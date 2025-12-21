@@ -29,3 +29,6 @@ temp/
 
 *storybook.log
 storybook-static
+
+# Playwright MCP screenshots
+.playwright-mcp/
