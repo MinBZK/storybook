@@ -92,7 +92,7 @@ export class RRButton extends RRBaseComponent {
     return `
       :host {
         display: inline-block;
-        font-family: RijksSansVF, system-ui, sans-serif;
+        font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
       }
 
       :host([hidden]) {

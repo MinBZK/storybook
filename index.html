@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RegelRecht Design System</title>
+  <link rel="stylesheet" href="src/fonts/fonts.css">
   <link rel="stylesheet" href="dist/css/tokens.css">
   <style>
     * {
@@ -11,7 +12,7 @@
     }
 
     body {
-      font-family: RijksSansVF, system-ui, -apple-system, sans-serif;
+      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
       margin: 0;
       padding: 0;
       background-color: var(--semantics-views-background-color, #fff);
