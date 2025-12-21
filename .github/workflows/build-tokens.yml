@@ -1,0 +1,62 @@
+name: Build Design Tokens
+
+on:
+  push:
+    paths:
+      - 'tokens/**'
+      - 'src/parser/**'
+      - 'style-dictionary.config.js'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'tokens/**'
+      - 'src/parser/**'
+      - 'style-dictionary.config.js'
+  workflow_dispatch:
+
+jobs:
+  build-tokens:
+    name: Build Design Tokens
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build tokens
+        run: npm run build:tokens
+
+      - name: Upload token artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-tokens
+          path: dist/css/
+          retention-days: 30
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if [[ -n $(git status --porcelain dist/) ]]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit token changes
+        if: steps.changes.outputs.changes == 'true' && github.event_name == 'push'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add dist/
+          git commit -m "chore: rebuild design tokens [skip ci]"
+          git push
