@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RegelRecht Design System</title>
+  <link rel="stylesheet" href="dist/css/tokens.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: RijksSansVF, system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--semantics-views-background-color, #fff);
+      color: var(--semantics-content-color, #1e293b);
+      line-height: 1.5;
+    }
+
+    .header {
+      background-color: var(--primitives-color-accent-100, #154273);
+      color: white;
+      padding: 2rem;
+    }
+
+    .header h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+    }
+
+    .header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--semantics-views-tinted-background-color, #f1f5f9);
+      border-radius: var(--primitives-corner-radius-l, 11px);
+    }
+
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--semantics-divider-color, #e2e8f0);
+    }
+
+    .section h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: var(--semantics-content-secondary-color, #475569);
+    }
+
+    .component-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .component-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+
+    .color-swatch {
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    .color-swatch.dark {
+      color: white;
+    }
+
+    .color-swatch.light {
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+    }
+
+    .spacing-demo {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+    }
+
+    .spacing-box {
+      background: var(--primitives-color-accent-100, #154273);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.75rem;
+    }
+
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .token-table th,
+    .token-table td {
+      text-align: left;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--semantics-divider-color, #e2e8f0);
+    }
+
+    .token-table th {
+      background: rgba(0,0,0,0.05);
+    }
+
+    .token-table code {
+      background: rgba(0,0,0,0.1);
+      padding: 0.125rem 0.375rem;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 0.8125rem;
+    }
+
+    .code-block {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 0.875rem;
+      margin: 1rem 0;
+    }
+
+    .code-block code {
+      color: inherit;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      background: var(--primitives-color-accent-15, #dce3ea);
+      color: var(--primitives-color-accent-100, #154273);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 1rem;
+      background: white;
+      border-radius: 8px;
+    }
+
+    .flow-box {
+      padding: 1rem 1.5rem;
+      background: var(--primitives-color-accent-100, #154273);
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .flow-arrow {
+      font-size: 1.5rem;
+      color: var(--primitives-color-accent-100, #154273);
+    }
+  </style>
+  <script type="module">
+    import './src/components/button/rr-button.js';
+  </script>
+</head>
+<body>
+  <header class="header">
+    <h1>RegelRecht Design System</h1>
+    <p>Design tokens en componenten voor Nederlandse Overheid webapplicaties</p>
+  </header>
+
+  <div class="container">
+    <!-- Workflow -->
+    <section class="section">
+      <h2>Single Source of Truth: Figma</h2>
+      <div class="flow-diagram">
+        <div class="flow-box">Figma Design</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">variables2json</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">tokens.json</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">Style Dictionary</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">CSS Variables</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">Web Components</div>
+      </div>
+      <p style="margin-top: 1rem; color: var(--semantics-content-secondary-color);">
+        Alle tokens komen uit Figma. Bij wijzigingen exporteert de designer nieuwe tokens,
+        en de pipeline genereert automatisch CSS en updated componenten.
+      </p>
+    </section>
+
+    <!-- Button Component -->
+    <section class="section">
+      <h2>Button Component</h2>
+      <span class="badge">rr-button</span>
+
+      <h3>Variants</h3>
+      <div class="component-grid">
+        <rr-button variant="accent-filled">Accent Filled</rr-button>
+        <rr-button variant="accent-outlined">Accent Outlined</rr-button>
+        <rr-button variant="accent-tinted">Accent Tinted</rr-button>
+        <rr-button variant="neutral-tinted">Neutral Tinted</rr-button>
+        <rr-button variant="accent-transparent">Accent Transparent</rr-button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="component-row">
+        <rr-button size="xs">Extra Small</rr-button>
+        <rr-button size="s">Small</rr-button>
+        <rr-button size="m">Medium (default)</rr-button>
+      </div>
+
+      <h3>States</h3>
+      <div class="component-row">
+        <rr-button>Normal</rr-button>
+        <rr-button disabled>Disabled</rr-button>
+      </div>
+
+      <h3>All Combinations</h3>
+      <table class="token-table" style="margin-top: 1rem;">
+        <thead>
+          <tr>
+            <th>Variant</th>
+            <th>XS</th>
+            <th>S</th>
+            <th>M</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>accent-filled</td>
+            <td><rr-button variant="accent-filled" size="xs">Label</rr-button></td>
+            <td><rr-button variant="accent-filled" size="s">Label</rr-button></td>
+            <td><rr-button variant="accent-filled" size="m">Label</rr-button></td>
+          </tr>
+          <tr>
+            <td>accent-outlined</td>
+            <td><rr-button variant="accent-outlined" size="xs">Label</rr-button></td>
+            <td><rr-button variant="accent-outlined" size="s">Label</rr-button></td>
+            <td><rr-button variant="accent-outlined" size="m">Label</rr-button></td>
+          </tr>
+          <tr>
+            <td>accent-tinted</td>
+            <td><rr-button variant="accent-tinted" size="xs">Label</rr-button></td>
+            <td><rr-button variant="accent-tinted" size="s">Label</rr-button></td>
+            <td><rr-button variant="accent-tinted" size="m">Label</rr-button></td>
+          </tr>
+          <tr>
+            <td>neutral-tinted</td>
+            <td><rr-button variant="neutral-tinted" size="xs">Label</rr-button></td>
+            <td><rr-button variant="neutral-tinted" size="s">Label</rr-button></td>
+            <td><rr-button variant="neutral-tinted" size="m">Label</rr-button></td>
+          </tr>
+          <tr>
+            <td>accent-transparent</td>
+            <td><rr-button variant="accent-transparent" size="xs">Label</rr-button></td>
+            <td><rr-button variant="accent-transparent" size="s">Label</rr-button></td>
+            <td><rr-button variant="accent-transparent" size="m">Label</rr-button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Usage</h3>
+      <div class="code-block">
+        <code>&lt;rr-button variant="accent-filled" size="m"&gt;Click me&lt;/rr-button&gt;</code>
+      </div>
+    </section>
+
+    <!-- Color Tokens -->
+    <section class="section">
+      <h2>Color Tokens</h2>
+
+      <h3>Accent (Lintblauw)</h3>
+      <div class="color-grid">
+        <div class="color-swatch dark" style="background: var(--primitives-color-accent-100);">
+          accent-100<br>#154273
+        </div>
+        <div class="color-swatch dark" style="background: var(--primitives-color-accent-75);">
+          accent-75
+        </div>
+        <div class="color-swatch dark" style="background: var(--primitives-color-accent-60);">
+          accent-60
+        </div>
+        <div class="color-swatch light" style="background: var(--primitives-color-accent-45);">
+          accent-45
+        </div>
+        <div class="color-swatch light" style="background: var(--primitives-color-accent-30);">
+          accent-30
+        </div>
+        <div class="color-swatch light" style="background: var(--primitives-color-accent-15);">
+          accent-15
+        </div>
+      </div>
+
+      <h3>Neutral (Grijs)</h3>
+      <div class="color-grid">
+        <div class="color-swatch dark" style="background: var(--primitives-color-neutral-1000);">
+          neutral-1000
+        </div>
+        <div class="color-swatch dark" style="background: var(--primitives-color-neutral-900);">
+          neutral-900
+        </div>
+        <div class="color-swatch dark" style="background: var(--primitives-color-neutral-800);">
+          neutral-800
+        </div>
+        <div class="color-swatch dark" style="background: var(--primitives-color-neutral-600);">
+          neutral-600
+        </div>
+        <div class="color-swatch light" style="background: var(--primitives-color-neutral-400);">
+          neutral-400
+        </div>
+        <div class="color-swatch light" style="background: var(--primitives-color-neutral-200);">
+          neutral-200
+        </div>
+        <div class="color-swatch light" style="background: var(--primitives-color-neutral-100);">
+          neutral-100
+        </div>
+        <div class="color-swatch light" style="background: var(--primitives-color-neutral-0);">
+          neutral-0
+        </div>
+      </div>
+    </section>
+
+    <!-- Spacing Tokens -->
+    <section class="section">
+      <h2>Spacing Tokens</h2>
+      <div class="spacing-demo">
+        <div class="spacing-box" style="width: 4px; height: 4px;" title="4px"></div>
+        <div class="spacing-box" style="width: 8px; height: 8px;" title="8px"></div>
+        <div class="spacing-box" style="width: 12px; height: 12px;" title="12px"></div>
+        <div class="spacing-box" style="width: 16px; height: 16px;" title="16px"></div>
+        <div class="spacing-box" style="width: 20px; height: 20px;" title="20px"></div>
+        <div class="spacing-box" style="width: 24px; height: 24px;" title="24px"></div>
+        <div class="spacing-box" style="width: 32px; height: 32px;" title="32px"></div>
+        <div class="spacing-box" style="width: 44px; height: 44px;" title="44px"></div>
+      </div>
+
+      <table class="token-table" style="margin-top: 1.5rem;">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Value</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--primitives-space-4</code></td>
+            <td>4px</td>
+            <td>Tight spacing, icons</td>
+          </tr>
+          <tr>
+            <td><code>--primitives-space-8</code></td>
+            <td>8px</td>
+            <td>Default gap</td>
+          </tr>
+          <tr>
+            <td><code>--primitives-space-16</code></td>
+            <td>16px</td>
+            <td>Section padding</td>
+          </tr>
+          <tr>
+            <td><code>--primitives-space-24</code></td>
+            <td>24px</td>
+            <td>Card padding</td>
+          </tr>
+          <tr>
+            <td><code>--primitives-space-32</code></td>
+            <td>32px</td>
+            <td>Large sections</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Typography -->
+    <section class="section">
+      <h2>Typography</h2>
+      <p style="font-size: 0.875rem; color: var(--semantics-content-secondary-color); margin-bottom: 1.5rem;">
+        Font: RijksSansVF (variabel font). Fallback: system-ui
+      </p>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Preview</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--components-button-m-font</code></td>
+            <td style="font: var(--components-button-m-font, 600 18px/1.125 system-ui);">Button Medium</td>
+          </tr>
+          <tr>
+            <td><code>--components-button-s-font</code></td>
+            <td style="font: var(--components-button-s-font, 600 16px/1.125 system-ui);">Button Small</td>
+          </tr>
+          <tr>
+            <td><code>--components-button-xs-font</code></td>
+            <td style="font: var(--components-button-xs-font, 600 14px/1.125 system-ui);">Button XS</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Installation -->
+    <section class="section">
+      <h2>Installation & Usage</h2>
+
+      <h3>Load Tokens CSS</h3>
+      <div class="code-block">
+        <code>&lt;link rel="stylesheet" href="dist/css/tokens.css"&gt;</code>
+      </div>
+
+      <h3>Import Components</h3>
+      <div class="code-block">
+        <code>&lt;script type="module"&gt;
+  import './src/components/button/rr-button.js';
+&lt;/script&gt;</code>
+      </div>
+
+      <h3>Use Components</h3>
+      <div class="code-block">
+        <code>&lt;rr-button variant="accent-filled"&gt;Primary Action&lt;/rr-button&gt;
+&lt;rr-button variant="accent-outlined"&gt;Secondary Action&lt;/rr-button&gt;</code>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

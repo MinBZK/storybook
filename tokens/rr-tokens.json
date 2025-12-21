@@ -1,0 +1,3760 @@
+{
+  "version": "1.0.4",
+  "metadata": {},
+  "collections": [
+    {
+      "name": "Themes",
+      "modes": [
+        {
+          "name": "Rijksoverheid",
+          "variables": [
+            {
+              "name": "components/menu-bar/menu-item/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "components/menu-bar/menu-item/is-selected/indicator/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "components/menu-bar/menu-item/is-selected/indicator/height",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/4"
+              }
+            },
+            {
+              "name": "components/menu-bar/menu-item/is-hovered/indicator/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/200"
+              }
+            },
+            {
+              "name": "components/menu-bar/menu-item/is-hovered/indicator/height",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/32"
+              }
+            },
+            {
+              "name": "components/checkbox/border-thickness",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "components/checkbox/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/600"
+              }
+            },
+            {
+              "name": "components/checkbox/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/views/background-color"
+              }
+            },
+            {
+              "name": "components/checkbox/is-selected/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "components/checkbox/is-selected/icon/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/content/white/color"
+              }
+            },
+            {
+              "name": "components/radio-button/border-thickness",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "components/radio-button/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/600"
+              }
+            },
+            {
+              "name": "components/radio-button/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/views/background-color"
+              }
+            },
+            {
+              "name": "components/radio-button/is-selected/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "components/radio-button/is-selected/inner-shape/border-thickness",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "components/radio-button/is-selected/inner-shape/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/content/white/color"
+              }
+            },
+            {
+              "name": "components/switch/border-thickness",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "components/switch/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/600"
+              }
+            },
+            {
+              "name": "components/switch/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/views/background-color"
+              }
+            },
+            {
+              "name": "components/switch/thumb/border-thickness",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "components/switch/thumb/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/600"
+              }
+            },
+            {
+              "name": "components/switch/thumb/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/views/background-color"
+              }
+            },
+            {
+              "name": "components/switch/icon/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/600"
+              }
+            },
+            {
+              "name": "components/switch/is-selected/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "components/switch/is-selected/thumb/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/content/white/color"
+              }
+            },
+            {
+              "name": "components/switch/is-selected/icon/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "components/toggle-button/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/buttons/neutral-tinted/color"
+              }
+            },
+            {
+              "name": "components/toggle-button/is-hovered/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/300"
+              }
+            },
+            {
+              "name": "components/toggle-button/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/900"
+              }
+            },
+            {
+              "name": "components/toggle-button/is-selected/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "components/toggle-button/is-selected/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/content/white/color"
+              }
+            },
+            {
+              "name": "components/toggle-button/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/buttons/neutral-tinted/background-color"
+              }
+            },
+            {
+              "name": "components/box/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/views/tinted/background-color"
+              }
+            },
+            {
+              "name": "semantics/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/800"
+              }
+            },
+            {
+              "name": "semantics/content/white/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/0"
+              }
+            },
+            {
+              "name": "semantics/content/secondary/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/600"
+              }
+            },
+            {
+              "name": "semantics/views/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/0"
+              }
+            },
+            {
+              "name": "semantics/views/tinted/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/100"
+              }
+            },
+            {
+              "name": "components/box/corner-radius",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/corner-radius/l"
+              }
+            },
+            {
+              "name": "components/box/padding",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/16"
+              }
+            },
+            {
+              "name": "semantics/links/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "semantics/divider/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/200"
+              }
+            },
+            {
+              "name": "semantics/controls/xs/min-size",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/24"
+              }
+            },
+            {
+              "name": "semantics/controls/xs/corner-radius",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/corner-radius/xs"
+              }
+            },
+            {
+              "name": "semantics/controls/xs/focus-ring/corner-radius",
+              "type": "number",
+              "isAlias": false,
+              "value": 7
+            },
+            {
+              "name": "semantics/controls/s/min-size",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/32"
+              }
+            },
+            {
+              "name": "semantics/controls/s/corner-radius",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/corner-radius/s"
+              }
+            },
+            {
+              "name": "semantics/controls/s/focus-ring/corner-radius",
+              "type": "number",
+              "isAlias": false,
+              "value": 9
+            },
+            {
+              "name": "semantics/controls/m/min-size",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/44"
+              }
+            },
+            {
+              "name": "semantics/controls/m/corner-radius",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/corner-radius/m"
+              }
+            },
+            {
+              "name": "semantics/divider/thickness",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "semantics/input-fields/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/0"
+              }
+            },
+            {
+              "name": "semantics/buttons/m/font-size",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/font-size/body-m"
+              }
+            },
+            {
+              "name": "semantics/input-fields/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/600"
+              }
+            },
+            {
+              "name": "semantics/input-fields/placeholder/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/500"
+              }
+            },
+            {
+              "name": "semantics/input-fields/border-thickness",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "semantics/buttons/s/font-size",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/font-size/body-m"
+              }
+            },
+            {
+              "name": "semantics/buttons/neutral-tinted/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/900"
+              }
+            },
+            {
+              "name": "semantics/buttons/neutral-tinted/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/200"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-filled/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/0"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-tinted/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-tinted/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/15"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-filled/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/border-thickness",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "semantics/input-fields/is-valid/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/success/100"
+              }
+            },
+            {
+              "name": "semantics/input-fields/is-valid/icon-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/success/100"
+              }
+            },
+            {
+              "name": "semantics/input-fields/is-invalid/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/danger/100"
+              }
+            },
+            {
+              "name": "semantics/input-fields/is-invalid/icon-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/danger/100"
+              }
+            },
+            {
+              "name": "semantics/sections/s/margin-inline",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/20"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-transparent/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "semantics/overlays/corner-radius",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/corner-radius/none"
+              }
+            },
+            {
+              "name": "semantics/focus-ring/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/1000"
+              }
+            },
+            {
+              "name": "semantics/sections/s/margin-block",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/20"
+              }
+            },
+            {
+              "name": "semantics/sections/s/gap",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/16"
+              }
+            },
+            {
+              "name": "semantics/sections/max-width",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/area/1280"
+              }
+            },
+            {
+              "name": "semantics/focus-ring/thickness",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/2"
+              }
+            },
+            {
+              "name": "semantics/buttons/font-weight",
+              "type": "string",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/font-weight/body/semi-bold"
+              }
+            },
+            {
+              "name": "primitives/color/neutral/0",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FFFFFF"
+            },
+            {
+              "name": "primitives/color/neutral/50",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F8FAFC"
+            },
+            {
+              "name": "primitives/color/neutral/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F1F5F9"
+            },
+            {
+              "name": "primitives/font-family/body",
+              "type": "string",
+              "isAlias": false,
+              "value": "RijksSansVF"
+            },
+            {
+              "name": "primitives/font-family/body-fallback",
+              "type": "string",
+              "isAlias": false,
+              "value": "system-ui"
+            },
+            {
+              "name": "primitives/font-family/display",
+              "type": "string",
+              "isAlias": false,
+              "value": "RijksSansVF"
+            },
+            {
+              "name": "primitives/font-family/display-fallback",
+              "type": "string",
+              "isAlias": false,
+              "value": "system-ui"
+            },
+            {
+              "name": "primitives/font-family/sans-serif",
+              "type": "string",
+              "isAlias": false,
+              "value": "RijksSansVF"
+            },
+            {
+              "name": "primitives/font-family/sans-serif-fallback",
+              "type": "string",
+              "isAlias": false,
+              "value": "system-ui"
+            },
+            {
+              "name": "primitives/font-family/serif",
+              "type": "string",
+              "isAlias": false,
+              "value": "RijksoverheidSerif"
+            },
+            {
+              "name": "primitives/font-family/serif-fallback",
+              "type": "string",
+              "isAlias": false,
+              "value": "serif"
+            },
+            {
+              "name": "primitives/color/neutral/200",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E2E8F0"
+            },
+            {
+              "name": "primitives/color/neutral/300",
+              "type": "color",
+              "isAlias": false,
+              "value": "#CBD5E1"
+            },
+            {
+              "name": "primitives/color/neutral/400",
+              "type": "color",
+              "isAlias": false,
+              "value": "#94A3B8"
+            },
+            {
+              "name": "primitives/color/neutral/500",
+              "type": "color",
+              "isAlias": false,
+              "value": "#64748B"
+            },
+            {
+              "name": "primitives/color/neutral/600",
+              "type": "color",
+              "isAlias": false,
+              "value": "#475569"
+            },
+            {
+              "name": "primitives/color/neutral/700",
+              "type": "color",
+              "isAlias": false,
+              "value": "#334155"
+            },
+            {
+              "name": "primitives/color/neutral/800",
+              "type": "color",
+              "isAlias": false,
+              "value": "#1E293B"
+            },
+            {
+              "name": "primitives/color/neutral/900",
+              "type": "color",
+              "isAlias": false,
+              "value": "#0F172A"
+            },
+            {
+              "name": "primitives/color/neutral/1000",
+              "type": "color",
+              "isAlias": false,
+              "value": "#000000"
+            },
+            {
+              "name": "primitives/color/accent/100",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/lintblauw/100"
+              }
+            },
+            {
+              "name": "primitives/color/accent/75",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/lintblauw/75"
+              }
+            },
+            {
+              "name": "primitives/color/accent/60",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/lintblauw/60"
+              }
+            },
+            {
+              "name": "primitives/color/accent/45",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/lintblauw/45"
+              }
+            },
+            {
+              "name": "primitives/color/accent/30",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/lintblauw/30"
+              }
+            },
+            {
+              "name": "primitives/color/accent/15",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/lintblauw/15"
+              }
+            },
+            {
+              "name": "primitives/color/success/100",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/groen/100"
+              }
+            },
+            {
+              "name": "primitives/color/success/75",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/groen/75"
+              }
+            },
+            {
+              "name": "primitives/color/success/60",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/groen/60"
+              }
+            },
+            {
+              "name": "primitives/color/success/45",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/groen/45"
+              }
+            },
+            {
+              "name": "primitives/color/success/30",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/groen/30"
+              }
+            },
+            {
+              "name": "primitives/color/success/15",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/groen/15"
+              }
+            },
+            {
+              "name": "primitives/color/warning/100",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/oranje/100"
+              }
+            },
+            {
+              "name": "primitives/color/warning/75",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/oranje/75"
+              }
+            },
+            {
+              "name": "primitives/color/warning/60",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/oranje/60"
+              }
+            },
+            {
+              "name": "primitives/color/warning/45",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/oranje/45"
+              }
+            },
+            {
+              "name": "primitives/color/warning/30",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/oranje/30"
+              }
+            },
+            {
+              "name": "primitives/color/warning/15",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/oranje/15"
+              }
+            },
+            {
+              "name": "primitives/color/danger/100",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/rood/100"
+              }
+            },
+            {
+              "name": "primitives/color/danger/75",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/rood/75"
+              }
+            },
+            {
+              "name": "primitives/color/danger/60",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/rood/60"
+              }
+            },
+            {
+              "name": "primitives/color/danger/45",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/rood/45"
+              }
+            },
+            {
+              "name": "primitives/color/danger/30",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/rood/30"
+              }
+            },
+            {
+              "name": "primitives/color/danger/15",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/rood/15"
+              }
+            },
+            {
+              "name": "primitives/color/lintblauw/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#154273"
+            },
+            {
+              "name": "primitives/color/lintblauw/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#4F7196"
+            },
+            {
+              "name": "primitives/color/lintblauw/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#738EAB"
+            },
+            {
+              "name": "primitives/color/lintblauw/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#95A9C0"
+            },
+            {
+              "name": "primitives/color/lintblauw/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#B8C6D5"
+            },
+            {
+              "name": "primitives/color/paars/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#42145F"
+            },
+            {
+              "name": "primitives/color/violet/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#A90061"
+            },
+            {
+              "name": "primitives/color/robijnrood/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#CA005D"
+            },
+            {
+              "name": "primitives/color/roze/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F092CD"
+            },
+            {
+              "name": "primitives/color/roze/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F4ADD9"
+            },
+            {
+              "name": "primitives/color/roze/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F6BDE1"
+            },
+            {
+              "name": "primitives/color/roze/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F8CEE8"
+            },
+            {
+              "name": "primitives/color/roze/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FBDEF0"
+            },
+            {
+              "name": "primitives/color/roze/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FDEFF8"
+            },
+            {
+              "name": "primitives/color/robijnrood/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#D74085"
+            },
+            {
+              "name": "primitives/color/robijnrood/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#DF669D"
+            },
+            {
+              "name": "primitives/color/robijnrood/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E78CB6"
+            },
+            {
+              "name": "primitives/color/robijnrood/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EFB2CE"
+            },
+            {
+              "name": "primitives/color/robijnrood/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F7D9E7"
+            },
+            {
+              "name": "primitives/color/violet/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#BE4088"
+            },
+            {
+              "name": "primitives/color/violet/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#CB66A0"
+            },
+            {
+              "name": "primitives/color/violet/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#D88CB7"
+            },
+            {
+              "name": "primitives/color/violet/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E5B2CF"
+            },
+            {
+              "name": "primitives/color/violet/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F2D9E7"
+            },
+            {
+              "name": "primitives/color/paars/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#714F87"
+            },
+            {
+              "name": "primitives/color/paars/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#8D729F"
+            },
+            {
+              "name": "primitives/color/paars/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#A995B7"
+            },
+            {
+              "name": "primitives/color/paars/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#C6B8CE"
+            },
+            {
+              "name": "primitives/color/paars/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E3DCE7"
+            },
+            {
+              "name": "primitives/color/rood/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#D52B1E"
+            },
+            {
+              "name": "primitives/color/lintblauw/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#DCE3EA"
+            },
+            {
+              "name": "primitives/color/rood/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#DF6056"
+            },
+            {
+              "name": "primitives/color/rood/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E67F78"
+            },
+            {
+              "name": "primitives/color/rood/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EC9F99"
+            },
+            {
+              "name": "primitives/color/rood/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F2BFBB"
+            },
+            {
+              "name": "primitives/color/rood/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F9DFDD"
+            },
+            {
+              "name": "primitives/font-size/display-a",
+              "type": "number",
+              "isAlias": false,
+              "value": 52
+            },
+            {
+              "name": "primitives/font-size/display-b",
+              "type": "number",
+              "isAlias": false,
+              "value": 46
+            },
+            {
+              "name": "primitives/font-size/display-c",
+              "type": "number",
+              "isAlias": false,
+              "value": 41
+            },
+            {
+              "name": "primitives/font-size/display-d",
+              "type": "number",
+              "isAlias": false,
+              "value": 36
+            },
+            {
+              "name": "primitives/font-size/display-e",
+              "type": "number",
+              "isAlias": false,
+              "value": 32
+            },
+            {
+              "name": "primitives/font-size/display-f",
+              "type": "number",
+              "isAlias": false,
+              "value": 29
+            },
+            {
+              "name": "primitives/font-size/display-g",
+              "type": "number",
+              "isAlias": false,
+              "value": 26
+            },
+            {
+              "name": "primitives/font-size/display-h",
+              "type": "number",
+              "isAlias": false,
+              "value": 23
+            },
+            {
+              "name": "primitives/font-size/display-i",
+              "type": "number",
+              "isAlias": false,
+              "value": 20
+            },
+            {
+              "name": "primitives/font-size/display-j",
+              "type": "number",
+              "isAlias": false,
+              "value": 18
+            },
+            {
+              "name": "primitives/font-size/body-l",
+              "type": "number",
+              "isAlias": false,
+              "value": 20
+            },
+            {
+              "name": "primitives/font-size/body-m",
+              "type": "number",
+              "isAlias": false,
+              "value": 18
+            },
+            {
+              "name": "primitives/font-size/body-s",
+              "type": "number",
+              "isAlias": false,
+              "value": 16
+            },
+            {
+              "name": "primitives/font-size/body-xs",
+              "type": "number",
+              "isAlias": false,
+              "value": 14
+            },
+            {
+              "name": "primitives/line-height/loose",
+              "type": "number",
+              "isAlias": false,
+              "value": 1.75
+            },
+            {
+              "name": "primitives/line-height/snug",
+              "type": "number",
+              "isAlias": false,
+              "value": 1.5
+            },
+            {
+              "name": "primitives/line-height/tight",
+              "type": "number",
+              "isAlias": false,
+              "value": 1.25
+            },
+            {
+              "name": "primitives/line-height/flat",
+              "type": "number",
+              "isAlias": false,
+              "value": 1.1299999952316284
+            },
+            {
+              "name": "primitives/space/0",
+              "type": "number",
+              "isAlias": false,
+              "value": 0
+            },
+            {
+              "name": "primitives/space/2",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "primitives/space/4",
+              "type": "number",
+              "isAlias": false,
+              "value": 4
+            },
+            {
+              "name": "primitives/space/6",
+              "type": "number",
+              "isAlias": false,
+              "value": 6
+            },
+            {
+              "name": "primitives/space/8",
+              "type": "number",
+              "isAlias": false,
+              "value": 8
+            },
+            {
+              "name": "primitives/space/10",
+              "type": "number",
+              "isAlias": false,
+              "value": 10
+            },
+            {
+              "name": "primitives/space/12",
+              "type": "number",
+              "isAlias": false,
+              "value": 12
+            },
+            {
+              "name": "primitives/space/16",
+              "type": "number",
+              "isAlias": false,
+              "value": 16
+            },
+            {
+              "name": "primitives/space/20",
+              "type": "number",
+              "isAlias": false,
+              "value": 20
+            },
+            {
+              "name": "primitives/space/24",
+              "type": "number",
+              "isAlias": false,
+              "value": 24
+            },
+            {
+              "name": "primitives/space/28",
+              "type": "number",
+              "isAlias": false,
+              "value": 28
+            },
+            {
+              "name": "primitives/space/32",
+              "type": "number",
+              "isAlias": false,
+              "value": 32
+            },
+            {
+              "name": "primitives/space/40",
+              "type": "number",
+              "isAlias": false,
+              "value": 40
+            },
+            {
+              "name": "primitives/space/44",
+              "type": "number",
+              "isAlias": false,
+              "value": 44
+            },
+            {
+              "name": "primitives/space/48",
+              "type": "number",
+              "isAlias": false,
+              "value": 48
+            },
+            {
+              "name": "primitives/space/56",
+              "type": "number",
+              "isAlias": false,
+              "value": 56
+            },
+            {
+              "name": "primitives/space/64",
+              "type": "number",
+              "isAlias": false,
+              "value": 64
+            },
+            {
+              "name": "primitives/space/80",
+              "type": "number",
+              "isAlias": false,
+              "value": 80
+            },
+            {
+              "name": "primitives/space/96",
+              "type": "number",
+              "isAlias": false,
+              "value": 96
+            },
+            {
+              "name": "primitives/font-weight/body/hairline",
+              "type": "string",
+              "isAlias": false,
+              "value": "Thin"
+            },
+            {
+              "name": "primitives/font-weight/body/thin",
+              "type": "string",
+              "isAlias": false,
+              "value": "Thin"
+            },
+            {
+              "name": "primitives/font-weight/body/light",
+              "type": "string",
+              "isAlias": false,
+              "value": "Light"
+            },
+            {
+              "name": "primitives/font-weight/body/regular",
+              "type": "string",
+              "isAlias": false,
+              "value": "Regular"
+            },
+            {
+              "name": "primitives/font-weight/body/medium",
+              "type": "string",
+              "isAlias": false,
+              "value": "SemiBold"
+            },
+            {
+              "name": "primitives/font-weight/body/semi-bold",
+              "type": "string",
+              "isAlias": false,
+              "value": "SemiBold"
+            },
+            {
+              "name": "primitives/font-weight/body/bold",
+              "type": "string",
+              "isAlias": false,
+              "value": "Bold"
+            },
+            {
+              "name": "primitives/font-weight/body/extra-bold",
+              "type": "string",
+              "isAlias": false,
+              "value": "ExtraBold"
+            },
+            {
+              "name": "primitives/font-weight/body/black",
+              "type": "string",
+              "isAlias": false,
+              "value": "ExtraBold"
+            },
+            {
+              "name": "primitives/area/120",
+              "type": "number",
+              "isAlias": false,
+              "value": 120
+            },
+            {
+              "name": "primitives/area/160",
+              "type": "number",
+              "isAlias": false,
+              "value": 160
+            },
+            {
+              "name": "primitives/area/200",
+              "type": "number",
+              "isAlias": false,
+              "value": 200
+            },
+            {
+              "name": "primitives/area/240",
+              "type": "number",
+              "isAlias": false,
+              "value": 240
+            },
+            {
+              "name": "primitives/area/280",
+              "type": "number",
+              "isAlias": false,
+              "value": 280
+            },
+            {
+              "name": "primitives/area/320",
+              "type": "number",
+              "isAlias": false,
+              "value": 320
+            },
+            {
+              "name": "primitives/area/360",
+              "type": "number",
+              "isAlias": false,
+              "value": 360
+            },
+            {
+              "name": "primitives/area/400",
+              "type": "number",
+              "isAlias": false,
+              "value": 400
+            },
+            {
+              "name": "primitives/area/480",
+              "type": "number",
+              "isAlias": false,
+              "value": 480
+            },
+            {
+              "name": "primitives/area/640",
+              "type": "number",
+              "isAlias": false,
+              "value": 640
+            },
+            {
+              "name": "primitives/area/720",
+              "type": "number",
+              "isAlias": false,
+              "value": 720
+            },
+            {
+              "name": "primitives/area/800",
+              "type": "number",
+              "isAlias": false,
+              "value": 800
+            },
+            {
+              "name": "primitives/area/960",
+              "type": "number",
+              "isAlias": false,
+              "value": 960
+            },
+            {
+              "name": "primitives/area/1280",
+              "type": "number",
+              "isAlias": false,
+              "value": 1280
+            },
+            {
+              "name": "primitives/area/1440",
+              "type": "number",
+              "isAlias": false,
+              "value": 1440
+            },
+            {
+              "name": "primitives/breakpoint/s-min",
+              "type": "number",
+              "isAlias": false,
+              "value": 320
+            },
+            {
+              "name": "primitives/breakpoint/s-max",
+              "type": "number",
+              "isAlias": false,
+              "value": 640
+            },
+            {
+              "name": "primitives/breakpoint/m-min",
+              "type": "number",
+              "isAlias": false,
+              "value": 641
+            },
+            {
+              "name": "primitives/breakpoint/m-max",
+              "type": "number",
+              "isAlias": false,
+              "value": 1007
+            },
+            {
+              "name": "primitives/breakpoint/l-min",
+              "type": "number",
+              "isAlias": false,
+              "value": 1008
+            },
+            {
+              "name": "primitives/corner-radius/none",
+              "type": "number",
+              "isAlias": false,
+              "value": 0
+            },
+            {
+              "name": "primitives/corner-radius/xxs",
+              "type": "number",
+              "isAlias": false,
+              "value": 1
+            },
+            {
+              "name": "primitives/corner-radius/xs",
+              "type": "number",
+              "isAlias": false,
+              "value": 3
+            },
+            {
+              "name": "primitives/corner-radius/s",
+              "type": "number",
+              "isAlias": false,
+              "value": 5
+            },
+            {
+              "name": "primitives/corner-radius/m",
+              "type": "number",
+              "isAlias": false,
+              "value": 7
+            },
+            {
+              "name": "primitives/corner-radius/l",
+              "type": "number",
+              "isAlias": false,
+              "value": 11
+            },
+            {
+              "name": "primitives/corner-radius/xl",
+              "type": "number",
+              "isAlias": false,
+              "value": 15
+            },
+            {
+              "name": "primitives/corner-radius/xxl",
+              "type": "number",
+              "isAlias": false,
+              "value": 21
+            },
+            {
+              "name": "primitives/corner-radius/full",
+              "type": "number",
+              "isAlias": false,
+              "value": 9999
+            },
+            {
+              "name": "primitives/opacity/disabled",
+              "type": "number",
+              "isAlias": false,
+              "value": 38
+            },
+            {
+              "name": "primitives/opacity/0",
+              "type": "number",
+              "isAlias": false,
+              "value": 0
+            },
+            {
+              "name": "primitives/opacity/5",
+              "type": "number",
+              "isAlias": false,
+              "value": 5
+            },
+            {
+              "name": "primitives/opacity/10",
+              "type": "number",
+              "isAlias": false,
+              "value": 10
+            },
+            {
+              "name": "primitives/opacity/15",
+              "type": "number",
+              "isAlias": false,
+              "value": 15
+            },
+            {
+              "name": "primitives/opacity/20",
+              "type": "number",
+              "isAlias": false,
+              "value": 20
+            },
+            {
+              "name": "primitives/opacity/25",
+              "type": "number",
+              "isAlias": false,
+              "value": 25
+            },
+            {
+              "name": "primitives/opacity/30",
+              "type": "number",
+              "isAlias": false,
+              "value": 30
+            },
+            {
+              "name": "primitives/opacity/35",
+              "type": "number",
+              "isAlias": false,
+              "value": 35
+            },
+            {
+              "name": "primitives/opacity/40",
+              "type": "number",
+              "isAlias": false,
+              "value": 40
+            },
+            {
+              "name": "primitives/opacity/45",
+              "type": "number",
+              "isAlias": false,
+              "value": 45
+            },
+            {
+              "name": "primitives/opacity/50",
+              "type": "number",
+              "isAlias": false,
+              "value": 50
+            },
+            {
+              "name": "primitives/opacity/55",
+              "type": "number",
+              "isAlias": false,
+              "value": 55
+            },
+            {
+              "name": "primitives/opacity/60",
+              "type": "number",
+              "isAlias": false,
+              "value": 60
+            },
+            {
+              "name": "primitives/opacity/65",
+              "type": "number",
+              "isAlias": false,
+              "value": 65
+            },
+            {
+              "name": "primitives/opacity/70",
+              "type": "number",
+              "isAlias": false,
+              "value": 70
+            },
+            {
+              "name": "primitives/opacity/75",
+              "type": "number",
+              "isAlias": false,
+              "value": 75
+            },
+            {
+              "name": "primitives/opacity/80",
+              "type": "number",
+              "isAlias": false,
+              "value": 80
+            },
+            {
+              "name": "primitives/opacity/85",
+              "type": "number",
+              "isAlias": false,
+              "value": 85
+            },
+            {
+              "name": "primitives/opacity/90",
+              "type": "number",
+              "isAlias": false,
+              "value": 90
+            },
+            {
+              "name": "primitives/opacity/95",
+              "type": "number",
+              "isAlias": false,
+              "value": 95
+            },
+            {
+              "name": "primitives/opacity/100",
+              "type": "number",
+              "isAlias": false,
+              "value": 100
+            },
+            {
+              "name": "primitives/font-weight/display/hairline",
+              "type": "string",
+              "isAlias": false,
+              "value": "Thin"
+            },
+            {
+              "name": "primitives/font-weight/display/thin",
+              "type": "string",
+              "isAlias": false,
+              "value": "Thin"
+            },
+            {
+              "name": "primitives/font-weight/display/light",
+              "type": "string",
+              "isAlias": false,
+              "value": "Light"
+            },
+            {
+              "name": "primitives/font-weight/display/regular",
+              "type": "string",
+              "isAlias": false,
+              "value": "Regular"
+            },
+            {
+              "name": "primitives/font-weight/display/medium",
+              "type": "string",
+              "isAlias": false,
+              "value": "SemiBold"
+            },
+            {
+              "name": "primitives/font-weight/display/semi-bold",
+              "type": "string",
+              "isAlias": false,
+              "value": "SemiBold"
+            },
+            {
+              "name": "primitives/font-weight/display/bold",
+              "type": "string",
+              "isAlias": false,
+              "value": "Bold"
+            },
+            {
+              "name": "primitives/font-weight/display/extra-bold",
+              "type": "string",
+              "isAlias": false,
+              "value": "ExtraBold"
+            },
+            {
+              "name": "primitives/font-weight/display/black",
+              "type": "string",
+              "isAlias": false,
+              "value": "ExtraBold"
+            },
+            {
+              "name": "primitives/color/oranje/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E17000"
+            },
+            {
+              "name": "primitives/color/oranje/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E89440"
+            },
+            {
+              "name": "primitives/color/oranje/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EDA966"
+            },
+            {
+              "name": "primitives/color/oranje/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F1BE8C"
+            },
+            {
+              "name": "primitives/color/oranje/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F6D4B2"
+            },
+            {
+              "name": "primitives/color/oranje/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FBEAD9"
+            },
+            {
+              "name": "primitives/color/donkergeel/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FFB612"
+            },
+            {
+              "name": "primitives/color/donkergeel/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FDC84D"
+            },
+            {
+              "name": "primitives/color/donkergeel/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FDD370"
+            },
+            {
+              "name": "primitives/color/donkergeel/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FDDE94"
+            },
+            {
+              "name": "primitives/color/donkergeel/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FEE9B7"
+            },
+            {
+              "name": "primitives/color/donkergeel/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FEF4DB"
+            },
+            {
+              "name": "primitives/color/geel/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F9E11E"
+            },
+            {
+              "name": "primitives/color/geel/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FAE856"
+            },
+            {
+              "name": "primitives/color/geel/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FBED78"
+            },
+            {
+              "name": "primitives/color/geel/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FCF199"
+            },
+            {
+              "name": "primitives/color/geel/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FDF6BB"
+            },
+            {
+              "name": "primitives/color/geel/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FEFBDD"
+            },
+            {
+              "name": "primitives/color/donkerbruin/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#673327"
+            },
+            {
+              "name": "primitives/color/donkerbruin/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#8D665D"
+            },
+            {
+              "name": "primitives/color/donkerbruin/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#A3847D"
+            },
+            {
+              "name": "primitives/color/donkerbruin/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#BAA39D"
+            },
+            {
+              "name": "primitives/color/donkerbruin/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#D1C1BD"
+            },
+            {
+              "name": "primitives/color/donkerbruin/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E8E0DF"
+            },
+            {
+              "name": "primitives/color/bruin/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#94710A"
+            },
+            {
+              "name": "primitives/color/bruin/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#AF9447"
+            },
+            {
+              "name": "primitives/color/bruin/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#BFA96C"
+            },
+            {
+              "name": "primitives/color/bruin/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#CFBF90"
+            },
+            {
+              "name": "primitives/color/bruin/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#DFD4B5"
+            },
+            {
+              "name": "primitives/color/bruin/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EFEADA"
+            },
+            {
+              "name": "primitives/color/donkergroen/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#275937"
+            },
+            {
+              "name": "primitives/color/donkergroen/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#5D8269"
+            },
+            {
+              "name": "primitives/color/donkergroen/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#7D9B87"
+            },
+            {
+              "name": "primitives/color/donkergroen/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#9DB4A4"
+            },
+            {
+              "name": "primitives/color/donkergroen/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#BDCDC2"
+            },
+            {
+              "name": "primitives/color/donkergroen/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#DEE6E1"
+            },
+            {
+              "name": "primitives/color/groen/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#39870C"
+            },
+            {
+              "name": "primitives/color/groen/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#6AA549"
+            },
+            {
+              "name": "primitives/color/groen/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#88B76D"
+            },
+            {
+              "name": "primitives/color/groen/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#A5C991"
+            },
+            {
+              "name": "primitives/color/groen/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#C3DBB5"
+            },
+            {
+              "name": "primitives/color/groen/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E1EDDA"
+            },
+            {
+              "name": "primitives/color/mosgroen/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#777B00"
+            },
+            {
+              "name": "primitives/color/mosgroen/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#999C40"
+            },
+            {
+              "name": "primitives/color/mosgroen/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#ADAF66"
+            },
+            {
+              "name": "primitives/color/mosgroen/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#C1C38C"
+            },
+            {
+              "name": "primitives/color/mosgroen/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#D6D7B2"
+            },
+            {
+              "name": "primitives/color/mosgroen/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EBEBD9"
+            },
+            {
+              "name": "primitives/color/mintgroen/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#76D2B6"
+            },
+            {
+              "name": "primitives/color/mintgroen/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#98DDC8"
+            },
+            {
+              "name": "primitives/color/mintgroen/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#ACE4D3"
+            },
+            {
+              "name": "primitives/color/mintgroen/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#C1EBDE"
+            },
+            {
+              "name": "primitives/color/mintgroen/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#D5F1E9"
+            },
+            {
+              "name": "primitives/color/mintgroen/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EAF8F4"
+            },
+            {
+              "name": "primitives/color/donkerblauw/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#01689B"
+            },
+            {
+              "name": "primitives/color/donkerblauw/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#408EB4"
+            },
+            {
+              "name": "primitives/color/donkerblauw/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#66A4C3"
+            },
+            {
+              "name": "primitives/color/donkerblauw/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#8CBBD2"
+            },
+            {
+              "name": "primitives/color/donkerblauw/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#B2D1E1"
+            },
+            {
+              "name": "primitives/color/donkerblauw/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#D9E8F0"
+            },
+            {
+              "name": "primitives/color/hemelblauw/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#007BC7"
+            },
+            {
+              "name": "primitives/color/hemelblauw/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#409CD5"
+            },
+            {
+              "name": "primitives/color/hemelblauw/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#66AFDD"
+            },
+            {
+              "name": "primitives/color/hemelblauw/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#8CC3E6"
+            },
+            {
+              "name": "primitives/color/hemelblauw/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#B2D7EE"
+            },
+            {
+              "name": "primitives/color/hemelblauw/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#D9EBF7"
+            },
+            {
+              "name": "primitives/color/lichtblauw/100",
+              "type": "color",
+              "isAlias": false,
+              "value": "#8FCAE7"
+            },
+            {
+              "name": "primitives/color/lichtblauw/75",
+              "type": "color",
+              "isAlias": false,
+              "value": "#ABD7ED"
+            },
+            {
+              "name": "primitives/color/lichtblauw/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#BCDFF0"
+            },
+            {
+              "name": "primitives/color/lichtblauw/45",
+              "type": "color",
+              "isAlias": false,
+              "value": "#CCE7F4"
+            },
+            {
+              "name": "primitives/color/lichtblauw/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#DDEFF8"
+            },
+            {
+              "name": "primitives/color/lichtblauw/15",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EEF7FC"
+            },
+            {
+              "name": "semantics/controls/m/focus-ring/corner-radius",
+              "type": "number",
+              "isAlias": false,
+              "value": 11
+            },
+            {
+              "name": "semantics/sections/m/margin-inline",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/32"
+              }
+            },
+            {
+              "name": "semantics/sections/m/margin-block",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/24"
+              }
+            },
+            {
+              "name": "semantics/sections/m/gap",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/24"
+              }
+            },
+            {
+              "name": "semantics/sections/l/margin-inline",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/48"
+              }
+            },
+            {
+              "name": "semantics/sections/l/margin-block",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/32"
+              }
+            },
+            {
+              "name": "semantics/sections/l/gap",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/24"
+              }
+            },
+            {
+              "name": "components/segmented-control/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/buttons/neutral-tinted/color"
+              }
+            },
+            {
+              "name": "components/segmented-control/is-hovered/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/300"
+              }
+            },
+            {
+              "name": "components/segmented-control/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/900"
+              }
+            },
+            {
+              "name": "components/segmented-control/is-selected/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/100"
+              }
+            },
+            {
+              "name": "components/segmented-control/is-selected/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/content/white/color"
+              }
+            },
+            {
+              "name": "components/segmented-control/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "semantics/buttons/neutral-tinted/background-color"
+              }
+            },
+            {
+              "name": "components/control-group/gap",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/8"
+              }
+            },
+            {
+              "name": "components/toggle-button-group/gap",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/6"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Typography",
+      "modes": [
+        {
+          "name": "Style",
+          "variables": [
+            {
+              "name": "components/button/m/font",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "components/button/s/font",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "components/button/xs/font",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "components/icon-button/font",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "components/menu-bar/title-item/s/font",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "components/menu-bar/title-item/m/font",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "components/menu-bar/title-item/l/font",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 23,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "components/menu-bar/menu-item/font",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "semantics/document-tab-bar/tab-title/font",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 100,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "semantics/input-fields/text",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 100,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/a",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 52,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/b",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 46,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/c",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 41,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/d",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 36,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/e",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 32,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/f",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 29,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/g",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 26,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/h",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 23,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/i",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/display/j",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "SemiBold",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/l/regular-loose",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 175,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/l/regular-snug",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 150,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/l/regular-tight",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/l/regular-flat",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/l/bold-loose",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 175,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/l/bold-snug",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 150,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/l/bold-tight",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/l/bold-flat",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 20,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/m/regular-loose",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 175,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/m/regular-snug",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 150,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/m/regular-tight",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/m/regular-flat",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/m/bold-loose",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 175,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/m/bold-snug",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 150,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/m/bold-tight",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/m/bold-flat",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 18,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/s/regular-loose",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 175,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/s/regular-snug",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 150,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/s/regular-tight",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/s/regular-flat",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/s/bold-loose",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 175,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/s/bold-snug",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 150,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/s/bold-tight",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/s/bold-flat",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 16,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/xs/regular-loose",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 175,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/xs/regular-snug",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 150,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/xs/regular-tight",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/xs/regular-flat",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Regular",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/xs/bold-loose",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 175,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/xs/bold-snug",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 150,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/xs/bold-tight",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 125,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            },
+            {
+              "name": "primitives/body/xs/bold-flat",
+              "type": "typography",
+              "isAlias": false,
+              "value": {
+                "fontSize": 14,
+                "fontFamily": "RijksSansVF",
+                "fontWeight": "Bold",
+                "lineHeight": 112.5,
+                "lineHeightUnit": "PERCENT",
+                "letterSpacing": 0,
+                "letterSpacingUnit": "PERCENT",
+                "textCase": "ORIGINAL",
+                "textDecoration": "NONE"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Effects",
+      "modes": [
+        {
+          "name": "Style",
+          "variables": [
+            {
+              "name": "primitives/box-shadows/level-1",
+              "type": "effect",
+              "isAlias": false,
+              "value": {
+                "effects": [
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.11
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "radius": 4,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.09
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "radius": 2,
+                    "spread": 0
+                  }
+                ]
+              }
+            },
+            {
+              "name": "primitives/box-shadows/level-2",
+              "type": "effect",
+              "isAlias": false,
+              "value": {
+                "effects": [
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.1
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "radius": 8,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.08
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "radius": 4,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.06
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "radius": 2,
+                    "spread": 0
+                  }
+                ]
+              }
+            },
+            {
+              "name": "primitives/box-shadows/level-3",
+              "type": "effect",
+              "isAlias": false,
+              "value": {
+                "effects": [
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.12
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "radius": 16,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.06
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "radius": 8,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.05
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "radius": 4,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.04
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "radius": 2,
+                    "spread": 0
+                  }
+                ]
+              }
+            },
+            {
+              "name": "primitives/box-shadows/level-4",
+              "type": "effect",
+              "isAlias": false,
+              "value": {
+                "effects": [
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.1
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 8
+                    },
+                    "radius": 32,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.08
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "radius": 16,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.06
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "radius": 8,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.04
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "radius": 4,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.02
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "radius": 2,
+                    "spread": 0
+                  }
+                ]
+              }
+            },
+            {
+              "name": "primitives/box-shadows/level-5",
+              "type": "effect",
+              "isAlias": false,
+              "value": {
+                "effects": [
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.11
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 16
+                    },
+                    "radius": 64,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.09
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 8
+                    },
+                    "radius": 32,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.06
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "radius": 16,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.04
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "radius": 8,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.03
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "radius": 4,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.02
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "radius": 2,
+                    "spread": 0
+                  }
+                ]
+              }
+            },
+            {
+              "name": "primitives/box-shadows/level-6",
+              "type": "effect",
+              "isAlias": false,
+              "value": {
+                "effects": [
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.16
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 32
+                    },
+                    "radius": 128,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.1
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 16
+                    },
+                    "radius": 64,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.08
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 8
+                    },
+                    "radius": 32,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.06
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 4
+                    },
+                    "radius": 16,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.04
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "radius": 8,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.03
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "radius": 4,
+                    "spread": 0
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "color": {
+                      "r": 0,
+                      "g": 0,
+                      "b": 0,
+                      "a": 0.02
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "radius": 2,
+                    "spread": 0
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

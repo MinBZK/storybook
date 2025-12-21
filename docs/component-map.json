@@ -1,0 +1,223 @@
+{
+  "$schema": "./component-map.schema.json",
+  "version": "0.1.0",
+  "figmaFile": {
+    "fileKey": "5DyHMXUNVxbgH7ZjhQxPZe",
+    "fileName": "RR-Components",
+    "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components"
+  },
+  "tokensSource": {
+    "file": "tokens/rr-tokens.json",
+    "exportedAt": "2024-12-20",
+    "plugin": "variables2json",
+    "version": "1.0.4"
+  },
+  "components": [
+    {
+      "name": "Button",
+      "figma": {
+        "nodeId": "236:41331",
+        "nodeName": "button-list-cell",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41331"
+      },
+      "implementation": {
+        "tagName": "rr-button",
+        "file": "src/components/button/rr-button.js",
+        "className": "RRButton"
+      },
+      "tokens": {
+        "semantics": [
+          "semantics-buttons-accent-filled-color",
+          "semantics-buttons-accent-filled-background-color",
+          "semantics-buttons-accent-outlined-color",
+          "semantics-buttons-accent-outlined-border-color",
+          "semantics-buttons-accent-outlined-border-thickness",
+          "semantics-buttons-accent-tinted-color",
+          "semantics-buttons-accent-tinted-background-color",
+          "semantics-buttons-accent-transparent-color",
+          "semantics-buttons-neutral-tinted-color",
+          "semantics-buttons-neutral-tinted-background-color",
+          "semantics-buttons-font-weight",
+          "semantics-buttons-m-font-size",
+          "semantics-buttons-s-font-size"
+        ],
+        "controls": [
+          "semantics-controls-xs-min-size",
+          "semantics-controls-xs-corner-radius",
+          "semantics-controls-s-min-size",
+          "semantics-controls-s-corner-radius",
+          "semantics-controls-m-min-size",
+          "semantics-controls-m-corner-radius"
+        ],
+        "focus": [
+          "semantics-focus-ring-color",
+          "semantics-focus-ring-thickness"
+        ],
+        "components": [
+          "components-button-m-font",
+          "components-button-s-font",
+          "components-button-xs-font"
+        ]
+      },
+      "variants": [
+        {
+          "name": "variant",
+          "values": ["accent-filled", "accent-outlined", "accent-tinted", "neutral-tinted", "accent-transparent"],
+          "default": "accent-filled"
+        },
+        {
+          "name": "size",
+          "values": ["xs", "s", "m"],
+          "default": "m"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2024-12-21"
+    },
+    {
+      "name": "Checkbox",
+      "figma": {
+        "nodeId": "236:41408",
+        "nodeName": "checkbox-list-cell",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408"
+      },
+      "implementation": null,
+      "tokens": {
+        "components": [
+          "components-checkbox-border-thickness",
+          "components-checkbox-border-color",
+          "components-checkbox-background-color",
+          "components-checkbox-is-selected-background-color",
+          "components-checkbox-is-selected-icon-color"
+        ]
+      },
+      "status": "planned"
+    },
+    {
+      "name": "Radio Button",
+      "figma": {
+        "nodeId": "236:41398",
+        "nodeName": "radio-button-list-cell",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41398"
+      },
+      "implementation": null,
+      "tokens": {
+        "components": [
+          "components-radio-button-border-thickness",
+          "components-radio-button-border-color",
+          "components-radio-button-background-color",
+          "components-radio-button-is-selected-background-color",
+          "components-radio-button-is-selected-inner-shape-border-thickness",
+          "components-radio-button-is-selected-inner-shape-border-color"
+        ]
+      },
+      "status": "planned"
+    },
+    {
+      "name": "Switch",
+      "figma": {
+        "nodeId": "236:41353",
+        "nodeName": "switch-list-cell",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41353"
+      },
+      "implementation": null,
+      "tokens": {
+        "components": [
+          "components-switch-border-thickness",
+          "components-switch-border-color",
+          "components-switch-background-color",
+          "components-switch-thumb-border-thickness",
+          "components-switch-thumb-border-color",
+          "components-switch-thumb-background-color",
+          "components-switch-icon-color",
+          "components-switch-is-selected-background-color",
+          "components-switch-is-selected-thumb-background-color",
+          "components-switch-is-selected-icon-color"
+        ]
+      },
+      "status": "planned"
+    },
+    {
+      "name": "Toggle Button",
+      "figma": {
+        "nodeId": null,
+        "nodeName": "toggle-button"
+      },
+      "implementation": null,
+      "tokens": {
+        "components": [
+          "components-toggle-button-content-color",
+          "components-toggle-button-background-color",
+          "components-toggle-button-is-hovered-background-color",
+          "components-toggle-button-is-hovered-content-color",
+          "components-toggle-button-is-selected-background-color",
+          "components-toggle-button-is-selected-content-color"
+        ]
+      },
+      "status": "planned"
+    },
+    {
+      "name": "Icon Button",
+      "figma": {
+        "nodeId": "240:1391",
+        "nodeName": "icon-button-list-cell",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=240:1391"
+      },
+      "implementation": null,
+      "tokens": {
+        "components": [
+          "components-icon-button-font"
+        ]
+      },
+      "status": "planned"
+    },
+    {
+      "name": "Box",
+      "figma": {
+        "nodeId": null,
+        "nodeName": "box"
+      },
+      "implementation": null,
+      "tokens": {
+        "components": [
+          "components-box-background-color",
+          "components-box-corner-radius",
+          "components-box-padding"
+        ]
+      },
+      "status": "planned"
+    },
+    {
+      "name": "Menu Bar",
+      "figma": {
+        "nodeId": null,
+        "nodeName": "menu-bar"
+      },
+      "implementation": null,
+      "tokens": {
+        "components": [
+          "components-menu-bar-menu-item-color",
+          "components-menu-bar-menu-item-font",
+          "components-menu-bar-menu-item-is-selected-indicator-color",
+          "components-menu-bar-menu-item-is-selected-indicator-height",
+          "components-menu-bar-menu-item-is-hovered-indicator-color",
+          "components-menu-bar-menu-item-is-hovered-indicator-height",
+          "components-menu-bar-title-item-s-font",
+          "components-menu-bar-title-item-m-font",
+          "components-menu-bar-title-item-l-font"
+        ]
+      },
+      "status": "planned"
+    }
+  ]
+}

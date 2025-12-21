@@ -1,0 +1,40 @@
+{
+  "name": "@regelrecht/design-system",
+  "version": "0.1.0",
+  "description": "Design System voor RegelRecht - Nederlandse Overheid",
+  "type": "module",
+  "main": "dist/components/rr-components.js",
+  "exports": {
+    ".": "./dist/components/rr-components.js",
+    "./css": "./dist/css/tokens.css",
+    "./css/primitives": "./dist/css/primitives.css",
+    "./css/semantics": "./dist/css/semantics.css",
+    "./css/components": "./dist/css/components.css"
+  },
+  "files": [
+    "dist",
+    "fonts"
+  ],
+  "scripts": {
+    "build": "npm run build:tokens && npm run build:components",
+    "build:tokens": "node style-dictionary.config.js",
+    "build:components": "node scripts/build-components.js",
+    "dev": "npm run build && npm run serve",
+    "serve": "npx http-server . -p 3000 -c-1",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.2.0",
+    "esbuild": "^0.24.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "design-system",
+    "web-components",
+    "rijksoverheid",
+    "regelrecht"
+  ],
+  "license": "EUPL-1.2"
+}
