@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Box Component Test</title>
+  <link rel="stylesheet" href="../../../dist/css/tokens.css">
+  <style>
+    body {
+      font-family: 'RijksoverheidSans', system-ui, sans-serif;
+      padding: 2rem;
+      background-color: #ffffff;
+    }
+    .test-section {
+      margin-bottom: 2rem;
+    }
+    .test-section h2 {
+      margin-bottom: 1rem;
+      color: #154273;
+    }
+    .test-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Box Component Test</h1>
+
+  <div class="test-section">
+    <h2>Default Box</h2>
+    <rr-box>
+      <p>Dit is een standaard box met default styling uit de design tokens.</p>
+    </rr-box>
+  </div>
+
+  <div class="test-section">
+    <h2>Box met Custom Padding</h2>
+    <div class="test-row">
+      <rr-box padding="8px">
+        <strong>Klein padding (8px)</strong>
+      </rr-box>
+      <rr-box>
+        <strong>Standaard (16px)</strong>
+      </rr-box>
+      <rr-box padding="32px">
+        <strong>Groot padding (32px)</strong>
+      </rr-box>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Box met Custom Radius</h2>
+    <div class="test-row">
+      <rr-box radius="0px">
+        <strong>Geen afronding</strong>
+      </rr-box>
+      <rr-box radius="4px">
+        <strong>Klein (4px)</strong>
+      </rr-box>
+      <rr-box>
+        <strong>Standaard (11px)</strong>
+      </rr-box>
+      <rr-box radius="24px">
+        <strong>Groot (24px)</strong>
+      </rr-box>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Box met Rijke Content</h2>
+    <rr-box>
+      <h3 style="margin: 0 0 8px 0;">Titel van de Box</h3>
+      <p style="margin: 0 0 12px 0;">
+        Deze box bevat rijke content met een titel, paragraaf en een lijst.
+      </p>
+      <ul style="margin: 0; padding-left: 20px;">
+        <li>Eerste punt</li>
+        <li>Tweede punt</li>
+        <li>Derde punt</li>
+      </ul>
+    </rr-box>
+  </div>
+
+  <div class="test-section">
+    <h2>Geneste Boxes</h2>
+    <rr-box>
+      <h3 style="margin: 0 0 12px 0;">Outer Box</h3>
+      <p style="margin: 0 0 12px 0;">
+        Deze box bevat een andere box binnenin.
+      </p>
+      <rr-box padding="12px" style="--rr-box-background-color: #ffffff;">
+        <strong>Inner Box</strong>
+        <p style="margin: 4px 0 0 0;">
+          Je kunt boxes nesten voor complexere layouts.
+        </p>
+      </rr-box>
+    </rr-box>
+  </div>
+
+  <div class="test-section">
+    <h2>Box met Custom CSS Properties</h2>
+    <rr-box style="--rr-box-background-color: #dce3ea; --rr-box-corner-radius: 16px; --rr-box-padding: 24px;">
+      <h3 style="margin: 0 0 8px 0;">Custom Styling</h3>
+      <p style="margin: 0;">
+        Deze box gebruikt CSS custom properties voor volledige controle over de styling.
+      </p>
+    </rr-box>
+  </div>
+
+  <script type="module" src="./rr-box.js"></script>
+</body>
+</html>

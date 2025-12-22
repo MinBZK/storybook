@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Bar Component Demo</title>
+  <link rel="stylesheet" href="../../../dist/css/tokens.css">
+  <style>
+    body {
+      font-family: RijksSansVF, system-ui, sans-serif;
+      padding: 2rem;
+      background: #f8fafc;
+    }
+    .demo-section {
+      margin-bottom: 3rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .demo-section h2 {
+      margin-top: 0;
+      color: #154273;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .demo-section p {
+      color: #64748b;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Menu Bar Component Demo</h1>
+
+  <div class="demo-section">
+    <h2>Basic Menu Bar</h2>
+    <p>Menu bar met standaard items en keyboard navigatie (gebruik pijltjestoetsen).</p>
+    <rr-menu-bar>
+      <rr-menu-item selected>Home</rr-menu-item>
+      <rr-menu-item>Diensten</rr-menu-item>
+      <rr-menu-item>Projecten</rr-menu-item>
+      <rr-menu-item>Over ons</rr-menu-item>
+      <rr-menu-item>Contact</rr-menu-item>
+    </rr-menu-bar>
+  </div>
+
+  <div class="demo-section">
+    <h2>Menu Bar met Links</h2>
+    <p>Menu items met href attributen worden weergegeven als anchor tags.</p>
+    <rr-menu-bar>
+      <rr-menu-item href="#home" selected>Home</rr-menu-item>
+      <rr-menu-item href="#diensten">Diensten</rr-menu-item>
+      <rr-menu-item href="#projecten">Projecten</rr-menu-item>
+      <rr-menu-item href="#over">Over ons</rr-menu-item>
+      <rr-menu-item href="#contact">Contact</rr-menu-item>
+    </rr-menu-bar>
+  </div>
+
+  <div class="demo-section">
+    <h2>Menu Bar met Disabled Item</h2>
+    <p>Disabled items zijn niet interactief en hebben een lagere opacity.</p>
+    <rr-menu-bar>
+      <rr-menu-item selected>Home</rr-menu-item>
+      <rr-menu-item>Diensten</rr-menu-item>
+      <rr-menu-item disabled>Projecten</rr-menu-item>
+      <rr-menu-item>Over ons</rr-menu-item>
+      <rr-menu-item>Contact</rr-menu-item>
+    </rr-menu-bar>
+  </div>
+
+  <div class="demo-section">
+    <h2>Menu Bar met Titel (Small)</h2>
+    <p>Gebruik de title slot voor een optionele titel boven het menu.</p>
+    <rr-menu-bar size="s">
+      <h2 slot="title" style="margin: 0; color: #154273;">Navigatie</h2>
+      <rr-menu-item selected>Home</rr-menu-item>
+      <rr-menu-item>Diensten</rr-menu-item>
+      <rr-menu-item>Projecten</rr-menu-item>
+      <rr-menu-item>Over ons</rr-menu-item>
+    </rr-menu-bar>
+  </div>
+
+  <div class="demo-section">
+    <h2>Menu Bar met Titel (Medium)</h2>
+    <p>Medium size is de standaard voor titels.</p>
+    <rr-menu-bar size="m">
+      <h2 slot="title" style="margin: 0; color: #154273;">Navigatie</h2>
+      <rr-menu-item selected>Home</rr-menu-item>
+      <rr-menu-item>Diensten</rr-menu-item>
+      <rr-menu-item>Projecten</rr-menu-item>
+      <rr-menu-item>Over ons</rr-menu-item>
+    </rr-menu-bar>
+  </div>
+
+  <div class="demo-section">
+    <h2>Menu Bar met Titel (Large)</h2>
+    <p>Large size voor grotere titels.</p>
+    <rr-menu-bar size="l">
+      <h2 slot="title" style="margin: 0; color: #154273;">Hoofdnavigatie</h2>
+      <rr-menu-item selected>Home</rr-menu-item>
+      <rr-menu-item>Diensten</rr-menu-item>
+      <rr-menu-item>Projecten</rr-menu-item>
+      <rr-menu-item>Over ons</rr-menu-item>
+    </rr-menu-bar>
+  </div>
+
+  <div class="demo-section">
+    <h2>Interactive Example</h2>
+    <p>Klik op menu items om de selectie te wijzigen. Open de console om events te zien.</p>
+    <rr-menu-bar id="interactive-menu">
+      <rr-menu-item selected>Home</rr-menu-item>
+      <rr-menu-item>Diensten</rr-menu-item>
+      <rr-menu-item>Projecten</rr-menu-item>
+      <rr-menu-item>Over ons</rr-menu-item>
+      <rr-menu-item>Contact</rr-menu-item>
+    </rr-menu-bar>
+    <div id="output" style="margin-top: 1rem; padding: 1rem; background: #f1f5f9; border-radius: 4px; color: #475569;">
+      Selecteer een menu item...
+    </div>
+  </div>
+
+  <script type="module">
+    import './rr-menu-bar.js';
+    import './rr-menu-item.js';
+
+    // Interactive example
+    const menu = document.getElementById('interactive-menu');
+    const output = document.getElementById('output');
+
+    menu.addEventListener('itemselect', (event) => {
+      const itemText = event.detail.item.textContent;
+      output.textContent = `Geselecteerd: ${itemText}`;
+      console.log('Menu item selected:', itemText, event.detail);
+    });
+  </script>
+</body>
+</html>

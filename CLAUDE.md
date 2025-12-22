@@ -260,3 +260,96 @@ DigiToegankelijk (WCAG 2.1 AA) compliance is verplicht.
 3. **GEEN** !important
 4. **GEEN** external dependencies zonder toestemming
 5. **GEEN** frameworks - alleen vanilla Web Components
+
+## Component Implementation Instructions (for Claude)
+
+When implementing a new component, follow this exact workflow:
+
+### Step 1: Get Figma Specs
+1. Look up component in `docs/component-map.json` for Figma node ID
+2. Use Chrome browser tools (`mcp__claude-in-chrome__*`) to navigate to Figma URL
+3. Click on the component to view Properties panel on the right
+4. Document ALL properties: style, size, is-disabled, is-selected, etc.
+5. Click on individual instances to get Layout specs (height, padding, gap, radius)
+6. Note the exact token names used (visible in Properties panel)
+
+### Step 2: Create Component Files
+Create these files following the Button pattern in `src/components/button/`:
+- `src/components/{name}/rr-{name}.js` - Component class
+- `src/components/{name}/rr-{name}.stories.js` - Storybook stories
+
+### Step 3: Implementation Requirements
+- Extend `RRBaseComponent` from `../base/base-component.js`
+- Use ONLY tokens from `dist/css/tokens.css` - NO hardcoded values
+- Match Figma properties EXACTLY as HTML attributes
+- Disabled opacity: `calc(var(--primitives-opacity-disabled, 38) / 100)`
+- Focus ring: `var(--semantics-focus-ring-thickness)` and `var(--semantics-focus-ring-color)`
+- Size tokens: `var(--semantics-controls-{xs|s|m}-min-size)`
+- Corner radius: `var(--semantics-controls-{xs|s|m}-corner-radius)`
+
+### Step 4: Update Documentation
+- Update `docs/component-map.json`: set status to "implemented", add properties
+- Update Figma node ID if discovered to be different
+- Add component spec table to this file (CLAUDE.md) under the Figma Node IDs section
+
+### Step 5: Verify
+- Compare Storybook output with Figma screenshot
+- Ensure all variants and states match
+
+### Available Component Tokens
+
+```css
+/* Checkbox */
+--components-checkbox-border-thickness: 2px
+--components-checkbox-border-color: #475569
+--components-checkbox-background-color: #ffffff
+--components-checkbox-is-selected-background-color: #154273
+--components-checkbox-is-selected-icon-color: #ffffff
+
+/* Radio Button */
+--components-radio-button-border-thickness: 2px
+--components-radio-button-border-color: #475569
+--components-radio-button-background-color: #ffffff
+--components-radio-button-is-selected-background-color: #154273
+--components-radio-button-is-selected-inner-shape-border-thickness: 2px
+--components-radio-button-is-selected-inner-shape-border-color: #ffffff
+
+/* Switch */
+--components-switch-border-thickness: 2px
+--components-switch-border-color: #475569
+--components-switch-background-color: #ffffff
+--components-switch-thumb-border-thickness: 2px
+--components-switch-thumb-border-color: #475569
+--components-switch-thumb-background-color: #ffffff
+--components-switch-icon-color: #475569
+--components-switch-is-selected-background-color: #154273
+--components-switch-is-selected-thumb-background-color: #ffffff
+--components-switch-is-selected-icon-color: #154273
+
+/* Toggle Button */
+--components-toggle-button-content-color: #0f172a
+--components-toggle-button-background-color: #e2e8f0
+--components-toggle-button-is-hovered-background-color: #cbd5e1
+--components-toggle-button-is-hovered-content-color: #0f172a
+--components-toggle-button-is-selected-background-color: #154273
+--components-toggle-button-is-selected-content-color: #ffffff
+
+/* Icon Button */
+--components-icon-button-font: 600 14px/1.125 RijksSansVF, system-ui
+
+/* Box */
+--components-box-background-color: #f1f5f9
+--components-box-corner-radius: 11px
+--components-box-padding: 16px
+
+/* Menu Bar */
+--components-menu-bar-menu-item-color: #154273
+--components-menu-bar-menu-item-font: 600 18px/1.125 RijksSansVF, system-ui
+--components-menu-bar-menu-item-is-selected-indicator-color: #154273
+--components-menu-bar-menu-item-is-selected-indicator-height: 4px
+--components-menu-bar-menu-item-is-hovered-indicator-color: #e2e8f0
+--components-menu-bar-menu-item-is-hovered-indicator-height: 32px
+--components-menu-bar-title-item-s-font: 600 18px/1.125 RijksSansVF, system-ui
+--components-menu-bar-title-item-m-font: 600 20px/1.125 RijksSansVF, system-ui
+--components-menu-bar-title-item-l-font: 600 23px/1.125 RijksSansVF, system-ui
+```

@@ -23,8 +23,18 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=20-27"
       },
       "properties": {
-        "style": ["accent-filled", "accent-outlined", "accent-tinted", "neutral-tinted", "accent-transparent"],
-        "size": ["xs", "s", "m"],
+        "style": [
+          "accent-filled",
+          "accent-outlined",
+          "accent-tinted",
+          "neutral-tinted",
+          "accent-transparent"
+        ],
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
         "is-disabled": "boolean",
         "has-leading-icon": "boolean",
         "leading-icon": "string",
@@ -75,17 +85,32 @@
       "variants": [
         {
           "name": "variant",
-          "values": ["accent-filled", "accent-outlined", "accent-tinted", "neutral-tinted", "accent-transparent"],
+          "values": [
+            "accent-filled",
+            "accent-outlined",
+            "accent-tinted",
+            "neutral-tinted",
+            "accent-transparent"
+          ],
           "default": "accent-filled"
         },
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
           "default": "m"
         },
         {
           "name": "icon",
-          "values": ["none", "leading", "trailing", "both"],
+          "values": [
+            "none",
+            "leading",
+            "trailing",
+            "both"
+          ],
           "default": "none"
         }
       ],
@@ -101,7 +126,21 @@
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408"
       },
-      "implementation": null,
+      "properties": {
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
+        "is-checked": "boolean",
+        "is-indeterminate": "boolean",
+        "is-disabled": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-checkbox",
+        "file": "src/components/checkbox/rr-checkbox.js",
+        "className": "RRCheckbox"
+      },
       "tokens": {
         "components": [
           "components-checkbox-border-thickness",
@@ -109,9 +148,42 @@
           "components-checkbox-background-color",
           "components-checkbox-is-selected-background-color",
           "components-checkbox-is-selected-icon-color"
+        ],
+        "controls": [
+          "semantics-controls-xs-min-size",
+          "semantics-controls-xs-corner-radius",
+          "semantics-controls-s-min-size",
+          "semantics-controls-s-corner-radius",
+          "semantics-controls-m-min-size",
+          "semantics-controls-m-corner-radius"
+        ],
+        "focus": [
+          "semantics-focus-ring-color",
+          "semantics-focus-ring-thickness"
         ]
       },
-      "status": "planned"
+      "variants": [
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
+          "default": "m"
+        },
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "checked",
+            "indeterminate"
+          ],
+          "default": "unchecked"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2024-12-22"
     },
     {
       "name": "Radio Button",
@@ -122,8 +194,30 @@
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41398"
       },
-      "implementation": null,
+      "properties": {
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
+        "is-checked": "boolean",
+        "is-disabled": "boolean",
+        "name": "string",
+        "value": "string"
+      },
+      "implementation": {
+        "tagName": "rr-radio",
+        "file": "src/components/radio/rr-radio.js",
+        "className": "RRRadio"
+      },
       "tokens": {
+        "semantics": [
+          "semantics-controls-xs-min-size",
+          "semantics-controls-s-min-size",
+          "semantics-controls-m-min-size",
+          "semantics-focus-ring-color",
+          "semantics-focus-ring-thickness"
+        ],
         "components": [
           "components-radio-button-border-thickness",
           "components-radio-button-border-color",
@@ -133,7 +227,19 @@
           "components-radio-button-is-selected-inner-shape-border-color"
         ]
       },
-      "status": "planned"
+      "variants": [
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
+          "default": "m"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2025-12-22"
     },
     {
       "name": "Switch",
@@ -144,7 +250,20 @@
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41353"
       },
-      "implementation": null,
+      "properties": {
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
+        "is-checked": "boolean",
+        "is-disabled": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-switch",
+        "file": "src/components/switch/rr-switch.js",
+        "className": "RRSwitch"
+      },
       "tokens": {
         "components": [
           "components-switch-border-thickness",
@@ -157,9 +276,38 @@
           "components-switch-is-selected-background-color",
           "components-switch-is-selected-thumb-background-color",
           "components-switch-is-selected-icon-color"
+        ],
+        "controls": [
+          "semantics-controls-xs-min-size",
+          "semantics-controls-s-min-size",
+          "semantics-controls-m-min-size"
+        ],
+        "focus": [
+          "semantics-focus-ring-color",
+          "semantics-focus-ring-thickness"
         ]
       },
-      "status": "planned"
+      "variants": [
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
+          "default": "m"
+        },
+        {
+          "name": "state",
+          "values": [
+            "unchecked",
+            "checked"
+          ],
+          "default": "unchecked"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2025-12-22"
     },
     {
       "name": "Toggle Button",
@@ -167,7 +315,20 @@
         "nodeId": null,
         "nodeName": "toggle-button"
       },
-      "implementation": null,
+      "properties": {
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
+        "is-selected": "boolean",
+        "is-disabled": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-toggle-button",
+        "file": "src/components/toggle-button/rr-toggle-button.js",
+        "className": "RRToggleButton"
+      },
       "tokens": {
         "components": [
           "components-toggle-button-content-color",
@@ -176,9 +337,33 @@
           "components-toggle-button-is-hovered-content-color",
           "components-toggle-button-is-selected-background-color",
           "components-toggle-button-is-selected-content-color"
+        ],
+        "controls": [
+          "semantics-controls-xs-min-size",
+          "semantics-controls-xs-corner-radius",
+          "semantics-controls-s-min-size",
+          "semantics-controls-s-corner-radius",
+          "semantics-controls-m-min-size",
+          "semantics-controls-m-corner-radius"
+        ],
+        "focus": [
+          "semantics-focus-ring-color",
+          "semantics-focus-ring-thickness"
         ]
       },
-      "status": "planned"
+      "variants": [
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
+          "default": "m"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2025-12-22"
     },
     {
       "name": "Icon Button",
@@ -189,13 +374,80 @@
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=240:1391"
       },
-      "implementation": null,
+      "properties": {
+        "style": [
+          "accent-filled",
+          "accent-outlined",
+          "accent-tinted",
+          "neutral-tinted",
+          "accent-transparent"
+        ],
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
+        "is-disabled": "boolean",
+        "aria-label": "string"
+      },
+      "implementation": {
+        "tagName": "rr-icon-button",
+        "file": "src/components/icon-button/rr-icon-button.js",
+        "className": "RRIconButton"
+      },
       "tokens": {
+        "semantics": [
+          "semantics-buttons-accent-filled-color",
+          "semantics-buttons-accent-filled-background-color",
+          "semantics-buttons-accent-outlined-color",
+          "semantics-buttons-accent-outlined-border-color",
+          "semantics-buttons-accent-outlined-border-thickness",
+          "semantics-buttons-accent-tinted-color",
+          "semantics-buttons-accent-tinted-background-color",
+          "semantics-buttons-accent-transparent-color",
+          "semantics-buttons-neutral-tinted-color",
+          "semantics-buttons-neutral-tinted-background-color"
+        ],
+        "controls": [
+          "semantics-controls-xs-min-size",
+          "semantics-controls-xs-corner-radius",
+          "semantics-controls-s-min-size",
+          "semantics-controls-s-corner-radius",
+          "semantics-controls-m-min-size",
+          "semantics-controls-m-corner-radius"
+        ],
+        "focus": [
+          "semantics-focus-ring-color",
+          "semantics-focus-ring-thickness"
+        ],
         "components": [
           "components-icon-button-font"
         ]
       },
-      "status": "planned"
+      "variants": [
+        {
+          "name": "variant",
+          "values": [
+            "accent-filled",
+            "accent-outlined",
+            "accent-tinted",
+            "neutral-tinted",
+            "accent-transparent"
+          ],
+          "default": "accent-filled"
+        },
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
+          "default": "m"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2024-12-22"
     },
     {
       "name": "Box",
@@ -203,7 +455,15 @@
         "nodeId": null,
         "nodeName": "box"
       },
-      "implementation": null,
+      "properties": {
+        "padding": "string",
+        "radius": "string"
+      },
+      "implementation": {
+        "tagName": "rr-box",
+        "file": "src/components/box/rr-box.js",
+        "className": "RRBox"
+      },
       "tokens": {
         "components": [
           "components-box-background-color",
@@ -211,7 +471,8 @@
           "components-box-padding"
         ]
       },
-      "status": "planned"
+      "status": "implemented",
+      "lastUpdated": "2025-12-22"
     },
     {
       "name": "Menu Bar",
@@ -219,7 +480,28 @@
         "nodeId": null,
         "nodeName": "menu-bar"
       },
-      "implementation": null,
+      "properties": {
+        "size": [
+          "s",
+          "m",
+          "l"
+        ],
+        "selected": "boolean",
+        "href": "string",
+        "disabled": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-menu-bar",
+        "file": "src/components/menu-bar/rr-menu-bar.js",
+        "className": "RRMenuBar",
+        "additionalComponents": [
+          {
+            "tagName": "rr-menu-item",
+            "file": "src/components/menu-bar/rr-menu-item.js",
+            "className": "RRMenuItem"
+          }
+        ]
+      },
       "tokens": {
         "components": [
           "components-menu-bar-menu-item-color",
@@ -233,7 +515,19 @@
           "components-menu-bar-title-item-l-font"
         ]
       },
-      "status": "planned"
+      "variants": [
+        {
+          "name": "size",
+          "values": [
+            "s",
+            "m",
+            "l"
+          ],
+          "default": "m"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2025-12-22"
     }
   ]
 }
