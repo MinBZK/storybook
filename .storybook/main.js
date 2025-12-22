@@ -11,7 +11,7 @@ const config = {
     '@storybook/addon-designs',
   ],
   framework: '@storybook/web-components-vite',
-  staticDirs: ['../dist'],
+  staticDirs: ['../dist', '../public'],
 };
 
 export default config;

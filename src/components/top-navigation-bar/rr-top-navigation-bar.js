@@ -22,33 +22,29 @@
 
 import { RRBaseComponent } from '../base/base-component.js';
 
-// Rijksoverheid coat of arms SVG (simplified representation)
-const rijksoverheidLogo = `<svg viewBox="0 0 80 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-  <!-- Shield shape -->
+// Fallback logo (simplified coat of arms) - used while loading or if fetch fails
+const fallbackLogo = `<svg viewBox="0 0 80 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path d="M4 4h72v60c0 20-36 32-36 32S4 84 4 64V4z" fill="#154273" stroke="#154273" stroke-width="2"/>
-  <!-- Crown at top -->
   <path d="M20 8h40v8H20z" fill="#c8102e"/>
   <circle cx="25" cy="6" r="3" fill="#ffd700"/>
   <circle cx="40" cy="4" r="4" fill="#ffd700"/>
   <circle cx="55" cy="6" r="3" fill="#ffd700"/>
-  <!-- Lion left -->
   <g transform="translate(12, 24) scale(0.4)">
     <path d="M30 10c5 0 10 5 10 10v30c0 5-2 8-5 10l-5-5v-10l-10 10-10-10v10l-5 5c-3-2-5-5-5-10V20c0-5 5-10 10-10h20z" fill="#ffd700"/>
-    <circle cx="18" cy="25" r="2" fill="#154273"/>
-    <circle cx="32" cy="25" r="2" fill="#154273"/>
-    <path d="M20 35h10v5H20z" fill="#c8102e"/>
   </g>
-  <!-- Lion right -->
   <g transform="translate(44, 24) scale(0.4)">
     <path d="M30 10c5 0 10 5 10 10v30c0 5-2 8-5 10l-5-5v-10l-10 10-10-10v10l-5 5c-3-2-5-5-5-10V20c0-5 5-10 10-10h20z" fill="#ffd700"/>
-    <circle cx="18" cy="25" r="2" fill="#154273"/>
-    <circle cx="32" cy="25" r="2" fill="#154273"/>
-    <path d="M20 35h10v5H20z" fill="#c8102e"/>
   </g>
 </svg>`;
 
+// Cache for loaded SVG assets
+let cachedOfficialLogo = null;
+
 export class RRTopNavigationBar extends RRBaseComponent {
   static componentName = 'rr-top-navigation-bar';
+
+  // Configurable asset path (can be overridden per-project)
+  static assetBasePath = '/assets';
 
   static get observedAttributes() {
     return [
@@ -66,6 +62,53 @@ export class RRTopNavigationBar extends RRBaseComponent {
 
   constructor() {
     super();
+    this._logoLoaded = false;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // Load official logo asynchronously
+    this._loadOfficialLogo();
+  }
+
+  /**
+   * Loads the official Rijksoverheid logo SVG and injects it into the component.
+   * Falls back to the simplified logo if loading fails.
+   */
+  async _loadOfficialLogo() {
+    // Use cached version if available
+    if (cachedOfficialLogo) {
+      this._injectLogo(cachedOfficialLogo);
+      return;
+    }
+
+    try {
+      const url = `${RRTopNavigationBar.assetBasePath}/rijkswapen.svg`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`Failed to load logo: ${response.status}`);
+      }
+
+      const svgText = await response.text();
+      cachedOfficialLogo = svgText;
+      this._injectLogo(svgText);
+    } catch (error) {
+      // Fallback logo is already rendered, just log the error
+      console.debug('Using fallback logo:', error.message);
+    }
+  }
+
+  /**
+   * Injects the loaded SVG into the logo container with smooth animation
+   */
+  _injectLogo(svgContent) {
+    const logoContainer = this.shadowRoot?.querySelector('.logo');
+    if (logoContainer) {
+      logoContainer.innerHTML = svgContent;
+      logoContainer.classList.add('loaded');
+      this._logoLoaded = true;
+    }
   }
 
   // Getters for attributes
@@ -172,25 +215,39 @@ export class RRTopNavigationBar extends RRBaseComponent {
       }
 
       .logo {
-        width: 38px;
-        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 88px; /* Figma M: 44×88px */
         color: var(--primitives-color-accent-100, #154273);
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
       }
 
-      /* Responsive logo sizes */
+      /* Responsive logo heights per Figma specs */
       :host([container="s"]) .logo {
-        width: 28px;
-        height: 35px;
+        height: 80px; /* Figma S: 40×80px */
       }
 
       :host([container="l"]) .logo {
-        width: 44px;
-        height: 55px;
+        height: 96px; /* Figma L: 48×96px */
       }
 
+      /* SVG styling - let height drive sizing, auto width */
       .logo svg {
-        width: 100%;
         height: 100%;
+        width: auto;
+        max-width: 100%;
+      }
+
+      /* Fade-in animation when official logo loads */
+      @keyframes logoFadeIn {
+        from { opacity: 0.7; transform: scale(0.98); }
+        to { opacity: 1; transform: scale(1); }
+      }
+
+      .logo.loaded svg {
+        animation: logoFadeIn 0.2s ease-out;
       }
 
       .title-text {
@@ -346,7 +403,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
         <!-- Logo bar with centered Rijksoverheid coat of arms -->
         <div class="logo-bar" part="logo-bar">
           <div class="logo" part="logo">
-            ${rijksoverheidLogo}
+            ${fallbackLogo}
           </div>
           <h1 class="title-text">${this.titleText}</h1>
         </div>
