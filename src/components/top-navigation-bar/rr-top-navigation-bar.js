@@ -374,7 +374,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
         <!-- Logo bar with centered Rijksoverheid coat of arms -->
         <div class="logo-bar" part="logo-bar">
           <div class="logo" part="logo">
-            <!-- Rijkswapen loaded asynchronously -->
+            ${cachedRijkswapen || ''}
           </div>
           <h1 class="title-text">${this.titleText}</h1>
         </div>

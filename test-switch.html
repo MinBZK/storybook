@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Switch Component Test</title>
+  <style>
+    body {
+      font-family: 'RijksoverheidSans', system-ui, sans-serif;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin-bottom: 2rem;
+    }
+
+    .section {
+      margin-bottom: 3rem;
+      padding: 1.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #154273;
+    }
+
+    .demo-row {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .demo-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .label {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Switch Component Test</h1>
+
+  <div class="section">
+    <h2>Sizes</h2>
+    <div class="demo-row">
+      <div class="demo-item">
+        <rr-switch size="xs"></rr-switch>
+        <span class="label">XS</span>
+      </div>
+      <div class="demo-item">
+        <rr-switch size="s"></rr-switch>
+        <span class="label">S</span>
+      </div>
+      <div class="demo-item">
+        <rr-switch size="m"></rr-switch>
+        <span class="label">M (default)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>States</h2>
+    <div class="demo-row">
+      <div class="demo-item">
+        <rr-switch></rr-switch>
+        <span class="label">Unchecked</span>
+      </div>
+      <div class="demo-item">
+        <rr-switch checked></rr-switch>
+        <span class="label">Checked</span>
+      </div>
+      <div class="demo-item">
+        <rr-switch disabled></rr-switch>
+        <span class="label">Disabled</span>
+      </div>
+      <div class="demo-item">
+        <rr-switch checked disabled></rr-switch>
+        <span class="label">Checked Disabled</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>With Labels</h2>
+    <label>
+      <rr-switch id="notifications"></rr-switch>
+      <span>Notificaties inschakelen</span>
+    </label>
+    <label>
+      <rr-switch id="dark-mode" checked></rr-switch>
+      <span>Donkere modus</span>
+    </label>
+    <label>
+      <rr-switch id="auto-save"></rr-switch>
+      <span>Automatisch opslaan</span>
+    </label>
+  </div>
+
+  <div class="section">
+    <h2>Size Matrix</h2>
+    <table style="border-collapse: collapse; width: 100%;">
+      <thead>
+        <tr>
+          <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Size</th>
+          <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Unchecked</th>
+          <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Checked</th>
+          <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Disabled</th>
+          <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Checked Disabled</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">XS</td>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs"></rr-switch></td>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" checked></rr-switch></td>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" disabled></rr-switch></td>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" checked disabled></rr-switch></td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">S</td>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s"></rr-switch></td>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" checked></rr-switch></td>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" disabled></rr-switch></td>
+          <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" checked disabled></rr-switch></td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem;">M</td>
+          <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m"></rr-switch></td>
+          <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" checked></rr-switch></td>
+          <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" disabled></rr-switch></td>
+          <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" checked disabled></rr-switch></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Interactive Test</h2>
+    <p>Click the switches or use keyboard (Tab + Space/Enter):</p>
+    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+      <label>
+        <rr-switch id="test1"></rr-switch>
+        <span>Toggle me!</span>
+      </label>
+      <label>
+        <rr-switch id="test2" size="s"></rr-switch>
+        <span>Small switch</span>
+      </label>
+      <label>
+        <rr-switch id="test3" size="xs"></rr-switch>
+        <span>Extra small switch</span>
+      </label>
+    </div>
+    <div id="status" style="margin-top: 1rem; padding: 1rem; background: #f1f5f9; border-radius: 4px;">
+      <strong>Events:</strong>
+      <div id="events" style="font-family: monospace; font-size: 0.875rem; margin-top: 0.5rem;"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import './src/components/switch/rr-switch.js';
+
+    // Add event listeners to test switches
+    const testSwitches = ['test1', 'test2', 'test3'];
+    const eventsDiv = document.getElementById('events');
+
+    testSwitches.forEach(id => {
+      const switchEl = document.getElementById(id);
+      switchEl.addEventListener('change', (e) => {
+        const timestamp = new Date().toLocaleTimeString();
+        const message = `[${timestamp}] Switch "${id}" changed to: ${e.detail.checked ? 'ON' : 'OFF'}`;
+        const p = document.createElement('p');
+        p.textContent = message;
+        p.style.margin = '0.25rem 0';
+        eventsDiv.insertBefore(p, eventsDiv.firstChild);
+
+        // Keep only last 5 events
+        while (eventsDiv.children.length > 5) {
+          eventsDiv.removeChild(eventsDiv.lastChild);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
