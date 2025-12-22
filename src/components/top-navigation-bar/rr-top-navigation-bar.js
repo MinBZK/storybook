@@ -148,20 +148,44 @@ export class RRTopNavigationBar extends RRBaseComponent {
       }
 
       /* Logo bar - white background with centered logo */
+      /* Figma specs: container S = ~62px, container M = 88px, container L = 98px */
       .logo-bar {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding-top: var(--primitives-space-16, 16px);
-        padding-bottom: var(--primitives-space-8, 8px);
+        padding-top: var(--primitives-space-8, 8px);
+        padding-bottom: var(--primitives-space-4, 4px);
         background-color: #ffffff;
       }
 
+      /* Container S: smaller logo for 62px logo-bar height */
+      :host([container="s"]) .logo-bar {
+        padding-top: var(--primitives-space-4, 4px);
+        padding-bottom: var(--primitives-space-4, 4px);
+      }
+
+      /* Container L: larger logo for 98px logo-bar height */
+      :host([container="l"]) .logo-bar {
+        padding-top: var(--primitives-space-8, 8px);
+        padding-bottom: var(--primitives-space-4, 4px);
+      }
+
       .logo {
-        width: 60px;
-        height: 75px;
+        width: 38px;
+        height: 48px;
         color: var(--primitives-color-accent-100, #154273);
+      }
+
+      /* Responsive logo sizes */
+      :host([container="s"]) .logo {
+        width: 28px;
+        height: 35px;
+      }
+
+      :host([container="l"]) .logo {
+        width: 44px;
+        height: 55px;
       }
 
       .logo svg {
@@ -172,8 +196,18 @@ export class RRTopNavigationBar extends RRBaseComponent {
       .title-text {
         font: var(--components-menu-bar-title-item-m-font, 600 20px/1.125 RijksSansVF, system-ui);
         color: var(--primitives-color-neutral-900, #0f172a);
-        margin: var(--primitives-space-8, 8px) 0 0 0;
+        margin: var(--primitives-space-4, 4px) 0 0 0;
         text-align: center;
+      }
+
+      /* Responsive title font sizes per Figma tokens */
+      :host([container="s"]) .title-text {
+        font: var(--components-menu-bar-title-item-s-font, 600 18px/1.125 RijksSansVF, system-ui);
+        margin: var(--primitives-space-2, 2px) 0 0 0;
+      }
+
+      :host([container="l"]) .title-text {
+        font: var(--components-menu-bar-title-item-l-font, 600 23px/1.125 RijksSansVF, system-ui);
       }
 
       /* Navigation bar with menu/search/account */

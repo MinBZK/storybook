@@ -194,7 +194,7 @@ export class RRSwitch extends RRBaseComponent {
         width: 12px;
         height: 12px;
         border-radius: 6px;
-        border-width: 1px;
+        /* Uses inherited border-width from .thumb (2px via token) */
       }
 
       :host([size="xs"][checked]) .thumb {
