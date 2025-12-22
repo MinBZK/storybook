@@ -125,8 +125,26 @@ export class RRTopNavigationBar extends RRBaseComponent {
         display: flex;
         flex-direction: column;
         width: 100%;
+        margin: 0 auto;
         background-color: #ffffff;
         border-bottom: var(--semantics-divider-thickness, 2px) solid var(--semantics-divider-color, #e2e8f0);
+      }
+
+      /* Container size constraints per Figma breakpoints */
+      :host([container="s"]) .container {
+        min-width: var(--primitives-breakpoint-s-min, 320px);
+        max-width: var(--primitives-breakpoint-s-max, 640px);
+      }
+
+      :host([container="m"]) .container,
+      :host(:not([container])) .container {
+        min-width: var(--primitives-breakpoint-m-min, 641px);
+        max-width: var(--primitives-breakpoint-m-max, 1007px);
+      }
+
+      :host([container="l"]) .container {
+        min-width: var(--primitives-breakpoint-l-min, 1008px);
+        max-width: none;
       }
 
       /* Logo bar - white background with centered logo */
@@ -170,23 +188,36 @@ export class RRTopNavigationBar extends RRBaseComponent {
 
       /* Size variants - responsive padding */
       :host([container="s"]) .nav-bar,
-      :host([container="s"]) .menu-bar {
+      :host([container="s"]) .menu-bar,
+      :host([container="s"]) .logo-bar {
         padding-left: var(--semantics-sections-s-margin-inline, 20px);
         padding-right: var(--semantics-sections-s-margin-inline, 20px);
       }
 
       :host([container="m"]) .nav-bar,
       :host([container="m"]) .menu-bar,
+      :host([container="m"]) .logo-bar,
       :host(:not([container])) .nav-bar,
-      :host(:not([container])) .menu-bar {
+      :host(:not([container])) .menu-bar,
+      :host(:not([container])) .logo-bar {
         padding-left: var(--semantics-sections-m-margin-inline, 32px);
         padding-right: var(--semantics-sections-m-margin-inline, 32px);
       }
 
       :host([container="l"]) .nav-bar,
-      :host([container="l"]) .menu-bar {
+      :host([container="l"]) .menu-bar,
+      :host([container="l"]) .logo-bar {
         padding-left: var(--semantics-sections-l-margin-inline, 48px);
         padding-right: var(--semantics-sections-l-margin-inline, 48px);
+      }
+
+      /* Responsive text hiding on small screens */
+      :host([container="s"]) .nav-button span {
+        display: none;
+      }
+
+      :host([container="s"]) .nav-button .chevron {
+        display: none;
       }
 
       .nav-left {
