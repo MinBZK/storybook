@@ -1,10 +1,34 @@
 import { html } from 'lit';
 import './rr-button.js';
 
+/**
+ * De Button component is het primaire interactie-element voor gebruikersacties.
+ *
+ * ## Figma Design
+ * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41331)
+ *
+ * ## Gebruik
+ * ```html
+ * <rr-button variant="accent-filled" size="m">Label</rr-button>
+ * ```
+ */
 export default {
   title: 'Components/Button',
   component: 'rr-button',
   tags: ['autodocs'],
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41331',
+    },
+    componentSource: {
+      file: 'src/components/button/rr-button.js',
+      repository: 'https://github.com/regelrecht/design-system',
+    },
+    status: {
+      type: 'stable',
+    },
+  },
   argTypes: {
     variant: {
       control: 'select',

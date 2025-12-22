@@ -8,6 +8,7 @@ const config = {
     '@chromatic-com/storybook',
     '@storybook/addon-a11y',
     '@storybook/addon-docs',
+    '@storybook/addon-designs',
   ],
   framework: '@storybook/web-components-vite',
   staticDirs: ['../dist'],
