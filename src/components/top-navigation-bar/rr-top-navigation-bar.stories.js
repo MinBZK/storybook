@@ -20,127 +20,64 @@ export default {
     },
     'has-logo': {
       control: 'boolean',
-      description: 'Show logo section',
-    },
-    'has-menu-bar': {
-      control: 'boolean',
-      description: 'Show global menu bar below ribbon',
+      description: 'Show Rijksoverheid coat of arms logo',
     },
     'has-title': {
       control: 'boolean',
-      description: 'Show title bar section',
+      description: 'Show title text below logo',
     },
-    'has-back-button': {
+    'has-menu-bar': {
       control: 'boolean',
-      description: 'Show back button in title bar',
+      description: 'Show global menu bar',
     },
     'has-global-menu': {
       control: 'boolean',
-      description: 'Show global menu items in ribbon',
+      description: 'Show hamburger Menu button',
     },
     'has-utility-menu-bar': {
       control: 'boolean',
-      description: 'Show utility menu icons',
-    },
-    'logo-text': {
-      control: 'text',
-      description: 'Logo text',
+      description: 'Show Zoeken and Account buttons',
     },
     title: {
       control: 'text',
-      description: 'Title text for title bar',
+      description: 'Title text below logo',
     },
   },
 };
 
 /**
- * Default top navigation bar with all features enabled.
- * Matches Figma top-navigation-bar component.
+ * Default top navigation bar matching Figma design.
+ * White background with centered Rijksoverheid coat of arms.
  */
 export const Default = {
   render: (args) => `
     <rr-top-navigation-bar
-      container="${args.container || 'l'}"
+      container="${args.container || 'm'}"
       ${args['has-logo'] === false ? 'has-logo="false"' : ''}
-      ${args['has-menu-bar'] === false ? 'has-menu-bar="false"' : ''}
-      ${args['has-title'] ? 'has-title' : ''}
-      ${args['has-back-button'] ? 'has-back-button' : ''}
+      ${args['has-title'] === false ? 'has-title="false"' : ''}
+      ${args['has-menu-bar'] ? '' : 'has-menu-bar="false"'}
       ${args['has-global-menu'] === false ? 'has-global-menu="false"' : ''}
       ${args['has-utility-menu-bar'] === false ? 'has-utility-menu-bar="false"' : ''}
-      logo-text="${args['logo-text'] || 'DigiD'}"
       ${args.title ? `title="${args.title}"` : ''}
-    >
-      <!-- Menu items IN the blue ribbon -->
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Home</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Menu item</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Menu item</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Menu item</span>
-
-      <!-- Optional menu bar below ribbon -->
-      <rr-menu-item slot="menu-bar" selected>Home</rr-menu-item>
-      <rr-menu-item slot="menu-bar">Diensten</rr-menu-item>
-      <rr-menu-item slot="menu-bar">Projecten</rr-menu-item>
-    </rr-top-navigation-bar>
+    ></rr-top-navigation-bar>
   `,
   args: {
-    container: 'l',
+    container: 'm',
     'has-logo': true,
-    'has-menu-bar': true,
-    'has-title': false,
-    'has-back-button': false,
+    'has-title': true,
+    'has-menu-bar': false,
     'has-global-menu': true,
     'has-utility-menu-bar': true,
-    'logo-text': 'DigiD',
+    title: 'Titel',
   },
 };
 
 /**
- * Navigation bar with title section visible.
+ * Large container size.
  */
-export const WithTitle = {
+export const LargeContainer = {
   render: () => `
-    <rr-top-navigation-bar
-      container="l"
-      has-title
-      title="Mijn overzicht"
-    >
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Home</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Menu item</span>
-      <rr-menu-item slot="menu-bar" selected>Home</rr-menu-item>
-      <rr-menu-item slot="menu-bar">Diensten</rr-menu-item>
-    </rr-top-navigation-bar>
-  `,
-};
-
-/**
- * Navigation bar with title and back button.
- */
-export const WithTitleAndBackButton = {
-  render: () => `
-    <rr-top-navigation-bar
-      container="l"
-      has-title
-      has-back-button
-      title="Document details"
-    >
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Home</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Menu item</span>
-    </rr-top-navigation-bar>
-  `,
-};
-
-/**
- * Medium container size.
- */
-export const MediumContainer = {
-  render: () => `
-    <rr-top-navigation-bar container="m">
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Titel</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Menu item</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Menu item</span>
-      <rr-menu-item slot="menu-bar" selected>Home</rr-menu-item>
-      <rr-menu-item slot="menu-bar">Menu item</rr-menu-item>
-    </rr-top-navigation-bar>
+    <rr-top-navigation-bar container="l" title="Titel"></rr-top-navigation-bar>
   `,
 };
 
@@ -149,98 +86,88 @@ export const MediumContainer = {
  */
 export const SmallContainer = {
   render: () => `
-    <rr-top-navigation-bar container="s">
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Home</span>
+    <rr-top-navigation-bar container="s" title="Titel"></rr-top-navigation-bar>
+  `,
+};
+
+/**
+ * Without title - just logo and navigation.
+ */
+export const WithoutTitle = {
+  render: () => `
+    <rr-top-navigation-bar has-title="false"></rr-top-navigation-bar>
+  `,
+};
+
+/**
+ * With global menu bar for additional navigation items.
+ */
+export const WithMenuBar = {
+  render: () => `
+    <rr-top-navigation-bar title="Titel">
       <rr-menu-item slot="menu-bar" selected>Home</rr-menu-item>
+      <rr-menu-item slot="menu-bar">Menu item</rr-menu-item>
+      <rr-menu-item slot="menu-bar">Menu item</rr-menu-item>
+      <rr-menu-item slot="menu-bar">Menu item</rr-menu-item>
     </rr-top-navigation-bar>
   `,
 };
 
 /**
- * Minimal navigation with just logo and utility menu.
+ * Minimal - just the logo.
  */
-export const MinimalNavigation = {
+export const MinimalLogo = {
   render: () => `
     <rr-top-navigation-bar
-      container="l"
-      has-menu-bar="false"
+      has-title="false"
       has-global-menu="false"
-    >
-    </rr-top-navigation-bar>
-  `,
-};
-
-/**
- * Navigation without utility menu.
- */
-export const WithoutUtilityMenu = {
-  render: () => `
-    <rr-top-navigation-bar
-      container="l"
       has-utility-menu-bar="false"
-    >
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Home</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Menu item</span>
-      <rr-menu-item slot="menu-bar" selected>Home</rr-menu-item>
-      <rr-menu-item slot="menu-bar">Diensten</rr-menu-item>
-    </rr-top-navigation-bar>
+    ></rr-top-navigation-bar>
   `,
 };
 
 /**
- * Rijksoverheid branded navigation.
+ * Custom title text.
  */
-export const RijksoverheidBranding = {
+export const CustomTitle = {
   render: () => `
-    <rr-top-navigation-bar
-      container="l"
-      logo-text="Rijksoverheid"
-      has-title
-      title="Mijn Rijksoverheid"
-    >
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Home</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Documenten</span>
-      <span slot="ribbon-menu" style="color: white; padding: 8px 12px; cursor: pointer;">Berichten</span>
-      <rr-menu-item slot="menu-bar" selected>Home</rr-menu-item>
-      <rr-menu-item slot="menu-bar">Documenten</rr-menu-item>
-    </rr-top-navigation-bar>
+    <rr-top-navigation-bar title="Mijn Overheid"></rr-top-navigation-bar>
   `,
 };
 
 /**
- * All states overview.
+ * DigiD branding example.
+ */
+export const DigiDBranding = {
+  render: () => `
+    <rr-top-navigation-bar title="DigiD"></rr-top-navigation-bar>
+  `,
+};
+
+/**
+ * All container sizes comparison.
  */
 export const AllStates = {
   render: () => `
     <div style="display: flex; flex-direction: column; gap: 32px;">
       <div>
-        <h3 style="margin: 0 0 8px; font-family: system-ui;">Default (Large)</h3>
-        <rr-top-navigation-bar container="l">
-          <span slot="ribbon-menu" style="color: white; padding: 8px 12px;">Home</span>
-          <span slot="ribbon-menu" style="color: white; padding: 8px 12px;">Menu item</span>
+        <h3 style="margin: 0 0 8px; font-family: system-ui;">Container L</h3>
+        <rr-top-navigation-bar container="l" title="Titel"></rr-top-navigation-bar>
+      </div>
+      <div>
+        <h3 style="margin: 0 0 8px; font-family: system-ui;">Container M (Default)</h3>
+        <rr-top-navigation-bar container="m" title="Titel"></rr-top-navigation-bar>
+      </div>
+      <div>
+        <h3 style="margin: 0 0 8px; font-family: system-ui;">Container S</h3>
+        <rr-top-navigation-bar container="s" title="Titel"></rr-top-navigation-bar>
+      </div>
+      <div>
+        <h3 style="margin: 0 0 8px; font-family: system-ui;">With Menu Bar</h3>
+        <rr-top-navigation-bar container="m" title="Titel">
           <rr-menu-item slot="menu-bar" selected>Home</rr-menu-item>
-          <rr-menu-item slot="menu-bar">Diensten</rr-menu-item>
-        </rr-top-navigation-bar>
-      </div>
-
-      <div>
-        <h3 style="margin: 0 0 8px; font-family: system-ui;">With Title</h3>
-        <rr-top-navigation-bar container="l" has-title title="Overzicht">
-          <span slot="ribbon-menu" style="color: white; padding: 8px 12px;">Home</span>
-          <rr-menu-item slot="menu-bar" selected>Home</rr-menu-item>
-        </rr-top-navigation-bar>
-      </div>
-
-      <div>
-        <h3 style="margin: 0 0 8px; font-family: system-ui;">With Back Button</h3>
-        <rr-top-navigation-bar container="l" has-title has-back-button title="Details">
-          <span slot="ribbon-menu" style="color: white; padding: 8px 12px;">Home</span>
-        </rr-top-navigation-bar>
-      </div>
-
-      <div>
-        <h3 style="margin: 0 0 8px; font-family: system-ui;">Minimal</h3>
-        <rr-top-navigation-bar container="l" has-menu-bar="false" has-global-menu="false">
+          <rr-menu-item slot="menu-bar">Menu item</rr-menu-item>
+          <rr-menu-item slot="menu-bar">Menu item</rr-menu-item>
         </rr-top-navigation-bar>
       </div>
     </div>
