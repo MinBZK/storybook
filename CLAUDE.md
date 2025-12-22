@@ -36,11 +36,34 @@ De Figma MCP server is geconfigureerd voor directe toegang tot designs. **BELANG
 
 | Component | Node ID | Status |
 |-----------|---------|--------|
-| Button | 236:41331 | Implemented |
+| Button | 20-27 | Implemented |
 | Checkbox | 236:41408 | Planned |
 | Radio Button | 236:41398 | Planned |
 | Switch | 236:41353 | Planned |
 | Icon Button | 240:1391 | Planned |
+
+### Button Component Specs (Reference)
+
+De button component heeft de volgende Figma properties:
+
+| Property | Type | Values |
+|----------|------|--------|
+| style | enum | accent-filled, accent-outlined, accent-tinted, neutral-tinted, accent-transparent |
+| size | enum | xs, s, m |
+| is-disabled | boolean | true/false |
+| has-leading-icon | boolean | true/false |
+| has-trailing-icon | boolean | true/false |
+| has-menu | boolean | true/false (toont dropdown chevron) |
+
+**Size Specifications:**
+
+| Size | Min Height | Font Token | Gap |
+|------|------------|------------|-----|
+| xs | 24px | `--components-button-xs-font` | 2px |
+| s | 32px | `--components-button-s-font` | 2px |
+| m | 44px | `--components-button-m-font` | 4px |
+
+**Disabled State:** Gebruik `--primitives-opacity-disabled` (38%) voor disabled opacity.
 
 ### Rate Limits
 

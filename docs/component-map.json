@@ -16,11 +16,22 @@
     {
       "name": "Button",
       "figma": {
-        "nodeId": "236:41331",
+        "nodeId": "20-27",
         "nodeName": "button-list-cell",
         "pageId": "0:1",
         "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41331"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=20-27"
+      },
+      "properties": {
+        "style": ["accent-filled", "accent-outlined", "accent-tinted", "neutral-tinted", "accent-transparent"],
+        "size": ["xs", "s", "m"],
+        "is-disabled": "boolean",
+        "has-leading-icon": "boolean",
+        "leading-icon": "string",
+        "has-trailing-icon": "boolean",
+        "trailing-icon": "string",
+        "has-menu": "boolean",
+        "is-focused": "boolean"
       },
       "implementation": {
         "tagName": "rr-button",
@@ -71,10 +82,15 @@
           "name": "size",
           "values": ["xs", "s", "m"],
           "default": "m"
+        },
+        {
+          "name": "icon",
+          "values": ["none", "leading", "trailing", "both"],
+          "default": "none"
         }
       ],
       "status": "implemented",
-      "lastUpdated": "2024-12-21"
+      "lastUpdated": "2024-12-22"
     },
     {
       "name": "Checkbox",

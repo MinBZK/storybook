@@ -6,6 +6,9 @@
  * @attr {string} size - Button size: 'xs' | 's' | 'm' (default: 'm')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
+ * @attr {boolean} has-leading-icon - Whether the button has a leading icon
+ * @attr {boolean} has-trailing-icon - Whether the button has a trailing icon
+ * @attr {boolean} has-menu - Whether the button has a dropdown menu icon
  *
  * @slot - Default slot for button content
  * @slot icon-start - Slot for icon before text
@@ -27,7 +30,7 @@ export class RRButton extends RRBaseComponent {
   static componentName = 'rr-button';
 
   static get observedAttributes() {
-    return [...super.observedAttributes, 'variant', 'type'];
+    return [...super.observedAttributes, 'variant', 'type', 'has-leading-icon', 'has-trailing-icon', 'has-menu'];
   }
 
   constructor() {
@@ -88,6 +91,42 @@ export class RRButton extends RRBaseComponent {
     this.setAttribute('type', value);
   }
 
+  get hasLeadingIcon() {
+    return this.getBooleanAttribute('has-leading-icon');
+  }
+
+  set hasLeadingIcon(value) {
+    if (value) {
+      this.setAttribute('has-leading-icon', '');
+    } else {
+      this.removeAttribute('has-leading-icon');
+    }
+  }
+
+  get hasTrailingIcon() {
+    return this.getBooleanAttribute('has-trailing-icon');
+  }
+
+  set hasTrailingIcon(value) {
+    if (value) {
+      this.setAttribute('has-trailing-icon', '');
+    } else {
+      this.removeAttribute('has-trailing-icon');
+    }
+  }
+
+  get hasMenu() {
+    return this.getBooleanAttribute('has-menu');
+  }
+
+  set hasMenu(value) {
+    if (value) {
+      this.setAttribute('has-menu', '');
+    } else {
+      this.removeAttribute('has-menu');
+    }
+  }
+
   _getStyles() {
     return `
       :host {
@@ -113,7 +152,6 @@ export class RRButton extends RRBaseComponent {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: var(--primitives-space-8, 8px);
 
         /* Typography */
         font-weight: var(--semantics-buttons-font-weight, 600);
@@ -136,16 +174,18 @@ export class RRButton extends RRBaseComponent {
       :host([size="xs"]) .button {
         min-height: var(--semantics-controls-xs-min-size, 24px);
         padding: 4px 12px;
-        font-size: 14px;
+        font: var(--components-button-xs-font, 600 14px/1.125 system-ui);
         border-radius: var(--semantics-controls-xs-corner-radius, 3px);
+        gap: var(--primitives-space-2, 2px);
       }
 
       /* Size: S */
       :host([size="s"]) .button {
         min-height: var(--semantics-controls-s-min-size, 32px);
         padding: 6px 16px;
-        font-size: 16px;
+        font: var(--components-button-s-font, 600 16px/1.125 system-ui);
         border-radius: var(--semantics-controls-s-corner-radius, 5px);
+        gap: var(--primitives-space-2, 2px);
       }
 
       /* Size: M (default) */
@@ -153,8 +193,9 @@ export class RRButton extends RRBaseComponent {
       :host(:not([size])) .button {
         min-height: var(--semantics-controls-m-min-size, 44px);
         padding: 10px 20px;
-        font-size: 18px;
+        font: var(--components-button-m-font, 600 18px/1.125 system-ui);
         border-radius: var(--semantics-controls-m-corner-radius, 7px);
+        gap: var(--primitives-space-4, 4px);
       }
 
       /* Variant: accent-filled (default) */
@@ -219,7 +260,7 @@ export class RRButton extends RRBaseComponent {
 
       /* Disabled state */
       :host([disabled]) .button {
-        opacity: 0.5;
+        opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
         cursor: not-allowed;
         pointer-events: none;
       }
@@ -241,6 +282,9 @@ export class RRButton extends RRBaseComponent {
   }
 
   render() {
+    const showLeadingIcon = this.hasLeadingIcon || this.hasMenu;
+    const showTrailingIcon = this.hasTrailingIcon;
+
     this.shadowRoot.innerHTML = `
       <button
         class="button"
@@ -250,9 +294,9 @@ export class RRButton extends RRBaseComponent {
         aria-disabled="${this.disabled}"
       >
         <span class="content" part="content">
-          <slot name="icon-start"></slot>
+          ${showLeadingIcon ? '<slot name="icon-start"></slot>' : ''}
           <slot></slot>
-          <slot name="icon-end"></slot>
+          ${showTrailingIcon ? '<slot name="icon-end"></slot>' : ''}
         </span>
       </button>
     `;
