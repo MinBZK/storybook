@@ -144,6 +144,8 @@ export class RRMenuBar extends RRBaseComponent {
         flex-direction: row;
         align-items: stretch;
         gap: 0;
+        /* Bottom border per Figma default-global-menu-bar */
+        border-bottom: var(--semantics-divider-thickness, 2px) solid var(--semantics-divider-color, #e2e8f0);
       }
 
       ::slotted(rr-menu-item) {
