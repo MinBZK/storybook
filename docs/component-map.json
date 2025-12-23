@@ -30,11 +30,7 @@
           "neutral-tinted",
           "accent-transparent"
         ],
-        "size": [
-          "xs",
-          "s",
-          "m"
-        ],
+        "size": ["xs", "s", "m"],
         "is-disabled": "boolean",
         "has-leading-icon": "boolean",
         "leading-icon": "string",
@@ -96,21 +92,12 @@
         },
         {
           "name": "size",
-          "values": [
-            "xs",
-            "s",
-            "m"
-          ],
+          "values": ["xs", "s", "m"],
           "default": "m"
         },
         {
           "name": "icon",
-          "values": [
-            "none",
-            "leading",
-            "trailing",
-            "both"
-          ],
+          "values": ["none", "leading", "trailing", "both"],
           "default": "none"
         }
       ],
@@ -127,11 +114,7 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408"
       },
       "properties": {
-        "size": [
-          "xs",
-          "s",
-          "m"
-        ],
+        "size": ["xs", "s", "m"],
         "is-checked": "boolean",
         "is-indeterminate": "boolean",
         "is-disabled": "boolean"
@@ -165,20 +148,12 @@
       "variants": [
         {
           "name": "size",
-          "values": [
-            "xs",
-            "s",
-            "m"
-          ],
+          "values": ["xs", "s", "m"],
           "default": "m"
         },
         {
           "name": "state",
-          "values": [
-            "unchecked",
-            "checked",
-            "indeterminate"
-          ],
+          "values": ["unchecked", "checked", "indeterminate"],
           "default": "unchecked"
         }
       ],
@@ -195,11 +170,7 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41398"
       },
       "properties": {
-        "size": [
-          "xs",
-          "s",
-          "m"
-        ],
+        "size": ["xs", "s", "m"],
         "is-checked": "boolean",
         "is-disabled": "boolean",
         "name": "string",
@@ -230,11 +201,7 @@
       "variants": [
         {
           "name": "size",
-          "values": [
-            "xs",
-            "s",
-            "m"
-          ],
+          "values": ["xs", "s", "m"],
           "default": "m"
         }
       ],
@@ -251,11 +218,7 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41353"
       },
       "properties": {
-        "size": [
-          "xs",
-          "s",
-          "m"
-        ],
+        "size": ["xs", "s", "m"],
         "is-checked": "boolean",
         "is-disabled": "boolean"
       },
@@ -290,19 +253,12 @@
       "variants": [
         {
           "name": "size",
-          "values": [
-            "xs",
-            "s",
-            "m"
-          ],
+          "values": ["xs", "s", "m"],
           "default": "m"
         },
         {
           "name": "state",
-          "values": [
-            "unchecked",
-            "checked"
-          ],
+          "values": ["unchecked", "checked"],
           "default": "unchecked"
         }
       ],
@@ -318,11 +274,7 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542"
       },
       "properties": {
-        "size": [
-          "xs",
-          "s",
-          "m"
-        ],
+        "size": ["xs", "s", "m"],
         "is-selected": "boolean",
         "is-disabled": "boolean"
       },
@@ -356,11 +308,7 @@
       "variants": [
         {
           "name": "size",
-          "values": [
-            "xs",
-            "s",
-            "m"
-          ],
+          "values": ["xs", "s", "m"],
           "default": "m"
         }
       ],
@@ -384,11 +332,7 @@
           "neutral-tinted",
           "accent-transparent"
         ],
-        "size": [
-          "xs",
-          "s",
-          "m"
-        ],
+        "size": ["xs", "s", "m"],
         "is-disabled": "boolean",
         "aria-label": "string"
       },
@@ -422,9 +366,7 @@
           "semantics-focus-ring-color",
           "semantics-focus-ring-thickness"
         ],
-        "components": [
-          "components-icon-button-font"
-        ]
+        "components": ["components-icon-button-font"]
       },
       "variants": [
         {
@@ -440,11 +382,7 @@
         },
         {
           "name": "size",
-          "values": [
-            "xs",
-            "s",
-            "m"
-          ],
+          "values": ["xs", "s", "m"],
           "default": "m"
         }
       ],
@@ -487,11 +425,7 @@
         "note": "Menu Bar is onderdeel van de Top Navigation Bar design"
       },
       "properties": {
-        "size": [
-          "s",
-          "m",
-          "l"
-        ],
+        "size": ["s", "m", "l"],
         "selected": "boolean",
         "href": "string",
         "disabled": "boolean"
@@ -524,11 +458,7 @@
       "variants": [
         {
           "name": "size",
-          "values": [
-            "s",
-            "m",
-            "l"
-          ],
+          "values": ["s", "m", "l"],
           "default": "m"
         }
       ],

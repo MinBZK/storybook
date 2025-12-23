@@ -13,7 +13,7 @@ StyleDictionary.registerTransform({
   },
   transform: (token) => {
     return `${token.$value}px`;
-  }
+  },
 });
 
 // Custom transform for number values that should stay as numbers
@@ -26,7 +26,7 @@ StyleDictionary.registerTransform({
   transform: (token) => {
     // Keep opacity, line-height etc as plain numbers
     return token.$value;
-  }
+  },
 });
 
 // Custom transform for typography to CSS font shorthand
@@ -42,7 +42,7 @@ StyleDictionary.registerTransform({
       return `${val.fontWeight} ${val.fontSize}/${val.lineHeight} ${val.fontFamily}, system-ui`;
     }
     return val;
-  }
+  },
 });
 
 // Custom format for CSS with organized sections
@@ -56,16 +56,15 @@ StyleDictionary.registerFormat({
  */\n\n`;
 
     const tokens = dictionary.allTokens
-      .map(token => {
-        const value = typeof token.$value === 'object'
-          ? JSON.stringify(token.$value)
-          : token.$value;
+      .map((token) => {
+        const value =
+          typeof token.$value === 'object' ? JSON.stringify(token.$value) : token.$value;
         return `  --${token.name}: ${value};`;
       })
       .join('\n');
 
     return `${header}:root {\n${tokens}\n}\n`;
-  }
+  },
 });
 
 const config = {
@@ -77,55 +76,65 @@ const config = {
     css: {
       transforms: ['name/kebab', 'size/px', 'number/value', 'typography/css', 'color/css'],
       buildPath: 'dist/css/',
-      files: [{
-        destination: 'tokens.css',
-        format: 'css/custom-properties-grouped'
-      }]
+      files: [
+        {
+          destination: 'tokens.css',
+          format: 'css/custom-properties-grouped',
+        },
+      ],
     },
 
     // Primitives only
     'css-primitives': {
       transforms: ['name/kebab', 'size/px', 'number/value', 'typography/css', 'color/css'],
       buildPath: 'dist/css/',
-      files: [{
-        destination: 'primitives.css',
-        format: 'css/custom-properties-grouped',
-        filter: (token) => token.path[0] === 'primitives'
-      }]
+      files: [
+        {
+          destination: 'primitives.css',
+          format: 'css/custom-properties-grouped',
+          filter: (token) => token.path[0] === 'primitives',
+        },
+      ],
     },
 
     // Semantics only
     'css-semantics': {
       transforms: ['name/kebab', 'size/px', 'number/value', 'typography/css', 'color/css'],
       buildPath: 'dist/css/',
-      files: [{
-        destination: 'semantics.css',
-        format: 'css/custom-properties-grouped',
-        filter: (token) => token.path[0] === 'semantics'
-      }]
+      files: [
+        {
+          destination: 'semantics.css',
+          format: 'css/custom-properties-grouped',
+          filter: (token) => token.path[0] === 'semantics',
+        },
+      ],
     },
 
     // Component tokens only
     'css-components': {
       transforms: ['name/kebab', 'size/px', 'number/value', 'typography/css', 'color/css'],
       buildPath: 'dist/css/',
-      files: [{
-        destination: 'components.css',
-        format: 'css/custom-properties-grouped',
-        filter: (token) => token.path[0] === 'components'
-      }]
+      files: [
+        {
+          destination: 'components.css',
+          format: 'css/custom-properties-grouped',
+          filter: (token) => token.path[0] === 'components',
+        },
+      ],
     },
 
     // JSON output for debugging/reference
     json: {
       transforms: ['name/kebab', 'size/px', 'number/value'],
       buildPath: 'dist/',
-      files: [{
-        destination: 'tokens.json',
-        format: 'json/nested'
-      }]
-    }
-  }
+      files: [
+        {
+          destination: 'tokens.json',
+          format: 'json/nested',
+        },
+      ],
+    },
+  },
 };
 
 const sd = new StyleDictionary(config);

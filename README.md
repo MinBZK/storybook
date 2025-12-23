@@ -38,7 +38,7 @@ npm run serve
 ### 1. Laad de tokens CSS
 
 ```html
-<link rel="stylesheet" href="dist/css/tokens.css">
+<link rel="stylesheet" href="dist/css/tokens.css" />
 ```
 
 ### 2. Importeer componenten
@@ -61,12 +61,12 @@ npm run serve
 
 ### rr-button
 
-| Attribuut | Type | Default | Beschrijving |
-|-----------|------|---------|--------------|
-| `variant` | string | `accent-filled` | `accent-filled`, `accent-outlined`, `accent-tinted`, `neutral-tinted`, `accent-transparent` |
-| `size` | string | `m` | `xs`, `s`, `m` |
-| `disabled` | boolean | `false` | Disabled state |
-| `type` | string | `button` | `button`, `submit`, `reset` |
+| Attribuut  | Type    | Default         | Beschrijving                                                                                |
+| ---------- | ------- | --------------- | ------------------------------------------------------------------------------------------- |
+| `variant`  | string  | `accent-filled` | `accent-filled`, `accent-outlined`, `accent-tinted`, `neutral-tinted`, `accent-transparent` |
+| `size`     | string  | `m`             | `xs`, `s`, `m`                                                                              |
+| `disabled` | boolean | `false`         | Disabled state                                                                              |
+| `type`     | string  | `button`        | `button`, `submit`, `reset`                                                                 |
 
 ## Token Structuur
 

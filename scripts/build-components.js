@@ -38,12 +38,15 @@ async function buildComponents() {
     }
 
     // Create a main export file that imports all components
-    const imports = componentFiles.map((file, index) => {
-      const componentName = file.split('/')[2]; // Get component folder name
-      return `export { RR${componentName.split('-').map(part =>
-        part.charAt(0).toUpperCase() + part.slice(1)
-      ).join('')} } from './${componentName}/rr-${componentName}.js';`;
-    }).join('\n');
+    const imports = componentFiles
+      .map((file, index) => {
+        const componentName = file.split('/')[2]; // Get component folder name
+        return `export { RR${componentName
+          .split('-')
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join('')} } from './${componentName}/rr-${componentName}.js';`;
+      })
+      .join('\n');
 
     const indexContent = `// Auto-generated file - do not edit directly
 ${imports}
