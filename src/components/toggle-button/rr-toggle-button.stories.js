@@ -6,7 +6,7 @@ import './rr-toggle-button.js';
  * Ideaal voor filtering, weergave-opties, of multi-select acties.
  *
  * ## Figma Design
- * Design specificaties worden nog toegevoegd.
+ * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542)
  *
  * ## Gebruik
  * ```html
@@ -19,6 +19,10 @@ export default {
   component: 'rr-toggle-button',
   tags: ['autodocs'],
   parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542',
+    },
     componentSource: {
       file: 'src/components/toggle-button/rr-toggle-button.js',
       repository: 'https://github.com/regelrecht/design-system',

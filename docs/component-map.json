@@ -312,8 +312,10 @@
     {
       "name": "Toggle Button",
       "figma": {
-        "nodeId": null,
-        "nodeName": "toggle-button"
+        "nodeId": "309:3542",
+        "nodeName": "toggle-button",
+        "pageName": "Inputs and Selectors",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542"
       },
       "properties": {
         "size": [
@@ -453,7 +455,8 @@
       "name": "Box",
       "figma": {
         "nodeId": null,
-        "nodeName": "box"
+        "nodeName": "box",
+        "note": "Utility component - geen dedicated Figma frame, styling via design tokens"
       },
       "properties": {
         "padding": "string",
@@ -477,8 +480,11 @@
     {
       "name": "Menu Bar",
       "figma": {
-        "nodeId": null,
-        "nodeName": "menu-bar"
+        "nodeId": "48:2135",
+        "nodeName": "top-navigation-bar",
+        "pageName": "Bars",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135",
+        "note": "Menu Bar is onderdeel van de Top Navigation Bar design"
       },
       "properties": {
         "size": [

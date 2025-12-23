@@ -7,7 +7,9 @@ import './rr-menu-item.js';
  * Ondersteunt een "Meer" overflow menu voor items die niet passen.
  *
  * ## Figma Design
- * Design specificaties worden nog toegevoegd.
+ * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135)
+ *
+ * *Note: Menu Bar is onderdeel van de Top Navigation Bar design.*
  *
  * ## Gebruik
  * ```html
@@ -32,6 +34,10 @@ export default {
   component: 'rr-menu-bar',
   tags: ['autodocs'],
   parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
+    },
     componentSource: {
       file: 'src/components/menu-bar/rr-menu-bar.js',
       repository: 'https://github.com/regelrecht/design-system',
