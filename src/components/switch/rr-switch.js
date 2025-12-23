@@ -124,11 +124,13 @@ export class RRSwitch extends RRBaseComponent {
     this.checked = !this.checked;
 
     // Dispatch change event
-    this.dispatchEvent(new CustomEvent('change', {
-      detail: { checked: this.checked },
-      bubbles: true,
-      composed: true,
-    }));
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        detail: { checked: this.checked },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   _getStyles() {

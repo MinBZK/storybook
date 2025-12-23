@@ -66,25 +66,29 @@ export class RRMenuBar extends RRBaseComponent {
   _onItemSelect(event) {
     // Deselect all items except the selected one
     const items = this.querySelectorAll('rr-menu-item');
-    items.forEach(item => {
+    items.forEach((item) => {
       if (item !== event.detail.item) {
         item.selected = false;
       }
     });
 
     // Dispatch event to parent
-    this.dispatchEvent(new CustomEvent('itemselect', {
-      bubbles: true,
-      composed: true,
-      detail: event.detail
-    }));
+    this.dispatchEvent(
+      new CustomEvent('itemselect', {
+        bubbles: true,
+        composed: true,
+        detail: event.detail,
+      })
+    );
   }
 
   _onKeyDown(event) {
     const items = Array.from(this.querySelectorAll('rr-menu-item:not([disabled])'));
     if (items.length === 0) return;
 
-    const currentIndex = items.findIndex(item => item === event.target || item.contains(event.target));
+    const currentIndex = items.findIndex(
+      (item) => item === event.target || item.contains(event.target)
+    );
     let newIndex = -1;
 
     switch (event.key) {
@@ -180,11 +184,11 @@ export class RRMenuBar extends RRBaseComponent {
     // Get all slotted menu items using assignedElements with flatten
     const slot = this.shadowRoot?.querySelector('slot:not([name])');
     const slottedElements = slot?.assignedElements({ flatten: true }) || [];
-    const items = slottedElements.filter(el => el.tagName === 'RR-MENU-ITEM');
+    const items = slottedElements.filter((el) => el.tagName === 'RR-MENU-ITEM');
     if (items.length === 0) return;
 
     // Reset all items to visible first
-    items.forEach(item => {
+    items.forEach((item) => {
       item.style.display = '';
       item.style.visibility = 'visible';
       item.removeAttribute('data-overflow');
@@ -293,7 +297,7 @@ export class RRMenuBar extends RRBaseComponent {
     const items = Array.from(dropdown.querySelectorAll('.overflow-item'));
     if (items.length === 0) return;
 
-    const currentIndex = items.findIndex(item => item === this.shadowRoot.activeElement);
+    const currentIndex = items.findIndex((item) => item === this.shadowRoot.activeElement);
     let newIndex = -1;
 
     switch (event.key) {
@@ -504,7 +508,9 @@ export class RRMenuBar extends RRBaseComponent {
         <slot name="title"></slot>
         <nav class="menu" part="menu" role="none">
           <slot></slot>
-          ${this.hasOverflowMenu ? `
+          ${
+            this.hasOverflowMenu
+              ? `
             <div class="overflow-wrapper">
               <button
                 class="overflow-button"
@@ -525,7 +531,9 @@ export class RRMenuBar extends RRBaseComponent {
               >
               </div>
             </div>
-          ` : ''}
+          `
+              : ''
+          }
         </nav>
       </div>
     `;

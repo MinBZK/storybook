@@ -33,7 +33,14 @@ export class RRRadio extends RRBaseComponent {
   static componentName = 'rr-radio';
 
   static get observedAttributes() {
-    return [...super.observedAttributes, 'checked', 'name', 'value', 'aria-label', 'aria-labelledby'];
+    return [
+      ...super.observedAttributes,
+      'checked',
+      'name',
+      'value',
+      'aria-label',
+      'aria-labelledby',
+    ];
   }
 
   constructor() {
@@ -98,10 +105,12 @@ export class RRRadio extends RRBaseComponent {
   }
 
   _dispatchChangeEvent() {
-    this.dispatchEvent(new Event('change', {
-      bubbles: true,
-      composed: true,
-    }));
+    this.dispatchEvent(
+      new Event('change', {
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   _uncheckOtherRadios() {
@@ -109,21 +118,24 @@ export class RRRadio extends RRBaseComponent {
 
     // Find all radio buttons in the same group
     const radios = document.querySelectorAll(`rr-radio[name="${this.name}"]`);
-    radios.forEach(radio => {
+    radios.forEach((radio) => {
       if (radio !== this && radio.checked) {
         radio.checked = false;
-        radio.dispatchEvent(new Event('change', {
-          bubbles: true,
-          composed: true,
-        }));
+        radio.dispatchEvent(
+          new Event('change', {
+            bubbles: true,
+            composed: true,
+          })
+        );
       }
     });
   }
 
   _getRadioGroup() {
     if (!this.name) return [];
-    return Array.from(document.querySelectorAll(`rr-radio[name="${this.name}"]`))
-      .filter(radio => !radio.disabled);
+    return Array.from(document.querySelectorAll(`rr-radio[name="${this.name}"]`)).filter(
+      (radio) => !radio.disabled
+    );
   }
 
   _focusNextRadio() {
