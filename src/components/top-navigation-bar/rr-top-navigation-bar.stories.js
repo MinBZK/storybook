@@ -11,14 +11,15 @@ import '../menu-bar/rr-menu-item.js';
  *
  * ## Gebruik
  * ```html
- * <rr-top-navigation-bar
- *   title="DigID"
- *   has-logo
- *   has-global-menu
- *   has-utility-menu-bar
- * >
+ * <rr-top-navigation-bar title="DigID">
  *   <rr-menu-item slot="menu" selected>Home</rr-menu-item>
  *   <rr-menu-item slot="menu" href="/aanvragen">Aanvragen</rr-menu-item>
+ * </rr-top-navigation-bar>
+ * ```
+ *
+ * Verberg onderdelen met `no-*` attributen:
+ * ```html
+ * <rr-top-navigation-bar title="DigID" no-menu no-utility-bar>
  * </rr-top-navigation-bar>
  * ```
  */
