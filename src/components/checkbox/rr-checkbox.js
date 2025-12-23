@@ -25,7 +25,7 @@ export class RRCheckbox extends RRBaseComponent {
   static componentName = 'rr-checkbox';
 
   static get observedAttributes() {
-    return [...super.observedAttributes, 'checked', 'indeterminate', 'value', 'name'];
+    return [...super.observedAttributes, 'checked', 'indeterminate', 'value', 'name', 'aria-label', 'aria-labelledby'];
   }
 
   constructor() {
@@ -38,6 +38,19 @@ export class RRCheckbox extends RRBaseComponent {
     super.connectedCallback();
     this.addEventListener('click', this._onChange);
     this.addEventListener('keydown', this._onKeyDown);
+
+    // Set ARIA role
+    this.setAttribute('role', 'checkbox');
+
+    // Set ARIA checked state
+    if (this.indeterminate) {
+      this.setAttribute('aria-checked', 'mixed');
+    } else {
+      this.setAttribute('aria-checked', String(this.checked));
+    }
+
+    // Set ARIA disabled state
+    this.setAttribute('aria-disabled', String(this.disabled));
 
     // Make focusable
     if (!this.hasAttribute('tabindex') && !this.disabled) {
@@ -105,6 +118,7 @@ export class RRCheckbox extends RRBaseComponent {
     } else {
       this.removeAttribute('checked');
     }
+    this.setAttribute('aria-checked', String(Boolean(value)));
   }
 
   get disabled() {
@@ -117,6 +131,7 @@ export class RRCheckbox extends RRBaseComponent {
     } else {
       this.removeAttribute('disabled');
     }
+    this.setAttribute('aria-disabled', String(Boolean(value)));
   }
 
   get indeterminate() {
@@ -126,8 +141,10 @@ export class RRCheckbox extends RRBaseComponent {
   set indeterminate(value) {
     if (value) {
       this.setAttribute('indeterminate', '');
+      this.setAttribute('aria-checked', 'mixed');
     } else {
       this.removeAttribute('indeterminate');
+      this.setAttribute('aria-checked', String(this.checked));
     }
   }
 
@@ -308,12 +325,13 @@ export class RRCheckbox extends RRBaseComponent {
           class="input"
           part="input"
           ${this.checked ? 'checked' : ''}
-          ${this.disabled ? 'disabled' : ''}
+          disabled
           ${this.indeterminate ? 'indeterminate' : ''}
           value="${this.value}"
           name="${this.name}"
-          aria-checked="${this.indeterminate ? 'mixed' : this.checked}"
-          aria-disabled="${this.disabled}"
+          aria-hidden="true"
+          tabindex="-1"
+          inert
         />
         <div class="box" part="box">
           ${checkIcon}

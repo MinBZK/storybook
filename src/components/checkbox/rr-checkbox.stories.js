@@ -81,7 +81,7 @@ export default {
   },
 };
 
-const Template = ({ checked, indeterminate, disabled, size, value, name }) => html`
+const Template = ({ checked, indeterminate, disabled, size, value, name, 'aria-label': ariaLabel }) => html`
   <rr-checkbox
     ?checked=${checked}
     ?indeterminate=${indeterminate}
@@ -89,6 +89,7 @@ const Template = ({ checked, indeterminate, disabled, size, value, name }) => ht
     size=${size}
     value=${value}
     name=${name}
+    aria-label=${ariaLabel || 'Checkbox'}
   ></rr-checkbox>
 `;
 
@@ -139,23 +140,23 @@ export const AllStates = () => html`
   <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
     <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
       <div style="font-size: 14px; color: #64748b;">Unchecked</div>
-      <rr-checkbox></rr-checkbox>
+      <rr-checkbox aria-label="Unchecked checkbox"></rr-checkbox>
     </div>
     <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
       <div style="font-size: 14px; color: #64748b;">Checked</div>
-      <rr-checkbox checked></rr-checkbox>
+      <rr-checkbox checked aria-label="Checked checkbox"></rr-checkbox>
     </div>
     <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
       <div style="font-size: 14px; color: #64748b;">Indeterminate</div>
-      <rr-checkbox indeterminate></rr-checkbox>
+      <rr-checkbox indeterminate aria-label="Indeterminate checkbox"></rr-checkbox>
     </div>
     <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
       <div style="font-size: 14px; color: #64748b;">Disabled</div>
-      <rr-checkbox disabled></rr-checkbox>
+      <rr-checkbox disabled aria-label="Disabled checkbox"></rr-checkbox>
     </div>
     <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
       <div style="font-size: 14px; color: #64748b;">Checked Disabled</div>
-      <rr-checkbox checked disabled></rr-checkbox>
+      <rr-checkbox checked disabled aria-label="Checked disabled checkbox"></rr-checkbox>
     </div>
   </div>
 `;
@@ -168,15 +169,15 @@ export const AllSizes = () => html`
   <div style="display: flex; gap: 2rem; align-items: center;">
     <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
       <div style="font-size: 14px; color: #64748b;">XS (24px)</div>
-      <rr-checkbox size="xs" checked></rr-checkbox>
+      <rr-checkbox size="xs" checked aria-label="Extra small checkbox"></rr-checkbox>
     </div>
     <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
       <div style="font-size: 14px; color: #64748b;">S (32px)</div>
-      <rr-checkbox size="s" checked></rr-checkbox>
+      <rr-checkbox size="s" checked aria-label="Small checkbox"></rr-checkbox>
     </div>
     <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
       <div style="font-size: 14px; color: #64748b;">M (44px)</div>
-      <rr-checkbox size="m" checked></rr-checkbox>
+      <rr-checkbox size="m" checked aria-label="Medium checkbox"></rr-checkbox>
     </div>
   </div>
 `;
@@ -188,19 +189,19 @@ AllSizes.parameters = {
 export const WithLabel = () => html`
   <div style="display: flex; flex-direction: column; gap: 1rem;">
     <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-      <rr-checkbox></rr-checkbox>
+      <rr-checkbox aria-label="Ik ga akkoord met de voorwaarden"></rr-checkbox>
       <span style="font-family: RijksSansVF, system-ui; font-size: 18px;">Ik ga akkoord met de voorwaarden</span>
     </label>
     <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-      <rr-checkbox checked></rr-checkbox>
+      <rr-checkbox checked aria-label="Ik wil updates ontvangen per e-mail"></rr-checkbox>
       <span style="font-family: RijksSansVF, system-ui; font-size: 18px;">Ik wil updates ontvangen per e-mail</span>
     </label>
     <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-      <rr-checkbox indeterminate></rr-checkbox>
+      <rr-checkbox indeterminate aria-label="Selecteer alle opties (3 van 5)"></rr-checkbox>
       <span style="font-family: RijksSansVF, system-ui; font-size: 18px;">Selecteer alle opties (3 van 5)</span>
     </label>
     <label style="display: flex; align-items: center; gap: 0.75rem; cursor: not-allowed;">
-      <rr-checkbox disabled></rr-checkbox>
+      <rr-checkbox disabled aria-label="Deze optie is niet beschikbaar"></rr-checkbox>
       <span style="font-family: RijksSansVF, system-ui; font-size: 18px; opacity: 0.38;">Deze optie is niet beschikbaar</span>
     </label>
   </div>
@@ -233,6 +234,7 @@ export const InteractiveExample = () => {
           @change=${handleChange}
           value="nieuwsbrief"
           name="voorkeuren"
+          aria-label="Nieuwsbrief ontvangen"
         ></rr-checkbox>
         <span style="font-family: RijksSansVF, system-ui; font-size: 18px;">Nieuwsbrief ontvangen</span>
       </label>
@@ -242,6 +244,7 @@ export const InteractiveExample = () => {
           @change=${handleChange}
           value="updates"
           name="voorkeuren"
+          aria-label="Product updates"
         ></rr-checkbox>
         <span style="font-family: RijksSansVF, system-ui; font-size: 18px;">Product updates</span>
       </label>
@@ -251,6 +254,7 @@ export const InteractiveExample = () => {
           @change=${handleChange}
           value="marketing"
           name="voorkeuren"
+          aria-label="Marketing communicatie"
         ></rr-checkbox>
         <span style="font-family: RijksSansVF, system-ui; font-size: 18px;">Marketing communicatie</span>
       </label>
@@ -287,24 +291,24 @@ export const StateMatrix = () => html`
     <tbody>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">XS</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="xs"></rr-checkbox></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="xs" checked></rr-checkbox></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="xs" indeterminate></rr-checkbox></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="xs" disabled></rr-checkbox></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="xs" aria-label="XS unchecked"></rr-checkbox></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="xs" checked aria-label="XS checked"></rr-checkbox></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="xs" indeterminate aria-label="XS indeterminate"></rr-checkbox></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="xs" disabled aria-label="XS disabled"></rr-checkbox></td>
       </tr>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">S</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="s"></rr-checkbox></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="s" checked></rr-checkbox></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="s" indeterminate></rr-checkbox></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="s" disabled></rr-checkbox></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="s" aria-label="S unchecked"></rr-checkbox></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="s" checked aria-label="S checked"></rr-checkbox></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="s" indeterminate aria-label="S indeterminate"></rr-checkbox></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-checkbox size="s" disabled aria-label="S disabled"></rr-checkbox></td>
       </tr>
       <tr>
         <td style="padding: 0.75rem;">M</td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-checkbox size="m"></rr-checkbox></td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-checkbox size="m" checked></rr-checkbox></td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-checkbox size="m" indeterminate></rr-checkbox></td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-checkbox size="m" disabled></rr-checkbox></td>
+        <td style="padding: 0.75rem; text-align: center;"><rr-checkbox size="m" aria-label="M unchecked"></rr-checkbox></td>
+        <td style="padding: 0.75rem; text-align: center;"><rr-checkbox size="m" checked aria-label="M checked"></rr-checkbox></td>
+        <td style="padding: 0.75rem; text-align: center;"><rr-checkbox size="m" indeterminate aria-label="M indeterminate"></rr-checkbox></td>
+        <td style="padding: 0.75rem; text-align: center;"><rr-checkbox size="m" disabled aria-label="M disabled"></rr-checkbox></td>
       </tr>
     </tbody>
   </table>

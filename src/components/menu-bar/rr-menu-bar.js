@@ -35,8 +35,11 @@ export class RRMenuBar extends RRBaseComponent {
     this._handleOverflow = this._handleOverflow.bind(this);
     this._toggleOverflowMenu = this._toggleOverflowMenu.bind(this);
     this._closeOverflowMenu = this._closeOverflowMenu.bind(this);
+    this._onOverflowButtonKeyDown = this._onOverflowButtonKeyDown.bind(this);
+    this._onOverflowKeyDown = this._onOverflowKeyDown.bind(this);
     this._resizeObserver = null;
     this._overflowMenuOpen = false;
+    this._overflowMenuId = `rr-overflow-${Math.random().toString(36).substr(2, 9)}`;
   }
 
   connectedCallback() {
@@ -223,12 +226,15 @@ export class RRMenuBar extends RRBaseComponent {
         // Create dropdown item
         const dropdownItem = document.createElement('button');
         dropdownItem.className = 'overflow-item';
+        dropdownItem.setAttribute('role', 'menuitem');
+        dropdownItem.setAttribute('tabindex', '-1');
         dropdownItem.textContent = items[i].textContent;
         dropdownItem.addEventListener('click', (e) => {
           e.stopPropagation();
           items[i].click();
           this._closeOverflowMenu();
         });
+        dropdownItem.addEventListener('keydown', this._onOverflowKeyDown);
         overflowDropdown.appendChild(dropdownItem);
       }
     } else {
@@ -263,6 +269,102 @@ export class RRMenuBar extends RRBaseComponent {
     if (dropdown && button) {
       dropdown.classList.remove('open');
       button.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  _onOverflowButtonKeyDown(event) {
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
+      case 'ArrowDown':
+        event.preventDefault();
+        this._openOverflowMenuWithFocus();
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        this._openOverflowMenuWithFocus(true);
+        break;
+      case 'Escape':
+        if (this._overflowMenuOpen) {
+          event.preventDefault();
+          this._closeOverflowMenuAndFocusButton();
+        }
+        break;
+    }
+  }
+
+  _onOverflowKeyDown(event) {
+    const dropdown = this.shadowRoot?.querySelector('.overflow-dropdown');
+    if (!dropdown) return;
+
+    const items = Array.from(dropdown.querySelectorAll('.overflow-item'));
+    if (items.length === 0) return;
+
+    const currentIndex = items.findIndex(item => item === this.shadowRoot.activeElement);
+    let newIndex = -1;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+        break;
+      case 'Home':
+        event.preventDefault();
+        newIndex = 0;
+        break;
+      case 'End':
+        event.preventDefault();
+        newIndex = items.length - 1;
+        break;
+      case 'Escape':
+        event.preventDefault();
+        this._closeOverflowMenuAndFocusButton();
+        return;
+      case 'Tab':
+        this._closeOverflowMenu();
+        return;
+    }
+
+    if (newIndex >= 0) {
+      items[newIndex].focus();
+    }
+  }
+
+  _openOverflowMenuWithFocus(focusLast = false) {
+    const dropdown = this.shadowRoot?.querySelector('.overflow-dropdown');
+    const button = this.shadowRoot?.querySelector('.overflow-button');
+    if (!dropdown || !button) return;
+
+    if (!this._overflowMenuOpen) {
+      this._overflowMenuOpen = true;
+      dropdown.classList.add('open');
+      button.setAttribute('aria-expanded', 'true');
+
+      const rect = button.getBoundingClientRect();
+      dropdown.style.top = `${rect.bottom + 4}px`;
+      dropdown.style.right = `${window.innerWidth - rect.right}px`;
+    }
+
+    requestAnimationFrame(() => {
+      const items = dropdown.querySelectorAll('.overflow-item');
+      if (items.length > 0) {
+        (focusLast ? items[items.length - 1] : items[0]).focus();
+      }
+    });
+  }
+
+  _closeOverflowMenuAndFocusButton() {
+    this._overflowMenuOpen = false;
+    const dropdown = this.shadowRoot?.querySelector('.overflow-dropdown');
+    const button = this.shadowRoot?.querySelector('.overflow-button');
+    if (dropdown && button) {
+      dropdown.classList.remove('open');
+      button.setAttribute('aria-expanded', 'false');
+      button.focus();
     }
   }
 
@@ -416,12 +518,19 @@ export class RRMenuBar extends RRBaseComponent {
                 class="overflow-button"
                 part="overflow-button"
                 aria-expanded="false"
-                aria-haspopup="true"
+                aria-haspopup="menu"
+                aria-controls="${this._overflowMenuId}"
               >
                 ${this.overflowLabel}
                 ${chevronIcon}
               </button>
-              <div class="overflow-dropdown" part="overflow-menu" role="menu">
+              <div
+                class="overflow-dropdown"
+                part="overflow-menu"
+                role="menu"
+                id="${this._overflowMenuId}"
+                aria-label="${this.overflowLabel}"
+              >
               </div>
             </div>
           ` : ''}
@@ -434,6 +543,7 @@ export class RRMenuBar extends RRBaseComponent {
       const overflowButton = this.shadowRoot.querySelector('.overflow-button');
       if (overflowButton) {
         overflowButton.addEventListener('click', this._toggleOverflowMenu);
+        overflowButton.addEventListener('keydown', this._onOverflowButtonKeyDown);
       }
       // Re-setup overflow detection after render
       this._setupOverflowDetection();

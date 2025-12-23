@@ -33,7 +33,7 @@ export class RRRadio extends RRBaseComponent {
   static componentName = 'rr-radio';
 
   static get observedAttributes() {
-    return [...super.observedAttributes, 'checked', 'name', 'value'];
+    return [...super.observedAttributes, 'checked', 'name', 'value', 'aria-label', 'aria-labelledby'];
   }
 
   constructor() {
@@ -45,6 +45,7 @@ export class RRRadio extends RRBaseComponent {
   connectedCallback() {
     super.connectedCallback();
     this.setAttribute('role', 'radio');
+    this.setAttribute('aria-checked', String(this.checked));
     this.setAttribute('tabindex', this.disabled ? '-1' : '0');
     this.addEventListener('click', this._onChange);
     this.addEventListener('keydown', this._onKeyDown);
@@ -352,9 +353,10 @@ export class RRRadio extends RRBaseComponent {
         name="${this.name}"
         value="${this.value}"
         ${this.checked ? 'checked' : ''}
-        ${this.disabled ? 'disabled' : ''}
+        disabled
         tabindex="-1"
         aria-hidden="true"
+        inert
       />
     `;
   }

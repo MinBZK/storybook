@@ -22,7 +22,7 @@ export class RRSwitch extends RRBaseComponent {
   static componentName = 'rr-switch';
 
   static get observedAttributes() {
-    return [...super.observedAttributes, 'checked'];
+    return [...super.observedAttributes, 'checked', 'aria-label', 'aria-labelledby'];
   }
 
   constructor() {
@@ -285,9 +285,10 @@ export class RRSwitch extends RRBaseComponent {
           class="input"
           part="input"
           ${this.checked ? 'checked' : ''}
-          ${this.disabled ? 'disabled' : ''}
+          disabled
           aria-hidden="true"
           tabindex="-1"
+          inert
         />
         <div class="switch" part="switch">
           <div class="thumb" part="thumb"></div>

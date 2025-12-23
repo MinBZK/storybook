@@ -64,6 +64,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
       'has-global-menu',
       'has-utility-menu-bar',
       'title',
+      'skip-link-target',
       // Logo pass-through
       'logo-has-wordmark',
       'logo-title',
@@ -123,6 +124,10 @@ export class RRTopNavigationBar extends RRBaseComponent {
 
   get titleText() {
     return this.getAttribute('title') || 'Titel';
+  }
+
+  get skipLinkTarget() {
+    return this.getAttribute('skip-link-target') || '#main-content';
   }
 
   // Logo pass-through getters
@@ -199,6 +204,26 @@ export class RRTopNavigationBar extends RRBaseComponent {
 
       * {
         box-sizing: border-box;
+      }
+
+      .skip-link {
+        position: absolute;
+        top: -100%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        background-color: var(--primitives-color-accent-100, #154273);
+        color: #ffffff;
+        padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
+        font: var(--components-menu-bar-menu-item-font, 600 18px/1.125 RijksSansVF, system-ui);
+        text-decoration: none;
+        border-radius: var(--semantics-controls-m-corner-radius, 7px);
+      }
+
+      .skip-link:focus {
+        top: var(--primitives-space-8, 8px);
+        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+        outline-offset: 2px;
       }
 
       .container {
@@ -380,6 +405,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
 
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>
+      <a href="${this.skipLinkTarget}" class="skip-link">Ga naar hoofdinhoud</a>
       <div class="container" part="container">
         <!-- Logo bar with centered Rijksoverheid coat of arms -->
         <div class="logo-bar" part="logo-bar">

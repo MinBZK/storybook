@@ -66,6 +66,7 @@ const Template = ({ checked, disabled, size }) => html`
     ?checked=${checked}
     ?disabled=${disabled}
     size=${size}
+    aria-label="Toggle switch"
     @change=${(e) => {
       console.log('Switch changed:', e.detail.checked);
     }}
@@ -115,15 +116,15 @@ Medium.args = {
 export const AllSizes = () => html`
   <div style="display: flex; gap: 1rem; align-items: center;">
     <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-      <rr-switch size="xs"></rr-switch>
+      <rr-switch size="xs" aria-label="Extra small switch"></rr-switch>
       <span style="font-size: 0.875rem; color: #64748b;">XS</span>
     </div>
     <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-      <rr-switch size="s"></rr-switch>
+      <rr-switch size="s" aria-label="Small switch"></rr-switch>
       <span style="font-size: 0.875rem; color: #64748b;">S</span>
     </div>
     <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-      <rr-switch size="m"></rr-switch>
+      <rr-switch size="m" aria-label="Medium switch"></rr-switch>
       <span style="font-size: 0.875rem; color: #64748b;">M</span>
     </div>
   </div>
@@ -136,19 +137,19 @@ AllSizes.parameters = {
 export const AllStates = () => html`
   <div style="display: flex; flex-direction: column; gap: 1rem;">
     <div style="display: flex; gap: 1rem; align-items: center;">
-      <rr-switch></rr-switch>
+      <rr-switch aria-label="Unchecked switch"></rr-switch>
       <span>Unchecked</span>
     </div>
     <div style="display: flex; gap: 1rem; align-items: center;">
-      <rr-switch checked></rr-switch>
+      <rr-switch checked aria-label="Checked switch"></rr-switch>
       <span>Checked</span>
     </div>
     <div style="display: flex; gap: 1rem; align-items: center;">
-      <rr-switch disabled></rr-switch>
+      <rr-switch disabled aria-label="Disabled switch"></rr-switch>
       <span>Disabled</span>
     </div>
     <div style="display: flex; gap: 1rem; align-items: center;">
-      <rr-switch checked disabled></rr-switch>
+      <rr-switch checked disabled aria-label="Checked disabled switch"></rr-switch>
       <span>Checked Disabled</span>
     </div>
   </div>
@@ -161,15 +162,15 @@ AllStates.parameters = {
 export const WithLabel = () => html`
   <div style="display: flex; flex-direction: column; gap: 1rem;">
     <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-      <rr-switch id="notifications"></rr-switch>
+      <rr-switch id="notifications" aria-label="Notificaties inschakelen"></rr-switch>
       <span>Notificaties inschakelen</span>
     </label>
     <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-      <rr-switch id="dark-mode" checked></rr-switch>
+      <rr-switch id="dark-mode" checked aria-label="Donkere modus"></rr-switch>
       <span>Donkere modus</span>
     </label>
     <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-      <rr-switch id="auto-save" checked></rr-switch>
+      <rr-switch id="auto-save" checked aria-label="Automatisch opslaan"></rr-switch>
       <span>Automatisch opslaan</span>
     </label>
   </div>
@@ -198,24 +199,24 @@ export const SizeStateMatrix = () => html`
     <tbody>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">XS</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs"></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" checked></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" disabled></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" checked disabled></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" aria-label="XS unchecked switch"></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" checked aria-label="XS checked switch"></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" disabled aria-label="XS disabled switch"></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" checked disabled aria-label="XS checked disabled switch"></rr-switch></td>
       </tr>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">S</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s"></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" checked></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" disabled></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" checked disabled></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" aria-label="S unchecked switch"></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" checked aria-label="S checked switch"></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" disabled aria-label="S disabled switch"></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" checked disabled aria-label="S checked disabled switch"></rr-switch></td>
       </tr>
       <tr>
         <td style="padding: 0.75rem;">M</td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m"></rr-switch></td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" checked></rr-switch></td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" disabled></rr-switch></td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" checked disabled></rr-switch></td>
+        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" aria-label="M unchecked switch"></rr-switch></td>
+        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" checked aria-label="M checked switch"></rr-switch></td>
+        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" disabled aria-label="M disabled switch"></rr-switch></td>
+        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" checked disabled aria-label="M checked disabled switch"></rr-switch></td>
       </tr>
     </tbody>
   </table>
@@ -242,6 +243,7 @@ export const ProgrammaticControl = () => {
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       <rr-switch
         id="programmatic-switch"
+        aria-label="Programmatisch bestuurbare switch"
         @change=${(e) => {
           const status = document.querySelector('#status');
           if (status) {

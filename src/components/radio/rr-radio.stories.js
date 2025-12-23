@@ -98,6 +98,7 @@ const Template = ({ checked, disabled, size, name, value, label }) => html`
       size=${size}
       name=${name}
       value=${value}
+      aria-label=${label}
     ></rr-radio>
     <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
       ${label}
@@ -158,25 +159,25 @@ export const RadioGroup = () => html`
     </div>
     <div style="display: flex; flex-direction: column; gap: 12px;">
       <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-        <rr-radio name="group1" value="option1" checked></rr-radio>
+        <rr-radio name="group1" value="option1" checked aria-label="Optie 1"></rr-radio>
         <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
           Optie 1
         </span>
       </label>
       <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-        <rr-radio name="group1" value="option2"></rr-radio>
+        <rr-radio name="group1" value="option2" aria-label="Optie 2"></rr-radio>
         <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
           Optie 2
         </span>
       </label>
       <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-        <rr-radio name="group1" value="option3"></rr-radio>
+        <rr-radio name="group1" value="option3" aria-label="Optie 3"></rr-radio>
         <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
           Optie 3
         </span>
       </label>
       <label style="display: flex; align-items: center; gap: 12px; cursor: not-allowed; opacity: 0.5;">
-        <rr-radio name="group1" value="option4" disabled></rr-radio>
+        <rr-radio name="group1" value="option4" disabled aria-label="Optie 4 (uitgeschakeld)"></rr-radio>
         <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
           Optie 4 (uitgeschakeld)
         </span>
@@ -197,19 +198,19 @@ RadioGroup.parameters = {
 export const AllSizes = () => html`
   <div style="display: flex; gap: 2rem; align-items: center;">
     <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-      <rr-radio name="sizes" value="xs" size="xs" checked></rr-radio>
+      <rr-radio name="sizes" value="xs" size="xs" checked aria-label="Extra Small (XS)"></rr-radio>
       <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 14px;">
         Extra Small (XS)
       </span>
     </label>
     <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-      <rr-radio name="sizes" value="s" size="s"></rr-radio>
+      <rr-radio name="sizes" value="s" size="s" aria-label="Small (S)"></rr-radio>
       <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
         Small (S)
       </span>
     </label>
     <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-      <rr-radio name="sizes" value="m" size="m"></rr-radio>
+      <rr-radio name="sizes" value="m" size="m" aria-label="Medium (M)"></rr-radio>
       <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 18px;">
         Medium (M)
       </span>
@@ -235,49 +236,49 @@ export const StateMatrix = () => html`
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">Unchecked</td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="unchecked" value="xs" size="xs"></rr-radio>
+          <rr-radio name="unchecked" value="xs" size="xs" aria-label="Unchecked XS"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="unchecked" value="s" size="s"></rr-radio>
+          <rr-radio name="unchecked" value="s" size="s" aria-label="Unchecked S"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="unchecked" value="m" size="m"></rr-radio>
+          <rr-radio name="unchecked" value="m" size="m" aria-label="Unchecked M"></rr-radio>
         </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">Checked</td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="checked" value="xs" size="xs" checked></rr-radio>
+          <rr-radio name="checked" value="xs" size="xs" checked aria-label="Checked XS"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="checked" value="s" size="s" checked></rr-radio>
+          <rr-radio name="checked" value="s" size="s" checked aria-label="Checked S"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="checked" value="m" size="m" checked></rr-radio>
+          <rr-radio name="checked" value="m" size="m" checked aria-label="Checked M"></rr-radio>
         </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">Disabled</td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="disabled" value="xs" size="xs" disabled></rr-radio>
+          <rr-radio name="disabled" value="xs" size="xs" disabled aria-label="Disabled XS"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="disabled" value="s" size="s" disabled></rr-radio>
+          <rr-radio name="disabled" value="s" size="s" disabled aria-label="Disabled S"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="disabled" value="m" size="m" disabled></rr-radio>
+          <rr-radio name="disabled" value="m" size="m" disabled aria-label="Disabled M"></rr-radio>
         </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem;">Disabled Checked</td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-radio name="disabled-checked" value="xs" size="xs" disabled checked></rr-radio>
+          <rr-radio name="disabled-checked" value="xs" size="xs" disabled checked aria-label="Disabled checked XS"></rr-radio>
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-radio name="disabled-checked" value="s" size="s" disabled checked></rr-radio>
+          <rr-radio name="disabled-checked" value="s" size="s" disabled checked aria-label="Disabled checked S"></rr-radio>
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-radio name="disabled-checked" value="m" size="m" disabled checked></rr-radio>
+          <rr-radio name="disabled-checked" value="m" size="m" disabled checked aria-label="Disabled checked M"></rr-radio>
         </td>
       </tr>
     </tbody>
@@ -301,13 +302,13 @@ export const MultipleGroups = () => html`
       </legend>
       <div style="display: flex; flex-direction: column; gap: 10px;">
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-          <rr-radio name="preference" value="yes" checked></rr-radio>
+          <rr-radio name="preference" value="yes" checked aria-label="Ja"></rr-radio>
           <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
             Ja
           </span>
         </label>
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-          <rr-radio name="preference" value="no"></rr-radio>
+          <rr-radio name="preference" value="no" aria-label="Nee"></rr-radio>
           <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
             Nee
           </span>
@@ -321,19 +322,19 @@ export const MultipleGroups = () => html`
       </legend>
       <div style="display: flex; flex-direction: column; gap: 10px;">
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-          <rr-radio name="priority" value="high"></rr-radio>
+          <rr-radio name="priority" value="high" aria-label="Hoog"></rr-radio>
           <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
             Hoog
           </span>
         </label>
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-          <rr-radio name="priority" value="medium" checked></rr-radio>
+          <rr-radio name="priority" value="medium" checked aria-label="Gemiddeld"></rr-radio>
           <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
             Gemiddeld
           </span>
         </label>
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-          <rr-radio name="priority" value="low"></rr-radio>
+          <rr-radio name="priority" value="low" aria-label="Laag"></rr-radio>
           <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
             Laag
           </span>
@@ -373,25 +374,25 @@ export const FormIntegration = () => {
           </div>
           <div style="display: flex; flex-direction: column; gap: 10px;">
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-              <rr-radio name="satisfaction" value="very-satisfied"></rr-radio>
+              <rr-radio name="satisfaction" value="very-satisfied" aria-label="Zeer tevreden"></rr-radio>
               <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
                 Zeer tevreden
               </span>
             </label>
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-              <rr-radio name="satisfaction" value="satisfied" checked></rr-radio>
+              <rr-radio name="satisfaction" value="satisfied" checked aria-label="Tevreden"></rr-radio>
               <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
                 Tevreden
               </span>
             </label>
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-              <rr-radio name="satisfaction" value="neutral"></rr-radio>
+              <rr-radio name="satisfaction" value="neutral" aria-label="Neutraal"></rr-radio>
               <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
                 Neutraal
               </span>
             </label>
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-              <rr-radio name="satisfaction" value="unsatisfied"></rr-radio>
+              <rr-radio name="satisfaction" value="unsatisfied" aria-label="Ontevreden"></rr-radio>
               <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
                 Ontevreden
               </span>
@@ -405,19 +406,19 @@ export const FormIntegration = () => {
           </div>
           <div style="display: flex; flex-direction: column; gap: 10px;">
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-              <rr-radio name="recommend" value="yes"></rr-radio>
+              <rr-radio name="recommend" value="yes" aria-label="Ja"></rr-radio>
               <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
                 Ja
               </span>
             </label>
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-              <rr-radio name="recommend" value="no"></rr-radio>
+              <rr-radio name="recommend" value="no" aria-label="Nee"></rr-radio>
               <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
                 Nee
               </span>
             </label>
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-              <rr-radio name="recommend" value="maybe" checked></rr-radio>
+              <rr-radio name="recommend" value="maybe" checked aria-label="Misschien"></rr-radio>
               <span style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px;">
                 Misschien
               </span>

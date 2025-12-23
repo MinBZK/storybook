@@ -236,7 +236,7 @@ export class RRNavLogo extends RRBaseComponent {
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>
       <div class="logo-container" part="container">
-        <div class="logo" part="logo">
+        <div class="logo" part="logo" role="img" aria-label="Rijkswapen - Rijksoverheid">
           ${cachedRijkswapen || ''}
         </div>
         ${showWordmark ? `

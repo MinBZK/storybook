@@ -129,7 +129,15 @@ export class RRBackButton extends RRBaseComponent {
       }
 
       :host([container="s"]) .label {
-        display: none;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
 
       :host([container="l"]) .back-button {
@@ -152,7 +160,7 @@ export class RRBackButton extends RRBaseComponent {
 
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>
-      <${tag} class="back-button" part="button" ${hrefAttr}>
+      <${tag} class="back-button" part="button" ${hrefAttr} aria-label="${this.label}">
         ${arrowIcon}
         <span class="label" part="label">${this.label}</span>
       </${tag}>
