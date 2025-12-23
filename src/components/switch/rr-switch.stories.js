@@ -190,33 +190,65 @@ export const SizeStateMatrix = () => html`
     <thead>
       <tr>
         <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Size</th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Unchecked</th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Checked</th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Disabled</th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Checked Disabled</th>
+        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
+          Unchecked
+        </th>
+        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
+          Checked
+        </th>
+        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
+          Disabled
+        </th>
+        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
+          Checked Disabled
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">XS</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" aria-label="XS unchecked switch"></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" checked aria-label="XS checked switch"></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" disabled aria-label="XS disabled switch"></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="xs" checked disabled aria-label="XS checked disabled switch"></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
+          <rr-switch size="xs" aria-label="XS unchecked switch"></rr-switch>
+        </td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
+          <rr-switch size="xs" checked aria-label="XS checked switch"></rr-switch>
+        </td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
+          <rr-switch size="xs" disabled aria-label="XS disabled switch"></rr-switch>
+        </td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
+          <rr-switch size="xs" checked disabled aria-label="XS checked disabled switch"></rr-switch>
+        </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">S</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" aria-label="S unchecked switch"></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" checked aria-label="S checked switch"></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" disabled aria-label="S disabled switch"></rr-switch></td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;"><rr-switch size="s" checked disabled aria-label="S checked disabled switch"></rr-switch></td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
+          <rr-switch size="s" aria-label="S unchecked switch"></rr-switch>
+        </td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
+          <rr-switch size="s" checked aria-label="S checked switch"></rr-switch>
+        </td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
+          <rr-switch size="s" disabled aria-label="S disabled switch"></rr-switch>
+        </td>
+        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
+          <rr-switch size="s" checked disabled aria-label="S checked disabled switch"></rr-switch>
+        </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem;">M</td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" aria-label="M unchecked switch"></rr-switch></td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" checked aria-label="M checked switch"></rr-switch></td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" disabled aria-label="M disabled switch"></rr-switch></td>
-        <td style="padding: 0.75rem; text-align: center;"><rr-switch size="m" checked disabled aria-label="M checked disabled switch"></rr-switch></td>
+        <td style="padding: 0.75rem; text-align: center;">
+          <rr-switch size="m" aria-label="M unchecked switch"></rr-switch>
+        </td>
+        <td style="padding: 0.75rem; text-align: center;">
+          <rr-switch size="m" checked aria-label="M checked switch"></rr-switch>
+        </td>
+        <td style="padding: 0.75rem; text-align: center;">
+          <rr-switch size="m" disabled aria-label="M disabled switch"></rr-switch>
+        </td>
+        <td style="padding: 0.75rem; text-align: center;">
+          <rr-switch size="m" checked disabled aria-label="M checked disabled switch"></rr-switch>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -262,7 +294,8 @@ ProgrammaticControl.parameters = {
   controls: { disable: true },
   docs: {
     description: {
-      story: 'Voorbeeld van programmatische controle van de switch. De switch kan worden getoggeld via JavaScript.',
+      story:
+        'Voorbeeld van programmatische controle van de switch. De switch kan worden getoggeld via JavaScript.',
     },
   },
 };

@@ -189,7 +189,7 @@ export const Interactive = () => {
     </rr-menu-bar>
     <p style="margin-top: 1rem; color: #64748b; font-size: 14px;">
       Open de browser console om de 'itemselect' events te zien.
-      <br>
+      <br />
       Gebruik de pijltjestoetsen (← →), Home en End om te navigeren.
     </p>
   `;
@@ -198,7 +198,8 @@ Interactive.parameters = {
   controls: { disable: true },
   docs: {
     description: {
-      story: 'Interactief voorbeeld dat laat zien hoe de menu bar reageert op selectie. Ondersteunt ook keyboard navigatie met pijltjestoetsen.',
+      story:
+        'Interactief voorbeeld dat laat zien hoe de menu bar reageert op selectie. Ondersteunt ook keyboard navigatie met pijltjestoetsen.',
     },
   },
 };

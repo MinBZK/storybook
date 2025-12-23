@@ -54,7 +54,7 @@ export class RRUtilityMenuBar extends RRBaseComponent {
       'has-settings',
       // Configuration
       'language',
-      'account-label'
+      'account-label',
     ];
   }
 
@@ -74,10 +74,12 @@ export class RRUtilityMenuBar extends RRBaseComponent {
 
       const action = button.dataset.action;
       if (action) {
-        this.dispatchEvent(new CustomEvent(`${action}-click`, {
-          bubbles: true,
-          composed: true
-        }));
+        this.dispatchEvent(
+          new CustomEvent(`${action}-click`, {
+            bubbles: true,
+            composed: true,
+          })
+        );
       }
     });
   }
@@ -222,41 +224,61 @@ export class RRUtilityMenuBar extends RRBaseComponent {
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>
       <div class="container" part="container">
-        ${this.hasLanguageSwitch ? `
+        ${
+          this.hasLanguageSwitch
+            ? `
           <button class="utility-button" part="button" data-action="language" aria-label="Taal" aria-haspopup="true">
             <span>${this.language}</span>
             ${chevronIcon}
           </button>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${this.hasSearch ? `
+        ${
+          this.hasSearch
+            ? `
           <button class="utility-button" part="button" data-action="search" aria-label="Zoeken">
             ${searchIcon}
             <span>Zoeken</span>
           </button>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${this.hasHelp ? `
+        ${
+          this.hasHelp
+            ? `
           <button class="utility-button" part="button" data-action="help" aria-label="Hulp">
             ${helpIcon}
             <span>Hulp</span>
           </button>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${this.hasSettings ? `
+        ${
+          this.hasSettings
+            ? `
           <button class="utility-button" part="button" data-action="settings" aria-label="Instellingen">
             ${settingsIcon}
             <span>Instellingen</span>
           </button>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${this.hasAccount ? `
+        ${
+          this.hasAccount
+            ? `
           <button class="utility-button" part="button" data-action="account" aria-label="Account" aria-haspopup="true">
             ${userIcon}
             <span>${this.accountLabel}</span>
             ${chevronIcon}
           </button>
-        ` : ''}
+        `
+            : ''
+        }
       </div>
     `;
 

@@ -76,9 +76,7 @@ export default {
  * Default utility menu bar with Language, Search, and Account buttons.
  */
 export const Default = {
-  render: () => html`
-    <rr-utility-menu-bar account-label="Mijn DigID"></rr-utility-menu-bar>
-  `,
+  render: () => html` <rr-utility-menu-bar account-label="Mijn DigID"></rr-utility-menu-bar> `,
 };
 
 /**
@@ -101,9 +99,7 @@ export const AllButtons = {
  * Minimal - only search.
  */
 export const SearchOnly = {
-  render: () => html`
-    <rr-utility-menu-bar no-language-switch no-account></rr-utility-menu-bar>
-  `,
+  render: () => html` <rr-utility-menu-bar no-language-switch no-account></rr-utility-menu-bar> `,
 };
 
 /**
@@ -111,10 +107,7 @@ export const SearchOnly = {
  */
 export const SmallContainer = {
   render: () => html`
-    <rr-utility-menu-bar
-      container="s"
-      account-label="Mijn DigID"
-    ></rr-utility-menu-bar>
+    <rr-utility-menu-bar container="s" account-label="Mijn DigID"></rr-utility-menu-bar>
   `,
 };
 
@@ -123,10 +116,7 @@ export const SmallContainer = {
  */
 export const LargeContainer = {
   render: () => html`
-    <rr-utility-menu-bar
-      container="l"
-      account-label="Mijn DigID"
-    ></rr-utility-menu-bar>
+    <rr-utility-menu-bar container="l" account-label="Mijn DigID"></rr-utility-menu-bar>
   `,
 };
 
@@ -135,10 +125,7 @@ export const LargeContainer = {
  */
 export const EnglishLanguage = {
   render: () => html`
-    <rr-utility-menu-bar
-      language="EN"
-      account-label="My Account"
-    ></rr-utility-menu-bar>
+    <rr-utility-menu-bar language="EN" account-label="My Account"></rr-utility-menu-bar>
   `,
 };
 
@@ -147,11 +134,7 @@ export const EnglishLanguage = {
  */
 export const WithHelpAndSettings = {
   render: () => html`
-    <rr-utility-menu-bar
-      has-help
-      has-settings
-      account-label="Mijn DigID"
-    ></rr-utility-menu-bar>
+    <rr-utility-menu-bar has-help has-settings account-label="Mijn DigID"></rr-utility-menu-bar>
   `,
 };
 
@@ -162,15 +145,21 @@ export const AllSizes = {
   render: () => html`
     <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-start;">
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">Container S (icons only)</p>
+        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+          Container S (icons only)
+        </p>
         <rr-utility-menu-bar container="s" account-label="Mijn DigID"></rr-utility-menu-bar>
       </div>
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">Container M (default)</p>
+        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+          Container M (default)
+        </p>
         <rr-utility-menu-bar container="m" account-label="Mijn DigID"></rr-utility-menu-bar>
       </div>
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">Container L</p>
+        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+          Container L
+        </p>
         <rr-utility-menu-bar container="l" account-label="Mijn DigID"></rr-utility-menu-bar>
       </div>
     </div>
@@ -181,9 +170,5 @@ export const AllSizes = {
  * Mijn Overheid branding.
  */
 export const MijnOverheidBranding = {
-  render: () => html`
-    <rr-utility-menu-bar
-      account-label="Mijn Overheid"
-    ></rr-utility-menu-bar>
-  `,
+  render: () => html` <rr-utility-menu-bar account-label="Mijn Overheid"></rr-utility-menu-bar> `,
 };

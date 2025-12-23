@@ -34,7 +34,13 @@ export default {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['accent-filled', 'accent-outlined', 'accent-tinted', 'neutral-tinted', 'accent-transparent'],
+      options: [
+        'accent-filled',
+        'accent-outlined',
+        'accent-tinted',
+        'neutral-tinted',
+        'accent-transparent',
+      ],
       description: 'Visual style variant',
       table: {
         defaultValue: { summary: 'accent-filled' },
@@ -79,28 +85,56 @@ export default {
 
 // Reusable icon SVG
 const closeIcon = html`
-  <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M18 6L6 18M6 6l12 12"/>
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <path d="M18 6L6 18M6 6l12 12" />
   </svg>
 `;
 
 const searchIcon = html`
-  <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <circle cx="11" cy="11" r="8"/>
-    <path d="m21 21-4.35-4.35"/>
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.35-4.35" />
   </svg>
 `;
 
 const menuIcon = html`
-  <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M3 12h18M3 6h18M3 18h18"/>
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <path d="M3 12h18M3 6h18M3 18h18" />
   </svg>
 `;
 
 const settingsIcon = html`
-  <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <circle cx="12" cy="12" r="3"/>
-    <path d="M12 1v6m0 6v6M1 12h6m6 0h6"/>
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <circle cx="12" cy="12" r="3" />
+    <path d="M12 1v6m0 6v6M1 12h6m6 0h6" />
   </svg>
 `;
 
@@ -183,10 +217,16 @@ Disabled.args = {
 export const AllVariants = () => html`
   <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
     <rr-icon-button variant="accent-filled" aria-label="Accent filled">${closeIcon}</rr-icon-button>
-    <rr-icon-button variant="accent-outlined" aria-label="Accent outlined">${closeIcon}</rr-icon-button>
+    <rr-icon-button variant="accent-outlined" aria-label="Accent outlined"
+      >${closeIcon}</rr-icon-button
+    >
     <rr-icon-button variant="accent-tinted" aria-label="Accent tinted">${closeIcon}</rr-icon-button>
-    <rr-icon-button variant="neutral-tinted" aria-label="Neutral tinted">${closeIcon}</rr-icon-button>
-    <rr-icon-button variant="accent-transparent" aria-label="Accent transparent">${closeIcon}</rr-icon-button>
+    <rr-icon-button variant="neutral-tinted" aria-label="Neutral tinted"
+      >${closeIcon}</rr-icon-button
+    >
+    <rr-icon-button variant="accent-transparent" aria-label="Accent transparent"
+      >${closeIcon}</rr-icon-button
+    >
   </div>
 `;
 AllVariants.parameters = {
@@ -210,7 +250,9 @@ export const VariantSizeMatrix = () => html`
   <table style="border-collapse: collapse; width: 100%;">
     <thead>
       <tr>
-        <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Variant</th>
+        <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
+          Variant
+        </th>
         <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">XS</th>
         <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">S</th>
         <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">M</th>
@@ -220,61 +262,91 @@ export const VariantSizeMatrix = () => html`
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">accent-filled</td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-filled" size="xs" aria-label="Accent filled XS">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-filled" size="xs" aria-label="Accent filled XS"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-filled" size="s" aria-label="Accent filled S">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-filled" size="s" aria-label="Accent filled S"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-filled" size="m" aria-label="Accent filled M">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-filled" size="m" aria-label="Accent filled M"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">accent-outlined</td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-outlined" size="xs" aria-label="Accent outlined XS">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-outlined" size="xs" aria-label="Accent outlined XS"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-outlined" size="s" aria-label="Accent outlined S">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-outlined" size="s" aria-label="Accent outlined S"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-outlined" size="m" aria-label="Accent outlined M">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-outlined" size="m" aria-label="Accent outlined M"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">accent-tinted</td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-tinted" size="xs" aria-label="Accent tinted XS">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-tinted" size="xs" aria-label="Accent tinted XS"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-tinted" size="s" aria-label="Accent tinted S">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-tinted" size="s" aria-label="Accent tinted S"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-tinted" size="m" aria-label="Accent tinted M">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-tinted" size="m" aria-label="Accent tinted M"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">neutral-tinted</td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="neutral-tinted" size="xs" aria-label="Neutral tinted XS">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="neutral-tinted" size="xs" aria-label="Neutral tinted XS"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="neutral-tinted" size="s" aria-label="Neutral tinted S">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="neutral-tinted" size="s" aria-label="Neutral tinted S"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="neutral-tinted" size="m" aria-label="Neutral tinted M">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="neutral-tinted" size="m" aria-label="Neutral tinted M"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem;">accent-transparent</td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-icon-button variant="accent-transparent" size="xs" aria-label="Accent transparent XS">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-transparent" size="xs" aria-label="Accent transparent XS"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-icon-button variant="accent-transparent" size="s" aria-label="Accent transparent S">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-transparent" size="s" aria-label="Accent transparent S"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-icon-button variant="accent-transparent" size="m" aria-label="Accent transparent M">${closeIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-transparent" size="m" aria-label="Accent transparent M"
+            >${closeIcon}</rr-icon-button
+          >
         </td>
       </tr>
     </tbody>
@@ -290,14 +362,17 @@ export const DifferentIcons = () => html`
     <rr-icon-button variant="accent-filled" aria-label="Sluiten">${closeIcon}</rr-icon-button>
     <rr-icon-button variant="accent-filled" aria-label="Zoeken">${searchIcon}</rr-icon-button>
     <rr-icon-button variant="accent-filled" aria-label="Menu">${menuIcon}</rr-icon-button>
-    <rr-icon-button variant="accent-filled" aria-label="Instellingen">${settingsIcon}</rr-icon-button>
+    <rr-icon-button variant="accent-filled" aria-label="Instellingen"
+      >${settingsIcon}</rr-icon-button
+    >
   </div>
 `;
 DifferentIcons.parameters = {
   controls: { disable: true },
   docs: {
     description: {
-      story: 'Icon buttons met verschillende iconen. Zorg altijd voor een duidelijke `aria-label` voor toegankelijkheid.',
+      story:
+        'Icon buttons met verschillende iconen. Zorg altijd voor een duidelijke `aria-label` voor toegankelijkheid.',
     },
   },
 };
@@ -309,16 +384,26 @@ export const IconButtonGroups = () => html`
       <h3 style="margin: 0 0 1rem 0; font-size: 1rem;">Toolbar acties</h3>
       <div style="display: flex; gap: 0.5rem;">
         <rr-icon-button variant="accent-transparent" aria-label="Menu">${menuIcon}</rr-icon-button>
-        <rr-icon-button variant="accent-transparent" aria-label="Zoeken">${searchIcon}</rr-icon-button>
-        <rr-icon-button variant="accent-transparent" aria-label="Instellingen">${settingsIcon}</rr-icon-button>
-        <rr-icon-button variant="accent-transparent" aria-label="Sluiten">${closeIcon}</rr-icon-button>
+        <rr-icon-button variant="accent-transparent" aria-label="Zoeken"
+          >${searchIcon}</rr-icon-button
+        >
+        <rr-icon-button variant="accent-transparent" aria-label="Instellingen"
+          >${settingsIcon}</rr-icon-button
+        >
+        <rr-icon-button variant="accent-transparent" aria-label="Sluiten"
+          >${closeIcon}</rr-icon-button
+        >
       </div>
     </div>
     <div>
       <h3 style="margin: 0 0 1rem 0; font-size: 1rem;">Dialog knoppen</h3>
       <div style="display: flex; gap: 0.5rem;">
-        <rr-icon-button variant="neutral-tinted" size="s" aria-label="Sluiten">${closeIcon}</rr-icon-button>
-        <rr-icon-button variant="neutral-tinted" size="s" aria-label="Instellingen">${settingsIcon}</rr-icon-button>
+        <rr-icon-button variant="neutral-tinted" size="s" aria-label="Sluiten"
+          >${closeIcon}</rr-icon-button
+        >
+        <rr-icon-button variant="neutral-tinted" size="s" aria-label="Instellingen"
+          >${settingsIcon}</rr-icon-button
+        >
       </div>
     </div>
     <div>

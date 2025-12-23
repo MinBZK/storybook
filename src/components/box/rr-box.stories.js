@@ -57,10 +57,7 @@ export default {
 };
 
 const Template = ({ content, padding, radius }) => html`
-  <rr-box
-    ${padding ? `padding="${padding}"` : ''}
-    ${radius ? `radius="${radius}"` : ''}
-  >
+  <rr-box ${padding ? `padding="${padding}"` : ''} ${radius ? `radius="${radius}"` : ''}>
     ${content}
   </rr-box>
 `;
@@ -154,9 +151,7 @@ CustomRadius.parameters = {
 export const NestedBoxes = () => html`
   <rr-box>
     <h3 style="margin: 0 0 12px 0; color: #154273;">Outer Box</h3>
-    <p style="margin: 0 0 12px 0; color: #334155;">
-      Deze box bevat een andere box binnenin.
-    </p>
+    <p style="margin: 0 0 12px 0; color: #334155;">Deze box bevat een andere box binnenin.</p>
     <rr-box padding="12px" style="--rr-box-background-color: #ffffff;">
       <strong style="color: #154273;">Inner Box</strong>
       <p style="margin: 4px 0 0 0; color: #334155;">
@@ -169,14 +164,17 @@ NestedBoxes.parameters = {
   controls: { disable: true },
   docs: {
     description: {
-      story: 'Box component ondersteunt nesting. De inner box gebruikt een CSS custom property override voor een witte achtergrond.',
+      story:
+        'Box component ondersteunt nesting. De inner box gebruikt een CSS custom property override voor een witte achtergrond.',
     },
   },
 };
 
 // With custom CSS properties
 export const WithCustomProperties = () => html`
-  <rr-box style="--rr-box-background-color: #dce3ea; --rr-box-corner-radius: 16px; --rr-box-padding: 24px;">
+  <rr-box
+    style="--rr-box-background-color: #dce3ea; --rr-box-corner-radius: 16px; --rr-box-padding: 24px;"
+  >
     <h3 style="margin: 0 0 8px 0; color: #154273;">Custom Styling</h3>
     <p style="margin: 0; color: #334155;">
       Deze box gebruikt CSS custom properties voor volledige controle over de styling:
@@ -199,11 +197,14 @@ WithCustomProperties.parameters = {
 
 // Different use cases
 export const UseCases = () => html`
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <div
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;"
+  >
     <rr-box>
       <h4 style="margin: 0 0 8px 0; color: #154273;">Informatie Card</h4>
       <p style="margin: 0; color: #64748b; font-size: 14px;">
-        Gebruik een box voor informatieve content die visueel gescheiden moet worden van de rest van de pagina.
+        Gebruik een box voor informatieve content die visueel gescheiden moet worden van de rest van
+        de pagina.
       </p>
     </rr-box>
 

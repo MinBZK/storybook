@@ -85,12 +85,7 @@ export const Default = {
  * Logo with title wordmark - typical usage for branded applications.
  */
 export const WithTitle = {
-  render: () => html`
-    <rr-nav-logo
-      has-wordmark
-      title="Rijksoverheid"
-    ></rr-nav-logo>
-  `,
+  render: () => html` <rr-nav-logo has-wordmark title="Rijksoverheid"></rr-nav-logo> `,
 };
 
 /**
@@ -125,50 +120,28 @@ export const FullWordmark = {
  * DigID branding example.
  */
 export const DigIDBranding = {
-  render: () => html`
-    <rr-nav-logo
-      has-wordmark
-      title="DigID"
-    ></rr-nav-logo>
-  `,
+  render: () => html` <rr-nav-logo has-wordmark title="DigID"></rr-nav-logo> `,
 };
 
 /**
  * Mijn Overheid branding example.
  */
 export const MijnOverheidBranding = {
-  render: () => html`
-    <rr-nav-logo
-      has-wordmark
-      title="Mijn Overheid"
-    ></rr-nav-logo>
-  `,
+  render: () => html` <rr-nav-logo has-wordmark title="Mijn Overheid"></rr-nav-logo> `,
 };
 
 /**
  * Small container size.
  */
 export const SmallContainer = {
-  render: () => html`
-    <rr-nav-logo
-      container="s"
-      has-wordmark
-      title="DigID"
-    ></rr-nav-logo>
-  `,
+  render: () => html` <rr-nav-logo container="s" has-wordmark title="DigID"></rr-nav-logo> `,
 };
 
 /**
  * Large container size.
  */
 export const LargeContainer = {
-  render: () => html`
-    <rr-nav-logo
-      container="l"
-      has-wordmark
-      title="DigID"
-    ></rr-nav-logo>
-  `,
+  render: () => html` <rr-nav-logo container="l" has-wordmark title="DigID"></rr-nav-logo> `,
 };
 
 /**
@@ -178,15 +151,21 @@ export const AllSizes = {
   render: () => html`
     <div style="display: flex; flex-direction: column; gap: 32px; align-items: flex-start;">
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">Container S</p>
+        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+          Container S
+        </p>
         <rr-nav-logo container="s" has-wordmark title="DigID"></rr-nav-logo>
       </div>
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">Container M (default)</p>
+        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+          Container M (default)
+        </p>
         <rr-nav-logo container="m" has-wordmark title="DigID"></rr-nav-logo>
       </div>
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">Container L</p>
+        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+          Container L
+        </p>
         <rr-nav-logo container="l" has-wordmark title="DigID"></rr-nav-logo>
       </div>
     </div>

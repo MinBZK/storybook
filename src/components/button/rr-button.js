@@ -30,7 +30,14 @@ export class RRButton extends RRBaseComponent {
   static componentName = 'rr-button';
 
   static get observedAttributes() {
-    return [...super.observedAttributes, 'variant', 'type', 'has-leading-icon', 'has-trailing-icon', 'has-menu'];
+    return [
+      ...super.observedAttributes,
+      'variant',
+      'type',
+      'has-leading-icon',
+      'has-trailing-icon',
+      'has-menu',
+    ];
   }
 
   constructor() {

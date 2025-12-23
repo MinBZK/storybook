@@ -22,12 +22,7 @@ export class RRBackButton extends RRBaseComponent {
   static componentName = 'rr-back-button';
 
   static get observedAttributes() {
-    return [
-      ...super.observedAttributes,
-      'href',
-      'label',
-      'container'
-    ];
+    return [...super.observedAttributes, 'href', 'label', 'container'];
   }
 
   constructor() {
@@ -44,10 +39,12 @@ export class RRBackButton extends RRBaseComponent {
       // If no href, dispatch event for SPA navigation
       if (!this.href) {
         e.preventDefault();
-        this.dispatchEvent(new CustomEvent('back-click', {
-          bubbles: true,
-          composed: true
-        }));
+        this.dispatchEvent(
+          new CustomEvent('back-click', {
+            bubbles: true,
+            composed: true,
+          })
+        );
       }
     });
   }

@@ -25,7 +25,15 @@ export class RRCheckbox extends RRBaseComponent {
   static componentName = 'rr-checkbox';
 
   static get observedAttributes() {
-    return [...super.observedAttributes, 'checked', 'indeterminate', 'value', 'name', 'aria-label', 'aria-labelledby'];
+    return [
+      ...super.observedAttributes,
+      'checked',
+      'indeterminate',
+      'value',
+      'name',
+      'aria-label',
+      'aria-labelledby',
+    ];
   }
 
   constructor() {

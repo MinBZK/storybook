@@ -97,7 +97,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
       'utility-account-label',
       // Back button pass-through
       'back-href',
-      'back-label'
+      'back-label',
     ];
   }
 
@@ -398,7 +398,9 @@ export class RRTopNavigationBar extends RRBaseComponent {
       this.logoSubtitle ? `subtitle="${this.logoSubtitle}"` : '',
       this.logoSupportingText1 ? `supporting-text-1="${this.logoSupportingText1}"` : '',
       this.logoSupportingText2 ? `supporting-text-2="${this.logoSupportingText2}"` : '',
-    ].filter(Boolean).join(' ');
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     // Build utility menu bar attributes (using clean no-* pattern)
     const utilityAttrs = [
@@ -410,14 +412,18 @@ export class RRTopNavigationBar extends RRBaseComponent {
       this.utilityHasAccount ? '' : 'no-account',
       `language="${this.utilityLanguage}"`,
       `account-label="${this.utilityAccountLabel}"`,
-    ].filter(Boolean).join(' ');
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     // Build back button attributes
     const backAttrs = [
       `container="${this.container}"`,
       this.backHref ? `href="${this.backHref}"` : '',
       `label="${this.backLabel}"`,
-    ].filter(Boolean).join(' ');
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>

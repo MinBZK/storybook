@@ -70,9 +70,7 @@ export const Default = {
  * As a link (with href).
  */
 export const AsLink = {
-  render: () => html`
-    <rr-back-button href="/" label="Terug naar home"></rr-back-button>
-  `,
+  render: () => html` <rr-back-button href="/" label="Terug naar home"></rr-back-button> `,
 };
 
 /**
@@ -91,36 +89,28 @@ export const AsButton = {
  * Custom label.
  */
 export const CustomLabel = {
-  render: () => html`
-    <rr-back-button label="Ga terug"></rr-back-button>
-  `,
+  render: () => html` <rr-back-button label="Ga terug"></rr-back-button> `,
 };
 
 /**
  * English label.
  */
 export const EnglishLabel = {
-  render: () => html`
-    <rr-back-button label="Back"></rr-back-button>
-  `,
+  render: () => html` <rr-back-button label="Back"></rr-back-button> `,
 };
 
 /**
  * Small container - icon only.
  */
 export const SmallContainer = {
-  render: () => html`
-    <rr-back-button container="s" label="Terug"></rr-back-button>
-  `,
+  render: () => html` <rr-back-button container="s" label="Terug"></rr-back-button> `,
 };
 
 /**
  * Large container.
  */
 export const LargeContainer = {
-  render: () => html`
-    <rr-back-button container="l" label="Terug"></rr-back-button>
-  `,
+  render: () => html` <rr-back-button container="l" label="Terug"></rr-back-button> `,
 };
 
 /**
@@ -131,11 +121,15 @@ export const AllSizes = {
     <div style="display: flex; gap: 24px; align-items: center;">
       <div style="text-align: center;">
         <rr-back-button container="s" label="Terug"></rr-back-button>
-        <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">S (icon only)</p>
+        <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">
+          S (icon only)
+        </p>
       </div>
       <div style="text-align: center;">
         <rr-back-button container="m" label="Terug"></rr-back-button>
-        <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">M (default)</p>
+        <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">
+          M (default)
+        </p>
       </div>
       <div style="text-align: center;">
         <rr-back-button container="l" label="Terug"></rr-back-button>
@@ -149,7 +143,5 @@ export const AllSizes = {
  * Long label.
  */
 export const LongLabel = {
-  render: () => html`
-    <rr-back-button label="Terug naar vorige pagina"></rr-back-button>
-  `,
+  render: () => html` <rr-back-button label="Terug naar vorige pagina"></rr-back-button> `,
 };

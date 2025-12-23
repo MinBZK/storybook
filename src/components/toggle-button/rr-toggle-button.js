@@ -102,11 +102,13 @@ export class RRToggleButton extends RRBaseComponent {
     this.selected = !this.selected;
 
     // Dispatch toggle event
-    this.dispatchEvent(new CustomEvent('toggle', {
-      detail: { selected: this.selected },
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('toggle', {
+        detail: { selected: this.selected },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   _getStyles() {

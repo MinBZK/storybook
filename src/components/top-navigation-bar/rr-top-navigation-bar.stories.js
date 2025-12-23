@@ -180,11 +180,7 @@ export const Default = {
  */
 export const WithLogoWordmark = {
   render: () => html`
-    <rr-top-navigation-bar
-      title="DigID"
-      logo-has-wordmark
-      logo-title="Rijksoverheid"
-    >
+    <rr-top-navigation-bar title="DigID" logo-has-wordmark logo-title="Rijksoverheid">
       <rr-menu-item slot="menu" selected>Home</rr-menu-item>
       <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
       <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
@@ -282,11 +278,7 @@ export const MinimalLogo = {
  */
 export const MijnOverheid = {
   render: () => html`
-    <rr-top-navigation-bar
-      title="Mijn Overheid"
-      logo-has-wordmark
-      logo-title="Rijksoverheid"
-    >
+    <rr-top-navigation-bar title="Mijn Overheid" logo-has-wordmark logo-title="Rijksoverheid">
       <rr-menu-item slot="menu" selected>Overzicht</rr-menu-item>
       <rr-menu-item slot="menu">Berichten</rr-menu-item>
       <rr-menu-item slot="menu">Lopende zaken</rr-menu-item>
@@ -337,7 +329,9 @@ export const AllStates = {
         </rr-top-navigation-bar>
       </div>
       <div>
-        <h3 style="margin: 0 0 8px; font-family: system-ui;">Container S (Mobile) - Menu items hidden</h3>
+        <h3 style="margin: 0 0 8px; font-family: system-ui;">
+          Container S (Mobile) - Menu items hidden
+        </h3>
         <rr-top-navigation-bar container="s" title="DigID">
           <rr-menu-item slot="menu" selected>Home</rr-menu-item>
           <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>

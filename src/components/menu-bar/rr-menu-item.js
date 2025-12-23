@@ -56,11 +56,13 @@ export class RRMenuItem extends RRBaseComponent {
     if (!this.href) {
       event.preventDefault();
       this.selected = true;
-      this.dispatchEvent(new CustomEvent('select', {
-        bubbles: true,
-        composed: true,
-        detail: { item: this }
-      }));
+      this.dispatchEvent(
+        new CustomEvent('select', {
+          bubbles: true,
+          composed: true,
+          detail: { item: this },
+        })
+      );
     }
   }
 

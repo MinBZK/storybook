@@ -36,7 +36,7 @@ export class RRNavLogo extends RRBaseComponent {
       'title',
       'subtitle',
       'supporting-text-1',
-      'supporting-text-2'
+      'supporting-text-2',
     ];
   }
 
@@ -239,14 +239,18 @@ export class RRNavLogo extends RRBaseComponent {
         <div class="logo" part="logo" role="img" aria-label="Rijkswapen - Rijksoverheid">
           ${cachedRijkswapen || ''}
         </div>
-        ${showWordmark ? `
+        ${
+          showWordmark
+            ? `
           <div class="wordmark" part="wordmark">
             ${title ? `<p class="title">${title}</p>` : ''}
             ${subtitle ? `<p class="subtitle">${subtitle}</p>` : ''}
             ${supportingText1 ? `<p class="supporting-text">${supportingText1}</p>` : ''}
             ${supportingText2 ? `<p class="supporting-text">${supportingText2}</p>` : ''}
           </div>
-        ` : ''}
+        `
+            : ''
+        }
       </div>
     `;
   }
