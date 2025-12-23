@@ -251,13 +251,6 @@ export class RRMenuBar extends RRBaseComponent {
     if (dropdown && button) {
       dropdown.classList.toggle('open', this._overflowMenuOpen);
       button.setAttribute('aria-expanded', String(this._overflowMenuOpen));
-
-      // Position dropdown below button when opening
-      if (this._overflowMenuOpen) {
-        const rect = button.getBoundingClientRect();
-        dropdown.style.top = `${rect.bottom + 4}px`;
-        dropdown.style.right = `${window.innerWidth - rect.right}px`;
-      }
     }
   }
 
@@ -343,10 +336,6 @@ export class RRMenuBar extends RRBaseComponent {
       this._overflowMenuOpen = true;
       dropdown.classList.add('open');
       button.setAttribute('aria-expanded', 'true');
-
-      const rect = button.getBoundingClientRect();
-      dropdown.style.top = `${rect.bottom + 4}px`;
-      dropdown.style.right = `${window.innerWidth - rect.right}px`;
     }
 
     requestAnimationFrame(() => {
@@ -465,13 +454,16 @@ export class RRMenuBar extends RRBaseComponent {
       /* Overflow dropdown */
       .overflow-dropdown {
         display: none;
-        position: fixed;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 4px;
         min-width: 200px;
         background: var(--primitives-color-neutral-0, #ffffff);
         border: 1px solid var(--semantics-divider-color, #e2e8f0);
         border-radius: var(--semantics-controls-m-corner-radius, 7px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
+        z-index: 10000;
         padding: var(--primitives-space-4, 4px) 0;
       }
 

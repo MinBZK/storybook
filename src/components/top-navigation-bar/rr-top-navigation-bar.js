@@ -312,7 +312,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
       .global-menu {
         flex: 1;
         min-width: 0;
-        overflow: hidden; /* Clip menu items - dropdown uses fixed positioning */
+        overflow: visible; /* Allow dropdown menu to extend beyond bounds */
       }
 
       /* Navigation title */
