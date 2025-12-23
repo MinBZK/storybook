@@ -7,7 +7,7 @@ export const figmaVariablesParser = {
   name: 'figma-variables',
   pattern: /\.json$/,
 
-  parser: ({ contents, filePath }) => {
+  parser: ({ contents, _filePath }) => {
     const figmaTokens = JSON.parse(contents);
     const result = {};
 
@@ -47,7 +47,7 @@ export const figmaVariablesParser = {
     }
 
     return result;
-  }
+  },
 };
 
 /**
@@ -55,11 +55,11 @@ export const figmaVariablesParser = {
  */
 function mapType(figmaType, name) {
   const typeMap = {
-    'color': 'color',
-    'number': 'number',
-    'string': 'string',
-    'typography': 'typography',
-    'effect': 'shadow'
+    color: 'color',
+    number: 'number',
+    string: 'string',
+    typography: 'typography',
+    effect: 'shadow',
   };
 
   // Infer more specific types from name patterns
@@ -96,7 +96,7 @@ function mapType(figmaType, name) {
 /**
  * Transform values based on type
  */
-function transformValue(type, value, name) {
+function transformValue(type, value, _name) {
   switch (type) {
     case 'color':
       return value; // Keep hex colors as-is
@@ -124,9 +124,7 @@ function transformValue(type, value, name) {
 function transformTypography(value) {
   if (!value || typeof value !== 'object') return value;
 
-  const lineHeight = value.lineHeightUnit === 'PERCENT'
-    ? value.lineHeight / 100
-    : value.lineHeight;
+  const lineHeight = value.lineHeightUnit === 'PERCENT' ? value.lineHeight / 100 : value.lineHeight;
 
   return {
     fontFamily: value.fontFamily,
@@ -135,7 +133,7 @@ function transformTypography(value) {
     lineHeight: lineHeight,
     letterSpacing: value.letterSpacing === 0 ? 'normal' : `${value.letterSpacing}%`,
     textTransform: value.textCase === 'ORIGINAL' ? 'none' : value.textCase?.toLowerCase(),
-    textDecoration: value.textDecoration === 'NONE' ? 'none' : value.textDecoration?.toLowerCase()
+    textDecoration: value.textDecoration === 'NONE' ? 'none' : value.textDecoration?.toLowerCase(),
   };
 }
 
@@ -144,15 +142,15 @@ function transformTypography(value) {
  */
 function mapFontWeight(weight) {
   const weightMap = {
-    'Thin': '100',
-    'ExtraLight': '200',
-    'Light': '300',
-    'Regular': '400',
-    'Medium': '500',
-    'SemiBold': '600',
-    'Bold': '700',
-    'ExtraBold': '800',
-    'Black': '900'
+    Thin: '100',
+    ExtraLight: '200',
+    Light: '300',
+    Regular: '400',
+    Medium: '500',
+    SemiBold: '600',
+    Bold: '700',
+    ExtraBold: '800',
+    Black: '900',
   };
   return weightMap[weight] || weight;
 }
@@ -164,8 +162,8 @@ function transformEffect(value) {
   if (!value?.effects) return value;
 
   return value.effects
-    .filter(e => e.type === 'DROP_SHADOW')
-    .map(e => {
+    .filter((e) => e.type === 'DROP_SHADOW')
+    .map((e) => {
       const { r, g, b, a } = e.color;
       const rgba = `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a})`;
       return `${e.offset.x}px ${e.offset.y}px ${e.radius}px ${e.spread}px ${rgba}`;
