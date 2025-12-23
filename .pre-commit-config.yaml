@@ -1,0 +1,59 @@
+# Pre-commit configuration for RegelRecht Design System
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+repos:
+  # Standard pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(dist/|node_modules/|storybook-static/)
+      - id: end-of-file-fixer
+        exclude: ^(dist/|node_modules/|storybook-static/)
+      - id: check-yaml
+      - id: check-json
+        exclude: ^(node_modules/|package-lock\.json)
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  # ESLint for JavaScript
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.17.0
+    hooks:
+      - id: eslint
+        files: \.(js|mjs)$
+        exclude: ^(dist/|node_modules/|storybook-static/|\.storybook/)
+        args: ['--fix']
+        additional_dependencies:
+          - eslint@9.17.0
+          - '@eslint/js@9.17.0'
+          - globals@15.14.0
+
+  # Prettier for code formatting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        files: \.(js|mjs|json|css|md)$
+        exclude: ^(dist/|node_modules/|storybook-static/|package-lock\.json)
+        additional_dependencies:
+          - prettier@3.4.2
+
+  # Commitlint for conventional commits
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.21.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies:
+          - '@commitlint/cli@19.6.1'
+          - '@commitlint/config-conventional@19.6.0'
+
+# CI configuration
+ci:
+  autofix_commit_msg: 'style: auto-fix by pre-commit hooks'
+  autoupdate_commit_msg: 'chore: update pre-commit hooks'
