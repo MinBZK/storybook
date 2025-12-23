@@ -6,18 +6,18 @@ export default {
       2,
       'always',
       [
-        'feat',     // New feature
-        'fix',      // Bug fix
-        'docs',     // Documentation
-        'style',    // Code formatting
+        'feat', // New feature
+        'fix', // Bug fix
+        'docs', // Documentation
+        'style', // Code formatting
         'refactor', // Code refactoring
-        'test',     // Tests
-        'chore',    // Maintenance
-        'perf',     // Performance
-        'a11y',     // Accessibility
-        'ci',       // CI/CD changes
-        'build',    // Build system
-        'revert',   // Revert commits
+        'test', // Tests
+        'chore', // Maintenance
+        'perf', // Performance
+        'a11y', // Accessibility
+        'ci', // CI/CD changes
+        'build', // Build system
+        'revert', // Revert commits
       ],
     ],
     // Allow longer subjects for descriptive commits

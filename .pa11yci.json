@@ -1,0 +1,37 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "runners": ["axe", "htmlcs"],
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox"]
+    },
+    "timeout": 30000,
+    "wait": 1000
+  },
+  "urls": [
+    {
+      "url": "http://localhost:6006/iframe.html?id=components-button--default",
+      "screenCapture": "./pa11y-screenshots/button.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=components-checkbox--default",
+      "screenCapture": "./pa11y-screenshots/checkbox.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=components-radio--default",
+      "screenCapture": "./pa11y-screenshots/radio.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=components-switch--default",
+      "screenCapture": "./pa11y-screenshots/switch.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=components-toggle-button--default",
+      "screenCapture": "./pa11y-screenshots/toggle-button.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=components-menu-bar--default",
+      "screenCapture": "./pa11y-screenshots/menu-bar.png"
+    }
+  ]
+}
