@@ -76,28 +76,9 @@ export default {
  * Default utility menu bar with Language, Search, and Account buttons.
  */
 export const Default = {
-  render: (args) => html`
-    <rr-utility-menu-bar
-      container=${args.container || 'm'}
-      ?no-language-switch=${args['no-language-switch']}
-      ?no-search=${args['no-search']}
-      ?no-account=${args['no-account']}
-      ?has-help=${args['has-help']}
-      ?has-settings=${args['has-settings']}
-      language=${args.language || 'NL'}
-      account-label=${args['account-label'] || 'Mijn DigID'}
-    ></rr-utility-menu-bar>
+  render: () => html`
+    <rr-utility-menu-bar account-label="Mijn DigID"></rr-utility-menu-bar>
   `,
-  args: {
-    container: 'm',
-    'no-language-switch': false,
-    'no-search': false,
-    'no-account': false,
-    'has-help': false,
-    'has-settings': false,
-    language: 'NL',
-    'account-label': 'Mijn DigID',
-  },
 };
 
 /**

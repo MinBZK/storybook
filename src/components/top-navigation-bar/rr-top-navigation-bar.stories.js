@@ -164,28 +164,8 @@ export default {
  * horizontal navigation menu, and utility buttons.
  */
 export const Default = {
-  render: (args) => html`
-    <rr-top-navigation-bar
-      container=${args.container || 'm'}
-      ?no-logo=${args['no-logo']}
-      ?no-title=${args['no-title']}
-      ?no-menu=${args['no-menu']}
-      ?no-utility-bar=${args['no-utility-bar']}
-      ?has-back-button=${args['has-back-button']}
-      title=${args.title || 'DigID'}
-      ?logo-has-wordmark=${args['logo-has-wordmark']}
-      logo-title=${args['logo-title'] || ''}
-      logo-subtitle=${args['logo-subtitle'] || ''}
-      ?utility-no-language-switch=${args['utility-no-language-switch']}
-      ?utility-no-search=${args['utility-no-search']}
-      ?utility-has-help=${args['utility-has-help']}
-      ?utility-has-settings=${args['utility-has-settings']}
-      ?utility-no-account=${args['utility-no-account']}
-      utility-language=${args['utility-language'] || 'NL'}
-      utility-account-label=${args['utility-account-label'] || ''}
-      back-href=${args['back-href'] || ''}
-      back-label=${args['back-label'] || 'Terug'}
-    >
+  render: () => html`
+    <rr-top-navigation-bar title="DigID">
       <rr-menu-item slot="menu" selected>Home</rr-menu-item>
       <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
       <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
@@ -193,24 +173,6 @@ export const Default = {
       <rr-menu-item slot="menu">Hulp</rr-menu-item>
     </rr-top-navigation-bar>
   `,
-  args: {
-    container: 'm',
-    'no-logo': false,
-    'no-title': false,
-    'no-menu': false,
-    'no-utility-bar': false,
-    'has-back-button': false,
-    title: 'DigID',
-    'logo-has-wordmark': false,
-    'logo-title': '',
-    'logo-subtitle': '',
-    'utility-no-language-switch': false,
-    'utility-no-search': false,
-    'utility-has-help': false,
-    'utility-has-settings': false,
-    'utility-no-account': false,
-    'utility-language': 'NL',
-  },
 };
 
 /**
