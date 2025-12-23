@@ -4,6 +4,10 @@ import './rr-menu-item.js';
 
 /**
  * De Menu Bar component is een navigatie-element met menu items die horizontaal worden weergegeven.
+ * Ondersteunt een "Meer" overflow menu voor items die niet passen.
+ *
+ * ## Figma Design
+ * Design specificaties worden nog toegevoegd.
  *
  * ## Gebruik
  * ```html
@@ -11,6 +15,15 @@ import './rr-menu-item.js';
  *   <rr-menu-item selected>Home</rr-menu-item>
  *   <rr-menu-item href="/about">Over ons</rr-menu-item>
  *   <rr-menu-item href="/contact">Contact</rr-menu-item>
+ * </rr-menu-bar>
+ * ```
+ *
+ * Met overflow menu:
+ * ```html
+ * <rr-menu-bar has-overflow-menu>
+ *   <rr-menu-item>Item 1</rr-menu-item>
+ *   <rr-menu-item>Item 2</rr-menu-item>
+ *   <!-- Items die niet passen verschijnen in "Meer" dropdown -->
  * </rr-menu-bar>
  * ```
  */

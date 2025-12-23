@@ -1,6 +1,22 @@
 import { html } from 'lit';
 import './rr-utility-menu-bar.js';
 
+/**
+ * De Utility Menu Bar bevat secundaire navigatie-elementen zoals taalkeuze, zoeken en account.
+ * Onderdeel van de Top Navigation Bar component.
+ *
+ * ## Figma Design
+ * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135)
+ *
+ * ## Gebruik
+ * ```html
+ * <rr-utility-menu-bar
+ *   has-language-switch
+ *   has-search
+ *   has-account
+ * ></rr-utility-menu-bar>
+ * ```
+ */
 export default {
   title: 'Components/Top Navigation Bar/Utility Menu Bar',
   component: 'rr-utility-menu-bar',
@@ -11,6 +27,13 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
     },
+    componentSource: {
+      file: 'src/components/top-navigation-bar/rr-utility-menu-bar.js',
+      repository: 'https://github.com/regelrecht/design-system',
+    },
+    status: {
+      type: 'stable',
+    },
   },
   argTypes: {
     container: {
@@ -18,13 +41,17 @@ export default {
       options: ['s', 'm', 'l'],
       description: 'Size variant for responsive breakpoints',
     },
-    'has-language-switch': {
+    'no-language-switch': {
       control: 'boolean',
-      description: 'Show language dropdown button',
+      description: 'Hide language dropdown button',
     },
-    'has-search': {
+    'no-search': {
       control: 'boolean',
-      description: 'Show search button',
+      description: 'Hide search button',
+    },
+    'no-account': {
+      control: 'boolean',
+      description: 'Hide account button',
     },
     'has-help': {
       control: 'boolean',
@@ -33,10 +60,6 @@ export default {
     'has-settings': {
       control: 'boolean',
       description: 'Show settings button',
-    },
-    'has-account': {
-      control: 'boolean',
-      description: 'Show account button',
     },
     language: {
       control: 'text',
@@ -56,22 +79,22 @@ export const Default = {
   render: (args) => html`
     <rr-utility-menu-bar
       container=${args.container || 'm'}
-      ?has-language-switch=${args['has-language-switch'] !== false}
-      ?has-search=${args['has-search'] !== false}
+      ?no-language-switch=${args['no-language-switch']}
+      ?no-search=${args['no-search']}
+      ?no-account=${args['no-account']}
       ?has-help=${args['has-help']}
       ?has-settings=${args['has-settings']}
-      ?has-account=${args['has-account'] !== false}
       language=${args.language || 'NL'}
       account-label=${args['account-label'] || 'Mijn DigID'}
     ></rr-utility-menu-bar>
   `,
   args: {
     container: 'm',
-    'has-language-switch': true,
-    'has-search': true,
+    'no-language-switch': false,
+    'no-search': false,
+    'no-account': false,
     'has-help': false,
     'has-settings': false,
-    'has-account': true,
     language: 'NL',
     'account-label': 'Mijn DigID',
   },
@@ -98,10 +121,7 @@ export const AllButtons = {
  */
 export const SearchOnly = {
   render: () => html`
-    <rr-utility-menu-bar
-      has-language-switch="false"
-      has-account="false"
-    ></rr-utility-menu-bar>
+    <rr-utility-menu-bar no-language-switch no-account></rr-utility-menu-bar>
   `,
 };
 

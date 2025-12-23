@@ -4,6 +4,9 @@ import './rr-box.js';
 /**
  * De Box component is een eenvoudige container/card component met achtergrondkleur, padding en afgeronde hoeken.
  *
+ * ## Figma Design
+ * Design specificaties worden nog toegevoegd.
+ *
  * ## Gebruik
  * ```html
  * <rr-box>

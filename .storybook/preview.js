@@ -21,6 +21,29 @@ const preview = {
     docs: {
       toc: true,
     },
+    options: {
+      storySort: {
+        method: 'alphabetical',
+        order: [
+          'Introduction',
+          'Components',
+          [
+            'Box',
+            'Button',
+            'Checkbox',
+            'Icon Button',
+            'Menu Bar',
+            'Radio Button',
+            'Switch',
+            'Toggle Button',
+            'Top Navigation Bar',
+            ['Docs', '*', 'Back Button', 'Logo', 'Utility Menu Bar'],
+            '*',
+          ],
+          '*',
+        ],
+      },
+    },
   },
 };
 

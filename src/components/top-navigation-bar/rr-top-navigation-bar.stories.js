@@ -2,6 +2,26 @@ import { html } from 'lit';
 import './rr-top-navigation-bar.js';
 import '../menu-bar/rr-menu-item.js';
 
+/**
+ * De Top Navigation Bar is de primaire navigatiecomponent voor Rijksoverheid websites.
+ * Combineert logo, titel, horizontale menunavigatie en utility knoppen (taal, zoeken, account).
+ *
+ * ## Figma Design
+ * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135)
+ *
+ * ## Gebruik
+ * ```html
+ * <rr-top-navigation-bar
+ *   title="DigID"
+ *   has-logo
+ *   has-global-menu
+ *   has-utility-menu-bar
+ * >
+ *   <rr-menu-item slot="menu" selected>Home</rr-menu-item>
+ *   <rr-menu-item slot="menu" href="/aanvragen">Aanvragen</rr-menu-item>
+ * </rr-top-navigation-bar>
+ * ```
+ */
 export default {
   title: 'Components/Top Navigation Bar',
   component: 'rr-top-navigation-bar',
@@ -11,6 +31,13 @@ export default {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
+    },
+    componentSource: {
+      file: 'src/components/top-navigation-bar/rr-top-navigation-bar.js',
+      repository: 'https://github.com/regelrecht/design-system',
+    },
+    status: {
+      type: 'stable',
     },
   },
   argTypes: {
@@ -26,24 +53,24 @@ export default {
       description: 'Title text in navigation bar (e.g., DigID, Mijn Overheid)',
       table: { category: 'Main' },
     },
-    'has-logo': {
+    'no-logo': {
       control: 'boolean',
-      description: 'Show Rijksoverheid coat of arms logo',
+      description: 'Hide the Rijksoverheid coat of arms logo',
       table: { category: 'Main' },
     },
-    'has-title': {
+    'no-title': {
       control: 'boolean',
-      description: 'Show title text in nav bar',
+      description: 'Hide the title text',
       table: { category: 'Main' },
     },
-    'has-global-menu': {
+    'no-menu': {
       control: 'boolean',
-      description: 'Show horizontal menu items (hidden on small container)',
+      description: 'Hide the horizontal menu',
       table: { category: 'Main' },
     },
-    'has-utility-menu-bar': {
+    'no-utility-bar': {
       control: 'boolean',
-      description: 'Show utility buttons (Language, Zoeken, Account)',
+      description: 'Hide utility buttons (Language, Zoeken, Account)',
       table: { category: 'Main' },
     },
     'has-back-button': {
@@ -80,14 +107,14 @@ export default {
     },
 
     // Utility menu bar properties
-    'utility-has-language-switch': {
+    'utility-no-language-switch': {
       control: 'boolean',
-      description: 'Show language dropdown button',
+      description: 'Hide language dropdown button',
       table: { category: 'Utility Menu' },
     },
-    'utility-has-search': {
+    'utility-no-search': {
       control: 'boolean',
-      description: 'Show search button',
+      description: 'Hide search button',
       table: { category: 'Utility Menu' },
     },
     'utility-has-help': {
@@ -100,9 +127,9 @@ export default {
       description: 'Show settings button',
       table: { category: 'Utility Menu' },
     },
-    'utility-has-account': {
+    'utility-no-account': {
       control: 'boolean',
-      description: 'Show account button',
+      description: 'Hide account button',
       table: { category: 'Utility Menu' },
     },
     'utility-language': {
@@ -139,22 +166,20 @@ export const Default = {
   render: (args) => html`
     <rr-top-navigation-bar
       container=${args.container || 'm'}
-      has-logo=${args['has-logo'] === false ? 'false' : ''}
-      has-title=${args['has-title'] === false ? 'false' : ''}
-      has-global-menu=${args['has-global-menu'] === false ? 'false' : ''}
-      has-utility-menu-bar=${args['has-utility-menu-bar'] === false ? 'false' : ''}
+      ?no-logo=${args['no-logo']}
+      ?no-title=${args['no-title']}
+      ?no-menu=${args['no-menu']}
+      ?no-utility-bar=${args['no-utility-bar']}
       ?has-back-button=${args['has-back-button']}
       title=${args.title || 'DigID'}
       ?logo-has-wordmark=${args['logo-has-wordmark']}
       logo-title=${args['logo-title'] || ''}
       logo-subtitle=${args['logo-subtitle'] || ''}
-      logo-supporting-text-1=${args['logo-supporting-text-1'] || ''}
-      logo-supporting-text-2=${args['logo-supporting-text-2'] || ''}
-      utility-has-language-switch=${args['utility-has-language-switch'] === false ? 'false' : ''}
-      utility-has-search=${args['utility-has-search'] === false ? 'false' : ''}
+      ?utility-no-language-switch=${args['utility-no-language-switch']}
+      ?utility-no-search=${args['utility-no-search']}
       ?utility-has-help=${args['utility-has-help']}
       ?utility-has-settings=${args['utility-has-settings']}
-      utility-has-account=${args['utility-has-account'] === false ? 'false' : ''}
+      ?utility-no-account=${args['utility-no-account']}
       utility-language=${args['utility-language'] || 'NL'}
       utility-account-label=${args['utility-account-label'] || ''}
       back-href=${args['back-href'] || ''}
@@ -169,20 +194,20 @@ export const Default = {
   `,
   args: {
     container: 'm',
-    'has-logo': true,
-    'has-title': true,
-    'has-global-menu': true,
-    'has-utility-menu-bar': true,
+    'no-logo': false,
+    'no-title': false,
+    'no-menu': false,
+    'no-utility-bar': false,
     'has-back-button': false,
     title: 'DigID',
     'logo-has-wordmark': false,
     'logo-title': '',
     'logo-subtitle': '',
-    'utility-has-language-switch': true,
-    'utility-has-search': true,
+    'utility-no-language-switch': false,
+    'utility-no-search': false,
     'utility-has-help': false,
     'utility-has-settings': false,
-    'utility-has-account': true,
+    'utility-no-account': false,
     'utility-language': 'NL',
   },
 };
@@ -272,7 +297,7 @@ export const SmallContainer = {
  */
 export const WithoutTitle = {
   render: () => html`
-    <rr-top-navigation-bar has-title="false">
+    <rr-top-navigation-bar no-title>
       <rr-menu-item slot="menu" selected>Home</rr-menu-item>
       <rr-menu-item slot="menu">Menu item</rr-menu-item>
       <rr-menu-item slot="menu">Menu item</rr-menu-item>
@@ -285,11 +310,7 @@ export const WithoutTitle = {
  */
 export const MinimalLogo = {
   render: () => html`
-    <rr-top-navigation-bar
-      has-title="false"
-      has-global-menu="false"
-      has-utility-menu-bar="false"
-    ></rr-top-navigation-bar>
+    <rr-top-navigation-bar no-title no-menu no-utility-bar></rr-top-navigation-bar>
   `,
 };
 

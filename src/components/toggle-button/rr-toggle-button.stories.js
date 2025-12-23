@@ -3,10 +3,15 @@ import './rr-toggle-button.js';
 
 /**
  * De Toggle Button component is een selecteerbare button die tussen aan/uit kan schakelen.
+ * Ideaal voor filtering, weergave-opties, of multi-select acties.
+ *
+ * ## Figma Design
+ * Design specificaties worden nog toegevoegd.
  *
  * ## Gebruik
  * ```html
  * <rr-toggle-button size="m">Label</rr-toggle-button>
+ * <rr-toggle-button selected>Geselecteerd</rr-toggle-button>
  * ```
  */
 export default {

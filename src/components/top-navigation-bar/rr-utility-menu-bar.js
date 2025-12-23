@@ -4,13 +4,25 @@
  * Utility buttons row for top navigation (Language, Search, Help, Settings, Account).
  * Used as a sub-component of rr-top-navigation-bar.
  *
+ * ## Usage
+ * ```html
+ * <!-- Default: Language, Search, Account visible -->
+ * <rr-utility-menu-bar></rr-utility-menu-bar>
+ *
+ * <!-- Hide default buttons -->
+ * <rr-utility-menu-bar no-language-switch no-account></rr-utility-menu-bar>
+ *
+ * <!-- Show optional buttons -->
+ * <rr-utility-menu-bar has-help has-settings></rr-utility-menu-bar>
+ * ```
+ *
  * @element rr-utility-menu-bar
  * @attr {string} container - Size variant: 's' | 'm' | 'l' (default: 'm')
- * @attr {boolean} has-language-switch - Show language dropdown (default: true)
- * @attr {boolean} has-search - Show search button (default: true)
- * @attr {boolean} has-help - Show help button (default: false)
- * @attr {boolean} has-settings - Show settings button (default: false)
- * @attr {boolean} has-account - Show account button (default: true)
+ * @attr {boolean} no-language-switch - Hide language dropdown
+ * @attr {boolean} no-search - Hide search button
+ * @attr {boolean} no-account - Hide account button
+ * @attr {boolean} has-help - Show help button
+ * @attr {boolean} has-settings - Show settings button
  * @attr {string} language - Current language code (default: 'NL')
  * @attr {string} account-label - Account button label (default: 'Mijn')
  *
@@ -33,11 +45,14 @@ export class RRUtilityMenuBar extends RRBaseComponent {
     return [
       ...super.observedAttributes,
       'container',
-      'has-language-switch',
-      'has-search',
+      // Hide default buttons
+      'no-language-switch',
+      'no-search',
+      'no-account',
+      // Show optional buttons
       'has-help',
       'has-settings',
-      'has-account',
+      // Configuration
       'language',
       'account-label'
     ];
@@ -76,24 +91,26 @@ export class RRUtilityMenuBar extends RRBaseComponent {
     this.setAttribute('container', value);
   }
 
+  // Default buttons: shown unless no-* attribute is present
   get hasLanguageSwitch() {
-    return this.getAttribute('has-language-switch') !== 'false';
+    return !this.hasAttribute('no-language-switch');
   }
 
   get hasSearch() {
-    return this.getAttribute('has-search') !== 'false';
-  }
-
-  get hasHelp() {
-    return this.getBooleanAttribute('has-help');
-  }
-
-  get hasSettings() {
-    return this.getBooleanAttribute('has-settings');
+    return !this.hasAttribute('no-search');
   }
 
   get hasAccount() {
-    return this.getAttribute('has-account') !== 'false';
+    return !this.hasAttribute('no-account');
+  }
+
+  // Optional buttons: hidden unless has-* attribute is present
+  get hasHelp() {
+    return this.hasAttribute('has-help');
+  }
+
+  get hasSettings() {
+    return this.hasAttribute('has-settings');
   }
 
   get language() {

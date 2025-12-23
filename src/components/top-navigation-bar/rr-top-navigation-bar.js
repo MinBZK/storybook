@@ -4,33 +4,48 @@
  * Full navigation header following Figma top-navigation-bar design.
  * Composes sub-components: rr-nav-logo, rr-menu-bar, rr-utility-menu-bar, rr-back-button.
  *
+ * ## Usage
+ * ```html
+ * <!-- Default: all features visible -->
+ * <rr-top-navigation-bar title="DigID">
+ *   <rr-menu-item slot="menu" selected>Home</rr-menu-item>
+ *   <rr-menu-item slot="menu">Aanvragen</rr-menu-item>
+ * </rr-top-navigation-bar>
+ *
+ * <!-- Minimal: hide features with no-* attributes -->
+ * <rr-top-navigation-bar no-title no-menu no-utility-bar></rr-top-navigation-bar>
+ *
+ * <!-- Add optional features with has-* attributes -->
+ * <rr-top-navigation-bar has-back-button back-href="/">
+ * </rr-top-navigation-bar>
+ * ```
+ *
  * @element rr-top-navigation-bar
  * @attr {string} container - Size variant: 's' | 'm' | 'l' (default: 'm')
- * @attr {boolean} has-logo - Show logo section (default: true)
- * @attr {boolean} has-menu-bar - Show menu bar section (default: true)
- * @attr {boolean} has-title - Show title in nav bar (default: true)
- * @attr {boolean} has-back-button - Show back button (default: false)
- * @attr {boolean} has-global-menu - Show global menu items (default: true)
- * @attr {boolean} has-utility-menu-bar - Show utility buttons (default: true)
  * @attr {string} title - Title text (default: 'Titel')
  *
- * Logo sub-component properties (pass-through to rr-nav-logo):
- * @attr {boolean} logo-has-wordmark - Show wordmark beside logo (default: false)
- * @attr {string} logo-title - Logo wordmark title
- * @attr {string} logo-subtitle - Logo wordmark subtitle
- * @attr {string} logo-supporting-text-1 - Logo supporting text line 1
- * @attr {string} logo-supporting-text-2 - Logo supporting text line 2
+ * Hide default features (clean boolean pattern):
+ * @attr {boolean} no-logo - Hide logo section
+ * @attr {boolean} no-title - Hide title text
+ * @attr {boolean} no-menu - Hide global menu
+ * @attr {boolean} no-utility-bar - Hide utility buttons
  *
- * Utility menu bar properties (pass-through to rr-utility-menu-bar):
- * @attr {boolean} utility-has-language-switch - Show language button (default: true)
- * @attr {boolean} utility-has-search - Show search button (default: true)
+ * Show optional features:
+ * @attr {boolean} has-back-button - Show back button (default: false)
+ * @attr {boolean} logo-has-wordmark - Show wordmark beside logo (default: false)
  * @attr {boolean} utility-has-help - Show help button (default: false)
  * @attr {boolean} utility-has-settings - Show settings button (default: false)
- * @attr {boolean} utility-has-account - Show account button (default: true)
+ *
+ * Hide utility buttons individually:
+ * @attr {boolean} utility-no-language-switch - Hide language button
+ * @attr {boolean} utility-no-search - Hide search button
+ * @attr {boolean} utility-no-account - Hide account button
+ *
+ * Configuration:
+ * @attr {string} logo-title - Logo wordmark title
+ * @attr {string} logo-subtitle - Logo wordmark subtitle
  * @attr {string} utility-language - Language code (default: 'NL')
  * @attr {string} utility-account-label - Account button label
- *
- * Back button properties (pass-through to rr-back-button):
  * @attr {string} back-href - Back button link destination
  * @attr {string} back-label - Back button text (default: 'Terug')
  *
@@ -57,14 +72,15 @@ export class RRTopNavigationBar extends RRBaseComponent {
     return [
       ...super.observedAttributes,
       'container',
-      'has-logo',
-      'has-menu-bar',
-      'has-title',
-      'has-back-button',
-      'has-global-menu',
-      'has-utility-menu-bar',
       'title',
       'skip-link-target',
+      // Hide default features (shown by default, add no-* to hide)
+      'no-logo',
+      'no-title',
+      'no-menu',
+      'no-utility-bar',
+      // Show optional features (hidden by default, add has-* to show)
+      'has-back-button',
       // Logo pass-through
       'logo-has-wordmark',
       'logo-title',
@@ -72,11 +88,11 @@ export class RRTopNavigationBar extends RRBaseComponent {
       'logo-supporting-text-1',
       'logo-supporting-text-2',
       // Utility menu bar pass-through
-      'utility-has-language-switch',
-      'utility-has-search',
+      'utility-no-language-switch',
+      'utility-no-search',
+      'utility-no-account',
       'utility-has-help',
       'utility-has-settings',
-      'utility-has-account',
       'utility-language',
       'utility-account-label',
       // Back button pass-through
@@ -98,28 +114,26 @@ export class RRTopNavigationBar extends RRBaseComponent {
     this.setAttribute('container', value);
   }
 
+  // Default features: shown unless no-* attribute is present
   get hasLogo() {
-    return this.getAttribute('has-logo') !== 'false';
-  }
-
-  get hasMenuBar() {
-    return this.getAttribute('has-menu-bar') !== 'false';
+    return !this.hasAttribute('no-logo');
   }
 
   get hasTitle() {
-    return this.getAttribute('has-title') !== 'false';
-  }
-
-  get hasBackButton() {
-    return this.getBooleanAttribute('has-back-button');
+    return !this.hasAttribute('no-title');
   }
 
   get hasGlobalMenu() {
-    return this.getAttribute('has-global-menu') !== 'false';
+    return !this.hasAttribute('no-menu');
   }
 
   get hasUtilityMenuBar() {
-    return this.getAttribute('has-utility-menu-bar') !== 'false';
+    return !this.hasAttribute('no-utility-bar');
+  }
+
+  // Optional features: hidden unless has-* attribute is present
+  get hasBackButton() {
+    return this.hasAttribute('has-back-button');
   }
 
   get titleText() {
@@ -152,24 +166,26 @@ export class RRTopNavigationBar extends RRBaseComponent {
   }
 
   // Utility menu bar pass-through getters
+  // Default buttons: shown unless utility-no-* attribute is present
   get utilityHasLanguageSwitch() {
-    return this.getAttribute('utility-has-language-switch') !== 'false';
+    return !this.hasAttribute('utility-no-language-switch');
   }
 
   get utilityHasSearch() {
-    return this.getAttribute('utility-has-search') !== 'false';
-  }
-
-  get utilityHasHelp() {
-    return this.getBooleanAttribute('utility-has-help');
-  }
-
-  get utilityHasSettings() {
-    return this.getBooleanAttribute('utility-has-settings');
+    return !this.hasAttribute('utility-no-search');
   }
 
   get utilityHasAccount() {
-    return this.getAttribute('utility-has-account') !== 'false';
+    return !this.hasAttribute('utility-no-account');
+  }
+
+  // Optional buttons: hidden unless utility-has-* attribute is present
+  get utilityHasHelp() {
+    return this.hasAttribute('utility-has-help');
+  }
+
+  get utilityHasSettings() {
+    return this.hasAttribute('utility-has-settings');
   }
 
   get utilityLanguage() {
@@ -345,20 +361,20 @@ export class RRTopNavigationBar extends RRBaseComponent {
         display: none;
       }
 
-      /* Hide sections based on attributes */
-      :host([has-logo="false"]) .logo-bar {
+      /* Hide sections based on no-* attributes */
+      :host([no-logo]) .logo-bar {
         display: none;
       }
 
-      :host([has-title="false"]) .nav-title {
+      :host([no-title]) .nav-title {
         display: none;
       }
 
-      :host([has-global-menu="false"]) .global-menu {
+      :host([no-menu]) .global-menu {
         display: none;
       }
 
-      :host([has-utility-menu-bar="false"]) .nav-right {
+      :host([no-utility-bar]) .nav-right {
         display: none;
       }
 
@@ -384,14 +400,14 @@ export class RRTopNavigationBar extends RRBaseComponent {
       this.logoSupportingText2 ? `supporting-text-2="${this.logoSupportingText2}"` : '',
     ].filter(Boolean).join(' ');
 
-    // Build utility menu bar attributes
+    // Build utility menu bar attributes (using clean no-* pattern)
     const utilityAttrs = [
       `container="${this.container}"`,
-      this.utilityHasLanguageSwitch ? '' : 'has-language-switch="false"',
-      this.utilityHasSearch ? '' : 'has-search="false"',
+      this.utilityHasLanguageSwitch ? '' : 'no-language-switch',
+      this.utilityHasSearch ? '' : 'no-search',
       this.utilityHasHelp ? 'has-help' : '',
       this.utilityHasSettings ? 'has-settings' : '',
-      this.utilityHasAccount ? '' : 'has-account="false"',
+      this.utilityHasAccount ? '' : 'no-account',
       `language="${this.utilityLanguage}"`,
       `account-label="${this.utilityAccountLabel}"`,
     ].filter(Boolean).join(' ');
