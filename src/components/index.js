@@ -19,5 +19,8 @@ export { RRIconButton } from './icon-button/rr-icon-button.js';
 export { RRMenuBar } from './menu-bar/rr-menu-bar.js';
 export { RRMenuItem } from './menu-bar/rr-menu-item.js';
 export { RRTopNavigationBar } from './top-navigation-bar/rr-top-navigation-bar.js';
+export { RRNavLogo } from './top-navigation-bar/rr-nav-logo.js';
+export { RRUtilityMenuBar } from './top-navigation-bar/rr-utility-menu-bar.js';
+export { RRBackButton } from './top-navigation-bar/rr-back-button.js';
 
 // Auto-register happens on import of individual component files

@@ -9,9 +9,22 @@ import './rr-radio.js';
  * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41398)
  *
  * ## Gebruik
+ * Voor optimale toegankelijkheid volgens WAI-ARIA, gebruik een container met `role="radiogroup"`:
  * ```html
- * <rr-radio name="option" value="1" checked>Optie 1</rr-radio>
- * <rr-radio name="option" value="2">Optie 2</rr-radio>
+ * <div role="radiogroup" aria-labelledby="group-label">
+ *   <div id="group-label">Kies een optie</div>
+ *   <rr-radio name="option" value="1" checked>Optie 1</rr-radio>
+ *   <rr-radio name="option" value="2">Optie 2</rr-radio>
+ * </div>
+ * ```
+ *
+ * Of gebruik een HTML `<fieldset>` voor formulieren:
+ * ```html
+ * <fieldset>
+ *   <legend>Kies een optie</legend>
+ *   <rr-radio name="option" value="1" checked>Optie 1</rr-radio>
+ *   <rr-radio name="option" value="2">Optie 2</rr-radio>
+ * </fieldset>
  * ```
  */
 export default {
@@ -137,12 +150,12 @@ Medium.args = {
   size: 'm',
 };
 
-// Radio Group Example
+// Radio Group Example (with proper WAI-ARIA radiogroup)
 export const RadioGroup = () => html`
-  <fieldset style="border: none; padding: 0; margin: 0;">
-    <legend style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 18px; font-weight: 600; margin-bottom: 16px;">
+  <div role="radiogroup" aria-labelledby="group-label-1" style="padding: 0; margin: 0;">
+    <div id="group-label-1" style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 18px; font-weight: 600; margin-bottom: 16px;">
       Kies een optie
-    </legend>
+    </div>
     <div style="display: flex; flex-direction: column; gap: 12px;">
       <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
         <rr-radio name="group1" value="option1" checked></rr-radio>
@@ -169,13 +182,13 @@ export const RadioGroup = () => html`
         </span>
       </label>
     </div>
-  </fieldset>
+  </div>
 `;
 RadioGroup.parameters = {
   controls: { disable: true },
   docs: {
     description: {
-      story: 'Een groep radio buttons waarbij slechts één optie geselecteerd kan zijn. Gebruik dezelfde `name` attribute voor alle radio buttons in een groep.',
+      story: 'Een groep radio buttons waarbij slechts één optie geselecteerd kan zijn. Let op: de radio buttons zijn omwikkeld in een container met role="radiogroup" en aria-labelledby voor optimale toegankelijkheid volgens WAI-ARIA.',
     },
   },
 };

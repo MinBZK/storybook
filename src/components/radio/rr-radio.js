@@ -1,6 +1,16 @@
 /**
  * RegelRecht Radio Button Component
  *
+ * WAI-ARIA: Radio buttons should be wrapped in a container with role="radiogroup" and aria-labelledby
+ * pointing to a label element. Each radio automatically has role="radio" and aria-checked.
+ *
+ * @example
+ * <div role="radiogroup" aria-labelledby="group-label">
+ *   <span id="group-label">Choose an option</span>
+ *   <rr-radio name="options" value="1">Option 1</rr-radio>
+ *   <rr-radio name="options" value="2">Option 2</rr-radio>
+ * </div>
+ *
  * @element rr-radio
  * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state

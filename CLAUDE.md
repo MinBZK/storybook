@@ -37,10 +37,18 @@ De Figma MCP server is geconfigureerd voor directe toegang tot designs. **BELANG
 | Component | Node ID | Status |
 |-----------|---------|--------|
 | Button | 20-27 | Implemented |
-| Checkbox | 236:41408 | Planned |
-| Radio Button | 236:41398 | Planned |
-| Switch | 236:41353 | Planned |
-| Icon Button | 240:1391 | Planned |
+| Checkbox | 236:41408 | Implemented |
+| Radio Button | 236:41398 | Implemented |
+| Switch | 236:41353 | Implemented |
+| Icon Button | 240:1391 | Implemented |
+| Toggle Button | - | Implemented |
+| Box | - | Implemented |
+| Menu Bar | - | Implemented |
+| Menu Item | - | Implemented |
+| Top Navigation Bar | 48-2135 | Implemented |
+| Nav Logo | - | Implemented |
+| Utility Menu Bar | - | Implemented |
+| Back Button | - | Implemented |
 
 ### Button Component Specs (Reference)
 

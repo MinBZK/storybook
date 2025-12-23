@@ -85,6 +85,12 @@ export class RRSwitch extends RRBaseComponent {
       this.removeAttribute('checked');
     }
     this.setAttribute('aria-checked', value ? 'true' : 'false');
+
+    // Sync hidden input
+    const input = this.shadowRoot?.querySelector('.input');
+    if (input) {
+      input.checked = value;
+    }
   }
 
   get disabled() {
@@ -184,60 +190,60 @@ export class RRSwitch extends RRBaseComponent {
 
       /* Size: XS */
       :host([size="xs"]) .switch {
-        width: 32px;
-        height: 20px;
-        border-radius: 10px;
+        width: calc(var(--semantics-controls-xs-min-size, 24px) * 1.6);
+        height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.833);
+        border-radius: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
         padding: 2px;
       }
 
       :host([size="xs"]) .thumb {
-        width: 12px;
-        height: 12px;
-        border-radius: 6px;
+        width: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
+        height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
+        border-radius: var(--semantics-controls-xs-corner-radius, 6px);
         /* Uses inherited border-width from .thumb (2px via token) */
       }
 
       :host([size="xs"][checked]) .thumb {
-        transform: translateX(12px);
+        transform: translateX(calc(var(--semantics-controls-xs-min-size, 24px) * 0.5));
       }
 
       /* Size: S */
       :host([size="s"]) .switch {
-        width: 40px;
-        height: 24px;
-        border-radius: 12px;
+        width: calc(var(--semantics-controls-s-min-size, 32px) * 1.25);
+        height: calc(var(--semantics-controls-s-min-size, 32px) * 0.75);
+        border-radius: calc(var(--semantics-controls-s-min-size, 32px) * 0.5);
         padding: 2px;
       }
 
       :host([size="s"]) .thumb {
-        width: 16px;
-        height: 16px;
-        border-radius: 8px;
+        width: calc(var(--semantics-controls-s-min-size, 32px) * 0.5);
+        height: calc(var(--semantics-controls-s-min-size, 32px) * 0.5);
+        border-radius: calc(var(--semantics-controls-s-corner-radius, 5px) * 1.6);
       }
 
       :host([size="s"][checked]) .thumb {
-        transform: translateX(16px);
+        transform: translateX(calc(var(--semantics-controls-s-min-size, 32px) * 0.5));
       }
 
       /* Size: M (default) */
       :host([size="m"]) .switch,
       :host(:not([size])) .switch {
-        width: 52px;
-        height: 32px;
-        border-radius: 16px;
+        width: calc(var(--semantics-controls-m-min-size, 44px) * 1.182);
+        height: calc(var(--semantics-controls-m-min-size, 44px) * 0.727);
+        border-radius: calc(var(--semantics-controls-m-min-size, 44px) * 0.5);
         padding: 2px;
       }
 
       :host([size="m"]) .thumb,
       :host(:not([size])) .thumb {
-        width: 24px;
-        height: 24px;
-        border-radius: 12px;
+        width: calc(var(--semantics-controls-m-min-size, 44px) * 0.545);
+        height: calc(var(--semantics-controls-m-min-size, 44px) * 0.545);
+        border-radius: calc(var(--semantics-controls-m-corner-radius, 11px) * 1.091);
       }
 
       :host([size="m"][checked]) .thumb,
       :host(:not([size])[checked]) .thumb {
-        transform: translateX(20px);
+        transform: translateX(calc(var(--semantics-controls-m-min-size, 44px) * 0.454));
       }
 
       /* Checked state */
