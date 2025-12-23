@@ -14,6 +14,14 @@
  *
  * <!-- Show optional buttons -->
  * <rr-utility-menu-bar has-help has-settings></rr-utility-menu-bar>
+ *
+ * <!-- Programmatically toggle dropdown state -->
+ * <script>
+ *   const utilityBar = document.querySelector('rr-utility-menu-bar');
+ *   utilityBar.toggleDropdown('language', true);  // Open language dropdown
+ *   utilityBar.toggleDropdown('language', false); // Close language dropdown
+ *   utilityBar.closeAllDropdowns();               // Close all dropdowns
+ * </script>
  * ```
  *
  * @element rr-utility-menu-bar
@@ -31,6 +39,9 @@
  * @fires help-click - When help button is clicked
  * @fires settings-click - When settings button is clicked
  * @fires account-click - When account button is clicked
+ *
+ * @method toggleDropdown - Toggle aria-expanded state for dropdown buttons (language, account)
+ * @method closeAllDropdowns - Close all dropdown menus
  *
  * @csspart container - The main container
  * @csspart button - Individual utility buttons
@@ -60,11 +71,36 @@ export class RRUtilityMenuBar extends RRBaseComponent {
 
   constructor() {
     super();
+    this._expandedButton = null; // Track which dropdown is currently expanded
   }
 
   connectedCallback() {
     super.connectedCallback();
     this._setupEventListeners();
+  }
+
+  /**
+   * Toggle aria-expanded state for dropdown buttons
+   * @param {string} action - The button action ('language' or 'account')
+   * @param {boolean} expanded - Whether the dropdown is expanded
+   */
+  toggleDropdown(action, expanded) {
+    const button = this.shadowRoot.querySelector(`button[data-action="${action}"]`);
+    if (button && button.hasAttribute('aria-haspopup')) {
+      button.setAttribute('aria-expanded', String(expanded));
+      this._expandedButton = expanded ? action : null;
+    }
+  }
+
+  /**
+   * Close all dropdowns
+   */
+  closeAllDropdowns() {
+    const dropdownButtons = this.shadowRoot.querySelectorAll('button[aria-haspopup="true"]');
+    dropdownButtons.forEach((button) => {
+      button.setAttribute('aria-expanded', 'false');
+    });
+    this._expandedButton = null;
   }
 
   _setupEventListeners() {
@@ -227,7 +263,7 @@ export class RRUtilityMenuBar extends RRBaseComponent {
         ${
           this.hasLanguageSwitch
             ? `
-          <button class="utility-button" part="button" data-action="language" aria-label="Taal" aria-haspopup="true">
+          <button class="utility-button" part="button" data-action="language" aria-label="${this.language} - Taal selecteren" aria-haspopup="true" aria-expanded="false">
             <span>${this.language}</span>
             ${chevronIcon}
           </button>
@@ -271,7 +307,7 @@ export class RRUtilityMenuBar extends RRBaseComponent {
         ${
           this.hasAccount
             ? `
-          <button class="utility-button" part="button" data-action="account" aria-label="Account" aria-haspopup="true">
+          <button class="utility-button" part="button" data-action="account" aria-label="${this.accountLabel} - Account menu" aria-haspopup="true" aria-expanded="false">
             ${userIcon}
             <span>${this.accountLabel}</span>
             ${chevronIcon}

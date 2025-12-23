@@ -172,3 +172,68 @@ export const AllSizes = {
 export const MijnOverheidBranding = {
   render: () => html` <rr-utility-menu-bar account-label="Mijn Overheid"></rr-utility-menu-bar> `,
 };
+
+/**
+ * Dropdown state control demo (aria-expanded support).
+ * This demonstrates the toggleDropdown() and closeAllDropdowns() methods for WCAG compliance.
+ */
+export const DropdownStateDemo = {
+  render: () => html`
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <rr-utility-menu-bar id="demo-utility-bar" account-label="Mijn DigID"></rr-utility-menu-bar>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button
+          @click="${() => {
+            const utilityBar = document.getElementById('demo-utility-bar');
+            utilityBar.toggleDropdown('language', true);
+          }}"
+          style="padding: 8px 16px; background: #154273; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Open Language Dropdown
+        </button>
+        <button
+          @click="${() => {
+            const utilityBar = document.getElementById('demo-utility-bar');
+            utilityBar.toggleDropdown('language', false);
+          }}"
+          style="padding: 8px 16px; background: #64748b; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Close Language Dropdown
+        </button>
+        <button
+          @click="${() => {
+            const utilityBar = document.getElementById('demo-utility-bar');
+            utilityBar.toggleDropdown('account', true);
+          }}"
+          style="padding: 8px 16px; background: #154273; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Open Account Dropdown
+        </button>
+        <button
+          @click="${() => {
+            const utilityBar = document.getElementById('demo-utility-bar');
+            utilityBar.toggleDropdown('account', false);
+          }}"
+          style="padding: 8px 16px; background: #64748b; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Close Account Dropdown
+        </button>
+        <button
+          @click="${() => {
+            const utilityBar = document.getElementById('demo-utility-bar');
+            utilityBar.closeAllDropdowns();
+          }}"
+          style="padding: 8px 16px; background: #d52b1e; color: white; border: none; border-radius: 4px; cursor: pointer;"
+        >
+          Close All Dropdowns
+        </button>
+      </div>
+
+      <p style="margin: 0; font-family: system-ui; color: #64748b; font-size: 14px;">
+        Click the buttons above to toggle aria-expanded state on the dropdown buttons.
+        This demonstrates WCAG-compliant screen reader support.
+      </p>
+    </div>
+  `,
+};

@@ -1,0 +1,48 @@
+name: Accessibility Testing
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  accessibility-tests:
+    name: Run Accessibility Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint (including lit-a11y rules)
+        run: npm run lint
+
+      - name: Start Storybook in background
+        run: npm run storybook -- --ci &
+
+      - name: Wait for Storybook to be ready
+        run: npx wait-on http://localhost:6006 --timeout 60000
+
+      - name: Run pa11y-ci accessibility tests
+        run: npm run test:a11y
+
+      - name: Upload accessibility screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pa11y-screenshots
+          path: pa11y-screenshots/
+          retention-days: 7
