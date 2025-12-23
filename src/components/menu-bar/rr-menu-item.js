@@ -36,7 +36,8 @@ export class RRMenuItem extends RRBaseComponent {
     this.addEventListener('click', this._onClick);
     this.addEventListener('keydown', this._onKeyDown);
 
-    // Set role for accessibility
+    // No specific role needed - internal link/button provides semantics
+    // role="none" for presentation, letting internal element handle semantics
     this.setAttribute('role', 'none');
   }
 
@@ -208,18 +209,16 @@ export class RRMenuItem extends RRBaseComponent {
 
   render() {
     const element = this.href ? 'a' : 'button';
-    const role = this.href ? 'menuitem' : 'menuitem';
     const tabindex = this.disabled ? '-1' : '0';
 
     this.shadowRoot.innerHTML = `
       <${element}
         class="menu-item"
         part="link"
-        role="${role}"
         ${this.href ? `href="${this.href}"` : 'type="button"'}
         ${this.disabled ? 'disabled' : ''}
         aria-disabled="${this.disabled}"
-        aria-current="${this.selected ? 'page' : 'false'}"
+        ${this.selected ? 'aria-current="page"' : ''}
         tabindex="${tabindex}"
       >
         <span class="hover-indicator"></span>

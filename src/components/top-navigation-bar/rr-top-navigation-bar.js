@@ -435,7 +435,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
         </div>
 
         <!-- Navigation bar: Back | Title | Menu items | Utility buttons -->
-        <nav class="nav-bar" part="nav-bar">
+        <nav class="nav-bar" part="nav-bar" aria-label="Hoofdnavigatie">
           <!-- Left: Back button, Title, Global Menu -->
           <div class="nav-left">
             <rr-back-button ${backAttrs}></rr-back-button>

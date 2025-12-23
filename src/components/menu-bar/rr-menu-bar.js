@@ -47,8 +47,8 @@ export class RRMenuBar extends RRBaseComponent {
     this.addEventListener('select', this._onItemSelect);
     this.addEventListener('keydown', this._onKeyDown);
 
-    // Set ARIA role
-    this.setAttribute('role', 'menubar');
+    // No role needed - parent component provides navigation landmark if needed
+    // This allows flexible use in different contexts
 
     // Setup overflow detection if enabled
     if (this.hasOverflowMenu) {
@@ -221,6 +221,8 @@ export class RRMenuBar extends RRBaseComponent {
     // If we have overflow items
     if (overflowStartIndex >= 0 && overflowStartIndex < items.length) {
       overflowButton.style.display = 'flex';
+      // Add role="menu" only when we have items (WCAG aria-required-children)
+      overflowDropdown.setAttribute('role', 'menu');
 
       // Hide overflow items and add them to dropdown
       for (let i = overflowStartIndex; i < items.length; i++) {
@@ -244,6 +246,8 @@ export class RRMenuBar extends RRBaseComponent {
     } else {
       // All items fit, hide the overflow button
       overflowButton.style.display = 'none';
+      // Remove role="menu" when empty (WCAG aria-required-children)
+      overflowDropdown.removeAttribute('role');
     }
   }
 
@@ -525,7 +529,6 @@ export class RRMenuBar extends RRBaseComponent {
               <div
                 class="overflow-dropdown"
                 part="overflow-menu"
-                role="menu"
                 id="${this._overflowMenuId}"
                 aria-label="${this.overflowLabel}"
               >

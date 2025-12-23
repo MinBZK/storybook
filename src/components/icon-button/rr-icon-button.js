@@ -36,6 +36,13 @@ export class RRIconButton extends RRBaseComponent {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('click', this._onClick);
+
+    // Move aria-label from host to internal button (host shouldn't have ARIA without role)
+    if (this.hasAttribute('aria-label')) {
+      this._ariaLabel = this.getAttribute('aria-label');
+      this.removeAttribute('aria-label');
+      this.render();
+    }
   }
 
   disconnectedCallback() {
@@ -87,11 +94,12 @@ export class RRIconButton extends RRBaseComponent {
   }
 
   get ariaLabel() {
-    return this.getAttribute('aria-label') || '';
+    return this._ariaLabel || this.getAttribute('aria-label') || '';
   }
 
   set ariaLabel(value) {
-    this.setAttribute('aria-label', value);
+    this._ariaLabel = value;
+    this.render();
   }
 
   _getStyles() {
