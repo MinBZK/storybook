@@ -244,10 +244,16 @@ export class RRMenuBar extends RRBaseComponent {
         overflowDropdown.appendChild(dropdownItem);
       }
     } else {
-      // All items fit, hide the overflow button
+      // All items fit, hide the overflow button and close menu if open
       overflowButton.style.display = 'none';
       // Remove role="menu" when empty (WCAG aria-required-children)
       overflowDropdown.removeAttribute('role');
+      // Close the menu if it was open (fixes bug where menu stays open after resize)
+      if (this._overflowMenuOpen) {
+        this._overflowMenuOpen = false;
+        overflowDropdown.classList.remove('open');
+        overflowButton.setAttribute('aria-expanded', 'false');
+      }
     }
   }
 
