@@ -423,3 +423,33 @@ IconButtonGroups.parameters = {
     },
   },
 };
+
+// Figma Comparison - visual comparison with Figma design
+const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
+const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
+
+export const FigmaComparison = () => html`
+  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
+        Our icon buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
+      </p>
+      <ftl-holster node="240:1391" style="display: inline-block;">
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
+          <rr-icon-button size="s" aria-label="S icon button">${settingsIcon}</rr-icon-button>
+          <rr-icon-button size="s" aria-label="S icon button">${settingsIcon}</rr-icon-button>
+          <rr-icon-button size="m" aria-label="M icon button">${settingsIcon}</rr-icon-button>
+          <rr-icon-button size="m" aria-label="M icon button">${settingsIcon}</rr-icon-button>
+        </div>
+      </ftl-holster>
+      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
+        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
+      </p>
+    </div>
+  </ftl-belt>
+`;
+FigmaComparison.storyName = '🎨 Figma Comparison';
+FigmaComparison.tags = ['!autodocs', 'figma'];
+FigmaComparison.parameters = {
+  controls: { disable: true },
+};

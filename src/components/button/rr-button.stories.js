@@ -623,3 +623,60 @@ IconVariants.parameters = {
     },
   },
 };
+
+// Figma Comparison - visual comparison with Figma design
+const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
+const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
+
+export const FigmaComparison = () => html`
+  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
+        Our buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
+      </p>
+      <ftl-holster node="20-27" style="display: inline-block;">
+        <!-- Representative buttons matching Figma layout -->
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
+          <!-- Size S buttons -->
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <rr-button variant="accent-filled" size="s">Button</rr-button>
+            <rr-button variant="accent-outlined" size="s">Button</rr-button>
+            <rr-button variant="accent-tinted" size="s">Button</rr-button>
+            <rr-button variant="neutral-tinted" size="s">Button</rr-button>
+            <rr-button variant="accent-transparent" size="s">Button</rr-button>
+          </div>
+          <!-- Size M buttons -->
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <rr-button variant="accent-filled" size="m">Button</rr-button>
+            <rr-button variant="accent-outlined" size="m">Button</rr-button>
+            <rr-button variant="accent-tinted" size="m">Button</rr-button>
+            <rr-button variant="neutral-tinted" size="m">Button</rr-button>
+            <rr-button variant="accent-transparent" size="m">Button</rr-button>
+          </div>
+          <!-- Size XS buttons -->
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <rr-button variant="accent-filled" size="xs">Button</rr-button>
+            <rr-button variant="accent-outlined" size="xs">Button</rr-button>
+            <rr-button variant="accent-tinted" size="xs">Button</rr-button>
+            <rr-button variant="neutral-tinted" size="xs">Button</rr-button>
+            <rr-button variant="accent-transparent" size="xs">Button</rr-button>
+          </div>
+          <!-- Disabled states -->
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <rr-button variant="accent-filled" size="m" disabled>Button</rr-button>
+            <rr-button variant="accent-outlined" size="m" disabled>Button</rr-button>
+            <rr-button variant="accent-tinted" size="m" disabled>Button</rr-button>
+          </div>
+        </div>
+      </ftl-holster>
+      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
+        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
+      </p>
+    </div>
+  </ftl-belt>
+`;
+FigmaComparison.storyName = '🎨 Figma Comparison';
+FigmaComparison.tags = ['!autodocs', 'figma'];
+FigmaComparison.parameters = {
+  controls: { disable: true },
+};

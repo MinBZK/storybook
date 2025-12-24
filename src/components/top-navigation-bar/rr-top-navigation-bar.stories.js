@@ -343,83 +343,45 @@ export const AllStates = {
 };
 
 /**
- * Figma Comparison - visual comparison with Figma design overlay.
+ * Figma Comparison - pixel-perfect overlay comparison with Figma design.
  */
+const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
+const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
+
 export const FigmaComparison = {
   name: '🎨 Figma Comparison',
   tags: ['!autodocs', 'figma'],
-  render: () => {
-    const figmaEmbedUrl =
-      'https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2F5DyHMXUNVxbgH7ZjhQxPZe%2FRR-Components%3Fnode-id%3D48-2135';
-
-    return html`
-      <div style="padding: 1.5rem;">
-        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-          <span style="font-size: 1.5rem;">🎨</span>
-          <div>
-            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #1e293b;">
-              Figma Overlay Comparison
-            </h2>
-            <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #64748b;">
-              Adjust opacity to compare implementation with Figma design
-            </p>
-          </div>
+  render: () => html`
+    <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        <div>
+          <h3 style="margin: 0 0 1rem 0; font-size: 1rem; color: #475569;">
+            Top Navigation Bar - Default
+          </h3>
+          <ftl-holster node="48:2135" style="display: block; width: 100%;">
+            <rr-top-navigation-bar title="DigID">
+              <rr-menu-item slot="menu" selected>Home</rr-menu-item>
+              <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
+              <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
+              <rr-menu-item slot="menu">Veiligheid</rr-menu-item>
+              <rr-menu-item slot="menu">Hulp</rr-menu-item>
+            </rr-top-navigation-bar>
+          </ftl-holster>
         </div>
-
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-          <label style="font-size: 0.875rem; font-weight: 500; color: #475569;">Figma overlay:</label>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="0"
-            style="width: 200px; accent-color: #154273;"
-            @input=${(e) => {
-              const overlay = document.getElementById('figma-overlay-nav');
-              if (overlay) overlay.style.opacity = e.target.value / 100;
-              const label = document.getElementById('opacity-value-nav');
-              if (label) label.textContent = e.target.value + '%';
-            }}
-          />
-          <span id="opacity-value-nav" style="font-size: 0.875rem; color: #64748b; min-width: 3rem;">0%</span>
-        </div>
-
-        <div style="position: relative; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-          <!-- Implementation layer -->
-          <rr-top-navigation-bar title="DigID">
-            <rr-menu-item slot="menu" selected>Home</rr-menu-item>
-            <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
-            <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
-            <rr-menu-item slot="menu">Veiligheid</rr-menu-item>
-            <rr-menu-item slot="menu">Hulp</rr-menu-item>
-          </rr-top-navigation-bar>
-
-          <!-- Figma overlay layer -->
-          <iframe
-            id="figma-overlay-nav"
-            src="${figmaEmbedUrl}"
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; opacity: 0; pointer-events: none;"
-            allowfullscreen
-          ></iframe>
-        </div>
-
-        <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 1rem;">
-          <strong>Tip:</strong> Drag the slider to reveal the Figma design overlay. For full Figma view, use the Design tab below.
+        <p style="font-size: 0.875rem; color: #64748b; margin-top: 1rem;">
+          Click on the component to toggle between your implementation and the Figma design overlay.
+          Use keyboard shortcuts: T (toggle), O (overlay), S (side-by-side).
         </p>
       </div>
-    `;
-  },
+    </ftl-belt>
+  `,
   parameters: {
     layout: 'fullscreen',
     controls: { disable: true },
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
-    },
     docs: {
       description: {
         story:
-          'Overlay vergelijking met Figma design. Gebruik de slider om de opacity van de Figma overlay aan te passen.',
+          'Pixel-perfect vergelijking met Figma design. Klik op de component om te wisselen tussen implementatie en Figma overlay.',
       },
     },
   },
