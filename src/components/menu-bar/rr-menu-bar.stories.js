@@ -310,8 +310,11 @@ export const FigmaComparison = () => html`
       <ftl-holster node="48:2135" style="display: block; width: 100%;">
         <rr-menu-bar>
           <rr-menu-item selected>Home</rr-menu-item>
-          <rr-menu-item>Menu Item</rr-menu-item>
-          <rr-menu-item>Menu Item</rr-menu-item>
+          <rr-menu-item>Menu item</rr-menu-item>
+          <rr-menu-item>Menu item</rr-menu-item>
+          <rr-menu-item>Menu item</rr-menu-item>
+          <rr-menu-item>Menu item</rr-menu-item>
+          <rr-menu-item>Menu item</rr-menu-item>
         </rr-menu-bar>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

@@ -392,10 +392,16 @@ export const FigmaComparison = () => html`
       </p>
       <ftl-holster node="236:41408" style="display: inline-block;">
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-checkbox size="s" aria-label="S checkbox"></rr-checkbox>
-          <rr-checkbox size="s" checked aria-label="S checkbox checked"></rr-checkbox>
-          <rr-checkbox size="m" aria-label="M checkbox"></rr-checkbox>
-          <rr-checkbox size="m" checked aria-label="M checkbox checked"></rr-checkbox>
+          <!-- Row 1: Size S -->
+          <div style="display: flex; gap: 16px;">
+            <rr-checkbox size="s" aria-label="S checkbox"></rr-checkbox>
+            <rr-checkbox size="s" checked aria-label="S checkbox checked"></rr-checkbox>
+          </div>
+          <!-- Row 2: Size M -->
+          <div style="display: flex; gap: 16px;">
+            <rr-checkbox size="m" aria-label="M checkbox"></rr-checkbox>
+            <rr-checkbox size="m" checked aria-label="M checkbox checked"></rr-checkbox>
+          </div>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

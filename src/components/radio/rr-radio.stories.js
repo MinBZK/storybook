@@ -568,10 +568,10 @@ export const FigmaComparison = () => html`
       </p>
       <ftl-holster node="236:41398" style="display: inline-block;">
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-radio size="s" name="figma-group" aria-label="S radio"></rr-radio>
-          <rr-radio size="s" name="figma-group" aria-label="S radio"></rr-radio>
-          <rr-radio size="m" name="figma-group" aria-label="M radio"></rr-radio>
-          <rr-radio size="m" name="figma-group" aria-label="M radio"></rr-radio>
+          <rr-radio size="s" name="figma-s" aria-label="S radio"></rr-radio>
+          <rr-radio size="s" name="figma-s" checked aria-label="S radio checked"></rr-radio>
+          <rr-radio size="m" name="figma-m" aria-label="M radio"></rr-radio>
+          <rr-radio size="m" name="figma-m" checked aria-label="M radio checked"></rr-radio>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

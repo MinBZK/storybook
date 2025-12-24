@@ -359,12 +359,13 @@ export const FigmaComparison = {
             Top Navigation Bar - Default
           </h3>
           <ftl-holster node="48:2135" style="display: block; width: 100%;">
-            <rr-top-navigation-bar title="DigID">
+            <rr-top-navigation-bar title="Titel" container="l">
               <rr-menu-item slot="menu" selected>Home</rr-menu-item>
-              <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
-              <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
-              <rr-menu-item slot="menu">Veiligheid</rr-menu-item>
-              <rr-menu-item slot="menu">Hulp</rr-menu-item>
+              <rr-menu-item slot="menu">Menu item</rr-menu-item>
+              <rr-menu-item slot="menu">Menu item</rr-menu-item>
+              <rr-menu-item slot="menu">Menu item</rr-menu-item>
+              <rr-menu-item slot="menu">Menu item</rr-menu-item>
+              <rr-menu-item slot="menu">Menu item</rr-menu-item>
             </rr-top-navigation-bar>
           </ftl-holster>
         </div>

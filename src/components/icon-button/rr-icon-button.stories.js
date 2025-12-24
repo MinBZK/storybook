@@ -436,10 +436,18 @@ export const FigmaComparison = () => html`
       </p>
       <ftl-holster node="240:1391" style="display: inline-block;">
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-icon-button size="s" aria-label="S icon button">${settingsIcon}</rr-icon-button>
-          <rr-icon-button size="s" aria-label="S icon button">${settingsIcon}</rr-icon-button>
-          <rr-icon-button size="m" aria-label="M icon button">${settingsIcon}</rr-icon-button>
-          <rr-icon-button size="m" aria-label="M icon button">${settingsIcon}</rr-icon-button>
+          <rr-icon-button variant="accent-filled" size="s" aria-label="S icon button"
+            >${settingsIcon}</rr-icon-button
+          >
+          <rr-icon-button variant="accent-filled" size="s" aria-label="S icon button"
+            >${settingsIcon}</rr-icon-button
+          >
+          <rr-icon-button variant="accent-filled" size="m" aria-label="M icon button"
+            >${settingsIcon}</rr-icon-button
+          >
+          <rr-icon-button variant="accent-filled" size="m" aria-label="M icon button"
+            >${settingsIcon}</rr-icon-button
+          >
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

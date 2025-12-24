@@ -370,10 +370,12 @@ export const FigmaComparison = () => html`
       </p>
       <ftl-holster node="309:3542" style="display: inline-block;">
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-toggle-button size="s">Toggle</rr-toggle-button>
-          <rr-toggle-button size="s">Toggle</rr-toggle-button>
-          <rr-toggle-button size="m">Toggle</rr-toggle-button>
-          <rr-toggle-button size="m">Toggle</rr-toggle-button>
+          <rr-toggle-button size="m">Toggle button</rr-toggle-button>
+          <rr-toggle-button size="m">Toggle button</rr-toggle-button>
+          <rr-toggle-button size="m" selected>Toggle button</rr-toggle-button>
+          <rr-toggle-button size="m">Toggle button</rr-toggle-button>
+          <rr-toggle-button size="m">Toggle button</rr-toggle-button>
+          <rr-toggle-button size="m" selected>Toggle button</rr-toggle-button>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
