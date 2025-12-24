@@ -343,45 +343,51 @@ export const AllStates = {
 };
 
 /**
- * Figma Comparison - pixel-perfect overlay comparison with Figma design.
+ * Figma Comparison - visual comparison with Figma design.
  */
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
 export const FigmaComparison = {
   name: '🎨 Figma Comparison',
   tags: ['!autodocs', 'figma'],
   render: () => html`
-    <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-      <div style="display: flex; flex-direction: column; gap: 2rem;">
+    <div style="padding: 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+        <span style="font-size: 1.5rem;">🎨</span>
         <div>
-          <h3 style="margin: 0 0 1rem 0; font-size: 1rem; color: #475569;">
-            Top Navigation Bar - Default
-          </h3>
-          <ftl-holster node="48:2135" style="display: block; width: 100%;">
-            <rr-top-navigation-bar title="DigID">
-              <rr-menu-item slot="menu" selected>Home</rr-menu-item>
-              <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
-              <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
-              <rr-menu-item slot="menu">Veiligheid</rr-menu-item>
-              <rr-menu-item slot="menu">Hulp</rr-menu-item>
-            </rr-top-navigation-bar>
-          </ftl-holster>
+          <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #1e293b;">
+            Figma Comparison
+          </h2>
+          <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #64748b;">
+            Compare with Figma using the Design panel below
+          </p>
         </div>
-        <p style="font-size: 0.875rem; color: #64748b; margin-top: 1rem;">
-          Click on the component to toggle between your implementation and the Figma design overlay.
-          Use keyboard shortcuts: T (toggle), O (overlay), S (side-by-side).
-        </p>
       </div>
-    </ftl-belt>
+
+      <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+        <rr-top-navigation-bar title="DigID">
+          <rr-menu-item slot="menu" selected>Home</rr-menu-item>
+          <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
+          <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
+          <rr-menu-item slot="menu">Veiligheid</rr-menu-item>
+          <rr-menu-item slot="menu">Hulp</rr-menu-item>
+        </rr-top-navigation-bar>
+      </div>
+
+      <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 1rem;">
+        <strong>Tip:</strong> Click the "Design" tab in the addon panel below to view the Figma design
+      </p>
+    </div>
   `,
   parameters: {
     layout: 'fullscreen',
     controls: { disable: true },
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
+    },
     docs: {
       description: {
         story:
-          'Pixel-perfect vergelijking met Figma design. Klik op de component om te wisselen tussen implementatie en Figma overlay.',
+          'Vergelijking met Figma design. Klik op de "Design" tab in het addon panel hieronder om het Figma ontwerp te bekijken.',
       },
     },
   },
