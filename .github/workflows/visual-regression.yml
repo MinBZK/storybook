@@ -1,0 +1,46 @@
+name: Visual Regression Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  visual-regression:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright@1.47.2 install chromium
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Serve Storybook and run Lost Pixel
+        run: |
+          npx http-server storybook-static -p 6006 &
+          sleep 5
+          npm run test:visual
+
+      - name: Upload visual diff artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lost-pixel-diff
+          path: |
+            .lostpixel/current/
+            .lostpixel/difference/
+          retention-days: 7
