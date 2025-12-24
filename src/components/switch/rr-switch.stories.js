@@ -300,80 +300,40 @@ ProgrammaticControl.parameters = {
   },
 };
 
-// Figma Comparison - visual comparison with Figma design overlay
-// Uses Figma embed iframe as overlay for comparison
-export const FigmaComparison = () => {
-  const figmaEmbedUrl =
-    'https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2F5DyHMXUNVxbgH7ZjhQxPZe%2FRR-Components%3Fnode-id%3D236-41353';
+// Figma Comparison - visual comparison with Figma design
+// Note: The Figma node 236:41353 is the switch-list-cell container showing all switch variants.
+// For true pixel-perfect overlay comparison, individual switch node IDs are needed.
+const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
+const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
 
-  return html`
-    <div style="padding: 1.5rem;">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-        <span style="font-size: 1.5rem;">🎨</span>
-        <div>
-          <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #1e293b;">
-            Figma Overlay Comparison
-          </h2>
-          <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #64748b;">
-            Adjust opacity to compare implementation with Figma design
-          </p>
-        </div>
-      </div>
-
-      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-        <label style="font-size: 0.875rem; font-weight: 500; color: #475569;">Figma overlay:</label>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value="0"
-          style="width: 200px; accent-color: #154273;"
-          @input=${(e) => {
-            const overlay = document.getElementById('figma-overlay-switch');
-            if (overlay) overlay.style.opacity = e.target.value / 100;
-            const label = document.getElementById('opacity-value-switch');
-            if (label) label.textContent = e.target.value + '%';
-          }}
-        />
-        <span id="opacity-value-switch" style="font-size: 0.875rem; color: #64748b; min-width: 3rem;">0%</span>
-      </div>
-
-      <div style="position: relative; display: inline-block; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: white;">
-        <!-- Implementation layer -->
+export const FigmaComparison = () => html`
+  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
+        Our switches (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
+      </p>
+      <ftl-holster node="236:41353" style="display: inline-block;">
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-switch size="s" aria-label="S switch"></rr-switch>
-          <rr-switch size="s" aria-label="S switch"></rr-switch>
-          <rr-switch size="m" aria-label="M switch"></rr-switch>
-          <rr-switch size="m" aria-label="M switch"></rr-switch>
+          <rr-switch size="s" aria-label="S switch top"></rr-switch>
+          <rr-switch size="s" aria-label="S switch center"></rr-switch>
+          <rr-switch size="m" aria-label="M switch top"></rr-switch>
+          <rr-switch size="m" aria-label="M switch center"></rr-switch>
         </div>
-
-        <!-- Figma overlay layer -->
-        <iframe
-          id="figma-overlay-switch"
-          src="${figmaEmbedUrl}"
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; opacity: 0; pointer-events: none;"
-          allowfullscreen
-        ></iframe>
-      </div>
-
-      <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 1rem;">
-        <strong>Tip:</strong> Drag the slider to reveal the Figma design overlay. For full Figma view, use the Design tab below.
+      </ftl-holster>
+      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
+        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
       </p>
     </div>
-  `;
-};
+  </ftl-belt>
+`;
 FigmaComparison.storyName = '🎨 Figma Comparison';
 FigmaComparison.tags = ['!autodocs', 'figma'];
 FigmaComparison.parameters = {
   controls: { disable: true },
-  design: {
-    type: 'figma',
-    url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41353',
-  },
   docs: {
     description: {
       story:
-        'Overlay vergelijking met Figma design. Gebruik de slider om de opacity van de Figma overlay aan te passen.',
+        'Vergelijking met Figma design. Het Figma overlay toont de switch-list-cell container (node 236:41353). Scroll in het Design panel naar kolom 4 voor de switch componenten. Vergelijk visueel met onze implementatie hierboven.',
     },
   },
 };
