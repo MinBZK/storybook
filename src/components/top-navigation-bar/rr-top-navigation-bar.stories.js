@@ -341,3 +341,46 @@ export const AllStates = {
     </div>
   `,
 };
+
+/**
+ * Figma Comparison - pixel-perfect overlay comparison with Figma design.
+ */
+const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
+const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
+
+export const FigmaComparison = {
+  render: () => html`
+    <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        <div>
+          <h3 style="margin: 0 0 1rem 0; font-size: 1rem; color: #475569;">
+            Top Navigation Bar - Default
+          </h3>
+          <ftl-holster node="48:2135" style="display: block; width: 100%;">
+            <rr-top-navigation-bar title="DigID">
+              <rr-menu-item slot="menu" selected>Home</rr-menu-item>
+              <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
+              <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
+              <rr-menu-item slot="menu">Veiligheid</rr-menu-item>
+              <rr-menu-item slot="menu">Hulp</rr-menu-item>
+            </rr-top-navigation-bar>
+          </ftl-holster>
+        </div>
+        <p style="font-size: 0.875rem; color: #64748b; margin-top: 1rem;">
+          Click on the component to toggle between your implementation and the Figma design overlay.
+          Use keyboard shortcuts: T (toggle), O (overlay), S (side-by-side).
+        </p>
+      </div>
+    </ftl-belt>
+  `,
+  parameters: {
+    layout: 'fullscreen',
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Pixel-perfect vergelijking met Figma design. Klik op de component om te wisselen tussen implementatie en Figma overlay.',
+      },
+    },
+  },
+};
