@@ -343,40 +343,72 @@ export const AllStates = {
 };
 
 /**
- * Figma Comparison - visual comparison with Figma design.
+ * Figma Comparison - visual comparison with Figma design overlay.
  */
 export const FigmaComparison = {
   name: '🎨 Figma Comparison',
   tags: ['!autodocs', 'figma'],
-  render: () => html`
-    <div style="padding: 1.5rem;">
-      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
-        <span style="font-size: 1.5rem;">🎨</span>
-        <div>
-          <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #1e293b;">
-            Figma Comparison
-          </h2>
-          <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #64748b;">
-            Compare with Figma using the Design panel below
-          </p>
+  render: () => {
+    const figmaEmbedUrl =
+      'https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2F5DyHMXUNVxbgH7ZjhQxPZe%2FRR-Components%3Fnode-id%3D48-2135';
+
+    return html`
+      <div style="padding: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+          <span style="font-size: 1.5rem;">🎨</span>
+          <div>
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #1e293b;">
+              Figma Overlay Comparison
+            </h2>
+            <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #64748b;">
+              Adjust opacity to compare implementation with Figma design
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-        <rr-top-navigation-bar title="DigID">
-          <rr-menu-item slot="menu" selected>Home</rr-menu-item>
-          <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
-          <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
-          <rr-menu-item slot="menu">Veiligheid</rr-menu-item>
-          <rr-menu-item slot="menu">Hulp</rr-menu-item>
-        </rr-top-navigation-bar>
-      </div>
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+          <label style="font-size: 0.875rem; font-weight: 500; color: #475569;">Figma overlay:</label>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="0"
+            style="width: 200px; accent-color: #154273;"
+            @input=${(e) => {
+              const overlay = document.getElementById('figma-overlay-nav');
+              if (overlay) overlay.style.opacity = e.target.value / 100;
+              const label = document.getElementById('opacity-value-nav');
+              if (label) label.textContent = e.target.value + '%';
+            }}
+          />
+          <span id="opacity-value-nav" style="font-size: 0.875rem; color: #64748b; min-width: 3rem;">0%</span>
+        </div>
 
-      <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 1rem;">
-        <strong>Tip:</strong> Click the "Design" tab in the addon panel below to view the Figma design
-      </p>
-    </div>
-  `,
+        <div style="position: relative; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+          <!-- Implementation layer -->
+          <rr-top-navigation-bar title="DigID">
+            <rr-menu-item slot="menu" selected>Home</rr-menu-item>
+            <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
+            <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
+            <rr-menu-item slot="menu">Veiligheid</rr-menu-item>
+            <rr-menu-item slot="menu">Hulp</rr-menu-item>
+          </rr-top-navigation-bar>
+
+          <!-- Figma overlay layer -->
+          <iframe
+            id="figma-overlay-nav"
+            src="${figmaEmbedUrl}"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; opacity: 0; pointer-events: none;"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 1rem;">
+          <strong>Tip:</strong> Drag the slider to reveal the Figma design overlay. For full Figma view, use the Design tab below.
+        </p>
+      </div>
+    `;
+  },
   parameters: {
     layout: 'fullscreen',
     controls: { disable: true },
@@ -387,7 +419,7 @@ export const FigmaComparison = {
     docs: {
       description: {
         story:
-          'Vergelijking met Figma design. Klik op de "Design" tab in het addon panel hieronder om het Figma ontwerp te bekijken.',
+          'Overlay vergelijking met Figma design. Gebruik de slider om de opacity van de Figma overlay aan te passen.',
       },
     },
   },
