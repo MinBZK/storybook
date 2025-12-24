@@ -201,8 +201,7 @@ export class RRSwitch extends RRBaseComponent {
       :host([size="xs"]) .thumb {
         width: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
         height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
-        border-radius: var(--semantics-controls-xs-corner-radius, 6px);
-        /* Uses inherited border-width from .thumb (2px via token) */
+        border-radius: 50%; /* Circular thumb per Figma */
       }
 
       :host([size="xs"][checked]) .thumb {
@@ -220,7 +219,7 @@ export class RRSwitch extends RRBaseComponent {
       :host([size="s"]) .thumb {
         width: calc(var(--semantics-controls-s-min-size, 32px) * 0.5);
         height: calc(var(--semantics-controls-s-min-size, 32px) * 0.5);
-        border-radius: calc(var(--semantics-controls-s-corner-radius, 5px) * 1.6);
+        border-radius: 50%; /* Circular thumb per Figma */
       }
 
       :host([size="s"][checked]) .thumb {
@@ -240,7 +239,7 @@ export class RRSwitch extends RRBaseComponent {
       :host(:not([size])) .thumb {
         width: calc(var(--semantics-controls-m-min-size, 44px) * 0.545);
         height: calc(var(--semantics-controls-m-min-size, 44px) * 0.545);
-        border-radius: calc(var(--semantics-controls-m-corner-radius, 11px) * 1.091);
+        border-radius: 50%; /* Circular thumb per Figma */
       }
 
       :host([size="m"][checked]) .thumb,
