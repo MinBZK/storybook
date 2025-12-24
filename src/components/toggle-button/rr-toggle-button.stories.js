@@ -369,13 +369,16 @@ export const FigmaComparison = () => html`
         Our toggle buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="309:3542" style="display: inline-block;">
+        <!-- Figma design: 3 M-size buttons + 3 S-size buttons, with gap: 16px, padding: 16px -->
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
+          <!-- M size buttons (rows 1-3) -->
           <rr-toggle-button size="m">Toggle button</rr-toggle-button>
           <rr-toggle-button size="m">Toggle button</rr-toggle-button>
           <rr-toggle-button size="m" selected>Toggle button</rr-toggle-button>
-          <rr-toggle-button size="m">Toggle button</rr-toggle-button>
-          <rr-toggle-button size="m">Toggle button</rr-toggle-button>
-          <rr-toggle-button size="m" selected>Toggle button</rr-toggle-button>
+          <!-- S size buttons (rows 4-6) -->
+          <rr-toggle-button size="s">Toggle button</rr-toggle-button>
+          <rr-toggle-button size="s">Toggle button</rr-toggle-button>
+          <rr-toggle-button size="s" selected>Toggle button</rr-toggle-button>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
