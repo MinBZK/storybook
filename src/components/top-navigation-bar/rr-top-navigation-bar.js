@@ -288,7 +288,6 @@ export class RRTopNavigationBar extends RRBaseComponent {
         justify-content: space-between;
         min-height: 44px;
         background-color: #ffffff;
-        border-top: 1px solid var(--semantics-divider-color, #e2e8f0);
       }
 
       /* Responsive padding */
