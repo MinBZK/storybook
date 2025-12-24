@@ -299,3 +299,107 @@ ProgrammaticControl.parameters = {
     },
   },
 };
+
+// Figma Comparison - visual comparison with Figma design
+// Note: The Figma node 236:41353 is the switch-list-cell container showing all switch variants.
+// For true pixel-perfect overlay comparison, individual switch node IDs are needed.
+const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
+const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
+
+export const FigmaComparison = () => html`
+  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      <div
+        style="padding: 1rem; background: #fefce8; border: 1px solid #fef08a; border-radius: 8px; margin-bottom: 1rem;"
+      >
+        <p style="margin: 0; font-size: 0.875rem; color: #854d0e;">
+          <strong>Note:</strong> The Figma overlay shows the entire switch-list-cell container (node
+          236:41353) which contains all switch variants. For pixel-perfect comparison, scroll the
+          Design panel below to column 4 (switch column) and compare manually with our
+          implementation.
+        </p>
+      </div>
+
+      <h3 style="margin: 0; font-size: 1.125rem; color: #1e293b;">Our Implementation</h3>
+
+      <div style="display: flex; gap: 2rem; align-items: flex-start;">
+        <div>
+          <h4 style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #475569;">Unchecked</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <rr-switch size="xs" aria-label="XS unchecked"></rr-switch>
+              <span style="font-size: 0.75rem; color: #64748b;">XS</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <rr-switch size="s" aria-label="S unchecked"></rr-switch>
+              <span style="font-size: 0.75rem; color: #64748b;">S</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <rr-switch size="m" aria-label="M unchecked"></rr-switch>
+              <span style="font-size: 0.75rem; color: #64748b;">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #475569;">Checked</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <rr-switch size="xs" checked aria-label="XS checked"></rr-switch>
+              <span style="font-size: 0.75rem; color: #64748b;">XS</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <rr-switch size="s" checked aria-label="S checked"></rr-switch>
+              <span style="font-size: 0.75rem; color: #64748b;">S</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <rr-switch size="m" checked aria-label="M checked"></rr-switch>
+              <span style="font-size: 0.75rem; color: #64748b;">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #475569;">Disabled</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <rr-switch size="m" disabled aria-label="M disabled unchecked"></rr-switch>
+              <span style="font-size: 0.75rem; color: #64748b;">Unchecked</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <rr-switch size="m" checked disabled aria-label="M disabled checked"></rr-switch>
+              <span style="font-size: 0.75rem; color: #64748b;">Checked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin: 1.5rem 0 0 0; font-size: 1.125rem; color: #1e293b;">
+        Pixel-Perfect Comparison
+      </h3>
+      <p style="font-size: 0.875rem; color: #64748b; margin: 0.5rem 0 1rem 0;">
+        Our switches (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
+      </p>
+      <ftl-holster node="236:41353" style="display: inline-block;">
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
+          <rr-switch size="s" aria-label="S switch top"></rr-switch>
+          <rr-switch size="s" aria-label="S switch center"></rr-switch>
+          <rr-switch size="m" aria-label="M switch top"></rr-switch>
+          <rr-switch size="m" aria-label="M switch center"></rr-switch>
+        </div>
+      </ftl-holster>
+      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
+        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
+      </p>
+    </div>
+  </ftl-belt>
+`;
+FigmaComparison.parameters = {
+  controls: { disable: true },
+  docs: {
+    description: {
+      story:
+        'Vergelijking met Figma design. Het Figma overlay toont de switch-list-cell container (node 236:41353). Scroll in het Design panel naar kolom 4 voor de switch componenten. Vergelijk visueel met onze implementatie hierboven.',
+    },
+  },
+};
