@@ -349,6 +349,8 @@ const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
 const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
 
 export const FigmaComparison = {
+  name: '🎨 Figma Comparison',
+  tags: ['!autodocs', 'figma'],
   render: () => html`
     <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
       <div style="display: flex; flex-direction: column; gap: 2rem;">

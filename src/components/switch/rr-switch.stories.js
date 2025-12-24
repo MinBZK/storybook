@@ -394,6 +394,8 @@ export const FigmaComparison = () => html`
     </div>
   </ftl-belt>
 `;
+FigmaComparison.storyName = '🎨 Figma Comparison';
+FigmaComparison.tags = ['!autodocs', 'figma'];
 FigmaComparison.parameters = {
   controls: { disable: true },
   docs: {
