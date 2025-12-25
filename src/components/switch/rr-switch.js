@@ -210,7 +210,7 @@ export class RRSwitch extends RRBaseComponent {
 
       /* Size: S - Figma specs: 44x24px */
       :host([size="s"]) .switch {
-        width: 44px;
+        width: calc(var(--semantics-controls-xs-min-size, 24px) * 1.833);
         height: var(--semantics-controls-xs-min-size, 24px);
         border-radius: calc(var(--semantics-controls-xs-min-size, 24px) / 2);
         padding: 2px;
@@ -223,13 +223,13 @@ export class RRSwitch extends RRBaseComponent {
       }
 
       :host([size="s"][checked]) .thumb {
-        transform: translateX(calc(44px - var(--semantics-controls-xs-min-size, 24px)));
+        transform: translateX(calc((var(--semantics-controls-xs-min-size, 24px) * 1.833) - var(--semantics-controls-xs-min-size, 24px)));
       }
 
       /* Size: M (default) - Figma specs: 56x32px */
       :host([size="m"]) .switch,
       :host(:not([size])) .switch {
-        width: 56px;
+        width: calc(var(--semantics-controls-s-min-size, 32px) * 1.75);
         height: var(--semantics-controls-s-min-size, 32px);
         border-radius: calc(var(--semantics-controls-s-min-size, 32px) / 2);
         padding: 2px;
@@ -244,7 +244,7 @@ export class RRSwitch extends RRBaseComponent {
 
       :host([size="m"][checked]) .thumb,
       :host(:not([size])[checked]) .thumb {
-        transform: translateX(calc(56px - var(--semantics-controls-s-min-size, 32px)));
+        transform: translateX(calc((var(--semantics-controls-s-min-size, 32px) * 1.75) - var(--semantics-controls-s-min-size, 32px)));
       }
 
       /* Checked state */

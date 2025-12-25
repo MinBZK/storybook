@@ -138,7 +138,7 @@ export class RRButton extends RRBaseComponent {
     return `
       :host {
         display: inline-block;
-        font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+        font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
       }
 
       :host([hidden]) {
@@ -180,7 +180,7 @@ export class RRButton extends RRBaseComponent {
       /* Size: XS */
       :host([size="xs"]) .button {
         min-height: var(--semantics-controls-xs-min-size, 24px);
-        padding: 4px 12px;
+        padding: var(--primitives-space-4, 4px) var(--primitives-space-12, 12px);
         font: var(--components-button-xs-font, 600 14px/1.125 system-ui);
         border-radius: var(--semantics-controls-xs-corner-radius, 3px);
         gap: var(--primitives-space-2, 2px);
@@ -189,7 +189,7 @@ export class RRButton extends RRBaseComponent {
       /* Size: S */
       :host([size="s"]) .button {
         min-height: var(--semantics-controls-s-min-size, 32px);
-        padding: 6px 16px;
+        padding: var(--primitives-space-6, 6px) var(--primitives-space-16, 16px);
         font: var(--components-button-s-font, 600 16px/1.125 system-ui);
         border-radius: var(--semantics-controls-s-corner-radius, 5px);
         gap: var(--primitives-space-2, 2px);
@@ -199,7 +199,7 @@ export class RRButton extends RRBaseComponent {
       :host([size="m"]) .button,
       :host(:not([size])) .button {
         min-height: var(--semantics-controls-m-min-size, 44px);
-        padding: 10px 20px;
+        padding: var(--primitives-space-10, 10px) var(--primitives-space-20, 20px);
         font: var(--components-button-m-font, 600 18px/1.125 system-ui);
         border-radius: var(--semantics-controls-m-corner-radius, 7px);
         gap: var(--primitives-space-4, 4px);

@@ -239,12 +239,28 @@ export class RRIconButton extends RRBaseComponent {
         pointer-events: none;
       }
 
-      /* Icon sizing */
+      /* Icon sizing - size-specific dimensions */
       ::slotted(*) {
-        width: 1em;
-        height: 1em;
+        width: var(--_icon-size);
+        height: var(--_icon-size);
         flex-shrink: 0;
         display: block;
+      }
+
+      /* XS: 24px button → 12px icon (~50%) */
+      :host([size="xs"]) {
+        --_icon-size: 12px;
+      }
+
+      /* S: 32px button → 16px icon (~50%) */
+      :host([size="s"]) {
+        --_icon-size: 16px;
+      }
+
+      /* M: 44px button → 20px icon (~45%) */
+      :host([size="m"]),
+      :host(:not([size])) {
+        --_icon-size: 20px;
       }
     `;
   }

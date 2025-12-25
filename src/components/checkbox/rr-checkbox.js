@@ -233,8 +233,8 @@ export class RRCheckbox extends RRBaseComponent {
       /* Checkmark icon */
       .icon {
         display: none;
-        width: 60%;
-        height: 60%;
+        width: 50%;
+        height: 50%;
         color: var(--components-checkbox-is-selected-icon-color, #ffffff);
       }
 
@@ -315,14 +315,14 @@ export class RRCheckbox extends RRBaseComponent {
 
   render() {
     const checkIcon = `
-      <svg class="icon icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="icon icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
     `;
 
     const indeterminateIcon = `
-      <svg class="icon icon-indeterminate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-        <line x1="5" y1="12" x2="19" y2="12"></line>
+      <svg class="icon icon-indeterminate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="6" y1="12" x2="18" y2="12"></line>
       </svg>
     `;
 

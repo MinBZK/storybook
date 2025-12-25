@@ -156,7 +156,7 @@ export class RRToggleButton extends RRBaseComponent {
       /* Size: XS */
       :host([size="xs"]) .button {
         min-height: var(--semantics-controls-xs-min-size, 24px);
-        padding: 4px 12px;
+        padding: var(--primitives-space-4, 4px) var(--primitives-space-12, 12px);
         font: var(--components-button-xs-font, 600 14px/1.125 system-ui);
         border-radius: var(--semantics-controls-xs-corner-radius, 3px);
         gap: var(--primitives-space-2, 2px);
@@ -195,7 +195,7 @@ export class RRToggleButton extends RRBaseComponent {
 
       /* Selected hover state - stays selected color on hover */
       :host([selected]) .button:hover:not(:disabled) {
-        background-color: var(--primitives-color-accent-75, #4F7196);
+        background-color: var(--primitives-color-accent-75, #4f7196);
         color: var(--components-toggle-button-is-selected-content-color, #ffffff);
       }
 

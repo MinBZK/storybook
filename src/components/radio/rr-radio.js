@@ -276,8 +276,9 @@ export class RRRadio extends RRBaseComponent {
       }
 
       :host([size="xs"]) .radio-inner {
-        width: 8px;
-        height: 8px;
+        /* Inner dot is ~33% of outer radio size (8px / 24px = 0.33) */
+        width: calc(var(--semantics-controls-xs-min-size, 24px) * 0.33);
+        height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.33);
       }
 
       /* Size: S (32px) */
@@ -287,8 +288,9 @@ export class RRRadio extends RRBaseComponent {
       }
 
       :host([size="s"]) .radio-inner {
-        width: 12px;
-        height: 12px;
+        /* Inner dot is ~37.5% of outer radio size (12px / 32px = 0.375) */
+        width: calc(var(--semantics-controls-s-min-size, 32px) * 0.375);
+        height: calc(var(--semantics-controls-s-min-size, 32px) * 0.375);
       }
 
       /* Size: M (44px - default) */
@@ -300,8 +302,9 @@ export class RRRadio extends RRBaseComponent {
 
       :host([size="m"]) .radio-inner,
       :host(:not([size])) .radio-inner {
-        width: 16px;
-        height: 16px;
+        /* Inner dot is ~36% of outer radio size (16px / 44px = 0.36) */
+        width: calc(var(--semantics-controls-m-min-size, 44px) * 0.36);
+        height: calc(var(--semantics-controls-m-min-size, 44px) * 0.36);
       }
 
       /* Inner dot (only visible when checked) */
@@ -332,7 +335,8 @@ export class RRRadio extends RRBaseComponent {
         outline-offset: 2px;
       }
 
-      /* Hover state (only when not disabled) */
+      /* Hover state (only when not disabled)
+         Note: Using primitive token as no semantic radio hover token exists in design system */
       :host(:not([disabled]):hover) .radio {
         border-color: var(--primitives-color-accent-75, #4F7196);
       }
