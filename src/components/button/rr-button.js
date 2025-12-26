@@ -189,7 +189,8 @@ export class RRButton extends RRBaseComponent {
       /* Size: S */
       :host([size="s"]) .button {
         min-height: var(--semantics-controls-s-min-size, 32px);
-        padding: var(--primitives-space-6, 6px) var(--primitives-space-16, 16px);
+        /* Figma shows asymmetric padding: top=8, right=8, bottom=6, left=8 */
+        padding: var(--primitives-space-8, 8px) var(--primitives-space-8, 8px) var(--primitives-space-6, 6px) var(--primitives-space-8, 8px);
         font: var(--components-button-s-font, 600 16px/1.125 system-ui);
         border-radius: var(--semantics-controls-s-corner-radius, 5px);
         gap: var(--primitives-space-2, 2px);
@@ -199,7 +200,7 @@ export class RRButton extends RRBaseComponent {
       :host([size="m"]) .button,
       :host(:not([size])) .button {
         min-height: var(--semantics-controls-m-min-size, 44px);
-        padding: var(--primitives-space-10, 10px) var(--primitives-space-20, 20px);
+        padding: var(--primitives-space-12, 12px);
         font: var(--components-button-m-font, 600 18px/1.125 system-ui);
         border-radius: var(--semantics-controls-m-corner-radius, 7px);
         gap: var(--primitives-space-4, 4px);
