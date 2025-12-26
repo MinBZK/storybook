@@ -34,6 +34,9 @@
     "test:visual": "lost-pixel",
     "test:visual:update": "lost-pixel update",
     "test:visual:storybook": "start-server-and-test storybook http://localhost:6006 test:visual",
+    "test:figma": "lost-pixel --config lostpixel.figma.config.ts",
+    "test:figma:update": "lost-pixel update --config lostpixel.figma.config.ts",
+    "test:figma:storybook": "start-server-and-test storybook http://localhost:6006 test:figma",
     "prepare": "pre-commit install || true"
   },
   "devDependencies": {

@@ -5,6 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      compare_figma:
+        description: 'Run Figma comparison tests'
+        type: boolean
+        default: false
 
 jobs:
   visual-regression:
@@ -43,4 +49,43 @@ jobs:
           path: |
             .lostpixel/current/
             .lostpixel/difference/
+          retention-days: 7
+
+  figma-comparison:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.compare_figma == 'true' || contains(github.event.pull_request.labels.*.name, 'compare-figma')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright@1.47.2 install chromium
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Serve Storybook and run Figma comparison
+        run: |
+          npx http-server storybook-static -p 6006 &
+          sleep 5
+          npm run test:figma
+
+      - name: Upload Figma diff artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: figma-comparison-diff
+          path: |
+            .lostpixel/figma-current/
+            .lostpixel/figma-difference/
           retention-days: 7
