@@ -391,11 +391,15 @@ export const FigmaComparison = () => html`
         Our checkboxes (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="236:41408" style="display: inline-block;">
-        <!-- Figma checkbox-list-cell: horizontal row with gap: 16px, padding: 16px -->
-        <div style="display: flex; flex-direction: row; gap: 16px; padding: 16px;">
-          <rr-checkbox size="m" aria-label="M checkbox unchecked"></rr-checkbox>
-          <rr-checkbox size="m" checked aria-label="M checkbox checked"></rr-checkbox>
-          <rr-checkbox size="m" checked aria-label="M checkbox checked"></rr-checkbox>
+        <!--
+          Figma checkbox-list-cell: 96x56px (Hug)
+          - Padding: 16px all sides
+          - Gap: 16px horizontal
+          - 2 checkboxes showing vertical alignment variants (xs size, 24px)
+        -->
+        <div style="display: inline-flex; flex-direction: row; gap: 16px; padding: 16px; background: #ffffff;">
+          <rr-checkbox size="xs" aria-label="XS checkbox 1"></rr-checkbox>
+          <rr-checkbox size="xs" aria-label="XS checkbox 2"></rr-checkbox>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
