@@ -635,54 +635,57 @@ export const FigmaComparison = () => html`
         Our buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="20-27" style="display: inline-block;">
-        <!-- 6 columns × 5 rows grid matching Figma button-list-cell layout exactly -->
-        <!-- Columns: accent-filled, accent-outlined, accent-filled, accent-transparent, accent-tinted, neutral-tinted -->
-        <!-- Rows: Size M (2 rows), Size S (2 rows), Size XS (1 row) pattern -->
-        <div style="display: flex; flex-direction: column; gap: 8px; padding: 16px;">
-          <!-- Row 1: Size M -->
-          <div style="display: flex; gap: 8px; align-items: center;">
+        <!--
+          Figma button-list-cell (20-27) is 832x316px with:
+          - 6 columns: 5 variants + disabled column
+          - 5 rows: M, M disabled, S, S disabled, XS
+          - White background, 16px padding, 16px gap between buttons
+        -->
+        <div style="width: 832px; height: 316px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
+          <!-- Row 1: Size M, normal -->
+          <div style="display: flex; gap: 16px; align-items: center;">
             <rr-button variant="accent-filled" size="m">Button</rr-button>
             <rr-button variant="accent-outlined" size="m">Button</rr-button>
-            <rr-button variant="accent-filled" size="m">Button</rr-button>
-            <rr-button variant="accent-transparent" size="m">Button</rr-button>
             <rr-button variant="accent-tinted" size="m">Button</rr-button>
             <rr-button variant="neutral-tinted" size="m">Button</rr-button>
-          </div>
-          <!-- Row 2: Size M repeat -->
-          <div style="display: flex; gap: 8px; align-items: center;">
-            <rr-button variant="accent-filled" size="m">Button</rr-button>
-            <rr-button variant="accent-outlined" size="m">Button</rr-button>
-            <rr-button variant="accent-filled" size="m">Button</rr-button>
             <rr-button variant="accent-transparent" size="m">Button</rr-button>
-            <rr-button variant="accent-tinted" size="m">Button</rr-button>
-            <rr-button variant="neutral-tinted" size="m">Button</rr-button>
+            <rr-button variant="accent-filled" size="m" disabled>Button</rr-button>
           </div>
-          <!-- Row 3: Size S -->
-          <div style="display: flex; gap: 8px; align-items: center;">
+          <!-- Row 2: Size M, disabled for all variants -->
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <rr-button variant="accent-filled" size="m" disabled>Button</rr-button>
+            <rr-button variant="accent-outlined" size="m" disabled>Button</rr-button>
+            <rr-button variant="accent-tinted" size="m" disabled>Button</rr-button>
+            <rr-button variant="neutral-tinted" size="m" disabled>Button</rr-button>
+            <rr-button variant="accent-transparent" size="m" disabled>Button</rr-button>
+            <rr-button variant="accent-filled" size="m" disabled>Button</rr-button>
+          </div>
+          <!-- Row 3: Size S, normal -->
+          <div style="display: flex; gap: 16px; align-items: center;">
             <rr-button variant="accent-filled" size="s">Button</rr-button>
             <rr-button variant="accent-outlined" size="s">Button</rr-button>
-            <rr-button variant="accent-filled" size="s">Button</rr-button>
-            <rr-button variant="accent-transparent" size="s">Button</rr-button>
             <rr-button variant="accent-tinted" size="s">Button</rr-button>
             <rr-button variant="neutral-tinted" size="s">Button</rr-button>
-          </div>
-          <!-- Row 4: Size S repeat -->
-          <div style="display: flex; gap: 8px; align-items: center;">
-            <rr-button variant="accent-filled" size="s">Button</rr-button>
-            <rr-button variant="accent-outlined" size="s">Button</rr-button>
-            <rr-button variant="accent-filled" size="s">Button</rr-button>
             <rr-button variant="accent-transparent" size="s">Button</rr-button>
-            <rr-button variant="accent-tinted" size="s">Button</rr-button>
-            <rr-button variant="neutral-tinted" size="s">Button</rr-button>
+            <rr-button variant="accent-filled" size="s" disabled>Button</rr-button>
           </div>
-          <!-- Row 5: Size XS -->
-          <div style="display: flex; gap: 8px; align-items: center;">
+          <!-- Row 4: Size S, disabled for all variants -->
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <rr-button variant="accent-filled" size="s" disabled>Button</rr-button>
+            <rr-button variant="accent-outlined" size="s" disabled>Button</rr-button>
+            <rr-button variant="accent-tinted" size="s" disabled>Button</rr-button>
+            <rr-button variant="neutral-tinted" size="s" disabled>Button</rr-button>
+            <rr-button variant="accent-transparent" size="s" disabled>Button</rr-button>
+            <rr-button variant="accent-filled" size="s" disabled>Button</rr-button>
+          </div>
+          <!-- Row 5: Size XS, normal -->
+          <div style="display: flex; gap: 16px; align-items: center;">
             <rr-button variant="accent-filled" size="xs">Button</rr-button>
             <rr-button variant="accent-outlined" size="xs">Button</rr-button>
-            <rr-button variant="accent-filled" size="xs">Button</rr-button>
-            <rr-button variant="accent-transparent" size="xs">Button</rr-button>
             <rr-button variant="accent-tinted" size="xs">Button</rr-button>
             <rr-button variant="neutral-tinted" size="xs">Button</rr-button>
+            <rr-button variant="accent-transparent" size="xs">Button</rr-button>
+            <rr-button variant="accent-filled" size="xs" disabled>Button</rr-button>
           </div>
         </div>
       </ftl-holster>
