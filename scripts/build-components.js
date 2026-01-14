@@ -44,7 +44,7 @@ async function buildComponents() {
         return `export { RR${componentName
           .split('-')
           .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-          .join('')} } from './${componentName}/rr-${componentName}.js';`;
+          .join('')} } from './rr-${componentName}.js';`;
       })
       .join('\n');
 
