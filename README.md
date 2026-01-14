@@ -1,6 +1,6 @@
 # RegelRecht Design System
 
-Design tokens en Web Components voor Nederlandse Overheid webapplicaties.
+Design tokens en Web Components voor RegelRecht.
 
 ## Architectuur
 
