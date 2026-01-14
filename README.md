@@ -17,9 +17,9 @@ npm login --registry=https://npm.pkg.github.com
 # Use your GitHub username and a personal access token with `read:packages` scope
 ```
 
-3. Install the package (including peer dependency):
+3. Install the package:
 ```bash
-npm install @minbzk/storybook lit
+npm install @minbzk/storybook
 ```
 
 ### Usage

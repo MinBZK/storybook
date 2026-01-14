@@ -10,8 +10,6 @@ async function buildComponents() {
       format: 'esm',
       target: 'es2020',
       minify: false,
-      // Keep lit as external since consumers will have their own copy
-      external: ['lit'],
     });
 
     console.log('✓ Components built successfully!');
