@@ -30,6 +30,9 @@ jobs:
       - name: Run ESLint (including lit-a11y rules)
         run: npm run lint
 
+      - name: Build tokens
+        run: npm run build:tokens
+
       - name: Start Storybook in background
         run: npm run storybook -- --ci &
 

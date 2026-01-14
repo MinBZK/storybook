@@ -42,19 +42,25 @@ export class RRNavLogo extends RRBaseComponent {
 
   constructor() {
     super();
+    this._logoLoaded = false;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this._loadRijkswapen();
+  async connectedCallback() {
+    await super.connectedCallback();
+    // Only load once - prevents infinite loop when cache exists
+    if (!this._logoLoaded) {
+      this._logoLoaded = true;
+      await this._loadRijkswapen();
+    }
   }
 
   /**
    * Loads the official Rijkswapen SVG and caches it.
    */
   async _loadRijkswapen() {
+    // If already cached, no need to fetch or re-render
+    // (base class connectedCallback already called render())
     if (cachedRijkswapen) {
-      this.render();
       return;
     }
 
@@ -68,6 +74,7 @@ export class RRNavLogo extends RRBaseComponent {
 
       const svgText = await response.text();
       cachedRijkswapen = svgText;
+      // Re-render now that we have the SVG
       this.render();
     } catch (error) {
       console.error('Failed to load Rijkswapen:', error.message);

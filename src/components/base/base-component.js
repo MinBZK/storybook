@@ -145,7 +145,7 @@ async function loadTokensCSS() {
         return tokensCSSContent;
       }
     }
-  } catch (e) {
+  } catch {
     // Silent fail - tokens should be loaded via CSS import in production
   }
 

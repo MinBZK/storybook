@@ -32,6 +32,9 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright@1.47.2 install chromium
 
+      - name: Build tokens
+        run: npm run build:tokens
+
       - name: Build Storybook
         run: npm run build-storybook
 
@@ -70,6 +73,9 @@ jobs:
 
       - name: Install Playwright browsers
         run: npx playwright@1.47.2 install chromium
+
+      - name: Build tokens
+        run: npm run build:tokens
 
       - name: Build Storybook
         run: npm run build-storybook
