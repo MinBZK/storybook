@@ -1,20 +1,29 @@
 {
-  "name": "@regelrecht/design-system",
+  "name": "@minbzk/storybook",
   "version": "0.1.0",
   "description": "Design System voor RegelRecht - Nederlandse Overheid",
   "type": "module",
   "main": "dist/components/rr-components.js",
+  "module": "dist/components/rr-components.js",
   "exports": {
     ".": "./dist/components/rr-components.js",
     "./css": "./dist/css/tokens.css",
     "./css/primitives": "./dist/css/primitives.css",
     "./css/semantics": "./dist/css/semantics.css",
-    "./css/components": "./dist/css/components.css"
+    "./css/components": "./dist/css/components.css",
+    "./components/*": "./dist/components/*.js"
   },
   "files": [
     "dist",
     "fonts"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MinBZK/storybook.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "build": "npm run build:tokens && npm run build:components",
     "build:tokens": "node style-dictionary.config.js",
