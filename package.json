@@ -1,6 +1,6 @@
 {
   "name": "@minbzk/storybook",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Design System voor RegelRecht - Nederlandse Overheid",
   "type": "module",
   "main": "dist/components/rr-components.js",

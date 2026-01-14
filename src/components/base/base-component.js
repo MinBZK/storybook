@@ -116,26 +116,40 @@ const ACCESSIBILITY_CSS = `
 `;
 
 /**
- * Load tokens CSS content once and cache it
+ * Load tokens CSS content once and cache it.
+ * When used as npm package, tokens should be imported separately via CSS.
+ * This fetch is only for local development with the storybook.
  */
 async function loadTokensCSS() {
   if (tokensCSSContent !== null) {
     return tokensCSSContent;
   }
 
-  try {
-    // Try to fetch from dist folder (development)
-    const response = await fetch('/dist/css/tokens.css');
-    if (response.ok) {
-      tokensCSSContent = await response.text();
-      return tokensCSSContent;
-    }
-  } catch (e) {
-    // Fallback: tokens might be inlined or loaded differently
-    console.warn('Could not load tokens.css from /dist/css/', e);
+  // Skip fetch in non-browser environments or when running as npm package
+  if (typeof window === 'undefined' || typeof fetch === 'undefined') {
+    tokensCSSContent = '';
+    return tokensCSSContent;
   }
 
-  // Return empty string if loading fails
+  try {
+    // Only try to fetch in development (localhost or file://)
+    const isLocalDev =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.protocol === 'file:';
+
+    if (isLocalDev) {
+      const response = await fetch('/dist/css/tokens.css');
+      if (response.ok) {
+        tokensCSSContent = await response.text();
+        return tokensCSSContent;
+      }
+    }
+  } catch (e) {
+    // Silent fail - tokens should be loaded via CSS import in production
+  }
+
+  // Return empty string - components use fallback values in CSS
   tokensCSSContent = '';
   return tokensCSSContent;
 }

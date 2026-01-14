@@ -24,15 +24,17 @@ npm install @minbzk/storybook
 
 ### Usage
 
+**Important:** You must import the CSS tokens for proper styling.
+
 ```javascript
+// Import CSS tokens (required for styling)
+import '@minbzk/storybook/css';
+
 // Import all components
 import '@minbzk/storybook';
 
 // Or import specific components
 import { RRButton, RRCheckbox, RRSwitch } from '@minbzk/storybook';
-
-// Import CSS tokens
-import '@minbzk/storybook/css';
 ```
 
 ```html

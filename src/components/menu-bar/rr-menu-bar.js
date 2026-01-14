@@ -40,6 +40,7 @@ export class RRMenuBar extends RRBaseComponent {
     this._resizeObserver = null;
     this._overflowMenuOpen = false;
     this._overflowMenuId = `rr-overflow-${Math.random().toString(36).substr(2, 9)}`;
+    this._isHandlingOverflow = false; // Guard flag to prevent infinite loops
   }
 
   connectedCallback() {
@@ -174,7 +175,18 @@ export class RRMenuBar extends RRBaseComponent {
 
   _handleOverflow() {
     if (!this.hasOverflowMenu) return;
+    // Guard against re-entrant calls from ResizeObserver
+    if (this._isHandlingOverflow) return;
+    this._isHandlingOverflow = true;
 
+    try {
+      this._doHandleOverflow();
+    } finally {
+      this._isHandlingOverflow = false;
+    }
+  }
+
+  _doHandleOverflow() {
     const menuContainer = this.shadowRoot?.querySelector('.menu');
     const overflowWrapper = this.shadowRoot?.querySelector('.overflow-wrapper');
     const overflowButton = this.shadowRoot?.querySelector('.overflow-button');
