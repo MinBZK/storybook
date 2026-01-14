@@ -2,6 +2,50 @@
 
 Design tokens en Web Components voor RegelRecht.
 
+## Installation
+
+### Via npm (GitHub Packages)
+
+1. Add `.npmrc` to your project for GitHub Packages authentication:
+```
+@minbzk:registry=https://npm.pkg.github.com
+```
+
+2. Authenticate with GitHub Packages (one-time setup):
+```bash
+npm login --registry=https://npm.pkg.github.com
+# Use your GitHub username and a personal access token with `read:packages` scope
+```
+
+3. Install the package:
+```bash
+npm install @minbzk/storybook
+```
+
+### Usage
+
+```javascript
+// Import all components
+import '@minbzk/storybook';
+
+// Or import specific components
+import { RRButton, RRCheckbox, RRSwitch } from '@minbzk/storybook';
+
+// Import CSS tokens
+import '@minbzk/storybook/css';
+```
+
+```html
+<!-- Use in HTML -->
+<rr-button variant="accent-filled">Click me</rr-button>
+<rr-checkbox label="Accept terms"></rr-checkbox>
+<rr-switch label="Enable notifications"></rr-switch>
+```
+
+## Storybook
+
+View the live component documentation: **https://minbzk.github.io/storybook/**
+
 ## Architectuur
 
 ```
