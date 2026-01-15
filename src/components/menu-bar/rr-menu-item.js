@@ -208,14 +208,16 @@ export class RRMenuItem extends RRBaseComponent {
   }
 
   render() {
-    const element = this.href ? 'a' : 'button';
+    // Sanitize href to prevent javascript: and other dangerous protocols
+    const safeHref = this.sanitizeUrl(this.href);
+    const element = safeHref ? 'a' : 'button';
     const tabindex = this.disabled ? '-1' : '0';
 
     this.shadowRoot.innerHTML = `
       <${element}
         class="menu-item"
         part="link"
-        ${this.href ? `href="${this.href}"` : 'type="button"'}
+        ${safeHref ? `href="${safeHref}"` : 'type="button"'}
         ${this.disabled ? 'disabled' : ''}
         aria-disabled="${this.disabled}"
         ${this.selected ? 'aria-current="page"' : ''}

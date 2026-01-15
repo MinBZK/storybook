@@ -235,10 +235,11 @@ export class RRNavLogo extends RRBaseComponent {
 
   render() {
     const showWordmark = this.hasWordmark;
-    const title = this.titleText;
-    const subtitle = this.subtitle;
-    const supportingText1 = this.supportingText1;
-    const supportingText2 = this.supportingText2;
+    // Escape all user-provided content to prevent XSS
+    const title = this.escapeHtml(this.titleText);
+    const subtitle = this.escapeHtml(this.subtitle);
+    const supportingText1 = this.escapeHtml(this.supportingText1);
+    const supportingText2 = this.escapeHtml(this.supportingText2);
 
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>

@@ -72,15 +72,8 @@ export class RRBox extends RRBaseComponent {
         box-sizing: border-box;
       }
 
-      /* Custom padding override via attribute */
-      :host([padding]) .container {
-        --_padding: attr(padding);
-      }
-
-      /* Custom radius override via attribute */
-      :host([radius]) .container {
-        --_border-radius: attr(radius);
-      }
+      /* Note: Custom padding/radius overrides are applied via inline styles in render()
+         CSS attr() does not work in custom properties in current browsers */
     `;
   }
 

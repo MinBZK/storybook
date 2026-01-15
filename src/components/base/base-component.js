@@ -163,18 +163,29 @@ export class RRBaseComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._initialized = false;
+    this._pendingAnnouncers = new Set(); // Track screen reader announcers for cleanup
   }
 
   async connectedCallback() {
     if (!this._initialized) {
       await this._initialize();
       this._initialized = true;
+      this.render(); // Only render after full initialization
+    } else {
+      this.render(); // Re-render on reconnect if already initialized
     }
-    this.render();
   }
 
   disconnectedCallback() {
-    // Cleanup if needed
+    // Cleanup pending screen reader announcers to prevent memory leaks
+    if (this._pendingAnnouncers) {
+      this._pendingAnnouncers.forEach((announcer) => {
+        if (announcer.parentNode) {
+          announcer.parentNode.removeChild(announcer);
+        }
+      });
+      this._pendingAnnouncers.clear();
+    }
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -268,6 +279,46 @@ export class RRBaseComponent extends HTMLElement {
   }
 
   /**
+   * Escapes HTML special characters to prevent XSS attacks
+   * @param {string} str - The string to escape
+   * @returns {string} The escaped string safe for HTML insertion
+   */
+  escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    if (typeof str !== 'string') str = String(str);
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  /**
+   * Sanitizes a URL to prevent javascript: and other dangerous protocols
+   * Only allows http, https, relative URLs, and anchor links
+   * @param {string} url - The URL to sanitize
+   * @returns {string} The sanitized URL or empty string if dangerous
+   */
+  sanitizeUrl(url) {
+    if (!url || typeof url !== 'string') return '';
+    const trimmed = url.trim();
+    // Allow relative URLs, anchors, http and https
+    if (
+      trimmed.startsWith('/') ||
+      trimmed.startsWith('#') ||
+      trimmed.startsWith('http://') ||
+      trimmed.startsWith('https://')
+    ) {
+      return trimmed;
+    }
+    // Block javascript:, data:, vbscript:, etc.
+    if (/^[a-z]+:/i.test(trimmed)) {
+      console.warn(`Blocked potentially dangerous URL: ${trimmed}`);
+      return '';
+    }
+    // Allow other relative URLs (e.g., "page.html", "../page")
+    return trimmed;
+  }
+
+  /**
    * Utility for boolean attributes
    * @param {string} name - Attribute name
    * @returns {boolean}
@@ -337,9 +388,17 @@ export class RRBaseComponent extends HTMLElement {
 
     document.body.appendChild(announcer);
 
+    // Track the announcer for cleanup if component disconnects
+    this._pendingAnnouncers.add(announcer);
+
     // Remove after announcement
     setTimeout(() => {
-      document.body.removeChild(announcer);
+      if (this._pendingAnnouncers.has(announcer)) {
+        if (announcer.parentNode) {
+          announcer.parentNode.removeChild(announcer);
+        }
+        this._pendingAnnouncers.delete(announcer);
+      }
     }, 1000);
   }
 

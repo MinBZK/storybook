@@ -27,26 +27,45 @@ export class RRBackButton extends RRBaseComponent {
 
   constructor() {
     super();
+    this._handleClick = this._handleClick.bind(this);
+    this._eventsAttached = false;
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this._setupEventListeners();
+    this._attachEvents();
   }
 
-  _setupEventListeners() {
-    this.shadowRoot.addEventListener('click', (e) => {
-      // If no href, dispatch event for SPA navigation
-      if (!this.href) {
-        e.preventDefault();
-        this.dispatchEvent(
-          new CustomEvent('back-click', {
-            bubbles: true,
-            composed: true,
-          })
-        );
-      }
-    });
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._detachEvents();
+  }
+
+  _attachEvents() {
+    if (!this._eventsAttached && this.shadowRoot) {
+      this.shadowRoot.addEventListener('click', this._handleClick);
+      this._eventsAttached = true;
+    }
+  }
+
+  _detachEvents() {
+    if (this._eventsAttached && this.shadowRoot) {
+      this.shadowRoot.removeEventListener('click', this._handleClick);
+      this._eventsAttached = false;
+    }
+  }
+
+  _handleClick(e) {
+    // If no href, dispatch event for SPA navigation
+    if (!this.href) {
+      e.preventDefault();
+      this.dispatchEvent(
+        new CustomEvent('back-click', {
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   }
 
   // Getters for attributes
@@ -152,19 +171,23 @@ export class RRBackButton extends RRBaseComponent {
     // Arrow left icon
     const arrowIcon = `<svg class="icon" part="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>`;
 
-    const tag = this.href ? 'a' : 'button';
-    const hrefAttr = this.href ? `href="${this.href}"` : '';
+    // Use escapeHtml/sanitizeUrl for user-provided content
+    const safeLabel = this.escapeHtml(this.label);
+    const safeHref = this.sanitizeUrl(this.href);
+    const tag = safeHref ? 'a' : 'button';
+    const hrefAttr = safeHref ? `href="${safeHref}"` : '';
 
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>
-      <${tag} class="back-button" part="button" ${hrefAttr} aria-label="${this.label}">
+      <${tag} class="back-button" part="button" ${hrefAttr} aria-label="${safeLabel}">
         ${arrowIcon}
-        <span class="label" part="label">${this.label}</span>
+        <span class="label" part="label">${safeLabel}</span>
       </${tag}>
     `;
 
-    // Re-attach event listeners after render
-    this._setupEventListeners();
+    // Re-attach events after render (shadowRoot was recreated)
+    this._eventsAttached = false;
+    this._attachEvents();
   }
 }
 
