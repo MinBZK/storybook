@@ -266,14 +266,20 @@ export class RRIconButton extends RRBaseComponent {
   }
 
   render() {
+    // Escape user-provided content
+    const safeAriaLabel = this.escapeHtml(this.ariaLabel);
+    // Validate type to prevent injection
+    const validTypes = ['button', 'submit', 'reset'];
+    const safeType = validTypes.includes(this.type) ? this.type : 'button';
+
     this.shadowRoot.innerHTML = `
       <button
         class="button"
         part="button"
-        type="${this.type}"
+        type="${safeType}"
         ${this.disabled ? 'disabled' : ''}
         aria-disabled="${this.disabled}"
-        aria-label="${this.ariaLabel}"
+        aria-label="${safeAriaLabel}"
       >
         <slot></slot>
       </button>

@@ -389,14 +389,26 @@ export class RRTopNavigationBar extends RRBaseComponent {
   }
 
   render() {
+    // Escape all user-provided content to prevent XSS
+    const safeTitle = this.escapeHtml(this.titleText);
+    const safeLogoTitle = this.escapeHtml(this.logoTitle);
+    const safeLogoSubtitle = this.escapeHtml(this.logoSubtitle);
+    const safeLogoSupporting1 = this.escapeHtml(this.logoSupportingText1);
+    const safeLogoSupporting2 = this.escapeHtml(this.logoSupportingText2);
+    const safeLanguage = this.escapeHtml(this.utilityLanguage);
+    const safeAccountLabel = this.escapeHtml(this.utilityAccountLabel);
+    const safeBackLabel = this.escapeHtml(this.backLabel);
+    const safeBackHref = this.sanitizeUrl(this.backHref);
+    const safeSkipTarget = this.sanitizeUrl(this.skipLinkTarget);
+
     // Build logo attributes
     const logoAttrs = [
       `container="${this.container}"`,
       this.logoHasWordmark ? 'has-wordmark' : '',
-      this.logoTitle ? `title="${this.logoTitle}"` : '',
-      this.logoSubtitle ? `subtitle="${this.logoSubtitle}"` : '',
-      this.logoSupportingText1 ? `supporting-text-1="${this.logoSupportingText1}"` : '',
-      this.logoSupportingText2 ? `supporting-text-2="${this.logoSupportingText2}"` : '',
+      safeLogoTitle ? `title="${safeLogoTitle}"` : '',
+      safeLogoSubtitle ? `subtitle="${safeLogoSubtitle}"` : '',
+      safeLogoSupporting1 ? `supporting-text-1="${safeLogoSupporting1}"` : '',
+      safeLogoSupporting2 ? `supporting-text-2="${safeLogoSupporting2}"` : '',
     ]
       .filter(Boolean)
       .join(' ');
@@ -409,8 +421,8 @@ export class RRTopNavigationBar extends RRBaseComponent {
       this.utilityHasHelp ? 'has-help' : '',
       this.utilityHasSettings ? 'has-settings' : '',
       this.utilityHasAccount ? '' : 'no-account',
-      `language="${this.utilityLanguage}"`,
-      `account-label="${this.utilityAccountLabel}"`,
+      `language="${safeLanguage}"`,
+      `account-label="${safeAccountLabel}"`,
     ]
       .filter(Boolean)
       .join(' ');
@@ -418,15 +430,15 @@ export class RRTopNavigationBar extends RRBaseComponent {
     // Build back button attributes
     const backAttrs = [
       `container="${this.container}"`,
-      this.backHref ? `href="${this.backHref}"` : '',
-      `label="${this.backLabel}"`,
+      safeBackHref ? `href="${safeBackHref}"` : '',
+      `label="${safeBackLabel}"`,
     ]
       .filter(Boolean)
       .join(' ');
 
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>
-      <a href="${this.skipLinkTarget}" class="skip-link">Ga naar hoofdinhoud</a>
+      <a href="${safeSkipTarget}" class="skip-link">Ga naar hoofdinhoud</a>
       <div class="container" part="container">
         <!-- Logo bar with centered Rijksoverheid coat of arms -->
         <div class="logo-bar" part="logo-bar">
@@ -438,7 +450,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
           <!-- Left: Back button, Title, Global Menu -->
           <div class="nav-left">
             <rr-back-button ${backAttrs}></rr-back-button>
-            <span class="nav-title">${this.titleText}</span>
+            <span class="nav-title">${safeTitle}</span>
             <div class="global-menu">
               <rr-menu-bar size="${this.container}" has-overflow-menu overflow-label="Meer">
                 <slot name="menu"></slot>

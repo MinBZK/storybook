@@ -72,11 +72,32 @@ export class RRUtilityMenuBar extends RRBaseComponent {
   constructor() {
     super();
     this._expandedButton = null; // Track which dropdown is currently expanded
+    this._handleClick = this._handleClick.bind(this);
+    this._eventsAttached = false;
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this._setupEventListeners();
+    this._attachEvents();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._detachEvents();
+  }
+
+  _attachEvents() {
+    if (!this._eventsAttached && this.shadowRoot) {
+      this.shadowRoot.addEventListener('click', this._handleClick);
+      this._eventsAttached = true;
+    }
+  }
+
+  _detachEvents() {
+    if (this._eventsAttached && this.shadowRoot) {
+      this.shadowRoot.removeEventListener('click', this._handleClick);
+      this._eventsAttached = false;
+    }
   }
 
   /**
@@ -103,21 +124,19 @@ export class RRUtilityMenuBar extends RRBaseComponent {
     this._expandedButton = null;
   }
 
-  _setupEventListeners() {
-    this.shadowRoot.addEventListener('click', (e) => {
-      const button = e.target.closest('button');
-      if (!button) return;
+  _handleClick(e) {
+    const button = e.target.closest('button');
+    if (!button) return;
 
-      const action = button.dataset.action;
-      if (action) {
-        this.dispatchEvent(
-          new CustomEvent(`${action}-click`, {
-            bubbles: true,
-            composed: true,
-          })
-        );
-      }
-    });
+    const action = button.dataset.action;
+    if (action) {
+      this.dispatchEvent(
+        new CustomEvent(`${action}-click`, {
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   }
 
   // Getters for attributes
@@ -250,6 +269,10 @@ export class RRUtilityMenuBar extends RRBaseComponent {
   }
 
   render() {
+    // Escape user-provided content
+    const safeLanguage = this.escapeHtml(this.language);
+    const safeAccountLabel = this.escapeHtml(this.accountLabel);
+
     // SVG icons
     const searchIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`;
     const userIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
@@ -263,8 +286,8 @@ export class RRUtilityMenuBar extends RRBaseComponent {
         ${
           this.hasLanguageSwitch
             ? `
-          <button class="utility-button" part="button" data-action="language" aria-label="${this.language} - Taal selecteren" aria-haspopup="true" aria-expanded="false">
-            <span>${this.language}</span>
+          <button class="utility-button" part="button" data-action="language" aria-label="${safeLanguage} - Taal selecteren" aria-haspopup="true" aria-expanded="false">
+            <span>${safeLanguage}</span>
             ${chevronIcon}
           </button>
         `
@@ -307,9 +330,9 @@ export class RRUtilityMenuBar extends RRBaseComponent {
         ${
           this.hasAccount
             ? `
-          <button class="utility-button" part="button" data-action="account" aria-label="${this.accountLabel} - Account menu" aria-haspopup="true" aria-expanded="false">
+          <button class="utility-button" part="button" data-action="account" aria-label="${safeAccountLabel} - Account menu" aria-haspopup="true" aria-expanded="false">
             ${userIcon}
-            <span>${this.accountLabel}</span>
+            <span>${safeAccountLabel}</span>
             ${chevronIcon}
           </button>
         `
@@ -318,8 +341,9 @@ export class RRUtilityMenuBar extends RRBaseComponent {
       </div>
     `;
 
-    // Re-attach event listeners after render
-    this._setupEventListeners();
+    // Re-attach events after render (shadowRoot was recreated)
+    this._eventsAttached = false;
+    this._attachEvents();
   }
 }
 

@@ -39,8 +39,10 @@ export class RRMenuBar extends RRBaseComponent {
     this._onOverflowKeyDown = this._onOverflowKeyDown.bind(this);
     this._resizeObserver = null;
     this._overflowMenuOpen = false;
-    this._overflowMenuId = `rr-overflow-${Math.random().toString(36).substr(2, 9)}`;
+    this._overflowMenuId = `rr-overflow-${Math.random().toString(36).substring(2, 11)}`;
     this._isHandlingOverflow = false; // Guard flag to prevent infinite loops
+    this._overflowRAF = null; // RequestAnimationFrame ID for debouncing
+    this._documentListenerAttached = false; // Track if document click listener is attached
   }
 
   connectedCallback() {
@@ -156,12 +158,20 @@ export class RRMenuBar extends RRBaseComponent {
       // Initial check
       this._handleOverflow();
 
-      // Close menu when clicking outside
-      document.addEventListener('click', this._closeOverflowMenu);
+      // Close menu when clicking outside - only attach once
+      if (!this._documentListenerAttached) {
+        document.addEventListener('click', this._closeOverflowMenu);
+        this._documentListenerAttached = true;
+      }
     });
   }
 
   _cleanupOverflowDetection() {
+    // Cancel any pending RAF
+    if (this._overflowRAF) {
+      cancelAnimationFrame(this._overflowRAF);
+      this._overflowRAF = null;
+    }
     if (this._resizeObserver) {
       this._resizeObserver.disconnect();
       this._resizeObserver = null;
@@ -170,20 +180,33 @@ export class RRMenuBar extends RRBaseComponent {
       this._slotElement.removeEventListener('slotchange', this._handleOverflow);
       this._slotElement = null;
     }
-    document.removeEventListener('click', this._closeOverflowMenu);
+    if (this._documentListenerAttached) {
+      document.removeEventListener('click', this._closeOverflowMenu);
+      this._documentListenerAttached = false;
+    }
   }
 
   _handleOverflow() {
     if (!this.hasOverflowMenu) return;
     // Guard against re-entrant calls from ResizeObserver
     if (this._isHandlingOverflow) return;
-    this._isHandlingOverflow = true;
 
-    try {
-      this._doHandleOverflow();
-    } finally {
-      this._isHandlingOverflow = false;
+    // Debounce with RAF to prevent ResizeObserver loops
+    if (this._overflowRAF) {
+      cancelAnimationFrame(this._overflowRAF);
     }
+
+    this._overflowRAF = requestAnimationFrame(() => {
+      this._isHandlingOverflow = true;
+      try {
+        this._doHandleOverflow();
+      } finally {
+        // Reset after a frame to allow new triggers
+        requestAnimationFrame(() => {
+          this._isHandlingOverflow = false;
+        });
+      }
+    });
   }
 
   _doHandleOverflow() {
