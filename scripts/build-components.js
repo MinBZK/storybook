@@ -4,7 +4,7 @@ async function buildComponents() {
   try {
     // Build a single bundled file with all components
     await esbuild.build({
-      entryPoints: ['src/components/index.js'],
+      entryPoints: ['src/components/index.ts'],
       bundle: true,
       outfile: 'dist/components/rr-components.js',
       format: 'esm',
