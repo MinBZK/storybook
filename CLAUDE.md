@@ -54,10 +54,6 @@ export const FigmaComparison = () => html`
     </ftl-holster>
   </ftl-belt>
 `;
-FigmaComparison.parameters = {
-  docs: { disable: true },
-  lostpixel: { disable: true }
-};
 ```
 
 **Usage:** In Storybook, use Toggle/Overlay/Side-by-Side modes to compare code vs Figma.
