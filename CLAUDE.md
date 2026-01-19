@@ -126,6 +126,59 @@ See `docs/component-map.json` for full details.
 - Conventional commits: `feat(button): add variant`, `fix(checkbox): focus ring`
 - No hardcoded values, no !important, no frameworks
 
+## Package Versioning
+
+**Bump the version in `package.json` when:**
+- Adding or modifying a component (`.js`, `.ts` in `src/components/`)
+- Changing design tokens that affect output
+- Updating dependencies that affect the bundle
+
+**Do NOT bump version for:**
+- Documentation changes only
+- Storybook-only changes
+- Test file changes
+- Development tooling changes
+
+**How to bump:** Edit `"version"` in `package.json`. Use semantic versioning.
+
+## BEM Naamgeving
+
+Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
+
+```
+.block                    /* Standalone component */
+.block__element           /* Onderdeel van block */
+.block--modifier          /* Variant of state van block */
+.block__element--modifier /* Variant van element */
+```
+
+**Voorbeelden:**
+
+```html
+<!-- Block -->
+<button class="button">
+
+<!-- Block met modifier -->
+<button class="button button--primary">
+<button class="button button--disabled">
+
+<!-- Element binnen block -->
+<button class="button">
+  <span class="button__icon"></span>
+  <span class="button__label">Tekst</span>
+</button>
+
+<!-- Element met modifier -->
+<span class="button__icon button__icon--large"></span>
+```
+
+**Regels:**
+- Block: `rr-{naam}` of simpelweg de component naam
+- Element: dubbele underscore `__`
+- Modifier: dubbele hyphen `--`
+- Geen nesting van blocks binnen element namen (niet: `block__element__subelement`)
+- Modifiers zijn altijd aanvullend, nooit vervanging van base class
+
 ## Rules
 
 1. Extend `RRBaseComponent`
@@ -133,3 +186,4 @@ See `docs/component-map.json` for full details.
 3. Only design tokens - never hardcode
 4. DigiToegankelijk (WCAG 2.1 AA) compliant
 5. RijksSansVF font with system-ui fallback
+6. BEM naamgeving voor alle class namen

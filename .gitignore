@@ -36,3 +36,6 @@ storybook-static
 # Lost Pixel (keep baseline, ignore current and difference)
 .lostpixel/current/
 .lostpixel/difference/
+
+# Git worktrees
+.worktrees/
