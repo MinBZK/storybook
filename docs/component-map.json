@@ -14,6 +14,32 @@
   },
   "components": [
     {
+      "name": "Box",
+      "figma": {
+        "nodeId": null,
+        "nodeName": "box",
+        "note": "Utility component - geen dedicated Figma frame, styling via design tokens"
+      },
+      "properties": {
+        "padding": "string",
+        "radius": "string"
+      },
+      "implementation": {
+        "tagName": "rr-box",
+        "file": "src/components/box/rr-box.js",
+        "className": "RRBox"
+      },
+      "tokens": {
+        "components": [
+          "components-box-background-color",
+          "components-box-corner-radius",
+          "components-box-padding"
+        ]
+      },
+      "status": "implemented",
+      "lastUpdated": "2025-12-22"
+    },
+    {
       "name": "Button",
       "figma": {
         "nodeId": "20-27",
@@ -30,7 +56,11 @@
           "neutral-tinted",
           "accent-transparent"
         ],
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
         "is-disabled": "boolean",
         "has-leading-icon": "boolean",
         "leading-icon": "string",
@@ -92,12 +122,21 @@
         },
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
           "default": "m"
         },
         {
           "name": "icon",
-          "values": ["none", "leading", "trailing", "both"],
+          "values": [
+            "none",
+            "leading",
+            "trailing",
+            "both"
+          ],
           "default": "none"
         }
       ],
@@ -114,7 +153,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408"
       },
       "properties": {
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
         "is-checked": "boolean",
         "is-indeterminate": "boolean",
         "is-disabled": "boolean"
@@ -148,17 +191,167 @@
       "variants": [
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
           "default": "m"
         },
         {
           "name": "state",
-          "values": ["unchecked", "checked", "indeterminate"],
+          "values": [
+            "unchecked",
+            "checked",
+            "indeterminate"
+          ],
           "default": "unchecked"
         }
       ],
       "status": "implemented",
       "lastUpdated": "2024-12-22"
+    },
+    {
+      "name": "Icon Button",
+      "figma": {
+        "nodeId": "240:1391",
+        "nodeName": "icon-button-list-cell",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=240:1391"
+      },
+      "properties": {
+        "style": [
+          "accent-filled",
+          "accent-outlined",
+          "accent-tinted",
+          "neutral-tinted",
+          "accent-transparent"
+        ],
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
+        "is-disabled": "boolean",
+        "aria-label": "string"
+      },
+      "implementation": {
+        "tagName": "rr-icon-button",
+        "file": "src/components/icon-button/rr-icon-button.js",
+        "className": "RRIconButton"
+      },
+      "tokens": {
+        "semantics": [
+          "semantics-buttons-accent-filled-color",
+          "semantics-buttons-accent-filled-background-color",
+          "semantics-buttons-accent-outlined-color",
+          "semantics-buttons-accent-outlined-border-color",
+          "semantics-buttons-accent-outlined-border-thickness",
+          "semantics-buttons-accent-tinted-color",
+          "semantics-buttons-accent-tinted-background-color",
+          "semantics-buttons-accent-transparent-color",
+          "semantics-buttons-neutral-tinted-color",
+          "semantics-buttons-neutral-tinted-background-color"
+        ],
+        "controls": [
+          "semantics-controls-xs-min-size",
+          "semantics-controls-xs-corner-radius",
+          "semantics-controls-s-min-size",
+          "semantics-controls-s-corner-radius",
+          "semantics-controls-m-min-size",
+          "semantics-controls-m-corner-radius"
+        ],
+        "focus": [
+          "semantics-focus-ring-color",
+          "semantics-focus-ring-thickness"
+        ],
+        "components": [
+          "components-icon-button-font"
+        ]
+      },
+      "variants": [
+        {
+          "name": "variant",
+          "values": [
+            "accent-filled",
+            "accent-outlined",
+            "accent-tinted",
+            "neutral-tinted",
+            "accent-transparent"
+          ],
+          "default": "accent-filled"
+        },
+        {
+          "name": "size",
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
+          "default": "m"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2024-12-22"
+    },
+    {
+      "name": "Menu Bar",
+      "figma": {
+        "nodeId": "48:2135",
+        "nodeName": "top-navigation-bar",
+        "pageName": "Bars",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135",
+        "note": "Menu Bar is onderdeel van de Top Navigation Bar design"
+      },
+      "properties": {
+        "size": [
+          "s",
+          "m",
+          "l"
+        ],
+        "selected": "boolean",
+        "href": "string",
+        "disabled": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-menu-bar",
+        "file": "src/components/menu-bar/rr-menu-bar.js",
+        "className": "RRMenuBar",
+        "additionalComponents": [
+          {
+            "tagName": "rr-menu-item",
+            "file": "src/components/menu-bar/rr-menu-item.js",
+            "className": "RRMenuItem"
+          }
+        ]
+      },
+      "tokens": {
+        "components": [
+          "components-menu-bar-menu-item-color",
+          "components-menu-bar-menu-item-font",
+          "components-menu-bar-menu-item-is-selected-indicator-color",
+          "components-menu-bar-menu-item-is-selected-indicator-height",
+          "components-menu-bar-menu-item-is-hovered-indicator-color",
+          "components-menu-bar-menu-item-is-hovered-indicator-height",
+          "components-menu-bar-title-item-s-font",
+          "components-menu-bar-title-item-m-font",
+          "components-menu-bar-title-item-l-font"
+        ]
+      },
+      "variants": [
+        {
+          "name": "size",
+          "values": [
+            "s",
+            "m",
+            "l"
+          ],
+          "default": "m"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2025-12-22"
     },
     {
       "name": "Radio Button",
@@ -170,7 +363,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41398"
       },
       "properties": {
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
         "is-checked": "boolean",
         "is-disabled": "boolean",
         "name": "string",
@@ -201,7 +398,11 @@
       "variants": [
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
           "default": "m"
         }
       ],
@@ -218,7 +419,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41353"
       },
       "properties": {
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
         "is-checked": "boolean",
         "is-disabled": "boolean"
       },
@@ -253,12 +458,19 @@
       "variants": [
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
           "default": "m"
         },
         {
           "name": "state",
-          "values": ["unchecked", "checked"],
+          "values": [
+            "unchecked",
+            "checked"
+          ],
           "default": "unchecked"
         }
       ],
@@ -274,7 +486,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542"
       },
       "properties": {
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "s",
+          "m"
+        ],
         "is-selected": "boolean",
         "is-disabled": "boolean"
       },
@@ -308,162 +524,409 @@
       "variants": [
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
+          "values": [
+            "xs",
+            "s",
+            "m"
+          ],
           "default": "m"
         }
       ],
       "status": "implemented",
       "lastUpdated": "2025-12-22"
+    },
+    {
+      "name": "Button Cell",
+      "figma": {
+        "nodeId": "236-41331",
+        "nodeName": "button-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41331"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Checkbox",
+      "figma": {
+        "nodeId": "204-38347",
+        "nodeName": "checkbox",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=204-38347"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Checkbox Field",
+      "figma": {
+        "nodeId": "241-2345",
+        "nodeName": "checkbox-field",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241-2345"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Combo Box Field",
+      "figma": {
+        "nodeId": "362-2435",
+        "nodeName": "combo-box-field",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=362-2435"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Custom Cell",
+      "figma": {
+        "nodeId": "1151-6202",
+        "nodeName": "custom-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1151-6202"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Description Cell",
+      "figma": {
+        "nodeId": "236-41321",
+        "nodeName": "description-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41321"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Document Tab Bar: Item",
+      "figma": {
+        "nodeId": "38-784",
+        "nodeName": "document-tab-bar__item",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=38-784"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Drop Down Field",
+      "figma": {
+        "nodeId": "358-717",
+        "nodeName": "drop-down-field",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=358-717"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Drop Down Field Cell",
+      "figma": {
+        "nodeId": "1014-3843",
+        "nodeName": "drop-down-field-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1014-3843"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Form Field",
+      "figma": {
+        "nodeId": "376-2395",
+        "nodeName": "form-field",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=376-2395"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Heading Group",
+      "figma": {
+        "nodeId": "996-3541",
+        "nodeName": "heading-group",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=996-3541"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
     },
     {
       "name": "Icon Button",
       "figma": {
-        "nodeId": "240:1391",
-        "nodeName": "icon-button-list-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=240:1391"
+        "nodeId": "31-75",
+        "nodeName": "icon-button",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=31-75"
       },
-      "properties": {
-        "style": [
-          "accent-filled",
-          "accent-outlined",
-          "accent-tinted",
-          "neutral-tinted",
-          "accent-transparent"
-        ],
-        "size": ["xs", "s", "m"],
-        "is-disabled": "boolean",
-        "aria-label": "string"
-      },
-      "implementation": {
-        "tagName": "rr-icon-button",
-        "file": "src/components/icon-button/rr-icon-button.js",
-        "className": "RRIconButton"
-      },
-      "tokens": {
-        "semantics": [
-          "semantics-buttons-accent-filled-color",
-          "semantics-buttons-accent-filled-background-color",
-          "semantics-buttons-accent-outlined-color",
-          "semantics-buttons-accent-outlined-border-color",
-          "semantics-buttons-accent-outlined-border-thickness",
-          "semantics-buttons-accent-tinted-color",
-          "semantics-buttons-accent-tinted-background-color",
-          "semantics-buttons-accent-transparent-color",
-          "semantics-buttons-neutral-tinted-color",
-          "semantics-buttons-neutral-tinted-background-color"
-        ],
-        "controls": [
-          "semantics-controls-xs-min-size",
-          "semantics-controls-xs-corner-radius",
-          "semantics-controls-s-min-size",
-          "semantics-controls-s-corner-radius",
-          "semantics-controls-m-min-size",
-          "semantics-controls-m-corner-radius"
-        ],
-        "focus": [
-          "semantics-focus-ring-color",
-          "semantics-focus-ring-thickness"
-        ],
-        "components": ["components-icon-button-font"]
-      },
-      "variants": [
-        {
-          "name": "variant",
-          "values": [
-            "accent-filled",
-            "accent-outlined",
-            "accent-tinted",
-            "neutral-tinted",
-            "accent-transparent"
-          ],
-          "default": "accent-filled"
-        },
-        {
-          "name": "size",
-          "values": ["xs", "s", "m"],
-          "default": "m"
-        }
-      ],
-      "status": "implemented",
-      "lastUpdated": "2024-12-22"
+      "status": "not-implemented"
     },
     {
-      "name": "Box",
+      "name": "Icon Cell",
       "figma": {
-        "nodeId": null,
-        "nodeName": "box",
-        "note": "Utility component - geen dedicated Figma frame, styling via design tokens"
+        "nodeId": "236-41365",
+        "nodeName": "icon-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41365"
       },
-      "properties": {
-        "padding": "string",
-        "radius": "string"
-      },
-      "implementation": {
-        "tagName": "rr-box",
-        "file": "src/components/box/rr-box.js",
-        "className": "RRBox"
-      },
-      "tokens": {
-        "components": [
-          "components-box-background-color",
-          "components-box-corner-radius",
-          "components-box-padding"
-        ]
-      },
-      "status": "implemented",
-      "lastUpdated": "2025-12-22"
+      "status": "not-implemented"
     },
     {
-      "name": "Menu Bar",
+      "name": "Input Field Button",
       "figma": {
-        "nodeId": "48:2135",
-        "nodeName": "top-navigation-bar",
-        "pageName": "Bars",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135",
-        "note": "Menu Bar is onderdeel van de Top Navigation Bar design"
+        "nodeId": "272-353",
+        "nodeName": "input-field-button",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=272-353"
       },
-      "properties": {
-        "size": ["s", "m", "l"],
-        "selected": "boolean",
-        "href": "string",
-        "disabled": "boolean"
+      "status": "not-implemented"
+    },
+    {
+      "name": "Label Cell",
+      "figma": {
+        "nodeId": "1033-4433",
+        "nodeName": "label-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1033-4433"
       },
-      "implementation": {
-        "tagName": "rr-menu-bar",
-        "file": "src/components/menu-bar/rr-menu-bar.js",
-        "className": "RRMenuBar",
-        "additionalComponents": [
-          {
-            "tagName": "rr-menu-item",
-            "file": "src/components/menu-bar/rr-menu-item.js",
-            "className": "RRMenuItem"
-          }
-        ]
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "List",
+      "figma": {
+        "nodeId": "1044-2275",
+        "nodeName": "list",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1044-2275"
       },
-      "tokens": {
-        "components": [
-          "components-menu-bar-menu-item-color",
-          "components-menu-bar-menu-item-font",
-          "components-menu-bar-menu-item-is-selected-indicator-color",
-          "components-menu-bar-menu-item-is-selected-indicator-height",
-          "components-menu-bar-menu-item-is-hovered-indicator-color",
-          "components-menu-bar-menu-item-is-hovered-indicator-height",
-          "components-menu-bar-title-item-s-font",
-          "components-menu-bar-title-item-m-font",
-          "components-menu-bar-title-item-l-font"
-        ]
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "List: Item",
+      "figma": {
+        "nodeId": "957-2279",
+        "nodeName": "list__item",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=957-2279"
       },
-      "variants": [
-        {
-          "name": "size",
-          "values": ["s", "m", "l"],
-          "default": "m"
-        }
-      ],
-      "status": "implemented",
-      "lastUpdated": "2025-12-22"
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Menu Bar: Menu Item",
+      "figma": {
+        "nodeId": "87-6523",
+        "nodeName": "menu-bar__menu-item",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=87-6523"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Menu Item",
+      "figma": {
+        "nodeId": "331-1456",
+        "nodeName": "menu-item",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=331-1456"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Number Field",
+      "figma": {
+        "nodeId": "266-344",
+        "nodeName": "number-field",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=266-344"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Page: Sticky Area Background",
+      "figma": {
+        "nodeId": "1171-6495",
+        "nodeName": "page__sticky-area-background",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1171-6495"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Radio Button",
+      "figma": {
+        "nodeId": "219-38433",
+        "nodeName": "radio-button",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=219-38433"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Radio Button Field",
+      "figma": {
+        "nodeId": "241-2382",
+        "nodeName": "radio-button-field",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241-2382"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Rich Text: Heading",
+      "figma": {
+        "nodeId": "980-145",
+        "nodeName": "rich-text__heading",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=980-145"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Search Field",
+      "figma": {
+        "nodeId": "243-3235",
+        "nodeName": "search-field",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=243-3235"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Segmented Control",
+      "figma": {
+        "nodeId": "336-2899",
+        "nodeName": "segmented-control",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=336-2899"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Segmented Control: Item",
+      "figma": {
+        "nodeId": "262-3512",
+        "nodeName": "segmented-control__item",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=262-3512"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Sheet",
+      "figma": {
+        "nodeId": "108-25937",
+        "nodeName": "sheet",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=108-25937"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Spacer",
+      "figma": {
+        "nodeId": "48-2234",
+        "nodeName": "spacer",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2234"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Split Vew: Divider",
+      "figma": {
+        "nodeId": "39-927",
+        "nodeName": "split-vew__divider",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-927"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Stepper",
+      "figma": {
+        "nodeId": "236-39011",
+        "nodeName": "stepper",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-39011"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Stepper Cell",
+      "figma": {
+        "nodeId": "236-41344",
+        "nodeName": "stepper-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41344"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Switch",
+      "figma": {
+        "nodeId": "232-38506",
+        "nodeName": "switch",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=232-38506"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Switch Field",
+      "figma": {
+        "nodeId": "348-2635",
+        "nodeName": "switch-field",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=348-2635"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Tab Bar: Item",
+      "figma": {
+        "nodeId": "987-1355",
+        "nodeName": "tab-bar__item",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=987-1355"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Text Cell",
+      "figma": {
+        "nodeId": "236-41152",
+        "nodeName": "text-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41152"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Text Field",
+      "figma": {
+        "nodeId": "192-37504",
+        "nodeName": "text-field",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=192-37504"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Text Field Cell",
+      "figma": {
+        "nodeId": "1019-3941",
+        "nodeName": "text-field-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1019-3941"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Title Cell",
+      "figma": {
+        "nodeId": "236-41079",
+        "nodeName": "title-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41079"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
+    },
+    {
+      "name": "Token",
+      "figma": {
+        "nodeId": "354-3680",
+        "nodeName": "token",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=354-3680"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Top Navigation Bar: Logo",
+      "figma": {
+        "nodeId": "22-28",
+        "nodeName": "top-navigation-bar__logo",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=22-28"
+      },
+      "status": "not-implemented"
+    },
+    {
+      "name": "Top Title Bar",
+      "figma": {
+        "nodeId": "1048-2288",
+        "nodeName": "top-title-bar",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1048-2288"
+      },
+      "status": "priority",
+      "neededFor": ["machine-action-sheet"]
     }
   ]
 }
