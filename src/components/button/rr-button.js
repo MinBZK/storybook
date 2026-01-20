@@ -180,19 +180,20 @@ export class RRButton extends RRBaseComponent {
       /* Size: XS */
       :host([size="xs"]) .button {
         min-height: var(--semantics-controls-xs-min-size, 24px);
-        padding: var(--primitives-space-4, 4px) var(--primitives-space-12, 12px);
+        /* Figma: padding 4px 6px (top/bottom 4, left/right 6) */
+        padding: var(--primitives-space-4, 4px) var(--primitives-space-6, 6px);
         font: var(--components-button-xs-font, 600 14px/1.125 system-ui);
-        border-radius: var(--semantics-controls-xs-corner-radius, 3px);
+        border-radius: var(--semantics-controls-xs-corner-radius, 4px);
         gap: var(--primitives-space-2, 2px);
       }
 
       /* Size: S */
       :host([size="s"]) .button {
         min-height: var(--semantics-controls-s-min-size, 32px);
-        /* Figma shows asymmetric padding: top=8, right=8, bottom=6, left=8 */
-        padding: var(--primitives-space-8, 8px) var(--primitives-space-8, 8px) var(--primitives-space-6, 6px) var(--primitives-space-8, 8px);
+        /* Figma: padding 6px 8px (top/bottom 6, left/right 8) */
+        padding: var(--primitives-space-6, 6px) var(--primitives-space-8, 8px);
         font: var(--components-button-s-font, 600 16px/1.125 system-ui);
-        border-radius: var(--semantics-controls-s-corner-radius, 5px);
+        border-radius: var(--semantics-controls-s-corner-radius, 6px);
         gap: var(--primitives-space-2, 2px);
       }
 

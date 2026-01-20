@@ -51,8 +51,9 @@ export class RRToggleButton extends LitElement {
       justify-content: center;
 
       /* Typography */
-      font-weight: var(--semantics-buttons-font-weight, 600);
+      font-weight: var(--semantics-buttons-font-weight, 550);
       text-decoration: none;
+      white-space: nowrap;
 
       /* Animation */
       transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;

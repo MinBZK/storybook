@@ -373,10 +373,8 @@ export const FigmaComparison = () => html`
           Figma toggle-button (309:3542) component set:
           - Layout: column, gap: 16px, padding: 16px, sizing: hug
           - 4 variants: md default (44px), md selected (44px), sm default (32px), sm selected (32px)
-          - Height: 16 + 44 + 16 + 44 + 16 + 32 + 16 + 32 + 16 = 232px
-          - Width: ~152px (button width with padding)
         -->
-        <div style="width: 152px; height: 232px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
+        <div style="background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
           <!-- Row 1: size=md, is-selected=false -->
           <rr-toggle-button size="m">Toggle button</rr-toggle-button>
           <!-- Row 2: size=md, is-selected=true -->
