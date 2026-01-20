@@ -636,61 +636,75 @@ export const FigmaComparison = () => html`
       </p>
       <ftl-holster node="20-27" style="display: inline-block;">
         <!--
-          Figma button-list-cell (20-27) is 832x316px with:
-          - 6 columns: 5 variants + disabled column
-          - 5 rows: M, M disabled, S, S disabled, XS
-          - White background, 16px padding, 16px gap between buttons
+          Figma component set (20:27) is 832x436px with absolute positioned buttons.
+          Columns: x=16, 179, 342, 478, 624, 760
+          Rows: y=16/76/136/196/256/316/376 (M), +6 for S, +10 for XS (vertical centering)
+          Row order: neutral-tinted, neutral-transparent*, accent-filled, accent-tinted, accent-outlined, accent-transparent, danger-tinted*
+          * = variant not yet implemented
         -->
-        <div style="width: 832px; height: 316px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
-          <!-- Row 1: Size M, normal -->
-          <div style="display: flex; gap: 16px; align-items: center;">
-            <rr-button variant="accent-filled" size="m">Button</rr-button>
-            <rr-button variant="accent-outlined" size="m">Button</rr-button>
-            <rr-button variant="accent-tinted" size="m">Button</rr-button>
-            <rr-button variant="neutral-tinted" size="m">Button</rr-button>
-            <rr-button variant="accent-transparent" size="m">Button</rr-button>
-            <rr-button variant="accent-filled" size="m" disabled>Button</rr-button>
-          </div>
-          <!-- Row 2: Size M, disabled for all variants -->
-          <div style="display: flex; gap: 16px; align-items: center;">
-            <rr-button variant="accent-filled" size="m" disabled>Button</rr-button>
-            <rr-button variant="accent-outlined" size="m" disabled>Button</rr-button>
-            <rr-button variant="accent-tinted" size="m" disabled>Button</rr-button>
-            <rr-button variant="neutral-tinted" size="m" disabled>Button</rr-button>
-            <rr-button variant="accent-transparent" size="m" disabled>Button</rr-button>
-            <rr-button variant="accent-filled" size="m" disabled>Button</rr-button>
-          </div>
-          <!-- Row 3: Size S, normal -->
-          <div style="display: flex; gap: 16px; align-items: center;">
-            <rr-button variant="accent-filled" size="s">Button</rr-button>
-            <rr-button variant="accent-outlined" size="s">Button</rr-button>
-            <rr-button variant="accent-tinted" size="s">Button</rr-button>
-            <rr-button variant="neutral-tinted" size="s">Button</rr-button>
-            <rr-button variant="accent-transparent" size="s">Button</rr-button>
-            <rr-button variant="accent-filled" size="s" disabled>Button</rr-button>
-          </div>
-          <!-- Row 4: Size S, disabled for all variants -->
-          <div style="display: flex; gap: 16px; align-items: center;">
-            <rr-button variant="accent-filled" size="s" disabled>Button</rr-button>
-            <rr-button variant="accent-outlined" size="s" disabled>Button</rr-button>
-            <rr-button variant="accent-tinted" size="s" disabled>Button</rr-button>
-            <rr-button variant="neutral-tinted" size="s" disabled>Button</rr-button>
-            <rr-button variant="accent-transparent" size="s" disabled>Button</rr-button>
-            <rr-button variant="accent-filled" size="s" disabled>Button</rr-button>
-          </div>
-          <!-- Row 5: Size XS, normal -->
-          <div style="display: flex; gap: 16px; align-items: center;">
-            <rr-button variant="accent-filled" size="xs">Button</rr-button>
-            <rr-button variant="accent-outlined" size="xs">Button</rr-button>
-            <rr-button variant="accent-tinted" size="xs">Button</rr-button>
-            <rr-button variant="neutral-tinted" size="xs">Button</rr-button>
-            <rr-button variant="accent-transparent" size="xs">Button</rr-button>
-            <rr-button variant="accent-filled" size="xs" disabled>Button</rr-button>
-          </div>
+        <div style="position: relative; width: 832px; height: 436px; background: #ffffff;">
+          <!-- Row 1: neutral-tinted (y=16/22/26) -->
+          <rr-button variant="neutral-tinted" size="m" style="position: absolute; left: 16px; top: 16px;">Button</rr-button>
+          <rr-button variant="neutral-tinted" size="m" disabled style="position: absolute; left: 179px; top: 16px;">Button</rr-button>
+          <rr-button variant="neutral-tinted" size="s" style="position: absolute; left: 342px; top: 22px;">Button</rr-button>
+          <rr-button variant="neutral-tinted" size="s" disabled style="position: absolute; left: 478px; top: 22px;">Button</rr-button>
+          <rr-button variant="neutral-tinted" size="xs" style="position: absolute; left: 624px; top: 26px;">Button</rr-button>
+          <rr-button variant="neutral-tinted" size="xs" disabled style="position: absolute; left: 760px; top: 26px;">Button</rr-button>
+
+          <!-- Row 2: neutral-transparent (y=76/82/86) - NOT IMPLEMENTED, using accent-transparent -->
+          <rr-button variant="accent-transparent" size="m" style="position: absolute; left: 16px; top: 76px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="m" disabled style="position: absolute; left: 179px; top: 76px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="s" style="position: absolute; left: 342px; top: 82px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="s" disabled style="position: absolute; left: 478px; top: 82px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="xs" style="position: absolute; left: 624px; top: 86px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="xs" disabled style="position: absolute; left: 760px; top: 86px;">Button</rr-button>
+
+          <!-- Row 3: accent-filled (y=136/142/146) -->
+          <rr-button variant="accent-filled" size="m" style="position: absolute; left: 16px; top: 136px;">Button</rr-button>
+          <rr-button variant="accent-filled" size="m" disabled style="position: absolute; left: 179px; top: 136px;">Button</rr-button>
+          <rr-button variant="accent-filled" size="s" style="position: absolute; left: 342px; top: 142px;">Button</rr-button>
+          <rr-button variant="accent-filled" size="s" disabled style="position: absolute; left: 478px; top: 142px;">Button</rr-button>
+          <rr-button variant="accent-filled" size="xs" style="position: absolute; left: 624px; top: 146px;">Button</rr-button>
+          <rr-button variant="accent-filled" size="xs" disabled style="position: absolute; left: 760px; top: 146px;">Button</rr-button>
+
+          <!-- Row 4: accent-tinted (y=196/202/206) -->
+          <rr-button variant="accent-tinted" size="m" style="position: absolute; left: 16px; top: 196px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="m" disabled style="position: absolute; left: 179px; top: 196px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="s" style="position: absolute; left: 342px; top: 202px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="s" disabled style="position: absolute; left: 478px; top: 202px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="xs" style="position: absolute; left: 624px; top: 206px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="xs" disabled style="position: absolute; left: 760px; top: 206px;">Button</rr-button>
+
+          <!-- Row 5: accent-outlined (y=256/262/266) -->
+          <rr-button variant="accent-outlined" size="m" style="position: absolute; left: 16px; top: 256px;">Button</rr-button>
+          <rr-button variant="accent-outlined" size="m" disabled style="position: absolute; left: 179px; top: 256px;">Button</rr-button>
+          <rr-button variant="accent-outlined" size="s" style="position: absolute; left: 342px; top: 262px;">Button</rr-button>
+          <rr-button variant="accent-outlined" size="s" disabled style="position: absolute; left: 478px; top: 262px;">Button</rr-button>
+          <rr-button variant="accent-outlined" size="xs" style="position: absolute; left: 624px; top: 266px;">Button</rr-button>
+          <rr-button variant="accent-outlined" size="xs" disabled style="position: absolute; left: 760px; top: 266px;">Button</rr-button>
+
+          <!-- Row 6: accent-transparent (y=316/322/326) -->
+          <rr-button variant="accent-transparent" size="m" style="position: absolute; left: 16px; top: 316px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="m" disabled style="position: absolute; left: 179px; top: 316px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="s" style="position: absolute; left: 342px; top: 322px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="s" disabled style="position: absolute; left: 478px; top: 322px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="xs" style="position: absolute; left: 624px; top: 326px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="xs" disabled style="position: absolute; left: 760px; top: 326px;">Button</rr-button>
+
+          <!-- Row 7: danger-tinted (y=376/382/386) - NOT IMPLEMENTED, using accent-tinted -->
+          <rr-button variant="accent-tinted" size="m" style="position: absolute; left: 16px; top: 376px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="m" disabled style="position: absolute; left: 179px; top: 376px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="s" style="position: absolute; left: 342px; top: 382px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="s" disabled style="position: absolute; left: 478px; top: 382px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="xs" style="position: absolute; left: 624px; top: 386px;">Button</rr-button>
+          <rr-button variant="accent-tinted" size="xs" disabled style="position: absolute; left: 760px; top: 386px;">Button</rr-button>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
         Keyboard: T (toggle) | O (overlay) | S (side-by-side)
+      </p>
+      <p style="font-size: 0.75rem; color: #94a3b8; margin: 0;">
+        Note: neutral-transparent (row 2) and danger-tinted (row 7) variants not yet implemented
       </p>
     </div>
   </ftl-belt>
