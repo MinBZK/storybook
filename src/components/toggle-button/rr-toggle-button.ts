@@ -51,8 +51,9 @@ export class RRToggleButton extends LitElement {
       justify-content: center;
 
       /* Typography */
-      font-weight: var(--semantics-buttons-font-weight, 600);
+      font-weight: var(--semantics-buttons-font-weight, 550);
       text-decoration: none;
+      white-space: nowrap;
 
       /* Animation */
       transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
@@ -78,7 +79,7 @@ export class RRToggleButton extends LitElement {
     /* Size: S */
     :host([size="s"]) .button {
       min-height: var(--semantics-controls-s-min-size, 32px);
-      padding: var(--primitives-space-8, 8px) var(--primitives-space-6, 6px);
+      padding: var(--primitives-space-6, 6px);
       font: var(--components-button-s-font, 600 16px/1.125 system-ui);
       border-radius: var(--semantics-controls-s-corner-radius, 5px);
       gap: var(--primitives-space-2, 2px);

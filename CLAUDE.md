@@ -54,10 +54,6 @@ export const FigmaComparison = () => html`
     </ftl-holster>
   </ftl-belt>
 `;
-FigmaComparison.parameters = {
-  docs: { disable: true },
-  lostpixel: { disable: true }
-};
 ```
 
 **Usage:** In Storybook, use Toggle/Overlay/Side-by-Side modes to compare code vs Figma.
@@ -88,11 +84,11 @@ See `docs/component-map.json` for full details.
 
 ## Button Sizes
 
-| Size | Min Height | Padding | Gap |
-|------|------------|---------|-----|
-| xs | 24px | 4px 12px | 2px |
-| s | 32px | 8px 8px 6px 8px | 2px |
-| m | 44px | 12px | 4px |
+| Size | Min Height | Padding | Gap | Border-radius |
+|------|------------|---------|-----|---------------|
+| xs | 24px | 4px 6px | 2px | 4px |
+| s | 32px | 6px 8px | 2px | 6px |
+| m | 44px | 12px | 4px | 8px |
 
 ## Key Tokens
 

@@ -369,15 +369,19 @@ export const FigmaComparison = () => html`
         Our toggle buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="309:3542" style="display: inline-block;">
-        <!-- Figma design: 3 M-size buttons + 3 S-size buttons, with gap: 16px, padding: 16px -->
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <!-- M size buttons (rows 1-3) -->
+        <!--
+          Figma toggle-button (309:3542) component set:
+          - Layout: column, gap: 16px, padding: 16px, sizing: hug
+          - 4 variants: md default (44px), md selected (44px), sm default (32px), sm selected (32px)
+        -->
+        <div style="background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
+          <!-- Row 1: size=md, is-selected=false -->
           <rr-toggle-button size="m">Toggle button</rr-toggle-button>
-          <rr-toggle-button size="m">Toggle button</rr-toggle-button>
+          <!-- Row 2: size=md, is-selected=true -->
           <rr-toggle-button size="m" selected>Toggle button</rr-toggle-button>
-          <!-- S size buttons (rows 4-6) -->
+          <!-- Row 3: size=sm, is-selected=false -->
           <rr-toggle-button size="s">Toggle button</rr-toggle-button>
-          <rr-toggle-button size="s">Toggle button</rr-toggle-button>
+          <!-- Row 4: size=sm, is-selected=true -->
           <rr-toggle-button size="s" selected>Toggle button</rr-toggle-button>
         </div>
       </ftl-holster>
