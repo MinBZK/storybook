@@ -89,31 +89,17 @@ grep -i "controls.*min-size" dist/css/tokens.css
 - Component: `src/components/{name}/rr-{name}.ts` (TypeScript)
 - Stories: `src/components/{name}/rr-{name}.stories.js` (JavaScript)
 
-### Stap 6: Visuele Verificatie
+### Stap 6: Pixel-Perfect Maken
 
-**Na het genereren van het component, ALTIJD verifiëren tegen Figma:**
+**Na het genereren van het component, voer `/pixel-perfect {name}` uit.**
 
-1. **Start Storybook** (als nog niet actief):
-   ```bash
-   npm run storybook
-   ```
-
-2. **Open FigmaComparison story** in browser:
-   ```
-   http://localhost:6006/?path=/story/components-{display-name-lowercase}--figma-comparison
-   ```
-
-3. **Vergelijk met Figma:**
-   - Gebruik de ftl-holster Toggle (T), Overlay (O), of Side-by-Side (S) modes
-   - Check op pixel-perfecte match
-
-4. **Bij afwijkingen:**
-   - Identificeer welke CSS properties afwijken
-   - Pas de component styling aan
-   - Herlaad Storybook en check opnieuw
-
-5. **Als pixel-perfect niet lukt:**
-   - Documenteer de afwijkingen en geef feedback aan de gebruiker
+Dit command doet automatisch:
+1. Start Storybook
+2. Opent FigmaComparison story met Playwright
+3. Haalt Figma layout data op (grid/flex/absolute positioning)
+4. Vergelijkt varianten, positionering en styling
+5. Past component en/of story aan bij afwijkingen
+6. Herhaalt tot pixel-perfect (max 8 iteraties)
 
 ---
 

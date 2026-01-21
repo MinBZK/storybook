@@ -1,7 +1,7 @@
 import { html } from 'lit';
 
 // Import all components
-import '../components/button/rr-button.js';
+import '../components/button/rr-button.ts';
 import '../components/checkbox/rr-checkbox.js';
 import '../components/radio/rr-radio.js';
 import '../components/switch/rr-switch.js';

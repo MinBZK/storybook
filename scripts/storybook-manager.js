@@ -120,6 +120,30 @@ function normalizePath(p) {
 }
 
 /**
+ * Ensure prerequisites are met (node_modules, dist)
+ */
+function ensurePrerequisites(cwd) {
+  const nodeModulesPath = path.join(cwd, 'node_modules');
+  const distPath = path.join(cwd, 'dist');
+  const isWindows = process.platform === 'win32';
+  const npmCmd = isWindows ? 'npm.cmd' : 'npm';
+
+  // Check node_modules
+  if (!fs.existsSync(nodeModulesPath)) {
+    console.log('node_modules not found, running npm install...');
+    execSync(`${npmCmd} install`, { cwd, stdio: 'inherit' });
+    console.log('npm install completed\n');
+  }
+
+  // Check dist folder
+  if (!fs.existsSync(distPath)) {
+    console.log('dist folder not found, running npm run build...');
+    execSync(`${npmCmd} run build`, { cwd, stdio: 'inherit' });
+    console.log('build completed\n');
+  }
+}
+
+/**
  * Start Storybook
  */
 async function start() {
@@ -135,6 +159,9 @@ async function start() {
     console.log(`  PID:    ${existing.pid}`);
     return;
   }
+
+  // Ensure node_modules and dist exist
+  ensurePrerequisites(cwd);
 
   // Find available port
   const port = await findAvailablePort(registry);

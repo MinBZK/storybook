@@ -72,15 +72,13 @@ export const FigmaComparison = () => html`
 
 See `docs/component-map.json` for full details.
 
-## Implementation Checklist
+## Components Maken/Updaten
 
-1. **Get Figma specs:** `mcp__figma__get_design_context(fileKey, nodeId)` or open in browser
-2. **Check Properties panel** for ALL values (padding can be asymmetric!)
-3. **Use tokens only** - no hardcoded values
-4. **Match sizes:** `--semantics-controls-{xs|s|m}-min-size`
-5. **Focus ring:** `--semantics-focus-ring-thickness` + `--semantics-focus-ring-color`
-6. **Add FigmaComparison story** for pixel verification
-7. **Update docs/component-map.json**
+Gebruik `/component <figma-node-id>` voor het maken of updaten van componenten. Dit command:
+- Haalt Figma specs op
+- Genereert Lit + TypeScript component
+- Maakt FigmaComparison story
+- Voert `/pixel-perfect` uit voor visuele verificatie
 
 ## Button Sizes
 
@@ -190,3 +188,4 @@ Bij wijzigingen aan design tokens:
 4. DigiToegankelijk (WCAG 2.1 AA) compliant
 5. RijksSansVF font with system-ui fallback
 6. BEM naamgeving voor alle class namen
+7. **Na elke component wijziging: `/pixel-perfect {name}`** - verifieer visuele correctheid tegen Figma
