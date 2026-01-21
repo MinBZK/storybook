@@ -101,21 +101,24 @@ Where `{name}` is the kebab-case component name:
 **Important: Playwright MCP output directory**
 
 Screenshots are saved to `.playwright-mcp/` directory (restricted by Playwright MCP).
-After capturing, copy screenshots to `docs/pr-screenshots/`:
+
+### Step 4: Upload Screenshots to 0x0.st
+
+Upload each screenshot to 0x0.st (no authentication required):
 
 ```bash
-cp .playwright-mcp/{name}-side-by-side.png docs/pr-screenshots/
-cp .playwright-mcp/{name}-overlay.png docs/pr-screenshots/
+# Upload and capture the returned URL
+SIDE_BY_SIDE_URL=$(curl -s -F "file=@.playwright-mcp/{name}-side-by-side.png" https://0x0.st)
+OVERLAY_URL=$(curl -s -F "file=@.playwright-mcp/{name}-overlay.png" https://0x0.st)
 ```
 
-### Step 4: Commit Screenshots
+Store the URLs for each component to use in the PR body.
 
-```bash
-git add docs/pr-screenshots/*.png
-git commit -m "docs: add FigmaComparison screenshots for PR
-
-Screenshots captured in Side-by-Side and Overlay modes for visual verification."
-```
+**0x0.st details:**
+- No authentication required
+- Returns direct image URL (e.g., `https://0x0.st/PKCB.png`)
+- Retention: 30 days to 1 year (small files last longer)
+- No view limits
 
 ### Step 5: Create or Update Pull Request
 
@@ -127,7 +130,7 @@ gh pr list --head $(git branch --show-current) --json number,url
 
 **Build the PR body with a screenshot table:**
 
-Use raw GitHub URLs for images (relative paths don't work in PR descriptions):
+Use the 0x0.st URLs from Step 4:
 
 ```markdown
 ## Summary
@@ -142,7 +145,7 @@ Visual updates for {N} component(s) with FigmaComparison verification.
 
 | Side-by-Side | Overlay |
 |--------------|---------|
-| ![side-by-side](https://raw.githubusercontent.com/{owner}/{repo}/{branch}/docs/pr-screenshots/{name}-side-by-side.png) | ![overlay](https://raw.githubusercontent.com/{owner}/{repo}/{branch}/docs/pr-screenshots/{name}-overlay.png) |
+| ![side-by-side]({SIDE_BY_SIDE_URL}) | ![overlay]({OVERLAY_URL}) |
 
 ---
 
@@ -175,6 +178,7 @@ gh pr create --title "feat: {summary of changes}" --body "{PR body}"
 | gh CLI not authenticated | Run `gh auth login` |
 | Component has no FigmaComparison | Skip component with warning |
 | Keyboard shortcuts not working | Click buttons directly via snapshot refs |
+| 0x0.st upload fails | Retry or use alternative host |
 
 ## Component Map
 
@@ -192,8 +196,9 @@ Components with FigmaComparison stories:
 
 ## Notes
 
-- Screenshots are committed to `docs/pr-screenshots/` for GitHub to render in PRs
-- Playwright MCP restricts output to `.playwright-mcp/`, so copy files after capture
-- Use raw GitHub URLs in PR descriptions (relative paths don't render)
+- Screenshots are uploaded to 0x0.st (external hosting) - not committed to repo
+- Playwright MCP restricts output to `.playwright-mcp/`
+- 0x0.st URLs work directly in GitHub PR descriptions
 - The `ftl-holster` component provides keyboard shortcuts (T/O/S) but clicking buttons is more reliable
 - Always use `fullPage: true` for screenshots - Side-by-Side layout is vertical
+- 0x0.st retention: 30 days minimum, up to 1 year for small files
