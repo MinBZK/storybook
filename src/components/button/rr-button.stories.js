@@ -640,9 +640,6 @@ export const FigmaComparison = () => html`
           Columns: x=16, 179, 342, 478, 624, 760
           Rows: y=16/76/136/196/256/316/376 (M), +6 for S, +10 for XS (vertical centering)
           Row order: neutral-tinted, neutral-transparent, accent-filled, accent-tinted, accent-outlined, accent-transparent, danger-tinted
-
-          Note: ~2px text offset visible in overlay is due to font baseline rendering differences
-          between Figma and browsers. This is inherent to how design tools vs browsers render text.
         -->
         <div style="position: relative; width: 832px; height: 436px; background: #ffffff;">
           <!-- Row 1: neutral-tinted (y=16/22/26) -->
@@ -704,9 +701,6 @@ export const FigmaComparison = () => html`
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
         Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-      <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem;">
-        Note: ~2px text offset in overlay is due to font baseline rendering differences between Figma and browsers.
       </p>
     </div>
   </ftl-belt>
