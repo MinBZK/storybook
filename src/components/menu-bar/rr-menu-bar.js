@@ -434,16 +434,16 @@ export class RRMenuBar extends RRBaseComponent {
 
       /* Title size variants */
       :host([size="s"]) .title {
-        font: var(--components-menu-bar-title-item-s-font, 600 18px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-s-font, 550 18px/1.125 RijksSansVF, system-ui);
       }
 
       :host([size="m"]) .title,
       :host(:not([size])) .title {
-        font: var(--components-menu-bar-title-item-m-font, 600 20px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-m-font, 550 20px/1.125 RijksSansVF, system-ui);
       }
 
       :host([size="l"]) .title {
-        font: var(--components-menu-bar-title-item-l-font, 600 23px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-l-font, 550 23px/1.125 RijksSansVF, system-ui);
       }
 
       .menu {
@@ -476,7 +476,7 @@ export class RRMenuBar extends RRBaseComponent {
         background: none;
         border: none;
         color: var(--components-menu-bar-menu-item-color, #154273);
-        font: var(--components-menu-bar-menu-item-font, 600 18px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
         cursor: pointer;
         white-space: nowrap;
       }
@@ -527,7 +527,7 @@ export class RRMenuBar extends RRBaseComponent {
         background: none;
         border: none;
         color: var(--components-menu-bar-menu-item-color, #154273);
-        font: var(--components-menu-bar-menu-item-font, 600 18px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
         text-align: left;
         cursor: pointer;
         white-space: nowrap;

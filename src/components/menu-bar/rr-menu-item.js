@@ -141,7 +141,7 @@ export class RRMenuItem extends RRBaseComponent {
         cursor: pointer;
 
         /* Typography */
-        font: var(--components-menu-bar-menu-item-font, 600 18px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
         color: var(--rr-menu-item-color, var(--components-menu-bar-menu-item-color, #154273));
         text-align: left;
 

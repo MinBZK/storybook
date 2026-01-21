@@ -115,7 +115,7 @@ export class RRBackButton extends RRBaseComponent {
         background: none;
         border: none;
         color: var(--primitives-color-accent-100, #154273);
-        font: var(--components-menu-bar-menu-item-font, 600 18px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
         text-decoration: none;
         cursor: pointer;
         border-radius: var(--semantics-controls-m-corner-radius, 7px);

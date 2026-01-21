@@ -1,5 +1,6 @@
 import StyleDictionary from 'style-dictionary';
 import { figmaVariablesParser } from './src/parser/figma-variables-parser.js';
+import { FONT_WEIGHT_MAP } from './src/parser/font-weights.js';
 
 // Register custom parser for Figma variables2json format
 StyleDictionary.registerParser(figmaVariablesParser);
@@ -25,6 +26,23 @@ StyleDictionary.registerTransform({
   },
   transform: (token) => {
     // Keep opacity, line-height etc as plain numbers
+    return token.$value;
+  },
+});
+
+// Custom transform for fontWeight tokens - convert string names to numeric values
+StyleDictionary.registerTransform({
+  name: 'fontWeight/number',
+  type: 'value',
+  filter: (token) => token.$type === 'fontWeight',
+  transform: (token) => {
+    if (typeof token.$value === 'string') {
+      const mapped = FONT_WEIGHT_MAP[token.$value];
+      if (mapped === undefined) {
+        throw new Error(`Unknown fontWeight value: "${token.$value}" in token ${token.name}`);
+      }
+      return mapped;
+    }
     return token.$value;
   },
 });
@@ -74,7 +92,7 @@ const config = {
   platforms: {
     // All tokens combined
     css: {
-      transforms: ['name/kebab', 'size/px', 'number/value', 'typography/css', 'color/css'],
+      transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number', 'typography/css', 'color/css'],
       buildPath: 'dist/css/',
       files: [
         {
@@ -86,7 +104,7 @@ const config = {
 
     // Primitives only
     'css-primitives': {
-      transforms: ['name/kebab', 'size/px', 'number/value', 'typography/css', 'color/css'],
+      transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number', 'typography/css', 'color/css'],
       buildPath: 'dist/css/',
       files: [
         {
@@ -99,7 +117,7 @@ const config = {
 
     // Semantics only
     'css-semantics': {
-      transforms: ['name/kebab', 'size/px', 'number/value', 'typography/css', 'color/css'],
+      transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number', 'typography/css', 'color/css'],
       buildPath: 'dist/css/',
       files: [
         {
@@ -112,7 +130,7 @@ const config = {
 
     // Component tokens only
     'css-components': {
-      transforms: ['name/kebab', 'size/px', 'number/value', 'typography/css', 'color/css'],
+      transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number', 'typography/css', 'color/css'],
       buildPath: 'dist/css/',
       files: [
         {
@@ -125,7 +143,7 @@ const config = {
 
     // JSON output for debugging/reference
     json: {
-      transforms: ['name/kebab', 'size/px', 'number/value'],
+      transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number'],
       buildPath: 'dist/',
       files: [
         {

@@ -245,7 +245,7 @@ export const InteractiveExample = () => {
   return html`
     <div style="display: flex; flex-direction: column; gap: 1.5rem;">
       <h3
-        style="margin: 0; font-family: RijksSansVF, system-ui; font-size: 20px; font-weight: 600;"
+        style="margin: 0; font-family: RijksSansVF, system-ui; font-size: 20px; font-weight: 550;"
       >
         Selecteer uw voorkeuren
       </h3>

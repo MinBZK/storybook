@@ -175,6 +175,13 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 - Geen nesting van blocks binnen element namen (niet: `block__element__subelement`)
 - Modifiers zijn altijd aanvullend, nooit vervanging van base class
 
+## Fallback Consistency Rule
+
+Bij wijzigingen aan design tokens:
+- Update altijd de corresponderende fallback waarden in component styles
+- Fallbacks moeten overeenkomen met de token waarden
+- Zoek naar `var(--token-name, fallback)` patronen in `src/components/`
+
 ## Rules
 
 1. Extend `RRBaseComponent`

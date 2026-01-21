@@ -158,7 +158,7 @@ export const RadioGroup = () => html`
   <div role="radiogroup" aria-labelledby="group-label-1" style="padding: 0; margin: 0;">
     <div
       id="group-label-1"
-      style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 18px; font-weight: 600; margin-bottom: 16px;"
+      style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 18px; font-weight: 550; margin-bottom: 16px;"
     >
       Kies een optie
     </div>
@@ -353,7 +353,7 @@ export const MultipleGroups = () => html`
   <div style="display: flex; gap: 3rem;">
     <fieldset style="border: none; padding: 0; margin: 0;">
       <legend
-        style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px; font-weight: 600; margin-bottom: 12px;"
+        style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
       >
         Groep 1: Voorkeur
       </legend>
@@ -379,7 +379,7 @@ export const MultipleGroups = () => html`
 
     <fieldset style="border: none; padding: 0; margin: 0;">
       <legend
-        style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px; font-weight: 600; margin-bottom: 12px;"
+        style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
       >
         Groep 2: Prioriteit
       </legend>
@@ -435,14 +435,14 @@ export const FormIntegration = () => {
     <form @submit=${handleSubmit} style="max-width: 400px;">
       <fieldset style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 0;">
         <legend
-          style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 18px; font-weight: 600; padding: 0 8px;"
+          style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 18px; font-weight: 550; padding: 0 8px;"
         >
           Vragenlijst
         </legend>
 
         <div style="margin-bottom: 20px;">
           <div
-            style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px; font-weight: 600; margin-bottom: 12px;"
+            style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
           >
             1. Hoe tevreden bent u?
           </div>
@@ -493,7 +493,7 @@ export const FormIntegration = () => {
 
         <div style="margin-bottom: 20px;">
           <div
-            style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px; font-weight: 600; margin-bottom: 12px;"
+            style="font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
           >
             2. Zou u dit aanbevelen?
           </div>
@@ -530,7 +530,7 @@ export const FormIntegration = () => {
           style="
           font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui);
           font-size: 16px;
-          font-weight: 600;
+          font-weight: 550;
           padding: 10px 20px;
           background: #154273;
           color: white;

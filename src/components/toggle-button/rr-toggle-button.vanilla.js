@@ -138,7 +138,7 @@ export class RRToggleButton extends RRBaseComponent {
         justify-content: center;
 
         /* Typography */
-        font-weight: var(--semantics-buttons-font-weight, 600);
+        font-weight: var(--semantics-buttons-font-weight, 550);
         text-decoration: none;
 
         /* Animation */
@@ -157,7 +157,7 @@ export class RRToggleButton extends RRBaseComponent {
       :host([size="xs"]) .button {
         min-height: var(--semantics-controls-xs-min-size, 24px);
         padding: var(--primitives-space-4, 4px) var(--primitives-space-12, 12px);
-        font: var(--components-button-xs-font, 600 14px/1.125 system-ui);
+        font: var(--components-button-xs-font, 550 14px/1.125 system-ui);
         border-radius: var(--semantics-controls-xs-corner-radius, 3px);
         gap: var(--primitives-space-2, 2px);
       }
@@ -166,7 +166,7 @@ export class RRToggleButton extends RRBaseComponent {
       :host([size="s"]) .button {
         min-height: var(--semantics-controls-s-min-size, 32px);
         padding: var(--primitives-space-8, 8px) var(--primitives-space-6, 6px);
-        font: var(--components-button-s-font, 600 16px/1.125 system-ui);
+        font: var(--components-button-s-font, 550 16px/1.125 system-ui);
         border-radius: var(--semantics-controls-s-corner-radius, 5px);
         gap: var(--primitives-space-2, 2px);
       }
@@ -176,7 +176,7 @@ export class RRToggleButton extends RRBaseComponent {
       :host(:not([size])) .button {
         min-height: var(--semantics-controls-m-min-size, 44px);
         padding: var(--primitives-space-8, 8px) var(--primitives-space-10, 10px);
-        font: var(--components-button-m-font, 600 18px/1.125 system-ui);
+        font: var(--components-button-m-font, 550 18px/1.125 system-ui);
         border-radius: var(--semantics-controls-m-corner-radius, 7px);
         gap: var(--primitives-space-4, 4px);
       }

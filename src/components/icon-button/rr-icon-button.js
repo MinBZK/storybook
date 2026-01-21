@@ -129,7 +129,7 @@ export class RRIconButton extends RRBaseComponent {
         justify-content: center;
 
         /* Typography */
-        font: var(--components-icon-button-font, 600 14px/1.125 RijksSansVF, system-ui);
+        font: var(--components-icon-button-font, 550 14px/1.125 RijksSansVF, system-ui);
 
         /* Animation */
         transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;

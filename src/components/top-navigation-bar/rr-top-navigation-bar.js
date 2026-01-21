@@ -231,7 +231,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
         background-color: var(--primitives-color-accent-100, #154273);
         color: #ffffff;
         padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
-        font: var(--components-menu-bar-menu-item-font, 600 18px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
         text-decoration: none;
         border-radius: var(--semantics-controls-m-corner-radius, 7px);
       }
@@ -332,18 +332,18 @@ export class RRTopNavigationBar extends RRBaseComponent {
 
       /* Navigation title */
       .nav-title {
-        font: var(--components-menu-bar-title-item-m-font, 600 20px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-m-font, 550 20px/1.125 RijksSansVF, system-ui);
         color: var(--primitives-color-neutral-900, #0f172a);
         margin-right: var(--primitives-space-16, 16px);
         white-space: nowrap;
       }
 
       :host([container="s"]) .nav-title {
-        font: var(--components-menu-bar-title-item-s-font, 600 18px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-s-font, 550 18px/1.125 RijksSansVF, system-ui);
       }
 
       :host([container="l"]) .nav-title {
-        font: var(--components-menu-bar-title-item-l-font, 600 23px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-l-font, 550 23px/1.125 RijksSansVF, system-ui);
       }
 
       /* Menu bar integration - remove its own border as nav-bar provides structure */
