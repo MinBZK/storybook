@@ -16,7 +16,11 @@ import path from 'node:path';
 import os from 'node:os';
 import net from 'node:net';
 
-const REGISTRY_FILE = path.join(os.homedir(), '.storybook-instances.json');
+const CLAUDE_DIR = path.join(os.homedir(), '.claude');
+// Use ~/.claude/ if it exists, otherwise fall back to home directory
+const REGISTRY_FILE = fs.existsSync(CLAUDE_DIR)
+  ? path.join(CLAUDE_DIR, 'storybook-instances.json')
+  : path.join(os.homedir(), '.storybook-instances.json');
 const BASE_PORT = 6006;
 const MAX_PORT = 6020;
 
