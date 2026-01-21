@@ -190,17 +190,17 @@ export class RRNavLogo extends RRBaseComponent {
       }
 
       .title {
-        font: var(--components-menu-bar-title-item-m-font, 600 20px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-m-font, 550 20px/1.125 RijksSansVF, system-ui);
         color: var(--primitives-color-neutral-900, #0f172a);
         margin: 0;
       }
 
       :host([container="s"]) .title {
-        font: var(--components-menu-bar-title-item-s-font, 600 18px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-s-font, 550 18px/1.125 RijksSansVF, system-ui);
       }
 
       :host([container="l"]) .title {
-        font: var(--components-menu-bar-title-item-l-font, 600 23px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-l-font, 550 23px/1.125 RijksSansVF, system-ui);
       }
 
       .subtitle {

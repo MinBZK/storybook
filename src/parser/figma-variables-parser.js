@@ -3,6 +3,8 @@
  * Transforms to Style Dictionary DTCG format
  */
 
+import { FONT_WEIGHT_MAP } from './font-weights.js';
+
 export const figmaVariablesParser = {
   name: 'figma-variables',
   pattern: /\.json$/,
@@ -139,20 +141,27 @@ function transformTypography(value) {
 
 /**
  * Map Figma font weight names to CSS values
+ * Handles both string values (from Figma text styles) and numeric values
+ * Throws on invalid input to fail fast during build
  */
 function mapFontWeight(weight) {
-  const weightMap = {
-    Thin: '100',
-    ExtraLight: '200',
-    Light: '300',
-    Regular: '400',
-    Medium: '500',
-    SemiBold: '600',
-    Bold: '700',
-    ExtraBold: '800',
-    Black: '900',
-  };
-  return weightMap[weight] || weight;
+  if (weight === undefined || weight === null) {
+    throw new Error('fontWeight is required in typography token but was undefined');
+  }
+
+  if (typeof weight === 'string') {
+    const mapped = FONT_WEIGHT_MAP[weight];
+    if (mapped === undefined) {
+      throw new Error(`Unknown fontWeight value: "${weight}"`);
+    }
+    return mapped;
+  }
+
+  if (typeof weight === 'number') {
+    return weight;
+  }
+
+  throw new Error(`Invalid fontWeight type: ${typeof weight}`);
 }
 
 /**
