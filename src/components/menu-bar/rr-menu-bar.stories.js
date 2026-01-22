@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './rr-menu-bar.js';
-import './rr-menu-item.js';
+import './rr-menu-bar.ts';
+import './rr-menu-item.ts';
 
 /**
  * De Menu Bar component is een navigatie-element met menu items die horizontaal worden weergegeven.
@@ -39,7 +39,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
     },
     componentSource: {
-      file: 'src/components/menu-bar/rr-menu-bar.js',
+      file: 'src/components/menu-bar/rr-menu-bar.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {

@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-top-navigation-bar.js';
-import '../menu-bar/rr-menu-item.js';
+import '../menu-bar/rr-menu-item.ts';
 
 /**
  * De Top Navigation Bar is de primaire navigatiecomponent voor Rijksoverheid websites.

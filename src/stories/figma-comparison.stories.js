@@ -7,8 +7,8 @@ import '../components/radio/rr-radio.ts';
 import '../components/switch/rr-switch.ts';
 import '../components/toggle-button/rr-toggle-button.js';
 import '../components/icon-button/rr-icon-button.ts';
-import '../components/menu-bar/rr-menu-bar.js';
-import '../components/menu-bar/rr-menu-item.js';
+import '../components/menu-bar/rr-menu-bar.ts';
+import '../components/menu-bar/rr-menu-item.ts';
 import '../components/top-navigation-bar/rr-top-navigation-bar.js';
 
 /**

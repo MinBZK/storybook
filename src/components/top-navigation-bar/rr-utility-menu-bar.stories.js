@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-utility-menu-bar.js';
+import './rr-utility-menu-bar.ts';
 
 /**
  * De Utility Menu Bar bevat secundaire navigatie-elementen zoals taalkeuze, zoeken en account.
@@ -28,7 +28,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
     },
     componentSource: {
-      file: 'src/components/top-navigation-bar/rr-utility-menu-bar.js',
+      file: 'src/components/top-navigation-bar/rr-utility-menu-bar.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {

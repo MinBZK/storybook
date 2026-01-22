@@ -60,9 +60,9 @@ import { RRBaseComponent } from '../base/base-component.js';
 
 // Import sub-components to ensure they're registered
 import './rr-nav-logo.js';
-import '../menu-bar/rr-menu-bar.js';
-import '../menu-bar/rr-menu-item.js';
-import './rr-utility-menu-bar.js';
+import '../menu-bar/rr-menu-bar.ts';
+import '../menu-bar/rr-menu-item.ts';
+import './rr-utility-menu-bar.ts';
 import './rr-back-button.js';
 
 export class RRTopNavigationBar extends RRBaseComponent {
