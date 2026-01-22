@@ -435,24 +435,12 @@ export const FigmaComparison = () => html`
         Our icon buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="240:1391" style="display: inline-block;">
-        <!-- Figma icon-button-list-cell: 6 buttons vertical (2 XS, 2 S, 2 M), gap: 16px, padding: 16px -->
+        <!-- Figma icon-button-cell: 2 buttons (neutral-tinted, size m), gap: 16px, padding: 16px -->
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-icon-button variant="accent-filled" size="xs" label="XS icon button"
+          <rr-icon-button variant="neutral-tinted" size="m" label="Icon button"
             >${settingsIcon}</rr-icon-button
           >
-          <rr-icon-button variant="accent-filled" size="xs" label="XS icon button"
-            >${settingsIcon}</rr-icon-button
-          >
-          <rr-icon-button variant="accent-filled" size="s" label="S icon button"
-            >${settingsIcon}</rr-icon-button
-          >
-          <rr-icon-button variant="accent-filled" size="s" label="S icon button"
-            >${settingsIcon}</rr-icon-button
-          >
-          <rr-icon-button variant="accent-filled" size="m" label="M icon button"
-            >${settingsIcon}</rr-icon-button
-          >
-          <rr-icon-button variant="accent-filled" size="m" label="M icon button"
+          <rr-icon-button variant="neutral-tinted" size="m" label="Icon button"
             >${settingsIcon}</rr-icon-button
           >
         </div>
