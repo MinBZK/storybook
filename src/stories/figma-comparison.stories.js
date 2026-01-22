@@ -1,12 +1,12 @@
 import { html } from 'lit';
 
-// Import all components
+// Import all components - use .ts for Lit components, .js for legacy
 import '../components/button/rr-button.ts';
 import '../components/checkbox/rr-checkbox.js';
-import '../components/radio/rr-radio.js';
-import '../components/switch/rr-switch.js';
+import '../components/radio/rr-radio.ts';
+import '../components/switch/rr-switch.ts';
 import '../components/toggle-button/rr-toggle-button.js';
-import '../components/icon-button/rr-icon-button.js';
+import '../components/icon-button/rr-icon-button.ts';
 import '../components/menu-bar/rr-menu-bar.js';
 import '../components/menu-bar/rr-menu-item.js';
 import '../components/top-navigation-bar/rr-top-navigation-bar.js';
@@ -286,7 +286,7 @@ export const IconButtonAccentFilledM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="accent-filled" size="m" aria-label="Add">${PlusIcon}</rr-icon-button>
+    <rr-icon-button variant="accent-filled" size="m" label="Add">${PlusIcon}</rr-icon-button>
   </div>
 `;
 IconButtonAccentFilledM.storyName = 'icon-button--accent-filled--m';
@@ -295,7 +295,7 @@ export const IconButtonAccentOutlinedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="accent-outlined" size="m" aria-label="Add">${PlusIcon}</rr-icon-button>
+    <rr-icon-button variant="accent-outlined" size="m" label="Add">${PlusIcon}</rr-icon-button>
   </div>
 `;
 IconButtonAccentOutlinedM.storyName = 'icon-button--accent-outlined--m';
@@ -304,7 +304,7 @@ export const IconButtonAccentTintedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="accent-tinted" size="m" aria-label="Add">${PlusIcon}</rr-icon-button>
+    <rr-icon-button variant="accent-tinted" size="m" label="Add">${PlusIcon}</rr-icon-button>
   </div>
 `;
 IconButtonAccentTintedM.storyName = 'icon-button--accent-tinted--m';
@@ -313,7 +313,7 @@ export const IconButtonNeutralTintedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="neutral-tinted" size="m" aria-label="Add">${PlusIcon}</rr-icon-button>
+    <rr-icon-button variant="neutral-tinted" size="m" label="Add">${PlusIcon}</rr-icon-button>
   </div>
 `;
 IconButtonNeutralTintedM.storyName = 'icon-button--neutral-tinted--m';
@@ -322,7 +322,7 @@ export const IconButtonAccentTransparentM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="accent-transparent" size="m" aria-label="Add"
+    <rr-icon-button variant="accent-transparent" size="m" label="Add"
       >${PlusIcon}</rr-icon-button
     >
   </div>
