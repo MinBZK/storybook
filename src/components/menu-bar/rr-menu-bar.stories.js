@@ -298,6 +298,7 @@ TitleSizes.parameters = {
 };
 
 // Figma Comparison - visual comparison with Figma design
+// Node 87:8516 = default-global-menu-bar (only menu items, not full top-nav-bar)
 const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
 const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
 
@@ -305,9 +306,9 @@ export const FigmaComparison = () => html`
   <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our menu bar (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
+        Menu bar (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
-      <ftl-holster node="48:2135" style="display: block; width: 100%;">
+      <ftl-holster node="87:8516" style="display: inline-block;">
         <rr-menu-bar>
           <rr-menu-item selected>Home</rr-menu-item>
           <rr-menu-item>Menu item</rr-menu-item>

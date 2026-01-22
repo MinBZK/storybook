@@ -237,3 +237,36 @@ export const DropdownStateDemo = {
     </div>
   `,
 };
+
+// Figma Comparison - visual comparison with Figma design
+// Node 81:570 = default-utility-menu-bar (Search + Account buttons)
+const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
+const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
+
+export const FigmaComparison = () => html`
+  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
+        Utility menu bar (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
+      </p>
+      <ftl-holster node="81:570" style="display: inline-block;">
+        <!--
+          Figma default-utility-menu-bar shows: Search (Zoeken) + Account buttons
+          Row layout, 44px height items
+        -->
+        <rr-utility-menu-bar
+          no-language-switch
+          account-label="Account"
+        ></rr-utility-menu-bar>
+      </ftl-holster>
+      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
+        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
+      </p>
+    </div>
+  </ftl-belt>
+`;
+FigmaComparison.storyName = '🎨 Figma Comparison';
+FigmaComparison.tags = ['!autodocs', 'figma'];
+FigmaComparison.parameters = {
+  controls: { disable: true },
+};
