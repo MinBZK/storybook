@@ -209,23 +209,7 @@ export const SwitchCheckedM = () => html`
 `;
 SwitchCheckedM.storyName = 'switch--checked--m';
 
-export const SwitchUncheckedS = () => html`
-  <div
-    style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
-  >
-    <rr-switch size="s" aria-label="Switch"></rr-switch>
-  </div>
-`;
-SwitchUncheckedS.storyName = 'switch--unchecked--s';
-
-export const SwitchCheckedS = () => html`
-  <div
-    style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
-  >
-    <rr-switch size="s" checked aria-label="Switch"></rr-switch>
-  </div>
-`;
-SwitchCheckedS.storyName = 'switch--checked--s';
+// Note: Figma design only has size M for switch, no S or XS variants
 
 // ============================================================================
 // TOGGLE BUTTON - Figma node: 309:3542 (toggle-button)

@@ -73,32 +73,32 @@ export class RRIconButton extends LitElement {
       transform: scale(0.98);
     }
 
-    /* Size: XS - Square 24x24 */
+    /* Size: XS - Square 24x24, Figma: 4px border-radius */
     :host([size='xs']) .button {
       width: var(--semantics-controls-xs-min-size, 24px);
       height: var(--semantics-controls-xs-min-size, 24px);
       min-width: var(--semantics-controls-xs-min-size, 24px);
       min-height: var(--semantics-controls-xs-min-size, 24px);
-      border-radius: var(--semantics-controls-xs-corner-radius, 3px);
+      border-radius: var(--components-icon-button-xs-corner-radius, 4px);
     }
 
-    /* Size: S - Square 32x32 */
+    /* Size: S - Square 32x32, Figma: 6px border-radius */
     :host([size='s']) .button {
       width: var(--semantics-controls-s-min-size, 32px);
       height: var(--semantics-controls-s-min-size, 32px);
       min-width: var(--semantics-controls-s-min-size, 32px);
       min-height: var(--semantics-controls-s-min-size, 32px);
-      border-radius: var(--semantics-controls-s-corner-radius, 5px);
+      border-radius: var(--components-icon-button-s-corner-radius, 6px);
     }
 
-    /* Size: M - Square 44x44 (default) */
+    /* Size: M - Square 44x44 (default), Figma: 8px border-radius */
     :host([size='m']) .button,
     :host(:not([size])) .button {
       width: var(--semantics-controls-m-min-size, 44px);
       height: var(--semantics-controls-m-min-size, 44px);
       min-width: var(--semantics-controls-m-min-size, 44px);
       min-height: var(--semantics-controls-m-min-size, 44px);
-      border-radius: var(--semantics-controls-m-corner-radius, 7px);
+      border-radius: var(--components-icon-button-m-corner-radius, 8px);
     }
 
     /* Variant: accent-filled (default) */

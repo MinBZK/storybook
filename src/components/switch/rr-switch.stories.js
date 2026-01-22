@@ -47,8 +47,8 @@ export default {
     },
     size: {
       control: 'select',
-      options: ['xs', 's', 'm'],
-      description: 'Switch size',
+      options: ['m'],
+      description: 'Switch size (only m available in Figma design)',
       table: {
         defaultValue: { summary: 'm' },
       },
@@ -94,43 +94,6 @@ export const CheckedDisabled = Template.bind({});
 CheckedDisabled.args = {
   checked: true,
   disabled: true,
-};
-
-// Sizes
-export const ExtraSmall = Template.bind({});
-ExtraSmall.args = {
-  size: 'xs',
-};
-
-export const Small = Template.bind({});
-Small.args = {
-  size: 's',
-};
-
-export const Medium = Template.bind({});
-Medium.args = {
-  size: 'm',
-};
-
-// All sizes overview
-export const AllSizes = () => html`
-  <div style="display: flex; gap: 1rem; align-items: center;">
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-      <rr-switch size="xs" aria-label="Extra small switch"></rr-switch>
-      <span style="font-size: 0.875rem; color: #64748b;">XS</span>
-    </div>
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-      <rr-switch size="s" aria-label="Small switch"></rr-switch>
-      <span style="font-size: 0.875rem; color: #64748b;">S</span>
-    </div>
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-      <rr-switch size="m" aria-label="Medium switch"></rr-switch>
-      <span style="font-size: 0.875rem; color: #64748b;">M</span>
-    </div>
-  </div>
-`;
-AllSizes.parameters = {
-  controls: { disable: true },
 };
 
 // All states overview
@@ -184,83 +147,6 @@ WithLabel.parameters = {
   },
 };
 
-// Size comparison matrix
-export const SizeStateMatrix = () => html`
-  <table style="border-collapse: collapse; width: 100%;">
-    <thead>
-      <tr>
-        <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Size</th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
-          Unchecked
-        </th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
-          Checked
-        </th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
-          Disabled
-        </th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
-          Checked Disabled
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">XS</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-switch size="xs" aria-label="XS unchecked switch"></rr-switch>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-switch size="xs" checked aria-label="XS checked switch"></rr-switch>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-switch size="xs" disabled aria-label="XS disabled switch"></rr-switch>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-switch size="xs" checked disabled aria-label="XS checked disabled switch"></rr-switch>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">S</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-switch size="s" aria-label="S unchecked switch"></rr-switch>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-switch size="s" checked aria-label="S checked switch"></rr-switch>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-switch size="s" disabled aria-label="S disabled switch"></rr-switch>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-switch size="s" checked disabled aria-label="S checked disabled switch"></rr-switch>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 0.75rem;">M</td>
-        <td style="padding: 0.75rem; text-align: center;">
-          <rr-switch size="m" aria-label="M unchecked switch"></rr-switch>
-        </td>
-        <td style="padding: 0.75rem; text-align: center;">
-          <rr-switch size="m" checked aria-label="M checked switch"></rr-switch>
-        </td>
-        <td style="padding: 0.75rem; text-align: center;">
-          <rr-switch size="m" disabled aria-label="M disabled switch"></rr-switch>
-        </td>
-        <td style="padding: 0.75rem; text-align: center;">
-          <rr-switch size="m" checked disabled aria-label="M checked disabled switch"></rr-switch>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-`;
-SizeStateMatrix.parameters = {
-  controls: { disable: true },
-  docs: {
-    description: {
-      story: 'Overzicht van alle beschikbare sizes en states in een matrix.',
-    },
-  },
-};
 
 // Programmatic control example
 export const ProgrammaticControl = () => {
@@ -313,9 +199,8 @@ export const FigmaComparison = () => html`
         Our switches (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="236:41353" style="display: inline-block;">
+        <!-- Figma switch-cell: 2 variants (top/center alignment), gap: 16px, padding: 16px -->
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-switch size="s" aria-label="S switch top"></rr-switch>
-          <rr-switch size="s" aria-label="S switch center"></rr-switch>
           <rr-switch size="m" aria-label="M switch top"></rr-switch>
           <rr-switch size="m" aria-label="M switch center"></rr-switch>
         </div>

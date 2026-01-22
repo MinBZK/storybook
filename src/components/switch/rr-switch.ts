@@ -4,7 +4,7 @@
  * @element rr-switch
  * @attr {boolean} checked - Whether the switch is on/off
  * @attr {boolean} disabled - Disabled state
- * @attr {string} size - Switch size: 'xs' | 's' | 'm' (default: 'm')
+ * @attr {string} size - Switch size: 'm' (only one size in Figma design)
  *
  * @fires change - When the switch state changes
  *
@@ -18,7 +18,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 'xs' | 's' | 'm';
+type Size = 'm';
 
 @customElement('rr-switch')
 export class RRSwitch extends LitElement {
@@ -77,42 +77,6 @@ export class RRSwitch extends LitElement {
         background-color 0.2s ease,
         border-color 0.2s ease;
       will-change: transform;
-    }
-
-    /* Size: XS */
-    :host([size='xs']) .switch {
-      width: calc(var(--semantics-controls-xs-min-size, 24px) * 1.6);
-      height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.833);
-      border-radius: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
-      padding: 2px;
-    }
-
-    :host([size='xs']) .switch__thumb {
-      width: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
-      height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
-    }
-
-    :host([size='xs'][checked]) .switch__thumb {
-      transform: translateX(calc(var(--semantics-controls-xs-min-size, 24px) * 0.5));
-    }
-
-    /* Size: S - Figma specs: 44x24px */
-    :host([size='s']) .switch {
-      width: calc(var(--semantics-controls-xs-min-size, 24px) * 1.833);
-      height: var(--semantics-controls-xs-min-size, 24px);
-      border-radius: calc(var(--semantics-controls-xs-min-size, 24px) / 2);
-      padding: 2px;
-    }
-
-    :host([size='s']) .switch__thumb {
-      width: calc(var(--semantics-controls-xs-min-size, 24px) - 8px);
-      height: calc(var(--semantics-controls-xs-min-size, 24px) - 8px);
-    }
-
-    :host([size='s'][checked]) .switch__thumb {
-      transform: translateX(
-        calc((var(--semantics-controls-xs-min-size, 24px) * 1.833) - var(--semantics-controls-xs-min-size, 24px))
-      );
     }
 
     /* Size: M (default) - Figma specs: 56x32px */
