@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-radio.js';
+import './rr-radio.ts';
 
 /**
  * De Radio Button component wordt gebruikt voor het maken van exclusieve keuzes binnen een groep opties.
@@ -37,7 +37,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41398',
     },
     componentSource: {
-      file: 'src/components/radio/rr-radio.js',
+      file: 'src/components/radio/rr-radio.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {
@@ -566,12 +566,40 @@ export const FigmaComparison = () => html`
       <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
         Our radio buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
-      <ftl-holster node="236:41398" style="display: inline-block;">
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-radio size="s" name="figma-s" aria-label="S radio"></rr-radio>
-          <rr-radio size="s" name="figma-s" checked aria-label="S radio checked"></rr-radio>
-          <rr-radio size="m" name="figma-m" aria-label="M radio"></rr-radio>
-          <rr-radio size="m" name="figma-m" checked aria-label="M radio checked"></rr-radio>
+      <ftl-holster node="219:38433" style="display: inline-block;">
+        <!-- Figma layout: 96x96px container with 2x2 grid of radio buttons -->
+        <!-- Each radio is 24px, positioned at (16,16), (56,16), (16,56), (56,56) -->
+        <div style="position: relative; width: 96px; height: 96px; background: #ffffff;">
+          <!-- Row 1: unchecked, checked -->
+          <rr-radio
+            size="xs"
+            name="figma-1"
+            aria-label="Unchecked"
+            style="position: absolute; left: 16px; top: 16px;"
+          ></rr-radio>
+          <rr-radio
+            size="xs"
+            name="figma-2"
+            checked
+            aria-label="Checked"
+            style="position: absolute; left: 56px; top: 16px;"
+          ></rr-radio>
+          <!-- Row 2: disabled unchecked, disabled checked -->
+          <rr-radio
+            size="xs"
+            name="figma-3"
+            disabled
+            aria-label="Disabled unchecked"
+            style="position: absolute; left: 16px; top: 56px;"
+          ></rr-radio>
+          <rr-radio
+            size="xs"
+            name="figma-4"
+            disabled
+            checked
+            aria-label="Disabled checked"
+            style="position: absolute; left: 56px; top: 56px;"
+          ></rr-radio>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
