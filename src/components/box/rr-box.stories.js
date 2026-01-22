@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-box.js';
+import './rr-box.ts';
 
 /**
  * De Box component is een eenvoudige container/card component met achtergrondkleur, padding en afgeronde hoeken.

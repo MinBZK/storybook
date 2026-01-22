@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-icon-button.js';
+import './rr-icon-button.ts';
 
 /**
  * De Icon Button component is een vierkante knop voor icoon-only acties.

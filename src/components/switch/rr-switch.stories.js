@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-switch.js';
+import './rr-switch.ts';
 
 /**
  * De Switch component is een toggle control voor aan/uit instellingen.
