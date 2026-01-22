@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-button.js';
+import './rr-button.ts';
 
 /**
  * De Button component is het primaire interactie-element voor gebruikersacties.
@@ -22,7 +22,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=20-27',
     },
     componentSource: {
-      file: 'src/components/button/rr-button.js',
+      file: 'src/components/button/rr-button.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {
@@ -639,8 +639,7 @@ export const FigmaComparison = () => html`
           Figma component set (20:27) is 832x436px with absolute positioned buttons.
           Columns: x=16, 179, 342, 478, 624, 760
           Rows: y=16/76/136/196/256/316/376 (M), +6 for S, +10 for XS (vertical centering)
-          Row order: neutral-tinted, neutral-transparent*, accent-filled, accent-tinted, accent-outlined, accent-transparent, danger-tinted*
-          * = variant not yet implemented
+          Row order: neutral-tinted, neutral-transparent, accent-filled, accent-tinted, accent-outlined, accent-transparent, danger-tinted
         -->
         <div style="position: relative; width: 832px; height: 436px; background: #ffffff;">
           <!-- Row 1: neutral-tinted (y=16/22/26) -->
@@ -651,13 +650,13 @@ export const FigmaComparison = () => html`
           <rr-button variant="neutral-tinted" size="xs" style="position: absolute; left: 624px; top: 26px;">Button</rr-button>
           <rr-button variant="neutral-tinted" size="xs" disabled style="position: absolute; left: 760px; top: 26px;">Button</rr-button>
 
-          <!-- Row 2: neutral-transparent (y=76/82/86) - NOT IMPLEMENTED, using accent-transparent -->
-          <rr-button variant="accent-transparent" size="m" style="position: absolute; left: 16px; top: 76px;">Button</rr-button>
-          <rr-button variant="accent-transparent" size="m" disabled style="position: absolute; left: 179px; top: 76px;">Button</rr-button>
-          <rr-button variant="accent-transparent" size="s" style="position: absolute; left: 342px; top: 82px;">Button</rr-button>
-          <rr-button variant="accent-transparent" size="s" disabled style="position: absolute; left: 478px; top: 82px;">Button</rr-button>
-          <rr-button variant="accent-transparent" size="xs" style="position: absolute; left: 624px; top: 86px;">Button</rr-button>
-          <rr-button variant="accent-transparent" size="xs" disabled style="position: absolute; left: 760px; top: 86px;">Button</rr-button>
+          <!-- Row 2: neutral-transparent (y=76/82/86) -->
+          <rr-button variant="neutral-transparent" size="m" style="position: absolute; left: 16px; top: 76px;">Button</rr-button>
+          <rr-button variant="neutral-transparent" size="m" disabled style="position: absolute; left: 179px; top: 76px;">Button</rr-button>
+          <rr-button variant="neutral-transparent" size="s" style="position: absolute; left: 342px; top: 82px;">Button</rr-button>
+          <rr-button variant="neutral-transparent" size="s" disabled style="position: absolute; left: 478px; top: 82px;">Button</rr-button>
+          <rr-button variant="neutral-transparent" size="xs" style="position: absolute; left: 624px; top: 86px;">Button</rr-button>
+          <rr-button variant="neutral-transparent" size="xs" disabled style="position: absolute; left: 760px; top: 86px;">Button</rr-button>
 
           <!-- Row 3: accent-filled (y=136/142/146) -->
           <rr-button variant="accent-filled" size="m" style="position: absolute; left: 16px; top: 136px;">Button</rr-button>
@@ -691,20 +690,17 @@ export const FigmaComparison = () => html`
           <rr-button variant="accent-transparent" size="xs" style="position: absolute; left: 624px; top: 326px;">Button</rr-button>
           <rr-button variant="accent-transparent" size="xs" disabled style="position: absolute; left: 760px; top: 326px;">Button</rr-button>
 
-          <!-- Row 7: danger-tinted (y=376/382/386) - NOT IMPLEMENTED, using accent-tinted -->
-          <rr-button variant="accent-tinted" size="m" style="position: absolute; left: 16px; top: 376px;">Button</rr-button>
-          <rr-button variant="accent-tinted" size="m" disabled style="position: absolute; left: 179px; top: 376px;">Button</rr-button>
-          <rr-button variant="accent-tinted" size="s" style="position: absolute; left: 342px; top: 382px;">Button</rr-button>
-          <rr-button variant="accent-tinted" size="s" disabled style="position: absolute; left: 478px; top: 382px;">Button</rr-button>
-          <rr-button variant="accent-tinted" size="xs" style="position: absolute; left: 624px; top: 386px;">Button</rr-button>
-          <rr-button variant="accent-tinted" size="xs" disabled style="position: absolute; left: 760px; top: 386px;">Button</rr-button>
+          <!-- Row 7: danger-tinted (y=376/382/386) -->
+          <rr-button variant="danger-tinted" size="m" style="position: absolute; left: 16px; top: 376px;">Button</rr-button>
+          <rr-button variant="danger-tinted" size="m" disabled style="position: absolute; left: 179px; top: 376px;">Button</rr-button>
+          <rr-button variant="danger-tinted" size="s" style="position: absolute; left: 342px; top: 382px;">Button</rr-button>
+          <rr-button variant="danger-tinted" size="s" disabled style="position: absolute; left: 478px; top: 382px;">Button</rr-button>
+          <rr-button variant="danger-tinted" size="xs" style="position: absolute; left: 624px; top: 386px;">Button</rr-button>
+          <rr-button variant="danger-tinted" size="xs" disabled style="position: absolute; left: 760px; top: 386px;">Button</rr-button>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
         Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-      <p style="font-size: 0.75rem; color: #94a3b8; margin: 0;">
-        Note: neutral-transparent (row 2) and danger-tinted (row 7) variants not yet implemented
       </p>
     </div>
   </ftl-belt>

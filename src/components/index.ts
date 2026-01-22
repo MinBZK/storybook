@@ -11,11 +11,11 @@
 // Base component (vanilla JS)
 export { RRBaseComponent } from './base/base-component.js';
 
-// Lit + TypeScript component (PoC)
-export { RRToggleButton } from './toggle-button/rr-toggle-button.js';
+// Lit + TypeScript components
+export { RRToggleButton } from './toggle-button/rr-toggle-button.ts';
+export { RRButton } from './button/rr-button.ts';
 
 // Vanilla JS components
-export { RRButton } from './button/rr-button.js';
 export { RRBox } from './box/rr-box.js';
 export { RRCheckbox } from './checkbox/rr-checkbox.js';
 export { RRRadio } from './radio/rr-radio.js';
