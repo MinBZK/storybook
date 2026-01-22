@@ -10,6 +10,26 @@ npm run build:tokens     # Rebuild design tokens
 npm run build            # Full build
 ```
 
+## Development Workflow
+
+**Gebruik ALTIJD deze skills voor de juiste workflow:**
+
+| Taak | Skill | Beschrijving |
+|------|-------|--------------|
+| Nieuwe branch starten | `/worktree <branch>` | Maakt worktree + kopieert .env en .claude/ |
+| Component maken/updaten | `/component <figma-node>` | Haalt Figma specs, genereert Lit+TS component |
+| Pixel-perfect checken | `/pixel-perfect <name>` | Vergelijkt component met Figma design |
+| PR maken met screenshots | `/figma-pr [component]` | Maakt PR met FigmaComparison screenshots |
+| Storybook beheren | `/storybook-manager` | Start/stop/status van Storybook instances |
+
+**Typische flow voor nieuwe feature:**
+```
+/worktree feat/my-component
+/component 123:456
+/pixel-perfect my-component
+/figma-pr my-component
+```
+
 ## Gotchas
 
 **Asymmetric Padding:** Figma uses different top/bottom padding. Check Properties panel for each value:
@@ -36,9 +56,12 @@ Always prefer semantic tokens. Only use primitives when no semantic exists.
 
 ```
 src/components/{name}/
-  rr-{name}.js           # Component class extending RRBaseComponent
+  rr-{name}.ts           # Lit + TypeScript component (nieuw)
+  rr-{name}.js           # Vanilla JS component (legacy)
   rr-{name}.stories.js   # Storybook stories
 ```
+
+**Let op:** We migreren naar Lit + TypeScript. Nieuwe componenten altijd in `.ts`.
 
 ## FigmaComparison Stories
 
@@ -182,7 +205,7 @@ Bij wijzigingen aan design tokens:
 
 ## Rules
 
-1. Extend `RRBaseComponent`
+1. Extend `LitElement` (nieuw) of `RRBaseComponent` (legacy)
 2. Use Shadow DOM
 3. Only design tokens - never hardcode
 4. DigiToegankelijk (WCAG 2.1 AA) compliant

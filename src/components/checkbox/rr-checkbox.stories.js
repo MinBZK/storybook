@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-checkbox.js';
+import './rr-checkbox.ts';
 
 /**
  * De Checkbox component stelt gebruikers in staat om een of meerdere opties te selecteren.
@@ -22,7 +22,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408',
     },
     componentSource: {
-      file: 'src/components/checkbox/rr-checkbox.js',
+      file: 'src/components/checkbox/rr-checkbox.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {

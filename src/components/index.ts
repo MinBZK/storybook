@@ -14,10 +14,10 @@ export { RRBaseComponent } from './base/base-component.js';
 // Lit + TypeScript components
 export { RRToggleButton } from './toggle-button/rr-toggle-button.ts';
 export { RRButton } from './button/rr-button.ts';
+export { RRCheckbox } from './checkbox/rr-checkbox.ts';
 
 // Vanilla JS components
 export { RRBox } from './box/rr-box.js';
-export { RRCheckbox } from './checkbox/rr-checkbox.js';
 export { RRRadio } from './radio/rr-radio.js';
 export { RRSwitch } from './switch/rr-switch.js';
 export { RRIconButton } from './icon-button/rr-icon-button.js';

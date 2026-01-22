@@ -12,7 +12,7 @@ export { RRBaseComponent } from './base/base-component.js';
 export { RRButton } from './button/rr-button.ts';
 export { RRBox } from './box/rr-box.js';
 export { RRToggleButton } from './toggle-button/rr-toggle-button.js';
-export { RRCheckbox } from './checkbox/rr-checkbox.js';
+export { RRCheckbox } from './checkbox/rr-checkbox.ts';
 export { RRRadio } from './radio/rr-radio.js';
 export { RRSwitch } from './switch/rr-switch.js';
 export { RRIconButton } from './icon-button/rr-icon-button.js';
