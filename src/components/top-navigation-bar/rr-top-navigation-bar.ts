@@ -60,11 +60,11 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 // Import sub-components to ensure they're registered
-import './rr-nav-logo.js';
+import './rr-nav-logo.ts';
 import '../menu-bar/rr-menu-bar.ts';
 import '../menu-bar/rr-menu-item.ts';
 import './rr-utility-menu-bar.ts';
-import './rr-back-button.js';
+import './rr-back-button.ts';
 
 type ContainerSize = 's' | 'm' | 'l';
 
