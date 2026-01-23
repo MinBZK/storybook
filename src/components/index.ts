@@ -27,7 +27,7 @@ export { RRUtilityMenuBar } from './top-navigation-bar/rr-utility-menu-bar.ts';
 // Vanilla JS components
 export { RRBox } from './box/rr-box.js';
 export { RRTopNavigationBar } from './top-navigation-bar/rr-top-navigation-bar.ts';
-export { RRNavLogo } from './top-navigation-bar/rr-nav-logo.js';
-export { RRBackButton } from './top-navigation-bar/rr-back-button.js';
+export { RRNavLogo } from './top-navigation-bar/rr-nav-logo.ts';
+export { RRBackButton } from './top-navigation-bar/rr-back-button.ts';
 
 // Auto-register happens on import of individual component files
