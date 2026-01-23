@@ -51,12 +51,12 @@ Use the storybook-manager to start Storybook:
 npm run sb:start
 ```
 
-This auto-assigns a port (6006-6020) and registers in `~/.storybook-instances.json`.
+This auto-assigns a port (6006-6020) and registers in `~/.claude/storybook-instances.json`.
 
 **Read the registry to get the assigned port:**
 
 ```javascript
-// Registry file: ~/.storybook-instances.json
+// Registry file: ~/.claude/storybook-instances.json
 // Find entry where path matches current working directory
 ```
 
@@ -91,12 +91,20 @@ Where `{name}` is the kebab-case component name:
 6. Wait for mode change: `mcp__playwright__browser_wait_for` with time: 1
 7. Take Side-by-Side screenshot: `mcp__playwright__browser_take_screenshot` with:
    - filename: `{name}-side-by-side.png` (relative path only)
-   - fullPage: true (Side-by-Side shows Figma above Code vertically)
+   - **element**: Use the `ftl-holster` element ref from snapshot
+   - **ref**: The ref of the `ftl-holster` element
+   - Do NOT use fullPage - screenshot only the ftl-holster element (the red bordered box)
 8. **Click** the "Overlay" button using `mcp__playwright__browser_click`
 9. Wait briefly: `mcp__playwright__browser_wait_for` with time: 1
 10. Take Overlay screenshot: `mcp__playwright__browser_take_screenshot` with:
     - filename: `{name}-overlay.png`
-    - fullPage: true
+    - **element**: Use the `ftl-holster` element ref from snapshot
+    - **ref**: The ref of the `ftl-holster` element
+    - Do NOT use fullPage - screenshot only the ftl-holster element
+
+**Important: Element Screenshots (not fullPage)**
+
+Always screenshot the `ftl-holster` element directly, NOT fullPage. This gives clean screenshots of just the comparison area without surrounding whitespace and Storybook UI.
 
 **Important: Playwright MCP output directory**
 
@@ -175,10 +183,56 @@ gh pr create --title "feat: {summary of changes}" --body "{PR body}"
 | Storybook timeout | Suggest running `npm run sb:start` manually |
 | No changes detected | Prompt to use `--all` or `--component <name>` |
 | ftl-holster not loading | Check `STORYBOOK_FIGMA_TOKEN` is set in `.env` |
+| Figma designs not loading in worktree | Copy `.env` from main repo to worktree (see below) |
 | gh CLI not authenticated | Run `gh auth login` |
-| Component has no FigmaComparison | Skip component with warning |
+| Component has no FigmaComparison | Use fallback: screenshot Default story (see below) |
 | Keyboard shortcuts not working | Click buttons directly via snapshot refs |
 | 0x0.st upload fails | Retry or use alternative host |
+
+### Worktree .env Issue
+
+When working in a git worktree, the `.env` file is not included by default. Figma designs won't load in Storybook without it. Solution:
+
+```bash
+# Copy .env from main repository to worktree
+cp /path/to/main/repo/.env /path/to/worktree/.env
+```
+
+Or relative from the worktree:
+```bash
+cp ../../.env .
+```
+
+## Fallback: Components zonder FigmaComparison
+
+Als een component GEEN FigmaComparison story heeft, maak dan een screenshot van de **Default** story:
+
+**URL Pattern:**
+```
+http://localhost:{port}/iframe.html?viewMode=story&id=components-{name}--default
+```
+
+**Screenshot Process:**
+1. Navigate to Default story URL
+2. Wait for component to load: `mcp__playwright__browser_wait_for` with time: 2
+3. Take snapshot: `mcp__playwright__browser_snapshot`
+4. Find the component element (usually `rr-{name}` or wrapper div)
+5. Take element screenshot: `mcp__playwright__browser_take_screenshot` with:
+   - filename: `{name}-default.png`
+   - element: The component or its container
+   - ref: The ref from snapshot
+
+**PR body voor components zonder FigmaComparison:**
+
+```markdown
+### {Component Name}
+
+> ⚠️ Geen FigmaComparison story - alleen Default screenshot
+
+| Default |
+|---------|
+| ![default]({DEFAULT_URL}) |
+```
 
 ## Component Map
 
@@ -200,5 +254,5 @@ Components with FigmaComparison stories:
 - Playwright MCP restricts output to `.playwright-mcp/`
 - 0x0.st URLs work directly in GitHub PR descriptions
 - The `ftl-holster` component provides keyboard shortcuts (T/O/S) but clicking buttons is more reliable
-- Always use `fullPage: true` for screenshots - Side-by-Side layout is vertical
+- Always screenshot the `ftl-holster` element directly (NOT fullPage) for clean, focused screenshots
 - 0x0.st retention: 30 days minimum, up to 1 year for small files
