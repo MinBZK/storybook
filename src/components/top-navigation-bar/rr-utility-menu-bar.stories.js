@@ -252,12 +252,17 @@ export const FigmaComparison = () => html`
       <ftl-holster node="81:570" style="display: inline-block;">
         <!--
           Figma default-utility-menu-bar shows: Search (Zoeken) + Account buttons
-          Row layout, 44px height items
+          Row layout, 44px height items, grey text on dark background
         -->
-        <rr-utility-menu-bar
-          no-language-switch
-          account-label="Account"
-        ></rr-utility-menu-bar>
+        <div style="
+          background: #1e293b;
+          --components-menu-bar-menu-item-color: #c0ccd8;
+        ">
+          <rr-utility-menu-bar
+            no-language-switch
+            account-label="Account"
+          ></rr-utility-menu-bar>
+        </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
         Keyboard: T (toggle) | O (overlay) | S (side-by-side)

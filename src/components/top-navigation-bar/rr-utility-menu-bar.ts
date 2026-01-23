@@ -113,14 +113,15 @@ export class RRUtilityMenuBar extends LitElement {
     .utility-button {
       display: flex;
       align-items: center;
-      gap: var(--primitives-space-8, 8px);
-      padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
+      gap: var(--primitives-space-4, 4px);
+      padding: 0 var(--primitives-space-8, 8px);
+      height: 44px;
       background: none;
       border: none;
-      color: var(--primitives-color-accent-100, #154273);
+      color: var(--components-menu-bar-menu-item-color, #c0ccd8);
       font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
       cursor: pointer;
-      border-radius: var(--semantics-controls-m-corner-radius, 7px);
+      border-radius: 0;
       transition: background-color 0.15s ease;
       white-space: nowrap;
     }
