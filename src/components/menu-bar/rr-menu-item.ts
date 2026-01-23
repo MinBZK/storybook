@@ -23,8 +23,9 @@ import { customElement, property } from 'lit/decorators.js';
 export class RRMenuItem extends LitElement {
   static override styles = css`
     :host {
-      display: block;
+      display: inline-block;
       position: relative;
+      width: fit-content;
       font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
     }
 
@@ -42,18 +43,21 @@ export class RRMenuItem extends LitElement {
       text-decoration: none;
 
       /* Layout */
-      display: block;
+      display: flex;
       position: relative;
-      width: 100%;
+      height: 44px;
+      box-sizing: border-box;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
 
       /* Typography */
       font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
-      color: var(--rr-menu-item-color, var(--components-menu-bar-menu-item-color, #154273));
-      text-align: left;
+      color: var(--rr-menu-item-color, var(--components-menu-bar-menu-item-color, #c0ccd8));
+      text-align: center;
 
-      /* Spacing */
-      padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
+      /* Spacing - Figma: 0px vertical, 8px horizontal */
+      padding: 0 var(--primitives-space-8, 8px);
 
       /* Animation */
       transition:
@@ -85,7 +89,7 @@ export class RRMenuItem extends LitElement {
       left: 0;
       right: 0;
       height: 0;
-      background-color: var(--components-menu-bar-menu-item-is-selected-indicator-color, #154273);
+      background-color: var(--components-menu-bar-menu-item-is-selected-indicator-color, #7eb1e7);
       transition: height 0.15s ease;
       pointer-events: none;
       z-index: 1;
@@ -93,6 +97,11 @@ export class RRMenuItem extends LitElement {
 
     :host([selected]) .selection-indicator {
       height: var(--components-menu-bar-menu-item-is-selected-indicator-height, 4px);
+    }
+
+    /* Selected state - text color */
+    :host([selected]) .menu-item {
+      color: var(--components-menu-bar-menu-item-is-selected-color, #7eb1e7);
     }
 
     /* Content wrapper for z-index layering */

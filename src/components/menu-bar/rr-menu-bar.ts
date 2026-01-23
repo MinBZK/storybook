@@ -56,6 +56,7 @@ export class RRMenuBar extends LitElement {
     .title {
       padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
       margin: 0;
+      color: var(--components-menu-bar-title-item-color, #c0ccd8);
     }
 
     /* Title size variants */
@@ -70,6 +71,11 @@ export class RRMenuBar extends LitElement {
 
     :host([size='l']) .title {
       font: var(--components-menu-bar-title-item-l-font, 550 23px/1.125 RijksSansVF, system-ui);
+    }
+
+    /* Title slot content inherits color */
+    ::slotted([slot='title']) {
+      color: inherit;
     }
 
     .menu {

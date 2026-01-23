@@ -124,7 +124,18 @@ export const FigmaComparison = () => html`
           Hover states cannot be rendered statically, so we show default and selected only.
           Variant order: default, hovered (skip), selected, selected+hovered (skip)
         -->
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #1e293b;">
+        <div style="
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+          padding: 16px;
+          background: #1e293b;
+          --components-menu-bar-menu-item-color: #c0ccd8;
+          --components-menu-bar-menu-item-is-selected-color: #7eb1e7;
+          --components-menu-bar-menu-item-is-selected-indicator-color: #7eb1e7;
+          --components-menu-bar-menu-item-is-hovered-indicator-color: #27333f;
+        ">
           <rr-menu-item>Menu item</rr-menu-item>
           <rr-menu-item>Menu item</rr-menu-item>
           <rr-menu-item selected>Menu item</rr-menu-item>

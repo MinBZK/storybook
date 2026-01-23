@@ -309,14 +309,26 @@ export const FigmaComparison = () => html`
         Menu bar (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="87:8516" style="display: inline-block;">
-        <rr-menu-bar>
-          <rr-menu-item selected>Home</rr-menu-item>
-          <rr-menu-item>Menu item</rr-menu-item>
-          <rr-menu-item>Menu item</rr-menu-item>
-          <rr-menu-item>Menu item</rr-menu-item>
-          <rr-menu-item>Menu item</rr-menu-item>
-          <rr-menu-item>Menu item</rr-menu-item>
-        </rr-menu-bar>
+        <!--
+          Figma design shows menu bar on dark background (#1e293b).
+          6 items: Home (selected), Menu item x5 (default)
+        -->
+        <div style="
+          background: #1e293b;
+          --components-menu-bar-menu-item-color: #c0ccd8;
+          --components-menu-bar-menu-item-is-selected-color: #7eb1e7;
+          --components-menu-bar-menu-item-is-selected-indicator-color: #7eb1e7;
+          --_menu-bar-border: none;
+        ">
+          <rr-menu-bar>
+            <rr-menu-item selected>Home</rr-menu-item>
+            <rr-menu-item>Menu item</rr-menu-item>
+            <rr-menu-item>Menu item</rr-menu-item>
+            <rr-menu-item>Menu item</rr-menu-item>
+            <rr-menu-item>Menu item</rr-menu-item>
+            <rr-menu-item>Menu item</rr-menu-item>
+          </rr-menu-bar>
+        </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
         Keyboard: T (toggle) | O (overlay) | S (side-by-side)
