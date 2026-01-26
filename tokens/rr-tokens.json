@@ -759,7 +759,7 @@
               "name": "primitives/color/neutral/200",
               "type": "color",
               "isAlias": false,
-              "value": "#E2E8F0"
+              "value": "#D8DEE7"
             },
             {
               "name": "primitives/color/neutral/300",
@@ -801,7 +801,7 @@
               "name": "primitives/color/neutral/900",
               "type": "color",
               "isAlias": false,
-              "value": "#0F172A"
+              "value": "#1F252D"
             },
             {
               "name": "primitives/color/neutral/1000",

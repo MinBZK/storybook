@@ -333,7 +333,7 @@ export class RRTopNavigationBar extends RRBaseComponent {
       /* Navigation title */
       .nav-title {
         font: var(--components-menu-bar-title-item-m-font, 550 20px/1.125 RijksSansVF, system-ui);
-        color: var(--primitives-color-neutral-900, #0f172a);
+        color: var(--primitives-color-neutral-900, #1f252d);
         margin-right: var(--primitives-space-16, 16px);
         white-space: nowrap;
       }

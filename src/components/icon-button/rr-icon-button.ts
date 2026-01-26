@@ -137,8 +137,8 @@ export class RRIconButton extends LitElement {
 
     /* Variant: neutral-tinted */
     :host([variant='neutral-tinted']) .button {
-      --_bg-color: var(--semantics-buttons-neutral-tinted-background-color, #e2e8f0);
-      --_text-color: var(--semantics-buttons-neutral-tinted-color, #0f172a);
+      --_bg-color: var(--semantics-buttons-neutral-tinted-background-color, #d8dee7);
+      --_text-color: var(--semantics-buttons-neutral-tinted-color, #1f252d);
     }
 
     :host([variant='neutral-tinted']) .button:hover:not(:disabled) {
@@ -186,10 +186,10 @@ export class RRIconButton extends LitElement {
       --_icon-size: 16px;
     }
 
-    /* M: 44px button -> 20px icon (~45%) */
+    /* M: 44px button -> 24px icon (matches Figma) */
     :host([size='m']),
     :host(:not([size])) {
-      --_icon-size: 20px;
+      --_icon-size: 24px;
     }
 
     /* Accessibility: Reduced motion */
