@@ -1,5 +1,7 @@
 ---
+name: pixel-perfect
 description: Maak een component pixel-perfect vergeleken met Figma design
+user-invocable: true
 argument-hint: <component-naam>
 ---
 
@@ -134,90 +136,11 @@ Als nodes `position: "absolute"` hebben:
 
 ## STAP 3.5: STYLE EXTRACTION (Automated Checks)
 
-### 3.5.1 Extraheer Figma style waarden
-
-Uit de Figma MCP response, extraheer:
-
-| Property | Figma locatie | Beschrijving |
-|----------|---------------|--------------|
-| **Colors** | `fills[].color` (RGBA 0-1) | Achtergrond kleuren |
-| **Stroke colors** | `strokes[].color` | Border kleuren |
-| **Font size** | `style.fontSize` | Font grootte in px |
-| **Font weight** | `style.fontWeight` | Font weight numeriek |
-| **Line height** | `style.lineHeightPx` | Line height in px |
-| **Stroke weight** | `strokeWeight` | Border dikte in px |
-| **Stroke align** | `strokeAlign` | `"INSIDE"`, `"OUTSIDE"`, `"CENTER"` |
-| **Border radius** | `cornerRadius` | Uniform radius |
-| **Border radius (asymm)** | `rectangleCornerRadii` | Array [TL, TR, BR, BL] |
-| **Padding** | `paddingTop/Right/Bottom/Left` | Padding per zijde |
-| **Min dimensions** | `minWidth`, `minHeight` | Minimum afmetingen |
-| **Box shadow** | `effects[]` waar `type === "DROP_SHADOW"` | Shadow effect |
-
-### 3.5.2 Color conversion utility
-
-Converteer Figma RGBA (0-1 range) naar CSS:
-
-```javascript
-// Figma RGBA (0-1) naar CSS rgba()
-function figmaToCSS(r, g, b, a) {
-  return `rgba(${Math.round(r*255)}, ${Math.round(g*255)}, ${Math.round(b*255)}, ${a})`;
-}
-
-// Voorbeeld: Figma { r: 0.059, g: 0.090, b: 0.165, a: 1 }
-// Wordt: rgba(15, 23, 42, 1) oftewel #0f172a
-```
-
-### 3.5.3 Extraheer browser computed styles
-
-Gebruik Playwright om computed styles te extraheren:
-
-```javascript
-mcp__playwright__browser_evaluate({
-  function: `() => {
-    const el = document.querySelector('rr-{name}').shadowRoot.querySelector('.{main-class}');
-    const styles = getComputedStyle(el);
-    return {
-      // Colors
-      color: styles.color,
-      backgroundColor: styles.backgroundColor,
-      borderColor: styles.borderColor,
-      // Typography
-      fontSize: styles.fontSize,
-      fontWeight: styles.fontWeight,
-      lineHeight: styles.lineHeight,
-      // Borders & radius
-      borderWidth: styles.borderWidth,
-      borderRadius: styles.borderRadius,
-      // Spacing
-      paddingTop: styles.paddingTop,
-      paddingRight: styles.paddingRight,
-      paddingBottom: styles.paddingBottom,
-      paddingLeft: styles.paddingLeft,
-      // Dimensions
-      minHeight: styles.minHeight,
-      minWidth: styles.minWidth,
-      // Effects
-      boxShadow: styles.boxShadow
-    };
-  }`
-})
-```
-
-### 3.5.4 Vergelijk waarden
-
-Vergelijk met toleranties:
-
-| Property | Tolerantie | Vergelijkingsmethode |
-|----------|------------|----------------------|
-| Colors | Exact | Converteer Figma RGBA naar CSS, vergelijk strings |
-| Font size | 0px | Figma px === computed px |
-| Font weight | Exact | Figma value === computed value |
-| Line height | 1px | Figma lineHeightPx vs computed (parse px value) |
-| Border width | 0px | Figma strokeWeight === parsed border-width |
-| Border radius | 1px | Figma cornerRadius vs parsed border-radius |
-| Padding | 1px | Vergelijk alle 4 zijdes apart (asymmetrisch!) |
-| Min dimensions | 1px | Figma minWidth/Height vs computed |
-| Box shadow | Visual | Vergelijk offset, blur, spread, color |
+> **Zie:** [style-extraction.md](./style-extraction.md) voor de volledige referentie over:
+> - Figma style waarden extractie
+> - Color conversion utility (RGBA 0-1 → CSS)
+> - Browser computed styles extractie met Playwright
+> - Vergelijkingstoleranties per property
 
 ---
 
@@ -266,7 +189,34 @@ mcp__playwright__browser_click(
 )
 ```
 
-### 4.6 Neem screenshot in Overlay mode
+### 4.6 Zet overlay opacity op 50%
+
+**BELANGRIJK:** Overlay screenshots moeten ALTIJD op 50% opacity genomen worden voor een half-half vergelijking.
+
+1. Neem een nieuwe snapshot om de opacity slider ref te vinden
+2. De slider is een `<input type="range">` element in de ftl-holster controls
+3. Zet de slider op 50%:
+
+```
+mcp__playwright__browser_evaluate(
+  function: "(slider) => { slider.value = 50; slider.dispatchEvent(new Event('input', { bubbles: true })); }",
+  ref: "{slider-ref}",
+  element: "Opacity slider"
+)
+```
+
+4. Wacht kort op de opacity change:
+
+```
+mcp__playwright__browser_wait_for(time: 0.5)
+```
+
+**Waarom 50% opacity?** Bij 50% opacity zie je een half-half blend van Code en Figma. Dit maakt het makkelijker om:
+- Afwijkingen te spotten (ze "shimmeren" niet door extreme transparantie)
+- Beide layers duidelijk te zien
+- Subtiele kleur- en positieverschillen te detecteren
+
+### 4.7 Neem screenshot in Overlay mode
 
 Screenshot alleen de `ftl-holster` element (de rode box), NIET fullPage:
 
@@ -280,7 +230,7 @@ mcp__playwright__browser_take_screenshot(
 
 **Belangrijk:** Gebruik altijd element screenshot van de `ftl-holster`, niet fullPage. Dit geeft schone screenshots zonder omringende whitespace en Storybook UI.
 
-### 4.7 Analyseer met automated checks + visuele inspectie
+### 4.8 Analyseer met automated checks + visuele inspectie
 
 Voer zowel **automated vergelijkingen** als **visuele controles** uit:
 
@@ -310,7 +260,7 @@ Voer zowel **automated vergelijkingen** als **visuele controles** uit:
 | paddingTop | 8px | 10px | ❌ -2px |
 ```
 
-### 4.8 Bij afwijkingen: Fix identificeren
+### 4.9 Bij afwijkingen: Fix identificeren
 
 **Positionering afwijking:**
 - Check of layout mode (column/row) klopt
@@ -327,7 +277,7 @@ Voer zowel **automated vergelijkingen** als **visuele controles** uit:
 - Zoek correcte token in `dist/css/tokens.css`
 - Pas component of story aan
 
-### 4.9 Pas bestanden aan
+### 4.10 Pas bestanden aan
 
 **Story aanpassen (layout/varianten):**
 ```
@@ -339,13 +289,13 @@ Edit: src/components/{name}/rr-{name}.stories.js
 Edit: src/components/{name}/rr-{name}.ts
 ```
 
-### 4.10 Wacht op hot reload
+### 4.11 Wacht op hot reload
 
 ```
 mcp__playwright__browser_wait_for(time: 2)
 ```
 
-### 4.11 Herhaal vanaf stap 4.2
+### 4.12 Herhaal vanaf stap 4.2
 
 ---
 
@@ -402,7 +352,7 @@ Style waarden per variant:
 3. Vergelijk tegen bovenstaande Figma waarden (tolerantie: exact voor colors, ±1px voor dimensions)
 4. Neem overlay screenshot
 5. Analyseer visueel: positionering, varianten, sizing, spacing
-6. Bij afwijkingen: **consulteer KNOWN ISSUES DATABASE** in dit command voor bekende fixes
+6. Bij afwijkingen: **consulteer [known-issues.md](./known-issues.md)** voor bekende fixes
 7. Pas component/story aan indien nodig
 8. Rapporteer resultaat met vergelijkingstabel
 
@@ -623,7 +573,7 @@ Geen - component was al pixel-perfect.
 
 Als de subagent een "Nieuw ontdekt issue" heeft gerapporteerd dat waardevol is:
 
-1. Voeg het issue toe aan de `## KNOWN ISSUES DATABASE` sectie in dit bestand
+1. Voeg het issue toe aan [known-issues.md](./known-issues.md)
 2. Gebruik het standaard format (Symptoom, Root cause, Diagnostiek, Fix, Preventie)
 3. Plaats het op de juiste plek (sorteer op frequentie/relevantie)
 4. Bevestig de toevoeging in het eindrapport:
@@ -711,293 +661,10 @@ Genereer HTML met CSS Grid:
 
 ## KNOWN ISSUES DATABASE
 
-> **Zelflerende sectie**: Wanneer je tijdens verificatie een nieuw issue ontdekt dat hier niet staat, voeg het toe aan deze database met dezelfde structuur. Dit helpt toekomstige verificaties.
-
-### Issue: Asymmetrische padding
-
-**Symptoom:** Component padding lijkt correct maar overlay toont verticale offset
-**Root cause:** Figma gebruikt verschillende top/bottom padding (bijv. 8/6px), CSS gebruikt symmetrisch
-**Diagnostiek:**
-```javascript
-// Check Figma data voor:
-paddingTop !== paddingBottom  // Als true: asymmetrisch!
-```
-**Fix:**
-```css
-/* FOUT */
-padding: 8px;
-/* GOED */
-padding: 8px 8px 6px 8px; /* top right bottom left */
-```
-**Preventie:** Check ALTIJD alle 4 padding waarden apart in Figma Properties panel
-
----
-
-### Issue: Font weight mismatch met variable font
-
-**Symptoom:** Tekst lijkt te bold of te light ondanks correcte font-weight waarde
-**Root cause:** RijksSansVF variable font gebruikt `font-variation-settings` voor weight, niet standaard `font-weight`
-**Diagnostiek:**
-```javascript
-// Computed style toont font-weight: 400
-// Maar visueel is het anders door font-variation-settings
-getComputedStyle(el).fontVariationSettings // Check deze waarde
-```
-**Fix:**
-```css
-/* Gebruik font shorthand met token die variation settings bevat */
-font: var(--components-button-m-font);
-/* OF expliciet */
-font-variation-settings: 'wght' 600;
-```
-**Preventie:** Gebruik altijd component font tokens, nooit losse font-weight
-
----
-
-### Issue: Border meegeteld in dimensies
-
-**Symptoom:** Component is 2px te groot (of te klein)
-**Root cause:** `box-sizing: content-box` vs `border-box` verschil, of border in Figma is INSIDE vs OUTSIDE
-**Diagnostiek:**
-```javascript
-// Check Figma strokeAlign:
-strokeAlign: "INSIDE"  // Border BINNEN de dimensies
-strokeAlign: "OUTSIDE" // Border BUITEN de dimensies
-strokeAlign: "CENTER"  // Border gecentreerd op edge
-```
-**Fix:**
-```css
-/* Voor INSIDE stroke (meest voorkomend) */
-box-sizing: border-box;
-
-/* Voor OUTSIDE stroke */
-box-sizing: content-box;
-/* OF compenseer met negatieve margin */
-```
-**Preventie:** Check strokeAlign in Figma data voordat je dimensies vergelijkt
-
----
-
-### Issue: Opacity token als percentage
-
-**Symptoom:** Disabled state is volledig transparant of niet transparant genoeg
-**Root cause:** `--primitives-opacity-disabled` is een percentage (38), niet een decimaal (0.38)
-**Diagnostiek:**
-```css
-/* FOUT - resulteert in opacity: 38 (invalid) */
-opacity: var(--primitives-opacity-disabled);
-```
-**Fix:**
-```css
-/* GOED */
-opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
-```
-**Preventie:** Opacity tokens ALTIJD delen door 100
-
----
-
-### Issue: Focus ring verschil
-
-**Symptoom:** Focus ring heeft andere offset of dikte dan Figma
-**Root cause:** Figma gebruikt stroke effect, CSS kan outline of box-shadow gebruiken
-**Diagnostiek:**
-```javascript
-// Figma focus ring is vaak een stroke met offset
-// Check effects array voor DROP_SHADOW of stroke op focus state
-```
-**Fix:**
-```css
-/* Met outline (scherp) */
-outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
-outline-offset: 2px;
-
-/* Met box-shadow (kan blur hebben) */
-box-shadow: 0 0 0 2px var(--semantics-focus-ring-color);
-```
-**Preventie:** Check of Figma stroke of effect gebruikt voor focus indicator
-
----
-
-### Issue: Gap in nested flex containers
-
-**Symptoom:** Spacing tussen items klopt niet, maar gap waarde lijkt correct
-**Root cause:** Figma auto-layout gap vs CSS gap werkt anders bij nested containers
-**Diagnostiek:**
-```javascript
-// Check of parent EN child beide gap hebben
-// Figma kan "space between" gebruiken i.p.v. vaste gap
-```
-**Fix:**
-```css
-/* Check of het gap of justify-content moet zijn */
-justify-content: space-between; /* i.p.v. gap */
-
-/* Of nested containers met eigen gap */
-.parent { gap: 12px; }
-.child { gap: 4px; }
-```
-**Preventie:** Analyseer volledige layout hierarchy in Figma
-
----
-
-### Issue: Line-height px vs unitless
-
-**Symptoom:** Tekst verticaal verkeerd gepositioneerd
-**Root cause:** Figma geeft `lineHeightPx`, CSS kan unitless of % gebruiken
-**Diagnostiek:**
-```javascript
-// Figma: lineHeightPx: 20
-// CSS computed: line-height: 1.5 (unitless) of 150%
-// Deze zijn NIET hetzelfde bij alle font sizes
-```
-**Fix:**
-```css
-/* Gebruik altijd px voor exacte match */
-line-height: 20px;
-
-/* OF via font token die line-height bevat */
-font: var(--components-button-m-font);
-```
-**Preventie:** Vergelijk line-height altijd in px, converteer indien nodig
-
----
-
-### Issue: Icon sizing in button
-
-**Symptoom:** Icon te groot/klein of verkeerd gepositioneerd t.o.v. tekst
-**Root cause:** Icon heeft eigen sizing die niet matcht met button context
-**Diagnostiek:**
-```javascript
-// Check icon dimensions in Figma vs rendered
-// Check of icon SVG viewBox klopt
-```
-**Fix:**
-```css
-.button__icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0; /* Voorkom dat icon krimpt */
-}
-
-/* Verticale alignment */
-.button {
-  align-items: center;
-}
-```
-**Preventie:** Icons altijd expliciete dimensies geven, niet afhankelijk van content
-
----
-
-### Issue: Text baseline alignment
-
-**Symptoom:** Tekst lijkt 1-2px te hoog of te laag
-**Root cause:** Font metrics verschillen, vooral bij custom fonts
-**Diagnostiek:**
-```javascript
-// Vergelijk visuele baseline in overlay
-// RijksSansVF kan andere metrics hebben dan Figma verwacht
-```
-**Fix:**
-```css
-/* Micro-adjustment indien nodig */
-.button__label {
-  position: relative;
-  top: 1px; /* Of gebruik transform */
-}
-
-/* Of via line-height tweaking */
-line-height: 1; /* Reset, dan fine-tune */
-```
-**Preventie:** Accepteer kleine baseline verschillen (±1px) als font metrics issue
-
----
-
-## COMMON FIXES (Quick Reference)
-
-### Padding klopt niet
-
-1. Check Figma padding (kan asymmetrisch zijn!)
-2. Pas aan in component CSS:
-   ```css
-   padding: {top}px {right}px {bottom}px {left}px;
-   ```
-
-### Gap klopt niet
-
-1. Check Figma gap waarde
-2. Pas aan in story container:
-   ```css
-   gap: {gap}px;
-   ```
-
-### Breedte/hoogte klopt niet
-
-1. Check Figma sizing mode (hug vs fixed)
-2. Bij fixed: voeg expliciete dimensies toe
-3. Bij hug: verwijder vaste dimensies
-
-### Font klopt niet
-
-1. Check component-specifieke font token:
-   ```css
-   font: var(--components-{name}-{size}-font);
-   ```
-
-### Border radius klopt niet
-
-1. Check semantics token:
-   ```css
-   border-radius: var(--semantics-controls-{size}-corner-radius);
-   ```
-
-### Color klopt niet
-
-1. Converteer Figma RGBA naar hex/rgb
-2. Zoek matching token in `dist/css/tokens.css`
-3. Update component met correcte token
-
----
-
-## NIEUWE ISSUES TOEVOEGEN
-
-Wanneer je tijdens verificatie een probleem tegenkomt dat **niet** in de Known Issues Database staat:
-
-### 1. Documenteer het issue
-
-Voeg toe aan de database met dit format:
-
-```markdown
-### Issue: [Korte beschrijving]
-
-**Symptoom:** [Wat zie je in de overlay/vergelijking?]
-**Root cause:** [Waarom gebeurt dit?]
-**Diagnostiek:**
-\`\`\`javascript
-// Code om het issue te identificeren
-\`\`\`
-**Fix:**
-\`\`\`css
-/* Oplossing */
-\`\`\`
-**Preventie:** [Hoe dit te voorkomen in de toekomst]
-```
-
-### 2. Locatie
-
-Voeg het issue toe aan `/.claude/commands/pixel-perfect.md` in de sectie `## KNOWN ISSUES DATABASE`, gesorteerd op frequentie (meest voorkomende bovenaan).
-
-### 3. Wanneer toevoegen
-
-- Issue kwam meerdere keren voor tijdens verificatie
-- Issue kostte significant tijd om te diagnosticeren
-- Issue heeft een niet-voor-de-hand-liggende root cause
-- Fix is niet intuïtief
-
-### 4. Niet toevoegen
-
-- Eenmalige typo's of simpele vergissingen
-- Issues specifiek voor één component (documenteer in component file)
-- Issues die al gedekt zijn door bestaande entries
+> **Zie:** [known-issues.md](./known-issues.md) voor de volledige database met:
+> - Bekende issues en hun fixes (asymmetrische padding, font weight, border sizing, etc.)
+> - Common fixes quick reference
+> - Instructies voor het toevoegen van nieuwe issues
 
 ---
 

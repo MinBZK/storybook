@@ -1,5 +1,7 @@
 ---
+name: figma-pr
 description: Create a PR with FigmaComparison screenshots for changed components
+user-invocable: true
 argument-hint: [--all | --component <name>]
 ---
 
@@ -96,11 +98,25 @@ Where `{name}` is the kebab-case component name:
    - Do NOT use fullPage - screenshot only the ftl-holster element (the red bordered box)
 8. **Click** the "Overlay" button using `mcp__playwright__browser_click`
 9. Wait briefly: `mcp__playwright__browser_wait_for` with time: 1
-10. Take Overlay screenshot: `mcp__playwright__browser_take_screenshot` with:
+10. **Set overlay opacity to 50%** for half-half comparison:
+    - Take a new snapshot to find the opacity slider ref
+    - The slider is a `<input type="range">` element in the ftl-holster controls
+    - Use `mcp__playwright__browser_evaluate` to set slider value to 50:
+      ```javascript
+      function: "(slider) => { slider.value = 50; slider.dispatchEvent(new Event('input', { bubbles: true })); }",
+      ref: "{slider-ref}",
+      element: "Opacity slider"
+      ```
+11. Wait for opacity change: `mcp__playwright__browser_wait_for` with time: 0.5
+12. Take Overlay screenshot: `mcp__playwright__browser_take_screenshot` with:
     - filename: `{name}-overlay.png`
     - **element**: Use the `ftl-holster` element ref from snapshot
     - **ref**: The ref of the `ftl-holster` element
     - Do NOT use fullPage - screenshot only the ftl-holster element
+
+**Important: 50% opacity for overlay screenshots**
+
+Overlay screenshots MUST be taken at 50% opacity to show a half-half blend of Code and Figma. This makes differences easier to spot while still being able to see both layers clearly.
 
 **Important: Element Screenshots (not fullPage)**
 

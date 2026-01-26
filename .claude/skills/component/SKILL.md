@@ -1,5 +1,7 @@
 ---
+name: component
 description: Implementeer een Lit + TypeScript web component vanuit Figma design
+user-invocable: true
 argument-hint: <figma-node-id> [component-naam]
 ---
 
