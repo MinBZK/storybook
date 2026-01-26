@@ -85,9 +85,9 @@ export class RRRadio extends LitElement {
     }
 
     :host([size='xs']) .radio__inner {
-      /* Inner dot is ~33% of outer radio size (8px / 24px = 0.33) */
-      width: calc(var(--semantics-controls-xs-min-size, 24px) * 0.33);
-      height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.33);
+      /* Inner ring is 19px for 24px outer (Figma: 19/24 = ~79%) */
+      width: 19px;
+      height: 19px;
     }
 
     /* Size: S (32px) */
@@ -97,9 +97,9 @@ export class RRRadio extends LitElement {
     }
 
     :host([size='s']) .radio__inner {
-      /* Inner dot is ~37.5% of outer radio size (12px / 32px = 0.375) */
-      width: calc(var(--semantics-controls-s-min-size, 32px) * 0.375);
-      height: calc(var(--semantics-controls-s-min-size, 32px) * 0.375);
+      /* Inner ring proportional to outer (~79%: 25px for 32px outer) */
+      width: 25px;
+      height: 25px;
     }
 
     /* Size: M (44px - default) */
@@ -111,15 +111,15 @@ export class RRRadio extends LitElement {
 
     :host([size='m']) .radio__inner,
     :host(:not([size])) .radio__inner {
-      /* Inner dot is ~36% of outer radio size (16px / 44px = 0.36) */
-      width: calc(var(--semantics-controls-m-min-size, 44px) * 0.36);
-      height: calc(var(--semantics-controls-m-min-size, 44px) * 0.36);
+      /* Inner ring proportional to outer (~79%: 35px for 44px outer) */
+      width: 35px;
+      height: 35px;
     }
 
-    /* Inner dot (only visible when checked) */
+    /* Inner ring (only visible when checked) - Figma shows white ring, not filled dot */
     .radio__inner {
       border-radius: 50%;
-      background-color: var(--components-radio-button-is-selected-inner-shape-border-color, #ffffff);
+      background-color: transparent;
       border: var(--components-radio-button-is-selected-inner-shape-border-thickness, 2px) solid
         var(--components-radio-button-is-selected-inner-shape-border-color, #ffffff);
       opacity: 0;
