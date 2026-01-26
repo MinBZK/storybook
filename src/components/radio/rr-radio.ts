@@ -69,7 +69,7 @@ export class RRRadio extends LitElement {
         var(--_bg-color, var(--components-radio-button-background-color, #ffffff))
       );
       outline: var(--components-radio-button-border-thickness, 2px) solid
-        var(--rr-radio-border-color, var(--_border-color, var(--components-radio-button-border-color, #475569)));
+        var(--rr-radio-border-color, var(--_border-color, var(--components-radio-button-border-color, #516279)));
       outline-offset: calc(var(--components-radio-button-border-thickness, 2px) * -1);
 
       /* Transition */
@@ -131,8 +131,8 @@ export class RRRadio extends LitElement {
 
     /* Checked state */
     :host([checked]) .radio {
-      --_bg-color: var(--components-radio-button-is-selected-background-color, #154273);
-      --_border-color: var(--components-radio-button-is-selected-background-color, #154273);
+      --_bg-color: var(--components-radio-button-is-selected-background-color, #274E81);
+      --_border-color: var(--components-radio-button-is-selected-background-color, #274E81);
     }
 
     :host([checked]) .radio__inner {
