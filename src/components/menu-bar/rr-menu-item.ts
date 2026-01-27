@@ -52,12 +52,12 @@ export class RRMenuItem extends LitElement {
       cursor: pointer;
 
       /* Typography */
-      font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
-      color: var(--rr-menu-item-color, var(--components-menu-bar-menu-item-color, #154273));
+      font: var(--components-menu-bar-menu-item-font);
+      color: var(--rr-menu-item-color, var(--components-menu-bar-menu-item-color));
       text-align: center;
 
       /* Spacing - Figma: 0px vertical, 8px horizontal */
-      padding: 0 var(--primitives-space-8, 8px);
+      padding: 0 var(--primitives-space-8);
 
       /* Animation */
       transition:
@@ -72,14 +72,14 @@ export class RRMenuItem extends LitElement {
       left: 0;
       right: 0;
       height: 0;
-      background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-color, #e2e8f0);
+      background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-color);
       transition: height 0.15s ease;
       pointer-events: none;
       z-index: 0;
     }
 
     .menu-item:hover:not(:disabled) .hover-indicator {
-      height: var(--components-menu-bar-menu-item-is-hovered-indicator-height, 32px);
+      height: var(--components-menu-bar-menu-item-is-hovered-indicator-height);
     }
 
     /* Selection indicator */
@@ -89,19 +89,19 @@ export class RRMenuItem extends LitElement {
       left: 0;
       right: 0;
       height: 0;
-      background-color: var(--components-menu-bar-menu-item-is-selected-indicator-color, #7eb1e7);
+      background-color: var(--components-menu-bar-menu-item-is-selected-indicator-color);
       transition: height 0.15s ease;
       pointer-events: none;
       z-index: 1;
     }
 
     :host([selected]) .selection-indicator {
-      height: var(--components-menu-bar-menu-item-is-selected-indicator-height, 4px);
+      height: var(--components-menu-bar-menu-item-is-selected-indicator-height);
     }
 
     /* Selected state - text color same as default for contrast */
     :host([selected]) .menu-item {
-      color: var(--components-menu-bar-menu-item-is-selected-color, #154273);
+      color: var(--components-menu-bar-menu-item-color);
     }
 
     /* Content wrapper for z-index layering */
@@ -112,13 +112,13 @@ export class RRMenuItem extends LitElement {
 
     /* Focus state */
     .menu-item:focus-visible {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
       outline-offset: 2px;
     }
 
     /* Disabled state */
     :host([disabled]) .menu-item {
-      opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+      opacity: calc(var(--primitives-opacity-disabled) / 100);
       cursor: not-allowed;
       pointer-events: none;
     }

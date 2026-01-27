@@ -54,7 +54,7 @@ export class RRIconButton extends LitElement {
       justify-content: center;
 
       /* Typography */
-      font: var(--components-icon-button-font, 550 14px/1.125 RijksSansVF, system-ui);
+      font: var(--components-icon-button-font);
 
       /* Animation */
       transition:
@@ -75,95 +75,95 @@ export class RRIconButton extends LitElement {
 
     /* Size: XS - Square 24x24, Figma: 4px border-radius */
     :host([size='xs']) .button {
-      width: var(--semantics-controls-xs-min-size, 24px);
-      height: var(--semantics-controls-xs-min-size, 24px);
-      min-width: var(--semantics-controls-xs-min-size, 24px);
-      min-height: var(--semantics-controls-xs-min-size, 24px);
-      border-radius: var(--components-icon-button-xs-corner-radius, 4px);
+      width: var(--semantics-controls-xs-min-size);
+      height: var(--semantics-controls-xs-min-size);
+      min-width: var(--semantics-controls-xs-min-size);
+      min-height: var(--semantics-controls-xs-min-size);
+      border-radius: var(--semantics-controls-xs-corner-radius);
     }
 
     /* Size: S - Square 32x32, Figma: 6px border-radius */
     :host([size='s']) .button {
-      width: var(--semantics-controls-s-min-size, 32px);
-      height: var(--semantics-controls-s-min-size, 32px);
-      min-width: var(--semantics-controls-s-min-size, 32px);
-      min-height: var(--semantics-controls-s-min-size, 32px);
-      border-radius: var(--components-icon-button-s-corner-radius, 6px);
+      width: var(--semantics-controls-s-min-size);
+      height: var(--semantics-controls-s-min-size);
+      min-width: var(--semantics-controls-s-min-size);
+      min-height: var(--semantics-controls-s-min-size);
+      border-radius: var(--semantics-controls-s-corner-radius);
     }
 
     /* Size: M - Square 44x44 (default), Figma: 8px border-radius */
     :host([size='m']) .button,
     :host(:not([size])) .button {
-      width: var(--semantics-controls-m-min-size, 44px);
-      height: var(--semantics-controls-m-min-size, 44px);
-      min-width: var(--semantics-controls-m-min-size, 44px);
-      min-height: var(--semantics-controls-m-min-size, 44px);
-      border-radius: var(--components-icon-button-m-corner-radius, 8px);
+      width: var(--semantics-controls-m-min-size);
+      height: var(--semantics-controls-m-min-size);
+      min-width: var(--semantics-controls-m-min-size);
+      min-height: var(--semantics-controls-m-min-size);
+      border-radius: var(--semantics-controls-m-corner-radius);
     }
 
     /* Variant: accent-filled (default) */
     :host([variant='accent-filled']) .button,
     :host(:not([variant])) .button {
-      --_bg-color: var(--semantics-buttons-accent-filled-background-color, #154273);
-      --_text-color: var(--semantics-buttons-accent-filled-color, #ffffff);
+      --_bg-color: var(--semantics-buttons-accent-filled-background-color);
+      --_text-color: var(--semantics-buttons-accent-filled-color);
     }
 
     :host([variant='accent-filled']) .button:hover:not(:disabled),
     :host(:not([variant])) .button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-accent-75, #4f7196);
+      --_bg-color: var(--primitives-color-accent-75);
     }
 
     /* Variant: accent-outlined */
     :host([variant='accent-outlined']) .button {
       --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-accent-outlined-color, #154273);
-      --_border-color: var(--semantics-buttons-accent-outlined-border-color, #154273);
-      --_border-width: var(--semantics-buttons-accent-outlined-border-thickness, 2px);
+      --_text-color: var(--semantics-buttons-accent-outlined-color);
+      --_border-color: var(--semantics-buttons-accent-outlined-border-color);
+      --_border-width: var(--semantics-buttons-accent-outlined-border-thickness);
     }
 
     :host([variant='accent-outlined']) .button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-accent-15, #dce3ea);
+      --_bg-color: var(--primitives-color-accent-15);
     }
 
     /* Variant: accent-tinted */
     :host([variant='accent-tinted']) .button {
-      --_bg-color: var(--semantics-buttons-accent-tinted-background-color, #dce3ea);
-      --_text-color: var(--semantics-buttons-accent-tinted-color, #154273);
+      --_bg-color: var(--semantics-buttons-accent-tinted-background-color);
+      --_text-color: var(--semantics-buttons-accent-tinted-color);
     }
 
     :host([variant='accent-tinted']) .button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-accent-30, #b9c7d5);
+      --_bg-color: var(--primitives-color-accent-30);
     }
 
     /* Variant: neutral-tinted */
     :host([variant='neutral-tinted']) .button {
-      --_bg-color: var(--semantics-buttons-neutral-tinted-background-color, #d8dee7);
-      --_text-color: var(--semantics-buttons-neutral-tinted-color, #1f252d);
+      --_bg-color: var(--semantics-buttons-neutral-tinted-background-color);
+      --_text-color: var(--semantics-buttons-neutral-tinted-color);
     }
 
     :host([variant='neutral-tinted']) .button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-neutral-300, #cbd5e1);
+      --_bg-color: var(--primitives-color-neutral-300);
     }
 
     /* Variant: accent-transparent */
     :host([variant='accent-transparent']) .button {
       --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-accent-transparent-color, #154273);
+      --_text-color: var(--semantics-buttons-accent-transparent-color);
     }
 
     :host([variant='accent-transparent']) .button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-accent-15, #dce3ea);
+      --_bg-color: var(--primitives-color-accent-15);
     }
 
     /* Focus state */
     .button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
       outline-offset: 2px;
     }
 
     /* Disabled state */
     :host([disabled]) .button {
-      opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+      opacity: calc(var(--primitives-opacity-disabled) / 100);
       cursor: not-allowed;
       pointer-events: none;
     }

@@ -452,7 +452,7 @@ export class RRMenuBar extends RRBaseComponent {
         align-items: stretch;
         gap: 0;
         /* Bottom border per Figma default-global-menu-bar */
-        border-bottom: var(--_menu-bar-border, var(--semantics-divider-thickness, 2px) solid var(--semantics-divider-color, #e2e8f0));
+        border-bottom: var(--rr-menu-bar-border, var(--semantics-divider-thickness) solid var(--semantics-divider-color));
         position: relative;
         width: 100%;
         min-width: 0;
