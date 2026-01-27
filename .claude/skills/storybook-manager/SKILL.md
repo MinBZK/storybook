@@ -21,7 +21,7 @@ Beheert meerdere Storybook instances, handig bij werken met git worktrees.
 ## Hoe het werkt
 
 - **Automatische poort toewijzing**: Eerste instance krijgt 6006, volgende 6007, etc.
-- **Registry**: Alle instances worden bijgehouden in `~/.storybook-instances.json`
+- **Registry**: Alle instances worden bijgehouden in `~/.claude/storybook-instances.json`
 - **Cross-platform**: Werkt op Windows, Mac en Linux
 - **Worktree support**: Elke worktree kan eigen Storybook draaien op unieke poort
 
