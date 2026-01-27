@@ -192,7 +192,8 @@ export class RRTopNavigationBar extends LitElement {
     .nav-title {
       font: var(--components-menu-bar-title-item-m-font, 550 20px/1.125 RijksSansVF, system-ui);
       color: var(--primitives-color-neutral-900, #0f172a);
-      margin-right: var(--primitives-space-16, 16px);
+      /* Match Figma title-item padding: 0px 8px - title item right padding creates gap to menu */
+      padding-right: var(--primitives-space-8, 8px);
       white-space: nowrap;
     }
 

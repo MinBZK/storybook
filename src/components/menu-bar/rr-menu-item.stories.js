@@ -112,46 +112,48 @@ export const AllStates = {
 const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
 const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
 
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Menu item states (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="87:6523" style="display: inline-block;">
-        <!--
-          Figma component set has 4 variants in column layout with 16px gap and 16px padding.
-          Hover states cannot be rendered statically, so we show default and selected only.
-          Variant order: default, hovered (skip), selected, selected+hovered (skip)
-        -->
-        <div style="
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 16px;
-          padding: 16px;
-          background: #1e293b;
-          --components-menu-bar-menu-item-color: #c0ccd8;
-          --components-menu-bar-menu-item-is-selected-color: #7eb1e7;
-          --components-menu-bar-menu-item-is-selected-indicator-color: #7eb1e7;
-          --components-menu-bar-menu-item-is-hovered-indicator-color: #27333f;
-        ">
-          <rr-menu-item>Menu item</rr-menu-item>
-          <rr-menu-item>Menu item</rr-menu-item>
-          <rr-menu-item selected>Menu item</rr-menu-item>
-          <rr-menu-item selected>Menu item</rr-menu-item>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Note: Hover states in Figma cannot be rendered statically.
-        <br />
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
+export const FigmaComparison = {
+  name: '🎨 Figma Comparison',
+  tags: ['!autodocs', 'figma'],
+  render: () => html`
+    <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
+          Menu item states (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
+        </p>
+        <ftl-holster node="87:6523" style="display: inline-block;">
+          <!--
+            Figma component set has 4 variants in column layout with 16px gap and 16px padding.
+            Hover states cannot be rendered statically, so we show default and selected only.
+            Variant order: default, hovered (skip), selected, selected+hovered (skip)
+          -->
+          <div style="
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px;
+            background: #1e293b;
+            --components-menu-bar-menu-item-color: #c0ccd8;
+            --components-menu-bar-menu-item-is-selected-color: #7eb1e7;
+            --components-menu-bar-menu-item-is-selected-indicator-color: #7eb1e7;
+            --components-menu-bar-menu-item-is-hovered-indicator-color: #27333f;
+          ">
+            <rr-menu-item>Menu item</rr-menu-item>
+            <rr-menu-item>Menu item</rr-menu-item>
+            <rr-menu-item selected>Menu item</rr-menu-item>
+            <rr-menu-item selected>Menu item</rr-menu-item>
+          </div>
+        </ftl-holster>
+        <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
+          Note: Hover states in Figma cannot be rendered statically.
+          <br />
+          Keyboard: T (toggle) | O (overlay) | S (side-by-side)
+        </p>
+      </div>
+    </ftl-belt>
+  `,
+  parameters: {
+    controls: { disable: true },
+  },
 };
