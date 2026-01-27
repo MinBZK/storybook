@@ -132,9 +132,12 @@ Upload each screenshot to 0x0.st (no authentication required):
 
 ```bash
 # Upload and capture the returned URL
-SIDE_BY_SIDE_URL=$(curl -s -F "file=@.playwright-mcp/{name}-side-by-side.png" https://0x0.st)
-OVERLAY_URL=$(curl -s -F "file=@.playwright-mcp/{name}-overlay.png" https://0x0.st)
+# IMPORTANT: On Windows, use ABSOLUTE paths - relative paths cause exit code 26
+SIDE_BY_SIDE_URL=$(curl -s -F "file=@/full/path/to/.playwright-mcp/{name}-side-by-side.png" https://0x0.st)
+OVERLAY_URL=$(curl -s -F "file=@/full/path/to/.playwright-mcp/{name}-overlay.png" https://0x0.st)
 ```
+
+**Windows path note:** Always use absolute paths for curl file uploads on Windows. Relative paths like `@.playwright-mcp/file.png` fail with exit code 26. Use full paths like `@C:/Users/.../project/.playwright-mcp/file.png`.
 
 Store the URLs for each component to use in the PR body.
 
@@ -203,6 +206,7 @@ gh pr create --title "feat: {summary of changes}" --body "{PR body}"
 | gh CLI not authenticated | Run `gh auth login` |
 | Component has no FigmaComparison | Use fallback: screenshot Default story (see below) |
 | Keyboard shortcuts not working | Click buttons directly via snapshot refs |
+| curl exit code 26 (Windows) | Use absolute file paths instead of relative paths |
 | 0x0.st upload fails | Retry or use alternative host |
 
 ### Worktree .env Issue
