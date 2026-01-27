@@ -464,6 +464,62 @@
       ],
       "status": "implemented",
       "lastUpdated": "2025-12-22"
+    },
+    {
+      "name": "Spacer",
+      "figma": {
+        "nodeId": "48:2234",
+        "nodeName": "spacer",
+        "pageName": "Bars",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2234",
+        "note": "Utility spacer component for layout spacing"
+      },
+      "properties": {
+        "size": ["2", "4", "6", "8", "10", "12", "16", "20", "24", "28", "32", "40", "44", "48", "56", "64", "80", "96", "m", "flexible"],
+        "container": ["s", "m", "l", "all"],
+        "direction": ["horizontal", "vertical", "both"]
+      },
+      "implementation": {
+        "tagName": "rr-spacer",
+        "file": "src/components/spacer/rr-spacer.ts",
+        "className": "RRSpacer"
+      },
+      "tokens": {
+        "primitives": [
+          "primitives-space-2",
+          "primitives-space-4",
+          "primitives-space-6",
+          "primitives-space-8",
+          "primitives-space-10",
+          "primitives-space-12",
+          "primitives-space-16",
+          "primitives-space-20",
+          "primitives-space-24",
+          "primitives-space-28",
+          "primitives-space-32",
+          "primitives-space-40",
+          "primitives-space-44",
+          "primitives-space-48",
+          "primitives-space-56",
+          "primitives-space-64",
+          "primitives-space-80",
+          "primitives-space-96"
+        ]
+      },
+      "variants": [
+        {
+          "name": "size",
+          "values": ["2", "4", "6", "8", "10", "12", "16", "20", "24", "28", "32", "40", "44", "48", "56", "64", "80", "96", "m", "flexible"],
+          "default": "8"
+        },
+        {
+          "name": "container",
+          "values": ["s", "m", "l", "all"],
+          "default": "all"
+        }
+      ],
+      "status": "implemented",
+      "lastUpdated": "2026-01-27"
     }
   ]
 }

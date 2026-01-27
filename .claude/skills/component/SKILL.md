@@ -85,6 +85,25 @@ grep -i "controls.*min-size" dist/css/tokens.css
 **Controleer ook bestaande componenten voor patronen:**
 - `src/components/toggle-button/rr-toggle-button.ts` (referentie implementatie)
 
+### Spacer Component Gebruik
+
+**Gebruik `<rr-spacer>` voor spacing in componenten waar Figma spacer elementen heeft.**
+
+Check in Figma data of er spacer frames zijn (bijv. `top-navigation-bar__section-spacer`).
+
+```html
+<!-- Vaste spacing -->
+<rr-spacer size="32"></rr-spacer>
+
+<!-- Flexibele spacing (vult beschikbare ruimte) -->
+<rr-spacer size="flexible"></rr-spacer>
+
+<!-- Container-responsive spacing -->
+<rr-spacer size="m" container="l"></rr-spacer>
+```
+
+**Beschikbare sizes:** 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 44, 48, 64, 80, 96, m, flexible
+
 ### Stap 5: Component Genereren/Updaten
 
 **Bestanden:**
