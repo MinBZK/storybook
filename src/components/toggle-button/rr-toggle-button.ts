@@ -59,8 +59,8 @@ export class RRToggleButton extends LitElement {
       transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
 
       /* Default state - using component tokens */
-      background-color: var(--rr-toggle-button-background-color, var(--components-toggle-button-background-color, #e2e8f0));
-      color: var(--rr-toggle-button-content-color, var(--components-toggle-button-content-color, #0f172a));
+      background-color: var(--rr-toggle-button-background-color, var(--components-toggle-button-background-color, #d8dee7));
+      color: var(--rr-toggle-button-content-color, var(--components-toggle-button-content-color, #1f252d));
     }
 
     .button:active:not(:disabled) {
@@ -98,7 +98,7 @@ export class RRToggleButton extends LitElement {
     /* Hover state */
     .button:hover:not(:disabled) {
       background-color: var(--components-toggle-button-is-hovered-background-color, #cbd5e1);
-      color: var(--components-toggle-button-is-hovered-content-color, #0f172a);
+      color: var(--components-toggle-button-is-hovered-content-color, #1f252d);
     }
 
     /* Selected state */

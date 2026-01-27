@@ -159,7 +159,7 @@ export class RRMenuItem extends RRBaseComponent {
         left: 0;
         right: 0;
         height: 0;
-        background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-color, #e2e8f0);
+        background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-color, #d8dee7);
         transition: height 0.15s ease;
         pointer-events: none;
         z-index: 0;

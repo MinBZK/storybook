@@ -151,8 +151,8 @@ export class RRButton extends LitElement {
 
     /* Variant: neutral-tinted */
     :host([variant="neutral-tinted"]) .button {
-      --_bg-color: var(--semantics-buttons-neutral-tinted-background-color, #e2e8f0);
-      --_text-color: var(--semantics-buttons-neutral-tinted-color, #0f172a);
+      --_bg-color: var(--semantics-buttons-neutral-tinted-background-color, #d8dee7);
+      --_text-color: var(--semantics-buttons-neutral-tinted-color, #1f252d);
     }
 
     :host([variant="neutral-tinted"]) .button:hover {
@@ -176,7 +176,7 @@ export class RRButton extends LitElement {
     }
 
     :host([variant="neutral-transparent"]) .button:hover {
-      --_bg-color: var(--primitives-color-neutral-200, #e2e8f0);
+      --_bg-color: var(--primitives-color-neutral-200, #d8dee7);
     }
 
     /* Variant: danger-tinted */
