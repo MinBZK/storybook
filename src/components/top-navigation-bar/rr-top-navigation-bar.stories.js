@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './rr-top-navigation-bar.js';
-import '../menu-bar/rr-menu-item.js';
+import './rr-top-navigation-bar.ts';
+import '../menu-bar/rr-menu-item.ts';
 
 /**
  * De Top Navigation Bar is de primaire navigatiecomponent voor Rijksoverheid websites.
@@ -34,7 +34,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
     },
     componentSource: {
-      file: 'src/components/top-navigation-bar/rr-top-navigation-bar.js',
+      file: 'src/components/top-navigation-bar/rr-top-navigation-bar.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {
@@ -358,8 +358,14 @@ export const FigmaComparison = {
           <h3 style="margin: 0 0 1rem 0; font-size: 1rem; color: #475569;">
             Top Navigation Bar - Default
           </h3>
-          <ftl-holster node="48:2135" style="display: block; width: 100%;">
-            <rr-top-navigation-bar title="Titel" container="l">
+          <ftl-holster node="20:138" style="display: block; width: 100%;">
+            <!-- Container L (large) - Figma node: 20:138 (container=lg variant) -->
+            <rr-top-navigation-bar
+              title="Titel"
+              container="l"
+              utility-no-language-switch
+              utility-account-label="Account"
+            >
               <rr-menu-item slot="menu" selected>Home</rr-menu-item>
               <rr-menu-item slot="menu">Menu item</rr-menu-item>
               <rr-menu-item slot="menu">Menu item</rr-menu-item>
