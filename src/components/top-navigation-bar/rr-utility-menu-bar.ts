@@ -92,7 +92,7 @@ export class RRUtilityMenuBar extends LitElement {
     :host {
       display: flex;
       align-items: center;
-      gap: var(--primitives-space-8, 8px);
+      /* No gap - Figma layout_KIRRSF has no gap between utility items */
     }
 
     :host([hidden]) {
@@ -106,7 +106,7 @@ export class RRUtilityMenuBar extends LitElement {
     .container {
       display: flex;
       align-items: center;
-      gap: var(--primitives-space-8, 8px);
+      /* No gap - Figma layout_KIRRSF has no gap between utility items */
     }
 
     /* Utility buttons */

@@ -182,6 +182,12 @@ export class RRTopNavigationBar extends LitElement {
       flex-shrink: 0; /* Prevent utility bar from shrinking */
     }
 
+    /* Figma: utility buttons are 40px from edge (8px nav + 32px spacer)
+       Code: nav-bar has 48px padding, so compensate with -8px margin */
+    :host([container='l']) .nav-right {
+      margin-right: -8px;
+    }
+
     .global-menu {
       flex: 1;
       min-width: 0;
