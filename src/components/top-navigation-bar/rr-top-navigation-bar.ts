@@ -65,7 +65,6 @@ import '../menu-bar/rr-menu-bar.ts';
 import '../menu-bar/rr-menu-item.ts';
 import './rr-utility-menu-bar.ts';
 import './rr-back-button.ts';
-import '../spacer/rr-spacer.ts';
 
 type ContainerSize = 's' | 'm' | 'l';
 
@@ -149,48 +148,21 @@ export class RRTopNavigationBar extends LitElement {
       background-color: #ffffff;
     }
 
-    /* Responsive base padding for nav-bar - matches Figma's menu-bar padding
-       Spacers provide additional offset from edge */
+    /* Responsive padding - only for nav-bar, logo-bar centers content without padding */
     :host([container='s']) .nav-bar {
-      padding-left: var(--primitives-space-4, 4px);
-      padding-right: var(--primitives-space-4, 4px);
+      padding-left: var(--semantics-sections-s-margin-inline, 20px);
+      padding-right: var(--semantics-sections-s-margin-inline, 20px);
     }
 
     :host([container='m']) .nav-bar,
     :host(:not([container])) .nav-bar {
-      padding-left: var(--primitives-space-8, 8px);
-      padding-right: var(--primitives-space-8, 8px);
+      padding-left: var(--semantics-sections-m-margin-inline, 32px);
+      padding-right: var(--semantics-sections-m-margin-inline, 32px);
     }
 
     :host([container='l']) .nav-bar {
-      padding-left: var(--primitives-space-8, 8px);
-      padding-right: var(--primitives-space-8, 8px);
-    }
-
-    /* Section spacers - match Figma's top-navigation-bar__section-spacer */
-    .section-spacer {
-      flex-shrink: 0;
-    }
-
-    :host([container='s']) .section-spacer {
-      display: none; /* No spacer on small screens */
-    }
-
-    :host([container='m']) .section-spacer,
-    :host(:not([container])) .section-spacer {
-      width: var(--primitives-space-16, 16px);
-    }
-
-    :host([container='l']) .section-spacer {
-      width: var(--primitives-space-32, 32px);
-    }
-
-    .nav-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex: 1;
-      min-width: 0;
+      padding-left: var(--semantics-sections-l-margin-inline, 48px);
+      padding-right: var(--semantics-sections-l-margin-inline, 48px);
     }
 
     .nav-left {
@@ -204,6 +176,12 @@ export class RRTopNavigationBar extends LitElement {
       display: flex;
       align-items: center;
       flex-shrink: 0; /* Prevent utility bar from shrinking */
+    }
+
+    /* Figma: utility buttons are 40px from edge (8px nav + 32px spacer)
+       Code: nav-bar has 48px padding, so compensate with -8px margin */
+    :host([container='l']) .nav-right {
+      margin-right: -8px;
     }
 
     .global-menu {
@@ -364,42 +342,34 @@ export class RRTopNavigationBar extends LitElement {
 
         <!-- Navigation bar: Back | Title | Menu items | Utility buttons -->
         <nav class="nav-bar" part="nav-bar" aria-label="Hoofdnavigatie">
-          <!-- Left spacer - matches Figma top-navigation-bar__section-spacer -->
-          <rr-spacer class="section-spacer" direction="horizontal"></rr-spacer>
-
-          <div class="nav-content">
-            <!-- Left: Back button, Title, Global Menu -->
-            <div class="nav-left">
-              <rr-back-button
-                container="${this.container}"
-                href="${this.backHref}"
-                label="${this.backLabel}"
-              ></rr-back-button>
-              <span class="nav-title">${this.title}</span>
-              <div class="global-menu">
-                <rr-menu-bar size="${this.container}" has-overflow-menu overflow-label="Meer">
-                  <slot name="menu"></slot>
-                </rr-menu-bar>
-              </div>
-            </div>
-
-            <!-- Right: Utility buttons -->
-            <div class="nav-right">
-              <rr-utility-menu-bar
-                container="${this.container}"
-                ?no-language-switch="${this.utilityNoLanguageSwitch}"
-                ?no-search="${this.utilityNoSearch}"
-                ?no-account="${this.utilityNoAccount}"
-                ?has-help="${this.utilityHasHelp}"
-                ?has-settings="${this.utilityHasSettings}"
-                language="${this.utilityLanguage}"
-                account-label="${this._accountLabel}"
-              ></rr-utility-menu-bar>
+          <!-- Left: Back button, Title, Global Menu -->
+          <div class="nav-left">
+            <rr-back-button
+              container="${this.container}"
+              href="${this.backHref}"
+              label="${this.backLabel}"
+            ></rr-back-button>
+            <span class="nav-title">${this.title}</span>
+            <div class="global-menu">
+              <rr-menu-bar size="${this.container}" has-overflow-menu overflow-label="Meer">
+                <slot name="menu"></slot>
+              </rr-menu-bar>
             </div>
           </div>
 
-          <!-- Right spacer - matches Figma top-navigation-bar__section-spacer -->
-          <rr-spacer class="section-spacer" direction="horizontal"></rr-spacer>
+          <!-- Right: Utility buttons -->
+          <div class="nav-right">
+            <rr-utility-menu-bar
+              container="${this.container}"
+              ?no-language-switch="${this.utilityNoLanguageSwitch}"
+              ?no-search="${this.utilityNoSearch}"
+              ?no-account="${this.utilityNoAccount}"
+              ?has-help="${this.utilityHasHelp}"
+              ?has-settings="${this.utilityHasSettings}"
+              language="${this.utilityLanguage}"
+              account-label="${this._accountLabel}"
+            ></rr-utility-menu-bar>
+          </div>
         </nav>
       </div>
     `;
