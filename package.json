@@ -1,6 +1,6 @@
 {
   "name": "@minbzk/storybook",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Design System voor RegelRecht - Nederlandse Overheid",
   "type": "module",
   "main": "dist/components/rr-components.js",
@@ -24,8 +24,9 @@
     "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
-    "build": "npm run build:tokens && npm run build:components",
+    "build": "npm run build:tokens && npm run validate:tokens && npm run build:components",
     "build:tokens": "node style-dictionary.config.js",
+    "validate:tokens": "node scripts/validate-css-variables.js",
     "build:components": "node scripts/build-components.js",
     "dev": "npm run build && npm run serve",
     "serve": "npx http-server . -p 3000 -c-1",

@@ -40,7 +40,7 @@ padding: 8px 8px 6px 8px;  /* NOT symmetric! */
 
 **Figma MCP Rate Limits:** Wait 60-120s on error. Workaround: open Figma in browser, click component, read Properties panel directly.
 
-**Disabled Opacity:** Always use `calc(var(--primitives-opacity-disabled, 38) / 100)` - the token is a percentage.
+**Disabled Opacity:** Always use `calc(var(--primitives-opacity-disabled) / 100)` - the token is a percentage.
 
 ## Token Hierarchy
 
@@ -194,12 +194,29 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 - Geen nesting van blocks binnen element namen (niet: `block__element__subelement`)
 - Modifiers zijn altijd aanvullend, nooit vervanging van base class
 
-## Fallback Consistency Rule
+## CSS Variable Validation
 
-Bij wijzigingen aan design tokens:
-- Update altijd de corresponderende fallback waarden in component styles
-- Fallbacks moeten overeenkomen met de token waarden
-- Zoek naar `var(--token-name, fallback)` patronen in `src/components/`
+Design tokens worden gevalideerd tijdens de build (`npm run validate:tokens`):
+
+**Token categorieën:**
+- `--rr-*` - Override hooks voor consumers (niet gevalideerd, niet in tokens.css)
+- `--_*` - Interne variabelen (gevalideerd binnen hetzelfde bestand)
+- `--primitives-*`, `--semantics-*`, `--components-*` - Design tokens (gevalideerd tegen tokens.css)
+
+**Stricte aanpak - GEEN fallbacks:**
+```css
+/* FOUT */
+min-height: var(--semantics-controls-m-min-size, 44px);
+
+/* GOED */
+min-height: var(--semantics-controls-m-min-size);
+```
+
+**Uitzonderingen (behoud fallbacks):**
+- Override hooks: `var(--rr-button-background-color, var(--_bg-color))`
+- Font-family: `var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif)`
+
+CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `dist/css/tokens.css`.
 
 ## Rules
 

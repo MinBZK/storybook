@@ -51,7 +51,7 @@ export class RRToggleButton extends LitElement {
       justify-content: center;
 
       /* Typography */
-      font-weight: var(--semantics-buttons-font-weight, 550);
+      font-weight: var(--semantics-buttons-font-weight);
       text-decoration: none;
       white-space: nowrap;
 
@@ -59,8 +59,8 @@ export class RRToggleButton extends LitElement {
       transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
 
       /* Default state - using component tokens */
-      background-color: var(--rr-toggle-button-background-color, var(--components-toggle-button-background-color, #d8dee7));
-      color: var(--rr-toggle-button-content-color, var(--components-toggle-button-content-color, #1f252d));
+      background-color: var(--rr-toggle-button-background-color, var(--components-toggle-button-background-color));
+      color: var(--rr-toggle-button-content-color, var(--components-toggle-button-content-color));
     }
 
     .button:active:not(:disabled) {
@@ -69,59 +69,59 @@ export class RRToggleButton extends LitElement {
 
     /* Size: XS */
     :host([size="xs"]) .button {
-      min-height: var(--semantics-controls-xs-min-size, 24px);
-      padding: var(--primitives-space-4, 4px) var(--primitives-space-12, 12px);
-      font: var(--components-button-xs-font, 550 14px/1.125 system-ui);
-      border-radius: var(--semantics-controls-xs-corner-radius, 3px);
-      gap: var(--primitives-space-2, 2px);
+      min-height: var(--semantics-controls-xs-min-size);
+      padding: var(--primitives-space-4) var(--primitives-space-12);
+      font: var(--components-button-xs-font);
+      border-radius: var(--semantics-controls-xs-corner-radius);
+      gap: var(--primitives-space-2);
     }
 
     /* Size: S */
     :host([size="s"]) .button {
-      min-height: var(--semantics-controls-s-min-size, 32px);
-      padding: var(--primitives-space-6, 6px);
-      font: var(--components-button-s-font, 550 16px/1.125 system-ui);
-      border-radius: var(--semantics-controls-s-corner-radius, 5px);
-      gap: var(--primitives-space-2, 2px);
+      min-height: var(--semantics-controls-s-min-size);
+      padding: var(--primitives-space-6);
+      font: var(--components-button-s-font);
+      border-radius: var(--semantics-controls-s-corner-radius);
+      gap: var(--primitives-space-2);
     }
 
     /* Size: M (default) */
     :host([size="m"]) .button,
     :host(:not([size])) .button {
-      min-height: var(--semantics-controls-m-min-size, 44px);
-      padding: var(--primitives-space-8, 8px) var(--primitives-space-10, 10px);
-      font: var(--components-button-m-font, 550 18px/1.125 system-ui);
-      border-radius: var(--semantics-controls-m-corner-radius, 7px);
-      gap: var(--primitives-space-4, 4px);
+      min-height: var(--semantics-controls-m-min-size);
+      padding: var(--primitives-space-8) var(--primitives-space-10);
+      font: var(--components-button-m-font);
+      border-radius: var(--semantics-controls-m-corner-radius);
+      gap: var(--primitives-space-4);
     }
 
     /* Hover state */
     .button:hover:not(:disabled) {
-      background-color: var(--components-toggle-button-is-hovered-background-color, #cbd5e1);
-      color: var(--components-toggle-button-is-hovered-content-color, #1f252d);
+      background-color: var(--components-toggle-button-is-hovered-background-color);
+      color: var(--components-toggle-button-is-hovered-content-color);
     }
 
     /* Selected state */
     :host([selected]) .button {
-      background-color: var(--components-toggle-button-is-selected-background-color, #154273);
-      color: var(--components-toggle-button-is-selected-content-color, #ffffff);
+      background-color: var(--components-toggle-button-is-selected-background-color);
+      color: var(--components-toggle-button-is-selected-content-color);
     }
 
     /* Selected hover state - stays selected color on hover */
     :host([selected]) .button:hover:not(:disabled) {
-      background-color: var(--primitives-color-accent-75, #4f7196);
-      color: var(--components-toggle-button-is-selected-content-color, #ffffff);
+      background-color: var(--primitives-color-accent-75);
+      color: var(--components-toggle-button-is-selected-content-color);
     }
 
     /* Focus state */
     .button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
       outline-offset: 2px;
     }
 
     /* Disabled state */
     :host([disabled]) .button {
-      opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+      opacity: calc(var(--primitives-opacity-disabled) / 100);
       cursor: not-allowed;
       pointer-events: none;
     }
