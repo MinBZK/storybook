@@ -133,9 +133,9 @@ export class RRTopNavigationBar extends LitElement {
     /* Logo bar - white background with centered logo */
     .logo-bar {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-direction: row;
       justify-content: center;
+      align-items: center;
       background-color: #ffffff;
     }
 
@@ -148,23 +148,19 @@ export class RRTopNavigationBar extends LitElement {
       background-color: #ffffff;
     }
 
-    /* Responsive padding */
-    :host([container='s']) .nav-bar,
-    :host([container='s']) .logo-bar {
+    /* Responsive padding - only for nav-bar, logo-bar centers content without padding */
+    :host([container='s']) .nav-bar {
       padding-left: var(--semantics-sections-s-margin-inline, 20px);
       padding-right: var(--semantics-sections-s-margin-inline, 20px);
     }
 
     :host([container='m']) .nav-bar,
-    :host([container='m']) .logo-bar,
-    :host(:not([container])) .nav-bar,
-    :host(:not([container])) .logo-bar {
+    :host(:not([container])) .nav-bar {
       padding-left: var(--semantics-sections-m-margin-inline, 32px);
       padding-right: var(--semantics-sections-m-margin-inline, 32px);
     }
 
-    :host([container='l']) .nav-bar,
-    :host([container='l']) .logo-bar {
+    :host([container='l']) .nav-bar {
       padding-left: var(--semantics-sections-l-margin-inline, 48px);
       padding-right: var(--semantics-sections-l-margin-inline, 48px);
     }
