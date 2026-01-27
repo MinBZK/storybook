@@ -118,7 +118,7 @@ export class RRUtilityMenuBar extends LitElement {
       height: 44px;
       background: none;
       border: none;
-      color: var(--components-menu-bar-menu-item-color, #c0ccd8);
+      color: var(--components-menu-bar-menu-item-color, #154273);
       font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
       cursor: pointer;
       border-radius: 0;

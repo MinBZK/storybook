@@ -56,7 +56,7 @@ export class RRMenuBar extends LitElement {
     .title {
       padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
       margin: 0;
-      color: var(--components-menu-bar-title-item-color, #c0ccd8);
+      color: var(--components-menu-bar-title-item-color, #154273);
     }
 
     /* Title size variants */

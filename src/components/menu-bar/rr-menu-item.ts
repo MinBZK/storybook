@@ -53,7 +53,7 @@ export class RRMenuItem extends LitElement {
 
       /* Typography */
       font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
-      color: var(--rr-menu-item-color, var(--components-menu-bar-menu-item-color, #c0ccd8));
+      color: var(--rr-menu-item-color, var(--components-menu-bar-menu-item-color, #154273));
       text-align: center;
 
       /* Spacing - Figma: 0px vertical, 8px horizontal */
@@ -99,9 +99,9 @@ export class RRMenuItem extends LitElement {
       height: var(--components-menu-bar-menu-item-is-selected-indicator-height, 4px);
     }
 
-    /* Selected state - text color */
+    /* Selected state - text color same as default for contrast */
     :host([selected]) .menu-item {
-      color: var(--components-menu-bar-menu-item-is-selected-color, #7eb1e7);
+      color: var(--components-menu-bar-menu-item-is-selected-color, #154273);
     }
 
     /* Content wrapper for z-index layering */
