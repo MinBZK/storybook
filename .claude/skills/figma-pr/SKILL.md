@@ -100,10 +100,10 @@ Where `{name}` is the kebab-case component name:
 9. Wait briefly: `mcp__playwright__browser_wait_for` with time: 1
 10. **Set overlay opacity to 50%** for half-half comparison:
     - Take a new snapshot to find the opacity slider ref
-    - The slider is a `<input type="range">` element in the ftl-holster controls
-    - Use `mcp__playwright__browser_evaluate` to set slider value to 50:
+    - The slider is a `<input type="range">` element with range 0.0-1.0
+    - Use `mcp__playwright__browser_evaluate` to set slider value to 0.5 (NOT 50!):
       ```javascript
-      function: "(slider) => { slider.value = 50; slider.dispatchEvent(new Event('input', { bubbles: true })); }",
+      function: "(slider) => { slider.value = 0.5; slider.dispatchEvent(new Event('input', { bubbles: true })); }",
       ref: "{slider-ref}",
       element: "Opacity slider"
       ```

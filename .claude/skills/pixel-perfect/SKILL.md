@@ -194,12 +194,12 @@ mcp__playwright__browser_click(
 **IMPORTANT:** Overlay screenshots must ALWAYS be taken at 50% opacity for a half-half comparison.
 
 1. Take a new snapshot to find the opacity slider ref
-2. The slider is an `<input type="range">` element in the ftl-holster controls
-3. Set the slider to 50%:
+2. The slider is an `<input type="range">` element with range 0.0-1.0
+3. Set the slider to 50% (value 0.5, NOT 50!):
 
 ```
 mcp__playwright__browser_evaluate(
-  function: "(slider) => { slider.value = 50; slider.dispatchEvent(new Event('input', { bubbles: true })); }",
+  function: "(slider) => { slider.value = 0.5; slider.dispatchEvent(new Event('input', { bubbles: true })); }",
   ref: "{slider-ref}",
   element: "Opacity slider"
 )
