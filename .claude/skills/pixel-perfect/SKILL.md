@@ -1,94 +1,94 @@
 ---
 name: pixel-perfect
-description: Maak een component pixel-perfect vergeleken met Figma design
+description: Make a component pixel-perfect compared to Figma design
 user-invocable: true
-argument-hint: <component-naam>
+argument-hint: <component-name>
 ---
 
-Maak component **$ARGUMENTS** pixel-perfect vergeleken met het Figma design.
+Make component **$ARGUMENTS** pixel-perfect compared to the Figma design.
 
 ## WORKFLOW OVERVIEW
 
-Dit command gebruikt een subagent architectuur met critical review:
+This command uses a subagent architecture with critical review:
 
-1. **Main agent**: Initialisatie (identificeer component, start Storybook)
-2. **Main agent**: Haal Figma data op en extraheer style waarden (EENMALIG)
-3. **Main agent**: Spawn verificatie subagent met Figma waarden als context
-4. **Subagent**: Voer verificatie cyclus uit (compare, fix, screenshot - GEEN Figma fetch)
-5. **Main agent**: Critical review van subagent resultaat
-6. **Bij issues**: Retry met feedback (max 3 iteraties) - Figma waarden blijven hetzelfde
-7. **Rapporteer** eindresultaat
+1. **Main agent**: Initialization (identify component, start Storybook)
+2. **Main agent**: Fetch Figma data and extract style values (ONCE)
+3. **Main agent**: Spawn verification subagent with Figma values as context
+4. **Subagent**: Execute verification cycle (compare, fix, screenshot - NO Figma fetch)
+5. **Main agent**: Critical review of subagent result
+6. **On issues**: Retry with feedback (max 3 iterations) - Figma values stay the same
+7. **Report** final result
 
-### Iteratie limieten
+### Iteration limits
 
-- Subagent: max 3 verificatie cycli per run
-- Critical review retries: max 3 iteraties
-- Totaal maximum: 9 verificatie cycli
+- Subagent: max 3 verification cycles per run
+- Critical review retries: max 3 iterations
+- Total maximum: 9 verification cycles
 
-### Optimalisatie: Figma data caching
+### Optimization: Figma data caching
 
-Figma data wordt **één keer** opgehaald door de main agent en doorgegeven aan alle subagents. Dit voorkomt:
-- Rate limit issues met Figma MCP
-- Onnodige API calls
-- Inconsistente data tussen iteraties
+Figma data is fetched **once** by the main agent and passed to all subagents. This prevents:
+- Rate limit issues with Figma MCP
+- Unnecessary API calls
+- Inconsistent data between iterations
 
 ---
 
-## STAP 1: INITIALISATIE
+## STEP 1: INITIALIZATION
 
-### 1.1 Component identificeren
+### 1.1 Identify component
 
-Bepaal de component naam en locatie:
+Determine the component name and location:
 
 ```
-Input: "button" of "toggle-button"
+Input: "button" or "toggle-button"
 Story ID: components-{name}--figma-comparison
 Component: src/components/{name}/rr-{name}.ts
 Stories: src/components/{name}/rr-{name}.stories.js
 ```
 
-### 1.2 Verifieer dat FigmaComparison story bestaat
+### 1.2 Verify FigmaComparison story exists
 
 ```bash
 grep -l "FigmaComparison" src/components/{name}/rr-{name}.stories.js
 ```
 
-Als niet gevonden: STOP met foutmelding "Component heeft geen FigmaComparison story"
+If not found: STOP with error message "Component has no FigmaComparison story"
 
-### 1.3 Haal Figma Node ID op
+### 1.3 Get Figma Node ID
 
-Lees de stories file en extraheer de node ID uit de `ftl-holster` element:
+Read the stories file and extract the node ID from the `ftl-holster` element:
 
 ```javascript
-// Zoek: <ftl-holster node="309:3542" ...>
-// Of: <ftl-holster node="20-27" ...>
+// Find: <ftl-holster node="309:3542" ...>
+// Or: <ftl-holster node="20-27" ...>
 ```
 
 ---
 
-## STAP 2: STORYBOOK STARTEN
+## STEP 2: START STORYBOOK
 
-### 2.1 Check of Storybook al draait
+### 2.1 Check if Storybook is already running
 
 ```bash
 npm run sb:status
 ```
 
-### 2.2 Start indien nodig
+### 2.2 Start if needed
 
 ```bash
 npm run sb:start
 ```
 
-### 2.3 Lees poort uit registry
+### 2.3 Read port from registry
 
 ```bash
 cat ~/.claude/storybook-instances.json
 ```
 
-Vind entry waar `path` overeenkomt met huidige working directory.
+Find entry where `path` matches current working directory.
 
-### 2.4 Wacht tot Storybook ready is
+### 2.4 Wait for Storybook to be ready
 
 ```bash
 npx wait-on http://localhost:{port} --timeout 60000
@@ -96,9 +96,9 @@ npx wait-on http://localhost:{port} --timeout 60000
 
 ---
 
-## STAP 3: FIGMA DATA OPHALEN
+## STEP 3: FETCH FIGMA DATA
 
-### 3.1 Gebruik Figma MCP tool
+### 3.1 Use Figma MCP tool
 
 ```
 mcp__figma-with-token__get_figma_data(
@@ -107,54 +107,54 @@ mcp__figma-with-token__get_figma_data(
 )
 ```
 
-### 3.2 Analyseer layout structuur
+### 3.2 Analyze layout structure
 
-Extraheer uit de response:
+Extract from the response:
 
-| Property | Waar te vinden | Betekenis |
-|----------|----------------|-----------|
-| Layout mode | `globalVars.styles.layout_XXX.mode` | `"column"` of `"row"` |
-| Gap | `globalVars.styles.layout_XXX.gap` | Ruimte tussen items in px |
+| Property | Where to find | Meaning |
+|----------|---------------|---------|
+| Layout mode | `globalVars.styles.layout_XXX.mode` | `"column"` or `"row"` |
+| Gap | `globalVars.styles.layout_XXX.gap` | Space between items in px |
 | Padding | `globalVars.styles.layout_XXX.padding` | Container padding in px |
-| Sizing | `globalVars.styles.layout_XXX.sizing` | `"hug"` of `"fixed"` |
-| Dimensions | `globalVars.styles.layout_XXX.dimensions` | Breedte/hoogte bij fixed |
+| Sizing | `globalVars.styles.layout_XXX.sizing` | `"hug"` or `"fixed"` |
+| Dimensions | `globalVars.styles.layout_XXX.dimensions` | Width/height for fixed |
 
-### 3.3 Extraheer varianten
+### 3.3 Extract variants
 
-Analyseer de children van de component set:
-- Elke variant heeft properties (size, state, selected, disabled)
-- Noteer de **volgorde** van varianten
-- Noteer **exacte dimensies** van elke variant
+Analyze the children of the component set:
+- Each variant has properties (size, state, selected, disabled)
+- Note the **order** of variants
+- Note **exact dimensions** of each variant
 
-### 3.4 Check voor absolute positioning
+### 3.4 Check for absolute positioning
 
-Als nodes `position: "absolute"` hebben:
-- Noteer x/y coördinaten
-- Gebruik absolute positioning in de story
+If nodes have `position: "absolute"`:
+- Note x/y coordinates
+- Use absolute positioning in the story
 
 ---
 
-## STAP 3.5: STYLE EXTRACTION (Automated Checks)
+## STEP 3.5: STYLE EXTRACTION (Automated Checks)
 
-> **Zie:** [style-extraction.md](./style-extraction.md) voor de volledige referentie over:
-> - Figma style waarden extractie
+> **See:** [style-extraction.md](./style-extraction.md) for the full reference on:
+> - Figma style value extraction
 > - Color conversion utility (RGBA 0-1 → CSS)
-> - Browser computed styles extractie met Playwright
-> - Vergelijkingstoleranties per property
+> - Browser computed styles extraction with Playwright
+> - Comparison tolerances per property
 
 ---
 
-## STAP 4: VERIFICATIE CYCLUS (max 3 iteraties per subagent)
+## STEP 4: VERIFICATION CYCLE (max 3 iterations per subagent)
 
-### Voor elke iteratie:
+### For each iteration:
 
-### 4.1 Lees huidige FigmaComparison story
+### 4.1 Read current FigmaComparison story
 
 ```
 Read: src/components/{name}/rr-{name}.stories.js
 ```
 
-Extraheer de huidige HTML structuur uit de FigmaComparison functie.
+Extract the current HTML structure from the FigmaComparison function.
 
 ### 4.2 Open story in Playwright
 
@@ -164,23 +164,23 @@ mcp__playwright__browser_navigate(
 )
 ```
 
-### 4.3 Wacht op ftl-holster laden
+### 4.3 Wait for ftl-holster to load
 
 ```
 mcp__playwright__browser_wait_for(time: 3)
 ```
 
-### 4.4 Neem snapshot
+### 4.4 Take snapshot
 
 ```
 mcp__playwright__browser_snapshot()
 ```
 
-Verifieer dat `ftl-holster` aanwezig is met mode buttons.
+Verify that `ftl-holster` is present with mode buttons.
 
-### 4.5 Activeer Overlay mode
+### 4.5 Activate Overlay mode
 
-Klik op "Overlay" button (betrouwbaarder dan keyboard shortcut):
+Click on "Overlay" button (more reliable than keyboard shortcut):
 
 ```
 mcp__playwright__browser_click(
@@ -189,13 +189,13 @@ mcp__playwright__browser_click(
 )
 ```
 
-### 4.6 Zet overlay opacity op 50%
+### 4.6 Set overlay opacity to 50%
 
-**BELANGRIJK:** Overlay screenshots moeten ALTIJD op 50% opacity genomen worden voor een half-half vergelijking.
+**IMPORTANT:** Overlay screenshots must ALWAYS be taken at 50% opacity for a half-half comparison.
 
-1. Neem een nieuwe snapshot om de opacity slider ref te vinden
-2. De slider is een `<input type="range">` element in de ftl-holster controls
-3. Zet de slider op 50%:
+1. Take a new snapshot to find the opacity slider ref
+2. The slider is an `<input type="range">` element in the ftl-holster controls
+3. Set the slider to 50%:
 
 ```
 mcp__playwright__browser_evaluate(
@@ -205,20 +205,22 @@ mcp__playwright__browser_evaluate(
 )
 ```
 
-4. Wacht kort op de opacity change:
+4. Wait briefly for the opacity change:
 
 ```
 mcp__playwright__browser_wait_for(time: 0.5)
 ```
 
-**Waarom 50% opacity?** Bij 50% opacity zie je een half-half blend van Code en Figma. Dit maakt het makkelijker om:
-- Afwijkingen te spotten (ze "shimmeren" niet door extreme transparantie)
-- Beide layers duidelijk te zien
-- Subtiele kleur- en positieverschillen te detecteren
+**Why 50% opacity?** At 50% opacity you see a half-half blend of Code and Figma. This makes it easier to:
+- Spot deviations (they don't "shimmer" due to extreme transparency)
+- See both layers clearly
+- Detect subtle color and position differences
 
-### 4.7 Neem screenshot in Overlay mode
+### 4.7 Take screenshot in Overlay mode
 
-Screenshot alleen de `ftl-holster` element (de rode box), NIET fullPage:
+Screenshot only the `ftl-holster` element (the red box), NOT fullPage.
+
+**Note:** Playwright saves screenshots to `.playwright-mcp/` in the folder where Claude Code was started (main repo), NOT the current worktree.
 
 ```
 mcp__playwright__browser_take_screenshot(
@@ -228,106 +230,106 @@ mcp__playwright__browser_take_screenshot(
 )
 ```
 
-**Belangrijk:** Gebruik altijd element screenshot van de `ftl-holster`, niet fullPage. Dit geeft schone screenshots zonder omringende whitespace en Storybook UI.
+**Important:** Always use element screenshot of the `ftl-holster`, not fullPage. This gives clean screenshots without surrounding whitespace and Storybook UI.
 
-### 4.8 Analyseer met automated checks + visuele inspectie
+### 4.8 Analyze with automated checks + visual inspection
 
-Voer zowel **automated vergelijkingen** als **visuele controles** uit:
+Perform both **automated comparisons** and **visual checks**:
 
-| Check | Automated vergelijking | Visuele controle |
-|-------|------------------------|------------------|
-| **Colors** | Vergelijk Figma fill/stroke vs computed background/border/color | Check overlay voor color bleeding |
-| **Font sizes** | Vergelijk Figma fontSize vs computed font-size | Check text alignment in overlay |
-| **Font weight** | Vergelijk Figma fontWeight vs computed font-weight | Check text boldness |
-| **Line height** | Vergelijk Figma lineHeightPx vs computed line-height | Check vertical text alignment |
-| **Line thickness** | Vergelijk Figma strokeWeight vs computed border-width | Check border crispness in overlay |
-| **Border radius** | Vergelijk Figma cornerRadius vs computed border-radius | Check corner smoothness |
-| **Padding** | Vergelijk alle 4 Figma padding values vs computed padding | Check content positioning |
-| **Min dimensions** | Vergelijk Figma minWidth/Height vs computed min-width/height | Check sizing constraints |
-| **Box shadows** | Vergelijk Figma DROP_SHADOW effect vs computed box-shadow | Check shadow visibility/blur |
-| **Positionering** | n/a | Zijn componenten op dezelfde plek als Figma? |
-| **Varianten** | n/a | Staan alle Figma varianten erin? Geen extra? |
-| **Sizing** | n/a | Klopt de grootte van elk component? |
-| **Spacing/Gap** | n/a | Klopt gap tussen elementen? |
+| Check | Automated comparison | Visual check |
+|-------|---------------------|--------------|
+| **Colors** | Compare Figma fill/stroke vs computed background/border/color | Check overlay for color bleeding |
+| **Font sizes** | Compare Figma fontSize vs computed font-size | Check text alignment in overlay |
+| **Font weight** | Compare Figma fontWeight vs computed font-weight | Check text boldness |
+| **Line height** | Compare Figma lineHeightPx vs computed line-height | Check vertical text alignment |
+| **Line thickness** | Compare Figma strokeWeight vs computed border-width | Check border crispness in overlay |
+| **Border radius** | Compare Figma cornerRadius vs computed border-radius | Check corner smoothness |
+| **Padding** | Compare all 4 Figma padding values vs computed padding | Check content positioning |
+| **Min dimensions** | Compare Figma minWidth/Height vs computed min-width/height | Check sizing constraints |
+| **Box shadows** | Compare Figma DROP_SHADOW effect vs computed box-shadow | Check shadow visibility/blur |
+| **Positioning** | n/a | Are components in the same place as Figma? |
+| **Variants** | n/a | Are all Figma variants present? No extras? |
+| **Sizing** | n/a | Is the size of each component correct? |
+| **Spacing/Gap** | n/a | Is gap between elements correct? |
 
-**Rapporteer afwijkingen in tabel formaat:**
+**Report deviations in table format:**
 
 ```markdown
-| Property | Figma waarde | Computed waarde | Status |
-|----------|--------------|-----------------|--------|
+| Property | Figma value | Computed value | Status |
+|----------|-------------|----------------|--------|
 | fontSize | 14px | 14px | ✅ |
 | backgroundColor | rgba(15, 23, 42, 1) | rgb(15, 23, 42) | ✅ |
 | paddingTop | 8px | 10px | ❌ -2px |
 ```
 
-### 4.9 Bij afwijkingen: Fix identificeren
+### 4.9 On deviations: Identify fix
 
-**Positionering afwijking:**
-- Check of layout mode (column/row) klopt
-- Check of gap waarde klopt
-- Check of padding klopt
-- Check of absolute positioning nodig is
+**Positioning deviation:**
+- Check if layout mode (column/row) is correct
+- Check if gap value is correct
+- Check if padding is correct
+- Check if absolute positioning is needed
 
-**Varianten afwijking:**
-- Vergelijk Figma varianten met story varianten
-- Voeg ontbrekende toe, verwijder overbodige
+**Variants deviation:**
+- Compare Figma variants with story variants
+- Add missing ones, remove extras
 
-**Styling afwijking:**
-- Identificeer welke CSS property afwijkt
-- Zoek correcte token in `dist/css/tokens.css`
-- Pas component of story aan
+**Styling deviation:**
+- Identify which CSS property deviates
+- Find correct token in `dist/css/tokens.css`
+- Adjust component or story
 
-### 4.10 Pas bestanden aan
+### 4.10 Modify files
 
-**Story aanpassen (layout/varianten):**
+**Adjust story (layout/variants):**
 ```
 Edit: src/components/{name}/rr-{name}.stories.js
 ```
 
-**Component aanpassen (styling):**
+**Adjust component (styling):**
 ```
 Edit: src/components/{name}/rr-{name}.ts
 ```
 
-### 4.11 Wacht op hot reload
+### 4.11 Wait for hot reload
 
 ```
 mcp__playwright__browser_wait_for(time: 2)
 ```
 
-### 4.12 Herhaal vanaf stap 4.2
+### 4.12 Repeat from step 4.2
 
 ---
 
-## STAP 5: SUBAGENT WORKFLOW
+## STEP 5: SUBAGENT WORKFLOW
 
-### 5.1 Spawn verificatie subagent
+### 5.1 Spawn verification subagent
 
-Gebruik de Task tool om een subagent te spawnen. **Belangrijk:** Geef de Figma waarden mee als context - de subagent haalt GEEN Figma data op.
+Use the Task tool to spawn a subagent. **Important:** Pass the Figma values as context - the subagent does NOT fetch Figma data.
 
 ```javascript
 Task({
   subagent_type: "general-purpose",
-  description: "Pixel-perfect verificatie {name}",
-  prompt: `Voer pixel-perfect verificatie uit voor component {name}.
+  description: "Pixel-perfect verification {name}",
+  prompt: `Perform pixel-perfect verification for component {name}.
 
 Context:
-- Storybook draait op port {port}
+- Storybook running on port {port}
 - Story URL: http://localhost:{port}/iframe.html?viewMode=story&id=components-{name}--figma-comparison
 - Component file: src/components/{name}/rr-{name}.ts
 - Stories file: src/components/{name}/rr-{name}.stories.js
 
-## Figma referentie waarden (NIET opnieuw ophalen):
+## Figma reference values (DO NOT fetch again):
 
 Layout:
 - Mode: {layout.mode}
 - Gap: {layout.gap}px
 - Padding: {layout.padding}
 
-Varianten: {variantList}
+Variants: {variantList}
 
-Style waarden per variant:
-{voor elke variant}
+Style values per variant:
+{for each variant}
 ### {variantName}
 - backgroundColor: {figmaBackgroundColor}
 - color: {figmaTextColor}
@@ -343,166 +345,166 @@ Style waarden per variant:
 - paddingLeft: {figmaPaddingLeft}px
 - minHeight: {figmaMinHeight}px
 - minWidth: {figmaMinWidth}px
-{/voor elke variant}
+{/for each variant}
 
-## Opdracht:
+## Task:
 
 1. Open story in Playwright
-2. Extraheer computed styles met browser_evaluate
-3. Vergelijk tegen bovenstaande Figma waarden (tolerantie: exact voor colors, ±1px voor dimensions)
-4. Neem overlay screenshot
-5. Analyseer visueel: positionering, varianten, sizing, spacing
-6. Bij afwijkingen: **consulteer [known-issues.md](./known-issues.md)** voor bekende fixes
-7. Pas component/story aan indien nodig
-8. Rapporteer resultaat met vergelijkingstabel
+2. Extract computed styles with browser_evaluate
+3. Compare against above Figma values (tolerance: exact for colors, ±1px for dimensions)
+4. Take overlay screenshot
+5. Analyze visually: positioning, variants, sizing, spacing
+6. On deviations: **consult [known-issues.md](./known-issues.md)** for known fixes
+7. Adjust component/story if needed
+8. Report result with comparison table
 
-## Bij onbekende issues:
+## For unknown issues:
 
-Als je een issue tegenkomt dat NIET in de Known Issues Database staat en significant was om op te lossen:
-- Documenteer het in je eindrapport onder "## Nieuw ontdekt issue"
-- Gebruik format: Symptoom, Root cause, Fix, Preventie
-- Main agent voegt dit toe aan de database
+If you encounter an issue that is NOT in the Known Issues Database and was significant to solve:
+- Document it in your final report under "## Newly discovered issue"
+- Use format: Symptom, Root cause, Fix, Prevention
+- Main agent will add this to the database
 
-## BELANGRIJK - Wijzigingen tracking:
+## IMPORTANT - Changes tracking:
 
-Bij ELKE Edit tool call, noteer:
-- Bestand + regelnummer
-- Oude waarde → nieuwe waarde
-- Reden (welke Figma waarde dit fixt)
+For EVERY Edit tool call, note:
+- File + line number
+- Old value → new value
+- Reason (which Figma value this fixes)
 
-Voorbeeld:
+Example:
 \`src/components/button/rr-button.ts:45\`: \`padding: 8px\` → \`padding: 8px 8px 6px 8px\` (Figma paddingBottom=6px)
 
-Rapporteer aan het eind ALLE wijzigingen, ook als er geen waren.
+Report ALL changes at the end, even if there were none.
 
-Max 3 verificatie cycli. Rapporteer na elke cyclus.
+Max 3 verification cycles. Report after each cycle.
 {previousFeedback}`
 })
 ```
 
 ### 5.2 Critical review checklist
 
-> **⚠️ BELANGRIJK: Wees ZEER kritisch!**
+> **⚠️ IMPORTANT: Be VERY critical!**
 >
-> Pixel-perfect verificatie is een moeilijke taak die vaak misgaat. Subagents:
-> - Vergeten regelmatig properties te checken
-> - Rapporteren soms "geslaagd" terwijl er afwijkingen zijn
-> - Missen asymmetrische padding (top ≠ bottom)
-> - Kijken niet naar alle varianten
-> - Maken oppervlakkige visuele analyses
+> Pixel-perfect verification is a difficult task that often goes wrong. Subagents:
+> - Regularly forget to check properties
+> - Sometimes report "passed" while there are deviations
+> - Miss asymmetric padding (top ≠ bottom)
+> - Don't look at all variants
+> - Make superficial visual analyses
 >
-> **Vertrouw het resultaat NIET blindelings. Controleer ELKE claim.**
+> **Do NOT trust the result blindly. Verify EVERY claim.**
 
-Na ontvangst van subagent resultaat, controleer **kritisch**:
+After receiving subagent result, check **critically**:
 
-**Automated checks (VERIFIEER dat deze daadwerkelijk zijn uitgevoerd):**
-- [ ] Color vergelijkingen: Staat er een concrete Figma waarde EN computed waarde in de tabel?
-- [ ] Font size: Is de exacte px waarde vergeleken (niet "looks correct")?
-- [ ] Font weight: Is de numerieke waarde vergeleken (400, 500, 600, etc.)?
-- [ ] Line height: Is de px waarde vergeleken?
-- [ ] Border/stroke: Is strokeWeight vergeleken met border-width?
-- [ ] Padding: Zijn ALLE 4 zijdes apart gecontroleerd? (top, right, bottom, left)
-- [ ] Min-dimensions: Zijn minHeight en minWidth gecontroleerd?
-- [ ] Is de vergelijkingstabel COMPLEET met concrete waarden (geen "n/a" of "correct")?
+**Automated checks (VERIFY these were actually performed):**
+- [ ] Color comparisons: Is there a concrete Figma value AND computed value in the table?
+- [ ] Font size: Is the exact px value compared (not "looks correct")?
+- [ ] Font weight: Is the numeric value compared (400, 500, 600, etc.)?
+- [ ] Line height: Is the px value compared?
+- [ ] Border/stroke: Is strokeWeight compared with border-width?
+- [ ] Padding: Are ALL 4 sides checked separately? (top, right, bottom, left)
+- [ ] Min-dimensions: Are minHeight and minWidth checked?
+- [ ] Is the comparison table COMPLETE with concrete values (no "n/a" or "correct")?
 
-**Visuele checks (BEKIJK de screenshot zelf):**
-- [ ] Tel de varianten: Matcht het aantal in de story met Figma?
-- [ ] Check positionering: Staan items op dezelfde plek in overlay?
-- [ ] Check sizing: Zijn er zichtbare grootteverschillen?
-- [ ] Check spacing: Is de gap tussen elementen consistent?
-- [ ] Check de overlay: Zijn er ENIGE zichtbare pixel differences?
-- [ ] Check Edit tool calls: Zijn wijzigingen syntactisch correct toegepast?
+**Visual checks (LOOK at the screenshot yourself):**
+- [ ] Count the variants: Does the number in the story match Figma?
+- [ ] Check positioning: Are items in the same place in overlay?
+- [ ] Check sizing: Are there visible size differences?
+- [ ] Check spacing: Is the gap between elements consistent?
+- [ ] Check the overlay: Are there ANY visible pixel differences?
+- [ ] Check Edit tool calls: Are changes syntactically correctly applied?
 
-**Wijzigingen tracking:**
-- [ ] Heeft subagent een wijzigingen lijst gerapporteerd?
-- [ ] Bevat elke wijziging: bestand, regelnummer, oude→nieuwe waarde?
-- [ ] Is de reden voor elke wijziging vermeld (welke Figma waarde)?
-- [ ] Als geen wijzigingen: is expliciet "geen wijzigingen nodig" vermeld?
+**Changes tracking:**
+- [ ] Did subagent report a changes list?
+- [ ] Does each change contain: file, line number, old→new value?
+- [ ] Is the reason for each change mentioned (which Figma value)?
+- [ ] If no changes: is "no changes needed" explicitly stated?
 
 **Red flags (trigger retry):**
-- Subagent zegt "alles ziet er goed uit" zonder concrete vergelijkingen
-- Vergelijkingstabel mist properties of heeft vage waarden
-- Geen overlay screenshot genomen
-- Padding alleen als "8px" vermeld i.p.v. alle 4 zijdes apart
-- "Visueel correct" zonder specifieke analyse per variant
+- Subagent says "everything looks good" without concrete comparisons
+- Comparison table misses properties or has vague values
+- No overlay screenshot taken
+- Padding only mentioned as "8px" instead of all 4 sides separately
+- "Visually correct" without specific analysis per variant
 
-**Check voor nieuwe issues:**
-- [ ] Heeft subagent een "Nieuw ontdekt issue" sectie gerapporteerd?
-- [ ] Zo ja: is het issue waardevol genoeg om toe te voegen aan de database?
-  - Kwam het meerdere keren voor?
-  - Was het niet-triviaal om te diagnosticeren?
-  - Heeft het een niet-voor-de-hand-liggende root cause?
-- [ ] Zo ja: voeg toe aan Known Issues Database na succesvolle verificatie
+**Check for new issues:**
+- [ ] Did subagent report a "Newly discovered issue" section?
+- [ ] If so: is the issue valuable enough to add to the database?
+  - Did it occur multiple times?
+  - Was it non-trivial to diagnose?
+  - Does it have a non-obvious root cause?
+- [ ] If so: add to Known Issues Database after successful verification
 
-### 5.3 Retry met feedback
+### 5.3 Retry with feedback
 
-Als critical review issues vindt, spawn nieuwe subagent met **specifieke, actionable feedback**.
+If critical review finds issues, spawn new subagent with **specific, actionable feedback**.
 
 **Feedback template:**
 
 ```markdown
-## Vorige verificatie was ONVOLLEDIG
+## Previous verification was INCOMPLETE
 
-### Ontbrekende checks:
-- paddingBottom: Je hebt alleen paddingTop gerapporteerd. Check ALLE 4 zijdes.
-- fontWeight: Mist in vergelijkingstabel. Figma waarde is {x}, check computed.
-- borderRadius: Geen concrete waarde vermeld, alleen "correct".
+### Missing checks:
+- paddingBottom: You only reported paddingTop. Check ALL 4 sides.
+- fontWeight: Missing in comparison table. Figma value is {x}, check computed.
+- borderRadius: No concrete value mentioned, only "correct".
 
-### Fouten in analyse:
-- Je zei "visueel correct" maar de overlay toont duidelijke offset bij variant X.
-- Variant "disabled" ontbreekt in je analyse maar staat wel in Figma.
+### Errors in analysis:
+- You said "visually correct" but the overlay shows clear offset at variant X.
+- Variant "disabled" is missing in your analysis but is in Figma.
 
-### Concrete opdracht voor deze iteratie:
-1. Extraheer computed styles voor ELKE variant apart
-2. Vul vergelijkingstabel met CONCRETE px/color waarden
-3. Vergelijk padding per zijde: top={x}px, right={y}px, bottom={z}px, left={w}px
-4. Neem nieuwe overlay screenshot NA eventuele fixes
+### Concrete task for this iteration:
+1. Extract computed styles for EACH variant separately
+2. Fill comparison table with CONCRETE px/color values
+3. Compare padding per side: top={x}px, right={y}px, bottom={z}px, left={w}px
+4. Take new overlay screenshot AFTER any fixes
 ```
 
-**Wees specifiek:** Noem exacte property namen, verwachte waarden, en welke variant het betreft. Vage feedback zoals "check beter" helpt niet.
+**Be specific:** Name exact property names, expected values, and which variant it concerns. Vague feedback like "check better" doesn't help.
 
 ### 5.4 Max retries
 
-- Maximum 3 retry iteraties met feedback
-- Als na 3 retries nog steeds issues: rapporteer en vraag om menselijke review
+- Maximum 3 retry iterations with feedback
+- If still issues after 3 retries: report and ask for human review
 
 ---
 
-## STAP 6: RESULTAAT
+## STEP 6: RESULT
 
-### Wijzigingen tracking
+### Changes tracking
 
-Houd tijdens de uitvoering een lijst bij van alle aanpassingen:
+Keep a list of all adjustments during execution:
 
 ```markdown
-## Wijzigingen gemaakt:
+## Changes made:
 
 ### Component (src/components/{name}/rr-{name}.ts)
-1. **Regel 45**: `padding: 8px` → `padding: 8px 8px 6px 8px` (asymmetrische padding)
-2. **Regel 52**: `border-radius: 8px` → `border-radius: 6px` (was incorrect)
-3. **Regel 67**: Toegevoegd `min-height: 32px`
+1. **Line 45**: `padding: 8px` → `padding: 8px 8px 6px 8px` (asymmetric padding)
+2. **Line 52**: `border-radius: 8px` → `border-radius: 6px` (was incorrect)
+3. **Line 67**: Added `min-height: 32px`
 
 ### Stories (src/components/{name}/rr-{name}.stories.js)
-1. **Regel 120**: `gap: 8px` → `gap: 12px` (matcht nu Figma layout)
-2. **Regel 135**: Variant "disabled" toegevoegd aan grid
+1. **Line 120**: `gap: 8px` → `gap: 12px` (now matches Figma layout)
+2. **Line 135**: Variant "disabled" added to grid
 
-### Geen wijzigingen nodig
-(Als alles al correct was)
+### No changes needed
+(If everything was already correct)
 ```
 
-**Instructie aan subagent:** Na elke Edit tool call, noteer:
-- Bestandsnaam en regelnummer
-- Oude waarde → nieuwe waarde
-- Reden voor wijziging
+**Instruction to subagent:** After each Edit tool call, note:
+- Filename and line number
+- Old value → new value
+- Reason for change
 
-### Bij succes (pixel-perfect):
+### On success (pixel-perfect):
 
 ```
 ✅ Component {name} is pixel-perfect!
 
-Iteraties nodig: {n}
+Iterations needed: {n}
 
-## Automated checks: allemaal geslaagd
+## Automated checks: all passed
 | Property | Figma | Computed | Status |
 |----------|-------|----------|--------|
 | fontSize | 14px | 14px | ✅ |
@@ -510,87 +512,87 @@ Iteraties nodig: {n}
 | paddingBottom | 6px | 6px | ✅ |
 | ... | ... | ... | ✅ |
 
-## Visuele checks: allemaal geslaagd
-- ✅ Alle varianten aanwezig (5/5)
-- ✅ Positionering correct
+## Visual checks: all passed
+- ✅ All variants present (5/5)
+- ✅ Positioning correct
 - ✅ Sizing correct
 - ✅ Spacing correct
-- ✅ Overlay screenshot schoon
+- ✅ Overlay screenshot clean
 
-## Wijzigingen gemaakt:
+## Changes made:
 
 ### src/components/{name}/rr-{name}.ts
-- Regel 45: `padding: 8px` → `padding: 8px 8px 6px 8px`
-- Regel 52: `border-radius: 8px` → `border-radius: 6px`
+- Line 45: `padding: 8px` → `padding: 8px 8px 6px 8px`
+- Line 52: `border-radius: 8px` → `border-radius: 6px`
 
 ### src/components/{name}/rr-{name}.stories.js
-- Regel 120: `gap: 8px` → `gap: 12px`
+- Line 120: `gap: 8px` → `gap: 12px`
 ```
 
-### Bij succes zonder wijzigingen:
+### On success without changes:
 
 ```
 ✅ Component {name} is pixel-perfect!
 
-Iteraties nodig: 1
+Iterations needed: 1
 
-## Automated checks: allemaal geslaagd
-[tabel]
+## Automated checks: all passed
+[table]
 
-## Visuele checks: allemaal geslaagd
-[lijst]
+## Visual checks: all passed
+[list]
 
-## Wijzigingen gemaakt:
-Geen - component was al pixel-perfect.
+## Changes made:
+None - component was already pixel-perfect.
 ```
 
-### Bij falen (max iteraties bereikt):
+### On failure (max iterations reached):
 
 ```
-❌ Component {name} is NIET pixel-perfect na {n} iteraties.
+❌ Component {name} is NOT pixel-perfect after {n} iterations.
 
-## Resterende afwijkingen (automated):
-| Property | Figma | Computed | Verschil |
-|----------|-------|----------|----------|
+## Remaining deviations (automated):
+| Property | Figma | Computed | Difference |
+|----------|-------|----------|------------|
 | paddingTop | 8px | 10px | -2px |
 | ... | ... | ... | ... |
 
-## Resterende afwijkingen (visueel):
-- ❌ Gap tussen rijen wijkt af
-- ❌ Variant "disabled" ontbreekt
+## Remaining deviations (visual):
+- ❌ Gap between rows deviates
+- ❌ Variant "disabled" missing
 
-## Wijzigingen gemaakt (maar onvoldoende):
+## Changes made (but insufficient):
 
 ### src/components/{name}/rr-{name}.ts
-- Regel 45: `padding: 8px` → `padding: 8px 8px 6px 8px`
+- Line 45: `padding: 8px` → `padding: 8px 8px 6px 8px`
 
-## Suggesties:
-- paddingTop token mogelijk incorrect in design tokens
-- Gap waarde niet beschikbaar als token, hardcode overwegen
+## Suggestions:
+- paddingTop token possibly incorrect in design tokens
+- Gap value not available as token, consider hardcoding
 ```
 
-### Database update (indien nieuwe issues ontdekt):
+### Database update (if new issues discovered):
 
-Als de subagent een "Nieuw ontdekt issue" heeft gerapporteerd dat waardevol is:
+If the subagent reported a "Newly discovered issue" that is valuable:
 
-1. Voeg het issue toe aan [known-issues.md](./known-issues.md)
-2. Gebruik het standaard format (Symptoom, Root cause, Diagnostiek, Fix, Preventie)
-3. Plaats het op de juiste plek (sorteer op frequentie/relevantie)
-4. Bevestig de toevoeging in het eindrapport:
+1. Add the issue to [known-issues.md](./known-issues.md)
+2. Use the standard format (Symptom, Root cause, Diagnostics, Fix, Prevention)
+3. Place it in the right location (sort by frequency/relevance)
+4. Confirm the addition in the final report:
 
 ```
-## Database bijgewerkt:
-- Nieuw issue toegevoegd: "[Issue naam]"
-- Reden: [Waarom dit waardevol is voor toekomstige verificaties]
+## Database updated:
+- New issue added: "[Issue name]"
+- Reason: [Why this is valuable for future verifications]
 ```
 
 ---
 
 ## LAYOUT MATCHING RULES
 
-### Figma gebruikt GRID layout:
+### Figma uses GRID layout:
 
-Genereer HTML met CSS Grid:
+Generate HTML with CSS Grid:
 
 ```html
 <div style="
@@ -601,7 +603,7 @@ Genereer HTML met CSS Grid:
 ">
 ```
 
-### Figma gebruikt FLEX layout (column):
+### Figma uses FLEX layout (column):
 
 ```html
 <div style="
@@ -613,7 +615,7 @@ Genereer HTML met CSS Grid:
 ">
 ```
 
-### Figma gebruikt FLEX layout (row):
+### Figma uses FLEX layout (row):
 
 ```html
 <div style="
@@ -625,7 +627,7 @@ Genereer HTML met CSS Grid:
 ">
 ```
 
-### Figma gebruikt ABSOLUTE positioning:
+### Figma uses ABSOLUTE positioning:
 
 ```html
 <div style="
@@ -655,72 +657,73 @@ Genereer HTML met CSS Grid:
 | `is-focused=true` | Skip (focus state) |
 | `variant=...` | `variant="..."` |
 
-**LET OP:** Hover en focus states worden NIET gerenderd in de FigmaComparison story. Deze states worden alleen visueel getoond, niet als aparte componenten.
+**NOTE:** Hover and focus states are NOT rendered in the FigmaComparison story. These states are only shown visually, not as separate components.
 
 ---
 
 ## KNOWN ISSUES DATABASE
 
-> **Zie:** [known-issues.md](./known-issues.md) voor de volledige database met:
-> - Bekende issues en hun fixes (asymmetrische padding, font weight, border sizing, etc.)
+> **See:** [known-issues.md](./known-issues.md) for the full database with:
+> - Known issues and their fixes (asymmetric padding, font weight, border sizing, etc.)
 > - Common fixes quick reference
-> - Instructies voor het toevoegen van nieuwe issues
+> - Instructions for adding new issues
 
 ---
 
-## FOUTAFHANDELING
+## ERROR HANDLING
 
-| Error | Oplossing |
-|-------|-----------|
-| FigmaComparison niet gevonden | Maak eerst story aan met `/component` |
-| Storybook start niet | Check `npm run sb:status`, mogelijk port conflict |
-| ftl-holster laadt niet | Check `STORYBOOK_FIGMA_TOKEN` in `.env` |
-| Figma design laadt niet in worktree | Kopieer `.env` van main naar worktree (zie hieronder) |
-| Figma MCP rate limit | Wacht 60-120 seconden |
-| Playwright crash | Sluit browser: `mcp__playwright__browser_close()` |
-| browser_evaluate faalt | Check shadowRoot selector, element moet in DOM zijn |
+| Error | Solution |
+|-------|----------|
+| FigmaComparison not found | Create story first with `/component` |
+| Storybook won't start | Check `npm run sb:status`, possible port conflict |
+| ftl-holster not loading | Check `STORYBOOK_FIGMA_TOKEN` is set in `.env` |
+| Figma design not loading in worktree | Copy `.env` from main to worktree (see below) |
+| Figma MCP rate limit | Wait 60-120 seconds |
+| Playwright crash | Close browser: `mcp__playwright__browser_close()` |
+| browser_evaluate fails | Check shadowRoot selector, element must be in DOM |
+| Screenshots not in worktree | Playwright saves to `.playwright-mcp/` in main repo where Claude started, not in worktree |
 
-### Worktree .env probleem
+### Worktree .env issue
 
-Bij werken in een git worktree bevat deze standaard geen `.env` file. De Figma designs laden dan niet in Storybook. Oplossing:
+When working in a git worktree, it doesn't contain an `.env` file by default. Figma designs won't load in Storybook without it. Solution:
 
 ```bash
-# Kopieer .env van main repository naar worktree
-cp /pad/naar/main/repo/.env /pad/naar/worktree/.env
+# Copy .env from main repository to worktree
+cp /path/to/main/repo/.env /path/to/worktree/.env
 ```
 
-Of relatief vanuit de worktree:
+Or relative from the worktree:
 ```bash
 cp ../../.env .
 ```
 
 ---
 
-## CHECKLIST PIXEL-PERFECT
+## PIXEL-PERFECT CHECKLIST
 
-### Automated checks (moet 100% slagen):
+### Automated checks (must pass 100%):
 
-- [ ] Colors matchen (fill → background, stroke → border)
-- [ ] Font size matcht exact
-- [ ] Font weight matcht exact
-- [ ] Line height matcht (±1px)
-- [ ] Border/stroke width matcht exact
-- [ ] Border radius matcht (±1px)
-- [ ] Padding matcht alle 4 zijdes (±1px)
-- [ ] Min-width/height matcht (±1px)
-- [ ] Box-shadow matcht (offset, blur, spread, color)
+- [ ] Colors match (fill → background, stroke → border)
+- [ ] Font size matches exactly
+- [ ] Font weight matches exactly
+- [ ] Line height matches (±1px)
+- [ ] Border/stroke width matches exactly
+- [ ] Border radius matches (±1px)
+- [ ] Padding matches all 4 sides (±1px)
+- [ ] Min-width/height matches (±1px)
+- [ ] Box-shadow matches (offset, blur, spread, color)
 
-### Visuele checks (moet 100% slagen):
+### Visual checks (must pass 100%):
 
-- [ ] Layout mode matcht Figma (column/row/grid/absolute)
-- [ ] Gap matcht Figma exact
-- [ ] Padding matcht Figma exact (ook asymmetrisch!)
-- [ ] Alle Figma varianten aanwezig
-- [ ] Geen extra varianten toegevoegd
-- [ ] Volgorde varianten matcht Figma
-- [ ] Container dimensies matchen Figma
-- [ ] Component sizing klopt per variant
-- [ ] Kleuren komen visueel overeen
-- [ ] Typography komt visueel overeen
-- [ ] Border radius komt visueel overeen
-- [ ] Geen zichtbare pixel differences in overlay mode
+- [ ] Layout mode matches Figma (column/row/grid/absolute)
+- [ ] Gap matches Figma exactly
+- [ ] Padding matches Figma exactly (including asymmetric!)
+- [ ] All Figma variants present
+- [ ] No extra variants added
+- [ ] Variant order matches Figma
+- [ ] Container dimensions match Figma
+- [ ] Component sizing correct per variant
+- [ ] Colors match visually
+- [ ] Typography matches visually
+- [ ] Border radius matches visually
+- [ ] No visible pixel differences in overlay mode

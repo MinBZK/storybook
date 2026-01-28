@@ -124,17 +124,24 @@ Always screenshot the `ftl-holster` element directly, NOT fullPage. This gives c
 
 **Important: Playwright MCP output directory**
 
-Screenshots are saved to `.playwright-mcp/` directory (restricted by Playwright MCP).
+Screenshots are saved to `.playwright-mcp/` directory in the folder where Claude Code was started (NOT the current working directory). When working in a worktree, screenshots will be saved to the main repository's `.playwright-mcp/` folder, not the worktree's folder.
+
+Example: If Claude Code was started in `C:\Users\timde\Documents\Code\storybook` but you're working in `.worktrees\feat-spacer-lit`, screenshots go to:
+- `C:\Users\timde\Documents\Code\storybook\.playwright-mcp\` (correct)
+- NOT `.worktrees\feat-spacer-lit\.playwright-mcp\`
 
 ### Step 4: Upload Screenshots to 0x0.st
 
-Upload each screenshot to 0x0.st (no authentication required):
+Upload each screenshot to 0x0.st (no authentication required).
+
+**Important:** Screenshots are in the `.playwright-mcp/` folder where Claude Code was started, NOT the current worktree. When working in a worktree, look in the main repo folder.
 
 ```bash
 # Upload and capture the returned URL
 # IMPORTANT: On Windows, use ABSOLUTE paths - relative paths cause exit code 26
-SIDE_BY_SIDE_URL=$(curl -s -F "file=@/full/path/to/.playwright-mcp/{name}-side-by-side.png" https://0x0.st)
-OVERLAY_URL=$(curl -s -F "file=@/full/path/to/.playwright-mcp/{name}-overlay.png" https://0x0.st)
+# Use the MAIN REPO path, not the worktree path!
+SIDE_BY_SIDE_URL=$(curl -s -F "file=@C:/Users/.../storybook/.playwright-mcp/{name}-side-by-side.png" https://0x0.st)
+OVERLAY_URL=$(curl -s -F "file=@C:/Users/.../storybook/.playwright-mcp/{name}-overlay.png" https://0x0.st)
 ```
 
 **Windows path note:** Always use absolute paths for curl file uploads on Windows. Relative paths like `@.playwright-mcp/file.png` fail with exit code 26. Use full paths like `@C:/Users/.../project/.playwright-mcp/file.png`.
@@ -207,6 +214,7 @@ gh pr create --title "feat: {summary of changes}" --body "{PR body}"
 | Component has no FigmaComparison | Use fallback: screenshot Default story (see below) |
 | Keyboard shortcuts not working | Click buttons directly via snapshot refs |
 | curl exit code 26 (Windows) | Use absolute file paths instead of relative paths |
+| Screenshots not in worktree | Check main repo's `.playwright-mcp/` folder - Playwright saves to where Claude started |
 | 0x0.st upload fails | Retry or use alternative host |
 
 ### Worktree .env Issue
