@@ -279,6 +279,14 @@ Perform both **automated comparisons** and **visual checks**:
 - Find correct token in `dist/css/tokens.css`
 - Adjust component or story
 
+**Token deviation (IMPORTANT):**
+If a deviation is caused by an **incorrect token value** (token doesn't match Figma):
+- Do **NOT** override the token with a hardcoded value
+- Do **NOT** modify the token file directly (it's generated from Figma)
+- Instead: **Report in the PR** that the token needs to be updated in Figma
+- The component should use the token as-is, even if it doesn't match visually yet
+- Format: "TODO: Figma token `{token-name}` should be `{correct-value}` (currently `{wrong-value}`)"
+
 ### 4.10 Modify files
 
 **Adjust story (layout/variants):**
