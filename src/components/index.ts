@@ -24,6 +24,11 @@ export { RRMenuBar } from './menu-bar/rr-menu-bar.ts';
 export { RRMenuItem } from './menu-bar/rr-menu-item.ts';
 export { RRUtilityMenuBar } from './top-navigation-bar/rr-utility-menu-bar.ts';
 
+// Layout utility components
+export { RRSpacer } from './spacer/rr-spacer.ts';
+export { RRDivider } from './divider/rr-divider.ts';
+export { RRPageStickyAreaBackground } from './page-sticky-area-background/rr-page-sticky-area-background.ts';
+
 // Vanilla JS components
 export { RRBox } from './box/rr-box.js';
 export { RRTopNavigationBar } from './top-navigation-bar/rr-top-navigation-bar.ts';
