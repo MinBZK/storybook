@@ -145,16 +145,16 @@ Gebruik `/component <figma-node-id>` voor het maken of updaten van componenten. 
 
 ## Package Versioning
 
-Versies worden **automatisch** gebumpt door semantic-release bij merge naar main.
+Versions are **automatically** bumped by semantic-release on merge to main.
 
 | Commit Type | Version Bump |
 |-------------|--------------|
 | `feat:` | Minor (0.1.0 → 0.2.0) |
 | `fix:`, `perf:` | Patch (0.1.0 → 0.1.1) |
-| `feat!:` of `BREAKING CHANGE:` | Major (0.1.0 → 1.0.0) |
-| `docs:`, `chore:`, `ci:`, etc. | Geen bump |
+| `feat!:` or `BREAKING CHANGE:` | Minor (pre-1.0) |
+| `docs:`, `chore:`, `ci:`, etc. | No bump |
 
-**Handmatig bumpen is niet nodig.** Gebruik conventional commits en de CI regelt de rest.
+**Manual version bumping is not needed.** Use conventional commits and CI handles the rest.
 
 ## BEM Naamgeving
 
