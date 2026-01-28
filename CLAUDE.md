@@ -145,18 +145,16 @@ Gebruik `/component <figma-node-id>` voor het maken of updaten van componenten. 
 
 ## Package Versioning
 
-**Bump the version in `package.json` when:**
-- Adding or modifying a component (`.js`, `.ts` in `src/components/`)
-- Changing design tokens that affect output
-- Updating dependencies that affect the bundle
+Versions are **automatically** bumped by semantic-release on merge to main.
 
-**Do NOT bump version for:**
-- Documentation changes only
-- Storybook-only changes
-- Test file changes
-- Development tooling changes
+| Commit Type | Version Bump |
+|-------------|--------------|
+| `feat:` | Minor (0.1.0 → 0.2.0) |
+| `fix:`, `perf:` | Patch (0.1.0 → 0.1.1) |
+| `feat!:` or `BREAKING CHANGE:` | Minor (pre-1.0) |
+| `docs:`, `chore:`, `ci:`, etc. | No bump |
 
-**How to bump:** Edit `"version"` in `package.json`. Use semantic versioning.
+**Manual version bumping is not needed.** Use conventional commits and CI handles the rest.
 
 ## BEM Naamgeving
 
