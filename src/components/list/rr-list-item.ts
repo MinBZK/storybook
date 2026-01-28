@@ -42,9 +42,10 @@ export class RRListItem extends LitElement {
       display: none;
       position: absolute;
       left: -10px;
-      top: 0;
-      bottom: 0;
       right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 48px; /* MD size */
       background-color: var(--semantics-buttons-accent-filled-background-color, #274e81);
       border-radius: 8px;
       z-index: 0;
@@ -52,6 +53,11 @@ export class RRListItem extends LitElement {
 
     :host([selected]) .list-item__indicator {
       display: block;
+    }
+
+    /* SM size indicator height */
+    :host([size="sm"]) .list-item__indicator {
+      height: 40px;
     }
 
     /* Areas */

@@ -71,16 +71,17 @@ export const FigmaComparison = () => html`
           Figma label-cell (1033:4433) component set:
           - Layout: column, gap: 16px, padding: 16px
           - Fixed width: 308px
+          - Background: #333A45 (dark, to show all variants)
           - 4 variants: 2 colors (default/white) x 2 h-align (left/right)
         -->
-        <div style="width: 308px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
-          <!-- Default color variants -->
-          <rr-label-cell horizontal-alignment="left">Label cell</rr-label-cell>
-          <rr-label-cell horizontal-alignment="right">Label cell</rr-label-cell>
-
-          <!-- White color variants (no background in Figma - white text on transparent) -->
+        <div style="width: 308px; background: #333a45; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
+          <!-- White color variants (visible on dark background) -->
           <rr-label-cell color="white" horizontal-alignment="left">Label cell</rr-label-cell>
           <rr-label-cell color="white" horizontal-alignment="right">Label cell</rr-label-cell>
+
+          <!-- Default color variants (darker text, less visible on dark bg) -->
+          <rr-label-cell color="default" horizontal-alignment="left">Label cell</rr-label-cell>
+          <rr-label-cell color="default" horizontal-alignment="right">Label cell</rr-label-cell>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
