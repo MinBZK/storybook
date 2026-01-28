@@ -100,10 +100,10 @@ Where `{name}` is the kebab-case component name:
 9. Wait briefly: `mcp__playwright__browser_wait_for` with time: 1
 10. **Set overlay opacity to 50%** for half-half comparison:
     - Take a new snapshot to find the opacity slider ref
-    - The slider is a `<input type="range">` element in the ftl-holster controls
-    - Use `mcp__playwright__browser_evaluate` to set slider value to 50:
+    - The slider is a `<input type="range">` element with range 0.0-1.0
+    - Use `mcp__playwright__browser_evaluate` to set slider value to 0.5 (NOT 50!):
       ```javascript
-      function: "(slider) => { slider.value = 50; slider.dispatchEvent(new Event('input', { bubbles: true })); }",
+      function: "(slider) => { slider.value = 0.5; slider.dispatchEvent(new Event('input', { bubbles: true })); }",
       ref: "{slider-ref}",
       element: "Opacity slider"
       ```
@@ -124,17 +124,27 @@ Always screenshot the `ftl-holster` element directly, NOT fullPage. This gives c
 
 **Important: Playwright MCP output directory**
 
-Screenshots are saved to `.playwright-mcp/` directory (restricted by Playwright MCP).
+Screenshots are saved to `.playwright-mcp/` directory in the folder where Claude Code was started (NOT the current working directory). When working in a worktree, screenshots will be saved to the main repository's `.playwright-mcp/` folder, not the worktree's folder.
+
+Example: If Claude Code was started in `C:\Users\timde\Documents\Code\storybook` but you're working in `.worktrees\feat-spacer-lit`, screenshots go to:
+- `C:\Users\timde\Documents\Code\storybook\.playwright-mcp\` (correct)
+- NOT `.worktrees\feat-spacer-lit\.playwright-mcp\`
 
 ### Step 4: Upload Screenshots to 0x0.st
 
-Upload each screenshot to 0x0.st (no authentication required):
+Upload each screenshot to 0x0.st (no authentication required).
+
+**Important:** Screenshots are in the `.playwright-mcp/` folder where Claude Code was started, NOT the current worktree. When working in a worktree, look in the main repo folder.
 
 ```bash
 # Upload and capture the returned URL
-SIDE_BY_SIDE_URL=$(curl -s -F "file=@.playwright-mcp/{name}-side-by-side.png" https://0x0.st)
-OVERLAY_URL=$(curl -s -F "file=@.playwright-mcp/{name}-overlay.png" https://0x0.st)
+# IMPORTANT: On Windows, use ABSOLUTE paths - relative paths cause exit code 26
+# Use the MAIN REPO path, not the worktree path!
+SIDE_BY_SIDE_URL=$(curl -s -F "file=@C:/Users/.../storybook/.playwright-mcp/{name}-side-by-side.png" https://0x0.st)
+OVERLAY_URL=$(curl -s -F "file=@C:/Users/.../storybook/.playwright-mcp/{name}-overlay.png" https://0x0.st)
 ```
+
+**Windows path note:** Always use absolute paths for curl file uploads on Windows. Relative paths like `@.playwright-mcp/file.png` fail with exit code 26. Use full paths like `@C:/Users/.../project/.playwright-mcp/file.png`.
 
 Store the URLs for each component to use in the PR body.
 
@@ -203,6 +213,8 @@ gh pr create --title "feat: {summary of changes}" --body "{PR body}"
 | gh CLI not authenticated | Run `gh auth login` |
 | Component has no FigmaComparison | Use fallback: screenshot Default story (see below) |
 | Keyboard shortcuts not working | Click buttons directly via snapshot refs |
+| curl exit code 26 (Windows) | Use absolute file paths instead of relative paths |
+| Screenshots not in worktree | Check main repo's `.playwright-mcp/` folder - Playwright saves to where Claude started |
 | 0x0.st upload fails | Retry or use alternative host |
 
 ### Worktree .env Issue

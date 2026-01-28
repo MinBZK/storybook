@@ -65,6 +65,7 @@ import '../menu-bar/rr-menu-bar.ts';
 import '../menu-bar/rr-menu-item.ts';
 import './rr-utility-menu-bar.ts';
 import './rr-back-button.ts';
+import '../spacer/rr-spacer.ts';
 
 type ContainerSize = 's' | 'm' | 'l';
 
@@ -143,26 +144,34 @@ export class RRTopNavigationBar extends LitElement {
     .nav-bar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       min-height: 44px;
       background-color: #ffffff;
     }
 
-    /* Responsive padding - only for nav-bar, logo-bar centers content without padding */
+    /* Inner wrapper - contains nav-left and nav-right, handles space-between */
+    .nav-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Responsive padding - base padding, spacers handle the rest */
     :host([container='s']) .nav-bar {
-      padding-left: var(--semantics-sections-s-margin-inline, 20px);
-      padding-right: var(--semantics-sections-s-margin-inline, 20px);
+      padding-left: var(--primitives-space-4, 4px);
+      padding-right: var(--primitives-space-4, 4px);
     }
 
     :host([container='m']) .nav-bar,
     :host(:not([container])) .nav-bar {
-      padding-left: var(--semantics-sections-m-margin-inline, 32px);
-      padding-right: var(--semantics-sections-m-margin-inline, 32px);
+      padding-left: var(--primitives-space-8, 8px);
+      padding-right: var(--primitives-space-8, 8px);
     }
 
     :host([container='l']) .nav-bar {
-      padding-left: var(--semantics-sections-l-margin-inline, 48px);
-      padding-right: var(--semantics-sections-l-margin-inline, 48px);
+      padding-left: var(--primitives-space-8, 8px);
+      padding-right: var(--primitives-space-8, 8px);
     }
 
     .nav-left {
@@ -178,12 +187,6 @@ export class RRTopNavigationBar extends LitElement {
       flex-shrink: 0; /* Prevent utility bar from shrinking */
     }
 
-    /* Figma: utility buttons are 40px from edge (8px nav + 32px spacer)
-       Code: nav-bar has 48px padding, so compensate with -8px margin */
-    :host([container='l']) .nav-right {
-      margin-right: -8px;
-    }
-
     .global-menu {
       flex: 1;
       min-width: 0;
@@ -194,7 +197,8 @@ export class RRTopNavigationBar extends LitElement {
     .nav-title {
       font: var(--components-menu-bar-title-item-m-font, 550 20px/1.125 RijksSansVF, system-ui);
       color: var(--primitives-color-neutral-900, #0f172a);
-      /* Match Figma title-item padding: 0px 8px - title item right padding creates gap to menu */
+      /* Match Figma title-item padding: 0px 8px (8px on left AND right) */
+      padding-left: var(--primitives-space-8, 8px);
       padding-right: var(--primitives-space-8, 8px);
       white-space: nowrap;
     }
@@ -324,6 +328,13 @@ export class RRTopNavigationBar extends LitElement {
     return this.utilityAccountLabel || `Mijn ${this.title}`;
   }
 
+  /** Spacer size based on container: L=32, M=16, S=none */
+  private get _spacerSize(): '32' | '16' | null {
+    if (this.container === 'l') return '32';
+    if (this.container === 'm') return '16';
+    return null; // S container has no spacer
+  }
+
   override render() {
     return html`
       <a href="${this.skipLinkTarget}" class="skip-link">Ga naar hoofdinhoud</a>
@@ -342,34 +353,47 @@ export class RRTopNavigationBar extends LitElement {
 
         <!-- Navigation bar: Back | Title | Menu items | Utility buttons -->
         <nav class="nav-bar" part="nav-bar" aria-label="Hoofdnavigatie">
-          <!-- Left: Back button, Title, Global Menu -->
-          <div class="nav-left">
-            <rr-back-button
-              container="${this.container}"
-              href="${this.backHref}"
-              label="${this.backLabel}"
-            ></rr-back-button>
-            <span class="nav-title">${this.title}</span>
-            <div class="global-menu">
-              <rr-menu-bar size="${this.container}" has-overflow-menu overflow-label="Meer">
-                <slot name="menu"></slot>
-              </rr-menu-bar>
+          <!-- Left spacer (L=32px, M=16px, S=none) -->
+          ${this._spacerSize
+            ? html`<rr-spacer size="${this._spacerSize}" direction="horizontal"></rr-spacer>`
+            : nothing}
+
+          <!-- Inner wrapper for left/right content -->
+          <div class="nav-bar-inner">
+            <!-- Left: Back button, Title, Global Menu -->
+            <div class="nav-left">
+              <rr-back-button
+                container="${this.container}"
+                href="${this.backHref}"
+                label="${this.backLabel}"
+              ></rr-back-button>
+              <span class="nav-title">${this.title}</span>
+              <div class="global-menu">
+                <rr-menu-bar size="${this.container}" has-overflow-menu overflow-label="Meer">
+                  <slot name="menu"></slot>
+                </rr-menu-bar>
+              </div>
+            </div>
+
+            <!-- Right: Utility buttons -->
+            <div class="nav-right">
+              <rr-utility-menu-bar
+                container="${this.container}"
+                ?no-language-switch="${this.utilityNoLanguageSwitch}"
+                ?no-search="${this.utilityNoSearch}"
+                ?no-account="${this.utilityNoAccount}"
+                ?has-help="${this.utilityHasHelp}"
+                ?has-settings="${this.utilityHasSettings}"
+                language="${this.utilityLanguage}"
+                account-label="${this._accountLabel}"
+              ></rr-utility-menu-bar>
             </div>
           </div>
 
-          <!-- Right: Utility buttons -->
-          <div class="nav-right">
-            <rr-utility-menu-bar
-              container="${this.container}"
-              ?no-language-switch="${this.utilityNoLanguageSwitch}"
-              ?no-search="${this.utilityNoSearch}"
-              ?no-account="${this.utilityNoAccount}"
-              ?has-help="${this.utilityHasHelp}"
-              ?has-settings="${this.utilityHasSettings}"
-              language="${this.utilityLanguage}"
-              account-label="${this._accountLabel}"
-            ></rr-utility-menu-bar>
-          </div>
+          <!-- Right spacer (L=32px, M=16px, S=none) -->
+          ${this._spacerSize
+            ? html`<rr-spacer size="${this._spacerSize}" direction="horizontal"></rr-spacer>`
+            : nothing}
         </nav>
       </div>
     `;

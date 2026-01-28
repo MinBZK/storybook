@@ -203,7 +203,109 @@ line-height: 1; /* Reset, dan fine-tune */
 
 ---
 
+## Issue: Figma spacer pattern vs CSS padding
+
+**Symptoom:** Elementen in nav-bar zijn horizontaal verschoven t.o.v. Figma (bijv. 8px te ver naar rechts)
+**Root cause:** Figma gebruikt vaak interne spacer elementen (bijv. 32px brede spacers) naast container padding, terwijl CSS alleen padding gebruikt
+**Diagnostiek:**
+```javascript
+// Check Figma structuur voor spacer children:
+// Container: padding=8px + spacer child width=32px = 40px totale offset
+// CSS: padding=48px (direct op container)
+// Verschil: 48px - 40px = 8px offset
+```
+**Fix:**
+```css
+/* Compenseer met negatieve margin op specifieke elementen */
+.nav-right {
+  margin-right: -8px; /* 48px padding - 40px Figma offset */
+}
+
+/* NIET: verander globale padding, dit breekt andere elementen */
+```
+**Preventie:** Analyseer Figma's interne structuur inclusief spacer elementen voordat je padding aanpast. Gebruik negatieve margins voor compensatie in plaats van globale padding wijzigingen.
+
+---
+
+## Issue: Title margin vs padding voor spacing
+
+**Symptoom:** Titel tekst is verkeerd uitgelijnd t.o.v. aangrenzende elementen
+**Root cause:** CSS margin-right op titel creëert extra ruimte bovenop de padding van het aangrenzende element, terwijl Figma's title-item interne padding gebruikt
+**Diagnostiek:**
+```javascript
+// Figma title-item heeft padding: 0px 8px (interne spacing)
+// CSS met margin-right: 16px creëert 16px + adjacent padding
+// Dit resulteert in te veel ruimte
+```
+**Fix:**
+```css
+/* FOUT - margin stapelt op adjacent element's padding */
+.nav-title {
+  margin-right: 16px;
+}
+
+/* GOED - padding matcht Figma's interne structuur */
+.nav-title {
+  padding-right: 8px; /* Matcht Figma title-item padding */
+}
+```
+**Preventie:** Check of Figma padding of margin gebruikt voor spacing. Gebruik padding voor interne spacing binnen een element.
+
+---
+
+## Issue: Meerdere alignment changes tegelijk
+
+**Symptoom:** Na meerdere CSS wijzigingen is de layout erger dan voorheen
+**Root cause:** Alignment issues hebben vaak onderlinge afhankelijkheden; meerdere fixes tegelijk maakt het moeilijk te zien welke werkt
+**Diagnostiek:**
+```
+# Voorbeeld van verkeerde aanpak:
+1. Wijzig nav-bar padding 48px → 40px
+2. Wijzig title margin 16px → 8px
+3. Screenshot → layout is erger dan voorheen
+# Welke wijziging is fout? Onduidelijk!
+```
+**Fix:**
+```
+# Correcte aanpak: incrementeel testen
+1. Wijzig ALLEEN titel spacing
+2. Screenshot + vergelijk → beter of slechter?
+3. Als beter: houd wijziging, ga naar volgende
+4. Als slechter: revert, probeer alternatief
+5. Herhaal voor elk element apart
+```
+**Preventie:** Test alignment wijzigingen ALTIJD één voor één. Neem een screenshot na elke individuele wijziging om het effect te isoleren.
+
+---
+
 # Common Fixes (Quick Reference)
+
+## Spacing met spacer component
+
+Gebruik `<rr-spacer>` voor spacing waar Figma spacer elementen gebruikt:
+
+```html
+<!-- Vaste spacing (NxN vierkant) -->
+<rr-spacer size="32"></rr-spacer>
+
+<!-- Flexibele spacing (vult beschikbare ruimte) -->
+<rr-spacer size="flexible"></rr-spacer>
+
+<!-- Container-responsive spacing -->
+<rr-spacer size="m" container="l"></rr-spacer>
+
+<!-- Alleen horizontaal of verticaal -->
+<rr-spacer size="16" direction="horizontal"></rr-spacer>
+<rr-spacer size="16" direction="vertical"></rr-spacer>
+```
+
+**Beschikbare sizes:** 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 44, 48, 64, 80, 96, m, flexible
+
+**Container-responsive 'm' size:**
+- container="s" → 16x16px
+- container="m" of "l" → 24x24px
+
+---
 
 ## Padding klopt niet
 
