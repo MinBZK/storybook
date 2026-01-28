@@ -29,15 +29,16 @@ export class RRDivider extends LitElement {
     }
 
     /* Horizontal orientation (default) */
+    /* Note: Figma shows 1px thickness, token incorrectly says 2px */
     :host([orientation='horizontal']) .divider,
     :host(:not([orientation])) .divider {
       width: 100%;
-      height: var(--semantics-divider-thickness, 2px);
+      height: 1px;
     }
 
     /* Vertical orientation */
     :host([orientation='vertical']) .divider {
-      width: var(--semantics-divider-thickness, 2px);
+      width: 1px;
       height: 100%;
     }
 
