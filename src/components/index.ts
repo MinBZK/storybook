@@ -26,6 +26,7 @@ export { RRUtilityMenuBar } from './top-navigation-bar/rr-utility-menu-bar.ts';
 
 // Layout utility components
 export { RRSpacer } from './spacer/rr-spacer.ts';
+export { RRSpacerCell } from './spacer-cell/rr-spacer-cell.ts';
 export { RRDivider } from './divider/rr-divider.ts';
 export { RRPageStickyAreaBackground } from './page-sticky-area-background/rr-page-sticky-area-background.ts';
 

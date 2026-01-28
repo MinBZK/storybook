@@ -644,6 +644,25 @@
       "lastUpdated": "2026-01-28"
     },
     {
+      "name": "Spacer Cell",
+      "figma": {
+        "nodeId": "236-41413",
+        "nodeName": "spacer-cell",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41413"
+      },
+      "properties": {
+        "size": ["2", "4", "6", "8", "10", "12", "16", "20", "24", "28", "32", "40", "44", "48", "56", "64", "80", "96", "m", "flexible"],
+        "container": ["s", "m", "l", "all"]
+      },
+      "implementation": {
+        "tagName": "rr-spacer-cell",
+        "file": "src/components/spacer-cell/rr-spacer-cell.ts",
+        "className": "RRSpacerCell"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-28"
+    },
+    {
       "name": "Text Field",
       "figma": {
         "nodeId": "192-37504",
