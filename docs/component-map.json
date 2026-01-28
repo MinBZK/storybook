@@ -502,8 +502,16 @@
         "nodeName": "button-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41331"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "properties": {
+        "vertical-alignment": ["top", "center"]
+      },
+      "implementation": {
+        "tagName": "rr-button-cell",
+        "file": "src/components/button-cell/rr-button-cell.ts",
+        "className": "RRButtonCell"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-28"
     },
     {
       "name": "Custom Cell",
@@ -512,8 +520,16 @@
         "nodeName": "custom-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1151-6202"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "properties": {
+        "vertical-alignment": ["top", "center"]
+      },
+      "implementation": {
+        "tagName": "rr-custom-cell",
+        "file": "src/components/custom-cell/rr-custom-cell.ts",
+        "className": "RRCustomCell"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-28"
     },
     {
       "name": "Divider",
@@ -571,8 +587,17 @@
         "nodeName": "label-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1033-4433"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "properties": {
+        "color": ["default", "white"],
+        "horizontal-alignment": ["left", "right"]
+      },
+      "implementation": {
+        "tagName": "rr-label-cell",
+        "file": "src/components/label-cell/rr-label-cell.ts",
+        "className": "RRLabelCell"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-28"
     },
     {
       "name": "List",
@@ -581,18 +606,35 @@
         "nodeName": "list",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1044-2275"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "properties": {
+        "variant": ["simple", "box", "box-on-tint"]
+      },
+      "implementation": {
+        "tagName": "rr-list",
+        "file": "src/components/list/rr-list.ts",
+        "className": "RRList"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-28"
     },
     {
-      "name": "List: Item",
+      "name": "List Item",
       "figma": {
         "nodeId": "957-2279",
         "nodeName": "list__item",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=957-2279"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "properties": {
+        "size": ["sm", "md"],
+        "is-selected": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-list-item",
+        "file": "src/components/list/rr-list-item.ts",
+        "className": "RRListItem"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-28"
     },
     {
       "name": "Page: Sticky Area Background",
@@ -689,8 +731,19 @@
         "nodeName": "title-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41079"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "properties": {
+        "size": ["sm", "md"],
+        "color": ["default", "white"],
+        "horizontal-alignment": ["left", "right"],
+        "vertical-alignment": ["top", "center"]
+      },
+      "implementation": {
+        "tagName": "rr-title-cell",
+        "file": "src/components/title-cell/rr-title-cell.ts",
+        "className": "RRTitleCell"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-28"
     },
     {
       "name": "Top Title Bar",
