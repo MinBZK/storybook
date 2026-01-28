@@ -38,7 +38,7 @@ export class RRSwitch extends LitElement {
 
     :host([disabled]) {
       cursor: not-allowed;
-      opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+      opacity: calc(var(--primitives-opacity-disabled) / 100);
       pointer-events: none;
     }
 
@@ -49,10 +49,10 @@ export class RRSwitch extends LitElement {
       box-sizing: border-box;
       background-color: var(
         --rr-switch-background-color,
-        var(--_bg-color, var(--components-switch-background-color, #ffffff))
+        var(--_bg-color, var(--components-switch-background-color))
       );
-      border: var(--components-switch-border-thickness, 2px) solid
-        var(--_border-color, var(--components-switch-border-color, #475569));
+      border: var(--components-switch-border-thickness) solid
+        var(--_border-color, var(--components-switch-border-color));
       transition:
         background-color 0.2s ease,
         border-color 0.2s ease;
@@ -67,10 +67,10 @@ export class RRSwitch extends LitElement {
       box-sizing: border-box;
       background-color: var(
         --rr-switch-thumb-color,
-        var(--_thumb-bg, var(--components-switch-thumb-background-color, #ffffff))
+        var(--_thumb-bg, var(--components-switch-thumb-background-color))
       );
-      border: var(--components-switch-thumb-border-thickness, 2px) solid
-        var(--_thumb-border, var(--components-switch-thumb-border-color, #475569));
+      border: var(--components-switch-thumb-border-thickness) solid
+        var(--_thumb-border, var(--components-switch-thumb-border-color));
       border-radius: 50%;
       transition:
         transform 0.2s ease,
@@ -82,39 +82,39 @@ export class RRSwitch extends LitElement {
     /* Size: M (default) - Figma specs: 56x32px */
     :host([size='m']) .switch,
     :host(:not([size])) .switch {
-      width: calc(var(--semantics-controls-s-min-size, 32px) * 1.75);
-      height: var(--semantics-controls-s-min-size, 32px);
-      border-radius: calc(var(--semantics-controls-s-min-size, 32px) / 2);
+      width: calc(var(--semantics-controls-s-min-size) * 1.75);
+      height: var(--semantics-controls-s-min-size);
+      border-radius: calc(var(--semantics-controls-s-min-size) / 2);
       padding: 2px;
     }
 
     :host([size='m']) .switch__thumb,
     :host(:not([size])) .switch__thumb {
-      width: calc(var(--semantics-controls-s-min-size, 32px) - 8px);
-      height: calc(var(--semantics-controls-s-min-size, 32px) - 8px);
+      width: calc(var(--semantics-controls-s-min-size) - 8px);
+      height: calc(var(--semantics-controls-s-min-size) - 8px);
     }
 
     :host([size='m'][checked]) .switch__thumb,
     :host(:not([size])[checked]) .switch__thumb {
       transform: translateX(
-        calc((var(--semantics-controls-s-min-size, 32px) * 1.75) - var(--semantics-controls-s-min-size, 32px))
+        calc((var(--semantics-controls-s-min-size) * 1.75) - var(--semantics-controls-s-min-size))
       );
     }
 
     /* Checked state */
     :host([checked]) .switch {
-      --_bg-color: var(--components-switch-is-selected-background-color, #154273);
-      --_border-color: var(--components-switch-is-selected-background-color, #154273);
+      --_bg-color: var(--components-switch-is-selected-background-color);
+      --_border-color: var(--components-switch-is-selected-background-color);
     }
 
     :host([checked]) .switch__thumb {
-      --_thumb-bg: var(--components-switch-is-selected-thumb-background-color, #ffffff);
-      --_thumb-border: var(--components-switch-is-selected-background-color, #154273);
+      --_thumb-bg: var(--components-switch-is-selected-thumb-background-color);
+      --_thumb-border: var(--components-switch-is-selected-background-color);
     }
 
     /* Focus state */
     :host(:focus-visible) .switch {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
       outline-offset: 2px;
     }
 

@@ -60,7 +60,7 @@ export class RRButton extends LitElement {
       justify-content: center;
 
       /* Typography */
-      font-weight: var(--semantics-buttons-font-weight, 600);
+      font-weight: var(--semantics-buttons-font-weight);
       text-decoration: none;
 
       /* Animation */
@@ -78,126 +78,126 @@ export class RRButton extends LitElement {
 
     /* Size: XS */
     :host([size="xs"]) .button {
-      min-height: var(--semantics-controls-xs-min-size, 24px);
+      min-height: var(--semantics-controls-xs-min-size);
       /* Figma: padding 4px 6px (top/bottom 4, left/right 6) */
-      padding: var(--primitives-space-4, 4px) var(--primitives-space-6, 6px);
-      font: var(--components-button-xs-font, 550 14px/1 'RijksSansVF', system-ui);
-      border-radius: var(--semantics-controls-xs-corner-radius, 4px);
-      gap: var(--primitives-space-2, 2px);
+      padding: var(--primitives-space-4) var(--primitives-space-6);
+      font: var(--components-button-xs-font);
+      border-radius: var(--semantics-controls-xs-corner-radius);
+      gap: var(--primitives-space-2);
     }
 
     /* Size: S */
     :host([size="s"]) .button {
-      min-height: var(--semantics-controls-s-min-size, 32px);
+      min-height: var(--semantics-controls-s-min-size);
       /* Figma: padding 6px 8px (top/bottom 6, left/right 8) */
-      padding: var(--primitives-space-6, 6px) var(--primitives-space-8, 8px);
-      font: var(--components-button-s-font, 550 16px/1 'RijksSansVF', system-ui);
-      border-radius: var(--semantics-controls-s-corner-radius, 6px);
-      gap: var(--primitives-space-2, 2px);
+      padding: var(--primitives-space-6) var(--primitives-space-8);
+      font: var(--components-button-s-font);
+      border-radius: var(--semantics-controls-s-corner-radius);
+      gap: var(--primitives-space-2);
     }
 
     /* Size: M (default) */
     :host([size="m"]) .button,
     :host(:not([size])) .button {
-      min-height: var(--semantics-controls-m-min-size, 44px);
-      padding: var(--primitives-space-12, 12px);
-      font: var(--components-button-m-font, 550 18px/1 'RijksSansVF', system-ui);
-      border-radius: var(--semantics-controls-m-corner-radius, 8px);
-      gap: var(--primitives-space-4, 4px);
+      min-height: var(--semantics-controls-m-min-size);
+      padding: var(--primitives-space-12);
+      font: var(--components-button-m-font);
+      border-radius: var(--semantics-controls-m-corner-radius);
+      gap: var(--primitives-space-4);
     }
 
     /* Variant: accent-filled (default) */
     :host([variant="accent-filled"]) .button,
     :host(:not([variant])) .button {
-      --_bg-color: var(--semantics-buttons-accent-filled-background-color, #154273);
-      --_text-color: var(--semantics-buttons-accent-filled-color, #ffffff);
+      --_bg-color: var(--semantics-buttons-accent-filled-background-color);
+      --_text-color: var(--semantics-buttons-accent-filled-color);
     }
 
     :host([variant="accent-filled"]) .button:hover,
     :host(:not([variant])) .button:hover {
-      --_bg-color: var(--primitives-color-accent-75, #4F7196);
+      --_bg-color: var(--primitives-color-accent-75);
     }
 
     /* Variant: accent-outlined - uses outline instead of border to avoid layout impact */
     :host([variant="accent-outlined"]) .button {
       --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-accent-outlined-color, #154273);
+      --_text-color: var(--semantics-buttons-accent-outlined-color);
       /* Don't use border variables - use outline instead */
       --_border-color: transparent;
       --_border-width: 0;
-      outline: var(--semantics-buttons-accent-outlined-border-thickness, 2px) solid var(--semantics-buttons-accent-outlined-border-color, #154273);
+      outline: var(--semantics-buttons-accent-outlined-border-thickness) solid var(--semantics-buttons-accent-outlined-border-color);
       /* -1px offset = stroke centered on boundary (1px in, 1px out) matching Figma */
       outline-offset: -1px;
     }
 
     :host([variant="accent-outlined"]) .button:hover {
-      --_bg-color: var(--primitives-color-accent-15, #DCE3EA);
+      --_bg-color: var(--primitives-color-accent-15);
     }
 
     :host([variant="accent-outlined"]) .button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
       outline-offset: 2px;
     }
 
     /* Variant: accent-tinted */
     :host([variant="accent-tinted"]) .button {
-      --_bg-color: var(--semantics-buttons-accent-tinted-background-color, #dce3ea);
-      --_text-color: var(--semantics-buttons-accent-tinted-color, #154273);
+      --_bg-color: var(--semantics-buttons-accent-tinted-background-color);
+      --_text-color: var(--semantics-buttons-accent-tinted-color);
     }
 
     :host([variant="accent-tinted"]) .button:hover {
-      --_bg-color: var(--primitives-color-accent-30, #B9C7D5);
+      --_bg-color: var(--primitives-color-accent-30);
     }
 
     /* Variant: neutral-tinted */
     :host([variant="neutral-tinted"]) .button {
-      --_bg-color: var(--semantics-buttons-neutral-tinted-background-color, #d8dee7);
-      --_text-color: var(--semantics-buttons-neutral-tinted-color, #1f252d);
+      --_bg-color: var(--semantics-buttons-neutral-tinted-background-color);
+      --_text-color: var(--semantics-buttons-neutral-tinted-color);
     }
 
     :host([variant="neutral-tinted"]) .button:hover {
-      --_bg-color: var(--primitives-color-neutral-300, #cbd5e1);
+      --_bg-color: var(--primitives-color-neutral-300);
     }
 
     /* Variant: accent-transparent */
     :host([variant="accent-transparent"]) .button {
       --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-accent-transparent-color, #154273);
+      --_text-color: var(--semantics-buttons-accent-transparent-color);
     }
 
     :host([variant="accent-transparent"]) .button:hover {
-      --_bg-color: var(--primitives-color-accent-15, #DCE3EA);
+      --_bg-color: var(--primitives-color-accent-15);
     }
 
     /* Variant: neutral-transparent */
     :host([variant="neutral-transparent"]) .button {
       --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-neutral-transparent-color, #131920);
+      --_text-color: var(--semantics-buttons-neutral-tinted-color);
     }
 
     :host([variant="neutral-transparent"]) .button:hover {
-      --_bg-color: var(--primitives-color-neutral-200, #d8dee7);
+      --_bg-color: var(--primitives-color-neutral-200);
     }
 
     /* Variant: danger-tinted */
     :host([variant="danger-tinted"]) .button {
-      --_bg-color: var(--semantics-buttons-danger-tinted-background-color, #F9D7D4);
-      --_text-color: var(--semantics-buttons-danger-tinted-color, #B22419);
+      --_bg-color: var(--primitives-color-danger-15);
+      --_text-color: var(--primitives-color-danger-100);
     }
 
     :host([variant="danger-tinted"]) .button:hover {
-      --_bg-color: var(--primitives-color-danger-30, #f2bfbb);
+      --_bg-color: var(--primitives-color-danger-30);
     }
 
     /* Focus state */
     .button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
       outline-offset: 2px;
     }
 
     /* Disabled state */
     :host([disabled]) .button {
-      opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+      opacity: calc(var(--primitives-opacity-disabled) / 100);
       cursor: not-allowed;
       pointer-events: none;
     }
