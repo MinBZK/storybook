@@ -60,15 +60,15 @@ export class RRLabelCell extends LitElement {
       text-align: right;
     }
 
-    /* Color: Default */
+    /* Color: Default (#333A45 per Figma) */
     :host([color="default"]) .label-cell__text,
     :host(:not([color])) .label-cell__text {
-      color: var(--semantics-content-color, #333a45);
+      color: var(--components-label-cell-default-color, #333a45);
     }
 
-    /* Color: White */
+    /* Color: White (#FFFFFF per Figma) */
     :host([color="white"]) .label-cell__text {
-      color: var(--semantics-content-white-color, #ffffff);
+      color: var(--components-label-cell-white-color, #ffffff);
     }
 
     /* Accessibility: High Contrast Mode */

@@ -158,12 +158,12 @@ export const FigmaComparison = () => html`
           Figma list (1044:2275) component set:
           - Layout: column, gap: 16px, padding: 16px
           - Fixed width: 272px
-          - 3 variants: simple, box, box-on-tint
+          - Shows: selected item, box variant, box-on-tint variant
         -->
         <div style="width: 272px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
-          <!-- simple variant -->
+          <!-- selected item (matches Figma first row) -->
           <rr-list variant="simple">
-            <rr-list-item>
+            <rr-list-item selected>
               <div style="background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; padding: 2px 8px; text-align: center; color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; width: 100%; box-sizing: border-box;">SLOT</div>
             </rr-list-item>
           </rr-list>
