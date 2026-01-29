@@ -66,29 +66,32 @@ export const FigmaComparison = () => html`
   <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our custom cells (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
+        Individual variant comparisons (Code vs Figma). Use Toggle/Overlay/Side-by-Side to compare.
       </p>
-      <ftl-holster node="1151:6202" style="display: inline-block;">
-        <!--
-          Figma custom-cell (1151:6202) component set:
-          - Layout: column, gap: 16px, padding: 16px
-          - Fixed width: 88px
-          - 2 variants: vertical-alignment (top/center)
-          - Shows a pink SLOT placeholder with flexbox centering
-        -->
-        <div style="width: 88px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
+
+      <!-- vertical-alignment=top -->
+      <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+        <span style="font-size: 0.75rem; color: #64748b;">vertical-alignment: top</span>
+        <ftl-holster node="1151:6203" style="display: inline-block;">
           <rr-custom-cell vertical-alignment="top">
             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
               <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
             </div>
           </rr-custom-cell>
+        </ftl-holster>
+      </div>
+
+      <!-- vertical-alignment=center -->
+      <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+        <span style="font-size: 0.75rem; color: #64748b;">vertical-alignment: center</span>
+        <ftl-holster node="1151:6205" style="display: inline-block;">
           <rr-custom-cell vertical-alignment="center">
             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
               <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
             </div>
           </rr-custom-cell>
-        </div>
-      </ftl-holster>
+        </ftl-holster>
+      </div>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
         Keyboard: T (toggle) | O (overlay) | S (side-by-side)
       </p>

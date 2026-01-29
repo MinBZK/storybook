@@ -22,8 +22,7 @@ type HorizontalAlignment = 'left' | 'right';
 export class RRLabelCell extends LitElement {
   static override styles = css`
     :host {
-      display: flex;
-      flex-direction: column;
+      display: block;
       font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
     }
 
@@ -31,24 +30,13 @@ export class RRLabelCell extends LitElement {
       display: none;
     }
 
-    .label-cell__inner {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .label-cell__label {
-      display: flex;
-      flex-direction: column;
-    }
-
     .label-cell__text {
       display: block;
-      width: 100%;
       margin: 0;
+      padding: 0;
       font-weight: var(--primitives-font-weight-body-regular, 400);
       font-size: var(--primitives-font-size-body-m, 18px);
-      line-height: 1.25;
+      line-height: 22px; /* Figma: 1.25em = 22.5px, using 22px for tighter match */
     }
 
     /* Horizontal alignment: left (default) */
@@ -88,15 +76,7 @@ export class RRLabelCell extends LitElement {
   horizontalAlignment: HorizontalAlignment = 'left';
 
   override render() {
-    return html`
-      <div class="label-cell__inner">
-        <div class="label-cell__label" part="label">
-          <span class="label-cell__text">
-            <slot></slot>
-          </span>
-        </div>
-      </div>
-    `;
+    return html`<span class="label-cell__text" part="label"><slot></slot></span>`;
   }
 }
 
