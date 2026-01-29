@@ -43,6 +43,8 @@ export class RRLabelCell extends LitElement {
     }
 
     .label-cell__text {
+      display: block;
+      width: 100%;
       margin: 0;
       font-weight: var(--primitives-font-weight-body-regular, 400);
       font-size: var(--primitives-font-size-body-m, 18px);

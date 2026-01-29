@@ -158,28 +158,29 @@ export const FigmaComparison = () => html`
           Figma list (1044:2275) component set:
           - Layout: column, gap: 16px, padding: 16px
           - Fixed width: 272px
-          - Shows: selected item, box variant, box-on-tint variant
+          - Shows: simple (with top border), box variant, box-on-tint variant
+          - Figma shows slot directly in list__main without list-item wrapper
         -->
         <div style="width: 272px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
-          <!-- selected item (matches Figma first row) -->
+          <!-- simple variant - slot directly in list with top border -->
           <rr-list variant="simple">
-            <rr-list-item selected>
-              <div style="background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; padding: 2px 8px; text-align: center; color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; width: 100%; box-sizing: border-box;">SLOT</div>
-            </rr-list-item>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
+              <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
+            </div>
           </rr-list>
 
           <!-- box variant -->
           <rr-list variant="box">
-            <rr-list-item>
-              <div style="background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; padding: 2px 8px; text-align: center; color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; width: 100%; box-sizing: border-box;">SLOT</div>
-            </rr-list-item>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
+              <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
+            </div>
           </rr-list>
 
           <!-- box-on-tint variant -->
           <rr-list variant="box-on-tint">
-            <rr-list-item>
-              <div style="background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; padding: 2px 8px; text-align: center; color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; width: 100%; box-sizing: border-box;">SLOT</div>
-            </rr-list-item>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
+              <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
+            </div>
           </rr-list>
         </div>
       </ftl-holster>

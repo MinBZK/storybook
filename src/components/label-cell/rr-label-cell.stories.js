@@ -75,13 +75,11 @@ export const FigmaComparison = () => html`
           - 4 variants: 2 colors (default/white) x 2 h-align (left/right)
         -->
         <div style="width: 308px; background: #333a45; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
-          <!-- White color variants (visible on dark background) -->
-          <rr-label-cell color="white" horizontal-alignment="left">Label cell</rr-label-cell>
-          <rr-label-cell color="white" horizontal-alignment="right">Label cell</rr-label-cell>
-
-          <!-- Default color variants (darker text, less visible on dark bg) -->
+          <!-- Figma order: default/left, default/right, white/left, white/right -->
           <rr-label-cell color="default" horizontal-alignment="left">Label cell</rr-label-cell>
           <rr-label-cell color="default" horizontal-alignment="right">Label cell</rr-label-cell>
+          <rr-label-cell color="white" horizontal-alignment="left">Label cell</rr-label-cell>
+          <rr-label-cell color="white" horizontal-alignment="right">Label cell</rr-label-cell>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

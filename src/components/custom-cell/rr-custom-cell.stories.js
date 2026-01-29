@@ -74,14 +74,18 @@ export const FigmaComparison = () => html`
           - Layout: column, gap: 16px, padding: 16px
           - Fixed width: 88px
           - 2 variants: vertical-alignment (top/center)
-          - Shows a pink SLOT placeholder in Figma
+          - Shows a pink SLOT placeholder with flexbox centering
         -->
         <div style="width: 88px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
           <rr-custom-cell vertical-alignment="top">
-            <div style="background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; padding: 2px 8px; text-align: center; color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125;">SLOT</div>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
+              <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
+            </div>
           </rr-custom-cell>
           <rr-custom-cell vertical-alignment="center">
-            <div style="background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; padding: 2px 8px; text-align: center; color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125;">SLOT</div>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
+              <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
+            </div>
           </rr-custom-cell>
         </div>
       </ftl-holster>
