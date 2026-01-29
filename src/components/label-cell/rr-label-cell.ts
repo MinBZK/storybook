@@ -36,7 +36,7 @@ export class RRLabelCell extends LitElement {
       padding: 0;
       font-weight: var(--primitives-font-weight-body-regular, 400);
       font-size: var(--primitives-font-size-body-m, 18px);
-      line-height: 22px; /* Figma: 1.25em = 22.5px, using 22px for tighter match */
+      line-height: 1.25; /* Figma: 1.25em = 22.5px */
     }
 
     /* Horizontal alignment: left (default) */
