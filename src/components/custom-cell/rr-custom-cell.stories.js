@@ -73,11 +73,11 @@ export const FigmaComparison = () => html`
       <div style="display: flex; flex-direction: column; gap: 0.25rem;">
         <span style="font-size: 0.75rem; color: #64748b;">vertical-alignment: top</span>
         <ftl-holster node="1151:6203" style="display: inline-block;">
-          <rr-custom-cell vertical-alignment="top">
-            <div style="display: inline-flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
+          <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch;">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
               <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center;">SLOT</span>
             </div>
-          </rr-custom-cell>
+          </div>
         </ftl-holster>
       </div>
 
@@ -85,11 +85,11 @@ export const FigmaComparison = () => html`
       <div style="display: flex; flex-direction: column; gap: 0.25rem;">
         <span style="font-size: 0.75rem; color: #64748b;">vertical-alignment: center</span>
         <ftl-holster node="1151:6205" style="display: inline-block;">
-          <rr-custom-cell vertical-alignment="center">
-            <div style="display: inline-flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: stretch;">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
               <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center;">SLOT</span>
             </div>
-          </rr-custom-cell>
+          </div>
         </ftl-holster>
       </div>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
