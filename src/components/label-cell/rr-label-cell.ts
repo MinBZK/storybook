@@ -22,7 +22,10 @@ type HorizontalAlignment = 'left' | 'right';
 export class RRLabelCell extends LitElement {
   static override styles = css`
     :host {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Match Figma's label-cell__inner justifyContent: center */
+      height: 100%; /* Fill container height so centering works */
       font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
     }
 
