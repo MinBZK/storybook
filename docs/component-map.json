@@ -559,8 +559,13 @@
         "nodeName": "drop-down-field",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=358-717"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "implementation": {
+        "tagName": "rr-drop-down-field",
+        "file": "src/components/drop-down-field/rr-drop-down-field.ts",
+        "className": "RRDropDownField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Drop Down Field Cell",
@@ -569,8 +574,13 @@
         "nodeName": "drop-down-field-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1014-3843"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "implementation": {
+        "tagName": "rr-drop-down-field-cell",
+        "file": "src/components/drop-down-field-cell/rr-drop-down-field-cell.ts",
+        "className": "RRDropDownFieldCell"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Title Bar: Title Group",
@@ -714,8 +724,13 @@
         "nodeName": "text-field",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=192-37504"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "implementation": {
+        "tagName": "rr-text-field",
+        "file": "src/components/text-field/rr-text-field.ts",
+        "className": "RRTextField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Text Field Cell",
@@ -724,8 +739,13 @@
         "nodeName": "text-field-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1019-3941"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "implementation": {
+        "tagName": "rr-text-field-cell",
+        "file": "src/components/text-field-cell/rr-text-field-cell.ts",
+        "className": "RRTextFieldCell"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Title Cell",
@@ -805,7 +825,13 @@
         "nodeName": "checkbox-field",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241-2345"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-checkbox-field",
+        "file": "src/components/checkbox-field/rr-checkbox-field.ts",
+        "className": "RRCheckboxField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Combo Box Field",
@@ -814,7 +840,13 @@
         "nodeName": "combo-box-field",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=362-2435"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-combo-box-field",
+        "file": "src/components/combo-box-field/rr-combo-box-field.ts",
+        "className": "RRComboBoxField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Description Cell",
@@ -841,7 +873,13 @@
         "nodeName": "form-field",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=376-2395"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-form-field",
+        "file": "src/components/form-field/rr-form-field.ts",
+        "className": "RRFormField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Icon Button (standalone)",
@@ -874,7 +912,13 @@
         "nodeName": "input-field-button",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=272-353"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-input-field-button",
+        "file": "src/components/input-field-button/rr-input-field-button.ts",
+        "className": "RRInputFieldButton"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Menu Bar: Menu Item",
@@ -901,7 +945,13 @@
         "nodeName": "number-field",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=266-344"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-number-field",
+        "file": "src/components/number-field/rr-number-field.ts",
+        "className": "RRNumberField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Radio Button (standalone)",
@@ -927,7 +977,13 @@
         "nodeName": "radio-button-field",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241-2382"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-radio-button-field",
+        "file": "src/components/radio-button-field/rr-radio-button-field.ts",
+        "className": "RRRadioButtonField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Rich Text: Heading",
@@ -945,7 +1001,13 @@
         "nodeName": "search-field",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=243-3235"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-search-field",
+        "file": "src/components/search-field/rr-search-field.ts",
+        "className": "RRSearchField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Segmented Control",
@@ -1055,7 +1117,13 @@
         "nodeName": "switch-field",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=348-2635"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-switch-field",
+        "file": "src/components/switch-field/rr-switch-field.ts",
+        "className": "RRSwitchField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-01-30"
     },
     {
       "name": "Tab Bar: Item",
