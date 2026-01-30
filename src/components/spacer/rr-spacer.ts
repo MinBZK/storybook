@@ -54,108 +54,108 @@ export class RRSpacer extends LitElement {
 
     /* Fixed sizes using primitives tokens */
     :host([size='2']) {
-      width: var(--primitives-space-2, 2px);
-      height: var(--primitives-space-2, 2px);
+      width: var(--primitives-space-2);
+      height: var(--primitives-space-2);
     }
 
     :host([size='4']) {
-      width: var(--primitives-space-4, 4px);
-      height: var(--primitives-space-4, 4px);
+      width: var(--primitives-space-4);
+      height: var(--primitives-space-4);
     }
 
     :host([size='6']) {
-      width: var(--primitives-space-6, 6px);
-      height: var(--primitives-space-6, 6px);
+      width: var(--primitives-space-6);
+      height: var(--primitives-space-6);
     }
 
     :host([size='8']),
     :host(:not([size])) {
-      width: var(--primitives-space-8, 8px);
-      height: var(--primitives-space-8, 8px);
+      width: var(--primitives-space-8);
+      height: var(--primitives-space-8);
     }
 
     :host([size='10']) {
-      width: var(--primitives-space-10, 10px);
-      height: var(--primitives-space-10, 10px);
+      width: var(--primitives-space-10);
+      height: var(--primitives-space-10);
     }
 
     :host([size='12']) {
-      width: var(--primitives-space-12, 12px);
-      height: var(--primitives-space-12, 12px);
+      width: var(--primitives-space-12);
+      height: var(--primitives-space-12);
     }
 
     :host([size='16']) {
-      width: var(--primitives-space-16, 16px);
-      height: var(--primitives-space-16, 16px);
+      width: var(--primitives-space-16);
+      height: var(--primitives-space-16);
     }
 
     :host([size='20']) {
-      width: var(--primitives-space-20, 20px);
-      height: var(--primitives-space-20, 20px);
+      width: var(--primitives-space-20);
+      height: var(--primitives-space-20);
     }
 
     :host([size='24']) {
-      width: var(--primitives-space-24, 24px);
-      height: var(--primitives-space-24, 24px);
+      width: var(--primitives-space-24);
+      height: var(--primitives-space-24);
     }
 
     :host([size='28']) {
-      width: var(--primitives-space-28, 28px);
-      height: var(--primitives-space-28, 28px);
+      width: var(--primitives-space-28);
+      height: var(--primitives-space-28);
     }
 
     :host([size='32']) {
-      width: var(--primitives-space-32, 32px);
-      height: var(--primitives-space-32, 32px);
+      width: var(--primitives-space-32);
+      height: var(--primitives-space-32);
     }
 
     :host([size='40']) {
-      width: var(--primitives-space-40, 40px);
-      height: var(--primitives-space-40, 40px);
+      width: var(--primitives-space-40);
+      height: var(--primitives-space-40);
     }
 
     :host([size='44']) {
-      width: var(--primitives-space-44, 44px);
-      height: var(--primitives-space-44, 44px);
+      width: var(--primitives-space-44);
+      height: var(--primitives-space-44);
     }
 
     :host([size='48']) {
-      width: var(--primitives-space-48, 48px);
-      height: var(--primitives-space-48, 48px);
+      width: var(--primitives-space-48);
+      height: var(--primitives-space-48);
     }
 
     :host([size='56']) {
-      width: var(--primitives-space-56, 56px);
-      height: var(--primitives-space-56, 56px);
+      width: var(--primitives-space-56);
+      height: var(--primitives-space-56);
     }
 
     :host([size='64']) {
-      width: var(--primitives-space-64, 64px);
-      height: var(--primitives-space-64, 64px);
+      width: var(--primitives-space-64);
+      height: var(--primitives-space-64);
     }
 
     :host([size='80']) {
-      width: var(--primitives-space-80, 80px);
-      height: var(--primitives-space-80, 80px);
+      width: var(--primitives-space-80);
+      height: var(--primitives-space-80);
     }
 
     :host([size='96']) {
-      width: var(--primitives-space-96, 96px);
-      height: var(--primitives-space-96, 96px);
+      width: var(--primitives-space-96);
+      height: var(--primitives-space-96);
     }
 
     /* Container-responsive 'm' size */
     :host([size='m']),
     :host([size='m'][container='s']),
     :host([size='m'][container='all']) {
-      width: var(--primitives-space-16, 16px);
-      height: var(--primitives-space-16, 16px);
+      width: var(--primitives-space-16);
+      height: var(--primitives-space-16);
     }
 
     :host([size='m'][container='m']),
     :host([size='m'][container='l']) {
-      width: var(--primitives-space-24, 24px);
-      height: var(--primitives-space-24, 24px);
+      width: var(--primitives-space-24);
+      height: var(--primitives-space-24);
     }
 
     /* Direction modifiers */

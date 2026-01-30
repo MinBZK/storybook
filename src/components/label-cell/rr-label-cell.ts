@@ -37,8 +37,8 @@ export class RRLabelCell extends LitElement {
       display: block;
       margin: 0;
       padding: 0;
-      font-weight: var(--primitives-font-weight-body-regular, 400);
-      font-size: var(--primitives-font-size-body-m, 18px);
+      font-weight: var(--primitives-font-weight-body-regular);
+      font-size: var(--primitives-font-size-body-m);
       line-height: 1.25; /* Figma: 1.25em = 22.5px */
     }
 
@@ -56,12 +56,12 @@ export class RRLabelCell extends LitElement {
     /* Color: Default (#333A45 per Figma) */
     :host([color="default"]) .label-cell__text,
     :host(:not([color])) .label-cell__text {
-      color: var(--components-label-cell-default-color, #333a45);
+      color: var(--components-label-cell-default-color);
     }
 
     /* Color: White (#FFFFFF per Figma) */
     :host([color="white"]) .label-cell__text {
-      color: var(--components-label-cell-white-color, #ffffff);
+      color: var(--components-label-cell-white-color);
     }
 
     /* Accessibility: High Contrast Mode */

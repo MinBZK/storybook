@@ -21,7 +21,7 @@ export class RRPageStickyAreaBackground extends LitElement {
       display: block;
       position: relative;
       width: 100%;
-      height: var(--components-page-sticky-area-height, 80px);
+      height: var(--components-page-sticky-area-height);
       overflow: visible;
     }
 

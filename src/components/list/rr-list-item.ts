@@ -46,7 +46,7 @@ export class RRListItem extends LitElement {
       top: 50%;
       transform: translateY(-50%);
       height: 48px; /* MD size */
-      background-color: var(--semantics-buttons-accent-filled-background-color, #274e81);
+      background-color: var(--semantics-buttons-accent-filled-background-color);
       border-radius: 8px;
       z-index: 0;
     }
@@ -114,7 +114,7 @@ export class RRListItem extends LitElement {
       left: 0;
       right: 0;
       height: 1px;
-      background-color: var(--semantics-divider-color, #d9dee4);
+      background-color: var(--semantics-divider-color);
     }
 
     /* Hide divider when selected */
@@ -137,7 +137,7 @@ export class RRListItem extends LitElement {
 
     /* Accessibility: focus state */
     :host(:focus-visible) {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
       outline-offset: 2px;
     }
   `;
