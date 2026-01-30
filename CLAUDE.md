@@ -42,6 +42,12 @@ padding: 8px 8px 6px 8px;  /* NOT symmetric! */
 
 **Disabled Opacity:** Always use `calc(var(--primitives-opacity-disabled, 38) / 100)` - the token is a percentage.
 
+**Asymmetric Figma Layouts:** Figma uses padding + spacer elements that can create asymmetric distances (e.g., 48px left vs 40px right). Check both sides separately and use margin compensation if needed.
+
+**Always Check Figma Gap:** Don't assume flex containers have gaps. Figma's layout panel shows gap explicitly - if not shown, gap is 0.
+
+**Subpixel Font Drift:** Expect ~0.4px cumulative drift per text element due to font rendering differences. This is inherent and not fixable.
+
 ## Token Hierarchy
 
 ```
@@ -92,6 +98,7 @@ export const FigmaComparison = () => html`
 | Toggle Button | 309:3542 | Implemented |
 | Icon Button | 240:1391 | Implemented |
 | Menu Bar / Top Nav | 48:2135 | Implemented |
+| Spacer | 48:2234 | Implemented |
 
 See `docs/component-map.json` for full details.
 
