@@ -37,19 +37,19 @@ export class RRList extends LitElement {
     /* Variant: simple (default) - just a vertical stack with top border */
     :host([variant="simple"]) .list__main,
     :host(:not([variant])) .list__main {
-      border-top: 1px solid var(--semantics-divider-color, #d9dee4);
+      border-top: 1px solid var(--semantics-divider-color);
     }
 
     /* Variant: box - rounded background with padding */
     :host([variant="box"]) .list__main {
-      background-color: var(--semantics-views-tinted-background-color, #f5f6f9);
+      background-color: var(--semantics-views-tinted-background-color);
       border-radius: 12px;
       gap: 8px;
     }
 
     /* Variant: box-on-tint - white background on tinted surface */
     :host([variant="box-on-tint"]) .list__main {
-      background-color: var(--semantics-views-background-color, #ffffff);
+      background-color: var(--semantics-views-background-color);
       border-radius: 12px;
       gap: 8px;
     }

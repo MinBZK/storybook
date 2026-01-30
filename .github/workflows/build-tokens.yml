@@ -36,6 +36,9 @@ jobs:
       - name: Build tokens
         run: npm run build:tokens
 
+      - name: Validate CSS variables
+        run: npm run validate:tokens
+
       - name: Upload token artifacts
         uses: actions/upload-artifact@v4
         with:

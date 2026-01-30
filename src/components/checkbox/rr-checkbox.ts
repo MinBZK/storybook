@@ -59,11 +59,11 @@ export class RRCheckbox extends LitElement {
       /* Use outline for centered stroke (Figma: stroke inside/centered) */
       background-color: var(
         --rr-checkbox-background-color,
-        var(--_bg-color, var(--components-checkbox-background-color, #ffffff))
+        var(--_bg-color, var(--components-checkbox-background-color))
       );
-      outline: var(--components-checkbox-border-thickness, 2px) solid
-        var(--rr-checkbox-border-color, var(--_border-color, var(--components-checkbox-border-color, #475569)));
-      outline-offset: calc(var(--components-checkbox-border-thickness, 2px) * -1);
+      outline: var(--components-checkbox-border-thickness) solid
+        var(--rr-checkbox-border-color, var(--_border-color, var(--components-checkbox-border-color)));
+      outline-offset: calc(var(--components-checkbox-border-thickness) * -1);
 
       transition:
         background-color 0.15s ease,
@@ -73,14 +73,14 @@ export class RRCheckbox extends LitElement {
     /* Checkmark icon */
     .icon {
       display: none;
-      color: var(--components-checkbox-is-selected-icon-color, #ffffff);
+      color: var(--components-checkbox-is-selected-icon-color);
     }
 
     /* Size: XS (24px) */
     :host([size='xs']) .box {
-      width: var(--semantics-controls-xs-min-size, 24px);
-      height: var(--semantics-controls-xs-min-size, 24px);
-      border-radius: var(--semantics-controls-xs-corner-radius, 3px);
+      width: var(--semantics-controls-xs-min-size);
+      height: var(--semantics-controls-xs-min-size);
+      border-radius: var(--semantics-controls-xs-corner-radius);
     }
 
     :host([size='xs']) .icon {
@@ -90,9 +90,9 @@ export class RRCheckbox extends LitElement {
 
     /* Size: S (32px) */
     :host([size='s']) .box {
-      width: var(--semantics-controls-s-min-size, 32px);
-      height: var(--semantics-controls-s-min-size, 32px);
-      border-radius: var(--semantics-controls-s-corner-radius, 5px);
+      width: var(--semantics-controls-s-min-size);
+      height: var(--semantics-controls-s-min-size);
+      border-radius: var(--semantics-controls-s-corner-radius);
     }
 
     :host([size='s']) .icon {
@@ -103,9 +103,9 @@ export class RRCheckbox extends LitElement {
     /* Size: M (44px - default) */
     :host([size='m']) .box,
     :host(:not([size])) .box {
-      width: var(--semantics-controls-m-min-size, 44px);
-      height: var(--semantics-controls-m-min-size, 44px);
-      border-radius: var(--semantics-controls-m-corner-radius, 7px);
+      width: var(--semantics-controls-m-min-size);
+      height: var(--semantics-controls-m-min-size);
+      border-radius: var(--semantics-controls-m-corner-radius);
     }
 
     :host([size='m']) .icon,
@@ -116,8 +116,8 @@ export class RRCheckbox extends LitElement {
 
     /* Checked state */
     :host([checked]) .box {
-      --_bg-color: var(--components-checkbox-is-selected-background-color, #154273);
-      --_border-color: var(--components-checkbox-is-selected-background-color, #154273);
+      --_bg-color: var(--components-checkbox-is-selected-background-color);
+      --_border-color: var(--components-checkbox-is-selected-background-color);
     }
 
     :host([checked]) .icon--check {
@@ -126,8 +126,8 @@ export class RRCheckbox extends LitElement {
 
     /* Indeterminate state - takes precedence over checked */
     :host([indeterminate]) .box {
-      --_bg-color: var(--components-checkbox-is-selected-background-color, #154273);
-      --_border-color: var(--components-checkbox-is-selected-background-color, #154273);
+      --_bg-color: var(--components-checkbox-is-selected-background-color);
+      --_border-color: var(--components-checkbox-is-selected-background-color);
     }
 
     :host([indeterminate]) .icon--indeterminate {
@@ -140,13 +140,13 @@ export class RRCheckbox extends LitElement {
 
     /* Hover state */
     :host(:hover:not([disabled])) .box {
-      --_border-color: var(--primitives-color-accent-75, #4f7196);
+      --_border-color: var(--primitives-color-accent-75);
     }
 
     :host([checked]:hover:not([disabled])) .box,
     :host([indeterminate]:hover:not([disabled])) .box {
-      --_bg-color: var(--primitives-color-accent-75, #4f7196);
-      --_border-color: var(--primitives-color-accent-75, #4f7196);
+      --_bg-color: var(--primitives-color-accent-75);
+      --_border-color: var(--primitives-color-accent-75);
     }
 
     /* Focus state */
@@ -155,13 +155,13 @@ export class RRCheckbox extends LitElement {
     }
 
     :host(:focus-visible) .box {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #000000);
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
       outline-offset: 2px;
     }
 
     /* Disabled state */
     :host([disabled]) {
-      opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+      opacity: calc(var(--primitives-opacity-disabled) / 100);
       pointer-events: none;
     }
 

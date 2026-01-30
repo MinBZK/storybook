@@ -66,11 +66,11 @@ export class RRRadio extends LitElement {
       /* Use outline for centered stroke (Figma: stroke inside/centered) */
       background-color: var(
         --rr-radio-background-color,
-        var(--_bg-color, var(--components-radio-button-background-color, #ffffff))
+        var(--_bg-color, var(--components-radio-button-background-color))
       );
-      outline: var(--components-radio-button-border-thickness, 2px) solid
-        var(--rr-radio-border-color, var(--_border-color, var(--components-radio-button-border-color, #516279)));
-      outline-offset: calc(var(--components-radio-button-border-thickness, 2px) * -1);
+      outline: var(--components-radio-button-border-thickness) solid
+        var(--rr-radio-border-color, var(--_border-color, var(--components-radio-button-border-color)));
+      outline-offset: calc(var(--components-radio-button-border-thickness) * -1);
 
       /* Transition */
       transition:
@@ -80,8 +80,8 @@ export class RRRadio extends LitElement {
 
     /* Size: XS (24px) */
     :host([size='xs']) .radio {
-      width: var(--semantics-controls-xs-min-size, 24px);
-      height: var(--semantics-controls-xs-min-size, 24px);
+      width: var(--semantics-controls-xs-min-size);
+      height: var(--semantics-controls-xs-min-size);
     }
 
     :host([size='xs']) .radio__inner {
@@ -92,8 +92,8 @@ export class RRRadio extends LitElement {
 
     /* Size: S (32px) */
     :host([size='s']) .radio {
-      width: var(--semantics-controls-s-min-size, 32px);
-      height: var(--semantics-controls-s-min-size, 32px);
+      width: var(--semantics-controls-s-min-size);
+      height: var(--semantics-controls-s-min-size);
     }
 
     :host([size='s']) .radio__inner {
@@ -105,8 +105,8 @@ export class RRRadio extends LitElement {
     /* Size: M (44px - default) */
     :host([size='m']) .radio,
     :host(:not([size])) .radio {
-      width: var(--semantics-controls-m-min-size, 44px);
-      height: var(--semantics-controls-m-min-size, 44px);
+      width: var(--semantics-controls-m-min-size);
+      height: var(--semantics-controls-m-min-size);
     }
 
     :host([size='m']) .radio__inner,
@@ -120,7 +120,7 @@ export class RRRadio extends LitElement {
     .radio__inner {
       border-radius: 50%;
       background-color: transparent;
-      border: 2px solid var(--components-radio-button-is-selected-inner-shape-border-color, #ffffff);
+      border: 2px solid var(--components-radio-button-is-selected-inner-shape-border-color);
       opacity: 0;
       transform: scale(0);
       transition:
@@ -130,8 +130,8 @@ export class RRRadio extends LitElement {
 
     /* Checked state */
     :host([checked]) .radio {
-      --_bg-color: var(--components-radio-button-is-selected-background-color, #274E81);
-      --_border-color: var(--components-radio-button-is-selected-background-color, #274E81);
+      --_bg-color: var(--components-radio-button-is-selected-background-color);
+      --_border-color: var(--components-radio-button-is-selected-background-color);
     }
 
     :host([checked]) .radio__inner {
@@ -141,12 +141,12 @@ export class RRRadio extends LitElement {
 
     /* Hover state (only when not disabled) */
     :host(:hover:not([disabled])) .radio {
-      --_border-color: var(--primitives-color-accent-75, #4f7196);
+      --_border-color: var(--primitives-color-accent-75);
     }
 
     :host([checked]:hover:not([disabled])) .radio {
-      --_bg-color: var(--primitives-color-accent-75, #4f7196);
-      --_border-color: var(--primitives-color-accent-75, #4f7196);
+      --_bg-color: var(--primitives-color-accent-75);
+      --_border-color: var(--primitives-color-accent-75);
     }
 
     /* Focus state */
@@ -155,13 +155,13 @@ export class RRRadio extends LitElement {
     }
 
     :host(:focus-visible) .radio {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #000000);
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
       outline-offset: 2px;
     }
 
     /* Disabled state */
     :host([disabled]) {
-      opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+      opacity: calc(var(--primitives-opacity-disabled) / 100);
       pointer-events: none;
     }
 
