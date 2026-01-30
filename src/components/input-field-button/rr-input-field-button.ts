@@ -36,7 +36,6 @@ export class RRInputFieldButton extends LitElement {
       /* Reset */
       appearance: none;
       border: none;
-      background: transparent;
       margin: 0;
       padding: 0;
       cursor: pointer;
@@ -49,19 +48,22 @@ export class RRInputFieldButton extends LitElement {
       height: var(--semantics-controls-s-min-size);
       border-radius: var(--semantics-controls-s-corner-radius);
 
+      /* Background - neutral tinted style */
+      background-color: var(--primitives-color-neutral-200);
+
       /* Icon color */
-      color: var(--primitives-color-text);
+      color: var(--semantics-buttons-neutral-tinted-color);
 
       /* Transition */
       transition: background-color 0.15s ease;
     }
 
     .input-field-button:hover:not(:disabled) {
-      background-color: var(--primitives-color-neutral-200);
+      background-color: var(--primitives-color-neutral-300);
     }
 
     .input-field-button:active:not(:disabled) {
-      background-color: var(--primitives-color-neutral-300);
+      background-color: var(--primitives-color-neutral-400);
     }
 
     .input-field-button:focus-visible {

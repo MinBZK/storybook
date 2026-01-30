@@ -132,7 +132,7 @@ export class RRDropDownField extends LitElement {
       display: flex;
       align-items: center;
       flex: 1;
-      color: var(--primitives-color-text);
+      color: var(--semantics-content-color);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -162,7 +162,7 @@ export class RRDropDownField extends LitElement {
       opacity: 0;
 
       /* Typography */
-      color: var(--primitives-color-text);
+      color: var(--semantics-content-color);
     }
 
     .drop-down-field__input-shade {
@@ -179,7 +179,7 @@ export class RRDropDownField extends LitElement {
       justify-content: center;
       align-items: center;
       flex-shrink: 0;
-      color: var(--primitives-color-text);
+      color: var(--semantics-content-color);
     }
 
     /* Focus state */

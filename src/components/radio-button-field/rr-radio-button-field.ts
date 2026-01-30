@@ -55,7 +55,7 @@ export class RRRadioButtonField extends LitElement {
       font-weight: var(--primitives-font-weight-body-regular);
       font-size: var(--primitives-font-size-body-m);
       line-height: 1.25em;
-      color: var(--primitives-color-text);
+      color: var(--semantics-content-color);
       padding-top: 2px; /* Align with radio center */
     }
 

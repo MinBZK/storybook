@@ -39,7 +39,7 @@ export class RRSwitchField extends LitElement {
       flex-direction: row;
       align-items: flex-start;
       gap: var(--primitives-space-8);
-      padding: 10px 0;
+      padding: 6px 0;
       cursor: pointer;
     }
 
@@ -55,8 +55,8 @@ export class RRSwitchField extends LitElement {
       font-weight: var(--primitives-font-weight-body-regular);
       font-size: var(--primitives-font-size-body-m);
       line-height: 1.25em;
-      color: var(--primitives-color-text);
-      padding-top: 2px; /* Align with switch center */
+      color: var(--semantics-content-body-color, #333A45);
+      padding: 4px 0;
     }
 
     /* Disabled state */
@@ -114,7 +114,7 @@ export class RRSwitchField extends LitElement {
         <div class="switch-field__control">
           <rr-switch
             part="switch"
-            size="xs"
+            size="sm"
             ?checked=${this.checked}
             ?disabled=${this.disabled}
             value=${this.value}

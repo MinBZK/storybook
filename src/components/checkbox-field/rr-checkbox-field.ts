@@ -57,7 +57,6 @@ export class RRCheckboxField extends LitElement {
       font-size: var(--primitives-font-size-body-m);
       line-height: 1.25em;
       color: var(--primitives-color-text);
-      padding-top: 2px; /* Align with checkbox center */
     }
 
     /* Disabled state */

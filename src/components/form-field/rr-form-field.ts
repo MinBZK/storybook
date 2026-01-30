@@ -35,16 +35,16 @@ export class RRFormField extends LitElement {
     .form-field {
       display: flex;
       flex-direction: column;
-      gap: var(--primitives-space-4);
+      gap: var(--primitives-space-2);
     }
 
     .form-field__label {
       display: flex;
       align-items: baseline;
-      gap: var(--primitives-space-4);
+      gap: var(--primitives-space-8);
       font-weight: var(--primitives-font-weight-body-regular);
       font-size: var(--primitives-font-size-body-m);
-      line-height: 1.25em;
+      line-height: 1.125em;
       color: var(--primitives-color-text);
     }
 

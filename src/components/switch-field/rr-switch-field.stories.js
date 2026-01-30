@@ -57,7 +57,7 @@ const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
 export const FigmaComparison = () => html`
   <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
     <ftl-holster node="348:2635" style="display: inline-block;">
-      <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 363px; background: #ffffff;">
+      <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 395px; background: #ffffff;">
         <rr-switch-field>Switch field</rr-switch-field>
         <rr-switch-field checked>Switch field</rr-switch-field>
       </div>

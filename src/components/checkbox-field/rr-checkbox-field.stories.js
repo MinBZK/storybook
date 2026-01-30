@@ -64,7 +64,7 @@ const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
 export const FigmaComparison = () => html`
   <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
     <ftl-holster node="241:2345" style="display: inline-block;">
-      <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 363px; background: #ffffff;">
+      <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 395px; background: #ffffff;">
         <rr-checkbox-field>Checkbox field</rr-checkbox-field>
         <rr-checkbox-field checked>Checkbox field</rr-checkbox-field>
         <rr-checkbox-field indeterminate>Checkbox field</rr-checkbox-field>
