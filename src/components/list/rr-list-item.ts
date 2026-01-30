@@ -31,6 +31,7 @@ export class RRListItem extends LitElement {
       flex-direction: row;
       align-items: center;
       position: relative;
+      --_list-item-divider-display: block;
     }
 
     :host([hidden]) {
@@ -108,7 +109,7 @@ export class RRListItem extends LitElement {
 
     /* Divider - appears at bottom of main area */
     .list-item__divider {
-      display: var(--_list-item-divider-display, block);
+      display: var(--_list-item-divider-display);
       position: absolute;
       bottom: 0;
       left: 0;
