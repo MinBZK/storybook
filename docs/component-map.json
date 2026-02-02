@@ -784,11 +784,19 @@
     {
       "name": "Checkbox (standalone)",
       "figma": {
-        "nodeId": "204-38347",
+        "nodeId": "204:38347",
         "nodeName": "checkbox",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=204-38347"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=204-38347",
+        "note": "Standalone checkbox is implemented via rr-checkbox with size='xs' (24x24px)"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-checkbox",
+        "file": "src/components/checkbox/rr-checkbox.ts",
+        "className": "RRCheckbox",
+        "usage": "<rr-checkbox size=\"xs\"></rr-checkbox>"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Checkbox Field",
@@ -838,11 +846,17 @@
     {
       "name": "Icon Button (standalone)",
       "figma": {
-        "nodeId": "31-75",
+        "nodeId": "31:75",
         "nodeName": "icon-button",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=31-75"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-icon-button",
+        "file": "src/components/icon-button/rr-icon-button.ts",
+        "className": "RRIconButton"
+      },
+      "status": "implemented",
+      "lastUpdated": "2025-02-02"
     },
     {
       "name": "Icon Cell",
@@ -892,11 +906,19 @@
     {
       "name": "Radio Button (standalone)",
       "figma": {
-        "nodeId": "219-38433",
+        "nodeId": "219:38433",
         "nodeName": "radio-button",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=219-38433"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=219-38433",
+        "note": "Standalone radio button is implemented via rr-radio with size='xs' (24x24px)"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-radio",
+        "file": "src/components/radio/rr-radio.ts",
+        "className": "RRRadio",
+        "usage": "<rr-radio size=\"xs\"></rr-radio>"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Radio Button Field",
@@ -928,20 +950,41 @@
     {
       "name": "Segmented Control",
       "figma": {
-        "nodeId": "336-2899",
+        "nodeId": "336:2899",
         "nodeName": "segmented-control",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=336-2899"
       },
-      "status": "not-implemented"
+      "properties": {
+        "size": ["s", "m"],
+        "content-type": ["text", "icons"]
+      },
+      "implementation": {
+        "tagName": "rr-segmented-control",
+        "file": "src/components/segmented-control/rr-segmented-control.ts",
+        "className": "RRSegmentedControl"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Segmented Control: Item",
       "figma": {
-        "nodeId": "262-3512",
+        "nodeId": "262:3512",
         "nodeName": "segmented-control__item",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=262-3512"
       },
-      "status": "not-implemented"
+      "properties": {
+        "size": ["s", "m"],
+        "is-selected": "boolean",
+        "content-type": ["text", "icon"]
+      },
+      "implementation": {
+        "tagName": "rr-segmented-control-item",
+        "file": "src/components/segmented-control/rr-segmented-control-item.ts",
+        "className": "RRSegmentedControlItem"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Split View: Divider",
@@ -955,11 +998,25 @@
     {
       "name": "Stepper",
       "figma": {
-        "nodeId": "236-39011",
+        "nodeId": "236:39011",
         "nodeName": "stepper",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-39011"
       },
-      "status": "not-implemented"
+      "properties": {
+        "size": ["s", "m"],
+        "value": "number",
+        "min": "number",
+        "max": "number",
+        "step": "number",
+        "disabled": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-stepper",
+        "file": "src/components/stepper/rr-stepper.ts",
+        "className": "RRStepper"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Stepper Cell",
@@ -973,11 +1030,23 @@
     {
       "name": "Switch (standalone)",
       "figma": {
-        "nodeId": "232-38506",
+        "nodeId": "232:38506",
         "nodeName": "switch",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=232-38506"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=232-38506",
+        "note": "Standalone switch with sizes 's' (44x24) and 'm' (56x32)"
       },
-      "status": "not-implemented"
+      "properties": {
+        "size": ["s", "m"],
+        "is-selected": "boolean",
+        "is-disabled": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-switch",
+        "file": "src/components/switch/rr-switch.ts",
+        "className": "RRSwitch"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Switch Field",
@@ -1012,11 +1081,21 @@
     {
       "name": "Token",
       "figma": {
-        "nodeId": "354-3680",
+        "nodeId": "354:3680",
         "nodeName": "token",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=354-3680"
       },
-      "status": "not-implemented"
+      "properties": {
+        "control": ["none", "dismiss", "picker"],
+        "menu-is-open": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-token",
+        "file": "src/components/token/rr-token.ts",
+        "className": "RRToken"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Top Navigation Bar: Logo",

@@ -4,7 +4,7 @@
  * @element rr-switch
  * @attr {boolean} checked - Whether the switch is on/off
  * @attr {boolean} disabled - Disabled state
- * @attr {string} size - Switch size: 'm' (only one size in Figma design)
+ * @attr {string} size - Switch size: 's' | 'm' (default: 'm')
  *
  * @fires change - When the switch state changes
  *
@@ -18,7 +18,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 'm';
+type Size = 's' | 'm';
 
 @customElement('rr-switch')
 export class RRSwitch extends LitElement {
@@ -77,6 +77,24 @@ export class RRSwitch extends LitElement {
         background-color 0.2s ease,
         border-color 0.2s ease;
       will-change: transform;
+    }
+
+    /* Size: S - Figma specs: 44x24px */
+    :host([size='s']) .switch {
+      width: 44px;
+      height: 24px;
+      border-radius: 12px;
+      padding: 2px;
+    }
+
+    :host([size='s']) .switch__thumb {
+      width: 16px;
+      height: 16px;
+    }
+
+    :host([size='s'][checked]) .switch__thumb {
+      /* Move thumb to right: track width (44) - thumb width (16) - padding (4) - border (4) = 20px */
+      transform: translateX(20px);
     }
 
     /* Size: M (default) - Figma specs: 56x32px */
