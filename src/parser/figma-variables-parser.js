@@ -15,8 +15,11 @@ export const figmaVariablesParser = {
 
     // Process all collections
     for (const collection of figmaTokens.collections || []) {
-      for (const mode of collection.modes || []) {
-        for (const variable of mode.variables || []) {
+      // Only use Light mode - find mode with "Light" in name, or use first mode as fallback
+      const lightMode = collection.modes?.find(m => m.name.includes('Light')) || collection.modes?.[0];
+      if (!lightMode) continue;
+
+      for (const variable of lightMode.variables || []) {
           const pathParts = variable.name.split('/');
           let current = result;
 
@@ -45,7 +48,6 @@ export const figmaVariablesParser = {
 
           current[tokenName] = token;
         }
-      }
     }
 
     return result;
