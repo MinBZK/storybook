@@ -37,7 +37,6 @@ export class RRSwitchField extends LitElement {
     .switch-field {
       display: flex;
       flex-direction: row;
-      align-items: flex-start;
       gap: var(--primitives-space-8);
       padding: 6px 0;
       cursor: pointer;
@@ -45,12 +44,16 @@ export class RRSwitchField extends LitElement {
 
     .switch-field__control {
       display: flex;
+      justify-content: flex-end;
       align-items: center;
+      align-self: stretch;
       flex-shrink: 0;
     }
 
     .switch-field__label {
       display: flex;
+      align-items: stretch;
+      align-self: stretch;
       flex: 1;
       font-weight: var(--primitives-font-weight-body-regular);
       font-size: var(--primitives-font-size-100);
