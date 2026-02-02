@@ -57,7 +57,7 @@ export class RRTextFieldCell extends LitElement {
     .text-field-cell__feedback {
       display: block;
       font-weight: var(--primitives-font-weight-body-regular);
-      font-size: var(--primitives-font-size-body-s);
+      font-size: var(--primitives-font-size-90);
       line-height: 1.25em;
       color: var(--semantics-input-fields-is-invalid-icon-color);
     }

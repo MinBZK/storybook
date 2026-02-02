@@ -54,9 +54,9 @@ export class RRCheckboxField extends LitElement {
       display: flex;
       flex: 1;
       font-weight: var(--primitives-font-weight-body-regular);
-      font-size: var(--primitives-font-size-body-m);
+      font-size: var(--primitives-font-size-100);
       line-height: 1.25em;
-      color: var(--primitives-color-text);
+      color: var(--semantics-content-color);
     }
 
     /* Disabled state */

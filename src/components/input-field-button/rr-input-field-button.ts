@@ -44,15 +44,15 @@ export class RRInputFieldButton extends LitElement {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: var(--semantics-controls-s-min-size);
-      height: var(--semantics-controls-s-min-size);
-      border-radius: var(--semantics-controls-s-corner-radius);
+      width: var(--semantics-controls-sm-min-size);
+      height: var(--semantics-controls-sm-min-size);
+      border-radius: var(--semantics-controls-sm-corner-radius);
 
       /* Background - neutral tinted style */
       background-color: var(--primitives-color-neutral-200);
 
       /* Icon color */
-      color: var(--semantics-buttons-neutral-tinted-color);
+      color: var(--semantics-buttons-neutral-tinted-content-color);
 
       /* Transition */
       transition: background-color 0.15s ease;
@@ -67,7 +67,7 @@ export class RRInputFieldButton extends LitElement {
     }
 
     .input-field-button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 
@@ -84,7 +84,7 @@ export class RRInputFieldButton extends LitElement {
     /* Variant: submit - accent colored */
     :host([variant="submit"]) .input-field-button {
       background-color: var(--semantics-buttons-accent-filled-background-color);
-      color: var(--semantics-buttons-accent-filled-color);
+      color: var(--semantics-buttons-accent-filled-content-color);
     }
 
     :host([variant="submit"]) .input-field-button:hover:not(:disabled) {

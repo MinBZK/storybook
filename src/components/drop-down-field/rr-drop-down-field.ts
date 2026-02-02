@@ -52,23 +52,23 @@ export class RRDropDownField extends LitElement {
     /* Size: MD (default) */
     :host([size="md"]) .drop-down-field,
     :host(:not([size])) .drop-down-field {
-      min-height: var(--semantics-controls-m-min-size);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      min-height: var(--semantics-controls-md-min-size);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     :host([size="md"]) .drop-down-field__value,
     :host(:not([size])) .drop-down-field__value {
-      font: var(--semantics-input-fields-text);
+      font: var(--semantics-input-fields-md-text);
     }
 
     :host([size="md"]) .drop-down-field__native,
     :host(:not([size])) .drop-down-field__native {
-      font: var(--semantics-input-fields-text);
+      font: var(--semantics-input-fields-md-text);
     }
 
     :host([size="md"]) .drop-down-field__picker-icon,
     :host(:not([size])) .drop-down-field__picker-icon {
-      width: var(--semantics-controls-m-min-size);
+      width: var(--semantics-controls-md-min-size);
     }
 
     :host([size="md"]) .drop-down-field__picker-icon svg,
@@ -79,29 +79,29 @@ export class RRDropDownField extends LitElement {
 
     :host([size="md"]) .drop-down-field__input-shade,
     :host(:not([size])) .drop-down-field__input-shade {
-      height: calc(var(--semantics-controls-m-min-size) - 4px);
+      height: calc(var(--semantics-controls-md-min-size) - 4px);
     }
 
     /* Size: SM */
     :host([size="sm"]) .drop-down-field {
-      min-height: var(--semantics-controls-s-min-size);
-      border-radius: var(--semantics-controls-s-corner-radius);
+      min-height: var(--semantics-controls-sm-min-size);
+      border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
     :host([size="sm"]) .drop-down-field__value {
-      font-size: var(--primitives-font-size-body-s);
+      font-size: var(--primitives-font-size-90);
       font-weight: var(--primitives-font-weight-body-regular);
       line-height: 1em;
     }
 
     :host([size="sm"]) .drop-down-field__native {
-      font-size: var(--primitives-font-size-body-s);
+      font-size: var(--primitives-font-size-90);
       font-weight: var(--primitives-font-weight-body-regular);
       line-height: 1em;
     }
 
     :host([size="sm"]) .drop-down-field__picker-icon {
-      width: var(--semantics-controls-s-min-size);
+      width: var(--semantics-controls-sm-min-size);
     }
 
     :host([size="sm"]) .drop-down-field__picker-icon svg {
@@ -110,7 +110,7 @@ export class RRDropDownField extends LitElement {
     }
 
     :host([size="sm"]) .drop-down-field__input-shade {
-      height: calc(var(--semantics-controls-s-min-size) - 4px);
+      height: calc(var(--semantics-controls-sm-min-size) - 4px);
     }
 
     .drop-down-field__spacer {
@@ -184,7 +184,7 @@ export class RRDropDownField extends LitElement {
 
     /* Focus state */
     .drop-down-field:focus-within {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 

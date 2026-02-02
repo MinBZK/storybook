@@ -43,9 +43,9 @@ export class RRFormField extends LitElement {
       align-items: baseline;
       gap: var(--primitives-space-8);
       font-weight: var(--primitives-font-weight-body-regular);
-      font-size: var(--primitives-font-size-body-m);
+      font-size: var(--primitives-font-size-100);
       line-height: 1.125em;
-      color: var(--primitives-color-text);
+      color: var(--semantics-content-color);
     }
 
     .form-field__required {
@@ -54,7 +54,7 @@ export class RRFormField extends LitElement {
 
     .form-field__description {
       font-weight: var(--primitives-font-weight-body-regular);
-      font-size: var(--primitives-font-size-body-s);
+      font-size: var(--primitives-font-size-90);
       line-height: 1.25em;
       color: var(--semantics-input-fields-placeholder-color);
     }
@@ -65,7 +65,7 @@ export class RRFormField extends LitElement {
 
     .form-field__error {
       font-weight: var(--primitives-font-weight-body-regular);
-      font-size: var(--primitives-font-size-body-s);
+      font-size: var(--primitives-font-size-90);
       line-height: 1.25em;
       color: var(--semantics-input-fields-is-invalid-icon-color);
     }

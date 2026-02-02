@@ -38,10 +38,10 @@ export class RRNumberField extends LitElement {
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      height: var(--semantics-controls-m-min-size);
+      height: var(--semantics-controls-md-min-size);
       background-color: var(--semantics-input-fields-background-color);
       border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      border-radius: var(--semantics-controls-md-corner-radius);
       box-sizing: border-box;
     }
 
@@ -58,12 +58,12 @@ export class RRNumberField extends LitElement {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: var(--semantics-controls-m-min-size);
+      width: var(--semantics-controls-md-min-size);
       height: 100%;
       flex-shrink: 0;
 
       /* Icon color */
-      color: var(--primitives-color-text);
+      color: var(--semantics-content-color);
     }
 
     .number-field__button:hover:not(:disabled) {
@@ -101,8 +101,8 @@ export class RRNumberField extends LitElement {
       box-sizing: border-box;
 
       /* Typography */
-      font: var(--semantics-input-fields-text);
-      color: var(--primitives-color-text);
+      font: var(--semantics-input-fields-md-text);
+      color: var(--semantics-content-color);
       text-align: center;
 
       /* Layout - auto width based on content */
@@ -123,7 +123,7 @@ export class RRNumberField extends LitElement {
 
     /* Focus state */
     .number-field:focus-within {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 

@@ -48,34 +48,34 @@ export class RRSearchField extends LitElement {
     /* Size: MD (default) */
     :host([size="md"]) .search-field,
     :host(:not([size])) .search-field {
-      min-height: var(--semantics-controls-m-min-size);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      min-height: var(--semantics-controls-md-min-size);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     :host([size="md"]) .search-field__native,
     :host(:not([size])) .search-field__native {
-      font: var(--semantics-input-fields-text);
+      font: var(--semantics-input-fields-md-text);
     }
 
     :host([size="md"]) .search-field__input-shade,
     :host(:not([size])) .search-field__input-shade {
-      height: calc(var(--semantics-controls-m-min-size) - 4px);
+      height: calc(var(--semantics-controls-md-min-size) - 4px);
     }
 
     /* Size: SM */
     :host([size="sm"]) .search-field {
-      min-height: var(--semantics-controls-s-min-size);
-      border-radius: var(--semantics-controls-s-corner-radius);
+      min-height: var(--semantics-controls-sm-min-size);
+      border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
     :host([size="sm"]) .search-field__native {
-      font-size: var(--primitives-font-size-body-s);
+      font-size: var(--primitives-font-size-90);
       font-weight: var(--primitives-font-weight-body-regular);
       line-height: 1em;
     }
 
     :host([size="sm"]) .search-field__input-shade {
-      height: calc(var(--semantics-controls-s-min-size) - 4px);
+      height: calc(var(--semantics-controls-sm-min-size) - 4px);
     }
 
     :host([size="sm"]) .search-field__icon svg {
@@ -123,7 +123,7 @@ export class RRSearchField extends LitElement {
       box-sizing: border-box;
 
       /* Typography */
-      color: var(--primitives-color-text);
+      color: var(--semantics-content-color);
 
       /* Layout */
       align-self: stretch;
@@ -144,7 +144,7 @@ export class RRSearchField extends LitElement {
 
     /* Focus state */
     .search-field:focus-within {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 

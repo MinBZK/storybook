@@ -53,9 +53,9 @@ export class RRSwitchField extends LitElement {
       display: flex;
       flex: 1;
       font-weight: var(--primitives-font-weight-body-regular);
-      font-size: var(--primitives-font-size-body-m);
+      font-size: var(--primitives-font-size-100);
       line-height: 1.25em;
-      color: var(--semantics-content-body-color, #333A45);
+      color: var(--semantics-content-color);
       padding: 4px 0;
     }
 
