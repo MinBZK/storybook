@@ -47,26 +47,26 @@ export class RRBackButton extends LitElement {
     .back-button {
       display: inline-flex;
       align-items: center;
-      gap: var(--primitives-space-8, 8px);
-      padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
+      gap: var(--primitives-space-8);
+      padding: var(--primitives-space-8) var(--primitives-space-16);
       background: none;
       border: none;
-      color: var(--primitives-color-accent-100, #154273);
-      font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
+      color: var(--primitives-color-accent-100);
+      font: var(--components-menu-bar-menu-item-font);
       text-decoration: none;
       cursor: pointer;
-      border-radius: var(--semantics-controls-md-corner-radius, 7px);
+      border-radius: var(--semantics-controls-md-corner-radius);
       transition: background-color 0.15s ease;
       white-space: nowrap;
     }
 
     .back-button:hover {
-      background-color: var(--primitives-color-neutral-100, #f1f5f9);
+      background-color: var(--primitives-color-neutral-100);
     }
 
     .back-button:focus-visible {
-      outline: var(--semantics-focus-rings-center-thickness, 2px) solid
-        var(--semantics-focus-rings-center-color, #0f172a);
+      outline: var(--semantics-focus-rings-center-thickness) solid
+        var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 
@@ -78,7 +78,7 @@ export class RRBackButton extends LitElement {
 
     /* Size variants */
     :host([container='s']) .back-button {
-      padding: var(--primitives-space-8, 8px);
+      padding: var(--primitives-space-8);
       font-size: 16px;
     }
 

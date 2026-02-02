@@ -34,13 +34,13 @@ export class RRNavLogo extends LitElement {
     :host {
       display: flex;
       align-items: center;
-      gap: var(--primitives-space-16, 16px);
+      gap: var(--primitives-space-16);
     }
 
     .logo-container {
       display: flex;
       align-items: center;
-      gap: var(--primitives-space-16, 16px);
+      gap: var(--primitives-space-16);
     }
 
     .logo {
@@ -48,7 +48,7 @@ export class RRNavLogo extends LitElement {
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      color: var(--primitives-color-accent-100, #154273);
+      color: var(--primitives-color-accent-100);
     }
 
     /* Logo sizes per container */
@@ -77,7 +77,7 @@ export class RRNavLogo extends LitElement {
     .wordmark {
       display: flex;
       flex-direction: column;
-      gap: var(--primitives-space-2, 2px);
+      gap: var(--primitives-space-2);
     }
 
     :host(:not([has-wordmark])) .wordmark {
@@ -85,22 +85,22 @@ export class RRNavLogo extends LitElement {
     }
 
     .title {
-      font: var(--components-menu-bar-title-item-m-font, 550 20px/1.125 RijksSansVF, system-ui);
-      color: var(--primitives-color-neutral-900, #0f172a);
+      font: var(--components-menu-bar-title-item-m-font);
+      color: var(--primitives-color-neutral-900);
       margin: 0;
     }
 
     :host([container='s']) .title {
-      font: var(--components-menu-bar-title-item-s-font, 550 18px/1.125 RijksSansVF, system-ui);
+      font: var(--components-menu-bar-title-item-s-font);
     }
 
     :host([container='l']) .title {
-      font: var(--components-menu-bar-title-item-l-font, 550 23px/1.125 RijksSansVF, system-ui);
+      font: var(--components-menu-bar-title-item-l-font);
     }
 
     .subtitle {
       font: 400 16px/1.25 var(--rr-font-family-sans, RijksSansVF, system-ui);
-      color: var(--primitives-color-neutral-700, #334155);
+      color: var(--primitives-color-neutral-700);
       margin: 0;
     }
 
@@ -114,7 +114,7 @@ export class RRNavLogo extends LitElement {
 
     .supporting-text {
       font: 400 14px/1.25 var(--rr-font-family-sans, RijksSansVF, system-ui);
-      color: var(--primitives-color-accent-100, #154273);
+      color: var(--primitives-color-accent-100);
       margin: 0;
     }
 

@@ -146,95 +146,95 @@ export class RRIconButton extends RRBaseComponent {
 
       /* Size: XS - Square 24x24 */
       :host([size="xs"]) .button {
-        width: var(--semantics-controls-xs-min-size, 24px);
-        height: var(--semantics-controls-xs-min-size, 24px);
-        min-width: var(--semantics-controls-xs-min-size, 24px);
-        min-height: var(--semantics-controls-xs-min-size, 24px);
-        border-radius: var(--semantics-controls-xs-corner-radius, 3px);
+        width: var(--semantics-controls-xs-min-size);
+        height: var(--semantics-controls-xs-min-size);
+        min-width: var(--semantics-controls-xs-min-size);
+        min-height: var(--semantics-controls-xs-min-size);
+        border-radius: var(--semantics-controls-xs-corner-radius);
       }
 
       /* Size: S - Square 32x32 */
       :host([size="s"]) .button {
-        width: var(--semantics-controls-sm-min-size, 32px);
-        height: var(--semantics-controls-sm-min-size, 32px);
-        min-width: var(--semantics-controls-sm-min-size, 32px);
-        min-height: var(--semantics-controls-sm-min-size, 32px);
-        border-radius: var(--semantics-controls-sm-corner-radius, 5px);
+        width: var(--semantics-controls-sm-min-size);
+        height: var(--semantics-controls-sm-min-size);
+        min-width: var(--semantics-controls-sm-min-size);
+        min-height: var(--semantics-controls-sm-min-size);
+        border-radius: var(--semantics-controls-sm-corner-radius);
       }
 
       /* Size: M - Square 44x44 (default) */
       :host([size="m"]) .button,
       :host(:not([size])) .button {
-        width: var(--semantics-controls-md-min-size, 44px);
-        height: var(--semantics-controls-md-min-size, 44px);
-        min-width: var(--semantics-controls-md-min-size, 44px);
-        min-height: var(--semantics-controls-md-min-size, 44px);
-        border-radius: var(--semantics-controls-md-corner-radius, 7px);
+        width: var(--semantics-controls-md-min-size);
+        height: var(--semantics-controls-md-min-size);
+        min-width: var(--semantics-controls-md-min-size);
+        min-height: var(--semantics-controls-md-min-size);
+        border-radius: var(--semantics-controls-md-corner-radius);
       }
 
       /* Variant: accent-filled (default) */
       :host([variant="accent-filled"]) .button,
       :host(:not([variant])) .button {
-        --_bg-color: var(--semantics-buttons-accent-filled-background-color, #154273);
-        --_text-color: var(--semantics-buttons-accent-filled-content-color, #ffffff);
+        --_bg-color: var(--semantics-buttons-accent-filled-background-color);
+        --_text-color: var(--semantics-buttons-accent-filled-content-color);
       }
 
       :host([variant="accent-filled"]) .button:hover,
       :host(:not([variant])) .button:hover {
-        --_bg-color: var(--primitives-color-accent-75, #4F7196);
+        --_bg-color: var(--primitives-color-accent-75);
       }
 
       /* Variant: accent-outlined */
       :host([variant="accent-outlined"]) .button {
         --_bg-color: transparent;
-        --_text-color: var(--semantics-buttons-accent-outlined-content-color, #154273);
-        --_border-color: var(--semantics-buttons-accent-outlined-border-color, #154273);
-        --_border-width: var(--semantics-buttons-accent-outlined-border-thickness, 2px);
+        --_text-color: var(--semantics-buttons-accent-outlined-content-color);
+        --_border-color: var(--semantics-buttons-accent-outlined-border-color);
+        --_border-width: var(--semantics-buttons-accent-outlined-border-thickness);
       }
 
       :host([variant="accent-outlined"]) .button:hover {
-        --_bg-color: var(--primitives-color-accent-150, #DCE3EA);
+        --_bg-color: var(--primitives-color-accent-150);
       }
 
       /* Variant: accent-tinted */
       :host([variant="accent-tinted"]) .button {
-        --_bg-color: var(--semantics-buttons-accent-tinted-background-color, #dce3ea);
-        --_text-color: var(--semantics-buttons-accent-tinted-content-color, #154273);
+        --_bg-color: var(--semantics-buttons-accent-tinted-background-color);
+        --_text-color: var(--semantics-buttons-accent-tinted-content-color);
       }
 
       :host([variant="accent-tinted"]) .button:hover {
-        --_bg-color: var(--primitives-color-accent-300, #B9C7D5);
+        --_bg-color: var(--primitives-color-accent-300);
       }
 
       /* Variant: neutral-tinted */
       :host([variant="neutral-tinted"]) .button {
-        --_bg-color: var(--semantics-buttons-neutral-tinted-background-color, #d8dee7);
-        --_text-color: var(--semantics-buttons-neutral-tinted-content-color, #1f252d);
+        --_bg-color: var(--semantics-buttons-neutral-tinted-background-color);
+        --_text-color: var(--semantics-buttons-neutral-tinted-content-color);
       }
 
       :host([variant="neutral-tinted"]) .button:hover {
-        --_bg-color: var(--primitives-color-neutral-300, #cbd5e1);
+        --_bg-color: var(--primitives-color-neutral-300);
       }
 
       /* Variant: accent-transparent */
       :host([variant="accent-transparent"]) .button {
         --_bg-color: transparent;
-        --_text-color: var(--semantics-buttons-accent-transparent-content-color, #154273);
+        --_text-color: var(--semantics-buttons-accent-transparent-content-color);
       }
 
       :host([variant="accent-transparent"]) .button:hover {
-        --_bg-color: var(--primitives-color-accent-150, #DCE3EA);
+        --_bg-color: var(--primitives-color-accent-150);
       }
 
       /* Focus state */
       .button:focus-visible {
-        outline: var(--semantics-focus-rings-center-thickness, 2px) solid var(--semantics-focus-rings-center-color, #0f172a);
+        outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
         outline-offset: 2px;
       }
 
       /* Disabled state */
       :host([disabled]) .button {
-        opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+        opacity: calc(var(--primitives-opacity-disabled) / 100);
         cursor: not-allowed;
         pointer-events: none;
       }

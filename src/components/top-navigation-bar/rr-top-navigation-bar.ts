@@ -92,18 +92,18 @@ export class RRTopNavigationBar extends LitElement {
       left: 50%;
       transform: translateX(-50%);
       z-index: 1000;
-      background-color: var(--primitives-color-accent-100, #154273);
+      background-color: var(--primitives-color-accent-100);
       color: #ffffff;
-      padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
-      font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
+      padding: var(--primitives-space-8) var(--primitives-space-16);
+      font: var(--components-menu-bar-menu-item-font);
       text-decoration: none;
-      border-radius: var(--semantics-controls-md-corner-radius, 7px);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     .skip-link:focus {
-      top: var(--primitives-space-8, 8px);
-      outline: var(--semantics-focus-rings-center-thickness, 2px) solid
-        var(--semantics-focus-rings-center-color, #0f172a);
+      top: var(--primitives-space-8);
+      outline: var(--semantics-focus-rings-center-thickness) solid
+        var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 
@@ -113,22 +113,22 @@ export class RRTopNavigationBar extends LitElement {
       width: 100%;
       margin: 0 auto;
       background-color: #ffffff;
-      border-bottom: var(--semantics-dividers-thickness, 2px) solid
-        var(--semantics-dividers-color, #e2e8f0);
+      border-bottom: var(--semantics-dividers-thickness) solid
+        var(--semantics-dividers-color);
     }
 
     /* Container fills available width - no max-width constraints */
     :host([container='s']) .container {
-      min-width: var(--primitives-breakpoint-sm-min, 320px);
+      min-width: var(--primitives-breakpoint-sm-min);
     }
 
     :host([container='m']) .container,
     :host(:not([container])) .container {
-      min-width: var(--primitives-breakpoint-md-min, 641px);
+      min-width: var(--primitives-breakpoint-md-min);
     }
 
     :host([container='l']) .container {
-      min-width: var(--primitives-breakpoint-lg-min, 1008px);
+      min-width: var(--primitives-breakpoint-lg-min);
     }
 
     /* Logo bar - white background with centered logo */
@@ -159,19 +159,19 @@ export class RRTopNavigationBar extends LitElement {
 
     /* Responsive padding - base padding, spacers handle the rest */
     :host([container='s']) .nav-bar {
-      padding-left: var(--primitives-space-4, 4px);
-      padding-right: var(--primitives-space-4, 4px);
+      padding-left: var(--primitives-space-4);
+      padding-right: var(--primitives-space-4);
     }
 
     :host([container='m']) .nav-bar,
     :host(:not([container])) .nav-bar {
-      padding-left: var(--primitives-space-8, 8px);
-      padding-right: var(--primitives-space-8, 8px);
+      padding-left: var(--primitives-space-8);
+      padding-right: var(--primitives-space-8);
     }
 
     :host([container='l']) .nav-bar {
-      padding-left: var(--primitives-space-8, 8px);
-      padding-right: var(--primitives-space-8, 8px);
+      padding-left: var(--primitives-space-8);
+      padding-right: var(--primitives-space-8);
     }
 
     .nav-left {
@@ -195,20 +195,20 @@ export class RRTopNavigationBar extends LitElement {
 
     /* Navigation title */
     .nav-title {
-      font: var(--components-menu-bar-title-item-m-font, 550 20px/1.125 RijksSansVF, system-ui);
-      color: var(--primitives-color-neutral-900, #0f172a);
+      font: var(--components-menu-bar-title-item-m-font);
+      color: var(--primitives-color-neutral-900);
       /* Match Figma title-item padding: 0px 8px (8px on left AND right) */
-      padding-left: var(--primitives-space-8, 8px);
-      padding-right: var(--primitives-space-8, 8px);
+      padding-left: var(--primitives-space-8);
+      padding-right: var(--primitives-space-8);
       white-space: nowrap;
     }
 
     :host([container='s']) .nav-title {
-      font: var(--components-menu-bar-title-item-s-font, 550 18px/1.125 RijksSansVF, system-ui);
+      font: var(--components-menu-bar-title-item-s-font);
     }
 
     :host([container='l']) .nav-title {
-      font: var(--components-menu-bar-title-item-l-font, 550 23px/1.125 RijksSansVF, system-ui);
+      font: var(--components-menu-bar-title-item-l-font);
     }
 
     /* Menu bar integration - remove its own border as nav-bar provides structure */
@@ -248,7 +248,7 @@ export class RRTopNavigationBar extends LitElement {
 
     :host([has-back-button]) rr-back-button {
       display: inline-flex;
-      margin-right: var(--primitives-space-8, 8px);
+      margin-right: var(--primitives-space-8);
     }
   `;
 
