@@ -14,6 +14,10 @@ export { RRBaseComponent } from './base/base-component.js';
 // Action components
 export { RRButton } from './actions/button/rr-button.ts';
 export { RRIconButton } from './actions/icon-button/rr-icon-button.ts';
+export { RRButtonGroup } from './actions/button-group/rr-button-group.ts';
+export { RRButtonBar } from './actions/button-bar/rr-button-bar.ts';
+export { RRButtonBarDivider } from './actions/button-bar-divider/rr-button-bar-divider.ts';
+export { RRSplitButton } from './actions/split-button/rr-split-button.ts';
 
 // Input components
 export { RRStepper } from './inputs/stepper/rr-stepper.ts';
@@ -60,6 +64,9 @@ export { RRBackButton } from './navigation/top-navigation-bar/rr-back-button.ts'
 export { RRMenuBar } from './navigation/menu-bar/rr-menu-bar.ts';
 export { RRMenuItem } from './navigation/menu-bar/rr-menu-item.ts';
 export { RRUtilityMenuBar } from './navigation/top-navigation-bar/rr-utility-menu-bar.ts';
+export { RRToolbar } from './navigation/toolbar/rr-toolbar.ts';
+export { RRToolbarDivider } from './navigation/toolbar-divider/rr-toolbar-divider.ts';
+export { RRToolbarTitleGroup } from './navigation/toolbar-title-group/rr-toolbar-title-group.ts';
 
 // List components
 export { RRList } from './lists/list/rr-list.ts';

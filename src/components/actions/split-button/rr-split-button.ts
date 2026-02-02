@@ -1,0 +1,251 @@
+/**
+ * RegelRecht Split Button Component (Lit + TypeScript)
+ *
+ * A split button combines a primary action button with a dropdown trigger.
+ * The main button performs the default action, while the dropdown icon opens a menu.
+ *
+ * @element rr-split-button
+ * @attr {string} size - Button size: 's' | 'm' (default: 'm')
+ * @attr {boolean} disabled - Disabled state
+ *
+ * @slot - Default slot for button label text
+ * @slot dropdown-icon - Slot for custom dropdown icon (defaults to chevron-down)
+ *
+ * @fires click - Fired when the main button is clicked
+ * @fires dropdown-click - Fired when the dropdown trigger is clicked
+ *
+ * @csspart container - The split button container
+ * @csspart button - The main action button
+ * @csspart divider - The divider between button and dropdown
+ * @csspart dropdown - The dropdown trigger button
+ */
+
+import { LitElement, html, css } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+
+type Size = 's' | 'm';
+
+@customElement('rr-split-button')
+export class RRSplitButton extends LitElement {
+  static override styles = css`
+    :host {
+      display: inline-flex;
+      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+    }
+
+    :host([hidden]) {
+      display: none;
+    }
+
+    .split-button {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--semantics-divider-color);
+    }
+
+    /* Size: M (default) */
+    :host([size="m"]) .split-button,
+    :host(:not([size])) .split-button {
+      /* Figma uses 9px, closest token is 8px */
+      border-radius: var(--primitives-corner-radius-m);
+    }
+
+    :host([size="m"]) .split-button__button,
+    :host(:not([size])) .split-button__button {
+      min-height: var(--semantics-controls-m-min-size);
+      padding: 10px 12px;
+      gap: 4px;
+      font: var(--components-button-m-font);
+      border-radius: var(--primitives-corner-radius-m) 0 0 var(--primitives-corner-radius-m);
+    }
+
+    :host([size="m"]) .split-button__divider,
+    :host(:not([size])) .split-button__divider {
+      height: 28px;
+    }
+
+    :host([size="m"]) .split-button__dropdown,
+    :host(:not([size])) .split-button__dropdown {
+      padding: 0 8px;
+      min-height: var(--semantics-controls-m-min-size);
+      border-radius: 0 var(--primitives-corner-radius-m) var(--primitives-corner-radius-m) 0;
+    }
+
+    :host([size="m"]) .split-button__dropdown svg,
+    :host(:not([size])) .split-button__dropdown svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Size: S */
+    :host([size="s"]) .split-button {
+      border-radius: var(--primitives-corner-radius-s);
+    }
+
+    :host([size="s"]) .split-button__button {
+      min-height: var(--semantics-controls-s-min-size);
+      padding: 6px 8px;
+      gap: 2px;
+      font: var(--components-button-s-font);
+      border-radius: var(--primitives-corner-radius-s) 0 0 var(--primitives-corner-radius-s);
+    }
+
+    :host([size="s"]) .split-button__divider {
+      height: 20px;
+    }
+
+    :host([size="s"]) .split-button__dropdown {
+      padding: 0 6px;
+      min-height: var(--semantics-controls-s-min-size);
+      border-radius: 0 var(--primitives-corner-radius-s) var(--primitives-corner-radius-s) 0;
+    }
+
+    :host([size="s"]) .split-button__dropdown svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Common button styles */
+    .split-button__button,
+    .split-button__dropdown {
+      appearance: none;
+      border: none;
+      margin: 0;
+      background: transparent;
+      font: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--semantics-content-color);
+      transition: background-color 0.15s ease;
+    }
+
+    .split-button__button:hover,
+    .split-button__dropdown:hover {
+      background-color: var(--semantics-buttons-neutral-ghost-hover-background-color);
+    }
+
+    .split-button__button:active,
+    .split-button__dropdown:active {
+      background-color: var(--semantics-buttons-neutral-ghost-active-background-color);
+    }
+
+    /* Focus state */
+    .split-button__button:focus-visible,
+    .split-button__dropdown:focus-visible {
+      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline-offset: -2px;
+      z-index: 1;
+    }
+
+    /* Divider */
+    .split-button__divider {
+      width: 1px;
+      background-color: #A9B2C0;
+      flex-shrink: 0;
+    }
+
+    /* Dropdown icon */
+    .split-button__dropdown svg {
+      fill: currentColor;
+    }
+
+    /* Disabled state */
+    :host([disabled]) .split-button {
+      opacity: calc(var(--primitives-opacity-disabled) / 100);
+    }
+
+    :host([disabled]) .split-button__button,
+    :host([disabled]) .split-button__dropdown {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Accessibility: Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .split-button__button,
+      .split-button__dropdown {
+        transition: none;
+      }
+    }
+
+    /* Accessibility: High Contrast Mode */
+    @media (forced-colors: active) {
+      .split-button__button:focus-visible,
+      .split-button__dropdown:focus-visible {
+        outline: 2px solid CanvasText !important;
+        outline-offset: 2px !important;
+      }
+
+      .split-button__divider {
+        background-color: CanvasText;
+      }
+    }
+  `;
+
+  @property({ type: String, reflect: true })
+  size: Size = 'm';
+
+  @property({ type: Boolean, reflect: true })
+  disabled = false;
+
+  private _handleButtonClick(e: Event) {
+    if (this.disabled) {
+      e.preventDefault();
+      return;
+    }
+    this.dispatchEvent(new CustomEvent('click', { bubbles: true, composed: true }));
+  }
+
+  private _handleDropdownClick(e: Event) {
+    if (this.disabled) {
+      e.preventDefault();
+      return;
+    }
+    e.stopPropagation();
+    this.dispatchEvent(new CustomEvent('dropdown-click', { bubbles: true, composed: true }));
+  }
+
+  override render() {
+    return html`
+      <div class="split-button" part="container">
+        <button
+          class="split-button__button"
+          part="button"
+          type="button"
+          ?disabled=${this.disabled}
+          aria-disabled=${this.disabled}
+          @click=${this._handleButtonClick}
+        >
+          <slot></slot>
+        </button>
+        <div class="split-button__divider" part="divider" role="separator" aria-orientation="vertical"></div>
+        <button
+          class="split-button__dropdown"
+          part="dropdown"
+          type="button"
+          ?disabled=${this.disabled}
+          aria-disabled=${this.disabled}
+          aria-haspopup="menu"
+          aria-label="More options"
+          @click=${this._handleDropdownClick}
+        >
+          <slot name="dropdown-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 10l5 5 5-5H7z"/>
+            </svg>
+          </slot>
+        </button>
+      </div>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'rr-split-button': RRSplitButton;
+  }
+}

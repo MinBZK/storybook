@@ -1,0 +1,78 @@
+/**
+ * RegelRecht Toolbar Divider Component (Lit + TypeScript)
+ *
+ * A vertical divider line for use within toolbars to separate groups of items.
+ *
+ * @element rr-toolbar-divider
+ * @attr {string} size - Divider size: 's' | 'm' (default: 'm')
+ *
+ * @csspart divider - The divider container
+ * @csspart line - The divider line element
+ */
+
+import { LitElement, html, css } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+
+type Size = 's' | 'm';
+
+@customElement('rr-toolbar-divider')
+export class RRToolbarDivider extends LitElement {
+  static override styles = css`
+    :host {
+      display: inline-flex;
+      align-self: stretch;
+    }
+
+    :host([hidden]) {
+      display: none;
+    }
+
+    .divider {
+      display: flex;
+      justify-content: center;
+      align-self: stretch;
+    }
+
+    /* Size: S - padding 3px 0, line height 26px */
+    :host([size="s"]) .divider {
+      padding: 3px 0;
+    }
+
+    :host([size="s"]) .divider__line {
+      height: 26px;
+    }
+
+    /* Size: M (default) - padding 5px 0, line height 34px */
+    :host([size="m"]) .divider,
+    :host(:not([size])) .divider {
+      padding: 5px 0;
+    }
+
+    :host([size="m"]) .divider__line,
+    :host(:not([size])) .divider__line {
+      height: 34px;
+    }
+
+    .divider__line {
+      width: 1px;
+      background-color: var(--semantics-divider-color);
+    }
+  `;
+
+  @property({ type: String, reflect: true })
+  size: Size = 'm';
+
+  override render() {
+    return html`
+      <div class="divider" part="divider" role="separator" aria-orientation="vertical">
+        <div class="divider__line" part="line"></div>
+      </div>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'rr-toolbar-divider': RRToolbarDivider;
+  }
+}
