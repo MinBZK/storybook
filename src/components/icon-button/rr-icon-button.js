@@ -128,8 +128,8 @@ export class RRIconButton extends RRBaseComponent {
         align-items: center;
         justify-content: center;
 
-        /* Typography */
-        font: var(--components-icon-button-font, 550 14px/1.125 RijksSansVF, system-ui);
+        /* Typography - icon buttons have no text, font inherited for sizing context */
+        font: var(--semantics-buttons-md-font);
 
         /* Animation */
         transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
@@ -155,28 +155,28 @@ export class RRIconButton extends RRBaseComponent {
 
       /* Size: S - Square 32x32 */
       :host([size="s"]) .button {
-        width: var(--semantics-controls-s-min-size, 32px);
-        height: var(--semantics-controls-s-min-size, 32px);
-        min-width: var(--semantics-controls-s-min-size, 32px);
-        min-height: var(--semantics-controls-s-min-size, 32px);
-        border-radius: var(--semantics-controls-s-corner-radius, 5px);
+        width: var(--semantics-controls-sm-min-size, 32px);
+        height: var(--semantics-controls-sm-min-size, 32px);
+        min-width: var(--semantics-controls-sm-min-size, 32px);
+        min-height: var(--semantics-controls-sm-min-size, 32px);
+        border-radius: var(--semantics-controls-sm-corner-radius, 5px);
       }
 
       /* Size: M - Square 44x44 (default) */
       :host([size="m"]) .button,
       :host(:not([size])) .button {
-        width: var(--semantics-controls-m-min-size, 44px);
-        height: var(--semantics-controls-m-min-size, 44px);
-        min-width: var(--semantics-controls-m-min-size, 44px);
-        min-height: var(--semantics-controls-m-min-size, 44px);
-        border-radius: var(--semantics-controls-m-corner-radius, 7px);
+        width: var(--semantics-controls-md-min-size, 44px);
+        height: var(--semantics-controls-md-min-size, 44px);
+        min-width: var(--semantics-controls-md-min-size, 44px);
+        min-height: var(--semantics-controls-md-min-size, 44px);
+        border-radius: var(--semantics-controls-md-corner-radius, 7px);
       }
 
       /* Variant: accent-filled (default) */
       :host([variant="accent-filled"]) .button,
       :host(:not([variant])) .button {
         --_bg-color: var(--semantics-buttons-accent-filled-background-color, #154273);
-        --_text-color: var(--semantics-buttons-accent-filled-color, #ffffff);
+        --_text-color: var(--semantics-buttons-accent-filled-content-color, #ffffff);
       }
 
       :host([variant="accent-filled"]) .button:hover,
@@ -187,29 +187,29 @@ export class RRIconButton extends RRBaseComponent {
       /* Variant: accent-outlined */
       :host([variant="accent-outlined"]) .button {
         --_bg-color: transparent;
-        --_text-color: var(--semantics-buttons-accent-outlined-color, #154273);
+        --_text-color: var(--semantics-buttons-accent-outlined-content-color, #154273);
         --_border-color: var(--semantics-buttons-accent-outlined-border-color, #154273);
         --_border-width: var(--semantics-buttons-accent-outlined-border-thickness, 2px);
       }
 
       :host([variant="accent-outlined"]) .button:hover {
-        --_bg-color: var(--primitives-color-accent-15, #DCE3EA);
+        --_bg-color: var(--primitives-color-accent-150, #DCE3EA);
       }
 
       /* Variant: accent-tinted */
       :host([variant="accent-tinted"]) .button {
         --_bg-color: var(--semantics-buttons-accent-tinted-background-color, #dce3ea);
-        --_text-color: var(--semantics-buttons-accent-tinted-color, #154273);
+        --_text-color: var(--semantics-buttons-accent-tinted-content-color, #154273);
       }
 
       :host([variant="accent-tinted"]) .button:hover {
-        --_bg-color: var(--primitives-color-accent-30, #B9C7D5);
+        --_bg-color: var(--primitives-color-accent-300, #B9C7D5);
       }
 
       /* Variant: neutral-tinted */
       :host([variant="neutral-tinted"]) .button {
         --_bg-color: var(--semantics-buttons-neutral-tinted-background-color, #d8dee7);
-        --_text-color: var(--semantics-buttons-neutral-tinted-color, #1f252d);
+        --_text-color: var(--semantics-buttons-neutral-tinted-content-color, #1f252d);
       }
 
       :host([variant="neutral-tinted"]) .button:hover {
@@ -219,16 +219,16 @@ export class RRIconButton extends RRBaseComponent {
       /* Variant: accent-transparent */
       :host([variant="accent-transparent"]) .button {
         --_bg-color: transparent;
-        --_text-color: var(--semantics-buttons-accent-transparent-color, #154273);
+        --_text-color: var(--semantics-buttons-accent-transparent-content-color, #154273);
       }
 
       :host([variant="accent-transparent"]) .button:hover {
-        --_bg-color: var(--primitives-color-accent-15, #DCE3EA);
+        --_bg-color: var(--primitives-color-accent-150, #DCE3EA);
       }
 
       /* Focus state */
       .button:focus-visible {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+        outline: var(--semantics-focus-rings-center-thickness, 2px) solid var(--semantics-focus-rings-center-color, #0f172a);
         outline-offset: 2px;
       }
 

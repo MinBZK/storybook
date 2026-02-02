@@ -229,22 +229,22 @@ export class RRSwitch extends RRBaseComponent {
       /* Size: M (default) - Figma specs: 56x32px */
       :host([size="m"]) .switch,
       :host(:not([size])) .switch {
-        width: calc(var(--semantics-controls-s-min-size, 32px) * 1.75);
-        height: var(--semantics-controls-s-min-size, 32px);
-        border-radius: calc(var(--semantics-controls-s-min-size, 32px) / 2);
+        width: calc(var(--semantics-controls-sm-min-size, 32px) * 1.75);
+        height: var(--semantics-controls-sm-min-size, 32px);
+        border-radius: calc(var(--semantics-controls-sm-min-size, 32px) / 2);
         padding: 2px;
       }
 
       :host([size="m"]) .thumb,
       :host(:not([size])) .thumb {
-        width: calc(var(--semantics-controls-s-min-size, 32px) - 8px);
-        height: calc(var(--semantics-controls-s-min-size, 32px) - 8px);
+        width: calc(var(--semantics-controls-sm-min-size, 32px) - 8px);
+        height: calc(var(--semantics-controls-sm-min-size, 32px) - 8px);
         border-radius: 50%; /* Circular thumb per Figma */
       }
 
       :host([size="m"][checked]) .thumb,
       :host(:not([size])[checked]) .thumb {
-        transform: translateX(calc((var(--semantics-controls-s-min-size, 32px) * 1.75) - var(--semantics-controls-s-min-size, 32px)));
+        transform: translateX(calc((var(--semantics-controls-sm-min-size, 32px) * 1.75) - var(--semantics-controls-sm-min-size, 32px)));
       }
 
       /* Checked state */
@@ -260,7 +260,7 @@ export class RRSwitch extends RRBaseComponent {
 
       /* Focus state */
       :host(:focus-visible) .switch {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+        outline: var(--semantics-focus-rings-center-thickness, 2px) solid var(--semantics-focus-rings-center-color, #0f172a);
         outline-offset: 2px;
       }
 

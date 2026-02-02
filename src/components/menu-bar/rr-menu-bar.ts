@@ -86,7 +86,7 @@ export class RRMenuBar extends LitElement {
       /* Bottom border per Figma default-global-menu-bar */
       border-bottom: var(
         --rr-menu-bar-border,
-        var(--semantics-divider-thickness) solid var(--semantics-divider-color)
+        var(--semantics-dividers-thickness) solid var(--semantics-dividers-color)
       );
       position: relative;
       width: 100%;
@@ -121,7 +121,7 @@ export class RRMenuBar extends LitElement {
     }
 
     .overflow-button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: -2px;
     }
 
@@ -144,8 +144,8 @@ export class RRMenuBar extends LitElement {
       margin-top: 4px;
       min-width: 200px;
       background: var(--primitives-color-neutral-0);
-      border: 1px solid var(--semantics-divider-color);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      border: 1px solid var(--semantics-dividers-color);
+      border-radius: var(--semantics-controls-md-corner-radius);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       z-index: 10000;
       padding: var(--primitives-space-4) 0;
@@ -173,7 +173,7 @@ export class RRMenuBar extends LitElement {
     }
 
     .overflow-item:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: -2px;
     }
 

@@ -55,7 +55,7 @@ export class RRBackButton extends LitElement {
       font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
       text-decoration: none;
       cursor: pointer;
-      border-radius: var(--semantics-controls-m-corner-radius, 7px);
+      border-radius: var(--semantics-controls-md-corner-radius, 7px);
       transition: background-color 0.15s ease;
       white-space: nowrap;
     }
@@ -65,8 +65,8 @@ export class RRBackButton extends LitElement {
     }
 
     .back-button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid
-        var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-rings-center-thickness, 2px) solid
+        var(--semantics-focus-rings-center-color, #0f172a);
       outline-offset: 2px;
     }
 

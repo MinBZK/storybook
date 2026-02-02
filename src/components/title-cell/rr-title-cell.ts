@@ -76,12 +76,12 @@ export class RRTitleCell extends LitElement {
     /* Size: MD (default) - 18px font */
     :host([size="md"]) .title-cell__text,
     :host(:not([size])) .title-cell__text {
-      font-size: var(--primitives-font-size-body-m);
+      font-size: var(--primitives-font-size-100);
     }
 
     /* Size: SM - 16px font */
     :host([size="sm"]) .title-cell__text {
-      font-size: var(--primitives-font-size-body-s);
+      font-size: var(--primitives-font-size-90);
     }
 
     /* Color: Default */
@@ -92,7 +92,7 @@ export class RRTitleCell extends LitElement {
 
     /* Color: White */
     :host([color="white"]) .title-cell__text {
-      color: var(--semantics-content-white-color);
+      color: var(--primitives-color-neutral-1000);
     }
 
     /* Accessibility: High Contrast Mode */

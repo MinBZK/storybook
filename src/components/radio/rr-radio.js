@@ -283,28 +283,28 @@ export class RRRadio extends RRBaseComponent {
 
       /* Size: S (32px) */
       :host([size="s"]) .radio {
-        width: var(--semantics-controls-s-min-size, 32px);
-        height: var(--semantics-controls-s-min-size, 32px);
+        width: var(--semantics-controls-sm-min-size, 32px);
+        height: var(--semantics-controls-sm-min-size, 32px);
       }
 
       :host([size="s"]) .radio-inner {
         /* Inner dot is ~37.5% of outer radio size (12px / 32px = 0.375) */
-        width: calc(var(--semantics-controls-s-min-size, 32px) * 0.375);
-        height: calc(var(--semantics-controls-s-min-size, 32px) * 0.375);
+        width: calc(var(--semantics-controls-sm-min-size, 32px) * 0.375);
+        height: calc(var(--semantics-controls-sm-min-size, 32px) * 0.375);
       }
 
       /* Size: M (44px - default) */
       :host([size="m"]) .radio,
       :host(:not([size])) .radio {
-        width: var(--semantics-controls-m-min-size, 44px);
-        height: var(--semantics-controls-m-min-size, 44px);
+        width: var(--semantics-controls-md-min-size, 44px);
+        height: var(--semantics-controls-md-min-size, 44px);
       }
 
       :host([size="m"]) .radio-inner,
       :host(:not([size])) .radio-inner {
         /* Inner dot is ~36% of outer radio size (16px / 44px = 0.36) */
-        width: calc(var(--semantics-controls-m-min-size, 44px) * 0.36);
-        height: calc(var(--semantics-controls-m-min-size, 44px) * 0.36);
+        width: calc(var(--semantics-controls-md-min-size, 44px) * 0.36);
+        height: calc(var(--semantics-controls-md-min-size, 44px) * 0.36);
       }
 
       /* Inner dot (only visible when checked) */
@@ -331,7 +331,7 @@ export class RRRadio extends RRBaseComponent {
 
       /* Focus state */
       :host(:focus-visible) .radio {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #000000);
+        outline: var(--semantics-focus-rings-center-thickness, 2px) solid var(--semantics-focus-rings-center-color, #000000);
         outline-offset: 2px;
       }
 

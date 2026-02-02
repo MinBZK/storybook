@@ -97,13 +97,13 @@ export class RRTopNavigationBar extends LitElement {
       padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
       font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
       text-decoration: none;
-      border-radius: var(--semantics-controls-m-corner-radius, 7px);
+      border-radius: var(--semantics-controls-md-corner-radius, 7px);
     }
 
     .skip-link:focus {
       top: var(--primitives-space-8, 8px);
-      outline: var(--semantics-focus-ring-thickness, 2px) solid
-        var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-rings-center-thickness, 2px) solid
+        var(--semantics-focus-rings-center-color, #0f172a);
       outline-offset: 2px;
     }
 
@@ -113,22 +113,22 @@ export class RRTopNavigationBar extends LitElement {
       width: 100%;
       margin: 0 auto;
       background-color: #ffffff;
-      border-bottom: var(--semantics-divider-thickness, 2px) solid
-        var(--semantics-divider-color, #e2e8f0);
+      border-bottom: var(--semantics-dividers-thickness, 2px) solid
+        var(--semantics-dividers-color, #e2e8f0);
     }
 
     /* Container fills available width - no max-width constraints */
     :host([container='s']) .container {
-      min-width: var(--primitives-breakpoint-s-min, 320px);
+      min-width: var(--primitives-breakpoint-sm-min, 320px);
     }
 
     :host([container='m']) .container,
     :host(:not([container])) .container {
-      min-width: var(--primitives-breakpoint-m-min, 641px);
+      min-width: var(--primitives-breakpoint-md-min, 641px);
     }
 
     :host([container='l']) .container {
-      min-width: var(--primitives-breakpoint-l-min, 1008px);
+      min-width: var(--primitives-breakpoint-lg-min, 1008px);
     }
 
     /* Logo bar - white background with centered logo */

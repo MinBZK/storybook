@@ -60,7 +60,7 @@ export class RRButton extends LitElement {
       justify-content: center;
 
       /* Typography */
-      font-weight: var(--semantics-buttons-font-weight);
+      /* font-weight is included in font shorthand token */
       text-decoration: none;
 
       /* Animation */
@@ -81,28 +81,28 @@ export class RRButton extends LitElement {
       min-height: var(--semantics-controls-xs-min-size);
       /* Figma: padding 4px 6px (top/bottom 4, left/right 6) */
       padding: var(--primitives-space-4) var(--primitives-space-6);
-      font: var(--components-button-xs-font);
+      font: var(--semantics-buttons-xs-font);
       border-radius: var(--semantics-controls-xs-corner-radius);
       gap: var(--primitives-space-2);
     }
 
     /* Size: S */
     :host([size="s"]) .button {
-      min-height: var(--semantics-controls-s-min-size);
+      min-height: var(--semantics-controls-sm-min-size);
       /* Figma: padding 6px 8px (top/bottom 6, left/right 8) */
       padding: var(--primitives-space-6) var(--primitives-space-8);
-      font: var(--components-button-s-font);
-      border-radius: var(--semantics-controls-s-corner-radius);
+      font: var(--semantics-buttons-sm-font);
+      border-radius: var(--semantics-controls-sm-corner-radius);
       gap: var(--primitives-space-2);
     }
 
     /* Size: M (default) */
     :host([size="m"]) .button,
     :host(:not([size])) .button {
-      min-height: var(--semantics-controls-m-min-size);
+      min-height: var(--semantics-controls-md-min-size);
       padding: var(--primitives-space-12);
-      font: var(--components-button-m-font);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      font: var(--semantics-buttons-md-font);
+      border-radius: var(--semantics-controls-md-corner-radius);
       gap: var(--primitives-space-4);
     }
 
@@ -110,7 +110,7 @@ export class RRButton extends LitElement {
     :host([variant="accent-filled"]) .button,
     :host(:not([variant])) .button {
       --_bg-color: var(--semantics-buttons-accent-filled-background-color);
-      --_text-color: var(--semantics-buttons-accent-filled-color);
+      --_text-color: var(--semantics-buttons-accent-filled-content-color);
     }
 
     :host([variant="accent-filled"]) .button:hover,
@@ -121,7 +121,7 @@ export class RRButton extends LitElement {
     /* Variant: accent-outlined - uses outline instead of border to avoid layout impact */
     :host([variant="accent-outlined"]) .button {
       --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-accent-outlined-color);
+      --_text-color: var(--semantics-buttons-accent-outlined-content-color);
       /* Don't use border variables - use outline instead */
       --_border-color: transparent;
       --_border-width: 0;
@@ -131,28 +131,28 @@ export class RRButton extends LitElement {
     }
 
     :host([variant="accent-outlined"]) .button:hover {
-      --_bg-color: var(--primitives-color-accent-15);
+      --_bg-color: var(--primitives-color-accent-150);
     }
 
     :host([variant="accent-outlined"]) .button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 
     /* Variant: accent-tinted */
     :host([variant="accent-tinted"]) .button {
       --_bg-color: var(--semantics-buttons-accent-tinted-background-color);
-      --_text-color: var(--semantics-buttons-accent-tinted-color);
+      --_text-color: var(--semantics-buttons-accent-tinted-content-color);
     }
 
     :host([variant="accent-tinted"]) .button:hover {
-      --_bg-color: var(--primitives-color-accent-30);
+      --_bg-color: var(--primitives-color-accent-300);
     }
 
     /* Variant: neutral-tinted */
     :host([variant="neutral-tinted"]) .button {
       --_bg-color: var(--semantics-buttons-neutral-tinted-background-color);
-      --_text-color: var(--semantics-buttons-neutral-tinted-color);
+      --_text-color: var(--semantics-buttons-neutral-tinted-content-color);
     }
 
     :host([variant="neutral-tinted"]) .button:hover {
@@ -162,17 +162,17 @@ export class RRButton extends LitElement {
     /* Variant: accent-transparent */
     :host([variant="accent-transparent"]) .button {
       --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-accent-transparent-color);
+      --_text-color: var(--semantics-buttons-accent-transparent-content-color);
     }
 
     :host([variant="accent-transparent"]) .button:hover {
-      --_bg-color: var(--primitives-color-accent-15);
+      --_bg-color: var(--primitives-color-accent-150);
     }
 
     /* Variant: neutral-transparent */
     :host([variant="neutral-transparent"]) .button {
       --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-neutral-tinted-color);
+      --_text-color: var(--semantics-buttons-neutral-tinted-content-color);
     }
 
     :host([variant="neutral-transparent"]) .button:hover {
@@ -181,17 +181,17 @@ export class RRButton extends LitElement {
 
     /* Variant: danger-tinted */
     :host([variant="danger-tinted"]) .button {
-      --_bg-color: var(--primitives-color-danger-15);
+      --_bg-color: var(--primitives-color-danger-150);
       --_text-color: var(--primitives-color-danger-100);
     }
 
     :host([variant="danger-tinted"]) .button:hover {
-      --_bg-color: var(--primitives-color-danger-30);
+      --_bg-color: var(--primitives-color-danger-300);
     }
 
     /* Focus state */
     .button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 

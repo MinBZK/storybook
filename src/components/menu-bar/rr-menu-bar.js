@@ -452,7 +452,7 @@ export class RRMenuBar extends RRBaseComponent {
         align-items: stretch;
         gap: 0;
         /* Bottom border per Figma default-global-menu-bar */
-        border-bottom: var(--rr-menu-bar-border, var(--semantics-divider-thickness) solid var(--semantics-divider-color));
+        border-bottom: var(--rr-menu-bar-border, var(--semantics-dividers-thickness) solid var(--semantics-dividers-color));
         position: relative;
         width: 100%;
         min-width: 0;
@@ -486,7 +486,7 @@ export class RRMenuBar extends RRBaseComponent {
       }
 
       .overflow-button:focus-visible {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+        outline: var(--semantics-focus-rings-center-thickness, 2px) solid var(--semantics-focus-rings-center-color, #0f172a);
         outline-offset: -2px;
       }
 
@@ -509,8 +509,8 @@ export class RRMenuBar extends RRBaseComponent {
         margin-top: 4px;
         min-width: 200px;
         background: var(--primitives-color-neutral-0, #ffffff);
-        border: 1px solid var(--semantics-divider-color, #e2e8f0);
-        border-radius: var(--semantics-controls-m-corner-radius, 7px);
+        border: 1px solid var(--semantics-dividers-color, #e2e8f0);
+        border-radius: var(--semantics-controls-md-corner-radius, 7px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         z-index: 10000;
         padding: var(--primitives-space-4, 4px) 0;
@@ -538,7 +538,7 @@ export class RRMenuBar extends RRBaseComponent {
       }
 
       .overflow-item:focus-visible {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+        outline: var(--semantics-focus-rings-center-thickness, 2px) solid var(--semantics-focus-rings-center-color, #0f172a);
         outline-offset: -2px;
       }
     `;

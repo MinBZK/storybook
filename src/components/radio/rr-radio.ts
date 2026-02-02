@@ -92,8 +92,8 @@ export class RRRadio extends LitElement {
 
     /* Size: S (32px) */
     :host([size='s']) .radio {
-      width: var(--semantics-controls-s-min-size);
-      height: var(--semantics-controls-s-min-size);
+      width: var(--semantics-controls-sm-min-size);
+      height: var(--semantics-controls-sm-min-size);
     }
 
     :host([size='s']) .radio__inner {
@@ -105,8 +105,8 @@ export class RRRadio extends LitElement {
     /* Size: M (44px - default) */
     :host([size='m']) .radio,
     :host(:not([size])) .radio {
-      width: var(--semantics-controls-m-min-size);
-      height: var(--semantics-controls-m-min-size);
+      width: var(--semantics-controls-md-min-size);
+      height: var(--semantics-controls-md-min-size);
     }
 
     :host([size='m']) .radio__inner,
@@ -155,7 +155,7 @@ export class RRRadio extends LitElement {
     }
 
     :host(:focus-visible) .radio {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 
