@@ -70,7 +70,8 @@ export class RRToggleButton extends LitElement {
     /* Size: XS */
     :host([size="xs"]) .button {
       min-height: var(--semantics-controls-xs-min-size);
-      padding: var(--primitives-space-4) var(--primitives-space-12);
+      /* Horizontal padding includes compensation for Figma's spacer gaps (2px × 2) */
+      padding: var(--primitives-space-4) var(--primitives-space-14);
       font: var(--semantics-buttons-xs-font);
       border-radius: var(--semantics-controls-xs-corner-radius);
       gap: var(--primitives-space-2);
@@ -79,7 +80,8 @@ export class RRToggleButton extends LitElement {
     /* Size: S */
     :host([size="s"]) .button {
       min-height: var(--semantics-controls-sm-min-size);
-      padding: var(--primitives-space-6);
+      /* Horizontal padding includes compensation for Figma's spacer gaps (2px × 2) */
+      padding: var(--primitives-space-6) var(--primitives-space-8);
       font: var(--semantics-buttons-sm-font);
       border-radius: var(--semantics-controls-sm-corner-radius);
       gap: var(--primitives-space-2);
@@ -89,7 +91,8 @@ export class RRToggleButton extends LitElement {
     :host([size="m"]) .button,
     :host(:not([size])) .button {
       min-height: var(--semantics-controls-md-min-size);
-      padding: var(--primitives-space-8) var(--primitives-space-10);
+      /* Horizontal padding includes compensation for Figma's spacer gaps (4px × 2) */
+      padding: var(--primitives-space-8) var(--primitives-space-14);
       font: var(--semantics-buttons-md-font);
       border-radius: var(--semantics-controls-md-corner-radius);
       gap: var(--primitives-space-4);
