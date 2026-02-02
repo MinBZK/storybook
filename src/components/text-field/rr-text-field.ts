@@ -94,12 +94,13 @@ export class RRTextField extends LitElement {
       width: 100%;
       box-sizing: border-box;
 
-      /* Typography - font shorthand includes line-height: 1 */
+      /* Typography */
       font: var(--semantics-input-fields-md-text);
       color: var(--rr-text-field-text-color, var(--semantics-content-color));
 
-      /* Layout - height matches container, flex centering handles vertical alignment */
-      height: var(--semantics-controls-md-min-size);
+      /* Layout - height accounts for container border (44px - 2*2px = 40px) */
+      height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness));
+      line-height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness));
     }
 
     .text-field__native::placeholder {
@@ -111,7 +112,7 @@ export class RRTextField extends LitElement {
       right: 0;
       top: 2px;
       width: 10px;
-      height: calc(var(--semantics-controls-md-min-size) - 4px);
+      height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness) - 4px);
       background: linear-gradient(-90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
       pointer-events: none;
     }
