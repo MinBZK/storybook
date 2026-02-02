@@ -51,7 +51,7 @@ export class RRToggleButton extends LitElement {
       justify-content: center;
 
       /* Typography */
-      font-weight: var(--semantics-buttons-font-weight);
+      /* font-weight is included in font shorthand token */
       text-decoration: none;
       white-space: nowrap;
 
@@ -59,8 +59,8 @@ export class RRToggleButton extends LitElement {
       transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
 
       /* Default state - using component tokens */
-      background-color: var(--rr-toggle-button-background-color, var(--components-toggle-button-background-color));
-      color: var(--rr-toggle-button-content-color, var(--components-toggle-button-content-color));
+      background-color: var(--rr-toggle-button-background-color, var(--semantics-buttons-neutral-tinted-background-color));
+      color: var(--rr-toggle-button-content-color, var(--semantics-buttons-neutral-tinted-content-color));
     }
 
     .button:active:not(:disabled) {
@@ -70,52 +70,55 @@ export class RRToggleButton extends LitElement {
     /* Size: XS */
     :host([size="xs"]) .button {
       min-height: var(--semantics-controls-xs-min-size);
-      padding: var(--primitives-space-4) var(--primitives-space-12);
-      font: var(--components-button-xs-font);
+      /* Horizontal padding includes compensation for Figma's spacer gaps (2px × 2) */
+      padding: var(--primitives-space-4) var(--primitives-space-14);
+      font: var(--semantics-buttons-xs-font);
       border-radius: var(--semantics-controls-xs-corner-radius);
       gap: var(--primitives-space-2);
     }
 
     /* Size: S */
     :host([size="s"]) .button {
-      min-height: var(--semantics-controls-s-min-size);
-      padding: var(--primitives-space-6);
-      font: var(--components-button-s-font);
-      border-radius: var(--semantics-controls-s-corner-radius);
+      min-height: var(--semantics-controls-sm-min-size);
+      /* Horizontal padding includes compensation for Figma's spacer gaps (2px × 2) */
+      padding: var(--primitives-space-6) var(--primitives-space-8);
+      font: var(--semantics-buttons-sm-font);
+      border-radius: var(--semantics-controls-sm-corner-radius);
       gap: var(--primitives-space-2);
     }
 
     /* Size: M (default) */
     :host([size="m"]) .button,
     :host(:not([size])) .button {
-      min-height: var(--semantics-controls-m-min-size);
-      padding: var(--primitives-space-8) var(--primitives-space-10);
-      font: var(--components-button-m-font);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      min-height: var(--semantics-controls-md-min-size);
+      /* Horizontal padding includes compensation for Figma's spacer gaps (4px × 2) */
+      padding: var(--primitives-space-8) var(--primitives-space-14);
+      font: var(--semantics-buttons-md-font);
+      border-radius: var(--semantics-controls-md-corner-radius);
       gap: var(--primitives-space-4);
     }
 
     /* Hover state */
     .button:hover:not(:disabled) {
-      background-color: var(--components-toggle-button-is-hovered-background-color);
-      color: var(--components-toggle-button-is-hovered-content-color);
+      background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+      color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
     }
 
     /* Selected state */
     :host([selected]) .button {
-      background-color: var(--components-toggle-button-is-selected-background-color);
-      color: var(--components-toggle-button-is-selected-content-color);
+      background-color: var(--semantics-buttons-neutral-tinted-is-selected-backround-color);
+      color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
     }
 
     /* Selected hover state - stays selected color on hover */
     :host([selected]) .button:hover:not(:disabled) {
       background-color: var(--primitives-color-accent-75);
-      color: var(--components-toggle-button-is-selected-content-color);
+      color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
     }
 
     /* Focus state */
     .button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 

@@ -244,7 +244,7 @@ export class RRRadio extends RRBaseComponent {
 
       :host([disabled]) {
         cursor: not-allowed;
-        opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+        opacity: calc(var(--primitives-opacity-disabled) / 100);
       }
 
       /* The visual radio button */
@@ -259,11 +259,11 @@ export class RRRadio extends RRBaseComponent {
         border-radius: 50%;
 
         /* Border */
-        border: var(--components-radio-button-border-thickness, 2px) solid
-                var(--rr-radio-border-color, var(--components-radio-button-border-color, #475569));
+        border: var(--components-radio-button-border-thickness) solid
+                var(--rr-radio-border-color, var(--components-radio-button-border-color));
 
         /* Background */
-        background-color: var(--rr-radio-background-color, var(--components-radio-button-background-color, #ffffff));
+        background-color: var(--rr-radio-background-color, var(--components-radio-button-background-color));
 
         /* Transition */
         transition: background-color 0.15s ease, border-color 0.15s ease;
@@ -271,48 +271,48 @@ export class RRRadio extends RRBaseComponent {
 
       /* Size: XS (24px) */
       :host([size="xs"]) .radio {
-        width: var(--semantics-controls-xs-min-size, 24px);
-        height: var(--semantics-controls-xs-min-size, 24px);
+        width: var(--semantics-controls-xs-min-size);
+        height: var(--semantics-controls-xs-min-size);
       }
 
       :host([size="xs"]) .radio-inner {
         /* Inner dot is ~33% of outer radio size (8px / 24px = 0.33) */
-        width: calc(var(--semantics-controls-xs-min-size, 24px) * 0.33);
-        height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.33);
+        width: calc(var(--semantics-controls-xs-min-size) * 0.33);
+        height: calc(var(--semantics-controls-xs-min-size) * 0.33);
       }
 
       /* Size: S (32px) */
       :host([size="s"]) .radio {
-        width: var(--semantics-controls-s-min-size, 32px);
-        height: var(--semantics-controls-s-min-size, 32px);
+        width: var(--semantics-controls-sm-min-size);
+        height: var(--semantics-controls-sm-min-size);
       }
 
       :host([size="s"]) .radio-inner {
         /* Inner dot is ~37.5% of outer radio size (12px / 32px = 0.375) */
-        width: calc(var(--semantics-controls-s-min-size, 32px) * 0.375);
-        height: calc(var(--semantics-controls-s-min-size, 32px) * 0.375);
+        width: calc(var(--semantics-controls-sm-min-size) * 0.375);
+        height: calc(var(--semantics-controls-sm-min-size) * 0.375);
       }
 
       /* Size: M (44px - default) */
       :host([size="m"]) .radio,
       :host(:not([size])) .radio {
-        width: var(--semantics-controls-m-min-size, 44px);
-        height: var(--semantics-controls-m-min-size, 44px);
+        width: var(--semantics-controls-md-min-size);
+        height: var(--semantics-controls-md-min-size);
       }
 
       :host([size="m"]) .radio-inner,
       :host(:not([size])) .radio-inner {
         /* Inner dot is ~36% of outer radio size (16px / 44px = 0.36) */
-        width: calc(var(--semantics-controls-m-min-size, 44px) * 0.36);
-        height: calc(var(--semantics-controls-m-min-size, 44px) * 0.36);
+        width: calc(var(--semantics-controls-md-min-size) * 0.36);
+        height: calc(var(--semantics-controls-md-min-size) * 0.36);
       }
 
       /* Inner dot (only visible when checked) */
       .radio-inner {
         border-radius: 50%;
-        background-color: var(--components-radio-button-is-selected-inner-shape-border-color, #ffffff);
-        border: var(--components-radio-button-is-selected-inner-shape-border-thickness, 2px) solid
-                var(--components-radio-button-is-selected-inner-shape-border-color, #ffffff);
+        background-color: var(--components-radio-button-is-selected-inner-shape-border-color);
+        border: var(--components-radio-button-is-selected-inner-shape-border-thickness) solid
+                var(--components-radio-button-is-selected-inner-shape-border-color);
         opacity: 0;
         transform: scale(0);
         transition: opacity 0.15s ease, transform 0.15s ease;
@@ -320,8 +320,8 @@ export class RRRadio extends RRBaseComponent {
 
       /* Checked state */
       :host([checked]) .radio {
-        background-color: var(--components-radio-button-is-selected-background-color, #154273);
-        border-color: var(--components-radio-button-is-selected-background-color, #154273);
+        background-color: var(--components-radio-button-is-selected-background-color);
+        border-color: var(--components-radio-button-is-selected-background-color);
       }
 
       :host([checked]) .radio-inner {
@@ -331,19 +331,19 @@ export class RRRadio extends RRBaseComponent {
 
       /* Focus state */
       :host(:focus-visible) .radio {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #000000);
+        outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
         outline-offset: 2px;
       }
 
       /* Hover state (only when not disabled)
          Note: Using primitive token as no semantic radio hover token exists in design system */
       :host(:not([disabled]):hover) .radio {
-        border-color: var(--primitives-color-accent-75, #4F7196);
+        border-color: var(--primitives-color-accent-75);
       }
 
       :host(:not([disabled])[checked]:hover) .radio {
-        background-color: var(--primitives-color-accent-75, #4F7196);
-        border-color: var(--primitives-color-accent-75, #4F7196);
+        background-color: var(--primitives-color-accent-75);
+        border-color: var(--primitives-color-accent-75);
       }
 
       /* Hidden native input for form integration */

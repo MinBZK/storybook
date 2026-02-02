@@ -82,22 +82,22 @@ export class RRSwitch extends LitElement {
     /* Size: M (default) - Figma specs: 56x32px */
     :host([size='m']) .switch,
     :host(:not([size])) .switch {
-      width: calc(var(--semantics-controls-s-min-size) * 1.75);
-      height: var(--semantics-controls-s-min-size);
-      border-radius: calc(var(--semantics-controls-s-min-size) / 2);
+      width: calc(var(--semantics-controls-sm-min-size) * 1.75);
+      height: var(--semantics-controls-sm-min-size);
+      border-radius: calc(var(--semantics-controls-sm-min-size) / 2);
       padding: 2px;
     }
 
     :host([size='m']) .switch__thumb,
     :host(:not([size])) .switch__thumb {
-      width: calc(var(--semantics-controls-s-min-size) - 8px);
-      height: calc(var(--semantics-controls-s-min-size) - 8px);
+      width: calc(var(--semantics-controls-sm-min-size) - 8px);
+      height: calc(var(--semantics-controls-sm-min-size) - 8px);
     }
 
     :host([size='m'][checked]) .switch__thumb,
     :host(:not([size])[checked]) .switch__thumb {
       transform: translateX(
-        calc((var(--semantics-controls-s-min-size) * 1.75) - var(--semantics-controls-s-min-size))
+        calc((var(--semantics-controls-sm-min-size) * 1.75) - var(--semantics-controls-sm-min-size))
       );
     }
 
@@ -114,7 +114,7 @@ export class RRSwitch extends LitElement {
 
     /* Focus state */
     :host(:focus-visible) .switch {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 

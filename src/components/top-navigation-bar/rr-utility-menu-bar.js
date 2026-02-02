@@ -191,7 +191,7 @@ export class RRUtilityMenuBar extends RRBaseComponent {
       :host {
         display: flex;
         align-items: center;
-        gap: var(--primitives-space-8, 8px);
+        gap: var(--primitives-space-8);
       }
 
       :host([hidden]) {
@@ -205,31 +205,31 @@ export class RRUtilityMenuBar extends RRBaseComponent {
       .container {
         display: flex;
         align-items: center;
-        gap: var(--primitives-space-8, 8px);
+        gap: var(--primitives-space-8);
       }
 
       /* Utility buttons */
       .utility-button {
         display: flex;
         align-items: center;
-        gap: var(--primitives-space-8, 8px);
-        padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
+        gap: var(--primitives-space-8);
+        padding: var(--primitives-space-8) var(--primitives-space-16);
         background: none;
         border: none;
-        color: var(--primitives-color-accent-100, #154273);
-        font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
+        color: var(--primitives-color-accent-100);
+        font: var(--components-menu-bar-menu-item-font);
         cursor: pointer;
-        border-radius: var(--semantics-controls-m-corner-radius, 7px);
+        border-radius: var(--semantics-controls-md-corner-radius);
         transition: background-color 0.15s ease;
         white-space: nowrap;
       }
 
       .utility-button:hover {
-        background-color: var(--primitives-color-neutral-100, #f1f5f9);
+        background-color: var(--primitives-color-neutral-100);
       }
 
       .utility-button:focus-visible {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+        outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
         outline-offset: 2px;
       }
 
@@ -263,7 +263,7 @@ export class RRUtilityMenuBar extends RRBaseComponent {
 
       /* Size adjustments */
       :host([container="s"]) .utility-button {
-        padding: var(--primitives-space-8, 8px);
+        padding: var(--primitives-space-8);
       }
     `;
   }

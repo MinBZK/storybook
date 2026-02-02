@@ -25,19 +25,19 @@ export class RRDivider extends LitElement {
     }
 
     .divider {
-      background-color: var(--semantics-divider-color);
+      background-color: var(--semantics-dividers-color);
     }
 
     /* Horizontal orientation (default) */
     :host([orientation='horizontal']) .divider,
     :host(:not([orientation])) .divider {
       width: 100%;
-      height: var(--semantics-divider-thickness);
+      height: var(--semantics-dividers-thickness);
     }
 
     /* Vertical orientation */
     :host([orientation='vertical']) .divider {
-      width: var(--semantics-divider-thickness);
+      width: var(--semantics-dividers-thickness);
       height: 100%;
     }
 

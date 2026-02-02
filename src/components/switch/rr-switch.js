@@ -148,7 +148,7 @@ export class RRSwitch extends RRBaseComponent {
 
       :host([disabled]) {
         cursor: not-allowed;
-        opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
+        opacity: calc(var(--primitives-opacity-disabled) / 100);
       }
 
       .switch-container {
@@ -172,8 +172,8 @@ export class RRSwitch extends RRBaseComponent {
         display: inline-flex;
         align-items: center;
         box-sizing: border-box;
-        background-color: var(--rr-switch-background-color, var(--components-switch-background-color, #ffffff));
-        border: var(--components-switch-border-thickness, 2px) solid var(--components-switch-border-color, #475569);
+        background-color: var(--rr-switch-background-color, var(--components-switch-background-color));
+        border: var(--components-switch-border-thickness) solid var(--components-switch-border-color);
         transition: background-color 0.2s ease, border-color 0.2s ease;
         cursor: inherit;
       }
@@ -184,83 +184,83 @@ export class RRSwitch extends RRBaseComponent {
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
-        background-color: var(--rr-switch-thumb-color, var(--components-switch-thumb-background-color, #ffffff));
-        border: var(--components-switch-thumb-border-thickness, 2px) solid var(--components-switch-thumb-border-color, #475569);
+        background-color: var(--rr-switch-thumb-color, var(--components-switch-thumb-background-color));
+        border: var(--components-switch-thumb-border-thickness) solid var(--components-switch-thumb-border-color);
         transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
         will-change: transform;
       }
 
       /* Size: XS */
       :host([size="xs"]) .switch {
-        width: calc(var(--semantics-controls-xs-min-size, 24px) * 1.6);
-        height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.833);
-        border-radius: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
+        width: calc(var(--semantics-controls-xs-min-size) * 1.6);
+        height: calc(var(--semantics-controls-xs-min-size) * 0.833);
+        border-radius: calc(var(--semantics-controls-xs-min-size) * 0.5);
         padding: 2px;
       }
 
       :host([size="xs"]) .thumb {
-        width: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
-        height: calc(var(--semantics-controls-xs-min-size, 24px) * 0.5);
+        width: calc(var(--semantics-controls-xs-min-size) * 0.5);
+        height: calc(var(--semantics-controls-xs-min-size) * 0.5);
         border-radius: 50%; /* Circular thumb per Figma */
       }
 
       :host([size="xs"][checked]) .thumb {
-        transform: translateX(calc(var(--semantics-controls-xs-min-size, 24px) * 0.5));
+        transform: translateX(calc(var(--semantics-controls-xs-min-size) * 0.5));
       }
 
       /* Size: S - Figma specs: 44x24px */
       :host([size="s"]) .switch {
-        width: calc(var(--semantics-controls-xs-min-size, 24px) * 1.833);
-        height: var(--semantics-controls-xs-min-size, 24px);
-        border-radius: calc(var(--semantics-controls-xs-min-size, 24px) / 2);
+        width: calc(var(--semantics-controls-xs-min-size) * 1.833);
+        height: var(--semantics-controls-xs-min-size);
+        border-radius: calc(var(--semantics-controls-xs-min-size) / 2);
         padding: 2px;
       }
 
       :host([size="s"]) .thumb {
-        width: calc(var(--semantics-controls-xs-min-size, 24px) - 8px);
-        height: calc(var(--semantics-controls-xs-min-size, 24px) - 8px);
+        width: calc(var(--semantics-controls-xs-min-size) - 8px);
+        height: calc(var(--semantics-controls-xs-min-size) - 8px);
         border-radius: 50%; /* Circular thumb per Figma */
       }
 
       :host([size="s"][checked]) .thumb {
-        transform: translateX(calc((var(--semantics-controls-xs-min-size, 24px) * 1.833) - var(--semantics-controls-xs-min-size, 24px)));
+        transform: translateX(calc((var(--semantics-controls-xs-min-size) * 1.833) - var(--semantics-controls-xs-min-size)));
       }
 
       /* Size: M (default) - Figma specs: 56x32px */
       :host([size="m"]) .switch,
       :host(:not([size])) .switch {
-        width: calc(var(--semantics-controls-s-min-size, 32px) * 1.75);
-        height: var(--semantics-controls-s-min-size, 32px);
-        border-radius: calc(var(--semantics-controls-s-min-size, 32px) / 2);
+        width: calc(var(--semantics-controls-sm-min-size) * 1.75);
+        height: var(--semantics-controls-sm-min-size);
+        border-radius: calc(var(--semantics-controls-sm-min-size) / 2);
         padding: 2px;
       }
 
       :host([size="m"]) .thumb,
       :host(:not([size])) .thumb {
-        width: calc(var(--semantics-controls-s-min-size, 32px) - 8px);
-        height: calc(var(--semantics-controls-s-min-size, 32px) - 8px);
+        width: calc(var(--semantics-controls-sm-min-size) - 8px);
+        height: calc(var(--semantics-controls-sm-min-size) - 8px);
         border-radius: 50%; /* Circular thumb per Figma */
       }
 
       :host([size="m"][checked]) .thumb,
       :host(:not([size])[checked]) .thumb {
-        transform: translateX(calc((var(--semantics-controls-s-min-size, 32px) * 1.75) - var(--semantics-controls-s-min-size, 32px)));
+        transform: translateX(calc((var(--semantics-controls-sm-min-size) * 1.75) - var(--semantics-controls-sm-min-size)));
       }
 
       /* Checked state */
       :host([checked]) .switch {
-        background-color: var(--components-switch-is-selected-background-color, #154273);
-        border-color: var(--components-switch-is-selected-background-color, #154273);
+        background-color: var(--components-switch-is-selected-background-color);
+        border-color: var(--components-switch-is-selected-background-color);
       }
 
       :host([checked]) .thumb {
-        background-color: var(--components-switch-is-selected-thumb-background-color, #ffffff);
-        border-color: var(--components-switch-is-selected-background-color, #154273);
+        background-color: var(--components-switch-is-selected-thumb-background-color);
+        border-color: var(--components-switch-is-selected-background-color);
       }
 
       /* Focus state */
       :host(:focus-visible) .switch {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+        outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
         outline-offset: 2px;
       }
 

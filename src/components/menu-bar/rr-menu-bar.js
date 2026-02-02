@@ -428,22 +428,22 @@ export class RRMenuBar extends RRBaseComponent {
       }
 
       .title {
-        padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
+        padding: var(--primitives-space-8) var(--primitives-space-16);
         margin: 0;
       }
 
       /* Title size variants */
       :host([size="s"]) .title {
-        font: var(--components-menu-bar-title-item-s-font, 550 18px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-s-font);
       }
 
       :host([size="m"]) .title,
       :host(:not([size])) .title {
-        font: var(--components-menu-bar-title-item-m-font, 550 20px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-m-font);
       }
 
       :host([size="l"]) .title {
-        font: var(--components-menu-bar-title-item-l-font, 550 23px/1.125 RijksSansVF, system-ui);
+        font: var(--components-menu-bar-title-item-l-font);
       }
 
       .menu {
@@ -452,7 +452,7 @@ export class RRMenuBar extends RRBaseComponent {
         align-items: stretch;
         gap: 0;
         /* Bottom border per Figma default-global-menu-bar */
-        border-bottom: var(--rr-menu-bar-border, var(--semantics-divider-thickness) solid var(--semantics-divider-color));
+        border-bottom: var(--rr-menu-bar-border, var(--semantics-dividers-thickness) solid var(--semantics-dividers-color));
         position: relative;
         width: 100%;
         min-width: 0;
@@ -471,22 +471,22 @@ export class RRMenuBar extends RRBaseComponent {
       .overflow-button {
         display: none;
         align-items: center;
-        gap: var(--primitives-space-4, 4px);
-        padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
+        gap: var(--primitives-space-4);
+        padding: var(--primitives-space-8) var(--primitives-space-16);
         background: none;
         border: none;
-        color: var(--components-menu-bar-menu-item-color, #154273);
-        font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
+        color: var(--components-menu-bar-menu-item-color);
+        font: var(--components-menu-bar-menu-item-font);
         cursor: pointer;
         white-space: nowrap;
       }
 
       .overflow-button:hover {
-        background-color: var(--primitives-color-neutral-100, #f1f5f9);
+        background-color: var(--primitives-color-neutral-100);
       }
 
       .overflow-button:focus-visible {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+        outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
         outline-offset: -2px;
       }
 
@@ -508,12 +508,12 @@ export class RRMenuBar extends RRBaseComponent {
         right: 0;
         margin-top: 4px;
         min-width: 200px;
-        background: var(--primitives-color-neutral-0, #ffffff);
-        border: 1px solid var(--semantics-divider-color, #e2e8f0);
-        border-radius: var(--semantics-controls-m-corner-radius, 7px);
+        background: var(--primitives-color-neutral-0);
+        border: 1px solid var(--semantics-dividers-color);
+        border-radius: var(--semantics-controls-md-corner-radius);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         z-index: 10000;
-        padding: var(--primitives-space-4, 4px) 0;
+        padding: var(--primitives-space-4) 0;
       }
 
       .overflow-dropdown.open {
@@ -523,22 +523,22 @@ export class RRMenuBar extends RRBaseComponent {
       .overflow-item {
         display: block;
         width: 100%;
-        padding: var(--primitives-space-8, 8px) var(--primitives-space-16, 16px);
+        padding: var(--primitives-space-8) var(--primitives-space-16);
         background: none;
         border: none;
-        color: var(--components-menu-bar-menu-item-color, #154273);
-        font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
+        color: var(--components-menu-bar-menu-item-color);
+        font: var(--components-menu-bar-menu-item-font);
         text-align: left;
         cursor: pointer;
         white-space: nowrap;
       }
 
       .overflow-item:hover {
-        background-color: var(--primitives-color-neutral-100, #f1f5f9);
+        background-color: var(--primitives-color-neutral-100);
       }
 
       .overflow-item:focus-visible {
-        outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+        outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
         outline-offset: -2px;
       }
     `;

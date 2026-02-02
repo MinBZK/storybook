@@ -110,7 +110,7 @@ const ACCESSIBILITY_CSS = `
   }
 
   :focus-visible {
-    outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+    outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
     outline-offset: 2px;
   }
 `;

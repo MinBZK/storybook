@@ -115,7 +115,7 @@ export class RRListItem extends LitElement {
       left: 0;
       right: 0;
       height: 1px;
-      background-color: var(--semantics-divider-color);
+      background-color: var(--semantics-dividers-color);
     }
 
     /* Hide divider when selected */
@@ -138,7 +138,7 @@ export class RRListItem extends LitElement {
 
     /* Accessibility: focus state */
     :host(:focus-visible) {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
   `;

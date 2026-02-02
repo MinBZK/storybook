@@ -113,13 +113,13 @@ export class RRUtilityMenuBar extends LitElement {
     .utility-button {
       display: flex;
       align-items: center;
-      gap: var(--primitives-space-4, 4px);
-      padding: 0 var(--primitives-space-8, 8px);
+      gap: var(--primitives-space-4);
+      padding: 0 var(--primitives-space-8);
       height: 44px;
       background: none;
       border: none;
-      color: var(--components-menu-bar-menu-item-color, #154273);
-      font: var(--components-menu-bar-menu-item-font, 550 18px/1.125 RijksSansVF, system-ui);
+      color: var(--components-menu-bar-menu-item-color);
+      font: var(--components-menu-bar-menu-item-font);
       cursor: pointer;
       border-radius: 0;
       transition: background-color 0.15s ease;
@@ -127,11 +127,11 @@ export class RRUtilityMenuBar extends LitElement {
     }
 
     .utility-button:hover {
-      background-color: var(--primitives-color-neutral-100, #f1f5f9);
+      background-color: var(--primitives-color-neutral-100);
     }
 
     .utility-button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness, 2px) solid var(--semantics-focus-ring-color, #0f172a);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 
@@ -165,7 +165,7 @@ export class RRUtilityMenuBar extends LitElement {
 
     /* Size adjustments */
     :host([container='s']) .utility-button {
-      padding: var(--primitives-space-8, 8px);
+      padding: var(--primitives-space-8);
     }
 
     /* Accessibility: Reduced motion */
