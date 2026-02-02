@@ -94,13 +94,12 @@ export class RRTextField extends LitElement {
       width: 100%;
       box-sizing: border-box;
 
-      /* Typography */
+      /* Typography - font shorthand includes line-height: 1 */
       font: var(--semantics-input-fields-text);
       color: var(--rr-text-field-text-color, var(--primitives-color-text));
 
-      /* Layout */
+      /* Layout - height matches container, flex centering handles vertical alignment */
       height: var(--semantics-controls-m-min-size);
-      line-height: var(--semantics-controls-m-min-size);
     }
 
     .text-field__native::placeholder {
@@ -229,19 +228,23 @@ export class RRTextField extends LitElement {
 
   private _renderValidationIcon() {
     if (this.validation === 'valid') {
+      // Outline check-circle icon from src/assets/icons/check-circle.svg
       return html`
         <div class="text-field__validation-icon">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM16.7071 9.88664L11 15.5938L7.29289 11.8866L8.70711 10.4724L11 12.7653L15.2929 8.47243L16.7071 9.88664Z"/>
           </svg>
         </div>
       `;
     }
     if (this.validation === 'invalid') {
+      // Outline exclamation-circle icon from src/assets/icons/exclamation-circle.svg
       return html`
         <div class="text-field__validation-icon">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            <path d="M12 15C12.6904 15 13.25 15.5596 13.25 16.25C13.25 16.9404 12.6904 17.5 12 17.5C11.3096 17.5 10.75 16.9404 10.75 16.25C10.75 15.5596 11.3096 15 12 15Z"/>
+            <path d="M13 13.5H11V6.5H13V13.5Z"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z"/>
           </svg>
         </div>
       `;
