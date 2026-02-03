@@ -44,9 +44,9 @@ export class RRInputFieldButton extends LitElement {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: var(--semantics-controls-sm-min-size);
-      height: var(--semantics-controls-sm-min-size);
-      border-radius: var(--semantics-controls-sm-corner-radius);
+      width: var(--semantics-controls-s-min-size);
+      height: var(--semantics-controls-s-min-size);
+      border-radius: var(--semantics-controls-s-corner-radius);
 
       /* Background - neutral tinted style */
       background-color: var(--primitives-color-neutral-200);

@@ -88,21 +88,21 @@ export class RRButton extends LitElement {
 
     /* Size: S */
     :host([size="s"]) .button {
-      min-height: var(--semantics-controls-sm-min-size);
+      min-height: var(--semantics-controls-s-min-size);
       /* Figma: padding 6px 8px (top/bottom 6, left/right 8) */
       padding: var(--primitives-space-6) var(--primitives-space-8);
       font: var(--semantics-buttons-sm-font);
-      border-radius: var(--semantics-controls-sm-corner-radius);
+      border-radius: var(--semantics-controls-s-corner-radius);
       gap: var(--primitives-space-2);
     }
 
     /* Size: M (default) */
     :host([size="m"]) .button,
     :host(:not([size])) .button {
-      min-height: var(--semantics-controls-md-min-size);
+      min-height: var(--semantics-controls-m-min-size);
       padding: var(--primitives-space-12);
       font: var(--semantics-buttons-md-font);
-      border-radius: var(--semantics-controls-md-corner-radius);
+      border-radius: var(--semantics-controls-m-corner-radius);
       gap: var(--primitives-space-4);
     }
 

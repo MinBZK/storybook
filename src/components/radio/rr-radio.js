@@ -283,28 +283,28 @@ export class RRRadio extends RRBaseComponent {
 
       /* Size: S (32px) */
       :host([size="s"]) .radio {
-        width: var(--semantics-controls-sm-min-size);
-        height: var(--semantics-controls-sm-min-size);
+        width: var(--semantics-controls-s-min-size);
+        height: var(--semantics-controls-s-min-size);
       }
 
       :host([size="s"]) .radio-inner {
         /* Inner dot is ~37.5% of outer radio size (12px / 32px = 0.375) */
-        width: calc(var(--semantics-controls-sm-min-size) * 0.375);
-        height: calc(var(--semantics-controls-sm-min-size) * 0.375);
+        width: calc(var(--semantics-controls-s-min-size) * 0.375);
+        height: calc(var(--semantics-controls-s-min-size) * 0.375);
       }
 
       /* Size: M (44px - default) */
       :host([size="m"]) .radio,
       :host(:not([size])) .radio {
-        width: var(--semantics-controls-md-min-size);
-        height: var(--semantics-controls-md-min-size);
+        width: var(--semantics-controls-m-min-size);
+        height: var(--semantics-controls-m-min-size);
       }
 
       :host([size="m"]) .radio-inner,
       :host(:not([size])) .radio-inner {
         /* Inner dot is ~36% of outer radio size (16px / 44px = 0.36) */
-        width: calc(var(--semantics-controls-md-min-size) * 0.36);
-        height: calc(var(--semantics-controls-md-min-size) * 0.36);
+        width: calc(var(--semantics-controls-m-min-size) * 0.36);
+        height: calc(var(--semantics-controls-m-min-size) * 0.36);
       }
 
       /* Inner dot (only visible when checked) */

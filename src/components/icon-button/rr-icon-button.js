@@ -155,21 +155,21 @@ export class RRIconButton extends RRBaseComponent {
 
       /* Size: S - Square 32x32 */
       :host([size="s"]) .button {
-        width: var(--semantics-controls-sm-min-size);
-        height: var(--semantics-controls-sm-min-size);
-        min-width: var(--semantics-controls-sm-min-size);
-        min-height: var(--semantics-controls-sm-min-size);
-        border-radius: var(--semantics-controls-sm-corner-radius);
+        width: var(--semantics-controls-s-min-size);
+        height: var(--semantics-controls-s-min-size);
+        min-width: var(--semantics-controls-s-min-size);
+        min-height: var(--semantics-controls-s-min-size);
+        border-radius: var(--semantics-controls-s-corner-radius);
       }
 
       /* Size: M - Square 44x44 (default) */
       :host([size="m"]) .button,
       :host(:not([size])) .button {
-        width: var(--semantics-controls-md-min-size);
-        height: var(--semantics-controls-md-min-size);
-        min-width: var(--semantics-controls-md-min-size);
-        min-height: var(--semantics-controls-md-min-size);
-        border-radius: var(--semantics-controls-md-corner-radius);
+        width: var(--semantics-controls-m-min-size);
+        height: var(--semantics-controls-m-min-size);
+        min-width: var(--semantics-controls-m-min-size);
+        min-height: var(--semantics-controls-m-min-size);
+        border-radius: var(--semantics-controls-m-corner-radius);
       }
 
       /* Variant: accent-filled (default) */

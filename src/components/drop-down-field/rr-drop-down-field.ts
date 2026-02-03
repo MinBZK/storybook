@@ -52,8 +52,8 @@ export class RRDropDownField extends LitElement {
     /* Size: MD (default) */
     :host([size="md"]) .drop-down-field,
     :host(:not([size])) .drop-down-field {
-      min-height: var(--semantics-controls-md-min-size);
-      border-radius: var(--semantics-controls-md-corner-radius);
+      min-height: var(--semantics-controls-m-min-size);
+      border-radius: var(--semantics-controls-m-corner-radius);
     }
 
     :host([size="md"]) .drop-down-field__value,
@@ -68,7 +68,7 @@ export class RRDropDownField extends LitElement {
 
     :host([size="md"]) .drop-down-field__picker-icon,
     :host(:not([size])) .drop-down-field__picker-icon {
-      width: var(--semantics-controls-md-min-size);
+      width: var(--semantics-controls-m-min-size);
     }
 
     :host([size="md"]) .drop-down-field__picker-icon svg,
@@ -79,13 +79,13 @@ export class RRDropDownField extends LitElement {
 
     :host([size="md"]) .drop-down-field__input-shade,
     :host(:not([size])) .drop-down-field__input-shade {
-      height: calc(var(--semantics-controls-md-min-size) - 4px);
+      height: calc(var(--semantics-controls-m-min-size) - 4px);
     }
 
     /* Size: SM */
     :host([size="sm"]) .drop-down-field {
-      min-height: var(--semantics-controls-sm-min-size);
-      border-radius: var(--semantics-controls-sm-corner-radius);
+      min-height: var(--semantics-controls-s-min-size);
+      border-radius: var(--semantics-controls-s-corner-radius);
     }
 
     :host([size="sm"]) .drop-down-field__value {
@@ -101,7 +101,7 @@ export class RRDropDownField extends LitElement {
     }
 
     :host([size="sm"]) .drop-down-field__picker-icon {
-      width: var(--semantics-controls-sm-min-size);
+      width: var(--semantics-controls-s-min-size);
     }
 
     :host([size="sm"]) .drop-down-field__picker-icon svg {
@@ -110,7 +110,7 @@ export class RRDropDownField extends LitElement {
     }
 
     :host([size="sm"]) .drop-down-field__input-shade {
-      height: calc(var(--semantics-controls-sm-min-size) - 4px);
+      height: calc(var(--semantics-controls-s-min-size) - 4px);
     }
 
     .drop-down-field__spacer {

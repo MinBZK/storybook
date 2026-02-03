@@ -90,9 +90,9 @@ export class RRCheckbox extends LitElement {
 
     /* Size: S (32px) */
     :host([size='s']) .box {
-      width: var(--semantics-controls-sm-min-size);
-      height: var(--semantics-controls-sm-min-size);
-      border-radius: var(--semantics-controls-sm-corner-radius);
+      width: var(--semantics-controls-s-min-size);
+      height: var(--semantics-controls-s-min-size);
+      border-radius: var(--semantics-controls-s-corner-radius);
     }
 
     :host([size='s']) .icon {
@@ -103,9 +103,9 @@ export class RRCheckbox extends LitElement {
     /* Size: M (44px - default) */
     :host([size='m']) .box,
     :host(:not([size])) .box {
-      width: var(--semantics-controls-md-min-size);
-      height: var(--semantics-controls-md-min-size);
-      border-radius: var(--semantics-controls-md-corner-radius);
+      width: var(--semantics-controls-m-min-size);
+      height: var(--semantics-controls-m-min-size);
+      border-radius: var(--semantics-controls-m-corner-radius);
     }
 
     :host([size='m']) .icon,

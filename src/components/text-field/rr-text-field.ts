@@ -45,10 +45,10 @@ export class RRTextField extends LitElement {
       display: flex;
       flex-direction: row;
       align-items: center;
-      min-height: var(--semantics-controls-md-min-size);
+      min-height: var(--semantics-controls-m-min-size);
       background-color: var(--rr-text-field-background-color, var(--semantics-input-fields-background-color));
       border: var(--semantics-input-fields-border-thickness) solid var(--rr-text-field-border-color, var(--_border-color));
-      border-radius: var(--semantics-controls-md-corner-radius);
+      border-radius: var(--semantics-controls-m-corner-radius);
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
@@ -99,8 +99,8 @@ export class RRTextField extends LitElement {
       color: var(--rr-text-field-text-color, var(--semantics-content-color));
 
       /* Layout - height accounts for container border (44px - 2*2px = 40px) */
-      height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness));
-      line-height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness));
+      height: calc(var(--semantics-controls-m-min-size) - 2 * var(--semantics-input-fields-border-thickness));
+      line-height: calc(var(--semantics-controls-m-min-size) - 2 * var(--semantics-input-fields-border-thickness));
     }
 
     .text-field__native::placeholder {
@@ -112,7 +112,7 @@ export class RRTextField extends LitElement {
       right: 0;
       top: 2px;
       width: 10px;
-      height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness) - 4px);
+      height: calc(var(--semantics-controls-m-min-size) - 2 * var(--semantics-input-fields-border-thickness) - 4px);
       background: linear-gradient(-90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
       pointer-events: none;
     }
