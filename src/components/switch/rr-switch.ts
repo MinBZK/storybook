@@ -102,8 +102,8 @@ export class RRSwitch extends LitElement {
     :host([size='s']) .switch__check {
       width: 24px;
       height: 24px;
-      right: 0;
-      top: 0;
+      right: -2px;
+      top: -2px;
     }
 
     :host([size='s']) .switch__check svg {
@@ -115,8 +115,8 @@ export class RRSwitch extends LitElement {
     :host(:not([size])) .switch__check {
       width: 32px;
       height: 32px;
-      right: 0;
-      top: 0;
+      right: -2px;
+      top: -2px;
     }
 
     :host([size='m']) .switch__check svg,
@@ -173,7 +173,8 @@ export class RRSwitch extends LitElement {
 
     :host([checked]) .switch__thumb {
       --_thumb-bg: var(--components-switch-is-selected-thumb-background-color);
-      --_thumb-border: var(--components-switch-is-selected-background-color);
+      /* Figma: checked thumb has no border */
+      border: none;
     }
 
     /* Focus state */
