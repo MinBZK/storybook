@@ -37,6 +37,7 @@ export class RRSwitchField extends LitElement {
     .switch-field {
       display: flex;
       flex-direction: row;
+      align-items: stretch;
       gap: var(--primitives-space-8);
       padding: 6px 0;
       cursor: pointer;
@@ -48,6 +49,13 @@ export class RRSwitchField extends LitElement {
       align-items: center;
       align-self: stretch;
       flex-shrink: 0;
+    }
+
+    /* Fix inline-block baseline alignment for the switch */
+    .switch-field__control rr-switch {
+      display: block;
+      /* Compensate for font rendering differences vs Figma */
+      margin-top: -2px;
     }
 
     .switch-field__label {
