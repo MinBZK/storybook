@@ -79,6 +79,52 @@ export class RRSwitch extends LitElement {
       will-change: transform;
     }
 
+    /* Checkmark icon */
+    .switch__check {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      pointer-events: none;
+    }
+
+    .switch__check svg {
+      fill: var(--components-switch-is-selected-background-color);
+    }
+
+    :host([checked]) .switch__check {
+      opacity: 1;
+    }
+
+    /* Checkmark sizing per size variant */
+    :host([size='s']) .switch__check {
+      width: 24px;
+      height: 24px;
+      right: 0;
+      top: 0;
+    }
+
+    :host([size='s']) .switch__check svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    :host([size='m']) .switch__check,
+    :host(:not([size])) .switch__check {
+      width: 32px;
+      height: 32px;
+      right: 0;
+      top: 0;
+    }
+
+    :host([size='m']) .switch__check svg,
+    :host(:not([size])) .switch__check svg {
+      width: 32px;
+      height: 32px;
+    }
+
     /* Size: S - Figma specs: 44x24px */
     :host([size='s']) .switch {
       width: 44px;
@@ -263,6 +309,11 @@ export class RRSwitch extends LitElement {
     return html`
       <div class="switch" part="switch">
         <div class="switch__thumb" part="thumb"></div>
+        <div class="switch__check" part="check">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M17.6642 8.70718L9.95711 16.4143L6.25 12.7072L7.66421 11.293L9.95711 13.5859L16.25 7.29297L17.6642 8.70718Z"/>
+          </svg>
+        </div>
       </div>
     `;
   }
