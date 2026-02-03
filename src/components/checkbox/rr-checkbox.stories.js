@@ -390,16 +390,36 @@ export const FigmaComparison = () => html`
       <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
         Our checkboxes (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
-      <ftl-holster node="236:41408" style="display: inline-block;">
+      <ftl-holster node="204:38347" style="display: inline-block;">
         <!--
-          Figma checkbox-list-cell: 96x56px (Hug)
-          - Padding: 16px all sides
-          - Gap: 16px horizontal
-          - 2 checkboxes showing vertical alignment variants (xs size, 24px)
+          Figma checkbox standalone (204:38347) component set:
+          - Layout: absolute positioning within 136x96px frame
+          - Row 1 (y=16): unchecked, selected, indeterminate (x: 16, 56, 96)
+          - Row 2 (y=56): disabled unchecked, disabled selected, disabled indeterminate
+          - Each checkbox: 24x24px, 4px border-radius
+          - Gap between checkboxes: 16px horizontal, 16px vertical
         -->
-        <div style="display: inline-flex; flex-direction: row; gap: 16px; padding: 16px; background: #ffffff;">
-          <rr-checkbox size="xs" aria-label="XS checkbox 1"></rr-checkbox>
-          <rr-checkbox size="xs" aria-label="XS checkbox 2"></rr-checkbox>
+        <div style="width: 136px; height: 96px; background: #ffffff; position: relative; box-sizing: border-box;">
+          <!-- Row 1: enabled states -->
+          <div style="position: absolute; left: 16px; top: 16px;">
+            <rr-checkbox size="xs" aria-label="Unchecked"></rr-checkbox>
+          </div>
+          <div style="position: absolute; left: 56px; top: 16px;">
+            <rr-checkbox size="xs" checked aria-label="Checked"></rr-checkbox>
+          </div>
+          <div style="position: absolute; left: 96px; top: 16px;">
+            <rr-checkbox size="xs" indeterminate aria-label="Indeterminate"></rr-checkbox>
+          </div>
+          <!-- Row 2: disabled states -->
+          <div style="position: absolute; left: 16px; top: 56px;">
+            <rr-checkbox size="xs" disabled aria-label="Disabled unchecked"></rr-checkbox>
+          </div>
+          <div style="position: absolute; left: 56px; top: 56px;">
+            <rr-checkbox size="xs" checked disabled aria-label="Disabled checked"></rr-checkbox>
+          </div>
+          <div style="position: absolute; left: 96px; top: 56px;">
+            <rr-checkbox size="xs" indeterminate disabled aria-label="Disabled indeterminate"></rr-checkbox>
+          </div>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

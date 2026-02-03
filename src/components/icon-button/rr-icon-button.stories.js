@@ -40,6 +40,8 @@ export default {
         'accent-tinted',
         'neutral-tinted',
         'accent-transparent',
+        'neutral-transparent',
+        'danger-tinted',
       ],
       description: 'Visual style variant',
       table: {
@@ -241,6 +243,10 @@ export const AllVariants = () => html`
     <rr-icon-button variant="accent-transparent" label="Accent transparent"
       >${closeIcon}</rr-icon-button
     >
+    <rr-icon-button variant="neutral-transparent" label="Neutral transparent"
+      >${closeIcon}</rr-icon-button
+    >
+    <rr-icon-button variant="danger-tinted" label="Danger tinted">${closeIcon}</rr-icon-button>
   </div>
 `;
 AllVariants.parameters = {
@@ -448,15 +454,134 @@ export const FigmaComparison = () => html`
       <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
         Our icon buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
-      <ftl-holster node="240:1391" style="display: inline-block;">
-        <!-- Figma icon-button-cell: 2 buttons (neutral-tinted, size m), gap: 16px, padding: 16px -->
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-icon-button variant="neutral-tinted" size="m" label="Icon button"
-            >${placeholderIcon}</rr-icon-button
-          >
-          <rr-icon-button variant="neutral-tinted" size="m" label="Icon button"
-            >${placeholderIcon}</rr-icon-button
-          >
+      <ftl-holster node="31:75" style="display: inline-block;">
+        <!--
+          Figma icon-button (31:75) component set:
+          - Layout: absolute positioning, dimensions: 594x428px
+          - Variants: xs, sm, md sizes + lg with title
+          - Styles: neutral-tinted, neutral-transparent, accent-filled, accent-outlined, accent-transparent, danger-tinted
+          - States: enabled, disabled
+        -->
+        <div style="position: relative; width: 594px; height: 428px; background: #ffffff;">
+          <!-- Row 1: neutral-tinted (md enabled, md disabled) and sm variants -->
+          <div style="position: absolute; left: 14px; top: 22px;">
+            <rr-icon-button variant="neutral-tinted" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 88px; top: 22px;">
+            <rr-icon-button variant="neutral-tinted" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 164px; top: 28px;">
+            <rr-icon-button variant="neutral-tinted" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 230px; top: 28px;">
+            <rr-icon-button variant="neutral-tinted" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 296px; top: 32px;">
+            <rr-icon-button variant="neutral-tinted" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 353px; top: 32px;">
+            <rr-icon-button variant="neutral-tinted" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+
+          <!-- Row 2: neutral-transparent -->
+          <div style="position: absolute; left: 14px; top: 90px;">
+            <rr-icon-button variant="neutral-transparent" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 90px; top: 90px;">
+            <rr-icon-button variant="neutral-transparent" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 168px; top: 96px;">
+            <rr-icon-button variant="neutral-transparent" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 232px; top: 96px;">
+            <rr-icon-button variant="neutral-transparent" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 296px; top: 100px;">
+            <rr-icon-button variant="neutral-transparent" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 352px; top: 100px;">
+            <rr-icon-button variant="neutral-transparent" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+
+          <!-- Row 3: accent-filled -->
+          <div style="position: absolute; left: 14px; top: 158px;">
+            <rr-icon-button variant="accent-filled" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 88px; top: 158px;">
+            <rr-icon-button variant="accent-filled" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 164px; top: 164px;">
+            <rr-icon-button variant="accent-filled" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 230px; top: 164px;">
+            <rr-icon-button variant="accent-filled" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 296px; top: 168px;">
+            <rr-icon-button variant="accent-filled" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 353px; top: 168px;">
+            <rr-icon-button variant="accent-filled" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+
+          <!-- Row 4: accent-outlined -->
+          <div style="position: absolute; left: 14px; top: 226px;">
+            <rr-icon-button variant="accent-outlined" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 88px; top: 226px;">
+            <rr-icon-button variant="accent-outlined" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 164px; top: 232px;">
+            <rr-icon-button variant="accent-outlined" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 230px; top: 232px;">
+            <rr-icon-button variant="accent-outlined" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 296px; top: 236px;">
+            <rr-icon-button variant="accent-outlined" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 353px; top: 236px;">
+            <rr-icon-button variant="accent-outlined" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+
+          <!-- Row 5: accent-transparent -->
+          <div style="position: absolute; left: 14px; top: 294px;">
+            <rr-icon-button variant="accent-transparent" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 90px; top: 294px;">
+            <rr-icon-button variant="accent-transparent" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 168px; top: 300px;">
+            <rr-icon-button variant="accent-transparent" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 232px; top: 300px;">
+            <rr-icon-button variant="accent-transparent" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 296px; top: 304px;">
+            <rr-icon-button variant="accent-transparent" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 354px; top: 304px;">
+            <rr-icon-button variant="accent-transparent" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+
+          <!-- Row 6: danger-tinted -->
+          <div style="position: absolute; left: 14px; top: 362px;">
+            <rr-icon-button variant="danger-tinted" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 88px; top: 362px;">
+            <rr-icon-button variant="danger-tinted" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 164px; top: 368px;">
+            <rr-icon-button variant="danger-tinted" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 230px; top: 368px;">
+            <rr-icon-button variant="danger-tinted" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 296px; top: 372px;">
+            <rr-icon-button variant="danger-tinted" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 353px; top: 372px;">
+            <rr-icon-button variant="danger-tinted" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

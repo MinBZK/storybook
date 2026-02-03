@@ -46,4 +46,10 @@ export { RRCustomCell } from './custom-cell/rr-custom-cell.ts';
 export { RRList } from './list/rr-list.ts';
 export { RRListItem } from './list/rr-list-item.ts';
 
+// Input components
+export { RRStepper } from './stepper/rr-stepper.ts';
+export { RRToken } from './token/rr-token.ts';
+export { RRSegmentedControl } from './segmented-control/rr-segmented-control.ts';
+export { RRSegmentedControlItem } from './segmented-control/rr-segmented-control-item.ts';
+
 // Auto-register happens on import of individual component files

@@ -16,10 +16,10 @@
     {
       "name": "Button",
       "figma": {
-        "nodeId": "20-27",
-        "nodeName": "button-list-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
+        "nodeId": "20:27",
+        "nodeName": "button",
+        "pageId": "19:3",
+        "pageName": "Actions",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=20-27"
       },
       "properties": {
@@ -108,7 +108,7 @@
       "name": "Checkbox",
       "figma": {
         "nodeId": "236:41408",
-        "nodeName": "checkbox-list-cell",
+        "nodeName": "checkbox-cell",
         "pageId": "0:1",
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408"
@@ -164,7 +164,7 @@
       "name": "Radio Button",
       "figma": {
         "nodeId": "236:41398",
-        "nodeName": "radio-button-list-cell",
+        "nodeName": "radio-button-cell",
         "pageId": "0:1",
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41398"
@@ -212,7 +212,7 @@
       "name": "Switch",
       "figma": {
         "nodeId": "236:41353",
-        "nodeName": "switch-list-cell",
+        "nodeName": "switch-cell",
         "pageId": "0:1",
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41353"
@@ -270,7 +270,8 @@
       "figma": {
         "nodeId": "309:3542",
         "nodeName": "toggle-button",
-        "pageName": "Inputs and Selectors",
+        "pageId": "19:4",
+        "pageName": "Inputs",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542"
       },
       "properties": {
@@ -319,7 +320,7 @@
       "name": "Icon Button",
       "figma": {
         "nodeId": "240:1391",
-        "nodeName": "icon-button-list-cell",
+        "nodeName": "icon-button-cell",
         "pageId": "0:1",
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=240:1391"
@@ -420,7 +421,8 @@
       "figma": {
         "nodeId": "48:2135",
         "nodeName": "top-navigation-bar",
-        "pageName": "Bars",
+        "pageId": "19:6",
+        "pageName": "Navigation",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135",
         "note": "Menu Bar is onderdeel van de Top Navigation Bar design"
       },
@@ -470,30 +472,30 @@
       "figma": {
         "nodeId": "94-24956",
         "nodeName": "action-sheet",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=94-24956"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=94-24956",
+        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "status": "removed"
     },
     {
       "name": "Action Sheet: Header",
       "figma": {
         "nodeId": "108-25982",
         "nodeName": "action-sheet__header",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=108-25982"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=108-25982",
+        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "status": "removed"
     },
     {
       "name": "Bottom Action Bar",
       "figma": {
         "nodeId": "134-28016",
         "nodeName": "bottom-action-bar",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=134-28016"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=134-28016",
+        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "status": "removed"
     },
     {
       "name": "Button Cell",
@@ -571,14 +573,15 @@
       "neededFor": ["machine-action-sheet"]
     },
     {
-      "name": "Heading Group",
+      "name": "Title Bar: Title Group",
       "figma": {
-        "nodeId": "996-3541",
-        "nodeName": "heading-group",
+        "nodeId": "996:3541",
+        "nodeName": "title-bar__title-group",
+        "pageId": "39:908",
+        "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=996-3541"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "status": "not-implemented"
     },
     {
       "name": "Label Cell",
@@ -727,9 +730,12 @@
     {
       "name": "Title Cell",
       "figma": {
-        "nodeId": "236-41079",
+        "nodeId": "1464:4047",
         "nodeName": "title-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41079"
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1464-4047",
+        "note": "Node ID changed from 236:41079 to 1464:4047"
       },
       "properties": {
         "size": ["sm", "md"],
@@ -760,27 +766,37 @@
       "figma": {
         "nodeId": "1040-4478",
         "nodeName": "accessory-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1040-4478"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1040-4478",
+        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
       },
-      "status": "not-implemented"
+      "status": "removed"
     },
     {
       "name": "Background",
       "figma": {
         "nodeId": "997-3542",
         "nodeName": "background",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=997-3542"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=997-3542",
+        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
       },
-      "status": "not-implemented"
+      "status": "removed"
     },
     {
       "name": "Checkbox (standalone)",
       "figma": {
-        "nodeId": "204-38347",
+        "nodeId": "204:38347",
         "nodeName": "checkbox",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=204-38347"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=204-38347",
+        "note": "Standalone checkbox is implemented via rr-checkbox with size='xs' (24x24px)"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-checkbox",
+        "file": "src/components/checkbox/rr-checkbox.ts",
+        "className": "RRCheckbox",
+        "usage": "<rr-checkbox size=\"xs\"></rr-checkbox>"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Checkbox Field",
@@ -830,11 +846,17 @@
     {
       "name": "Icon Button (standalone)",
       "figma": {
-        "nodeId": "31-75",
+        "nodeId": "31:75",
         "nodeName": "icon-button",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=31-75"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-icon-button",
+        "file": "src/components/icon-button/rr-icon-button.ts",
+        "className": "RRIconButton"
+      },
+      "status": "implemented",
+      "lastUpdated": "2025-02-02"
     },
     {
       "name": "Icon Cell",
@@ -884,11 +906,19 @@
     {
       "name": "Radio Button (standalone)",
       "figma": {
-        "nodeId": "219-38433",
+        "nodeId": "219:38433",
         "nodeName": "radio-button",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=219-38433"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=219-38433",
+        "note": "Standalone radio button is implemented via rr-radio with size='xs' (24x24px)"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-radio",
+        "file": "src/components/radio/rr-radio.ts",
+        "className": "RRRadio",
+        "usage": "<rr-radio size=\"xs\"></rr-radio>"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Radio Button Field",
@@ -920,20 +950,41 @@
     {
       "name": "Segmented Control",
       "figma": {
-        "nodeId": "336-2899",
+        "nodeId": "336:2899",
         "nodeName": "segmented-control",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=336-2899"
       },
-      "status": "not-implemented"
+      "properties": {
+        "size": ["s", "m"],
+        "content-type": ["text", "icons"]
+      },
+      "implementation": {
+        "tagName": "rr-segmented-control",
+        "file": "src/components/segmented-control/rr-segmented-control.ts",
+        "className": "RRSegmentedControl"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Segmented Control: Item",
       "figma": {
-        "nodeId": "262-3512",
+        "nodeId": "262:3512",
         "nodeName": "segmented-control__item",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=262-3512"
       },
-      "status": "not-implemented"
+      "properties": {
+        "size": ["s", "m"],
+        "is-selected": "boolean",
+        "content-type": ["text", "icon"]
+      },
+      "implementation": {
+        "tagName": "rr-segmented-control-item",
+        "file": "src/components/segmented-control/rr-segmented-control-item.ts",
+        "className": "RRSegmentedControlItem"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Split View: Divider",
@@ -947,11 +998,25 @@
     {
       "name": "Stepper",
       "figma": {
-        "nodeId": "236-39011",
+        "nodeId": "236:39011",
         "nodeName": "stepper",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-39011"
       },
-      "status": "not-implemented"
+      "properties": {
+        "size": ["s", "m"],
+        "value": "number",
+        "min": "number",
+        "max": "number",
+        "step": "number",
+        "disabled": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-stepper",
+        "file": "src/components/stepper/rr-stepper.ts",
+        "className": "RRStepper"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Stepper Cell",
@@ -965,11 +1030,23 @@
     {
       "name": "Switch (standalone)",
       "figma": {
-        "nodeId": "232-38506",
+        "nodeId": "232:38506",
         "nodeName": "switch",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=232-38506"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=232-38506",
+        "note": "Standalone switch with sizes 's' (44x24) and 'm' (56x32)"
       },
-      "status": "not-implemented"
+      "properties": {
+        "size": ["s", "m"],
+        "is-selected": "boolean",
+        "is-disabled": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-switch",
+        "file": "src/components/switch/rr-switch.ts",
+        "className": "RRSwitch"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Switch Field",
@@ -983,9 +1060,12 @@
     {
       "name": "Tab Bar: Item",
       "figma": {
-        "nodeId": "987-1355",
+        "nodeId": "1366:43604",
         "nodeName": "tab-bar__item",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=987-1355"
+        "pageId": "19:6",
+        "pageName": "Navigation",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43604",
+        "note": "Node ID changed from 987:1355 to 1366:43604"
       },
       "status": "not-implemented"
     },
@@ -1001,20 +1081,369 @@
     {
       "name": "Token",
       "figma": {
-        "nodeId": "354-3680",
+        "nodeId": "354:3680",
         "nodeName": "token",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=354-3680"
       },
-      "status": "not-implemented"
+      "properties": {
+        "control": ["none", "dismiss", "picker"],
+        "menu-is-open": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-token",
+        "file": "src/components/token/rr-token.ts",
+        "className": "RRToken"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-02"
     },
     {
       "name": "Top Navigation Bar: Logo",
       "figma": {
-        "nodeId": "22-28",
+        "nodeId": "22:28",
         "nodeName": "top-navigation-bar__logo",
+        "pageId": "19:6",
+        "pageName": "Navigation",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=22-28"
       },
       "status": "not-implemented"
+    },
+    {
+      "name": "Timeline Track Cell",
+      "figma": {
+        "nodeId": "1404:10417",
+        "nodeName": "timeline-track-cell",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1404-10417"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Flexible Spacer Cell",
+      "figma": {
+        "nodeId": "1061:3456",
+        "nodeName": "flexible-spacer-cell",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1061-3456"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "List Item Drag Handle Cell",
+      "figma": {
+        "nodeId": "1342:3143",
+        "nodeName": "list-item-drag-handle-cell",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1342-3143"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "List Item Drag Handle",
+      "figma": {
+        "nodeId": "1342:3114",
+        "nodeName": "list-item-drag-handle",
+        "pageId": "0:1",
+        "pageName": "Lists",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1342-3114"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Tab Bar",
+      "figma": {
+        "nodeId": "1366:43642",
+        "nodeName": "tab-bar",
+        "pageId": "19:6",
+        "pageName": "Navigation",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43642"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Pagination",
+      "figma": {
+        "nodeId": "1353:3779",
+        "nodeName": "pagination",
+        "pageId": "19:6",
+        "pageName": "Navigation",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1353-3779"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Split Button",
+      "figma": {
+        "nodeId": "1304:2775",
+        "nodeName": "split-button",
+        "pageId": "19:3",
+        "pageName": "Actions",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1304-2775"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Password Field",
+      "figma": {
+        "nodeId": "1380:5781",
+        "nodeName": "password-field",
+        "pageId": "19:4",
+        "pageName": "Inputs",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-5781"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Toolbar",
+      "figma": {
+        "nodeId": "1380:3538",
+        "nodeName": "toolbar",
+        "pageId": "20:177",
+        "pageName": "Control groups",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-3538"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Toolbar: Divider",
+      "figma": {
+        "nodeId": "1356:13969",
+        "nodeName": "toolbar__divider",
+        "pageId": "20:177",
+        "pageName": "Control groups",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1356-13969"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Toolbar: Title Group",
+      "figma": {
+        "nodeId": "1406:12871",
+        "nodeName": "toolbar__title-group",
+        "pageId": "20:177",
+        "pageName": "Control groups",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1406-12871"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Button Group",
+      "figma": {
+        "nodeId": "1339:3762",
+        "nodeName": "button-group",
+        "pageId": "20:177",
+        "pageName": "Control groups",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1339-3762"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Button Bar",
+      "figma": {
+        "nodeId": "1263:6841",
+        "nodeName": "button-bar",
+        "pageId": "20:177",
+        "pageName": "Control groups",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263-6841"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Button Bar: Divider",
+      "figma": {
+        "nodeId": "1263:6851",
+        "nodeName": "button-bar__divider",
+        "pageId": "20:177",
+        "pageName": "Control groups",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263-6851"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Tooltip",
+      "figma": {
+        "nodeId": "1398:10237",
+        "nodeName": "tooltip",
+        "pageId": "19:9",
+        "pageName": "Overlays",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10237"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Tooltip: Arrow",
+      "figma": {
+        "nodeId": "1398:10227",
+        "nodeName": "tooltip__arrow",
+        "pageId": "19:9",
+        "pageName": "Overlays",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10227"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Dialog",
+      "figma": {
+        "nodeId": "1340:4344",
+        "nodeName": "dialog",
+        "pageId": "1340:4281",
+        "pageName": "Feedback",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4344"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Alert",
+      "figma": {
+        "nodeId": "1340:4678",
+        "nodeName": "alert",
+        "pageId": "19:9",
+        "pageName": "Overlays",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4678"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Window",
+      "figma": {
+        "nodeId": "1261:3627",
+        "nodeName": "window",
+        "pageId": "19:9",
+        "pageName": "Overlays",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1261-3627"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Page",
+      "figma": {
+        "nodeId": "1255:1052",
+        "nodeName": "page",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1052"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Collection",
+      "figma": {
+        "nodeId": "1435:29304",
+        "nodeName": "collection",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1435-29304"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Box (Figma)",
+      "figma": {
+        "nodeId": "1451:33442",
+        "nodeName": "box",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1451-33442",
+        "note": "Figma box component with on-tinted variants. Different from utility Box component."
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Simple Section",
+      "figma": {
+        "nodeId": "1255:1471",
+        "nodeName": "simple-section",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1471"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Full Bleed Section",
+      "figma": {
+        "nodeId": "1255:1496",
+        "nodeName": "full-bleed-section",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1496"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "One Third Two Thirds Section",
+      "figma": {
+        "nodeId": "1255:1530",
+        "nodeName": "one-third-two-thirds-section",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1530"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Two Thirds One Third Section",
+      "figma": {
+        "nodeId": "1255:1623",
+        "nodeName": "two-thirds-one-third-section",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1623"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "One Half One Half Section",
+      "figma": {
+        "nodeId": "1255:1815",
+        "nodeName": "one-half-one-half-section",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1815"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
+    },
+    {
+      "name": "Lister Section",
+      "figma": {
+        "nodeId": "1449:33380",
+        "nodeName": "lister-section",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1449-33380"
+      },
+      "status": "not-implemented",
+      "note": "New component added 2026-02-02"
     }
   ]
 }

@@ -89,18 +89,21 @@ export const FigmaComparison = () => html`
 
 ## Figma Node IDs
 
-| Component | Node ID | Status |
-|-----------|---------|--------|
-| Button | 20:27 | Implemented |
-| Checkbox | 236:41408 | Implemented |
-| Radio | 236:41398 | Implemented |
-| Switch | 236:41353 | Implemented |
-| Toggle Button | 309:3542 | Implemented |
-| Icon Button | 240:1391 | Implemented |
-| Menu Bar / Top Nav | 48:2135 | Implemented |
-| Spacer | 48:2234 | Implemented |
+| Component | Node ID | Figma Name | Status |
+|-----------|---------|------------|--------|
+| Button | 20:27 | button | Implemented |
+| Checkbox | 236:41408 | checkbox-cell | Implemented |
+| Radio | 236:41398 | radio-button-cell | Implemented |
+| Switch | 236:41353 | switch-cell | Implemented |
+| Toggle Button | 309:3542 | toggle-button | Implemented |
+| Icon Button | 240:1391 | icon-button-cell | Implemented |
+| Menu Bar / Top Nav | 48:2135 | top-navigation-bar | Implemented |
+| Spacer | 48:2234 | spacer | Implemented |
+| Title Cell | 1464:4047 | title-cell | Implemented |
+| List | 1044:2275 | list | Implemented |
+| List Item | 957:2279 | list__item | Implemented |
 
-See `docs/component-map.json` for full details.
+See `docs/component-map.json` for full details (85 components).
 
 ## Components Maken/Updaten
 

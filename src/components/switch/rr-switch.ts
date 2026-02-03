@@ -4,7 +4,7 @@
  * @element rr-switch
  * @attr {boolean} checked - Whether the switch is on/off
  * @attr {boolean} disabled - Disabled state
- * @attr {string} size - Switch size: 'm' (only one size in Figma design)
+ * @attr {string} size - Switch size: 's' | 'm' (default: 'm')
  *
  * @fires change - When the switch state changes
  *
@@ -18,7 +18,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 'm';
+type Size = 's' | 'm';
 
 @customElement('rr-switch')
 export class RRSwitch extends LitElement {
@@ -79,6 +79,70 @@ export class RRSwitch extends LitElement {
       will-change: transform;
     }
 
+    /* Checkmark icon */
+    .switch__check {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      pointer-events: none;
+    }
+
+    .switch__check svg {
+      fill: var(--components-switch-is-selected-background-color);
+    }
+
+    :host([checked]) .switch__check {
+      opacity: 1;
+    }
+
+    /* Checkmark sizing per size variant */
+    :host([size='s']) .switch__check {
+      width: 24px;
+      height: 24px;
+      right: -2px;
+      top: -2px;
+    }
+
+    :host([size='s']) .switch__check svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    :host([size='m']) .switch__check,
+    :host(:not([size])) .switch__check {
+      width: 32px;
+      height: 32px;
+      right: -2px;
+      top: -2px;
+    }
+
+    :host([size='m']) .switch__check svg,
+    :host(:not([size])) .switch__check svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    /* Size: S - Figma specs: 44x24px */
+    :host([size='s']) .switch {
+      width: 44px;
+      height: 24px;
+      border-radius: 12px;
+      padding: 2px;
+    }
+
+    :host([size='s']) .switch__thumb {
+      width: 16px;
+      height: 16px;
+    }
+
+    :host([size='s'][checked]) .switch__thumb {
+      /* Move thumb to right: track width (44) - thumb width (16) - padding (4) - border (4) = 20px */
+      transform: translateX(20px);
+    }
+
     /* Size: M (default) - Figma specs: 56x32px */
     :host([size='m']) .switch,
     :host(:not([size])) .switch {
@@ -109,7 +173,8 @@ export class RRSwitch extends LitElement {
 
     :host([checked]) .switch__thumb {
       --_thumb-bg: var(--components-switch-is-selected-thumb-background-color);
-      --_thumb-border: var(--components-switch-is-selected-background-color);
+      /* Figma: checked thumb has no border */
+      border: none;
     }
 
     /* Focus state */
@@ -245,6 +310,11 @@ export class RRSwitch extends LitElement {
     return html`
       <div class="switch" part="switch">
         <div class="switch__thumb" part="thumb"></div>
+        <div class="switch__check" part="check">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M17.6642 8.70718L9.95711 16.4143L6.25 12.7072L7.66421 11.293L9.95711 13.5859L16.25 7.29297L17.6642 8.70718Z"/>
+          </svg>
+        </div>
       </div>
     `;
   }

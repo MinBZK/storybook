@@ -23,7 +23,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 type Size = 'xs' | 's' | 'm';
-type Variant = 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent';
+type Variant = 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('rr-icon-button')
@@ -153,6 +153,26 @@ export class RRIconButton extends LitElement {
 
     :host([variant='accent-transparent']) .button:hover:not(:disabled) {
       --_bg-color: var(--primitives-color-accent-150);
+    }
+
+    /* Variant: neutral-transparent */
+    :host([variant='neutral-transparent']) .button {
+      --_bg-color: transparent;
+      --_text-color: var(--primitives-color-gray-90);
+    }
+
+    :host([variant='neutral-transparent']) .button:hover:not(:disabled) {
+      --_bg-color: var(--primitives-color-neutral-200);
+    }
+
+    /* Variant: danger-tinted (destructive) */
+    :host([variant='danger-tinted']) .button {
+      --_bg-color: var(--semantics-buttons-danger-tinted-background-color);
+      --_text-color: var(--semantics-buttons-danger-tinted-color);
+    }
+
+    :host([variant='danger-tinted']) .button:hover:not(:disabled) {
+      --_bg-color: var(--primitives-color-danger-30);
     }
 
     /* Focus state */
