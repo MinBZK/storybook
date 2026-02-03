@@ -46,6 +46,7 @@ export { RRPage } from './page/rr-page.ts';
 export { RRTitleBarTitleGroup } from './title-bar-title-group/rr-title-bar-title-group.ts';
 export { RRTopTitleBar } from './top-title-bar/rr-top-title-bar.ts';
 export { RRSection } from './section/rr-section.ts';
+export { RRCollection } from './collection/rr-collection.ts';
 
 // Navigation components
 export { RRTopNavigationBar } from './navigation/top-navigation-bar/rr-top-navigation-bar.ts';
