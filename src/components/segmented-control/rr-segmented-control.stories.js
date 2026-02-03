@@ -155,7 +155,7 @@ export const FigmaComparison = () => html`
           - Width: 349px (fills for text variants)
         -->
         <div
-          style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff; width: 349px; align-items: flex-start;"
+          style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff; width: 349px; box-sizing: border-box; align-items: flex-start;"
         >
           <!-- md text (full-width, no selection - Figma shows all items unselected) -->
           <rr-segmented-control size="m" full-width style="width: 100%;">
