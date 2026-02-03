@@ -155,7 +155,7 @@ export const FigmaComparison = () => html`
           - Width: 349px (fills for text variants)
         -->
         <div
-          style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff; width: 349px;"
+          style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff; width: 349px; align-items: flex-start;"
         >
           <!-- md text (full-width, no selection - Figma shows all items unselected) -->
           <rr-segmented-control size="m" full-width>
@@ -171,15 +171,39 @@ export const FigmaComparison = () => html`
           </rr-segmented-control>
           <!-- md icons (hug content, no selection) -->
           <rr-segmented-control size="m">
-            <rr-segmented-control-item value="option1">⬜</rr-segmented-control-item>
-            <rr-segmented-control-item value="option2">⬜</rr-segmented-control-item>
-            <rr-segmented-control-item value="option3">⬜</rr-segmented-control-item>
+            <rr-segmented-control-item value="option1" content-type="icon">
+              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
+                <circle cx="12" cy="12" r="9"/>
+              </svg>
+            </rr-segmented-control-item>
+            <rr-segmented-control-item value="option2" content-type="icon">
+              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
+                <circle cx="12" cy="12" r="9"/>
+              </svg>
+            </rr-segmented-control-item>
+            <rr-segmented-control-item value="option3" content-type="icon">
+              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
+                <circle cx="12" cy="12" r="9"/>
+              </svg>
+            </rr-segmented-control-item>
           </rr-segmented-control>
           <!-- sm icons (hug content, no selection) -->
           <rr-segmented-control size="s">
-            <rr-segmented-control-item value="option1">⬜</rr-segmented-control-item>
-            <rr-segmented-control-item value="option2">⬜</rr-segmented-control-item>
-            <rr-segmented-control-item value="option3">⬜</rr-segmented-control-item>
+            <rr-segmented-control-item value="option1" content-type="icon">
+              <svg slot="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
+                <circle cx="12" cy="12" r="9"/>
+              </svg>
+            </rr-segmented-control-item>
+            <rr-segmented-control-item value="option2" content-type="icon">
+              <svg slot="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
+                <circle cx="12" cy="12" r="9"/>
+              </svg>
+            </rr-segmented-control-item>
+            <rr-segmented-control-item value="option3" content-type="icon">
+              <svg slot="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
+                <circle cx="12" cy="12" r="9"/>
+              </svg>
+            </rr-segmented-control-item>
           </rr-segmented-control>
         </div>
       </ftl-holster>
