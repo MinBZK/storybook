@@ -158,13 +158,13 @@ export const FigmaComparison = () => html`
           style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff; width: 349px; align-items: flex-start;"
         >
           <!-- md text (full-width, no selection - Figma shows all items unselected) -->
-          <rr-segmented-control size="m" full-width>
+          <rr-segmented-control size="m" full-width style="width: 100%;">
             <rr-segmented-control-item value="option1">Item</rr-segmented-control-item>
             <rr-segmented-control-item value="option2">Item</rr-segmented-control-item>
             <rr-segmented-control-item value="option3">Item</rr-segmented-control-item>
           </rr-segmented-control>
           <!-- sm text (full-width, no selection) -->
-          <rr-segmented-control size="s" full-width>
+          <rr-segmented-control size="s" full-width style="width: 100%;">
             <rr-segmented-control-item value="option1">Item</rr-segmented-control-item>
             <rr-segmented-control-item value="option2">Item</rr-segmented-control-item>
             <rr-segmented-control-item value="option3">Item</rr-segmented-control-item>
