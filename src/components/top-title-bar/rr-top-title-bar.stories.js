@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-top-title-bar.js';
+import './rr-top-title-bar.ts';
 
 export default {
   title: 'Components/Top Title Bar',

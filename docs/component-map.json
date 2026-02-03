@@ -591,7 +591,16 @@
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=996-3541"
       },
-      "status": "not-implemented"
+      "properties": {
+        "size": ["sm", "md", "lg"]
+      },
+      "implementation": {
+        "tagName": "rr-title-bar-title-group",
+        "file": "src/components/title-bar-title-group/rr-title-bar-title-group.ts",
+        "className": "RRTitleBarTitleGroup"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     },
     {
       "name": "Label Cell",
@@ -774,12 +783,24 @@
     {
       "name": "Top Title Bar",
       "figma": {
-        "nodeId": "1048-2288",
+        "nodeId": "1048:2288",
         "nodeName": "top-title-bar",
+        "pageId": "39:908",
+        "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1048-2288"
       },
-      "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "properties": {
+        "container": ["sm", "md", "lg"],
+        "compact": "boolean",
+        "toolbar": ["default", "custom", "none"]
+      },
+      "implementation": {
+        "tagName": "rr-top-title-bar",
+        "file": "src/components/top-title-bar/rr-top-title-bar.ts",
+        "className": "RRTopTitleBar"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     },
     {
       "name": "Accessory Cell",
@@ -1413,8 +1434,18 @@
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1052"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "properties": {
+        "header-sticky": "boolean",
+        "footer-sticky": "boolean",
+        "tinted": "boolean"
+      },
+      "implementation": {
+        "tagName": "rr-page",
+        "file": "src/components/page/rr-page.ts",
+        "className": "RRPage"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     },
     {
       "name": "Collection",
@@ -1425,8 +1456,19 @@
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1435-29304"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "properties": {
+        "layout": ["grid", "list", "horizontal-scroll"],
+        "title": "string",
+        "show-load-more": "boolean",
+        "load-more-label": "string"
+      },
+      "implementation": {
+        "tagName": "rr-collection",
+        "file": "src/components/collection/rr-collection.ts",
+        "className": "RRCollection"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     },
     {
       "name": "Box (Figma)",
@@ -1450,8 +1492,17 @@
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1471"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "properties": {
+        "container": ["sm", "md", "lg"]
+      },
+      "implementation": {
+        "tagName": "rr-section",
+        "file": "src/components/section/rr-section.ts",
+        "className": "RRSection",
+        "note": "Implemented as variant='simple' of unified rr-section component"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     },
     {
       "name": "Full Bleed Section",
@@ -1462,8 +1513,17 @@
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1496"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "properties": {
+        "container": ["sm", "md", "lg"]
+      },
+      "implementation": {
+        "tagName": "rr-section",
+        "file": "src/components/section/rr-section.ts",
+        "className": "RRSection",
+        "note": "Implemented as variant='full-bleed' of unified rr-section component"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     },
     {
       "name": "One Third Two Thirds Section",
@@ -1474,8 +1534,17 @@
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1530"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "properties": {
+        "container": ["sm", "md", "lg"]
+      },
+      "implementation": {
+        "tagName": "rr-section",
+        "file": "src/components/section/rr-section.ts",
+        "className": "RRSection",
+        "note": "Implemented as variant='one-third-two-thirds' of unified rr-section component"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     },
     {
       "name": "Two Thirds One Third Section",
@@ -1486,8 +1555,17 @@
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1623"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "properties": {
+        "container": ["sm", "md", "lg"]
+      },
+      "implementation": {
+        "tagName": "rr-section",
+        "file": "src/components/section/rr-section.ts",
+        "className": "RRSection",
+        "note": "Implemented as variant='two-thirds-one-third' of unified rr-section component"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     },
     {
       "name": "One Half One Half Section",
@@ -1498,8 +1576,17 @@
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1815"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "properties": {
+        "container": ["sm", "md", "lg"]
+      },
+      "implementation": {
+        "tagName": "rr-section",
+        "file": "src/components/section/rr-section.ts",
+        "className": "RRSection",
+        "note": "Implemented as variant='half-half' of unified rr-section component"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     },
     {
       "name": "Lister Section",
@@ -1510,8 +1597,17 @@
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1449-33380"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "properties": {
+        "container": ["sm", "md", "lg"]
+      },
+      "implementation": {
+        "tagName": "rr-section",
+        "file": "src/components/section/rr-section.ts",
+        "className": "RRSection",
+        "note": "Implemented as variant='lister' of unified rr-section component"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-03"
     }
   ]
 }

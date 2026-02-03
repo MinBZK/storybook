@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './rr-page.js';
 
+// Page component stories
 export default {
   title: 'Components/Page',
   component: 'rr-page',
@@ -189,7 +190,7 @@ export const FigmaComparison = () => html`
               </div>
             </div>
             <div
-              style="padding: 2px 8px; height: 572px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; display: flex; align-items: center; justify-content: center;"
+              style="padding: 2px 8px; flex: 1; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; display: flex; align-items: center; justify-content: center;"
             >
               <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
             </div>

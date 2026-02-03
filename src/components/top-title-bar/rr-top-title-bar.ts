@@ -50,16 +50,6 @@ export class RRTopTitleBar extends LitElement {
       width: 100%;
     }
 
-    /* Non-compact: toolbar + title with negative margin overlap */
-    :host(:not([compact])) .title-bar {
-      gap: -16px;
-    }
-
-    /* Compact: single toolbar row */
-    :host([compact]) .title-bar {
-      flex-direction: column;
-    }
-
     .title-bar__toolbar {
       display: flex;
       flex-direction: column;
@@ -70,7 +60,24 @@ export class RRTopTitleBar extends LitElement {
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: flex-end;
       width: 100%;
+      min-height: 44px;
+      box-sizing: border-box;
+    }
+
+    /* Toolbar padding per container (matches title area horizontal padding) */
+    :host([container='sm']) .toolbar,
+    :host(:not([container])) .toolbar {
+      padding: 0 16px;
+    }
+
+    :host([container='md']) .toolbar {
+      padding: 0 32px;
+    }
+
+    :host([container='lg']) .toolbar {
+      padding: 0 48px;
     }
 
     .toolbar__start-area {
@@ -86,16 +93,15 @@ export class RRTopTitleBar extends LitElement {
       justify-content: flex-end;
       align-items: center;
       gap: 8px;
-      flex: 1;
     }
 
     /* Compact mode: title in toolbar */
-    :host([compact]) .toolbar__start-area {
-      flex: 1;
+    :host([compact]) .toolbar {
+      justify-content: space-between;
     }
 
-    :host([compact]) .toolbar__end-area {
-      flex: none;
+    :host([compact]) .toolbar__start-area {
+      flex: 1;
     }
 
     .toolbar__title-group {
@@ -109,7 +115,7 @@ export class RRTopTitleBar extends LitElement {
       font-weight: 550;
       font-size: 20px;
       line-height: 1.125;
-      color: var(--rr-top-title-bar-title-color, var(--semantics-content-color));
+      color: var(--rr-top-title-bar-title-color, #333A45);
       margin: 0;
     }
 
@@ -123,11 +129,11 @@ export class RRTopTitleBar extends LitElement {
     .title {
       font-weight: 550;
       line-height: 1.125;
-      color: var(--rr-top-title-bar-title-color, var(--semantics-content-color));
+      color: var(--rr-top-title-bar-title-color, #333A45);
       margin: 0;
     }
 
-    /* Container: SM */
+    /* Container: SM - padding 16px 16px 0 */
     :host([container='sm']) .title-bar__title,
     :host(:not([container])) .title-bar__title {
       padding: 16px 16px 0;
@@ -138,7 +144,7 @@ export class RRTopTitleBar extends LitElement {
       font-size: 29px;
     }
 
-    /* Container: MD */
+    /* Container: MD - padding 16px 32px 0 */
     :host([container='md']) .title-bar__title {
       padding: 16px 32px 0;
     }
@@ -147,7 +153,7 @@ export class RRTopTitleBar extends LitElement {
       font-size: 32px;
     }
 
-    /* Container: LG */
+    /* Container: LG - padding 16px 48px 0 */
     :host([container='lg']) .title-bar__title {
       padding: 16px 48px 0;
     }

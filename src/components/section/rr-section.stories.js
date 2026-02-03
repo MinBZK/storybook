@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-section.js';
+import './rr-section.ts';
 
 export default {
   title: 'Components/Section',
