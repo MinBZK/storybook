@@ -51,11 +51,8 @@ export class RRSwitchField extends LitElement {
       flex-shrink: 0;
     }
 
-    /* Fix inline-block baseline alignment for the switch */
     .switch-field__control rr-switch {
       display: block;
-      /* Compensate for font rendering differences vs Figma */
-      margin-top: -2px;
     }
 
     .switch-field__label {
@@ -125,7 +122,7 @@ export class RRSwitchField extends LitElement {
         <div class="switch-field__control">
           <rr-switch
             part="switch"
-            size="sm"
+            size="s"
             ?checked=${this.checked}
             ?disabled=${this.disabled}
             value=${this.value}
