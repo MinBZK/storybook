@@ -79,23 +79,23 @@ export const FigmaComparison = () => html`
         <!--
           Figma toolbar (1380:3538) component set:
           - Layout: column, gap: 16px, padding: 16px
-          - Variants: size=md, size=sm
-          - Width: 480px (fixed)
-          - Note: Figma shows slot placeholders, we show actual toolbar structure
+          - Each toolbar: row, justify-content: space-between, alignItems: center
+          - Size MD: 496x48, Size SM: 376x36
+          - SLOT placeholders: same size within each row
         -->
-        <div style="width: 480px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
-          <!-- Size M toolbar with SLOT placeholders matching Figma's dimensions (64x44px) -->
-          <rr-toolbar size="m" style="width: 100%;">
-            <div slot="start" style="width: 64px; height: 44px; background: rgba(236, 72, 153, 0.3); display: flex; align-items: center; justify-content: center; color: #ec4899; font-size: 12px; font-weight: bold; box-sizing: border-box; border: 2px solid #ec4899;">SLOT</div>
-            <div style="width: 64px; height: 44px; background: rgba(236, 72, 153, 0.3); display: flex; align-items: center; justify-content: center; color: #ec4899; font-size: 12px; font-weight: bold; box-sizing: border-box; border: 2px solid #ec4899;">SLOT</div>
-            <div slot="end" style="width: 64px; height: 44px; background: rgba(236, 72, 153, 0.3); display: flex; align-items: center; justify-content: center; color: #ec4899; font-size: 12px; font-weight: bold; box-sizing: border-box; border: 2px solid #ec4899;">SLOT</div>
-          </rr-toolbar>
-          <!-- Size S toolbar with SLOT placeholders matching Figma's dimensions (48x32px) -->
-          <rr-toolbar size="s" style="width: 100%;">
-            <div slot="start" style="width: 48px; height: 32px; background: rgba(236, 72, 153, 0.3); display: flex; align-items: center; justify-content: center; color: #ec4899; font-size: 10px; font-weight: bold; box-sizing: border-box; border: 2px solid #ec4899;">SLOT</div>
-            <div style="width: 48px; height: 32px; background: rgba(236, 72, 153, 0.3); display: flex; align-items: center; justify-content: center; color: #ec4899; font-size: 10px; font-weight: bold; box-sizing: border-box; border: 2px solid #ec4899;">SLOT</div>
-            <div slot="end" style="width: 48px; height: 32px; background: rgba(236, 72, 153, 0.3); display: flex; align-items: center; justify-content: center; color: #ec4899; font-size: 10px; font-weight: bold; box-sizing: border-box; border: 2px solid #ec4899;">SLOT</div>
-          </rr-toolbar>
+        <div style="padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
+          <!-- Size MD: 496x48 with 3 equal SLOT placeholders -->
+          <div style="width: 496px; height: 48px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; border: 1px dashed #8A38F5;">
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
+          </div>
+          <!-- Size SM: 376x36 with 3 equal SLOT placeholders -->
+          <div style="width: 376px; height: 36px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; border: 1px dashed #8A38F5;">
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
+          </div>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
