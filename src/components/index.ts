@@ -42,6 +42,10 @@ export { RRSpacer } from './layout/spacer/rr-spacer.ts';
 export { RRDivider } from './layout/divider/rr-divider.ts';
 export { RRPageStickyAreaBackground } from './layout/page/page-sticky-area-background/rr-page-sticky-area-background.ts';
 export { RRBox } from './layout/box/rr-box.js';
+export { RRPage } from './page/rr-page.ts';
+export { RRTitleBarTitleGroup } from './title-bar-title-group/rr-title-bar-title-group.ts';
+export { RRTopTitleBar } from './top-title-bar/rr-top-title-bar.ts';
+export { RRSection } from './section/rr-section.ts';
 
 // Navigation components
 export { RRTopNavigationBar } from './navigation/top-navigation-bar/rr-top-navigation-bar.ts';
