@@ -219,7 +219,7 @@ export class RRUtilityMenuBar extends RRBaseComponent {
         color: var(--primitives-color-accent-100);
         font: var(--components-menu-bar-menu-item-font);
         cursor: pointer;
-        border-radius: var(--semantics-controls-m-corner-radius);
+        border-radius: var(--semantics-controls-md-corner-radius);
         transition: background-color 0.15s ease;
         white-space: nowrap;
       }

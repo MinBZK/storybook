@@ -48,8 +48,8 @@ export class RRSearchField extends LitElement {
     /* Size: MD (default) */
     :host([size="md"]) .search-field,
     :host(:not([size])) .search-field {
-      min-height: var(--semantics-controls-m-min-size);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      min-height: var(--semantics-controls-md-min-size);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     :host([size="md"]) .search-field__native,
@@ -59,13 +59,13 @@ export class RRSearchField extends LitElement {
 
     :host([size="md"]) .search-field__input-shade,
     :host(:not([size])) .search-field__input-shade {
-      height: calc(var(--semantics-controls-m-min-size) - 4px);
+      height: calc(var(--semantics-controls-md-min-size) - 4px);
     }
 
     /* Size: SM */
     :host([size="sm"]) .search-field {
-      min-height: var(--semantics-controls-s-min-size);
-      border-radius: var(--semantics-controls-s-corner-radius);
+      min-height: var(--semantics-controls-sm-min-size);
+      border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
     :host([size="sm"]) .search-field__native {
@@ -75,7 +75,7 @@ export class RRSearchField extends LitElement {
     }
 
     :host([size="sm"]) .search-field__input-shade {
-      height: calc(var(--semantics-controls-s-min-size) - 4px);
+      height: calc(var(--semantics-controls-sm-min-size) - 4px);
     }
 
     :host([size="sm"]) .search-field__icon svg {

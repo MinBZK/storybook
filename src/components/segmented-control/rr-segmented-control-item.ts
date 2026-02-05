@@ -128,7 +128,7 @@ export class RRSegmentedControlItem extends LitElement {
 
     /* Focus state */
     .item:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: -2px;
       z-index: 2;
     }

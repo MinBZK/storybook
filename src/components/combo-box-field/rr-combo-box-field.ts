@@ -36,10 +36,10 @@ export class RRComboBoxField extends LitElement {
       display: flex;
       flex-direction: row;
       align-items: center;
-      min-height: var(--semantics-controls-m-min-size);
+      min-height: var(--semantics-controls-md-min-size);
       background-color: var(--semantics-input-fields-background-color);
       border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      border-radius: var(--semantics-controls-md-corner-radius);
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
@@ -76,8 +76,8 @@ export class RRComboBoxField extends LitElement {
       color: var(--semantics-content-color);
 
       /* Layout */
-      height: var(--semantics-controls-m-min-size);
-      line-height: var(--semantics-controls-m-min-size);
+      height: var(--semantics-controls-md-min-size);
+      line-height: var(--semantics-controls-md-min-size);
     }
 
     .combo-box-field__native::placeholder {
@@ -89,7 +89,7 @@ export class RRComboBoxField extends LitElement {
       right: 0;
       top: 2px;
       width: 10px;
-      height: calc(var(--semantics-controls-m-min-size) - 4px);
+      height: calc(var(--semantics-controls-md-min-size) - 4px);
       background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
       pointer-events: none;
     }
@@ -107,7 +107,7 @@ export class RRComboBoxField extends LitElement {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: var(--semantics-controls-m-min-size);
+      width: var(--semantics-controls-md-min-size);
       align-self: stretch;
       flex-shrink: 0;
 

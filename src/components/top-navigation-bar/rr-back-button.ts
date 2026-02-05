@@ -55,7 +55,7 @@ export class RRBackButton extends LitElement {
       font: var(--components-menu-bar-menu-item-font);
       text-decoration: none;
       cursor: pointer;
-      border-radius: var(--semantics-controls-m-corner-radius);
+      border-radius: var(--semantics-controls-md-corner-radius);
       transition: background-color 0.15s ease;
       white-space: nowrap;
     }

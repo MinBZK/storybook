@@ -39,9 +39,9 @@ export class RRToken extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      height: var(--semantics-controls-s-min-size);
+      height: var(--semantics-controls-sm-min-size);
       padding: 0 6px;
-      border-radius: var(--semantics-controls-s-corner-radius);
+      border-radius: var(--semantics-controls-sm-corner-radius);
       background-color: var(--_bg-color, var(--semantics-buttons-neutral-tinted-background-color));
       box-sizing: border-box;
       cursor: default;
@@ -50,7 +50,7 @@ export class RRToken extends LitElement {
 
     /* Open state (for picker) */
     :host([open]) .token {
-      --_bg-color: var(--primitives-color-gray-40);
+      --_bg-color: var(--primitives-color-neutral-400);
     }
 
     /* Hover state for interactive tokens */
@@ -66,7 +66,7 @@ export class RRToken extends LitElement {
       padding: 0 2px;
       font-size: 18px;
       line-height: 1.25;
-      color: var(--primitives-color-gray-90);
+      color: var(--primitives-color-neutral-900);
     }
 
     .token__icon {
@@ -80,7 +80,7 @@ export class RRToken extends LitElement {
     .token__icon svg {
       width: 20px;
       height: 20px;
-      color: var(--primitives-color-gray-90);
+      color: var(--primitives-color-neutral-900);
     }
 
     /* Dismiss button */
@@ -96,8 +96,8 @@ export class RRToken extends LitElement {
       justify-content: center;
       width: 20px;
       height: 100%;
-      border-radius: 0 var(--semantics-controls-s-corner-radius)
-        var(--semantics-controls-s-corner-radius) 0;
+      border-radius: 0 var(--semantics-controls-sm-corner-radius)
+        var(--semantics-controls-sm-corner-radius) 0;
     }
 
     .token__dismiss:hover {
@@ -105,7 +105,7 @@ export class RRToken extends LitElement {
     }
 
     .token__dismiss:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: -2px;
     }
 
@@ -115,7 +115,7 @@ export class RRToken extends LitElement {
     }
 
     :host([control='picker']) .token:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 

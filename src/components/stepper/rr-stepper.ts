@@ -45,12 +45,12 @@ export class RRStepper extends LitElement {
 
     /* Size: S - Figma: ~64x32px (two 32px buttons) */
     :host([size='s']) .stepper {
-      border-radius: var(--semantics-controls-s-corner-radius);
+      border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
     :host([size='s']) .stepper__button {
-      min-width: var(--semantics-controls-s-min-size);
-      min-height: var(--semantics-controls-s-min-size);
+      min-width: var(--semantics-controls-sm-min-size);
+      min-height: var(--semantics-controls-sm-min-size);
       padding: 0 6px;
     }
 
@@ -66,13 +66,13 @@ export class RRStepper extends LitElement {
     /* Size: M (default) - Figma: ~88x44px (two 44px buttons) */
     :host([size='m']) .stepper,
     :host(:not([size])) .stepper {
-      border-radius: var(--semantics-controls-m-corner-radius);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     :host([size='m']) .stepper__button,
     :host(:not([size])) .stepper__button {
-      min-width: var(--semantics-controls-m-min-size);
-      min-height: var(--semantics-controls-m-min-size);
+      min-width: var(--semantics-controls-md-min-size);
+      min-height: var(--semantics-controls-md-min-size);
       padding: 0 8px;
     }
 
@@ -95,7 +95,7 @@ export class RRStepper extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: var(--semantics-buttons-neutral-tinted-color);
+      color: var(--semantics-buttons-neutral-tinted-content-color);
       transition: background-color 0.15s ease;
     }
 
@@ -118,7 +118,7 @@ export class RRStepper extends LitElement {
     }
 
     .stepper__button:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: -2px;
       z-index: 1;
     }
@@ -130,7 +130,7 @@ export class RRStepper extends LitElement {
 
     .stepper__divider {
       width: 1px;
-      background-color: var(--primitives-color-gray-40);
+      background-color: var(--primitives-color-neutral-400);
       flex-shrink: 0;
     }
 

@@ -229,22 +229,22 @@ export class RRSwitch extends RRBaseComponent {
       /* Size: M (default) - Figma specs: 56x32px */
       :host([size="m"]) .switch,
       :host(:not([size])) .switch {
-        width: calc(var(--semantics-controls-s-min-size) * 1.75);
-        height: var(--semantics-controls-s-min-size);
-        border-radius: calc(var(--semantics-controls-s-min-size) / 2);
+        width: calc(var(--semantics-controls-sm-min-size) * 1.75);
+        height: var(--semantics-controls-sm-min-size);
+        border-radius: calc(var(--semantics-controls-sm-min-size) / 2);
         padding: 2px;
       }
 
       :host([size="m"]) .thumb,
       :host(:not([size])) .thumb {
-        width: calc(var(--semantics-controls-s-min-size) - 8px);
-        height: calc(var(--semantics-controls-s-min-size) - 8px);
+        width: calc(var(--semantics-controls-sm-min-size) - 8px);
+        height: calc(var(--semantics-controls-sm-min-size) - 8px);
         border-radius: 50%; /* Circular thumb per Figma */
       }
 
       :host([size="m"][checked]) .thumb,
       :host(:not([size])[checked]) .thumb {
-        transform: translateX(calc((var(--semantics-controls-s-min-size) * 1.75) - var(--semantics-controls-s-min-size)));
+        transform: translateX(calc((var(--semantics-controls-sm-min-size) * 1.75) - var(--semantics-controls-sm-min-size)));
       }
 
       /* Checked state */

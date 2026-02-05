@@ -84,21 +84,21 @@ export class RRIconButton extends LitElement {
 
     /* Size: S - Square 32x32, Figma: 6px border-radius */
     :host([size='s']) .button {
-      width: var(--semantics-controls-s-min-size);
-      height: var(--semantics-controls-s-min-size);
-      min-width: var(--semantics-controls-s-min-size);
-      min-height: var(--semantics-controls-s-min-size);
-      border-radius: var(--semantics-controls-s-corner-radius);
+      width: var(--semantics-controls-sm-min-size);
+      height: var(--semantics-controls-sm-min-size);
+      min-width: var(--semantics-controls-sm-min-size);
+      min-height: var(--semantics-controls-sm-min-size);
+      border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
     /* Size: M - Square 44x44 (default), Figma: 8px border-radius */
     :host([size='m']) .button,
     :host(:not([size])) .button {
-      width: var(--semantics-controls-m-min-size);
-      height: var(--semantics-controls-m-min-size);
-      min-width: var(--semantics-controls-m-min-size);
-      min-height: var(--semantics-controls-m-min-size);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      width: var(--semantics-controls-md-min-size);
+      height: var(--semantics-controls-md-min-size);
+      min-width: var(--semantics-controls-md-min-size);
+      min-height: var(--semantics-controls-md-min-size);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     /* Variant: accent-filled (default) */
@@ -158,7 +158,7 @@ export class RRIconButton extends LitElement {
     /* Variant: neutral-transparent */
     :host([variant='neutral-transparent']) .button {
       --_bg-color: transparent;
-      --_text-color: var(--primitives-color-gray-90);
+      --_text-color: var(--primitives-color-neutral-900);
     }
 
     :host([variant='neutral-transparent']) .button:hover:not(:disabled) {
@@ -168,11 +168,11 @@ export class RRIconButton extends LitElement {
     /* Variant: danger-tinted (destructive) */
     :host([variant='danger-tinted']) .button {
       --_bg-color: var(--semantics-buttons-danger-tinted-background-color);
-      --_text-color: var(--semantics-buttons-danger-tinted-color);
+      --_text-color: var(--semantics-buttons-danger-tinted-content-color);
     }
 
     :host([variant='danger-tinted']) .button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-danger-30);
+      --_bg-color: var(--primitives-color-danger-300);
     }
 
     /* Focus state */

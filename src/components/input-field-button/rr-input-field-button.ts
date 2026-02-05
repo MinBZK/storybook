@@ -43,8 +43,8 @@ export class RRInputFieldButton extends LitElement {
      * Icon button uses size=s, text button uses size=xs (with sm height override).
      */
     rr-icon-button {
-      --semantics-controls-s-min-size: var(--semantics-controls-sm-min-size);
-      --semantics-controls-s-corner-radius: var(--semantics-controls-sm-corner-radius);
+      --semantics-controls-sm-min-size: var(--semantics-controls-sm-min-size);
+      --semantics-controls-sm-corner-radius: var(--semantics-controls-sm-corner-radius);
     }
 
     rr-button {

@@ -79,22 +79,22 @@ export class RRToggleButton extends LitElement {
 
     /* Size: S */
     :host([size="s"]) .button {
-      min-height: var(--semantics-controls-s-min-size);
+      min-height: var(--semantics-controls-sm-min-size);
       /* Horizontal padding includes compensation for Figma's spacer gaps (2px × 2) */
       padding: var(--primitives-space-6) var(--primitives-space-8);
       font: var(--semantics-buttons-sm-font);
-      border-radius: var(--semantics-controls-s-corner-radius);
+      border-radius: var(--semantics-controls-sm-corner-radius);
       gap: var(--primitives-space-2);
     }
 
     /* Size: M (default) */
     :host([size="m"]) .button,
     :host(:not([size])) .button {
-      min-height: var(--semantics-controls-m-min-size);
+      min-height: var(--semantics-controls-md-min-size);
       /* Horizontal padding includes compensation for Figma's spacer gaps (4px × 2) */
       padding: var(--primitives-space-8) var(--primitives-space-14);
       font: var(--semantics-buttons-md-font);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      border-radius: var(--semantics-controls-md-corner-radius);
       gap: var(--primitives-space-4);
     }
 

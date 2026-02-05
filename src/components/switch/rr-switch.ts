@@ -70,7 +70,7 @@ export class RRSwitch extends LitElement {
         var(--_thumb-bg, var(--components-switch-thumb-background-color))
       );
       border: var(--components-switch-thumb-border-thickness) solid
-        var(--_thumb-border, var(--components-switch-thumb-border-color));
+        var(--components-switch-thumb-border-color);
       border-radius: 50%;
       transition:
         transform 0.2s ease,
@@ -146,22 +146,22 @@ export class RRSwitch extends LitElement {
     /* Size: M (default) - Figma specs: 56x32px */
     :host([size='m']) .switch,
     :host(:not([size])) .switch {
-      width: calc(var(--semantics-controls-s-min-size) * 1.75);
-      height: var(--semantics-controls-s-min-size);
-      border-radius: calc(var(--semantics-controls-s-min-size) / 2);
+      width: calc(var(--semantics-controls-sm-min-size) * 1.75);
+      height: var(--semantics-controls-sm-min-size);
+      border-radius: calc(var(--semantics-controls-sm-min-size) / 2);
       padding: 2px;
     }
 
     :host([size='m']) .switch__thumb,
     :host(:not([size])) .switch__thumb {
-      width: calc(var(--semantics-controls-s-min-size) - 8px);
-      height: calc(var(--semantics-controls-s-min-size) - 8px);
+      width: calc(var(--semantics-controls-sm-min-size) - 8px);
+      height: calc(var(--semantics-controls-sm-min-size) - 8px);
     }
 
     :host([size='m'][checked]) .switch__thumb,
     :host(:not([size])[checked]) .switch__thumb {
       transform: translateX(
-        calc((var(--semantics-controls-s-min-size) * 1.75) - var(--semantics-controls-s-min-size))
+        calc((var(--semantics-controls-sm-min-size) * 1.75) - var(--semantics-controls-sm-min-size))
       );
     }
 

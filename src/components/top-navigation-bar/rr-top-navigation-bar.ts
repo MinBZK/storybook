@@ -97,7 +97,7 @@ export class RRTopNavigationBar extends LitElement {
       padding: var(--primitives-space-8) var(--primitives-space-16);
       font: var(--components-menu-bar-menu-item-font);
       text-decoration: none;
-      border-radius: var(--semantics-controls-m-corner-radius);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     .skip-link:focus {
