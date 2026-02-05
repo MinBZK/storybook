@@ -114,7 +114,7 @@ export class RRStepper extends LitElement {
     }
 
     .stepper__button:active:not(:disabled) {
-      background-color: var(--semantics-buttons-neutral-tinted-is-pressed-background-color);
+      background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
     }
 
     .stepper__button:focus-visible {

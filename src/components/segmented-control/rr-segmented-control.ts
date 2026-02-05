@@ -38,7 +38,7 @@ export class RRSegmentedControl extends LitElement {
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: var(--components-segmented-control-background-color);
+      background-color: var(--semantics-buttons-neutral-tinted-background-color);
       padding: 0 2px;
       box-sizing: border-box;
     }
