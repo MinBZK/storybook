@@ -41,7 +41,6 @@ export class RRCheckboxField extends LitElement {
       align-items: stretch;
       gap: var(--primitives-space-8);
       padding: 10px 0;
-      cursor: pointer;
     }
 
     .checkbox-field__control {
@@ -57,15 +56,11 @@ export class RRCheckboxField extends LitElement {
       flex: 1;
       font-weight: var(--primitives-font-weight-body-regular);
       font-size: var(--primitives-font-size-100);
-      line-height: 1.25em;
+      line-height: var(--primitives-line-height-tight);
       color: var(--semantics-content-color);
     }
 
     /* Disabled state */
-    :host([disabled]) .checkbox-field {
-      cursor: not-allowed;
-    }
-
     :host([disabled]) .checkbox-field__label {
       opacity: calc(var(--primitives-opacity-disabled) / 100);
     }
@@ -102,7 +97,11 @@ export class RRCheckboxField extends LitElement {
     }));
   }
 
-  private _handleClick(): void {
+  private _handleLabelClick(e: Event): void {
+    // Prevent double-toggle when clicking directly on the checkbox
+    if ((e.target as HTMLElement).closest('rr-checkbox')) {
+      return;
+    }
     if (!this.disabled) {
       this.checked = !this.checked;
       this.indeterminate = false;
@@ -116,24 +115,22 @@ export class RRCheckboxField extends LitElement {
 
   override render() {
     return html`
-      <div class="checkbox-field" part="container" @click=${this._handleClick}>
+      <label class="checkbox-field" part="container" @click=${this._handleLabelClick}>
         <div class="checkbox-field__control">
           <rr-checkbox
             part="checkbox"
-            size="xs"
             ?checked=${this.checked}
             ?indeterminate=${this.indeterminate}
             ?disabled=${this.disabled}
             value=${this.value}
             name=${this.name}
             @change=${this._handleChange}
-            @click=${(e: Event) => e.stopPropagation()}
           ></rr-checkbox>
         </div>
         <span class="checkbox-field__label" part="label">
           <slot></slot>
         </span>
-      </div>
+      </label>
     `;
   }
 }
