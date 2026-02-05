@@ -39,6 +39,11 @@ export class RRButton extends LitElement {
       font-family: var(--rr-font-family-body);
     }
 
+    /* When host has explicit width (e.g., in vertical button-group), fill it */
+    .button {
+      width: 100%;
+    }
+
     :host([hidden]) {
       display: none;
     }

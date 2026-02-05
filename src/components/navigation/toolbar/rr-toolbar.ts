@@ -38,7 +38,6 @@ export class RRToolbar extends LitElement {
       display: flex;
       flex-direction: row;
       align-items: stretch;
-      justify-content: stretch;
       width: 100%;
     }
 

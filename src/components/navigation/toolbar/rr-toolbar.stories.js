@@ -69,6 +69,9 @@ export const EndOnly = {
 const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
 const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
 
+// Figma slot style: dashed border, pink tint
+const slotStyle = "padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; line-height: 1.125em; display: flex; align-items: center; justify-content: center;";
+
 export const FigmaComparison = () => html`
   <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
     <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -76,26 +79,19 @@ export const FigmaComparison = () => html`
         Our toolbar (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="1380:3538" style="display: inline-block;">
-        <!--
-          Figma toolbar (1380:3538) component set:
-          - Layout: column, gap: 16px, padding: 16px
-          - Each toolbar: row, justify-content: space-between, alignItems: center
-          - Size MD: 496x48, Size SM: 376x36
-          - SLOT placeholders: same size within each row
-        -->
-        <div style="padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
-          <!-- Size MD: 496x48 with 3 equal SLOT placeholders -->
-          <div style="width: 496px; height: 48px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; border: 1px dashed #8A38F5;">
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
-          </div>
-          <!-- Size SM: 376x36 with 3 equal SLOT placeholders -->
-          <div style="width: 376px; height: 36px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; border: 1px dashed #8A38F5;">
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center;">SLOT</div>
-          </div>
+        <div style="padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; width: 480px;">
+          <!-- Size MD toolbar - fills container width, gap 8px -->
+          <rr-toolbar size="m">
+            <div slot="start" style="${slotStyle}">SLOT</div>
+            <div style="${slotStyle}">SLOT</div>
+            <div slot="end" style="${slotStyle}">SLOT</div>
+          </rr-toolbar>
+          <!-- Size SM toolbar - also fills container width, gap 6px -->
+          <rr-toolbar size="s">
+            <div slot="start" style="${slotStyle}">SLOT</div>
+            <div style="${slotStyle}">SLOT</div>
+            <div slot="end" style="${slotStyle}">SLOT</div>
+          </rr-toolbar>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
