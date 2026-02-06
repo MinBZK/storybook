@@ -113,8 +113,9 @@ export class RRIconButton extends LitElement {
       padding: 8px 10px;
     }
 
-    /* LG with title - vertical layout */
+    /* LG with title - wider button to fit text on one line */
     :host([size='lg'][has-title]) .button {
+      width: auto;
       padding: 8px 8px;
     }
 
@@ -126,6 +127,7 @@ export class RRIconButton extends LitElement {
       line-height: 1.125;
       text-align: center;
       color: inherit;
+      white-space: nowrap;
     }
 
     :host([size='lg'][has-title]) .button__title {
