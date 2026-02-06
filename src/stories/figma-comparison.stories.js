@@ -100,52 +100,35 @@ ButtonAccentTransparentM.storyName = 'button--accent-transparent--m';
 
 // ============================================================================
 // CHECKBOX - Figma node: 236:41408 (checkbox-list-cell)
+// Single size: 24x24px per Figma specs
 // ============================================================================
 
-export const CheckboxUncheckedM = () => html`
+export const CheckboxUnchecked = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-checkbox size="m" aria-label="Checkbox"></rr-checkbox>
+    <rr-checkbox aria-label="Checkbox"></rr-checkbox>
   </div>
 `;
-CheckboxUncheckedM.storyName = 'checkbox--unchecked--m';
+CheckboxUnchecked.storyName = 'checkbox--unchecked';
 
-export const CheckboxCheckedM = () => html`
+export const CheckboxChecked = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-checkbox size="m" checked aria-label="Checkbox"></rr-checkbox>
+    <rr-checkbox checked aria-label="Checkbox"></rr-checkbox>
   </div>
 `;
-CheckboxCheckedM.storyName = 'checkbox--checked--m';
+CheckboxChecked.storyName = 'checkbox--checked';
 
-export const CheckboxIndeterminateM = () => html`
+export const CheckboxIndeterminate = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-checkbox size="m" indeterminate aria-label="Checkbox"></rr-checkbox>
+    <rr-checkbox indeterminate aria-label="Checkbox"></rr-checkbox>
   </div>
 `;
-CheckboxIndeterminateM.storyName = 'checkbox--indeterminate--m';
-
-export const CheckboxUncheckedS = () => html`
-  <div
-    style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
-  >
-    <rr-checkbox size="s" aria-label="Checkbox"></rr-checkbox>
-  </div>
-`;
-CheckboxUncheckedS.storyName = 'checkbox--unchecked--s';
-
-export const CheckboxCheckedS = () => html`
-  <div
-    style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
-  >
-    <rr-checkbox size="s" checked aria-label="Checkbox"></rr-checkbox>
-  </div>
-`;
-CheckboxCheckedS.storyName = 'checkbox--checked--s';
+CheckboxIndeterminate.storyName = 'checkbox--indeterminate';
 
 // ============================================================================
 // RADIO - Figma node: 236:41398 (radio-button-list-cell)
