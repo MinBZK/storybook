@@ -22,7 +22,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 'xs' | 's' | 'm';
+type Size = 'xs' | 's' | 'm' | 'lg';
 type Variant = 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type ButtonType = 'button' | 'submit' | 'reset';
 
@@ -99,6 +99,37 @@ export class RRIconButton extends LitElement {
       min-width: var(--semantics-controls-md-min-size);
       min-height: var(--semantics-controls-md-min-size);
       border-radius: var(--semantics-controls-md-corner-radius);
+    }
+
+    /* Size: LG - Larger icon button, Figma: 9px border-radius */
+    :host([size='lg']) .button {
+      width: var(--semantics-controls-lg-min-size);
+      height: auto;
+      min-width: var(--semantics-controls-lg-min-size);
+      min-height: var(--semantics-controls-lg-min-size);
+      border-radius: var(--semantics-controls-lg-corner-radius);
+      flex-direction: column;
+      gap: 1px;
+      padding: 8px 10px;
+    }
+
+    /* LG with title - vertical layout */
+    :host([size='lg'][has-title]) .button {
+      padding: 8px 8px;
+    }
+
+    .button__title {
+      display: none;
+      font: var(--semantics-buttons-xs-font);
+      font-size: 12px;
+      font-weight: 550;
+      line-height: 1.125;
+      text-align: center;
+      color: inherit;
+    }
+
+    :host([size='lg'][has-title]) .button__title {
+      display: block;
     }
 
     /* Variant: accent-filled (default) */
@@ -212,6 +243,11 @@ export class RRIconButton extends LitElement {
       --_icon-size: 24px;
     }
 
+    /* LG: larger button -> 24px icon (per Figma specs) */
+    :host([size='lg']) {
+      --_icon-size: 24px;
+    }
+
     /* Accessibility: Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .button {
@@ -246,6 +282,12 @@ export class RRIconButton extends LitElement {
   @property({ type: String })
   label = '';
 
+  @property({ type: Boolean, reflect: true, attribute: 'has-title' })
+  hasTitle = false;
+
+  @property({ type: String })
+  title = 'Icon Button';
+
   private _handleClick = (event: Event): void => {
     if (this.disabled) {
       event.preventDefault();
@@ -274,6 +316,7 @@ export class RRIconButton extends LitElement {
         aria-label=${this.label}
       >
         <slot></slot>
+        <span class="button__title" part="title">${this.title}</span>
       </button>
     `;
   }
