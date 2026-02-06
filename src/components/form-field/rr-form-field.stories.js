@@ -90,10 +90,10 @@ const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
 
 export const FigmaComparison = () => html`
   <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <ftl-holster node="376:2395" style="display: inline-block;">
-      <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 363px; background: #ffffff;">
+    <ftl-holster node="376:2396" style="display: inline-block;">
+      <div style="display: flex; flex-direction: column; gap: 2px; width: 100%;">
         <rr-form-field label="Form field">
-          <rr-text-field placeholder="Value"></rr-text-field>
+          <rr-text-field value="Text field"></rr-text-field>
         </rr-form-field>
       </div>
     </ftl-holster>
