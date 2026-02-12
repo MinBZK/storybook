@@ -946,9 +946,16 @@
       "figma": {
         "nodeId": "87-6523",
         "nodeName": "menu-bar__menu-item",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=87-6523"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=87-6523",
+        "note": "Covered by existing rr-menu-item component"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-menu-item",
+        "file": "src/components/navigation/menu-bar/rr-menu-item.ts",
+        "className": "RRMenuItem"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Menu Item",
@@ -1229,10 +1236,17 @@
         "nodeName": "flexible-spacer-cell",
         "pageId": "0:1",
         "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1061-3456"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1061-3456",
+        "note": "Covered by rr-spacer-cell with size=\"flexible\""
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-spacer-cell",
+        "file": "src/components/lists/spacer-cell/rr-spacer-cell.ts",
+        "className": "RRSpacerCell",
+        "usage": "<rr-spacer-cell size=\"flexible\"></rr-spacer-cell>"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "List Item Drag Handle Cell",
@@ -1526,10 +1540,15 @@
         "pageId": "39:908",
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1451-33442",
-        "note": "Figma box component with on-tinted variants. Different from utility Box component."
+        "note": "Covered by existing rr-box component. On-tinted variant can be added as attribute."
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-box",
+        "file": "src/components/layout/box/rr-box.ts",
+        "className": "RRBox"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Simple Section",
