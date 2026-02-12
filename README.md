@@ -91,7 +91,7 @@ npm run serve
 
 ```html
 <script type="module">
-  import './src/components/button/rr-button.js';
+  import './src/components/actions/button/rr-button.js';
 </script>
 ```
 

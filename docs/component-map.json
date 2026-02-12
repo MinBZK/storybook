@@ -41,7 +41,7 @@
       },
       "implementation": {
         "tagName": "rr-button",
-        "file": "src/components/button/rr-button.ts",
+        "file": "src/components/actions/button/rr-button.ts",
         "className": "RRButton"
       },
       "tokens": {
@@ -121,7 +121,7 @@
       },
       "implementation": {
         "tagName": "rr-checkbox",
-        "file": "src/components/checkbox/rr-checkbox.ts",
+        "file": "src/components/inputs/checkbox/rr-checkbox.ts",
         "className": "RRCheckbox"
       },
       "tokens": {
@@ -178,7 +178,7 @@
       },
       "implementation": {
         "tagName": "rr-radio",
-        "file": "src/components/radio/rr-radio.js",
+        "file": "src/inputs/components/radio/rr-radio.js",
         "className": "RRRadio"
       },
       "tokens": {
@@ -224,7 +224,7 @@
       },
       "implementation": {
         "tagName": "rr-switch",
-        "file": "src/components/switch/rr-switch.js",
+        "file": "src/components/inputs/switch/rr-switch.js",
         "className": "RRSwitch"
       },
       "tokens": {
@@ -281,7 +281,7 @@
       },
       "implementation": {
         "tagName": "rr-toggle-button",
-        "file": "src/components/toggle-button/rr-toggle-button.ts",
+        "file": "src/components/inputs/toggle-button/rr-toggle-button.ts",
         "className": "RRToggleButton"
       },
       "tokens": {
@@ -339,7 +339,7 @@
       },
       "implementation": {
         "tagName": "rr-icon-button",
-        "file": "src/components/icon-button/rr-icon-button.js",
+        "file": "src/components/actions/icon-button/rr-icon-button.js",
         "className": "RRIconButton"
       },
       "tokens": {
@@ -403,7 +403,7 @@
       },
       "implementation": {
         "tagName": "rr-box",
-        "file": "src/components/box/rr-box.js",
+        "file": "src/components/layout/box/rr-box.js",
         "className": "RRBox"
       },
       "tokens": {
@@ -434,12 +434,12 @@
       },
       "implementation": {
         "tagName": "rr-menu-bar",
-        "file": "src/components/menu-bar/rr-menu-bar.js",
+        "file": "src/components/navigation/menu-bar/rr-menu-bar.js",
         "className": "RRMenuBar",
         "additionalComponents": [
           {
             "tagName": "rr-menu-item",
-            "file": "src/components/menu-bar/rr-menu-item.js",
+            "file": "src/components/navigation/menu-bar/rr-menu-item.js",
             "className": "RRMenuItem"
           }
         ]
@@ -509,7 +509,7 @@
       },
       "implementation": {
         "tagName": "rr-button-cell",
-        "file": "src/components/button-cell/rr-button-cell.ts",
+        "file": "src/components/lists/button-cell/rr-button-cell.ts",
         "className": "RRButtonCell"
       },
       "status": "implemented",
@@ -527,7 +527,7 @@
       },
       "implementation": {
         "tagName": "rr-custom-cell",
-        "file": "src/components/custom-cell/rr-custom-cell.ts",
+        "file": "src/components/lists/custom-cell/rr-custom-cell.ts",
         "className": "RRCustomCell"
       },
       "status": "implemented",
@@ -546,7 +546,7 @@
       },
       "implementation": {
         "tagName": "rr-divider",
-        "file": "src/components/divider/rr-divider.ts",
+        "file": "src/components/layout/divider/rr-divider.ts",
         "className": "RRDivider"
       },
       "status": "implemented",
@@ -561,7 +561,7 @@
       },
       "implementation": {
         "tagName": "rr-drop-down-field",
-        "file": "src/components/drop-down-field/rr-drop-down-field.ts",
+        "file": "src/inputs/components/drop-down-field/rr-drop-down-field.ts",
         "className": "RRDropDownField"
       },
       "status": "implemented",
@@ -576,7 +576,7 @@
       },
       "implementation": {
         "tagName": "rr-drop-down-field-cell",
-        "file": "src/components/drop-down-field-cell/rr-drop-down-field-cell.ts",
+        "file": "src/inputs/components/lists/drop-down-field-cell/rr-drop-down-field-cell.ts",
         "className": "RRDropDownFieldCell"
       },
       "status": "implemented",
@@ -606,7 +606,7 @@
       },
       "implementation": {
         "tagName": "rr-label-cell",
-        "file": "src/components/label-cell/rr-label-cell.ts",
+        "file": "src/components/lists/label-cell/rr-label-cell.ts",
         "className": "RRLabelCell"
       },
       "status": "implemented",
@@ -662,7 +662,7 @@
       },
       "implementation": {
         "tagName": "rr-page-sticky-area-background",
-        "file": "src/components/page-sticky-area-background/rr-page-sticky-area-background.ts",
+        "file": "src/components/layout/page/page-sticky-area-background/rr-page-sticky-area-background.ts",
         "className": "RRPageStickyAreaBackground"
       },
       "status": "implemented",
@@ -692,7 +692,7 @@
       },
       "implementation": {
         "tagName": "rr-spacer",
-        "file": "src/components/spacer/rr-spacer.ts",
+        "file": "src/components/layout/spacer/rr-spacer.ts",
         "className": "RRSpacer"
       },
       "status": "implemented",
@@ -711,7 +711,7 @@
       },
       "implementation": {
         "tagName": "rr-spacer-cell",
-        "file": "src/components/spacer-cell/rr-spacer-cell.ts",
+        "file": "src/components/lists/spacer-cell/rr-spacer-cell.ts",
         "className": "RRSpacerCell"
       },
       "status": "implemented",
@@ -726,7 +726,7 @@
       },
       "implementation": {
         "tagName": "rr-text-field",
-        "file": "src/components/text-field/rr-text-field.ts",
+        "file": "src/components/inputs/text-field/rr-text-field.ts",
         "className": "RRTextField"
       },
       "status": "implemented",
@@ -741,7 +741,7 @@
       },
       "implementation": {
         "tagName": "rr-text-field-cell",
-        "file": "src/components/text-field-cell/rr-text-field-cell.ts",
+        "file": "src/components/lists/text-field-cell/rr-text-field-cell.ts",
         "className": "RRTextFieldCell"
       },
       "status": "implemented",
@@ -765,7 +765,7 @@
       },
       "implementation": {
         "tagName": "rr-title-cell",
-        "file": "src/components/title-cell/rr-title-cell.ts",
+        "file": "src/components/lists/title-cell/rr-title-cell.ts",
         "className": "RRTitleCell"
       },
       "status": "implemented",
@@ -811,7 +811,7 @@
       },
       "implementation": {
         "tagName": "rr-checkbox",
-        "file": "src/components/checkbox/rr-checkbox.ts",
+        "file": "src/components/inputs/checkbox/rr-checkbox.ts",
         "className": "RRCheckbox",
         "usage": "<rr-checkbox size=\"xs\"></rr-checkbox>"
       },
@@ -827,7 +827,7 @@
       },
       "implementation": {
         "tagName": "rr-checkbox-field",
-        "file": "src/components/checkbox-field/rr-checkbox-field.ts",
+        "file": "src/components/inputs/checkbox-field/rr-checkbox-field.ts",
         "className": "RRCheckboxField"
       },
       "status": "implemented",
@@ -890,7 +890,7 @@
       },
       "implementation": {
         "tagName": "rr-icon-button",
-        "file": "src/components/icon-button/rr-icon-button.ts",
+        "file": "src/components/actions/icon-button/rr-icon-button.ts",
         "className": "RRIconButton"
       },
       "status": "implemented",
@@ -914,7 +914,7 @@
       },
       "implementation": {
         "tagName": "rr-input-field-button",
-        "file": "src/components/input-field-button/rr-input-field-button.ts",
+        "file": "src/components/inputs/input-field-button/rr-input-field-button.ts",
         "className": "RRInputFieldButton"
       },
       "status": "implemented",
@@ -947,7 +947,7 @@
       },
       "implementation": {
         "tagName": "rr-number-field",
-        "file": "src/components/number-field/rr-number-field.ts",
+        "file": "src/components/inputs/number-field/rr-number-field.ts",
         "className": "RRNumberField"
       },
       "status": "implemented",
@@ -963,7 +963,7 @@
       },
       "implementation": {
         "tagName": "rr-radio",
-        "file": "src/components/radio/rr-radio.ts",
+        "file": "src/inputs/components/radio/rr-radio.ts",
         "className": "RRRadio",
         "usage": "<rr-radio size=\"xs\"></rr-radio>"
       },
@@ -979,7 +979,7 @@
       },
       "implementation": {
         "tagName": "rr-radio-button-field",
-        "file": "src/components/radio-button-field/rr-radio-button-field.ts",
+        "file": "src/components/inputs/radio-button-field/rr-radio-button-field.ts",
         "className": "RRRadioButtonField"
       },
       "status": "implemented",
@@ -1003,7 +1003,7 @@
       },
       "implementation": {
         "tagName": "rr-search-field",
-        "file": "src/components/search-field/rr-search-field.ts",
+        "file": "src/components/inputs/search-field/rr-search-field.ts",
         "className": "RRSearchField"
       },
       "status": "implemented",
@@ -1022,7 +1022,7 @@
       },
       "implementation": {
         "tagName": "rr-segmented-control",
-        "file": "src/components/segmented-control/rr-segmented-control.ts",
+        "file": "src/components/inputs/segmented-control/rr-segmented-control.ts",
         "className": "RRSegmentedControl"
       },
       "status": "implemented",
@@ -1042,7 +1042,7 @@
       },
       "implementation": {
         "tagName": "rr-segmented-control-item",
-        "file": "src/components/segmented-control/rr-segmented-control-item.ts",
+        "file": "src/components/inputs/segmented-control/rr-segmented-control-item.ts",
         "className": "RRSegmentedControlItem"
       },
       "status": "implemented",
@@ -1074,7 +1074,7 @@
       },
       "implementation": {
         "tagName": "rr-stepper",
-        "file": "src/components/stepper/rr-stepper.ts",
+        "file": "src/components/inputs/stepper/rr-stepper.ts",
         "className": "RRStepper"
       },
       "status": "implemented",
@@ -1104,7 +1104,7 @@
       },
       "implementation": {
         "tagName": "rr-switch",
-        "file": "src/components/switch/rr-switch.ts",
+        "file": "src/components/inputs/switch/rr-switch.ts",
         "className": "RRSwitch"
       },
       "status": "implemented",
@@ -1119,7 +1119,7 @@
       },
       "implementation": {
         "tagName": "rr-switch-field",
-        "file": "src/components/switch-field/rr-switch-field.ts",
+        "file": "src/components/inputs/switch-field/rr-switch-field.ts",
         "className": "RRSwitchField"
       },
       "status": "implemented",
@@ -1159,7 +1159,7 @@
       },
       "implementation": {
         "tagName": "rr-token",
-        "file": "src/components/token/rr-token.ts",
+        "file": "src/components/inputs/token/rr-token.ts",
         "className": "RRToken"
       },
       "status": "implemented",

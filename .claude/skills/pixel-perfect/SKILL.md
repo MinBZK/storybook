@@ -381,7 +381,7 @@ For EVERY Edit tool call, note:
 - Reason (which Figma value this fixes)
 
 Example:
-\`src/components/button/rr-button.ts:45\`: \`padding: 8px\` → \`padding: 8px 8px 6px 8px\` (Figma paddingBottom=6px)
+\`src/components/actions/button/rr-button.ts:45\`: \`padding: 8px\` → \`padding: 8px 8px 6px 8px\` (Figma paddingBottom=6px)
 
 Report ALL changes at the end, even if there were none.
 

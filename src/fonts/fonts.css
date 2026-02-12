@@ -5,32 +5,32 @@
  */
 
 @font-face {
-  font-family: 'RijksSansVF';
-  src: url('./RijksSansVF-Regular.ttf') format('truetype-variations');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'RijksSansVF';
+	src: url('./RijksSansVF-Regular.ttf') format('truetype-variations');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
-  font-family: 'RijksSansVF';
-  src: url('./RijksSansVF-Italic.ttf') format('truetype-variations');
-  font-weight: 100 900;
-  font-style: italic;
-  font-display: swap;
+	font-family: 'RijksSansVF';
+	src: url('./RijksSansVF-Italic.ttf') format('truetype-variations');
+	font-weight: 100 900;
+	font-style: italic;
+	font-display: swap;
 }
 
 :root {
-  --rr-font-family-sans-serif: 'RijksSansVF', system-ui, sans-serif;
-  --rr-font-family-serif: 'RijksoverheidSerif', Georgia, serif;
-  --rr-font-family-body: var(--rr-font-family-body);
-  --rr-font-family-display: var(--rr-font-family-body);
+	--rr-font-family-sans-serif: 'RijksSansVF', system-ui, sans-serif;
+	--rr-font-family-serif: 'RijksoverheidSerif', Georgia, serif;
+	--rr-font-family-body: 'RijksSansVF', system-ui, sans-serif;
+	--rr-font-family-display: 'RijksSansVF', system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    /* Font smoothing for consistent rendering */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+	:root {
+		/* Font smoothing for consistent rendering */
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
 }

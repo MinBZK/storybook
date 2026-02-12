@@ -15,7 +15,7 @@ Implementeer een web component voor Figma node: $ARGUMENTS
 | **Taal** | TypeScript (`.ts`) |
 | **Component bestand** | `src/components/{name}/rr-{name}.ts` |
 | **Stories bestand** | `src/components/{name}/rr-{name}.stories.js` |
-| **Referentie** | `src/components/toggle-button/rr-toggle-button.ts` |
+| **Referentie** | `src/components/inputs/toggle-button/rr-toggle-button.ts` |
 
 **BELANGRIJK:** Componenten worden ALTIJD geschreven in Lit + TypeScript. Gebruik de toggle-button als referentie implementatie.
 
@@ -83,7 +83,7 @@ grep -i "controls.*min-size" dist/css/tokens.css
 ```
 
 **Controleer ook bestaande componenten voor patronen:**
-- `src/components/toggle-button/rr-toggle-button.ts` (referentie implementatie)
+- `src/components/inputs/toggle-button/rr-toggle-button.ts` (referentie implementatie)
 
 ### Spacer Component Gebruik
 

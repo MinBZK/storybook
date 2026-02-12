@@ -26,8 +26,8 @@ git diff --name-only main...HEAD -- "src/components/**/*"
 ```
 
 Extract component names from paths:
-- `src/components/button/...` → `button`
-- `src/components/toggle-button/...` → `toggle-button`
+- `src/components/actions/button/...` → `button`
+- `src/components/input/toggle-button/...` → `toggle-button`
 
 **Filter to components with FigmaComparison stories:**
 
