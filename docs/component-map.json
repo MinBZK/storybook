@@ -576,7 +576,7 @@
       },
       "implementation": {
         "tagName": "rr-drop-down-field-cell",
-        "file": "src/components/inputs/lists/drop-down-field-cell/rr-drop-down-field-cell.ts",
+        "file": "src/components/lists/drop-down-field-cell/rr-drop-down-field-cell.ts",
         "className": "RRDropDownFieldCell"
       },
       "status": "implemented",
@@ -624,7 +624,7 @@
       },
       "implementation": {
         "tagName": "rr-list",
-        "file": "src/components/list/rr-list.ts",
+        "file": "src/components/lists/list/rr-list.ts",
         "className": "RRList"
       },
       "status": "implemented",
@@ -643,7 +643,7 @@
       },
       "implementation": {
         "tagName": "rr-list-item",
-        "file": "src/components/list/rr-list-item.ts",
+        "file": "src/components/lists/list/rr-list-item.ts",
         "className": "RRListItem"
       },
       "status": "implemented",
@@ -842,7 +842,7 @@
       },
       "implementation": {
         "tagName": "rr-combo-box-field",
-        "file": "src/components/combo-box-field/rr-combo-box-field.ts",
+        "file": "src/components/inputs/combo-box-field/rr-combo-box-field.ts",
         "className": "RRComboBoxField"
       },
       "status": "implemented",
@@ -875,7 +875,7 @@
       },
       "implementation": {
         "tagName": "rr-form-field",
-        "file": "src/components/form-field/rr-form-field.ts",
+        "file": "src/components/control-groups/form-field/rr-form-field.ts",
         "className": "RRFormField"
       },
       "status": "implemented",

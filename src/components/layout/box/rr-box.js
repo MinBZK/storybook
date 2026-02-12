@@ -14,7 +14,7 @@
  * @cssprop --rr-box-padding - Override padding
  */
 
-import { RRBaseComponent } from '../base/base-component.js';
+import { RRBaseComponent } from '../../base/base-component.js';
 
 export class RRBox extends RRBaseComponent {
   static componentName = 'rr-box';

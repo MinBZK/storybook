@@ -25,7 +25,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1014:3843',
     },
     componentSource: {
-      file: 'src/components/inputs/drop-down-field-cell/rr-drop-down-field-cell.ts',
+      file: 'src/components/lists/drop-down-field-cell/rr-drop-down-field-cell.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {
