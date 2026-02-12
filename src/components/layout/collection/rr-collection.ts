@@ -39,6 +39,7 @@ export class RRCollection extends LitElement {
       display: flex;
       flex-direction: column;
       width: 100%;
+      min-width: 0;
       gap: 16px;
       font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
     }
@@ -63,14 +64,8 @@ export class RRCollection extends LitElement {
     /* Grid layout */
     :host([layout='grid']) .collection__items,
     :host(:not([layout])) .collection__items {
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-
-    :host([layout='grid']) .collection__items ::slotted(*),
-    :host(:not([layout])) .collection__items ::slotted(*) {
-      flex: 1 1 var(--rr-collection-item-min-width, 280px);
-      min-width: var(--rr-collection-item-min-width, 280px);
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--rr-collection-item-min-width, 200px), 1fr));
     }
 
     /* List layout */

@@ -178,7 +178,7 @@ export const FigmaComparisonSimple = () => html`
           <!-- container=sm -->
           <rr-section container="sm" variant="simple" style="width: 100%;">
             <div
-              style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; text-align: center;"
+              style="padding: 2px 8px; width: 100%; box-sizing: border-box; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; text-align: center;"
             >
               <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
             </div>
@@ -187,7 +187,7 @@ export const FigmaComparisonSimple = () => html`
           <!-- container=md -->
           <rr-section container="md" variant="simple" style="width: 100%;">
             <div
-              style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; text-align: center;"
+              style="padding: 2px 8px; width: 100%; box-sizing: border-box; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; text-align: center;"
             >
               <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
             </div>
@@ -196,7 +196,7 @@ export const FigmaComparisonSimple = () => html`
           <!-- container=lg -->
           <rr-section container="lg" variant="simple" style="width: 100%;">
             <div
-              style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; text-align: center;"
+              style="padding: 2px 8px; width: 100%; box-sizing: border-box; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; text-align: center;"
             >
               <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
             </div>

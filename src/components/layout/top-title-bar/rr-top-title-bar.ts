@@ -60,7 +60,6 @@ export class RRTopTitleBar extends LitElement {
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: flex-end;
       width: 100%;
       min-height: 44px;
       box-sizing: border-box;
@@ -93,6 +92,12 @@ export class RRTopTitleBar extends LitElement {
       justify-content: flex-end;
       align-items: center;
       gap: 8px;
+      flex: 1;
+    }
+
+    /* Custom toolbar: both areas fill equally */
+    :host([toolbar='custom']) .toolbar__start-area {
+      flex: 1;
     }
 
     /* Compact mode: title in toolbar */
@@ -102,6 +107,10 @@ export class RRTopTitleBar extends LitElement {
 
     :host([compact]) .toolbar__start-area {
       flex: 1;
+    }
+
+    :host([compact]) .toolbar__end-area {
+      flex: initial;
     }
 
     .toolbar__title-group {
@@ -124,6 +133,12 @@ export class RRTopTitleBar extends LitElement {
       display: flex;
       flex-direction: column;
       width: 100%;
+      margin-top: -16px;
+    }
+
+    /* No negative margin when toolbar is absent */
+    :host([toolbar='none']:not([compact])) .title-bar__title {
+      margin-top: 0;
     }
 
     .title {
