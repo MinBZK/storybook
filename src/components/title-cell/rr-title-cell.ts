@@ -28,7 +28,7 @@ export class RRTitleCell extends LitElement {
     :host {
       display: flex;
       flex-direction: column;
-      font-family: var(--rr-font-family-sans);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {

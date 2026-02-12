@@ -410,7 +410,7 @@ export class RRMenuBar extends RRBaseComponent {
     return `
       :host {
         display: block;
-        font-family: var(--rr-font-family-sans);
+        font-family: var(--rr-font-family-body);
         width: 100%;
         min-width: 0; /* Allow shrinking */
       }

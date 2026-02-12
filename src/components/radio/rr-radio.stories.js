@@ -101,7 +101,7 @@ const Template = ({ checked, disabled, size, name, value, label }) => html`
       aria-label=${label}
     ></rr-radio>
     <span
-      style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+      style="font-family: var(--rr-font-family-body); font-size: 16px;"
     >
       ${label}
     </span>
@@ -158,7 +158,7 @@ export const RadioGroup = () => html`
   <div role="radiogroup" aria-labelledby="group-label-1" style="padding: 0; margin: 0;">
     <div
       id="group-label-1"
-      style="font-family: var(--rr-font-family-sans); font-size: 18px; font-weight: 550; margin-bottom: 16px;"
+      style="font-family: var(--rr-font-family-body); font-size: 18px; font-weight: 550; margin-bottom: 16px;"
     >
       Kies een optie
     </div>
@@ -166,7 +166,7 @@ export const RadioGroup = () => html`
       <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
         <rr-radio name="group1" value="option1" checked aria-label="Optie 1"></rr-radio>
         <span
-          style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+          style="font-family: var(--rr-font-family-body); font-size: 16px;"
         >
           Optie 1
         </span>
@@ -174,7 +174,7 @@ export const RadioGroup = () => html`
       <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
         <rr-radio name="group1" value="option2" aria-label="Optie 2"></rr-radio>
         <span
-          style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+          style="font-family: var(--rr-font-family-body); font-size: 16px;"
         >
           Optie 2
         </span>
@@ -182,7 +182,7 @@ export const RadioGroup = () => html`
       <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
         <rr-radio name="group1" value="option3" aria-label="Optie 3"></rr-radio>
         <span
-          style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+          style="font-family: var(--rr-font-family-body); font-size: 16px;"
         >
           Optie 3
         </span>
@@ -197,7 +197,7 @@ export const RadioGroup = () => html`
           aria-label="Optie 4 (uitgeschakeld)"
         ></rr-radio>
         <span
-          style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+          style="font-family: var(--rr-font-family-body); font-size: 16px;"
         >
           Optie 4 (uitgeschakeld)
         </span>
@@ -221,7 +221,7 @@ export const AllSizes = () => html`
     <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
       <rr-radio name="sizes" value="xs" size="xs" checked aria-label="Extra Small (XS)"></rr-radio>
       <span
-        style="font-family: var(--rr-font-family-sans); font-size: 14px;"
+        style="font-family: var(--rr-font-family-body); font-size: 14px;"
       >
         Extra Small (XS)
       </span>
@@ -229,7 +229,7 @@ export const AllSizes = () => html`
     <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
       <rr-radio name="sizes" value="s" size="s" aria-label="Small (S)"></rr-radio>
       <span
-        style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+        style="font-family: var(--rr-font-family-body); font-size: 16px;"
       >
         Small (S)
       </span>
@@ -237,7 +237,7 @@ export const AllSizes = () => html`
     <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
       <rr-radio name="sizes" value="m" size="m" aria-label="Medium (M)"></rr-radio>
       <span
-        style="font-family: var(--rr-font-family-sans); font-size: 18px;"
+        style="font-family: var(--rr-font-family-body); font-size: 18px;"
       >
         Medium (M)
       </span>
@@ -353,7 +353,7 @@ export const MultipleGroups = () => html`
   <div style="display: flex; gap: 3rem;">
     <fieldset style="border: none; padding: 0; margin: 0;">
       <legend
-        style="font-family: var(--rr-font-family-sans); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
+        style="font-family: var(--rr-font-family-body); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
       >
         Groep 1: Voorkeur
       </legend>
@@ -361,7 +361,7 @@ export const MultipleGroups = () => html`
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
           <rr-radio name="preference" value="yes" checked aria-label="Ja"></rr-radio>
           <span
-            style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+            style="font-family: var(--rr-font-family-body); font-size: 16px;"
           >
             Ja
           </span>
@@ -369,7 +369,7 @@ export const MultipleGroups = () => html`
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
           <rr-radio name="preference" value="no" aria-label="Nee"></rr-radio>
           <span
-            style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+            style="font-family: var(--rr-font-family-body); font-size: 16px;"
           >
             Nee
           </span>
@@ -379,7 +379,7 @@ export const MultipleGroups = () => html`
 
     <fieldset style="border: none; padding: 0; margin: 0;">
       <legend
-        style="font-family: var(--rr-font-family-sans); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
+        style="font-family: var(--rr-font-family-body); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
       >
         Groep 2: Prioriteit
       </legend>
@@ -387,7 +387,7 @@ export const MultipleGroups = () => html`
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
           <rr-radio name="priority" value="high" aria-label="Hoog"></rr-radio>
           <span
-            style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+            style="font-family: var(--rr-font-family-body); font-size: 16px;"
           >
             Hoog
           </span>
@@ -395,7 +395,7 @@ export const MultipleGroups = () => html`
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
           <rr-radio name="priority" value="medium" checked aria-label="Gemiddeld"></rr-radio>
           <span
-            style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+            style="font-family: var(--rr-font-family-body); font-size: 16px;"
           >
             Gemiddeld
           </span>
@@ -403,7 +403,7 @@ export const MultipleGroups = () => html`
         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
           <rr-radio name="priority" value="low" aria-label="Laag"></rr-radio>
           <span
-            style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+            style="font-family: var(--rr-font-family-body); font-size: 16px;"
           >
             Laag
           </span>
@@ -435,14 +435,14 @@ export const FormIntegration = () => {
     <form @submit=${handleSubmit} style="max-width: 400px;">
       <fieldset style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 0;">
         <legend
-          style="font-family: var(--rr-font-family-sans); font-size: 18px; font-weight: 550; padding: 0 8px;"
+          style="font-family: var(--rr-font-family-body); font-size: 18px; font-weight: 550; padding: 0 8px;"
         >
           Vragenlijst
         </legend>
 
         <div style="margin-bottom: 20px;">
           <div
-            style="font-family: var(--rr-font-family-sans); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
+            style="font-family: var(--rr-font-family-body); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
           >
             1. Hoe tevreden bent u?
           </div>
@@ -454,7 +454,7 @@ export const FormIntegration = () => {
                 aria-label="Zeer tevreden"
               ></rr-radio>
               <span
-                style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+                style="font-family: var(--rr-font-family-body); font-size: 16px;"
               >
                 Zeer tevreden
               </span>
@@ -467,7 +467,7 @@ export const FormIntegration = () => {
                 aria-label="Tevreden"
               ></rr-radio>
               <span
-                style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+                style="font-family: var(--rr-font-family-body); font-size: 16px;"
               >
                 Tevreden
               </span>
@@ -475,7 +475,7 @@ export const FormIntegration = () => {
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
               <rr-radio name="satisfaction" value="neutral" aria-label="Neutraal"></rr-radio>
               <span
-                style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+                style="font-family: var(--rr-font-family-body); font-size: 16px;"
               >
                 Neutraal
               </span>
@@ -483,7 +483,7 @@ export const FormIntegration = () => {
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
               <rr-radio name="satisfaction" value="unsatisfied" aria-label="Ontevreden"></rr-radio>
               <span
-                style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+                style="font-family: var(--rr-font-family-body); font-size: 16px;"
               >
                 Ontevreden
               </span>
@@ -493,7 +493,7 @@ export const FormIntegration = () => {
 
         <div style="margin-bottom: 20px;">
           <div
-            style="font-family: var(--rr-font-family-sans); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
+            style="font-family: var(--rr-font-family-body); font-size: 16px; font-weight: 550; margin-bottom: 12px;"
           >
             2. Zou u dit aanbevelen?
           </div>
@@ -501,7 +501,7 @@ export const FormIntegration = () => {
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
               <rr-radio name="recommend" value="yes" aria-label="Ja"></rr-radio>
               <span
-                style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+                style="font-family: var(--rr-font-family-body); font-size: 16px;"
               >
                 Ja
               </span>
@@ -509,7 +509,7 @@ export const FormIntegration = () => {
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
               <rr-radio name="recommend" value="no" aria-label="Nee"></rr-radio>
               <span
-                style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+                style="font-family: var(--rr-font-family-body); font-size: 16px;"
               >
                 Nee
               </span>
@@ -517,7 +517,7 @@ export const FormIntegration = () => {
             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
               <rr-radio name="recommend" value="maybe" checked aria-label="Misschien"></rr-radio>
               <span
-                style="font-family: var(--rr-font-family-sans); font-size: 16px;"
+                style="font-family: var(--rr-font-family-body); font-size: 16px;"
               >
                 Misschien
               </span>
@@ -528,7 +528,7 @@ export const FormIntegration = () => {
         <button
           type="submit"
           style="
-          font-family: var(--rr-font-family-sans);
+          font-family: var(--rr-font-family-body);
           font-size: 16px;
           font-weight: 550;
           padding: 10px 20px;

@@ -26,7 +26,7 @@ export class RRMenuItem extends LitElement {
       display: inline-block;
       position: relative;
       width: fit-content;
-      font-family: var(--rr-font-family-sans);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {

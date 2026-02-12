@@ -235,7 +235,7 @@ export class RRRadio extends RRBaseComponent {
         display: inline-flex;
         align-items: center;
         cursor: pointer;
-        font-family: var(--rr-font-family-sans);
+        font-family: var(--rr-font-family-body);
       }
 
       :host([hidden]) {

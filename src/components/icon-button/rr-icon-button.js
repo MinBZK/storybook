@@ -106,7 +106,7 @@ export class RRIconButton extends RRBaseComponent {
     return `
       :host {
         display: inline-block;
-        font-family: var(--rr-font-family-sans);
+        font-family: var(--rr-font-family-body);
       }
 
       :host([hidden]) {

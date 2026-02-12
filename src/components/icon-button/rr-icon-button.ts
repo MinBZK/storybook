@@ -31,7 +31,7 @@ export class RRIconButton extends LitElement {
   static override styles = css`
     :host {
       display: inline-block;
-      font-family: var(--rr-font-family-sans);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {

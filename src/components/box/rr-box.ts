@@ -23,7 +23,7 @@ export class RRBox extends LitElement {
   static override styles = css`
     :host {
       display: block;
-      font-family: var(--rr-font-family-sans);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {

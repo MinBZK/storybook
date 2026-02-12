@@ -25,7 +25,7 @@ export class RRSwitch extends LitElement {
   static override styles = css`
     :host {
       display: inline-block;
-      font-family: var(--rr-font-family-sans);
+      font-family: var(--rr-font-family-body);
       outline: none;
       cursor: pointer;
       user-select: none;

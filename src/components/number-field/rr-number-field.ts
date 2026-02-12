@@ -26,7 +26,7 @@ export class RRNumberField extends LitElement {
   static override styles = css`
     :host {
       display: inline-block;
-      font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {
