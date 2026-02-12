@@ -238,7 +238,7 @@ export class RRSplitButton extends LitElement {
         >
           <slot name="dropdown-icon">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6 9l6 6 6-6"/>
+              <path d="M4 7l8 9 8-9"/>
             </svg>
           </slot>
         </button>
