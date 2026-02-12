@@ -46,7 +46,6 @@ padding: 8px 8px 6px 8px;  /* NOT symmetric! */
 
 **Always Check Figma Gap:** Don't assume flex containers have gaps. Figma's layout panel shows gap explicitly - if not shown, gap is 0.
 
-**Subpixel Font Drift:** Expect ~0.4px cumulative drift per text element due to font rendering differences. This is inherent and not fixable.
 
 ## Token Hierarchy
 
