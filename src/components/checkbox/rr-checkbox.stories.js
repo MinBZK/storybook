@@ -9,7 +9,7 @@ import './rr-checkbox.ts';
  *
  * ## Gebruik
  * ```html
- * <rr-checkbox size="m">Label</rr-checkbox>
+ * <rr-checkbox>Label</rr-checkbox>
  * ```
  */
 export default {
@@ -51,14 +51,6 @@ export default {
         defaultValue: { summary: false },
       },
     },
-    size: {
-      control: 'select',
-      options: ['xs', 's', 'm'],
-      description: 'Checkbox size',
-      table: {
-        defaultValue: { summary: 'm' },
-      },
-    },
     value: {
       control: 'text',
       description: 'Value for form submission',
@@ -75,7 +67,6 @@ export default {
     checked: false,
     indeterminate: false,
     disabled: false,
-    size: 'm',
     value: 'on',
     name: '',
   },
@@ -85,7 +76,6 @@ const Template = ({
   checked,
   indeterminate,
   disabled,
-  size,
   value,
   name,
   'aria-label': ariaLabel,
@@ -94,7 +84,6 @@ const Template = ({
     ?checked=${checked}
     ?indeterminate=${indeterminate}
     ?disabled=${disabled}
-    size=${size}
     value=${value}
     name=${name}
     aria-label=${ariaLabel || 'Checkbox'}
@@ -127,22 +116,6 @@ CheckedDisabled.args = {
   disabled: true,
 };
 
-// Sizes
-export const ExtraSmall = Template.bind({});
-ExtraSmall.args = {
-  size: 'xs',
-};
-
-export const Small = Template.bind({});
-Small.args = {
-  size: 's',
-};
-
-export const Medium = Template.bind({});
-Medium.args = {
-  size: 'm',
-};
-
 // All states overview
 export const AllStates = () => html`
   <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
@@ -169,27 +142,6 @@ export const AllStates = () => html`
   </div>
 `;
 AllStates.parameters = {
-  controls: { disable: true },
-};
-
-// All sizes overview
-export const AllSizes = () => html`
-  <div style="display: flex; gap: 2rem; align-items: center;">
-    <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
-      <div style="font-size: 14px; color: #64748b;">XS (24px)</div>
-      <rr-checkbox size="xs" checked aria-label="Extra small checkbox"></rr-checkbox>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
-      <div style="font-size: 14px; color: #64748b;">S (32px)</div>
-      <rr-checkbox size="s" checked aria-label="Small checkbox"></rr-checkbox>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
-      <div style="font-size: 14px; color: #64748b;">M (44px)</div>
-      <rr-checkbox size="m" checked aria-label="Medium checkbox"></rr-checkbox>
-    </div>
-  </div>
-`;
-AllSizes.parameters = {
   controls: { disable: true },
 };
 
@@ -307,7 +259,6 @@ export const StateMatrix = () => html`
   <table style="border-collapse: collapse; width: 100%;">
     <thead>
       <tr>
-        <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Size</th>
         <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
           Unchecked
         </th>
@@ -320,52 +271,33 @@ export const StateMatrix = () => html`
         <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
           Disabled
         </th>
+        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
+          Checked Disabled
+        </th>
+        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
+          Indeterminate Disabled
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">XS</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-checkbox size="xs" aria-label="XS unchecked"></rr-checkbox>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-checkbox size="xs" checked aria-label="XS checked"></rr-checkbox>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-checkbox size="xs" indeterminate aria-label="XS indeterminate"></rr-checkbox>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-checkbox size="xs" disabled aria-label="XS disabled"></rr-checkbox>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">S</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-checkbox size="s" aria-label="S unchecked"></rr-checkbox>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-checkbox size="s" checked aria-label="S checked"></rr-checkbox>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-checkbox size="s" indeterminate aria-label="S indeterminate"></rr-checkbox>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-checkbox size="s" disabled aria-label="S disabled"></rr-checkbox>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 0.75rem;">M</td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-checkbox size="m" aria-label="M unchecked"></rr-checkbox>
+          <rr-checkbox aria-label="Unchecked"></rr-checkbox>
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-checkbox size="m" checked aria-label="M checked"></rr-checkbox>
+          <rr-checkbox checked aria-label="Checked"></rr-checkbox>
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-checkbox size="m" indeterminate aria-label="M indeterminate"></rr-checkbox>
+          <rr-checkbox indeterminate aria-label="Indeterminate"></rr-checkbox>
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-checkbox size="m" disabled aria-label="M disabled"></rr-checkbox>
+          <rr-checkbox disabled aria-label="Disabled"></rr-checkbox>
+        </td>
+        <td style="padding: 0.75rem; text-align: center;">
+          <rr-checkbox checked disabled aria-label="Checked disabled"></rr-checkbox>
+        </td>
+        <td style="padding: 0.75rem; text-align: center;">
+          <rr-checkbox indeterminate disabled aria-label="Indeterminate disabled"></rr-checkbox>
         </td>
       </tr>
     </tbody>
@@ -375,7 +307,7 @@ StateMatrix.parameters = {
   controls: { disable: true },
   docs: {
     description: {
-      story: 'Overzicht van alle checkbox states in alle beschikbare sizes.',
+      story: 'Overzicht van alle checkbox states.',
     },
   },
 };
@@ -402,23 +334,23 @@ export const FigmaComparison = () => html`
         <div style="width: 136px; height: 96px; background: #ffffff; position: relative; box-sizing: border-box;">
           <!-- Row 1: enabled states -->
           <div style="position: absolute; left: 16px; top: 16px;">
-            <rr-checkbox size="xs" aria-label="Unchecked"></rr-checkbox>
+            <rr-checkbox aria-label="Unchecked"></rr-checkbox>
           </div>
           <div style="position: absolute; left: 56px; top: 16px;">
-            <rr-checkbox size="xs" checked aria-label="Checked"></rr-checkbox>
+            <rr-checkbox checked aria-label="Checked"></rr-checkbox>
           </div>
           <div style="position: absolute; left: 96px; top: 16px;">
-            <rr-checkbox size="xs" indeterminate aria-label="Indeterminate"></rr-checkbox>
+            <rr-checkbox indeterminate aria-label="Indeterminate"></rr-checkbox>
           </div>
           <!-- Row 2: disabled states -->
           <div style="position: absolute; left: 16px; top: 56px;">
-            <rr-checkbox size="xs" disabled aria-label="Disabled unchecked"></rr-checkbox>
+            <rr-checkbox disabled aria-label="Disabled unchecked"></rr-checkbox>
           </div>
           <div style="position: absolute; left: 56px; top: 56px;">
-            <rr-checkbox size="xs" checked disabled aria-label="Disabled checked"></rr-checkbox>
+            <rr-checkbox checked disabled aria-label="Disabled checked"></rr-checkbox>
           </div>
           <div style="position: absolute; left: 96px; top: 56px;">
-            <rr-checkbox size="xs" indeterminate disabled aria-label="Disabled indeterminate"></rr-checkbox>
+            <rr-checkbox indeterminate disabled aria-label="Disabled indeterminate"></rr-checkbox>
           </div>
         </div>
       </ftl-holster>

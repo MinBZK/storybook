@@ -52,4 +52,18 @@ export { RRToken } from './token/rr-token.ts';
 export { RRSegmentedControl } from './segmented-control/rr-segmented-control.ts';
 export { RRSegmentedControlItem } from './segmented-control/rr-segmented-control-item.ts';
 
+// Form field components
+export { RRTextField } from './text-field/rr-text-field.ts';
+export { RRTextFieldCell } from './text-field-cell/rr-text-field-cell.ts';
+export { RRNumberField } from './number-field/rr-number-field.ts';
+export { RRSearchField } from './search-field/rr-search-field.ts';
+export { RRDropDownField } from './drop-down-field/rr-drop-down-field.ts';
+export { RRDropDownFieldCell } from './drop-down-field-cell/rr-drop-down-field-cell.ts';
+export { RRComboBoxField } from './combo-box-field/rr-combo-box-field.ts';
+export { RRCheckboxField } from './checkbox-field/rr-checkbox-field.ts';
+export { RRRadioButtonField } from './radio-button-field/rr-radio-button-field.ts';
+export { RRSwitchField } from './switch-field/rr-switch-field.ts';
+export { RRFormField } from './form-field/rr-form-field.ts';
+export { RRInputFieldButton } from './input-field-button/rr-input-field-button.ts';
+
 // Auto-register happens on import of individual component files

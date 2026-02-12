@@ -50,7 +50,7 @@ export default {
     },
     size: {
       control: 'select',
-      options: ['xs', 's', 'm'],
+      options: ['xs', 's', 'm', 'lg'],
       description: 'Button size',
       table: {
         defaultValue: { summary: 'm' },
@@ -457,30 +457,42 @@ export const FigmaComparison = () => html`
       <ftl-holster node="31:75" style="display: inline-block;">
         <!--
           Figma icon-button (31:75) component set:
-          - Layout: absolute positioning, dimensions: 594x428px
-          - Variants: xs, sm, md sizes + lg with title
+          - Layout: absolute positioning, dimensions: 754x428px
+          - Variants: xs, sm, md, lg sizes (lg has has-title variants)
           - Styles: neutral-tinted, neutral-transparent, accent-filled, accent-outlined, accent-transparent, danger-tinted
           - States: enabled, disabled
         -->
-        <div style="position: relative; width: 594px; height: 428px; background: #ffffff;">
-          <!-- Row 1: neutral-tinted (md enabled, md disabled) and sm variants -->
+        <div style="position: relative; width: 754px; height: 428px; background: #ffffff;">
+          <!-- Row 1: neutral-tinted -->
           <div style="position: absolute; left: 14px; top: 22px;">
             <rr-icon-button variant="neutral-tinted" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 88px; top: 22px;">
             <rr-icon-button variant="neutral-tinted" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
-          <div style="position: absolute; left: 164px; top: 28px;">
+          <div style="position: absolute; left: 162px; top: 28px;">
             <rr-icon-button variant="neutral-tinted" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
-          <div style="position: absolute; left: 230px; top: 28px;">
+          <div style="position: absolute; left: 228px; top: 28px;">
             <rr-icon-button variant="neutral-tinted" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
-          <div style="position: absolute; left: 296px; top: 32px;">
+          <div style="position: absolute; left: 294px; top: 32px;">
             <rr-icon-button variant="neutral-tinted" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
-          <div style="position: absolute; left: 353px; top: 32px;">
+          <div style="position: absolute; left: 351px; top: 32px;">
             <rr-icon-button variant="neutral-tinted" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 406px; top: 16px;">
+            <rr-icon-button variant="neutral-tinted" size="lg" has-title label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 497px; top: 16px;">
+            <rr-icon-button variant="neutral-tinted" size="lg" has-title disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 588px; top: 16px;">
+            <rr-icon-button variant="neutral-tinted" size="lg" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 672px; top: 16px;">
+            <rr-icon-button variant="neutral-tinted" size="lg" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
 
           <!-- Row 2: neutral-transparent -->
@@ -490,17 +502,29 @@ export const FigmaComparison = () => html`
           <div style="position: absolute; left: 90px; top: 90px;">
             <rr-icon-button variant="neutral-transparent" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
-          <div style="position: absolute; left: 168px; top: 96px;">
+          <div style="position: absolute; left: 166px; top: 96px;">
             <rr-icon-button variant="neutral-transparent" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
-          <div style="position: absolute; left: 232px; top: 96px;">
+          <div style="position: absolute; left: 230px; top: 96px;">
             <rr-icon-button variant="neutral-transparent" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
-          <div style="position: absolute; left: 296px; top: 100px;">
+          <div style="position: absolute; left: 294px; top: 100px;">
             <rr-icon-button variant="neutral-transparent" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
-          <div style="position: absolute; left: 352px; top: 100px;">
+          <div style="position: absolute; left: 350px; top: 100px;">
             <rr-icon-button variant="neutral-transparent" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 406px; top: 84px;">
+            <rr-icon-button variant="neutral-transparent" size="lg" has-title label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 497px; top: 84px;">
+            <rr-icon-button variant="neutral-transparent" size="lg" has-title disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 588px; top: 84px;">
+            <rr-icon-button variant="neutral-transparent" size="lg" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 672px; top: 84px;">
+            <rr-icon-button variant="neutral-transparent" size="lg" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
 
           <!-- Row 3: accent-filled -->
@@ -522,6 +546,18 @@ export const FigmaComparison = () => html`
           <div style="position: absolute; left: 353px; top: 168px;">
             <rr-icon-button variant="accent-filled" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
+          <div style="position: absolute; left: 406px; top: 152px;">
+            <rr-icon-button variant="accent-filled" size="lg" has-title label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 497px; top: 152px;">
+            <rr-icon-button variant="accent-filled" size="lg" has-title disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 588px; top: 152px;">
+            <rr-icon-button variant="accent-filled" size="lg" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 672px; top: 152px;">
+            <rr-icon-button variant="accent-filled" size="lg" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
 
           <!-- Row 4: accent-outlined -->
           <div style="position: absolute; left: 14px; top: 226px;">
@@ -541,6 +577,18 @@ export const FigmaComparison = () => html`
           </div>
           <div style="position: absolute; left: 353px; top: 236px;">
             <rr-icon-button variant="accent-outlined" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 406px; top: 220px;">
+            <rr-icon-button variant="accent-outlined" size="lg" has-title label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 497px; top: 220px;">
+            <rr-icon-button variant="accent-outlined" size="lg" has-title disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 588px; top: 220px;">
+            <rr-icon-button variant="accent-outlined" size="lg" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 672px; top: 220px;">
+            <rr-icon-button variant="accent-outlined" size="lg" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
 
           <!-- Row 5: accent-transparent -->
@@ -562,6 +610,18 @@ export const FigmaComparison = () => html`
           <div style="position: absolute; left: 354px; top: 304px;">
             <rr-icon-button variant="accent-transparent" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
+          <div style="position: absolute; left: 406px; top: 288px;">
+            <rr-icon-button variant="accent-transparent" size="lg" has-title label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 497px; top: 288px;">
+            <rr-icon-button variant="accent-transparent" size="lg" has-title disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 588px; top: 288px;">
+            <rr-icon-button variant="accent-transparent" size="lg" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 672px; top: 288px;">
+            <rr-icon-button variant="accent-transparent" size="lg" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
 
           <!-- Row 6: danger-tinted -->
           <div style="position: absolute; left: 14px; top: 362px;">
@@ -581,6 +641,18 @@ export const FigmaComparison = () => html`
           </div>
           <div style="position: absolute; left: 353px; top: 372px;">
             <rr-icon-button variant="danger-tinted" size="xs" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 406px; top: 356px;">
+            <rr-icon-button variant="danger-tinted" size="lg" has-title label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 497px; top: 356px;">
+            <rr-icon-button variant="danger-tinted" size="lg" has-title disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 588px; top: 356px;">
+            <rr-icon-button variant="danger-tinted" size="lg" label="Icon button">${placeholderIcon}</rr-icon-button>
+          </div>
+          <div style="position: absolute; left: 672px; top: 356px;">
+            <rr-icon-button variant="danger-tinted" size="lg" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
         </div>
       </ftl-holster>

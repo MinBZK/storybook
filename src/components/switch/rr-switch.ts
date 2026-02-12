@@ -70,7 +70,7 @@ export class RRSwitch extends LitElement {
         var(--_thumb-bg, var(--components-switch-thumb-background-color))
       );
       border: var(--components-switch-thumb-border-thickness) solid
-        var(--_thumb-border, var(--components-switch-thumb-border-color));
+        var(--components-switch-thumb-border-color);
       border-radius: 50%;
       transition:
         transform 0.2s ease,
@@ -134,13 +134,17 @@ export class RRSwitch extends LitElement {
     }
 
     :host([size='s']) .switch__thumb {
+      /* Off state: 16x16px per Figma */
       width: 16px;
       height: 16px;
     }
 
     :host([size='s'][checked]) .switch__thumb {
-      /* Move thumb to right: track width (44) - thumb width (16) - padding (4) - border (4) = 20px */
-      transform: translateX(20px);
+      /* Checked state: thumb grows to 20x20px per Figma specs */
+      width: 20px;
+      height: 20px;
+      /* Figma: x=22, y=2 → adjusted for size growth */
+      transform: translateX(18px);
     }
 
     /* Size: M (default) - Figma specs: 56x32px */
@@ -154,14 +158,19 @@ export class RRSwitch extends LitElement {
 
     :host([size='m']) .switch__thumb,
     :host(:not([size])) .switch__thumb {
+      /* Off state: 24x24px (32 - 8) */
       width: calc(var(--semantics-controls-sm-min-size) - 8px);
       height: calc(var(--semantics-controls-sm-min-size) - 8px);
     }
 
     :host([size='m'][checked]) .switch__thumb,
     :host(:not([size])[checked]) .switch__thumb {
+      /* Checked state: thumb grows to 28x28px (32 - 4) per Figma specs */
+      width: calc(var(--semantics-controls-sm-min-size) - 4px);
+      height: calc(var(--semantics-controls-sm-min-size) - 4px);
+      /* Figma: x=26, y=2 → translateX = 26 - 4 (initial) = 22px, but account for size change */
       transform: translateX(
-        calc((var(--semantics-controls-sm-min-size) * 1.75) - var(--semantics-controls-sm-min-size))
+        calc((var(--semantics-controls-sm-min-size) * 1.75) - var(--semantics-controls-sm-min-size) - 2px)
       );
     }
 

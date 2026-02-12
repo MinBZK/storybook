@@ -22,7 +22,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 'xs' | 's' | 'm';
+type Size = 'xs' | 's' | 'm' | 'lg';
 type Variant = 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type ButtonType = 'button' | 'submit' | 'reset';
 
@@ -101,6 +101,39 @@ export class RRIconButton extends LitElement {
       border-radius: var(--semantics-controls-md-corner-radius);
     }
 
+    /* Size: LG - Larger icon button, Figma: 9px border-radius */
+    :host([size='lg']) .button {
+      width: var(--semantics-controls-lg-min-size);
+      height: auto;
+      min-width: var(--semantics-controls-lg-min-size);
+      min-height: var(--semantics-controls-lg-min-size);
+      border-radius: var(--semantics-controls-lg-corner-radius);
+      flex-direction: column;
+      gap: 1px;
+      padding: 8px 10px;
+    }
+
+    /* LG with title - wider button to fit text on one line */
+    :host([size='lg'][has-title]) .button {
+      width: auto;
+      padding: 8px 8px;
+    }
+
+    .button__title {
+      display: none;
+      font: var(--semantics-buttons-xs-font);
+      font-size: 12px;
+      font-weight: 550;
+      line-height: 1.125;
+      text-align: center;
+      color: inherit;
+      white-space: nowrap;
+    }
+
+    :host([size='lg'][has-title]) .button__title {
+      display: block;
+    }
+
     /* Variant: accent-filled (default) */
     :host([variant='accent-filled']) .button,
     :host(:not([variant])) .button {
@@ -158,7 +191,7 @@ export class RRIconButton extends LitElement {
     /* Variant: neutral-transparent */
     :host([variant='neutral-transparent']) .button {
       --_bg-color: transparent;
-      --_text-color: var(--primitives-color-gray-90);
+      --_text-color: var(--primitives-color-neutral-900);
     }
 
     :host([variant='neutral-transparent']) .button:hover:not(:disabled) {
@@ -168,11 +201,11 @@ export class RRIconButton extends LitElement {
     /* Variant: danger-tinted (destructive) */
     :host([variant='danger-tinted']) .button {
       --_bg-color: var(--semantics-buttons-danger-tinted-background-color);
-      --_text-color: var(--semantics-buttons-danger-tinted-color);
+      --_text-color: var(--semantics-buttons-danger-tinted-content-color);
     }
 
     :host([variant='danger-tinted']) .button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-danger-30);
+      --_bg-color: var(--primitives-color-danger-300);
     }
 
     /* Focus state */
@@ -212,6 +245,11 @@ export class RRIconButton extends LitElement {
       --_icon-size: 24px;
     }
 
+    /* LG: larger button -> 24px icon (per Figma specs) */
+    :host([size='lg']) {
+      --_icon-size: 24px;
+    }
+
     /* Accessibility: Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .button {
@@ -246,6 +284,12 @@ export class RRIconButton extends LitElement {
   @property({ type: String })
   label = '';
 
+  @property({ type: Boolean, reflect: true, attribute: 'has-title' })
+  hasTitle = false;
+
+  @property({ type: String })
+  title = 'Icon Button';
+
   private _handleClick = (event: Event): void => {
     if (this.disabled) {
       event.preventDefault();
@@ -274,6 +318,7 @@ export class RRIconButton extends LitElement {
         aria-label=${this.label}
       >
         <slot></slot>
+        <span class="button__title" part="title">${this.title}</span>
       </button>
     `;
   }

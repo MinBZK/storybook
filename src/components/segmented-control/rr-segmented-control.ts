@@ -38,20 +38,20 @@ export class RRSegmentedControl extends LitElement {
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: var(--components-segmented-control-background-color);
+      background-color: var(--semantics-buttons-neutral-tinted-background-color);
       padding: 0 2px;
       box-sizing: border-box;
     }
 
     /* Size: S */
     :host([size='s']) .container {
-      border-radius: var(--semantics-controls-s-corner-radius);
+      border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
     /* Size: M (default) */
     :host([size='m']) .container,
     :host(:not([size])) .container {
-      border-radius: var(--semantics-controls-m-corner-radius);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     /* Full width option */

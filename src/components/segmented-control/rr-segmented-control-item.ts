@@ -87,7 +87,7 @@ export class RRSegmentedControlItem extends LitElement {
     .item__indicator {
       position: absolute;
       inset: var(--_indicator-inset);
-      background-color: var(--components-segmented-control-is-selected-background-color);
+      background-color: var(--semantics-buttons-accent-filled-background-color);
       border-radius: var(--_indicator-radius);
       opacity: 0;
       transform: scale(0.95);
@@ -112,11 +112,11 @@ export class RRSegmentedControlItem extends LitElement {
       font-size: var(--_item-font-size);
       font-weight: 550;
       line-height: 1.125;
-      color: var(--components-segmented-control-content-color);
+      color: var(--semantics-buttons-neutral-tinted-content-color);
     }
 
     :host([selected]) .item__content {
-      color: var(--components-segmented-control-is-selected-content-color);
+      color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
     }
 
     /* Icon content */
@@ -128,18 +128,18 @@ export class RRSegmentedControlItem extends LitElement {
 
     /* Focus state */
     .item:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: -2px;
       z-index: 2;
     }
 
     /* Hover state */
     .item:hover:not([aria-disabled='true']) .item__content {
-      color: var(--components-segmented-control-is-hovered-content-color);
+      color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
     }
 
     :host([selected]) .item:hover:not([aria-disabled='true']) .item__content {
-      color: var(--components-segmented-control-is-selected-content-color);
+      color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
     }
 
     /* Disabled state */

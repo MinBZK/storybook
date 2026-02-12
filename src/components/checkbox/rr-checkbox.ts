@@ -5,7 +5,6 @@
  * @attr {boolean} checked - Checked state
  * @attr {boolean} disabled - Disabled state
  * @attr {boolean} indeterminate - Indeterminate state
- * @attr {string} size - Checkbox size: 'xs' | 's' | 'm' (default: 'm')
  * @attr {string} value - Value for form submission
  * @attr {string} name - Name for form submission
  *
@@ -20,8 +19,6 @@
 
 import { LitElement, html, css, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-
-type Size = 'xs' | 's' | 'm';
 
 @customElement('rr-checkbox')
 export class RRCheckbox extends LitElement {
@@ -73,45 +70,16 @@ export class RRCheckbox extends LitElement {
     /* Checkmark icon */
     .icon {
       display: none;
+      width: 14px;
+      height: 14px;
       color: var(--components-checkbox-is-selected-icon-color);
     }
 
-    /* Size: XS (24px) */
-    :host([size='xs']) .box {
+    /* Checkbox is always 24x24px per Figma specs */
+    .box {
       width: var(--semantics-controls-xs-min-size);
       height: var(--semantics-controls-xs-min-size);
       border-radius: var(--semantics-controls-xs-corner-radius);
-    }
-
-    :host([size='xs']) .icon {
-      width: 12px;
-      height: 12px;
-    }
-
-    /* Size: S (32px) */
-    :host([size='s']) .box {
-      width: var(--semantics-controls-sm-min-size);
-      height: var(--semantics-controls-sm-min-size);
-      border-radius: var(--semantics-controls-sm-corner-radius);
-    }
-
-    :host([size='s']) .icon {
-      width: 16px;
-      height: 16px;
-    }
-
-    /* Size: M (44px - default) */
-    :host([size='m']) .box,
-    :host(:not([size])) .box {
-      width: var(--semantics-controls-md-min-size);
-      height: var(--semantics-controls-md-min-size);
-      border-radius: var(--semantics-controls-md-corner-radius);
-    }
-
-    :host([size='m']) .icon,
-    :host(:not([size])) .icon {
-      width: 22px;
-      height: 22px;
     }
 
     /* Checked state */
@@ -202,9 +170,6 @@ export class RRCheckbox extends LitElement {
 
   @property({ type: Boolean, reflect: true })
   indeterminate = false;
-
-  @property({ type: String, reflect: true })
-  size: Size = 'm';
 
   @property({ type: String })
   value = 'on';
