@@ -16,7 +16,7 @@ import '../drop-down-field/rr-drop-down-field.ts';
  * ```
  */
 export default {
-  title: 'Components/Form Fields/Drop Down Field Cell',
+  title: 'Components/Inputs/Drop Down Field Cell',
   component: 'rr-drop-down-field-cell',
   tags: ['autodocs'],
   parameters: {

@@ -13,7 +13,7 @@ import './rr-number-field.ts';
  * ```
  */
 export default {
-  title: 'Components/Form Fields/Number Field',
+  title: 'Components/Inputs/Number Field',
   component: 'rr-number-field',
   tags: ['autodocs'],
   parameters: {

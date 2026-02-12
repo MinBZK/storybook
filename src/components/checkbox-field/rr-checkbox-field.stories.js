@@ -8,7 +8,7 @@ import './rr-checkbox-field.ts';
  * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241:2345)
  */
 export default {
-  title: 'Components/Form Fields/Checkbox Field',
+  title: 'Components/Inputs/Checkbox Field',
   component: 'rr-checkbox-field',
   tags: ['autodocs'],
   parameters: {

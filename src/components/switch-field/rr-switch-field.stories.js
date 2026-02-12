@@ -8,7 +8,7 @@ import './rr-switch-field.ts';
  * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=348:2635)
  */
 export default {
-  title: 'Components/Form Fields/Switch Field',
+  title: 'Components/Inputs/Switch Field',
   component: 'rr-switch-field',
   tags: ['autodocs'],
   parameters: {

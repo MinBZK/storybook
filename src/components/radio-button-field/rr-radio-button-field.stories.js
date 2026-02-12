@@ -8,7 +8,7 @@ import './rr-radio-button-field.ts';
  * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241:2382)
  */
 export default {
-  title: 'Components/Form Fields/Radio Button Field',
+  title: 'Components/Inputs/Radio Button Field',
   component: 'rr-radio-button-field',
   tags: ['autodocs'],
   parameters: {

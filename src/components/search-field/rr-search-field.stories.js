@@ -13,7 +13,7 @@ import './rr-search-field.ts';
  * ```
  */
 export default {
-  title: 'Components/Form Fields/Search Field',
+  title: 'Components/Inputs/Search Field',
   component: 'rr-search-field',
   tags: ['autodocs'],
   parameters: {

@@ -16,7 +16,7 @@ import '../text-field/rr-text-field.ts';
  * ```
  */
 export default {
-  title: 'Components/Form Fields/Text Field Cell',
+  title: 'Components/Inputs/Text Field Cell',
   component: 'rr-text-field-cell',
   tags: ['autodocs'],
   parameters: {

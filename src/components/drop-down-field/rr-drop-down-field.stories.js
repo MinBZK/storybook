@@ -19,7 +19,7 @@ import './rr-drop-down-field.ts';
  * ```
  */
 export default {
-  title: 'Components/Form Fields/Drop Down Field',
+  title: 'Components/Inputs/Drop Down Field',
   component: 'rr-drop-down-field',
   tags: ['autodocs'],
   parameters: {

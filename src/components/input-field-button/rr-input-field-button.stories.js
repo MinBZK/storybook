@@ -11,7 +11,7 @@ import './rr-input-field-button.ts';
  * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=272:353)
  */
 export default {
-  title: 'Components/Form Fields/Input Field Button',
+  title: 'Components/Inputs/Input Field Button',
   component: 'rr-input-field-button',
   tags: ['autodocs'],
   parameters: {

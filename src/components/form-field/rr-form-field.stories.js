@@ -9,7 +9,7 @@ import '../text-field/rr-text-field.ts';
  * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=376:2395)
  */
 export default {
-  title: 'Components/Form Fields/Form Field',
+  title: 'Components/Inputs/Form Field',
   component: 'rr-form-field',
   tags: ['autodocs'],
   parameters: {

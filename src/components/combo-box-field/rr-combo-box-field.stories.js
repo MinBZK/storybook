@@ -13,7 +13,7 @@ import './rr-combo-box-field.ts';
  * ```
  */
 export default {
-  title: 'Components/Form Fields/Combo Box Field',
+  title: 'Components/Inputs/Combo Box Field',
   component: 'rr-combo-box-field',
   tags: ['autodocs'],
   parameters: {
