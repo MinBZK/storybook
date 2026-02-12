@@ -65,7 +65,7 @@ import '../menu-bar/rr-menu-bar.ts';
 import '../menu-bar/rr-menu-item.ts';
 import './rr-utility-menu-bar.ts';
 import './rr-back-button.ts';
-import '../spacer/rr-spacer.ts';
+import '../../layout/spacer/rr-spacer.ts';
 
 type ContainerSize = 's' | 'm' | 'l';
 
