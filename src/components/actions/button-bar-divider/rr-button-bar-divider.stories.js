@@ -70,15 +70,15 @@ export const FigmaComparison = () => html`
       <ftl-holster node="1263:6851" style="display: inline-block;">
         <!--
           Figma button-bar__divider (1263:6851) component set:
-          - Layout: row, gap: 16px, padding: 16px
-          - Variants: size=md (line 28px), size=sm (line 20px)
-          - Line color: #A9B2C0
+          - Layout: ABSOLUTE (mode: none), 33x104px
+          - size=md: at x=16 y=16, height 44px, line 1x28px #A9B2C0
+          - size=sm: at x=16 y=60, height 32px, line 1x20px #A9B2C0
         -->
-        <div style="padding: 16px; box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; align-items: flex-start;">
-          <!-- size=md -->
-          <rr-button-bar-divider size="m"></rr-button-bar-divider>
-          <!-- size=sm -->
-          <rr-button-bar-divider size="s"></rr-button-bar-divider>
+        <div style="position: relative; width: 33px; height: 104px;">
+          <!-- size=md at x=16 y=16 -->
+          <rr-button-bar-divider size="m" style="position: absolute; left: 16px; top: 16px;"></rr-button-bar-divider>
+          <!-- size=sm at x=16 y=60 -->
+          <rr-button-bar-divider size="s" style="position: absolute; left: 16px; top: 60px;"></rr-button-bar-divider>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
