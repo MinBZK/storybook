@@ -76,15 +76,15 @@ export const FigmaComparison = () => html`
         <div style="padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
           <!-- size=md with slot placeholders -->
           <rr-button-bar size="m">
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
             <div style="width: 1px; height: 28px; background: #A9B2C0;"></div>
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
           </rr-button-bar>
           <!-- size=sm with slot placeholders -->
           <rr-button-bar size="s">
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
             <div style="width: 1px; height: 20px; background: #A9B2C0;"></div>
-            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
+            <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
           </rr-button-bar>
         </div>
       </ftl-holster>

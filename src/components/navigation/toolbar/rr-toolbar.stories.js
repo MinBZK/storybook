@@ -70,7 +70,7 @@ const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
 const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
 
 // Figma slot style: dashed border, pink tint
-const slotStyle = "padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; color: #FF24BD; font-size: 18px; font-weight: 700; line-height: 1.125em; display: flex; align-items: center; justify-content: center; align-self: stretch;";
+const slotStyle = "padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; color: #FF24BD; font-size: 18px; font-weight: 700; line-height: 1.125em; display: flex; align-items: center; justify-content: center; align-self: stretch;";
 
 export const FigmaComparison = () => html`
   <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
