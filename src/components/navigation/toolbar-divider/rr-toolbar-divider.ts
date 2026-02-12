@@ -55,7 +55,7 @@ export class RRToolbarDivider extends LitElement {
 
     .divider__line {
       width: 1px;
-      background-color: var(--semantics-divider-color);
+      background-color: var(--semantics-dividers-color);
     }
   `;
 

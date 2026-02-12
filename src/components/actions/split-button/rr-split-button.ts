@@ -42,23 +42,23 @@ export class RRSplitButton extends LitElement {
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      background-color: var(--semantics-divider-color);
+      background-color: var(--semantics-dividers-color);
     }
 
     /* Size: M (default) */
     :host([size="m"]) .split-button,
     :host(:not([size])) .split-button {
       /* Figma uses 9px, closest token is 8px */
-      border-radius: var(--primitives-corner-radius-m);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     :host([size="m"]) .split-button__button,
     :host(:not([size])) .split-button__button {
-      min-height: var(--semantics-controls-m-min-size);
+      min-height: var(--semantics-controls-md-min-size);
       padding: 10px 12px;
       gap: 4px;
-      font: var(--components-button-m-font);
-      border-radius: var(--primitives-corner-radius-m) 0 0 var(--primitives-corner-radius-m);
+      font: var(--semantics-buttons-md-font);
+      border-radius: var(--semantics-controls-md-corner-radius) 0 0 var(--semantics-controls-md-corner-radius);
     }
 
     :host([size="m"]) .split-button__divider,
@@ -69,8 +69,8 @@ export class RRSplitButton extends LitElement {
     :host([size="m"]) .split-button__dropdown,
     :host(:not([size])) .split-button__dropdown {
       padding: 0 8px;
-      min-height: var(--semantics-controls-m-min-size);
-      border-radius: 0 var(--primitives-corner-radius-m) var(--primitives-corner-radius-m) 0;
+      min-height: var(--semantics-controls-md-min-size);
+      border-radius: 0 var(--semantics-controls-md-corner-radius) var(--semantics-controls-md-corner-radius) 0;
     }
 
     :host([size="m"]) .split-button__dropdown svg,
@@ -81,15 +81,15 @@ export class RRSplitButton extends LitElement {
 
     /* Size: S */
     :host([size="s"]) .split-button {
-      border-radius: var(--primitives-corner-radius-s);
+      border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
     :host([size="s"]) .split-button__button {
-      min-height: var(--semantics-controls-s-min-size);
+      min-height: var(--semantics-controls-sm-min-size);
       padding: 6px 8px;
       gap: 2px;
-      font: var(--components-button-s-font);
-      border-radius: var(--primitives-corner-radius-s) 0 0 var(--primitives-corner-radius-s);
+      font: var(--semantics-buttons-sm-font);
+      border-radius: var(--semantics-controls-sm-corner-radius) 0 0 var(--semantics-controls-sm-corner-radius);
     }
 
     :host([size="s"]) .split-button__divider {
@@ -98,8 +98,8 @@ export class RRSplitButton extends LitElement {
 
     :host([size="s"]) .split-button__dropdown {
       padding: 0 6px;
-      min-height: var(--semantics-controls-s-min-size);
-      border-radius: 0 var(--primitives-corner-radius-s) var(--primitives-corner-radius-s) 0;
+      min-height: var(--semantics-controls-sm-min-size);
+      border-radius: 0 var(--semantics-controls-sm-corner-radius) var(--semantics-controls-sm-corner-radius) 0;
     }
 
     :host([size="s"]) .split-button__dropdown svg {
@@ -125,18 +125,18 @@ export class RRSplitButton extends LitElement {
 
     .split-button__button:hover,
     .split-button__dropdown:hover {
-      background-color: var(--semantics-buttons-neutral-ghost-hover-background-color);
+      background-color: var(--semantics-buttons-neutral-transparent-is-hovered-background-color);
     }
 
     .split-button__button:active,
     .split-button__dropdown:active {
-      background-color: var(--semantics-buttons-neutral-ghost-active-background-color);
+      background-color: var(--semantics-buttons-neutral-transparent-is-active-background-color);
     }
 
     /* Focus state */
     .split-button__button:focus-visible,
     .split-button__dropdown:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
+      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: -2px;
       z-index: 1;
     }

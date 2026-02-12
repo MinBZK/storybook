@@ -80,13 +80,13 @@ export class RRToolbarTitleGroup extends LitElement {
     /* Size: M title - 20px bold */
     :host([size="m"]) .title-group__title,
     :host(:not([size])) .title-group__title {
-      font: var(--primitives-body-l-bold-flat);
+      font: var(--semantics-content-body-lg-bold-flat);
       font-weight: 550;
     }
 
     /* Size: S title - 16px bold */
     :host([size="s"]) .title-group__title {
-      font: var(--primitives-body-s-bold-flat);
+      font: var(--semantics-content-body-sm-bold-flat);
       font-weight: 550;
     }
 
@@ -101,7 +101,7 @@ export class RRToolbarTitleGroup extends LitElement {
     /* Size: M subtitle - 14px regular */
     :host([size="m"]) .title-group__subtitle,
     :host(:not([size])) .title-group__subtitle {
-      font: var(--primitives-body-xs-regular-flat);
+      font: var(--semantics-content-body-xs-regular-flat);
     }
 
     /* Size: S subtitle - 12px regular */

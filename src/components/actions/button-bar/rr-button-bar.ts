@@ -34,9 +34,9 @@ export class RRButtonBar extends LitElement {
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      background-color: var(--semantics-divider-color);
+      background-color: var(--semantics-dividers-color);
       /* Figma uses 9px for all sizes; closest token is primitives-corner-radius-m (8px) */
-      border-radius: var(--primitives-corner-radius-m);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     /* Size: S - height 32px */
