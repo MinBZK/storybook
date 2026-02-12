@@ -68,6 +68,7 @@ export class RRSplitButton extends LitElement {
     :host([size="m"]) .split-button__dropdown,
     :host(:not([size])) .split-button__dropdown {
       padding: 0 8px;
+      min-width: var(--semantics-controls-md-min-size);
       min-height: var(--semantics-controls-md-min-size);
       border-radius: 0 var(--semantics-controls-md-corner-radius) var(--semantics-controls-md-corner-radius) 0;
     }
@@ -97,6 +98,7 @@ export class RRSplitButton extends LitElement {
 
     :host([size="s"]) .split-button__dropdown {
       padding: 0 6px;
+      min-width: var(--semantics-controls-sm-min-size);
       min-height: var(--semantics-controls-sm-min-size);
       border-radius: 0 var(--semantics-controls-sm-corner-radius) var(--semantics-controls-sm-corner-radius) 0;
     }
