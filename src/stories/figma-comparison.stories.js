@@ -1,15 +1,15 @@
 import { html } from 'lit';
 
 // Import all components - use .ts for Lit components, .js for legacy
-import '../components/button/rr-button.ts';
-import '../components/checkbox/rr-checkbox.js';
-import '../components/radio/rr-radio.ts';
-import '../components/switch/rr-switch.ts';
-import '../components/toggle-button/rr-toggle-button.js';
-import '../components/icon-button/rr-icon-button.ts';
-import '../components/menu-bar/rr-menu-bar.ts';
-import '../components/menu-bar/rr-menu-item.ts';
-import '../components/top-navigation-bar/rr-top-navigation-bar.js';
+import '../components/actions/button/rr-button.ts';
+import '../components/inputs/checkbox/rr-checkbox.js';
+import '../components/inputs/radio/rr-radio.ts';
+import '../components/inputs/switch/rr-switch.ts';
+import '../components/inputs/toggle-button/rr-toggle-button.js';
+import '../components/actions/icon-button/rr-icon-button.ts';
+import '../components/navigation/menu-bar/rr-menu-bar.ts';
+import '../components/navigation/menu-bar/rr-menu-item.ts';
+import '../components/navigation/top-navigation-bar/rr-top-navigation-bar.js';
 
 /**
  * Stories for automated pixel-perfect comparison with Figma designs.
