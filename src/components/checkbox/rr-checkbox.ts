@@ -25,7 +25,7 @@ export class RRCheckbox extends LitElement {
   static override styles = css`
     :host {
       display: inline-block;
-      font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
+      font-family: var(--rr-font-family-sans);
       cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
@@ -46,7 +46,7 @@ export class RRCheckbox extends LitElement {
       justify-content: center;
     }
 
-    .box {
+    .checkbox__box {
       position: relative;
       display: inline-flex;
       align-items: center;
@@ -68,7 +68,7 @@ export class RRCheckbox extends LitElement {
     }
 
     /* Checkmark icon */
-    .icon {
+    .checkbox__icon {
       display: none;
       width: 14px;
       height: 14px;
@@ -76,43 +76,43 @@ export class RRCheckbox extends LitElement {
     }
 
     /* Checkbox is always 24x24px per Figma specs */
-    .box {
+    .checkbox__box {
       width: var(--semantics-controls-xs-min-size);
       height: var(--semantics-controls-xs-min-size);
       border-radius: var(--semantics-controls-xs-corner-radius);
     }
 
     /* Checked state */
-    :host([checked]) .box {
+    :host([checked]) .checkbox__box {
       --_bg-color: var(--components-checkbox-is-selected-background-color);
       --_border-color: var(--components-checkbox-is-selected-background-color);
     }
 
-    :host([checked]) .icon--check {
+    :host([checked]) .checkbox__icon--check {
       display: block;
     }
 
     /* Indeterminate state - takes precedence over checked */
-    :host([indeterminate]) .box {
+    :host([indeterminate]) .checkbox__box {
       --_bg-color: var(--components-checkbox-is-selected-background-color);
       --_border-color: var(--components-checkbox-is-selected-background-color);
     }
 
-    :host([indeterminate]) .icon--indeterminate {
+    :host([indeterminate]) .checkbox__icon--indeterminate {
       display: block;
     }
 
-    :host([indeterminate]) .icon--check {
+    :host([indeterminate]) .checkbox__icon--check {
       display: none;
     }
 
     /* Hover state */
-    :host(:hover:not([disabled])) .box {
+    :host(:hover:not([disabled])) .checkbox__box {
       --_border-color: var(--primitives-color-accent-75);
     }
 
-    :host([checked]:hover:not([disabled])) .box,
-    :host([indeterminate]:hover:not([disabled])) .box {
+    :host([checked]:hover:not([disabled])) .checkbox__box,
+    :host([indeterminate]:hover:not([disabled])) .checkbox__box {
       --_bg-color: var(--primitives-color-accent-75);
       --_border-color: var(--primitives-color-accent-75);
     }
@@ -122,7 +122,7 @@ export class RRCheckbox extends LitElement {
       outline: none;
     }
 
-    :host(:focus-visible) .box {
+    :host(:focus-visible) .checkbox__box {
       outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
@@ -135,23 +135,23 @@ export class RRCheckbox extends LitElement {
 
     /* Accessibility: Reduced motion */
     @media (prefers-reduced-motion: reduce) {
-      .box {
+      .checkbox__box {
         transition: none;
       }
     }
 
     /* Accessibility: High Contrast Mode */
     @media (forced-colors: active) {
-      .box {
+      .checkbox__box {
         outline: 2px solid CanvasText !important;
       }
 
-      :host([checked]) .box,
-      :host([indeterminate]) .box {
+      :host([checked]) .checkbox__box,
+      :host([indeterminate]) .checkbox__box {
         background-color: Highlight !important;
       }
 
-      :host(:focus-visible) .box {
+      :host(:focus-visible) .checkbox__box {
         outline: 2px solid CanvasText !important;
         outline-offset: 2px !important;
       }
@@ -251,7 +251,7 @@ export class RRCheckbox extends LitElement {
 
   private _renderCheckIcon() {
     return svg`
-      <svg class="icon icon--check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="checkbox__icon checkbox__icon--check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
     `;
@@ -259,7 +259,7 @@ export class RRCheckbox extends LitElement {
 
   private _renderIndeterminateIcon() {
     return svg`
-      <svg class="icon icon--indeterminate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <svg class="checkbox__icon checkbox__icon--indeterminate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
         <line x1="6" y1="12" x2="18" y2="12"></line>
       </svg>
     `;
@@ -268,7 +268,7 @@ export class RRCheckbox extends LitElement {
   override render() {
     return html`
       <div class="checkbox" part="checkbox">
-        <div class="box" part="box">${this._renderCheckIcon()} ${this._renderIndeterminateIcon()}</div>
+        <div class="checkbox__box" part="box">${this._renderCheckIcon()} ${this._renderIndeterminateIcon()}</div>
       </div>
     `;
   }

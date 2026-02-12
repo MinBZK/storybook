@@ -99,7 +99,7 @@ export class RRNavLogo extends LitElement {
     }
 
     .subtitle {
-      font: 400 16px/1.25 var(--rr-font-family-sans, RijksSansVF, system-ui);
+      font: 400 16px/1.25 var(--rr-font-family-sans);
       color: var(--primitives-color-neutral-700);
       margin: 0;
     }
@@ -113,7 +113,7 @@ export class RRNavLogo extends LitElement {
     }
 
     .supporting-text {
-      font: 400 14px/1.25 var(--rr-font-family-sans, RijksSansVF, system-ui);
+      font: 400 14px/1.25 var(--rr-font-family-sans);
       color: var(--primitives-color-accent-100);
       margin: 0;
     }

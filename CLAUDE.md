@@ -224,7 +224,6 @@ min-height: var(--semantics-controls-m-min-size);
 
 **Uitzonderingen (behoud fallbacks):**
 - Override hooks: `var(--rr-button-background-color, var(--_bg-color))`
-- Font-family: `var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif)`
 
 CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `dist/css/tokens.css`.
 
