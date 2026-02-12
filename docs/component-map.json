@@ -596,7 +596,7 @@
       },
       "implementation": {
         "tagName": "rr-title-bar-title-group",
-        "file": "src/components/title-bar-title-group/rr-title-bar-title-group.ts",
+        "file": "src/components/layout/title-bar-title-group/rr-title-bar-title-group.ts",
         "className": "RRTitleBarTitleGroup"
       },
       "status": "implemented",
@@ -796,7 +796,7 @@
       },
       "implementation": {
         "tagName": "rr-top-title-bar",
-        "file": "src/components/top-title-bar/rr-top-title-bar.ts",
+        "file": "src/components/layout/top-title-bar/rr-top-title-bar.ts",
         "className": "RRTopTitleBar"
       },
       "status": "implemented",
@@ -1441,7 +1441,7 @@
       },
       "implementation": {
         "tagName": "rr-page",
-        "file": "src/components/page/rr-page.ts",
+        "file": "src/components/layout/page/rr-page.ts",
         "className": "RRPage"
       },
       "status": "implemented",
@@ -1464,7 +1464,7 @@
       },
       "implementation": {
         "tagName": "rr-collection",
-        "file": "src/components/collection/rr-collection.ts",
+        "file": "src/components/layout/collection/rr-collection.ts",
         "className": "RRCollection"
       },
       "status": "implemented",
@@ -1497,7 +1497,7 @@
       },
       "implementation": {
         "tagName": "rr-section",
-        "file": "src/components/section/rr-section.ts",
+        "file": "src/components/layout/section/rr-section.ts",
         "className": "RRSection",
         "note": "Implemented as variant='simple' of unified rr-section component"
       },
@@ -1518,7 +1518,7 @@
       },
       "implementation": {
         "tagName": "rr-section",
-        "file": "src/components/section/rr-section.ts",
+        "file": "src/components/layout/section/rr-section.ts",
         "className": "RRSection",
         "note": "Implemented as variant='full-bleed' of unified rr-section component"
       },
@@ -1539,7 +1539,7 @@
       },
       "implementation": {
         "tagName": "rr-section",
-        "file": "src/components/section/rr-section.ts",
+        "file": "src/components/layout/section/rr-section.ts",
         "className": "RRSection",
         "note": "Implemented as variant='one-third-two-thirds' of unified rr-section component"
       },
@@ -1560,7 +1560,7 @@
       },
       "implementation": {
         "tagName": "rr-section",
-        "file": "src/components/section/rr-section.ts",
+        "file": "src/components/layout/section/rr-section.ts",
         "className": "RRSection",
         "note": "Implemented as variant='two-thirds-one-third' of unified rr-section component"
       },
@@ -1581,7 +1581,7 @@
       },
       "implementation": {
         "tagName": "rr-section",
-        "file": "src/components/section/rr-section.ts",
+        "file": "src/components/layout/section/rr-section.ts",
         "className": "RRSection",
         "note": "Implemented as variant='half-half' of unified rr-section component"
       },
@@ -1602,7 +1602,7 @@
       },
       "implementation": {
         "tagName": "rr-section",
-        "file": "src/components/section/rr-section.ts",
+        "file": "src/components/layout/section/rr-section.ts",
         "className": "RRSection",
         "note": "Implemented as variant='lister' of unified rr-section component"
       },

@@ -28,7 +28,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import '../title-bar-title-group/rr-title-bar-title-group.js';
-import '../button/rr-button.js';
+import '../../actions/button/rr-button.js';
 
 type Layout = 'grid' | 'list' | 'horizontal-scroll';
 

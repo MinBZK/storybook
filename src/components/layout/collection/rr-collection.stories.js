@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-collection.js';
 
 export default {
-  title: 'Components/Collection',
+  title: 'Components/Layout/Collection',
   component: 'rr-collection',
   tags: ['autodocs'],
   parameters: {

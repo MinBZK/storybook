@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-title-bar-title-group.js';
 
 export default {
-  title: 'Components/Title Bar Title Group',
+  title: 'Components/Layout/Title Bar Title Group',
   component: 'rr-title-bar-title-group',
   tags: ['autodocs'],
   parameters: {

@@ -25,7 +25,7 @@
 
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import '../button/rr-button.js';
+import '../../actions/button/rr-button.js';
 
 type Container = 'sm' | 'md' | 'lg';
 type Toolbar = 'default' | 'custom' | 'none';

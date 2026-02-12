@@ -3,7 +3,7 @@ import './rr-page.js';
 
 // Page component stories
 export default {
-  title: 'Components/Page',
+  title: 'Components/Layout/Page',
   component: 'rr-page',
   tags: ['autodocs'],
   parameters: {

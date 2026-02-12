@@ -26,7 +26,7 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import '../page-sticky-area-background/rr-page-sticky-area-background.js';
+import './page-sticky-area-background/rr-page-sticky-area-background.js';
 
 @customElement('rr-page')
 export class RRPage extends LitElement {
@@ -54,13 +54,13 @@ export class RRPage extends LitElement {
     /* Default background color */
     :host(:not([tinted])) .page,
     :host([tinted='false']) .page {
-      background-color: var(--rr-page-background-color, var(--semantics-views-background-color));
+      background-color: var(--rr-page-background-color, var(--semantics-surfaces-background-color));
     }
 
     /* Tinted background color */
     :host([tinted]) .page,
     :host([tinted='true']) .page {
-      background-color: var(--rr-page-background-color, var(--semantics-views-tinted-background-color));
+      background-color: var(--rr-page-background-color, var(--semantics-surfaces-tinted-background-color));
     }
 
     /* Scrollable area */
