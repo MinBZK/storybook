@@ -41,7 +41,7 @@
       },
       "implementation": {
         "tagName": "rr-button",
-        "file": "src/components/button/rr-button.js",
+        "file": "src/components/button/rr-button.ts",
         "className": "RRButton"
       },
       "tokens": {
@@ -121,7 +121,7 @@
       },
       "implementation": {
         "tagName": "rr-checkbox",
-        "file": "src/components/checkbox/rr-checkbox.js",
+        "file": "src/components/checkbox/rr-checkbox.ts",
         "className": "RRCheckbox"
       },
       "tokens": {
@@ -281,7 +281,7 @@
       },
       "implementation": {
         "tagName": "rr-toggle-button",
-        "file": "src/components/toggle-button/rr-toggle-button.js",
+        "file": "src/components/toggle-button/rr-toggle-button.ts",
         "className": "RRToggleButton"
       },
       "tokens": {
