@@ -118,7 +118,7 @@ export class RRMenuItem extends RRBaseComponent {
       :host {
         display: block;
         position: relative;
-        font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+        font-family: var(--rr-font-family-sans);
       }
 
       :host([hidden]) {

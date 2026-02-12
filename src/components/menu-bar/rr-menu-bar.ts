@@ -36,7 +36,7 @@ export class RRMenuBar extends LitElement {
   static override styles = css`
     :host {
       display: block;
-      font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
+      font-family: var(--rr-font-family-sans);
       width: 100%;
       min-width: 0; /* Allow shrinking */
     }

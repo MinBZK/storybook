@@ -26,7 +26,7 @@ export class RRLabelCell extends LitElement {
       flex-direction: column;
       justify-content: center; /* Match Figma's label-cell__inner justifyContent: center */
       height: 100%; /* Fill container height so centering works */
-      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+      font-family: var(--rr-font-family-sans);
     }
 
     :host([hidden]) {

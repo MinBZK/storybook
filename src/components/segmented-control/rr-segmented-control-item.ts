@@ -30,7 +30,7 @@ export class RRSegmentedControlItem extends LitElement {
   static override styles = css`
     :host {
       display: inline-flex;
-      font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
+      font-family: var(--rr-font-family-sans);
       flex: 1;
     }
 

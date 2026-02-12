@@ -106,7 +106,7 @@ export class RRIconButton extends RRBaseComponent {
     return `
       :host {
         display: inline-block;
-        font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+        font-family: var(--rr-font-family-sans);
       }
 
       :host([hidden]) {

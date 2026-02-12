@@ -55,7 +55,7 @@ export class RRBox extends RRBaseComponent {
     return `
       :host {
         display: block;
-        font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+        font-family: var(--rr-font-family-sans);
       }
 
       :host([hidden]) {

@@ -37,7 +37,7 @@ export class RRRadio extends LitElement {
     :host {
       display: inline-flex;
       align-items: center;
-      font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
+      font-family: var(--rr-font-family-sans);
       cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
