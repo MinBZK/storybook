@@ -86,4 +86,25 @@ export { RRListItemDragHandle } from './lists/list-item-drag-handle/rr-list-item
 export { RRListItemDragHandleCell } from './lists/list-item-drag-handle-cell/rr-list-item-drag-handle-cell.ts';
 export { RRTimelineTrackCell } from './lists/timeline-track-cell/rr-timeline-track-cell.ts';
 
+// Navigation components
+export { RRTabBarItem } from './tab-bar/rr-tab-bar-item.ts';
+export { RRTabBar } from './tab-bar/rr-tab-bar.ts';
+export { RRDocumentTabBarItem } from './document-tab-bar-item/rr-document-tab-bar-item.ts';
+export { RRPagination } from './pagination/rr-pagination.ts';
+export { RRStandaloneMenuItem } from './menu-item/rr-standalone-menu-item.ts';
+
+// Input components (continued)
+export { RRPasswordField } from './password-field/rr-password-field.ts';
+
+// Typography components
+export { RRRichTextHeading } from './rich-text-heading/rr-rich-text-heading.ts';
+
+// Overlay components
+export { RRTooltipArrow } from './tooltip/rr-tooltip-arrow.ts';
+export { RRTooltip } from './tooltip/rr-tooltip.ts';
+export { RRDialog } from './dialog/rr-dialog.ts';
+export { RRAlert } from './alert/rr-alert.ts';
+export { RRSheet } from './sheet/rr-sheet.ts';
+export { RRWindow } from './window/rr-window.ts';
+
 // Auto-register happens on import of individual component files
