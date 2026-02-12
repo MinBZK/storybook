@@ -25,7 +25,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1019:3941',
     },
     componentSource: {
-      file: 'src/components/inputs/text-field-cell/rr-text-field-cell.ts',
+      file: 'src/components/lists/text-field-cell/rr-text-field-cell.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {

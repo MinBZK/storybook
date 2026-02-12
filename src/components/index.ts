@@ -23,21 +23,19 @@ export { RRSegmentedControlItem } from './inputs/segmented-control/rr-segmented-
 export { RRToggleButton } from './inputs/toggle-button/rr-toggle-button.ts';
 export { RRCheckbox } from './inputs/checkbox/rr-checkbox.ts';
 export { RRTextField } from './inputs/text-field/rr-text-field.ts';
-export { RRTextFieldCell } from './inputs/text-field-cell/rr-text-field-cell.ts';
 export { RRNumberField } from './inputs/number-field/rr-number-field.ts';
 export { RRSearchField } from './inputs/search-field/rr-search-field.ts';
 export { RRDropDownField } from './inputs/drop-down-field/rr-drop-down-field.ts';
-export { RRDropDownFieldCell } from './inputs/drop-down-field-cell/rr-drop-down-field-cell.ts';
 export { RRComboBoxField } from './inputs/combo-box-field/rr-combo-box-field.ts';
 export { RRCheckboxField } from './inputs/checkbox-field/rr-checkbox-field.ts';
 export { RRRadioButtonField } from './inputs/radio-button-field/rr-radio-button-field.ts';
 export { RRSwitchField } from './inputs/switch-field/rr-switch-field.ts';
-export { RRInputFieldButton } from './input-field-button/rr-input-field-button.ts';
+export { RRInputFieldButton } from './inputs/input-field-button/rr-input-field-button.ts';
 export { RRRadio } from './inputs/radio/rr-radio.ts';
 export { RRSwitch } from './inputs/switch/rr-switch.ts';
 
 // Control group components
-export { RRFormField } from './form-field/rr-form-field.ts';
+export { RRFormField } from './control-groups/form-field/rr-form-field.ts';
 
 // Layout components
 export { RRSpacer } from './layout/spacer/rr-spacer.ts';
@@ -54,12 +52,14 @@ export { RRMenuItem } from './navigation/menu-bar/rr-menu-item.ts';
 export { RRUtilityMenuBar } from './navigation/top-navigation-bar/rr-utility-menu-bar.ts';
 
 // List components
-export { RRList } from './list/rr-list.ts';
-export { RRListItem } from './list/rr-list-item.ts';
+export { RRList } from './lists/list/rr-list.ts';
+export { RRListItem } from './lists/list/rr-list-item.ts';
 export { RRTitleCell } from './lists/title-cell/rr-title-cell.ts';
 export { RRLabelCell } from './lists/label-cell/rr-label-cell.ts';
 export { RRButtonCell } from './lists/button-cell/rr-button-cell.ts';
 export { RRCustomCell } from './lists/custom-cell/rr-custom-cell.ts';
 export { RRSpacerCell } from './lists/spacer-cell/rr-spacer-cell.ts';
+export { RRTextFieldCell } from './lists/text-field-cell/rr-text-field-cell.ts';
+export { RRDropDownFieldCell } from './lists/drop-down-field-cell/rr-drop-down-field-cell.ts';
 
 // Auto-register happens on import of individual component files

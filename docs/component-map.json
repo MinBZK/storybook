@@ -178,7 +178,7 @@
       },
       "implementation": {
         "tagName": "rr-radio",
-        "file": "src/inputs/components/radio/rr-radio.js",
+        "file": "src/components/inputs/radio/rr-radio.js",
         "className": "RRRadio"
       },
       "tokens": {
@@ -561,7 +561,7 @@
       },
       "implementation": {
         "tagName": "rr-drop-down-field",
-        "file": "src/inputs/components/drop-down-field/rr-drop-down-field.ts",
+        "file": "src/components/inputs/drop-down-field/rr-drop-down-field.ts",
         "className": "RRDropDownField"
       },
       "status": "implemented",
@@ -576,7 +576,7 @@
       },
       "implementation": {
         "tagName": "rr-drop-down-field-cell",
-        "file": "src/inputs/components/lists/drop-down-field-cell/rr-drop-down-field-cell.ts",
+        "file": "src/components/inputs/lists/drop-down-field-cell/rr-drop-down-field-cell.ts",
         "className": "RRDropDownFieldCell"
       },
       "status": "implemented",
@@ -963,7 +963,7 @@
       },
       "implementation": {
         "tagName": "rr-radio",
-        "file": "src/inputs/components/radio/rr-radio.ts",
+        "file": "src/components/inputs/radio/rr-radio.ts",
         "className": "RRRadio",
         "usage": "<rr-radio size=\"xs\"></rr-radio>"
       },
