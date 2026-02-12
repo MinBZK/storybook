@@ -48,7 +48,6 @@ export class RRSplitButton extends LitElement {
     /* Size: M (default) */
     :host([size="m"]) .split-button,
     :host(:not([size])) .split-button {
-      /* Figma uses 9px, closest token is 8px */
       border-radius: var(--semantics-controls-md-corner-radius);
     }
 
