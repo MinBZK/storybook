@@ -150,7 +150,11 @@ export class RRSplitButton extends LitElement {
 
     /* Dropdown icon */
     .split-button__dropdown svg {
-      fill: currentColor;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     /* Disabled state */
@@ -235,7 +239,7 @@ export class RRSplitButton extends LitElement {
         >
           <slot name="dropdown-icon">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 10l5 5 5-5H7z"/>
+              <path d="M6 9l6 6 6-6"/>
             </svg>
           </slot>
         </button>
