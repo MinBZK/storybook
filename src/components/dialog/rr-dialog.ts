@@ -60,13 +60,13 @@ export class RRDialog extends LitElement {
       background-color: var(--semantics-surfaces-background-color);
       border-radius: var(--primitives-corner-radius-xl);
       box-shadow: var(--primitives-box-shadows-level-5);
-      padding: var(--primitives-space-24);
+      padding: var(--primitives-space-24) var(--primitives-space-16);
       max-width: 480px;
       width: 100%;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: var(--primitives-space-16);
+      gap: var(--primitives-space-8);
       max-height: 90vh;
     }
 

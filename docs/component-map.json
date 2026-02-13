@@ -1735,11 +1735,11 @@
     {
       "name": "Dialog",
       "figma": {
-        "nodeId": "1340:4344",
-        "nodeName": "dialog",
-        "pageId": "1340:4281",
-        "pageName": "Feedback",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4344"
+        "nodeId": "1506:5969",
+        "nodeName": "modal-dialog",
+        "pageId": "19:9",
+        "pageName": "Overlays",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1506-5969"
       },
       "implementation": {
         "tagName": "rr-dialog",

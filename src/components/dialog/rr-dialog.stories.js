@@ -7,7 +7,7 @@ import '../button/rr-button.ts';
  * Gebruikt het native <dialog> element voor toegankelijkheid.
  *
  * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4344)
+ * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1506-5969)
  *
  * ## Gebruik
  * ```html
@@ -26,7 +26,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4344',
+      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1506-5969',
     },
     componentSource: {
       file: 'src/components/dialog/rr-dialog.ts',
@@ -113,31 +113,29 @@ export const FigmaComparison = () => html`
       <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
         Dialog (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
-      <ftl-holster node="1340-4344" style="display: inline-block;">
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 617px; padding: 16px; box-sizing: border-box;">
+      <ftl-holster node="1506-5969" style="display: inline-block;">
+        <div style="padding: 40px 56px 72px 66px; display: inline-block;">
           <div style="
             background-color: var(--semantics-surfaces-background-color);
-            border-radius: var(--primitives-corner-radius-xl);
-            box-shadow: var(--primitives-box-shadows-level-5);
-            padding: var(--primitives-space-24);
-            width: 100%;
+            padding: var(--primitives-space-24) var(--primitives-space-16);
+            width: 480px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: var(--primitives-space-16);
+            gap: var(--primitives-space-8);
             font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
           ">
-            <div style="display: flex; justify-content: center; padding-bottom: 4px;">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <circle cx="24" cy="24" r="20" stroke="#94A3B8" stroke-width="2" stroke-dasharray="4 4"/>
-              </svg>
-            </div>
-            <div style="text-align: center; font: var(--semantics-content-body-md-bold-tight); color: var(--semantics-content-color);">Dialog</div>
-            <div style="text-align: center; font: var(--semantics-content-body-sm-regular-tight); color: var(--semantics-content-color);">Supporting text</div>
-            <div style="display: flex; flex-direction: column; gap: var(--primitives-space-8); padding-top: var(--primitives-space-12);">
-              <rr-button variant="accent-filled" style="width: 100%;">Button</rr-button>
-              <rr-button variant="neutral-tinted" style="width: 100%;">Button</rr-button>
-            </div>
+          <div style="display: flex; justify-content: center; padding-bottom: 4px;">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="20" stroke="#94A3B8" stroke-width="2" stroke-dasharray="4 4"/>
+            </svg>
+          </div>
+          <div style="text-align: center; font: var(--semantics-content-body-md-bold-tight); color: var(--semantics-content-color);">Modal dialog</div>
+          <div style="text-align: center; font: var(--semantics-content-body-sm-regular-tight); color: var(--semantics-content-color);">Supporting text</div>
+          <div style="display: flex; flex-direction: column; gap: var(--primitives-space-8); padding-top: var(--primitives-space-12);">
+            <rr-button variant="accent-filled" style="display: block;">Button</rr-button>
+            <rr-button variant="neutral-tinted" style="display: block;">Button</rr-button>
+          </div>
           </div>
         </div>
       </ftl-holster>
