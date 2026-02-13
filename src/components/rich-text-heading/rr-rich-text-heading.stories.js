@@ -132,13 +132,25 @@ export const FigmaComparison = () => html`
         Rich Text Heading (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="980-145" style="display: inline-block;">
-        <div style="display: flex; flex-direction: column; gap: 8px; padding: 16px;">
-          <rr-rich-text-heading level="1" container="md">Heading 1</rr-rich-text-heading>
-          <rr-rich-text-heading level="2" container="md">Heading 2</rr-rich-text-heading>
-          <rr-rich-text-heading level="3" container="md">Heading 3</rr-rich-text-heading>
-          <rr-rich-text-heading level="4" container="md">Heading 4</rr-rich-text-heading>
-          <rr-rich-text-heading level="5" container="md">Heading 5</rr-rich-text-heading>
-          <rr-rich-text-heading level="6" container="md">Heading 6</rr-rich-text-heading>
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 313px; box-sizing: border-box;">
+          <rr-rich-text-heading level="1" container="sm">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="2" container="sm">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="3" container="sm">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="4" container="sm">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="5" container="sm">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="6" container="sm">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="1" container="md">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="2" container="md">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="3" container="md">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="4" container="md">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="5" container="md">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="6" container="md">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="1" container="lg">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="2" container="lg">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="3" container="lg">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="4" container="lg">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="5" container="lg">Heading</rr-rich-text-heading>
+          <rr-rich-text-heading level="6" container="lg">Heading</rr-rich-text-heading>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

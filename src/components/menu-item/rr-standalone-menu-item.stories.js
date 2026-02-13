@@ -31,7 +31,7 @@ export default {
     },
   },
   argTypes: {
-    style: {
+    variant: {
       control: 'select',
       options: ['neutral', 'danger'],
       description: 'Visual style variant',
@@ -66,7 +66,7 @@ export default {
     },
   },
   args: {
-    style: 'neutral',
+    variant: 'neutral',
     selected: false,
     disabled: false,
     hasSubmenu: false,
@@ -74,10 +74,10 @@ export default {
   },
 };
 
-const Template = ({ style, selected, disabled, hasSubmenu, label }) => html`
+const Template = ({ variant, selected, disabled, hasSubmenu, label }) => html`
   <div style="width: 250px;">
     <rr-standalone-menu-item
-      style=${style}
+      variant=${variant}
       ?selected=${selected}
       ?disabled=${disabled}
       ?has-submenu=${hasSubmenu}
@@ -97,7 +97,7 @@ Default.args = {
 export const DangerStyle = Template.bind({});
 DangerStyle.args = {
   label: 'Verwijderen',
-  style: 'danger',
+  variant: 'danger',
 };
 
 // Selected
@@ -121,7 +121,7 @@ export const AllStates = () => html`
   >
     <rr-standalone-menu-item>Default item</rr-standalone-menu-item>
     <rr-standalone-menu-item selected>Geselecteerd item</rr-standalone-menu-item>
-    <rr-standalone-menu-item style="danger">Verwijderen</rr-standalone-menu-item>
+    <rr-standalone-menu-item variant="danger">Verwijderen</rr-standalone-menu-item>
     <rr-standalone-menu-item has-submenu>Meer opties</rr-standalone-menu-item>
     <rr-standalone-menu-item disabled>Uitgeschakeld</rr-standalone-menu-item>
     <rr-standalone-menu-item>
@@ -185,13 +185,24 @@ export const FigmaComparison = () => html`
       </p>
       <ftl-holster node="331-1456" style="display: inline-block;">
         <div
-          style="width: 250px; display: flex; flex-direction: column; gap: 2px; padding: 8px;"
+          style="width: 410px; display: flex; flex-direction: column; padding: 16px;"
         >
-          <rr-standalone-menu-item>Default item</rr-standalone-menu-item>
-          <rr-standalone-menu-item selected>Selected item</rr-standalone-menu-item>
-          <rr-standalone-menu-item has-submenu>With submenu</rr-standalone-menu-item>
-          <rr-standalone-menu-item style="danger">Danger item</rr-standalone-menu-item>
-          <rr-standalone-menu-item disabled>Disabled item</rr-standalone-menu-item>
+          <!-- neutral, not-selected, not-hovered -->
+          <rr-standalone-menu-item>Text cell</rr-standalone-menu-item>
+          <!-- spacer for: neutral, not-selected, hovered -->
+          <div style="height: 39px;" aria-hidden="true"></div>
+          <!-- neutral, selected, not-hovered (Figma shows no visual difference) -->
+          <rr-standalone-menu-item>Text cell</rr-standalone-menu-item>
+          <!-- spacer for: neutral, selected, hovered -->
+          <div style="height: 39px;" aria-hidden="true"></div>
+          <!-- danger, not-selected, not-hovered -->
+          <rr-standalone-menu-item variant="danger">Text cell</rr-standalone-menu-item>
+          <!-- spacer for: danger, not-selected, hovered -->
+          <div style="height: 39px;" aria-hidden="true"></div>
+          <!-- danger, selected, not-hovered (Figma shows no visual difference) -->
+          <rr-standalone-menu-item variant="danger">Text cell</rr-standalone-menu-item>
+          <!-- spacer for: danger, selected, hovered -->
+          <div style="height: 39px;" aria-hidden="true"></div>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

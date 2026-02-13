@@ -56,7 +56,7 @@ export class RRSheet extends LitElement {
     .sheet-overlay__panel {
       position: absolute;
       background-color: var(--semantics-surfaces-background-color);
-      box-shadow: var(--primitives-box-shadows-level-6);
+      box-shadow: var(--primitives-box-shadows-level-5);
       display: flex;
       flex-direction: column;
       box-sizing: border-box;

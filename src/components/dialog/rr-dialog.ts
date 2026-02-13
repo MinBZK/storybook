@@ -106,8 +106,8 @@ export class RRDialog extends LitElement {
 
     .dialog__footer {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      align-items: stretch;
       gap: var(--primitives-space-8);
       padding-top: var(--primitives-space-12);
     }

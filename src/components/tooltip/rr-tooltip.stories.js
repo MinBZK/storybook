@@ -100,11 +100,13 @@ export const FigmaComparison = () => html`
         Tooltip (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="1398-10237" style="display: inline-block;">
-        <div style="display: flex; gap: 32px; padding: 32px; align-items: center;">
-          <rr-tooltip position="top" text="Tooltip"></rr-tooltip>
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
+          <rr-tooltip position="bottom" text="Tooltip"></rr-tooltip>
+          <rr-tooltip position="bottom" text="Tooltip"></rr-tooltip>
           <rr-tooltip position="bottom" text="Tooltip"></rr-tooltip>
           <rr-tooltip position="left" text="Tooltip"></rr-tooltip>
-          <rr-tooltip position="right" text="Tooltip"></rr-tooltip>
+          <rr-tooltip position="left" text="Tooltip"></rr-tooltip>
+          <rr-tooltip position="left" text="Tooltip"></rr-tooltip>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

@@ -110,7 +110,7 @@ export class RRAlert extends LitElement {
     }
 
     .alert__body {
-      font: var(--semantics-content-body-md-regular-tight);
+      font: var(--semantics-content-body-sm-regular-tight);
       color: var(--semantics-content-color);
     }
 

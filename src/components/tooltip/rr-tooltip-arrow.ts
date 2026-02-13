@@ -38,25 +38,25 @@ export class RRTooltipArrow extends LitElement {
     :host([direction='up']) .tooltip-arrow,
     :host(:not([direction])) .tooltip-arrow {
       border-width: 0 6px 6px 6px;
-      border-color: transparent transparent var(--primitives-color-neutral-900) transparent;
+      border-color: transparent transparent var(--rr-tooltip-arrow-color, var(--primitives-color-neutral-900)) transparent;
     }
 
     /* Arrow pointing down: 12px wide x 6px tall */
     :host([direction='down']) .tooltip-arrow {
       border-width: 6px 6px 0 6px;
-      border-color: var(--primitives-color-neutral-900) transparent transparent transparent;
+      border-color: var(--rr-tooltip-arrow-color, var(--primitives-color-neutral-900)) transparent transparent transparent;
     }
 
     /* Arrow pointing left: 6px wide x 12px tall */
     :host([direction='left']) .tooltip-arrow {
       border-width: 6px 6px 6px 0;
-      border-color: transparent var(--primitives-color-neutral-900) transparent transparent;
+      border-color: transparent var(--rr-tooltip-arrow-color, var(--primitives-color-neutral-900)) transparent transparent;
     }
 
     /* Arrow pointing right: 6px wide x 12px tall */
     :host([direction='right']) .tooltip-arrow {
       border-width: 6px 0 6px 6px;
-      border-color: transparent transparent transparent var(--primitives-color-neutral-900);
+      border-color: transparent transparent transparent var(--rr-tooltip-arrow-color, var(--primitives-color-neutral-900));
     }
 
     /* Accessibility: High Contrast Mode */

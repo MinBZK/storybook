@@ -28,7 +28,7 @@ type Validation = 'neutral' | 'valid' | 'invalid';
 export class RRPasswordField extends LitElement {
   static override styles = css`
     :host {
-      display: inline-block;
+      display: block;
       font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
     }
 

@@ -98,11 +98,11 @@ export const FigmaComparison = () => html`
         Tooltip Arrow (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="1398-10227" style="display: inline-block;">
-        <div style="display: flex; gap: 32px; padding: 32px; align-items: center;">
+        <div style="display: flex; flex-direction: column; gap: 20px; padding: 16px; align-items: center;">
           <rr-tooltip-arrow direction="up"></rr-tooltip-arrow>
+          <rr-tooltip-arrow direction="right"></rr-tooltip-arrow>
           <rr-tooltip-arrow direction="down"></rr-tooltip-arrow>
           <rr-tooltip-arrow direction="left"></rr-tooltip-arrow>
-          <rr-tooltip-arrow direction="right"></rr-tooltip-arrow>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

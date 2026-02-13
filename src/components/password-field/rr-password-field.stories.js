@@ -167,11 +167,15 @@ export const FigmaComparison = () => html`
         Password Field (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="1380-5781" style="display: inline-block;">
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 320px;">
-          <rr-password-field placeholder="Password field"></rr-password-field>
-          <rr-password-field value="password123" validation="valid"></rr-password-field>
-          <rr-password-field value="123" validation="invalid"></rr-password-field>
-          <rr-password-field value="disabled" disabled></rr-password-field>
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 411px; box-sizing: border-box;">
+          <rr-password-field placeholder="Password field" .masked=${false}></rr-password-field>
+          <rr-password-field placeholder="Password field" .masked=${false} disabled></rr-password-field>
+          <rr-password-field placeholder="Password field" .masked=${false} validation="valid"></rr-password-field>
+          <rr-password-field placeholder="Password field" .masked=${false} validation="invalid"></rr-password-field>
+          <rr-password-field value="password12345"></rr-password-field>
+          <rr-password-field value="password12345" disabled></rr-password-field>
+          <rr-password-field value="password12345" validation="valid"></rr-password-field>
+          <rr-password-field value="password12345" validation="invalid"></rr-password-field>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

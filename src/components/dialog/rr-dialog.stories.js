@@ -66,10 +66,8 @@ export const Default = () => {
     <rr-button variant="accent-filled" @click=${openDialog}>Open Dialog</rr-button>
     <rr-dialog id="demo-dialog" heading="Bevestiging vereist">
       <p style="margin: 0;">Weet u zeker dat u door wilt gaan met deze actie? Dit kan niet ongedaan worden gemaakt.</p>
-      <div slot="footer">
-        <rr-button variant="neutral-tinted" @click=${() => { document.querySelector('#demo-dialog').open = false; }}>Annuleren</rr-button>
-        <rr-button variant="accent-filled" @click=${() => { document.querySelector('#demo-dialog').open = false; }}>Bevestigen</rr-button>
-      </div>
+      <rr-button slot="footer" variant="accent-filled" @click=${() => { document.querySelector('#demo-dialog').open = false; }}>Bevestigen</rr-button>
+      <rr-button slot="footer" variant="neutral-tinted" @click=${() => { document.querySelector('#demo-dialog').open = false; }}>Annuleren</rr-button>
     </rr-dialog>
   `;
 };
@@ -92,9 +90,7 @@ export const WithIcon = () => {
         <path d="M20 25l3 3 6-6" stroke="#2E7D32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <p style="margin: 0;">Uw wijzigingen zijn succesvol opgeslagen.</p>
-      <div slot="footer">
-        <rr-button variant="accent-filled" @click=${() => { document.querySelector('#icon-dialog').open = false; }}>OK</rr-button>
-      </div>
+      <rr-button slot="footer" variant="accent-filled" @click=${() => { document.querySelector('#icon-dialog').open = false; }}>OK</rr-button>
     </rr-dialog>
   `;
 };
@@ -118,13 +114,29 @@ export const FigmaComparison = () => html`
         Dialog (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="1340-4344" style="display: inline-block;">
-        <div style="padding: 24px; background: white; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); max-width: 480px; text-align: center;">
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
-            <h2 style="margin: 0; font-size: 1rem; font-weight: 700;">Dialog Heading</h2>
-            <p style="margin: 0; font-size: 0.875rem; color: #333;">Dialog body content goes here. This is an example of how the dialog looks when rendered.</p>
-            <div style="display: flex; justify-content: center; gap: 8px; padding-top: 12px;">
-              <rr-button variant="neutral-tinted">Annuleren</rr-button>
-              <rr-button variant="accent-filled">Bevestigen</rr-button>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 617px; padding: 16px; box-sizing: border-box;">
+          <div style="
+            background-color: var(--semantics-surfaces-background-color);
+            border-radius: var(--primitives-corner-radius-xl);
+            box-shadow: var(--primitives-box-shadows-level-5);
+            padding: var(--primitives-space-24);
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: var(--primitives-space-16);
+            font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
+          ">
+            <div style="display: flex; justify-content: center; padding-bottom: 4px;">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <circle cx="24" cy="24" r="20" stroke="#94A3B8" stroke-width="2" stroke-dasharray="4 4"/>
+              </svg>
+            </div>
+            <div style="text-align: center; font: var(--semantics-content-body-md-bold-tight); color: var(--semantics-content-color);">Dialog</div>
+            <div style="text-align: center; font: var(--semantics-content-body-sm-regular-tight); color: var(--semantics-content-color);">Supporting text</div>
+            <div style="display: flex; flex-direction: column; gap: var(--primitives-space-8); padding-top: var(--primitives-space-12);">
+              <rr-button variant="accent-filled" style="width: 100%;">Button</rr-button>
+              <rr-button variant="neutral-tinted" style="width: 100%;">Button</rr-button>
             </div>
           </div>
         </div>

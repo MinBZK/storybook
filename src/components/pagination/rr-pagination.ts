@@ -72,13 +72,25 @@ export class RRPagination extends LitElement {
     }
 
     .pagination__button--active {
-      background-color: var(--primitives-color-accent-750-reference);
       color: var(--primitives-color-neutral-0);
+    }
+
+    .pagination__button--active::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      background-color: var(--primitives-color-accent-750-reference);
       border-radius: var(--primitives-corner-radius-sm);
+    }
+
+    .pagination__button-label {
+      position: relative;
+      z-index: 1;
     }
 
     .pagination__button--nav {
       padding: 0 var(--primitives-space-8);
+      min-width: auto;
     }
 
     .pagination__divider {
@@ -88,15 +100,9 @@ export class RRPagination extends LitElement {
       flex-shrink: 0;
     }
 
-    .pagination__ellipsis {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      height: 44px;
-      padding: 0 var(--primitives-space-4);
-      font: var(--semantics-buttons-md-font);
-      color: var(--primitives-color-neutral-900);
-      user-select: none;
+    .pagination__button--ellipsis {
+      cursor: default;
+      pointer-events: none;
     }
 
     .pagination__icon {
@@ -125,8 +131,11 @@ export class RRPagination extends LitElement {
       }
 
       .pagination__button--active {
-        background-color: Highlight;
         color: HighlightText;
+      }
+
+      .pagination__button--active::before {
+        background-color: Highlight;
       }
 
       .pagination__button:focus-visible {
@@ -152,33 +161,24 @@ export class RRPagination extends LitElement {
       return Array.from({ length: total }, (_, i) => i + 1);
     }
 
-    const pages: (number | 'ellipsis')[] = [];
-
-    // Always show first page
-    pages.push(1);
-
-    if (current > 3) {
-      pages.push('ellipsis');
+    // Always show exactly 7 slots for consistent width
+    if (current <= 3) {
+      // Near start: first 4 + ellipsis + last 2
+      return [1, 2, 3, 4, 'ellipsis', total - 1, total];
     }
 
-    // Show pages around current
-    const start = Math.max(2, current - 1);
-    const end = Math.min(total - 1, current + 1);
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
+    if (current === 4) {
+      // Transition from start: first 5 + ellipsis + last 1
+      return [1, 2, 3, 4, 5, 'ellipsis', total];
     }
 
-    if (current < total - 2) {
-      pages.push('ellipsis');
+    if (current >= total - 3) {
+      // Near end: first 1 + ellipsis + last 5
+      return [1, 'ellipsis', total - 4, total - 3, total - 2, total - 1, total];
     }
 
-    // Always show last page
-    if (total > 1) {
-      pages.push(total);
-    }
-
-    return pages;
+    // Middle: first 1 + ellipsis + 3 around current + ellipsis + last 1
+    return [1, 'ellipsis', current - 1, current, current + 1, 'ellipsis', total];
   }
 
   private _goToPage(page: number): void {
@@ -234,7 +234,9 @@ export class RRPagination extends LitElement {
 
         ${pages.map((page) =>
           page === 'ellipsis'
-            ? html`<span class="pagination__ellipsis" aria-hidden="true">...</span>`
+            ? html`<span class="pagination__button pagination__button--ellipsis" aria-hidden="true">
+                <span class="pagination__button-label">...</span>
+              </span>`
             : html`
                 <button
                   class="pagination__button ${page === this.currentPage ? 'pagination__button--active' : ''}"
@@ -244,7 +246,7 @@ export class RRPagination extends LitElement {
                   aria-current=${page === this.currentPage ? 'page' : nothing}
                   @click=${() => this._goToPage(page as number)}
                 >
-                  ${page}
+                  <span class="pagination__button-label">${page}</span>
                 </button>
               `
         )}

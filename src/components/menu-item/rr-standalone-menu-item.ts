@@ -5,7 +5,7 @@
  * Different from rr-menu-item which is used inside rr-menu-bar.
  *
  * @element rr-standalone-menu-item
- * @attr {string} style - Item style: 'neutral' | 'danger' (default: 'neutral')
+ * @attr {string} variant - Item style: 'neutral' | 'danger' (default: 'neutral')
  * @attr {boolean} selected - Whether the item is selected (shows checkmark)
  * @attr {boolean} disabled - Disabled state
  * @attr {boolean} has-submenu - Whether item opens a submenu (shows chevron-right)
@@ -40,6 +40,7 @@ export class RRStandaloneMenuItem extends LitElement {
       display: flex;
       flex-direction: row;
       align-items: center;
+      gap: 8px;
       padding: 8px;
       border-radius: var(--semantics-controls-md-corner-radius);
       width: 100%;
@@ -55,8 +56,8 @@ export class RRStandaloneMenuItem extends LitElement {
       text-decoration: none;
     }
 
-    /* Danger style */
-    :host([style='danger']) .menu-item {
+    /* Danger variant */
+    :host([variant='danger']) .menu-item {
       color: var(--primitives-color-danger-500);
     }
 
@@ -66,7 +67,7 @@ export class RRStandaloneMenuItem extends LitElement {
       color: var(--primitives-color-neutral-0);
     }
 
-    :host([style='danger']) .menu-item:hover:not(:disabled) {
+    :host([variant='danger']) .menu-item:hover:not(:disabled) {
       background-color: var(--primitives-color-accent-700);
       color: var(--primitives-color-neutral-0);
     }
@@ -94,19 +95,6 @@ export class RRStandaloneMenuItem extends LitElement {
       justify-content: center;
     }
 
-    .menu-item__check--hidden {
-      visibility: hidden;
-    }
-
-    .menu-item__icon {
-      width: 24px;
-      height: 24px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     .menu-item__content {
       flex: 1;
       min-width: 0;
@@ -125,6 +113,10 @@ export class RRStandaloneMenuItem extends LitElement {
     ::slotted([slot='icon-end']) {
       width: 24px;
       height: 24px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Accessibility: Reduced motion */
@@ -148,7 +140,7 @@ export class RRStandaloneMenuItem extends LitElement {
   `;
 
   @property({ type: String, reflect: true })
-  style: StyleVariant = 'neutral';
+  variant: StyleVariant = 'neutral';
 
   @property({ type: Boolean, reflect: true })
   selected = false;
@@ -216,23 +208,17 @@ export class RRStandaloneMenuItem extends LitElement {
         aria-disabled=${this.disabled}
         @click=${this._handleClick}
       >
-        <span
-          class="menu-item__check ${this.selected ? '' : 'menu-item__check--hidden'}"
-        >
-          ${this._renderCheckmark()}
-        </span>
+        ${this.selected
+          ? html`<span class="menu-item__check">${this._renderCheckmark()}</span>`
+          : ''}
 
-        <span class="menu-item__icon">
-          <slot name="icon-start"></slot>
-        </span>
+        <slot name="icon-start"></slot>
 
         <span class="menu-item__content">
           <slot></slot>
         </span>
 
-        <span class="menu-item__icon">
-          <slot name="icon-end"></slot>
-        </span>
+        <slot name="icon-end"></slot>
 
         ${this.hasSubmenu
           ? html`<span class="menu-item__submenu-icon"

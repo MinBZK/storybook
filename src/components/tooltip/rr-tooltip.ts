@@ -34,6 +34,8 @@ export class RRTooltip extends LitElement {
       display: inline-flex;
       align-items: center;
       flex-direction: column;
+      --rr-tooltip-arrow-color: var(--primitives-color-neutral-0);
+      box-shadow: var(--primitives-box-shadows-level-2);
     }
 
     /* Position-specific layouts */
@@ -55,10 +57,10 @@ export class RRTooltip extends LitElement {
     }
 
     .tooltip__body {
-      background-color: var(--primitives-color-neutral-900);
-      color: var(--primitives-color-neutral-0);
-      font: var(--semantics-content-body-sm-regular-flat);
-      padding: var(--primitives-space-8) var(--primitives-space-12);
+      background-color: var(--primitives-color-neutral-0);
+      color: var(--semantics-content-color);
+      font: var(--semantics-content-body-xs-regular-tight);
+      padding: var(--primitives-space-4) var(--primitives-space-8);
       border-radius: var(--primitives-corner-radius-sm);
       white-space: nowrap;
     }
@@ -86,12 +88,12 @@ export class RRTooltip extends LitElement {
 
   /**
    * Maps tooltip position to arrow direction.
-   * When tooltip is on top, arrow points down (bottom).
+   * When tooltip is on top, arrow points down toward the target.
    */
-  private _getArrowPosition(): Position {
-    const map: Record<Position, Position> = {
-      top: 'bottom',
-      bottom: 'top',
+  private _getArrowDirection(): string {
+    const map: Record<Position, string> = {
+      top: 'down',
+      bottom: 'up',
       left: 'right',
       right: 'left',
     };
@@ -103,7 +105,7 @@ export class RRTooltip extends LitElement {
       <div class="tooltip" part="tooltip" role="tooltip">
         <div class="tooltip__body" part="text">${this.text}</div>
         <div class="tooltip__arrow" part="arrow">
-          <rr-tooltip-arrow position=${this._getArrowPosition()}></rr-tooltip-arrow>
+          <rr-tooltip-arrow direction=${this._getArrowDirection()}></rr-tooltip-arrow>
         </div>
       </div>
     `;
