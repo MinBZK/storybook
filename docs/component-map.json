@@ -1758,13 +1758,8 @@
         "pageName": "Overlays",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4678"
       },
-      "implementation": {
-        "tagName": "rr-alert",
-        "file": "src/components/alert/rr-alert.ts",
-        "className": "RRAlert"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
+      "status": "not-implemented",
+      "note": "Alert is a preconfigured dialog instance — implement as part of rr-dialog"
     },
     {
       "name": "Window",
