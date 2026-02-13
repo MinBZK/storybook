@@ -87,7 +87,7 @@ export class RRPasswordField extends LitElement {
       width: 24px;
       height: 24px;
       flex-shrink: 0;
-      padding-right: var(--primitives-space-8);
+      margin-left: var(--primitives-space-8);
     }
 
     .password-field__icon--valid {
