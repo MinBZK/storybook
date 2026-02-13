@@ -74,7 +74,7 @@ export const FigmaComparison = () => html`
       <div style="display: flex; flex-direction: column; gap: 0.25rem;">
         <span style="font-size: 0.75rem; color: #64748b;">step=past / child=between</span>
         <ftl-holster node="1404:10418" style="display: inline-block;">
-          <rr-timeline-track-cell step="past" child="between" style="height: 50px;"></rr-timeline-track-cell>
+          <rr-timeline-track-cell step="past" child="between" style="height: 50px; margin-top: 44px;"></rr-timeline-track-cell>
         </ftl-holster>
       </div>
 
@@ -82,7 +82,7 @@ export const FigmaComparison = () => html`
       <div style="display: flex; flex-direction: column; gap: 0.25rem;">
         <span style="font-size: 0.75rem; color: #64748b;">step=future / child=between</span>
         <ftl-holster node="1404:10422" style="display: inline-block;">
-          <rr-timeline-track-cell step="future" child="between" style="height: 50px;"></rr-timeline-track-cell>
+          <rr-timeline-track-cell step="future" child="between" style="height: 50px; margin-top: 44px;"></rr-timeline-track-cell>
         </ftl-holster>
       </div>
 
@@ -90,7 +90,7 @@ export const FigmaComparison = () => html`
       <div style="display: flex; flex-direction: column; gap: 0.25rem;">
         <span style="font-size: 0.75rem; color: #64748b;">step=none / child=between</span>
         <ftl-holster node="1404:10426" style="display: inline-block;">
-          <rr-timeline-track-cell step="none" child="between" style="height: 50px;"></rr-timeline-track-cell>
+          <rr-timeline-track-cell step="none" child="between" style="height: 50px; margin-top: 44px;"></rr-timeline-track-cell>
         </ftl-holster>
       </div>
 
@@ -98,7 +98,7 @@ export const FigmaComparison = () => html`
       <div style="display: flex; flex-direction: column; gap: 0.25rem;">
         <span style="font-size: 0.75rem; color: #64748b;">step=past / child=last</span>
         <ftl-holster node="1404:10429" style="display: inline-block;">
-          <rr-timeline-track-cell step="past" child="last" style="height: 50px;"></rr-timeline-track-cell>
+          <rr-timeline-track-cell step="past" child="last" style="height: 50px; margin-top: 44px;"></rr-timeline-track-cell>
         </ftl-holster>
       </div>
 
@@ -106,7 +106,7 @@ export const FigmaComparison = () => html`
       <div style="display: flex; flex-direction: column; gap: 0.25rem;">
         <span style="font-size: 0.75rem; color: #64748b;">step=future / child=last</span>
         <ftl-holster node="1404:10432" style="display: inline-block;">
-          <rr-timeline-track-cell step="future" child="last" style="height: 50px;"></rr-timeline-track-cell>
+          <rr-timeline-track-cell step="future" child="last" style="height: 50px; margin-top: 44px;"></rr-timeline-track-cell>
         </ftl-holster>
       </div>
 
