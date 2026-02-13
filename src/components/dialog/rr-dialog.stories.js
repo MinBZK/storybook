@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-dialog.ts';
-import '../button/rr-button.ts';
+import '../actions/button/rr-button.ts';
 
 /**
  * De Dialog component voor modale dialogen met overlay backdrop.
