@@ -92,7 +92,7 @@ export const FigmaComparison = () => html`
         Pagination (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="1353-3779" style="display: inline-block;">
-        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 16px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 16px;">
           <div style="height: 44px;" aria-hidden="true"></div>
           <rr-pagination current-page="1" total-pages="10"></rr-pagination>
           <rr-pagination current-page="4" total-pages="10"></rr-pagination>
