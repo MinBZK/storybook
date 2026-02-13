@@ -2,7 +2,7 @@
  * RegelRecht Tooltip Arrow Component (Lit + TypeScript)
  *
  * A small triangular arrow used as part of the tooltip component.
- * Renders a CSS triangle that points in the specified direction.
+ * Renders an SVG triangle that points in the specified direction.
  *
  * @element rr-tooltip-arrow
  * @attr {string} direction - Arrow direction: 'up' | 'down' | 'left' | 'right' (default: 'up')
@@ -10,7 +10,7 @@
  * @csspart arrow - The arrow element
  */
 
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, svg, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 type Direction = 'up' | 'down' | 'left' | 'right';
@@ -29,34 +29,7 @@ export class RRTooltipArrow extends LitElement {
 
     .tooltip-arrow {
       display: block;
-      width: 0;
-      height: 0;
-      border-style: solid;
-    }
-
-    /* Arrow pointing up: 12px wide x 6px tall */
-    :host([direction='up']) .tooltip-arrow,
-    :host(:not([direction])) .tooltip-arrow {
-      border-width: 0 6px 6px 6px;
-      border-color: transparent transparent var(--rr-tooltip-arrow-color, var(--primitives-color-neutral-900)) transparent;
-    }
-
-    /* Arrow pointing down: 12px wide x 6px tall */
-    :host([direction='down']) .tooltip-arrow {
-      border-width: 6px 6px 0 6px;
-      border-color: var(--rr-tooltip-arrow-color, var(--primitives-color-neutral-900)) transparent transparent transparent;
-    }
-
-    /* Arrow pointing left: 6px wide x 12px tall */
-    :host([direction='left']) .tooltip-arrow {
-      border-width: 6px 6px 6px 0;
-      border-color: transparent var(--rr-tooltip-arrow-color, var(--primitives-color-neutral-900)) transparent transparent;
-    }
-
-    /* Arrow pointing right: 6px wide x 12px tall */
-    :host([direction='right']) .tooltip-arrow {
-      border-width: 6px 0 6px 6px;
-      border-color: transparent transparent transparent var(--rr-tooltip-arrow-color, var(--primitives-color-neutral-900));
+      fill: var(--rr-tooltip-arrow-color, var(--primitives-color-neutral-0));
     }
 
     /* Accessibility: High Contrast Mode */
@@ -70,8 +43,47 @@ export class RRTooltipArrow extends LitElement {
   @property({ type: String, reflect: true })
   direction: Direction = 'up';
 
+  private _getArrowPath(): string {
+    switch (this.direction) {
+      case 'up':
+        return 'M0 6 L6 0 L12 6Z';
+      case 'down':
+        return 'M0 0 L12 0 L6 6Z';
+      case 'left':
+        return 'M6 0 L0 6 L6 12Z';
+      case 'right':
+        return 'M0 0 L6 6 L0 12Z';
+    }
+  }
+
+  private _getViewBox(): string {
+    if (this.direction === 'up' || this.direction === 'down') {
+      return '0 0 12 6';
+    }
+    return '0 0 6 12';
+  }
+
+  private _getWidth(): number {
+    return this.direction === 'up' || this.direction === 'down' ? 12 : 6;
+  }
+
+  private _getHeight(): number {
+    return this.direction === 'up' || this.direction === 'down' ? 6 : 12;
+  }
+
   override render() {
-    return html`<span class="tooltip-arrow" part="arrow"></span>`;
+    return svg`
+      <svg
+        class="tooltip-arrow"
+        part="arrow"
+        width="${this._getWidth()}"
+        height="${this._getHeight()}"
+        viewBox="${this._getViewBox()}"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="${this._getArrowPath()}" />
+      </svg>
+    `;
   }
 }
 
