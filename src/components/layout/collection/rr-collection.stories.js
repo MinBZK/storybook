@@ -170,7 +170,7 @@ export const FigmaComparison = () => html`
               .map(
                 () => html`
                   <div
-                    style="padding: 2px 8px; height: 24px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; display: flex; align-items: center; justify-content: center;"
+                    style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; display: flex; align-items: center; justify-content: center;"
                   >
                     <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;"
                       >SLOT</span
@@ -187,7 +187,7 @@ export const FigmaComparison = () => html`
               .map(
                 () => html`
                   <div
-                    style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; display: flex; align-items: center; justify-content: center;"
+                    style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; display: flex; align-items: center; justify-content: center;"
                   >
                     <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;"
                       >SLOT</span
@@ -204,7 +204,7 @@ export const FigmaComparison = () => html`
               .map(
                 () => html`
                   <div
-                    style="width: 280px; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+                    style="width: 280px; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
                   >
                     <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;"
                       >SLOT</span
