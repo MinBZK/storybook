@@ -73,6 +73,24 @@ export class RRTooltip extends LitElement {
       line-height: 0;
     }
 
+    /* Close subpixel gap between arrow and body */
+    :host([position='top']) .tooltip__arrow,
+    :host(:not([position])) .tooltip__arrow {
+      transform: translateY(-1px);
+    }
+
+    :host([position='bottom']) .tooltip__arrow {
+      transform: translateY(1px);
+    }
+
+    :host([position='left']) .tooltip__arrow {
+      transform: translateX(-1px);
+    }
+
+    :host([position='right']) .tooltip__arrow {
+      transform: translateX(1px);
+    }
+
     /* Pointer position: start */
     .tooltip__arrow--start {
       align-self: flex-start;
