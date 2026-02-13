@@ -17,6 +17,7 @@ import { customElement, property } from 'lit/decorators.js';
 import './rr-tooltip-arrow.ts';
 
 type Position = 'top' | 'bottom' | 'left' | 'right';
+type PointerPosition = 'start' | 'center' | 'end';
 
 @customElement('rr-tooltip')
 export class RRTooltip extends LitElement {
@@ -72,6 +73,38 @@ export class RRTooltip extends LitElement {
       line-height: 0;
     }
 
+    /* Pointer position: start */
+    .tooltip__arrow--start {
+      align-self: flex-start;
+    }
+
+    :host([position='top']) .tooltip__arrow--start,
+    :host([position='bottom']) .tooltip__arrow--start,
+    :host(:not([position])) .tooltip__arrow--start {
+      margin-left: var(--primitives-space-4);
+    }
+
+    :host([position='left']) .tooltip__arrow--start,
+    :host([position='right']) .tooltip__arrow--start {
+      margin-top: var(--primitives-space-4);
+    }
+
+    /* Pointer position: end */
+    .tooltip__arrow--end {
+      align-self: flex-end;
+    }
+
+    :host([position='top']) .tooltip__arrow--end,
+    :host([position='bottom']) .tooltip__arrow--end,
+    :host(:not([position])) .tooltip__arrow--end {
+      margin-right: var(--primitives-space-4);
+    }
+
+    :host([position='left']) .tooltip__arrow--end,
+    :host([position='right']) .tooltip__arrow--end {
+      margin-bottom: var(--primitives-space-4);
+    }
+
     /* Accessibility: High Contrast Mode */
     @media (forced-colors: active) {
       .tooltip__body {
@@ -82,6 +115,9 @@ export class RRTooltip extends LitElement {
 
   @property({ type: String, reflect: true })
   position: Position = 'top';
+
+  @property({ type: String, reflect: true, attribute: 'pointer-position' })
+  pointerPosition: PointerPosition = 'center';
 
   @property({ type: String })
   text = '';
@@ -101,10 +137,11 @@ export class RRTooltip extends LitElement {
   }
 
   override render() {
+    const arrowClasses = `tooltip__arrow tooltip__arrow--${this.pointerPosition}`;
     return html`
       <div class="tooltip" part="tooltip" role="tooltip">
         <div class="tooltip__body" part="text">${this.text}</div>
-        <div class="tooltip__arrow" part="arrow">
+        <div class="${arrowClasses}" part="arrow">
           <rr-tooltip-arrow direction=${this._getArrowDirection()}></rr-tooltip-arrow>
         </div>
       </div>

@@ -39,6 +39,14 @@ export default {
         defaultValue: { summary: 'top' },
       },
     },
+    'pointer-position': {
+      control: 'select',
+      options: ['start', 'center', 'end'],
+      description: 'Arrow position along the tooltip edge',
+      table: {
+        defaultValue: { summary: 'center' },
+      },
+    },
     text: {
       control: 'text',
       description: 'Tooltip text content',
@@ -46,6 +54,7 @@ export default {
   },
   args: {
     position: 'top',
+    'pointer-position': 'center',
     text: 'Tooltip tekst',
   },
 };
@@ -101,12 +110,12 @@ export const FigmaComparison = () => html`
       </p>
       <ftl-holster node="1398-10237" style="display: inline-block;">
         <div style="display: inline-flex; flex-direction: column; gap: 16px; padding: 16px; align-items: flex-start;">
-          <div style="padding: 0 6px 6px 6px; display: flex;"><rr-tooltip position="bottom" text="Tooltip"></rr-tooltip></div>
-          <div style="padding: 0 6px 6px 6px; display: flex;"><rr-tooltip position="bottom" text="Tooltip"></rr-tooltip></div>
-          <div style="padding: 0 6px 6px 6px; display: flex;"><rr-tooltip position="bottom" text="Tooltip"></rr-tooltip></div>
-          <div style="padding: 6px; display: flex;"><rr-tooltip position="left" text="Tooltip"></rr-tooltip></div>
-          <div style="padding: 6px; display: flex;"><rr-tooltip position="left" text="Tooltip"></rr-tooltip></div>
-          <div style="padding: 6px; display: flex;"><rr-tooltip position="left" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 0 6px 6px 6px; display: flex;"><rr-tooltip position="bottom" pointer-position="start" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 0 6px 6px 6px; display: flex;"><rr-tooltip position="bottom" pointer-position="center" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 0 6px 6px 6px; display: flex;"><rr-tooltip position="bottom" pointer-position="end" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 6px; display: flex;"><rr-tooltip position="left" pointer-position="start" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 6px; display: flex;"><rr-tooltip position="left" pointer-position="center" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 6px; display: flex;"><rr-tooltip position="left" pointer-position="end" text="Tooltip"></rr-tooltip></div>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
