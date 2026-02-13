@@ -5,25 +5,28 @@
 
 import { FONT_WEIGHT_MAP } from './font-weights.js';
 
-export const figmaVariablesParser = {
-  name: 'figma-variables',
-  pattern: /\.json$/,
+/**
+ * Factory function to create a Figma variables parser for a specific mode.
+ * @param {string} modeName - Mode to match via .includes() (e.g. 'Light', 'Dark')
+ * @param {string} [parserName='figma-variables'] - Unique name for Style Dictionary registration
+ */
+export function createFigmaVariablesParser(modeName, parserName = 'figma-variables') {
+  return {
+    name: parserName,
+    pattern: /\.json$/,
 
-  parser: ({ contents, _filePath }) => {
-    const figmaTokens = JSON.parse(contents);
-    const result = {};
+    parser: ({ contents, _filePath }) => {
+      const figmaTokens = JSON.parse(contents);
+      const result = {};
 
-    // Process all collections
-    for (const collection of figmaTokens.collections || []) {
-      // Only use Light mode - find mode with "Light" in name, or use first mode as fallback
-      const lightMode = collection.modes?.find(m => m.name.includes('Light')) || collection.modes?.[0];
-      if (!lightMode) continue;
+      for (const collection of figmaTokens.collections || []) {
+        const mode = collection.modes?.find(m => m.name.includes(modeName)) || collection.modes?.[0];
+        if (!mode) continue;
 
-      for (const variable of lightMode.variables || []) {
+        for (const variable of mode.variables || []) {
           const pathParts = variable.name.split('/');
           let current = result;
 
-          // Navigate/create nested structure
           for (let i = 0; i < pathParts.length - 1; i++) {
             const part = pathParts[i];
             if (!current[part]) {
@@ -37,9 +40,7 @@ export const figmaVariablesParser = {
             $type: mapType(variable.type, variable.name),
           };
 
-          // Handle alias vs direct value
           if (variable.isAlias && typeof variable.value === 'object' && variable.value.name) {
-            // Convert alias reference to Style Dictionary format
             const aliasPath = variable.value.name.split('/').join('.');
             token.$value = `{${aliasPath}}`;
           } else {
@@ -48,11 +49,15 @@ export const figmaVariablesParser = {
 
           current[tokenName] = token;
         }
-    }
+      }
 
-    return result;
-  },
-};
+      return result;
+    },
+  };
+}
+
+// Backward-compatible export for existing usage
+export const figmaVariablesParser = createFigmaVariablesParser('Light');
 
 /**
  * Map Figma variable types to DTCG types

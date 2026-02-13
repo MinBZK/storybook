@@ -1,36 +1,49 @@
 import StyleDictionary from 'style-dictionary';
-import { figmaVariablesParser } from './src/parser/figma-variables-parser.js';
+import { createFigmaVariablesParser } from './src/parser/figma-variables-parser.js';
 import { FONT_WEIGHT_MAP } from './src/parser/font-weights.js';
 
-// Register custom parser for Figma variables2json format
-StyleDictionary.registerParser(figmaVariablesParser);
+// Theme definitions
+const THEMES = [
+  {
+    name: 'light',
+    mode: 'Light',
+    selector: ':root',
+    parserName: 'figma-variables-light',
+    files: [
+      { destination: 'tokens.css' },
+      { destination: 'primitives.css', filter: (token) => token.path[0] === 'primitives' },
+      { destination: 'semantics.css', filter: (token) => token.path[0] === 'semantics' },
+      { destination: 'components.css', filter: (token) => token.path[0] === 'components' },
+    ],
+  },
+  {
+    name: 'dark',
+    mode: 'Dark',
+    selector: '[data-theme="dark"]',
+    parserName: 'figma-variables-dark',
+    files: [
+      { destination: 'theme-dark.css' },
+    ],
+  },
+];
 
-// Custom transform for dimension values (number to px)
+const TRANSFORMS = ['name/kebab', 'size/px', 'number/value', 'fontWeight/number', 'typography/css', 'color/css'];
+
+// Register global transforms (once)
 StyleDictionary.registerTransform({
   name: 'size/px',
   type: 'value',
-  filter: (token) => {
-    return token.$type === 'dimension' && typeof token.$value === 'number';
-  },
-  transform: (token) => {
-    return `${token.$value}px`;
-  },
+  filter: (token) => token.$type === 'dimension' && typeof token.$value === 'number',
+  transform: (token) => `${token.$value}px`,
 });
 
-// Custom transform for number values that should stay as numbers
 StyleDictionary.registerTransform({
   name: 'number/value',
   type: 'value',
-  filter: (token) => {
-    return token.$type === 'number' && typeof token.$value === 'number';
-  },
-  transform: (token) => {
-    // Keep opacity, line-height etc as plain numbers
-    return token.$value;
-  },
+  filter: (token) => token.$type === 'number' && typeof token.$value === 'number',
+  transform: (token) => token.$value,
 });
 
-// Custom transform for fontWeight tokens - convert string names to numeric values
 StyleDictionary.registerTransform({
   name: 'fontWeight/number',
   type: 'value',
@@ -47,7 +60,6 @@ StyleDictionary.registerTransform({
   },
 });
 
-// Custom transform for typography to CSS font shorthand
 StyleDictionary.registerTransform({
   name: 'typography/css',
   type: 'value',
@@ -56,93 +68,67 @@ StyleDictionary.registerTransform({
   transform: (token) => {
     const val = token.$value;
     if (typeof val === 'object') {
-      // Return CSS font shorthand
       return `${val.fontWeight} ${val.fontSize}/${val.lineHeight} ${val.fontFamily}, system-ui`;
     }
     return val;
   },
 });
 
-// Custom format for CSS with organized sections
-StyleDictionary.registerFormat({
-  name: 'css/custom-properties-grouped',
-  format: ({ dictionary, options }) => {
-    const header = `/**
+/**
+ * Register a CSS custom properties format with a specific selector.
+ */
+function registerThemeFormat(formatName, selector) {
+  StyleDictionary.registerFormat({
+    name: formatName,
+    format: ({ dictionary }) => {
+      const header = `/**
  * RegelRecht Design System Tokens
  * Auto-generated from Figma - Do not edit directly
  * Generated: ${new Date().toISOString()}
  */\n\n`;
 
-    const tokens = dictionary.allTokens
-      .map((token) => {
-        const value =
-          typeof token.$value === 'object' ? JSON.stringify(token.$value) : token.$value;
-        return `  --${token.name}: ${value};`;
-      })
-      .join('\n');
+      const tokens = dictionary.allTokens
+        .map((token) => {
+          const value =
+            typeof token.$value === 'object' ? JSON.stringify(token.$value) : token.$value;
+          return `  --${token.name}: ${value};`;
+        })
+        .join('\n');
 
-    return `${header}:root {\n${tokens}\n}\n`;
-  },
-});
+      return `${header}${selector} {\n${tokens}\n}\n`;
+    },
+  });
+}
 
-const config = {
-  source: ['tokens/rr-tokens.json'],
-  parsers: ['figma-variables'],
+// Build each theme
+for (const theme of THEMES) {
+  const parser = createFigmaVariablesParser(theme.mode, theme.parserName);
+  StyleDictionary.registerParser(parser);
 
-  platforms: {
-    // All tokens combined
-    css: {
-      transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number', 'typography/css', 'color/css'],
+  const formatName = `css/custom-properties-${theme.name}`;
+  registerThemeFormat(formatName, theme.selector);
+
+  const platforms = {};
+
+  // CSS platforms for this theme
+  theme.files.forEach((file, index) => {
+    const platformName = index === 0 ? `css-${theme.name}` : `css-${theme.name}-${file.destination.replace('.css', '')}`;
+    platforms[platformName] = {
+      transforms: TRANSFORMS,
       buildPath: 'dist/css/',
       files: [
         {
-          destination: 'tokens.css',
-          format: 'css/custom-properties-grouped',
+          destination: file.destination,
+          format: formatName,
+          ...(file.filter && { filter: file.filter }),
         },
       ],
-    },
+    };
+  });
 
-    // Primitives only
-    'css-primitives': {
-      transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number', 'typography/css', 'color/css'],
-      buildPath: 'dist/css/',
-      files: [
-        {
-          destination: 'primitives.css',
-          format: 'css/custom-properties-grouped',
-          filter: (token) => token.path[0] === 'primitives',
-        },
-      ],
-    },
-
-    // Semantics only
-    'css-semantics': {
-      transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number', 'typography/css', 'color/css'],
-      buildPath: 'dist/css/',
-      files: [
-        {
-          destination: 'semantics.css',
-          format: 'css/custom-properties-grouped',
-          filter: (token) => token.path[0] === 'semantics',
-        },
-      ],
-    },
-
-    // Component tokens only
-    'css-components': {
-      transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number', 'typography/css', 'color/css'],
-      buildPath: 'dist/css/',
-      files: [
-        {
-          destination: 'components.css',
-          format: 'css/custom-properties-grouped',
-          filter: (token) => token.path[0] === 'components',
-        },
-      ],
-    },
-
-    // JSON output for debugging/reference
-    json: {
+  // JSON output only for light theme
+  if (theme.name === 'light') {
+    platforms['json'] = {
       transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number'],
       buildPath: 'dist/',
       files: [
@@ -151,11 +137,17 @@ const config = {
           format: 'json/nested',
         },
       ],
-    },
-  },
-};
+    };
+  }
 
-const sd = new StyleDictionary(config);
-await sd.buildAllPlatforms();
+  const config = {
+    source: ['tokens/rr-tokens.json'],
+    parsers: [theme.parserName],
+    platforms,
+  };
+
+  const sd = new StyleDictionary(config);
+  await sd.buildAllPlatforms();
+}
 
 console.log('Design tokens built successfully!');

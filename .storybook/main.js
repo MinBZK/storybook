@@ -8,7 +8,8 @@ const config = {
   addons: [
     '@storybook/addon-a11y',
     '@storybook/addon-docs',
-    '@storybook/addon-designs'
+    '@storybook/addon-designs',
+    '@storybook/addon-themes'
   ],
   framework: '@storybook/web-components-vite',
   staticDirs: ['../dist', '../public'],

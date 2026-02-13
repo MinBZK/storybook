@@ -1,5 +1,7 @@
 import '../src/fonts/fonts.css';
 import '../dist/css/tokens.css';
+import '../dist/css/theme-dark.css';
+import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 // Figma Testing Library for pixel-perfect comparison
 import { defineCustomElements } from '@cianfrani/figma-testing-library/loader';
@@ -11,6 +13,16 @@ if (typeof window !== 'undefined') {
 
 /** @type { import('@storybook/web-components-vite').Preview } */
 const preview = {
+  decorators: [
+    withThemeByDataAttribute({
+      themes: {
+        light: '',
+        dark: 'dark',
+      },
+      defaultTheme: 'light',
+      attributeName: 'data-theme',
+    }),
+  ],
   parameters: {
     controls: {
       matchers: {

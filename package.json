@@ -10,7 +10,8 @@
     "./css": "./dist/css/tokens.css",
     "./css/primitives": "./dist/css/primitives.css",
     "./css/semantics": "./dist/css/semantics.css",
-    "./css/components": "./dist/css/components.css"
+    "./css/components": "./dist/css/components.css",
+    "./css/theme-dark": "./dist/css/theme-dark.css"
   },
   "files": [
     "dist",
@@ -63,6 +64,7 @@
     "@storybook/addon-a11y": "^10.1.10",
     "@storybook/addon-designs": "^11.1.0",
     "@storybook/addon-docs": "^10.1.10",
+    "@storybook/addon-themes": "^10.2.8",
     "@storybook/addon-vitest": "^10.1.10",
     "@storybook/web-components-vite": "^10.1.10",
     "@vitest/browser-playwright": "^4.0.16",
