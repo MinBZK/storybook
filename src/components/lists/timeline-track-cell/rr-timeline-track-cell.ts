@@ -49,13 +49,13 @@ export class RRTimelineTrackCell extends LitElement {
     }
 
     .timeline-track__line-top {
-      top: 0;
-      height: calc(50% - 9px);
+      bottom: 50%;
+      height: 59px;
     }
 
     .timeline-track__line-bottom {
-      bottom: 0;
-      height: calc(50% - 9px);
+      top: 50%;
+      height: 59px;
     }
 
     /* Dot indicator */
@@ -88,8 +88,8 @@ export class RRTimelineTrackCell extends LitElement {
       left: 50%;
       width: 2px;
       margin-left: -1px;
-      top: 0;
-      bottom: 0;
+      top: -34px;
+      bottom: -34px;
       background-color: var(--semantics-buttons-accent-filled-background-color);
     }
 
