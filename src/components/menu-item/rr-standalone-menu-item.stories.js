@@ -189,20 +189,20 @@ export const FigmaComparison = () => html`
         >
           <!-- neutral, not-selected, not-hovered -->
           <rr-standalone-menu-item>Text cell</rr-standalone-menu-item>
-          <!-- spacer for: neutral, not-selected, hovered -->
-          <div style="height: 39px;" aria-hidden="true"></div>
-          <!-- neutral, selected, not-hovered (Figma shows no visual difference) -->
+          <!-- neutral, not-selected, hovered -->
+          <div style="display: flex; align-items: center; padding: 8px; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
+          <!-- neutral, selected, not-hovered -->
           <rr-standalone-menu-item>Text cell</rr-standalone-menu-item>
-          <!-- spacer for: neutral, selected, hovered -->
-          <div style="height: 39px;" aria-hidden="true"></div>
+          <!-- neutral, selected, hovered -->
+          <div style="display: flex; align-items: center; padding: 8px; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
           <!-- danger, not-selected, not-hovered -->
           <rr-standalone-menu-item variant="danger">Text cell</rr-standalone-menu-item>
-          <!-- spacer for: danger, not-selected, hovered -->
-          <div style="height: 39px;" aria-hidden="true"></div>
-          <!-- danger, selected, not-hovered (Figma shows no visual difference) -->
+          <!-- danger, not-selected, hovered -->
+          <div style="display: flex; align-items: center; padding: 8px; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
+          <!-- danger, selected, not-hovered -->
           <rr-standalone-menu-item variant="danger">Text cell</rr-standalone-menu-item>
-          <!-- spacer for: danger, selected, hovered -->
-          <div style="height: 39px;" aria-hidden="true"></div>
+          <!-- danger, selected, hovered -->
+          <div style="display: flex; align-items: center; padding: 8px; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
