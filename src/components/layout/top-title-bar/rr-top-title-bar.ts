@@ -61,7 +61,6 @@ export class RRTopTitleBar extends LitElement {
       flex-direction: row;
       align-items: center;
       width: 100%;
-      min-height: 44px;
       box-sizing: border-box;
     }
 
