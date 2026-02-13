@@ -122,6 +122,8 @@ export const FigmaComparison = () => html`
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            border-radius: var(--primitives-corner-radius-xl);
+            overflow: hidden;
             font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
           ">
           <div style="display: flex; justify-content: center; padding-bottom: 4px;">
