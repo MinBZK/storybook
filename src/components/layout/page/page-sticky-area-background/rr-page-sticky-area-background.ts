@@ -81,7 +81,7 @@ export class RRPageStickyAreaBackground extends LitElement {
     /* White background (default) - filled area */
     :host(:not([tinted])) .filled,
     :host([tinted='false']) .filled {
-      background-color: rgba(255, 255, 255, 0.9);
+      background-color: rgba(255, 255, 255, 0.95);
     }
 
     /* White gradient - top position (fades from solid to transparent going down) */
@@ -91,8 +91,8 @@ export class RRPageStickyAreaBackground extends LitElement {
     :host(:not([position])[tinted='false']) .gradient {
       background: linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.9) 0%,
-        rgba(255, 255, 255, 0.5) 70%,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.6) 70%,
         rgba(255, 255, 255, 0) 100%
       );
     }
@@ -103,15 +103,15 @@ export class RRPageStickyAreaBackground extends LitElement {
       background: linear-gradient(
         180deg,
         rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.5) 30%,
-        rgba(255, 255, 255, 0.9) 100%
+        rgba(255, 255, 255, 0.6) 30%,
+        rgba(255, 255, 255, 0.95) 100%
       );
     }
 
     /* Tinted background (gray) - filled area */
     :host([tinted]) .filled,
     :host([tinted='true']) .filled {
-      background-color: rgba(245, 246, 249, 0.9);
+      background-color: rgba(245, 246, 249, 0.95);
     }
 
     /* Tinted gradient - top position */
@@ -121,8 +121,8 @@ export class RRPageStickyAreaBackground extends LitElement {
     :host(:not([position])[tinted='true']) .gradient {
       background: linear-gradient(
         180deg,
-        rgba(245, 246, 249, 0.9) 0%,
-        rgba(245, 246, 249, 0.5) 70%,
+        rgba(245, 246, 249, 0.95) 0%,
+        rgba(245, 246, 249, 0.6) 70%,
         rgba(245, 246, 249, 0) 100%
       );
     }
@@ -133,8 +133,8 @@ export class RRPageStickyAreaBackground extends LitElement {
       background: linear-gradient(
         180deg,
         rgba(245, 246, 249, 0) 0%,
-        rgba(245, 246, 249, 0.5) 30%,
-        rgba(245, 246, 249, 0.9) 100%
+        rgba(245, 246, 249, 0.6) 30%,
+        rgba(245, 246, 249, 0.95) 100%
       );
     }
 

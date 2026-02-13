@@ -65,19 +65,7 @@ export class RRTopTitleBar extends LitElement {
       box-sizing: border-box;
     }
 
-    /* Toolbar padding per container (matches title area horizontal padding) */
-    :host([container='sm']) .toolbar,
-    :host(:not([container])) .toolbar {
-      padding: 0 16px;
-    }
-
-    :host([container='md']) .toolbar {
-      padding: 0 32px;
-    }
-
-    :host([container='lg']) .toolbar {
-      padding: 0 48px;
-    }
+    /* Figma toolbar has no padding - button at component edge */
 
     .toolbar__start-area {
       display: flex;

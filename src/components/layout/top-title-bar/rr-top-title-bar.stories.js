@@ -178,68 +178,107 @@ export const FigmaComparison = () => html`
       <ftl-holster node="1048:2288" style="display: inline-block;">
         <!--
           Figma top-title-bar (1048:2288) component set:
-          - Layout: column, gap: 16px, padding: 16px
-          - Variants: container (sm/md/lg) x is-compact (true/false) x top-toolbar (default/custom/none)
-          - Width: 512px
+          - Layout: column, gap: 16px, padding: 16px, width: 512px
+          - 18 variants: container (sm/md/lg) x is-compact (false/true) x top-toolbar (default/custom/none)
         -->
         <div
           style="width: 512px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;"
         >
-          <!-- sm, non-compact, default toolbar -->
+          <!-- 1. sm, non-compact, default -->
           <rr-top-title-bar container="sm" toolbar="default" title="Title"></rr-top-title-bar>
 
-          <!-- sm, non-compact, custom toolbar (shows slots) -->
+          <!-- 2. sm, non-compact, custom -->
           <rr-top-title-bar container="sm" toolbar="custom" title="Title">
-            <div
-              slot="toolbar-start"
-              style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD;"
-            >
-              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
+            <div slot="toolbar-start" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
             </div>
-            <div
-              slot="toolbar-end"
-              style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD;"
-            >
-              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
+            <div slot="toolbar-end" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
             </div>
           </rr-top-title-bar>
 
-          <!-- sm, non-compact, no toolbar -->
+          <!-- 3. sm, non-compact, none -->
           <rr-top-title-bar container="sm" toolbar="none" title="Title"></rr-top-title-bar>
 
-          <!-- md, non-compact, default toolbar -->
+          <!-- 4. md, non-compact, default -->
           <rr-top-title-bar container="md" toolbar="default" title="Title"></rr-top-title-bar>
 
-          <!-- md, non-compact, custom toolbar -->
+          <!-- 5. md, non-compact, custom -->
           <rr-top-title-bar container="md" toolbar="custom" title="Title">
-            <div
-              slot="toolbar-start"
-              style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD;"
-            >
-              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
+            <div slot="toolbar-start" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
             </div>
-            <div
-              slot="toolbar-end"
-              style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD;"
-            >
-              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
+            <div slot="toolbar-end" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
             </div>
           </rr-top-title-bar>
 
-          <!-- md, non-compact, no toolbar -->
+          <!-- 6. md, non-compact, none -->
           <rr-top-title-bar container="md" toolbar="none" title="Title"></rr-top-title-bar>
 
-          <!-- lg, non-compact, default toolbar -->
+          <!-- 7. lg, non-compact, default -->
           <rr-top-title-bar container="lg" toolbar="default" title="Title"></rr-top-title-bar>
 
-          <!-- sm, compact, default toolbar -->
+          <!-- 8. lg, non-compact, custom -->
+          <rr-top-title-bar container="lg" toolbar="custom" title="Title">
+            <div slot="toolbar-start" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
+            </div>
+            <div slot="toolbar-end" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
+            </div>
+          </rr-top-title-bar>
+
+          <!-- 9. lg, non-compact, none -->
+          <rr-top-title-bar container="lg" toolbar="none" title="Title"></rr-top-title-bar>
+
+          <!-- 10. sm, compact, default -->
           <rr-top-title-bar container="sm" compact toolbar="default" title="Title"></rr-top-title-bar>
 
-          <!-- md, compact, default toolbar -->
+          <!-- 11. sm, compact, custom -->
+          <rr-top-title-bar container="sm" compact toolbar="custom" title="Title">
+            <div slot="toolbar-start" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
+            </div>
+            <div slot="toolbar-end" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
+            </div>
+          </rr-top-title-bar>
+
+          <!-- 12. sm, compact, none (empty in Figma) -->
+          <rr-top-title-bar container="sm" compact toolbar="none" title="Title"></rr-top-title-bar>
+
+          <!-- 13. md, compact, default -->
           <rr-top-title-bar container="md" compact toolbar="default" title="Title"></rr-top-title-bar>
 
-          <!-- lg, compact, default toolbar -->
+          <!-- 14. md, compact, custom -->
+          <rr-top-title-bar container="md" compact toolbar="custom" title="Title">
+            <div slot="toolbar-start" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
+            </div>
+            <div slot="toolbar-end" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
+            </div>
+          </rr-top-title-bar>
+
+          <!-- 15. md, compact, none -->
+          <rr-top-title-bar container="md" compact toolbar="none" title="Title"></rr-top-title-bar>
+
+          <!-- 16. lg, compact, default -->
           <rr-top-title-bar container="lg" compact toolbar="default" title="Title"></rr-top-title-bar>
+
+          <!-- 17. lg, compact, custom -->
+          <rr-top-title-bar container="lg" compact toolbar="custom" title="Title">
+            <div slot="toolbar-start" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
+            </div>
+            <div slot="toolbar-end" style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD;">
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
+            </div>
+          </rr-top-title-bar>
+
+          <!-- 18. lg, compact, none -->
+          <rr-top-title-bar container="lg" compact toolbar="none" title="Title"></rr-top-title-bar>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

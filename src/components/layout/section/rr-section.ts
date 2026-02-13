@@ -45,6 +45,7 @@ export class RRSection extends LitElement {
       flex-direction: column;
       align-items: center;
       width: 100%;
+      box-sizing: border-box;
     }
 
     .section__body {

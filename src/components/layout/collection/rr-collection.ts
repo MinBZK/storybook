@@ -74,7 +74,7 @@ export class RRCollection extends LitElement {
     }
 
     :host([layout='list']) .collection__items ::slotted(*) {
-      width: 100%;
+      box-sizing: border-box;
     }
 
     /* Horizontal scroll layout */
@@ -89,6 +89,7 @@ export class RRCollection extends LitElement {
 
     :host([layout='horizontal-scroll']) .collection__items ::slotted(*) {
       flex: 0 0 var(--rr-collection-item-min-width, 280px);
+      box-sizing: border-box;
       scroll-snap-align: start;
     }
 
