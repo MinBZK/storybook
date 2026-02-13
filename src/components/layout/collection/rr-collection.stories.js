@@ -153,23 +153,26 @@ export const FigmaComparison = () => html`
       <ftl-holster node="1435:29304" style="display: inline-block;">
         <!--
           Figma collection (1435:29304) component set:
-          - Layout: row, gap: 16px, padding: 16px
-          - Variants: layout (grid/list/horizontal-scroll)
+          - Layout: row, gap: 16px, padding: 16px, alignItems: stretch
+          - Variants: layout (grid/list/horizontal-scroll), each ~793px wide
           - Width: 2442px
+          - Grid: 2-column wrapping grid with "Load more" button
+          - List: single column with "Load more" button
+          - Horizontal scroll: row with 280px items, nav arrows in footer
         -->
         <div
           style="width: 2442px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; align-items: stretch;"
         >
-          <!-- layout=grid -->
-          <rr-collection layout="grid" title="Collection" show-load-more style="flex: 1;">
+          <!-- layout=grid (2-column wrapping grid) -->
+          <rr-collection layout="grid" title="Collection" show-load-more style="flex: 1; min-width: 0; --rr-collection-item-min-width: 300px;">
             ${Array(24)
               .fill(null)
               .map(
                 () => html`
                   <div
-                    style="padding: 2px 8px; height: 24px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; display: flex; align-items: center; justify-content: center;"
+                    style="padding: 2px 8px; height: 24px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; display: flex; align-items: center; justify-content: center;"
                   >
-                    <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;"
+                    <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;"
                       >SLOT</span
                     >
                   </div>
@@ -177,16 +180,16 @@ export const FigmaComparison = () => html`
               )}
           </rr-collection>
 
-          <!-- layout=list -->
-          <rr-collection layout="list" title="Collection" show-load-more style="flex: 1;">
+          <!-- layout=list (single column) -->
+          <rr-collection layout="list" title="Collection" show-load-more style="flex: 1; min-width: 0;">
             ${Array(24)
               .fill(null)
               .map(
                 () => html`
                   <div
-                    style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; display: flex; align-items: center; justify-content: center;"
+                    style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; display: flex; align-items: center; justify-content: center;"
                   >
-                    <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;"
+                    <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;"
                       >SLOT</span
                     >
                   </div>
@@ -194,16 +197,16 @@ export const FigmaComparison = () => html`
               )}
           </rr-collection>
 
-          <!-- layout=horizontal-scroll -->
-          <rr-collection layout="horizontal-scroll" title="Collection" style="flex: 1;">
+          <!-- layout=horizontal-scroll (280px fixed items, nav arrows) -->
+          <rr-collection layout="horizontal-scroll" title="Collection" style="flex: 1; min-width: 0;">
             ${Array(24)
               .fill(null)
               .map(
                 () => html`
                   <div
-                    style="width: 280px; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+                    style="width: 280px; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
                   >
-                    <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;"
+                    <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;"
                       >SLOT</span
                     >
                   </div>

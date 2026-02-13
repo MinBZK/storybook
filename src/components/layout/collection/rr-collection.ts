@@ -114,6 +114,13 @@ export class RRCollection extends LitElement {
       width: 100%;
     }
 
+    /* Inner button must also stretch to fill rr-button host */
+    :host([layout='grid']) .collection__footer rr-button::part(button),
+    :host([layout='list']) .collection__footer rr-button::part(button),
+    :host(:not([layout])) .collection__footer rr-button::part(button) {
+      width: 100%;
+    }
+
     /* Horizontal scroll: Navigation on right */
     :host([layout='horizontal-scroll']) .collection__footer {
       justify-content: flex-end;
