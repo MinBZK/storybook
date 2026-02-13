@@ -140,7 +140,7 @@ export const FigmaComparison = () => html`
           </div>
           <div style="text-align: center; font: var(--semantics-content-body-md-bold-tight); color: var(--semantics-content-color);">Modal dialog</div>
           <div style="text-align: center; font: var(--semantics-content-body-sm-regular-tight); color: var(--semantics-content-color);">Supporting text</div>
-          <div style="display: flex; flex-direction: column; gap: var(--primitives-space-8); padding-top: var(--primitives-space-12);">
+          <div style="display: flex; flex-direction: column; gap: var(--primitives-space-8); padding: var(--primitives-space-12) 44px 0;">
             <rr-button variant="accent-filled" style="display: block;">Button</rr-button>
             <rr-button variant="neutral-tinted" style="display: block;">Button</rr-button>
           </div>
