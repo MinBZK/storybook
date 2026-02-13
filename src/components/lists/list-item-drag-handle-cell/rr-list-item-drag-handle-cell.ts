@@ -19,7 +19,7 @@ type VerticalAlignment = 'top' | 'center';
 export class RRListItemDragHandleCell extends LitElement {
   static override styles = css`
     :host {
-      display: flex;
+      display: inline-flex;
       flex-direction: column;
       align-items: center;
     }
