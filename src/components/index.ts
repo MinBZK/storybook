@@ -78,5 +78,12 @@ export { RRCustomCell } from './lists/custom-cell/rr-custom-cell.ts';
 export { RRSpacerCell } from './lists/spacer-cell/rr-spacer-cell.ts';
 export { RRTextFieldCell } from './lists/text-field-cell/rr-text-field-cell.ts';
 export { RRDropDownFieldCell } from './lists/drop-down-field-cell/rr-drop-down-field-cell.ts';
+export { RRTextCell } from './lists/text-cell/rr-text-cell.ts';
+export { RRIconCell } from './lists/icon-cell/rr-icon-cell.ts';
+export { RRDescriptionCell } from './lists/description-cell/rr-description-cell.ts';
+export { RRStepperCell } from './lists/stepper-cell/rr-stepper-cell.ts';
+export { RRListItemDragHandle } from './lists/list-item-drag-handle/rr-list-item-drag-handle.ts';
+export { RRListItemDragHandleCell } from './lists/list-item-drag-handle-cell/rr-list-item-drag-handle-cell.ts';
+export { RRTimelineTrackCell } from './lists/timeline-track-cell/rr-timeline-track-cell.ts';
 
 // Auto-register happens on import of individual component files
