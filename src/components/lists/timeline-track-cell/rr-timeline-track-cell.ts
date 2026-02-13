@@ -77,9 +77,9 @@ export class RRTimelineTrackCell extends LitElement {
       background-color: var(--semantics-buttons-accent-filled-background-color);
     }
 
-    /* Step: future (hollow dot) */
+    /* Step: future (hollow dot with white fill) */
     :host([step="future"]) .timeline-track__dot {
-      background-color: transparent;
+      background-color: var(--semantics-surfaces-background-color);
     }
 
     /* Step: none - continuous line, no dot */
