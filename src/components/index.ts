@@ -103,6 +103,5 @@ export { RRRichTextHeading } from './rich-text-heading/rr-rich-text-heading.ts';
 export { RRTooltipArrow } from './tooltip/rr-tooltip-arrow.ts';
 export { RRTooltip } from './tooltip/rr-tooltip.ts';
 export { RRDialog } from './dialog/rr-dialog.ts';
-export { RRWindow } from './window/rr-window.ts';
 
 // Auto-register happens on import of individual component files

@@ -1765,13 +1765,8 @@
         "pageName": "Overlays",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1261-3627"
       },
-      "implementation": {
-        "tagName": "rr-window",
-        "file": "src/components/window/rr-window.ts",
-        "className": "RRWindow"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
+      "status": "not-implemented",
+      "note": "Window composes page, top-title-bar, and toolbar — implement after those sub-components exist"
     },
     {
       "name": "Page",
