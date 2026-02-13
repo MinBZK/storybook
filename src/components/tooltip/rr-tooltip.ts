@@ -61,7 +61,7 @@ export class RRTooltip extends LitElement {
       color: var(--semantics-content-color);
       font: var(--semantics-content-body-xs-regular-tight);
       padding: var(--primitives-space-4) var(--primitives-space-8);
-      border-radius: var(--primitives-corner-radius-sm);
+
       white-space: nowrap;
     }
 

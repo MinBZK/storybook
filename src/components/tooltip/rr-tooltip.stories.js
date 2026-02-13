@@ -100,13 +100,13 @@ export const FigmaComparison = () => html`
         Tooltip (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
       </p>
       <ftl-holster node="1398-10237" style="display: inline-block;">
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
-          <rr-tooltip position="bottom" text="Tooltip"></rr-tooltip>
-          <rr-tooltip position="bottom" text="Tooltip"></rr-tooltip>
-          <rr-tooltip position="bottom" text="Tooltip"></rr-tooltip>
-          <rr-tooltip position="left" text="Tooltip"></rr-tooltip>
-          <rr-tooltip position="left" text="Tooltip"></rr-tooltip>
-          <rr-tooltip position="left" text="Tooltip"></rr-tooltip>
+        <div style="display: inline-flex; flex-direction: column; gap: 16px; padding: 16px; align-items: flex-start;">
+          <div style="padding: 0 6px 6px 6px; display: flex;"><rr-tooltip position="bottom" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 0 6px 6px 6px; display: flex;"><rr-tooltip position="bottom" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 0 6px 6px 6px; display: flex;"><rr-tooltip position="bottom" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 6px; display: flex;"><rr-tooltip position="left" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 6px; display: flex;"><rr-tooltip position="left" text="Tooltip"></rr-tooltip></div>
+          <div style="padding: 6px; display: flex;"><rr-tooltip position="left" text="Tooltip"></rr-tooltip></div>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
