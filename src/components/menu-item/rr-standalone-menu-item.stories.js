@@ -190,19 +190,19 @@ export const FigmaComparison = () => html`
           <!-- neutral, not-selected, not-hovered -->
           <rr-standalone-menu-item>Text cell</rr-standalone-menu-item>
           <!-- neutral, not-selected, hovered -->
-          <div style="display: flex; align-items: center; padding: 8px; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
+          <div style="display: flex; align-items: center; padding: 8px; min-height: var(--semantics-controls-md-min-size); box-sizing: border-box; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
           <!-- neutral, selected, not-hovered -->
           <rr-standalone-menu-item>Text cell</rr-standalone-menu-item>
           <!-- neutral, selected, hovered -->
-          <div style="display: flex; align-items: center; padding: 8px; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
+          <div style="display: flex; align-items: center; padding: 8px; min-height: var(--semantics-controls-md-min-size); box-sizing: border-box; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
           <!-- danger, not-selected, not-hovered -->
           <rr-standalone-menu-item variant="danger">Text cell</rr-standalone-menu-item>
           <!-- danger, not-selected, hovered -->
-          <div style="display: flex; align-items: center; padding: 8px; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
+          <div style="display: flex; align-items: center; padding: 8px; min-height: var(--semantics-controls-md-min-size); box-sizing: border-box; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
           <!-- danger, selected, not-hovered -->
           <rr-standalone-menu-item variant="danger">Text cell</rr-standalone-menu-item>
           <!-- danger, selected, hovered -->
-          <div style="display: flex; align-items: center; padding: 8px; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
+          <div style="display: flex; align-items: center; padding: 8px; min-height: var(--semantics-controls-md-min-size); box-sizing: border-box; border-radius: var(--semantics-controls-md-corner-radius); background: var(--primitives-color-accent-700); color: var(--primitives-color-neutral-0); font: var(--semantics-content-body-md-regular-tight);">Text cell</div>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

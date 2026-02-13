@@ -42,6 +42,7 @@ export class RRStandaloneMenuItem extends LitElement {
       align-items: center;
       gap: 8px;
       padding: 8px;
+      min-height: var(--semantics-controls-md-min-size);
       border-radius: var(--semantics-controls-md-corner-radius);
       width: 100%;
       box-sizing: border-box;
