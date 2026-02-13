@@ -1,10 +1,10 @@
 import { html } from 'lit';
 import './rr-button-bar-divider.ts';
 import '../button-bar/rr-button-bar.ts';
-import '../button/rr-button.ts';
+import '../../actions/button/rr-button.ts';
 
 export default {
-  title: 'Components/Actions/Button Bar Divider',
+  title: 'Components/Control Groups/Button Bar Divider',
   component: 'rr-button-bar-divider',
   tags: ['autodocs'],
   parameters: {
@@ -26,11 +26,11 @@ export const Default = {
   args: { size: 'm' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size=${args.size} variant="neutral-ghost">Cut</rr-button>
+      <rr-button size=${args.size} variant="neutral-transparent">Cut</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size=${args.size} variant="neutral-ghost">Copy</rr-button>
+      <rr-button size=${args.size} variant="neutral-transparent">Copy</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size=${args.size} variant="neutral-ghost">Paste</rr-button>
+      <rr-button size=${args.size} variant="neutral-transparent">Paste</rr-button>
     </rr-button-bar>
   `,
 };
@@ -39,9 +39,9 @@ export const SizeSmall = {
   args: { size: 's' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size=${args.size} variant="neutral-ghost">Edit</rr-button>
+      <rr-button size=${args.size} variant="neutral-transparent">Edit</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size=${args.size} variant="neutral-ghost">Delete</rr-button>
+      <rr-button size=${args.size} variant="neutral-transparent">Delete</rr-button>
     </rr-button-bar>
   `,
 };

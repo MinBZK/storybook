@@ -40,7 +40,7 @@ export class RRButtonBarDivider extends LitElement {
     }
 
     :host([size="s"]) .divider__line {
-      height: 20px;
+      height: var(--semantics-buttons-sm-divider-length);
     }
 
     /* Size: M (default) - height 44px, line 28px */
@@ -51,12 +51,12 @@ export class RRButtonBarDivider extends LitElement {
 
     :host([size="m"]) .divider__line,
     :host(:not([size])) .divider__line {
-      height: 28px;
+      height: var(--semantics-buttons-md-divider-length);
     }
 
     .divider__line {
       width: 1px;
-      background-color: #A9B2C0;
+      background-color: var(--semantics-buttons-neutral-tinted-divider-color);
     }
   `;
 

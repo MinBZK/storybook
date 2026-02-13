@@ -1336,7 +1336,7 @@
       },
       "implementation": {
         "tagName": "rr-toolbar",
-        "file": "src/components/navigation/toolbar/rr-toolbar.ts",
+        "file": "src/components/control-groups/toolbar/rr-toolbar.ts",
         "className": "RRToolbar"
       },
       "status": "implemented",
@@ -1353,7 +1353,7 @@
       },
       "implementation": {
         "tagName": "rr-toolbar-divider",
-        "file": "src/components/navigation/toolbar-divider/rr-toolbar-divider.ts",
+        "file": "src/components/control-groups/toolbar-divider/rr-toolbar-divider.ts",
         "className": "RRToolbarDivider"
       },
       "status": "implemented",
@@ -1370,7 +1370,7 @@
       },
       "implementation": {
         "tagName": "rr-toolbar-title-group",
-        "file": "src/components/navigation/toolbar-title-group/rr-toolbar-title-group.ts",
+        "file": "src/components/control-groups/toolbar-title-group/rr-toolbar-title-group.ts",
         "className": "RRToolbarTitleGroup"
       },
       "status": "implemented",
@@ -1387,7 +1387,7 @@
       },
       "implementation": {
         "tagName": "rr-button-group",
-        "file": "src/components/actions/button-group/rr-button-group.ts",
+        "file": "src/components/control-groups/button-group/rr-button-group.ts",
         "className": "RRButtonGroup"
       },
       "status": "implemented",
@@ -1404,7 +1404,7 @@
       },
       "implementation": {
         "tagName": "rr-button-bar",
-        "file": "src/components/actions/button-bar/rr-button-bar.ts",
+        "file": "src/components/control-groups/button-bar/rr-button-bar.ts",
         "className": "RRButtonBar"
       },
       "status": "implemented",
@@ -1421,7 +1421,7 @@
       },
       "implementation": {
         "tagName": "rr-button-bar-divider",
-        "file": "src/components/actions/button-bar-divider/rr-button-bar-divider.ts",
+        "file": "src/components/control-groups/button-bar-divider/rr-button-bar-divider.ts",
         "className": "RRButtonBarDivider"
       },
       "status": "implemented",

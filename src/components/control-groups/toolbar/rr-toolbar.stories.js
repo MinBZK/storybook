@@ -3,7 +3,7 @@ import './rr-toolbar.ts';
 import '../../actions/button/rr-button.ts';
 
 export default {
-  title: 'Components/Navigation/Toolbar',
+  title: 'Components/Control Groups/Toolbar',
   component: 'rr-toolbar',
   tags: ['autodocs'],
   parameters: {

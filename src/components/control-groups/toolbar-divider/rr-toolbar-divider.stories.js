@@ -4,7 +4,7 @@ import '../toolbar/rr-toolbar.ts';
 import '../../actions/button/rr-button.ts';
 
 export default {
-  title: 'Components/Navigation/Toolbar Divider',
+  title: 'Components/Control Groups/Toolbar Divider',
   component: 'rr-toolbar-divider',
   tags: ['autodocs'],
   parameters: {

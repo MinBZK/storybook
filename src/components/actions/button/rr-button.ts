@@ -9,6 +9,7 @@
  * @attr {boolean} has-leading-icon - Whether the button has a leading icon
  * @attr {boolean} has-trailing-icon - Whether the button has a trailing icon
  * @attr {boolean} has-menu - Whether the button has a dropdown menu icon
+ * @attr {boolean} full-width - Whether the button stretches to fill its container width
  *
  * @slot - Default slot for button content
  * @slot icon-start - Slot for icon before text
@@ -39,8 +40,8 @@ export class RRButton extends LitElement {
       font-family: var(--rr-font-family-body);
     }
 
-    /* When host has explicit width (e.g., in vertical button-group), fill it */
-    .button {
+    :host([full-width]) {
+      display: block;
       width: 100%;
     }
 
@@ -63,6 +64,7 @@ export class RRButton extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
 
       /* Typography */
       /* font-weight is included in font shorthand token */
@@ -262,6 +264,9 @@ export class RRButton extends LitElement {
 
   @property({ type: Boolean, reflect: true, attribute: 'has-menu' })
   hasMenu = false;
+
+  @property({ type: Boolean, reflect: true, attribute: 'full-width' })
+  fullWidth = false;
 
   private _handleClick(e: MouseEvent): void {
     if (this.disabled) {

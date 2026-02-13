@@ -1,9 +1,9 @@
 import { html } from 'lit';
 import './rr-button-group.ts';
-import '../button/rr-button.ts';
+import '../../actions/button/rr-button.ts';
 
 export default {
-  title: 'Components/Actions/Button Group',
+  title: 'Components/Control Groups/Button Group',
   component: 'rr-button-group',
   tags: ['autodocs'],
   parameters: {

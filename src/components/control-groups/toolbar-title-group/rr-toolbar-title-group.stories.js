@@ -3,7 +3,7 @@ import './rr-toolbar-title-group.ts';
 import '../toolbar/rr-toolbar.ts';
 
 export default {
-  title: 'Components/Navigation/Toolbar Title Group',
+  title: 'Components/Control Groups/Toolbar Title Group',
   component: 'rr-toolbar-title-group',
   tags: ['autodocs'],
   parameters: {
