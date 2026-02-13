@@ -168,37 +168,38 @@ export const FigmaComparisonSimple = () => html`
       <ftl-holster node="1255:1471" style="display: inline-block;">
         <!--
           Figma simple-section (1255:1471) component set:
-          - Layout: column, gap: 16px, padding: 16px
-          - Variants: container (sm/md/lg)
+          - Layout: column, gap: 16px, padding: 16px, alignItems: center
+          - Variants: container (sm/md/lg) at different widths
           - Width: 1280px
+          - SM: 640px, MD: 1007px, LG: 1248px (fill)
         -->
         <div
           style="width: 1280px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: center;"
         >
-          <!-- container=sm -->
-          <rr-section container="sm" variant="simple" style="width: 100%;">
+          <!-- container=sm (640px) -->
+          <rr-section container="sm" variant="simple" style="width: 640px;">
             <div
-              style="padding: 2px 8px; width: 100%; box-sizing: border-box; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; text-align: center;"
+              style="padding: 2px 8px; width: 100%; box-sizing: border-box; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; text-align: center;"
             >
-              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
             </div>
           </rr-section>
 
-          <!-- container=md -->
-          <rr-section container="md" variant="simple" style="width: 100%;">
+          <!-- container=md (1007px) -->
+          <rr-section container="md" variant="simple" style="width: 1007px;">
             <div
-              style="padding: 2px 8px; width: 100%; box-sizing: border-box; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; text-align: center;"
+              style="padding: 2px 8px; width: 100%; box-sizing: border-box; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; text-align: center;"
             >
-              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
             </div>
           </rr-section>
 
-          <!-- container=lg -->
-          <rr-section container="lg" variant="simple" style="width: 100%;">
+          <!-- container=lg (1248px) -->
+          <rr-section container="lg" variant="simple" style="width: 1248px;">
             <div
-              style="padding: 2px 8px; width: 100%; box-sizing: border-box; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; text-align: center;"
+              style="padding: 2px 8px; width: 100%; box-sizing: border-box; background: rgba(255, 36, 189, 0.1); border: 2px dashed #FF24BD; text-align: center;"
             >
-              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; color: #FF24BD;">SLOT</span>
+              <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;">SLOT</span>
             </div>
           </rr-section>
         </div>
