@@ -18,6 +18,8 @@
  * @csspart button - The main action button
  * @csspart divider - The divider between button and dropdown
  * @csspart dropdown - The dropdown trigger button
+ *
+ * @todo Add variant support (accent-filled, accent-outlined, etc.) matching rr-button variants
  */
 
 import { LitElement, html, css } from 'lit';

@@ -10,6 +10,9 @@
  * @csspart tooltip - The tooltip container
  * @csspart text - The text content
  * @csspart arrow - The arrow element
+ *
+ * @note This component renders the tooltip visual only. The consumer is responsible
+ * for trigger logic (hover/focus), positioning, and show/hide behavior.
  */
 
 import { LitElement, html, css } from 'lit';
