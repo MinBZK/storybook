@@ -56,6 +56,10 @@ export { RRTwoThirdsOneThirdSection } from './layout/page-sections/rr-two-thirds
 export { RROneHalfOneHalfSection } from './layout/page-sections/rr-one-half-one-half-section.ts';
 export { RRListerSection } from './layout/page-sections/rr-lister-section.ts';
 export { RRCollection } from './layout/collection/rr-collection.ts';
+export { RRSplitViewPane } from './layout/split-view/rr-split-view-pane.ts';
+export { RRSplitViewDivider } from './layout/split-view/rr-split-view-divider.ts';
+export { RRHorizontalSplitView } from './layout/split-view/rr-horizontal-split-view.ts';
+export { RRSideBySideSplitView } from './layout/split-view/rr-side-by-side-split-view.ts';
 
 // Navigation components
 export { RRTopNavigationBar } from './navigation/top-navigation-bar/rr-top-navigation-bar.ts';

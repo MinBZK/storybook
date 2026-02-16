@@ -102,6 +102,10 @@ export const FigmaComparison = () => html`
 | Title Cell | 1464:4047 | title-cell | Implemented |
 | List | 1044:2275 | list | Implemented |
 | List Item | 957:2279 | list__item | Implemented |
+| Split View Pane | 39:944 | split-view-pane | Implemented |
+| Split View Divider | 39:927 | split-view-divider | Implemented |
+| Horizontal Split View | 39:941 | horizontal-split-view | Implemented |
+| Side-by-Side Split View | 1558:3547 | side-by-side-split-view | Implemented |
 
 See `docs/component-map.json` for full details (85 components).
 
