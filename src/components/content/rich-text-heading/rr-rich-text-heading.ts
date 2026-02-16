@@ -24,7 +24,7 @@ export class RRRichTextHeading extends LitElement {
   static override styles = css`
     :host {
       display: block;
-      font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
       color: var(--semantics-content-color);
     }
 

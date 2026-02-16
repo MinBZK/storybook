@@ -11,7 +11,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=38-784',
     },
     componentSource: {
-      file: 'src/components/document-tab-bar-item/rr-document-tab-bar-item.ts',
+      file: 'src/components/navigation/document-tab-bar-item/rr-document-tab-bar-item.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: { type: 'stable' },

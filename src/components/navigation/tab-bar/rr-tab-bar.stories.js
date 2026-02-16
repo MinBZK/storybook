@@ -12,7 +12,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43642',
     },
     componentSource: {
-      file: 'src/components/tab-bar/rr-tab-bar.ts',
+      file: 'src/components/navigation/tab-bar/rr-tab-bar.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: { type: 'stable' },

@@ -14,7 +14,7 @@ import './rr-rich-text-heading.ts';
  * ```
  */
 export default {
-  title: 'Components/Typography/Rich Text Heading',
+  title: 'Components/Content/Rich Text Heading',
   component: 'rr-rich-text-heading',
   tags: ['autodocs'],
   parameters: {
@@ -23,7 +23,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=980-145',
     },
     componentSource: {
-      file: 'src/components/rich-text-heading/rr-rich-text-heading.ts',
+      file: 'src/components/content/rich-text-heading/rr-rich-text-heading.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {

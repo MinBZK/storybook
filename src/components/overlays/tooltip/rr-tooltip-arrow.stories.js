@@ -23,7 +23,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10227',
     },
     componentSource: {
-      file: 'src/components/tooltip/rr-tooltip-arrow.ts',
+      file: 'src/components/overlays/tooltip/rr-tooltip-arrow.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {

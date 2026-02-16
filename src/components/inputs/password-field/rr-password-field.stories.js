@@ -25,7 +25,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-5781',
     },
     componentSource: {
-      file: 'src/components/password-field/rr-password-field.ts',
+      file: 'src/components/inputs/password-field/rr-password-field.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {

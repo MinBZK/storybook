@@ -27,7 +27,7 @@ export class RRTabBarItem extends LitElement {
     :host {
       display: inline-block;
       position: relative;
-      font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {

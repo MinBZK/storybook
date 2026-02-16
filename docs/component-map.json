@@ -1056,7 +1056,7 @@
       },
       "implementation": {
         "tagName": "rr-document-tab-bar-item",
-        "file": "src/components/document-tab-bar-item/rr-document-tab-bar-item.ts",
+        "file": "src/components/navigation/document-tab-bar-item/rr-document-tab-bar-item.ts",
         "className": "RRDocumentTabBarItem"
       },
       "status": "implemented",
@@ -1147,7 +1147,7 @@
       },
       "implementation": {
         "tagName": "rr-standalone-menu-item",
-        "file": "src/components/menu-item/rr-standalone-menu-item.ts",
+        "file": "src/components/menus/menu-item/rr-standalone-menu-item.ts",
         "className": "RRStandaloneMenuItem"
       },
       "status": "implemented",
@@ -1209,7 +1209,7 @@
       },
       "implementation": {
         "tagName": "rr-rich-text-heading",
-        "file": "src/components/rich-text-heading/rr-rich-text-heading.ts",
+        "file": "src/components/content/rich-text-heading/rr-rich-text-heading.ts",
         "className": "RRRichTextHeading"
       },
       "status": "implemented",
@@ -1389,7 +1389,7 @@
       },
       "implementation": {
         "tagName": "rr-tab-bar-item",
-        "file": "src/components/tab-bar/rr-tab-bar-item.ts",
+        "file": "src/components/navigation/tab-bar/rr-tab-bar-item.ts",
         "className": "RRTabBarItem"
       },
       "status": "implemented",
@@ -1534,7 +1534,7 @@
       },
       "implementation": {
         "tagName": "rr-tab-bar",
-        "file": "src/components/tab-bar/rr-tab-bar.ts",
+        "file": "src/components/navigation/tab-bar/rr-tab-bar.ts",
         "className": "RRTabBar"
       },
       "status": "implemented",
@@ -1551,7 +1551,7 @@
       },
       "implementation": {
         "tagName": "rr-pagination",
-        "file": "src/components/pagination/rr-pagination.ts",
+        "file": "src/components/navigation/pagination/rr-pagination.ts",
         "className": "RRPagination"
       },
       "status": "implemented",
@@ -1585,7 +1585,7 @@
       },
       "implementation": {
         "tagName": "rr-password-field",
-        "file": "src/components/password-field/rr-password-field.ts",
+        "file": "src/components/inputs/password-field/rr-password-field.ts",
         "className": "RRPasswordField"
       },
       "status": "implemented",
@@ -1704,7 +1704,7 @@
       },
       "implementation": {
         "tagName": "rr-tooltip",
-        "file": "src/components/tooltip/rr-tooltip.ts",
+        "file": "src/components/overlays/tooltip/rr-tooltip.ts",
         "className": "RRTooltip"
       },
       "status": "implemented",
@@ -1721,7 +1721,7 @@
       },
       "implementation": {
         "tagName": "rr-tooltip-arrow",
-        "file": "src/components/tooltip/rr-tooltip-arrow.ts",
+        "file": "src/components/overlays/tooltip/rr-tooltip-arrow.ts",
         "className": "RRTooltipArrow"
       },
       "status": "implemented",
@@ -1738,7 +1738,7 @@
       },
       "implementation": {
         "tagName": "rr-dialog",
-        "file": "src/components/dialog/rr-dialog.ts",
+        "file": "src/components/overlays/dialog/rr-dialog.ts",
         "className": "RRDialog"
       },
       "status": "implemented",

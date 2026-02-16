@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-dialog.ts';
-import '../actions/button/rr-button.ts';
+import '../../actions/button/rr-button.ts';
 
 /**
  * De Dialog component voor modale dialogen met overlay backdrop.
@@ -29,7 +29,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1506-5969',
     },
     componentSource: {
-      file: 'src/components/dialog/rr-dialog.ts',
+      file: 'src/components/overlays/dialog/rr-dialog.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {
@@ -124,7 +124,7 @@ export const FigmaComparison = () => html`
             flex-direction: column;
             border-radius: var(--primitives-corner-radius-xl);
             overflow: hidden;
-            font-family: var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif);
+            font-family: var(--rr-font-family-body);
           ">
           <div style="display: flex; justify-content: center; padding-bottom: 4px;">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none">

@@ -22,7 +22,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1353-3779',
     },
     componentSource: {
-      file: 'src/components/pagination/rr-pagination.ts',
+      file: 'src/components/navigation/pagination/rr-pagination.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {

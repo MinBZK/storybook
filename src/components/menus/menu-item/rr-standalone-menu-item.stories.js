@@ -14,7 +14,7 @@ import './rr-standalone-menu-item.ts';
  * ```
  */
 export default {
-  title: 'Components/Navigation/Menu Item',
+  title: 'Components/Menus/Menu Item',
   component: 'rr-standalone-menu-item',
   tags: ['autodocs'],
   parameters: {
@@ -23,7 +23,7 @@ export default {
       url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=331-1456',
     },
     componentSource: {
-      file: 'src/components/menu-item/rr-standalone-menu-item.ts',
+      file: 'src/components/menus/menu-item/rr-standalone-menu-item.ts',
       repository: 'https://github.com/regelrecht/design-system',
     },
     status: {
