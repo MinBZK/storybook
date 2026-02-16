@@ -77,50 +77,33 @@ export const FigmaComparison = () => html`
           - Layout: column, gap: 16px, padding: 16px
           - Size: 120x221
           - 4 variants: orientation x has-drag-handle
-          - Vertical variants fill height, horizontal variants are fixed height
+          - Vertical: 1px wide (no handle) / 12px wide (with handle), fill height
+          - Horizontal: fill width, 1px tall (no handle) / 12px tall (with handle)
         -->
         <div
-          style="width: 120px; height: 221px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; background: #fff;"
+          style="width: 120px; height: 221px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; background: #fff;"
         >
-          <!-- orientation=vertical, has-drag-handle=false -->
-          <div
-            style="display: flex; flex-direction: row; justify-content: flex-start; align-items: stretch; flex: 1; background: #fff;"
-          >
-            <rr-split-view-divider
-              orientation="vertical"
-            ></rr-split-view-divider>
-          </div>
+          <rr-split-view-divider
+            orientation="vertical"
+            style="flex: 1; align-self: flex-start;"
+          ></rr-split-view-divider>
 
-          <!-- orientation=vertical, has-drag-handle=true -->
-          <div
-            style="display: flex; flex-direction: row; justify-content: flex-start; align-items: stretch; flex: 1; background: #fff;"
-          >
-            <rr-split-view-divider
-              orientation="vertical"
-              has-drag-handle
-            ></rr-split-view-divider>
-          </div>
+          <rr-split-view-divider
+            orientation="vertical"
+            has-drag-handle
+            style="flex: 1; align-self: flex-start;"
+          ></rr-split-view-divider>
 
-          <!-- orientation=horizontal, has-drag-handle=false -->
-          <div
-            style="display: flex; flex-direction: row; justify-content: center; align-items: center; background: #fff;"
-          >
-            <rr-split-view-divider
-              orientation="horizontal"
-              style="width: 100%;"
-            ></rr-split-view-divider>
-          </div>
+          <rr-split-view-divider
+            orientation="horizontal"
+            style="align-self: stretch;"
+          ></rr-split-view-divider>
 
-          <!-- orientation=horizontal, has-drag-handle=true -->
-          <div
-            style="display: flex; flex-direction: row; justify-content: center; align-items: center; background: #fff;"
-          >
-            <rr-split-view-divider
-              orientation="horizontal"
-              has-drag-handle
-              style="width: 100%;"
-            ></rr-split-view-divider>
-          </div>
+          <rr-split-view-divider
+            orientation="horizontal"
+            has-drag-handle
+            style="align-self: stretch;"
+          ></rr-split-view-divider>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

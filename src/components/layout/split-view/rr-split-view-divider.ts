@@ -59,6 +59,10 @@ export class RRSplitViewDivider extends LitElement {
       height: 100%;
     }
 
+    :host([orientation='vertical'][has-drag-handle]) .split-view-divider {
+      width: 12px;
+    }
+
     :host([orientation='vertical']) .split-view-divider__drag-handle {
       width: 4px;
       height: 40px;
@@ -69,6 +73,11 @@ export class RRSplitViewDivider extends LitElement {
     :host(:not([orientation])) .split-view-divider {
       width: 100%;
       height: var(--semantics-dividers-thickness);
+    }
+
+    :host([orientation='horizontal'][has-drag-handle]) .split-view-divider,
+    :host(:not([orientation])[has-drag-handle]) .split-view-divider {
+      height: 12px;
     }
 
     :host([orientation='horizontal']) .split-view-divider__drag-handle,
