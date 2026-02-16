@@ -81,7 +81,7 @@ export class RRPageStickyAreaBackground extends LitElement {
     /* White background (default) - filled area */
     :host(:not([tinted])) .filled,
     :host([tinted='false']) .filled {
-      background-color: rgba(255, 255, 255, 0.95);
+      background-color: var(--components-page-fixed-area-background-gradient-color-1);
     }
 
     /* White gradient - top position (fades from solid to transparent going down) */
@@ -91,9 +91,9 @@ export class RRPageStickyAreaBackground extends LitElement {
     :host(:not([position])[tinted='false']) .gradient {
       background: linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.95) 0%,
-        rgba(255, 255, 255, 0.6) 70%,
-        rgba(255, 255, 255, 0) 100%
+        var(--components-page-fixed-area-background-gradient-color-1) 0%,
+        var(--components-page-fixed-area-background-gradient-color-2) 70%,
+        var(--components-page-fixed-area-background-gradient-color-3) 100%
       );
     }
 
@@ -102,16 +102,16 @@ export class RRPageStickyAreaBackground extends LitElement {
     :host([position='bottom'][tinted='false']) .gradient {
       background: linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.6) 30%,
-        rgba(255, 255, 255, 0.95) 100%
+        var(--components-page-fixed-area-background-gradient-color-3) 0%,
+        var(--components-page-fixed-area-background-gradient-color-2) 30%,
+        var(--components-page-fixed-area-background-gradient-color-1) 100%
       );
     }
 
     /* Tinted background (gray) - filled area */
     :host([tinted]) .filled,
     :host([tinted='true']) .filled {
-      background-color: rgba(245, 246, 249, 0.95);
+      background-color: var(--components-page-fixed-area-tinted-background-gradient-color-1);
     }
 
     /* Tinted gradient - top position */
@@ -121,9 +121,9 @@ export class RRPageStickyAreaBackground extends LitElement {
     :host(:not([position])[tinted='true']) .gradient {
       background: linear-gradient(
         180deg,
-        rgba(245, 246, 249, 0.95) 0%,
-        rgba(245, 246, 249, 0.6) 70%,
-        rgba(245, 246, 249, 0) 100%
+        var(--components-page-fixed-area-tinted-background-gradient-color-1) 0%,
+        var(--components-page-fixed-area-tinted-background-gradient-color-2) 70%,
+        var(--components-page-fixed-area-tinted-background-gradient-color-3) 100%
       );
     }
 
@@ -132,9 +132,9 @@ export class RRPageStickyAreaBackground extends LitElement {
     :host([position='bottom'][tinted='true']) .gradient {
       background: linear-gradient(
         180deg,
-        rgba(245, 246, 249, 0) 0%,
-        rgba(245, 246, 249, 0.6) 30%,
-        rgba(245, 246, 249, 0.95) 100%
+        var(--components-page-fixed-area-tinted-background-gradient-color-3) 0%,
+        var(--components-page-fixed-area-tinted-background-gradient-color-2) 30%,
+        var(--components-page-fixed-area-tinted-background-gradient-color-1) 100%
       );
     }
 

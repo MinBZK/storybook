@@ -93,7 +93,7 @@ export class RRTopNavigationBar extends LitElement {
       transform: translateX(-50%);
       z-index: 1000;
       background-color: var(--primitives-color-accent-100);
-      color: #ffffff;
+      color: var(--primitives-color-neutral-0);
       padding: var(--primitives-space-8) var(--primitives-space-16);
       font: var(--components-menu-bar-menu-item-font);
       text-decoration: none;
@@ -112,7 +112,7 @@ export class RRTopNavigationBar extends LitElement {
       flex-direction: column;
       width: 100%;
       margin: 0 auto;
-      background-color: #ffffff;
+      background-color: var(--semantics-surfaces-background-color);
       border-bottom: var(--semantics-dividers-thickness) solid
         var(--semantics-dividers-color);
     }
@@ -137,7 +137,7 @@ export class RRTopNavigationBar extends LitElement {
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      background-color: #ffffff;
+      background-color: var(--semantics-surfaces-background-color);
     }
 
     /* Navigation bar */
@@ -145,7 +145,7 @@ export class RRTopNavigationBar extends LitElement {
       display: flex;
       align-items: center;
       min-height: 44px;
-      background-color: #ffffff;
+      background-color: var(--semantics-surfaces-background-color);
     }
 
     /* Inner wrapper - contains nav-left and nav-right, handles space-between */

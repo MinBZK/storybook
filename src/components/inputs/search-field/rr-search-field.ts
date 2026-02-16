@@ -138,7 +138,7 @@ export class RRSearchField extends LitElement {
       right: 0;
       top: 2px;
       width: 10px;
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+      background: linear-gradient(90deg, var(--semantics-input-fields-end-fade-start-color) 0%, var(--semantics-input-fields-end-fade-end-color) 100%);
       pointer-events: none;
     }
 

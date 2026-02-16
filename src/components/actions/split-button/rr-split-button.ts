@@ -145,7 +145,7 @@ export class RRSplitButton extends LitElement {
     /* Divider */
     .split-button__divider {
       width: 1px;
-      background-color: #A9B2C0;
+      background-color: var(--semantics-buttons-neutral-tinted-divider-color);
       flex-shrink: 0;
     }
 
