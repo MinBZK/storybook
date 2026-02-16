@@ -41,7 +41,7 @@ export class RRCollection extends LitElement {
       width: 100%;
       min-width: 0;
       gap: 16px;
-      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {

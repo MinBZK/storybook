@@ -37,7 +37,7 @@ export class RRTopTitleBar extends LitElement {
       display: flex;
       flex-direction: column;
       width: 100%;
-      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {

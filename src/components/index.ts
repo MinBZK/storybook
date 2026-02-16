@@ -45,7 +45,12 @@ export { RRBox } from './layout/box/rr-box.js';
 export { RRPage } from './layout/page/rr-page.ts';
 export { RRTitleBarTitleGroup } from './layout/title-bar-title-group/rr-title-bar-title-group.ts';
 export { RRTopTitleBar } from './layout/top-title-bar/rr-top-title-bar.ts';
-export { RRSection } from './layout/section/rr-section.ts';
+export { RRSimpleSection } from './layout/section/rr-simple-section.ts';
+export { RRFullBleedSection } from './layout/section/rr-full-bleed-section.ts';
+export { RROneThirdTwoThirdsSection } from './layout/section/rr-one-third-two-thirds-section.ts';
+export { RRTwoThirdsOneThirdSection } from './layout/section/rr-two-thirds-one-third-section.ts';
+export { RROneHalfOneHalfSection } from './layout/section/rr-one-half-one-half-section.ts';
+export { RRListerSection } from './layout/section/rr-lister-section.ts';
 export { RRCollection } from './layout/collection/rr-collection.ts';
 
 // Navigation components
