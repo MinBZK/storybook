@@ -77,12 +77,15 @@ export const FigmaComparison = () => html`
           - Layout: column, gap: 16px, padding: 16px
           - Size: 120x221
           - 4 variants: orientation x has-drag-handle
+          - Vertical variants fill height, horizontal variants are fixed height
         -->
         <div
-          style="width: 120px; height: 221px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;"
+          style="width: 120px; height: 221px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; background: #fff;"
         >
           <!-- orientation=vertical, has-drag-handle=false -->
-          <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; flex: 1;">
+          <div
+            style="display: flex; flex-direction: row; justify-content: center; align-items: center; flex: 1; background: #fff;"
+          >
             <rr-split-view-divider
               orientation="vertical"
               style="height: 100%;"
@@ -90,7 +93,9 @@ export const FigmaComparison = () => html`
           </div>
 
           <!-- orientation=vertical, has-drag-handle=true -->
-          <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; flex: 1;">
+          <div
+            style="display: flex; flex-direction: row; justify-content: center; align-items: center; flex: 1; background: #fff;"
+          >
             <rr-split-view-divider
               orientation="vertical"
               has-drag-handle
@@ -100,7 +105,7 @@ export const FigmaComparison = () => html`
 
           <!-- orientation=horizontal, has-drag-handle=false -->
           <div
-            style="display: flex; flex-direction: row; justify-content: center; align-items: center; align-self: stretch;"
+            style="display: flex; flex-direction: row; justify-content: center; align-items: center; background: #fff;"
           >
             <rr-split-view-divider
               orientation="horizontal"
@@ -110,7 +115,7 @@ export const FigmaComparison = () => html`
 
           <!-- orientation=horizontal, has-drag-handle=true -->
           <div
-            style="display: flex; flex-direction: row; justify-content: center; align-items: center; align-self: stretch;"
+            style="display: flex; flex-direction: row; justify-content: center; align-items: center; background: #fff;"
           >
             <rr-split-view-divider
               orientation="horizontal"
