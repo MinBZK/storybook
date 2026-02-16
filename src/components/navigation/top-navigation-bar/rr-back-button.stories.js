@@ -43,7 +43,7 @@ export default {
     },
     container: {
       control: 'select',
-      options: ['s', 'm', 'l'],
+      options: ['sm', 'md', 'lg'],
       description: 'Size variant for responsive breakpoints',
     },
   },
@@ -57,7 +57,7 @@ export const Default = {
     <rr-back-button
       href=${args.href || ''}
       label=${args.label || 'Terug'}
-      container=${args.container || 'm'}
+      container=${args.container || 'md'}
     ></rr-back-button>
   `,
   args: {
@@ -103,14 +103,14 @@ export const EnglishLabel = {
  * Small container - icon only.
  */
 export const SmallContainer = {
-  render: () => html` <rr-back-button container="s" label="Terug"></rr-back-button> `,
+  render: () => html` <rr-back-button container="sm" label="Terug"></rr-back-button> `,
 };
 
 /**
  * Large container.
  */
 export const LargeContainer = {
-  render: () => html` <rr-back-button container="l" label="Terug"></rr-back-button> `,
+  render: () => html` <rr-back-button container="lg" label="Terug"></rr-back-button> `,
 };
 
 /**
@@ -120,19 +120,19 @@ export const AllSizes = {
   render: () => html`
     <div style="display: flex; gap: 24px; align-items: center;">
       <div style="text-align: center;">
-        <rr-back-button container="s" label="Terug"></rr-back-button>
+        <rr-back-button container="sm" label="Terug"></rr-back-button>
         <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">
           S (icon only)
         </p>
       </div>
       <div style="text-align: center;">
-        <rr-back-button container="m" label="Terug"></rr-back-button>
+        <rr-back-button container="md" label="Terug"></rr-back-button>
         <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">
           M (default)
         </p>
       </div>
       <div style="text-align: center;">
-        <rr-back-button container="l" label="Terug"></rr-back-button>
+        <rr-back-button container="lg" label="Terug"></rr-back-button>
         <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">L</p>
       </div>
     </div>

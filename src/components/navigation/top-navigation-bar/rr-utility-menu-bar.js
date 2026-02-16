@@ -25,7 +25,7 @@
  * ```
  *
  * @element rr-utility-menu-bar
- * @attr {string} container - Size variant: 's' | 'm' | 'l' (default: 'm')
+ * @attr {string} container - Size variant: 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} no-language-switch - Hide language dropdown
  * @attr {boolean} no-search - Hide search button
  * @attr {boolean} no-account - Hide account button
@@ -141,7 +141,7 @@ export class RRUtilityMenuBar extends RRBaseComponent {
 
   // Getters for attributes
   get container() {
-    return this.getAttribute('container') || 'm';
+    return this.getAttribute('container') || 'md';
   }
 
   set container(value) {
@@ -245,7 +245,7 @@ export class RRUtilityMenuBar extends RRBaseComponent {
       }
 
       /* Hide text on small screens */
-      :host([container="s"]) .utility-button span {
+      :host([container="sm"]) .utility-button span {
         position: absolute;
         width: 1px;
         height: 1px;
@@ -257,12 +257,12 @@ export class RRUtilityMenuBar extends RRBaseComponent {
         border: 0;
       }
 
-      :host([container="s"]) .utility-button .chevron {
+      :host([container="sm"]) .utility-button .chevron {
         display: none;
       }
 
       /* Size adjustments */
-      :host([container="s"]) .utility-button {
+      :host([container="sm"]) .utility-button {
         padding: var(--primitives-space-8);
       }
     `;

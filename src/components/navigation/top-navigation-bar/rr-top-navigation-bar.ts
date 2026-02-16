@@ -21,7 +21,7 @@
  * ```
  *
  * @element rr-top-navigation-bar
- * @attr {string} container - Size variant: 's' | 'm' | 'l' (default: 'm')
+ * @attr {string} container - Size variant: 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {string} title - Title text (default: 'Titel')
  *
  * Hide default features (clean boolean pattern):
@@ -67,7 +67,7 @@ import './rr-utility-menu-bar.ts';
 import './rr-back-button.ts';
 import '../../layout/spacer/rr-spacer.ts';
 
-type ContainerSize = 's' | 'm' | 'l';
+type ContainerSize = 'sm' | 'md' | 'lg';
 
 @customElement('rr-top-navigation-bar')
 export class RRTopNavigationBar extends LitElement {
@@ -118,16 +118,16 @@ export class RRTopNavigationBar extends LitElement {
     }
 
     /* Container fills available width - no max-width constraints */
-    :host([container='s']) .container {
+    :host([container='sm']) .container {
       min-width: var(--primitives-breakpoint-sm-min);
     }
 
-    :host([container='m']) .container,
+    :host([container='md']) .container,
     :host(:not([container])) .container {
       min-width: var(--primitives-breakpoint-md-min);
     }
 
-    :host([container='l']) .container {
+    :host([container='lg']) .container {
       min-width: var(--primitives-breakpoint-lg-min);
     }
 
@@ -158,18 +158,18 @@ export class RRTopNavigationBar extends LitElement {
     }
 
     /* Responsive padding - base padding, spacers handle the rest */
-    :host([container='s']) .nav-bar {
+    :host([container='sm']) .nav-bar {
       padding-left: var(--primitives-space-4);
       padding-right: var(--primitives-space-4);
     }
 
-    :host([container='m']) .nav-bar,
+    :host([container='md']) .nav-bar,
     :host(:not([container])) .nav-bar {
       padding-left: var(--primitives-space-8);
       padding-right: var(--primitives-space-8);
     }
 
-    :host([container='l']) .nav-bar {
+    :host([container='lg']) .nav-bar {
       padding-left: var(--primitives-space-8);
       padding-right: var(--primitives-space-8);
     }
@@ -203,11 +203,11 @@ export class RRTopNavigationBar extends LitElement {
       white-space: nowrap;
     }
 
-    :host([container='s']) .nav-title {
+    :host([container='sm']) .nav-title {
       font: var(--components-menu-bar-title-item-s-font);
     }
 
-    :host([container='l']) .nav-title {
+    :host([container='lg']) .nav-title {
       font: var(--components-menu-bar-title-item-l-font);
     }
 
@@ -221,7 +221,7 @@ export class RRTopNavigationBar extends LitElement {
     }
 
     /* Hide on small screens */
-    :host([container='s']) .global-menu {
+    :host([container='sm']) .global-menu {
       display: none;
     }
 
@@ -253,7 +253,7 @@ export class RRTopNavigationBar extends LitElement {
   `;
 
   @property({ type: String, reflect: true })
-  container: ContainerSize = 'm';
+  container: ContainerSize = 'md';
 
   @property({ type: String })
   override title = 'Titel';
@@ -328,11 +328,17 @@ export class RRTopNavigationBar extends LitElement {
     return this.utilityAccountLabel || `Mijn ${this.title}`;
   }
 
-  /** Spacer size based on container: L=32, M=16, S=none */
+  /** Spacer size based on container: lg=32, md=16, sm=none */
   private get _spacerSize(): '32' | '16' | null {
-    if (this.container === 'l') return '32';
-    if (this.container === 'm') return '16';
-    return null; // S container has no spacer
+    if (this.container === 'lg') return '32';
+    if (this.container === 'md') return '16';
+    return null; // sm container has no spacer
+  }
+
+  /** Map container size to menu-bar title size (menu-bar uses s/m/l) */
+  private get _menuBarSize(): string {
+    const map: Record<ContainerSize, string> = { sm: 's', md: 'm', lg: 'l' };
+    return map[this.container];
   }
 
   override render() {
@@ -369,7 +375,7 @@ export class RRTopNavigationBar extends LitElement {
               ></rr-back-button>
               <span class="nav-title">${this.title}</span>
               <div class="global-menu">
-                <rr-menu-bar size="${this.container}" has-overflow-menu overflow-label="Meer">
+                <rr-menu-bar size="${this._menuBarSize}" has-overflow-menu overflow-label="Meer">
                   <slot name="menu"></slot>
                 </rr-menu-bar>
               </div>

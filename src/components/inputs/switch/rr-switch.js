@@ -4,7 +4,7 @@
  * @element rr-switch
  * @attr {boolean} checked - Whether the switch is on/off
  * @attr {boolean} disabled - Disabled state
- * @attr {string} size - Switch size: 'xs' | 's' | 'm' (default: 'm')
+ * @attr {string} size - Switch size: 'xs' | 'sm' | 'md' (default: 'md')
  *
  * @fires change - When the switch state changes
  *
@@ -109,7 +109,7 @@ export class RRSwitch extends RRBaseComponent {
   }
 
   get size() {
-    return this.getAttribute('size') || 'm';
+    return this.getAttribute('size') || 'md';
   }
 
   set size(value) {
@@ -209,25 +209,25 @@ export class RRSwitch extends RRBaseComponent {
       }
 
       /* Size: S - Figma specs: 44x24px */
-      :host([size="s"]) .switch {
+      :host([size="sm"]) .switch {
         width: calc(var(--semantics-controls-xs-min-size) * 1.833);
         height: var(--semantics-controls-xs-min-size);
         border-radius: calc(var(--semantics-controls-xs-min-size) / 2);
         padding: 2px;
       }
 
-      :host([size="s"]) .thumb {
+      :host([size="sm"]) .thumb {
         width: calc(var(--semantics-controls-xs-min-size) - 8px);
         height: calc(var(--semantics-controls-xs-min-size) - 8px);
         border-radius: 50%; /* Circular thumb per Figma */
       }
 
-      :host([size="s"][checked]) .thumb {
+      :host([size="sm"][checked]) .thumb {
         transform: translateX(calc((var(--semantics-controls-xs-min-size) * 1.833) - var(--semantics-controls-xs-min-size)));
       }
 
       /* Size: M (default) - Figma specs: 56x32px */
-      :host([size="m"]) .switch,
+      :host([size="md"]) .switch,
       :host(:not([size])) .switch {
         width: calc(var(--semantics-controls-sm-min-size) * 1.75);
         height: var(--semantics-controls-sm-min-size);
@@ -235,14 +235,14 @@ export class RRSwitch extends RRBaseComponent {
         padding: 2px;
       }
 
-      :host([size="m"]) .thumb,
+      :host([size="md"]) .thumb,
       :host(:not([size])) .thumb {
         width: calc(var(--semantics-controls-sm-min-size) - 8px);
         height: calc(var(--semantics-controls-sm-min-size) - 8px);
         border-radius: 50%; /* Circular thumb per Figma */
       }
 
-      :host([size="m"][checked]) .thumb,
+      :host([size="md"][checked]) .thumb,
       :host(:not([size])[checked]) .thumb {
         transform: translateX(calc((var(--semantics-controls-sm-min-size) * 1.75) - var(--semantics-controls-sm-min-size)));
       }

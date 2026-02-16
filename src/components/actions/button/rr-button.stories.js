@@ -9,7 +9,7 @@ import './rr-button.ts';
  *
  * ## Gebruik
  * ```html
- * <rr-button variant="accent-filled" size="m">Label</rr-button>
+ * <rr-button variant="accent-filled" size="md">Label</rr-button>
  * ```
  */
 export default {
@@ -190,8 +190,8 @@ AllVariants.parameters = {
 export const AllSizes = () => html`
   <div style="display: flex; gap: 1rem; align-items: center;">
     <rr-button size="xs">Extra Small</rr-button>
-    <rr-button size="s">Small</rr-button>
-    <rr-button size="m">Medium</rr-button>
+    <rr-button size="sm">Small</rr-button>
+    <rr-button size="md">Medium</rr-button>
   </div>
 `;
 AllSizes.parameters = {
@@ -218,10 +218,10 @@ export const VariantSizeMatrix = () => html`
           <rr-button variant="accent-filled" size="xs">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-button variant="accent-filled" size="s">Label</rr-button>
+          <rr-button variant="accent-filled" size="sm">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-button variant="accent-filled" size="m">Label</rr-button>
+          <rr-button variant="accent-filled" size="md">Label</rr-button>
         </td>
       </tr>
       <tr>
@@ -230,10 +230,10 @@ export const VariantSizeMatrix = () => html`
           <rr-button variant="accent-outlined" size="xs">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-button variant="accent-outlined" size="s">Label</rr-button>
+          <rr-button variant="accent-outlined" size="sm">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-button variant="accent-outlined" size="m">Label</rr-button>
+          <rr-button variant="accent-outlined" size="md">Label</rr-button>
         </td>
       </tr>
       <tr>
@@ -242,10 +242,10 @@ export const VariantSizeMatrix = () => html`
           <rr-button variant="accent-tinted" size="xs">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-button variant="accent-tinted" size="s">Label</rr-button>
+          <rr-button variant="accent-tinted" size="sm">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-button variant="accent-tinted" size="m">Label</rr-button>
+          <rr-button variant="accent-tinted" size="md">Label</rr-button>
         </td>
       </tr>
       <tr>
@@ -254,10 +254,10 @@ export const VariantSizeMatrix = () => html`
           <rr-button variant="neutral-tinted" size="xs">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-button variant="neutral-tinted" size="s">Label</rr-button>
+          <rr-button variant="neutral-tinted" size="sm">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-button variant="neutral-tinted" size="m">Label</rr-button>
+          <rr-button variant="neutral-tinted" size="md">Label</rr-button>
         </td>
       </tr>
       <tr>
@@ -266,10 +266,10 @@ export const VariantSizeMatrix = () => html`
           <rr-button variant="accent-transparent" size="xs">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-button variant="accent-transparent" size="s">Label</rr-button>
+          <rr-button variant="accent-transparent" size="sm">Label</rr-button>
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-button variant="accent-transparent" size="m">Label</rr-button>
+          <rr-button variant="accent-transparent" size="md">Label</rr-button>
         </td>
       </tr>
     </tbody>
@@ -281,7 +281,7 @@ VariantSizeMatrix.parameters = {
 
 // Icon stories
 export const WithLeadingIcon = () => html`
-  <rr-button variant="accent-filled" size="m" has-leading-icon>
+  <rr-button variant="accent-filled" size="md" has-leading-icon>
     <svg
       slot="icon-start"
       width="1em"
@@ -307,7 +307,7 @@ WithLeadingIcon.parameters = {
 };
 
 export const WithTrailingIcon = () => html`
-  <rr-button variant="accent-filled" size="m" has-trailing-icon>
+  <rr-button variant="accent-filled" size="md" has-trailing-icon>
     Volgende
     <svg
       slot="icon-end"
@@ -333,7 +333,7 @@ WithTrailingIcon.parameters = {
 };
 
 export const WithMenu = () => html`
-  <rr-button variant="accent-outlined" size="m" has-menu>
+  <rr-button variant="accent-outlined" size="md" has-menu>
     Opties
     <svg
       slot="icon-end"
@@ -359,7 +359,7 @@ WithMenu.parameters = {
 };
 
 export const WithBothIcons = () => html`
-  <rr-button variant="accent-tinted" size="m" has-leading-icon has-trailing-icon>
+  <rr-button variant="accent-tinted" size="md" has-leading-icon has-trailing-icon>
     <svg
       slot="icon-start"
       width="1em"
@@ -643,50 +643,50 @@ export const FigmaComparison = () => html`
         -->
         <div style="position: relative; width: 832px; height: 376px; background: #ffffff;">
           <!-- Row 1: neutral-tinted (y=16/22/26) -->
-          <rr-button variant="neutral-tinted" size="m" style="position: absolute; left: 16px; top: 16px;">Button</rr-button>
-          <rr-button variant="neutral-tinted" size="m" disabled style="position: absolute; left: 179px; top: 16px;">Button</rr-button>
-          <rr-button variant="neutral-tinted" size="s" style="position: absolute; left: 342px; top: 22px;">Button</rr-button>
-          <rr-button variant="neutral-tinted" size="s" disabled style="position: absolute; left: 478px; top: 22px;">Button</rr-button>
+          <rr-button variant="neutral-tinted" size="md" style="position: absolute; left: 16px; top: 16px;">Button</rr-button>
+          <rr-button variant="neutral-tinted" size="md" disabled style="position: absolute; left: 179px; top: 16px;">Button</rr-button>
+          <rr-button variant="neutral-tinted" size="sm" style="position: absolute; left: 342px; top: 22px;">Button</rr-button>
+          <rr-button variant="neutral-tinted" size="sm" disabled style="position: absolute; left: 478px; top: 22px;">Button</rr-button>
           <rr-button variant="neutral-tinted" size="xs" style="position: absolute; left: 624px; top: 26px;">Button</rr-button>
           <rr-button variant="neutral-tinted" size="xs" disabled style="position: absolute; left: 760px; top: 26px;">Button</rr-button>
 
           <!-- Row 2: neutral-transparent (y=76/82/86) -->
-          <rr-button variant="neutral-transparent" size="m" style="position: absolute; left: 16px; top: 76px;">Button</rr-button>
-          <rr-button variant="neutral-transparent" size="m" disabled style="position: absolute; left: 179px; top: 76px;">Button</rr-button>
-          <rr-button variant="neutral-transparent" size="s" style="position: absolute; left: 342px; top: 82px;">Button</rr-button>
-          <rr-button variant="neutral-transparent" size="s" disabled style="position: absolute; left: 478px; top: 82px;">Button</rr-button>
+          <rr-button variant="neutral-transparent" size="md" style="position: absolute; left: 16px; top: 76px;">Button</rr-button>
+          <rr-button variant="neutral-transparent" size="md" disabled style="position: absolute; left: 179px; top: 76px;">Button</rr-button>
+          <rr-button variant="neutral-transparent" size="sm" style="position: absolute; left: 342px; top: 82px;">Button</rr-button>
+          <rr-button variant="neutral-transparent" size="sm" disabled style="position: absolute; left: 478px; top: 82px;">Button</rr-button>
           <rr-button variant="neutral-transparent" size="xs" style="position: absolute; left: 624px; top: 86px;">Button</rr-button>
           <rr-button variant="neutral-transparent" size="xs" disabled style="position: absolute; left: 760px; top: 86px;">Button</rr-button>
 
           <!-- Row 3: accent-filled (y=136/142/146) -->
-          <rr-button variant="accent-filled" size="m" style="position: absolute; left: 16px; top: 136px;">Button</rr-button>
-          <rr-button variant="accent-filled" size="m" disabled style="position: absolute; left: 179px; top: 136px;">Button</rr-button>
-          <rr-button variant="accent-filled" size="s" style="position: absolute; left: 342px; top: 142px;">Button</rr-button>
-          <rr-button variant="accent-filled" size="s" disabled style="position: absolute; left: 478px; top: 142px;">Button</rr-button>
+          <rr-button variant="accent-filled" size="md" style="position: absolute; left: 16px; top: 136px;">Button</rr-button>
+          <rr-button variant="accent-filled" size="md" disabled style="position: absolute; left: 179px; top: 136px;">Button</rr-button>
+          <rr-button variant="accent-filled" size="sm" style="position: absolute; left: 342px; top: 142px;">Button</rr-button>
+          <rr-button variant="accent-filled" size="sm" disabled style="position: absolute; left: 478px; top: 142px;">Button</rr-button>
           <rr-button variant="accent-filled" size="xs" style="position: absolute; left: 624px; top: 146px;">Button</rr-button>
           <rr-button variant="accent-filled" size="xs" disabled style="position: absolute; left: 760px; top: 146px;">Button</rr-button>
 
           <!-- Row 4: accent-outlined (y=196/202/206) -->
-          <rr-button variant="accent-outlined" size="m" style="position: absolute; left: 16px; top: 196px;">Button</rr-button>
-          <rr-button variant="accent-outlined" size="m" disabled style="position: absolute; left: 179px; top: 196px;">Button</rr-button>
-          <rr-button variant="accent-outlined" size="s" style="position: absolute; left: 342px; top: 202px;">Button</rr-button>
-          <rr-button variant="accent-outlined" size="s" disabled style="position: absolute; left: 478px; top: 202px;">Button</rr-button>
+          <rr-button variant="accent-outlined" size="md" style="position: absolute; left: 16px; top: 196px;">Button</rr-button>
+          <rr-button variant="accent-outlined" size="md" disabled style="position: absolute; left: 179px; top: 196px;">Button</rr-button>
+          <rr-button variant="accent-outlined" size="sm" style="position: absolute; left: 342px; top: 202px;">Button</rr-button>
+          <rr-button variant="accent-outlined" size="sm" disabled style="position: absolute; left: 478px; top: 202px;">Button</rr-button>
           <rr-button variant="accent-outlined" size="xs" style="position: absolute; left: 624px; top: 206px;">Button</rr-button>
           <rr-button variant="accent-outlined" size="xs" disabled style="position: absolute; left: 760px; top: 206px;">Button</rr-button>
 
           <!-- Row 5: accent-transparent (y=256/262/266) -->
-          <rr-button variant="accent-transparent" size="m" style="position: absolute; left: 16px; top: 256px;">Button</rr-button>
-          <rr-button variant="accent-transparent" size="m" disabled style="position: absolute; left: 179px; top: 256px;">Button</rr-button>
-          <rr-button variant="accent-transparent" size="s" style="position: absolute; left: 342px; top: 262px;">Button</rr-button>
-          <rr-button variant="accent-transparent" size="s" disabled style="position: absolute; left: 478px; top: 262px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="md" style="position: absolute; left: 16px; top: 256px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="md" disabled style="position: absolute; left: 179px; top: 256px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="sm" style="position: absolute; left: 342px; top: 262px;">Button</rr-button>
+          <rr-button variant="accent-transparent" size="sm" disabled style="position: absolute; left: 478px; top: 262px;">Button</rr-button>
           <rr-button variant="accent-transparent" size="xs" style="position: absolute; left: 624px; top: 266px;">Button</rr-button>
           <rr-button variant="accent-transparent" size="xs" disabled style="position: absolute; left: 760px; top: 266px;">Button</rr-button>
 
           <!-- Row 6: danger-tinted (y=316/322/326) -->
-          <rr-button variant="danger-tinted" size="m" style="position: absolute; left: 16px; top: 316px;">Button</rr-button>
-          <rr-button variant="danger-tinted" size="m" disabled style="position: absolute; left: 179px; top: 316px;">Button</rr-button>
-          <rr-button variant="danger-tinted" size="s" style="position: absolute; left: 342px; top: 322px;">Button</rr-button>
-          <rr-button variant="danger-tinted" size="s" disabled style="position: absolute; left: 478px; top: 322px;">Button</rr-button>
+          <rr-button variant="danger-tinted" size="md" style="position: absolute; left: 16px; top: 316px;">Button</rr-button>
+          <rr-button variant="danger-tinted" size="md" disabled style="position: absolute; left: 179px; top: 316px;">Button</rr-button>
+          <rr-button variant="danger-tinted" size="sm" style="position: absolute; left: 342px; top: 322px;">Button</rr-button>
+          <rr-button variant="danger-tinted" size="sm" disabled style="position: absolute; left: 478px; top: 322px;">Button</rr-button>
           <rr-button variant="danger-tinted" size="xs" style="position: absolute; left: 624px; top: 326px;">Button</rr-button>
           <rr-button variant="danger-tinted" size="xs" disabled style="position: absolute; left: 760px; top: 326px;">Button</rr-button>
         </div>

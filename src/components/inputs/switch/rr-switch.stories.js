@@ -191,11 +191,11 @@ export const AllSizes = () => html`
   <div style="display: flex; gap: 2rem; align-items: center;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
       <span style="font-size: 14px; color: #64748b;">Small (44x24)</span>
-      <rr-switch size="s" aria-label="Small switch"></rr-switch>
+      <rr-switch size="sm" aria-label="Small switch"></rr-switch>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
       <span style="font-size: 14px; color: #64748b;">Medium (56x32)</span>
-      <rr-switch size="m" aria-label="Medium switch"></rr-switch>
+      <rr-switch size="md" aria-label="Medium switch"></rr-switch>
     </div>
   </div>
 `;
@@ -224,31 +224,31 @@ export const FigmaComparison = () => html`
         <div style="width: 152px; height: 168px; background: #ffffff; position: relative; box-sizing: border-box;">
           <!-- Row 1: sm enabled -->
           <div style="position: absolute; left: 16px; top: 16px;">
-            <rr-switch size="s" aria-label="Small off"></rr-switch>
+            <rr-switch size="sm" aria-label="Small off"></rr-switch>
           </div>
           <div style="position: absolute; left: 68px; top: 16px;">
-            <rr-switch size="s" checked aria-label="Small on"></rr-switch>
+            <rr-switch size="sm" checked aria-label="Small on"></rr-switch>
           </div>
           <!-- Row 2: sm disabled -->
           <div style="position: absolute; left: 16px; top: 48px;">
-            <rr-switch size="s" disabled aria-label="Small off disabled"></rr-switch>
+            <rr-switch size="sm" disabled aria-label="Small off disabled"></rr-switch>
           </div>
           <div style="position: absolute; left: 68px; top: 48px;">
-            <rr-switch size="s" checked disabled aria-label="Small on disabled"></rr-switch>
+            <rr-switch size="sm" checked disabled aria-label="Small on disabled"></rr-switch>
           </div>
           <!-- Row 3: md enabled -->
           <div style="position: absolute; left: 16px; top: 80px;">
-            <rr-switch size="m" aria-label="Medium off"></rr-switch>
+            <rr-switch size="md" aria-label="Medium off"></rr-switch>
           </div>
           <div style="position: absolute; left: 80px; top: 80px;">
-            <rr-switch size="m" checked aria-label="Medium on"></rr-switch>
+            <rr-switch size="md" checked aria-label="Medium on"></rr-switch>
           </div>
           <!-- Row 4: md disabled -->
           <div style="position: absolute; left: 16px; top: 120px;">
-            <rr-switch size="m" disabled aria-label="Medium off disabled"></rr-switch>
+            <rr-switch size="md" disabled aria-label="Medium off disabled"></rr-switch>
           </div>
           <div style="position: absolute; left: 80px; top: 120px;">
-            <rr-switch size="m" checked disabled aria-label="Medium on disabled"></rr-switch>
+            <rr-switch size="md" checked disabled aria-label="Medium on disabled"></rr-switch>
           </div>
         </div>
       </ftl-holster>

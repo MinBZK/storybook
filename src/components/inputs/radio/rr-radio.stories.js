@@ -227,7 +227,7 @@ export const AllSizes = () => html`
       </span>
     </label>
     <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-      <rr-radio name="sizes" value="s" size="s" aria-label="Small (S)"></rr-radio>
+      <rr-radio name="sizes" value="s" size="sm" aria-label="Small (S)"></rr-radio>
       <span
         style="font-family: var(--rr-font-family-body); font-size: 16px;"
       >
@@ -235,7 +235,7 @@ export const AllSizes = () => html`
       </span>
     </label>
     <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-      <rr-radio name="sizes" value="m" size="m" aria-label="Medium (M)"></rr-radio>
+      <rr-radio name="sizes" value="m" size="md" aria-label="Medium (M)"></rr-radio>
       <span
         style="font-family: var(--rr-font-family-body); font-size: 18px;"
       >
@@ -266,10 +266,10 @@ export const StateMatrix = () => html`
           <rr-radio name="unchecked" value="xs" size="xs" aria-label="Unchecked XS"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="unchecked" value="s" size="s" aria-label="Unchecked S"></rr-radio>
+          <rr-radio name="unchecked" value="s" size="sm" aria-label="Unchecked S"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="unchecked" value="m" size="m" aria-label="Unchecked M"></rr-radio>
+          <rr-radio name="unchecked" value="m" size="md" aria-label="Unchecked M"></rr-radio>
         </td>
       </tr>
       <tr>
@@ -278,10 +278,10 @@ export const StateMatrix = () => html`
           <rr-radio name="checked" value="xs" size="xs" checked aria-label="Checked XS"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="checked" value="s" size="s" checked aria-label="Checked S"></rr-radio>
+          <rr-radio name="checked" value="s" size="sm" checked aria-label="Checked S"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="checked" value="m" size="m" checked aria-label="Checked M"></rr-radio>
+          <rr-radio name="checked" value="m" size="md" checked aria-label="Checked M"></rr-radio>
         </td>
       </tr>
       <tr>
@@ -296,10 +296,10 @@ export const StateMatrix = () => html`
           ></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="disabled" value="s" size="s" disabled aria-label="Disabled S"></rr-radio>
+          <rr-radio name="disabled" value="s" size="sm" disabled aria-label="Disabled S"></rr-radio>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-radio name="disabled" value="m" size="m" disabled aria-label="Disabled M"></rr-radio>
+          <rr-radio name="disabled" value="m" size="md" disabled aria-label="Disabled M"></rr-radio>
         </td>
       </tr>
       <tr>
@@ -318,7 +318,7 @@ export const StateMatrix = () => html`
           <rr-radio
             name="disabled-checked"
             value="s"
-            size="s"
+            size="sm"
             disabled
             checked
             aria-label="Disabled checked S"
@@ -328,7 +328,7 @@ export const StateMatrix = () => html`
           <rr-radio
             name="disabled-checked"
             value="m"
-            size="m"
+            size="md"
             disabled
             checked
             aria-label="Disabled checked M"

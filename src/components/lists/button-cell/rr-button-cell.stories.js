@@ -70,10 +70,10 @@ export const FigmaComparison = () => html`
         -->
         <div style="background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
           <rr-button-cell vertical-alignment="center">
-            <rr-button variant="neutral-tinted" size="m">Button</rr-button>
+            <rr-button variant="neutral-tinted" size="md">Button</rr-button>
           </rr-button-cell>
           <rr-button-cell vertical-alignment="top">
-            <rr-button variant="neutral-tinted" size="m">Button</rr-button>
+            <rr-button variant="neutral-tinted" size="md">Button</rr-button>
           </rr-button-cell>
         </div>
       </ftl-holster>

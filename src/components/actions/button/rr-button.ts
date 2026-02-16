@@ -3,7 +3,7 @@
  *
  * @element rr-button
  * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted'
- * @attr {string} size - Button size: 'xs' | 's' | 'm' (default: 'm')
+ * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
  * @attr {boolean} has-leading-icon - Whether the button has a leading icon
@@ -29,7 +29,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 type Variant = 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
-type Size = 'xs' | 's' | 'm';
+type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('rr-button')
@@ -93,8 +93,8 @@ export class RRButton extends LitElement {
       gap: var(--primitives-space-2);
     }
 
-    /* Size: S */
-    :host([size="s"]) .button {
+    /* Size: SM */
+    :host([size="sm"]) .button {
       min-height: var(--semantics-controls-sm-min-size);
       /* Figma: padding 6px 8px (top/bottom 6, left/right 8) */
       padding: var(--primitives-space-6) var(--primitives-space-8);
@@ -103,8 +103,8 @@ export class RRButton extends LitElement {
       gap: var(--primitives-space-2);
     }
 
-    /* Size: M (default) */
-    :host([size="m"]) .button,
+    /* Size: MD (default) */
+    :host([size="md"]) .button,
     :host(:not([size])) .button {
       min-height: var(--semantics-controls-md-min-size);
       padding: var(--primitives-space-12);
@@ -248,7 +248,7 @@ export class RRButton extends LitElement {
   variant: Variant = 'accent-filled';
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;

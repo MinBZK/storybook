@@ -9,7 +9,7 @@
  * @attr {number} max - Maximum value (default: 100)
  * @attr {number} step - Step increment (default: 1)
  * @attr {boolean} disabled - Disabled state
- * @attr {string} size - Stepper size: 's' | 'm' (default: 'm')
+ * @attr {string} size - Stepper size: 'sm' | 'md' (default: 'md')
  *
  * @fires change - When value changes (detail: { value: number })
  *
@@ -21,7 +21,7 @@
 import { LitElement, html, css, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 's' | 'm';
+type Size = 'sm' | 'md';
 
 @customElement('rr-stepper')
 export class RRStepper extends LitElement {
@@ -44,44 +44,44 @@ export class RRStepper extends LitElement {
     }
 
     /* Size: S - Figma: ~64x32px (two 32px buttons) */
-    :host([size='s']) .stepper {
+    :host([size='sm']) .stepper {
       border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
-    :host([size='s']) .stepper__button {
+    :host([size='sm']) .stepper__button {
       min-width: var(--semantics-controls-sm-min-size);
       min-height: var(--semantics-controls-sm-min-size);
       padding: 0 6px;
     }
 
-    :host([size='s']) .stepper__divider {
+    :host([size='sm']) .stepper__divider {
       height: 20px;
     }
 
-    :host([size='s']) .stepper__icon {
+    :host([size='sm']) .stepper__icon {
       width: 20px;
       height: 20px;
     }
 
     /* Size: M (default) - Figma: ~88x44px (two 44px buttons) */
-    :host([size='m']) .stepper,
+    :host([size='md']) .stepper,
     :host(:not([size])) .stepper {
       border-radius: var(--semantics-controls-md-corner-radius);
     }
 
-    :host([size='m']) .stepper__button,
+    :host([size='md']) .stepper__button,
     :host(:not([size])) .stepper__button {
       min-width: var(--semantics-controls-md-min-size);
       min-height: var(--semantics-controls-md-min-size);
       padding: 0 8px;
     }
 
-    :host([size='m']) .stepper__divider,
+    :host([size='md']) .stepper__divider,
     :host(:not([size])) .stepper__divider {
       height: 28px;
     }
 
-    :host([size='m']) .stepper__icon,
+    :host([size='md']) .stepper__icon,
     :host(:not([size])) .stepper__icon {
       width: 24px;
       height: 24px;
@@ -187,7 +187,7 @@ export class RRStepper extends LitElement {
   disabled = false;
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   private _decrement(): void {
     if (this.disabled) return;

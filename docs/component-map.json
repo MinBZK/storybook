@@ -30,7 +30,11 @@
           "neutral-tinted",
           "accent-transparent"
         ],
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "sm",
+          "md"
+        ],
         "is-disabled": "boolean",
         "has-leading-icon": "boolean",
         "leading-icon": "string",
@@ -63,10 +67,10 @@
         "controls": [
           "semantics-controls-xs-min-size",
           "semantics-controls-xs-corner-radius",
-          "semantics-controls-s-min-size",
-          "semantics-controls-s-corner-radius",
-          "semantics-controls-m-min-size",
-          "semantics-controls-m-corner-radius"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-sm-corner-radius",
+          "semantics-controls-md-min-size",
+          "semantics-controls-md-corner-radius"
         ],
         "focus": [
           "semantics-focus-ring-color",
@@ -92,12 +96,21 @@
         },
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
-          "default": "m"
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ],
+          "default": "md"
         },
         {
           "name": "icon",
-          "values": ["none", "leading", "trailing", "both"],
+          "values": [
+            "none",
+            "leading",
+            "trailing",
+            "both"
+          ],
           "default": "none"
         }
       ],
@@ -114,7 +127,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408"
       },
       "properties": {
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "sm",
+          "md"
+        ],
         "is-checked": "boolean",
         "is-indeterminate": "boolean",
         "is-disabled": "boolean"
@@ -135,10 +152,10 @@
         "controls": [
           "semantics-controls-xs-min-size",
           "semantics-controls-xs-corner-radius",
-          "semantics-controls-s-min-size",
-          "semantics-controls-s-corner-radius",
-          "semantics-controls-m-min-size",
-          "semantics-controls-m-corner-radius"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-sm-corner-radius",
+          "semantics-controls-md-min-size",
+          "semantics-controls-md-corner-radius"
         ],
         "focus": [
           "semantics-focus-ring-color",
@@ -148,12 +165,20 @@
       "variants": [
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
-          "default": "m"
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ],
+          "default": "md"
         },
         {
           "name": "state",
-          "values": ["unchecked", "checked", "indeterminate"],
+          "values": [
+            "unchecked",
+            "checked",
+            "indeterminate"
+          ],
           "default": "unchecked"
         }
       ],
@@ -170,7 +195,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41398"
       },
       "properties": {
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "sm",
+          "md"
+        ],
         "is-checked": "boolean",
         "is-disabled": "boolean",
         "name": "string",
@@ -184,8 +213,8 @@
       "tokens": {
         "semantics": [
           "semantics-controls-xs-min-size",
-          "semantics-controls-s-min-size",
-          "semantics-controls-m-min-size",
+          "semantics-controls-sm-min-size",
+          "semantics-controls-md-min-size",
           "semantics-focus-ring-color",
           "semantics-focus-ring-thickness"
         ],
@@ -201,8 +230,12 @@
       "variants": [
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
-          "default": "m"
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ],
+          "default": "md"
         }
       ],
       "status": "implemented",
@@ -218,7 +251,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41353"
       },
       "properties": {
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "sm",
+          "md"
+        ],
         "is-checked": "boolean",
         "is-disabled": "boolean"
       },
@@ -242,8 +279,8 @@
         ],
         "controls": [
           "semantics-controls-xs-min-size",
-          "semantics-controls-s-min-size",
-          "semantics-controls-m-min-size"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-md-min-size"
         ],
         "focus": [
           "semantics-focus-ring-color",
@@ -253,12 +290,19 @@
       "variants": [
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
-          "default": "m"
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ],
+          "default": "md"
         },
         {
           "name": "state",
-          "values": ["unchecked", "checked"],
+          "values": [
+            "unchecked",
+            "checked"
+          ],
           "default": "unchecked"
         }
       ],
@@ -275,7 +319,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542"
       },
       "properties": {
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "sm",
+          "md"
+        ],
         "is-selected": "boolean",
         "is-disabled": "boolean"
       },
@@ -296,10 +344,10 @@
         "controls": [
           "semantics-controls-xs-min-size",
           "semantics-controls-xs-corner-radius",
-          "semantics-controls-s-min-size",
-          "semantics-controls-s-corner-radius",
-          "semantics-controls-m-min-size",
-          "semantics-controls-m-corner-radius"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-sm-corner-radius",
+          "semantics-controls-md-min-size",
+          "semantics-controls-md-corner-radius"
         ],
         "focus": [
           "semantics-focus-ring-color",
@@ -309,8 +357,12 @@
       "variants": [
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
-          "default": "m"
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ],
+          "default": "md"
         }
       ],
       "status": "implemented",
@@ -333,7 +385,11 @@
           "neutral-tinted",
           "accent-transparent"
         ],
-        "size": ["xs", "s", "m"],
+        "size": [
+          "xs",
+          "sm",
+          "md"
+        ],
         "is-disabled": "boolean",
         "aria-label": "string"
       },
@@ -358,16 +414,18 @@
         "controls": [
           "semantics-controls-xs-min-size",
           "semantics-controls-xs-corner-radius",
-          "semantics-controls-s-min-size",
-          "semantics-controls-s-corner-radius",
-          "semantics-controls-m-min-size",
-          "semantics-controls-m-corner-radius"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-sm-corner-radius",
+          "semantics-controls-md-min-size",
+          "semantics-controls-md-corner-radius"
         ],
         "focus": [
           "semantics-focus-ring-color",
           "semantics-focus-ring-thickness"
         ],
-        "components": ["components-icon-button-font"]
+        "components": [
+          "components-icon-button-font"
+        ]
       },
       "variants": [
         {
@@ -383,8 +441,12 @@
         },
         {
           "name": "size",
-          "values": ["xs", "s", "m"],
-          "default": "m"
+          "values": [
+            "xs",
+            "sm",
+            "md"
+          ],
+          "default": "md"
         }
       ],
       "status": "implemented",
@@ -427,7 +489,11 @@
         "note": "Menu Bar is onderdeel van de Top Navigation Bar design"
       },
       "properties": {
-        "size": ["s", "m", "l"],
+        "size": [
+          "s",
+          "m",
+          "l"
+        ],
         "selected": "boolean",
         "href": "string",
         "disabled": "boolean"
@@ -460,7 +526,11 @@
       "variants": [
         {
           "name": "size",
-          "values": ["s", "m", "l"],
+          "values": [
+            "s",
+            "m",
+            "l"
+          ],
           "default": "m"
         }
       ],
@@ -505,7 +575,10 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41331"
       },
       "properties": {
-        "vertical-alignment": ["top", "center"]
+        "vertical-alignment": [
+          "top",
+          "center"
+        ]
       },
       "implementation": {
         "tagName": "rr-button-cell",
@@ -523,7 +596,10 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1151-6202"
       },
       "properties": {
-        "vertical-alignment": ["top", "center"]
+        "vertical-alignment": [
+          "top",
+          "center"
+        ]
       },
       "implementation": {
         "tagName": "rr-custom-cell",
@@ -542,7 +618,10 @@
         "note": "Component naam in Figma heeft typo (vew ipv view)"
       },
       "properties": {
-        "orientation": ["horizontal", "vertical"]
+        "orientation": [
+          "horizontal",
+          "vertical"
+        ]
       },
       "implementation": {
         "tagName": "rr-divider",
@@ -610,8 +689,14 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1033-4433"
       },
       "properties": {
-        "color": ["default", "white"],
-        "horizontal-alignment": ["left", "right"]
+        "color": [
+          "default",
+          "white"
+        ],
+        "horizontal-alignment": [
+          "left",
+          "right"
+        ]
       },
       "implementation": {
         "tagName": "rr-label-cell",
@@ -629,7 +714,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1044-2275"
       },
       "properties": {
-        "variant": ["simple", "box", "box-on-tint"]
+        "variant": [
+          "simple",
+          "box",
+          "box-on-tint"
+        ]
       },
       "implementation": {
         "tagName": "rr-list",
@@ -647,7 +736,10 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=957-2279"
       },
       "properties": {
-        "size": ["sm", "md"],
+        "size": [
+          "sm",
+          "md"
+        ],
         "is-selected": "boolean"
       },
       "implementation": {
@@ -666,7 +758,10 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1171-6495"
       },
       "properties": {
-        "position": ["top", "bottom"],
+        "position": [
+          "top",
+          "bottom"
+        ],
         "tinted": "boolean"
       },
       "implementation": {
@@ -685,7 +780,9 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=108-25937"
       },
       "status": "priority",
-      "neededFor": ["machine-action-sheet"]
+      "neededFor": [
+        "machine-action-sheet"
+      ]
     },
     {
       "name": "Spacer",
@@ -695,9 +792,39 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2234"
       },
       "properties": {
-        "size": ["2", "4", "6", "8", "10", "12", "16", "20", "24", "28", "32", "40", "44", "48", "56", "64", "80", "96", "m", "flexible"],
-        "direction": ["horizontal", "vertical", "both"],
-        "container": ["s", "m", "l", "all"]
+        "size": [
+          "2",
+          "4",
+          "6",
+          "8",
+          "10",
+          "12",
+          "16",
+          "20",
+          "24",
+          "28",
+          "32",
+          "40",
+          "44",
+          "48",
+          "56",
+          "64",
+          "80",
+          "96",
+          "m",
+          "flexible"
+        ],
+        "direction": [
+          "horizontal",
+          "vertical",
+          "both"
+        ],
+        "container": [
+          "s",
+          "m",
+          "l",
+          "all"
+        ]
       },
       "implementation": {
         "tagName": "rr-spacer",
@@ -715,8 +842,34 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41413"
       },
       "properties": {
-        "size": ["2", "4", "6", "8", "10", "12", "16", "20", "24", "28", "32", "40", "44", "48", "56", "64", "80", "96", "m", "flexible"],
-        "container": ["s", "m", "l", "all"]
+        "size": [
+          "2",
+          "4",
+          "6",
+          "8",
+          "10",
+          "12",
+          "16",
+          "20",
+          "24",
+          "28",
+          "32",
+          "40",
+          "44",
+          "48",
+          "56",
+          "64",
+          "80",
+          "96",
+          "m",
+          "flexible"
+        ],
+        "container": [
+          "s",
+          "m",
+          "l",
+          "all"
+        ]
       },
       "implementation": {
         "tagName": "rr-spacer-cell",
@@ -767,10 +920,22 @@
         "note": "Node ID changed from 236:41079 to 1464:4047"
       },
       "properties": {
-        "size": ["sm", "md"],
-        "color": ["default", "white"],
-        "horizontal-alignment": ["left", "right"],
-        "vertical-alignment": ["top", "center"]
+        "size": [
+          "sm",
+          "md"
+        ],
+        "color": [
+          "default",
+          "white"
+        ],
+        "horizontal-alignment": [
+          "left",
+          "right"
+        ],
+        "vertical-alignment": [
+          "top",
+          "center"
+        ]
       },
       "implementation": {
         "tagName": "rr-title-cell",
@@ -876,7 +1041,13 @@
         "nodeName": "description-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41321"
       },
-      "status": "not-implemented"
+      "status": "implemented",
+      "implementation": {
+        "tagName": "rr-description-cell",
+        "file": "src/components/lists/description-cell/rr-description-cell.ts",
+        "className": "RRDescriptionCell"
+      },
+      "lastUpdated": "2025-02-12"
     },
     {
       "name": "Document Tab Bar: Item",
@@ -924,7 +1095,13 @@
         "nodeName": "icon-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41365"
       },
-      "status": "not-implemented"
+      "status": "implemented",
+      "implementation": {
+        "tagName": "rr-icon-cell",
+        "file": "src/components/lists/icon-cell/rr-icon-cell.ts",
+        "className": "RRIconCell"
+      },
+      "lastUpdated": "2025-02-12"
     },
     {
       "name": "Input Field Button",
@@ -1045,8 +1222,14 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=336-2899"
       },
       "properties": {
-        "size": ["s", "m"],
-        "content-type": ["text", "icons"]
+        "size": [
+          "sm",
+          "md"
+        ],
+        "content-type": [
+          "text",
+          "icons"
+        ]
       },
       "implementation": {
         "tagName": "rr-segmented-control",
@@ -1064,9 +1247,15 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=262-3512"
       },
       "properties": {
-        "size": ["s", "m"],
+        "size": [
+          "sm",
+          "md"
+        ],
         "is-selected": "boolean",
-        "content-type": ["text", "icon"]
+        "content-type": [
+          "text",
+          "icon"
+        ]
       },
       "implementation": {
         "tagName": "rr-segmented-control-item",
@@ -1100,7 +1289,10 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-39011"
       },
       "properties": {
-        "size": ["s", "m"],
+        "size": [
+          "sm",
+          "md"
+        ],
         "value": "number",
         "min": "number",
         "max": "number",
@@ -1122,7 +1314,13 @@
         "nodeName": "stepper-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41344"
       },
-      "status": "not-implemented"
+      "status": "implemented",
+      "implementation": {
+        "tagName": "rr-stepper-cell",
+        "file": "src/components/lists/stepper-cell/rr-stepper-cell.ts",
+        "className": "RRStepperCell"
+      },
+      "lastUpdated": "2025-02-12"
     },
     {
       "name": "Switch (standalone)",
@@ -1130,10 +1328,13 @@
         "nodeId": "232:38506",
         "nodeName": "switch",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=232-38506",
-        "note": "Standalone switch with sizes 's' (44x24) and 'm' (56x32)"
+        "note": "Standalone switch with sizes 'sm' (44x24) and 'md' (56x32)"
       },
       "properties": {
-        "size": ["s", "m"],
+        "size": [
+          "sm",
+          "md"
+        ],
         "is-selected": "boolean",
         "is-disabled": "boolean"
       },
@@ -1179,7 +1380,13 @@
         "nodeName": "text-cell",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41152"
       },
-      "status": "not-implemented"
+      "status": "implemented",
+      "implementation": {
+        "tagName": "rr-text-cell",
+        "file": "src/components/lists/text-cell/rr-text-cell.ts",
+        "className": "RRTextCell"
+      },
+      "lastUpdated": "2025-02-12"
     },
     {
       "name": "Token",
@@ -1189,7 +1396,11 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=354-3680"
       },
       "properties": {
-        "control": ["none", "dismiss", "picker"],
+        "control": [
+          "none",
+          "dismiss",
+          "picker"
+        ],
         "menu-is-open": "boolean"
       },
       "implementation": {
@@ -1226,8 +1437,14 @@
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1404-10417"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "status": "implemented",
+      "note": "New component added 2026-02-02",
+      "implementation": {
+        "tagName": "rr-timeline-track-cell",
+        "file": "src/components/lists/timeline-track-cell/rr-timeline-track-cell.ts",
+        "className": "RRTimelineTrackCell"
+      },
+      "lastUpdated": "2025-02-12"
     },
     {
       "name": "Flexible Spacer Cell",
@@ -1257,8 +1474,14 @@
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1342-3143"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "status": "implemented",
+      "note": "New component added 2026-02-02",
+      "implementation": {
+        "tagName": "rr-list-item-drag-handle-cell",
+        "file": "src/components/lists/list-item-drag-handle-cell/rr-list-item-drag-handle-cell.ts",
+        "className": "RRListItemDragHandleCell"
+      },
+      "lastUpdated": "2025-02-12"
     },
     {
       "name": "List Item Drag Handle",
@@ -1269,8 +1492,14 @@
         "pageName": "Lists",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1342-3114"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "status": "implemented",
+      "note": "New component added 2026-02-02",
+      "implementation": {
+        "tagName": "rr-list-item-drag-handle",
+        "file": "src/components/lists/list-item-drag-handle/rr-list-item-drag-handle.ts",
+        "className": "RRListItemDragHandle"
+      },
+      "lastUpdated": "2025-02-12"
     },
     {
       "name": "Tab Bar",

@@ -38,7 +38,7 @@ export default {
   argTypes: {
     container: {
       control: 'select',
-      options: ['s', 'm', 'l'],
+      options: ['sm', 'md', 'lg'],
       description: 'Size variant for responsive breakpoints',
     },
     'no-language-switch': {
@@ -107,7 +107,7 @@ export const SearchOnly = {
  */
 export const SmallContainer = {
   render: () => html`
-    <rr-utility-menu-bar container="s" account-label="Mijn DigID"></rr-utility-menu-bar>
+    <rr-utility-menu-bar container="sm" account-label="Mijn DigID"></rr-utility-menu-bar>
   `,
 };
 
@@ -116,7 +116,7 @@ export const SmallContainer = {
  */
 export const LargeContainer = {
   render: () => html`
-    <rr-utility-menu-bar container="l" account-label="Mijn DigID"></rr-utility-menu-bar>
+    <rr-utility-menu-bar container="lg" account-label="Mijn DigID"></rr-utility-menu-bar>
   `,
 };
 
@@ -148,19 +148,19 @@ export const AllSizes = {
         <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
           Container S (icons only)
         </p>
-        <rr-utility-menu-bar container="s" account-label="Mijn DigID"></rr-utility-menu-bar>
+        <rr-utility-menu-bar container="sm" account-label="Mijn DigID"></rr-utility-menu-bar>
       </div>
       <div>
         <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
           Container M (default)
         </p>
-        <rr-utility-menu-bar container="m" account-label="Mijn DigID"></rr-utility-menu-bar>
+        <rr-utility-menu-bar container="md" account-label="Mijn DigID"></rr-utility-menu-bar>
       </div>
       <div>
         <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
           Container L
         </p>
-        <rr-utility-menu-bar container="l" account-label="Mijn DigID"></rr-utility-menu-bar>
+        <rr-utility-menu-bar container="lg" account-label="Mijn DigID"></rr-utility-menu-bar>
       </div>
     </div>
   `,

@@ -16,7 +16,7 @@
  * @attr {boolean} disabled - Disabled state
  * @attr {string} name - Form control name (for radio groups)
  * @attr {string} value - Form control value
- * @attr {string} size - Radio button size: 'xs' | 's' | 'm' (default: 'm')
+ * @attr {string} size - Radio button size: 'xs' | 'sm' | 'md' (default: 'md')
  *
  * @fires change - When checked state changes
  *
@@ -29,7 +29,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 'xs' | 's' | 'm';
+type Size = 'xs' | 'sm' | 'md';
 
 @customElement('rr-radio')
 export class RRRadio extends LitElement {
@@ -91,25 +91,25 @@ export class RRRadio extends LitElement {
     }
 
     /* Size: S (32px) */
-    :host([size='s']) .radio {
+    :host([size='sm']) .radio {
       width: var(--semantics-controls-sm-min-size);
       height: var(--semantics-controls-sm-min-size);
     }
 
-    :host([size='s']) .radio__inner {
+    :host([size='sm']) .radio__inner {
       /* Inner ring proportional */
       width: 20px;
       height: 20px;
     }
 
     /* Size: M (44px - default) */
-    :host([size='m']) .radio,
+    :host([size='md']) .radio,
     :host(:not([size])) .radio {
       width: var(--semantics-controls-md-min-size);
       height: var(--semantics-controls-md-min-size);
     }
 
-    :host([size='m']) .radio__inner,
+    :host([size='md']) .radio__inner,
     :host(:not([size])) .radio__inner {
       /* Inner ring proportional */
       width: 28px;
@@ -201,7 +201,7 @@ export class RRRadio extends LitElement {
   disabled = false;
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   @property({ type: String })
   name = '';

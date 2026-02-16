@@ -122,7 +122,7 @@ export class RRSwitchField extends LitElement {
         <div class="switch-field__control">
           <rr-switch
             part="switch"
-            size="s"
+            size="sm"
             ?checked=${this.checked}
             ?disabled=${this.disabled}
             value=${this.value}

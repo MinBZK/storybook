@@ -5,7 +5,7 @@
  * Can display title, subtitle, and supporting text beside the logo.
  *
  * @element rr-nav-logo
- * @attr {string} container - Size variant: 's' | 'm' | 'l' (default: 'm')
+ * @attr {string} container - Size variant: 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} has-wordmark - Show text beside logo (default: false)
  * @attr {string} title - Main title text
  * @attr {string} subtitle - Subtitle text
@@ -20,7 +20,7 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-type ContainerSize = 's' | 'm' | 'l';
+type ContainerSize = 'sm' | 'md' | 'lg';
 
 // Shared cache across all rr-nav-logo instances
 let cachedRijkswapen: string | null = null;
@@ -52,18 +52,18 @@ export class RRNavLogo extends LitElement {
     }
 
     /* Logo sizes per container */
-    :host([container='s']) .logo,
+    :host([container='sm']) .logo,
     :host(:not([container])) .logo {
       width: 40px;
       height: 80px;
     }
 
-    :host([container='m']) .logo {
+    :host([container='md']) .logo {
       width: 44px;
       height: 88px;
     }
 
-    :host([container='l']) .logo {
+    :host([container='lg']) .logo {
       width: 48px;
       height: 96px;
     }
@@ -90,11 +90,11 @@ export class RRNavLogo extends LitElement {
       margin: 0;
     }
 
-    :host([container='s']) .title {
+    :host([container='sm']) .title {
       font: var(--components-menu-bar-title-item-s-font);
     }
 
-    :host([container='l']) .title {
+    :host([container='lg']) .title {
       font: var(--components-menu-bar-title-item-l-font);
     }
 
@@ -104,11 +104,11 @@ export class RRNavLogo extends LitElement {
       margin: 0;
     }
 
-    :host([container='s']) .subtitle {
+    :host([container='sm']) .subtitle {
       font-size: 14px;
     }
 
-    :host([container='l']) .subtitle {
+    :host([container='lg']) .subtitle {
       font-size: 18px;
     }
 
@@ -118,17 +118,17 @@ export class RRNavLogo extends LitElement {
       margin: 0;
     }
 
-    :host([container='s']) .supporting-text {
+    :host([container='sm']) .supporting-text {
       font-size: 12px;
     }
 
-    :host([container='l']) .supporting-text {
+    :host([container='lg']) .supporting-text {
       font-size: 16px;
     }
   `;
 
   @property({ type: String, reflect: true })
-  container: ContainerSize = 'm';
+  container: ContainerSize = 'md';
 
   @property({ type: Boolean, attribute: 'has-wordmark', reflect: true })
   hasWordmark = false;

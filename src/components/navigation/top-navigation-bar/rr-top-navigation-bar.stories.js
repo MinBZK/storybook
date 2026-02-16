@@ -45,7 +45,7 @@ export default {
     // Main properties
     container: {
       control: 'select',
-      options: ['s', 'm', 'l'],
+      options: ['sm', 'md', 'lg'],
       description: 'Size variant for responsive breakpoints',
       table: { category: 'Main' },
     },
@@ -228,7 +228,7 @@ export const WithBackButton = {
  */
 export const LargeContainer = {
   render: () => html`
-    <rr-top-navigation-bar container="l" title="DigID">
+    <rr-top-navigation-bar container="lg" title="DigID">
       <rr-menu-item slot="menu" selected>Home</rr-menu-item>
       <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
       <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
@@ -243,7 +243,7 @@ export const LargeContainer = {
  */
 export const SmallContainer = {
   render: () => html`
-    <rr-top-navigation-bar container="s" title="DigID">
+    <rr-top-navigation-bar container="sm" title="DigID">
       <rr-menu-item slot="menu" selected>Home</rr-menu-item>
       <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
       <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
@@ -310,7 +310,7 @@ export const AllStates = {
     <div style="display: flex; flex-direction: column; gap: 32px;">
       <div>
         <h3 style="margin: 0 0 8px; font-family: system-ui;">Container L (Desktop)</h3>
-        <rr-top-navigation-bar container="l" title="DigID">
+        <rr-top-navigation-bar container="lg" title="DigID">
           <rr-menu-item slot="menu" selected>Home</rr-menu-item>
           <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
           <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
@@ -320,7 +320,7 @@ export const AllStates = {
       </div>
       <div>
         <h3 style="margin: 0 0 8px; font-family: system-ui;">Container M (Tablet)</h3>
-        <rr-top-navigation-bar container="m" title="DigID">
+        <rr-top-navigation-bar container="md" title="DigID">
           <rr-menu-item slot="menu" selected>Home</rr-menu-item>
           <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
           <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
@@ -332,7 +332,7 @@ export const AllStates = {
         <h3 style="margin: 0 0 8px; font-family: system-ui;">
           Container S (Mobile) - Menu items hidden
         </h3>
-        <rr-top-navigation-bar container="s" title="DigID">
+        <rr-top-navigation-bar container="sm" title="DigID">
           <rr-menu-item slot="menu" selected>Home</rr-menu-item>
           <rr-menu-item slot="menu">Aanvragen & activeren</rr-menu-item>
           <rr-menu-item slot="menu">Manieren van inloggen</rr-menu-item>
@@ -362,7 +362,7 @@ export const FigmaComparison = {
             <!-- Container L (large) - Figma node: 20:138 (container=lg variant) -->
             <rr-top-navigation-bar
               title="Titel"
-              container="l"
+              container="lg"
               utility-no-language-switch
               utility-account-label="Account"
             >

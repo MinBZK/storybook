@@ -3,7 +3,7 @@
  *
  * @element rr-icon-button
  * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent'
- * @attr {string} size - Button size: 'xs' | 's' | 'm' (default: 'm')
+ * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
  * @attr {string} aria-label - Accessible label for the icon button (required for accessibility)
@@ -66,7 +66,7 @@ export class RRIconButton extends RRBaseComponent {
   }
 
   get size() {
-    return this.getAttribute('size') || 'm';
+    return this.getAttribute('size') || 'md';
   }
 
   set size(value) {
@@ -154,7 +154,7 @@ export class RRIconButton extends RRBaseComponent {
       }
 
       /* Size: S - Square 32x32 */
-      :host([size="s"]) .button {
+      :host([size="sm"]) .button {
         width: var(--semantics-controls-sm-min-size);
         height: var(--semantics-controls-sm-min-size);
         min-width: var(--semantics-controls-sm-min-size);
@@ -163,7 +163,7 @@ export class RRIconButton extends RRBaseComponent {
       }
 
       /* Size: M - Square 44x44 (default) */
-      :host([size="m"]) .button,
+      :host([size="md"]) .button,
       :host(:not([size])) .button {
         width: var(--semantics-controls-md-min-size);
         height: var(--semantics-controls-md-min-size);
@@ -253,12 +253,12 @@ export class RRIconButton extends RRBaseComponent {
       }
 
       /* S: 32px button → 16px icon (~50%) */
-      :host([size="s"]) {
+      :host([size="sm"]) {
         --_icon-size: 16px;
       }
 
       /* M: 44px button → 20px icon (~45%) */
-      :host([size="m"]),
+      :host([size="md"]),
       :host(:not([size])) {
         --_icon-size: 20px;
       }
