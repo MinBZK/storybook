@@ -84,22 +84,20 @@ export const FigmaComparison = () => html`
         >
           <!-- orientation=vertical, has-drag-handle=false -->
           <div
-            style="display: flex; flex-direction: row; justify-content: center; align-items: center; flex: 1; background: #fff;"
+            style="display: flex; flex-direction: row; justify-content: flex-start; align-items: stretch; flex: 1; background: #fff;"
           >
             <rr-split-view-divider
               orientation="vertical"
-              style="height: 100%;"
             ></rr-split-view-divider>
           </div>
 
           <!-- orientation=vertical, has-drag-handle=true -->
           <div
-            style="display: flex; flex-direction: row; justify-content: center; align-items: center; flex: 1; background: #fff;"
+            style="display: flex; flex-direction: row; justify-content: flex-start; align-items: stretch; flex: 1; background: #fff;"
           >
             <rr-split-view-divider
               orientation="vertical"
               has-drag-handle
-              style="height: 100%;"
             ></rr-split-view-divider>
           </div>
 

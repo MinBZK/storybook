@@ -2,13 +2,14 @@
  * RegelRecht Split View Divider Component (Lit + TypeScript)
  *
  * A 1px line between split view panes with optional drag handle.
+ * The divider container itself is the colored line; the drag handle
+ * is centered on top of it.
  *
  * @element rr-split-view-divider
  * @attr {string} orientation - Divider orientation: 'vertical' | 'horizontal'
  * @attr {boolean} has-drag-handle - Whether to show a drag handle
  *
- * @csspart divider - The divider container
- * @csspart line - The divider line element
+ * @csspart divider - The divider element (also the line)
  * @csspart drag-handle - The drag handle element
  *
  * @cssprop --rr-split-view-divider-color - Override divider color
@@ -25,8 +26,6 @@ export class RRSplitViewDivider extends LitElement {
     :host {
       display: flex;
       flex-shrink: 0;
-      justify-content: center;
-      align-items: center;
     }
 
     :host([hidden]) {
@@ -38,9 +37,6 @@ export class RRSplitViewDivider extends LitElement {
       justify-content: center;
       align-items: center;
       position: relative;
-    }
-
-    .split-view-divider__line {
       background-color: var(
         --rr-split-view-divider-color,
         var(--semantics-dividers-color)
@@ -63,11 +59,6 @@ export class RRSplitViewDivider extends LitElement {
       height: 100%;
     }
 
-    :host([orientation='vertical']) .split-view-divider__line {
-      width: var(--semantics-dividers-thickness);
-      height: 100%;
-    }
-
     :host([orientation='vertical']) .split-view-divider__drag-handle {
       width: 4px;
       height: 40px;
@@ -80,12 +71,6 @@ export class RRSplitViewDivider extends LitElement {
       height: var(--semantics-dividers-thickness);
     }
 
-    :host([orientation='horizontal']) .split-view-divider__line,
-    :host(:not([orientation])) .split-view-divider__line {
-      width: 100%;
-      height: var(--semantics-dividers-thickness);
-    }
-
     :host([orientation='horizontal']) .split-view-divider__drag-handle,
     :host(:not([orientation])) .split-view-divider__drag-handle {
       width: 40px;
@@ -94,7 +79,7 @@ export class RRSplitViewDivider extends LitElement {
 
     /* Accessibility: High Contrast Mode */
     @media (forced-colors: active) {
-      .split-view-divider__line {
+      .split-view-divider {
         background-color: CanvasText;
       }
     }
@@ -114,7 +99,6 @@ export class RRSplitViewDivider extends LitElement {
         role="separator"
         aria-orientation=${this.orientation}
       >
-        <div class="split-view-divider__line" part="line"></div>
         ${this.hasDragHandle
           ? html`<div
               class="split-view-divider__drag-handle"
