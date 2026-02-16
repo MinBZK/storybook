@@ -779,10 +779,8 @@
         "nodeName": "sheet",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=108-25937"
       },
-      "status": "priority",
-      "neededFor": [
-        "machine-action-sheet"
-      ]
+      "status": "not-implemented",
+      "note": "Sheet composes top-title-bar, page, toolbar, and simple-section — implement after those sub-components exist"
     },
     {
       "name": "Spacer",
@@ -1056,7 +1054,13 @@
         "nodeName": "document-tab-bar__item",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=38-784"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-document-tab-bar-item",
+        "file": "src/components/navigation/document-tab-bar-item/rr-document-tab-bar-item.ts",
+        "className": "RRDocumentTabBarItem"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Form Field",
@@ -1141,7 +1145,13 @@
         "nodeName": "menu-item",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=331-1456"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-standalone-menu-item",
+        "file": "src/components/menus/menu-item/rr-standalone-menu-item.ts",
+        "className": "RRStandaloneMenuItem"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Number Field",
@@ -1197,7 +1207,13 @@
         "nodeName": "rich-text__heading",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=980-145"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-rich-text-heading",
+        "file": "src/components/content/rich-text-heading/rr-rich-text-heading.ts",
+        "className": "RRRichTextHeading"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Search Field",
@@ -1371,7 +1387,13 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43604",
         "note": "Node ID changed from 987:1355 to 1366:43604"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-tab-bar-item",
+        "file": "src/components/navigation/tab-bar/rr-tab-bar-item.ts",
+        "className": "RRTabBarItem"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Text Cell",
@@ -1510,8 +1532,13 @@
         "pageName": "Navigation",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43642"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-tab-bar",
+        "file": "src/components/navigation/tab-bar/rr-tab-bar.ts",
+        "className": "RRTabBar"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Pagination",
@@ -1522,8 +1549,13 @@
         "pageName": "Navigation",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1353-3779"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-pagination",
+        "file": "src/components/navigation/pagination/rr-pagination.ts",
+        "className": "RRPagination"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Split Button",
@@ -1551,8 +1583,13 @@
         "pageName": "Inputs",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-5781"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-password-field",
+        "file": "src/components/inputs/password-field/rr-password-field.ts",
+        "className": "RRPasswordField"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Toolbar",
@@ -1665,8 +1702,13 @@
         "pageName": "Overlays",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10237"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-tooltip",
+        "file": "src/components/overlays/tooltip/rr-tooltip.ts",
+        "className": "RRTooltip"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Tooltip: Arrow",
@@ -1677,20 +1719,30 @@
         "pageName": "Overlays",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10227"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-tooltip-arrow",
+        "file": "src/components/overlays/tooltip/rr-tooltip-arrow.ts",
+        "className": "RRTooltipArrow"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Dialog",
       "figma": {
-        "nodeId": "1340:4344",
-        "nodeName": "dialog",
-        "pageId": "1340:4281",
-        "pageName": "Feedback",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4344"
+        "nodeId": "1506:5969",
+        "nodeName": "modal-dialog",
+        "pageId": "19:9",
+        "pageName": "Overlays",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1506-5969"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-dialog",
+        "file": "src/components/overlays/dialog/rr-dialog.ts",
+        "className": "RRDialog"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Alert",
@@ -1702,7 +1754,7 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4678"
       },
       "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "note": "Alert is a preconfigured dialog instance — implement as part of rr-dialog"
     },
     {
       "name": "Window",
@@ -1714,7 +1766,7 @@
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1261-3627"
       },
       "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "note": "Window composes page, top-title-bar, and toolbar — implement after those sub-components exist"
     },
     {
       "name": "Page",
