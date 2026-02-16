@@ -7,7 +7,7 @@
  * @element rr-back-button
  * @attr {string} href - Link destination URL
  * @attr {string} label - Button text (default: 'Terug')
- * @attr {string} container - Size variant: 's' | 'm' | 'l' (default: 'm')
+ * @attr {string} container - Size variant: 'sm' | 'md' | 'lg' (default: 'md')
  *
  * @fires back-click - When button is clicked (for SPA navigation)
  *
@@ -19,7 +19,7 @@
 import { LitElement, html, css, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type ContainerSize = 's' | 'm' | 'l';
+type ContainerSize = 'sm' | 'md' | 'lg';
 
 // Arrow left icon
 const arrowLeftIcon = svg`
@@ -77,12 +77,12 @@ export class RRBackButton extends LitElement {
     }
 
     /* Size variants */
-    :host([container='s']) .back-button {
+    :host([container='sm']) .back-button {
       padding: var(--primitives-space-8);
       font-size: 16px;
     }
 
-    :host([container='s']) .label {
+    :host([container='sm']) .label {
       position: absolute;
       width: 1px;
       height: 1px;
@@ -94,11 +94,11 @@ export class RRBackButton extends LitElement {
       border: 0;
     }
 
-    :host([container='l']) .back-button {
+    :host([container='lg']) .back-button {
       font-size: 20px;
     }
 
-    :host([container='l']) .icon {
+    :host([container='lg']) .icon {
       width: 24px;
       height: 24px;
     }
@@ -111,7 +111,7 @@ export class RRBackButton extends LitElement {
   label = 'Terug';
 
   @property({ type: String, reflect: true })
-  container: ContainerSize = 'm';
+  container: ContainerSize = 'md';
 
   private _handleClick(e: Event): void {
     // If no href, dispatch event for SPA navigation

@@ -25,7 +25,7 @@
  * ```
  *
  * @element rr-utility-menu-bar
- * @attr {string} container - Size variant: 's' | 'm' | 'l' (default: 'm')
+ * @attr {string} container - Size variant: 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} no-language-switch - Hide language dropdown
  * @attr {boolean} no-search - Hide search button
  * @attr {boolean} no-account - Hide account button
@@ -50,7 +50,7 @@
 import { LitElement, html, css, svg, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type ContainerSize = 's' | 'm' | 'l';
+type ContainerSize = 'sm' | 'md' | 'lg';
 
 // Icons from the icon set
 const searchIcon = svg`
@@ -147,7 +147,7 @@ export class RRUtilityMenuBar extends LitElement {
     }
 
     /* Hide text on small screens */
-    :host([container='s']) .utility-button span {
+    :host([container='sm']) .utility-button span {
       position: absolute;
       width: 1px;
       height: 1px;
@@ -159,12 +159,12 @@ export class RRUtilityMenuBar extends LitElement {
       border: 0;
     }
 
-    :host([container='s']) .utility-button .chevron {
+    :host([container='sm']) .utility-button .chevron {
       display: none;
     }
 
     /* Size adjustments */
-    :host([container='s']) .utility-button {
+    :host([container='sm']) .utility-button {
       padding: var(--primitives-space-8);
     }
 
@@ -177,7 +177,7 @@ export class RRUtilityMenuBar extends LitElement {
   `;
 
   @property({ type: String, reflect: true })
-  container: ContainerSize = 'm';
+  container: ContainerSize = 'md';
 
   // Default buttons: shown unless no-* attribute is present
   @property({ type: Boolean, reflect: true, attribute: 'no-language-switch' })
