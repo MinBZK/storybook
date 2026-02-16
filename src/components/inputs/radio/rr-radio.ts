@@ -294,7 +294,8 @@ export class RRRadio extends LitElement {
 
   private _dispatchChangeEvent(): void {
     this.dispatchEvent(
-      new Event('change', {
+      new CustomEvent('change', {
+        detail: { checked: this.checked, value: this.value, name: this.name },
         bubbles: true,
         composed: true,
       })
@@ -311,7 +312,8 @@ export class RRRadio extends LitElement {
       if (radio !== this && radio.checked) {
         radio.checked = false;
         radio.dispatchEvent(
-          new Event('change', {
+          new CustomEvent('change', {
+            detail: { checked: radio.checked, value: radio.value, name: radio.name },
             bubbles: true,
             composed: true,
           })
