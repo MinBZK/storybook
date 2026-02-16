@@ -25,10 +25,10 @@ export const Default = {
   args: { size: 'md' },
   render: (args) => html`
     <rr-toolbar size=${args.size}>
-      <rr-button slot="start-area" size="s" variant="neutral">Action 1</rr-button>
-      <rr-button slot="start-area" size="s" variant="neutral">Action 2</rr-button>
+      <rr-button slot="start-area" size="sm" variant="neutral">Action 1</rr-button>
+      <rr-button slot="start-area" size="sm" variant="neutral">Action 2</rr-button>
       <span>Center Content</span>
-      <rr-button slot="end-area" size="s" variant="accent">Save</rr-button>
+      <rr-button slot="end-area" size="sm" variant="accent">Save</rr-button>
     </rr-toolbar>
   `,
 };
@@ -48,9 +48,9 @@ export const StartOnly = {
   args: { size: 'md' },
   render: (args) => html`
     <rr-toolbar size=${args.size}>
-      <rr-button slot="start-area" size="s" variant="neutral">File</rr-button>
-      <rr-button slot="start-area" size="s" variant="neutral">Edit</rr-button>
-      <rr-button slot="start-area" size="s" variant="neutral">View</rr-button>
+      <rr-button slot="start-area" size="sm" variant="neutral">File</rr-button>
+      <rr-button slot="start-area" size="sm" variant="neutral">Edit</rr-button>
+      <rr-button slot="start-area" size="sm" variant="neutral">View</rr-button>
     </rr-toolbar>
   `,
 };
@@ -59,8 +59,8 @@ export const EndOnly = {
   args: { size: 'md' },
   render: (args) => html`
     <rr-toolbar size=${args.size}>
-      <rr-button slot="end-area" size="s" variant="neutral">Cancel</rr-button>
-      <rr-button slot="end-area" size="s" variant="accent">Submit</rr-button>
+      <rr-button slot="end-area" size="sm" variant="neutral">Cancel</rr-button>
+      <rr-button slot="end-area" size="sm" variant="accent">Submit</rr-button>
     </rr-toolbar>
   `,
 };

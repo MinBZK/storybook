@@ -133,7 +133,7 @@ export const CustomHeader = {
     <rr-collection layout="grid" show-load-more>
       <div slot="header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
         <h2 style="margin: 0;">Custom Header</h2>
-        <rr-button variant="accent-transparent" size="s">View all</rr-button>
+        <rr-button variant="accent-transparent" size="sm">View all</rr-button>
       </div>
       ${sampleItems.slice(0, 6)}
     </rr-collection>

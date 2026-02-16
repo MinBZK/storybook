@@ -35,9 +35,9 @@ export default {
     },
     size: {
       control: 'select',
-      options: ['s', 'm'],
+      options: ['sm', 'md'],
       description: 'Control size',
-      table: { defaultValue: { summary: 'm' } },
+      table: { defaultValue: { summary: 'md' } },
     },
     disabled: {
       control: 'boolean',
@@ -52,7 +52,7 @@ export default {
   },
   args: {
     value: 'option1',
-    size: 'm',
+    size: 'md',
     disabled: false,
     fullWidth: false,
   },
@@ -76,10 +76,10 @@ export const Default = Template.bind({});
 Default.args = {};
 
 export const Small = Template.bind({});
-Small.args = { size: 's' };
+Small.args = { size: 'sm' };
 
 export const Medium = Template.bind({});
-Medium.args = { size: 'm' };
+Medium.args = { size: 'md' };
 
 export const Disabled = Template.bind({});
 Disabled.args = { disabled: true };

@@ -34,10 +34,10 @@ export default {
   argTypes: {
     size: {
       control: 'select',
-      options: ['xs', 's', 'm'],
+      options: ['xs', 'sm', 'md'],
       description: 'Button size',
       table: {
-        defaultValue: { summary: 'm' },
+        defaultValue: { summary: 'md' },
       },
     },
     selected: {
@@ -61,7 +61,7 @@ export default {
   },
   args: {
     label: 'Toggle',
-    size: 'm',
+    size: 'md',
     selected: false,
     disabled: false,
   },
@@ -109,13 +109,13 @@ ExtraSmall.args = {
 export const Small = Template.bind({});
 Small.args = {
   label: 'Small',
-  size: 's',
+  size: 'sm',
 };
 
 export const Medium = Template.bind({});
 Medium.args = {
   label: 'Medium',
-  size: 'm',
+  size: 'md',
 };
 
 // Interactive example

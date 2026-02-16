@@ -46,10 +46,10 @@ export default {
     },
     size: {
       control: 'select',
-      options: ['xs', 's', 'm'],
+      options: ['xs', 'sm', 'md'],
       description: 'Button size',
       table: {
-        defaultValue: { summary: 'm' },
+        defaultValue: { summary: 'md' },
       },
     },
     disabled: {
@@ -96,7 +96,7 @@ export default {
   args: {
     label: 'Button',
     variant: 'accent-filled',
-    size: 'm',
+    size: 'md',
     disabled: false,
     type: 'button',
     hasLeadingIcon: false,
@@ -156,13 +156,13 @@ ExtraSmall.args = {
 export const Small = Template.bind({});
 Small.args = {
   label: 'Small',
-  size: 's',
+  size: 'sm',
 };
 
 export const Medium = Template.bind({});
 Medium.args = {
   label: 'Medium',
-  size: 'm',
+  size: 'md',
 };
 
 // States

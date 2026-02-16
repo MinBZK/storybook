@@ -25,8 +25,8 @@ export const Default = {
   args: { size: 'md' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size="s" variant="neutral-transparent">Action 1</rr-button>
-      <rr-button size="s" variant="neutral-transparent">Action 2</rr-button>
+      <rr-button size="sm" variant="neutral-transparent">Action 1</rr-button>
+      <rr-button size="sm" variant="neutral-transparent">Action 2</rr-button>
     </rr-button-bar>
   `,
 };
@@ -35,8 +35,8 @@ export const SizeSmall = {
   args: { size: 'sm' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size="s" variant="neutral-transparent">Edit</rr-button>
-      <rr-button size="s" variant="neutral-transparent">Delete</rr-button>
+      <rr-button size="sm" variant="neutral-transparent">Edit</rr-button>
+      <rr-button size="sm" variant="neutral-transparent">Delete</rr-button>
     </rr-button-bar>
   `,
 };
@@ -45,11 +45,11 @@ export const WithDivider = {
   args: { size: 'md' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size="s" variant="neutral-transparent">Cut</rr-button>
+      <rr-button size="sm" variant="neutral-transparent">Cut</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size="s" variant="neutral-transparent">Copy</rr-button>
+      <rr-button size="sm" variant="neutral-transparent">Copy</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size="s" variant="neutral-transparent">Paste</rr-button>
+      <rr-button size="sm" variant="neutral-transparent">Paste</rr-button>
     </rr-button-bar>
   `,
 };

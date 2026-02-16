@@ -50,10 +50,10 @@ export default {
     },
     size: {
       control: 'select',
-      options: ['xs', 's', 'm', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
       description: 'Button size',
       table: {
-        defaultValue: { summary: 'm' },
+        defaultValue: { summary: 'md' },
       },
     },
     disabled: {
@@ -78,7 +78,7 @@ export default {
   },
   args: {
     variant: 'accent-filled',
-    size: 'm',
+    size: 'md',
     disabled: false,
     type: 'button',
     ariaLabel: 'Icon button',
@@ -212,13 +212,13 @@ ExtraSmall.args = {
 
 export const Small = Template.bind({});
 Small.args = {
-  size: 's',
+  size: 'sm',
   ariaLabel: 'Small',
 };
 
 export const Medium = Template.bind({});
 Medium.args = {
-  size: 'm',
+  size: 'md',
   ariaLabel: 'Medium',
 };
 

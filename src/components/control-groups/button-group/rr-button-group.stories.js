@@ -30,8 +30,8 @@ export const Default = {
   args: { size: 'md', flow: 'horizontal' },
   render: (args) => html`
     <rr-button-group size=${args.size} flow=${args.flow}>
-      <rr-button size="m" variant="accent-filled">Button</rr-button>
-      <rr-button size="m" variant="neutral-tinted">Button</rr-button>
+      <rr-button size="md" variant="accent-filled">Button</rr-button>
+      <rr-button size="md" variant="neutral-tinted">Button</rr-button>
     </rr-button-group>
   `,
 };
@@ -40,8 +40,8 @@ export const Vertical = {
   args: { size: 'md', flow: 'vertical' },
   render: (args) => html`
     <rr-button-group size=${args.size} flow=${args.flow} style="width: 200px;">
-      <rr-button size="m" variant="accent-filled">Button</rr-button>
-      <rr-button size="m" variant="neutral-tinted">Button</rr-button>
+      <rr-button size="md" variant="accent-filled">Button</rr-button>
+      <rr-button size="md" variant="neutral-tinted">Button</rr-button>
     </rr-button-group>
   `,
 };
@@ -50,8 +50,8 @@ export const SizeSmall = {
   args: { size: 'sm', flow: 'horizontal' },
   render: (args) => html`
     <rr-button-group size=${args.size} flow=${args.flow}>
-      <rr-button size="s" variant="accent-filled">Button</rr-button>
-      <rr-button size="s" variant="neutral-tinted">Button</rr-button>
+      <rr-button size="sm" variant="accent-filled">Button</rr-button>
+      <rr-button size="sm" variant="neutral-tinted">Button</rr-button>
     </rr-button-group>
   `,
 };
@@ -60,9 +60,9 @@ export const MultipleButtons = {
   args: { size: 'md', flow: 'horizontal' },
   render: (args) => html`
     <rr-button-group size=${args.size} flow=${args.flow}>
-      <rr-button size="m" variant="accent-filled">Save</rr-button>
-      <rr-button size="m" variant="neutral-tinted">Cancel</rr-button>
-      <rr-button size="m" variant="neutral-tinted">Reset</rr-button>
+      <rr-button size="md" variant="accent-filled">Save</rr-button>
+      <rr-button size="md" variant="neutral-tinted">Cancel</rr-button>
+      <rr-button size="md" variant="neutral-tinted">Reset</rr-button>
     </rr-button-group>
   `,
 };
@@ -87,23 +87,23 @@ export const FigmaComparison = () => html`
         <div style="width: 404px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: center;">
           <!-- size=md, flow=vertical -->
           <rr-button-group size="md" flow="vertical" style="width: 100%;">
-            <rr-button size="m" variant="accent-filled">Button</rr-button>
-            <rr-button size="m" variant="neutral-tinted">Button</rr-button>
+            <rr-button size="md" variant="accent-filled">Button</rr-button>
+            <rr-button size="md" variant="neutral-tinted">Button</rr-button>
           </rr-button-group>
           <!-- size=md, flow=horizontal -->
           <rr-button-group size="md" flow="horizontal">
-            <rr-button size="m" variant="accent-filled">Button</rr-button>
-            <rr-button size="m" variant="neutral-tinted">Button</rr-button>
+            <rr-button size="md" variant="accent-filled">Button</rr-button>
+            <rr-button size="md" variant="neutral-tinted">Button</rr-button>
           </rr-button-group>
           <!-- size=sm, flow=vertical -->
           <rr-button-group size="sm" flow="vertical" style="width: 100%;">
-            <rr-button size="s" variant="accent-filled">Button</rr-button>
-            <rr-button size="s" variant="neutral-tinted">Button</rr-button>
+            <rr-button size="sm" variant="accent-filled">Button</rr-button>
+            <rr-button size="sm" variant="neutral-tinted">Button</rr-button>
           </rr-button-group>
           <!-- size=sm, flow=horizontal -->
           <rr-button-group size="sm" flow="horizontal">
-            <rr-button size="s" variant="accent-filled">Button</rr-button>
-            <rr-button size="s" variant="neutral-tinted">Button</rr-button>
+            <rr-button size="sm" variant="accent-filled">Button</rr-button>
+            <rr-button size="sm" variant="neutral-tinted">Button</rr-button>
           </rr-button-group>
         </div>
       </ftl-holster>
