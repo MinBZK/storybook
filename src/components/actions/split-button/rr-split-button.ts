@@ -5,7 +5,7 @@
  * The main button performs the default action, while the dropdown icon opens a menu.
  *
  * @element rr-split-button
- * @attr {string} size - Button size: 's' | 'm' (default: 'm')
+ * @attr {string} size - Button size: 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  *
  * @slot - Default slot for button label text
@@ -23,14 +23,14 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 's' | 'm';
+type Size = 'sm' | 'md';
 
 @customElement('rr-split-button')
 export class RRSplitButton extends LitElement {
   static override styles = css`
     :host {
       display: inline-flex;
-      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {
@@ -46,12 +46,12 @@ export class RRSplitButton extends LitElement {
     }
 
     /* Size: M (default) */
-    :host([size="m"]) .split-button,
+    :host([size="md"]) .split-button,
     :host(:not([size])) .split-button {
       border-radius: var(--semantics-controls-md-corner-radius);
     }
 
-    :host([size="m"]) .split-button__button,
+    :host([size="md"]) .split-button__button,
     :host(:not([size])) .split-button__button {
       min-height: var(--semantics-controls-md-min-size);
       padding: 10px 12px;
@@ -60,12 +60,12 @@ export class RRSplitButton extends LitElement {
       border-radius: var(--semantics-controls-md-corner-radius) 0 0 var(--semantics-controls-md-corner-radius);
     }
 
-    :host([size="m"]) .split-button__divider,
+    :host([size="md"]) .split-button__divider,
     :host(:not([size])) .split-button__divider {
       height: 28px;
     }
 
-    :host([size="m"]) .split-button__dropdown,
+    :host([size="md"]) .split-button__dropdown,
     :host(:not([size])) .split-button__dropdown {
       padding: 0 8px;
       min-width: var(--semantics-controls-md-min-size);
@@ -73,18 +73,18 @@ export class RRSplitButton extends LitElement {
       border-radius: 0 var(--semantics-controls-md-corner-radius) var(--semantics-controls-md-corner-radius) 0;
     }
 
-    :host([size="m"]) .split-button__dropdown svg,
+    :host([size="md"]) .split-button__dropdown svg,
     :host(:not([size])) .split-button__dropdown svg {
       width: 24px;
       height: 24px;
     }
 
     /* Size: S */
-    :host([size="s"]) .split-button {
+    :host([size="sm"]) .split-button {
       border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
-    :host([size="s"]) .split-button__button {
+    :host([size="sm"]) .split-button__button {
       min-height: var(--semantics-controls-sm-min-size);
       padding: 6px 8px;
       gap: 2px;
@@ -92,18 +92,18 @@ export class RRSplitButton extends LitElement {
       border-radius: var(--semantics-controls-sm-corner-radius) 0 0 var(--semantics-controls-sm-corner-radius);
     }
 
-    :host([size="s"]) .split-button__divider {
+    :host([size="sm"]) .split-button__divider {
       height: 20px;
     }
 
-    :host([size="s"]) .split-button__dropdown {
+    :host([size="sm"]) .split-button__dropdown {
       padding: 0 6px;
       min-width: var(--semantics-controls-sm-min-size);
       min-height: var(--semantics-controls-sm-min-size);
       border-radius: 0 var(--semantics-controls-sm-corner-radius) var(--semantics-controls-sm-corner-radius) 0;
     }
 
-    :host([size="s"]) .split-button__dropdown svg {
+    :host([size="sm"]) .split-button__dropdown svg {
       width: 20px;
       height: 20px;
     }
@@ -192,7 +192,7 @@ export class RRSplitButton extends LitElement {
   `;
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;

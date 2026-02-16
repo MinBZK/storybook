@@ -16,38 +16,38 @@ export default {
   argTypes: {
     size: {
       control: 'select',
-      options: ['s', 'm'],
+      options: ['sm', 'md'],
       description: 'Divider size',
     },
   },
 };
 
 export const Default = {
-  args: { size: 'm' },
+  args: { size: 'md' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size=${args.size} variant="neutral-transparent">Cut</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Cut</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size=${args.size} variant="neutral-transparent">Copy</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Copy</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size=${args.size} variant="neutral-transparent">Paste</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Paste</rr-button>
     </rr-button-bar>
   `,
 };
 
 export const SizeSmall = {
-  args: { size: 's' },
+  args: { size: 'sm' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size=${args.size} variant="neutral-transparent">Edit</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Edit</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size=${args.size} variant="neutral-transparent">Delete</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Delete</rr-button>
     </rr-button-bar>
   `,
 };
 
 export const Standalone = {
-  args: { size: 'm' },
+  args: { size: 'md' },
   render: (args) => html`
     <div style="display: flex; align-items: center; gap: 8px; background: #D9DEE4; padding: 8px; border-radius: 8px;">
       <span>Item 1</span>
@@ -76,9 +76,9 @@ export const FigmaComparison = () => html`
         -->
         <div style="position: relative; width: 33px; height: 104px;">
           <!-- size=md at x=16 y=16 -->
-          <rr-button-bar-divider size="m" style="position: absolute; left: 16px; top: 16px;"></rr-button-bar-divider>
+          <rr-button-bar-divider size="md" style="position: absolute; left: 16px; top: 16px;"></rr-button-bar-divider>
           <!-- size=sm at x=16 y=60 -->
-          <rr-button-bar-divider size="s" style="position: absolute; left: 16px; top: 60px;"></rr-button-bar-divider>
+          <rr-button-bar-divider size="sm" style="position: absolute; left: 16px; top: 60px;"></rr-button-bar-divider>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

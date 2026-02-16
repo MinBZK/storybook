@@ -16,14 +16,14 @@ export default {
   argTypes: {
     size: {
       control: 'select',
-      options: ['s', 'm'],
+      options: ['sm', 'md'],
       description: 'Divider size',
     },
   },
 };
 
 export const Default = {
-  args: { size: 'm' },
+  args: { size: 'md' },
   render: (args) => html`
     <div style="display: flex; align-items: center; gap: 8px; height: 44px;">
       <rr-button size="s" variant="neutral">Action 1</rr-button>
@@ -34,7 +34,7 @@ export const Default = {
 };
 
 export const SizeSmall = {
-  args: { size: 's' },
+  args: { size: 'sm' },
   render: (args) => html`
     <div style="display: flex; align-items: center; gap: 6px; height: 32px;">
       <rr-button size="xs" variant="neutral">Edit</rr-button>
@@ -45,14 +45,14 @@ export const SizeSmall = {
 };
 
 export const InToolbar = {
-  args: { size: 'm' },
+  args: { size: 'md' },
   render: (args) => html`
-    <rr-toolbar size="m">
-      <rr-button slot="start" size="s" variant="neutral">File</rr-button>
-      <rr-toolbar-divider slot="start" size=${args.size}></rr-toolbar-divider>
-      <rr-button slot="start" size="s" variant="neutral">Edit</rr-button>
-      <rr-toolbar-divider slot="start" size=${args.size}></rr-toolbar-divider>
-      <rr-button slot="start" size="s" variant="neutral">View</rr-button>
+    <rr-toolbar size="md">
+      <rr-button slot="start-area" size="s" variant="neutral">File</rr-button>
+      <rr-toolbar-divider slot="start-area" size=${args.size}></rr-toolbar-divider>
+      <rr-button slot="start-area" size="s" variant="neutral">Edit</rr-button>
+      <rr-toolbar-divider slot="start-area" size=${args.size}></rr-toolbar-divider>
+      <rr-button slot="start-area" size="s" variant="neutral">View</rr-button>
     </rr-toolbar>
   `,
 };
@@ -77,9 +77,9 @@ export const FigmaComparison = () => html`
         -->
         <div style="padding: 16px; box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; align-items: stretch; height: 76px;">
           <!-- Size M: 5px padding top/bottom + 34px line = 44px total -->
-          <rr-toolbar-divider size="m"></rr-toolbar-divider>
+          <rr-toolbar-divider size="md"></rr-toolbar-divider>
           <!-- Size S: 3px padding top/bottom + 26px line = 32px total -->
-          <rr-toolbar-divider size="s"></rr-toolbar-divider>
+          <rr-toolbar-divider size="sm"></rr-toolbar-divider>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

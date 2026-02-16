@@ -14,7 +14,7 @@ export default {
   argTypes: {
     size: {
       control: 'select',
-      options: ['s', 'm'],
+      options: ['sm', 'md'],
       description: 'Button size',
     },
     disabled: {
@@ -25,7 +25,7 @@ export default {
 };
 
 export const Default = {
-  args: { size: 'm', disabled: false },
+  args: { size: 'md', disabled: false },
   render: (args) => html`
     <rr-split-button
       size=${args.size}
@@ -39,7 +39,7 @@ export const Default = {
 };
 
 export const SizeSmall = {
-  args: { size: 's', disabled: false },
+  args: { size: 'sm', disabled: false },
   render: (args) => html`
     <rr-split-button
       size=${args.size}
@@ -51,7 +51,7 @@ export const SizeSmall = {
 };
 
 export const Disabled = {
-  args: { size: 'm', disabled: true },
+  args: { size: 'md', disabled: true },
   render: (args) => html`
     <rr-split-button
       size=${args.size}
@@ -65,8 +65,8 @@ export const Disabled = {
 export const AllSizes = {
   render: () => html`
     <div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
-      <rr-split-button size="m">Split button</rr-split-button>
-      <rr-split-button size="s">Split button</rr-split-button>
+      <rr-split-button size="md">Split button</rr-split-button>
+      <rr-split-button size="sm">Split button</rr-split-button>
     </div>
   `,
 };
@@ -92,9 +92,9 @@ export const FigmaComparison = () => html`
         -->
         <div style="position: relative; width: 191px; height: 136px; background: #ffffff;">
           <!-- size=md at y=16, x=16 -->
-          <rr-split-button size="m" style="position: absolute; left: 16px; top: 16px;">Split button</rr-split-button>
+          <rr-split-button size="md" style="position: absolute; left: 16px; top: 16px;">Split button</rr-split-button>
           <!-- size=sm at y=76, x=16 -->
-          <rr-split-button size="s" style="position: absolute; left: 16px; top: 76px;">Split button</rr-split-button>
+          <rr-split-button size="sm" style="position: absolute; left: 16px; top: 76px;">Split button</rr-split-button>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

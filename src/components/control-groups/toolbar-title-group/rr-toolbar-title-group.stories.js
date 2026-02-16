@@ -15,7 +15,7 @@ export default {
   argTypes: {
     size: {
       control: 'select',
-      options: ['s', 'm'],
+      options: ['sm', 'md'],
       description: 'Title group size',
     },
     align: {
@@ -35,7 +35,7 @@ export default {
 };
 
 export const Default = {
-  args: { size: 'm', align: 'left', title: 'Toolbar', subtitle: 'Subtitle' },
+  args: { size: 'md', align: 'left', title: 'Toolbar', subtitle: 'Subtitle' },
   render: (args) => html`
     <rr-toolbar-title-group
       size=${args.size}
@@ -47,7 +47,7 @@ export const Default = {
 };
 
 export const Centered = {
-  args: { size: 'm', align: 'center', title: 'Toolbar', subtitle: 'Subtitle' },
+  args: { size: 'md', align: 'center', title: 'Toolbar', subtitle: 'Subtitle' },
   render: (args) => html`
     <rr-toolbar-title-group
       size=${args.size}
@@ -59,7 +59,7 @@ export const Centered = {
 };
 
 export const SizeSmall = {
-  args: { size: 's', align: 'left', title: 'Toolbar', subtitle: 'Subtitle' },
+  args: { size: 'sm', align: 'left', title: 'Toolbar', subtitle: 'Subtitle' },
   render: (args) => html`
     <rr-toolbar-title-group
       size=${args.size}
@@ -71,7 +71,7 @@ export const SizeSmall = {
 };
 
 export const TitleOnly = {
-  args: { size: 'm', align: 'left', title: 'Toolbar Title', subtitle: '' },
+  args: { size: 'md', align: 'left', title: 'Toolbar Title', subtitle: '' },
   render: (args) => html`
     <rr-toolbar-title-group
       size=${args.size}
@@ -82,11 +82,11 @@ export const TitleOnly = {
 };
 
 export const InToolbar = {
-  args: { size: 'm', title: 'Document Title', subtitle: 'Last edited: Today' },
+  args: { size: 'md', title: 'Document Title', subtitle: 'Last edited: Today' },
   render: (args) => html`
-    <rr-toolbar size="m">
+    <rr-toolbar size="md">
       <rr-toolbar-title-group
-        slot="start"
+        slot="start-area"
         size=${args.size}
         title=${args.title}
         subtitle=${args.subtitle}
@@ -114,13 +114,13 @@ export const FigmaComparison = () => html`
         -->
         <div style="padding: 16px; box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; align-items: flex-start;">
           <!-- size=md, text-align=left -->
-          <rr-toolbar-title-group size="m" align="left" title="Toolbar" subtitle="Subtitle"></rr-toolbar-title-group>
+          <rr-toolbar-title-group size="md" align="left" title="Toolbar" subtitle="Subtitle"></rr-toolbar-title-group>
           <!-- size=md, text-align=center -->
-          <rr-toolbar-title-group size="m" align="center" title="Toolbar" subtitle="Subtitle"></rr-toolbar-title-group>
+          <rr-toolbar-title-group size="md" align="center" title="Toolbar" subtitle="Subtitle"></rr-toolbar-title-group>
           <!-- size=sm, text-align=left -->
-          <rr-toolbar-title-group size="s" align="left" title="Toolbar" subtitle="Subtitle"></rr-toolbar-title-group>
+          <rr-toolbar-title-group size="sm" align="left" title="Toolbar" subtitle="Subtitle"></rr-toolbar-title-group>
           <!-- size=sm, text-align=center -->
-          <rr-toolbar-title-group size="s" align="center" title="Toolbar" subtitle="Subtitle"></rr-toolbar-title-group>
+          <rr-toolbar-title-group size="sm" align="center" title="Toolbar" subtitle="Subtitle"></rr-toolbar-title-group>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

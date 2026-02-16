@@ -4,7 +4,7 @@
  * A container for grouping related buttons together, either horizontally or vertically.
  *
  * @element rr-button-group
- * @attr {string} size - Button group size: 's' | 'm' (default: 'm')
+ * @attr {string} size - Button group size: 'sm' | 'md' (default: 'md')
  * @attr {string} flow - Layout direction: 'horizontal' | 'vertical' (default: 'horizontal')
  *
  * @slot - Default slot for buttons
@@ -15,7 +15,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 's' | 'm';
+type Size = 'sm' | 'md';
 type Flow = 'horizontal' | 'vertical';
 
 @customElement('rr-button-group')
@@ -23,7 +23,7 @@ export class RRButtonGroup extends LitElement {
   static override styles = css`
     :host {
       display: inline-flex;
-      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {
@@ -53,12 +53,12 @@ export class RRButtonGroup extends LitElement {
     }
 
     /* Size: S - gap 6px */
-    :host([size="s"]) .button-group {
+    :host([size="sm"]) .button-group {
       gap: var(--primitives-space-6);
     }
 
     /* Size: M (default) - gap 8px */
-    :host([size="m"]) .button-group,
+    :host([size="md"]) .button-group,
     :host(:not([size])) .button-group {
       gap: var(--primitives-space-8);
     }
@@ -71,7 +71,7 @@ export class RRButtonGroup extends LitElement {
   `;
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   @property({ type: String, reflect: true })
   flow: Flow = 'horizontal';

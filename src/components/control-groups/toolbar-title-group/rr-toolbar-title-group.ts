@@ -4,7 +4,7 @@
  * A title and subtitle group for use within toolbars.
  *
  * @element rr-toolbar-title-group
- * @attr {string} size - Group size: 's' | 'm' (default: 'm')
+ * @attr {string} size - Group size: 'sm' | 'md' (default: 'md')
  * @attr {string} align - Text alignment: 'left' | 'center' (default: 'left')
  * @attr {string} title - The main title text
  * @attr {string} subtitle - The optional subtitle text
@@ -21,7 +21,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 's' | 'm';
+type Size = 'sm' | 'md';
 type Align = 'left' | 'center';
 
 @customElement('rr-toolbar-title-group')
@@ -30,7 +30,7 @@ export class RRToolbarTitleGroup extends LitElement {
     :host {
       display: inline-flex;
       flex-direction: column;
-      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {
@@ -50,13 +50,13 @@ export class RRToolbarTitleGroup extends LitElement {
     }
 
     /* Size: M (default) - height 44px */
-    :host([size="m"]) .title-group__inner,
+    :host([size="md"]) .title-group__inner,
     :host(:not([size])) .title-group__inner {
       height: 44px;
     }
 
     /* Size: S - height 32px */
-    :host([size="s"]) .title-group__inner {
+    :host([size="sm"]) .title-group__inner {
       height: 32px;
     }
 
@@ -78,14 +78,14 @@ export class RRToolbarTitleGroup extends LitElement {
     }
 
     /* Size: M title - 20px bold */
-    :host([size="m"]) .title-group__title,
+    :host([size="md"]) .title-group__title,
     :host(:not([size])) .title-group__title {
       font: var(--semantics-content-body-lg-bold-flat);
       font-weight: 550;
     }
 
     /* Size: S title - 16px bold */
-    :host([size="s"]) .title-group__title {
+    :host([size="sm"]) .title-group__title {
       font: var(--semantics-content-body-sm-bold-flat);
       font-weight: 550;
     }
@@ -99,13 +99,13 @@ export class RRToolbarTitleGroup extends LitElement {
     }
 
     /* Size: M subtitle - 14px regular */
-    :host([size="m"]) .title-group__subtitle,
+    :host([size="md"]) .title-group__subtitle,
     :host(:not([size])) .title-group__subtitle {
       font: var(--semantics-content-body-xs-regular-flat);
     }
 
     /* Size: S subtitle - 12px regular */
-    :host([size="s"]) .title-group__subtitle {
+    :host([size="sm"]) .title-group__subtitle {
       font-size: 12px;
       font-weight: 400;
       line-height: 1.125;
@@ -126,7 +126,7 @@ export class RRToolbarTitleGroup extends LitElement {
   `;
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   @property({ type: String, reflect: true })
   align: Align = 'left';

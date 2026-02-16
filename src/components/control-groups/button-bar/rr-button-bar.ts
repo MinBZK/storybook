@@ -5,7 +5,7 @@
  * Similar to button-group but with a visible background and border radius.
  *
  * @element rr-button-bar
- * @attr {string} size - Bar size: 's' | 'm' (default: 'm')
+ * @attr {string} size - Bar size: 'sm' | 'md' (default: 'md')
  *
  * @slot - Default slot for buttons and dividers
  *
@@ -15,14 +15,14 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 's' | 'm';
+type Size = 'sm' | 'md';
 
 @customElement('rr-button-bar')
 export class RRButtonBar extends LitElement {
   static override styles = css`
     :host {
       display: inline-flex;
-      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {
@@ -39,19 +39,19 @@ export class RRButtonBar extends LitElement {
     }
 
     /* Size: S - height 32px */
-    :host([size="s"]) .button-bar {
+    :host([size="sm"]) .button-bar {
       height: 32px;
     }
 
     /* Size: M (default) - height 44px */
-    :host([size="m"]) .button-bar,
+    :host([size="md"]) .button-bar,
     :host(:not([size])) .button-bar {
       height: 44px;
     }
   `;
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   override render() {
     return html`

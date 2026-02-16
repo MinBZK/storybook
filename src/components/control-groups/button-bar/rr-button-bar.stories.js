@@ -15,41 +15,41 @@ export default {
   argTypes: {
     size: {
       control: 'select',
-      options: ['s', 'm'],
+      options: ['sm', 'md'],
       description: 'Button bar size',
     },
   },
 };
 
 export const Default = {
-  args: { size: 'm' },
+  args: { size: 'md' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size=${args.size} variant="neutral-transparent">Action 1</rr-button>
-      <rr-button size=${args.size} variant="neutral-transparent">Action 2</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Action 1</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Action 2</rr-button>
     </rr-button-bar>
   `,
 };
 
 export const SizeSmall = {
-  args: { size: 's' },
+  args: { size: 'sm' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size=${args.size} variant="neutral-transparent">Edit</rr-button>
-      <rr-button size=${args.size} variant="neutral-transparent">Delete</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Edit</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Delete</rr-button>
     </rr-button-bar>
   `,
 };
 
 export const WithDivider = {
-  args: { size: 'm' },
+  args: { size: 'md' },
   render: (args) => html`
     <rr-button-bar size=${args.size}>
-      <rr-button size=${args.size} variant="neutral-transparent">Cut</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Cut</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size=${args.size} variant="neutral-transparent">Copy</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Copy</rr-button>
       <rr-button-bar-divider size=${args.size}></rr-button-bar-divider>
-      <rr-button size=${args.size} variant="neutral-transparent">Paste</rr-button>
+      <rr-button size="s" variant="neutral-transparent">Paste</rr-button>
     </rr-button-bar>
   `,
 };
@@ -75,13 +75,13 @@ export const FigmaComparison = () => html`
         -->
         <div style="padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
           <!-- size=md with slot placeholders -->
-          <rr-button-bar size="m">
+          <rr-button-bar size="md">
             <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
             <div style="width: 1px; height: 28px; background: #A9B2C0;"></div>
             <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
           </rr-button-bar>
           <!-- size=sm with slot placeholders -->
-          <rr-button-bar size="s">
+          <rr-button-bar size="sm">
             <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
             <div style="width: 1px; height: 20px; background: #A9B2C0;"></div>
             <div style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; color: #FF24BD; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; align-self: stretch;">SLOT</div>
