@@ -20,6 +20,7 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 
 // Configuration
 const TOKENS_FILE = path.join(ROOT_DIR, 'dist/css/tokens.css');
+const DARK_TOKENS_FILE = path.join(ROOT_DIR, 'dist/css/scheme-dark.css');
 const COMPONENTS_DIR = path.join(ROOT_DIR, 'src/components');
 
 // Patterns
@@ -225,7 +226,50 @@ function validate() {
     process.exit(1);
   }
 
+  // Dark scheme consistency check (warning only, not blocking)
+  validateDarkSchemeConsistency(tokens);
+
   console.log('✅ All CSS variables validated successfully!\n');
+}
+
+/**
+ * Check that scheme-dark.css defines the same token names as tokens.css.
+ * This is a warning-only check to catch token drift between schemes.
+ */
+function validateDarkSchemeConsistency(lightTokens) {
+  if (!fs.existsSync(DARK_TOKENS_FILE)) return;
+
+  console.log('🌙 Dark scheme consistency check...\n');
+  const darkTokens = parseTokensFile(DARK_TOKENS_FILE);
+
+  const missingInDark = [...lightTokens].filter(t => !darkTokens.has(t));
+  const extraInDark = [...darkTokens].filter(t => !lightTokens.has(t));
+
+  if (missingInDark.length > 0) {
+    console.log(`   ⚠️  ${missingInDark.length} token(s) in light but missing in dark scheme`);
+    for (const token of missingInDark.slice(0, 5)) {
+      console.log(`      └─ ${token}`);
+    }
+    if (missingInDark.length > 5) {
+      console.log(`      ... and ${missingInDark.length - 5} more`);
+    }
+  }
+
+  if (extraInDark.length > 0) {
+    console.log(`   ⚠️  ${extraInDark.length} token(s) in dark but missing in light scheme`);
+    for (const token of extraInDark.slice(0, 5)) {
+      console.log(`      └─ ${token}`);
+    }
+    if (extraInDark.length > 5) {
+      console.log(`      ... and ${extraInDark.length - 5} more`);
+    }
+  }
+
+  if (missingInDark.length === 0 && extraInDark.length === 0) {
+    console.log(`   ✅ Dark scheme has same ${darkTokens.size} tokens as light scheme\n`);
+  } else {
+    console.log('');
+  }
 }
 
 // Run validation
