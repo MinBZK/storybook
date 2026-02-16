@@ -1497,7 +1497,7 @@
       },
       "implementation": {
         "tagName": "rr-simple-section",
-        "file": "src/components/layout/section/rr-simple-section.ts",
+        "file": "src/components/layout/page-sections/rr-simple-section.ts",
         "className": "RRSimpleSection"
       },
       "status": "implemented",
@@ -1517,7 +1517,7 @@
       },
       "implementation": {
         "tagName": "rr-full-bleed-section",
-        "file": "src/components/layout/section/rr-full-bleed-section.ts",
+        "file": "src/components/layout/page-sections/rr-full-bleed-section.ts",
         "className": "RRFullBleedSection"
       },
       "status": "implemented",
@@ -1537,7 +1537,7 @@
       },
       "implementation": {
         "tagName": "rr-one-third-two-thirds-section",
-        "file": "src/components/layout/section/rr-one-third-two-thirds-section.ts",
+        "file": "src/components/layout/page-sections/rr-one-third-two-thirds-section.ts",
         "className": "RROneThirdTwoThirdsSection"
       },
       "status": "implemented",
@@ -1557,7 +1557,7 @@
       },
       "implementation": {
         "tagName": "rr-two-thirds-one-third-section",
-        "file": "src/components/layout/section/rr-two-thirds-one-third-section.ts",
+        "file": "src/components/layout/page-sections/rr-two-thirds-one-third-section.ts",
         "className": "RRTwoThirdsOneThirdSection"
       },
       "status": "implemented",
@@ -1577,7 +1577,7 @@
       },
       "implementation": {
         "tagName": "rr-one-half-one-half-section",
-        "file": "src/components/layout/section/rr-one-half-one-half-section.ts",
+        "file": "src/components/layout/page-sections/rr-one-half-one-half-section.ts",
         "className": "RROneHalfOneHalfSection"
       },
       "status": "implemented",
@@ -1597,7 +1597,7 @@
       },
       "implementation": {
         "tagName": "rr-lister-section",
-        "file": "src/components/layout/section/rr-lister-section.ts",
+        "file": "src/components/layout/page-sections/rr-lister-section.ts",
         "className": "RRListerSection"
       },
       "status": "implemented",
