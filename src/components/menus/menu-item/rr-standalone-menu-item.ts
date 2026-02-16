@@ -204,9 +204,7 @@ export class RRStandaloneMenuItem extends LitElement {
         class="menu-item"
         part="item"
         type="button"
-        role="menuitem"
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
         @click=${this._handleClick}
       >
         ${this.selected

@@ -288,7 +288,7 @@ export class RRIconButton extends LitElement {
   hasTitle = false;
 
   @property({ type: String })
-  title = 'Icon Button';
+  title = '';
 
   private _handleClick = (event: Event): void => {
     if (this.disabled) {

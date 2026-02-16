@@ -304,8 +304,9 @@ export class RRRadio extends LitElement {
   private _uncheckOtherRadios(): void {
     if (!this.name) return;
 
-    // Find all radio buttons in the same group
-    const radios = document.querySelectorAll<RRRadio>(`rr-radio[name="${this.name}"]`);
+    // Find all radio buttons in the same group (works inside Shadow DOM too)
+    const root = this.getRootNode() as Document | ShadowRoot;
+    const radios = root.querySelectorAll<RRRadio>(`rr-radio[name="${this.name}"]`);
     radios.forEach((radio) => {
       if (radio !== this && radio.checked) {
         radio.checked = false;
@@ -321,7 +322,8 @@ export class RRRadio extends LitElement {
 
   private _getRadioGroup(): RRRadio[] {
     if (!this.name) return [];
-    return Array.from(document.querySelectorAll<RRRadio>(`rr-radio[name="${this.name}"]`)).filter(
+    const root = this.getRootNode() as Document | ShadowRoot;
+    return Array.from(root.querySelectorAll<RRRadio>(`rr-radio[name="${this.name}"]`)).filter(
       (radio) => !radio.disabled
     );
   }

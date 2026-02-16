@@ -290,7 +290,6 @@ export class RRPasswordField extends LitElement {
           aria-label=${this.masked ? 'Show password' : 'Hide password'}
           @click=${this._toggleVisibility}
           ?disabled=${this.disabled}
-          tabindex="-1"
         >
           ${this.masked ? this._renderEyeIcon() : this._renderEyeSlashIcon()}
         </button>
