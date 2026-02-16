@@ -12,6 +12,7 @@ dist/
 # IDE
 .idea/
 .vscode/
+.nova/
 *.swp
 *.swo
 .DS_Store
