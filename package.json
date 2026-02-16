@@ -11,7 +11,7 @@
     "./css/primitives": "./dist/css/primitives.css",
     "./css/semantics": "./dist/css/semantics.css",
     "./css/components": "./dist/css/components.css",
-    "./css/theme-dark": "./dist/css/theme-dark.css"
+    "./css/scheme-dark": "./dist/css/scheme-dark.css"
   },
   "files": [
     "dist",

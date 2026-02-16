@@ -1,6 +1,6 @@
 import '../src/fonts/fonts.css';
 import '../dist/css/tokens.css';
-import '../dist/css/theme-dark.css';
+import '../dist/css/scheme-dark.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 // Figma Testing Library for pixel-perfect comparison
@@ -20,7 +20,7 @@ const preview = {
         dark: 'dark',
       },
       defaultTheme: 'light',
-      attributeName: 'data-theme',
+      attributeName: 'data-scheme',
     }),
   ],
   parameters: {

@@ -2,8 +2,8 @@ import StyleDictionary from 'style-dictionary';
 import { createFigmaVariablesParser } from './src/parser/figma-variables-parser.js';
 import { FONT_WEIGHT_MAP } from './src/parser/font-weights.js';
 
-// Theme definitions
-const THEMES = [
+// Scheme definitions
+const SCHEMES = [
   {
     name: 'light',
     mode: 'Light',
@@ -19,10 +19,10 @@ const THEMES = [
   {
     name: 'dark',
     mode: 'Dark',
-    selector: '[data-theme="dark"]',
+    selector: '[data-scheme="dark"]',
     parserName: 'figma-variables-dark',
     files: [
-      { destination: 'theme-dark.css' },
+      { destination: 'scheme-dark.css' },
     ],
   },
 ];
@@ -77,7 +77,7 @@ StyleDictionary.registerTransform({
 /**
  * Register a CSS custom properties format with a specific selector.
  */
-function registerThemeFormat(formatName, selector) {
+function registerSchemeFormat(formatName, selector) {
   StyleDictionary.registerFormat({
     name: formatName,
     format: ({ dictionary }) => {
@@ -100,19 +100,19 @@ function registerThemeFormat(formatName, selector) {
   });
 }
 
-// Build each theme
-for (const theme of THEMES) {
-  const parser = createFigmaVariablesParser(theme.mode, theme.parserName);
+// Build each scheme
+for (const scheme of SCHEMES) {
+  const parser = createFigmaVariablesParser(scheme.mode, scheme.parserName);
   StyleDictionary.registerParser(parser);
 
-  const formatName = `css/custom-properties-${theme.name}`;
-  registerThemeFormat(formatName, theme.selector);
+  const formatName = `css/custom-properties-${scheme.name}`;
+  registerSchemeFormat(formatName, scheme.selector);
 
   const platforms = {};
 
-  // CSS platforms for this theme
-  theme.files.forEach((file, index) => {
-    const platformName = index === 0 ? `css-${theme.name}` : `css-${theme.name}-${file.destination.replace('.css', '')}`;
+  // CSS platforms for this scheme
+  scheme.files.forEach((file, index) => {
+    const platformName = index === 0 ? `css-${scheme.name}` : `css-${scheme.name}-${file.destination.replace('.css', '')}`;
     platforms[platformName] = {
       transforms: TRANSFORMS,
       buildPath: 'dist/css/',
@@ -126,8 +126,8 @@ for (const theme of THEMES) {
     };
   });
 
-  // JSON output only for light theme
-  if (theme.name === 'light') {
+  // JSON output only for light scheme
+  if (scheme.name === 'light') {
     platforms['json'] = {
       transforms: ['name/kebab', 'size/px', 'number/value', 'fontWeight/number'],
       buildPath: 'dist/',
@@ -142,7 +142,7 @@ for (const theme of THEMES) {
 
   const config = {
     source: ['tokens/rr-tokens.json'],
-    parsers: [theme.parserName],
+    parsers: [scheme.parserName],
     platforms,
   };
 
