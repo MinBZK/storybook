@@ -91,7 +91,7 @@ export class RRSegmentedControl extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.setAttribute('role', 'tablist');
+    this.setAttribute('role', 'radiogroup');
     this.addEventListener('select', this._handleSelect as EventListener);
     this.addEventListener('keydown', this._handleKeyDown);
   }

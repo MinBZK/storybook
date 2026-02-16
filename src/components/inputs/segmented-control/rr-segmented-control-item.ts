@@ -186,7 +186,7 @@ export class RRSegmentedControlItem extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.setAttribute('role', 'tab');
+    this.setAttribute('role', 'radio');
     this._updateAriaState();
 
     if (!this.hasAttribute('tabindex') && !this.disabled) {
@@ -210,7 +210,7 @@ export class RRSegmentedControlItem extends LitElement {
   }
 
   private _updateAriaState(): void {
-    this.setAttribute('aria-selected', String(this.selected));
+    this.setAttribute('aria-checked', String(this.selected));
     this.setAttribute('aria-disabled', String(this.disabled));
     this.setAttribute('tabindex', this.selected && !this.disabled ? '0' : '-1');
   }

@@ -287,7 +287,7 @@ export class RRPasswordField extends LitElement {
           class="password-field__toggle"
           part="toggle"
           type="button"
-          aria-label=${this.masked ? 'Show password' : 'Hide password'}
+          aria-label=${this.masked ? 'Wachtwoord tonen' : 'Wachtwoord verbergen'}
           @click=${this._toggleVisibility}
           ?disabled=${this.disabled}
         >

@@ -221,7 +221,6 @@ export class RRToggleButton extends LitElement {
         type="button"
         aria-pressed=${this.selected}
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
         tabindex=${this.disabled ? -1 : 0}
         @click=${this._handleClick}
         @keydown=${this._handleKeyDown}

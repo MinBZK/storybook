@@ -225,7 +225,7 @@ export class RRComboBoxField extends LitElement {
           type="button"
           ?disabled=${this.disabled}
           @click=${this._handlePickerClick}
-          aria-label="Open dropdown"
+          aria-label="Dropdown openen"
         >
           <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path d="M10 14.17L5.83 10l-1.42 1.41L10 17l5.59-5.59L14.17 10 10 14.17zM10 5.83L14.17 10l1.42-1.41L10 3 4.41 8.59 5.83 10 10 5.83z"/>

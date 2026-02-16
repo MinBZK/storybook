@@ -211,7 +211,7 @@ export class RRNumberField extends LitElement {
           type="button"
           ?disabled=${this.disabled || !canDecrease}
           @click=${this._handleDecrease}
-          aria-label="Decrease value"
+          aria-label="Waarde verlagen"
         >
           <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path d="M3.33 9.17h13.34v1.66H3.33z"/>
@@ -237,7 +237,7 @@ export class RRNumberField extends LitElement {
           type="button"
           ?disabled=${this.disabled || !canIncrease}
           @click=${this._handleIncrease}
-          aria-label="Increase value"
+          aria-label="Waarde verhogen"
         >
           <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path d="M9.17 3.33v5.84H3.33v1.66h5.84v5.84h1.66v-5.84h5.84V9.17h-5.84V3.33z"/>

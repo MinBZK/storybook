@@ -314,7 +314,6 @@ export class RRIconButton extends LitElement {
         part="button"
         type=${this.type}
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
         aria-label=${this.label}
       >
         <slot></slot>

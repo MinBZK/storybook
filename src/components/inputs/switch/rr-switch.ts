@@ -296,8 +296,8 @@ export class RRSwitch extends LitElement {
       return;
     }
 
-    // Space or Enter toggles the switch
-    if (event.key === ' ' || event.key === 'Enter') {
+    // Space toggles the switch (Enter is not standard for switch role)
+    if (event.key === ' ') {
       event.preventDefault();
       this._toggle();
     }

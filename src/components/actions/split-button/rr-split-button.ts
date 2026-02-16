@@ -222,7 +222,6 @@ export class RRSplitButton extends LitElement {
           part="button"
           type="button"
           ?disabled=${this.disabled}
-          aria-disabled=${this.disabled}
           @click=${this._handleButtonClick}
         >
           <slot></slot>
@@ -233,9 +232,8 @@ export class RRSplitButton extends LitElement {
           part="dropdown"
           type="button"
           ?disabled=${this.disabled}
-          aria-disabled=${this.disabled}
           aria-haspopup="menu"
-          aria-label="More options"
+          aria-label="Meer opties"
           @click=${this._handleDropdownClick}
         >
           <slot name="dropdown-icon">

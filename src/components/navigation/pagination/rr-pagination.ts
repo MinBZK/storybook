@@ -218,13 +218,13 @@ export class RRPagination extends LitElement {
     const atLast = this.currentPage >= this.totalPages;
 
     return html`
-      <nav class="pagination" part="container" role="navigation" aria-label="Pagination">
+      <nav class="pagination" part="container" role="navigation" aria-label="Paginering">
         <button
           class="pagination__button pagination__button--nav"
           part="button"
           type="button"
           ?disabled=${atFirst}
-          aria-label="Previous page"
+          aria-label="Vorige pagina"
           @click=${() => this._goToPage(this.currentPage - 1)}
         >
           ${this._renderChevronLeft()}
@@ -242,7 +242,7 @@ export class RRPagination extends LitElement {
                   class="pagination__button ${page === this.currentPage ? 'pagination__button--active' : ''}"
                   part=${page === this.currentPage ? 'button-active' : 'button'}
                   type="button"
-                  aria-label="Page ${page}"
+                  aria-label="Pagina ${page}"
                   aria-current=${page === this.currentPage ? 'page' : nothing}
                   @click=${() => this._goToPage(page as number)}
                 >
@@ -258,7 +258,7 @@ export class RRPagination extends LitElement {
           part="button"
           type="button"
           ?disabled=${atLast}
-          aria-label="Next page"
+          aria-label="Volgende pagina"
           @click=${() => this._goToPage(this.currentPage + 1)}
         >
           ${this._renderChevronRight()}

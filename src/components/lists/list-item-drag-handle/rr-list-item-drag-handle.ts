@@ -91,7 +91,7 @@ export class RRListItemDragHandle extends LitElement {
 
   override render() {
     return html`
-      <div class="drag-handle" part="handle" role="img" aria-label="Drag handle">
+      <div class="drag-handle" part="handle" role="img" aria-label="Sleepgreep">
         ${this._renderDots()}
       </div>
     `;
