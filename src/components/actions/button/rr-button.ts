@@ -27,6 +27,7 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { buttonResetStyles } from '../../shared/button-reset-styles.ts';
 
 type Variant = 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type Size = 'xs' | 'sm' | 'md';
@@ -34,7 +35,7 @@ type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('rr-button')
 export class RRButton extends LitElement {
-  static override styles = css`
+  static override styles = [buttonResetStyles, css`
     :host {
       display: inline-block;
       font-family: var(--rr-font-family-body);
@@ -50,14 +51,6 @@ export class RRButton extends LitElement {
     }
 
     .button {
-      /* Reset */
-      appearance: none;
-      border: none;
-      margin: 0;
-      padding: 0;
-      background: none;
-      font: inherit;
-      cursor: pointer;
       box-sizing: border-box;
 
       /* Layout */
@@ -242,7 +235,7 @@ export class RRButton extends LitElement {
         opacity: 0.5 !important;
       }
     }
-  `;
+  `];
 
   @property({ type: String, reflect: true })
   variant: Variant = 'accent-filled';

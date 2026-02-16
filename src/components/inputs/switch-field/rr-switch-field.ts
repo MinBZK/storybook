@@ -20,20 +20,12 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { fieldSharedStyles } from '../../shared/field-shared-styles.ts';
 import '../switch/rr-switch.ts';
 
 @customElement('rr-switch-field')
 export class RRSwitchField extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: var(--rr-font-family-body);
-    }
-
-    :host([hidden]) {
-      display: none;
-    }
-
+  static override styles = [fieldSharedStyles, css`
     .switch-field {
       display: flex;
       flex-direction: row;
@@ -82,7 +74,7 @@ export class RRSwitchField extends LitElement {
         opacity: 0.5 !important;
       }
     }
-  `;
+  `];
 
   @property({ type: Boolean, reflect: true })
   checked = false;

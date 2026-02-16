@@ -15,33 +15,17 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { cellSharedStyles } from '../../shared/cell-shared-styles.ts';
 
 type IconSize = '16' | '20' | '24' | '32';
 type VerticalAlignment = 'top' | 'center';
 
 @customElement('rr-icon-cell')
 export class RRIconCell extends LitElement {
-  static override styles = css`
+  static override styles = [cellSharedStyles, css`
     :host {
-      display: flex;
-      flex-direction: column;
       align-items: center;
       color: var(--semantics-content-color);
-    }
-
-    :host([hidden]) {
-      display: none;
-    }
-
-    /* Vertical alignment: center (default) */
-    :host([vertical-alignment="center"]),
-    :host(:not([vertical-alignment])) {
-      justify-content: center;
-    }
-
-    /* Vertical alignment: top */
-    :host([vertical-alignment="top"]) {
-      justify-content: flex-start;
     }
 
     /* Icon sizing via slotted content */
@@ -74,7 +58,7 @@ export class RRIconCell extends LitElement {
       width: 32px;
       height: 32px;
     }
-  `;
+  `];
 
   @property({ type: String, reflect: true })
   size: IconSize = '24';

@@ -17,6 +17,7 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { cellSharedStyles } from '../../shared/cell-shared-styles.ts';
 
 type Size = 'sm' | 'md';
 type Color = 'default' | 'secondary';
@@ -25,37 +26,9 @@ type VerticalAlignment = 'top' | 'center';
 
 @customElement('rr-text-cell')
 export class RRTextCell extends LitElement {
-  static override styles = css`
+  static override styles = [cellSharedStyles, css`
     :host {
-      display: flex;
-      flex-direction: column;
       font-family: var(--rr-font-family-body);
-    }
-
-    :host([hidden]) {
-      display: none;
-    }
-
-    /* Vertical alignment: center (default) */
-    :host([vertical-alignment="center"]),
-    :host(:not([vertical-alignment])) {
-      justify-content: center;
-    }
-
-    /* Vertical alignment: top */
-    :host([vertical-alignment="top"]) {
-      justify-content: flex-start;
-    }
-
-    /* Horizontal alignment: left (default) */
-    :host([horizontal-alignment="left"]),
-    :host(:not([horizontal-alignment])) {
-      align-items: flex-start;
-    }
-
-    /* Horizontal alignment: right */
-    :host([horizontal-alignment="right"]) {
-      align-items: flex-end;
     }
 
     .text-cell__text {
@@ -104,7 +77,7 @@ export class RRTextCell extends LitElement {
         forced-color-adjust: none;
       }
     }
-  `;
+  `];
 
   @property({ type: String, reflect: true })
   size: Size = 'md';
