@@ -118,17 +118,17 @@ Gebruik `/component <figma-node-id>` voor het maken of updaten van componenten. 
 | Size | Min Height | Padding | Gap | Border-radius |
 |------|------------|---------|-----|---------------|
 | xs | 24px | 4px 6px | 2px | 4px |
-| s | 32px | 6px 8px | 2px | 6px |
-| m | 44px | 12px | 4px | 8px |
+| sm | 32px | 6px 8px | 2px | 6px |
+| md | 44px | 12px | 4px | 8px |
 
 ## Key Tokens
 
 ```css
 /* Controls */
 --semantics-controls-xs-min-size: 24px
---semantics-controls-s-min-size: 32px
---semantics-controls-m-min-size: 44px
---semantics-controls-{xs|s|m}-corner-radius
+--semantics-controls-sm-min-size: 32px
+--semantics-controls-md-min-size: 44px
+--semantics-controls-{xs|sm|md}-corner-radius
 
 /* Focus */
 --semantics-focus-ring-thickness: 2px
@@ -139,7 +139,7 @@ Gebruik `/component <figma-node-id>` voor het maken of updaten van componenten. 
 --semantics-buttons-accent-filled-color
 
 /* Components */
---components-button-{xs|s|m}-font
+--components-button-{xs|sm|md}-font
 --components-checkbox-*
 --components-radio-button-*
 --components-switch-*

@@ -946,9 +946,16 @@
       "figma": {
         "nodeId": "87-6523",
         "nodeName": "menu-bar__menu-item",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=87-6523"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=87-6523",
+        "note": "Covered by existing rr-menu-item component"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-menu-item",
+        "file": "src/components/navigation/menu-bar/rr-menu-item.ts",
+        "className": "RRMenuItem"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Menu Item",
@@ -1074,9 +1081,16 @@
       "figma": {
         "nodeId": "39-927",
         "nodeName": "split-view__divider",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-927"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-927",
+        "note": "Same node ID as Divider component (39-927) - implemented as rr-divider"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-divider",
+        "file": "src/components/layout/divider/rr-divider.ts",
+        "className": "RRDivider"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Stepper",
@@ -1195,7 +1209,13 @@
         "pageName": "Navigation",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=22-28"
       },
-      "status": "not-implemented"
+      "implementation": {
+        "tagName": "rr-nav-logo",
+        "file": "src/components/navigation/top-navigation-bar/rr-nav-logo.ts",
+        "className": "RRNavLogo"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Timeline Track Cell",
@@ -1216,10 +1236,17 @@
         "nodeName": "flexible-spacer-cell",
         "pageId": "0:1",
         "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1061-3456"
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1061-3456",
+        "note": "Covered by rr-spacer-cell with size=\"flexible\""
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-spacer-cell",
+        "file": "src/components/lists/spacer-cell/rr-spacer-cell.ts",
+        "className": "RRSpacerCell",
+        "usage": "<rr-spacer-cell size=\"flexible\"></rr-spacer-cell>"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "List Item Drag Handle Cell",
@@ -1278,8 +1305,13 @@
         "pageName": "Actions",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1304-2775"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-split-button",
+        "file": "src/components/actions/split-button/rr-split-button.ts",
+        "className": "RRSplitButton"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Password Field",
@@ -1302,8 +1334,13 @@
         "pageName": "Control groups",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-3538"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-toolbar",
+        "file": "src/components/control-groups/toolbar/rr-toolbar.ts",
+        "className": "RRToolbar"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Toolbar: Divider",
@@ -1314,8 +1351,13 @@
         "pageName": "Control groups",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1356-13969"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-toolbar-divider",
+        "file": "src/components/control-groups/toolbar-divider/rr-toolbar-divider.ts",
+        "className": "RRToolbarDivider"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Toolbar: Title Group",
@@ -1326,8 +1368,13 @@
         "pageName": "Control groups",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1406-12871"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-toolbar-title-group",
+        "file": "src/components/control-groups/toolbar-title-group/rr-toolbar-title-group.ts",
+        "className": "RRToolbarTitleGroup"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Button Group",
@@ -1338,8 +1385,13 @@
         "pageName": "Control groups",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1339-3762"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-button-group",
+        "file": "src/components/control-groups/button-group/rr-button-group.ts",
+        "className": "RRButtonGroup"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Button Bar",
@@ -1350,8 +1402,13 @@
         "pageName": "Control groups",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263-6841"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-button-bar",
+        "file": "src/components/control-groups/button-bar/rr-button-bar.ts",
+        "className": "RRButtonBar"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Button Bar: Divider",
@@ -1362,8 +1419,13 @@
         "pageName": "Control groups",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263-6851"
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-button-bar-divider",
+        "file": "src/components/control-groups/button-bar-divider/rr-button-bar-divider.ts",
+        "className": "RRButtonBarDivider"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Tooltip",
@@ -1478,10 +1540,15 @@
         "pageId": "39:908",
         "pageName": "Layout",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1451-33442",
-        "note": "Figma box component with on-tinted variants. Different from utility Box component."
+        "note": "Covered by existing rr-box component. On-tinted variant can be added as attribute."
       },
-      "status": "not-implemented",
-      "note": "New component added 2026-02-02"
+      "implementation": {
+        "tagName": "rr-box",
+        "file": "src/components/layout/box/rr-box.ts",
+        "className": "RRBox"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Simple Section",

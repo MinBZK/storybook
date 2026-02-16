@@ -61,7 +61,7 @@ mcp__figma-with-token__get_figma_data(fileKey: "5DyHMXUNVxbgH7ZjhQxPZe", nodeId:
 ```
 
 **Analyseer:**
-- Sizes (xs, s, m)
+- Sizes (xs, sm, md)
 - States (default, hover, active, focus, disabled)
 - Padding (LET OP: kan asymmetrisch zijn!)
 - Typography
@@ -133,7 +133,7 @@ Dit command doet automatisch:
  * RegelRecht {DisplayName} Component (Lit + TypeScript)
  *
  * @element rr-{name}
- * @attr {string} size - Component size: 'xs' | 's' | 'm' (default: 'm')
+ * @attr {string} size - Component size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  *
  * @slot - Default slot for content
@@ -146,7 +146,7 @@ Dit command doet automatisch:
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 'xs' | 's' | 'm';
+type Size = 'xs' | 'sm' | 'md';
 
 @customElement('rr-{name}')
 export class RR{PascalName} extends LitElement {
@@ -190,15 +190,15 @@ export class RR{PascalName} extends LitElement {
       /* padding en font: haal uit Figma */
     }
 
-    :host([size="s"]) .{name} {
-      min-height: var(--semantics-controls-s-min-size);
-      border-radius: var(--semantics-controls-s-corner-radius);
+    :host([size="sm"]) .{name} {
+      min-height: var(--semantics-controls-sm-min-size);
+      border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
-    :host([size="m"]) .{name},
+    :host([size="md"]) .{name},
     :host(:not([size])) .{name} {
-      min-height: var(--semantics-controls-m-min-size);
-      border-radius: var(--semantics-controls-m-corner-radius);
+      min-height: var(--semantics-controls-md-min-size);
+      border-radius: var(--semantics-controls-md-corner-radius);
     }
 
     /* Focus state */
@@ -231,7 +231,7 @@ export class RR{PascalName} extends LitElement {
   `;
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;
@@ -282,7 +282,7 @@ export default {
   argTypes: {
     size: {
       control: 'select',
-      options: ['xs', 's', 'm'],
+      options: ['xs', 'sm', 'md'],
     },
     disabled: {
       control: 'boolean',
@@ -291,7 +291,7 @@ export default {
 };
 
 export const Default = {
-  args: { size: 'm', disabled: false },
+  args: { size: 'md', disabled: false },
   render: (args) => html`<rr-{name} size=${args.size} ?disabled=${args.disabled}>Label</rr-{name}>`,
 };
 ```
@@ -366,9 +366,9 @@ export const FigmaComparison = () => html`
         -->
         <div style="width: {width}px; height: {height}px; background: #ffffff; padding: {padding}px; box-sizing: border-box; display: flex; flex-direction: {direction}; gap: {gap}px; align-items: flex-start;">
           <!-- Genereer EXACT de varianten uit Figma, in dezelfde volgorde -->
-          <rr-{name} size="m">Label</rr-{name}>
+          <rr-{name} size="md">Label</rr-{name}>
           <rr-{name} size="m" selected>Label</rr-{name}>
-          <rr-{name} size="s">Label</rr-{name}>
+          <rr-{name} size="sm">Label</rr-{name}>
           <rr-{name} size="s" selected>Label</rr-{name}>
         </div>
       </ftl-holster>
@@ -438,7 +438,7 @@ grep -i "opacity" dist/css/tokens.css
 
 **Tokens:**
 - [ ] Semantics tokens waar mogelijk
-- [ ] Alle CSS vars hebben fallback waarden
+- [ ] Geen fallback waarden op design tokens (enige uitzondering: override hooks `--rr-*`)
 - [ ] Opacity: `calc(token / 100)`
 
 **Accessibility:**
