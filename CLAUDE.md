@@ -118,17 +118,17 @@ Gebruik `/component <figma-node-id>` voor het maken of updaten van componenten. 
 | Size | Min Height | Padding | Gap | Border-radius |
 |------|------------|---------|-----|---------------|
 | xs | 24px | 4px 6px | 2px | 4px |
-| sm | 32px | 6px 8px | 2px | 6px |
-| md | 44px | 12px | 4px | 8px |
+| s | 32px | 6px 8px | 2px | 6px |
+| m | 44px | 12px | 4px | 8px |
 
 ## Key Tokens
 
 ```css
 /* Controls */
 --semantics-controls-xs-min-size: 24px
---semantics-controls-sm-min-size: 32px
---semantics-controls-md-min-size: 44px
---semantics-controls-{xs|sm|md}-corner-radius
+--semantics-controls-s-min-size: 32px
+--semantics-controls-m-min-size: 44px
+--semantics-controls-{xs|s|m}-corner-radius
 
 /* Focus */
 --semantics-focus-ring-thickness: 2px
@@ -139,7 +139,7 @@ Gebruik `/component <figma-node-id>` voor het maken of updaten van componenten. 
 --semantics-buttons-accent-filled-color
 
 /* Components */
---components-button-{xs|sm|md}-font
+--components-button-{xs|s|m}-font
 --components-checkbox-*
 --components-radio-button-*
 --components-switch-*
@@ -159,9 +159,9 @@ Versions are **automatically** bumped by semantic-release on merge to main.
 
 | Commit Type | Version Bump |
 |-------------|--------------|
-| `feat:` | Minor (0.1.0 → 0.2.0) |
-| `fix:`, `perf:` | Patch (0.1.0 → 0.1.1) |
-| `feat!:` or `BREAKING CHANGE:` | Minor (pre-1.0) |
+| `feat:` | Patch (0.5.0 → 0.5.1) |
+| `fix:`, `perf:` | Patch (0.5.0 → 0.5.1) |
+| `feat!:` or `BREAKING CHANGE:` | Patch (0.5.0 → 0.5.1) |
 | `docs:`, `chore:`, `ci:`, etc. | No bump |
 
 **Manual version bumping is not needed.** Use conventional commits and CI handles the rest.
@@ -224,6 +224,7 @@ min-height: var(--semantics-controls-m-min-size);
 
 **Uitzonderingen (behoud fallbacks):**
 - Override hooks: `var(--rr-button-background-color, var(--_bg-color))`
+- Font-family: `var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif)`
 
 CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `dist/css/tokens.css`.
 
