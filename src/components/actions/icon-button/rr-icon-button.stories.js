@@ -9,7 +9,7 @@ import './rr-icon-button.ts';
  *
  * ## Gebruik
  * ```html
- * <rr-icon-button variant="accent-filled" size="m" label="Sluiten">
+ * <rr-icon-button variant="accent-filled" size="md" label="Sluiten">
  *   <svg>...</svg>
  * </rr-icon-button>
  * ```
@@ -257,8 +257,8 @@ AllVariants.parameters = {
 export const AllSizes = () => html`
   <div style="display: flex; gap: 1rem; align-items: center;">
     <rr-icon-button size="xs" label="Extra small">${closeIcon}</rr-icon-button>
-    <rr-icon-button size="s" label="Small">${closeIcon}</rr-icon-button>
-    <rr-icon-button size="m" label="Medium">${closeIcon}</rr-icon-button>
+    <rr-icon-button size="sm" label="Small">${closeIcon}</rr-icon-button>
+    <rr-icon-button size="md" label="Medium">${closeIcon}</rr-icon-button>
   </div>
 `;
 AllSizes.parameters = {
@@ -287,12 +287,12 @@ export const VariantSizeMatrix = () => html`
           >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-filled" size="s" label="Accent filled S"
+          <rr-icon-button variant="accent-filled" size="sm" label="Accent filled S"
             >${closeIcon}</rr-icon-button
           >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-filled" size="m" label="Accent filled M"
+          <rr-icon-button variant="accent-filled" size="md" label="Accent filled M"
             >${closeIcon}</rr-icon-button
           >
         </td>
@@ -305,12 +305,12 @@ export const VariantSizeMatrix = () => html`
           >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-outlined" size="s" label="Accent outlined S"
+          <rr-icon-button variant="accent-outlined" size="sm" label="Accent outlined S"
             >${closeIcon}</rr-icon-button
           >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-outlined" size="m" label="Accent outlined M"
+          <rr-icon-button variant="accent-outlined" size="md" label="Accent outlined M"
             >${closeIcon}</rr-icon-button
           >
         </td>
@@ -323,12 +323,12 @@ export const VariantSizeMatrix = () => html`
           >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-tinted" size="s" label="Accent tinted S"
+          <rr-icon-button variant="accent-tinted" size="sm" label="Accent tinted S"
             >${closeIcon}</rr-icon-button
           >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-tinted" size="m" label="Accent tinted M"
+          <rr-icon-button variant="accent-tinted" size="md" label="Accent tinted M"
             >${closeIcon}</rr-icon-button
           >
         </td>
@@ -341,12 +341,12 @@ export const VariantSizeMatrix = () => html`
           >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="neutral-tinted" size="s" label="Neutral tinted S"
+          <rr-icon-button variant="neutral-tinted" size="sm" label="Neutral tinted S"
             >${closeIcon}</rr-icon-button
           >
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="neutral-tinted" size="m" label="Neutral tinted M"
+          <rr-icon-button variant="neutral-tinted" size="md" label="Neutral tinted M"
             >${closeIcon}</rr-icon-button
           >
         </td>
@@ -359,12 +359,12 @@ export const VariantSizeMatrix = () => html`
           >
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-icon-button variant="accent-transparent" size="s" label="Accent transparent S"
+          <rr-icon-button variant="accent-transparent" size="sm" label="Accent transparent S"
             >${closeIcon}</rr-icon-button
           >
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-icon-button variant="accent-transparent" size="m" label="Accent transparent M"
+          <rr-icon-button variant="accent-transparent" size="md" label="Accent transparent M"
             >${closeIcon}</rr-icon-button
           >
         </td>
@@ -418,10 +418,10 @@ export const IconButtonGroups = () => html`
     <div>
       <h3 style="margin: 0 0 1rem 0; font-size: 1rem;">Dialog knoppen</h3>
       <div style="display: flex; gap: 0.5rem;">
-        <rr-icon-button variant="neutral-tinted" size="s" label="Sluiten"
+        <rr-icon-button variant="neutral-tinted" size="sm" label="Sluiten"
           >${closeIcon}</rr-icon-button
         >
-        <rr-icon-button variant="neutral-tinted" size="s" label="Instellingen"
+        <rr-icon-button variant="neutral-tinted" size="sm" label="Instellingen"
           >${settingsIcon}</rr-icon-button
         >
       </div>
@@ -465,16 +465,16 @@ export const FigmaComparison = () => html`
         <div style="position: relative; width: 754px; height: 428px; background: #ffffff;">
           <!-- Row 1: neutral-tinted -->
           <div style="position: absolute; left: 14px; top: 22px;">
-            <rr-icon-button variant="neutral-tinted" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="neutral-tinted" size="md" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 88px; top: 22px;">
-            <rr-icon-button variant="neutral-tinted" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="neutral-tinted" size="md" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 162px; top: 28px;">
-            <rr-icon-button variant="neutral-tinted" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="neutral-tinted" size="sm" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 228px; top: 28px;">
-            <rr-icon-button variant="neutral-tinted" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="neutral-tinted" size="sm" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 294px; top: 32px;">
             <rr-icon-button variant="neutral-tinted" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
@@ -497,16 +497,16 @@ export const FigmaComparison = () => html`
 
           <!-- Row 2: neutral-transparent -->
           <div style="position: absolute; left: 14px; top: 90px;">
-            <rr-icon-button variant="neutral-transparent" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="neutral-transparent" size="md" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 90px; top: 90px;">
-            <rr-icon-button variant="neutral-transparent" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="neutral-transparent" size="md" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 166px; top: 96px;">
-            <rr-icon-button variant="neutral-transparent" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="neutral-transparent" size="sm" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 230px; top: 96px;">
-            <rr-icon-button variant="neutral-transparent" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="neutral-transparent" size="sm" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 294px; top: 100px;">
             <rr-icon-button variant="neutral-transparent" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
@@ -529,16 +529,16 @@ export const FigmaComparison = () => html`
 
           <!-- Row 3: accent-filled -->
           <div style="position: absolute; left: 14px; top: 158px;">
-            <rr-icon-button variant="accent-filled" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-filled" size="md" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 88px; top: 158px;">
-            <rr-icon-button variant="accent-filled" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-filled" size="md" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 164px; top: 164px;">
-            <rr-icon-button variant="accent-filled" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-filled" size="sm" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 230px; top: 164px;">
-            <rr-icon-button variant="accent-filled" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-filled" size="sm" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 296px; top: 168px;">
             <rr-icon-button variant="accent-filled" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
@@ -561,16 +561,16 @@ export const FigmaComparison = () => html`
 
           <!-- Row 4: accent-outlined -->
           <div style="position: absolute; left: 14px; top: 226px;">
-            <rr-icon-button variant="accent-outlined" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-outlined" size="md" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 88px; top: 226px;">
-            <rr-icon-button variant="accent-outlined" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-outlined" size="md" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 164px; top: 232px;">
-            <rr-icon-button variant="accent-outlined" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-outlined" size="sm" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 230px; top: 232px;">
-            <rr-icon-button variant="accent-outlined" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-outlined" size="sm" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 296px; top: 236px;">
             <rr-icon-button variant="accent-outlined" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
@@ -593,16 +593,16 @@ export const FigmaComparison = () => html`
 
           <!-- Row 5: accent-transparent -->
           <div style="position: absolute; left: 14px; top: 294px;">
-            <rr-icon-button variant="accent-transparent" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-transparent" size="md" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 90px; top: 294px;">
-            <rr-icon-button variant="accent-transparent" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-transparent" size="md" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 168px; top: 300px;">
-            <rr-icon-button variant="accent-transparent" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-transparent" size="sm" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 232px; top: 300px;">
-            <rr-icon-button variant="accent-transparent" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="accent-transparent" size="sm" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 296px; top: 304px;">
             <rr-icon-button variant="accent-transparent" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>
@@ -625,16 +625,16 @@ export const FigmaComparison = () => html`
 
           <!-- Row 6: danger-tinted -->
           <div style="position: absolute; left: 14px; top: 362px;">
-            <rr-icon-button variant="danger-tinted" size="m" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="danger-tinted" size="md" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 88px; top: 362px;">
-            <rr-icon-button variant="danger-tinted" size="m" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="danger-tinted" size="md" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 164px; top: 368px;">
-            <rr-icon-button variant="danger-tinted" size="s" label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="danger-tinted" size="sm" label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 230px; top: 368px;">
-            <rr-icon-button variant="danger-tinted" size="s" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
+            <rr-icon-button variant="danger-tinted" size="sm" disabled label="Icon button">${placeholderIcon}</rr-icon-button>
           </div>
           <div style="position: absolute; left: 296px; top: 372px;">
             <rr-icon-button variant="danger-tinted" size="xs" label="Icon button">${placeholderIcon}</rr-icon-button>

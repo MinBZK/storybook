@@ -95,7 +95,7 @@ export const AllSizes = () => html`
   <div style="display: flex; flex-direction: column; gap: 1rem;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
       <span style="font-size: 14px; color: #64748b;">Small</span>
-      <rr-segmented-control size="s" value="option1">
+      <rr-segmented-control size="sm" value="option1">
         <rr-segmented-control-item value="option1">Optie 1</rr-segmented-control-item>
         <rr-segmented-control-item value="option2">Optie 2</rr-segmented-control-item>
         <rr-segmented-control-item value="option3">Optie 3</rr-segmented-control-item>
@@ -103,7 +103,7 @@ export const AllSizes = () => html`
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
       <span style="font-size: 14px; color: #64748b;">Medium</span>
-      <rr-segmented-control size="m" value="option1">
+      <rr-segmented-control size="md" value="option1">
         <rr-segmented-control-item value="option1">Optie 1</rr-segmented-control-item>
         <rr-segmented-control-item value="option2">Optie 2</rr-segmented-control-item>
         <rr-segmented-control-item value="option3">Optie 3</rr-segmented-control-item>
@@ -158,19 +158,19 @@ export const FigmaComparison = () => html`
           style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff; width: 349px; box-sizing: border-box; align-items: flex-start;"
         >
           <!-- md text (full-width, no selection - Figma shows all items unselected) -->
-          <rr-segmented-control size="m" full-width style="width: 100%;">
+          <rr-segmented-control size="md" full-width style="width: 100%;">
             <rr-segmented-control-item value="option1">Item</rr-segmented-control-item>
             <rr-segmented-control-item value="option2">Item</rr-segmented-control-item>
             <rr-segmented-control-item value="option3">Item</rr-segmented-control-item>
           </rr-segmented-control>
           <!-- sm text (full-width, no selection) -->
-          <rr-segmented-control size="s" full-width style="width: 100%;">
+          <rr-segmented-control size="sm" full-width style="width: 100%;">
             <rr-segmented-control-item value="option1">Item</rr-segmented-control-item>
             <rr-segmented-control-item value="option2">Item</rr-segmented-control-item>
             <rr-segmented-control-item value="option3">Item</rr-segmented-control-item>
           </rr-segmented-control>
           <!-- md icons (hug content, no selection) -->
-          <rr-segmented-control size="m">
+          <rr-segmented-control size="md">
             <rr-segmented-control-item value="option1" content-type="icon">
               <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
                 <circle cx="12" cy="12" r="9"/>
@@ -188,7 +188,7 @@ export const FigmaComparison = () => html`
             </rr-segmented-control-item>
           </rr-segmented-control>
           <!-- sm icons (hug content, no selection) -->
-          <rr-segmented-control size="s">
+          <rr-segmented-control size="sm">
             <rr-segmented-control-item value="option1" content-type="icon">
               <svg slot="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
                 <circle cx="12" cy="12" r="9"/>

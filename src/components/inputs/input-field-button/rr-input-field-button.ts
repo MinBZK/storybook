@@ -38,9 +38,8 @@ export class RRInputFieldButton extends LitElement {
     }
 
     /*
-     * Token compat: components use old s/m naming, tokens define sm/md.
      * Both button types: sm height (32px), sm corner-radius (6px).
-     * Icon button uses size=s, text button uses size=xs (with sm height override).
+     * Icon button uses size=sm, text button uses size=xs (with sm height override).
      */
     rr-icon-button {
       --semantics-controls-sm-min-size: var(--semantics-controls-sm-min-size);
@@ -78,7 +77,7 @@ export class RRInputFieldButton extends LitElement {
     return html`
       <rr-icon-button
         variant="neutral-tinted"
-        size="s"
+        size="sm"
         label=${this.label || 'input-field-button'}
         ?disabled=${this.disabled}
       >

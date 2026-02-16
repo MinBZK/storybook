@@ -3,7 +3,7 @@
  *
  * @element rr-icon-button
  * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent'
- * @attr {string} size - Button size: 'xs' | 's' | 'm' (default: 'm')
+ * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
  * @attr {string} label - Accessible label for the icon button (required for accessibility)
@@ -22,7 +22,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 'xs' | 's' | 'm' | 'lg';
+type Size = 'xs' | 'sm' | 'md' | 'lg';
 type Variant = 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type ButtonType = 'button' | 'submit' | 'reset';
 
@@ -82,8 +82,8 @@ export class RRIconButton extends LitElement {
       border-radius: var(--semantics-controls-xs-corner-radius);
     }
 
-    /* Size: S - Square 32x32, Figma: 6px border-radius */
-    :host([size='s']) .button {
+    /* Size: SM - Square 32x32, Figma: 6px border-radius */
+    :host([size='sm']) .button {
       width: var(--semantics-controls-sm-min-size);
       height: var(--semantics-controls-sm-min-size);
       min-width: var(--semantics-controls-sm-min-size);
@@ -91,8 +91,8 @@ export class RRIconButton extends LitElement {
       border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
-    /* Size: M - Square 44x44 (default), Figma: 8px border-radius */
-    :host([size='m']) .button,
+    /* Size: MD - Square 44x44 (default), Figma: 8px border-radius */
+    :host([size='md']) .button,
     :host(:not([size])) .button {
       width: var(--semantics-controls-md-min-size);
       height: var(--semantics-controls-md-min-size);
@@ -234,13 +234,13 @@ export class RRIconButton extends LitElement {
       --_icon-size: 12px;
     }
 
-    /* S: 32px button -> 16px icon (~50%) */
-    :host([size='s']) {
+    /* SM: 32px button -> 16px icon (~50%) */
+    :host([size='sm']) {
       --_icon-size: 16px;
     }
 
-    /* M: 44px button -> 24px icon (matches Figma) */
-    :host([size='m']),
+    /* MD: 44px button -> 24px icon (matches Figma) */
+    :host([size='md']),
     :host(:not([size])) {
       --_icon-size: 24px;
     }
@@ -273,7 +273,7 @@ export class RRIconButton extends LitElement {
   variant: Variant = 'accent-filled';
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;

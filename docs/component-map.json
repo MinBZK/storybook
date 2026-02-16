@@ -32,8 +32,8 @@
         ],
         "size": [
           "xs",
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "is-disabled": "boolean",
         "has-leading-icon": "boolean",
@@ -67,10 +67,10 @@
         "controls": [
           "semantics-controls-xs-min-size",
           "semantics-controls-xs-corner-radius",
-          "semantics-controls-s-min-size",
-          "semantics-controls-s-corner-radius",
-          "semantics-controls-m-min-size",
-          "semantics-controls-m-corner-radius"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-sm-corner-radius",
+          "semantics-controls-md-min-size",
+          "semantics-controls-md-corner-radius"
         ],
         "focus": [
           "semantics-focus-ring-color",
@@ -98,10 +98,10 @@
           "name": "size",
           "values": [
             "xs",
-            "s",
-            "m"
+            "sm",
+            "md"
           ],
-          "default": "m"
+          "default": "md"
         },
         {
           "name": "icon",
@@ -129,8 +129,8 @@
       "properties": {
         "size": [
           "xs",
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "is-checked": "boolean",
         "is-indeterminate": "boolean",
@@ -152,10 +152,10 @@
         "controls": [
           "semantics-controls-xs-min-size",
           "semantics-controls-xs-corner-radius",
-          "semantics-controls-s-min-size",
-          "semantics-controls-s-corner-radius",
-          "semantics-controls-m-min-size",
-          "semantics-controls-m-corner-radius"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-sm-corner-radius",
+          "semantics-controls-md-min-size",
+          "semantics-controls-md-corner-radius"
         ],
         "focus": [
           "semantics-focus-ring-color",
@@ -167,10 +167,10 @@
           "name": "size",
           "values": [
             "xs",
-            "s",
-            "m"
+            "sm",
+            "md"
           ],
-          "default": "m"
+          "default": "md"
         },
         {
           "name": "state",
@@ -197,8 +197,8 @@
       "properties": {
         "size": [
           "xs",
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "is-checked": "boolean",
         "is-disabled": "boolean",
@@ -213,8 +213,8 @@
       "tokens": {
         "semantics": [
           "semantics-controls-xs-min-size",
-          "semantics-controls-s-min-size",
-          "semantics-controls-m-min-size",
+          "semantics-controls-sm-min-size",
+          "semantics-controls-md-min-size",
           "semantics-focus-ring-color",
           "semantics-focus-ring-thickness"
         ],
@@ -232,10 +232,10 @@
           "name": "size",
           "values": [
             "xs",
-            "s",
-            "m"
+            "sm",
+            "md"
           ],
-          "default": "m"
+          "default": "md"
         }
       ],
       "status": "implemented",
@@ -253,8 +253,8 @@
       "properties": {
         "size": [
           "xs",
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "is-checked": "boolean",
         "is-disabled": "boolean"
@@ -279,8 +279,8 @@
         ],
         "controls": [
           "semantics-controls-xs-min-size",
-          "semantics-controls-s-min-size",
-          "semantics-controls-m-min-size"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-md-min-size"
         ],
         "focus": [
           "semantics-focus-ring-color",
@@ -292,10 +292,10 @@
           "name": "size",
           "values": [
             "xs",
-            "s",
-            "m"
+            "sm",
+            "md"
           ],
-          "default": "m"
+          "default": "md"
         },
         {
           "name": "state",
@@ -321,8 +321,8 @@
       "properties": {
         "size": [
           "xs",
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "is-selected": "boolean",
         "is-disabled": "boolean"
@@ -344,10 +344,10 @@
         "controls": [
           "semantics-controls-xs-min-size",
           "semantics-controls-xs-corner-radius",
-          "semantics-controls-s-min-size",
-          "semantics-controls-s-corner-radius",
-          "semantics-controls-m-min-size",
-          "semantics-controls-m-corner-radius"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-sm-corner-radius",
+          "semantics-controls-md-min-size",
+          "semantics-controls-md-corner-radius"
         ],
         "focus": [
           "semantics-focus-ring-color",
@@ -359,10 +359,10 @@
           "name": "size",
           "values": [
             "xs",
-            "s",
-            "m"
+            "sm",
+            "md"
           ],
-          "default": "m"
+          "default": "md"
         }
       ],
       "status": "implemented",
@@ -387,8 +387,8 @@
         ],
         "size": [
           "xs",
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "is-disabled": "boolean",
         "aria-label": "string"
@@ -414,10 +414,10 @@
         "controls": [
           "semantics-controls-xs-min-size",
           "semantics-controls-xs-corner-radius",
-          "semantics-controls-s-min-size",
-          "semantics-controls-s-corner-radius",
-          "semantics-controls-m-min-size",
-          "semantics-controls-m-corner-radius"
+          "semantics-controls-sm-min-size",
+          "semantics-controls-sm-corner-radius",
+          "semantics-controls-md-min-size",
+          "semantics-controls-md-corner-radius"
         ],
         "focus": [
           "semantics-focus-ring-color",
@@ -443,10 +443,10 @@
           "name": "size",
           "values": [
             "xs",
-            "s",
-            "m"
+            "sm",
+            "md"
           ],
-          "default": "m"
+          "default": "md"
         }
       ],
       "status": "implemented",
@@ -1223,8 +1223,8 @@
       },
       "properties": {
         "size": [
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "content-type": [
           "text",
@@ -1248,8 +1248,8 @@
       },
       "properties": {
         "size": [
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "is-selected": "boolean",
         "content-type": [
@@ -1290,8 +1290,8 @@
       },
       "properties": {
         "size": [
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "value": "number",
         "min": "number",
@@ -1328,12 +1328,12 @@
         "nodeId": "232:38506",
         "nodeName": "switch",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=232-38506",
-        "note": "Standalone switch with sizes 's' (44x24) and 'm' (56x32)"
+        "note": "Standalone switch with sizes 'sm' (44x24) and 'md' (56x32)"
       },
       "properties": {
         "size": [
-          "s",
-          "m"
+          "sm",
+          "md"
         ],
         "is-selected": "boolean",
         "is-disabled": "boolean"

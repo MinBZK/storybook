@@ -5,7 +5,7 @@
  *
  * @element rr-segmented-control
  * @attr {string} value - Currently selected value
- * @attr {string} size - Control size: 's' | 'm' (default: 'm')
+ * @attr {string} size - Control size: 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state for all items
  *
  * @fires change - When selection changes (detail: { value: string })
@@ -20,7 +20,7 @@ import { customElement, property } from 'lit/decorators.js';
 import type { RRSegmentedControlItem } from './rr-segmented-control-item.ts';
 import './rr-segmented-control-item.ts';
 
-type Size = 's' | 'm';
+type Size = 'sm' | 'md';
 
 @customElement('rr-segmented-control')
 export class RRSegmentedControl extends LitElement {
@@ -44,12 +44,12 @@ export class RRSegmentedControl extends LitElement {
     }
 
     /* Size: S */
-    :host([size='s']) .container {
+    :host([size='sm']) .container {
       border-radius: var(--semantics-controls-sm-corner-radius);
     }
 
     /* Size: M (default) */
-    :host([size='m']) .container,
+    :host([size='md']) .container,
     :host(:not([size])) .container {
       border-radius: var(--semantics-controls-md-corner-radius);
     }
@@ -81,7 +81,7 @@ export class RRSegmentedControl extends LitElement {
   value = '';
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;

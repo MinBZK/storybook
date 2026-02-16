@@ -100,11 +100,11 @@ export const AllSizes = () => html`
   <div style="display: flex; gap: 2rem; align-items: center;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
       <span style="font-size: 14px; color: #64748b;">Small</span>
-      <rr-stepper size="s" value="5"></rr-stepper>
+      <rr-stepper size="sm" value="5"></rr-stepper>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
       <span style="font-size: 14px; color: #64748b;">Medium</span>
-      <rr-stepper size="m" value="5"></rr-stepper>
+      <rr-stepper size="md" value="5"></rr-stepper>
     </div>
   </div>
 `;
@@ -157,8 +157,8 @@ export const FigmaComparison = () => html`
         <div
           style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff;"
         >
-          <rr-stepper size="m" value="5"></rr-stepper>
-          <rr-stepper size="s" value="5"></rr-stepper>
+          <rr-stepper size="md" value="5"></rr-stepper>
+          <rr-stepper size="sm" value="5"></rr-stepper>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

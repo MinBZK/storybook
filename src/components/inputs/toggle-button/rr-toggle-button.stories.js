@@ -10,7 +10,7 @@ import './rr-toggle-button.js';
  *
  * ## Gebruik
  * ```html
- * <rr-toggle-button size="m">Label</rr-toggle-button>
+ * <rr-toggle-button size="md">Label</rr-toggle-button>
  * <rr-toggle-button selected>Geselecteerd</rr-toggle-button>
  * ```
  */
@@ -126,7 +126,7 @@ export const Interactive = () => {
 
   return html`
     <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <rr-toggle-button size="m" @toggle=${handleToggle}> Click to toggle </rr-toggle-button>
+      <rr-toggle-button size="md" @toggle=${handleToggle}> Click to toggle </rr-toggle-button>
       <p style="font-size: 14px; color: #64748b;">Check the console to see toggle events</p>
     </div>
   `;
@@ -144,8 +144,8 @@ Interactive.parameters = {
 export const AllSizes = () => html`
   <div style="display: flex; gap: 1rem; align-items: center;">
     <rr-toggle-button size="xs">Extra Small</rr-toggle-button>
-    <rr-toggle-button size="s">Small</rr-toggle-button>
-    <rr-toggle-button size="m">Medium</rr-toggle-button>
+    <rr-toggle-button size="sm">Small</rr-toggle-button>
+    <rr-toggle-button size="md">Medium</rr-toggle-button>
   </div>
 `;
 AllSizes.parameters = {
@@ -168,7 +168,7 @@ AllStates.parameters = {
 // With icons
 export const WithIcon = () => html`
   <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-    <rr-toggle-button size="m">
+    <rr-toggle-button size="md">
       <svg
         slot="icon"
         width="1em"
@@ -184,7 +184,7 @@ export const WithIcon = () => html`
       </svg>
       Like
     </rr-toggle-button>
-    <rr-toggle-button size="m" selected>
+    <rr-toggle-button size="md" selected>
       <svg
         slot="icon"
         width="1em"
@@ -200,7 +200,7 @@ export const WithIcon = () => html`
       </svg>
       Liked
     </rr-toggle-button>
-    <rr-toggle-button size="m">
+    <rr-toggle-button size="md">
       <svg
         slot="icon"
         width="1em"
@@ -214,7 +214,7 @@ export const WithIcon = () => html`
       </svg>
       Bookmark
     </rr-toggle-button>
-    <rr-toggle-button size="m" selected>
+    <rr-toggle-button size="md" selected>
       <svg
         slot="icon"
         width="1em"
@@ -242,7 +242,7 @@ WithIcon.parameters = {
 // Button group example
 export const ButtonGroup = () => html`
   <div style="display: flex; gap: 0; border-radius: 7px; overflow: hidden; width: fit-content;">
-    <rr-toggle-button size="m" style="border-radius: 7px 0 0 7px;">
+    <rr-toggle-button size="md" style="border-radius: 7px 0 0 7px;">
       <svg
         slot="icon"
         width="1em"
@@ -257,7 +257,7 @@ export const ButtonGroup = () => html`
         <line x1="4" y1="18" x2="20" y2="18" />
       </svg>
     </rr-toggle-button>
-    <rr-toggle-button size="m" style="border-radius: 0; margin-left: -1px;">
+    <rr-toggle-button size="md" style="border-radius: 0; margin-left: -1px;">
       <svg
         slot="icon"
         width="1em"
@@ -273,7 +273,7 @@ export const ButtonGroup = () => html`
         <rect x="3" y="14" width="7" height="7" />
       </svg>
     </rr-toggle-button>
-    <rr-toggle-button size="m" selected style="border-radius: 0 7px 7px 0; margin-left: -1px;">
+    <rr-toggle-button size="md" selected style="border-radius: 0 7px 7px 0; margin-left: -1px;">
       <svg
         slot="icon"
         width="1em"
@@ -330,25 +330,25 @@ export const SizeMatrix = () => html`
       <tr>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">s</td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-toggle-button size="s">Label</rr-toggle-button>
+          <rr-toggle-button size="sm">Label</rr-toggle-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-toggle-button size="s" selected>Label</rr-toggle-button>
+          <rr-toggle-button size="sm" selected>Label</rr-toggle-button>
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-toggle-button size="s" disabled>Label</rr-toggle-button>
+          <rr-toggle-button size="sm" disabled>Label</rr-toggle-button>
         </td>
       </tr>
       <tr>
         <td style="padding: 0.75rem;">m</td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-toggle-button size="m">Label</rr-toggle-button>
+          <rr-toggle-button size="md">Label</rr-toggle-button>
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-toggle-button size="m" selected>Label</rr-toggle-button>
+          <rr-toggle-button size="md" selected>Label</rr-toggle-button>
         </td>
         <td style="padding: 0.75rem; text-align: center;">
-          <rr-toggle-button size="m" disabled>Label</rr-toggle-button>
+          <rr-toggle-button size="md" disabled>Label</rr-toggle-button>
         </td>
       </tr>
     </tbody>
@@ -376,13 +376,13 @@ export const FigmaComparison = () => html`
         -->
         <div style="background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
           <!-- Row 1: size=md, is-selected=false -->
-          <rr-toggle-button size="m">Toggle button</rr-toggle-button>
+          <rr-toggle-button size="md">Toggle button</rr-toggle-button>
           <!-- Row 2: size=md, is-selected=true -->
-          <rr-toggle-button size="m" selected>Toggle button</rr-toggle-button>
+          <rr-toggle-button size="md" selected>Toggle button</rr-toggle-button>
           <!-- Row 3: size=sm, is-selected=false -->
-          <rr-toggle-button size="s">Toggle button</rr-toggle-button>
+          <rr-toggle-button size="sm">Toggle button</rr-toggle-button>
           <!-- Row 4: size=sm, is-selected=true -->
-          <rr-toggle-button size="s" selected>Toggle button</rr-toggle-button>
+          <rr-toggle-button size="sm" selected>Toggle button</rr-toggle-button>
         </div>
       </ftl-holster>
       <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">

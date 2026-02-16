@@ -27,7 +27,7 @@ export const Default = {
   },
   render: (args) => html`
     <rr-stepper-cell vertical-alignment=${args.verticalAlignment}>
-      <rr-stepper size="m" value="0" min="0" max="10"></rr-stepper>
+      <rr-stepper size="md" value="0" min="0" max="10"></rr-stepper>
     </rr-stepper-cell>
   `,
 };
@@ -35,7 +35,7 @@ export const Default = {
 export const VerticalTop = {
   render: () => html`
     <rr-stepper-cell vertical-alignment="top" style="height: 80px; border: 1px dashed #ccc;">
-      <rr-stepper size="m" value="5" min="0" max="10"></rr-stepper>
+      <rr-stepper size="md" value="5" min="0" max="10"></rr-stepper>
     </rr-stepper-cell>
   `,
 };
@@ -56,7 +56,7 @@ export const FigmaComparison = () => html`
         <span style="font-size: 0.75rem; color: #64748b;">vertical-alignment=center</span>
         <ftl-holster node="236:41349" style="display: inline-block;">
           <rr-stepper-cell vertical-alignment="center">
-            <rr-stepper size="m" value="0" min="0" max="10"></rr-stepper>
+            <rr-stepper size="md" value="0" min="0" max="10"></rr-stepper>
           </rr-stepper-cell>
         </ftl-holster>
       </div>
@@ -66,7 +66,7 @@ export const FigmaComparison = () => html`
         <span style="font-size: 0.75rem; color: #64748b;">vertical-alignment=top</span>
         <ftl-holster node="236:41351" style="display: inline-block;">
           <rr-stepper-cell vertical-alignment="top">
-            <rr-stepper size="m" value="0" min="0" max="10"></rr-stepper>
+            <rr-stepper size="md" value="0" min="0" max="10"></rr-stepper>
           </rr-stepper-cell>
         </ftl-holster>
       </div>

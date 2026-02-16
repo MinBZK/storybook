@@ -4,7 +4,7 @@
  * @element rr-switch
  * @attr {boolean} checked - Whether the switch is on/off
  * @attr {boolean} disabled - Disabled state
- * @attr {string} size - Switch size: 's' | 'm' (default: 'm')
+ * @attr {string} size - Switch size: 'sm' | 'md' (default: 'md')
  *
  * @fires change - When the switch state changes
  *
@@ -18,7 +18,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 's' | 'm';
+type Size = 'sm' | 'md';
 
 @customElement('rr-switch')
 export class RRSwitch extends LitElement {
@@ -99,19 +99,19 @@ export class RRSwitch extends LitElement {
     }
 
     /* Checkmark sizing per size variant */
-    :host([size='s']) .switch__check {
+    :host([size='sm']) .switch__check {
       width: 24px;
       height: 24px;
       right: -2px;
       top: -2px;
     }
 
-    :host([size='s']) .switch__check svg {
+    :host([size='sm']) .switch__check svg {
       width: 24px;
       height: 24px;
     }
 
-    :host([size='m']) .switch__check,
+    :host([size='md']) .switch__check,
     :host(:not([size])) .switch__check {
       width: 32px;
       height: 32px;
@@ -119,27 +119,27 @@ export class RRSwitch extends LitElement {
       top: -2px;
     }
 
-    :host([size='m']) .switch__check svg,
+    :host([size='md']) .switch__check svg,
     :host(:not([size])) .switch__check svg {
       width: 32px;
       height: 32px;
     }
 
     /* Size: S - Figma specs: 44x24px */
-    :host([size='s']) .switch {
+    :host([size='sm']) .switch {
       width: 44px;
       height: 24px;
       border-radius: 12px;
       padding: 2px;
     }
 
-    :host([size='s']) .switch__thumb {
+    :host([size='sm']) .switch__thumb {
       /* Off state: 16x16px per Figma */
       width: 16px;
       height: 16px;
     }
 
-    :host([size='s'][checked]) .switch__thumb {
+    :host([size='sm'][checked]) .switch__thumb {
       /* Checked state: thumb grows to 20x20px per Figma specs */
       width: 20px;
       height: 20px;
@@ -148,7 +148,7 @@ export class RRSwitch extends LitElement {
     }
 
     /* Size: M (default) - Figma specs: 56x32px */
-    :host([size='m']) .switch,
+    :host([size='md']) .switch,
     :host(:not([size])) .switch {
       width: calc(var(--semantics-controls-sm-min-size) * 1.75);
       height: var(--semantics-controls-sm-min-size);
@@ -156,14 +156,14 @@ export class RRSwitch extends LitElement {
       padding: 2px;
     }
 
-    :host([size='m']) .switch__thumb,
+    :host([size='md']) .switch__thumb,
     :host(:not([size])) .switch__thumb {
       /* Off state: 24x24px (32 - 8) */
       width: calc(var(--semantics-controls-sm-min-size) - 8px);
       height: calc(var(--semantics-controls-sm-min-size) - 8px);
     }
 
-    :host([size='m'][checked]) .switch__thumb,
+    :host([size='md'][checked]) .switch__thumb,
     :host(:not([size])[checked]) .switch__thumb {
       /* Checked state: thumb grows to 28x28px (32 - 4) per Figma specs */
       width: calc(var(--semantics-controls-sm-min-size) - 4px);
@@ -238,7 +238,7 @@ export class RRSwitch extends LitElement {
   disabled = false;
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   override connectedCallback(): void {
     super.connectedCallback();

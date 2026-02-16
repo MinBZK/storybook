@@ -16,7 +16,7 @@
  * @attr {boolean} disabled - Disabled state
  * @attr {string} name - Form control name (for radio groups)
  * @attr {string} value - Form control value
- * @attr {string} size - Radio button size: 'xs' | 's' | 'm' (default: 'm')
+ * @attr {string} size - Radio button size: 'xs' | 'sm' | 'md' (default: 'md')
  *
  * @fires change - When checked state changes
  *
@@ -222,7 +222,7 @@ export class RRRadio extends RRBaseComponent {
   }
 
   get size() {
-    return this.getAttribute('size') || 'm';
+    return this.getAttribute('size') || 'md';
   }
 
   set size(value) {
@@ -282,25 +282,25 @@ export class RRRadio extends RRBaseComponent {
       }
 
       /* Size: S (32px) */
-      :host([size="s"]) .radio {
+      :host([size="sm"]) .radio {
         width: var(--semantics-controls-sm-min-size);
         height: var(--semantics-controls-sm-min-size);
       }
 
-      :host([size="s"]) .radio-inner {
+      :host([size="sm"]) .radio-inner {
         /* Inner dot is ~37.5% of outer radio size (12px / 32px = 0.375) */
         width: calc(var(--semantics-controls-sm-min-size) * 0.375);
         height: calc(var(--semantics-controls-sm-min-size) * 0.375);
       }
 
       /* Size: M (44px - default) */
-      :host([size="m"]) .radio,
+      :host([size="md"]) .radio,
       :host(:not([size])) .radio {
         width: var(--semantics-controls-md-min-size);
         height: var(--semantics-controls-md-min-size);
       }
 
-      :host([size="m"]) .radio-inner,
+      :host([size="md"]) .radio-inner,
       :host(:not([size])) .radio-inner {
         /* Inner dot is ~36% of outer radio size (16px / 44px = 0.36) */
         width: calc(var(--semantics-controls-md-min-size) * 0.36);

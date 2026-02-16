@@ -2,7 +2,7 @@
  * RegelRecht Toggle Button Component (Lit + TypeScript)
  *
  * @element rr-toggle-button
- * @attr {string} size - Button size: 'xs' | 's' | 'm' (default: 'm')
+ * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} selected - Selected state
  * @attr {boolean} disabled - Disabled state
  *
@@ -21,7 +21,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Size = 'xs' | 's' | 'm';
+type Size = 'xs' | 'sm' | 'md';
 
 @customElement('rr-toggle-button')
 export class RRToggleButton extends LitElement {
@@ -77,8 +77,8 @@ export class RRToggleButton extends LitElement {
       gap: var(--primitives-space-2);
     }
 
-    /* Size: S */
-    :host([size="s"]) .button {
+    /* Size: SM */
+    :host([size="sm"]) .button {
       min-height: var(--semantics-controls-sm-min-size);
       /* Horizontal padding includes compensation for Figma's spacer gaps (2px × 2) */
       padding: var(--primitives-space-6) var(--primitives-space-8);
@@ -87,8 +87,8 @@ export class RRToggleButton extends LitElement {
       gap: var(--primitives-space-2);
     }
 
-    /* Size: M (default) */
-    :host([size="m"]) .button,
+    /* Size: MD (default) */
+    :host([size="md"]) .button,
     :host(:not([size])) .button {
       min-height: var(--semantics-controls-md-min-size);
       /* Horizontal padding includes compensation for Figma's spacer gaps (4px × 2) */
@@ -169,7 +169,7 @@ export class RRToggleButton extends LitElement {
   `;
 
   @property({ type: String, reflect: true })
-  size: Size = 'm';
+  size: Size = 'md';
 
   @property({ type: Boolean, reflect: true })
   selected = false;

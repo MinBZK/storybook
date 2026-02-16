@@ -59,7 +59,7 @@ export class RRSegmentedControlItem extends LitElement {
       --_icon-size: 24px;
     }
 
-    :host([size='s']) {
+    :host([size='sm']) {
       --_item-padding: 6px 8px;
       --_item-min-height: 32px;
       --_item-font-size: 16px;
@@ -74,7 +74,7 @@ export class RRSegmentedControlItem extends LitElement {
       --_item-padding: 8px;
     }
 
-    :host([content-type='icon'][size='s']) {
+    :host([content-type='icon'][size='sm']) {
       --_item-padding: 6px 4px;
     }
 
@@ -182,7 +182,7 @@ export class RRSegmentedControlItem extends LitElement {
   contentType: ContentType = 'text';
 
   @property({ type: String, reflect: true })
-  size: 's' | 'm' = 'm';
+  size: 'sm' | 'md' = 'md';
 
   override connectedCallback(): void {
     super.connectedCallback();
