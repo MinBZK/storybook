@@ -60,6 +60,7 @@ const preview = {
             ['Docs', '*', 'Back Button', 'Logo', 'Utility Menu Bar'],
             '*',
           ],
+          'Screens',
           '*',
         ],
       },
