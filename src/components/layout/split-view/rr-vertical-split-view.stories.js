@@ -143,12 +143,12 @@ export const FigmaComparison = () => html`
           - Size: 1440px wide, hug height
           - Children: header-pane(hug) | divider(horizontal) | main-pane(974px fixed) | divider(horizontal) | footer-pane(hug)
         -->
-        <rr-vertical-split-view style="width: 1440px;">
+        <rr-vertical-split-view style="width: 1440px; height: 1024px;">
           <rr-split-view-pane slot="top">
             <div style="${slotStyle}">${slotText}</div>
           </rr-split-view-pane>
 
-          <rr-split-view-pane slot="main" style="height: 974px;">
+          <rr-split-view-pane slot="main">
             <div style="${slotStyle}">${slotText}</div>
           </rr-split-view-pane>
 
