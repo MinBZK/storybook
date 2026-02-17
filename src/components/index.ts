@@ -60,6 +60,8 @@ export { RRSplitViewPane } from './layout/split-view/rr-split-view-pane.ts';
 export { RRSplitViewDivider } from './layout/split-view/rr-split-view-divider.ts';
 export { RRHorizontalSplitView } from './layout/split-view/rr-horizontal-split-view.ts';
 export { RRSideBySideSplitView } from './layout/split-view/rr-side-by-side-split-view.ts';
+export { RRVerticalSplitView } from './layout/split-view/rr-vertical-split-view.ts';
+export { RRStackedSplitView } from './layout/split-view/rr-stacked-split-view.ts';
 
 // Navigation components
 export { RRTopNavigationBar } from './navigation/top-navigation-bar/rr-top-navigation-bar.ts';
