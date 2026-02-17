@@ -207,7 +207,7 @@
       },
       "implementation": {
         "tagName": "rr-radio",
-        "file": "src/components/inputs/radio/rr-radio.js",
+        "file": "src/components/inputs/radio/rr-radio.ts",
         "className": "RRRadio"
       },
       "tokens": {
@@ -261,7 +261,7 @@
       },
       "implementation": {
         "tagName": "rr-switch",
-        "file": "src/components/inputs/switch/rr-switch.js",
+        "file": "src/components/inputs/switch/rr-switch.ts",
         "className": "RRSwitch"
       },
       "tokens": {
@@ -395,7 +395,7 @@
       },
       "implementation": {
         "tagName": "rr-icon-button",
-        "file": "src/components/actions/icon-button/rr-icon-button.js",
+        "file": "src/components/actions/icon-button/rr-icon-button.ts",
         "className": "RRIconButton"
       },
       "tokens": {
@@ -465,7 +465,7 @@
       },
       "implementation": {
         "tagName": "rr-box",
-        "file": "src/components/layout/box/rr-box.js",
+        "file": "src/components/layout/box/rr-box.ts",
         "className": "RRBox"
       },
       "tokens": {
@@ -500,12 +500,12 @@
       },
       "implementation": {
         "tagName": "rr-menu-bar",
-        "file": "src/components/navigation/menu-bar/rr-menu-bar.js",
+        "file": "src/components/navigation/menu-bar/rr-menu-bar.ts",
         "className": "RRMenuBar",
         "additionalComponents": [
           {
             "tagName": "rr-menu-item",
-            "file": "src/components/navigation/menu-bar/rr-menu-item.js",
+            "file": "src/components/navigation/menu-bar/rr-menu-item.ts",
             "className": "RRMenuItem"
           }
         ]
