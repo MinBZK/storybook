@@ -1950,6 +1950,58 @@
       },
       "status": "implemented",
       "lastUpdated": "2026-02-16"
+    },
+    {
+      "name": "Document Tab Bar",
+      "figma": {
+        "nodeId": "39:857",
+        "nodeName": "document-tab-bar",
+        "pageId": "19:6",
+        "pageName": "Navigation",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-857"
+      },
+      "implementation": {
+        "tagName": "rr-document-tab-bar",
+        "file": "src/components/navigation/document-tab-bar/rr-document-tab-bar.ts",
+        "className": "RRDocumentTabBar"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-17"
+    },
+    {
+      "name": "Rich Text",
+      "figma": {
+        "nodeId": "1451:33454",
+        "nodeName": "rich-text",
+        "pageId": "39:908",
+        "pageName": "Layout",
+        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1451-33454"
+      },
+      "properties": {
+        "container": ["sm", "md", "lg"]
+      },
+      "implementation": {
+        "tagName": "rr-rich-text",
+        "file": "src/components/content/rich-text/rr-rich-text.ts",
+        "className": "RRRichText"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-17"
+    },
+    {
+      "name": "App Shell",
+      "figma": {
+        "nodeId": null,
+        "nodeName": "app-shell",
+        "note": "Developer utility component - no dedicated Figma frame"
+      },
+      "implementation": {
+        "tagName": "rr-app-shell",
+        "file": "src/components/layout/app-shell/rr-app-shell.ts",
+        "className": "RRAppShell"
+      },
+      "status": "implemented",
+      "lastUpdated": "2026-02-17"
     }
   ]
 }

@@ -8,7 +8,9 @@ import '../../components/layout/divider/rr-divider.js';
 import '../../components/control-groups/toolbar/rr-toolbar.ts';
 import '../../components/navigation/tab-bar/rr-tab-bar.ts';
 import '../../components/navigation/tab-bar/rr-tab-bar-item.ts';
+import '../../components/navigation/document-tab-bar/rr-document-tab-bar.ts';
 import '../../components/navigation/document-tab-bar-item/rr-document-tab-bar-item.ts';
+import '../../components/layout/app-shell/rr-app-shell.ts';
 import '../../components/actions/button/rr-button.ts';
 import '../../components/actions/icon-button/rr-icon-button.ts';
 import '../../components/inputs/search-field/rr-search-field.ts';
@@ -30,15 +32,15 @@ const editorTabBar = () => html`
 // -- Document tabs --------------------------------------------------
 
 const documentTabs = () => html`
-  <div style="display: flex; gap: 8px; overflow-x: auto; padding: 0 16px;">
+  <rr-document-tab-bar>
     <rr-document-tab-bar-item selected subtitle="Wet op de Zorgtoeslag">Artikel 2</rr-document-tab-bar-item>
     <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 1</rr-document-tab-bar-item>
     <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 68b</rr-document-tab-bar-item>
     <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 69</rr-document-tab-bar-item>
     <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 24</rr-document-tab-bar-item>
     <rr-document-tab-bar-item subtitle="WML">Artikel 8</rr-document-tab-bar-item>
-    <rr-icon-button variant="neutral-tinted" size="md" label="Meer">${moreIcon}</rr-icon-button>
-  </div>
+    <rr-icon-button slot="end" variant="neutral-tinted" size="md" label="Meer">${moreIcon}</rr-icon-button>
+  </rr-document-tab-bar>
 `;
 
 // -------------------------------------------------------------------

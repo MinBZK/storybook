@@ -47,6 +47,7 @@ export { RRDivider } from './layout/divider/rr-divider.ts';
 export { RRPageStickyAreaBackground } from './layout/page/page-sticky-area-background/rr-page-sticky-area-background.ts';
 export { RRBox } from './layout/box/rr-box.js';
 export { RRPage } from './layout/page/rr-page.ts';
+export { RRAppShell } from './layout/app-shell/rr-app-shell.ts';
 export { RRTitleBarTitleGroup } from './layout/title-bar-title-group/rr-title-bar-title-group.ts';
 export { RRTopTitleBar } from './layout/top-title-bar/rr-top-title-bar.ts';
 export { RRSimpleSection } from './layout/page-sections/rr-simple-section.ts';
@@ -90,6 +91,7 @@ export { RRTimelineTrackCell } from './lists/timeline-track-cell/rr-timeline-tra
 export { RRTabBarItem } from './navigation/tab-bar/rr-tab-bar-item.ts';
 export { RRTabBar } from './navigation/tab-bar/rr-tab-bar.ts';
 export { RRDocumentTabBarItem } from './navigation/document-tab-bar-item/rr-document-tab-bar-item.ts';
+export { RRDocumentTabBar } from './navigation/document-tab-bar/rr-document-tab-bar.ts';
 export { RRPagination } from './navigation/pagination/rr-pagination.ts';
 
 // Menu components
@@ -100,6 +102,7 @@ export { RRPasswordField } from './inputs/password-field/rr-password-field.ts';
 
 // Content components
 export { RRRichTextHeading } from './content/rich-text-heading/rr-rich-text-heading.ts';
+export { RRRichText } from './content/rich-text/rr-rich-text.ts';
 
 // Overlay components
 export { RRTooltipArrow } from './overlays/tooltip/rr-tooltip-arrow.ts';

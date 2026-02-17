@@ -13,6 +13,7 @@ import '../../components/navigation/tab-bar/rr-tab-bar-item.ts';
 import '../../components/inputs/segmented-control/rr-segmented-control.ts';
 import '../../components/inputs/segmented-control/rr-segmented-control-item.ts';
 import '../../components/content/rich-text-heading/rr-rich-text-heading.ts';
+import '../../components/content/rich-text/rr-rich-text.ts';
 import '../../components/actions/button/rr-button.ts';
 import '../../components/actions/icon-button/rr-icon-button.ts';
 
@@ -47,28 +48,16 @@ const articleHeader = (container: string) => html`
 
 const articleText = (container: string) => html`
   <rr-simple-section container="${container}">
-    <div style="display: flex; flex-direction: column; gap: 27px;">
+    <rr-rich-text container="${container}">
       <rr-rich-text-heading level="3" container="${container}">Artikel 1. Algemene begrippen</rr-rich-text-heading>
-      <p style="margin: 0; font: var(--rr-font-family-body); line-height: 1.5;">
-        1. In deze wet en de daarop berustende bepalingen wordt verstaan onder:
-      </p>
-      <p style="margin: 0; font: var(--rr-font-family-body); line-height: 1.5;">
-        a. <strong>alleenstaande:</strong> de verzekerde die geen partner heeft;
-      </p>
-      <p style="margin: 0; font: var(--rr-font-family-body); line-height: 1.5;">
-        b. <strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert
-        als bedoeld in artikel 3, tweede en derde lid, van de Wet werk en bijstand;
-      </p>
-      <p style="margin: 0; font: var(--rr-font-family-body); line-height: 1.5;">
-        c. <strong>berekeningsjaar:</strong> het kalenderjaar waarover de zorgtoeslag wordt berekend;
-      </p>
-      <p style="margin: 0; font: var(--rr-font-family-body); line-height: 1.5;">
-        d. <strong>normpremie:</strong> de normpremie, bedoeld in artikel 4;
-      </p>
-      <p style="margin: 0; font: var(--rr-font-family-body); line-height: 1.5;">
-        e. <strong>standaardpremie:</strong> de standaardpremie, bedoeld in artikel 5.
-      </p>
-    </div>
+      <p>1. In deze wet en de daarop berustende bepalingen wordt verstaan onder:</p>
+      <p>a. <strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</p>
+      <p>b. <strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert
+        als bedoeld in artikel 3, tweede en derde lid, van de Wet werk en bijstand;</p>
+      <p>c. <strong>berekeningsjaar:</strong> het kalenderjaar waarover de zorgtoeslag wordt berekend;</p>
+      <p>d. <strong>normpremie:</strong> de normpremie, bedoeld in artikel 4;</p>
+      <p>e. <strong>standaardpremie:</strong> de standaardpremie, bedoeld in artikel 5.</p>
+    </rr-rich-text>
   </rr-simple-section>
 `;
 
