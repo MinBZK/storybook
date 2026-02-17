@@ -323,14 +323,6 @@ export class RRButton extends LitElement {
 	private _shouldShowPicker(): boolean {
 		return this.hasMenu;
 	}
-	
-	private _getIconSize(): number {
-		switch (this.size) {
-			case 'xs': return 16;
-			case 'sm': return 18;
-			case 'md': default: return 20;
-		}
-	}
 
 	override render() {
 		return html`
@@ -350,7 +342,6 @@ export class RRButton extends LitElement {
 						<rr-icon
 							 class="picker-icon"
 							 name="chevronDownSmall"
-							 size="${this._getIconSize()}"
 						></rr-icon>
 					` : ''}
 				</span>
