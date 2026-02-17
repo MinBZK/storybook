@@ -152,9 +152,9 @@ AppearanceBased.parameters = {
 // All sizes overview
 export const Sizes = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-button size="xs">Extra Small</rr-button>
-		<rr-button size="sm">Small</rr-button>
 		<rr-button size="md">Medium</rr-button>
+		<rr-button size="sm">Small</rr-button>
+		<rr-button size="xs">Extra Small</rr-button>
 	</div>
 `;
 Sizes.parameters = {
@@ -216,7 +216,40 @@ WithStartIcon.parameters = {
 
 export const WithEndIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-button has-end-icon>
+		<rr-button
+			size="md"
+			has-end-icon
+		>
+			Volgende
+			<svg
+				slot="icon-end"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M5 12h14M12 5l7 7-7 7" />
+			</svg>
+		</rr-button>
+		<rr-button
+			size="sm"
+			has-end-icon
+		>
+			Volgende
+			<svg
+				slot="icon-end"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M5 12h14M12 5l7 7-7 7" />
+			</svg>
+		</rr-button>
+		<rr-button
+			size="xs"
+			has-end-icon
+		>
 			Volgende
 			<svg
 				slot="icon-end"
@@ -242,7 +275,61 @@ WithEndIcon.parameters = {
 
 export const WithBothIcons = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-button has-start-icon has-end-icon>
+		<rr-button
+			size="md"
+			has-start-icon
+			has-end-icon
+		>
+			<svg
+				slot="icon-start"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+			</svg>
+			Download bestand
+			<svg
+				slot="icon-end"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M5 12h14M12 5l7 7-7 7" />
+			</svg>
+		</rr-button>
+		<rr-button
+			size="sm"
+			has-start-icon
+			has-end-icon
+		>
+			<svg
+				slot="icon-start"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+			</svg>
+			Download bestand
+			<svg
+				slot="icon-end"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M5 12h14M12 5l7 7-7 7" />
+			</svg>
+		</rr-button>
+		<rr-button
+			size="xs"
+			has-start-icon
+			has-end-icon
+		>
 			<svg
 				slot="icon-start"
 				viewBox="0 0 24 24"

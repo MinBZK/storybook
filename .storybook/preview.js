@@ -1,5 +1,4 @@
 import '../dist/css/tokens.css';
-import '../dist/css/scheme-dark.css';
 import '../src/fonts/fonts.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
