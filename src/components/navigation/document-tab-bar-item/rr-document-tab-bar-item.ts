@@ -138,7 +138,7 @@ export class RRDocumentTabBarItem extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .document-tab-bar-item {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }

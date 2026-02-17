@@ -129,7 +129,7 @@ export class RRPasswordField extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .password-field {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       pointer-events: none;
     }
 

@@ -244,7 +244,7 @@ export class RRRadio extends RRBaseComponent {
 
       :host([disabled]) {
         cursor: not-allowed;
-        opacity: calc(var(--primitives-opacity-disabled) / 100);
+        opacity: var(--primitives-opacity-disabled);
       }
 
       /* The visual radio button */

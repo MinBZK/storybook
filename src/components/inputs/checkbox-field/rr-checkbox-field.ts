@@ -63,7 +63,7 @@ export class RRCheckboxField extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .checkbox-field__label {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
     }
 
     /* Accessibility: High Contrast Mode */

@@ -208,7 +208,7 @@ export class RR{PascalName} extends LitElement {
 
     /* Disabled state - opacity is PERCENTAGE */
     :host([disabled]) .{name} {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }

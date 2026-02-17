@@ -160,7 +160,7 @@ export class RRSplitButton extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .split-button {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
     }
 
     :host([disabled]) .split-button__button,

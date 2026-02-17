@@ -132,7 +132,7 @@ export class RRComboBoxField extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .combo-box-field {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
     }
 

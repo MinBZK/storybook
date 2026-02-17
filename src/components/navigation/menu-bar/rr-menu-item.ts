@@ -118,7 +118,7 @@ export class RRMenuItem extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .menu-item {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }

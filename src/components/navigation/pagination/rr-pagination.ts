@@ -67,7 +67,7 @@ export class RRPagination extends LitElement {
     }
 
     .pagination__button:disabled {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
     }
 
@@ -113,7 +113,7 @@ export class RRPagination extends LitElement {
 
     /* Disabled state for entire component */
     :host([disabled]) .pagination {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       pointer-events: none;
     }
 

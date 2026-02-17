@@ -2,7 +2,7 @@
  * RegelRecht Button Component (Lit + TypeScript)
  *
  * @element rr-button
- * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'danger-tinted'
+ * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'danger-tinted'
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
@@ -25,7 +25,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-type Variant = 'primary' | 'secondary' | 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
+type Variant = 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
 
@@ -124,6 +124,13 @@ export class RRButton extends LitElement {
 			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 		}
 		
+		:host([variant="neutral-tinted"]) .button:active,
+		:host([variant="secondary"]) .button:active,
+		:host(:not([variant])) .button:active {
+			background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+		}
+		
 		/* Variant: neutral-transparent */
 		:host([variant="neutral-transparent"]) .button {
 			background-color: transparent;
@@ -131,7 +138,11 @@ export class RRButton extends LitElement {
 		}
 		
 		:host([variant="neutral-transparent"]) .button:hover {
-			background-color: var(--primitives-color-neutral-200);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+		}
+		
+		:host([variant="neutral-transparent"]) .button:active {
+			color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 		}
 
 		/* Variant: accent-filled (primary) */
@@ -146,18 +157,31 @@ export class RRButton extends LitElement {
 			background-color: var(--semantics-buttons-accent-filled-is-hovered-background-color);
 			color: var(--semantics-buttons-accent-filled-is-hovered-content-color);
 		}
+		
+		:host([variant="accent-filled"]) .button:active,
+		:host([variant="primary"]) .button:active {
+			background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
+			color: var(--semantics-buttons-accent-filled-is-active-content-color);
+		}
 
 		/* Variant: accent-outlined - uses outline instead of border to avoid layout impact */
 		:host([variant="accent-outlined"]) .button {
 			padding: var(--primitives-space-10);
 			background-color: transparent;
 			color: var(--semantics-buttons-accent-outlined-content-color);
-			border: var(--semantics-buttons-accent-outlined-border-thickness) solid var(--semantics-buttons-accent-outlined-border-color);
+			border-width: var(--semantics-buttons-accent-outlined-border-thickness);
+			border-style: solid;
+			border-color: var(--semantics-buttons-accent-outlined-border-color);
 		}
-
+		
 		:host([variant="accent-outlined"]) .button:hover {
 			color: var(--semantics-buttons-accent-outlined-is-hovered-content-color);
-			border: var(--semantics-buttons-accent-outlined-is-hovered-border-thickness) solid var(--semantics-buttons-accent-outlined-is-hovered-border-color);
+			border-color: var(--semantics-buttons-accent-outlined-is-hovered-border-color);
+		}
+		
+		:host([variant="accent-outlined"]) .button:active {
+			color: var(--semantics-buttons-accent-outlined-is-active-content-color);
+			border-color: var(--semantics-buttons-accent-outlined-is-active-border-color);
 		}
 
 		/* Variant: accent-transparent */
@@ -165,23 +189,36 @@ export class RRButton extends LitElement {
 			background-color: transparent;
 			color: var(--semantics-buttons-accent-transparent-content-color);
 		}
-
+		
 		:host([variant="accent-transparent"]) .button:hover {
-			background-color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
+			color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
+		}
+		
+		:host([variant="accent-transparent"]) .button:active {
+			color: var(--semantics-buttons-accent-transparent-is-active-content-color);
 		}
 
 		/* Variant: danger-tinted */
-		:host([variant="danger-tinted"]) .button {
-			background-color: var(--primitives-color-danger-150);
-			color: var(--primitives-color-danger-100);
+		:host([variant="danger-tinted"]) .button,
+		:host([variant="destructive"]) .button {
+			background-color: var(--semantics-buttons-danger-tinted-background-color);
+			color: var(--semantics-buttons-danger-tinted-content-color);
 		}
 
-		:host([variant="danger-tinted"]) .button:hover {
-			background-color: var(--primitives-color-danger-300);
+		:host([variant="danger-tinted"]) .button:hover,
+		:host([variant="destructive"]) .button:hover {
+			background-color: var(--semantics-buttons-danger-tinted-is-hovered-background-color);
+			color: var(--semantics-buttons-danger-tinted-is-hovered-content-color);
+		}
+		
+		:host([variant="danger-tinted"]) .button:active,
+		:host([variant="destructive"]) .button:active {
+			background-color: var(--semantics-buttons-danger-tinted-is-active-background-color);
+			color: var(--semantics-buttons-danger-tinted-is-active-content-color);
 		}
 		
 		:host([disabled]) .button {
-			opacity: calc(var(--primitives-opacity-disabled) / 100);
+			opacity: var(--primitives-opacity-disabled);
 			cursor: not-allowed;
 			pointer-events: none;
 		}
@@ -189,9 +226,25 @@ export class RRButton extends LitElement {
 		/* Slots */
 		::slotted([slot="icon-start"]),
 		::slotted([slot="icon-end"]) {
+			flex-shrink: 0;
+		}
+		
+		:host([size="md"]) ::slotted([slot="icon-start"]),
+		:host([size="md"]) ::slotted([slot="icon-end"]) {
 			width: 20px;
 			height: 20px;
-			flex-shrink: 0;
+		}
+		
+		:host([size="sm"]) ::slotted([slot="icon-start"]),
+		:host([size="sm"]) ::slotted([slot="icon-end"]) {
+			width: 18px;
+			height: 18px;
+		}
+		
+		:host([size="xs"]) ::slotted([slot="icon-start"]),
+		:host([size="xs"]) ::slotted([slot="icon-end"]) {
+			width: 16px;
+			height: 16px;
 		}
 
 		.content {
@@ -199,10 +252,36 @@ export class RRButton extends LitElement {
 			/* This ensures text aligns directly with button's flex alignment */
 			display: contents;
 		}
+		
+		.picker-icon {
+			display: block;
+			flex-shrink: 0;
+		}
+		
+		:host([size="md"]) .picker-icon {
+			width: 20px;
+			height: 20px;
+			margin-left: -2px;
+			margin-right: -2px;
+		}
+		
+		:host([size="sm"]) .picker-icon {
+			width: var(--primitives-space-18);
+			height: var(--primitives-space-18);
+			margin-left: -1px;
+			margin-right: -2px;
+		}
+		
+		:host([size="xs"]) .picker-icon {
+			width: var(--primitives-space-16);
+			height: var(--primitives-space-16);
+			margin-left: -1px;
+			margin-right: -2px;
+		}
 	`;
 
 	@property({ type: String, reflect: true })
-	variant: Variant = 'accent-filled';
+	variant: Variant = 'neutral-tinted';
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
@@ -233,11 +312,15 @@ export class RRButton extends LitElement {
 	}
 
 	private _shouldShowStartIcon(): boolean {
-		return this.hasStartIcon || this.hasMenu;
+		return this.hasStartIcon;
 	}
 
 	private _shouldShowEndIcon(): boolean {
 		return this.hasEndIcon;
+	}
+	
+	private _shouldShowPicker(): boolean {
+		return this.hasMenu;
 	}
 
 	override render() {
@@ -254,6 +337,18 @@ export class RRButton extends LitElement {
 					${this._shouldShowStartIcon() ? html`<slot name="icon-start"></slot>` : ''}
 					<slot></slot>
 					${this._shouldShowEndIcon() ? html`<slot name="icon-end"></slot>` : ''}
+					${this._shouldShowPicker() ? html`
+						<svg
+							class="picker-icon"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+						>
+							<path
+								fill="currentColor"
+								d="M12 14.172 5.4 7.6 4 9l8 8 8-8-1.4-1.4z"
+							/>
+						</svg>
+					` : ''}
 				</span>
 			</button>
 		`;
