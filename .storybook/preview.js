@@ -61,6 +61,7 @@ const preview = {
             '*',
           ],
           'Screens',
+          ['Editor', 'Library', ['Home', 'Law', 'Article'], 'Search', '*'],
           '*',
         ],
       },
