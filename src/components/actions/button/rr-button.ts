@@ -24,6 +24,7 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import './../../content/icon/icon.ts';
 
 type Variant = 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type Size = 'xs' | 'sm' | 'md';
@@ -92,7 +93,7 @@ export class RRButton extends LitElement {
 		:host([size="sm"]) .button {
 			min-height: var(--semantics-controls-sm-min-size);
 			min-width: var(--semantics-controls-sm-min-size);
-			padding: var(--primitives-space-6) var(--primitives-space-8);
+			padding: var(--primitives-space-6) var(--primitives-space-10);
 			font: var(--semantics-buttons-sm-font);
 			border-radius: var(--semantics-controls-sm-corner-radius);
 			gap: var(--primitives-space-2);
@@ -231,20 +232,20 @@ export class RRButton extends LitElement {
 		
 		:host([size="md"]) ::slotted([slot="icon-start"]),
 		:host([size="md"]) ::slotted([slot="icon-end"]) {
-			width: 20px;
-			height: 20px;
+			width: var(--primitives-space-20);
+			height: var(--primitives-space-20);
 		}
 		
 		:host([size="sm"]) ::slotted([slot="icon-start"]),
 		:host([size="sm"]) ::slotted([slot="icon-end"]) {
-			width: 18px;
-			height: 18px;
+			width: var(--primitives-space-18);
+			height: var(--primitives-space-18);
 		}
 		
 		:host([size="xs"]) ::slotted([slot="icon-start"]),
 		:host([size="xs"]) ::slotted([slot="icon-end"]) {
-			width: 16px;
-			height: 16px;
+			width: var(--primitives-space-16);
+			height: var(--primitives-space-16);
 		}
 
 		.content {
@@ -322,6 +323,14 @@ export class RRButton extends LitElement {
 	private _shouldShowPicker(): boolean {
 		return this.hasMenu;
 	}
+	
+	private _getIconSize(): number {
+		switch (this.size) {
+			case 'xs': return 16;
+			case 'sm': return 18;
+			case 'md': default: return 20;
+		}
+	}
 
 	override render() {
 		return html`
@@ -338,16 +347,11 @@ export class RRButton extends LitElement {
 					<slot></slot>
 					${this._shouldShowEndIcon() ? html`<slot name="icon-end"></slot>` : ''}
 					${this._shouldShowPicker() ? html`
-						<svg
-							class="picker-icon"
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24"
-						>
-							<path
-								fill="currentColor"
-								d="M12 14.172 5.4 7.6 4 9l8 8 8-8-1.4-1.4z"
-							/>
-						</svg>
+						<rr-icon
+							 class="picker-icon"
+							 name="chevronDownSmall"
+							 size="${this._getIconSize()}"
+						></rr-icon>
 					` : ''}
 				</span>
 			</button>
