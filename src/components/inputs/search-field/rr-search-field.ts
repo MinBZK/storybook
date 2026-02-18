@@ -172,7 +172,7 @@ export class RRSearchField extends LitElement {
   value = '';
 
   @property({ type: String })
-  placeholder = 'Search';
+  placeholder = 'Zoeken';
 
   @property({ type: String, reflect: true })
   size: Size = 'md';

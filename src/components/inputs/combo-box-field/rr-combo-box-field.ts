@@ -155,7 +155,7 @@ export class RRComboBoxField extends LitElement {
   value = '';
 
   @property({ type: String })
-  placeholder = 'Combo box field';
+  placeholder = 'Selecteer een optie';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;

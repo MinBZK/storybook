@@ -161,7 +161,7 @@ export class RRPasswordField extends LitElement {
   value = '';
 
   @property({ type: String })
-  placeholder = 'Password field';
+  placeholder = 'Wachtwoord';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;
