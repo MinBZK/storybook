@@ -22,7 +22,7 @@ export class RRIcon extends LitElement {
    * The name of the icon from the icon library
    * @type {string}
    */
-  @property({ type: String }) name = 'home';
+  @property({ type: String }) name = 'circleDashed';
   
   
   static styles = css`

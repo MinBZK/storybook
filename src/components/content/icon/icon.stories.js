@@ -49,7 +49,7 @@ export default {
 			description: 'Select an icon from the library',
 			table: {
 				type: { summary: 'string' },
-				defaultValue: { summary: 'house' },
+				defaultValue: { summary: 'circleDashed' },
 			},
 		},
 		containerSize: {
@@ -85,7 +85,7 @@ export default {
 
 export const Default = {
 	args: {
-		name: 'house',
+		name: 'circleDashed',
 		containerSize: 32,
 		containerColor: '#000000',
 	},
