@@ -167,39 +167,24 @@ Sizes.parameters = {
 export const WithStartIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-button has-start-icon size="md">
-			<svg
+			<rr-icon
+				name="download"
 				slot="icon-start"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-			</svg>
+			></rr-icon>
 			Download
 		</rr-button>
 		<rr-button has-start-icon size="sm">
-			<svg
+			<rr-icon
+				name="download"
 				slot="icon-start"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-			</svg>
+			></rr-icon>
 			Download
 		</rr-button>
 		<rr-button has-start-icon size="xs">
-			<svg
+			<rr-icon
+				name="download"
 				slot="icon-start"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-			</svg>
+			></rr-icon>
 			Download
 		</rr-button>
 	</div>
@@ -221,45 +206,30 @@ export const WithEndIcon = () => html`
 			has-end-icon
 		>
 			Volgende
-			<svg
+			<rr-icon
+				name="arrow-right"
 				slot="icon-end"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M5 12h14M12 5l7 7-7 7" />
-			</svg>
+			></rr-icon>
 		</rr-button>
 		<rr-button
 			size="sm"
 			has-end-icon
 		>
 			Volgende
-			<svg
+			<rr-icon
+				name="arrow-right"
 				slot="icon-end"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M5 12h14M12 5l7 7-7 7" />
-			</svg>
+			></rr-icon>
 		</rr-button>
 		<rr-button
 			size="xs"
 			has-end-icon
 		>
 			Volgende
-			<svg
+			<rr-icon
+				name="arrow-right"
 				slot="icon-end"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M5 12h14M12 5l7 7-7 7" />
-			</svg>
+			></rr-icon>
 		</rr-button>
 	</div>
 `;
@@ -280,75 +250,45 @@ export const WithBothIcons = () => html`
 			has-start-icon
 			has-end-icon
 		>
-			<svg
+			<rr-icon
+				name="download"
 				slot="icon-start"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-			</svg>
+			></rr-icon>
 			Download bestand
-			<svg
+			<rr-icon
+				name="arrow-right"
 				slot="icon-end"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M5 12h14M12 5l7 7-7 7" />
-			</svg>
+			></rr-icon>
 		</rr-button>
 		<rr-button
 			size="sm"
 			has-start-icon
 			has-end-icon
 		>
-			<svg
+			<rr-icon
+				name="download"
 				slot="icon-start"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-			</svg>
+			></rr-icon>
 			Download bestand
-			<svg
+			<rr-icon
+				name="arrow-right"
 				slot="icon-end"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M5 12h14M12 5l7 7-7 7" />
-			</svg>
+			></rr-icon>
 		</rr-button>
 		<rr-button
 			size="xs"
 			has-start-icon
 			has-end-icon
 		>
-			<svg
+			<rr-icon
+				name="download"
 				slot="icon-start"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-			</svg>
+			></rr-icon>
 			Download bestand
-			<svg
+			<rr-icon
+				name="arrow-right"
 				slot="icon-end"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-			>
-				<path d="M5 12h14M12 5l7 7-7 7" />
-			</svg>
+			></rr-icon>
 		</rr-button>
 	</div>
 `;
