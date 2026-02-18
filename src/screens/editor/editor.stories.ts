@@ -10,7 +10,6 @@ import '../../components/navigation/tab-bar/rr-tab-bar.ts';
 import '../../components/navigation/tab-bar/rr-tab-bar-item.ts';
 import '../../components/navigation/document-tab-bar/rr-document-tab-bar.ts';
 import '../../components/navigation/document-tab-bar-item/rr-document-tab-bar-item.ts';
-import '../../components/layout/app-shell/rr-app-shell.ts';
 import '../../components/actions/button/rr-button.ts';
 import '../../components/actions/icon-button/rr-icon-button.ts';
 import '../../components/inputs/search-field/rr-search-field.ts';

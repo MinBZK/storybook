@@ -1987,21 +1987,6 @@
       },
       "status": "implemented",
       "lastUpdated": "2026-02-17"
-    },
-    {
-      "name": "App Shell",
-      "figma": {
-        "nodeId": null,
-        "nodeName": "app-shell",
-        "note": "Developer utility component - no dedicated Figma frame"
-      },
-      "implementation": {
-        "tagName": "rr-app-shell",
-        "file": "src/components/layout/app-shell/rr-app-shell.ts",
-        "className": "RRAppShell"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-17"
     }
   ]
 }

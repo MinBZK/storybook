@@ -12,7 +12,6 @@ import '../../components/navigation/tab-bar/rr-tab-bar.ts';
 import '../../components/navigation/tab-bar/rr-tab-bar-item.ts';
 import '../../components/inputs/segmented-control/rr-segmented-control.ts';
 import '../../components/inputs/segmented-control/rr-segmented-control-item.ts';
-import '../../components/content/rich-text-heading/rr-rich-text-heading.ts';
 import '../../components/content/rich-text/rr-rich-text.ts';
 import '../../components/actions/button/rr-button.ts';
 import '../../components/actions/icon-button/rr-icon-button.ts';
@@ -48,8 +47,8 @@ const articleHeader = (container: string) => html`
 
 const articleText = (container: string) => html`
   <rr-simple-section container="${container}">
-    <rr-rich-text container="${container}">
-      <rr-rich-text-heading level="3" container="${container}">Artikel 1. Algemene begrippen</rr-rich-text-heading>
+    <rr-rich-text>
+      <h3>Artikel 1. Algemene begrippen</h3>
       <p>1. In deze wet en de daarop berustende bepalingen wordt verstaan onder:</p>
       <p>a. <strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</p>
       <p>b. <strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert
