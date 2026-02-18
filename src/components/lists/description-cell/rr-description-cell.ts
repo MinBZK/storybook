@@ -16,13 +16,19 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { cellSharedStyles } from '../../shared/cell-shared-styles.ts';
 
 @customElement('rr-description-cell')
 export class RRDescriptionCell extends LitElement {
-  static override styles = [cellSharedStyles, css`
+  static override styles = css`
     :host {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       font-family: var(--rr-font-family-body);
+    }
+
+    :host([hidden]) {
+      display: none;
     }
 
     .description-cell__title {
@@ -55,7 +61,7 @@ export class RRDescriptionCell extends LitElement {
         forced-color-adjust: none;
       }
     }
-  `];
+  `;
 
   @property({ type: String, reflect: true })
   label = '';

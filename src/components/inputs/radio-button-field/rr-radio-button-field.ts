@@ -20,12 +20,20 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { fieldSharedStyles } from '../../shared/field-shared-styles.ts';
 import '../radio/rr-radio.ts';
 
 @customElement('rr-radio-button-field')
 export class RRRadioButtonField extends LitElement {
-  static override styles = [fieldSharedStyles, css`
+  static override styles = css`
+    :host {
+      display: block;
+      font-family: var(--rr-font-family-body);
+    }
+
+    :host([hidden]) {
+      display: none;
+    }
+
     .radio-button-field {
       display: flex;
       flex-direction: row;
@@ -66,7 +74,7 @@ export class RRRadioButtonField extends LitElement {
         opacity: 0.5 !important;
       }
     }
-  `];
+  `;
 
   @property({ type: Boolean, reflect: true })
   checked = false;

@@ -21,12 +21,20 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { fieldSharedStyles } from '../../shared/field-shared-styles.ts';
 import '../checkbox/rr-checkbox.ts';
 
 @customElement('rr-checkbox-field')
 export class RRCheckboxField extends LitElement {
-  static override styles = [fieldSharedStyles, css`
+  static override styles = css`
+    :host {
+      display: block;
+      font-family: var(--rr-font-family-body);
+    }
+
+    :host([hidden]) {
+      display: none;
+    }
+
     .checkbox-field {
       display: flex;
       flex-direction: row;
@@ -64,7 +72,7 @@ export class RRCheckboxField extends LitElement {
         opacity: 0.5 !important;
       }
     }
-  `];
+  `;
 
   @property({ type: Boolean, reflect: true })
   checked = false;

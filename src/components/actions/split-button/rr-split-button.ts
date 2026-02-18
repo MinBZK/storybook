@@ -24,13 +24,12 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { buttonResetStyles } from '../../shared/button-reset-styles.ts';
 
 type Size = 'sm' | 'md';
 
 @customElement('rr-split-button')
 export class RRSplitButton extends LitElement {
-  static override styles = [buttonResetStyles, css`
+  static override styles = css`
     :host {
       display: inline-flex;
       font-family: var(--rr-font-family-body);
@@ -114,6 +113,12 @@ export class RRSplitButton extends LitElement {
     /* Common button styles */
     .split-button__button,
     .split-button__dropdown {
+      appearance: none;
+      border: none;
+      margin: 0;
+      background: transparent;
+      font: inherit;
+      cursor: pointer;
       display: inline-flex;
       justify-content: center;
       align-items: center;
@@ -186,7 +191,7 @@ export class RRSplitButton extends LitElement {
         background-color: CanvasText;
       }
     }
-  `];
+  `;
 
   @property({ type: String, reflect: true })
   size: Size = 'md';
