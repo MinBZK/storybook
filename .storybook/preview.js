@@ -1,5 +1,5 @@
-import '../dist/css/tokens.css';
-import '../src/fonts/fonts.css';
+import '../src/assets/css/fonts.css';
+import '../src/assets/css/settings.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 // Figma Testing Library for pixel-perfect comparison
