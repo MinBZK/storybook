@@ -1,6 +1,9 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import * as icons from './icon-library.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { aliases } from './icon-aliases.js';
+
+const iconCache = new Map<string, string>();
 
 /**
  * A customizable icon component that renders SVG icons from a predefined library.
@@ -8,56 +11,75 @@ import * as icons from './icon-library.js';
  * @element rr-icon
  * 
  * @attr {string} name - The name of the icon to display
- * @attr {number} size - The size of the icon in pixels
- * @attr {string} color - The color of the icon
  * 
  * @example
  * ```html
- * <rr-icon name="heart" size="32" color="#ff0000"></rr-icon>
+ * <rr-icon name="heart"></rr-icon>
  * ```
  */
 @customElement('rr-icon')
 export class RRIcon extends LitElement {
-  /**
-   * The name of the icon from the icon library
-   * @type {string}
-   */
-  @property({ type: String }) name = 'circleDashed';
-  
-  
+  @property({ type: String }) name = 'circle-dashed';
+  @state() private _iconSvg: string | null = null;
+
   static styles = css`
 	:host {
-		display: inline-block;
-		width: 100%;
-		height: 100%;
-		aspect-ratio: 1 / 1;
-		color: inherit;
+	  display: inline-block;
+	  width: 100%;
+	  height: 100%;
+	  aspect-ratio: 1 / 1;
+	  color: inherit;
 	}
 	.icon__container {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	  width: 100%;
+	  height: 100%;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
 	}
 	svg {
-		display: block;
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
+	  display: block;
+	  width: 100%;
+	  height: 100%;
+	  object-fit: contain;
 	}
   `;
 
-  render() {
-	const iconSvg = icons[this.name];
-	
-	if (!iconSvg) {
-	  return html`<span>Icon not found</span>`;
-	}
+  async connectedCallback() {
+	super.connectedCallback();
+	await this._loadIcon(this.name);
+  }
 
+  async updated(changedProperties: Map<string, unknown>) {
+	if (changedProperties.has('name') && this.name) {
+	  await this._loadIcon(this.name);
+	}
+  }
+
+  private async _loadIcon(name: string) {
+	const resolvedName = aliases[name] ?? name;
+	if (!iconCache.has(resolvedName)) {
+	  try {
+		const response = await fetch(`/src/assets/icons/${resolvedName}.svg`);
+		if (!response.ok) throw new Error(`Icon "${resolvedName}" not found`);
+		const svg = await response.text();
+		iconCache.set(resolvedName, svg);
+	  } catch {
+		console.warn(`RRIcon: icon "${resolvedName}" not found`);
+		this._iconSvg = null;
+		return;
+	  }
+	}
+	this._iconSvg = iconCache.get(resolvedName)!;
+  }
+
+  render() {
+	if (!this._iconSvg) {
+	  return html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"></svg>`;
+	}
 	return html`
-	  <div class="icon__container"">
-		${iconSvg}
+	  <div class="icon__container">
+		${unsafeHTML(this._iconSvg)}
 	  </div>
 	`;
   }

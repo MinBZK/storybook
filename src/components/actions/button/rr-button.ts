@@ -341,7 +341,7 @@ export class RRButton extends LitElement {
 					${this._shouldShowPicker() ? html`
 						<rr-icon
 							 class="picker-icon"
-							 name="chevronDownSmall"
+							 name="chevron-down-small"
 						></rr-icon>
 					` : ''}
 				</span>
