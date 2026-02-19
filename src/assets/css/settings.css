@@ -4,151 +4,157 @@
 
 :root {
 	color-scheme: light dark;
+
+	/* 1. Neutral (Blue-Gray) - 253.4° with reduced chroma */
+	--primitives-color-neutral-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
+	--primitives-color-neutral-25: light-dark(oklch(0.974 0.004 253.4), oklch(0.158 0.009 253.4)); /* light: #F4F6F9 | dark: #0A0D10 */
+	--primitives-color-neutral-50: light-dark(oklch(0.948 0.007 253.4), oklch(0.202 0.011 253.4)); /* light: #EBEEF2 | dark: #13171B */
+	--primitives-color-neutral-75: light-dark(oklch(0.923 0.009 253.4), oklch(0.234 0.013 253.4)); /* light: #E1E6EB | dark: #1A1E24 */
+	--primitives-color-neutral-100: light-dark(oklch(0.898 0.011 253.4), oklch(0.261 0.015 253.4)); /* light: #D8DEE5 | dark: #1F252B */
+	--primitives-color-neutral-150: light-dark(oklch(0.850 0.015 253.4), oklch(0.307 0.018 253.4)); /* light: #C7CFD8 | dark: #293038 */
+	--primitives-color-neutral-200: light-dark(oklch(0.804 0.019 253.4), oklch(0.347 0.020 253.4)); /* light: #B7C0CB | dark: #333B44 */
+	--primitives-color-neutral-250: light-dark(oklch(0.760 0.023 253.4), oklch(0.385 0.023 253.4)); /* light: #A7B2C0 | dark: #3B4450 */
+	--primitives-color-neutral-300: light-dark(oklch(0.718 0.026 253.4), oklch(0.421 0.026 253.4)); /* light: #99A5B5 | dark: #444E5B */
+	--primitives-color-neutral-350: light-dark(oklch(0.677 0.030 253.4), oklch(0.456 0.029 253.4)); /* light: #8B99AA | dark: #4C5867 */
+	--primitives-color-neutral-400: light-dark(oklch(0.638 0.033 253.4), oklch(0.491 0.032 253.4)); /* light: #7E8DA0 | dark: #546273 */
+	--primitives-color-neutral-450: light-dark(oklch(0.600 0.037 253.4), oklch(0.527 0.036 253.4)); /* light: #718296 | dark: #5D6C80 */
+	--primitives-color-neutral-500: light-dark(oklch(0.563 0.040 253.4), oklch(0.563 0.040 253.4)); /* light: #65778D | dark: #65778D */
+	--primitives-color-neutral-550: light-dark(oklch(0.527 0.036 253.4), oklch(0.600 0.037 253.4)); /* light: #5D6C80 | dark: #718296 */
+	--primitives-color-neutral-600: light-dark(oklch(0.491 0.032 253.4), oklch(0.638 0.033 253.4)); /* light: #546273 | dark: #7E8DA0 */
+	--primitives-color-neutral-650: light-dark(oklch(0.456 0.029 253.4), oklch(0.677 0.030 253.4)); /* light: #4C5867 | dark: #8B99AA */
+	--primitives-color-neutral-700: light-dark(oklch(0.421 0.026 253.4), oklch(0.718 0.026 253.4)); /* light: #444E5B | dark: #99A5B5 */
+	--primitives-color-neutral-750: light-dark(oklch(0.385 0.023 253.4), oklch(0.760 0.023 253.4)); /* light: #3B4450 | dark: #A7B2C0 */
+	--primitives-color-neutral-800: light-dark(oklch(0.347 0.020 253.4), oklch(0.804 0.019 253.4)); /* light: #333B44 | dark: #B7C0CB */
+	--primitives-color-neutral-850: light-dark(oklch(0.307 0.018 253.4), oklch(0.850 0.015 253.4)); /* light: #293038 | dark: #C7CFD8 */
+	--primitives-color-neutral-900: light-dark(oklch(0.261 0.015 253.4), oklch(0.898 0.011 253.4)); /* light: #1F252B | dark: #D8DEE5 */
+	--primitives-color-neutral-950: light-dark(oklch(0.202 0.011 253.4), oklch(0.948 0.007 253.4)); /* light: #13171B | dark: #EBEEF2 */
+	--primitives-color-neutral-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
+
 	
+	/* 2. Accent (Blue) - 253.4° */
+	--primitives-color-accent-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
+	--primitives-color-accent-25: light-dark(oklch(0.973 0.013 253.4), oklch(0.159 0.050 253.4)); /* light: #F0F7FF | dark: #000D21 */
+	--primitives-color-accent-50: light-dark(oklch(0.947 0.026 253.4), oklch(0.203 0.063 253.4)); /* light: #E2EFFF | dark: #001632 */
+	--primitives-color-accent-75: light-dark(oklch(0.922 0.038 253.4), oklch(0.235 0.074 253.4)); /* light: #D4E7FF | dark: #001E3F */
+	--primitives-color-accent-100: light-dark(oklch(0.897 0.051 253.4), oklch(0.262 0.082 253.4)); /* light: #C6E0FF | dark: #00244B */
+	--primitives-color-accent-150: light-dark(oklch(0.849 0.076 253.4), oklch(0.308 0.096 253.4)); /* light: #ABD1FF | dark: #00305F */
+	--primitives-color-accent-200: light-dark(oklch(0.804 0.097 253.4), oklch(0.348 0.097 253.4)); /* light: #93C3FC | dark: #0C3A6B */
+	--primitives-color-accent-250: light-dark(oklch(0.760 0.097 253.4), oklch(0.386 0.097 253.4)); /* light: #85B5EE | dark: #184576 */
+	--primitives-color-accent-300: light-dark(oklch(0.718 0.097 253.4), oklch(0.421 0.097 253.4)); /* light: #78A7E0 | dark: #224F81 */
+	--primitives-color-accent-350: light-dark(oklch(0.677 0.097 253.4), oklch(0.457 0.097 253.4)); /* light: #6C9BD2 | dark: #2C598C */
+	--primitives-color-accent-400: light-dark(oklch(0.638 0.097 253.4), oklch(0.492 0.097 253.4)); /* light: #608FC5 | dark: #366396 */
+	--primitives-color-accent-450: light-dark(oklch(0.600 0.097 253.4), oklch(0.527 0.097 253.4)); /* light: #5583B9 | dark: #406DA2 */
+	--primitives-color-accent-500: light-dark(oklch(0.563 0.097 253.4), oklch(0.563 0.097 253.4)); /* light: #4B78AD | dark: #4B78AD */
+	--primitives-color-accent-550: light-dark(oklch(0.527 0.097 253.4), oklch(0.600 0.097 253.4)); /* light: #406DA2 | dark: #5583B9 */
+	--primitives-color-accent-600: light-dark(oklch(0.492 0.097 253.4), oklch(0.638 0.097 253.4)); /* light: #366396 | dark: #608FC5 */
+	--primitives-color-accent-650: light-dark(oklch(0.457 0.097 253.4), oklch(0.677 0.097 253.4)); /* light: #2C598C | dark: #6C9BD2 */
+	--primitives-color-accent-700: light-dark(oklch(0.421 0.097 253.4), oklch(0.718 0.097 253.4)); /* light: #224F81 | dark: #78A7E0 */
+	--primitives-color-accent-750: light-dark(oklch(0.386 0.097 253.4), oklch(0.760 0.097 253.4)); /* light: #184576 | dark: #85B5EE */
+	--primitives-color-accent-800: light-dark(oklch(0.348 0.097 253.4), oklch(0.804 0.097 253.4)); /* light: #0C3A6B | dark: #93C3FC */
+	--primitives-color-accent-850: light-dark(oklch(0.308 0.096 253.4), oklch(0.849 0.076 253.4)); /* light: #00305F | dark: #ABD1FF */
+	--primitives-color-accent-900: light-dark(oklch(0.262 0.082 253.4), oklch(0.897 0.051 253.4)); /* light: #00244B | dark: #C6E0FF */
+	--primitives-color-accent-950: light-dark(oklch(0.203 0.063 253.4), oklch(0.947 0.026 253.4)); /* light: #001632 | dark: #E2EFFF */
+	--primitives-color-accent-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 	
-	--primitives-color-neutral-0: light-dark(#ffffff, #000000);
-	--primitives-color-neutral-25: light-dark(#f5f6f9, #0b0d10);
-	--primitives-color-neutral-50: light-dark(#ebeef2, #14171a);
-	--primitives-color-neutral-75: light-dark(#e2e6eb, #1b1e23);
-	--primitives-color-neutral-100: light-dark(#d9dee4, #20252b);
-	--primitives-color-neutral-150: light-dark(#c9ced8, #2a3039);
-	--primitives-color-neutral-200: light-dark(#b8c0cb, #333a45);
-	--primitives-color-neutral-250: light-dark(#a9b2c0, #3b4451);
-	--primitives-color-neutral-300: light-dark(#9ba5b5, #444e5d);
-	--primitives-color-neutral-350: light-dark(#8d98aa, #4c5869);
-	--primitives-color-neutral-400: light-dark(#808da0, #556275);
-	--primitives-color-neutral-450: light-dark(#738197, #5d6c81);
-	--primitives-color-neutral-500: light-dark(#67778d, #67778d);
-	--primitives-color-neutral-550: light-dark(#5d6c81, #738197);
-	--primitives-color-neutral-600: light-dark(#556275, #808da0);
-	--primitives-color-neutral-650: light-dark(#4c5869, #8d98aa);
-	--primitives-color-neutral-700: light-dark(#444e5d, #9ba5b5);
-	--primitives-color-neutral-750: light-dark(#3b4451, #a9b2c0);
-	--primitives-color-neutral-800: light-dark(#333a45, #b8c0cb);
-	--primitives-color-neutral-850: light-dark(#2a3039, #c9ced8);
-	--primitives-color-neutral-900: light-dark(#20252b, #d9dee4);
-	--primitives-color-neutral-950: light-dark(#14171a, #ebeef2);
-	--primitives-color-neutral-1000: light-dark(#000000, #ffffff);
+	/* 3. Success (Green) - 137.9° */
+	--primitives-color-success-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
+	--primitives-color-success-25: light-dark(oklch(0.967 0.062 137.9), oklch(0.154 0.047 137.9)); /* light: #E0FFD6 | dark: #031000 */
+	--primitives-color-success-50: light-dark(oklch(0.935 0.133 137.9), oklch(0.197 0.061 137.9)); /* light: #BDFFA7 | dark: #061B00 */
+	--primitives-color-success-75: light-dark(oklch(0.907 0.165 137.9), oklch(0.228 0.070 137.9)); /* light: #A8FA8B | dark: #092300 */
+	--primitives-color-success-100: light-dark(oklch(0.883 0.165 137.9), oklch(0.254 0.078 137.9)); /* light: #A0F283 | dark: #0C2B00 */
+	--primitives-color-success-150: light-dark(oklch(0.835 0.165 137.9), oklch(0.299 0.092 137.9)); /* light: #91E273 | dark: #123700 */
+	--primitives-color-success-200: light-dark(oklch(0.790 0.165 137.9), oklch(0.338 0.104 137.9)); /* light: #83D365 | dark: #174300 */
+	--primitives-color-success-250: light-dark(oklch(0.746 0.165 137.9), oklch(0.375 0.115 137.9)); /* light: #75C456 | dark: #1C4E00 */
+	--primitives-color-success-300: light-dark(oklch(0.704 0.165 137.9), oklch(0.410 0.126 137.9)); /* light: #68B749 | dark: #215900 */
+	--primitives-color-success-350: light-dark(oklch(0.663 0.165 137.9), oklch(0.444 0.137 137.9)); /* light: #5BAA3B | dark: #266400 */
+	--primitives-color-success-400: light-dark(oklch(0.624 0.165 137.9), oklch(0.479 0.148 137.9)); /* light: #4F9D2D | dark: #2B6F00 */
+	--primitives-color-success-450: light-dark(oklch(0.586 0.165 137.9), oklch(0.514 0.158 137.9)); /* light: #44911E | dark: #307A00 */
+	--primitives-color-success-500: light-dark(oklch(0.549 0.165 137.9), oklch(0.549 0.165 137.9)); /* light: #38860A | dark: #38860A */
+	--primitives-color-success-550: light-dark(oklch(0.514 0.158 137.9), oklch(0.586 0.165 137.9)); /* light: #307A00 | dark: #44911E */
+	--primitives-color-success-600: light-dark(oklch(0.479 0.148 137.9), oklch(0.624 0.165 137.9)); /* light: #2B6F00 | dark: #4F9D2D */
+	--primitives-color-success-650: light-dark(oklch(0.444 0.137 137.9), oklch(0.663 0.165 137.9)); /* light: #266400 | dark: #5BAA3B */
+	--primitives-color-success-700: light-dark(oklch(0.410 0.126 137.9), oklch(0.704 0.165 137.9)); /* light: #215900 | dark: #68B749 */
+	--primitives-color-success-750: light-dark(oklch(0.375 0.115 137.9), oklch(0.746 0.165 137.9)); /* light: #1C4E00 | dark: #75C456 */
+	--primitives-color-success-800: light-dark(oklch(0.338 0.104 137.9), oklch(0.790 0.165 137.9)); /* light: #174300 | dark: #83D365 */
+	--primitives-color-success-850: light-dark(oklch(0.299 0.092 137.9), oklch(0.835 0.165 137.9)); /* light: #123700 | dark: #91E273 */
+	--primitives-color-success-900: light-dark(oklch(0.254 0.078 137.9), oklch(0.883 0.165 137.9)); /* light: #0C2B00 | dark: #A0F283 */
+	--primitives-color-success-950: light-dark(oklch(0.197 0.061 137.9), oklch(0.935 0.133 137.9)); /* light: #061B00 | dark: #BDFFA7 */
+	--primitives-color-success-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 	
-	--primitives-color-accent-0: light-dark(#ffffff, #000000);
-	--primitives-color-accent-25: light-dark(#f3f6ff, #000d21);
-	--primitives-color-accent-50: light-dark(#e7eeff, #08192b);
-	--primitives-color-accent-75: light-dark(#dbe5ff, #001e3d);
-	--primitives-color-accent-100: light-dark(#cfddff, #08192b);
-	--primitives-color-accent-150: light-dark(#b8ceff, #0c2541);
-	--primitives-color-accent-200: light-dark(#a2c0fb, #103257);
-	--primitives-color-accent-250: light-dark(#94b2ec, #133d6a);
-	--primitives-color-accent-300: light-dark(#86a5de, #184b81);
-	--primitives-color-accent-350: light-dark(#7998d1, #1c5897);
-	--primitives-color-accent-400: light-dark(#6d8cc4, #2064ac);
-	--primitives-color-accent-450: light-dark(#6181b8, #2471c2);
-	--primitives-color-accent-500: light-dark(#5576ac, #2677cd);
-	--primitives-color-accent-550: light-dark(#4a6ca1, #3d8bdb);
-	--primitives-color-accent-600: light-dark(#3f6296, #5397df);
-	--primitives-color-accent-650: light-dark(#33588b, #68a4e3);
-	--primitives-color-accent-700: light-dark(#274e81, #93beeb);
-	--primitives-color-accent-750: light-dark(#194476, #7eb1e7);
-	--primitives-color-accent-800: light-dark(#053b6b, #a9cbef);
-	--primitives-color-accent-850: light-dark(#00305b, #bed8f3);
-	--primitives-color-accent-900: light-dark(#002547, #d4e5f7);
-	--primitives-color-accent-950: light-dark(#001730, #e9f2fb);
-	--primitives-color-accent-1000: light-dark(#000000, #ffffff);
+	/* 4. Warning (Orange) - 52.9° */
+	--primitives-color-warning-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
+	--primitives-color-warning-25: light-dark(oklch(0.975 0.014 52.9), oklch(0.162 0.041 52.9)); /* light: #FFF4EE | dark: #1B0800 */
+	--primitives-color-warning-50: light-dark(oklch(0.950 0.029 52.9), oklch(0.206 0.052 52.9)); /* light: #FFEADD | dark: #290F00 */
+	--primitives-color-warning-75: light-dark(oklch(0.926 0.043 52.9), oklch(0.239 0.061 52.9)); /* light: #FFDFCC | dark: #351500 */
+	--primitives-color-warning-100: light-dark(oklch(0.902 0.058 52.9), oklch(0.267 0.068 52.9)); /* light: #FFD5BC | dark: #3E1A00 */
+	--primitives-color-warning-150: light-dark(oklch(0.857 0.089 52.9), oklch(0.314 0.080 52.9)); /* light: #FFC09A | dark: #4F2300 */
+	--primitives-color-warning-200: light-dark(oklch(0.814 0.119 52.9), oklch(0.355 0.090 52.9)); /* light: #FFAC77 | dark: #5F2B00 */
+	--primitives-color-warning-250: light-dark(oklch(0.773 0.151 52.9), oklch(0.394 0.100 52.9)); /* light: #FF9750 | dark: #6E3300 */
+	--primitives-color-warning-300: light-dark(oklch(0.733 0.169 52.9), oklch(0.430 0.109 52.9)); /* light: #F9852D | dark: #7D3B00 */
+	--primitives-color-warning-350: light-dark(oklch(0.692 0.169 52.9), oklch(0.467 0.119 52.9)); /* light: #EA7918 | dark: #8B4300 */
+	--primitives-color-warning-400: light-dark(oklch(0.653 0.166 52.9), oklch(0.503 0.128 52.9)); /* light: #DB6D00 | dark: #9A4B00 */
+	--primitives-color-warning-450: light-dark(oklch(0.614 0.156 52.9), oklch(0.539 0.137 52.9)); /* light: #CA6400 | dark: #AA5300 */
+	--primitives-color-warning-500: light-dark(oklch(0.576 0.146 52.9), oklch(0.576 0.146 52.9)); /* light: #BA5B00 | dark: #BA5B00 */
+	--primitives-color-warning-550: light-dark(oklch(0.539 0.137 52.9), oklch(0.614 0.156 52.9)); /* light: #AA5300 | dark: #CA6400 */
+	--primitives-color-warning-600: light-dark(oklch(0.503 0.128 52.9), oklch(0.653 0.166 52.9)); /* light: #9A4B00 | dark: #DB6D00 */
+	--primitives-color-warning-650: light-dark(oklch(0.467 0.119 52.9), oklch(0.692 0.169 52.9)); /* light: #8B4300 | dark: #EA7918 */
+	--primitives-color-warning-700: light-dark(oklch(0.430 0.109 52.9), oklch(0.733 0.169 52.9)); /* light: #7D3B00 | dark: #F9852D */
+	--primitives-color-warning-750: light-dark(oklch(0.394 0.100 52.9), oklch(0.773 0.151 52.9)); /* light: #6E3300 | dark: #FF9750 */
+	--primitives-color-warning-800: light-dark(oklch(0.355 0.090 52.9), oklch(0.814 0.119 52.9)); /* light: #5F2B00 | dark: #FFAC77 */
+	--primitives-color-warning-850: light-dark(oklch(0.314 0.080 52.9), oklch(0.857 0.089 52.9)); /* light: #4F2300 | dark: #FFC09A */
+	--primitives-color-warning-900: light-dark(oklch(0.267 0.068 52.9), oklch(0.902 0.058 52.9)); /* light: #3E1A00 | dark: #FFD5BC */
+	--primitives-color-warning-950: light-dark(oklch(0.206 0.052 52.9), oklch(0.950 0.029 52.9)); /* light: #290F00 | dark: #FFEADD */
+	--primitives-color-warning-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 	
-	--primitives-color-success-0: light-dark(#ffffff, #000000);
-	--primitives-color-success-25: light-dark(#e3ffce, #070f00);
-	--primitives-color-success-50: light-dark(#c1ff99, #0e1a00);
-	--primitives-color-success-75: light-dark(#adfa7f, #122200);
-	--primitives-color-success-100: light-dark(#a5f178, #132a00);
-	--primitives-color-success-150: light-dark(#95e169, #153700);
-	--primitives-color-success-200: light-dark(#87d25b, #174300);
-	--primitives-color-success-250: light-dark(#78c44e, #1b4e00);
-	--primitives-color-success-300: light-dark(#6bb641, #205900);
-	--primitives-color-success-350: light-dark(#5eaa34, #256400);
-	--primitives-color-success-400: light-dark(#519d28, #296f00);
-	--primitives-color-success-450: light-dark(#44911a, #2f7b00);
-	--primitives-color-success-500: light-dark(#38860a, #38860a);
-	--primitives-color-success-550: light-dark(#2f7b00, #44911a);
-	--primitives-color-success-600: light-dark(#296f00, #519d28);
-	--primitives-color-success-650: light-dark(#256400, #5eaa34);
-	--primitives-color-success-700: light-dark(#205900, #6bb641);
-	--primitives-color-success-750: light-dark(#1b4e00, #78c44e);
-	--primitives-color-success-800: light-dark(#174300, #87d25b);
-	--primitives-color-success-850: light-dark(#153700, #95e169);
-	--primitives-color-success-900: light-dark(#132a00, #a5f178);
-	--primitives-color-success-950: light-dark(#0e1a00, #c1ff99);
-	--primitives-color-success-1000: light-dark(#000000, #ffffff);
+	/* 5. Danger (Red) - 29.5° */
+	--primitives-color-danger-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
+	--primitives-color-danger-25: light-dark(oklch(0.975 0.012 29.5), oklch(0.166 0.068 29.5)); /* light: #FFF4F2 | dark: #250000 */
+	--primitives-color-danger-50: light-dark(oklch(0.951 0.025 29.5), oklch(0.212 0.086 29.5)); /* light: #FFE9E5 | dark: #370000 */
+	--primitives-color-danger-75: light-dark(oklch(0.927 0.037 29.5), oklch(0.246 0.100 29.5)); /* light: #FFDED8 | dark: #450100 */
+	--primitives-color-danger-100: light-dark(oklch(0.903 0.050 29.5), oklch(0.275 0.112 29.5)); /* light: #FFD3CC | dark: #510100 */
+	--primitives-color-danger-150: light-dark(oklch(0.859 0.077 29.5), oklch(0.323 0.131 29.5)); /* light: #FFBEB3 | dark: #670100 */
+	--primitives-color-danger-200: light-dark(oklch(0.816 0.104 29.5), oklch(0.365 0.148 29.5)); /* light: #FFA99B | dark: #7A0200 */
+	--primitives-color-danger-250: light-dark(oklch(0.776 0.132 29.5), oklch(0.405 0.165 29.5)); /* light: #FF9484 | dark: #8D0300 */
+	--primitives-color-danger-300: light-dark(oklch(0.737 0.161 29.5), oklch(0.443 0.180 29.5)); /* light: #FF7D6C | dark: #9F0400 */
+	--primitives-color-danger-350: light-dark(oklch(0.700 0.191 29.5), oklch(0.480 0.195 29.5)); /* light: #FF6553 | dark: #B20400 */
+	--primitives-color-danger-400: light-dark(oklch(0.663 0.207 29.5), oklch(0.517 0.207 29.5)); /* light: #F8503F | dark: #C30E05 */
+	--primitives-color-danger-450: light-dark(oklch(0.625 0.207 29.5), oklch(0.552 0.207 29.5)); /* light: #EA4233 | dark: #D02418 */
+	--primitives-color-danger-500: light-dark(oklch(0.588 0.207 29.5), oklch(0.588 0.207 29.5)); /* light: #DD3426 | dark: #DD3426 */
+	--primitives-color-danger-550: light-dark(oklch(0.552 0.207 29.5), oklch(0.625 0.207 29.5)); /* light: #D02418 | dark: #EA4233 */
+	--primitives-color-danger-600: light-dark(oklch(0.517 0.207 29.5), oklch(0.663 0.207 29.5)); /* light: #C30E05 | dark: #F8503F */
+	--primitives-color-danger-650: light-dark(oklch(0.480 0.195 29.5), oklch(0.700 0.191 29.5)); /* light: #B20400 | dark: #FF6553 */
+	--primitives-color-danger-700: light-dark(oklch(0.443 0.180 29.5), oklch(0.737 0.161 29.5)); /* light: #9F0400 | dark: #FF7D6C */
+	--primitives-color-danger-750: light-dark(oklch(0.405 0.165 29.5), oklch(0.776 0.132 29.5)); /* light: #8D0300 | dark: #FF9484 */
+	--primitives-color-danger-800: light-dark(oklch(0.365 0.148 29.5), oklch(0.816 0.104 29.5)); /* light: #7A0200 | dark: #FFA99B */
+	--primitives-color-danger-850: light-dark(oklch(0.323 0.131 29.5), oklch(0.859 0.077 29.5)); /* light: #670100 | dark: #FFBEB3 */
+	--primitives-color-danger-900: light-dark(oklch(0.275 0.112 29.5), oklch(0.903 0.050 29.5)); /* light: #510100 | dark: #FFD3CC */
+	--primitives-color-danger-950: light-dark(oklch(0.212 0.086 29.5), oklch(0.951 0.025 29.5)); /* light: #370000 | dark: #FFE9E5 */
+	--primitives-color-danger-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 	
-	--primitives-color-warning-0: light-dark(#ffffff, #000000);
-	--primitives-color-warning-25: light-dark(#fff4ee, #170a00);
-	--primitives-color-warning-50: light-dark(#ffeadd, #241300);
-	--primitives-color-warning-75: light-dark(#ffdfcc, #301800);
-	--primitives-color-warning-100: light-dark(#ffd5ba, #3b1d00);
-	--primitives-color-warning-150: light-dark(#ffc197, #4d2500);
-	--primitives-color-warning-200: light-dark(#ffac72, #5e2c00);
-	--primitives-color-warning-250: light-dark(#ff9849, #6e3400);
-	--primitives-color-warning-300: light-dark(#fa8521, #7d3b00);
-	--primitives-color-warning-350: light-dark(#eb7810, #8b4300);
-	--primitives-color-warning-400: light-dark(#db6d00, #9a4b00);
-	--primitives-color-warning-450: light-dark(#ca6400, #aa5300);
-	--primitives-color-warning-500: light-dark(#ba5b00, #ba5b00);
-	--primitives-color-warning-550: light-dark(#aa5300, #ca6400);
-	--primitives-color-warning-600: light-dark(#9a4b00, #db6d00);
-	--primitives-color-warning-650: light-dark(#8b4300, #eb7810);
-	--primitives-color-warning-700: light-dark(#7d3b00, #fa8521);
-	--primitives-color-warning-750: light-dark(#6e3400, #ff9849);
-	--primitives-color-warning-800: light-dark(#5e2c00, #ffac72);
-	--primitives-color-warning-850: light-dark(#4d2500, #ffc197);
-	--primitives-color-warning-900: light-dark(#3b1d00, #ffd5ba);
-	--primitives-color-warning-950: light-dark(#241300, #ffeadd);
-	--primitives-color-warning-1000: light-dark(#000000, #ffffff);
-	
-	--primitives-color-danger-0: light-dark(#ffffff, #000000);
-	--primitives-color-danger-25: light-dark(#fff4f1, #1c0700);
-	--primitives-color-danger-50: light-dark(#ffe9e4, #2c0d00);
-	--primitives-color-danger-75: light-dark(#ffded7, #3d0e00);
-	--primitives-color-danger-100: light-dark(#ffd4ca, #4b0d00);
-	--primitives-color-danger-150: light-dark(#ffbfb0, #640800);
-	--primitives-color-danger-200: light-dark(#ffaa97, #7b0000);
-	--primitives-color-danger-250: light-dark(#ff947e, #8d0004);
-	--primitives-color-danger-300: light-dark(#ff7e65, #a00007);
-	--primitives-color-danger-350: light-dark(#ff654c, #b20009);
-	--primitives-color-danger-400: light-dark(#f94f38, #c21110);
-	--primitives-color-danger-450: light-dark(#eb412e, #cf241a);
-	--primitives-color-danger-500: light-dark(#dd3424, #dd3424);
-	--primitives-color-danger-550: light-dark(#cf241a, #eb412e);
-	--primitives-color-danger-600: light-dark(#c21110, #f94f38);
-	--primitives-color-danger-650: light-dark(#b20009, #ff654c);
-	--primitives-color-danger-700: light-dark(#a00007, #ff7e65);
-	--primitives-color-danger-750: light-dark(#8d0004, #ff947e);
-	--primitives-color-danger-800: light-dark(#7b0000, #ffaa97);
-	--primitives-color-danger-850: light-dark(#640800, #ffbfb0);
-	--primitives-color-danger-900: light-dark(#4b0d00, #ffd4ca);
-	--primitives-color-danger-950: light-dark(#2c0d00, #ffe9e4);
-	--primitives-color-danger-1000: light-dark(#000000, #ffffff);
-	
-	--primitives-color-highlight-0: light-dark(#ffffff, #000000);
-	--primitives-color-highlight-25: light-dark(#fff5e9, #130c00);
-	--primitives-color-highlight-50: light-dark(#ffebd1, #1f1500);
-	--primitives-color-highlight-75: light-dark(#ffe1b9, #291c00);
-	--primitives-color-highlight-100: light-dark(#ffd79f, #322100);
-	--primitives-color-highlight-150: light-dark(#ffc460, #412c00);
-	--primitives-color-highlight-200: light-dark(#fab207, #4e3500);
-	--primitives-color-highlight-250: light-dark(#e9a500, #5b3e00);
-	--primitives-color-highlight-300: light-dark(#d89800, #684700);
-	--primitives-color-highlight-350: light-dark(#c78d00, #745000);
-	--primitives-color-highlight-400: light-dark(#b88200, #815a00);
-	--primitives-color-highlight-450: light-dark(#a97700, #8e6300);
-	--primitives-color-highlight-500: light-dark(#9b6d00, #9b6d00);
-	--primitives-color-highlight-550: light-dark(#8e6300, #a97700);
-	--primitives-color-highlight-600: light-dark(#815a00, #b88200);
-	--primitives-color-highlight-650: light-dark(#745000, #c78d00);
-	--primitives-color-highlight-700: light-dark(#684700, #d89800);
-	--primitives-color-highlight-750: light-dark(#5b3e00, #e9a500);
-	--primitives-color-highlight-800: light-dark(#4e3500, #fab207);
-	--primitives-color-highlight-850: light-dark(#412c00, #ffc460);
-	--primitives-color-highlight-900: light-dark(#322100, #ffd79f);
-	--primitives-color-highlight-950: light-dark(#1f1500, #ffebd1);
-	--primitives-color-highlight-1000: light-dark(#000000, #ffffff);
+	/* 6. Highlight (Yellow) - 79.0° */
+	--primitives-color-highlight-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
+	--primitives-color-highlight-25: light-dark(oklch(0.974 0.023 79.0), oklch(0.159 0.033 79.0)); /* light: #FFF5E6 | dark: #150B00 */
+	--primitives-color-highlight-50: light-dark(oklch(0.949 0.046 79.0), oklch(0.203 0.042 79.0)); /* light: #FFEBCC | dark: #211400 */
+	--primitives-color-highlight-75: light-dark(oklch(0.924 0.069 79.0), oklch(0.236 0.049 79.0)); /* light: #FFE1B3 | dark: #2A1B00 */
+	--primitives-color-highlight-100: light-dark(oklch(0.900 0.091 79.0), oklch(0.263 0.055 79.0)); /* light: #FFD898 | dark: #332100 */
+	--primitives-color-highlight-150: light-dark(oklch(0.854 0.137 79.0), oklch(0.309 0.064 79.0)); /* light: #FFC45D | dark: #412B00 */
+	--primitives-color-highlight-200: light-dark(oklch(0.810 0.168 79.0), oklch(0.350 0.073 79.0)); /* light: #FAB200 | dark: #4E3500 */
+	--primitives-color-highlight-250: light-dark(oklch(0.766 0.159 79.0), oklch(0.388 0.081 79.0)); /* light: #E9A500 | dark: #5B3E00 */
+	--primitives-color-highlight-300: light-dark(oklch(0.724 0.150 79.0), oklch(0.424 0.088 79.0)); /* light: #D89800 | dark: #684700 */
+	--primitives-color-highlight-350: light-dark(oklch(0.683 0.142 79.0), oklch(0.460 0.096 79.0)); /* light: #C78D00 | dark: #745000 */
+	--primitives-color-highlight-400: light-dark(oklch(0.643 0.134 79.0), oklch(0.495 0.103 79.0)); /* light: #B88200 | dark: #815A00 */
+	--primitives-color-highlight-450: light-dark(oklch(0.605 0.126 79.0), oklch(0.531 0.110 79.0)); /* light: #A97700 | dark: #8E6300 */
+	--primitives-color-highlight-500: light-dark(oklch(0.568 0.118 79.0), oklch(0.568 0.118 79.0)); /* light: #9B6D00 | dark: #9B6D00 */
+	--primitives-color-highlight-550: light-dark(oklch(0.531 0.110 79.0), oklch(0.605 0.126 79.0)); /* light: #8E6300 | dark: #A97700 */
+	--primitives-color-highlight-600: light-dark(oklch(0.495 0.103 79.0), oklch(0.643 0.134 79.0)); /* light: #815A00 | dark: #B88200 */
+	--primitives-color-highlight-650: light-dark(oklch(0.460 0.096 79.0), oklch(0.683 0.142 79.0)); /* light: #745000 | dark: #C78D00 */
+	--primitives-color-highlight-700: light-dark(oklch(0.424 0.088 79.0), oklch(0.724 0.150 79.0)); /* light: #684700 | dark: #D89800 */
+	--primitives-color-highlight-750: light-dark(oklch(0.388 0.081 79.0), oklch(0.766 0.159 79.0)); /* light: #5B3E00 | dark: #E9A500 */
+	--primitives-color-highlight-800: light-dark(oklch(0.350 0.073 79.0), oklch(0.810 0.168 79.0)); /* light: #4E3500 | dark: #FAB200 */
+	--primitives-color-highlight-850: light-dark(oklch(0.309 0.064 79.0), oklch(0.854 0.137 79.0)); /* light: #412B00 | dark: #FFC45D */
+	--primitives-color-highlight-900: light-dark(oklch(0.263 0.055 79.0), oklch(0.900 0.091 79.0)); /* light: #332100 | dark: #FFD898 */
+	--primitives-color-highlight-950: light-dark(oklch(0.203 0.042 79.0), oklch(0.949 0.046 79.0)); /* light: #211400 | dark: #FFEBCC */
+	--primitives-color-highlight-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 	
 	--primitives-color-reference-coolgray: #64748b;
 	--primitives-color-reference-lintblauw: #154273;
@@ -674,42 +680,42 @@
 	--semantics-buttons-neutral-tinted-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
 	--semantics-buttons-neutral-tinted-is-active-background-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
 	--semantics-buttons-neutral-tinted-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
-	--semantics-buttons-neutral-tinted-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-buttons-neutral-tinted-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-neutral-tinted-is-selected-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
+	--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
 	--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	--semantics-buttons-neutral-tinted-is-selected-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	--semantics-buttons-neutral-tinted-is-selected-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-neutral-tinted-is-selected-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 	
 	--semantics-buttons-neutral-transparent-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-transparent-is-hovered-content-color: light-dark(var(--primitives-color-neutral-950), var(--primitives-color-neutral-950));
 	--semantics-buttons-neutral-transparent-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
 	
-	--semantics-buttons-accent-filled-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-buttons-accent-filled-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-filled-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	--semantics-buttons-accent-filled-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
+	--semantics-buttons-accent-filled-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
 	--semantics-buttons-accent-filled-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	--semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	--semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-accent-filled-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 	
 	--semantics-buttons-accent-outlined-border-thickness: var(--primitives-space-2);
-	--semantics-buttons-accent-outlined-border-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-	--semantics-buttons-accent-outlined-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-	--semantics-buttons-accent-outlined-is-hovered-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
-	--semantics-buttons-accent-outlined-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
-	--semantics-buttons-accent-outlined-is-active-border-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
-	--semantics-buttons-accent-outlined-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	--semantics-buttons-accent-outlined-border-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+	--semantics-buttons-accent-outlined-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+	--semantics-buttons-accent-outlined-is-hovered-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
+	--semantics-buttons-accent-outlined-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
+	--semantics-buttons-accent-outlined-is-active-border-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
+	--semantics-buttons-accent-outlined-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	
-	--semantics-buttons-accent-transparent-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-	--semantics-buttons-accent-transparent-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
-	--semantics-buttons-accent-transparent-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	--semantics-buttons-accent-transparent-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+	--semantics-buttons-accent-transparent-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
+	--semantics-buttons-accent-transparent-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	
-	--semantics-buttons-danger-tinted-background-color: light-dark(var(--primitives-color-danger-50), var(--primitives-color-danger-50));
-	--semantics-buttons-danger-tinted-content-color: light-dark(var(--primitives-color-danger-600), var(--primitives-color-danger-600));
-	--semantics-buttons-danger-tinted-is-hovered-background-color: light-dark(var(--primitives-color-danger-100), var(--primitives-color-danger-100));
-	--semantics-buttons-danger-tinted-is-hovered-content-color: light-dark(var(--primitives-color-danger-650), var(--primitives-color-danger-650));
-	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-150));
-	--semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-700), var(--primitives-color-danger-700));
+	--semantics-buttons-danger-tinted-background-color: light-dark(var(--primitives-color-danger-100), var(--primitives-color-danger-150));
+	--semantics-buttons-danger-tinted-content-color: light-dark(var(--primitives-color-danger-650), var(--primitives-color-danger-700));
+	--semantics-buttons-danger-tinted-is-hovered-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-200));
+	--semantics-buttons-danger-tinted-is-hovered-content-color: light-dark(var(--primitives-color-danger-700), var(--primitives-color-danger-750));
+	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-200), var(--primitives-color-danger-250));
+	--semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-750), var(--primitives-color-danger-800));
 	
 	
 	--semantics-input-fields-border-thickness: var(--primitives-space-2);
@@ -717,11 +723,11 @@
 	--semantics-input-fields-end-fade-start-color: rgba(255, 255, 255, 0);
 	--semantics-input-fields-end-fade-end-color: var(--semantics-surfaces-background-color);
 	--semantics-input-fields-background-color: var(--semantics-surfaces-background-color);
-	--semantics-input-fields-border-color: light-dark(var(--primitives-color-neutral-500), var(--primitives-color-neutral-600));
-	--semantics-input-fields-is-valid-border-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-600));
-	--semantics-input-fields-is-valid-icon-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-600));
-	--semantics-input-fields-is-invalid-border-color: light-dark(var(--primitives-color-danger-500), var(--primitives-color-danger-600));
-	--semantics-input-fields-is-invalid-icon-color: light-dark(var(--primitives-color-danger-500), var(--primitives-color-danger-600));
+	--semantics-input-fields-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
+	--semantics-input-fields-is-valid-border-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
+	--semantics-input-fields-is-valid-icon-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
+	--semantics-input-fields-is-invalid-border-color: light-dark(var(--primitives-color-danger-550), var(--primitives-color-danger-650));
+	--semantics-input-fields-is-invalid-icon-color: light-dark(var(--primitives-color-danger-550), var(--primitives-color-danger-650));
 	--semantics-input-fields-is-read-only-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-input-fields-is-read-only-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 
