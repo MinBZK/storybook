@@ -236,7 +236,6 @@ export class RRMenuItem extends LitElement {
         part="link"
         type="button"
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
         aria-current=${this.selected ? 'page' : nothing}
         tabindex=${tabindex}
       >

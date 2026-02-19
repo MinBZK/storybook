@@ -38,7 +38,7 @@ export class RRIconButton extends LitElement {
       display: none;
     }
 
-    .button {
+    .icon-button {
       /* Reset */
       appearance: none;
       border: none;
@@ -69,12 +69,12 @@ export class RRIconButton extends LitElement {
       border: var(--_border-width, 0) solid var(--rr-icon-button-border-color, var(--_border-color, transparent));
     }
 
-    .button:active:not(:disabled) {
+    .icon-button:active:not(:disabled) {
       transform: scale(0.98);
     }
 
     /* Size: XS - Square 24x24, Figma: 4px border-radius */
-    :host([size='xs']) .button {
+    :host([size='xs']) .icon-button {
       width: var(--semantics-controls-xs-min-size);
       height: var(--semantics-controls-xs-min-size);
       min-width: var(--semantics-controls-xs-min-size);
@@ -83,7 +83,7 @@ export class RRIconButton extends LitElement {
     }
 
     /* Size: SM - Square 32x32, Figma: 6px border-radius */
-    :host([size='sm']) .button {
+    :host([size='sm']) .icon-button {
       width: var(--semantics-controls-sm-min-size);
       height: var(--semantics-controls-sm-min-size);
       min-width: var(--semantics-controls-sm-min-size);
@@ -92,8 +92,8 @@ export class RRIconButton extends LitElement {
     }
 
     /* Size: MD - Square 44x44 (default), Figma: 8px border-radius */
-    :host([size='md']) .button,
-    :host(:not([size])) .button {
+    :host([size='md']) .icon-button,
+    :host(:not([size])) .icon-button {
       width: var(--semantics-controls-md-min-size);
       height: var(--semantics-controls-md-min-size);
       min-width: var(--semantics-controls-md-min-size);
@@ -102,7 +102,7 @@ export class RRIconButton extends LitElement {
     }
 
     /* Size: LG - Larger icon button, Figma: 9px border-radius */
-    :host([size='lg']) .button {
+    :host([size='lg']) .icon-button {
       width: var(--semantics-controls-lg-min-size);
       height: auto;
       min-width: var(--semantics-controls-lg-min-size);
@@ -114,12 +114,12 @@ export class RRIconButton extends LitElement {
     }
 
     /* LG with title - wider button to fit text on one line */
-    :host([size='lg'][has-title]) .button {
+    :host([size='lg'][has-title]) .icon-button {
       width: auto;
       padding: 8px 8px;
     }
 
-    .button__title {
+    .icon-button__title {
       display: none;
       font: var(--semantics-buttons-xs-font);
       font-size: 12px;
@@ -130,92 +130,92 @@ export class RRIconButton extends LitElement {
       white-space: nowrap;
     }
 
-    :host([size='lg'][has-title]) .button__title {
+    :host([size='lg'][has-title]) .icon-button__title {
       display: block;
     }
 
     /* Variant: accent-filled (default) */
-    :host([variant='accent-filled']) .button,
-    :host(:not([variant])) .button {
+    :host([variant='accent-filled']) .icon-button,
+    :host(:not([variant])) .icon-button {
       --_bg-color: var(--semantics-buttons-accent-filled-background-color);
       --_text-color: var(--semantics-buttons-accent-filled-content-color);
     }
 
-    :host([variant='accent-filled']) .button:hover:not(:disabled),
-    :host(:not([variant])) .button:hover:not(:disabled) {
+    :host([variant='accent-filled']) .icon-button:hover:not(:disabled),
+    :host(:not([variant])) .icon-button:hover:not(:disabled) {
       --_bg-color: var(--primitives-color-accent-75);
     }
 
     /* Variant: accent-outlined */
-    :host([variant='accent-outlined']) .button {
+    :host([variant='accent-outlined']) .icon-button {
       --_bg-color: transparent;
       --_text-color: var(--semantics-buttons-accent-outlined-content-color);
       --_border-color: var(--semantics-buttons-accent-outlined-border-color);
       --_border-width: var(--semantics-buttons-accent-outlined-border-thickness);
     }
 
-    :host([variant='accent-outlined']) .button:hover:not(:disabled) {
+    :host([variant='accent-outlined']) .icon-button:hover:not(:disabled) {
       --_bg-color: var(--primitives-color-accent-150);
     }
 
     /* Variant: accent-tinted */
-    :host([variant='accent-tinted']) .button {
+    :host([variant='accent-tinted']) .icon-button {
       --_bg-color: var(--semantics-buttons-accent-tinted-background-color);
       --_text-color: var(--semantics-buttons-accent-tinted-content-color);
     }
 
-    :host([variant='accent-tinted']) .button:hover:not(:disabled) {
+    :host([variant='accent-tinted']) .icon-button:hover:not(:disabled) {
       --_bg-color: var(--primitives-color-accent-300);
     }
 
     /* Variant: neutral-tinted */
-    :host([variant='neutral-tinted']) .button {
+    :host([variant='neutral-tinted']) .icon-button {
       --_bg-color: var(--semantics-buttons-neutral-tinted-background-color);
       --_text-color: var(--semantics-buttons-neutral-tinted-content-color);
     }
 
-    :host([variant='neutral-tinted']) .button:hover:not(:disabled) {
+    :host([variant='neutral-tinted']) .icon-button:hover:not(:disabled) {
       --_bg-color: var(--primitives-color-neutral-300);
     }
 
     /* Variant: accent-transparent */
-    :host([variant='accent-transparent']) .button {
+    :host([variant='accent-transparent']) .icon-button {
       --_bg-color: transparent;
       --_text-color: var(--semantics-buttons-accent-transparent-content-color);
     }
 
-    :host([variant='accent-transparent']) .button:hover:not(:disabled) {
+    :host([variant='accent-transparent']) .icon-button:hover:not(:disabled) {
       --_bg-color: var(--primitives-color-accent-150);
     }
 
     /* Variant: neutral-transparent */
-    :host([variant='neutral-transparent']) .button {
+    :host([variant='neutral-transparent']) .icon-button {
       --_bg-color: transparent;
       --_text-color: var(--primitives-color-neutral-900);
     }
 
-    :host([variant='neutral-transparent']) .button:hover:not(:disabled) {
+    :host([variant='neutral-transparent']) .icon-button:hover:not(:disabled) {
       --_bg-color: var(--primitives-color-neutral-200);
     }
 
     /* Variant: danger-tinted (destructive) */
-    :host([variant='danger-tinted']) .button {
+    :host([variant='danger-tinted']) .icon-button {
       --_bg-color: var(--semantics-buttons-danger-tinted-background-color);
       --_text-color: var(--semantics-buttons-danger-tinted-content-color);
     }
 
-    :host([variant='danger-tinted']) .button:hover:not(:disabled) {
+    :host([variant='danger-tinted']) .icon-button:hover:not(:disabled) {
       --_bg-color: var(--primitives-color-danger-300);
     }
 
     /* Focus state */
-    .button:focus-visible {
+    .icon-button:focus-visible {
       outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
       outline-offset: 2px;
     }
 
     /* Disabled state */
-    :host([disabled]) .button {
+    :host([disabled]) .icon-button {
       opacity: calc(var(--primitives-opacity-disabled) / 100);
       cursor: not-allowed;
       pointer-events: none;
@@ -252,18 +252,18 @@ export class RRIconButton extends LitElement {
 
     /* Accessibility: Reduced motion */
     @media (prefers-reduced-motion: reduce) {
-      .button {
+      .icon-button {
         transition: none;
       }
     }
 
     /* Accessibility: High Contrast Mode */
     @media (forced-colors: active) {
-      .button {
+      .icon-button {
         border: 2px solid CanvasText !important;
       }
 
-      :host([disabled]) .button {
+      :host([disabled]) .icon-button {
         opacity: 0.5 !important;
       }
     }
@@ -288,7 +288,7 @@ export class RRIconButton extends LitElement {
   hasTitle = false;
 
   @property({ type: String })
-  title = 'Icon Button';
+  title = '';
 
   private _handleClick = (event: Event): void => {
     if (this.disabled) {
@@ -310,15 +310,14 @@ export class RRIconButton extends LitElement {
   override render() {
     return html`
       <button
-        class="button"
+        class="icon-button"
         part="button"
         type=${this.type}
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
         aria-label=${this.label}
       >
         <slot></slot>
-        <span class="button__title" part="title">${this.title}</span>
+        <span class="icon-button__title" part="title">${this.title}</span>
       </button>
     `;
   }

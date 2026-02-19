@@ -8,7 +8,7 @@
  * @attr {string} layout - Layout mode: 'grid' | 'list' | 'horizontal-scroll' (default: 'grid')
  * @attr {string} title - Collection title
  * @attr {boolean} show-load-more - Whether to show load more button (default: false)
- * @attr {string} load-more-label - Label for load more button (default: 'Load more')
+ * @attr {string} load-more-label - Label for load more button (default: 'Meer laden')
  *
  * @slot - Default slot for collection items
  * @slot header - Slot for custom header content
@@ -137,7 +137,7 @@ export class RRCollection extends LitElement {
   showLoadMore = false;
 
   @property({ type: String, attribute: 'load-more-label' })
-  loadMoreLabel = 'Load more';
+  loadMoreLabel = 'Toon meer';
 
   private _handleLoadMore(): void {
     this.dispatchEvent(

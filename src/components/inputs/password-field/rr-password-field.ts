@@ -161,7 +161,7 @@ export class RRPasswordField extends LitElement {
   value = '';
 
   @property({ type: String })
-  placeholder = 'Password field';
+  placeholder = 'Wachtwoord';
 
   @property({ type: Boolean, reflect: true })
   disabled = false;
@@ -287,10 +287,9 @@ export class RRPasswordField extends LitElement {
           class="password-field__toggle"
           part="toggle"
           type="button"
-          aria-label=${this.masked ? 'Show password' : 'Hide password'}
+          aria-label=${this.masked ? 'Wachtwoord tonen' : 'Wachtwoord verbergen'}
           @click=${this._toggleVisibility}
           ?disabled=${this.disabled}
-          tabindex="-1"
         >
           ${this.masked ? this._renderEyeIcon() : this._renderEyeSlashIcon()}
         </button>

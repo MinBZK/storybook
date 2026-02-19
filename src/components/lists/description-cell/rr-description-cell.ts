@@ -24,7 +24,7 @@ export class RRDescriptionCell extends LitElement {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {

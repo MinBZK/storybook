@@ -29,7 +29,7 @@ export class RRTextCell extends LitElement {
     :host {
       display: flex;
       flex-direction: column;
-      font-family: var(--rr-font-family-sans, 'RijksoverheidSans', system-ui, sans-serif);
+      font-family: var(--rr-font-family-body);
     }
 
     :host([hidden]) {

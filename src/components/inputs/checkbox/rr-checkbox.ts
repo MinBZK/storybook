@@ -235,7 +235,13 @@ export class RRCheckbox extends LitElement {
       this.indeterminate = false;
     }
 
-    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        detail: { checked: this.checked, value: this.value },
+        bubbles: true,
+        composed: true,
+      })
+    );
   };
 
   private _handleKeyDown = (event: KeyboardEvent): void => {

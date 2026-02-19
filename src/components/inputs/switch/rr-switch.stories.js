@@ -47,17 +47,17 @@ export default {
     },
     size: {
       control: 'select',
-      options: ['s', 'm'],
+      options: ['sm', 'md'],
       description: 'Switch size',
       table: {
-        defaultValue: { summary: 'm' },
+        defaultValue: { summary: 'md' },
       },
     },
   },
   args: {
     checked: false,
     disabled: false,
-    size: 'm',
+    size: 'md',
   },
 };
 

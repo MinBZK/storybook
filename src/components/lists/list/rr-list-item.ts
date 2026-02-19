@@ -132,8 +132,8 @@ export class RRListItem extends LitElement {
 
     /* Slotted content colors when selected */
     :host([selected]) {
-      --semantics-content-color: #ffffff;
-      color: #ffffff;
+      --semantics-content-color: var(--primitives-color-neutral-0);
+      color: var(--primitives-color-neutral-0);
     }
 
     /* Accessibility: focus state */

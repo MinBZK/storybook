@@ -45,7 +45,7 @@ export { RRFormField } from './control-groups/form-field/rr-form-field.ts';
 export { RRSpacer } from './layout/spacer/rr-spacer.ts';
 export { RRDivider } from './layout/divider/rr-divider.ts';
 export { RRPageStickyAreaBackground } from './layout/page/page-sticky-area-background/rr-page-sticky-area-background.ts';
-export { RRBox } from './layout/box/rr-box.js';
+export { RRBox } from './layout/box/rr-box.ts';
 export { RRPage } from './layout/page/rr-page.ts';
 export { RRTitleBarTitleGroup } from './layout/title-bar-title-group/rr-title-bar-title-group.ts';
 export { RRTopTitleBar } from './layout/top-title-bar/rr-top-title-bar.ts';

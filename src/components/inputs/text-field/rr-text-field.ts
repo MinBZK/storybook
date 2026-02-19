@@ -113,7 +113,7 @@ export class RRTextField extends LitElement {
       top: 2px;
       width: 10px;
       height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness) - 4px);
-      background: linear-gradient(-90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+      background: linear-gradient(-90deg, var(--semantics-input-fields-end-fade-end-color) 0%, var(--semantics-input-fields-end-fade-start-color) 100%);
       pointer-events: none;
     }
 

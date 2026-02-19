@@ -61,10 +61,10 @@ export default {
     },
     size: {
       control: 'select',
-      options: ['xs', 's', 'm'],
+      options: ['xs', 'sm', 'md'],
       description: 'Radio button size',
       table: {
-        defaultValue: { summary: 'm' },
+        defaultValue: { summary: 'md' },
       },
     },
     name: {
@@ -83,7 +83,7 @@ export default {
   args: {
     checked: false,
     disabled: false,
-    size: 'm',
+    size: 'md',
     name: 'demo-radio',
     value: 'option1',
     label: 'Radio Option',
@@ -144,13 +144,13 @@ ExtraSmall.args = {
 export const Small = Template.bind({});
 Small.args = {
   label: 'Klein',
-  size: 's',
+  size: 'sm',
 };
 
 export const Medium = Template.bind({});
 Medium.args = {
   label: 'Medium',
-  size: 'm',
+  size: 'md',
 };
 
 // Radio Group Example (with proper WAI-ARIA radiogroup)

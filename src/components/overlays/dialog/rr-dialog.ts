@@ -53,6 +53,7 @@ export class RRDialog extends LitElement {
     }
 
     .dialog::backdrop {
+      /* TODO: tokenize — no dedicated overlay/backdrop token exists yet */
       background: rgba(0, 0, 0, 0.5);
     }
 
@@ -181,9 +182,11 @@ export class RRDialog extends LitElement {
             <slot name="icon"></slot>
           </div>
 
-          <div class="dialog__header" part="header">
-            <h2 class="dialog__heading">${this.heading}</h2>
-          </div>
+          ${this.heading
+            ? html`<div class="dialog__header" part="header">
+                <h2 class="dialog__heading">${this.heading}</h2>
+              </div>`
+            : ''}
 
           <div class="dialog__body" part="body">
             <slot></slot>

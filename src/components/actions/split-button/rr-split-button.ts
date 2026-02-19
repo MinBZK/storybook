@@ -18,6 +18,8 @@
  * @csspart button - The main action button
  * @csspart divider - The divider between button and dropdown
  * @csspart dropdown - The dropdown trigger button
+ *
+ * @todo Add variant support (accent-filled, accent-outlined, etc.) matching rr-button variants
  */
 
 import { LitElement, html, css } from 'lit';
@@ -145,7 +147,7 @@ export class RRSplitButton extends LitElement {
     /* Divider */
     .split-button__divider {
       width: 1px;
-      background-color: #A9B2C0;
+      background-color: var(--semantics-buttons-neutral-tinted-divider-color);
       flex-shrink: 0;
     }
 
@@ -222,7 +224,6 @@ export class RRSplitButton extends LitElement {
           part="button"
           type="button"
           ?disabled=${this.disabled}
-          aria-disabled=${this.disabled}
           @click=${this._handleButtonClick}
         >
           <slot></slot>
@@ -233,9 +234,8 @@ export class RRSplitButton extends LitElement {
           part="dropdown"
           type="button"
           ?disabled=${this.disabled}
-          aria-disabled=${this.disabled}
           aria-haspopup="menu"
-          aria-label="More options"
+          aria-label="Meer opties"
           @click=${this._handleDropdownClick}
         >
           <slot name="dropdown-icon">

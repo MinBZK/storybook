@@ -50,9 +50,9 @@ export default {
     },
     size: {
       control: 'select',
-      options: ['s', 'm'],
+      options: ['sm', 'md'],
       description: 'Stepper size',
-      table: { defaultValue: { summary: 'm' } },
+      table: { defaultValue: { summary: 'md' } },
     },
   },
   args: {
@@ -61,7 +61,7 @@ export default {
     max: 10,
     step: 1,
     disabled: false,
-    size: 'm',
+    size: 'md',
   },
 };
 
@@ -81,10 +81,10 @@ export const Default = Template.bind({});
 Default.args = {};
 
 export const Small = Template.bind({});
-Small.args = { size: 's' };
+Small.args = { size: 'sm' };
 
 export const Medium = Template.bind({});
-Medium.args = { size: 'm' };
+Medium.args = { size: 'md' };
 
 export const Disabled = Template.bind({});
 Disabled.args = { disabled: true };

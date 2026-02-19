@@ -40,8 +40,8 @@ export class RRStandaloneMenuItem extends LitElement {
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: 8px;
-      padding: 8px;
+      gap: var(--primitives-space-8);
+      padding: var(--primitives-space-8);
       min-height: var(--semantics-controls-md-min-size);
       border-radius: var(--semantics-controls-md-corner-radius);
       width: 100%;
@@ -204,9 +204,7 @@ export class RRStandaloneMenuItem extends LitElement {
         class="menu-item"
         part="item"
         type="button"
-        role="menuitem"
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
         @click=${this._handleClick}
       >
         ${this.selected

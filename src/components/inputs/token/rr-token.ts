@@ -101,6 +101,7 @@ export class RRToken extends LitElement {
     }
 
     .token__dismiss:hover {
+      /* TODO: tokenize — no dedicated hover/surface opacity token exists yet */
       background-color: rgba(0, 0, 0, 0.1);
     }
 

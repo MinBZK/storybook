@@ -2,14 +2,14 @@ import { html } from 'lit';
 
 // Import all components - use .ts for Lit components, .js for legacy
 import '../components/actions/button/rr-button.ts';
-import '../components/inputs/checkbox/rr-checkbox.js';
+import '../components/inputs/checkbox/rr-checkbox.ts';
 import '../components/inputs/radio/rr-radio.ts';
 import '../components/inputs/switch/rr-switch.ts';
-import '../components/inputs/toggle-button/rr-toggle-button.js';
+import '../components/inputs/toggle-button/rr-toggle-button.ts';
 import '../components/actions/icon-button/rr-icon-button.ts';
 import '../components/navigation/menu-bar/rr-menu-bar.ts';
 import '../components/navigation/menu-bar/rr-menu-item.ts';
-import '../components/navigation/top-navigation-bar/rr-top-navigation-bar.js';
+import '../components/navigation/top-navigation-bar/rr-top-navigation-bar.ts';
 
 /**
  * Stories for automated pixel-perfect comparison with Figma designs.
@@ -39,7 +39,7 @@ export const ButtonAccentFilledM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-button variant="accent-filled" size="m">Button</rr-button>
+    <rr-button variant="accent-filled" size="md">Button</rr-button>
   </div>
 `;
 ButtonAccentFilledM.storyName = 'button--accent-filled--m';
@@ -48,7 +48,7 @@ export const ButtonAccentFilledS = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-button variant="accent-filled" size="s">Button</rr-button>
+    <rr-button variant="accent-filled" size="sm">Button</rr-button>
   </div>
 `;
 ButtonAccentFilledS.storyName = 'button--accent-filled--s';
@@ -66,7 +66,7 @@ export const ButtonAccentOutlinedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-button variant="accent-outlined" size="m">Button</rr-button>
+    <rr-button variant="accent-outlined" size="md">Button</rr-button>
   </div>
 `;
 ButtonAccentOutlinedM.storyName = 'button--accent-outlined--m';
@@ -75,7 +75,7 @@ export const ButtonAccentTintedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-button variant="accent-tinted" size="m">Button</rr-button>
+    <rr-button variant="accent-tinted" size="md">Button</rr-button>
   </div>
 `;
 ButtonAccentTintedM.storyName = 'button--accent-tinted--m';
@@ -84,7 +84,7 @@ export const ButtonNeutralTintedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-button variant="neutral-tinted" size="m">Button</rr-button>
+    <rr-button variant="neutral-tinted" size="md">Button</rr-button>
   </div>
 `;
 ButtonNeutralTintedM.storyName = 'button--neutral-tinted--m';
@@ -93,7 +93,7 @@ export const ButtonAccentTransparentM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-button variant="accent-transparent" size="m">Button</rr-button>
+    <rr-button variant="accent-transparent" size="md">Button</rr-button>
   </div>
 `;
 ButtonAccentTransparentM.storyName = 'button--accent-transparent--m';
@@ -138,7 +138,7 @@ export const RadioUncheckedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-radio size="m" name="figma-radio" aria-label="Radio"></rr-radio>
+    <rr-radio size="md" name="figma-radio" aria-label="Radio"></rr-radio>
   </div>
 `;
 RadioUncheckedM.storyName = 'radio--unchecked--m';
@@ -147,7 +147,7 @@ export const RadioCheckedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-radio size="m" name="figma-radio-checked" checked aria-label="Radio"></rr-radio>
+    <rr-radio size="md" name="figma-radio-checked" checked aria-label="Radio"></rr-radio>
   </div>
 `;
 RadioCheckedM.storyName = 'radio--checked--m';
@@ -156,7 +156,7 @@ export const RadioUncheckedS = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-radio size="s" name="figma-radio-s" aria-label="Radio"></rr-radio>
+    <rr-radio size="sm" name="figma-radio-s" aria-label="Radio"></rr-radio>
   </div>
 `;
 RadioUncheckedS.storyName = 'radio--unchecked--s';
@@ -165,7 +165,7 @@ export const RadioCheckedS = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-radio size="s" name="figma-radio-s-checked" checked aria-label="Radio"></rr-radio>
+    <rr-radio size="sm" name="figma-radio-s-checked" checked aria-label="Radio"></rr-radio>
   </div>
 `;
 RadioCheckedS.storyName = 'radio--checked--s';
@@ -178,7 +178,7 @@ export const SwitchUncheckedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-switch size="m" aria-label="Switch"></rr-switch>
+    <rr-switch size="md" aria-label="Switch"></rr-switch>
   </div>
 `;
 SwitchUncheckedM.storyName = 'switch--unchecked--m';
@@ -187,7 +187,7 @@ export const SwitchCheckedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-switch size="m" checked aria-label="Switch"></rr-switch>
+    <rr-switch size="md" checked aria-label="Switch"></rr-switch>
   </div>
 `;
 SwitchCheckedM.storyName = 'switch--checked--m';
@@ -202,7 +202,7 @@ export const ToggleButtonUnselectedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-toggle-button size="m">Toggle</rr-toggle-button>
+    <rr-toggle-button size="md">Toggle</rr-toggle-button>
   </div>
 `;
 ToggleButtonUnselectedM.storyName = 'toggle-button--unselected--m';
@@ -211,7 +211,7 @@ export const ToggleButtonSelectedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-toggle-button size="m" selected>Toggle</rr-toggle-button>
+    <rr-toggle-button size="md" selected>Toggle</rr-toggle-button>
   </div>
 `;
 ToggleButtonSelectedM.storyName = 'toggle-button--selected--m';
@@ -220,7 +220,7 @@ export const ToggleButtonUnselectedS = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-toggle-button size="s">Toggle</rr-toggle-button>
+    <rr-toggle-button size="sm">Toggle</rr-toggle-button>
   </div>
 `;
 ToggleButtonUnselectedS.storyName = 'toggle-button--unselected--s';
@@ -229,7 +229,7 @@ export const ToggleButtonSelectedS = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-toggle-button size="s" selected>Toggle</rr-toggle-button>
+    <rr-toggle-button size="sm" selected>Toggle</rr-toggle-button>
   </div>
 `;
 ToggleButtonSelectedS.storyName = 'toggle-button--selected--s';
@@ -253,7 +253,7 @@ export const IconButtonAccentFilledM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="accent-filled" size="m" label="Add">${PlusIcon}</rr-icon-button>
+    <rr-icon-button variant="accent-filled" size="md" label="Add">${PlusIcon}</rr-icon-button>
   </div>
 `;
 IconButtonAccentFilledM.storyName = 'icon-button--accent-filled--m';
@@ -262,7 +262,7 @@ export const IconButtonAccentOutlinedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="accent-outlined" size="m" label="Add">${PlusIcon}</rr-icon-button>
+    <rr-icon-button variant="accent-outlined" size="md" label="Add">${PlusIcon}</rr-icon-button>
   </div>
 `;
 IconButtonAccentOutlinedM.storyName = 'icon-button--accent-outlined--m';
@@ -271,7 +271,7 @@ export const IconButtonAccentTintedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="accent-tinted" size="m" label="Add">${PlusIcon}</rr-icon-button>
+    <rr-icon-button variant="accent-tinted" size="md" label="Add">${PlusIcon}</rr-icon-button>
   </div>
 `;
 IconButtonAccentTintedM.storyName = 'icon-button--accent-tinted--m';
@@ -280,7 +280,7 @@ export const IconButtonNeutralTintedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="neutral-tinted" size="m" label="Add">${PlusIcon}</rr-icon-button>
+    <rr-icon-button variant="neutral-tinted" size="md" label="Add">${PlusIcon}</rr-icon-button>
   </div>
 `;
 IconButtonNeutralTintedM.storyName = 'icon-button--neutral-tinted--m';
@@ -289,7 +289,7 @@ export const IconButtonAccentTransparentM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
   >
-    <rr-icon-button variant="accent-transparent" size="m" label="Add"
+    <rr-icon-button variant="accent-transparent" size="md" label="Add"
       >${PlusIcon}</rr-icon-button
     >
   </div>

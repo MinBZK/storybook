@@ -146,7 +146,7 @@ export class RRMenuBar extends LitElement {
       background: var(--primitives-color-neutral-0);
       border: 1px solid var(--semantics-dividers-color);
       border-radius: var(--semantics-controls-md-corner-radius);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--primitives-box-shadows-level-3);
       z-index: 10000;
       padding: var(--primitives-space-4) 0;
     }

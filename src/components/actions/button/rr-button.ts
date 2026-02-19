@@ -290,7 +290,6 @@ export class RRButton extends LitElement {
         part="button"
         type=${this.type}
         ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
         @click=${this._handleClick}
       >
         <span class="content" part="content">
