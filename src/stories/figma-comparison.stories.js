@@ -71,6 +71,7 @@ export const ButtonAccentOutlinedM = () => html`
 `;
 ButtonAccentOutlinedM.storyName = 'button--accent-outlined--m';
 
+<<<<<<< HEAD
 export const ButtonAccentTintedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
@@ -80,6 +81,8 @@ export const ButtonAccentTintedM = () => html`
 `;
 ButtonAccentTintedM.storyName = 'button--accent-tinted--m';
 
+=======
+>>>>>>> 344317c (Removes accent-tinted buttons)
 export const ButtonNeutralTintedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
@@ -266,15 +269,6 @@ export const IconButtonAccentOutlinedM = () => html`
   </div>
 `;
 IconButtonAccentOutlinedM.storyName = 'icon-button--accent-outlined--m';
-
-export const IconButtonAccentTintedM = () => html`
-  <div
-    style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
-  >
-    <rr-icon-button variant="accent-tinted" size="md" label="Add">${PlusIcon}</rr-icon-button>
-  </div>
-`;
-IconButtonAccentTintedM.storyName = 'icon-button--accent-tinted--m';
 
 export const IconButtonNeutralTintedM = () => html`
   <div
