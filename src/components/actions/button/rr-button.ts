@@ -165,14 +165,31 @@ export class RRButton extends LitElement {
 			color: var(--semantics-buttons-accent-filled-is-active-content-color);
 		}
 
-		/* Variant: accent-outlined - uses outline instead of border to avoid layout impact */
 		:host([variant="accent-outlined"]) .button {
-			padding: var(--primitives-space-10);
 			background-color: transparent;
+			padding: calc(var(--primitives-space-12) - var(--semantics-buttons-accent-outlined-border-thickness));
 			color: var(--semantics-buttons-accent-outlined-content-color);
 			border-width: var(--semantics-buttons-accent-outlined-border-thickness);
 			border-style: solid;
 			border-color: var(--semantics-buttons-accent-outlined-border-color);
+		}
+		
+		:host([variant="accent-outlined"][size="md"]) .button {
+			padding: calc(var(--primitives-space-12) - var(--semantics-buttons-accent-outlined-border-thickness));
+		}
+		
+		:host([variant="accent-outlined"][size="sm"]) .button {
+			padding:
+				calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness))
+				calc(var(--primitives-space-10) - var(--semantics-buttons-accent-outlined-border-thickness))
+			;
+		}
+		
+		:host([variant="accent-outlined"][size="xs"]) .button {
+			padding:
+				calc(var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness))
+				calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness))
+			;
 		}
 		
 		:host([variant="accent-outlined"]) .button:hover {
