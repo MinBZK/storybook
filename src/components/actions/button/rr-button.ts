@@ -26,7 +26,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import './../../content/icon/icon.ts';
 
-type Variant = 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
+type Variant = 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
 

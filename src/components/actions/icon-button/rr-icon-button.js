@@ -2,7 +2,7 @@
  * RegelRecht Icon Button Component
  *
  * @element rr-icon-button
- * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent'
+ * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent'
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
@@ -194,16 +194,6 @@ export class RRIconButton extends RRBaseComponent {
 
       :host([variant="accent-outlined"]) .button:hover {
         --_bg-color: var(--primitives-color-accent-150);
-      }
-
-      /* Variant: accent-tinted */
-      :host([variant="accent-tinted"]) .button {
-        --_bg-color: var(--semantics-buttons-accent-tinted-background-color);
-        --_text-color: var(--semantics-buttons-accent-tinted-content-color);
-      }
-
-      :host([variant="accent-tinted"]) .button:hover {
-        --_bg-color: var(--primitives-color-accent-300);
       }
 
       /* Variant: neutral-tinted */

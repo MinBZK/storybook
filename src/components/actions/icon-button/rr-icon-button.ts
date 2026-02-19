@@ -2,7 +2,7 @@
  * RegelRecht Icon Button Component (Lit + TypeScript)
  *
  * @element rr-icon-button
- * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent'
+ * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent'
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
@@ -23,7 +23,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 type Size = 'xs' | 'sm' | 'md' | 'lg';
-type Variant = 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
+type Variant = 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('rr-icon-button')
@@ -156,16 +156,6 @@ export class RRIconButton extends LitElement {
 
     :host([variant='accent-outlined']) .button:hover:not(:disabled) {
       --_bg-color: var(--primitives-color-accent-150);
-    }
-
-    /* Variant: accent-tinted */
-    :host([variant='accent-tinted']) .button {
-      --_bg-color: var(--semantics-buttons-accent-tinted-background-color);
-      --_text-color: var(--semantics-buttons-accent-tinted-content-color);
-    }
-
-    :host([variant='accent-tinted']) .button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-accent-300);
     }
 
     /* Variant: neutral-tinted */

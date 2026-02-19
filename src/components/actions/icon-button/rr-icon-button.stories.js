@@ -37,7 +37,6 @@ export default {
       options: [
         'accent-filled',
         'accent-outlined',
-        'accent-tinted',
         'neutral-tinted',
         'accent-transparent',
         'neutral-transparent',
@@ -185,12 +184,6 @@ AccentOutlined.args = {
   ariaLabel: 'Accent outlined',
 };
 
-export const AccentTinted = Template.bind({});
-AccentTinted.args = {
-  variant: 'accent-tinted',
-  ariaLabel: 'Accent tinted',
-};
-
 export const NeutralTinted = Template.bind({});
 NeutralTinted.args = {
   variant: 'neutral-tinted',
@@ -234,10 +227,6 @@ export const AllVariants = () => html`
   <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
     <rr-icon-button variant="accent-filled" label="Accent filled">${closeIcon}</rr-icon-button>
     <rr-icon-button variant="accent-outlined" label="Accent outlined"
-      >${closeIcon}</rr-icon-button
-    >
-    <rr-icon-button variant="accent-tinted" label="Accent tinted">${closeIcon}</rr-icon-button>
-    <rr-icon-button variant="neutral-tinted" label="Neutral tinted"
       >${closeIcon}</rr-icon-button
     >
     <rr-icon-button variant="accent-transparent" label="Accent transparent"
@@ -311,24 +300,6 @@ export const VariantSizeMatrix = () => html`
         </td>
         <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
           <rr-icon-button variant="accent-outlined" size="md" label="Accent outlined M"
-            >${closeIcon}</rr-icon-button
-          >
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">accent-tinted</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-tinted" size="xs" label="Accent tinted XS"
-            >${closeIcon}</rr-icon-button
-          >
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-tinted" size="sm" label="Accent tinted S"
-            >${closeIcon}</rr-icon-button
-          >
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-icon-button variant="accent-tinted" size="md" label="Accent tinted M"
             >${closeIcon}</rr-icon-button
           >
         </td>
