@@ -71,18 +71,6 @@ export const ButtonAccentOutlinedM = () => html`
 `;
 ButtonAccentOutlinedM.storyName = 'button--accent-outlined--m';
 
-<<<<<<< HEAD
-export const ButtonAccentTintedM = () => html`
-  <div
-    style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
-  >
-    <rr-button variant="accent-tinted" size="md">Button</rr-button>
-  </div>
-`;
-ButtonAccentTintedM.storyName = 'button--accent-tinted--m';
-
-=======
->>>>>>> 344317c (Removes accent-tinted buttons)
 export const ButtonNeutralTintedM = () => html`
   <div
     style="background: #ffffff; padding: 8px; display: inline-flex; align-items: center; justify-content: center;"
