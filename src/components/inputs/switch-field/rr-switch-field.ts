@@ -73,7 +73,7 @@ export class RRSwitchField extends LitElement {
     }
 
     :host([disabled]) .switch-field__label {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
     }
 
     /* Accessibility: High Contrast Mode */

@@ -147,7 +147,7 @@ export class RRTextField extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .text-field {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
     }
 

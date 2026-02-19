@@ -28,11 +28,13 @@ export default {
 			options: [
 				'primary',
 				'secondary',
+				'destructive',
 				'accent-filled',
 				'accent-outlined',
 				'accent-transparent',
 				'neutral-tinted',
 				'neutral-transparent',
+				'danger-tinted',
 			],
 			description: 'Visual style variant',
 			table: {
@@ -75,7 +77,7 @@ export default {
 		},
 		hasEndIcon: {
 			control: 'boolean',
-			description: 'Whether button has a end icon',
+			description: 'Whether button has an end icon',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -104,180 +106,103 @@ const Template = ({ title, variant, size, disabled, type }) => html`
 	<rr-button variant=${variant} size=${size} ?disabled=${disabled} type=${type}>${title}</rr-button>
 `;
 
-// Primary story
+// Main story
 export const Default = Template.bind({});
 Default.args = {
 	title: 'Button',
 };
 
-// All variants
-export const AccentFilled = Template.bind({});
-AccentFilled.args = {
-	title: 'Accent Filled',
-	variant: 'accent-filled',
-};
-
-export const AccentOutlined = Template.bind({});
-AccentOutlined.args = {
-	title: 'Accent Outlined',
-	variant: 'accent-outlined',
-};
-
-export const AccentTransparent = Template.bind({});
-AccentTransparent.args = {
-	title: 'Accent Transparent',
-	variant: 'accent-transparent',
-};
-
-export const NeutralTinted = Template.bind({});
-NeutralTinted.args = {
-	title: 'Neutral Tinted',
-	variant: 'neutral-tinted',
-};
-
-export const NeutralTransparent = Template.bind({});
-NeutralTransparent.args = {
-	title: 'Neutral Transparent',
-	variant: 'neutral-transparent',
-};
-
-// Sizes
-export const ExtraSmall = Template.bind({});
-ExtraSmall.args = {
-	title: 'Extra Small',
-	size: 'xs',
-};
-
-export const Small = Template.bind({});
-Small.args = {
-	title: 'Small',
-	size: 'sm',
-};
-
-export const Medium = Template.bind({});
-Medium.args = {
-	title: 'Medium',
-	size: 'md',
-};
-
-// States
-export const Disabled = Template.bind({});
-Disabled.args = {
-	title: 'Disabled',
-	disabled: true,
+// All roles overview
+export const RoleBased = () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<rr-button variant="primary">Primary</rr-button>
+		<rr-button variant="secondary">Secondary</rr-button>
+		<rr-button variant="destructive">Destructive</rr-button>
+	</div>
+`;
+RoleBased.parameters = {
+	controls: {
+		disable: true
+	},
+	docs: {
+		description: {
+			story:
+				'Role based buttons zijn aliases van de appearance based buttons.',
+		},
+	},
 };
 
 // All variants overview
-export const AllVariants = () => html`
+export const AppearanceBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-button variant="accent-filled">Accent Filled</rr-button>
 		<rr-button variant="accent-outlined">Accent Outlined</rr-button>
 		<rr-button variant="accent-transparent">Accent Transparent</rr-button>
 		<rr-button variant="neutral-tinted">Neutral Tinted</rr-button>
 		<rr-button variant="neutral-transparent">Neutral Tinted</rr-button>
+		<rr-button variant="danger-tinted">Danger Tinted</rr-button>
 	</div>
 `;
-AllVariants.parameters = {
-	controls: { disable: true },
+AppearanceBased.parameters = {
+	controls: {
+		disable: true
+	},
 };
 
 // All sizes overview
-export const AllSizes = () => html`
-	<div style="display: flex; gap: 1rem; align-items: center;">
+export const Sizes = () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-button size="xs">Extra Small</rr-button>
 		<rr-button size="sm">Small</rr-button>
 		<rr-button size="md">Medium</rr-button>
 	</div>
 `;
-AllSizes.parameters = {
-	controls: { disable: true },
-};
-
-// Matrix of all combinations
-export const VariantSizeMatrix = () => html`
-	<table style="border-collapse: collapse; width: 100%;">
-		<thead>
-			<tr>
-				<th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
-					Variant
-				</th>
-				<th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">XS</th>
-				<th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">S</th>
-				<th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">M</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">accent-filled</td>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-					<rr-button variant="accent-filled" size="xs">Title</rr-button>
-				</td>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-					<rr-button variant="accent-filled" size="sm">Title</rr-button>
-				</td>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-					<rr-button variant="accent-filled" size="md">Title</rr-button>
-				</td>
-			</tr>
-			<tr>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">accent-outlined</td>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-					<rr-button variant="accent-outlined" size="xs">Title</rr-button>
-				</td>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-					<rr-button variant="accent-outlined" size="sm">Title</rr-button>
-				</td>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-					<rr-button variant="accent-outlined" size="md">Title</rr-button>
-				</td>
-			</tr>
-			<tr>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">neutral-tinted</td>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-					<rr-button variant="neutral-tinted" size="xs">Title</rr-button>
-				</td>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-					<rr-button variant="neutral-tinted" size="sm">Title</rr-button>
-				</td>
-				<td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-					<rr-button variant="neutral-tinted" size="md">Title</rr-button>
-				</td>
-			</tr>
-			<tr>
-				<td style="padding: 0.75rem;">accent-transparent</td>
-				<td style="padding: 0.75rem; text-align: center;">
-					<rr-button variant="accent-transparent" size="xs">Title</rr-button>
-				</td>
-				<td style="padding: 0.75rem; text-align: center;">
-					<rr-button variant="accent-transparent" size="sm">Title</rr-button>
-				</td>
-				<td style="padding: 0.75rem; text-align: center;">
-					<rr-button variant="accent-transparent" size="md">Title</rr-button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-`;
-VariantSizeMatrix.parameters = {
-	controls: { disable: true },
+Sizes.parameters = {
+	controls: {
+		disable: true
+	},
 };
 
 // Icon stories
 export const WithStartIcon = () => html`
-	<rr-button variant="accent-filled" size="md" has-start-icon>
-		<svg
-			slot="icon-start"
-			width="1em"
-			height="1em"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-		>
-			<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-		</svg>
-		Download
-	</rr-button>
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<rr-button has-start-icon size="md">
+			<svg
+				slot="icon-start"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+			</svg>
+			Download
+		</rr-button>
+		<rr-button has-start-icon size="sm">
+			<svg
+				slot="icon-start"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+			</svg>
+			Download
+		</rr-button>
+		<rr-button has-start-icon size="xs">
+			<svg
+				slot="icon-start"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+			</svg>
+			Download
+		</rr-button>
+	</div>
 `;
 WithStartIcon.parameters = {
 	controls: { disable: true },
@@ -290,20 +215,20 @@ WithStartIcon.parameters = {
 };
 
 export const WithEndIcon = () => html`
-	<rr-button variant="accent-filled" size="md" has-end-icon>
-		Volgende
-		<svg
-			slot="icon-end"
-			width="1em"
-			height="1em"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-		>
-			<path d="M5 12h14M12 5l7 7-7 7" />
-		</svg>
-	</rr-button>
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<rr-button has-end-icon>
+			Volgende
+			<svg
+				slot="icon-end"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M5 12h14M12 5l7 7-7 7" />
+			</svg>
+		</rr-button>
+	</div>
 `;
 WithEndIcon.parameters = {
 	controls: { disable: true },
@@ -315,61 +240,35 @@ WithEndIcon.parameters = {
 	},
 };
 
-export const WithMenu = () => html`
-	<rr-button variant="accent-outlined" size="md" has-menu>
-		Opties
-		<svg
-			slot="icon-end"
-			width="1em"
-			height="1em"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-		>
-			<path d="M6 9l6 6 6-6" />
-		</svg>
-	</rr-button>
-`;
-WithMenu.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story:
-				'Button die een menu opent. Gebruik de `has-menu` attribute om aan te geven dat deze button een dropdown menu toont.',
-		},
-	},
-};
-
 export const WithBothIcons = () => html`
-	<rr-button variant="accent-filled" size="md" has-start-icon has-end-icon>
-		<svg
-			slot="icon-start"
-			width="1em"
-			height="1em"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-		>
-			<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-		</svg>
-		Download bestand
-		<svg
-			slot="icon-end"
-			width="1em"
-			height="1em"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="2"
-		>
-			<path d="M5 12h14M12 5l7 7-7 7" />
-		</svg>
-	</rr-button>
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<rr-button has-start-icon has-end-icon>
+			<svg
+				slot="icon-start"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+			</svg>
+			Download bestand
+			<svg
+				slot="icon-end"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path d="M5 12h14M12 5l7 7-7 7" />
+			</svg>
+		</rr-button>
+	</div>
 `;
 WithBothIcons.parameters = {
-	controls: { disable: true },
+	controls: {
+		disable: true
+	},
 	docs: {
 		description: {
 			story:
@@ -378,201 +277,21 @@ WithBothIcons.parameters = {
 	},
 };
 
-export const IconVariants = () => html`
-	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-			<rr-button variant="accent-filled" has-start-icon>
-				<svg
-					slot="icon-start"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-				</svg>
-				Accent Filled
-			</rr-button>
-			<rr-button variant="accent-outlined" has-start-icon>
-				<svg
-					slot="icon-start"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-				</svg>
-				Accent Outlined
-			</rr-button>
-			<rr-button variant="accent-filled" has-start-icon>
-				<svg
-					slot="icon-start"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-				</svg>
-				Accent Tinted
-			</rr-button>
-			<rr-button variant="neutral-tinted" has-start-icon>
-				<svg
-					slot="icon-start"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-				</svg>
-				Neutral Tinted
-			</rr-button>
-			<rr-button variant="accent-transparent" has-start-icon>
-				<svg
-					slot="icon-start"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-				</svg>
-				Accent Transparent
-			</rr-button>
-		</div>
-		<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-			<rr-button variant="accent-filled" has-end-icon>
-				Volgende
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M5 12h14M12 5l7 7-7 7" />
-				</svg>
-			</rr-button>
-			<rr-button variant="accent-outlined" has-end-icon>
-				Volgende
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M5 12h14M12 5l7 7-7 7" />
-				</svg>
-			</rr-button>
-			<rr-button variant="accent-filled" has-end-icon>
-				Volgende
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M5 12h14M12 5l7 7-7 7" />
-				</svg>
-			</rr-button>
-			<rr-button variant="neutral-tinted" has-end-icon>
-				Volgende
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M5 12h14M12 5l7 7-7 7" />
-				</svg>
-			</rr-button>
-			<rr-button variant="accent-transparent" has-end-icon>
-				Volgende
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M5 12h14M12 5l7 7-7 7" />
-				</svg>
-			</rr-button>
-		</div>
-		<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-			<rr-button variant="accent-filled" has-menu>
-				Menu
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M6 9l6 6 6-6" />
-				</svg>
-			</rr-button>
-			<rr-button variant="accent-outlined" has-menu>
-				Menu
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M6 9l6 6 6-6" />
-				</svg>
-			</rr-button>
-			<rr-button variant="accent-filled" has-menu>
-				Menu
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M6 9l6 6 6-6" />
-				</svg>
-			</rr-button>
-			<rr-button variant="neutral-tinted" has-menu>
-				Menu
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M6 9l6 6 6-6" />
-				</svg>
-			</rr-button>
-			<rr-button variant="accent-transparent" has-menu>
-				Menu
-				<svg
-					slot="icon-end"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path d="M6 9l6 6 6-6" />
-				</svg>
-			</rr-button>
-		</div>
+export const WithMenu = () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<rr-button has-menu size="md">Opties</rr-button>
+		<rr-button has-menu size="sm">Opties</rr-button>
+		<rr-button has-menu size="xs">Opties</rr-button>
 	</div>
 `;
-IconVariants.parameters = {
-	controls: { disable: true },
+WithMenu.parameters = {
+	controls: {
+		disable: true
+	},
 	docs: {
 		description: {
-			story: 'Overzicht van buttons met iconen in alle beschikbare varianten.',
+			story:
+				'Button die een menu opent. Gebruik de `has-menu` attribute om aan te geven dat deze button een dropdown menu toont.',
 		},
 	},
 };

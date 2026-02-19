@@ -124,7 +124,7 @@ export class RRStepper extends LitElement {
     }
 
     .stepper__button:disabled {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
     }
 
@@ -140,7 +140,7 @@ export class RRStepper extends LitElement {
 
     /* Disabled state for entire component */
     :host([disabled]) .stepper {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
     }
 
     :host([disabled]) .stepper__button {
