@@ -128,12 +128,12 @@ export class RRSplitButton extends LitElement {
 
     .split-button__button:hover,
     .split-button__dropdown:hover {
-      background-color: var(--semantics-buttons-neutral-transparent-is-hovered-background-color);
+      background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
     }
 
     .split-button__button:active,
     .split-button__dropdown:active {
-      background-color: var(--semantics-buttons-neutral-transparent-is-active-background-color);
+      background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
     }
 
     /* Focus state */
