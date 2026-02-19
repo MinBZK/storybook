@@ -135,15 +135,15 @@ export class RRButton extends LitElement {
 		/* Variant: neutral-transparent */
 		:host([variant="neutral-transparent"]) .button {
 			background-color: transparent;
-			color: var(--semantics-buttons-neutral-tinted-content-color);
+			color: var(--semantics-buttons-neutral-transparent-content-color);
 		}
 		
 		:host([variant="neutral-transparent"]) .button:hover {
-			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+			color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
 		}
 		
 		:host([variant="neutral-transparent"]) .button:active {
-			color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+			color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
 		}
 
 		/* Variant: accent-filled (primary) */
