@@ -85,7 +85,7 @@ export class RRDocumentTabBarItem extends LitElement {
     }
 
     .document-tab-bar-item__subtitle {
-      font: var(--semantics-content-body-xs-regular-flat);
+      font: var(--primitives-font-body-xs-regular-flat);
       color: var(--primitives-color-neutral-650);
       overflow: hidden;
       text-overflow: ellipsis;

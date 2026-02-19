@@ -84,7 +84,7 @@ export class RRTabBarItem extends LitElement {
     }
 
     :host([content-type="icon-with-title"]) .tab-bar-item__label {
-      font: var(--semantics-content-body-xxs-bold-flat);
+      font: var(--primitives-font-body-xxs-bold-flat);
     }
 
     /* Selection indicator */

@@ -41,73 +41,73 @@ export class RRRichTextHeading extends LitElement {
     /* Small container titles */
     :host([container='sm']) h1,
     :host([container='sm'][level='1']) h1 {
-      font: var(--semantics-content-sm-title-1);
+      font: var(--primitives-font-display-1-sm);
     }
     :host([container='sm']) h2,
     :host([container='sm'][level='2']) h2 {
-      font: var(--semantics-content-sm-title-2);
+      font: var(--primitives-font-display-2-sm);
     }
     :host([container='sm']) h3,
     :host([container='sm'][level='3']) h3 {
-      font: var(--semantics-content-sm-title-3);
+      font: var(--primitives-font-display-3-sm);
     }
     :host([container='sm']) h4,
     :host([container='sm'][level='4']) h4 {
-      font: var(--semantics-content-sm-title-4);
+      font: var(--primitives-font-display-4-sm);
     }
     :host([container='sm']) h5,
     :host([container='sm'][level='5']) h5 {
-      font: var(--semantics-content-sm-title-5);
+      font: var(--primitives-font-display-5-sm);
     }
     :host([container='sm']) h6,
     :host([container='sm'][level='6']) h6 {
-      font: var(--semantics-content-sm-title-6);
+      font: var(--primitives-font-display-6-sm);
     }
 
     /* Medium container titles (default) */
     :host([container='md']) h1,
     :host(:not([container])) h1 {
-      font: var(--semantics-content-md-title-1);
+      font: var(--primitives-font-display-1-md);
     }
     :host([container='md']) h2,
     :host(:not([container])) h2 {
-      font: var(--semantics-content-md-title-2);
+      font: var(--primitives-font-display-2-md);
     }
     :host([container='md']) h3,
     :host(:not([container])) h3 {
-      font: var(--semantics-content-md-title-3);
+      font: var(--primitives-font-display-3-md);
     }
     :host([container='md']) h4,
     :host(:not([container])) h4 {
-      font: var(--semantics-content-md-title-4);
+      font: var(--primitives-font-display-4-md);
     }
     :host([container='md']) h5,
     :host(:not([container])) h5 {
-      font: var(--semantics-content-md-title-5);
+      font: var(--primitives-font-display-5-md);
     }
     :host([container='md']) h6,
     :host(:not([container])) h6 {
-      font: var(--semantics-content-md-title-6);
+      font: var(--primitives-font-display-6-md);
     }
 
     /* Large container titles */
     :host([container='lg']) h1 {
-      font: var(--semantics-content-lg-title-1);
+      font: var(--primitives-font-display-1-lg);
     }
     :host([container='lg']) h2 {
-      font: var(--semantics-content-lg-title-2);
+      font: var(--primitives-font-display-2-lg);
     }
     :host([container='lg']) h3 {
-      font: var(--semantics-content-lg-title-3);
+      font: var(--primitives-font-display-3-lg);
     }
     :host([container='lg']) h4 {
-      font: var(--semantics-content-lg-title-4);
+      font: var(--primitives-font-display-4-lg);
     }
     :host([container='lg']) h5 {
-      font: var(--semantics-content-lg-title-5);
+      font: var(--primitives-font-display-5-lg);
     }
     :host([container='lg']) h6 {
-      font: var(--semantics-content-lg-title-6);
+      font: var(--primitives-font-display-6-lg);
     }
   `;
 

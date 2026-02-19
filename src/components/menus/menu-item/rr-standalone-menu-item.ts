@@ -49,7 +49,7 @@ export class RRStandaloneMenuItem extends LitElement {
       cursor: pointer;
       border: none;
       background: transparent;
-      font: var(--semantics-content-body-md-regular-tight);
+      font: var(--primitives-font-body-md-regular-tight);
       color: var(--semantics-content-color);
       text-align: start;
       transition: background-color 0.15s ease, color 0.15s ease;

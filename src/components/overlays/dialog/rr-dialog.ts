@@ -93,7 +93,7 @@ export class RRDialog extends LitElement {
 
     .dialog__heading {
       margin: 0;
-      font: var(--semantics-content-body-md-bold-tight);
+      font: var(--primitives-font-body-md-bold-tight);
       color: var(--semantics-content-color);
       text-align: center;
     }
@@ -101,7 +101,7 @@ export class RRDialog extends LitElement {
     .dialog__body {
       overflow-y: auto;
       color: var(--semantics-content-color);
-      font: var(--semantics-content-body-sm-regular-tight);
+      font: var(--primitives-font-body-sm-regular-tight);
       text-align: center;
     }
 
