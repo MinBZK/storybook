@@ -96,6 +96,7 @@ export { RRTimelineTrackCell } from './lists/timeline-track-cell/rr-timeline-tra
 export { RRTabBarItem } from './navigation/tab-bar/rr-tab-bar-item.ts';
 export { RRTabBar } from './navigation/tab-bar/rr-tab-bar.ts';
 export { RRDocumentTabBarItem } from './navigation/document-tab-bar-item/rr-document-tab-bar-item.ts';
+export { RRDocumentTabBar } from './navigation/document-tab-bar/rr-document-tab-bar.ts';
 export { RRPagination } from './navigation/pagination/rr-pagination.ts';
 
 // Menu components
@@ -106,6 +107,7 @@ export { RRPasswordField } from './inputs/password-field/rr-password-field.ts';
 
 // Content components
 export { RRRichTextHeading } from './content/rich-text-heading/rr-rich-text-heading.ts';
+export { RRRichText } from './content/rich-text/rr-rich-text.ts';
 
 // Overlay components
 export { RRTooltipArrow } from './overlays/tooltip/rr-tooltip-arrow.ts';
