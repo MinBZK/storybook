@@ -241,14 +241,14 @@ export class RRStepper extends LitElement {
     const atMax = this.value >= this.max;
 
     return html`
-      <div class="stepper" part="stepper" role="group" aria-label="Stappenregelaar">
+      <div class="stepper" part="stepper" role="group" aria-label="Aantal aanpassen">
         <button
           class="stepper__button"
           part="button"
           type="button"
           @click=${this._decrement}
           ?disabled=${this.disabled || atMin}
-          aria-label="Waarde verlagen"
+          aria-label="Aantal verlagen"
         >
           ${this._renderMinusIcon()}
         </button>
@@ -259,7 +259,7 @@ export class RRStepper extends LitElement {
           type="button"
           @click=${this._increment}
           ?disabled=${this.disabled || atMax}
-          aria-label="Waarde verhogen"
+          aria-label="Aantal verhogen"
         >
           ${this._renderPlusIcon()}
         </button>

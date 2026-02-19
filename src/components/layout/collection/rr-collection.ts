@@ -137,7 +137,7 @@ export class RRCollection extends LitElement {
   showLoadMore = false;
 
   @property({ type: String, attribute: 'load-more-label' })
-  loadMoreLabel = 'Meer laden';
+  loadMoreLabel = 'Toon meer';
 
   private _handleLoadMore(): void {
     this.dispatchEvent(
