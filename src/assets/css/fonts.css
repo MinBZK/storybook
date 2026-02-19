@@ -20,13 +20,6 @@
 	font-display: swap;
 }
 
-:root {
-	--rr-font-family-sans-serif: 'RijksSansVF', system-ui, sans-serif;
-	--rr-font-family-serif: 'RijksoverheidSerif', Georgia, serif;
-	--rr-font-family-body: 'RijksSansVF', system-ui, sans-serif;
-	--rr-font-family-display: 'RijksSansVF', system-ui, sans-serif;
-}
-
 @media (prefers-color-scheme: dark) {
 	:root {
 		/* Font smoothing for consistent rendering */
