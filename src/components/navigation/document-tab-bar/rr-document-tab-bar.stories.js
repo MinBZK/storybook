@@ -7,7 +7,7 @@ const moreIcon = html`<svg viewBox="0 0 20 20" fill="none" stroke="currentColor"
 const plusIcon = html`<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4v12M4 10h12"/></svg>`;
 
 export default {
-  title: 'Navigation/Document Tab Bar',
+  title: 'Components/Navigation/Document Tab Bar',
   component: 'rr-document-tab-bar',
   tags: ['autodocs'],
 };
