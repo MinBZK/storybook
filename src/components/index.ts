@@ -106,6 +106,7 @@ export { RRStandaloneMenuItem } from './menus/menu-item/rr-standalone-menu-item.
 export { RRPasswordField } from './inputs/password-field/rr-password-field.ts';
 
 // Content components
+export { RRIcon } from './content/icon/rr-icon.ts';
 export { RRRichTextHeading } from './content/rich-text-heading/rr-rich-text-heading.ts';
 export { RRRichText } from './content/rich-text/rr-rich-text.ts';
 
