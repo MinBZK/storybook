@@ -168,7 +168,6 @@ export class RR{PascalName} extends LitElement {
       padding: 0;
       background: none;
       font: inherit;
-      cursor: pointer;
 
       /* Layout */
       display: inline-flex;
