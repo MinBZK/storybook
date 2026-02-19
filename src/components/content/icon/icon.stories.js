@@ -3,9 +3,9 @@ import './icon.ts';
 import { aliases } from './icon-aliases.js';
 
 // Get all icon names from the assets folder at build time
-const iconModules = import.meta.glob('/src/assets/icons/*.svg');
+const iconModules = import.meta.glob('/public/assets/icons/*.svg');
 const iconNames = Object.keys(iconModules).map(path => 
-  path.replace('/src/assets/icons/', '').replace('.svg', '')
+  path.replace('/public/assets/icons/', '').replace('.svg', '')
 );
 
 const aliasNames = Object.keys(aliases);
