@@ -3,852 +3,852 @@
  */
 
 :root {
-  color-scheme: light dark;
-  
-  
-  --primitives-color-neutral-0: light-dark(#ffffff, #000000);
-  --primitives-color-neutral-25: light-dark(#f5f6f9, #0b0d10);
-  --primitives-color-neutral-50: light-dark(#ebeef2, #14171a);
-  --primitives-color-neutral-75: light-dark(#e2e6eb, #1b1e23);
-  --primitives-color-neutral-100: light-dark(#d9dee4, #20252b);
-  --primitives-color-neutral-150: light-dark(#c9ced8, #2a3039);
-  --primitives-color-neutral-200: light-dark(#b8c0cb, #333a45);
-  --primitives-color-neutral-250: light-dark(#a9b2c0, #3b4451);
-  --primitives-color-neutral-300: light-dark(#9ba5b5, #444e5d);
-  --primitives-color-neutral-350: light-dark(#8d98aa, #4c5869);
-  --primitives-color-neutral-400: light-dark(#808da0, #556275);
-  --primitives-color-neutral-450: light-dark(#738197, #5d6c81);
-  --primitives-color-neutral-500: light-dark(#67778d, #67778d);
-  --primitives-color-neutral-550: light-dark(#5d6c81, #738197);
-  --primitives-color-neutral-600: light-dark(#556275, #808da0);
-  --primitives-color-neutral-650: light-dark(#4c5869, #8d98aa);
-  --primitives-color-neutral-700: light-dark(#444e5d, #9ba5b5);
-  --primitives-color-neutral-750: light-dark(#3b4451, #a9b2c0);
-  --primitives-color-neutral-800: light-dark(#333a45, #b8c0cb);
-  --primitives-color-neutral-850: light-dark(#2a3039, #c9ced8);
-  --primitives-color-neutral-900: light-dark(#20252b, #d9dee4);
-  --primitives-color-neutral-950: light-dark(#14171a, #ebeef2);
-  --primitives-color-neutral-1000: light-dark(#000000, #ffffff);
-  
-  --primitives-color-accent-0: light-dark(#ffffff, #000000);
-  --primitives-color-accent-25: light-dark(#f3f6ff, #000d21);
-  --primitives-color-accent-50: light-dark(#e7eeff, #08192b);
-  --primitives-color-accent-75: light-dark(#dbe5ff, #001e3d);
-  --primitives-color-accent-100: light-dark(#cfddff, #08192b);
-  --primitives-color-accent-150: light-dark(#b8ceff, #0c2541);
-  --primitives-color-accent-200: light-dark(#a2c0fb, #103257);
-  --primitives-color-accent-250: light-dark(#94b2ec, #133d6a);
-  --primitives-color-accent-300: light-dark(#86a5de, #184b81);
-  --primitives-color-accent-350: light-dark(#7998d1, #1c5897);
-  --primitives-color-accent-400: light-dark(#6d8cc4, #2064ac);
-  --primitives-color-accent-450: light-dark(#6181b8, #2471c2);
-  --primitives-color-accent-500: light-dark(#5576ac, #2677cd);
-  --primitives-color-accent-550: light-dark(#4a6ca1, #3d8bdb);
-  --primitives-color-accent-600: light-dark(#3f6296, #5397df);
-  --primitives-color-accent-650: light-dark(#33588b, #68a4e3);
-  --primitives-color-accent-700: light-dark(#274e81, #93beeb);
-  --primitives-color-accent-750: light-dark(#194476, #7eb1e7);
-  --primitives-color-accent-800: light-dark(#053b6b, #a9cbef);
-  --primitives-color-accent-850: light-dark(#00305b, #bed8f3);
-  --primitives-color-accent-900: light-dark(#002547, #d4e5f7);
-  --primitives-color-accent-950: light-dark(#001730, #e9f2fb);
-  --primitives-color-accent-1000: light-dark(#000000, #ffffff);
-  
-  --primitives-color-success-0: light-dark(#ffffff, #000000);
-  --primitives-color-success-25: light-dark(#e3ffce, #070f00);
-  --primitives-color-success-50: light-dark(#c1ff99, #0e1a00);
-  --primitives-color-success-75: light-dark(#adfa7f, #122200);
-  --primitives-color-success-100: light-dark(#a5f178, #132a00);
-  --primitives-color-success-150: light-dark(#95e169, #153700);
-  --primitives-color-success-200: light-dark(#87d25b, #174300);
-  --primitives-color-success-250: light-dark(#78c44e, #1b4e00);
-  --primitives-color-success-300: light-dark(#6bb641, #205900);
-  --primitives-color-success-350: light-dark(#5eaa34, #256400);
-  --primitives-color-success-400: light-dark(#519d28, #296f00);
-  --primitives-color-success-450: light-dark(#44911a, #2f7b00);
-  --primitives-color-success-500: light-dark(#38860a, #38860a);
-  --primitives-color-success-550: light-dark(#2f7b00, #44911a);
-  --primitives-color-success-600: light-dark(#296f00, #519d28);
-  --primitives-color-success-650: light-dark(#256400, #5eaa34);
-  --primitives-color-success-700: light-dark(#205900, #6bb641);
-  --primitives-color-success-750: light-dark(#1b4e00, #78c44e);
-  --primitives-color-success-800: light-dark(#174300, #87d25b);
-  --primitives-color-success-850: light-dark(#153700, #95e169);
-  --primitives-color-success-900: light-dark(#132a00, #a5f178);
-  --primitives-color-success-950: light-dark(#0e1a00, #c1ff99);
-  --primitives-color-success-1000: light-dark(#000000, #ffffff);
-  
-  --primitives-color-warning-0: light-dark(#ffffff, #000000);
-  --primitives-color-warning-25: light-dark(#fff4ee, #170a00);
-  --primitives-color-warning-50: light-dark(#ffeadd, #241300);
-  --primitives-color-warning-75: light-dark(#ffdfcc, #301800);
-  --primitives-color-warning-100: light-dark(#ffd5ba, #3b1d00);
-  --primitives-color-warning-150: light-dark(#ffc197, #4d2500);
-  --primitives-color-warning-200: light-dark(#ffac72, #5e2c00);
-  --primitives-color-warning-250: light-dark(#ff9849, #6e3400);
-  --primitives-color-warning-300: light-dark(#fa8521, #7d3b00);
-  --primitives-color-warning-350: light-dark(#eb7810, #8b4300);
-  --primitives-color-warning-400: light-dark(#db6d00, #9a4b00);
-  --primitives-color-warning-450: light-dark(#ca6400, #aa5300);
-  --primitives-color-warning-500: light-dark(#ba5b00, #ba5b00);
-  --primitives-color-warning-550: light-dark(#aa5300, #ca6400);
-  --primitives-color-warning-600: light-dark(#9a4b00, #db6d00);
-  --primitives-color-warning-650: light-dark(#8b4300, #eb7810);
-  --primitives-color-warning-700: light-dark(#7d3b00, #fa8521);
-  --primitives-color-warning-750: light-dark(#6e3400, #ff9849);
-  --primitives-color-warning-800: light-dark(#5e2c00, #ffac72);
-  --primitives-color-warning-850: light-dark(#4d2500, #ffc197);
-  --primitives-color-warning-900: light-dark(#3b1d00, #ffd5ba);
-  --primitives-color-warning-950: light-dark(#241300, #ffeadd);
-  --primitives-color-warning-1000: light-dark(#000000, #ffffff);
-  
-  --primitives-color-danger-0: light-dark(#ffffff, #000000);
-  --primitives-color-danger-25: light-dark(#fff4f1, #1c0700);
-  --primitives-color-danger-50: light-dark(#ffe9e4, #2c0d00);
-  --primitives-color-danger-75: light-dark(#ffded7, #3d0e00);
-  --primitives-color-danger-100: light-dark(#ffd4ca, #4b0d00);
-  --primitives-color-danger-150: light-dark(#ffbfb0, #640800);
-  --primitives-color-danger-200: light-dark(#ffaa97, #7b0000);
-  --primitives-color-danger-250: light-dark(#ff947e, #8d0004);
-  --primitives-color-danger-300: light-dark(#ff7e65, #a00007);
-  --primitives-color-danger-350: light-dark(#ff654c, #b20009);
-  --primitives-color-danger-400: light-dark(#f94f38, #c21110);
-  --primitives-color-danger-450: light-dark(#eb412e, #cf241a);
-  --primitives-color-danger-500: light-dark(#dd3424, #dd3424);
-  --primitives-color-danger-550: light-dark(#cf241a, #eb412e);
-  --primitives-color-danger-600: light-dark(#c21110, #f94f38);
-  --primitives-color-danger-650: light-dark(#b20009, #ff654c);
-  --primitives-color-danger-700: light-dark(#a00007, #ff7e65);
-  --primitives-color-danger-750: light-dark(#8d0004, #ff947e);
-  --primitives-color-danger-800: light-dark(#7b0000, #ffaa97);
-  --primitives-color-danger-850: light-dark(#640800, #ffbfb0);
-  --primitives-color-danger-900: light-dark(#4b0d00, #ffd4ca);
-  --primitives-color-danger-950: light-dark(#2c0d00, #ffe9e4);
-  --primitives-color-danger-1000: light-dark(#000000, #ffffff);
-  
-  --primitives-color-highlight-0: light-dark(#ffffff, #000000);
-  --primitives-color-highlight-25: light-dark(#fff5e9, #130c00);
-  --primitives-color-highlight-50: light-dark(#ffebd1, #1f1500);
-  --primitives-color-highlight-75: light-dark(#ffe1b9, #291c00);
-  --primitives-color-highlight-100: light-dark(#ffd79f, #322100);
-  --primitives-color-highlight-150: light-dark(#ffc460, #412c00);
-  --primitives-color-highlight-200: light-dark(#fab207, #4e3500);
-  --primitives-color-highlight-250: light-dark(#e9a500, #5b3e00);
-  --primitives-color-highlight-300: light-dark(#d89800, #684700);
-  --primitives-color-highlight-350: light-dark(#c78d00, #745000);
-  --primitives-color-highlight-400: light-dark(#b88200, #815a00);
-  --primitives-color-highlight-450: light-dark(#a97700, #8e6300);
-  --primitives-color-highlight-500: light-dark(#9b6d00, #9b6d00);
-  --primitives-color-highlight-550: light-dark(#8e6300, #a97700);
-  --primitives-color-highlight-600: light-dark(#815a00, #b88200);
-  --primitives-color-highlight-650: light-dark(#745000, #c78d00);
-  --primitives-color-highlight-700: light-dark(#684700, #d89800);
-  --primitives-color-highlight-750: light-dark(#5b3e00, #e9a500);
-  --primitives-color-highlight-800: light-dark(#4e3500, #fab207);
-  --primitives-color-highlight-850: light-dark(#412c00, #ffc460);
-  --primitives-color-highlight-900: light-dark(#322100, #ffd79f);
-  --primitives-color-highlight-950: light-dark(#1f1500, #ffebd1);
-  --primitives-color-highlight-1000: light-dark(#000000, #ffffff);
-  
-  --primitives-color-reference-coolgray: #64748b;
-  --primitives-color-reference-lintblauw: #154273;
-  --primitives-color-reference-paars: #42145f;
-  --primitives-color-reference-violet: #a90061;
-  --primitives-color-reference-robijnrood: #ca005d;
-  --primitives-color-reference-roze: #f092cd;
-  --primitives-color-reference-rood: #d52b1e;
-  --primitives-color-reference-oranje: #e17000;
-  --primitives-color-reference-donkergeel: #ffb612;
-  --primitives-color-reference-geel: #f9e11e;
-  --primitives-color-reference-donkerbruin: #673327;
-  --primitives-color-reference-bruin: #94710a;
-  --primitives-color-reference-donkergroen: #275937;
-  --primitives-color-reference-groen: #39870c;
-  --primitives-color-reference-mosgroen: #777b00;
-  --primitives-color-reference-mintgroen: #76d2b6;
-  --primitives-color-reference-donkerblauw: #01689b;
-  --primitives-color-reference-hemelblauw: #007bc7;
-  --primitives-color-reference-lichtblauw: #8fcae7;
-  
-  
-  --primitives-space-0: 0px;
-  --primitives-space-2: 2px;
-  --primitives-space-4: 4px;
-  --primitives-space-6: 6px;
-  --primitives-space-8: 8px;
-  --primitives-space-10: 10px;
-  --primitives-space-12: 12px;
-  --primitives-space-14: 14px;
-  --primitives-space-16: 16px;
-  --primitives-space-18: 18px;
-  --primitives-space-20: 20px;
-  --primitives-space-24: 24px;
-  --primitives-space-28: 28px;
-  --primitives-space-32: 32px;
-  --primitives-space-40: 40px;
-  --primitives-space-44: 44px;
-  --primitives-space-48: 48px;
-  --primitives-space-56: 56px;
-  --primitives-space-64: 64px;
-  --primitives-space-80: 80px;
-  --primitives-space-96: 96px;
-  
-  
-  --primitives-area-120: 120px;
-  --primitives-area-160: 160px;
-  --primitives-area-200: 200px;
-  --primitives-area-240: 240px;
-  --primitives-area-280: 280px;
-  --primitives-area-320: 320px;
-  --primitives-area-360: 360px;
-  --primitives-area-400: 400px;
-  --primitives-area-480: 480px;
-  --primitives-area-640: 640px;
-  --primitives-area-720: 720px;
-  --primitives-area-800: 800px;
-  --primitives-area-960: 960px;
-  --primitives-area-1280: 1280px;
-  --primitives-area-1440: 1440px;
-  
-  
-  --primitives-breakpoint-sm-min: 320px;
-  --primitives-breakpoint-sm-max: 640px;
-  --primitives-breakpoint-md-min: 641px;
-  --primitives-breakpoint-md-max: 1007px;
-  --primitives-breakpoint-lg-min: 1008px;
-  
-  
-  --primitives-corner-radius-none: 0px;
-  --primitives-corner-radius-xxs: 2px;
-  --primitives-corner-radius-xs: 4px;
-  --primitives-corner-radius-sm: 6px;
-  --primitives-corner-radius-md: 9px;
-  --primitives-corner-radius-lg: 12px;
-  --primitives-corner-radius-xl: 16px;
-  --primitives-corner-radius-xxl: 20px;
-  --primitives-corner-radius-xxxl: 24px;
-  --primitives-corner-radius-full: 9999px;
-  
-  
-  --primitives-font-family-sans-serif-fallback: system-ui, sans-serif;
-  --primitives-font-family-sans-serif: RijksSansVF, system-ui, sans-serif;
-  --primitives-font-family-serif-fallback: serif;
-  --primitives-font-family-serif: RijksoverheidSerif, serif;
-  --primitives-font-family-body-fallback: var(--primitives-font-family-sans-serif-fallback);
-  --primitives-font-family-body: var(--primitives-font-family-sans-serif);
-  --primitives-font-family-display-fallback: var(--primitives-font-family-sans-serif-fallback);
-  --primitives-font-family-display: var(--primitives-font-family-sans-serif);
-  
-  
-  --primitives-font-size-70: 12px;
-  --primitives-font-size-80: 14px;
-  --primitives-font-size-90: 16px;
-  --primitives-font-size-100: 18px;
-  --primitives-font-size-200: 20px;
-  --primitives-font-size-300: 23px;
-  --primitives-font-size-400: 26px;
-  --primitives-font-size-500: 29px;
-  --primitives-font-size-600: 32px;
-  --primitives-font-size-700: 36px;
-  --primitives-font-size-800: 41px;
-  --primitives-font-size-900: 46px;
-  --primitives-font-size-1000: 52px;
-  
-  
-  --primitives-line-height-loose: 1.75;
-  --primitives-line-height-snug: 1.5;
-  --primitives-line-height-tight: 1.25;
-  --primitives-line-height-flat: 1.125;
-  
-  
-  --primitives-font-weight-body-hairline: 100;
-  --primitives-font-weight-body-thin: 100;
-  --primitives-font-weight-body-light: 300;
-  --primitives-font-weight-body-regular: 400;
-  --primitives-font-weight-body-medium: 550;
-  --primitives-font-weight-body-semi-bold: 550;
-  --primitives-font-weight-body-bold: 550;
-  --primitives-font-weight-body-extra-bold: 700;
-  --primitives-font-weight-body-black: 800;
-  
-  --primitives-font-weight-display-hairline: 100;
-  --primitives-font-weight-display-thin: 100;
-  --primitives-font-weight-display-light: 300;
-  --primitives-font-weight-display-regular: 400;
-  --primitives-font-weight-display-medium: 550;
-  --primitives-font-weight-display-semi-bold: 550;
-  --primitives-font-weight-display-bold: 550;
-  --primitives-font-weight-display-extra-bold: 700;
-  --primitives-font-weight-display-black: 800;
-  
-  --primitives-font-body-lg-regular-loose:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-200) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-lg-regular-snug:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-200) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-lg-regular-tight:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-200) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-lg-regular-flat:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-200) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-lg-bold-loose:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-200) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-lg-bold-snug:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-200) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-lg-bold-tight:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-200) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-lg-bold-flat:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-200) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-md-regular-loose:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-100) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-md-regular-snug:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-100) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-md-regular-tight:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-100) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-md-regular-flat:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-100) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-md-bold-loose:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-100) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-md-bold-snug:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-100) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-md-bold-tight:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-100) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-md-bold-flat:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-100) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-sm-regular-loose:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-90) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-sm-regular-snug:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-90) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-sm-regular-tight:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-90) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-sm-regular-flat:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-90) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-sm-bold-loose:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-90) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-sm-bold-snug:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-90) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-sm-bold-tight:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-90) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-sm-bold-flat:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-90) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xs-regular-loose:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-80) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xs-regular-snug:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-80) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xs-regular-tight:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-80) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xs-regular-flat:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-80) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xs-bold-loose:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-80) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xs-bold-snug:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-80) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xs-bold-tight:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-80) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xs-bold-flat:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-80) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xxs-bold-flat:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-70) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xxs-regular-loose:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-70) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xxs-regular-snug:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-70) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xxs-regular-tight:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-70) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xxs-regular-flat:
-    var(--primitives-font-weight-body-regular)
-    var(--primitives-font-size-70) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xxs-bold-loose:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-70) / var(--primitives-line-height-loose)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xxs-bold-snug:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-70) / var(--primitives-line-height-snug)
-    var(--primitives-font-family-body)
-  ;
-  --primitives-font-body-xxs-bold-tight:
-    var(--primitives-font-weight-body-bold)
-    var(--primitives-font-size-70) / var(--primitives-line-height-tight)
-    var(--primitives-font-family-body)
-  ;
-  
-  --primitives-font-display-1-sm:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-700) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-1-md:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-800) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-1-lg:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-1000) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-2-sm:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-500) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-2-md:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-600) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-2-lg:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-800) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-3-sm:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-400) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-3-md:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-400) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-3-lg:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-600) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-4-sm:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-300) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-4-md:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-300) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-4-lg:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-400) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-5-sm:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-200) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-5-md:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-200) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-5-lg:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-200) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-6-sm:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-100) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-6-md:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-100) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  --primitives-font-display-6-lg:
-    var(--primitives-font-weight-display-bold)
-    var(--primitives-font-size-100) / var(--primitives-line-height-flat)
-    var(--primitives-font-family-display)
-  ;
-  
-  --primitives-opacity-0: 0;
-  --primitives-opacity-5: 0.05;
-  --primitives-opacity-10: 0.1;
-  --primitives-opacity-15: 0.15;
-  --primitives-opacity-20: 0.2;
-  --primitives-opacity-25: 0.25;
-  --primitives-opacity-30: 0.3;
-  --primitives-opacity-35: 0.35;
-  --primitives-opacity-40: 0.4;
-  --primitives-opacity-45: 0.45;
-  --primitives-opacity-50: 0.5;
-  --primitives-opacity-55: 0.55;
-  --primitives-opacity-60: 0.6;
-  --primitives-opacity-65: 0.65;
-  --primitives-opacity-70: 0.7;
-  --primitives-opacity-75: 0.75;
-  --primitives-opacity-80: 0.8;
-  --primitives-opacity-85: 0.85;
-  --primitives-opacity-90: 0.9;
-  --primitives-opacity-95: 0.95;
-  --primitives-opacity-100: 1;
-  --primitives-opacity-disabled: 0.38;
-  
-  
-  --primitives-box-shadows-level-1:
-    0px 2px 4px 0px rgba(0, 0, 0, 0.11),
-    0px 0px 2px 0px rgba(0, 0, 0, 0.09)
-    ;
-  --primitives-box-shadows-level-2:
-    0px 2px 8px 0px rgba(0, 0, 0, 0.1),
-    0px 1px 4px 0px rgba(0, 0, 0, 0.08),
-    0px 0px 2px 0px rgba(0, 0, 0, 0.06)
-  ;
-  --primitives-box-shadows-level-3:
-    0px 4px 16px 0px rgba(0, 0, 0, 0.12),
-    0px 2px 8px 0px rgba(0, 0, 0, 0.06),
-    0px 1px 4px 0px rgba(0, 0, 0, 0.05),
-    0px 0px 2px 0px rgba(0, 0, 0, 0.04)
-  ;
-  --primitives-box-shadows-level-4:
-    0px 8px 32px 0px rgba(0, 0, 0, 0.1),
-    0px 4px 16px 0px rgba(0, 0, 0, 0.08),
-    0px 2px 8px 0px rgba(0, 0, 0, 0.06),
-    0px 1px 4px 0px rgba(0, 0, 0, 0.04),
-    0px 0px 2px 0px rgba(0, 0, 0, 0.02)
-  ;
-  --primitives-box-shadows-level-5:
-    0px 16px 64px 0px rgba(0, 0, 0, 0.11),
-    0px 8px 32px 0px rgba(0, 0, 0, 0.09),
-    0px 4px 16px 0px rgba(0, 0, 0, 0.06),
-    0px 2px 8px 0px rgba(0, 0, 0, 0.04),
-    0px 1px 4px 0px rgba(0, 0, 0, 0.03),
-    0px 0px 2px 0px rgba(0, 0, 0, 0.02)
-  ;
-  --primitives-box-shadows-level-6:
-    0px 32px 128px 0px rgba(0, 0, 0, 0.16),
-    0px 16px 64px 0px rgba(0, 0, 0, 0.1),
-    0px 8px 32px 0px rgba(0, 0, 0, 0.08),
-    0px 4px 16px 0px rgba(0, 0, 0, 0.06),
-    0px 2px 8px 0px rgba(0, 0, 0, 0.04),
-    0px 1px 4px 0px rgba(0, 0, 0, 0.03),
-    0px 0px 2px 0px rgba(0, 0, 0, 0.02)
-  ;
+	color-scheme: light dark;
+	
+	
+	--primitives-color-neutral-0: light-dark(#ffffff, #000000);
+	--primitives-color-neutral-25: light-dark(#f5f6f9, #0b0d10);
+	--primitives-color-neutral-50: light-dark(#ebeef2, #14171a);
+	--primitives-color-neutral-75: light-dark(#e2e6eb, #1b1e23);
+	--primitives-color-neutral-100: light-dark(#d9dee4, #20252b);
+	--primitives-color-neutral-150: light-dark(#c9ced8, #2a3039);
+	--primitives-color-neutral-200: light-dark(#b8c0cb, #333a45);
+	--primitives-color-neutral-250: light-dark(#a9b2c0, #3b4451);
+	--primitives-color-neutral-300: light-dark(#9ba5b5, #444e5d);
+	--primitives-color-neutral-350: light-dark(#8d98aa, #4c5869);
+	--primitives-color-neutral-400: light-dark(#808da0, #556275);
+	--primitives-color-neutral-450: light-dark(#738197, #5d6c81);
+	--primitives-color-neutral-500: light-dark(#67778d, #67778d);
+	--primitives-color-neutral-550: light-dark(#5d6c81, #738197);
+	--primitives-color-neutral-600: light-dark(#556275, #808da0);
+	--primitives-color-neutral-650: light-dark(#4c5869, #8d98aa);
+	--primitives-color-neutral-700: light-dark(#444e5d, #9ba5b5);
+	--primitives-color-neutral-750: light-dark(#3b4451, #a9b2c0);
+	--primitives-color-neutral-800: light-dark(#333a45, #b8c0cb);
+	--primitives-color-neutral-850: light-dark(#2a3039, #c9ced8);
+	--primitives-color-neutral-900: light-dark(#20252b, #d9dee4);
+	--primitives-color-neutral-950: light-dark(#14171a, #ebeef2);
+	--primitives-color-neutral-1000: light-dark(#000000, #ffffff);
+	
+	--primitives-color-accent-0: light-dark(#ffffff, #000000);
+	--primitives-color-accent-25: light-dark(#f3f6ff, #000d21);
+	--primitives-color-accent-50: light-dark(#e7eeff, #08192b);
+	--primitives-color-accent-75: light-dark(#dbe5ff, #001e3d);
+	--primitives-color-accent-100: light-dark(#cfddff, #08192b);
+	--primitives-color-accent-150: light-dark(#b8ceff, #0c2541);
+	--primitives-color-accent-200: light-dark(#a2c0fb, #103257);
+	--primitives-color-accent-250: light-dark(#94b2ec, #133d6a);
+	--primitives-color-accent-300: light-dark(#86a5de, #184b81);
+	--primitives-color-accent-350: light-dark(#7998d1, #1c5897);
+	--primitives-color-accent-400: light-dark(#6d8cc4, #2064ac);
+	--primitives-color-accent-450: light-dark(#6181b8, #2471c2);
+	--primitives-color-accent-500: light-dark(#5576ac, #2677cd);
+	--primitives-color-accent-550: light-dark(#4a6ca1, #3d8bdb);
+	--primitives-color-accent-600: light-dark(#3f6296, #5397df);
+	--primitives-color-accent-650: light-dark(#33588b, #68a4e3);
+	--primitives-color-accent-700: light-dark(#274e81, #93beeb);
+	--primitives-color-accent-750: light-dark(#194476, #7eb1e7);
+	--primitives-color-accent-800: light-dark(#053b6b, #a9cbef);
+	--primitives-color-accent-850: light-dark(#00305b, #bed8f3);
+	--primitives-color-accent-900: light-dark(#002547, #d4e5f7);
+	--primitives-color-accent-950: light-dark(#001730, #e9f2fb);
+	--primitives-color-accent-1000: light-dark(#000000, #ffffff);
+	
+	--primitives-color-success-0: light-dark(#ffffff, #000000);
+	--primitives-color-success-25: light-dark(#e3ffce, #070f00);
+	--primitives-color-success-50: light-dark(#c1ff99, #0e1a00);
+	--primitives-color-success-75: light-dark(#adfa7f, #122200);
+	--primitives-color-success-100: light-dark(#a5f178, #132a00);
+	--primitives-color-success-150: light-dark(#95e169, #153700);
+	--primitives-color-success-200: light-dark(#87d25b, #174300);
+	--primitives-color-success-250: light-dark(#78c44e, #1b4e00);
+	--primitives-color-success-300: light-dark(#6bb641, #205900);
+	--primitives-color-success-350: light-dark(#5eaa34, #256400);
+	--primitives-color-success-400: light-dark(#519d28, #296f00);
+	--primitives-color-success-450: light-dark(#44911a, #2f7b00);
+	--primitives-color-success-500: light-dark(#38860a, #38860a);
+	--primitives-color-success-550: light-dark(#2f7b00, #44911a);
+	--primitives-color-success-600: light-dark(#296f00, #519d28);
+	--primitives-color-success-650: light-dark(#256400, #5eaa34);
+	--primitives-color-success-700: light-dark(#205900, #6bb641);
+	--primitives-color-success-750: light-dark(#1b4e00, #78c44e);
+	--primitives-color-success-800: light-dark(#174300, #87d25b);
+	--primitives-color-success-850: light-dark(#153700, #95e169);
+	--primitives-color-success-900: light-dark(#132a00, #a5f178);
+	--primitives-color-success-950: light-dark(#0e1a00, #c1ff99);
+	--primitives-color-success-1000: light-dark(#000000, #ffffff);
+	
+	--primitives-color-warning-0: light-dark(#ffffff, #000000);
+	--primitives-color-warning-25: light-dark(#fff4ee, #170a00);
+	--primitives-color-warning-50: light-dark(#ffeadd, #241300);
+	--primitives-color-warning-75: light-dark(#ffdfcc, #301800);
+	--primitives-color-warning-100: light-dark(#ffd5ba, #3b1d00);
+	--primitives-color-warning-150: light-dark(#ffc197, #4d2500);
+	--primitives-color-warning-200: light-dark(#ffac72, #5e2c00);
+	--primitives-color-warning-250: light-dark(#ff9849, #6e3400);
+	--primitives-color-warning-300: light-dark(#fa8521, #7d3b00);
+	--primitives-color-warning-350: light-dark(#eb7810, #8b4300);
+	--primitives-color-warning-400: light-dark(#db6d00, #9a4b00);
+	--primitives-color-warning-450: light-dark(#ca6400, #aa5300);
+	--primitives-color-warning-500: light-dark(#ba5b00, #ba5b00);
+	--primitives-color-warning-550: light-dark(#aa5300, #ca6400);
+	--primitives-color-warning-600: light-dark(#9a4b00, #db6d00);
+	--primitives-color-warning-650: light-dark(#8b4300, #eb7810);
+	--primitives-color-warning-700: light-dark(#7d3b00, #fa8521);
+	--primitives-color-warning-750: light-dark(#6e3400, #ff9849);
+	--primitives-color-warning-800: light-dark(#5e2c00, #ffac72);
+	--primitives-color-warning-850: light-dark(#4d2500, #ffc197);
+	--primitives-color-warning-900: light-dark(#3b1d00, #ffd5ba);
+	--primitives-color-warning-950: light-dark(#241300, #ffeadd);
+	--primitives-color-warning-1000: light-dark(#000000, #ffffff);
+	
+	--primitives-color-danger-0: light-dark(#ffffff, #000000);
+	--primitives-color-danger-25: light-dark(#fff4f1, #1c0700);
+	--primitives-color-danger-50: light-dark(#ffe9e4, #2c0d00);
+	--primitives-color-danger-75: light-dark(#ffded7, #3d0e00);
+	--primitives-color-danger-100: light-dark(#ffd4ca, #4b0d00);
+	--primitives-color-danger-150: light-dark(#ffbfb0, #640800);
+	--primitives-color-danger-200: light-dark(#ffaa97, #7b0000);
+	--primitives-color-danger-250: light-dark(#ff947e, #8d0004);
+	--primitives-color-danger-300: light-dark(#ff7e65, #a00007);
+	--primitives-color-danger-350: light-dark(#ff654c, #b20009);
+	--primitives-color-danger-400: light-dark(#f94f38, #c21110);
+	--primitives-color-danger-450: light-dark(#eb412e, #cf241a);
+	--primitives-color-danger-500: light-dark(#dd3424, #dd3424);
+	--primitives-color-danger-550: light-dark(#cf241a, #eb412e);
+	--primitives-color-danger-600: light-dark(#c21110, #f94f38);
+	--primitives-color-danger-650: light-dark(#b20009, #ff654c);
+	--primitives-color-danger-700: light-dark(#a00007, #ff7e65);
+	--primitives-color-danger-750: light-dark(#8d0004, #ff947e);
+	--primitives-color-danger-800: light-dark(#7b0000, #ffaa97);
+	--primitives-color-danger-850: light-dark(#640800, #ffbfb0);
+	--primitives-color-danger-900: light-dark(#4b0d00, #ffd4ca);
+	--primitives-color-danger-950: light-dark(#2c0d00, #ffe9e4);
+	--primitives-color-danger-1000: light-dark(#000000, #ffffff);
+	
+	--primitives-color-highlight-0: light-dark(#ffffff, #000000);
+	--primitives-color-highlight-25: light-dark(#fff5e9, #130c00);
+	--primitives-color-highlight-50: light-dark(#ffebd1, #1f1500);
+	--primitives-color-highlight-75: light-dark(#ffe1b9, #291c00);
+	--primitives-color-highlight-100: light-dark(#ffd79f, #322100);
+	--primitives-color-highlight-150: light-dark(#ffc460, #412c00);
+	--primitives-color-highlight-200: light-dark(#fab207, #4e3500);
+	--primitives-color-highlight-250: light-dark(#e9a500, #5b3e00);
+	--primitives-color-highlight-300: light-dark(#d89800, #684700);
+	--primitives-color-highlight-350: light-dark(#c78d00, #745000);
+	--primitives-color-highlight-400: light-dark(#b88200, #815a00);
+	--primitives-color-highlight-450: light-dark(#a97700, #8e6300);
+	--primitives-color-highlight-500: light-dark(#9b6d00, #9b6d00);
+	--primitives-color-highlight-550: light-dark(#8e6300, #a97700);
+	--primitives-color-highlight-600: light-dark(#815a00, #b88200);
+	--primitives-color-highlight-650: light-dark(#745000, #c78d00);
+	--primitives-color-highlight-700: light-dark(#684700, #d89800);
+	--primitives-color-highlight-750: light-dark(#5b3e00, #e9a500);
+	--primitives-color-highlight-800: light-dark(#4e3500, #fab207);
+	--primitives-color-highlight-850: light-dark(#412c00, #ffc460);
+	--primitives-color-highlight-900: light-dark(#322100, #ffd79f);
+	--primitives-color-highlight-950: light-dark(#1f1500, #ffebd1);
+	--primitives-color-highlight-1000: light-dark(#000000, #ffffff);
+	
+	--primitives-color-reference-coolgray: #64748b;
+	--primitives-color-reference-lintblauw: #154273;
+	--primitives-color-reference-paars: #42145f;
+	--primitives-color-reference-violet: #a90061;
+	--primitives-color-reference-robijnrood: #ca005d;
+	--primitives-color-reference-roze: #f092cd;
+	--primitives-color-reference-rood: #d52b1e;
+	--primitives-color-reference-oranje: #e17000;
+	--primitives-color-reference-donkergeel: #ffb612;
+	--primitives-color-reference-geel: #f9e11e;
+	--primitives-color-reference-donkerbruin: #673327;
+	--primitives-color-reference-bruin: #94710a;
+	--primitives-color-reference-donkergroen: #275937;
+	--primitives-color-reference-groen: #39870c;
+	--primitives-color-reference-mosgroen: #777b00;
+	--primitives-color-reference-mintgroen: #76d2b6;
+	--primitives-color-reference-donkerblauw: #01689b;
+	--primitives-color-reference-hemelblauw: #007bc7;
+	--primitives-color-reference-lichtblauw: #8fcae7;
+	
+	
+	--primitives-space-0: 0px;
+	--primitives-space-2: 2px;
+	--primitives-space-4: 4px;
+	--primitives-space-6: 6px;
+	--primitives-space-8: 8px;
+	--primitives-space-10: 10px;
+	--primitives-space-12: 12px;
+	--primitives-space-14: 14px;
+	--primitives-space-16: 16px;
+	--primitives-space-18: 18px;
+	--primitives-space-20: 20px;
+	--primitives-space-24: 24px;
+	--primitives-space-28: 28px;
+	--primitives-space-32: 32px;
+	--primitives-space-40: 40px;
+	--primitives-space-44: 44px;
+	--primitives-space-48: 48px;
+	--primitives-space-56: 56px;
+	--primitives-space-64: 64px;
+	--primitives-space-80: 80px;
+	--primitives-space-96: 96px;
+	
+	
+	--primitives-area-120: 120px;
+	--primitives-area-160: 160px;
+	--primitives-area-200: 200px;
+	--primitives-area-240: 240px;
+	--primitives-area-280: 280px;
+	--primitives-area-320: 320px;
+	--primitives-area-360: 360px;
+	--primitives-area-400: 400px;
+	--primitives-area-480: 480px;
+	--primitives-area-640: 640px;
+	--primitives-area-720: 720px;
+	--primitives-area-800: 800px;
+	--primitives-area-960: 960px;
+	--primitives-area-1280: 1280px;
+	--primitives-area-1440: 1440px;
+	
+	
+	--primitives-breakpoint-sm-min: 320px;
+	--primitives-breakpoint-sm-max: 640px;
+	--primitives-breakpoint-md-min: 641px;
+	--primitives-breakpoint-md-max: 1007px;
+	--primitives-breakpoint-lg-min: 1008px;
+	
+	
+	--primitives-corner-radius-none: 0px;
+	--primitives-corner-radius-xxs: 2px;
+	--primitives-corner-radius-xs: 4px;
+	--primitives-corner-radius-sm: 6px;
+	--primitives-corner-radius-md: 9px;
+	--primitives-corner-radius-lg: 12px;
+	--primitives-corner-radius-xl: 16px;
+	--primitives-corner-radius-xxl: 20px;
+	--primitives-corner-radius-xxxl: 24px;
+	--primitives-corner-radius-full: 9999px;
+	
+	
+	--primitives-font-family-sans-serif-fallback: system-ui, sans-serif;
+	--primitives-font-family-sans-serif: RijksSansVF, system-ui, sans-serif;
+	--primitives-font-family-serif-fallback: serif;
+	--primitives-font-family-serif: RijksoverheidSerif, serif;
+	--primitives-font-family-body-fallback: var(--primitives-font-family-sans-serif-fallback);
+	--primitives-font-family-body: var(--primitives-font-family-sans-serif);
+	--primitives-font-family-display-fallback: var(--primitives-font-family-sans-serif-fallback);
+	--primitives-font-family-display: var(--primitives-font-family-sans-serif);
+	
+	
+	--primitives-font-size-70: 12px;
+	--primitives-font-size-80: 14px;
+	--primitives-font-size-90: 16px;
+	--primitives-font-size-100: 18px;
+	--primitives-font-size-200: 20px;
+	--primitives-font-size-300: 23px;
+	--primitives-font-size-400: 26px;
+	--primitives-font-size-500: 29px;
+	--primitives-font-size-600: 32px;
+	--primitives-font-size-700: 36px;
+	--primitives-font-size-800: 41px;
+	--primitives-font-size-900: 46px;
+	--primitives-font-size-1000: 52px;
+	
+	
+	--primitives-line-height-loose: 1.75;
+	--primitives-line-height-snug: 1.5;
+	--primitives-line-height-tight: 1.25;
+	--primitives-line-height-flat: 1.125;
+	
+	
+	--primitives-font-weight-body-hairline: 100;
+	--primitives-font-weight-body-thin: 100;
+	--primitives-font-weight-body-light: 300;
+	--primitives-font-weight-body-regular: 400;
+	--primitives-font-weight-body-medium: 550;
+	--primitives-font-weight-body-semi-bold: 550;
+	--primitives-font-weight-body-bold: 550;
+	--primitives-font-weight-body-extra-bold: 700;
+	--primitives-font-weight-body-black: 800;
+	
+	--primitives-font-weight-display-hairline: 100;
+	--primitives-font-weight-display-thin: 100;
+	--primitives-font-weight-display-light: 300;
+	--primitives-font-weight-display-regular: 400;
+	--primitives-font-weight-display-medium: 550;
+	--primitives-font-weight-display-semi-bold: 550;
+	--primitives-font-weight-display-bold: 550;
+	--primitives-font-weight-display-extra-bold: 700;
+	--primitives-font-weight-display-black: 800;
+	
+	--primitives-font-body-lg-regular-loose:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-200) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-regular-snug:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-200) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-regular-tight:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-200) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-regular-flat:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-200) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-bold-loose:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-bold-snug:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-bold-tight:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-lg-bold-flat:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-regular-loose:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-100) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-regular-snug:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-100) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-regular-tight:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-100) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-regular-flat:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-100) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-bold-loose:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-bold-snug:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-bold-tight:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-md-bold-flat:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-regular-loose:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-90) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-regular-snug:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-90) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-regular-tight:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-90) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-regular-flat:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-90) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-bold-loose:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-90) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-bold-snug:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-90) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-bold-tight:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-90) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-sm-bold-flat:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-90) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-regular-loose:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-80) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-regular-snug:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-80) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-regular-tight:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-80) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-regular-flat:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-80) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-bold-loose:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-80) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-bold-snug:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-80) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-bold-tight:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-80) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xs-bold-flat:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-80) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-bold-flat:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-70) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-regular-loose:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-70) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-regular-snug:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-70) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-regular-tight:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-70) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-regular-flat:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-70) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-bold-loose:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-70) / var(--primitives-line-height-loose)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-bold-snug:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-70) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+	--primitives-font-body-xxs-bold-tight:
+		var(--primitives-font-weight-body-bold)
+		var(--primitives-font-size-70) / var(--primitives-line-height-tight)
+		var(--primitives-font-family-body)
+	;
+	
+	--primitives-font-display-1-sm:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-700) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-1-md:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-800) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-1-lg:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-1000) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-2-sm:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-500) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-2-md:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-600) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-2-lg:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-800) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-3-sm:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-400) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-3-md:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-400) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-3-lg:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-600) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-4-sm:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-300) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-4-md:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-300) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-4-lg:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-400) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-5-sm:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-5-md:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-5-lg:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-200) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-6-sm:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-6-md:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	--primitives-font-display-6-lg:
+		var(--primitives-font-weight-display-bold)
+		var(--primitives-font-size-100) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-display)
+	;
+	
+	--primitives-opacity-0: 0;
+	--primitives-opacity-5: 0.05;
+	--primitives-opacity-10: 0.1;
+	--primitives-opacity-15: 0.15;
+	--primitives-opacity-20: 0.2;
+	--primitives-opacity-25: 0.25;
+	--primitives-opacity-30: 0.3;
+	--primitives-opacity-35: 0.35;
+	--primitives-opacity-40: 0.4;
+	--primitives-opacity-45: 0.45;
+	--primitives-opacity-50: 0.5;
+	--primitives-opacity-55: 0.55;
+	--primitives-opacity-60: 0.6;
+	--primitives-opacity-65: 0.65;
+	--primitives-opacity-70: 0.7;
+	--primitives-opacity-75: 0.75;
+	--primitives-opacity-80: 0.8;
+	--primitives-opacity-85: 0.85;
+	--primitives-opacity-90: 0.9;
+	--primitives-opacity-95: 0.95;
+	--primitives-opacity-100: 1;
+	--primitives-opacity-disabled: 0.38;
+	
+	
+	--primitives-box-shadows-level-1:
+		0px 2px 4px 0px rgba(0, 0, 0, 0.11),
+		0px 0px 2px 0px rgba(0, 0, 0, 0.09)
+		;
+	--primitives-box-shadows-level-2:
+		0px 2px 8px 0px rgba(0, 0, 0, 0.1),
+		0px 1px 4px 0px rgba(0, 0, 0, 0.08),
+		0px 0px 2px 0px rgba(0, 0, 0, 0.06)
+	;
+	--primitives-box-shadows-level-3:
+		0px 4px 16px 0px rgba(0, 0, 0, 0.12),
+		0px 2px 8px 0px rgba(0, 0, 0, 0.06),
+		0px 1px 4px 0px rgba(0, 0, 0, 0.05),
+		0px 0px 2px 0px rgba(0, 0, 0, 0.04)
+	;
+	--primitives-box-shadows-level-4:
+		0px 8px 32px 0px rgba(0, 0, 0, 0.1),
+		0px 4px 16px 0px rgba(0, 0, 0, 0.08),
+		0px 2px 8px 0px rgba(0, 0, 0, 0.06),
+		0px 1px 4px 0px rgba(0, 0, 0, 0.04),
+		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
+	;
+	--primitives-box-shadows-level-5:
+		0px 16px 64px 0px rgba(0, 0, 0, 0.11),
+		0px 8px 32px 0px rgba(0, 0, 0, 0.09),
+		0px 4px 16px 0px rgba(0, 0, 0, 0.06),
+		0px 2px 8px 0px rgba(0, 0, 0, 0.04),
+		0px 1px 4px 0px rgba(0, 0, 0, 0.03),
+		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
+	;
+	--primitives-box-shadows-level-6:
+		0px 32px 128px 0px rgba(0, 0, 0, 0.16),
+		0px 16px 64px 0px rgba(0, 0, 0, 0.1),
+		0px 8px 32px 0px rgba(0, 0, 0, 0.08),
+		0px 4px 16px 0px rgba(0, 0, 0, 0.06),
+		0px 2px 8px 0px rgba(0, 0, 0, 0.04),
+		0px 1px 4px 0px rgba(0, 0, 0, 0.03),
+		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
+	;
 
 
-  --semantics-surfaces-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
-  --semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
+	--semantics-surfaces-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
+	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
 
 
-  --semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-800));
-  --semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-600));
+	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-800));
+	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-600));
 
-  --semantics-links-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-links-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
 
 
-  --semantics-controls-xs-min-size: var(--primitives-space-24);
-  --semantics-controls-xs-corner-radius: var(--primitives-corner-radius-xs);
-  --semantics-controls-sm-min-size: var(--primitives-space-32);
-  --semantics-controls-sm-corner-radius: var(--primitives-corner-radius-sm);
-  --semantics-controls-md-min-size: var(--primitives-space-44);
-  --semantics-controls-md-corner-radius: var(--primitives-corner-radius-md);
-  --semantics-controls-lg-min-size: var(--primitives-space-56);
-  --semantics-controls-lg-corner-radius: var(--primitives-corner-radius-md);
-  
-  
-  --semantics-buttons-md-font: var(--primitives-font-body-md-bold-flat);
-  --semantics-buttons-sm-font: var(--primitives-font-body-sm-bold-flat);
-  --semantics-buttons-xs-font: var(--primitives-font-body-xs-bold-flat);
-  
-  --semantics-buttons-sm-divider-length: var(--primitives-space-20);
-  --semantics-buttons-md-divider-length: var(--primitives-space-28);
-    
-  --semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
-  --semantics-buttons-neutral-tinted-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
-  --semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-350));
-  --semantics-buttons-neutral-tinted-end-fade-start-color: rgba(215, 222, 234, 0);
-  --semantics-buttons-neutral-tinted-end-fade-end-color: var(--semantics-buttons-neutral-tinted-background-color);
-  --semantics-buttons-neutral-tinted-is-hovered-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-250));
-  --semantics-buttons-neutral-tinted-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
-  --semantics-buttons-neutral-tinted-is-active-background-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
-  --semantics-buttons-neutral-tinted-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
-  --semantics-buttons-neutral-tinted-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-  --semantics-buttons-neutral-tinted-is-selected-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-  --semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
-  --semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-  --semantics-buttons-neutral-tinted-is-selected-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
-  --semantics-buttons-neutral-tinted-is-selected-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-  
-  --semantics-buttons-neutral-transparent-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
-  --semantics-buttons-neutral-transparent-is-hovered-content-color: light-dark(var(--primitives-color-neutral-950), var(--primitives-color-neutral-950));
-  --semantics-buttons-neutral-transparent-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
-  
-  --semantics-buttons-accent-filled-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-  --semantics-buttons-accent-filled-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-  --semantics-buttons-accent-filled-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
-  --semantics-buttons-accent-filled-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-  --semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
-  --semantics-buttons-accent-filled-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-  
-  --semantics-buttons-accent-outlined-border-thickness: var(--primitives-space-2);
-  --semantics-buttons-accent-outlined-border-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-  --semantics-buttons-accent-outlined-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-  --semantics-buttons-accent-outlined-is-hovered-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
-  --semantics-buttons-accent-outlined-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
-  --semantics-buttons-accent-outlined-is-active-border-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
-  --semantics-buttons-accent-outlined-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
-  
-  --semantics-buttons-accent-transparent-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-  --semantics-buttons-accent-transparent-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
-  --semantics-buttons-accent-transparent-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
-  
-  --semantics-buttons-danger-tinted-background-color: light-dark(var(--primitives-color-danger-50), var(--primitives-color-danger-50));
-  --semantics-buttons-danger-tinted-content-color: light-dark(var(--primitives-color-danger-600), var(--primitives-color-danger-600));
-  --semantics-buttons-danger-tinted-is-hovered-background-color: light-dark(var(--primitives-color-danger-100), var(--primitives-color-danger-100));
-  --semantics-buttons-danger-tinted-is-hovered-content-color: light-dark(var(--primitives-color-danger-650), var(--primitives-color-danger-650));
-  --semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-150));
-  --semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-700), var(--primitives-color-danger-700));
-  
-  
-  --semantics-input-fields-border-thickness: 2px;
-  --semantics-input-fields-placeholder-color: #67778d;
-  --semantics-input-fields-end-fade-start-color: rgba(255, 255, 255, 0);
-  --semantics-input-fields-end-fade-end-color: var(--semantics-surfaces-background-color);
-  --semantics-input-fields-background-color: var(--semantics-surfaces-background-color);
-  --semantics-input-fields-border-color: #67778d;
-  --semantics-input-fields-is-valid-border-color: #38860a;
-  --semantics-input-fields-is-valid-icon-color: #38860a;
-  --semantics-input-fields-is-invalid-border-color: #dd3424;
-  --semantics-input-fields-is-invalid-icon-color: #dd3424;
-  --semantics-input-fields-is-read-only-background-color: #ebeef2;
-  --semantics-input-fields-is-read-only-border-color: #ebeef2;
+	--semantics-controls-xs-min-size: var(--primitives-space-24);
+	--semantics-controls-xs-corner-radius: var(--primitives-corner-radius-xs);
+	--semantics-controls-sm-min-size: var(--primitives-space-32);
+	--semantics-controls-sm-corner-radius: var(--primitives-corner-radius-sm);
+	--semantics-controls-md-min-size: var(--primitives-space-44);
+	--semantics-controls-md-corner-radius: var(--primitives-corner-radius-md);
+	--semantics-controls-lg-min-size: var(--primitives-space-56);
+	--semantics-controls-lg-corner-radius: var(--primitives-corner-radius-md);
+	
+	
+	--semantics-buttons-md-font: var(--primitives-font-body-md-bold-flat);
+	--semantics-buttons-sm-font: var(--primitives-font-body-sm-bold-flat);
+	--semantics-buttons-xs-font: var(--primitives-font-body-xs-bold-flat);
+	
+	--semantics-buttons-sm-divider-length: var(--primitives-space-20);
+	--semantics-buttons-md-divider-length: var(--primitives-space-28);
+		
+	--semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
+	--semantics-buttons-neutral-tinted-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
+	--semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-350));
+	--semantics-buttons-neutral-tinted-end-fade-start-color: rgba(215, 222, 234, 0);
+	--semantics-buttons-neutral-tinted-end-fade-end-color: var(--semantics-buttons-neutral-tinted-background-color);
+	--semantics-buttons-neutral-tinted-is-hovered-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-250));
+	--semantics-buttons-neutral-tinted-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-active-background-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
+	--semantics-buttons-neutral-tinted-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-buttons-neutral-tinted-is-selected-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
+	--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-neutral-tinted-is-selected-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	--semantics-buttons-neutral-tinted-is-selected-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	
+	--semantics-buttons-neutral-transparent-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
+	--semantics-buttons-neutral-transparent-is-hovered-content-color: light-dark(var(--primitives-color-neutral-950), var(--primitives-color-neutral-950));
+	--semantics-buttons-neutral-transparent-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	
+	--semantics-buttons-accent-filled-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-buttons-accent-filled-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-accent-filled-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
+	--semantics-buttons-accent-filled-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	--semantics-buttons-accent-filled-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	
+	--semantics-buttons-accent-outlined-border-thickness: var(--primitives-space-2);
+	--semantics-buttons-accent-outlined-border-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-buttons-accent-outlined-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-buttons-accent-outlined-is-hovered-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
+	--semantics-buttons-accent-outlined-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
+	--semantics-buttons-accent-outlined-is-active-border-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	--semantics-buttons-accent-outlined-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	
+	--semantics-buttons-accent-transparent-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-buttons-accent-transparent-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
+	--semantics-buttons-accent-transparent-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	
+	--semantics-buttons-danger-tinted-background-color: light-dark(var(--primitives-color-danger-50), var(--primitives-color-danger-50));
+	--semantics-buttons-danger-tinted-content-color: light-dark(var(--primitives-color-danger-600), var(--primitives-color-danger-600));
+	--semantics-buttons-danger-tinted-is-hovered-background-color: light-dark(var(--primitives-color-danger-100), var(--primitives-color-danger-100));
+	--semantics-buttons-danger-tinted-is-hovered-content-color: light-dark(var(--primitives-color-danger-650), var(--primitives-color-danger-650));
+	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-150));
+	--semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-700), var(--primitives-color-danger-700));
+	
+	
+	--semantics-input-fields-border-thickness: var(--primitives-space-2);
+	--semantics-input-fields-placeholder-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
+	--semantics-input-fields-end-fade-start-color: rgba(255, 255, 255, 0);
+	--semantics-input-fields-end-fade-end-color: var(--semantics-surfaces-background-color);
+	--semantics-input-fields-background-color: var(--semantics-surfaces-background-color);
+	--semantics-input-fields-border-color: light-dark(var(--primitives-color-neutral-500), var(--primitives-color-neutral-600));
+	--semantics-input-fields-is-valid-border-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-600));
+	--semantics-input-fields-is-valid-icon-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-600));
+	--semantics-input-fields-is-invalid-border-color: light-dark(var(--primitives-color-danger-500), var(--primitives-color-danger-600));
+	--semantics-input-fields-is-invalid-icon-color: light-dark(var(--primitives-color-danger-500), var(--primitives-color-danger-600));
+	--semantics-input-fields-is-read-only-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
+	--semantics-input-fields-is-read-only-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 
-  --semantics-input-fields-sm-text: 400 16px/1 RijksSansVF, system-ui;
-  --semantics-input-fields-sm-mask: 400 16px/1 Verdana, system-ui;
-  --semantics-input-fields-md-text: 400 18px/1 RijksSansVF, system-ui;
-  --semantics-input-fields-md-mask: 400 18px/1 Verdana, system-ui;
-  
-  
-  --semantics-dividers-color: #d9dee4;
-  --semantics-dividers-thickness: 1px;
-  
-  
-  --semantics-page-sections-body-max-width: var(--primitives-area-1280);
-  --semantics-page-sections-sm-margin-inline: var(--primitives-space-16);
-  --semantics-page-sections-sm-margin-block: var(--primitives-space-16);
-  --semantics-page-sections-sm-gap: var(--primitives-space-16);
-  --semantics-page-sections-md-margin-inline: var(--primitives-space-32);
-  --semantics-page-sections-md-margin-block: var(--primitives-space-24);
-  --semantics-page-sections-md-gap: var(--primitives-space-24);
-  --semantics-page-sections-lg-margin-inline: var(--primitives-space-48);
-  --semantics-page-sections-lg-margin-block: var(--primitives-space-32);
-  --semantics-page-sections-lg-gap: var(--primitives-space-24);
-  
-  
-  --semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
-  
-  
-  --semantics-focus-rings-inner-color: var(--semantics-surfaces-background-color);
-  --semantics-focus-rings-inner-thickness: 2px;
-  --semantics-focus-rings-center-color: #4a6ca1;
-  --semantics-focus-rings-center-thickness: 4px;
-  --semantics-focus-rings-outer-color: var(--semantics-surfaces-background-color);
-  --semantics-focus-rings-outer-thickness: 6px;
-  
-  
-  --components-list-item-sm-padding-block: var(--primitives-space-8);
-  --components-list-item-md-padding-block: var(--primitives-space-12);
-  --components-list-item-is-selected-corner-radius: var(--primitives-corner-radius-md);
-  --components-list-item-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-  --components-list-item-is-selected-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-  
-  
-  --components-menu-bar-menu-item-color: #194476;
-  --components-menu-bar-menu-item-is-selected-color: #194476;
-  --components-menu-bar-menu-item-is-selected-indicator-color: #194476;
-  --components-menu-bar-menu-item-is-selected-indicator-height: var(--primitives-space-4);
-  --components-menu-bar-menu-item-is-hovered-indicator-color: #d9dee4;
-  --components-menu-bar-menu-item-is-hovered-indicator-height: var(--primitives-space-32);
-  --components-menu-bar-menu-item-font: 550 18px/1.125 RijksSansVF, system-ui;
-  --components-menu-bar-title-item-s-font: 550 18px/1.125 RijksSansVF, system-ui;
-  --components-menu-bar-title-item-m-font: 550 20px/1.125 RijksSansVF, system-ui;
-  --components-menu-bar-title-item-l-font: 550 23px/1.125 RijksSansVF, system-ui;
-  
-  
-  --components-checkbox-border-thickness: var(--primitives-space-2);
-  --components-checkbox-border-color: #556275;
-  --components-checkbox-background-color: var(--semantics-surfaces-background-color);
-  --components-checkbox-is-selected-background-color: #274e81;
-  --components-checkbox-is-selected-icon-color: #ffffff;
-  
-  
-  --components-radio-button-border-thickness: var(--primitives-space-2);
-  --components-radio-button-border-color: #556275;
-  --components-radio-button-background-color: var(--semantics-surfaces-background-color);
-  --components-radio-button-is-selected-background-color: #274e81;
-  --components-radio-button-is-selected-inner-shape-border-thickness: 2px;
-  --components-radio-button-is-selected-inner-shape-border-color: #ffffff;
-  
-  
-  --components-switch-border-thickness: var(--primitives-space-2);
-  --components-switch-border-color: #556275;
-  --components-switch-background-color: var(--semantics-surfaces-background-color);
-  --components-switch-thumb-border-thickness: var(--primitives-space-2);
-  --components-switch-thumb-border-color: #556275;
-  --components-switch-thumb-background-color: var(--semantics-surfaces-background-color);
-  --components-switch-icon-color: #556275;
-  --components-switch-is-selected-background-color: #274e81;
-  --components-switch-is-selected-thumb-background-color: var(--semantics-surfaces-background-color);
-  --components-switch-is-selected-icon-color: #274e81;
-  
-  
-  --components-box-background-color: var(--semantics-surfaces-tinted-background-color);
-  --components-box-is-on-tinted-background-color: var(--semantics-surfaces-background-color);
-  --components-box-corner-radius: 16px;
-  --components-box-padding: var(--primitives-space-16);
-  
-  
-  --components-top-title-bar-button-bar-divider-color: #c9ced8;
-  
-  
-  --components-grab-handle-background-color: #d9dee4;
-  --components-grab-handle-color: #67778d;
-  
-  
-  --components-form-gap: var(--primitives-space-16);
-  
-  
-  --components-toolbar-sm-gap: var(--primitives-space-6);
-  --components-toolbar-md-gap: var(--primitives-space-8);
-  
-  
-  --components-button-group-sm-gap: var(--primitives-space-6);
-  --components-button-group-md-gap: var(--primitives-space-8);
-  
-  
-  --components-toggle-button-group-sm-gap: var(--primitives-space-6);
-  --components-toggle-button-group-md-gap: var(--primitives-space-8);
-  
-  
-  --components-page-fixed-area-background-gradient-color-1: rgba(255, 255, 255, 0.95);
-  --components-page-fixed-area-background-gradient-color-2: rgba(255, 255, 255, 0.6);
-  --components-page-fixed-area-background-gradient-color-3: rgba(255, 255, 255, 0);
-  --components-page-fixed-area-tinted-background-gradient-color-1: rgba(245, 246, 249, 0.95);
-  --components-page-fixed-area-tinted-background-gradient-color-2: rgba(245, 246, 249, 0.6);
-  --components-page-fixed-area-tinted-background-gradient-color-3: rgba(245, 246, 249, 0);
-  
-  
-  --components-title-bar-sm-overline: var(--primitives-font-body-sm-regular-tight);
-  --components-title-bar-sm-subtitle: var(--primitives-font-body-md-regular-tight);
-  
-  --components-title-bar-md-overline: var(--primitives-font-body-sm-regular-tight);
-  --components-title-bar-md-subtitle: var(--primitives-font-body-md-regular-tight);
-  
-  --components-title-bar-lg-overline: var(--primitives-font-body-md-regular-tight);
-  --components-title-bar-lg-subtitle: var(--primitives-font-body-md-regular-tight);
-  
-  
-  --components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
+	--semantics-input-fields-sm-text: var(--primitives-font-body-sm-regular-flat);
+	--semantics-input-fields-sm-mask: 400 var(--primitives-font-size-90)/var(--primitives-line-height-flat) Verdana, system-ui;
+	--semantics-input-fields-md-text: var(--primitives-font-body-md-regular-flat);
+	--semantics-input-fields-md-mask: 400 var(--primitives-font-size-100)/var(--primitives-line-height-flat) Verdana, system-ui;
+	
+	
+	--semantics-dividers-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
+	--semantics-dividers-thickness: 1px;
+	
+	
+	--semantics-page-sections-body-max-width: var(--primitives-area-1280);
+	--semantics-page-sections-sm-margin-inline: var(--primitives-space-16);
+	--semantics-page-sections-sm-margin-block: var(--primitives-space-16);
+	--semantics-page-sections-sm-gap: var(--primitives-space-16);
+	--semantics-page-sections-md-margin-inline: var(--primitives-space-32);
+	--semantics-page-sections-md-margin-block: var(--primitives-space-24);
+	--semantics-page-sections-md-gap: var(--primitives-space-24);
+	--semantics-page-sections-lg-margin-inline: var(--primitives-space-48);
+	--semantics-page-sections-lg-margin-block: var(--primitives-space-32);
+	--semantics-page-sections-lg-gap: var(--primitives-space-24);
+	
+	
+	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
+	
+	
+	--semantics-focus-rings-inner-color: var(--semantics-surfaces-background-color);
+	--semantics-focus-rings-inner-thickness: 2px;
+	--semantics-focus-rings-center-color:  light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
+	--semantics-focus-rings-center-thickness: 4px;
+	--semantics-focus-rings-outer-color: var(--semantics-surfaces-background-color);
+	--semantics-focus-rings-outer-thickness: 6px;
+	
+	
+	--components-list-item-sm-padding-block: var(--primitives-space-8);
+	--components-list-item-md-padding-block: var(--primitives-space-12);
+	--components-list-item-is-selected-corner-radius: var(--primitives-corner-radius-md);
+	--components-list-item-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--components-list-item-is-selected-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	
+	
+	--components-menu-bar-menu-item-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--components-menu-bar-menu-item-is-selected-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--components-menu-bar-menu-item-is-selected-indicator-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--components-menu-bar-menu-item-is-selected-indicator-height: var(--primitives-space-4);
+	--components-menu-bar-menu-item-is-hovered-indicator-color: #d9dee4;
+	--components-menu-bar-menu-item-is-hovered-indicator-height: var(--primitives-space-32);
+	--components-menu-bar-menu-item-font: 550 18px/1.125 RijksSansVF, system-ui;
+	--components-menu-bar-title-item-s-font: 550 18px/1.125 RijksSansVF, system-ui;
+	--components-menu-bar-title-item-m-font: 550 20px/1.125 RijksSansVF, system-ui;
+	--components-menu-bar-title-item-l-font: 550 23px/1.125 RijksSansVF, system-ui;
+	
+	
+	--components-checkbox-border-thickness: var(--primitives-space-2);
+	--components-checkbox-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
+	--components-checkbox-background-color: var(--semantics-surfaces-background-color);
+	--components-checkbox-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--components-checkbox-is-selected-icon-color:  light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-0));
+	
+	
+	--components-radio-button-border-thickness: var(--primitives-space-2);
+	--components-radio-button-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
+	--components-radio-button-background-color: var(--semantics-surfaces-background-color);
+	--components-radio-button-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--components-radio-button-is-selected-inner-shape-border-thickness:  var(--primitives-space-2);
+	--components-radio-button-is-selected-inner-shape-border-color:  light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-0));
+	
+	
+	--components-switch-border-thickness: var(--primitives-space-2);
+	--components-switch-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
+	--components-switch-background-color: var(--semantics-surfaces-background-color);
+	--components-switch-thumb-border-thickness: var(--primitives-space-2);
+	--components-switch-thumb-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
+	--components-switch-thumb-background-color: var(--semantics-surfaces-background-color);
+	--components-switch-icon-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
+	--components-switch-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--components-switch-is-selected-thumb-background-color: var(--semantics-surfaces-background-color);
+	--components-switch-is-selected-icon-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	
+	
+	--components-box-background-color: var(--semantics-surfaces-tinted-background-color);
+	--components-box-is-on-tinted-background-color: var(--semantics-surfaces-background-color);
+	--components-box-corner-radius: var(--primitives-corner-radius-xl);
+	--components-box-padding: var(--primitives-space-16);
+	
+	
+	--components-top-title-bar-button-bar-divider-color: #c9ced8;
+	
+	
+	--components-grab-handle-background-color: #d9dee4;
+	--components-grab-handle-color: #67778d;
+	
+	
+	--components-form-gap: var(--primitives-space-16);
+	
+	
+	--components-toolbar-sm-gap: var(--primitives-space-6);
+	--components-toolbar-md-gap: var(--primitives-space-8);
+	
+	
+	--components-button-group-sm-gap: var(--primitives-space-6);
+	--components-button-group-md-gap: var(--primitives-space-8);
+	
+	
+	--components-toggle-button-group-sm-gap: var(--primitives-space-6);
+	--components-toggle-button-group-md-gap: var(--primitives-space-8);
+	
+	
+	--components-page-fixed-area-background-gradient-color-1: rgba(255, 255, 255, 0.95);
+	--components-page-fixed-area-background-gradient-color-2: rgba(255, 255, 255, 0.6);
+	--components-page-fixed-area-background-gradient-color-3: rgba(255, 255, 255, 0);
+	--components-page-fixed-area-tinted-background-gradient-color-1: rgba(245, 246, 249, 0.95);
+	--components-page-fixed-area-tinted-background-gradient-color-2: rgba(245, 246, 249, 0.6);
+	--components-page-fixed-area-tinted-background-gradient-color-3: rgba(245, 246, 249, 0);
+	
+	
+	--components-title-bar-sm-overline: var(--primitives-font-body-sm-regular-tight);
+	--components-title-bar-sm-subtitle: var(--primitives-font-body-md-regular-tight);
+	
+	--components-title-bar-md-overline: var(--primitives-font-body-sm-regular-tight);
+	--components-title-bar-md-subtitle: var(--primitives-font-body-md-regular-tight);
+	
+	--components-title-bar-lg-overline: var(--primitives-font-body-md-regular-tight);
+	--components-title-bar-lg-subtitle: var(--primitives-font-body-md-regular-tight);
+	
+	
+	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 }
