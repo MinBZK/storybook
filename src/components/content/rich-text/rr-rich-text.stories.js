@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-rich-text.ts';
 
 export default {
-  title: 'Content/Rich Text',
+  title: 'Components/Content/Rich Text',
   component: 'rr-rich-text',
   tags: ['autodocs'],
 };
