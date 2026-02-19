@@ -72,7 +72,7 @@ export class RRMenuItem extends LitElement {
       left: 0;
       right: 0;
       height: 0;
-      background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-color);
+      background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-background-color);
       transition: height 0.15s ease;
       pointer-events: none;
       z-index: 0;
@@ -89,7 +89,7 @@ export class RRMenuItem extends LitElement {
       left: 0;
       right: 0;
       height: 0;
-      background-color: var(--components-menu-bar-menu-item-is-selected-indicator-color);
+      background-color: var(--components-menu-bar-menu-item-is-selected-indicator-background-color);
       transition: height 0.15s ease;
       pointer-events: none;
       z-index: 1;
