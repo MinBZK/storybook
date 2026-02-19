@@ -90,7 +90,7 @@
               }
             },
             {
-              "name": "components/menu-bar/menu-item/is-hovered/indicator/color",
+              "name": "components/menu-bar/menu-item/is-hovered/indicator/background-color",
               "type": "color",
               "isAlias": true,
               "value": {

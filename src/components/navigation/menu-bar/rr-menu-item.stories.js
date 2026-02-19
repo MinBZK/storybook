@@ -136,8 +136,8 @@ export const FigmaComparison = {
             background: #1e293b;
             --components-menu-bar-menu-item-color: #c0ccd8;
             --components-menu-bar-menu-item-is-selected-color: #7eb1e7;
-            --components-menu-bar-menu-item-is-selected-indicator-color: #7eb1e7;
-            --components-menu-bar-menu-item-is-hovered-indicator-color: #27333f;
+            --components-menu-bar-menu-item-is-selected-indicator-background-color: #7eb1e7;
+            --components-menu-bar-menu-item-is-hovered-indicator-background-color: #27333f;
           ">
             <rr-menu-item>Menu item</rr-menu-item>
             <rr-menu-item>Menu item</rr-menu-item>
