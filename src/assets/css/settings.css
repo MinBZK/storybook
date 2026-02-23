@@ -858,9 +858,9 @@
 }
 
 html[data-scheme="light"] {
-	color-scheme: light; /* Storybook forced light */
+	color-scheme: light;
 }
 
 html[data-scheme="dark"] {
-	color-scheme: dark; /* Storybook forced dark */
+	color-scheme: dark;
 }
