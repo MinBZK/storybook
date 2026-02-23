@@ -756,12 +756,10 @@
 	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
 	
 	
-	--semantics-focus-rings-inner-color: var(--semantics-surfaces-background-color);
-	--semantics-focus-rings-inner-thickness: 2px;
-	--semantics-focus-rings-center-color:  light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
-	--semantics-focus-rings-center-thickness: 4px;
-	--semantics-focus-rings-outer-color: var(--semantics-surfaces-background-color);
-	--semantics-focus-rings-outer-thickness: 6px;
+	--semantics-focus-ring-edge-color: var(--semantics-surfaces-background-color);
+	--semantics-focus-ring-edge-thickness: 6px;
+	--semantics-focus-ring-center-color:  light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
+	--semantics-focus-ring-center-thickness: 4px;
 	
 	
 	--components-list-item-sm-padding-block: var(--primitives-space-8);

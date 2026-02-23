@@ -1071,7 +1071,7 @@
               }
             },
             {
-              "name": "semantics/focus-rings/inner/color",
+              "name": "semantics/focus-ring/edge/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -1080,16 +1080,16 @@
               }
             },
             {
-              "name": "semantics/focus-rings/inner/thickness",
+              "name": "semantics/focus-ring/edge/thickness",
               "type": "number",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/space/2"
+                "name": "primitives/space/6"
               }
             },
             {
-              "name": "semantics/focus-rings/center/color",
+              "name": "semantics/focus-ring/center/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -1098,7 +1098,7 @@
               }
             },
             {
-              "name": "semantics/focus-rings/center/thickness",
+              "name": "semantics/focus-ring/center/thickness",
               "type": "number",
               "isAlias": true,
               "value": {
@@ -2833,24 +2833,6 @@
                 "collection": "Themes",
                 "name": "primitives/corner-radius/md"
               }
-            },
-            {
-              "name": "semantics/focus-rings/outer/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "semantics/surfaces/background-color"
-              }
-            },
-            {
-              "name": "semantics/focus-rings/outer/thickness",
-              "type": "number",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/space/6"
-              }
             }
           ]
         },
@@ -3920,7 +3902,7 @@
               }
             },
             {
-              "name": "semantics/focus-rings/inner/color",
+              "name": "semantics/focus-ring/edge/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -3929,16 +3911,16 @@
               }
             },
             {
-              "name": "semantics/focus-rings/inner/thickness",
+              "name": "semantics/focus-ring/edge/thickness",
               "type": "number",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/space/2"
+                "name": "primitives/space/6"
               }
             },
             {
-              "name": "semantics/focus-rings/center/color",
+              "name": "semantics/focus-ring/center/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -3947,7 +3929,7 @@
               }
             },
             {
-              "name": "semantics/focus-rings/center/thickness",
+              "name": "semantics/focus-ring/center/thickness",
               "type": "number",
               "isAlias": true,
               "value": {
@@ -5681,24 +5663,6 @@
               "value": {
                 "collection": "Themes",
                 "name": "primitives/corner-radius/md"
-              }
-            },
-            {
-              "name": "semantics/focus-rings/outer/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "semantics/surfaces/background-color"
-              }
-            },
-            {
-              "name": "semantics/focus-rings/outer/thickness",
-              "type": "number",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/space/6"
               }
             }
           ]

@@ -71,8 +71,8 @@ export class RRButton extends LitElement {
 		}
 		
 		.button:focus-visible {
-			box-shadow: 0 0 0 4px var(--semantics-focus-rings-center-color);
-			outline: 6px double var(--semantics-focus-rings-inner-color);
+			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+			outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 		}
 		
 		.button:focus:not(:focus-visible) {

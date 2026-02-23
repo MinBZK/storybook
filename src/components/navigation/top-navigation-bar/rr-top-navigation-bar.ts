@@ -102,9 +102,8 @@ export class RRTopNavigationBar extends LitElement {
 
     .skip-link:focus {
       top: var(--primitives-space-8);
-      outline: var(--semantics-focus-rings-center-thickness) solid
-        var(--semantics-focus-rings-center-color);
-      outline-offset: 2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
     }
 
     .container {
