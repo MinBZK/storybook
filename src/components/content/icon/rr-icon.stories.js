@@ -1,11 +1,11 @@
 // icon.stories.js
-import './icon.ts';
-import { aliases } from './icon-aliases.js';
+import './rr-icon.ts';
+import { aliases } from './rr-icon-aliases.js';
 
 // Get all icon names from the icons folder at build time
-const iconModules = import.meta.glob('./icons/*.svg', { query: '?raw' });
+const iconModules = import.meta.glob('./rr-icons/*.svg', { query: '?raw' });
 const iconNames = Object.keys(iconModules).map(path =>
-	path.replace('./icons/', '').replace('.svg', '')
+	path.replace('./rr-icons/', '').replace('.svg', '')
 ).sort();
 
 const aliasNames = Object.keys(aliases);

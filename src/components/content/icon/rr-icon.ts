@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { aliases } from './icon-aliases.js';
+import { aliases } from './rr-icon-aliases.js';
 
 const iconCache = new Map<string, string>();
 
@@ -65,7 +65,7 @@ export class RRIcon extends LitElement {
 		}
 
 		try {
-			const module = await import(`./icons/${resolvedName}.svg?raw`);
+			const module = await import(`./rr-icons/${resolvedName}.svg?raw`);
 			iconCache.set(resolvedName, module.default);
 			this._iconSvg = module.default;
 		} catch {
