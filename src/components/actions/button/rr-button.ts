@@ -6,14 +6,11 @@
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
- * @attr {boolean} has-start-icon - Whether the button has a start icon
- * @attr {boolean} has-end-icon - Whether the button has a end icon
  * @attr {boolean} has-menu - Whether the button has a dropdown menu icon
  * @attr {boolean} full-width - Whether the button stretches to fill its container width
  *
- * @slot title - Slot for button title
- * @slot icon-start - Slot for icon before text
- * @slot icon-end - Slot for icon after text
+ * @slot - Slot for button title
+ * @slot (auto) - Place an rr-icon before or after the label to auto-detect position
  *
  * @fires click - When button is clicked (not fired when disabled)
  *
@@ -23,12 +20,13 @@
  */
 
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import './../../content/icon/icon.ts';
 
 type Variant = 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
+type IconPosition = 'start' | 'end' | 'both' | null;
 
 @customElement('rr-button')
 export class RRButton extends LitElement {
@@ -242,32 +240,26 @@ export class RRButton extends LitElement {
 		}
 
 		/* Slots */
-		::slotted([slot="icon-start"]),
-		::slotted([slot="icon-end"]) {
+		::slotted(rr-icon) {
 			flex-shrink: 0;
 		}
 		
-		:host([size="md"]) ::slotted([slot="icon-start"]),
-		:host([size="md"]) ::slotted([slot="icon-end"]) {
+		:host([size="md"]) ::slotted(rr-icon) {
 			width: var(--primitives-space-20);
 			height: var(--primitives-space-20);
 		}
 		
-		:host([size="sm"]) ::slotted([slot="icon-start"]),
-		:host([size="sm"]) ::slotted([slot="icon-end"]) {
+		:host([size="sm"]) ::slotted(rr-icon) {
 			width: var(--primitives-space-18);
 			height: var(--primitives-space-18);
 		}
 		
-		:host([size="xs"]) ::slotted([slot="icon-start"]),
-		:host([size="xs"]) ::slotted([slot="icon-end"]) {
+		:host([size="xs"]) ::slotted(rr-icon) {
 			width: var(--primitives-space-16);
 			height: var(--primitives-space-16);
 		}
 
 		.content {
-			/* Use display: contents to remove wrapper from layout flow */
-			/* This ensures text aligns directly with button's flex alignment */
 			display: contents;
 		}
 		
@@ -310,35 +302,79 @@ export class RRButton extends LitElement {
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';
 
-	@property({ type: Boolean, reflect: true, attribute: 'has-start-icon' })
-	hasStartIcon = false;
-
-	@property({ type: Boolean, reflect: true, attribute: 'has-end-icon' })
-	hasEndIcon = false;
-
 	@property({ type: Boolean, reflect: true, attribute: 'has-menu' })
 	hasMenu = false;
 
 	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
 	fullWidth = false;
 
+	@state()
+	private _iconPosition: IconPosition = null;
+
+	private _observer: MutationObserver | null = null;
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._observer = new MutationObserver(() => this._detectIconPosition());
+		this._observer.observe(this, { childList: true });
+		this._detectIconPosition();
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._observer?.disconnect();
+		this._observer = null;
+	}
+
+	private _detectIconPosition(): void {
+		const children = Array.from(this.children);
+		const icons = children.filter(el => el.tagName.toLowerCase() === 'rr-icon');
+
+		// Reset all icon slots first
+		icons.forEach(el => el.removeAttribute('slot'));
+
+		if (icons.length === 0) {
+			this._iconPosition = null;
+			return;
+		}
+
+		if (icons.length > 2) {
+			console.warn('<rr-button>: Too many rr-icon elements provided. Maximum is one before and one after the label. Extra icons will be ignored.');
+			// Trim to max 2 for further processing
+			icons.splice(2);
+		}
+
+		if (icons.length === 2) {
+			const first = children[0];
+			const last = children[children.length - 1];
+			const firstIsIcon = first.tagName.toLowerCase() === 'rr-icon';
+			const lastIsIcon = last.tagName.toLowerCase() === 'rr-icon';
+
+			if (!firstIsIcon || !lastIsIcon) {
+				console.warn('<rr-button>: Two rr-icon elements detected but they are not surrounding the label. Expected pattern: <rr-icon> label <rr-icon>. Falling back to using the first icon as a start icon.');
+				icons[0].slot = '__icon-start';
+				this._iconPosition = 'start';
+				return;
+			}
+
+			icons[0].slot = '__icon-start';
+			icons[1].slot = '__icon-end';
+			this._iconPosition = 'both';
+			return;
+		}
+
+		// Exactly one icon
+		const icon = icons[0];
+		const isFirst = children[0] === icon;
+		this._iconPosition = isFirst ? 'start' : 'end';
+		icon.slot = isFirst ? '__icon-start' : '__icon-end';
+	}
+
 	private _handleClick(e: MouseEvent): void {
 		if (this.disabled) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
-	}
-
-	private _shouldShowStartIcon(): boolean {
-		return this.hasStartIcon;
-	}
-
-	private _shouldShowEndIcon(): boolean {
-		return this.hasEndIcon;
-	}
-	
-	private _shouldShowPicker(): boolean {
-		return this.hasMenu;
 	}
 
 	override render() {
@@ -352,13 +388,17 @@ export class RRButton extends LitElement {
 				@click=${this._handleClick}
 			>
 				<span class="content" part="content">
-					${this._shouldShowStartIcon() ? html`<slot name="icon-start"></slot>` : ''}
+					${this._iconPosition === 'start' || this._iconPosition === 'both'
+						? html`<slot name="__icon-start"></slot>`
+						: ''}
 					<slot></slot>
-					${this._shouldShowEndIcon() ? html`<slot name="icon-end"></slot>` : ''}
-					${this._shouldShowPicker() ? html`
+					${this._iconPosition === 'end' || this._iconPosition === 'both'
+						? html`<slot name="__icon-end"></slot>`
+						: ''}
+					${this.hasMenu ? html`
 						<rr-icon
-							 class="picker-icon"
-							 name="chevron-down-small"
+							class="picker-icon"
+							name="chevron-down-small"
 						></rr-icon>
 					` : ''}
 				</span>

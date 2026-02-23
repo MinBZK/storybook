@@ -166,24 +166,27 @@ Sizes.parameters = {
 // Icon stories
 export const WithStartIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-button has-start-icon size="md">
+		<rr-button
+			size="md"
+		>
 			<rr-icon
 				name="download"
-				slot="icon-start"
 			></rr-icon>
 			Download
 		</rr-button>
-		<rr-button has-start-icon size="sm">
+		<rr-button
+			size="sm"
+		>
 			<rr-icon
 				name="download"
-				slot="icon-start"
 			></rr-icon>
 			Download
 		</rr-button>
-		<rr-button has-start-icon size="xs">
+		<rr-button
+			size="xs"
+		>
 			<rr-icon
 				name="download"
-				slot="icon-start"
 			></rr-icon>
 			Download
 		</rr-button>
@@ -203,32 +206,26 @@ export const WithEndIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-button
 			size="md"
-			has-end-icon
 		>
 			Volgende
 			<rr-icon
 				name="arrow-right"
-				slot="icon-end"
 			></rr-icon>
 		</rr-button>
 		<rr-button
 			size="sm"
-			has-end-icon
 		>
 			Volgende
 			<rr-icon
 				name="arrow-right"
-				slot="icon-end"
 			></rr-icon>
 		</rr-button>
 		<rr-button
 			size="xs"
-			has-end-icon
 		>
 			Volgende
 			<rr-icon
 				name="arrow-right"
-				slot="icon-end"
 			></rr-icon>
 		</rr-button>
 	</div>
@@ -246,48 +243,33 @@ WithEndIcon.parameters = {
 export const WithBothIcons = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-button
-			size="md"
-			has-start-icon
-			has-end-icon
-		>
+			size="md">
 			<rr-icon
 				name="download"
-				slot="icon-start"
 			></rr-icon>
 			Download bestand
 			<rr-icon
 				name="arrow-right"
-				slot="icon-end"
 			></rr-icon>
 		</rr-button>
 		<rr-button
-			size="sm"
-			has-start-icon
-			has-end-icon
-		>
+			size="sm">
 			<rr-icon
 				name="download"
-				slot="icon-start"
 			></rr-icon>
 			Download bestand
 			<rr-icon
 				name="arrow-right"
-				slot="icon-end"
 			></rr-icon>
 		</rr-button>
 		<rr-button
-			size="xs"
-			has-start-icon
-			has-end-icon
-		>
+			size="xs">
 			<rr-icon
 				name="download"
-				slot="icon-start"
 			></rr-icon>
 			Download bestand
 			<rr-icon
 				name="arrow-right"
-				slot="icon-end"
 			></rr-icon>
 		</rr-button>
 	</div>
