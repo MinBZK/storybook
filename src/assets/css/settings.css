@@ -857,10 +857,10 @@
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 }
 
-html[data-scheme="light"] {
+[data-scheme="light"] {
 	color-scheme: light;
 }
 
-html[data-scheme="dark"] {
+[data-scheme="dark"] {
 	color-scheme: dark;
 }
