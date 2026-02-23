@@ -856,3 +856,11 @@
 	
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 }
+
+html[data-scheme="light"] {
+	color-scheme: light; /* Storybook forced light */
+}
+
+html[data-scheme="dark"] {
+	color-scheme: dark; /* Storybook forced dark */
+}
