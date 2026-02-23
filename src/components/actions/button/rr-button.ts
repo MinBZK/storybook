@@ -277,8 +277,8 @@ export class RRButton extends LitElement {
 		}
 		
 		:host([size="md"]) .picker-icon {
-			width: 20px;
-			height: 20px;
+			width: var(--primitives-space-20);
+			height: var(--primitives-space-20);
 			margin-left: -2px;
 			margin-right: -2px;
 		}
