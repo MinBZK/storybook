@@ -21,7 +21,7 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import './../../content/icon/icon.ts';
+import './../../content/icon/rr-icon.ts';
 
 type Variant = 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type Size = 'xs' | 'sm' | 'md';
