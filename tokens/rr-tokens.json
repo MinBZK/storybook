@@ -5676,7 +5676,7 @@
           "name": "Style",
           "variables": [
             {
-              "name": "components/title-bar/sm/overline",
+              "name": "components/title-bar/sm/overline-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5692,7 +5692,7 @@
               }
             },
             {
-              "name": "components/title-bar/sm/subtitle",
+              "name": "components/title-bar/sm/subtitle-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5708,7 +5708,7 @@
               }
             },
             {
-              "name": "components/title-bar/md/overline",
+              "name": "components/title-bar/md/overline-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5724,7 +5724,7 @@
               }
             },
             {
-              "name": "components/title-bar/md/subtitle",
+              "name": "components/title-bar/md/subtitle-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5740,7 +5740,7 @@
               }
             },
             {
-              "name": "components/title-bar/lg/overline",
+              "name": "components/title-bar/lg/overline-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5756,7 +5756,7 @@
               }
             },
             {
-              "name": "components/title-bar/lg/subtitle",
+              "name": "components/title-bar/lg/subtitle-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5852,7 +5852,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/regular-loose",
+              "name": "primitives/font/body/lg/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5868,7 +5868,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/regular-snug",
+              "name": "primitives/font/body/lg/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5884,7 +5884,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/regular-tight",
+              "name": "primitives/font/body/lg/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5900,7 +5900,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/regular-flat",
+              "name": "primitives/font/body/lg/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5916,7 +5916,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/bold-loose",
+              "name": "primitives/font/body/lg/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5932,7 +5932,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/bold-snug",
+              "name": "primitives/font/body/lg/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5948,7 +5948,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/bold-tight",
+              "name": "primitives/font/body/lg/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5964,7 +5964,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/bold-flat",
+              "name": "primitives/font/body/lg/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5980,7 +5980,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/regular-loose",
+              "name": "primitives/font/body/md/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5996,7 +5996,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/regular-snug",
+              "name": "primitives/font/body/md/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6012,7 +6012,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/regular-tight",
+              "name": "primitives/font/body/md/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6028,7 +6028,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/regular-flat",
+              "name": "primitives/font/body/md/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6044,7 +6044,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/bold-loose",
+              "name": "primitives/font/body/md/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6060,7 +6060,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/bold-snug",
+              "name": "primitives/font/body/md/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6076,7 +6076,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/bold-tight",
+              "name": "primitives/font/body/md/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6092,7 +6092,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/bold-flat",
+              "name": "primitives/font/body/md/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6108,7 +6108,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/regular-loose",
+              "name": "primitives/font/body/sm/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6124,7 +6124,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/regular-snug",
+              "name": "primitives/font/body/sm/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6140,7 +6140,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/regular-tight",
+              "name": "primitives/font/body/sm/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6156,7 +6156,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/regular-flat",
+              "name": "primitives/font/body/sm/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6172,7 +6172,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/bold-loose",
+              "name": "primitives/font/body/sm/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6188,7 +6188,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/bold-snug",
+              "name": "primitives/font/body/sm/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6204,7 +6204,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/bold-tight",
+              "name": "primitives/font/body/sm/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6220,7 +6220,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/bold-flat",
+              "name": "primitives/font/body/sm/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6236,7 +6236,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/regular-loose",
+              "name": "primitives/font/body/xs/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6252,7 +6252,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/regular-snug",
+              "name": "primitives/font/body/xs/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6268,7 +6268,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/regular-tight",
+              "name": "primitives/font/body/xs/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6284,7 +6284,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/regular-flat",
+              "name": "primitives/font/body/xs/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6300,7 +6300,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/bold-loose",
+              "name": "primitives/font/body/xs/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6316,7 +6316,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/bold-snug",
+              "name": "primitives/font/body/xs/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6332,7 +6332,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/bold-tight",
+              "name": "primitives/font/body/xs/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6348,7 +6348,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/bold-flat",
+              "name": "primitives/font/body/xs/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6364,7 +6364,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/bold-flat",
+              "name": "primitives/font/body/xxs/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6380,7 +6380,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/regular-loose",
+              "name": "primitives/font/body/xxs/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6396,7 +6396,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/regular-snug",
+              "name": "primitives/font/body/xxs/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6412,7 +6412,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/regular-tight",
+              "name": "primitives/font/body/xxs/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6428,7 +6428,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/regular-flat",
+              "name": "primitives/font/body/xxs/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6444,7 +6444,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/bold-loose",
+              "name": "primitives/font/body/xxs/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6460,7 +6460,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/bold-snug",
+              "name": "primitives/font/body/xxs/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6476,7 +6476,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/bold-tight",
+              "name": "primitives/font/body/xxs/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6492,7 +6492,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-1",
+              "name": "primitives/font/display-1/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6508,7 +6508,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-2",
+              "name": "primitives/font/display-2/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6524,7 +6524,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-3",
+              "name": "primitives/font/display-3/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6540,7 +6540,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-4",
+              "name": "primitives/font/display-4/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6556,7 +6556,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-5",
+              "name": "primitives/font/display-5/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6572,7 +6572,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-6",
+              "name": "primitives/font/display-6/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6588,7 +6588,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-1",
+              "name": "primitives/font/display-1/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6604,7 +6604,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-2",
+              "name": "primitives/font/display-2/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6620,7 +6620,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-3",
+              "name": "primitives/font/display-3/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6636,7 +6636,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-4",
+              "name": "primitives/font/display-4/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6652,7 +6652,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-5",
+              "name": "primitives/font/display-5/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6668,7 +6668,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-6",
+              "name": "primitives/font/display-6/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6684,7 +6684,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-1",
+              "name": "primitives/font/display-1/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6700,7 +6700,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-2",
+              "name": "primitives/font/display-2/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6716,7 +6716,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-3",
+              "name": "primitives/font/display-3/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6732,7 +6732,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-4",
+              "name": "primitives/font/display-4/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6748,7 +6748,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-5",
+              "name": "primitives/font/display-5/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6764,7 +6764,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-6",
+              "name": "primitives/font/display-6/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6828,7 +6828,7 @@
               }
             },
             {
-              "name": "semantics/input-fields/sm/text",
+              "name": "semantics/input-fields/sm/text-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6844,7 +6844,7 @@
               }
             },
             {
-              "name": "semantics/input-fields/sm/mask",
+              "name": "semantics/input-fields/sm/mask-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6860,7 +6860,7 @@
               }
             },
             {
-              "name": "semantics/input-fields/md/text",
+              "name": "semantics/input-fields/md/text-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6876,7 +6876,7 @@
               }
             },
             {
-              "name": "semantics/input-fields/md/mask",
+              "name": "semantics/input-fields/md/mask-font",
               "type": "typography",
               "isAlias": false,
               "value": {

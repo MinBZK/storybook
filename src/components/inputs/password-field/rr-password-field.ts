@@ -70,7 +70,7 @@ export class RRPasswordField extends LitElement {
       border: none;
       background: transparent;
       padding: 0 var(--primitives-space-12);
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
       color: var(--semantics-content-color);
       outline: none;
       min-width: 0;

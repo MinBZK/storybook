@@ -731,10 +731,10 @@
 	--semantics-input-fields-is-read-only-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-input-fields-is-read-only-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 
-	--semantics-input-fields-sm-text: var(--primitives-font-body-sm-regular-flat);
-	--semantics-input-fields-sm-mask: 400 var(--primitives-font-size-90)/var(--primitives-line-height-flat) Verdana, system-ui;
-	--semantics-input-fields-md-text: var(--primitives-font-body-md-regular-flat);
-	--semantics-input-fields-md-mask: 400 var(--primitives-font-size-100)/var(--primitives-line-height-flat) Verdana, system-ui;
+	--semantics-input-fields-sm-text-font: var(--primitives-font-body-sm-regular-flat);
+	--semantics-input-fields-sm-mask-font: 400 var(--primitives-font-size-90)/var(--primitives-line-height-flat) Verdana, system-ui;
+	--semantics-input-fields-md-text-font: var(--primitives-font-body-md-regular-flat);
+	--semantics-input-fields-md-mask-font: 400 var(--primitives-font-size-100)/var(--primitives-line-height-flat) Verdana, system-ui;
 	
 	
 	--semantics-dividers-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
@@ -844,14 +844,14 @@
 	--components-page-fixed-area-tinted-background-gradient-color-3: rgba(245, 246, 249, 0);
 	
 	
-	--components-title-bar-sm-overline: var(--primitives-font-body-sm-regular-tight);
-	--components-title-bar-sm-subtitle: var(--primitives-font-body-md-regular-tight);
+	--components-title-bar-sm-overline-font: var(--primitives-font-body-sm-regular-tight);
+	--components-title-bar-sm-subtitle-font: var(--primitives-font-body-md-regular-tight);
 	
-	--components-title-bar-md-overline: var(--primitives-font-body-sm-regular-tight);
-	--components-title-bar-md-subtitle: var(--primitives-font-body-md-regular-tight);
+	--components-title-bar-md-overline-font: var(--primitives-font-body-sm-regular-tight);
+	--components-title-bar-md-subtitle-font: var(--primitives-font-body-md-regular-tight);
 	
-	--components-title-bar-lg-overline: var(--primitives-font-body-md-regular-tight);
-	--components-title-bar-lg-subtitle: var(--primitives-font-body-md-regular-tight);
+	--components-title-bar-lg-overline-font: var(--primitives-font-body-md-regular-tight);
+	--components-title-bar-lg-subtitle-font: var(--primitives-font-body-md-regular-tight);
 	
 	
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);

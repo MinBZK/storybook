@@ -72,7 +72,7 @@ export class RRComboBoxField extends LitElement {
       box-sizing: border-box;
 
       /* Typography */
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
       color: var(--semantics-content-color);
 
       /* Layout */

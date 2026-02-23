@@ -58,12 +58,12 @@ export class RRDropDownField extends LitElement {
 
     :host([size="md"]) .drop-down-field__value,
     :host(:not([size])) .drop-down-field__value {
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
     }
 
     :host([size="md"]) .drop-down-field__native,
     :host(:not([size])) .drop-down-field__native {
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
     }
 
     :host([size="md"]) .drop-down-field__picker-icon,

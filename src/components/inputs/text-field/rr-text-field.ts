@@ -95,7 +95,7 @@ export class RRTextField extends LitElement {
       box-sizing: border-box;
 
       /* Typography */
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
       color: var(--rr-text-field-text-color, var(--semantics-content-color));
 
       /* Layout - height accounts for container border (44px - 2*2px = 40px) */

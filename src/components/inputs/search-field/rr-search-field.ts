@@ -54,7 +54,7 @@ export class RRSearchField extends LitElement {
 
     :host([size="md"]) .search-field__native,
     :host(:not([size])) .search-field__native {
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
     }
 
     :host([size="md"]) .search-field__input-shade,
