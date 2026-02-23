@@ -65,7 +65,7 @@ export class RRRadioButtonField extends LitElement {
     }
 
     :host([disabled]) .radio-button-field__label {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
     }
 
     /* Accessibility: High Contrast Mode */

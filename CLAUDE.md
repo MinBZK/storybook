@@ -40,7 +40,7 @@ padding: 8px 8px 6px 8px;  /* NOT symmetric! */
 
 **Figma MCP Rate Limits:** Wait 60-120s on error. Workaround: open Figma in browser, click component, read Properties panel directly.
 
-**Disabled Opacity:** Always use `calc(var(--primitives-opacity-disabled) / 100)` - the token is a percentage.
+**Disabled Opacity:** Always use `var(--primitives-opacity-disabled)` - the token is a percentage.
 
 **Asymmetric Figma Layouts:** Figma uses padding + spacer elements that can create asymmetric distances (e.g., 48px left vs 40px right). Check both sides separately and use margin compensation if needed.
 

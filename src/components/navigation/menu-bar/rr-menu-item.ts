@@ -72,7 +72,7 @@ export class RRMenuItem extends LitElement {
       left: 0;
       right: 0;
       height: 0;
-      background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-color);
+      background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-background-color);
       transition: height 0.15s ease;
       pointer-events: none;
       z-index: 0;
@@ -89,7 +89,7 @@ export class RRMenuItem extends LitElement {
       left: 0;
       right: 0;
       height: 0;
-      background-color: var(--components-menu-bar-menu-item-is-selected-indicator-color);
+      background-color: var(--components-menu-bar-menu-item-is-selected-indicator-background-color);
       transition: height 0.15s ease;
       pointer-events: none;
       z-index: 1;
@@ -112,13 +112,13 @@ export class RRMenuItem extends LitElement {
 
     /* Focus state */
     .menu-item:focus-visible {
-      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-      outline-offset: 2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
     }
 
     /* Disabled state */
     :host([disabled]) .menu-item {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }

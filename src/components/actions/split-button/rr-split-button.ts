@@ -128,20 +128,24 @@ export class RRSplitButton extends LitElement {
 
     .split-button__button:hover,
     .split-button__dropdown:hover {
-      background-color: var(--semantics-buttons-neutral-transparent-is-hovered-background-color);
+      background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
     }
 
     .split-button__button:active,
     .split-button__dropdown:active {
-      background-color: var(--semantics-buttons-neutral-transparent-is-active-background-color);
+      background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
     }
 
     /* Focus state */
     .split-button__button:focus-visible,
     .split-button__dropdown:focus-visible {
-      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-      outline-offset: -2px;
-      z-index: 1;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+    }
+    
+    .split-button__button:focus:not(:focus-visible),
+    .split-button__dropdown:focus:not(:focus-visible) {
+      outline: none;
     }
 
     /* Divider */
@@ -162,7 +166,7 @@ export class RRSplitButton extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .split-button {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
     }
 
     :host([disabled]) .split-button__button,

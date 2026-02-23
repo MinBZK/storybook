@@ -105,13 +105,14 @@ const ACCESSIBILITY_CSS = `
    * FOCUS MANAGEMENT - Consistent focus indicators
    * WCAG 2.4.7 Focus Visible
    * ========================================================================== */
+  
+  :focus-visible {
+    box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+    outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+  }
+  
   :focus:not(:focus-visible) {
     outline: none;
-  }
-
-  :focus-visible {
-    outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-    outline-offset: 2px;
   }
 `;
 

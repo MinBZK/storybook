@@ -168,7 +168,6 @@ export class RR{PascalName} extends LitElement {
       padding: 0;
       background: none;
       font: inherit;
-      cursor: pointer;
 
       /* Layout */
       display: inline-flex;
@@ -209,7 +208,7 @@ export class RR{PascalName} extends LitElement {
 
     /* Disabled state - opacity is PERCENTAGE */
     :host([disabled]) .{name} {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }

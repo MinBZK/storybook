@@ -45,38 +45,38 @@ export class RRRichText extends LitElement {
 
     ::slotted(p) {
       margin: 0;
-      font: var(--semantics-content-body-sm-regular-snug);
+      font: var(--primitives-font-body-sm-regular-snug);
       color: var(--semantics-content-color);
     }
 
     ::slotted(h1) {
       margin: 0;
-      font: var(--semantics-content-sm-title-1);
+      font: var(--primitives-font-display-1-sm);
       color: var(--semantics-content-color);
     }
     ::slotted(h2) {
       margin: 0;
-      font: var(--semantics-content-sm-title-2);
+      font: var(--primitives-font-display-2-sm);
       color: var(--semantics-content-color);
     }
     ::slotted(h3) {
       margin: 0;
-      font: var(--semantics-content-sm-title-3);
+      font: var(--primitives-font-display-3-sm);
       color: var(--semantics-content-color);
     }
     ::slotted(h4) {
       margin: 0;
-      font: var(--semantics-content-sm-title-4);
+      font: var(--primitives-font-display-4-sm);
       color: var(--semantics-content-color);
     }
     ::slotted(h5) {
       margin: 0;
-      font: var(--semantics-content-sm-title-5);
+      font: var(--primitives-font-display-5-sm);
       color: var(--semantics-content-color);
     }
     ::slotted(h6) {
       margin: 0;
-      font: var(--semantics-content-sm-title-6);
+      font: var(--primitives-font-display-6-sm);
       color: var(--semantics-content-color);
     }
 
@@ -84,25 +84,25 @@ export class RRRichText extends LitElement {
 
     @container (min-width: 600px) {
       ::slotted(p) {
-        font: var(--semantics-content-body-md-regular-snug);
+        font: var(--primitives-font-body-md-regular-snug);
       }
       ::slotted(h1) {
-        font: var(--semantics-content-md-title-1);
+        font: var(--primitives-font-display-1-md);
       }
       ::slotted(h2) {
-        font: var(--semantics-content-md-title-2);
+        font: var(--primitives-font-display-2-md);
       }
       ::slotted(h3) {
-        font: var(--semantics-content-md-title-3);
+        font: var(--primitives-font-display-3-md);
       }
       ::slotted(h4) {
-        font: var(--semantics-content-md-title-4);
+        font: var(--primitives-font-display-4-md);
       }
       ::slotted(h5) {
-        font: var(--semantics-content-md-title-5);
+        font: var(--primitives-font-display-5-md);
       }
       ::slotted(h6) {
-        font: var(--semantics-content-md-title-6);
+        font: var(--primitives-font-display-6-md);
       }
     }
 
@@ -110,25 +110,25 @@ export class RRRichText extends LitElement {
 
     @container (min-width: 1024px) {
       ::slotted(p) {
-        font: var(--semantics-content-body-lg-regular-snug);
+        font: var(--primitives-font-body-lg-regular-snug);
       }
       ::slotted(h1) {
-        font: var(--semantics-content-lg-title-1);
+        font: var(--primitives-font-display-1-lg);
       }
       ::slotted(h2) {
-        font: var(--semantics-content-lg-title-2);
+        font: var(--primitives-font-display-2-lg);
       }
       ::slotted(h3) {
-        font: var(--semantics-content-lg-title-3);
+        font: var(--primitives-font-display-3-lg);
       }
       ::slotted(h4) {
-        font: var(--semantics-content-lg-title-4);
+        font: var(--primitives-font-display-4-lg);
       }
       ::slotted(h5) {
-        font: var(--semantics-content-lg-title-5);
+        font: var(--primitives-font-display-5-lg);
       }
       ::slotted(h6) {
-        font: var(--semantics-content-lg-title-6);
+        font: var(--primitives-font-display-6-lg);
       }
     }
   `;

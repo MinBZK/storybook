@@ -74,12 +74,12 @@ export class RRTextCell extends LitElement {
     /* Size: MD (default) */
     :host([size="md"]) .text-cell__content,
     :host(:not([size])) .text-cell__content {
-      font: var(--semantics-content-body-md-regular-tight);
+      font: var(--primitives-font-body-md-regular-tight);
     }
 
     /* Size: SM */
     :host([size="sm"]) .text-cell__content {
-      font: var(--semantics-content-body-sm-regular-tight);
+      font: var(--primitives-font-body-sm-regular-tight);
     }
 
     /* Horizontal alignment: right text */

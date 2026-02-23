@@ -107,12 +107,12 @@ npm run serve
 
 ### rr-button
 
-| Attribuut  | Type    | Default         | Beschrijving                                                                                |
-| ---------- | ------- | --------------- | ------------------------------------------------------------------------------------------- |
-| `variant`  | string  | `accent-filled` | `accent-filled`, `accent-outlined`, `accent-tinted`, `neutral-tinted`, `accent-transparent` |
-| `size`     | string  | `m`             | `xs`, `s`, `m`                                                                              |
-| `disabled` | boolean | `false`         | Disabled state                                                                              |
-| `type`     | string  | `button`        | `button`, `submit`, `reset`                                                                 |
+| Attribuut  | Type    | Default         | Beschrijving                                                               |
+| ---------- | ------- | --------------- | -------------------------------------------------------------------------- |
+| `variant`  | string  | `accent-filled` | `accent-filled`, `accent-outlined`, `neutral-tinted`, `accent-transparent` |
+| `size`     | string  | `m`             | `xs`, `s`, `m`                                                             |
+| `disabled` | boolean | `false`         | Disabled state                                                             |
+| `type`     | string  | `button`        | `button`, `submit`, `reset`                                                |
 
 ## Token Structuur
 

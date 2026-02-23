@@ -1,6 +1,5 @@
-import '../src/fonts/fonts.css';
-import '../dist/css/tokens.css';
-import '../dist/css/scheme-dark.css';
+import '../src/assets/css/fonts.css';
+import '../src/assets/css/settings.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 // Figma Testing Library for pixel-perfect comparison
@@ -8,63 +7,38 @@ import { defineCustomElements } from '@cianfrani/figma-testing-library/loader';
 
 // Initialize Figma Testing Library web components
 if (typeof window !== 'undefined') {
-  defineCustomElements(window);
+	defineCustomElements(window);
 }
 
 /** @type { import('@storybook/web-components-vite').Preview } */
 const preview = {
-  decorators: [
-    withThemeByDataAttribute({
-      themes: {
-        light: '',
-        dark: 'dark',
-      },
-      defaultTheme: 'light',
-      attributeName: 'data-scheme',
-    }),
-  ],
-  parameters: {
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
-      },
-    },
-    backgrounds: {
-      default: 'light',
-      values: [
-        { name: 'light', value: '#ffffff' },
-        { name: 'tinted', value: 'var(--semantics-views-tinted-background-color, #f1f5f9)' },
-        { name: 'dark', value: 'var(--primitives-color-accent-100, #154273)' },
-      ],
-    },
-    docs: {
-      toc: true,
-    },
-    options: {
-      storySort: {
-        method: 'alphabetical',
-        order: [
-          'Introduction',
-          'Components',
-          [
-            'Box',
-            'Button',
-            'Checkbox',
-            'Icon Button',
-            'Menu Bar',
-            'Radio Button',
-            'Switch',
-            'Toggle Button',
-            'Top Navigation Bar',
-            ['Docs', '*', 'Back Button', 'Logo', 'Utility Menu Bar'],
-            '*',
-          ],
-          '*',
-        ],
-      },
-    },
-  },
+	decorators: [
+		withThemeByDataAttribute({
+			themes: {
+				light: 'light',
+				dark: 'dark',
+			},
+			defaultTheme: 'light',
+			attributeName: 'data-scheme',
+		}),
+	],
+	parameters: {
+		controls: {
+			matchers: {
+				color: /(background|color)$/i,
+				date: /Date$/i,
+			},
+		},
+		backgrounds: { disable: true },
+		docs: {
+			toc: true,
+		},
+		options: {
+			storySort: {
+				method: 'alphabetical',
+			},
+		},
+	},
 };
 
 export default preview;

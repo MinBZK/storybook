@@ -317,7 +317,7 @@ export const FigmaComparison = () => html`
           background: #1e293b;
           --components-menu-bar-menu-item-color: #c0ccd8;
           --components-menu-bar-menu-item-is-selected-color: #7eb1e7;
-          --components-menu-bar-menu-item-is-selected-indicator-color: #7eb1e7;
+          --components-menu-bar-menu-item-is-selected-indicator-background-color: #7eb1e7;
           --_menu-bar-border: none;
         ">
           <rr-menu-bar>

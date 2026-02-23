@@ -138,8 +138,8 @@ export const FigmaComparison = () => html`
               <path d="M24 4C25.7902 4 27.5246 4.23848 29.1758 4.67969L28.6621 6.60938L28.6602 6.60742L28.1445 8.54102C26.8271 8.18892 25.4387 8 24 8C22.5613 8 21.1729 8.18892 19.8555 8.54102L18.8223 4.67969C20.4739 4.23816 22.2091 4 24 4Z" fill="#333A45"/>
             </svg>
           </div>
-          <div style="text-align: center; font: var(--semantics-content-body-md-bold-tight); color: var(--semantics-content-color);">Modal dialog</div>
-          <div style="text-align: center; font: var(--semantics-content-body-sm-regular-tight); color: var(--semantics-content-color);">Supporting text</div>
+          <div style="text-align: center; font: var(--primitives-font-body-md-bold-tight); color: var(--semantics-content-color);">Modal dialog</div>
+          <div style="text-align: center; font: var(--primitives-font-body-sm-regular-tight); color: var(--semantics-content-color);">Supporting text</div>
           <div style="display: flex; flex-direction: column; gap: var(--primitives-space-8); padding: var(--primitives-space-12) 44px 0;">
             <rr-button variant="accent-filled" style="display: block;">Button</rr-button>
             <rr-button variant="neutral-tinted" style="display: block;">Button</rr-button>

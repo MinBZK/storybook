@@ -37,8 +37,8 @@ export class RRPasswordField extends LitElement {
     }
 
     :host(.focus) {
-      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-      outline-offset: 2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
     }
 
     .password-field {
@@ -70,7 +70,7 @@ export class RRPasswordField extends LitElement {
       border: none;
       background: transparent;
       padding: 0 var(--primitives-space-12);
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
       color: var(--semantics-content-color);
       outline: none;
       min-width: 0;
@@ -118,8 +118,8 @@ export class RRPasswordField extends LitElement {
     }
 
     .password-field__toggle:focus-visible {
-      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-      outline-offset: -2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
     }
 
     .password-field__toggle-icon {
@@ -129,7 +129,7 @@ export class RRPasswordField extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .password-field {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       pointer-events: none;
     }
 

@@ -72,7 +72,7 @@ export class RRComboBoxField extends LitElement {
       box-sizing: border-box;
 
       /* Typography */
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
       color: var(--semantics-content-color);
 
       /* Layout */
@@ -126,13 +126,13 @@ export class RRComboBoxField extends LitElement {
 
     /* Focus state */
     .combo-box-field:focus-within {
-      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-      outline-offset: 2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
     }
 
     /* Disabled state */
     :host([disabled]) .combo-box-field {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
     }
 

@@ -58,12 +58,12 @@ export class RRDropDownField extends LitElement {
 
     :host([size="md"]) .drop-down-field__value,
     :host(:not([size])) .drop-down-field__value {
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
     }
 
     :host([size="md"]) .drop-down-field__native,
     :host(:not([size])) .drop-down-field__native {
-      font: var(--semantics-input-fields-md-text);
+      font: var(--semantics-input-fields-md-text-font);
     }
 
     :host([size="md"]) .drop-down-field__picker-icon,
@@ -184,13 +184,13 @@ export class RRDropDownField extends LitElement {
 
     /* Focus state */
     .drop-down-field:focus-within {
-      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-      outline-offset: 2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
     }
 
     /* Disabled state */
     :host([disabled]) .drop-down-field {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
     }
 

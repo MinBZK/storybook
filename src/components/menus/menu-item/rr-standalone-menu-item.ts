@@ -49,7 +49,7 @@ export class RRStandaloneMenuItem extends LitElement {
       cursor: pointer;
       border: none;
       background: transparent;
-      font: var(--semantics-content-body-md-regular-tight);
+      font: var(--primitives-font-body-md-regular-tight);
       color: var(--semantics-content-color);
       text-align: start;
       transition: background-color 0.15s ease, color 0.15s ease;
@@ -75,14 +75,13 @@ export class RRStandaloneMenuItem extends LitElement {
 
     /* Focus state */
     .menu-item:focus-visible {
-      outline: var(--semantics-focus-rings-center-thickness) solid
-        var(--semantics-focus-rings-center-color);
-      outline-offset: -2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
     }
 
     /* Disabled state */
     :host([disabled]) .menu-item {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }

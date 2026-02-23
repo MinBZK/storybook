@@ -73,17 +73,7 @@ box-sizing: content-box;
 
 **Symptoom:** Disabled state is volledig transparant of niet transparant genoeg
 **Root cause:** `--primitives-opacity-disabled` is een percentage (38), niet een decimaal (0.38)
-**Diagnostiek:**
-```css
-/* FOUT - resulteert in opacity: 38 (invalid) */
-opacity: var(--primitives-opacity-disabled);
-```
-**Fix:**
-```css
-/* GOED */
-opacity: calc(var(--primitives-opacity-disabled, 38) / 100);
-```
-**Preventie:** Opacity tokens ALTIJD delen door 100
+**Preventie:** Opacity tokens ALTIJD delen door 100. Dus sla bijvoorbeeld als token 0.38 in plaats van 38 op voor opacities.
 
 ---
 

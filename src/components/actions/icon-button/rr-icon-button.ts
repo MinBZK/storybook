@@ -2,7 +2,7 @@
  * RegelRecht Icon Button Component (Lit + TypeScript)
  *
  * @element rr-icon-button
- * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent'
+ * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent'
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
@@ -23,7 +23,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 type Size = 'xs' | 'sm' | 'md' | 'lg';
-type Variant = 'accent-filled' | 'accent-outlined' | 'accent-tinted' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
+type Variant = 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
 type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('rr-icon-button')
@@ -158,16 +158,6 @@ export class RRIconButton extends LitElement {
       --_bg-color: var(--primitives-color-accent-150);
     }
 
-    /* Variant: accent-tinted */
-    :host([variant='accent-tinted']) .icon-button {
-      --_bg-color: var(--semantics-buttons-accent-tinted-background-color);
-      --_text-color: var(--semantics-buttons-accent-tinted-content-color);
-    }
-
-    :host([variant='accent-tinted']) .icon-button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-accent-300);
-    }
-
     /* Variant: neutral-tinted */
     :host([variant='neutral-tinted']) .icon-button {
       --_bg-color: var(--semantics-buttons-neutral-tinted-background-color);
@@ -210,13 +200,17 @@ export class RRIconButton extends LitElement {
 
     /* Focus state */
     .icon-button:focus-visible {
-      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-      outline-offset: 2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+    }
+    
+    .icon-button:focus:not(:focus-visible) {
+      outline: none;
     }
 
     /* Disabled state */
     :host([disabled]) .icon-button {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }

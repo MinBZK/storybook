@@ -41,7 +41,7 @@ export class RRDescriptionCell extends LitElement {
     .description-cell__title-text {
       flex: 1;
       min-width: 0;
-      font: var(--semantics-content-body-sm-regular-flat);
+      font: var(--primitives-font-body-sm-regular-flat);
       color: var(--semantics-content-secondary-color);
       margin: 0;
     }
@@ -50,7 +50,7 @@ export class RRDescriptionCell extends LitElement {
       display: flex;
       flex-direction: column;
       align-self: stretch;
-      font: var(--semantics-content-body-md-regular-tight);
+      font: var(--primitives-font-body-md-regular-tight);
       color: var(--semantics-content-color);
     }
 

@@ -72,7 +72,7 @@
               }
             },
             {
-              "name": "components/menu-bar/menu-item/is-selected/indicator/color",
+              "name": "components/menu-bar/menu-item/is-selected/indicator/background-color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -90,7 +90,7 @@
               }
             },
             {
-              "name": "components/menu-bar/menu-item/is-hovered/indicator/color",
+              "name": "components/menu-bar/menu-item/is-hovered/indicator/background-color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -137,7 +137,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/750 (reference)"
               }
             },
             {
@@ -179,7 +179,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/750 (reference)"
               }
             },
             {
@@ -260,7 +260,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/750 (reference)"
               }
             },
             {
@@ -278,7 +278,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/750 (reference)"
               }
             },
             {
@@ -327,21 +327,21 @@
               }
             },
             {
-              "name": "components/toolbar/sm/gap",
-              "type": "number",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/space/6"
-              }
-            },
-            {
               "name": "components/grab-handle/background-color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
                 "name": "primitives/color/neutral/100"
+              }
+            },
+            {
+              "name": "components/toolbar/sm/gap",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/6"
               }
             },
             {
@@ -413,7 +413,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/750 (reference)"
               }
             },
             {
@@ -531,6 +531,15 @@
               }
             },
             {
+              "name": "semantics/buttons/neutral-tinted/content/secondary/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/650"
+              }
+            },
+            {
               "name": "semantics/buttons/neutral-tinted/is-hovered/background-color",
               "type": "color",
               "isAlias": true,
@@ -585,6 +594,42 @@
               }
             },
             {
+              "name": "semantics/buttons/neutral-tinted/is-selected/is-hovered/backround-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/800"
+              }
+            },
+            {
+              "name": "semantics/buttons/neutral-tinted/is-selected/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/0"
+              }
+            },
+            {
+              "name": "semantics/buttons/neutral-tinted/is-selected/is-active/backround-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/850"
+              }
+            },
+            {
+              "name": "semantics/buttons/neutral-tinted/is-selected/is-active/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/0"
+              }
+            },
+            {
               "name": "semantics/buttons/neutral-transparent/content/color",
               "type": "color",
               "isAlias": true,
@@ -594,57 +639,21 @@
               }
             },
             {
+              "name": "semantics/buttons/neutral-transparent/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/950"
+              }
+            },
+            {
               "name": "semantics/buttons/neutral-transparent/is-active/content/color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
                 "name": "primitives/color/neutral/1000"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-hovered/background-color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/neutral/150"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-hovered/content/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/neutral/1000"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-active/background-color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/neutral/200"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-selected/backround-color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/accent/750 (reference)"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-selected/content/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/neutral/0"
               }
             },
             {
@@ -666,15 +675,6 @@
               }
             },
             {
-              "name": "semantics/buttons/accent-filled/is-hovered/content/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/neutral/0"
-              }
-            },
-            {
               "name": "semantics/buttons/accent-filled/is-hovered/background-color",
               "type": "color",
               "isAlias": true,
@@ -684,39 +684,30 @@
               }
             },
             {
-              "name": "semantics/buttons/accent-tinted/content/color",
+              "name": "semantics/buttons/accent-filled/is-hovered/content/color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/750 (reference)"
+                "name": "primitives/color/neutral/0"
               }
             },
             {
-              "name": "semantics/buttons/accent-tinted/background-color",
+              "name": "semantics/buttons/accent-filled/is-active/background-color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/100"
+                "name": "primitives/color/accent/850"
               }
             },
             {
-              "name": "semantics/buttons/accent-tinted/is-hovered/content/color",
+              "name": "semantics/buttons/accent-filled/is-active/content/color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/750 (reference)"
-              }
-            },
-            {
-              "name": "semantics/buttons/accent-tinted/is-hovered/background-color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/accent/150"
+                "name": "primitives/color/neutral/0"
               }
             },
             {
@@ -726,6 +717,42 @@
               "value": {
                 "collection": "Themes",
                 "name": "primitives/color/accent/750 (reference)"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/is-hovered/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/800"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/800"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/is-active/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/850"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/is-active/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/850"
               }
             },
             {
@@ -740,8 +767,11 @@
             {
               "name": "semantics/buttons/accent-outlined/border-thickness",
               "type": "number",
-              "isAlias": false,
-              "value": 2
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/2"
+              }
             },
             {
               "name": "semantics/buttons/accent-transparent/content/color",
@@ -753,12 +783,66 @@
               }
             },
             {
+              "name": "semantics/buttons/accent-transparent/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/800"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-transparent/is-active/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/850"
+              }
+            },
+            {
               "name": "semantics/buttons/danger-tinted/content/color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/danger/600"
+                "name": "primitives/color/danger/650"
+              }
+            },
+            {
+              "name": "semantics/buttons/danger-tinted/is-hovered/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/danger/150"
+              }
+            },
+            {
+              "name": "semantics/buttons/danger-tinted/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/danger/700"
+              }
+            },
+            {
+              "name": "semantics/buttons/danger-tinted/is-active/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/danger/200"
+              }
+            },
+            {
+              "name": "semantics/buttons/danger-tinted/is-active/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/danger/750"
               }
             },
             {
@@ -987,7 +1071,7 @@
               }
             },
             {
-              "name": "semantics/focus-rings/inner/color",
+              "name": "semantics/focus-ring/edge/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -996,16 +1080,16 @@
               }
             },
             {
-              "name": "semantics/focus-rings/inner/thickness",
+              "name": "semantics/focus-ring/edge/thickness",
               "type": "number",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/space/2"
+                "name": "primitives/space/6"
               }
             },
             {
-              "name": "semantics/focus-rings/center/color",
+              "name": "semantics/focus-ring/center/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -1014,7 +1098,7 @@
               }
             },
             {
-              "name": "semantics/focus-rings/center/thickness",
+              "name": "semantics/focus-ring/center/thickness",
               "type": "number",
               "isAlias": true,
               "value": {
@@ -1032,7 +1116,7 @@
               "name": "primitives/color/neutral/25",
               "type": "color",
               "isAlias": false,
-              "value": "#F5F6F9"
+              "value": "#F4F6F9"
             },
             {
               "name": "primitives/color/neutral/50",
@@ -1044,13 +1128,13 @@
               "name": "primitives/color/neutral/75",
               "type": "color",
               "isAlias": false,
-              "value": "#E2E6EB"
+              "value": "#E1E6EB"
             },
             {
               "name": "primitives/color/neutral/100",
               "type": "color",
               "isAlias": false,
-              "value": "#D9DEE4"
+              "value": "#D8DEE5"
             },
             {
               "name": "primitives/font-family/body",
@@ -1062,7 +1146,7 @@
               "name": "primitives/color/neutral/150",
               "type": "color",
               "isAlias": false,
-              "value": "#C9CED8"
+              "value": "#C7CFD8"
             },
             {
               "name": "primitives/font-family/body-fallback",
@@ -1110,97 +1194,97 @@
               "name": "primitives/color/neutral/200",
               "type": "color",
               "isAlias": false,
-              "value": "#B8C0CB"
+              "value": "#B7C0CB"
             },
             {
               "name": "primitives/color/neutral/250",
               "type": "color",
               "isAlias": false,
-              "value": "#A9B2C0"
+              "value": "#A7B2C0"
             },
             {
               "name": "primitives/color/neutral/300",
               "type": "color",
               "isAlias": false,
-              "value": "#9BA5B5"
+              "value": "#99A5B5"
             },
             {
               "name": "primitives/color/neutral/350",
               "type": "color",
               "isAlias": false,
-              "value": "#8D98AA"
+              "value": "#8B99AA"
             },
             {
               "name": "primitives/color/neutral/400",
               "type": "color",
               "isAlias": false,
-              "value": "#808DA0"
+              "value": "#7E8DA0"
             },
             {
               "name": "primitives/color/neutral/450",
               "type": "color",
               "isAlias": false,
-              "value": "#738197"
+              "value": "#718296"
             },
             {
               "name": "primitives/color/neutral/500",
               "type": "color",
               "isAlias": false,
-              "value": "#67778D"
+              "value": "#65778D"
             },
             {
               "name": "primitives/color/neutral/550",
               "type": "color",
               "isAlias": false,
-              "value": "#5D6C81"
+              "value": "#5D6C80"
             },
             {
               "name": "primitives/color/neutral/600",
               "type": "color",
               "isAlias": false,
-              "value": "#556275"
+              "value": "#546273"
             },
             {
               "name": "primitives/color/neutral/650",
               "type": "color",
               "isAlias": false,
-              "value": "#4C5869"
+              "value": "#4C5867"
             },
             {
               "name": "primitives/color/neutral/700",
               "type": "color",
               "isAlias": false,
-              "value": "#444E5D"
+              "value": "#444E5B"
             },
             {
               "name": "primitives/color/neutral/750",
               "type": "color",
               "isAlias": false,
-              "value": "#3B4451"
+              "value": "#3B4450"
             },
             {
               "name": "primitives/color/neutral/800",
               "type": "color",
               "isAlias": false,
-              "value": "#333A45"
+              "value": "#333B44"
             },
             {
               "name": "primitives/color/neutral/850",
               "type": "color",
               "isAlias": false,
-              "value": "#2A3039"
+              "value": "#293038"
             },
             {
               "name": "primitives/color/neutral/900",
               "type": "color",
               "isAlias": false,
-              "value": "#20252B"
+              "value": "#1F252B"
             },
             {
               "name": "primitives/color/neutral/950",
               "type": "color",
               "isAlias": false,
-              "value": "#14171A"
+              "value": "#13171B"
             },
             {
               "name": "primitives/color/neutral/1000",
@@ -1218,73 +1302,67 @@
               "name": "primitives/color/accent/25",
               "type": "color",
               "isAlias": false,
-              "value": "#F3F6FF"
+              "value": "#F0F7FF"
             },
             {
               "name": "primitives/color/accent/50",
               "type": "color",
               "isAlias": false,
-              "value": "#E7EEFF"
+              "value": "#E2EFFF"
             },
             {
               "name": "primitives/color/accent/75",
               "type": "color",
               "isAlias": false,
-              "value": "#DBE5FF"
+              "value": "#D4E7FF"
             },
             {
               "name": "primitives/color/accent/100",
               "type": "color",
               "isAlias": false,
-              "value": "#CFDDFF"
+              "value": "#C6E0FF"
             },
             {
               "name": "primitives/color/accent/150",
               "type": "color",
               "isAlias": false,
-              "value": "#B8CEFF"
+              "value": "#ABD1FF"
             },
             {
               "name": "primitives/color/accent/200",
               "type": "color",
               "isAlias": false,
-              "value": "#A2C0FB"
+              "value": "#93C3FC"
             },
             {
               "name": "primitives/color/accent/250",
               "type": "color",
               "isAlias": false,
-              "value": "#94B2EC"
+              "value": "#85B5EE"
             },
             {
               "name": "primitives/color/accent/300",
               "type": "color",
               "isAlias": false,
-              "value": "#86A5DE"
+              "value": "#78A7E0"
             },
             {
               "name": "primitives/color/accent/350",
               "type": "color",
               "isAlias": false,
-              "value": "#7998D1"
+              "value": "#6C9BD2"
             },
             {
               "name": "primitives/color/accent/400",
               "type": "color",
               "isAlias": false,
-              "value": "#6D8CC4"
+              "value": "#608FC5"
             },
             {
               "name": "primitives/color/accent/450",
               "type": "color",
               "isAlias": false,
-              "value": "#6181B8"
-            },
-            {
-              "name": "primitives/color/accent/500",
-              "type": "color",
-              "isAlias": false,
-              "value": "#5576AC"
+              "value": "#5583B9"
             },
             {
               "name": "primitives/color/success/0",
@@ -1293,94 +1371,94 @@
               "value": "#FFFFFF"
             },
             {
+              "name": "primitives/color/accent/500",
+              "type": "color",
+              "isAlias": false,
+              "value": "#4B78AD"
+            },
+            {
               "name": "primitives/color/success/25",
               "type": "color",
               "isAlias": false,
-              "value": "#E3FFCE"
+              "value": "#E0FFD6"
             },
             {
               "name": "primitives/color/success/50",
               "type": "color",
               "isAlias": false,
-              "value": "#C1FF99"
+              "value": "#BDFFA7"
             },
             {
               "name": "primitives/color/success/75",
               "type": "color",
               "isAlias": false,
-              "value": "#ADFA7F"
+              "value": "#A8FA8B"
             },
             {
               "name": "primitives/color/success/100",
               "type": "color",
               "isAlias": false,
-              "value": "#A5F178"
+              "value": "#A0F283"
             },
             {
               "name": "primitives/color/success/150",
               "type": "color",
               "isAlias": false,
-              "value": "#95E169"
-            },
-            {
-              "name": "primitives/color/success/200",
-              "type": "color",
-              "isAlias": false,
-              "value": "#87D25B"
+              "value": "#91E273"
             },
             {
               "name": "primitives/color/accent/550",
               "type": "color",
               "isAlias": false,
-              "value": "#4A6CA1"
+              "value": "#406DA2"
             },
             {
-              "name": "primitives/color/accent/600",
+              "name": "primitives/color/success/200",
               "type": "color",
               "isAlias": false,
-              "value": "#3F6296"
+              "value": "#83D365"
             },
             {
               "name": "primitives/color/success/250",
               "type": "color",
               "isAlias": false,
-              "value": "#78C44E"
+              "value": "#75C456"
+            },
+            {
+              "name": "primitives/color/accent/600",
+              "type": "color",
+              "isAlias": false,
+              "value": "#366396"
             },
             {
               "name": "primitives/color/success/300",
               "type": "color",
               "isAlias": false,
-              "value": "#6BB641"
-            },
-            {
-              "name": "primitives/color/success/350",
-              "type": "color",
-              "isAlias": false,
-              "value": "#5EAA34"
+              "value": "#68B749"
             },
             {
               "name": "primitives/color/accent/650",
               "type": "color",
               "isAlias": false,
-              "value": "#33588B"
+              "value": "#2C598C"
+            },
+            {
+              "name": "primitives/color/success/350",
+              "type": "color",
+              "isAlias": false,
+              "value": "#5BAA3B"
             },
             {
               "name": "primitives/color/success/400",
               "type": "color",
               "isAlias": false,
-              "value": "#519D28"
+              "value": "#4F9D2D"
             },
             {
               "name": "primitives/color/success/450",
               "type": "color",
               "isAlias": false,
-              "value": "#44911A"
-            },
-            {
-              "name": "primitives/color/accent/700",
-              "type": "color",
-              "isAlias": false,
-              "value": "#274E81"
+              "value": "#44911E"
             },
             {
               "name": "primitives/color/success/500",
@@ -1389,22 +1467,28 @@
               "value": "#38860A"
             },
             {
+              "name": "primitives/color/accent/700",
+              "type": "color",
+              "isAlias": false,
+              "value": "#224F81"
+            },
+            {
               "name": "primitives/color/success/550",
               "type": "color",
               "isAlias": false,
-              "value": "#2F7B00"
+              "value": "#307A00"
             },
             {
               "name": "primitives/color/success/600",
               "type": "color",
               "isAlias": false,
-              "value": "#296F00"
+              "value": "#2B6F00"
             },
             {
               "name": "primitives/color/success/650",
               "type": "color",
               "isAlias": false,
-              "value": "#256400"
+              "value": "#266400"
             },
             {
               "name": "primitives/color/warning/0",
@@ -1419,16 +1503,16 @@
               "value": "#FFF4EE"
             },
             {
-              "name": "primitives/color/success/700",
-              "type": "color",
-              "isAlias": false,
-              "value": "#205900"
-            },
-            {
               "name": "primitives/color/warning/50",
               "type": "color",
               "isAlias": false,
               "value": "#FFEADD"
+            },
+            {
+              "name": "primitives/color/success/700",
+              "type": "color",
+              "isAlias": false,
+              "value": "#215900"
             },
             {
               "name": "primitives/color/warning/75",
@@ -1440,31 +1524,25 @@
               "name": "primitives/color/warning/100",
               "type": "color",
               "isAlias": false,
-              "value": "#FFD5BA"
+              "value": "#FFD5BC"
             },
             {
               "name": "primitives/color/warning/150",
               "type": "color",
               "isAlias": false,
-              "value": "#FFC197"
+              "value": "#FFC09A"
             },
             {
               "name": "primitives/color/success/750",
               "type": "color",
               "isAlias": false,
-              "value": "#1B4E00"
+              "value": "#1C4E00"
             },
             {
               "name": "primitives/color/warning/200",
               "type": "color",
               "isAlias": false,
-              "value": "#FFAC72"
-            },
-            {
-              "name": "primitives/color/warning/250",
-              "type": "color",
-              "isAlias": false,
-              "value": "#FF9849"
+              "value": "#FFAC77"
             },
             {
               "name": "primitives/color/success/800",
@@ -1473,34 +1551,40 @@
               "value": "#174300"
             },
             {
+              "name": "primitives/color/warning/250",
+              "type": "color",
+              "isAlias": false,
+              "value": "#FF9750"
+            },
+            {
               "name": "primitives/color/success/850",
               "type": "color",
               "isAlias": false,
-              "value": "#153700"
+              "value": "#123700"
             },
             {
               "name": "primitives/color/success/900",
               "type": "color",
               "isAlias": false,
-              "value": "#132A00"
+              "value": "#0C2B00"
             },
             {
               "name": "primitives/color/warning/300",
               "type": "color",
               "isAlias": false,
-              "value": "#FA8521"
-            },
-            {
-              "name": "primitives/color/warning/350",
-              "type": "color",
-              "isAlias": false,
-              "value": "#EB7810"
+              "value": "#F9852D"
             },
             {
               "name": "primitives/color/success/950",
               "type": "color",
               "isAlias": false,
-              "value": "#0E1A00"
+              "value": "#061B00"
+            },
+            {
+              "name": "primitives/color/warning/350",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EA7918"
             },
             {
               "name": "primitives/color/warning/400",
@@ -1554,31 +1638,31 @@
               "name": "primitives/color/warning/750",
               "type": "color",
               "isAlias": false,
-              "value": "#6E3400"
+              "value": "#6E3300"
             },
             {
               "name": "primitives/color/warning/800",
               "type": "color",
               "isAlias": false,
-              "value": "#5E2C00"
+              "value": "#5F2B00"
             },
             {
               "name": "primitives/color/warning/850",
               "type": "color",
               "isAlias": false,
-              "value": "#4D2500"
+              "value": "#4F2300"
             },
             {
               "name": "primitives/color/warning/900",
               "type": "color",
               "isAlias": false,
-              "value": "#3B1D00"
+              "value": "#3E1A00"
             },
             {
               "name": "primitives/color/warning/950",
               "type": "color",
               "isAlias": false,
-              "value": "#241300"
+              "value": "#290F00"
             },
             {
               "name": "primitives/color/warning/1000",
@@ -1596,7 +1680,7 @@
               "name": "primitives/color/danger/25",
               "type": "color",
               "isAlias": false,
-              "value": "#FFF4F1"
+              "value": "#FFF4F2"
             },
             {
               "name": "primitives/color/highlight/0",
@@ -1608,37 +1692,37 @@
               "name": "primitives/color/highlight/25",
               "type": "color",
               "isAlias": false,
-              "value": "#FFF5E9"
+              "value": "#FFF5E6"
             },
             {
               "name": "primitives/color/highlight/50",
               "type": "color",
               "isAlias": false,
-              "value": "#FFEBD1"
+              "value": "#FFEBCC"
             },
             {
               "name": "primitives/color/highlight/75",
               "type": "color",
               "isAlias": false,
-              "value": "#FFE1B9"
+              "value": "#FFE1B3"
             },
             {
               "name": "primitives/color/highlight/100",
               "type": "color",
               "isAlias": false,
-              "value": "#FFD79F"
+              "value": "#FFD898"
             },
             {
               "name": "primitives/color/highlight/150",
               "type": "color",
               "isAlias": false,
-              "value": "#FFC460"
+              "value": "#FFC45D"
             },
             {
               "name": "primitives/color/highlight/200",
               "type": "color",
               "isAlias": false,
-              "value": "#FAB207"
+              "value": "#FAB200"
             },
             {
               "name": "primitives/color/highlight/250",
@@ -1716,19 +1800,19 @@
               "name": "primitives/color/highlight/850",
               "type": "color",
               "isAlias": false,
-              "value": "#412C00"
+              "value": "#412B00"
             },
             {
               "name": "primitives/color/highlight/900",
               "type": "color",
               "isAlias": false,
-              "value": "#322100"
+              "value": "#332100"
             },
             {
               "name": "primitives/color/highlight/950",
               "type": "color",
               "isAlias": false,
-              "value": "#1F1500"
+              "value": "#211400"
             },
             {
               "name": "primitives/color/highlight/1000",
@@ -1746,121 +1830,121 @@
               "name": "primitives/color/danger/50",
               "type": "color",
               "isAlias": false,
-              "value": "#FFE9E4"
+              "value": "#FFE9E5"
             },
             {
               "name": "primitives/color/danger/75",
               "type": "color",
               "isAlias": false,
-              "value": "#FFDED7"
+              "value": "#FFDED8"
             },
             {
               "name": "primitives/color/danger/100",
               "type": "color",
               "isAlias": false,
-              "value": "#FFD4CA"
+              "value": "#FFD3CC"
             },
             {
               "name": "primitives/color/danger/150",
               "type": "color",
               "isAlias": false,
-              "value": "#FFBFB0"
+              "value": "#FFBEB3"
             },
             {
               "name": "primitives/color/danger/200",
               "type": "color",
               "isAlias": false,
-              "value": "#FFAA97"
+              "value": "#FFA99B"
             },
             {
               "name": "primitives/color/danger/250",
               "type": "color",
               "isAlias": false,
-              "value": "#FF947E"
+              "value": "#FF9484"
             },
             {
               "name": "primitives/color/danger/300",
               "type": "color",
               "isAlias": false,
-              "value": "#FF7E65"
+              "value": "#FF7D6C"
             },
             {
               "name": "primitives/color/danger/350",
               "type": "color",
               "isAlias": false,
-              "value": "#FF654C"
+              "value": "#FF6553"
             },
             {
               "name": "primitives/color/danger/400",
               "type": "color",
               "isAlias": false,
-              "value": "#F94F38"
+              "value": "#F8503F"
             },
             {
               "name": "primitives/color/danger/450",
               "type": "color",
               "isAlias": false,
-              "value": "#EB412E"
+              "value": "#EA4233"
             },
             {
               "name": "primitives/color/danger/500",
               "type": "color",
               "isAlias": false,
-              "value": "#DD3424"
+              "value": "#DD3426"
             },
             {
               "name": "primitives/color/danger/550",
               "type": "color",
               "isAlias": false,
-              "value": "#CF241A"
+              "value": "#D02418"
             },
             {
               "name": "primitives/color/danger/600",
               "type": "color",
               "isAlias": false,
-              "value": "#C21110"
+              "value": "#C30E05"
             },
             {
               "name": "primitives/color/danger/650",
               "type": "color",
               "isAlias": false,
-              "value": "#B20009"
+              "value": "#B20400"
             },
             {
               "name": "primitives/color/danger/700",
               "type": "color",
               "isAlias": false,
-              "value": "#A00007"
+              "value": "#9F0400"
             },
             {
               "name": "primitives/color/danger/750",
               "type": "color",
               "isAlias": false,
-              "value": "#8D0004"
+              "value": "#8D0300"
             },
             {
               "name": "primitives/color/danger/800",
               "type": "color",
               "isAlias": false,
-              "value": "#7B0000"
+              "value": "#7A0200"
             },
             {
               "name": "primitives/color/danger/850",
               "type": "color",
               "isAlias": false,
-              "value": "#640800"
+              "value": "#670100"
             },
             {
               "name": "primitives/color/danger/900",
               "type": "color",
               "isAlias": false,
-              "value": "#4B0D00"
+              "value": "#510100"
             },
             {
               "name": "primitives/color/danger/950",
               "type": "color",
               "isAlias": false,
-              "value": "#2C0D00"
+              "value": "#370000"
             },
             {
               "name": "primitives/color/danger/1000",
@@ -2682,49 +2766,49 @@
               "name": "components/page/fixed-area/tinted/background-gradient/color-1",
               "type": "color",
               "isAlias": false,
-              "value": "#F5F6F9F2"
+              "value": "#F4F6F9F2"
             },
             {
               "name": "components/page/fixed-area/tinted/background-gradient/color-2",
               "type": "color",
               "isAlias": false,
-              "value": "#F5F6F999"
+              "value": "#F4F6F999"
             },
             {
               "name": "components/page/fixed-area/tinted/background-gradient/color-3",
               "type": "color",
               "isAlias": false,
-              "value": "#F5F6F900"
+              "value": "#F4F6F900"
             },
             {
               "name": "primitives/color/accent/750 (reference)",
               "type": "color",
               "isAlias": false,
-              "value": "#194476"
+              "value": "#184576"
             },
             {
               "name": "primitives/color/accent/800",
               "type": "color",
               "isAlias": false,
-              "value": "#053B6B"
+              "value": "#0C3A6B"
             },
             {
               "name": "primitives/color/accent/850",
               "type": "color",
               "isAlias": false,
-              "value": "#00305B"
+              "value": "#00305F"
             },
             {
               "name": "primitives/color/accent/900",
               "type": "color",
               "isAlias": false,
-              "value": "#002547"
+              "value": "#00244B"
             },
             {
               "name": "primitives/color/accent/950",
               "type": "color",
               "isAlias": false,
-              "value": "#001730"
+              "value": "#001632"
             },
             {
               "name": "primitives/color/accent/1000",
@@ -2748,24 +2832,6 @@
               "value": {
                 "collection": "Themes",
                 "name": "primitives/corner-radius/md"
-              }
-            },
-            {
-              "name": "semantics/focus-rings/outer/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "semantics/surfaces/background-color"
-              }
-            },
-            {
-              "name": "semantics/focus-rings/outer/thickness",
-              "type": "number",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/space/6"
               }
             }
           ]
@@ -2806,7 +2872,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/650"
               }
             },
             {
@@ -2824,7 +2890,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/750 (reference)"
+                "name": "primitives/color/accent/650"
               }
             },
             {
@@ -2833,16 +2899,16 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/750 (reference)"
+                "name": "primitives/color/accent/650"
               }
             },
             {
-              "name": "components/menu-bar/menu-item/is-selected/indicator/color",
+              "name": "components/menu-bar/menu-item/is-selected/indicator/background-color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/750 (reference)"
+                "name": "primitives/color/accent/650"
               }
             },
             {
@@ -2855,7 +2921,7 @@
               }
             },
             {
-              "name": "components/menu-bar/menu-item/is-hovered/indicator/color",
+              "name": "components/menu-bar/menu-item/is-hovered/indicator/background-color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -2902,7 +2968,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/650"
               }
             },
             {
@@ -2944,7 +3010,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/650"
               }
             },
             {
@@ -3025,7 +3091,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/650"
               }
             },
             {
@@ -3043,7 +3109,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/650"
               }
             },
             {
@@ -3092,21 +3158,21 @@
               }
             },
             {
-              "name": "components/toolbar/sm/gap",
-              "type": "number",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/space/6"
-              }
-            },
-            {
               "name": "components/grab-handle/background-color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
                 "name": "primitives/color/neutral/200"
+              }
+            },
+            {
+              "name": "components/toolbar/sm/gap",
+              "type": "number",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/6"
               }
             },
             {
@@ -3178,7 +3244,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/800"
+                "name": "primitives/color/accent/650"
               }
             },
             {
@@ -3241,14 +3307,14 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/neutral/400"
+                "name": "primitives/color/neutral/350"
               }
             },
             {
               "name": "semantics/buttons/neutral-tinted/end-fade/start-color",
               "type": "color",
               "isAlias": false,
-              "value": "#3A445300"
+              "value": "#333B4400"
             },
             {
               "name": "semantics/buttons/neutral-tinted/end-fade/end-color",
@@ -3283,7 +3349,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/neutral/250"
+                "name": "primitives/color/neutral/200"
               }
             },
             {
@@ -3296,12 +3362,21 @@
               }
             },
             {
+              "name": "semantics/buttons/neutral-tinted/content/secondary/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/750"
+              }
+            },
+            {
               "name": "semantics/buttons/neutral-tinted/is-hovered/background-color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/neutral/300"
+                "name": "primitives/color/neutral/250"
               }
             },
             {
@@ -3328,7 +3403,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/neutral/350"
+                "name": "primitives/color/neutral/300"
               }
             },
             {
@@ -3337,11 +3412,47 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/600"
               }
             },
             {
               "name": "semantics/buttons/neutral-tinted/is-selected/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/0"
+              }
+            },
+            {
+              "name": "semantics/buttons/neutral-tinted/is-selected/is-hovered/backround-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/650"
+              }
+            },
+            {
+              "name": "semantics/buttons/neutral-tinted/is-selected/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/0"
+              }
+            },
+            {
+              "name": "semantics/buttons/neutral-tinted/is-selected/is-active/backround-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/700"
+              }
+            },
+            {
+              "name": "semantics/buttons/neutral-tinted/is-selected/is-active/content/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -3359,57 +3470,21 @@
               }
             },
             {
+              "name": "semantics/buttons/neutral-transparent/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/neutral/950"
+              }
+            },
+            {
               "name": "semantics/buttons/neutral-transparent/is-active/content/color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
                 "name": "primitives/color/neutral/1000"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-hovered/background-color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/neutral/300"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-hovered/content/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/neutral/1000"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-active/background-color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/neutral/350"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-selected/backround-color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/accent/700"
-              }
-            },
-            {
-              "name": "semantics/buttons/neutral-transparent/is-selected/content/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/neutral/0"
               }
             },
             {
@@ -3427,7 +3502,16 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/600"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-filled/is-hovered/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/650"
               }
             },
             {
@@ -3440,16 +3524,7 @@
               }
             },
             {
-              "name": "semantics/buttons/accent-filled/is-hovered/background-color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/accent/750 (reference)"
-              }
-            },
-            {
-              "name": "semantics/buttons/accent-tinted/content/color",
+              "name": "semantics/buttons/accent-filled/is-active/background-color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -3458,34 +3533,52 @@
               }
             },
             {
-              "name": "semantics/buttons/accent-tinted/background-color",
+              "name": "semantics/buttons/accent-filled/is-active/content/color",
               "type": "color",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/100"
-              }
-            },
-            {
-              "name": "semantics/buttons/accent-tinted/is-hovered/content/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/accent/700"
-              }
-            },
-            {
-              "name": "semantics/buttons/accent-tinted/is-hovered/background-color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/color/accent/150"
+                "name": "primitives/color/neutral/0"
               }
             },
             {
               "name": "semantics/buttons/accent-outlined/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/600"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/is-hovered/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/650"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/650"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/is-active/border-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/700"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-outlined/is-active/content/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -3499,17 +3592,38 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/accent/700"
+                "name": "primitives/color/accent/600"
               }
             },
             {
               "name": "semantics/buttons/accent-outlined/border-thickness",
               "type": "number",
-              "isAlias": false,
-              "value": 2
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/space/2"
+              }
             },
             {
               "name": "semantics/buttons/accent-transparent/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/600"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-transparent/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/accent/650"
+              }
+            },
+            {
+              "name": "semantics/buttons/accent-transparent/is-active/content/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -3523,7 +3637,43 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
+                "name": "primitives/color/danger/700"
+              }
+            },
+            {
+              "name": "semantics/buttons/danger-tinted/is-hovered/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/danger/200"
+              }
+            },
+            {
+              "name": "semantics/buttons/danger-tinted/is-hovered/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
                 "name": "primitives/color/danger/750"
+              }
+            },
+            {
+              "name": "semantics/buttons/danger-tinted/is-active/background-color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/danger/250"
+              }
+            },
+            {
+              "name": "semantics/buttons/danger-tinted/is-active/content/color",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "collection": "Themes",
+                "name": "primitives/color/danger/800"
               }
             },
             {
@@ -3532,7 +3682,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/danger/200"
+                "name": "primitives/color/danger/150"
               }
             },
             {
@@ -3547,7 +3697,7 @@
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/color/neutral/250"
+                "name": "primitives/color/neutral/200"
               }
             },
             {
@@ -3569,7 +3719,7 @@
               "name": "semantics/input-fields/end-fade/start-color",
               "type": "color",
               "isAlias": false,
-              "value": "#20252B00"
+              "value": "#1F252B00"
             },
             {
               "name": "semantics/input-fields/background-color",
@@ -3752,7 +3902,7 @@
               }
             },
             {
-              "name": "semantics/focus-rings/inner/color",
+              "name": "semantics/focus-ring/edge/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -3761,16 +3911,16 @@
               }
             },
             {
-              "name": "semantics/focus-rings/inner/thickness",
+              "name": "semantics/focus-ring/edge/thickness",
               "type": "number",
               "isAlias": true,
               "value": {
                 "collection": "Themes",
-                "name": "primitives/space/2"
+                "name": "primitives/space/6"
               }
             },
             {
-              "name": "semantics/focus-rings/center/color",
+              "name": "semantics/focus-ring/center/color",
               "type": "color",
               "isAlias": true,
               "value": {
@@ -3779,7 +3929,7 @@
               }
             },
             {
-              "name": "semantics/focus-rings/center/thickness",
+              "name": "semantics/focus-ring/center/thickness",
               "type": "number",
               "isAlias": true,
               "value": {
@@ -3797,25 +3947,25 @@
               "name": "primitives/color/neutral/25",
               "type": "color",
               "isAlias": false,
-              "value": "#0B0D10"
+              "value": "#0A0D10"
             },
             {
               "name": "primitives/color/neutral/50",
               "type": "color",
               "isAlias": false,
-              "value": "#14171A"
+              "value": "#13171B"
             },
             {
               "name": "primitives/color/neutral/75",
               "type": "color",
               "isAlias": false,
-              "value": "#1B1E23"
+              "value": "#1A1E24"
             },
             {
               "name": "primitives/color/neutral/100",
               "type": "color",
               "isAlias": false,
-              "value": "#20252B"
+              "value": "#1F252B"
             },
             {
               "name": "primitives/font-family/body",
@@ -3827,7 +3977,7 @@
               "name": "primitives/color/neutral/150",
               "type": "color",
               "isAlias": false,
-              "value": "#2A3039"
+              "value": "#293038"
             },
             {
               "name": "primitives/font-family/body-fallback",
@@ -3875,91 +4025,91 @@
               "name": "primitives/color/neutral/200",
               "type": "color",
               "isAlias": false,
-              "value": "#333A45"
+              "value": "#333B44"
             },
             {
               "name": "primitives/color/neutral/250",
               "type": "color",
               "isAlias": false,
-              "value": "#3B4451"
+              "value": "#3B4450"
             },
             {
               "name": "primitives/color/neutral/300",
               "type": "color",
               "isAlias": false,
-              "value": "#444E5D"
+              "value": "#444E5B"
             },
             {
               "name": "primitives/color/neutral/350",
               "type": "color",
               "isAlias": false,
-              "value": "#4C5869"
+              "value": "#4C5867"
             },
             {
               "name": "primitives/color/neutral/400",
               "type": "color",
               "isAlias": false,
-              "value": "#556275"
+              "value": "#546273"
             },
             {
               "name": "primitives/color/neutral/450",
               "type": "color",
               "isAlias": false,
-              "value": "#5D6C81"
+              "value": "#5D6C80"
             },
             {
               "name": "primitives/color/neutral/500",
               "type": "color",
               "isAlias": false,
-              "value": "#67778D"
+              "value": "#65778D"
             },
             {
               "name": "primitives/color/neutral/550",
               "type": "color",
               "isAlias": false,
-              "value": "#738197"
+              "value": "#718296"
             },
             {
               "name": "primitives/color/neutral/600",
               "type": "color",
               "isAlias": false,
-              "value": "#808DA0"
+              "value": "#7E8DA0"
             },
             {
               "name": "primitives/color/neutral/650",
               "type": "color",
               "isAlias": false,
-              "value": "#8D98AA"
+              "value": "#8B99AA"
             },
             {
               "name": "primitives/color/neutral/700",
               "type": "color",
               "isAlias": false,
-              "value": "#9BA5B5"
+              "value": "#99A5B5"
             },
             {
               "name": "primitives/color/neutral/750",
               "type": "color",
               "isAlias": false,
-              "value": "#A9B2C0"
+              "value": "#A7B2C0"
             },
             {
               "name": "primitives/color/neutral/800",
               "type": "color",
               "isAlias": false,
-              "value": "#B8C0CB"
+              "value": "#B7C0CB"
             },
             {
               "name": "primitives/color/neutral/850",
               "type": "color",
               "isAlias": false,
-              "value": "#C9CED8"
+              "value": "#C7CFD8"
             },
             {
               "name": "primitives/color/neutral/900",
               "type": "color",
               "isAlias": false,
-              "value": "#D9DEE4"
+              "value": "#D8DEE5"
             },
             {
               "name": "primitives/color/neutral/950",
@@ -3989,67 +4139,61 @@
               "name": "primitives/color/accent/50",
               "type": "color",
               "isAlias": false,
-              "value": "#08192B"
+              "value": "#001632"
             },
             {
               "name": "primitives/color/accent/75",
               "type": "color",
               "isAlias": false,
-              "value": "#001E3D"
+              "value": "#001E3F"
             },
             {
               "name": "primitives/color/accent/100",
               "type": "color",
               "isAlias": false,
-              "value": "#08192B"
+              "value": "#00244B"
             },
             {
               "name": "primitives/color/accent/150",
               "type": "color",
               "isAlias": false,
-              "value": "#0C2541"
+              "value": "#00305F"
             },
             {
               "name": "primitives/color/accent/200",
               "type": "color",
               "isAlias": false,
-              "value": "#103257"
+              "value": "#0C3A6B"
             },
             {
               "name": "primitives/color/accent/250",
               "type": "color",
               "isAlias": false,
-              "value": "#133D6A"
+              "value": "#184576"
             },
             {
               "name": "primitives/color/accent/300",
               "type": "color",
               "isAlias": false,
-              "value": "#184B81"
+              "value": "#224F81"
             },
             {
               "name": "primitives/color/accent/350",
               "type": "color",
               "isAlias": false,
-              "value": "#1C5897"
+              "value": "#2C598C"
             },
             {
               "name": "primitives/color/accent/400",
               "type": "color",
               "isAlias": false,
-              "value": "#2064AC"
+              "value": "#366396"
             },
             {
               "name": "primitives/color/accent/450",
               "type": "color",
               "isAlias": false,
-              "value": "#2471C2"
-            },
-            {
-              "name": "primitives/color/accent/500",
-              "type": "color",
-              "isAlias": false,
-              "value": "#2677CD"
+              "value": "#406DA2"
             },
             {
               "name": "primitives/color/success/0",
@@ -4058,34 +4202,46 @@
               "value": "#000000"
             },
             {
+              "name": "primitives/color/accent/500",
+              "type": "color",
+              "isAlias": false,
+              "value": "#4B78AD"
+            },
+            {
               "name": "primitives/color/success/25",
               "type": "color",
               "isAlias": false,
-              "value": "#070F00"
+              "value": "#031000"
             },
             {
               "name": "primitives/color/success/50",
               "type": "color",
               "isAlias": false,
-              "value": "#0E1A00"
+              "value": "#061B00"
             },
             {
               "name": "primitives/color/success/75",
               "type": "color",
               "isAlias": false,
-              "value": "#122200"
+              "value": "#092300"
             },
             {
               "name": "primitives/color/success/100",
               "type": "color",
               "isAlias": false,
-              "value": "#132A00"
+              "value": "#0C2B00"
             },
             {
               "name": "primitives/color/success/150",
               "type": "color",
               "isAlias": false,
-              "value": "#153700"
+              "value": "#123700"
+            },
+            {
+              "name": "primitives/color/accent/550",
+              "type": "color",
+              "isAlias": false,
+              "value": "#5583B9"
             },
             {
               "name": "primitives/color/success/200",
@@ -4094,58 +4250,46 @@
               "value": "#174300"
             },
             {
-              "name": "primitives/color/accent/550",
+              "name": "primitives/color/success/250",
               "type": "color",
               "isAlias": false,
-              "value": "#3D8BDB"
+              "value": "#1C4E00"
             },
             {
               "name": "primitives/color/accent/600",
               "type": "color",
               "isAlias": false,
-              "value": "#5397DF"
-            },
-            {
-              "name": "primitives/color/success/250",
-              "type": "color",
-              "isAlias": false,
-              "value": "#1B4E00"
+              "value": "#608FC5"
             },
             {
               "name": "primitives/color/success/300",
               "type": "color",
               "isAlias": false,
-              "value": "#205900"
-            },
-            {
-              "name": "primitives/color/success/350",
-              "type": "color",
-              "isAlias": false,
-              "value": "#256400"
+              "value": "#215900"
             },
             {
               "name": "primitives/color/accent/650",
               "type": "color",
               "isAlias": false,
-              "value": "#68A4E3"
+              "value": "#6C9BD2"
+            },
+            {
+              "name": "primitives/color/success/350",
+              "type": "color",
+              "isAlias": false,
+              "value": "#266400"
             },
             {
               "name": "primitives/color/success/400",
               "type": "color",
               "isAlias": false,
-              "value": "#296F00"
+              "value": "#2B6F00"
             },
             {
               "name": "primitives/color/success/450",
               "type": "color",
               "isAlias": false,
-              "value": "#2F7B00"
-            },
-            {
-              "name": "primitives/color/accent/700",
-              "type": "color",
-              "isAlias": false,
-              "value": "#7EB1E7"
+              "value": "#307A00"
             },
             {
               "name": "primitives/color/success/500",
@@ -4154,22 +4298,28 @@
               "value": "#38860A"
             },
             {
+              "name": "primitives/color/accent/700",
+              "type": "color",
+              "isAlias": false,
+              "value": "#78A7E0"
+            },
+            {
               "name": "primitives/color/success/550",
               "type": "color",
               "isAlias": false,
-              "value": "#44911A"
+              "value": "#44911E"
             },
             {
               "name": "primitives/color/success/600",
               "type": "color",
               "isAlias": false,
-              "value": "#519D28"
+              "value": "#4F9D2D"
             },
             {
               "name": "primitives/color/success/650",
               "type": "color",
               "isAlias": false,
-              "value": "#5EAA34"
+              "value": "#5BAA3B"
             },
             {
               "name": "primitives/color/warning/0",
@@ -4181,73 +4331,73 @@
               "name": "primitives/color/warning/25",
               "type": "color",
               "isAlias": false,
-              "value": "#170A00"
-            },
-            {
-              "name": "primitives/color/success/700",
-              "type": "color",
-              "isAlias": false,
-              "value": "#6BB641"
+              "value": "#1B0800"
             },
             {
               "name": "primitives/color/warning/50",
               "type": "color",
               "isAlias": false,
-              "value": "#241300"
+              "value": "#290F00"
+            },
+            {
+              "name": "primitives/color/success/700",
+              "type": "color",
+              "isAlias": false,
+              "value": "#68B749"
             },
             {
               "name": "primitives/color/warning/75",
               "type": "color",
               "isAlias": false,
-              "value": "#301800"
+              "value": "#351500"
             },
             {
               "name": "primitives/color/warning/100",
               "type": "color",
               "isAlias": false,
-              "value": "#3B1D00"
+              "value": "#3E1A00"
             },
             {
               "name": "primitives/color/warning/150",
               "type": "color",
               "isAlias": false,
-              "value": "#4D2500"
+              "value": "#4F2300"
             },
             {
               "name": "primitives/color/success/750",
               "type": "color",
               "isAlias": false,
-              "value": "#78C44E"
+              "value": "#75C456"
             },
             {
               "name": "primitives/color/warning/200",
               "type": "color",
               "isAlias": false,
-              "value": "#5E2C00"
-            },
-            {
-              "name": "primitives/color/warning/250",
-              "type": "color",
-              "isAlias": false,
-              "value": "#6E3400"
+              "value": "#5F2B00"
             },
             {
               "name": "primitives/color/success/800",
               "type": "color",
               "isAlias": false,
-              "value": "#87D25B"
+              "value": "#83D365"
+            },
+            {
+              "name": "primitives/color/warning/250",
+              "type": "color",
+              "isAlias": false,
+              "value": "#6E3300"
             },
             {
               "name": "primitives/color/success/850",
               "type": "color",
               "isAlias": false,
-              "value": "#95E169"
+              "value": "#91E273"
             },
             {
               "name": "primitives/color/success/900",
               "type": "color",
               "isAlias": false,
-              "value": "#A5F178"
+              "value": "#A0F283"
             },
             {
               "name": "primitives/color/warning/300",
@@ -4256,16 +4406,16 @@
               "value": "#7D3B00"
             },
             {
+              "name": "primitives/color/success/950",
+              "type": "color",
+              "isAlias": false,
+              "value": "#BDFFA7"
+            },
+            {
               "name": "primitives/color/warning/350",
               "type": "color",
               "isAlias": false,
               "value": "#8B4300"
-            },
-            {
-              "name": "primitives/color/success/950",
-              "type": "color",
-              "isAlias": false,
-              "value": "#C1FF99"
             },
             {
               "name": "primitives/color/warning/400",
@@ -4307,37 +4457,37 @@
               "name": "primitives/color/warning/650",
               "type": "color",
               "isAlias": false,
-              "value": "#EB7810"
+              "value": "#EA7918"
             },
             {
               "name": "primitives/color/warning/700",
               "type": "color",
               "isAlias": false,
-              "value": "#FA8521"
+              "value": "#F9852D"
             },
             {
               "name": "primitives/color/warning/750",
               "type": "color",
               "isAlias": false,
-              "value": "#FF9849"
+              "value": "#FF9750"
             },
             {
               "name": "primitives/color/warning/800",
               "type": "color",
               "isAlias": false,
-              "value": "#FFAC72"
+              "value": "#FFAC77"
             },
             {
               "name": "primitives/color/warning/850",
               "type": "color",
               "isAlias": false,
-              "value": "#FFC197"
+              "value": "#FFC09A"
             },
             {
               "name": "primitives/color/warning/900",
               "type": "color",
               "isAlias": false,
-              "value": "#FFD5BA"
+              "value": "#FFD5BC"
             },
             {
               "name": "primitives/color/warning/950",
@@ -4361,7 +4511,7 @@
               "name": "primitives/color/danger/25",
               "type": "color",
               "isAlias": false,
-              "value": "#1C0700"
+              "value": "#250000"
             },
             {
               "name": "primitives/color/highlight/0",
@@ -4373,31 +4523,31 @@
               "name": "primitives/color/highlight/25",
               "type": "color",
               "isAlias": false,
-              "value": "#130C00"
+              "value": "#150B00"
             },
             {
               "name": "primitives/color/highlight/50",
               "type": "color",
               "isAlias": false,
-              "value": "#1F1500"
+              "value": "#211400"
             },
             {
               "name": "primitives/color/highlight/75",
               "type": "color",
               "isAlias": false,
-              "value": "#291C00"
+              "value": "#2A1B00"
             },
             {
               "name": "primitives/color/highlight/100",
               "type": "color",
               "isAlias": false,
-              "value": "#322100"
+              "value": "#332100"
             },
             {
               "name": "primitives/color/highlight/150",
               "type": "color",
               "isAlias": false,
-              "value": "#412C00"
+              "value": "#412B00"
             },
             {
               "name": "primitives/color/highlight/200",
@@ -4475,25 +4625,25 @@
               "name": "primitives/color/highlight/800",
               "type": "color",
               "isAlias": false,
-              "value": "#FAB207"
+              "value": "#FAB200"
             },
             {
               "name": "primitives/color/highlight/850",
               "type": "color",
               "isAlias": false,
-              "value": "#FFC460"
+              "value": "#FFC45D"
             },
             {
               "name": "primitives/color/highlight/900",
               "type": "color",
               "isAlias": false,
-              "value": "#FFD79F"
+              "value": "#FFD898"
             },
             {
               "name": "primitives/color/highlight/950",
               "type": "color",
               "isAlias": false,
-              "value": "#FFEBD1"
+              "value": "#FFEBCC"
             },
             {
               "name": "primitives/color/highlight/1000",
@@ -4511,121 +4661,121 @@
               "name": "primitives/color/danger/50",
               "type": "color",
               "isAlias": false,
-              "value": "#2C0D00"
+              "value": "#370000"
             },
             {
               "name": "primitives/color/danger/75",
               "type": "color",
               "isAlias": false,
-              "value": "#3D0E00"
+              "value": "#450100"
             },
             {
               "name": "primitives/color/danger/100",
               "type": "color",
               "isAlias": false,
-              "value": "#4B0D00"
+              "value": "#510100"
             },
             {
               "name": "primitives/color/danger/150",
               "type": "color",
               "isAlias": false,
-              "value": "#640800"
+              "value": "#670100"
             },
             {
               "name": "primitives/color/danger/200",
               "type": "color",
               "isAlias": false,
-              "value": "#7B0000"
+              "value": "#7A0200"
             },
             {
               "name": "primitives/color/danger/250",
               "type": "color",
               "isAlias": false,
-              "value": "#8D0004"
+              "value": "#8D0300"
             },
             {
               "name": "primitives/color/danger/300",
               "type": "color",
               "isAlias": false,
-              "value": "#A00007"
+              "value": "#9F0400"
             },
             {
               "name": "primitives/color/danger/350",
               "type": "color",
               "isAlias": false,
-              "value": "#B20009"
+              "value": "#B20400"
             },
             {
               "name": "primitives/color/danger/400",
               "type": "color",
               "isAlias": false,
-              "value": "#C21110"
+              "value": "#C30E05"
             },
             {
               "name": "primitives/color/danger/450",
               "type": "color",
               "isAlias": false,
-              "value": "#CF241A"
+              "value": "#D02418"
             },
             {
               "name": "primitives/color/danger/500",
               "type": "color",
               "isAlias": false,
-              "value": "#DD3424"
+              "value": "#DD3426"
             },
             {
               "name": "primitives/color/danger/550",
               "type": "color",
               "isAlias": false,
-              "value": "#EB412E"
+              "value": "#EA4233"
             },
             {
               "name": "primitives/color/danger/600",
               "type": "color",
               "isAlias": false,
-              "value": "#F94F38"
+              "value": "#F8503F"
             },
             {
               "name": "primitives/color/danger/650",
               "type": "color",
               "isAlias": false,
-              "value": "#FF654C"
+              "value": "#FF6553"
             },
             {
               "name": "primitives/color/danger/700",
               "type": "color",
               "isAlias": false,
-              "value": "#FF7E65"
+              "value": "#FF7D6C"
             },
             {
               "name": "primitives/color/danger/750",
               "type": "color",
               "isAlias": false,
-              "value": "#FF947E"
+              "value": "#FF9484"
             },
             {
               "name": "primitives/color/danger/800",
               "type": "color",
               "isAlias": false,
-              "value": "#FFAA97"
+              "value": "#FFA99B"
             },
             {
               "name": "primitives/color/danger/850",
               "type": "color",
               "isAlias": false,
-              "value": "#FFBFB0"
+              "value": "#FFBEB3"
             },
             {
               "name": "primitives/color/danger/900",
               "type": "color",
               "isAlias": false,
-              "value": "#FFD4CA"
+              "value": "#FFD3CC"
             },
             {
               "name": "primitives/color/danger/950",
               "type": "color",
               "isAlias": false,
-              "value": "#FFE9E4"
+              "value": "#FFE9E5"
             },
             {
               "name": "primitives/color/danger/1000",
@@ -5429,67 +5579,67 @@
               "name": "components/page/fixed-area/background-gradient/color-1",
               "type": "color",
               "isAlias": false,
-              "value": "#20252BF2"
+              "value": "#1F252BF2"
             },
             {
               "name": "components/page/fixed-area/background-gradient/color-2",
               "type": "color",
               "isAlias": false,
-              "value": "#20252B99"
+              "value": "#1F252B99"
             },
             {
               "name": "components/page/fixed-area/background-gradient/color-3",
               "type": "color",
               "isAlias": false,
-              "value": "#1E252E00"
+              "value": "#1F252B00"
             },
             {
               "name": "components/page/fixed-area/tinted/background-gradient/color-1",
               "type": "color",
               "isAlias": false,
-              "value": "#1B1E23F2"
+              "value": "#1A1E24F2"
             },
             {
               "name": "components/page/fixed-area/tinted/background-gradient/color-2",
               "type": "color",
               "isAlias": false,
-              "value": "#1B1E2399"
+              "value": "#1A1E2499"
             },
             {
               "name": "components/page/fixed-area/tinted/background-gradient/color-3",
               "type": "color",
               "isAlias": false,
-              "value": "#1B1E2300"
+              "value": "#1A1E2400"
             },
             {
               "name": "primitives/color/accent/750 (reference)",
               "type": "color",
               "isAlias": false,
-              "value": "#93BEEB"
+              "value": "#85B5EE"
             },
             {
               "name": "primitives/color/accent/800",
               "type": "color",
               "isAlias": false,
-              "value": "#A9CBEF"
+              "value": "#93C3FC"
             },
             {
               "name": "primitives/color/accent/850",
               "type": "color",
               "isAlias": false,
-              "value": "#BED8F3"
+              "value": "#ABD1FF"
             },
             {
               "name": "primitives/color/accent/900",
               "type": "color",
               "isAlias": false,
-              "value": "#D4E5F7"
+              "value": "#C6E0FF"
             },
             {
               "name": "primitives/color/accent/950",
               "type": "color",
               "isAlias": false,
-              "value": "#E9F2FB"
+              "value": "#E7EEFF"
             },
             {
               "name": "primitives/color/accent/1000",
@@ -5514,24 +5664,6 @@
                 "collection": "Themes",
                 "name": "primitives/corner-radius/md"
               }
-            },
-            {
-              "name": "semantics/focus-rings/outer/color",
-              "type": "color",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "semantics/surfaces/background-color"
-              }
-            },
-            {
-              "name": "semantics/focus-rings/outer/thickness",
-              "type": "number",
-              "isAlias": true,
-              "value": {
-                "collection": "Themes",
-                "name": "primitives/space/6"
-              }
             }
           ]
         }
@@ -5544,7 +5676,7 @@
           "name": "Style",
           "variables": [
             {
-              "name": "components/title-bar/sm/overline",
+              "name": "components/title-bar/sm/overline-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5560,7 +5692,7 @@
               }
             },
             {
-              "name": "components/title-bar/sm/subtitle",
+              "name": "components/title-bar/sm/subtitle-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5576,7 +5708,7 @@
               }
             },
             {
-              "name": "components/title-bar/md/overline",
+              "name": "components/title-bar/md/overline-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5592,7 +5724,7 @@
               }
             },
             {
-              "name": "components/title-bar/md/subtitle",
+              "name": "components/title-bar/md/subtitle-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5608,7 +5740,7 @@
               }
             },
             {
-              "name": "components/title-bar/lg/overline",
+              "name": "components/title-bar/lg/overline-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5624,7 +5756,7 @@
               }
             },
             {
-              "name": "components/title-bar/lg/subtitle",
+              "name": "components/title-bar/lg/subtitle-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5720,7 +5852,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/regular-loose",
+              "name": "primitives/font/body/lg/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5736,7 +5868,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/regular-snug",
+              "name": "primitives/font/body/lg/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5752,7 +5884,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/regular-tight",
+              "name": "primitives/font/body/lg/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5768,7 +5900,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/regular-flat",
+              "name": "primitives/font/body/lg/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5784,7 +5916,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/bold-loose",
+              "name": "primitives/font/body/lg/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5800,7 +5932,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/bold-snug",
+              "name": "primitives/font/body/lg/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5816,7 +5948,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/bold-tight",
+              "name": "primitives/font/body/lg/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5832,7 +5964,7 @@
               }
             },
             {
-              "name": "semantics/content/body/lg/bold-flat",
+              "name": "primitives/font/body/lg/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5848,7 +5980,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/regular-loose",
+              "name": "primitives/font/body/md/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5864,7 +5996,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/regular-snug",
+              "name": "primitives/font/body/md/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5880,7 +6012,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/regular-tight",
+              "name": "primitives/font/body/md/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5896,7 +6028,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/regular-flat",
+              "name": "primitives/font/body/md/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5912,7 +6044,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/bold-loose",
+              "name": "primitives/font/body/md/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5928,7 +6060,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/bold-snug",
+              "name": "primitives/font/body/md/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5944,7 +6076,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/bold-tight",
+              "name": "primitives/font/body/md/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5960,7 +6092,7 @@
               }
             },
             {
-              "name": "semantics/content/body/md/bold-flat",
+              "name": "primitives/font/body/md/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5976,7 +6108,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/regular-loose",
+              "name": "primitives/font/body/sm/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -5992,7 +6124,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/regular-snug",
+              "name": "primitives/font/body/sm/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6008,7 +6140,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/regular-tight",
+              "name": "primitives/font/body/sm/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6024,7 +6156,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/regular-flat",
+              "name": "primitives/font/body/sm/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6040,7 +6172,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/bold-loose",
+              "name": "primitives/font/body/sm/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6056,7 +6188,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/bold-snug",
+              "name": "primitives/font/body/sm/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6072,7 +6204,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/bold-tight",
+              "name": "primitives/font/body/sm/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6088,7 +6220,7 @@
               }
             },
             {
-              "name": "semantics/content/body/sm/bold-flat",
+              "name": "primitives/font/body/sm/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6104,7 +6236,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/regular-loose",
+              "name": "primitives/font/body/xs/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6120,7 +6252,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/regular-snug",
+              "name": "primitives/font/body/xs/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6136,7 +6268,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/regular-tight",
+              "name": "primitives/font/body/xs/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6152,7 +6284,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/regular-flat",
+              "name": "primitives/font/body/xs/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6168,7 +6300,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/bold-loose",
+              "name": "primitives/font/body/xs/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6184,7 +6316,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/bold-snug",
+              "name": "primitives/font/body/xs/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6200,7 +6332,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/bold-tight",
+              "name": "primitives/font/body/xs/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6216,7 +6348,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xs/bold-flat",
+              "name": "primitives/font/body/xs/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6232,7 +6364,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/bold-flat",
+              "name": "primitives/font/body/xxs/bold-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6248,7 +6380,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/regular-loose",
+              "name": "primitives/font/body/xxs/regular-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6264,7 +6396,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/regular-snug",
+              "name": "primitives/font/body/xxs/regular-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6280,7 +6412,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/regular-tight",
+              "name": "primitives/font/body/xxs/regular-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6296,7 +6428,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/regular-flat",
+              "name": "primitives/font/body/xxs/regular-flat",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6312,7 +6444,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/bold-loose",
+              "name": "primitives/font/body/xxs/bold-loose",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6328,7 +6460,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/bold-snug",
+              "name": "primitives/font/body/xxs/bold-snug",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6344,7 +6476,7 @@
               }
             },
             {
-              "name": "semantics/content/body/xxs/bold-tight",
+              "name": "primitives/font/body/xxs/bold-tight",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6360,7 +6492,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-1",
+              "name": "primitives/font/display-1/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6376,7 +6508,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-2",
+              "name": "primitives/font/display-2/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6392,7 +6524,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-3",
+              "name": "primitives/font/display-3/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6408,7 +6540,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-4",
+              "name": "primitives/font/display-4/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6424,7 +6556,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-5",
+              "name": "primitives/font/display-5/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6440,7 +6572,7 @@
               }
             },
             {
-              "name": "semantics/content/sm/title-6",
+              "name": "primitives/font/display-6/sm",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6456,7 +6588,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-1",
+              "name": "primitives/font/display-1/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6472,7 +6604,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-2",
+              "name": "primitives/font/display-2/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6488,7 +6620,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-3",
+              "name": "primitives/font/display-3/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6504,7 +6636,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-4",
+              "name": "primitives/font/display-4/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6520,7 +6652,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-5",
+              "name": "primitives/font/display-5/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6536,7 +6668,7 @@
               }
             },
             {
-              "name": "semantics/content/md/title-6",
+              "name": "primitives/font/display-6/md",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6552,7 +6684,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-1",
+              "name": "primitives/font/display-1/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6568,7 +6700,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-2",
+              "name": "primitives/font/display-2/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6584,7 +6716,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-3",
+              "name": "primitives/font/display-3/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6600,7 +6732,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-4",
+              "name": "primitives/font/display-4/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6616,7 +6748,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-5",
+              "name": "primitives/font/display-5/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6632,7 +6764,7 @@
               }
             },
             {
-              "name": "semantics/content/lg/title-6",
+              "name": "primitives/font/display-6/lg",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6696,7 +6828,7 @@
               }
             },
             {
-              "name": "semantics/input-fields/sm/text",
+              "name": "semantics/input-fields/sm/text-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6712,7 +6844,7 @@
               }
             },
             {
-              "name": "semantics/input-fields/sm/mask",
+              "name": "semantics/input-fields/sm/mask-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6728,7 +6860,7 @@
               }
             },
             {
-              "name": "semantics/input-fields/md/text",
+              "name": "semantics/input-fields/md/text-font",
               "type": "typography",
               "isAlias": false,
               "value": {
@@ -6744,7 +6876,7 @@
               }
             },
             {
-              "name": "semantics/input-fields/md/mask",
+              "name": "semantics/input-fields/md/mask-font",
               "type": "typography",
               "isAlias": false,
               "value": {

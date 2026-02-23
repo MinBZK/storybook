@@ -26,7 +26,6 @@
         "style": [
           "accent-filled",
           "accent-outlined",
-          "accent-tinted",
           "neutral-tinted",
           "accent-transparent"
         ],
@@ -55,8 +54,6 @@
           "semantics-buttons-accent-outlined-color",
           "semantics-buttons-accent-outlined-border-color",
           "semantics-buttons-accent-outlined-border-thickness",
-          "semantics-buttons-accent-tinted-color",
-          "semantics-buttons-accent-tinted-background-color",
           "semantics-buttons-accent-transparent-color",
           "semantics-buttons-neutral-tinted-color",
           "semantics-buttons-neutral-tinted-background-color",
@@ -88,7 +85,6 @@
           "values": [
             "accent-filled",
             "accent-outlined",
-            "accent-tinted",
             "neutral-tinted",
             "accent-transparent"
           ],
@@ -381,7 +377,6 @@
         "style": [
           "accent-filled",
           "accent-outlined",
-          "accent-tinted",
           "neutral-tinted",
           "accent-transparent"
         ],
@@ -405,8 +400,6 @@
           "semantics-buttons-accent-outlined-color",
           "semantics-buttons-accent-outlined-border-color",
           "semantics-buttons-accent-outlined-border-thickness",
-          "semantics-buttons-accent-tinted-color",
-          "semantics-buttons-accent-tinted-background-color",
           "semantics-buttons-accent-transparent-color",
           "semantics-buttons-neutral-tinted-color",
           "semantics-buttons-neutral-tinted-background-color"
@@ -433,7 +426,6 @@
           "values": [
             "accent-filled",
             "accent-outlined",
-            "accent-tinted",
             "neutral-tinted",
             "accent-transparent"
           ],
@@ -1199,21 +1191,6 @@
       },
       "status": "implemented",
       "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Rich Text: Heading",
-      "figma": {
-        "nodeId": "980-145",
-        "nodeName": "rich-text__heading",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=980-145"
-      },
-      "implementation": {
-        "tagName": "rr-rich-text-heading",
-        "file": "src/components/content/rich-text-heading/rr-rich-text-heading.ts",
-        "className": "RRRichTextHeading"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
     },
     {
       "name": "Search Field",

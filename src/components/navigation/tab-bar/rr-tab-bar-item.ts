@@ -84,7 +84,7 @@ export class RRTabBarItem extends LitElement {
     }
 
     :host([content-type="icon-with-title"]) .tab-bar-item__label {
-      font: var(--semantics-content-body-xxs-bold-flat);
+      font: var(--primitives-font-body-xxs-bold-flat);
     }
 
     /* Selection indicator */
@@ -139,13 +139,13 @@ export class RRTabBarItem extends LitElement {
 
     /* Focus state */
     .tab-bar-item:focus-visible {
-      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-      outline-offset: 2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
     }
 
     /* Disabled state */
     :host([disabled]) .tab-bar-item {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }

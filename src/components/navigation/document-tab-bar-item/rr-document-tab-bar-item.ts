@@ -85,7 +85,7 @@ export class RRDocumentTabBarItem extends LitElement {
     }
 
     .document-tab-bar-item__subtitle {
-      font: var(--semantics-content-body-xs-regular-flat);
+      font: var(--primitives-font-body-xs-regular-flat);
       color: var(--primitives-color-neutral-650);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -127,8 +127,8 @@ export class RRDocumentTabBarItem extends LitElement {
     }
 
     .document-tab-bar-item__dismiss:focus-visible {
-      outline: var(--semantics-focus-rings-center-thickness) solid var(--semantics-focus-rings-center-color);
-      outline-offset: 2px;
+      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
     }
 
     .document-tab-bar-item__dismiss svg {
@@ -138,7 +138,7 @@ export class RRDocumentTabBarItem extends LitElement {
 
     /* Disabled state */
     :host([disabled]) .document-tab-bar-item {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }
