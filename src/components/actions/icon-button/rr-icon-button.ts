@@ -2,323 +2,430 @@
  * RegelRecht Icon Button Component (Lit + TypeScript)
  *
  * @element rr-icon-button
- * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent'
- * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'danger-tinted' | 'primary' | 'secondary' | 'destructive'
+ * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
- * @attr {string} label - Accessible label for the icon button (required for accessibility)
+ * @attr {boolean} has-menu - Whether the button opens a menu (shows chevron)
  *
- * @slot - Default slot for icon content
+ * @slot - Place an rr-icon and optionally a text label. Text is used as aria-label and shown below the icon in lg size.
+ *
+ * @example
+ * ```html
+ * <rr-icon-button>
+ *   <rr-icon name="download"></rr-icon>
+ *   Download
+ * </rr-icon-button>
+ * ```
  *
  * @fires click - When button is clicked (not fired when disabled)
- *
- * @csspart button - The native button element
- *
- * @cssprop --rr-icon-button-background-color - Override background color
- * @cssprop --rr-icon-button-color - Override icon color
- * @cssprop --rr-icon-button-border-color - Override border color
  */
 
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import './../../content/icon/rr-icon.ts';
 
 type Size = 'xs' | 'sm' | 'md' | 'lg';
-type Variant = 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
+type Variant =
+	| 'primary'
+	| 'secondary'
+	| 'destructive'
+	| 'accent-filled'
+	| 'accent-outlined'
+	| 'accent-transparent'
+	| 'neutral-tinted'
+	| 'neutral-transparent'
+	| 'danger-tinted';
 type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('rr-icon-button')
 export class RRIconButton extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = css`
+		:host {
+			display: inline-block;
+		}
 
-    :host([hidden]) {
-      display: none;
-    }
+		:host([hidden]) {
+			display: none;
+		}
 
-    .icon-button {
-      /* Reset */
-      appearance: none;
-      border: none;
-      margin: 0;
-      padding: 0;
-      background: none;
-      font: inherit;
-      cursor: pointer;
+		:host([disabled]) {
+			opacity: var(--primitives-opacity-disabled);
+			cursor: not-allowed;
+			pointer-events: none;
+		}
 
-      /* Layout - Square aspect ratio */
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+		.icon-button {
+			/* Reset */
+			appearance: none;
+			border: none;
+			margin: 0;
+			padding: 0;
+			background: none;
+			font: inherit;
+			box-sizing: border-box;
 
-      /* Typography - icon buttons have no text, font inherited for sizing context */
-      font: var(--semantics-buttons-md-font);
+			/* Layout */
+			display: inline-flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
 
-      /* Animation */
-      transition:
-        background-color 0.15s ease,
-        color 0.15s ease,
-        border-color 0.15s ease,
-        transform 0.1s ease;
+			/* Transitions */
+			transition:
+				background-color 0.15s ease-out,
+				color 0.15s ease-out;
+		}
 
-      /* Allow custom overrides */
-      background-color: var(--rr-icon-button-background-color, var(--_bg-color));
-      color: var(--rr-icon-button-color, var(--_text-color));
-      border: var(--_border-width, 0) solid var(--rr-icon-button-border-color, var(--_border-color, transparent));
-    }
+		.icon-button:focus-visible {
+			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+			outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		}
 
-    .icon-button:active:not(:disabled) {
-      transform: scale(0.98);
-    }
+		.icon-button:focus:not(:focus-visible) {
+			outline: none;
+		}
 
-    /* Size: XS - Square 24x24, Figma: 4px border-radius */
-    :host([size='xs']) .icon-button {
-      width: var(--semantics-controls-xs-min-size);
-      height: var(--semantics-controls-xs-min-size);
-      min-width: var(--semantics-controls-xs-min-size);
-      min-height: var(--semantics-controls-xs-min-size);
-      border-radius: var(--semantics-controls-xs-corner-radius);
-    }
+		/* Icon area */
+		.icon-button__icon-area {
+			display: inline-flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+		}
 
-    /* Size: SM - Square 32x32, Figma: 6px border-radius */
-    :host([size='sm']) .icon-button {
-      width: var(--semantics-controls-sm-min-size);
-      height: var(--semantics-controls-sm-min-size);
-      min-width: var(--semantics-controls-sm-min-size);
-      min-height: var(--semantics-controls-sm-min-size);
-      border-radius: var(--semantics-controls-sm-corner-radius);
-    }
+		.icon-button__icon {
+			display: flex;
+			flex-shrink: 0;
+			align-items: center;
+			justify-content: center;
+		}
 
-    /* Size: MD - Square 44x44 (default), Figma: 8px border-radius */
-    :host([size='md']) .icon-button,
-    :host(:not([size])) .icon-button {
-      width: var(--semantics-controls-md-min-size);
-      height: var(--semantics-controls-md-min-size);
-      min-width: var(--semantics-controls-md-min-size);
-      min-height: var(--semantics-controls-md-min-size);
-      border-radius: var(--semantics-controls-md-corner-radius);
-    }
+		.icon-button__picker-icon {
+			display: flex;
+			flex-shrink: 0;
+		}
 
-    /* Size: LG - Larger icon button, Figma: 9px border-radius */
-    :host([size='lg']) .icon-button {
-      width: var(--semantics-controls-lg-min-size);
-      height: auto;
-      min-width: var(--semantics-controls-lg-min-size);
-      min-height: var(--semantics-controls-lg-min-size);
-      border-radius: var(--semantics-controls-lg-corner-radius);
-      flex-direction: column;
-      gap: 1px;
-      padding: 8px 10px;
-    }
+		/* Title - only visible in lg */
+		.icon-button__title {
+			display: none;
+			text-align: center;
+			white-space: nowrap;
+			color: inherit;
+			font: var(--primitives-font-body-xxs-bold-flat);
+		}
 
-    /* LG with title - wider button to fit text on one line */
-    :host([size='lg'][has-title]) .icon-button {
-      width: auto;
-      padding: 8px 8px;
-    }
+		:host([size='lg']) .icon-button__title {
+			display: block;
+		}
 
-    .icon-button__title {
-      display: none;
-      font: var(--semantics-buttons-xs-font);
-      font-size: 12px;
-      font-weight: 550;
-      line-height: 1.125;
-      text-align: center;
-      color: inherit;
-      white-space: nowrap;
-    }
+		/* Size: XS */
+		:host([size='xs']) .icon-button {
+			width: auto;
+			height: var(--semantics-controls-xs-min-size);
+			min-width: var(--semantics-controls-xs-min-size);
+			min-height: var(--semantics-controls-xs-min-size);
+			padding: var(--primitives-space-4);
+			border-radius: var(--semantics-controls-xs-corner-radius);
+		}
 
-    :host([size='lg'][has-title]) .icon-button__title {
-      display: block;
-    }
+		:host([size='xs']) .icon-button__icon {
+			width: var(--primitives-space-16);
+			height: var(--primitives-space-16);
+		}
 
-    /* Variant: accent-filled (default) */
-    :host([variant='accent-filled']) .icon-button,
-    :host(:not([variant])) .icon-button {
-      --_bg-color: var(--semantics-buttons-accent-filled-background-color);
-      --_text-color: var(--semantics-buttons-accent-filled-content-color);
-    }
+		:host([size='xs']) .icon-button__picker-icon {
+			width: var(--primitives-space-16);
+			height: var(--primitives-space-16);
+		}
 
-    :host([variant='accent-filled']) .icon-button:hover:not(:disabled),
-    :host(:not([variant])) .icon-button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-accent-75);
-    }
+		/* Size: SM */
+		:host([size='sm']) .icon-button {
+			width: auto;
+			height: var(--semantics-controls-sm-min-size);
+			min-width: var(--semantics-controls-sm-min-size);
+			min-height: var(--semantics-controls-sm-min-size);
+			padding: var(--primitives-space-6);
+			border-radius: var(--semantics-controls-sm-corner-radius);
+		}
 
-    /* Variant: accent-outlined */
-    :host([variant='accent-outlined']) .icon-button {
-      --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-accent-outlined-content-color);
-      --_border-color: var(--semantics-buttons-accent-outlined-border-color);
-      --_border-width: var(--semantics-buttons-accent-outlined-border-thickness);
-    }
+		:host([size='sm']) .icon-button__icon {
+			width: var(--primitives-space-20);
+			height: var(--primitives-space-20);
+		}
 
-    :host([variant='accent-outlined']) .icon-button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-accent-150);
-    }
+		:host([size='sm']) .icon-button__picker-icon {
+			width: var(--primitives-space-20);
+			height: var(--primitives-space-20);
+			margin-right: calc(var(--primitives-space-2) * -1);
+		}
 
-    /* Variant: neutral-tinted */
-    :host([variant='neutral-tinted']) .icon-button {
-      --_bg-color: var(--semantics-buttons-neutral-tinted-background-color);
-      --_text-color: var(--semantics-buttons-neutral-tinted-content-color);
-    }
+		/* Size: MD (default) */
+		:host([size='md']) .icon-button,
+		:host(:not([size])) .icon-button {
+			width: auto;
+			height: var(--semantics-controls-md-min-size);
+			min-width: var(--semantics-controls-md-min-size);
+			min-height: var(--semantics-controls-md-min-size);
+			padding: var(--primitives-space-8);
+			border-radius: var(--semantics-controls-md-corner-radius);
+		}
 
-    :host([variant='neutral-tinted']) .icon-button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-neutral-300);
-    }
+		:host([size='md']) .icon-button__icon,
+		:host(:not([size])) .icon-button__icon {
+			width: var(--primitives-space-24);
+			height: var(--primitives-space-24);
+		}
 
-    /* Variant: accent-transparent */
-    :host([variant='accent-transparent']) .icon-button {
-      --_bg-color: transparent;
-      --_text-color: var(--semantics-buttons-accent-transparent-content-color);
-    }
+		:host([size='md']) .icon-button__picker-icon,
+		:host(:not([size])) .icon-button__picker-icon {
+			width: var(--primitives-space-20);
+			height: var(--primitives-space-20);
+			margin-right: calc(var(--primitives-space-2) * -1);
+		}
 
-    :host([variant='accent-transparent']) .icon-button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-accent-150);
-    }
+		/* Size: LG */
+		:host([size='lg']) .icon-button {
+			width: auto;
+			height: var(--semantics-controls-lg-min-size);
+			min-width: var(--semantics-controls-lg-min-size);
+			min-height: var(--semantics-controls-lg-min-size);
+			padding: var(--primitives-space-8);
+			border-radius: var(--semantics-controls-lg-corner-radius);
+			gap: 1px;
+		}
 
-    /* Variant: neutral-transparent */
-    :host([variant='neutral-transparent']) .icon-button {
-      --_bg-color: transparent;
-      --_text-color: var(--primitives-color-neutral-900);
-    }
+		:host([size='lg']) .icon-button__icon {
+			width: var(--primitives-space-24);
+			height: var(--primitives-space-24);
+		}
 
-    :host([variant='neutral-transparent']) .icon-button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-neutral-200);
-    }
+		:host([size='lg']) .icon-button__picker-icon {
+			width: var(--primitives-space-20);
+			height: var(--primitives-space-20);
+			margin-right: calc(var(--primitives-space-2) * -1);
+		}
 
-    /* Variant: danger-tinted (destructive) */
-    :host([variant='danger-tinted']) .icon-button {
-      --_bg-color: var(--semantics-buttons-danger-tinted-background-color);
-      --_text-color: var(--semantics-buttons-danger-tinted-content-color);
-    }
+		/* Variant: neutral-tinted (secondary) */
+		:host([variant='neutral-tinted']) .icon-button,
+		:host([variant='secondary']) .icon-button,
+		:host(:not([variant])) .icon-button {
+			background-color: var(--semantics-buttons-neutral-tinted-background-color);
+			color: var(--semantics-buttons-neutral-tinted-content-color);
+		}
 
-    :host([variant='danger-tinted']) .icon-button:hover:not(:disabled) {
-      --_bg-color: var(--primitives-color-danger-300);
-    }
+		:host([variant='neutral-tinted']) .icon-button:hover,
+		:host([variant='secondary']) .icon-button:hover,
+		:host(:not([variant])) .icon-button:hover {
+			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+		}
 
-    /* Focus state */
-    .icon-button:focus-visible {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
-    
-    .icon-button:focus:not(:focus-visible) {
-      outline: none;
-    }
+		:host([variant='neutral-tinted']) .icon-button:active,
+		:host([variant='secondary']) .icon-button:active,
+		:host(:not([variant])) .icon-button:active {
+			background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+		}
 
-    /* Disabled state */
-    :host([disabled]) .icon-button {
-      opacity: var(--primitives-opacity-disabled);
-      cursor: not-allowed;
-      pointer-events: none;
-    }
+		/* Variant: neutral-transparent */
+		:host([variant='neutral-transparent']) .icon-button {
+			background-color: transparent;
+			color: var(--semantics-buttons-neutral-transparent-content-color);
+		}
 
-    /* Icon sizing - size-specific dimensions */
-    ::slotted(*) {
-      width: var(--_icon-size);
-      height: var(--_icon-size);
-      flex-shrink: 0;
-      display: block;
-    }
+		:host([variant='neutral-transparent']) .icon-button:hover {
+			background-color: transparent;
+			color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
+		}
 
-    /* XS: 24px button -> 12px icon (~50%) */
-    :host([size='xs']) {
-      --_icon-size: 12px;
-    }
+		:host([variant='neutral-transparent']) .icon-button:active {
+			color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
+		}
 
-    /* SM: 32px button -> 16px icon (~50%) */
-    :host([size='sm']) {
-      --_icon-size: 16px;
-    }
+		/* Variant: accent-filled (primary) */
+		:host([variant='accent-filled']) .icon-button,
+		:host([variant='primary']) .icon-button {
+			background-color: var(--semantics-buttons-accent-filled-background-color);
+			color: var(--semantics-buttons-accent-filled-content-color);
+		}
 
-    /* MD: 44px button -> 24px icon (matches Figma) */
-    :host([size='md']),
-    :host(:not([size])) {
-      --_icon-size: 24px;
-    }
+		:host([variant='accent-filled']) .icon-button:hover,
+		:host([variant='primary']) .icon-button:hover {
+			background-color: var(--semantics-buttons-accent-filled-is-hovered-background-color);
+			color: var(--semantics-buttons-accent-filled-is-hovered-content-color);
+		}
 
-    /* LG: larger button -> 24px icon (per Figma specs) */
-    :host([size='lg']) {
-      --_icon-size: 24px;
-    }
+		:host([variant='accent-filled']) .icon-button:active,
+		:host([variant='primary']) .icon-button:active {
+			background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
+			color: var(--semantics-buttons-accent-filled-is-active-content-color);
+		}
 
-    /* Accessibility: Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .icon-button {
-        transition: none;
-      }
-    }
+		/* Variant: accent-outlined */
+		:host([variant='accent-outlined']) .icon-button {
+			background-color: transparent;
+			border-width: var(--semantics-buttons-accent-outlined-border-thickness);
+			border-style: solid;
+			border-color: var(--semantics-buttons-accent-outlined-border-color);
+			color: var(--semantics-buttons-accent-outlined-content-color);
+		}
+		
+		:host([variant="accent-outlined"][size="lg"]) .icon-button {
+			padding: calc(var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness));
+		}
+		
+		:host([variant="accent-outlined"][size="md"]) .icon-button {
+			padding: calc(var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness));
+		}
+		
+		:host([variant="accent-outlined"][size="sm"]) .icon-button {
+			padding: calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness));
+		}
+		
+		:host([variant="accent-outlined"][size="xs"]) .icon-button {
+			padding: calc(var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness));
+		}
 
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .icon-button {
-        border: 2px solid CanvasText !important;
-      }
+		:host([variant='accent-outlined']) .icon-button:hover {
+			border-color: var(--semantics-buttons-accent-outlined-is-hovered-border-color);
+			color: var(--semantics-buttons-accent-outlined-is-hovered-content-color);
+		}
 
-      :host([disabled]) .icon-button {
-        opacity: 0.5 !important;
-      }
-    }
-  `;
+		:host([variant='accent-outlined']) .icon-button:active {
+			border-color: var(--semantics-buttons-accent-outlined-is-active-border-color);
+			color: var(--semantics-buttons-accent-outlined-is-active-content-color);
+		}
 
-  @property({ type: String, reflect: true })
-  variant: Variant = 'accent-filled';
+		/* Variant: accent-transparent */
+		:host([variant='accent-transparent']) .icon-button {
+			background-color: transparent;
+			color: var(--semantics-buttons-accent-transparent-content-color);
+		}
 
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
+		:host([variant='accent-transparent']) .icon-button:hover {
+			color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
+		}
 
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
+		:host([variant='accent-transparent']) .icon-button:active {
+			color: var(--semantics-buttons-accent-transparent-is-active-content-color);
+		}
 
-  @property({ type: String, reflect: true })
-  type: ButtonType = 'button';
+		/* Variant: danger-tinted (destructive) */
+		:host([variant='danger-tinted']) .icon-button,
+		:host([variant='destructive']) .icon-button {
+			background-color: var(--semantics-buttons-danger-tinted-background-color);
+			color: var(--semantics-buttons-danger-tinted-content-color);
+		}
 
-  @property({ type: String })
-  label = '';
+		:host([variant='danger-tinted']) .icon-button:hover,
+		:host([variant='destructive']) .icon-button:hover {
+			background-color: var(--semantics-buttons-danger-tinted-is-hovered-background-color);
+			color: var(--semantics-buttons-danger-tinted-is-hovered-content-color);
+		}
 
-  @property({ type: Boolean, reflect: true, attribute: 'has-title' })
-  hasTitle = false;
+		:host([variant='danger-tinted']) .icon-button:active,
+		:host([variant='destructive']) .icon-button:active {
+			background-color: var(--semantics-buttons-danger-tinted-is-active-background-color);
+			color: var(--semantics-buttons-danger-tinted-is-active-content-color);
+		}
 
-  @property({ type: String })
-  title = '';
+		/* Accessibility: Reduced motion */
+		@media (prefers-reduced-motion: reduce) {
+			.icon-button {
+				transition: none;
+			}
+		}
+	`;
 
-  private _handleClick = (event: Event): void => {
-    if (this.disabled) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  };
+	@property({ type: String, reflect: true })
+	variant: Variant = 'neutral-tinted';
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.addEventListener('click', this._handleClick);
-  }
+	@property({ type: String, reflect: true })
+	size: Size = 'md';
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('click', this._handleClick);
-  }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-  override render() {
-    return html`
-      <button
-        class="icon-button"
-        part="button"
-        type=${this.type}
-        ?disabled=${this.disabled}
-        aria-label=${this.label}
-      >
-        <slot></slot>
-        <span class="icon-button__title" part="title">${this.title}</span>
-      </button>
-    `;
-  }
+	@property({ type: String, reflect: true })
+	type: ButtonType = 'button';
+
+	@property({ type: Boolean, reflect: true, attribute: 'has-menu' })
+	hasMenu = false;
+
+	@state()
+	private _title = '';
+
+	private _observer: MutationObserver | null = null;
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._observer = new MutationObserver(() => this._detectSlots());
+		this._observer.observe(this, { childList: true, characterData: true, subtree: true });
+		this._detectSlots();
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._observer?.disconnect();
+		this._observer = null;
+	}
+
+	private _detectSlots(): void {
+		// Assign icon slot
+		const icon = Array.from(this.children)
+			.find(el => el.tagName.toLowerCase() === 'rr-icon');
+
+		if (icon) {
+			icon.setAttribute('slot', '__icon');
+		}
+
+		// Extract text nodes for aria-label and lg title
+		this._title = Array.from(this.childNodes)
+			.filter(n => n.nodeType === Node.TEXT_NODE)
+			.map(n => n.textContent?.trim())
+			.filter(Boolean)
+			.join(' ');
+	}
+
+	private _handleClick(e: MouseEvent): void {
+		if (this.disabled) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+	}
+
+	override render() {
+		return html`
+			<button
+				class="icon-button"
+				type=${this.type}
+				?disabled=${this.disabled}
+				aria-disabled=${this.disabled}
+				title=${this.size !== 'lg' ? this._title : ''}
+				aria-label=${this._title || nothing}
+				@click=${this._handleClick}
+			>
+				<span class="icon-button__icon-area">
+					<span class="icon-button__icon">
+						<slot name="__icon"></slot>
+					</span>
+					${this.hasMenu ? html`
+						<span class="icon-button__picker-icon">
+							<rr-icon name="chevron-down-small"></rr-icon>
+						</span>
+					` : ''}
+				</span>
+				${this._title ? html`
+					<span class="icon-button__title">${this._title}</span>
+				` : ''}
+			</button>
+		`;
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-icon-button': RRIconButton;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-icon-button': RRIconButton;
+	}
 }

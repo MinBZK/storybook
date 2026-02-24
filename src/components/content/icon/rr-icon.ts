@@ -3,6 +3,19 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { aliases } from './rr-icon-aliases.js';
 
+const iconModules = import.meta.glob('/src/components/content/icon/rr-icons/*.svg', { eager: false });
+
+const svgIcons: string[] = Object.keys(iconModules)
+	.map(path => path.replace('/src/components/content/icon/rr-icons/', '').replace('.svg', ''))
+	.sort();
+
+export { aliases };
+
+export const ICONS: string[] = [
+	...svgIcons,
+	...Object.keys(aliases),
+].sort();
+
 const iconCache = new Map<string, string>();
 
 /**
@@ -58,12 +71,10 @@ export class RRIcon extends LitElement {
 
 	private async _loadIcon(name: string) {
 		const resolvedName = aliases[name] ?? name;
-
 		if (iconCache.has(resolvedName)) {
 			this._iconSvg = iconCache.get(resolvedName)!;
 			return;
 		}
-
 		try {
 			const module = await import(`./rr-icons/${resolvedName}.svg?raw`);
 			iconCache.set(resolvedName, module.default);
@@ -83,5 +94,11 @@ export class RRIcon extends LitElement {
 				${unsafeHTML(this._iconSvg)}
 			</div>
 		`;
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'rr-icon': RRIcon;
 	}
 }

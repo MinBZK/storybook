@@ -668,6 +668,7 @@
 	--semantics-buttons-sm-font: var(--primitives-font-body-sm-bold-flat);
 	--semantics-buttons-xs-font: var(--primitives-font-body-xs-bold-flat);
 	
+	--semantics-buttons-xs-divider-length: var(--primitives-space-14);
 	--semantics-buttons-sm-divider-length: var(--primitives-space-20);
 	--semantics-buttons-md-divider-length: var(--primitives-space-28);
 		

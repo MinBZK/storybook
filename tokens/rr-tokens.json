@@ -494,6 +494,15 @@
                 "name": "semantics/buttons/neutral-tinted/background-color"
               }
             },
+			{
+			  "name": "semantics/buttons/xs/divider/length",
+			  "type": "number",
+			  "isAlias": true,
+			  "value": {
+				"collection": "Themes",
+				"name": "primitives/space/14"
+			  }
+			},
             {
               "name": "semantics/buttons/sm/divider/length",
               "type": "number",

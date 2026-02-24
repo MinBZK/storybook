@@ -1,4 +1,5 @@
 export const aliases = {
+	'icon-placeholder': 'circle-dashed',
 	'home': 'house',
 	'user': 'person-circle',
 	'profile': 'person-circle',
@@ -44,6 +45,8 @@ export const aliases = {
 	'forward': 'chevron-right',
 	'add': 'plus',
 	'add-small': 'plus-small',
+	'delete': 'minus',
+	'delete-small': 'minus-small',
 	'sort': 'arrows-sort',
 	'filter': 'list-decreasing-lines',
 };
