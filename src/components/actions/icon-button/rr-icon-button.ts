@@ -6,17 +6,23 @@
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
- * @attr {string} title - Accessible label and visible text in lg size
- * @attr {string} icon - Icon name to display (uses rr-icon internally, falls back to slot)
  * @attr {boolean} has-menu - Whether the button opens a menu (shows chevron)
  *
- * @slot - Fallback slot when no icon attribute is provided
+ * @slot - Place an rr-icon and optionally a text label. Text is used as aria-label and shown below the icon in lg size.
+ *
+ * @example
+ * ```html
+ * <rr-icon-button>
+ *   <rr-icon name="download"></rr-icon>
+ *   Download
+ * </rr-icon-button>
+ * ```
  *
  * @fires click - When button is clicked (not fired when disabled)
  */
 
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import './../../content/icon/rr-icon.ts';
 
 type Size = 'xs' | 'sm' | 'md' | 'lg';
@@ -329,14 +335,43 @@ export class RRIconButton extends LitElement {
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';
 
-	@property({ type: String })
-	title = '';
-
-	@property({ type: String })
-	icon = 'icon-placeholder';
-
 	@property({ type: Boolean, reflect: true, attribute: 'has-menu' })
 	hasMenu = false;
+
+	@state()
+	private _title = '';
+
+	private _observer: MutationObserver | null = null;
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._observer = new MutationObserver(() => this._detectSlots());
+		this._observer.observe(this, { childList: true, characterData: true, subtree: true });
+		this._detectSlots();
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._observer?.disconnect();
+		this._observer = null;
+	}
+
+	private _detectSlots(): void {
+		// Assign icon slot
+		const icon = Array.from(this.children)
+			.find(el => el.tagName.toLowerCase() === 'rr-icon');
+
+		if (icon) {
+			icon.setAttribute('slot', '__icon');
+		}
+
+		// Extract text nodes for aria-label and lg title
+		this._title = Array.from(this.childNodes)
+			.filter(n => n.nodeType === Node.TEXT_NODE)
+			.map(n => n.textContent?.trim())
+			.filter(Boolean)
+			.join(' ');
+	}
 
 	private _handleClick(e: MouseEvent): void {
 		if (this.disabled) {
@@ -352,14 +387,12 @@ export class RRIconButton extends LitElement {
 				type=${this.type}
 				?disabled=${this.disabled}
 				aria-disabled=${this.disabled}
-				aria-label=${this.title}
+				aria-label=${this._title}
 				@click=${this._handleClick}
 			>
 				<span class="icon-button__icon-area">
 					<span class="icon-button__icon">
-						${this.icon
-							? html`<rr-icon name=${this.icon}></rr-icon>`
-							: html`<slot></slot>`}
+						<slot name="__icon"></slot>
 					</span>
 					${this.hasMenu ? html`
 						<span class="icon-button__picker-icon">
@@ -367,7 +400,9 @@ export class RRIconButton extends LitElement {
 						</span>
 					` : ''}
 				</span>
-				<span class="icon-button__title">${this.title}</span>
+				${this._title ? html`
+					<span class="icon-button__title">${this._title}</span>
+				` : ''}
 			</button>
 		`;
 	}
