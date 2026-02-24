@@ -342,9 +342,35 @@ export class RRButton extends LitElement {
 		this._observer = null;
 	}
 
+	/**
+	 * Resolves the effective child nodes, following slot projection.
+	 *
+	 * When rr-button is used inside a component that passes a <slot> as its
+	 * child (e.g. rr-split-button), `this.children` only sees that <slot>
+	 * element — not the nodes the end-user projected into it.
+	 *
+	 * By querying our own shadow <slot> and calling assignedNodes({ flatten: true }),
+	 * we get the fully resolved, flattened list of nodes regardless of how many
+	 * slot-layers deep they are.
+	 */
+	private _getEffectiveNodes(): Node[] {
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
+		if (!slot) {
+			// Shadow DOM not yet rendered — fall back to light DOM children
+			return Array.from(this.childNodes);
+		}
+		return slot.assignedNodes({ flatten: true });
+	}
+
 	private _detectIconPosition(): void {
-		const children = Array.from(this.children);
-		const icons = children.filter(el => el.tagName.toLowerCase() === 'rr-icon');
+		const effectiveNodes = this._getEffectiveNodes();
+
+		// Collect rr-icon elements from effective (possibly projected) nodes
+		const icons = effectiveNodes.filter(
+			(n): n is Element =>
+				n.nodeType === Node.ELEMENT_NODE &&
+				(n as Element).tagName.toLowerCase() === 'rr-icon'
+		);
 
 		// Reset all icon slots first
 		icons.forEach(el => el.removeAttribute('slot'));
@@ -359,9 +385,10 @@ export class RRButton extends LitElement {
 			icons.splice(2);
 		}
 
-		// Filter childNodes to only significant nodes (elements + non-whitespace text)
-		const significantNodes = Array.from(this.childNodes).filter(
-			n => n.nodeType === Node.ELEMENT_NODE ||
+		// Filter to only significant nodes (elements + non-whitespace text)
+		const significantNodes = effectiveNodes.filter(
+			n =>
+				n.nodeType === Node.ELEMENT_NODE ||
 				(n.nodeType === Node.TEXT_NODE && n.textContent?.trim() !== '')
 		);
 
@@ -412,7 +439,7 @@ export class RRButton extends LitElement {
 					${this._iconPosition === 'start' || this._iconPosition === 'both'
 						? html`<slot name="__icon-start"></slot>`
 						: ''}
-					<slot></slot>
+					<slot @slotchange=${this._detectIconPosition}></slot>
 					${this._iconPosition === 'end' || this._iconPosition === 'both'
 						? html`<slot name="__icon-end"></slot>`
 						: ''}
