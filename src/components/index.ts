@@ -16,7 +16,6 @@ export { RRButton } from './actions/button/rr-button.ts';
 export { RRIconButton } from './actions/icon-button/rr-icon-button.ts';
 export { RRButtonGroup } from './control-groups/button-group/rr-button-group.ts';
 export { RRButtonBar } from './control-groups/button-bar/rr-button-bar.ts';
-export { RRButtonBarDivider } from './control-groups/button-bar-divider/rr-button-bar-divider.ts';
 export { RRSplitButton } from './actions/split-button/rr-split-button.ts';
 
 // Input components
