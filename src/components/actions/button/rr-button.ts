@@ -23,7 +23,16 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import './../../content/icon/rr-icon.ts';
 
-type Variant = 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'neutral-tinted' | 'accent-transparent' | 'neutral-transparent' | 'danger-tinted';
+type Variant =
+	| 'primary'
+	| 'secondary'
+	| 'destructive'
+	| 'accent-filled'
+	| 'accent-outlined'
+	| 'accent-transparent'
+	| 'neutral-tinted'
+	| 'neutral-transparent'
+	| 'danger-tinted';
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
 type IconPosition = 'start' | 'end' | 'both' | null;
@@ -44,6 +53,12 @@ export class RRButton extends LitElement {
 			display: none;
 		}
 
+		:host([disabled]) {
+			opacity: var(--primitives-opacity-disabled);
+			cursor: not-allowed;
+			pointer-events: none;
+		}
+
 		.button {
 			/* Reset */
 			appearance: none;
@@ -60,19 +75,19 @@ export class RRButton extends LitElement {
 			align-items: center;
 			justify-content: center;
 			width: 100%;
-			
+
 			/* Transitions */
 			transition:
 				background-color 0.15s ease-out,
 				color 0.15s ease-out
 			;
 		}
-		
+
 		.button:focus-visible {
 			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 			outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 		}
-		
+
 		.button:focus:not(:focus-visible) {
 			outline: none;
 		}
@@ -107,7 +122,7 @@ export class RRButton extends LitElement {
 			border-radius: var(--semantics-controls-md-corner-radius);
 			gap: var(--primitives-space-4);
 		}
-		
+
 		/* Variant: neutral-tinted (default, secondary) */
 		:host([variant="neutral-tinted"]) .button,
 		:host([variant="secondary"]) .button,
@@ -115,31 +130,31 @@ export class RRButton extends LitElement {
 			background-color: var(--semantics-buttons-neutral-tinted-background-color);
 			color: var(--semantics-buttons-neutral-tinted-content-color);
 		}
-		
+
 		:host([variant="neutral-tinted"]) .button:hover,
 		:host([variant="secondary"]) .button:hover,
 		:host(:not([variant])) .button:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 		}
-		
+
 		:host([variant="neutral-tinted"]) .button:active,
 		:host([variant="secondary"]) .button:active,
 		:host(:not([variant])) .button:active {
 			background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
 			color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 		}
-		
+
 		/* Variant: neutral-transparent */
 		:host([variant="neutral-transparent"]) .button {
 			background-color: transparent;
 			color: var(--semantics-buttons-neutral-transparent-content-color);
 		}
-		
+
 		:host([variant="neutral-transparent"]) .button:hover {
 			color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
 		}
-		
+
 		:host([variant="neutral-transparent"]) .button:active {
 			color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
 		}
@@ -156,7 +171,7 @@ export class RRButton extends LitElement {
 			background-color: var(--semantics-buttons-accent-filled-is-hovered-background-color);
 			color: var(--semantics-buttons-accent-filled-is-hovered-content-color);
 		}
-		
+
 		:host([variant="accent-filled"]) .button:active,
 		:host([variant="primary"]) .button:active {
 			background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
@@ -171,30 +186,30 @@ export class RRButton extends LitElement {
 			border-style: solid;
 			border-color: var(--semantics-buttons-accent-outlined-border-color);
 		}
-		
+
 		:host([variant="accent-outlined"][size="md"]) .button {
 			padding: calc(var(--primitives-space-12) - var(--semantics-buttons-accent-outlined-border-thickness));
 		}
-		
+
 		:host([variant="accent-outlined"][size="sm"]) .button {
 			padding:
 				calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness))
 				calc(var(--primitives-space-10) - var(--semantics-buttons-accent-outlined-border-thickness))
 			;
 		}
-		
+
 		:host([variant="accent-outlined"][size="xs"]) .button {
 			padding:
 				calc(var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness))
 				calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness))
 			;
 		}
-		
+
 		:host([variant="accent-outlined"]) .button:hover {
 			color: var(--semantics-buttons-accent-outlined-is-hovered-content-color);
 			border-color: var(--semantics-buttons-accent-outlined-is-hovered-border-color);
 		}
-		
+
 		:host([variant="accent-outlined"]) .button:active {
 			color: var(--semantics-buttons-accent-outlined-is-active-content-color);
 			border-color: var(--semantics-buttons-accent-outlined-is-active-border-color);
@@ -205,11 +220,11 @@ export class RRButton extends LitElement {
 			background-color: transparent;
 			color: var(--semantics-buttons-accent-transparent-content-color);
 		}
-		
+
 		:host([variant="accent-transparent"]) .button:hover {
 			color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
 		}
-		
+
 		:host([variant="accent-transparent"]) .button:active {
 			color: var(--semantics-buttons-accent-transparent-is-active-content-color);
 		}
@@ -226,34 +241,35 @@ export class RRButton extends LitElement {
 			background-color: var(--semantics-buttons-danger-tinted-is-hovered-background-color);
 			color: var(--semantics-buttons-danger-tinted-is-hovered-content-color);
 		}
-		
+
 		:host([variant="danger-tinted"]) .button:active,
 		:host([variant="destructive"]) .button:active {
 			background-color: var(--semantics-buttons-danger-tinted-is-active-background-color);
 			color: var(--semantics-buttons-danger-tinted-is-active-content-color);
 		}
-		
-		:host([disabled]) .button {
-			opacity: var(--primitives-opacity-disabled);
-			cursor: not-allowed;
-			pointer-events: none;
+
+		/* Accessibility: Reduced motion */
+		@media (prefers-reduced-motion: reduce) {
+			.button {
+				transition: none;
+			}
 		}
 
 		/* Slots */
 		::slotted(rr-icon) {
 			flex-shrink: 0;
 		}
-		
+
 		:host([size="md"]) ::slotted(rr-icon) {
 			width: var(--primitives-space-20);
 			height: var(--primitives-space-20);
 		}
-		
+
 		:host([size="sm"]) ::slotted(rr-icon) {
 			width: var(--primitives-space-18);
 			height: var(--primitives-space-18);
 		}
-		
+
 		:host([size="xs"]) ::slotted(rr-icon) {
 			width: var(--primitives-space-16);
 			height: var(--primitives-space-16);
@@ -262,26 +278,26 @@ export class RRButton extends LitElement {
 		.content {
 			display: contents;
 		}
-		
+
 		.picker-icon {
 			display: block;
 			flex-shrink: 0;
 		}
-		
+
 		:host([size="md"]) .picker-icon {
 			width: var(--primitives-space-20);
 			height: var(--primitives-space-20);
 			margin-left: -2px;
 			margin-right: -2px;
 		}
-		
+
 		:host([size="sm"]) .picker-icon {
 			width: var(--primitives-space-18);
 			height: var(--primitives-space-18);
 			margin-left: -1px;
 			margin-right: -2px;
 		}
-		
+
 		:host([size="xs"]) .picker-icon {
 			width: var(--primitives-space-16);
 			height: var(--primitives-space-16);
@@ -329,45 +345,45 @@ export class RRButton extends LitElement {
 	private _detectIconPosition(): void {
 		const children = Array.from(this.children);
 		const icons = children.filter(el => el.tagName.toLowerCase() === 'rr-icon');
-	
+
 		// Reset all icon slots first
 		icons.forEach(el => el.removeAttribute('slot'));
-	
+
 		if (icons.length === 0) {
 			this._iconPosition = null;
 			return;
 		}
-	
+
 		if (icons.length > 2) {
 			console.warn('<rr-button>: Too many rr-icon elements provided. Maximum is one before and one after the title. Extra icons will be ignored.');
 			icons.splice(2);
 		}
-	
+
 		// Filter childNodes to only significant nodes (elements + non-whitespace text)
 		const significantNodes = Array.from(this.childNodes).filter(
-			n => n.nodeType === Node.ELEMENT_NODE || 
+			n => n.nodeType === Node.ELEMENT_NODE ||
 				(n.nodeType === Node.TEXT_NODE && n.textContent?.trim() !== '')
 		);
-	
+
 		if (icons.length === 2) {
 			const first = significantNodes[0];
 			const last = significantNodes[significantNodes.length - 1];
 			const firstIsIcon = (first as Element)?.tagName?.toLowerCase() === 'rr-icon';
 			const lastIsIcon = (last as Element)?.tagName?.toLowerCase() === 'rr-icon';
-	
+
 			if (!firstIsIcon || !lastIsIcon) {
 				console.warn('<rr-button>: Two rr-icon elements detected but they are not surrounding the title. Expected pattern: <rr-icon> label <rr-icon>. Falling back to using the first icon as a start icon.');
 				icons[0].slot = '__icon-start';
 				this._iconPosition = 'start';
 				return;
 			}
-	
+
 			icons[0].slot = '__icon-start';
 			icons[1].slot = '__icon-end';
 			this._iconPosition = 'both';
 			return;
 		}
-	
+
 		// Exactly one icon — check position against significant nodes
 		const icon = icons[0];
 		const isFirst = significantNodes[0] === icon;

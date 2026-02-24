@@ -1,4 +1,5 @@
 export const aliases = {
+	'icon-placeholder': 'circle-dashed',
 	'home': 'house',
 	'user': 'person-circle',
 	'profile': 'person-circle',
