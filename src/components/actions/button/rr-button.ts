@@ -10,7 +10,7 @@
  * @attr {boolean} full-width - Whether the button stretches to fill its container width
  *
  * @slot - Slot for button title
- * @slot (auto) - Place an rr-icon before or after the label to auto-detect position
+ * @slot (auto) - Place an rr-icon before or after the title to auto-detect position
  *
  * @fires click - When button is clicked (not fired when disabled)
  *
@@ -19,7 +19,7 @@
  *
  */
 
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import './../../content/icon/rr-icon.ts';
 
@@ -35,7 +35,11 @@ type Variant =
 	| 'danger-tinted';
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
-type IconPosition = 'start' | 'end' | 'both' | null;
+
+interface IconState {
+	name: string;
+	attributes: Record<string, string>;
+}
 
 @customElement('rr-button')
 export class RRButton extends LitElement {
@@ -81,6 +85,12 @@ export class RRButton extends LitElement {
 				background-color 0.15s ease-out,
 				color 0.15s ease-out
 			;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.button {
+				transition: none;
+			}
 		}
 
 		.button:focus-visible {
@@ -248,57 +258,59 @@ export class RRButton extends LitElement {
 			color: var(--semantics-buttons-danger-tinted-is-active-content-color);
 		}
 
-		/* Accessibility: Reduced motion */
-		@media (prefers-reduced-motion: reduce) {
-			.button {
-				transition: none;
-			}
-		}
-
-		/* Slots */
-		::slotted(rr-icon) {
-			flex-shrink: 0;
-		}
-
-		:host([size="md"]) ::slotted(rr-icon) {
-			width: var(--primitives-space-20);
-			height: var(--primitives-space-20);
-		}
-
-		:host([size="sm"]) ::slotted(rr-icon) {
-			width: var(--primitives-space-18);
-			height: var(--primitives-space-18);
-		}
-
-		:host([size="xs"]) ::slotted(rr-icon) {
-			width: var(--primitives-space-16);
-			height: var(--primitives-space-16);
-		}
-
-		.content {
+		.button__content {
 			display: contents;
 		}
 
-		.picker-icon {
+		/* Hide projected rr-icon elements — we render them ourselves in shadow DOM */
+		::slotted(rr-icon) {
+			display: none;
+		}
+
+		.button__start-icon,
+		.button__end-icon{
 			display: block;
 			flex-shrink: 0;
 		}
 
-		:host([size="md"]) .picker-icon {
+		:host([size="md"]) .button__start-icon,
+		:host([size="md"]) .button__end-icon {
+			width: var(--primitives-space-20);
+			height: var(--primitives-space-20);
+		}
+
+		:host([size="sm"]) .button__start-icon,
+		:host([size="sm"]) .button__end-icon {
+			width: var(--primitives-space-18);
+			height: var(--primitives-space-18);
+		}
+
+		:host([size="xs"]) .button__start-icon,
+		:host([size="xs"]) .button__end-icon {
+			width: var(--primitives-space-16);
+			height: var(--primitives-space-16);
+		}
+
+		.button__picker-icon {
+			display: block;
+			flex-shrink: 0;
+		}
+
+		:host([size="md"]) .button__picker-icon {
 			width: var(--primitives-space-20);
 			height: var(--primitives-space-20);
 			margin-left: -2px;
 			margin-right: -2px;
 		}
 
-		:host([size="sm"]) .picker-icon {
+		:host([size="sm"]) .button__picker-icon {
 			width: var(--primitives-space-18);
 			height: var(--primitives-space-18);
 			margin-left: -1px;
 			margin-right: -2px;
 		}
 
-		:host([size="xs"]) .picker-icon {
+		:host([size="xs"]) .button__picker-icon {
 			width: var(--primitives-space-16);
 			height: var(--primitives-space-16);
 			margin-left: -1px;
@@ -312,34 +324,51 @@ export class RRButton extends LitElement {
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
-	@property({ type: Boolean, reflect: true })
-	disabled = false;
-
-	@property({ type: String, reflect: true })
-	type: ButtonType = 'button';
+	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
+	fullWidth = false;
 
 	@property({ type: Boolean, reflect: true, attribute: 'has-menu' })
 	hasMenu = false;
 
-	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
-	fullWidth = false;
+	@property({ type: String, reflect: true })
+	type: ButtonType = 'button';
+
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
 	@state()
-	private _iconPosition: IconPosition = null;
+	private _iconStart: IconState | null = null;
+
+	@state()
+	private _iconEnd: IconState | null = null;
 
 	private _observer: MutationObserver | null = null;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this._observer = new MutationObserver(() => this._detectIconPosition());
-		this._observer.observe(this, { childList: true });
-		this._detectIconPosition();
+		this._observer.observe(this, { childList: true, subtree: true, attributes: true });
+		this.updateComplete.then(() => this._detectIconPosition());
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this._observer?.disconnect();
 		this._observer = null;
+	}
+
+	/**
+	 * Extracts all attributes from an Element into a plain record,
+	 * excluding the 'slot' attribute which we manage ourselves.
+	 */
+	private _extractAttributes(el: Element): Record<string, string> {
+		const attrs: Record<string, string> = {};
+		for (const attr of Array.from(el.attributes)) {
+			if (attr.name !== 'slot') {
+				attrs[attr.name] = attr.value;
+			}
+		}
+		return attrs;
 	}
 
 	/**
@@ -356,7 +385,6 @@ export class RRButton extends LitElement {
 	private _getEffectiveNodes(): Node[] {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		if (!slot) {
-			// Shadow DOM not yet rendered — fall back to light DOM children
 			return Array.from(this.childNodes);
 		}
 		return slot.assignedNodes({ flatten: true });
@@ -365,18 +393,15 @@ export class RRButton extends LitElement {
 	private _detectIconPosition(): void {
 		const effectiveNodes = this._getEffectiveNodes();
 
-		// Collect rr-icon elements from effective (possibly projected) nodes
 		const icons = effectiveNodes.filter(
 			(n): n is Element =>
 				n.nodeType === Node.ELEMENT_NODE &&
 				(n as Element).tagName.toLowerCase() === 'rr-icon'
 		);
 
-		// Reset all icon slots first
-		icons.forEach(el => el.removeAttribute('slot'));
-
 		if (icons.length === 0) {
-			this._iconPosition = null;
+			this._iconStart = null;
+			this._iconEnd = null;
 			return;
 		}
 
@@ -399,23 +424,55 @@ export class RRButton extends LitElement {
 			const lastIsIcon = (last as Element)?.tagName?.toLowerCase() === 'rr-icon';
 
 			if (!firstIsIcon || !lastIsIcon) {
-				console.warn('<rr-button>: Two rr-icon elements detected but they are not surrounding the title. Expected pattern: <rr-icon> label <rr-icon>. Falling back to using the first icon as a start icon.');
-				icons[0].slot = '__icon-start';
-				this._iconPosition = 'start';
+				console.warn('<rr-button>: Two rr-icon elements detected but they are not surrounding the title. Expected pattern: <rr-icon> title <rr-icon>. Falling back to using the first icon as a start icon.');
+				this._iconStart = {
+					name: icons[0].getAttribute('name') ?? '',
+					attributes: this._extractAttributes(icons[0]),
+				};
+				this._iconEnd = null;
 				return;
 			}
 
-			icons[0].slot = '__icon-start';
-			icons[1].slot = '__icon-end';
-			this._iconPosition = 'both';
+			this._iconStart = {
+				name: icons[0].getAttribute('name') ?? '',
+				attributes: this._extractAttributes(icons[0]),
+			};
+			this._iconEnd = {
+				name: icons[1].getAttribute('name') ?? '',
+				attributes: this._extractAttributes(icons[1]),
+			};
 			return;
 		}
 
-		// Exactly one icon — check position against significant nodes
+		// Exactly one icon — determine position
 		const icon = icons[0];
 		const isFirst = significantNodes[0] === icon;
-		this._iconPosition = isFirst ? 'start' : 'end';
-		icon.slot = isFirst ? '__icon-start' : '__icon-end';
+		const iconState: IconState = {
+			name: icon.getAttribute('name') ?? '',
+			attributes: this._extractAttributes(icon),
+		};
+
+		if (isFirst) {
+			this._iconStart = iconState;
+			this._iconEnd = null;
+		} else {
+			this._iconStart = null;
+			this._iconEnd = iconState;
+		}
+	}
+
+	private _renderIcon(icon: IconState): unknown {
+		// Spread all original attributes onto the shadow DOM icon
+		const attrEntries = Object.entries(icon.attributes)
+			.filter(([key]) => key !== 'name')
+			.map(([key, value]) => `${key}="${value}"`)
+			.join(' ');
+
+		return html`<rr-icon
+			class="icon"
+			name=${icon.name}
+			${attrEntries ? html`...` : nothing}
+		></rr-icon>`;
 	}
 
 	private _handleClick(e: MouseEvent): void {
@@ -435,20 +492,26 @@ export class RRButton extends LitElement {
 				aria-disabled=${this.disabled}
 				@click=${this._handleClick}
 			>
-				<span class="content" part="content">
-					${this._iconPosition === 'start' || this._iconPosition === 'both'
-						? html`<slot name="__icon-start"></slot>`
-						: ''}
+				<span class="button__content" part="content">
+					${this._iconStart ? html`
+						<rr-icon
+							class="button__start-icon"
+							name=${this._iconStart.name}
+						></rr-icon>
+					` : nothing}
 					<slot @slotchange=${this._detectIconPosition}></slot>
-					${this._iconPosition === 'end' || this._iconPosition === 'both'
-						? html`<slot name="__icon-end"></slot>`
-						: ''}
+					${this._iconEnd ? html`
+						<rr-icon
+							class="button__end-icon"
+							name=${this._iconEnd.name}
+						></rr-icon>
+					` : nothing}
 					${this.hasMenu ? html`
 						<rr-icon
-							class="picker-icon"
+							class="button__picker-icon"
 							name="chevron-down-small"
 						></rr-icon>
-					` : ''}
+					` : nothing}
 				</span>
 			</button>
 		`;
