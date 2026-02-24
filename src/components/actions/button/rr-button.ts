@@ -329,43 +329,48 @@ export class RRButton extends LitElement {
 	private _detectIconPosition(): void {
 		const children = Array.from(this.children);
 		const icons = children.filter(el => el.tagName.toLowerCase() === 'rr-icon');
-
+	
 		// Reset all icon slots first
 		icons.forEach(el => el.removeAttribute('slot'));
-
+	
 		if (icons.length === 0) {
 			this._iconPosition = null;
 			return;
 		}
-
+	
 		if (icons.length > 2) {
-			console.warn('<rr-button>: Too many rr-icon elements provided. Maximum is one before and one after the label. Extra icons will be ignored.');
-			// Trim to max 2 for further processing
+			console.warn('<rr-button>: Too many rr-icon elements provided. Maximum is one before and one after the title. Extra icons will be ignored.');
 			icons.splice(2);
 		}
-
+	
+		// Filter childNodes to only significant nodes (elements + non-whitespace text)
+		const significantNodes = Array.from(this.childNodes).filter(
+			n => n.nodeType === Node.ELEMENT_NODE || 
+				(n.nodeType === Node.TEXT_NODE && n.textContent?.trim() !== '')
+		);
+	
 		if (icons.length === 2) {
-			const first = children[0];
-			const last = children[children.length - 1];
-			const firstIsIcon = first.tagName.toLowerCase() === 'rr-icon';
-			const lastIsIcon = last.tagName.toLowerCase() === 'rr-icon';
-
+			const first = significantNodes[0];
+			const last = significantNodes[significantNodes.length - 1];
+			const firstIsIcon = (first as Element)?.tagName?.toLowerCase() === 'rr-icon';
+			const lastIsIcon = (last as Element)?.tagName?.toLowerCase() === 'rr-icon';
+	
 			if (!firstIsIcon || !lastIsIcon) {
-				console.warn('<rr-button>: Two rr-icon elements detected but they are not surrounding the label. Expected pattern: <rr-icon> label <rr-icon>. Falling back to using the first icon as a start icon.');
+				console.warn('<rr-button>: Two rr-icon elements detected but they are not surrounding the title. Expected pattern: <rr-icon> label <rr-icon>. Falling back to using the first icon as a start icon.');
 				icons[0].slot = '__icon-start';
 				this._iconPosition = 'start';
 				return;
 			}
-
+	
 			icons[0].slot = '__icon-start';
 			icons[1].slot = '__icon-end';
 			this._iconPosition = 'both';
 			return;
 		}
-
-		// Exactly one icon
+	
+		// Exactly one icon — check position against significant nodes
 		const icon = icons[0];
-		const isFirst = children[0] === icon;
+		const isFirst = significantNodes[0] === icon;
 		this._iconPosition = isFirst ? 'start' : 'end';
 		icon.slot = isFirst ? '__icon-start' : '__icon-end';
 	}

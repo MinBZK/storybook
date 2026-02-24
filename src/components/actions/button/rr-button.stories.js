@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './rr-button.ts';
+import { ICONS } from './../../content/icon/rr-icon.ts';
 
 /**
  * De Button component is het primaire interactie-element voor gebruikersacties.
@@ -49,9 +50,30 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
-		disabled: {
+		title: {
+			control: 'text',
+			description: 'Button label text',
+		},
+		startIcon: {
+			control: 'select',
+			options: ['', ...ICONS],
+			description: 'Icon name to show before the label.',
+			table: {
+				defaultValue: { summary: '' },
+			},
+		},
+		endIcon: {
+			control: 'select',
+			options: ['', ...ICONS],
+			description: 'Icon name to show after the label.',
+			table: {
+				defaultValue: { summary: '' },
+			},
+		},
+		hasMenu: {
 			control: 'boolean',
-			description: 'Disabled state',
+			name: 'has-menu',
+			description: 'Adds a chevron to indicate this button opens a dropdown menu',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -64,46 +86,38 @@ export default {
 				defaultValue: { summary: 'button' },
 			},
 		},
-		title: {
-			control: 'text',
-			description: 'Button title',
-		},
-		hasStartIcon: {
+		disabled: {
 			control: 'boolean',
-			description: 'Whether button has a start icon',
-			table: {
-				defaultValue: { summary: false },
-			},
-		},
-		hasEndIcon: {
-			control: 'boolean',
-			description: 'Whether button has an end icon',
-			table: {
-				defaultValue: { summary: false },
-			},
-		},
-		hasMenu: {
-			control: 'boolean',
-			description: 'Whether button opens a menu (shows chevron)',
+			description: 'Disabled state',
 			table: {
 				defaultValue: { summary: false },
 			},
 		},
 	},
 	args: {
-		title: 'Button',
 		variant: 'neutral-tinted',
 		size: 'md',
-		disabled: false,
-		type: 'button',
-		hasStartIcon: false,
-		hasEndIcon: false,
+		title: 'Button',
+		startIcon: '',
+		endIcon: '',
 		hasMenu: false,
+		type: 'button',
+		disabled: false,
 	},
 };
 
-const Template = ({ title, variant, size, disabled, type }) => html`
-	<rr-button variant=${variant} size=${size} ?disabled=${disabled} type=${type}>${title}</rr-button>
+const Template = ({ title, variant, size, type, startIcon, endIcon, hasMenu, disabled }) => html`
+	<rr-button
+		variant=${variant}
+		size=${size}
+		type=${type}
+		?has-menu=${hasMenu}
+		?disabled=${disabled}
+	>
+		${startIcon ? html`<rr-icon name=${startIcon}></rr-icon>` : ''}
+		${title}
+		${endIcon ? html`<rr-icon name=${endIcon}></rr-icon>` : ''}
+	</rr-button>
 `;
 
 // Main story
