@@ -9,7 +9,7 @@ import { ICONS } from './../../content/icon/rr-icon.ts';
  * ```html
  * <rr-icon-button>
  *   <rr-icon name="dismiss"></rr-icon>
- *   Sluiten
+ *   Annuleer
  * </rr-icon-button>
  * ```
  */
@@ -93,7 +93,7 @@ export default {
 		variant: 'neutral-tinted',
 		size: 'md',
 		icon: 'dismiss',
-		title: 'Sluiten',
+		title: 'Annuleer',
 		hasMenu: false,
 		type: 'button',
 		disabled: false,
@@ -117,7 +117,7 @@ const Template = ({ variant, size, icon, title, hasMenu, type, disabled }) => ht
 export const Default = Template.bind({});
 Default.args = {
 	icon: 'dismiss',
-	title: 'Sluiten',
+	title: 'Annuleer',
 };
 
 // Role based
@@ -125,15 +125,15 @@ export const RoleBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button variant="primary">
 			<rr-icon name="add"></rr-icon>
-			Toevoegen
+			Voeg toe
 		</rr-icon-button>
 		<rr-icon-button variant="secondary">
 			<rr-icon name="add"></rr-icon>
-			Toevoegen
+			Voeg toe
 		</rr-icon-button>
 		<rr-icon-button variant="destructive">
 			<rr-icon name="delete"></rr-icon>
-			Verwijderen
+			Verwijder
 		</rr-icon-button>
 	</div>
 `;
@@ -151,27 +151,27 @@ export const AppearanceBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button variant="accent-filled">
 			<rr-icon name="add"></rr-icon>
-			Toevoegen
+			Voeg toe
 		</rr-icon-button>
 		<rr-icon-button variant="accent-outlined">
 			<rr-icon name="add"></rr-icon>
-			Toevoegen
+			Voeg toe
 		</rr-icon-button>
 		<rr-icon-button variant="accent-transparent">
 			<rr-icon name="add"></rr-icon>
-			Toevoegen
+			Voeg toe
 		</rr-icon-button>
 		<rr-icon-button variant="neutral-tinted">
 			<rr-icon name="add"></rr-icon>
-			Toevoegen
+			Voeg toe
 		</rr-icon-button>
 		<rr-icon-button variant="neutral-transparent">
 			<rr-icon name="add"></rr-icon>
-			Toevoegen
+			Voeg toe
 		</rr-icon-button>
 		<rr-icon-button variant="danger-tinted">
-			<rr-icon name="remove"></rr-icon>
-			Verwijderen
+			<rr-icon name="delete"></rr-icon>
+			Verwijder
 		</rr-icon-button>
 	</div>
 `;
@@ -184,19 +184,19 @@ export const Sizes = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button size="lg">
 			<rr-icon name="dismiss"></rr-icon>
-			Sluiten
+			Annuleer
 		</rr-icon-button>
 		<rr-icon-button size="md">
 			<rr-icon name="dismiss"></rr-icon>
-			Sluiten
+			Annuleer
 		</rr-icon-button>
 		<rr-icon-button size="sm">
 			<rr-icon name="dismiss"></rr-icon>
-			Sluiten
+			Annuleer
 		</rr-icon-button>
 		<rr-icon-button size="xs">
 			<rr-icon name="dismiss"></rr-icon>
-			Sluiten
+			Annuleer
 		</rr-icon-button>
 	</div>
 `;
@@ -216,8 +216,8 @@ export const Large = () => html`
 			Instellingen
 		</rr-icon-button>
 		<rr-icon-button size="lg">
-			<rr-icon name="dismiss"></rr-icon>
-			Sluiten
+			<rr-icon name="search"></rr-icon>
+			Zoeken
 		</rr-icon-button>
 	</div>
 `;
@@ -235,19 +235,19 @@ export const WithMenu = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button has-menu size="lg">
 			<rr-icon name="global-settings"></rr-icon>
-			Opties
+			Instellingen
 		</rr-icon-button>
 		<rr-icon-button has-menu size="md">
 			<rr-icon name="global-settings"></rr-icon>
-			Opties
+			Instellingen
 		</rr-icon-button>
 		<rr-icon-button has-menu size="sm">
 			<rr-icon name="global-settings"></rr-icon>
-			Opties
+			Instellingen
 		</rr-icon-button>
 		<rr-icon-button has-menu size="xs">
 			<rr-icon name="global-settings"></rr-icon>
-			Opties
+			Instellingen
 		</rr-icon-button>
 	</div>
 `;

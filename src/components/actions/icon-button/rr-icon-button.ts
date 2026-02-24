@@ -387,7 +387,7 @@ export class RRIconButton extends LitElement {
 				type=${this.type}
 				?disabled=${this.disabled}
 				aria-disabled=${this.disabled}
-				aria-label=${this._title}
+				title=${this.size !== 'lg' ? this._title : ''}
 				@click=${this._handleClick}
 			>
 				<span class="icon-button__icon-area">
