@@ -210,8 +210,7 @@ WithStartIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'Button met een icoon aan de linkerkant. Gebruik de `has-start-icon` attribute en plaats een icoon in de `icon-start` slot.',
+			story: 'Button met een icoon aan de linkerkant. Plaats een `rr-icon` vóór de tekst — de positie wordt automatisch gedetecteerd.',
 		},
 	},
 };
@@ -248,8 +247,7 @@ WithEndIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'Button met een icoon aan de rechterkant. Gebruik de `has-end-icon` attribute en plaats een icoon in de `icon-end` slot.',
+			story: 'Button met een icoon aan de rechterkant. Plaats een `rr-icon` ná de tekst — de positie wordt automatisch gedetecteerd.',
 		},
 	},
 };
@@ -294,8 +292,7 @@ WithBothIcons.parameters = {
 	},
 	docs: {
 		description: {
-			story:
-				'Button met zowel een start als end icoon. Combineer `has-start-icon` en `has-end-icon` attributes.',
+			story: 'Button met zowel een start als end icoon. Plaats een `rr-icon` vóór én ná de tekst — beide posities worden automatisch gedetecteerd.',
 		},
 	},
 };
