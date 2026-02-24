@@ -492,7 +492,7 @@ export class RRButton extends LitElement {
 				aria-disabled=${this.disabled}
 				@click=${this._handleClick}
 			>
-				<span class="button__content" part="content">
+				<span class="button__content">
 					${this._iconStart ? html`
 						<rr-icon
 							class="button__start-icon"

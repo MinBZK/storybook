@@ -2,68 +2,188 @@
  * RegelRecht Button Bar Component (Lit + TypeScript)
  *
  * A horizontal container for grouping buttons with a neutral background.
- * Similar to button-group but with a visible background and border radius.
+ * Automatically propagates its size to all child rr-button and rr-icon-button elements.
+ * Renders rr-button-bar-divider elements as internal dividers — no separate component needed.
  *
  * @element rr-button-bar
  * @attr {string} size - Bar size: 'sm' | 'md' (default: 'md')
  *
- * @slot - Default slot for buttons and dividers
+ * @slot - Default slot for rr-button, rr-icon-button and rr-button-bar-divider elements
  *
  * @csspart bar - The button bar container
  */
-
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
+
+// Marker element — geen logica, geen styles, puur een tag voor slotchange detectie
+if (!customElements.get('rr-button-bar-divider')) {
+	customElements.define('rr-button-bar-divider', class extends HTMLElement {});
+}
 
 type Size = 'sm' | 'md';
 
+type BarChild =
+	| { type: 'divider'; id: number }
+	| { type: 'button'; element: Element; id: number };
+
 @customElement('rr-button-bar')
 export class RRButtonBar extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-flex;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = css`
+		:host {
+			display: inline-flex;
+		}
 
-    :host([hidden]) {
-      display: none;
-    }
+		:host([hidden]) {
+			display: none;
+		}
 
-    .button-bar {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      background-color: var(--semantics-dividers-color);
-      border-radius: var(--semantics-controls-md-corner-radius);
-    }
+		:host([disabled]) {
+			opacity: var(--primitives-opacity-disabled);
+			pointer-events: none;
+			cursor: not-allowed;
+		}
 
-    /* Size: S - height 32px */
-    :host([size="sm"]) .button-bar {
-      height: 32px;
-    }
+		:host([disabled]) ::slotted(rr-button),
+		:host([disabled]) ::slotted(rr-icon-button) {
+			opacity: 1;
+		}
 
-    /* Size: M (default) - height 44px */
-    :host([size="md"]) .button-bar,
-    :host(:not([size])) .button-bar {
-      height: 44px;
-    }
-  `;
+		.button-bar {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		}
 
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
+		/* Size: SM */
+		:host([size="sm"]) .button-bar {
+			height: var(--semantics-controls-sm-min-size);
+			border-radius: var(--semantics-controls-sm-corner-radius);
+		}
 
-  override render() {
-    return html`
-      <div class="button-bar" part="bar" role="group">
-        <slot></slot>
-      </div>
-    `;
-  }
+		/* Size: MD (default) */
+		:host([size="md"]) .button-bar,
+		:host(:not([size])) .button-bar {
+			height: var(--semantics-controls-md-min-size);
+			border-radius: var(--semantics-controls-md-corner-radius);
+		}
+
+		/* Divider */
+		.button-bar__divider {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+		}
+
+		:host([size="sm"]) .button-bar__divider {
+			height: var(--semantics-controls-sm-min-size);
+		}
+
+		:host([size="md"]) .button-bar__divider,
+		:host(:not([size])) .button-bar__divider {
+			height: var(--semantics-controls-md-min-size);
+		}
+
+		.button-bar__divider-line {
+			width: var(--semantics-dividers-thickness);
+			background-color: var(--semantics-buttons-neutral-tinted-divider-color);
+		}
+
+		:host([size="sm"]) .button-bar__divider-line {
+			height: var(--semantics-buttons-sm-divider-length);
+		}
+
+		:host([size="md"]) .button-bar__divider-line,
+		:host(:not([size])) .button-bar__divider-line {
+			height: var(--semantics-buttons-md-divider-length);
+		}
+	`;
+
+	@property({ type: String, reflect: true })
+	size: Size = 'md';
+
+	@state()
+	private _children: BarChild[] = [];
+
+	private _idCounter = 0;
+	private _observer: MutationObserver | null = null;
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._observer = new MutationObserver(() => this._buildChildren());
+		this._observer.observe(this, { childList: true });
+		this._buildChildren();
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._observer?.disconnect();
+		this._observer = null;
+	}
+
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('size')) {
+			this._propagateSize();
+		}
+	}
+
+	private _propagateSize(): void {
+		Array.from(this.children)
+			.filter(el => ['rr-button', 'rr-icon-button'].includes(el.tagName.toLowerCase()))
+			.forEach(el => el.setAttribute('size', this.size));
+	}
+
+	private _buildChildren(): void {
+		// Clean up stale slot attributes from previous render
+		Array.from(this.children).forEach(el => el.removeAttribute('slot'));
+
+		this._children = Array.from(this.children).map(el => {
+			const tag = el.tagName.toLowerCase();
+
+			if (tag === 'rr-button-bar-divider') {
+				return { type: 'divider', id: this._idCounter++ } as BarChild;
+			}
+
+			if (['rr-button', 'rr-icon-button'].includes(tag)) {
+				el.setAttribute('size', this.size);
+			}
+
+			const id = this._idCounter++;
+			el.setAttribute('slot', `child-${id}`);
+			return { type: 'button', element: el, id } as BarChild;
+		});
+	}
+
+	private _renderChild(child: BarChild) {
+		if (child.type === 'divider') {
+			return html`
+				<div
+					class="button-bar__divider"
+					role="separator"
+				>
+					<div class="button-bar__divider-line"></div>
+				</div>
+			`;
+		}
+
+		return html`<slot name="child-${child.id}"></slot>`;
+	}
+
+	override render() {
+		return html`
+			<div class="button-bar" role="group">
+				${repeat(this._children, c => c.id, c => this._renderChild(c))}
+			</div>
+		`;
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-button-bar': RRButtonBar;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-button-bar': RRButtonBar;
+		'rr-button-bar-divider': HTMLElement;
+	}
 }
