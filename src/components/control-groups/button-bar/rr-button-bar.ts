@@ -6,7 +6,8 @@
  * Renders rr-button-bar-divider elements as internal dividers — no separate component needed.
  *
  * @element rr-button-bar
- * @attr {string} size - Bar size: 'sm' | 'md' (default: 'md')
+ * @attr {string} size - Bar size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {boolean} disabled - Disabled state
  *
  * @slot - Default slot for rr-button, rr-icon-button and rr-button-bar-divider elements
  *
@@ -21,7 +22,7 @@ if (!customElements.get('rr-button-bar-divider')) {
 	customElements.define('rr-button-bar-divider', class extends HTMLElement {});
 }
 
-type Size = 'sm' | 'md';
+type Size = 'xs' | 'sm' | 'md';
 
 type BarChild =
 	| { type: 'divider'; id: number }
@@ -57,6 +58,12 @@ export class RRButtonBar extends LitElement {
 			background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		}
 
+		/* Size: XS */
+		:host([size="xs"]) .button-bar {
+			height: var(--semantics-controls-xs-min-size);
+			border-radius: var(--semantics-controls-xs-corner-radius);
+		}
+
 		/* Size: SM */
 		:host([size="sm"]) .button-bar {
 			height: var(--semantics-controls-sm-min-size);
@@ -78,6 +85,10 @@ export class RRButtonBar extends LitElement {
 			flex-shrink: 0;
 		}
 
+		:host([size="xs"]) .button-bar__divider {
+			height: var(--semantics-controls-xs-min-size);
+		}
+
 		:host([size="sm"]) .button-bar__divider {
 			height: var(--semantics-controls-sm-min-size);
 		}
@@ -92,6 +103,10 @@ export class RRButtonBar extends LitElement {
 			background-color: var(--semantics-buttons-neutral-tinted-divider-color);
 		}
 
+		:host([size="xs"]) .button-bar__divider-line {
+			height: var(--semantics-buttons-xs-divider-length);
+		}
+
 		:host([size="sm"]) .button-bar__divider-line {
 			height: var(--semantics-buttons-sm-divider-length);
 		}
@@ -104,6 +119,9 @@ export class RRButtonBar extends LitElement {
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
+
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
 	@state()
 	private _children: BarChild[] = [];
@@ -128,12 +146,27 @@ export class RRButtonBar extends LitElement {
 		if (changedProperties.has('size')) {
 			this._propagateSize();
 		}
+		if (changedProperties.has('disabled')) {
+			this._propagateDisabled();
+		}
 	}
 
 	private _propagateSize(): void {
 		Array.from(this.children)
 			.filter(el => ['rr-button', 'rr-icon-button'].includes(el.tagName.toLowerCase()))
 			.forEach(el => el.setAttribute('size', this.size));
+	}
+
+	private _propagateDisabled(): void {
+		Array.from(this.children)
+			.filter(el => ['rr-button', 'rr-icon-button'].includes(el.tagName.toLowerCase()))
+			.forEach(el => {
+				if (this.disabled) {
+					el.setAttribute('disabled', '');
+				} else {
+					el.removeAttribute('disabled');
+				}
+			});
 	}
 
 	private _buildChildren(): void {
@@ -149,6 +182,9 @@ export class RRButtonBar extends LitElement {
 
 			if (['rr-button', 'rr-icon-button'].includes(tag)) {
 				el.setAttribute('size', this.size);
+				if (this.disabled) {
+					el.setAttribute('disabled', '');
+				}
 			}
 
 			const id = this._idCounter++;
