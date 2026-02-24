@@ -50,6 +50,13 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
+		fullWidth: {
+			control: 'boolean',
+			description: 'Full width',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
 		title: {
 			control: 'text',
 			description: 'Button label text',
@@ -97,6 +104,7 @@ export default {
 	args: {
 		variant: 'neutral-tinted',
 		size: 'md',
+		fullWidth: false,
 		title: 'Button',
 		startIcon: '',
 		endIcon: '',
@@ -106,10 +114,11 @@ export default {
 	},
 };
 
-const Template = ({ title, variant, size, type, startIcon, endIcon, hasMenu, disabled }) => html`
+const Template = ({ title, variant, size, fullWidth, type, startIcon, endIcon, hasMenu, disabled }) => html`
 	<rr-button
 		variant=${variant}
 		size=${size}
+		?full-width=${fullWidth}
 		type=${type}
 		?has-menu=${hasMenu}
 		?disabled=${disabled}
