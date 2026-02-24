@@ -235,12 +235,11 @@ export class RRIconButton extends LitElement {
 		}
 
 		:host([variant='neutral-transparent']) .icon-button:hover {
-			background-color: var(--semantics-buttons-neutral-transparent-is-hovered-background-color);
+			background-color: transparent;
 			color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
 		}
 
 		:host([variant='neutral-transparent']) .icon-button:active {
-			background-color: var(--semantics-buttons-neutral-transparent-is-active-background-color);
 			color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
 		}
 
@@ -270,6 +269,22 @@ export class RRIconButton extends LitElement {
 			border-style: solid;
 			border-color: var(--semantics-buttons-accent-outlined-border-color);
 			color: var(--semantics-buttons-accent-outlined-content-color);
+		}
+		
+		:host([variant="accent-outlined"][size="lg"]) .icon-button {
+			padding: calc(var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness));
+		}
+		
+		:host([variant="accent-outlined"][size="md"]) .icon-button {
+			padding: calc(var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness));
+		}
+		
+		:host([variant="accent-outlined"][size="sm"]) .icon-button {
+			padding: calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness));
+		}
+		
+		:host([variant="accent-outlined"][size="xs"]) .icon-button {
+			padding: calc(var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness));
 		}
 
 		:host([variant='accent-outlined']) .icon-button:hover {
