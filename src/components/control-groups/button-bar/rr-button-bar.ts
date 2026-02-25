@@ -172,6 +172,7 @@ export class RRButtonBar extends LitElement {
 	private _building = false;
 
 	private _buildChildren(): void {
+		this._idCounter = 0;
 		if (this._building) return;
 		this._building = true;
 		// Clean up stale slot attributes from previous render
