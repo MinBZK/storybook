@@ -30,9 +30,9 @@ export function template(this: RRButton, helpers: TemplateHelpers) {
 						name=${this._iconEnd.name}
 					></rr-icon>
 				` : nothing}
-				${this.hasMenu ? html`
+				${this.isExpandable ? html`
 					<rr-icon
-						class="button__picker-icon"
+						class="button__disclosure-icon"
 						name="chevron-down-small"
 					></rr-icon>
 				` : nothing}

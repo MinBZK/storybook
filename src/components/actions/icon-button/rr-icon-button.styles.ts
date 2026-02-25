@@ -1,6 +1,7 @@
 import { css } from 'lit';
 
 export const styles = css`
+	/* # Host */
 	:host {
 		display: inline-block;
 	}
@@ -14,6 +15,8 @@ export const styles = css`
 		cursor: not-allowed;
 		pointer-events: none;
 	}
+
+	/* # Base */
 
 	.icon-button {
 		appearance: none;
@@ -38,7 +41,7 @@ export const styles = css`
 		}
 	}
 
-	/* # Focus State */
+	/* # Focus */
 
 	.icon-button:focus-visible {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
@@ -67,7 +70,7 @@ export const styles = css`
 		height: var(--primitives-space-16);
 	}
 
-	:host([size='xs']) .icon-button__picker-icon {
+	:host([size='xs']) .icon-button__disclosure-icon {
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
 	}
@@ -88,7 +91,7 @@ export const styles = css`
 		height: var(--primitives-space-20);
 	}
 
-	:host([size='sm']) .icon-button__picker-icon {
+	:host([size='sm']) .icon-button__disclosure-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		margin-right: calc(var(--primitives-space-2) * -1);
@@ -112,8 +115,8 @@ export const styles = css`
 		height: var(--primitives-space-24);
 	}
 
-	:host([size='md']) .icon-button__picker-icon,
-	:host(:not([size])) .icon-button__picker-icon {
+	:host([size='md']) .icon-button__disclosure-icon,
+	:host(:not([size])) .icon-button__disclosure-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		margin-right: calc(var(--primitives-space-2) * -1);
@@ -136,7 +139,7 @@ export const styles = css`
 		height: var(--primitives-space-24);
 	}
 
-	:host([size='lg']) .icon-button__picker-icon {
+	:host([size='lg']) .icon-button__disclosure-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		margin-right: calc(var(--primitives-space-2) * -1);
@@ -274,7 +277,7 @@ export const styles = css`
 		color: var(--semantics-buttons-danger-tinted-is-active-content-color);
 	}
 
-	/* # Content */
+	/* # Elements */
 
 	.icon-button__icon-area {
 		display: inline-flex;
@@ -290,7 +293,7 @@ export const styles = css`
 		justify-content: center;
 	}
 
-	.icon-button__picker-icon {
+	.icon-button__disclosure-icon {
 		display: flex;
 		flex-shrink: 0;
 	}

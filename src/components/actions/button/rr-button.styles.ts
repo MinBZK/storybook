@@ -1,6 +1,7 @@
 import { css } from 'lit';
 
 export const styles = css`
+	/* # Host */
 	:host {
 		display: inline-block;
 	}
@@ -19,6 +20,8 @@ export const styles = css`
 		cursor: not-allowed;
 		pointer-events: none;
 	}
+
+	/* # Base */
 
 	.button {
 		appearance: none;
@@ -45,7 +48,7 @@ export const styles = css`
 		}
 	}
 
-	/* # Focus state */
+	/* # Focus */
 
 	.button:focus-visible {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
@@ -226,7 +229,7 @@ export const styles = css`
 		color: var(--semantics-buttons-danger-tinted-is-active-content-color);
 	}
 
-	/* ## Content (Title and Icons) */
+	/* ## Elements */
 
 	.button__content {
 		display: contents;
@@ -243,7 +246,9 @@ export const styles = css`
 	}
 
 	:host([size="md"]) .button__start-icon,
-	:host([size="md"]) .button__end-icon {
+	:host(:not([size])) .button__start-icon,
+	:host([size="md"]) .button__end-icon,
+	:host(:not([size])) .button__end-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 	}
@@ -260,26 +265,27 @@ export const styles = css`
 		height: var(--primitives-space-16);
 	}
 
-	.button__picker-icon {
+	.button__disclosure-icon {
 		display: block;
 		flex-shrink: 0;
 	}
 
-	:host([size="md"]) .button__picker-icon {
+	:host([size="md"]) .button__disclosure-icon,
+	:host(:not([size])) .button__disclosure-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		margin-left: -2px;
 		margin-right: -2px;
 	}
 
-	:host([size="sm"]) .button__picker-icon {
+	:host([size="sm"]) .button__disclosure-icon {
 		width: var(--primitives-space-18);
 		height: var(--primitives-space-18);
 		margin-left: -1px;
 		margin-right: -2px;
 	}
 
-	:host([size="xs"]) .button__picker-icon {
+	:host([size="xs"]) .button__disclosure-icon {
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
 		margin-left: -1px;

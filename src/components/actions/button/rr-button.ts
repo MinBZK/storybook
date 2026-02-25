@@ -6,7 +6,7 @@
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
- * @attr {boolean} has-menu - Whether the button has a dropdown menu icon
+ * @attr {boolean} is-expandable - Whether the button has a icon to indicate it opens a menu or popover
  * @attr {boolean} full-width - Whether the button stretches to fill its container width
  *
  * @slot - Slot for button title
@@ -55,8 +55,8 @@ export class RRButton extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
 	fullWidth = false;
 
-	@property({ type: Boolean, reflect: true, attribute: 'has-menu' })
-	hasMenu = false;
+	@property({ type: Boolean, reflect: true, attribute: 'is-expandable' })
+	isExpandable = false;
 
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';

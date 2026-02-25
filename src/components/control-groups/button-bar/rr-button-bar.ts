@@ -58,6 +58,12 @@ export class RRButtonBar extends LitElement {
 			background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		}
 
+		::slotted(rr-button:focus-within),
+		::slotted(rr-icon-button:focus-within) {
+			position: relative;
+			z-index: 1;
+		}
+
 		/* Size: XS */
 		:host([size="xs"]) .button-bar {
 			height: var(--semantics-controls-xs-min-size);

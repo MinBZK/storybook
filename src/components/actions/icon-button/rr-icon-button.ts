@@ -6,7 +6,7 @@
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
- * @attr {boolean} has-menu - Whether the button opens a menu (shows chevron)
+ * @attr {boolean} is-expandable - Whether the button opens a menu or popover and shows chevron next to the icon.
  *
  * @slot - Place an rr-icon and optionally a text label. Text is used as aria-label and shown below the icon in lg size.
  *
@@ -56,8 +56,8 @@ export class RRIconButton extends LitElement {
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';
 
-	@property({ type: Boolean, reflect: true, attribute: 'has-menu' })
-	hasMenu = false;
+	@property({ type: Boolean, reflect: true, attribute: 'is-expandable' })
+	isExpandable = false;
 
 	@state()
 	_title = '';

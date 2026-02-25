@@ -16,8 +16,8 @@ export function template(this: RRIconButton) {
 				<span class="icon-button__icon">
 					<slot name="__icon"></slot>
 				</span>
-				${this.hasMenu ? html`
-					<span class="icon-button__picker-icon">
+				${this.isExpandable ? html`
+					<span class="icon-button__disclosure-icon">
 						<rr-icon name="chevron-down-small"></rr-icon>
 					</span>
 				` : ''}
