@@ -2,14 +2,6 @@ import '../src/assets/css/fonts.css';
 import '../src/assets/css/settings.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
-// Figma Testing Library for pixel-perfect comparison
-import { defineCustomElements } from '@cianfrani/figma-testing-library/loader';
-
-// Initialize Figma Testing Library web components
-if (typeof window !== 'undefined') {
-	defineCustomElements(window);
-}
-
 /** @type { import('@storybook/web-components-vite').Preview } */
 const preview = {
 	decorators: [

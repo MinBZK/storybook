@@ -6,9 +6,6 @@ import '../menu-bar/rr-menu-item.ts';
  * De Top Navigation Bar is de primaire navigatiecomponent voor Rijksoverheid websites.
  * Combineert logo, titel, horizontale menunavigatie en utility knoppen (taal, zoeken, account).
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135)
- *
  * ## Gebruik
  * ```html
  * <rr-top-navigation-bar title="DigID">
@@ -29,10 +26,6 @@ export default {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
-    },
     componentSource: {
       file: 'src/components/navigation/top-navigation-bar/rr-top-navigation-bar.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -159,7 +152,7 @@ export default {
 };
 
 /**
- * Default top navigation bar matching Figma design.
+ * Default top navigation bar.
  * White background with centered Rijksoverheid coat of arms,
  * horizontal navigation menu, and utility buttons.
  */
@@ -288,7 +281,7 @@ export const MijnOverheid = {
 };
 
 /**
- * DigiD branding example matching Figma.
+ * DigiD branding example.
  */
 export const DigiDBranding = {
   render: () => html`
@@ -340,56 +333,4 @@ export const AllStates = {
       </div>
     </div>
   `,
-};
-
-/**
- * Figma Comparison - pixel-perfect overlay comparison with Figma design.
- */
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = {
-  name: '🎨 Figma Comparison',
-  tags: ['!autodocs', 'figma'],
-  render: () => html`
-    <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-      <div style="display: flex; flex-direction: column; gap: 2rem;">
-        <div>
-          <h3 style="margin: 0 0 1rem 0; font-size: 1rem; color: #475569;">
-            Top Navigation Bar - Default
-          </h3>
-          <ftl-holster node="20:138" style="display: block; width: 100%;">
-            <!-- Container L (large) - Figma node: 20:138 (container=lg variant) -->
-            <rr-top-navigation-bar
-              title="Titel"
-              container="lg"
-              utility-no-language-switch
-              utility-account-label="Account"
-            >
-              <rr-menu-item slot="menu" selected>Home</rr-menu-item>
-              <rr-menu-item slot="menu">Menu item</rr-menu-item>
-              <rr-menu-item slot="menu">Menu item</rr-menu-item>
-              <rr-menu-item slot="menu">Menu item</rr-menu-item>
-              <rr-menu-item slot="menu">Menu item</rr-menu-item>
-              <rr-menu-item slot="menu">Menu item</rr-menu-item>
-            </rr-top-navigation-bar>
-          </ftl-holster>
-        </div>
-        <p style="font-size: 0.875rem; color: #64748b; margin-top: 1rem;">
-          Click on the component to toggle between your implementation and the Figma design overlay.
-          Use keyboard shortcuts: T (toggle), O (overlay), S (side-by-side).
-        </p>
-      </div>
-    </ftl-belt>
-  `,
-  parameters: {
-    layout: 'fullscreen',
-    controls: { disable: true },
-    docs: {
-      description: {
-        story:
-          'Pixel-perfect vergelijking met Figma design. Klik op de component om te wisselen tussen implementatie en Figma overlay.',
-      },
-    },
-  },
 };

@@ -7,11 +7,7 @@
   "module": "dist/components/rr-components.js",
   "exports": {
     ".": "./dist/components/rr-components.js",
-    "./css": "./dist/css/tokens.css",
-    "./css/primitives": "./dist/css/primitives.css",
-    "./css/semantics": "./dist/css/semantics.css",
-    "./css/components": "./dist/css/components.css",
-    "./css/scheme-dark": "./dist/css/scheme-dark.css"
+    "./css": "./dist/css/tokens.css"
   },
   "files": [
     "dist",
@@ -26,7 +22,7 @@
   },
   "scripts": {
     "build": "npm run build:tokens && npm run validate:tokens && npm run build:components",
-    "build:tokens": "node style-dictionary.config.js",
+    "build:tokens": "mkdir -p dist/css && cp src/assets/css/settings.css dist/css/tokens.css",
     "validate:tokens": "node scripts/validate-css-variables.js",
     "validate:map": "node scripts/validate-component-map.js",
     "build:components": "node scripts/build-components.js",
@@ -49,21 +45,16 @@
     "test:visual": "lost-pixel",
     "test:visual:update": "lost-pixel update",
     "test:visual:storybook": "start-server-and-test storybook http://localhost:6006 test:visual",
-    "test:figma": "lost-pixel --config lostpixel.figma.config.ts",
-    "test:figma:update": "lost-pixel update --config lostpixel.figma.config.ts",
-    "test:figma:storybook": "start-server-and-test storybook http://localhost:6006 test:figma",
     "prepare": "pre-commit install || true",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@axe-core/puppeteer": "^4.11.0",
-    "@cianfrani/figma-testing-library": "^0.3.0",
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@eslint/js": "^9.17.0",
     "@semantic-release/git": "^10.0.1",
     "@storybook/addon-a11y": "^10.1.10",
-    "@storybook/addon-designs": "^11.1.0",
     "@storybook/addon-docs": "^10.1.10",
     "@storybook/addon-themes": "^10.1.10",
     "@storybook/addon-vitest": "^10.1.10",
@@ -82,7 +73,6 @@
     "semantic-release": "^25.0.2",
     "start-server-and-test": "^2.1.3",
     "storybook": "^10.1.10",
-    "style-dictionary": "^4.2.0",
     "typescript": "^5.3.0",
     "vitest": "^4.0.16",
     "wait-on": "^8.0.1"

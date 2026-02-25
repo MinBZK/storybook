@@ -4,9 +4,6 @@ import './rr-checkbox.ts';
 /**
  * De Checkbox component stelt gebruikers in staat om een of meerdere opties te selecteren.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408)
- *
  * ## Gebruik
  * ```html
  * <rr-checkbox>Label</rr-checkbox>
@@ -17,10 +14,6 @@ export default {
   component: 'rr-checkbox',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408',
-    },
     componentSource: {
       file: 'src/components/inputs/checkbox/rr-checkbox.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -310,58 +303,4 @@ StateMatrix.parameters = {
       story: 'Overzicht van alle checkbox states.',
     },
   },
-};
-
-// Figma Comparison - visual comparison with Figma design
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our checkboxes (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="204:38347" style="display: inline-block;">
-        <!--
-          Figma checkbox standalone (204:38347) component set:
-          - Layout: absolute positioning within 136x96px frame
-          - Row 1 (y=16): unchecked, selected, indeterminate (x: 16, 56, 96)
-          - Row 2 (y=56): disabled unchecked, disabled selected, disabled indeterminate
-          - Each checkbox: 24x24px, 4px border-radius
-          - Gap between checkboxes: 16px horizontal, 16px vertical
-        -->
-        <div style="width: 136px; height: 96px; background: #ffffff; position: relative; box-sizing: border-box;">
-          <!-- Row 1: enabled states -->
-          <div style="position: absolute; left: 16px; top: 16px;">
-            <rr-checkbox aria-label="Unchecked"></rr-checkbox>
-          </div>
-          <div style="position: absolute; left: 56px; top: 16px;">
-            <rr-checkbox checked aria-label="Checked"></rr-checkbox>
-          </div>
-          <div style="position: absolute; left: 96px; top: 16px;">
-            <rr-checkbox indeterminate aria-label="Indeterminate"></rr-checkbox>
-          </div>
-          <!-- Row 2: disabled states -->
-          <div style="position: absolute; left: 16px; top: 56px;">
-            <rr-checkbox disabled aria-label="Disabled unchecked"></rr-checkbox>
-          </div>
-          <div style="position: absolute; left: 56px; top: 56px;">
-            <rr-checkbox checked disabled aria-label="Disabled checked"></rr-checkbox>
-          </div>
-          <div style="position: absolute; left: 96px; top: 56px;">
-            <rr-checkbox indeterminate disabled aria-label="Disabled indeterminate"></rr-checkbox>
-          </div>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
 };

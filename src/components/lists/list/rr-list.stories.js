@@ -9,10 +9,6 @@ export default {
   component: 'rr-list',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1044-2275',
-    },
   },
   argTypes: {
     variant: {
@@ -142,60 +138,3 @@ export const WithTitleAndLabel = {
     </rr-list>
   `,
 };
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Individual variant comparisons (Code vs Figma). Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-
-      <!-- style=simple -->
-      <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-        <span style="font-size: 0.75rem; color: #64748b;">style: simple</span>
-        <ftl-holster node="1044:2273" style="display: inline-block;">
-          <rr-list variant="simple">
-            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
-              <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
-            </div>
-          </rr-list>
-        </ftl-holster>
-      </div>
-
-      <!-- style=box -->
-      <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-        <span style="font-size: 0.75rem; color: #64748b;">style: box</span>
-        <ftl-holster node="1044:2276" style="display: inline-block;">
-          <rr-list variant="box">
-            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
-              <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
-            </div>
-          </rr-list>
-        </ftl-holster>
-      </div>
-
-      <!-- style=box-on-tint -->
-      <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-        <span style="font-size: 0.75rem; color: #64748b;">style: box-on-tint</span>
-        <ftl-holster node="1045:2284" style="display: inline-block;">
-          <rr-list variant="box-on-tint">
-            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); border: 2px solid #FF24BD; box-sizing: border-box;">
-              <span style="color: #FF24BD; font-weight: 700; font-size: 18px; line-height: 1.125; text-align: center; width: 100%;">SLOT</span>
-            </div>
-          </rr-list>
-        </ftl-holster>
-      </div>
-
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = { controls: { disable: true } };

@@ -79,7 +79,7 @@ export class RRPagination extends LitElement {
       content: '';
       position: absolute;
       inset: 4px;
-      background-color: var(--primitives-color-accent-750-reference);
+      background-color: var(--primitives-color-accent-750);
       border-radius: var(--primitives-corner-radius-sm);
     }
 

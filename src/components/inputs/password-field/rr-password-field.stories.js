@@ -1,14 +1,8 @@
 import { html } from 'lit';
 import './rr-password-field.ts';
 
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
 /**
  * De Password Field component voor wachtwoordinvoer met zichtbaarheidstoggle.
- *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-5781)
  *
  * ## Gebruik
  * ```html
@@ -20,10 +14,6 @@ export default {
   component: 'rr-password-field',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-5781',
-    },
     componentSource: {
       file: 'src/components/inputs/password-field/rr-password-field.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -156,36 +146,5 @@ export const AllStates = () => html`
   </div>
 `;
 AllStates.parameters = {
-  controls: { disable: true },
-};
-
-// Figma Comparison
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Password Field (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="1380-5781" style="display: inline-block;">
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 411px; box-sizing: border-box;">
-          <rr-password-field placeholder="Password field" .masked=${false}></rr-password-field>
-          <rr-password-field placeholder="Password field" .masked=${false} disabled></rr-password-field>
-          <rr-password-field placeholder="Password field" .masked=${false} validation="valid"></rr-password-field>
-          <rr-password-field placeholder="Password field" .masked=${false} validation="invalid"></rr-password-field>
-          <rr-password-field value="password12345"></rr-password-field>
-          <rr-password-field value="password12345" disabled></rr-password-field>
-          <rr-password-field value="password12345" validation="valid"></rr-password-field>
-          <rr-password-field value="password12345" validation="invalid"></rr-password-field>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = 'Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
   controls: { disable: true },
 };

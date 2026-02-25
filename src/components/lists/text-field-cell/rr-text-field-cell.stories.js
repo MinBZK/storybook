@@ -5,9 +5,6 @@ import '../../inputs/text-field/rr-text-field.ts';
 /**
  * De Text Field Cell component is een wrapper voor text fields met ondersteuning voor validatie feedback.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1019:3941)
- *
  * ## Gebruik
  * ```html
  * <rr-text-field-cell feedback-text="Dit veld is verplicht">
@@ -20,10 +17,6 @@ export default {
   component: 'rr-text-field-cell',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1019:3941',
-    },
     componentSource: {
       file: 'src/components/lists/text-field-cell/rr-text-field-cell.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -170,50 +163,4 @@ FormExample.parameters = {
       story: 'Voorbeeld van text field cells in een formulier context met labels en validatie.',
     },
   },
-};
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Text Field Cell (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="1019:3941" style="display: inline-block;">
-        <!--
-          Figma text-field-cell component set layout:
-          - Hug width
-          - 16px padding
-          - 16px gap between variants
-          - 4 variants: center/top x normal/invalid
-          - Each cell is 180px width
-        -->
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff;">
-          <rr-text-field-cell vertical-alignment="center" style="width: 180px;">
-            <rr-text-field value="Text field"></rr-text-field>
-          </rr-text-field-cell>
-          <rr-text-field-cell vertical-alignment="top" style="width: 180px;">
-            <rr-text-field value="Text field"></rr-text-field>
-          </rr-text-field-cell>
-          <rr-text-field-cell vertical-alignment="center" feedback-text="Feedback text" style="width: 180px;">
-            <rr-text-field value="Text field" validation="invalid"></rr-text-field>
-          </rr-text-field-cell>
-          <rr-text-field-cell vertical-alignment="top" feedback-text="Feedback text" style="width: 180px;">
-            <rr-text-field value="Text field" validation="invalid"></rr-text-field>
-          </rr-text-field-cell>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = 'Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
 };

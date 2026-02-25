@@ -58,7 +58,7 @@ export class RRDocumentTabBarItem extends LitElement {
     }
 
     :host([selected]) .document-tab-bar-item {
-      background-color: var(--primitives-color-accent-750-reference);
+      background-color: var(--primitives-color-accent-750);
     }
 
     :host([selected]) .document-tab-bar-item:hover {

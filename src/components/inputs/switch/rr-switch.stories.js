@@ -4,9 +4,6 @@ import './rr-switch.ts';
 /**
  * De Switch component is een toggle control voor aan/uit instellingen.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41353)
- *
  * ## Gebruik
  * ```html
  * <rr-switch></rr-switch>
@@ -18,10 +15,6 @@ export default {
   component: 'rr-switch',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41353',
-    },
     componentSource: {
       file: 'src/components/inputs/switch/rr-switch.js',
       repository: 'https://github.com/regelrecht/design-system',
@@ -147,7 +140,6 @@ WithLabel.parameters = {
   },
 };
 
-
 // Programmatic control example
 export const ProgrammaticControl = () => {
   const handleToggle = () => {
@@ -200,66 +192,3 @@ export const AllSizes = () => html`
   </div>
 `;
 AllSizes.parameters = { controls: { disable: true } };
-
-// Figma Comparison - visual comparison with Figma design (standalone switch node)
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our switches (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="232:38506" style="display: inline-block;">
-        <!--
-          Figma switch standalone (232:38506) component set:
-          - Frame: 152x168px
-          - Variants in absolute positioning:
-            Row 1 (y=16): sm off (16,16), sm on (68,16)
-            Row 2 (y=48): sm off disabled, sm on disabled
-            Row 3 (y=80): md off (16,80), md on (80,80)
-            Row 4 (y=120): md off disabled, md on disabled
-        -->
-        <div style="width: 152px; height: 168px; background: #ffffff; position: relative; box-sizing: border-box;">
-          <!-- Row 1: sm enabled -->
-          <div style="position: absolute; left: 16px; top: 16px;">
-            <rr-switch size="sm" aria-label="Small off"></rr-switch>
-          </div>
-          <div style="position: absolute; left: 68px; top: 16px;">
-            <rr-switch size="sm" checked aria-label="Small on"></rr-switch>
-          </div>
-          <!-- Row 2: sm disabled -->
-          <div style="position: absolute; left: 16px; top: 48px;">
-            <rr-switch size="sm" disabled aria-label="Small off disabled"></rr-switch>
-          </div>
-          <div style="position: absolute; left: 68px; top: 48px;">
-            <rr-switch size="sm" checked disabled aria-label="Small on disabled"></rr-switch>
-          </div>
-          <!-- Row 3: md enabled -->
-          <div style="position: absolute; left: 16px; top: 80px;">
-            <rr-switch size="md" aria-label="Medium off"></rr-switch>
-          </div>
-          <div style="position: absolute; left: 80px; top: 80px;">
-            <rr-switch size="md" checked aria-label="Medium on"></rr-switch>
-          </div>
-          <!-- Row 4: md disabled -->
-          <div style="position: absolute; left: 16px; top: 120px;">
-            <rr-switch size="md" disabled aria-label="Medium off disabled"></rr-switch>
-          </div>
-          <div style="position: absolute; left: 80px; top: 120px;">
-            <rr-switch size="md" checked disabled aria-label="Medium on disabled"></rr-switch>
-          </div>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
-};

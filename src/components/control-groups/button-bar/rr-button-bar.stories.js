@@ -9,10 +9,6 @@ export default {
 	component: 'rr-button-bar',
 	tags: ['autodocs'],
 	parameters: {
-		design: {
-			type: 'figma',
-			url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263:6841',
-		},
 	},
 	argTypes: {
 		size: {

@@ -99,7 +99,7 @@ export class RRTabBarItem extends LitElement {
     }
 
     :host([selected]) .tab-bar-item__indicator {
-      background-color: var(--primitives-color-accent-750-reference);
+      background-color: var(--primitives-color-accent-750);
     }
 
     :host([selected]) .tab-bar-item {

@@ -4,9 +4,6 @@ import './rr-stepper.ts';
 /**
  * De Stepper component is een numerieke control met increment en decrement buttons.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-39011)
- *
  * ## Gebruik
  * ```html
  * <rr-stepper value="5" min="0" max="10"></rr-stepper>
@@ -17,10 +14,6 @@ export default {
   component: 'rr-stepper',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-39011',
-    },
   },
   argTypes: {
     value: {
@@ -136,37 +129,3 @@ export const InteractiveExample = () => {
   `;
 };
 InteractiveExample.parameters = { controls: { disable: true } };
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our stepper (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="236:39011" style="display: inline-block;">
-        <!--
-          Figma stepper (236:39011) component set:
-          - Layout: column, gap: 16px, padding: 16px
-          - Variants: md (top), sm (bottom)
-          - Frame size: hug content
-        -->
-        <div
-          style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff;"
-        >
-          <rr-stepper size="md" value="5"></rr-stepper>
-          <rr-stepper size="sm" value="5"></rr-stepper>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = { controls: { disable: true } };

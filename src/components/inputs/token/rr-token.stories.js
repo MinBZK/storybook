@@ -4,9 +4,6 @@ import './rr-token.ts';
 /**
  * De Token component is een tag/chip component voor het weergeven van geselecteerde waarden of filters.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=354-3680)
- *
  * ## Gebruik
  * ```html
  * <rr-token>Label</rr-token>
@@ -19,10 +16,6 @@ export default {
   component: 'rr-token',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=354-3680',
-    },
   },
   argTypes: {
     control: {
@@ -113,39 +106,3 @@ export const FilterExample = () => {
   `;
 };
 FilterExample.parameters = { controls: { disable: true } };
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our tokens (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="354:3680" style="display: inline-block;">
-        <!--
-          Figma token (354:3680) component set:
-          - Layout: column, gap: 16px, padding: 16px
-          - Variants: none, dismiss, picker (closed), picker (open)
-          - Height: 32px fixed per token
-        -->
-        <div
-          style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff;"
-        >
-          <rr-token>Token</rr-token>
-          <rr-token control="dismiss">Token</rr-token>
-          <rr-token control="picker">Token</rr-token>
-          <rr-token control="picker" open>Token</rr-token>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = { controls: { disable: true } };

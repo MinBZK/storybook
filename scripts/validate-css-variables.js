@@ -7,7 +7,7 @@
  * Token categories:
  * - --rr-* : Override hooks for consumers (SKIPPED - not defined in tokens)
  * - --_* : Internal variables (validated within same file)
- * - --components-*, --semantics-*, --primitives-* : Design tokens (validated against tokens.css)
+ * - --components-*, --semantics-*, --primitives-* : Design tokens (validated against settings.css)
  */
 
 import fs from 'fs';
@@ -19,8 +19,7 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
 
 // Configuration
-const TOKENS_FILE = path.join(ROOT_DIR, 'dist/css/tokens.css');
-const DARK_TOKENS_FILE = path.join(ROOT_DIR, 'dist/css/scheme-dark.css');
+const TOKENS_FILE = path.join(ROOT_DIR, 'src/assets/css/settings.css');
 const COMPONENTS_DIR = path.join(ROOT_DIR, 'src/components');
 
 // Patterns
@@ -127,7 +126,7 @@ function validate() {
 
   // Parse tokens
   const tokens = parseTokensFile(TOKENS_FILE);
-  console.log(`📦 Found ${tokens.size} tokens in tokens.css\n`);
+  console.log(`📦 Found ${tokens.size} tokens in settings.css\n`);
 
   // Find component files
   const componentFiles = findComponentFiles(COMPONENTS_DIR);
@@ -171,13 +170,13 @@ function validate() {
           break;
 
         case 'token':
-          // Design tokens must exist in tokens.css
+          // Design tokens must exist in settings.css
           stats.tokenVars++;
           if (!tokens.has(varName)) {
             errors.push({
               file: relativePath,
               variable: varName,
-              message: `Token "${varName}" is not defined in tokens.css`,
+              message: `Token "${varName}" is not defined in settings.css`,
             });
           }
           break;
@@ -226,50 +225,7 @@ function validate() {
     process.exit(1);
   }
 
-  // Dark scheme consistency check (warning only, not blocking)
-  validateDarkSchemeConsistency(tokens);
-
   console.log('✅ All CSS variables validated successfully!\n');
-}
-
-/**
- * Check that scheme-dark.css defines the same token names as tokens.css.
- * This is a warning-only check to catch token drift between schemes.
- */
-function validateDarkSchemeConsistency(lightTokens) {
-  if (!fs.existsSync(DARK_TOKENS_FILE)) return;
-
-  console.log('🌙 Dark scheme consistency check...\n');
-  const darkTokens = parseTokensFile(DARK_TOKENS_FILE);
-
-  const missingInDark = [...lightTokens].filter(t => !darkTokens.has(t));
-  const extraInDark = [...darkTokens].filter(t => !lightTokens.has(t));
-
-  if (missingInDark.length > 0) {
-    console.log(`   ⚠️  ${missingInDark.length} token(s) in light but missing in dark scheme`);
-    for (const token of missingInDark.slice(0, 5)) {
-      console.log(`      └─ ${token}`);
-    }
-    if (missingInDark.length > 5) {
-      console.log(`      ... and ${missingInDark.length - 5} more`);
-    }
-  }
-
-  if (extraInDark.length > 0) {
-    console.log(`   ⚠️  ${extraInDark.length} token(s) in dark but missing in light scheme`);
-    for (const token of extraInDark.slice(0, 5)) {
-      console.log(`      └─ ${token}`);
-    }
-    if (extraInDark.length > 5) {
-      console.log(`      ... and ${extraInDark.length - 5} more`);
-    }
-  }
-
-  if (missingInDark.length === 0 && extraInDark.length === 0) {
-    console.log(`   ✅ Dark scheme has same ${darkTokens.size} tokens as light scheme\n`);
-  } else {
-    console.log('');
-  }
 }
 
 // Run validation

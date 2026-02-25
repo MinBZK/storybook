@@ -5,9 +5,6 @@ import './rr-back-button.js';
  * De Back Button is een navigatieknop voor terugkeren naar de vorige pagina.
  * Onderdeel van de Top Navigation Bar component.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135)
- *
  * ## Gebruik
  * ```html
  * <rr-back-button href="/vorige" label="Terug"></rr-back-button>
@@ -20,10 +17,6 @@ export default {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
-    },
     componentSource: {
       file: 'src/components/navigation/top-navigation-bar/rr-back-button.js',
       repository: 'https://github.com/regelrecht/design-system',

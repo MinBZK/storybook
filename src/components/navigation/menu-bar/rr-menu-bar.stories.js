@@ -6,9 +6,6 @@ import './rr-menu-item.ts';
  * De Menu Bar component is een navigatie-element met menu items die horizontaal worden weergegeven.
  * Ondersteunt een "Meer" overflow menu voor items die niet passen.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135)
- *
  * *Note: Menu Bar is onderdeel van de Top Navigation Bar design.*
  *
  * ## Gebruik
@@ -34,10 +31,6 @@ export default {
   component: 'rr-menu-bar',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
-    },
     componentSource: {
       file: 'src/components/navigation/menu-bar/rr-menu-bar.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -295,49 +288,4 @@ TitleSizes.parameters = {
       story: 'Vergelijking van de verschillende title sizes.',
     },
   },
-};
-
-// Figma Comparison - visual comparison with Figma design
-// Node 87:8516 = default-global-menu-bar (only menu items, not full top-nav-bar)
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Menu bar (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="87:8516" style="display: inline-block;">
-        <!--
-          Figma design shows menu bar on dark background (#1e293b).
-          6 items: Home (selected), Menu item x5 (default)
-        -->
-        <div style="
-          background: #1e293b;
-          --components-menu-bar-menu-item-color: #c0ccd8;
-          --components-menu-bar-menu-item-is-selected-color: #7eb1e7;
-          --components-menu-bar-menu-item-is-selected-indicator-background-color: #7eb1e7;
-          --_menu-bar-border: none;
-        ">
-          <rr-menu-bar>
-            <rr-menu-item selected>Home</rr-menu-item>
-            <rr-menu-item>Menu item</rr-menu-item>
-            <rr-menu-item>Menu item</rr-menu-item>
-            <rr-menu-item>Menu item</rr-menu-item>
-            <rr-menu-item>Menu item</rr-menu-item>
-            <rr-menu-item>Menu item</rr-menu-item>
-          </rr-menu-bar>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
 };

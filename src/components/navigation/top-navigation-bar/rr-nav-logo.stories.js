@@ -5,9 +5,6 @@ import './rr-nav-logo.js';
  * De Nav Logo component toont het Rijkswapen logo met optionele titel en subtitel.
  * Onderdeel van de Top Navigation Bar component.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135)
- *
  * ## Gebruik
  * ```html
  * <rr-nav-logo title="Rijksoverheid"></rr-nav-logo>
@@ -20,10 +17,6 @@ export default {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135',
-    },
     componentSource: {
       file: 'src/components/navigation/top-navigation-bar/rr-nav-logo.js',
       repository: 'https://github.com/regelrecht/design-system',

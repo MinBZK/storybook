@@ -158,7 +158,7 @@ Phase 8 (Content) ────────────────────�
 | Simple Section | 1255:1471 | Medium | |
 | Full Bleed Section | 1255:1496 | Medium | |
 | Collection | 1435:29304 | Medium | |
-| Box (Figma) | 1451:33442 | Medium | |
+| Box | 1451:33442 | Medium | |
 | One Third Two Thirds Section | 1255:1530 | Low | |
 | Two Thirds One Third Section | 1255:1623 | Low | |
 | One Half One Half Section | 1255:1815 | Low | |

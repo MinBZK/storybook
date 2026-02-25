@@ -6,10 +6,6 @@ export default {
   component: 'rr-collection',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1435-29304',
-    },
   },
   argTypes: {
     layout: {
@@ -139,88 +135,3 @@ export const CustomHeader = {
     </rr-collection>
   `,
 };
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Collection (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="1435:29304" style="display: inline-block;">
-        <!--
-          Figma collection (1435:29304) component set:
-          - Layout: row, gap: 16px, padding: 16px, alignItems: stretch
-          - Variants: layout (grid/list/horizontal-scroll), each ~793px wide
-          - Width: 2442px
-          - Grid: 2-column wrapping grid with "Load more" button
-          - List: single column with "Load more" button
-          - Horizontal scroll: row with 280px items, nav arrows in footer
-        -->
-        <div
-          style="width: 2442px; background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; align-items: stretch;"
-        >
-          <!-- layout=grid (2-column wrapping grid) -->
-          <rr-collection layout="grid" title="Collection" show-load-more style="flex: 1; min-width: 0; --rr-collection-item-min-width: 300px;">
-            ${Array(24)
-              .fill(null)
-              .map(
-                () => html`
-                  <div
-                    style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; display: flex; align-items: center; justify-content: center;"
-                  >
-                    <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;"
-                      >SLOT</span
-                    >
-                  </div>
-                `
-              )}
-          </rr-collection>
-
-          <!-- layout=list (single column) -->
-          <rr-collection layout="list" title="Collection" show-load-more style="flex: 1; min-width: 0;">
-            ${Array(24)
-              .fill(null)
-              .map(
-                () => html`
-                  <div
-                    style="padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; display: flex; align-items: center; justify-content: center;"
-                  >
-                    <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;"
-                      >SLOT</span
-                    >
-                  </div>
-                `
-              )}
-          </rr-collection>
-
-          <!-- layout=horizontal-scroll (280px fixed items, nav arrows) -->
-          <rr-collection layout="horizontal-scroll" title="Collection" style="flex: 1; min-width: 0;">
-            ${Array(24)
-              .fill(null)
-              .map(
-                () => html`
-                  <div
-                    style="width: 280px; padding: 2px 8px; background: rgba(255, 36, 189, 0.1); outline: 2px dashed #FF24BD; outline-offset: -2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
-                  >
-                    <span style="font-family: RijksSansVF; font-weight: 700; font-size: 18px; line-height: 1.125; color: #FF24BD;"
-                      >SLOT</span
-                    >
-                  </div>
-                `
-              )}
-          </rr-collection>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = { controls: { disable: true } };

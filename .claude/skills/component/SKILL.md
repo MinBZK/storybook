@@ -1,11 +1,11 @@
 ---
 name: component
-description: Implementeer een Lit + TypeScript web component vanuit Figma design
+description: Implementeer een Lit + TypeScript web component
 user-invocable: true
-argument-hint: <figma-node-id> [component-naam]
+argument-hint: <component-naam>
 ---
 
-Implementeer een web component voor Figma node: $ARGUMENTS
+Implementeer een web component: $ARGUMENTS
 
 ## Tech Stack
 
@@ -25,61 +25,31 @@ Implementeer een web component voor Figma node: $ARGUMENTS
 
 ### Stap 1: Input Parsing
 
-**Extraheer node ID:**
-```javascript
-// Uit URL: ...node-id=309-3542 of ...node-id=309:3542
-// Direct: 309:3542 of 309-3542
-// Normaliseer naar: 309:3542 (met dubbele punt)
-```
-
 **Bepaal component naam:**
-1. Als gebruiker naam opgaf (tweede argument) → gebruik die
-2. Anders → haal uit Figma node `name` property
-3. Converteer naar kebab-case: "Toggle Button" → "toggle-button"
-4. Voeg `rr-` prefix toe: → "rr-toggle-button"
+1. Als gebruiker naam opgaf → gebruik die
+2. Converteer naar kebab-case: "Toggle Button" → "toggle-button"
+3. Voeg `rr-` prefix toe: → "rr-toggle-button"
 
 ### Stap 2: Bestaand Component Check
 
-Lees `docs/component-map.json` en check of nodeId al bestaat:
-
-```javascript
-const existing = componentMap.components.find(c =>
-  c.figma?.nodeId?.replace(':', '-') === normalizedNodeId
-);
-```
+Lees `docs/component-map.json` en check of component al bestaat.
 
 | Situatie | Mode |
 |----------|------|
 | Component bestaat niet | **CREATE** - nieuwe bestanden aanmaken |
 | Component bestaat al | **UPDATE** - bestaande bestanden bijwerken |
 
-### Stap 3: Figma Data Ophalen
-
-Gebruik de Figma MCP tool:
-```
-mcp__figma-with-token__get_figma_data(fileKey: "5DyHMXUNVxbgH7ZjhQxPZe", nodeId: "<node-id>")
-```
-
-**Analyseer:**
-- Sizes (xs, sm, md)
-- States (default, hover, active, focus, disabled)
-- Padding (LET OP: kan asymmetrisch zijn!)
-- Typography
-- Colors
-- Border radius
-- Shadows
-
-### Stap 4: Tokens Identificeren
+### Stap 3: Tokens Identificeren
 
 **Token hiërarchie (voorkeursvolgorde):**
 1. `--components-{name}-*` (component-specifiek)
 2. `--semantics-*` (betekenisvol)
 3. `--primitives-*` (alleen als backup)
 
-**Zoek tokens in `dist/css/tokens.css`:**
+**Zoek tokens in `src/assets/css/settings.css`:**
 ```bash
-grep -i "{component-naam}" dist/css/tokens.css
-grep -i "controls.*min-size" dist/css/tokens.css
+grep -i "{component-naam}" src/assets/css/settings.css
+grep -i "controls.*min-size" src/assets/css/settings.css
 ```
 
 **Controleer ook bestaande componenten voor patronen:**
@@ -87,9 +57,7 @@ grep -i "controls.*min-size" dist/css/tokens.css
 
 ### Spacer Component Gebruik
 
-**Gebruik `<rr-spacer>` voor spacing in componenten waar Figma spacer elementen heeft.**
-
-Check in Figma data of er spacer frames zijn (bijv. `top-navigation-bar__section-spacer`).
+**Gebruik `<rr-spacer>` voor spacing in componenten waar spacer elementen nodig zijn.**
 
 ```html
 <!-- Vaste spacing -->
@@ -104,23 +72,11 @@ Check in Figma data of er spacer frames zijn (bijv. `top-navigation-bar__section
 
 **Beschikbare sizes:** 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 44, 48, 64, 80, 96, m, flexible
 
-### Stap 5: Component Genereren/Updaten
+### Stap 4: Component Genereren/Updaten
 
 **Bestanden:**
 - Component: `src/components/{name}/rr-{name}.ts` (TypeScript)
 - Stories: `src/components/{name}/rr-{name}.stories.js` (JavaScript)
-
-### Stap 6: Pixel-Perfect Maken
-
-**Na het genereren van het component, voer `/pixel-perfect {name}` uit.**
-
-Dit command doet automatisch:
-1. Start Storybook
-2. Opent FigmaComparison story met Playwright
-3. Haalt Figma layout data op (grid/flex/absolute positioning)
-4. Vergelijkt varianten, positionering en styling
-5. Past component en/of story aan bij afwijkingen
-6. Herhaalt tot pixel-perfect (max 8 iteraties)
 
 ---
 
@@ -168,6 +124,7 @@ export class RR{PascalName} extends LitElement {
       padding: 0;
       background: none;
       font: inherit;
+      cursor: pointer;
 
       /* Layout */
       display: inline-flex;
@@ -182,11 +139,11 @@ export class RR{PascalName} extends LitElement {
       transform: scale(0.98);
     }
 
-    /* Size variants - ZOEK TOKENS OP in dist/css/tokens.css */
+    /* Size variants - ZOEK TOKENS OP in src/assets/css/settings.css */
     :host([size="xs"]) .{name} {
       min-height: var(--semantics-controls-xs-min-size);
       border-radius: var(--semantics-controls-xs-corner-radius);
-      /* padding en font: haal uit Figma */
+      /* padding en font: haal uit design tokens */
     }
 
     :host([size="sm"]) .{name} {
@@ -206,7 +163,7 @@ export class RR{PascalName} extends LitElement {
       outline-offset: 2px;
     }
 
-    /* Disabled state - opacity is PERCENTAGE */
+    /* Disabled state */
     :host([disabled]) .{name} {
       opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
@@ -272,12 +229,6 @@ export default {
   title: 'Components/{DisplayName}',
   component: 'rr-{name}',
   tags: ['autodocs'],
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id={nodeId}',
-    },
-  },
   argTypes: {
     size: {
       control: 'select',
@@ -294,102 +245,6 @@ export const Default = {
   render: (args) => html`<rr-{name} size=${args.size} ?disabled=${args.disabled}>Label</rr-{name}>`,
 };
 ```
-
----
-
-## FIGMA COMPARISON STORY
-
-**BELANGRIJK:** De FigmaComparison story moet expliciete dimensies hebben voor Side-by-Side mode.
-
-### Stap 1: Extraheer dimensies uit Figma data
-
-Analyseer de `globalVars.styles` sectie uit de Figma MCP response:
-
-```javascript
-// Zoek de layout style van de component set (bijv. layout_G8J7XL)
-globalVars.styles.layout_XXXXX = {
-  mode: "column" | "row",  // → flex-direction
-  gap: 16,                 // → gap in px
-  padding: 16,             // → padding in px (kan ook object zijn)
-  sizing: {
-    horizontal: "hug" | "fixed",
-    vertical: "hug" | "fixed"
-  },
-  dimensions: {            // alleen bij fixed sizing
-    width: 832,
-    height: 316
-  }
-}
-```
-
-### Stap 2: Bereken totale frame dimensies
-
-**Voor "hug" sizing (meeste component sets):**
-
-```
-Height = padding-top + Σ(child heights) + Σ(gaps) + padding-bottom
-Width = padding-left + max(child widths) + padding-right
-```
-
-**Voorbeeld Toggle Button (309:3542):**
-```
-Layout: column, gap: 16px, padding: 16px
-Children: md (44px), md selected (44px), sm (32px), sm selected (32px)
-Height: 16 + 44 + 16 + 44 + 16 + 32 + 16 + 32 + 16 = 232px
-Width: 16 + ~120px button + 16 = ~152px
-```
-
-**Voor "fixed" sizing:**
-Gebruik de `dimensions.width` en `dimensions.height` direct.
-
-### Stap 3: Genereer de FigmaComparison story
-
-```javascript
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our {name}s (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="{nodeId}" style="display: inline-block;">
-        <!--
-          Figma {component-name} ({nodeId}) component set:
-          - Layout: {direction}, gap: {gap}px, padding: {padding}px
-          - Variants: {beschrijf alle varianten met hun heights}
-          - Height: {berekeningsformule} = {total}px
-          - Width: {berekeningsformule} = {total}px
-        -->
-        <div style="width: {width}px; height: {height}px; background: #ffffff; padding: {padding}px; box-sizing: border-box; display: flex; flex-direction: {direction}; gap: {gap}px; align-items: flex-start;">
-          <!-- Genereer EXACT de varianten uit Figma, in dezelfde volgorde -->
-          <rr-{name} size="md">Label</rr-{name}>
-          <rr-{name} size="m" selected>Label</rr-{name}>
-          <rr-{name} size="sm">Label</rr-{name}>
-          <rr-{name} size="s" selected>Label</rr-{name}>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = { controls: { disable: true } };
-```
-
-### Checklist FigmaComparison
-
-- [ ] **Expliciete width EN height** op de container div
-- [ ] **Exact dezelfde varianten** als in Figma (aantal, volgorde, props)
-- [ ] **Comment met specs** zodat dimensies later makkelijk te updaten zijn
-- [ ] **flex-direction** matcht Figma layout mode (column/row)
-- [ ] **gap en padding** matchen exact de Figma waarden
-- [ ] **align-items: flex-start** voor "hug" width items
 
 ---
 
@@ -413,32 +268,26 @@ Voeg nieuwe entry toe of update bestaande met `lastUpdated`.
 
 ## TOKENS OPZOEKEN
 
-**Zoek ALTIJD actuele token waarden op in `dist/css/tokens.css`:**
+**Zoek ALTIJD actuele token waarden op in `src/assets/css/settings.css`:**
 
 ```bash
-grep -i "{component-naam}" dist/css/tokens.css
-grep -i "controls.*min-size\|controls.*corner-radius" dist/css/tokens.css
-grep -i "focus-ring" dist/css/tokens.css
-grep -i "primitives-space" dist/css/tokens.css
-grep -i "opacity" dist/css/tokens.css
+grep -i "{component-naam}" src/assets/css/settings.css
+grep -i "controls.*min-size\|controls.*corner-radius" src/assets/css/settings.css
+grep -i "focus-ring" src/assets/css/settings.css
+grep -i "primitives-space" src/assets/css/settings.css
+grep -i "opacity" src/assets/css/settings.css
 ```
 
-**LET OP:** Opacity tokens zijn percentages (0-100). Gebruik: `calc(var(--token) / 100)`
+**LET OP:** Opacity tokens zijn decimale fracties (0-1). Gebruik: `var(--token)`
 
 ---
 
 ## CHECKLIST
 
-**Figma:**
-- [ ] Node ID correct geparsed
-- [ ] Alle sizes geanalyseerd
-- [ ] Padding waarden (kan asymmetrisch zijn!)
-- [ ] Alle states: default, hover, active, focus, disabled
-
 **Tokens:**
 - [ ] Semantics tokens waar mogelijk
 - [ ] Geen fallback waarden op design tokens (enige uitzondering: override hooks `--rr-*`)
-- [ ] Opacity: `calc(token / 100)`
+- [ ] Opacity: `var(--token)`
 
 **Accessibility:**
 - [ ] ARIA attributes
@@ -453,12 +302,4 @@ grep -i "opacity" dist/css/tokens.css
 
 **Verificatie:**
 - [ ] Storybook gestart
-- [ ] FigmaComparison geopend
-- [ ] Pixel-perfect OF afwijkingen gedocumenteerd
-
----
-
-## FIGMA FILE INFO
-
-- **File Key:** `5DyHMXUNVxbgH7ZjhQxPZe`
-- **MCP Tool:** `mcp__figma-with-token__get_figma_data`
+- [ ] Component visueel gecontroleerd in Storybook
