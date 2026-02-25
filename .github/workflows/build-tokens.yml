@@ -3,16 +3,12 @@ name: Build Design Tokens
 on:
   push:
     paths:
-      - 'tokens/**'
-      - 'src/parser/**'
-      - 'style-dictionary.config.js'
+      - 'src/assets/css/settings.css'
     branches:
       - main
   pull_request:
     paths:
-      - 'tokens/**'
-      - 'src/parser/**'
-      - 'style-dictionary.config.js'
+      - 'src/assets/css/settings.css'
   workflow_dispatch:
 
 jobs:

@@ -46,10 +46,10 @@ Lees `docs/component-map.json` en check of component al bestaat.
 2. `--semantics-*` (betekenisvol)
 3. `--primitives-*` (alleen als backup)
 
-**Zoek tokens in `dist/css/tokens.css`:**
+**Zoek tokens in `src/assets/css/settings.css`:**
 ```bash
-grep -i "{component-naam}" dist/css/tokens.css
-grep -i "controls.*min-size" dist/css/tokens.css
+grep -i "{component-naam}" src/assets/css/settings.css
+grep -i "controls.*min-size" src/assets/css/settings.css
 ```
 
 **Controleer ook bestaande componenten voor patronen:**
@@ -139,7 +139,7 @@ export class RR{PascalName} extends LitElement {
       transform: scale(0.98);
     }
 
-    /* Size variants - ZOEK TOKENS OP in dist/css/tokens.css */
+    /* Size variants - ZOEK TOKENS OP in src/assets/css/settings.css */
     :host([size="xs"]) .{name} {
       min-height: var(--semantics-controls-xs-min-size);
       border-radius: var(--semantics-controls-xs-corner-radius);
@@ -163,9 +163,9 @@ export class RR{PascalName} extends LitElement {
       outline-offset: 2px;
     }
 
-    /* Disabled state - opacity is PERCENTAGE */
+    /* Disabled state */
     :host([disabled]) .{name} {
-      opacity: calc(var(--primitives-opacity-disabled) / 100);
+      opacity: var(--primitives-opacity-disabled);
       cursor: not-allowed;
       pointer-events: none;
     }
@@ -268,17 +268,17 @@ Voeg nieuwe entry toe of update bestaande met `lastUpdated`.
 
 ## TOKENS OPZOEKEN
 
-**Zoek ALTIJD actuele token waarden op in `dist/css/tokens.css`:**
+**Zoek ALTIJD actuele token waarden op in `src/assets/css/settings.css`:**
 
 ```bash
-grep -i "{component-naam}" dist/css/tokens.css
-grep -i "controls.*min-size\|controls.*corner-radius" dist/css/tokens.css
-grep -i "focus-ring" dist/css/tokens.css
-grep -i "primitives-space" dist/css/tokens.css
-grep -i "opacity" dist/css/tokens.css
+grep -i "{component-naam}" src/assets/css/settings.css
+grep -i "controls.*min-size\|controls.*corner-radius" src/assets/css/settings.css
+grep -i "focus-ring" src/assets/css/settings.css
+grep -i "primitives-space" src/assets/css/settings.css
+grep -i "opacity" src/assets/css/settings.css
 ```
 
-**LET OP:** Opacity tokens zijn percentages (0-100). Gebruik: `calc(var(--token) / 100)`
+**LET OP:** Opacity tokens zijn decimale fracties (0-1). Gebruik: `var(--token)`
 
 ---
 
@@ -287,7 +287,7 @@ grep -i "opacity" dist/css/tokens.css
 **Tokens:**
 - [ ] Semantics tokens waar mogelijk
 - [ ] Geen fallback waarden op design tokens (enige uitzondering: override hooks `--rr-*`)
-- [ ] Opacity: `calc(token / 100)`
+- [ ] Opacity: `var(--token)`
 
 **Accessibility:**
 - [ ] ARIA attributes

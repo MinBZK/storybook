@@ -72,7 +72,6 @@ export default [
       '.storybook/**',
       'scripts/**',
       '*.config.js',
-      'style-dictionary.config.js',
     ],
   },
 ];

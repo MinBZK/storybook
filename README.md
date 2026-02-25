@@ -51,11 +51,7 @@ View the live component documentation: **https://minbzk.github.io/storybook/**
 ## Architectuur
 
 ```
-tokens/rr-tokens-*.json (DTCG format)
-    ↓
-Style Dictionary
-    ↓
-dist/css/tokens.css
+src/assets/css/settings.css (CSS custom properties)
     ↓
 Web Components
 ```
@@ -135,7 +131,7 @@ Tokens zijn georganiseerd in drie lagen:
 
 ### Tokens updaten
 
-1. Bewerk `tokens/rr-tokens-light.json` en/of `tokens/rr-tokens-dark.json` (DTCG format)
+1. Bewerk `src/assets/css/settings.css`
 2. Run `npm run build:tokens`
 
 ### Nieuwe component maken

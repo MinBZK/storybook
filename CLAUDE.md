@@ -6,7 +6,7 @@ Vanilla Web Components for Dutch Government (Rijksoverheid) apps. Single source 
 
 ```bash
 npm run storybook        # Dev server at localhost:6006
-npm run build:tokens     # Rebuild design tokens
+npm run build:tokens     # Copy tokens CSS to dist
 npm run build            # Full build
 ```
 
@@ -34,7 +34,7 @@ npm run build            # Full build
 padding: 8px 8px 6px 8px;  /* NOT symmetric! */
 ```
 
-**Disabled Opacity:** Always use `var(--primitives-opacity-disabled)` - the token is a percentage.
+**Disabled Opacity:** Always use `var(--primitives-opacity-disabled)` - the token is a decimal fraction (0.38).
 
 **Subpixel Font Drift:** Expect ~0.4px cumulative drift per text element due to font rendering differences. This is inherent and not fixable.
 
@@ -178,7 +178,7 @@ min-height: var(--semantics-controls-m-min-size);
 - Override hooks: `var(--rr-button-background-color, var(--_bg-color))`
 - Font-family: `var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif)`
 
-CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `dist/css/tokens.css`.
+CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `src/assets/css/settings.css`.
 
 ## Rules
 

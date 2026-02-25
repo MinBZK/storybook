@@ -106,7 +106,7 @@ export class RRToggleButton extends LitElement {
 
     /* Selected state */
     :host([selected]) .button {
-      background-color: var(--semantics-buttons-neutral-tinted-is-selected-backround-color);
+      background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
       color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
     }
 
