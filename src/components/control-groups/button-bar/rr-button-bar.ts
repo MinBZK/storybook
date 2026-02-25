@@ -169,7 +169,11 @@ export class RRButtonBar extends LitElement {
 			});
 	}
 
+	private _building = false;
+
 	private _buildChildren(): void {
+		if (this._building) return;
+		this._building = true;
 		// Clean up stale slot attributes from previous render
 		Array.from(this.children).forEach(el => el.removeAttribute('slot'));
 
@@ -191,6 +195,7 @@ export class RRButtonBar extends LitElement {
 			el.setAttribute('slot', `child-${id}`);
 			return { type: 'button', element: el, id } as BarChild;
 		});
+		this._building = false;
 	}
 
 	private _renderChild(child: BarChild) {
