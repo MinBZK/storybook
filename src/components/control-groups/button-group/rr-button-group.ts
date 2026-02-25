@@ -33,47 +33,41 @@ export class RRButtonGroup extends LitElement {
 	private _slot!: HTMLSlotElement;
 
 	handleSlotChange() {
-	const assigned = this._slot
-		.assignedElements({ flatten: true })
-		.filter((el): el is HTMLElement => el instanceof HTMLElement);
+		const assigned = this._slot
+			.assignedElements({ flatten: true })
+			.filter((el): el is HTMLElement => el instanceof HTMLElement);
 
-	assigned.forEach((el, index) => {
-		if (index >= 3) {
-		el.setAttribute('hidden', '');
-		console.warn('rr-button-group: Only 3 buttons are allowed. Extra buttons will be hidden.');
-		} else {
-		el.removeAttribute('hidden');
-		}
+		assigned.forEach((el, index) => {
+			if (index >= 3) {
+				el.setAttribute('hidden', '');
+				console.warn('rr-button-group: Only 3 buttons are allowed. Extra buttons will be hidden.');
+			} else {
+				el.removeAttribute('hidden');
+			}
 
-		if (this.flow === 'vertical') {
-		el.setAttribute('full-width', '');
-		} else {
-		el.removeAttribute('full-width');
-		}
+			if (this.flow === 'vertical') {
+				el.setAttribute('full-width', '');
+			} else {
+				el.removeAttribute('full-width');
+			}
 
-		el.setAttribute('size', this.size);
-	});
+			el.setAttribute('size', this.size);
+		});
 	}
 
 	override updated(changedProperties: Map<string, unknown>) {
-	if (changedProperties.has('flow') || changedProperties.has('size')) {
-		this.handleSlotChange();
-	}
-	}
-
-	override updated(changedProperties: Map<string, unknown>) {
-	if (changedProperties.has('flow')) {
-		this.handleSlotChange();
-	}
+		if (changedProperties.has('flow') || changedProperties.has('size')) {
+			this.handleSlotChange();
+		}
 	}
 
 	override render() {
-	return template.call(this);
+		return template.call(this);
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-	'rr-button-group': RRButtonGroup;
+		'rr-button-group': RRButtonGroup;
 	}
 }
