@@ -18,14 +18,16 @@ export const styles = css`
 		justify-content: center;
 	}
 
-	/* Flow: Horizontal */
+	/* # Flow: Horizontal */
+
 	:host([flow="horizontal"]) .button-group,
 	:host(:not([flow])) .button-group {
 		flex-direction: row;
 		flex-wrap: wrap;
 	}
 
-	/* Flow: Vertical */
+	/* # Flow: Vertical */
+
 	:host([flow="vertical"]) {
 		display: flex;
 		width: 100%;
@@ -36,12 +38,14 @@ export const styles = css`
 		width: 100%;
 	}
 
-	/* Size: S */
+	/* # Size: S */
+
 	:host([size="sm"]) .button-group {
 		gap: var(--components-button-group-sm-gap);
 	}
 
-	/* Size: M (default) */
+	/* # Size: M (default) */
+
 	:host([size="md"]) .button-group,
 	:host(:not([size])) .button-group {
 		gap: var(--components-button-group-md-gap);

@@ -45,6 +45,8 @@ export const styles = css`
 		}
 	}
 
+	/* # Focus state */
+
 	.button:focus-visible {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
@@ -53,6 +55,10 @@ export const styles = css`
 	.button:focus:not(:focus-visible) {
 		outline: none;
 	}
+
+	/* # Sizes */
+
+	/* ## Size: XS */
 
 	:host([size="xs"]) .button {
 		min-height: var(--semantics-controls-xs-min-size);
@@ -63,6 +69,8 @@ export const styles = css`
 		gap: var(--primitives-space-2);
 	}
 
+	/* ## Size: SM */
+
 	:host([size="sm"]) .button {
 		min-height: var(--semantics-controls-sm-min-size);
 		min-width: var(--semantics-controls-sm-min-size);
@@ -71,6 +79,8 @@ export const styles = css`
 		border-radius: var(--semantics-controls-sm-corner-radius);
 		gap: var(--primitives-space-2);
 	}
+
+	/* ## Size: MD (Default) */
 
 	:host([size="md"]) .button,
 	:host(:not([size])) .button {
@@ -81,6 +91,10 @@ export const styles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 		gap: var(--primitives-space-4);
 	}
+
+	/* # Variants */
+
+	/* ## Variant: Neutral Tintend (Secondary, Default) */
 
 	:host([variant="neutral-tinted"]) .button,
 	:host([variant="secondary"]) .button,
@@ -103,6 +117,8 @@ export const styles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
+	/* ## Variant: Neutral Transparent */
+
 	:host([variant="neutral-transparent"]) .button {
 		background-color: transparent;
 		color: var(--semantics-buttons-neutral-transparent-content-color);
@@ -115,6 +131,8 @@ export const styles = css`
 	:host([variant="neutral-transparent"]) .button:active {
 		color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
 	}
+
+	/* ## Variant: Accent Filled (Primary) */
 
 	:host([variant="accent-filled"]) .button,
 	:host([variant="primary"]) .button {
@@ -133,6 +151,8 @@ export const styles = css`
 		background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
 		color: var(--semantics-buttons-accent-filled-is-active-content-color);
 	}
+
+	/* ## Variant: Accent Outlined */
 
 	:host([variant="accent-outlined"]) .button {
 		background-color: transparent;
@@ -171,6 +191,8 @@ export const styles = css`
 		border-color: var(--semantics-buttons-accent-outlined-is-active-border-color);
 	}
 
+	/* ## Variant: Accent Transparent */
+
 	:host([variant="accent-transparent"]) .button {
 		background-color: transparent;
 		color: var(--semantics-buttons-accent-transparent-content-color);
@@ -183,6 +205,8 @@ export const styles = css`
 	:host([variant="accent-transparent"]) .button:active {
 		color: var(--semantics-buttons-accent-transparent-is-active-content-color);
 	}
+
+	/* ## Variant: Danger Tinted */
 
 	:host([variant="danger-tinted"]) .button,
 	:host([variant="destructive"]) .button {
@@ -201,6 +225,8 @@ export const styles = css`
 		background-color: var(--semantics-buttons-danger-tinted-is-active-background-color);
 		color: var(--semantics-buttons-danger-tinted-is-active-content-color);
 	}
+
+	/* ## Content (Title and Icons) */
 
 	.button__content {
 		display: contents;
