@@ -4,9 +4,6 @@ import './rr-number-field.ts';
 /**
  * De Number Field component is een numeriek invoerveld met plus en min knoppen.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=266:344)
- *
  * ## Gebruik
  * ```html
  * <rr-number-field value="1" min="0" max="10"></rr-number-field>
@@ -17,10 +14,6 @@ export default {
   component: 'rr-number-field',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=266:344',
-    },
     componentSource: {
       file: 'src/components/inputs/number-field/rr-number-field.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -199,39 +192,4 @@ InteractiveExample.parameters = {
         'Een interactief voorbeeld met een number field. De component triggert `input` en `change` events.',
     },
   },
-};
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Number Field (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="266:344" style="display: inline-block;">
-        <!--
-          Figma number-field component set layout:
-          - Hug content
-          - 16px padding
-          - 16px gap between variants
-          - 2 variants: enabled, disabled
-        -->
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff;">
-          <rr-number-field value="1"></rr-number-field>
-          <rr-number-field value="1" disabled></rr-number-field>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = 'Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
 };

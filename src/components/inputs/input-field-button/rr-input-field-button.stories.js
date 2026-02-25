@@ -7,18 +7,12 @@ import './rr-input-field-button.ts';
  *
  * Heeft twee types: `icon` (vierkant met icon slot) en `text` (met tekst).
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=272:353)
  */
 export default {
   title: 'Components/Inputs/Input Field Button',
   component: 'rr-input-field-button',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=272:353',
-    },
   },
   argTypes: {
     type: {
@@ -81,21 +75,3 @@ export const AllVariants = () => html`
     </div>
   </div>
 `;
-
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <ftl-holster node="272:353" style="display: inline-block;">
-      <div style="display: flex; align-items: center; padding: 16px 17px 16px 7px; background: #ffffff;">
-        <rr-input-field-button type="icon" style="margin-right: 1px;">${iconSvg}</rr-input-field-button>
-        <rr-input-field-button type="icon" style="margin-right: 5px;">${iconSvg}</rr-input-field-button>
-        <rr-input-field-button type="icon" disabled style="margin-right: 15px;">${iconSvg}</rr-input-field-button>
-        <rr-input-field-button type="text" style="margin-right: 9px;">Button</rr-input-field-button>
-        <rr-input-field-button type="text" disabled>Button</rr-input-field-button>
-      </div>
-    </ftl-holster>
-  </ftl-belt>
-`;
-FigmaComparison.tags = ['!autodocs', 'figma'];

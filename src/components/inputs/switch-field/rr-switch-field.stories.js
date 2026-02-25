@@ -4,18 +4,12 @@ import './rr-switch-field.ts';
 /**
  * De Switch Field component is een switch toggle met label.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=348:2635)
  */
 export default {
   title: 'Components/Inputs/Switch Field',
   component: 'rr-switch-field',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=348:2635',
-    },
   },
   argTypes: {
     checked: { control: 'boolean' },
@@ -50,18 +44,3 @@ export const AllStates = () => html`
     <rr-switch-field checked disabled>Always on (disabled)</rr-switch-field>
   </div>
 `;
-
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <ftl-holster node="348:2635" style="display: inline-block;">
-      <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 395px; background: #ffffff;">
-        <rr-switch-field>Switch field</rr-switch-field>
-        <rr-switch-field checked>Switch field</rr-switch-field>
-      </div>
-    </ftl-holster>
-  </ftl-belt>
-`;
-FigmaComparison.tags = ['!autodocs', 'figma'];

@@ -4,9 +4,6 @@ import './rr-drop-down-field.ts';
 /**
  * De Drop Down Field component is een select/dropdown veld.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=358:717)
- *
  * ## Gebruik
  * ```html
  * <rr-drop-down-field
@@ -23,10 +20,6 @@ export default {
   component: 'rr-drop-down-field',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=358:717',
-    },
     componentSource: {
       file: 'src/components/inputs/drop-down-field/rr-drop-down-field.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -221,41 +214,4 @@ InteractiveExample.parameters = {
         'Een interactief voorbeeld met een drop down field. De component triggert een `change` event bij selectie.',
     },
   },
-};
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Drop Down Field (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="358:717" style="display: inline-block;">
-        <!--
-          Figma drop-down-field component set layout:
-          - 456px width
-          - 16px padding
-          - 16px gap between variants
-          - 4 variants: md enabled, md disabled, sm enabled, sm disabled
-        -->
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 424px; background: #ffffff;">
-          <rr-drop-down-field size="md" value="Drop down field" .options=${[{ value: 'Drop down field', label: 'Drop down field' }]}></rr-drop-down-field>
-          <rr-drop-down-field size="md" value="Drop down field" disabled .options=${[{ value: 'Drop down field', label: 'Drop down field' }]}></rr-drop-down-field>
-          <rr-drop-down-field size="sm" value="Drop down field" .options=${[{ value: 'Drop down field', label: 'Drop down field' }]}></rr-drop-down-field>
-          <rr-drop-down-field size="sm" value="Drop down field" disabled .options=${[{ value: 'Drop down field', label: 'Drop down field' }]}></rr-drop-down-field>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = 'Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
 };

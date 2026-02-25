@@ -5,9 +5,6 @@ import './rr-segmented-control-item.ts';
 /**
  * De Segmented Control component is een horizontale groep van wederzijds exclusieve opties.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=336-2899)
- *
  * ## Gebruik
  * ```html
  * <rr-segmented-control value="option1">
@@ -22,10 +19,6 @@ export default {
   component: 'rr-segmented-control',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=336-2899',
-    },
   },
   argTypes: {
     value: {
@@ -136,83 +129,3 @@ export const ViewModeExample = () => html`
   </div>
 `;
 ViewModeExample.parameters = { controls: { disable: true } };
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our segmented control (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="336:2899" style="display: inline-block;">
-        <!--
-          Figma segmented-control (336:2899) component set:
-          - Layout: column, gap: 16px, padding: 16px
-          - Variants: md text, sm text, md icons, sm icons
-          - Width: 349px (fills for text variants)
-        -->
-        <div
-          style="display: flex; flex-direction: column; gap: 16px; padding: 16px; background: #ffffff; width: 349px; box-sizing: border-box; align-items: flex-start;"
-        >
-          <!-- md text (full-width, no selection - Figma shows all items unselected) -->
-          <rr-segmented-control size="md" full-width style="width: 100%;">
-            <rr-segmented-control-item value="option1">Item</rr-segmented-control-item>
-            <rr-segmented-control-item value="option2">Item</rr-segmented-control-item>
-            <rr-segmented-control-item value="option3">Item</rr-segmented-control-item>
-          </rr-segmented-control>
-          <!-- sm text (full-width, no selection) -->
-          <rr-segmented-control size="sm" full-width style="width: 100%;">
-            <rr-segmented-control-item value="option1">Item</rr-segmented-control-item>
-            <rr-segmented-control-item value="option2">Item</rr-segmented-control-item>
-            <rr-segmented-control-item value="option3">Item</rr-segmented-control-item>
-          </rr-segmented-control>
-          <!-- md icons (hug content, no selection) -->
-          <rr-segmented-control size="md">
-            <rr-segmented-control-item value="option1" content-type="icon">
-              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
-                <circle cx="12" cy="12" r="9"/>
-              </svg>
-            </rr-segmented-control-item>
-            <rr-segmented-control-item value="option2" content-type="icon">
-              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
-                <circle cx="12" cy="12" r="9"/>
-              </svg>
-            </rr-segmented-control-item>
-            <rr-segmented-control-item value="option3" content-type="icon">
-              <svg slot="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
-                <circle cx="12" cy="12" r="9"/>
-              </svg>
-            </rr-segmented-control-item>
-          </rr-segmented-control>
-          <!-- sm icons (hug content, no selection) -->
-          <rr-segmented-control size="sm">
-            <rr-segmented-control-item value="option1" content-type="icon">
-              <svg slot="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
-                <circle cx="12" cy="12" r="9"/>
-              </svg>
-            </rr-segmented-control-item>
-            <rr-segmented-control-item value="option2" content-type="icon">
-              <svg slot="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
-                <circle cx="12" cy="12" r="9"/>
-              </svg>
-            </rr-segmented-control-item>
-            <rr-segmented-control-item value="option3" content-type="icon">
-              <svg slot="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 2">
-                <circle cx="12" cy="12" r="9"/>
-              </svg>
-            </rr-segmented-control-item>
-          </rr-segmented-control>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = { controls: { disable: true } };

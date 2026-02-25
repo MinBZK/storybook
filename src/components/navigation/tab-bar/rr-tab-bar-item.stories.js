@@ -6,10 +6,6 @@ export default {
   component: 'rr-tab-bar-item',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43604',
-    },
     componentSource: {
       file: 'src/components/navigation/tab-bar/rr-tab-bar-item.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -82,43 +78,3 @@ export const AllContentTypes = () => html`
   </div>
 `;
 AllContentTypes.parameters = { controls: { disable: true } };
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Tab bar items (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="1366:43604" style="display: inline-block;">
-        <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 16px;">
-          <rr-tab-bar-item content-type="text">Tab bar item</rr-tab-bar-item>
-          <rr-tab-bar-item content-type="text" selected>Tab bar item</rr-tab-bar-item>
-          <rr-tab-bar-item content-type="icon">
-            <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4 2"/></svg>
-          </rr-tab-bar-item>
-          <rr-tab-bar-item content-type="icon" selected>
-            <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4 2"/></svg>
-          </rr-tab-bar-item>
-          <rr-tab-bar-item content-type="icon-with-title">
-            <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4 2"/></svg>
-            Tab bar item
-          </rr-tab-bar-item>
-          <rr-tab-bar-item content-type="icon-with-title" selected>
-            <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4 2"/></svg>
-            Tab bar item
-          </rr-tab-bar-item>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = { controls: { disable: true } };

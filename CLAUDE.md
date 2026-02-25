@@ -1,6 +1,6 @@
 # RegelRecht Design System
 
-Vanilla Web Components for Dutch Government (Rijksoverheid) apps. Single source of truth: **Figma** (`5DyHMXUNVxbgH7ZjhQxPZe`).
+Vanilla Web Components for Dutch Government (Rijksoverheid) apps. Single source of truth: **Storybook**.
 
 ## Quick Reference
 
@@ -17,34 +17,24 @@ npm run build            # Full build
 | Taak | Skill | Beschrijving |
 |------|-------|--------------|
 | Nieuwe branch starten | `/worktree <branch>` | Maakt worktree + kopieert .env en .claude/ |
-| Component maken/updaten | `/component <figma-node>` | Haalt Figma specs, genereert Lit+TS component |
-| Pixel-perfect checken | `/pixel-perfect <name>` | Vergelijkt component met Figma design |
-| PR maken met screenshots | `/figma-pr [component]` | Maakt PR met FigmaComparison screenshots |
+| Component maken/updaten | `/component <naam>` | Genereert Lit+TS component |
 | Storybook beheren | `/storybook-manager` | Start/stop/status van Storybook instances |
 
 **Typische flow voor nieuwe feature:**
 ```
 /worktree feat/my-component
-/component 123:456
-/pixel-perfect my-component
-/figma-pr my-component
+/component my-component
 ```
 
 ## Gotchas
 
-**Asymmetric Padding:** Figma uses different top/bottom padding. Check Properties panel for each value:
+**Asymmetric Padding:** Components may use different top/bottom padding. Check design specs for each value:
 ```css
 /* Button S-size: top=8, right=8, bottom=6, left=8 */
 padding: 8px 8px 6px 8px;  /* NOT symmetric! */
 ```
 
-**Figma MCP Rate Limits:** Wait 60-120s on error. Workaround: open Figma in browser, click component, read Properties panel directly.
-
 **Disabled Opacity:** Always use `var(--primitives-opacity-disabled)` - the token is a percentage.
-
-**Asymmetric Figma Layouts:** Figma uses padding + spacer elements that can create asymmetric distances (e.g., 48px left vs 40px right). Check both sides separately and use margin compensation if needed.
-
-**Always Check Figma Gap:** Don't assume flex containers have gaps. Figma's layout panel shows gap explicitly - if not shown, gap is 0.
 
 **Subpixel Font Drift:** Expect ~0.4px cumulative drift per text element due to font rendering differences. This is inherent and not fixable.
 
@@ -69,53 +59,11 @@ src/components/{name}/
 
 **Let op:** We migreren naar Lit + TypeScript. Nieuwe componenten altijd in `.ts`.
 
-## FigmaComparison Stories
-
-Each component has a `FigmaComparison` story using `ftl-holster` for pixel comparison:
-
-```javascript
-import { FIGMA_TOKEN, FIGMA_FILE_ID } from '../../stories/figma-config.js';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <ftl-holster node="NODE-ID" style="display: inline-block;">
-      <!-- Component grid matching Figma layout exactly -->
-    </ftl-holster>
-  </ftl-belt>
-`;
-```
-
-**Usage:** In Storybook, use Toggle/Overlay/Side-by-Side modes to compare code vs Figma.
-
-## Figma Node IDs
-
-| Component | Node ID | Figma Name | Status |
-|-----------|---------|------------|--------|
-| Button | 20:27 | button | Implemented |
-| Checkbox | 236:41408 | checkbox-cell | Implemented |
-| Radio | 236:41398 | radio-button-cell | Implemented |
-| Switch | 236:41353 | switch-cell | Implemented |
-| Toggle Button | 309:3542 | toggle-button | Implemented |
-| Icon Button | 240:1391 | icon-button-cell | Implemented |
-| Menu Bar / Top Nav | 48:2135 | top-navigation-bar | Implemented |
-| Spacer | 48:2234 | spacer | Implemented |
-| Title Cell | 1464:4047 | title-cell | Implemented |
-| List | 1044:2275 | list | Implemented |
-| List Item | 957:2279 | list__item | Implemented |
-| Split View Pane | 39:944 | split-view-pane | Implemented |
-| Split View Divider | 39:927 | split-view-divider | Implemented |
-| Horizontal Split View | 39:941 | horizontal-split-view | Implemented |
-| Side-by-Side Split View | 1558:3547 | side-by-side-split-view | Implemented |
-
-See `docs/component-map.json` for full details (85 components).
-
 ## Components Maken/Updaten
 
-Gebruik `/component <figma-node-id>` voor het maken of updaten van componenten. Dit command:
-- Haalt Figma specs op
+Gebruik `/component <naam>` voor het maken of updaten van componenten. Dit command:
 - Genereert Lit + TypeScript component
-- Maakt FigmaComparison story
-- Voert `/pixel-perfect` uit voor visuele verificatie
+- Maakt Storybook stories
 
 ## Button Sizes
 
@@ -240,4 +188,3 @@ CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn i
 4. DigiToegankelijk (WCAG 2.1 AA) compliant
 5. RijksSansVF font with system-ui fallback
 6. BEM naamgeving voor alle class namen
-7. **Na elke component wijziging: `/pixel-perfect {name}`** - verifieer visuele correctheid tegen Figma

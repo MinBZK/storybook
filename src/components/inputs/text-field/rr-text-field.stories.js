@@ -4,9 +4,6 @@ import './rr-text-field.ts';
 /**
  * De Text Field component is een basis input veld voor tekst invoer.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=192:37504)
- *
  * ## Gebruik
  * ```html
  * <rr-text-field placeholder="Voer tekst in"></rr-text-field>
@@ -17,10 +14,6 @@ export default {
   component: 'rr-text-field',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=192:37504',
-    },
     componentSource: {
       file: 'src/components/inputs/text-field/rr-text-field.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -246,41 +239,4 @@ InteractiveExample.parameters = {
         'Een interactief voorbeeld met meerdere text fields. De component triggert `input` en `change` events.',
     },
   },
-};
-
-// Figma Comparison - visual comparison with Figma design
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Text Field (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="192:37504" style="display: inline-block;">
-        <!--
-          Figma text-field component set layout:
-          - 411px width
-          - 16px padding
-          - 16px gap between variants
-          - 4 variants: neutral, disabled, valid, invalid
-        -->
-        <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 379px; background: #ffffff;">
-          <rr-text-field placeholder="Text field" validation="neutral"></rr-text-field>
-          <rr-text-field placeholder="Text field" validation="neutral" disabled></rr-text-field>
-          <rr-text-field placeholder="Text field" validation="valid"></rr-text-field>
-          <rr-text-field placeholder="Text field" validation="invalid"></rr-text-field>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = 'Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
 };

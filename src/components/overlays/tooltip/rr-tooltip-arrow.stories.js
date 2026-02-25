@@ -5,9 +5,6 @@ import './rr-tooltip-arrow.ts';
  * De Tooltip Arrow sub-component voor het tonen van een driehoekig pijltje
  * als onderdeel van een tooltip.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10227)
- *
  * ## Gebruik
  * ```html
  * <rr-tooltip-arrow direction="up"></rr-tooltip-arrow>
@@ -18,10 +15,6 @@ export default {
   component: 'rr-tooltip-arrow',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10227',
-    },
     componentSource: {
       file: 'src/components/overlays/tooltip/rr-tooltip-arrow.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -85,34 +78,4 @@ AllDirections.parameters = {
       story: 'De tooltip arrow in alle vier de richtingen (up, down, left, right).',
     },
   },
-};
-
-// Figma Comparison
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Tooltip Arrow (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="1398-10227" style="display: inline-block;">
-        <div style="display: inline-flex; flex-direction: column; gap: 20px; padding: 16px; align-items: center;">
-          <rr-tooltip-arrow direction="up"></rr-tooltip-arrow>
-          <rr-tooltip-arrow direction="right"></rr-tooltip-arrow>
-          <rr-tooltip-arrow direction="down"></rr-tooltip-arrow>
-          <rr-tooltip-arrow direction="left"></rr-tooltip-arrow>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = 'Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
 };

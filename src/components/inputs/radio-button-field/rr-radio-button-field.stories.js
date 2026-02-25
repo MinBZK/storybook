@@ -4,18 +4,12 @@ import './rr-radio-button-field.ts';
 /**
  * De Radio Button Field component is een radio button met label.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241:2382)
  */
 export default {
   title: 'Components/Inputs/Radio Button Field',
   component: 'rr-radio-button-field',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241:2382',
-    },
   },
   argTypes: {
     checked: { control: 'boolean' },
@@ -50,18 +44,3 @@ export const RadioGroup = () => html`
     <rr-radio-button-field name="option" value="4" disabled>Option 4 (disabled)</rr-radio-button-field>
   </div>
 `;
-
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <ftl-holster node="241:2382" style="display: inline-block;">
-      <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px; width: 363px; background: #ffffff;">
-        <rr-radio-button-field>Radio button field</rr-radio-button-field>
-        <rr-radio-button-field checked>Radio button field</rr-radio-button-field>
-      </div>
-    </ftl-holster>
-  </ftl-belt>
-`;
-FigmaComparison.tags = ['!autodocs', 'figma'];

@@ -51,13 +51,9 @@ View the live component documentation: **https://minbzk.github.io/storybook/**
 ## Architectuur
 
 ```
-Figma (single source of truth)
+tokens/rr-tokens-*.json (DTCG format)
     ↓
-variables2json plugin
-    ↓
-tokens/rr-tokens.json
-    ↓
-Style Dictionary (custom parser)
+Style Dictionary
     ↓
 dist/css/tokens.css
     ↓
@@ -139,9 +135,8 @@ Tokens zijn georganiseerd in drie lagen:
 
 ### Tokens updaten
 
-1. Exporteer tokens uit Figma met de variables2json plugin
-2. Plaats het bestand als `tokens/rr-tokens.json`
-3. Run `npm run build:tokens`
+1. Bewerk `tokens/rr-tokens-light.json` en/of `tokens/rr-tokens-dark.json` (DTCG format)
+2. Run `npm run build:tokens`
 
 ### Nieuwe component maken
 

@@ -5,9 +5,6 @@ import './rr-spacer.js';
  * De Spacer component is een utility component voor het creëren van ruimte
  * tussen elementen. Ondersteunt vaste sizes, flexibele ruimte, en container-responsive sizes.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2234)
- *
  * ## Gebruik
  * ```html
  * <!-- Vaste spacing -->
@@ -25,10 +22,6 @@ export default {
   component: 'rr-spacer',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2234',
-    },
     componentSource: {
       file: 'src/components/layout/spacer/rr-spacer.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -302,76 +295,5 @@ export const NavigationExample = () => html`
   </div>
 `;
 NavigationExample.parameters = {
-  controls: { disable: true },
-};
-
-// Figma Comparison - visual comparison with Figma design
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our spacers (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="48:2234" style="display: inline-block;">
-        <!--
-          Figma spacer (48:2234) component set:
-          - Layout: column, gap: 16px, padding: 16px
-          - 19 variants in order: m(s), m(m), m(l), flexible, 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 44, 48, 64, 80, 96
-        -->
-        <div
-          style="background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;"
-        >
-          <!-- container=s, size=m (16x16) -->
-          <rr-spacer size="m" container="s" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=m, size=m (24x24) -->
-          <rr-spacer size="m" container="m" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=l, size=m (24x24) -->
-          <rr-spacer size="m" container="l" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=flexible (fill x 8px) -->
-          <rr-spacer size="flexible" style="background: #e2e8f0; min-height: 8px; width: 96px;"></rr-spacer>
-          <!-- container=all, size=2 -->
-          <rr-spacer size="2" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=4 -->
-          <rr-spacer size="4" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=6 -->
-          <rr-spacer size="6" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=8 -->
-          <rr-spacer size="8" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=12 -->
-          <rr-spacer size="12" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=16 -->
-          <rr-spacer size="16" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=20 -->
-          <rr-spacer size="20" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=24 -->
-          <rr-spacer size="24" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=32 -->
-          <rr-spacer size="32" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=40 -->
-          <rr-spacer size="40" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=44 -->
-          <rr-spacer size="44" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=48 -->
-          <rr-spacer size="48" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=64 -->
-          <rr-spacer size="64" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=80 -->
-          <rr-spacer size="80" style="background: #e2e8f0;"></rr-spacer>
-          <!-- container=all, size=96 -->
-          <rr-spacer size="96" style="background: #e2e8f0;"></rr-spacer>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = 'Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
   controls: { disable: true },
 };

@@ -1,14 +1,12 @@
 import StyleDictionary from 'style-dictionary';
-import { createFigmaVariablesParser } from './src/parser/figma-variables-parser.js';
 import { FONT_WEIGHT_MAP } from './src/parser/font-weights.js';
 
 // Scheme definitions
 const SCHEMES = [
   {
     name: 'light',
-    mode: 'Light',
+    source: ['tokens/rr-tokens-light.json'],
     selector: ':root',
-    parserName: 'figma-variables-light',
     files: [
       { destination: 'tokens.css' },
       { destination: 'primitives.css', filter: (token) => token.path[0] === 'primitives' },
@@ -18,9 +16,8 @@ const SCHEMES = [
   },
   {
     name: 'dark',
-    mode: 'Dark',
+    source: ['tokens/rr-tokens-dark.json'],
     selector: '[data-scheme="dark"]',
-    parserName: 'figma-variables-dark',
     files: [
       { destination: 'scheme-dark.css' },
     ],
@@ -83,7 +80,7 @@ function registerSchemeFormat(formatName, selector) {
     format: ({ dictionary }) => {
       const header = `/**
  * RegelRecht Design System Tokens
- * Auto-generated from Figma - Do not edit directly
+ * Auto-generated from design tokens - Do not edit directly
  * Generated: ${new Date().toISOString()}
  */\n\n`;
 
@@ -102,9 +99,6 @@ function registerSchemeFormat(formatName, selector) {
 
 // Build each scheme
 for (const scheme of SCHEMES) {
-  const parser = createFigmaVariablesParser(scheme.mode, scheme.parserName);
-  StyleDictionary.registerParser(parser);
-
   const formatName = `css/custom-properties-${scheme.name}`;
   registerSchemeFormat(formatName, scheme.selector);
 
@@ -141,8 +135,7 @@ for (const scheme of SCHEMES) {
   }
 
   const config = {
-    source: ['tokens/rr-tokens.json'],
-    parsers: [scheme.parserName],
+    source: scheme.source,
     platforms,
   };
 

@@ -34,35 +34,3 @@ export const ManyTabs = () => html`
   </rr-document-tab-bar>
 `;
 
-// -- Figma Comparison --
-
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
-      <div>
-        <h3 style="margin: 0 0 8px;">Document Tab Bar</h3>
-        <ftl-holster node="39-857" style="display: inline-block;">
-          <rr-document-tab-bar>
-            <rr-document-tab-bar-item selected subtitle="Wet op de Zorgtoeslag">Artikel 2</rr-document-tab-bar-item>
-            <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 1</rr-document-tab-bar-item>
-            <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 68b</rr-document-tab-bar-item>
-            <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 69</rr-document-tab-bar-item>
-            <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 24</rr-document-tab-bar-item>
-            <rr-document-tab-bar-item subtitle="WML">Artikel 8</rr-document-tab-bar-item>
-            <rr-icon-button slot="end" variant="neutral-tinted" size="md" label="Meer">${moreIcon}</rr-icon-button>
-          </rr-document-tab-bar>
-        </ftl-holster>
-      </div>
-
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = 'Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = { controls: { disable: true } };

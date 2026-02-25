@@ -5,9 +5,6 @@ import './rr-toggle-button.js';
  * De Toggle Button component is een selecteerbare button die tussen aan/uit kan schakelen.
  * Ideaal voor filtering, weergave-opties, of multi-select acties.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542)
- *
  * ## Gebruik
  * ```html
  * <rr-toggle-button size="md">Label</rr-toggle-button>
@@ -19,10 +16,6 @@ export default {
   component: 'rr-toggle-button',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542',
-    },
     componentSource: {
       file: 'src/components/inputs/toggle-button/rr-toggle-button.js',
       repository: 'https://github.com/regelrecht/design-system',
@@ -355,44 +348,5 @@ export const SizeMatrix = () => html`
   </table>
 `;
 SizeMatrix.parameters = {
-  controls: { disable: true },
-};
-
-// Figma Comparison - visual comparison with Figma design
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our toggle buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="309:3542" style="display: inline-block;">
-        <!--
-          Figma toggle-button (309:3542) component set:
-          - Layout: column, gap: 16px, padding: 16px, sizing: hug
-          - 4 variants: md default (44px), md selected (44px), sm default (32px), sm selected (32px)
-        -->
-        <div style="background: #ffffff; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
-          <!-- Row 1: size=md, is-selected=false -->
-          <rr-toggle-button size="md">Toggle button</rr-toggle-button>
-          <!-- Row 2: size=md, is-selected=true -->
-          <rr-toggle-button size="md" selected>Toggle button</rr-toggle-button>
-          <!-- Row 3: size=sm, is-selected=false -->
-          <rr-toggle-button size="sm">Toggle button</rr-toggle-button>
-          <!-- Row 4: size=sm, is-selected=true -->
-          <rr-toggle-button size="sm" selected>Toggle button</rr-toggle-button>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
   controls: { disable: true },
 };

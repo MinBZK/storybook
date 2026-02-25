@@ -5,18 +5,12 @@ import '../../inputs/text-field/rr-text-field.ts';
 /**
  * De Form Field component is een generieke wrapper voor formuliervelden met label en beschrijving.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=376:2395)
  */
 export default {
   title: 'Components/Control Groups/Form Field',
   component: 'rr-form-field',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=376:2395',
-    },
   },
   argTypes: {
     label: { control: 'text' },
@@ -84,19 +78,3 @@ export const CompleteForm = () => html`
     </rr-form-field>
   </div>
 `;
-
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <ftl-holster node="376:2396" style="display: inline-block;">
-      <div style="display: flex; flex-direction: column; gap: 2px; width: 100%;">
-        <rr-form-field label="Form field">
-          <rr-text-field value="Text field"></rr-text-field>
-        </rr-form-field>
-      </div>
-    </ftl-holster>
-  </ftl-belt>
-`;
-FigmaComparison.tags = ['!autodocs', 'figma'];

@@ -5,9 +5,6 @@ import './rr-radio.ts';
  * De Radio Button component wordt gebruikt voor het maken van exclusieve keuzes binnen een groep opties.
  * Slechts één radio button binnen een groep (met dezelfde `name`) kan tegelijkertijd geselecteerd zijn.
  *
- * ## Figma Design
- * [Open in Figma](https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41398)
- *
  * ## Gebruik
  * Voor optimale toegankelijkheid volgens WAI-ARIA, gebruik een container met `role="radiogroup"`:
  * ```html
@@ -32,10 +29,6 @@ export default {
   component: 'rr-radio',
   tags: ['autodocs'],
   parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41398',
-    },
     componentSource: {
       file: 'src/components/inputs/radio/rr-radio.ts',
       repository: 'https://github.com/regelrecht/design-system',
@@ -554,62 +547,4 @@ FormIntegration.parameters = {
         'Voorbeeld van radio buttons geïntegreerd in een formulier. Klik op "Verstuur" om de geselecteerde waarden te zien.',
     },
   },
-};
-
-// Figma Comparison - visual comparison with Figma design
-const FIGMA_TOKEN = import.meta.env.STORYBOOK_FIGMA_TOKEN || '';
-const FIGMA_FILE_ID = '5DyHMXUNVxbgH7ZjhQxPZe';
-
-export const FigmaComparison = () => html`
-  <ftl-belt access-token="${FIGMA_TOKEN}" file-id="${FIGMA_FILE_ID}">
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-        Our radio buttons (Code) vs Figma design. Use Toggle/Overlay/Side-by-Side to compare.
-      </p>
-      <ftl-holster node="219:38433" style="display: inline-block;">
-        <!-- Figma layout: 96x96px container with 2x2 grid of radio buttons -->
-        <!-- Each radio is 24px, positioned at (16,16), (56,16), (16,56), (56,56) -->
-        <div style="position: relative; width: 96px; height: 96px; background: #ffffff;">
-          <!-- Row 1: unchecked, checked -->
-          <rr-radio
-            size="xs"
-            name="figma-1"
-            aria-label="Unchecked"
-            style="position: absolute; left: 16px; top: 16px;"
-          ></rr-radio>
-          <rr-radio
-            size="xs"
-            name="figma-2"
-            checked
-            aria-label="Checked"
-            style="position: absolute; left: 56px; top: 16px;"
-          ></rr-radio>
-          <!-- Row 2: disabled unchecked, disabled checked -->
-          <rr-radio
-            size="xs"
-            name="figma-3"
-            disabled
-            aria-label="Disabled unchecked"
-            style="position: absolute; left: 16px; top: 56px;"
-          ></rr-radio>
-          <rr-radio
-            size="xs"
-            name="figma-4"
-            disabled
-            checked
-            aria-label="Disabled checked"
-            style="position: absolute; left: 56px; top: 56px;"
-          ></rr-radio>
-        </div>
-      </ftl-holster>
-      <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
-        Keyboard: T (toggle) | O (overlay) | S (side-by-side)
-      </p>
-    </div>
-  </ftl-belt>
-`;
-FigmaComparison.storyName = '🎨 Figma Comparison';
-FigmaComparison.tags = ['!autodocs', 'figma'];
-FigmaComparison.parameters = {
-  controls: { disable: true },
 };
