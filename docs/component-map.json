@@ -1662,11 +1662,6 @@
         "pageName": "Control groups",
         "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263-6851"
       },
-      "implementation": {
-        "tagName": "rr-button-bar-divider",
-        "file": "src/components/control-groups/button-bar-divider/rr-button-bar-divider.ts",
-        "className": "RRButtonBarDivider"
-      },
       "status": "implemented",
       "lastUpdated": "2026-02-12"
     },
