@@ -268,7 +268,7 @@ export class RRButton extends LitElement {
 		}
 
 		.button__start-icon,
-		.button__end-icon{
+		.button__end-icon {
 			display: block;
 			flex-shrink: 0;
 		}
@@ -459,20 +459,6 @@ export class RRButton extends LitElement {
 			this._iconStart = null;
 			this._iconEnd = iconState;
 		}
-	}
-
-	private _renderIcon(icon: IconState): unknown {
-		// Spread all original attributes onto the shadow DOM icon
-		const attrEntries = Object.entries(icon.attributes)
-			.filter(([key]) => key !== 'name')
-			.map(([key, value]) => `${key}="${value}"`)
-			.join(' ');
-
-		return html`<rr-icon
-			class="icon"
-			name=${icon.name}
-			${attrEntries ? html`...` : nothing}
-		></rr-icon>`;
 	}
 
 	private _handleClick(e: MouseEvent): void {
