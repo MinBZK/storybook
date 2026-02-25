@@ -1,0 +1,47 @@
+import type { LitElement } from 'lit';
+
+/**
+ * Creates a DOM fixture by parsing the given HTML string, appending it to the
+ * document body inside a wrapper <div>, and waiting for the first element
+ * child to finish its Lit update cycle.
+ *
+ * Returns the first element child, typed as T.
+ */
+export async function fixture<T extends LitElement>(html: string): Promise<T> {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
+
+  const el = wrapper.firstElementChild as T;
+
+  // Wait for the element's Lit lifecycle to settle
+  if (el.updateComplete) {
+    await el.updateComplete;
+  }
+
+  return el;
+}
+
+/**
+ * Removes the fixture wrapper (parent div) from the DOM.
+ * Call this in `afterEach` to clean up.
+ */
+export function cleanup(el: Element): void {
+  el.parentElement?.remove();
+}
+
+/**
+ * Waits for a full MutationObserver → Lit re-render cycle to settle.
+ *
+ * MO callbacks are microtasks that trigger Lit state changes, which
+ * themselves schedule an async `updateComplete`. This helper bridges
+ * that gap by:
+ *   1. Awaiting the current updateComplete
+ *   2. Yielding to the macrotask queue (setTimeout 0)
+ *   3. Awaiting updateComplete again (covers MO-triggered re-renders)
+ */
+export async function waitForUpdate(el: LitElement): Promise<void> {
+  await el.updateComplete;
+  await new Promise(r => setTimeout(r, 0));
+  await el.updateComplete;
+}
