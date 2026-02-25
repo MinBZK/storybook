@@ -7,86 +7,73 @@
  * @attr {string} size - Button group size: 'sm' | 'md' (default: 'md')
  * @attr {string} flow - Layout direction: 'horizontal' | 'vertical' (default: 'horizontal')
  *
- * @slot - Default slot for buttons
+ * @slot - Default slot for buttons (max 3)
  *
  * @csspart group - The button group container
  */
-
-import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { LitElement } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
+import { styles } from './rr-button-group.styles.ts';
+import { template } from './rr-button-group.template.ts';
 
 type Size = 'sm' | 'md';
 type Flow = 'horizontal' | 'vertical';
 
 @customElement('rr-button-group')
 export class RRButtonGroup extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-flex;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = styles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String, reflect: true })
+	size: Size = 'md';
 
-    .button-group {
-      display: flex;
-      justify-content: center;
-    }
+	@property({ type: String, reflect: true })
+	flow: Flow = 'horizontal';
 
-    /* Flow: Horizontal */
-    :host([flow="horizontal"]) .button-group,
-    :host(:not([flow])) .button-group {
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
+	@query('slot')
+	private _slot!: HTMLSlotElement;
 
-    /* Flow: Vertical */
-    :host([flow="vertical"]) {
-      width: 100%;
-    }
+	handleSlotChange() {
+	const assigned = this._slot
+		.assignedElements({ flatten: true })
+		.filter((el): el is HTMLElement => el instanceof HTMLElement);
 
-    :host([flow="vertical"]) .button-group {
-      flex-direction: column;
-      width: 100%;
-    }
+	assigned.forEach((el, index) => {
+		if (index >= 3) {
+		el.setAttribute('hidden', '');
+		console.warn('rr-button-group: Only 3 buttons are allowed. Extra buttons will be hidden.');
+		} else {
+		el.removeAttribute('hidden');
+		}
 
-    /* Size: S - gap 6px */
-    :host([size="sm"]) .button-group {
-      gap: var(--primitives-space-6);
-    }
+		if (this.flow === 'vertical') {
+		el.setAttribute('full-width', '');
+		} else {
+		el.removeAttribute('full-width');
+		}
 
-    /* Size: M (default) - gap 8px */
-    :host([size="md"]) .button-group,
-    :host(:not([size])) .button-group {
-      gap: var(--primitives-space-8);
-    }
+		el.setAttribute('size', this.size);
+	});
+	}
 
-    /* Vertical flow makes buttons stretch to fill width */
-    :host([flow="vertical"]) ::slotted(*) {
-      display: block;
-      width: 100%;
-    }
-  `;
+	override updated(changedProperties: Map<string, unknown>) {
+	if (changedProperties.has('flow') || changedProperties.has('size')) {
+		this.handleSlotChange();
+	}
+	}
 
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
+	override updated(changedProperties: Map<string, unknown>) {
+	if (changedProperties.has('flow')) {
+		this.handleSlotChange();
+	}
+	}
 
-  @property({ type: String, reflect: true })
-  flow: Flow = 'horizontal';
-
-  override render() {
-    return html`
-      <div class="button-group" part="group" role="group">
-        <slot></slot>
-      </div>
-    `;
-  }
+	override render() {
+	return template.call(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-button-group': RRButtonGroup;
-  }
+	interface HTMLElementTagNameMap {
+	'rr-button-group': RRButtonGroup;
+	}
 }
