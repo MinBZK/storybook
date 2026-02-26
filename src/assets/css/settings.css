@@ -240,6 +240,8 @@
 	--primitives-font-family-sans-serif: RijksSansVF, system-ui, sans-serif;
 	--primitives-font-family-serif-fallback: serif;
 	--primitives-font-family-serif: RijksoverheidSerif, serif;
+	--primitives-font-family-mono-fallback: mono;
+	--primitives-font-family-mono: 'IBM Plex Mono', mono;
 	--primitives-font-family-body-fallback: var(--primitives-font-family-sans-serif-fallback);
 	--primitives-font-family-body: var(--primitives-font-family-sans-serif);
 	--primitives-font-family-display-fallback: var(--primitives-font-family-sans-serif-fallback);
@@ -856,6 +858,8 @@
 
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
+
+	--components-rich-text-grid: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));
 }
 
 :root[data-scheme="light"] {
