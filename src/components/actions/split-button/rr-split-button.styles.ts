@@ -28,7 +28,6 @@ export const styles = css`
 		display: inline-flex;
 		flex-direction: row;
 		align-items: center;
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 	}
 
 	/* # Focus */
@@ -72,6 +71,16 @@ export const styles = css`
 	:host(:not([size])) .split-button__divider {
 		height: var(--semantics-buttons-md-divider-length);
 	}
+
+	/* # Variants */
+
+	/* ## Variant: Neutral Tintend (Default) */
+
+	:host([variant="neutral-tinted"]) .split-button,
+	:host(:not([variant])) .split-button {
+		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+	}
+
 
 	/* # Elements */
 
