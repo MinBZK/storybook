@@ -27,7 +27,7 @@ export class RRButtonGroup extends LitElement {
 	size: Size = 'md';
 
 	@property({ type: String, reflect: true })
-	flow: Flow = 'horizontal';
+	flow: Flow = 'vertical';
 
 	@query('slot')
 	private _slot!: HTMLSlotElement;
