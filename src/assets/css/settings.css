@@ -240,6 +240,8 @@
 	--primitives-font-family-sans-serif: RijksSansVF, system-ui, sans-serif;
 	--primitives-font-family-serif-fallback: serif;
 	--primitives-font-family-serif: RijksoverheidSerif, serif;
+	--primitives-font-family-monospace-fallback: monospace;
+	--primitives-font-family-monospace: 'IBM Plex Mono', monospace;
 	--primitives-font-family-body-fallback: var(--primitives-font-family-sans-serif-fallback);
 	--primitives-font-family-body: var(--primitives-font-family-sans-serif);
 	--primitives-font-family-display-fallback: var(--primitives-font-family-sans-serif-fallback);
@@ -652,6 +654,8 @@
 	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-600));
 
 	--semantics-links-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
+	--semantics-links-is-active-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
 
 
 	--semantics-controls-xs-min-size: var(--primitives-space-24);
@@ -856,6 +860,11 @@
 
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
+
+	--components-rich-text-grid-size: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));--components-rich-text-spacing-flat: 0px;
+	--components-rich-text-spacing-tight: calc(var(--components-rich-text-grid-size) / 4);
+	--components-rich-text-spacing-snug: calc(var(--components-rich-text-grid-size) / 2);
+	--components-rich-text-spacing-loose: var(--components-rich-text-grid-size);
 }
 
 :root[data-scheme="light"] {

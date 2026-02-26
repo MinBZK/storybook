@@ -1,5 +1,6 @@
 import '../src/assets/css/fonts.css';
 import '../src/assets/css/settings.css';
+import '../src/components/content/rich-text/rr-rich-text.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 /** @type { import('@storybook/web-components-vite').Preview } */
