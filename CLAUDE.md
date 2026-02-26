@@ -99,6 +99,43 @@ Gebruik `/component <naam>` voor het maken of updaten van componenten. Dit comma
 --components-menu-bar-*
 ```
 
+## Component Testing
+
+Elk component MOET minimaal een **smoke test** hebben. Run tests met `npm test`.
+
+**Minimale vereisten:**
+1. **Smoke test** (verplicht): rendert zonder errors, heeft een shadowRoot
+2. **Logic tests** (verplicht bij complexe logica): test MutationObservers, slot management, attribuut propagatie, event handlers, state transitions
+
+**Test bestand:** `src/components/{category}/{name}/rr-{name}.test.ts`
+
+**Smoke test patroon:**
+```typescript
+import { describe, it, expect, afterEach } from 'vitest';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import './rr-{name}.ts';
+
+describe('rr-{name}', () => {
+  let el: HTMLElement;
+
+  afterEach(() => {
+    if (el) cleanup(el);
+  });
+
+  it('renders without error', async () => {
+    el = await fixture('<rr-{name}></rr-{name}>');
+    await waitForUpdate(el);
+
+    expect(el.shadowRoot).not.toBeNull();
+  });
+});
+```
+
+**Test helpers** (`src/test-utils.ts`):
+- `fixture<T>(html)` — maakt DOM element, wacht op Lit updateComplete
+- `cleanup(el)` — verwijdert fixture wrapper uit DOM (gebruik in afterEach)
+- `waitForUpdate(el)` — wacht op MutationObserver + Lit re-render cycle
+
 ## Code Quality
 
 - Pre-commit hooks: ESLint, Prettier, commitlint
