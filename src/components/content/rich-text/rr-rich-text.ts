@@ -6,12 +6,19 @@
  * Import rr-rich-text.css globally in your application.
  *
  * @element rr-rich-text
+ *
+ * @attr {string} spacing - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
  */
 import { LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
+
+type Spacing = 'flat' | 'tight' | 'snug' | 'loose';
 
 @customElement('rr-rich-text')
 export class RRRichText extends LitElement {
+	@property({ type: String, reflect: true })
+	spacing: Spacing = 'snug';
+
 	override createRenderRoot() {
 		return this;
 	}

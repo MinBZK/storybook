@@ -861,7 +861,10 @@
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 
-	--components-rich-text-grid-size: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));
+	--components-rich-text-grid-size: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));--components-rich-text-spacing-flat: 0px;
+	--components-rich-text-spacing-tight: calc(var(--components-rich-text-grid-size) / 4);
+	--components-rich-text-spacing-snug: calc(var(--components-rich-text-grid-size) / 2);
+	--components-rich-text-spacing-loose: var(--components-rich-text-grid-size);
 }
 
 :root[data-scheme="light"] {

@@ -4,7 +4,25 @@ rr-rich-text {
 	font: var(--primitives-font-body-md-regular-snug);
 	color: var(--semantics-content-color);
 	container-type: inline-size;
+	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
 }
+
+rr-rich-text[spacing="flat"] {
+	--components-rich-text-spacing: var(--components-rich-text-spacing-flat);
+}
+
+rr-rich-text[spacing="tight"] {
+	--components-rich-text-spacing: var(--components-rich-text-spacing-tight);
+}
+
+rr-rich-text[spacing="snug"] {
+	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
+}
+
+rr-rich-text[spacing="loose"] {
+	--components-rich-text-spacing: var(--components-rich-text-spacing-loose);
+}
+En de tok
 
 rr-rich-text[hidden] {
 	display: none;
@@ -34,15 +52,15 @@ rr-rich-text *:focus:not(:focus-visible) {
 /* # p */
 
 rr-rich-text p {
-	margin: calc(var(--components-rich-text-grid-size) / 2) 0;
+	margin: var(--components-rich-text-spacing) 0;
 	max-width: var(--primitives-area-720);
 }
 
 /* # h1 */
 
 rr-rich-text h1 {
-	margin-top: var(--components-rich-text-grid-size);
-	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
+	margin-top: calc(var(--components-rich-text-spacing) * 2);
+	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-1-sm);
 
 	@container (min-width: 641px) {
@@ -56,8 +74,8 @@ rr-rich-text h1 {
 /* # h2 */
 
 rr-rich-text h2 {
-	margin-top: var(--components-rich-text-grid-size);
-	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
+	margin-top: calc(var(--components-rich-text-spacing) * 2);
+	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-2-sm);
 
 	@container (min-width: 641px) {
@@ -71,8 +89,8 @@ rr-rich-text h2 {
 /* # h3 */
 
 rr-rich-text h3 {
-	margin-top: var(--components-rich-text-grid-size);
-	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
+	margin-top: calc(var(--components-rich-text-spacing) * 2);
+	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-3-sm);
 
 	@container (min-width: 641px) {
@@ -86,8 +104,8 @@ rr-rich-text h3 {
 /* # h4 */
 
 rr-rich-text h4 {
-	margin-top: var(--components-rich-text-grid-size);
-	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
+	margin-top: calc(var(--components-rich-text-spacing) * 2);
+	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-4-sm);
 
 	@container (min-width: 641px) {
@@ -101,8 +119,8 @@ rr-rich-text h4 {
 /* # h5 */
 
 rr-rich-text h5 {
-	margin-top: var(--components-rich-text-grid-size);
-	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
+	margin-top: calc(var(--components-rich-text-spacing) * 2);
+	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-5-sm);
 
 	@container (min-width: 641px) {
@@ -116,8 +134,8 @@ rr-rich-text h5 {
 /* # h6 */
 
 rr-rich-text h6 {
-	margin-top: var(--components-rich-text-grid-size);
-	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
+	margin-top: calc(var(--components-rich-text-spacing) * 2);
+	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-6-sm);
 
 	@container (min-width: 641px) {
@@ -151,7 +169,7 @@ rr-rich-text ol > li > ol {
 /* # li */
 
 rr-rich-text li {
-	margin: calc(var(--components-rich-text-grid-size) / 4) 0;
+	margin: calc(var(--components-rich-text-spacing) / 2) 0;
 	padding: 0;
 	max-width: var(--primitives-area-720);
 }
@@ -261,7 +279,7 @@ rr-rich-text img {
 /* # hr */
 
 rr-rich-text hr {
-	margin: calc(var(--components-rich-text-grid-size) / 2) 0;
+	margin: var(--components-rich-text-spacing) 0;
 	border: none;
 	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 }
