@@ -34,11 +34,13 @@ export class RRSplitButton extends LitElement {
 	disabled = false;
 
 	_handleActionClick(e: MouseEvent): void {
+		if (this.disabled) return;
 		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('action-click', { bubbles: true, composed: true }));
 	}
 
 	_handleMenuClick(e: MouseEvent): void {
+		if (this.disabled) return;
 		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('menu-click', { bubbles: true, composed: true }));
 	}
