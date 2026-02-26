@@ -129,6 +129,7 @@ rr-rich-text h6 {
 }
 
 /* # ul */
+
 rr-rich-text ul {
 	margin: 0;
 	padding-left: var(--components-rich-text-grid-size);
@@ -136,13 +137,19 @@ rr-rich-text ul {
 }
 
 /* # ol */
+
 rr-rich-text ol {
 	margin: 0;
 	padding-left: var(--components-rich-text-grid-size);
 	list-style-type: decimal;
 }
 
+rr-rich-text ol > li > ol {
+	list-style-type: lower-alpha;
+}
+
 /* # li */
+
 rr-rich-text li {
 	margin: calc(var(--components-rich-text-grid-size) / 4) 0;
 	padding: 0;
@@ -150,6 +157,7 @@ rr-rich-text li {
 }
 
 /* # a */
+
 rr-rich-text a {
 	color: var(--semantics-links-color);
 	text-decoration: underline;
@@ -295,9 +303,4 @@ rr-rich-text td {
 	@container (min-width: 641px) {
 		min-width: none;
 	}
-}
-
-/* # tr */
-
-rr-rich-text tr {
 }

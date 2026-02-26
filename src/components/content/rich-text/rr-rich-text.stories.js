@@ -49,16 +49,7 @@ export const Lists = () => html`
 			<li>Recent loonstrookje of jaaropgave</li>
 			<li>Bankafschrift van de afgelopen drie maanden</li>
 		</ul>
-		<h3>Geordende lijst</h3>
-		<p>De aanvraag verloopt in de volgende stappen:</p>
-		<ol>
-			<li>Maak een DigiD aan op digid.nl</li>
-			<li>Log in op de website van de Belastingdienst</li>
-			<li>Vul het aanvraagformulier volledig in</li>
-			<li>Voeg de vereiste documenten toe</li>
-			<li>Dien de aanvraag in en bewaar de bevestiging</li>
-		</ol>
-		<h3>Geneste lijst</h3>
+		<h3>Geneste en ongeordende lijst</h3>
 		<ul>
 			<li>Hoofdcategorie A
 				<ul>
@@ -73,6 +64,30 @@ export const Lists = () => html`
 				</ul>
 			</li>
 		</ul>
+		<h3>Geordende lijst</h3>
+		<p>De aanvraag verloopt in de volgende stappen:</p>
+		<ol>
+			<li>Maak een DigiD aan op digid.nl</li>
+			<li>Log in op de website van de Belastingdienst</li>
+			<li>Vul het aanvraagformulier volledig in</li>
+			<li>Voeg de vereiste documenten toe</li>
+			<li>Dien de aanvraag in en bewaar de bevestiging</li>
+		</ol>
+		<h3>Geneste en geordende lijst</h3>
+		<ol>
+			<li>Hoofdcategorie A
+				<ol>
+					<li>Subcategorie A1</li>
+					<li>Subcategorie A2</li>
+				</ol>
+			</li>
+			<li>Hoofdcategorie B
+				<ol>
+					<li>Subcategorie B1</li>
+					<li>Subcategorie B2</li>
+				</ol>
+			</li>
+		</ol>
 	</rr-rich-text>
 `;
 
