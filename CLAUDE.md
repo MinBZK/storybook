@@ -115,6 +115,7 @@ Versions are **automatically** bumped by semantic-release on merge to main.
 | `fix:`, `perf:` | Patch (0.5.0 → 0.5.1) |
 | `feat!:` or `BREAKING CHANGE:` | Patch (0.5.0 → 0.5.1) |
 | `docs:`, `chore:`, `ci:`, etc. | No bump |
+| Unrecognized (no conventional prefix) | Patch (treated as feat) |
 
 **Manual version bumping is not needed.** Use conventional commits and CI handles the rest.
 

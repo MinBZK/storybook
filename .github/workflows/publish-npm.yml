@@ -18,6 +18,11 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Only publish when triggered by version-bump commit, release, or manual dispatch
+    if: >-
+      github.event_name == 'release' ||
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.event.head_commit.message, 'chore(release):')
     permissions:
       contents: read
       packages: write
