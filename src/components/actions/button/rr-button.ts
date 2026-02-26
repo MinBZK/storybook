@@ -65,10 +65,10 @@ export class RRButton extends LitElement {
 	disabled = false;
 
 	@state()
-	private _iconStart: IconState | null = null;
+	_iconStart: IconState | null = null;
 
 	@state()
-	private _iconEnd: IconState | null = null;
+	_iconEnd: IconState | null = null;
 
 	private _observer: MutationObserver | null = null;
 
