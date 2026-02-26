@@ -13,7 +13,6 @@
  *
  * @csspart bar - The button bar container
  */
-
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './rr-button-bar.styles.ts';
@@ -48,6 +47,7 @@ export class RRButtonBar extends LitElement {
 	private _idCounter = 0;
 	private _observer: MutationObserver | null = null;
 	private _building = false;
+	private _individuallyDisabled = new WeakSet<Element>();
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -95,15 +95,12 @@ export class RRButtonBar extends LitElement {
 			.forEach(el => el.setAttribute('size', this.size));
 	}
 
-	private _individuallyDisabled = new WeakSet<Element>();
-
 	private _propagateDisabled(): void {
 		const buttons = Array.from(this.children).filter(el =>
 			BUTTON_TAGS.includes(el.tagName.toLowerCase())
 		);
 
 		if (this.disabled) {
-			// Snapshot which buttons are already disabled before we touch them
 			buttons.forEach(el => {
 				if (el.hasAttribute('disabled')) {
 					this._individuallyDisabled.add(el);
@@ -111,7 +108,6 @@ export class RRButtonBar extends LitElement {
 			});
 			buttons.forEach(el => el.setAttribute('disabled', ''));
 		} else {
-			// Only re-enable buttons that weren't individually disabled
 			buttons.forEach(el => {
 				if (!this._individuallyDisabled.has(el)) {
 					el.removeAttribute('disabled');
@@ -122,11 +118,9 @@ export class RRButtonBar extends LitElement {
 	}
 
 	private _buildChildren(): void {
-		this._idCounter = 0;
 		if (this._building) return;
 		this._building = true;
-
-		Array.from(this.children).forEach(el => el.removeAttribute('slot'));
+		this._idCounter = 0;
 
 		this._children = Array.from(this.children).map(el => {
 			const tag = el.tagName.toLowerCase();
@@ -143,7 +137,10 @@ export class RRButtonBar extends LitElement {
 			}
 
 			const id = this._idCounter++;
-			el.setAttribute('slot', `child-${id}`);
+			const slotName = `child-${id}`;
+			if (el.getAttribute('slot') !== slotName) {
+				el.setAttribute('slot', slotName);
+			}
 			return { type: 'button', element: el, id } as BarChild;
 		});
 
