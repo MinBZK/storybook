@@ -41,6 +41,7 @@ export class RRButtonGroup extends LitElement {
 			if (index >= 3) {
 				el.setAttribute('hidden', '');
 				console.warn('rr-button-group: Only 3 buttons are allowed. Extra buttons will be hidden.');
+			}
 
 			if (this.flow === 'vertical') {
 				el.setAttribute('full-width', '');
