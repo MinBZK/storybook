@@ -71,14 +71,19 @@ export class RRButtonBar extends LitElement {
 	}
 
 	override updated(changedProperties: Map<string, unknown>): void {
-		if (changedProperties.has('size')) {
+		if (changedProperties.has('size') || changedProperties.has('_children')) {
 			this._propagateSize();
 		}
-		if (changedProperties.has('variant')) {
+		if (changedProperties.has('variant') || changedProperties.has('_children')) {
 			this._propagateVariant();
 		}
 		if (changedProperties.has('disabled')) {
 			this._propagateDisabled();
+		} else if (changedProperties.has('_children') && this.disabled) {
+			// New children added while bar is disabled — disable them
+			Array.from(this.children)
+				.filter(el => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
+				.forEach(el => el.setAttribute('disabled', ''));
 		}
 	}
 
@@ -145,9 +150,6 @@ export class RRButtonBar extends LitElement {
 			if (BUTTON_TAGS.includes(tag)) {
 				el.setAttribute('size', this.size);
 				el.setAttribute('variant', this.variant);
-				if (this.disabled) {
-					el.setAttribute('disabled', '');
-				}
 			}
 
 			const id = this._idCounter++;

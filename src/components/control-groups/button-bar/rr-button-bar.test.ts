@@ -55,9 +55,9 @@ describe('rr-button-bar – child building & attribute propagation', () => {
     const divider = el.querySelector('rr-button-bar-divider')!;
     expect(divider.hasAttribute('slot')).toBe(false);
 
-    // Shadow DOM should contain a separator
-    const separator = el.shadowRoot!.querySelector('[role="separator"]');
-    expect(separator).not.toBeNull();
+    // Shadow DOM should contain a divider
+    const divider2 = el.shadowRoot!.querySelector('.button-bar__divider');
+    expect(divider2).not.toBeNull();
   });
 
   it('treats rr-icon-button the same as rr-button', async () => {
