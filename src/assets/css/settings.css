@@ -30,7 +30,7 @@
 	--primitives-color-neutral-950: light-dark(oklch(0.202 0.011 253.4), oklch(0.948 0.007 253.4)); /* light: #13171B | dark: #EBEEF2 */
 	--primitives-color-neutral-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 
-	
+
 	/* 2. Accent (Blue) - 253.4° */
 	--primitives-color-accent-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-accent-25: light-dark(oklch(0.973 0.013 253.4), oklch(0.159 0.050 253.4)); /* light: #F0F7FF | dark: #000D21 */
@@ -55,7 +55,7 @@
 	--primitives-color-accent-900: light-dark(oklch(0.262 0.082 253.4), oklch(0.897 0.051 253.4)); /* light: #00244B | dark: #C6E0FF */
 	--primitives-color-accent-950: light-dark(oklch(0.203 0.063 253.4), oklch(0.947 0.026 253.4)); /* light: #001632 | dark: #E2EFFF */
 	--primitives-color-accent-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
-	
+
 	/* 3. Success (Green) - 137.9° */
 	--primitives-color-success-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-success-25: light-dark(oklch(0.967 0.062 137.9), oklch(0.154 0.047 137.9)); /* light: #E0FFD6 | dark: #031000 */
@@ -80,7 +80,7 @@
 	--primitives-color-success-900: light-dark(oklch(0.254 0.078 137.9), oklch(0.883 0.165 137.9)); /* light: #0C2B00 | dark: #A0F283 */
 	--primitives-color-success-950: light-dark(oklch(0.197 0.061 137.9), oklch(0.935 0.133 137.9)); /* light: #061B00 | dark: #BDFFA7 */
 	--primitives-color-success-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
-	
+
 	/* 4. Warning (Orange) - 52.9° */
 	--primitives-color-warning-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-warning-25: light-dark(oklch(0.975 0.014 52.9), oklch(0.162 0.041 52.9)); /* light: #FFF4EE | dark: #1B0800 */
@@ -105,7 +105,7 @@
 	--primitives-color-warning-900: light-dark(oklch(0.267 0.068 52.9), oklch(0.902 0.058 52.9)); /* light: #3E1A00 | dark: #FFD5BC */
 	--primitives-color-warning-950: light-dark(oklch(0.206 0.052 52.9), oklch(0.950 0.029 52.9)); /* light: #290F00 | dark: #FFEADD */
 	--primitives-color-warning-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
-	
+
 	/* 5. Danger (Red) - 29.5° */
 	--primitives-color-danger-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-danger-25: light-dark(oklch(0.975 0.012 29.5), oklch(0.166 0.068 29.5)); /* light: #FFF4F2 | dark: #250000 */
@@ -130,7 +130,7 @@
 	--primitives-color-danger-900: light-dark(oklch(0.275 0.112 29.5), oklch(0.903 0.050 29.5)); /* light: #510100 | dark: #FFD3CC */
 	--primitives-color-danger-950: light-dark(oklch(0.212 0.086 29.5), oklch(0.951 0.025 29.5)); /* light: #370000 | dark: #FFE9E5 */
 	--primitives-color-danger-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
-	
+
 	/* 6. Highlight (Yellow) - 79.0° */
 	--primitives-color-highlight-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-highlight-25: light-dark(oklch(0.974 0.023 79.0), oklch(0.159 0.033 79.0)); /* light: #FFF5E6 | dark: #150B00 */
@@ -155,7 +155,7 @@
 	--primitives-color-highlight-900: light-dark(oklch(0.263 0.055 79.0), oklch(0.900 0.091 79.0)); /* light: #332100 | dark: #FFD898 */
 	--primitives-color-highlight-950: light-dark(oklch(0.203 0.042 79.0), oklch(0.949 0.046 79.0)); /* light: #211400 | dark: #FFEBCC */
 	--primitives-color-highlight-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
-	
+
 	--primitives-color-reference-coolgray: #64748b;
 	--primitives-color-reference-lintblauw: #154273;
 	--primitives-color-reference-paars: #42145f;
@@ -175,8 +175,8 @@
 	--primitives-color-reference-donkerblauw: #01689b;
 	--primitives-color-reference-hemelblauw: #007bc7;
 	--primitives-color-reference-lichtblauw: #8fcae7;
-	
-	
+
+
 	--primitives-space-0: 0px;
 	--primitives-space-2: 2px;
 	--primitives-space-4: 4px;
@@ -198,8 +198,8 @@
 	--primitives-space-64: 64px;
 	--primitives-space-80: 80px;
 	--primitives-space-96: 96px;
-	
-	
+
+
 	--primitives-area-120: 120px;
 	--primitives-area-160: 160px;
 	--primitives-area-200: 200px;
@@ -215,15 +215,15 @@
 	--primitives-area-960: 960px;
 	--primitives-area-1280: 1280px;
 	--primitives-area-1440: 1440px;
-	
-	
+
+
 	--primitives-breakpoint-sm-min: 320px;
 	--primitives-breakpoint-sm-max: 640px;
 	--primitives-breakpoint-md-min: 641px;
 	--primitives-breakpoint-md-max: 1007px;
 	--primitives-breakpoint-lg-min: 1008px;
-	
-	
+
+
 	--primitives-corner-radius-none: 0px;
 	--primitives-corner-radius-xxs: 2px;
 	--primitives-corner-radius-xs: 4px;
@@ -234,8 +234,8 @@
 	--primitives-corner-radius-xxl: 20px;
 	--primitives-corner-radius-xxxl: 24px;
 	--primitives-corner-radius-full: 9999px;
-	
-	
+
+
 	--primitives-font-family-sans-serif-fallback: system-ui, sans-serif;
 	--primitives-font-family-sans-serif: RijksSansVF, system-ui, sans-serif;
 	--primitives-font-family-serif-fallback: serif;
@@ -244,8 +244,8 @@
 	--primitives-font-family-body: var(--primitives-font-family-sans-serif);
 	--primitives-font-family-display-fallback: var(--primitives-font-family-sans-serif-fallback);
 	--primitives-font-family-display: var(--primitives-font-family-sans-serif);
-	
-	
+
+
 	--primitives-font-size-70: 12px;
 	--primitives-font-size-80: 14px;
 	--primitives-font-size-90: 16px;
@@ -259,14 +259,14 @@
 	--primitives-font-size-800: 41px;
 	--primitives-font-size-900: 46px;
 	--primitives-font-size-1000: 52px;
-	
-	
+
+
 	--primitives-line-height-loose: 1.75;
 	--primitives-line-height-snug: 1.5;
 	--primitives-line-height-tight: 1.25;
 	--primitives-line-height-flat: 1.125;
-	
-	
+
+
 	--primitives-font-weight-body-hairline: 100;
 	--primitives-font-weight-body-thin: 100;
 	--primitives-font-weight-body-light: 300;
@@ -276,7 +276,7 @@
 	--primitives-font-weight-body-bold: 550;
 	--primitives-font-weight-body-extra-bold: 700;
 	--primitives-font-weight-body-black: 800;
-	
+
 	--primitives-font-weight-display-hairline: 100;
 	--primitives-font-weight-display-thin: 100;
 	--primitives-font-weight-display-light: 300;
@@ -286,7 +286,7 @@
 	--primitives-font-weight-display-bold: 550;
 	--primitives-font-weight-display-extra-bold: 700;
 	--primitives-font-weight-display-black: 800;
-	
+
 	--primitives-font-body-lg-regular-loose:
 		var(--primitives-font-weight-body-regular)
 		var(--primitives-font-size-200) / var(--primitives-line-height-loose)
@@ -487,7 +487,7 @@
 		var(--primitives-font-size-70) / var(--primitives-line-height-tight)
 		var(--primitives-font-family-body)
 	;
-	
+
 	--primitives-font-display-1-sm:
 		var(--primitives-font-weight-display-bold)
 		var(--primitives-font-size-700) / var(--primitives-line-height-flat)
@@ -578,7 +578,7 @@
 		var(--primitives-font-size-100) / var(--primitives-line-height-flat)
 		var(--primitives-font-family-display)
 	;
-	
+
 	--primitives-opacity-0: 0;
 	--primitives-opacity-5: 0.05;
 	--primitives-opacity-10: 0.1;
@@ -601,8 +601,8 @@
 	--primitives-opacity-95: 0.95;
 	--primitives-opacity-100: 1;
 	--primitives-opacity-disabled: 0.38;
-	
-	
+
+
 	--primitives-box-shadows-level-1:
 		0px 2px 4px 0px rgba(0, 0, 0, 0.11),
 		0px 0px 2px 0px rgba(0, 0, 0, 0.09)
@@ -662,16 +662,16 @@
 	--semantics-controls-md-corner-radius: var(--primitives-corner-radius-md);
 	--semantics-controls-lg-min-size: var(--primitives-space-56);
 	--semantics-controls-lg-corner-radius: var(--primitives-corner-radius-md);
-	
-	
+
+
 	--semantics-buttons-md-font: var(--primitives-font-body-md-bold-flat);
 	--semantics-buttons-sm-font: var(--primitives-font-body-sm-bold-flat);
 	--semantics-buttons-xs-font: var(--primitives-font-body-xs-bold-flat);
-	
+
 	--semantics-buttons-xs-divider-length: var(--primitives-space-14);
 	--semantics-buttons-sm-divider-length: var(--primitives-space-20);
 	--semantics-buttons-md-divider-length: var(--primitives-space-28);
-		
+
 	--semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
 	--semantics-buttons-neutral-tinted-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-350));
@@ -687,18 +687,18 @@
 	--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 	--semantics-buttons-neutral-tinted-is-selected-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-neutral-tinted-is-selected-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	
+
 	--semantics-buttons-neutral-transparent-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-transparent-is-hovered-content-color: light-dark(var(--primitives-color-neutral-950), var(--primitives-color-neutral-950));
 	--semantics-buttons-neutral-transparent-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
-	
+
 	--semantics-buttons-accent-filled-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-filled-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 	--semantics-buttons-accent-filled-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
 	--semantics-buttons-accent-filled-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 	--semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-accent-filled-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	
+
 	--semantics-buttons-accent-outlined-border-thickness: var(--primitives-space-2);
 	--semantics-buttons-accent-outlined-border-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-outlined-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
@@ -706,19 +706,19 @@
 	--semantics-buttons-accent-outlined-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
 	--semantics-buttons-accent-outlined-is-active-border-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-accent-outlined-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
-	
+
 	--semantics-buttons-accent-transparent-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-transparent-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
 	--semantics-buttons-accent-transparent-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
-	
+
 	--semantics-buttons-danger-tinted-background-color: light-dark(var(--primitives-color-danger-100), var(--primitives-color-danger-150));
 	--semantics-buttons-danger-tinted-content-color: light-dark(var(--primitives-color-danger-650), var(--primitives-color-danger-700));
 	--semantics-buttons-danger-tinted-is-hovered-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-200));
 	--semantics-buttons-danger-tinted-is-hovered-content-color: light-dark(var(--primitives-color-danger-700), var(--primitives-color-danger-750));
 	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-200), var(--primitives-color-danger-250));
 	--semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-750), var(--primitives-color-danger-800));
-	
-	
+
+
 	--semantics-input-fields-border-thickness: var(--primitives-space-2);
 	--semantics-input-fields-placeholder-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--semantics-input-fields-end-fade-start-color: rgba(255, 255, 255, 0);
@@ -736,12 +736,12 @@
 	--semantics-input-fields-sm-mask-font: 400 var(--primitives-font-size-90)/var(--primitives-line-height-flat) Verdana, system-ui;
 	--semantics-input-fields-md-text-font: var(--primitives-font-body-md-regular-flat);
 	--semantics-input-fields-md-mask-font: 400 var(--primitives-font-size-100)/var(--primitives-line-height-flat) Verdana, system-ui;
-	
-	
+
+
 	--semantics-dividers-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
 	--semantics-dividers-thickness: 1px;
-	
-	
+
+
 	--semantics-page-sections-body-max-width: var(--primitives-area-1280);
 	--semantics-page-sections-sm-margin-inline: var(--primitives-space-16);
 	--semantics-page-sections-sm-margin-block: var(--primitives-space-16);
@@ -752,24 +752,24 @@
 	--semantics-page-sections-lg-margin-inline: var(--primitives-space-48);
 	--semantics-page-sections-lg-margin-block: var(--primitives-space-32);
 	--semantics-page-sections-lg-gap: var(--primitives-space-24);
-	
-	
+
+
 	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
-	
-	
+
+
 	--semantics-focus-ring-edge-color: var(--semantics-surfaces-background-color);
 	--semantics-focus-ring-edge-thickness: 6px;
 	--semantics-focus-ring-center-color:  light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
 	--semantics-focus-ring-center-thickness: 4px;
-	
-	
+
+
 	--components-list-item-sm-padding-block: var(--primitives-space-8);
 	--components-list-item-md-padding-block: var(--primitives-space-12);
 	--components-list-item-is-selected-corner-radius: var(--primitives-corner-radius-md);
 	--components-list-item-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
 	--components-list-item-is-selected-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	
-	
+
+
 	--components-menu-bar-menu-item-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
 	--components-menu-bar-menu-item-is-selected-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
 	--components-menu-bar-menu-item-is-selected-indicator-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
@@ -780,23 +780,23 @@
 	--components-menu-bar-title-item-s-font: 550 18px/1.125 RijksSansVF, system-ui;
 	--components-menu-bar-title-item-m-font: 550 20px/1.125 RijksSansVF, system-ui;
 	--components-menu-bar-title-item-l-font: 550 23px/1.125 RijksSansVF, system-ui;
-	
-	
+
+
 	--components-checkbox-border-thickness: var(--primitives-space-2);
 	--components-checkbox-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-checkbox-background-color: var(--semantics-surfaces-background-color);
 	--components-checkbox-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
 	--components-checkbox-is-selected-icon-color:  light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-0));
-	
-	
+
+
 	--components-radio-button-border-thickness: var(--primitives-space-2);
 	--components-radio-button-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-radio-button-background-color: var(--semantics-surfaces-background-color);
 	--components-radio-button-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
 	--components-radio-button-is-selected-inner-shape-border-thickness:  var(--primitives-space-2);
 	--components-radio-button-is-selected-inner-shape-border-color:  light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-0));
-	
-	
+
+
 	--components-switch-border-thickness: var(--primitives-space-2);
 	--components-switch-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-switch-background-color: var(--semantics-surfaces-background-color);
@@ -807,61 +807,61 @@
 	--components-switch-is-selected-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
 	--components-switch-is-selected-thumb-background-color: var(--semantics-surfaces-background-color);
 	--components-switch-is-selected-icon-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-	
-	
+
+
 	--components-box-background-color: var(--semantics-surfaces-tinted-background-color);
 	--components-box-is-on-tinted-background-color: var(--semantics-surfaces-background-color);
 	--components-box-corner-radius: var(--primitives-corner-radius-xl);
 	--components-box-padding: var(--primitives-space-16);
-	
-	
+
+
 	--components-top-title-bar-button-bar-divider-color: #c9ced8;
-	
-	
+
+
 	--components-grab-handle-background-color: #d9dee4;
 	--components-grab-handle-color: #67778d;
-	
-	
+
+
 	--components-form-gap: var(--primitives-space-16);
-	
-	
+
+
 	--components-toolbar-sm-gap: var(--primitives-space-6);
 	--components-toolbar-md-gap: var(--primitives-space-8);
-	
-	
+
+
 	--components-button-group-sm-gap: var(--primitives-space-6);
 	--components-button-group-md-gap: var(--primitives-space-8);
-	
-	
+
+
 	--components-toggle-button-group-sm-gap: var(--primitives-space-6);
 	--components-toggle-button-group-md-gap: var(--primitives-space-8);
-	
-	
+
+
 	--components-page-fixed-area-background-gradient-color-1: rgba(255, 255, 255, 0.95);
 	--components-page-fixed-area-background-gradient-color-2: rgba(255, 255, 255, 0.6);
 	--components-page-fixed-area-background-gradient-color-3: rgba(255, 255, 255, 0);
 	--components-page-fixed-area-tinted-background-gradient-color-1: rgba(245, 246, 249, 0.95);
 	--components-page-fixed-area-tinted-background-gradient-color-2: rgba(245, 246, 249, 0.6);
 	--components-page-fixed-area-tinted-background-gradient-color-3: rgba(245, 246, 249, 0);
-	
-	
+
+
 	--components-title-bar-sm-overline-font: var(--primitives-font-body-sm-regular-tight);
 	--components-title-bar-sm-subtitle-font: var(--primitives-font-body-md-regular-tight);
-	
+
 	--components-title-bar-md-overline-font: var(--primitives-font-body-sm-regular-tight);
 	--components-title-bar-md-subtitle-font: var(--primitives-font-body-md-regular-tight);
-	
+
 	--components-title-bar-lg-overline-font: var(--primitives-font-body-md-regular-tight);
 	--components-title-bar-lg-subtitle-font: var(--primitives-font-body-md-regular-tight);
-	
-	
+
+
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 }
 
-[data-scheme="light"] {
+:root[data-scheme="light"] {
 	color-scheme: light;
 }
 
-[data-scheme="dark"] {
+:root[data-scheme="dark"] {
 	color-scheme: dark;
 }

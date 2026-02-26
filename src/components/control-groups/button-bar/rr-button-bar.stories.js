@@ -29,7 +29,7 @@ export const Default = {
 		<rr-button-bar size=${args.size} ?disabled=${args.disabled}>
 			<rr-icon-button>
 				<rr-icon name="chevron-left"></rr-icon>
-				Terug
+				Vorige
 			</rr-icon-button>
 			<rr-button-bar-divider></rr-button-bar-divider>
 			<rr-icon-button>

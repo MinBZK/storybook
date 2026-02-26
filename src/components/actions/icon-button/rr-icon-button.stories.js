@@ -65,10 +65,10 @@ export default {
 			control: 'text',
 			description: 'Accessible label (aria-label) and visible text in lg size',
 		},
-		hasMenu: {
+		isExpandable: {
 			control: 'boolean',
-			name: 'has-menu',
-			description: 'Adds a chevron to indicate this button opens a dropdown menu',
+			name: 'is-expandable',
+			description: 'Adds a chevron to indicate this button opens a menu or popover',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -94,17 +94,17 @@ export default {
 		size: 'md',
 		icon: 'dismiss',
 		title: 'Annuleer',
-		hasMenu: false,
+		isExpandable: false,
 		type: 'button',
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, icon, title, hasMenu, type, disabled }) => html`
+const Template = ({ variant, size, icon, title, isExpandable, type, disabled }) => html`
 	<rr-icon-button
 		variant=${variant}
 		size=${size}
-		?has-menu=${hasMenu}
+		?is-expandable=${isExpandable}
 		type=${type}
 		?disabled=${disabled}
 	>
@@ -230,32 +230,32 @@ Large.parameters = {
 	},
 };
 
-// With menu
-export const WithMenu = () => html`
+// With disclosure icon
+export const WithDisclosureIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-icon-button has-menu size="lg">
+		<rr-icon-button is-expandable size="lg">
 			<rr-icon name="global-settings"></rr-icon>
 			Instellingen
 		</rr-icon-button>
-		<rr-icon-button has-menu size="md">
+		<rr-icon-button is-expandable size="md">
 			<rr-icon name="global-settings"></rr-icon>
 			Instellingen
 		</rr-icon-button>
-		<rr-icon-button has-menu size="sm">
+		<rr-icon-button is-expandable size="sm">
 			<rr-icon name="global-settings"></rr-icon>
 			Instellingen
 		</rr-icon-button>
-		<rr-icon-button has-menu size="xs">
+		<rr-icon-button is-expandable size="xs">
 			<rr-icon name="global-settings"></rr-icon>
 			Instellingen
 		</rr-icon-button>
 	</div>
 `;
-WithMenu.parameters = {
+WithDisclosureIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Icon button die een menu opent. Gebruik de `has-menu` attribute om aan te geven dat deze button een dropdown menu toont.',
+			story: 'Icon button die een menu of popover opent. Gebruik de `is-expandable` attribute om aan te geven dat deze button een menu of popover toont.',
 		},
 	},
 };

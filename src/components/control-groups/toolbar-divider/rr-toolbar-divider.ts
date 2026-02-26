@@ -64,7 +64,7 @@ export class RRToolbarDivider extends LitElement {
 
   override render() {
     return html`
-      <div class="divider" part="divider" role="separator" aria-orientation="vertical">
+      <div class="divider">
         <div class="divider__line" part="line"></div>
       </div>
     `;

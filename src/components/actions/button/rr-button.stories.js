@@ -77,10 +77,10 @@ export default {
 				defaultValue: { summary: '' },
 			},
 		},
-		hasMenu: {
+		isExpandable: {
 			control: 'boolean',
-			name: 'has-menu',
-			description: 'Adds a chevron to indicate this button opens a dropdown menu',
+			name: 'is-expandable',
+			description: 'Adds a chevron to indicate this button opens a menu or popover',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -108,19 +108,19 @@ export default {
 		title: 'Button',
 		startIcon: '',
 		endIcon: '',
-		hasMenu: false,
+		isExpandable: false,
 		type: 'button',
 		disabled: false,
 	},
 };
 
-const Template = ({ title, variant, size, fullWidth, type, startIcon, endIcon, hasMenu, disabled }) => html`
+const Template = ({ title, variant, size, fullWidth, type, startIcon, endIcon, isExpandable, disabled }) => html`
 	<rr-button
 		variant=${variant}
 		size=${size}
 		?full-width=${fullWidth}
 		type=${type}
-		?has-menu=${hasMenu}
+		?is-expandable=${isExpandable}
 		?disabled=${disabled}
 	>
 		${startIcon ? html`<rr-icon name=${startIcon}></rr-icon>` : ''}
@@ -306,21 +306,21 @@ WithBothIcons.parameters = {
 	},
 };
 
-export const WithMenu = () => html`
+export const WithDisclosureIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-button has-menu size="md">Opties</rr-button>
-		<rr-button has-menu size="sm">Opties</rr-button>
-		<rr-button has-menu size="xs">Opties</rr-button>
+		<rr-button is-expandable size="md">Opties</rr-button>
+		<rr-button is-expandable size="sm">Opties</rr-button>
+		<rr-button is-expandable size="xs">Opties</rr-button>
 	</div>
 `;
-WithMenu.parameters = {
+WithDisclosureIcon.parameters = {
 	controls: {
 		disable: true
 	},
 	docs: {
 		description: {
 			story:
-				'Button die een menu opent. Gebruik de `has-menu` attribute om aan te geven dat deze button een dropdown menu toont.',
+				'Button die een menu of popover opent. Gebruik de `is-expandable` attribute om aan te geven dat deze button een menu of popover opent.',
 		},
 	},
 };
