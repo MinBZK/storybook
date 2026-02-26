@@ -859,7 +859,7 @@
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 
-	--components-rich-text-grid: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));
+	--components-rich-text-grid-size: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));
 }
 
 :root[data-scheme="light"] {

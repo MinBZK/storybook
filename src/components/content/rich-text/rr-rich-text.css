@@ -23,15 +23,15 @@ rr-rich-text > :last-child {
 /* # p */
 
 rr-rich-text p {
-	margin: calc(var(--components-rich-text-grid) / 2) 0;
+	margin: calc(var(--components-rich-text-grid-size) / 2) 0;
 	max-width: var(--primitives-area-720);
 }
 
 /* # h1 */
 
 rr-rich-text h1 {
-	margin-top: var(--components-rich-text-grid);
-	margin-bottom: calc(var(--components-rich-text-grid) / 2);
+	margin-top: var(--components-rich-text-grid-size);
+	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
 	font: var(--primitives-font-display-1-sm);
 
 	@container (min-width: 641px) {
@@ -45,8 +45,8 @@ rr-rich-text h1 {
 /* # h2 */
 
 rr-rich-text h2 {
-	margin-top: var(--components-rich-text-grid);
-	margin-bottom: calc(var(--components-rich-text-grid) / 2);
+	margin-top: var(--components-rich-text-grid-size);
+	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
 	font: var(--primitives-font-display-2-sm);
 
 	@container (min-width: 641px) {
@@ -60,8 +60,8 @@ rr-rich-text h2 {
 /* # h3 */
 
 rr-rich-text h3 {
-	margin-top: var(--components-rich-text-grid);
-	margin-bottom: calc(var(--components-rich-text-grid) / 2);
+	margin-top: var(--components-rich-text-grid-size);
+	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
 	font: var(--primitives-font-display-3-sm);
 
 	@container (min-width: 641px) {
@@ -75,8 +75,8 @@ rr-rich-text h3 {
 /* # h4 */
 
 rr-rich-text h4 {
-	margin-top: var(--components-rich-text-grid);
-	margin-bottom: calc(var(--components-rich-text-grid) / 2);
+	margin-top: var(--components-rich-text-grid-size);
+	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
 	font: var(--primitives-font-display-4-sm);
 
 	@container (min-width: 641px) {
@@ -90,8 +90,8 @@ rr-rich-text h4 {
 /* # h5 */
 
 rr-rich-text h5 {
-	margin-top: var(--components-rich-text-grid);
-	margin-bottom: calc(var(--components-rich-text-grid) / 2);
+	margin-top: var(--components-rich-text-grid-size);
+	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
 	font: var(--primitives-font-display-5-sm);
 
 	@container (min-width: 641px) {
@@ -105,8 +105,8 @@ rr-rich-text h5 {
 /* # h6 */
 
 rr-rich-text h6 {
-	margin-top: var(--components-rich-text-grid);
-	margin-bottom: calc(var(--components-rich-text-grid) / 2);
+	margin-top: var(--components-rich-text-grid-size);
+	margin-bottom: calc(var(--components-rich-text-grid-size) / 2);
 	font: var(--primitives-font-display-6-sm);
 
 	@container (min-width: 641px) {
@@ -120,20 +120,20 @@ rr-rich-text h6 {
 /* # ul */
 rr-rich-text ul {
 	margin: 0;
-	padding-left: var(--components-rich-text-grid);
+	padding-left: var(--components-rich-text-grid-size);
 	list-style-type: disc;
 }
 
 /* # ol */
 rr-rich-text ol {
 	margin: 0;
-	padding-left: var(--components-rich-text-grid);
+	padding-left: var(--components-rich-text-grid-size);
 	list-style-type: decimal;
 }
 
 /* # li */
 rr-rich-text li {
-	margin: calc(var(--components-rich-text-grid) / 2) 0;
+	margin: calc(var(--components-rich-text-grid-size) / 4) 0;
 	padding: 0;
 	max-width: var(--primitives-area-720);
 }
@@ -211,7 +211,7 @@ rr-rich-text figcaption {
 
 rr-rich-text blockquote {
 	margin: 0;
-	padding: 0 0 0 var(--components-rich-text-grid);
+	padding: 0 0 0 var(--components-rich-text-grid-size);
 	max-width: var(--primitives-area-720);
 	background-color: var(--semantics-content-blockquote-background-color);
 	color: var(--semantics-content-subtle-color);
