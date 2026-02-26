@@ -2,10 +2,12 @@
  * RegelRecht Toolbar Component (Lit + TypeScript)
  *
  * A horizontal toolbar container with three areas: start, center, and end.
- * Items in start are left-aligned, center items are centered, and end items are right-aligned.
+ * Automatically renders rr-toolbar-item, rr-toolbar-divider and rr-toolbar-title-group
+ * elements — no separate component files needed for these.
  *
  * @element rr-toolbar
  * @attr {string} size - Toolbar size: 'sm' | 'md' (default: 'md')
+ * @attr {boolean} show-labels - Show labels below toolbar items
  *
  * @slot start-area - Left-aligned content area
  * @slot - Center-aligned content area (default slot)
@@ -17,102 +19,158 @@
  * @csspart end - The end area
  */
 
-import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { LitElement } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { styles } from './rr-toolbar.styles.js';
+import { template, type ToolbarChild } from './rr-toolbar.template.js';
+
+// # Marker elements
+
+if (!customElements.get('rr-toolbar-item')) {
+	customElements.define('rr-toolbar-item', class extends HTMLElement {
+		constructor() {
+			super();
+			this.attachShadow({ mode: 'open' }).innerHTML = '<slot></slot>';
+		}
+	});
+}
+
+if (!customElements.get('rr-toolbar-divider')) {
+	customElements.define('rr-toolbar-divider', class extends HTMLElement {});
+}
+
+if (!customElements.get('rr-toolbar-title-group')) {
+	customElements.define('rr-toolbar-title-group', class extends HTMLElement {});
+}
+
+// # Types
 
 type Size = 'sm' | 'md';
 
+// # Component
+
 @customElement('rr-toolbar')
 export class RRToolbar extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = styles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String, reflect: true })
+	size: Size = 'md';
 
-    .toolbar {
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      width: 100%;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'show-labels' })
+	showLabels = false;
 
-    /* Size: S */
-    :host([size="sm"]) .toolbar {
-      gap: var(--primitives-space-6);
-    }
+	@state()
+	private _startChildren: ToolbarChild[] = [];
 
-    /* Size: M (default) */
-    :host([size="md"]) .toolbar,
-    :host(:not([size])) .toolbar {
-      gap: var(--primitives-space-8);
-    }
+	@state()
+	private _centerChildren: ToolbarChild[] = [];
 
-    .toolbar__start-area,
-    .toolbar__center-area,
-    .toolbar__end-area {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      flex: 1 1 0%;
-    }
+	@state()
+	private _endChildren: ToolbarChild[] = [];
 
-    /* Size: S gaps */
-    :host([size="sm"]) .toolbar__start-area,
-    :host([size="sm"]) .toolbar__center-area,
-    :host([size="sm"]) .toolbar__end-area {
-      gap: var(--primitives-space-6);
-    }
+	private _idCounter = 0;
+	private _observer: MutationObserver | null = null;
 
-    /* Size: M gaps (default) */
-    :host([size="md"]) .toolbar__start-area,
-    :host([size="md"]) .toolbar__center-area,
-    :host([size="md"]) .toolbar__end-area,
-    :host(:not([size])) .toolbar__start-area,
-    :host(:not([size])) .toolbar__center-area,
-    :host(:not([size])) .toolbar__end-area {
-      gap: var(--primitives-space-8);
-    }
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._observer = new MutationObserver(() => this._buildChildren());
+		this._observer.observe(this, { childList: true, attributes: true, subtree: true });
+		this._buildChildren();
+	}
 
-    .toolbar__start-area {
-      justify-content: flex-start;
-    }
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._observer?.disconnect();
+		this._observer = null;
+	}
 
-    .toolbar__center-area {
-      justify-content: center;
-    }
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('size')) {
+			this._propagateSize();
+		}
+	}
 
-    .toolbar__end-area {
-      justify-content: flex-end;
-    }
-  `;
+	private _propagateSize(): void {
+		Array.from(this.children)
+			.filter(el => el.tagName.toLowerCase() === 'rr-toolbar-item')
+			.forEach(item => {
+				Array.from(item.children).forEach(el => {
+					el.setAttribute('size', this.size);
+				});
+			});
+	}
 
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
+	private _buildChildrenForSlot(slotName: string | null): ToolbarChild[] {
+		const elements = Array.from(this.children).filter(el => {
+			const originalSlot = el.getAttribute('data-toolbar-slot') ?? el.getAttribute('slot') ?? '';
+			if (slotName === null) return !originalSlot || originalSlot.startsWith('child-');
+			return originalSlot === slotName;
+		});
 
-  override render() {
-    return html`
-      <div class="toolbar" part="toolbar" role="toolbar">
-        <div class="toolbar__start-area" part="start">
-          <slot name="start-area"></slot>
-        </div>
-        <div class="toolbar__center-area" part="center">
-          <slot></slot>
-        </div>
-        <div class="toolbar__end-area" part="end">
-          <slot name="end-area"></slot>
-        </div>
-      </div>
-    `;
-  }
+		return elements.map(el => {
+			const tag = el.tagName.toLowerCase();
+
+			// Store original slot value on first encounter
+			if (!el.hasAttribute('data-toolbar-slot')) {
+				const slot = el.getAttribute('slot') ?? '';
+				el.setAttribute('data-toolbar-slot', slot);
+			}
+
+			if (tag === 'rr-toolbar-divider') {
+				return { type: 'divider', id: this._idCounter++ } as ToolbarChild;
+			}
+
+			if (tag === 'rr-toolbar-title-group') {
+				return {
+					type: 'title-group',
+					title: el.getAttribute('title') ?? '',
+					subtitle: el.getAttribute('subtitle') ?? '',
+					align: el.getAttribute('align') ?? 'left',
+					id: this._idCounter++,
+				} as ToolbarChild;
+			}
+
+			if (tag === 'rr-toolbar-item') {
+				const id = this._idCounter++;
+				const label = el.getAttribute('label') ?? '';
+
+				// Propagate size to all children
+				Array.from(el.children).forEach(child => {
+					child.setAttribute('size', this.size);
+				});
+
+				el.setAttribute('slot', `child-${id}`);
+
+				return { type: 'item', element: el, label, id } as ToolbarChild;
+			}
+
+			// Other elements — re-project directly
+			const id = this._idCounter++;
+			el.setAttribute('slot', `child-${id}`);
+			return { type: 'other', element: el, id } as ToolbarChild;
+		});
+	}
+
+	private _buildChildren(): void {
+		this._observer?.disconnect();
+
+		this._startChildren = this._buildChildrenForSlot('start-area');
+		this._centerChildren = this._buildChildrenForSlot(null);
+		this._endChildren = this._buildChildrenForSlot('end-area');
+
+		this._observer?.observe(this, { childList: true, attributes: true, subtree: true });
+	}
+
+	override render() {
+		return template(this._startChildren, this._centerChildren, this._endChildren);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-toolbar': RRToolbar;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-toolbar': RRToolbar;
+		'rr-toolbar-item': HTMLElement;
+		'rr-toolbar-divider': HTMLElement;
+		'rr-toolbar-title-group': HTMLElement;
+	}
 }

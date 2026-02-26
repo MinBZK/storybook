@@ -70,8 +70,6 @@ export { RRMenuBar } from './navigation/menu-bar/rr-menu-bar.ts';
 export { RRMenuItem } from './navigation/menu-bar/rr-menu-item.ts';
 export { RRUtilityMenuBar } from './navigation/top-navigation-bar/rr-utility-menu-bar.ts';
 export { RRToolbar } from './control-groups/toolbar/rr-toolbar.ts';
-export { RRToolbarDivider } from './control-groups/toolbar-divider/rr-toolbar-divider.ts';
-export { RRToolbarTitleGroup } from './control-groups/toolbar-title-group/rr-toolbar-title-group.ts';
 
 // List components
 export { RRList } from './lists/list/rr-list.ts';
