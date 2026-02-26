@@ -20,6 +20,17 @@ rr-rich-text > :last-child {
 	margin-bottom: 0;
 }
 
+
+
+rr-rich-text *:focus-visible {
+	box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+	outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+}
+
+rr-rich-text *:focus:not(:focus-visible) {
+	outline: none;
+}
+
 /* # p */
 
 rr-rich-text p {
@@ -144,15 +155,13 @@ rr-rich-text a {
 	text-decoration: underline;
 	text-underline-offset: var(--primitives-space-2);
 	cursor: pointer;
+	border-radius: var(--primitives-corner-radius-xxs);
 
 	&:hover {
 		color: var(--semantics-links-is-hovered-color);
 	}
 	&:active {
 		color: var(--semantics-links-is-active-color);
-	}
-	&:visited {
-		color: var(--semantics-links-is-visited-color);
 	}
 }
 
