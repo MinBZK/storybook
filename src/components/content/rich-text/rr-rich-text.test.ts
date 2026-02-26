@@ -1,18 +1,28 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { fixture, cleanup } from '../../../test-utils.ts';
 import './rr-rich-text.ts';
 
 describe('rr-rich-text', () => {
-  let el: HTMLElement;
+	let el: HTMLElement;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('renders without error', async () => {
-    el = await fixture('<rr-rich-text></rr-rich-text>');
-    await waitForUpdate(el);
+	it('renders without error', async () => {
+		el = await fixture('<rr-rich-text></rr-rich-text>');
+		expect(el).toBeDefined();
+		expect(el.tagName.toLowerCase()).toBe('rr-rich-text');
+	});
 
-    expect(el.shadowRoot).not.toBeNull();
-  });
+	it('has no shadow DOM', () => {
+		expect(el.shadowRoot).toBeNull();
+	});
+
+	it('renders slotted content as light DOM', async () => {
+		el = await fixture('<rr-rich-text><p>Tekst</p></rr-rich-text>');
+		const p = el.querySelector('p');
+		expect(p).not.toBeNull();
+		expect(p?.textContent).toBe('Tekst');
+	});
 });

@@ -253,7 +253,7 @@ rr-rich-text img {
 /* # hr */
 
 rr-rich-text hr {
-	margin: 0;
+	margin: calc(var(--components-rich-text-grid-size) / 2) 0;
 	border: none;
 	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 }
