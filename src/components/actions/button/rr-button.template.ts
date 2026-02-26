@@ -10,7 +10,6 @@ export function template(this: RRButton, helpers: TemplateHelpers) {
 	return html`
 		<button
 			class="button"
-			part="button"
 			type=${this.type}
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled}

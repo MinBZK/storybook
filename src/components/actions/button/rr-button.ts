@@ -13,9 +13,6 @@
  * @slot (auto) - Place an rr-icon before or after the title to auto-detect position
  *
  * @fires click - When button is clicked (not fired when disabled)
- *
- * @csspart button - The native button element
- * @csspart content - The content wrapper
  */
 
 import { LitElement } from 'lit';
