@@ -240,8 +240,8 @@
 	--primitives-font-family-sans-serif: RijksSansVF, system-ui, sans-serif;
 	--primitives-font-family-serif-fallback: serif;
 	--primitives-font-family-serif: RijksoverheidSerif, serif;
-	--primitives-font-family-mono-fallback: mono;
-	--primitives-font-family-mono: 'IBM Plex Mono', mono;
+	--primitives-font-family-monospace-fallback: monospace;
+	--primitives-font-family-monospace: 'IBM Plex Mono', monospace;
 	--primitives-font-family-body-fallback: var(--primitives-font-family-sans-serif-fallback);
 	--primitives-font-family-body: var(--primitives-font-family-sans-serif);
 	--primitives-font-family-display-fallback: var(--primitives-font-family-sans-serif-fallback);

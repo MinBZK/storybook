@@ -211,7 +211,7 @@ rr-rich-text i {
 
 rr-rich-text code {
 	font-size: 0.85em;
-	font-family: var(--primitives-font-family-mono);
+	font-family: var(--primitives-font-family-monospace);
 	background-color: var(--semantics-surfaces-tinted-background-color);
 	padding: var(--primitives-space-4);
 	border-radius: var(--semantics-controls-xs-corner-radius);
