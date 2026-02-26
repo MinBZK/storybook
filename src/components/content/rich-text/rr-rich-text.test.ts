@@ -15,7 +15,8 @@ describe('rr-rich-text', () => {
 		expect(el.tagName.toLowerCase()).toBe('rr-rich-text');
 	});
 
-	it('has no shadow DOM', () => {
+	it('has no shadow DOM', async () => {
+		el = await fixture('<rr-rich-text></rr-rich-text>');
 		expect(el.shadowRoot).toBeNull();
 	});
 
