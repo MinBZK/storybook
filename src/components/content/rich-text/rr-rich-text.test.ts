@@ -25,4 +25,14 @@ describe('rr-rich-text', () => {
 		expect(p).not.toBeNull();
 		expect(p?.textContent).toBe('Tekst');
 	});
+
+	it('defaults to snug spacing', async () => {
+		el = await fixture('<rr-rich-text></rr-rich-text>');
+		expect(el.getAttribute('spacing')).toBe('snug');
+	});
+
+	it('reflects spacing attribute', async () => {
+		el = await fixture('<rr-rich-text spacing="loose"></rr-rich-text>');
+		expect(el.getAttribute('spacing')).toBe('loose');
+	});
 });
