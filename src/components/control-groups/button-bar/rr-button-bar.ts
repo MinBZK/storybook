@@ -95,16 +95,30 @@ export class RRButtonBar extends LitElement {
 			.forEach(el => el.setAttribute('size', this.size));
 	}
 
+	private _individuallyDisabled = new WeakSet<Element>();
+
 	private _propagateDisabled(): void {
-		Array.from(this.children)
-			.filter(el => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
-			.forEach(el => {
-				if (this.disabled) {
-					el.setAttribute('disabled', '');
-				} else {
+		const buttons = Array.from(this.children).filter(el =>
+			BUTTON_TAGS.includes(el.tagName.toLowerCase())
+		);
+
+		if (this.disabled) {
+			// Snapshot which buttons are already disabled before we touch them
+			buttons.forEach(el => {
+				if (el.hasAttribute('disabled')) {
+					this._individuallyDisabled.add(el);
+				}
+			});
+			buttons.forEach(el => el.setAttribute('disabled', ''));
+		} else {
+			// Only re-enable buttons that weren't individually disabled
+			buttons.forEach(el => {
+				if (!this._individuallyDisabled.has(el)) {
 					el.removeAttribute('disabled');
 				}
 			});
+			this._individuallyDisabled = new WeakSet();
+		}
 	}
 
 	private _buildChildren(): void {
