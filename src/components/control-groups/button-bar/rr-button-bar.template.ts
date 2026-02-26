@@ -13,10 +13,7 @@ export function template(this: RRButtonBar) {
 function renderChild(this: RRButtonBar, child: BarChild) {
 	if (child.type === 'divider') {
 		return html`
-			<div
-				class="button-bar__divider"
-				role="separator"
-			>
+			<div class="button-bar__divider">
 				<div class="button-bar__divider-line"></div>
 			</div>
 		`;

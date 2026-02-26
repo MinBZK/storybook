@@ -5,20 +5,16 @@ export function template(this: RRSplitButton) {
 	return html`
 		<div class="split-button">
 			<rr-button
-				variant="neutral-tinted"
+				variant=${this.variant}
 				size=${this.size}
 				?disabled=${this.disabled}
 				@click=${this._handleActionClick}
 			>
 				<slot></slot>
 			</rr-button>
-			<div
-				class="split-button__divider"
-				role="separator"
-				aria-orientation="vertical"
-			></div>
+			<div class="split-button__divider"></div>
 			<rr-icon-button
-				variant="neutral-tinted"
+				variant=${this.variant}
 				size=${this.size}
 				?disabled=${this.disabled}
 				aria-haspopup="menu"
