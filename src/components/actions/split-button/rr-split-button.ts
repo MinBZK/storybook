@@ -6,6 +6,7 @@
  *
  * @element rr-split-button
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {string} variant - Button variant (default: 'neutral-tinted')
  * @attr {boolean} disabled - Disabled state
  *
  * @slot - Default slot for button label text and optional icons
@@ -13,7 +14,6 @@
  * @fires action-click - Fired when the main button is clicked
  * @fires menu-click - Fired when the dropdown trigger is clicked
  */
-
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styles } from './rr-split-button.styles.ts';
@@ -29,6 +29,9 @@ export class RRSplitButton extends LitElement {
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
+
+	@property({ type: String, reflect: true })
+	variant: string = 'neutral-tinted';
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;

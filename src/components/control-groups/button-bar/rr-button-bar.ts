@@ -2,11 +2,12 @@
  * RegelRecht Button Bar Component (Lit + TypeScript)
  *
  * A horizontal container for grouping buttons with a neutral background.
- * Automatically propagates its size to all child rr-button and rr-icon-button elements.
+ * Automatically propagates its size and variant to all child rr-button and rr-icon-button elements.
  * Renders rr-button-bar-divider elements as internal dividers — no separate component needed.
  *
  * @element rr-button-bar
  * @attr {string} size - Bar size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {string} variant - Button variant (default: 'neutral-tinted')
  * @attr {boolean} disabled - Disabled state
  *
  * @slot - Default slot for rr-button, rr-icon-button and rr-button-bar-divider elements
@@ -37,6 +38,9 @@ export class RRButtonBar extends LitElement {
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
+
+	@property({ type: String, reflect: true })
+	variant: string = 'neutral-tinted';
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
@@ -70,6 +74,9 @@ export class RRButtonBar extends LitElement {
 		if (changedProperties.has('size')) {
 			this._propagateSize();
 		}
+		if (changedProperties.has('variant')) {
+			this._propagateVariant();
+		}
 		if (changedProperties.has('disabled')) {
 			this._propagateDisabled();
 		}
@@ -93,6 +100,12 @@ export class RRButtonBar extends LitElement {
 		Array.from(this.children)
 			.filter(el => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
 			.forEach(el => el.setAttribute('size', this.size));
+	}
+
+	private _propagateVariant(): void {
+		Array.from(this.children)
+			.filter(el => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
+			.forEach(el => el.setAttribute('variant', this.variant));
 	}
 
 	private _propagateDisabled(): void {
@@ -131,6 +144,7 @@ export class RRButtonBar extends LitElement {
 
 			if (BUTTON_TAGS.includes(tag)) {
 				el.setAttribute('size', this.size);
+				el.setAttribute('variant', this.variant);
 				if (this.disabled) {
 					el.setAttribute('disabled', '');
 				}
