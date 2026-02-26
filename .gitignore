@@ -24,6 +24,9 @@ npm-debug.log*
 # Test coverage
 coverage/
 
+# Vitest browser screenshots
+__screenshots__/
+
 # Temporary files
 tmp/
 temp/

@@ -46,6 +46,8 @@
     "test:visual:update": "lost-pixel update",
     "test:visual:storybook": "start-server-and-test storybook http://localhost:6006 test:visual",
     "prepare": "pre-commit install || true",
+    "test": "vitest",
+    "test:run": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
