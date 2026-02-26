@@ -32,7 +32,7 @@ export const Default = {
 	`,
 };
 
-export const Vertical = {
+export const Horizontal = {
 	args: { size: 'md', flow: 'horizontal' },
 	render: (args) => html`
 	<rr-button-group size=${args.size} flow=${args.flow}>
