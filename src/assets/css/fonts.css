@@ -30,7 +30,11 @@
 	font-display: swap;
 }
 
-:root[data-theme="dark"],
+:root[data-theme="dark"] {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme="light"]) {
 		-webkit-font-smoothing: antialiased;
