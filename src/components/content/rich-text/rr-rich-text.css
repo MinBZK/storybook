@@ -267,10 +267,12 @@ rr-rich-text table {
 	font: var(--primitives-font-body-md-regular-tight);
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
+	scrollbar-width: thin;
 
 	@container (min-width: 641px) {
 		display: table;
 		overflow-x: unset;
+		scrollbar-width: unset;
 	}
 }
 
@@ -278,7 +280,7 @@ rr-rich-text table {
 
 rr-rich-text th {
 	padding: var(--primitives-space-6);
-	border-bottom: calc(var(--semantics-dividers-thickness) * 2) solid var(--semantics-dividers-color);
+	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	text-align: left;
 	font-weight: var(--primitives-font-weight-body-bold);
 }
@@ -288,6 +290,11 @@ rr-rich-text th {
 rr-rich-text td {
 	padding: var(--primitives-space-6);
 	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+	min-width: var(--primitives-area-120);
+
+	@container (min-width: 641px) {
+		min-width: none;
+	}
 }
 
 /* # tr */

@@ -143,7 +143,7 @@ export const Divider = () => html`
 	<rr-rich-text>
 		<h3>Artikel 6. Eerste onderdeel</h3>
 		<p>De verzekerde heeft recht op zorgtoeslag indien het toetsingsinkomen niet hoger is dan de vastgestelde inkomensgrens.</p>
-		<hr />
+		<hr>
 		<h3>Artikel 7. Tweede onderdeel</h3>
 		<p>De zorgtoeslag wordt maandelijks als voorschot uitbetaald op basis van het geschatte jaarinkomen.</p>
 	</rr-rich-text>
@@ -191,7 +191,6 @@ export const FullArticle = () => html`
 				<td>€ 48.224</td>
 			</tr>
 		</table>
-		<hr />
 		<h3>Artikel 4. Meer informatie</h3>
 		<p>Voor meer informatie verwijzen wij naar de <a href="#">website van de Belastingdienst</a> of het <a href="#">Besluit zorgtoeslag</a>.</p>
 		<figure>
