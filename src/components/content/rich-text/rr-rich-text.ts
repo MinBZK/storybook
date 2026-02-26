@@ -6,25 +6,14 @@
  * Import rr-rich-text.css globally in your application.
  *
  * @element rr-rich-text
- *
- * @slot - Default slot for content (p, h1–h6, ul, ol, table, etc.)
- *
- * @csspart content - The content wrapper
- *
- * @cssprop --rr-rich-text-gap - Override gap between content elements
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { template } from './rr-rich-text.template.js';
 
 @customElement('rr-rich-text')
 export class RRRichText extends LitElement {
 	override createRenderRoot() {
 		return this;
-	}
-
-	override render() {
-		return template();
 	}
 }
 

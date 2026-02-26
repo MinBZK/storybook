@@ -143,6 +143,7 @@ rr-rich-text a {
 	color: var(--semantics-links-color);
 	text-decoration: underline;
 	text-underline-offset: var(--primitives-space-2);
+	cursor: pointer;
 
 	&:hover {
 		color: var(--semantics-links-is-hovered-color);
@@ -253,6 +254,15 @@ rr-rich-text hr {
 rr-rich-text table {
 	width: 100%;
 	border-collapse: collapse;
+	display: block;
+	font: var(--primitives-font-body-md-regular-tight);
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+
+	@container (min-width: 641px) {
+		display: table;
+		overflow-x: unset;
+	}
 }
 
 /* # th */
