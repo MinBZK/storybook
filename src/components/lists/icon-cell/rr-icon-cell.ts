@@ -5,90 +5,40 @@
  * alignment and size. Accepts an icon via the default slot.
  *
  * @element rr-icon-cell
- * @attr {string} size - Icon size: '16' | '20' | '24' | '32' (default: '24')
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' (default: 'center')
+ * @attr {string} size - Size: '16' | '20' | '24' | '32' (default: '24')
+ * @attr {boolean} selected - Selected state
  *
- * @slot - Default slot for icon content (SVG or img)
- *
- * @csspart icon - The icon container
+ * @slot - Default slot for icon content
  */
-
-import { LitElement, html, css } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { styles } from './rr-icon-cell.styles.js';
+import { template } from './rr-icon-cell.template.js';
 
-type IconSize = '16' | '20' | '24' | '32';
 type VerticalAlignment = 'top' | 'center';
+type Size = '16' | '20' | '24' | '32';
 
 @customElement('rr-icon-cell')
 export class RRIconCell extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: var(--semantics-content-color);
-    }
+	static override styles = styles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })
+	verticalAlignment: VerticalAlignment = 'center';
 
-    /* Vertical alignment: center (default) */
-    :host([vertical-alignment="center"]),
-    :host(:not([vertical-alignment])) {
-      justify-content: center;
-    }
+	@property({ type: String, reflect: true })
+	size: Size = '24';
 
-    /* Vertical alignment: top */
-    :host([vertical-alignment="top"]) {
-      justify-content: flex-start;
-    }
+	@property({ type: Boolean, reflect: true })
+	selected = false;
 
-    /* Icon sizing via slotted content */
-    ::slotted(*) {
-      display: block;
-      flex-shrink: 0;
-    }
-
-    /* Size: 16 */
-    :host([size="16"]) ::slotted(*) {
-      width: 16px;
-      height: 16px;
-    }
-
-    /* Size: 20 */
-    :host([size="20"]) ::slotted(*) {
-      width: 20px;
-      height: 20px;
-    }
-
-    /* Size: 24 (default) */
-    :host([size="24"]) ::slotted(*),
-    :host(:not([size])) ::slotted(*) {
-      width: 24px;
-      height: 24px;
-    }
-
-    /* Size: 32 */
-    :host([size="32"]) ::slotted(*) {
-      width: 32px;
-      height: 32px;
-    }
-  `;
-
-  @property({ type: String, reflect: true })
-  size: IconSize = '24';
-
-  @property({ type: String, reflect: true, attribute: 'vertical-alignment' })
-  verticalAlignment: VerticalAlignment = 'center';
-
-  override render() {
-    return html`<slot></slot>`;
-  }
+	override render() {
+		return template.call(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-icon-cell': RRIconCell;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-icon-cell': RRIconCell;
+	}
 }
