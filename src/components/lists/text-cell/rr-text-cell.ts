@@ -7,130 +7,56 @@
  * @element rr-text-cell
  * @attr {string} size - Cell size: 'sm' | 'md' (default: 'md')
  * @attr {string} color - Text color variant: 'default' | 'secondary' (default: 'default')
+ * @attr {string} width - Width: 'stretch' | 'fit-content' (default: 'stretch')
  * @attr {string} horizontal-alignment - Horizontal alignment: 'left' | 'right' (default: 'left')
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' (default: 'center')
+ * @attr {boolean} selected - Selected state
  *
- * @slot - Default slot for text content
- *
- * @csspart text - The text content container
+ * @slot overline - Optional overline text displayed above the main content
+ * @slot text - Main text content
+ * @slot - Fallback default slot for main text content
+ * @slot supporting-text - Optional supporting text displayed below the main content
  */
-
-import { LitElement, html, css } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { styles } from './rr-text-cell.styles.js';
+import { template } from './rr-text-cell.template.js';
 
 type Size = 'sm' | 'md';
 type Color = 'default' | 'secondary';
+type Width = 'stretch' | 'fit-content';
 type HorizontalAlignment = 'left' | 'right';
 type VerticalAlignment = 'top' | 'center';
 
 @customElement('rr-text-cell')
 export class RRTextCell extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = styles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String, reflect: true })
+	size: Size = 'md';
 
-    /* Vertical alignment: center (default) */
-    :host([vertical-alignment="center"]),
-    :host(:not([vertical-alignment])) {
-      justify-content: center;
-    }
+	@property({ type: String, reflect: true })
+	color: Color = 'default';
 
-    /* Vertical alignment: top */
-    :host([vertical-alignment="top"]) {
-      justify-content: flex-start;
-    }
+	@property({ type: String, reflect: true })
+	width: Width = 'stretch';
 
-    /* Horizontal alignment: left (default) */
-    :host([horizontal-alignment="left"]),
-    :host(:not([horizontal-alignment])) {
-      align-items: flex-start;
-    }
+	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
+	horizontalAlignment: HorizontalAlignment = 'left';
 
-    /* Horizontal alignment: right */
-    :host([horizontal-alignment="right"]) {
-      align-items: flex-end;
-    }
+	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })
+	verticalAlignment: VerticalAlignment = 'center';
 
-    .text-cell__text {
-      display: flex;
-      flex-direction: row;
-      gap: 8px;
-      align-self: stretch;
-      margin: 0;
-    }
+	@property({ type: Boolean, reflect: true })
+	selected = false;
 
-    .text-cell__content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    /* Size: MD (default) */
-    :host([size="md"]) .text-cell__content,
-    :host(:not([size])) .text-cell__content {
-      font: var(--primitives-font-body-md-regular-tight);
-    }
-
-    /* Size: SM */
-    :host([size="sm"]) .text-cell__content {
-      font: var(--primitives-font-body-sm-regular-tight);
-    }
-
-    /* Horizontal alignment: right text */
-    :host([horizontal-alignment="right"]) .text-cell__content {
-      text-align: right;
-    }
-
-    /* Color: Default */
-    :host([color="default"]) .text-cell__content,
-    :host(:not([color])) .text-cell__content {
-      color: var(--semantics-content-color);
-    }
-
-    /* Color: Secondary */
-    :host([color="secondary"]) .text-cell__content {
-      color: var(--semantics-content-secondary-color);
-    }
-
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .text-cell__content {
-        forced-color-adjust: none;
-      }
-    }
-  `;
-
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
-
-  @property({ type: String, reflect: true })
-  color: Color = 'default';
-
-  @property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
-  horizontalAlignment: HorizontalAlignment = 'left';
-
-  @property({ type: String, reflect: true, attribute: 'vertical-alignment' })
-  verticalAlignment: VerticalAlignment = 'center';
-
-  override render() {
-    return html`
-      <div class="text-cell__text" part="text">
-        <span class="text-cell__content">
-          <slot></slot>
-        </span>
-      </div>
-    `;
-  }
+	override render() {
+		return template.call(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-text-cell': RRTextCell;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-text-cell': RRTextCell;
+	}
 }

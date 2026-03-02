@@ -1,79 +1,175 @@
 import { html } from 'lit';
-import './rr-text-cell.js';
+import './rr-text-cell.ts';
 
 export default {
-  title: 'Components/Lists/Text Cell',
-  component: 'rr-text-cell',
-  tags: ['autodocs'],
-  parameters: {
-  },
-  argTypes: {
-    size: {
-      control: 'select',
-      options: ['md', 'sm'],
-      description: 'Text cell size',
-    },
-    color: {
-      control: 'select',
-      options: ['default', 'secondary'],
-      description: 'Color variant of the text',
-    },
-    horizontalAlignment: {
-      control: 'select',
-      options: ['left', 'right'],
-      description: 'Horizontal alignment of the text',
-    },
-    verticalAlignment: {
-      control: 'select',
-      options: ['center', 'top'],
-      description: 'Vertical alignment of the cell',
-    },
-  },
+	title: 'Components/Lists/Text Cell',
+	component: 'rr-text-cell',
+	tags: ['autodocs'],
+	argTypes: {
+		size: {
+			control: 'select',
+			options: ['md', 'sm'],
+			description: 'Text cell size',
+		},
+		color: {
+			control: 'select',
+			options: ['default', 'secondary'],
+			description: 'Color variant of the text',
+		},
+		width: {
+			control: 'select',
+			options: ['stretch', 'fit-content'],
+			description: 'Width of the cell',
+		},
+		horizontalAlignment: {
+			control: 'select',
+			options: ['left', 'right'],
+			description: 'Horizontal alignment of the text',
+		},
+		verticalAlignment: {
+			control: 'select',
+			options: ['center', 'top'],
+			description: 'Vertical alignment of the cell',
+		},
+		selected: {
+			control: 'boolean',
+			description: 'Selected state',
+		},
+	},
 };
 
 export const Default = {
-  args: {
-    size: 'md',
-    color: 'default',
-    horizontalAlignment: 'left',
-    verticalAlignment: 'center',
-  },
-  render: (args) => html`
-    <rr-text-cell
-      size=${args.size}
-      color=${args.color}
-      horizontal-alignment=${args.horizontalAlignment}
-      vertical-alignment=${args.verticalAlignment}
-    >
-      Text cell
-    </rr-text-cell>
-  `,
+	args: {
+		size: 'md',
+		color: 'default',
+		width: 'stretch',
+		horizontalAlignment: 'left',
+		verticalAlignment: 'center',
+		selected: false,
+	},
+	render: (args) => html`
+		<rr-text-cell
+			size=${args.size}
+			color=${args.color}
+			width=${args.width}
+			horizontal-alignment=${args.horizontalAlignment}
+			vertical-alignment=${args.verticalAlignment}
+			?selected=${args.selected}
+		>
+			<p slot="text">Text cell</p>
+		</rr-text-cell>
+	`,
+};
+
+export const WithOverline = {
+	render: () => html`
+		<rr-text-cell>
+			<p slot="overline">Overline</p>
+			<p slot="text">Text cell</p>
+		</rr-text-cell>
+	`,
+};
+
+export const WithSupportingText = {
+	render: () => html`
+		<rr-text-cell>
+			<p slot="text">Text cell</p>
+			<p slot="supporting-text">Supporting text</p>
+		</rr-text-cell>
+	`,
+};
+
+export const WithOverlineAndSupportingText = {
+	render: () => html`
+		<rr-text-cell>
+			<p slot="overline">Overline</p>
+			<p slot="text">Text cell</p>
+			<p slot="supporting-text">Supporting text</p>
+		</rr-text-cell>
+	`,
+};
+
+export const Selected = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 8px;">
+			<rr-text-cell>
+				<p slot="overline">Overline</p>
+				<p slot="text">Text cell</p>
+				<p slot="supporting-text">Supporting text</p>
+			</rr-text-cell>
+			<rr-text-cell selected>
+				<p slot="overline">Overline</p>
+				<p slot="text">Text cell (selected)</p>
+				<p slot="supporting-text">Supporting text</p>
+			</rr-text-cell>
+		</div>
+	`,
 };
 
 export const Secondary = {
-  render: () => html`
-    <rr-text-cell color="secondary">Text cell (secondary)</rr-text-cell>
-  `,
+	render: () => html`
+		<rr-text-cell color="secondary">
+			<p slot="text">Text cell (secondary)</p>
+		</rr-text-cell>
+	`,
 };
 
-export const SmallSize = {
-  render: () => html`
-    <rr-text-cell size="sm">Text cell (small)</rr-text-cell>
-  `,
+export const Sizes = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 8px;">
+			<rr-text-cell size="md">
+				<p slot="overline">Overline</p>
+				<p slot="text">Text cell (md)</p>
+				<p slot="supporting-text">Supporting text</p>
+			</rr-text-cell>
+			<rr-text-cell size="sm">
+				<p slot="overline">Overline</p>
+				<p slot="text">Text cell (sm)</p>
+				<p slot="supporting-text">Supporting text</p>
+			</rr-text-cell>
+		</div>
+	`,
 };
 
-export const AlignmentRight = {
-  render: () => html`
-    <rr-text-cell horizontal-alignment="right" style="width: 200px; border: 1px dashed #ccc;">
-      Text cell
-    </rr-text-cell>
-  `,
+export const Width = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 8px; width: 300px; border: 1px dashed #ccc; padding: 8px;">
+			<rr-text-cell width="stretch">
+				<p slot="text">Stretch (default)</p>
+			</rr-text-cell>
+			<rr-text-cell width="fit-content">
+				<p slot="text">Fit content</p>
+			</rr-text-cell>
+		</div>
+	`,
 };
 
-export const VerticalTop = {
-  render: () => html`
-    <rr-text-cell vertical-alignment="top" style="height: 80px; border: 1px dashed #ccc;">
-      Text cell (top)
-    </rr-text-cell>
-  `,
+export const HorizontalAlignment = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 8px;">
+			<rr-text-cell horizontal-alignment="left" style="width: 200px; border: 1px dashed #ccc;">
+				<p slot="overline">Overline</p>
+				<p slot="text">Text cell (left)</p>
+				<p slot="supporting-text">Supporting text</p>
+			</rr-text-cell>
+			<rr-text-cell horizontal-alignment="right" style="width: 200px; border: 1px dashed #ccc;">
+				<p slot="overline">Overline</p>
+				<p slot="text">Text cell (right)</p>
+				<p slot="supporting-text">Supporting text</p>
+			</rr-text-cell>
+		</div>
+	`,
+};
+
+export const VerticalAlignment = {
+	render: () => html`
+		<div style="display: flex; gap: 8px;">
+			<rr-text-cell vertical-alignment="center" style="height: 80px; border: 1px dashed #ccc;">
+				<p slot="text">Text cell (center)</p>
+			</rr-text-cell>
+			<rr-text-cell vertical-alignment="top" style="height: 80px; border: 1px dashed #ccc;">
+				<p slot="text">Text cell (top)</p>
+			</rr-text-cell>
+		</div>
+	`,
 };
