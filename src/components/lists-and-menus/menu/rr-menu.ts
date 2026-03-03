@@ -1,35 +1,3 @@
-/**
- * RegelRecht Menu Components (Lit + TypeScript)
- *
- * A menu container with menu items and dividers.
- * Automatically registers itself as a popover.
- *
- * @element rr-menu
- * @attr {string} anchor - ID of the element to anchor the menu to
- *
- * @example
- * <rr-button id="my-button">Open menu</rr-button>
- * <rr-menu anchor="my-button">
- *   <rr-menu-item title="Bewerk" selectable selected></rr-menu-item>
- *   <rr-menu-item title="Kopieer" selectable></rr-menu-item>
- *   <rr-menu-item title="Sluiten"></rr-menu-item>
- * </rr-menu>
- *
- * ---
- *
- * @element rr-menu-item
- * @attr {string} title - Menu item text
- * @attr {string} details - Optional details text (e.g. keyboard shortcut)
- * @attr {boolean} selectable - Whether this item shows the checkmark column
- * @attr {boolean} selected - Whether the item is selected (shows checkmark)
- * @attr {boolean} disabled - Disabled state
- *
- * @fires rr-select - When the item is clicked
- *
- * ---
- *
- * @element rr-menu-divider
- */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
@@ -91,15 +59,29 @@ export class RRMenuItem extends LitElement {
 export class RRMenu extends LitElement {
 	static override styles = menuStyles;
 
+	// String ID for light DOM usage
 	@property({ type: String, reflect: true })
 	anchor = '';
 
+	// Direct element reference — takes priority over anchor string
+	@property({ attribute: false })
+	anchorElement: Element | null = null;
+
 	private _isOpen = false;
 
+	private _getAnchorEl(): Element | null {
+		if (this.anchorElement) return this.anchorElement;
+		if (this.anchor) return document.getElementById(this.anchor);
+		return null;
+	}
+
 	private _handleDocumentClick = (event: MouseEvent): void => {
-		if (!this.anchor) return;
-		const anchorEl = document.getElementById(this.anchor);
-		if (!anchorEl?.contains(event.target as Node)) return;
+		const anchorEl = this._getAnchorEl();
+		if (!anchorEl) return;
+
+		const path = event.composedPath();
+		if (!path.includes(anchorEl)) return;
+
 		if (this._isOpen) {
 			(this as unknown as { hidePopover: () => void }).hidePopover();
 		} else {
@@ -163,8 +145,8 @@ export class RRMenu extends LitElement {
 			case 'Escape': {
 				event.preventDefault();
 				(this as unknown as { hidePopover: () => void }).hidePopover();
-				const anchorEl = this.anchor ? document.getElementById(this.anchor) : null;
-				anchorEl?.focus();
+				const anchorEl = this._getAnchorEl();
+				(anchorEl as HTMLElement | null)?.focus();
 				break;
 			}
 		}
@@ -175,9 +157,8 @@ export class RRMenu extends LitElement {
 		this._isOpen = toggleEvent.newState === 'open';
 
 		if (toggleEvent.newState !== 'open') return;
-		if (!this.anchor) return;
 
-		const anchorEl = document.getElementById(this.anchor);
+		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
 
 		const { x, y } = await computePosition(anchorEl, this, {

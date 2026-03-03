@@ -1,68 +1,80 @@
 import { css } from 'lit';
-
 export const styles = css`
-	/* # host */
+
+	/* # Host */
 
 	:host {
 		display: block;
 		font-family: var(--rr-font-family-body);
 	}
-
 	:host([hidden]) {
 		display: none;
 	}
 
-	/* # toolbar */
+	/* # Toolbar */
 
 	.toolbar {
 		display: flex;
 		flex-direction: row;
-		align-items: stretch;
+		align-items: flex-start;
 		width: 100%;
 	}
 
-	:host([size="sm"]) .toolbar {
-		gap: var(--primitives-space-6);
-		min-height: var(--semantics-controls-sm-min-size);
-	}
+	/* # Areas */
 
-	:host([size="md"]) .toolbar,
-	:host(:not([size])) .toolbar {
-		gap: var(--primitives-space-8);
-		min-height: var(--semantics-controls-md-min-size);
-	}
-
-	/* # areas */
-
-	.toolbar__area {
+	.toolbar__start-area,
+	.toolbar__center-area,
+	.toolbar__end-area {
 		display: flex;
 		flex-direction: row;
-		align-items: center;
-		flex: 1 1 0%;
+		align-items: flex-start;
+		flex-shrink: 0;
+		flex-grow: 0;
 	}
 
-	:host([size="sm"]) .toolbar__area {
-		gap: var(--primitives-space-6);
+	:host([size="sm"]) .toolbar__start-area,
+	:host([size="sm"]) .toolbar__center-area,
+	:host([size="sm"]) .toolbar__end-area {
+		gap: var(--components-toolbar-sm-gap);
 	}
 
-	:host([size="md"]) .toolbar__area,
-	:host(:not([size])) .toolbar__area {
-		gap: var(--primitives-space-8);
+	:host([size="md"]) .toolbar__start-area,
+	:host([size="md"]) .toolbar__center-area,
+	:host([size="md"]) .toolbar__end-area,
+	:host(:not([size])) .toolbar__start-area,
+	:host(:not([size])) .toolbar__center-area,
+	:host(:not([size])) .toolbar__end-area {
+		gap: var(--components-toolbar-md-gap);
 	}
 
-	.toolbar__area--start {
+	.toolbar__start-area {
 		justify-content: flex-start;
 	}
 
-	.toolbar__area--center {
+	.toolbar__center-area {
 		justify-content: center;
+		min-width: 0;
+		overflow: hidden;
 	}
 
-	.toolbar__area--end {
+	.toolbar__end-area {
 		justify-content: flex-end;
+		margin-left: auto;
 	}
 
-	/* # divider */
+	:host([has-center]) .toolbar__end-area {
+		margin-left: 0;
+	}
+
+	/* # Spacers */
+
+	.toolbar__left-spacer,
+	.toolbar__right-spacer {
+		flex-shrink: 0;
+		flex-grow: 0;
+	}
+
+	/* # Divider */
 
 	.toolbar__divider {
 		display: flex;
@@ -80,7 +92,7 @@ export const styles = css`
 	}
 
 	.toolbar__divider-line {
-		width: 1px;
+		width: var(--semantics-dividers-thickness);
 		background-color: var(--semantics-dividers-color);
 	}
 
@@ -93,13 +105,17 @@ export const styles = css`
 		height: 34px;
 	}
 
-	/* # item */
+	/* # Item */
 
 	.toolbar__item {
 		display: inline-flex;
 		flex-direction: column;
 		align-items: center;
 		gap: var(--primitives-space-2);
+	}
+
+	.toolbar__item.is-hidden {
+		display: none;
 	}
 
 	.toolbar__item-content {
@@ -119,12 +135,34 @@ export const styles = css`
 		display: block;
 	}
 
-	/* # title-group */
+	/* # Overflow button */
+
+	.toolbar__more-button {
+		display: inline-flex;
+		align-items: center;
+		flex-shrink: 0;
+		flex-grow: 0;
+		flex-basis: auto;
+	}
+
+	/* ## Overflow button sizer */
+
+	.toolbar__more-button-sizer {
+		position: absolute;
+		visibility: hidden;
+		pointer-events: none;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	/* # Title group */
 
 	.toolbar__title-group {
 		display: inline-flex;
 		flex-direction: column;
 		justify-content: center;
+		min-width: 0;
+		overflow: hidden;
 	}
 
 	:host([size="sm"]) .toolbar__title-group {
@@ -136,12 +174,12 @@ export const styles = css`
 		height: var(--semantics-controls-md-min-size);
 	}
 
-	.toolbar__title-group--center {
+	.toolbar__title-group--center-text-align {
 		align-items: center;
 		text-align: center;
 	}
 
-	.toolbar__title-group--left {
+	.toolbar__title-group--left-text-align {
 		align-items: flex-start;
 		text-align: left;
 	}
@@ -149,6 +187,10 @@ export const styles = css`
 	.toolbar__title {
 		margin: 0;
 		color: var(--semantics-content-color);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 100%;
 	}
 
 	:host([size="md"]) .toolbar__title,
@@ -165,6 +207,10 @@ export const styles = css`
 	.toolbar__subtitle {
 		margin: 0;
 		color: var(--semantics-content-secondary-color);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 100%;
 	}
 
 	:host([size="md"]) .toolbar__subtitle,
