@@ -28,8 +28,7 @@ export const menuStyles = css`
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--primitives-box-shadows-level-5);
 		box-sizing: border-box;
-		min-width: var(--primitives-area-240);
-		max-width: var(--primitives-area-280);
+		width: var(--primitives-area-280);
 	}
 `;
 
@@ -83,7 +82,6 @@ export const menuItemStyles = css`
 
 	:host([disabled]) .menu__item {
 		opacity: var(--primitives-opacity-disabled);
-		cursor: not-allowed;
 		pointer-events: none;
 	}
 

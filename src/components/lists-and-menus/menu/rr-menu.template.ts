@@ -3,7 +3,7 @@ import type { RRMenuItem, RRMenu } from './rr-menu.js';
 
 export function menuTemplate(this: RRMenu) {
 	return html`
-		<div class="menu" role="menu">
+		<div class="menu" role="menu" tabindex="-1">
 			<slot></slot>
 		</div>
 	`;

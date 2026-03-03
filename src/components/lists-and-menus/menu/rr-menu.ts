@@ -2,14 +2,14 @@
  * RegelRecht Menu Components (Lit + TypeScript)
  *
  * A menu container with menu items and dividers.
- * Use as a native HTML popover by adding the popover attribute.
+ * Automatically registers itself as a popover.
  *
  * @element rr-menu
  * @attr {string} anchor - ID of the element to anchor the menu to
  *
  * @example
- * <rr-button id="my-button" popovertarget="my-menu">Open menu</rr-button>
- * <rr-menu id="my-menu" popover anchor="my-button">
+ * <rr-button id="my-button">Open menu</rr-button>
+ * <rr-menu anchor="my-button">
  *   <rr-menu-item title="Bewerk" selectable selected></rr-menu-item>
  *   <rr-menu-item title="Kopieer" selectable></rr-menu-item>
  *   <rr-menu-item title="Sluiten"></rr-menu-item>
@@ -94,18 +94,86 @@ export class RRMenu extends LitElement {
 	@property({ type: String, reflect: true })
 	anchor = '';
 
+	private _isOpen = false;
+
+	private _handleDocumentClick = (event: MouseEvent): void => {
+		if (!this.anchor) return;
+		const anchorEl = document.getElementById(this.anchor);
+		if (!anchorEl?.contains(event.target as Node)) return;
+		if (this._isOpen) {
+			(this as unknown as { hidePopover: () => void }).hidePopover();
+		} else {
+			(this as unknown as { showPopover: () => void }).showPopover();
+		}
+	};
+
 	override connectedCallback(): void {
 		super.connectedCallback();
+		if (!this.hasAttribute('popover')) {
+			this.setAttribute('popover', '');
+		}
 		this.addEventListener('toggle', this._handleToggle);
+		this.addEventListener('keydown', this._handleKeydown);
+		document.addEventListener('click', this._handleDocumentClick);
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this.removeEventListener('toggle', this._handleToggle);
+		this.removeEventListener('keydown', this._handleKeydown);
+		document.removeEventListener('click', this._handleDocumentClick);
 	}
+
+	private _getItems(): RRMenuItem[] {
+		return Array.from(
+			this.querySelectorAll('rr-menu-item:not([disabled])')
+		) as RRMenuItem[];
+	}
+
+	private _handleKeydown = (event: KeyboardEvent): void => {
+		const items = this._getItems();
+		if (items.length === 0) return;
+
+		const focused = this.querySelector('rr-menu-item:focus-within') as RRMenuItem | null;
+		const index = focused ? items.indexOf(focused) : -1;
+
+		switch (event.key) {
+			case 'ArrowDown': {
+				event.preventDefault();
+				const next = index === -1 ? 0 : index < items.length - 1 ? index + 1 : 0;
+				items[next].shadowRoot?.querySelector('button')?.focus();
+				break;
+			}
+			case 'ArrowUp': {
+				event.preventDefault();
+				const prev = index === -1 ? items.length - 1 : index > 0 ? index - 1 : items.length - 1;
+				items[prev].shadowRoot?.querySelector('button')?.focus();
+				break;
+			}
+			case 'Home': {
+				event.preventDefault();
+				items[0].shadowRoot?.querySelector('button')?.focus();
+				break;
+			}
+			case 'End': {
+				event.preventDefault();
+				items[items.length - 1].shadowRoot?.querySelector('button')?.focus();
+				break;
+			}
+			case 'Escape': {
+				event.preventDefault();
+				(this as unknown as { hidePopover: () => void }).hidePopover();
+				const anchorEl = this.anchor ? document.getElementById(this.anchor) : null;
+				anchorEl?.focus();
+				break;
+			}
+		}
+	};
 
 	private _handleToggle = async (event: Event): Promise<void> => {
 		const toggleEvent = event as ToggleEvent;
+		this._isOpen = toggleEvent.newState === 'open';
+
 		if (toggleEvent.newState !== 'open') return;
 		if (!this.anchor) return;
 
@@ -115,7 +183,7 @@ export class RRMenu extends LitElement {
 		const { x, y } = await computePosition(anchorEl, this, {
 			placement: 'bottom-start',
 			middleware: [
-				offset(4),
+				offset(0),
 				flip(),
 				shift({ padding: 8 }),
 			],
@@ -125,6 +193,12 @@ export class RRMenu extends LitElement {
 			left: `${x}px`,
 			top: `${y}px`,
 		});
+
+		await this.updateComplete;
+		const items = this._getItems();
+		if (items.length > 0) {
+			items[0].shadowRoot?.querySelector('button')?.focus();
+		}
 	};
 
 	override render() {

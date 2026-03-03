@@ -101,13 +101,6 @@ export class RRIconButton extends LitElement {
 			e.stopPropagation();
 			return;
 		}
-
-		if (this.popovertarget) {
-			const target = document.getElementById(this.popovertarget) as HTMLElement & { showPopover?: () => void; hidePopover?: () => void; togglePopover?: () => void };
-			if (target?.togglePopover) {
-				target.togglePopover();
-			}
-		}
 	}
 
 	override render() {

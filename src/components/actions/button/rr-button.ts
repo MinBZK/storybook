@@ -176,21 +176,7 @@ export class RRButton extends LitElement {
 		if (this.disabled) {
 			e.preventDefault();
 			e.stopPropagation();
-		}
-	}
-
-	private _handleClick(e: MouseEvent): void {
-		if (this.disabled) {
-			e.preventDefault();
-			e.stopPropagation();
 			return;
-		}
-
-		if (this.popovertarget) {
-			const target = document.getElementById(this.popovertarget) as HTMLElement & { showPopover?: () => void; hidePopover?: () => void; togglePopover?: () => void };
-			if (target?.togglePopover) {
-				target.togglePopover();
-			}
 		}
 	}
 
