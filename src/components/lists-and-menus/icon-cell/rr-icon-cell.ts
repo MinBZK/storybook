@@ -7,6 +7,7 @@
  * @element rr-icon-cell
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' (default: 'center')
  * @attr {string} size - Size: '16' | '20' | '24' | '32' (default: '24')
+ * @attr {string} color - Color: 'default' | 'inherit' (default: 'default')
  * @attr {boolean} selected - Selected state
  *
  * @slot - Default slot for icon content
@@ -18,6 +19,7 @@ import { template } from './rr-icon-cell.template.js';
 
 type VerticalAlignment = 'top' | 'center';
 type Size = '16' | '20' | '24' | '32';
+type Color = 'default' | 'inherit';
 
 @customElement('rr-icon-cell')
 export class RRIconCell extends LitElement {
@@ -28,6 +30,9 @@ export class RRIconCell extends LitElement {
 
 	@property({ type: String, reflect: true })
 	size: Size = '24';
+
+	@property({ type: String, reflect: true })
+	color: Color = 'default';
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;

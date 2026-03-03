@@ -6,7 +6,7 @@
  *
  * @element rr-text-cell
  * @attr {string} size - Cell size: 'sm' | 'md' (default: 'md')
- * @attr {string} color - Text color variant: 'default' | 'secondary' (default: 'default')
+ * @attr {string} color - Text color variant: 'default' | 'secondary' | 'inherit' (default: 'default')
  * @attr {string} width - Width: 'stretch' | 'fit-content' (default: 'stretch')
  * @attr {string} horizontal-alignment - Horizontal alignment: 'left' | 'right' (default: 'left')
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' (default: 'center')
@@ -23,7 +23,7 @@ import { styles } from './rr-text-cell.styles.js';
 import { template } from './rr-text-cell.template.js';
 
 type Size = 'sm' | 'md';
-type Color = 'default' | 'secondary';
+type Color = 'default' | 'secondary' | 'inherit';
 type Width = 'stretch' | 'fit-content';
 type HorizontalAlignment = 'left' | 'right';
 type VerticalAlignment = 'top' | 'center';

@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const styles = css`
+	/* # host */
+
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -12,44 +14,43 @@ export const styles = css`
 		display: none;
 	}
 
-	/* # Vertical alignment */
+	/* # vertical-alignment */
 
-	/* ## Vertical alignment: center (default) */
+	/* ## vertical-alignment: center (default) */
 
 	:host([vertical-alignment="center"]),
 	:host(:not([vertical-alignment])) {
 		justify-content: center;
 	}
 
-	/* ## Vertical alignment: top */
+	/* ## vertical-alignment: top */
 
 	:host([vertical-alignment="top"]) {
 		justify-content: flex-start;
 	}
 
-	/* # Sizes */
+	/* # size */
 
-	/* Icon sizing via slotted content */
 	::slotted(*) {
 		display: block;
 		flex-shrink: 0;
 	}
 
-	/* ## Size: 16 */
+	/* ## size: 16 */
 
 	:host([size="16"]) ::slotted(*) {
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
 	}
 
-	/* ## Size: 20 */
+	/* ## size: 20 */
 
 	:host([size="20"]) ::slotted(*) {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 	}
 
-	/* ## Size: 24 (default) */
+	/* ## size: 24 (default) */
 
 	:host([size="24"]) ::slotted(*),
 	:host(:not([size])) ::slotted(*) {
@@ -57,14 +58,22 @@ export const styles = css`
 		height: var(--primitives-space-24);
 	}
 
-	/* ## Size: 32 */
+	/* ## size: 32 */
 
 	:host([size="32"]) ::slotted(*) {
 		width: var(--primitives-space-32);
 		height: var(--primitives-space-32);
 	}
 
+	/* # selected */
+
 	:host([selected]) {
 		color: var(--semantics-controls-is-selected-contrast-color);
+	}
+
+	/* # color: inherit */
+
+	:host([color="inherit"]) {
+		color: inherit;
 	}
 `;

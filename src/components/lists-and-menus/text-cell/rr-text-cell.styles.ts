@@ -100,6 +100,8 @@ export const styles = css`
 
 	/* # color */
 
+	/* ## color: default */
+
 	:host([color="default"]) ::slotted([slot="text"]),
 	:host(:not([color])) ::slotted([slot="text"]),
 	:host([color="default"]) ::slotted(:not([slot])),
@@ -107,9 +109,20 @@ export const styles = css`
 		color: var(--semantics-content-color);
 	}
 
+	/* ## color: secondary */
+
 	:host([color="secondary"]) ::slotted([slot="text"]),
 	:host([color="secondary"]) ::slotted(:not([slot])) {
 		color: var(--semantics-content-secondary-color);
+	}
+
+	/* ## color: inherit */
+
+	:host([color="inherit"]) ::slotted([slot="text"]),
+	:host([color="inherit"]) ::slotted(:not([slot])),
+	:host([color="inherit"]) ::slotted([slot="overline"]),
+	:host([color="inherit"]) ::slotted([slot="supporting-text"]) {
+		color: inherit;
 	}
 
 	/* # supporting-text */
