@@ -38,12 +38,20 @@ export const styles = css`
 
 	/* ## size: 16 */
 
+	:host([size="16"]) {
+		width: var(--primitives-space-16);
+	}
+
 	:host([size="16"]) ::slotted(*) {
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
 	}
 
 	/* ## size: 20 */
+
+	:host([size="20"]) {
+		width: var(--primitives-space-20);
+	}
 
 	:host([size="20"]) ::slotted(*) {
 		width: var(--primitives-space-20);
@@ -52,6 +60,10 @@ export const styles = css`
 
 	/* ## size: 24 (default) */
 
+	:host([size="24"]) {
+		width: var(--primitives-space-24);
+	}
+
 	:host([size="24"]) ::slotted(*),
 	:host(:not([size])) ::slotted(*) {
 		width: var(--primitives-space-24);
@@ -59,6 +71,10 @@ export const styles = css`
 	}
 
 	/* ## size: 32 */
+
+	:host([size="32"]) {
+		width: var(--primitives-space-32);
+	}
 
 	:host([size="32"]) ::slotted(*) {
 		width: var(--primitives-space-32);

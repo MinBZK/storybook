@@ -5,22 +5,24 @@
  * Use as a native HTML popover by adding the popover attribute.
  *
  * @element rr-menu
+ * @attr {string} anchor - ID of the element to anchor the menu to
  *
  * @example
  * <rr-button id="my-button" popovertarget="my-menu">Open menu</rr-button>
  * <rr-menu id="my-menu" popover anchor="my-button">
- *   <rr-menu-item title="Bewerk"></rr-menu-item>
+ *   <rr-menu-item title="Bewerk" selectable selected></rr-menu-item>
+ *   <rr-menu-item title="Kopieer" selectable></rr-menu-item>
+ *   <rr-menu-item title="Sluiten"></rr-menu-item>
  * </rr-menu>
  *
  * ---
  *
  * @element rr-menu-item
  * @attr {string} title - Menu item text
- * @attr {string} variant - Item style: 'neutral' | 'danger' (default: 'neutral')
  * @attr {string} details - Optional details text (e.g. keyboard shortcut)
+ * @attr {boolean} selectable - Whether this item shows the checkmark column
  * @attr {boolean} selected - Whether the item is selected (shows checkmark)
  * @attr {boolean} disabled - Disabled state
- * @attr {boolean} has-submenu - Whether item opens a submenu (shows chevron-right)
  *
  * @fires rr-select - When the item is clicked
  *
@@ -28,7 +30,6 @@
  *
  * @element rr-menu-divider
  */
-
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
@@ -38,10 +39,6 @@ import '../../lists-and-menus/icon-cell/rr-icon-cell.js';
 import '../../lists-and-menus/spacer-cell/rr-spacer-cell.js';
 import '../../lists-and-menus/text-cell/rr-text-cell.js';
 import '../../content/icon/rr-icon.js';
-
-// # Types
-
-type MenuItemVariant = 'neutral' | 'danger';
 
 // # rr-menu-divider
 
@@ -64,19 +61,16 @@ export class RRMenuItem extends LitElement {
 	override title = '';
 
 	@property({ type: String, reflect: true })
-	variant: MenuItemVariant = 'neutral';
-
-	@property({ type: String, reflect: true })
 	details = '';
+
+	@property({ type: Boolean, reflect: true })
+	selectable = false;
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
-
-	@property({ type: Boolean, reflect: true, attribute: 'has-submenu' })
-	hasSubmenu = false;
 
 	_handleClick(): void {
 		if (this.disabled) return;

@@ -54,18 +54,6 @@ describe('rr-menu-item', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('defaults to neutral variant', async () => {
-		el = await fixture('<rr-menu-item></rr-menu-item>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('neutral');
-	});
-
-	it('reflects variant attribute', async () => {
-		el = await fixture('<rr-menu-item variant="danger"></rr-menu-item>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('danger');
-	});
-
 	it('reflects title attribute', async () => {
 		el = await fixture('<rr-menu-item title="Bewerk"></rr-menu-item>');
 		await waitForUpdate(el);
@@ -76,6 +64,18 @@ describe('rr-menu-item', () => {
 		el = await fixture('<rr-menu-item details="Cmd+S"></rr-menu-item>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('details')).toBe('Cmd+S');
+	});
+
+	it('defaults selectable to false', async () => {
+		el = await fixture('<rr-menu-item></rr-menu-item>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('selectable')).toBe(false);
+	});
+
+	it('reflects selectable attribute', async () => {
+		el = await fixture('<rr-menu-item selectable></rr-menu-item>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('selectable')).toBe(true);
 	});
 
 	it('defaults selected to false', async () => {
@@ -100,18 +100,6 @@ describe('rr-menu-item', () => {
 		el = await fixture('<rr-menu-item disabled></rr-menu-item>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('disabled')).toBe(true);
-	});
-
-	it('defaults has-submenu to false', async () => {
-		el = await fixture('<rr-menu-item></rr-menu-item>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('has-submenu')).toBe(false);
-	});
-
-	it('reflects has-submenu attribute', async () => {
-		el = await fixture('<rr-menu-item has-submenu></rr-menu-item>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('has-submenu')).toBe(true);
 	});
 
 	it('dispatches rr-select event on click', async () => {

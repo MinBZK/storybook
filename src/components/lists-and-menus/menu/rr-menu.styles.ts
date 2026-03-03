@@ -28,7 +28,8 @@ export const menuStyles = css`
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--primitives-box-shadows-level-5);
 		box-sizing: border-box;
-		min-width: 200px;
+		min-width: var(--primitives-area-240);
+		max-width: var(--primitives-area-280);
 	}
 `;
 
@@ -44,9 +45,9 @@ export const menuItemStyles = css`
 		display: none;
 	}
 
-	/* # item */
+	/* # menu__item */
 
-	.item {
+	.menu__item {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -63,34 +64,24 @@ export const menuItemStyles = css`
 		font: var(--primitives-font-body-md-regular-tight);
 	}
 
-	/* # variant: danger */
-
-	:host([variant="danger"]) .item {
-		color: var(--primitives-color-danger-500);
-	}
-
 	/* # hover */
 
-	.item:hover:not(:disabled) {
-		background-color: var(--primitives-color-accent-700);
-		color: var(--primitives-color-neutral-0);
-	}
-
-	:host([variant="danger"]) .item:hover:not(:disabled) {
-		background-color: var(--primitives-color-danger-500);
-		color: var(--primitives-color-neutral-0);
+	.menu__item:hover:not(:disabled) {
+		background-color: var(--components-menu-item-is-highlighted-background-color);
+		color: var(--components-menu-item-is-highlighted-content-color);
+		--semantics-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);
 	}
 
 	/* # focus */
 
-	.item:focus-visible {
+	.menu__item:focus-visible {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
 	/* # disabled */
 
-	:host([disabled]) .item {
+	:host([disabled]) .menu__item {
 		opacity: var(--primitives-opacity-disabled);
 		cursor: not-allowed;
 		pointer-events: none;
@@ -99,7 +90,7 @@ export const menuItemStyles = css`
 	/* # reduced motion */
 
 	@media (prefers-reduced-motion: reduce) {
-		.item {
+		.menu__item {
 			transition: none;
 		}
 	}
@@ -107,12 +98,12 @@ export const menuItemStyles = css`
 	/* # forced-colors */
 
 	@media (forced-colors: active) {
-		.item:hover {
+		.menu__item:hover {
 			background-color: Highlight;
 			color: HighlightText;
 		}
 
-		.item:focus-visible {
+		.menu__item:focus-visible {
 			outline: 2px solid CanvasText;
 		}
 	}
@@ -130,10 +121,10 @@ export const menuDividerStyles = css`
 		display: none;
 	}
 
-	/* # divider */
+	/* # menu__divider */
 
-	.divider {
-		height: 1px;
+	.menu__divider {
+		height: var(--semantics-dividers-thickness);
 		background-color: var(--semantics-dividers-color);
 	}
 `;

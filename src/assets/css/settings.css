@@ -653,7 +653,7 @@
 
 
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-800));
-	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-600));
+	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-550));
 
 	--semantics-links-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
 	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
@@ -781,6 +781,10 @@
 	--components-list-item-is-selected-corner-radius: var(--primitives-corner-radius-md);
 	--components-list-item-is-selected-background-color: var(--semantics-controls-is-selected-indicator-color);
 	--components-list-item-is-selected-content-color: var(--semantics-controls-is-selected-contrast-color);
+
+
+	--components-menu-item-is-highlighted-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+	--components-menu-item-is-highlighted-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 
 
 	--components-menu-bar-menu-item-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
