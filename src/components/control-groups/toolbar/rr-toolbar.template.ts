@@ -55,9 +55,10 @@ function renderChildren(
 			const alignClass = child.align === 'center'
 				? 'toolbar__title-group--center-text-align'
 				: 'toolbar__title-group--left-text-align';
+			const solo = isSoloFluid(allChildren, overflowIds, child.id);
 			return html`
 				<div
-					class="toolbar__title-group ${alignClass}"
+					class="toolbar__title-group ${alignClass} ${solo ? 'is-solo-fluid' : ''}"
 					data-child-id=${child.id}
 					style=${styleMap({ '--_title-group-min-width': child.minWidth })}
 				>
@@ -109,8 +110,9 @@ export function template(
 	hasCenterChildren: boolean,
 	leftSpacerZero: boolean,
 	rightSpacerZero: boolean,
+	isSoloFluidItem: boolean,
+	hasOverflow: boolean,
 ) {
-	const hasOverflow = overflowIds.size > 0;
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 
 	return html`
@@ -120,7 +122,7 @@ export function template(
 				${leftSpacerZero ? nothing : html`<div class="toolbar__left-spacer"></div>`}
 				${renderChildren(centerChildren, allChildren, overflowIds)}
 				${rightSpacerZero ? nothing : html`<div class="toolbar__right-spacer"></div>`}
-			` : html`
+			` : isSoloFluidItem ? nothing : html`
 				<div class="toolbar__flexible-spacer"></div>
 			`}
 			${renderChildren(endChildren, allChildren, overflowIds)}
@@ -130,6 +132,7 @@ export function template(
 				<rr-icon name="ellipsis"></rr-icon>
 				Meer
 			</rr-icon-button>
+			<span class="toolbar__item-label">Meer</span>
 		</div>
 	`;
 }

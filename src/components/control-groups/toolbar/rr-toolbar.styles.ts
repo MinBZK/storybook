@@ -158,6 +158,7 @@ export const styles = css`
 		display: inline-flex;
 		align-items: center;
 		width: 100%;
+		justify-content: center;
 	}
 
 	.toolbar__item.is-fluid .toolbar__item-content ::slotted(*),
@@ -181,6 +182,7 @@ export const styles = css`
 
 	.toolbar__overflow-button {
 		display: inline-flex;
+		flex-direction: column;
 		align-items: center;
 		flex-shrink: 0;
 		flex-grow: 0;
@@ -188,6 +190,14 @@ export const styles = css`
 
 	.toolbar__overflow-button.is-hidden {
 		display: none;
+	}
+
+	.toolbar__overflow-button .toolbar__item-label {
+		display: none;
+	}
+
+	:host([show-labels]) .toolbar__overflow-button .toolbar__item-label {
+		display: block;
 	}
 
 	/* # Title group */
@@ -199,6 +209,13 @@ export const styles = css`
 		min-width: var(--_title-group-min-width, 200px);
 		overflow: hidden;
 		flex-shrink: 1;
+	}
+
+	.toolbar__title-group.is-solo-fluid {
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
+		min-width: 0;
 	}
 
 	:host([size="sm"]) .toolbar__title-group {

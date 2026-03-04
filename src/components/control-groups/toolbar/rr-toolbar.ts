@@ -15,6 +15,9 @@ if (!customElements.get('rr-toolbar-center-area')) {
 if (!customElements.get('rr-toolbar-end-area')) {
 	customElements.define('rr-toolbar-end-area', class extends HTMLElement {});
 }
+if (!customElements.get('rr-toolbar-overflow-area')) {
+	customElements.define('rr-toolbar-overflow-area', class extends HTMLElement {});
+}
 if (!customElements.get('rr-toolbar-item')) {
 	customElements.define('rr-toolbar-item', class extends HTMLElement {
 		constructor() {
@@ -62,12 +65,17 @@ export class RRToolbar extends LitElement {
 	@state()
 	private _rightSpacerZero = false;
 
+	@state()
+	private _pinnedOverflowItems: Element[] = [];
+
 	private _childIds = new WeakMap<Element, number>();
 	private _idCounter = 0;
 	private _itemWidths = new Map<number, number>();
 	private _observer: MutationObserver | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
 	private _menu: RRMenu | null = null;
+	private _isMeasuring = false;
+	private _isBuilding = false;
 
 	private _getId(el: Element): number {
 		if (!this._childIds.has(el)) {
@@ -78,7 +86,25 @@ export class RRToolbar extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		this._observer = new MutationObserver(() => this._buildChildren());
+		this._observer = new MutationObserver((mutations) => {
+			if (this._isBuilding) return;
+			// Ignore mutations on the toolbar root caused by _buildChildrenForArea
+			// moving rr-toolbar-item / rr-toolbar-title-group up via appendChild.
+			// Only area-element additions/removals on the host should trigger a rebuild.
+			const areaTags = new Set([
+				'rr-toolbar-start-area',
+				'rr-toolbar-center-area',
+				'rr-toolbar-end-area',
+				'rr-toolbar-overflow-area',
+			]);
+			const onlyInternalMoves = mutations.every(m => {
+				if (m.target !== this) return false;
+				const nodes = [...Array.from(m.addedNodes), ...Array.from(m.removedNodes)];
+				return nodes.every(n => n instanceof Element && !areaTags.has(n.tagName.toLowerCase()));
+			});
+			if (onlyInternalMoves) return;
+			this._buildChildren();
+		});
 		Promise.resolve().then(() => this._buildChildren());
 		this._createMenu();
 	}
@@ -115,7 +141,10 @@ export class RRToolbar extends LitElement {
 		) {
 			this.updateComplete.then(() => this._measureAndUpdate());
 		}
-		if (changedProperties.has('_overflowIds')) {
+		if (
+			changedProperties.has('_overflowIds') ||
+			changedProperties.has('_pinnedOverflowItems')
+		) {
 			this._syncMenuItems();
 			this._syncMenuAnchor();
 			this.updateComplete.then(() => this._updateAreaVars());
@@ -124,13 +153,14 @@ export class RRToolbar extends LitElement {
 
 	private _createMenu(): void {
 		const menu = document.createElement('rr-menu') as RRMenu;
+		menu.setAttribute('placement', 'bottom-end');
 		document.body.appendChild(menu);
 		this._menu = menu;
 	}
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
-		const moreButton = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
+		const moreButton = this.shadowRoot?.querySelector('.toolbar__overflow-button rr-icon-button') as HTMLElement | null;
 		if (moreButton) {
 			this._menu.anchorElement = moreButton;
 		}
@@ -139,13 +169,26 @@ export class RRToolbar extends LitElement {
 	private _syncMenuItems(): void {
 		if (!this._menu) return;
 		this._menu.innerHTML = '';
-		const orderedChildren = [
-			...this._endChildren,
-			...this._startChildren,
-			...this._centerChildren,
-		];
-		orderedChildren.forEach(child => {
-			if (child.type !== 'item') return;
+
+		// Dynamic overflow items — sorted so last-to-overflow appears at top
+		const endItems = this._endChildren.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
+		const startItems = this._startChildren.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
+		const centerItems = this._centerChildren.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
+
+		const prioritized = [
+			...endItems.map((item, index) => ({ item, areaOrder: 0, index })),
+			...centerItems.map((item, index) => ({ item, areaOrder: 1, index })),
+			...startItems.map((item, index) => ({ item, areaOrder: 2, index })),
+		]
+			.sort((a, b) => {
+				if (a.item.priority !== b.item.priority) return a.item.priority - b.item.priority;
+				if (a.areaOrder !== b.areaOrder) return a.areaOrder - b.areaOrder;
+				return b.index - a.index;
+			})
+			.map(({ item }) => item)
+			.reverse();
+
+		prioritized.forEach(child => {
 			if (!this._overflowIds.has(child.id)) return;
 			if (child.overflowItems.length === 0) return;
 			child.overflowItems.forEach(el => {
@@ -160,6 +203,20 @@ export class RRToolbar extends LitElement {
 				this._menu!.appendChild(clone);
 			});
 		});
+
+		// Pinned items — always at the bottom
+		if (this._pinnedOverflowItems.length > 0) {
+			this._pinnedOverflowItems.forEach(el => {
+				const clone = el.cloneNode(true) as Element;
+				clone.addEventListener('rr-select', () => {
+					el.dispatchEvent(new CustomEvent('rr-select', {
+						bubbles: true,
+						composed: true,
+					}));
+				});
+				this._menu!.appendChild(clone);
+			});
+		}
 	}
 
 	private _propagateSize(): void {
@@ -242,8 +299,9 @@ export class RRToolbar extends LitElement {
 		const itemGap = parseFloat(getComputedStyle(itemsEl).gap ?? '0');
 		const hostGap = parseFloat(getComputedStyle(this).gap ?? '0');
 
-		const moreButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
-		const overflowButtonWidth = (moreButtonEl && !moreButtonEl.classList.contains('is-hidden'))
+		const moreButtonContainerEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
+		const moreButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button rr-icon-button') as HTMLElement | null;
+		const overflowButtonWidth = (moreButtonContainerEl && !moreButtonContainerEl.classList.contains('is-hidden') && moreButtonEl)
 			? moreButtonEl.getBoundingClientRect().width + hostGap
 			: 0;
 
@@ -265,19 +323,24 @@ export class RRToolbar extends LitElement {
 	}
 
 	private _measureAndUpdate(): void {
+		if (this._isMeasuring) return;
 		const itemsEl = this.shadowRoot?.querySelector('.toolbar__items') as HTMLElement | null;
 		if (!itemsEl) return;
 
+		this._isMeasuring = true;
 		const hostWidth = this.getBoundingClientRect().width;
 		this.style.setProperty('--rr-toolbar-width', `${hostWidth}px`);
-
 		this._measureOverflow(itemsEl);
+		this._isMeasuring = false;
 	}
 
 	private _measureOverflow(itemsEl: HTMLElement): void {
 		const moreButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
 		const allItemEls = Array.from(
 			this.shadowRoot?.querySelectorAll('.toolbar__item[data-child-id]') ?? []
+		) as HTMLElement[];
+		const allTitleGroupEls = Array.from(
+			this.shadowRoot?.querySelectorAll('.toolbar__title-group[data-child-id]') ?? []
 		) as HTMLElement[];
 		const allChildren = [...this._startChildren, ...this._centerChildren, ...this._endChildren];
 
@@ -293,7 +356,20 @@ export class RRToolbar extends LitElement {
 				}
 			}
 		});
-		moreButtonEl?.classList.add('is-hidden');
+		// Reset solo-fluid on title groups
+		allTitleGroupEls.forEach(el => {
+			if (el.classList.contains('is-solo-fluid')) {
+				el.classList.remove('is-solo-fluid');
+				el.style.removeProperty('min-width');
+			}
+		});
+
+		// Always show overflow button if pinned items exist
+		if (this._pinnedOverflowItems.length > 0) {
+			moreButtonEl?.classList.remove('is-hidden');
+		} else {
+			moreButtonEl?.classList.add('is-hidden');
+		}
 		void itemsEl.offsetWidth;
 
 		const isOverflowing = () => itemsEl.scrollWidth > itemsEl.clientWidth + 1;
@@ -335,15 +411,23 @@ export class RRToolbar extends LitElement {
 			void itemsEl.offsetWidth;
 		}
 
-		if (newOverflowIds.size === 0) {
+		if (newOverflowIds.size === 0 && this._pinnedOverflowItems.length === 0) {
 			moreButtonEl?.classList.add('is-hidden');
 		}
 
-		// If only one fluid item remains, promote to solo-fluid and remove min-width
+		// If only one item remains, promote to solo-fluid and remove min-width
 		const remainingVisible = allItemEls.filter(el => !el.classList.contains('is-hidden'));
 		if (remainingVisible.length === 1 && remainingVisible[0].classList.contains('is-fluid')) {
 			remainingVisible[0].classList.replace('is-fluid', 'is-solo-fluid');
 			remainingVisible[0].style.removeProperty('--_item-min-width');
+			void itemsEl.offsetWidth;
+		}
+
+		// If only one title-group remains visible (and no items), promote to solo-fluid
+		const remainingTitleGroups = allTitleGroupEls.filter(el => !el.classList.contains('is-hidden'));
+		if (remainingVisible.length === 0 && remainingTitleGroups.length === 1) {
+			remainingTitleGroups[0].classList.add('is-solo-fluid');
+			remainingTitleGroups[0].style.setProperty('min-width', '0px');
 			void itemsEl.offsetWidth;
 		}
 
@@ -420,27 +504,60 @@ export class RRToolbar extends LitElement {
 		});
 	}
 
+	private _buildPinnedOverflowItems(): void {
+		const areaEl = this.querySelector('rr-toolbar-overflow-area');
+		if (!areaEl) {
+			this._pinnedOverflowItems = [];
+			return;
+		}
+		this._pinnedOverflowItems = Array.from(areaEl.children).filter(el => {
+			const tag = el.tagName.toLowerCase();
+			return tag === 'rr-menu-item' || tag === 'rr-menu-divider';
+		});
+	}
+
 	private _buildChildren(): void {
+		if (this._isBuilding) return;
+		this._isBuilding = true;
+
 		this._observer?.disconnect();
 
 		this._startChildren = this._buildChildrenForArea('rr-toolbar-start-area');
 		this._centerChildren = this._buildChildrenForArea('rr-toolbar-center-area');
 		this._endChildren = this._buildChildrenForArea('rr-toolbar-end-area');
-
-		this._observer?.observe(this, { childList: true });
+		this._buildPinnedOverflowItems();
 
 		const areas = [
 			this.querySelector('rr-toolbar-start-area'),
 			this.querySelector('rr-toolbar-center-area'),
 			this.querySelector('rr-toolbar-end-area'),
+			this.querySelector('rr-toolbar-overflow-area'),
 		].filter(Boolean) as Element[];
 
+		// Re-attach observers before clearing the guard so that any mutations
+		// queued during appendChild are absorbed by the observer but _isBuilding
+		// is still true when they fire synchronously. We clear the flag in a
+		// microtask so it stays set until the current call stack unwinds.
+		this._observer?.observe(this, { childList: true });
 		areas.forEach(area => {
 			this._observer?.observe(area, { childList: true, attributes: true, subtree: true });
+		});
+
+		Promise.resolve().then(() => {
+			this._isBuilding = false;
 		});
 	}
 
 	override render() {
+		const allChildren = [...this._startChildren, ...this._centerChildren, ...this._endChildren];
+		const visibleNonDivider = allChildren.filter(c =>
+			c.type !== 'divider' && !this._overflowIds.has(c.id)
+		);
+		const isSoloFluid = visibleNonDivider.length === 1 && (
+			visibleNonDivider[0].type === 'title-group' ||
+			(visibleNonDivider[0].type === 'item' && visibleNonDivider[0].isFluid)
+		);
+
 		return template(
 			this._startChildren,
 			this._centerChildren,
@@ -450,6 +567,8 @@ export class RRToolbar extends LitElement {
 			this._centerChildren.length > 0,
 			this._leftSpacerZero,
 			this._rightSpacerZero,
+			isSoloFluid,
+			this._pinnedOverflowItems.length > 0 || this._overflowIds.size > 0,
 		);
 	}
 }
@@ -460,6 +579,7 @@ declare global {
 		'rr-toolbar-start-area': HTMLElement;
 		'rr-toolbar-center-area': HTMLElement;
 		'rr-toolbar-end-area': HTMLElement;
+		'rr-toolbar-overflow-area': HTMLElement;
 		'rr-toolbar-item': HTMLElement;
 		'rr-toolbar-divider': HTMLElement;
 		'rr-toolbar-title-group': HTMLElement;
