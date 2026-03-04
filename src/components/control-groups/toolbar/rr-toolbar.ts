@@ -6,19 +6,15 @@ import type { RRMenu } from '../../lists-and-menus/menu/rr-menu.js';
 import '../../lists-and-menus/menu/rr-menu.js';
 
 // # Marker elements
-
 if (!customElements.get('rr-toolbar-start-area')) {
 	customElements.define('rr-toolbar-start-area', class extends HTMLElement {});
 }
-
 if (!customElements.get('rr-toolbar-center-area')) {
 	customElements.define('rr-toolbar-center-area', class extends HTMLElement {});
 }
-
 if (!customElements.get('rr-toolbar-end-area')) {
 	customElements.define('rr-toolbar-end-area', class extends HTMLElement {});
 }
-
 if (!customElements.get('rr-toolbar-item')) {
 	customElements.define('rr-toolbar-item', class extends HTMLElement {
 		constructor() {
@@ -27,21 +23,17 @@ if (!customElements.get('rr-toolbar-item')) {
 		}
 	});
 }
-
 if (!customElements.get('rr-toolbar-divider')) {
 	customElements.define('rr-toolbar-divider', class extends HTMLElement {});
 }
-
 if (!customElements.get('rr-toolbar-title-group')) {
 	customElements.define('rr-toolbar-title-group', class extends HTMLElement {});
 }
 
 // # Types
-
 type Size = 'sm' | 'md';
 
 // # Component
-
 @customElement('rr-toolbar')
 export class RRToolbar extends LitElement {
 	static override styles = styles;
@@ -65,10 +57,10 @@ export class RRToolbar extends LitElement {
 	private _overflowIds: Set<number> = new Set();
 
 	@state()
-	private _leftSpacerWidth = 0;
+	private _leftSpacerZero = false;
 
 	@state()
-	private _rightSpacerWidth = 0;
+	private _rightSpacerZero = false;
 
 	private _childIds = new WeakMap<Element, number>();
 	private _idCounter = 0;
@@ -87,7 +79,7 @@ export class RRToolbar extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this._observer = new MutationObserver(() => this._buildChildren());
-		this._buildChildren();
+		Promise.resolve().then(() => this._buildChildren());
 		this._createMenu();
 	}
 
@@ -103,15 +95,12 @@ export class RRToolbar extends LitElement {
 
 	override firstUpdated(): void {
 		this._resizeObserver = new ResizeObserver(() => {
-			this._measureOverflow();
-			this._measureSpacers();
+			this._measureAndUpdate();
 		});
 		this._resizeObserver.observe(this);
-
 		this._propagateSize();
 		requestAnimationFrame(() => {
-			this._measureOverflow();
-			this._measureSpacers();
+			this._measureAndUpdate();
 		});
 	}
 
@@ -124,15 +113,12 @@ export class RRToolbar extends LitElement {
 			changedProperties.has('_centerChildren') ||
 			changedProperties.has('_endChildren')
 		) {
-			this.updateComplete.then(() => {
-				this._measureOverflow();
-				this._measureSpacers();
-			});
+			this.updateComplete.then(() => this._measureAndUpdate());
 		}
 		if (changedProperties.has('_overflowIds')) {
 			this._syncMenuItems();
 			this._syncMenuAnchor();
-			this.updateComplete.then(() => this._measureSpacers());
+			this.updateComplete.then(() => this._updateAreaVars());
 		}
 	}
 
@@ -144,7 +130,7 @@ export class RRToolbar extends LitElement {
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
-		const moreButton = this.shadowRoot?.querySelector('.toolbar__more-button') as HTMLElement | null;
+		const moreButton = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
 		if (moreButton) {
 			this._menu.anchorElement = moreButton;
 		}
@@ -152,20 +138,16 @@ export class RRToolbar extends LitElement {
 
 	private _syncMenuItems(): void {
 		if (!this._menu) return;
-
 		this._menu.innerHTML = '';
-
 		const orderedChildren = [
 			...this._endChildren,
 			...this._startChildren,
 			...this._centerChildren,
 		];
-
 		orderedChildren.forEach(child => {
 			if (child.type !== 'item') return;
 			if (!this._overflowIds.has(child.id)) return;
 			if (child.overflowItems.length === 0) return;
-
 			child.overflowItems.forEach(el => {
 				const clone = el.cloneNode(true) as Element;
 				clone.removeAttribute('slot');
@@ -190,125 +172,7 @@ export class RRToolbar extends LitElement {
 		});
 	}
 
-	private _measureItemWidths(): void {
-		const measurableEls = Array.from(
-			this.shadowRoot?.querySelectorAll('.toolbar__item, .toolbar__title-group') ?? []
-		) as HTMLElement[];
-
-		const wasHidden = new Set(
-			measurableEls.filter(el => el.classList.contains('is-hidden'))
-		);
-
-		measurableEls.forEach(el => el.classList.remove('is-hidden'));
-
-		void (this.shadowRoot?.querySelector('.toolbar') as HTMLElement | null)?.offsetWidth;
-
-		measurableEls.forEach(el => {
-			const id = Number(el.dataset.childId);
-			this._itemWidths.set(id, el.getBoundingClientRect().width);
-		});
-
-		wasHidden.forEach(el => el.classList.add('is-hidden'));
-	}
-
-	private _measureSpacers(): void {
-		const hasCenterChildren = this._centerChildren.length > 0;
-		if (!hasCenterChildren) {
-			this._leftSpacerWidth = 0;
-			this._rightSpacerWidth = 0;
-			return;
-		}
-
-		const toolbar = this.shadowRoot?.querySelector('.toolbar') as HTMLElement | null;
-		if (!toolbar) return;
-
-		const startAreaEl = this.shadowRoot?.querySelector('.toolbar__start-area') as HTMLElement | null;
-		const centerAreaEl = this.shadowRoot?.querySelector('.toolbar__center-area') as HTMLElement | null;
-		const endAreaEl = this.shadowRoot?.querySelector('.toolbar__end-area') as HTMLElement | null;
-		const leftSpacerEl = this.shadowRoot?.querySelector('.toolbar__left-spacer') as HTMLElement | null;
-		const rightSpacerEl = this.shadowRoot?.querySelector('.toolbar__right-spacer') as HTMLElement | null;
-
-		if (!startAreaEl || !centerAreaEl || !endAreaEl || !leftSpacerEl || !rightSpacerEl) return;
-
-		// Collapse spacers to zero so we measure natural area widths unaffected by previous spacer values
-		leftSpacerEl.style.width = '0px';
-		leftSpacerEl.style.minWidth = '0px';
-		rightSpacerEl.style.width = '0px';
-		rightSpacerEl.style.minWidth = '0px';
-
-		// Force layout
-		void toolbar.offsetWidth;
-
-		const toolbarWidth = toolbar.getBoundingClientRect().width;
-		const startWidth = startAreaEl.getBoundingClientRect().width;
-		const centerWidth = centerAreaEl.getBoundingClientRect().width;
-		const endWidth = endAreaEl.getBoundingClientRect().width;
-
-		const itemGap = parseFloat(getComputedStyle(startAreaEl).gap ?? '0');
-
-		const leftSpacer = (toolbarWidth / 2) - startWidth - (centerWidth / 2);
-		const rightSpacer = (toolbarWidth / 2) - endWidth - (centerWidth / 2);
-
-		const newLeft = Math.max(itemGap, leftSpacer);
-		const newRight = Math.max(itemGap, rightSpacer);
-
-		// Only update state if values actually changed to avoid render loop
-		if (newLeft !== this._leftSpacerWidth || newRight !== this._rightSpacerWidth) {
-			this._leftSpacerWidth = newLeft;
-			this._rightSpacerWidth = newRight;
-		} else {
-			// Values unchanged — restore spacer styles directly to avoid flash
-			leftSpacerEl.style.width = `${newLeft}px`;
-			leftSpacerEl.style.minWidth = `${newLeft}px`;
-			rightSpacerEl.style.width = `${newRight}px`;
-			rightSpacerEl.style.minWidth = `${newRight}px`;
-		}
-	}
-
-	private _measureOverflow(): void {
-		this._measureItemWidths();
-
-		const toolbar = this.shadowRoot?.querySelector('.toolbar') as HTMLElement | null;
-		if (!toolbar) return;
-
-		const sizerEl = this.shadowRoot?.querySelector('.toolbar__more-button-sizer') as HTMLElement | null;
-		if (!sizerEl) return;
-
-		const moreButtonWidth = sizerEl.getBoundingClientRect().width;
-		const toolbarWidth = toolbar.getBoundingClientRect().width;
-
-		if (this._itemWidths.size === 0) return;
-
-		const anyArea = this.shadowRoot?.querySelector(
-			'.toolbar__start-area, .toolbar__center-area, .toolbar__end-area'
-		);
-		const itemGap = parseFloat(getComputedStyle(anyArea as Element)?.gap ?? '0');
-
-		// Include both items and title groups in width calculation
-		const allMeasured = [
-			...this._startChildren,
-			...this._centerChildren,
-			...this._endChildren,
-		].filter((child): child is Extract<ToolbarChild, { type: 'item' } | { type: 'title-group' }> =>
-			child.type === 'item' || child.type === 'title-group'
-		);
-
-		const totalNaturalWidth = allMeasured.reduce((sum, child) => {
-			return sum + (this._itemWidths.get(child.id) ?? 0);
-		}, 0);
-		const totalItemGap = itemGap * Math.max(0, allMeasured.length - 1);
-
-		const availableWithoutMore = toolbarWidth - totalItemGap;
-		if (totalNaturalWidth <= availableWithoutMore) {
-			if (this._overflowIds.size > 0) {
-				this._overflowIds = new Set();
-			}
-			return;
-		}
-
-		const availableWithMore = toolbarWidth - moreButtonWidth - totalItemGap;
-
-		// Only items can overflow, title groups are always visible
+	private _getPrioritizedItems(): Extract<ToolbarChild, { type: 'item' }>[] {
 		const endItems = this._endChildren
 			.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
 		const startItems = this._startChildren
@@ -316,29 +180,171 @@ export class RRToolbar extends LitElement {
 		const centerItems = this._centerChildren
 			.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
 
-		const orderedByPriority = [
+		return [
 			...endItems.map((item, index) => ({ item, areaOrder: 0, index })),
-			...startItems.map((item, index) => ({ item, areaOrder: 1, index })),
-			...centerItems.map((item, index) => ({ item, areaOrder: 2, index })),
+			...centerItems.map((item, index) => ({ item, areaOrder: 1, index })),
+			...startItems.map((item, index) => ({ item, areaOrder: 2, index })),
 		]
 			.sort((a, b) => {
-				if (a.item.priority !== b.item.priority) {
-					return a.item.priority - b.item.priority;
-				}
-				if (a.areaOrder !== b.areaOrder) {
-					return a.areaOrder - b.areaOrder;
-				}
+				if (a.item.priority !== b.item.priority) return a.item.priority - b.item.priority;
+				if (a.areaOrder !== b.areaOrder) return a.areaOrder - b.areaOrder;
 				return b.index - a.index;
 			})
 			.map(({ item }) => item);
+	}
 
-		let usedWidth = totalNaturalWidth;
+	private _measureItemWidths(): void {
+		const measurableEls = Array.from(
+			this.shadowRoot?.querySelectorAll('.toolbar__item[data-child-id], .toolbar__title-group[data-child-id]') ?? []
+		) as HTMLElement[];
+		measurableEls.forEach(el => {
+			const id = Number(el.dataset.childId);
+			this._itemWidths.set(id, el.getBoundingClientRect().width);
+		});
+	}
+
+	private _computeAreaWidth(children: ToolbarChild[], itemGap: number): number {
+		const visible = children.filter(c => !this._overflowIds.has(c.id));
+		const gaps = Math.max(0, visible.length - 1) * itemGap;
+		const itemsWidth = visible.reduce((sum, child) => {
+			if (child.type === 'item' || child.type === 'title-group' || child.type === 'divider') {
+				return sum + (this._itemWidths.get(child.id) ?? 0);
+			}
+			return sum;
+		}, 0);
+		return gaps + itemsWidth;
+	}
+
+	private _computeSpacerZeros(
+		hostWidth: number,
+		itemGap: number,
+		overflowButtonWidth: number,
+		startWidth: number,
+		centerWidth: number,
+		endWidth: number,
+	): { leftZero: boolean; rightZero: boolean } {
+		if (startWidth === 0 && endWidth === 0) {
+			return { leftZero: true, rightZero: true };
+		}
+		const leftSpacer = hostWidth / 2 - startWidth - centerWidth / 2 - itemGap;
+		const rightSpacer = hostWidth / 2 - endWidth - centerWidth / 2 - itemGap - overflowButtonWidth;
+		return {
+			leftZero: leftSpacer <= 0,
+			rightZero: rightSpacer <= 0,
+		};
+	}
+
+	private _updateAreaVars(): void {
+		const itemsEl = this.shadowRoot?.querySelector('.toolbar__items') as HTMLElement | null;
+		if (!itemsEl) return;
+
+		const hostWidth = this.getBoundingClientRect().width;
+		const itemGap = parseFloat(getComputedStyle(itemsEl).gap ?? '0');
+		const hostGap = parseFloat(getComputedStyle(this).gap ?? '0');
+
+		const moreButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
+		const overflowButtonWidth = (moreButtonEl && !moreButtonEl.classList.contains('is-hidden'))
+			? moreButtonEl.getBoundingClientRect().width + hostGap
+			: 0;
+
+		this.style.setProperty('--rr-toolbar-overflow-button-width', `${overflowButtonWidth}px`);
+
+		const startWidth = this._computeAreaWidth(this._startChildren, itemGap);
+		const centerWidth = this._computeAreaWidth(this._centerChildren, itemGap);
+		const endWidth = this._computeAreaWidth(this._endChildren, itemGap);
+
+		this.style.setProperty('--rr-toolbar-start-width', `${startWidth}px`);
+		this.style.setProperty('--rr-toolbar-center-width', `${centerWidth}px`);
+		this.style.setProperty('--rr-toolbar-end-width', `${endWidth}px`);
+
+		const { leftZero, rightZero } = this._computeSpacerZeros(
+			hostWidth, itemGap, overflowButtonWidth, startWidth, centerWidth, endWidth
+		);
+		if (leftZero !== this._leftSpacerZero) this._leftSpacerZero = leftZero;
+		if (rightZero !== this._rightSpacerZero) this._rightSpacerZero = rightZero;
+	}
+
+	private _measureAndUpdate(): void {
+		const itemsEl = this.shadowRoot?.querySelector('.toolbar__items') as HTMLElement | null;
+		if (!itemsEl) return;
+
+		const hostWidth = this.getBoundingClientRect().width;
+		this.style.setProperty('--rr-toolbar-width', `${hostWidth}px`);
+
+		this._measureOverflow(itemsEl);
+	}
+
+	private _measureOverflow(itemsEl: HTMLElement): void {
+		const moreButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
+		const allItemEls = Array.from(
+			this.shadowRoot?.querySelectorAll('.toolbar__item[data-child-id]') ?? []
+		) as HTMLElement[];
+		const allChildren = [...this._startChildren, ...this._centerChildren, ...this._endChildren];
+
+		// Show all items, reset solo-fluid to is-fluid with min-width restored
+		allItemEls.forEach(el => {
+			el.classList.remove('is-hidden');
+			if (el.classList.contains('is-solo-fluid')) {
+				el.classList.replace('is-solo-fluid', 'is-fluid');
+				const id = Number(el.dataset.childId);
+				const child = allChildren.find(c => c.id === id);
+				if (child?.type === 'item' && child.minWidth) {
+					el.style.setProperty('--_item-min-width', child.minWidth);
+				}
+			}
+		});
+		moreButtonEl?.classList.add('is-hidden');
+		void itemsEl.offsetWidth;
+
+		const isOverflowing = () => itemsEl.scrollWidth > itemsEl.clientWidth + 1;
+
+		if (!isOverflowing()) {
+			if (this._overflowIds.size > 0) {
+				this._overflowIds = new Set();
+			}
+			this._measureItemWidths();
+			this._updateAreaVars();
+			return;
+		}
+
+		// Show more button since we will have overflow
+		moreButtonEl?.classList.remove('is-hidden');
+		void itemsEl.offsetWidth;
+
+		const prioritized = this._getPrioritizedItems();
 		const newOverflowIds = new Set<number>();
 
-		for (const child of orderedByPriority) {
-			if (usedWidth <= availableWithMore) break;
-			usedWidth -= (this._itemWidths.get(child.id) ?? 0);
+		for (const child of prioritized) {
+			if (!isOverflowing()) break;
+
+			// Never hide a fluid item if it would be the last visible item
+			if (child.isFluid) {
+				const remainingVisible = allItemEls.filter(el =>
+					!el.classList.contains('is-hidden') &&
+					!el.classList.contains('is-fluid') &&
+					!el.classList.contains('is-solo-fluid')
+				);
+				if (remainingVisible.length === 0) break;
+			}
+
 			newOverflowIds.add(child.id);
+			const el = this.shadowRoot?.querySelector(
+				`.toolbar__item[data-child-id="${child.id}"]`
+			) as HTMLElement | null;
+			el?.classList.add('is-hidden');
+			void itemsEl.offsetWidth;
+		}
+
+		if (newOverflowIds.size === 0) {
+			moreButtonEl?.classList.add('is-hidden');
+		}
+
+		// If only one fluid item remains, promote to solo-fluid and remove min-width
+		const remainingVisible = allItemEls.filter(el => !el.classList.contains('is-hidden'));
+		if (remainingVisible.length === 1 && remainingVisible[0].classList.contains('is-fluid')) {
+			remainingVisible[0].classList.replace('is-fluid', 'is-solo-fluid');
+			remainingVisible[0].style.removeProperty('--_item-min-width');
+			void itemsEl.offsetWidth;
 		}
 
 		const changed =
@@ -348,6 +354,9 @@ export class RRToolbar extends LitElement {
 		if (changed) {
 			this._overflowIds = newOverflowIds;
 		}
+
+		this._measureItemWidths();
+		this._updateAreaVars();
 	}
 
 	private _buildChildrenForArea(areaTag: string): ToolbarChild[] {
@@ -363,17 +372,14 @@ export class RRToolbar extends LitElement {
 
 			if (tag === 'rr-toolbar-title-group') {
 				const id = this._getId(el);
-
-				if (el.parentElement !== this) {
-					this.appendChild(el);
-				}
+				if (el.parentElement !== this) this.appendChild(el);
 				el.setAttribute('slot', `child-${id}`);
-
 				return {
 					type: 'title-group',
-					title: el.getAttribute('title') ?? '',
-					subtitle: el.getAttribute('subtitle') ?? '',
+					title: el.getAttribute('text') ?? '',
+					subtitle: el.getAttribute('subtext') ?? '',
 					align: el.getAttribute('align') ?? 'left',
+					minWidth: el.getAttribute('min-width') ?? '200px',
 					id,
 				} as ToolbarChild;
 			}
@@ -382,6 +388,9 @@ export class RRToolbar extends LitElement {
 				const id = this._getId(el);
 				const label = el.getAttribute('label') ?? '';
 				const priority = parseInt(el.getAttribute('priority') ?? '0', 10);
+				const minWidth = el.getAttribute('min-width') ?? '';
+				const width = el.getAttribute('width') ?? '';
+				const isFluid = !!(minWidth || width);
 
 				Array.from(el.children).forEach(child => {
 					if (child.getAttribute('slot') !== 'overflow') {
@@ -389,9 +398,7 @@ export class RRToolbar extends LitElement {
 					}
 				});
 
-				if (el.parentElement !== this) {
-					this.appendChild(el);
-				}
+				if (el.parentElement !== this) this.appendChild(el);
 				el.setAttribute('slot', `child-${id}`);
 
 				const overflowItems = Array.from(el.children).filter(child => {
@@ -403,13 +410,11 @@ export class RRToolbar extends LitElement {
 					);
 				});
 
-				return { type: 'item', element: el, label, id, priority, overflowItems } as ToolbarChild;
+				return { type: 'item', element: el, label, id, priority, overflowItems, minWidth, width, isFluid } as ToolbarChild;
 			}
 
 			const id = this._getId(el);
-			if (el.parentElement !== this) {
-				this.appendChild(el);
-			}
+			if (el.parentElement !== this) this.appendChild(el);
 			el.setAttribute('slot', `child-${id}`);
 			return { type: 'other', element: el, id } as ToolbarChild;
 		});
@@ -422,12 +427,7 @@ export class RRToolbar extends LitElement {
 		this._centerChildren = this._buildChildrenForArea('rr-toolbar-center-area');
 		this._endChildren = this._buildChildrenForArea('rr-toolbar-end-area');
 
-		// Toggle attribute so CSS can conditionally apply margin-left: auto to end area
-		if (this._centerChildren.length > 0) {
-			this.setAttribute('has-center', '');
-		} else {
-			this.removeAttribute('has-center');
-		}
+		this._observer?.observe(this, { childList: true });
 
 		const areas = [
 			this.querySelector('rr-toolbar-start-area'),
@@ -447,8 +447,9 @@ export class RRToolbar extends LitElement {
 			this._endChildren,
 			this._overflowIds,
 			this.size,
-			this._leftSpacerWidth,
-			this._rightSpacerWidth,
+			this._centerChildren.length > 0,
+			this._leftSpacerZero,
+			this._rightSpacerZero,
 		);
 	}
 }

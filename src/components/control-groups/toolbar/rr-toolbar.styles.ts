@@ -4,74 +4,97 @@ export const styles = css`
 	/* # Host */
 
 	:host {
-		display: block;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 		font-family: var(--rr-font-family-body);
 	}
+
 	:host([hidden]) {
 		display: none;
 	}
 
-	/* # Toolbar */
-
-	.toolbar {
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		width: 100%;
-	}
-
-	/* # Areas */
-
-	.toolbar__start-area,
-	.toolbar__center-area,
-	.toolbar__end-area {
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		flex-shrink: 0;
-		flex-grow: 0;
-	}
-
-	:host([size="sm"]) .toolbar__start-area,
-	:host([size="sm"]) .toolbar__center-area,
-	:host([size="sm"]) .toolbar__end-area {
+	:host([size="sm"]) {
 		gap: var(--components-toolbar-sm-gap);
 	}
 
-	:host([size="md"]) .toolbar__start-area,
-	:host([size="md"]) .toolbar__center-area,
-	:host([size="md"]) .toolbar__end-area,
-	:host(:not([size])) .toolbar__start-area,
-	:host(:not([size])) .toolbar__center-area,
-	:host(:not([size])) .toolbar__end-area {
+	:host([size="md"]),
+	:host(:not([size])) {
 		gap: var(--components-toolbar-md-gap);
 	}
 
-	.toolbar__start-area {
-		justify-content: flex-start;
-	}
+	/* # Items */
 
-	.toolbar__center-area {
-		justify-content: center;
+	.toolbar__items {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		flex: 1;
 		min-width: 0;
-		overflow: hidden;
 	}
 
-	.toolbar__end-area {
-		justify-content: flex-end;
-		margin-left: auto;
+	:host([size="sm"]) .toolbar__items {
+		gap: var(--components-toolbar-sm-gap);
 	}
 
-	:host([has-center]) .toolbar__end-area {
-		margin-left: 0;
+	:host([size="md"]) .toolbar__items,
+	:host(:not([size])) .toolbar__items {
+		gap: var(--components-toolbar-md-gap);
 	}
 
 	/* # Spacers */
 
-	.toolbar__left-spacer,
-	.toolbar__right-spacer {
-		flex-shrink: 0;
+	.toolbar__flexible-spacer {
+		flex-grow: 1;
+		flex-shrink: 1;
+	}
+
+	.toolbar__left-spacer {
+		flex-shrink: 1;
 		flex-grow: 0;
+		min-width: 0;
+		margin-right: calc(-1 * var(--components-toolbar-md-gap));
+		flex-basis: calc(
+			var(--rr-toolbar-width) / 2
+			- var(--rr-toolbar-start-width)
+			- var(--rr-toolbar-center-width) / 2
+			- var(--components-toolbar-md-gap)
+		);
+	}
+
+	:host([size="sm"]) .toolbar__left-spacer {
+		margin-right: calc(-1 * var(--components-toolbar-sm-gap));
+		flex-basis: calc(
+			var(--rr-toolbar-width) / 2
+			- var(--rr-toolbar-start-width)
+			- var(--rr-toolbar-center-width) / 2
+			- var(--components-toolbar-sm-gap)
+		);
+	}
+
+	.toolbar__right-spacer {
+		flex-shrink: 1;
+		flex-grow: 0;
+		min-width: 0;
+		margin-left: calc(-1 * var(--components-toolbar-md-gap));
+		flex-basis: calc(
+			var(--rr-toolbar-width) / 2
+			- var(--rr-toolbar-end-width)
+			- var(--rr-toolbar-center-width) / 2
+			- var(--components-toolbar-md-gap)
+			- var(--rr-toolbar-overflow-button-width, 0px)
+		);
+	}
+
+	:host([size="sm"]) .toolbar__right-spacer {
+		margin-left: calc(-1 * var(--components-toolbar-sm-gap));
+		flex-basis: calc(
+			var(--rr-toolbar-width) / 2
+			- var(--rr-toolbar-end-width)
+			- var(--rr-toolbar-center-width) / 2
+			- var(--components-toolbar-sm-gap)
+			- var(--rr-toolbar-overflow-button-width, 0px)
+		);
 	}
 
 	/* # Divider */
@@ -111,7 +134,20 @@ export const styles = css`
 		display: inline-flex;
 		flex-direction: column;
 		align-items: center;
-		gap: var(--primitives-space-2);
+		flex-shrink: 0;
+		flex-grow: 0;
+	}
+
+	.toolbar__item.is-fluid {
+		flex-basis: var(--_item-width, auto);
+		min-width: var(--_item-min-width, 0px);
+		flex-shrink: 1;
+	}
+
+	.toolbar__item.is-solo-fluid {
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
 	}
 
 	.toolbar__item.is-hidden {
@@ -121,6 +157,12 @@ export const styles = css`
 	.toolbar__item-content {
 		display: inline-flex;
 		align-items: center;
+		width: 100%;
+	}
+
+	.toolbar__item.is-fluid .toolbar__item-content ::slotted(*),
+	.toolbar__item.is-solo-fluid .toolbar__item-content ::slotted(*) {
+		width: 100%;
 	}
 
 	.toolbar__item-label {
@@ -137,22 +179,15 @@ export const styles = css`
 
 	/* # Overflow button */
 
-	.toolbar__more-button {
+	.toolbar__overflow-button {
 		display: inline-flex;
 		align-items: center;
 		flex-shrink: 0;
 		flex-grow: 0;
-		flex-basis: auto;
 	}
 
-	/* ## Overflow button sizer */
-
-	.toolbar__more-button-sizer {
-		position: absolute;
-		visibility: hidden;
-		pointer-events: none;
-		display: inline-flex;
-		align-items: center;
+	.toolbar__overflow-button.is-hidden {
+		display: none;
 	}
 
 	/* # Title group */
@@ -161,8 +196,9 @@ export const styles = css`
 		display: inline-flex;
 		flex-direction: column;
 		justify-content: center;
-		min-width: 0;
+		min-width: var(--_title-group-min-width, 200px);
 		overflow: hidden;
+		flex-shrink: 1;
 	}
 
 	:host([size="sm"]) .toolbar__title-group {

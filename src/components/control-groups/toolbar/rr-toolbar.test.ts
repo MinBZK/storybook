@@ -42,11 +42,15 @@ describe('rr-toolbar', () => {
 	it('renders toolbar item in start area', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-item slot="start-area" label="Opslaan">
-					<button>Opslaan</button>
-				</rr-toolbar-item>
+				<rr-toolbar-start-area>
+					<rr-toolbar-item label="Opslaan">
+						<button>Opslaan</button>
+					</rr-toolbar-item>
+				</rr-toolbar-start-area>
 			</rr-toolbar>
 		`);
+		// Extra tick for deferred _buildChildren
+		await Promise.resolve();
 		await waitForUpdate(el);
 		const item = el.shadowRoot?.querySelector('.toolbar__item');
 		expect(item).not.toBeNull();
@@ -55,9 +59,12 @@ describe('rr-toolbar', () => {
 	it('renders divider in start area', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-divider slot="start-area"></rr-toolbar-divider>
+				<rr-toolbar-start-area>
+					<rr-toolbar-divider></rr-toolbar-divider>
+				</rr-toolbar-start-area>
 			</rr-toolbar>
 		`);
+		await Promise.resolve();
 		await waitForUpdate(el);
 		const divider = el.shadowRoot?.querySelector('.toolbar__divider');
 		expect(divider).not.toBeNull();
@@ -66,13 +73,15 @@ describe('rr-toolbar', () => {
 	it('renders title group', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-title-group
-					slot="start-area"
-					title="Titel"
-					subtitle="Subtitel"
-				></rr-toolbar-title-group>
+				<rr-toolbar-start-area>
+					<rr-toolbar-title-group
+						text="Titel"
+						subtext="Subtitel"
+					></rr-toolbar-title-group>
+				</rr-toolbar-start-area>
 			</rr-toolbar>
 		`);
+		await Promise.resolve();
 		await waitForUpdate(el);
 		const titleGroup = el.shadowRoot?.querySelector('.toolbar__title-group');
 		expect(titleGroup).not.toBeNull();
@@ -83,11 +92,14 @@ describe('rr-toolbar', () => {
 	it('hides item label when show-labels is false', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-item slot="start-area" label="Vet">
-					<button>B</button>
-				</rr-toolbar-item>
+				<rr-toolbar-start-area>
+					<rr-toolbar-item label="Vet">
+						<button>B</button>
+					</rr-toolbar-item>
+				</rr-toolbar-start-area>
 			</rr-toolbar>
 		`);
+		await Promise.resolve();
 		await waitForUpdate(el);
 		const label = el.shadowRoot?.querySelector('.toolbar__item-label');
 		expect(label).not.toBeNull();
