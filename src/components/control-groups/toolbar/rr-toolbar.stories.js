@@ -337,7 +337,7 @@ export const WithOverflow = {
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Onderstrepen">
 					<rr-icon-button>
-						<rr-icon name="underline"></rr-icon>
+						<rr-icon name="underlined"></rr-icon>
 						Onderstrepen
 					</rr-icon-button>
 					<rr-menu-item slot="overflow" text="Onderstrepen"></rr-menu-item>
@@ -345,14 +345,14 @@ export const WithOverflow = {
 				<rr-toolbar-divider></rr-toolbar-divider>
 				<rr-toolbar-item label="Lijst">
 					<rr-icon-button>
-						<rr-icon name="list-bullet"></rr-icon>
+						<rr-icon name="bullet-list"></rr-icon>
 						Lijst
 					</rr-icon-button>
 					<rr-menu-item slot="overflow" text="Lijst"></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Genummerd">
 					<rr-icon-button>
-						<rr-icon name="list-number"></rr-icon>
+						<rr-icon name="numbered-list"></rr-icon>
 						Genummerd
 					</rr-icon-button>
 					<rr-menu-item slot="overflow" text="Genummerd"></rr-menu-item>
@@ -392,7 +392,7 @@ export const WithOverflowPartial = {
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Onderstrepen">
 					<rr-icon-button>
-						<rr-icon name="underline"></rr-icon>
+						<rr-icon name="underlined"></rr-icon>
 						Onderstrepen
 					</rr-icon-button>
 					<rr-menu-item slot="overflow" text="Onderstrepen"></rr-menu-item>
@@ -428,7 +428,7 @@ export const WithPriority = {
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Onderstrepen" priority="1">
 					<rr-icon-button>
-						<rr-icon name="underline"></rr-icon>
+						<rr-icon name="underlined"></rr-icon>
 						Onderstrepen
 					</rr-icon-button>
 					<rr-menu-item slot="overflow" text="Onderstrepen"></rr-menu-item>
@@ -436,14 +436,14 @@ export const WithPriority = {
 				<rr-toolbar-divider></rr-toolbar-divider>
 				<rr-toolbar-item label="Lijst" priority="2">
 					<rr-icon-button>
-						<rr-icon name="list-bullet"></rr-icon>
+						<rr-icon name="bullet-list"></rr-icon>
 						Lijst
 					</rr-icon-button>
 					<rr-menu-item slot="overflow" text="Lijst"></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Genummerd" priority="2">
 					<rr-icon-button>
-						<rr-icon name="list-number"></rr-icon>
+						<rr-icon name="numbered-list"></rr-icon>
 						Genummerd
 					</rr-icon-button>
 					<rr-menu-item slot="overflow" text="Genummerd"></rr-menu-item>
