@@ -67,6 +67,9 @@ export class RRMenu extends LitElement {
 	@property({ attribute: false })
 	anchorElement: Element | null = null;
 
+	@property({ type: String, reflect: true })
+	placement: string = 'bottom-start';
+
 	private _isOpen = false;
 
 	private _getAnchorEl(): Element | null {
@@ -152,17 +155,42 @@ export class RRMenu extends LitElement {
 		}
 	};
 
+	private _updateDividerVisibility(): void {
+		const children = Array.from(this.children) as Element[];
+
+		// Reset all dividers
+		children.forEach(el => {
+			if (el.tagName.toLowerCase() === 'rr-menu-divider') {
+				el.removeAttribute('hidden');
+			}
+		});
+
+		// Hide dividers that are first, last, or adjacent to another divider
+		const visible = children.filter(el => !el.hasAttribute('hidden'));
+		visible.forEach((el, index) => {
+			if (el.tagName.toLowerCase() !== 'rr-menu-divider') return;
+			const isFirst = index === 0;
+			const isLast = index === visible.length - 1;
+			const prevIsDivider = index > 0 && visible[index - 1].tagName.toLowerCase() === 'rr-menu-divider';
+			if (isFirst || isLast || prevIsDivider) {
+				el.setAttribute('hidden', '');
+			}
+		});
+	}
+
 	private _handleToggle = async (event: Event): Promise<void> => {
 		const toggleEvent = event as ToggleEvent;
 		this._isOpen = toggleEvent.newState === 'open';
 
 		if (toggleEvent.newState !== 'open') return;
 
+		this._updateDividerVisibility();
+
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
 
 		const { x, y } = await computePosition(anchorEl, this, {
-			placement: 'bottom-start',
+			placement: this.placement as import('@floating-ui/dom').Placement,
 			middleware: [
 				offset(0),
 				flip(),
