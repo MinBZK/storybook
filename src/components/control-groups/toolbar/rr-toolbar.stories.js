@@ -40,14 +40,14 @@ export const Default = {
 							Volgende
 						</rr-icon-button>
 					</rr-button-bar>
-					<rr-menu-item slot="overflow" title="Vorige"></rr-menu-item>
-					<rr-menu-item slot="overflow" title="Volgende"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Vorige"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Volgende"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
@@ -64,20 +64,20 @@ export const WithLabels = {
 						<rr-icon name="bold"></rr-icon>
 						Vet
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" title="Vet"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Vet"></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Cursief">
 					<rr-icon-button>
 						<rr-icon name="italic"></rr-icon>
 						Cursief
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" title="Cursief"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Cursief"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
@@ -91,22 +91,22 @@ export const WithDivider = {
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Bestand">
 					<rr-button>Bestand</rr-button>
-					<rr-menu-item slot="overflow" title="Bestand"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Bestand"></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Bewerk">
 					<rr-button>Bewerk</rr-button>
-					<rr-menu-item slot="overflow" title="Bewerk"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Bewerk"></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-divider></rr-toolbar-divider>
 				<rr-toolbar-item label="Weergave">
 					<rr-button>Weergave</rr-button>
-					<rr-menu-item slot="overflow" title="Weergave"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Weergave"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
@@ -123,21 +123,21 @@ export const WithTitleGroup = {
 						<rr-icon name="chevron-left"></rr-icon>
 						Terug
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" title="Terug"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Terug"></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-title-group
-					title="Document titel"
-					subtitle="Laatste wijziging: vandaag"
+					text="Document titel"
+					subtext="Laatste wijziging: vandaag"
 				></rr-toolbar-title-group>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Annuleren">
 					<rr-button>Annuleren</rr-button>
-					<rr-menu-item slot="overflow" title="Annuleren"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Annuleren"></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
@@ -154,20 +154,20 @@ export const WithTitleGroupCentered = {
 						<rr-icon name="chevron-left"></rr-icon>
 						Terug
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" title="Terug"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Terug"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-center-area>
 				<rr-toolbar-title-group
-					title="Document titel"
-					subtitle="Laatste wijziging: vandaag"
+					text="Document titel"
+					subtext="Laatste wijziging: vandaag"
 					align="center"
 				></rr-toolbar-title-group>
 			</rr-toolbar-center-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
@@ -181,18 +181,18 @@ export const SizeSmall = {
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Bewerk">
 					<rr-button>Bewerk</rr-button>
-					<rr-menu-item slot="overflow" title="Bewerk"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Bewerk"></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-divider></rr-toolbar-divider>
 				<rr-toolbar-item label="Dupliceer">
 					<rr-button>Dupliceer</rr-button>
-					<rr-menu-item slot="overflow" title="Dupliceer"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Dupliceer"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
@@ -208,18 +208,18 @@ export const Sizes = {
 					<rr-toolbar-start-area>
 						<rr-toolbar-item label="Bewerk">
 							<rr-button>Bewerk</rr-button>
-							<rr-menu-item slot="overflow" title="Bewerk"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Bewerk"></rr-menu-item>
 						</rr-toolbar-item>
 						<rr-toolbar-divider></rr-toolbar-divider>
 						<rr-toolbar-item label="Dupliceer">
 							<rr-button>Dupliceer</rr-button>
-							<rr-menu-item slot="overflow" title="Dupliceer"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Dupliceer"></rr-menu-item>
 						</rr-toolbar-item>
 					</rr-toolbar-start-area>
 					<rr-toolbar-end-area>
 						<rr-toolbar-item label="Opslaan">
 							<rr-button variant="accent-filled">Opslaan</rr-button>
-							<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 						</rr-toolbar-item>
 					</rr-toolbar-end-area>
 				</rr-toolbar>
@@ -230,18 +230,18 @@ export const Sizes = {
 					<rr-toolbar-start-area>
 						<rr-toolbar-item label="Bewerk">
 							<rr-button>Bewerk</rr-button>
-							<rr-menu-item slot="overflow" title="Bewerk"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Bewerk"></rr-menu-item>
 						</rr-toolbar-item>
 						<rr-toolbar-divider></rr-toolbar-divider>
 						<rr-toolbar-item label="Dupliceer">
 							<rr-button>Dupliceer</rr-button>
-							<rr-menu-item slot="overflow" title="Dupliceer"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Dupliceer"></rr-menu-item>
 						</rr-toolbar-item>
 					</rr-toolbar-start-area>
 					<rr-toolbar-end-area>
 						<rr-toolbar-item label="Opslaan">
 							<rr-button variant="accent-filled">Opslaan</rr-button>
-							<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 						</rr-toolbar-item>
 					</rr-toolbar-end-area>
 				</rr-toolbar>
@@ -262,14 +262,14 @@ export const LabelsToggle = {
 								<rr-icon name="bold"></rr-icon>
 								Vet
 							</rr-icon-button>
-							<rr-menu-item slot="overflow" title="Vet"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Vet"></rr-menu-item>
 						</rr-toolbar-item>
 						<rr-toolbar-item label="Cursief">
 							<rr-icon-button>
 								<rr-icon name="italic"></rr-icon>
 								Cursief
 							</rr-icon-button>
-							<rr-menu-item slot="overflow" title="Cursief"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Cursief"></rr-menu-item>
 						</rr-toolbar-item>
 					</rr-toolbar-start-area>
 				</rr-toolbar>
@@ -283,14 +283,14 @@ export const LabelsToggle = {
 								<rr-icon name="bold"></rr-icon>
 								Vet
 							</rr-icon-button>
-							<rr-menu-item slot="overflow" title="Vet"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Vet"></rr-menu-item>
 						</rr-toolbar-item>
 						<rr-toolbar-item label="Cursief">
 							<rr-icon-button>
 								<rr-icon name="italic"></rr-icon>
 								Cursief
 							</rr-icon-button>
-							<rr-menu-item slot="overflow" title="Cursief"></rr-menu-item>
+							<rr-menu-item slot="overflow" text="Cursief"></rr-menu-item>
 						</rr-toolbar-item>
 					</rr-toolbar-start-area>
 				</rr-toolbar>
@@ -309,21 +309,21 @@ export const WithOverflow = {
 							<rr-icon name="bold"></rr-icon>
 							Vet
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Vet"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Vet"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-item label="Cursief">
 						<rr-icon-button>
 							<rr-icon name="italic"></rr-icon>
 							Cursief
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Cursief"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Cursief"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-item label="Onderstrepen">
 						<rr-icon-button>
 							<rr-icon name="underline"></rr-icon>
 							Onderstrepen
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Onderstrepen"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Onderstrepen"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-divider></rr-toolbar-divider>
 					<rr-toolbar-item label="Lijst">
@@ -331,24 +331,24 @@ export const WithOverflow = {
 							<rr-icon name="list-bullet"></rr-icon>
 							Lijst
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Lijst"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Lijst"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-item label="Genummerd">
 						<rr-icon-button>
 							<rr-icon name="list-number"></rr-icon>
 							Genummerd
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Genummerd"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Genummerd"></rr-menu-item>
 					</rr-toolbar-item>
 				</rr-toolbar-start-area>
 				<rr-toolbar-end-area>
 					<rr-toolbar-item label="Annuleren">
 						<rr-button>Annuleren</rr-button>
-						<rr-menu-item slot="overflow" title="Annuleren"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Annuleren"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-item label="Opslaan">
 						<rr-button variant="accent-filled">Opslaan</rr-button>
-						<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 					</rr-toolbar-item>
 				</rr-toolbar-end-area>
 			</rr-toolbar>
@@ -369,7 +369,7 @@ export const WithOverflowPartial = {
 							<rr-icon name="bold"></rr-icon>
 							Vet
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Vet"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Vet"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-item label="Cursief">
 						<rr-icon-button>
@@ -383,13 +383,13 @@ export const WithOverflowPartial = {
 							<rr-icon name="underline"></rr-icon>
 							Onderstrepen
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Onderstrepen"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Onderstrepen"></rr-menu-item>
 					</rr-toolbar-item>
 				</rr-toolbar-start-area>
 				<rr-toolbar-end-area>
 					<rr-toolbar-item label="Opslaan">
 						<rr-button variant="accent-filled">Opslaan</rr-button>
-						<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 					</rr-toolbar-item>
 				</rr-toolbar-end-area>
 			</rr-toolbar>
@@ -410,21 +410,21 @@ export const WithPriority = {
 							<rr-icon name="bold"></rr-icon>
 							Vet
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Vet"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Vet"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-item label="Cursief" priority="1">
 						<rr-icon-button>
 							<rr-icon name="italic"></rr-icon>
 							Cursief
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Cursief"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Cursief"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-item label="Onderstrepen" priority="1">
 						<rr-icon-button>
 							<rr-icon name="underline"></rr-icon>
 							Onderstrepen
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Onderstrepen"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Onderstrepen"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-divider></rr-toolbar-divider>
 					<rr-toolbar-item label="Lijst" priority="2">
@@ -432,31 +432,31 @@ export const WithPriority = {
 							<rr-icon name="list-bullet"></rr-icon>
 							Lijst
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Lijst"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Lijst"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-item label="Genummerd" priority="2">
 						<rr-icon-button>
 							<rr-icon name="list-number"></rr-icon>
 							Genummerd
 						</rr-icon-button>
-						<rr-menu-item slot="overflow" title="Genummerd"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Genummerd"></rr-menu-item>
 					</rr-toolbar-item>
 				</rr-toolbar-start-area>
 				<rr-toolbar-center-area>
 					<rr-toolbar-title-group
-						title="Document titel"
-						subtitle="Laatste wijziging: vandaag"
+						text="Document titel"
+						subtext="Laatste wijziging: vandaag"
 						align="center"
 					></rr-toolbar-title-group>
 				</rr-toolbar-center-area>
 				<rr-toolbar-end-area>
 					<rr-toolbar-item label="Annuleren" priority="3">
 						<rr-button>Annuleren</rr-button>
-						<rr-menu-item slot="overflow" title="Annuleren"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Annuleren"></rr-menu-item>
 					</rr-toolbar-item>
 					<rr-toolbar-item label="Opslaan" priority="10">
 						<rr-button variant="accent-filled">Opslaan</rr-button>
-						<rr-menu-item slot="overflow" title="Opslaan"></rr-menu-item>
+						<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 					</rr-toolbar-item>
 				</rr-toolbar-end-area>
 			</rr-toolbar>

@@ -19,8 +19,8 @@ describe('rr-menu', () => {
 	it('renders slotted menu items', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -31,9 +31,9 @@ describe('rr-menu', () => {
 	it('renders slotted divider', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
 				<rr-menu-divider></rr-menu-divider>
-				<rr-menu-item title="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -44,8 +44,8 @@ describe('rr-menu', () => {
 	it('navigates down with ArrowDown', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -60,8 +60,8 @@ describe('rr-menu', () => {
 	it('navigates up with ArrowUp', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -76,8 +76,8 @@ describe('rr-menu', () => {
 	it('wraps around at bottom with ArrowDown', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -92,8 +92,8 @@ describe('rr-menu', () => {
 	it('wraps around at top with ArrowUp', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -108,8 +108,8 @@ describe('rr-menu', () => {
 	it('focuses first item with ArrowDown when nothing focused', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -121,8 +121,8 @@ describe('rr-menu', () => {
 	it('focuses last item with ArrowUp when nothing focused', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -135,9 +135,9 @@ describe('rr-menu', () => {
 	it('skips disabled items during navigation', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2" disabled></rr-menu-item>
-				<rr-menu-item title="Item 3"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2" disabled></rr-menu-item>
+				<rr-menu-item text="Item 3"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -152,9 +152,9 @@ describe('rr-menu', () => {
 	it('focuses first item with Home', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2"></rr-menu-item>
-				<rr-menu-item title="Item 3"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 3"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -169,9 +169,9 @@ describe('rr-menu', () => {
 	it('focuses last item with End', async () => {
 		el = await fixture(`
 			<rr-menu>
-				<rr-menu-item title="Item 1"></rr-menu-item>
-				<rr-menu-item title="Item 2"></rr-menu-item>
-				<rr-menu-item title="Item 3"></rr-menu-item>
+				<rr-menu-item text="Item 1"></rr-menu-item>
+				<rr-menu-item text="Item 2"></rr-menu-item>
+				<rr-menu-item text="Item 3"></rr-menu-item>
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
@@ -198,7 +198,7 @@ describe('rr-menu-item', () => {
 	});
 
 	it('reflects title attribute', async () => {
-		el = await fixture('<rr-menu-item title="Bewerk"></rr-menu-item>');
+		el = await fixture('<rr-menu-item text="Bewerk"></rr-menu-item>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('title')).toBe('Bewerk');
 	});
@@ -246,7 +246,7 @@ describe('rr-menu-item', () => {
 	});
 
 	it('dispatches rr-select event on click', async () => {
-		el = await fixture('<rr-menu-item title="Item"></rr-menu-item>');
+		el = await fixture('<rr-menu-item text="Item"></rr-menu-item>');
 		await waitForUpdate(el);
 		let fired = false;
 		el.addEventListener('rr-select', () => { fired = true; });
@@ -256,7 +256,7 @@ describe('rr-menu-item', () => {
 	});
 
 	it('does not dispatch rr-select when disabled', async () => {
-		el = await fixture('<rr-menu-item title="Item" disabled></rr-menu-item>');
+		el = await fixture('<rr-menu-item text="Item" disabled></rr-menu-item>');
 		await waitForUpdate(el);
 		let fired = false;
 		el.addEventListener('rr-select', () => { fired = true; });

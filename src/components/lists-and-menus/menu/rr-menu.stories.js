@@ -21,7 +21,7 @@ export const Default = {
 			id="menu-default"
 			anchor="button-default"
 		>
-			<rr-menu-item title="Menu item"></rr-menu-item>
+			<rr-menu-item text="Menu item"></rr-menu-item>
 		</rr-menu>
 	`,
 };
@@ -39,15 +39,15 @@ export const WithDetails = {
 			anchor="button-details"
 		>
 			<rr-menu-item
-				title="Bewerk"
+				text="Bewerk"
 				details="Cmd+E"
 			></rr-menu-item>
 			<rr-menu-item
-				title="Kopieer"
+				text="Kopieer"
 				details="Cmd+C"
 			></rr-menu-item>
 			<rr-menu-item
-				title="Plak"
+				text="Plak"
 				details="Cmd+V"
 			></rr-menu-item>
 		</rr-menu>
@@ -66,11 +66,11 @@ export const WithDivider = {
 			id="menu-divider"
 			anchor="button-divider"
 		>
-			<rr-menu-item title="Bewerk" details="Cmd+E"></rr-menu-item>
-			<rr-menu-item title="Kopieer" details="Cmd+C"></rr-menu-item>
-			<rr-menu-item title="Plak" details="Cmd+V"></rr-menu-item>
+			<rr-menu-item text="Bewerk" details="Cmd+E"></rr-menu-item>
+			<rr-menu-item text="Kopieer" details="Cmd+C"></rr-menu-item>
+			<rr-menu-item text="Plak" details="Cmd+V"></rr-menu-item>
 			<rr-menu-divider></rr-menu-divider>
-			<rr-menu-item title="Sluiten"></rr-menu-item>
+			<rr-menu-item text="Sluiten"></rr-menu-item>
 		</rr-menu>
 	`,
 };
@@ -88,16 +88,16 @@ export const Selectable = {
 			anchor="button-selectable"
 		>
 			<rr-menu-item
-				title="Optie 1"
+				text="Optie 1"
 				selectable
 				selected
 			></rr-menu-item>
 			<rr-menu-item
-				title="Optie 2"
+				text="Optie 2"
 				selectable
 			></rr-menu-item>
 			<rr-menu-item
-				title="Optie 3"
+				text="Optie 3"
 				selectable
 			></rr-menu-item>
 		</rr-menu>
@@ -116,12 +116,12 @@ export const Disabled = {
 			id="menu-disabled"
 			anchor="button-disabled"
 		>
-			<rr-menu-item title="Bewerk"></rr-menu-item>
+			<rr-menu-item text="Bewerk"></rr-menu-item>
 			<rr-menu-item
-				title="Uitgeschakeld"
+				text="Uitgeschakeld"
 				disabled
 			></rr-menu-item>
-			<rr-menu-item title="Kopieer"></rr-menu-item>
+			<rr-menu-item text="Kopieer"></rr-menu-item>
 		</rr-menu>
 	`,
 };

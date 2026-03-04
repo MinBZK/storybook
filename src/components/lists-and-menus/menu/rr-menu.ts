@@ -26,7 +26,7 @@ export class RRMenuItem extends LitElement {
 	static override styles = menuItemStyles;
 
 	@property({ type: String, reflect: true })
-	override title = '';
+	override text = '';
 
 	@property({ type: String, reflect: true })
 	details = '';

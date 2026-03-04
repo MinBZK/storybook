@@ -29,6 +29,10 @@ export const menuStyles = css`
 		box-shadow: var(--primitives-box-shadows-level-5);
 		box-sizing: border-box;
 		width: var(--primitives-area-280);
+
+		@media (pointer: fine) {
+			padding: var(--primitives-space-6);
+		}
 	}
 `;
 
@@ -61,6 +65,12 @@ export const menuItemStyles = css`
 		appearance: none;
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-md-regular-tight);
+
+		@media (pointer: fine) {
+			min-height: var(--semantics-controls-sm-min-size);
+			padding: var(--primitives-space-4) var(--primitives-space-8);
+			border-radius: var(--semantics-controls-sm-corner-radius);
+		}
 	}
 
 	/* # hover */

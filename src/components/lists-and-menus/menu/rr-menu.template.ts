@@ -31,7 +31,7 @@ export function menuItemTemplate(this: RRMenuItem) {
 			` : nothing}
 
 			<rr-text-cell color="inherit">
-				<p slot="text">${this.title}</p>
+				<p slot="text">${this.text}</p>
 			</rr-text-cell>
 
 			${this.details ? html`
