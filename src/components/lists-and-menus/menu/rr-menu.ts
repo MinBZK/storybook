@@ -18,6 +18,10 @@ export class RRMenuDivider extends LitElement {
 	}
 }
 
+if (!customElements.get('rr-menu-divider')) {
+	customElements.define('rr-menu-divider', RRMenuDivider);
+}
+
 // # rr-menu-item
 
 export class RRMenuItem extends LitElement {
@@ -49,6 +53,10 @@ export class RRMenuItem extends LitElement {
 	override render() {
 		return menuItemTemplate.call(this);
 	}
+}
+
+if (!customElements.get('rr-menu-item')) {
+	customElements.define('rr-menu-item', RRMenuItem);
 }
 
 // # rr-menu
@@ -207,6 +215,10 @@ export class RRMenu extends LitElement {
 	override render() {
 		return menuTemplate.call(this);
 	}
+}
+
+if (!customElements.get('rr-menu')) {
+	customElements.define('rr-menu', RRMenu);
 }
 
 declare global {
