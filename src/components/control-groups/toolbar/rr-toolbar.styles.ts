@@ -25,6 +25,15 @@ export const styles = css`
 		width: 100%;
 	}
 
+	:host([size="sm"]) .toolbar {
+		gap: var(--components-toolbar-sm-gap);
+	}
+
+	:host([size="md"]) .toolbar,
+	:host(:not([size])) .toolbar {
+		gap: var(--components-toolbar-md-gap);
+	}
+
 	/* # Items */
 
 	.toolbar__items {
