@@ -53,6 +53,7 @@ describe('rr-menu', () => {
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
 		const spy = vi.spyOn(getButton(items[1]), 'focus');
+		getButton(items[0]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
 		expect(spy).toHaveBeenCalled();
 	});
@@ -66,8 +67,8 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		const spy = vi.spyOn(getButton(items[0]), 'focus');
 		getButton(items[1]).focus();
+		const spy = vi.spyOn(getButton(items[0]), 'focus');
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
 		expect(spy).toHaveBeenCalled();
 	});
