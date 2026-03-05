@@ -148,6 +148,7 @@ export class RRToolbar extends LitElement {
 	}
 
 	private _createMenu(): void {
+		if (this._menu) return;
 		const menu = document.createElement('rr-menu') as RRMenu;
 		menu.setAttribute('placement', 'bottom-end');
 		document.body.appendChild(menu);
