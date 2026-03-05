@@ -33,8 +33,8 @@ export class RRMenuItem extends LitElement {
 	@property({ type: String, reflect: true })
 	details = '';
 
-	@property({ type: Boolean, reflect: true })
-	selectable = false;
+	@property({ type: String, reflect: true })
+	type: 'button' | 'checkbox' | 'radio' = 'button';
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;

@@ -43,8 +43,6 @@ describe('rr-menu', () => {
 		expect(el.querySelector('rr-menu-divider')).not.toBeNull();
 	});
 
-
-
 	it('wraps around at bottom with ArrowDown', async () => {
 		el = await fixture(`
 			<rr-menu>
@@ -102,7 +100,6 @@ describe('rr-menu', () => {
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
 		expect(spy).toHaveBeenCalled();
 	});
-
 
 	it('focuses first item with Home', async () => {
 		el = await fixture(`
@@ -162,16 +159,22 @@ describe('rr-menu-item', () => {
 		expect(el.getAttribute('details')).toBe('Cmd+S');
 	});
 
-	it('defaults selectable to false', async () => {
+	it('defaults type to button', async () => {
 		el = await fixture('<rr-menu-item></rr-menu-item>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('selectable')).toBe(false);
+		expect(el.getAttribute('type')).toBe('button');
 	});
 
-	it('reflects selectable attribute', async () => {
-		el = await fixture('<rr-menu-item selectable></rr-menu-item>');
+	it('reflects type checkbox', async () => {
+		el = await fixture('<rr-menu-item type="checkbox"></rr-menu-item>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('selectable')).toBe(true);
+		expect(el.getAttribute('type')).toBe('checkbox');
+	});
+
+	it('reflects type radio', async () => {
+		el = await fixture('<rr-menu-item type="radio"></rr-menu-item>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('type')).toBe('radio');
 	});
 
 	it('defaults selected to false', async () => {
@@ -181,7 +184,7 @@ describe('rr-menu-item', () => {
 	});
 
 	it('reflects selected attribute', async () => {
-		el = await fixture('<rr-menu-item selected></rr-menu-item>');
+		el = await fixture('<rr-menu-item type="checkbox" selected></rr-menu-item>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('selected')).toBe(true);
 	});
@@ -214,6 +217,36 @@ describe('rr-menu-item', () => {
 		el.addEventListener('rr-select', () => { fired = true; });
 		getButton(el)?.click();
 		expect(fired).toBe(false);
+	});
+
+	it('renders role menuitem for default type', async () => {
+		el = await fixture('<rr-menu-item text="Item"></rr-menu-item>');
+		await waitForUpdate(el);
+		expect(getButton(el).getAttribute('role')).toBe('menuitem');
+	});
+
+	it('renders role menuitemcheckbox for type checkbox', async () => {
+		el = await fixture('<rr-menu-item type="checkbox" text="Item"></rr-menu-item>');
+		await waitForUpdate(el);
+		expect(getButton(el).getAttribute('role')).toBe('menuitemcheckbox');
+	});
+
+	it('renders role menuitemradio for type radio', async () => {
+		el = await fixture('<rr-menu-item type="radio" text="Item"></rr-menu-item>');
+		await waitForUpdate(el);
+		expect(getButton(el).getAttribute('role')).toBe('menuitemradio');
+	});
+
+	it('sets aria-checked for checkbox type', async () => {
+		el = await fixture('<rr-menu-item type="checkbox" selected text="Item"></rr-menu-item>');
+		await waitForUpdate(el);
+		expect(getButton(el).getAttribute('aria-checked')).toBe('true');
+	});
+
+	it('does not set aria-checked for default type', async () => {
+		el = await fixture('<rr-menu-item text="Item"></rr-menu-item>');
+		await waitForUpdate(el);
+		expect(getButton(el).getAttribute('aria-checked')).toBeNull();
 	});
 });
 
