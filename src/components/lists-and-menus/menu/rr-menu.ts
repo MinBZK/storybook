@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
 import { menuStyles, menuItemStyles, menuDividerStyles } from './rr-menu.styles.js';
 import { menuTemplate, menuItemTemplate, menuDividerTemplate } from './rr-menu.template.js';
@@ -10,7 +10,6 @@ import '../../content/icon/rr-icon.js';
 
 // # rr-menu-divider
 
-@customElement('rr-menu-divider')
 export class RRMenuDivider extends LitElement {
 	static override styles = menuDividerStyles;
 
@@ -19,9 +18,12 @@ export class RRMenuDivider extends LitElement {
 	}
 }
 
+if (!customElements.get('rr-menu-divider')) {
+	customElements.define('rr-menu-divider', RRMenuDivider);
+}
+
 // # rr-menu-item
 
-@customElement('rr-menu-item')
 export class RRMenuItem extends LitElement {
 	static override styles = menuItemStyles;
 
@@ -53,17 +55,18 @@ export class RRMenuItem extends LitElement {
 	}
 }
 
+if (!customElements.get('rr-menu-item')) {
+	customElements.define('rr-menu-item', RRMenuItem);
+}
+
 // # rr-menu
 
-@customElement('rr-menu')
 export class RRMenu extends LitElement {
 	static override styles = menuStyles;
 
-	// String ID for light DOM usage
 	@property({ type: String, reflect: true })
 	anchor = '';
 
-	// Direct element reference — takes priority over anchor string
 	@property({ attribute: false })
 	anchorElement: Element | null = null;
 
@@ -158,14 +161,12 @@ export class RRMenu extends LitElement {
 	private _updateDividerVisibility(): void {
 		const children = Array.from(this.children) as Element[];
 
-		// Reset all dividers
 		children.forEach(el => {
 			if (el.tagName.toLowerCase() === 'rr-menu-divider') {
 				el.removeAttribute('hidden');
 			}
 		});
 
-		// Hide dividers that are first, last, or adjacent to another divider
 		const visible = children.filter(el => !el.hasAttribute('hidden'));
 		visible.forEach((el, index) => {
 			if (el.tagName.toLowerCase() !== 'rr-menu-divider') return;
@@ -213,6 +214,10 @@ export class RRMenu extends LitElement {
 	override render() {
 		return menuTemplate.call(this);
 	}
+}
+
+if (!customElements.get('rr-menu')) {
+	customElements.define('rr-menu', RRMenu);
 }
 
 declare global {
