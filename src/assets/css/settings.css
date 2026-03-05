@@ -685,14 +685,14 @@
 	--semantics-buttons-sm-divider-length: var(--primitives-space-20);
 	--semantics-buttons-md-divider-length: var(--primitives-space-28);
 
-	--semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
+	--semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
 	--semantics-buttons-neutral-tinted-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-350));
 	--semantics-buttons-neutral-tinted-end-fade-start-color: rgba(215, 222, 234, 0);
 	--semantics-buttons-neutral-tinted-end-fade-end-color: var(--semantics-buttons-neutral-tinted-background-color);
-	--semantics-buttons-neutral-tinted-is-hovered-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-250));
+	--semantics-buttons-neutral-tinted-is-hovered-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
 	--semantics-buttons-neutral-tinted-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
-	--semantics-buttons-neutral-tinted-is-active-background-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-300));
+	--semantics-buttons-neutral-tinted-is-active-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
 	--semantics-buttons-neutral-tinted-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
 	--semantics-buttons-neutral-tinted-is-selected-background-color: var(--semantics-controls-is-selected-indicator-color);
 	--semantics-buttons-neutral-tinted-is-selected-content-color: var(--semantics-controls-is-selected-contrast-color);
