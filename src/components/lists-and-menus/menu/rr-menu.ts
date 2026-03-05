@@ -54,6 +54,7 @@ export class RRMenuItem extends LitElement {
 			bubbles: true,
 			composed: true,
 		}));
+		(this.closest('rr-menu') as unknown as { hidePopover?: () => void })?.hidePopover?.();
 	}
 
 	override render() {
