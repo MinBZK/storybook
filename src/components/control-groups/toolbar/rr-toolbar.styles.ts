@@ -9,6 +9,9 @@ export const styles = css`
 		align-items: center;
 		font-family: var(--rr-font-family-body);
 		box-sizing: border-box;
+		--_item-width: auto;
+		--_item-min-width: 0px;
+		--_title-group-min-width: 200px;
 	}
 
 	:host([hidden]) {
@@ -114,8 +117,8 @@ export const styles = css`
 	}
 
 	.toolbar__item.is-fluid {
-		flex-basis: var(--_item-width, auto);
-		min-width: var(--_item-min-width, 0px);
+		flex-basis: var(--_item-width);
+		min-width: var(--_item-min-width);
 		flex-shrink: 1;
 	}
 
@@ -181,7 +184,7 @@ export const styles = css`
 		display: inline-flex;
 		flex-direction: column;
 		justify-content: center;
-		min-width: var(--_title-group-min-width, 200px);
+		min-width: var(--_title-group-min-width);
 		overflow: hidden;
 		flex-shrink: 1;
 	}
