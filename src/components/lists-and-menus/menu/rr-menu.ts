@@ -74,6 +74,7 @@ export class RRMenu extends LitElement {
 	placement: string = 'bottom-start';
 
 	private _isOpen = false;
+	private _focusedItem: RRMenuItem | null = null;
 
 	private _getAnchorEl(): Element | null {
 		if (this.anchorElement) return this.anchorElement;
@@ -102,6 +103,8 @@ export class RRMenu extends LitElement {
 		}
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
+		this.addEventListener('focusin', this._handleFocusin);
+		this.addEventListener('focusout', this._handleFocusout);
 		document.addEventListener('click', this._handleDocumentClick);
 	}
 
@@ -109,6 +112,8 @@ export class RRMenu extends LitElement {
 		super.disconnectedCallback();
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
+		this.removeEventListener('focusin', this._handleFocusin);
+		this.removeEventListener('focusout', this._handleFocusout);
 		document.removeEventListener('click', this._handleDocumentClick);
 	}
 
@@ -118,13 +123,21 @@ export class RRMenu extends LitElement {
 		) as RRMenuItem[];
 	}
 
+	private _handleFocusin = (event: FocusEvent): void => {
+		const path = event.composedPath();
+		const items = Array.from(this.querySelectorAll('rr-menu-item')) as RRMenuItem[];
+		this._focusedItem = items.find(item => path.includes(item) || path.includes(item.shadowRoot as unknown as EventTarget)) ?? null;
+	};
+
+	private _handleFocusout = (): void => {
+		this._focusedItem = null;
+	};
+
 	private _handleKeydown = (event: KeyboardEvent): void => {
 		const items = this._getItems();
 		if (items.length === 0) return;
 
-		const path = event.composedPath();
-		const focused = items.find(item => path.includes(item) || path.includes(item.shadowRoot as unknown as EventTarget)) ?? null;
-		const index = focused ? items.indexOf(focused) : -1;
+		const index = this._focusedItem ? items.indexOf(this._focusedItem) : -1;
 
 		switch (event.key) {
 			case 'ArrowDown': {
