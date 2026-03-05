@@ -248,19 +248,19 @@
 	--primitives-font-family-display: var(--primitives-font-family-sans-serif);
 
 
-	--primitives-font-size-70: 0.79rem;    /* 12px */
-	--primitives-font-size-80: 0.889rem;   /* 14px */
-	--primitives-font-size-90: 1rem;       /* 16px */
-	--primitives-font-size-100: 1.125rem;  /* 18px */
-	--primitives-font-size-200: 1.266rem;  /* 20px */
-	--primitives-font-size-300: 1.424rem;  /* 23px */
-	--primitives-font-size-400: 1.602rem;  /* 26px */
-	--primitives-font-size-500: 1.802rem;  /* 29px */
-	--primitives-font-size-600: 2.027rem;  /* 32px */
-	--primitives-font-size-700: 2.280rem;  /* 36px */
-	--primitives-font-size-800: 2.566rem;  /* 41px */
-	--primitives-font-size-900: 2.887rem;  /* 46px */
-	--primitives-font-size-1000: 3.247rem; /* 52px */
+	--primitives-font-size-70: 0.79rem;    /* ~13px */
+	--primitives-font-size-80: 0.889rem;   /* ~14px */
+	--primitives-font-size-90: 1rem;       /* ~16px */
+	--primitives-font-size-100: 1.125rem;  /* ~18px */
+	--primitives-font-size-200: 1.266rem;  /* ~20px */
+	--primitives-font-size-300: 1.424rem;  /* ~23px */
+	--primitives-font-size-400: 1.602rem;  /* ~26px */
+	--primitives-font-size-500: 1.802rem;  /* ~29px */
+	--primitives-font-size-600: 2.027rem;  /* ~32px */
+	--primitives-font-size-700: 2.280rem;  /* ~36px */
+	--primitives-font-size-800: 2.566rem;  /* ~41px */
+	--primitives-font-size-900: 2.887rem;  /* ~46px */
+	--primitives-font-size-1000: 3.247rem; /* ~52px */
 
 
 	--primitives-line-height-loose: 1.75;
