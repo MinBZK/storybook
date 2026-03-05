@@ -42,6 +42,12 @@ export class RRMenuItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this.addEventListener('focusin', () => this.setAttribute('data-focused', ''));
+		this.addEventListener('focusout', () => this.removeAttribute('data-focused'));
+	}
+
 	_handleClick(): void {
 		if (this.disabled) return;
 		this.dispatchEvent(new CustomEvent('rr-select', {
@@ -119,17 +125,7 @@ export class RRMenu extends LitElement {
 	}
 
 	private _getFocusedIndex(items: RRMenuItem[]): number {
-		// Walk activeElement through shadow roots to find which item contains focus
-		let active: Element | null = document.activeElement;
-		while (active) {
-			const idx = items.indexOf(active as RRMenuItem);
-			if (idx !== -1) return idx;
-			const inner = active.shadowRoot?.activeElement ?? null;
-			if (!inner || inner === active) break;
-			active = inner;
-		}
-		// Also check if any item's shadow root contains the active element
-		return items.findIndex(item => item.shadowRoot?.activeElement !== null && item.shadowRoot?.activeElement !== undefined);
+		return items.findIndex(item => item.hasAttribute('data-focused'));
 	}
 
 	private _handleKeydown = (event: KeyboardEvent): void => {

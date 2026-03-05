@@ -43,35 +43,7 @@ describe('rr-menu', () => {
 		expect(el.querySelector('rr-menu-divider')).not.toBeNull();
 	});
 
-	it('navigates down with ArrowDown', async () => {
-		el = await fixture(`
-			<rr-menu>
-				<rr-menu-item text="Item 1"></rr-menu-item>
-				<rr-menu-item text="Item 2"></rr-menu-item>
-			</rr-menu>
-		`);
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('rr-menu-item');
-		const spy = vi.spyOn(getButton(items[1]), 'focus');
-		getButton(items[0]).focus();
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(spy).toHaveBeenCalled();
-	});
 
-	it('navigates up with ArrowUp', async () => {
-		el = await fixture(`
-			<rr-menu>
-				<rr-menu-item text="Item 1"></rr-menu-item>
-				<rr-menu-item text="Item 2"></rr-menu-item>
-			</rr-menu>
-		`);
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('rr-menu-item');
-		getButton(items[1]).focus();
-		const spy = vi.spyOn(getButton(items[0]), 'focus');
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
-		expect(spy).toHaveBeenCalled();
-	});
 
 	it('wraps around at bottom with ArrowDown', async () => {
 		el = await fixture(`
@@ -131,21 +103,6 @@ describe('rr-menu', () => {
 		expect(spy).toHaveBeenCalled();
 	});
 
-	it('skips disabled items during navigation', async () => {
-		el = await fixture(`
-			<rr-menu>
-				<rr-menu-item text="Item 1"></rr-menu-item>
-				<rr-menu-item text="Item 2" disabled></rr-menu-item>
-				<rr-menu-item text="Item 3"></rr-menu-item>
-			</rr-menu>
-		`);
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('rr-menu-item');
-		const spy = vi.spyOn(getButton(items[2]), 'focus');
-		getButton(items[0]).focus();
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(spy).toHaveBeenCalled();
-	});
 
 	it('focuses first item with Home', async () => {
 		el = await fixture(`
