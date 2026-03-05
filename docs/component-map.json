@@ -1,1964 +1,1963 @@
 {
-  "$schema": "./component-map.schema.json",
-  "version": "0.1.0",
-  "figmaFile": {
-    "fileKey": "5DyHMXUNVxbgH7ZjhQxPZe",
-    "fileName": "RR-Components",
-    "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components"
-  },
-  "tokensSource": {
-    "file": "tokens/rr-tokens.json",
-    "exportedAt": "2024-12-20",
-    "plugin": "variables2json",
-    "version": "1.0.4"
-  },
-  "components": [
-    {
-      "name": "Button",
-      "figma": {
-        "nodeId": "20:27",
-        "nodeName": "button",
-        "pageId": "19:3",
-        "pageName": "Actions",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=20-27"
-      },
-      "properties": {
-        "style": [
-          "accent-filled",
-          "accent-outlined",
-          "neutral-tinted",
-          "accent-transparent"
-        ],
-        "size": [
-          "xs",
-          "sm",
-          "md"
-        ],
-        "is-disabled": "boolean",
-        "has-leading-icon": "boolean",
-        "leading-icon": "string",
-        "has-trailing-icon": "boolean",
-        "trailing-icon": "string",
-        "has-menu": "boolean",
-        "is-focused": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-button",
-        "file": "src/components/actions/button/rr-button.ts",
-        "className": "RRButton"
-      },
-      "tokens": {
-        "semantics": [
-          "semantics-buttons-accent-filled-color",
-          "semantics-buttons-accent-filled-background-color",
-          "semantics-buttons-accent-outlined-color",
-          "semantics-buttons-accent-outlined-border-color",
-          "semantics-buttons-accent-outlined-border-thickness",
-          "semantics-buttons-accent-transparent-color",
-          "semantics-buttons-neutral-tinted-color",
-          "semantics-buttons-neutral-tinted-background-color",
-          "semantics-buttons-font-weight",
-          "semantics-buttons-m-font-size",
-          "semantics-buttons-s-font-size"
-        ],
-        "controls": [
-          "semantics-controls-xs-min-size",
-          "semantics-controls-xs-corner-radius",
-          "semantics-controls-sm-min-size",
-          "semantics-controls-sm-corner-radius",
-          "semantics-controls-md-min-size",
-          "semantics-controls-md-corner-radius"
-        ],
-        "focus": [
-          "semantics-focus-ring-color",
-          "semantics-focus-ring-thickness"
-        ],
-        "components": [
-          "components-button-m-font",
-          "components-button-s-font",
-          "components-button-xs-font"
-        ]
-      },
-      "variants": [
-        {
-          "name": "variant",
-          "values": [
-            "accent-filled",
-            "accent-outlined",
-            "neutral-tinted",
-            "accent-transparent"
-          ],
-          "default": "accent-filled"
-        },
-        {
-          "name": "size",
-          "values": [
-            "xs",
-            "sm",
-            "md"
-          ],
-          "default": "md"
-        },
-        {
-          "name": "icon",
-          "values": [
-            "none",
-            "leading",
-            "trailing",
-            "both"
-          ],
-          "default": "none"
-        }
-      ],
-      "status": "implemented",
-      "lastUpdated": "2024-12-22"
-    },
-    {
-      "name": "Checkbox",
-      "figma": {
-        "nodeId": "236:41408",
-        "nodeName": "checkbox-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408"
-      },
-      "properties": {
-        "size": [
-          "xs",
-          "sm",
-          "md"
-        ],
-        "is-checked": "boolean",
-        "is-indeterminate": "boolean",
-        "is-disabled": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-checkbox",
-        "file": "src/components/inputs/checkbox/rr-checkbox.ts",
-        "className": "RRCheckbox"
-      },
-      "tokens": {
-        "components": [
-          "components-checkbox-border-thickness",
-          "components-checkbox-border-color",
-          "components-checkbox-background-color",
-          "components-checkbox-is-selected-background-color",
-          "components-checkbox-is-selected-icon-color"
-        ],
-        "controls": [
-          "semantics-controls-xs-min-size",
-          "semantics-controls-xs-corner-radius",
-          "semantics-controls-sm-min-size",
-          "semantics-controls-sm-corner-radius",
-          "semantics-controls-md-min-size",
-          "semantics-controls-md-corner-radius"
-        ],
-        "focus": [
-          "semantics-focus-ring-color",
-          "semantics-focus-ring-thickness"
-        ]
-      },
-      "variants": [
-        {
-          "name": "size",
-          "values": [
-            "xs",
-            "sm",
-            "md"
-          ],
-          "default": "md"
-        },
-        {
-          "name": "state",
-          "values": [
-            "unchecked",
-            "checked",
-            "indeterminate"
-          ],
-          "default": "unchecked"
-        }
-      ],
-      "status": "implemented",
-      "lastUpdated": "2024-12-22"
-    },
-    {
-      "name": "Radio Button",
-      "figma": {
-        "nodeId": "236:41398",
-        "nodeName": "radio-button-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41398"
-      },
-      "properties": {
-        "size": [
-          "xs",
-          "sm",
-          "md"
-        ],
-        "is-checked": "boolean",
-        "is-disabled": "boolean",
-        "name": "string",
-        "value": "string"
-      },
-      "implementation": {
-        "tagName": "rr-radio",
-        "file": "src/components/inputs/radio/rr-radio.ts",
-        "className": "RRRadio"
-      },
-      "tokens": {
-        "semantics": [
-          "semantics-controls-xs-min-size",
-          "semantics-controls-sm-min-size",
-          "semantics-controls-md-min-size",
-          "semantics-focus-ring-color",
-          "semantics-focus-ring-thickness"
-        ],
-        "components": [
-          "components-radio-button-border-thickness",
-          "components-radio-button-border-color",
-          "components-radio-button-background-color",
-          "components-radio-button-is-selected-background-color",
-          "components-radio-button-is-selected-inner-shape-border-thickness",
-          "components-radio-button-is-selected-inner-shape-border-color"
-        ]
-      },
-      "variants": [
-        {
-          "name": "size",
-          "values": [
-            "xs",
-            "sm",
-            "md"
-          ],
-          "default": "md"
-        }
-      ],
-      "status": "implemented",
-      "lastUpdated": "2025-12-22"
-    },
-    {
-      "name": "Switch",
-      "figma": {
-        "nodeId": "236:41353",
-        "nodeName": "switch-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41353"
-      },
-      "properties": {
-        "size": [
-          "xs",
-          "sm",
-          "md"
-        ],
-        "is-checked": "boolean",
-        "is-disabled": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-switch",
-        "file": "src/components/inputs/switch/rr-switch.ts",
-        "className": "RRSwitch"
-      },
-      "tokens": {
-        "components": [
-          "components-switch-border-thickness",
-          "components-switch-border-color",
-          "components-switch-background-color",
-          "components-switch-thumb-border-thickness",
-          "components-switch-thumb-border-color",
-          "components-switch-thumb-background-color",
-          "components-switch-icon-color",
-          "components-switch-is-selected-background-color",
-          "components-switch-is-selected-thumb-background-color",
-          "components-switch-is-selected-icon-color"
-        ],
-        "controls": [
-          "semantics-controls-xs-min-size",
-          "semantics-controls-sm-min-size",
-          "semantics-controls-md-min-size"
-        ],
-        "focus": [
-          "semantics-focus-ring-color",
-          "semantics-focus-ring-thickness"
-        ]
-      },
-      "variants": [
-        {
-          "name": "size",
-          "values": [
-            "xs",
-            "sm",
-            "md"
-          ],
-          "default": "md"
-        },
-        {
-          "name": "state",
-          "values": [
-            "unchecked",
-            "checked"
-          ],
-          "default": "unchecked"
-        }
-      ],
-      "status": "implemented",
-      "lastUpdated": "2025-12-22"
-    },
-    {
-      "name": "Toggle Button",
-      "figma": {
-        "nodeId": "309:3542",
-        "nodeName": "toggle-button",
-        "pageId": "19:4",
-        "pageName": "Inputs",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542"
-      },
-      "properties": {
-        "size": [
-          "xs",
-          "sm",
-          "md"
-        ],
-        "is-selected": "boolean",
-        "is-disabled": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-toggle-button",
-        "file": "src/components/inputs/toggle-button/rr-toggle-button.ts",
-        "className": "RRToggleButton"
-      },
-      "tokens": {
-        "components": [
-          "components-toggle-button-content-color",
-          "components-toggle-button-background-color",
-          "components-toggle-button-is-hovered-background-color",
-          "components-toggle-button-is-hovered-content-color",
-          "components-toggle-button-is-selected-background-color",
-          "components-toggle-button-is-selected-content-color"
-        ],
-        "controls": [
-          "semantics-controls-xs-min-size",
-          "semantics-controls-xs-corner-radius",
-          "semantics-controls-sm-min-size",
-          "semantics-controls-sm-corner-radius",
-          "semantics-controls-md-min-size",
-          "semantics-controls-md-corner-radius"
-        ],
-        "focus": [
-          "semantics-focus-ring-color",
-          "semantics-focus-ring-thickness"
-        ]
-      },
-      "variants": [
-        {
-          "name": "size",
-          "values": [
-            "xs",
-            "sm",
-            "md"
-          ],
-          "default": "md"
-        }
-      ],
-      "status": "implemented",
-      "lastUpdated": "2026-01-19"
-    },
-    {
-      "name": "Icon Button",
-      "figma": {
-        "nodeId": "240:1391",
-        "nodeName": "icon-button-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=240:1391"
-      },
-      "properties": {
-        "style": [
-          "accent-filled",
-          "accent-outlined",
-          "neutral-tinted",
-          "accent-transparent"
-        ],
-        "size": [
-          "xs",
-          "sm",
-          "md"
-        ],
-        "is-disabled": "boolean",
-        "aria-label": "string"
-      },
-      "implementation": {
-        "tagName": "rr-icon-button",
-        "file": "src/components/actions/icon-button/rr-icon-button.ts",
-        "className": "RRIconButton"
-      },
-      "tokens": {
-        "semantics": [
-          "semantics-buttons-accent-filled-color",
-          "semantics-buttons-accent-filled-background-color",
-          "semantics-buttons-accent-outlined-color",
-          "semantics-buttons-accent-outlined-border-color",
-          "semantics-buttons-accent-outlined-border-thickness",
-          "semantics-buttons-accent-transparent-color",
-          "semantics-buttons-neutral-tinted-color",
-          "semantics-buttons-neutral-tinted-background-color"
-        ],
-        "controls": [
-          "semantics-controls-xs-min-size",
-          "semantics-controls-xs-corner-radius",
-          "semantics-controls-sm-min-size",
-          "semantics-controls-sm-corner-radius",
-          "semantics-controls-md-min-size",
-          "semantics-controls-md-corner-radius"
-        ],
-        "focus": [
-          "semantics-focus-ring-color",
-          "semantics-focus-ring-thickness"
-        ],
-        "components": [
-          "components-icon-button-font"
-        ]
-      },
-      "variants": [
-        {
-          "name": "variant",
-          "values": [
-            "accent-filled",
-            "accent-outlined",
-            "neutral-tinted",
-            "accent-transparent"
-          ],
-          "default": "accent-filled"
-        },
-        {
-          "name": "size",
-          "values": [
-            "xs",
-            "sm",
-            "md"
-          ],
-          "default": "md"
-        }
-      ],
-      "status": "implemented",
-      "lastUpdated": "2024-12-22"
-    },
-    {
-      "name": "Box",
-      "figma": {
-        "nodeId": null,
-        "nodeName": "box",
-        "note": "Utility component - geen dedicated Figma frame, styling via design tokens"
-      },
-      "properties": {
-        "padding": "string",
-        "radius": "string"
-      },
-      "implementation": {
-        "tagName": "rr-box",
-        "file": "src/components/layout/box/rr-box.ts",
-        "className": "RRBox"
-      },
-      "tokens": {
-        "components": [
-          "components-box-background-color",
-          "components-box-corner-radius",
-          "components-box-padding"
-        ]
-      },
-      "status": "implemented",
-      "lastUpdated": "2025-12-22"
-    },
-    {
-      "name": "Menu Bar",
-      "figma": {
-        "nodeId": "48:2135",
-        "nodeName": "top-navigation-bar",
-        "pageId": "19:6",
-        "pageName": "Navigation",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135",
-        "note": "Menu Bar is onderdeel van de Top Navigation Bar design"
-      },
-      "properties": {
-        "size": [
-          "s",
-          "m",
-          "l"
-        ],
-        "selected": "boolean",
-        "href": "string",
-        "disabled": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-menu-bar",
-        "file": "src/components/navigation/menu-bar/rr-menu-bar.ts",
-        "className": "RRMenuBar",
-        "additionalComponents": [
-          {
-            "tagName": "rr-menu-item",
-            "file": "src/components/navigation/menu-bar/rr-menu-item.ts",
-            "className": "RRMenuItem"
-          }
-        ]
-      },
-      "tokens": {
-        "components": [
-          "components-menu-bar-menu-item-color",
-          "components-menu-bar-menu-item-font",
-          "components-menu-bar-menu-item-is-selected-indicator-color",
-          "components-menu-bar-menu-item-is-selected-indicator-height",
-          "components-menu-bar-menu-item-is-hovered-indicator-color",
-          "components-menu-bar-menu-item-is-hovered-indicator-height",
-          "components-menu-bar-title-item-s-font",
-          "components-menu-bar-title-item-m-font",
-          "components-menu-bar-title-item-l-font"
-        ]
-      },
-      "variants": [
-        {
-          "name": "size",
-          "values": [
-            "s",
-            "m",
-            "l"
-          ],
-          "default": "m"
-        }
-      ],
-      "status": "implemented",
-      "lastUpdated": "2025-12-22"
-    },
-    {
-      "name": "Action Sheet",
-      "figma": {
-        "nodeId": "94-24956",
-        "nodeName": "action-sheet",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=94-24956",
-        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
-      },
-      "status": "removed"
-    },
-    {
-      "name": "Action Sheet: Header",
-      "figma": {
-        "nodeId": "108-25982",
-        "nodeName": "action-sheet__header",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=108-25982",
-        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
-      },
-      "status": "removed"
-    },
-    {
-      "name": "Bottom Action Bar",
-      "figma": {
-        "nodeId": "134-28016",
-        "nodeName": "bottom-action-bar",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=134-28016",
-        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
-      },
-      "status": "removed"
-    },
-    {
-      "name": "Button Cell",
-      "figma": {
-        "nodeId": "236-41331",
-        "nodeName": "button-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41331"
-      },
-      "properties": {
-        "vertical-alignment": [
-          "top",
-          "center"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-button-cell",
-        "file": "src/components/lists/button-cell/rr-button-cell.ts",
-        "className": "RRButtonCell"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "Custom Cell",
-      "figma": {
-        "nodeId": "1151-6202",
-        "nodeName": "custom-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1151-6202"
-      },
-      "properties": {
-        "vertical-alignment": [
-          "top",
-          "center"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-custom-cell",
-        "file": "src/components/lists/custom-cell/rr-custom-cell.ts",
-        "className": "RRCustomCell"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "Divider",
-      "figma": {
-        "nodeId": "39-927",
-        "nodeName": "split-vew__divider",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-927",
-        "note": "Component naam in Figma heeft typo (vew ipv view)"
-      },
-      "properties": {
-        "orientation": [
-          "horizontal",
-          "vertical"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-divider",
-        "file": "src/components/layout/divider/rr-divider.ts",
-        "className": "RRDivider"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "Drop Down Field",
-      "figma": {
-        "nodeId": "358-717",
-        "nodeName": "drop-down-field",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=358-717"
-      },
-      "implementation": {
-        "tagName": "rr-drop-down-field",
-        "file": "src/components/inputs/drop-down-field/rr-drop-down-field.ts",
-        "className": "RRDropDownField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Drop Down Field Cell",
-      "figma": {
-        "nodeId": "1014-3843",
-        "nodeName": "drop-down-field-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1014-3843"
-      },
-      "implementation": {
-        "tagName": "rr-drop-down-field-cell",
-        "file": "src/components/lists/drop-down-field-cell/rr-drop-down-field-cell.ts",
-        "className": "RRDropDownFieldCell"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Title Bar: Title Group",
-      "figma": {
-        "nodeId": "996:3541",
-        "nodeName": "title-bar__title-group",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=996-3541"
-      },
-      "properties": {
-        "size": ["sm", "md", "lg"]
-      },
-      "implementation": {
-        "tagName": "rr-title-bar-title-group",
-        "file": "src/components/layout/title-bar-title-group/rr-title-bar-title-group.ts",
-        "className": "RRTitleBarTitleGroup"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-03"
-    },
-    {
-      "name": "Label Cell",
-      "figma": {
-        "nodeId": "1033-4433",
-        "nodeName": "label-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1033-4433"
-      },
-      "properties": {
-        "color": [
-          "default",
-          "white"
-        ],
-        "horizontal-alignment": [
-          "left",
-          "right"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-label-cell",
-        "file": "src/components/lists/label-cell/rr-label-cell.ts",
-        "className": "RRLabelCell"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "List",
-      "figma": {
-        "nodeId": "1044-2275",
-        "nodeName": "list",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1044-2275"
-      },
-      "properties": {
-        "variant": [
-          "simple",
-          "box",
-          "box-on-tint"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-list",
-        "file": "src/components/lists/list/rr-list.ts",
-        "className": "RRList"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "List Item",
-      "figma": {
-        "nodeId": "957-2279",
-        "nodeName": "list__item",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=957-2279"
-      },
-      "properties": {
-        "size": [
-          "sm",
-          "md"
-        ],
-        "is-selected": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-list-item",
-        "file": "src/components/lists/list/rr-list-item.ts",
-        "className": "RRListItem"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "Page: Sticky Area Background",
-      "figma": {
-        "nodeId": "1171-6495",
-        "nodeName": "page__sticky-area-background",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1171-6495"
-      },
-      "properties": {
-        "position": [
-          "top",
-          "bottom"
-        ],
-        "tinted": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-page-sticky-area-background",
-        "file": "src/components/layout/page/page-sticky-area-background/rr-page-sticky-area-background.ts",
-        "className": "RRPageStickyAreaBackground"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "Sheet",
-      "figma": {
-        "nodeId": "108-25937",
-        "nodeName": "sheet",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=108-25937"
-      },
-      "status": "not-implemented",
-      "note": "Sheet composes top-title-bar, page, toolbar, and simple-section — implement after those sub-components exist"
-    },
-    {
-      "name": "Spacer",
-      "figma": {
-        "nodeId": "48-2234",
-        "nodeName": "spacer",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2234"
-      },
-      "properties": {
-        "size": [
-          "2",
-          "4",
-          "6",
-          "8",
-          "10",
-          "12",
-          "16",
-          "20",
-          "24",
-          "28",
-          "32",
-          "40",
-          "44",
-          "48",
-          "56",
-          "64",
-          "80",
-          "96",
-          "m",
-          "flexible"
-        ],
-        "direction": [
-          "horizontal",
-          "vertical",
-          "both"
-        ],
-        "container": [
-          "s",
-          "m",
-          "l",
-          "all"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-spacer",
-        "file": "src/components/layout/spacer/rr-spacer.ts",
-        "className": "RRSpacer"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "Spacer Cell",
-      "figma": {
-        "nodeId": "236-41413",
-        "nodeName": "spacer-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41413"
-      },
-      "properties": {
-        "size": [
-          "2",
-          "4",
-          "6",
-          "8",
-          "10",
-          "12",
-          "16",
-          "20",
-          "24",
-          "28",
-          "32",
-          "40",
-          "44",
-          "48",
-          "56",
-          "64",
-          "80",
-          "96",
-          "m",
-          "flexible"
-        ],
-        "container": [
-          "s",
-          "m",
-          "l",
-          "all"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-spacer-cell",
-        "file": "src/components/lists/spacer-cell/rr-spacer-cell.ts",
-        "className": "RRSpacerCell"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "Text Field",
-      "figma": {
-        "nodeId": "192-37504",
-        "nodeName": "text-field",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=192-37504"
-      },
-      "implementation": {
-        "tagName": "rr-text-field",
-        "file": "src/components/inputs/text-field/rr-text-field.ts",
-        "className": "RRTextField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Text Field Cell",
-      "figma": {
-        "nodeId": "1019-3941",
-        "nodeName": "text-field-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1019-3941"
-      },
-      "implementation": {
-        "tagName": "rr-text-field-cell",
-        "file": "src/components/lists/text-field-cell/rr-text-field-cell.ts",
-        "className": "RRTextFieldCell"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Title Cell",
-      "figma": {
-        "nodeId": "1464:4047",
-        "nodeName": "title-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1464-4047",
-        "note": "Node ID changed from 236:41079 to 1464:4047"
-      },
-      "properties": {
-        "size": [
-          "sm",
-          "md"
-        ],
-        "color": [
-          "default",
-          "white"
-        ],
-        "horizontal-alignment": [
-          "left",
-          "right"
-        ],
-        "vertical-alignment": [
-          "top",
-          "center"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-title-cell",
-        "file": "src/components/lists/title-cell/rr-title-cell.ts",
-        "className": "RRTitleCell"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-28"
-    },
-    {
-      "name": "Top Title Bar",
-      "figma": {
-        "nodeId": "1048:2288",
-        "nodeName": "top-title-bar",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1048-2288"
-      },
-      "properties": {
-        "container": ["sm", "md", "lg"],
-        "compact": "boolean",
-        "toolbar": ["default", "custom", "none"]
-      },
-      "implementation": {
-        "tagName": "rr-top-title-bar",
-        "file": "src/components/layout/top-title-bar/rr-top-title-bar.ts",
-        "className": "RRTopTitleBar"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-03"
-    },
-    {
-      "name": "Accessory Cell",
-      "figma": {
-        "nodeId": "1040-4478",
-        "nodeName": "accessory-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1040-4478",
-        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
-      },
-      "status": "removed"
-    },
-    {
-      "name": "Background",
-      "figma": {
-        "nodeId": "997-3542",
-        "nodeName": "background",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=997-3542",
-        "note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
-      },
-      "status": "removed"
-    },
-    {
-      "name": "Checkbox (standalone)",
-      "figma": {
-        "nodeId": "204:38347",
-        "nodeName": "checkbox",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=204-38347",
-        "note": "Standalone checkbox is implemented via rr-checkbox with size='xs' (24x24px)"
-      },
-      "implementation": {
-        "tagName": "rr-checkbox",
-        "file": "src/components/inputs/checkbox/rr-checkbox.ts",
-        "className": "RRCheckbox",
-        "usage": "<rr-checkbox size=\"xs\"></rr-checkbox>"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-02"
-    },
-    {
-      "name": "Checkbox Field",
-      "figma": {
-        "nodeId": "241-2345",
-        "nodeName": "checkbox-field",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241-2345"
-      },
-      "implementation": {
-        "tagName": "rr-checkbox-field",
-        "file": "src/components/inputs/checkbox-field/rr-checkbox-field.ts",
-        "className": "RRCheckboxField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Combo Box Field",
-      "figma": {
-        "nodeId": "362-2435",
-        "nodeName": "combo-box-field",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=362-2435"
-      },
-      "implementation": {
-        "tagName": "rr-combo-box-field",
-        "file": "src/components/inputs/combo-box-field/rr-combo-box-field.ts",
-        "className": "RRComboBoxField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Description Cell",
-      "figma": {
-        "nodeId": "236-41321",
-        "nodeName": "description-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41321"
-      },
-      "status": "implemented",
-      "implementation": {
-        "tagName": "rr-description-cell",
-        "file": "src/components/lists/description-cell/rr-description-cell.ts",
-        "className": "RRDescriptionCell"
-      },
-      "lastUpdated": "2025-02-12"
-    },
-    {
-      "name": "Document Tab Bar: Item",
-      "figma": {
-        "nodeId": "38-784",
-        "nodeName": "document-tab-bar__item",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=38-784"
-      },
-      "implementation": {
-        "tagName": "rr-document-tab-bar-item",
-        "file": "src/components/navigation/document-tab-bar-item/rr-document-tab-bar-item.ts",
-        "className": "RRDocumentTabBarItem"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Form Field",
-      "figma": {
-        "nodeId": "376-2395",
-        "nodeName": "form-field",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=376-2395"
-      },
-      "implementation": {
-        "tagName": "rr-form-field",
-        "file": "src/components/control-groups/form-field/rr-form-field.ts",
-        "className": "RRFormField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Icon Button (standalone)",
-      "figma": {
-        "nodeId": "31:75",
-        "nodeName": "icon-button",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=31-75"
-      },
-      "implementation": {
-        "tagName": "rr-icon-button",
-        "file": "src/components/actions/icon-button/rr-icon-button.ts",
-        "className": "RRIconButton"
-      },
-      "status": "implemented",
-      "lastUpdated": "2025-02-02"
-    },
-    {
-      "name": "Icon Cell",
-      "figma": {
-        "nodeId": "236-41365",
-        "nodeName": "icon-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41365"
-      },
-      "status": "implemented",
-      "implementation": {
-        "tagName": "rr-icon-cell",
-        "file": "src/components/lists/icon-cell/rr-icon-cell.ts",
-        "className": "RRIconCell"
-      },
-      "lastUpdated": "2025-02-12"
-    },
-    {
-      "name": "Input Field Button",
-      "figma": {
-        "nodeId": "272-353",
-        "nodeName": "input-field-button",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=272-353"
-      },
-      "implementation": {
-        "tagName": "rr-input-field-button",
-        "file": "src/components/inputs/input-field-button/rr-input-field-button.ts",
-        "className": "RRInputFieldButton"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Menu Bar: Menu Item",
-      "figma": {
-        "nodeId": "87-6523",
-        "nodeName": "menu-bar__menu-item",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=87-6523",
-        "note": "Covered by existing rr-menu-item component"
-      },
-      "implementation": {
-        "tagName": "rr-menu-item",
-        "file": "src/components/navigation/menu-bar/rr-menu-item.ts",
-        "className": "RRMenuItem"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Menu Item",
-      "figma": {
-        "nodeId": "331-1456",
-        "nodeName": "menu-item",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=331-1456"
-      },
-      "implementation": {
-        "tagName": "rr-standalone-menu-item",
-        "file": "src/components/menus/menu-item/rr-standalone-menu-item.ts",
-        "className": "RRStandaloneMenuItem"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Number Field",
-      "figma": {
-        "nodeId": "266-344",
-        "nodeName": "number-field",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=266-344"
-      },
-      "implementation": {
-        "tagName": "rr-number-field",
-        "file": "src/components/inputs/number-field/rr-number-field.ts",
-        "className": "RRNumberField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Radio Button (standalone)",
-      "figma": {
-        "nodeId": "219:38433",
-        "nodeName": "radio-button",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=219-38433",
-        "note": "Standalone radio button is implemented via rr-radio with size='xs' (24x24px)"
-      },
-      "implementation": {
-        "tagName": "rr-radio",
-        "file": "src/components/inputs/radio/rr-radio.ts",
-        "className": "RRRadio",
-        "usage": "<rr-radio size=\"xs\"></rr-radio>"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-02"
-    },
-    {
-      "name": "Radio Button Field",
-      "figma": {
-        "nodeId": "241-2382",
-        "nodeName": "radio-button-field",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241-2382"
-      },
-      "implementation": {
-        "tagName": "rr-radio-button-field",
-        "file": "src/components/inputs/radio-button-field/rr-radio-button-field.ts",
-        "className": "RRRadioButtonField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Search Field",
-      "figma": {
-        "nodeId": "243-3235",
-        "nodeName": "search-field",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=243-3235"
-      },
-      "implementation": {
-        "tagName": "rr-search-field",
-        "file": "src/components/inputs/search-field/rr-search-field.ts",
-        "className": "RRSearchField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Segmented Control",
-      "figma": {
-        "nodeId": "336:2899",
-        "nodeName": "segmented-control",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=336-2899"
-      },
-      "properties": {
-        "size": [
-          "sm",
-          "md"
-        ],
-        "content-type": [
-          "text",
-          "icons"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-segmented-control",
-        "file": "src/components/inputs/segmented-control/rr-segmented-control.ts",
-        "className": "RRSegmentedControl"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-02"
-    },
-    {
-      "name": "Segmented Control: Item",
-      "figma": {
-        "nodeId": "262:3512",
-        "nodeName": "segmented-control__item",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=262-3512"
-      },
-      "properties": {
-        "size": [
-          "sm",
-          "md"
-        ],
-        "is-selected": "boolean",
-        "content-type": [
-          "text",
-          "icon"
-        ]
-      },
-      "implementation": {
-        "tagName": "rr-segmented-control-item",
-        "file": "src/components/inputs/segmented-control/rr-segmented-control-item.ts",
-        "className": "RRSegmentedControlItem"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-02"
-    },
-    {
-      "name": "Split View: Divider",
-      "figma": {
-        "nodeId": "39-927",
-        "nodeName": "split-view__divider",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-927",
-        "note": "Same node ID as Divider component (39-927) - implemented as rr-divider"
-      },
-      "implementation": {
-        "tagName": "rr-divider",
-        "file": "src/components/layout/divider/rr-divider.ts",
-        "className": "RRDivider"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Stepper",
-      "figma": {
-        "nodeId": "236:39011",
-        "nodeName": "stepper",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-39011"
-      },
-      "properties": {
-        "size": [
-          "sm",
-          "md"
-        ],
-        "value": "number",
-        "min": "number",
-        "max": "number",
-        "step": "number",
-        "disabled": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-stepper",
-        "file": "src/components/inputs/stepper/rr-stepper.ts",
-        "className": "RRStepper"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-02"
-    },
-    {
-      "name": "Stepper Cell",
-      "figma": {
-        "nodeId": "236-41344",
-        "nodeName": "stepper-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41344"
-      },
-      "status": "implemented",
-      "implementation": {
-        "tagName": "rr-stepper-cell",
-        "file": "src/components/lists/stepper-cell/rr-stepper-cell.ts",
-        "className": "RRStepperCell"
-      },
-      "lastUpdated": "2025-02-12"
-    },
-    {
-      "name": "Switch (standalone)",
-      "figma": {
-        "nodeId": "232:38506",
-        "nodeName": "switch",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=232-38506",
-        "note": "Standalone switch with sizes 'sm' (44x24) and 'md' (56x32)"
-      },
-      "properties": {
-        "size": [
-          "sm",
-          "md"
-        ],
-        "is-selected": "boolean",
-        "is-disabled": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-switch",
-        "file": "src/components/inputs/switch/rr-switch.ts",
-        "className": "RRSwitch"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-02"
-    },
-    {
-      "name": "Switch Field",
-      "figma": {
-        "nodeId": "348-2635",
-        "nodeName": "switch-field",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=348-2635"
-      },
-      "implementation": {
-        "tagName": "rr-switch-field",
-        "file": "src/components/inputs/switch-field/rr-switch-field.ts",
-        "className": "RRSwitchField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-01-30"
-    },
-    {
-      "name": "Tab Bar: Item",
-      "figma": {
-        "nodeId": "1366:43604",
-        "nodeName": "tab-bar__item",
-        "pageId": "19:6",
-        "pageName": "Navigation",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43604",
-        "note": "Node ID changed from 987:1355 to 1366:43604"
-      },
-      "implementation": {
-        "tagName": "rr-tab-bar-item",
-        "file": "src/components/navigation/tab-bar/rr-tab-bar-item.ts",
-        "className": "RRTabBarItem"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Text Cell",
-      "figma": {
-        "nodeId": "236-41152",
-        "nodeName": "text-cell",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41152"
-      },
-      "status": "implemented",
-      "implementation": {
-        "tagName": "rr-text-cell",
-        "file": "src/components/lists/text-cell/rr-text-cell.ts",
-        "className": "RRTextCell"
-      },
-      "lastUpdated": "2025-02-12"
-    },
-    {
-      "name": "Token",
-      "figma": {
-        "nodeId": "354:3680",
-        "nodeName": "token",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=354-3680"
-      },
-      "properties": {
-        "control": [
-          "none",
-          "dismiss",
-          "picker"
-        ],
-        "menu-is-open": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-token",
-        "file": "src/components/inputs/token/rr-token.ts",
-        "className": "RRToken"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-02"
-    },
-    {
-      "name": "Top Navigation Bar: Logo",
-      "figma": {
-        "nodeId": "22:28",
-        "nodeName": "top-navigation-bar__logo",
-        "pageId": "19:6",
-        "pageName": "Navigation",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=22-28"
-      },
-      "implementation": {
-        "tagName": "rr-nav-logo",
-        "file": "src/components/navigation/top-navigation-bar/rr-nav-logo.ts",
-        "className": "RRNavLogo"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Timeline Track Cell",
-      "figma": {
-        "nodeId": "1404:10417",
-        "nodeName": "timeline-track-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1404-10417"
-      },
-      "status": "implemented",
-      "note": "New component added 2026-02-02",
-      "implementation": {
-        "tagName": "rr-timeline-track-cell",
-        "file": "src/components/lists/timeline-track-cell/rr-timeline-track-cell.ts",
-        "className": "RRTimelineTrackCell"
-      },
-      "lastUpdated": "2025-02-12"
-    },
-    {
-      "name": "Flexible Spacer Cell",
-      "figma": {
-        "nodeId": "1061:3456",
-        "nodeName": "flexible-spacer-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1061-3456",
-        "note": "Covered by rr-spacer-cell with size=\"flexible\""
-      },
-      "implementation": {
-        "tagName": "rr-spacer-cell",
-        "file": "src/components/lists/spacer-cell/rr-spacer-cell.ts",
-        "className": "RRSpacerCell",
-        "usage": "<rr-spacer-cell size=\"flexible\"></rr-spacer-cell>"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "List Item Drag Handle Cell",
-      "figma": {
-        "nodeId": "1342:3143",
-        "nodeName": "list-item-drag-handle-cell",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1342-3143"
-      },
-      "status": "implemented",
-      "note": "New component added 2026-02-02",
-      "implementation": {
-        "tagName": "rr-list-item-drag-handle-cell",
-        "file": "src/components/lists/list-item-drag-handle-cell/rr-list-item-drag-handle-cell.ts",
-        "className": "RRListItemDragHandleCell"
-      },
-      "lastUpdated": "2025-02-12"
-    },
-    {
-      "name": "List Item Drag Handle",
-      "figma": {
-        "nodeId": "1342:3114",
-        "nodeName": "list-item-drag-handle",
-        "pageId": "0:1",
-        "pageName": "Lists",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1342-3114"
-      },
-      "status": "implemented",
-      "note": "New component added 2026-02-02",
-      "implementation": {
-        "tagName": "rr-list-item-drag-handle",
-        "file": "src/components/lists/list-item-drag-handle/rr-list-item-drag-handle.ts",
-        "className": "RRListItemDragHandle"
-      },
-      "lastUpdated": "2025-02-12"
-    },
-    {
-      "name": "Tab Bar",
-      "figma": {
-        "nodeId": "1366:43642",
-        "nodeName": "tab-bar",
-        "pageId": "19:6",
-        "pageName": "Navigation",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43642"
-      },
-      "implementation": {
-        "tagName": "rr-tab-bar",
-        "file": "src/components/navigation/tab-bar/rr-tab-bar.ts",
-        "className": "RRTabBar"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Pagination",
-      "figma": {
-        "nodeId": "1353:3779",
-        "nodeName": "pagination",
-        "pageId": "19:6",
-        "pageName": "Navigation",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1353-3779"
-      },
-      "implementation": {
-        "tagName": "rr-pagination",
-        "file": "src/components/navigation/pagination/rr-pagination.ts",
-        "className": "RRPagination"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Split Button",
-      "figma": {
-        "nodeId": "1304:2775",
-        "nodeName": "split-button",
-        "pageId": "19:3",
-        "pageName": "Actions",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1304-2775"
-      },
-      "implementation": {
-        "tagName": "rr-split-button",
-        "file": "src/components/actions/split-button/rr-split-button.ts",
-        "className": "RRSplitButton"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Password Field",
-      "figma": {
-        "nodeId": "1380:5781",
-        "nodeName": "password-field",
-        "pageId": "19:4",
-        "pageName": "Inputs",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-5781"
-      },
-      "implementation": {
-        "tagName": "rr-password-field",
-        "file": "src/components/inputs/password-field/rr-password-field.ts",
-        "className": "RRPasswordField"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Toolbar",
-      "figma": {
-        "nodeId": "1380:3538",
-        "nodeName": "toolbar",
-        "pageId": "20:177",
-        "pageName": "Control groups",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-3538"
-      },
-      "implementation": {
-        "tagName": "rr-toolbar",
-        "file": "src/components/control-groups/toolbar/rr-toolbar.ts",
-        "className": "RRToolbar"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Toolbar: Divider",
-      "figma": {
-        "nodeId": "1356:13969",
-        "nodeName": "toolbar__divider",
-        "pageId": "20:177",
-        "pageName": "Control groups",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1356-13969"
-      },
-      "implementation": {
-        "tagName": "rr-toolbar-divider",
-        "file": "src/components/control-groups/toolbar-divider/rr-toolbar-divider.ts",
-        "className": "RRToolbarDivider"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Toolbar: Title Group",
-      "figma": {
-        "nodeId": "1406:12871",
-        "nodeName": "toolbar__title-group",
-        "pageId": "20:177",
-        "pageName": "Control groups",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1406-12871"
-      },
-      "implementation": {
-        "tagName": "rr-toolbar-title-group",
-        "file": "src/components/control-groups/toolbar-title-group/rr-toolbar-title-group.ts",
-        "className": "RRToolbarTitleGroup"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Button Group",
-      "figma": {
-        "nodeId": "1339:3762",
-        "nodeName": "button-group",
-        "pageId": "20:177",
-        "pageName": "Control groups",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1339-3762"
-      },
-      "implementation": {
-        "tagName": "rr-button-group",
-        "file": "src/components/control-groups/button-group/rr-button-group.ts",
-        "className": "RRButtonGroup"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Button Bar",
-      "figma": {
-        "nodeId": "1263:6841",
-        "nodeName": "button-bar",
-        "pageId": "20:177",
-        "pageName": "Control groups",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263-6841"
-      },
-      "implementation": {
-        "tagName": "rr-button-bar",
-        "file": "src/components/control-groups/button-bar/rr-button-bar.ts",
-        "className": "RRButtonBar"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Button Bar: Divider",
-      "figma": {
-        "nodeId": "1263:6851",
-        "nodeName": "button-bar__divider",
-        "pageId": "20:177",
-        "pageName": "Control groups",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263-6851"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Tooltip",
-      "figma": {
-        "nodeId": "1398:10237",
-        "nodeName": "tooltip",
-        "pageId": "19:9",
-        "pageName": "Overlays",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10237"
-      },
-      "implementation": {
-        "tagName": "rr-tooltip",
-        "file": "src/components/overlays/tooltip/rr-tooltip.ts",
-        "className": "RRTooltip"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Tooltip: Arrow",
-      "figma": {
-        "nodeId": "1398:10227",
-        "nodeName": "tooltip__arrow",
-        "pageId": "19:9",
-        "pageName": "Overlays",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10227"
-      },
-      "implementation": {
-        "tagName": "rr-tooltip-arrow",
-        "file": "src/components/overlays/tooltip/rr-tooltip-arrow.ts",
-        "className": "RRTooltipArrow"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Dialog",
-      "figma": {
-        "nodeId": "1506:5969",
-        "nodeName": "modal-dialog",
-        "pageId": "19:9",
-        "pageName": "Overlays",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1506-5969"
-      },
-      "implementation": {
-        "tagName": "rr-dialog",
-        "file": "src/components/overlays/dialog/rr-dialog.ts",
-        "className": "RRDialog"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Alert",
-      "figma": {
-        "nodeId": "1340:4678",
-        "nodeName": "alert",
-        "pageId": "19:9",
-        "pageName": "Overlays",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4678"
-      },
-      "status": "not-implemented",
-      "note": "Alert is a preconfigured dialog instance — implement as part of rr-dialog"
-    },
-    {
-      "name": "Window",
-      "figma": {
-        "nodeId": "1261:3627",
-        "nodeName": "window",
-        "pageId": "19:9",
-        "pageName": "Overlays",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1261-3627"
-      },
-      "status": "not-implemented",
-      "note": "Window composes page, top-title-bar, and toolbar — implement after those sub-components exist"
-    },
-    {
-      "name": "Page",
-      "figma": {
-        "nodeId": "1255:1052",
-        "nodeName": "page",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1052"
-      },
-      "properties": {
-        "header-sticky": "boolean",
-        "footer-sticky": "boolean",
-        "tinted": "boolean"
-      },
-      "implementation": {
-        "tagName": "rr-page",
-        "file": "src/components/layout/page/rr-page.ts",
-        "className": "RRPage"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-03"
-    },
-    {
-      "name": "Collection",
-      "figma": {
-        "nodeId": "1435:29304",
-        "nodeName": "collection",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1435-29304"
-      },
-      "properties": {
-        "layout": ["grid", "list", "horizontal-scroll"],
-        "title": "string",
-        "show-load-more": "boolean",
-        "load-more-label": "string"
-      },
-      "implementation": {
-        "tagName": "rr-collection",
-        "file": "src/components/layout/collection/rr-collection.ts",
-        "className": "RRCollection"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-03"
-    },
-    {
-      "name": "Box (Figma)",
-      "figma": {
-        "nodeId": "1451:33442",
-        "nodeName": "box",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1451-33442",
-        "note": "Covered by existing rr-box component. On-tinted variant can be added as attribute."
-      },
-      "implementation": {
-        "tagName": "rr-box",
-        "file": "src/components/layout/box/rr-box.ts",
-        "className": "RRBox"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-12"
-    },
-    {
-      "name": "Simple Section",
-      "figma": {
-        "nodeId": "1255:1471",
-        "nodeName": "simple-section",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1471"
-      },
-      "properties": {
-        "container": ["sm", "md", "lg"]
-      },
-      "implementation": {
-        "tagName": "rr-simple-section",
-        "file": "src/components/layout/page-sections/rr-simple-section.ts",
-        "className": "RRSimpleSection"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-16"
-    },
-    {
-      "name": "Full Bleed Section",
-      "figma": {
-        "nodeId": "1255:1496",
-        "nodeName": "full-bleed-section",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1496"
-      },
-      "properties": {
-        "container": ["sm", "md", "lg"]
-      },
-      "implementation": {
-        "tagName": "rr-full-bleed-section",
-        "file": "src/components/layout/page-sections/rr-full-bleed-section.ts",
-        "className": "RRFullBleedSection"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-16"
-    },
-    {
-      "name": "One Third Two Thirds Section",
-      "figma": {
-        "nodeId": "1255:1530",
-        "nodeName": "one-third-two-thirds-section",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1530"
-      },
-      "properties": {
-        "container": ["sm", "md", "lg"]
-      },
-      "implementation": {
-        "tagName": "rr-one-third-two-thirds-section",
-        "file": "src/components/layout/page-sections/rr-one-third-two-thirds-section.ts",
-        "className": "RROneThirdTwoThirdsSection"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-16"
-    },
-    {
-      "name": "Two Thirds One Third Section",
-      "figma": {
-        "nodeId": "1255:1623",
-        "nodeName": "two-thirds-one-third-section",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1623"
-      },
-      "properties": {
-        "container": ["sm", "md", "lg"]
-      },
-      "implementation": {
-        "tagName": "rr-two-thirds-one-third-section",
-        "file": "src/components/layout/page-sections/rr-two-thirds-one-third-section.ts",
-        "className": "RRTwoThirdsOneThirdSection"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-16"
-    },
-    {
-      "name": "One Half One Half Section",
-      "figma": {
-        "nodeId": "1255:1815",
-        "nodeName": "one-half-one-half-section",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1815"
-      },
-      "properties": {
-        "container": ["sm", "md", "lg"]
-      },
-      "implementation": {
-        "tagName": "rr-one-half-one-half-section",
-        "file": "src/components/layout/page-sections/rr-one-half-one-half-section.ts",
-        "className": "RROneHalfOneHalfSection"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-16"
-    },
-    {
-      "name": "Lister Section",
-      "figma": {
-        "nodeId": "1449:33380",
-        "nodeName": "lister-section",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1449-33380"
-      },
-      "properties": {
-        "container": ["sm", "md", "lg"]
-      },
-      "implementation": {
-        "tagName": "rr-lister-section",
-        "file": "src/components/layout/page-sections/rr-lister-section.ts",
-        "className": "RRListerSection"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-16"
-    },
-    {
-      "name": "Document Tab Bar",
-      "figma": {
-        "nodeId": "39:857",
-        "nodeName": "document-tab-bar",
-        "pageId": "19:6",
-        "pageName": "Navigation",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-857"
-      },
-      "implementation": {
-        "tagName": "rr-document-tab-bar",
-        "file": "src/components/navigation/document-tab-bar/rr-document-tab-bar.ts",
-        "className": "RRDocumentTabBar"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-17"
-    },
-    {
-      "name": "Rich Text",
-      "figma": {
-        "nodeId": "1451:33454",
-        "nodeName": "rich-text",
-        "pageId": "39:908",
-        "pageName": "Layout",
-        "url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1451-33454"
-      },
-      "properties": {
-        "container": ["sm", "md", "lg"]
-      },
-      "implementation": {
-        "tagName": "rr-rich-text",
-        "file": "src/components/content/rich-text/rr-rich-text.ts",
-        "className": "RRRichText"
-      },
-      "status": "implemented",
-      "lastUpdated": "2026-02-17"
-    }
-  ]
+	"$schema": "./component-map.schema.json",
+	"version": "0.1.0",
+	"figmaFile": {
+		"fileKey": "5DyHMXUNVxbgH7ZjhQxPZe",
+		"fileName": "RR-Components",
+		"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components"
+	},
+	"tokensSource": {
+		"file": "tokens/rr-tokens.json",
+		"exportedAt": "2024-12-20",
+		"plugin": "variables2json",
+		"version": "1.0.4"
+	},
+	"components": [
+		{
+			"name": "Button",
+			"figma": {
+				"nodeId": "20:27",
+				"nodeName": "button",
+				"pageId": "19:3",
+				"pageName": "Actions",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=20-27"
+			},
+			"properties": {
+				"style": [
+					"accent-filled",
+					"accent-outlined",
+					"neutral-tinted",
+					"accent-transparent"
+				],
+				"size": [
+					"xs",
+					"sm",
+					"md"
+				],
+				"is-disabled": "boolean",
+				"has-leading-icon": "boolean",
+				"leading-icon": "string",
+				"has-trailing-icon": "boolean",
+				"trailing-icon": "string",
+				"has-menu": "boolean",
+				"is-focused": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-button",
+				"file": "src/components/actions/button/rr-button.ts",
+				"className": "RRButton"
+			},
+			"tokens": {
+				"semantics": [
+					"semantics-buttons-accent-filled-color",
+					"semantics-buttons-accent-filled-background-color",
+					"semantics-buttons-accent-outlined-color",
+					"semantics-buttons-accent-outlined-border-color",
+					"semantics-buttons-accent-outlined-border-thickness",
+					"semantics-buttons-accent-transparent-color",
+					"semantics-buttons-neutral-tinted-color",
+					"semantics-buttons-neutral-tinted-background-color",
+					"semantics-buttons-font-weight",
+					"semantics-buttons-m-font-size",
+					"semantics-buttons-s-font-size"
+				],
+				"controls": [
+					"semantics-controls-xs-min-size",
+					"semantics-controls-xs-corner-radius",
+					"semantics-controls-sm-min-size",
+					"semantics-controls-sm-corner-radius",
+					"semantics-controls-md-min-size",
+					"semantics-controls-md-corner-radius"
+				],
+				"focus": [
+					"semantics-focus-ring-color",
+					"semantics-focus-ring-thickness"
+				],
+				"components": [
+					"components-button-m-font",
+					"components-button-s-font",
+					"components-button-xs-font"
+				]
+			},
+			"variants": [
+				{
+					"name": "variant",
+					"values": [
+						"accent-filled",
+						"accent-outlined",
+						"neutral-tinted",
+						"accent-transparent"
+					],
+					"default": "accent-filled"
+				},
+				{
+					"name": "size",
+					"values": [
+						"xs",
+						"sm",
+						"md"
+					],
+					"default": "md"
+				},
+				{
+					"name": "icon",
+					"values": [
+						"none",
+						"leading",
+						"trailing",
+						"both"
+					],
+					"default": "none"
+				}
+			],
+			"status": "implemented",
+			"lastUpdated": "2024-12-22"
+		},
+		{
+			"name": "Checkbox",
+			"figma": {
+				"nodeId": "236:41408",
+				"nodeName": "checkbox-cell",
+				"pageId": "0:1",
+				"pageName": "Lists",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41408"
+			},
+			"properties": {
+				"size": [
+					"xs",
+					"sm",
+					"md"
+				],
+				"is-checked": "boolean",
+				"is-indeterminate": "boolean",
+				"is-disabled": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-checkbox",
+				"file": "src/components/inputs/checkbox/rr-checkbox.ts",
+				"className": "RRCheckbox"
+			},
+			"tokens": {
+				"components": [
+					"components-checkbox-border-thickness",
+					"components-checkbox-border-color",
+					"components-checkbox-background-color",
+					"components-checkbox-is-selected-background-color",
+					"components-checkbox-is-selected-icon-color"
+				],
+				"controls": [
+					"semantics-controls-xs-min-size",
+					"semantics-controls-xs-corner-radius",
+					"semantics-controls-sm-min-size",
+					"semantics-controls-sm-corner-radius",
+					"semantics-controls-md-min-size",
+					"semantics-controls-md-corner-radius"
+				],
+				"focus": [
+					"semantics-focus-ring-color",
+					"semantics-focus-ring-thickness"
+				]
+			},
+			"variants": [
+				{
+					"name": "size",
+					"values": [
+						"xs",
+						"sm",
+						"md"
+					],
+					"default": "md"
+				},
+				{
+					"name": "state",
+					"values": [
+						"unchecked",
+						"checked",
+						"indeterminate"
+					],
+					"default": "unchecked"
+				}
+			],
+			"status": "implemented",
+			"lastUpdated": "2024-12-22"
+		},
+		{
+			"name": "Radio Button",
+			"figma": {
+				"nodeId": "236:41398",
+				"nodeName": "radio-button-cell",
+				"pageId": "0:1",
+				"pageName": "Lists",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41398"
+			},
+			"properties": {
+				"size": [
+					"xs",
+					"sm",
+					"md"
+				],
+				"is-checked": "boolean",
+				"is-disabled": "boolean",
+				"name": "string",
+				"value": "string"
+			},
+			"implementation": {
+				"tagName": "rr-radio",
+				"file": "src/components/inputs/radio/rr-radio.ts",
+				"className": "RRRadio"
+			},
+			"tokens": {
+				"semantics": [
+					"semantics-controls-xs-min-size",
+					"semantics-controls-sm-min-size",
+					"semantics-controls-md-min-size",
+					"semantics-focus-ring-color",
+					"semantics-focus-ring-thickness"
+				],
+				"components": [
+					"components-radio-button-border-thickness",
+					"components-radio-button-border-color",
+					"components-radio-button-background-color",
+					"components-radio-button-is-selected-background-color",
+					"components-radio-button-is-selected-inner-shape-border-thickness",
+					"components-radio-button-is-selected-inner-shape-border-color"
+				]
+			},
+			"variants": [
+				{
+					"name": "size",
+					"values": [
+						"xs",
+						"sm",
+						"md"
+					],
+					"default": "md"
+				}
+			],
+			"status": "implemented",
+			"lastUpdated": "2025-12-22"
+		},
+		{
+			"name": "Switch",
+			"figma": {
+				"nodeId": "236:41353",
+				"nodeName": "switch-cell",
+				"pageId": "0:1",
+				"pageName": "Lists",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236:41353"
+			},
+			"properties": {
+				"size": [
+					"xs",
+					"sm",
+					"md"
+				],
+				"is-checked": "boolean",
+				"is-disabled": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-switch",
+				"file": "src/components/inputs/switch/rr-switch.ts",
+				"className": "RRSwitch"
+			},
+			"tokens": {
+				"components": [
+					"components-switch-border-thickness",
+					"components-switch-border-color",
+					"components-switch-background-color",
+					"components-switch-thumb-border-thickness",
+					"components-switch-thumb-border-color",
+					"components-switch-thumb-background-color",
+					"components-switch-icon-color",
+					"components-switch-is-selected-background-color",
+					"components-switch-is-selected-thumb-background-color",
+					"components-switch-is-selected-icon-color"
+				],
+				"controls": [
+					"semantics-controls-xs-min-size",
+					"semantics-controls-sm-min-size",
+					"semantics-controls-md-min-size"
+				],
+				"focus": [
+					"semantics-focus-ring-color",
+					"semantics-focus-ring-thickness"
+				]
+			},
+			"variants": [
+				{
+					"name": "size",
+					"values": [
+						"xs",
+						"sm",
+						"md"
+					],
+					"default": "md"
+				},
+				{
+					"name": "state",
+					"values": [
+						"unchecked",
+						"checked"
+					],
+					"default": "unchecked"
+				}
+			],
+			"status": "implemented",
+			"lastUpdated": "2025-12-22"
+		},
+		{
+			"name": "Toggle Button",
+			"figma": {
+				"nodeId": "309:3542",
+				"nodeName": "toggle-button",
+				"pageId": "19:4",
+				"pageName": "Inputs",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=309-3542"
+			},
+			"properties": {
+				"size": [
+					"xs",
+					"sm",
+					"md"
+				],
+				"is-selected": "boolean",
+				"is-disabled": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-toggle-button",
+				"file": "src/components/inputs/toggle-button/rr-toggle-button.ts",
+				"className": "RRToggleButton"
+			},
+			"tokens": {
+				"components": [
+					"components-toggle-button-content-color",
+					"components-toggle-button-background-color",
+					"components-toggle-button-is-hovered-background-color",
+					"components-toggle-button-is-hovered-content-color",
+					"components-toggle-button-is-selected-background-color",
+					"components-toggle-button-is-selected-content-color"
+				],
+				"controls": [
+					"semantics-controls-xs-min-size",
+					"semantics-controls-xs-corner-radius",
+					"semantics-controls-sm-min-size",
+					"semantics-controls-sm-corner-radius",
+					"semantics-controls-md-min-size",
+					"semantics-controls-md-corner-radius"
+				],
+				"focus": [
+					"semantics-focus-ring-color",
+					"semantics-focus-ring-thickness"
+				]
+			},
+			"variants": [
+				{
+					"name": "size",
+					"values": [
+						"xs",
+						"sm",
+						"md"
+					],
+					"default": "md"
+				}
+			],
+			"status": "implemented",
+			"lastUpdated": "2026-01-19"
+		},
+		{
+			"name": "Icon Button",
+			"figma": {
+				"nodeId": "240:1391",
+				"nodeName": "icon-button-cell",
+				"pageId": "0:1",
+				"pageName": "Lists",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=240:1391"
+			},
+			"properties": {
+				"style": [
+					"accent-filled",
+					"accent-outlined",
+					"neutral-tinted",
+					"accent-transparent"
+				],
+				"size": [
+					"xs",
+					"sm",
+					"md"
+				],
+				"is-disabled": "boolean",
+				"aria-label": "string"
+			},
+			"implementation": {
+				"tagName": "rr-icon-button",
+				"file": "src/components/actions/icon-button/rr-icon-button.ts",
+				"className": "RRIconButton"
+			},
+			"tokens": {
+				"semantics": [
+					"semantics-buttons-accent-filled-color",
+					"semantics-buttons-accent-filled-background-color",
+					"semantics-buttons-accent-outlined-color",
+					"semantics-buttons-accent-outlined-border-color",
+					"semantics-buttons-accent-outlined-border-thickness",
+					"semantics-buttons-accent-transparent-color",
+					"semantics-buttons-neutral-tinted-color",
+					"semantics-buttons-neutral-tinted-background-color"
+				],
+				"controls": [
+					"semantics-controls-xs-min-size",
+					"semantics-controls-xs-corner-radius",
+					"semantics-controls-sm-min-size",
+					"semantics-controls-sm-corner-radius",
+					"semantics-controls-md-min-size",
+					"semantics-controls-md-corner-radius"
+				],
+				"focus": [
+					"semantics-focus-ring-color",
+					"semantics-focus-ring-thickness"
+				],
+				"components": [
+					"components-icon-button-font"
+				]
+			},
+			"variants": [
+				{
+					"name": "variant",
+					"values": [
+						"accent-filled",
+						"accent-outlined",
+						"neutral-tinted",
+						"accent-transparent"
+					],
+					"default": "accent-filled"
+				},
+				{
+					"name": "size",
+					"values": [
+						"xs",
+						"sm",
+						"md"
+					],
+					"default": "md"
+				}
+			],
+			"status": "implemented",
+			"lastUpdated": "2024-12-22"
+		},
+		{
+			"name": "Box",
+			"figma": {
+				"nodeId": null,
+				"nodeName": "box",
+				"note": "Utility component - geen dedicated Figma frame, styling via design tokens"
+			},
+			"properties": {
+				"padding": "string",
+				"radius": "string"
+			},
+			"implementation": {
+				"tagName": "rr-box",
+				"file": "src/components/layout/box/rr-box.ts",
+				"className": "RRBox"
+			},
+			"tokens": {
+				"components": [
+					"components-box-background-color",
+					"components-box-corner-radius",
+					"components-box-padding"
+				]
+			},
+			"status": "implemented",
+			"lastUpdated": "2025-12-22"
+		},
+		{
+			"name": "Menu Bar",
+			"figma": {
+				"nodeId": "48:2135",
+				"nodeName": "top-navigation-bar",
+				"pageId": "19:6",
+				"pageName": "Navigation",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2135",
+				"note": "Menu Bar is onderdeel van de Top Navigation Bar design"
+			},
+			"properties": {
+				"size": [
+					"s",
+					"m",
+					"l"
+				],
+				"selected": "boolean",
+				"href": "string",
+				"disabled": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-menu-bar",
+				"file": "src/components/navigation/menu-bar/rr-menu-bar.ts",
+				"className": "RRMenuBar",
+				"additionalComponents": [
+					{
+						"tagName": "rr-menu-bar-item",
+						"file": "src/components/navigation/menu-bar/rr-menu-bar.ts",
+						"className": "RRMenuBarItem"
+					}
+				]
+			},
+			"tokens": {
+				"components": [
+					"components-menu-bar-menu-item-color",
+					"components-menu-bar-menu-item-font",
+					"components-menu-bar-menu-item-is-selected-indicator-color",
+					"components-menu-bar-menu-item-is-selected-indicator-height",
+					"components-menu-bar-menu-item-is-hovered-indicator-color",
+					"components-menu-bar-menu-item-is-hovered-indicator-height",
+					"components-menu-bar-title-item-s-font",
+					"components-menu-bar-title-item-m-font",
+					"components-menu-bar-title-item-l-font"
+				]
+			},
+			"variants": [
+				{
+					"name": "size",
+					"values": [
+						"s",
+						"m",
+						"l"
+					],
+					"default": "m"
+				}
+			],
+			"status": "implemented",
+			"lastUpdated": "2025-12-22"
+		},
+		{
+			"name": "Action Sheet",
+			"figma": {
+				"nodeId": "94-24956",
+				"nodeName": "action-sheet",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=94-24956",
+				"note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
+			},
+			"status": "removed"
+		},
+		{
+			"name": "Action Sheet: Header",
+			"figma": {
+				"nodeId": "108-25982",
+				"nodeName": "action-sheet__header",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=108-25982",
+				"note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
+			},
+			"status": "removed"
+		},
+		{
+			"name": "Bottom Action Bar",
+			"figma": {
+				"nodeId": "134-28016",
+				"nodeName": "bottom-action-bar",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=134-28016",
+				"note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
+			},
+			"status": "removed"
+		},
+		{
+			"name": "Button Cell",
+			"figma": {
+				"nodeId": "236-41331",
+				"nodeName": "button-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41331"
+			},
+			"properties": {
+				"vertical-alignment": [
+					"top",
+					"center"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-button-cell",
+				"file": "src/components/lists-and-menus/button-cell/rr-button-cell.ts",
+				"className": "RRButtonCell"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "Custom Cell",
+			"figma": {
+				"nodeId": "1151-6202",
+				"nodeName": "custom-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1151-6202"
+			},
+			"properties": {
+				"vertical-alignment": [
+					"top",
+					"center"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-custom-cell",
+				"file": "src/components/lists-and-menus/custom-cell/rr-custom-cell.ts",
+				"className": "RRCustomCell"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "Divider",
+			"figma": {
+				"nodeId": "39-927",
+				"nodeName": "split-vew__divider",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-927",
+				"note": "Component naam in Figma heeft typo (vew ipv view)"
+			},
+			"properties": {
+				"orientation": [
+					"horizontal",
+					"vertical"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-divider",
+				"file": "src/components/layout/divider/rr-divider.ts",
+				"className": "RRDivider"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "Drop Down Field",
+			"figma": {
+				"nodeId": "358-717",
+				"nodeName": "drop-down-field",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=358-717"
+			},
+			"implementation": {
+				"tagName": "rr-drop-down-field",
+				"file": "src/components/inputs/drop-down-field/rr-drop-down-field.ts",
+				"className": "RRDropDownField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Drop Down Field Cell",
+			"figma": {
+				"nodeId": "1014-3843",
+				"nodeName": "drop-down-field-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1014-3843"
+			},
+			"implementation": {
+				"tagName": "rr-drop-down-field-cell",
+				"file": "src/components/lists-and-menus/drop-down-field-cell/rr-drop-down-field-cell.ts",
+				"className": "RRDropDownFieldCell"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Title Bar: Title Group",
+			"figma": {
+				"nodeId": "996:3541",
+				"nodeName": "title-bar__title-group",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=996-3541"
+			},
+			"properties": {
+				"size": ["sm", "md", "lg"]
+			},
+			"implementation": {
+				"tagName": "rr-title-bar-title-group",
+				"file": "src/components/layout/title-bar-title-group/rr-title-bar-title-group.ts",
+				"className": "RRTitleBarTitleGroup"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-03"
+		},
+		{
+			"name": "Label Cell",
+			"figma": {
+				"nodeId": "1033-4433",
+				"nodeName": "label-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1033-4433"
+			},
+			"properties": {
+				"color": [
+					"default",
+					"white"
+				],
+				"horizontal-alignment": [
+					"left",
+					"right"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-label-cell",
+				"file": "src/components/lists-and-menus/label-cell/rr-label-cell.ts",
+				"className": "RRLabelCell"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "List",
+			"figma": {
+				"nodeId": "1044-2275",
+				"nodeName": "list",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1044-2275"
+			},
+			"properties": {
+				"variant": [
+					"simple",
+					"box",
+					"box-on-tint"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-list",
+				"file": "src/components/lists-and-menus/list/rr-list.ts",
+				"className": "RRList"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "List Item",
+			"figma": {
+				"nodeId": "957-2279",
+				"nodeName": "list__item",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=957-2279"
+			},
+			"properties": {
+				"size": [
+					"sm",
+					"md"
+				],
+				"is-selected": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-list-item",
+				"file": "src/components/lists-and-menus/list/rr-list-item.ts",
+				"className": "RRListItem"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "Page: Sticky Area Background",
+			"figma": {
+				"nodeId": "1171-6495",
+				"nodeName": "page__sticky-area-background",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1171-6495"
+			},
+			"properties": {
+				"position": [
+					"top",
+					"bottom"
+				],
+				"tinted": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-page-sticky-area-background",
+				"file": "src/components/layout/page/page-sticky-area-background/rr-page-sticky-area-background.ts",
+				"className": "RRPageStickyAreaBackground"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "Sheet",
+			"figma": {
+				"nodeId": "108-25937",
+				"nodeName": "sheet",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=108-25937"
+			},
+			"status": "not-implemented",
+			"note": "Sheet composes top-title-bar, page, toolbar, and simple-section — implement after those sub-components exist"
+		},
+		{
+			"name": "Spacer",
+			"figma": {
+				"nodeId": "48-2234",
+				"nodeName": "spacer",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=48-2234"
+			},
+			"properties": {
+				"size": [
+					"2",
+					"4",
+					"6",
+					"8",
+					"10",
+					"12",
+					"16",
+					"20",
+					"24",
+					"28",
+					"32",
+					"40",
+					"44",
+					"48",
+					"56",
+					"64",
+					"80",
+					"96",
+					"m",
+					"flexible"
+				],
+				"direction": [
+					"horizontal",
+					"vertical",
+					"both"
+				],
+				"container": [
+					"s",
+					"m",
+					"l",
+					"all"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-spacer",
+				"file": "src/components/layout/spacer/rr-spacer.ts",
+				"className": "RRSpacer"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "Spacer Cell",
+			"figma": {
+				"nodeId": "236-41413",
+				"nodeName": "spacer-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41413"
+			},
+			"properties": {
+				"size": [
+					"2",
+					"4",
+					"6",
+					"8",
+					"10",
+					"12",
+					"16",
+					"20",
+					"24",
+					"28",
+					"32",
+					"40",
+					"44",
+					"48",
+					"56",
+					"64",
+					"80",
+					"96",
+					"m",
+					"flexible"
+				],
+				"container": [
+					"s",
+					"m",
+					"l",
+					"all"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-spacer-cell",
+				"file": "src/components/lists-and-menus/spacer-cell/rr-spacer-cell.ts",
+				"className": "RRSpacerCell"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "Text Field",
+			"figma": {
+				"nodeId": "192-37504",
+				"nodeName": "text-field",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=192-37504"
+			},
+			"implementation": {
+				"tagName": "rr-text-field",
+				"file": "src/components/inputs/text-field/rr-text-field.ts",
+				"className": "RRTextField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Text Field Cell",
+			"figma": {
+				"nodeId": "1019-3941",
+				"nodeName": "text-field-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1019-3941"
+			},
+			"implementation": {
+				"tagName": "rr-text-field-cell",
+				"file": "src/components/lists-and-menus/text-field-cell/rr-text-field-cell.ts",
+				"className": "RRTextFieldCell"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Title Cell",
+			"figma": {
+				"nodeId": "1464:4047",
+				"nodeName": "title-cell",
+				"pageId": "0:1",
+				"pageName": "Lists",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1464-4047",
+				"note": "Node ID changed from 236:41079 to 1464:4047"
+			},
+			"properties": {
+				"size": [
+					"sm",
+					"md"
+				],
+				"color": [
+					"default",
+					"white"
+				],
+				"horizontal-alignment": [
+					"left",
+					"right"
+				],
+				"vertical-alignment": [
+					"top",
+					"center"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-title-cell",
+				"file": "src/components/lists-and-menus/title-cell/rr-title-cell.ts",
+				"className": "RRTitleCell"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-28"
+		},
+		{
+			"name": "Top Title Bar",
+			"figma": {
+				"nodeId": "1048:2288",
+				"nodeName": "top-title-bar",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1048-2288"
+			},
+			"properties": {
+				"container": ["sm", "md", "lg"],
+				"compact": "boolean",
+				"toolbar": ["default", "custom", "none"]
+			},
+			"implementation": {
+				"tagName": "rr-top-title-bar",
+				"file": "src/components/layout/top-title-bar/rr-top-title-bar.ts",
+				"className": "RRTopTitleBar"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-03"
+		},
+		{
+			"name": "Accessory Cell",
+			"figma": {
+				"nodeId": "1040-4478",
+				"nodeName": "accessory-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1040-4478",
+				"note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
+			},
+			"status": "removed"
+		},
+		{
+			"name": "Background",
+			"figma": {
+				"nodeId": "997-3542",
+				"nodeName": "background",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=997-3542",
+				"note": "Component not found in Figma file as of 2026-02-02 - may have been removed or renamed"
+			},
+			"status": "removed"
+		},
+		{
+			"name": "Checkbox (standalone)",
+			"figma": {
+				"nodeId": "204:38347",
+				"nodeName": "checkbox",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=204-38347",
+				"note": "Standalone checkbox is implemented via rr-checkbox with size='xs' (24x24px)"
+			},
+			"implementation": {
+				"tagName": "rr-checkbox",
+				"file": "src/components/inputs/checkbox/rr-checkbox.ts",
+				"className": "RRCheckbox",
+				"usage": "<rr-checkbox size=\"xs\"></rr-checkbox>"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-02"
+		},
+		{
+			"name": "Checkbox Field",
+			"figma": {
+				"nodeId": "241-2345",
+				"nodeName": "checkbox-field",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241-2345"
+			},
+			"implementation": {
+				"tagName": "rr-checkbox-field",
+				"file": "src/components/inputs/checkbox-field/rr-checkbox-field.ts",
+				"className": "RRCheckboxField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Combo Box Field",
+			"figma": {
+				"nodeId": "362-2435",
+				"nodeName": "combo-box-field",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=362-2435"
+			},
+			"implementation": {
+				"tagName": "rr-combo-box-field",
+				"file": "src/components/inputs/combo-box-field/rr-combo-box-field.ts",
+				"className": "RRComboBoxField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Description Cell",
+			"figma": {
+				"nodeId": "236-41321",
+				"nodeName": "description-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41321"
+			},
+			"status": "implemented",
+			"implementation": {
+				"tagName": "rr-description-cell",
+				"file": "src/components/lists-and-menus/description-cell/rr-description-cell.ts",
+				"className": "RRDescriptionCell"
+			},
+			"lastUpdated": "2025-02-12"
+		},
+		{
+			"name": "Document Tab Bar: Item",
+			"figma": {
+				"nodeId": "38-784",
+				"nodeName": "document-tab-bar__item",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=38-784"
+			},
+			"implementation": {
+				"tagName": "rr-document-tab-bar-item",
+				"file": "src/components/navigation/document-tab-bar-item/rr-document-tab-bar-item.ts",
+				"className": "RRDocumentTabBarItem"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Form Field",
+			"figma": {
+				"nodeId": "376-2395",
+				"nodeName": "form-field",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=376-2395"
+			},
+			"implementation": {
+				"tagName": "rr-form-field",
+				"file": "src/components/control-groups/form-field/rr-form-field.ts",
+				"className": "RRFormField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Icon Button (standalone)",
+			"figma": {
+				"nodeId": "31:75",
+				"nodeName": "icon-button",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=31-75"
+			},
+			"implementation": {
+				"tagName": "rr-icon-button",
+				"file": "src/components/actions/icon-button/rr-icon-button.ts",
+				"className": "RRIconButton"
+			},
+			"status": "implemented",
+			"lastUpdated": "2025-02-02"
+		},
+		{
+			"name": "Icon Cell",
+			"figma": {
+				"nodeId": "236-41365",
+				"nodeName": "icon-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41365"
+			},
+			"status": "implemented",
+			"implementation": {
+				"tagName": "rr-icon-cell",
+				"file": "src/components/lists-and-menus/icon-cell/rr-icon-cell.ts",
+				"className": "RRIconCell"
+			},
+			"lastUpdated": "2025-02-12"
+		},
+		{
+			"name": "Input Field Button",
+			"figma": {
+				"nodeId": "272-353",
+				"nodeName": "input-field-button",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=272-353"
+			},
+			"implementation": {
+				"tagName": "rr-input-field-button",
+				"file": "src/components/inputs/input-field-button/rr-input-field-button.ts",
+				"className": "RRInputFieldButton"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Menu Bar: Menu Item",
+			"figma": {
+				"nodeId": "87-6523",
+				"nodeName": "menu-bar__menu-item",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=87-6523"
+			},
+			"implementation": {
+				"tagName": "rr-menu-bar-item",
+				"file": "src/components/navigation/menu-bar/rr-menu-bar.ts",
+				"className": "RRMenuBarItem"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-03-05"
+		},
+		{
+			"name": "Menu Item",
+			"figma": {
+				"nodeId": "331-1456",
+				"nodeName": "menu-item",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=331-1456"
+			},
+			"implementation": {
+				"tagName": "rr-standalone-menu-item",
+				"file": "src/components/lists-and-menus/menu-item/rr-standalone-menu-item.ts",
+				"className": "RRStandaloneMenuItem"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Number Field",
+			"figma": {
+				"nodeId": "266-344",
+				"nodeName": "number-field",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=266-344"
+			},
+			"implementation": {
+				"tagName": "rr-number-field",
+				"file": "src/components/inputs/number-field/rr-number-field.ts",
+				"className": "RRNumberField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Radio Button (standalone)",
+			"figma": {
+				"nodeId": "219:38433",
+				"nodeName": "radio-button",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=219-38433",
+				"note": "Standalone radio button is implemented via rr-radio with size='xs' (24x24px)"
+			},
+			"implementation": {
+				"tagName": "rr-radio",
+				"file": "src/components/inputs/radio/rr-radio.ts",
+				"className": "RRRadio",
+				"usage": "<rr-radio size=\"xs\"></rr-radio>"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-02"
+		},
+		{
+			"name": "Radio Button Field",
+			"figma": {
+				"nodeId": "241-2382",
+				"nodeName": "radio-button-field",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=241-2382"
+			},
+			"implementation": {
+				"tagName": "rr-radio-button-field",
+				"file": "src/components/inputs/radio-button-field/rr-radio-button-field.ts",
+				"className": "RRRadioButtonField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Search Field",
+			"figma": {
+				"nodeId": "243-3235",
+				"nodeName": "search-field",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=243-3235"
+			},
+			"implementation": {
+				"tagName": "rr-search-field",
+				"file": "src/components/inputs/search-field/rr-search-field.ts",
+				"className": "RRSearchField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Segmented Control",
+			"figma": {
+				"nodeId": "336:2899",
+				"nodeName": "segmented-control",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=336-2899"
+			},
+			"properties": {
+				"size": [
+					"sm",
+					"md"
+				],
+				"content-type": [
+					"text",
+					"icons"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-segmented-control",
+				"file": "src/components/inputs/segmented-control/rr-segmented-control.ts",
+				"className": "RRSegmentedControl"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-02"
+		},
+		{
+			"name": "Segmented Control: Item",
+			"figma": {
+				"nodeId": "262:3512",
+				"nodeName": "segmented-control__item",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=262-3512"
+			},
+			"properties": {
+				"size": [
+					"sm",
+					"md"
+				],
+				"is-selected": "boolean",
+				"content-type": [
+					"text",
+					"icon"
+				]
+			},
+			"implementation": {
+				"tagName": "rr-segmented-control-item",
+				"file": "src/components/inputs/segmented-control/rr-segmented-control-item.ts",
+				"className": "RRSegmentedControlItem"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-02"
+		},
+		{
+			"name": "Split View: Divider",
+			"figma": {
+				"nodeId": "39-927",
+				"nodeName": "split-view__divider",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-927",
+				"note": "Same node ID as Divider component (39-927) - implemented as rr-divider"
+			},
+			"implementation": {
+				"tagName": "rr-divider",
+				"file": "src/components/layout/divider/rr-divider.ts",
+				"className": "RRDivider"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Stepper",
+			"figma": {
+				"nodeId": "236:39011",
+				"nodeName": "stepper",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-39011"
+			},
+			"properties": {
+				"size": [
+					"sm",
+					"md"
+				],
+				"value": "number",
+				"min": "number",
+				"max": "number",
+				"step": "number",
+				"disabled": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-stepper",
+				"file": "src/components/inputs/stepper/rr-stepper.ts",
+				"className": "RRStepper"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-02"
+		},
+		{
+			"name": "Stepper Cell",
+			"figma": {
+				"nodeId": "236-41344",
+				"nodeName": "stepper-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41344"
+			},
+			"status": "implemented",
+			"implementation": {
+				"tagName": "rr-stepper-cell",
+				"file": "src/components/lists-and-menus/stepper-cell/rr-stepper-cell.ts",
+				"className": "RRStepperCell"
+			},
+			"lastUpdated": "2025-02-12"
+		},
+		{
+			"name": "Switch (standalone)",
+			"figma": {
+				"nodeId": "232:38506",
+				"nodeName": "switch",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=232-38506",
+				"note": "Standalone switch with sizes 'sm' (44x24) and 'md' (56x32)"
+			},
+			"properties": {
+				"size": [
+					"sm",
+					"md"
+				],
+				"is-selected": "boolean",
+				"is-disabled": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-switch",
+				"file": "src/components/inputs/switch/rr-switch.ts",
+				"className": "RRSwitch"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-02"
+		},
+		{
+			"name": "Switch Field",
+			"figma": {
+				"nodeId": "348-2635",
+				"nodeName": "switch-field",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=348-2635"
+			},
+			"implementation": {
+				"tagName": "rr-switch-field",
+				"file": "src/components/inputs/switch-field/rr-switch-field.ts",
+				"className": "RRSwitchField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-01-30"
+		},
+		{
+			"name": "Tab Bar: Item",
+			"figma": {
+				"nodeId": "1366:43604",
+				"nodeName": "tab-bar__item",
+				"pageId": "19:6",
+				"pageName": "Navigation",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43604",
+				"note": "Node ID changed from 987:1355 to 1366:43604"
+			},
+			"implementation": {
+				"tagName": "rr-tab-bar-item",
+				"file": "src/components/navigation/tab-bar/rr-tab-bar-item.ts",
+				"className": "RRTabBarItem"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Text Cell",
+			"figma": {
+				"nodeId": "236-41152",
+				"nodeName": "text-cell",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=236-41152"
+			},
+			"status": "implemented",
+			"implementation": {
+				"tagName": "rr-text-cell",
+				"file": "src/components/lists-and-menus/text-cell/rr-text-cell.ts",
+				"className": "RRTextCell"
+			},
+			"lastUpdated": "2025-02-12"
+		},
+		{
+			"name": "Token",
+			"figma": {
+				"nodeId": "354:3680",
+				"nodeName": "token",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=354-3680"
+			},
+			"properties": {
+				"control": [
+					"none",
+					"dismiss",
+					"picker"
+				],
+				"menu-is-open": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-token",
+				"file": "src/components/inputs/token/rr-token.ts",
+				"className": "RRToken"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-02"
+		},
+		{
+			"name": "Top Navigation Bar: Logo",
+			"figma": {
+				"nodeId": "22:28",
+				"nodeName": "top-navigation-bar__logo",
+				"pageId": "19:6",
+				"pageName": "Navigation",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=22-28"
+			},
+			"implementation": {
+				"tagName": "rr-nav-logo",
+				"file": "src/components/navigation/top-navigation-bar/rr-nav-logo.ts",
+				"className": "RRNavLogo"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Timeline Track Cell",
+			"figma": {
+				"nodeId": "1404:10417",
+				"nodeName": "timeline-track-cell",
+				"pageId": "0:1",
+				"pageName": "Lists",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1404-10417"
+			},
+			"status": "implemented",
+			"note": "New component added 2026-02-02",
+			"implementation": {
+				"tagName": "rr-timeline-track-cell",
+				"file": "src/components/lists-and-menus/timeline-track-cell/rr-timeline-track-cell.ts",
+				"className": "RRTimelineTrackCell"
+			},
+			"lastUpdated": "2025-02-12"
+		},
+		{
+			"name": "Flexible Spacer Cell",
+			"figma": {
+				"nodeId": "1061:3456",
+				"nodeName": "flexible-spacer-cell",
+				"pageId": "0:1",
+				"pageName": "Lists",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1061-3456",
+				"note": "Covered by rr-spacer-cell with size=\"flexible\""
+			},
+			"implementation": {
+				"tagName": "rr-spacer-cell",
+				"file": "src/components/lists-and-menus/spacer-cell/rr-spacer-cell.ts",
+				"className": "RRSpacerCell",
+				"usage": "<rr-spacer-cell size=\"flexible\"></rr-spacer-cell>"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "List Item Drag Handle Cell",
+			"figma": {
+				"nodeId": "1342:3143",
+				"nodeName": "list-item-drag-handle-cell",
+				"pageId": "0:1",
+				"pageName": "Lists",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1342-3143"
+			},
+			"status": "implemented",
+			"note": "New component added 2026-02-02",
+			"implementation": {
+				"tagName": "rr-list-item-drag-handle-cell",
+				"file": "src/components/lists-and-menus/list-item-drag-handle-cell/rr-list-item-drag-handle-cell.ts",
+				"className": "RRListItemDragHandleCell"
+			},
+			"lastUpdated": "2025-02-12"
+		},
+		{
+			"name": "List Item Drag Handle",
+			"figma": {
+				"nodeId": "1342:3114",
+				"nodeName": "list-item-drag-handle",
+				"pageId": "0:1",
+				"pageName": "Lists",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1342-3114"
+			},
+			"status": "implemented",
+			"note": "New component added 2026-02-02",
+			"implementation": {
+				"tagName": "rr-list-item-drag-handle",
+				"file": "src/components/lists-and-menus/list-item-drag-handle/rr-list-item-drag-handle.ts",
+				"className": "RRListItemDragHandle"
+			},
+			"lastUpdated": "2025-02-12"
+		},
+		{
+			"name": "Tab Bar",
+			"figma": {
+				"nodeId": "1366:43642",
+				"nodeName": "tab-bar",
+				"pageId": "19:6",
+				"pageName": "Navigation",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1366-43642"
+			},
+			"implementation": {
+				"tagName": "rr-tab-bar",
+				"file": "src/components/navigation/tab-bar/rr-tab-bar.ts",
+				"className": "RRTabBar"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Pagination",
+			"figma": {
+				"nodeId": "1353:3779",
+				"nodeName": "pagination",
+				"pageId": "19:6",
+				"pageName": "Navigation",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1353-3779"
+			},
+			"implementation": {
+				"tagName": "rr-pagination",
+				"file": "src/components/navigation/pagination/rr-pagination.ts",
+				"className": "RRPagination"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Split Button",
+			"figma": {
+				"nodeId": "1304:2775",
+				"nodeName": "split-button",
+				"pageId": "19:3",
+				"pageName": "Actions",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1304-2775"
+			},
+			"implementation": {
+				"tagName": "rr-split-button",
+				"file": "src/components/actions/split-button/rr-split-button.ts",
+				"className": "RRSplitButton"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Password Field",
+			"figma": {
+				"nodeId": "1380:5781",
+				"nodeName": "password-field",
+				"pageId": "19:4",
+				"pageName": "Inputs",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-5781"
+			},
+			"implementation": {
+				"tagName": "rr-password-field",
+				"file": "src/components/inputs/password-field/rr-password-field.ts",
+				"className": "RRPasswordField"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Toolbar",
+			"figma": {
+				"nodeId": "1380:3538",
+				"nodeName": "toolbar",
+				"pageId": "20:177",
+				"pageName": "Control groups",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1380-3538"
+			},
+			"implementation": {
+				"tagName": "rr-toolbar",
+				"file": "src/components/control-groups/toolbar/rr-toolbar.ts",
+				"className": "RRToolbar"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Toolbar: Divider",
+			"figma": {
+				"nodeId": "1356:13969",
+				"nodeName": "toolbar__divider",
+				"pageId": "20:177",
+				"pageName": "Control groups",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1356-13969"
+			},
+			"implementation": {
+				"tagName": "rr-toolbar-divider",
+				"file": "src/components/control-groups/toolbar-divider/rr-toolbar-divider.ts",
+				"className": "RRToolbarDivider"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Toolbar: Title Group",
+			"figma": {
+				"nodeId": "1406:12871",
+				"nodeName": "toolbar__title-group",
+				"pageId": "20:177",
+				"pageName": "Control groups",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1406-12871"
+			},
+			"implementation": {
+				"tagName": "rr-toolbar-title-group",
+				"file": "src/components/control-groups/toolbar-title-group/rr-toolbar-title-group.ts",
+				"className": "RRToolbarTitleGroup"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Button Group",
+			"figma": {
+				"nodeId": "1339:3762",
+				"nodeName": "button-group",
+				"pageId": "20:177",
+				"pageName": "Control groups",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1339-3762"
+			},
+			"implementation": {
+				"tagName": "rr-button-group",
+				"file": "src/components/control-groups/button-group/rr-button-group.ts",
+				"className": "RRButtonGroup"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Button Bar",
+			"figma": {
+				"nodeId": "1263:6841",
+				"nodeName": "button-bar",
+				"pageId": "20:177",
+				"pageName": "Control groups",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263-6841"
+			},
+			"implementation": {
+				"tagName": "rr-button-bar",
+				"file": "src/components/control-groups/button-bar/rr-button-bar.ts",
+				"className": "RRButtonBar"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Button Bar: Divider",
+			"figma": {
+				"nodeId": "1263:6851",
+				"nodeName": "button-bar__divider",
+				"pageId": "20:177",
+				"pageName": "Control groups",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1263-6851"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Tooltip",
+			"figma": {
+				"nodeId": "1398:10237",
+				"nodeName": "tooltip",
+				"pageId": "19:9",
+				"pageName": "Overlays",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10237"
+			},
+			"implementation": {
+				"tagName": "rr-tooltip",
+				"file": "src/components/overlays/tooltip/rr-tooltip.ts",
+				"className": "RRTooltip"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Tooltip: Arrow",
+			"figma": {
+				"nodeId": "1398:10227",
+				"nodeName": "tooltip__arrow",
+				"pageId": "19:9",
+				"pageName": "Overlays",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1398-10227"
+			},
+			"implementation": {
+				"tagName": "rr-tooltip-arrow",
+				"file": "src/components/overlays/tooltip/rr-tooltip-arrow.ts",
+				"className": "RRTooltipArrow"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Dialog",
+			"figma": {
+				"nodeId": "1506:5969",
+				"nodeName": "modal-dialog",
+				"pageId": "19:9",
+				"pageName": "Overlays",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1506-5969"
+			},
+			"implementation": {
+				"tagName": "rr-dialog",
+				"file": "src/components/overlays/dialog/rr-dialog.ts",
+				"className": "RRDialog"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Alert",
+			"figma": {
+				"nodeId": "1340:4678",
+				"nodeName": "alert",
+				"pageId": "19:9",
+				"pageName": "Overlays",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1340-4678"
+			},
+			"status": "not-implemented",
+			"note": "Alert is a preconfigured dialog instance — implement as part of rr-dialog"
+		},
+		{
+			"name": "Window",
+			"figma": {
+				"nodeId": "1261:3627",
+				"nodeName": "window",
+				"pageId": "19:9",
+				"pageName": "Overlays",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1261-3627"
+			},
+			"status": "not-implemented",
+			"note": "Window composes page, top-title-bar, and toolbar — implement after those sub-components exist"
+		},
+		{
+			"name": "Page",
+			"figma": {
+				"nodeId": "1255:1052",
+				"nodeName": "page",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1052"
+			},
+			"properties": {
+				"header-sticky": "boolean",
+				"footer-sticky": "boolean",
+				"tinted": "boolean"
+			},
+			"implementation": {
+				"tagName": "rr-page",
+				"file": "src/components/layout/page/rr-page.ts",
+				"className": "RRPage"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-03"
+		},
+		{
+			"name": "Collection",
+			"figma": {
+				"nodeId": "1435:29304",
+				"nodeName": "collection",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1435-29304"
+			},
+			"properties": {
+				"layout": ["grid", "list", "horizontal-scroll"],
+				"title": "string",
+				"show-load-more": "boolean",
+				"load-more-label": "string"
+			},
+			"implementation": {
+				"tagName": "rr-collection",
+				"file": "src/components/layout/collection/rr-collection.ts",
+				"className": "RRCollection"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-03"
+		},
+		{
+			"name": "Box (Figma)",
+			"figma": {
+				"nodeId": "1451:33442",
+				"nodeName": "box",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1451-33442",
+				"note": "Covered by existing rr-box component. On-tinted variant can be added as attribute."
+			},
+			"implementation": {
+				"tagName": "rr-box",
+				"file": "src/components/layout/box/rr-box.ts",
+				"className": "RRBox"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-12"
+		},
+		{
+			"name": "Simple Section",
+			"figma": {
+				"nodeId": "1255:1471",
+				"nodeName": "simple-section",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1471"
+			},
+			"properties": {
+				"container": ["sm", "md", "lg"]
+			},
+			"implementation": {
+				"tagName": "rr-simple-section",
+				"file": "src/components/layout/page-sections/rr-simple-section.ts",
+				"className": "RRSimpleSection"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-16"
+		},
+		{
+			"name": "Full Bleed Section",
+			"figma": {
+				"nodeId": "1255:1496",
+				"nodeName": "full-bleed-section",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1496"
+			},
+			"properties": {
+				"container": ["sm", "md", "lg"]
+			},
+			"implementation": {
+				"tagName": "rr-full-bleed-section",
+				"file": "src/components/layout/page-sections/rr-full-bleed-section.ts",
+				"className": "RRFullBleedSection"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-16"
+		},
+		{
+			"name": "One Third Two Thirds Section",
+			"figma": {
+				"nodeId": "1255:1530",
+				"nodeName": "one-third-two-thirds-section",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1530"
+			},
+			"properties": {
+				"container": ["sm", "md", "lg"]
+			},
+			"implementation": {
+				"tagName": "rr-one-third-two-thirds-section",
+				"file": "src/components/layout/page-sections/rr-one-third-two-thirds-section.ts",
+				"className": "RROneThirdTwoThirdsSection"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-16"
+		},
+		{
+			"name": "Two Thirds One Third Section",
+			"figma": {
+				"nodeId": "1255:1623",
+				"nodeName": "two-thirds-one-third-section",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1623"
+			},
+			"properties": {
+				"container": ["sm", "md", "lg"]
+			},
+			"implementation": {
+				"tagName": "rr-two-thirds-one-third-section",
+				"file": "src/components/layout/page-sections/rr-two-thirds-one-third-section.ts",
+				"className": "RRTwoThirdsOneThirdSection"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-16"
+		},
+		{
+			"name": "One Half One Half Section",
+			"figma": {
+				"nodeId": "1255:1815",
+				"nodeName": "one-half-one-half-section",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1255-1815"
+			},
+			"properties": {
+				"container": ["sm", "md", "lg"]
+			},
+			"implementation": {
+				"tagName": "rr-one-half-one-half-section",
+				"file": "src/components/layout/page-sections/rr-one-half-one-half-section.ts",
+				"className": "RROneHalfOneHalfSection"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-16"
+		},
+		{
+			"name": "Lister Section",
+			"figma": {
+				"nodeId": "1449:33380",
+				"nodeName": "lister-section",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1449-33380"
+			},
+			"properties": {
+				"container": ["sm", "md", "lg"]
+			},
+			"implementation": {
+				"tagName": "rr-lister-section",
+				"file": "src/components/layout/page-sections/rr-lister-section.ts",
+				"className": "RRListerSection"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-16"
+		},
+		{
+			"name": "Document Tab Bar",
+			"figma": {
+				"nodeId": "39:857",
+				"nodeName": "document-tab-bar",
+				"pageId": "19:6",
+				"pageName": "Navigation",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=39-857"
+			},
+			"implementation": {
+				"tagName": "rr-document-tab-bar",
+				"file": "src/components/navigation/document-tab-bar/rr-document-tab-bar.ts",
+				"className": "RRDocumentTabBar"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-17"
+		},
+		{
+			"name": "Rich Text",
+			"figma": {
+				"nodeId": "1451:33454",
+				"nodeName": "rich-text",
+				"pageId": "39:908",
+				"pageName": "Layout",
+				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1451-33454"
+			},
+			"properties": {
+				"container": ["sm", "md", "lg"]
+			},
+			"implementation": {
+				"tagName": "rr-rich-text",
+				"file": "src/components/content/rich-text/rr-rich-text.ts",
+				"className": "RRRichText"
+			},
+			"status": "implemented",
+			"lastUpdated": "2026-02-17"
+		}
+	]
 }
