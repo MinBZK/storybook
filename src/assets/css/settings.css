@@ -724,11 +724,11 @@
 	--semantics-buttons-accent-transparent-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
 	--semantics-buttons-accent-transparent-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 
-	--semantics-buttons-danger-tinted-background-color: light-dark(var(--primitives-color-danger-100), var(--primitives-color-danger-150));
+	--semantics-buttons-danger-tinted-background-color: light-dark(var(--primitives-color-danger-75), var(--primitives-color-danger-150));
 	--semantics-buttons-danger-tinted-content-color: light-dark(var(--primitives-color-danger-650), var(--primitives-color-danger-700));
-	--semantics-buttons-danger-tinted-is-hovered-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-200));
+	--semantics-buttons-danger-tinted-is-hovered-background-color: light-dark(var(--primitives-color-danger-100), var(--primitives-color-danger-200));
 	--semantics-buttons-danger-tinted-is-hovered-content-color: light-dark(var(--primitives-color-danger-700), var(--primitives-color-danger-750));
-	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-200), var(--primitives-color-danger-250));
+	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-250));
 	--semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-750), var(--primitives-color-danger-800));
 
 
