@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
 import { menuStyles, menuItemStyles, menuDividerStyles } from './rr-menu.styles.js';
 import { menuTemplate, menuItemTemplate, menuDividerTemplate } from './rr-menu.template.js';
@@ -10,7 +10,6 @@ import '../../content/icon/rr-icon.js';
 
 // # rr-menu-divider
 
-@customElement('rr-menu-divider')
 export class RRMenuDivider extends LitElement {
 	static override styles = menuDividerStyles;
 
@@ -21,7 +20,6 @@ export class RRMenuDivider extends LitElement {
 
 // # rr-menu-item
 
-@customElement('rr-menu-item')
 export class RRMenuItem extends LitElement {
 	static override styles = menuItemStyles;
 
@@ -55,15 +53,12 @@ export class RRMenuItem extends LitElement {
 
 // # rr-menu
 
-@customElement('rr-menu')
 export class RRMenu extends LitElement {
 	static override styles = menuStyles;
 
-	// String ID for light DOM usage
 	@property({ type: String, reflect: true })
 	anchor = '';
 
-	// Direct element reference — takes priority over anchor string
 	@property({ attribute: false })
 	anchorElement: Element | null = null;
 
@@ -119,7 +114,8 @@ export class RRMenu extends LitElement {
 		const items = this._getItems();
 		if (items.length === 0) return;
 
-		const focused = this.querySelector('rr-menu-item:focus-within') as RRMenuItem | null;
+		const path = event.composedPath();
+		const focused = items.find(item => path.includes(item) || path.includes(item.shadowRoot as unknown as EventTarget)) ?? null;
 		const index = focused ? items.indexOf(focused) : -1;
 
 		switch (event.key) {
@@ -158,14 +154,12 @@ export class RRMenu extends LitElement {
 	private _updateDividerVisibility(): void {
 		const children = Array.from(this.children) as Element[];
 
-		// Reset all dividers
 		children.forEach(el => {
 			if (el.tagName.toLowerCase() === 'rr-menu-divider') {
 				el.removeAttribute('hidden');
 			}
 		});
 
-		// Hide dividers that are first, last, or adjacent to another divider
 		const visible = children.filter(el => !el.hasAttribute('hidden'));
 		visible.forEach((el, index) => {
 			if (el.tagName.toLowerCase() !== 'rr-menu-divider') return;
