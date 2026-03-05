@@ -167,22 +167,7 @@ export class RRToolbar extends LitElement {
 		if (!this._menu) return;
 		this._menu.innerHTML = '';
 
-		const endItems = this._endChildren.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
-		const startItems = this._startChildren.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
-		const centerItems = this._centerChildren.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
-
-		const prioritized = [
-			...endItems.map((item, index) => ({ item, areaOrder: 0, index })),
-			...centerItems.map((item, index) => ({ item, areaOrder: 1, index })),
-			...startItems.map((item, index) => ({ item, areaOrder: 2, index })),
-		]
-			.sort((a, b) => {
-				if (a.item.priority !== b.item.priority) return a.item.priority - b.item.priority;
-				if (a.areaOrder !== b.areaOrder) return a.areaOrder - b.areaOrder;
-				return b.index - a.index;
-			})
-			.map(({ item }) => item)
-			.reverse();
+		const prioritized = [...this._getPrioritizedItems()].reverse();
 
 		prioritized.forEach(child => {
 			if (!this._overflowIds.has(child.id)) return;
