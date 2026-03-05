@@ -90,27 +90,37 @@ export function template(
 	rightSpacerZero: boolean,
 	isSoloFluidItem: boolean,
 	hasOverflow: boolean,
+	menuOpen: boolean,
+	label: string,
 ) {
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 
 	return html`
-		<div class="toolbar__items" role="toolbar">
-			${renderChildren(startChildren, allChildren, overflowIds)}
-			${hasCenterChildren ? html`
-				${leftSpacerZero ? nothing : html`<div class="toolbar__left-spacer"></div>`}
-				${renderChildren(centerChildren, allChildren, overflowIds)}
-				${rightSpacerZero ? nothing : html`<div class="toolbar__right-spacer"></div>`}
-			` : isSoloFluidItem ? nothing : html`
-				<div class="toolbar__flexible-spacer"></div>
-			`}
-			${renderChildren(endChildren, allChildren, overflowIds)}
-		</div>
-		<div class="toolbar__overflow-button ${hasOverflow ? '' : 'is-hidden'}">
-			<rr-icon-button size=${size}>
-				<rr-icon name="ellipsis"></rr-icon>
-				Meer
-			</rr-icon-button>
-			<span class="toolbar__item-label">Meer</span>
+		<div class="toolbar"
+			role="toolbar"
+			aria-label=${label || nothing}
+		>
+			<div class="toolbar__items">
+				${renderChildren(startChildren, allChildren, overflowIds)}
+				${hasCenterChildren ? html`
+					${leftSpacerZero ? nothing : html`<div class="toolbar__left-spacer"></div>`}
+					${renderChildren(centerChildren, allChildren, overflowIds)}
+					${rightSpacerZero ? nothing : html`<div class="toolbar__right-spacer"></div>`}
+				` : isSoloFluidItem ? nothing : html`
+					<div class="toolbar__flexible-spacer"></div>
+				`}
+				${renderChildren(endChildren, allChildren, overflowIds)}
+			</div>
+			<div class="toolbar__overflow-button ${hasOverflow ? '' : 'is-hidden'}">
+				<rr-icon-button size=${size}
+					aria-haspopup="menu"
+					aria-expanded=${menuOpen ? 'true' : 'false'}
+				>
+					<rr-icon name="ellipsis"></rr-icon>
+					Meer
+				</rr-icon-button>
+				<span class="toolbar__item-label">Meer</span>
+			</div>
 		</div>
 	`;
 }

@@ -16,7 +16,7 @@ export default {
 			options: ['sm', 'md'],
 			description: 'Toolbar size',
 		},
-		showLabels: {
+		showItemLabels: {
 			control: 'boolean',
 			description: 'Show labels below toolbar items',
 		},
@@ -31,11 +31,11 @@ const resizable = (content) => html`
 	</p>
 `;
 export const Default = {
-	args: { size: 'md', showLabels: false },
+	args: { size: 'md', showItemLabels: false },
 	render: (args) => resizable(html`
 		<rr-toolbar
 			size=${args.size}
-			?show-labels=${args.showLabels}
+			?show-item-labels=${args.showItemLabels}
 		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Vorige/Volgende">
@@ -70,11 +70,11 @@ export const Default = {
 	`),
 };
 export const WithLabels = {
-	args: { size: 'md', showLabels: true },
+	args: { size: 'md', showItemLabels: true },
 	render: (args) => resizable(html`
 		<rr-toolbar
 			size=${args.size}
-			?show-labels=${args.showLabels}
+			?show-item-labels=${args.showItemLabels}
 		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Vet">
@@ -120,11 +120,11 @@ export const WithLabels = {
 	`),
 };
 export const WithTitleGroup = {
-	args: { size: 'md', showLabels: false },
+	args: { size: 'md', showItemLabels: false },
 	render: (args) => resizable(html`
 		<rr-toolbar
 			size=${args.size}
-			?show-labels=${args.showLabels}
+			?show-item-labels=${args.showItemLabels}
 		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Terug">
@@ -159,11 +159,11 @@ export const WithTitleGroup = {
 	`),
 };
 export const WithTitleGroupCentered = {
-	args: { size: 'md', showLabels: false },
+	args: { size: 'md', showItemLabels: false },
 	render: (args) => resizable(html`
 		<rr-toolbar
 			size=${args.size}
-			?show-labels=${args.showLabels}
+			?show-item-labels=${args.showItemLabels}
 		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Terug">
@@ -195,11 +195,11 @@ export const WithTitleGroupCentered = {
 	`),
 };
 export const SizeSmall = {
-	args: { size: 'sm', showLabels: false },
+	args: { size: 'sm', showItemLabels: false },
 	render: (args) => resizable(html`
 		<rr-toolbar
 			size=${args.size}
-			?show-labels=${args.showLabels}
+			?show-item-labels=${args.showItemLabels}
 		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Bewerk">
@@ -337,7 +337,7 @@ export const LabelsToggle = {
 				${resizable(html`
 					<rr-toolbar
 						size="md"
-						show-labels
+						show-item-labels
 					>
 						<rr-toolbar-start-area>
 							<rr-toolbar-item label="Vet">

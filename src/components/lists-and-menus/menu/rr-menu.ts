@@ -50,7 +50,7 @@ export class RRMenuItem extends LitElement {
 
 	_handleClick(): void {
 		if (this.disabled) return;
-		this.dispatchEvent(new CustomEvent('rr-select', {
+		this.dispatchEvent(new CustomEvent('select', {
 			bubbles: true,
 			composed: true,
 		}));

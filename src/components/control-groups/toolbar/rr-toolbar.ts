@@ -1,9 +1,18 @@
+/**
+ * RegelRecht Toolbar Component (Lit + TypeScript)
+ *
+ * @element rr-toolbar
+ * @attr {string} size - Toolbar size, propagated to all child controls: 'sm' | 'md' (default: 'md')
+ * @attr {boolean} show-item-labels - When true, shows a text label below each toolbar item and the overflow button
+ * @attr {string} label - Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page
+ *
+ * @slot - Place area elements (rr-toolbar-start-area, rr-toolbar-center-area, rr-toolbar-end-area, rr-toolbar-overflow-area) here
+ */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './rr-toolbar.styles.js';
 import { template, type ToolbarChild } from './rr-toolbar.template.js';
-import type { RRMenu } from '../../lists-and-menus/menu/rr-menu.js';
-import '../../lists-and-menus/menu/rr-menu.js';
+import { RRMenu } from '../../lists-and-menus/menu/rr-menu.js';
 
 // # Marker elements
 if (!customElements.get('rr-toolbar-start-area')) {
@@ -34,6 +43,7 @@ if (!customElements.get('rr-toolbar-title-group')) {
 type Size = 'sm' | 'md';
 
 // # Component
+
 @customElement('rr-toolbar')
 export class RRToolbar extends LitElement {
 	static override styles = styles;
@@ -41,8 +51,14 @@ export class RRToolbar extends LitElement {
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
-	@property({ type: Boolean, reflect: true, attribute: 'show-labels' })
-	showLabels = false;
+	@property({ type: Boolean, reflect: true, attribute: 'show-item-labels' })
+	showItemLabels = false;
+
+	@property({ type: String, reflect: true })
+	label = '';
+
+	@state()
+	private _menuOpen = false;
 
 	@state()
 	private _startChildren: ToolbarChild[] = [];
@@ -151,15 +167,18 @@ export class RRToolbar extends LitElement {
 		if (this._menu) return;
 		const menu = document.createElement('rr-menu') as RRMenu;
 		menu.setAttribute('placement', 'bottom-end');
+		menu.addEventListener('toggle', (event: Event) => {
+			this._menuOpen = (event as ToggleEvent).newState === 'open';
+		});
 		document.body.appendChild(menu);
 		this._menu = menu;
 	}
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
-		const moreButton = this.shadowRoot?.querySelector('.toolbar__overflow-button rr-icon-button') as HTMLElement | null;
-		if (moreButton) {
-			this._menu.anchorElement = moreButton;
+		const overflowButton = this.shadowRoot?.querySelector('.toolbar__overflow-button rr-icon-button') as HTMLElement | null;
+		if (overflowButton) {
+			this._menu.anchorElement = overflowButton;
 		}
 	}
 
@@ -175,12 +194,6 @@ export class RRToolbar extends LitElement {
 			child.overflowItems.forEach(el => {
 				const clone = el.cloneNode(true) as Element;
 				clone.removeAttribute('slot');
-				clone.addEventListener('rr-select', () => {
-					el.dispatchEvent(new CustomEvent('rr-select', {
-						bubbles: true,
-						composed: true,
-					}));
-				});
 				this._menu!.appendChild(clone);
 			});
 		});
@@ -188,12 +201,6 @@ export class RRToolbar extends LitElement {
 		if (this._pinnedOverflowItems.length > 0) {
 			this._pinnedOverflowItems.forEach(el => {
 				const clone = el.cloneNode(true) as Element;
-				clone.addEventListener('rr-select', () => {
-					el.dispatchEvent(new CustomEvent('rr-select', {
-						bubbles: true,
-						composed: true,
-					}));
-				});
 				this._menu!.appendChild(clone);
 			});
 		}
@@ -282,10 +289,10 @@ export class RRToolbar extends LitElement {
 		const itemGap = parseFloat(getComputedStyle(itemsEl).gap ?? '0');
 		const hostGap = parseFloat(getComputedStyle(this).gap ?? '0');
 
-		const moreButtonContainerEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
-		const moreButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button rr-icon-button') as HTMLElement | null;
-		const overflowButtonWidth = (moreButtonContainerEl && !moreButtonContainerEl.classList.contains('is-hidden') && moreButtonEl)
-			? moreButtonEl.getBoundingClientRect().width + hostGap
+		const overflowButtonContainerEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
+		const overflowButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button rr-icon-button') as HTMLElement | null;
+		const overflowButtonWidth = (overflowButtonContainerEl && !overflowButtonContainerEl.classList.contains('is-hidden') && overflowButtonEl)
+			? overflowButtonEl.getBoundingClientRect().width + hostGap
 			: 0;
 
 		this.style.setProperty('--rr-toolbar-overflow-button-width', `${overflowButtonWidth}px`);
@@ -319,7 +326,7 @@ export class RRToolbar extends LitElement {
 	}
 
 	private _measureOverflow(itemsEl: HTMLElement): void {
-		const moreButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
+		const overflowButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
 		const allItemEls = Array.from(
 			this.shadowRoot?.querySelectorAll('.toolbar__item[data-child-id]') ?? []
 		) as HTMLElement[];
@@ -348,9 +355,9 @@ export class RRToolbar extends LitElement {
 		});
 
 		if (this._pinnedOverflowItems.length > 0) {
-			moreButtonEl?.classList.remove('is-hidden');
+			overflowButtonEl?.classList.remove('is-hidden');
 		} else {
-			moreButtonEl?.classList.add('is-hidden');
+			overflowButtonEl?.classList.add('is-hidden');
 		}
 		void itemsEl.offsetWidth;
 
@@ -365,7 +372,7 @@ export class RRToolbar extends LitElement {
 			return;
 		}
 
-		moreButtonEl?.classList.remove('is-hidden');
+		overflowButtonEl?.classList.remove('is-hidden');
 		void itemsEl.offsetWidth;
 
 		const prioritized = this._getPrioritizedItems();
@@ -392,7 +399,7 @@ export class RRToolbar extends LitElement {
 		}
 
 		if (newOverflowIds.size === 0 && this._pinnedOverflowItems.length === 0) {
-			moreButtonEl?.classList.add('is-hidden');
+			overflowButtonEl?.classList.add('is-hidden');
 		}
 
 		const remainingVisible = allItemEls.filter(el => !el.classList.contains('is-hidden'));
@@ -535,6 +542,8 @@ export class RRToolbar extends LitElement {
 			this._rightSpacerZero,
 			isSoloFluid,
 			this._pinnedOverflowItems.length > 0 || this._overflowIds.size > 0,
+			this._menuOpen,
+			this.label,
 		);
 	}
 }

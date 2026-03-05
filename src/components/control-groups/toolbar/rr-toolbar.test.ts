@@ -30,16 +30,16 @@ describe('rr-toolbar', () => {
 		expect(el.getAttribute('size')).toBe('sm');
 	});
 
-	it('defaults show-labels to false', async () => {
+	it('defaults show-item-labels to false', async () => {
 		el = await fixture('<rr-toolbar></rr-toolbar>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('show-labels')).toBe(false);
+		expect(el.hasAttribute('show-item-labels')).toBe(false);
 	});
 
-	it('reflects show-labels attribute', async () => {
-		el = await fixture('<rr-toolbar show-labels></rr-toolbar>');
+	it('reflects show-item-labels attribute', async () => {
+		el = await fixture('<rr-toolbar show-item-labels></rr-toolbar>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('show-labels')).toBe(true);
+		expect(el.hasAttribute('show-item-labels')).toBe(true);
 	});
 
 	it('registers marker elements as custom elements', () => {

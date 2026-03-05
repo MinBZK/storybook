@@ -4,9 +4,7 @@ export const styles = css`
 	/* # Host */
 
 	:host {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
+		display: block;
 		font-family: var(--rr-font-family-body);
 		box-sizing: border-box;
 		--_item-width: auto;
@@ -16,14 +14,22 @@ export const styles = css`
 
 	:host([hidden]) {
 		display: none;
+
+	/* # Toolbar */
+
+	.toolbar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		width: 100%;
 	}
 
-	:host([size="sm"]) {
+	:host([size="sm"]) .toolbar {
 		gap: var(--components-toolbar-sm-gap);
 	}
 
-	:host([size="md"]),
-	:host(:not([size])) {
+	:host([size="md"]) .toolbar,
+	:host(:not([size])) .toolbar {
 		gap: var(--components-toolbar-md-gap);
 	}
 
@@ -152,7 +158,7 @@ export const styles = css`
 		white-space: nowrap;
 	}
 
-	:host([show-labels]) .toolbar__item-label {
+	:host([show-item-labels]) .toolbar__item-label {
 		display: block;
 	}
 
@@ -174,7 +180,7 @@ export const styles = css`
 		display: none;
 	}
 
-	:host([show-labels]) .toolbar__overflow-button .toolbar__item-label {
+	:host([show-item-labels]) .toolbar__overflow-button .toolbar__item-label {
 		display: block;
 	}
 

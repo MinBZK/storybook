@@ -201,20 +201,20 @@ describe('rr-menu-item', () => {
 		expect(el.hasAttribute('disabled')).toBe(true);
 	});
 
-	it('dispatches rr-select event on click', async () => {
+	it('dispatches select event on click', async () => {
 		el = await fixture('<rr-menu-item text="Item"></rr-menu-item>');
 		await waitForUpdate(el);
 		let fired = false;
-		el.addEventListener('rr-select', () => { fired = true; });
+		el.addEventListener('select', () => { fired = true; });
 		getButton(el)?.click();
 		expect(fired).toBe(true);
 	});
 
-	it('does not dispatch rr-select when disabled', async () => {
+	it('does not dispatch select when disabled', async () => {
 		el = await fixture('<rr-menu-item text="Item" disabled></rr-menu-item>');
 		await waitForUpdate(el);
 		let fired = false;
-		el.addEventListener('rr-select', () => { fired = true; });
+		el.addEventListener('select', () => { fired = true; });
 		getButton(el)?.click();
 		expect(fired).toBe(false);
 	});
