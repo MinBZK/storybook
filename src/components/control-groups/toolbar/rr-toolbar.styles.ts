@@ -14,6 +14,7 @@ export const styles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
 
 	/* # Toolbar */
 
@@ -22,15 +23,6 @@ export const styles = css`
 		flex-direction: row;
 		align-items: center;
 		width: 100%;
-	}
-
-	:host([size="sm"]) .toolbar {
-		gap: var(--components-toolbar-sm-gap);
-	}
-
-	:host([size="md"]) .toolbar,
-	:host(:not([size])) .toolbar {
-		gap: var(--components-toolbar-md-gap);
 	}
 
 	/* # Items */
