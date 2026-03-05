@@ -1,6 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { RRMenuItem } from './rr-menu.js';
 import './rr-menu.ts';
 
 describe('rr-menu', () => {
@@ -197,10 +196,10 @@ describe('rr-menu-item', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('reflects title attribute', async () => {
+	it('reflects text attribute', async () => {
 		el = await fixture('<rr-menu-item text="Bewerk"></rr-menu-item>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('title')).toBe('Bewerk');
+		expect(el.getAttribute('text')).toBe('Bewerk');
 	});
 
 	it('reflects details attribute', async () => {
