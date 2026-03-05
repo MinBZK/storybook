@@ -72,7 +72,7 @@ export { RRTopNavigationBar } from './navigation/top-navigation-bar/rr-top-navig
 export { RRNavLogo } from './navigation/top-navigation-bar/rr-nav-logo.ts';
 export { RRBackButton } from './navigation/top-navigation-bar/rr-back-button.ts';
 export { RRMenuBar } from './navigation/menu-bar/rr-menu-bar.ts';
-export { RRMenuItem } from './navigation/menu-bar/rr-menu-item.ts';
+export { RRMenuBarItem } from './navigation/menu-bar/rr-menu-bar-item.ts';
 export { RRUtilityMenuBar } from './navigation/top-navigation-bar/rr-utility-menu-bar.ts';
 export { RRToolbar } from './control-groups/toolbar/rr-toolbar.ts';
 
