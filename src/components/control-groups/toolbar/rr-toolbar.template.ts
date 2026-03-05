@@ -5,29 +5,11 @@ import '../../content/icon/rr-icon.js';
 
 // # Types
 export type ToolbarChild =
-	| { type: 'divider'; id: number }
 	| { type: 'title-group'; title: string; subtitle: string; align: string; minWidth: string; id: number }
 	| { type: 'item'; element: Element; label: string; id: number; priority: number; overflowItems: Element[]; minWidth: string; width: string; isFluid: boolean }
 	| { type: 'other'; element: Element; id: number };
 
 // # Helpers
-function isDividerVisible(index: number, children: ToolbarChild[], overflowIds: Set<number>): boolean {
-	const hasVisibleBefore = children.slice(0, index).some(c =>
-		(c.type === 'item' && !overflowIds.has(c.id)) || c.type === 'title-group'
-	);
-	const hasVisibleAfter = children.slice(index + 1).some(c =>
-		(c.type === 'item' && !overflowIds.has(c.id)) || c.type === 'title-group'
-	);
-	return hasVisibleBefore && hasVisibleAfter;
-}
-
-function isSoloFluid(allChildren: ToolbarChild[], overflowIds: Set<number>, id: number): boolean {
-	const visibleItems = allChildren.filter(c =>
-		!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
-	);
-	return visibleItems.length === 1 && visibleItems[0].id === id;
-}
-
 function resolveWidth(width: string): string {
 	if (!width) return '';
 	if (width.endsWith('%')) {
@@ -42,20 +24,15 @@ function renderChildren(
 	allChildren: ToolbarChild[],
 	overflowIds: Set<number>,
 ) {
-	return children.map((child, index) => {
-		if (child.type === 'divider') {
-			const visible = isDividerVisible(index, children, overflowIds);
-			return visible ? html`
-				<div class="toolbar__divider" role="separator" aria-orientation="vertical">
-					<div class="toolbar__divider-line"></div>
-				</div>
-			` : nothing;
-		}
+	return children.map((child) => {
 		if (child.type === 'title-group') {
 			const alignClass = child.align === 'center'
 				? 'toolbar__title-group--center-text-align'
 				: 'toolbar__title-group--left-text-align';
-			const solo = isSoloFluid(allChildren, overflowIds, child.id);
+			const visibleItems = allChildren.filter(c =>
+				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
+			);
+			const solo = visibleItems.length === 1 && visibleItems[0].id === child.id;
 			return html`
 				<div
 					class="toolbar__title-group ${alignClass} ${solo ? 'is-solo-fluid' : ''}"
@@ -69,11 +46,12 @@ function renderChildren(
 		}
 		if (child.type === 'item') {
 			const isOverflowed = overflowIds.has(child.id);
-			const soloFluid = !isOverflowed && child.isFluid && isSoloFluid(allChildren, overflowIds, child.id);
+			const visibleItems = allChildren.filter(c =>
+				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
+			);
+			const soloFluid = !isOverflowed && child.isFluid && visibleItems.length === 1 && visibleItems[0].id === child.id;
 			const cssVars: Record<string, string> = {};
-			if (soloFluid) {
-				// No vars needed — is-solo-fluid uses flex-grow: 1 to fill all space
-			} else if (child.isFluid) {
+			if (!soloFluid && child.isFluid) {
 				if (child.minWidth) cssVars['--_item-min-width'] = child.minWidth;
 				if (child.width) cssVars['--_item-width'] = resolveWidth(child.width);
 			}

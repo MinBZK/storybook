@@ -6,7 +6,6 @@ import '../../content/icon/rr-icon.ts';
 import '../button-bar/rr-button-bar.ts';
 import '../../lists-and-menus/menu/rr-menu.ts';
 import '../../inputs/search-field/rr-search-field.ts';
-
 export default {
 	title: 'Components/Control Groups/Toolbar',
 	component: 'rr-toolbar',
@@ -23,20 +22,21 @@ export default {
 		},
 	},
 };
-
 const resizable = (content) => html`
-	<div style="resize: horizontal; overflow: hidden; min-width: 200px; max-width: 100%; padding-bottom: 8px;">
+	<div style="resize: horizontal; overflow: hidden; min-width: 200px; max-width: 100%; padding: 8px;">
 		${content}
 	</div>
 	<p style="font-size: 0.75rem; color: #64748b; margin: 8px 0 0;">
 		↔ Sleep de hoek rechtsonder om de breedte aan te passen
 	</p>
 `;
-
 export const Default = {
 	args: { size: 'md', showLabels: false },
 	render: (args) => resizable(html`
-		<rr-toolbar size=${args.size} ?show-labels=${args.showLabels}>
+		<rr-toolbar
+			size=${args.size}
+			?show-labels=${args.showLabels}
+		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Vorige/Volgende">
 					<rr-button-bar>
@@ -50,97 +50,91 @@ export const Default = {
 							Volgende
 						</rr-icon-button>
 					</rr-button-bar>
-					<rr-menu-item slot="overflow" text="Vorige"></rr-menu-item>
-					<rr-menu-item slot="overflow" text="Volgende"></rr-menu-item>
+					<rr-menu-item
+						text="Vorige"
+					></rr-menu-item>
+					<rr-menu-item
+						text="Volgende"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
 	`),
 };
-
 export const WithLabels = {
 	args: { size: 'md', showLabels: true },
 	render: (args) => resizable(html`
-		<rr-toolbar size=${args.size} ?show-labels=${args.showLabels}>
+		<rr-toolbar
+			size=${args.size}
+			?show-labels=${args.showLabels}
+		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Vet">
 					<rr-icon-button>
 						<rr-icon name="bold"></rr-icon>
 						Vet
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Vet" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Vet"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Cursief">
 					<rr-icon-button>
 						<rr-icon name="italic"></rr-icon>
 						Cursief
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Cursief" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Cursief"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Onderstrepen">
 					<rr-icon-button>
 						<rr-icon name="underlined"></rr-icon>
 						Onderstrepen
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Onderstrepen" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Onderstrepen"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
 	`),
 };
-
-export const WithDivider = {
-	args: { size: 'md', showLabels: false },
-	render: (args) => resizable(html`
-		<rr-toolbar size=${args.size} ?show-labels=${args.showLabels}>
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Bestand">
-					<rr-button>Bestand</rr-button>
-					<rr-menu-item slot="overflow" text="Bestand"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Bewerk">
-					<rr-button>Bewerk</rr-button>
-					<rr-menu-item slot="overflow" text="Bewerk"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-divider></rr-toolbar-divider>
-				<rr-toolbar-item label="Weergave">
-					<rr-button>Weergave</rr-button>
-					<rr-menu-item slot="overflow" text="Weergave"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
-		</rr-toolbar>
-	`),
-};
-
 export const WithTitleGroup = {
 	args: { size: 'md', showLabels: false },
 	render: (args) => resizable(html`
-		<rr-toolbar size=${args.size} ?show-labels=${args.showLabels}>
+		<rr-toolbar
+			size=${args.size}
+			?show-labels=${args.showLabels}
+		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Terug">
 					<rr-icon-button>
 						<rr-icon name="chevron-left"></rr-icon>
 						Terug
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Terug"></rr-menu-item>
+					<rr-menu-item
+						text="Terug"
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-title-group
 					text="Document titel"
@@ -150,28 +144,36 @@ export const WithTitleGroup = {
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Annuleren">
 					<rr-button>Annuleren</rr-button>
-					<rr-menu-item slot="overflow" text="Annuleren"></rr-menu-item>
+					<rr-menu-item
+						text="Annuleren"
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
 	`),
 };
-
 export const WithTitleGroupCentered = {
 	args: { size: 'md', showLabels: false },
 	render: (args) => resizable(html`
-		<rr-toolbar size=${args.size} ?show-labels=${args.showLabels}>
+		<rr-toolbar
+			size=${args.size}
+			?show-labels=${args.showLabels}
+		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Terug">
 					<rr-icon-button>
 						<rr-icon name="chevron-left"></rr-icon>
 						Terug
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Terug"></rr-menu-item>
+					<rr-menu-item
+						text="Terug"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-center-area>
@@ -184,38 +186,46 @@ export const WithTitleGroupCentered = {
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
 	`),
 };
-
 export const SizeSmall = {
 	args: { size: 'sm', showLabels: false },
 	render: (args) => resizable(html`
-		<rr-toolbar size=${args.size} ?show-labels=${args.showLabels}>
+		<rr-toolbar
+			size=${args.size}
+			?show-labels=${args.showLabels}
+		>
 			<rr-toolbar-start-area>
 				<rr-toolbar-item label="Bewerk">
 					<rr-button>Bewerk</rr-button>
-					<rr-menu-item slot="overflow" text="Bewerk"></rr-menu-item>
+					<rr-menu-item
+						text="Bewerk"
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-divider></rr-toolbar-divider>
 				<rr-toolbar-item label="Dupliceer">
 					<rr-button>Dupliceer</rr-button>
-					<rr-menu-item slot="overflow" text="Dupliceer"></rr-menu-item>
+					<rr-menu-item
+						text="Dupliceer"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
 	`),
 };
-
 export const Sizes = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
@@ -226,18 +236,23 @@ export const Sizes = {
 						<rr-toolbar-start-area>
 							<rr-toolbar-item label="Bewerk">
 								<rr-button>Bewerk</rr-button>
-								<rr-menu-item slot="overflow" text="Bewerk"></rr-menu-item>
+								<rr-menu-item
+									text="Bewerk"
+								></rr-menu-item>
 							</rr-toolbar-item>
-							<rr-toolbar-divider></rr-toolbar-divider>
 							<rr-toolbar-item label="Dupliceer">
 								<rr-button>Dupliceer</rr-button>
-								<rr-menu-item slot="overflow" text="Dupliceer"></rr-menu-item>
+								<rr-menu-item
+									text="Dupliceer"
+								></rr-menu-item>
 							</rr-toolbar-item>
 						</rr-toolbar-start-area>
 						<rr-toolbar-end-area>
 							<rr-toolbar-item label="Opslaan">
 								<rr-button variant="accent-filled">Opslaan</rr-button>
-								<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+								<rr-menu-item
+									text="Opslaan"
+								></rr-menu-item>
 							</rr-toolbar-item>
 						</rr-toolbar-end-area>
 					</rr-toolbar>
@@ -250,18 +265,23 @@ export const Sizes = {
 						<rr-toolbar-start-area>
 							<rr-toolbar-item label="Bewerk">
 								<rr-button>Bewerk</rr-button>
-								<rr-menu-item slot="overflow" text="Bewerk"></rr-menu-item>
+								<rr-menu-item
+									text="Bewerk"
+								></rr-menu-item>
 							</rr-toolbar-item>
-							<rr-toolbar-divider></rr-toolbar-divider>
 							<rr-toolbar-item label="Dupliceer">
 								<rr-button>Dupliceer</rr-button>
-								<rr-menu-item slot="overflow" text="Dupliceer"></rr-menu-item>
+								<rr-menu-item
+									text="Dupliceer"
+								></rr-menu-item>
 							</rr-toolbar-item>
 						</rr-toolbar-start-area>
 						<rr-toolbar-end-area>
 							<rr-toolbar-item label="Opslaan">
 								<rr-button variant="accent-filled">Opslaan</rr-button>
-								<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+								<rr-menu-item
+									text="Opslaan"
+								></rr-menu-item>
 							</rr-toolbar-item>
 						</rr-toolbar-end-area>
 					</rr-toolbar>
@@ -270,7 +290,6 @@ export const Sizes = {
 		</div>
 	`,
 };
-
 export const LabelsToggle = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
@@ -284,21 +303,30 @@ export const LabelsToggle = {
 									<rr-icon name="bold"></rr-icon>
 									Vet
 								</rr-icon-button>
-								<rr-menu-item slot="overflow" text="Vet" selectable></rr-menu-item>
+								<rr-menu-item
+									text="Vet"
+									selectable
+								></rr-menu-item>
 							</rr-toolbar-item>
 							<rr-toolbar-item label="Cursief">
 								<rr-icon-button>
 									<rr-icon name="italic"></rr-icon>
 									Cursief
 								</rr-icon-button>
-								<rr-menu-item slot="overflow" text="Cursief" selectable></rr-menu-item>
+								<rr-menu-item
+									text="Cursief"
+									selectable
+								></rr-menu-item>
 							</rr-toolbar-item>
 							<rr-toolbar-item label="Onderstrepen">
 								<rr-icon-button>
 									<rr-icon name="underlined"></rr-icon>
 									Onderstrepen
 								</rr-icon-button>
-								<rr-menu-item slot="overflow" text="Onderstrepen" selectable></rr-menu-item>
+								<rr-menu-item
+									text="Onderstrepen"
+									selectable
+								></rr-menu-item>
 							</rr-toolbar-item>
 						</rr-toolbar-start-area>
 					</rr-toolbar>
@@ -307,28 +335,40 @@ export const LabelsToggle = {
 			<div>
 				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">Met labels</p>
 				${resizable(html`
-					<rr-toolbar size="md" show-labels>
+					<rr-toolbar
+						size="md"
+						show-labels
+					>
 						<rr-toolbar-start-area>
 							<rr-toolbar-item label="Vet">
 								<rr-icon-button>
 									<rr-icon name="bold"></rr-icon>
 									Vet
 								</rr-icon-button>
-								<rr-menu-item slot="overflow" text="Vet" selectable></rr-menu-item>
+								<rr-menu-item
+									text="Vet"
+									selectable
+								></rr-menu-item>
 							</rr-toolbar-item>
 							<rr-toolbar-item label="Cursief">
 								<rr-icon-button>
 									<rr-icon name="italic"></rr-icon>
 									Cursief
 								</rr-icon-button>
-								<rr-menu-item slot="overflow" text="Cursief" selectable></rr-menu-item>
+								<rr-menu-item
+									text="Cursief"
+									selectable
+								></rr-menu-item>
 							</rr-toolbar-item>
 							<rr-toolbar-item label="Onderstrepen">
 								<rr-icon-button>
 									<rr-icon name="underlined"></rr-icon>
 									Onderstrepen
 								</rr-icon-button>
-								<rr-menu-item slot="overflow" text="Onderstrepen" selectable></rr-menu-item>
+								<rr-menu-item
+									text="Onderstrepen"
+									selectable
+								></rr-menu-item>
 							</rr-toolbar-item>
 						</rr-toolbar-start-area>
 					</rr-toolbar>
@@ -337,7 +377,6 @@ export const LabelsToggle = {
 		</div>
 	`,
 };
-
 export const WithOverflow = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
@@ -347,52 +386,69 @@ export const WithOverflow = {
 						<rr-icon name="bold"></rr-icon>
 						Vet
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Vet" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Vet"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Cursief">
 					<rr-icon-button>
 						<rr-icon name="italic"></rr-icon>
 						Cursief
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Cursief" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Cursief"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Onderstrepen">
 					<rr-icon-button>
 						<rr-icon name="underlined"></rr-icon>
 						Onderstrepen
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Onderstrepen" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Onderstrepen"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-divider></rr-toolbar-divider>
 				<rr-toolbar-item label="Lijst">
 					<rr-icon-button>
 						<rr-icon name="bullet-list"></rr-icon>
 						Lijst
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Lijst" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Lijst"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Genummerd">
 					<rr-icon-button>
 						<rr-icon name="numbered-list"></rr-icon>
 						Genummerd
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Genummerd" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Genummerd"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Annuleren">
 					<rr-button>Annuleren</rr-button>
-					<rr-menu-item slot="overflow" text="Annuleren"></rr-menu-item>
+					<rr-menu-item
+						text="Annuleren"
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
 	`),
 };
-
 export const WithOverflowPartial = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
@@ -402,7 +458,10 @@ export const WithOverflowPartial = {
 						<rr-icon name="bold"></rr-icon>
 						Vet
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Vet" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Vet"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Cursief">
 					<rr-icon-button>
@@ -416,58 +475,91 @@ export const WithOverflowPartial = {
 						<rr-icon name="underlined"></rr-icon>
 						Onderstrepen
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Onderstrepen" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Onderstrepen"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
 	`),
 };
-
 export const WithPriority = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
 			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Vet" priority="1">
+				<rr-toolbar-item
+					label="Vet"
+					priority="1"
+				>
 					<rr-icon-button>
 						<rr-icon name="bold"></rr-icon>
 						Vet
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Vet" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Vet"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-item label="Cursief" priority="1">
+				<rr-toolbar-item
+					label="Cursief"
+					priority="1"
+				>
 					<rr-icon-button>
 						<rr-icon name="italic"></rr-icon>
 						Cursief
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Cursief" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Cursief"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-item label="Onderstrepen" priority="1">
+				<rr-toolbar-item
+					label="Onderstrepen"
+					priority="1"
+				>
 					<rr-icon-button>
 						<rr-icon name="underlined"></rr-icon>
 						Onderstrepen
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Onderstrepen" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Onderstrepen"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-divider></rr-toolbar-divider>
-				<rr-toolbar-item label="Lijst" priority="2">
+				<rr-toolbar-item
+					label="Lijst"
+					priority="2"
+				>
 					<rr-icon-button>
 						<rr-icon name="bullet-list"></rr-icon>
 						Lijst
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Lijst" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Lijst"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-item label="Genummerd" priority="2">
+				<rr-toolbar-item
+					label="Genummerd"
+					priority="2"
+				>
 					<rr-icon-button>
 						<rr-icon name="numbered-list"></rr-icon>
 						Genummerd
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Genummerd" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Genummerd"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-center-area>
@@ -478,53 +570,78 @@ export const WithPriority = {
 				></rr-toolbar-title-group>
 			</rr-toolbar-center-area>
 			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Annuleren" priority="3">
+				<rr-toolbar-item
+					label="Annuleren"
+					priority="3"
+				>
 					<rr-button>Annuleren</rr-button>
-					<rr-menu-item slot="overflow" text="Annuleren"></rr-menu-item>
+					<rr-menu-item
+						text="Annuleren"
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-item label="Opslaan" priority="10">
+				<rr-toolbar-item
+					label="Opslaan"
+					priority="10"
+				>
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
 	`),
 };
-
 export const WithFluidItem = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
 			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Terug" priority="1">
+				<rr-toolbar-item
+					label="Terug"
+					priority="1"
+				>
 					<rr-icon-button>
 						<rr-icon name="chevron-left"></rr-icon>
 						Terug
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Terug"></rr-menu-item>
+					<rr-menu-item
+						text="Terug"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-center-area>
-				<rr-toolbar-item label="Zoeken" min-width="240px" width="40%" priority="3">
+				<rr-toolbar-item
+					label="Zoeken"
+					min-width="240px"
+					width="40%"
+					priority="3"
+				>
 					<rr-search-field placeholder="Zoeken..."></rr-search-field>
-					<rr-menu-item slot="overflow" text="Zoeken"></rr-menu-item>
+					<rr-menu-item
+						text="Zoeken"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-center-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Annuleren">
 					<rr-button>Annuleren</rr-button>
-					<rr-menu-item slot="overflow" text="Annuleren"></rr-menu-item>
+					<rr-menu-item
+						text="Annuleren"
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-item label="Opslaan" priority="2">
+				<rr-toolbar-item
+					label="Opslaan"
+					priority="2"
+				>
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 		</rr-toolbar>
 	`),
 };
-
-// Items placed in rr-toolbar-overflow-area are always pinned to the bottom
-// of the overflow menu, regardless of available toolbar space.
 export const WithPinnedOverflow = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
@@ -534,20 +651,28 @@ export const WithPinnedOverflow = {
 						<rr-icon name="bold"></rr-icon>
 						Vet
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Vet" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Vet"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Cursief">
 					<rr-icon-button>
 						<rr-icon name="italic"></rr-icon>
 						Cursief
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Cursief" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Cursief"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 			<rr-toolbar-overflow-area>
@@ -558,8 +683,6 @@ export const WithPinnedOverflow = {
 		</rr-toolbar>
 	`),
 };
-
-// Pinned items without any toolbar items — the overflow button is always visible.
 export const WithPinnedOverflowOnly = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
@@ -578,7 +701,6 @@ export const WithPinnedOverflowOnly = {
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 			<rr-toolbar-overflow-area>
@@ -591,54 +713,85 @@ export const WithPinnedOverflowOnly = {
 		</rr-toolbar>
 	`),
 };
-
-// Pinned items combined with dynamic overflow and priority.
-// As the toolbar shrinks, dynamic items move into the menu above the pinned items.
 export const WithPinnedAndDynamicOverflow = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
 			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Vet" priority="1">
+				<rr-toolbar-item
+					label="Vet"
+					priority="1"
+				>
 					<rr-icon-button>
 						<rr-icon name="bold"></rr-icon>
 						Vet
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Vet" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Vet"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-item label="Cursief" priority="1">
+				<rr-toolbar-item
+					label="Cursief"
+					priority="1"
+				>
 					<rr-icon-button>
 						<rr-icon name="italic"></rr-icon>
 						Cursief
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Cursief" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Cursief"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-item label="Onderstrepen" priority="1">
+				<rr-toolbar-item
+					label="Onderstrepen"
+					priority="1"
+				>
 					<rr-icon-button>
 						<rr-icon name="underlined"></rr-icon>
 						Onderstrepen
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Onderstrepen" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Onderstrepen"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-divider></rr-toolbar-divider>
-				<rr-toolbar-item label="Lijst" priority="2">
+				<rr-toolbar-item
+					label="Lijst"
+					priority="2"
+				>
 					<rr-icon-button>
 						<rr-icon name="bullet-list"></rr-icon>
 						Lijst
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Lijst" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Lijst"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
-				<rr-toolbar-item label="Genummerd" priority="2">
+				<rr-toolbar-item
+					label="Genummerd"
+					priority="2"
+				>
 					<rr-icon-button>
 						<rr-icon name="numbered-list"></rr-icon>
 						Genummerd
 					</rr-icon-button>
-					<rr-menu-item slot="overflow" text="Genummerd" selectable></rr-menu-item>
+					<rr-menu-item
+						text="Genummerd"
+						selectable
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan" priority="10">
+				<rr-toolbar-item
+					label="Opslaan"
+					priority="10"
+				>
 					<rr-button variant="accent-filled">Opslaan</rr-button>
-					<rr-menu-item slot="overflow" text="Opslaan"></rr-menu-item>
+					<rr-menu-item
+						text="Opslaan"
+					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 			<rr-toolbar-overflow-area>

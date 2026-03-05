@@ -8,6 +8,7 @@ export const styles = css`
 		flex-direction: row;
 		align-items: center;
 		font-family: var(--rr-font-family-body);
+		box-sizing: border-box;
 	}
 
 	:host([hidden]) {
@@ -47,6 +48,11 @@ export const styles = css`
 	.toolbar__flexible-spacer {
 		flex-grow: 1;
 		flex-shrink: 1;
+		margin-left: calc(-1 * var(--components-toolbar-md-gap));
+	}
+
+	:host([size="sm"]) .toolbar__flexible-spacer {
+		margin-left: calc(-1 * var(--components-toolbar-sm-gap));
 	}
 
 	.toolbar__left-spacer {
@@ -95,37 +101,6 @@ export const styles = css`
 			- var(--components-toolbar-sm-gap)
 			- var(--rr-toolbar-overflow-button-width, 0px)
 		);
-	}
-
-	/* # Divider */
-
-	.toolbar__divider {
-		display: flex;
-		justify-content: center;
-		align-self: stretch;
-	}
-
-	:host([size="sm"]) .toolbar__divider {
-		padding: 3px 0;
-	}
-
-	:host([size="md"]) .toolbar__divider,
-	:host(:not([size])) .toolbar__divider {
-		padding: 5px 0;
-	}
-
-	.toolbar__divider-line {
-		width: var(--semantics-dividers-thickness);
-		background-color: var(--semantics-dividers-color);
-	}
-
-	:host([size="sm"]) .toolbar__divider-line {
-		height: 26px;
-	}
-
-	:host([size="md"]) .toolbar__divider-line,
-	:host(:not([size])) .toolbar__divider-line {
-		height: 34px;
 	}
 
 	/* # Item */
