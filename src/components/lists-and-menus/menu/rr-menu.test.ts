@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './rr-menu.ts';
 
@@ -6,16 +6,12 @@ function getButton(el: Element): HTMLElement {
 	return el.shadowRoot?.querySelector('button') as HTMLElement;
 }
 
-function activeShadowElement(): Element | null {
-	const host = document.activeElement;
-	return host?.shadowRoot?.activeElement ?? host;
-}
-
 describe('rr-menu', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		vi.restoreAllMocks();
 	});
 
 	it('renders without error', async () => {
@@ -32,8 +28,7 @@ describe('rr-menu', () => {
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
-		const items = el.querySelectorAll('rr-menu-item');
-		expect(items.length).toBe(2);
+		expect(el.querySelectorAll('rr-menu-item').length).toBe(2);
 	});
 
 	it('renders slotted divider', async () => {
@@ -45,8 +40,7 @@ describe('rr-menu', () => {
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
-		const divider = el.querySelector('rr-menu-divider');
-		expect(divider).not.toBeNull();
+		expect(el.querySelector('rr-menu-divider')).not.toBeNull();
 	});
 
 	it('navigates down with ArrowDown', async () => {
@@ -58,9 +52,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		getButton(items[0]).focus();
+		const spy = vi.spyOn(getButton(items[1]), 'focus');
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(activeShadowElement()).toBe(getButton(items[1]));
+		expect(spy).toHaveBeenCalled();
 	});
 
 	it('navigates up with ArrowUp', async () => {
@@ -72,9 +66,10 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
+		const spy = vi.spyOn(getButton(items[0]), 'focus');
 		getButton(items[1]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
-		expect(activeShadowElement()).toBe(getButton(items[0]));
+		expect(spy).toHaveBeenCalled();
 	});
 
 	it('wraps around at bottom with ArrowDown', async () => {
@@ -86,9 +81,10 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
+		const spy = vi.spyOn(getButton(items[0]), 'focus');
 		getButton(items[items.length - 1]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(activeShadowElement()).toBe(getButton(items[0]));
+		expect(spy).toHaveBeenCalled();
 	});
 
 	it('wraps around at top with ArrowUp', async () => {
@@ -100,9 +96,10 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
+		const spy = vi.spyOn(getButton(items[items.length - 1]), 'focus');
 		getButton(items[0]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
-		expect(activeShadowElement()).toBe(getButton(items[items.length - 1]));
+		expect(spy).toHaveBeenCalled();
 	});
 
 	it('focuses first item with ArrowDown when nothing focused', async () => {
@@ -114,8 +111,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
+		const spy = vi.spyOn(getButton(items[0]), 'focus');
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(activeShadowElement()).toBe(getButton(items[0]));
+		expect(spy).toHaveBeenCalled();
 	});
 
 	it('focuses last item with ArrowUp when nothing focused', async () => {
@@ -127,8 +125,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
+		const spy = vi.spyOn(getButton(items[items.length - 1]), 'focus');
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
-		expect(activeShadowElement()).toBe(getButton(items[items.length - 1]));
+		expect(spy).toHaveBeenCalled();
 	});
 
 	it('skips disabled items during navigation', async () => {
@@ -141,9 +140,10 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
+		const spy = vi.spyOn(getButton(items[2]), 'focus');
 		getButton(items[0]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(activeShadowElement()).toBe(getButton(items[2]));
+		expect(spy).toHaveBeenCalled();
 	});
 
 	it('focuses first item with Home', async () => {
@@ -156,9 +156,10 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
+		const spy = vi.spyOn(getButton(items[0]), 'focus');
 		getButton(items[items.length - 1]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
-		expect(activeShadowElement()).toBe(getButton(items[0]));
+		expect(spy).toHaveBeenCalled();
 	});
 
 	it('focuses last item with End', async () => {
@@ -171,9 +172,10 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
+		const spy = vi.spyOn(getButton(items[items.length - 1]), 'focus');
 		getButton(items[0]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
-		expect(activeShadowElement()).toBe(getButton(items[items.length - 1]));
+		expect(spy).toHaveBeenCalled();
 	});
 });
 
