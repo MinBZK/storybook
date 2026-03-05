@@ -23,7 +23,6 @@ export const menuStyles = css`
 		display: flex;
 		flex-direction: column;
 		padding: var(--primitives-space-8);
-		gap: var(--primitives-space-2);
 		background: var(--semantics-surfaces-background-color);
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--primitives-box-shadows-level-5);
