@@ -2,6 +2,15 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './rr-menu.ts';
 
+function getButton(el: Element): HTMLElement {
+	return el.shadowRoot?.querySelector('button') as HTMLElement;
+}
+
+function activeShadowElement(): Element | null {
+	const host = document.activeElement;
+	return host?.shadowRoot?.activeElement ?? host;
+}
+
 describe('rr-menu', () => {
 	let el: HTMLElement;
 
@@ -49,11 +58,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		const firstButton = items[0].shadowRoot?.querySelector('button') as HTMLElement;
-		const secondButton = items[1].shadowRoot?.querySelector('button') as HTMLElement;
-		firstButton.focus();
+		getButton(items[0]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(document.activeElement).toBe(secondButton);
+		expect(activeShadowElement()).toBe(getButton(items[1]));
 	});
 
 	it('navigates up with ArrowUp', async () => {
@@ -65,11 +72,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		const firstButton = items[0].shadowRoot?.querySelector('button') as HTMLElement;
-		const secondButton = items[1].shadowRoot?.querySelector('button') as HTMLElement;
-		secondButton.focus();
+		getButton(items[1]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
-		expect(document.activeElement).toBe(firstButton);
+		expect(activeShadowElement()).toBe(getButton(items[0]));
 	});
 
 	it('wraps around at bottom with ArrowDown', async () => {
@@ -81,11 +86,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		const firstButton = items[0].shadowRoot?.querySelector('button') as HTMLElement;
-		const lastButton = items[items.length - 1].shadowRoot?.querySelector('button') as HTMLElement;
-		lastButton.focus();
+		getButton(items[items.length - 1]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(document.activeElement).toBe(firstButton);
+		expect(activeShadowElement()).toBe(getButton(items[0]));
 	});
 
 	it('wraps around at top with ArrowUp', async () => {
@@ -97,11 +100,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		const firstButton = items[0].shadowRoot?.querySelector('button') as HTMLElement;
-		const lastButton = items[items.length - 1].shadowRoot?.querySelector('button') as HTMLElement;
-		firstButton.focus();
+		getButton(items[0]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
-		expect(document.activeElement).toBe(lastButton);
+		expect(activeShadowElement()).toBe(getButton(items[items.length - 1]));
 	});
 
 	it('focuses first item with ArrowDown when nothing focused', async () => {
@@ -112,9 +113,9 @@ describe('rr-menu', () => {
 			</rr-menu>
 		`);
 		await waitForUpdate(el);
-		const firstButton = el.querySelector('rr-menu-item')?.shadowRoot?.querySelector('button') as HTMLElement;
+		const items = el.querySelectorAll('rr-menu-item');
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(document.activeElement).toBe(firstButton);
+		expect(activeShadowElement()).toBe(getButton(items[0]));
 	});
 
 	it('focuses last item with ArrowUp when nothing focused', async () => {
@@ -126,9 +127,8 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		const lastButton = items[items.length - 1].shadowRoot?.querySelector('button') as HTMLElement;
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
-		expect(document.activeElement).toBe(lastButton);
+		expect(activeShadowElement()).toBe(getButton(items[items.length - 1]));
 	});
 
 	it('skips disabled items during navigation', async () => {
@@ -141,11 +141,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		const firstButton = items[0].shadowRoot?.querySelector('button') as HTMLElement;
-		const thirdButton = items[2].shadowRoot?.querySelector('button') as HTMLElement;
-		firstButton.focus();
+		getButton(items[0]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-		expect(document.activeElement).toBe(thirdButton);
+		expect(activeShadowElement()).toBe(getButton(items[2]));
 	});
 
 	it('focuses first item with Home', async () => {
@@ -158,11 +156,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		const firstButton = items[0].shadowRoot?.querySelector('button') as HTMLElement;
-		const lastButton = items[items.length - 1].shadowRoot?.querySelector('button') as HTMLElement;
-		lastButton.focus();
+		getButton(items[items.length - 1]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
-		expect(document.activeElement).toBe(firstButton);
+		expect(activeShadowElement()).toBe(getButton(items[0]));
 	});
 
 	it('focuses last item with End', async () => {
@@ -175,11 +171,9 @@ describe('rr-menu', () => {
 		`);
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('rr-menu-item');
-		const firstButton = items[0].shadowRoot?.querySelector('button') as HTMLElement;
-		const lastButton = items[items.length - 1].shadowRoot?.querySelector('button') as HTMLElement;
-		firstButton.focus();
+		getButton(items[0]).focus();
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
-		expect(document.activeElement).toBe(lastButton);
+		expect(activeShadowElement()).toBe(getButton(items[items.length - 1]));
 	});
 });
 
@@ -249,8 +243,7 @@ describe('rr-menu-item', () => {
 		await waitForUpdate(el);
 		let fired = false;
 		el.addEventListener('rr-select', () => { fired = true; });
-		const button = el.shadowRoot?.querySelector('button');
-		button?.click();
+		getButton(el)?.click();
 		expect(fired).toBe(true);
 	});
 
@@ -259,8 +252,7 @@ describe('rr-menu-item', () => {
 		await waitForUpdate(el);
 		let fired = false;
 		el.addEventListener('rr-select', () => { fired = true; });
-		const button = el.shadowRoot?.querySelector('button');
-		button?.click();
+		getButton(el)?.click();
 		expect(fired).toBe(false);
 	});
 });
