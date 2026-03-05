@@ -227,12 +227,10 @@ export const styles = css`
 	:host([size="md"]) .toolbar__title,
 	:host(:not([size])) .toolbar__title {
 		font: var(--primitives-font-body-lg-bold-flat);
-		font-weight: 550;
 	}
 
 	:host([size="sm"]) .toolbar__title {
 		font: var(--primitives-font-body-sm-bold-flat);
-		font-weight: 550;
 	}
 
 	.toolbar__subtitle {
@@ -250,8 +248,6 @@ export const styles = css`
 	}
 
 	:host([size="sm"]) .toolbar__subtitle {
-		font-size: 12px;
-		font-weight: 400;
-		line-height: 1.125;
+		font: var(--primitives-font-body-xxs-regular-flat);
 	}
 `;
