@@ -1130,21 +1130,6 @@
 			"lastUpdated": "2026-03-05"
 		},
 		{
-			"name": "Menu Item",
-			"figma": {
-				"nodeId": "331-1456",
-				"nodeName": "menu-item",
-				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=331-1456"
-			},
-			"implementation": {
-				"tagName": "rr-standalone-menu-item",
-				"file": "src/components/lists-and-menus/menu-item/rr-standalone-menu-item.ts",
-				"className": "RRStandaloneMenuItem"
-			},
-			"status": "implemented",
-			"lastUpdated": "2026-02-12"
-		},
-		{
 			"name": "Number Field",
 			"figma": {
 				"nodeId": "266-344",
@@ -1580,40 +1565,6 @@
 				"tagName": "rr-toolbar",
 				"file": "src/components/control-groups/toolbar/rr-toolbar.ts",
 				"className": "RRToolbar"
-			},
-			"status": "implemented",
-			"lastUpdated": "2026-02-12"
-		},
-		{
-			"name": "Toolbar: Divider",
-			"figma": {
-				"nodeId": "1356:13969",
-				"nodeName": "toolbar__divider",
-				"pageId": "20:177",
-				"pageName": "Control groups",
-				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1356-13969"
-			},
-			"implementation": {
-				"tagName": "rr-toolbar-divider",
-				"file": "src/components/control-groups/toolbar-divider/rr-toolbar-divider.ts",
-				"className": "RRToolbarDivider"
-			},
-			"status": "implemented",
-			"lastUpdated": "2026-02-12"
-		},
-		{
-			"name": "Toolbar: Title Group",
-			"figma": {
-				"nodeId": "1406:12871",
-				"nodeName": "toolbar__title-group",
-				"pageId": "20:177",
-				"pageName": "Control groups",
-				"url": "https://www.figma.com/design/5DyHMXUNVxbgH7ZjhQxPZe/RR-Components?node-id=1406-12871"
-			},
-			"implementation": {
-				"tagName": "rr-toolbar-title-group",
-				"file": "src/components/control-groups/toolbar-title-group/rr-toolbar-title-group.ts",
-				"className": "RRToolbarTitleGroup"
 			},
 			"status": "implemented",
 			"lastUpdated": "2026-02-12"
