@@ -148,7 +148,7 @@ export const styles = css`
 		display: none;
 		margin-top: var(--primitives-space-2);
 		font: var(--primitives-font-body-xs-regular-flat);
-		color: var(--semantics-content-primary-color);
+		color: var(--semantics-content-color);
 		white-space: nowrap;
 	}
 
