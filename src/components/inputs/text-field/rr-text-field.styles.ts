@@ -15,21 +15,21 @@ export const textFieldStyles = css`
 
 	.text-field {
 		display: flex;
-		padding-left: var(--primitives-space-12);
 		flex-direction: row;
 		align-items: center;
+		overflow: hidden;
+		box-sizing: border-box;
+		padding-left: var(--primitives-space-12);
 		height: var(--semantics-controls-md-min-size);
-		background-color: var(--semantics-input-fields-background-color);
 		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		box-sizing: border-box;
-		overflow: hidden;
+		background-color: var(--semantics-input-fields-background-color);
 	}
 
 	:host([size='sm']) .text-field {
+		padding-left: var(--primitives-space-8);
 		height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
-		padding-left: var(--primitives-space-8);
 	}
 
 	:host([valid]) .text-field {
@@ -41,8 +41,8 @@ export const textFieldStyles = css`
 	}
 
 	:host([readonly]) .text-field {
-		background-color: var(--semantics-input-fields-is-read-only-background-color);
 		border-color: var(--semantics-input-fields-is-read-only-border-color);
+		background-color: var(--semantics-input-fields-is-read-only-background-color);
 	}
 
 	:host([disabled]) .text-field {
@@ -51,34 +51,36 @@ export const textFieldStyles = css`
 	}
 
 	.text-field:focus-within {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 	}
 
 	/* # Input */
 
 	.text-field__input {
-		appearance: none;
-		border: none;
-		background: transparent;
-		margin: 0;
-		padding: 0;
-		outline: none;
-		box-sizing: border-box;
 		flex-grow: 1;
 		min-width: 0;
+		overflow: hidden;
+		box-sizing: border-box;
+		padding: 0 var(--primitives-space-4) 0 0;
+		margin: 0;
+		height: var(--semantics-controls-md-min-size);
 		font: var(--semantics-input-fields-md-text-font);
 		color: var(--semantics-content-color);
-		height: 100%;
+		background: transparent;
+		border: none;
+		outline: none;
+		appearance: none;
 	}
 
 	:host([size='sm']) .text-field__input {
+		height: var(--semantics-controls-sm-min-size);
 		font: var(--semantics-input-fields-sm-text-font);
 	}
 
 	:host([disabled]) .text-field__input {
-		cursor: not-allowed;
 		pointer-events: none;
+		cursor: not-allowed;
 	}
 
 	.text-field__input::placeholder {
@@ -88,19 +90,20 @@ export const textFieldStyles = css`
 	/* # Fade */
 
 	.text-field__fade {
-		width: 0;
+		position: relative;
 		flex-shrink: 0;
 		align-self: stretch;
-		position: relative;
+		width: 0;
 	}
 
 	.text-field__fade::after {
 		content: '';
 		position: absolute;
-		right: 0;
 		top: 0;
 		bottom: 0;
+		right: var(--primitives-space-4);
 		width: var(--primitives-space-8);
+		border-radius: var(--semantics-controls-md-corner-radius);
 		background: linear-gradient(-90deg, var(--semantics-input-fields-end-fade-end-color) 0%, var(--semantics-input-fields-end-fade-start-color) 100%);
 		pointer-events: none;
 	}
@@ -112,8 +115,8 @@ export const textFieldStyles = css`
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		height: 100%;
 		width: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		height: 100%;
 	}
 
 	:host([size='sm']) .text-field__validation-icon {
