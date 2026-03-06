@@ -117,7 +117,7 @@ export class RRToolbar extends LitElement {
 				'rr-toolbar-overflow-area',
 			]);
 			const onlyInternalMoves = mutations.every(m => {
-				// Attribute change on a moved toolbar item — always rebuild
+				// Attribute change on a consumer-relevant attribute — always rebuild
 				if (m.type === 'attributes') return false;
 				// childList change on the toolbar root — ignore if it's just internal slot moves
 				if (m.target !== this) return false;
@@ -539,9 +539,10 @@ export class RRToolbar extends LitElement {
 			this.querySelector('rr-toolbar-overflow-area'),
 		].filter(Boolean) as Element[];
 
-		this._observer?.observe(this, { childList: true, attributes: true, subtree: true });
+		const itemAttributeFilter = ['label', 'priority', 'min-width', 'width', 'text', 'disabled', 'selected', 'type'];
+		this._observer?.observe(this, { childList: true, attributes: true, subtree: true, attributeFilter: itemAttributeFilter });
 		areas.forEach(area => {
-			this._observer?.observe(area, { childList: true, attributes: true, subtree: true });
+			this._observer?.observe(area, { childList: true, attributes: true, subtree: true, attributeFilter: itemAttributeFilter });
 		});
 
 		this._isBuilding = false;
