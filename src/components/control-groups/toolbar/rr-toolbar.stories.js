@@ -84,7 +84,7 @@ export const WithLabels = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Vet"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Cursief">
@@ -94,7 +94,7 @@ export const WithLabels = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Cursief"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Onderstrepen">
@@ -104,7 +104,7 @@ export const WithLabels = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Onderstrepen"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
@@ -305,7 +305,7 @@ export const LabelsToggle = {
 								</rr-icon-button>
 								<rr-menu-item
 									text="Vet"
-									selectable
+									type="checkbox"
 								></rr-menu-item>
 							</rr-toolbar-item>
 							<rr-toolbar-item label="Cursief">
@@ -315,7 +315,7 @@ export const LabelsToggle = {
 								</rr-icon-button>
 								<rr-menu-item
 									text="Cursief"
-									selectable
+									type="checkbox"
 								></rr-menu-item>
 							</rr-toolbar-item>
 							<rr-toolbar-item label="Onderstrepen">
@@ -325,7 +325,7 @@ export const LabelsToggle = {
 								</rr-icon-button>
 								<rr-menu-item
 									text="Onderstrepen"
-									selectable
+									type="checkbox"
 								></rr-menu-item>
 							</rr-toolbar-item>
 						</rr-toolbar-start-area>
@@ -347,7 +347,7 @@ export const LabelsToggle = {
 								</rr-icon-button>
 								<rr-menu-item
 									text="Vet"
-									selectable
+									type="checkbox"
 								></rr-menu-item>
 							</rr-toolbar-item>
 							<rr-toolbar-item label="Cursief">
@@ -357,7 +357,7 @@ export const LabelsToggle = {
 								</rr-icon-button>
 								<rr-menu-item
 									text="Cursief"
-									selectable
+									type="checkbox"
 								></rr-menu-item>
 							</rr-toolbar-item>
 							<rr-toolbar-item label="Onderstrepen">
@@ -367,7 +367,7 @@ export const LabelsToggle = {
 								</rr-icon-button>
 								<rr-menu-item
 									text="Onderstrepen"
-									selectable
+									type="checkbox"
 								></rr-menu-item>
 							</rr-toolbar-item>
 						</rr-toolbar-start-area>
@@ -388,7 +388,7 @@ export const WithOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Vet"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Cursief">
@@ -398,7 +398,7 @@ export const WithOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Cursief"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Onderstrepen">
@@ -408,7 +408,7 @@ export const WithOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Onderstrepen"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Lijst">
@@ -418,7 +418,7 @@ export const WithOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Lijst"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Genummerd">
@@ -428,7 +428,7 @@ export const WithOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Genummerd"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
@@ -460,7 +460,7 @@ export const WithOverflowPartial = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Vet"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Cursief">
@@ -477,7 +477,7 @@ export const WithOverflowPartial = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Onderstrepen"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
@@ -506,7 +506,7 @@ export const WithPriority = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Vet"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item
@@ -519,7 +519,7 @@ export const WithPriority = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Cursief"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item
@@ -532,7 +532,7 @@ export const WithPriority = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Onderstrepen"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item
@@ -545,7 +545,7 @@ export const WithPriority = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Lijst"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item
@@ -558,7 +558,7 @@ export const WithPriority = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Genummerd"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
@@ -653,7 +653,7 @@ export const WithPinnedOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Vet"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Cursief">
@@ -663,7 +663,7 @@ export const WithPinnedOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Cursief"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
@@ -727,7 +727,7 @@ export const WithPinnedAndDynamicOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Vet"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item
@@ -740,7 +740,7 @@ export const WithPinnedAndDynamicOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Cursief"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item
@@ -753,7 +753,7 @@ export const WithPinnedAndDynamicOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Onderstrepen"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item
@@ -766,7 +766,7 @@ export const WithPinnedAndDynamicOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Lijst"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item
@@ -779,7 +779,7 @@ export const WithPinnedAndDynamicOverflow = {
 					</rr-icon-button>
 					<rr-menu-item
 						text="Genummerd"
-						selectable
+						type="checkbox"
 					></rr-menu-item>
 				</rr-toolbar-item>
 			</rr-toolbar-start-area>
