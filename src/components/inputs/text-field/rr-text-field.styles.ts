@@ -85,6 +85,26 @@ export const textFieldStyles = css`
 		color: var(--semantics-input-fields-placeholder-color);
 	}
 
+	/* # Fade */
+
+	.text-field__fade {
+		width: 0;
+		flex-shrink: 0;
+		align-self: stretch;
+		position: relative;
+	}
+
+	.text-field__fade::after {
+		content: '';
+		position: absolute;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		width: var(--primitives-space-8);
+		background: linear-gradient(-90deg, var(--semantics-input-fields-end-fade-end-color) 0%, var(--semantics-input-fields-end-fade-start-color) 100%);
+		pointer-events: none;
+	}
+
 	/* # Validation icon */
 
 	.text-field__validation-icon {

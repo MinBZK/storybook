@@ -137,7 +137,7 @@ export const Readonly = Template.bind({});
 Readonly.args = { value: 'Readonly value', readonly: true };
 
 export const AllStates = () => html`
-	<div style="display: flex; flex-direction: column; gap: 1rem; max-width: 400px;">
+	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<rr-text-field placeholder="Neutral"></rr-text-field>
 		<rr-text-field value="Valid input" valid></rr-text-field>
 		<rr-text-field value="Invalid input" invalid></rr-text-field>
@@ -149,7 +149,7 @@ export const AllStates = () => html`
 AllStates.parameters = { controls: { disable: true } };
 
 export const InteractiveExample = () => html`
-	<div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 400px;">
+	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
 		<rr-text-field
 			name="name"
 			placeholder="Full name"

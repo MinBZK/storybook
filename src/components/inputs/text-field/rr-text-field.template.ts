@@ -39,6 +39,7 @@ export function textFieldTemplate(component: RRTextField): TemplateResult {
 				@input=${component.handleInput}
 				@change=${component.handleChange}
 			/>
+			<div class="text-field__fade"></div>
 			${renderValidationIcon(component)}
 		</div>
 	`;
