@@ -92,6 +92,8 @@ export function template(
 	hasOverflow: boolean,
 	menuOpen: boolean,
 	label: string,
+	menuId: string,
+	onOverflowClick: () => void,
 ) {
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 
@@ -115,6 +117,8 @@ export function template(
 				<rr-icon-button size=${size}
 					aria-haspopup="menu"
 					aria-expanded=${menuOpen ? 'true' : 'false'}
+					aria-controls=${menuId}
+					@click=${onOverflowClick}
 				>
 					<rr-icon name="ellipsis"></rr-icon>
 					Meer

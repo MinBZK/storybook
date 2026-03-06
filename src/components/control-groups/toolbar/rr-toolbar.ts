@@ -48,12 +48,19 @@ type Size = 'sm' | 'md';
 export class RRToolbar extends LitElement {
 	static override styles = styles;
 
+	/** Controls the size of toolbar items. Propagated automatically to all child controls. */
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
+	/** When true, shows a text label below each toolbar item and the overflow button. */
 	@property({ type: Boolean, reflect: true, attribute: 'show-item-labels' })
 	showItemLabels = false;
 
+	/**
+	 * Accessible label for the toolbar, exposed as `aria-label` on the `role="toolbar"` container.
+	 * Only needed when multiple toolbars appear on the same page so screen readers can distinguish them.
+	 * @example `<rr-toolbar label="Formatting">`
+	 */
 	@property({ type: String, reflect: true })
 	label = '';
 
@@ -110,6 +117,9 @@ export class RRToolbar extends LitElement {
 				'rr-toolbar-overflow-area',
 			]);
 			const onlyInternalMoves = mutations.every(m => {
+				// Attribute change on a moved toolbar item — always rebuild
+				if (m.type === 'attributes') return false;
+				// childList change on the toolbar root — ignore if it's just internal slot moves
 				if (m.target !== this) return false;
 				const nodes = [...Array.from(m.addedNodes), ...Array.from(m.removedNodes)];
 				return nodes.every(n => n instanceof Element && !areaTags.has(n.tagName.toLowerCase()));
@@ -163,10 +173,20 @@ export class RRToolbar extends LitElement {
 		}
 	}
 
+	private _handleOverflowButtonClick(): void {
+		if (!this._menu) return;
+		if (this._menuOpen) {
+			(this._menu as unknown as { hidePopover: () => void }).hidePopover();
+		} else {
+			(this._menu as unknown as { showPopover: () => void }).showPopover();
+		}
+	}
+
 	private _createMenu(): void {
 		if (this._menu) return;
 		const menu = document.createElement('rr-menu') as RRMenu;
 		menu.setAttribute('placement', 'bottom-end');
+		menu.id = `rr-toolbar-overflow-menu-${this._idCounter++}`;
 		menu.addEventListener('toggle', (event: Event) => {
 			this._menuOpen = (event as ToggleEvent).newState === 'open';
 		});
@@ -182,6 +202,12 @@ export class RRToolbar extends LitElement {
 		}
 	}
 
+	/**
+	 * Syncs overflow menu items by cloning the original `rr-menu-item` elements.
+	 * Note: `cloneNode` does not copy event listeners added via `addEventListener`.
+	 * The `select` event works correctly since it is dispatched by `rr-menu-item` internally.
+	 * Consumers should avoid adding extra listeners directly on overflow `rr-menu-item` elements.
+	 */
 	private _syncMenuItems(): void {
 		if (!this._menu) return;
 		this._menu.innerHTML = '';
@@ -513,7 +539,7 @@ export class RRToolbar extends LitElement {
 			this.querySelector('rr-toolbar-overflow-area'),
 		].filter(Boolean) as Element[];
 
-		this._observer?.observe(this, { childList: true });
+		this._observer?.observe(this, { childList: true, attributes: true, subtree: true });
 		areas.forEach(area => {
 			this._observer?.observe(area, { childList: true, attributes: true, subtree: true });
 		});
@@ -544,6 +570,8 @@ export class RRToolbar extends LitElement {
 			this._pinnedOverflowItems.length > 0 || this._overflowIds.size > 0,
 			this._menuOpen,
 			this.label,
+			this._menu?.id ?? '',
+			() => this._handleOverflowButtonClick(),
 		);
 	}
 }
