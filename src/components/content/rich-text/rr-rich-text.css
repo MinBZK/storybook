@@ -1,7 +1,6 @@
 /* # host */
 rr-rich-text {
 	display: block;
-	font: var(--primitives-font-body-md-regular-snug);
 	color: var(--semantics-content-color);
 	container-type: inline-size;
 	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
@@ -54,6 +53,7 @@ rr-rich-text *:focus:not(:focus-visible) {
 rr-rich-text p {
 	margin: var(--components-rich-text-spacing) 0;
 	max-width: var(--primitives-area-720);
+	font: var(--primitives-font-body-md-regular-snug);
 }
 
 /* # h1 */
@@ -172,6 +172,7 @@ rr-rich-text li {
 	margin: calc(var(--components-rich-text-spacing) / 2) 0;
 	padding: 0;
 	max-width: var(--primitives-area-720);
+	font: var(--primitives-font-body-md-regular-snug);
 }
 
 /* # a */
@@ -308,7 +309,7 @@ rr-rich-text th {
 	padding: var(--primitives-space-6);
 	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	text-align: left;
-	font-weight: var(--primitives-font-weight-body-bold);
+	font: var(--primitives-font-body-md-bold-snug);
 }
 
 /* # td */
@@ -317,6 +318,7 @@ rr-rich-text td {
 	padding: var(--primitives-space-6);
 	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	min-width: var(--primitives-area-120);
+	font: var(--primitives-font-body-md-regular-snug);
 
 	@container (min-width: 641px) {
 		min-width: none;

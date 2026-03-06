@@ -10,6 +10,7 @@ export const styles = css`
 	:host([full-width]) {
 		display: block;
 		width: 100%;
+		flex-grow: 1;
 	}
 
 	:host([hidden]) {

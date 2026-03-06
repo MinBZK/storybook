@@ -58,6 +58,9 @@ export class RRButton extends LitElement {
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';
 
+	@property({ type: String, reflect: true, attribute: 'popovertarget' })
+	popovertarget = '';
+
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
@@ -173,6 +176,7 @@ export class RRButton extends LitElement {
 		if (this.disabled) {
 			e.preventDefault();
 			e.stopPropagation();
+			return;
 		}
 	}
 

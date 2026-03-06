@@ -59,6 +59,9 @@ export class RRIconButton extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'is-expandable' })
 	isExpandable = false;
 
+	@property({ type: String, reflect: true, attribute: 'popovertarget' })
+	popovertarget = '';
+
 	@state()
 	_title = '';
 
@@ -92,10 +95,11 @@ export class RRIconButton extends LitElement {
 			.join(' ');
 	}
 
-	_handleClick(e: MouseEvent): void {
+	private _handleClick(e: MouseEvent): void {
 		if (this.disabled) {
 			e.preventDefault();
 			e.stopPropagation();
+			return;
 		}
 	}
 

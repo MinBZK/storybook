@@ -1,412 +1,110 @@
-/**
- * RegelRecht Top Navigation Bar Component (Lit + TypeScript)
- *
- * Full navigation header following Figma top-navigation-bar design.
- * Composes sub-components: rr-nav-logo, rr-menu-bar, rr-utility-menu-bar, rr-back-button.
- *
- * ## Usage
- * ```html
- * <!-- Default: all features visible -->
- * <rr-top-navigation-bar title="DigID">
- *   <rr-menu-item slot="menu" selected>Home</rr-menu-item>
- *   <rr-menu-item slot="menu">Aanvragen</rr-menu-item>
- * </rr-top-navigation-bar>
- *
- * <!-- Minimal: hide features with no-* attributes -->
- * <rr-top-navigation-bar no-title no-menu no-utility-bar></rr-top-navigation-bar>
- *
- * <!-- Add optional features with has-* attributes -->
- * <rr-top-navigation-bar has-back-button back-href="/">
- * </rr-top-navigation-bar>
- * ```
- *
- * @element rr-top-navigation-bar
- * @attr {string} container - Size variant: 'sm' | 'md' | 'lg' (default: 'md')
- * @attr {string} title - Title text (default: 'Titel')
- *
- * Hide default features (clean boolean pattern):
- * @attr {boolean} no-logo - Hide logo section
- * @attr {boolean} no-title - Hide title text
- * @attr {boolean} no-menu - Hide global menu
- * @attr {boolean} no-utility-bar - Hide utility buttons
- *
- * Show optional features:
- * @attr {boolean} has-back-button - Show back button (default: false)
- * @attr {boolean} logo-has-wordmark - Show wordmark beside logo (default: false)
- * @attr {boolean} utility-has-help - Show help button (default: false)
- * @attr {boolean} utility-has-settings - Show settings button (default: false)
- *
- * Hide utility buttons individually:
- * @attr {boolean} utility-no-language-switch - Hide language button
- * @attr {boolean} utility-no-search - Hide search button
- * @attr {boolean} utility-no-account - Hide account button
- *
- * Configuration:
- * @attr {string} logo-title - Logo wordmark title
- * @attr {string} logo-subtitle - Logo wordmark subtitle
- * @attr {string} utility-language - Language code (default: 'NL')
- * @attr {string} utility-account-label - Account button label
- * @attr {string} back-href - Back button link destination
- * @attr {string} back-label - Back button text (default: 'Terug')
- *
- * @slot menu - Menu items (rr-menu-item components) for global menu bar
- *
- * @csspart container - The main container
- * @csspart logo-bar - The logo section
- * @csspart nav-bar - The navigation bar section
- */
-
-import { LitElement, html, css, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-
-// Import sub-components to ensure they're registered
-import './rr-nav-logo.ts';
-import '../menu-bar/rr-menu-bar.ts';
-import '../menu-bar/rr-menu-item.ts';
-import './rr-utility-menu-bar.ts';
-import './rr-back-button.ts';
-import '../../layout/spacer/rr-spacer.ts';
+import { LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
+import { styles } from './rr-top-navigation-bar.styles.js';
+import { template } from './rr-top-navigation-bar.template.js';
+import './rr-nav-logo.js';
+import '../menu-bar/rr-menu-bar.js';
+import './rr-utility-menu-bar.js';
+import './rr-back-button.js';
+import '../../layout/spacer/rr-spacer.js';
 
 type ContainerSize = 'sm' | 'md' | 'lg';
 
-@customElement('rr-top-navigation-bar')
 export class RRTopNavigationBar extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: var(--rr-font-family-body);
-      width: 100%;
-    }
+	static override styles = styles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String, reflect: true })
+	container: ContainerSize = 'md';
 
-    * {
-      box-sizing: border-box;
-    }
+	@property({ type: String })
+	override title = 'Titel';
 
-    .skip-link {
-      position: absolute;
-      top: -100%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      background-color: var(--primitives-color-accent-100);
-      color: var(--primitives-color-neutral-0);
-      padding: var(--primitives-space-8) var(--primitives-space-16);
-      font: var(--components-menu-bar-menu-item-font);
-      text-decoration: none;
-      border-radius: var(--semantics-controls-md-corner-radius);
-    }
+	@property({ type: String, attribute: 'skip-link-target' })
+	skipLinkTarget = '#main-content';
 
-    .skip-link:focus {
-      top: var(--primitives-space-8);
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
+	@property({ type: Boolean, attribute: 'no-logo', reflect: true })
+	noLogo = false;
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      margin: 0 auto;
-      background-color: var(--semantics-surfaces-background-color);
-      border-bottom: var(--semantics-dividers-thickness) solid
-        var(--semantics-dividers-color);
-    }
+	@property({ type: Boolean, attribute: 'no-title', reflect: true })
+	noTitle = false;
 
-    /* Container fills available width - no max-width constraints */
-    :host([container='sm']) .container {
-      min-width: var(--primitives-breakpoint-sm-min);
-    }
+	@property({ type: Boolean, attribute: 'no-menu', reflect: true })
+	noMenu = false;
 
-    :host([container='md']) .container,
-    :host(:not([container])) .container {
-      min-width: var(--primitives-breakpoint-md-min);
-    }
+	@property({ type: Boolean, attribute: 'no-utility-bar', reflect: true })
+	noUtilityBar = false;
 
-    :host([container='lg']) .container {
-      min-width: var(--primitives-breakpoint-lg-min);
-    }
+	@property({ type: Boolean, attribute: 'has-back-button', reflect: true })
+	hasBackButton = false;
 
-    /* Logo bar - white background with centered logo */
-    .logo-bar {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      background-color: var(--semantics-surfaces-background-color);
-    }
+	@property({ type: Boolean, attribute: 'logo-has-wordmark' })
+	logoHasWordmark = false;
 
-    /* Navigation bar */
-    .nav-bar {
-      display: flex;
-      align-items: center;
-      min-height: 44px;
-      background-color: var(--semantics-surfaces-background-color);
-    }
+	@property({ type: String, attribute: 'logo-title' })
+	logoTitle = '';
 
-    /* Inner wrapper - contains nav-left and nav-right, handles space-between */
-    .nav-bar-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex: 1;
-      min-width: 0;
-    }
+	@property({ type: String, attribute: 'logo-subtitle' })
+	logoSubtitle = '';
 
-    /* Responsive padding - base padding, spacers handle the rest */
-    :host([container='sm']) .nav-bar {
-      padding-left: var(--primitives-space-4);
-      padding-right: var(--primitives-space-4);
-    }
+	@property({ type: String, attribute: 'logo-supporting-text-1' })
+	logoSupportingText1 = '';
 
-    :host([container='md']) .nav-bar,
-    :host(:not([container])) .nav-bar {
-      padding-left: var(--primitives-space-8);
-      padding-right: var(--primitives-space-8);
-    }
+	@property({ type: String, attribute: 'logo-supporting-text-2' })
+	logoSupportingText2 = '';
 
-    :host([container='lg']) .nav-bar {
-      padding-left: var(--primitives-space-8);
-      padding-right: var(--primitives-space-8);
-    }
+	@property({ type: Boolean, attribute: 'utility-no-language-switch' })
+	utilityNoLanguageSwitch = false;
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      flex: 1;
-      min-width: 0; /* Allow flex item to shrink below content size */
-    }
+	@property({ type: Boolean, attribute: 'utility-no-search' })
+	utilityNoSearch = false;
 
-    .nav-right {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0; /* Prevent utility bar from shrinking */
-    }
+	@property({ type: Boolean, attribute: 'utility-no-account' })
+	utilityNoAccount = false;
 
-    .global-menu {
-      flex: 1;
-      min-width: 0;
-      overflow: visible; /* Allow dropdown menu to extend beyond bounds */
-    }
+	@property({ type: Boolean, attribute: 'utility-has-help' })
+	utilityHasHelp = false;
 
-    /* Navigation title */
-    .nav-title {
-      font: var(--components-menu-bar-title-item-m-font);
-      color: var(--primitives-color-neutral-900);
-      /* Match Figma title-item padding: 0px 8px (8px on left AND right) */
-      padding-left: var(--primitives-space-8);
-      padding-right: var(--primitives-space-8);
-      white-space: nowrap;
-    }
+	@property({ type: Boolean, attribute: 'utility-has-settings' })
+	utilityHasSettings = false;
 
-    :host([container='sm']) .nav-title {
-      font: var(--components-menu-bar-title-item-s-font);
-    }
+	@property({ type: String, attribute: 'utility-language' })
+	utilityLanguage = 'NL';
 
-    :host([container='lg']) .nav-title {
-      font: var(--components-menu-bar-title-item-l-font);
-    }
+	@property({ type: String, attribute: 'utility-account-label' })
+	utilityAccountLabel = '';
 
-    /* Menu bar integration - remove its own border as nav-bar provides structure */
-    rr-menu-bar {
-      --_menu-bar-border: none;
-    }
+	@property({ type: String, attribute: 'back-href' })
+	backHref = '';
 
-    rr-menu-bar::part(menu) {
-      border-bottom: none;
-    }
+	@property({ type: String, attribute: 'back-label' })
+	backLabel = 'Terug';
 
-    /* Hide on small screens */
-    :host([container='sm']) .global-menu {
-      display: none;
-    }
+	get _accountLabel(): string {
+		return this.utilityAccountLabel || `Mijn ${this.title}`;
+	}
 
-    /* Hide sections based on no-* attributes */
-    :host([no-logo]) .logo-bar {
-      display: none;
-    }
+	get _spacerSize(): '32' | '16' | null {
+		if (this.container === 'lg') return '32';
+		if (this.container === 'md') return '16';
+		return null;
+	}
 
-    :host([no-title]) .nav-title {
-      display: none;
-    }
+	get _menuBarSize(): string {
+		const map: Record<ContainerSize, string> = { sm: 's', md: 'm', lg: 'l' };
+		return map[this.container];
+	}
 
-    :host([no-menu]) .global-menu {
-      display: none;
-    }
+	override render() {
+		return template.call(this);
+	}
+}
 
-    :host([no-utility-bar]) .nav-right {
-      display: none;
-    }
-
-    :host(:not([has-back-button])) rr-back-button {
-      display: none;
-    }
-
-    :host([has-back-button]) rr-back-button {
-      display: inline-flex;
-      margin-right: var(--primitives-space-8);
-    }
-  `;
-
-  @property({ type: String, reflect: true })
-  container: ContainerSize = 'md';
-
-  @property({ type: String })
-  override title = 'Titel';
-
-  @property({ type: String, attribute: 'skip-link-target' })
-  skipLinkTarget = '#main-content';
-
-  // Hide default features (shown by default, add attribute to hide)
-  @property({ type: Boolean, attribute: 'no-logo', reflect: true })
-  noLogo = false;
-
-  @property({ type: Boolean, attribute: 'no-title', reflect: true })
-  noTitle = false;
-
-  @property({ type: Boolean, attribute: 'no-menu', reflect: true })
-  noMenu = false;
-
-  @property({ type: Boolean, attribute: 'no-utility-bar', reflect: true })
-  noUtilityBar = false;
-
-  // Show optional features (hidden by default, add attribute to show)
-  @property({ type: Boolean, attribute: 'has-back-button', reflect: true })
-  hasBackButton = false;
-
-  // Logo pass-through
-  @property({ type: Boolean, attribute: 'logo-has-wordmark' })
-  logoHasWordmark = false;
-
-  @property({ type: String, attribute: 'logo-title' })
-  logoTitle = '';
-
-  @property({ type: String, attribute: 'logo-subtitle' })
-  logoSubtitle = '';
-
-  @property({ type: String, attribute: 'logo-supporting-text-1' })
-  logoSupportingText1 = '';
-
-  @property({ type: String, attribute: 'logo-supporting-text-2' })
-  logoSupportingText2 = '';
-
-  // Utility menu bar pass-through - Hide default buttons
-  @property({ type: Boolean, attribute: 'utility-no-language-switch' })
-  utilityNoLanguageSwitch = false;
-
-  @property({ type: Boolean, attribute: 'utility-no-search' })
-  utilityNoSearch = false;
-
-  @property({ type: Boolean, attribute: 'utility-no-account' })
-  utilityNoAccount = false;
-
-  // Utility menu bar pass-through - Show optional buttons
-  @property({ type: Boolean, attribute: 'utility-has-help' })
-  utilityHasHelp = false;
-
-  @property({ type: Boolean, attribute: 'utility-has-settings' })
-  utilityHasSettings = false;
-
-  @property({ type: String, attribute: 'utility-language' })
-  utilityLanguage = 'NL';
-
-  @property({ type: String, attribute: 'utility-account-label' })
-  utilityAccountLabel = '';
-
-  // Back button pass-through
-  @property({ type: String, attribute: 'back-href' })
-  backHref = '';
-
-  @property({ type: String, attribute: 'back-label' })
-  backLabel = 'Terug';
-
-  private get _accountLabel(): string {
-    return this.utilityAccountLabel || `Mijn ${this.title}`;
-  }
-
-  /** Spacer size based on container: lg=32, md=16, sm=none */
-  private get _spacerSize(): '32' | '16' | null {
-    if (this.container === 'lg') return '32';
-    if (this.container === 'md') return '16';
-    return null; // sm container has no spacer
-  }
-
-  /** Map container size to menu-bar title size (menu-bar uses s/m/l) */
-  private get _menuBarSize(): string {
-    const map: Record<ContainerSize, string> = { sm: 's', md: 'm', lg: 'l' };
-    return map[this.container];
-  }
-
-  override render() {
-    return html`
-      <a href="${this.skipLinkTarget}" class="skip-link">Ga naar hoofdinhoud</a>
-      <div class="container" part="container">
-        <!-- Logo bar with centered Rijksoverheid coat of arms -->
-        <div class="logo-bar" part="logo-bar">
-          <rr-nav-logo
-            container="${this.container}"
-            ?has-wordmark="${this.logoHasWordmark}"
-            title="${this.logoTitle}"
-            subtitle="${this.logoSubtitle}"
-            supporting-text-1="${this.logoSupportingText1}"
-            supporting-text-2="${this.logoSupportingText2}"
-          ></rr-nav-logo>
-        </div>
-
-        <!-- Navigation bar: Back | Title | Menu items | Utility buttons -->
-        <nav class="nav-bar" part="nav-bar" aria-label="Hoofdnavigatie">
-          <!-- Left spacer (L=32px, M=16px, S=none) -->
-          ${this._spacerSize
-            ? html`<rr-spacer size="${this._spacerSize}" direction="horizontal"></rr-spacer>`
-            : nothing}
-
-          <!-- Inner wrapper for left/right content -->
-          <div class="nav-bar-inner">
-            <!-- Left: Back button, Title, Global Menu -->
-            <div class="nav-left">
-              <rr-back-button
-                container="${this.container}"
-                href="${this.backHref}"
-                label="${this.backLabel}"
-              ></rr-back-button>
-              <span class="nav-title">${this.title}</span>
-              <div class="global-menu">
-                <rr-menu-bar size="${this._menuBarSize}" has-overflow-menu overflow-label="Meer">
-                  <slot name="menu"></slot>
-                </rr-menu-bar>
-              </div>
-            </div>
-
-            <!-- Right: Utility buttons -->
-            <div class="nav-right">
-              <rr-utility-menu-bar
-                container="${this.container}"
-                ?no-language-switch="${this.utilityNoLanguageSwitch}"
-                ?no-search="${this.utilityNoSearch}"
-                ?no-account="${this.utilityNoAccount}"
-                ?has-help="${this.utilityHasHelp}"
-                ?has-settings="${this.utilityHasSettings}"
-                language="${this.utilityLanguage}"
-                account-label="${this._accountLabel}"
-              ></rr-utility-menu-bar>
-            </div>
-          </div>
-
-          <!-- Right spacer (L=32px, M=16px, S=none) -->
-          ${this._spacerSize
-            ? html`<rr-spacer size="${this._spacerSize}" direction="horizontal"></rr-spacer>`
-            : nothing}
-        </nav>
-      </div>
-    `;
-  }
+if (!customElements.get('rr-top-navigation-bar')) {
+	customElements.define('rr-top-navigation-bar', RRTopNavigationBar);
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-top-navigation-bar': RRTopNavigationBar;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-top-navigation-bar': RRTopNavigationBar;
+	}
 }
