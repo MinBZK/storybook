@@ -3,17 +3,39 @@ import './rr-form-field.ts';
 import '../../inputs/text-field/rr-text-field.ts';
 
 /**
- * `rr-form-field` is a layout wrapper for form controls.
+ * `rr-form-field` is a layout wrapper for form inputs.
+ *
+ * ### Label association
+ * The form field automatically generates an id for the native input inside the
+ * slotted input element and sets the label's `for` attribute to match — clicking
+ * the label focuses the input. No manual wiring needed.
+ *
+ * To use a stable, predictable id set `input-id` on
+ * the slotted input — the form field will use it as-is.
+ *
+ * ```html
+ * <!-- Automatic -->
+ * <rr-form-field label="Name">
+ *   <rr-text-field></rr-text-field>
+ * </rr-form-field>
+ *
+ * <!-- Consumer-provided -->
+ * <rr-form-field label="Name">
+ *   <rr-text-field input-id="name-input"></rr-text-field>
+ * </rr-form-field>
+ * ```
  *
  * ### Slots
- * - Default slot: the form control. Set `invalid` and `error-message="id1 id2"` on
- *   the control to wire up error texts automatically.
- * - `rr-form-field-help-text`: slot in anywhere in the default slot — the component
- *   assigns itself to the `help-text` slot automatically.
+ * - Default slot: the slotted input. Set `invalid` and `error-message="id1 id2"`
+ *   on the input to wire up error texts automatically.
+ * - `rr-form-field-help-text`: slot in alongside the input — the component
+ *   assigns itself to the help slot automatically.
+ * - `rr-form-field-error-text`: slot in alongside the input — the component
+ *   assigns itself to the errors slot automatically.
  *
  * ### Error texts
  * Slot in as many `rr-form-field-error-text` elements as needed. The form field
- * observes the control and shows only the ones referenced by `error-message`.
+ * observes the input and shows only the ones referenced by `error-message`.
  *
  * ```html
  * <rr-form-field label="Password">
@@ -36,7 +58,7 @@ export default {
 			control: 'select',
 			options: ['top', 'left', 'right'],
 		},
-		controlSize: {
+		size: {
 			control: 'select',
 			options: ['md', 'sm', 'xs'],
 		},
@@ -45,18 +67,17 @@ export default {
 	args: {
 		label: 'Label',
 		labelAlignment: 'top',
-		controlSize: 'md',
+		size: 'md',
 		optional: false,
 	},
 };
 
-const Template = ({ label, labelAlignment, controlSize, optional }) => html`
+const Template = ({ label, labelAlignment, size, optional }) => html`
 	<rr-form-field
 		label=${label}
 		label-alignment=${labelAlignment}
-		control-size=${controlSize}
+		size=${size}
 		?optional=${optional}
-
 	>
 		<rr-text-field></rr-text-field>
 	</rr-form-field>
@@ -98,6 +119,26 @@ export const MultipleErrors = () => html`
 	</rr-form-field>
 `;
 
+/**
+ * The form field generates an id automatically. Inspect the DOM to see
+ * `id="rr-field-input-{n}"` on the rr-text-field and a matching `for` on the label.
+ */
+export const AutomaticLabelAssociation = () => html`
+	<rr-form-field label="Full name">
+		<rr-text-field></rr-text-field>
+	</rr-form-field>
+`;
+
+/**
+ * Set `input-id` on the slotted input to use a stable, predictable id.
+ * The form field will use it as-is instead of generating one.
+ */
+export const ConsumerProvidedInputId = () => html`
+	<rr-form-field label="Full name">
+		<rr-text-field input-id="full-name-input"></rr-text-field>
+	</rr-form-field>
+`;
+
 export const LabelAlignmentLeft = () => html`
 	<rr-form-field label="Full name" label-alignment="left">
 		<rr-form-field-help-text>As it appears on your passport.</rr-form-field-help-text>
@@ -115,15 +156,16 @@ export const LabelAlignmentRight = () => html`
 export const CompleteFormTop = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
 		<rr-form-field label="Full name">
-			<rr-text-field></rr-text-field>
+			<rr-text-field input-id="top-full-name"></rr-text-field>
 		</rr-form-field>
 		<rr-form-field label="Email address">
 			<rr-form-field-help-text>We'll send a confirmation email.</rr-form-field-help-text>
-			<rr-text-field type="email"></rr-text-field>
+			<rr-text-field type="email" input-id="top-email"></rr-text-field>
 		</rr-form-field>
 		<rr-form-field label="Phone number" optional>
 			<rr-text-field
 				type="tel"
+				input-id="top-phone"
 				invalid
 				error-message="err-phone"
 			></rr-text-field>
@@ -131,7 +173,7 @@ export const CompleteFormTop = () => html`
 		</rr-form-field>
 		<rr-form-field label="Comments" optional>
 			<rr-form-field-help-text>Any additional remarks.</rr-form-field-help-text>
-			<rr-text-field></rr-text-field>
+			<rr-text-field input-id="top-comments"></rr-text-field>
 		</rr-form-field>
 	</div>
 `;
@@ -139,15 +181,16 @@ export const CompleteFormTop = () => html`
 export const CompleteFormRight = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem; container-type: inline-size;">
 		<rr-form-field label="Full name" label-alignment="right">
-			<rr-text-field></rr-text-field>
+			<rr-text-field input-id="right-full-name"></rr-text-field>
 		</rr-form-field>
 		<rr-form-field label="Email address" label-alignment="right">
 			<rr-form-field-help-text>We'll send a confirmation email.</rr-form-field-help-text>
-			<rr-text-field type="email"></rr-text-field>
+			<rr-text-field type="email" input-id="right-email"></rr-text-field>
 		</rr-form-field>
 		<rr-form-field label="Phone number" label-alignment="right" optional>
 			<rr-text-field
 				type="tel"
+				input-id="right-phone"
 				invalid
 				error-message="err-phone-right"
 			></rr-text-field>
@@ -155,7 +198,7 @@ export const CompleteFormRight = () => html`
 		</rr-form-field>
 		<rr-form-field label="Comments" label-alignment="right" optional>
 			<rr-form-field-help-text>Any additional remarks.</rr-form-field-help-text>
-			<rr-text-field></rr-text-field>
+			<rr-text-field input-id="right-comments"></rr-text-field>
 		</rr-form-field>
 	</div>
 `;

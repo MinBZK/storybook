@@ -15,17 +15,19 @@ function renderOptional(): TemplateResult {
 export function formFieldTemplate(component: RRFormField): TemplateResult {
 	const hasLabel = Boolean(component.label);
 
-	// The entire header is a <label> so clicking anywhere in the header
-	// (label text, optional badge, help text) activates the associated control.
 	const headerEl = html`
-		<label class="form-field__header ${hasLabel ? '' : 'is-empty'}">
+		<label
+			class="form-field__header ${hasLabel ? '' : 'is-empty'}"
+			for=${component.labelFor || nothing}
+			@click=${(e: Event) => component.focusInput(e)}
+		>
 			${hasLabel ? html`
 				<span class="form-field__label">
 					${component.label}
 					${component.optional ? renderOptional() : nothing}
 				</span>
 			` : nothing}
-			<slot name="help-text"></slot>
+			<slot name="help"></slot>
 		</label>
 	`;
 
@@ -34,6 +36,9 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 			${headerEl}
 			<div class="form-field__main">
 				<slot></slot>
+				<div class="form-field__errors">
+					<slot name="errors"></slot>
+				</div>
 			</div>
 		</div>
 	`;
@@ -46,9 +51,9 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 
 export function formFieldHelpTextTemplate(_component: RRFormFieldHelpText): TemplateResult {
 	return html`
-		<span class="form-field__help-text">
+		<p class="form-field__help-text">
 			<slot></slot>
-		</span>
+		</p>
 	`;
 }
 
@@ -59,8 +64,8 @@ export function formFieldHelpTextTemplate(_component: RRFormFieldHelpText): Temp
 
 export function formFieldErrorTextTemplate(_component: RRFormFieldErrorText): TemplateResult {
 	return html`
-		<span class="form-field__error-text">
+		<p class="form-field__error-text">
 			<slot></slot>
-		</span>
+		</p>
 	`;
 }

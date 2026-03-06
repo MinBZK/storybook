@@ -5,12 +5,14 @@
  *
  * @attr {string} label           - Field label text. Omit for no-label layout.
  * @attr {string} label-alignment - 'top' (default) | 'left' | 'right'
- * @attr {string} control-size    - 'md' (default) | 'sm' | 'xs' — vertically centres
- *                                  the header against the control in left/right alignment.
+ * @attr {string} size            - 'md' (default) | 'sm' | 'xs' — vertically centres
+ *                                  the header against the input in left/right alignment.
  * @attr {boolean} optional       - Shows "Optional" badge next to the label.
  *
- * @slot           - The form control (e.g. rr-text-field). Set `invalid` and
- *                   `error-message="id1 id2"` on the control to wire up error texts.
+ * @slot           - The slotted input (e.g. rr-text-field). Set `invalid` and
+ *                   `error-message="id1 id2"` on the input to wire up error texts.
+ *                   rr-form-field-error-text elements assign themselves to the
+ *                   errors slot automatically.
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
@@ -22,7 +24,7 @@
  *
  * @element rr-form-field-error-text
  *
- * @attr {string} id       - Referenced by the control's `error-message` attribute.
+ * @attr {string} id       - Referenced by the input's `error-message` attribute.
  * @attr {boolean} invalid - Visibility managed automatically by rr-form-field.
  *
  * @slot - The error message text.
@@ -40,7 +42,7 @@
  * </rr-form-field>
  */
 import { LitElement } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import {
 	formFieldStyles,
 	formFieldHelpTextStyles,
@@ -53,9 +55,14 @@ import {
 } from './rr-form-field.template.js';
 
 export type LabelAlignment = 'top' | 'left' | 'right';
-export type ControlSize = 'xs' | 'sm' | 'md';
+export type InputSize = 'xs' | 'sm' | 'md';
 
-const HELPER_TAGS = ['rr-form-field-help-text', 'rr-form-field-error-text'];
+const HELPER_TAGS = ['rr-form-field-help-text'];
+
+let idCounter = 0;
+function generateId(): string {
+	return `rr-field-input-${++idCounter}`;
+}
 
 
 /* ============================================================
@@ -76,18 +83,17 @@ export class RRFormField extends LitElement {
 	 *  - 'left'  : 240 px column, left-aligned text
 	 *  - 'right' : 240 px column, right-aligned text
 	 *
-	 * Collapses to 'top' automatically when the container is < 640 px wide
-	 * (requires a CSS container query context on the host's parent).
+	 * Collapses to 'top' automatically when the container is < 640 px wide.
 	 */
 	@property({ type: String, attribute: 'label-alignment', reflect: true })
 	labelAlignment: LabelAlignment = 'top';
 
 	/**
-	 * Size of the slotted control. Sets the header min-height so the label
-	 * vertically centres against the control in left/right label-alignment.
+	 * Size of the slotted input. Sets the header min-height so the label
+	 * vertically centres against the input in left/right label-alignment.
 	 */
-	@property({ type: String, attribute: 'control-size', reflect: true })
-	controlSize: ControlSize = 'md';
+	@property({ type: String, reflect: true })
+	size: InputSize = 'md';
 
 	/**
 	 * When true an "Optional" badge is shown next to the label.
@@ -96,32 +102,76 @@ export class RRFormField extends LitElement {
 	@property({ type: Boolean })
 	optional = false;
 
-	@query('slot:not([name])')
-	private _slot!: HTMLSlotElement;
+	/**
+	 * The id of the slotted input, used to associate the label via `for`.
+	 * Set automatically when the input is slotted — do not set manually.
+	 */
+	@state()
+	labelFor = '';
 
+	private _childObserver: MutationObserver | null = null;
 	private _observer: MutationObserver | null = null;
 
 	override render() {
 		return formFieldTemplate(this);
 	}
 
+	override connectedCallback() {
+		super.connectedCallback();
+		this._childObserver = new MutationObserver(() => this._onSlotChange());
+		this._childObserver.observe(this, { childList: true });
+	}
+
 	override firstUpdated() {
-		this._slot.addEventListener('slotchange', () => this._onSlotChange());
+		this._onSlotChange();
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback();
+		this._childObserver?.disconnect();
 		this._observer?.disconnect();
+	}
+
+	override updated(changed: Map<string, unknown>) {
+		if (changed.has('size')) {
+			const input = this._findInput();
+			if (input) this._forwardSize(input);
+		}
+	}
+
+	/** Forwards the form field's size to the slotted input. */
+	private _forwardSize(input: Element) {
+		input.setAttribute('size', this.size);
+	}
+
+	/** Called when the label header is clicked — focuses the slotted input. */
+	focusInput(e: Event) {
+		// <label for> cannot cross shadow boundaries so we focus manually.
+		e.preventDefault();
+		(this._findInput() as HTMLElement | undefined)?.focus();
 	}
 
 	private _onSlotChange() {
 		this._observer?.disconnect();
 
-		const control = this._findControl();
-		if (!control) return;
+		const input = this._findInput();
+		if (!input) return;
+
+		// Use the consumer-provided id if available, otherwise generate one.
+		// If the element exposes inputId (e.g. rr-text-field), read that as the
+		// preferred id. Always set it on the element itself so the label for
+		// can resolve it in the light DOM.
+		const hasInputId = 'inputId' in input;
+		const existingId = hasInputId
+			? (input as HTMLElement & { inputId: string }).inputId
+			: input.id;
+		const generatedId = existingId || generateId();
+		input.id = generatedId;
+		this.labelFor = generatedId;
+		this._forwardSize(input);
 
 		this._observer = new MutationObserver(() => this._syncErrorText());
-		this._observer.observe(control, {
+		this._observer.observe(input, {
 			attributes: true,
 			attributeFilter: ['invalid', 'error-message'],
 		});
@@ -129,28 +179,26 @@ export class RRFormField extends LitElement {
 		this._syncErrorText();
 	}
 
-	/** First slotted element that is not a form field helper component. */
-	private _findControl(): Element | undefined {
-		return this._slot
-			.assignedElements({ flatten: true })
+	/** First child element that is not a form field helper component. */
+	private _findInput(): Element | undefined {
+		return Array.from(this.children)
 			.find(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()));
 	}
 
 	/**
-	 * Reads `invalid` and `error-message` from the control and toggles
+	 * Reads `invalid` and `error-message` from the input and toggles
 	 * the `invalid` attribute on the referenced rr-form-field-error-text elements.
 	 */
 	private _syncErrorText() {
-		const control = this._findControl();
-		if (!control) return;
+		const input = this._findInput();
+		if (!input) return;
 
-		const isInvalid = control.hasAttribute('invalid');
-		const referencedIds = (control.getAttribute('error-message') ?? '')
+		const isInvalid = input.hasAttribute('invalid');
+		const referencedIds = (input.getAttribute('error-message') ?? '')
 			.split(' ')
 			.filter(Boolean);
 
-		const allErrorTexts = this._slot
-			.assignedElements({ flatten: true })
+		const allErrorTexts = Array.from(this.children)
 			.filter(el => el.tagName.toLowerCase() === 'rr-form-field-error-text');
 
 		for (const el of allErrorTexts) {
@@ -171,7 +219,7 @@ export class RRFormFieldHelpText extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback();
-		this.slot = 'help-text';
+		this.slot = 'help';
 	}
 
 	override render() {
@@ -194,6 +242,11 @@ export class RRFormFieldErrorText extends LitElement {
 	 */
 	@property({ type: Boolean, reflect: true })
 	invalid = false;
+
+	override connectedCallback() {
+		super.connectedCallback();
+		this.slot = 'errors';
+	}
 
 	override render() {
 		return formFieldErrorTextTemplate(this);

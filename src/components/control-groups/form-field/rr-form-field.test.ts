@@ -38,7 +38,7 @@ describe('rr-form-field', () => {
 		el = await fixture('<rr-form-field></rr-form-field>');
 		await waitForUpdate(el);
 		const header = el.shadowRoot!.querySelector('.form-field__header');
-		expect(header?.classList.contains('form-field__header--empty')).toBe(true);
+		expect(header?.classList.contains('is-empty')).toBe(true);
 	});
 
 	it('shows "Optional" when optional attribute is set', async () => {
@@ -61,16 +61,16 @@ describe('rr-form-field', () => {
 		expect(el.getAttribute('label-alignment')).toBe('right');
 	});
 
-	it('reflects control-size attribute, defaulting to md', async () => {
+	it('reflects size attribute, defaulting to md', async () => {
 		el = await fixture('<rr-form-field label="Name" label-alignment="right"></rr-form-field>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('control-size')).toBe('md');
+		expect(el.getAttribute('size')).toBe('md');
 	});
 
-	it('reflects control-size attribute when set to sm', async () => {
-		el = await fixture('<rr-form-field label="Name" label-alignment="right" control-size="sm"></rr-form-field>');
+	it('reflects size attribute when set to sm', async () => {
+		el = await fixture('<rr-form-field label="Name" label-alignment="right" size="sm"></rr-form-field>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('control-size')).toBe('sm');
+		expect(el.getAttribute('size')).toBe('sm');
 	});
 
 	it('renders the header as a label element', async () => {

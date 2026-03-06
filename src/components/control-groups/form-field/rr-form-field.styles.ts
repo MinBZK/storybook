@@ -28,7 +28,7 @@ export const formFieldStyles = css`
 		:host([label-alignment='left']) .form-field,
 		:host([label-alignment='right']) .form-field {
 			flex-direction: row;
-			align-items: flex-start;
+			align-items: start;
 			gap: var(--primitives-space-8);
 		}
 	}
@@ -46,16 +46,7 @@ export const formFieldStyles = css`
 		display: none;
 	}
 
-	:host([control-size='sm']) .form-field__header {
-		min-height: var(--semantics-controls-sm-min-size);
-	}
-
-	:host([control-size='xs']) .form-field__header {
-		min-height: var(--semantics-controls-xs-min-size);
-	}
-
 	@container (min-width: 640px) {
-
 		:host([label-alignment='left']) .form-field__header,
 		:host([label-alignment='right']) .form-field__header {
 			flex-grow: 0;
@@ -65,26 +56,53 @@ export const formFieldStyles = css`
 			min-height: var(--semantics-controls-md-min-size);
 		}
 
+		:host([label-alignment='left'][size='sm']) .form-field__header,
+		:host([label-alignment='right'][size='sm']) .form-field__header {
+			min-height: var(--semantics-controls-sm-min-size);
+		}
+
+		:host([label-alignment='left'][size='xs']) .form-field__header,
+		:host([label-alignment='right'][size='xs']) .form-field__header {
+			min-height: var(--semantics-controls-xs-min-size);
+		}
+
 		:host([label-alignment='left']) .form-field__header {
-			align-items: flex-start;
+			align-items: start;
 			text-align: left;
 		}
 
 		:host([label-alignment='right']) .form-field__header {
-			align-items: flex-end;
+			align-items: end;
 			text-align: right;
 		}
-
 	}
+
 
 	/* # Label */
 
 	.form-field__label {
 		display: inline-flex;
 		align-items: baseline;
-		gap: var(--primitives-space-8);
+		gap: var(--primitives-space-4);
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-md-regular-tight);
+	}
+
+	@container (min-width: 640px) {
+		:host([label-alignment='left']) .form-field__label,
+		:host([label-alignment='right']) .form-field__label {
+			display: flex;
+			flex-direction: column;
+			gap: var(--primitives-space-0);
+		}
+
+		:host([label-alignment='left']) .form-field__label {
+			align-items: start;
+		}
+
+		:host([label-alignment='right']) .form-field__label {
+			align-items: end;
+		}
 	}
 
 
@@ -95,20 +113,29 @@ export const formFieldStyles = css`
 		font: var(--primitives-font-body-xs-regular-tight);
 	}
 
-	/* ## Main */
 
-	@container (min-width: 640px) {
+	/* # Main */
 
-		:host([label-alignment='left']) .form-field__main,
-		:host([label-alignment='right']) .form-field__main {
-			display: flex;
-			flex-direction: column;
-			flex-grow: 1;
-			flex-shrink: 1;
-			flex-basis: 0;
-			min-width: 0;
-		}
+	.form-field__main {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0;
+		min-width: 0;
+	}
 
+
+	/* # Errors */
+
+	.form-field__errors:empty {
+		display: none;
+	}
+
+	.form-field__errors {
+		display: flex;
+		flex-direction: column;
+		margin-top: var(--primitives-space-2);
 	}
 `;
 
@@ -129,6 +156,7 @@ export const formFieldHelpTextStyles = css`
 	/* # Help text */
 
 	.form-field__help-text {
+		margin: 0;
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
@@ -155,6 +183,7 @@ export const formFieldErrorTextStyles = css`
 	/* # Error text */
 
 	.form-field__error-text {
+		margin: 0;
 		color: var(--semantics-content-error-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}

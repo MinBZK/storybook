@@ -2,9 +2,12 @@
  * RegelRecht Text Field Component (Lit + TypeScript)
  *
  * @element rr-text-field
- * @attr {string} value - The input value
- * @attr {string} placeholder - Placeholder text
- * @attr {string} validation - Validation state: 'neutral' | 'valid' | 'invalid'
+ * @attr {string} value        - The input value
+ * @attr {string} placeholder  - Placeholder text
+ * @attr {string} input-id     - Sets the id on the native input. Set automatically by rr-form-field.
+ * @attr {string} size       - 'md' (default) | 'sm' | 'xs'. Set automatically by rr-form-field.
+ * @attr {boolean} invalid     - Marks the field as invalid
+ * @attr {boolean} valid - Marks the field as valid
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Input type: 'text' | 'email' | 'password' | 'tel' | 'url'
  * @attr {string} name - Input name for form submission
@@ -26,11 +29,14 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 
-type Validation = 'neutral' | 'valid' | 'invalid';
 type InputType = 'text' | 'email' | 'password' | 'tel' | 'url';
 
 @customElement('rr-text-field')
 export class RRTextField extends LitElement {
+  static override shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
   static override styles = css`
     :host {
       display: block;
@@ -52,19 +58,14 @@ export class RRTextField extends LitElement {
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
-    }
-
-    /* Validation states */
-    :host([validation="neutral"]) .text-field,
-    :host(:not([validation])) .text-field {
       --_border-color: var(--semantics-input-fields-border-color);
     }
 
-    :host([validation="valid"]) .text-field {
+    :host([valid]) .text-field {
       --_border-color: var(--semantics-input-fields-is-valid-border-color);
     }
 
-    :host([validation="invalid"]) .text-field {
+    :host([invalid]) .text-field {
       --_border-color: var(--semantics-input-fields-is-invalid-border-color);
     }
 
@@ -131,11 +132,11 @@ export class RRTextField extends LitElement {
       height: 24px;
     }
 
-    :host([validation="valid"]) .text-field__validation-icon {
+    :host([valid]) .text-field__validation-icon {
       color: var(--semantics-input-fields-is-valid-icon-color);
     }
 
-    :host([validation="invalid"]) .text-field__validation-icon {
+    :host([invalid]) .text-field__validation-icon {
       color: var(--semantics-input-fields-is-invalid-icon-color);
     }
 
@@ -156,6 +157,37 @@ export class RRTextField extends LitElement {
       pointer-events: none;
     }
 
+    /* Size variants */
+    :host([size='sm']) .text-field {
+      min-height: var(--semantics-controls-sm-min-size);
+      border-radius: var(--semantics-controls-sm-corner-radius);
+    }
+
+    :host([size='sm']) .text-field__native {
+      font: var(--semantics-input-fields-sm-text-font);
+      height: calc(var(--semantics-controls-sm-min-size) - 2 * var(--semantics-input-fields-border-thickness));
+      line-height: calc(var(--semantics-controls-sm-min-size) - 2 * var(--semantics-input-fields-border-thickness));
+    }
+
+    :host([size='sm']) .text-field__input-shade {
+      height: calc(var(--semantics-controls-sm-min-size) - 2 * var(--semantics-input-fields-border-thickness) - 4px);
+    }
+
+    :host([size='xs']) .text-field {
+      min-height: var(--semantics-controls-xs-min-size);
+      border-radius: var(--semantics-controls-xs-corner-radius);
+    }
+
+    :host([size='xs']) .text-field__native {
+      font: var(--semantics-input-fields-xs-text-font);
+      height: calc(var(--semantics-controls-xs-min-size) - 2 * var(--semantics-input-fields-border-thickness));
+      line-height: calc(var(--semantics-controls-xs-min-size) - 2 * var(--semantics-input-fields-border-thickness));
+    }
+
+    :host([size='xs']) .text-field__input-shade {
+      height: calc(var(--semantics-controls-xs-min-size) - 2 * var(--semantics-input-fields-border-thickness) - 4px);
+    }
+
     /* Accessibility: High Contrast Mode */
     @media (forced-colors: active) {
       .text-field:focus-within {
@@ -169,14 +201,23 @@ export class RRTextField extends LitElement {
     }
   `;
 
+  @property({ type: String, reflect: true })
+  size: 'md' | 'sm' | 'xs' = 'md';
+
   @property({ type: String })
   value = '';
+
+  @property({ type: String, attribute: 'input-id' })
+  inputId = '';
 
   @property({ type: String })
   placeholder = '';
 
-  @property({ type: String, reflect: true })
-  validation: Validation = 'neutral';
+  @property({ type: Boolean, reflect: true })
+  invalid = false;
+
+  @property({ type: Boolean, reflect: true })
+  valid = false;
 
   @property({ type: Boolean, reflect: true })
   disabled = false;
@@ -228,7 +269,7 @@ export class RRTextField extends LitElement {
   }
 
   private _renderValidationIcon() {
-    if (this.validation === 'valid') {
+    if (this.valid) {
       // Outline check-circle icon from src/assets/icons/check-circle.svg
       return html`
         <div class="text-field__validation-icon">
@@ -238,7 +279,7 @@ export class RRTextField extends LitElement {
         </div>
       `;
     }
-    if (this.validation === 'invalid') {
+    if (this.invalid) {
       // Outline exclamation-circle icon from src/assets/icons/exclamation-circle.svg
       return html`
         <div class="text-field__validation-icon">
@@ -261,6 +302,7 @@ export class RRTextField extends LitElement {
           <input
             class="text-field__native"
             part="input"
+            id=${this.inputId || nothing}
             type=${this.type}
             .value=${this.value}
             placeholder=${this.placeholder || nothing}
@@ -269,7 +311,7 @@ export class RRTextField extends LitElement {
             ?required=${this.required}
             name=${this.name || nothing}
             autocomplete=${this.autocomplete || nothing}
-            aria-invalid=${this.validation === 'invalid' ? 'true' : 'false'}
+            aria-invalid=${this.invalid ? 'true' : 'false'}
             @input=${this._handleInput}
             @change=${this._handleChange}
           />
