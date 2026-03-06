@@ -144,6 +144,9 @@ export class RRToolbar extends LitElement {
 	override firstUpdated(): void {
 		this._resizeObserver = new ResizeObserver(() => {
 			if (this._isMeasuring) return;
+			if (this._menuOpen) {
+				(this._menu as unknown as { hidePopover: () => void })?.hidePopover();
+			}
 			this._measureAndUpdate();
 		});
 		this._resizeObserver.observe(this);
