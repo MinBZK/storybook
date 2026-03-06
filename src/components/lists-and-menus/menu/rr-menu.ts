@@ -89,6 +89,11 @@ export class RRMenu extends LitElement {
 	}
 
 	private _handleDocumentClick = (event: MouseEvent): void => {
+		// When anchorElement is set, the caller controls toggling explicitly — skip document click handling
+		// to prevent a race condition where showPopover() and the document click handler both fire for
+		// the same click, causing the menu to flash open and immediately close.
+		if (this.anchorElement) return;
+
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
 
