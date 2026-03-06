@@ -5,7 +5,7 @@
  *
  * @attr {string} label           - Field label text. Omit for no-label layout.
  * @attr {string} label-alignment - 'top' (default) | 'left' | 'right'
- * @attr {string} size            - 'md' (default) | 'sm' | 'xs' — vertically centres
+ * @attr {string} size            - 'md' (default) | 'sm'  — vertically centres
  *                                  the header against the input in left/right alignment.
  * @attr {boolean} optional       - Shows "Optional" badge next to the label.
  *
@@ -55,7 +55,7 @@ import {
 } from './rr-form-field.template.js';
 
 export type LabelAlignment = 'top' | 'left' | 'right';
-export type InputSize = 'xs' | 'sm' | 'md';
+export type InputSize = 'sm' | 'md';
 
 const HELPER_TAGS = ['rr-form-field-help-text'];
 

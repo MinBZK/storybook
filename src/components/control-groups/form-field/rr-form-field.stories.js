@@ -56,11 +56,11 @@ export default {
 		label: { control: 'text' },
 		labelAlignment: {
 			control: 'select',
-			options: ['top', 'left', 'right'],
+			options: ['top', 'right', 'left'],
 		},
 		size: {
 			control: 'select',
-			options: ['md', 'sm', 'xs'],
+			options: ['md', 'sm'],
 		},
 		optional: { control: 'boolean' },
 	},

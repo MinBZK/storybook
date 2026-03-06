@@ -1,13 +1,11 @@
 import { css } from 'lit';
 
-
 /* ============================================================
    rr-form-field
    ============================================================ */
 
 export const formFieldStyles = css`
-
-	/* # Base */
+	/* # Host */
 
 	:host {
 		display: block;
@@ -17,6 +15,8 @@ export const formFieldStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
+	/* # Form field */
 
 	.form-field {
 		display: flex;
@@ -32,7 +32,6 @@ export const formFieldStyles = css`
 			gap: var(--primitives-space-8);
 		}
 	}
-
 
 	/* # Header */
 
@@ -61,22 +60,16 @@ export const formFieldStyles = css`
 			min-height: var(--semantics-controls-sm-min-size);
 		}
 
-		:host([label-alignment='left'][size='xs']) .form-field__header,
-		:host([label-alignment='right'][size='xs']) .form-field__header {
-			min-height: var(--semantics-controls-xs-min-size);
+		:host([label-alignment='right']) .form-field__header {
+			align-items: end;
+			text-align: right;
 		}
 
 		:host([label-alignment='left']) .form-field__header {
 			align-items: start;
 			text-align: left;
 		}
-
-		:host([label-alignment='right']) .form-field__header {
-			align-items: end;
-			text-align: right;
-		}
 	}
-
 
 	/* # Label */
 
@@ -96,15 +89,14 @@ export const formFieldStyles = css`
 			gap: var(--primitives-space-0);
 		}
 
-		:host([label-alignment='left']) .form-field__label {
-			align-items: start;
-		}
-
 		:host([label-alignment='right']) .form-field__label {
 			align-items: end;
 		}
-	}
 
+		:host([label-alignment='left']) .form-field__label {
+			align-items: start;
+		}
+	}
 
 	/* # Optional indicator */
 
@@ -112,7 +104,6 @@ export const formFieldStyles = css`
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-xs-regular-tight);
 	}
-
 
 	/* # Main */
 
@@ -124,7 +115,6 @@ export const formFieldStyles = css`
 		flex-basis: 0;
 		min-width: 0;
 	}
-
 
 	/* # Errors */
 
@@ -139,19 +129,16 @@ export const formFieldStyles = css`
 	}
 `;
 
-
 /* ============================================================
    rr-form-field-help-text
    ============================================================ */
 
 export const formFieldHelpTextStyles = css`
-
-	/* # Base */
+	/* # Host */
 
 	:host {
 		display: contents;
 	}
-
 
 	/* # Help text */
 
@@ -162,14 +149,12 @@ export const formFieldHelpTextStyles = css`
 	}
 `;
 
-
 /* ============================================================
    rr-form-field-error-text
    ============================================================ */
 
 export const formFieldErrorTextStyles = css`
-
-	/* # Base */
+	/* # Host */
 
 	:host {
 		display: none;
@@ -178,7 +163,6 @@ export const formFieldErrorTextStyles = css`
 	:host([invalid]) {
 		display: block;
 	}
-
 
 	/* # Error text */
 
