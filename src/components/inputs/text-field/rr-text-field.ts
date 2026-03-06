@@ -2,329 +2,117 @@
  * RegelRecht Text Field Component (Lit + TypeScript)
  *
  * @element rr-text-field
+ *
  * @attr {string} value        - The input value
  * @attr {string} placeholder  - Placeholder text
  * @attr {string} input-id     - Sets the id on the native input. Set automatically by rr-form-field.
- * @attr {string} size       - 'md' (default) | 'sm' | 'xs'. Set automatically by rr-form-field.
+ * @attr {string} size         - 'md' (default) | 'sm'. Set automatically by rr-form-field.
  * @attr {boolean} invalid     - Marks the field as invalid
- * @attr {boolean} valid - Marks the field as valid
- * @attr {boolean} disabled - Disabled state
- * @attr {string} type - Input type: 'text' | 'email' | 'password' | 'tel' | 'url'
- * @attr {string} name - Input name for form submission
- * @attr {boolean} readonly - Readonly state
- * @attr {boolean} required - Required state
+ * @attr {boolean} valid       - Marks the field as valid
+ * @attr {boolean} disabled    - Disabled state
+ * @attr {string} type         - Input type: 'text' | 'email' | 'tel' | 'url'
+ * @attr {string} name         - Input name for form submission
+ * @attr {boolean} readonly    - Readonly state
+ * @attr {boolean} required    - Required state
  * @attr {string} autocomplete - Autocomplete hint
  *
- * @fires input - When input value changes
+ * @fires input  - When input value changes
  * @fires change - When input value is committed
  *
- * @csspart input - The native input element
  * @csspart container - The field container
- *
- * @cssprop --rr-text-field-background-color - Override background color
- * @cssprop --rr-text-field-border-color - Override border color
- * @cssprop --rr-text-field-text-color - Override text color
+ * @csspart input     - The native input element
  */
 
-import { LitElement, html, css, nothing } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { textFieldStyles } from './rr-text-field.styles.js';
+import { textFieldTemplate } from './rr-text-field.template.js';
 
-type InputType = 'text' | 'email' | 'password' | 'tel' | 'url';
+export type InputType = 'text' | 'email' | 'tel' | 'url';
 
 @customElement('rr-text-field')
 export class RRTextField extends LitElement {
-  static override shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  };
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override shadowRootOptions = {
+		...LitElement.shadowRootOptions,
+		delegatesFocus: true,
+	};
 
-    :host([hidden]) {
-      display: none;
-    }
+	static override styles = textFieldStyles;
 
-    .text-field {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      min-height: var(--semantics-controls-md-min-size);
-      background-color: var(--rr-text-field-background-color, var(--semantics-input-fields-background-color));
-      border: var(--semantics-input-fields-border-thickness) solid var(--rr-text-field-border-color, var(--_border-color));
-      border-radius: var(--semantics-controls-md-corner-radius);
-      box-sizing: border-box;
-      position: relative;
-      overflow: hidden;
-      --_border-color: var(--semantics-input-fields-border-color);
-    }
+	@property({ type: String, reflect: true })
+	size: 'md' | 'sm' = 'md';
 
-    :host([valid]) .text-field {
-      --_border-color: var(--semantics-input-fields-is-valid-border-color);
-    }
+	@property({ type: String })
+	value = '';
 
-    :host([invalid]) .text-field {
-      --_border-color: var(--semantics-input-fields-is-invalid-border-color);
-    }
+	@property({ type: String, attribute: 'input-id' })
+	inputId = '';
 
-    .text-field__spacer {
-      width: var(--primitives-space-12);
-      flex-shrink: 0;
-      align-self: stretch;
-    }
+	@property({ type: String })
+	placeholder = '';
 
-    .text-field__input {
-      display: flex;
-      flex-direction: row;
-      flex: 1;
-      min-width: 0;
-      position: relative;
-    }
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
-    .text-field__native {
-      /* Reset */
-      appearance: none;
-      border: none;
-      background: transparent;
-      margin: 0;
-      padding: 0;
-      outline: none;
-      font: inherit;
-      width: 100%;
-      box-sizing: border-box;
+	@property({ type: Boolean, reflect: true })
+	valid = false;
 
-      /* Typography */
-      font: var(--semantics-input-fields-md-text-font);
-      color: var(--rr-text-field-text-color, var(--semantics-content-color));
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-      /* Layout - height accounts for container border (44px - 2*2px = 40px) */
-      height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness));
-      line-height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness));
-    }
+	@property({ type: String })
+	type: InputType = 'text';
 
-    .text-field__native::placeholder {
-      color: var(--semantics-input-fields-placeholder-color);
-    }
+	@property({ type: String })
+	name = '';
 
-    .text-field__input-shade {
-      position: absolute;
-      right: 0;
-      top: 2px;
-      width: 10px;
-      height: calc(var(--semantics-controls-md-min-size) - 2 * var(--semantics-input-fields-border-thickness) - 4px);
-      background: linear-gradient(-90deg, var(--semantics-input-fields-end-fade-end-color) 0%, var(--semantics-input-fields-end-fade-start-color) 100%);
-      pointer-events: none;
-    }
+	@property({ type: Boolean })
+	readonly = false;
 
-    .text-field__validation-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      align-self: stretch;
-      flex-shrink: 0;
-      padding: 0 var(--primitives-space-12) 0 var(--primitives-space-8);
-    }
+	@property({ type: Boolean })
+	required = false;
 
-    .text-field__validation-icon svg {
-      width: 24px;
-      height: 24px;
-    }
+	@property({ type: String })
+	autocomplete = '';
 
-    :host([valid]) .text-field__validation-icon {
-      color: var(--semantics-input-fields-is-valid-icon-color);
-    }
+	@query('.text-field__input')
+	private _input!: HTMLInputElement;
 
-    :host([invalid]) .text-field__validation-icon {
-      color: var(--semantics-input-fields-is-invalid-icon-color);
-    }
+	handleInput(e: Event): void {
+		const input = e.target as HTMLInputElement;
+		this.value = input.value;
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-    /* Focus state */
-    .text-field:focus-within {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
+	handleChange(e: Event): void {
+		const input = e.target as HTMLInputElement;
+		this.value = input.value;
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-    /* Disabled state */
-    :host([disabled]) .text-field {
-      opacity: var(--primitives-opacity-disabled);
-      cursor: not-allowed;
-    }
+	public focus(): void {
+		this._input?.focus();
+	}
 
-    :host([disabled]) .text-field__native {
-      cursor: not-allowed;
-      pointer-events: none;
-    }
+	public blur(): void {
+		this._input?.blur();
+	}
 
-    /* Size variants */
-    :host([size='sm']) .text-field {
-      min-height: var(--semantics-controls-sm-min-size);
-      border-radius: var(--semantics-controls-sm-corner-radius);
-    }
-
-    :host([size='sm']) .text-field__native {
-      font: var(--semantics-input-fields-sm-text-font);
-      height: calc(var(--semantics-controls-sm-min-size) - 2 * var(--semantics-input-fields-border-thickness));
-      line-height: calc(var(--semantics-controls-sm-min-size) - 2 * var(--semantics-input-fields-border-thickness));
-    }
-
-    :host([size='sm']) .text-field__input-shade {
-      height: calc(var(--semantics-controls-sm-min-size) - 2 * var(--semantics-input-fields-border-thickness) - 4px);
-    }
-
-    :host([size='xs']) .text-field {
-      min-height: var(--semantics-controls-xs-min-size);
-      border-radius: var(--semantics-controls-xs-corner-radius);
-    }
-
-    :host([size='xs']) .text-field__native {
-      font: var(--semantics-input-fields-xs-text-font);
-      height: calc(var(--semantics-controls-xs-min-size) - 2 * var(--semantics-input-fields-border-thickness));
-      line-height: calc(var(--semantics-controls-xs-min-size) - 2 * var(--semantics-input-fields-border-thickness));
-    }
-
-    :host([size='xs']) .text-field__input-shade {
-      height: calc(var(--semantics-controls-xs-min-size) - 2 * var(--semantics-input-fields-border-thickness) - 4px);
-    }
-
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .text-field:focus-within {
-        outline: 2px solid CanvasText !important;
-        outline-offset: 2px !important;
-      }
-
-      :host([disabled]) .text-field {
-        opacity: 0.5 !important;
-      }
-    }
-  `;
-
-  @property({ type: String, reflect: true })
-  size: 'md' | 'sm' | 'xs' = 'md';
-
-  @property({ type: String })
-  value = '';
-
-  @property({ type: String, attribute: 'input-id' })
-  inputId = '';
-
-  @property({ type: String })
-  placeholder = '';
-
-  @property({ type: Boolean, reflect: true })
-  invalid = false;
-
-  @property({ type: Boolean, reflect: true })
-  valid = false;
-
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
-
-  @property({ type: String })
-  type: InputType = 'text';
-
-  @property({ type: String })
-  name = '';
-
-  @property({ type: Boolean })
-  readonly = false;
-
-  @property({ type: Boolean })
-  required = false;
-
-  @property({ type: String })
-  autocomplete = '';
-
-  @query('.text-field__native')
-  private _input!: HTMLInputElement;
-
-  private _handleInput(e: Event): void {
-    const input = e.target as HTMLInputElement;
-    this.value = input.value;
-    this.dispatchEvent(new CustomEvent('input', {
-      detail: { value: this.value },
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  private _handleChange(e: Event): void {
-    const input = e.target as HTMLInputElement;
-    this.value = input.value;
-    this.dispatchEvent(new CustomEvent('change', {
-      detail: { value: this.value },
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  public focus(): void {
-    this._input?.focus();
-  }
-
-  public blur(): void {
-    this._input?.blur();
-  }
-
-  private _renderValidationIcon() {
-    if (this.valid) {
-      // Outline check-circle icon from src/assets/icons/check-circle.svg
-      return html`
-        <div class="text-field__validation-icon">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM16.7071 9.88664L11 15.5938L7.29289 11.8866L8.70711 10.4724L11 12.7653L15.2929 8.47243L16.7071 9.88664Z"/>
-          </svg>
-        </div>
-      `;
-    }
-    if (this.invalid) {
-      // Outline exclamation-circle icon from src/assets/icons/exclamation-circle.svg
-      return html`
-        <div class="text-field__validation-icon">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 15C12.6904 15 13.25 15.5596 13.25 16.25C13.25 16.9404 12.6904 17.5 12 17.5C11.3096 17.5 10.75 16.9404 10.75 16.25C10.75 15.5596 11.3096 15 12 15Z"/>
-            <path d="M13 13.5H11V6.5H13V13.5Z"/>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z"/>
-          </svg>
-        </div>
-      `;
-    }
-    return nothing;
-  }
-
-  override render() {
-    return html`
-      <div class="text-field" part="container">
-        <div class="text-field__spacer"></div>
-        <div class="text-field__input">
-          <input
-            class="text-field__native"
-            part="input"
-            id=${this.inputId || nothing}
-            type=${this.type}
-            .value=${this.value}
-            placeholder=${this.placeholder || nothing}
-            ?disabled=${this.disabled}
-            ?readonly=${this.readonly}
-            ?required=${this.required}
-            name=${this.name || nothing}
-            autocomplete=${this.autocomplete || nothing}
-            aria-invalid=${this.invalid ? 'true' : 'false'}
-            @input=${this._handleInput}
-            @change=${this._handleChange}
-          />
-          <div class="text-field__input-shade"></div>
-        </div>
-        ${this._renderValidationIcon()}
-      </div>
-    `;
-  }
+	override render() {
+		return textFieldTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-text-field': RRTextField;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-text-field': RRTextField;
+	}
 }
