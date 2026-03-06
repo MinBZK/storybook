@@ -60,7 +60,7 @@ export const Default = {
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -110,7 +110,7 @@ export const WithLabels = {
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -149,7 +149,7 @@ export const WithTitleGroup = {
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -185,7 +185,7 @@ export const WithTitleGroupCentered = {
 			</rr-toolbar-center-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -217,7 +217,7 @@ export const SizeSmall = {
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -249,7 +249,7 @@ export const Sizes = {
 						</rr-toolbar-start-area>
 						<rr-toolbar-end-area>
 							<rr-toolbar-item label="Opslaan">
-								<rr-button variant="accent-filled">Opslaan</rr-button>
+								<rr-button variant="primary">Opslaan</rr-button>
 								<rr-menu-item
 									text="Opslaan"
 								></rr-menu-item>
@@ -278,7 +278,7 @@ export const Sizes = {
 						</rr-toolbar-start-area>
 						<rr-toolbar-end-area>
 							<rr-toolbar-item label="Opslaan">
-								<rr-button variant="accent-filled">Opslaan</rr-button>
+								<rr-button variant="primary">Opslaan</rr-button>
 								<rr-menu-item
 									text="Opslaan"
 								></rr-menu-item>
@@ -440,7 +440,7 @@ export const WithOverflow = {
 					></rr-menu-item>
 				</rr-toolbar-item>
 				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -483,7 +483,7 @@ export const WithOverflowPartial = {
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -583,7 +583,7 @@ export const WithPriority = {
 					label="Opslaan"
 					priority="10"
 				>
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -633,7 +633,7 @@ export const WithFluidItem = {
 					label="Opslaan"
 					priority="2"
 				>
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -669,7 +669,7 @@ export const WithPinnedOverflow = {
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
@@ -700,7 +700,7 @@ export const WithPinnedOverflowOnly = {
 			</rr-toolbar-start-area>
 			<rr-toolbar-end-area>
 				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 				</rr-toolbar-item>
 			</rr-toolbar-end-area>
 			<rr-toolbar-overflow-area>
@@ -788,7 +788,7 @@ export const WithPinnedAndDynamicOverflow = {
 					label="Opslaan"
 					priority="10"
 				>
-					<rr-button variant="accent-filled">Opslaan</rr-button>
+					<rr-button variant="primary">Opslaan</rr-button>
 					<rr-menu-item
 						text="Opslaan"
 					></rr-menu-item>
