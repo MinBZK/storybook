@@ -51,7 +51,8 @@ export const textFieldStyles = css`
 		cursor: not-allowed;
 	}
 
-	.text-field:has(input:-webkit-autofill) {
+	.text-field:has(input:-webkit-autofill),
+	.text-field:has(input:autofill) {
 		--_background-color: var(--semantics-input-fields-is-autofill-background-color);
 	}
 
@@ -92,7 +93,8 @@ export const textFieldStyles = css`
 		color: var(--semantics-input-fields-placeholder-color);
 	}
 
-	.text-field__input:-webkit-autofill {
+	.text-field__input:-webkit-autofill,
+	.text-field__input:autofill {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
 
