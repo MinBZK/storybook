@@ -5,7 +5,6 @@
  *
  * @attr {string} label           - Field label text. Omit for no-label layout.
  * @attr {string} label-alignment - 'top' (default) | 'left' | 'right'
- * @attr {string} size            - 'md' (default) | 'sm'  — vertically centres
  *                                  the header against the input in left/right alignment.
  * @attr {boolean} optional       - Shows "Optional" badge next to the label.
  *
@@ -55,7 +54,7 @@ import {
 } from './rr-form-field.template.js';
 
 export type LabelAlignment = 'top' | 'left' | 'right';
-export type InputSize = 'sm' | 'md';
+
 
 const HELPER_TAGS = ['rr-form-field-help-text'];
 
@@ -89,18 +88,18 @@ export class RRFormField extends LitElement {
 	labelAlignment: LabelAlignment = 'top';
 
 	/**
-	 * Size of the slotted input. Sets the header min-height so the label
-	 * vertically centres against the input in left/right label-alignment.
-	 */
-	@property({ type: String, reflect: true })
-	size: InputSize = 'md';
-
-	/**
 	 * When true an "Optional" badge is shown next to the label.
 	 * Required fields are intentionally left unmarked per design spec.
 	 */
 	@property({ type: Boolean })
 	optional = false;
+
+	/**
+	 * Short supporting text shown below the label. Same typography as the
+	 * optional badge. Use rr-form-field-help-text for longer descriptive text.
+	 */
+	@property({ type: String, attribute: 'supporting-label' })
+	supportingLabel = '';
 
 	/**
 	 * The id of the slotted input, used to associate the label via `for`.
@@ -132,18 +131,6 @@ export class RRFormField extends LitElement {
 		this._observer?.disconnect();
 	}
 
-	override updated(changed: Map<string, unknown>) {
-		if (changed.has('size')) {
-			const input = this._findInput();
-			if (input) this._forwardSize(input);
-		}
-	}
-
-	/** Forwards the form field's size to the slotted input. */
-	private _forwardSize(input: Element) {
-		input.setAttribute('size', this.size);
-	}
-
 	/** Called when the label header is clicked — focuses the slotted input. */
 	focusInput(e: Event) {
 		// <label for> cannot cross shadow boundaries so we focus manually.
@@ -168,7 +155,6 @@ export class RRFormField extends LitElement {
 		const generatedId = existingId || generateId();
 		input.id = generatedId;
 		this.labelFor = generatedId;
-		this._forwardSize(input);
 
 		this._observer = new MutationObserver(() => this._syncErrorText());
 		this._observer.observe(input, {

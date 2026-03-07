@@ -27,7 +27,9 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 					${component.optional ? renderOptional() : nothing}
 				</span>
 			` : nothing}
-			<slot name="help"></slot>
+			${component.supportingLabel ? html`
+				<span class="form-field__supporting-label">${component.supportingLabel}</span>
+			` : nothing}
 		</label>
 	`;
 
@@ -39,6 +41,7 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 				<div class="form-field__errors">
 					<slot name="errors"></slot>
 				</div>
+				<slot name="help"></slot>
 			</div>
 		</div>
 	`;

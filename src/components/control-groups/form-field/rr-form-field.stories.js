@@ -58,25 +58,22 @@ export default {
 			control: 'select',
 			options: ['top', 'right', 'left'],
 		},
-		size: {
-			control: 'select',
-			options: ['md', 'sm'],
-		},
+		supportingLabel: { control: 'text' },
 		optional: { control: 'boolean' },
 	},
 	args: {
 		label: 'Label',
 		labelAlignment: 'top',
-		size: 'md',
+		supportingLabel: '',
 		optional: false,
 	},
 };
 
-const Template = ({ label, labelAlignment, size, optional }) => html`
+const Template = ({ label, labelAlignment, supportingLabel, optional }) => html`
 	<rr-form-field
 		label=${label}
 		label-alignment=${labelAlignment}
-		size=${size}
+		supporting-label=${supportingLabel}
 		?optional=${optional}
 	>
 		<rr-text-field></rr-text-field>
@@ -84,6 +81,12 @@ const Template = ({ label, labelAlignment, size, optional }) => html`
 `;
 
 export const Default = Template.bind({});
+
+export const WithSupportingLabel = () => html`
+	<rr-form-field label="Date of birth" supporting-label="DD-MM-YYYY">
+		<rr-text-field></rr-text-field>
+	</rr-form-field>
+`;
 
 export const WithHelpText = () => html`
 	<rr-form-field label="Email address">
@@ -95,8 +98,8 @@ export const WithHelpText = () => html`
 `;
 
 export const Optional = () => html`
-	<rr-form-field label="Phone number" optional>
-		<rr-form-field-help-text>Used for 2-factor authentication only.</rr-form-field-help-text>
+	<rr-form-field label="Phone number" optional supporting-label="Used for 2-factor authentication only.">
+
 		<rr-text-field type="tel"></rr-text-field>
 	</rr-form-field>
 `;
@@ -119,36 +122,16 @@ export const MultipleErrors = () => html`
 	</rr-form-field>
 `;
 
-/**
- * The form field generates an id automatically. Inspect the DOM to see
- * `id="rr-field-input-{n}"` on the rr-text-field and a matching `for` on the label.
- */
-export const AutomaticLabelAssociation = () => html`
-	<rr-form-field label="Full name">
-		<rr-text-field></rr-text-field>
-	</rr-form-field>
-`;
+export const LabelAlignmentRight = () => html`
+	<rr-form-field label="Full name" label-alignment="right" supporting-label="As it appears on your passport.">
 
-/**
- * Set `input-id` on the slotted input to use a stable, predictable id.
- * The form field will use it as-is instead of generating one.
- */
-export const ConsumerProvidedInputId = () => html`
-	<rr-form-field label="Full name">
-		<rr-text-field input-id="full-name-input"></rr-text-field>
+		<rr-text-field></rr-text-field>
 	</rr-form-field>
 `;
 
 export const LabelAlignmentLeft = () => html`
-	<rr-form-field label="Full name" label-alignment="left">
-		<rr-form-field-help-text>As it appears on your passport.</rr-form-field-help-text>
-		<rr-text-field></rr-text-field>
-	</rr-form-field>
-`;
+	<rr-form-field label="Full name" label-alignment="left" supporting-label="As it appears on your passport.">
 
-export const LabelAlignmentRight = () => html`
-	<rr-form-field label="Full name" label-alignment="right">
-		<rr-form-field-help-text>As it appears on your passport.</rr-form-field-help-text>
 		<rr-text-field></rr-text-field>
 	</rr-form-field>
 `;
@@ -158,11 +141,10 @@ export const CompleteFormTop = () => html`
 		<rr-form-field label="Full name">
 			<rr-text-field input-id="top-full-name"></rr-text-field>
 		</rr-form-field>
-		<rr-form-field label="Email address">
-			<rr-form-field-help-text>We'll send a confirmation email.</rr-form-field-help-text>
+		<rr-form-field label="Email address" supporting-label="We'll send a confirmation email.">
 			<rr-text-field type="email" input-id="top-email"></rr-text-field>
 		</rr-form-field>
-		<rr-form-field label="Phone number" optional>
+		<rr-form-field label="Phone number" optional supporting-label="Used for 2-factor authentication only.">
 			<rr-text-field
 				type="tel"
 				input-id="top-phone"
@@ -172,7 +154,6 @@ export const CompleteFormTop = () => html`
 			<rr-form-field-error-text id="err-phone">Please enter a valid phone number.</rr-form-field-error-text>
 		</rr-form-field>
 		<rr-form-field label="Comments" optional>
-			<rr-form-field-help-text>Any additional remarks.</rr-form-field-help-text>
 			<rr-text-field input-id="top-comments"></rr-text-field>
 		</rr-form-field>
 	</div>
@@ -180,11 +161,10 @@ export const CompleteFormTop = () => html`
 
 export const CompleteFormRight = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem; container-type: inline-size;">
-		<rr-form-field label="Full name" label-alignment="right">
+		<rr-form-field label="Full name" label-alignment="right" supporting-label="As it appears on your passport.">
 			<rr-text-field input-id="right-full-name"></rr-text-field>
 		</rr-form-field>
-		<rr-form-field label="Email address" label-alignment="right">
-			<rr-form-field-help-text>We'll send a confirmation email.</rr-form-field-help-text>
+		<rr-form-field label="Email address" label-alignment="right" supporting-label="We'll send a confirmation email.">
 			<rr-text-field type="email" input-id="right-email"></rr-text-field>
 		</rr-form-field>
 		<rr-form-field label="Phone number" label-alignment="right" optional>
@@ -197,7 +177,6 @@ export const CompleteFormRight = () => html`
 			<rr-form-field-error-text id="err-phone-right">Please enter a valid phone number.</rr-form-field-error-text>
 		</rr-form-field>
 		<rr-form-field label="Comments" label-alignment="right" optional>
-			<rr-form-field-help-text>Any additional remarks.</rr-form-field-help-text>
 			<rr-text-field input-id="right-comments"></rr-text-field>
 		</rr-form-field>
 	</div>

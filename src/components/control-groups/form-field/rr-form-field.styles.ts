@@ -55,11 +55,6 @@ export const formFieldStyles = css`
 			min-height: var(--semantics-controls-md-min-size);
 		}
 
-		:host([label-alignment='left'][size='sm']) .form-field__header,
-		:host([label-alignment='right'][size='sm']) .form-field__header {
-			min-height: var(--semantics-controls-sm-min-size);
-		}
-
 		:host([label-alignment='right']) .form-field__header {
 			align-items: end;
 			text-align: right;
@@ -105,6 +100,13 @@ export const formFieldStyles = css`
 		font: var(--primitives-font-body-xs-regular-tight);
 	}
 
+	/* # Supporting label */
+
+	.form-field__supporting-label {
+		color: var(--semantics-content-secondary-color);
+		font: var(--primitives-font-body-xs-regular-tight);
+	}
+
 	/* # Main */
 
 	.form-field__main {
@@ -143,8 +145,8 @@ export const formFieldHelpTextStyles = css`
 	/* # Help text */
 
 	.form-field__help-text {
-		margin: 0;
-		color: var(--semantics-content-secondary-color);
+		margin: var(--primitives-space-2) 0 0;
+		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
 `;

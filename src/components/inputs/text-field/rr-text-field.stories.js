@@ -118,24 +118,6 @@ const Template = ({ value, placeholder, size, valid, invalid, disabled, type, na
 
 export const Default = Template.bind({});
 
-export const WithValue = Template.bind({});
-WithValue.args = { value: 'Hello World' };
-
-export const Small = Template.bind({});
-Small.args = { size: 'sm' };
-
-export const Valid = Template.bind({});
-Valid.args = { value: 'Correct value', valid: true };
-
-export const Invalid = Template.bind({});
-Invalid.args = { value: 'Incorrect value', invalid: true };
-
-export const Disabled = Template.bind({});
-Disabled.args = { value: 'Disabled field', disabled: true };
-
-export const Readonly = Template.bind({});
-Readonly.args = { value: 'Readonly value', readonly: true };
-
 export const AllStates = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<rr-text-field placeholder="Neutral"></rr-text-field>
@@ -143,10 +125,17 @@ export const AllStates = () => html`
 		<rr-text-field value="Invalid input" invalid></rr-text-field>
 		<rr-text-field value="Disabled" disabled></rr-text-field>
 		<rr-text-field value="Readonly" readonly></rr-text-field>
-		<rr-text-field placeholder="Small" size="sm"></rr-text-field>
 	</div>
 `;
 AllStates.parameters = { controls: { disable: true } };
+
+export const Sizes = () => html`
+	<div style="display: flex; flex-direction: column; gap: 1rem;">
+		<rr-text-field placeholder="Medium (md)"></rr-text-field>
+		<rr-text-field placeholder="Small (sm)" size="sm"></rr-text-field>
+	</div>
+`;
+Sizes.parameters = { controls: { disable: true } };
 
 export const InteractiveExample = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem;">

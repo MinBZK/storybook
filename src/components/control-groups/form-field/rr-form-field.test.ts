@@ -61,18 +61,6 @@ describe('rr-form-field', () => {
 		expect(el.getAttribute('label-alignment')).toBe('right');
 	});
 
-	it('reflects size attribute, defaulting to md', async () => {
-		el = await fixture('<rr-form-field label="Name" label-alignment="right"></rr-form-field>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('size')).toBe('md');
-	});
-
-	it('reflects size attribute when set to sm', async () => {
-		el = await fixture('<rr-form-field label="Name" label-alignment="right" size="sm"></rr-form-field>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('size')).toBe('sm');
-	});
-
 	it('renders the header as a label element', async () => {
 		el = await fixture('<rr-form-field label="Name"></rr-form-field>');
 		await waitForUpdate(el);
