@@ -5,6 +5,7 @@ export const textFieldStyles = css`
 
 	:host {
 		display: block;
+		--_background-color: var(--semantics-input-fields-background-color);
 	}
 
 	:host([hidden]) {
@@ -23,7 +24,7 @@ export const textFieldStyles = css`
 		height: var(--semantics-controls-md-min-size);
 		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		background-color: var(--semantics-input-fields-background-color);
+		background-color: var(--_background-color);
 	}
 
 	:host([size='sm']) .text-field {
@@ -42,12 +43,16 @@ export const textFieldStyles = css`
 
 	:host([readonly]) .text-field {
 		border-color: var(--semantics-input-fields-is-read-only-border-color);
-		background-color: var(--semantics-input-fields-is-read-only-background-color);
+		--_background-color: var(--semantics-input-fields-is-read-only-background-color);
 	}
 
 	:host([disabled]) .text-field {
 		opacity: var(--primitives-opacity-disabled);
 		cursor: not-allowed;
+	}
+
+	.text-field:has(input:-webkit-autofill) {
+		--_background-color: var(--semantics-input-fields-is-autofill-background-color);
 	}
 
 	.text-field:focus-within {
@@ -87,6 +92,10 @@ export const textFieldStyles = css`
 		color: var(--semantics-input-fields-placeholder-color);
 	}
 
+	.text-field__input:-webkit-autofill {
+		box-shadow: 0 0 0 999px var(--_background-color) inset;
+	}
+
 	/* # Fade */
 
 	.text-field__fade {
@@ -104,7 +113,7 @@ export const textFieldStyles = css`
 		right: var(--primitives-space-4);
 		width: var(--primitives-space-8);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		background: linear-gradient(-90deg, var(--semantics-input-fields-end-fade-end-color) 0%, var(--semantics-input-fields-end-fade-start-color) 100%);
+		background: linear-gradient(90deg, transparent 0%, var(--_background-color) 100%);
 		pointer-events: none;
 	}
 
