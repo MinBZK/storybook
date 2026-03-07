@@ -3,10 +3,10 @@
  *
  * @element rr-form-field
  *
- * @attr {string} label           - Field label text. Omit for no-label layout.
- * @attr {string} label-alignment - 'top' (default) | 'left' | 'right'
- *                                  the header against the input in left/right alignment.
- * @attr {boolean} optional       - Shows "Optional" badge next to the label.
+ * @attr {string} label-alignment  - 'top' (default) | 'right' | 'left'
+ * @attr {string} label            - Field label text. Omit for no-label layout.
+ * @attr {string} supporting-label - Short supporting text below the label. Same typography as optional badge.
+ * @attr {boolean} optional        - Shows "Optional" badge next to the label.
  *
  * @slot           - The slotted input (e.g. rr-text-field). Set `invalid` and
  *                   `error-message="id1 id2"` on the input to wire up error texts.
@@ -72,27 +72,20 @@ function generateId(): string {
 export class RRFormField extends LitElement {
 	static override styles = formFieldStyles;
 
-	/** Label text. When empty no label is rendered but side-alignment indent is preserved. */
-	@property({ type: String })
-	label = '';
-
 	/**
 	 * Controls how the label is positioned relative to the input.
 	 *  - 'top'   : label above the input (default)
-	 *  - 'left'  : 240 px column, left-aligned text
 	 *  - 'right' : 240 px column, right-aligned text
+	 *  - 'left'  : 240 px column, left-aligned text
 	 *
 	 * Collapses to 'top' automatically when the container is < 640 px wide.
 	 */
 	@property({ type: String, attribute: 'label-alignment', reflect: true })
 	labelAlignment: LabelAlignment = 'top';
 
-	/**
-	 * When true an "Optional" badge is shown next to the label.
-	 * Required fields are intentionally left unmarked per design spec.
-	 */
-	@property({ type: Boolean })
-	optional = false;
+	/** Label text. When empty no label is rendered but side-alignment indent is preserved. */
+	@property({ type: String })
+	label = '';
 
 	/**
 	 * Short supporting text shown below the label. Same typography as the
@@ -100,6 +93,13 @@ export class RRFormField extends LitElement {
 	 */
 	@property({ type: String, attribute: 'supporting-label' })
 	supportingLabel = '';
+
+	/**
+	 * When true an "Optional" badge is shown next to the label.
+	 * Required fields are intentionally left unmarked per design spec.
+	 */
+	@property({ type: Boolean })
+	optional = false;
 
 	/**
 	 * The id of the slotted input, used to associate the label via `for`.

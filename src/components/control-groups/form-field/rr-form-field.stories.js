@@ -53,26 +53,36 @@ export default {
 	component: 'rr-form-field',
 	tags: ['autodocs'],
 	argTypes: {
-		label: { control: 'text' },
 		labelAlignment: {
 			control: 'select',
 			options: ['top', 'right', 'left'],
+			table: { order: 1 },
 		},
-		supportingLabel: { control: 'text' },
-		optional: { control: 'boolean' },
+		label: {
+			control: 'text',
+			table: { order: 2 },
+		},
+		supportingLabel: {
+			control: 'text',
+			table: { order: 3 },
+		},
+		optional: {
+			control: 'boolean',
+			table: { order: 4 },
+		},
 	},
 	args: {
-		label: 'Label',
 		labelAlignment: 'top',
+		label: 'Label',
 		supportingLabel: '',
 		optional: false,
 	},
 };
 
-const Template = ({ label, labelAlignment, supportingLabel, optional }) => html`
+const Template = ({ labelAlignment, label, supportingLabel, optional }) => html`
 	<rr-form-field
-		label=${label}
 		label-alignment=${labelAlignment}
+		label=${label}
 		supporting-label=${supportingLabel}
 		?optional=${optional}
 	>
@@ -153,7 +163,7 @@ export const CompleteFormTop = () => html`
 			></rr-text-field>
 			<rr-form-field-error-text id="err-phone">Please enter a valid phone number.</rr-form-field-error-text>
 		</rr-form-field>
-		<rr-form-field label="Comments" optional>
+		<rr-form-field label="Comments" optional supporting-label="Any additional remarks.">
 			<rr-text-field input-id="top-comments"></rr-text-field>
 		</rr-form-field>
 	</div>
@@ -176,7 +186,7 @@ export const CompleteFormRight = () => html`
 			></rr-text-field>
 			<rr-form-field-error-text id="err-phone-right">Please enter a valid phone number.</rr-form-field-error-text>
 		</rr-form-field>
-		<rr-form-field label="Comments" label-alignment="right" optional>
+		<rr-form-field label="Comments" label-alignment="right" optional supporting-label="Any additional remarks.">
 			<rr-text-field input-id="right-comments"></rr-text-field>
 		</rr-form-field>
 	</div>
