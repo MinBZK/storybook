@@ -30,7 +30,7 @@ npm run build            # Full build
 
 **Asymmetric Padding:** Components may use different top/bottom padding. Check design specs for each value:
 ```css
-/* Button S-size: top=8, right=8, bottom=6, left=8 */
+/* Button sm-size: top=8, right=8, bottom=6, left=8 */
 padding: 8px 8px 6px 8px;  /* NOT symmetric! */
 ```
 
@@ -51,13 +51,13 @@ Always prefer semantic tokens. Only use primitives when no semantic exists.
 ## Component Structure
 
 ```
-src/components/{name}/
-  rr-{name}.ts           # Lit + TypeScript component (nieuw)
-  rr-{name}.js           # Vanilla JS component (legacy)
-  rr-{name}.stories.js   # Storybook stories
+src/components/{category}/{name}/
+  rr-{name}.ts           # Lit + TypeScript component
+  rr-{name}.styles.ts    # Component styles
+  rr-{name}.template.ts  # Render template
+  rr-{name}.stories.ts   # Storybook stories
+  rr-{name}.test.ts      # Unit tests
 ```
-
-**Let op:** We migreren naar Lit + TypeScript. Nieuwe componenten altijd in `.ts`.
 
 ## Components Maken/Updaten
 
@@ -70,28 +70,30 @@ Gebruik `/component <naam>` voor het maken of updaten van componenten. Dit comma
 | Size | Min Height | Padding | Gap | Border-radius |
 |------|------------|---------|-----|---------------|
 | xs | 24px | 4px 6px | 2px | 4px |
-| s | 32px | 6px 8px | 2px | 6px |
-| m | 44px | 12px | 4px | 8px |
+| sm | 32px | 6px 8px | 2px | 6px |
+| md | 44px | 12px | 4px | 8px |
 
 ## Key Tokens
 
 ```css
 /* Controls */
 --semantics-controls-xs-min-size: 24px
---semantics-controls-s-min-size: 32px
---semantics-controls-m-min-size: 44px
---semantics-controls-{xs|s|m}-corner-radius
+--semantics-controls-sm-min-size: 32px
+--semantics-controls-md-min-size: 44px
+--semantics-controls-{xs|sm|md}-corner-radius
 
 /* Focus */
---semantics-focus-ring-thickness: 2px
---semantics-focus-ring-color: #0f172a
+--semantics-focus-ring-center-thickness: 2px
+--semantics-focus-ring-center-color: #0f172a
+--semantics-focus-ring-edge-thickness: 2px
+--semantics-focus-ring-edge-color: #ffffff
 
 /* Buttons */
 --semantics-buttons-accent-filled-background-color
 --semantics-buttons-accent-filled-color
 
 /* Components */
---components-button-{xs|s|m}-font
+--components-button-{xs|sm|md}-font
 --components-checkbox-*
 --components-radio-button-*
 --components-switch-*
@@ -119,14 +121,14 @@ describe('rr-{name}', () => {
   let el: HTMLElement;
 
   afterEach(() => {
-    if (el) cleanup(el);
+	if (el) cleanup(el);
   });
 
   it('renders without error', async () => {
-    el = await fixture('<rr-{name}></rr-{name}>');
-    await waitForUpdate(el);
+	el = await fixture('<rr-{name}></rr-{name}>');
+	await waitForUpdate(el);
 
-    expect(el.shadowRoot).not.toBeNull();
+	expect(el.shadowRoot).not.toBeNull();
   });
 });
 ```
@@ -175,7 +177,7 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 
 <!-- Block met modifier -->
 <button class="button button--primary">
-<button class="button button--disabled">
+<button class="button button--sm">
 
 <!-- Element binnen block -->
 <button class="button">
@@ -206,10 +208,10 @@ Design tokens worden gevalideerd tijdens de build (`npm run validate:tokens`):
 **Stricte aanpak - GEEN fallbacks:**
 ```css
 /* FOUT */
-min-height: var(--semantics-controls-m-min-size, 44px);
+min-height: var(--semantics-controls-md-min-size, 44px);
 
 /* GOED */
-min-height: var(--semantics-controls-m-min-size);
+min-height: var(--semantics-controls-md-min-size);
 ```
 
 **Uitzonderingen (behoud fallbacks):**
@@ -220,7 +222,7 @@ CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn i
 
 ## Rules
 
-1. Extend `LitElement` (nieuw) of `RRBaseComponent` (legacy)
+1. Extend `LitElement`
 2. Use Shadow DOM
 3. Only design tokens - never hardcode
 4. DigiToegankelijk (WCAG 2.1 AA) compliant

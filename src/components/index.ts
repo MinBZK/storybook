@@ -8,9 +8,6 @@
  * import '@regelrecht/design-system/components/actions/button';
  */
 
-// Base component (vanilla JS)
-export { RRBaseComponent } from './base/base-component.js';
-
 // Action components
 export { RRButton } from './actions/button/rr-button.ts';
 export { RRIconButton } from './actions/icon-button/rr-icon-button.ts';

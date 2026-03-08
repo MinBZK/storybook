@@ -20,17 +20,29 @@ The RegelRecht Design System is built with accessibility at its core, ensuring c
 
 ---
 
-## Built-in Accessibility Features
+## Accessibility Patterns in Lit Components
 
-All components inherit accessibility features from `RRBaseComponent`, ensuring consistent behavior across the design system.
+All components are built with Lit and implement accessibility features directly in their component styles and templates. The following patterns are used consistently across the design system.
 
 ### 1. Visually-Hidden Content
 
-Screen reader-only content can be hidden visually while remaining accessible to assistive technologies.
+Screen reader-only content should be hidden visually while remaining accessible to assistive technologies. Since components use shadow DOM, visually-hidden styles must be defined in each component's `static styles` or applied via global stylesheet to light DOM content.
 
-**CSS Classes:**
-- `.visually-hidden` / `.sr-only`: Hides content visually but keeps it accessible
-- `.visually-hidden-focusable`: Becomes visible when focused (useful for skip links)
+**Recommended CSS (add to component styles or global stylesheet):**
+```css
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+```
 
 **Usage:**
 ```html
@@ -46,7 +58,7 @@ Screen reader-only content can be hidden visually while remaining accessible to 
 
 ### 2. Reduced Motion Support
 
-Respects user preferences for reduced motion to accommodate users with vestibular disorders.
+Respects user preferences for reduced motion to accommodate users with vestibular disorders. Add to each component's `static styles` where animations or transitions are used.
 
 **Implementation:**
 ```css
@@ -54,10 +66,10 @@ Respects user preferences for reduced motion to accommodate users with vestibula
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+	animation-duration: 0.01ms !important;
+	animation-iteration-count: 1 !important;
+	transition-duration: 0.01ms !important;
+	scroll-behavior: auto !important;
   }
 }
 ```
@@ -68,7 +80,7 @@ Respects user preferences for reduced motion to accommodate users with vestibula
 
 ### 3. High Contrast Mode Support
 
-All components are tested and optimized for Windows High Contrast Mode and other forced color schemes.
+All components are tested and optimized for Windows High Contrast Mode and other forced color schemes. Add to each component's `static styles`.
 
 **Features:**
 - Ensures focus rings remain visible with system colors
@@ -80,19 +92,19 @@ All components are tested and optimized for Windows High Contrast Mode and other
 ```css
 @media (forced-colors: active) {
   :focus-visible {
-    outline: 2px solid CanvasText !important;
-    outline-offset: 2px !important;
+	outline: 2px solid CanvasText !important;
+	outline-offset: 2px !important;
   }
 
   [role="checkbox"],
   [role="radio"],
   [role="switch"] {
-    border: 2px solid CanvasText !important;
+	border: 2px solid CanvasText !important;
   }
 
   [aria-checked="true"] {
-    background-color: Highlight !important;
-    color: HighlightText !important;
+	background-color: Highlight !important;
+	color: HighlightText !important;
   }
 }
 ```
@@ -101,24 +113,26 @@ All components are tested and optimized for Windows High Contrast Mode and other
 
 ### 4. Focus Management
 
-Consistent, visible focus indicators across all interactive components.
+Consistent, visible focus indicators across all interactive components. Each component implements focus styles in its `static styles`.
 
 **Focus Ring Specifications:**
-- **Thickness**: 2px (via `--semantics-focus-ring-thickness`)
-- **Color**: #0f172a - Rijksoverheid dark (via `--semantics-focus-ring-color`)
-- **Offset**: 2px outside the element
+- **Inner ring**: 2px solid, color via `--semantics-focus-ring-center-color` (#0f172a)
+- **Outer ring**: 2px double, color via `--semantics-focus-ring-edge-color` (#ffffff)
+- **Thickness tokens**: `--semantics-focus-ring-center-thickness`, `--semantics-focus-ring-edge-thickness`
 - **Strategy**: `:focus-visible` to avoid showing focus on mouse clicks
 
-**Implementation:**
+**Standard implementation in Lit component styles:**
 ```css
-:focus:not(:focus-visible) {
-  outline: none;
+.my-element:focus-within {
+  box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+  outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 }
 
-:focus-visible {
-  outline: var(--semantics-focus-ring-thickness, 2px) solid
-           var(--semantics-focus-ring-color, #0f172a);
-  outline-offset: 2px;
+@media (forced-colors: active) {
+  .my-element:focus-within {
+	outline: 2px solid CanvasText !important;
+	outline-offset: 2px !important;
+  }
 }
 ```
 
@@ -126,50 +140,34 @@ Consistent, visible focus indicators across all interactive components.
 
 ---
 
-### 5. ARIA Helper Methods
+### 5. ARIA in Lit Templates
 
-All components have access to utility methods for consistent ARIA attribute management.
+ARIA attributes are set directly in Lit templates using standard attribute bindings. Set attributes explicitly in the component's `render()` method.
 
-#### `setAriaAttributes(attrs)`
-Sets multiple ARIA attributes at once.
-
-```javascript
-// Example: Set multiple ARIA states
-this.setAriaAttributes({
-  checked: true,
-  disabled: false,
-  labelledby: 'label-id'
-});
+```typescript
+// Set ARIA attributes directly in the template
+override render() {
+  return html`
+	<div
+	  role="checkbox"
+	  aria-checked=${this.checked}
+	  aria-disabled=${this.disabled}
+	  tabindex=${this.disabled ? -1 : 0}
+	>
+	  <slot></slot>
+	</div>
+  `;
+}
 ```
 
-#### `updateAriaState(state)`
-Updates common ARIA state attributes.
+For dynamic ARIA updates, use Lit's reactive properties with `reflect: true`:
 
-```javascript
-// Example: Update component state
-this.updateAriaState({
-  checked: this.checked,
-  disabled: this.disabled,
-  expanded: this.isOpen
-});
-```
+```typescript
+@property({ type: Boolean, reflect: true })
+checked = false;
 
-#### `generateId(prefix)`
-Generates unique IDs for ARIA relationships.
-
-```javascript
-// Example: Create unique ID for aria-controls
-const menuId = this.generateId('menu'); // 'menu-abc123def'
-button.setAttribute('aria-controls', menuId);
-```
-
-#### `announceToScreenReader(message, priority)`
-Announces messages to screen readers via live regions.
-
-```javascript
-// Example: Announce status change
-this.announceToScreenReader('Item added to cart', 'polite');
-this.announceToScreenReader('Error: Form submission failed', 'assertive');
+@property({ type: Boolean, reflect: true })
+disabled = false;
 ```
 
 ---
@@ -276,9 +274,9 @@ this.announceToScreenReader('Error: Form submission failed', 'assertive');
 ```html
 <nav aria-label="Main navigation">
   <rr-menu-bar has-overflow-menu overflow-label="Meer">
-    <rr-menu-item selected>Home</rr-menu-item>
-    <rr-menu-item>Over ons</rr-menu-item>
-    <rr-menu-item>Contact</rr-menu-item>
+	<rr-menu-item selected>Home</rr-menu-item>
+	<rr-menu-item>Over ons</rr-menu-item>
+	<rr-menu-item>Contact</rr-menu-item>
   </rr-menu-bar>
 </nav>
 ```
@@ -302,7 +300,7 @@ this.announceToScreenReader('Error: Form submission failed', 'assertive');
 
 **Usage:**
 ```html
-<rr-button variant="accent-filled" size="m">
+<rr-button variant="accent-filled" size="md">
   Verzenden
 </rr-button>
 ```
@@ -540,7 +538,6 @@ Ensure sufficient contrast ratios:
 Test with different color schemes:
 
 ```css
-/* User preference */
 @media (prefers-color-scheme: dark) {
   /* Dark mode styles if implemented */
 }
@@ -566,7 +563,7 @@ Use this checklist when creating new components or features.
 - [ ] Add `role` attribute only when native HTML is insufficient
 - [ ] Set `aria-label` or `aria-labelledby` for all form controls
 - [ ] Use `aria-describedby` for additional help text
-- [ ] Update `aria-checked`, `aria-expanded`, `aria-disabled` as state changes
+- [ ] Update `aria-checked`, `aria-expanded`, `aria-disabled` as state changes via Lit reactive properties
 - [ ] Never use ARIA when native HTML can do the job
 
 **ARIA Rule #1:** No ARIA is better than bad ARIA.
@@ -581,11 +578,12 @@ Use this checklist when creating new components or features.
 
 ### Focus Management
 
-- [ ] Visible focus indicator on all interactive elements
+- [ ] Visible focus indicator on all interactive elements using `--semantics-focus-ring-*` tokens
 - [ ] Focus indicator has 3:1 contrast ratio minimum
 - [ ] Use `:focus-visible` to avoid mouse focus rings
 - [ ] Don't remove outlines with `outline: none` without replacement
 - [ ] Manage focus when content changes (modals, dropdowns)
+- [ ] Include `forced-colors` fallback in component styles
 
 ### Color and Contrast
 
@@ -618,6 +616,12 @@ Use this checklist when creating new components or features.
 - [ ] Icon-only buttons have `aria-label`
 - [ ] SVG icons have `aria-hidden="true"`
 - [ ] Icon fonts are hidden from screen readers
+
+### Lit-specific
+
+- [ ] Use `reflect: true` on boolean ARIA-related properties so attributes stay in sync
+- [ ] Set ARIA attributes directly in `render()` templates, not via external helpers
+- [ ] Add `prefers-reduced-motion` and `forced-colors` blocks to component `static styles` where animations or borders are used
 
 ### Testing
 
