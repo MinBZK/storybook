@@ -49,7 +49,7 @@ import '../../inputs/text-field/rr-text-field.ts';
  * ```
  */
 export default {
-	title: 'Components/Control Groups/Form Field',
+	title: 'Components/Forms/Form Field',
 	component: 'rr-form-field',
 	tags: ['autodocs'],
 	argTypes: {
