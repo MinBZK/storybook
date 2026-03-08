@@ -26,6 +26,7 @@ export class RRComboBoxField extends LitElement {
     :host {
       display: block;
       font-family: var(--rr-font-family-body);
+      --_background-color: var(--semantics-input-fields-background-color);
     }
 
     :host([hidden]) {
@@ -37,7 +38,7 @@ export class RRComboBoxField extends LitElement {
       flex-direction: row;
       align-items: center;
       min-height: var(--semantics-controls-md-min-size);
-      background-color: var(--semantics-input-fields-background-color);
+      background-color: var(--_background-color);
       border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
       border-radius: var(--semantics-controls-md-corner-radius);
       box-sizing: border-box;
@@ -90,7 +91,7 @@ export class RRComboBoxField extends LitElement {
       top: 2px;
       width: 10px;
       height: calc(var(--semantics-controls-md-min-size) - 4px);
-      background: linear-gradient(90deg, var(--semantics-input-fields-end-fade-start-color) 0%, var(--semantics-input-fields-end-fade-end-color) 100%);
+      background: linear-gradient(90deg, transparent 0%, var(--_background-color) 100%);
       pointer-events: none;
     }
 

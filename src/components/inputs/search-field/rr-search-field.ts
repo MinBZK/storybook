@@ -28,6 +28,7 @@ export class RRSearchField extends LitElement {
     :host {
       display: block;
       font-family: var(--rr-font-family-body);
+      --_background-color: var(--semantics-input-fields-background-color);
     }
 
     :host([hidden]) {
@@ -38,7 +39,7 @@ export class RRSearchField extends LitElement {
       display: flex;
       flex-direction: row;
       align-items: stretch;
-      background-color: var(--semantics-input-fields-background-color);
+      background-color: var(--_background-color);
       border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
       box-sizing: border-box;
       position: relative;
@@ -138,7 +139,7 @@ export class RRSearchField extends LitElement {
       right: 0;
       top: 2px;
       width: 10px;
-      background: linear-gradient(90deg, var(--semantics-input-fields-end-fade-start-color) 0%, var(--semantics-input-fields-end-fade-end-color) 100%);
+      background: linear-gradient(90deg, transparent 0%, var(--_background-color) 100%);
       pointer-events: none;
     }
 
