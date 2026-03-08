@@ -95,21 +95,24 @@ npm run storybook
 ### 3. Gebruik componenten
 
 ```html
-<rr-button variant="accent-filled">Primary Action</rr-button>
-<rr-button variant="accent-outlined">Secondary Action</rr-button>
-<rr-button variant="neutral-tinted" size="sm">Small Button</rr-button>
+<rr-button variant="primary">Primary Action</rr-button>
+<rr-button variant="secondary">Secondary Action</rr-button>
+<rr-button size="sm">Small Button</rr-button>
 ```
 
 ## Componenten
 
 ### rr-button
 
-| Attribuut  | Type    | Default         | Beschrijving                                                               |
-| ---------- | ------- | --------------- | -------------------------------------------------------------------------- |
-| `variant`  | string  | `accent-filled` | `accent-filled`, `accent-outlined`, `neutral-tinted`, `accent-transparent` |
-| `size`     | string  | `md`            | `xs`, `sm`, `md`                                                           |
-| `disabled` | boolean | `false`         | Disabled state                                                             |
-| `type`     | string  | `button`        | `button`, `submit`, `reset`                                                |
+| Attribuut       | Type    | Default          | Beschrijving                                                                                                                                              |
+| --------------- | ------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`       | string  | `neutral-tinted` | `primary`, `secondary`, `destructive`, `accent-filled`, `accent-outlined`, `accent-transparent`, `neutral-tinted`, `neutral-transparent`, `danger-tinted` |
+| `size`          | string  | `md`             | `xs`, `sm`, `md`                                                                                                                                          |
+| `disabled`      | boolean | `false`          | Disabled state                                                                                                                                            |
+| `type`          | string  | `button`         | `button`, `submit`, `reset`                                                                                                                               |
+| `full-width`    | boolean | `false`          | Stretches button to fill container width                                                                                                                  |
+| `is-expandable` | boolean | `false`          | Adds an icon indicating the button opens a menu or popover                                                                                                |
+| `popovertarget` | string  | `''`             | ID of the popover element to target                                                                                                                       |
 
 ## Token Structuur
 
