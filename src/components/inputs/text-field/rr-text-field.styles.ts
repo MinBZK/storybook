@@ -1,5 +1,4 @@
 import { css } from 'lit';
-
 export const textFieldStyles = css`
 	/* # Host */
 
@@ -119,9 +118,9 @@ export const textFieldStyles = css`
 		pointer-events: none;
 	}
 
-	/* # Validation icon */
+	/* # Validation icon area */
 
-	.text-field__validation-icon {
+	.text-field__validation-icon-area {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -130,24 +129,26 @@ export const textFieldStyles = css`
 		height: 100%;
 	}
 
-	:host([size='sm']) .text-field__validation-icon {
+	:host([size='sm']) .text-field__validation-icon-area {
 		width: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 	}
 
-	:host([valid]) .text-field__validation-icon {
+	:host([valid]) .text-field__validation-icon-area {
 		color: var(--semantics-input-fields-is-valid-icon-color);
 	}
 
-	:host([invalid]) .text-field__validation-icon {
+	:host([invalid]) .text-field__validation-icon-area {
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
 
-	.text-field__validation-icon rr-icon {
+	/* # Validation icon */
+
+	.text-field__validation-icon {
 		width: var(--primitives-space-24);
 		height: var(--primitives-space-24);
 	}
 
-	:host([size='sm']) .text-field__validation-icon rr-icon {
+	:host([size='sm']) .text-field__validation-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 	}

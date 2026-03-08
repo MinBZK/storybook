@@ -5,15 +5,21 @@ import './../../content/icon/rr-icon.ts';
 function renderValidationIcon(component: RRTextField): TemplateResult | typeof nothing {
 	if (component.valid) {
 		return html`
-			<div class="text-field__validation-icon">
-				<rr-icon name="valid" aria-hidden="true"></rr-icon>
+			<div class="text-field__validation-icon-area">
+				<rr-icon class="text-field__validation-icon"
+					name="valid"
+					aria-hidden="true"
+				></rr-icon>
 			</div>
 		`;
 	}
 	if (component.invalid) {
 		return html`
-			<div class="text-field__validation-icon">
-				<rr-icon name="invalid" aria-hidden="true"></rr-icon>
+			<div class="text-field__validation-icon-area">
+				<rr-icon class="text-field__validation-icon"
+					name="invalid"
+					aria-hidden="true"
+				></rr-icon>
 			</div>
 		`;
 	}
@@ -24,8 +30,7 @@ export function textFieldTemplate(component: RRTextField): TemplateResult {
 	return html`
 		<div class="text-field">
 			<div class="text-field__spacer"></div>
-			<input
-				class="text-field__input"
+			<input class="text-field__input"
 				id=${component.inputId || nothing}
 				type=${component.type}
 				.value=${component.value}

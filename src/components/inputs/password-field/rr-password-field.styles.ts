@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 export const passwordFieldStyles = css`
 	/* # Host */
+
 	:host {
 		display: block;
 		--_background-color: var(--semantics-input-fields-background-color);
@@ -12,6 +13,7 @@ export const passwordFieldStyles = css`
 	}
 
 	/* # Container */
+
 	.password-field {
 		display: flex;
 		flex-direction: row;
@@ -64,6 +66,7 @@ export const passwordFieldStyles = css`
 	}
 
 	/* # Input */
+
 	.password-field__input {
 		flex-grow: 1;
 		min-width: 0;
@@ -114,6 +117,7 @@ export const passwordFieldStyles = css`
 	}
 
 	/* # Fade */
+
 	.password-field__fade {
 		position: relative;
 		flex-shrink: 0;
@@ -133,8 +137,9 @@ export const passwordFieldStyles = css`
 		pointer-events: none;
 	}
 
-	/* # Validation icon */
-	.password-field__validation-icon {
+	/* # Validation icon area */
+
+	.password-field__validation-icon-area {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -143,29 +148,32 @@ export const passwordFieldStyles = css`
 		height: 100%;
 	}
 
-	:host([size='sm']) .password-field__validation-icon {
+	:host([size='sm']) .password-field__validation-icon-area {
 		width: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 	}
 
-	:host([valid]) .password-field__validation-icon {
+	:host([valid]) .password-field__validation-icon-area {
 		color: var(--semantics-input-fields-is-valid-icon-color);
 	}
 
-	:host([invalid]) .password-field__validation-icon {
+	:host([invalid]) .password-field__validation-icon-area {
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
 
-	.password-field__validation-icon rr-icon {
+	/* # Validation icon */
+
+	.password-field__validation-icon {
 		width: var(--primitives-space-24);
 		height: var(--primitives-space-24);
 	}
 
-	:host([size='sm']) .password-field__validation-icon rr-icon {
+	:host([size='sm']) .password-field__validation-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 	}
 
 	/* # Toggle button */
+
 	.password-field__visibility-toggle {
 		display: flex;
 		align-items: center;
