@@ -10,141 +10,126 @@ import './rr-password-field.ts';
  * ```
  */
 export default {
-  title: 'Components/Inputs/Password Field',
-  component: 'rr-password-field',
-  tags: ['autodocs'],
-  parameters: {
-    componentSource: {
-      file: 'src/components/inputs/password-field/rr-password-field.ts',
-      repository: 'https://github.com/regelrecht/design-system',
-    },
-    status: {
-      type: 'stable',
-    },
-  },
-  argTypes: {
-    value: {
-      control: 'text',
-      description: 'Input value',
-    },
-    placeholder: {
-      control: 'text',
-      description: 'Placeholder text',
-      table: {
-        defaultValue: { summary: 'Password field' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disabled state',
-      table: {
-        defaultValue: { summary: false },
-      },
-    },
-    validation: {
-      control: 'select',
-      options: ['neutral', 'valid', 'invalid'],
-      description: 'Validation state',
-      table: {
-        defaultValue: { summary: 'neutral' },
-      },
-    },
-    masked: {
-      control: 'boolean',
-      description: 'Whether the password is masked',
-      table: {
-        defaultValue: { summary: true },
-      },
-    },
-    name: {
-      control: 'text',
-      description: 'Form field name',
-    },
-  },
-  args: {
-    value: '',
-    placeholder: 'Password field',
-    disabled: false,
-    validation: 'neutral',
-    masked: true,
-    name: 'password',
-  },
+	title: 'Components/Inputs/Password Field',
+	component: 'rr-password-field',
+	tags: ['autodocs'],
+	parameters: {
+		componentSource: {
+			file: 'src/components/inputs/password-field/rr-password-field.ts',
+			repository: 'https://github.com/regelrecht/design-system',
+		},
+		status: {
+			type: 'stable',
+		},
+	},
+	argTypes: {
+		value: {
+			control: 'text',
+			description: 'Input value',
+			table: { defaultValue: { summary: '' } },
+		},
+		placeholder: {
+			control: 'text',
+			description: 'Placeholder text',
+			table: { defaultValue: { summary: 'Password field' } },
+		},
+		size: {
+			control: 'select',
+			options: ['md', 'sm'],
+			description: 'Size variant',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		valid: {
+			control: 'boolean',
+			description: 'Valid state',
+			table: { defaultValue: { summary: false } },
+		},
+		invalid: {
+			control: 'boolean',
+			description: 'Invalid state',
+			table: { defaultValue: { summary: false } },
+		},
+		disabled: {
+			control: 'boolean',
+			description: 'Disabled state',
+			table: { defaultValue: { summary: false } },
+		},
+		masked: {
+			control: 'boolean',
+			description: 'Whether the password is masked',
+			table: { defaultValue: { summary: false } },
+		},
+		name: {
+			control: 'text',
+			description: 'Form field name',
+		},
+	},
+	args: {
+		value: '',
+		placeholder: 'Password field',
+		size: 'md',
+		valid: false,
+		invalid: false,
+		disabled: false,
+		masked: false,
+		name: 'password',
+	},
 };
 
-const Template = ({ value, placeholder, disabled, validation, masked, name }) => html`
-  <div style="width: 320px;">
-    <rr-password-field
-      value=${value}
-      placeholder=${placeholder}
-      ?disabled=${disabled}
-      validation=${validation}
-      ?masked=${masked}
-      name=${name}
-    ></rr-password-field>
-  </div>
+const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, name }) => html`
+	<rr-password-field
+		value=${value}
+		placeholder=${placeholder}
+		size=${size}
+		?valid=${valid}
+		?invalid=${invalid}
+		?disabled=${disabled}
+		?masked=${masked}
+		name=${name}
+	></rr-password-field>
 `;
 
-// Primary story
 export const Default = Template.bind({});
-Default.args = {};
 
-// Unmasked
 export const Unmasked = Template.bind({});
 Unmasked.args = {
-  value: 'visible-password',
-  masked: false,
+	value: 'visible-password',
+	masked: false,
 };
 
-// Valid
 export const Valid = Template.bind({});
 Valid.args = {
-  value: 'strong-password-123',
-  validation: 'valid',
+	value: 'strong-password-123',
+	valid: true,
 };
 
-// Invalid
 export const Invalid = Template.bind({});
 Invalid.args = {
-  value: '123',
-  validation: 'invalid',
+	value: '123',
+	invalid: true,
 };
 
-// Disabled
 export const Disabled = Template.bind({});
 Disabled.args = {
-  value: 'disabled-password',
-  disabled: true,
+	value: 'disabled-password',
+	disabled: true,
 };
 
-// All states overview
 export const AllStates = () => html`
-  <div style="display: flex; flex-direction: column; gap: 1.5rem; width: 320px;">
-    <div>
-      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b;">Default (empty)</p>
-      <rr-password-field placeholder="Password field"></rr-password-field>
-    </div>
-    <div>
-      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b;">With value (masked)</p>
-      <rr-password-field value="my-password"></rr-password-field>
-    </div>
-    <div>
-      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b;">Unmasked</p>
-      <rr-password-field value="visible-password" .masked=${false}></rr-password-field>
-    </div>
-    <div>
-      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b;">Valid</p>
-      <rr-password-field value="strong-password" validation="valid"></rr-password-field>
-    </div>
-    <div>
-      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b;">Invalid</p>
-      <rr-password-field value="123" validation="invalid"></rr-password-field>
-    </div>
-    <div>
-      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b;">Disabled</p>
-      <rr-password-field value="disabled" disabled></rr-password-field>
-    </div>
-  </div>
+	<div style="display: flex; flex-direction: column; gap: 1rem;">
+		<rr-password-field placeholder="Neutral"></rr-password-field>
+		<rr-password-field value="strong-password" valid></rr-password-field>
+		<rr-password-field value="123" invalid></rr-password-field>
+		<rr-password-field value="disabled" disabled></rr-password-field>
+		<rr-password-field value="unmasked" .masked=${false}></rr-password-field>
+	</div>
 `;
-AllStates.parameters = {
-  controls: { disable: true },
-};
+AllStates.parameters = { controls: { disable: true } };
+
+export const Sizes = () => html`
+	<div style="display: flex; flex-direction: column; gap: 1rem;">
+		<rr-password-field placeholder="Medium (md)"></rr-password-field>
+		<rr-password-field placeholder="Small (sm)" size="sm"></rr-password-field>
+	</div>
+`;
+Sizes.parameters = { controls: { disable: true } };
