@@ -246,6 +246,8 @@ export class RRFormFieldHelpText extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback();
+		// Assign to the 'help' slot automatically so consumers don't need to set slot="help" manually.
+		// Note: this will overwrite any explicit slot attribute set by the consumer.
 		this.slot = 'help';
 	}
 
@@ -272,6 +274,8 @@ export class RRFormFieldErrorText extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback();
+		// Assign to the 'errors' slot automatically so consumers don't need to set slot="errors" manually.
+		// Note: this will overwrite any explicit slot attribute set by the consumer.
 		this.slot = 'errors';
 	}
 
