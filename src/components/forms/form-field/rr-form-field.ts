@@ -143,7 +143,7 @@ export class RRFormField extends LitElement {
 	}
 
 	/** Called when the label header is clicked — focuses the slotted input. */
-	protected focusInput(e: Event) {
+	protected _focusInput(e: Event) {
 		// <label for> cannot cross shadow boundaries so we focus manually.
 		e.preventDefault();
 		(this._findInput() as HTMLElement | undefined)?.focus();

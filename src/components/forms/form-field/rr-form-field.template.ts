@@ -20,7 +20,7 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 		<label
 			class="form-field__header ${isHeaderEmpty ? 'is-empty' : ''}"
 			for=${component.labelFor || nothing}
-			@click=${(e: Event) => component.focusInput(e)}
+			@click=${(e: Event) => component._focusInput(e)}
 		>
 			${hasLabel ? html`
 				<span class="form-field__label">
