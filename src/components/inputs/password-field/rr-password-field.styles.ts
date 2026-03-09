@@ -78,7 +78,7 @@ export const passwordFieldStyles = css`
 		box-sizing: border-box;
 		padding: 0 var(--primitives-space-4) 0 0;
 		margin: 0;
-		min-height: var(--semantics-controls-md-min-size);
+		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		font: var(--semantics-input-fields-md-text-font);
 		color: var(--semantics-content-color);
 		background: transparent;
@@ -92,7 +92,7 @@ export const passwordFieldStyles = css`
 	}
 
 	:host([size='sm']) .password-field__input {
-		min-height: var(--semantics-controls-sm-min-size);
+		min-height: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		font: var(--semantics-input-fields-sm-text-font);
 	}
 
