@@ -49,18 +49,30 @@ describe('rr-form-field', () => {
 		expect(header!.textContent).toContain('DD-MM-YYYY');
 	});
 
-	it('shows "Optional" when optional attribute is set', async () => {
+	it('shows the optional badge when optional attribute is set', async () => {
 		el = await fixture('<rr-form-field label="Phone" optional></rr-form-field>');
 		await waitForUpdate(el);
-		const optional = el.shadowRoot!.querySelector('.form-field__optional');
-		expect(optional).not.toBeNull();
-		expect(optional!.textContent).toContain('Optional');
+		expect(el.shadowRoot!.querySelector('.form-field__optional')).not.toBeNull();
 	});
 
 	it('hides "Optional" when optional attribute is not set', async () => {
 		el = await fixture('<rr-form-field label="Name"></rr-form-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.form-field__optional')).toBeNull();
+	});
+
+	it('renders "Optioneel" as the default optional label', async () => {
+		el = await fixture('<rr-form-field label="Phone" optional></rr-form-field>');
+		await waitForUpdate(el);
+		const optional = el.shadowRoot!.querySelector('.form-field__optional');
+		expect(optional!.textContent).toContain('Optioneel');
+	});
+
+	it('renders a custom optional label when optional-label is set', async () => {
+		el = await fixture('<rr-form-field label="Phone" optional optional-label="Optional"></rr-form-field>');
+		await waitForUpdate(el);
+		const optional = el.shadowRoot!.querySelector('.form-field__optional');
+		expect(optional!.textContent).toContain('Optional');
 	});
 
 	it('reflects label-alignment attribute', async () => {

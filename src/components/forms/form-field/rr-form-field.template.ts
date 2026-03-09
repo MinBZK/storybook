@@ -7,8 +7,8 @@ import type { RRFormFieldErrorText } from './rr-form-field.js';
    rr-form-field
    ============================================================ */
 
-function renderOptional(): TemplateResult {
-	return html`<span class="form-field__optional">Optional</span>`;
+function renderOptional(label: string): TemplateResult {
+	return html`<span class="form-field__optional">${label}</span>`;
 }
 
 export function formFieldTemplate(component: RRFormField): TemplateResult {
@@ -25,7 +25,7 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 			${hasLabel ? html`
 				<span class="form-field__label">
 					${component.label}
-					${component.optional ? renderOptional() : nothing}
+					${component.optional ? renderOptional(component.optionalLabel) : nothing}
 				</span>
 			` : nothing}
 			${hasSupportingLabel ? html`

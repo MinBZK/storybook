@@ -6,7 +6,8 @@
  * @attr {string} label-alignment  - 'top' (default) | 'right' | 'left'
  * @attr {string} label            - Field label text. Omit for no-label layout.
  * @attr {string} supporting-label - Short supporting text below the label. Same typography as optional badge.
- * @attr {boolean} optional        - Shows "Optional" badge next to the label.
+ * @attr {boolean} optional        - Shows an optional badge next to the label.
+ * @attr {string} optional-label   - Text for the optional badge. Defaults to 'Optioneel'.
  *
  * @slot           - The slotted input (e.g. rr-text-field). Set `invalid` and
  *                   `error-message="id1 id2"` on the input to wire up error texts.
@@ -100,6 +101,10 @@ export class RRFormField extends LitElement {
 	 */
 	@property({ type: Boolean })
 	optional = false;
+
+	/** Label text for the optional badge. Defaults to 'Optioneel'. Override for localisation. */
+	@property({ type: String, attribute: 'optional-label' })
+	optionalLabel = 'Optioneel';
 
 	/**
 	 * The id of the slotted input, used to associate the label via `for`.
