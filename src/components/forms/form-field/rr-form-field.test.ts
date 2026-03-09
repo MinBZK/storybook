@@ -237,7 +237,7 @@ describe('rr-form-field error text wiring', () => {
 		`);
 		await waitForUpdate(el);
 		el.querySelector('#ctrl')!.removeAttribute('invalid');
-		await new Promise(r => setTimeout(r, 0));
+		await waitForUpdate(el);
 		expect(el.querySelector('rr-form-field-error-text')!.hasAttribute('invalid')).toBe(false);
 	});
 
@@ -298,7 +298,7 @@ describe('rr-form-field error text wiring', () => {
 		`);
 		await waitForUpdate(el);
 		el.querySelector('#ctrl')!.removeAttribute('invalid');
-		await new Promise(r => setTimeout(r, 0));
+		await waitForUpdate(el);
 		expect(el.querySelector('#ctrl')!.hasAttribute('aria-describedby')).toBe(false);
 	});
 });
