@@ -55,8 +55,8 @@ import {
 
 export type LabelAlignment = 'top' | 'left' | 'right';
 
-
-const HELPER_TAGS = ['rr-form-field-help-text'];
+// Exclude helper elements so _findInput() never returns them instead of the actual input
+const HELPER_TAGS = ['rr-form-field-help-text', 'rr-form-field-error-text'];
 
 let idCounter = 0;
 function generateId(): string {
@@ -144,17 +144,20 @@ export class RRFormField extends LitElement {
 		const input = this._findInput();
 		if (!input) return;
 
-		// Use the consumer-provided id if available, otherwise generate one.
-		// If the element exposes inputId (e.g. rr-text-field), read that as the
-		// preferred id. Always set it on the element itself so the label for
-		// can resolve it in the light DOM.
+		// For custom elements like rr-text-field, inputId is passed as an attribute
+		// and the inner native input gets the id via the template — setting it on
+		// the host would create duplicate IDs.
 		const hasInputId = 'inputId' in input;
-		const existingId = hasInputId
-			? (input as HTMLElement & { inputId: string }).inputId
-			: input.id;
-		const generatedId = existingId || generateId();
-		input.id = generatedId;
-		this.labelFor = generatedId;
+		if (hasInputId) {
+			const existingId = (input as HTMLElement & { inputId: string }).inputId;
+			const generatedId = existingId || generateId();
+			(input as HTMLElement & { inputId: string }).inputId = generatedId;
+			this.labelFor = generatedId;
+		} else {
+			const generatedId = input.id || generateId();
+			input.id = generatedId;
+			this.labelFor = generatedId;
+		}
 
 		this._observer = new MutationObserver(() => this._syncErrorText());
 		this._observer.observe(input, {
@@ -174,6 +177,7 @@ export class RRFormField extends LitElement {
 	/**
 	 * Reads `invalid` and `error-message` from the input and toggles
 	 * the `invalid` attribute on the referenced rr-form-field-error-text elements.
+	 * Also sets `aria-describedby` on the input to reference visible error texts.
 	 */
 	private _syncErrorText() {
 		const input = this._findInput();
@@ -187,9 +191,19 @@ export class RRFormField extends LitElement {
 		const allErrorTexts = Array.from(this.children)
 			.filter(el => el.tagName.toLowerCase() === 'rr-form-field-error-text');
 
+		const visibleIds: string[] = [];
+
 		for (const el of allErrorTexts) {
 			const shouldShow = isInvalid && referencedIds.includes(el.id);
 			el.toggleAttribute('invalid', shouldShow);
+			if (shouldShow && el.id) visibleIds.push(el.id);
+		}
+
+		// readers announce the errors when the input is focused.
+		if (visibleIds.length > 0) {
+			input.setAttribute('aria-describedby', visibleIds.join(' '));
+		} else {
+			input.removeAttribute('aria-describedby');
 		}
 	}
 }

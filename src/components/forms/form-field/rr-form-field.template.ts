@@ -3,7 +3,6 @@ import type { RRFormField } from './rr-form-field.js';
 import type { RRFormFieldHelpText } from './rr-form-field.js';
 import type { RRFormFieldErrorText } from './rr-form-field.js';
 
-
 /* ============================================================
    rr-form-field
    ============================================================ */
@@ -14,10 +13,12 @@ function renderOptional(): TemplateResult {
 
 export function formFieldTemplate(component: RRFormField): TemplateResult {
 	const hasLabel = Boolean(component.label);
+	const hasSupportingLabel = Boolean(component.supportingLabel);
+	const isHeaderEmpty = !hasLabel && !hasSupportingLabel;
 
 	const headerEl = html`
 		<label
-			class="form-field__header ${hasLabel ? '' : 'is-empty'}"
+			class="form-field__header ${isHeaderEmpty ? 'is-empty' : ''}"
 			for=${component.labelFor || nothing}
 			@click=${(e: Event) => component.focusInput(e)}
 		>
@@ -27,7 +28,7 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 					${component.optional ? renderOptional() : nothing}
 				</span>
 			` : nothing}
-			${component.supportingLabel ? html`
+			${hasSupportingLabel ? html`
 				<span class="form-field__supporting-label">${component.supportingLabel}</span>
 			` : nothing}
 		</label>
@@ -47,7 +48,6 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 	`;
 }
 
-
 /* ============================================================
    rr-form-field-help-text
    ============================================================ */
@@ -59,7 +59,6 @@ export function formFieldHelpTextTemplate(_component: RRFormFieldHelpText): Temp
 		</p>
 	`;
 }
-
 
 /* ============================================================
    rr-form-field-error-text

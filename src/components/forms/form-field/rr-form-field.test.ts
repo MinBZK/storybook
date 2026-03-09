@@ -34,11 +34,19 @@ describe('rr-form-field', () => {
 		expect(el.shadowRoot!.querySelector('.form-field__label')).toBeNull();
 	});
 
-	it('hides the header when no label is set', async () => {
+	it('hides the header when neither label nor supporting-label is set', async () => {
 		el = await fixture('<rr-form-field></rr-form-field>');
 		await waitForUpdate(el);
 		const header = el.shadowRoot!.querySelector('.form-field__header');
 		expect(header?.classList.contains('is-empty')).toBe(true);
+	});
+
+	it('shows the header when only supporting-label is set', async () => {
+		el = await fixture('<rr-form-field supporting-label="DD-MM-YYYY"></rr-form-field>');
+		await waitForUpdate(el);
+		const header = el.shadowRoot!.querySelector('.form-field__header');
+		expect(header?.classList.contains('is-empty')).toBe(false);
+		expect(header!.textContent).toContain('DD-MM-YYYY');
 	});
 
 	it('shows "Optional" when optional attribute is set', async () => {
@@ -153,6 +161,55 @@ describe('rr-form-field error text wiring', () => {
 		`);
 		await waitForUpdate(el);
 		expect(el.querySelector('rr-form-field-error-text')!.hasAttribute('invalid')).toBe(true);
+	});
+
+	it('does not treat rr-form-field-error-text as the control', async () => {
+		el = await fixture(`
+			<rr-form-field label="Email">
+				<rr-form-field-error-text id="err-1">Required.</rr-form-field-error-text>
+				<input invalid error-message="err-1">
+			</rr-form-field>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('rr-form-field-error-text')!.hasAttribute('invalid')).toBe(true);
+	});
+
+	it('sets aria-describedby on the input referencing visible error IDs', async () => {
+		el = await fixture(`
+			<rr-form-field label="Email">
+				<input invalid error-message="err-1">
+				<rr-form-field-error-text id="err-1">Required.</rr-form-field-error-text>
+			</rr-form-field>
+		`);
+		await waitForUpdate(el);
+		const input = el.querySelector('input')!;
+		expect(input.getAttribute('aria-describedby')).toBe('err-1');
+	});
+
+	it('sets aria-describedby with multiple IDs when multiple errors are visible', async () => {
+		el = await fixture(`
+			<rr-form-field label="Password">
+				<input invalid error-message="err-required err-length">
+				<rr-form-field-error-text id="err-required">Required.</rr-form-field-error-text>
+				<rr-form-field-error-text id="err-length">Too short.</rr-form-field-error-text>
+			</rr-form-field>
+		`);
+		await waitForUpdate(el);
+		const input = el.querySelector('input')!;
+		expect(input.getAttribute('aria-describedby')).toBe('err-required err-length');
+	});
+
+	it('removes aria-describedby when errors are cleared', async () => {
+		el = await fixture(`
+			<rr-form-field label="Email">
+				<input id="ctrl" invalid error-message="err-1">
+				<rr-form-field-error-text id="err-1">Required.</rr-form-field-error-text>
+			</rr-form-field>
+		`);
+		await waitForUpdate(el);
+		el.querySelector('#ctrl')!.removeAttribute('invalid');
+		await new Promise(r => setTimeout(r, 0));
+		expect(el.querySelector('#ctrl')!.hasAttribute('aria-describedby')).toBe(false);
 	});
 });
 
