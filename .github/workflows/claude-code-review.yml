@@ -1,0 +1,110 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+jobs:
+  claude-review:
+    if: ${{ !github.event.pull_request.draft && github.event.pull_request.user.login != 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Code Review
+        id: claude-review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          use_sticky_comment: true
+          claude_args: "--allowedTools Bash,Read,Glob,Grep"
+          prompt: |
+            Review PR #${{ github.event.pull_request.number }} in ${{ github.repository }}.
+
+            ## Project context
+
+            This is the RegelRecht Design System — a library of vanilla Web Components for
+            Dutch Government (Rijksoverheid) applications. Components are built with Lit + TypeScript
+            and documented in Storybook.
+
+            **Key architecture:**
+            - `src/components/` — Lit + TypeScript web components using Shadow DOM
+            - `src/assets/css/settings.css` — Design tokens (primitives, semantics, components)
+            - Components follow BEM naming, use design tokens (never hardcoded values)
+            - Must be DigiToegankelijk (WCAG 2.1 AA) compliant
+            - Uses RijksSansVF font with system-ui fallback
+
+            **Token hierarchy:**
+            - `--primitives-*` → base values (colors, spacing)
+            - `--semantics-*` → meaningful tokens (buttons, controls)
+            - `--components-*` → component-specific tokens
+
+            ## Review dimensions
+
+            Review the PR diff across these dimensions. Only comment on changed lines.
+            Skip dimensions that have no findings. Be precise and actionable.
+
+            ### 1. Component correctness
+
+            - Does the component extend LitElement correctly?
+            - Is Shadow DOM used properly?
+            - Are properties/attributes declared and reflected correctly?
+            - Are slots, events, and lifecycle hooks used appropriately?
+            - No hardcoded values — all styling via design tokens.
+
+            ### 2. Accessibility (WCAG 2.1 AA)
+
+            - Proper ARIA attributes and roles?
+            - Keyboard navigation support?
+            - Focus management and visible focus indicators?
+            - Color contrast meets AA requirements?
+            - Screen reader compatibility?
+
+            ### 3. Design token usage
+
+            - Are semantic tokens preferred over primitives?
+            - No fallback values on design tokens (strict validation)?
+            - Override hooks use `--rr-*` prefix?
+            - Internal variables use `--_*` prefix?
+
+            ### 4. CSS and styling
+
+            - BEM naming convention followed?
+            - No `!important` usage?
+            - Asymmetric padding matches design specs?
+            - Disabled states use `var(--primitives-opacity-disabled)`?
+
+            ### 5. Testing
+
+            - Smoke tests present for new components?
+            - Complex logic has unit tests?
+            - Tests use project test utilities (fixture, cleanup, waitForUpdate)?
+
+            ### 6. General code quality
+
+            - TypeScript types correct and complete?
+            - No security vulnerabilities (XSS in Shadow DOM, etc.)?
+            - Conventional commit messages used?
+            - No unnecessary dependencies or file bloat?
+
+            ## Output format
+
+            Structure your review as a single comment with sections for each dimension that has
+            findings. Use this severity scale:
+
+            - 🔴 **Critical** — broken component, accessibility failure, security issue
+            - 🟠 **Significant** — likely bug, missing token, broken pattern
+            - 🟡 **Minor** — code quality, style, non-blocking improvement
+
+            Also leave inline comments on specific lines where possible.
+
+            If there are no issues, say so briefly. Do not pad the review with praise or filler.
