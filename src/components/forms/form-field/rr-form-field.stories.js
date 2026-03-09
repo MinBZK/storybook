@@ -3,48 +3,47 @@ import './rr-form-field.ts';
 import '../../inputs/text-field/rr-text-field.ts';
 
 /**
- * `rr-form-field` is a layout wrapper for form inputs.
+ * `rr-form-field` is een lay-outwrapper voor formulierinvoer.
  *
- * ### Label association
- * The form field automatically generates an id for the native input inside the
- * slotted input element and sets the label's `for` attribute to match — clicking
- * the label focuses the input. No manual wiring needed.
+ * ### Labelkoppeling
+ * Het formulierveld genereert automatisch een id voor de native input binnen
+ * het geslote invoerelement en stelt het `for`-attribuut van het label hierop in —
+ * klikken op het label focust de invoer. Geen handmatige koppeling nodig.
  *
- * To use a stable, predictable id set `input-id` on
- * the slotted input — the form field will use it as-is.
+ * Gebruik `input-id` op het geslote invoerelement voor een stabiel, voorspelbaar id.
  *
  * ```html
- * <!-- Automatic -->
- * <rr-form-field label="Name">
+ * <!-- Automatisch -->
+ * <rr-form-field label="Naam">
  *   <rr-text-field></rr-text-field>
  * </rr-form-field>
  *
- * <!-- Consumer-provided -->
- * <rr-form-field label="Name">
- *   <rr-text-field input-id="name-input"></rr-text-field>
+ * <!-- Door consument opgegeven -->
+ * <rr-form-field label="Naam">
+ *   <rr-text-field input-id="naam-invoer"></rr-text-field>
  * </rr-form-field>
  * ```
  *
  * ### Slots
- * - Default slot: the slotted input. Set `invalid` and `error-message="id1 id2"`
- *   on the input to wire up error texts automatically.
- * - `rr-form-field-help-text`: slot in alongside the input — the component
- *   assigns itself to the help slot automatically.
- * - `rr-form-field-error-text`: slot in alongside the input — the component
- *   assigns itself to the errors slot automatically.
+ * - Standaard slot: het geslote invoerelement. Stel `invalid` en `error-message="id1 id2"`
+ *   in op de invoer om foutmeldingen automatisch te koppelen.
+ * - `rr-form-field-help-text`: plaatsen naast de invoer — het component
+ *   wijst zichzelf automatisch toe aan het help-slot.
+ * - `rr-form-field-error-text`: plaatsen naast de invoer — het component
+ *   wijst zichzelf automatisch toe aan het fout-slot.
  *
- * ### Error texts
- * Slot in as many `rr-form-field-error-text` elements as needed. The form field
- * observes the input and shows only the ones referenced by `error-message`.
+ * ### Foutmeldingen
+ * Voeg zoveel `rr-form-field-error-text`-elementen toe als nodig. Het formulierveld
+ * observeert de invoer en toont alleen de elementen waarnaar `error-message` verwijst.
  *
  * ```html
- * <rr-form-field label="Password">
+ * <rr-form-field label="Wachtwoord">
  *   <rr-form-field-help-text>
- *     At least 8 characters. <a href="/help">Learn more</a>.
+ *     Minimaal 8 tekens. <a href="/help">Meer informatie</a>.
  *   </rr-form-field-help-text>
- *   <rr-text-field invalid error-message="err-required err-length"></rr-text-field>
- *   <rr-form-field-error-text id="err-required">This field is required.</rr-form-field-error-text>
- *   <rr-form-field-error-text id="err-length">Must be at least 8 characters.</rr-form-field-error-text>
+ *   <rr-text-field invalid error-message="err-verplicht err-lengte"></rr-text-field>
+ *   <rr-form-field-error-text id="err-verplicht">Dit veld is verplicht.</rr-form-field-error-text>
+ *   <rr-form-field-error-text id="err-lengte">Minimaal 8 tekens vereist.</rr-form-field-error-text>
  * </rr-form-field>
  * ```
  */
@@ -93,101 +92,98 @@ const Template = ({ labelAlignment, label, supportingLabel, optional }) => html`
 export const Default = Template.bind({});
 
 export const WithSupportingLabel = () => html`
-	<rr-form-field label="Date of birth" supporting-label="DD-MM-YYYY">
+	<rr-form-field label="Geboortedatum" supporting-label="DD-MM-JJJJ">
 		<rr-text-field></rr-text-field>
 	</rr-form-field>
 `;
 
 export const WithHelpText = () => html`
-	<rr-form-field label="Email address">
+	<rr-form-field label="E-mailadres">
 		<rr-form-field-help-text>
-			We will never share your email. <a href="/privacy">Privacy policy</a>.
+			Wij delen uw e-mailadres nooit. <a href="/privacy">Privacybeleid</a>.
 		</rr-form-field-help-text>
 		<rr-text-field type="email"></rr-text-field>
 	</rr-form-field>
 `;
 
 export const Optional = () => html`
-	<rr-form-field label="Phone number" optional supporting-label="Used for 2-factor authentication only.">
-
+	<rr-form-field label="Telefoonnummer" optional supporting-label="Alleen gebruikt voor tweestapsverificatie.">
 		<rr-text-field type="tel"></rr-text-field>
 	</rr-form-field>
 `;
 
 export const Invalid = () => html`
-	<rr-form-field label="Email address">
+	<rr-form-field label="E-mailadres">
 		<rr-text-field invalid error-message="err-email"></rr-text-field>
-		<rr-form-field-error-text id="err-email">Please enter a valid email address.</rr-form-field-error-text>
+		<rr-form-field-error-text id="err-email">Voer een geldig e-mailadres in.</rr-form-field-error-text>
 	</rr-form-field>
 `;
 
 export const MultipleErrors = () => html`
-	<rr-form-field label="Password">
+	<rr-form-field label="Wachtwoord">
 		<rr-form-field-help-text>
-			At least 8 characters. <a href="/help">Requirements</a>.
+			Minimaal 8 tekens. <a href="/help">Vereisten</a>.
 		</rr-form-field-help-text>
-		<rr-text-field invalid error-message="err-required err-length"></rr-text-field>
-		<rr-form-field-error-text id="err-required">This field is required.</rr-form-field-error-text>
-		<rr-form-field-error-text id="err-length">Must be at least 8 characters.</rr-form-field-error-text>
+		<rr-text-field invalid error-message="err-verplicht err-lengte"></rr-text-field>
+		<rr-form-field-error-text id="err-verplicht">Dit veld is verplicht.</rr-form-field-error-text>
+		<rr-form-field-error-text id="err-lengte">Minimaal 8 tekens vereist.</rr-form-field-error-text>
 	</rr-form-field>
 `;
 
 export const LabelAlignmentRight = () => html`
-	<rr-form-field label="Full name" label-alignment="right" supporting-label="As it appears on your passport.">
-
+	<rr-form-field label="Volledige naam" label-alignment="right" supporting-label="Zoals vermeld in uw paspoort.">
 		<rr-text-field></rr-text-field>
 	</rr-form-field>
 `;
 
 export const LabelAlignmentLeft = () => html`
-	<rr-form-field label="Full name" label-alignment="left" supporting-label="As it appears on your passport.">
-
+	<rr-form-field label="Volledige naam" label-alignment="left" supporting-label="Zoals vermeld in uw paspoort.">
 		<rr-text-field></rr-text-field>
 	</rr-form-field>
 `;
 
 export const CompleteFormTop = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
-		<rr-form-field label="Full name">
-			<rr-text-field input-id="top-full-name"></rr-text-field>
+		<rr-form-field label="Volledige naam">
+			<rr-text-field input-id="top-volledige-naam"></rr-text-field>
 		</rr-form-field>
-		<rr-form-field label="Email address" supporting-label="We'll send a confirmation email.">
+		<rr-form-field label="E-mailadres" supporting-label="We sturen een bevestigingsmail.">
 			<rr-text-field type="email" input-id="top-email"></rr-text-field>
 		</rr-form-field>
-		<rr-form-field label="Phone number" optional supporting-label="Used for 2-factor authentication only.">
+		<rr-form-field label="Telefoonnummer" optional supporting-label="Alleen gebruikt voor tweestapsverificatie.">
 			<rr-text-field
 				type="tel"
-				input-id="top-phone"
+				input-id="top-telefoon"
 				invalid
-				error-message="err-phone"
+				error-message="err-telefoon"
 			></rr-text-field>
-			<rr-form-field-error-text id="err-phone">Please enter a valid phone number.</rr-form-field-error-text>
+			<rr-form-field-error-text id="err-telefoon">Voer een geldig telefoonnummer in.</rr-form-field-error-text>
 		</rr-form-field>
-		<rr-form-field label="Comments" optional supporting-label="Any additional remarks.">
-			<rr-text-field input-id="top-comments"></rr-text-field>
+		<rr-form-field label="Opmerkingen" optional supporting-label="Eventuele aanvullende opmerkingen.">
+			<rr-text-field input-id="top-opmerkingen"></rr-text-field>
 		</rr-form-field>
 	</div>
 `;
 
 export const CompleteFormRight = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem; container-type: inline-size;">
-		<rr-form-field label="Full name" label-alignment="right" supporting-label="As it appears on your passport.">
-			<rr-text-field input-id="right-full-name"></rr-text-field>
+		<rr-form-field label="Volledige naam" label-alignment="right" supporting-label="Zoals vermeld in uw paspoort.">
+			<rr-text-field input-id="rechts-volledige-naam"></rr-text-field>
 		</rr-form-field>
-		<rr-form-field label="Email address" label-alignment="right" supporting-label="We'll send a confirmation email.">
-			<rr-text-field type="email" input-id="right-email"></rr-text-field>
+		<rr-form-field label="E-mailadres" label-alignment="right" supporting-label="We sturen een bevestigingsmail.">
+			<rr-text-field type="email" input-id="rechts-email"></rr-text-field>
 		</rr-form-field>
-		<rr-form-field label="Phone number" label-alignment="right" optional>
+		<rr-form-field label="Telefoonnummer" label-alignment="right" optional>
 			<rr-text-field
 				type="tel"
-				input-id="right-phone"
+				input-id="rechts-telefoon"
 				invalid
-				error-message="err-phone-right"
+				error-message="err-telefoon-rechts"
 			></rr-text-field>
-			<rr-form-field-error-text id="err-phone-right">Please enter a valid phone number.</rr-form-field-error-text>
+			<rr-form-field-error-text id="err-telefoon-rechts">Voer een geldig telefoonnummer in.</rr-form-field-error-text>
 		</rr-form-field>
-		<rr-form-field label="Comments" label-alignment="right" optional supporting-label="Any additional remarks.">
-			<rr-text-field input-id="right-comments"></rr-text-field>
+		<rr-form-field label="Opmerkingen" label-alignment="right" optional supporting-label="Eventuele aanvullende opmerkingen.">
+			<rr-text-field input-id="rechts-opmerkingen"></rr-text-field>
 		</rr-form-field>
 	</div>
 `;
