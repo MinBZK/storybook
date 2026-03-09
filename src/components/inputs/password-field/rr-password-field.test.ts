@@ -63,7 +63,7 @@ describe('rr-password-field', () => {
 		el = await fixture('<rr-password-field></rr-password-field>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('rr-button');
-		expect(button!.getAttribute('aria-label')).toBe('Toon wachtwoord');
+		expect(button!.getAttribute('accessible-label')).toBe('Toon wachtwoord');
 	});
 
 	it('sets default aria-label "Verberg wachtwoord" on toggle button when unmasked', async () => {
@@ -72,7 +72,7 @@ describe('rr-password-field', () => {
 		(el as any).masked = false;
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('rr-button');
-		expect(button!.getAttribute('aria-label')).toBe('Verberg wachtwoord');
+		expect(button!.getAttribute('accessible-label')).toBe('Verberg wachtwoord');
 	});
 
 	it('uses custom show-label and show-accessible-label when provided', async () => {
@@ -80,7 +80,7 @@ describe('rr-password-field', () => {
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('rr-button');
 		expect(button!.textContent?.trim()).toBe('Show');
-		expect(button!.getAttribute('aria-label')).toBe('Show password');
+		expect(button!.getAttribute('accessible-label')).toBe('Show password');
 	});
 
 	it('applies is-masked class to input when masked', async () => {
