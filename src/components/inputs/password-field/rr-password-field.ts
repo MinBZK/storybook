@@ -4,302 +4,153 @@
  * A password input field with visibility toggle and validation states.
  *
  * @element rr-password-field
- * @attr {string} value - Input value
- * @attr {string} placeholder - Placeholder text
- * @attr {boolean} disabled - Disabled state
- * @attr {string} validation - Validation state: 'neutral' | 'valid' | 'invalid'
- * @attr {boolean} masked - Whether the password is masked (default: true)
- * @attr {string} name - Form field name
  *
- * @fires input - When the input value changes
- * @fires change - When the input value is committed
+ * @attr {string} value        - The input value
+ * @attr {string} placeholder  - Placeholder text
+ * @attr {string} input-id     - Sets the id on the native input. Set automatically by rr-form-field.
+ * @attr {string} size         - 'md' (default) | 'sm'. Set automatically by rr-form-field.
+ * @attr {boolean} valid       - Marks the field as valid
+ * @attr {boolean} invalid     - Marks the field as invalid
+ * @attr {boolean} disabled    - Disabled state
+ * @attr {boolean} masked                  - Whether the password is masked (default: true)
+ * @attr {string} show-label               - Visible toggle button label when masked (default: 'Toon')
+ * @attr {string} hide-label               - Visible toggle button label when unmasked (default: 'Verberg')
+ * @attr {string} show-accessible-label    - aria-label for toggle when masked (default: 'Toon wachtwoord')
+ * @attr {string} hide-accessible-label    - aria-label for toggle when unmasked (default: 'Verberg wachtwoord')
+ * @attr {boolean} readonly    - Readonly state
+ * @attr {boolean} required    - Required state
+ * @attr {string} name         - Input name for form submission
+ * @attr {string} autocomplete        - Autocomplete hint
+ * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by rr-form-field.
  *
- * @csspart field - The field container
- * @csspart input - The native input element
- * @csspart toggle - The visibility toggle button
+ * @fires input  - When the input value changes ({ detail: { value } })
+ * @fires change - When the input value is committed ({ detail: { value } })
+ *
+ * @csspart field  - The field container
+ * @csspart input  - The native input element
+ * @csspart toggle - The toggle button wrapper
  */
-
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-
-type Validation = 'neutral' | 'valid' | 'invalid';
+import { passwordFieldStyles } from './rr-password-field.styles.js';
+import { passwordFieldTemplate } from './rr-password-field.template.js';
 
 @customElement('rr-password-field')
 export class RRPasswordField extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override shadowRootOptions = {
+		...LitElement.shadowRootOptions,
+		delegatesFocus: true,
+	};
 
-    :host([hidden]) {
-      display: none;
-    }
+	static override styles = passwordFieldStyles;
 
-    :host(.focus) {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
+	@property({ type: String, reflect: true })
+	size: 'md' | 'sm' = 'md';
 
-    .password-field {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      height: 44px;
-      background-color: var(--semantics-input-fields-background-color);
-      border: var(--semantics-input-fields-border-thickness) solid
-        var(--_border-color, var(--semantics-input-fields-border-color));
-      border-radius: var(--semantics-controls-md-corner-radius);
-      box-sizing: border-box;
-      overflow: hidden;
-      transition: border-color 0.15s ease;
-    }
+	@property({ type: String })
+	value = '';
 
-    /* Validation states */
-    :host([validation='valid']) .password-field {
-      --_border-color: var(--semantics-input-fields-is-valid-border-color);
-    }
+	@property({ type: String, attribute: 'input-id' })
+	inputId = '';
 
-    :host([validation='invalid']) .password-field {
-      --_border-color: var(--semantics-input-fields-is-invalid-border-color);
-    }
+	@property({ type: String })
+	placeholder = '';
 
-    .password-field__input {
-      flex: 1;
-      height: 100%;
-      border: none;
-      background: transparent;
-      padding: 0 var(--primitives-space-12);
-      font: var(--semantics-input-fields-md-text-font);
-      color: var(--semantics-content-color);
-      outline: none;
-      min-width: 0;
-    }
+	@property({ type: Boolean, reflect: true })
+	valid = false;
 
-    .password-field__input::placeholder {
-      color: var(--semantics-input-fields-placeholder-color);
-    }
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
-    .password-field__icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      flex-shrink: 0;
-      margin-left: var(--primitives-space-8);
-    }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-    .password-field__icon--valid {
-      color: var(--semantics-input-fields-is-valid-border-color);
-    }
+	@property({ type: Boolean, reflect: true })
+	masked = true;
 
-    .password-field__icon--invalid {
-      color: var(--semantics-input-fields-is-invalid-border-color);
-    }
+	/** Visible button label when the field is masked. Override for localisation. */
+	@property({ type: String, attribute: 'show-label' })
+	showLabel = 'Toon';
 
-    .password-field__toggle {
-      appearance: none;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 100%;
-      color: var(--semantics-content-secondary-color);
-      flex-shrink: 0;
-      transition: color 0.15s ease;
-    }
+	/** Visible button label when the field is unmasked. Override for localisation. */
+	@property({ type: String, attribute: 'hide-label' })
+	hideLabel = 'Verberg';
 
-    .password-field__toggle:hover {
-      color: var(--semantics-content-color);
-    }
+	/** Accessible aria-label for the toggle button when the field is masked. Override for localisation. */
+	@property({ type: String, attribute: 'show-accessible-label' })
+	showAccessibleLabel = 'Toon wachtwoord';
 
-    .password-field__toggle:focus-visible {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
+	/** Accessible aria-label for the toggle button when the field is unmasked. Override for localisation. */
+	@property({ type: String, attribute: 'hide-accessible-label' })
+	hideAccessibleLabel = 'Verberg wachtwoord';
 
-    .password-field__toggle-icon {
-      width: 24px;
-      height: 24px;
-    }
+	@property({ type: Boolean, reflect: true })
+	readonly = false;
 
-    /* Disabled state */
-    :host([disabled]) .password-field {
-      opacity: var(--primitives-opacity-disabled);
-      pointer-events: none;
-    }
+	@property({ type: Boolean, reflect: true })
+	required = false;
 
-    :host([disabled]) .password-field__input {
-      cursor: not-allowed;
-    }
+	@property({ type: String })
+	name = '';
 
-    /* Accessibility: Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .password-field,
-      .password-field__toggle {
-        transition: none;
-      }
-    }
+	@property({ type: String })
+	autocomplete = '';
 
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .password-field {
-        border: 1px solid CanvasText;
-      }
+	/** Accessible label forwarded to the inner <input>. Set automatically by rr-form-field. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-      :host(.focus) {
-        outline: 2px solid CanvasText !important;
-      }
-    }
-  `;
+	@property({ type: String, attribute: 'error-message-ids' })
+	errorMessageIds = '';
 
-  @property({ type: String })
-  value = '';
 
-  @property({ type: String })
-  placeholder = 'Wachtwoord';
+	@query('.password-field__input')
+	private _input!: HTMLInputElement;
 
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
+	public _handleInput(e: Event): void {
+		e.stopPropagation();
+		const input = e.target as HTMLInputElement;
+		this.value = input.value;
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-  @property({ type: String, reflect: true })
-  validation: Validation = 'neutral';
+	public _handleChange(e: Event): void {
+		e.stopPropagation();
+		const input = e.target as HTMLInputElement;
+		this.value = input.value;
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-  @property({ type: Boolean, reflect: true })
-  masked = true;
+	public _handleToggle(): void {
+		this.masked = !this.masked;
+		this.updateComplete.then(() => {
+			this._input?.focus();
+		});
+	}
 
-  @property({ type: String })
-  name = '';
+	public focus(): void {
+		this._input?.focus();
+	}
 
-  @query('.password-field__input')
-  private _input!: HTMLInputElement;
+	public blur(): void {
+		this._input?.blur();
+	}
 
-  private _handleInput(e: Event): void {
-    const input = e.target as HTMLInputElement;
-    this.value = input.value;
-
-    this.dispatchEvent(
-      new CustomEvent('input', {
-        detail: { value: this.value },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private _handleChange(): void {
-    this.dispatchEvent(
-      new CustomEvent('change', {
-        detail: { value: this.value },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private _handleFocusIn(): void {
-    this.classList.add('focus');
-  }
-
-  private _handleFocusOut(): void {
-    this.classList.remove('focus');
-  }
-
-  private _toggleVisibility(): void {
-    this.masked = !this.masked;
-    // Refocus the input after toggling
-    this.updateComplete.then(() => {
-      this._input?.focus();
-    });
-  }
-
-  private _renderEyeIcon() {
-    return svg`
-      <svg class="password-field__toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-        <circle cx="12" cy="12" r="3"></circle>
-      </svg>
-    `;
-  }
-
-  private _renderEyeSlashIcon() {
-    return svg`
-      <svg class="password-field__toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-        <line x1="1" y1="1" x2="23" y2="23"></line>
-      </svg>
-    `;
-  }
-
-  private _renderCheckCircle() {
-    return svg`
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-      </svg>
-    `;
-  }
-
-  private _renderExclamationCircle() {
-    return svg`
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <line x1="12" y1="8" x2="12" y2="12"></line>
-        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-      </svg>
-    `;
-  }
-
-  override render() {
-    return html`
-      <div class="password-field" part="field">
-        <input
-          class="password-field__input"
-          part="input"
-          type=${this.masked ? 'password' : 'text'}
-          .value=${this.value}
-          placeholder=${this.placeholder}
-          name=${this.name}
-          ?disabled=${this.disabled}
-          aria-invalid=${this.validation === 'invalid'}
-          @input=${this._handleInput}
-          @change=${this._handleChange}
-          @focusin=${this._handleFocusIn}
-          @focusout=${this._handleFocusOut}
-        />
-
-        ${this.validation === 'valid'
-          ? html`<span class="password-field__icon password-field__icon--valid"
-              >${this._renderCheckCircle()}</span
-            >`
-          : ''}
-        ${this.validation === 'invalid'
-          ? html`<span class="password-field__icon password-field__icon--invalid"
-              >${this._renderExclamationCircle()}</span
-            >`
-          : ''}
-
-        <button
-          class="password-field__toggle"
-          part="toggle"
-          type="button"
-          aria-label=${this.masked ? 'Wachtwoord tonen' : 'Wachtwoord verbergen'}
-          @click=${this._toggleVisibility}
-          ?disabled=${this.disabled}
-        >
-          ${this.masked ? this._renderEyeIcon() : this._renderEyeSlashIcon()}
-        </button>
-      </div>
-    `;
-  }
+	override render() {
+		return passwordFieldTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-password-field': RRPasswordField;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-password-field': RRPasswordField;
+	}
 }

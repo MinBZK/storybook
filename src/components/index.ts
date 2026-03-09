@@ -8,25 +8,27 @@
  * import '@regelrecht/design-system/components/actions/button';
  */
 
-// Base component (vanilla JS)
-export { RRBaseComponent } from './base/base-component.js';
-
 // Action components
 export { RRButton } from './actions/button/rr-button.ts';
 export { RRIconButton } from './actions/icon-button/rr-icon-button.ts';
-export { RRButtonGroup } from './control-groups/button-group/rr-button-group.ts';
-export { RRButtonBar } from './control-groups/button-bar/rr-button-bar.ts';
 export { RRSplitButton } from './actions/split-button/rr-split-button.ts';
 
 // Content components
 export { RRIcon } from './content/icon/rr-icon.ts';
 export { RRRichText } from './content/rich-text/rr-rich-text.ts';
 
+// Control Group components
+export { RRButtonGroup } from './control-groups/button-group/rr-button-group.ts';
+export { RRButtonBar } from './control-groups/button-bar/rr-button-bar.ts';
+export { RRToolbar } from './control-groups/toolbar/rr-toolbar.ts';
+
+// Forms components
+export { RRFormField } from './forms/form-field/rr-form-field.ts';
+
 // Input components
 export { RRStepper } from './inputs/stepper/rr-stepper.ts';
 export { RRToken } from './inputs/token/rr-token.ts';
 export { RRSegmentedControl } from './inputs/segmented-control/rr-segmented-control.ts';
-export { RRSegmentedControlItem } from './inputs/segmented-control/rr-segmented-control-item.ts';
 export { RRToggleButton } from './inputs/toggle-button/rr-toggle-button.ts';
 export { RRCheckbox } from './inputs/checkbox/rr-checkbox.ts';
 export { RRTextField } from './inputs/text-field/rr-text-field.ts';
@@ -38,12 +40,8 @@ export { RRComboBoxField } from './inputs/combo-box-field/rr-combo-box-field.ts'
 export { RRCheckboxField } from './inputs/checkbox-field/rr-checkbox-field.ts';
 export { RRRadioButtonField } from './inputs/radio-button-field/rr-radio-button-field.ts';
 export { RRSwitchField } from './inputs/switch-field/rr-switch-field.ts';
-export { RRInputFieldButton } from './inputs/input-field-button/rr-input-field-button.ts';
 export { RRRadio } from './inputs/radio/rr-radio.ts';
 export { RRSwitch } from './inputs/switch/rr-switch.ts';
-
-// Control group components
-export { RRFormField } from './control-groups/form-field/rr-form-field.ts';
 
 // Layout components
 export { RRSpacer } from './layout/spacer/rr-spacer.ts';
@@ -60,49 +58,23 @@ export { RRTwoThirdsOneThirdSection } from './layout/page-sections/rr-two-thirds
 export { RROneHalfOneHalfSection } from './layout/page-sections/rr-one-half-one-half-section.ts';
 export { RRListerSection } from './layout/page-sections/rr-lister-section.ts';
 export { RRCollection } from './layout/collection/rr-collection.ts';
-export { RRSplitViewPane } from './layout/split-view/rr-split-view-pane.ts';
-export { RRSplitViewDivider } from './layout/split-view/rr-split-view-divider.ts';
 export { RRHorizontalSplitView } from './layout/split-view/rr-horizontal-split-view.ts';
 export { RRSideBySideSplitView } from './layout/split-view/rr-side-by-side-split-view.ts';
 export { RRVerticalSplitView } from './layout/split-view/rr-vertical-split-view.ts';
 export { RRStackedSplitView } from './layout/split-view/rr-stacked-split-view.ts';
 
-// Navigation components
-export { RRTopNavigationBar } from './navigation/top-navigation-bar/rr-top-navigation-bar.ts';
-export { RRNavLogo } from './navigation/top-navigation-bar/rr-nav-logo.ts';
-export { RRBackButton } from './navigation/top-navigation-bar/rr-back-button.ts';
-export { RRMenuBar } from './navigation/menu-bar/rr-menu-bar.ts';
-export { RRUtilityMenuBar } from './navigation/top-navigation-bar/rr-utility-menu-bar.ts';
-export { RRToolbar } from './control-groups/toolbar/rr-toolbar.ts';
-
 // List and Menu components
 export { RRMenu } from './lists-and-menus/menu/rr-menu.ts';
 export { RRList } from './lists-and-menus/list/rr-list.ts';
-export { RRListItem } from './lists-and-menus/list/rr-list-item.ts';
-export { RRTitleCell } from './lists-and-menus/title-cell/rr-title-cell.ts';
-export { RRLabelCell } from './lists-and-menus/label-cell/rr-label-cell.ts';
-export { RRButtonCell } from './lists-and-menus/button-cell/rr-button-cell.ts';
-export { RRCustomCell } from './lists-and-menus/custom-cell/rr-custom-cell.ts';
-export { RRSpacerCell } from './lists-and-menus/spacer-cell/rr-spacer-cell.ts';
-export { RRTextFieldCell } from './lists-and-menus/text-field-cell/rr-text-field-cell.ts';
-export { RRDropDownFieldCell } from './lists-and-menus/drop-down-field-cell/rr-drop-down-field-cell.ts';
-export { RRTextCell } from './lists-and-menus/text-cell/rr-text-cell.ts';
-export { RRIconCell } from './lists-and-menus/icon-cell/rr-icon-cell.ts';
-export { RRDescriptionCell } from './lists-and-menus/description-cell/rr-description-cell.ts';
-export { RRStepperCell } from './lists-and-menus/stepper-cell/rr-stepper-cell.ts';
-export { RRListItemDragHandle } from './lists-and-menus/list-item-drag-handle/rr-list-item-drag-handle.ts';
-export { RRListItemDragHandleCell } from './lists-and-menus/list-item-drag-handle-cell/rr-list-item-drag-handle-cell.ts';
-export { RRTimelineTrackCell } from './lists-and-menus/timeline-track-cell/rr-timeline-track-cell.ts';
 
-// Navigation components (continued)
-export { RRTabBarItem } from './navigation/tab-bar/rr-tab-bar-item.ts';
+// Navigation components
+export { RRTopNavigationBar } from './navigation/top-navigation-bar/rr-top-navigation-bar.ts';
+export { RRMenuBar } from './navigation/menu-bar/rr-menu-bar.ts';
 export { RRTabBar } from './navigation/tab-bar/rr-tab-bar.ts';
-export { RRDocumentTabBarItem } from './navigation/document-tab-bar-item/rr-document-tab-bar-item.ts';
 export { RRDocumentTabBar } from './navigation/document-tab-bar/rr-document-tab-bar.ts';
 export { RRPagination } from './navigation/pagination/rr-pagination.ts';
 
 // Overlay components
-export { RRTooltipArrow } from './overlays/tooltip/rr-tooltip-arrow.ts';
 export { RRTooltip } from './overlays/tooltip/rr-tooltip.ts';
 export { RRDialog } from './overlays/dialog/rr-dialog.ts';
 

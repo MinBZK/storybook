@@ -1,18 +1,214 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './rr-password-field.ts';
 
 describe('rr-password-field', () => {
-  let el: HTMLElement;
+	let el: HTMLElement;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('renders without error', async () => {
-    el = await fixture('<rr-password-field></rr-password-field>');
-    await waitForUpdate(el);
+	it('renders without error', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
 
-    expect(el.shadowRoot).not.toBeNull();
-  });
+	it('defaults to masked (type="password")', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.type).toBe('password');
+	});
+
+	it('shows password as text when masked is false', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		(el as any).masked = false;
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.type).toBe('text');
+	});
+
+	it('toggles masked state when visibility button is clicked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		expect((el as any).masked).toBe(true);
+		const button = el.shadowRoot!.querySelector('.password-field__visibility-toggle rr-button')!;
+		(button as HTMLElement).click();
+		await waitForUpdate(el);
+		expect((el as any).masked).toBe(false);
+		(button as HTMLElement).click();
+		await waitForUpdate(el);
+		expect((el as any).masked).toBe(true);
+	});
+
+	it('shows default visible label "Toon" when masked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.textContent?.trim()).toBe('Toon');
+	});
+
+	it('shows default visible label "Verberg" when unmasked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		(el as any).masked = false;
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.textContent?.trim()).toBe('Verberg');
+	});
+
+	it('sets default aria-label "Toon wachtwoord" on toggle button when masked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.getAttribute('accessible-label')).toBe('Toon wachtwoord');
+	});
+
+	it('sets default aria-label "Verberg wachtwoord" on toggle button when unmasked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		(el as any).masked = false;
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.getAttribute('accessible-label')).toBe('Verberg wachtwoord');
+	});
+
+	it('uses custom show-label and show-accessible-label when provided', async () => {
+		el = await fixture('<rr-password-field show-label="Show" show-accessible-label="Show password"></rr-password-field>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.textContent?.trim()).toBe('Show');
+		expect(button!.getAttribute('accessible-label')).toBe('Show password');
+	});
+
+	it('applies is-masked class to input when masked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.classList.contains('is-masked')).toBe(true);
+	});
+
+	it('removes is-masked class from input when unmasked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		(el as any).masked = false;
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.classList.contains('is-masked')).toBe(false);
+	});
+
+	it('renders valid icon when valid attribute is set', async () => {
+		el = await fixture('<rr-password-field valid></rr-password-field>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.password-field__validation-icon-area rr-icon');
+		expect(icon).not.toBeNull();
+		expect(icon!.getAttribute('name')).toBe('valid');
+	});
+
+	it('renders invalid icon when invalid attribute is set', async () => {
+		el = await fixture('<rr-password-field invalid></rr-password-field>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.password-field__validation-icon-area rr-icon');
+		expect(icon).not.toBeNull();
+		expect(icon!.getAttribute('name')).toBe('invalid');
+	});
+
+	it('does not render validation icon in neutral state', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const area = el.shadowRoot!.querySelector('.password-field__validation-icon-area');
+		expect(area).toBeNull();
+	});
+
+	it('dispatches custom input event on input', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const handler = vi.fn();
+		el.addEventListener('input', handler);
+		const input = el.shadowRoot!.querySelector('input')!;
+		input.value = 'secret';
+		input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+		expect(handler).toHaveBeenCalledOnce();
+		expect(handler.mock.calls[0][0].detail.value).toBe('secret');
+	});
+
+	it('dispatches custom change event on change', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const handler = vi.fn();
+		el.addEventListener('change', handler);
+		const input = el.shadowRoot!.querySelector('input')!;
+		input.value = 'secret';
+		input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+		expect(handler).toHaveBeenCalledOnce();
+		expect(handler.mock.calls[0][0].detail.value).toBe('secret');
+	});
+
+	it('does not double-fire input event', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const handler = vi.fn();
+		el.addEventListener('input', handler);
+		const input = el.shadowRoot!.querySelector('input')!;
+		input.value = 'test';
+		input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+		expect(handler).toHaveBeenCalledOnce();
+	});
+
+	it('reflects disabled attribute to host', async () => {
+		el = await fixture('<rr-password-field disabled></rr-password-field>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('disabled')).toBe(true);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.disabled).toBe(true);
+	});
+
+	it('reflects readonly attribute to host', async () => {
+		el = await fixture('<rr-password-field readonly></rr-password-field>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('readonly')).toBe(true);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.readOnly).toBe(true);
+	});
+
+	it('disables visibility toggle button when disabled', async () => {
+		el = await fixture('<rr-password-field disabled></rr-password-field>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('.password-field__visibility-toggle rr-button')!;
+		expect(button.hasAttribute('disabled')).toBe(true);
+	});
+
+	it('forwards accessible-label to the inner input', async () => {
+		el = await fixture('<rr-password-field accessible-label="Wachtwoord"></rr-password-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-label')).toBe('Wachtwoord');
+	});
+
+	it('accepts aria-describedby on the host element', async () => {
+		el = await fixture('<rr-password-field aria-describedby="help-1 err-1"></rr-password-field>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-describedby')).toBe('help-1 err-1');
+	});
+
+	it('forwards error-message-ids to inner input aria-describedby', async () => {
+		el = await fixture('<rr-password-field error-message-ids="help-1 err-1"></rr-password-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-describedby')).toBe('help-1 err-1');
+	});
+
+	it('omits aria-describedby from inner input when error-message-ids not set', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.hasAttribute('aria-describedby')).toBe(false);
+	});
+
+	it('reflects size attribute to host', async () => {
+		el = await fixture('<rr-password-field size="sm"></rr-password-field>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('sm');
+	});
 });

@@ -1,0 +1,166 @@
+import { css } from 'lit';
+export const textFieldStyles = css`
+
+
+	/* # Host */
+
+	:host {
+		display: block;
+		--_background-color: var(--semantics-input-fields-background-color);
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+
+	/* # Container */
+
+	.text-field {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		overflow: hidden;
+		box-sizing: border-box;
+		padding-left: var(--primitives-space-12);
+		min-height: var(--semantics-controls-md-min-size);
+		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background-color: var(--_background-color);
+	}
+
+	:host([size='sm']) .text-field {
+		padding-left: var(--primitives-space-8);
+		min-height: var(--semantics-controls-sm-min-size);
+		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
+	:host([valid]) .text-field {
+		border-color: var(--semantics-input-fields-is-valid-border-color);
+	}
+
+	:host([invalid]) .text-field {
+		border-color: var(--semantics-input-fields-is-invalid-border-color);
+	}
+
+	:host([readonly]) .text-field {
+		border-color: var(--semantics-input-fields-is-read-only-border-color);
+		--_background-color: var(--semantics-input-fields-is-read-only-background-color);
+	}
+
+	:host([disabled]) .text-field {
+		opacity: var(--primitives-opacity-disabled);
+		cursor: not-allowed;
+	}
+
+	.text-field:has(input:-webkit-autofill),
+	.text-field:has(input:autofill) {
+		--_background-color: var(--semantics-input-fields-is-autofill-background-color);
+	}
+
+	.text-field:focus-within {
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+	}
+
+
+	/* # Input */
+
+	.text-field__input {
+		flex-grow: 1;
+		min-width: 0;
+		overflow: hidden;
+		box-sizing: border-box;
+		padding: 0 ;
+		margin: 0;
+		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		font: var(--semantics-input-fields-md-text-font);
+		color: var(--semantics-content-color);
+		background: transparent;
+		border: none;
+		outline: none;
+		appearance: none;
+	}
+
+	:host([size='sm']) .text-field__input {
+		min-height: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		font: var(--semantics-input-fields-sm-text-font);
+	}
+
+	:host([disabled]) .text-field__input {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+
+	.text-field__input::placeholder {
+		color: var(--semantics-input-fields-placeholder-color);
+	}
+
+	.text-field__input:-webkit-autofill,
+	.text-field__input:autofill {
+		box-shadow: 0 0 0 999px var(--_background-color) inset;
+	}
+
+
+	/* # Fade */
+
+	.text-field__fade {
+		position: relative;
+		flex-shrink: 0;
+		align-self: stretch;
+		width: 0;
+	}
+
+	.text-field__fade::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: var(--primitives-space-8);
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
+		pointer-events: none;
+	}
+
+	:host([size='sm']) .text-field__fade::after {
+		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
+
+	/* # Validation icon area */
+
+	.text-field__validation-icon-area {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		width: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		height: 100%;
+	}
+
+	:host([size='sm']) .text-field__validation-icon-area {
+		width: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+	}
+
+	:host([valid]) .text-field__validation-icon-area {
+		color: var(--semantics-input-fields-is-valid-icon-color);
+	}
+
+	:host([invalid]) .text-field__validation-icon-area {
+		color: var(--semantics-input-fields-is-invalid-icon-color);
+	}
+
+
+	/* # Validation icon */
+
+	.text-field__validation-icon {
+		width: var(--primitives-space-24);
+		height: var(--primitives-space-24);
+	}
+
+	:host([size='sm']) .text-field__validation-icon {
+		width: var(--primitives-space-20);
+		height: var(--primitives-space-20);
+	}
+`;

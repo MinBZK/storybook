@@ -7,17 +7,20 @@ Design tokens en Web Components voor RegelRecht.
 ### Via npm (GitHub Packages)
 
 1. Add `.npmrc` to your project for GitHub Packages authentication:
+
 ```
 @minbzk:registry=https://npm.pkg.github.com
 ```
 
 2. Authenticate with GitHub Packages (one-time setup):
+
 ```bash
 npm login --registry=https://npm.pkg.github.com
 # Use your GitHub username and a personal access token with `read:packages` scope
 ```
 
 3. Install the package:
+
 ```bash
 npm install @minbzk/storybook
 ```
@@ -52,8 +55,10 @@ View the live component documentation: **https://minbzk.github.io/storybook/**
 
 ```
 src/assets/css/settings.css (CSS custom properties)
-    ↓
-Web Components
+	↓
+dist/css/tokens.css
+	↓
+Web Components (Lit)
 ```
 
 ## Quickstart
@@ -65,10 +70,10 @@ npm install
 # Tokens bouwen
 npm run build:tokens
 
-# Development server starten
-npm run serve
+# Storybook starten
+npm run storybook
 
-# Open http://localhost:3000 voor de styleguide
+# Open http://localhost:6006 voor de component documentatie
 ```
 
 ## Gebruik
@@ -83,28 +88,31 @@ npm run serve
 
 ```html
 <script type="module">
-  import './src/components/actions/button/rr-button.js';
+  import './src/components/actions/button/rr-button.ts';
 </script>
 ```
 
 ### 3. Gebruik componenten
 
 ```html
-<rr-button variant="accent-filled">Primary Action</rr-button>
-<rr-button variant="accent-outlined">Secondary Action</rr-button>
-<rr-button variant="neutral-tinted" size="s">Small Button</rr-button>
+<rr-button variant="primary">Primary Action</rr-button>
+<rr-button variant="secondary">Secondary Action</rr-button>
+<rr-button size="sm">Small Button</rr-button>
 ```
 
 ## Componenten
 
 ### rr-button
 
-| Attribuut  | Type    | Default         | Beschrijving                                                               |
-| ---------- | ------- | --------------- | -------------------------------------------------------------------------- |
-| `variant`  | string  | `accent-filled` | `accent-filled`, `accent-outlined`, `neutral-tinted`, `accent-transparent` |
-| `size`     | string  | `m`             | `xs`, `s`, `m`                                                             |
-| `disabled` | boolean | `false`         | Disabled state                                                             |
-| `type`     | string  | `button`        | `button`, `submit`, `reset`                                                |
+| Attribuut       | Type    | Default          | Beschrijving                                                                                                                                              |
+| --------------- | ------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`       | string  | `neutral-tinted` | `primary`, `secondary`, `destructive`, `accent-filled`, `accent-outlined`, `accent-transparent`, `neutral-tinted`, `neutral-transparent`, `danger-tinted` |
+| `size`          | string  | `md`             | `xs`, `sm`, `md`                                                                                                                                          |
+| `disabled`      | boolean | `false`          | Disabled state                                                                                                                                            |
+| `type`          | string  | `button`         | `button`, `submit`, `reset`                                                                                                                               |
+| `full-width`    | boolean | `false`          | Stretches button to fill container width                                                                                                                  |
+| `is-expandable` | boolean | `false`          | Adds an icon indicating the button opens a menu or popover                                                                                                |
+| `popovertarget` | string  | `''`             | ID of the popover element to target                                                                                                                       |
 
 ## Token Structuur
 
@@ -121,10 +129,10 @@ Tokens zijn georganiseerd in drie lagen:
 
 /* Semantics */
 --semantics-buttons-accent-filled-background-color: #154273;
---semantics-controls-m-min-size: 44px;
+--semantics-controls-md-min-size: 44px;
 
 /* Components */
---components-button-m-font: 600 18px/1.125 RijksSansVF, system-ui;
+--components-button-md-font: 600 18px/1.125 RijksSansVF, system-ui;
 ```
 
 ## Development
@@ -136,10 +144,14 @@ Tokens zijn georganiseerd in drie lagen:
 
 ### Nieuwe component maken
 
-1. Maak een directory in `src/components/{component-name}/`
-2. Maak `rr-{component-name}.js` met de component class
-3. Extend `RRBaseComponent` voor gedeelde functionaliteit
-4. Registreer met `customElements.define()`
+1. Maak een directory in `src/components/{category}/{component-name}/`
+2. Maak de volgende bestanden aan:
+   - `rr-{component-name}.ts` — component class (extends `LitElement`)
+   - `rr-{component-name}.styles.ts` — component styles
+   - `rr-{component-name}.template.ts` — render template
+   - `rr-{component-name}.stories.ts` — Storybook stories
+   - `rr-{component-name}.test.ts` — unit tests
+3. Exporteer de component class in `src/index.ts`
 
 Zie `CLAUDE.md` voor conventies en richtlijnen.
 
