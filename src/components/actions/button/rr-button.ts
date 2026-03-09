@@ -8,6 +8,7 @@
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
  * @attr {boolean} is-expandable - Whether the button has a icon to indicate it opens a menu or popover
  * @attr {boolean} full-width - Whether the button stretches to fill its container width
+ * @attr {string} aria-label - Accessible label for the button, overrides slot content for screen readers
  *
  * @slot - Slot for button title
  * @slot (auto) - Place an rr-icon before or after the title to auto-detect position
@@ -63,6 +64,10 @@ export class RRButton extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+
+	/** Accessible label forwarded to the inner <button>. Use when visible text alone lacks context. */
+	@property({ type: String, attribute: 'aria-label' })
+	ariaLabel = '';
 
 	@state()
 	_iconStart: IconState | null = null;

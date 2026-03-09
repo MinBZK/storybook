@@ -1,4 +1,44 @@
-import { describe, it, expect, afterEach, vi } from 'vitest';
+impor
+	it('shows default visible label "Toon" when masked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.textContent?.trim()).toBe('Toon');
+	});
+
+	it('shows default visible label "Verberg" when unmasked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		(el as any).masked = false;
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.textContent?.trim()).toBe('Verberg');
+	});
+
+	it('sets default aria-label "Toon wachtwoord" on toggle button when masked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.getAttribute('aria-label')).toBe('Toon wachtwoord');
+	});
+
+	it('sets default aria-label "Verberg wachtwoord" on toggle button when unmasked', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		(el as any).masked = false;
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.getAttribute('aria-label')).toBe('Verberg wachtwoord');
+	});
+
+	it('uses custom show-label and show-accessible-label when provided', async () => {
+		el = await fixture('<rr-password-field show-label="Show" show-accessible-label="Show password"></rr-password-field>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('rr-button');
+		expect(button!.textContent?.trim()).toBe('Show');
+		expect(button!.getAttribute('aria-label')).toBe('Show password');
+	});
+t { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './rr-password-field.ts';
 

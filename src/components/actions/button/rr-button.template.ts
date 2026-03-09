@@ -13,6 +13,7 @@ export function template(this: RRButton, helpers: TemplateHelpers) {
 			type=${this.type}
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled}
+			aria-label=${this.ariaLabel || nothing}
 			@click=${helpers.handleClick}
 		>
 			<span class="button__content">

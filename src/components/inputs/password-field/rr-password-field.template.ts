@@ -29,13 +29,15 @@ function renderValidationIcon(component: RRPasswordField): TemplateResult | type
 
 function renderVisibilityToggle(component: RRPasswordField): TemplateResult {
 	const buttonSize = component.size === 'sm' ? 'xs' : 'sm';
-	const label = component.masked ? 'Toon' : 'Verberg';
+	const label = component.masked ? component.showLabel : component.hideLabel;
+	const accessibleLabel = component.masked ? component.showAccessibleLabel : component.hideAccessibleLabel;
 
 	return html`
 		<div class="password-field__visibility-toggle">
 			<rr-button
 				size=${buttonSize}
 				type="button"
+				aria-label=${accessibleLabel}
 				?disabled=${component.disabled}
 				@click=${component.handleToggle}
 			>${label}</rr-button>
