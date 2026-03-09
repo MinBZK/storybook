@@ -78,8 +78,8 @@ export default {
 
 const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, name }) => html`
 	<rr-password-field
-		value=${value}
-		placeholder=${placeholder}
+		.value=${value}
+		.placeholder=${placeholder}
 		size=${size}
 		?valid=${valid}
 		?invalid=${invalid}
@@ -118,10 +118,10 @@ Disabled.args = {
 export const AllStates = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<rr-password-field placeholder="Neutral"></rr-password-field>
-		<rr-password-field value="strong-password" valid></rr-password-field>
-		<rr-password-field value="123" invalid></rr-password-field>
-		<rr-password-field value="disabled" disabled></rr-password-field>
-		<rr-password-field value="unmasked" .masked=${false}></rr-password-field>
+		<rr-password-field .value=${"strong-password"} valid></rr-password-field>
+		<rr-password-field .value=${"123"} invalid></rr-password-field>
+		<rr-password-field .value=${"disabled"} disabled></rr-password-field>
+		<rr-password-field .value=${"unmasked"} .masked=${false}></rr-password-field>
 	</div>
 `;
 AllStates.parameters = { controls: { disable: true } };

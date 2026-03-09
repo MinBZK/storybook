@@ -22,7 +22,6 @@
  * @csspart container - The field container
  * @csspart input     - The native input element
  */
-
 import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { textFieldStyles } from './rr-text-field.styles.js';
@@ -66,10 +65,10 @@ export class RRTextField extends LitElement {
 	@property({ type: String })
 	name = '';
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	readonly = false;
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	required = false;
 
 	@property({ type: String })
@@ -79,6 +78,7 @@ export class RRTextField extends LitElement {
 	private _input!: HTMLInputElement;
 
 	handleInput(e: Event): void {
+		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
 		this.dispatchEvent(new CustomEvent('input', {
@@ -89,6 +89,7 @@ export class RRTextField extends LitElement {
 	}
 
 	handleChange(e: Event): void {
+		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
 		this.dispatchEvent(new CustomEvent('change', {

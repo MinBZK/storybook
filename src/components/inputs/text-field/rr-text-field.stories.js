@@ -103,8 +103,8 @@ export default {
 
 const Template = ({ value, placeholder, size, valid, invalid, disabled, type, name, readonly, required }) => html`
 	<rr-text-field
-		value=${value}
-		placeholder=${placeholder}
+		.value=${value}
+		.placeholder=${placeholder}
 		size=${size}
 		?valid=${valid}
 		?invalid=${invalid}
@@ -121,10 +121,10 @@ export const Default = Template.bind({});
 export const AllStates = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<rr-text-field placeholder="Neutral"></rr-text-field>
-		<rr-text-field value="Valid input" valid></rr-text-field>
-		<rr-text-field value="Invalid input" invalid></rr-text-field>
-		<rr-text-field value="Disabled" disabled></rr-text-field>
-		<rr-text-field value="Readonly" readonly></rr-text-field>
+		<rr-text-field .value=${'Valid input'} valid></rr-text-field>
+		<rr-text-field .value=${'Invalid input'} invalid></rr-text-field>
+		<rr-text-field .value=${'Disabled'} disabled></rr-text-field>
+		<rr-text-field .value=${'Readonly'} readonly></rr-text-field>
 	</div>
 `;
 AllStates.parameters = { controls: { disable: true } };
