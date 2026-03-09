@@ -186,6 +186,20 @@ describe('rr-password-field', () => {
 		expect(input.getAttribute('aria-label')).toBe('Wachtwoord');
 	});
 
+	it('forwards aria-describedby to the inner input', async () => {
+		el = await fixture('<rr-password-field aria-describedby="help-1 err-1"></rr-password-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-describedby')).toBe('help-1 err-1');
+	});
+
+	it('omits aria-describedby from inner input when not set', async () => {
+		el = await fixture('<rr-password-field></rr-password-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.hasAttribute('aria-describedby')).toBe(false);
+	});
+
 	it('reflects size attribute to host', async () => {
 		el = await fixture('<rr-password-field size="sm"></rr-password-field>');
 		await waitForUpdate(el);

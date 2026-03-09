@@ -94,4 +94,25 @@ describe('rr-text-field', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('size')).toBe('sm');
 	});
+
+	it('forwards accessible-label to the inner input', async () => {
+		el = await fixture('<rr-text-field accessible-label="Zoeken"></rr-text-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-label')).toBe('Zoeken');
+	});
+
+	it('forwards aria-describedby to the inner input', async () => {
+		el = await fixture('<rr-text-field aria-describedby="help-1 err-1"></rr-text-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-describedby')).toBe('help-1 err-1');
+	});
+
+	it('omits aria-describedby from inner input when not set', async () => {
+		el = await fixture('<rr-text-field></rr-text-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.hasAttribute('aria-describedby')).toBe(false);
+	});
 });
