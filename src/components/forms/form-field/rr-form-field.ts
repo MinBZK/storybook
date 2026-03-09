@@ -180,27 +180,19 @@ export class RRFormField extends LitElement {
 		// Custom elements (rr-text-field, rr-password-field) expose an `accessible-label`
 		// property that they forward to their inner <input aria-label>. Native <input>
 		// elements have no such property — set aria-label directly on them instead.
-		// Wait for upgrade in case the element is not yet defined.
-		const tagName = input.tagName.toLowerCase();
-		const upgradePromise = tagName.includes('-')
-			? customElements.whenDefined(tagName)
-			: Promise.resolve();
-
-		upgradePromise.then(() => {
-			const supportsAccessibleLabel = 'accessibleLabel' in input;
-			if (this.label) {
-				if (supportsAccessibleLabel) {
-					input.setAttribute('accessible-label', this.label);
-					input.removeAttribute('aria-label');
-				} else {
-					input.setAttribute('aria-label', this.label);
-					input.removeAttribute('accessible-label');
-				}
-			} else {
-				input.removeAttribute('accessible-label');
+		const supportsAccessibleLabel = 'ariaLabel' in input;
+		if (this.label) {
+			if (supportsAccessibleLabel) {
+				input.setAttribute('accessible-label', this.label);
 				input.removeAttribute('aria-label');
+			} else {
+				input.setAttribute('aria-label', this.label);
+				input.removeAttribute('accessible-label');
 			}
-		});
+		} else {
+			input.removeAttribute('accessible-label');
+			input.removeAttribute('aria-label');
+		}
 
 		// Ensure each help text element has an id so it can be referenced in aria-describedby
 		Array.from(this.children)

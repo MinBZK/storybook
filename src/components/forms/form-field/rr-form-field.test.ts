@@ -144,7 +144,6 @@ describe('rr-form-field', () => {
 
 	it('forwards aria-label to the inner input of a slotted rr-text-field', async () => {
 		el = await fixture('<rr-form-field label="Email"><rr-text-field></rr-text-field></rr-form-field>');
-		await customElements.whenDefined('rr-text-field');
 		await waitForUpdate(el);
 		const textField = el.querySelector('rr-text-field') as any;
 		if (!textField) throw new Error('rr-text-field not found');
@@ -155,7 +154,6 @@ describe('rr-form-field', () => {
 
 	it('forwards aria-label to the inner input of a slotted rr-password-field', async () => {
 		el = await fixture('<rr-form-field label="Wachtwoord"><rr-password-field></rr-password-field></rr-form-field>');
-		await customElements.whenDefined('rr-password-field');
 		await waitForUpdate(el);
 		const passwordField = el.querySelector('rr-password-field') as any;
 		if (!passwordField) throw new Error('rr-password-field not found');
