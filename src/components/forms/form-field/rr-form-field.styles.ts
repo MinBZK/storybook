@@ -174,7 +174,6 @@ export const formFieldHelpTextStyles = css`
 		color: var(--semantics-links-color);
 		text-decoration: underline;
 		text-underline-offset: var(--primitives-space-2);
-		cursor: pointer;
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
@@ -229,7 +228,6 @@ export const formFieldErrorTextStyles = css`
 		color: var(--semantics-links-color);
 		text-decoration: underline;
 		text-underline-offset: var(--primitives-space-2);
-		cursor: pointer;
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 

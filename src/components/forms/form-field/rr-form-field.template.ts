@@ -17,20 +17,19 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 	const isHeaderEmpty = !hasLabel && !hasSupportingLabel;
 
 	const headerEl = html`
-		<label
-			class="form-field__header ${isHeaderEmpty ? 'is-empty' : ''}"
-			@click=${(e: Event) => component._focusInput(e)}
-		>
+		<div class="form-field__header ${isHeaderEmpty ? 'is-empty' : ''}">
 			${hasLabel ? html`
-				<span class="form-field__label">
+				<label class="form-field__label"
+					@click=${(e: Event) => component._focusInput(e)}
+				>
 					${component.label}
 					${component.optional ? renderOptional(component.optionalLabel) : nothing}
-				</span>
+				</label>
 			` : nothing}
 			${hasSupportingLabel ? html`
 				<span class="form-field__supporting-label">${component.supportingLabel}</span>
 			` : nothing}
-		</label>
+		</div>
 	`;
 
 	return html`
