@@ -76,7 +76,7 @@ export const passwordFieldStyles = css`
 		min-width: 0;
 		overflow: hidden;
 		box-sizing: border-box;
-		padding: 0 var(--primitives-space-4) 0 0;
+		padding: 0;
 		margin: 0;
 		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		font: var(--semantics-input-fields-md-text-font);
@@ -135,7 +135,7 @@ export const passwordFieldStyles = css`
 		position: absolute;
 		top: 0;
 		bottom: 0;
-		right: var(--primitives-space-4);
+		right: 0;
 		width: var(--primitives-space-8);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
