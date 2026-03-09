@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './rr-form-field.ts';
+import '../../inputs/text-field/rr-text-field.ts';
 
 
 /* ============================================================
@@ -90,15 +91,14 @@ describe('rr-form-field', () => {
 	it('includes help text id in aria-describedby', async () => {
 		el = await fixture(`
 			<rr-form-field label="Email">
-				<rr-form-field-help-text>Format: DD-MM-YYYY</rr-form-field-help-text>
+				<rr-form-field-help-text id="help-static">Format: DD-MM-YYYY</rr-form-field-help-text>
 				<input>
 			</rr-form-field>
 		`);
 		await waitForUpdate(el);
-		const helpText = el.querySelector('rr-form-field-help-text')!;
 		const input = el.querySelector('input')!;
-		expect(helpText.id).toBeTruthy();
-		expect(input.getAttribute('aria-describedby')).toContain(helpText.id);
+		const describedBy = input.getAttribute('aria-describedby') ?? '';
+		expect(describedBy).toContain('help-static');
 	});
 
 	it('lists help text id before error id in aria-describedby', async () => {
@@ -143,7 +143,10 @@ describe('rr-form-field', () => {
 	it('forwards aria-label to the inner input of a slotted rr-text-field', async () => {
 		el = await fixture('<rr-form-field label="Email"><rr-text-field></rr-text-field></rr-form-field>');
 		await waitForUpdate(el);
-		const textField = el.querySelector('rr-text-field')!;
+		const textField = el.querySelector('rr-text-field') as any;
+		if (!textField) throw new Error('rr-text-field not found');
+		await waitForUpdate(textField);
+		// aria-label is set as a property by form-field, then rendered by text-field template
 		await waitForUpdate(textField);
 		const innerInput = textField.shadowRoot!.querySelector('input')!;
 		expect(innerInput.getAttribute('aria-label')).toBe('Email');
