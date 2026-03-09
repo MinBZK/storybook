@@ -12,7 +12,7 @@
  * @attr {boolean} valid       - Marks the field as valid
  * @attr {boolean} invalid     - Marks the field as invalid
  * @attr {boolean} disabled    - Disabled state
- * @attr {boolean} masked      - Whether the password is masked (default: false)
+ * @attr {boolean} masked      - Whether the password is masked (default: true)
  * @attr {boolean} readonly    - Readonly state
  * @attr {boolean} required    - Required state
  * @attr {string} name         - Input name for form submission
@@ -61,9 +61,9 @@ export class RRPasswordField extends LitElement {
 	disabled = false;
 
 	@property({ type: Boolean, reflect: true })
-	masked = false;
+	masked = true;
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	readonly = false;
 
 	@property({ type: Boolean })
@@ -79,6 +79,7 @@ export class RRPasswordField extends LitElement {
 	private _input!: HTMLInputElement;
 
 	handleInput(e: Event): void {
+		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
 		this.dispatchEvent(new CustomEvent('input', {
@@ -89,6 +90,7 @@ export class RRPasswordField extends LitElement {
 	}
 
 	handleChange(e: Event): void {
+		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
 		this.dispatchEvent(new CustomEvent('change', {

@@ -57,7 +57,7 @@ export default {
 		masked: {
 			control: 'boolean',
 			description: 'Whether the password is masked',
-			table: { defaultValue: { summary: false } },
+			table: { defaultValue: { summary: true } },
 		},
 		name: {
 			control: 'text',
@@ -71,7 +71,7 @@ export default {
 		valid: false,
 		invalid: false,
 		disabled: false,
-		masked: false,
+		masked: true,
 		name: 'password',
 	},
 };
@@ -84,7 +84,7 @@ const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, 
 		?valid=${valid}
 		?invalid=${invalid}
 		?disabled=${disabled}
-		?masked=${masked}
+		.masked=${masked}
 		name=${name}
 	></rr-password-field>
 `;
