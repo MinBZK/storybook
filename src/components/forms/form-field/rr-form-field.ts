@@ -59,8 +59,11 @@ export type LabelAlignment = 'top' | 'left' | 'right';
 // Exclude helper elements so _findInput() never returns them instead of the actual input
 const HELPER_TAGS = ['rr-form-field-help-text', 'rr-form-field-error-text'];
 
+// crypto.randomUUID() requires a secure context (HTTPS or localhost).
+// The fallback uses Math.random() which is sufficient for non-security-sensitive DOM IDs.
 function generateId(): string {
-	return `rr-field-input-${crypto.randomUUID()}`;
+	const uuid = crypto.randomUUID?.() ?? Math.random().toString(36).slice(2);
+	return `rr-field-input-${uuid}`;
 }
 
 
