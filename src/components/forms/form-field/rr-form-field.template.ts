@@ -39,7 +39,6 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 				<slot></slot>
 				<div class="form-field__errors"
 					aria-live="polite"
-					aria-atomic="true"
 				>
 					<slot name="errors"></slot>
 				</div>
