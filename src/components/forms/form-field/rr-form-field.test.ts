@@ -83,10 +83,11 @@ describe('rr-form-field', () => {
 		expect(el.getAttribute('label-alignment')).toBe('right');
 	});
 
-	it('renders the header as a label element', async () => {
+	it('renders the header as a div containing a label element', async () => {
 		el = await fixture('<rr-form-field label="Name"></rr-form-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('label.form-field__header')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('div.form-field__header')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('label.form-field__label')).not.toBeNull();
 	});
 
 	it('includes help text id in aria-describedby', async () => {
