@@ -100,6 +100,9 @@ export class RRPasswordField extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
+	@property({ type: String, attribute: 'error-message-ids' })
+	errorMessageIds = '';
+
 
 	@query('.password-field__input')
 	private _input!: HTMLInputElement;

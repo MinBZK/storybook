@@ -232,6 +232,7 @@ export class RRFormField extends LitElement {
 		const input = this._findInput();
 		if (!input) return;
 
+		const isCustomInput = 'inputId' in input;
 		const isInvalid = input.hasAttribute('invalid');
 		const referencedIds = (input.getAttribute('error-message') ?? '')
 			.split(' ')
@@ -254,10 +255,19 @@ export class RRFormField extends LitElement {
 
 		// Prepend help text IDs so they are announced first, then error IDs.
 		const describedByIds = [...helpIds, ...visibleErrorIds];
-		if (describedByIds.length > 0) {
-			input.setAttribute('aria-describedby', describedByIds.join(' '));
+		const describedByValue = describedByIds.join(' ');
+
+		if (isCustomInput) {
+			// For custom elements (rr-text-field, rr-password-field), set error-message-ids
+			// so they can forward it to the inner <input aria-describedby>. IDs do not cross
+			// shadow DOM boundaries so setting aria-describedby on the host is not sufficient.
+			(input as HTMLElement & { errorMessageIds: string }).errorMessageIds = describedByValue;
 		} else {
-			input.removeAttribute('aria-describedby');
+			if (describedByIds.length > 0) {
+				input.setAttribute('aria-describedby', describedByValue);
+			} else {
+				input.removeAttribute('aria-describedby');
+			}
 		}
 
 		this._hasErrors = visibleErrorIds.length > 0;

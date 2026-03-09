@@ -108,8 +108,15 @@ describe('rr-text-field', () => {
 		expect(el.getAttribute('aria-describedby')).toBe('help-1 err-1');
 	});
 
-	it('does not forward aria-describedby to the inner input', async () => {
-		el = await fixture('<rr-text-field aria-describedby="help-1 err-1"></rr-text-field>');
+	it('forwards error-message-ids to inner input aria-describedby', async () => {
+		el = await fixture('<rr-text-field error-message-ids="help-1 err-1"></rr-text-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-describedby')).toBe('help-1 err-1');
+	});
+
+	it('omits aria-describedby from inner input when error-message-ids not set', async () => {
+		el = await fixture('<rr-text-field></rr-text-field>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.hasAttribute('aria-describedby')).toBe(false);

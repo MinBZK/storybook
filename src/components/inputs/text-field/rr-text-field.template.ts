@@ -40,6 +40,7 @@ export function textFieldTemplate(component: RRTextField): TemplateResult {
 				name=${component.name || nothing}
 				autocomplete=${component.autocomplete || nothing}
 				aria-label=${component.accessibleLabel || nothing}
+				aria-describedby=${component.errorMessageIds || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
 				@input=${component._handleInput}
 				@change=${component._handleChange}
