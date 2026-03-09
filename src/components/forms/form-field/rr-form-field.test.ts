@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './rr-form-field.ts';
 import '../../inputs/text-field/rr-text-field.ts';
+import '../../inputs/password-field/rr-password-field.ts';
 
 
 /* ============================================================
@@ -150,6 +151,17 @@ describe('rr-form-field', () => {
 		await waitForUpdate(textField);
 		const innerInput = textField.shadowRoot!.querySelector('input')!;
 		expect(innerInput.getAttribute('aria-label')).toBe('Email');
+	});
+
+	it('forwards aria-label to the inner input of a slotted rr-password-field', async () => {
+		el = await fixture('<rr-form-field label="Wachtwoord"><rr-password-field></rr-password-field></rr-form-field>');
+		await waitForUpdate(el);
+		const passwordField = el.querySelector('rr-password-field') as any;
+		if (!passwordField) throw new Error('rr-password-field not found');
+		await waitForUpdate(passwordField);
+		await waitForUpdate(passwordField);
+		const innerInput = passwordField.shadowRoot!.querySelector('input')!;
+		expect(innerInput.getAttribute('aria-label')).toBe('Wachtwoord');
 	});
 });
 
