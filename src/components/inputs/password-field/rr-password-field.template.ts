@@ -39,7 +39,7 @@ function renderVisibilityToggle(component: RRPasswordField): TemplateResult {
 				type="button"
 				aria-label=${accessibleLabel}
 				?disabled=${component.disabled}
-				@click=${component.handleToggle}
+				@click=${component._handleToggle}
 			>${label}</rr-button>
 		</div>
 	`;
@@ -59,8 +59,8 @@ export function passwordFieldTemplate(component: RRPasswordField): TemplateResul
 				name=${component.name || nothing}
 				autocomplete=${component.autocomplete || nothing}
 				aria-invalid=${component.invalid ? 'true' : 'false'}
-				@input=${component.handleInput}
-				@change=${component.handleChange}
+				@input=${component._handleInput}
+				@change=${component._handleChange}
 			/>
 			<div class="password-field__fade"></div>
 			${renderValidationIcon(component)}

@@ -41,8 +41,8 @@ export function textFieldTemplate(component: RRTextField): TemplateResult {
 				autocomplete=${component.autocomplete || nothing}
 				aria-label=${component.ariaLabel || nothing}
 				aria-invalid=${component.invalid ? 'true' : 'false'}
-				@input=${component.handleInput}
-				@change=${component.handleChange}
+				@input=${component._handleInput}
+				@change=${component._handleChange}
 			/>
 			<div class="text-field__fade"></div>
 			${renderValidationIcon(component)}
