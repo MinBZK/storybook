@@ -6,11 +6,15 @@ import '../../inputs/text-field/rr-text-field.ts';
  * `rr-form-field` is een lay-outwrapper voor formulierinvoer.
  *
  * ### Labelkoppeling
- * Het formulierveld genereert automatisch een id voor de native input binnen
- * het geslote invoerelement en stelt het `for`-attribuut van het label hierop in —
- * klikken op het label focust de invoer. Geen handmatige koppeling nodig.
+ * Omdat het native `for`-attribuut de shadow DOM niet kan oversteken, koppelt
+ * `rr-form-field` het label aan de invoer via twee mechanismen:
+ * - Een `@click`-handler op het label focust de invoer programmatisch.
+ * - Het `accessible-label`-attribuut wordt automatisch ingesteld op het gesloten
+ *   invoerelement (`rr-text-field`, `rr-password-field`), dat dit doorgeeft aan
+ *   het interne `<input aria-label>`. Bij een native `<input>` wordt `aria-label`
+ *   direct op het element gezet.
  *
- * Gebruik `input-id` op het geslote invoerelement voor een stabiel, voorspelbaar id.
+ * Geen handmatige koppeling nodig.
  *
  * ```html
  * <!-- Automatisch -->
