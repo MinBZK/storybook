@@ -116,7 +116,7 @@ export class RRFormField extends LitElement {
 	private _observer: MutationObserver | null = null;
 
 	@state()
-	private _hasErrors = false;
+	public _hasErrors = false;
 
 	override render() {
 		return formFieldTemplate(this);
