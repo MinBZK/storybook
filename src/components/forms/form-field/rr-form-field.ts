@@ -59,9 +59,8 @@ export type LabelAlignment = 'top' | 'left' | 'right';
 // Exclude helper elements so _findInput() never returns them instead of the actual input
 const HELPER_TAGS = ['rr-form-field-help-text', 'rr-form-field-error-text'];
 
-let idCounter = 0;
 function generateId(): string {
-	return `rr-field-input-${++idCounter}`;
+	return `rr-field-input-${crypto.randomUUID()}`;
 }
 
 
