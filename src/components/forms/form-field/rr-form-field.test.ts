@@ -147,9 +147,9 @@ describe('rr-form-field', () => {
 		await waitForUpdate(el);
 		const textField = el.querySelector('rr-text-field') as any;
 		if (!textField) throw new Error('rr-text-field not found');
-		await waitForUpdate(textField);
-		// aria-label is set as a property by form-field, then rendered by text-field template
-		await waitForUpdate(textField);
+		// Wait for form-field to set accessible-label, then for text-field to re-render
+		await waitForUpdate(el);
+		await textField.updateComplete;
 		const innerInput = textField.shadowRoot!.querySelector('input')!;
 		expect(innerInput.getAttribute('aria-label')).toBe('Email');
 	});
@@ -159,8 +159,9 @@ describe('rr-form-field', () => {
 		await waitForUpdate(el);
 		const passwordField = el.querySelector('rr-password-field') as any;
 		if (!passwordField) throw new Error('rr-password-field not found');
-		await waitForUpdate(passwordField);
-		await waitForUpdate(passwordField);
+		// Wait for form-field to set accessible-label, then for password-field to re-render
+		await waitForUpdate(el);
+		await passwordField.updateComplete;
 		const innerInput = passwordField.shadowRoot!.querySelector('input')!;
 		expect(innerInput.getAttribute('aria-label')).toBe('Wachtwoord');
 	});
