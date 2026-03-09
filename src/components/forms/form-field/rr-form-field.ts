@@ -97,6 +97,10 @@ export class RRFormField extends LitElement {
 	/**
 	 * When true an "Optional" badge is shown next to the label.
 	 * Required fields are intentionally left unmarked per design spec.
+	 *
+	 * Note: rr-form-field does not auto-propagate `required` or `aria-required`
+	 * to the slotted input. If the field is required, set `required` directly
+	 * on the slotted input element so screen readers announce it correctly.
 	 */
 	@property({ type: Boolean })
 	optional = false;
