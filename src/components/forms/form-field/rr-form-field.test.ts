@@ -139,6 +139,15 @@ describe('rr-form-field', () => {
 		await waitForUpdate(el);
 		expect(el.querySelector('input')!.hasAttribute('aria-label')).toBe(false);
 	});
+
+	it('forwards aria-label to the inner input of a slotted rr-text-field', async () => {
+		el = await fixture('<rr-form-field label="Email"><rr-text-field></rr-text-field></rr-form-field>');
+		await waitForUpdate(el);
+		const textField = el.querySelector('rr-text-field')!;
+		await waitForUpdate(textField);
+		const innerInput = textField.shadowRoot!.querySelector('input')!;
+		expect(innerInput.getAttribute('aria-label')).toBe('Email');
+	});
 });
 
 
