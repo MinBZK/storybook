@@ -19,7 +19,6 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 	const headerEl = html`
 		<label
 			class="form-field__header ${isHeaderEmpty ? 'is-empty' : ''}"
-			for=${component.labelFor || nothing}
 			@click=${(e: Event) => component._focusInput(e)}
 		>
 			${hasLabel ? html`

@@ -106,13 +106,6 @@ export class RRFormField extends LitElement {
 	@property({ type: String, attribute: 'optional-label' })
 	optionalLabel = 'Optioneel';
 
-	/**
-	 * The id of the slotted input, used to associate the label via `for`.
-	 * Set automatically when the input is slotted — do not set manually.
-	 */
-	@state()
-	labelFor = '';
-
 	private _childObserver: MutationObserver | null = null;
 	private _observer: MutationObserver | null = null;
 
@@ -155,19 +148,17 @@ export class RRFormField extends LitElement {
 		const input = this._findInput();
 		if (!input) return;
 
-		// For custom elements like rr-text-field, inputId is passed as an attribute
-		// and the inner native input gets the id via the template — setting it on
-		// the host would create duplicate IDs.
+		// Ensure the inner native input has an id so aria-describedby can reference it.
+		// For custom elements (rr-text-field, rr-password-field) inputId is a property
+		// that gets forwarded to the inner <input id>. For plain <input> elements we set
+		// the id directly. We never set the host element's id to avoid duplicate IDs.
 		const hasInputId = 'inputId' in input;
 		if (hasInputId) {
 			const existingId = (input as HTMLElement & { inputId: string }).inputId;
 			const generatedId = existingId || generateId();
 			(input as HTMLElement & { inputId: string }).inputId = generatedId;
-			this.labelFor = generatedId;
 		} else {
-			const generatedId = input.id || generateId();
-			input.id = generatedId;
-			this.labelFor = generatedId;
+			if (!input.id) input.id = generateId();
 		}
 
 		if (this.label) {
