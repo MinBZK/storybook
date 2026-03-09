@@ -172,11 +172,9 @@ export class RRFormField extends LitElement {
 		}
 
 		// Custom elements (rr-text-field, rr-password-field) expose an `accessible-label`
-		// property that they forward to their inner <input aria-label>. Native <input>
+		// attribute that they forward to their inner <input aria-label>. Native <input>
 		// elements have no such property — set aria-label directly on them instead.
-		// We detect our custom elements by the presence of `inputId`, which is a property
-		// declared on rr-text-field and rr-password-field but not on native elements.
-		const supportsAccessibleLabel = 'inputId' in input;
+		const supportsAccessibleLabel = input.tagName.includes('-');
 		if (this.label) {
 			if (supportsAccessibleLabel) {
 				input.setAttribute('accessible-label', this.label);
