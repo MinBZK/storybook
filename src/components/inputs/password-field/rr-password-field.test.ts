@@ -82,7 +82,6 @@ describe('rr-password-field', () => {
 		expect(button!.textContent?.trim()).toBe('Show');
 		expect(button!.getAttribute('aria-label')).toBe('Show password');
 	});
-t { describe, it, expect, afterEach, vi } from 'vitest';
 
 	it('applies is-masked class to input when masked', async () => {
 		el = await fixture('<rr-password-field></rr-password-field>');

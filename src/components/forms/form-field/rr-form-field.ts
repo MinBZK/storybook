@@ -213,17 +213,22 @@ export class RRFormField extends LitElement {
 		const allErrorTexts = Array.from(this.children)
 			.filter(el => el.tagName.toLowerCase() === 'rr-form-field-error-text');
 
-		const visibleIds: string[] = [];
+		const helpIds = Array.from(this.children)
+			.filter(el => el.tagName.toLowerCase() === 'rr-form-field-help-text' && el.id)
+			.map(el => el.id);
+
+		const visibleErrorIds: string[] = [];
 
 		for (const el of allErrorTexts) {
 			const shouldShow = isInvalid && referencedIds.includes(el.id);
 			el.toggleAttribute('invalid', shouldShow);
-			if (shouldShow && el.id) visibleIds.push(el.id);
+			if (shouldShow && el.id) visibleErrorIds.push(el.id);
 		}
 
-		// readers announce the errors when the input is focused.
-		if (visibleIds.length > 0) {
-			input.setAttribute('aria-describedby', visibleIds.join(' '));
+		// Prepend help text IDs so they are announced first, then error IDs.
+		const describedByIds = [...helpIds, ...visibleErrorIds];
+		if (describedByIds.length > 0) {
+			input.setAttribute('aria-describedby', describedByIds.join(' '));
 		} else {
 			input.removeAttribute('aria-describedby');
 		}
