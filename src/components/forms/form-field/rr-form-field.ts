@@ -172,8 +172,8 @@ export class RRFormField extends LitElement {
 		// For custom elements (rr-text-field, rr-password-field) inputId is a property
 		// that gets forwarded to the inner <input id>. For plain <input> elements we set
 		// the id directly. We never set the host element's id to avoid duplicate IDs.
-		const hasInputId = 'inputId' in input;
-		if (hasInputId) {
+		const isCustomInput = 'inputId' in input;
+		if (isCustomInput) {
 			const existingId = (input as HTMLElement & { inputId: string }).inputId;
 			const generatedId = existingId || generateId();
 			(input as HTMLElement & { inputId: string }).inputId = generatedId;
@@ -184,9 +184,8 @@ export class RRFormField extends LitElement {
 		// Custom elements (rr-text-field, rr-password-field) expose an `accessible-label`
 		// attribute that they forward to their inner <input aria-label>. Native <input>
 		// elements have no such property — set aria-label directly on them instead.
-		const supportsAccessibleLabel = input.tagName.includes('-');
 		if (this.label) {
-			if (supportsAccessibleLabel) {
+			if (isCustomInput) {
 				input.setAttribute('accessible-label', this.label);
 				input.removeAttribute('aria-label');
 			} else {
