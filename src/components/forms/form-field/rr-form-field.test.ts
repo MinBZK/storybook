@@ -87,6 +87,37 @@ describe('rr-form-field', () => {
 		expect(el.shadowRoot!.querySelector('label.form-field__header')).not.toBeNull();
 	});
 
+	it('includes help text id in aria-describedby', async () => {
+		el = await fixture(`
+			<rr-form-field label="Email">
+				<rr-form-field-help-text>Format: DD-MM-YYYY</rr-form-field-help-text>
+				<input>
+			</rr-form-field>
+		`);
+		await waitForUpdate(el);
+		const helpText = el.querySelector('rr-form-field-help-text')!;
+		const input = el.querySelector('input')!;
+		expect(helpText.id).toBeTruthy();
+		expect(input.getAttribute('aria-describedby')).toContain(helpText.id);
+	});
+
+	it('lists help text id before error id in aria-describedby', async () => {
+		el = await fixture(`
+			<rr-form-field label="Email">
+				<rr-form-field-help-text id="help-1">Format hint</rr-form-field-help-text>
+				<input invalid error-message="err-1">
+				<rr-form-field-error-text id="err-1">Required</rr-form-field-error-text>
+			</rr-form-field>
+		`);
+		await waitForUpdate(el);
+		const input = el.querySelector('input')!;
+		const describedBy = input.getAttribute('aria-describedby') ?? '';
+		const helpIndex = describedBy.indexOf('help-1');
+		const errIndex = describedBy.indexOf('err-1');
+		expect(helpIndex).toBeGreaterThanOrEqual(0);
+		expect(errIndex).toBeGreaterThan(helpIndex);
+	});
+
 	it('sets aria-label on the slotted input', async () => {
 		el = await fixture('<rr-form-field label="Email"><input></rr-form-field>');
 		await waitForUpdate(el);

@@ -174,6 +174,11 @@ export class RRFormField extends LitElement {
 			input.setAttribute('aria-label', this.label);
 		}
 
+		// Ensure each help text element has an id so it can be referenced in aria-describedby
+		Array.from(this.children)
+			.filter(el => el.tagName.toLowerCase() === 'rr-form-field-help-text')
+			.forEach(el => { if (!el.id) el.id = generateId(); });
+
 		this._observer = new MutationObserver(() => this._syncErrorText());
 		this._observer.observe(input, {
 			attributes: true,
