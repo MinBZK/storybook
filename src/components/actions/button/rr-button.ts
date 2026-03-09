@@ -66,7 +66,7 @@ export class RRButton extends LitElement {
 	disabled = false;
 
 	/** Accessible label forwarded to the inner <button>. Use when visible text alone lacks context. */
-	@property({ type: String, attribute: 'accessible-label' })
+	@property({ type: String, attribute: 'accessible-label', reflect: true })
 	ariaLabel = '';
 
 	@state()
