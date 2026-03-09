@@ -77,8 +77,8 @@ export class RRTextField extends LitElement {
 	autocomplete = '';
 
 	/** Accessible label forwarded to the inner <input>. Set automatically by rr-form-field. */
-	@property({ type: String, attribute: 'accessible-label' })
-	ariaLabel = '';
+	@property({ type: String, attribute: 'accessible-label', reflect: true })
+	accessibleLabel = '';
 
 	/** aria-describedby forwarded to the inner <input>. Set automatically by rr-form-field. */
 	@property({ type: String, attribute: 'aria-describedby' })
