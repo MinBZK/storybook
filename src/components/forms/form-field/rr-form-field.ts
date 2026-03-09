@@ -148,8 +148,18 @@ export class RRFormField extends LitElement {
 	/** Called when the label header is clicked — focuses the slotted input. */
 	public _focusInput(e: Event) {
 		// <label for> cannot cross shadow boundaries so we focus manually.
-		e.preventDefault();
-		(this._findInput() as HTMLElement | undefined)?.focus();
+		const input = this._findInput();
+		if (!input) return;
+
+		// Only preventDefault for text-like inputs to avoid double-firing focus.
+		// For checkbox/radio, preventDefault cancels the native toggle — don't call it.
+		const tag = input.tagName.toLowerCase();
+		const type = (input as HTMLInputElement).type?.toLowerCase();
+		if (tag !== 'input' || (type !== 'checkbox' && type !== 'radio')) {
+			e.preventDefault();
+		}
+
+		(input as HTMLElement).focus();
 	}
 
 	private _onSlotChange() {
