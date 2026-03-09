@@ -179,6 +179,13 @@ describe('rr-password-field', () => {
 		expect(button.hasAttribute('disabled')).toBe(true);
 	});
 
+	it('forwards accessible-label to the inner input', async () => {
+		el = await fixture('<rr-password-field accessible-label="Wachtwoord"></rr-password-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-label')).toBe('Wachtwoord');
+	});
+
 	it('reflects size attribute to host', async () => {
 		el = await fixture('<rr-password-field size="sm"></rr-password-field>');
 		await waitForUpdate(el);
