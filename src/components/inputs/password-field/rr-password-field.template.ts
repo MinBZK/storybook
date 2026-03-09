@@ -58,8 +58,7 @@ export function passwordFieldTemplate(component: RRPasswordField): TemplateResul
 				?required=${component.required}
 				name=${component.name || nothing}
 				autocomplete=${component.autocomplete || nothing}
-				aria-label=${component.ariaLabel || nothing}
-				aria-describedby=${component.ariaDescribedBy || nothing}
+				aria-label=${component.accessibleLabel || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
 				@input=${component._handleInput}
 				@change=${component._handleChange}

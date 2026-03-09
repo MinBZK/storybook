@@ -22,7 +22,6 @@
  * @attr {string} name         - Input name for form submission
  * @attr {string} autocomplete        - Autocomplete hint
  * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by rr-form-field.
- * @attr {string} aria-describedby     - Forwarded to the inner input. Set automatically by rr-form-field.
  *
  * @fires input  - When the input value changes ({ detail: { value } })
  * @fires change - When the input value is committed ({ detail: { value } })
@@ -101,9 +100,6 @@ export class RRPasswordField extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	/** aria-describedby forwarded to the inner <input>. Set automatically by rr-form-field. */
-	@property({ type: String, attribute: 'aria-describedby' })
-	ariaDescribedBy = '';
 
 	@query('.password-field__input')
 	private _input!: HTMLInputElement;
