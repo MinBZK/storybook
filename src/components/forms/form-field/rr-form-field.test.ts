@@ -131,6 +131,14 @@ describe('rr-form-field', () => {
 		await waitForUpdate(el);
 		expect(el.querySelector('input')!.getAttribute('aria-label')).toBe('New label');
 	});
+
+	it('removes aria-label from slotted input when label is cleared', async () => {
+		el = await fixture('<rr-form-field label="Email"><input></rr-form-field>');
+		await waitForUpdate(el);
+		(el as any).label = '';
+		await waitForUpdate(el);
+		expect(el.querySelector('input')!.hasAttribute('aria-label')).toBe(false);
+	});
 });
 
 

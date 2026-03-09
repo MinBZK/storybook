@@ -172,6 +172,8 @@ export class RRFormField extends LitElement {
 
 		if (this.label) {
 			input.setAttribute('aria-label', this.label);
+		} else {
+			input.removeAttribute('aria-label');
 		}
 
 		// Ensure each help text element has an id so it can be referenced in aria-describedby
