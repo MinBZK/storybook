@@ -12,7 +12,7 @@ export function template(this: RRButton, helpers: TemplateHelpers) {
 			class="button"
 			type=${this.type}
 			?disabled=${this.disabled}
-			aria-disabled=${this.disabled}
+			aria-disabled=${this.disabled ? 'true' : nothing}
 			aria-label=${this.ariaLabel || nothing}
 			@click=${helpers.handleClick}
 		>
