@@ -122,8 +122,11 @@ export class RRFormField extends LitElement {
 		return formFieldTemplate(this);
 	}
 
-	override updated() {
+	override updated(changed: Map<PropertyKey, unknown>) {
 		this.classList.toggle('has-errors', this._hasErrors);
+		if (changed.has('label')) {
+			this._onSlotChange();
+		}
 	}
 
 	override connectedCallback() {
@@ -134,12 +137,6 @@ export class RRFormField extends LitElement {
 
 	override firstUpdated() {
 		this._onSlotChange();
-	}
-
-	override updated(changed: Map<string, unknown>) {
-		if (changed.has('label')) {
-			this._onSlotChange();
-		}
 	}
 
 	override disconnectedCallback() {
