@@ -119,7 +119,7 @@ export const textFieldStyles = css`
 		right: var(--primitives-space-4);
 		width: var(--primitives-space-8);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		background: linear-gradient(90deg, transparent 0%, var(--_background-color) 100%);
+		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
 		pointer-events: none;
 	}
 
