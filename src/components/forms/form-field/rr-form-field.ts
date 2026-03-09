@@ -205,6 +205,12 @@ export class RRFormField extends LitElement {
 	 * Reads `invalid` and `error-message` from the input and toggles
 	 * the `invalid` attribute on the referenced rr-form-field-error-text elements.
 	 * Also sets `aria-describedby` on the input to reference visible error texts.
+	 *
+	 * Note: this mechanism relies on the slotted input reflecting an `invalid`
+	 * attribute, which rr-text-field and rr-password-field do. Plain native
+	 * `<input>` elements use constraint validation (validity.valid, the `invalid`
+	 * event) instead — support for native inputs is a known limitation and
+	 * tracked as a follow-up.
 	 */
 	private _syncErrorText() {
 		const input = this._findInput();
