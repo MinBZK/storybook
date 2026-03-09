@@ -102,15 +102,14 @@ describe('rr-text-field', () => {
 		expect(input.getAttribute('aria-label')).toBe('Zoeken');
 	});
 
-	it('forwards aria-describedby to the inner input', async () => {
+	it('accepts aria-describedby on the host element', async () => {
 		el = await fixture('<rr-text-field aria-describedby="help-1 err-1"></rr-text-field>');
 		await waitForUpdate(el);
-		const input = el.shadowRoot!.querySelector('input')!;
-		expect(input.getAttribute('aria-describedby')).toBe('help-1 err-1');
+		expect(el.getAttribute('aria-describedby')).toBe('help-1 err-1');
 	});
 
-	it('omits aria-describedby from inner input when not set', async () => {
-		el = await fixture('<rr-text-field></rr-text-field>');
+	it('does not forward aria-describedby to the inner input', async () => {
+		el = await fixture('<rr-text-field aria-describedby="help-1 err-1"></rr-text-field>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.hasAttribute('aria-describedby')).toBe(false);
