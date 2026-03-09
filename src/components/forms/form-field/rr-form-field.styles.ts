@@ -50,6 +50,11 @@ export const formFieldStyles = css`
 	}
 
 	@container (min-width: 640px) {
+		:host([label-alignment='left']) .form-field__header.is-empty,
+		:host([label-alignment='right']) .form-field__header.is-empty {
+			display: flex;
+		}
+
 		:host([label-alignment='left']) .form-field__header,
 		:host([label-alignment='right']) .form-field__header {
 			flex-grow: 0;
