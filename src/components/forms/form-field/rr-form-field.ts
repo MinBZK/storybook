@@ -232,7 +232,8 @@ export class RRFormField extends LitElement {
 		} else {
 			input.removeAttribute('aria-describedby');
 		}
-	}
+
+		this.classList.toggle('has-errors', visibleErrorIds.length > 0);
 }
 
 

@@ -129,14 +129,14 @@ export const formFieldStyles = css`
 
 	/* # Errors */
 
-	.form-field__errors:empty {
-		display: none;
-	}
-
 	.form-field__errors {
-		display: flex;
+		display: none;
 		flex-direction: column;
 		margin-top: var(--primitives-space-2);
+	}
+
+	:host(.has-errors) .form-field__errors {
+		display: flex;
 	}
 `;
 

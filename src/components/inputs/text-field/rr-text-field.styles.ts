@@ -123,6 +123,10 @@ export const textFieldStyles = css`
 		pointer-events: none;
 	}
 
+	:host([size='sm']) .text-field__fade::after {
+		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
 
 	/* # Validation icon area */
 
