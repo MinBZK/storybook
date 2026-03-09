@@ -86,7 +86,7 @@ export class RRPasswordField extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	readonly = false;
 
-	@property({ type: Boolean })
+	@property({ type: Boolean, reflect: true })
 	required = false;
 
 	@property({ type: String })
