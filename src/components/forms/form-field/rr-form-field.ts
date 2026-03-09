@@ -115,8 +115,15 @@ export class RRFormField extends LitElement {
 	private _childObserver: MutationObserver | null = null;
 	private _observer: MutationObserver | null = null;
 
+	@state()
+	private _hasErrors = false;
+
 	override render() {
 		return formFieldTemplate(this);
+	}
+
+	override updated() {
+		this.classList.toggle('has-errors', this._hasErrors);
 	}
 
 	override connectedCallback() {
@@ -247,7 +254,7 @@ export class RRFormField extends LitElement {
 			input.removeAttribute('aria-describedby');
 		}
 
-		this.classList.toggle('has-errors', visibleErrorIds.length > 0);
+		this._hasErrors = visibleErrorIds.length > 0;
 	}
 }
 
