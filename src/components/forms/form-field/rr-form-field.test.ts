@@ -74,6 +74,20 @@ describe('rr-form-field', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('label.form-field__header')).not.toBeNull();
 	});
+
+	it('sets aria-label on the slotted input', async () => {
+		el = await fixture('<rr-form-field label="Email"><input></rr-form-field>');
+		await waitForUpdate(el);
+		expect(el.querySelector('input')!.getAttribute('aria-label')).toBe('Email');
+	});
+
+	it('updates aria-label on the slotted input when label changes', async () => {
+		el = await fixture('<rr-form-field label="Email"><input></rr-form-field>');
+		await waitForUpdate(el);
+		(el as any).label = 'New label';
+		await waitForUpdate(el);
+		expect(el.querySelector('input')!.getAttribute('aria-label')).toBe('New label');
+	});
 });
 
 

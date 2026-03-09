@@ -125,6 +125,12 @@ export class RRFormField extends LitElement {
 		this._onSlotChange();
 	}
 
+	override updated(changed: Map<string, unknown>) {
+		if (changed.has('label')) {
+			this._onSlotChange();
+		}
+	}
+
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this._childObserver?.disconnect();
@@ -157,6 +163,10 @@ export class RRFormField extends LitElement {
 			const generatedId = input.id || generateId();
 			input.id = generatedId;
 			this.labelFor = generatedId;
+		}
+
+		if (this.label) {
+			input.setAttribute('aria-label', this.label);
 		}
 
 		this._observer = new MutationObserver(() => this._syncErrorText());
