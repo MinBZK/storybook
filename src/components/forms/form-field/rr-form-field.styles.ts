@@ -135,13 +135,19 @@ export const formFieldStyles = css`
 	/* # Errors */
 
 	.form-field__errors {
-		display: none;
+		display: flex;
 		flex-direction: column;
-		margin-top: var(--primitives-space-2);
+		margin-top: 0;
+		height: 0;
+		overflow: hidden;
+		visibility: hidden;
 	}
 
 	:host(.has-errors) .form-field__errors {
-		display: flex;
+		margin-top: var(--primitives-space-2);
+		height: auto;
+		overflow: visible;
+		visibility: visible;
 	}
 `;
 
