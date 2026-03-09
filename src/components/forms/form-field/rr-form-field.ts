@@ -152,6 +152,12 @@ export class RRFormField extends LitElement {
 		(this._findInput() as HTMLElement | undefined)?.focus();
 	}
 
+	public _handleLabelKeydown(e: KeyboardEvent) {
+		if (e.key === 'Enter' || e.key === ' ') {
+			this._focusInput(e);
+		}
+	}
+
 	private _onSlotChange() {
 		this._observer?.disconnect();
 

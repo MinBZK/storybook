@@ -21,6 +21,7 @@ export function formFieldTemplate(component: RRFormField): TemplateResult {
 			${hasLabel ? html`
 				<label class="form-field__label"
 					@click=${(e: Event) => component._focusInput(e)}
+					@keydown=${(e: KeyboardEvent) => component._handleLabelKeydown(e)}
 				>
 					${component.label}
 					${component.optional ? renderOptional(component.optionalLabel) : nothing}
