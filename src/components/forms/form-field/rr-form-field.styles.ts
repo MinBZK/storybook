@@ -165,7 +165,7 @@ export const formFieldHelpTextStyles = css`
 
 	/* # Links */
 
-	a {
+	::slotted(a) {
 		color: var(--semantics-links-color);
 		text-decoration: underline;
 		text-underline-offset: var(--primitives-space-2);
@@ -173,20 +173,20 @@ export const formFieldHelpTextStyles = css`
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
-	a:hover {
+	::slotted(a:hover) {
 		color: var(--semantics-links-is-hovered-color);
 	}
 
-	a:active {
+	::slotted(a:active) {
 		color: var(--semantics-links-is-active-color);
 	}
 
-	a:focus-visible {
+	::slotted(a:focus-visible) {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
-	a:focus:not(:focus-visible) {
+	::slotted(a:focus:not(:focus-visible)) {
 		outline: none;
 	}
 `;
@@ -220,7 +220,7 @@ export const formFieldErrorTextStyles = css`
 
 	/* # Links */
 
-	a {
+	::slotted(a) {
 		color: var(--semantics-links-color);
 		text-decoration: underline;
 		text-underline-offset: var(--primitives-space-2);
@@ -228,20 +228,20 @@ export const formFieldErrorTextStyles = css`
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
-	a:hover {
+	::slotted(a:hover) {
 		color: var(--semantics-links-is-hovered-color);
 	}
 
-	a:active {
+	::slotted(a:active) {
 		color: var(--semantics-links-is-active-color);
 	}
 
-	a:focus-visible {
+	::slotted(a:focus-visible) {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
-	a:focus:not(:focus-visible) {
+	::slotted(a:focus:not(:focus-visible)) {
 		outline: none;
 	}
 `;
