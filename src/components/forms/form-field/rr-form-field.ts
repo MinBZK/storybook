@@ -163,6 +163,7 @@ export class RRFormField extends LitElement {
 	}
 
 	private _onSlotChange() {
+		// Disconnect the previous attribute observer before wiring up a new one.
 		this._observer?.disconnect();
 
 		const input = this._findInput();
