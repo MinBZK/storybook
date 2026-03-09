@@ -29,7 +29,6 @@ function renderValidationIcon(component: RRTextField): TemplateResult | typeof n
 export function textFieldTemplate(component: RRTextField): TemplateResult {
 	return html`
 		<div class="text-field">
-			<div class="text-field__spacer"></div>
 			<input class="text-field__input"
 				id=${component.inputId || nothing}
 				type=${component.type}
