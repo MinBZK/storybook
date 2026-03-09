@@ -87,7 +87,7 @@ export class RRTextField extends LitElement {
 	@query('.text-field__input')
 	private _input!: HTMLInputElement;
 
-	protected _handleInput(e: Event): void {
+	public _handleInput(e: Event): void {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
@@ -98,7 +98,7 @@ export class RRTextField extends LitElement {
 		}));
 	}
 
-	protected _handleChange(e: Event): void {
+	public _handleChange(e: Event): void {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;

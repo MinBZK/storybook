@@ -108,7 +108,7 @@ export class RRPasswordField extends LitElement {
 	@query('.password-field__input')
 	private _input!: HTMLInputElement;
 
-	protected _handleInput(e: Event): void {
+	public _handleInput(e: Event): void {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
@@ -119,7 +119,7 @@ export class RRPasswordField extends LitElement {
 		}));
 	}
 
-	protected _handleChange(e: Event): void {
+	public _handleChange(e: Event): void {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
@@ -130,7 +130,7 @@ export class RRPasswordField extends LitElement {
 		}));
 	}
 
-	protected _handleToggle(): void {
+	public _handleToggle(): void {
 		this.masked = !this.masked;
 		this.updateComplete.then(() => {
 			this._input?.focus();
