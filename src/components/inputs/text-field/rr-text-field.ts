@@ -15,7 +15,7 @@
  * @attr {boolean} readonly    - Readonly state
  * @attr {boolean} required    - Required state
  * @attr {string} autocomplete - Autocomplete hint
- * @attr {string} aria-label   - Accessible label forwarded to the inner input. Set automatically by rr-form-field.
+ * @attr {string} accessible-label   - Accessible label forwarded to the inner input. Set automatically by rr-form-field.
  *
  * @fires input  - When input value changes
  * @fires change - When input value is committed
@@ -76,7 +76,7 @@ export class RRTextField extends LitElement {
 	autocomplete = '';
 
 	/** Accessible label forwarded to the inner <input>. Set automatically by rr-form-field. */
-	@property({ type: String, attribute: 'aria-label' })
+	@property({ type: String, attribute: 'accessible-label' })
 	ariaLabel = '';
 
 	@query('.text-field__input')

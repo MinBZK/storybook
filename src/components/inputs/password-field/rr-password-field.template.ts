@@ -37,7 +37,7 @@ function renderVisibilityToggle(component: RRPasswordField): TemplateResult {
 			<rr-button
 				size=${buttonSize}
 				type="button"
-				aria-label=${accessibleLabel}
+				accessible-label=${accessibleLabel}
 				?disabled=${component.disabled}
 				@click=${component._handleToggle}
 			>${label}</rr-button>

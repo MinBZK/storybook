@@ -18,7 +18,7 @@ describe('rr-button', () => {
   });
 
   it('forwards aria-label to the inner button element', async () => {
-	el = await fixture('<rr-button aria-label="Close dialog">X</rr-button>');
+	el = await fixture('<rr-button accessible-label="Close dialog">X</rr-button>');
 	await waitForUpdate(el);
 	const inner = el.shadowRoot!.querySelector('button');
 	expect(inner!.getAttribute('aria-label')).toBe('Close dialog');
