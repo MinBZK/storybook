@@ -1,5 +1,7 @@
 import { css } from 'lit';
 export const textFieldStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -10,6 +12,7 @@ export const textFieldStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
 
 	/* # Container */
 
@@ -60,6 +63,7 @@ export const textFieldStyles = css`
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 	}
 
+
 	/* # Input */
 
 	.text-field__input {
@@ -97,6 +101,7 @@ export const textFieldStyles = css`
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
 
+
 	/* # Fade */
 
 	.text-field__fade {
@@ -117,6 +122,7 @@ export const textFieldStyles = css`
 		background: linear-gradient(90deg, transparent 0%, var(--_background-color) 100%);
 		pointer-events: none;
 	}
+
 
 	/* # Validation icon area */
 
@@ -140,6 +146,7 @@ export const textFieldStyles = css`
 	:host([invalid]) .text-field__validation-icon-area {
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
+
 
 	/* # Validation icon */
 

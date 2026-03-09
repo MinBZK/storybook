@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const passwordFieldStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -11,6 +13,7 @@ export const passwordFieldStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
 
 	/* # Container */
 
@@ -65,6 +68,7 @@ export const passwordFieldStyles = css`
 		overflow: visible;
 	}
 
+
 	/* # Input */
 
 	.password-field__input {
@@ -116,6 +120,7 @@ export const passwordFieldStyles = css`
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
 
+
 	/* # Fade */
 
 	.password-field__fade {
@@ -136,6 +141,7 @@ export const passwordFieldStyles = css`
 		background: linear-gradient(90deg, transparent 0%, var(--_background-color) 100%);
 		pointer-events: none;
 	}
+
 
 	/* # Validation icon area */
 
@@ -160,6 +166,7 @@ export const passwordFieldStyles = css`
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
 
+
 	/* # Validation icon */
 
 	.password-field__validation-icon {
@@ -171,6 +178,7 @@ export const passwordFieldStyles = css`
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 	}
+
 
 	/* # Toggle button */
 
