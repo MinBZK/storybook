@@ -160,10 +160,21 @@ export class RRFormField extends LitElement {
 			if (!input.id) input.id = generateId();
 		}
 
+		// Custom elements (rr-text-field, rr-password-field) expose an `accessible-label`
+		// property that they forward to their inner <input aria-label>. Native <input>
+		// elements have no such property — set aria-label directly on them instead.
+		const isCustomElement = input.tagName.includes('-');
 		if (this.label) {
-			input.setAttribute('accessible-label', this.label);
+			if (isCustomElement) {
+				input.setAttribute('accessible-label', this.label);
+				input.removeAttribute('aria-label');
+			} else {
+				input.setAttribute('aria-label', this.label);
+				input.removeAttribute('accessible-label');
+			}
 		} else {
 			input.removeAttribute('accessible-label');
+			input.removeAttribute('aria-label');
 		}
 
 		// Ensure each help text element has an id so it can be referenced in aria-describedby
