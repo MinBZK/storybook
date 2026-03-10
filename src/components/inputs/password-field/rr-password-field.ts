@@ -129,11 +129,8 @@ export class RRPasswordField extends LitElement {
 		}));
 	}
 
-	public _handleToggle(): void {
+	public _handleToggle(e: Event): void {
 		this.masked = !this.masked;
-		this.updateComplete.then(() => {
-			this._input?.focus();
-		});
 	}
 
 	public focus(): void {
