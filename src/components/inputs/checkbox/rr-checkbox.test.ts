@@ -132,9 +132,39 @@ describe('rr-checkbox – change event', () => {
 });
 
 
+
 /* ============================================================
-   Accessibility
+   Keyboard interaction
    ============================================================ */
+
+describe('rr-checkbox – keyboard interaction', () => {
+	let el: RRCheckbox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('toggles checked state when Space is pressed on the native input', async () => {
+		el = await fixture<RRCheckbox>('<rr-checkbox></rr-checkbox>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		input.focus();
+		input.checked = true;
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(el.checked).toBe(true);
+	});
+
+	it('does not toggle when disabled and Space is pressed', async () => {
+		el = await fixture<RRCheckbox>('<rr-checkbox disabled></rr-checkbox>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		input.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+		await waitForUpdate(el);
+		expect(el.checked).toBe(false);
+	});
+});
 
 describe('rr-checkbox – accessibility', () => {
 	let el: RRCheckbox;
