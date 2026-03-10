@@ -14,8 +14,8 @@
  * @element rr-radio-button
  * @attr {boolean} checked  - Checked state
  * @attr {boolean} disabled - Disabled state
- * @attr {string}  name     - Form control name (for radio groups)
- * @attr {string}  value    - Form control value
+ * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the native input.
+ *   Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string, name: string }
  */
@@ -45,9 +45,6 @@ export class RRRadioButton extends LitElement {
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
-
-	@property({ type: String, attribute: 'accessible-labelledby' })
-	accessibleLabelledBy = '';
 
 	public select(): void {
 		if (this.disabled || this.checked) return;

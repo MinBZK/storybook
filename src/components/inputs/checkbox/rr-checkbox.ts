@@ -7,8 +7,8 @@
  * @attr {boolean} indeterminate - Indeterminate state (takes precedence over checked visually)
  * @attr {string}  value         - Value for form submission
  * @attr {string}  name          - Name for form submission
- * @attr {string}  accessible-label    - Accessible label forwarded to the native input
- * @attr {string}  accessible-labelledby - ID of external label element forwarded to the native input
+ * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the native input.
+ *   Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries.
  *
  * @fires change - Fired when the checkbox state changes; detail: { checked: boolean, value: string }
  */
@@ -38,9 +38,6 @@ export class RRCheckbox extends LitElement {
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
-
-	@property({ type: String, attribute: 'accessible-labelledby' })
-	accessibleLabelledBy = '';
 
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
