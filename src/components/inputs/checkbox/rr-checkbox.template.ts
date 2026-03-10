@@ -11,6 +11,8 @@ export function checkboxTemplate(component: RRCheckbox): TemplateResult {
 			?disabled=${component.disabled}
 			name=${component.name || ''}
 			value=${component.value}
+			aria-label=${component.ariaLabel || ''}
+			aria-labelledby=${component.ariaLabelledBy || ''}
 			@change=${component._handleChange}
 		>
 		<div class="checkbox__box" aria-hidden="true">

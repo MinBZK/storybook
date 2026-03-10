@@ -7,10 +7,11 @@
  * @attr {boolean} indeterminate - Indeterminate state (takes precedence over checked visually)
  * @attr {string}  value         - Value for form submission
  * @attr {string}  name          - Name for form submission
+ * @attr {string}  aria-label    - Accessible label forwarded to the native input
+ * @attr {string}  aria-labelledby - ID of external label element forwarded to the native input
  *
  * @fires change - Fired when the checkbox state changes; detail: { checked: boolean, value: string }
  */
-
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { checkboxStyles } from './rr-checkbox.styles.ts';
@@ -35,11 +36,16 @@ export class RRCheckbox extends LitElement {
 	@property({ type: String })
 	name = '';
 
+	@property({ type: String, attribute: 'aria-label' })
+	ariaLabel = '';
+
+	@property({ type: String, attribute: 'aria-labelledby' })
+	ariaLabelledBy = '';
+
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
 		this.indeterminate = input.indeterminate;
-
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value },
 			bubbles: true,

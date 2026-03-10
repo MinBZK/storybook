@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRRadioButtonField } from './rr-radio-button-field.ts';
 import './rr-radio-button-field.ts';
+import '../radio-button/rr-radio-button.ts';
 
 describe('rr-radio-button-field', () => {
 	let el: HTMLElement;
@@ -57,6 +58,7 @@ describe('rr-radio-button-field – state', () => {
 		el = await fixture<RRRadioButtonField>('<rr-radio-button-field disabled></rr-radio-button-field>');
 		await waitForUpdate(el);
 		const radioButton = el.shadowRoot!.querySelector('rr-radio-button') as any;
+		await waitForUpdate(radioButton);
 		expect(radioButton.disabled).toBe(true);
 	});
 
@@ -64,6 +66,7 @@ describe('rr-radio-button-field – state', () => {
 		el = await fixture<RRRadioButtonField>('<rr-radio-button-field value="option-a"></rr-radio-button-field>');
 		await waitForUpdate(el);
 		const radioButton = el.shadowRoot!.querySelector('rr-radio-button') as any;
+		await waitForUpdate(radioButton);
 		expect(radioButton.value).toBe('option-a');
 	});
 });
