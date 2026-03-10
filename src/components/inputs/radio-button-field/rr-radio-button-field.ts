@@ -42,6 +42,10 @@ export class RRRadioButtonField extends LitElement {
 	@state()
 	private _labelText = '';
 
+	override firstUpdated(): void {
+		this._onSlotChange();
+	}
+
 	public _onSlotChange(): void {
 		const slot = this.shadowRoot?.querySelector('slot');
 		this._labelText = slot?.assignedNodes({ flatten: true })
