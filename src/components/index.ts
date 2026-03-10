@@ -40,7 +40,7 @@ export { RRComboBoxField } from './inputs/combo-box-field/rr-combo-box-field.ts'
 export { RRCheckboxField } from './inputs/checkbox-field/rr-checkbox-field.ts';
 export { RRRadioButtonField } from './inputs/radio-button-field/rr-radio-button-field.ts';
 export { RRSwitchField } from './inputs/switch-field/rr-switch-field.ts';
-export { RRRadio } from './inputs/radio/rr-radio.ts';
+export { RRRadioButton } from './inputs/radio-button/rr-radio-button.ts';
 export { RRSwitch } from './inputs/switch/rr-switch.ts';
 
 // Layout components
