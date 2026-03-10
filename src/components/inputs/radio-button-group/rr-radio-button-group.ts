@@ -14,7 +14,6 @@
  *
  * @fires change - Bubbles up from the checked field; detail: { checked: boolean, value: string }
  */
-
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { radioButtonGroupStyles } from './rr-radio-button-group.styles.ts';
@@ -63,7 +62,7 @@ export class RRRadioButtonGroup extends LitElement {
 	private _syncFields(): void {
 		this._getFields().forEach(field => {
 			if (this.name) field.name = this.name;
-			field.disabled = this.disabled;
+			if (this.disabled) field.disabled = true;
 		});
 	}
 
@@ -84,7 +83,6 @@ export class RRRadioButtonGroup extends LitElement {
 
 		const activeField = fields.find(f => f.checked) ?? fields[0];
 		const currentIndex = fields.indexOf(activeField);
-
 		const isNext = e.key === 'ArrowDown' || e.key === 'ArrowRight';
 		const nextIndex = isNext
 			? (currentIndex + 1) % fields.length
@@ -95,11 +93,9 @@ export class RRRadioButtonGroup extends LitElement {
 
 		e.preventDefault();
 
-		// Uncheck current, check next
 		activeField.checked = false;
 		nextField.checked = true;
 
-		// Focus the inner input of the next field
 		const input = nextField.shadowRoot
 			?.querySelector('rr-radio-button')
 			?.shadowRoot?.querySelector('input');

@@ -1,6 +1,5 @@
 import { html, TemplateResult } from 'lit';
 import type { RRRadioButtonField } from './rr-radio-button-field.js';
-import '../radio-button/rr-radio-button.ts';
 
 export function radioButtonFieldTemplate(component: RRRadioButtonField): TemplateResult {
 	return html`
@@ -13,11 +12,11 @@ export function radioButtonFieldTemplate(component: RRRadioButtonField): Templat
 				value=${component.value}
 				@change=${component._handleChange}
 			></rr-radio-button>
-			<span class="radio-button-field__label"
+			<label class="radio-button-field__label"
 				@click=${component._handleLabelClick}
 			>
 				<slot></slot>
-			</span>
+			</label>
 		</div>
 	`;
 }
