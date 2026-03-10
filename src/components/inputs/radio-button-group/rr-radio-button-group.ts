@@ -19,7 +19,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { radioButtonGroupStyles } from './rr-radio-button-group.styles.ts';
 import { radioButtonGroupTemplate } from './rr-radio-button-group.template.ts';
-import type { RRRadioButtonField } from '../../inputs/radio-button-field/rr-radio-button-field.js';
+import type { RRRadioButtonField } from '../radio-button-field/rr-radio-button-field.js';
 
 @customElement('rr-radio-button-group')
 export class RRRadioButtonGroup extends LitElement {

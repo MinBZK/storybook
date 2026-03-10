@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-radio-button-group.ts';
-import '../../inputs/radio-button-field/rr-radio-button-field.ts';
+import '../radio-button-field/rr-radio-button-field.ts';
 import '../../forms/form-field/rr-form-field.ts';
 
 /**
@@ -19,7 +19,7 @@ import '../../forms/form-field/rr-form-field.ts';
  * ```
  */
 export default {
-	title: 'Components/Control Groups/Radio Button Group',
+	title: 'Components/Inputs/Radio Button Group',
 	component: 'rr-radio-button-group',
 	tags: ['autodocs'],
 	parameters: {
