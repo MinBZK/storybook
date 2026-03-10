@@ -1,4 +1,4 @@
-import { html, TemplateResult } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
 import type { RRCheckbox } from './rr-checkbox.js';
 import './../../content/icon/rr-icon.ts';
 
@@ -11,8 +11,8 @@ export function checkboxTemplate(component: RRCheckbox): TemplateResult {
 			?disabled=${component.disabled}
 			name=${component.name || ''}
 			value=${component.value}
-			aria-label=${component.ariaLabel || ''}
-			aria-labelledby=${component.ariaLabelledBy || ''}
+			aria-label=${component.ariaLabel || nothing}
+			aria-labelledby=${component.ariaLabelledBy || nothing}
 			@change=${component._handleChange}
 		>
 		<div class="checkbox__box" aria-hidden="true">

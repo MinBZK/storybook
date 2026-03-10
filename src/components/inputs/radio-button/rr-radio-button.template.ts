@@ -1,4 +1,4 @@
-import { html, TemplateResult } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
 import type { RRRadioButton } from './rr-radio-button.js';
 
 export function radioButtonTemplate(component: RRRadioButton): TemplateResult {
@@ -9,8 +9,8 @@ export function radioButtonTemplate(component: RRRadioButton): TemplateResult {
 			?disabled=${component.disabled}
 			name=${component.name || ''}
 			value=${component.value}
-			aria-label=${component.ariaLabel || ''}
-			aria-labelledby=${component.ariaLabelledby || ''}
+			aria-label=${component.ariaLabel || nothing}
+			aria-labelledby=${component.ariaLabelledby || nothing}
 			@change=${component._handleChange}
 		>
 		<div class="radio-button__outer-shape" aria-hidden="true">
