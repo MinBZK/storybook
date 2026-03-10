@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 export const radioButtonStyles = css`
 
-
 	/* # Host */
 
 	:host {
@@ -63,7 +62,7 @@ export const radioButtonStyles = css`
 	/* # Selected */
 
 	.radio-button__input:checked ~ .radio-button__outer-shape {
-		border-color: var(--components-radio-button-is-selected-background-color);
+		border-color: var(--components-radio-button-is-selected-border-color);
 		background-color: var(--components-radio-button-is-selected-background-color);
 	}
 
@@ -79,7 +78,7 @@ export const radioButtonStyles = css`
 	}
 
 	.radio-button__input:checked:hover:not(:disabled) ~ .radio-button__outer-shape {
-		border-color: var(--components-radio-button-is-selected-is-hovered-background-color);
+		border-color: var(--components-radio-button-is-selected-is-hovered-border-color);
 		background-color: var(--components-radio-button-is-selected-is-hovered-background-color);
 	}
 
@@ -95,7 +94,7 @@ export const radioButtonStyles = css`
 	}
 
 	.radio-button__input:checked:active:not(:disabled) ~ .radio-button__outer-shape {
-		border-color: var(--components-radio-button-is-selected-is-active-background-color);
+		border-color: var(--components-radio-button-is-selected-is-active-border-color);
 		background-color: var(--components-radio-button-is-selected-is-active-background-color);
 	}
 

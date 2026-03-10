@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 export const checkboxStyles = css`
 
-
 	/* # Host */
 
 	:host {
@@ -50,7 +49,7 @@ export const checkboxStyles = css`
 
 	.checkbox__input:checked ~ .checkbox__box,
 	.checkbox__input:indeterminate ~ .checkbox__box {
-		border-color: var(--components-checkbox-is-selected-background-color);
+		border-color: var(--components-checkbox-is-selected-border-color);
 		background-color: var(--components-checkbox-is-selected-background-color);
 		color: var(--components-checkbox-is-selected-icon-color);
 	}
@@ -64,7 +63,7 @@ export const checkboxStyles = css`
 
 	.checkbox__input:checked:hover:not(:disabled) ~ .checkbox__box,
 	.checkbox__input:indeterminate:hover:not(:disabled) ~ .checkbox__box {
-		border-color: var(--components-checkbox-is-selected-is-hovered-background-color);
+		border-color: var(--components-checkbox-is-selected-is-hovered-border-color);
 		background-color: var(--components-checkbox-is-selected-is-hovered-background-color);
 		color: var(--components-checkbox-is-selected-is-hovered-icon-color);
 	}
@@ -78,7 +77,7 @@ export const checkboxStyles = css`
 
 	.checkbox__input:checked:active:not(:disabled) ~ .checkbox__box,
 	.checkbox__input:indeterminate:active:not(:disabled) ~ .checkbox__box {
-		border-color: var(--components-checkbox-is-selected-is-active-background-color);
+		border-color: var(--components-checkbox-is-selected-is-active-border-color);
 		background-color: var(--components-checkbox-is-selected-is-active-background-color);
 		color: var(--components-checkbox-is-selected-is-active-icon-color);
 	}
