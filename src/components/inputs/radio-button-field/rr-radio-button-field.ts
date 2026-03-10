@@ -40,7 +40,7 @@ export class RRRadioButtonField extends LitElement {
 	required = false;
 
 	@state()
-	private _labelText = '';
+	public _labelText = '';
 
 	override firstUpdated(): void {
 		this._onSlotChange();
