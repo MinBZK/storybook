@@ -33,6 +33,9 @@ export class RRRadioButtonGroup extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
+	@property({ type: String, attribute: 'aria-labelledby' })
+	ariaLabelledby = '';
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.addEventListener('keydown', this._handleKeyDown);
