@@ -49,7 +49,7 @@ export class RRRadioButtonGroup extends LitElement {
 	}
 
 	override updated(changed: Map<PropertyKey, unknown>): void {
-		if (changed.has('name') || changed.has('disabled')) {
+		if (changed.has('name') || changed.has('disabled') || changed.has('required')) {
 			this._syncFields();
 		}
 	}
@@ -65,6 +65,7 @@ export class RRRadioButtonGroup extends LitElement {
 	private _syncFields(): void {
 		this._getFields().forEach(field => {
 			field.name = this.name;
+			field.required = this.required;
 			if (this.disabled) {
 				field.setAttribute('data-group-disabled', '');
 				field.disabled = true;
