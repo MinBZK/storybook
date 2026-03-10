@@ -115,7 +115,7 @@ export class RRRadioButtonGroup extends LitElement {
 		}));
 	};
 
-	private _onSlotChange = (): void => {
+	public _onSlotChange = (): void => {
 		this._syncFields();
 	};
 
