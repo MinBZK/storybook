@@ -40,6 +40,9 @@ export class RRRadioButton extends LitElement {
 	@property({ type: String })
 	value = '';
 
+	@property({ type: String, attribute: 'aria-label' })
+	ariaLabel = '';
+
 	public select(): void {
 		if (this.disabled || this.checked) return;
 		this.checked = true;
