@@ -1,5 +1,6 @@
 import { html, TemplateResult } from 'lit';
 import type { RRRadioButtonField } from './rr-radio-button-field.js';
+import '../radio-button/rr-radio-button.ts';
 
 export function radioButtonFieldTemplate(component: RRRadioButtonField): TemplateResult {
 	return html`

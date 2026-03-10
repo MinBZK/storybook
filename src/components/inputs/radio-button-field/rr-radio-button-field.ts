@@ -17,7 +17,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { radioButtonFieldStyles } from './rr-radio-button-field.styles.ts';
 import { radioButtonFieldTemplate } from './rr-radio-button-field.template.ts';
-import { type RRRadioButton } from '../radio-button/rr-radio-button.ts';
+import type { RRRadioButton } from '../radio-button/rr-radio-button.js';
 
 @customElement('rr-radio-button-field')
 export class RRRadioButtonField extends LitElement {
