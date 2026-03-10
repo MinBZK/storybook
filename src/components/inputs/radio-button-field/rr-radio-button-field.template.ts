@@ -11,9 +11,11 @@ export function radioButtonFieldTemplate(component: RRRadioButtonField): Templat
 				?disabled=${component.disabled}
 				name=${component.name || ''}
 				value=${component.value}
+				aria-labelledby=${component._labelId}
 				@change=${component._handleChange}
 			></rr-radio-button>
 			<label class="radio-button-field__label"
+				id=${component._labelId}
 				@click=${component._handleLabelClick}
 			>
 				<slot></slot>

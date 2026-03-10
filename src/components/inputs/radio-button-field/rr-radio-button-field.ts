@@ -36,6 +36,8 @@ export class RRRadioButtonField extends LitElement {
 	@property({ type: String })
 	name = '';
 
+	private readonly _labelId = `rr-rbf-label-${Math.random().toString(36).slice(2)}`;
+
 	public _handleLabelClick(): void {
 		if (this.disabled) return;
 		const radioButton = this.shadowRoot?.querySelector('rr-radio-button') as RRRadioButton | null;
