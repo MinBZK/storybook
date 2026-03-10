@@ -61,7 +61,7 @@ const Template = ({ checked, disabled, name, value }) => html`
 		?disabled=${disabled}
 		name=${name}
 		value=${value}
-		aria-label="Radio button"
+		accessible-label="Radio button"
 	></rr-radio-button>
 `;
 
@@ -92,10 +92,10 @@ RadioGroep.parameters = { controls: { disable: true } };
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; gap: 2rem; align-items: center;">
-		<rr-radio-button aria-label="Niet geselecteerd"></rr-radio-button>
-		<rr-radio-button checked aria-label="Geselecteerd"></rr-radio-button>
-		<rr-radio-button disabled aria-label="Uitgeschakeld"></rr-radio-button>
-		<rr-radio-button checked disabled aria-label="Geselecteerd en uitgeschakeld"></rr-radio-button>
+		<rr-radio-button accessible-label="Niet geselecteerd"></rr-radio-button>
+		<rr-radio-button checked accessible-label="Geselecteerd"></rr-radio-button>
+		<rr-radio-button disabled accessible-label="Uitgeschakeld"></rr-radio-button>
+		<rr-radio-button checked disabled accessible-label="Geselecteerd en uitgeschakeld"></rr-radio-button>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };
