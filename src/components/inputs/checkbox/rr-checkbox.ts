@@ -7,8 +7,8 @@
  * @attr {boolean} indeterminate - Indeterminate state (takes precedence over checked visually)
  * @attr {string}  value         - Value for form submission
  * @attr {string}  name          - Name for form submission
- * @attr {string}  aria-label    - Accessible label forwarded to the native input
- * @attr {string}  aria-labelledby - ID of external label element forwarded to the native input
+ * @attr {string}  accessible-label    - Accessible label forwarded to the native input
+ * @attr {string}  accessible-labelledby - ID of external label element forwarded to the native input
  *
  * @fires change - Fired when the checkbox state changes; detail: { checked: boolean, value: string }
  */
