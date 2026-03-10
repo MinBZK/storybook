@@ -1,138 +1,68 @@
 /**
  * RegelRecht Radio Button Field Component (Lit + TypeScript)
  *
- * A radio button with label for form fields.
+ * A radio button with an inline label. Use inside rr-radio-button-group
+ * for keyboard navigation and group semantics. The group sets the name.
  *
  * @element rr-radio-button-field
- * @attr {boolean} checked - Checked state
+ * @attr {boolean} checked  - Checked state
  * @attr {boolean} disabled - Disabled state
- * @attr {string} value - Value for form submission
- * @attr {string} name - Input name for form submission (group name)
+ * @attr {string}  value    - Value for form submission
  *
- * @slot - Default slot for label text
+ * @slot - Label text
  *
- * @fires change - When checked state changes
- *
- * @csspart container - The field container
- * @csspart radio - The radio element
- * @csspart label - The label element
+ * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
 
-import { LitElement, html, css } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import '../radio/rr-radio.ts';
+import { radioButtonFieldStyles } from './rr-radio-button-field.styles.ts';
+import { radioButtonFieldTemplate } from './rr-radio-button-field.template.ts';
 
 @customElement('rr-radio-button-field')
 export class RRRadioButtonField extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = radioButtonFieldStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Boolean, reflect: true })
+	checked = false;
 
-    .radio-button-field {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      gap: var(--primitives-space-8);
-      padding: 10px 0;
-      cursor: pointer;
-    }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-    .radio-button-field__control {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
+	@property({ type: String })
+	value = '';
 
-    .radio-button-field__label {
-      display: flex;
-      flex: 1;
-      font-weight: var(--primitives-font-weight-body-regular);
-      font-size: var(--primitives-font-size-100);
-      line-height: 1.25em;
-      color: var(--semantics-content-color);
-      padding-top: 2px; /* Align with radio center */
-    }
+	/** Set by rr-radio-button-group. Not part of the public API. */
+	@property({ type: String })
+	name = '';
 
-    /* Disabled state */
-    :host([disabled]) .radio-button-field {
-      cursor: not-allowed;
-    }
+	public _handleLabelClick(): void {
+		if (this.disabled) return;
+		const radioButton = this.shadowRoot?.querySelector('rr-radio-button');
+		const input = radioButton?.shadowRoot?.querySelector('input');
+		if (!input || input.checked) return;
+		input.checked = true;
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+	}
 
-    :host([disabled]) .radio-button-field__label {
-      opacity: var(--primitives-opacity-disabled);
-    }
+	public _handleChange(e: Event): void {
+		const input = (e.target as HTMLElement).shadowRoot?.querySelector('input') as HTMLInputElement;
+		this.checked = input?.checked ?? true;
 
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      :host([disabled]) .radio-button-field__label {
-        opacity: 0.5 !important;
-      }
-    }
-  `;
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { checked: this.checked, value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-  @property({ type: Boolean, reflect: true })
-  checked = false;
-
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
-
-  @property({ type: String })
-  value = '';
-
-  @property({ type: String })
-  name = '';
-
-  private _handleChange(e: CustomEvent): void {
-    this.checked = e.detail.checked;
-    this.dispatchEvent(new CustomEvent('change', {
-      detail: { checked: this.checked, value: this.value },
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  private _handleClick(): void {
-    if (!this.disabled && !this.checked) {
-      this.checked = true;
-      this.dispatchEvent(new CustomEvent('change', {
-        detail: { checked: this.checked, value: this.value },
-        bubbles: true,
-        composed: true
-      }));
-    }
-  }
-
-  override render() {
-    return html`
-      <div class="radio-button-field" part="container" @click=${this._handleClick}>
-        <div class="radio-button-field__control">
-          <rr-radio
-            part="radio"
-            size="xs"
-            ?checked=${this.checked}
-            ?disabled=${this.disabled}
-            value=${this.value}
-            name=${this.name}
-            @change=${this._handleChange}
-            @click=${(e: Event) => e.stopPropagation()}
-          ></rr-radio>
-        </div>
-        <span class="radio-button-field__label" part="label">
-          <slot></slot>
-        </span>
-      </div>
-    `;
-  }
+	override render() {
+		return radioButtonFieldTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-radio-button-field': RRRadioButtonField;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-radio-button-field': RRRadioButtonField;
+	}
 }
