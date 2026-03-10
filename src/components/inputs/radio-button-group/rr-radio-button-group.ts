@@ -33,8 +33,8 @@ export class RRRadioButtonGroup extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@property({ type: String, attribute: 'aria-labelledby' })
-	ariaLabelledby = '';
+	@property({ type: String, attribute: 'accessible-labelledby' })
+	accessibleLabelledBy = '';
 
 	override connectedCallback(): void {
 		super.connectedCallback();

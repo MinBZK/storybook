@@ -40,11 +40,11 @@ export class RRRadioButton extends LitElement {
 	@property({ type: String })
 	value = '';
 
-	@property({ type: String, attribute: 'aria-label' })
-	ariaLabel = '';
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-	@property({ type: String, attribute: 'aria-labelledby' })
-	ariaLabelledby = '';
+	@property({ type: String, attribute: 'accessible-labelledby' })
+	accessibleLabelledBy = '';
 
 	public select(): void {
 		if (this.disabled || this.checked) return;

@@ -36,11 +36,11 @@ export class RRCheckbox extends LitElement {
 	@property({ type: String })
 	name = '';
 
-	@property({ type: String, attribute: 'aria-label' })
-	ariaLabel = '';
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-	@property({ type: String, attribute: 'aria-labelledby' })
-	ariaLabelledBy = '';
+	@property({ type: String, attribute: 'accessible-labelledby' })
+	accessibleLabelledBy = '';
 
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
