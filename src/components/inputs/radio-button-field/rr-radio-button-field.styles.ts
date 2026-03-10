@@ -19,8 +19,9 @@ export const radioButtonFieldStyles = css`
 	.radio-button-field {
 		display: flex;
 		flex-direction: row;
-		align-items: flex-start;
+		align-items: center;
 		gap: var(--primitives-space-8);
+		min-height: var(--semantics-controls-md-min-size);
 	}
 
 

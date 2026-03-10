@@ -45,26 +45,11 @@ export class RRRadioButton extends LitElement {
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
 
-		if (this.checked) {
-			this._uncheckOtherRadioButtons();
-		}
-
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value, name: this.name },
 			bubbles: true,
 			composed: true,
 		}));
-	}
-
-	private _uncheckOtherRadioButtons(): void {
-		if (!this.name) return;
-		const root = this.getRootNode() as Document | ShadowRoot;
-		const siblings = root.querySelectorAll<RRRadioButton>(`rr-radio-button[name="${this.name}"]`);
-		siblings.forEach(sibling => {
-			if (sibling !== this && sibling.checked) {
-				sibling.checked = false;
-			}
-		});
 	}
 
 	override render() {

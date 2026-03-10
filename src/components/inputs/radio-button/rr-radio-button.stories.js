@@ -81,22 +81,10 @@ export const RadioGroep = () => html`
 	<fieldset style="border: none; padding: 0; margin: 0;">
 		<legend style="font-size: 16px; font-weight: 550; margin-bottom: 12px;">Kies een optie</legend>
 		<div style="display: flex; flex-direction: column; gap: 12px;">
-			<label style="display: flex; align-items: center; gap: 12px;">
-				<rr-radio-button name="groep" value="1" checked aria-label="Optie 1"></rr-radio-button>
-				<span>Optie 1</span>
-			</label>
-			<label style="display: flex; align-items: center; gap: 12px;">
-				<rr-radio-button name="groep" value="2" aria-label="Optie 2"></rr-radio-button>
-				<span>Optie 2</span>
-			</label>
-			<label style="display: flex; align-items: center; gap: 12px;">
-				<rr-radio-button name="groep" value="3" aria-label="Optie 3"></rr-radio-button>
-				<span>Optie 3</span>
-			</label>
-			<label style="display: flex; align-items: center; gap: 12px;">
-				<rr-radio-button name="groep" value="4" disabled aria-label="Optie 4 (uitgeschakeld)"></rr-radio-button>
-				<span style="opacity: 0.38;">Optie 4 (uitgeschakeld)</span>
-			</label>
+			<rr-radio-button name="groep" value="1" checked>Optie 1</rr-radio-button>
+			<rr-radio-button name="groep" value="2">Optie 2</rr-radio-button>
+			<rr-radio-button name="groep" value="3">Optie 3</rr-radio-button>
+			<rr-radio-button name="groep" value="4" disabled>Optie 4 (uitgeschakeld)</rr-radio-button>
 		</div>
 	</fieldset>
 `;

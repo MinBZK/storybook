@@ -52,10 +52,11 @@ export const radioButtonStyles = css`
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%) scale(0);
-		width: calc(var(--semantics-controls-xs-min-size) / 2);
-		height: calc(var(--semantics-controls-xs-min-size) / 2);
+		width: var(--primitives-space-20);
+		height: var(--primitives-space-20);
 		border-radius: 50%;
 		border: var(--components-radio-button-is-selected-inner-shape-border-thickness) solid var(--components-radio-button-is-selected-inner-shape-border-color);
+		box-sizing: border-box;
 	}
 
 
