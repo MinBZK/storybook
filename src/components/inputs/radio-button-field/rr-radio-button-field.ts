@@ -14,7 +14,7 @@
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { radioButtonFieldStyles } from './rr-radio-button-field.styles.ts';
 import { radioButtonFieldTemplate } from './rr-radio-button-field.template.ts';
 import type { RRRadioButton } from '../radio-button/rr-radio-button.js';
@@ -42,6 +42,17 @@ export class RRRadioButtonField extends LitElement {
 	required = false;
 
 	private readonly _labelId = `rr-rbf-label-${++_labelCounter}`;
+
+	@state()
+	private _labelText = '';
+
+	public _onSlotChange(): void {
+		const slot = this.shadowRoot?.querySelector('slot');
+		this._labelText = slot?.assignedNodes({ flatten: true })
+			.map(n => n.textContent ?? '')
+			.join('')
+			.trim() ?? '';
+	}
 
 	public _handleLabelClick(): void {
 		if (this.disabled) return;
