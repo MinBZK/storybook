@@ -148,3 +148,34 @@ describe('rr-radio-button-group – keyboard navigation', () => {
 		expect(fields[2].checked).toBe(true);
 	});
 });
+
+
+/* ============================================================
+   Accessibility
+   ============================================================ */
+
+describe('rr-radio-button-group – accessibility', () => {
+	let el: RRRadioButtonGroup;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('forwards accessible-labelledby to aria-labelledby on the radiogroup element', async () => {
+		el = await fixture<RRRadioButtonGroup>(`
+			<rr-radio-button-group accessible-labelledby="my-label"></rr-radio-button-group>
+		`);
+		await waitForUpdate(el);
+		const radiogroup = el.shadowRoot!.querySelector('[role="radiogroup"]')!;
+		expect(radiogroup.getAttribute('aria-labelledby')).toBe('my-label');
+	});
+
+	it('does not set aria-labelledby when accessible-labelledby is not provided', async () => {
+		el = await fixture<RRRadioButtonGroup>(`
+			<rr-radio-button-group></rr-radio-button-group>
+		`);
+		await waitForUpdate(el);
+		const radiogroup = el.shadowRoot!.querySelector('[role="radiogroup"]')!;
+		expect(radiogroup.getAttribute('aria-labelledby')).toBeNull();
+	});
+});
