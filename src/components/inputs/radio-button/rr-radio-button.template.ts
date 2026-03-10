@@ -9,8 +9,8 @@ export function radioButtonTemplate(component: RRRadioButton): TemplateResult {
 			?disabled=${component.disabled}
 			name=${component.name || ''}
 			value=${component.value}
-			aria-label=${component.ariaLabel || nothing}
-			aria-labelledby=${component.ariaLabelledby || nothing}
+			aria-label=${component.accessibleLabel || nothing}
+			aria-labelledby=${component.accessibleLabelledBy || nothing}
 			@change=${component._handleChange}
 		>
 		<div class="radio-button__outer-shape" aria-hidden="true">
