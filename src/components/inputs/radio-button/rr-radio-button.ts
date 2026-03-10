@@ -48,12 +48,10 @@ export class RRRadioButton extends LitElement {
 
 	public select(): void {
 		if (this.disabled || this.checked) return;
-		this.checked = true;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: true, value: this.value, name: this.name },
-			bubbles: true,
-			composed: true,
-		}));
+		const input = this.shadowRoot?.querySelector('input') as HTMLInputElement | null;
+		if (!input) return;
+		input.checked = true;
+		input.dispatchEvent(new Event('change', { bubbles: true }));
 	}
 
 	public _handleChange(e: Event): void {
