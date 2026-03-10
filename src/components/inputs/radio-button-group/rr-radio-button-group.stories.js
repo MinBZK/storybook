@@ -2,7 +2,6 @@ import { html } from 'lit';
 import './rr-radio-button-group.ts';
 import '../radio-button-field/rr-radio-button-field.ts';
 import '../../forms/form-field/rr-form-field.ts';
-
 /**
  * De Radio Button Group groepeert `rr-radio-button-field` elementen, beheert
  * toetsenbordnavigatie en geeft `name` en `disabled` door aan alle velden.
@@ -24,7 +23,7 @@ export default {
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/control-groups/radio-button-group/rr-radio-button-group.ts',
+			file: 'src/components/inputs/radio-button-group/rr-radio-button-group.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
