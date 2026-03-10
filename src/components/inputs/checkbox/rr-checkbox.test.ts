@@ -130,3 +130,38 @@ describe('rr-checkbox – change event', () => {
 		expect(el.checked).toBe(true);
 	});
 });
+
+
+/* ============================================================
+   Accessibility
+   ============================================================ */
+
+describe('rr-checkbox – accessibility', () => {
+	let el: RRCheckbox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('forwards aria-label to the native input', async () => {
+		el = await fixture<RRCheckbox>('<rr-checkbox aria-label="Accepteer voorwaarden"></rr-checkbox>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-label')).toBe('Accepteer voorwaarden');
+	});
+
+	it('forwards aria-labelledby to the native input', async () => {
+		el = await fixture<RRCheckbox>('<rr-checkbox aria-labelledby="label-id"></rr-checkbox>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-labelledby')).toBe('label-id');
+	});
+
+	it('focus lands on the native input', async () => {
+		el = await fixture<RRCheckbox>('<rr-checkbox></rr-checkbox>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		input.focus();
+		expect(document.activeElement).toBe(el);
+	});
+});
