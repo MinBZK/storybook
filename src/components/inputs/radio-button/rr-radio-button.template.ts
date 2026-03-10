@@ -7,6 +7,7 @@ export function radioButtonTemplate(component: RRRadioButton): TemplateResult {
 			type="radio"
 			.checked=${component.checked}
 			?disabled=${component.disabled}
+			?required=${component.required}
 			name=${component.name || ''}
 			value=${component.value}
 			aria-label=${component.accessibleLabel || nothing}

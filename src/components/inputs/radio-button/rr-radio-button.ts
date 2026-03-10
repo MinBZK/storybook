@@ -34,6 +34,9 @@ export class RRRadioButton extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
 	@property({ type: String })
 	name = '';
 

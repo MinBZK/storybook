@@ -9,6 +9,7 @@ export function radioButtonFieldTemplate(component: RRRadioButtonField): Templat
 				class="radio-button-field__control"
 				?checked=${component.checked}
 				?disabled=${component.disabled}
+				?required=${component.required}
 				name=${component.name || ''}
 				value=${component.value}
 				accessible-label=${component._labelText || nothing}
