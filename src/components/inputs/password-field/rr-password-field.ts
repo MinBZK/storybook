@@ -103,7 +103,6 @@ export class RRPasswordField extends LitElement {
 	@property({ type: String, attribute: 'error-message-ids' })
 	errorMessageIds = '';
 
-
 	@query('.password-field__input')
 	private _input!: HTMLInputElement;
 
@@ -131,9 +130,7 @@ export class RRPasswordField extends LitElement {
 
 	public _handleToggle(): void {
 		this.masked = !this.masked;
-		this.updateComplete.then(() => {
-			this._input?.focus();
-		});
+		this.updateComplete.then(() => { this._input?.focus(); });
 	}
 
 	public focus(): void {
