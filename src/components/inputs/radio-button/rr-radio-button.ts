@@ -19,7 +19,6 @@
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string, name: string }
  */
-
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { radioButtonStyles } from './rr-radio-button.styles.ts';
@@ -41,10 +40,19 @@ export class RRRadioButton extends LitElement {
 	@property({ type: String })
 	value = '';
 
+	public select(): void {
+		if (this.disabled || this.checked) return;
+		this.checked = true;
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { checked: true, value: this.value, name: this.name },
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
-
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value, name: this.name },
 			bubbles: true,

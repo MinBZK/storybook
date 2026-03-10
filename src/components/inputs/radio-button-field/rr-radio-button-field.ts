@@ -17,7 +17,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { radioButtonFieldStyles } from './rr-radio-button-field.styles.ts';
 import { radioButtonFieldTemplate } from './rr-radio-button-field.template.ts';
-import '../radio-button/rr-radio-button.ts';
+import { type RRRadioButton } from '../radio-button/rr-radio-button.ts';
 
 @customElement('rr-radio-button-field')
 export class RRRadioButtonField extends LitElement {
@@ -38,19 +38,13 @@ export class RRRadioButtonField extends LitElement {
 
 	public _handleLabelClick(): void {
 		if (this.disabled) return;
-		const radioButton = this.shadowRoot?.querySelector('rr-radio-button');
-		const input = radioButton?.shadowRoot?.querySelector('input');
-		if (!input || input.checked) return;
-		input.checked = true;
-		input.dispatchEvent(new Event('change', { bubbles: true }));
+		const radioButton = this.shadowRoot?.querySelector('rr-radio-button') as RRRadioButton | null;
+		radioButton?.select();
 	}
 
 	public _handleChange(e: Event): void {
-		const target = e.target as HTMLElement;
-		const input = (target instanceof HTMLInputElement
-			? target
-			: target.shadowRoot?.querySelector('input')) as HTMLInputElement | null;
-		this.checked = input?.checked ?? false;
+		const { checked } = (e as CustomEvent).detail;
+		this.checked = checked;
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value },
 			bubbles: true,
