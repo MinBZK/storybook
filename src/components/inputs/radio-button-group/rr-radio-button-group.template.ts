@@ -6,7 +6,7 @@ export function radioButtonGroupTemplate(component: RRRadioButtonGroup): Templat
 		<div class="radio-button-group"
 			role="radiogroup"
 		>
-			<slot @slotchange=${component._onSlotChange.bind(component)}></slot>
+			<slot @slotchange=${component._onSlotChange}></slot>
 		</div>
 	`;
 }
