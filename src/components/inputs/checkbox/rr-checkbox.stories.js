@@ -6,7 +6,7 @@ import './rr-checkbox.ts';
  *
  * ## Gebruik
  * ```html
- * <rr-checkbox aria-label="Ik ga akkoord"></rr-checkbox>
+ * <rr-checkbox accessible-label="Ik ga akkoord"></rr-checkbox>
  * ```
  */
 export default {
@@ -64,7 +64,7 @@ const Template = ({ checked, indeterminate, disabled, value, name }) => html`
 		?disabled=${disabled}
 		value=${value}
 		name=${name}
-		aria-label="Checkbox"
+		accessible-label="Checkbox"
 	></rr-checkbox>
 `;
 
@@ -85,12 +85,12 @@ AangevinktUitgeschakeld.args = { checked: true, disabled: true };
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
-		<rr-checkbox aria-label="Niet aangevinkt"></rr-checkbox>
-		<rr-checkbox checked aria-label="Aangevinkt"></rr-checkbox>
-		<rr-checkbox indeterminate aria-label="Onbepaald"></rr-checkbox>
-		<rr-checkbox disabled aria-label="Uitgeschakeld"></rr-checkbox>
-		<rr-checkbox checked disabled aria-label="Aangevinkt en uitgeschakeld"></rr-checkbox>
-		<rr-checkbox indeterminate disabled aria-label="Onbepaald en uitgeschakeld"></rr-checkbox>
+		<rr-checkbox accessible-label="Niet aangevinkt"></rr-checkbox>
+		<rr-checkbox checked accessible-label="Aangevinkt"></rr-checkbox>
+		<rr-checkbox indeterminate accessible-label="Onbepaald"></rr-checkbox>
+		<rr-checkbox disabled accessible-label="Uitgeschakeld"></rr-checkbox>
+		<rr-checkbox checked disabled accessible-label="Aangevinkt en uitgeschakeld"></rr-checkbox>
+		<rr-checkbox indeterminate disabled accessible-label="Onbepaald en uitgeschakeld"></rr-checkbox>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };
