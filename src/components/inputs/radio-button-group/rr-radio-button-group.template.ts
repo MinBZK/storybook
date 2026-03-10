@@ -5,7 +5,7 @@ export function radioButtonGroupTemplate(component: RRRadioButtonGroup): Templat
 	return html`
 		<div class="radio-button-group"
 			role="radiogroup"
-			aria-labelledby=${component.ariaLabelledby || nothing}
+			aria-labelledby=${component.accessibleLabelledBy || nothing}
 			aria-required=${component.required ? 'true' : nothing}
 		>
 			<slot @slotchange=${component._onSlotChange}></slot>
