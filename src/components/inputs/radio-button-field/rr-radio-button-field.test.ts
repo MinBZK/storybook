@@ -22,7 +22,7 @@ describe('rr-radio-button-field', () => {
 		expect(el.shadowRoot!.querySelector('label')).not.toBeNull();
 	});
 
-	it('renders a slotted rr-radio-button', async () => {
+	it('renders rr-radio-button in shadow DOM', async () => {
 		el = await fixture('<rr-radio-button-field></rr-radio-button-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('rr-radio-button')).not.toBeNull();
