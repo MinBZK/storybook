@@ -66,8 +66,10 @@ export class RRRadioButtonGroup extends LitElement {
 		this._getFields().forEach(field => {
 			field.name = this.name;
 			if (this.disabled) {
+				field.setAttribute('data-group-disabled', '');
 				field.disabled = true;
-			} else if (!field.hasAttribute('disabled')) {
+			} else if (field.hasAttribute('data-group-disabled')) {
+				field.removeAttribute('data-group-disabled');
 				field.disabled = false;
 			}
 		});
