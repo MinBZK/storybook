@@ -30,7 +30,7 @@ describe('rr-radio-button-group', () => {
 	it('renders a div with role="radiogroup"', async () => {
 		el = await fixture('<rr-radio-button-group></rr-radio-button-group>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('[role="radiogroup"]')).not.toBeNull();
+		expect(el.getAttribute('role')).toBe('radiogroup');
 	});
 });
 
@@ -166,8 +166,7 @@ describe('rr-radio-button-group – accessibility', () => {
 			<rr-radio-button-group accessible-labelledby="my-label"></rr-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const radiogroup = el.shadowRoot!.querySelector('[role="radiogroup"]')!;
-		expect(radiogroup.getAttribute('aria-labelledby')).toBe('my-label');
+		expect(el.getAttribute('aria-labelledby')).toBe('my-label');
 	});
 
 	it('does not set aria-labelledby when accessible-labelledby is not provided', async () => {
@@ -175,7 +174,6 @@ describe('rr-radio-button-group – accessibility', () => {
 			<rr-radio-button-group></rr-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const radiogroup = el.shadowRoot!.querySelector('[role="radiogroup"]')!;
-		expect(radiogroup.getAttribute('aria-labelledby')).toBeNull();
+		expect(el.getAttribute('aria-labelledby')).toBeNull();
 	});
 });

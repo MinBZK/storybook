@@ -38,6 +38,7 @@ export class RRRadioButtonGroup extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
+		this.setAttribute('role', 'radiogroup');
 		this.addEventListener('keydown', this._handleKeyDown);
 		this.addEventListener('change', this._handleChange);
 	}
@@ -51,6 +52,20 @@ export class RRRadioButtonGroup extends LitElement {
 	override updated(changed: Map<PropertyKey, unknown>): void {
 		if (changed.has('name') || changed.has('disabled') || changed.has('required')) {
 			this._syncFields();
+		}
+		if (changed.has('accessibleLabelledBy')) {
+			if (this.accessibleLabelledBy) {
+				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+			} else {
+				this.removeAttribute('aria-labelledby');
+			}
+		}
+		if (changed.has('required')) {
+			if (this.required) {
+				this.setAttribute('aria-required', 'true');
+			} else {
+				this.removeAttribute('aria-required');
+			}
 		}
 	}
 
