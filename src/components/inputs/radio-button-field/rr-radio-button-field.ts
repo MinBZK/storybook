@@ -19,6 +19,8 @@ import { radioButtonFieldStyles } from './rr-radio-button-field.styles.ts';
 import { radioButtonFieldTemplate } from './rr-radio-button-field.template.ts';
 import type { RRRadioButton } from '../radio-button/rr-radio-button.js';
 
+let _labelCounter = 0;
+
 @customElement('rr-radio-button-field')
 export class RRRadioButtonField extends LitElement {
 	static override styles = radioButtonFieldStyles;
@@ -39,7 +41,7 @@ export class RRRadioButtonField extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	private readonly _labelId = `rr-rbf-label-${Math.random().toString(36).slice(2)}`;
+	private readonly _labelId = `rr-rbf-label-${++_labelCounter}`;
 
 	public _handleLabelClick(): void {
 		if (this.disabled) return;
