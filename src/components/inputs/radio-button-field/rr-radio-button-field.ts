@@ -50,7 +50,7 @@ export class RRRadioButtonField extends LitElement {
 		const input = (target instanceof HTMLInputElement
 			? target
 			: target.shadowRoot?.querySelector('input')) as HTMLInputElement | null;
-		this.checked = input?.checked ?? true;
+		this.checked = input?.checked ?? false;
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: this.checked, value: this.value },
 			bubbles: true,
