@@ -174,14 +174,14 @@ describe('rr-checkbox – accessibility', () => {
 	});
 
 	it('forwards aria-label to the native input', async () => {
-		el = await fixture<RRCheckbox>('<rr-checkbox aria-label="Accepteer voorwaarden"></rr-checkbox>');
+		el = await fixture<RRCheckbox>('<rr-checkbox accessible-label="Accepteer voorwaarden"></rr-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('aria-label')).toBe('Accepteer voorwaarden');
 	});
 
 	it('forwards aria-labelledby to the native input', async () => {
-		el = await fixture<RRCheckbox>('<rr-checkbox aria-labelledby="label-id"></rr-checkbox>');
+		el = await fixture<RRCheckbox>('<rr-checkbox accessible-labelledby="label-id"></rr-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('aria-labelledby')).toBe('label-id');
