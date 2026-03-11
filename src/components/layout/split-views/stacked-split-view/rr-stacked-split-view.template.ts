@@ -16,7 +16,7 @@ export function stackedSplitViewTemplate(component: RRStackedSplitView): Templat
 						aria-orientation="horizontal"
 					></rr-split-view-divider>
 				` : nothing}
-				<div class="stacked-split-view__pane" style="--_pane-flex: 1;">
+				<div class="stacked-split-view__pane">
 					<slot name="pane-${n}"></slot>
 				</div>
 			`)}

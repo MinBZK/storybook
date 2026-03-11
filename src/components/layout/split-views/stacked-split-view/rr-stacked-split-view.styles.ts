@@ -33,7 +33,7 @@ export const stackedSplitViewStyles = css`
 	.stacked-split-view__pane {
 		display: flex;
 		flex-direction: column;
-		flex: var(--_pane-flex, 1);
+		flex: 1;
 		min-height: var(--primitives-area-320);
 		min-width: 0;
 		overflow: hidden;

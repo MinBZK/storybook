@@ -32,7 +32,7 @@ export const sideBySideSplitViewStyles = css`
 	.side-by-side-split-view__pane {
 		display: flex;
 		flex-direction: column;
-		flex: var(--_pane-flex, 1);
+		flex: 1;
 		min-height: 0;
 		min-width: var(--primitives-area-320);
 		overflow: hidden;

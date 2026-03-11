@@ -16,7 +16,7 @@ export function sideBySideSplitViewTemplate(component: RRSideBySideSplitView): T
 						aria-orientation="vertical"
 					></rr-split-view-divider>
 				` : nothing}
-				<div class="side-by-side-split-view__pane" style="--_pane-flex: 1;">
+				<div class="side-by-side-split-view__pane">
 					<slot name="pane-${n}"></slot>
 				</div>
 			`)}

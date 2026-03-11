@@ -31,7 +31,7 @@ export const collectionStyles = css`
 	:host([layout='grid']) .collection__items,
 	:host(:not([layout])) .collection__items {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(var(--collection-item-min-width, 200px), 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(var(--primitives-area-280), 1fr));
 	}
 
 
@@ -113,6 +113,6 @@ export const collectionStyles = css`
 
 	:host([layout='horizontal-scroll']) .collection__footer {
 		justify-content: flex-end;
-		gap: var(--semantics-spacing-sm);
+		gap: var(--primitives-space-16);
 	}
 `;
