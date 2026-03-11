@@ -1,5 +1,5 @@
-import '../src/assets/css/fonts.css';
-import '../src/assets/css/settings.css';
+import '../src/assets/styles/fonts.css';
+import '../src/assets/styles/settings.css';
 import '../src/components/content/rich-text/rr-rich-text.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 

@@ -22,7 +22,7 @@
   },
   "scripts": {
     "build": "npm run build:tokens && npm run validate:tokens && npm run build:components",
-    "build:tokens": "mkdir -p dist/css && cp src/assets/css/settings.css dist/css/tokens.css",
+    "build:tokens": "mkdir -p dist/css && cp src/assets/styles/settings.css dist/css/tokens.css",
     "validate:tokens": "node scripts/validate-css-variables.js",
     "build:components": "npm run clean:components && vite build",
     "clean": "rm -rf dist",

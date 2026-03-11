@@ -54,7 +54,7 @@ View the live component documentation: **https://minbzk.github.io/storybook/**
 ## Architectuur
 
 ```
-src/assets/css/settings.css (CSS custom properties)
+src/assets/styles/settings.css (CSS custom properties)
 	↓
 dist/css/tokens.css
 	↓
@@ -139,7 +139,7 @@ Tokens zijn georganiseerd in drie lagen:
 
 ### Tokens updaten
 
-1. Bewerk `src/assets/css/settings.css`
+1. Bewerk `src/assets/styles/settings.css`
 2. Run `npm run build:tokens`
 
 ### Nieuwe component maken
