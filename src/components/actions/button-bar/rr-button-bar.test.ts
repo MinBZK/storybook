@@ -2,8 +2,8 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRButtonBar } from './rr-button-bar.ts';
 import './rr-button-bar.ts';
-import '../../actions/button/rr-button.ts';
-import '../../actions/icon-button/rr-icon-button.ts';
+import '../button/rr-button.ts';
+import '../icon-button/rr-icon-button.ts';
 
 describe('rr-button-bar', () => {
   let el: HTMLElement;

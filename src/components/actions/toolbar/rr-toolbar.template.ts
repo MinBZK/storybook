@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
-import '../../actions/icon-button/rr-icon-button.js';
+import '../icon-button/rr-icon-button.js';
 import '../../content/icon/rr-icon.js';
 
 // # Types

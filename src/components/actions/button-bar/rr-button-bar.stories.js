@@ -1,11 +1,11 @@
 import { html } from 'lit';
 import './rr-button-bar.ts';
-import '../../actions/button/rr-button.ts';
-import '../../actions/icon-button/rr-icon-button.ts';
+import '../button/rr-button.ts';
+import '../icon-button/rr-icon-button.ts';
 import '../../content/icon/rr-icon.ts';
 
 export default {
-	title: 'Components/Control Groups/Button Bar',
+	title: 'Components/Actions/Button Bar',
 	component: 'rr-button-bar',
 	tags: ['autodocs'],
 	parameters: {

@@ -1,13 +1,13 @@
 import { html } from 'lit';
 import './rr-toolbar.ts';
-import '../../actions/button/rr-button.ts';
-import '../../actions/icon-button/rr-icon-button.ts';
-import '../../content/icon/rr-icon.ts';
+import '../button/rr-button.ts';
+import '../icon-button/rr-icon-button.ts';
 import '../button-bar/rr-button-bar.ts';
+import '../../content/icon/rr-icon.ts';
 import '../../lists-and-menus/menu/rr-menu.ts';
 import '../../inputs/search-field/rr-search-field.ts';
 export default {
-	title: 'Components/Control Groups/Toolbar',
+	title: 'Components/Actions/Toolbar',
 	component: 'rr-toolbar',
 	tags: ['autodocs'],
 	argTypes: {

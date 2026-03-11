@@ -14,19 +14,15 @@
 export { RRButton } from './actions/button/rr-button.ts';
 export { RRIconButton } from './actions/icon-button/rr-icon-button.ts';
 export { RRSplitButton } from './actions/split-button/rr-split-button.ts';
+export { RRButtonGroup } from './actions/button-group/rr-button-group.ts';
+export { RRButtonBar } from './actions/button-bar/rr-button-bar.ts';
+export { RRToolbar } from './actions/toolbar/rr-toolbar.ts';
 
 
 // # Content components
 
 export { RRIcon } from './content/icon/rr-icon.ts';
 export { RRRichText } from './content/rich-text/rr-rich-text.ts';
-
-
-// # Control Group components
-
-export { RRButtonGroup } from './control-groups/button-group/rr-button-group.ts';
-export { RRButtonBar } from './control-groups/button-bar/rr-button-bar.ts';
-export { RRToolbar } from './control-groups/toolbar/rr-toolbar.ts';
 
 
 // # Forms components
