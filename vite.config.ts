@@ -1,0 +1,16 @@
+import { defineConfig } from 'vite';
+import { resolve } from 'node:path';
+
+export default defineConfig({
+	build: {
+		lib: {
+			entry: resolve(__dirname, 'src/components/index.ts'),
+			formats: ['es'],
+			fileName: () => 'rr-components.js',
+		},
+		outDir: 'dist/components',
+		emptyOutDir: false,
+		target: 'es2020',
+		minify: false,
+	},
+});

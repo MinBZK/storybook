@@ -1,5 +1,3 @@
-import type { LitElement } from 'lit';
-
 /**
  * Creates a DOM fixture by parsing the given HTML string, appending it to the
  * document body inside a wrapper <div>, and waiting for the first element
@@ -7,7 +5,7 @@ import type { LitElement } from 'lit';
  *
  * Returns the first element child, typed as T.
  */
-export async function fixture<T extends LitElement>(html: string): Promise<T> {
+export async function fixture<T extends HTMLElement = HTMLElement>(html: string): Promise<T> {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = html;
   document.body.appendChild(wrapper);
@@ -15,8 +13,8 @@ export async function fixture<T extends LitElement>(html: string): Promise<T> {
   const el = wrapper.firstElementChild as T;
 
   // Wait for the element's Lit lifecycle to settle
-  if (el.updateComplete) {
-    await el.updateComplete;
+  if ('updateComplete' in el) {
+    await (el as T & { updateComplete: Promise<boolean> }).updateComplete;
   }
 
   return el;
@@ -40,8 +38,9 @@ export function cleanup(el: Element): void {
  *   2. Yielding to the macrotask queue (setTimeout 0)
  *   3. Awaiting updateComplete again (covers MO-triggered re-renders)
  */
-export async function waitForUpdate(el: LitElement): Promise<void> {
-  await el.updateComplete;
+export async function waitForUpdate(el: HTMLElement): Promise<void> {
+  const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+  await litEl.updateComplete;
   await new Promise(r => setTimeout(r, 0));
-  await el.updateComplete;
+  await litEl.updateComplete;
 }
