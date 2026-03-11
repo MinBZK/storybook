@@ -76,6 +76,8 @@ export class RRCollection extends LitElement {
 	private _loadMoreBtn!: HTMLElement | null;
 
 	private _intersectionObserver: IntersectionObserver | undefined;
+	private _resizeObserver: ResizeObserver | undefined;
+	private _scrollListenerAttached = false;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -85,21 +87,14 @@ export class RRCollection extends LitElement {
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this._intersectionObserver?.disconnect();
-		this._resizeObserver?.disconnect();
-		this._itemsEl?.removeEventListener('scroll', this._scrollListener);
+		this._teardownScrollListeners();
 	}
 
-	private _resizeObserver: ResizeObserver | undefined;
-
-	override firstUpdated(): void {
-		if (this.layout === 'horizontal-scroll' && this._itemsEl) {
-			this._itemsEl.addEventListener('scroll', this._scrollListener, { passive: true });
-			this._resizeObserver = new ResizeObserver(() => this._scrollListener());
-			this._resizeObserver.observe(this._itemsEl);
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('layout')) {
+			this._setupScrollListeners();
 		}
-	}
 
-	override updated(): void {
 		if (this.lazyLoad && this._loadMoreBtn && !this._intersectionObserver) {
 			this._intersectionObserver = new IntersectionObserver(
 				([entry]) => { if (entry.isIntersecting) this._loadMore(); },
@@ -110,6 +105,24 @@ export class RRCollection extends LitElement {
 			this._intersectionObserver?.disconnect();
 			this._intersectionObserver = undefined;
 		}
+	}
+
+	private _setupScrollListeners(): void {
+		this._teardownScrollListeners();
+
+		if (this.layout === 'horizontal-scroll' && this._itemsEl) {
+			this._itemsEl.addEventListener('scroll', this._scrollListener, { passive: true });
+			this._resizeObserver = new ResizeObserver(() => this._scrollListener());
+			this._resizeObserver.observe(this._itemsEl);
+			this._scrollListenerAttached = true;
+		}
+	}
+
+	private _teardownScrollListeners(): void {
+		this._itemsEl?.removeEventListener('scroll', this._scrollListener);
+		this._resizeObserver?.disconnect();
+		this._resizeObserver = undefined;
+		this._scrollListenerAttached = false;
 	}
 
 	_onSlotChange(e: Event): void {

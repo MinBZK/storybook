@@ -74,19 +74,19 @@ export const collectionStyles = css`
 		display: none;
 	}
 
+	:host([layout='horizontal-scroll']) .collection__items ::slotted(*) {
+		flex-grow: 0;
+		flex-shrink: 0;
+		flex-basis: var(--primitives-area-280);
+		scroll-snap-align: start;
+	}
+
 
 	/* # Footer */
 
 	.collection__footer {
 		display: flex;
 		width: 100%;
-	}
-
-	:host([layout='horizontal-scroll']) .collection__items ::slotted(*) {
-		flex-grow: 0;
-		flex-shrink: 0;
-		flex-basis: var(--primitives-area-280)
-		scroll-snap-align: start;
 	}
 
 
