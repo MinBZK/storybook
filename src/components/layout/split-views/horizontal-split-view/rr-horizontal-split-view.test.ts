@@ -15,7 +15,7 @@ describe('rr-horizontal-split-view', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders sidebar, content and inspector panes', async () => {
+	it('renders sidebar, main and inspector panes', async () => {
 		el = await fixture('<rr-horizontal-split-view></rr-horizontal-split-view>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.horizontal-split-view__sidebar')).not.toBeNull();

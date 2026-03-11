@@ -14,7 +14,7 @@ import '../../../content/rich-text/rr-rich-text.ts';
  * ```html
  * <rr-vertical-split-view>
  *   <rr-page slot="header">...</rr-page>
- *   <rr-page slot="content">...</rr-page>
+ *   <rr-page slot="main">...</rr-page>
  *   <rr-page slot="footer">...</rr-page>
  * </rr-vertical-split-view>
  * ```
@@ -68,7 +68,7 @@ export const Standaard = ({ showHeader, showFooter }) => html`
 			</rr-simple-section>
 		</rr-page>
 
-		<rr-page sticky-header slot="content">
+		<rr-page sticky-header slot="main">
 			<rr-rich-text slot="header" style="padding: 16px;">
 				<strong>Inhoud</strong>
 			</rr-rich-text>

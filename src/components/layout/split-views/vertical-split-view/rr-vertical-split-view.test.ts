@@ -15,7 +15,7 @@ describe('rr-vertical-split-view', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders header, content and footer panes', async () => {
+	it('renders header, main and footer panes', async () => {
 		el = await fixture('<rr-vertical-split-view></rr-vertical-split-view>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.vertical-split-view__header')).not.toBeNull();
@@ -45,7 +45,7 @@ describe('rr-vertical-split-view', () => {
 		expect(el.shadowRoot!.querySelectorAll('rr-split-view-divider').length).toBe(1);
 	});
 
-	it('always renders content pane', async () => {
+	it('always renders main pane', async () => {
 		el = await fixture('<rr-vertical-split-view></rr-vertical-split-view>');
 		(el as any).showHeader = false;
 		(el as any).showFooter = false;
