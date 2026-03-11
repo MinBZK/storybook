@@ -24,7 +24,7 @@ describe('rr-one-third-two-thirds-section', () => {
 	it('renders aside and main columns', async () => {
 		el = await fixture('<rr-one-third-two-thirds-section></rr-one-third-two-thirds-section>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.section__aside')).not.toBeNull();
-		expect(el.shadowRoot!.querySelector('.section__main')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.one-third-two-thirds-section__left-column')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.one-third-two-thirds-section__right-column')).not.toBeNull();
 	});
 });

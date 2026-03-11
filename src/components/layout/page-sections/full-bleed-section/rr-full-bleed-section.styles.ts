@@ -20,58 +20,44 @@ export const fullBleedSectionStyles = css`
 
 	/* # Section */
 
-	.section {
+	.full-bleed-section {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		box-sizing: border-box;
+
+		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
+			padding-block: var(--semantics-page-sections-sm-margin-block);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
+			padding-block: var(--semantics-page-sections-md-margin-block);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
+			padding-block: var(--semantics-page-sections-lg-margin-block);
+		}
 	}
 
 
 	/* # Body */
 
-	.section__body {
+	.full-bleed-section__body {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-	}
 
-
-	/* # Container: sm */
-
-	@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
-		.section {
-			padding-block: var(--semantics-page-sections-sm-margin-block);
-		}
-
-		.section__body {
+		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
-	}
 
-
-	/* # Container: md */
-
-	@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
-		.section {
-			padding-block: var(--semantics-page-sections-md-margin-block);
-		}
-
-		.section__body {
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
-	}
 
-
-	/* # Container: lg */
-
-	@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
-		.section {
-			padding-block: var(--semantics-page-sections-lg-margin-block);
-		}
-
-		.section__body {
+		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
+
 `;

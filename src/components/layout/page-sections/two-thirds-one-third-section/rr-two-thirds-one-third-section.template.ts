@@ -3,15 +3,15 @@ import type { RRTwoThirdsOneThirdSection } from './rr-two-thirds-one-third-secti
 
 export function twoThirdsOneThirdSectionTemplate(component: RRTwoThirdsOneThirdSection): TemplateResult {
 	return html`
-		<section class="section">
-			<div class="section__body">
+		<section class="two-thirds-one-third-section">
+			<div class="two-thirds-one-third-section__body">
 				<slot name="header"></slot>
-				<div class="section__columns">
-					<div class="section__left-column">
+				<div class="two-thirds-one-third-section__columns">
+					<div class="two-thirds-one-third-section__left-column">
 						<slot></slot>
 						<slot name="left"></slot>
 					</div>
-					<div class="section__right-column">
+					<div class="two-thirds-one-third-section__right-column">
 						<slot name="right"></slot>
 					</div>
 				</div>

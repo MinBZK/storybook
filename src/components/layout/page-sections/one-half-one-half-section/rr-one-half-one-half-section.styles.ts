@@ -20,93 +20,78 @@ export const oneHalfOneHalfSectionStyles = css`
 
 	/* # Section */
 
-	.section {
+	.one-half-one-half-section {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		width: 100%;
 		box-sizing: border-box;
+
+		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			padding-block: var(--semantics-page-sections-sm-margin-block);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
+			padding-inline: var(--semantics-page-sections-md-margin-inline);
+			padding-block: var(--semantics-page-sections-md-margin-block);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
+			padding-inline: var(--semantics-page-sections-lg-margin-inline);
+			padding-block: var(--semantics-page-sections-lg-margin-block);
+		}
 	}
 
 
 	/* # Body */
 
-	.section__body {
+	.one-half-one-half-section__body {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		max-width: var(--semantics-page-sections-body-max-width);
+
+		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
+			gap: var(--semantics-page-sections-md-gap);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
+			gap: var(--semantics-page-sections-lg-gap);
+		}
 	}
 
 
 	/* # Columns */
 
-	.section__columns {
+	.one-half-one-half-section__columns {
 		display: flex;
 		flex-wrap: wrap;
+
+		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
+			gap: var(--semantics-page-sections-md-gap);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
+			gap: var(--semantics-page-sections-lg-gap);
+		}
 	}
 
-	.section__left-column {
+	.one-half-one-half-section__left-column {
 		flex: 1;
 		min-width: var(--primitives-area-280);
 	}
 
-	.section__right-column {
+	.one-half-one-half-section__right-column {
 		flex: 1;
 		min-width: var(--primitives-area-280);
-	}
-
-
-	/* # Container: sm */
-
-	@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
-		.section {
-			padding-inline: var(--semantics-page-sections-sm-margin-inline);
-			padding-block: var(--semantics-page-sections-sm-margin-block);
-		}
-
-		.section__body {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-
-		.section__columns {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-	}
-
-
-	/* # Container: md */
-
-	@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
-		.section {
-			padding-inline: var(--semantics-page-sections-md-margin-inline);
-			padding-block: var(--semantics-page-sections-md-margin-block);
-		}
-
-		.section__body {
-			gap: var(--semantics-page-sections-md-gap);
-		}
-
-		.section__columns {
-			gap: var(--semantics-page-sections-md-gap);
-		}
-	}
-
-
-	/* # Container: lg */
-
-	@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
-		.section {
-			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-			padding-block: var(--semantics-page-sections-lg-margin-block);
-		}
-
-		.section__body {
-			gap: var(--semantics-page-sections-lg-gap);
-		}
-
-		.section__columns {
-			gap: var(--semantics-page-sections-lg-gap);
-		}
 	}
 `;

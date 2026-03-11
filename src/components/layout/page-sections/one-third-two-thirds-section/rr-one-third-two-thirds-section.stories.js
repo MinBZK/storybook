@@ -38,7 +38,7 @@ export const Standaard = () => html`
 		<rr-rich-text slot="header">
 			<h2>Sectietitel</h2>
 		</rr-rich-text>
-		<rr-rich-text slot="aside">
+		<rr-rich-text slot="left">
 			<h3>Zijkolom</h3>
 			<p>Gebruik de zijkolom voor navigatie, filters of aanvullende informatie.</p>
 		</rr-rich-text>
@@ -55,7 +55,7 @@ export const Standaard = () => html`
 
 export const ZonderHeaderEnFooter = () => html`
 	<rr-one-third-two-thirds-section>
-		<rr-rich-text slot="aside">
+		<rr-rich-text slot="left">
 			<h3>Zijkolom</h3>
 			<p>Aanvullende informatie.</p>
 		</rr-rich-text>

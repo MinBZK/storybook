@@ -24,7 +24,7 @@ describe('rr-one-half-one-half-section', () => {
 	it('renders main and aside columns', async () => {
 		el = await fixture('<rr-one-half-one-half-section></rr-one-half-one-half-section>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.section__main')).not.toBeNull();
-		expect(el.shadowRoot!.querySelector('.section__aside')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.one-half-one-half-section__left-column')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.one-half-one-half-section__right-column')).not.toBeNull();
 	});
 });

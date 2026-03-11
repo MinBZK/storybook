@@ -14,7 +14,7 @@ import '../../../content/rich-text/rr-rich-text.ts';
  * <rr-two-thirds-one-third-section>
  *   <rr-rich-text slot="header"><h2>Sectietitel</h2></rr-rich-text>
  *   <rr-rich-text><p>Hoofdinhoud.</p></rr-rich-text>
- *   <rr-rich-text slot="aside"><p>Zijkolom.</p></rr-rich-text>
+ *   <rr-rich-text slot="right"><p>Zijkolom.</p></rr-rich-text>
  * </rr-two-thirds-one-third-section>
  * ```
  */
@@ -43,7 +43,7 @@ export const Standaard = () => html`
 			<p>Dit is de hoofdinhoud van de sectie. Deze kolom neemt twee derde van de breedte in.</p>
 			<p>De kolommen wrappen automatisch wanneer de beschikbare breedte te klein wordt.</p>
 		</rr-rich-text>
-		<rr-rich-text slot="aside">
+		<rr-rich-text slot="right">
 			<h3>Zijkolom</h3>
 			<p>Gebruik de zijkolom voor gerelateerde informatie, uitleg of aanvullende acties.</p>
 		</rr-rich-text>
@@ -59,7 +59,7 @@ export const ZonderHeaderEnFooter = () => html`
 			<h3>Hoofdinhoud</h3>
 			<p>De hoofdinhoud van de sectie zonder header en footer.</p>
 		</rr-rich-text>
-		<rr-rich-text slot="aside">
+		<rr-rich-text slot="right">
 			<h3>Zijkolom</h3>
 			<p>Aanvullende informatie.</p>
 		</rr-rich-text>

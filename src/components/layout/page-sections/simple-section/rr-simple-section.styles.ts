@@ -20,62 +20,47 @@ export const simpleSectionStyles = css`
 
 	/* # Section */
 
-	.section {
+	.simple-section {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		width: 100%;
 		box-sizing: border-box;
+
+		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			padding-block: var(--semantics-page-sections-sm-margin-block);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
+			padding-inline: var(--semantics-page-sections-md-margin-inline);
+			padding-block: var(--semantics-page-sections-md-margin-block);
+		}
+
+		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
+			padding-inline: var(--semantics-page-sections-lg-margin-inline);
+			padding-block: var(--semantics-page-sections-lg-margin-block);
+		}
 	}
 
 
 	/* # Body */
 
-	.section__body {
+	.simple-section__body {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		max-width: var(--semantics-page-sections-body-max-width);
-	}
 
-
-	/* # Container: sm */
-
-	@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
-		.section {
-			padding-inline: var(--semantics-page-sections-sm-margin-inline);
-			padding-block: var(--semantics-page-sections-sm-margin-block);
-		}
-
-		.section__body {
+		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
-	}
 
-
-	/* # Container: md */
-
-	@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
-		.section {
-			padding-inline: var(--semantics-page-sections-md-margin-inline);
-			padding-block: var(--semantics-page-sections-md-margin-block);
-		}
-
-		.section__body {
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
-	}
 
-
-	/* # Container: lg */
-
-	@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
-		.section {
-			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-			padding-block: var(--semantics-page-sections-lg-margin-block);
-		}
-
-		.section__body {
+		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}

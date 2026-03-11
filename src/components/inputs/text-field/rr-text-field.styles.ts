@@ -71,7 +71,7 @@ export const textFieldStyles = css`
 		min-width: 0;
 		overflow: hidden;
 		box-sizing: border-box;
-		padding: 0 ;
+		padding: 0;
 		margin: 0;
 		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		font: var(--semantics-input-fields-md-text-font);

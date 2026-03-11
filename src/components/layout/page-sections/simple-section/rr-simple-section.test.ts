@@ -18,6 +18,6 @@ describe('rr-simple-section', () => {
 	it('renders a section element in the shadow DOM', async () => {
 		el = await fixture('<rr-simple-section></rr-simple-section>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('section')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.simple-section')).not.toBeNull();
 	});
 });
