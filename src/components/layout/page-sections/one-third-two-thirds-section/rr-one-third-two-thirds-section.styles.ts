@@ -4,7 +4,7 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 /* # rr-two-thirds-one-third-section styles */
 
-export const twoThirdsOneThirdSectionStyles = css`
+export const oneThirdTwoThirdsSectionStyles = css`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -86,12 +86,12 @@ export const twoThirdsOneThirdSectionStyles = css`
 	}
 
 	.one-third-two-thirds-section__left-column {
-		flex: 2;
+		flex: 1;
 		min-width: var(--primitives-area-280);
 	}
 
 	.one-third-two-thirds-section__right-column {
-		flex: 1;
+		flex: 2;
 		min-width: var(--primitives-area-280);
 	}
 `;
