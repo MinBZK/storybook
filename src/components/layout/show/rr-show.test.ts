@@ -36,7 +36,7 @@ describe('rr-show', () => {
 	it('defaults query to viewport', async () => {
 		el = await fixture('<rr-show></rr-show>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('query')).toBe('viewport');
+		expect(el.getAttribute('query')).toBe('container');
 	});
 
 	it('reflects query attribute', async () => {

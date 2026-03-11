@@ -41,11 +41,6 @@ export default {
 		},
 	},
 	argTypes: {
-		query: {
-			control: 'select',
-			options: ['viewport', 'container'],
-			description: 'Type query: viewport (standaard) of container',
-		},
 		above: {
 			control: 'select',
 			options: ['sm', 'md', 'lg'],
@@ -61,16 +56,21 @@ export default {
 			options: ['sm', 'md', 'lg'],
 			description: 'Toon alleen op dit breekpunt',
 		},
+		query: {
+			control: 'select',
+			options: ['viewport', 'container'],
+			description: 'Type query: viewport (standaard) of container',
+		},
 	},
 };
 
 export const Standaard = {
 	args: {
 		above: 'md',
-		query: 'viewport',
+		query: 'container',
 	},
 	render: (args) => html`
-		<rr-show query=${args.query} above=${args.above} below=${args.below} only=${args.only}>
+		<rr-show above=${args.above} below=${args.below} only=${args.only} query=${args.query}>
 			<rr-rich-text><p>Verklein of vergroot het venster om het effect te zien.</p></rr-rich-text>
 		</rr-show>
 	`,
@@ -81,35 +81,35 @@ export const AboveMd = () => html`
 		<rr-rich-text><p>Zichtbaar op <strong>md en groter</strong>.</p></rr-rich-text>
 	</rr-show>
 `;
-AboveMd.storyName = 'Above md';
+AboveMd.storyName = 'above="md"';
 
 export const BelowMd = () => html`
 	<rr-show below="md">
 		<rr-rich-text><p>Zichtbaar op <strong>sm en md</strong>.</p></rr-rich-text>
 	</rr-show>
 `;
-BelowMd.storyName = 'Below md';
+BelowMd.storyName = 'below="md"';
 
 export const OnlySm = () => html`
 	<rr-show only="sm">
 		<rr-rich-text><p>Alleen zichtbaar op <strong>sm</strong>.</p></rr-rich-text>
 	</rr-show>
 `;
-OnlySm.storyName = 'Only sm';
+OnlySm.storyName = 'only="sm"';
 
 export const OnlyMd = () => html`
 	<rr-show only="md">
 		<rr-rich-text><p>Alleen zichtbaar op <strong>md</strong>.</p></rr-rich-text>
 	</rr-show>
 `;
-OnlyMd.storyName = 'Only md';
+OnlyMd.storyName = 'only="md"';
 
 export const OnlyLg = () => html`
 	<rr-show only="lg">
 		<rr-rich-text><p>Alleen zichtbaar op <strong>lg</strong>.</p></rr-rich-text>
 	</rr-show>
 `;
-OnlyLg.storyName = 'Only lg';
+OnlyLg.storyName = 'only="lg"';
 
 export const MeerdereZones = () => html`
 	<rr-show only="sm">

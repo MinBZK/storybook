@@ -37,7 +37,7 @@ export class RRShow extends LitElement {
 	only: Breakpoint | undefined = undefined;
 
 	@property({ type: String, reflect: true })
-	query: Query = 'viewport';
+	query: Query = 'container';
 
 	override render() {
 		return showTemplate(this);
