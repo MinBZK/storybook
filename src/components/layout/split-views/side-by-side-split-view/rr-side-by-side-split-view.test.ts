@@ -30,6 +30,6 @@ describe('rr-side-by-side-split-view', () => {
 	it('renders dividers between panes', async () => {
 		el = await fixture('<rr-side-by-side-split-view panes="3"></rr-side-by-side-split-view>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelectorAll('.side-by-side-split-view__divider').length).toBe(2);
+		expect(el.shadowRoot!.querySelectorAll('rr-split-view-divider').length).toBe(2);
 	});
 });
