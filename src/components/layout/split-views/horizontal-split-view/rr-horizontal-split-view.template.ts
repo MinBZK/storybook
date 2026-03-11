@@ -16,8 +16,8 @@ export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): T
 					aria-orientation="vertical"
 				></rr-split-view-divider>
 			` : nothing}
-			<div class="split-view__content">
-				<slot name="content"></slot>
+			<div class="split-view__main">
+				<slot name="main"></slot>
 			</div>
 			${component.showInspector ? html`
 				<rr-split-view-divider

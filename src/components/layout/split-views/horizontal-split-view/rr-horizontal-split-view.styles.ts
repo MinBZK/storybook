@@ -40,9 +40,9 @@ export const horizontalSplitViewStyles = css`
 	}
 
 
-	/* # Content */
+	/* # Main */
 
-	.split-view__content {
+	.split-view__main {
 		display: flex;
 		flex-direction: column;
 		flex: 1;

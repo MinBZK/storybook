@@ -15,11 +15,11 @@ describe('rr-horizontal-split-view', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders sidebar, content and inspector panes', async () => {
+	it('renders sidebar, main and inspector panes', async () => {
 		el = await fixture('<rr-horizontal-split-view></rr-horizontal-split-view>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.split-view__sidebar')).not.toBeNull();
-		expect(el.shadowRoot!.querySelector('.split-view__content')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.split-view__main')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('.split-view__inspector')).not.toBeNull();
 	});
 

@@ -13,7 +13,7 @@
  * @attr {boolean} show-sidebar - Toon de zijbalk (standaard: true)
  * @attr {boolean} show-inspector - Toon de inspecteur (standaard: true)
  *
- * @slot content - Middelste paneel voor de primaire inhoud
+ * @slot main - Middelste paneel voor de primaire inhoud
  * @slot inspector - Rechter paneel voor details of eigenschappen
  */
 import { LitElement } from 'lit';

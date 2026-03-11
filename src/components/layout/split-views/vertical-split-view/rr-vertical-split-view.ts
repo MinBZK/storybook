@@ -1,110 +1,43 @@
 /**
  * RegelRecht Vertical Split View Component (Lit + TypeScript)
  *
- * A 3-pane column layout for the browser page. Renders horizontal dividers
- * automatically between panes.
+ * Een drierijige layout met een koptekst, inhoudsgebied en voettekst.
+ * De koptekst biedt ruimte voor tools en acties boven de inhoud; het
+ * inhoudsgebied toont de primaire inhoud; het voettekst biedt ruimte
+ * voor uitvoer, logboeken of aanvullende panelen onder de inhoud.
+ * Het inhoudsgebied blijft altijd zichtbaar.
  *
  * @element rr-vertical-split-view
  *
- * @slot top - Fixed-height top pane (e.g. toolbar, header)
- * @slot main - Flex-grow center pane (e.g. content area)
- * @slot bottom - Fixed-height bottom pane (e.g. footer, status bar)
+ * @attr {boolean} show-header - Toon de koptekst (standaard: true)
+ * @attr {boolean} show-footer - Toon het voettekst (standaard: true)
  *
- * @csspart container - The outer flex container
- * @csspart divider-top - The divider between top and main panes
- * @csspart divider-bottom - The divider between main and bottom panes
- *
- * @cssprop --rr-vertical-split-view-top-height - Height of the top pane
- * @cssprop --rr-vertical-split-view-bottom-height - Height of the bottom pane
+ * @slot header - Bovenste paneel voor kopteksten en acties
+ * @slot content - Middelste paneel voor de primaire inhoud
+ * @slot footer - Onderste paneel voor uitvoer, logboeken of statusinformatie
  */
-
-import { LitElement, html, css } from 'lit';
-import { customElement } from 'lit/decorators.js';
-import '../split-view-divider/rr-split-view-divider.ts';
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { verticalSplitViewStyles } from './rr-vertical-split-view.styles.ts';
+import { verticalSplitViewTemplate } from './rr-vertical-split-view.template.ts';
 
 @customElement('rr-vertical-split-view')
 export class RRVerticalSplitView extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-    }
+	static override styles = verticalSplitViewStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'show-header' })
+	showHeader = true;
 
-    .vertical-split-view {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      min-width: 0;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'show-footer' })
+	showFooter = true;
 
-    .vertical-split-view__top {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      height: var(--rr-vertical-split-view-top-height, auto);
-      min-width: 0;
-    }
-
-    .vertical-split-view__main {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      min-width: 0;
-    }
-
-    .vertical-split-view__bottom {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      height: var(--rr-vertical-split-view-bottom-height, auto);
-      min-width: 0;
-    }
-
-    ::slotted(*) {
-      flex: 1;
-      min-height: 0;
-    }
-
-    rr-split-view-divider {
-      align-self: stretch;
-    }
-  `;
-
-  override render() {
-    return html`
-      <div class="vertical-split-view" part="container">
-        <div class="vertical-split-view__top">
-          <slot name="top"></slot>
-        </div>
-        <rr-split-view-divider
-          orientation="horizontal"
-          part="divider-top"
-        ></rr-split-view-divider>
-        <div class="vertical-split-view__main">
-          <slot name="main"></slot>
-        </div>
-        <rr-split-view-divider
-          orientation="horizontal"
-          part="divider-bottom"
-        ></rr-split-view-divider>
-        <div class="vertical-split-view__bottom">
-          <slot name="bottom"></slot>
-        </div>
-      </div>
-    `;
-  }
+	override render() {
+		return verticalSplitViewTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-vertical-split-view': RRVerticalSplitView;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-vertical-split-view': RRVerticalSplitView;
+	}
 }
