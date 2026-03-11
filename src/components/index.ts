@@ -72,8 +72,7 @@ export { RROneThirdTwoThirdsSection } from './layout/page-sections/one-third-two
 export { RRTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/rr-two-thirds-one-third-section.ts';
 export { RROneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/rr-one-half-one-half-section.ts';
 
-export { RRTitleBarTitleGroup } from './layout/title-bar-title-group/rr-title-bar-title-group.ts';
-export { RRTopTitleBar } from './layout/top-title-bar/rr-top-title-bar.ts';
+export { RRTitleBar } from './layout/title-bar/rr-title-bar.ts';
 
 export { RRBox } from './layout/box/rr-box.ts';
 export { RRCollection } from './layout/collection/rr-collection.ts';
@@ -105,6 +104,7 @@ export { RRTitleCell } from './lists-and-menus/cells/title-cell/rr-title-cell.ts
 // # Navigation components
 
 export { RRTopNavigationBar } from './navigation/top-navigation-bar/rr-top-navigation-bar.ts';
+export { RRTopTitleBar } from './navigation/top-title-bar/rr-top-title-bar.ts';
 export { RRTabBar } from './navigation/tab-bar/rr-tab-bar.ts';
 export { RRDocumentTabBar } from './navigation/document-tab-bar/rr-document-tab-bar.ts';
 export { RRPagination } from './navigation/pagination/rr-pagination.ts';
