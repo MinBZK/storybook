@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-list-item-drag-handle.js';
 
 export default {
-  title: 'Components/Lists & Menus/List Item Drag Handle',
+  title: 'Components/Lists & Menus/Cells/List Item Drag Handle',
   component: 'rr-list-item-drag-handle',
   tags: ['autodocs'],
   parameters: {
