@@ -78,6 +78,7 @@ export { RRBox } from './layout/box/rr-box.ts';
 export { RRCollection } from './layout/collection/rr-collection.ts';
 
 export { RRSpacer } from './layout/spacer/rr-spacer.ts';
+export { RRContainer } from './layout/container/rr-container.ts';
 export { RRDivider } from './layout/divider/rr-divider.ts';
 
 
