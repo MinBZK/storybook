@@ -1,75 +1,26 @@
 /**
  * RegelRecht Divider Component (Lit + TypeScript)
  *
- * A visual separator for content sections.
+ * Een scheidingslijn die secties van inhoud visueel van elkaar scheidt.
  *
  * @element rr-divider
- * @attr {string} orientation - Divider orientation: 'horizontal' | 'vertical'
  */
-
-import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-
-type Orientation = 'horizontal' | 'vertical';
+import { LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { dividerStyles } from './rr-divider.styles.ts';
+import { dividerTemplate } from './rr-divider.template.ts';
 
 @customElement('rr-divider')
 export class RRDivider extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      flex-shrink: 0;
-    }
+	static override styles = dividerStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
-
-    .divider {
-      background-color: var(--semantics-dividers-color);
-    }
-
-    /* Horizontal orientation (default) */
-    :host([orientation='horizontal']) .divider,
-    :host(:not([orientation])) .divider {
-      width: 100%;
-      height: var(--semantics-dividers-thickness);
-    }
-
-    /* Vertical orientation */
-    :host([orientation='vertical']) .divider {
-      width: var(--semantics-dividers-thickness);
-      height: 100%;
-    }
-
-    :host([orientation='vertical']) {
-      display: inline-block;
-      height: 100%;
-    }
-
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .divider {
-        background-color: CanvasText;
-      }
-    }
-  `;
-
-  @property({ type: String, reflect: true })
-  orientation: Orientation = 'horizontal';
-
-  override render() {
-    return html`
-      <div
-        class="divider"
-        role="separator"
-        aria-orientation=${this.orientation}
-      ></div>
-    `;
-  }
+	override render() {
+		return dividerTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-divider': RRDivider;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-divider': RRDivider;
+	}
 }
