@@ -7,11 +7,12 @@ export function oneThirdTwoThirdsSectionTemplate(component: RROneThirdTwoThirdsS
 			<div class="section__body">
 				<slot name="header"></slot>
 				<div class="section__columns">
-					<aside class="section__aside">
-						<slot name="aside"></slot>
-					</aside>
-					<div class="section__main">
+					<div class="section__right-column">
+						<slot name="right"></slot>
+					</div>
+					<div class="section__left-column">
 						<slot></slot>
+						<slot name="left"></slot>
 					</div>
 				</div>
 				<slot name="footer"></slot>

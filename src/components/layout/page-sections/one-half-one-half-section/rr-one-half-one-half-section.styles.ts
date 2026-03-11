@@ -2,9 +2,9 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 
-/* # rr-two-thirds-one-third-section styles */
+/* # rr-one-half-one-half-section styles */
 
-export const twoThirdsOneThirdSectionStyles = css`
+export const oneHalfOneHalfSectionStyles = css`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -47,7 +47,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 	}
 
 	.section__left-column {
-		flex: 2;
+		flex: 1;
 		min-width: var(--primitives-area-280);
 	}
 

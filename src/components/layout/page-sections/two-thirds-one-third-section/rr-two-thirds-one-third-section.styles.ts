@@ -46,12 +46,12 @@ export const twoThirdsOneThirdSectionStyles = css`
 		flex-wrap: wrap;
 	}
 
-	.section__main {
+	.section__left-column {
 		flex: 2;
 		min-width: var(--primitives-area-280);
 	}
 
-	.section__aside {
+	.section__right-column {
 		flex: 1;
 		min-width: var(--primitives-area-280);
 	}

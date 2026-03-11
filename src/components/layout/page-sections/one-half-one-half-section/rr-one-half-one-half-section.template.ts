@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
-import type { RRTwoThirdsOneThirdSection } from './rr-two-thirds-one-third-section.js';
+import type { RROneHalfOneHalfSection } from './rr-one-half-one-half-section.js';
 
-export function twoThirdsOneThirdSectionTemplate(component: RRTwoThirdsOneThirdSection): TemplateResult {
+export function oneHalfOneHalfSectionTemplate(component: RROneHalfOneHalfSection): TemplateResult {
 	return html`
 		<section class="section">
 			<div class="section__body">
