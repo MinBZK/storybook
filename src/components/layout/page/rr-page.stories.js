@@ -60,7 +60,7 @@ export default {
 
 const header = html`
 	<rr-rich-text spacing="tight" style="padding: 16px;">
-		<strong>Paginatitel</strong>
+		<strong>Header</strong>
 	</rr-rich-text>
 `;
 
