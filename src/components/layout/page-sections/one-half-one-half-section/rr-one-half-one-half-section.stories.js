@@ -38,7 +38,7 @@ export const Standaard = () => html`
 		<rr-rich-text slot="header">
 			<h2>Sectietitel</h2>
 		</rr-rich-text>
-		<rr-rich-text
+		<rr-rich-text>
 			<h3>Linkerkolom</h3>
 			<p>Dit is de linkerkolom. Beide kolommen nemen de helft van de beschikbare breedte in.</p>
 			<p>De kolommen wrappen automatisch wanneer de beschikbare breedte te klein wordt.</p>
