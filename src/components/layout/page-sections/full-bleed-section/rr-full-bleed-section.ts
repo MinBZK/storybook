@@ -1,34 +1,34 @@
 /**
- * RegelRecht Lister Section Component (Lit + TypeScript)
+ * RegelRecht Full Bleed Section Component (Lit + TypeScript)
  *
- * A section with a CSS grid layout for displaying card collections.
+ * A section that extends to full width with no horizontal padding.
  *
- * @element rr-lister-section
+ * @element rr-full-bleed-section
  * @attr {string} container - Container size: 'sm' | 'md' | 'lg' (default: 'md')
  *
- * @slot - Default slot for grid items
+ * @slot - Default slot for content
  *
  * @csspart section - The section container
  * @csspart body - The section body
- * @csspart main - The main content area (grid)
+ * @csspart main - The main content area
  *
  * @cssprop --rr-section-gap - Override gap between sections
  */
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { sectionSharedStyles } from './section-shared-styles.js';
+import { sectionSharedStyles } from '../section-shared-styles.js';
 
 type Container = 'sm' | 'md' | 'lg';
 
-@customElement('rr-lister-section')
-export class RRListerSection extends LitElement {
+@customElement('rr-full-bleed-section')
+export class RRFullBleedSection extends LitElement {
   static override styles = [
     sectionSharedStyles,
     css`
-      .section__main {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      .section {
+        padding-left: 0;
+        padding-right: 0;
       }
     `,
   ];
@@ -51,6 +51,6 @@ export class RRListerSection extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'rr-lister-section': RRListerSection;
+    'rr-full-bleed-section': RRFullBleedSection;
   }
 }

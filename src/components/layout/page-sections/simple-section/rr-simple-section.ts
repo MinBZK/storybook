@@ -1,9 +1,9 @@
 /**
- * RegelRecht Full Bleed Section Component (Lit + TypeScript)
+ * RegelRecht Simple Section Component (Lit + TypeScript)
  *
- * A section that extends to full width with no horizontal padding.
+ * A basic section with responsive container padding.
  *
- * @element rr-full-bleed-section
+ * @element rr-simple-section
  * @attr {string} container - Container size: 'sm' | 'md' | 'lg' (default: 'md')
  *
  * @slot - Default slot for content
@@ -15,23 +15,15 @@
  * @cssprop --rr-section-gap - Override gap between sections
  */
 
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { sectionSharedStyles } from './section-shared-styles.js';
+import { sectionSharedStyles } from '../section-shared-styles.js';
 
 type Container = 'sm' | 'md' | 'lg';
 
-@customElement('rr-full-bleed-section')
-export class RRFullBleedSection extends LitElement {
-  static override styles = [
-    sectionSharedStyles,
-    css`
-      .section {
-        padding-left: 0;
-        padding-right: 0;
-      }
-    `,
-  ];
+@customElement('rr-simple-section')
+export class RRSimpleSection extends LitElement {
+  static override styles = [sectionSharedStyles];
 
   @property({ type: String, reflect: true })
   container: Container = 'md';
@@ -51,6 +43,6 @@ export class RRFullBleedSection extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'rr-full-bleed-section': RRFullBleedSection;
+    'rr-simple-section': RRSimpleSection;
   }
 }

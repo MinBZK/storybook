@@ -1,13 +1,13 @@
 /**
- * RegelRecht Two Thirds One Third Section Component (Lit + TypeScript)
+ * RegelRecht One Half One Half Section Component (Lit + TypeScript)
  *
- * A split layout section with 2/3 main content on the left and a 1/3 aside on the right.
+ * A split layout section with two equal-width columns.
  * Stacks vertically on small screens.
  *
- * @element rr-two-thirds-one-third-section
+ * @element rr-one-half-one-half-section
  * @attr {string} container - Container size: 'sm' | 'md' | 'lg' (default: 'md')
  *
- * @slot - Default slot for main content
+ * @slot - Default slot for main content (left column)
  * @slot aside - Slot for aside content (right column)
  *
  * @csspart section - The section container
@@ -20,12 +20,12 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { sectionSharedStyles } from './section-shared-styles.js';
+import { sectionSharedStyles } from '../section-shared-styles.js';
 
 type Container = 'sm' | 'md' | 'lg';
 
-@customElement('rr-two-thirds-one-third-section')
-export class RRTwoThirdsOneThirdSection extends LitElement {
+@customElement('rr-one-half-one-half-section')
+export class RROneHalfOneHalfSection extends LitElement {
   static override styles = [
     sectionSharedStyles,
     css`
@@ -40,7 +40,7 @@ export class RRTwoThirdsOneThirdSection extends LitElement {
       }
 
       .section__main {
-        flex: 2;
+        flex: 1;
       }
 
       @media (max-width: 768px) {
@@ -72,6 +72,6 @@ export class RRTwoThirdsOneThirdSection extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'rr-two-thirds-one-third-section': RRTwoThirdsOneThirdSection;
+    'rr-one-half-one-half-section': RROneHalfOneHalfSection;
   }
 }

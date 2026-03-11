@@ -1,9 +1,9 @@
 import { html } from 'lit';
-import './rr-two-thirds-one-third-section.ts';
+import './rr-one-third-two-thirds-section.ts';
 
 export default {
-  title: 'Components/Layout/Two Thirds One Third Section',
-  component: 'rr-two-thirds-one-third-section',
+  title: 'Components/Layout/Page Sections/One Third Two Thirds Section',
+  component: 'rr-one-third-two-thirds-section',
   tags: ['autodocs'],
   parameters: {
   },
@@ -35,9 +35,9 @@ export const Default = {
     container: 'md',
   },
   render: (args) => html`
-    <rr-two-thirds-one-third-section container=${args.container}>
+    <rr-one-third-two-thirds-section container=${args.container}>
       ${sampleContent}
       <div slot="aside">${sampleAside}</div>
-    </rr-two-thirds-one-third-section>
+    </rr-one-third-two-thirds-section>
   `,
 };

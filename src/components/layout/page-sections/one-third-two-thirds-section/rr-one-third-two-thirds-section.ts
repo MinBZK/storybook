@@ -1,14 +1,14 @@
 /**
- * RegelRecht One Half One Half Section Component (Lit + TypeScript)
+ * RegelRecht One Third Two Thirds Section Component (Lit + TypeScript)
  *
- * A split layout section with two equal-width columns.
+ * A split layout section with a 1/3 aside on the left and 2/3 main content on the right.
  * Stacks vertically on small screens.
  *
- * @element rr-one-half-one-half-section
+ * @element rr-one-third-two-thirds-section
  * @attr {string} container - Container size: 'sm' | 'md' | 'lg' (default: 'md')
  *
- * @slot - Default slot for main content (left column)
- * @slot aside - Slot for aside content (right column)
+ * @slot - Default slot for main content
+ * @slot aside - Slot for aside content (left column)
  *
  * @csspart section - The section container
  * @csspart body - The section body
@@ -20,12 +20,12 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { sectionSharedStyles } from './section-shared-styles.js';
+import { sectionSharedStyles } from '../section-shared-styles.js';
 
 type Container = 'sm' | 'md' | 'lg';
 
-@customElement('rr-one-half-one-half-section')
-export class RROneHalfOneHalfSection extends LitElement {
+@customElement('rr-one-third-two-thirds-section')
+export class RROneThirdTwoThirdsSection extends LitElement {
   static override styles = [
     sectionSharedStyles,
     css`
@@ -40,7 +40,7 @@ export class RROneHalfOneHalfSection extends LitElement {
       }
 
       .section__main {
-        flex: 1;
+        flex: 2;
       }
 
       @media (max-width: 768px) {
@@ -58,12 +58,12 @@ export class RROneHalfOneHalfSection extends LitElement {
     return html`
       <section class="section" part="section">
         <div class="section__body" part="body">
-          <div class="section__main" part="main">
-            <slot></slot>
-          </div>
           <aside class="section__aside" part="aside">
             <slot name="aside"></slot>
           </aside>
+          <div class="section__main" part="main">
+            <slot></slot>
+          </div>
         </div>
       </section>
     `;
@@ -72,6 +72,6 @@ export class RROneHalfOneHalfSection extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'rr-one-half-one-half-section': RROneHalfOneHalfSection;
+    'rr-one-third-two-thirds-section': RROneThirdTwoThirdsSection;
   }
 }

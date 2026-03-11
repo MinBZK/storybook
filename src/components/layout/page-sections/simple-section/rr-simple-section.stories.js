@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-simple-section.ts';
 
 export default {
-  title: 'Components/Layout/Simple Section',
+  title: 'Components/Layout/Page Sections/Simple Section',
   component: 'rr-simple-section',
   tags: ['autodocs'],
   parameters: {

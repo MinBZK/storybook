@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-full-bleed-section.ts';
 
 export default {
-  title: 'Components/Layout/Full Bleed Section',
+  title: 'Components/Layout/Page Sections/Full Bleed Section',
   component: 'rr-full-bleed-section',
   tags: ['autodocs'],
   parameters: {

@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-lister-section.ts';
 
 export default {
-  title: 'Components/Layout/Lister Section',
+  title: 'Components/Layout/Page Sections/Lister Section',
   component: 'rr-lister-section',
   tags: ['autodocs'],
   parameters: {

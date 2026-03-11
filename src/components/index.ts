@@ -66,12 +66,12 @@ export { RRStackedSplitView } from './layout/split-view/rr-stacked-split-view.ts
 
 export { RRPage } from './layout/page/rr-page.ts';
 
-export { RRSimpleSection } from './layout/page-sections/rr-simple-section.ts';
-export { RRFullBleedSection } from './layout/page-sections/rr-full-bleed-section.ts';
-export { RROneThirdTwoThirdsSection } from './layout/page-sections/rr-one-third-two-thirds-section.ts';
-export { RRTwoThirdsOneThirdSection } from './layout/page-sections/rr-two-thirds-one-third-section.ts';
-export { RROneHalfOneHalfSection } from './layout/page-sections/rr-one-half-one-half-section.ts';
-export { RRListerSection } from './layout/page-sections/rr-lister-section.ts';
+export { RRSimpleSection } from './layout/page-sections/simple-section/rr-simple-section.ts';
+export { RRFullBleedSection } from './layout/page-sections/full-bleed-section/rr-full-bleed-section.ts';
+export { RROneThirdTwoThirdsSection } from './layout/page-sections/one-third-two-thirds-section/rr-one-third-two-thirds-section.ts';
+export { RRTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/rr-two-thirds-one-third-section.ts';
+export { RROneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/rr-one-half-one-half-section.ts';
+export { RRListerSection } from './layout/page-sections/lister-section/rr-lister-section.ts';
 
 export { RRTitleBarTitleGroup } from './layout/title-bar-title-group/rr-title-bar-title-group.ts';
 export { RRTopTitleBar } from './layout/top-title-bar/rr-top-title-bar.ts';
