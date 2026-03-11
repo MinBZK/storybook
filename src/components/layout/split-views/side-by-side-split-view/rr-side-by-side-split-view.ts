@@ -1,82 +1,38 @@
 /**
  * RegelRecht Side-by-Side Split View Component (Lit + TypeScript)
  *
- * A 2-pane row layout for the editor page. Equal flex distribution
- * with an automatically rendered divider between panes.
+ * Een horizontale split view met meerdere gelijke panelen naast elkaar.
+ * Het aantal panelen wordt ingesteld via het `panes` attribuut. Elk paneel
+ * krijgt automatisch een genummerde slot: pane-1, pane-2, etc.
+ * Panelen zijn minimaal 320px breed; panelen die niet passen worden verborgen.
  *
  * @element rr-side-by-side-split-view
  *
- * @slot start - Left pane (e.g. text editor)
- * @slot end - Right pane (e.g. machine editor)
+ * @attr {number} panes - Aantal panelen (standaard: 2)
  *
- * @csspart container - The outer flex container
- * @csspart divider - The divider between panes
+ * @slot pane-1 - Eerste paneel
+ * @slot pane-2 - Tweede paneel
+ * @slot pane-n - Elk volgend paneel op basis van het `panes` attribuut
  */
-
-import { LitElement, html, css } from 'lit';
-import { customElement } from 'lit/decorators.js';
-import '../split-view-divider/rr-split-view-divider.ts';
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { sideBySideSplitViewStyles } from './rr-side-by-side-split-view.styles.ts';
+import { sideBySideSplitViewTemplate } from './rr-side-by-side-split-view.template.ts';
 
 @customElement('rr-side-by-side-split-view')
 export class RRSideBySideSplitView extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      height: 100%;
-    }
+	static override styles = sideBySideSplitViewStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Number, reflect: true })
+	panes = 2;
 
-    .side-by-side-split-view {
-      display: flex;
-      flex-direction: row;
-      flex: 1;
-      min-height: 0;
-      min-width: 0;
-    }
-
-    .side-by-side-split-view__pane {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      min-width: 0;
-    }
-
-    ::slotted(*) {
-      flex: 1;
-      min-height: 0;
-    }
-
-    rr-split-view-divider {
-      align-self: stretch;
-    }
-  `;
-
-  override render() {
-    return html`
-      <div class="side-by-side-split-view" part="container">
-        <div class="side-by-side-split-view__pane">
-          <slot name="start"></slot>
-        </div>
-        <rr-split-view-divider
-          orientation="vertical"
-          part="divider"
-        ></rr-split-view-divider>
-        <div class="side-by-side-split-view__pane">
-          <slot name="end"></slot>
-        </div>
-      </div>
-    `;
-  }
+	override render() {
+		return sideBySideSplitViewTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-side-by-side-split-view': RRSideBySideSplitView;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-side-by-side-split-view': RRSideBySideSplitView;
+	}
 }
