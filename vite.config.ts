@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 export default defineConfig({
 	build: {
 		lib: {
-			entry: resolve(__dirname, 'src/components/index.ts'),
+			entry: resolve(import.meta.dirname, 'src/components/index.ts'),
 			formats: ['es'],
 			fileName: () => 'rr-components.js',
 		},
