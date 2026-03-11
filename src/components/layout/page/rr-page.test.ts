@@ -3,16 +3,33 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './rr-page.ts';
 
 describe('rr-page', () => {
-  let el: HTMLElement;
+	let el: HTMLElement;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('renders without error', async () => {
-    el = await fixture('<rr-page></rr-page>');
-    await waitForUpdate(el);
+	it('renders without error', async () => {
+		el = await fixture('<rr-page></rr-page>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
 
-    expect(el.shadowRoot).not.toBeNull();
-  });
+	it('reflects sticky-header attribute', async () => {
+		el = await fixture('<rr-page sticky-header></rr-page>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('sticky-header')).toBe(true);
+	});
+
+	it('reflects sticky-footer attribute', async () => {
+		el = await fixture('<rr-page sticky-footer></rr-page>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('sticky-footer')).toBe(true);
+	});
+
+	it('reflects tinted attribute', async () => {
+		el = await fixture('<rr-page tinted></rr-page>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('tinted')).toBe(true);
+	});
 });
