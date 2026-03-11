@@ -1,134 +1,100 @@
 import { html } from 'lit';
 import './rr-horizontal-split-view.ts';
-import '../split-view-pane/rr-split-view-pane.ts';
+import '../../../layout/page/rr-page.ts';
+import '../../../layout/page-sections/simple-section/rr-simple-section.ts';
+import '../../../content/rich-text/rr-rich-text.ts';
 
+/**
+ * Gebruik een horizontal split view voor een driekoloms navigatiepatroon met
+ * een zijbalk, inhoudsgebied en inspecteur. De zijbalk en inspecteur hebben
+ * een vaste breedte; het inhoudsgebied neemt de resterende ruimte in.
+ * Panelen zijn minimaal 320px breed; panelen die niet passen worden automatisch verborgen.
+ *
+ * ## Gebruik
+ * ```html
+ * <rr-horizontal-split-view>
+ *   <rr-page slot="sidebar">...</rr-page>
+ *   <rr-page slot="content">...</rr-page>
+ *   <rr-page slot="inspector">...</rr-page>
+ * </rr-horizontal-split-view>
+ * ```
+ */
 export default {
-  title: 'Components/Layout/Split Views/Horizontal Split View',
-  component: 'rr-horizontal-split-view',
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-  },
+	title: 'Components/Layout/Split Views/Horizontal Split View',
+	component: 'rr-horizontal-split-view',
+	tags: ['autodocs'],
+	parameters: {
+		layout: 'fullscreen',
+		componentSource: {
+			file: 'src/components/layout/split-views/horizontal-split-view/rr-horizontal-split-view.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: {
+			type: 'stable',
+		},
+	},
+	argTypes: {
+		showSidebar: {
+			control: 'boolean',
+			description: 'Toon de zijbalk',
+			table: { defaultValue: { summary: 'true' } },
+		},
+		showInspector: {
+			control: 'boolean',
+			description: 'Toon de inspecteur',
+			table: { defaultValue: { summary: 'true' } },
+		},
+	},
+	args: {
+		showSidebar: true,
+		showInspector: true,
+	},
 };
 
-export const Default = {
-  render: () => html`
-    <rr-horizontal-split-view style="height: 600px;">
-      <rr-split-view-pane
-        slot="side"
-        style="width: 280px;"
-      >
-        <div style="padding: 16px; background: #f8fafc; height: 100%; box-sizing: border-box;">
-          <strong>Side Pane</strong>
-          <p>Law list, navigation, etc.</p>
-        </div>
-      </rr-split-view-pane>
+export const Standaard = ({ showSidebar, showInspector }) => html`
+	<rr-horizontal-split-view
+		style="height: 600px;"
+		?show-sidebar=${showSidebar}
+		?show-inspector=${showInspector}
+	>
+		<rr-page sticky-header slot="sidebar">
+			<rr-rich-text slot="header" style="padding: 16px;">
+				<strong>Zijbalk</strong>
+			</rr-rich-text>
+			<rr-simple-section>
+				<rr-rich-text>
+					<h2>Navigatie</h2>
+					<p>Wetten, regelingen en andere bronnen.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+				</rr-rich-text>
+			</rr-simple-section>
+		</rr-page>
 
-      <rr-split-view-pane slot="main">
-        <div style="padding: 16px; height: 100%; box-sizing: border-box;">
-          <strong>Main Pane</strong>
-          <p>Article list, primary content area.</p>
-        </div>
-      </rr-split-view-pane>
+		<rr-page sticky-header slot="content">
+			<rr-rich-text slot="header" style="padding: 16px;">
+				<strong>Inhoud</strong>
+			</rr-rich-text>
+			<rr-simple-section>
+				<rr-rich-text>
+					<h2>Primaire inhoud</h2>
+					<p>Artikelen, artikellijsten en primaire weergave.</p>
+					<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+				</rr-rich-text>
+			</rr-simple-section>
+		</rr-page>
 
-      <rr-split-view-pane
-        slot="inspector"
-        style="width: 320px;"
-      >
-        <div style="padding: 16px; background: #f8fafc; height: 100%; box-sizing: border-box;">
-          <strong>Inspector Pane</strong>
-          <p>Article detail, properties panel.</p>
-        </div>
-      </rr-split-view-pane>
-    </rr-horizontal-split-view>
-  `,
-};
-
-export const BrowserLayout = {
-  render: () => html`
-    <rr-horizontal-split-view style="height: 100vh;">
-      <rr-split-view-pane
-        slot="side"
-        style="width: 300px;"
-      >
-        <rr-page header-sticky>
-          <div slot="header">
-            <div
-              style="padding: 12px 16px; background: var(--semantics-surfaces-background-color, #fff); border-bottom: 1px solid var(--semantics-dividers-color, #d9dee4);"
-            >
-              <strong>Wetten en regels</strong>
-            </div>
-          </div>
-          <div style="padding: 8px;">
-            ${Array(30)
-              .fill(null)
-              .map(
-                (_, i) => html`
-                  <div
-                    style="padding: 12px; border-bottom: 1px solid #ebeef2; cursor: pointer;"
-                  >
-                    Wet ${i + 1}
-                  </div>
-                `
-              )}
-          </div>
-        </rr-page>
-      </rr-split-view-pane>
-
-      <rr-split-view-pane slot="main">
-        <rr-page header-sticky>
-          <div slot="header">
-            <div
-              style="padding: 12px 16px; background: var(--semantics-surfaces-background-color, #fff); border-bottom: 1px solid var(--semantics-dividers-color, #d9dee4);"
-            >
-              <strong>Wet op de zorgtoeslag</strong>
-            </div>
-          </div>
-          <div style="padding: 16px;">
-            ${Array(20)
-              .fill(null)
-              .map(
-                (_, i) => html`
-                  <div
-                    style="padding: 16px; margin-bottom: 8px; background: #f8fafc; border-radius: 8px;"
-                  >
-                    Artikel ${i + 1}
-                  </div>
-                `
-              )}
-          </div>
-        </rr-page>
-      </rr-split-view-pane>
-
-      <rr-split-view-pane
-        slot="inspector"
-        style="width: 400px;"
-      >
-        <rr-page header-sticky footer-sticky>
-          <div slot="header">
-            <div
-              style="padding: 12px 16px; background: var(--semantics-surfaces-background-color, #fff); border-bottom: 1px solid var(--semantics-dividers-color, #d9dee4);"
-            >
-              <strong>Artikel 1</strong>
-            </div>
-          </div>
-          <div style="padding: 16px;">
-            <p>
-              Voor de toepassing van deze wet en de daarop berustende bepalingen wordt verstaan
-              onder...
-            </p>
-          </div>
-          <div slot="footer">
-            <div
-              style="padding: 12px 16px; background: var(--semantics-surfaces-background-color, #fff); border-top: 1px solid var(--semantics-dividers-color, #d9dee4); display: flex; gap: 8px;"
-            >
-              <button>Opslaan</button>
-              <button>Annuleren</button>
-            </div>
-          </div>
-        </rr-page>
-      </rr-split-view-pane>
-    </rr-horizontal-split-view>
-  `,
-};
-
+		<rr-page sticky-header slot="inspector">
+			<rr-rich-text slot="header" style="padding: 16px;">
+				<strong>Inspecteur</strong>
+			</rr-rich-text>
+			<rr-simple-section>
+				<rr-rich-text>
+					<h2>Details</h2>
+					<p>Eigenschappen en aanvullende informatie over de selectie.</p>
+					<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				</rr-rich-text>
+			</rr-simple-section>
+		</rr-page>
+	</rr-horizontal-split-view>
+`;
