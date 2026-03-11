@@ -4,20 +4,20 @@ import { styles } from './rr-icon.styles.js';
 import { template } from './rr-icon.template.js';
 import { aliases } from './rr-icon-aliases.js';
 
-const iconModules = import.meta.glob('/src/components/content/icon/rr-icons/*.svg', { eager: false });
+const iconModules = import.meta.glob('./rr-icons/*.svg', { query: '?raw', eager: true }) as Record<string, { default: string }>;
 
-const svgIcons: string[] = Object.keys(iconModules)
-	.map(path => path.replace('/src/components/content/icon/rr-icons/', '').replace('.svg', ''))
-	.sort();
+const iconRegistry = new Map<string, string>();
+for (const [path, module] of Object.entries(iconModules)) {
+	const name = path.replace('./rr-icons/', '').replace('.svg', '');
+	iconRegistry.set(name, module.default);
+}
 
 export { aliases };
 
 export const ICONS: string[] = [
-	...svgIcons,
+	...iconRegistry.keys(),
 	...Object.keys(aliases),
 ].sort();
-
-const iconCache = new Map<string, string>();
 
 /**
  * A customizable icon component that renders SVG icons from a predefined library.
@@ -41,32 +41,27 @@ export class RRIcon extends LitElement {
 	@state()
 	private _iconSvg: string | null = null;
 
-	override async connectedCallback(): Promise<void> {
+	override connectedCallback(): void {
 		super.connectedCallback();
-		this._iconSvg = await this._loadIcon(this.name);
+		this._iconSvg = this._loadIcon(this.name);
 	}
 
-	override async updated(changedProperties: Map<string, unknown>): Promise<void> {
+	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('name') && this.name) {
-			this._iconSvg = await this._loadIcon(this.name);
+			this._iconSvg = this._loadIcon(this.name);
 		}
 	}
 
-	private async _loadIcon(name: string): Promise<string | null> {
+	private _loadIcon(name: string): string | null {
 		const resolvedName = aliases[name] ?? name;
+		const svg = iconRegistry.get(resolvedName);
 
-		if (iconCache.has(resolvedName)) {
-			return iconCache.get(resolvedName)!;
+		if (svg) {
+			return svg;
 		}
 
-		try {
-			const module = await import(`./rr-icons/${resolvedName}.svg?raw`);
-			iconCache.set(resolvedName, module.default);
-			return module.default;
-		} catch {
-			console.warn(`RRIcon: icon "${resolvedName}" not found`);
-			return null;
-		}
+		console.warn(`RRIcon: icon "${resolvedName}" not found`);
+		return null;
 	}
 
 	override render() {

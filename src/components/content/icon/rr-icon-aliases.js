@@ -1,3 +1,4 @@
+/** @type {Record<string, string>} */
 export const aliases = {
 	'icon-placeholder': 'circle-dashed',
 	'home': 'house',

@@ -136,17 +136,18 @@ export class RRMenuBar extends LitElement {
 		}
 	}
 
-	private _handleItemSelect = (event: CustomEvent): void => {
+	private _handleItemSelect = (event: Event): void => {
+		const detail = (event as CustomEvent).detail;
 		const items = this.querySelectorAll('rr-menu-bar-item');
 		items.forEach(item => {
-			if (item !== event.detail.item) {
+			if (item !== detail.item) {
 				(item as HTMLElement).removeAttribute('selected');
 			}
 		});
 		this.dispatchEvent(new CustomEvent('itemselect', {
 			bubbles: true,
 			composed: true,
-			detail: event.detail,
+			detail,
 		}));
 	};
 
@@ -386,7 +387,7 @@ export class RRMenuBar extends LitElement {
 		requestAnimationFrame(() => {
 			const items = this._overflowDropdown.querySelectorAll('.overflow-item');
 			if (items.length > 0) {
-				(focusLast ? items[items.length - 1] : items[0] as HTMLElement).focus();
+				(focusLast ? items[items.length - 1] as HTMLElement : items[0] as HTMLElement).focus();
 			}
 		});
 	}

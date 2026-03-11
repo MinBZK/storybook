@@ -262,7 +262,7 @@ export class RRFormField extends LitElement {
 			// For custom elements (rr-text-field, rr-password-field), set error-message-ids
 			// so they can forward it to the inner <input aria-describedby>. IDs do not cross
 			// shadow DOM boundaries so setting aria-describedby on the host is not sufficient.
-			(input as HTMLElement & { errorMessageIds: string }).errorMessageIds = describedByValue;
+			(input as unknown as HTMLElement & { errorMessageIds: string }).errorMessageIds = describedByValue;
 		} else {
 			if (describedByIds.length > 0) {
 				input.setAttribute('aria-describedby', describedByValue);
