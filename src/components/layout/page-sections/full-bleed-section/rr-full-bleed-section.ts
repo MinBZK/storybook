@@ -1,56 +1,32 @@
 /**
  * RegelRecht Full Bleed Section Component (Lit + TypeScript)
  *
- * A section that extends to full width with no horizontal padding.
+ * Een sectie die de volledige breedte beslaat zonder horizontale padding.
+ * Nuttig voor achtergrondkleuren, afbeeldingen of andere inhoud die van rand
+ * tot rand loopt. Verticale padding en gap passen zich aan via container queries.
  *
  * @element rr-full-bleed-section
- * @attr {string} container - Container size: 'sm' | 'md' | 'lg' (default: 'md')
  *
- * @slot - Default slot for content
- *
- * @csspart section - The section container
- * @csspart body - The section body
- * @csspart main - The main content area
- *
- * @cssprop --rr-section-gap - Override gap between sections
+ * @slot header - Inhoud boven de hoofdinhoud
+ * @slot - Hoofdinhoud
+ * @slot footer - Inhoud onder de hoofdinhoud
  */
-
-import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import { sectionSharedStyles } from '../section-shared-styles.js';
-
-type Container = 'sm' | 'md' | 'lg';
+import { LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { fullBleedSectionStyles } from './rr-full-bleed-section.styles.ts';
+import { fullBleedSectionTemplate } from './rr-full-bleed-section.template.ts';
 
 @customElement('rr-full-bleed-section')
 export class RRFullBleedSection extends LitElement {
-  static override styles = [
-    sectionSharedStyles,
-    css`
-      .section {
-        padding-left: 0;
-        padding-right: 0;
-      }
-    `,
-  ];
+	static override styles = fullBleedSectionStyles;
 
-  @property({ type: String, reflect: true })
-  container: Container = 'md';
-
-  override render() {
-    return html`
-      <section class="section" part="section">
-        <div class="section__body" part="body">
-          <div class="section__main" part="main">
-            <slot></slot>
-          </div>
-        </div>
-      </section>
-    `;
-  }
+	override render() {
+		return fullBleedSectionTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-full-bleed-section': RRFullBleedSection;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-full-bleed-section': RRFullBleedSection;
+	}
 }
