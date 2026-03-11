@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-button-cell.js';
-import '../../actions/button/rr-button.js';
+import '../../../actions/button/rr-button.js';
 
 export default {
   title: 'Components/Lists & Menus/Cells/Button Cell',
