@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-top-title-bar.ts';
 
 export default {
-  title: 'Components/Layout/Top Title Bar',
+  title: 'Components/Navigation/Top Title Bar',
   component: 'rr-top-title-bar',
   tags: ['autodocs'],
   parameters: {
