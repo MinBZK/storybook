@@ -83,7 +83,9 @@ export const collectionStyles = css`
 	}
 
 	:host([layout='horizontal-scroll']) .collection__items ::slotted(*) {
-		flex: 0 0 var(--collection-item-min-width, 280px);
+		flex-grow: 0;
+		flex-shrink: 0;
+		flex-basis: var(--primitives-area-280)
 		scroll-snap-align: start;
 	}
 

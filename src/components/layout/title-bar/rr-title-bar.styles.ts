@@ -24,7 +24,7 @@ export const titleBarStyles = css`
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: var(--semantics-spacing-md);
+		gap: var(--primitives-space-12);
 		width: 100%;
 	}
 
@@ -77,7 +77,6 @@ export const titleBarStyles = css`
 		flex-direction: row;
 		align-items: center;
 		flex-shrink: 0;
-		gap: var(--semantics-spacing-sm);
 	}
 
 
