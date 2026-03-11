@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
 import './rr-drop-down-field-cell.ts';
 
 describe('rr-drop-down-field-cell', () => {

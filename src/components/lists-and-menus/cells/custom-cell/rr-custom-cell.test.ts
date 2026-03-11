@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
 import './rr-custom-cell.ts';
 
 describe('rr-custom-cell', () => {
