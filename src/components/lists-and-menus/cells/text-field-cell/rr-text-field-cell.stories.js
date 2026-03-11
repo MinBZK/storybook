@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-text-field-cell.ts';
-import '../../inputs/text-field/rr-text-field.ts';
+import '../../../inputs/text-field/rr-text-field.ts';
 
 /**
  * De Text Field Cell component is een wrapper voor text fields met ondersteuning voor validatie feedback.

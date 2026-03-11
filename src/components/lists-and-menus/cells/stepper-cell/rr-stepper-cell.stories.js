@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-stepper-cell.js';
-import '../../inputs/stepper/rr-stepper.js';
+import '../../../inputs/stepper/rr-stepper.js';
 
 export default {
   title: 'Components/Lists & Menus/Cells/Stepper Cell',

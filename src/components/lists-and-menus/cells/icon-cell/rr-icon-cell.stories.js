@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-icon-cell.ts';
-import { ICONS } from './../../content/icon/rr-icon.ts';
+import { ICONS } from '../../../content/icon/rr-icon.ts';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Icon Cell',
