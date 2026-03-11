@@ -3,9 +3,9 @@ import { property } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
 import { menuStyles, menuItemStyles, menuDividerStyles } from './rr-menu.styles.js';
 import { menuTemplate, menuItemTemplate, menuDividerTemplate } from './rr-menu.template.js';
-import '../../lists-and-menus/icon-cell/rr-icon-cell.js';
-import '../../lists-and-menus/spacer-cell/rr-spacer-cell.js';
-import '../../lists-and-menus/text-cell/rr-text-cell.js';
+import '../../lists-and-menus/cells/icon-cell/rr-icon-cell.js';
+import '../../lists-and-menus/cells/spacer-cell/rr-spacer-cell.js';
+import '../../lists-and-menus/cells/text-cell/rr-text-cell.js';
 import '../../content/icon/rr-icon.js';
 
 // # rr-menu-divider

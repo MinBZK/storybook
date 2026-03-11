@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './rr-list-item.js';
-import '../title-cell/rr-title-cell.js';
-import '../label-cell/rr-label-cell.js';
+import '../cells/title-cell/rr-title-cell.js';
+import '../cells/label-cell/rr-label-cell.js';
 
 export default {
   title: 'Components/Lists & Menus/List Item',
