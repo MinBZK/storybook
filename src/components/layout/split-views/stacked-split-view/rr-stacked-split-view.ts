@@ -1,82 +1,38 @@
 /**
  * RegelRecht Stacked Split View Component (Lit + TypeScript)
  *
- * A 2-pane column layout. Equal flex distribution with an automatically
- * rendered horizontal divider between panes.
+ * Een verticale split view met meerdere gestapelde panelen.
+ * Het aantal panelen wordt ingesteld via het `panes` attribuut. Elk paneel
+ * krijgt automatisch een genummerde slot: pane-1, pane-2, etc.
+ * Panelen zijn minimaal 320px hoog; panelen die niet passen worden verborgen.
  *
  * @element rr-stacked-split-view
  *
- * @slot top - Top pane
- * @slot bottom - Bottom pane
+ * @attr {number} panes - Aantal panelen (standaard: 2)
  *
- * @csspart container - The outer flex container
- * @csspart divider - The divider between panes
+ * @slot pane-1 - Eerste paneel
+ * @slot pane-2 - Tweede paneel
+ * @slot pane-n - Elk volgend paneel op basis van het `panes` attribuut
  */
-
-import { LitElement, html, css } from 'lit';
-import { customElement } from 'lit/decorators.js';
-import '../split-view-divider/rr-split-view-divider.ts';
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { stackedSplitViewStyles } from './rr-stacked-split-view.styles.ts';
+import { stackedSplitViewTemplate } from './rr-stacked-split-view.template.ts';
 
 @customElement('rr-stacked-split-view')
 export class RRStackedSplitView extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-    }
+	static override styles = stackedSplitViewStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Number, reflect: true })
+	panes = 2;
 
-    .stacked-split-view {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      min-width: 0;
-    }
-
-    .stacked-split-view__pane {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      min-width: 0;
-    }
-
-    ::slotted(*) {
-      flex: 1;
-      min-height: 0;
-    }
-
-    rr-split-view-divider {
-      align-self: stretch;
-    }
-  `;
-
-  override render() {
-    return html`
-      <div class="stacked-split-view" part="container">
-        <div class="stacked-split-view__pane">
-          <slot name="top"></slot>
-        </div>
-        <rr-split-view-divider
-          orientation="horizontal"
-          part="divider"
-        ></rr-split-view-divider>
-        <div class="stacked-split-view__pane">
-          <slot name="bottom"></slot>
-        </div>
-      </div>
-    `;
-  }
+	override render() {
+		return stackedSplitViewTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-stacked-split-view': RRStackedSplitView;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-stacked-split-view': RRStackedSplitView;
+	}
 }
