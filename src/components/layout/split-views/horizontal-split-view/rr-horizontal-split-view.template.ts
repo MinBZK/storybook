@@ -4,9 +4,9 @@ import '../split-view-divider/rr-split-view-divider.ts';
 
 export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): TemplateResult {
 	return html`
-		<div class="split-view">
+		<div class="horizontal-split-view">
 			${component.showSidebar ? html`
-				<div class="split-view__sidebar">
+				<div class="horizontal-split-view__sidebar">
 					<slot name="sidebar"></slot>
 				</div>
 				<rr-split-view-divider
@@ -16,8 +16,8 @@ export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): T
 					aria-orientation="vertical"
 				></rr-split-view-divider>
 			` : nothing}
-			<div class="split-view__main">
-				<slot name="main"></slot>
+			<div class="split-view__content">
+				<slot name="content"></slot>
 			</div>
 			${component.showInspector ? html`
 				<rr-split-view-divider
@@ -26,7 +26,7 @@ export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): T
 					role="separator"
 					aria-orientation="vertical"
 				></rr-split-view-divider>
-				<div class="split-view__inspector">
+				<div class="horizontal-split-view__inspector">
 					<slot name="inspector"></slot>
 				</div>
 			` : nothing}

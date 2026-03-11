@@ -18,7 +18,7 @@ export const stackedSplitViewStyles = css`
 
 	/* # Split view */
 
-	.split-view {
+	.stacked-split-view {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -30,7 +30,7 @@ export const stackedSplitViewStyles = css`
 
 	/* # Pane */
 
-	.split-view__pane {
+	.stacked-split-view__pane {
 		display: flex;
 		flex-direction: column;
 		flex: var(--_pane-flex, 1);

@@ -17,7 +17,7 @@ export const sideBySideSplitViewStyles = css`
 
 	/* # Split view */
 
-	.split-view {
+	.side-by-side-split-view {
 		display: flex;
 		flex-direction: row;
 		flex: 1;
@@ -29,7 +29,7 @@ export const sideBySideSplitViewStyles = css`
 
 	/* # Pane */
 
-	.split-view__pane {
+	.side-by-side-split-view__pane {
 		display: flex;
 		flex-direction: column;
 		flex: var(--_pane-flex, 1);

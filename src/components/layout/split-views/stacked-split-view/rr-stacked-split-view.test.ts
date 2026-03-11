@@ -18,13 +18,13 @@ describe('rr-stacked-split-view', () => {
 	it('renders 2 panes by default', async () => {
 		el = await fixture('<rr-stacked-split-view></rr-stacked-split-view>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelectorAll('.split-view__pane').length).toBe(2);
+		expect(el.shadowRoot!.querySelectorAll('.stacked-split-view__pane').length).toBe(2);
 	});
 
 	it('renders the correct number of panes', async () => {
 		el = await fixture('<rr-stacked-split-view panes="3"></rr-stacked-split-view>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelectorAll('.split-view__pane').length).toBe(3);
+		expect(el.shadowRoot!.querySelectorAll('.stacked-split-view__pane').length).toBe(3);
 	});
 
 	it('renders dividers between panes', async () => {

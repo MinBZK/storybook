@@ -14,7 +14,7 @@ import '../../../content/rich-text/rr-rich-text.ts';
  * ```html
  * <rr-horizontal-split-view>
  *   <rr-page slot="sidebar">...</rr-page>
- *   <rr-page slot="main">...</rr-page>
+ *   <rr-page slot="content">...</rr-page>
  *   <rr-page slot="inspector">...</rr-page>
  * </rr-horizontal-split-view>
  * ```
@@ -70,7 +70,7 @@ export const Standaard = ({ showSidebar, showInspector }) => html`
 			</rr-simple-section>
 		</rr-page>
 
-		<rr-page sticky-header slot="main">
+		<rr-page sticky-header slot="content">
 			<rr-rich-text slot="header" style="padding: 16px;">
 				<strong>Inhoud</strong>
 			</rr-rich-text>

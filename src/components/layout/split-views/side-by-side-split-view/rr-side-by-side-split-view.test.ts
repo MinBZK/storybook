@@ -18,18 +18,18 @@ describe('rr-side-by-side-split-view', () => {
 	it('renders 2 panes by default', async () => {
 		el = await fixture('<rr-side-by-side-split-view></rr-side-by-side-split-view>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelectorAll('.split-view__pane').length).toBe(2);
+		expect(el.shadowRoot!.querySelectorAll('.side-by-side-split-view__pane').length).toBe(2);
 	});
 
 	it('renders the correct number of panes', async () => {
 		el = await fixture('<rr-side-by-side-split-view panes="3"></rr-side-by-side-split-view>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelectorAll('.split-view__pane').length).toBe(3);
+		expect(el.shadowRoot!.querySelectorAll('.side-by-side-split-view__pane').length).toBe(3);
 	});
 
 	it('renders dividers between panes', async () => {
 		el = await fixture('<rr-side-by-side-split-view panes="3"></rr-side-by-side-split-view>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelectorAll('.split-view__divider').length).toBe(2);
+		expect(el.shadowRoot!.querySelectorAll('.side-by-side-split-view__divider').length).toBe(2);
 	});
 });

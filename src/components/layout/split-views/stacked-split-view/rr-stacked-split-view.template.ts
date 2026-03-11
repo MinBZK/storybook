@@ -6,7 +6,7 @@ export function stackedSplitViewTemplate(component: RRStackedSplitView): Templat
 	const panes = Array.from({ length: component.panes }, (_, i) => i + 1);
 
 	return html`
-		<div class="split-view">
+		<div class="stacked-split-view">
 			${panes.map((n, i) => html`
 				${i > 0 ? html`
 					<rr-split-view-divider
@@ -16,7 +16,7 @@ export function stackedSplitViewTemplate(component: RRStackedSplitView): Templat
 						aria-orientation="horizontal"
 					></rr-split-view-divider>
 				` : nothing}
-				<div class="split-view__pane" style="--_pane-flex: 1;">
+				<div class="stacked-split-view__pane" style="--_pane-flex: 1;">
 					<slot name="pane-${n}"></slot>
 				</div>
 			`)}

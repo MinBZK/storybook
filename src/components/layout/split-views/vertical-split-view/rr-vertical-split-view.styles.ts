@@ -18,7 +18,7 @@ export const verticalSplitViewStyles = css`
 
 	/* # Split view */
 
-	.split-view {
+	.vertical-split-view {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -30,7 +30,7 @@ export const verticalSplitViewStyles = css`
 
 	/* # Toolbar */
 
-	.split-view__header {
+	.vertical-split-view__header {
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
@@ -41,7 +41,7 @@ export const verticalSplitViewStyles = css`
 
 	/* # Content */
 
-	.split-view__main {
+	.vertical-split-view__main {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -53,7 +53,7 @@ export const verticalSplitViewStyles = css`
 
 	/* # Accessory */
 
-	.split-view__footer {
+	.vertical-split-view__footer {
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;

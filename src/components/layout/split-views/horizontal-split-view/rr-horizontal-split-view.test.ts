@@ -15,12 +15,12 @@ describe('rr-horizontal-split-view', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders sidebar, main and inspector panes', async () => {
+	it('renders sidebar, content and inspector panes', async () => {
 		el = await fixture('<rr-horizontal-split-view></rr-horizontal-split-view>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.split-view__sidebar')).not.toBeNull();
-		expect(el.shadowRoot!.querySelector('.split-view__main')).not.toBeNull();
-		expect(el.shadowRoot!.querySelector('.split-view__inspector')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.horizontal-split-view__sidebar')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.horizontal-split-view__main')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.horizontal-split-view__inspector')).not.toBeNull();
 	});
 
 	it('renders 2 dividers', async () => {
@@ -33,7 +33,7 @@ describe('rr-horizontal-split-view', () => {
 		el = await fixture('<rr-horizontal-split-view></rr-horizontal-split-view>');
 		(el as any).showSidebar = false;
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.split-view__sidebar')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.horizontal-split-view__sidebar')).toBeNull();
 		expect(el.shadowRoot!.querySelectorAll('rr-split-view-divider').length).toBe(1);
 	});
 
@@ -41,7 +41,7 @@ describe('rr-horizontal-split-view', () => {
 		el = await fixture('<rr-horizontal-split-view></rr-horizontal-split-view>');
 		(el as any).showInspector = false;
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.split-view__inspector')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.horizontal-split-view__inspector')).toBeNull();
 		expect(el.shadowRoot!.querySelectorAll('rr-split-view-divider').length).toBe(1);
 	});
 });

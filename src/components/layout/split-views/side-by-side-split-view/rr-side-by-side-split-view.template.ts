@@ -6,7 +6,7 @@ export function sideBySideSplitViewTemplate(component: RRSideBySideSplitView): T
 	const panes = Array.from({ length: component.panes }, (_, i) => i + 1);
 
 	return html`
-		<div class="split-view">
+		<div class="side-by-side-split-view">
 			${panes.map((n, i) => html`
 				${i > 0 ? html`
 					<rr-split-view-divider
@@ -16,7 +16,7 @@ export function sideBySideSplitViewTemplate(component: RRSideBySideSplitView): T
 						aria-orientation="vertical"
 					></rr-split-view-divider>
 				` : nothing}
-				<div class="split-view__pane" style="--_pane-flex: 1;">
+				<div class="side-by-side-split-view__pane" style="--_pane-flex: 1;">
 					<slot name="pane-${n}"></slot>
 				</div>
 			`)}

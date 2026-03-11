@@ -17,7 +17,7 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Split view */
 
-	.split-view {
+	.horizontal-split-view {
 		display: flex;
 		flex-direction: row;
 		flex: 1;
@@ -30,7 +30,7 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Sidebar */
 
-	.split-view__sidebar {
+	.horizontal-split-view__sidebar {
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
@@ -40,9 +40,9 @@ export const horizontalSplitViewStyles = css`
 	}
 
 
-	/* # Main */
+	/* # Content */
 
-	.split-view__main {
+	.horizontal-split-view__main {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -54,7 +54,7 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Inspector */
 
-	.split-view__inspector {
+	.horizontal-split-view__inspector {
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
@@ -72,7 +72,7 @@ export const horizontalSplitViewStyles = css`
 	/* # Auto-hide */
 
 	@container (max-width: 961px) {
-		.split-view__inspector,
+		.horizontal-split-view__inspector,
 		rr-split-view-divider[data-index="1"] {
 			display: none;
 		}
@@ -80,14 +80,14 @@ export const horizontalSplitViewStyles = css`
 
 	/* If sidebar is already hidden by consumer, inspector stays until 641px */
 	@container (min-width: 641px) {
-		:host(:not([show-sidebar])) .split-view__inspector,
+		:host(:not([show-sidebar])) .horizontal-split-view__inspector,
 		:host(:not([show-sidebar])) rr-split-view-divider[data-index="1"] {
 			display: flex;
 		}
 	}
 
 	@container (max-width: 640px) {
-		.split-view__sidebar,
+		.horizontal-split-view__sidebar,
 		rr-split-view-divider[data-index="0"] {
 			display: none;
 		}
