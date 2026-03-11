@@ -1,9 +1,9 @@
 import { html } from 'lit';
 import './rr-horizontal-split-view.ts';
-import './rr-split-view-pane.ts';
+import '../split-view-pane/rr-split-view-pane.ts';
 
 export default {
-  title: 'Components/Layout/Split View/Horizontal Split View',
+  title: 'Components/Layout/Split Views/Horizontal Split View',
   component: 'rr-horizontal-split-view',
   tags: ['autodocs'],
   parameters: {

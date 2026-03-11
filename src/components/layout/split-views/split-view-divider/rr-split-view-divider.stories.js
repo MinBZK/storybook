@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-split-view-divider.ts';
 
 export default {
-  title: 'Components/Layout/Split View/Split View Divider',
+  title: 'Components/Layout/Split Views/Split View Divider',
   component: 'rr-split-view-divider',
   tags: ['autodocs'],
   parameters: {

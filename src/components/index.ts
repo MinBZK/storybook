@@ -59,10 +59,10 @@ export { RRToken } from './inputs/token/rr-token.ts';
 
 // # Layout components
 
-export { RRHorizontalSplitView } from './layout/split-view/rr-horizontal-split-view.ts';
-export { RRSideBySideSplitView } from './layout/split-view/rr-side-by-side-split-view.ts';
-export { RRVerticalSplitView } from './layout/split-view/rr-vertical-split-view.ts';
-export { RRStackedSplitView } from './layout/split-view/rr-stacked-split-view.ts';
+export { RRHorizontalSplitView } from './layout/split-views/horizontal-split-view/rr-horizontal-split-view.ts';
+export { RRSideBySideSplitView } from './layout/split-views/side-by-side-split-view/rr-side-by-side-split-view.ts';
+export { RRVerticalSplitView } from './layout/split-views/vertical-split-view/rr-vertical-split-view.ts';
+export { RRStackedSplitView } from './layout/split-views/stacked-split-view/rr-stacked-split-view.ts';
 
 export { RRPage } from './layout/page/rr-page.ts';
 

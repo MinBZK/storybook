@@ -20,7 +20,7 @@
 
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import './rr-split-view-divider.ts';
+import '../split-view-divider/rr-split-view-divider.ts';
 
 @customElement('rr-horizontal-split-view')
 export class RRHorizontalSplitView extends LitElement {

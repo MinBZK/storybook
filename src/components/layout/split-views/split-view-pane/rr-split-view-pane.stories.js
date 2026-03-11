@@ -2,7 +2,7 @@ import { html } from 'lit';
 import './rr-split-view-pane.ts';
 
 export default {
-  title: 'Components/Layout/Split View/Split View Pane',
+  title: 'Components/Layout/Split Views/Split View Pane',
   component: 'rr-split-view-pane',
   tags: ['autodocs'],
   parameters: {

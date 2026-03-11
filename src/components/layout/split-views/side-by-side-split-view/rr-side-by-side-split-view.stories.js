@@ -1,9 +1,9 @@
 import { html } from 'lit';
 import './rr-side-by-side-split-view.ts';
-import './rr-split-view-pane.ts';
+import '../split-view-pane/rr-split-view-pane.ts';
 
 export default {
-  title: 'Components/Layout/Split View/Side-by-Side Split View',
+  title: 'Components/Layout/Split Views/Side-by-Side Split View',
   component: 'rr-side-by-side-split-view',
   tags: ['autodocs'],
   parameters: {

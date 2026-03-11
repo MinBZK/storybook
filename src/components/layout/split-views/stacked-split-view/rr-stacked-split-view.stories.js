@@ -1,9 +1,9 @@
 import { html } from 'lit';
 import './rr-stacked-split-view.ts';
-import './rr-split-view-pane.ts';
+import '../split-view-pane/rr-split-view-pane.ts';
 
 export default {
-  title: 'Components/Layout/Split View/Stacked Split View',
+  title: 'Components/Layout/Split Views/Stacked Split View',
   component: 'rr-stacked-split-view',
   tags: ['autodocs'],
   parameters: {
