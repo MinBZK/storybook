@@ -95,7 +95,7 @@ export class RRIconButton extends LitElement {
 			.join(' ');
 	}
 
-	_handleClick(e: MouseEvent): void {
+	protected _handleClick(e: MouseEvent): void {
 		if (this.disabled) {
 			e.preventDefault();
 			e.stopPropagation();

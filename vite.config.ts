@@ -12,5 +12,8 @@ export default defineConfig({
 		emptyOutDir: false,
 		target: 'es2020',
 		minify: false,
+		rollupOptions: {
+			external: ['lit', /^lit\//, /^@lit\//, '@floating-ui/dom'],
+		},
 	},
 });

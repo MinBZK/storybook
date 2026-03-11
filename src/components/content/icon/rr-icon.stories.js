@@ -1,7 +1,8 @@
 // icon.stories.js
 import { ICONS, aliases } from './rr-icon.ts';
 
-const iconNames = ICONS.filter(name => !Object.keys(aliases).includes(name));
+const aliasSet = new Set(Object.keys(aliases));
+const iconNames = ICONS.filter(name => !aliasSet.has(name));
 const allIconNames = ICONS;
 
 export default {
