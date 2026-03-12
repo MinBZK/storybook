@@ -68,7 +68,7 @@ export default {
 };
 
 const gridItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="padding: 24px; background: #ccc; border-radius: 8px; min-height: 120px; min-width:280px;">
+	<div style="padding: 24px; background: #ccc; border-radius: 8px; min-height: 120px;">
 		<rr-rich-text size="flat">
 			<h3>Item ${i + 1}</h3>
 			<p>Omschrijving van item ${i + 1}.</p>

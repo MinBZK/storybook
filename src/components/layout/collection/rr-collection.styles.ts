@@ -52,7 +52,7 @@ export const collectionStyles = css`
 		scroll-behavior: smooth;
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: none;
-		gap: 16px;
+		gap: var(--primitives-space-16);
 		margin-inline-start: -16px;
 		padding-inline-start: 16px;
 		scroll-padding-inline-start: 16px;
@@ -75,7 +75,7 @@ export const collectionStyles = css`
 	}
 
 	:host([layout='horizontal-scroll']) .collection__items ::slotted(*) {
-		flex-grow: 0;
+		flex-grow: 1;
 		flex-shrink: 0;
 		flex-basis: var(--primitives-area-280);
 		scroll-snap-align: start;
