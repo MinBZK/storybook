@@ -11,7 +11,7 @@ export const styles = css`
 	.list__body {
 		display: flex;
 		flex-direction: column;
-		gap: var(--primitives-space-12);
+		gap: var(--primitives-space-8);
 	}
 
 

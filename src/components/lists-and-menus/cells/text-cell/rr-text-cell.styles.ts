@@ -6,7 +6,6 @@ export const styles = css`
 	:host {
 		display: flex;
 		flex-direction: column;
-		font-family: var(--rr-font-family-body);
 	}
 
 	:host([hidden]) {

@@ -20,6 +20,22 @@ export class RrList extends LitElement {
 	@property({ reflect: true })
 	variant: ListVariant = 'simple';
 
+	override firstUpdated() {
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
+		slot?.addEventListener('slotchange', () => this._markLastItem());
+		this._markLastItem();
+	}
+
+	private _markLastItem() {
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
+		const items = (slot?.assignedElements() ?? []).filter(
+			(el) => el.tagName.toLowerCase() === 'rr-list-item',
+		);
+		items.forEach((item, index) => {
+			item.classList.toggle('is-last', index === items.length - 1);
+		});
+	}
+
 	render() {
 		return template();
 	}

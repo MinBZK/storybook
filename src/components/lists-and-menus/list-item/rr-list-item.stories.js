@@ -155,7 +155,9 @@ export const WithStartAndEnd = {
 					<p slot="text">Item with start icon</p>
 				</rr-text-cell>
 				<rr-spacer-cell slot="end" size="8"></rr-spacer-cell>
-				<div slot="end" style="color: #999;">›</div>
+				<rr-icon-cell slot="end" size="16">
+					<rr-icon name="chevron-right"></rr-icon>
+				</rr-icon-cell>
 				<rr-spacer-cell slot="end" size="12"></rr-spacer-cell>
 			</rr-list-item>
 			<rr-list-item>
@@ -178,7 +180,9 @@ export const SimpleWithEndOnly = {
 					<p slot="text">Only end slot filled</p>
 				</rr-text-cell>
 				<rr-spacer-cell slot="end" size="8"></rr-spacer-cell>
-				<div slot="end" style="color: #999;">›</div>
+				<rr-icon-cell slot="end" size="16">
+					<rr-icon name="chevron-right"></rr-icon>
+				</rr-icon-cell>
 			</rr-list-item>
 			<rr-list-item>
 				<rr-text-cell>

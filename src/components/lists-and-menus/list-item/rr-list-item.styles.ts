@@ -118,7 +118,7 @@ export const styles = css`
 	}
 
 	:host([selected]) .list-item__divider,
-	:host(.is-boxed:last-child) .list-item__divider {
+	:host(.is-boxed.is-last) .list-item__divider {
 		display: none;
 	}
 `;
