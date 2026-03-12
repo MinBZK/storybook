@@ -7,12 +7,6 @@ export default {
 	component: 'rr-cell',
 	tags: ['autodocs'],
 	argTypes: {
-		verticalAlignment: {
-			control: 'select',
-			options: ['center', 'top', 'bottom'],
-			description: 'Vertical alignment of slotted content',
-			table: { defaultValue: { summary: 'center' } },
-		},
 		width: {
 			control: 'text',
 			description: "Width of the cell: 'stretch', 'fit-content', or a number (pixels)",
@@ -25,6 +19,16 @@ export default {
 		maxWidth: {
 			control: 'number',
 			description: 'Maximum width in pixels',
+		},
+		minHeight: {
+			control: 'number',
+			description: 'Minimum height in pixels',
+		},
+		verticalAlignment: {
+			control: 'select',
+			options: ['center', 'top', 'bottom'],
+			description: 'Vertical alignment of slotted content',
+			table: { defaultValue: { summary: 'center' } },
 		},
 	},
 };
@@ -77,49 +81,28 @@ export const WithMinAndMaxWidth = {
 	`,
 };
 
-export const VerticalAlignmentCenter = {
+export const WithMinHeight = {
 	render: () => html`
-		<rr-cell vertical-alignment="center" style="height: 100px; border: 1px dashed #ccc;">
-			<rr-button variant="neutral-tinted">Center</rr-button>
-		</rr-cell>
+		<div style="display: flex; gap: 8px; align-items: flex-start;">
+			<rr-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed #ccc;">
+				<rr-button variant="neutral-tinted">Min height 44px</rr-button>
+			</rr-cell>
+		</div>
 	`,
 };
 
-export const VerticalAlignmentTop = {
+export const VerticalAlignment = {
 	render: () => html`
-		<rr-cell vertical-alignment="top" style="height: 100px; border: 1px dashed #ccc;">
-			<rr-button variant="neutral-tinted">Top</rr-button>
-		</rr-cell>
-	`,
-};
-
-export const VerticalAlignmentBottom = {
-	render: () => html`
-		<rr-cell vertical-alignment="bottom" style="height: 100px; border: 1px dashed #ccc;">
-			<rr-button variant="neutral-tinted">Bottom</rr-button>
-		</rr-cell>
-	`,
-};
-
-export const InListItem = {
-	render: () => html`
-		<rr-list variant="box" style="width: 300px;">
-			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Item with button</p>
-				</rr-text-cell>
-				<rr-cell slot="end">
-					<rr-button variant="neutral-tinted" size="sm">Action</rr-button>
-				</rr-cell>
-			</rr-list-item>
-			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Item with fixed width cell</p>
-				</rr-text-cell>
-				<rr-cell slot="end" width=${80}>
-					<rr-button variant="neutral-tinted" size="sm" width="stretch">80px</rr-button>
-				</rr-cell>
-			</rr-list-item>
-		</rr-list>
+		<div style="display: flex; gap: 8px; height: 100px;">
+			<rr-cell vertical-alignment="center" style="border: 1px dashed #ccc;">
+				<rr-button variant="neutral-tinted">Center</rr-button>
+			</rr-cell>
+			<rr-cell vertical-alignment="top" style="border: 1px dashed #ccc;">
+				<rr-button variant="neutral-tinted">Top</rr-button>
+			</rr-cell>
+			<rr-cell vertical-alignment="bottom" style="border: 1px dashed #ccc;">
+				<rr-button variant="neutral-tinted">Bottom</rr-button>
+			</rr-cell>
+		</div>
 	`,
 };

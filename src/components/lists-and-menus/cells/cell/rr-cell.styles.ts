@@ -8,6 +8,7 @@ export const styles = css`
 		flex-direction: column;
 		align-items: stretch;
 		flex-shrink: 0;
+		justify-content: center;
 	}
 
 	:host([hidden]) {
@@ -34,15 +35,15 @@ export const styles = css`
 
 	:host([vertical-alignment='center']),
 	:host(:not([vertical-alignment])) {
-		justify-content: center;
+		align-self: stretch;
 	}
 
 	:host([vertical-alignment='top']) {
-		justify-content: flex-start;
+		align-self: flex-start;
 	}
 
 	:host([vertical-alignment='bottom']) {
-		justify-content: flex-end;
+		align-self: flex-end;
 	}
 
 

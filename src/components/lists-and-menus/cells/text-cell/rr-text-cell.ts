@@ -7,9 +7,12 @@
  * @element rr-text-cell
  * @attr {string} size - Cell size: 'sm' | 'md' (default: 'md')
  * @attr {string} color - Text color variant: 'default' | 'secondary' | 'inherit' (default: 'default')
- * @attr {string} width - Width: 'stretch' | 'fit-content' (default: 'stretch')
+ * @attr {'stretch' | 'fit-content' | number} width - Width of the cell (default: 'stretch')
+ * @attr {number} min-width - Minimum width in pixels
+ * @attr {number} max-width - Maximum width in pixels
+ * @attr {number} min-height - Minimum height in pixels
  * @attr {string} horizontal-alignment - Horizontal alignment: 'left' | 'right' (default: 'left')
- * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' (default: 'center')
+ * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')
  * @attr {boolean} selected - Selected state
  *
  * @slot overline - Optional overline text displayed above the main content
@@ -19,18 +22,18 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './rr-text-cell.styles.js';
-import { template } from './rr-text-cell.template.js';
+import { styles } from './rr-text-cell.styles.ts';
+import { template } from './rr-text-cell.template.ts';
 
 type Size = 'sm' | 'md';
 type Color = 'default' | 'secondary' | 'inherit';
 type Width = 'stretch' | 'fit-content';
 type HorizontalAlignment = 'left' | 'right';
-type VerticalAlignment = 'top' | 'center';
+type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('rr-text-cell')
-export class RRTextCell extends LitElement {
-	static override styles = styles;
+export class RrTextCell extends LitElement {
+	static styles = [styles];
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
@@ -38,8 +41,17 @@ export class RRTextCell extends LitElement {
 	@property({ type: String, reflect: true })
 	color: Color = 'default';
 
-	@property({ type: String, reflect: true })
-	width: Width = 'stretch';
+	@property({ reflect: true })
+	width: Width | number = 'stretch';
+
+	@property({ type: Number, reflect: true, attribute: 'min-width' })
+	minWidth?: number;
+
+	@property({ type: Number, reflect: true, attribute: 'max-width' })
+	maxWidth?: number;
+
+	@property({ type: Number, reflect: true, attribute: 'min-height' })
+	minHeight?: number;
 
 	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
 	horizontalAlignment: HorizontalAlignment = 'left';
@@ -50,6 +62,18 @@ export class RRTextCell extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
+	override updated() {
+		this._applyDimensionStyles();
+	}
+
+	private _applyDimensionStyles() {
+		const numericWidth = Number(this.width);
+		this.style.width = Number.isFinite(numericWidth) && this.width !== 'stretch' && this.width !== 'fit-content' ? `${numericWidth}px` : '';
+		this.style.minWidth = this.minWidth != null ? `${this.minWidth}px` : '';
+		this.style.maxWidth = this.maxWidth != null ? `${this.maxWidth}px` : '';
+		this.style.minHeight = this.minHeight != null ? `${this.minHeight}px` : '';
+	}
+
 	override render() {
 		return template.call(this);
 	}
@@ -57,6 +81,6 @@ export class RRTextCell extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-text-cell': RRTextCell;
+		'rr-text-cell': RrTextCell;
 	}
 }

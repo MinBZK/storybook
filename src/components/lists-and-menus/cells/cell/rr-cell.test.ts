@@ -45,13 +45,19 @@ describe('rr-cell', () => {
 		expect(el.style.maxWidth).toBe('200px');
 	});
 
+	it('sets inline min-height style', async () => {
+		el = await fixture('<rr-cell min-height="44"></rr-cell>');
+		await waitForUpdate(el);
+		expect(el.style.minHeight).toBe('44px');
+	});
+
 	it('defaults to center vertical alignment', async () => {
 		el = await fixture('<rr-cell></rr-cell>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('vertical-alignment')).toBe('center');
 	});
 
-	it('reflects vertical-alignment attribute', async () => {
+	it('reflects vertical-alignment top', async () => {
 		el = await fixture('<rr-cell vertical-alignment="top"></rr-cell>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('vertical-alignment')).toBe('top');

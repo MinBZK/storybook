@@ -51,6 +51,30 @@ describe('rr-text-cell', () => {
 		expect(el.getAttribute('width')).toBe('fit-content');
 	});
 
+	it('sets inline width style for numeric width', async () => {
+		el = await fixture('<rr-text-cell width="120"></rr-text-cell>');
+		await waitForUpdate(el);
+		expect(el.style.width).toBe('120px');
+	});
+
+	it('sets inline min-width style', async () => {
+		el = await fixture('<rr-text-cell min-width="80"></rr-text-cell>');
+		await waitForUpdate(el);
+		expect(el.style.minWidth).toBe('80px');
+	});
+
+	it('sets inline max-width style', async () => {
+		el = await fixture('<rr-text-cell max-width="200"></rr-text-cell>');
+		await waitForUpdate(el);
+		expect(el.style.maxWidth).toBe('200px');
+	});
+
+	it('sets inline min-height style', async () => {
+		el = await fixture('<rr-text-cell min-height="44"></rr-text-cell>');
+		await waitForUpdate(el);
+		expect(el.style.minHeight).toBe('44px');
+	});
+
 	it('defaults to left horizontal alignment', async () => {
 		el = await fixture('<rr-text-cell></rr-text-cell>');
 		await waitForUpdate(el);
@@ -69,10 +93,16 @@ describe('rr-text-cell', () => {
 		expect(el.getAttribute('vertical-alignment')).toBe('center');
 	});
 
-	it('reflects vertical-alignment attribute', async () => {
+	it('reflects vertical-alignment top', async () => {
 		el = await fixture('<rr-text-cell vertical-alignment="top"></rr-text-cell>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('vertical-alignment')).toBe('top');
+	});
+
+	it('reflects vertical-alignment bottom', async () => {
+		el = await fixture('<rr-text-cell vertical-alignment="bottom"></rr-text-cell>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('vertical-alignment')).toBe('bottom');
 	});
 
 	it('renders slotted text content', async () => {

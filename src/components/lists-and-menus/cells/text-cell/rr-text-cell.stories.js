@@ -10,30 +10,47 @@ export default {
 			control: 'select',
 			options: ['md', 'sm'],
 			description: 'Text cell size',
+			table: { defaultValue: { summary: 'md' } },
 		},
 		color: {
 			control: 'select',
-			options: ['default', 'secondary'],
+			options: ['default', 'secondary', 'inherit'],
 			description: 'Color variant of the text',
+			table: { defaultValue: { summary: 'default' } },
 		},
 		width: {
-			control: 'select',
-			options: ['stretch', 'fit-content'],
-			description: 'Width of the cell',
+			control: 'text',
+			description: "Width of the cell: 'stretch', 'fit-content', or a number (pixels)",
+			table: { defaultValue: { summary: 'stretch' } },
+		},
+		minWidth: {
+			control: 'number',
+			description: 'Minimum width in pixels',
+		},
+		maxWidth: {
+			control: 'number',
+			description: 'Maximum width in pixels',
+		},
+		minHeight: {
+			control: 'number',
+			description: 'Minimum height in pixels',
 		},
 		horizontalAlignment: {
 			control: 'select',
 			options: ['left', 'right'],
 			description: 'Horizontal alignment of the text',
+			table: { defaultValue: { summary: 'left' } },
 		},
 		verticalAlignment: {
 			control: 'select',
-			options: ['center', 'top'],
+			options: ['center', 'top', 'bottom'],
 			description: 'Vertical alignment of the cell',
+			table: { defaultValue: { summary: 'center' } },
 		},
 		selected: {
 			control: 'boolean',
 			description: 'Selected state',
+			table: { defaultValue: { summary: 'false' } },
 		},
 	},
 };
@@ -140,6 +157,23 @@ export const Width = {
 			<rr-text-cell width="fit-content">
 				<p slot="text">Fit content</p>
 			</rr-text-cell>
+			<rr-text-cell width=${120}>
+				<p slot="text">120px fixed</p>
+			</rr-text-cell>
+		</div>
+	`,
+};
+
+export const MinHeight = {
+	render: () => html`
+		<div style="display: flex; gap: 8px; align-items: flex-start;">
+			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed #ccc;">
+				<p slot="text">Min height 44px</p>
+			</rr-text-cell>
+			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed #ccc;">
+				<p slot="text">With supporting text</p>
+				<p slot="supporting-text">Supporting text</p>
+			</rr-text-cell>
 		</div>
 	`,
 };
@@ -163,12 +197,15 @@ export const HorizontalAlignment = {
 
 export const VerticalAlignment = {
 	render: () => html`
-		<div style="display: flex; gap: 8px;">
-			<rr-text-cell vertical-alignment="center" style="height: 80px; border: 1px dashed #ccc;">
-				<p slot="text">Text cell (center)</p>
+		<div style="display: flex; gap: 8px; height: 80px;">
+			<rr-text-cell vertical-alignment="center" style="border: 1px dashed #ccc;">
+				<p slot="text">Center</p>
 			</rr-text-cell>
-			<rr-text-cell vertical-alignment="top" style="height: 80px; border: 1px dashed #ccc;">
-				<p slot="text">Text cell (top)</p>
+			<rr-text-cell vertical-alignment="top" style="border: 1px dashed #ccc;">
+				<p slot="text">Top</p>
+			</rr-text-cell>
+			<rr-text-cell vertical-alignment="bottom" style="border: 1px dashed #ccc;">
+				<p slot="text">Bottom</p>
 			</rr-text-cell>
 		</div>
 	`,
