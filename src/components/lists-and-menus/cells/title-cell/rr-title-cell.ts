@@ -1,133 +1,86 @@
 /**
  * RegelRecht Title Cell Component (Lit + TypeScript)
  *
- * A cell component for displaying titles in lists with configurable alignment and size.
+ * A cell component for displaying a title with optional overline and subtitle in lists.
+ * The heading level is semantically configurable independent of the visual size.
  *
  * @element rr-title-cell
- * @attr {string} size - Cell size: 'sm' | 'md' (default: 'md')
- * @attr {string} color - Text color variant: 'default' | 'white' (default: 'default')
- * @attr {string} horizontal-alignment - Horizontal alignment: 'left' | 'right' (default: 'left')
- * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' (default: 'center')
+ * @attr {1|2|3|4|5|6} level - Semantic heading level (default: 2)
+ * @attr {1|2|3|4|5|6} size - Visual size of the title (default: 5)
+ * @attr {'default' | 'inherit'} color - Text color variant (default: 'default')
+ * @attr {'stretch' | 'fit-content' | number} width - Width of the cell (default: 'stretch')
+ * @attr {number} min-width - Minimum width in pixels
+ * @attr {number} max-width - Maximum width in pixels
+ * @attr {number} min-height - Minimum height in pixels
+ * @attr {'left' | 'right'} horizontal-alignment - Horizontal alignment (default: 'left')
+ * @attr {'top' | 'center' | 'bottom'} vertical-alignment - Vertical alignment (default: 'center')
+ * @attr {boolean} selected - Selected state
  *
- * @slot - Default slot for title text content
- *
- * @csspart title - The title text container
+ * @slot overline - Optional overline text displayed above the title
+ * @slot - Title text content
+ * @slot subtitle - Optional subtitle text displayed below the title
  */
-
-import { LitElement, html, css } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { styles } from './rr-title-cell.styles.ts';
+import { template } from './rr-title-cell.template.ts';
 
-type Size = 'sm' | 'md';
-type Color = 'default' | 'white';
+export type TitleCellSize = 1 | 2 | 3 | 4 | 5 | 6;
+type Color = 'default' | 'inherit';
+type Width = 'stretch' | 'fit-content';
 type HorizontalAlignment = 'left' | 'right';
-type VerticalAlignment = 'top' | 'center';
+type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('rr-title-cell')
-export class RRTitleCell extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      font-family: var(--rr-font-family-body);
-    }
+export class RrTitleCell extends LitElement {
+	static styles = [styles];
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Number, reflect: true })
+	size: TitleCellSize = 5;
 
-    /* Vertical alignment */
-    :host([vertical-alignment="center"]),
-    :host(:not([vertical-alignment])) {
-      justify-content: center;
-    }
+	@property({ type: String, reflect: true })
+	color: Color = 'default';
 
-    :host([vertical-alignment="top"]) {
-      justify-content: flex-start;
-    }
+	@property({ reflect: true })
+	width: Width | number = 'stretch';
 
-    /* Horizontal alignment */
-    :host([horizontal-alignment="left"]),
-    :host(:not([horizontal-alignment])) {
-      align-items: flex-start;
-    }
+	@property({ type: Number, reflect: true, attribute: 'min-width' })
+	minWidth?: number;
 
-    :host([horizontal-alignment="right"]) {
-      align-items: flex-end;
-    }
+	@property({ type: Number, reflect: true, attribute: 'max-width' })
+	maxWidth?: number;
 
-    .title-cell__title {
-      display: flex;
-      flex-direction: row;
-      gap: 8px;
-      width: 100%;
-    }
+	@property({ type: Number, reflect: true, attribute: 'min-height' })
+	minHeight?: number;
 
-    /* Text alignment based on horizontal-alignment */
-    :host([horizontal-alignment="right"]) .title-cell__title {
-      justify-content: flex-end;
-    }
+	@property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
+	horizontalAlignment: HorizontalAlignment = 'left';
 
-    .title-cell__text {
-      margin: 0;
-      font-weight: var(--primitives-font-weight-body-medium);
-      line-height: 1.25;
-    }
+	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })
+	verticalAlignment: VerticalAlignment = 'center';
 
-    /* Size: MD (default) - 18px font */
-    :host([size="md"]) .title-cell__text,
-    :host(:not([size])) .title-cell__text {
-      font-size: var(--primitives-font-size-100);
-    }
+	@property({ type: Boolean, reflect: true })
+	selected = false;
 
-    /* Size: SM - 16px font */
-    :host([size="sm"]) .title-cell__text {
-      font-size: var(--primitives-font-size-90);
-    }
+	override updated() {
+		this._applyDimensionStyles();
+	}
 
-    /* Color: Default */
-    :host([color="default"]) .title-cell__text,
-    :host(:not([color])) .title-cell__text {
-      color: var(--semantics-content-color);
-    }
+	private _applyDimensionStyles() {
+		const numericWidth = Number(this.width);
+		this.style.width = Number.isFinite(numericWidth) && this.width !== 'stretch' && this.width !== 'fit-content' ? `${numericWidth}px` : '';
+		this.style.minWidth = this.minWidth != null ? `${this.minWidth}px` : '';
+		this.style.maxWidth = this.maxWidth != null ? `${this.maxWidth}px` : '';
+		this.style.minHeight = this.minHeight != null ? `${this.minHeight}px` : '';
+	}
 
-    /* Color: White */
-    :host([color="white"]) .title-cell__text {
-      color: var(--primitives-color-neutral-1000);
-    }
-
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .title-cell__text {
-        forced-color-adjust: none;
-      }
-    }
-  `;
-
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
-
-  @property({ type: String, reflect: true })
-  color: Color = 'default';
-
-  @property({ type: String, reflect: true, attribute: 'horizontal-alignment' })
-  horizontalAlignment: HorizontalAlignment = 'left';
-
-  @property({ type: String, reflect: true, attribute: 'vertical-alignment' })
-  verticalAlignment: VerticalAlignment = 'center';
-
-  override render() {
-    return html`
-      <div class="title-cell__title" part="title">
-        <span class="title-cell__text">
-          <slot></slot>
-        </span>
-      </div>
-    `;
-  }
+	override render() {
+		return template();
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-title-cell': RRTitleCell;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-title-cell': RrTitleCell;
+	}
 }
