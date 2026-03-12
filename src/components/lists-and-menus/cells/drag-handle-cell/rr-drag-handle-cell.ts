@@ -18,18 +18,18 @@ type Size = 'sm' | 'md';
 
 @customElement('rr-drag-handle-cell')
 export class RRDragHandleCell extends LitElement {
-  static override styles = styles;
+	static override styles = styles;
 
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
+	@property({ type: String, reflect: true })
+	size: Size = 'md';
 
-  override render() {
-	return template.call(this);
-  }
+	override render() {
+		return template.call(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-	'rr-drag-handle-cell': RRDragHandleCell;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-drag-handle-cell': RRDragHandleCell;
+	}
 }

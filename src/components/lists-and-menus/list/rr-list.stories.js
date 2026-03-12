@@ -4,6 +4,7 @@ import '../list-item/rr-list-item.ts';
 import '../cells/title-cell/rr-title-cell.ts';
 import '../cells/text-cell/rr-text-cell.ts';
 import '../cells/spacer-cell/rr-spacer-cell.ts';
+import '../cells/drag-handle-cell/rr-drag-handle-cell.ts';
 import '../../layout/title-bar/rr-title-bar.ts';
 import '../../content/rich-text/rr-rich-text.ts';
 
@@ -273,16 +274,8 @@ export const DraggableList = {
 				${['Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten'].map((label) => `
 					<rr-list-item>
 						<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
-						<rr-cell slot="start" draggable-only tabindex="0" style="align-items: center; padding: 4px;">
-							<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-								<circle cx="5" cy="4" r="1.5" fill="currentColor"/>
-								<circle cx="11" cy="4" r="1.5" fill="currentColor"/>
-								<circle cx="5" cy="8" r="1.5" fill="currentColor"/>
-								<circle cx="11" cy="8" r="1.5" fill="currentColor"/>
-								<circle cx="5" cy="12" r="1.5" fill="currentColor"/>
-								<circle cx="11" cy="12" r="1.5" fill="currentColor"/>
-							</svg>
-						</rr-cell>
+						<rr-drag-handle-cell size="sm" slot="start" draggable-only tabindex="0">
+						</rr-drag-handle-cell>
 						<rr-spacer-cell slot="start" draggable-only size="8"></rr-spacer-cell>
 						<rr-text-cell>
 							<p slot="text">${label}</p>

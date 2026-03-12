@@ -2,50 +2,54 @@ import { css } from 'lit';
 
 export const styles = css`
 
-  /* # Host */
 
-  :host {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: fit-content;
-	cursor: grab;
-  }
+	/* # Host */
 
-  :host([hidden]) {
-	display: none;
-  }
+	:host {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: fit-content;
+		cursor: grab;
+	}
 
-  :host(:active) {
-	cursor: grabbing;
-  }
+	:host([hidden]) {
+		display: none;
+	}
+
+	:host(:active) {
+		cursor: grabbing;
+	}
 
 
-  /* # Control */
+	/* # Control */
 
-  .drag-handle-cell__control {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: var(--semantics-grab-handles-background-color);
-	border-radius: 6px;
-  }
+	.drag-handle-cell__control {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: var(--semantics-grab-handles-background-color);
+	}
 
-  /* Size: MD (default) - 32x44 */
-  :host([size="md"]) .drag-handle-cell__control,
-  :host(:not([size])) .drag-handle-cell__control {
-	width: 32px;
-	height: 44px;
-  }
+	/* ## Size: MD (default) */
 
-  /* Size: SM - 24x32 */
-  :host([size="sm"]) .drag-handle-cell__control {
-	width: 24px;
-	height: 32px;
-  }
+	:host([size="md"]) .drag-handle-cell__control,
+	:host(:not([size])) .drag-handle-cell__control {
+		width: var(--semantics-controls-sm-min-size);
+		height: var(--semantics-controls-md-min-size);
+		border-radius: var(--semantics-controls-md-corner-radius);
+	}
 
-  .drag-handle-cell__control-grip {
+	/* ## Size: SM */
+
+	:host([size="sm"]) .drag-handle-cell__control {
+	width: var(--semantics-controls-xs-min-size);
+	height: var(--semantics-controls-sm-min-size);
+	border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
+	.drag-handle-cell__control-grip {
 	display: block;
 	color: var(--semantics-grab-handles-grip-color);
-  }
+	}
 `;
