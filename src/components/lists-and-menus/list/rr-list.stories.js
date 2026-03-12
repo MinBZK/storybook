@@ -117,7 +117,9 @@ export const VariantInset = {
 export const WithHeaderAndFooter = {
 	render: () => html`
 		<rr-list variant="box">
-			<rr-title-bar slot="header" size="5">Notifications</rr-title-bar>
+			<rr-title-bar slot="header" size="4">
+				<h5>Notifications</h5>
+			</rr-title-bar>
 			<rr-list-item>
 				<rr-text-cell>
 					<p slot="text">Allow notifications</p>
@@ -211,7 +213,7 @@ export const WithTitleAndDetail = {
 					<p slot="text">Primary title</p>
 				</rr-text-cell>
 				<rr-spacer-cell></rr-spacer-cell>
-				<rr-text-cell>
+				<rr-text-cell color="secondary" horizontal-alignment="right" width="fit-content">
 					<p slot="text">Detail</p>
 				</rr-text-cell>
 			</rr-list-item>
@@ -220,7 +222,7 @@ export const WithTitleAndDetail = {
 					<p slot="text">Another title</p>
 				</rr-text-cell>
 				<rr-spacer-cell size="8"></rr-spacer-cell>
-				<rr-text-cell>
+				<rr-text-cell color="secondary" horizontal-alignment="right" width="fit-content">
 					<p slot="text">More detail</p>
 				</rr-text-cell>
 			</rr-list-item>
@@ -274,8 +276,7 @@ export const DraggableList = {
 				${['Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten'].map((label) => `
 					<rr-list-item>
 						<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
-						<rr-drag-handle-cell size="sm" slot="start" draggable-only tabindex="0">
-						</rr-drag-handle-cell>
+						<rr-drag-handle-cell size="sm" slot="start" draggable-only tabindex="0"></rr-drag-handle-cell>
 						<rr-spacer-cell slot="start" draggable-only size="8"></rr-spacer-cell>
 						<rr-text-cell>
 							<p slot="text">${label}</p>
