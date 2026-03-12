@@ -2,8 +2,10 @@ import { html } from 'lit';
 import './rr-list.ts';
 import '../list-item/rr-list-item.ts';
 import '../cells/title-cell/rr-title-cell.ts';
-import '../cells/label-cell/rr-label-cell.ts';
+import '../cells/text-cell/rr-text-cell.ts';
+import '../cells/spacer-cell/rr-spacer-cell.ts';
 import '../../layout/title-bar/rr-title-bar.ts';
+import '../../content/rich-text/rr-rich-text.ts';
 
 export default {
 	title: 'Components/Lists & Menus/List',
@@ -91,7 +93,6 @@ export const WithHeaderAndFooter = {
 	render: () => html`
 		<rr-list variant="box">
 			<rr-title-bar slot="header" size="5">Notifications</rr-title-bar>
-
 			<rr-list-item>
 				<rr-title-cell>Allow notifications</rr-title-cell>
 			</rr-list-item>
@@ -101,9 +102,8 @@ export const WithHeaderAndFooter = {
 			<rr-list-item>
 				<rr-title-cell>Badges</rr-title-cell>
 			</rr-list-item>
-
 			<rr-rich-text slot="footer">
-				<p>	Notifications will only be sent when the app is active on your device.</p>
+				<p>Notifications will only be sent when the app is active on your device.</p>
 			</rr-rich-text>
 		</rr-list>
 	`,
@@ -145,14 +145,30 @@ export const WithTitleAndDetail = {
 	render: () => html`
 		<rr-list variant="box">
 			<rr-list-item>
-					<rr-title-cell>Primary title</rr-title-cell>
-					<rr-spacer-cell></rr-spacer-cell>
-					<rr-text-cell space="8">Secondary label text</rr-text-cell>
+				<rr-title-cell>Primary title</rr-title-cell>
+				<rr-spacer-cell></rr-spacer-cell>
+				<rr-text-cell size="8">Secondary label text</rr-text-cell>
 			</rr-list-item>
 			<rr-list-item>
-					<rr-title-cell>Another title</rr-title-cell>
-					<rr-spacer-cell space="8"></rr-spacer-cell>
-					<rr-text-cell>More description here</rr-text-cell>
+				<rr-title-cell>Another title</rr-title-cell>
+				<rr-spacer-cell size="8"></rr-spacer-cell>
+				<rr-text-cell>More description here</rr-text-cell>
+			</rr-list-item>
+		</rr-list>
+	`,
+};
+
+export const WithInteractiveItems = {
+	render: () => html`
+		<rr-list variant="box">
+			<rr-list-item type="button">
+				<rr-title-cell>Button item</rr-title-cell>
+			</rr-list-item>
+			<rr-list-item type="link" href="/settings">
+				<rr-title-cell>Link item</rr-title-cell>
+			</rr-list-item>
+			<rr-list-item>
+				<rr-title-cell>Non-interactive item</rr-title-cell>
 			</rr-list-item>
 		</rr-list>
 	`,

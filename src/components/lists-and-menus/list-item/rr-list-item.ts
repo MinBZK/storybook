@@ -6,9 +6,11 @@ import type { RrList } from '../list/rr-list.ts';
 import '../cells/spacer-cell/rr-spacer-cell.ts';
 
 export type ListItemSize = 'sm' | 'md';
+export type ListItemType = 'button' | 'link';
 
 /**
  * A row within an `rr-list`, providing layout for start, main and end areas.
+ * Can render as a button, link, or plain container depending on `type`.
  *
  * @slot         - Main content area (cells)
  * @slot start   - Content at the start of the row
@@ -23,6 +25,14 @@ export class RrListItem extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;
+
+	/** When set, renders the item as a button or link. */
+	@property({ reflect: true })
+	type?: ListItemType;
+
+	/** URL for when type="link". */
+	@property({ reflect: true })
+	href?: string;
 
 	@state()
 	private _showStart = false;
@@ -108,7 +118,7 @@ export class RrListItem extends LitElement {
 	}
 
 	override render() {
-		return template(this._showStart, this._showEnd);
+		return template(this.type, this.href, this._showStart, this._showEnd);
 	}
 }
 

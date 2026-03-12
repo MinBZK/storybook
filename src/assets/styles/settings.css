@@ -776,7 +776,8 @@
 
 	--components-list-item-sm-padding-block: var(--primitives-space-8);
 	--components-list-item-md-padding-block: var(--primitives-space-12);
-	--components-list-item-is-selected-corner-radius: var(--primitives-corner-radius-md);
+	--components-list-item-indicator-corner-radius: var(--primitives-corner-radius-md);
+	--components-list-item-is-hovered-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--components-list-item-is-selected-background-color: var(--semantics-controls-is-selected-indicator-color);
 	--components-list-item-is-selected-content-color: var(--semantics-controls-is-selected-contrast-color);
 

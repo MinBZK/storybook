@@ -28,7 +28,27 @@ describe('rr-list-item', () => {
 		expect(el.hasAttribute('selected')).toBe(true);
 	});
 
-	it('sets show-gutters when inside a box list', async () => {
+	it('renders a div by default', async () => {
+		el = await fixture('<rr-list-item></rr-list-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('div.list-item')).not.toBeNull();
+	});
+
+	it('renders a button when type="button"', async () => {
+		el = await fixture('<rr-list-item type="button"></rr-list-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button.list-item')).not.toBeNull();
+	});
+
+	it('renders an anchor when type="link"', async () => {
+		el = await fixture('<rr-list-item type="link" href="/test"></rr-list-item>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a.list-item');
+		expect(anchor).not.toBeNull();
+		expect(anchor?.getAttribute('href')).toBe('/test');
+	});
+
+	it('sets is-boxed class when inside a box list', async () => {
 		const wrapper = await fixture(`
 			<rr-list variant="box">
 				<rr-list-item></rr-list-item>
@@ -36,10 +56,10 @@ describe('rr-list-item', () => {
 		`);
 		await waitForUpdate(wrapper);
 		el = wrapper.querySelector('rr-list-item')!;
-		expect(el.hasAttribute('show-gutters')).toBe(true);
+		expect(el.classList.contains('is-boxed')).toBe(true);
 	});
 
-	it('does not set show-gutters when inside a simple list', async () => {
+	it('does not set is-boxed class when inside a simple list', async () => {
 		const wrapper = await fixture(`
 			<rr-list variant="simple">
 				<rr-list-item></rr-list-item>
@@ -47,10 +67,10 @@ describe('rr-list-item', () => {
 		`);
 		await waitForUpdate(wrapper);
 		el = wrapper.querySelector('rr-list-item')!;
-		expect(el.hasAttribute('show-gutters')).toBe(false);
+		expect(el.classList.contains('is-boxed')).toBe(false);
 	});
 
-	it('sets has-end when end slot is filled, but not has-start', async () => {
+	it('shows end area when end slot is filled, start area stays hidden', async () => {
 		const wrapper = await fixture(`
 			<rr-list variant="simple">
 				<rr-list-item>
@@ -60,7 +80,9 @@ describe('rr-list-item', () => {
 		`);
 		await waitForUpdate(wrapper);
 		el = wrapper.querySelector('rr-list-item')!;
-		expect(el.hasAttribute('has-end')).toBe(true);
-		expect(el.hasAttribute('has-start')).toBe(false);
+		const startArea = el.shadowRoot!.querySelector('.list-item__start-area');
+		const endArea = el.shadowRoot!.querySelector('.list-item__end-area');
+		expect(startArea?.classList.contains('is-visible')).toBe(false);
+		expect(endArea?.classList.contains('is-visible')).toBe(true);
 	});
 });

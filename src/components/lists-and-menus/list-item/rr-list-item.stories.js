@@ -18,6 +18,15 @@ export default {
 			control: 'boolean',
 			description: 'Whether the item is selected',
 		},
+		type: {
+			control: 'select',
+			options: [undefined, 'button', 'link'],
+			description: 'Interactive mode of the list item',
+		},
+		href: {
+			control: 'text',
+			description: 'URL for type="link"',
+		},
 	},
 };
 
@@ -28,7 +37,7 @@ export const Default = {
 	},
 	render: (args) => html`
 		<rr-list variant="simple">
-			<rr-list-item size=${args.size} ?selected=${args.selected}>
+			<rr-list-item size=${args.size} ?selected=${args.selected} type=${args.type} href=${args.href}>
 				<rr-text-cell>
 					<p slot="text">Text cell</p>
 					<p slot="supporting-text">Supporting text</p>
@@ -78,6 +87,40 @@ export const Selected = {
 			<rr-list-item>
 				<rr-text-cell>
 					<p slot="text">Not selected</p>
+				</rr-text-cell>
+			</rr-list-item>
+		</rr-list>
+	`,
+};
+
+export const TypeButton = {
+	render: () => html`
+		<rr-list variant="simple">
+			<rr-list-item type="button">
+				<rr-text-cell>
+					<p slot="text">Clickable button item</p>
+				</rr-text-cell>
+			</rr-list-item>
+			<rr-list-item type="button">
+				<rr-text-cell>
+					<p slot="text">Another button item</p>
+				</rr-text-cell>
+			</rr-list-item>
+		</rr-list>
+	`,
+};
+
+export const TypeLink = {
+	render: () => html`
+		<rr-list variant="simple">
+			<rr-list-item type="link" href="/settings">
+				<rr-text-cell>
+					<p slot="text">Settings</p>
+				</rr-text-cell>
+			</rr-list-item>
+			<rr-list-item type="link" href="/profile">
+				<rr-text-cell>
+					<p slot="text">Profile</p>
 				</rr-text-cell>
 			</rr-list-item>
 		</rr-list>

@@ -1,15 +1,39 @@
 import { css } from 'lit';
 
 export const styles = css`
+	/* # Host */
+
 	:host {
-		display: flex;
-		flex-direction: row;
-		align-items: stretch;
-		position: relative;
+		display: contents;
 	}
 
 	:host([hidden]) {
 		display: none;
+	}
+
+
+	/* # List item */
+
+	.list-item {
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
+		position: relative;
+		width: 100%;
+		background: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		text-align: start;
+		text-decoration: none;
+		color: inherit;
+		font: inherit;
+	}
+
+	button.list-item:focus-visible,
+	a.list-item:focus-visible {
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 	}
 
 
@@ -19,18 +43,29 @@ export const styles = css`
 		display: none;
 		position: absolute;
 		inset-block: 0;
-		inset-inline: var(--_list-item-indicator-inset, -8px);
-		background-color: var(--semantics-buttons-accent-filled-background-color);
-		border-radius: var(--primitives-corner-radius-sm);
+		inset-inline: calc(var(--primitives-space-12) * -1);
+		border-radius: var(--components-list-item-indicator-corner-radius);
 		z-index: 0;
 	}
 
 	:host([selected]) .list-item__indicator {
 		display: block;
+		background-color: var(--components-list-item-is-selected-background-color);
+	}
+
+	button.list-item:hover .list-item__indicator,
+	a.list-item:hover .list-item__indicator {
+		display: block;
+		background-color: var(--components-list-item-is-hovered-background-color);
+	}
+
+	:host([selected]) button.list-item:hover .list-item__indicator,
+	:host([selected]) a.list-item:hover .list-item__indicator {
+		background-color: var(--components-list-item-is-selected-background-color);
 	}
 
 
-	/* # Areas */
+	/* # Start & end area */
 
 	.list-item__start-area,
 	.list-item__end-area {
@@ -40,12 +75,21 @@ export const styles = css`
 		flex-shrink: 0;
 		position: relative;
 		z-index: 1;
+		padding-block: var(--primitives-space-12);
 	}
 
 	.list-item__start-area.is-visible,
 	.list-item__end-area.is-visible {
 		display: flex;
 	}
+
+	:host([size='sm']) .list-item__start-area,
+	:host([size='sm']) .list-item__end-area {
+		padding-block: var(--primitives-space-8);
+	}
+
+
+	/* # Main area */
 
 	.list-item__main-area {
 		display: flex;
@@ -55,6 +99,11 @@ export const styles = css`
 		min-width: 0;
 		position: relative;
 		z-index: 1;
+		padding-block: var(--primitives-space-12);
+	}
+
+	:host([size='sm']) .list-item__main-area {
+		padding-block: var(--primitives-space-8);
 	}
 
 
@@ -71,39 +120,5 @@ export const styles = css`
 	:host([selected]) .list-item__divider,
 	:host(.is-boxed:last-child) .list-item__divider {
 		display: none;
-	}
-
-
-	/* # Size: md (default) */
-
-	.list-item__main-area,
-	.list-item__start-area.is-visible,
-	.list-item__end-area.is-visible {
-		padding-block: var(--primitives-space-12);
-	}
-
-
-	/* # Size: sm */
-
-	:host([size='sm']) .list-item__main-area,
-	:host([size='sm']) .list-item__start-area,
-	:host([size='sm']) .list-item__end-area {
-		padding-block: var(--primitives-space-8);
-	}
-
-
-	/* # Hover */
-
-	:host(:hover:not([selected])) .list-item__indicator {
-		display: block;
-		background-color: var(--semantics-surfaces-tinted-background-color);
-	}
-
-
-	/* # Focus */
-
-	:host(:focus-visible) {
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 	}
 `;

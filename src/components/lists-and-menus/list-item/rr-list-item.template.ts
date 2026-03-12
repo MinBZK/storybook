@@ -1,6 +1,6 @@
 import { html } from 'lit';
 
-export const template = (showStart: boolean, showEnd: boolean) => html`
+const areas = (showStart: boolean, showEnd: boolean) => html`
 	<div class="list-item__indicator"></div>
 	<div class="list-item__start-area ${showStart ? 'is-visible' : ''}">
 		<slot name="start">
@@ -17,3 +17,18 @@ export const template = (showStart: boolean, showEnd: boolean) => html`
 		</slot>
 	</div>
 `;
+
+export const template = (
+	type: string | undefined,
+	href: string | undefined,
+	showStart: boolean,
+	showEnd: boolean,
+) => {
+	if (type === 'link') {
+		return html`<a class="list-item" href=${href ?? ''}>${areas(showStart, showEnd)}</a>`;
+	}
+	if (type === 'button') {
+		return html`<button class="list-item" type="button">${areas(showStart, showEnd)}</button>`;
+	}
+	return html`<div class="list-item">${areas(showStart, showEnd)}</div>`;
+};
