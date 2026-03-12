@@ -87,7 +87,7 @@ export { RRDivider } from './layout/divider/rr-divider.ts';
 
 export { RRMenu } from './lists-and-menus/menu/rr-menu.ts';
 export { RRList } from './lists-and-menus/list/rr-list.ts';
-export { RRList } from './lists-and-menus/list-item/rr-list-item.ts';
+export { RRListItem } from './lists-and-menus/list-item/rr-list-item.ts';
 
 export { RRCell } from './lists-and-menus/cells/cell/rr-cell.ts';
 export { RRSpacerCell } from './lists-and-menus/cells/spacer-cell/rr-spacer-cell.ts';
