@@ -8,9 +8,9 @@
  * @element rr-one-third-two-thirds-section
  *
  * @slot header - Inhoud boven de kolommen
- * @slot right - Zijkolom (1/3)
- * @slot - Linkerkolom (2/3), alternatief voor slot="left"
- * @slot left - Linkerkolom (2/3)
+ * @slot left - Linkerkolom (1/3)
+ * @slot - Rechterkolom (2/3), alternatief voor slot="right"
+ * @slot right - Rechterkolom (2/3)
  * @slot footer - Inhoud onder de kolommen
  */
 import { LitElement } from 'lit';
