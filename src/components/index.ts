@@ -90,7 +90,6 @@ export { RRList } from './lists-and-menus/list/rr-list.ts';
 
 export { RRCell } from './lists-and-menus/cells/cell/rr-cell.ts';
 export { RRDescriptionCell } from './lists-and-menus/cells/description-cell/rr-description-cell.ts';
-export { RRDropDownFieldCell } from './lists-and-menus/cells/drop-down-field-cell/rr-drop-down-field-cell.ts';
 export { RRIconCell } from './lists-and-menus/cells/icon-cell/rr-icon-cell.ts';
 export { RRLabelCell } from './lists-and-menus/cells/label-cell/rr-label-cell.ts';
 export { RRListItemDragHandleCell } from './lists-and-menus/cells/list-item-drag-handle-cell/rr-list-item-drag-handle-cell.ts';
