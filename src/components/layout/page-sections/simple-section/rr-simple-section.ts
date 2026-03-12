@@ -1,48 +1,32 @@
 /**
  * RegelRecht Simple Section Component (Lit + TypeScript)
  *
- * A basic section with responsive container padding.
+ * Een basissectie met responsieve padding en gap op basis van containergrootte.
+ * Bevat optionele header- en footerslots. De padding en ruimte tussen de slots
+ * passen zich automatisch aan via container queries.
  *
  * @element rr-simple-section
- * @attr {string} container - Container size: 'sm' | 'md' | 'lg' (default: 'md')
  *
- * @slot - Default slot for content
- *
- * @csspart section - The section container
- * @csspart body - The section body
- * @csspart main - The main content area
- *
- * @cssprop --rr-section-gap - Override gap between sections
+ * @slot header - Inhoud boven de hoofdinhoud
+ * @slot - Hoofdinhoud
+ * @slot footer - Inhoud onder de hoofdinhoud
  */
-
-import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import { sectionSharedStyles } from '../section-shared-styles.js';
-
-type Container = 'sm' | 'md' | 'lg';
+import { LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { simpleSectionStyles } from './rr-simple-section.styles.ts';
+import { simpleSectionTemplate } from './rr-simple-section.template.ts';
 
 @customElement('rr-simple-section')
 export class RRSimpleSection extends LitElement {
-  static override styles = [sectionSharedStyles];
+	static override styles = simpleSectionStyles;
 
-  @property({ type: String, reflect: true })
-  container: Container = 'md';
-
-  override render() {
-    return html`
-      <section class="section" part="section">
-        <div class="section__body" part="body">
-          <div class="section__main" part="main">
-            <slot></slot>
-          </div>
-        </div>
-      </section>
-    `;
-  }
+	override render() {
+		return simpleSectionTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-simple-section': RRSimpleSection;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-simple-section': RRSimpleSection;
+	}
 }

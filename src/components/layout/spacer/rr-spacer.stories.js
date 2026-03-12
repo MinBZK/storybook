@@ -1,299 +1,150 @@
 import { html } from 'lit';
-import './rr-spacer.js';
+import './rr-spacer.ts';
+import '../../actions/button/rr-button.ts';
 
 /**
- * De Spacer component is een utility component voor het creëren van ruimte
- * tussen elementen. Ondersteunt vaste sizes, flexibele ruimte, en container-responsive sizes.
+ * Gebruik een spacer om ruimte tussen elementen te creëren.
+ * Componenten in dit design system hebben geen eigen margins — alle witruimte
+ * wordt expliciet bepaald met een spacer. Dat maakt de ruimte zichtbaar en
+ * aanpasbaar zonder de componenten zelf te wijzigen.
+ *
+ * Gebruik een spacer **tussen verschillende types componenten**: tussen een knop
+ * en een tekstveld, tussen een titel en een lijst, of tussen secties onderling.
+ * Zo houd je componenten herbruikbaar en onafhankelijk van hun context.
+ *
+ * Kies een **vaste grootte** voor ruimte die altijd gelijk blijft, de
+ * **responsieve 'md'** voor ruimte die meebeweegt met de containergrootte, of
+ * **flexible** om een element naar het andere uiteinde van een rij te duwen.
  *
  * ## Gebruik
  * ```html
  * <!-- Vaste spacing -->
  * <rr-spacer size="32"></rr-spacer>
  *
- * <!-- Flexibele spacing -->
- * <rr-spacer size="flexible"></rr-spacer>
+ * <!-- Responsief: 16px in sm, 24px in md en lg -->
+ * <rr-spacer size="md"></rr-spacer>
  *
- * <!-- Container-responsive -->
- * <rr-spacer size="m" container="l"></rr-spacer>
+ * <!-- Vult beschikbare ruimte op -->
+ * <rr-spacer size="flexible"></rr-spacer>
  * ```
  */
 export default {
-  title: 'Components/Layout/Spacer',
-  component: 'rr-spacer',
-  tags: ['autodocs'],
-  parameters: {
-    componentSource: {
-      file: 'src/components/layout/spacer/rr-spacer.ts',
-      repository: 'https://github.com/regelrecht/design-system',
-    },
-    status: {
-      type: 'stable',
-    },
-  },
-  argTypes: {
-    size: {
-      control: 'select',
-      options: [
-        '2',
-        '4',
-        '6',
-        '8',
-        '10',
-        '12',
-        '16',
-        '20',
-        '24',
-        '28',
-        '32',
-        '40',
-        '44',
-        '48',
-        '56',
-        '64',
-        '80',
-        '96',
-        'm',
-        'flexible',
-      ],
-      description: 'Spacer size',
-      table: {
-        defaultValue: { summary: '8' },
-      },
-    },
-    container: {
-      control: 'select',
-      options: ['s', 'm', 'l', 'all'],
-      description: 'Container size for responsive "m" size',
-      table: {
-        defaultValue: { summary: 'all' },
-      },
-    },
-    direction: {
-      control: 'select',
-      options: ['horizontal', 'vertical', 'both'],
-      description: 'Direction of spacing',
-      table: {
-        defaultValue: { summary: 'both' },
-      },
-    },
-  },
-  args: {
-    size: '8',
-    container: 'all',
-    direction: 'both',
-  },
+	title: 'Components/Layout/Spacer',
+	component: 'rr-spacer',
+	tags: ['autodocs'],
+	parameters: {
+		componentSource: {
+			file: 'src/components/layout/spacer/rr-spacer.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: {
+			type: 'stable',
+		},
+	},
+	argTypes: {
+		size: {
+			control: { type: 'select' },
+			options: [
+				'flexible',
+				'md',
+				'2',
+				'4',
+				'6',
+				'8',
+				'10',
+				'12',
+				'16',
+				'20',
+				'24',
+				'28',
+				'32',
+				'40',
+				'44',
+				'48',
+				'56',
+				'64',
+				'80',
+				'96',
+			],
+			type: { name: 'string', required: false },
+			description: 'Spacer size',
+			table: {
+				defaultValue: { summary: '16' },
+			},
+		},
+		direction: {
+			control: 'select',
+			options: ['horizontal', 'vertical', 'both'],
+			description: 'Direction of spacing',
+			table: {
+				defaultValue: { summary: 'both' },
+			},
+		},
+	},
+	args: {
+		size: '16',
+		direction: 'both',
+	},
 };
 
-// Helper to visualize spacer
-const SpacerDemo = ({ size, container, direction }) => html`
-  <div
-    style="display: flex; align-items: center; gap: 8px; padding: 16px; background: #f8fafc; border-radius: 8px;"
-  >
-    <div
-      style="padding: 8px 16px; background: #e2e8f0; border-radius: 4px; font-family: system-ui;"
-    >
-      Before
-    </div>
-    <rr-spacer
-      size=${size}
-      container=${container}
-      direction=${direction}
-      style="background: #3b82f6; opacity: 0.5;"
-    ></rr-spacer>
-    <div
-      style="padding: 8px 16px; background: #e2e8f0; border-radius: 4px; font-family: system-ui;"
-    >
-      After
-    </div>
-  </div>
+export const Standaard = ({ size, direction }) => html`
+	<div style="display: flex; flex-direction: column; align-items: flex-start;">
+		<rr-button>Knop</rr-button>
+		<rr-spacer size=${size} direction=${direction}></rr-spacer>
+		<rr-button>Knop</rr-button>
+	</div>
 `;
 
-// Primary story
-export const Default = SpacerDemo.bind({});
-Default.args = {
-  size: '16',
-};
-
-// Fixed sizes
-export const FixedSizes = () => html`
-  <div style="display: flex; flex-direction: column; gap: 16px;">
-    <h3 style="margin: 0; font-family: system-ui;">Fixed Sizes (NxN squares)</h3>
-    <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
-      ${['8', '16', '24', '32', '48', '64', '96'].map(
-        (size) => html`
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-            <rr-spacer
-              size=${size}
-              style="background: #3b82f6; opacity: 0.7; border-radius: 2px;"
-            ></rr-spacer>
-            <span style="font-size: 12px; color: #64748b; font-family: system-ui;">${size}px</span>
-          </div>
-        `
-      )}
-    </div>
-  </div>
+export const Flexibel = () => html`
+	<div style="display: flex; align-items: center;">
+		<rr-button>Links</rr-button>
+		<rr-spacer size="flexible"></rr-spacer>
+		<rr-button>Rechts</rr-button>
+	</div>
 `;
-FixedSizes.parameters = {
-  controls: { disable: true },
-};
+Flexibel.parameters = { controls: { disable: true } };
 
-// Flexible size
-export const Flexible = () => html`
-  <div style="display: flex; flex-direction: column; gap: 16px;">
-    <h3 style="margin: 0; font-family: system-ui;">Flexible Spacing</h3>
-    <p style="margin: 0; font-size: 14px; color: #64748b; font-family: system-ui;">
-      The flexible spacer fills available space, useful for layouts like navigation bars.
-    </p>
-    <div
-      style="display: flex; align-items: center; padding: 16px; background: #f8fafc; border-radius: 8px; width: 100%; box-sizing: border-box;"
-    >
-      <div style="padding: 8px 16px; background: #154273; color: white; border-radius: 4px; font-family: system-ui;">
-        Logo
-      </div>
-      <rr-spacer size="flexible" style="background: #3b82f6; opacity: 0.2; min-height: 8px;"></rr-spacer>
-      <div style="padding: 8px 16px; background: #e2e8f0; border-radius: 4px; font-family: system-ui;">
-        Menu
-      </div>
-    </div>
-  </div>
+export const Responsief = () => html`
+	<div style="display: flex; flex-direction: column; align-items: flex-start;">
+		<p style="font-size: 14px; color: #64748b; margin: 0 0 8px 0;">sm — 16px</p>
+		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 320px; border: 1px dashed #cbd5e1; padding: 8px;">
+			<rr-button>Knop</rr-button>
+			<rr-spacer size="md"></rr-spacer>
+			<rr-button>Knop</rr-button>
+		</div>
+
+		<rr-spacer size="24" direction="vertical"></rr-spacer>
+
+		<p style="font-size: 14px; color: #64748b; margin: 0 0 8px 0;">md — 24px</p>
+		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 641px; border: 1px dashed #cbd5e1; padding: 8px;">
+			<rr-button>Knop</rr-button>
+			<rr-spacer size="md"></rr-spacer>
+			<rr-button>Knop</rr-button>
+		</div>
+
+		<rr-spacer size="24" direction="vertical"></rr-spacer>
+
+		<p style="font-size: 14px; color: #64748b; margin: 0 0 8px 0;">lg — 24px</p>
+		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 1008px; border: 1px dashed #cbd5e1; padding: 8px;">
+			<rr-button>Knop</rr-button>
+			<rr-spacer size="md"></rr-spacer>
+			<rr-button>Knop</rr-button>
+		</div>
+	</div>
 `;
-Flexible.parameters = {
-  controls: { disable: true },
-};
+Responsief.parameters = { controls: { disable: true } };
 
-// Container-responsive 'm' size
-export const ContainerResponsive = () => html`
-  <div style="display: flex; flex-direction: column; gap: 16px;">
-    <h3 style="margin: 0; font-family: system-ui;">Container-Responsive 'm' Size</h3>
-    <p style="margin: 0; font-size: 14px; color: #64748b; font-family: system-ui;">
-      The 'm' size changes based on the container size attribute.
-    </p>
-    <div style="display: flex; flex-direction: column; gap: 12px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <code style="font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">container="s"</code>
-        <span style="color: #64748b; font-family: system-ui;">→ 16x16px</span>
-        <rr-spacer size="m" container="s" style="background: #3b82f6; opacity: 0.7; border-radius: 2px;"></rr-spacer>
-      </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <code style="font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">container="m"</code>
-        <span style="color: #64748b; font-family: system-ui;">→ 24x24px</span>
-        <rr-spacer size="m" container="m" style="background: #3b82f6; opacity: 0.7; border-radius: 2px;"></rr-spacer>
-      </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <code style="font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">container="l"</code>
-        <span style="color: #64748b; font-family: system-ui;">→ 24x24px</span>
-        <rr-spacer size="m" container="l" style="background: #3b82f6; opacity: 0.7; border-radius: 2px;"></rr-spacer>
-      </div>
-    </div>
-  </div>
+export const VasteGroottes = () => html`
+	<div style="display: flex; flex-direction: column;">
+		${['2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'].map(
+			(size) => html`
+				<div style="display: flex; align-items: center;">
+					<rr-button>${size}</rr-button>
+					<rr-spacer size=${size} direction="horizontal"></rr-spacer>
+					<rr-button>${size}</rr-button>
+				</div>
+			`,
+		)}
+	</div>
 `;
-ContainerResponsive.parameters = {
-  controls: { disable: true },
-};
-
-// Direction
-export const Direction = () => html`
-  <div style="display: flex; flex-direction: column; gap: 24px;">
-    <h3 style="margin: 0; font-family: system-ui;">Direction</h3>
-
-    <div>
-      <h4 style="margin: 0 0 8px 0; font-family: system-ui; font-size: 14px;">
-        direction="both" (default) - NxN square
-      </h4>
-      <div
-        style="display: inline-flex; align-items: center; padding: 8px; background: #f8fafc; border-radius: 4px;"
-      >
-        <div style="padding: 8px; background: #e2e8f0; border-radius: 4px;">A</div>
-        <rr-spacer size="32" style="background: #3b82f6; opacity: 0.5;"></rr-spacer>
-        <div style="padding: 8px; background: #e2e8f0; border-radius: 4px;">B</div>
-      </div>
-    </div>
-
-    <div>
-      <h4 style="margin: 0 0 8px 0; font-family: system-ui; font-size: 14px;">
-        direction="horizontal" - only width
-      </h4>
-      <div
-        style="display: inline-flex; align-items: center; padding: 8px; background: #f8fafc; border-radius: 4px;"
-      >
-        <div style="padding: 8px; background: #e2e8f0; border-radius: 4px;">A</div>
-        <rr-spacer
-          size="32"
-          direction="horizontal"
-          style="background: #3b82f6; opacity: 0.5;"
-        ></rr-spacer>
-        <div style="padding: 8px; background: #e2e8f0; border-radius: 4px;">B</div>
-      </div>
-    </div>
-
-    <div>
-      <h4 style="margin: 0 0 8px 0; font-family: system-ui; font-size: 14px;">
-        direction="vertical" - only height
-      </h4>
-      <div
-        style="display: inline-flex; flex-direction: column; align-items: center; padding: 8px; background: #f8fafc; border-radius: 4px;"
-      >
-        <div style="padding: 8px; background: #e2e8f0; border-radius: 4px;">A</div>
-        <rr-spacer
-          size="32"
-          direction="vertical"
-          style="background: #3b82f6; opacity: 0.5;"
-        ></rr-spacer>
-        <div style="padding: 8px; background: #e2e8f0; border-radius: 4px;">B</div>
-      </div>
-    </div>
-  </div>
-`;
-Direction.parameters = {
-  controls: { disable: true },
-};
-
-// All fixed sizes overview
-export const AllSizes = () => html`
-  <div style="display: flex; flex-direction: column; gap: 8px;">
-    <h3 style="margin: 0; font-family: system-ui;">All Fixed Sizes</h3>
-    <div style="display: flex; gap: 4px; align-items: flex-end; flex-wrap: wrap;">
-      ${['2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'].map(
-        (size) => html`
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
-            <rr-spacer
-              size=${size}
-              style="background: #3b82f6; opacity: 0.7; border-radius: 2px;"
-            ></rr-spacer>
-            <span style="font-size: 10px; color: #64748b; font-family: system-ui;">${size}</span>
-          </div>
-        `
-      )}
-    </div>
-  </div>
-`;
-AllSizes.parameters = {
-  controls: { disable: true },
-};
-
-// Real-world example: Navigation bar with spacers
-export const NavigationExample = () => html`
-  <div style="display: flex; flex-direction: column; gap: 16px;">
-    <h3 style="margin: 0; font-family: system-ui;">Real-World Example: Navigation Bar</h3>
-    <div
-      style="display: flex; align-items: center; padding: 8px 16px; background: #1f252d; border-radius: 8px; color: white; font-family: system-ui;"
-    >
-      <div style="font-weight: 600;">RegelRecht</div>
-      <rr-spacer size="32"></rr-spacer>
-      <nav style="display: flex; gap: 24px;">
-        <a href="#" style="color: white; text-decoration: none;">Home</a>
-        <a href="#" style="color: white; text-decoration: none;">Products</a>
-        <a href="#" style="color: white; text-decoration: none;">About</a>
-      </nav>
-      <rr-spacer size="flexible"></rr-spacer>
-      <button
-        style="padding: 8px 16px; background: #154273; color: white; border: none; border-radius: 4px; cursor: pointer;"
-      >
-        Login
-      </button>
-    </div>
-  </div>
-`;
-NavigationExample.parameters = {
-  controls: { disable: true },
-};
+VasteGroottes.parameters = { controls: { disable: true } };

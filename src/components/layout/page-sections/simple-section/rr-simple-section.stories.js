@@ -1,58 +1,56 @@
 import { html } from 'lit';
 import './rr-simple-section.ts';
+import '../../../content/rich-text/rr-rich-text.ts';
 
+/**
+ * Gebruik een simple section als bouwsteen voor paginainhoud.
+ * De sectie past padding en ruimte tussen header, inhoud en footer automatisch
+ * aan op basis van de beschikbare breedte via container queries — geen attribuut nodig.
+ *
+ * ## Gebruik
+ * ```html
+ * <rr-simple-section>
+ *   <rr-rich-text slot="header"><h2>Sectietitel</h2></rr-rich-text>
+ *   <rr-rich-text><p>Inhoud van de sectie.</p></rr-rich-text>
+ *   <rr-rich-text slot="footer"><p>Voetnoot of actie.</p></rr-rich-text>
+ * </rr-simple-section>
+ * ```
+ */
 export default {
-  title: 'Components/Layout/Page Sections/Simple Section',
-  component: 'rr-simple-section',
-  tags: ['autodocs'],
-  parameters: {
-  },
-  argTypes: {
-    container: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Container size',
-    },
-  },
+	title: 'Components/Layout/Page Sections/Simple Section',
+	component: 'rr-simple-section',
+	tags: ['autodocs'],
+	parameters: {
+		componentSource: {
+			file: 'src/components/layout/page-sections/simple-section/rr-simple-section.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: {
+			type: 'stable',
+		},
+	},
 };
 
-const sampleContent = html`
-  <div style="padding: 24px; background: #f1f5f9; border-radius: 8px;">
-    <h2 style="margin: 0 0 8px 0;">Section Content</h2>
-    <p style="margin: 0;">This is the main content area of the section.</p>
-  </div>
+export const Standaard = () => html`
+	<rr-simple-section>
+		<rr-rich-text slot="header">
+			<h2>Sectietitel</h2>
+		</rr-rich-text>
+		<rr-rich-text>
+			<p>Dit is de hoofdinhoud van de sectie. Voeg hier tekst, formulieren of andere componenten toe.</p>
+			<p>De ruimte tussen header, inhoud en footer wordt bepaald door de breedte van de sectie.</p>
+		</rr-rich-text>
+		<rr-rich-text slot="footer">
+			<p>Voetnoot of aanvullende informatie.</p>
+		</rr-rich-text>
+	</rr-simple-section>
 `;
 
-export const Default = {
-  args: {
-    container: 'md',
-  },
-  render: (args) => html`
-    <rr-simple-section container=${args.container}> ${sampleContent} </rr-simple-section>
-  `,
-};
-
-export const AllContainerSizes = {
-  render: () => html`
-    <div style="display: flex; flex-direction: column; gap: 32px; background: #e2e8f0; padding: 16px;">
-      <div>
-        <h3 style="margin: 0 0 8px 16px;">Small Container (sm)</h3>
-        <rr-simple-section container="sm" style="background: white;">
-          <div style="padding: 24px; background: #f1f5f9;">Content with sm padding (16px)</div>
-        </rr-simple-section>
-      </div>
-      <div>
-        <h3 style="margin: 0 0 8px 32px;">Medium Container (md)</h3>
-        <rr-simple-section container="md" style="background: white;">
-          <div style="padding: 24px; background: #f1f5f9;">Content with md padding (24px 32px)</div>
-        </rr-simple-section>
-      </div>
-      <div>
-        <h3 style="margin: 0 0 8px 48px;">Large Container (lg)</h3>
-        <rr-simple-section container="lg" style="background: white;">
-          <div style="padding: 24px; background: #f1f5f9;">Content with lg padding (32px 48px)</div>
-        </rr-simple-section>
-      </div>
-    </div>
-  `,
-};
+export const ZonderHeaderEnFooter = () => html`
+	<rr-simple-section>
+		<rr-rich-text>
+			<p>Een sectie zonder header en footer. Alleen de hoofdinhoud wordt getoond.</p>
+		</rr-rich-text>
+	</rr-simple-section>
+`;
+ZonderHeaderEnFooter.parameters = { controls: { disable: true } };

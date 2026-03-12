@@ -46,10 +46,10 @@ Lees `docs/component-map.json` en check of component al bestaat.
 2. `--semantics-*` (betekenisvol)
 3. `--primitives-*` (alleen als backup)
 
-**Zoek tokens in `src/assets/css/settings.css`:**
+**Zoek tokens in `src/assets/styles/settings.css`:**
 ```bash
-grep -i "{component-naam}" src/assets/css/settings.css
-grep -i "controls.*min-size" src/assets/css/settings.css
+grep -i "{component-naam}" src/assets/styles/settings.css
+grep -i "controls.*min-size" src/assets/styles/settings.css
 ```
 
 **Controleer ook bestaande componenten voor patronen:**
@@ -139,7 +139,7 @@ export class RR{PascalName} extends LitElement {
       transform: scale(0.98);
     }
 
-    /* Size variants - ZOEK TOKENS OP in src/assets/css/settings.css */
+    /* Size variants - ZOEK TOKENS OP in src/assets/styles/settings.css */
     :host([size="xs"]) .{name} {
       min-height: var(--semantics-controls-xs-min-size);
       border-radius: var(--semantics-controls-xs-corner-radius);
@@ -268,14 +268,14 @@ Voeg nieuwe entry toe of update bestaande met `lastUpdated`.
 
 ## TOKENS OPZOEKEN
 
-**Zoek ALTIJD actuele token waarden op in `src/assets/css/settings.css`:**
+**Zoek ALTIJD actuele token waarden op in `src/assets/styles/settings.css`:**
 
 ```bash
-grep -i "{component-naam}" src/assets/css/settings.css
-grep -i "controls.*min-size\|controls.*corner-radius" src/assets/css/settings.css
-grep -i "focus-ring" src/assets/css/settings.css
-grep -i "primitives-space" src/assets/css/settings.css
-grep -i "opacity" src/assets/css/settings.css
+grep -i "{component-naam}" src/assets/styles/settings.css
+grep -i "controls.*min-size\|controls.*corner-radius" src/assets/styles/settings.css
+grep -i "focus-ring" src/assets/styles/settings.css
+grep -i "primitives-space" src/assets/styles/settings.css
+grep -i "opacity" src/assets/styles/settings.css
 ```
 
 **LET OP:** Opacity tokens zijn decimale fracties (0-1). Gebruik: `var(--token)`

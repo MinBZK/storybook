@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
 
 // Configuration
-const TOKENS_FILE = path.join(ROOT_DIR, 'src/assets/css/settings.css');
+const TOKENS_FILE = path.join(ROOT_DIR, 'src/assets/styles/settings.css');
 const COMPONENTS_DIR = path.join(ROOT_DIR, 'src/components');
 
 // Patterns

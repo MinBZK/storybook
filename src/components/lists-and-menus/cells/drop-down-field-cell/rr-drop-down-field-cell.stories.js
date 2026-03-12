@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-drop-down-field-cell.ts';
-import '../../inputs/drop-down-field/rr-drop-down-field.ts';
+import '../../../inputs/drop-down-field/rr-drop-down-field.ts';
 
 /**
  * De Drop Down Field Cell component is een wrapper voor drop-down fields met uitlijningsopties.

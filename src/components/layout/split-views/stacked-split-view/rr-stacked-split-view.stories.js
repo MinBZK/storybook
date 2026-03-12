@@ -1,80 +1,77 @@
 import { html } from 'lit';
 import './rr-stacked-split-view.ts';
-import '../split-view-pane/rr-split-view-pane.ts';
+import '../../../layout/page/rr-page.ts';
+import '../../../layout/page-sections/simple-section/rr-simple-section.ts';
+import '../../../content/rich-text/rr-rich-text.ts';
 
+/**
+ * Gebruik een stacked split view om meerdere panelen verticaal gestapeld te tonen,
+ * elk met een eigen scrollbaar gebied. Typisch gebruikt voor editors waarbij
+ * de gebruiker twee of meer weergaven boven elkaar nodig heeft.
+ * Panelen zijn minimaal 320px hoog; panelen die niet passen worden automatisch verborgen.
+ * Het aantal panelen wordt bepaald door het `panes` attribuut.
+ *
+ * ## Gebruik
+ * ```html
+ * <rr-stacked-split-view panes="2">
+ *   <rr-page slot="pane-1">...</rr-page>
+ *   <rr-page slot="pane-2">...</rr-page>
+ * </rr-stacked-split-view>
+ * ```
+ */
 export default {
-  title: 'Components/Layout/Split Views/Stacked Split View',
-  component: 'rr-stacked-split-view',
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-  },
+	title: 'Components/Layout/Split Views/Stacked Split View',
+	component: 'rr-stacked-split-view',
+	tags: ['autodocs'],
+	parameters: {
+		layout: 'fullscreen',
+		componentSource: {
+			file: 'src/components/layout/split-views/stacked-split-view/rr-stacked-split-view.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: {
+			type: 'stable',
+		},
+	},
+	argTypes: {
+		panes: {
+			control: { type: 'number' },
+			description: 'Aantal panelen',
+			table: { defaultValue: { summary: '2' } },
+		},
+	},
+	args: {
+		panes: 2,
+	},
 };
 
-export const Default = {
-  render: () => html`
-    <rr-stacked-split-view style="height: 600px;">
-      <rr-split-view-pane slot="top">
-        <div style="padding: 16px; height: 100%; box-sizing: border-box;">
-          <strong>Top Pane</strong>
-          <p>Upper content area.</p>
-        </div>
-      </rr-split-view-pane>
+const paneContent = (title, slot) => html`
+	<rr-page sticky-header slot=${slot}>
+		<rr-rich-text slot="header" style="padding: 16px;">
+			<strong>${title}</strong>
+		</rr-rich-text>
+		<rr-simple-section>
+			<rr-rich-text>
+				<h2>Sectietitel</h2>
+				<p>Dit is de inhoud van ${title}. Elke pagina heeft een eigen scrollbaar gebied.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+				<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+				<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			</rr-rich-text>
+		</rr-simple-section>
+	</rr-page>
+`;
 
-      <rr-split-view-pane slot="bottom">
-        <div style="padding: 16px; height: 100%; box-sizing: border-box;">
-          <strong>Bottom Pane</strong>
-          <p>Lower content area.</p>
-        </div>
-      </rr-split-view-pane>
-    </rr-stacked-split-view>
-  `,
-};
+export const Standaard = ({ panes }) => html`
+	<rr-stacked-split-view panes=${panes} style="height: 600px;">
+		${Array.from({ length: panes }, (_, i) => paneContent(`Paneel ${i + 1}`, `pane-${i + 1}`))}
+	</rr-stacked-split-view>
+`;
 
-export const FullPage = {
-  render: () => html`
-    <rr-stacked-split-view style="height: 100vh;">
-      <rr-split-view-pane slot="top">
-        <rr-page header-sticky>
-          <div slot="header">
-            <div
-              style="padding: 12px 16px; background: var(--semantics-surfaces-background-color, #fff); border-bottom: 1px solid var(--semantics-dividers-color, #d9dee4);"
-            >
-              <strong>Tekst Editor</strong>
-            </div>
-          </div>
-          <div style="padding: 16px;">
-            <p>Artikel 1. Begripsbepalingen</p>
-            <p>
-              1. Voor de toepassing van deze wet en de daarop berustende bepalingen wordt
-              verstaan onder:
-            </p>
-            <p>a. Onze Minister: Onze Minister van Volksgezondheid, Welzijn en Sport;</p>
-            <p>b. verzekerde: degene die verzekerd is ingevolge de Zorgverzekeringswet;</p>
-          </div>
-        </rr-page>
-      </rr-split-view-pane>
-
-      <rr-split-view-pane slot="bottom">
-        <rr-page header-sticky>
-          <div slot="header">
-            <div
-              style="padding: 12px 16px; background: var(--semantics-surfaces-background-color, #fff); border-bottom: 1px solid var(--semantics-dividers-color, #d9dee4);"
-            >
-              <strong>Machine Editor</strong>
-            </div>
-          </div>
-          <div style="padding: 16px;">
-            <pre style="font-family: monospace; font-size: 13px; margin: 0; white-space: pre-wrap;">
-IF begrip = "Onze Minister"
-  THEN waarde = "Minister van VWS"
-IF persoon.is_verzekerd = TRUE
-  THEN ...
-            </pre>
-          </div>
-        </rr-page>
-      </rr-split-view-pane>
-    </rr-stacked-split-view>
-  `,
-};
-
+export const DrieRijen = () => html`
+	<rr-stacked-split-view panes="3" style="height: 900px;">
+		${[1, 2, 3].map(n => paneContent(`Paneel ${n}`, `pane-${n}`))}
+	</rr-stacked-split-view>
+`;
+DrieRijen.parameters = { controls: { disable: true } };

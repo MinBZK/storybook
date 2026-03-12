@@ -1,222 +1,63 @@
 /**
  * RegelRecht Page Component (Lit + TypeScript)
  *
- * A page layout component with optional sticky header and footer areas.
- * Provides a scrollable main content area with gradient fades for sticky sections.
+ * Een pagina-layout met optioneel sticky header en footer.
+ * Het scrollgebied is de host zelf. Sticky secties krijgen een doorschijnende
+ * achtergrond met een vervagend verloop dat buiten de sectie uitsteekt.
+ * De header toont het verloop pas na het scrollen, met een overgang.
  *
  * @element rr-page
- * @attr {boolean} header-sticky - Whether the header should be sticky
- * @attr {boolean} footer-sticky - Whether the footer should be sticky
- * @attr {boolean} tinted - Whether to use tinted (gray) background instead of white
  *
- * @slot header - Slot for header content
- * @slot - Default slot for main content
- * @slot footer - Slot for footer content
+ * @attr {boolean} sticky-header - Sticky header
+ * @attr {boolean} sticky-footer - Sticky footer
+ * @attr {boolean} tinted - Gebruik een grijze achtergrond in plaats van wit
  *
- * @csspart page - The page container
- * @csspart scroll - The scrollable area
- * @csspart header - The header section
- * @csspart main - The main content section
- * @csspart footer - The footer section
- *
- * @cssprop --rr-page-background-color - Override page background color
- * @cssprop --rr-page-header-height - Height of sticky header area (default: auto)
- * @cssprop --rr-page-footer-height - Height of sticky footer area (default: auto)
+ * @slot header - Inhoud van de header
+ * @slot - Hoofdinhoud (scrollbaar)
+ * @slot footer - Inhoud van de footer
  */
-
-import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import './page-sticky-area-background/rr-page-sticky-area-background.js';
+import { LitElement } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { pageStyles } from './rr-page.styles.ts';
+import { pageTemplate } from './rr-page.template.ts';
 
 @customElement('rr-page')
 export class RRPage extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = pageStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'sticky-header' })
+	stickyHeader = false;
 
-    .page {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      position: relative;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'sticky-footer' })
+	stickyFooter = false;
 
-    /* Default background color */
-    :host(:not([tinted])) .page,
-    :host([tinted='false']) .page {
-      background-color: var(--rr-page-background-color, var(--semantics-surfaces-background-color));
-    }
+	@property({ type: Boolean, reflect: true })
+	tinted = false;
 
-    /* Tinted background color */
-    :host([tinted]) .page,
-    :host([tinted='true']) .page {
-      background-color: var(--rr-page-background-color, var(--semantics-surfaces-tinted-background-color));
-    }
+	@state()
+	_scrolled = false;
 
-    /* Scrollable area */
-    .page__scroll {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
+	override connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('scroll', this._onScroll);
+	}
 
-    /* Header section */
-    .page__header {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      position: relative;
-    }
+	override disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('scroll', this._onScroll);
+	}
 
-    /* Sticky header */
-    :host([header-sticky]) .page__header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+	private _onScroll = () => {
+		this._scrolled = this.scrollTop > 0;
+	};
 
-    .page__header-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .page__header-background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: -16px;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* Main content section */
-    .page__main {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-    }
-
-    /* Footer section */
-    .page__footer {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    /* Sticky footer */
-    :host([footer-sticky]) .page__footer {
-      position: sticky;
-      bottom: 0;
-      z-index: 10;
-    }
-
-    .page__footer-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .page__footer-background {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      top: -16px;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* Hide sticky backgrounds when not sticky */
-    :host(:not([header-sticky])) .page__header-background {
-      display: none;
-    }
-
-    :host(:not([footer-sticky])) .page__footer-background {
-      display: none;
-    }
-
-    /* Slots */
-    ::slotted(*) {
-      width: 100%;
-    }
-
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .page {
-        background-color: Canvas;
-      }
-    }
-  `;
-
-  @property({ type: Boolean, reflect: true, attribute: 'header-sticky' })
-  headerSticky = false;
-
-  @property({ type: Boolean, reflect: true, attribute: 'footer-sticky' })
-  footerSticky = false;
-
-  @property({ type: Boolean, reflect: true })
-  tinted = false;
-
-  override render() {
-    return html`
-      <div class="page" part="page">
-        <div class="page__scroll" part="scroll">
-          <header class="page__header" part="header">
-            ${this.headerSticky
-              ? html`
-                  <rr-page-sticky-area-background
-                    class="page__header-background"
-                    position="top"
-                    ?tinted=${this.tinted}
-                    style="--rr-page-sticky-area-height: 100%;"
-                  ></rr-page-sticky-area-background>
-                `
-              : ''}
-            <div class="page__header-content">
-              <slot name="header"></slot>
-            </div>
-          </header>
-          <main class="page__main" part="main">
-            <slot></slot>
-          </main>
-          <footer class="page__footer" part="footer">
-            ${this.footerSticky
-              ? html`
-                  <rr-page-sticky-area-background
-                    class="page__footer-background"
-                    position="bottom"
-                    ?tinted=${this.tinted}
-                    style="--rr-page-sticky-area-height: 100%;"
-                  ></rr-page-sticky-area-background>
-                `
-              : ''}
-            <div class="page__footer-content">
-              <slot name="footer"></slot>
-            </div>
-          </footer>
-        </div>
-      </div>
-    `;
-  }
+	override render() {
+		return pageTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-page': RRPage;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-page': RRPage;
+	}
 }

@@ -1,83 +1,77 @@
 import { html } from 'lit';
 import './rr-side-by-side-split-view.ts';
-import '../split-view-pane/rr-split-view-pane.ts';
+import '../../../layout/page/rr-page.ts';
+import '../../../layout/page-sections/simple-section/rr-simple-section.ts';
+import '../../../content/rich-text/rr-rich-text.ts';
 
+/**
+ * Gebruik een side-by-side split view om meerdere panelen naast elkaar te tonen,
+ * elk met een eigen scrollbaar gebied. Typisch gebruikt voor editors waarbij
+ * de gebruiker twee of meer weergaven tegelijk nodig heeft.
+ * Panelen zijn minimaal 320px breed — panelen die niet passen worden automatisch verborgen.
+ * Het aantal panelen wordt bepaald door het `panes` attribuut.
+ *
+ * ## Gebruik
+ * ```html
+ * <rr-side-by-side-split-view panes="2">
+ *   <rr-page slot="pane-1">...</rr-page>
+ *   <rr-page slot="pane-2">...</rr-page>
+ * </rr-side-by-side-split-view>
+ * ```
+ */
 export default {
-  title: 'Components/Layout/Split Views/Side-by-Side Split View',
-  component: 'rr-side-by-side-split-view',
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-  },
+	title: 'Components/Layout/Split Views/Side-by-Side Split View',
+	component: 'rr-side-by-side-split-view',
+	tags: ['autodocs'],
+	parameters: {
+		layout: 'fullscreen',
+		componentSource: {
+			file: 'src/components/layout/split-views/side-by-side-split-view/rr-side-by-side-split-view.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: {
+			type: 'stable',
+		},
+	},
+	argTypes: {
+		panes: {
+			control: { type: 'number' },
+			description: 'Aantal panelen',
+			table: { defaultValue: { summary: '2' } },
+		},
+	},
+	args: {
+		panes: 2,
+	},
 };
 
-export const Default = {
-  render: () => html`
-    <rr-side-by-side-split-view style="height: 600px;">
-      <rr-split-view-pane slot="start">
-        <div style="padding: 16px; height: 100%; box-sizing: border-box;">
-          <strong>Start Pane</strong>
-          <p>Text editor, left panel content.</p>
-        </div>
-      </rr-split-view-pane>
+const paneContent = (title, slot) => html`
+	<rr-page sticky-header slot=${slot}>
+		<rr-rich-text slot="header" style="padding: 16px;">
+			<strong>${title}</strong>
+		</rr-rich-text>
+		<rr-simple-section>
+			<rr-rich-text>
+				<h2>Sectietitel</h2>
+				<p>Dit is de inhoud van ${title}. Elke pagina heeft een eigen scrollbaar gebied.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+				<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+				<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			</rr-rich-text>
+		</rr-simple-section>
+	</rr-page>
+`;
 
-      <rr-split-view-pane slot="end">
-        <div style="padding: 16px; height: 100%; box-sizing: border-box;">
-          <strong>End Pane</strong>
-          <p>Machine editor, right panel content.</p>
-        </div>
-      </rr-split-view-pane>
-    </rr-side-by-side-split-view>
-  `,
-};
+export const Standaard = ({ panes }) => html`
+	<rr-side-by-side-split-view panes=${panes} style="height: 500px;">
+		${Array.from({ length: panes }, (_, i) => paneContent(`Paneel ${i + 1}`, `pane-${i + 1}`))}
+	</rr-side-by-side-split-view>
+`;
 
-export const EditorLayout = {
-  render: () => html`
-    <rr-side-by-side-split-view style="height: 100vh;">
-      <rr-split-view-pane slot="start">
-        <rr-page header-sticky>
-          <div slot="header">
-            <div
-              style="padding: 12px 16px; background: var(--semantics-surfaces-background-color, #fff); border-bottom: 1px solid var(--semantics-dividers-color, #d9dee4);"
-            >
-              <strong>Tekst Editor</strong>
-            </div>
-          </div>
-          <div style="padding: 16px;">
-            <p>Artikel 1. Begripsbepalingen</p>
-            <p>
-              1. Voor de toepassing van deze wet en de daarop berustende bepalingen wordt
-              verstaan onder:
-            </p>
-            <p>a. Onze Minister: Onze Minister van Volksgezondheid, Welzijn en Sport;</p>
-            <p>b. verzekerde: degene die verzekerd is ingevolge de Zorgverzekeringswet;</p>
-          </div>
-        </rr-page>
-      </rr-split-view-pane>
-
-      <rr-split-view-pane slot="end">
-        <rr-page header-sticky>
-          <div slot="header">
-            <div
-              style="padding: 12px 16px; background: var(--semantics-surfaces-background-color, #fff); border-bottom: 1px solid var(--semantics-dividers-color, #d9dee4);"
-            >
-              <strong>Machine Editor</strong>
-            </div>
-          </div>
-          <div style="padding: 16px;">
-            <pre
-              style="font-family: monospace; font-size: 13px; margin: 0; white-space: pre-wrap;"
-            >
-IF begrip = "Onze Minister"
-  THEN waarde = "Minister van VWS"
-IF persoon.is_verzekerd = TRUE
-  THEN ...
-            </pre
-            >
-          </div>
-        </rr-page>
-      </rr-split-view-pane>
-    </rr-side-by-side-split-view>
-  `,
-};
-
+export const DrieKolommen = () => html`
+	<rr-side-by-side-split-view panes="3" style="height: 500px;">
+		${[1, 2, 3].map(n => paneContent(`Paneel ${n}`, `pane-${n}`))}
+	</rr-side-by-side-split-view>
+`;
+DrieKolommen.parameters = { controls: { disable: true } };

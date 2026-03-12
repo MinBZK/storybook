@@ -1,178 +1,171 @@
 /**
  * RegelRecht Collection Component (Lit + TypeScript)
  *
- * A container for displaying collections of items with a title header.
- * Supports grid, list, and horizontal scroll layouts.
+ * Een container voor het weergeven van verzamelingen items.
+ * Ondersteunt grid-, lijst- en horizontale scrolllay-outs.
+ * Bij grid en list worden items gepagineerd getoond via een laad-meer-knop.
+ * Met `lazy-load` worden de volgende items automatisch geladen wanneer
+ * de laad-meer-knop in beeld komt.
  *
  * @element rr-collection
- * @attr {string} layout - Layout mode: 'grid' | 'list' | 'horizontal-scroll' (default: 'grid')
- * @attr {string} title - Collection title
- * @attr {boolean} show-load-more - Whether to show load more button (default: false)
- * @attr {string} load-more-label - Label for load more button (default: 'Meer laden')
  *
- * @slot - Default slot for collection items
- * @slot header - Slot for custom header content
- * @slot footer - Slot for custom footer content
+ * @attr {string} layout - Lay-outmodus: 'grid' | 'list' | 'horizontal-scroll' (standaard: 'grid')
+ * @attr {boolean} show-load-more - Toon laad-meer-knop bij grid/list (standaard: false)
+ * @attr {string} load-more-label - Label voor de laad-meer-knop (standaard: 'Toon meer')
+ * @attr {number} max-items - Aantal zichtbare items per pagina (standaard: 24)
+ * @attr {boolean} lazy-load - Laad automatisch meer items wanneer de knop zichtbaar wordt
  *
- * @fires load-more - When load more button is clicked
+ * @slot - Standaard slot voor collectie-items
+ * @slot footer - Slot voor aangepaste voettekstinhoud
  *
- * @csspart collection - The collection container
- * @csspart header - The header section
- * @csspart items - The items container
- * @csspart footer - The footer section
- *
- * @cssprop --rr-collection-gap - Gap between items (default: 16px)
- * @cssprop --rr-collection-item-min-width - Minimum item width for grid (default: 280px)
+ * @fires load-more - Wanneer de laad-meer-knop wordt aangeklikt
  */
-
-import { LitElement, html, css, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import '../title-bar-title-group/rr-title-bar-title-group.js';
-import '../../actions/button/rr-button.js';
+import { LitElement } from 'lit';
+import { customElement, property, state, query } from 'lit/decorators.js';
+import { collectionStyles } from './rr-collection.styles.ts';
+import { collectionTemplate } from './rr-collection.template.ts';
+import '../../actions/button/rr-button.ts';
+import '../../actions/button-bar/rr-button-bar.ts';
+import '../../actions/icon-button/rr-icon-button.ts';
+import '../../content/icon/rr-icon.ts';
 
 type Layout = 'grid' | 'list' | 'horizontal-scroll';
 
 @customElement('rr-collection')
 export class RRCollection extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      min-width: 0;
-      gap: 16px;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = collectionStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String, reflect: true })
+	layout: Layout = 'grid';
 
-    .collection__header {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      width: 100%;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'show-load-more' })
+	showLoadMore = false;
 
-    .collection__items {
-      display: flex;
-      width: 100%;
-      gap: var(--rr-collection-gap, 16px);
-    }
+	@property({ type: String, attribute: 'load-more-label' })
+	loadMoreLabel = 'Toon meer';
 
-    /* Grid layout */
-    :host([layout='grid']) .collection__items,
-    :host(:not([layout])) .collection__items {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(var(--rr-collection-item-min-width, 200px), 1fr));
-    }
+	@property({ type: Number, attribute: 'max-items' })
+	maxItems = 24;
 
-    /* List layout */
-    :host([layout='list']) .collection__items {
-      flex-direction: column;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'lazy-load' })
+	lazyLoad = false;
 
-    :host([layout='list']) .collection__items ::slotted(*) {
-      box-sizing: border-box;
-    }
+	@state()
+	_visibleCount = 0;
 
-    /* Horizontal scroll layout */
-    :host([layout='horizontal-scroll']) .collection__items {
-      flex-direction: row;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-    }
+	@state()
+	_totalCount = 0;
 
-    :host([layout='horizontal-scroll']) .collection__items ::slotted(*) {
-      flex: 0 0 var(--rr-collection-item-min-width, 280px);
-      box-sizing: border-box;
-      scroll-snap-align: start;
-    }
+	@state()
+	_atStart = true;
 
-    .collection__footer {
-      display: flex;
-      width: 100%;
-    }
+	@state()
+	_atEnd = false;
 
-    /* Grid/List: Load more button full width */
-    :host([layout='grid']) .collection__footer,
-    :host([layout='list']) .collection__footer,
-    :host(:not([layout])) .collection__footer {
-      justify-content: stretch;
-    }
+	@query('.collection__items')
+	private _itemsEl!: HTMLElement;
 
-    :host([layout='grid']) .collection__footer ::slotted(*),
-    :host([layout='list']) .collection__footer ::slotted(*),
-    :host(:not([layout])) .collection__footer ::slotted(*),
-    :host([layout='grid']) .collection__footer rr-button,
-    :host([layout='list']) .collection__footer rr-button,
-    :host(:not([layout])) .collection__footer rr-button {
-      width: 100%;
-    }
+	private _scrollListener = (): void => {
+		const el = this._itemsEl;
+		if (!el) return;
+		this._atStart = el.scrollLeft < 1;
+		this._atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+	};
 
-    /* Inner button must also stretch to fill rr-button host */
-    :host([layout='grid']) .collection__footer rr-button::part(button),
-    :host([layout='list']) .collection__footer rr-button::part(button),
-    :host(:not([layout])) .collection__footer rr-button::part(button) {
-      width: 100%;
-    }
+	@query('rr-button.load-more')
+	private _loadMoreBtn!: HTMLElement | null;
 
-    /* Horizontal scroll: Navigation on right */
-    :host([layout='horizontal-scroll']) .collection__footer {
-      justify-content: flex-end;
-    }
-  `;
+	private _intersectionObserver: IntersectionObserver | undefined;
+	private _resizeObserver: ResizeObserver | undefined;
+	private _scrollListenerAttached = false;
 
-  @property({ type: String, reflect: true })
-  layout: Layout = 'grid';
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._visibleCount = this.maxItems;
+	}
 
-  @property({ type: String })
-  title = '';
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._intersectionObserver?.disconnect();
+		this._teardownScrollListeners();
+	}
 
-  @property({ type: Boolean, reflect: true, attribute: 'show-load-more' })
-  showLoadMore = false;
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('layout')) {
+			this._setupScrollListeners();
+		}
 
-  @property({ type: String, attribute: 'load-more-label' })
-  loadMoreLabel = 'Toon meer';
+		if (this.lazyLoad && this._loadMoreBtn && !this._intersectionObserver) {
+			this._intersectionObserver = new IntersectionObserver(
+				([entry]) => { if (entry.isIntersecting) this._loadMore(); },
+				{ threshold: 0.1 }
+			);
+			this._intersectionObserver.observe(this._loadMoreBtn);
+		} else if (!this._loadMoreBtn) {
+			this._intersectionObserver?.disconnect();
+			this._intersectionObserver = undefined;
+		}
+	}
 
-  private _handleLoadMore(): void {
-    this.dispatchEvent(
-      new CustomEvent('load-more', {
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
+	private _setupScrollListeners(): void {
+		this._teardownScrollListeners();
 
-  override render() {
-    return html`
-      <header class="collection__header" part="header">
-        <slot name="header">
-          ${this.title ? html`<rr-title-bar-title-group size="sm">${this.title}</rr-title-bar-title-group>` : nothing}
-        </slot>
-      </header>
-      <div class="collection__items" part="items">
-        <slot></slot>
-      </div>
-      <footer class="collection__footer" part="footer">
-        <slot name="footer">
-          ${this.showLoadMore
-            ? html`
-                <rr-button variant="neutral-tinted" @click=${this._handleLoadMore}> ${this.loadMoreLabel} </rr-button>
-              `
-            : nothing}
-        </slot>
-      </footer>
-    `;
-  }
+		if (this.layout === 'horizontal-scroll' && this._itemsEl) {
+			this._itemsEl.addEventListener('scroll', this._scrollListener, { passive: true });
+			this._resizeObserver = new ResizeObserver(() => this._scrollListener());
+			this._resizeObserver.observe(this._itemsEl);
+			this._scrollListenerAttached = true;
+		}
+	}
+
+	private _teardownScrollListeners(): void {
+		this._itemsEl?.removeEventListener('scroll', this._scrollListener);
+		this._resizeObserver?.disconnect();
+		this._resizeObserver = undefined;
+		this._scrollListenerAttached = false;
+	}
+
+	_onSlotChange(e: Event): void {
+		const slot = e.target as HTMLSlotElement;
+		const items = slot.assignedElements() as HTMLElement[];
+		this._totalCount = items.length;
+		if (this.layout !== 'horizontal-scroll') {
+			this._applyVisibility(items);
+		}
+	}
+
+	private _applyVisibility(items?: HTMLElement[]): void {
+		const slot = this._itemsEl?.querySelector('slot') as HTMLSlotElement | null;
+		const elements = items ?? (slot?.assignedElements() as HTMLElement[] ?? []);
+		elements.forEach((el, i) => {
+			el.hidden = i >= this._visibleCount;
+		});
+	}
+
+	_loadMore(): void {
+		this._visibleCount = Math.min(this._visibleCount + this.maxItems, this._totalCount);
+		this._applyVisibility();
+		this.dispatchEvent(new CustomEvent('load-more', { bubbles: true, composed: true }));
+	}
+
+	get _hasMore(): boolean {
+		return this._visibleCount < this._totalCount;
+	}
+
+	_scrollBy(direction: 1 | -1): void {
+		const slot = this._itemsEl?.querySelector('slot') as HTMLSlotElement | null;
+		const firstItem = slot?.assignedElements()[0] as HTMLElement | undefined;
+		const itemWidth = firstItem?.offsetWidth ?? 280;
+		this._itemsEl?.scrollBy({ left: direction * (itemWidth + 16), behavior: 'smooth' });
+	}
+
+	override render() {
+		return collectionTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-collection': RRCollection;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-collection': RRCollection;
+	}
 }

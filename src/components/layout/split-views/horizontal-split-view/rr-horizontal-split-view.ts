@@ -1,110 +1,43 @@
 /**
  * RegelRecht Horizontal Split View Component (Lit + TypeScript)
  *
- * A 3-pane row layout for the browser page. Renders dividers automatically
- * between panes.
+ * Een driekoloms layout met een zijbalk, inhoudsgebied en inspecteur.
+ * De zijbalk toont navigatie of lijsten, het inhoudsgebied de primaire inhoud,
+ * en de inspecteur aanvullende details of eigenschappen van de selectie.
  *
  * @element rr-horizontal-split-view
+ * Panelen worden automatisch verborgen als er onvoldoende ruimte is:
+ * bij minder dan 962px verdwijnt de inspecteur, bij minder dan 641px ook de zijbalk.
+ * Het inhoudsgebied blijft altijd zichtbaar.
  *
- * @slot side - Fixed-width left pane (e.g. law list)
- * @slot main - Flex-grow center pane (e.g. article list)
- * @slot inspector - Fixed-width right pane (e.g. article detail)
+ * @attr {boolean} show-sidebar - Toon de zijbalk (standaard: true)
+ * @attr {boolean} show-inspector - Toon de inspecteur (standaard: true)
  *
- * @csspart container - The outer flex container
- * @csspart divider-side - The divider between side and main panes
- * @csspart divider-inspector - The divider between main and inspector panes
- *
- * @cssprop --rr-horizontal-split-view-side-width - Width of the side pane
- * @cssprop --rr-horizontal-split-view-inspector-width - Width of the inspector pane
+ * @slot content - Middelste paneel voor de primaire inhoud
+ * @slot inspector - Rechter paneel voor details of eigenschappen
  */
-
-import { LitElement, html, css } from 'lit';
-import { customElement } from 'lit/decorators.js';
-import '../split-view-divider/rr-split-view-divider.ts';
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { horizontalSplitViewStyles } from './rr-horizontal-split-view.styles.ts';
+import { horizontalSplitViewTemplate } from './rr-horizontal-split-view.template.ts';
 
 @customElement('rr-horizontal-split-view')
 export class RRHorizontalSplitView extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      height: 100%;
-    }
+	static override styles = horizontalSplitViewStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'show-sidebar' })
+	showSidebar = true;
 
-    .horizontal-split-view {
-      display: flex;
-      flex-direction: row;
-      flex: 1;
-      min-height: 0;
-      min-width: 0;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'show-inspector' })
+	showInspector = true;
 
-    .horizontal-split-view__side {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      width: var(--rr-horizontal-split-view-side-width, auto);
-      min-height: 0;
-    }
-
-    .horizontal-split-view__main {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-      min-width: 0;
-    }
-
-    .horizontal-split-view__inspector {
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      width: var(--rr-horizontal-split-view-inspector-width, auto);
-      min-height: 0;
-    }
-
-    ::slotted(*) {
-      flex: 1;
-      min-height: 0;
-    }
-
-    rr-split-view-divider {
-      align-self: stretch;
-    }
-  `;
-
-  override render() {
-    return html`
-      <div class="horizontal-split-view" part="container">
-        <div class="horizontal-split-view__side">
-          <slot name="side"></slot>
-        </div>
-        <rr-split-view-divider
-          orientation="vertical"
-          part="divider-side"
-        ></rr-split-view-divider>
-        <div class="horizontal-split-view__main">
-          <slot name="main"></slot>
-        </div>
-        <rr-split-view-divider
-          orientation="vertical"
-          part="divider-inspector"
-        ></rr-split-view-divider>
-        <div class="horizontal-split-view__inspector">
-          <slot name="inspector"></slot>
-        </div>
-      </div>
-    `;
-  }
+	override render() {
+		return horizontalSplitViewTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-horizontal-split-view': RRHorizontalSplitView;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-horizontal-split-view': RRHorizontalSplitView;
+	}
 }

@@ -4,6 +4,7 @@ rr-rich-text {
 	color: var(--semantics-content-color);
 	container-type: inline-size;
 	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
+	font: var(--primitives-font-body-md-regular-snug);
 }
 
 rr-rich-text[spacing="flat"] {
@@ -53,7 +54,6 @@ rr-rich-text *:focus:not(:focus-visible) {
 rr-rich-text p {
 	margin: var(--components-rich-text-spacing) 0;
 	max-width: var(--primitives-area-720);
-	font: var(--primitives-font-body-md-regular-snug);
 }
 
 /* # h1 */
@@ -172,7 +172,6 @@ rr-rich-text li {
 	margin: calc(var(--components-rich-text-spacing) / 2) 0;
 	padding: 0;
 	max-width: var(--primitives-area-720);
-	font: var(--primitives-font-body-md-regular-snug);
 }
 
 /* # a */

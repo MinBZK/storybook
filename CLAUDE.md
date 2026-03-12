@@ -218,7 +218,7 @@ min-height: var(--semantics-controls-md-min-size);
 - Override hooks: `var(--rr-button-background-color, var(--_bg-color))`
 - Font-family: `var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif)`
 
-CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `src/assets/css/settings.css`.
+CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `src/assets/styles/settings.css`.
 
 ## Rules
 

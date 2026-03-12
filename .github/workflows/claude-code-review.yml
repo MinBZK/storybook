@@ -38,7 +38,7 @@ jobs:
 
             **Key architecture:**
             - `src/components/` — Lit + TypeScript web components using Shadow DOM
-            - `src/assets/css/settings.css` — Design tokens (primitives, semantics, components)
+            - `src/assets/styles/settings.css` — Design tokens (primitives, semantics, components)
             - Components follow BEM naming, use design tokens (never hardcoded values)
             - Must be DigiToegankelijk (WCAG 2.1 AA) compliant
             - Uses RijksSansVF font with system-ui fallback
