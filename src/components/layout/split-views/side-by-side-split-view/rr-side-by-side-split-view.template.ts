@@ -12,8 +12,6 @@ export function sideBySideSplitViewTemplate(component: RRSideBySideSplitView): T
 					<rr-split-view-divider
 						orientation="vertical"
 						data-index=${i}
-						role="separator"
-						aria-orientation="vertical"
 					></rr-split-view-divider>
 				` : nothing}
 				<div class="side-by-side-split-view__pane">

@@ -12,8 +12,6 @@ export function verticalSplitViewTemplate(component: RRVerticalSplitView): Templ
 				<rr-split-view-divider
 					orientation="horizontal"
 					data-index="0"
-					role="separator"
-					aria-orientation="horizontal"
 				></rr-split-view-divider>
 			` : nothing}
 			<div class="vertical-split-view__main">
@@ -23,8 +21,6 @@ export function verticalSplitViewTemplate(component: RRVerticalSplitView): Templ
 				<rr-split-view-divider
 					orientation="horizontal"
 					data-index="1"
-					role="separator"
-					aria-orientation="horizontal"
 				></rr-split-view-divider>
 				<div class="vertical-split-view__footer">
 					<slot name="footer"></slot>

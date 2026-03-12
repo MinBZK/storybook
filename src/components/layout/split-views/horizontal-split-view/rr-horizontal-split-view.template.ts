@@ -12,8 +12,6 @@ export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): T
 				<rr-split-view-divider
 					orientation="vertical"
 					data-index="0"
-					role="separator"
-					aria-orientation="vertical"
 				></rr-split-view-divider>
 			` : nothing}
 			<div class="horizontal-split-view__main">
@@ -23,8 +21,6 @@ export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): T
 				<rr-split-view-divider
 					orientation="vertical"
 					data-index="1"
-					role="separator"
-					aria-orientation="vertical"
 				></rr-split-view-divider>
 				<div class="horizontal-split-view__inspector">
 					<slot name="inspector"></slot>

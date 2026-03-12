@@ -12,8 +12,6 @@ export function stackedSplitViewTemplate(component: RRStackedSplitView): Templat
 					<rr-split-view-divider
 						orientation="horizontal"
 						data-index=${i}
-						role="separator"
-						aria-orientation="horizontal"
 					></rr-split-view-divider>
 				` : nothing}
 				<div class="stacked-split-view__pane">
