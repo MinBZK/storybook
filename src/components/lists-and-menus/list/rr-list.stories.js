@@ -209,8 +209,8 @@ export const WithTitleAndDetail = {
 				<rr-text-cell>
 					<p slot="text">Primary title</p>
 				</rr-text-cell>
-				<rr-spacer-cell size="12"></rr-spacer-cell>
-				<rr-text-cell horizontal-alignment="right" size="sm" color="secondary">
+				<rr-spacer-cell></rr-spacer-cell>
+				<rr-text-cell>
 					<p slot="text">Detail</p>
 				</rr-text-cell>
 			</rr-list-item>
@@ -218,8 +218,8 @@ export const WithTitleAndDetail = {
 				<rr-text-cell>
 					<p slot="text">Another title</p>
 				</rr-text-cell>
-				<rr-spacer-cell size="12"></rr-spacer-cell>
-				<rr-text-cell horizontal-alignment="right" size="sm" color="secondary">
+				<rr-spacer-cell size="8"></rr-spacer-cell>
+				<rr-text-cell>
 					<p slot="text">More detail</p>
 				</rr-text-cell>
 			</rr-list-item>
@@ -248,3 +248,51 @@ export const WithInteractiveItems = {
 		</rr-list>
 	`,
 };
+
+export const DraggableList = {
+	render: () => {
+		const onReorder = (e) => {
+			const list = e.currentTarget;
+			const { fromIndex, toIndex } = e.detail;
+			const items = [...list.querySelectorAll('rr-list-item')];
+			const moved = items[fromIndex];
+			if (toIndex === 0) {
+				items[0].before(moved);
+			} else {
+				const ref = items.filter((_, i) => i !== fromIndex)[toIndex - 1];
+				ref.after(moved);
+			}
+		};
+
+		const el = document.createElement('div');
+		el.innerHTML = `
+			<style>
+				rr-list-item:not([draggable]) [draggable-only] { display: none; }
+			</style>
+			<rr-list variant="box" draggable>
+				${['Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten'].map((label) => `
+					<rr-list-item>
+						<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
+						<rr-cell slot="start" draggable-only tabindex="0" style="align-items: center; padding: 4px;">
+							<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+								<circle cx="5" cy="4" r="1.5" fill="currentColor"/>
+								<circle cx="11" cy="4" r="1.5" fill="currentColor"/>
+								<circle cx="5" cy="8" r="1.5" fill="currentColor"/>
+								<circle cx="11" cy="8" r="1.5" fill="currentColor"/>
+								<circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+								<circle cx="11" cy="12" r="1.5" fill="currentColor"/>
+							</svg>
+						</rr-cell>
+						<rr-spacer-cell slot="start" draggable-only size="8"></rr-spacer-cell>
+						<rr-text-cell>
+							<p slot="text">${label}</p>
+						</rr-text-cell>
+					</rr-list-item>
+				`).join('')}
+			</rr-list>
+		`;
+		el.querySelector('rr-list').addEventListener('rr-reorder', onReorder);
+		return el;
+	},
+};
+DraggableList.parameters = { controls: { disable: true } };

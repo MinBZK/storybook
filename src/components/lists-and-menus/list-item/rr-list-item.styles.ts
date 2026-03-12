@@ -37,6 +37,29 @@ export const styles = css`
 	}
 
 
+	/* # Dragging state */
+
+	:host(.is-dragging) {
+		opacity: 0.4;
+	}
+
+	:host(.is-dragging-pointer) {
+		display: none;
+	}
+
+	:host([draggable]) {
+		touch-action: none;
+	}
+
+	:host([draggable]) ::slotted([draggable-only]) {
+		cursor: grab;
+	}
+
+	:host(.is-dragging) ::slotted([draggable-only]) {
+		cursor: grabbing;
+	}
+
+
 	/* # Indicator */
 
 	.list-item__indicator {

@@ -14,4 +14,10 @@ export const template = () => html`
 			<slot name="footer"></slot>
 		</div>
 	</div>
+
+	<div
+		class="list__announcer"
+		aria-live="assertive"
+		aria-atomic="true"
+	></div>
 `;

@@ -774,6 +774,8 @@
 	--semantics-focus-ring-center-thickness: 4px;
 
 
+	--components-list-drag-placeholder-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
+
 	--components-list-item-sm-padding-block: var(--primitives-space-8);
 	--components-list-item-md-padding-block: var(--primitives-space-12);
 	--components-list-item-indicator-corner-radius: var(--primitives-corner-radius-md);
