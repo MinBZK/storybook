@@ -55,7 +55,7 @@ export const Standaard = () => html`
 
 export const ZonderHeaderEnFooter = () => html`
 	<rr-one-half-one-half-section>
-		<rr-rich-text
+		<rr-rich-text>
 			<h3>Linkerkolom</h3>
 			<p>De linkerkolom zonder header en footer.</p>
 		</rr-rich-text>
