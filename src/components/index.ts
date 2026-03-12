@@ -96,7 +96,7 @@ export { RRTitleCell } from './lists-and-menus/cells/title-cell/rr-title-cell.ts
 export { RRTextCell } from './lists-and-menus/cells/text-cell/rr-text-cell.ts';
 export { RRDescriptionCell } from './lists-and-menus/cells/description-cell/rr-description-cell.ts';
 
-export { RRListItemDragHandleCell } from './lists-and-menus/cells/list-item-drag-handle-cell/rr-list-item-drag-handle-cell.ts';
+export { RRDragHandleCell } from './lists-and-menus/cells/drag-handle-cell/rr-drag-handle-cell.ts';
 export { RRTimelineTrackCell } from './lists-and-menus/cells/timeline-track-cell/rr-timeline-track-cell.ts';
 
 
