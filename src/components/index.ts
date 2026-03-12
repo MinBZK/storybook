@@ -87,17 +87,18 @@ export { RRDivider } from './layout/divider/rr-divider.ts';
 
 export { RRMenu } from './lists-and-menus/menu/rr-menu.ts';
 export { RRList } from './lists-and-menus/list/rr-list.ts';
+export { RRList } from './lists-and-menus/list-item/rr-list-item.ts';
 
 export { RRCell } from './lists-and-menus/cells/cell/rr-cell.ts';
-export { RRDescriptionCell } from './lists-and-menus/cells/description-cell/rr-description-cell.ts';
+export { RRSpacerCell } from './lists-and-menus/cells/spacer-cell/rr-spacer-cell.ts';
 export { RRIconCell } from './lists-and-menus/cells/icon-cell/rr-icon-cell.ts';
+export { RRTitleCell } from './lists-and-menus/cells/title-cell/rr-title-cell.ts';
+export { RRTextCell } from './lists-and-menus/cells/text-cell/rr-text-cell.ts';
+export { RRDescriptionCell } from './lists-and-menus/cells/description-cell/rr-description-cell.ts';
+
 export { RRLabelCell } from './lists-and-menus/cells/label-cell/rr-label-cell.ts';
 export { RRListItemDragHandleCell } from './lists-and-menus/cells/list-item-drag-handle-cell/rr-list-item-drag-handle-cell.ts';
-export { RRSpacerCell } from './lists-and-menus/cells/spacer-cell/rr-spacer-cell.ts';
-export { RRTextCell } from './lists-and-menus/cells/text-cell/rr-text-cell.ts';
-export { RRTextFieldCell } from './lists-and-menus/cells/text-field-cell/rr-text-field-cell.ts';
 export { RRTimelineTrackCell } from './lists-and-menus/cells/timeline-track-cell/rr-timeline-track-cell.ts';
-export { RRTitleCell } from './lists-and-menus/cells/title-cell/rr-title-cell.ts';
 
 
 // # Navigation components
