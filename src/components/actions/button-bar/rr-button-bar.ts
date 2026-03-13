@@ -18,7 +18,6 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './rr-button-bar.styles.ts';
 import { template } from './rr-button-bar.template.ts';
-import { repeat } from 'lit/directives/repeat.js';
 
 if (!customElements.get('rr-button-bar-divider')) {
 	customElements.define('rr-button-bar-divider', class extends HTMLElement {});
@@ -52,6 +51,7 @@ export class RRButtonBar extends LitElement {
 	private _observer: MutationObserver | null = null;
 	private _building = false;
 	private _individuallyDisabled = new WeakSet<Element>();
+	private _individuallyVarianted = new WeakSet<Element>();
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -75,7 +75,8 @@ export class RRButtonBar extends LitElement {
 			this._propagateSize();
 		}
 		if (changedProperties.has('variant') || changedProperties.has('_children')) {
-			this._propagateVariant();
+			const oldVariant = changedProperties.get('variant') as string | undefined;
+			this._propagateVariant(oldVariant);
 		}
 		if (changedProperties.has('disabled')) {
 			this._propagateDisabled();
@@ -107,10 +108,22 @@ export class RRButtonBar extends LitElement {
 			.forEach(el => el.setAttribute('size', this.size));
 	}
 
-	private _propagateVariant(): void {
+	private _propagateVariant(oldVariant?: string): void {
 		Array.from(this.children)
 			.filter(el => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
-			.forEach(el => el.setAttribute('variant', this.variant));
+			.forEach(el => {
+				if (
+					!this._individuallyVarianted.has(el) &&
+					el.hasAttribute('variant') &&
+					el.getAttribute('variant') !== this.variant &&
+					(oldVariant == null || el.getAttribute('variant') !== oldVariant)
+				) {
+					this._individuallyVarianted.add(el);
+				}
+				if (!this._individuallyVarianted.has(el)) {
+					el.setAttribute('variant', this.variant);
+				}
+			});
 	}
 
 	private _propagateDisabled(): void {
@@ -149,7 +162,12 @@ export class RRButtonBar extends LitElement {
 
 			if (BUTTON_TAGS.includes(tag)) {
 				el.setAttribute('size', this.size);
-				el.setAttribute('variant', this.variant);
+				if (el.hasAttribute('variant') && el.getAttribute('variant') !== this.variant) {
+					this._individuallyVarianted.add(el);
+				}
+				if (!this._individuallyVarianted.has(el)) {
+					el.setAttribute('variant', this.variant);
+				}
 			}
 
 			const id = this._idCounter++;

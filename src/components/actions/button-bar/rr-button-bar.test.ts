@@ -178,6 +178,84 @@ describe('rr-button-bar – child building & attribute propagation', () => {
     expect(namedSlot).not.toBeNull();
   });
 
+  it('preserves individual variant set in markup', async () => {
+    el = await fixture<RRButtonBar>(`
+      <rr-button-bar variant="neutral-tinted">
+        <rr-button variant="accent-filled">Active</rr-button>
+        <rr-button>Inactive</rr-button>
+      </rr-button-bar>
+    `);
+    await waitForUpdate(el);
+
+    const buttons = el.querySelectorAll('rr-button');
+    expect(buttons[0].getAttribute('variant')).toBe('accent-filled');
+    expect(buttons[1].getAttribute('variant')).toBe('neutral-tinted');
+  });
+
+  it('preserves individual variant after bar variant changes', async () => {
+    el = await fixture<RRButtonBar>(`
+      <rr-button-bar variant="neutral-tinted">
+        <rr-button variant="accent-filled">Active</rr-button>
+        <rr-button>Inactive</rr-button>
+      </rr-button-bar>
+    `);
+    await waitForUpdate(el);
+
+    el.variant = 'accent-tinted';
+    await waitForUpdate(el);
+
+    const buttons = el.querySelectorAll('rr-button');
+    // Individually-set variant should be preserved
+    expect(buttons[0].getAttribute('variant')).toBe('accent-filled');
+    // Non-individual button should follow the bar
+    expect(buttons[1].getAttribute('variant')).toBe('accent-tinted');
+  });
+
+  it('preserves individual variant when variant is changed via setAttribute', async () => {
+    el = await fixture<RRButtonBar>(`
+      <rr-button-bar variant="neutral-tinted">
+        <rr-button>A</rr-button>
+        <rr-button>B</rr-button>
+      </rr-button-bar>
+    `);
+    await waitForUpdate(el);
+
+    // Simulate a framework (e.g. Vue) setting variant on one button
+    const btnA = el.querySelectorAll('rr-button')[0];
+    btnA.setAttribute('variant', 'accent-filled');
+
+    // Trigger a rebuild by adding a new child
+    const btnC = document.createElement('rr-button');
+    btnC.textContent = 'C';
+    el.appendChild(btnC);
+    await waitForUpdate(el);
+
+    // btnA's individual variant should be preserved
+    expect(btnA.getAttribute('variant')).toBe('accent-filled');
+    // btnC (new, no individual variant) should get bar's variant
+    expect(btnC.getAttribute('variant')).toBe('neutral-tinted');
+  });
+
+  it('preserves individual variant set via setAttribute when bar variant changes', async () => {
+    el = await fixture<RRButtonBar>(`
+      <rr-button-bar variant="neutral-tinted">
+        <rr-button>A</rr-button>
+        <rr-button>B</rr-button>
+      </rr-button-bar>
+    `);
+    await waitForUpdate(el);
+
+    const btnA = el.querySelectorAll('rr-button')[0];
+    btnA.setAttribute('variant', 'accent-filled');
+
+    // Change bar variant WITHOUT adding a child
+    el.variant = 'accent-tinted';
+    await waitForUpdate(el);
+
+    expect(btnA.getAttribute('variant')).toBe('accent-filled');
+    expect(el.querySelectorAll('rr-button')[1].getAttribute('variant')).toBe('accent-tinted');
+  });
+
   it('updates slots when a child is removed after mount', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar>
