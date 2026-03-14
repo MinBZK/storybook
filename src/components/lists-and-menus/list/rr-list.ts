@@ -230,7 +230,6 @@ export class RRList extends LitElement {
 		item.after(this._placeholder);
 
 		item.classList.add('is-dragging');
-		item.setAttribute('aria-grabbed', 'true');
 
 		// Pointer drag: hide the original and show a floating clone
 		// Keyboard drag: keep the item visible (dimmed) so the user sees what they grabbed
@@ -322,7 +321,6 @@ export class RRList extends LitElement {
 	private _cleanupDrag() {
 		this._draggingEl?.classList.remove('is-dragging');
 		this._draggingEl?.classList.remove('is-dragging-pointer');
-		this._draggingEl?.removeAttribute('aria-grabbed');
 		this._placeholder?.remove();
 		this._clone?.remove();
 
