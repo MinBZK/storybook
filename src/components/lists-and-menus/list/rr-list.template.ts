@@ -15,7 +15,7 @@ export const template = () => html`
 		</div>
 	</div>
 	<div class="list__announcer"
-		aria-live="assertive"
+		aria-live="polite"
 		aria-atomic="true"
 	></div>
 `;

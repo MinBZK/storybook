@@ -209,7 +209,7 @@ export class RRList extends LitElement {
 		event.preventDefault();
 		this._keyboardDragging = true;
 		this._startDrag(item);
-		this._announce(this._t('components.list.drag-grabbed-text'));
+		this._announce(this._t('components.list.drag-grabbed-text'), true);
 	};
 
 	// — Drag: core ———————————————————————————————————————————————————————————
@@ -366,9 +366,10 @@ export class RRList extends LitElement {
 		return this._t('components.list.drag-position-text', { position: pos, total: items.length });
 	}
 
-	private _announce(message: string) {
+	private _announce(message: string, assertive = false) {
 		const region = this.shadowRoot?.querySelector<HTMLElement>('.list__announcer');
 		if (!region) return;
+		region.setAttribute('aria-live', assertive ? 'assertive' : 'polite');
 		region.textContent = '';
 		// Timeout forces screen readers to register the content change
 		setTimeout(() => {
