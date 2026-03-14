@@ -21,7 +21,7 @@ export type CellVerticalAlignment = 'top' | 'center' | 'bottom';
  */
 @customElement('rr-cell')
 export class RRCell extends LitElement {
-	static styles = [styles];
+	static override styles = [styles];
 
 	@property({ reflect: true })
 	width: CellWidth | number = 'fit-content';

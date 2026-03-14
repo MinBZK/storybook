@@ -31,7 +31,7 @@ type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('rr-title-cell')
 export class RRTitleCell extends LitElement {
-	static styles = [styles];
+	static override styles = [styles];
 
 	@property({ type: Number, reflect: true })
 	size: TitleCellSize = 5;

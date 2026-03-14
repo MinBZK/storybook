@@ -18,7 +18,7 @@ export type ListItemType = 'button' | 'link';
  */
 @customElement('rr-list-item')
 export class RRListItem extends LitElement {
-	static styles = [styles];
+	static override styles = [styles];
 
 	@property({ reflect: true })
 	size: ListItemSize = 'md';
