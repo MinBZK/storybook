@@ -68,13 +68,10 @@ export class RRListItem extends LitElement {
 	private _syncWithList() {
 		const list = this.closest<RRList>('rr-list');
 		if (!list) return;
-
 		this._applyVariant(list.variant);
-
 		this._listObserver = new MutationObserver(() => {
 			this._applyVariant(list.variant);
 		});
-
 		this._listObserver.observe(list, {
 			attributes: true,
 			attributeFilter: ['variant'],
@@ -107,13 +104,15 @@ export class RRListItem extends LitElement {
 	private _propagateSelected() {
 		const slots = this.shadowRoot?.querySelectorAll('slot');
 		slots?.forEach((slot) => {
-			slot.assignedElements({ flatten: true }).forEach((el) => {
-				if (this.selected) {
-					el.setAttribute('selected', '');
-				} else {
-					el.removeAttribute('selected');
-				}
-			});
+			slot.assignedElements({ flatten: true })
+				.filter((el) => el.tagName.toLowerCase().endsWith('-cell'))
+				.forEach((el) => {
+					if (this.selected) {
+						el.setAttribute('selected', '');
+					} else {
+						el.removeAttribute('selected');
+					}
+				});
 		});
 	}
 
