@@ -33,7 +33,7 @@ type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('rr-text-cell')
 export class RRTextCell extends LitElement {
-	static styles = [styles];
+	static override styles = [styles];
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';

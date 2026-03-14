@@ -24,7 +24,7 @@ type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('rr-description-cell')
 export class RRDescriptionCell extends LitElement {
-	static styles = [styles];
+	static override styles = [styles];
 
 	@property({ reflect: true })
 	width: Width | number = 'stretch';

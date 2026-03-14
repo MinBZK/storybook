@@ -29,6 +29,10 @@ export const styles = css`
 		width: fit-content;
 	}
 
+	:host([width]:not([width='stretch']):not([width='fit-content'])) {
+		flex-shrink: 0;
+	}
+
 
 	/* # Vertical alignment */
 
