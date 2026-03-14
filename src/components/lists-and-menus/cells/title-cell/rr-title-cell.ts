@@ -2,10 +2,8 @@
  * RegelRecht Title Cell Component (Lit + TypeScript)
  *
  * A cell component for displaying a title with optional overline and subtitle in lists.
- * The heading level is semantically configurable independent of the visual size.
  *
  * @element rr-title-cell
- * @attr {1|2|3|4|5|6} level - Semantic heading level (default: 2)
  * @attr {1|2|3|4|5|6} size - Visual size of the title (default: 5)
  * @attr {'default' | 'inherit'} color - Text color variant (default: 'default')
  * @attr {'stretch' | 'fit-content' | number} width - Width of the cell (default: 'stretch')
