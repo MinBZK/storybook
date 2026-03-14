@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const areas = (showStart: boolean, showEnd: boolean) => html`
 	<div class="list-item__indicator"></div>
@@ -26,7 +27,7 @@ export const template = (
 ) => {
 	if (type === 'link') {
 		return html`<a class="list-item"
-			href=${href ?? ''}
+			href=${ifDefined(href)}
 		>${areas(showStart, showEnd)}</a>`;
 	}
 	if (type === 'button') {
