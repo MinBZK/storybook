@@ -56,12 +56,6 @@ export const titleBarStyles = css`
 		color: var(--semantics-content-color);
 	}
 
-	@media (forced-colors: active) {
-		::slotted(:not([slot])) {
-			forced-color-adjust: none;
-		}
-	}
-
 
 	/* # Subtitle */
 
