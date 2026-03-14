@@ -378,7 +378,7 @@ export class RRList extends LitElement {
 	}
 
 	override render() {
-		return template();
+		return template(this._t('components.list.items-label-text'));
 	}
 }
 

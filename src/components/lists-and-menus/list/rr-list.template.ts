@@ -1,12 +1,13 @@
 import { html } from 'lit';
 
-export const template = () => html`
+export const template = (itemsLabel: string) => html`
 	<div class="list__body">
 		<div class="list__header">
 			<slot name="header"></slot>
 		</div>
 		<div class="list__items"
-			role="list"
+			role="group"
+			aria-label=${itemsLabel}
 		>
 			<slot></slot>
 		</div>
