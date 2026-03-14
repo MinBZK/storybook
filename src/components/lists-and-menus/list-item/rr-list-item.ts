@@ -2,7 +2,7 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './rr-list-item.styles.ts';
 import { template } from './rr-list-item.template.ts';
-import type { RrList } from '../list/rr-list.ts';
+import type { RRList } from '../list/rr-list.ts';
 import '../cells/spacer-cell/rr-spacer-cell.ts';
 
 export type ListItemSize = 'sm' | 'md';
@@ -66,7 +66,7 @@ export class RRListItem extends LitElement {
 	}
 
 	private _syncWithList() {
-		const list = this.closest<RrList>('rr-list');
+		const list = this.closest<RRList>('rr-list');
 		if (!list) return;
 
 		this._applyVariant(list.variant);

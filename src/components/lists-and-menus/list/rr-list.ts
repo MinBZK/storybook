@@ -8,7 +8,7 @@ import type { RRListTranslations } from './rr-list.i18n.ts';
 
 export type ListVariant = 'simple' | 'box' | 'inset';
 
-export interface RrReorderEventDetail {
+export interface RRReorderEventDetail {
 	fromIndex: number;
 	toIndex: number;
 }
@@ -305,7 +305,7 @@ export class RRList extends LitElement {
 
 		if (fromIndex !== toIndex) {
 			this.dispatchEvent(
-				new CustomEvent<RrReorderEventDetail>('rr-reorder', {
+				new CustomEvent<RRReorderEventDetail>('rr-reorder', {
 					detail: { fromIndex, toIndex },
 					bubbles: true,
 					composed: true,

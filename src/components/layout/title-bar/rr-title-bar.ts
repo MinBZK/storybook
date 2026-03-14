@@ -21,7 +21,7 @@ import { titleBarTemplate } from './rr-title-bar.template.ts';
 type Size = 1 | 2 | 3 | 4 | 5 | 6;
 
 @customElement('rr-title-bar')
-export class RrTitleBar extends LitElement {
+export class RRTitleBar extends LitElement {
 	static override styles = titleBarStyles;
 
 	@property({ type: Number, reflect: true })
@@ -34,6 +34,6 @@ export class RrTitleBar extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-title-bar': RrTitleBar;
+		'rr-title-bar': RRTitleBar;
 	}
 }
