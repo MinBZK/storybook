@@ -42,7 +42,7 @@ export const styles = css`
 
 	:host([variant='box']) .list__items {
 		background-color: var(--semantics-surfaces-tinted-background-color);
-		border-radius: var(--primitives-corner-radius-md);
+		border-radius: var(--components-list-corner-radius);
 		overflow: hidden;
 	}
 
@@ -51,7 +51,7 @@ export const styles = css`
 
 	:host([variant='inset']) .list__items {
 		background-color: var(--semantics-surfaces-background-color);
-		border-radius: var(--primitives-corner-radius-md);
+		border-radius: var(--components-list-corner-radius);
 		overflow: hidden;
 	}
 

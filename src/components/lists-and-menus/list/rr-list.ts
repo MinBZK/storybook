@@ -41,6 +41,8 @@ export class RrList extends LitElement {
 	private _currentDropIndex = -1;
 	private _keyboardDragging = false;
 	private _pointerId: number | null = null;
+	private _clone: HTMLDivElement | null = null;
+	private _cloneOffsetY = 0;
 
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
@@ -208,7 +210,7 @@ export class RrList extends LitElement {
 
 	// — Drag: core ———————————————————————————————————————————————————————————
 
-	private _startDrag(item: RrListItem, clientY: number) {
+	private _startDrag(item: RrListItem, clientY = 0) {
 		const items = this._getItems();
 		const fromIndex = items.indexOf(item);
 		if (fromIndex === -1) return;
