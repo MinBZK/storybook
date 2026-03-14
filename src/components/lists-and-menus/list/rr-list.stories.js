@@ -213,7 +213,11 @@ export const WithTitleAndDetail = {
 					<p slot="text">Primary title</p>
 				</rr-text-cell>
 				<rr-spacer-cell></rr-spacer-cell>
-				<rr-text-cell color="secondary" horizontal-alignment="right" width="fit-content">
+				<rr-text-cell
+					color="secondary"
+					horizontal-alignment="right"
+					width="fit-content"
+				>
 					<p slot="text">Detail</p>
 				</rr-text-cell>
 			</rr-list-item>
@@ -222,7 +226,11 @@ export const WithTitleAndDetail = {
 					<p slot="text">Another title</p>
 				</rr-text-cell>
 				<rr-spacer-cell size="8"></rr-spacer-cell>
-				<rr-text-cell color="secondary" horizontal-alignment="right" width="fit-content">
+				<rr-text-cell
+					color="secondary"
+					horizontal-alignment="right"
+					width="fit-content"
+				>
 					<p slot="text">More detail</p>
 				</rr-text-cell>
 			</rr-list-item>
@@ -272,7 +280,7 @@ export const DraggableList = {
 			<style>
 				rr-list-item:not([draggable]) [draggable-only] { display: none; }
 			</style>
-			<rr-list variant="box" draggable>
+			<rr-list variant="box" reorderable>
 				${['Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten'].map((label) => `
 					<rr-list-item>
 						<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>

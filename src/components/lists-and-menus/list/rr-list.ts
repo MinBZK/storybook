@@ -15,7 +15,7 @@ export interface RRReorderEventDetail {
 
 /**
  * A container for `rr-list-item` elements, with optional header and footer slots.
- * When `draggable` is set, items can be reordered by drag or keyboard.
+ * When `reorderable` is set, items can be reordered by drag or keyboard.
  *
  * @slot         - List items (`rr-list-item`)
  * @slot header  - Content above the list body (e.g. `rr-title-bar`)
@@ -33,7 +33,7 @@ export class RRList extends LitElement {
 
 	/** Enables drag-to-reorder. Sets `draggable` on each `rr-list-item`. */
 	@property({ type: Boolean, reflect: true })
-	override draggable = false;
+	reorderable = false;
 
 	/** Overschrijf een of meer vertaalsleutels. Niet-opgegeven sleutels vallen terug op de Nederlandse standaard. */
 	@property({ type: Object })
@@ -72,7 +72,7 @@ export class RRList extends LitElement {
 	}
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('draggable')) {
+		if (changed.has('reorderable')) {
 			this._updateItems();
 		}
 	}
@@ -90,7 +90,7 @@ export class RRList extends LitElement {
 		const items = this._getItems();
 		items.forEach((item, index) => {
 			item.classList.toggle('is-last', index === items.length - 1);
-			if (this.draggable) {
+			if (this.reorderable) {
 				item.setAttribute('draggable', 'true');
 			} else {
 				item.removeAttribute('draggable');
@@ -101,7 +101,7 @@ export class RRList extends LitElement {
 	// — Drag: pointer ————————————————————————————————————————————————————————
 
 	private _onPointerDown = (event: PointerEvent) => {
-		if (!this.draggable) return;
+		if (!this.reorderable) return;
 
 		const path = event.composedPath() as Element[];
 		const hasDragHandle = path.some(
@@ -161,7 +161,7 @@ export class RRList extends LitElement {
 	// — Drag: keyboard ———————————————————————————————————————————————————————
 
 	private _onKeyDown = (event: KeyboardEvent) => {
-		if (!this.draggable) return;
+		if (!this.reorderable) return;
 
 		if (this._keyboardDragging) {
 			switch (event.key) {
