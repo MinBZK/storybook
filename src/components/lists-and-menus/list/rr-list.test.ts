@@ -55,7 +55,7 @@ describe('rr-list', () => {
 
 	it('fires rr-reorder with correct fromIndex and toIndex after keyboard drop', async () => {
 		el = await fixture(`
-			<rr-list draggable>
+			<rr-list reorderable>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
@@ -89,7 +89,7 @@ describe('rr-list', () => {
 
 	it('does not fire rr-reorder when item is dropped at its original position', async () => {
 		el = await fixture(`
-			<rr-list draggable>
+			<rr-list reorderable>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
 			</rr-list>
@@ -114,7 +114,7 @@ describe('rr-list', () => {
 
 	it('ArrowDown and ArrowUp move the placeholder, Enter commits the drop', async () => {
 		el = await fixture(`
-			<rr-list draggable>
+			<rr-list reorderable>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
@@ -148,7 +148,7 @@ describe('rr-list', () => {
 
 	it('Escape cancels drag: restores is-dragging class and removes placeholder', async () => {
 		el = await fixture(`
-			<rr-list draggable>
+			<rr-list reorderable>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
 				<rr-list-item><span draggable-only tabindex="0">handle</span></rr-list-item>
 			</rr-list>
