@@ -45,7 +45,6 @@ export class RRListItem extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback();
-		this._syncWithList();
 	}
 
 	override disconnectedCallback() {
@@ -55,6 +54,7 @@ export class RRListItem extends LitElement {
 	}
 
 	override firstUpdated() {
+		this._syncWithList();
 		this._observeStartSlot();
 		this._observeEndSlot();
 	}
