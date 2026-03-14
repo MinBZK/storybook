@@ -284,7 +284,7 @@ export const DraggableList = {
 				${['Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten'].map((label) => `
 					<rr-list-item>
 						<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
-						<rr-drag-handle-cell size="sm" slot="start" draggable-only tabindex="0"></rr-drag-handle-cell>
+						<rr-drag-handle-cell size="sm" slot="start" draggable-only></rr-drag-handle-cell>
 						<rr-spacer-cell slot="start" draggable-only size="8"></rr-spacer-cell>
 						<rr-text-cell>
 							<p slot="text">${label}</p>

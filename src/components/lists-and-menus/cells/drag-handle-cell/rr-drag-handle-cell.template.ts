@@ -43,6 +43,7 @@ export function template(this: RRDragHandleCell) {
 	return html`
 		<div class="drag-handle-cell__control"
 			role="button"
+			tabindex="0"
 			aria-label=${label}
 			aria-pressed=${this.pressed}
 		>
