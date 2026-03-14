@@ -32,7 +32,7 @@ type HorizontalAlignment = 'left' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('rr-title-cell')
-export class RrTitleCell extends LitElement {
+export class RRTitleCell extends LitElement {
 	static styles = [styles];
 
 	@property({ type: Number, reflect: true })
@@ -81,6 +81,6 @@ export class RrTitleCell extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-title-cell': RrTitleCell;
+		'rr-title-cell': RRTitleCell;
 	}
 }

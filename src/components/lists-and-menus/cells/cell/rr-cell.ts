@@ -20,7 +20,7 @@ export type CellVerticalAlignment = 'top' | 'center' | 'bottom';
  * @slot - Default slot for any content (buttons, switches, icons, etc.)
  */
 @customElement('rr-cell')
-export class RrCell extends LitElement {
+export class RRCell extends LitElement {
 	static styles = [styles];
 
 	@property({ reflect: true })
@@ -57,6 +57,6 @@ export class RrCell extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-cell': RrCell;
+		'rr-cell': RRCell;
 	}
 }

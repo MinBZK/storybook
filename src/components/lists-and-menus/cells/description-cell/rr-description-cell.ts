@@ -23,7 +23,7 @@ type Width = 'stretch' | 'fit-content';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('rr-description-cell')
-export class RrDescriptionCell extends LitElement {
+export class RRDescriptionCell extends LitElement {
 	static styles = [styles];
 
 	@property({ reflect: true })
@@ -63,6 +63,6 @@ export class RrDescriptionCell extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-description-cell': RrDescriptionCell;
+		'rr-description-cell': RRDescriptionCell;
 	}
 }

@@ -2,7 +2,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styles } from './rr-list.styles.ts';
 import { template } from './rr-list.template.ts';
-import type { RrListItem } from '../list-item/rr-list-item.ts';
+import type { RRListItem } from '../list-item/rr-list-item.ts';
 
 export type ListVariant = 'simple' | 'box' | 'inset';
 
@@ -22,7 +22,7 @@ export interface RrReorderEventDetail {
  * @fires rr-reorder - Fired on successful drop: `{ fromIndex, toIndex }`
  */
 @customElement('rr-list')
-export class RrList extends LitElement {
+export class RRList extends LitElement {
 	static override styles = [styles];
 
 	/** Visual style of the list. */
@@ -35,7 +35,7 @@ export class RrList extends LitElement {
 
 	// — Drag state ——————————————————————————————————————————————————————————
 
-	private _draggingEl: RrListItem | null = null;
+	private _draggingEl: RRListItem | null = null;
 	private _draggingFromIndex = -1;
 	private _placeholder: HTMLDivElement | null = null;
 	private _currentDropIndex = -1;
@@ -73,11 +73,11 @@ export class RrList extends LitElement {
 
 	// — Items ————————————————————————————————————————————————————————————————
 
-	private _getItems(): RrListItem[] {
+	private _getItems(): RRListItem[] {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		return (slot?.assignedElements() ?? []).filter(
 			(el) => el.tagName.toLowerCase() === 'rr-list-item',
-		) as RrListItem[];
+		) as RRListItem[];
 	}
 
 	private _updateItems() {
@@ -105,7 +105,7 @@ export class RrList extends LitElement {
 
 		const item = path.find(
 			(el) => el instanceof Element && el.tagName.toLowerCase() === 'rr-list-item',
-		) as RrListItem | undefined;
+		) as RRListItem | undefined;
 		if (!item) return;
 
 		event.preventDefault();
@@ -197,7 +197,7 @@ export class RrList extends LitElement {
 
 		const item = path.find(
 			(el) => el instanceof Element && el.tagName.toLowerCase() === 'rr-list-item',
-		) as RrListItem | undefined;
+		) as RRListItem | undefined;
 		if (!item) return;
 
 		event.preventDefault();
@@ -210,7 +210,7 @@ export class RrList extends LitElement {
 
 	// — Drag: core ———————————————————————————————————————————————————————————
 
-	private _startDrag(item: RrListItem, clientY = 0) {
+	private _startDrag(item: RRListItem, clientY = 0) {
 		const items = this._getItems();
 		const fromIndex = items.indexOf(item);
 		if (fromIndex === -1) return;
@@ -369,6 +369,6 @@ export class RrList extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-list': RrList;
+		'rr-list': RRList;
 	}
 }

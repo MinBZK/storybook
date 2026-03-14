@@ -17,7 +17,7 @@ export type ListItemType = 'button' | 'link';
  * @slot end     - Content at the end of the row
  */
 @customElement('rr-list-item')
-export class RrListItem extends LitElement {
+export class RRListItem extends LitElement {
 	static styles = [styles];
 
 	@property({ reflect: true })
@@ -124,6 +124,6 @@ export class RrListItem extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-list-item': RrListItem;
+		'rr-list-item': RRListItem;
 	}
 }
