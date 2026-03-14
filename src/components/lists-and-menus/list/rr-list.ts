@@ -3,6 +3,8 @@ import { customElement, property } from 'lit/decorators.js';
 import { styles } from './rr-list.styles.ts';
 import { template } from './rr-list.template.ts';
 import type { RRListItem } from '../list-item/rr-list-item.ts';
+import { rrListTranslations } from './rr-list.i18n.ts';
+import type { RRListTranslations } from './rr-list.i18n.ts';
 
 export type ListVariant = 'simple' | 'box' | 'inset';
 
@@ -32,6 +34,10 @@ export class RRList extends LitElement {
 	/** Enables drag-to-reorder. Sets `draggable` on each `rr-list-item`. */
 	@property({ type: Boolean, reflect: true })
 	override draggable = false;
+
+	/** Overschrijf een of meer vertaalsleutels. Niet-opgegeven sleutels vallen terug op de Nederlandse standaard. */
+	@property({ type: Object })
+	translations: Partial<RRListTranslations> = {};
 
 	// — Drag state ——————————————————————————————————————————————————————————
 
@@ -203,9 +209,7 @@ export class RRList extends LitElement {
 		event.preventDefault();
 		this._keyboardDragging = true;
 		this._startDrag(item);
-		this._announce(
-			'Item grabbed. Use arrow keys to reorder, Space or Enter to drop, Escape to cancel.',
-		);
+		this._announce(this._t('components.list.drag-grabbed-text'));
 	};
 
 	// — Drag: core ———————————————————————————————————————————————————————————
@@ -309,13 +313,13 @@ export class RRList extends LitElement {
 			);
 		}
 
-		this._announce(`Item dropped at position ${toIndex + 1}.`);
+		this._announce(this._t('components.list.drag-dropped-text', { position: toIndex + 1 }));
 	}
 
 	private _cancelDrag() {
 		if (!this._draggingEl) return;
 		this._cleanupDrag();
-		this._announce('Drag cancelled.');
+		this._announce(this._t('components.list.drag-cancelled-text'));
 	}
 
 	private _cleanupDrag() {
@@ -342,12 +346,24 @@ export class RRList extends LitElement {
 		this._keyboardDragging = false;
 	}
 
+	// — i18n ————————————————————————————————————————————————————————————————
+
+	private _t(key: keyof RRListTranslations, vars?: Record<string, string | number>): string {
+		let str = { ...rrListTranslations, ...this.translations }[key];
+		if (vars) {
+			for (const [k, v] of Object.entries(vars)) {
+				str = str.replace(`{${k}}`, String(v));
+			}
+		}
+		return str;
+	}
+
 	// — Accessibility ————————————————————————————————————————————————————————
 
 	private _dragPositionLabel(): string {
 		const items = this._getItems();
 		const pos = this._getDropIndex() + 1;
-		return `Position ${pos} of ${items.length}.`;
+		return this._t('components.list.drag-position-text', { position: pos, total: items.length });
 	}
 
 	private _announce(message: string) {
