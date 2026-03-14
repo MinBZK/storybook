@@ -43,13 +43,13 @@ export const styles = css`
 	/* ## Size: SM */
 
 	:host([size="sm"]) .drag-handle-cell__control {
-	width: var(--semantics-controls-xs-min-size);
-	height: var(--semantics-controls-sm-min-size);
-	border-radius: var(--semantics-controls-sm-corner-radius);
+		width: var(--semantics-controls-xs-min-size);
+		height: var(--semantics-controls-sm-min-size);
+		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
 	.drag-handle-cell__control-grip {
-	display: block;
-	color: var(--semantics-grab-handles-grip-color);
+		display: block;
+		color: var(--semantics-grab-handles-grip-color);
 	}
 `;
