@@ -9,7 +9,7 @@ export const styles = css`
 		--_drag-clone-width: 0px;
 		--_drag-clone-height: 0px;
 		--_drag-clone-opacity: 0.95;
-		--_drag-clone-z-index: 9999;
+		--_drag-clone-z-index: 100;
 	}
 
 
