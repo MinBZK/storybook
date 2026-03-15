@@ -92,9 +92,9 @@ export class RRList extends LitElement {
 		items.forEach((item, index) => {
 			item.classList.toggle('is-last', index === items.length - 1);
 			if (this.reorderable) {
-				item.setAttribute('draggable', 'true');
+				item.setAttribute('reorderable', '');
 			} else {
-				item.removeAttribute('draggable');
+				item.removeAttribute('reorderable');
 			}
 		});
 	}

@@ -22,11 +22,11 @@ export const styles = css`
 		display: none;
 	}
 
-	:host([draggable]) {
+	:host([reorderable]) {
 		touch-action: none;
 	}
 
-	:host([draggable]) ::slotted([draggable-only]) {
+	:host([reorderable]) ::slotted([draggable-only]) {
 		cursor: grab;
 	}
 
