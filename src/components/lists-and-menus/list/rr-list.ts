@@ -128,8 +128,8 @@ export class RRList extends LitElement {
 
 		// Move floating clone
 		if (this._clone) {
-			this._clone.style.top = `${event.clientY - this._cloneOffsetY}px`;
-		}
+				this._clone.style.setProperty('--_drag-clone-top', `${event.clientY - this._cloneOffsetY}px`);
+			}
 
 		const items = this._getItems();
 		const nonDragging = items.filter((i) => i !== this._draggingEl);
@@ -248,19 +248,11 @@ export class RRList extends LitElement {
 			hostClone.classList.remove('is-dragging-pointer');
 
 			this._clone = document.createElement('div');
-			this._clone.style.cssText = `
-				position: fixed;
-				top: ${clientY - this._cloneOffsetY}px;
-				left: ${rect.left}px;
-				width: ${rect.width}px;
-				height: ${rect.height}px;
-				pointer-events: none;
-				opacity: var(--_drag-clone-opacity, 0.95);
-				border-radius: var(--components-list-item-indicator-corner-radius);
-				background: var(--semantics-surfaces-background-color);
-				z-index: var(--_drag-clone-z-index, 9999);
-				overflow: hidden;
-			`;
+			this._clone.className = 'list__drag-clone';
+			this._clone.style.setProperty('--_drag-clone-top', `${clientY - this._cloneOffsetY}px`);
+			this._clone.style.setProperty('--_drag-clone-left', `${rect.left}px`);
+			this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
+			this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
 			this._clone.appendChild(hostClone);
 			this.shadowRoot!.appendChild(this._clone);
 		}

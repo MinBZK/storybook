@@ -66,6 +66,23 @@ export const styles = css`
 	}
 
 
+	/* # Drag clone */
+
+	.list__drag-clone {
+		position: fixed;
+		top: var(--_drag-clone-top);
+		left: var(--_drag-clone-left);
+		width: var(--_drag-clone-width);
+		height: var(--_drag-clone-height);
+		pointer-events: none;
+		opacity: var(--_drag-clone-opacity, 0.95);
+		border-radius: var(--components-list-item-indicator-corner-radius);
+		background: var(--semantics-surfaces-background-color);
+		z-index: var(--_drag-clone-z-index, 9999);
+		overflow: hidden;
+	}
+
+
 	/* # Announcer */
 
 	.list__announcer {
