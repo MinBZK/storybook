@@ -33,22 +33,22 @@ describe('rr-cell', () => {
 		expect(el.style.width).toBe('120px');
 	});
 
-	it('sets inline min-width style', async () => {
+	it('sets --_min-width custom property', async () => {
 		el = await fixture('<rr-cell min-width="80"></rr-cell>');
 		await waitForUpdate(el);
-		expect(el.style.minWidth).toBe('80px');
+		expect(el.style.getPropertyValue('--_min-width')).toBe('80px');
 	});
 
-	it('sets inline max-width style', async () => {
+	it('sets --_max-width custom property', async () => {
 		el = await fixture('<rr-cell max-width="200"></rr-cell>');
 		await waitForUpdate(el);
-		expect(el.style.maxWidth).toBe('200px');
+		expect(el.style.getPropertyValue('--_max-width')).toBe('200px');
 	});
 
-	it('sets inline min-height style', async () => {
+	it('sets --_min-height custom property', async () => {
 		el = await fixture('<rr-cell min-height="44"></rr-cell>');
 		await waitForUpdate(el);
-		expect(el.style.minHeight).toBe('44px');
+		expect(el.style.getPropertyValue('--_min-height')).toBe('44px');
 	});
 
 	it('defaults to center vertical alignment', async () => {
