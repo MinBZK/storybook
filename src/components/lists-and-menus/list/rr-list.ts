@@ -128,8 +128,8 @@ export class RRList extends LitElement {
 
 		// Move floating clone
 		if (this._clone) {
-				this._clone.style.setProperty('--_drag-clone-top', `${event.clientY - this._cloneOffsetY}px`);
-			}
+			this._clone.style.setProperty('--_drag-clone-top', `${event.clientY - this._cloneOffsetY}px`);
+		}
 
 		const items = this._getItems();
 		const nonDragging = items.filter((i) => i !== this._draggingEl);
