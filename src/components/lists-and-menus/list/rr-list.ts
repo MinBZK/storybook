@@ -311,9 +311,10 @@ export class RRList extends LitElement {
 					composed: true,
 				}),
 			);
+			this._announce(this._t('components.list.drag-dropped-text', { position: toIndex + 1 }));
+		} else {
+			this._announce(this._t('components.list.drag-cancelled-text'));
 		}
-
-		this._announce(this._t('components.list.drag-dropped-text', { position: toIndex + 1 }));
 	}
 
 	private _cancelDrag() {
