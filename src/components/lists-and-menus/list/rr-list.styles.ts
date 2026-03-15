@@ -92,7 +92,8 @@ export const styles = css`
 
 	/* # Announcer */
 
-	.list__announcer {
+	.list__polite-announcer,
+	.list__assertive-announcer {
 		position: absolute;
 		width: 1px;
 		height: 1px;

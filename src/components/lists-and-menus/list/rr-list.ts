@@ -363,9 +363,9 @@ export class RRList extends LitElement {
 	}
 
 	private _announce(message: string, assertive = false) {
-		const region = this.shadowRoot?.querySelector<HTMLElement>('.list__announcer');
+		const selector = assertive ? '.list__assertive-announcer' : '.list__polite-announcer';
+		const region = this.shadowRoot?.querySelector<HTMLElement>(selector);
 		if (!region) return;
-		region.setAttribute('aria-live', assertive ? 'assertive' : 'polite');
 		region.textContent = '';
 		// Double rAF forces screen readers to register the content change across browsers
 		requestAnimationFrame(() => requestAnimationFrame(() => {

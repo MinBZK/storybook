@@ -15,9 +15,14 @@ export const template = (itemsLabel: string) => html`
 			<slot name="footer"></slot>
 		</div>
 	</div>
-	<div class="list__announcer"
+	<div class="list__polite-announcer"
 		role="status"
 		aria-live="polite"
+		aria-atomic="true"
+	></div>
+	<div class="list__assertive-announcer"
+		role="alert"
+		aria-live="assertive"
 		aria-atomic="true"
 	></div>
 `;
