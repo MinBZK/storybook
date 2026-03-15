@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rr-drag-handle-cell.js';
+import './rr-drag-handle-cell.ts';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Drag Handle Cell',
