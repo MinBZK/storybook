@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import './rr-list-item.ts';
 import '../list/rr-list.ts';
+import '../cells/text-cell/rr-text-cell.ts';
 
 describe('rr-list-item', () => {
 	let el: HTMLElement;
@@ -56,6 +57,7 @@ describe('rr-list-item', () => {
 		`);
 		await waitForUpdate(wrapper);
 		el = wrapper.querySelector('rr-list-item')!;
+		await waitForUpdate(el);
 		expect(el.classList.contains('is-boxed')).toBe(true);
 	});
 
@@ -67,6 +69,7 @@ describe('rr-list-item', () => {
 		`);
 		await waitForUpdate(wrapper);
 		el = wrapper.querySelector('rr-list-item')!;
+		await waitForUpdate(el);
 		expect(el.classList.contains('is-boxed')).toBe(false);
 	});
 
@@ -80,6 +83,7 @@ describe('rr-list-item', () => {
 		`);
 		await waitForUpdate(wrapper);
 		el = wrapper.querySelector('rr-list-item')!;
+		await waitForUpdate(el);
 		const startArea = el.shadowRoot!.querySelector('.list-item__start-area');
 		const endArea = el.shadowRoot!.querySelector('.list-item__end-area');
 		expect(startArea?.classList.contains('is-visible')).toBe(false);
@@ -99,6 +103,7 @@ describe('rr-list-item', () => {
 		`);
 		await waitForUpdate(wrapper);
 		el = wrapper.querySelector('rr-list-item')!;
+		await waitForUpdate(el);
 		const cell = el.querySelector('rr-text-cell');
 		expect(cell?.hasAttribute('selected')).toBe(true);
 	});
@@ -113,6 +118,7 @@ describe('rr-list-item', () => {
 		`);
 		await waitForUpdate(wrapper);
 		el = wrapper.querySelector('rr-list-item')!;
+		await waitForUpdate(el);
 		el.removeAttribute('selected');
 		await waitForUpdate(el);
 		const cell = el.querySelector('rr-text-cell');
