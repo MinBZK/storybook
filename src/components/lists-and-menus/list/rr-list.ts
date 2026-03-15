@@ -369,7 +369,7 @@ export class RRList extends LitElement {
 	}
 
 	private _announce(message: string, assertive = false) {
-		const selector = assertive ? '.list__announcer--assertive' : '.list__announcer--polite';
+		const selector = assertive ? '.list__assertive-announcer' : '.list__polite-announcer';
 		const region = this.shadowRoot?.querySelector<HTMLElement>(selector);
 		if (!region) return;
 		region.textContent = '';
