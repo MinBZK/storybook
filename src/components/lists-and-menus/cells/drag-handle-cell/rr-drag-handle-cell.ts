@@ -33,12 +33,15 @@ export class RRDragHandleCell extends LitElement {
 
 	// — i18n ————————————————————————————————————————————————————————————————
 
-	private _t(key: keyof RRDragHandleCellTranslations): string {
+	_t(key: keyof RRDragHandleCellTranslations): string {
 		return { ...rrDragHandleCellTranslations, ...this.translations }[key];
 	}
 
 	override render() {
-		return template.call(this);
+		const label = this.pressed
+			? this._t('components.drag-handle-cell.label-pressed-text')
+			: this._t('components.drag-handle-cell.label-text');
+		return template(this.size, this.pressed, label);
 	}
 }
 

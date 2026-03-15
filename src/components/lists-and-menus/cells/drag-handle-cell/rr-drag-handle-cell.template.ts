@@ -1,5 +1,4 @@
 import { html, svg } from 'lit';
-import type { RRDragHandleCell } from './rr-drag-handle-cell.ts';
 
 const gripMd = svg`
 	<svg class="drag-handle-cell__control-grip"
@@ -35,18 +34,14 @@ const gripSm = svg`
 	</svg>
 `;
 
-export function template(this: RRDragHandleCell) {
-	const label = this.pressed
-		? this._t('components.drag-handle-cell.label-pressed-text')
-		: this._t('components.drag-handle-cell.label-text');
-
+export function template(size: 'sm' | 'md', pressed: boolean, label: string) {
 	return html`
 		<button class="drag-handle-cell__control"
 			type="button"
 			aria-label=${label}
-			aria-pressed=${this.pressed}
+			aria-pressed=${pressed}
 		>
-			${this.size === 'sm' ? gripSm : gripMd}
+			${size === 'sm' ? gripSm : gripMd}
 		</button>
 	`;
 }
