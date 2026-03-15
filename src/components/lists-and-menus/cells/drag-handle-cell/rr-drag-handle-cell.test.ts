@@ -31,28 +31,8 @@ describe('rr-drag-handle-cell', () => {
 		);
 	});
 
-	it('uses the pressed label when pressed=true', async () => {
-		el = await fixture('<rr-drag-handle-cell pressed></rr-drag-handle-cell>');
-		await waitForUpdate(el);
-		const control = el.shadowRoot!.querySelector('.drag-handle-cell__control');
-		expect(control?.getAttribute('aria-label')).toBe(
-			rrDragHandleCellTranslations['components.drag-handle-cell.label-pressed-text'],
-		);
-	});
 
-	it('sets aria-pressed="true" when pressed', async () => {
-		el = await fixture('<rr-drag-handle-cell pressed></rr-drag-handle-cell>');
-		await waitForUpdate(el);
-		const control = el.shadowRoot!.querySelector('.drag-handle-cell__control');
-		expect(control?.getAttribute('aria-pressed')).toBe('true');
-	});
 
-	it('sets aria-pressed="false" when not pressed', async () => {
-		el = await fixture('<rr-drag-handle-cell></rr-drag-handle-cell>');
-		await waitForUpdate(el);
-		const control = el.shadowRoot!.querySelector('.drag-handle-cell__control');
-		expect(control?.getAttribute('aria-pressed')).toBe('false');
-	});
 
 	it('applies a custom translation override', async () => {
 		el = await fixture('<rr-drag-handle-cell></rr-drag-handle-cell>');

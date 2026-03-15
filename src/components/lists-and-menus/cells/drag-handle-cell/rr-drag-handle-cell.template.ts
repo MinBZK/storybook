@@ -1,12 +1,11 @@
 import { html, svg } from 'lit';
 
 const gripMd = svg`
-	<svg class="drag-handle-cell__control-grip"
+	<svg aria-hidden="true" class="drag-handle-cell__control-grip"
 		width="10"
 		height="22"
 		viewBox="0 0 10 22"
 		xmlns="http://www.w3.org/2000/svg"
-		aria-hidden="true"
 	>
 		<circle cx="2" cy="2"  r="2" fill="currentColor"/>
 		<circle cx="8" cy="2"  r="2" fill="currentColor"/>
@@ -20,12 +19,11 @@ const gripMd = svg`
 `;
 
 const gripSm = svg`
-	<svg class="drag-handle-cell__control-grip"
+	<svg aria-hidden="true" class="drag-handle-cell__control-grip"
 		width="10"
 		height="16"
 		viewBox="0 0 10 16"
 		xmlns="http://www.w3.org/2000/svg"
-		aria-hidden="true"
 	>
 		<circle cx="2" cy="2"  r="2" fill="currentColor"/>
 		<circle cx="8" cy="2"  r="2" fill="currentColor"/>
@@ -36,12 +34,11 @@ const gripSm = svg`
 	</svg>
 `;
 
-export function template(size: 'sm' | 'md', pressed: boolean, label: string) {
+export function template(size: 'sm' | 'md', label: string) {
 	return html`
 		<button class="drag-handle-cell__control"
 			type="button"
 			aria-label=${label}
-			aria-pressed=${pressed}
 		>
 			${size === 'sm' ? gripSm : gripMd}
 		</button>

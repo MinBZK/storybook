@@ -27,9 +27,6 @@ export class RRDragHandleCell extends LitElement {
 	@property({ type: Object })
 	translations: Partial<RRDragHandleCellTranslations> = {};
 
-	/** Whether the handle is active (item is being dragged). Sets aria-pressed. */
-	@property({ type: Boolean, reflect: true })
-	pressed = false;
 
 	// — i18n ————————————————————————————————————————————————————————————————
 
@@ -38,10 +35,8 @@ export class RRDragHandleCell extends LitElement {
 	}
 
 	override render() {
-		const label = this.pressed
-			? this._t('components.drag-handle-cell.label-pressed-text')
-			: this._t('components.drag-handle-cell.label-text');
-		return template(this.size, this.pressed, label);
+		const label = this._t('components.drag-handle-cell.label-text');
+		return template(this.size, label);
 	}
 }
 
