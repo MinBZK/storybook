@@ -61,6 +61,12 @@ export class RRListItem extends LitElement {
 		}
 	}
 
+	/**
+	 * Syncs the item with the closest parent rr-list variant.
+	 * Called once in firstUpdated. If the item is moved to a different rr-list
+	 * after first render, the MutationObserver will still watch the original list.
+	 * This is acceptable as moving items between lists is not a supported use case.
+	 */
 	private _syncWithList() {
 		const list = this.closest<RRList>('rr-list');
 		if (!list) return;
