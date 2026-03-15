@@ -41,13 +41,12 @@ export function template(this: RRDragHandleCell) {
 		: this._t('components.drag-handle-cell.label-text');
 
 	return html`
-		<div class="drag-handle-cell__control"
-			role="button"
-			tabindex="0"
+		<button class="drag-handle-cell__control"
+			type="button"
 			aria-label=${label}
 			aria-pressed=${this.pressed}
 		>
 			${this.size === 'sm' ? gripSm : gripMd}
-		</div>
+		</button>
 	`;
 }
