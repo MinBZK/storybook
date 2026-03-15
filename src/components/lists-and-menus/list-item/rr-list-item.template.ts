@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 
 const areas = (showStart: boolean, showEnd: boolean) => html`
 	<div class="list-item__indicator"></div>
-	<div ${classMap({ 'list-item__start-area': true, 'is-visible': showStart })}>
+	<div class=${classMap({ 'list-item__start-area': true, 'is-visible': showStart })}>
 		<slot name="start">
 			<rr-spacer-cell size="12"></rr-spacer-cell>
 		</slot>
@@ -13,7 +13,7 @@ const areas = (showStart: boolean, showEnd: boolean) => html`
 		<slot></slot>
 		<div class="list-item__divider"></div>
 	</div>
-	<div ${classMap({ 'list-item__end-area': true, 'is-visible': showEnd })}>
+	<div class=${classMap({ 'list-item__end-area': true, 'is-visible': showEnd })}>
 		<slot name="end">
 			<rr-spacer-cell size="12"></rr-spacer-cell>
 		</slot>
