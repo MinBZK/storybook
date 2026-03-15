@@ -31,23 +31,27 @@ describe('rr-title-bar', () => {
 		el = await fixture('<rr-title-bar><h1>Paginatitel</h1></rr-title-bar>');
 		await waitForUpdate(el);
 		expect(el.querySelector('h1')?.textContent?.trim()).toBe('Paginatitel');
+		expect(el.shadowRoot!.querySelector('slot:not([name])')!.assignedElements().length).toBeGreaterThan(0);
 	});
 
 	it('renders slotted overline content', async () => {
 		el = await fixture('<rr-title-bar><p slot="overline">Overline</p></rr-title-bar>');
 		await waitForUpdate(el);
 		expect(el.querySelector('[slot="overline"]')?.textContent?.trim()).toBe('Overline');
+		expect(el.shadowRoot!.querySelector('slot[name="overline"]')!.assignedElements().length).toBeGreaterThan(0);
 	});
 
 	it('renders slotted subtitle content', async () => {
 		el = await fixture('<rr-title-bar><p slot="subtitle">Ondertitel</p></rr-title-bar>');
 		await waitForUpdate(el);
 		expect(el.querySelector('[slot="subtitle"]')?.textContent?.trim()).toBe('Ondertitel');
+		expect(el.shadowRoot!.querySelector('slot[name="subtitle"]')!.assignedElements().length).toBeGreaterThan(0);
 	});
 
 	it('renders slotted actions', async () => {
 		el = await fixture('<rr-title-bar><button slot="actions">Actie</button></rr-title-bar>');
 		await waitForUpdate(el);
 		expect(el.querySelector('[slot="actions"]')?.textContent?.trim()).toBe('Actie');
+		expect(el.shadowRoot!.querySelector('slot[name="actions"]')!.assignedElements().length).toBeGreaterThan(0);
 	});
 });
