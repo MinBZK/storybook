@@ -52,33 +52,41 @@ export const styles = css`
 		align-items: stretch;
 		position: relative;
 		width: 100%;
-		background: none;
-		border: none;
-		padding: 0;
-		margin: 0;
-		text-align: start;
-		text-decoration: none;
 	}
 
 	:host([size='sm']) .list-item {
 		min-height: var(--semantics-controls-sm-min-size);
 	}
 
-	button.list-item:focus-visible,
-	a.list-item:focus-visible {
+
+	/* # Action */
+
+	.list-item__action {
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
+		width: 100%;
+		background: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		text-align: start;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.list-item__action:focus-visible {
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
-	:host(.is-boxed) button.list-item:focus-visible,
-	:host(.is-boxed) a.list-item:focus-visible {
+	:host(.is-boxed) .list-item__action:focus-visible {
 		outline: none;
 		box-shadow: none;
 	}
 
-	:host(.is-boxed) button.list-item:focus-visible:after,
-	:host(.is-boxed) a.list-item:focus-visible:after {
+	:host(.is-boxed) .list-item__action:focus-visible:after {
 		content: '';
 		display: block;
 		position: absolute;
@@ -166,14 +174,12 @@ export const styles = css`
 		background-color: var(--components-list-item-is-selected-background-color);
 	}
 
-	button.list-item:hover .list-item__indicator,
-	a.list-item:hover .list-item__indicator {
+	.list-item__action:hover .list-item__indicator {
 		display: block;
 		background-color: var(--components-list-item-is-hovered-background-color);
 	}
 
-	:host([selected]) button.list-item:hover .list-item__indicator,
-	:host([selected]) a.list-item:hover .list-item__indicator {
+	:host([selected]) .list-item__action:hover .list-item__indicator {
 		background-color: var(--components-list-item-is-selected-background-color);
 	}
 `;

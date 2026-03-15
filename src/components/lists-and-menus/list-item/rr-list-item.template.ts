@@ -27,18 +27,18 @@ export const template = (
 	showEnd: boolean,
 ) => {
 	if (type === 'link') {
-		return html`<a class="list-item"
-			role="listitem"
-			href=${ifDefined(href)}
-		>${areas(showStart, showEnd)}</a>`;
+		return html`<div class="list-item" role="listitem">
+			<a class="list-item__action"
+				href=${ifDefined(href)}
+			>${areas(showStart, showEnd)}</a>
+		</div>`;
 	}
 	if (type === 'button') {
-		return html`<button class="list-item"
-			role="listitem"
-			type="button"
-		>${areas(showStart, showEnd)}</button>`;
+		return html`<div class="list-item" role="listitem">
+			<button class="list-item__action"
+				type="button"
+			>${areas(showStart, showEnd)}</button>
+		</div>`;
 	}
-	return html`<div class="list-item"
-		role="listitem"
-	>${areas(showStart, showEnd)}</div>`;
+	return html`<div class="list-item" role="listitem">${areas(showStart, showEnd)}</div>`;
 };

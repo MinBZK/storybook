@@ -38,13 +38,13 @@ describe('rr-list-item', () => {
 	it('renders a button when type="button"', async () => {
 		el = await fixture('<rr-list-item type="button"></rr-list-item>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('button.list-item')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('button.list-item__action')).not.toBeNull();
 	});
 
 	it('renders an anchor when type="link"', async () => {
 		el = await fixture('<rr-list-item type="link" href="/test"></rr-list-item>');
 		await waitForUpdate(el);
-		const anchor = el.shadowRoot!.querySelector('a.list-item');
+		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
 		expect(anchor).not.toBeNull();
 		expect(anchor?.getAttribute('href')).toBe('/test');
 	});
