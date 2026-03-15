@@ -9,6 +9,12 @@ export const styles = css`
 		align-items: stretch;
 		flex-shrink: 0;
 		justify-content: center;
+		--_min-width: 0;
+		--_max-width: none;
+		--_min-height: 0;
+		min-width: var(--_min-width);
+		max-width: var(--_max-width);
+		min-height: var(--_min-height);
 	}
 
 	:host([hidden]) {
@@ -35,7 +41,13 @@ export const styles = css`
 	}
 
 
-	/* # Vertical alignment */
+	/* # Vertical alignment
+	 *
+	 * 'center' (default): the cell stretches to fill the full row height, then
+	 * centers its content within that space. When min-height is set, the cell is
+	 * at least that tall and the content sits centered inside it. For strict top
+	 * alignment without a minimum height, use vertical-alignment="top".
+	 */
 
 	:host([vertical-alignment='center']),
 	:host(:not([vertical-alignment])) {

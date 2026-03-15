@@ -3,6 +3,12 @@
  *
  * A cell component for displaying a title-description pair in lists.
  *
+ * ### Vertical alignment
+ * `vertical-alignment="center"` (default) stretches the cell to fill the full
+ * row height and centers its content within that space. Use `min-height` to set
+ * a minimum centered region. For strict top alignment without a minimum height,
+ * use `vertical-alignment="top"`.
+ *
  * @element rr-description-cell
  * @attr {'stretch' | 'fit-content' | number} width - Width of the cell (default: 'stretch')
  * @attr {number} min-width - Minimum width in pixels
@@ -50,10 +56,26 @@ export class RRDescriptionCell extends LitElement {
 
 	private _applyDimensionStyles() {
 		const numericWidth = Number(this.width);
-		this.style.width = Number.isFinite(numericWidth) && this.width !== 'stretch' && this.width !== 'fit-content' ? `${numericWidth}px` : '';
-		this.style.minWidth = this.minWidth != null ? `${this.minWidth}px` : '';
-		this.style.maxWidth = this.maxWidth != null ? `${this.maxWidth}px` : '';
-		this.style.minHeight = this.minHeight != null ? `${this.minHeight}px` : '';
+		if (Number.isFinite(numericWidth) && this.width !== 'stretch' && this.width !== 'fit-content') {
+			this.style.width = `${numericWidth}px`;
+		} else {
+			this.style.width = '';
+		}
+		if (this.minWidth != null) {
+			this.style.setProperty('--_min-width', `${this.minWidth}px`);
+		} else {
+			this.style.removeProperty('--_min-width');
+		}
+		if (this.maxWidth != null) {
+			this.style.setProperty('--_max-width', `${this.maxWidth}px`);
+		} else {
+			this.style.removeProperty('--_max-width');
+		}
+		if (this.minHeight != null) {
+			this.style.setProperty('--_min-height', `${this.minHeight}px`);
+		} else {
+			this.style.removeProperty('--_min-height');
+		}
 	}
 
 	override render() {
