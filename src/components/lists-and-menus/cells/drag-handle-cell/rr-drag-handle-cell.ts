@@ -4,6 +4,22 @@
  * A cell that displays a drag handle for reorderable list items.
  * Always vertically centered and sized to fit the handle.
  *
+ * ### Usage with rr-list
+ * To enable drag-to-reorder, add the `draggable-only` attribute to this element.
+ * This attribute is required for `rr-list` to detect the drag handle in the
+ * composed event path and activate pointer and keyboard drag mode:
+ *
+ * ```html
+ * <rr-list reorderable>
+ *   <rr-list-item>
+ *     <rr-drag-handle-cell slot="start" draggable-only></rr-drag-handle-cell>
+ *     <rr-text-cell><p slot="text">Item</p></rr-text-cell>
+ *   </rr-list-item>
+ * </rr-list>
+ * ```
+ *
+ * Without `draggable-only`, pointer and keyboard drag will never trigger.
+ *
  * @element rr-drag-handle-cell
  * @attr {string} size - Handle size: 'sm' | 'md' (default: 'md')
  */

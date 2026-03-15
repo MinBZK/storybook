@@ -3,6 +3,7 @@ import './rr-list-item.ts';
 import '../list/rr-list.ts';
 import '../cells/text-cell/rr-text-cell.ts';
 import '../cells/spacer-cell/rr-spacer-cell.ts';
+import '../cells/drag-handle-cell/rr-drag-handle-cell.ts';
 
 export default {
 	title: 'Components/Lists & Menus/List Item',
@@ -192,3 +193,48 @@ export const SimpleWithEndOnly = {
 		</rr-list>
 	`,
 };
+
+/**
+ * Voeg het `draggable-only` attribuut toe aan `rr-drag-handle-cell` zodat
+ * `rr-list` de hendel herkent in het composed event path. Zonder dit attribuut
+ * werkt slepen via pointer en toetsenbord niet.
+ */
+export const WithDragHandle = {
+	render: () => html`
+		<rr-list variant="box" reorderable>
+			<rr-list-item>
+				<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
+				<rr-drag-handle-cell
+					size="sm"
+					slot="start"
+					draggable-only
+				></rr-drag-handle-cell>
+				<rr-spacer-cell
+					slot="start"
+					draggable-only
+					size="8"
+				></rr-spacer-cell>
+				<rr-text-cell>
+					<p slot="text">Versleepbaar item</p>
+				</rr-text-cell>
+			</rr-list-item>
+			<rr-list-item>
+				<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
+				<rr-drag-handle-cell
+					size="sm"
+					slot="start"
+					draggable-only
+				></rr-drag-handle-cell>
+				<rr-spacer-cell
+					slot="start"
+					draggable-only
+					size="8"
+				></rr-spacer-cell>
+				<rr-text-cell>
+					<p slot="text">Nog een item</p>
+				</rr-text-cell>
+			</rr-list-item>
+		</rr-list>
+	`,
+};
+WithDragHandle.parameters = { controls: { disable: true } };
