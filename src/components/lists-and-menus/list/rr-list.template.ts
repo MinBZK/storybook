@@ -6,7 +6,7 @@ export const template = (itemsLabel: string) => html`
 			<slot name="header"></slot>
 		</div>
 		<div class="list__items"
-			role="group"
+			role="list"
 			aria-label=${itemsLabel}
 		>
 			<slot></slot>
