@@ -16,6 +16,7 @@ export const template = (itemsLabel: string) => html`
 		</div>
 	</div>
 	<div class="list__announcer"
+		role="status"
 		aria-live="polite"
 		aria-atomic="true"
 	></div>
