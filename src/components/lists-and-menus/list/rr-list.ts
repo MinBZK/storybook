@@ -364,10 +364,10 @@ export class RRList extends LitElement {
 		if (!region) return;
 		region.setAttribute('aria-live', assertive ? 'assertive' : 'polite');
 		region.textContent = '';
-		// Timeout forces screen readers to register the content change
-		setTimeout(() => {
+		// Double rAF forces screen readers to register the content change across browsers
+		requestAnimationFrame(() => requestAnimationFrame(() => {
 			region.textContent = message;
-		}, 50);
+		}));
 	}
 
 	override render() {
