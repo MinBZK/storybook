@@ -43,10 +43,6 @@ export class RRListItem extends LitElement {
 	private _isBoxOrInset = false;
 	private _listObserver: MutationObserver | null = null;
 
-	override connectedCallback() {
-		super.connectedCallback();
-	}
-
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this._listObserver?.disconnect();
