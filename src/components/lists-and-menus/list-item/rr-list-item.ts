@@ -100,15 +100,13 @@ export class RRListItem extends LitElement {
 	private _propagateSelected() {
 		const slots = this.shadowRoot?.querySelectorAll('slot');
 		slots?.forEach((slot) => {
-			slot.assignedElements({ flatten: true })
-				.filter((el) => el.tagName.toLowerCase().endsWith('-cell'))
-				.forEach((el) => {
-					if (this.selected) {
-						el.setAttribute('selected', '');
-					} else {
-						el.removeAttribute('selected');
-					}
-				});
+			slot.assignedElements({ flatten: true }).forEach((el) => {
+				if (this.selected) {
+					el.setAttribute('selected', '');
+				} else {
+					el.removeAttribute('selected');
+				}
+			});
 		});
 	}
 
