@@ -784,6 +784,7 @@
 	--components-list-item-is-hovered-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--components-list-item-is-selected-background-color: var(--semantics-controls-is-selected-indicator-color);
 	--components-list-item-is-selected-content-color: var(--semantics-controls-is-selected-contrast-color);
+	--components-list-item-is-dragging-opacity: 0.4;
 
 
 	--components-menu-item-is-highlighted-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));

@@ -15,7 +15,7 @@ export const styles = css`
 	/* ## Dragging */
 
 	:host(.is-dragging) {
-		opacity: 0.4;
+		opacity: var(--components-list-item-is-dragging-opacity);
 	}
 
 	:host(.is-dragging-pointer) {
