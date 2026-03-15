@@ -15,7 +15,7 @@ export const styles = css`
 	/* ## Dragging */
 
 	:host(.is-dragging) {
-		opacity: var(--components-list-item-is-dragging-opacity);
+		opacity: 0.4;
 	}
 
 	:host(.is-dragging-pointer) {
@@ -24,6 +24,14 @@ export const styles = css`
 
 	:host([reorderable]) {
 		touch-action: none;
+	}
+
+	::slotted([draggable-only]) {
+		display: none;
+	}
+
+	:host([reorderable]) ::slotted([draggable-only]) {
+		display: revert;
 	}
 
 	:host([reorderable]) ::slotted([draggable-only]) {

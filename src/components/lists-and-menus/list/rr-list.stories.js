@@ -279,9 +279,6 @@ export const DraggableList = {
 
 		const el = document.createElement('div');
 		render(html`
-			<style>
-				rr-list-item:not([reorderable]) [draggable-only] { display: none; }
-			</style>
 			<rr-list variant="box" reorderable @rr-reorder=${onReorder}>
 				${labels.map((label) => html`
 					<rr-list-item>
