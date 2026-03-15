@@ -3,6 +3,12 @@ import { css } from 'lit';
 export const styles = css`
 	:host {
 		display: block;
+		--_drag-clone-top: 0px;
+		--_drag-clone-left: 0px;
+		--_drag-clone-width: 0px;
+		--_drag-clone-height: 0px;
+		--_drag-clone-opacity: 0.95;
+		--_drag-clone-z-index: 9999;
 	}
 
 
@@ -75,10 +81,10 @@ export const styles = css`
 		width: var(--_drag-clone-width);
 		height: var(--_drag-clone-height);
 		pointer-events: none;
-		opacity: var(--_drag-clone-opacity, 0.95);
+		opacity: var(--_drag-clone-opacity);
 		border-radius: var(--components-list-item-indicator-corner-radius);
 		background: var(--semantics-surfaces-background-color);
-		z-index: var(--_drag-clone-z-index, 9999);
+		z-index: var(--_drag-clone-z-index);
 		overflow: hidden;
 	}
 
