@@ -33,7 +33,7 @@ export const styles = css`
 	}
 
 	:host([reorderable]) ::slotted([draggable-only]) {
-		display: revert;
+		display: revert-layer;
 		cursor: grab;
 	}
 
