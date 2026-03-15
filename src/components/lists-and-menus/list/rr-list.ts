@@ -322,7 +322,7 @@ export class RRList extends LitElement {
 		this._clone?.remove();
 
 		if (this._pointerId !== null) {
-			try { this.releasePointerCapture(this._pointerId); } catch { /* noop */ }
+			try { this.releasePointerCapture(this._pointerId); } catch (e) { if (!(e instanceof DOMException)) throw e; }
 			this._pointerId = null;
 		}
 
