@@ -5,6 +5,8 @@ export const styles = css`
 
 	:host {
 		display: contents;
+		--_z-index-content: 1;
+		--_z-index-indicator: calc(var(--_z-index-content) - 1);
 	}
 
 	:host([hidden]) {
@@ -32,9 +34,6 @@ export const styles = css`
 
 	:host([reorderable]) ::slotted([draggable-only]) {
 		display: revert;
-	}
-
-	:host([reorderable]) ::slotted([draggable-only]) {
 		cursor: grab;
 	}
 
@@ -93,34 +92,6 @@ export const styles = css`
 	}
 
 
-	/* # Indicator */
-
-	.list-item__indicator {
-		display: none;
-		position: absolute;
-		inset-block: 0;
-		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
-		border-radius: var(--components-list-item-indicator-corner-radius);
-		z-index: 0;
-	}
-
-	:host([selected]) .list-item__indicator {
-		display: block;
-		background-color: var(--components-list-item-is-selected-background-color);
-	}
-
-	button.list-item:hover .list-item__indicator,
-	a.list-item:hover .list-item__indicator {
-		display: block;
-		background-color: var(--components-list-item-is-hovered-background-color);
-	}
-
-	:host([selected]) button.list-item:hover .list-item__indicator,
-	:host([selected]) a.list-item:hover .list-item__indicator {
-		background-color: var(--components-list-item-is-selected-background-color);
-	}
-
-
 	/* # Start & end area */
 
 	.list-item__start-area,
@@ -130,7 +101,7 @@ export const styles = css`
 		align-items: center;
 		flex-shrink: 0;
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-content);
 		padding-block: var(--components-list-item-md-padding-block);
 	}
 
@@ -154,7 +125,7 @@ export const styles = css`
 		flex-grow: 1;
 		min-width: 0;
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-content);
 		padding-block: var(--components-list-item-md-padding-block);
 	}
 
@@ -176,5 +147,33 @@ export const styles = css`
 	:host([selected]) .list-item__divider,
 	:host(.is-boxed.is-last) .list-item__divider {
 		display: none;
+	}
+
+
+	/* # Indicator */
+
+	.list-item__indicator {
+		display: none;
+		position: absolute;
+		inset-block: 0;
+		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
+		border-radius: var(--components-list-item-indicator-corner-radius);
+		z-index: var(--_z-index-indicator);
+	}
+
+	:host([selected]) .list-item__indicator {
+		display: block;
+		background-color: var(--components-list-item-is-selected-background-color);
+	}
+
+	button.list-item:hover .list-item__indicator,
+	a.list-item:hover .list-item__indicator {
+		display: block;
+		background-color: var(--components-list-item-is-hovered-background-color);
+	}
+
+	:host([selected]) button.list-item:hover .list-item__indicator,
+	:host([selected]) a.list-item:hover .list-item__indicator {
+		background-color: var(--components-list-item-is-selected-background-color);
 	}
 `;
