@@ -27,13 +27,17 @@ export const template = (
 ) => {
 	if (type === 'link') {
 		return html`<a class="list-item"
+			role="listitem"
 			href=${ifDefined(href)}
 		>${areas(showStart, showEnd)}</a>`;
 	}
 	if (type === 'button') {
 		return html`<button class="list-item"
+			role="listitem"
 			type="button"
 		>${areas(showStart, showEnd)}</button>`;
 	}
-	return html`<div class="list-item">${areas(showStart, showEnd)}</div>`;
+	return html`<div class="list-item"
+		role="listitem"
+	>${areas(showStart, showEnd)}</div>`;
 };
