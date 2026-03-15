@@ -85,4 +85,37 @@ describe('rr-list-item', () => {
 		expect(startArea?.classList.contains('is-visible')).toBe(false);
 		expect(endArea?.classList.contains('is-visible')).toBe(true);
 	});
+
+
+	// — Selected propagation ————————————————————————————————————————————————
+
+	it('propagates selected attribute to slotted elements when selected', async () => {
+		const wrapper = await fixture(`
+			<rr-list variant="simple">
+				<rr-list-item selected>
+					<rr-text-cell><p slot="text">Item</p></rr-text-cell>
+				</rr-list-item>
+			</rr-list>
+		`);
+		await waitForUpdate(wrapper);
+		el = wrapper.querySelector('rr-list-item')!;
+		const cell = el.querySelector('rr-text-cell');
+		expect(cell?.hasAttribute('selected')).toBe(true);
+	});
+
+	it('removes selected attribute from slotted elements when deselected', async () => {
+		const wrapper = await fixture(`
+			<rr-list variant="simple">
+				<rr-list-item selected>
+					<rr-text-cell><p slot="text">Item</p></rr-text-cell>
+				</rr-list-item>
+			</rr-list>
+		`);
+		await waitForUpdate(wrapper);
+		el = wrapper.querySelector('rr-list-item')!;
+		el.removeAttribute('selected');
+		await waitForUpdate(el);
+		const cell = el.querySelector('rr-text-cell');
+		expect(cell?.hasAttribute('selected')).toBe(false);
+	});
 });
