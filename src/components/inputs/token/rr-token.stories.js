@@ -93,7 +93,7 @@ export const FilterExample = () => {
 
   return html`
     <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <p style="margin: 0; font-size: 14px; color: #64748b;">
+      <p style="margin: 0; font-size: 14px; color: var(--semantics-content-color);">
         Klik op het X icoon om een filter te verwijderen:
       </p>
       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">

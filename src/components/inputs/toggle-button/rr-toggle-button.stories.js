@@ -120,7 +120,7 @@ export const Interactive = () => {
   return html`
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       <rr-toggle-button size="md" @toggle=${handleToggle}> Click to toggle </rr-toggle-button>
-      <p style="font-size: 14px; color: #64748b;">Check the console to see toggle events</p>
+      <p style="font-size: 14px; color: var(--semantics-content-color);">Check the console to see toggle events</p>
     </div>
   `;
 };

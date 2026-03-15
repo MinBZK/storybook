@@ -72,21 +72,21 @@ Small.args = { size: 'sm' };
 export const States = () => html`
   <div style="display: flex; flex-direction: column; gap: 1rem;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <span style="font-size: 14px; color: #64748b;">Default</span>
+      <span style="font-size: 14px; color: var(--semantics-content-color);">Default</span>
       <rr-segmented-control>
         <rr-segmented-control-item value="a">Optie A</rr-segmented-control-item>
         <rr-segmented-control-item value="b">Optie B</rr-segmented-control-item>
       </rr-segmented-control>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <span style="font-size: 14px; color: #64748b;">Selected</span>
+      <span style="font-size: 14px; color: var(--semantics-content-color);">Selected</span>
       <rr-segmented-control value="a">
         <rr-segmented-control-item value="a">Optie A</rr-segmented-control-item>
         <rr-segmented-control-item value="b">Optie B</rr-segmented-control-item>
       </rr-segmented-control>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <span style="font-size: 14px; color: #64748b;">Disabled</span>
+      <span style="font-size: 14px; color: var(--semantics-content-color);">Disabled</span>
       <rr-segmented-control disabled>
         <rr-segmented-control-item value="a">Optie A</rr-segmented-control-item>
         <rr-segmented-control-item value="b">Optie B</rr-segmented-control-item>

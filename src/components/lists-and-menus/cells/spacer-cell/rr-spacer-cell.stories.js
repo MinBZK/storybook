@@ -43,7 +43,7 @@ export const AllFixedSizes = {
 		<div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;">
 			${['2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'].map(size => html`
 				<div style="display: flex; align-items: center; gap: 8px;">
-					<span style="width: 40px; font-size: 12px; color: #64748b;">${size}px</span>
+					<span style="width: 40px; font-size: 12px; color: var(--semantics-content-color);">${size}px</span>
 					<div style=${containerStyle}>
 						<span>|</span>
 						<rr-spacer-cell size=${size} style=${debugStyle}></rr-spacer-cell>

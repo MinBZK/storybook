@@ -116,7 +116,7 @@ Disabled.args = {
 export const AllSizes = () => html`
   <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 400px;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Medium (default)</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Medium (default)</label>
       <rr-drop-down-field
         size="md"
         placeholder="Drop down field"
@@ -124,7 +124,7 @@ export const AllSizes = () => html`
       ></rr-drop-down-field>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Small</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Small</label>
       <rr-drop-down-field
         size="sm"
         placeholder="Drop down field"
@@ -141,21 +141,21 @@ AllSizes.parameters = {
 export const AllStates = () => html`
   <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 400px;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Default</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Default</label>
       <rr-drop-down-field
         placeholder="Drop down field"
         .options=${sampleOptions}
       ></rr-drop-down-field>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">With value</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">With value</label>
       <rr-drop-down-field
         value="option1"
         .options=${sampleOptions}
       ></rr-drop-down-field>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Disabled</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Disabled</label>
       <rr-drop-down-field
         value="option1"
         disabled

@@ -138,19 +138,19 @@ export const AllSizes = {
   render: () => html`
     <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-start;">
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+        <p style="margin: 0 0 8px; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">
           Container S (icons only)
         </p>
         <rr-utility-menu-bar container="sm" account-label="Mijn DigID"></rr-utility-menu-bar>
       </div>
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+        <p style="margin: 0 0 8px; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">
           Container M (default)
         </p>
         <rr-utility-menu-bar container="md" account-label="Mijn DigID"></rr-utility-menu-bar>
       </div>
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+        <p style="margin: 0 0 8px; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">
           Container L
         </p>
         <rr-utility-menu-bar container="lg" account-label="Mijn DigID"></rr-utility-menu-bar>
@@ -223,7 +223,7 @@ export const DropdownStateDemo = {
         </button>
       </div>
 
-      <p style="margin: 0; font-family: system-ui; color: #64748b; font-size: 14px;">
+      <p style="margin: 0; font-family: system-ui; color: var(--semantics-content-color); font-size: 14px;">
         Click the buttons above to toggle aria-expanded state on the dropdown buttons.
         This demonstrates WCAG-compliant screen reader support.
       </p>
