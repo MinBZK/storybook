@@ -82,7 +82,7 @@ export class RRList extends LitElement {
 	private _getItems(): RRListItem[] {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		return (slot?.assignedElements() ?? []).filter(
-			(el) => el.tagName.toLowerCase() === 'rr-list-item',
+			(el) => el.tagName.toLowerCase() === 'rr-list-item' && !el.hasAttribute('data-rr-placeholder'),
 		) as RRListItem[];
 	}
 
@@ -230,6 +230,7 @@ export class RRList extends LitElement {
 		this._placeholder = document.createElement('div');
 		this._placeholder.className = 'rr-list-drag-placeholder';
 		this._placeholder.setAttribute('aria-hidden', 'true');
+		this._placeholder.setAttribute('data-rr-placeholder', '');
 		this._placeholder.style.height = `${rect.height}px`;
 		item.after(this._placeholder);
 
