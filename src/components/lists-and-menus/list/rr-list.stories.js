@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, render } from 'lit';
 import './rr-list.ts';
 import '../list-item/rr-list-item.ts';
 import '../cells/title-cell/rr-title-cell.ts';
@@ -275,13 +275,15 @@ export const DraggableList = {
 			}
 		};
 
+		const labels = ['Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten'];
+
 		const el = document.createElement('div');
-		el.innerHTML = `
+		render(html`
 			<style>
 				rr-list-item:not([draggable]) [draggable-only] { display: none; }
 			</style>
-			<rr-list variant="box" reorderable>
-				${['Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten'].map((label) => `
+			<rr-list variant="box" reorderable @rr-reorder=${onReorder}>
+				${labels.map((label) => html`
 					<rr-list-item>
 						<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
 						<rr-drag-handle-cell size="sm" slot="start" draggable-only></rr-drag-handle-cell>
@@ -290,10 +292,9 @@ export const DraggableList = {
 							<p slot="text">${label}</p>
 						</rr-text-cell>
 					</rr-list-item>
-				`).join('')}
+				`)}
 			</rr-list>
-		`;
-		el.querySelector('rr-list').addEventListener('rr-reorder', onReorder);
+		`, el);
 		return el;
 	},
 };
