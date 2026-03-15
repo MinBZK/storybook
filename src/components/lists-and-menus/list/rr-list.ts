@@ -199,7 +199,7 @@ export class RRList extends LitElement {
 			return;
 		}
 
-		if (event.key !== ' ') return;
+		if (event.key !== ' ' && event.key !== 'Enter') return;
 
 		const path = event.composedPath() as Element[];
 		const hasDragHandle = path.some(
