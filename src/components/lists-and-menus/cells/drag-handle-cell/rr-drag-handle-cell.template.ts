@@ -6,6 +6,7 @@ const gripMd = svg`
 		height="22"
 		viewBox="0 0 10 22"
 		xmlns="http://www.w3.org/2000/svg"
+		aria-hidden="true"
 	>
 		<circle cx="2" cy="2"  r="2" fill="currentColor"/>
 		<circle cx="8" cy="2"  r="2" fill="currentColor"/>
@@ -24,6 +25,7 @@ const gripSm = svg`
 		height="16"
 		viewBox="0 0 10 16"
 		xmlns="http://www.w3.org/2000/svg"
+		aria-hidden="true"
 	>
 		<circle cx="2" cy="2"  r="2" fill="currentColor"/>
 		<circle cx="8" cy="2"  r="2" fill="currentColor"/>
