@@ -117,6 +117,11 @@ export class RRList extends LitElement {
 
 		event.preventDefault();
 		this._startDrag(item, event.clientY);
+		// Restore focus suppressed by preventDefault
+		const handle = path.find(
+			(el) => el instanceof HTMLButtonElement,
+		) as HTMLButtonElement | undefined;
+		handle?.focus();
 		this._pointerId = event.pointerId;
 		this.setPointerCapture(event.pointerId);
 		this.addEventListener('pointermove', this._onPointerMove);
@@ -363,7 +368,7 @@ export class RRList extends LitElement {
 	}
 
 	private _announce(message: string, assertive = false) {
-		const selector = assertive ? '.list__assertive-announcer' : '.list__polite-announcer';
+		const selector = assertive ? '.list__announcer--assertive' : '.list__announcer--polite';
 		const region = this.shadowRoot?.querySelector<HTMLElement>(selector);
 		if (!region) return;
 		region.textContent = '';
