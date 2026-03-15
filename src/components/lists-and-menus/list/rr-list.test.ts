@@ -51,7 +51,7 @@ describe('rr-list', () => {
 	});
 
 
-	// — Drag: reorder ————————————————————————————————————————————————————————
+	// — Drag: keyboard ———————————————————————————————————————————————————————
 
 	it('fires rr-reorder with correct fromIndex and toIndex after keyboard drop', async () => {
 		el = await fixture(`
@@ -70,16 +70,13 @@ describe('rr-list', () => {
 			reorderDetail = (e as CustomEvent).detail;
 		});
 
-		// Space: start drag on first item
 		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
-		// ArrowDown: move placeholder to index 1
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
-		// Enter: drop
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		expect(reorderDetail).not.toBeNull();
@@ -101,12 +98,10 @@ describe('rr-list', () => {
 		let fired = false;
 		el.addEventListener('rr-reorder', () => { fired = true; });
 
-		// Space: start drag
 		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
-		// Enter: drop immediately without moving
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		expect(fired).toBe(false);
@@ -132,14 +127,14 @@ describe('rr-list', () => {
 		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
 		await waitForUpdate(el);
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
 		await waitForUpdate(el);
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		// Net effect: 2 down, 1 up = toIndex 1
@@ -163,7 +158,64 @@ describe('rr-list', () => {
 
 		expect(firstItem.classList.contains('is-dragging')).toBe(true);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		expect(firstItem.classList.contains('is-dragging')).toBe(false);
+		expect(el.querySelector('.rr-list-drag-placeholder')).toBeNull();
+	});
+
+
+	// — Drag: pointer ————————————————————————————————————————————————————————
+
+	it('fires rr-reorder with correct indices after pointer drag', async () => {
+		el = await fixture(`
+			<rr-list reorderable>
+				<rr-list-item><span draggable-only>handle</span></rr-list-item>
+				<rr-list-item><span draggable-only>handle</span></rr-list-item>
+				<rr-list-item><span draggable-only>handle</span></rr-list-item>
+			</rr-list>
+		`);
+		await waitForUpdate(el);
+
+		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
+
+		let reorderDetail: { fromIndex: number; toIndex: number } | null = null;
+		el.addEventListener('rr-reorder', (e: Event) => {
+			reorderDetail = (e as CustomEvent).detail;
+		});
+
+		handle.dispatchEvent(new PointerEvent('pointerdown', { clientY: 10, pointerId: 1, bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		el.dispatchEvent(new PointerEvent('pointermove', { clientY: 100, pointerId: 1, bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		el.dispatchEvent(new PointerEvent('pointerup', { pointerId: 1, bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		expect(reorderDetail).not.toBeNull();
+		expect(reorderDetail!.fromIndex).toBe(0);
+	});
+
+	it('pointer cancel cleans up is-dragging class and removes placeholder', async () => {
+		el = await fixture(`
+			<rr-list reorderable>
+				<rr-list-item><span draggable-only>handle</span></rr-list-item>
+				<rr-list-item><span draggable-only>handle</span></rr-list-item>
+			</rr-list>
+		`);
+		await waitForUpdate(el);
+
+		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
+		const firstItem = el.querySelectorAll('rr-list-item')[0];
+
+		handle.dispatchEvent(new PointerEvent('pointerdown', { clientY: 10, pointerId: 1, bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		expect(firstItem.classList.contains('is-dragging')).toBe(true);
+
+		el.dispatchEvent(new PointerEvent('pointercancel', { pointerId: 1, bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		expect(firstItem.classList.contains('is-dragging')).toBe(false);
