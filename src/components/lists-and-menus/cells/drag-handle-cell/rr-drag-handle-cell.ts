@@ -33,7 +33,7 @@ export class RRDragHandleCell extends LitElement {
 
 	// — i18n ————————————————————————————————————————————————————————————————
 
-	_t(key: keyof RRDragHandleCellTranslations): string {
+	private _t(key: keyof RRDragHandleCellTranslations): string {
 		return { ...rrDragHandleCellTranslations, ...this.translations }[key];
 	}
 
