@@ -3,6 +3,7 @@ import { css } from 'lit';
 export const styles = css`
 	:host {
 		display: block;
+		position: relative;
 		--_drag-clone-top: 0px;
 		--_drag-clone-left: 0px;
 		--_drag-clone-width: 0px;
@@ -75,7 +76,7 @@ export const styles = css`
 	/* # Drag clone */
 
 	.list__drag-clone {
-		position: fixed;
+		position: absolute;
 		top: var(--_drag-clone-top);
 		left: var(--_drag-clone-left);
 		width: var(--_drag-clone-width);

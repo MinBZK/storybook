@@ -49,6 +49,7 @@ export class RRList extends LitElement {
 	private _pointerId: number | null = null;
 	private _clone: HTMLDivElement | null = null;
 	private _cloneOffsetY = 0;
+	private _listRect: DOMRect | null = null;
 
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
@@ -127,8 +128,8 @@ export class RRList extends LitElement {
 		if (!this._draggingEl || !this._placeholder) return;
 
 		// Move floating clone
-		if (this._clone) {
-			this._clone.style.setProperty('--_drag-clone-top', `${event.clientY - this._cloneOffsetY}px`);
+		if (this._clone && this._listRect) {
+			this._clone.style.setProperty('--_drag-clone-top', `${event.clientY - this._listRect.top - this._cloneOffsetY}px`);
 		}
 
 		const items = this._getItems();
@@ -240,6 +241,7 @@ export class RRList extends LitElement {
 		// Keyboard drag: keep the item visible (dimmed) so the user sees what they grabbed
 		if (!this._keyboardDragging) {
 			item.classList.add('is-dragging-pointer');
+			this._listRect = this.getBoundingClientRect();
 			this._cloneOffsetY = clientY - rect.top;
 
 			// Clone the host (carries slotted light DOM), keep draggable so consumer
@@ -250,8 +252,8 @@ export class RRList extends LitElement {
 
 			this._clone = document.createElement('div');
 			this._clone.className = 'list__drag-clone';
-			this._clone.style.setProperty('--_drag-clone-top', `${clientY - this._cloneOffsetY}px`);
-			this._clone.style.setProperty('--_drag-clone-left', `${rect.left}px`);
+			this._clone.style.setProperty('--_drag-clone-top', `${clientY - this._listRect.top - this._cloneOffsetY}px`);
+			this._clone.style.setProperty('--_drag-clone-left', `${rect.left - this._listRect.left}px`);
 			this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
 			this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
 			this._clone.appendChild(hostClone);
@@ -335,6 +337,7 @@ export class RRList extends LitElement {
 		this._placeholder = null;
 		this._clone = null;
 		this._cloneOffsetY = 0;
+		this._listRect = null;
 		this._currentDropIndex = -1;
 		this._keyboardDragging = false;
 	}
