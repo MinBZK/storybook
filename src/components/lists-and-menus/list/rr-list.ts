@@ -255,14 +255,14 @@ export class RRList extends LitElement {
 				width: ${rect.width}px;
 				height: ${rect.height}px;
 				pointer-events: none;
-				opacity: 0.95;
+				opacity: var(--_drag-clone-opacity, 0.95);
 				border-radius: var(--components-list-item-indicator-corner-radius);
 				background: var(--semantics-surfaces-background-color);
-				z-index: 9999;
+				z-index: var(--_drag-clone-z-index, 9999);
 				overflow: hidden;
 			`;
 			this._clone.appendChild(hostClone);
-			document.body.appendChild(this._clone);
+			this.shadowRoot!.appendChild(this._clone);
 		}
 	}
 
