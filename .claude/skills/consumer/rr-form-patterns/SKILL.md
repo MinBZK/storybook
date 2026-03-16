@@ -6,7 +6,9 @@ user-invocable: true
 
 # RegelRecht Form Patterns
 
-Guide for building forms with RegelRecht components. Covers form field composition, validation states, error messages, and input types.
+> **Note:** Dedicated form container components (`<rr-form>`, `<rr-fieldset>`, etc.) do not exist yet and are planned for a future release. The individual input components below are available and can be used with standard HTML `<form>` and `<fieldset>` elements.
+
+Guide for building forms with RegelRecht input components. Covers form field composition, validation states, error messages, and input types.
 
 ---
 

@@ -13,27 +13,27 @@ All RegelRecht components are built to comply with **DigiToegankelijk** (Dutch D
 ## Quick Checklist for Consumers
 
 ### Page Structure
-- [ ] Use `<rr-page>` with `<rr-top-navigation-bar>` (includes skip link to `#main-content`)
+- [ ] Use `<rr-page>` or `<rr-split-view>` as the outermost container
 - [ ] Set `lang="nl"` on `<html>` element
-- [ ] Use semantic heading levels via `<rr-title-bar level="1|2|3...">` — don't skip levels
-- [ ] Ensure a `<main id="main-content">` element exists as skip-link target
+- [ ] Use semantic heading levels — set the correct `<h#>` element and assign it to the appropriate slot
+- [ ] A dedicated skip action component will be available in the future for skipping past components with many links or options (e.g. filters)
 
 ### Forms
 - [ ] Every input has a label — use `<rr-form-field label="...">` to wrap inputs
-- [ ] Error messages use `<rr-form-field-error-text>` (auto-wired to `aria-describedby`)
+- [ ] Error messages use `<rr-form-field-error-text>` (auto-wired to `aria-describedby`). A dedicated `<rr-error-text>` component may be introduced in the future.
 - [ ] Required fields marked with `required` attribute
 - [ ] Group related radio buttons in `<rr-radio-button-group>` with `accessible-labelledby`
 
 ### Interactive Elements
-- [ ] Icon-only buttons have `accessible-label` attribute: `<rr-icon-button accessible-label="Delete">`
+- [ ] Icon-only buttons: use `<rr-icon-button>` (accessible-label support coming soon)
 - [ ] All custom controls are keyboard accessible (built-in for all `rr-*` components)
 - [ ] Don't remove or override focus styles
 
 ### Color & Motion
 - [ ] Don't rely on color alone to convey information
 - [ ] Content works at 200% zoom without horizontal scrolling
-- [ ] Test with `prefers-reduced-motion: reduce` (components handle this internally)
-- [ ] Test with Windows High Contrast Mode / `forced-colors: active`
+- [ ] `prefers-reduced-motion: reduce` support will be added to components in a future release
+- [ ] `forced-colors: active` (Windows High Contrast Mode) support will be added in a future release
 
 ---
 
@@ -103,7 +103,7 @@ All RegelRecht components are built to comply with **DigiToegankelijk** (Dutch D
 
 ### Toolbar (`rr-toolbar`)
 - `role="toolbar"` with `aria-label`
-- Always set the `label` attribute for screen readers:
+- Set the `label` attribute for screen readers when there are multiple toolbars on the page:
 
 ```html
 <rr-toolbar label="Text formatting">...</rr-toolbar>
@@ -122,7 +122,7 @@ All components use a consistent double-ring focus indicator using design tokens:
 
 ```css
 /* Inner ring */
---semantics-focus-ring-center-color: #364B6D
+--semantics-focus-ring-center-color: light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600))
 --semantics-focus-ring-center-thickness: 4px
 
 /* Outer ring */
@@ -153,7 +153,9 @@ If you add custom animations around RegelRecht components, apply this same patte
 
 ## High Contrast Mode (Forced Colors)
 
-Components include `forced-colors: active` support. If you add custom styling, include:
+> **Note:** `forced-colors: active` support is not yet available in components. It will be added in a future release.
+
+When adding custom styling alongside RegelRecht components, consider including forced-colors support:
 
 ```css
 @media (forced-colors: active) {
@@ -186,11 +188,11 @@ For screen-reader-only text (outside shadow DOM), use this CSS class:
 }
 ```
 
+**Important:** Never use this pattern on `<rr-button>` with an icon. Use `<rr-icon-button>` instead for icon-only actions.
+
 ```html
-<rr-button>
-  <rr-icon name="trash"></rr-icon>
-  <span class="sr-only">Delete selected items</span>
-</rr-button>
+<!-- Use sr-only for custom (non-component) elements only -->
+<span class="sr-only">Additional context for screen readers</span>
 ```
 
 ---

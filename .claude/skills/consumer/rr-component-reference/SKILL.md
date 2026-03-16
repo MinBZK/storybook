@@ -112,7 +112,6 @@ Horizontal toolbar with overflow menu support.
 | `label` | string | '' | Accessible label (required) |
 
 **Slots:** default (`rr-toolbar-start-area`, `rr-toolbar-center-area`, `rr-toolbar-end-area`, `rr-toolbar-overflow-area`)
-**Override hooks:** `--rr-toolbar-overflow-button-width`, `--rr-toolbar-start-width`, `--rr-toolbar-center-width`, `--rr-toolbar-end-width`, `--rr-toolbar-width`
 
 **Helper elements:** `rr-toolbar-item` (wraps tools, `label` attribute), `rr-toolbar-title-group`
 
@@ -150,7 +149,7 @@ Styled container for rich text / HTML content.
 
 ### rr-form-field
 
-Wraps inputs with label, help text, and error messages. See `/rr-form-patterns` for detailed usage.
+Wraps inputs with label, help text, and error messages. See `/rr-form-patterns` for usage patterns (note: dedicated form container components are not yet available).
 
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -353,7 +352,6 @@ Standalone toggle switch.
 
 **Events:** `change` (detail: {checked})
 **CSS Parts:** `switch`, `thumb`, `check`
-**Override hooks:** `--rr-switch-background-color`, `--rr-switch-thumb-color`
 
 ### rr-switch-field
 
@@ -383,7 +381,6 @@ Button that toggles between selected/deselected states.
 **Slots:** default (label), `icon`
 **Events:** `toggle` (detail: {selected})
 **CSS Parts:** `button`, `content`
-**Override hooks:** `--rr-toggle-button-background-color`, `--rr-toggle-button-content-color`
 
 ### rr-segmented-control
 
@@ -462,7 +459,7 @@ No attributes. Tinted rounded container.
 
 ### rr-divider
 
-No attributes. Visual separator line.
+No attributes. Visual separator line. An inset variant is planned for a future release.
 
 ### rr-show
 
@@ -596,7 +593,6 @@ See `/rr-navigation` for full API. Key attributes: `title`, `container`, `skip-l
 
 **Slots:** `toolbar-start`, `toolbar-end`
 **Events:** `dismiss`
-**Override hooks:** `--rr-top-title-bar-title-color`
 
 ### rr-tab-bar
 
@@ -674,7 +670,6 @@ No attributes. Visual separator in menus.
 | `text` | string | '' | Tooltip text |
 
 **CSS Parts:** `tooltip`, `text`, `arrow`
-**Override hooks:** `--rr-tooltip-arrow-color`
 
 ### rr-dialog
 

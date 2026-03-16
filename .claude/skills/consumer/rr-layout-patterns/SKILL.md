@@ -10,9 +10,20 @@ Guide for composing page layouts with RegelRecht layout components.
 
 ---
 
+## Layout Hierarchy
+
+The outermost container can be either a split view or a page:
+
+```
+split-view (optional)
+ └── page or container (e.g. header/footer in split view)
+      └── page-sections (when page is parent)
+           └── other components
+```
+
 ## Page Shell
 
-Every app starts with `rr-page` as the outermost container:
+An app can start with `<rr-page>` or a `<rr-split-view>` as the outermost container:
 
 ```html
 <rr-page sticky-header>
@@ -42,9 +53,9 @@ Sticky headers/footers get a transparent-to-opaque gradient transition on scroll
 
 ---
 
-## Sections
+## Page Sections
 
-Sections are the building blocks within a page. They control max-width, padding, and responsive gaps.
+Page sections are the building blocks within a page. They control max-width, padding, and responsive gaps.
 
 ### rr-simple-section
 
@@ -58,7 +69,7 @@ Basic content section with responsive padding. No attributes — padding adjusts
 </rr-simple-section>
 ```
 
-**Slots:** `header`, default, `footer`
+**Slots:** `header`, default, `footer` — all page sections have header and footer slots.
 
 ### rr-full-bleed-section
 
@@ -106,7 +117,7 @@ For app-level layout structures (sidebars, panels, multi-pane editors).
 
 ### rr-horizontal-split-view
 
-Three-column layout: sidebar + content + inspector.
+Three-column layout: sidebar + content + inspector. An additional sidebar option will be added in a future update.
 
 ```html
 <rr-horizontal-split-view show-sidebar show-inspector>
@@ -131,11 +142,13 @@ Three-row layout: header + content + footer.
 
 ```html
 <rr-vertical-split-view show-header show-footer>
-  <div slot="header">Toolbar area</div>
-  <main>Main content</main>
-  <div slot="footer">Status bar</div>
+  <rr-container slot="header">Toolbar area</rr-container>
+  <rr-page>Main content</rr-page>
+  <rr-container slot="footer">Status bar</rr-container>
 </rr-vertical-split-view>
 ```
+
+**Typical slot content:** The `header` and `footer` slots usually contain an `<rr-container>`, while the default slot usually contains an `<rr-page>`.
 
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -375,18 +388,19 @@ Grid, list, or horizontal scroll layout for item collections.
 
 ### Editor with Panels
 
-```html
-<rr-page>
-  <rr-top-title-bar slot="header" title="Document Editor">
-    <rr-toolbar slot="toolbar-start" label="Formatting">
-      <!-- toolbar items -->
-    </rr-toolbar>
-  </rr-top-title-bar>
+A split view is the outermost container. Pages go inside split views, never the other way around.
 
-  <rr-horizontal-split-view show-sidebar show-inspector>
-    <div slot="sidebar">File tree</div>
-    <main>Editor canvas</main>
-    <div slot="inspector">Properties</div>
-  </rr-horizontal-split-view>
-</rr-page>
+```html
+<rr-horizontal-split-view show-sidebar show-inspector>
+  <nav slot="sidebar">File tree</nav>
+  <rr-page>
+    <rr-top-title-bar slot="header" title="Document Editor">
+      <rr-toolbar slot="toolbar-start" label="Formatting">
+        <!-- toolbar items -->
+      </rr-toolbar>
+    </rr-top-title-bar>
+    <rr-simple-section>Editor canvas</rr-simple-section>
+  </rr-page>
+  <div slot="inspector">Properties</div>
+</rr-horizontal-split-view>
 ```

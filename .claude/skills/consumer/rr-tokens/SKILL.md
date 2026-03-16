@@ -16,53 +16,11 @@ Primitives (--primitives-*)  →  Base values (colors, spacing, fonts)
 Semantics (--semantics-*)    →  Meaningful values (buttons, controls, focus)
      ↓
 Components (--components-*)  →  Component-specific tokens
-     ↓
-Override hooks (--rr-*)      →  Consumer customization points
 ```
+
+Internal component variables use underscore prefixes (`--_*`) and are not intended for consumer use. No consumer override hooks are provided.
 
 **Rule:** Always use the highest-level token available. Prefer `--semantics-*` over `--primitives-*`. Only use primitives when no semantic token exists.
-
----
-
-## Override Hooks (`--rr-*`)
-
-These are the consumer-facing customization points. Set them on a component or parent to override styling:
-
-```css
-/* Switch colors */
---rr-switch-background-color
---rr-switch-thumb-color
-
-/* Toggle button */
---rr-toggle-button-background-color
---rr-toggle-button-content-color
-
-/* Toolbar sizing */
---rr-toolbar-overflow-button-width
---rr-toolbar-start-width
---rr-toolbar-center-width
---rr-toolbar-end-width
---rr-toolbar-width
-
-/* Top title bar */
---rr-top-title-bar-title-color
-
-/* Tooltip */
---rr-tooltip-arrow-color
-
-/* Font family (global) */
---rr-font-family-sans: 'RijksSansVF', system-ui, sans-serif
-```
-
-**Usage pattern:**
-
-```css
-/* Override switch colors in a specific context */
-.my-theme rr-switch {
-  --rr-switch-background-color: #1a73e8;
-  --rr-switch-thumb-color: #ffffff;
-}
-```
 
 ---
 
@@ -231,7 +189,7 @@ Used for interactive UI elements (buttons, inputs, toggles):
 All interactive components use this consistent focus indicator:
 
 ```css
---semantics-focus-ring-center-color: #364B6D   /* Inner ring */
+--semantics-focus-ring-center-color: light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600))   /* Inner ring */
 --semantics-focus-ring-center-thickness: 4px
 --semantics-focus-ring-edge-color              /* Outer ring (matches background) */
 --semantics-focus-ring-edge-thickness: 6px
