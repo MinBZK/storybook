@@ -300,6 +300,7 @@ export class RRList extends LitElement {
 
 		const fromIndex = this._draggingFromIndex;
 		const toIndex = this._getDropIndex();
+		const movedItem = this._draggingEl;
 
 		this._cleanupDrag();
 
@@ -312,6 +313,15 @@ export class RRList extends LitElement {
 				}),
 			);
 			this._announce(this._t('components.list.drag-dropped-text', { position: toIndex + 1 }));
+
+			// Restore focus to the drag handle on the moved item after the
+			// consumer has had a chance to reorder the DOM in response to rr-reorder.
+			requestAnimationFrame(() => {
+				const handle = movedItem
+					.querySelector('[draggable-only]')
+					?.shadowRoot?.querySelector<HTMLElement>('button');
+				handle?.focus();
+			});
 		} else {
 			this._announce(this._t('components.list.drag-cancelled-text'));
 		}
