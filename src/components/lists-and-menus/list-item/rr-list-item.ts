@@ -74,7 +74,12 @@ export class RRListItem extends LitElement {
 	 */
 	private _syncWithList() {
 		const list = this.closest<RRList>('rr-list');
-		if (!list) return;
+		if (!list) {
+			if (import.meta.env?.DEV) {
+				console.warn('rr-list-item: no parent rr-list found. Variant sync will not work if appended into a list after first render.');
+			}
+			return;
+		}
 		this._applyVariant(list.variant);
 		this._listObserver = new MutationObserver(() => {
 			this._applyVariant(list.variant);
