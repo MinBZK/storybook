@@ -35,6 +35,17 @@ type Width = 'stretch' | 'fit-content';
 type HorizontalAlignment = 'left' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 
+const widthConverter = {
+	fromAttribute(value: string | null, defaultValue: string | number = 'fit-content'): string | number {
+		if (value === null) return defaultValue;
+		const num = Number(value);
+		return Number.isFinite(num) ? num : value;
+	},
+	toAttribute(value: string | number): string {
+		return String(value);
+	},
+};
+
 @customElement('rr-title-cell')
 export class RRTitleCell extends LitElement {
 	static override styles = [styles];
@@ -45,7 +56,7 @@ export class RRTitleCell extends LitElement {
 	@property({ type: String, reflect: true })
 	color: Color = 'default';
 
-	@property({ reflect: true })
+	@property({ reflect: true, converter: widthConverter })
 	width: Width | number = 'stretch';
 
 	@property({ type: Number, reflect: true, attribute: 'min-width' })
@@ -71,9 +82,8 @@ export class RRTitleCell extends LitElement {
 	}
 
 	private _applyDimensionStyles() {
-		const numericWidth = Number(this.width);
-		if (Number.isFinite(numericWidth) && this.width !== 'stretch' && this.width !== 'fit-content') {
-			this.style.width = `${numericWidth}px`;
+		if (typeof this.width === 'number') {
+			this.style.width = `${this.width}px`;
 		} else {
 			this.style.width = '';
 		}

@@ -25,11 +25,22 @@ import { template } from './rr-cell.template.ts';
 export type CellWidth = 'stretch' | 'fit-content';
 export type CellVerticalAlignment = 'top' | 'center' | 'bottom';
 
+const widthConverter = {
+	fromAttribute(value: string | null, defaultValue: string | number = 'fit-content'): string | number {
+		if (value === null) return defaultValue;
+		const num = Number(value);
+		return Number.isFinite(num) ? num : value;
+	},
+	toAttribute(value: string | number): string {
+		return String(value);
+	},
+};
+
 @customElement('rr-cell')
 export class RRCell extends LitElement {
 	static override styles = [styles];
 
-	@property({ reflect: true })
+	@property({ reflect: true, converter: widthConverter })
 	width: CellWidth | number = 'fit-content';
 
 	@property({ type: Number, reflect: true, attribute: 'min-width' })
@@ -49,9 +60,8 @@ export class RRCell extends LitElement {
 	}
 
 	private _applyDimensionStyles() {
-		const numericWidth = Number(this.width);
-		if (Number.isFinite(numericWidth) && this.width !== 'stretch' && this.width !== 'fit-content') {
-			this.style.width = `${numericWidth}px`;
+		if (typeof this.width === 'number') {
+			this.style.width = `${this.width}px`;
 		} else {
 			this.style.width = '';
 		}
