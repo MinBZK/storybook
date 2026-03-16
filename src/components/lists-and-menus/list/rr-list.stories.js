@@ -261,6 +261,9 @@ export const WithInteractiveItems = {
 };
 
 export const DraggableList = {
+	// Imperative render is intentional: the rr-reorder handler needs to mutate
+	// the DOM in-place to demonstrate actual reordering. A standard Storybook
+	// render function cannot do this because Lit templates are stateless.
 	render: () => {
 		const onReorder = (e) => {
 			const list = e.currentTarget;
