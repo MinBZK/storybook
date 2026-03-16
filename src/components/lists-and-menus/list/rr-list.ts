@@ -323,7 +323,7 @@ export class RRList extends LitElement {
 				handle?.focus();
 			});
 		} else {
-			this._announce(this._t('components.list.drag-cancelled-text'));
+			this._announce(this._t('components.list.drag-no-change-text'));
 		}
 	}
 
