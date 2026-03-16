@@ -39,6 +39,8 @@ export class RRList extends LitElement {
 	@property({ type: Object })
 	translations: Partial<RRListTranslations> = {};
 
+	private _mergedTranslations = { ...rrListTranslations };
+
 	// — Drag state ——————————————————————————————————————————————————————————
 
 	private _draggingEl: RRListItem | null = null;
@@ -75,6 +77,9 @@ export class RRList extends LitElement {
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('reorderable')) {
 			this._updateItems();
+		}
+		if (changed.has('translations')) {
+			this._mergedTranslations = { ...rrListTranslations, ...this.translations };
 		}
 	}
 
@@ -361,7 +366,7 @@ export class RRList extends LitElement {
 	// — i18n ————————————————————————————————————————————————————————————————
 
 	private _t(key: keyof RRListTranslations, vars?: Record<string, string | number>): string {
-		let str = { ...rrListTranslations, ...this.translations }[key];
+		let str = this._mergedTranslations[key];
 		if (vars) {
 			for (const [k, v] of Object.entries(vars)) {
 				str = str.replace(`{${k}}`, String(v));
