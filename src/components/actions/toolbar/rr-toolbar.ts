@@ -117,8 +117,11 @@ export class RRToolbar extends LitElement {
 				'rr-toolbar-overflow-area',
 			]);
 			const onlyInternalMoves = mutations.every(m => {
-				// Attribute change on a consumer-relevant attribute — always rebuild
-				if (m.type === 'attributes') return false;
+				// Attribute change — only rebuild for toolbar-structural elements
+				if (m.type === 'attributes') {
+					const tag = (m.target as Element).tagName.toLowerCase();
+					return tag !== 'rr-toolbar-item' && tag !== 'rr-toolbar-title-group';
+				}
 				// childList change on the toolbar root — ignore if it's just internal slot moves
 				if (m.target !== this) return false;
 				const nodes = [...Array.from(m.addedNodes), ...Array.from(m.removedNodes)];
@@ -468,6 +471,7 @@ export class RRToolbar extends LitElement {
 				const id = this._getId(el);
 				if (el.parentElement !== this) this.appendChild(el);
 				el.setAttribute('slot', `child-${id}`);
+				(el as HTMLElement).dataset.toolbarArea = areaTag;
 				return {
 					type: 'title-group',
 					title: el.getAttribute('text') ?? '',
@@ -494,6 +498,7 @@ export class RRToolbar extends LitElement {
 
 				if (el.parentElement !== this) this.appendChild(el);
 				el.setAttribute('slot', `child-${id}`);
+				(el as HTMLElement).dataset.toolbarArea = areaTag;
 
 				const overflowItems = Array.from(el.children).filter(child => {
 					const childTag = child.tagName.toLowerCase();
@@ -507,6 +512,7 @@ export class RRToolbar extends LitElement {
 			const id = this._getId(el);
 			if (el.parentElement !== this) this.appendChild(el);
 			el.setAttribute('slot', `child-${id}`);
+			(el as HTMLElement).dataset.toolbarArea = areaTag;
 			return { type: 'other', element: el, id } as ToolbarChild;
 		});
 	}
@@ -523,11 +529,28 @@ export class RRToolbar extends LitElement {
 		});
 	}
 
+	private _restoreItemsToAreas(): void {
+		const reparented = Array.from(this.children).filter(
+			(child): child is HTMLElement => child instanceof HTMLElement && !!child.dataset.toolbarArea
+		);
+		for (const el of reparented) {
+			const areaTag = el.dataset.toolbarArea!;
+			const area = this.querySelector(areaTag);
+			if (area) {
+				el.removeAttribute('slot');
+				delete el.dataset.toolbarArea;
+				area.appendChild(el);
+			}
+		}
+	}
+
 	private _buildChildren(): void {
 		if (this._isBuilding) return;
 		this._isBuilding = true;
 
 		this._observer?.disconnect();
+
+		this._restoreItemsToAreas();
 
 		this._startChildren = this._buildChildrenForArea('rr-toolbar-start-area');
 		this._centerChildren = this._buildChildrenForArea('rr-toolbar-center-area');
