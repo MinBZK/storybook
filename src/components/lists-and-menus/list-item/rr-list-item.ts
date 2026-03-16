@@ -34,6 +34,10 @@ export class RRListItem extends LitElement {
 	@property({ reflect: true })
 	href?: string;
 
+	/** Set by the parent rr-list when reorderable is enabled. Used as a CSS hook for drag handle visibility. */
+	@property({ type: Boolean, reflect: true })
+	reorderable = false;
+
 	@state()
 	private _showStart = false;
 
