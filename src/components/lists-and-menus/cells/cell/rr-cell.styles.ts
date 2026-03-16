@@ -1,8 +1,6 @@
 import { css } from 'lit';
 
 export const styles = css`
-
-
 	/* # Host */
 
 	:host {
@@ -11,9 +9,11 @@ export const styles = css`
 		align-items: stretch;
 		flex-shrink: 0;
 		justify-content: center;
+		--_width: auto;
 		--_min-width: 0;
 		--_max-width: none;
 		--_min-height: 0;
+		width: var(--_width);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
 		min-height: var(--_min-height);

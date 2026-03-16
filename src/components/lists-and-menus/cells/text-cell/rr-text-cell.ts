@@ -87,9 +87,9 @@ export class RRTextCell extends LitElement {
 
 	private _applyDimensionStyles() {
 		if (typeof this.width === 'number') {
-			this.style.width = `${this.width}px`;
+			this.style.setProperty('--_width', `${this.width}px`);
 		} else {
-			this.style.width = '';
+			this.style.removeProperty('--_width');
 		}
 		if (this.minWidth != null) {
 			this.style.setProperty('--_min-width', `${this.minWidth}px`);

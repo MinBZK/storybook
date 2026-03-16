@@ -7,9 +7,11 @@ export const styles = css`
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		--_width: auto;
 		--_min-width: 0;
 		--_max-width: none;
 		--_min-height: 0;
+		width: var(--_width);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
 		min-height: var(--_min-height);
