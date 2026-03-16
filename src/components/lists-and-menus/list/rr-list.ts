@@ -42,6 +42,9 @@ export class RRList extends LitElement {
 	@state()
 	private _mergedTranslations = { ...rrListTranslations };
 
+	@state()
+	private _hasHeader = false;
+
 	// — Drag state ——————————————————————————————————————————————————————————
 
 	private _draggingEl: RRListItem | null = null;
@@ -60,6 +63,11 @@ export class RRList extends LitElement {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		slot?.addEventListener('slotchange', () => this._updateItems());
 		this._updateItems();
+
+		const headerSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="header"]');
+		headerSlot?.addEventListener('slotchange', () => {
+			this._hasHeader = (headerSlot.assignedElements().length > 0);
+		});
 	}
 
 	override connectedCallback() {
@@ -398,7 +406,7 @@ export class RRList extends LitElement {
 	}
 
 	override render() {
-		return template(this._t('components.list.items-label-text'));
+		return template(this._t('components.list.items-label-text'), this._hasHeader);
 	}
 }
 

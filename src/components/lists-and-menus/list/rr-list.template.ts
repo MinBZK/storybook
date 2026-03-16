@@ -1,13 +1,14 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
-export const template = (itemsLabel: string) => html`
+export const template = (itemsLabel: string, hasHeader: boolean) => html`
 	<div class="list__body">
 		<div class="list__header">
 			<slot name="header"></slot>
 		</div>
 		<div class="list__items"
 			role="list"
-			aria-label=${itemsLabel}
+			aria-label=${ifDefined(hasHeader ? undefined : itemsLabel)}
 		>
 			<slot></slot>
 		</div>
