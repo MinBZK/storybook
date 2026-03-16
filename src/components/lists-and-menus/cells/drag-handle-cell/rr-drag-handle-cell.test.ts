@@ -31,9 +31,6 @@ describe('rr-drag-handle-cell', () => {
 		);
 	});
 
-
-
-
 	it('applies a custom translation override', async () => {
 		el = await fixture('<rr-drag-handle-cell></rr-drag-handle-cell>');
 		(el as any).translations = {
