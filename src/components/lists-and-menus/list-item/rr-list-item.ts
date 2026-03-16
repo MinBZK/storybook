@@ -45,6 +45,8 @@ export class RRListItem extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback();
+		// Skip setup for drag clones — they are visual-only copies inside rr-list's shadow root
+		if (this.hasAttribute('data-rr-clone')) return;
 		this.setAttribute('role', 'listitem');
 	}
 

@@ -259,6 +259,7 @@ export class RRList extends LitElement {
 			const hostClone = item.cloneNode(true) as HTMLElement;
 			hostClone.classList.remove('is-dragging');
 			hostClone.classList.remove('is-dragging-pointer');
+			hostClone.setAttribute('data-rr-clone', '');
 
 			this._clone = document.createElement('div');
 			this._clone.className = 'list__drag-clone';
