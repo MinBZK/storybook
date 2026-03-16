@@ -57,6 +57,7 @@ export class RRListItem extends LitElement {
 	}
 
 	override firstUpdated() {
+		if (this.hasAttribute('data-rr-clone')) return;
 		this._syncWithList();
 		this._observeStartSlot();
 		this._observeEndSlot();
