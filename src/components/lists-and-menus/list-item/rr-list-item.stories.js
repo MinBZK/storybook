@@ -150,7 +150,7 @@ export const WithStartAndEnd = {
 		<rr-list variant="box">
 			<rr-list-item>
 				<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
-				<div slot="start" style="width: 32px; height: 32px; background: #e0e0e0; border-radius: 8px;"></div>
+				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
 				<rr-spacer-cell slot="start" size="8"></rr-spacer-cell>
 				<rr-text-cell>
 					<p slot="text">Item with start icon</p>
@@ -163,7 +163,7 @@ export const WithStartAndEnd = {
 			</rr-list-item>
 			<rr-list-item>
 				<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
-				<div slot="start" style="width: 32px; height: 32px; background: #e0e0e0; border-radius: 8px;"></div>
+				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
 				<rr-spacer-cell slot="start" size="8"></rr-spacer-cell>
 				<rr-text-cell>
 					<p slot="text">Another item</p>

@@ -26,8 +26,8 @@ export type CellWidth = 'stretch' | 'fit-content';
 export type CellVerticalAlignment = 'top' | 'center' | 'bottom';
 
 const widthConverter = {
-	fromAttribute(value: string | null, defaultValue: string | number = 'fit-content'): string | number {
-		if (value === null) return defaultValue;
+	fromAttribute(value: string | null): string | number {
+		if (value === null) return 'fit-content';
 		const num = Number(value);
 		return Number.isFinite(num) ? num : value;
 	},
