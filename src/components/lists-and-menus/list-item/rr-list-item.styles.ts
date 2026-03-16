@@ -28,12 +28,11 @@ export const styles = css`
 		touch-action: none;
 	}
 
-	::slotted([draggable-only]) {
+	:host(:not([reorderable])) ::slotted([draggable-only]) {
 		display: none;
 	}
 
 	:host([reorderable]) ::slotted([draggable-only]) {
-		display: revert-layer;
 		cursor: grab;
 	}
 
