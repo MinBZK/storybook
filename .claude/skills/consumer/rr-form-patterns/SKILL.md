@@ -78,7 +78,7 @@ This auto-wires:
 | `valid` | boolean | false | Show valid state |
 | `autocomplete` | string | '' | Browser autocomplete hint |
 | `accessible-label` | string | '' | aria-label (auto-set by form-field) |
-| `error-message-ids` | string | '' | Space-separated IDs of error elements |
+| `error-message` | string | '' | Space-separated IDs of error elements |
 | `input-id` | string | '' | Custom ID for the internal input |
 
 **Events:** `input` (detail: {value}), `change` (detail: {value})
@@ -297,7 +297,7 @@ Combines text input with dropdown picker. Events: `input`, `change`, `picker-cli
 <rr-form-field label="Password">
   <rr-text-field
     invalid
-    error-message-ids="err-required err-length"
+    error-message="err-required err-length"
   ></rr-text-field>
 
   <rr-form-field-error-text id="err-required">
@@ -313,7 +313,7 @@ Combines text input with dropdown picker. Events: `input`, `change`, `picker-cli
 **How it works:**
 
 1. Set `invalid` attribute on the input to enable error state styling
-2. Set `error-message-ids="id1 id2"` with space-separated IDs of error text elements
+2. Set `error-message="id1 id2"` with space-separated IDs of error text elements
 3. `rr-form-field` automatically:
    - Shows only error elements whose IDs are listed
    - Sets `aria-describedby` on the input to reference visible errors + help text
@@ -326,11 +326,11 @@ const input = document.querySelector('rr-text-field');
 
 // Show errors
 input.setAttribute('invalid', '');
-input.setAttribute('error-message-ids', 'err-required');
+input.setAttribute('error-message', 'err-required');
 
 // Clear errors
 input.removeAttribute('invalid');
-input.removeAttribute('error-message-ids');
+input.removeAttribute('error-message');
 ```
 
 ---

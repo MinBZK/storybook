@@ -164,9 +164,10 @@ Browser-style tabs with close buttons (for document/editor interfaces).
 <rr-document-tab-bar>
   <rr-document-tab-bar-item selected>Document 1</rr-document-tab-bar-item>
   <rr-document-tab-bar-item>Document 2</rr-document-tab-bar-item>
-  <rr-button slot="end" variant="neutral-transparent">
+  <rr-icon-button slot="end" variant="neutral-transparent">
     <rr-icon name="plus"></rr-icon>
-  </rr-button>
+    New tab
+  </rr-icon-button>
 </rr-document-tab-bar>
 ```
 
@@ -205,6 +206,78 @@ document.querySelector('rr-pagination').addEventListener('page-change', (e) => {
   console.log('Navigate to page:', e.detail.page);
   // Update your data and set current-page
   e.target.currentPage = e.detail.page;
+});
+```
+
+---
+
+## Menu Bar
+
+Horizontal navigation bar for section-level navigation. Supports optional title slot, overflow menu for responsive layouts, and keyboard navigation.
+
+```html
+<rr-menu-bar>
+  <rr-menu-bar-item selected>Home</rr-menu-bar-item>
+  <rr-menu-bar-item>Diensten</rr-menu-bar-item>
+  <rr-menu-bar-item>Projecten</rr-menu-bar-item>
+  <rr-menu-bar-item>Contact</rr-menu-bar-item>
+</rr-menu-bar>
+```
+
+### rr-menu-bar
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `size` | string | 'm' | Title slot size: `s | m | l` |
+| `has-overflow-menu` | boolean | false | Enable overflow menu for responsive layouts |
+| `overflow-label` | string | 'Meer' | Overflow button label |
+
+**Slots:** default (`rr-menu-bar-item` elements), `title` (heading element)
+**Events:** `itemselect` (detail: {item}) — fired when an item is selected
+**Keyboard:** `Arrow Left/Right` = navigate, `Home/End` = first/last item
+
+### rr-menu-bar-item
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `selected` | boolean | false | Selected/active state |
+| `href` | string | '' | Link URL (renders as anchor when set) |
+| `disabled` | boolean | false | Disabled state |
+
+**Slots:** default (label text)
+**Events:** `select` (detail: {item}) — fired on click when no `href` is set
+
+### Examples
+
+```html
+<!-- With links -->
+<rr-menu-bar>
+  <rr-menu-bar-item href="/" selected>Home</rr-menu-bar-item>
+  <rr-menu-bar-item href="/diensten">Diensten</rr-menu-bar-item>
+  <rr-menu-bar-item href="/projecten">Projecten</rr-menu-bar-item>
+</rr-menu-bar>
+
+<!-- With title -->
+<rr-menu-bar size="m">
+  <h2 slot="title" style="margin: 0;">Navigatie</h2>
+  <rr-menu-bar-item selected>Home</rr-menu-bar-item>
+  <rr-menu-bar-item>Diensten</rr-menu-bar-item>
+  <rr-menu-bar-item>Projecten</rr-menu-bar-item>
+</rr-menu-bar>
+
+<!-- With overflow menu -->
+<rr-menu-bar has-overflow-menu overflow-label="Meer">
+  <rr-menu-bar-item selected>Home</rr-menu-bar-item>
+  <rr-menu-bar-item>Diensten</rr-menu-bar-item>
+  <rr-menu-bar-item>Projecten</rr-menu-bar-item>
+  <rr-menu-bar-item>Over ons</rr-menu-bar-item>
+  <rr-menu-bar-item>Contact</rr-menu-bar-item>
+</rr-menu-bar>
+```
+
+```javascript
+document.querySelector('rr-menu-bar').addEventListener('itemselect', (e) => {
+  console.log('Selected:', e.detail.item.textContent);
 });
 ```
 
@@ -280,7 +353,7 @@ Combined action button with dropdown menu.
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `variant` | string | 'neutral-tinted' | Button variant |
-| `size` | string | 'md' | `sm | md` |
+| `size` | string | 'md' | `xs | sm | md` |
 | `disabled` | boolean | false | Disabled state |
 
 **Events:** `action-click` (main button), `menu-click` (dropdown arrow)

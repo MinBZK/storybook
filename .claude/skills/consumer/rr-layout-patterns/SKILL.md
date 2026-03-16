@@ -366,24 +366,25 @@ Grid, list, or horizontal scroll layout for item collections.
 
 ### Sidebar App Layout
 
+Pages go inside split views, never the other way around:
+
 ```html
-<rr-page>
-  <rr-top-navigation-bar slot="header" title="Admin"></rr-top-navigation-bar>
+<rr-horizontal-split-view show-sidebar>
+  <nav slot="sidebar">
+    <rr-list>
+      <rr-list-item selected><rr-text-cell>Dashboard</rr-text-cell></rr-list-item>
+      <rr-list-item><rr-text-cell>Settings</rr-text-cell></rr-list-item>
+    </rr-list>
+  </nav>
 
-  <rr-horizontal-split-view show-sidebar>
-    <nav slot="sidebar">
-      <rr-list>
-        <rr-list-item selected><rr-text-cell>Dashboard</rr-text-cell></rr-list-item>
-        <rr-list-item><rr-text-cell>Settings</rr-text-cell></rr-list-item>
-      </rr-list>
-    </nav>
-
+  <rr-page>
+    <rr-top-navigation-bar slot="header" title="Admin"></rr-top-navigation-bar>
     <rr-simple-section>
       <rr-title-bar level="1">Dashboard</rr-title-bar>
       <p>Content here</p>
     </rr-simple-section>
-  </rr-horizontal-split-view>
-</rr-page>
+  </rr-page>
+</rr-horizontal-split-view>
 ```
 
 ### Editor with Panels

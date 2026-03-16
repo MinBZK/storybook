@@ -58,8 +58,8 @@ All RegelRecht components are built to comply with **DigiToegankelijk** (Dutch D
 ```
 
 ### Checkbox (`rr-checkbox`, `rr-checkbox-field`)
-- `role="checkbox"` with `aria-checked="true|false|mixed"`
-- `mixed` = indeterminate state
+- Uses native `<input type="checkbox">` — no ARIA role needed
+- Indeterminate state set via `.indeterminate` property
 - Keyboard: `Space` = toggle, `Tab` = move focus
 
 ```html
@@ -69,7 +69,7 @@ All RegelRecht components are built to comply with **DigiToegankelijk** (Dutch D
 
 ### Radio Buttons (`rr-radio-button-group`)
 - Container: `role="radiogroup"` with `aria-labelledby`
-- Items: `role="radio"` with `aria-checked`
+- Items: use native `<input type="radio">` — no ARIA role needed
 - Keyboard: `Arrow Up/Left` = previous, `Arrow Down/Right` = next, `Space/Enter` = select
 
 ```html
@@ -82,7 +82,7 @@ All RegelRecht components are built to comply with **DigiToegankelijk** (Dutch D
 
 ### Switch (`rr-switch`, `rr-switch-field`)
 - `role="switch"` with `aria-checked="true|false"`
-- Keyboard: `Space/Enter` = toggle
+- Keyboard: `Space` = toggle
 
 ```html
 <rr-switch-field>Enable dark mode</rr-switch-field>
@@ -104,7 +104,7 @@ All RegelRecht components are built to comply with **DigiToegankelijk** (Dutch D
 
 ### Toolbar (`rr-toolbar`)
 - `role="toolbar"` with `aria-label`
-- Set the `label` attribute for screen readers when there are multiple toolbars on the page:
+- A single toolbar on the page does not strictly need a label, but when there are multiple toolbars, each must have a unique `label` to distinguish them for screen readers:
 
 ```html
 <rr-toolbar label="Text formatting">...</rr-toolbar>
@@ -209,7 +209,7 @@ For screen-reader-only text (outside shadow DOM), use this CSS class:
 | Radio | `Arrow Up/Left` | Previous option |
 | Radio | `Arrow Down/Right` | Next option |
 | Radio | `Space/Enter` | Select option |
-| Switch | `Space/Enter` | Toggle on/off |
+| Switch | `Space` | Toggle on/off |
 | Tab Bar | `Arrow Left/Right` | Navigate tabs |
 | Tab Bar | `Home/End` | First/last tab |
 | Menu | `Arrow Down/Up` | Navigate items |

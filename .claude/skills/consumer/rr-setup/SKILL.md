@@ -48,7 +48,7 @@ Or in HTML:
 ## Step 4: Import Components
 
 ```javascript
-// All components at once (~470KB)
+// All components at once
 import '@minbzk/storybook';
 
 // Or import specific classes
@@ -72,8 +72,17 @@ RegelRecht uses the **RijksSansVF** font with `system-ui` fallback. The font fil
 ```css
 @font-face {
   font-family: 'RijksSansVF';
-  src: url('/fonts/RijksSansVF.woff2') format('woff2-variations');
+  src: url('/fonts/RijksSansVF-Regular.ttf') format('truetype-variations');
   font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'RijksSansVF';
+  src: url('/fonts/RijksSansVF-Italic.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: italic;
   font-display: swap;
 }
 ```

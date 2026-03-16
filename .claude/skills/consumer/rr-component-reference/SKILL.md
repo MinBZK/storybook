@@ -71,7 +71,7 @@ Combined action button with dropdown arrow.
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `variant` | string | 'neutral-tinted' | Button variant |
-| `size` | string | 'md' | `sm | md` |
+| `size` | string | 'md' | `xs | sm | md` |
 | `disabled` | boolean | false | Disabled state |
 
 **Slots:** default (label text and icons)
@@ -142,7 +142,7 @@ Styled container for rich text / HTML content.
 | `spacing` | string | 'snug' | Line spacing |
 
 **Slots:** default (HTML content)
-**Note:** No shadow DOM — styles apply to light DOM children.
+**Note:** No shadow DOM — uses light DOM so that consumer-authored rich text (e.g. CMS output) inherits global styles directly.
 
 ---
 
@@ -198,7 +198,7 @@ Error message that auto-slots into `rr-form-field`. Visibility controlled by inp
 | `valid` | boolean | false | Valid state |
 | `autocomplete` | string | '' | Browser hint |
 | `accessible-label` | string | '' | aria-label |
-| `error-message-ids` | string | '' | Error element IDs |
+| `error-message` | string | '' | Space-separated IDs of error elements (used by rr-form-field) |
 | `input-id` | string | '' | Custom input ID |
 
 **Events:** `input` (detail: {value}), `change` (detail: {value})
@@ -590,6 +590,7 @@ See `/rr-navigation` for full API. Key attributes: `title`, `container`, `skip-l
 | `title` | string | 'Title' | Title text |
 | `container` | string | 'sm' | `sm | md | lg` |
 | `compact` | boolean | false | Compact mode |
+| `toolbar` | string | 'default' | `default | custom | none` |
 | `dismiss-label` | string | 'Sluit' | Close button text |
 
 **Slots:** `toolbar-start`, `toolbar-end`
@@ -617,6 +618,18 @@ See `/rr-navigation` for full API. Key attributes: `title`, `container`, `skip-l
 **Events:** `tabchange`, `tabdismiss`
 **CSS Parts:** `container`, `items`, `divider`, `end`
 
+### rr-document-tab-bar-item
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `selected` | boolean | false | Selected state |
+| `disabled` | boolean | false | Disabled state |
+| `subtitle` | string | '' | Subtitle text below title |
+
+**Slots:** default (title text)
+**Events:** `select` (detail: {item}), `dismiss` (detail: {item})
+**CSS Parts:** `item`, `title`, `subtitle`, `dismiss`
+
 ### rr-pagination
 
 | Attribute | Type | Default | Description |
@@ -627,6 +640,50 @@ See `/rr-navigation` for full API. Key attributes: `title`, `container`, `skip-l
 
 **Events:** `page-change` (detail: {page})
 **CSS Parts:** `container`, `button`, `button-active`
+
+### rr-menu-bar
+
+Horizontal navigation bar for section-level navigation. Manages item selection and keyboard navigation.
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `size` | string | 'm' | Title slot size: `s | m | l` |
+| `has-overflow-menu` | boolean | false | Enable overflow menu for responsive layouts |
+| `overflow-label` | string | 'Meer' | Overflow button label |
+
+**Slots:** default (`rr-menu-bar-item` elements), `title` (heading element)
+**Events:** `itemselect` (detail: {item}) — fired when an item is selected
+**Keyboard:** `Arrow Left/Right` = navigate, `Home/End` = first/last item
+
+```html
+<rr-menu-bar>
+  <rr-menu-bar-item selected>Home</rr-menu-bar-item>
+  <rr-menu-bar-item>Diensten</rr-menu-bar-item>
+  <rr-menu-bar-item>Projecten</rr-menu-bar-item>
+  <rr-menu-bar-item>Contact</rr-menu-bar-item>
+</rr-menu-bar>
+```
+
+### rr-menu-bar-item
+
+Navigation item for use inside `rr-menu-bar`.
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `selected` | boolean | false | Selected/active state |
+| `href` | string | '' | Link URL (renders as anchor when set) |
+| `disabled` | boolean | false | Disabled state |
+
+**Slots:** default (label text)
+**Events:** `select` (detail: {item}) — fired on click when no `href` is set
+
+```html
+<!-- As button (managed selection) -->
+<rr-menu-bar-item selected>Home</rr-menu-bar-item>
+
+<!-- As link -->
+<rr-menu-bar-item href="/diensten">Diensten</rr-menu-bar-item>
+```
 
 ---
 
@@ -648,7 +705,7 @@ See `/rr-navigation` for full API. Key attributes: `title`, `container`, `skip-l
 |-----------|------|---------|-------------|
 | `text` | string | '' | Label |
 | `details` | string | '' | Secondary text |
-| `type` | string | 'button' | Item type |
+| `type` | string | 'button' | `button | checkbox | radio` |
 | `selected` | boolean | false | Selected |
 | `disabled` | boolean | false | Disabled |
 

@@ -1,6 +1,6 @@
 ---
 name: rr-tokens
-description: Design token reference for @minbzk/storybook — token hierarchy, key tokens by category, and component override hooks (--rr-*)
+description: Design token reference for @minbzk/storybook — token hierarchy and key tokens by category
 user-invocable: true
 ---
 
@@ -200,8 +200,7 @@ All interactive components use this consistent focus indicator:
 ```css
 .element:focus-visible {
   box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-  outline: var(--semantics-focus-ring-edge-thickness) solid var(--semantics-focus-ring-edge-color);
-  outline-offset: 2px;
+  outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 }
 ```
 
