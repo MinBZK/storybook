@@ -3,5 +3,5 @@ export interface RRDragHandleCellTranslations {
 }
 
 export const rrDragHandleCellTranslations: RRDragHandleCellTranslations = {
-	'components.drag-handle-cell.label-text': 'Sleepgreep, druk spatie om te verplaatsen',
+	'components.drag-handle-cell.label-text': 'Sleepgreep, druk spatie of enter om te verplaatsen',
 };
