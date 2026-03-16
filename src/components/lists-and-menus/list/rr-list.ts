@@ -139,7 +139,8 @@ export class RRList extends LitElement {
 		if (!this._draggingEl || !this._placeholder) return;
 
 		// Move floating clone
-		if (this._clone && this._listRect) {
+		if (this._clone) {
+			this._listRect = this.getBoundingClientRect();
 			this._clone.style.setProperty('--_drag-clone-top', `${event.clientY - this._listRect.top - this._cloneOffsetY}px`);
 		}
 
