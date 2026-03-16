@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './rr-list.styles.ts';
 import { template } from './rr-list.template.ts';
 import type { RRListItem } from '../list-item/rr-list-item.ts';
@@ -39,6 +39,7 @@ export class RRList extends LitElement {
 	@property({ type: Object })
 	translations: Partial<RRListTranslations> = {};
 
+	@state()
 	private _mergedTranslations = { ...rrListTranslations };
 
 	// — Drag state ——————————————————————————————————————————————————————————
