@@ -35,7 +35,7 @@ export class RRList extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	reorderable = false;
 
-	/** Overschrijf een of meer vertaalsleutels. Niet-opgegeven sleutels vallen terug op de Nederlandse standaard. */
+	/** Override one or more translation keys. Unset keys fall back to the Dutch default. */
 	@property({ type: Object })
 	translations: Partial<RRListTranslations> = {};
 
