@@ -1,22 +1,22 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { RRRadioButtonField } from './rr-radio-button-field.js';
-import '../radio-button/rr-radio-button.ts';
+import type { RRCheckboxField } from './rr-checkbox-field.js';
+import '../checkbox/rr-checkbox.ts';
 
-export function radioButtonFieldTemplate(component: RRRadioButtonField): TemplateResult {
+export function checkboxFieldTemplate(component: RRCheckboxField): TemplateResult {
 	return html`
-		<div class="radio-button-field"
+		<div class="checkbox-field"
 			@click=${component._handleLabelClick}
 		>
-			<rr-radio-button class="radio-button-field__control"
+			<rr-checkbox class="checkbox-field__control"
 				?checked=${component.checked}
+				?indeterminate=${component.indeterminate}
 				?disabled=${component.disabled}
-				?required=${component.required}
 				name=${component.name || ''}
 				value=${component.value}
 				accessible-label=${component._labelText || nothing}
 				@change=${component._handleChange}
-			></rr-radio-button>
-			<label class="radio-button-field__label">
+			></rr-checkbox>
+			<label class="checkbox-field__label">
 				<slot @slotchange=${component._onSlotChange}></slot>
 			</label>
 		</div>

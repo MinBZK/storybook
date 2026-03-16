@@ -39,6 +39,17 @@ export class RRCheckbox extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
+	public toggle(): void {
+		if (this.disabled) return;
+		this.checked = !this.checked;
+		this.indeterminate = false;
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { checked: this.checked, value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;

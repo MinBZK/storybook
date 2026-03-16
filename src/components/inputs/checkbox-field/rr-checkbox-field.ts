@@ -1,143 +1,84 @@
 /**
  * RegelRecht Checkbox Field Component (Lit + TypeScript)
  *
- * A checkbox with label for form fields.
+ * A checkbox with an inline label for use in forms.
  *
  * @element rr-checkbox-field
- * @attr {boolean} checked - Checked state
+ * @attr {boolean} checked       - Checked state
  * @attr {boolean} indeterminate - Indeterminate state
- * @attr {boolean} disabled - Disabled state
- * @attr {string} value - Value for form submission
- * @attr {string} name - Input name for form submission
+ * @attr {boolean} disabled      - Disabled state
+ * @attr {string}  value         - Value for form submission
+ * @attr {string}  name          - Name for form submission
  *
- * @slot - Default slot for label text
+ * @slot - Label text
  *
- * @fires change - When checked state changes
- *
- * @csspart container - The field container
- * @csspart checkbox - The checkbox element
- * @csspart label - The label element
+ * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
-
-import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import '../checkbox/rr-checkbox.ts';
+import { LitElement } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { checkboxFieldStyles } from './rr-checkbox-field.styles.ts';
+import { checkboxFieldTemplate } from './rr-checkbox-field.template.ts';
+import type { RRCheckbox } from '../checkbox/rr-checkbox.js';
 
 @customElement('rr-checkbox-field')
 export class RRCheckboxField extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = checkboxFieldStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Boolean, reflect: true })
+	checked = false;
 
-    .checkbox-field {
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      gap: var(--primitives-space-8);
-      padding: 10px 0;
-    }
+	@property({ type: Boolean, reflect: true })
+	indeterminate = false;
 
-    .checkbox-field__control {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-    .checkbox-field__label {
-      display: flex;
-      align-items: center;
-      align-self: stretch;
-      flex: 1;
-      font-weight: var(--primitives-font-weight-body-regular);
-      font-size: var(--primitives-font-size-100);
-      line-height: var(--primitives-line-height-tight);
-      color: var(--semantics-content-color);
-      font-family: var(--rr-font-family-body);
-    }
+	@property({ type: String })
+	value = 'on';
 
-    /* Disabled state */
-    :host([disabled]) .checkbox-field__label {
-      opacity: var(--primitives-opacity-disabled);
-    }
+	@property({ type: String })
+	name = '';
 
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      :host([disabled]) .checkbox-field__label {
-        opacity: 0.5 !important;
-      }
-    }
-  `;
+	@state()
+	public _labelText = '';
 
-  @property({ type: Boolean, reflect: true })
-  checked = false;
+	override firstUpdated(): void {
+		this._onSlotChange();
+	}
 
-  @property({ type: Boolean, reflect: true })
-  indeterminate = false;
+	public _onSlotChange(): void {
+		const slot = this.shadowRoot?.querySelector('slot');
+		this._labelText = slot?.assignedNodes({ flatten: true })
+			.map(n => n.textContent ?? '')
+			.join('')
+			.trim() ?? '';
+	}
 
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
+	public _handleLabelClick(e: Event): void {
+		if (this.disabled) return;
+		if ((e.target as HTMLElement).closest?.('rr-checkbox')) return;
+		const checkbox = this.shadowRoot?.querySelector('rr-checkbox') as RRCheckbox | null;
+		checkbox?.toggle();
+	}
 
-  @property({ type: String })
-  value = 'on';
+	public _handleChange(e: Event): void {
+		const { checked } = (e as CustomEvent<{ checked: boolean }>).detail;
+		this.checked = checked;
+		this.indeterminate = false;
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { checked: this.checked, value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-  @property({ type: String })
-  name = '';
-
-  private _handleChange(e: CustomEvent): void {
-    this.checked = e.detail.checked;
-    this.dispatchEvent(new CustomEvent('change', {
-      detail: { checked: this.checked, value: this.value },
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  private _handleLabelClick(e: Event): void {
-    // Prevent double-toggle when clicking directly on the checkbox
-    if ((e.target as HTMLElement).closest('rr-checkbox')) {
-      return;
-    }
-    if (!this.disabled) {
-      this.checked = !this.checked;
-      this.indeterminate = false;
-      this.dispatchEvent(new CustomEvent('change', {
-        detail: { checked: this.checked, value: this.value },
-        bubbles: true,
-        composed: true
-      }));
-    }
-  }
-
-  override render() {
-    return html`
-      <label class="checkbox-field" part="container" @click=${this._handleLabelClick}>
-        <div class="checkbox-field__control">
-          <rr-checkbox
-            part="checkbox"
-            ?checked=${this.checked}
-            ?indeterminate=${this.indeterminate}
-            ?disabled=${this.disabled}
-            value=${this.value}
-            name=${this.name}
-            @change=${this._handleChange}
-          ></rr-checkbox>
-        </div>
-        <span class="checkbox-field__label" part="label">
-          <slot></slot>
-        </span>
-      </label>
-    `;
-  }
+	override render() {
+		return checkboxFieldTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-checkbox-field': RRCheckboxField;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-checkbox-field': RRCheckboxField;
+	}
 }
