@@ -25,14 +25,14 @@ All RegelRecht components are built to comply with **DigiToegankelijk** (Dutch D
 - [ ] Group related radio buttons in `<rr-radio-button-group>` with `accessible-labelledby`
 
 ### Interactive Elements
-- [ ] Icon-only buttons: use `<rr-icon-button>` (accessible-label support coming soon)
+- [ ] Icon-only buttons: use `<rr-icon-button>` with text content as accessible label (text is visually hidden except in `lg` size)
 - [ ] All custom controls are keyboard accessible (built-in for all `rr-*` components)
 - [ ] Don't remove or override focus styles
 
 ### Color & Motion
 - [ ] Don't rely on color alone to convey information
 - [ ] Content works at 200% zoom without horizontal scrolling
-- [ ] `prefers-reduced-motion: reduce` support will be added to components in a future release
+- [ ] Test with `prefers-reduced-motion: reduce` (components handle this internally)
 - [ ] `forced-colors: active` (Windows High Contrast Mode) support will be added in a future release
 
 ---
@@ -42,12 +42,13 @@ All RegelRecht components are built to comply with **DigiToegankelijk** (Dutch D
 ### Buttons (`rr-button`, `rr-icon-button`)
 - Uses native `<button>` — no ARIA role needed
 - `aria-disabled` reflects `disabled` attribute
-- **Icon-only buttons MUST have** `accessible-label`:
+- **Icon-only buttons MUST have text content** as accessible label:
 
 ```html
-<!-- Good -->
-<rr-icon-button accessible-label="Delete item">
+<!-- Good — text is used as aria-label, visible only in lg size -->
+<rr-icon-button>
   <rr-icon name="trash"></rr-icon>
+  Delete item
 </rr-icon-button>
 
 <!-- Bad — screen reader announces nothing meaningful -->

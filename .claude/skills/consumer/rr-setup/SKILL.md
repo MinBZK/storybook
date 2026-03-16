@@ -29,11 +29,7 @@ npm login --registry=https://npm.pkg.github.com
 npm install @minbzk/storybook
 ```
 
-**Peer dependencies** (install if not already present):
-
-```bash
-npm install lit @floating-ui/dom
-```
+`lit` and `@floating-ui/dom` are direct dependencies and will be installed automatically.
 
 ## Step 3: Import CSS Tokens (Required)
 
@@ -115,7 +111,7 @@ Available skills:
 - `/rr-component-reference` — Full API reference for all 60+ components
 - `/rr-layout-patterns` — Page composition with layout components
 - `/rr-form-patterns` — Form building with validation and error states
-- `/rr-tokens` — Design token hierarchy and override hooks
+- `/rr-tokens` — Design token hierarchy and reference
 - `/rr-accessibility` — DigiToegankelijk (WCAG 2.1 AA) compliance checklist
 - `/rr-navigation` — Navigation bars, tabs, pagination, menus
 

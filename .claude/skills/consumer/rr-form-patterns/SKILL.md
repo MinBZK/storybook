@@ -297,7 +297,7 @@ Combines text input with dropdown picker. Events: `input`, `change`, `picker-cli
 <rr-form-field label="Password">
   <rr-text-field
     invalid
-    error-message="err-required err-length"
+    error-message-ids="err-required err-length"
   ></rr-text-field>
 
   <rr-form-field-error-text id="err-required">
@@ -313,7 +313,7 @@ Combines text input with dropdown picker. Events: `input`, `change`, `picker-cli
 **How it works:**
 
 1. Set `invalid` attribute on the input to enable error state styling
-2. Set `error-message="id1 id2"` with space-separated IDs of error text elements
+2. Set `error-message-ids="id1 id2"` with space-separated IDs of error text elements
 3. `rr-form-field` automatically:
    - Shows only error elements whose IDs are listed
    - Sets `aria-describedby` on the input to reference visible errors + help text
@@ -326,11 +326,11 @@ const input = document.querySelector('rr-text-field');
 
 // Show errors
 input.setAttribute('invalid', '');
-input.setAttribute('error-message', 'err-required');
+input.setAttribute('error-message-ids', 'err-required');
 
 // Clear errors
 input.removeAttribute('invalid');
-input.removeAttribute('error-message');
+input.removeAttribute('error-message-ids');
 ```
 
 ---

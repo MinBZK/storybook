@@ -44,22 +44,23 @@ Primary interactive element.
 
 ### rr-icon-button
 
-Icon-only button. **Must have** `accessible-label` for screen readers.
+Icon-only button. **Must include text content** as accessible label. Text is used as `aria-label` and shown below the icon in `lg` size.
 
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `variant` | string | 'neutral-tinted' | Same as rr-button |
-| `size` | string | 'md' | `xs | sm | md` |
+| `size` | string | 'md' | `xs | sm | md | lg` |
 | `disabled` | boolean | false | Disabled state |
 | `type` | string | 'button' | `button | submit | reset` |
 | `is-expandable` | boolean | false | Show chevron |
 | `popovertarget` | string | '' | Popover ID |
 
-**Slots:** default (icon + optional text label)
+**Slots:** default (icon + text label for accessibility)
 
 ```html
-<rr-icon-button accessible-label="Delete" variant="danger-tinted">
+<rr-icon-button variant="danger-tinted">
   <rr-icon name="trash"></rr-icon>
+  Delete
 </rr-icon-button>
 ```
 
@@ -568,7 +569,7 @@ All cells have `vertical-alignment` attribute (`center` default).
       <span slot="supporting-text">Last modified yesterday</span>
     </rr-text-cell>
     <rr-button-cell slot="end">
-      <rr-icon-button accessible-label="More"><rr-icon name="ellipsis"></rr-icon></rr-icon-button>
+      <rr-icon-button><rr-icon name="ellipsis"></rr-icon>More</rr-icon-button>
     </rr-button-cell>
   </rr-list-item>
 </rr-list>

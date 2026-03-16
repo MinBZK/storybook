@@ -105,7 +105,6 @@ Compact header for detail pages or modal-like views with optional toolbar.
 
 **Slots:** `toolbar-start`, `toolbar-end`
 **Events:** `dismiss` (close button clicked)
-**Override hook:** `--rr-top-title-bar-title-color`
 
 ---
 
@@ -313,8 +312,8 @@ Horizontal toolbar with overflow menu for responsive layouts.
   <rr-toolbar-end-area>
     <rr-toolbar-item label="Align">
       <rr-button-bar>
-        <rr-icon-button><rr-icon name="align-left"></rr-icon></rr-icon-button>
-        <rr-icon-button><rr-icon name="align-center"></rr-icon></rr-icon-button>
+        <rr-icon-button><rr-icon name="align-left"></rr-icon>Align left</rr-icon-button>
+        <rr-icon-button><rr-icon name="align-center"></rr-icon>Align center</rr-icon-button>
       </rr-button-bar>
     </rr-toolbar-item>
   </rr-toolbar-end-area>
@@ -351,15 +350,6 @@ Items that don't fit the toolbar are moved to an overflow menu. Provide an `<rr-
 </rr-toolbar-item>
 ```
 
-**Override hooks:**
-```css
---rr-toolbar-overflow-button-width
---rr-toolbar-start-width
---rr-toolbar-center-width
---rr-toolbar-end-width
---rr-toolbar-width
-```
-
 ---
 
 ## Button Group & Button Bar
@@ -387,10 +377,10 @@ Connected row of buttons (like a segmented control but for actions).
 
 ```html
 <rr-button-bar size="md" variant="neutral-tinted">
-  <rr-icon-button><rr-icon name="align-left"></rr-icon></rr-icon-button>
-  <rr-icon-button><rr-icon name="align-center"></rr-icon></rr-icon-button>
+  <rr-icon-button><rr-icon name="align-left"></rr-icon>Align left</rr-icon-button>
+  <rr-icon-button><rr-icon name="align-center"></rr-icon>Align center</rr-icon-button>
   <rr-button-bar-divider></rr-button-bar-divider>
-  <rr-icon-button><rr-icon name="bold"></rr-icon></rr-icon-button>
+  <rr-icon-button><rr-icon name="bold"></rr-icon>Bold</rr-icon-button>
 </rr-button-bar>
 ```
 
