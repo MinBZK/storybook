@@ -237,6 +237,34 @@ describe('rr-toolbar', () => {
 		expect(spy).toHaveBeenCalled();
 	});
 
+	it('preserves children when a descendant selected attribute changes', async () => {
+		el = await fixture(`
+			<rr-toolbar>
+				<rr-toolbar-start-area>
+					<rr-toolbar-item label="Item">
+						<button selected>Toggle</button>
+					</rr-toolbar-item>
+				</rr-toolbar-start-area>
+			</rr-toolbar>
+		`);
+		await waitForUpdate(el);
+
+		const toolbar = el as unknown as { _startChildren: unknown[] };
+		expect(toolbar._startChildren.length).toBe(1);
+
+		// Simulate a descendant attribute change (like rr-segmented-control-item)
+		const button = el.querySelector('button')!;
+		button.removeAttribute('selected');
+		await waitForUpdate(el);
+
+		// Toolbar children must still be intact
+		expect(toolbar._startChildren.length).toBe(1);
+
+		// Slot must still exist in shadow DOM
+		const slot = el.shadowRoot?.querySelector('slot[name^="child-"]');
+		expect(slot).not.toBeNull();
+	});
+
 	// ## _computeSpacerZeros
 
 	it('returns both zeros true when start and end are both empty', async () => {
