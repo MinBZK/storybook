@@ -85,15 +85,15 @@ export const WithRichText = {
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<rr-description-cell vertical-alignment="center" style="border: 1px dashed #ccc;">
+			<rr-description-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="title">Term</p>
 				<p slot="description">Center</p>
 			</rr-description-cell>
-			<rr-description-cell vertical-alignment="top" style="border: 1px dashed #ccc;">
+			<rr-description-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="title">Term</p>
 				<p slot="description">Top</p>
 			</rr-description-cell>
-			<rr-description-cell vertical-alignment="bottom" style="border: 1px dashed #ccc;">
+			<rr-description-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="title">Term</p>
 				<p slot="description">Bottom</p>
 			</rr-description-cell>

@@ -150,7 +150,7 @@ export const Sizes = {
 
 export const Width = {
 	render: () => html`
-		<div style="display: flex; flex-direction: column; gap: 8px; width: 300px; border: 1px dashed #ccc; padding: 8px;">
+		<div style="display: flex; flex-direction: column; gap: 8px; width: 300px; border: 1px dashed var(--primitives-color-neutral-150); padding: 8px;">
 			<rr-text-cell width="stretch">
 				<p slot="text">Stretch (default)</p>
 			</rr-text-cell>
@@ -167,10 +167,10 @@ export const Width = {
 export const MinHeight = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; align-items: flex-start;">
-			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed #ccc;">
+			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="text">Min height 44px</p>
 			</rr-text-cell>
-			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed #ccc;">
+			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="text">With supporting text</p>
 				<p slot="supporting-text">Supporting text</p>
 			</rr-text-cell>
@@ -181,12 +181,12 @@ export const MinHeight = {
 export const HorizontalAlignment = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<rr-text-cell horizontal-alignment="left" style="width: 200px; border: 1px dashed #ccc;">
+			<rr-text-cell horizontal-alignment="left" style="width: 200px; border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="overline">Overline</p>
 				<p slot="text">Text cell (left)</p>
 				<p slot="supporting-text">Supporting text</p>
 			</rr-text-cell>
-			<rr-text-cell horizontal-alignment="right" style="width: 200px; border: 1px dashed #ccc;">
+			<rr-text-cell horizontal-alignment="right" style="width: 200px; border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="overline">Overline</p>
 				<p slot="text">Text cell (right)</p>
 				<p slot="supporting-text">Supporting text</p>
@@ -198,13 +198,13 @@ export const HorizontalAlignment = {
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<rr-text-cell vertical-alignment="center" style="border: 1px dashed #ccc;">
+			<rr-text-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="text">Center</p>
 			</rr-text-cell>
-			<rr-text-cell vertical-alignment="top" style="border: 1px dashed #ccc;">
+			<rr-text-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="text">Top</p>
 			</rr-text-cell>
-			<rr-text-cell vertical-alignment="bottom" style="border: 1px dashed #ccc;">
+			<rr-text-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="text">Bottom</p>
 			</rr-text-cell>
 		</div>

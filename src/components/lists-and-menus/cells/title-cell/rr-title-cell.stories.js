@@ -150,12 +150,12 @@ export const ColorInherit = {
 export const HorizontalAlignment = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<rr-title-cell horizontal-alignment="left" style="border: 1px dashed #ccc;">
+			<rr-title-cell horizontal-alignment="left" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="overline">Overline</p>
 				<h2>Title cell (left)</h2>
 				<p slot="subtitle">Subtitle</p>
 			</rr-title-cell>
-			<rr-title-cell horizontal-alignment="right" style="border: 1px dashed #ccc;">
+			<rr-title-cell horizontal-alignment="right" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="overline">Overline</p>
 				<h2>Title cell (right)</h2>
 				<p slot="subtitle">Subtitle</p>
@@ -167,13 +167,13 @@ export const HorizontalAlignment = {
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<rr-title-cell vertical-alignment="center" style="border: 1px dashed #ccc;">
+			<rr-title-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<h2>Center</h2>
 			</rr-title-cell>
-			<rr-title-cell vertical-alignment="top" style="border: 1px dashed #ccc;">
+			<rr-title-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<h2>Top</h2>
 			</rr-title-cell>
-			<rr-title-cell vertical-alignment="bottom" style="border: 1px dashed #ccc;">
+			<rr-title-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<h2>Bottom</h2>
 			</rr-title-cell>
 		</div>
