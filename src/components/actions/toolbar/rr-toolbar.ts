@@ -117,7 +117,10 @@ export class RRToolbar extends LitElement {
 				'rr-toolbar-overflow-area',
 			]);
 			const onlyInternalMoves = mutations.every(m => {
-				// Attribute change — only rebuild for toolbar-structural elements
+				// Attribute change — only rebuild for toolbar-structural elements.
+				// Deeply nested descendants (e.g. rr-segmented-control-item) can change
+				// selected/disabled/type without affecting toolbar layout. The attributeFilter
+				// values (label, priority, min-width, etc.) are only meaningful on these two tags.
 				if (m.type === 'attributes') {
 					const tag = (m.target as Element).tagName.toLowerCase();
 					return tag !== 'rr-toolbar-item' && tag !== 'rr-toolbar-title-group';
@@ -540,6 +543,8 @@ export class RRToolbar extends LitElement {
 				el.removeAttribute('slot');
 				delete el.dataset.toolbarArea;
 				area.appendChild(el);
+			} else {
+				delete el.dataset.toolbarArea;
 			}
 		}
 	}
