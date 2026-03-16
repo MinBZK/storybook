@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const styles = css`
+	/* # Host */
+
 	:host {
 		display: block;
 		position: relative;
@@ -81,6 +83,9 @@ export const styles = css`
 		left: var(--_drag-clone-left);
 		width: var(--_drag-clone-width);
 		height: var(--_drag-clone-height);
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
 		pointer-events: none;
 		opacity: var(--_drag-clone-opacity);
 		border-radius: var(--components-list-item-indicator-corner-radius);
