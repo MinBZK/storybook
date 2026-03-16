@@ -118,9 +118,11 @@ export class RRToolbar extends LitElement {
 			]);
 			const onlyInternalMoves = mutations.every(m => {
 				// Attribute change — only rebuild for toolbar-structural elements.
-				// Deeply nested descendants (e.g. rr-segmented-control-item) can change
-				// selected/disabled/type without affecting toolbar layout. The attributeFilter
-				// values (label, priority, min-width, etc.) are only meaningful on these two tags.
+				// The watched attributeFilter values (label, priority, min-width, width,
+				// text, disabled, selected, type) only affect toolbar layout when they
+				// change on rr-toolbar-item or rr-toolbar-title-group. Changes on area
+				// elements or deeply nested descendants (e.g. rr-segmented-control-item)
+				// are safe to ignore.
 				if (m.type === 'attributes') {
 					const tag = (m.target as Element).tagName.toLowerCase();
 					return tag !== 'rr-toolbar-item' && tag !== 'rr-toolbar-title-group';

@@ -255,8 +255,6 @@ describe('rr-toolbar', () => {
 		// Simulate a descendant attribute change (like rr-segmented-control-item)
 		const button = el.querySelector('button')!;
 		button.removeAttribute('selected');
-		// MutationObserver fires asynchronously; setTimeout ensures the callback runs before we assert.
-		await new Promise(resolve => setTimeout(resolve, 50));
 		await waitForUpdate(el);
 
 		// Toolbar children must still be intact
