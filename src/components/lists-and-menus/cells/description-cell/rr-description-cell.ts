@@ -30,7 +30,7 @@ type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 const widthConverter = {
 	fromAttribute(value: string | null): string | number {
-		if (value === null) return 'fit-content';
+		if (value === null) return 'stretch';
 		const num = Number(value);
 		return Number.isFinite(num) ? num : value;
 	},
