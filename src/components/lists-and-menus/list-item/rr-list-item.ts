@@ -61,7 +61,13 @@ export class RRListItem extends LitElement {
 	}
 
 	override firstUpdated() {
-		if (this.hasAttribute('data-rr-clone')) return;
+		if (this.hasAttribute('data-rr-clone')) {
+			// Clone is visual-only — skip list sync but still observe slots
+			// so start/end areas render correctly based on cloned light DOM
+			this._observeStartSlot();
+			this._observeEndSlot();
+			return;
+		}
 		this._syncWithList();
 		this._observeStartSlot();
 		this._observeEndSlot();
