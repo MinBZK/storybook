@@ -24,16 +24,13 @@ export const styles = css`
 		display: none;
 	}
 
-	:host([reorderable]) {
-		touch-action: none;
-	}
-
 	:host(:not([reorderable])) ::slotted([draggable-only]) {
 		display: none;
 	}
 
 	:host([reorderable]) ::slotted([draggable-only]) {
 		cursor: grab;
+		touch-action: none;
 	}
 
 	:host(.is-dragging) ::slotted([draggable-only]) {
