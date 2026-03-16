@@ -190,7 +190,8 @@ export class RRList extends LitElement {
 					event.preventDefault();
 					const current = this._getDropIndex();
 					this._setDropIndex(Math.max(0, current - 1));
-					this._announce(this._dragPositionLabel());
+					this._announce(this._dragPositionAnnouncement());
+					if (this._draggingEl) this._setDragHandleLabel(this._draggingEl, this._dragPositionLabel());
 					break;
 				}
 				case 'ArrowDown': {
@@ -198,7 +199,8 @@ export class RRList extends LitElement {
 					const items = this._getItems();
 					const current = this._getDropIndex();
 					this._setDropIndex(Math.min(items.length - 1, current + 1));
-					this._announce(this._dragPositionLabel());
+					this._announce(this._dragPositionAnnouncement());
+					if (this._draggingEl) this._setDragHandleLabel(this._draggingEl, this._dragPositionLabel());
 					break;
 				}
 				case 'Enter':
@@ -231,6 +233,7 @@ export class RRList extends LitElement {
 		this._keyboardDragging = true;
 		this._startDrag(item);
 		this._announce(this._t('components.list.drag-grabbed-text'), true);
+		this._setDragHandleLabel(item, this._dragPositionLabel());
 	};
 
 	// — Drag: core ———————————————————————————————————————————————————————————
@@ -350,6 +353,7 @@ export class RRList extends LitElement {
 	}
 
 	private _cleanupDrag() {
+		if (this._draggingEl) this._setDragHandleLabel(this._draggingEl);
 		this._draggingEl?.classList.remove('is-dragging');
 		this._draggingEl?.classList.remove('is-dragging-pointer');
 		this._placeholder?.remove();
@@ -386,9 +390,29 @@ export class RRList extends LitElement {
 		return str;
 	}
 
+
+	// Sets or clears the aria-label on the active keyboard drag handle button directly
+	private _setDragHandleLabel(item: RRListItem, label?: string) {
+		const handle = item
+			.querySelector('[draggable-only]')
+			?.shadowRoot?.querySelector<HTMLElement>('button');
+		if (!handle) return;
+		if (label) {
+			handle.setAttribute('aria-label', label);
+		} else {
+			handle.removeAttribute('aria-label');
+		}
+	}
+
 	// — Accessibility ————————————————————————————————————————————————————————
 
 	private _dragPositionLabel(): string {
+		const items = this._getItems();
+		const pos = this._getDropIndex() + 1;
+		return this._t('components.list.drag-handle-active-label-text', { position: pos, total: items.length });
+	}
+
+	private _dragPositionAnnouncement(): string {
 		const items = this._getItems();
 		const pos = this._getDropIndex() + 1;
 		return this._t('components.list.drag-position-text', { position: pos, total: items.length });
