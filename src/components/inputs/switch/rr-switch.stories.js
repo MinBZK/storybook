@@ -182,11 +182,11 @@ ProgrammaticControl.parameters = {
 export const AllSizes = () => html`
   <div style="display: flex; gap: 2rem; align-items: center;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
-      <span style="font-size: 14px; color: #64748b;">Small (44x24)</span>
+      <span style="font-size: 14px; color: var(--semantics-content-color);">Small (44x24)</span>
       <rr-switch size="sm" aria-label="Small switch"></rr-switch>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
-      <span style="font-size: 14px; color: #64748b;">Medium (56x32)</span>
+      <span style="font-size: 14px; color: var(--semantics-content-color);">Medium (56x32)</span>
       <rr-switch size="md" aria-label="Medium switch"></rr-switch>
     </div>
   </div>

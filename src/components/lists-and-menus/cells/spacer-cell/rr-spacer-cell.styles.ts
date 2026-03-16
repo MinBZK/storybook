@@ -6,6 +6,7 @@ export const styles = css`
 	:host {
 		display: block;
 		flex-shrink: 0;
+		flex-grow: 0;
 	}
 
 	:host([hidden]) {
@@ -37,7 +38,7 @@ export const styles = css`
 	:host([size="96"]) { width: var(--primitives-space-96); }
 
 	:host([size="flexible"]) {
-		flex: 1;
+		flex-grow: 1;
 		width: auto;
 	}
 `;

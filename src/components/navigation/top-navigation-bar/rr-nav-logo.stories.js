@@ -144,19 +144,19 @@ export const AllSizes = {
   render: () => html`
     <div style="display: flex; flex-direction: column; gap: 32px; align-items: flex-start;">
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+        <p style="margin: 0 0 8px; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">
           Container S
         </p>
         <rr-nav-logo container="sm" has-wordmark title="DigID"></rr-nav-logo>
       </div>
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+        <p style="margin: 0 0 8px; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">
           Container M (default)
         </p>
         <rr-nav-logo container="md" has-wordmark title="DigID"></rr-nav-logo>
       </div>
       <div>
-        <p style="margin: 0 0 8px; font-family: system-ui; color: #64748b; font-size: 12px;">
+        <p style="margin: 0 0 8px; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">
           Container L
         </p>
         <rr-nav-logo container="lg" has-wordmark title="DigID"></rr-nav-logo>
@@ -173,15 +173,15 @@ export const LogoOnlyAllSizes = {
     <div style="display: flex; gap: 32px; align-items: flex-end;">
       <div style="text-align: center;">
         <rr-nav-logo container="sm"></rr-nav-logo>
-        <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">S</p>
+        <p style="margin: 8px 0 0; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">S</p>
       </div>
       <div style="text-align: center;">
         <rr-nav-logo container="md"></rr-nav-logo>
-        <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">M</p>
+        <p style="margin: 8px 0 0; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">M</p>
       </div>
       <div style="text-align: center;">
         <rr-nav-logo container="lg"></rr-nav-logo>
-        <p style="margin: 8px 0 0; font-family: system-ui; color: #64748b; font-size: 12px;">L</p>
+        <p style="margin: 8px 0 0; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">L</p>
       </div>
     </div>
   `,

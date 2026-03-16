@@ -41,7 +41,7 @@ export const titleBarStyles = css`
 
 	/* # Overline */
 
-	.title-bar__overline {
+	::slotted([slot='overline']) {
 		margin: 0;
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-sm-regular-tight);
@@ -50,20 +50,16 @@ export const titleBarStyles = css`
 
 	/* # Title */
 
-	.title-bar__title {
+	::slotted(:not([slot])) {
 		margin: 0;
 		padding: 0;
 		color: var(--semantics-content-color);
-
-		@media (forced-colors: active) {
-			color: CanvasText;
-		}
 	}
 
 
 	/* # Subtitle */
 
-	.title-bar__subtitle {
+	::slotted([slot='subtitle']) {
 		margin: 0;
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-sm-regular-tight);
@@ -82,18 +78,18 @@ export const titleBarStyles = css`
 
 	/* # Size 1 */
 
-	:host([size='1']) .title-bar__title {
+	:host([size='1']) ::slotted(:not([slot])) {
 		font: var(--primitives-font-display-1-sm);
 	}
 
 	@container (min-width: ${mdMin}) {
-		:host([size='1']) .title-bar__title {
+		:host([size='1']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-1-md);
 		}
 	}
 
 	@container (min-width: ${lgMin}) {
-		:host([size='1']) .title-bar__title {
+		:host([size='1']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-1-lg);
 		}
 	}
@@ -101,18 +97,18 @@ export const titleBarStyles = css`
 
 	/* # Size 2 */
 
-	:host([size='2']) .title-bar__title {
+	:host([size='2']) ::slotted(:not([slot])) {
 		font: var(--primitives-font-display-2-sm);
 	}
 
 	@container (min-width: ${mdMin}) {
-		:host([size='2']) .title-bar__title {
+		:host([size='2']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-2-md);
 		}
 	}
 
 	@container (min-width: ${lgMin}) {
-		:host([size='2']) .title-bar__title {
+		:host([size='2']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-2-lg);
 		}
 	}
@@ -120,21 +116,21 @@ export const titleBarStyles = css`
 
 	/* # Size 3 */
 
-	:host([size='3']) .title-bar__title,
-	:host(:not([size])) .title-bar__title {
+	:host([size='3']) ::slotted(:not([slot])),
+	:host(:not([size])) ::slotted(:not([slot])) {
 		font: var(--primitives-font-display-3-sm);
 	}
 
 	@container (min-width: ${mdMin}) {
-		:host([size='3']) .title-bar__title,
-		:host(:not([size])) .title-bar__title {
+		:host([size='3']) ::slotted(:not([slot])),
+		:host(:not([size])) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-3-md);
 		}
 	}
 
 	@container (min-width: ${lgMin}) {
-		:host([size='3']) .title-bar__title,
-		:host(:not([size])) .title-bar__title {
+		:host([size='3']) ::slotted(:not([slot])),
+		:host(:not([size])) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-3-lg);
 		}
 	}
@@ -142,18 +138,18 @@ export const titleBarStyles = css`
 
 	/* # Size 4 */
 
-	:host([size='4']) .title-bar__title {
+	:host([size='4']) ::slotted(:not([slot])) {
 		font: var(--primitives-font-display-4-sm);
 	}
 
 	@container (min-width: ${mdMin}) {
-		:host([size='4']) .title-bar__title {
+		:host([size='4']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-4-md);
 		}
 	}
 
 	@container (min-width: ${lgMin}) {
-		:host([size='4']) .title-bar__title {
+		:host([size='4']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-4-lg);
 		}
 	}
@@ -161,18 +157,18 @@ export const titleBarStyles = css`
 
 	/* # Size 5 */
 
-	:host([size='5']) .title-bar__title {
+	:host([size='5']) ::slotted(:not([slot])) {
 		font: var(--primitives-font-display-5-sm);
 	}
 
 	@container (min-width: ${mdMin}) {
-		:host([size='5']) .title-bar__title {
+		:host([size='5']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-5-md);
 		}
 	}
 
 	@container (min-width: ${lgMin}) {
-		:host([size='5']) .title-bar__title {
+		:host([size='5']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-5-lg);
 		}
 	}
@@ -180,18 +176,18 @@ export const titleBarStyles = css`
 
 	/* # Size 6 */
 
-	:host([size='6']) .title-bar__title {
+	:host([size='6']) ::slotted(:not([slot])) {
 		font: var(--primitives-font-display-6-sm);
 	}
 
 	@container (min-width: ${mdMin}) {
-		:host([size='6']) .title-bar__title {
+		:host([size='6']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-6-md);
 		}
 	}
 
 	@container (min-width: ${lgMin}) {
-		:host([size='6']) .title-bar__title {
+		:host([size='6']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-6-lg);
 		}
 	}

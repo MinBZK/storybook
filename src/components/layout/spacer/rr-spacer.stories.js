@@ -106,7 +106,7 @@ Flexibel.parameters = { controls: { disable: true } };
 
 export const Responsief = () => html`
 	<div style="display: flex; flex-direction: column; align-items: flex-start;">
-		<p style="font-size: 14px; color: #64748b; margin: 0 0 8px 0;">sm — 16px</p>
+		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">sm — 16px</p>
 		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 320px; border: 1px dashed #cbd5e1; padding: 8px;">
 			<rr-button>Knop</rr-button>
 			<rr-spacer size="md"></rr-spacer>
@@ -115,7 +115,7 @@ export const Responsief = () => html`
 
 		<rr-spacer size="24" direction="vertical"></rr-spacer>
 
-		<p style="font-size: 14px; color: #64748b; margin: 0 0 8px 0;">md — 24px</p>
+		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">md — 24px</p>
 		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 641px; border: 1px dashed #cbd5e1; padding: 8px;">
 			<rr-button>Knop</rr-button>
 			<rr-spacer size="md"></rr-spacer>
@@ -124,7 +124,7 @@ export const Responsief = () => html`
 
 		<rr-spacer size="24" direction="vertical"></rr-spacer>
 
-		<p style="font-size: 14px; color: #64748b; margin: 0 0 8px 0;">lg — 24px</p>
+		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">lg — 24px</p>
 		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 1008px; border: 1px dashed #cbd5e1; padding: 8px;">
 			<rr-button>Knop</rr-button>
 			<rr-spacer size="md"></rr-spacer>

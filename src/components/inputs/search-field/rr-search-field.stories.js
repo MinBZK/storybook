@@ -102,11 +102,11 @@ Disabled.args = {
 export const AllSizes = () => html`
   <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 400px;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Medium (default)</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Medium (default)</label>
       <rr-search-field size="md" placeholder="Search"></rr-search-field>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Small</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Small</label>
       <rr-search-field size="sm" placeholder="Search"></rr-search-field>
     </div>
   </div>
@@ -119,15 +119,15 @@ AllSizes.parameters = {
 export const AllStates = () => html`
   <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 400px;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Default</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Default</label>
       <rr-search-field placeholder="Search"></rr-search-field>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">With value</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">With value</label>
       <rr-search-field value="Example search"></rr-search-field>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Disabled</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Disabled</label>
       <rr-search-field disabled placeholder="Search"></rr-search-field>
     </div>
   </div>

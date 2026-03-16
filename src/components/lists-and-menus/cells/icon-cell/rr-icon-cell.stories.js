@@ -81,7 +81,7 @@ export const Selected = {
 
 export const VerticalTop = {
 	render: () => html`
-		<rr-icon-cell vertical-alignment="top" size="24" style="height: 80px; border: 1px dashed #ccc;">
+		<rr-icon-cell vertical-alignment="top" size="24" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
 			<rr-icon name="icon-placeholder"></rr-icon>
 		</rr-icon-cell>
 	`,

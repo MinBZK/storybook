@@ -730,6 +730,8 @@
 	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-250));
 	--semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-750), var(--primitives-color-danger-800));
 
+	--semantics-grab-handles-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
+	--semantics-grab-handles-grip-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-750));
 
 	--semantics-input-fields-border-thickness: var(--primitives-space-2);
 	--semantics-input-fields-placeholder-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
@@ -773,12 +775,16 @@
 	--semantics-focus-ring-center-color:  light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
 	--semantics-focus-ring-center-thickness: 4px;
 
+	--components-list-corner-radius: var(--semantics-controls-md-corner-radius);
+	--components-list-drag-placeholder-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 
-	--components-list-item-sm-padding-block: var(--primitives-space-8);
-	--components-list-item-md-padding-block: var(--primitives-space-12);
-	--components-list-item-is-selected-corner-radius: var(--primitives-corner-radius-md);
+	--components-list-item-sm-padding-block: var(--primitives-space-6);
+	--components-list-item-md-padding-block: var(--primitives-space-10);
+	--components-list-item-indicator-corner-radius: var(--primitives-corner-radius-md);
+	--components-list-item-is-hovered-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--components-list-item-is-selected-background-color: var(--semantics-controls-is-selected-indicator-color);
 	--components-list-item-is-selected-content-color: var(--semantics-controls-is-selected-contrast-color);
+	--components-list-item-is-dragging-opacity: var(--primitives-opacity-40);
 
 
 	--components-menu-item-is-highlighted-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
@@ -849,10 +855,6 @@
 
 
 	--components-top-title-bar-button-bar-divider-color: #c9ced8;
-
-
-	--components-grab-handle-background-color: #d9dee4;
-	--components-grab-handle-color: #67778d;
 
 
 	--components-form-gap: var(--primitives-space-16);

@@ -107,7 +107,7 @@ export const Interactive = () => {
 			<rr-menu-bar-item>Over ons</rr-menu-bar-item>
 			<rr-menu-bar-item>Contact</rr-menu-bar-item>
 		</rr-menu-bar>
-		<p style="margin-top: 1rem; color: #64748b; font-size: 14px;">
+		<p style="margin-top: 1rem; color: var(--semantics-content-color); font-size: 14px;">
 			Open de browser console om de 'itemselect' events te zien.
 			<br />
 			Gebruik de pijltjestoetsen (← →), Home en End om te navigeren.
@@ -119,7 +119,7 @@ Interactive.parameters = { controls: { disable: true } };
 export const AllStates = () => html`
 	<div style="display: flex; flex-direction: column; gap: 2rem;">
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">Default state</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Default state</h3>
 			<rr-menu-bar>
 				<rr-menu-bar-item>Home</rr-menu-bar-item>
 				<rr-menu-bar-item>Diensten</rr-menu-bar-item>
@@ -127,7 +127,7 @@ export const AllStates = () => html`
 			</rr-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">With selection</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">With selection</h3>
 			<rr-menu-bar>
 				<rr-menu-bar-item>Home</rr-menu-bar-item>
 				<rr-menu-bar-item selected>Diensten</rr-menu-bar-item>
@@ -135,7 +135,7 @@ export const AllStates = () => html`
 			</rr-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">With disabled item</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">With disabled item</h3>
 			<rr-menu-bar>
 				<rr-menu-bar-item>Home</rr-menu-bar-item>
 				<rr-menu-bar-item disabled>Diensten</rr-menu-bar-item>
@@ -143,7 +143,7 @@ export const AllStates = () => html`
 			</rr-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">With title (size m)</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">With title (size m)</h3>
 			<rr-menu-bar size="m">
 				<h2 slot="title" style="margin: 0;">Navigatie</h2>
 				<rr-menu-bar-item>Home</rr-menu-bar-item>
@@ -158,7 +158,7 @@ AllStates.parameters = { controls: { disable: true } };
 export const TitleSizes = () => html`
 	<div style="display: flex; flex-direction: column; gap: 2rem;">
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">Small (18px)</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Small (18px)</h3>
 			<rr-menu-bar size="s">
 				<h2 slot="title" style="margin: 0;">Navigatie</h2>
 				<rr-menu-bar-item selected>Home</rr-menu-bar-item>
@@ -167,7 +167,7 @@ export const TitleSizes = () => html`
 			</rr-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">Medium (20px, default)</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Medium (20px, default)</h3>
 			<rr-menu-bar size="m">
 				<h2 slot="title" style="margin: 0;">Navigatie</h2>
 				<rr-menu-bar-item selected>Home</rr-menu-bar-item>
@@ -176,7 +176,7 @@ export const TitleSizes = () => html`
 			</rr-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">Large (23px)</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Large (23px)</h3>
 			<rr-menu-bar size="l">
 				<h2 slot="title" style="margin: 0;">Navigatie</h2>
 				<rr-menu-bar-item selected>Home</rr-menu-bar-item>

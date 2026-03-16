@@ -51,12 +51,12 @@ Selected.args = { selected: true };
 export const AllContentTypes = () => html`
   <div style="display: flex; gap: 1rem; align-items: center;">
     <div>
-      <h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">Text</h3>
+      <h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Text</h3>
       <rr-tab-bar-item content-type="text">Tab bar item</rr-tab-bar-item>
       <rr-tab-bar-item content-type="text" selected>Tab bar item</rr-tab-bar-item>
     </div>
     <div>
-      <h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">Icon</h3>
+      <h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Icon</h3>
       <rr-tab-bar-item content-type="icon">
         <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4 2"/></svg>
       </rr-tab-bar-item>
@@ -65,7 +65,7 @@ export const AllContentTypes = () => html`
       </rr-tab-bar-item>
     </div>
     <div>
-      <h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: #64748b;">Icon with title</h3>
+      <h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Icon with title</h3>
       <rr-tab-bar-item content-type="icon-with-title">
         <svg slot="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="4 2"/></svg>
         Tab bar item

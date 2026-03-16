@@ -87,7 +87,7 @@ FullWidth.decorators = [
 export const AllSizes = () => html`
   <div style="display: flex; flex-direction: column; gap: 1rem;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <span style="font-size: 14px; color: #64748b;">Small</span>
+      <span style="font-size: 14px; color: var(--semantics-content-color);">Small</span>
       <rr-segmented-control size="sm" value="option1">
         <rr-segmented-control-item value="option1">Optie 1</rr-segmented-control-item>
         <rr-segmented-control-item value="option2">Optie 2</rr-segmented-control-item>
@@ -95,7 +95,7 @@ export const AllSizes = () => html`
       </rr-segmented-control>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <span style="font-size: 14px; color: #64748b;">Medium</span>
+      <span style="font-size: 14px; color: var(--semantics-content-color);">Medium</span>
       <rr-segmented-control size="md" value="option1">
         <rr-segmented-control-item value="option1">Optie 1</rr-segmented-control-item>
         <rr-segmented-control-item value="option2">Optie 2</rr-segmented-control-item>
@@ -123,7 +123,7 @@ export const ViewModeExample = () => html`
       <rr-segmented-control-item value="grid">Raster</rr-segmented-control-item>
       <rr-segmented-control-item value="table">Tabel</rr-segmented-control-item>
     </rr-segmented-control>
-    <p style="font-size: 14px; color: #64748b; margin: 0;">
+    <p style="font-size: 14px; color: var(--semantics-content-color); margin: 0;">
       Klik op een optie om de weergave te wijzigen (check console)
     </p>
   </div>

@@ -92,11 +92,11 @@ AtMaximum.args = { value: 10, max: 10 };
 export const AllSizes = () => html`
   <div style="display: flex; gap: 2rem; align-items: center;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
-      <span style="font-size: 14px; color: #64748b;">Small</span>
+      <span style="font-size: 14px; color: var(--semantics-content-color);">Small</span>
       <rr-stepper size="sm" value="5"></rr-stepper>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
-      <span style="font-size: 14px; color: #64748b;">Medium</span>
+      <span style="font-size: 14px; color: var(--semantics-content-color);">Medium</span>
       <rr-stepper size="md" value="5"></rr-stepper>
     </div>
   </div>
@@ -122,7 +122,7 @@ export const InteractiveExample = () => {
           Value: <span id="value-display">5</span>
         </span>
       </div>
-      <p style="font-size: 14px; color: #64748b; margin: 0;">
+      <p style="font-size: 14px; color: var(--semantics-content-color); margin: 0;">
         Click the + and - buttons to change the value (min: 0, max: 10)
       </p>
     </div>

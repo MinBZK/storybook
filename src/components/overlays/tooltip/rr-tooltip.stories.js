@@ -68,21 +68,21 @@ Default.args = {
 export const AllPositions = () => html`
   <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center; padding: 2rem;">
     <div>
-      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b; text-align: center;">Top</p>
+      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: var(--semantics-content-color); text-align: center;">Top</p>
       <rr-tooltip position="top" text="Tooltip boven"></rr-tooltip>
     </div>
     <div style="display: flex; gap: 4rem; align-items: center;">
       <div>
-        <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b; text-align: center;">Left</p>
+        <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: var(--semantics-content-color); text-align: center;">Left</p>
         <rr-tooltip position="left" text="Tooltip links"></rr-tooltip>
       </div>
       <div>
-        <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b; text-align: center;">Right</p>
+        <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: var(--semantics-content-color); text-align: center;">Right</p>
         <rr-tooltip position="right" text="Tooltip rechts"></rr-tooltip>
       </div>
     </div>
     <div>
-      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: #64748b; text-align: center;">Bottom</p>
+      <p style="margin: 0 0 0.5rem; font-size: 0.875rem; color: var(--semantics-content-color); text-align: center;">Bottom</p>
       <rr-tooltip position="bottom" text="Tooltip onder"></rr-tooltip>
     </div>
   </div>

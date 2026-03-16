@@ -202,7 +202,7 @@ export const Spacing = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 3rem;">
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">flat</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">flat</p>
 				<rr-rich-text spacing="flat">
 					<h3>Artikel 1. Algemene begrippen</h3>
 					<p>In deze wet wordt verstaan onder:</p>
@@ -213,7 +213,7 @@ export const Spacing = {
 				</rr-rich-text>
 			</div>
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">tight</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">tight</p>
 				<rr-rich-text spacing="tight">
 					<h3>Artikel 1. Algemene begrippen</h3>
 					<p>In deze wet wordt verstaan onder:</p>
@@ -224,7 +224,7 @@ export const Spacing = {
 				</rr-rich-text>
 			</div>
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">snug (default)</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">snug (default)</p>
 				<rr-rich-text spacing="snug">
 					<h3>Artikel 1. Algemene begrippen</h3>
 					<p>In deze wet wordt verstaan onder:</p>
@@ -235,7 +235,7 @@ export const Spacing = {
 				</rr-rich-text>
 			</div>
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">loose</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">loose</p>
 				<rr-rich-text spacing="loose">
 					<h3>Artikel 1. Algemene begrippen</h3>
 					<p>In deze wet wordt verstaan onder:</p>
@@ -308,7 +308,7 @@ export const AllSizes = {
 	render: (args) => html`
 		<div style="display: flex; flex-direction: column; gap: 2rem;">
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">sm (&lt; 641px) — constrained to 393px</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">sm (&lt; 641px) — constrained to 393px</p>
 				<div style="width: 393px; border: 1px dashed #cbd5e1; padding: 16px;">
 					<rr-rich-text spacing=${args.spacing}>
 						<h3>Artikel 1. Algemene begrippen</h3>
@@ -321,7 +321,7 @@ export const AllSizes = {
 				</div>
 			</div>
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">md (≥ 641px) — constrained to 834px</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">md (≥ 641px) — constrained to 834px</p>
 				<div style="width: 834px; border: 1px dashed #cbd5e1; padding: 16px;">
 					<rr-rich-text spacing=${args.spacing}>
 						<h3>Artikel 1. Algemene begrippen</h3>
@@ -334,7 +334,7 @@ export const AllSizes = {
 				</div>
 			</div>
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">lg (≥ 1008px) — constrained to 1200px</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">lg (≥ 1008px) — constrained to 1200px</p>
 				<div style="width: 1200px; border: 1px dashed #cbd5e1; padding: 16px;">
 					<rr-rich-text spacing=${args.spacing}>
 						<h3>Artikel 1. Algemene begrippen</h3>

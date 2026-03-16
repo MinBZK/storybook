@@ -68,7 +68,7 @@ export default {
 };
 
 const gridItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="padding: 24px; background: #ccc; border-radius: 8px; min-height: 120px;">
+	<div style="padding: 24px; background: var(--primitives-color-neutral-150); border-radius: 8px; min-height: 120px;">
 		<rr-rich-text size="flat">
 			<h3>Item ${i + 1}</h3>
 			<p>Omschrijving van item ${i + 1}.</p>
@@ -77,7 +77,7 @@ const gridItems = Array.from({ length: 12 }, (_, i) => html`
 `);
 
 const listItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="padding: 16px; background: #ccc; border-radius: 8px;">
+	<div style="padding: 16px; background: var(--primitives-color-neutral-150); border-radius: 8px;">
 		<rr-rich-text size="flat">
 			<h3>Item ${i + 1}</h3>
 			<p>Omschrijving van item ${i + 1}.</p>
@@ -86,7 +86,7 @@ const listItems = Array.from({ length: 12 }, (_, i) => html`
 `);
 
 const scrollItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="width: 280px; min-height: 200px; padding: 24px; background: #ccc; border-radius: 8px; flex-shrink: 0; box-sizing: border-box;">
+	<div style="width: 280px; min-height: 200px; padding: 24px; background: var(--primitives-color-neutral-150); border-radius: 8px; flex-shrink: 0; box-sizing: border-box;">
 		<rr-rich-text size="flat">
 			<h3>Item ${i + 1}</h3>
 			<p>Omschrijving van item ${i + 1}.</p>

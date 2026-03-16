@@ -132,19 +132,19 @@ CustomStep.args = {
 export const AllStates = () => html`
   <div style="display: flex; flex-direction: column; gap: 1.5rem;">
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Default</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Default</label>
       <rr-number-field value="1"></rr-number-field>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">At minimum (0)</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">At minimum (0)</label>
       <rr-number-field value="0" min="0" max="10"></rr-number-field>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">At maximum (10)</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">At maximum (10)</label>
       <rr-number-field value="10" min="0" max="10"></rr-number-field>
     </div>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: #64748b;">Disabled</label>
+      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Disabled</label>
       <rr-number-field value="5" disabled></rr-number-field>
     </div>
   </div>

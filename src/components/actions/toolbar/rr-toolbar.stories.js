@@ -26,7 +26,7 @@ const resizable = (content) => html`
 	<div style="resize: horizontal; overflow: hidden; min-width: 200px; max-width: 100%; padding: 8px;">
 		${content}
 	</div>
-	<p style="font-size: 0.75rem; color: #64748b; margin: 8px 0 0;">
+	<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 8px 0 0;">
 		↔ Sleep de hoek rechtsonder om de breedte aan te passen
 	</p>
 `;
@@ -230,7 +230,7 @@ export const Sizes = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">md (default)</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">md (default)</p>
 				${resizable(html`
 					<rr-toolbar size="md">
 						<rr-toolbar-start-area>
@@ -259,7 +259,7 @@ export const Sizes = {
 				`)}
 			</div>
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">sm</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">sm</p>
 				${resizable(html`
 					<rr-toolbar size="sm">
 						<rr-toolbar-start-area>
@@ -294,7 +294,7 @@ export const LabelsToggle = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">Zonder labels</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">Zonder labels</p>
 				${resizable(html`
 					<rr-toolbar size="md">
 						<rr-toolbar-start-area>
@@ -333,7 +333,7 @@ export const LabelsToggle = {
 				`)}
 			</div>
 			<div>
-				<p style="font-size: 0.75rem; color: #64748b; margin: 0 0 8px;">Met labels</p>
+				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">Met labels</p>
 				${resizable(html`
 					<rr-toolbar
 						size="md"
