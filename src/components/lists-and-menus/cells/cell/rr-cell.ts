@@ -55,8 +55,10 @@ export class RRCell extends LitElement {
 	@property({ reflect: true, attribute: 'vertical-alignment' })
 	verticalAlignment: CellVerticalAlignment = 'center';
 
-	override updated() {
-		this._applyDimensionStyles();
+	override updated(changed: Map<string, unknown>) {
+		if (changed.has('width') || changed.has('minWidth') || changed.has('maxWidth') || changed.has('minHeight')) {
+			this._applyDimensionStyles();
+		}
 	}
 
 	private _applyDimensionStyles() {

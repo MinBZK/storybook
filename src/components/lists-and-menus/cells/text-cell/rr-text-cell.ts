@@ -79,8 +79,10 @@ export class RRTextCell extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	override updated() {
-		this._applyDimensionStyles();
+	override updated(changed: Map<string, unknown>) {
+		if (changed.has('width') || changed.has('minWidth') || changed.has('maxWidth') || changed.has('minHeight')) {
+			this._applyDimensionStyles();
+		}
 	}
 
 	private _applyDimensionStyles() {
