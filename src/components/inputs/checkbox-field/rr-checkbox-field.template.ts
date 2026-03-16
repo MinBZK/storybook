@@ -7,15 +7,17 @@ export function checkboxFieldTemplate(component: RRCheckboxField): TemplateResul
 		<div class="checkbox-field"
 			@click=${component._handleLabelClick}
 		>
-			<rr-checkbox class="checkbox-field__control"
-				?checked=${component.checked}
-				?indeterminate=${component.indeterminate}
-				?disabled=${component.disabled}
-				name=${component.name || ''}
-				value=${component.value}
-				accessible-label=${component._labelText || nothing}
-				@change=${component._handleChange}
-			></rr-checkbox>
+			<div class="checkbox-field__control">
+				<rr-checkbox
+					?checked=${component.checked}
+					?indeterminate=${component.indeterminate}
+					?disabled=${component.disabled}
+					name=${component.name || ''}
+					value=${component.value}
+					accessible-label=${component._labelText || nothing}
+					@change=${component._handleChange}
+				></rr-checkbox>
+			</div>
 			<label class="checkbox-field__label">
 				<slot @slotchange=${component._onSlotChange}></slot>
 			</label>
