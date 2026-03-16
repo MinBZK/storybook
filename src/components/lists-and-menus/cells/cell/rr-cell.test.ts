@@ -30,7 +30,7 @@ describe('rr-cell', () => {
 	it('sets inline width style for numeric width', async () => {
 		el = await fixture('<rr-cell width="120"></rr-cell>');
 		await waitForUpdate(el);
-		expect(el.style.width).toBe('120px');
+		expect(el.style.getPropertyValue('--_width')).toBe('120px');
 	});
 
 	it('sets --_min-width custom property', async () => {
