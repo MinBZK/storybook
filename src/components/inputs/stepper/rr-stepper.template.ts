@@ -10,7 +10,7 @@ export function stepperTemplate(component: RRStepper): TemplateResult {
 	return html`
 		<div class="stepper"
 			role="group"
-			aria-label=${component._t('components.stepper.to-change-amount-action')}
+			aria-label=${component._t('components.stepper.to-adjust-value-action')}
 		>
 			<rr-icon-button
 				variant="neutral-tinted"

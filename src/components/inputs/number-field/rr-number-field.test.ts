@@ -4,173 +4,205 @@ import type { RRNumberField } from './rr-number-field.ts';
 import './rr-number-field.ts';
 
 describe('rr-number-field', () => {
-  let el: HTMLElement;
+	let el: HTMLElement;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('renders without error', async () => {
-    el = await fixture('<rr-number-field></rr-number-field>');
-    await waitForUpdate(el);
+	it('renders without error', async () => {
+		el = await fixture('<rr-number-field></rr-number-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
 
-    expect(el.shadowRoot).not.toBeNull();
-  });
+	it('renders two rr-icon-button elements', async () => {
+		el = await fixture('<rr-number-field></rr-number-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelectorAll('rr-icon-button').length).toBe(2);
+	});
+
+	it('renders a native number input', async () => {
+		el = await fixture('<rr-number-field></rr-number-field>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input[type="number"]')).not.toBeNull();
+	});
 });
+
+
+/* ============================================================
+   State
+   ============================================================ */
+
+describe('rr-number-field – state', () => {
+	let el: RRNumberField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('has default value of 0', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field></rr-number-field>');
+		await waitForUpdate(el);
+		expect(el.value).toBe(0);
+	});
+
+	it('reflects value attribute', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="5"></rr-number-field>');
+		await waitForUpdate(el);
+		expect(el.value).toBe(5);
+	});
+
+	it('forwards name to native input', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field name="aantal"></rr-number-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.name).toBe('aantal');
+	});
+
+	it('disables native input when disabled', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field disabled></rr-number-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.disabled).toBe(true);
+	});
+
+	it('disables decrement button at minimum value', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="0" min="0"></rr-number-field>');
+		await waitForUpdate(el);
+		const [decrement] = el.shadowRoot!.querySelectorAll('rr-icon-button');
+		await waitForUpdate(decrement);
+		expect((decrement as any).disabled).toBe(true);
+	});
+
+	it('disables increment button at maximum value', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="10" max="10"></rr-number-field>');
+		await waitForUpdate(el);
+		const buttons = el.shadowRoot!.querySelectorAll('rr-icon-button');
+		const increment = buttons[1];
+		await waitForUpdate(increment);
+		expect((increment as any).disabled).toBe(true);
+	});
+
+	it('disables both buttons when component is disabled', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="5" disabled></rr-number-field>');
+		await waitForUpdate(el);
+		const [decrement, increment] = el.shadowRoot!.querySelectorAll('rr-icon-button');
+		await waitForUpdate(decrement);
+		await waitForUpdate(increment);
+		expect((decrement as any).disabled).toBe(true);
+		expect((increment as any).disabled).toBe(true);
+	});
+});
+
+
+/* ============================================================
+   Increment & decrement
+   ============================================================ */
 
 describe('rr-number-field – increment & decrement', () => {
-  let el: RRNumberField;
+	let el: RRNumberField;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('increments value on increase button click', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="5"></rr-number-field>');
-    await waitForUpdate(el);
+	it('increments value by step', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="5" step="1"></rr-number-field>');
+		await waitForUpdate(el);
+		el._handleIncrease();
+		expect(el.value).toBe(6);
+	});
 
-    const increaseBtn = el.shadowRoot!.querySelector('[part="increase-button"]') as HTMLElement;
-    increaseBtn.click();
-    await waitForUpdate(el);
+	it('decrements value by step', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="5" step="1"></rr-number-field>');
+		await waitForUpdate(el);
+		el._handleDecrease();
+		expect(el.value).toBe(4);
+	});
 
-    expect(el.value).toBe(6);
-  });
+	it('respects custom step size', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="0" step="5"></rr-number-field>');
+		await waitForUpdate(el);
+		el._handleIncrease();
+		expect(el.value).toBe(5);
+	});
 
-  it('decrements value on decrease button click', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="5"></rr-number-field>');
-    await waitForUpdate(el);
+	it('clamps value to max on increment', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="9" max="10"></rr-number-field>');
+		await waitForUpdate(el);
+		el._handleIncrease();
+		expect(el.value).toBe(10);
+		el._handleIncrease();
+		expect(el.value).toBe(10);
+	});
 
-    const decreaseBtn = el.shadowRoot!.querySelector('[part="decrease-button"]') as HTMLElement;
-    decreaseBtn.click();
-    await waitForUpdate(el);
+	it('clamps value to min on decrement', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="1" min="0"></rr-number-field>');
+		await waitForUpdate(el);
+		el._handleDecrease();
+		expect(el.value).toBe(0);
+		el._handleDecrease();
+		expect(el.value).toBe(0);
+	});
 
-    expect(el.value).toBe(4);
-  });
+	it('does not increment when disabled', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="5" disabled></rr-number-field>');
+		await waitForUpdate(el);
+		el._handleIncrease();
+		expect(el.value).toBe(5);
+	});
 
-  it('uses custom step value', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="10" step="5"></rr-number-field>');
-    await waitForUpdate(el);
-
-    const increaseBtn = el.shadowRoot!.querySelector('[part="increase-button"]') as HTMLElement;
-    increaseBtn.click();
-    await waitForUpdate(el);
-
-    expect(el.value).toBe(15);
-  });
-
-  it('dispatches input and change events on value change', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="5"></rr-number-field>');
-    await waitForUpdate(el);
-
-    let inputDetail: any;
-    let changeDetail: any;
-    el.addEventListener('input', ((e: CustomEvent) => { inputDetail = e.detail; }) as EventListener);
-    el.addEventListener('change', ((e: CustomEvent) => { changeDetail = e.detail; }) as EventListener);
-
-    const increaseBtn = el.shadowRoot!.querySelector('[part="increase-button"]') as HTMLElement;
-    increaseBtn.click();
-
-    expect(inputDetail).toBeDefined();
-    expect(inputDetail.value).toBe(6);
-    expect(changeDetail).toBeDefined();
-    expect(changeDetail.value).toBe(6);
-  });
+	it('does not decrement when disabled', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="5" disabled></rr-number-field>');
+		await waitForUpdate(el);
+		el._handleDecrease();
+		expect(el.value).toBe(5);
+	});
 });
 
-describe('rr-number-field – min/max clamping', () => {
-  let el: RRNumberField;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+/* ============================================================
+   Change event
+   ============================================================ */
 
-  it('clamps value to max on increase', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="9" max="10"></rr-number-field>');
-    await waitForUpdate(el);
+describe('rr-number-field – change event', () => {
+	let el: RRNumberField;
 
-    const increaseBtn = el.shadowRoot!.querySelector('[part="increase-button"]') as HTMLElement;
-    increaseBtn.click();
-    await waitForUpdate(el);
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-    expect(el.value).toBe(10);
+	it('dispatches input and change events on increment', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="5" max="10"></rr-number-field>');
+		await waitForUpdate(el);
+		let inputDetail: any;
+		let changeDetail: any;
+		el.addEventListener('input', ((e: CustomEvent) => { inputDetail = e.detail; }) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => { changeDetail = e.detail; }) as EventListener);
+		el._handleIncrease();
+		expect(inputDetail?.value).toBe(6);
+		expect(changeDetail?.value).toBe(6);
+	});
 
-    // Try again — should not go beyond
-    increaseBtn.click();
-    await waitForUpdate(el);
+	it('dispatches input and change events on decrement', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="5" min="0"></rr-number-field>');
+		await waitForUpdate(el);
+		let inputDetail: any;
+		let changeDetail: any;
+		el.addEventListener('input', ((e: CustomEvent) => { inputDetail = e.detail; }) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => { changeDetail = e.detail; }) as EventListener);
+		el._handleDecrease();
+		expect(inputDetail?.value).toBe(4);
+		expect(changeDetail?.value).toBe(4);
+	});
 
-    expect(el.value).toBe(10);
-  });
-
-  it('clamps value to min on decrease', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="1" min="0"></rr-number-field>');
-    await waitForUpdate(el);
-
-    const decreaseBtn = el.shadowRoot!.querySelector('[part="decrease-button"]') as HTMLElement;
-    decreaseBtn.click();
-    await waitForUpdate(el);
-
-    expect(el.value).toBe(0);
-
-    // Try again — should not go below
-    decreaseBtn.click();
-    await waitForUpdate(el);
-
-    expect(el.value).toBe(0);
-  });
-
-  it('disables decrease button when at min', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="0" min="0"></rr-number-field>');
-    await waitForUpdate(el);
-
-    const decreaseBtn = el.shadowRoot!.querySelector('[part="decrease-button"]') as HTMLButtonElement;
-    expect(decreaseBtn.disabled).toBe(true);
-  });
-
-  it('disables increase button when at max', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="10" max="10"></rr-number-field>');
-    await waitForUpdate(el);
-
-    const increaseBtn = el.shadowRoot!.querySelector('[part="increase-button"]') as HTMLButtonElement;
-    expect(increaseBtn.disabled).toBe(true);
-  });
-
-  it('does not dispatch events when value would not change', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="10" max="10"></rr-number-field>');
-    await waitForUpdate(el);
-
-    let eventFired = false;
-    el.addEventListener('input', () => { eventFired = true; });
-
-    const increaseBtn = el.shadowRoot!.querySelector('[part="increase-button"]') as HTMLElement;
-    increaseBtn.click();
-
-    expect(eventFired).toBe(false);
-  });
-});
-
-describe('rr-number-field – disabled state', () => {
-  let el: RRNumberField;
-
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
-
-  it('disables both buttons when component is disabled', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="5" disabled></rr-number-field>');
-    await waitForUpdate(el);
-
-    const decreaseBtn = el.shadowRoot!.querySelector('[part="decrease-button"]') as HTMLButtonElement;
-    const increaseBtn = el.shadowRoot!.querySelector('[part="increase-button"]') as HTMLButtonElement;
-
-    expect(decreaseBtn.disabled).toBe(true);
-    expect(increaseBtn.disabled).toBe(true);
-  });
-
-  it('disables the native input when component is disabled', async () => {
-    el = await fixture<RRNumberField>('<rr-number-field value="5" disabled></rr-number-field>');
-    await waitForUpdate(el);
-
-    const input = el.shadowRoot!.querySelector('[part="input"]') as HTMLInputElement;
-    expect(input.disabled).toBe(true);
-  });
+	it('does not dispatch events when value would not change', async () => {
+		el = await fixture<RRNumberField>('<rr-number-field value="10" max="10"></rr-number-field>');
+		await waitForUpdate(el);
+		let eventFired = false;
+		el.addEventListener('input', () => { eventFired = true; });
+		el._handleIncrease();
+		expect(eventFired).toBe(false);
+	});
 });
