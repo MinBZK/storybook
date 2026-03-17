@@ -51,6 +51,10 @@ export const segmentedControlItemStyles = css`
 		display: flex;
 		min-width: 0;
 		position: relative;
+		--_segmented-control-md-inset-size: 4px;
+		--_segmented-control-md-gap-size: 4px;
+		--_segmented-control-sm-inset-size: 3px;
+		--_segmented-control-sm-gap-size: 2px;
 	}
 
 	:host([hidden]) {
@@ -83,28 +87,22 @@ export const segmentedControlItemStyles = css`
 
 	:host([size='md']) .segmented-control__item-indicator,
 	:host(:not([size])) .segmented-control__item-indicator {
-		inset-block: var(--primitives-space-4);
-		inset-inline: var(--primitives-space-2);
-		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--primitives-space-2));
+		inset-block: var(--_segmented-control-md-inset-size);
+		inset-inline: calc(var(--_segmented-control-md-gap-size) / 2);
+		border-radius: calc(var(--semantics-controls-md-corner-radius) - (var(--_segmented-control-md-inset-size) / 2));
 	}
 
 	:host([size='sm']) .segmented-control__item-indicator {
-		inset-block: 3px;
-		inset-inline: 1px;
-		border-radius: calc(var(--semantics-controls-sm-corner-radius) - 1px);
+		inset-block: var(--_segmented-control-sm-inset-size);
+		inset-inline: calc(var(--_segmented-control-sm-gap-size) / 2);
+		border-radius: calc(var(--semantics-controls-sm-corner-radius) - (var(--_segmented-control-sm-inset-size) / 2));
 	}
 
 	:host([content-type='icon'][size='md']) .segmented-control__item-indicator,
 	:host([content-type='icon']:not([size])) .segmented-control__item-indicator {
-		inset-block: var(--primitives-space-4);
-		inset-inline: var(--primitives-space-4);
-		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--primitives-space-2));
 	}
 
 	:host([content-type='icon'][size='sm']) .segmented-control__item-indicator {
-		inset-block: 3px;
-		inset-inline: 3px;
-		border-radius: calc(var(--semantics-controls-sm-corner-radius) - 1px);
 	}
 
 	:host([selected]) .segmented-control__item-indicator {
@@ -127,15 +125,13 @@ export const segmentedControlItemStyles = css`
 
 	:host([size='md']) .segmented-control__item-label,
 	:host(:not([size])) .segmented-control__item-label {
-		min-height: var(--semantics-controls-md-min-size);
-		padding-block: calc(var(--primitives-space-4) + var(--primitives-space-4));
+		height: var(--semantics-controls-md-min-size);
 		padding-inline: calc(var(--primitives-space-2) + var(--primitives-space-8));
 		font: var(--semantics-buttons-md-font);
 	}
 
 	:host([size='sm']) .segmented-control__item-label {
-		min-height: var(--semantics-controls-sm-min-size);
-		padding-block: calc(3px + 3px);
+		height: var(--semantics-controls-sm-min-size);
 		padding-inline: calc(1px + var(--primitives-space-6));
 		font: var(--semantics-buttons-sm-font);
 	}
