@@ -53,8 +53,11 @@ export const segmentedControlItemStyles = css`
 		position: relative;
 		--_segmented-control-md-inset-size: 4px;
 		--_segmented-control-md-gap-size: 4px;
+		--_segmented-control-md-item-icon-size: var(--primitives-space-24);
 		--_segmented-control-sm-inset-size: 3px;
 		--_segmented-control-sm-gap-size: 2px;
+		--_segmented-control-sm-item-icon-size: var(--primitives-space-20);
+		--_segmented-control-item-transition-duration: 100ms;
 	}
 
 	:host([hidden]) {
@@ -75,41 +78,6 @@ export const segmentedControlItemStyles = css`
 	}
 
 
-	/* # Indicator */
-
-	.segmented-control__item-indicator {
-		position: absolute;
-		inset: 0;
-		background-color: var(--semantics-buttons-accent-filled-background-color);
-		opacity: 0;
-		pointer-events: none;
-	}
-
-	:host([size='md']) .segmented-control__item-indicator,
-	:host(:not([size])) .segmented-control__item-indicator {
-		inset-block: var(--_segmented-control-md-inset-size);
-		inset-inline: calc(var(--_segmented-control-md-gap-size) / 2);
-		border-radius: calc(var(--semantics-controls-md-corner-radius) - (var(--_segmented-control-md-inset-size) / 2));
-	}
-
-	:host([size='sm']) .segmented-control__item-indicator {
-		inset-block: var(--_segmented-control-sm-inset-size);
-		inset-inline: calc(var(--_segmented-control-sm-gap-size) / 2);
-		border-radius: calc(var(--semantics-controls-sm-corner-radius) - (var(--_segmented-control-sm-inset-size) / 2));
-	}
-
-	:host([content-type='icon'][size='md']) .segmented-control__item-indicator,
-	:host([content-type='icon']:not([size])) .segmented-control__item-indicator {
-	}
-
-	:host([content-type='icon'][size='sm']) .segmented-control__item-indicator {
-	}
-
-	:host([selected]) .segmented-control__item-indicator {
-		opacity: 1;
-	}
-
-
 	/* # Label */
 
 	.segmented-control__item-label {
@@ -121,23 +89,33 @@ export const segmentedControlItemStyles = css`
 		box-sizing: border-box;
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 		pointer-events: none;
+		transition: color var(--_segmented-control-item-transition-duration) ease-out;
 	}
 
 	:host([size='md']) .segmented-control__item-label,
 	:host(:not([size])) .segmented-control__item-label {
 		height: var(--semantics-controls-md-min-size);
-		padding-inline: calc(var(--primitives-space-2) + var(--primitives-space-8));
+		padding-inline: calc(var(--_segmented-control-md-inset-size) / 2 + var(--primitives-space-12));
 		font: var(--semantics-buttons-md-font);
 	}
 
 	:host([size='sm']) .segmented-control__item-label {
 		height: var(--semantics-controls-sm-min-size);
-		padding-inline: calc(1px + var(--primitives-space-6));
+		padding-inline: calc(var(--_segmented-control-sm-inset-size) / 2 + var(--primitives-space-8));
 		font: var(--semantics-buttons-sm-font);
 	}
 
+	:host([content-type='icon'][size='md']) .segmented-control__item-label,
+	:host([content-type='icon']:not([size])) .segmented-control__item-label {
+		padding-inline: calc((var(--semantics-controls-md-min-size) - var(--_segmented-control-md-item-icon-size) - var(--_segmented-control-md-inset-size) * 2 + var(--_segmented-control-md-gap-size)) / 2);
+	}
+
+	:host([content-type='icon'][size='sm']) .segmented-control__item-label {
+		padding-inline: calc((var(--semantics-controls-sm-min-size) - var(--_segmented-control-sm-item-icon-size) - var(--_segmented-control-sm-inset-size) * 2 + var(--_segmented-control-sm-gap-size)) / 2);
+	}
+
 	:host([selected]) .segmented-control__item-label {
-		color: var(--semantics-buttons-accent-filled-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
 	:host([disabled]) .segmented-control__item-label {
@@ -165,13 +143,13 @@ export const segmentedControlItemStyles = css`
 
 	:host([size='md']) .segmented-control__item-icon,
 	:host(:not([size])) .segmented-control__item-icon {
-		width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
+		width: var(--_segmented-control-md-item-icon-size);
+		height: var(--_segmented-control-md-item-icon-size);
 	}
 
 	:host([size='sm']) .segmented-control__item-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
+		width: var(--_segmented-control-sm-item-icon-size);
+		height: var(--_segmented-control-sm-item-icon-size);
 	}
 
 	::slotted(rr-icon) {
@@ -189,6 +167,40 @@ export const segmentedControlItemStyles = css`
 
 	:host([content-type='icon']) .segmented-control__item-text {
 		display: none;
+	}
+
+
+	/* # Indicator */
+
+	.segmented-control__item-indicator {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity var(--_segmented-control-item-transition-duration) ease-out, background-color var(--_segmented-control-item-transition-duration) ease-out;
+	}
+
+	:host([size='md']) .segmented-control__item-indicator,
+	:host(:not([size])) .segmented-control__item-indicator {
+		inset-block: var(--_segmented-control-md-inset-size);
+		inset-inline: calc(var(--_segmented-control-md-gap-size) / 2);
+		border-radius: calc(var(--semantics-controls-md-corner-radius) - (var(--_segmented-control-md-inset-size) / 2));
+	}
+
+	:host([size='sm']) .segmented-control__item-indicator {
+		inset-block: var(--_segmented-control-sm-inset-size);
+		inset-inline: calc(var(--_segmented-control-sm-gap-size) / 2);
+		border-radius: calc(var(--semantics-controls-sm-corner-radius) - (var(--_segmented-control-sm-inset-size) / 2));
+	}
+
+	:host([selected]) .segmented-control__item-indicator {
+		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
+		opacity: 1;
+	}
+
+	:host(:not([selected])) .segmented-control__item-input:hover ~ .segmented-control__item-indicator {
+		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+		opacity: 1;
 	}
 
 
