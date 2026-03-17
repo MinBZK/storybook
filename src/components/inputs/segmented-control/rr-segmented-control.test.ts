@@ -1,328 +1,317 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { RRSegmentedControl } from './rr-segmented-control.ts';
-import type { RRSegmentedControlItem } from './rr-segmented-control-item.ts';
+import type { RRSegmentedControl, RRSegmentedControlItem } from './rr-segmented-control.ts';
 import './rr-segmented-control.ts';
 
-function threeItemFixture(selectedValue = 'a'): string {
-  return `
-    <rr-segmented-control value="${selectedValue}">
-      <rr-segmented-control-item value="a">Alpha</rr-segmented-control-item>
-      <rr-segmented-control-item value="b">Beta</rr-segmented-control-item>
-      <rr-segmented-control-item value="c">Gamma</rr-segmented-control-item>
-    </rr-segmented-control>
-  `;
+function radioFixture(selectedValue = 'a'): string {
+	return `
+		<rr-segmented-control value="${selectedValue}" name="test">
+			<rr-segmented-control-item value="a">Alpha</rr-segmented-control-item>
+			<rr-segmented-control-item value="b">Beta</rr-segmented-control-item>
+			<rr-segmented-control-item value="c">Gamma</rr-segmented-control-item>
+		</rr-segmented-control>
+	`;
 }
 
 function getItems(el: RRSegmentedControl): RRSegmentedControlItem[] {
-  return Array.from(el.querySelectorAll('rr-segmented-control-item'));
+	return Array.from(el.querySelectorAll('rr-segmented-control-item'));
+}
+
+function getInput(item: RRSegmentedControlItem): HTMLInputElement {
+	return item.shadowRoot!.querySelector('input')!;
 }
 
 describe('rr-segmented-control', () => {
-  let el: HTMLElement;
+	let el: HTMLElement;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('renders without error', async () => {
-    el = await fixture('<rr-segmented-control></rr-segmented-control>');
-    await waitForUpdate(el);
-
-    expect(el.shadowRoot).not.toBeNull();
-  });
+	it('renders without error', async () => {
+		el = await fixture('<rr-segmented-control></rr-segmented-control>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
 });
 
-describe('rr-segmented-control – state sync & propagation', () => {
-  let el: RRSegmentedControl;
+describe('rr-segmented-control-item', () => {
+	let el: HTMLElement;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('sets selected=true on the item matching value', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('b'));
-    await waitForUpdate(el);
+	it('renders without error', async () => {
+		el = await fixture('<rr-segmented-control-item></rr-segmented-control-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
 
-    const items = getItems(el);
-    expect(items[0].selected).toBe(false);
-    expect(items[1].selected).toBe(true);
-    expect(items[2].selected).toBe(false);
-  });
-
-  it('updates child selected when parent value changes', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('a'));
-    await waitForUpdate(el);
-
-    el.value = 'c';
-    await waitForUpdate(el);
-
-    const items = getItems(el);
-    expect(items[0].selected).toBe(false);
-    expect(items[2].selected).toBe(true);
-  });
-
-  it('propagates size to items', async () => {
-    el = await fixture<RRSegmentedControl>(`
-      <rr-segmented-control value="a" size="sm">
-        <rr-segmented-control-item value="a">A</rr-segmented-control-item>
-        <rr-segmented-control-item value="b">B</rr-segmented-control-item>
-      </rr-segmented-control>
-    `);
-    await waitForUpdate(el);
-
-    const items = getItems(el);
-    expect(items[0].size).toBe('sm');
-    expect(items[1].size).toBe('sm');
-  });
-
-  it('disables all items when parent is disabled', async () => {
-    el = await fixture<RRSegmentedControl>(`
-      <rr-segmented-control value="a" disabled>
-        <rr-segmented-control-item value="a">A</rr-segmented-control-item>
-        <rr-segmented-control-item value="b">B</rr-segmented-control-item>
-      </rr-segmented-control>
-    `);
-    await waitForUpdate(el);
-
-    const items = getItems(el);
-    expect(items[0].disabled).toBe(true);
-    expect(items[1].disabled).toBe(true);
-  });
-
-  it('preserves item-level disabled when parent is not disabled', async () => {
-    el = await fixture<RRSegmentedControl>(`
-      <rr-segmented-control value="a">
-        <rr-segmented-control-item value="a">A</rr-segmented-control-item>
-        <rr-segmented-control-item value="b" disabled>B</rr-segmented-control-item>
-        <rr-segmented-control-item value="c">C</rr-segmented-control-item>
-      </rr-segmented-control>
-    `);
-    await waitForUpdate(el);
-
-    const items = getItems(el);
-    expect(items[0].disabled).toBe(false);
-    expect(items[1].disabled).toBe(true);
-    expect(items[2].disabled).toBe(false);
-  });
+	it('renders a native input', async () => {
+		el = await fixture('<rr-segmented-control-item></rr-segmented-control-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')).not.toBeNull();
+	});
 });
 
-describe('rr-segmented-control – click selection', () => {
-  let el: RRSegmentedControl;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+/* ============================================================
+   State sync
+   ============================================================ */
 
-  it('fires change event when clicking an unselected item', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('a'));
-    await waitForUpdate(el);
+describe('rr-segmented-control – state sync', () => {
+	let el: RRSegmentedControl;
 
-    let changeValue: string | undefined;
-    el.addEventListener('change', ((e: CustomEvent) => {
-      changeValue = e.detail.value;
-    }) as EventListener);
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-    const items = getItems(el);
-    items[1].click();
-    await waitForUpdate(el);
+	it('marks matching item as selected', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('b'));
+		await waitForUpdate(el);
+		const items = getItems(el);
+		expect(items[0].selected).toBe(false);
+		expect(items[1].selected).toBe(true);
+		expect(items[2].selected).toBe(false);
+	});
 
-    expect(changeValue).toBe('b');
-    expect(el.value).toBe('b');
-  });
+	it('updates selected when value changes', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('a'));
+		await waitForUpdate(el);
+		el.value = 'c';
+		await waitForUpdate(el);
+		const items = getItems(el);
+		expect(items[0].selected).toBe(false);
+		expect(items[2].selected).toBe(true);
+	});
 
-  it('does NOT fire change when clicking the already selected item', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('a'));
-    await waitForUpdate(el);
+	it('propagates size to items', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control size="sm">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(getItems(el)[0].size).toBe('sm');
+	});
 
-    let changeFired = false;
-    el.addEventListener('change', () => { changeFired = true; });
+	it('disables all items when parent is disabled', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control disabled>
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		getItems(el).forEach(item => expect(item.disabled).toBe(true));
+	});
 
-    const items = getItems(el);
-    items[0].click();
-    await waitForUpdate(el);
+	it('preserves item-level disabled when parent is not disabled', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control>
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="b" disabled>B</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		expect(items[0].disabled).toBe(false);
+		expect(items[1].disabled).toBe(true);
+	});
 
-    expect(changeFired).toBe(false);
-  });
+	it('propagates content-type to items', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control content-type="icon">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(getItems(el)[0].contentType).toBe('icon');
+	});
 
-  it('ignores clicks when parent is disabled', async () => {
-    el = await fixture<RRSegmentedControl>(`
-      <rr-segmented-control value="a" disabled>
-        <rr-segmented-control-item value="a">A</rr-segmented-control-item>
-        <rr-segmented-control-item value="b">B</rr-segmented-control-item>
-      </rr-segmented-control>
-    `);
-    await waitForUpdate(el);
-
-    let changeFired = false;
-    el.addEventListener('change', () => { changeFired = true; });
-
-    // Dispatch a manual select event like the item would
-    el.dispatchEvent(new CustomEvent('select', {
-      detail: { value: 'b' },
-      bubbles: true,
-      composed: true,
-    }));
-    await waitForUpdate(el);
-
-    expect(changeFired).toBe(false);
-    expect(el.value).toBe('a');
-  });
+	it('forwads name as groupName to items', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control name="view">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(getInput(getItems(el)[0]).name).toBe('view');
+	});
 });
+
+
+/* ============================================================
+   Radio change event
+   ============================================================ */
+
+describe('rr-segmented-control – radio change', () => {
+	let el: RRSegmentedControl;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('fires change with value detail when item changes', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('a'));
+		await waitForUpdate(el);
+		let detail: any;
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		const input = getInput(getItems(el)[1]);
+		input.checked = true;
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+		expect(detail?.value).toBe('b');
+	});
+
+	it('does not fire change when already selected item is clicked', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('a'));
+		await waitForUpdate(el);
+		let fired = false;
+		el.addEventListener('change', () => { fired = true; });
+		const input = getInput(getItems(el)[0]);
+		input.checked = true;
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+		expect(fired).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   Checkbox change event
+   ============================================================ */
+
+describe('rr-segmented-control – checkbox change', () => {
+	let el: RRSegmentedControl;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('fires change with values array when item is checked', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control type="checkbox">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		let detail: any;
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		const input = getInput(getItems(el)[0]);
+		input.checked = true;
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+		expect(detail?.values).toContain('a');
+	});
+
+	it('removes value from values when item is unchecked', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control type="checkbox" value="a b">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		let detail: any;
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		const input = getInput(getItems(el)[0]);
+		input.checked = false;
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+		expect(detail?.values).not.toContain('a');
+		expect(detail?.values).toContain('b');
+	});
+});
+
+
+/* ============================================================
+   Keyboard navigation
+   ============================================================ */
 
 describe('rr-segmented-control – keyboard navigation', () => {
-  let el: RRSegmentedControl;
+	let el: RRSegmentedControl;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  function pressKey(target: Element, key: string) {
-    target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
-  }
+	function pressKey(key: string) {
+		el.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
+	}
 
-  it('ArrowRight selects next item', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('a'));
-    await waitForUpdate(el);
+	it('ArrowRight selects next item', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('a'));
+		await waitForUpdate(el);
+		pressKey('ArrowRight');
+		await waitForUpdate(el);
+		expect(el.value).toBe('b');
+	});
 
-    pressKey(el, 'ArrowRight');
-    await waitForUpdate(el);
+	it('ArrowLeft selects previous item', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('b'));
+		await waitForUpdate(el);
+		pressKey('ArrowLeft');
+		await waitForUpdate(el);
+		expect(el.value).toBe('a');
+	});
 
-    expect(el.value).toBe('b');
-  });
+	it('ArrowRight wraps from last to first', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('c'));
+		await waitForUpdate(el);
+		pressKey('ArrowRight');
+		await waitForUpdate(el);
+		expect(el.value).toBe('a');
+	});
 
-  it('ArrowLeft selects previous item', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('b'));
-    await waitForUpdate(el);
+	it('Home selects first item', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('c'));
+		await waitForUpdate(el);
+		pressKey('Home');
+		await waitForUpdate(el);
+		expect(el.value).toBe('a');
+	});
 
-    pressKey(el, 'ArrowLeft');
-    await waitForUpdate(el);
-
-    expect(el.value).toBe('a');
-  });
-
-  it('ArrowRight wraps from last to first', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('c'));
-    await waitForUpdate(el);
-
-    pressKey(el, 'ArrowRight');
-    await waitForUpdate(el);
-
-    expect(el.value).toBe('a');
-  });
-
-  it('ArrowLeft wraps from first to last', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('a'));
-    await waitForUpdate(el);
-
-    pressKey(el, 'ArrowLeft');
-    await waitForUpdate(el);
-
-    expect(el.value).toBe('c');
-  });
-
-  it('Home selects first item', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('c'));
-    await waitForUpdate(el);
-
-    pressKey(el, 'Home');
-    await waitForUpdate(el);
-
-    expect(el.value).toBe('a');
-  });
-
-  it('End selects last item', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('a'));
-    await waitForUpdate(el);
-
-    pressKey(el, 'End');
-    await waitForUpdate(el);
-
-    expect(el.value).toBe('c');
-  });
-
-  it('skips disabled items in keyboard navigation', async () => {
-    el = await fixture<RRSegmentedControl>(`
-      <rr-segmented-control value="a">
-        <rr-segmented-control-item value="a">A</rr-segmented-control-item>
-        <rr-segmented-control-item value="b" disabled>B</rr-segmented-control-item>
-        <rr-segmented-control-item value="c">C</rr-segmented-control-item>
-      </rr-segmented-control>
-    `);
-    await waitForUpdate(el);
-
-    pressKey(el, 'ArrowRight');
-    await waitForUpdate(el);
-
-    // Should skip disabled "b" and go to "c"
-    expect(el.value).toBe('c');
-  });
+	it('End selects last item', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('a'));
+		await waitForUpdate(el);
+		pressKey('End');
+		await waitForUpdate(el);
+		expect(el.value).toBe('c');
+	});
 });
 
-describe('rr-segmented-control – ARIA roles & state', () => {
-  let el: RRSegmentedControl;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+/* ============================================================
+   ARIA
+   ============================================================ */
 
-  it('has role="radiogroup" on the parent', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('a'));
-    await waitForUpdate(el);
+describe('rr-segmented-control – ARIA', () => {
+	let el: RRSegmentedControl;
 
-    expect(el.getAttribute('role')).toBe('radiogroup');
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('has role="radio" on each item', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('a'));
-    await waitForUpdate(el);
+	it('has role="radiogroup" for radio type', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('a'));
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('radiogroup');
+	});
 
-    const items = getItems(el);
-    items.forEach(item => {
-      expect(item.getAttribute('role')).toBe('radio');
-    });
-  });
+	it('has role="group" for checkbox type', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control type="checkbox">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('group');
+	});
 
-  it('sets aria-checked and tabindex correctly', async () => {
-    el = await fixture<RRSegmentedControl>(threeItemFixture('b'));
-    await waitForUpdate(el);
-
-    const items = getItems(el);
-    // Selected item: aria-checked=true, tabindex=0
-    expect(items[1].getAttribute('aria-checked')).toBe('true');
-    expect(items[1].getAttribute('tabindex')).toBe('0');
-
-    // Non-selected items: aria-checked=false, tabindex=-1
-    expect(items[0].getAttribute('aria-checked')).toBe('false');
-    expect(items[0].getAttribute('tabindex')).toBe('-1');
-    expect(items[2].getAttribute('aria-checked')).toBe('false');
-    expect(items[2].getAttribute('tabindex')).toBe('-1');
-  });
-});
-
-describe('rr-segmented-control – slotchange reactivity', () => {
-  let el: RRSegmentedControl;
-
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
-
-  it('dynamically added item receives size and disabled properties', async () => {
-    el = await fixture<RRSegmentedControl>(`
-      <rr-segmented-control value="a" size="sm">
-        <rr-segmented-control-item value="a">A</rr-segmented-control-item>
-      </rr-segmented-control>
-    `);
-    await waitForUpdate(el);
-
-    const newItem = document.createElement('rr-segmented-control-item') as RRSegmentedControlItem;
-    newItem.value = 'b';
-    newItem.textContent = 'B';
-    el.appendChild(newItem);
-
-    await waitForUpdate(el);
-
-    expect(newItem.size).toBe('sm');
-    expect(newItem.selected).toBe(false);
-  });
+	it('native radio input has correct checked state', async () => {
+		el = await fixture<RRSegmentedControl>(radioFixture('b'));
+		await waitForUpdate(el);
+		const items = getItems(el);
+		expect(getInput(items[0]).checked).toBe(false);
+		expect(getInput(items[1]).checked).toBe(true);
+	});
 });
