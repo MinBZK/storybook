@@ -57,7 +57,6 @@ export const segmentedControlItemStyles = css`
 		--_segmented-control-sm-inset-size: 3px;
 		--_segmented-control-sm-gap-size: 2px;
 		--_segmented-control-sm-item-icon-size: var(--primitives-space-20);
-		--_segmented-control-item-transition-duration: 100ms;
 	}
 
 	:host([hidden]) {
@@ -89,7 +88,6 @@ export const segmentedControlItemStyles = css`
 		box-sizing: border-box;
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 		pointer-events: none;
-		transition: color var(--_segmented-control-item-transition-duration) ease-out;
 	}
 
 	:host([size='md']) .segmented-control__item-label,
@@ -129,6 +127,7 @@ export const segmentedControlItemStyles = css`
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		z-index: 2;
 	}
 
 
@@ -139,6 +138,7 @@ export const segmentedControlItemStyles = css`
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
+		z-index: 2;
 	}
 
 	:host([size='md']) .segmented-control__item-icon,
@@ -177,7 +177,6 @@ export const segmentedControlItemStyles = css`
 		inset: 0;
 		opacity: 0;
 		pointer-events: none;
-		transition: opacity var(--_segmented-control-item-transition-duration) ease-out, background-color var(--_segmented-control-item-transition-duration) ease-out;
 	}
 
 	:host([size='md']) .segmented-control__item-indicator,
