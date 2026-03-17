@@ -1,0 +1,39 @@
+import { html, nothing, TemplateResult } from 'lit';
+import type { RRComboBoxField } from './rr-combo-box-field.js';
+import '../../actions/icon-button/rr-icon-button.ts';
+import '../../content/icon/rr-icon.ts';
+
+export function comboBoxFieldTemplate(component: RRComboBoxField): TemplateResult {
+	return html`
+		<div class="combo-box-field">
+			<div class="combo-box-field__input">
+				<input class="combo-box-field__native"
+					type="text"
+					role="combobox"
+					aria-expanded=${component._isOpen ? 'true' : 'false'}
+					aria-controls=${component._menuId}
+					aria-autocomplete="list"
+					aria-haspopup="menu"
+					.value=${component.value}
+					placeholder=${component.placeholder || nothing}
+					?disabled=${component.disabled}
+					name=${component.name || nothing}
+					@input=${component._handleInput}
+					@change=${component._handleChange}
+				>
+			</div>
+			<div class="combo-box-field__picker"
+				@click=${component._toggleMenu}
+			>
+				<rr-icon-button
+					variant="neutral-tinted"
+					size="sm"
+					?disabled=${component.disabled}
+				>
+					<rr-icon name="chevron-down"></rr-icon>
+					${component._t('components.combo-box-field.open-picker-action')}
+				</rr-icon-button>
+			</div>
+		</div>
+	`;
+}
