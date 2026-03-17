@@ -46,14 +46,14 @@ export const numberFieldStyles = css`
 		display: flex;
 		align-items: center;
 		height: 100%;
-		padding-left: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness)) / 2);
+		padding-left: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
 	.number-field__increment-control {
 		display: flex;
 		align-items: center;
 		height: 100%;
-		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness)) / 2);
+		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
 
