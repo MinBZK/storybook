@@ -40,7 +40,7 @@ export default {
 				'neutral-transparent',
 				'danger-tinted',
 			],
-			description: 'Visual style variant',
+			description: 'Visuele stijlvariant',
 			table: {
 				defaultValue: { summary: 'neutral-tinted' },
 			},
@@ -48,7 +48,7 @@ export default {
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md', 'lg'],
-			description: 'Button size',
+			description: 'Grootte van de knop',
 			table: {
 				defaultValue: { summary: 'md' },
 			},
@@ -56,7 +56,7 @@ export default {
 		icon: {
 			control: 'select',
 			options: ICONS,
-			description: 'Icon to display — rendered as rr-icon inside the button',
+			description: 'Icoon dat wordt weergegeven — als rr-icon in de knop geplaatst',
 			table: {
 				defaultValue: { summary: 'dismiss' },
 			},
@@ -81,7 +81,7 @@ export default {
 		type: {
 			control: 'select',
 			options: ['button', 'submit', 'reset'],
-			description: 'Button type attribute',
+			description: 'Type attribuut voor formulierverwerking',
 			table: {
 				defaultValue: { summary: 'button' },
 			},
