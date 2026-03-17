@@ -2,13 +2,17 @@
  * RegelRecht Icon Button Component (Lit + TypeScript)
  *
  * @element rr-icon-button
- * @attr {string} variant - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'danger-tinted' | 'primary' | 'secondary' | 'destructive'
- * @attr {string} size - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
- * @attr {boolean} disabled - Disabled state
- * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
- * @attr {boolean} is-expandable - Whether the button opens a menu or popover and shows chevron next to the icon.
+ * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'danger-tinted' | 'primary' | 'secondary' | 'destructive'
+ * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
+ * @attr {boolean} disabled          - Disabled state
+ * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset'
+ * @attr {boolean} is-expandable     - Whether the button opens a menu or popover and shows chevron next to the icon
+ * @attr {string}  accessible-label  - Accessible label for screen readers. Overrides the slot text as aria-label
+ *                                     and title tooltip. Use when the visible text alone lacks context for screen
+ *                                     readers (e.g. text "Toon", accessible-label "Toon wachtwoord").
+ *                                     The slot text is still shown visually in lg size regardless.
  *
- * @slot - Place an rr-icon and optionally a text label. Text is used as aria-label and shown below the icon in lg size.
+ * @slot - Place an rr-icon and a text label. The text is used as aria-label and shown below the icon in lg size.
  *
  * @example
  * ```html
@@ -20,7 +24,6 @@
  *
  * @fires click - When button is clicked (not fired when disabled)
  */
-
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './rr-icon-button.styles.ts';
@@ -62,8 +65,13 @@ export class RRIconButton extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'popovertarget' })
 	popovertarget = '';
 
+	/** Accessible label for screen readers. Overrides slot text as aria-label and title tooltip.
+	 *  The slot text is still shown visually in lg size regardless. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
 	@state()
-	_title = '';
+	_text = '';
 
 	private _observer: MutationObserver | null = null;
 
@@ -83,12 +91,10 @@ export class RRIconButton extends LitElement {
 	private _detectSlots(): void {
 		const icon = Array.from(this.children)
 			.find(el => el.tagName.toLowerCase() === 'rr-icon');
-
 		if (icon) {
 			icon.setAttribute('slot', '__icon');
 		}
-
-		this._title = Array.from(this.childNodes)
+		this._text = Array.from(this.childNodes)
 			.filter(n => n.nodeType === Node.TEXT_NODE)
 			.map(n => n.textContent?.trim())
 			.filter(Boolean)

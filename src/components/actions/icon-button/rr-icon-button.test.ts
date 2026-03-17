@@ -4,145 +4,232 @@ import type { RRIconButton } from './rr-icon-button.ts';
 import './rr-icon-button.ts';
 
 describe('rr-icon-button', () => {
-  let el: HTMLElement;
+	let el: HTMLElement;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('renders without error', async () => {
-    el = await fixture('<rr-icon-button></rr-icon-button>');
-    await waitForUpdate(el);
-
-    expect(el.shadowRoot).not.toBeNull();
-  });
+	it('renders without error', async () => {
+		el = await fixture('<rr-icon-button></rr-icon-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
 });
 
+
+/* ============================================================
+   Slot assignment & text extraction
+   ============================================================ */
+
 describe('rr-icon-button – slot assignment & text extraction', () => {
-  let el: RRIconButton;
+	let el: RRIconButton;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('assigns slot="__icon" to rr-icon child', async () => {
-    el = await fixture<RRIconButton>(`
-      <rr-icon-button>
-        <rr-icon name="download"></rr-icon>
-        Download
-      </rr-icon-button>
-    `);
-    await waitForUpdate(el);
+	it('assigns slot="__icon" to rr-icon child', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button>
+				<rr-icon name="download"></rr-icon>
+				Download
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		const icon = el.querySelector('rr-icon')!;
+		expect(icon.getAttribute('slot')).toBe('__icon');
+	});
 
-    const icon = el.querySelector('rr-icon')!;
-    expect(icon.getAttribute('slot')).toBe('__icon');
-  });
+	it('extracts slot text into _text', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button>
+				<rr-icon name="download"></rr-icon>
+				Download
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		expect(el._text).toBe('Download');
+	});
 
-  it('extracts text as aria-label on shadow button', async () => {
-    el = await fixture<RRIconButton>(`
-      <rr-icon-button>
-        <rr-icon name="download"></rr-icon>
-        Download
-      </rr-icon-button>
-    `);
-    await waitForUpdate(el);
+	it('filters out whitespace-only text nodes', async () => {
+		el = await fixture<RRIconButton>(`<rr-icon-button>
+			<rr-icon name="download"></rr-icon>
+			Download
+		</rr-icon-button>`);
+		await waitForUpdate(el);
+		expect(el._text).toBe('Download');
+	});
 
-    const btn = el.shadowRoot!.querySelector('button')!;
-    expect(btn.getAttribute('aria-label')).toBe('Download');
-  });
+	it('updates _text when text is dynamically added', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button>
+				<rr-icon name="download"></rr-icon>
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		el.appendChild(document.createTextNode('Save'));
+		await waitForUpdate(el);
+		expect(el._text).toBe('Save');
+	});
 
-  it('filters out whitespace-only text nodes', async () => {
-    el = await fixture<RRIconButton>(`<rr-icon-button>
-        <rr-icon name="download"></rr-icon>
+	it('assigns slot to dynamically added icon', async () => {
+		el = await fixture<RRIconButton>(`<rr-icon-button>Upload</rr-icon-button>`);
+		await waitForUpdate(el);
+		const icon = document.createElement('rr-icon');
+		icon.setAttribute('name', 'upload');
+		el.prepend(icon);
+		await waitForUpdate(el);
+		expect(icon.getAttribute('slot')).toBe('__icon');
+	});
 
-        Download
+	it('cleans up observer on disconnect', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button>
+				<rr-icon name="x"></rr-icon>
+				Close
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		expect((el as any)._observer).not.toBeNull();
+		el.remove();
+		expect((el as any)._observer).toBeNull();
+	});
+});
 
-      </rr-icon-button>`);
-    await waitForUpdate(el);
 
-    const btn = el.shadowRoot!.querySelector('button')!;
-    expect(btn.getAttribute('aria-label')).toBe('Download');
-  });
+/* ============================================================
+   Accessible label & aria-label
+   ============================================================ */
 
-  it('has empty aria-label when only icon is provided', async () => {
-    el = await fixture<RRIconButton>(`
-      <rr-icon-button>
-        <rr-icon name="download"></rr-icon>
-      </rr-icon-button>
-    `);
-    await waitForUpdate(el);
+describe('rr-icon-button – accessible label & aria-label', () => {
+	let el: RRIconButton;
 
-    const btn = el.shadowRoot!.querySelector('button')!;
-    // With no text, _title is '' so aria-label should not be set (Lit's nothing)
-    // or empty string
-    const ariaLabel = btn.getAttribute('aria-label');
-    expect(ariaLabel === null || ariaLabel === '').toBe(true);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('sets title attr for non-lg sizes and empty for lg', async () => {
-    el = await fixture<RRIconButton>(`
-      <rr-icon-button size="md">
-        <rr-icon name="download"></rr-icon>
-        Download
-      </rr-icon-button>
-    `);
-    await waitForUpdate(el);
+	it('uses slot text as aria-label when no accessible-label is set', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button>
+				<rr-icon name="download"></rr-icon>
+				Download
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.getAttribute('aria-label')).toBe('Download');
+	});
 
-    let btn = el.shadowRoot!.querySelector('button')!;
-    expect(btn.getAttribute('title')).toBe('Download');
+	it('uses accessible-label as aria-label when set', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button accessible-label="Toon wachtwoord">
+				<rr-icon name="eye"></rr-icon>
+				Toon
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.getAttribute('aria-label')).toBe('Toon wachtwoord');
+	});
 
-    // Change to lg
-    el.size = 'lg';
-    await waitForUpdate(el);
+	it('has no aria-label when neither text nor accessible-label is set', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button>
+				<rr-icon name="download"></rr-icon>
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		const ariaLabel = btn.getAttribute('aria-label');
+		expect(ariaLabel === null || ariaLabel === '').toBe(true);
+	});
+});
 
-    btn = el.shadowRoot!.querySelector('button')!;
-    expect(btn.getAttribute('title')).toBe('');
-  });
 
-  it('updates aria-label when text is dynamically added', async () => {
-    el = await fixture<RRIconButton>(`
-      <rr-icon-button>
-        <rr-icon name="download"></rr-icon>
-      </rr-icon-button>
-    `);
-    await waitForUpdate(el);
+/* ============================================================
+   Title tooltip
+   ============================================================ */
 
-    // Dynamically add text
-    el.appendChild(document.createTextNode('Save'));
-    await waitForUpdate(el);
+describe('rr-icon-button – title tooltip', () => {
+	let el: RRIconButton;
 
-    const btn = el.shadowRoot!.querySelector('button')!;
-    expect(btn.getAttribute('aria-label')).toBe('Save');
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('assigns slot to dynamically added icon', async () => {
-    el = await fixture<RRIconButton>(`
-      <rr-icon-button>Upload</rr-icon-button>
-    `);
-    await waitForUpdate(el);
+	it('uses slot text as title tooltip for non-lg sizes', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button size="md">
+				<rr-icon name="download"></rr-icon>
+				Download
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.getAttribute('title')).toBe('Download');
+	});
 
-    const icon = document.createElement('rr-icon');
-    icon.setAttribute('name', 'upload');
-    el.prepend(icon);
+	it('uses accessible-label as title tooltip when set', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button size="md" accessible-label="Toon wachtwoord">
+				<rr-icon name="eye"></rr-icon>
+				Toon
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.getAttribute('title')).toBe('Toon wachtwoord');
+	});
 
-    await waitForUpdate(el);
+	it('sets empty title for lg size', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button size="lg">
+				<rr-icon name="download"></rr-icon>
+				Download
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.getAttribute('title')).toBe('');
+	});
 
-    expect(icon.getAttribute('slot')).toBe('__icon');
-  });
+	it('sets empty title for lg size even when accessible-label is set', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button size="lg" accessible-label="Toon wachtwoord">
+				<rr-icon name="eye"></rr-icon>
+				Toon
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.getAttribute('title')).toBe('');
+	});
+});
 
-  it('cleans up observer on disconnect', async () => {
-    el = await fixture<RRIconButton>(`
-      <rr-icon-button>
-        <rr-icon name="x"></rr-icon>
-        Close
-      </rr-icon-button>
-    `);
-    await waitForUpdate(el);
 
-    expect((el as any)._observer).not.toBeNull();
+/* ============================================================
+   Disabled & aria-disabled
+   ============================================================ */
 
-    el.remove();
+describe('rr-icon-button – disabled & aria-disabled', () => {
+	let el: RRIconButton;
 
-    expect((el as any)._observer).toBeNull();
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('does not set aria-disabled when not disabled', async () => {
+		el = await fixture<RRIconButton>(`<rr-icon-button>Close</rr-icon-button>`);
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.hasAttribute('aria-disabled')).toBe(false);
+	});
+
+	it('sets aria-disabled="true" when disabled', async () => {
+		el = await fixture<RRIconButton>(`<rr-icon-button disabled>Close</rr-icon-button>`);
+		await waitForUpdate(el);
+		const btn = el.shadowRoot!.querySelector('button')!;
+		expect(btn.getAttribute('aria-disabled')).toBe('true');
+	});
 });

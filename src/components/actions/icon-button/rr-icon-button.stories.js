@@ -61,14 +61,19 @@ export default {
 				defaultValue: { summary: 'dismiss' },
 			},
 		},
-		title: {
+		text: {
 			control: 'text',
-			description: 'Accessible label (aria-label) and visible text in lg size',
+			description: 'Tekst die als aria-label en title tooltip wordt gebruikt, en zichtbaar is als label onder het icoon in lg formaat',
+		},
+		accessibleLabel: {
+			control: 'text',
+			name: 'accessible-label',
+			description: 'Overschrijft de tekst als aria-label en title tooltip voor schermlezer-context. Gebruik als de zichtbare tekst onvoldoende context biedt (bijv. tekst "Toon", accessible-label "Toon wachtwoord"). De tekst blijft zichtbaar in lg formaat.',
 		},
 		isExpandable: {
 			control: 'boolean',
 			name: 'is-expandable',
-			description: 'Adds a chevron to indicate this button opens a menu or popover',
+			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -83,7 +88,7 @@ export default {
 		},
 		disabled: {
 			control: 'boolean',
-			description: 'Disabled state',
+			description: 'Uitgeschakelde toestand',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -93,34 +98,34 @@ export default {
 		variant: 'neutral-tinted',
 		size: 'md',
 		icon: 'dismiss',
-		title: 'Annuleer',
+		text: 'Annuleer',
+		accessibleLabel: '',
 		isExpandable: false,
 		type: 'button',
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, icon, title, isExpandable, type, disabled }) => html`
+const Template = ({ variant, size, icon, text, accessibleLabel, isExpandable, type, disabled }) => html`
 	<rr-icon-button
 		variant=${variant}
 		size=${size}
 		?is-expandable=${isExpandable}
 		type=${type}
 		?disabled=${disabled}
+		accessible-label=${accessibleLabel || ''}
 	>
 		<rr-icon name=${icon}></rr-icon>
-		${title}
+		${text}
 	</rr-icon-button>
 `;
 
-// Main story
 export const Default = Template.bind({});
 Default.args = {
 	icon: 'dismiss',
-	title: 'Annuleer',
+	text: 'Annuleer',
 };
 
-// Role based
 export const RoleBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button variant="primary">
@@ -146,7 +151,6 @@ RoleBased.parameters = {
 	},
 };
 
-// All variants overview
 export const AppearanceBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button variant="accent-filled">
@@ -179,7 +183,6 @@ AppearanceBased.parameters = {
 	controls: { disable: true },
 };
 
-// All sizes overview
 export const Sizes = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button size="lg">
@@ -204,7 +207,6 @@ Sizes.parameters = {
 	controls: { disable: true },
 };
 
-// LG with title
 export const Large = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button size="lg">
@@ -230,7 +232,27 @@ Large.parameters = {
 	},
 };
 
-// With disclosure icon
+export const WithAccessibleLabel = () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<rr-icon-button accessible-label="Toon wachtwoord">
+			<rr-icon name="eye"></rr-icon>
+			Toon
+		</rr-icon-button>
+		<rr-icon-button accessible-label="Verberg wachtwoord">
+			<rr-icon name="eye-slash"></rr-icon>
+			Verberg
+		</rr-icon-button>
+	</div>
+`;
+WithAccessibleLabel.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: 'Gebruik <code>accessible-label</code> als de zichtbare tekst onvoldoende context biedt voor schermlezers. De zichtbare tekst blijft ongewijzigd.',
+		},
+	},
+};
+
 export const WithDisclosureIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button is-expandable size="lg">
@@ -255,12 +277,11 @@ WithDisclosureIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Icon button die een menu of popover opent. Gebruik de `is-expandable` attribute om aan te geven dat deze button een menu of popover toont.',
+			story: 'Icon button die een menu of popover opent. Gebruik de <code>is-expandable</code> attribute om aan te geven dat deze button een menu of popover toont.',
 		},
 	},
 };
 
-// Disabled
 export const Disabled = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-icon-button disabled variant="accent-filled">
