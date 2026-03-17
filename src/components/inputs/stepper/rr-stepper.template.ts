@@ -16,7 +16,6 @@ export function stepperTemplate(component: RRStepper): TemplateResult {
 				variant="neutral-tinted"
 				size=${component.size}
 				?disabled=${component.disabled || atMin}
-				aria-label=${component._t('components.stepper.decrement-action')}
 				@click=${component._decrement}
 			>
 				<rr-icon name="minus"></rr-icon>
@@ -29,7 +28,6 @@ export function stepperTemplate(component: RRStepper): TemplateResult {
 				variant="neutral-tinted"
 				size=${component.size}
 				?disabled=${component.disabled || atMax}
-				aria-label=${component._t('components.stepper.increment-action')}
 				@click=${component._increment}
 			>
 				<rr-icon name="plus"></rr-icon>
