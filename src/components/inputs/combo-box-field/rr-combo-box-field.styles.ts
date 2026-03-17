@@ -5,8 +5,6 @@ export const comboBoxFieldStyles = css`
 
 	:host {
 		display: block;
-		width: 100%;
-		flex-grow: 1;
 	}
 
 	:host([hidden]) {
@@ -28,9 +26,15 @@ export const comboBoxFieldStyles = css`
 		box-sizing: border-box;
 		width: 100%;
 		min-height: var(--semantics-controls-md-min-size);
-		background-color: var(--semantics-input-fields-background-color);
+		background-color: var(--_background-color);
 		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
 		border-radius: var(--semantics-controls-md-corner-radius);
+		--_background-color: var(--semantics-input-fields-background-color);
+	}
+
+	.combo-box-field:has(input:-webkit-autofill),
+	.combo-box-field:has(input:autofill) {
+		--_background-color: var(--semantics-input-fields-is-autofill-background-color);
 	}
 
 	.combo-box-field:focus-within {
@@ -64,6 +68,11 @@ export const comboBoxFieldStyles = css`
 		color: var(--semantics-input-fields-placeholder-color);
 	}
 
+	.combo-box-field__native:-webkit-autofill,
+	.combo-box-field__native:autofill {
+		box-shadow: 0 0 0 999px var(--_background-color) inset;
+	}
+
 
 	/* # Picker */
 
@@ -72,12 +81,5 @@ export const comboBoxFieldStyles = css`
 		align-items: center;
 		flex-shrink: 0;
 		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
-	}
-
-
-	/* # Slot */
-
-	slot {
-		display: none;
 	}
 `;

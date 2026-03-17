@@ -14,12 +14,13 @@ export function comboBoxFieldTemplate(component: RRComboBoxField): TemplateResul
 					aria-controls=${component._menuId}
 					aria-autocomplete="list"
 					aria-haspopup="menu"
-					.value=${component.value}
+					.value=${component._displayValue}
 					placeholder=${component.placeholder || nothing}
 					?disabled=${component.disabled}
 					name=${component.name || nothing}
 					@input=${component._handleInput}
-					@change=${component._handleChange}
+					@keydown=${component._handleKeydown}
+					@blur=${component._handleBlur}
 				>
 			</div>
 			<div class="combo-box-field__picker"
@@ -35,5 +36,6 @@ export function comboBoxFieldTemplate(component: RRComboBoxField): TemplateResul
 				</rr-icon-button>
 			</div>
 		</div>
+		<slot @slotchange=${component._onSlotChange}></slot>
 	`;
 }

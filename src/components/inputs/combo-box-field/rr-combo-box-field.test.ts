@@ -2,12 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRComboBoxField } from './rr-combo-box-field.ts';
 import './rr-combo-box-field.ts';
-
-const sampleOptions = [
-	{ text: 'Nederland', value: 'nl' },
-	{ text: 'België', value: 'be' },
-	{ text: 'Duitsland', value: 'de' },
-];
+import '../../lists-and-menus/menu/rr-menu.ts';
 
 describe('rr-combo-box-field', () => {
 	let el: HTMLElement;
@@ -107,26 +102,6 @@ describe('rr-combo-box-field – state', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.disabled).toBe(true);
 	});
-
-	it('creates rr-menu-item elements from options', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
-		(el as RRComboBoxField).options = sampleOptions;
-		await waitForUpdate(el);
-		const menu = document.getElementById((el as RRComboBoxField)._menuId);
-		expect(menu?.querySelectorAll('rr-menu-item').length).toBe(3);
-	});
-
-	it('creates rr-menu-divider for divider options', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
-		(el as RRComboBoxField).options = [
-			{ text: 'Nederland', value: 'nl' },
-			{ type: 'divider' },
-			{ text: 'België', value: 'be' },
-		];
-		await waitForUpdate(el);
-		const menu = document.getElementById((el as RRComboBoxField)._menuId);
-		expect(menu?.querySelector('rr-menu-divider')).not.toBeNull();
-	});
 });
 
 
@@ -141,17 +116,17 @@ describe('rr-combo-box-field – input event', () => {
 		if (el) cleanup(el);
 	});
 
-	it('updates value on input', async () => {
+	it('updates _displayValue on input', async () => {
 		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		(input as any).value = 'Neder';
 		input.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
-		expect(el.value).toBe('Neder');
+		expect(el._displayValue).toBe('Neder');
 	});
 
-	it('dispatches input event with value detail', async () => {
+	it('dispatches input event with displayValue detail', async () => {
 		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
 		await waitForUpdate(el);
 		let detail: any;
@@ -175,9 +150,15 @@ describe('rr-combo-box-field – filtering', () => {
 		if (el) cleanup(el);
 	});
 
-	it('hides non-matching items when filtering', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
-		(el as RRComboBoxField).options = sampleOptions;
+	it('filters rr-menu-item elements on input', async () => {
+		el = await fixture<RRComboBoxField>(`
+			<rr-combo-box-field>
+				<rr-menu>
+					<rr-menu-item text="Nederland" value="nl"></rr-menu-item>
+					<rr-menu-item text="België" value="be"></rr-menu-item>
+				</rr-menu>
+			</rr-combo-box-field>
+		`);
 		await waitForUpdate(el);
 
 		const input = el.shadowRoot!.querySelector('input')!;
@@ -185,28 +166,31 @@ describe('rr-combo-box-field – filtering', () => {
 		input.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
 
-		const menu = document.getElementById((el as RRComboBoxField)._menuId)!;
+		const menu = document.getElementById(el._menuId)!;
 		const items = menu.querySelectorAll('rr-menu-item');
 		expect(items[0].hasAttribute('hidden')).toBe(false);
 		expect(items[1].hasAttribute('hidden')).toBe(true);
-		expect(items[2].hasAttribute('hidden')).toBe(true);
 	});
 
-	it('shows all items when input is cleared', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
-		(el as RRComboBoxField).options = sampleOptions;
+	it('matches on search attribute', async () => {
+		el = await fixture<RRComboBoxField>(`
+			<rr-combo-box-field>
+				<rr-menu>
+					<rr-menu-item text="Nederland" value="nl" search="dutch holland"></rr-menu-item>
+					<rr-menu-item text="België" value="be"></rr-menu-item>
+				</rr-menu>
+			</rr-combo-box-field>
+		`);
 		await waitForUpdate(el);
 
 		const input = el.shadowRoot!.querySelector('input')!;
-		(input as any).value = 'Ned';
-		input.dispatchEvent(new Event('input', { bubbles: true }));
-		(input as any).value = '';
+		(input as any).value = 'dutch';
 		input.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
 
-		const menu = document.getElementById((el as RRComboBoxField)._menuId)!;
-		menu.querySelectorAll('rr-menu-item').forEach(item => {
-			expect(item.hasAttribute('hidden')).toBe(false);
-		});
+		const menu = document.getElementById(el._menuId)!;
+		const items = menu.querySelectorAll('rr-menu-item');
+		expect(items[0].hasAttribute('hidden')).toBe(false);
+		expect(items[1].hasAttribute('hidden')).toBe(true);
 	});
 });
