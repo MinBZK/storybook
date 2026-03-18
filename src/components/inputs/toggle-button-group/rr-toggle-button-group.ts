@@ -1,23 +1,23 @@
 /**
  * RegelRecht Toggle Button Group Component (Lit + TypeScript)
  *
- * Groepeert `rr-toggle-button` elementen en beheert selectie, toetsenbordnavigatie
- * en het doorsturen van `type`, `name`, `size` en `disabled` naar alle knoppen.
+ * Groups rr-toggle-button elements and manages selection, keyboard navigation,
+ * and forwarding of type, name, size, and disabled state to all buttons.
  *
- * Bij `type="radio"` (single-select) worden pijltoetsen gebruikt voor navigatie
- * en wordt de geselecteerde knop na keuze gesynchroniseerd.
- * Bij `type="checkbox"` (multi-select) kunnen meerdere knoppen tegelijk geselecteerd zijn.
+ * For type="radio" (single-select), arrow keys navigate between buttons and
+ * automatically select the focused one.
+ * For type="checkbox" (multi-select), multiple buttons can be selected simultaneously.
  *
  * @element rr-toggle-button-group
  *
- * @attr {'checkbox' | 'radio'} type     - Selectiemodus (standaard: 'checkbox')
- * @attr {string}               name     - Doorgestuurd naar alle knoppen
- * @attr {'xs' | 'sm' | 'md'}  size     - Doorgestuurd naar alle knoppen (standaard: 'md')
- * @attr {boolean}              disabled - Schakelt alle knoppen uit
+ * @attr {'checkbox' | 'radio'} type     - Selection mode (default: 'checkbox')
+ * @attr {string}               name     - Forwarded to all buttons
+ * @attr {'xs' | 'sm' | 'md'}  size     - Forwarded to all buttons (default: 'md')
+ * @attr {boolean}              disabled - Disables all buttons
  *
- * @slot - rr-toggle-button elementen
+ * @slot - rr-toggle-button elements
  *
- * @fires change - Bubbles omhoog vanuit de gewijzigde knop; detail: { selected: boolean, value: string }
+ * @fires change - Bubbles up from the changed button; detail: { selected: boolean, value: string }
  */
 
 import { LitElement } from 'lit';
@@ -86,6 +86,7 @@ export class RRToggleButtonGroup extends LitElement {
 
 			if (this.disabled) {
 				if (!button.hasAttribute('disabled')) {
+					// Mark as group-disabled so we can restore it when the group re-enables
 					button.setAttribute('data-group-disabled', '');
 					button.disabled = true;
 				}
@@ -102,6 +103,7 @@ export class RRToggleButtonGroup extends LitElement {
 		const changedButton = e.target as RRToggleButton;
 		if (!changedButton.selected) return;
 
+		// Deselect all other buttons when a radio button is selected
 		this._getButtons().forEach(button => {
 			if (button !== changedButton) button.selected = false;
 		});

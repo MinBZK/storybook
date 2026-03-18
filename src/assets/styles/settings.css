@@ -868,6 +868,7 @@
 	--components-button-group-md-gap: var(--primitives-space-8);
 
 
+	--components-toggle-button-group-xs-gap: var(--primitives-space-4);
 	--components-toggle-button-group-sm-gap: var(--primitives-space-6);
 	--components-toggle-button-group-md-gap: var(--primitives-space-8);
 

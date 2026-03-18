@@ -1,23 +1,23 @@
 /**
  * RegelRecht Toggle Button Component (Lit + TypeScript)
  *
- * Een selecteerbare knop die tussen geselecteerd/niet-geselecteerd kan schakelen.
- * Beschikbaar als button (aria-pressed), checkbox of radio input.
+ * A selectable button that toggles between selected and unselected.
+ * Available as a button (aria-pressed), checkbox, or radio input.
  *
  * @element rr-toggle-button
  *
- * @attr {'button' | 'checkbox' | 'radio'} type - Onderliggend element (standaard: 'button')
- * @attr {'xs' | 'sm' | 'md'}              size - Grootte (standaard: 'md')
- * @attr {boolean}                         selected  - Geselecteerde toestand
- * @attr {boolean}                         disabled  - Uitgeschakelde toestand
- * @attr {string}                          value     - Waarde voor formulierverwerking (checkbox/radio)
- * @attr {string}                          name      - Naam voor formulierverwerking (checkbox/radio)
- * @attr {string}                          accessible-label - Toegankelijk label; verplicht bij icoon-only gebruik
+ * @attr {'button' | 'checkbox' | 'radio'} type - Underlying element (default: 'button')
+ * @attr {'xs' | 'sm' | 'md'}              size - Button size (default: 'md')
+ * @attr {boolean}                         selected         - Selected state
+ * @attr {boolean}                         disabled         - Disabled state
+ * @attr {string}                          value            - Value for form submission (checkbox/radio)
+ * @attr {string}                          name             - Name for form submission (checkbox/radio)
+ * @attr {string}                          accessible-label - Accessible label; required for icon-only usage
  *
- * @slot      - Tekst van de knop
- * @slot icon - Icoon vóór de tekst
+ * @slot      - Button text
+ * @slot icon - Icon before the text
  *
- * @fires change - Bij selectieverandering; detail: { selected: boolean, value: string }
+ * @fires change - When selection changes; detail: { selected: boolean, value: string }
  */
 
 import { LitElement } from 'lit';
@@ -64,7 +64,7 @@ export class RRToggleButton extends LitElement {
 		this.toggleAttribute('icon-only', iconOnly);
 
 		if (iconOnly && !this.accessibleLabel) {
-			console.warn('<rr-toggle-button>: Icoon-only gebruik vereist een accessible-label attribuut voor toegankelijkheid.');
+			console.warn('<rr-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
 		}
 	}
 
@@ -108,8 +108,8 @@ export class RRToggleButton extends LitElement {
 	}
 
 	/**
-	 * Selecteer of deselecteer programmatisch.
-	 * Bij type="radio" wordt de knop alleen geselecteerd, nooit gedeselecteerd (native gedrag).
+	 * Toggle selected state programmatically.
+	 * For type="radio", the button can only be selected, never deselected (native behavior).
 	 */
 	toggle(): void {
 		if (this.disabled) return;

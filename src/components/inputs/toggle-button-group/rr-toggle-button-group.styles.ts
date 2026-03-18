@@ -14,7 +14,7 @@ export const toggleButtonGroupStyles = css`
 	}
 
 
-	/* # Groep */
+	/* # Group */
 
 	.toggle-button-group {
 		display: flex;
@@ -22,8 +22,11 @@ export const toggleButtonGroupStyles = css`
 		gap: var(--components-toggle-button-group-md-gap);
 	}
 
-	:host([size="xs"]) .toggle-button-group,
 	:host([size="sm"]) .toggle-button-group {
 		gap: var(--components-toggle-button-group-sm-gap);
+	}
+
+	:host([size="xs"]) .toggle-button-group {
+		gap: var(--components-toggle-button-group-xs-gap);
 	}
 `;

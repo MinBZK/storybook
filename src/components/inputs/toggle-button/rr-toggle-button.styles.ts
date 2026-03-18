@@ -39,11 +39,11 @@ export const toggleButtonStyles = css`
 		white-space: nowrap;
 		text-decoration: none;
 
-		/* Uiterlijk */
+		/* Appearance */
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 
-		/* Animatie */
+		/* Animation */
 		transition:
 			background-color 0.15s ease-out,
 			color 0.15s ease-out;
@@ -69,7 +69,7 @@ export const toggleButtonStyles = css`
 	}
 
 
-	/* # Icoon */
+	/* # Icon */
 
 	::slotted([slot="icon"]) {
 		display: block;
@@ -77,9 +77,9 @@ export const toggleButtonStyles = css`
 	}
 
 
-	/* # Grootten */
+	/* # Sizes */
 
-	/* ## Grootte: XS */
+	/* ## Size: XS */
 
 	:host([size="xs"]) .button {
 		min-height: var(--semantics-controls-xs-min-size);
@@ -89,7 +89,7 @@ export const toggleButtonStyles = css`
 		gap: var(--primitives-space-2);
 	}
 
-	/* ## Grootte: SM */
+	/* ## Size: SM */
 
 	:host([size="sm"]) .button {
 		min-height: var(--semantics-controls-sm-min-size);
@@ -99,7 +99,7 @@ export const toggleButtonStyles = css`
 		gap: var(--primitives-space-2);
 	}
 
-	/* ## Grootte: MD (standaard) */
+	/* ## Size: MD (default) */
 
 	:host([size="md"]) .button,
 	:host(:not([size])) .button {
@@ -111,7 +111,7 @@ export const toggleButtonStyles = css`
 	}
 
 
-	/* # Icoon-only: vierkant */
+	/* # Icon-only: square */
 
 	:host([icon-only][size="xs"]) .button {
 		width: var(--semantics-controls-xs-min-size);
@@ -130,7 +130,7 @@ export const toggleButtonStyles = css`
 	}
 
 
-	/* # Icoongrootten */
+	/* # Icon sizes */
 
 	:host([size="md"]) ::slotted([slot="icon"]),
 	:host(:not([size])) ::slotted([slot="icon"]) {
@@ -149,7 +149,7 @@ export const toggleButtonStyles = css`
 	}
 
 
-	/* # Toestanden */
+	/* # States */
 
 	/* ## Hover */
 
@@ -159,7 +159,7 @@ export const toggleButtonStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 	}
 
-	/* ## Geselecteerd */
+	/* ## Selected */
 
 	:host([selected]) .button {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
@@ -185,7 +185,7 @@ export const toggleButtonStyles = css`
 	}
 
 
-	/* # Toegankelijkheid */
+	/* # Accessibility */
 
 	@media (forced-colors: active) {
 		.button:focus-visible,
