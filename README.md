@@ -1,6 +1,6 @@
 # RegelRecht Design System
 
-Design tokens en Web Components voor RegelRecht.
+Design tokens en Web Components for RegelRecht.
 
 ## Installation
 
@@ -64,27 +64,27 @@ Web Components (Lit)
 ## Quickstart
 
 ```bash
-# Dependencies installeren
+# Install dependencies
 npm install
 
-# Tokens bouwen
+# Build tokens
 npm run build:tokens
 
-# Storybook starten
+# Start Storybook
 npm run storybook
 
-# Open http://localhost:6006 voor de component documentatie
+# Open http://localhost:6006 for the component documentation
 ```
 
-## Gebruik
+## Usage
 
-### 1. Laad de tokens CSS
+### 1. Load the tokens CSS file
 
 ```html
 <link rel="stylesheet" href="dist/css/tokens.css" />
 ```
 
-### 2. Importeer componenten
+### 2. Import the components you want to use
 
 ```html
 <script type="module">
@@ -92,7 +92,7 @@ npm run storybook
 </script>
 ```
 
-### 3. Gebruik componenten
+### 3. Use the components
 
 ```html
 <rr-button variant="primary">Primary Action</rr-button>
@@ -100,7 +100,7 @@ npm run storybook
 <rr-button size="sm">Small Button</rr-button>
 ```
 
-## Componenten
+## Components
 
 ### rr-button
 
@@ -114,13 +114,13 @@ npm run storybook
 | `is-expandable` | boolean | `false`          | Adds an icon indicating the button opens a menu or popover                                                                                                |
 | `popovertarget` | string  | `''`             | ID of the popover element to target                                                                                                                       |
 
-## Token Structuur
+## Token structure
 
-Tokens zijn georganiseerd in drie lagen:
+Tokens are organized in three layers:
 
-- **Primitives** - Basis waarden (kleuren, spacing, typography)
-- **Semantics** - Betekenisvolle tokens (buttons, controls, views)
-- **Components** - Component-specifieke tokens
+- **Primitives** - Base values (colors, spacing, typography)
+- **Semantics** - Semantic tokens (buttons, controls, views)
+- **Components** - Component-specific tokens
 
 ```css
 /* Primitives */
@@ -137,24 +137,24 @@ Tokens zijn georganiseerd in drie lagen:
 
 ## Development
 
-### Tokens updaten
+### Update tokens
 
-1. Bewerk `src/assets/styles/settings.css`
+1. Edit `src/assets/styles/settings.css`
 2. Run `npm run build:tokens`
 
-### Nieuwe component maken
+### Create a new Component
 
-1. Maak een directory in `src/components/{category}/{component-name}/`
-2. Maak de volgende bestanden aan:
-   - `rr-{component-name}.ts` — component class (extends `LitElement`)
-   - `rr-{component-name}.styles.ts` — component styles
-   - `rr-{component-name}.template.ts` — render template
-   - `rr-{component-name}.stories.ts` — Storybook stories
-   - `rr-{component-name}.test.ts` — unit tests
-3. Exporteer de component class in `src/index.ts`
+1. Create a new directory at `src/components/{category}/{component-name}/`
+2. Create the following files:
+   - `rr-{component-name}.ts` - component class (extends `LitElement`)
+   - `rr-{component-name}.styles.ts` - component styles
+   - `rr-{component-name}.template.ts` - render template
+   - `rr-{component-name}.stories.ts` - Storybook stories
+   - `rr-{component-name}.test.ts` - unit tests
+3. Export the component class in `src/index.ts`
 
-Zie `CLAUDE.md` voor conventies en richtlijnen.
+See `CLAUDE.md` for conventions and guidelines.
 
-## Licentie
+## License
 
 EUPL-1.2
