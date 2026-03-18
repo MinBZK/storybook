@@ -61,7 +61,7 @@ dist/css/tokens.css
 Web Components (Lit)
 ```
 
-## Quickstart
+## Development setup
 
 ```bash
 # Install dependencies
