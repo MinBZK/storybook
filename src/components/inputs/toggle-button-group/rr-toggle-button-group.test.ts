@@ -48,6 +48,19 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 		if (el) cleanup(el);
 	});
 
+	it('does not sync name to child buttons when type=button', async () => {
+		el = await fixture<RRToggleGroup>(`
+			<rr-toggle-button-group type="button" name="toolbar">
+				<rr-toggle-button value="bold">Bold</rr-toggle-button>
+				<rr-toggle-button value="italic">Italic</rr-toggle-button>
+			</rr-toggle-button-group>
+		`);
+		await waitForUpdate(el);
+
+		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
+		buttons.forEach(b => expect(b.name).toBe(''));
+	});
+
 	it('syncs type to child buttons', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio">

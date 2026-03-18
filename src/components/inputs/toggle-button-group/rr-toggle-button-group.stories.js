@@ -31,7 +31,7 @@ export default {
 	argTypes: {
 		type: {
 			control: 'select',
-			options: ['checkbox', 'radio'],
+			options: ['button', 'checkbox', 'radio'],
 			description: 'Selectiemodus',
 			table: {
 				defaultValue: { summary: 'checkbox' },
@@ -94,6 +94,39 @@ Standaard.args = {};
 /* ============================================================
    Selectiemodi
    ============================================================ */
+
+export const TypeButton = () => html`
+	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
+			Met <code>type="button"</code> beheert elke knop zijn eigen <code>aria-pressed</code> toestand onafhankelijk. Ideaal voor teksteditor-toolbars.
+		</p>
+		<rr-toggle-button-group type="button" aria-label="Tekst opmaken">
+			<rr-toggle-button value="bold" accessible-label="Vet">
+				<rr-icon slot="icon" name="bold"></rr-icon>
+			</rr-toggle-button>
+			<rr-toggle-button value="italic" accessible-label="Cursief" selected>
+				<rr-icon slot="icon" name="italic"></rr-icon>
+			</rr-toggle-button>
+			<rr-toggle-button value="underlined" accessible-label="Onderstreept">
+				<rr-icon slot="icon" name="underlined"></rr-icon>
+			</rr-toggle-button>
+			<rr-toggle-button value="bullet-list" accessible-label="Opsomming">
+				<rr-icon slot="icon" name="bullet-list"></rr-icon>
+			</rr-toggle-button>
+			<rr-toggle-button value="numbered-list" accessible-label="Genummerde lijst">
+				<rr-icon slot="icon" name="numbered-list"></rr-icon>
+			</rr-toggle-button>
+		</rr-toggle-button-group>
+	</div>
+`;
+TypeButton.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: '`type="button"` — knoppen zijn onafhankelijk van elkaar en kunnen tegelijk actief zijn. De groep biedt layout en synchronisatie van `size` en `disabled`.',
+		},
+	},
+};
 
 export const MultiSelect = () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">

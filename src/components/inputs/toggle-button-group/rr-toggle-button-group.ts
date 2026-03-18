@@ -10,7 +10,7 @@
  *
  * @element rr-toggle-button-group
  *
- * @attr {'checkbox' | 'radio'} type     - Selection mode (default: 'checkbox')
+ * @attr {'button' | 'checkbox' | 'radio'} type     - Selection mode (default: 'checkbox')
  * @attr {string}               name     - Forwarded to all buttons
  * @attr {'xs' | 'sm' | 'md'}  size     - Forwarded to all buttons (default: 'md')
  * @attr {boolean}              disabled - Disables all buttons
@@ -26,7 +26,7 @@ import { toggleButtonGroupStyles } from './rr-toggle-button-group.styles.ts';
 import { toggleButtonGroupTemplate } from './rr-toggle-button-group.template.ts';
 import type { RRToggleButton, ToggleButtonSize } from '../toggle-button/rr-toggle-button.js';
 
-type GroupType = 'checkbox' | 'radio';
+type GroupType = 'button' | 'checkbox' | 'radio';
 
 @customElement('rr-toggle-button-group')
 export class RRToggleButtonGroup extends LitElement {
@@ -81,8 +81,12 @@ export class RRToggleButtonGroup extends LitElement {
 	private _syncButtons(): void {
 		this._getButtons().forEach(button => {
 			button.type = this.type;
-			button.name = this.name;
 			button.size = this.size;
+
+			// name is only meaningful for checkbox and radio
+			if (this.type !== 'button') {
+				button.name = this.name;
+			}
 
 			if (this.disabled) {
 				if (!button.hasAttribute('disabled')) {
@@ -131,7 +135,7 @@ export class RRToggleButtonGroup extends LitElement {
 		activeButton.selected = false;
 		nextButton.selected = true;
 
-		const input = nextButton.shadowRoot?.querySelector<HTMLInputElement>('.button__input');
+		const input = nextButton.shadowRoot?.querySelector<HTMLInputElement>('.toggle-button__input');
 		input?.focus();
 
 		nextButton.dispatchEvent(new CustomEvent('change', {
