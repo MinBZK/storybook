@@ -42,44 +42,9 @@ export const toggleButtonStyles = css`
 		/* Appearance */
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
-
-		/* Animation */
-		transition:
-			background-color 0.15s ease-out,
-			color 0.15s ease-out;
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.toggle-button {
-			transition: none;
-		}
-	}
-
-
-	/* # Input overlay */
-
-	.toggle-button__input {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		margin: 0;
-		opacity: 0;
-		z-index: 1;
-	}
-
-
-	/* # Icon */
-
-	::slotted([slot="icon"]) {
-		display: block;
-		flex-shrink: 0;
-	}
-
-
-	/* # Sizes */
-
-	/* ## Size: XS */
+	/* ## Sizes */
 
 	:host([size="xs"]) .toggle-button {
 		min-height: var(--semantics-controls-xs-min-size);
@@ -89,8 +54,6 @@ export const toggleButtonStyles = css`
 		gap: var(--primitives-space-2);
 	}
 
-	/* ## Size: SM */
-
 	:host([size="sm"]) .toggle-button {
 		min-height: var(--semantics-controls-sm-min-size);
 		padding: var(--primitives-space-6) var(--primitives-space-8);
@@ -98,8 +61,6 @@ export const toggleButtonStyles = css`
 		border-radius: var(--semantics-controls-sm-corner-radius);
 		gap: var(--primitives-space-2);
 	}
-
-	/* ## Size: MD (default) */
 
 	:host([size="md"]) .toggle-button,
 	:host(:not([size])) .toggle-button {
@@ -110,8 +71,7 @@ export const toggleButtonStyles = css`
 		gap: var(--primitives-space-4);
 	}
 
-
-	/* # Icon-only: square */
+	/* ## Icon-only sizes */
 
 	:host([icon-only][size="xs"]) .toggle-button {
 		width: var(--semantics-controls-xs-min-size);
@@ -128,28 +88,6 @@ export const toggleButtonStyles = css`
 		width: var(--semantics-controls-md-min-size);
 		padding: 0;
 	}
-
-
-	/* # Icon sizes */
-
-	:host([size="md"]) ::slotted([slot="icon"]),
-	:host(:not([size])) ::slotted([slot="icon"]) {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-	}
-
-	:host([size="sm"]) ::slotted([slot="icon"]) {
-		width: var(--primitives-space-18);
-		height: var(--primitives-space-18);
-	}
-
-	:host([size="xs"]) ::slotted([slot="icon"]) {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
-	}
-
-
-	/* # States */
 
 	/* ## Hover */
 
@@ -185,19 +123,44 @@ export const toggleButtonStyles = css`
 	}
 
 
-	/* # Accessibility */
+	/* # Icon */
 
-	@media (forced-colors: active) {
-		.toggle-button:focus-visible,
-		.toggle-button:has(.toggle-button__input:focus-visible) {
-			outline: 2px solid CanvasText;
-			outline-offset: 2px;
-		}
+	/* Hide the original rr-icon in the slot — it is re-rendered in the shadow DOM */
+	::slotted(rr-icon) {
+		display: none;
+	}
 
-		:host([selected]) .toggle-button {
-			forced-color-adjust: none;
-			background-color: Highlight;
-			color: HighlightText;
-		}
+	.toggle-button__icon {
+		display: block;
+		flex-shrink: 0;
+	}
+
+	:host([size="md"]) .toggle-button__icon,
+	:host(:not([size])) .toggle-button__icon {
+		width: var(--primitives-space-20);
+		height: var(--primitives-space-20);
+	}
+
+	:host([size="sm"]) .toggle-button__icon {
+		width: var(--primitives-space-18);
+		height: var(--primitives-space-18);
+	}
+
+	:host([size="xs"]) .toggle-button__icon {
+		width: var(--primitives-space-16);
+		height: var(--primitives-space-16);
+	}
+
+
+	/* # Input */
+
+	.toggle-button__input {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		opacity: 0;
+		z-index: 1;
 	}
 `;

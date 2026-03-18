@@ -73,15 +73,15 @@ const Template = (args) => html`
 		?disabled=${args.disabled}
 	>
 		<rr-toggle-button value="mijn-zaken">
-			<rr-icon slot="icon" name="person"></rr-icon>
+			<rr-icon name="person"></rr-icon>
 			Mijn zaken
 		</rr-toggle-button>
 		<rr-toggle-button value="inbox" selected>
-			<rr-icon slot="icon" name="inbox"></rr-icon>
+			<rr-icon name="inbox"></rr-icon>
 			Inbox
 		</rr-toggle-button>
 		<rr-toggle-button value="agenda">
-			<rr-icon slot="icon" name="calendar-event"></rr-icon>
+			<rr-icon name="calendar-event"></rr-icon>
 			Agenda
 		</rr-toggle-button>
 	</rr-toggle-button-group>
@@ -102,19 +102,19 @@ export const TypeButton = () => html`
 		</p>
 		<rr-toggle-button-group type="button" aria-label="Tekst opmaken">
 			<rr-toggle-button value="bold" accessible-label="Vet">
-				<rr-icon slot="icon" name="bold"></rr-icon>
+				<rr-icon name="bold"></rr-icon>
 			</rr-toggle-button>
 			<rr-toggle-button value="italic" accessible-label="Cursief" selected>
-				<rr-icon slot="icon" name="italic"></rr-icon>
+				<rr-icon name="italic"></rr-icon>
 			</rr-toggle-button>
 			<rr-toggle-button value="underlined" accessible-label="Onderstreept">
-				<rr-icon slot="icon" name="underlined"></rr-icon>
+				<rr-icon name="underlined"></rr-icon>
 			</rr-toggle-button>
 			<rr-toggle-button value="bullet-list" accessible-label="Opsomming">
-				<rr-icon slot="icon" name="bullet-list"></rr-icon>
+				<rr-icon name="bullet-list"></rr-icon>
 			</rr-toggle-button>
 			<rr-toggle-button value="numbered-list" accessible-label="Genummerde lijst">
-				<rr-icon slot="icon" name="numbered-list"></rr-icon>
+				<rr-icon name="numbered-list"></rr-icon>
 			</rr-toggle-button>
 		</rr-toggle-button-group>
 	</div>
@@ -135,19 +135,19 @@ export const MultiSelect = () => html`
 		</p>
 		<rr-toggle-button-group type="checkbox" name="filter" aria-label="Filters">
 			<rr-toggle-button value="mijn-zaken" selected>
-				<rr-icon slot="icon" name="person"></rr-icon>
+				<rr-icon name="person"></rr-icon>
 				Mijn zaken
 			</rr-toggle-button>
 			<rr-toggle-button value="inbox">
-				<rr-icon slot="icon" name="inbox"></rr-icon>
+				<rr-icon name="inbox"></rr-icon>
 				Inbox
 			</rr-toggle-button>
 			<rr-toggle-button value="agenda" selected>
-				<rr-icon slot="icon" name="calendar-event"></rr-icon>
+				<rr-icon name="calendar-event"></rr-icon>
 				Agenda
 			</rr-toggle-button>
 			<rr-toggle-button value="documenten">
-				<rr-icon slot="icon" name="file-text"></rr-icon>
+				<rr-icon name="file-text"></rr-icon>
 				Documenten
 			</rr-toggle-button>
 		</rr-toggle-button-group>
@@ -170,15 +170,15 @@ export const SingleSelect = () => html`
 		</p>
 		<rr-toggle-button-group type="radio" name="sortering" aria-label="Sortering">
 			<rr-toggle-button value="oplopend">
-				<rr-icon slot="icon" name="sort-ascending"></rr-icon>
+				<rr-icon name="sort-ascending"></rr-icon>
 				Oplopend
 			</rr-toggle-button>
 			<rr-toggle-button value="aflopend" selected>
-				<rr-icon slot="icon" name="sort-descending"></rr-icon>
+				<rr-icon name="sort-descending"></rr-icon>
 				Aflopend
 			</rr-toggle-button>
 			<rr-toggle-button value="relevant">
-				<rr-icon slot="icon" name="arrows-sort"></rr-icon>
+				<rr-icon name="arrows-sort"></rr-icon>
 				Relevant
 			</rr-toggle-button>
 		</rr-toggle-button-group>
@@ -202,31 +202,31 @@ export const Grootten = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<rr-toggle-button-group type="radio" name="sortering-xs" size="xs" aria-label="Sortering (extra klein)">
 			<rr-toggle-button value="oplopend">
-				<rr-icon slot="icon" name="sort-ascending"></rr-icon>
+				<rr-icon name="sort-ascending"></rr-icon>
 				Oplopend
 			</rr-toggle-button>
 			<rr-toggle-button value="aflopend" selected>
-				<rr-icon slot="icon" name="sort-descending"></rr-icon>
+				<rr-icon name="sort-descending"></rr-icon>
 				Aflopend
 			</rr-toggle-button>
 		</rr-toggle-button-group>
 		<rr-toggle-button-group type="radio" name="sortering-sm" size="sm" aria-label="Sortering (klein)">
 			<rr-toggle-button value="oplopend">
-				<rr-icon slot="icon" name="sort-ascending"></rr-icon>
+				<rr-icon name="sort-ascending"></rr-icon>
 				Oplopend
 			</rr-toggle-button>
 			<rr-toggle-button value="aflopend" selected>
-				<rr-icon slot="icon" name="sort-descending"></rr-icon>
+				<rr-icon name="sort-descending"></rr-icon>
 				Aflopend
 			</rr-toggle-button>
 		</rr-toggle-button-group>
 		<rr-toggle-button-group type="radio" name="sortering-md" size="md" aria-label="Sortering (middel)">
 			<rr-toggle-button value="oplopend">
-				<rr-icon slot="icon" name="sort-ascending"></rr-icon>
+				<rr-icon name="sort-ascending"></rr-icon>
 				Oplopend
 			</rr-toggle-button>
 			<rr-toggle-button value="aflopend" selected>
-				<rr-icon slot="icon" name="sort-descending"></rr-icon>
+				<rr-icon name="sort-descending"></rr-icon>
 				Aflopend
 			</rr-toggle-button>
 		</rr-toggle-button-group>
@@ -243,15 +243,15 @@ export const Uitgeschakeld = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<rr-toggle-button-group type="checkbox" name="filter-uit" disabled aria-label="Filters (uitgeschakeld)">
 			<rr-toggle-button value="mijn-zaken">
-				<rr-icon slot="icon" name="person"></rr-icon>
+				<rr-icon name="person"></rr-icon>
 				Mijn zaken
 			</rr-toggle-button>
 			<rr-toggle-button value="inbox" selected>
-				<rr-icon slot="icon" name="inbox"></rr-icon>
+				<rr-icon name="inbox"></rr-icon>
 				Inbox
 			</rr-toggle-button>
 			<rr-toggle-button value="agenda">
-				<rr-icon slot="icon" name="calendar-event"></rr-icon>
+				<rr-icon name="calendar-event"></rr-icon>
 				Agenda
 			</rr-toggle-button>
 		</rr-toggle-button-group>
@@ -274,13 +274,13 @@ Uitgeschakeld.parameters = {
 export const MetIconen = () => html`
 	<rr-toggle-button-group type="radio" name="weergave" aria-label="Weergave">
 		<rr-toggle-button value="lijst" accessible-label="Lijstweergave" selected>
-			<rr-icon slot="icon" name="list"></rr-icon>
+			<rr-icon name="list"></rr-icon>
 		</rr-toggle-button>
 		<rr-toggle-button value="compact" accessible-label="Compacte weergave">
-			<rr-icon slot="icon" name="list-decreasing-lines"></rr-icon>
+			<rr-icon name="list-decreasing-lines"></rr-icon>
 		</rr-toggle-button>
 		<rr-toggle-button value="uitgebreid" accessible-label="Uitgebreide weergave">
-			<rr-icon slot="icon" name="stack"></rr-icon>
+			<rr-icon name="stack"></rr-icon>
 		</rr-toggle-button>
 	</rr-toggle-button-group>
 `;

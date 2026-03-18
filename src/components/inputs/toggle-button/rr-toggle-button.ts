@@ -4,6 +4,8 @@
  * A selectable button that toggles between selected and unselected.
  * Available as a button (aria-pressed), checkbox, or radio input.
  *
+ * Place an rr-icon before the text to add an icon — position is auto-detected.
+ *
  * @element rr-toggle-button
  *
  * @attr {'button' | 'checkbox' | 'radio'} type - Underlying element (default: 'button')
@@ -14,8 +16,7 @@
  * @attr {string}                          name             - Name for form submission (checkbox/radio)
  * @attr {string}                          accessible-label - Accessible label; required for icon-only usage
  *
- * @slot      - Button text
- * @slot icon - Icon before the text
+ * @slot - Button content: place an rr-icon before the text for an icon
  *
  * @fires change - When selection changes; detail: { selected: boolean, value: string }
  */
@@ -24,6 +25,7 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { toggleButtonStyles } from './rr-toggle-button.styles.ts';
 import { toggleButtonTemplate } from './rr-toggle-button.template.ts';
+import './../../content/icon/rr-icon.ts';
 
 export type ToggleButtonType = 'button' | 'checkbox' | 'radio';
 export type ToggleButtonSize = 'xs' | 'sm' | 'md';
@@ -54,13 +56,28 @@ export class RRToggleButton extends LitElement {
 	accessibleLabel = '';
 
 	@state()
-	_hasText = false;
+	_iconName: string | null = null;
 
 	@state()
-	_hasIcon = false;
+	_hasText = false;
+
+	private _observer: MutationObserver | null = null;
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._observer = new MutationObserver(() => this._detectIcon());
+		this._observer.observe(this, { childList: true, subtree: true, attributes: true });
+		this.updateComplete.then(() => this._detectIcon());
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._observer?.disconnect();
+		this._observer = null;
+	}
 
 	override updated(): void {
-		const iconOnly = this._hasIcon && !this._hasText;
+		const iconOnly = this._iconName !== null && !this._hasText;
 		this.toggleAttribute('icon-only', iconOnly);
 
 		if (iconOnly && !this.accessibleLabel) {
@@ -68,19 +85,28 @@ export class RRToggleButton extends LitElement {
 		}
 	}
 
-	_onDefaultSlotChange(e: Event): void {
-		const slot = e.target as HTMLSlotElement;
-		const text = slot
-			.assignedNodes({ flatten: true })
-			.map(n => n.textContent ?? '')
-			.join('')
-			.trim();
-		this._hasText = text.length > 0;
+	private _getEffectiveNodes(): Node[] {
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot');
+		if (!slot) return Array.from(this.childNodes);
+		return slot.assignedNodes({ flatten: true });
 	}
 
-	_onIconSlotChange(e: Event): void {
-		const slot = e.target as HTMLSlotElement;
-		this._hasIcon = slot.assignedElements({ flatten: true }).length > 0;
+	_detectIcon(): void {
+		const nodes = this._getEffectiveNodes();
+
+		const icon = nodes.find(
+			(n): n is Element =>
+				n.nodeType === Node.ELEMENT_NODE &&
+				(n as Element).tagName.toLowerCase() === 'rr-icon'
+		) ?? null;
+
+		this._iconName = icon?.getAttribute('name') ?? null;
+
+		this._hasText = nodes.some(
+			n =>
+				n.nodeType === Node.TEXT_NODE &&
+				n.textContent?.trim() !== ''
+		);
 	}
 
 	_handleButtonClick(): void {

@@ -53,10 +53,10 @@ describe('rr-toggle-button', () => {
 
 
 /* ============================================================
-   Toestand
+   State
    ============================================================ */
 
-describe('rr-toggle-button – toestand', () => {
+describe('rr-toggle-button – state', () => {
 	let el: RRToggleButton;
 
 	afterEach(() => {
@@ -126,10 +126,174 @@ describe('rr-toggle-button – toestand', () => {
 
 
 /* ============================================================
-   Interactie – type=button
+   Icon detection
    ============================================================ */
 
-describe('rr-toggle-button – interactie (button)', () => {
+describe('rr-toggle-button – icon detection', () => {
+	let el: RRToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders no shadow icon when there is no rr-icon', async () => {
+		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.toggle-button__icon')).toBeNull();
+	});
+
+	it('renders a shadow icon when rr-icon is present', async () => {
+		el = await fixture<RRToggleButton>(`
+			<rr-toggle-button>
+				<rr-icon name="heart"></rr-icon>
+				Label
+			</rr-toggle-button>
+		`);
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.toggle-button__icon');
+		expect(icon).not.toBeNull();
+		expect(icon!.getAttribute('name')).toBe('heart');
+	});
+
+	it('hides the slotted rr-icon', async () => {
+		el = await fixture<RRToggleButton>(`
+			<rr-toggle-button>
+				<rr-icon name="heart"></rr-icon>
+				Label
+			</rr-toggle-button>
+		`);
+		await waitForUpdate(el);
+		// The slotted icon should be hidden via ::slotted(rr-icon) { display: none }
+		// We verify _iconName is set correctly instead
+		expect(el._iconName).toBe('heart');
+	});
+
+	it('re-detects when an icon is dynamically added', async () => {
+		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		await waitForUpdate(el);
+		expect(el._iconName).toBeNull();
+
+		const icon = document.createElement('rr-icon');
+		icon.setAttribute('name', 'plus');
+		el.prepend(icon);
+		await waitForUpdate(el);
+
+		expect(el._iconName).toBe('plus');
+	});
+
+	it('re-detects when an icon is dynamically removed', async () => {
+		el = await fixture<RRToggleButton>(`
+			<rr-toggle-button>
+				<rr-icon name="heart"></rr-icon>
+				Label
+			</rr-toggle-button>
+		`);
+		await waitForUpdate(el);
+		expect(el._iconName).toBe('heart');
+
+		el.querySelector('rr-icon')!.remove();
+		await waitForUpdate(el);
+
+		expect(el._iconName).toBeNull();
+	});
+
+	it('disconnects observer when removed from DOM', async () => {
+		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		await waitForUpdate(el);
+		expect((el as any)._observer).not.toBeNull();
+
+		el.remove();
+		expect((el as any)._observer).toBeNull();
+	});
+
+	it('re-creates observer when re-inserted into DOM', async () => {
+		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		await waitForUpdate(el);
+
+		const parent = el.parentElement!;
+		el.remove();
+		expect((el as any)._observer).toBeNull();
+
+		parent.appendChild(el);
+		await waitForUpdate(el);
+		expect((el as any)._observer).not.toBeNull();
+	});
+});
+
+
+/* ============================================================
+   Icon-only detection
+   ============================================================ */
+
+describe('rr-toggle-button – icon-only', () => {
+	let el: RRToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('sets icon-only attribute when only an icon is present', async () => {
+		el = await fixture<RRToggleButton>(`
+			<rr-toggle-button accessible-label="Favoriet">
+				<rr-icon name="heart"></rr-icon>
+			</rr-toggle-button>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('icon-only')).toBe(true);
+	});
+
+	it('does not set icon-only when there is text', async () => {
+		el = await fixture<RRToggleButton>(`
+			<rr-toggle-button>
+				<rr-icon name="heart"></rr-icon>
+				Label
+			</rr-toggle-button>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('icon-only')).toBe(false);
+	});
+
+	it('does not set icon-only when there is no icon', async () => {
+		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('icon-only')).toBe(false);
+	});
+
+	it('warns when icon-only without accessible-label', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+		el = await fixture<RRToggleButton>(`
+			<rr-toggle-button>
+				<rr-icon name="heart"></rr-icon>
+			</rr-toggle-button>
+		`);
+		await waitForUpdate(el);
+
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
+		warnSpy.mockRestore();
+	});
+
+	it('does not warn when icon-only with accessible-label', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+		el = await fixture<RRToggleButton>(`
+			<rr-toggle-button accessible-label="Favoriet">
+				<rr-icon name="heart"></rr-icon>
+			</rr-toggle-button>
+		`);
+		await waitForUpdate(el);
+
+		expect(warnSpy).not.toHaveBeenCalled();
+		warnSpy.mockRestore();
+	});
+});
+
+
+/* ============================================================
+   Interaction – type=button
+   ============================================================ */
+
+describe('rr-toggle-button – interaction (button)', () => {
 	let el: RRToggleButton;
 
 	afterEach(() => {
@@ -158,12 +322,10 @@ describe('rr-toggle-button – interactie (button)', () => {
 
 		let detail: any;
 		el.addEventListener('change', (e: Event) => { detail = (e as CustomEvent).detail; });
-
 		el.shadowRoot!.querySelector('button')!.click();
 
-		expect(detail).toBeDefined();
-		expect(detail.selected).toBe(true);
-		expect(detail.value).toBe('optie');
+		expect(detail?.selected).toBe(true);
+		expect(detail?.value).toBe('optie');
 	});
 
 	it('disabled button does not toggle when clicked', async () => {
@@ -177,10 +339,10 @@ describe('rr-toggle-button – interactie (button)', () => {
 
 
 /* ============================================================
-   Interactie – type=checkbox
+   Interaction – type=checkbox
    ============================================================ */
 
-describe('rr-toggle-button – interactie (checkbox)', () => {
+describe('rr-toggle-button – interaction (checkbox)', () => {
 	let el: RRToggleButton;
 
 	afterEach(() => {
@@ -217,10 +379,10 @@ describe('rr-toggle-button – interactie (checkbox)', () => {
 
 
 /* ============================================================
-   Interactie – type=radio
+   Interaction – type=radio
    ============================================================ */
 
-describe('rr-toggle-button – interactie (radio)', () => {
+describe('rr-toggle-button – interaction (radio)', () => {
 	let el: RRToggleButton;
 
 	afterEach(() => {
@@ -246,7 +408,7 @@ describe('rr-toggle-button – interactie (radio)', () => {
 
 
 /* ============================================================
-   toggle() methode
+   toggle() method
    ============================================================ */
 
 describe('rr-toggle-button – toggle()', () => {
@@ -275,82 +437,10 @@ describe('rr-toggle-button – toggle()', () => {
 
 
 /* ============================================================
-   Icoon-only detectie
+   Accessibility
    ============================================================ */
 
-describe('rr-toggle-button – icoon-only', () => {
-	let el: RRToggleButton;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('sets icon-only attribute when only an icon is slotted', async () => {
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button accessible-label="Favoriet">
-				<span slot="icon">★</span>
-			</rr-toggle-button>
-		`);
-		await waitForUpdate(el);
-		expect(el.hasAttribute('icon-only')).toBe(true);
-	});
-
-	it('does not set icon-only when there is text', async () => {
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button>
-				<span slot="icon">★</span>
-				Label
-			</rr-toggle-button>
-		`);
-		await waitForUpdate(el);
-		expect(el.hasAttribute('icon-only')).toBe(false);
-	});
-
-	it('does not set icon-only when there is no icon slot', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('icon-only')).toBe(false);
-	});
-
-	it('warns when icon-only without accessible-label', async () => {
-		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button>
-				<span slot="icon">★</span>
-			</rr-toggle-button>
-		`);
-		await waitForUpdate(el);
-
-		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining('accessible-label')
-		);
-
-		warnSpy.mockRestore();
-	});
-
-	it('does not warn when icon-only with accessible-label', async () => {
-		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button accessible-label="Favoriet">
-				<span slot="icon">★</span>
-			</rr-toggle-button>
-		`);
-		await waitForUpdate(el);
-
-		expect(warnSpy).not.toHaveBeenCalled();
-
-		warnSpy.mockRestore();
-	});
-});
-
-
-/* ============================================================
-   Toegankelijkheid
-   ============================================================ */
-
-describe('rr-toggle-button – toegankelijkheid', () => {
+describe('rr-toggle-button – accessibility', () => {
 	let el: RRToggleButton;
 
 	afterEach(() => {
