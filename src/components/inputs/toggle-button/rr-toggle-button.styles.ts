@@ -21,7 +21,7 @@ export const toggleButtonStyles = css`
 
 	/* # Base */
 
-	.button {
+	.toggle-button {
 		/* Reset */
 		appearance: none;
 		border: none;
@@ -50,7 +50,7 @@ export const toggleButtonStyles = css`
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.button {
+		.toggle-button {
 			transition: none;
 		}
 	}
@@ -58,7 +58,7 @@ export const toggleButtonStyles = css`
 
 	/* # Input overlay */
 
-	.button__input {
+	.toggle-button__input {
 		position: absolute;
 		inset: 0;
 		width: 100%;
@@ -81,7 +81,7 @@ export const toggleButtonStyles = css`
 
 	/* ## Size: XS */
 
-	:host([size="xs"]) .button {
+	:host([size="xs"]) .toggle-button {
 		min-height: var(--semantics-controls-xs-min-size);
 		padding: var(--primitives-space-4) var(--primitives-space-6);
 		font: var(--semantics-buttons-xs-font);
@@ -91,7 +91,7 @@ export const toggleButtonStyles = css`
 
 	/* ## Size: SM */
 
-	:host([size="sm"]) .button {
+	:host([size="sm"]) .toggle-button {
 		min-height: var(--semantics-controls-sm-min-size);
 		padding: var(--primitives-space-6) var(--primitives-space-8);
 		font: var(--semantics-buttons-sm-font);
@@ -101,8 +101,8 @@ export const toggleButtonStyles = css`
 
 	/* ## Size: MD (default) */
 
-	:host([size="md"]) .button,
-	:host(:not([size])) .button {
+	:host([size="md"]) .toggle-button,
+	:host(:not([size])) .toggle-button {
 		min-height: var(--semantics-controls-md-min-size);
 		padding: var(--primitives-space-8) var(--primitives-space-14);
 		font: var(--semantics-buttons-md-font);
@@ -113,18 +113,18 @@ export const toggleButtonStyles = css`
 
 	/* # Icon-only: square */
 
-	:host([icon-only][size="xs"]) .button {
+	:host([icon-only][size="xs"]) .toggle-button {
 		width: var(--semantics-controls-xs-min-size);
 		padding: 0;
 	}
 
-	:host([icon-only][size="sm"]) .button {
+	:host([icon-only][size="sm"]) .toggle-button {
 		width: var(--semantics-controls-sm-min-size);
 		padding: 0;
 	}
 
-	:host([icon-only][size="md"]) .button,
-	:host([icon-only]:not([size])) .button {
+	:host([icon-only][size="md"]) .toggle-button,
+	:host([icon-only]:not([size])) .toggle-button {
 		width: var(--semantics-controls-md-min-size);
 		padding: 0;
 	}
@@ -153,34 +153,34 @@ export const toggleButtonStyles = css`
 
 	/* ## Hover */
 
-	.button:hover,
-	.button:has(.button__input:hover) {
+	.toggle-button:hover,
+	.toggle-button:has(.toggle-button__input:hover) {
 		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 	}
 
 	/* ## Selected */
 
-	:host([selected]) .button {
+	:host([selected]) .toggle-button {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
-	:host([selected]) .button:hover,
-	:host([selected]) .button:has(.button__input:hover) {
+	:host([selected]) .toggle-button:hover,
+	:host([selected]) .toggle-button:has(.toggle-button__input:hover) {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
 	}
 
 	/* ## Focus */
 
-	.button:focus-visible,
-	.button:has(.button__input:focus-visible) {
+	.toggle-button:focus-visible,
+	.toggle-button:has(.toggle-button__input:focus-visible) {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
-	.button:focus:not(:focus-visible) {
+	.toggle-button:focus:not(:focus-visible) {
 		outline: none;
 	}
 
@@ -188,13 +188,13 @@ export const toggleButtonStyles = css`
 	/* # Accessibility */
 
 	@media (forced-colors: active) {
-		.button:focus-visible,
-		.button:has(.button__input:focus-visible) {
+		.toggle-button:focus-visible,
+		.toggle-button:has(.toggle-button__input:focus-visible) {
 			outline: 2px solid CanvasText;
 			outline-offset: 2px;
 		}
 
-		:host([selected]) .button {
+		:host([selected]) .toggle-button {
 			forced-color-adjust: none;
 			background-color: Highlight;
 			color: HighlightText;

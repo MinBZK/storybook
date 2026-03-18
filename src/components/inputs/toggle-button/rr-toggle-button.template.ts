@@ -18,9 +18,8 @@ export function toggleButtonTemplate(component: RRToggleButton): TemplateResult 
 
 	if (component.type === 'checkbox' || component.type === 'radio') {
 		return html`
-			<label class="button">
-				<input
-					class="button__input"
+			<label class="toggle-button">
+				<input class="toggle-button__input"
 					type=${component.type}
 					.checked=${component.selected}
 					?disabled=${component.disabled}
@@ -36,8 +35,7 @@ export function toggleButtonTemplate(component: RRToggleButton): TemplateResult 
 	}
 
 	return html`
-		<button
-			class="button"
+		<button class="toggle-button"
 			type="button"
 			aria-pressed=${component.selected}
 			?disabled=${component.disabled}
