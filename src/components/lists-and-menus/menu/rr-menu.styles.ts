@@ -12,6 +12,8 @@ export const menuStyles = css`
 		position: absolute;
 		overflow: visible;
 		--_viewport-margin: 16px;
+		--_menu-width: var(--primitives-area-280);
+		--_menu-max-height: none;
 	}
 
 	:host(:not(:popover-open)) {
@@ -29,8 +31,8 @@ export const menuStyles = css`
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--primitives-box-shadows-level-5);
 		box-sizing: border-box;
-		width: var(--_menu-width, var(--primitives-area-280));
-		max-height: var(--_menu-max-height, none);
+		width: var(--_menu-width);
+		max-height: var(--_menu-max-height);
 		overflow-y: auto;
 		@media (pointer: fine) {
 			padding: var(--primitives-space-6);
