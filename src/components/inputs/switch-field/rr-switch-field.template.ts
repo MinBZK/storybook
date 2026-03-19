@@ -17,9 +17,9 @@ export function switchFieldTemplate(component: RRSwitchField): TemplateResult {
 					@change=${component._handleChange}
 				></rr-switch>
 			</div>
-			<label class="switch-field__label">
+			<span class="switch-field__label">
 				<slot @slotchange=${component._onSlotChange}></slot>
-			</label>
+			</span>
 		</div>
 	`;
 }

@@ -18,9 +18,9 @@ export function checkboxFieldTemplate(component: RRCheckboxField): TemplateResul
 					@change=${component._handleChange}
 				></rr-checkbox>
 			</div>
-			<label class="checkbox-field__label">
+			<span class="checkbox-field__label">
 				<slot @slotchange=${component._onSlotChange}></slot>
-			</label>
+			</span>
 		</div>
 	`;
 }

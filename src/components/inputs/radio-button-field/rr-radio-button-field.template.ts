@@ -18,9 +18,9 @@ export function radioButtonFieldTemplate(component: RRRadioButtonField): Templat
 					@change=${component._handleChange}
 				></rr-radio-button>
 			</div>
-			<label class="radio-button-field__label">
+			<span class="radio-button-field__label">
 				<slot @slotchange=${component._onSlotChange}></slot>
-			</label>
+			</span>
 		</div>
 	`;
 }
