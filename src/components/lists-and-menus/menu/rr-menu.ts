@@ -347,17 +347,24 @@ export class RRMenu extends LitElement {
 			if (!query) {
 				item._displayText = '';
 			} else if (matches) {
-				const idx = item.text.toLowerCase().indexOf(query.toLowerCase());
-				if (idx !== -1) {
-					const before = item.text.slice(0, idx);
-					const match = item.text.slice(idx, idx + query.length);
-					const after = item.text.slice(idx + query.length);
-					const boldBefore = before ? `**${before}**` : '';
-					const boldAfter = after ? `**${after}**` : '';
-					item._displayText = `${boldBefore}${match}${boldAfter}`;
-				} else {
-					item._displayText = '';
+				const q = query.toLowerCase();
+				let remaining = item.text;
+				let remainingLower = item.text.toLowerCase();
+				const parts: string[] = [];
+
+				while (remaining.length > 0) {
+					const idx = remainingLower.indexOf(q);
+					if (idx === -1) {
+						parts.push(`**${remaining}**`);
+						break;
+					}
+					if (idx > 0) parts.push(`**${remaining.slice(0, idx)}**`);
+					parts.push(remaining.slice(idx, idx + query.length));
+					remaining = remaining.slice(idx + query.length);
+					remainingLower = remaining.toLowerCase();
 				}
+
+				item._displayText = parts.join('');
 			}
 		});
 		this._updateHighlight();
