@@ -6,7 +6,6 @@ export function dropDownFieldTemplate(component: RRDropDownField): TemplateResul
 	return html`
 		<div class="drop-down-field">
 			<select class="drop-down-field__native"
-				.value=${component.value}
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
 				@change=${component._handleChange}

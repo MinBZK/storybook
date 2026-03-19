@@ -53,6 +53,12 @@ export class RRDropDownField extends LitElement {
 	@query('.drop-down-field__native')
 	_select!: HTMLSelectElement;
 
+	override firstUpdated(): void {
+		// _onSlotChange will fire and call _syncSelectValue after options are cloned.
+		// Call it here too in case the slot is already populated synchronously.
+		this._syncSelectValue();
+	}
+
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('value')) {
 			this._syncSelectValue();
