@@ -75,7 +75,8 @@ export class RRComboBoxField extends LitElement {
 	@state()
 	_displayValue = '';
 
-	readonly _menuId = `rr-combo-box-menu-${Math.random().toString(36).slice(2)}`;
+	private static _counter = 0;
+	readonly _menuId = `rr-combo-box-menu-${RRComboBoxField._counter++}`;
 
 	private _menu: RRMenu | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
