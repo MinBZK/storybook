@@ -50,7 +50,7 @@ export class RRDropDownField extends LitElement {
 	@state()
 	_displayValue = '';
 
-	@query('.drop-down-field__native')
+	@query('.drop-down-field__select')
 	_select!: HTMLSelectElement;
 
 	override firstUpdated(): void {

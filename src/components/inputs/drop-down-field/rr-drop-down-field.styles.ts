@@ -50,7 +50,7 @@ export const dropDownFieldStyles = css`
 
 	/* # Native select */
 
-	.drop-down-field__native {
+	.drop-down-field__select {
 		position: absolute;
 		inset: 0;
 		width: 100%;
@@ -65,13 +65,12 @@ export const dropDownFieldStyles = css`
 		box-sizing: border-box;
 	}
 
-	:host([size='md']) .drop-down-field__native,
-	:host(:not([size])) .drop-down-field__native {
+	:host([size='md']) .drop-down-field__select,
+	:host(:not([size])) .drop-down-field__select {
 		font: var(--semantics-input-fields-md-text-font);
-		font-size: 16px;
 	}
 
-	:host([size='sm']) .drop-down-field__native {
+	:host([size='sm']) .drop-down-field__select {
 		font: var(--semantics-input-fields-sm-text-font);
 	}
 

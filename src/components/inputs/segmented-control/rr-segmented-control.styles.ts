@@ -51,11 +51,11 @@ export const segmentedControlItemStyles = css`
 		display: flex;
 		min-width: 0;
 		position: relative;
-		--_segmented-control-md-inset-size: 4px;
-		--_segmented-control-md-gap-size: 4px;
+		--_segmented-control-md-inset-size: var(--primitives-space-4);
+		--_segmented-control-md-gap-size: var(--primitives-space-4);
 		--_segmented-control-md-item-icon-size: var(--primitives-space-24);
-		--_segmented-control-sm-inset-size: 3px;
-		--_segmented-control-sm-gap-size: 2px;
+		--_segmented-control-sm-inset-size: var(--primitives-space-3);
+		--_segmented-control-sm-gap-size: var(--primitives-space-2);
 		--_segmented-control-sm-item-icon-size: var(--primitives-space-20);
 	}
 

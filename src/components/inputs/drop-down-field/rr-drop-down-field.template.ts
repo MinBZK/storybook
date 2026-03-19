@@ -5,7 +5,7 @@ import './../../content/icon/rr-icon.ts';
 export function dropDownFieldTemplate(component: RRDropDownField): TemplateResult {
 	return html`
 		<div class="drop-down-field">
-			<select class="drop-down-field__native"
+			<select class="drop-down-field__select"
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
 				@change=${component._handleChange}
