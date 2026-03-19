@@ -180,12 +180,12 @@ export class RRComboBoxField extends LitElement {
 		if (!this._menu || this._isOpen) return;
 		this._updateMenuWidth();
 		this._menu.noAutoFocus = !moveFocus;
-		(this._menu as any).showPopover?.();
+		(this._menu as HTMLElement).showPopover?.();
 	}
 
 	public _closeMenu(): void {
 		if (!this._menu || !this._isOpen) return;
-		(this._menu as any).hidePopover?.();
+		(this._menu as HTMLElement).hidePopover?.();
 	}
 
 	public _toggleMenu(): void {
