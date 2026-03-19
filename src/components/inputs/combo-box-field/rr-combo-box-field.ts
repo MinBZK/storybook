@@ -192,12 +192,24 @@ export class RRComboBoxField extends LitElement {
 		(this._menu as HTMLElement).hidePopover();
 	}
 
+	private _pickerMousedown = false;
+
 	public _toggleMenu(): void {
+		if (this._pickerMousedown) {
+			this._pickerMousedown = false;
+			return;
+		}
 		if (this._isOpen) {
 			this._closeMenu();
 			this._input?.focus();
 		} else {
 			this._openMenu(true);
+		}
+	}
+
+	public _handlePickerMousedown(): void {
+		if (this._isOpen) {
+			this._pickerMousedown = true;
 		}
 	}
 

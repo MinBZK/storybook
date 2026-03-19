@@ -26,6 +26,7 @@ export function comboBoxFieldTemplate(component: RRComboBoxField): TemplateResul
 					variant="neutral-tinted"
 					size="sm"
 					?disabled=${component.disabled}
+					@mousedown=${component._handlePickerMousedown}
 					@click=${component._toggleMenu}
 				>
 					<rr-icon name="chevron-down"></rr-icon>
