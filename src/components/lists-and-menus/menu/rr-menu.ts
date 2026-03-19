@@ -310,21 +310,12 @@ export class RRMenu extends LitElement {
 		return items.findIndex(item => item.hasAttribute('data-focused'));
 	}
 
-	private _setHighlight(target: RRMenuItem): void {
+	private _setHighlight(target: RRMenuItem | null): void {
 		Array.from(this.querySelectorAll('rr-menu-item')).forEach(item => {
 			item.removeAttribute('highlighted');
 		});
-		target.setAttribute('highlighted', '');
-	}
-
-	private _updateHighlight(): void {
-		const items = this._getVisibleItems();
-		Array.from(this.querySelectorAll('rr-menu-item')).forEach(item => {
-			item.removeAttribute('highlighted');
-		});
-		if (items.length > 0) {
-			items[0].setAttribute('highlighted', '');
-		}
+		const resolved = target ?? this._getVisibleItems()[0] ?? null;
+		resolved?.setAttribute('highlighted', '');
 	}
 
 	private _updateEmptyState(): void {
@@ -394,7 +385,7 @@ export class RRMenu extends LitElement {
 				item.setDisplayText(parts.join(''));
 			}
 		});
-		this._updateHighlight();
+		this._setHighlight(null);
 		this._updateEmptyState();
 		this._updateDividerVisibility();
 		if (this._isOpen) this.reposition();
@@ -531,7 +522,7 @@ export class RRMenu extends LitElement {
 		if (toggleEvent.newState !== 'open') return;
 
 		this._updateDividerVisibility();
-		this._updateHighlight();
+		this._setHighlight(null);
 		this._updateEmptyState();
 		Array.from(this.querySelectorAll('rr-menu-item')).forEach(item => {
 			(item as RRMenuItem).menuVariant = this.variant;
