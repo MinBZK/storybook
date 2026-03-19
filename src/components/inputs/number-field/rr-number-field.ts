@@ -1,255 +1,141 @@
 /**
  * RegelRecht Number Field Component (Lit + TypeScript)
  *
+ * Een numeriek invoerveld met decrement en increment knoppen.
+ *
  * @element rr-number-field
- * @attr {number} value - The numeric value
- * @attr {number} min - Minimum allowed value
- * @attr {number} max - Maximum allowed value
- * @attr {number} step - Step increment for buttons
- * @attr {boolean} disabled - Disabled state
- * @attr {string} name - Input name for form submission
+ * @attr {number}  value        - Huidige waarde
+ * @attr {number}  min          - Minimale waarde (standaard: -∞)
+ * @attr {number}  max          - Maximale waarde (standaard: ∞)
+ * @attr {number}  step         - Stapgrootte (standaard: 1)
+ * @attr {boolean} disabled     - Uitgeschakelde toestand
+ * @attr {string}  name         - Naam voor formulierverwerking
+ * @attr {object}  translations - Vertalingen; niet-opgegeven sleutels vallen terug op Nederlands
+ * @attr {boolean} full-width       - Stretches to fill the container width
+ * @attr {string}  width            - Fixed width; the input stretches to fill remaining space
+ * @attr {boolean} hide-spin-buttons - When set, hides the decrement and increment buttons
+ * @attr {string}  accessible-label  - Accessible label (aria-label) forwarded to the native input
  *
- * @fires input - When value changes
- * @fires change - When value is committed
- *
- * @csspart container - The field container
- * @csspart input - The native input element
- * @csspart decrease-button - The decrease button
- * @csspart increase-button - The increase button
+ * @fires input  - Wanneer de waarde verandert; detail: { value: number }
+ * @fires change - Wanneer de waarde wordt bevestigd; detail: { value: number }
  */
-
-import { LitElement, html, css } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { numberFieldStyles } from './rr-number-field.styles.ts';
+import { numberFieldTemplate } from './rr-number-field.template.ts';
+import { rrNumberFieldTranslations } from './rr-number-field.i18n.ts';
+import type { RRNumberFieldTranslations } from './rr-number-field.i18n.ts';
+import './../../actions/icon-button/rr-icon-button.ts';
+import './../../content/icon/rr-icon.ts';
 
 @customElement('rr-number-field')
 export class RRNumberField extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = numberFieldStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Number })
+	value = 0;
 
-    .number-field {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      height: var(--semantics-controls-md-min-size);
-      background-color: var(--semantics-input-fields-background-color);
-      border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
-      border-radius: var(--semantics-controls-md-corner-radius);
-      box-sizing: border-box;
-    }
+	@property({ type: Number })
+	min = -Infinity;
 
-    .number-field__button {
-      /* Reset */
-      appearance: none;
-      border: none;
-      background: transparent;
-      margin: 0;
-      padding: 0;
-      cursor: pointer;
+	@property({ type: Number })
+	max = Infinity;
 
-      /* Layout */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: var(--semantics-controls-md-min-size);
-      height: 100%;
-      flex-shrink: 0;
+	@property({ type: Number })
+	step = 1;
 
-      /* Icon color */
-      color: var(--semantics-content-color);
-    }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-    .number-field__button:hover:not(:disabled) {
-      background-color: var(--primitives-color-neutral-100);
-    }
+	@property({ type: String })
+	name = '';
 
-    .number-field__button:active:not(:disabled) {
-      background-color: var(--primitives-color-neutral-200);
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
+	fullWidth = false;
 
-    .number-field__button:disabled {
-      cursor: not-allowed;
-    }
+	/** Sets a fixed width on the component. The input stretches to fill the available space. */
+	@property({ type: String })
+	width = '';
 
-    .number-field__button svg {
-      width: 20px;
-      height: 20px;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'hide-spin-buttons' })
+	hideSpinButtons = false;
 
-    .number-field__input {
-      display: flex;
-      justify-content: center;
-      padding: 0 var(--primitives-space-6);
-    }
+	/** Accessible label forwarded as aria-label to the native input. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-    .number-field__native {
-      /* Reset */
-      appearance: none;
-      border: none;
-      background: transparent;
-      margin: 0;
-      padding: 0;
-      outline: none;
-      font: inherit;
-      box-sizing: border-box;
+	/** Overschrijf een of meer vertalingssleutels. Niet-opgegeven sleutels vallen terug op Nederlands. */
+	@property({ type: Object })
+	translations: Partial<RRNumberFieldTranslations> = {};
 
-      /* Typography */
-      font: var(--semantics-input-fields-md-text-font);
-      color: var(--semantics-content-color);
-      text-align: center;
+	override firstUpdated(): void {
+		if (!this.accessibleLabel) {
+			console.warn('<rr-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input\'s purpose.');
+		}
+	}
 
-      /* Layout - auto width based on content */
-      width: 3ch;
-      min-width: 2ch;
-    }
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('width')) {
+			if (this.width) {
+				this.style.setProperty('--_width', this.width);
+				this.setAttribute('width', this.width);
+			} else {
+				this.style.removeProperty('--_width');
+				this.removeAttribute('width');
+			}
+		}
+	}
 
-    /* Hide number input spinners */
-    .number-field__native::-webkit-outer-spin-button,
-    .number-field__native::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
+	// — i18n —————————————————————————————————————————————————————————————————
 
-    .number-field__native[type='number'] {
-      -moz-appearance: textfield;
-    }
+	public _t(key: keyof RRNumberFieldTranslations): string {
+		return this.translations[key] ?? rrNumberFieldTranslations[key];
+	}
 
-    /* Focus state */
-    .number-field:focus-within {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
+	// — Actions ——————————————————————————————————————————————————————————————
 
-    /* Disabled state */
-    :host([disabled]) .number-field {
-      opacity: var(--primitives-opacity-disabled);
-      cursor: not-allowed;
-    }
+	public _handleDecrease(): void {
+		if (this.disabled) return;
+		this._updateValue(this.value - this.step);
+	}
 
-    :host([disabled]) .number-field__native,
-    :host([disabled]) .number-field__button {
-      cursor: not-allowed;
-      pointer-events: none;
-    }
+	public _handleIncrease(): void {
+		if (this.disabled) return;
+		this._updateValue(this.value + this.step);
+	}
 
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .number-field:focus-within {
-        outline: 2px solid CanvasText !important;
-        outline-offset: 2px !important;
-      }
-    }
-  `;
+	public _handleInput(e: Event): void {
+		const input = e.target as HTMLInputElement;
+		const newValue = parseFloat(input.value);
+		if (!isNaN(newValue)) {
+			this._updateValue(newValue);
+		}
+	}
 
-  @property({ type: Number })
-  value = 0;
+	private _updateValue(newValue: number): void {
+		const clampedValue = Math.max(this.min, Math.min(this.max, newValue));
+		if (clampedValue !== this.value) {
+			this.value = clampedValue;
+			this.dispatchEvent(new CustomEvent('input', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			}));
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			}));
+		}
+	}
 
-  @property({ type: Number })
-  min = -Infinity;
-
-  @property({ type: Number })
-  max = Infinity;
-
-  @property({ type: Number })
-  step = 1;
-
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
-
-  @property({ type: String })
-  name = '';
-
-  private _updateValue(newValue: number): void {
-    const clampedValue = Math.max(this.min, Math.min(this.max, newValue));
-    if (clampedValue !== this.value) {
-      this.value = clampedValue;
-      this.dispatchEvent(new CustomEvent('input', {
-        detail: { value: this.value },
-        bubbles: true,
-        composed: true
-      }));
-      this.dispatchEvent(new CustomEvent('change', {
-        detail: { value: this.value },
-        bubbles: true,
-        composed: true
-      }));
-    }
-  }
-
-  private _handleDecrease(): void {
-    this._updateValue(this.value - this.step);
-  }
-
-  private _handleIncrease(): void {
-    this._updateValue(this.value + this.step);
-  }
-
-  private _handleInput(e: Event): void {
-    const input = e.target as HTMLInputElement;
-    const newValue = parseFloat(input.value);
-    if (!isNaN(newValue)) {
-      this._updateValue(newValue);
-    }
-  }
-
-  override render() {
-    const canDecrease = this.value > this.min;
-    const canIncrease = this.value < this.max;
-
-    return html`
-      <div class="number-field" part="container">
-        <button
-          class="number-field__button"
-          part="decrease-button"
-          type="button"
-          ?disabled=${this.disabled || !canDecrease}
-          @click=${this._handleDecrease}
-          aria-label="Waarde verlagen"
-        >
-          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M3.33 9.17h13.34v1.66H3.33z"/>
-          </svg>
-        </button>
-        <div class="number-field__input">
-          <input
-            class="number-field__native"
-            part="input"
-            type="number"
-            .value=${String(this.value)}
-            min=${this.min}
-            max=${this.max}
-            step=${this.step}
-            ?disabled=${this.disabled}
-            name=${this.name}
-            @input=${this._handleInput}
-          />
-        </div>
-        <button
-          class="number-field__button"
-          part="increase-button"
-          type="button"
-          ?disabled=${this.disabled || !canIncrease}
-          @click=${this._handleIncrease}
-          aria-label="Waarde verhogen"
-        >
-          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M9.17 3.33v5.84H3.33v1.66h5.84v5.84h1.66v-5.84h5.84V9.17h-5.84V3.33z"/>
-          </svg>
-        </button>
-      </div>
-    `;
-  }
+	override render() {
+		return numberFieldTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-number-field': RRNumberField;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-number-field': RRNumberField;
+	}
 }

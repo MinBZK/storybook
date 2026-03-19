@@ -1,215 +1,367 @@
 /**
  * RegelRecht Segmented Control Component (Lit + TypeScript)
  *
- * A horizontal group of mutually exclusive options.
+ * A horizontal group of mutually exclusive (radio) or multi-select (checkbox) options.
+ * Exports both RRSegmentedControl and RRSegmentedControlItem.
  *
  * @element rr-segmented-control
- * @attr {string} value - Currently selected value
- * @attr {string} size - Control size: 'sm' | 'md' (default: 'md')
- * @attr {boolean} disabled - Disabled state for all items
+ * @attr {string}  value         - Selected value for radio type
+ * @prop {string[]} values        - Selected values for checkbox type (property binding only, not an attribute)
+ * @attr {string}  size          - Control size: 'sm' | 'md' (default: 'md')
+ * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio')
+ * @attr {string}  content-type  - Content type for all items: 'text' | 'icon' (default: 'text')
+ * @attr {boolean} disabled      - Disabled state for all items
+ * @attr {boolean} full-width    - Stretches to fill the container width
+ * @attr {string}  name          - Name for form submission, forwarded to native inputs
  *
- * @fires change - When selection changes (detail: { value: string })
+ * @fires change - When selection changes; detail: { value: string } for radio,
+ *                 detail: { values: string[] } for checkbox
  *
- * @slot - Default slot for rr-segmented-control-item elements
+ * @slot - rr-segmented-control-item elements
  *
- * @csspart container - The container element
+ * ---
+ *
+ * @element rr-segmented-control-item
+ * @attr {string}  value        - Value for this item
+ * @attr {boolean} selected     - Whether this item is selected (set by parent)
+ * @attr {boolean} disabled     - Disabled state
+ *
+ * @slot         - Text label content (shown when parent content-type="text",
+ *                 always used as aria-label and tooltip for icon items)
+ * @slot icon    - Icon content (shown when parent content-type="icon")
+ *
+ * @fires item-change - When item is activated; detail: { value: string, checked: boolean }
  */
+import { LitElement } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import {
+	segmentedControlStyles,
+	segmentedControlItemStyles,
+} from './rr-segmented-control.styles.ts';
+import {
+	segmentedControlTemplate,
+	segmentedControlItemTemplate,
+} from './rr-segmented-control.template.ts';
+import './../../content/icon/rr-icon.ts';
 
-import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import type { RRSegmentedControlItem } from './rr-segmented-control-item.ts';
-import './rr-segmented-control-item.ts';
+export type SegmentedControlSize = 'sm' | 'md';
+export type SegmentedControlType = 'radio' | 'checkbox';
+export type SegmentedControlContentType = 'text' | 'icon';
 
-type Size = 'sm' | 'md';
+
+// # rr-segmented-control-item
+
+@customElement('rr-segmented-control-item')
+export class RRSegmentedControlItem extends LitElement {
+	static override styles = segmentedControlItemStyles;
+
+	@property({ type: String })
+	value = '';
+
+	@property({ type: Boolean, reflect: true })
+	selected = false;
+
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
+
+	/** Set by rr-segmented-control. Not part of the public API. */
+	@property({ type: String, reflect: true })
+	size: SegmentedControlSize = 'md';
+
+	/** Set by rr-segmented-control. Not part of the public API. */
+	@property({ type: String, reflect: true, attribute: 'content-type' })
+	contentType: SegmentedControlContentType = 'text';
+
+	/** Set by rr-segmented-control. Not part of the public API. */
+	@property({ type: String, reflect: true, attribute: 'input-type' })
+	inputType: SegmentedControlType = 'radio';
+
+	/** Set by rr-segmented-control. Not part of the public API. */
+	@property({ type: String })
+	groupName = '';
+
+	/**
+	 * Text content of the default slot.
+	 * Used as aria-label and title tooltip for icon items so screen readers
+	 * and pointer users can identify the option.
+	 */
+	@state()
+	_labelText = '';
+
+	public _onDefaultSlotChange(e: Event): void {
+		const slot = e.target as HTMLSlotElement;
+		this._labelText = slot.assignedNodes({ flatten: true })
+			.map(node => node.textContent ?? '')
+			.join('')
+			.trim();
+	}
+
+	public _handleChange(e: Event): void {
+		const input = e.target as HTMLInputElement;
+		this.dispatchEvent(new CustomEvent('item-change', {
+			detail: { value: this.value, checked: input.checked },
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	override render() {
+		return segmentedControlItemTemplate(this);
+	}
+}
+
+
+// # rr-segmented-control
 
 @customElement('rr-segmented-control')
 export class RRSegmentedControl extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = segmentedControlStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	/** Selected value for radio type. */
+	@property({ type: String, reflect: true })
+	value = '';
 
-    .container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--semantics-buttons-neutral-tinted-background-color);
-      padding: 0 2px;
-      box-sizing: border-box;
-    }
+	/**
+	 * Selected values for checkbox type.
+	 * Use property binding: .values=${['New York', 'Amsterdam']}
+	 * Does not reflect to an attribute — safe for values containing spaces or special characters.
+	 */
+	@property({ type: Array, attribute: false })
+	values: string[] = [];
 
-    /* Size: S */
-    :host([size='sm']) .container {
-      border-radius: var(--semantics-controls-sm-corner-radius);
-    }
+	@property({ type: String, reflect: true })
+	size: SegmentedControlSize = 'md';
 
-    /* Size: M (default) */
-    :host([size='md']) .container,
-    :host(:not([size])) .container {
-      border-radius: var(--semantics-controls-md-corner-radius);
-    }
+	@property({ type: String, reflect: true })
+	type: SegmentedControlType = 'radio';
 
-    /* Full width option */
-    :host([full-width]) {
-      display: block;
-    }
+	/** Content type applied to all items. Mixing text and icon items is not supported. */
+	@property({ type: String, reflect: true, attribute: 'content-type' })
+	contentType: SegmentedControlContentType = 'text';
 
-    :host([full-width]) .container {
-      width: 100%;
-    }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-    /* Disabled state */
-    :host([disabled]) .container {
-      opacity: var(--primitives-opacity-disabled);
-      pointer-events: none;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
+	fullWidth = false;
 
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .container {
-        border: 1px solid CanvasText;
-      }
-    }
-  `;
+	@property({ type: String })
+	name = '';
 
-  @property({ type: String, reflect: true })
-  value = '';
+	/** Accessible name for the group (aria-label). */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
+	/** ID of an external label element (aria-labelledby). */
+	@property({ type: String, attribute: 'accessible-labelledby' })
+	accessibleLabelledBy = '';
 
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
+	// — Lifecycle ——————————————————————————————————————————————————————————————
 
-  @property({ type: Boolean, attribute: 'full-width', reflect: true })
-  fullWidth = false;
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
+		if (this.accessibleLabel) this.setAttribute('aria-label', this.accessibleLabel);
+		if (this.accessibleLabelledBy) this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+		this.addEventListener('item-change', this._handleItemChange as EventListener);
+		this.addEventListener('keydown', this._handleKeydown);
+	}
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.setAttribute('role', 'radiogroup');
-    this.addEventListener('select', this._handleSelect as EventListener);
-    this.addEventListener('keydown', this._handleKeyDown);
-  }
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this.removeEventListener('item-change', this._handleItemChange as EventListener);
+		this.removeEventListener('keydown', this._handleKeydown);
+	}
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('select', this._handleSelect as EventListener);
-    this.removeEventListener('keydown', this._handleKeyDown);
-  }
+	override firstUpdated(): void {
+		this._syncItems();
+		if (!this.accessibleLabel && !this.accessibleLabelledBy) {
+			console.warn('<rr-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+		}
+	}
 
-  override firstUpdated(): void {
-    this._updateItems();
-  }
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (
+			changedProperties.has('value') ||
+			changedProperties.has('values') ||
+			changedProperties.has('size') ||
+			changedProperties.has('disabled') ||
+			changedProperties.has('type') ||
+			changedProperties.has('contentType') ||
+			changedProperties.has('name')
+		) {
+			this._syncItems();
+		}
+		if (changedProperties.has('type')) {
+			this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
+		}
+		if (changedProperties.has('accessibleLabel')) {
+			if (this.accessibleLabel) {
+				this.setAttribute('aria-label', this.accessibleLabel);
+			} else {
+				this.removeAttribute('aria-label');
+			}
+		}
+		if (changedProperties.has('accessibleLabelledBy')) {
+			if (this.accessibleLabelledBy) {
+				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+			} else {
+				this.removeAttribute('aria-labelledby');
+			}
+		}
+	}
 
-  override updated(changedProperties: Map<string, unknown>): void {
-    if (changedProperties.has('value') || changedProperties.has('size') || changedProperties.has('disabled')) {
-      this._updateItems();
-    }
-  }
+	// — Items ——————————————————————————————————————————————————————————————————
 
-  private _getItems(): RRSegmentedControlItem[] {
-    const slot = this.shadowRoot?.querySelector('slot');
-    if (!slot) return [];
-    return slot
-      .assignedElements()
-      .filter((el): el is RRSegmentedControlItem => el.tagName === 'RR-SEGMENTED-CONTROL-ITEM');
-  }
+	private _getItems(): RRSegmentedControlItem[] {
+		const slot = this.shadowRoot?.querySelector('slot');
+		if (!slot) return [];
+		return slot
+			.assignedElements()
+			.filter((el): el is RRSegmentedControlItem =>
+				el.tagName.toLowerCase() === 'rr-segmented-control-item'
+			);
+	}
 
-  private _updateItems(): void {
-    const items = this._getItems();
-    items.forEach((item) => {
-      item.selected = item.value === this.value;
-      item.size = this.size;
-      item.disabled = this.disabled || item.hasAttribute('disabled');
-    });
-  }
+	private _getSelectedValues(): string[] {
+		return this.type === 'checkbox' ? this.values : (this.value ? [this.value] : []);
+	}
 
-  private _handleSelect = (e: CustomEvent<{ value: string }>): void => {
-    e.stopPropagation();
-    if (this.disabled) return;
+	private _syncItems(): void {
+		const items = this._getItems();
+		const selectedValues = this._getSelectedValues();
 
-    const newValue = e.detail.value;
-    if (newValue !== this.value) {
-      this.value = newValue;
-      this._updateItems();
+		if (this.disabled) {
+			items.forEach(item => {
+				if (!item.hasAttribute('disabled')) {
+					item.setAttribute('group-disabled', '');
+					item.disabled = true;
+				}
+			});
+		} else {
+			items.forEach(item => {
+				if (item.hasAttribute('group-disabled')) {
+					item.removeAttribute('group-disabled');
+					item.disabled = false;
+				}
+			});
+		}
 
-      this.dispatchEvent(
-        new CustomEvent('change', {
-          detail: { value: this.value },
-          bubbles: true,
-          composed: true,
-        })
-      );
-    }
-  };
+		items.forEach(item => {
+			item.size = this.size;
+			item.inputType = this.type;
+			item.contentType = this.contentType;
+			item.groupName = this.name || this._autoName;
+			item.selected = this.type === 'checkbox'
+				? selectedValues.includes(item.value)
+				: item.value === this.value;
+		});
+	}
 
-  private _handleKeyDown = (e: KeyboardEvent): void => {
-    if (this.disabled) return;
+	private static _counter = 0;
 
-    const items = this._getItems().filter((item) => !item.disabled);
-    if (items.length === 0) return;
+	private get _autoName(): string {
+		if (!this._generatedName) {
+			this._generatedName = `rr-segmented-${RRSegmentedControl._counter++}`;
+		}
+		return this._generatedName;
+	}
 
-    const currentIndex = items.findIndex((item) => item.selected);
-    let nextIndex = currentIndex;
+	private _generatedName = '';
 
-    switch (e.key) {
-      case 'ArrowLeft':
-      case 'ArrowUp':
-        e.preventDefault();
-        nextIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
-        break;
-      case 'ArrowRight':
-      case 'ArrowDown':
-        e.preventDefault();
-        nextIndex = currentIndex >= items.length - 1 ? 0 : currentIndex + 1;
-        break;
-      case 'Home':
-        e.preventDefault();
-        nextIndex = 0;
-        break;
-      case 'End':
-        e.preventDefault();
-        nextIndex = items.length - 1;
-        break;
-      default:
-        return;
-    }
+	// — Handlers ———————————————————————————————————————————————————————————————
 
-    if (nextIndex !== currentIndex && items[nextIndex]) {
-      this.value = items[nextIndex].value;
-      this._updateItems();
-      items[nextIndex].focus();
+	private _handleItemChange = (e: CustomEvent<{ value: string; checked: boolean }>): void => {
+		e.stopPropagation();
+		if (this.disabled) return;
 
-      this.dispatchEvent(
-        new CustomEvent('change', {
-          detail: { value: this.value },
-          bubbles: true,
-          composed: true,
-        })
-      );
-    }
-  };
+		if (this.type === 'checkbox') {
+			const current = this.values;
+			const updated = e.detail.checked
+				? [...current, e.detail.value]
+				: current.filter(v => v !== e.detail.value);
+			this.values = updated;
+			this._syncItems();
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { values: updated },
+				bubbles: true,
+				composed: true,
+			}));
+		} else {
+			if (e.detail.value === this.value) return;
+			this.value = e.detail.value;
+			this._syncItems();
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			}));
+		}
+	};
 
-  private _handleSlotChange = (): void => {
-    this._updateItems();
-  };
+	/**
+	 * Handles arrow key navigation for radio type.
+	 * For checkbox type, keyboard navigation is intentionally omitted —
+	 * each native checkbox input is individually Tab-focusable and
+	 * Space-toggleable per the native checkbox interaction pattern.
+	 */
+	private _handleKeydown = (e: KeyboardEvent): void => {
+		if (this.disabled || this.type === 'checkbox') return;
 
-  override render() {
-    return html`
-      <div class="container" part="container">
-        <slot @slotchange=${this._handleSlotChange}></slot>
-      </div>
-    `;
-  }
+		const items = this._getItems().filter(item => !item.disabled);
+		if (items.length === 0) return;
+
+		const currentIndex = items.findIndex(item => item.selected);
+
+		let nextIndex = currentIndex;
+
+		switch (e.key) {
+			case 'ArrowLeft':
+			case 'ArrowUp':
+				e.preventDefault();
+				nextIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+				break;
+			case 'ArrowRight':
+			case 'ArrowDown':
+				e.preventDefault();
+				nextIndex = currentIndex >= items.length - 1 ? 0 : currentIndex + 1;
+				break;
+			case 'Home':
+				e.preventDefault();
+				nextIndex = 0;
+				break;
+			case 'End':
+				e.preventDefault();
+				nextIndex = items.length - 1;
+				break;
+			default:
+				return;
+		}
+
+		if (nextIndex !== currentIndex && items[nextIndex]) {
+			this.value = items[nextIndex].value;
+			this._syncItems();
+			items[nextIndex].shadowRoot?.querySelector('input')?.focus();
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			}));
+		}
+	};
+
+	public _onSlotChange(): void {
+		this._syncItems();
+	}
+
+	override render() {
+		return segmentedControlTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-segmented-control': RRSegmentedControl;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-segmented-control': RRSegmentedControl;
+		'rr-segmented-control-item': RRSegmentedControlItem;
+	}
 }

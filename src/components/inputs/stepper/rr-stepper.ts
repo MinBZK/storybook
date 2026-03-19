@@ -1,275 +1,126 @@
 /**
  * RegelRecht Stepper Component (Lit + TypeScript)
  *
- * A numeric stepper control with increment and decrement buttons.
+ * Een numerieke control met increment en decrement knoppen.
  *
  * @element rr-stepper
- * @attr {number} value - Current value
- * @attr {number} min - Minimum value (default: 0)
- * @attr {number} max - Maximum value (default: 100)
- * @attr {number} step - Step increment (default: 1)
- * @attr {boolean} disabled - Disabled state
- * @attr {string} size - Stepper size: 'sm' | 'md' (default: 'md')
+ * @attr {number}  value        - Huidige waarde
+ * @attr {number}  min          - Minimale waarde (standaard: 0)
+ * @attr {number}  max          - Maximale waarde (standaard: Infinity)
+ * @attr {number}  step         - Stapgrootte (standaard: 1)
+ * @attr {boolean} disabled     - Uitgeschakelde toestand
+ * @attr {string}  size         - Grootte: 'sm' | 'md' (standaard: 'md')
+ * @attr {object}  translations - Vertalingen; niet-opgegeven sleutels vallen terug op Nederlands
  *
- * @fires change - When value changes (detail: { value: number })
- *
- * @csspart stepper - The stepper container
- * @csspart button - The increment/decrement buttons
- * @csspart divider - The divider between buttons
+ * @fires change - Wanneer de waarde verandert; detail: { value: number }
  */
-
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { stepperStyles } from './rr-stepper.styles.ts';
+import { stepperTemplate } from './rr-stepper.template.ts';
+import { rrStepperTranslations } from './rr-stepper.i18n.ts';
+import type { RRStepperTranslations } from './rr-stepper.i18n.ts';
+import './../../actions/icon-button/rr-icon-button.ts';
+import './../../content/icon/rr-icon.ts';
 
-type Size = 'sm' | 'md';
+export type StepperSize = 'sm' | 'md';
 
 @customElement('rr-stepper')
 export class RRStepper extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = stepperStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Number })
+	value = 0;
 
-    .stepper {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--semantics-buttons-neutral-tinted-background-color);
-      box-sizing: border-box;
-    }
+	@property({ type: Number })
+	min = 0;
 
-    /* Size: S - Figma: ~64x32px (two 32px buttons) */
-    :host([size='sm']) .stepper {
-      border-radius: var(--semantics-controls-sm-corner-radius);
-    }
+	@property({ type: Number })
+	max = Infinity;
 
-    :host([size='sm']) .stepper__button {
-      min-width: var(--semantics-controls-sm-min-size);
-      min-height: var(--semantics-controls-sm-min-size);
-      padding: 0 6px;
-    }
+	@property({ type: Number })
+	step = 1;
 
-    :host([size='sm']) .stepper__divider {
-      height: 20px;
-    }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-    :host([size='sm']) .stepper__icon {
-      width: 20px;
-      height: 20px;
-    }
+	@property({ type: String, reflect: true })
+	size: StepperSize = 'md';
 
-    /* Size: M (default) - Figma: ~88x44px (two 44px buttons) */
-    :host([size='md']) .stepper,
-    :host(:not([size])) .stepper {
-      border-radius: var(--semantics-controls-md-corner-radius);
-    }
+	/** Overschrijf een of meer vertalingssleutels. Niet-opgegeven sleutels vallen terug op Nederlands. */
+	@property({ type: Object })
+	translations: Partial<RRStepperTranslations> = {};
 
-    :host([size='md']) .stepper__button,
-    :host(:not([size])) .stepper__button {
-      min-width: var(--semantics-controls-md-min-size);
-      min-height: var(--semantics-controls-md-min-size);
-      padding: 0 8px;
-    }
+	// — i18n —————————————————————————————————————————————————————————————————
 
-    :host([size='md']) .stepper__divider,
-    :host(:not([size])) .stepper__divider {
-      height: 28px;
-    }
+	public _t(key: keyof RRStepperTranslations): string {
+		return this.translations[key] ?? rrStepperTranslations[key];
+	}
 
-    :host([size='md']) .stepper__icon,
-    :host(:not([size])) .stepper__icon {
-      width: 24px;
-      height: 24px;
-    }
+	// — Actions ——————————————————————————————————————————————————————————————
 
-    .stepper__button {
-      appearance: none;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--semantics-buttons-neutral-tinted-content-color);
-      transition: background-color 0.15s ease;
-    }
+	public _decrement(): void {
+		if (this.disabled) return;
+		const newValue = Math.max(this.min, this.value - this.step);
+		if (newValue !== this.value) {
+			this.value = newValue;
+			this._dispatchChange();
+		}
+	}
 
-    .stepper__button:first-child {
-      border-top-left-radius: inherit;
-      border-bottom-left-radius: inherit;
-    }
+	public _increment(): void {
+		if (this.disabled) return;
+		const newValue = Math.min(this.max, this.value + this.step);
+		if (newValue !== this.value) {
+			this.value = newValue;
+			this._dispatchChange();
+		}
+	}
 
-    .stepper__button:last-child {
-      border-top-right-radius: inherit;
-      border-bottom-right-radius: inherit;
-    }
+	public _handleKeydown(e: KeyboardEvent): void {
+		switch (e.key) {
+			case 'ArrowUp':
+			case 'ArrowRight':
+				e.preventDefault();
+				this._increment();
+				break;
+			case 'ArrowDown':
+			case 'ArrowLeft':
+				e.preventDefault();
+				this._decrement();
+				break;
+			case 'Home':
+				e.preventDefault();
+				if (isFinite(this.min)) {
+					this.value = this.min;
+					this._dispatchChange();
+				}
+				break;
+			case 'End':
+				e.preventDefault();
+				if (isFinite(this.max)) {
+					this.value = this.max;
+					this._dispatchChange();
+				}
+				break;
+		}
+	}
 
-    .stepper__button:hover:not(:disabled) {
-      background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-    }
+	private _dispatchChange(): void {
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-    .stepper__button:active:not(:disabled) {
-      background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-    }
-
-    .stepper__button:focus-visible {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-      z-index: 1;
-    }
-
-    .stepper__button:disabled {
-      opacity: var(--primitives-opacity-disabled);
-      cursor: not-allowed;
-    }
-
-    .stepper__divider {
-      width: 1px;
-      background-color: var(--primitives-color-neutral-400);
-      flex-shrink: 0;
-    }
-
-    .stepper__icon {
-      display: block;
-    }
-
-    /* Disabled state for entire component */
-    :host([disabled]) .stepper {
-      opacity: var(--primitives-opacity-disabled);
-    }
-
-    :host([disabled]) .stepper__button {
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
-    /* Accessibility: Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .stepper__button {
-        transition: none;
-      }
-    }
-
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .stepper {
-        border: 1px solid CanvasText;
-      }
-
-      .stepper__button:focus-visible {
-        outline: 2px solid CanvasText !important;
-      }
-
-      .stepper__divider {
-        background-color: CanvasText;
-      }
-    }
-  `;
-
-  @property({ type: Number })
-  value = 0;
-
-  @property({ type: Number })
-  min = 0;
-
-  @property({ type: Number })
-  max = 100;
-
-  @property({ type: Number })
-  step = 1;
-
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
-
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
-
-  private _decrement(): void {
-    if (this.disabled) return;
-
-    const newValue = Math.max(this.min, this.value - this.step);
-    if (newValue !== this.value) {
-      this.value = newValue;
-      this._dispatchChange();
-    }
-  }
-
-  private _increment(): void {
-    if (this.disabled) return;
-
-    const newValue = Math.min(this.max, this.value + this.step);
-    if (newValue !== this.value) {
-      this.value = newValue;
-      this._dispatchChange();
-    }
-  }
-
-  private _dispatchChange(): void {
-    this.dispatchEvent(
-      new CustomEvent('change', {
-        detail: { value: this.value },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private _renderMinusIcon() {
-    return svg`
-      <svg class="stepper__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-      </svg>
-    `;
-  }
-
-  private _renderPlusIcon() {
-    return svg`
-      <svg class="stepper__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="12" y1="5" x2="12" y2="19"></line>
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-      </svg>
-    `;
-  }
-
-  override render() {
-    const atMin = this.value <= this.min;
-    const atMax = this.value >= this.max;
-
-    return html`
-      <div class="stepper" part="stepper" role="group" aria-label="Aantal aanpassen">
-        <button
-          class="stepper__button"
-          part="button"
-          type="button"
-          @click=${this._decrement}
-          ?disabled=${this.disabled || atMin}
-          aria-label="Aantal verlagen"
-        >
-          ${this._renderMinusIcon()}
-        </button>
-        <div class="stepper__divider" part="divider" aria-hidden="true"></div>
-        <button
-          class="stepper__button"
-          part="button"
-          type="button"
-          @click=${this._increment}
-          ?disabled=${this.disabled || atMax}
-          aria-label="Aantal verhogen"
-        >
-          ${this._renderPlusIcon()}
-        </button>
-      </div>
-    `;
-  }
+	override render() {
+		return stepperTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-stepper': RRStepper;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-stepper': RRStepper;
+	}
 }

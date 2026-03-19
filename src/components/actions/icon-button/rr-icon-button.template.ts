@@ -2,14 +2,16 @@ import { html, nothing } from 'lit';
 import type { RRIconButton } from './rr-icon-button.ts';
 
 export function template(this: RRIconButton) {
+	const label = this.accessibleLabel || this._text || nothing;
+	const tooltip = this.size !== 'lg' ? (this.accessibleLabel || this._text || nothing) : nothing;
+
 	return html`
-		<button
-			class="icon-button"
+		<button class="icon-button"
 			type=${this.type}
 			?disabled=${this.disabled}
-			aria-disabled=${this.disabled}
-			title=${this.size !== 'lg' ? this._title : ''}
-			aria-label=${this._title || nothing}
+			aria-disabled=${this.disabled ? 'true' : nothing}
+			title=${tooltip}
+			aria-label=${label}
 			@click=${this._handleClick}
 		>
 			<span class="icon-button__icon-area">
@@ -22,8 +24,8 @@ export function template(this: RRIconButton) {
 					</span>
 				` : ''}
 			</span>
-			${this._title ? html`
-				<span class="icon-button__title">${this._title}</span>
+			${this._text ? html`
+				<span class="icon-button__text">${this._text}</span>
 			` : ''}
 		</button>
 	`;

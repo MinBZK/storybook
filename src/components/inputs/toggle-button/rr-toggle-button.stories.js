@@ -2,351 +2,391 @@ import { html } from 'lit';
 import './rr-toggle-button.js';
 
 /**
- * De Toggle Button component is een selecteerbare button die tussen aan/uit kan schakelen.
- * Ideaal voor filtering, weergave-opties, of multi-select acties.
+ * De Toggle Button component is een selecteerbare knop die tussen aan/uit kan schakelen.
+ * Beschikbaar als `button` (met `aria-pressed`), `checkbox` of `radio` als onderliggend element,
+ * zodat de semantiek aansluit bij het gebruik.
+ *
+ * Plaats een `rr-icon` vóór de tekst om een icoon toe te voegen — de positie wordt automatisch gedetecteerd.
  *
  * ## Gebruik
  * ```html
- * <rr-toggle-button size="md">Label</rr-toggle-button>
- * <rr-toggle-button selected>Geselecteerd</rr-toggle-button>
+ * <rr-toggle-button>Label</rr-toggle-button>
+ * <rr-toggle-button><rr-icon name="heart"></rr-icon> Bewaren</rr-toggle-button>
  * ```
  */
 export default {
-  title: 'Components/Inputs/Toggle Button',
-  component: 'rr-toggle-button',
-  tags: ['autodocs'],
-  parameters: {
-    componentSource: {
-      file: 'src/components/inputs/toggle-button/rr-toggle-button.js',
-      repository: 'https://github.com/regelrecht/design-system',
-    },
-    status: {
-      type: 'stable',
-    },
-  },
-  argTypes: {
-    size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md'],
-      description: 'Button size',
-      table: {
-        defaultValue: { summary: 'md' },
-      },
-    },
-    selected: {
-      control: 'boolean',
-      description: 'Selected state',
-      table: {
-        defaultValue: { summary: false },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disabled state',
-      table: {
-        defaultValue: { summary: false },
-      },
-    },
-    label: {
-      control: 'text',
-      description: 'Button label text',
-    },
-  },
-  args: {
-    label: 'Toggle',
-    size: 'md',
-    selected: false,
-    disabled: false,
-  },
+	title: 'Components/Inputs/Toggle Button',
+	component: 'rr-toggle-button',
+	tags: ['autodocs'],
+	parameters: {
+		componentSource: {
+			file: 'src/components/inputs/toggle-button/rr-toggle-button.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: {
+			type: 'stable',
+		},
+	},
+	argTypes: {
+		type: {
+			control: 'select',
+			options: ['button', 'checkbox', 'radio'],
+			description: 'Onderliggend element',
+			table: {
+				defaultValue: { summary: 'button' },
+			},
+		},
+		size: {
+			control: 'select',
+			options: ['xs', 'sm', 'md'],
+			description: 'Grootte',
+			table: {
+				defaultValue: { summary: 'md' },
+			},
+		},
+		selected: {
+			control: 'boolean',
+			description: 'Geselecteerde toestand',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
+		disabled: {
+			control: 'boolean',
+			description: 'Uitgeschakelde toestand',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
+		label: {
+			control: 'text',
+			description: 'Tekst van de knop',
+		},
+	},
+	args: {
+		type: 'button',
+		size: 'md',
+		selected: false,
+		disabled: false,
+		label: 'Toggle',
+	},
 };
 
-const Template = ({ label, size, selected, disabled }) => html`
-  <rr-toggle-button size=${size} ?selected=${selected} ?disabled=${disabled}
-    >${label}</rr-toggle-button
-  >
+const Template = (args) => html`
+	<rr-toggle-button
+		type=${args.type}
+		size=${args.size}
+		?selected=${args.selected}
+		?disabled=${args.disabled}
+	>${args.label}</rr-toggle-button>
 `;
 
-// Primary story
-export const Default = Template.bind({});
-Default.args = {
-  label: 'Toggle Button',
+export const Standaard = Template.bind({});
+Standaard.args = {
+	label: 'Toggle button',
+};
+Standaard.parameters = {
+	docs: {
+		description: {
+			story: 'Standaard toggle button met `type="button"` (de default). Gebruikt `aria-pressed` voor de geselecteerde toestand en neemt niet deel aan formulierverwerking.',
+		},
+	},
 };
 
-// States
-export const Selected = Template.bind({});
-Selected.args = {
-  label: 'Selected',
-  selected: true,
-};
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  label: 'Disabled',
-  disabled: true,
-};
+/* ============================================================
+   Types
+   ============================================================ */
 
-export const SelectedDisabled = Template.bind({});
-SelectedDisabled.args = {
-  label: 'Selected & Disabled',
-  selected: true,
-  disabled: true,
-};
-
-// Sizes
-export const ExtraSmall = Template.bind({});
-ExtraSmall.args = {
-  label: 'Extra Small',
-  size: 'xs',
-};
-
-export const Small = Template.bind({});
-Small.args = {
-  label: 'Small',
-  size: 'sm',
-};
-
-export const Medium = Template.bind({});
-Medium.args = {
-  label: 'Medium',
-  size: 'md',
-};
-
-// Interactive example
-export const Interactive = () => {
-  const handleToggle = (e) => {
-    console.log('Toggle button state:', e.detail);
-  };
-
-  return html`
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <rr-toggle-button size="md" @toggle=${handleToggle}> Click to toggle </rr-toggle-button>
-      <p style="font-size: 14px; color: var(--semantics-content-color);">Check the console to see toggle events</p>
-    </div>
-  `;
-};
-Interactive.parameters = {
-  controls: { disable: true },
-  docs: {
-    description: {
-      story: 'Interactieve toggle button die een event dispatched bij het togglen.',
-    },
-  },
-};
-
-// All sizes overview
-export const AllSizes = () => html`
-  <div style="display: flex; gap: 1rem; align-items: center;">
-    <rr-toggle-button size="xs">Extra Small</rr-toggle-button>
-    <rr-toggle-button size="sm">Small</rr-toggle-button>
-    <rr-toggle-button size="md">Medium</rr-toggle-button>
-  </div>
+export const AlleTypes = () => html`
+	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+		<div>
+			<p style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;">
+				type="button" (standaard) — aria-pressed, geen formulierparticipatie
+			</p>
+			<div style="display: flex; gap: 0.5rem;">
+				<rr-toggle-button type="button">
+					<rr-icon name="eye"></rr-icon>
+					Voorbeeld
+				</rr-toggle-button>
+				<rr-toggle-button type="button" selected>
+					<rr-icon name="pencil"></rr-icon>
+					Bewerken
+				</rr-toggle-button>
+			</div>
+		</div>
+		<div>
+			<p style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;">
+				type="checkbox" — native checkbox input, meerdere tegelijk selecteerbaar
+			</p>
+			<div style="display: flex; gap: 0.5rem;">
+				<rr-toggle-button type="checkbox" name="filter" value="mijn-zaken">
+					<rr-icon name="person"></rr-icon>
+					Mijn zaken
+				</rr-toggle-button>
+				<rr-toggle-button type="checkbox" name="filter" value="inbox" selected>
+					<rr-icon name="inbox"></rr-icon>
+					Inbox
+				</rr-toggle-button>
+				<rr-toggle-button type="checkbox" name="filter" value="agenda">
+					<rr-icon name="calendar-event"></rr-icon>
+					Agenda
+				</rr-toggle-button>
+			</div>
+		</div>
+		<div>
+			<p style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;">
+				type="radio" — native radio input, wederzijdse uitsluiting via name-groep
+			</p>
+			<div style="display: flex; gap: 0.5rem;" role="radiogroup" aria-label="Sortering">
+				<rr-toggle-button type="radio" name="sortering" value="oplopend">
+					<rr-icon name="sort-ascending"></rr-icon>
+					Oplopend
+				</rr-toggle-button>
+				<rr-toggle-button type="radio" name="sortering" value="aflopend" selected>
+					<rr-icon name="sort-descending"></rr-icon>
+					Aflopend
+				</rr-toggle-button>
+				<rr-toggle-button type="radio" name="sortering" value="relevant">
+					<rr-icon name="arrows-sort"></rr-icon>
+					Relevant
+				</rr-toggle-button>
+			</div>
+		</div>
+	</div>
 `;
-AllSizes.parameters = {
-  controls: { disable: true },
+AlleTypes.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: 'Overzicht van alle drie de types. Gebruik `type="button"` voor UI-acties, `type="checkbox"` voor multi-select filters en `type="radio"` voor single-select keuzes met formulierparticipatie.',
+		},
+	},
 };
 
-// All states overview
-export const AllStates = () => html`
-  <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-    <rr-toggle-button>Default</rr-toggle-button>
-    <rr-toggle-button selected>Selected</rr-toggle-button>
-    <rr-toggle-button disabled>Disabled</rr-toggle-button>
-    <rr-toggle-button selected disabled>Selected & Disabled</rr-toggle-button>
-  </div>
+
+/* ============================================================
+   Toestanden
+   ============================================================ */
+
+export const AlleToestanden = () => html`
+	<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+		<rr-toggle-button>
+			<rr-icon name="heart"></rr-icon>
+			Bewaren
+		</rr-toggle-button>
+		<rr-toggle-button selected>
+			<rr-icon name="heart-filled"></rr-icon>
+			Bewaard
+		</rr-toggle-button>
+		<rr-toggle-button disabled>
+			<rr-icon name="heart"></rr-icon>
+			Bewaren
+		</rr-toggle-button>
+		<rr-toggle-button selected disabled>
+			<rr-icon name="heart-filled"></rr-icon>
+			Bewaard
+		</rr-toggle-button>
+	</div>
 `;
-AllStates.parameters = {
-  controls: { disable: true },
+AlleToestanden.parameters = { controls: { disable: true } };
+
+
+/* ============================================================
+   Grootten
+   ============================================================ */
+
+export const AlleGrootten = () => html`
+	<div style="display: flex; gap: 1rem; align-items: center;">
+		<rr-toggle-button size="xs">
+			<rr-icon name="magnifier"></rr-icon>
+			Zoeken
+		</rr-toggle-button>
+		<rr-toggle-button size="sm">
+			<rr-icon name="magnifier"></rr-icon>
+			Zoeken
+		</rr-toggle-button>
+		<rr-toggle-button size="md">
+			<rr-icon name="magnifier"></rr-icon>
+			Zoeken
+		</rr-toggle-button>
+	</div>
+`;
+AlleGrootten.parameters = { controls: { disable: true } };
+
+
+/* ============================================================
+   Met icoon
+   ============================================================ */
+
+export const MetIcoon = () => html`
+	<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+		<rr-toggle-button>
+			<rr-icon name="heart"></rr-icon>
+			Bewaren
+		</rr-toggle-button>
+		<rr-toggle-button selected>
+			<rr-icon name="heart-filled"></rr-icon>
+			Bewaard
+		</rr-toggle-button>
+		<rr-toggle-button>
+			<rr-icon name="square-and-arrow-up"></rr-icon>
+			Delen
+		</rr-toggle-button>
+		<rr-toggle-button>
+			<rr-icon name="eye"></rr-icon>
+			Tonen
+		</rr-toggle-button>
+		<rr-toggle-button selected>
+			<rr-icon name="eye-slash"></rr-icon>
+			Verborgen
+		</rr-toggle-button>
+	</div>
+`;
+MetIcoon.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: 'Plaats een `rr-icon` vóór de tekst — de positie wordt automatisch gedetecteerd.',
+		},
+	},
 };
 
-// With icons
-export const WithIcon = () => html`
-  <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-    <rr-toggle-button size="md">
-      <svg
-        slot="icon"
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-        />
-      </svg>
-      Like
-    </rr-toggle-button>
-    <rr-toggle-button size="md" selected>
-      <svg
-        slot="icon"
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-        />
-      </svg>
-      Liked
-    </rr-toggle-button>
-    <rr-toggle-button size="md">
-      <svg
-        slot="icon"
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-      </svg>
-      Bookmark
-    </rr-toggle-button>
-    <rr-toggle-button size="md" selected>
-      <svg
-        slot="icon"
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-      </svg>
-      Bookmarked
-    </rr-toggle-button>
-  </div>
+export const AlleenIcoon = () => html`
+	<div style="display: flex; gap: 0.5rem; align-items: center;">
+		<rr-toggle-button size="md" accessible-label="Vet">
+			<rr-icon name="bold"></rr-icon>
+		</rr-toggle-button>
+		<rr-toggle-button size="md" selected accessible-label="Cursief">
+			<rr-icon name="italic"></rr-icon>
+		</rr-toggle-button>
+		<rr-toggle-button size="md" accessible-label="Onderstreept">
+			<rr-icon name="underlined"></rr-icon>
+		</rr-toggle-button>
+		<rr-toggle-button size="md" accessible-label="Opsomming">
+			<rr-icon name="bullet-list"></rr-icon>
+		</rr-toggle-button>
+		<rr-toggle-button size="md" accessible-label="Genummerde lijst">
+			<rr-icon name="numbered-list"></rr-icon>
+		</rr-toggle-button>
+	</div>
 `;
-WithIcon.parameters = {
-  controls: { disable: true },
-  docs: {
-    description: {
-      story: 'Toggle buttons met iconen. Gebruik de `icon` slot om een icoon toe te voegen.',
-    },
-  },
+AlleenIcoon.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: 'Zonder tekst wordt de knop automatisch vierkant. Het `accessible-label` attribuut is verplicht voor toegankelijkheid.',
+		},
+	},
 };
 
-// Button group example
-export const ButtonGroup = () => html`
-  <div style="display: flex; gap: 0; border-radius: 7px; overflow: hidden; width: fit-content;">
-    <rr-toggle-button size="md" style="border-radius: 7px 0 0 7px;">
-      <svg
-        slot="icon"
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <line x1="4" y1="6" x2="20" y2="6" />
-        <line x1="4" y1="12" x2="20" y2="12" />
-        <line x1="4" y1="18" x2="20" y2="18" />
-      </svg>
-    </rr-toggle-button>
-    <rr-toggle-button size="md" style="border-radius: 0; margin-left: -1px;">
-      <svg
-        slot="icon"
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <rect x="3" y="3" width="7" height="7" />
-        <rect x="14" y="3" width="7" height="7" />
-        <rect x="14" y="14" width="7" height="7" />
-        <rect x="3" y="14" width="7" height="7" />
-      </svg>
-    </rr-toggle-button>
-    <rr-toggle-button size="md" selected style="border-radius: 0 7px 7px 0; margin-left: -1px;">
-      <svg
-        slot="icon"
-        width="1em"
-        height="1em"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <rect x="3" y="3" width="18" height="18" />
-      </svg>
-    </rr-toggle-button>
-  </div>
+
+/* ============================================================
+   Type: button
+   ============================================================ */
+
+export const TypeButton = () => html`
+	<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
+			<code>type="button"</code> is de standaard. Gebruikt <code>aria-pressed</code> voor de geselecteerde toestand en neemt niet deel aan formulierverwerking.
+		</p>
+		<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+			<rr-toggle-button type="button" accessible-label="Opsomming">
+				<rr-icon name="bullet-list"></rr-icon>
+			</rr-toggle-button>
+			<rr-toggle-button type="button" selected accessible-label="Genummerde lijst">
+				<rr-icon name="numbered-list"></rr-icon>
+			</rr-toggle-button>
+			<rr-toggle-button type="button">
+				<rr-icon name="eye"></rr-icon>
+				Voorbeeld
+			</rr-toggle-button>
+			<rr-toggle-button type="button" selected>
+				<rr-icon name="pencil"></rr-icon>
+				Bewerken
+			</rr-toggle-button>
+		</div>
+	</div>
 `;
-ButtonGroup.parameters = {
-  controls: { disable: true },
-  docs: {
-    description: {
-      story: 'Voorbeeld van toggle buttons gegroepeerd voor een view switcher.',
-    },
-  },
+TypeButton.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: '`type="button"` (de default) — `aria-pressed` geeft de geselecteerde toestand door aan hulptechnologie.',
+		},
+	},
 };
 
-// Size matrix
-export const SizeMatrix = () => html`
-  <table style="border-collapse: collapse; width: 100%;">
-    <thead>
-      <tr>
-        <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">Size</th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
-          Default
-        </th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
-          Selected
-        </th>
-        <th style="text-align: center; padding: 0.75rem; border-bottom: 2px solid #e2e8f0;">
-          Disabled
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">xs</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-toggle-button size="xs">Label</rr-toggle-button>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-toggle-button size="xs" selected>Label</rr-toggle-button>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-toggle-button size="xs" disabled>Label</rr-toggle-button>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0;">s</td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-toggle-button size="sm">Label</rr-toggle-button>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-toggle-button size="sm" selected>Label</rr-toggle-button>
-        </td>
-        <td style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; text-align: center;">
-          <rr-toggle-button size="sm" disabled>Label</rr-toggle-button>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 0.75rem;">m</td>
-        <td style="padding: 0.75rem; text-align: center;">
-          <rr-toggle-button size="md">Label</rr-toggle-button>
-        </td>
-        <td style="padding: 0.75rem; text-align: center;">
-          <rr-toggle-button size="md" selected>Label</rr-toggle-button>
-        </td>
-        <td style="padding: 0.75rem; text-align: center;">
-          <rr-toggle-button size="md" disabled>Label</rr-toggle-button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+/* ============================================================
+   Type: checkbox
+   ============================================================ */
+
+export const TypeCheckbox = () => html`
+	<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
+			<code>type="checkbox"</code> voor filter-chips en multi-select acties met formulierparticipatie.
+		</p>
+		<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+			<rr-toggle-button type="checkbox" name="filter" value="mijn-zaken">
+				<rr-icon name="person"></rr-icon>
+				Mijn zaken
+			</rr-toggle-button>
+			<rr-toggle-button type="checkbox" name="filter" value="inbox" selected>
+				<rr-icon name="inbox"></rr-icon>
+				Inbox
+			</rr-toggle-button>
+			<rr-toggle-button type="checkbox" name="filter" value="agenda" selected>
+				<rr-icon name="calendar-event"></rr-icon>
+				Agenda
+			</rr-toggle-button>
+			<rr-toggle-button type="checkbox" name="filter" value="documenten">
+				<rr-icon name="file-text"></rr-icon>
+				Documenten
+			</rr-toggle-button>
+		</div>
+	</div>
 `;
-SizeMatrix.parameters = {
-  controls: { disable: true },
+TypeCheckbox.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: '`type="checkbox"` — meerdere knoppen kunnen tegelijk geselecteerd zijn.',
+		},
+	},
+};
+
+
+/* ============================================================
+   Type: radio
+   ============================================================ */
+
+export const TypeRadio = () => html`
+	<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
+			<code>type="radio"</code> voor single-select keuzes. Gebruik <code>rr-toggle-button-group</code> voor beheer via JavaScript.
+		</p>
+		<div style="display: flex; gap: 0.5rem;" role="radiogroup" aria-label="Sortering">
+			<rr-toggle-button type="radio" name="sortering" value="oplopend">
+				<rr-icon name="sort-ascending"></rr-icon>
+				Oplopend
+			</rr-toggle-button>
+			<rr-toggle-button type="radio" name="sortering" value="aflopend" selected>
+				<rr-icon name="sort-descending"></rr-icon>
+				Aflopend
+			</rr-toggle-button>
+			<rr-toggle-button type="radio" name="sortering" value="relevant">
+				<rr-icon name="arrows-sort"></rr-icon>
+				Relevant
+			</rr-toggle-button>
+		</div>
+	</div>
+`;
+TypeRadio.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: '`type="radio"` — native browser-gedrag zorgt voor wederzijdse uitsluiting binnen dezelfde `name`-groep.',
+		},
+	},
 };

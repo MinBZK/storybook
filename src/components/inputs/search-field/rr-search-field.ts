@@ -1,262 +1,137 @@
 /**
  * RegelRecht Search Field Component (Lit + TypeScript)
  *
+ * A search input with a leading search icon, an optional dismiss button,
+ * and an optional search button.
+ *
  * @element rr-search-field
- * @attr {string} value - The search value
- * @attr {string} placeholder - Placeholder text
- * @attr {string} size - Field size: 'sm' | 'md' (default: 'md')
- * @attr {boolean} disabled - Disabled state
- * @attr {string} name - Input name for form submission
+ * @attr {string}  value               - The search value
+ * @attr {string}  placeholder         - Placeholder text for the input
+ * @attr {string}  accessible-label    - Accessible label (aria-label) for the native input.
+ *                                       Falls back to placeholder when not set.
+ *                                       Set explicitly when a value is already present
+ *                                       and the placeholder is no longer visible.
+ * @attr {string}  size                - Field size: 'sm' | 'md' (default: 'md')
+ * @attr {boolean} disabled            - Disabled state
+ * @attr {string}  name                - Input name for form submission
+ * @attr {boolean} has-search-button  - When set, shows a search button on the right
+ * @attr {object}  translations        - Override translation keys; unset keys fall back to Dutch
  *
- * @fires input - When input value changes
- * @fires change - When input value is committed
- * @fires search - When search is submitted (Enter key)
- *
- * @csspart container - The field container
- * @csspart input - The native input element
- * @csspart icon - The search icon
+ * @fires input  - When the input value changes; detail: { value: string }
+ * @fires change - When the input value is committed; detail: { value: string }
+ * @fires search - When search is submitted via Enter or the search button; detail: { value: string }
  */
-
-import { LitElement, html, css } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { searchFieldStyles } from './rr-search-field.styles.ts';
+import { searchFieldTemplate } from './rr-search-field.template.ts';
+import { rrSearchFieldTranslations } from './rr-search-field.i18n.ts';
+import type { RRSearchFieldTranslations } from './rr-search-field.i18n.ts';
+import './../../actions/icon-button/rr-icon-button.ts';
+import './../../actions/button/rr-button.ts';
+import './../../content/icon/rr-icon.ts';
 
-type Size = 'sm' | 'md';
+export type SearchFieldSize = 'sm' | 'md';
 
 @customElement('rr-search-field')
 export class RRSearchField extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: var(--rr-font-family-body);
-      --_background-color: var(--semantics-input-fields-background-color);
-    }
+	static override styles = searchFieldStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String })
+	value = '';
 
-    .search-field {
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      background-color: var(--_background-color);
-      border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
-      box-sizing: border-box;
-      position: relative;
-      overflow: hidden;
-    }
+	@property({ type: String })
+	placeholder = 'Zoeken';
 
-    /* Size: MD (default) */
-    :host([size="md"]) .search-field,
-    :host(:not([size])) .search-field {
-      min-height: var(--semantics-controls-md-min-size);
-      border-radius: var(--semantics-controls-md-corner-radius);
-    }
+	/** Accessible label forwarded as aria-label to the native input.
+	 *  Use to describe what is being searched, e.g. "Zoek een document".
+	 *  When not set, the placeholder value is used as aria-label automatically.
+	 *  Set an explicit accessible-label when a value is already present and the
+	 *  placeholder is no longer visible, to ensure screen readers still have context. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-    :host([size="md"]) .search-field__native,
-    :host(:not([size])) .search-field__native {
-      font: var(--semantics-input-fields-md-text-font);
-    }
+	@property({ type: String, reflect: true })
+	size: SearchFieldSize = 'md';
 
-    :host([size="md"]) .search-field__input-shade,
-    :host(:not([size])) .search-field__input-shade {
-      height: calc(var(--semantics-controls-md-min-size) - 4px);
-    }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-    /* Size: SM */
-    :host([size="sm"]) .search-field {
-      min-height: var(--semantics-controls-sm-min-size);
-      border-radius: var(--semantics-controls-sm-corner-radius);
-    }
+	@property({ type: String })
+	name = '';
 
-    :host([size="sm"]) .search-field__native {
-      font-size: var(--primitives-font-size-90);
-      font-weight: var(--primitives-font-weight-body-regular);
-      line-height: 1em;
-    }
+	@property({ type: Boolean, reflect: true, attribute: 'has-search-button' })
+	hasSearchButton = false;
 
-    :host([size="sm"]) .search-field__input-shade {
-      height: calc(var(--semantics-controls-sm-min-size) - 4px);
-    }
+	/** Override one or more translation keys. Unset keys fall back to Dutch. */
+	@property({ type: Object })
+	translations: Partial<RRSearchFieldTranslations> = {};
 
-    :host([size="sm"]) .search-field__icon svg {
-      width: 16px;
-      height: 16px;
-    }
+	@query('.search-field__input')
+	_input!: HTMLInputElement;
 
-    .search-field__spacer {
-      width: var(--primitives-space-8);
-      flex-shrink: 0;
-    }
+	// — i18n ——————————————————————————————————————————————————————————————————
 
-    .search-field__icon {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-shrink: 0;
-      color: var(--semantics-input-fields-placeholder-color);
-    }
+	public _t(key: keyof RRSearchFieldTranslations): string {
+		return this.translations[key] ?? rrSearchFieldTranslations[key];
+	}
 
-    .search-field__icon svg {
-      width: 24px;
-      height: 24px;
-    }
+	// — Handlers ————————————————————————————————————————————————————————————
 
-    .search-field__input {
-      display: flex;
-      flex-direction: row;
-      flex: 1;
-      min-width: 0;
-      position: relative;
-      padding-right: var(--primitives-space-2);
-    }
+	public _handleInput(e: Event): void {
+		const input = e.target as HTMLInputElement;
+		this.value = input.value;
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-    .search-field__native {
-      /* Reset */
-      appearance: none;
-      border: none;
-      background: transparent;
-      margin: 0;
-      padding: 0;
-      outline: none;
-      font: inherit;
-      width: 100%;
-      box-sizing: border-box;
+	public _handleChange(e: Event): void {
+		const input = e.target as HTMLInputElement;
+		this.value = input.value;
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-      /* Typography */
-      color: var(--semantics-content-color);
+	public _handleKeydown(e: KeyboardEvent): void {
+		if (e.key === 'Enter') {
+			this._dispatchSearch();
+		}
+	}
 
-      /* Layout */
-      align-self: stretch;
-    }
+	public _handleDismiss(): void {
+		this.value = '';
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: '' },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-    .search-field__native::placeholder {
-      color: var(--semantics-input-fields-placeholder-color);
-    }
+	public _handleSearch(): void {
+		this._dispatchSearch();
+	}
 
-    .search-field__input-shade {
-      position: absolute;
-      right: 0;
-      top: 2px;
-      width: 10px;
-      background: linear-gradient(90deg, transparent 0%, var(--_background-color) 100%);
-      pointer-events: none;
-    }
+	private _dispatchSearch(): void {
+		this.dispatchEvent(new CustomEvent('search', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-    /* Focus state */
-    .search-field:focus-within {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
-
-    /* Disabled state */
-    :host([disabled]) .search-field {
-      opacity: var(--primitives-opacity-disabled);
-      cursor: not-allowed;
-    }
-
-    :host([disabled]) .search-field__native {
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .search-field:focus-within {
-        outline: 2px solid CanvasText !important;
-        outline-offset: 2px !important;
-      }
-    }
-  `;
-
-  @property({ type: String })
-  value = '';
-
-  @property({ type: String })
-  placeholder = 'Zoeken';
-
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
-
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
-
-  @property({ type: String })
-  name = '';
-
-  @query('.search-field__native')
-  private _input!: HTMLInputElement;
-
-  private _handleInput(e: Event): void {
-    const input = e.target as HTMLInputElement;
-    this.value = input.value;
-    this.dispatchEvent(new CustomEvent('input', {
-      detail: { value: this.value },
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  private _handleChange(e: Event): void {
-    const input = e.target as HTMLInputElement;
-    this.value = input.value;
-    this.dispatchEvent(new CustomEvent('change', {
-      detail: { value: this.value },
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  private _handleKeydown(e: KeyboardEvent): void {
-    if (e.key === 'Enter') {
-      this.dispatchEvent(new CustomEvent('search', {
-        detail: { value: this.value },
-        bubbles: true,
-        composed: true
-      }));
-    }
-  }
-
-  public focus(): void {
-    this._input?.focus();
-  }
-
-  public blur(): void {
-    this._input?.blur();
-  }
-
-  override render() {
-    return html`
-      <div class="search-field" part="container">
-        <div class="search-field__spacer"></div>
-        <div class="search-field__icon" part="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M2 10c0 4.4 3.6 8 8 8a7.95 7.95 0 0 0 4.9-1.7l5.7 5.7 1.4-1.4-5.7-5.7A7.97 7.97 0 0 0 18 10c0-4.4-3.6-8-8-8s-8 3.6-8 8m2 0c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6"/>
-          </svg>
-        </div>
-        <div class="search-field__spacer"></div>
-        <div class="search-field__input">
-          <input
-            class="search-field__native"
-            part="input"
-            type="search"
-            .value=${this.value}
-            placeholder=${this.placeholder}
-            ?disabled=${this.disabled}
-            name=${this.name}
-            @input=${this._handleInput}
-            @change=${this._handleChange}
-            @keydown=${this._handleKeydown}
-          />
-          <div class="search-field__input-shade"></div>
-        </div>
-      </div>
-    `;
-  }
+	override render() {
+		return searchFieldTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-search-field': RRSearchField;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-search-field': RRSearchField;
+	}
 }

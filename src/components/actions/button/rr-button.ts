@@ -8,10 +8,10 @@
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
  * @attr {boolean} is-expandable - Whether the button has a icon to indicate it opens a menu or popover
  * @attr {boolean} full-width - Whether the button stretches to fill its container width
- * @attr {string} accessible-label - Accessible label for the button, overrides slot content for screen readers
+ * @attr {string} accessible-label - Accessible label for the button, overrides slot text for screen readers
  *
- * @slot - Slot for button title
- * @slot (auto) - Place an rr-icon before or after the title to auto-detect position
+ * @slot - Slot for button text
+ * @slot (auto) - Place an rr-icon before or after the text to auto-detect position
  *
  * @fires click - When button is clicked (not fired when disabled)
  */
@@ -124,7 +124,7 @@ export class RRButton extends LitElement {
 		}
 
 		if (icons.length > 2) {
-			console.warn('<rr-button>: Too many rr-icon elements provided. Maximum is one before and one after the title. Extra icons will be ignored.');
+			console.warn('<rr-button>: Too many rr-icon elements provided. Maximum is one before and one after the text. Extra icons will be ignored.');
 			icons.splice(2);
 		}
 
@@ -141,7 +141,7 @@ export class RRButton extends LitElement {
 			const lastIsIcon = (last as Element)?.tagName?.toLowerCase() === 'rr-icon';
 
 			if (!firstIsIcon || !lastIsIcon) {
-				console.warn('<rr-button>: Two rr-icon elements detected but they are not surrounding the title. Expected pattern: <rr-icon> title <rr-icon>. Falling back to using the first icon as a start icon.');
+				console.warn('<rr-button>: Two rr-icon elements detected but they are not surrounding the text. Expected pattern: <rr-icon> text <rr-icon>. Falling back to using the first icon as a start icon.');
 				this._iconStart = {
 					name: icons[0].getAttribute('name') ?? '',
 					attributes: this._extractAttributes(icons[0]),

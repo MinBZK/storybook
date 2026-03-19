@@ -83,11 +83,11 @@ export class RRRadioButtonGroup extends LitElement {
 			field.required = this.required;
 			if (this.disabled) {
 				if (!field.hasAttribute('disabled')) {
-					field.setAttribute('data-group-disabled', '');
+					field.setAttribute('group-disabled', '');
 					field.disabled = true;
 				}
-			} else if (field.hasAttribute('data-group-disabled')) {
-				field.removeAttribute('data-group-disabled');
+			} else if (field.hasAttribute('group-disabled')) {
+				field.removeAttribute('group-disabled');
 				field.disabled = false;
 			}
 		});
@@ -135,7 +135,7 @@ export class RRRadioButtonGroup extends LitElement {
 		}));
 	};
 
-	public _onSlotChange = (): void => {
+	_onSlotChange = (): void => {
 		this._syncFields();
 	};
 

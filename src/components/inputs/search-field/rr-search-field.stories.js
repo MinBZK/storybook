@@ -2,178 +2,101 @@ import { html } from 'lit';
 import './rr-search-field.ts';
 
 /**
- * De Search Field component is een zoekveld met zoekicoon.
- *
- * ## Gebruik
- * ```html
- * <rr-search-field placeholder="Zoeken..."></rr-search-field>
- * ```
+ * De Search Field component is een zoekveld met zoekicoon, een optionele dismiss knop
+ * en een optionele zoekknop.
  */
 export default {
-  title: 'Components/Inputs/Search Field',
-  component: 'rr-search-field',
-  tags: ['autodocs'],
-  parameters: {
-    componentSource: {
-      file: 'src/components/inputs/search-field/rr-search-field.ts',
-      repository: 'https://github.com/regelrecht/design-system',
-    },
-    status: {
-      type: 'stable',
-    },
-  },
-  argTypes: {
-    value: {
-      control: 'text',
-      description: 'Search value',
-      table: {
-        defaultValue: { summary: '' },
-      },
-    },
-    placeholder: {
-      control: 'text',
-      description: 'Placeholder text',
-      table: {
-        defaultValue: { summary: 'Search' },
-      },
-    },
-    size: {
-      control: 'select',
-      options: ['sm', 'md'],
-      description: 'Field size',
-      table: {
-        defaultValue: { summary: 'md' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disabled state',
-      table: {
-        defaultValue: { summary: false },
-      },
-    },
-    name: {
-      control: 'text',
-      description: 'Input name for form submission',
-    },
-  },
-  args: {
-    value: '',
-    placeholder: 'Search',
-    size: 'md',
-    disabled: false,
-    name: '',
-  },
+	title: 'Components/Inputs/Search Field',
+	component: 'rr-search-field',
+	tags: ['autodocs'],
+	parameters: {
+		componentSource: {
+			file: 'src/components/inputs/search-field/rr-search-field.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: {
+			type: 'stable',
+		},
+	},
+	argTypes: {
+		value: {
+			control: 'text',
+			description: 'Huidige zoekwaarde',
+			table: { defaultValue: { summary: '' } },
+		},
+		placeholder: {
+			control: 'text',
+			description: 'Placeholder tekst',
+			table: { defaultValue: { summary: 'Zoeken' } },
+		},
+		accessibleLabel: {
+			control: 'text',
+			name: 'accessible-label',
+			description: 'Toegankelijkheidslabel voor de input. Valt automatisch terug op de placeholder als niet ingevuld.',
+		},
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Grootte van het veld',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		disabled: {
+			control: 'boolean',
+			description: 'Uitgeschakelde toestand',
+			table: { defaultValue: { summary: false } },
+		},
+		hasSearchButton: {
+			control: 'boolean',
+			name: 'has-search-button',
+			description: 'Toont een zoekknop aan de rechterkant',
+			table: { defaultValue: { summary: false } },
+		},
+		name: {
+			control: 'text',
+			description: 'Naam voor formulierverwerking',
+		},
+	},
+	args: {
+		value: '',
+		placeholder: 'Zoeken',
+		accessibleLabel: '',
+		size: 'md',
+		disabled: false,
+		hasSearchButton: false,
+		name: '',
+	},
 };
 
-const Template = ({ value, placeholder, size, disabled, name }) => html`
-  <rr-search-field
-    value=${value}
-    placeholder=${placeholder}
-    size=${size}
-    ?disabled=${disabled}
-    name=${name}
-  ></rr-search-field>
+const Template = ({ value, placeholder, accessibleLabel, size, disabled, hasSearchButton, name }) => html`
+	<rr-search-field
+		value=${value}
+		placeholder=${placeholder}
+		accessible-label=${accessibleLabel}
+		size=${size}
+		?disabled=${disabled}
+		?has-search-button=${hasSearchButton}
+		name=${name}
+	></rr-search-field>
 `;
 
-// Primary story
-export const Default = Template.bind({});
-Default.args = {};
+export const Standaard = Template.bind({});
+Standaard.args = {};
 
-// With value
-export const WithValue = Template.bind({});
-WithValue.args = {
-  value: 'Example search',
-};
+export const MetZoekKnop = Template.bind({});
+MetZoekKnop.args = { hasSearchButton: true };
 
-// Size small
-export const Small = Template.bind({});
-Small.args = {
-  size: 'sm',
-};
-
-// Disabled
-export const Disabled = Template.bind({});
-Disabled.args = {
-  disabled: true,
-};
-
-// All sizes overview
-export const AllSizes = () => html`
-  <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 400px;">
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Medium (default)</label>
-      <rr-search-field size="md" placeholder="Search"></rr-search-field>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Small</label>
-      <rr-search-field size="sm" placeholder="Search"></rr-search-field>
-    </div>
-  </div>
+export const AlleToestanden = () => html`
+	<div style="display: flex; flex-direction: column; gap: 1rem;">
+		<rr-search-field size="md" placeholder="Zoeken"></rr-search-field>
+		<rr-search-field size="md" placeholder="Zoeken" value="Zoekterm"></rr-search-field>
+		<rr-search-field size="md" placeholder="Zoeken" has-search-button></rr-search-field>
+		<rr-search-field size="md" placeholder="Zoeken" value="Zoekterm" has-search-button></rr-search-field>
+		<rr-search-field size="sm" placeholder="Zoeken"></rr-search-field>
+		<rr-search-field size="sm" placeholder="Zoeken" value="Zoekterm"></rr-search-field>
+		<rr-search-field size="sm" placeholder="Zoeken" has-search-button></rr-search-field>
+		<rr-search-field size="sm" placeholder="Zoeken" value="Zoekterm" has-search-button></rr-search-field>
+		<rr-search-field size="md" placeholder="Zoeken" disabled></rr-search-field>
+		<rr-search-field size="md" placeholder="Zoeken" value="Zoekterm" disabled></rr-search-field>
+	</div>
 `;
-AllSizes.parameters = {
-  controls: { disable: true },
-};
-
-// All states overview
-export const AllStates = () => html`
-  <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 400px;">
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Default</label>
-      <rr-search-field placeholder="Search"></rr-search-field>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">With value</label>
-      <rr-search-field value="Example search"></rr-search-field>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <label style="font-family: RijksSansVF, system-ui; font-size: 14px; color: var(--semantics-content-color);">Disabled</label>
-      <rr-search-field disabled placeholder="Search"></rr-search-field>
-    </div>
-  </div>
-`;
-AllStates.parameters = {
-  controls: { disable: true },
-};
-
-// Interactive example
-export const InteractiveExample = () => {
-  const handleInput = (e) => {
-    console.log('Input:', e.detail.value);
-  };
-
-  const handleSearch = (e) => {
-    console.log('Search submitted:', e.detail.value);
-    alert(`Searching for: ${e.detail.value}`);
-  };
-
-  return html`
-    <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 400px;">
-      <h3 style="margin: 0; font-family: RijksSansVF, system-ui; font-size: 20px; font-weight: 550;">
-        Zoeken
-      </h3>
-
-      <rr-search-field
-        @input=${handleInput}
-        @search=${handleSearch}
-        placeholder="Zoek documenten..."
-        name="search"
-      ></rr-search-field>
-
-      <div style="padding: 1rem; background-color: #f1f5f9; border-radius: 5px;">
-        <p style="margin: 0; font-family: RijksSansVF, system-ui; font-size: 14px; color: #475569;">
-          Tip: Druk op Enter om te zoeken. Open de console voor events.
-        </p>
-      </div>
-    </div>
-  `;
-};
-InteractiveExample.parameters = {
-  controls: { disable: true },
-  docs: {
-    description: {
-      story:
-        'Een interactief voorbeeld met een search field. De component triggert `input`, `change`, en `search` (bij Enter) events.',
-    },
-  },
-};
+AlleToestanden.parameters = { controls: { disable: true } };

@@ -1,244 +1,352 @@
 /**
  * RegelRecht Combo Box Field Component (Lit + TypeScript)
  *
- * A text input with dropdown suggestions (autocomplete).
+ * A text input with autocomplete dropdown via rr-menu.
+ * Add a slotted rr-menu with rr-menu-item children to provide options.
+ *
+ * The component automatically sets no-auto-focus on the slotted rr-menu
+ * so that typing keeps focus on the input. The picker button moves focus
+ * to the menu explicitly on activation.
+ *
+ * Note: Only rr-menu-item type="button" is supported. Radio and checkbox
+ * types are not supported in this context.
  *
  * @element rr-combo-box-field
- * @attr {string} value - The input value
- * @attr {string} placeholder - Placeholder text
- * @attr {boolean} disabled - Disabled state
- * @attr {string} name - Input name for form submission
+ * @attr {string}  value        - The selected form value
+ * @attr {string}  placeholder  - Placeholder text for the input
+ * @attr {boolean} disabled     - Disabled state
+ * @attr {string}  name         - Input name for form submission
+ * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the input. Required for screen reader accessibility.
+ * @attr {number}  max-items    - Maximum visible items before scrolling (default: 8)
+ * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
  *
- * @fires input - When input value changes
- * @fires change - When input value is committed
+ * @note Free-text values: if the user types a value that does not match any menu option
+ *       and presses Enter or moves focus away, the typed text is emitted as-is via the
+ *       `change` event. Consumers are responsible for validating emitted values.
  *
- * @csspart container - The field container
- * @csspart input - The native input element
- * @csspart button - The dropdown button
+ * @slot - An rr-menu element with rr-menu-item and rr-menu-divider children
+ *
+ * @fires input  - When the input value changes; detail: { value: string }
+ * @fires change - When an option is selected or a custom value is committed;
+ *                 detail: { value: string }
+ *
+ * @example
+ * ```html
+ * <rr-combo-box-field placeholder="Zoek een land" name="land">
+ *   <rr-menu>
+ *     <rr-menu-item text="Nederland" value="nl"></rr-menu-item>
+ *     <rr-menu-item text="België" value="be"></rr-menu-item>
+ *   </rr-menu>
+ * </rr-combo-box-field>
+ * ```
  */
+import { LitElement } from 'lit';
+import { customElement, property, state, query } from 'lit/decorators.js';
+import { comboBoxFieldStyles } from './rr-combo-box-field.styles.ts';
+import { comboBoxFieldTemplate } from './rr-combo-box-field.template.ts';
+import { rrComboBoxFieldTranslations } from './rr-combo-box-field.i18n.ts';
+import type { RRComboBoxFieldTranslations } from './rr-combo-box-field.i18n.ts';
+import type { RRMenu, RRMenuItem } from '../../lists-and-menus/menu/rr-menu.js';
+import '../../lists-and-menus/menu/rr-menu.ts';
+import '../../actions/icon-button/rr-icon-button.ts';
+import '../../content/icon/rr-icon.ts';
 
-import { LitElement, html, css } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
 
 @customElement('rr-combo-box-field')
 export class RRComboBoxField extends LitElement {
-  static override styles = css`
-    :host {
-      display: block;
-      font-family: var(--rr-font-family-body);
-      --_background-color: var(--semantics-input-fields-background-color);
-    }
+	static override styles = comboBoxFieldStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String })
+	value = '';
 
-    .combo-box-field {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      min-height: var(--semantics-controls-md-min-size);
-      background-color: var(--_background-color);
-      border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
-      border-radius: var(--semantics-controls-md-corner-radius);
-      box-sizing: border-box;
-      position: relative;
-      overflow: hidden;
-    }
+	@property({ type: String })
+	placeholder = '';
 
-    .combo-box-field__spacer {
-      width: var(--primitives-space-12);
-      flex-shrink: 0;
-      align-self: stretch;
-    }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-    .combo-box-field__input {
-      display: flex;
-      flex-direction: row;
-      flex: 1;
-      min-width: 0;
-      position: relative;
-    }
+	@property({ type: String })
+	name = '';
 
-    .combo-box-field__native {
-      /* Reset */
-      appearance: none;
-      border: none;
-      background: transparent;
-      margin: 0;
-      padding: 0;
-      outline: none;
-      font: inherit;
-      width: 100%;
-      box-sizing: border-box;
+	/** Maximum number of visible menu items before scrolling. Defaults to 8. */
+	@property({ type: Number, attribute: 'max-items' })
+	maxItems = 8;
 
-      /* Typography */
-      font: var(--semantics-input-fields-md-text-font);
-      color: var(--semantics-content-color);
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-      /* Layout */
-      height: var(--semantics-controls-md-min-size);
-      line-height: var(--semantics-controls-md-min-size);
-    }
+	@property({ type: Object })
+	translations: Partial<RRComboBoxFieldTranslations> = {};
 
-    .combo-box-field__native::placeholder {
-      color: var(--semantics-input-fields-placeholder-color);
-    }
+	@state()
+	_isOpen = false;
 
-    .combo-box-field__input-shade {
-      position: absolute;
-      right: 0;
-      top: 2px;
-      width: 10px;
-      height: calc(var(--semantics-controls-md-min-size) - 4px);
-      background: linear-gradient(90deg, transparent 0%, var(--_background-color) 100%);
-      pointer-events: none;
-    }
+	/** Display value shown in the input. May differ from value (form value). */
+	@state()
+	_displayValue = '';
 
-    .combo-box-field__picker-button {
-      /* Reset */
-      appearance: none;
-      border: none;
-      background: transparent;
-      margin: 0;
-      padding: 0;
-      cursor: pointer;
+	/** ID of the currently highlighted menu item for aria-activedescendant. */
+	@state()
+	_highlightedId = '';
 
-      /* Layout */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: var(--semantics-controls-md-min-size);
-      align-self: stretch;
-      flex-shrink: 0;
+	private static _counter = 0;
+	readonly _menuId = `rr-combo-box-menu-${RRComboBoxField._counter++}`;
 
-      /* Icon color */
-      color: var(--semantics-content-color);
-    }
+	private _menu: RRMenu | null = null;
+	private _resizeObserver: ResizeObserver | null = null;
 
-    .combo-box-field__picker-button:hover:not(:disabled) {
-      background-color: var(--primitives-color-neutral-100);
-    }
+	@query('.combo-box-field__input')
+	_input!: HTMLInputElement;
 
-    .combo-box-field__picker-button svg {
-      width: 20px;
-      height: 20px;
-    }
+	// — i18n ——————————————————————————————————————————————————————————————————
 
-    /* Focus state */
-    .combo-box-field:focus-within {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
+	public _t(key: keyof RRComboBoxFieldTranslations): string {
+		return this.translations[key] ?? rrComboBoxFieldTranslations[key];
+	}
 
-    /* Disabled state */
-    :host([disabled]) .combo-box-field {
-      opacity: var(--primitives-opacity-disabled);
-      cursor: not-allowed;
-    }
+	// — Lifecycle ————————————————————————————————————————————————————————————
 
-    :host([disabled]) .combo-box-field__native,
-    :host([disabled]) .combo-box-field__picker-button {
-      cursor: not-allowed;
-      pointer-events: none;
-    }
+	override firstUpdated(): void {
+		if (!this.accessibleLabel) {
+			console.warn('<rr-combo-box-field>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
+		}
+	}
 
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .combo-box-field:focus-within {
-        outline: 2px solid CanvasText !important;
-        outline-offset: 2px !important;
-      }
-    }
-  `;
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('maxItems') && this._menu) {
+			this._menu.maxItems = this.maxItems;
+		}
+	}
 
-  @property({ type: String })
-  value = '';
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._resizeObserver = new ResizeObserver(() => this._updateMenuWidth());
+		this._resizeObserver.observe(this);
+		window.addEventListener('scroll', this._handleScrollOrResize, true);
+		window.addEventListener('resize', this._handleScrollOrResize);
+	}
 
-  @property({ type: String })
-  placeholder = 'Selecteer een optie';
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._resizeObserver?.disconnect();
+		this._resizeObserver = null;
+		window.removeEventListener('scroll', this._handleScrollOrResize, true);
+		window.removeEventListener('resize', this._handleScrollOrResize);
+		if (this._menu) {
+			this._menu.removeEventListener('toggle', this._handleMenuToggle);
+			this._menu.removeEventListener('select', this._handleMenuSelect);
+			this._menu.removeEventListener('keydown', this._handleMenuKeydown);
+			this._menu = null;
+		}
+	}
 
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
+	// — Slot —————————————————————————————————————————————————————————————————
 
-  @property({ type: String })
-  name = '';
+	public _onSlotChange(): void {
+		const slot = this.shadowRoot?.querySelector('slot');
+		const menu = slot?.assignedElements({ flatten: true })
+			.find(el => el.tagName.toLowerCase() === 'rr-menu') as RRMenu | undefined;
 
-  @query('.combo-box-field__native')
-  private _input!: HTMLInputElement;
+		if (!menu || menu === this._menu) return;
 
-  private _handleInput(e: Event): void {
-    const input = e.target as HTMLInputElement;
-    this.value = input.value;
-    this.dispatchEvent(new CustomEvent('input', {
-      detail: { value: this.value },
-      bubbles: true,
-      composed: true
-    }));
-  }
+		this._menu = menu;
+		menu.id = this._menuId;
+		menu.anchorElement = this;
+		menu.placement = 'bottom-start';
+		menu.maxItems = this.maxItems;
+		menu.variant = 'listbox';
+		// Always prevent auto-focus so typing keeps focus on the input.
+		// The picker button moves focus explicitly when activated.
+		menu.noAutoFocus = true;
+		menu.addEventListener('toggle', this._handleMenuToggle);
+		menu.addEventListener('select', this._handleMenuSelect);
+		menu.addEventListener('keydown', this._handleMenuKeydown);
+		this._updateMenuWidth();
+	}
 
-  private _handleChange(e: Event): void {
-    const input = e.target as HTMLInputElement;
-    this.value = input.value;
-    this.dispatchEvent(new CustomEvent('change', {
-      detail: { value: this.value },
-      bubbles: true,
-      composed: true
-    }));
-  }
+	// — Menu width & position ————————————————————————————————————————————————
 
-  private _handlePickerClick(): void {
-    this.dispatchEvent(new CustomEvent('picker-click', {
-      bubbles: true,
-      composed: true
-    }));
-  }
+	private _updateMenuWidth(): void {
+		if (!this._menu) return;
+		const rect = this.getBoundingClientRect();
+		this._menu.width = `${rect.width}px`;
+	}
 
-  public focus(): void {
-    this._input?.focus();
-  }
+	private _handleScrollOrResize = (): void => {
+		if (!this._isOpen) return;
+		this._updateMenuWidth();
+		this._menu?.reposition();
+	};
 
-  public blur(): void {
-    this._input?.blur();
-  }
+	// — Menu management ——————————————————————————————————————————————————————
 
-  override render() {
-    return html`
-      <div class="combo-box-field" part="container">
-        <div class="combo-box-field__spacer"></div>
-        <div class="combo-box-field__input">
-          <input
-            class="combo-box-field__native"
-            part="input"
-            type="text"
-            .value=${this.value}
-            placeholder=${this.placeholder}
-            ?disabled=${this.disabled}
-            name=${this.name}
-            @input=${this._handleInput}
-            @change=${this._handleChange}
-          />
-          <div class="combo-box-field__input-shade"></div>
-        </div>
-        <button
-          class="combo-box-field__picker-button"
-          part="button"
-          type="button"
-          ?disabled=${this.disabled}
-          @click=${this._handlePickerClick}
-          aria-label="Dropdown openen"
-        >
-          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M10 14.17L5.83 10l-1.42 1.41L10 17l5.59-5.59L14.17 10 10 14.17zM10 5.83L14.17 10l1.42-1.41L10 3 4.41 8.59 5.83 10 10 5.83z"/>
-          </svg>
-        </button>
-      </div>
-    `;
-  }
+	private _handleMenuToggle = (e: Event): void => {
+		this._isOpen = (e as ToggleEvent).newState === 'open';
+		if (!this._isOpen) {
+			this._highlightedId = '';
+		} else {
+			// Update highlight ID after menu opens and first item is highlighted
+			requestAnimationFrame(() => {
+				this._highlightedId = this._menu?.getHighlightedId() ?? '';
+			});
+		}
+	};
+
+	private _handleMenuSelect = (e: Event): void => {
+		const item = e.target as RRMenuItem;
+		this._displayValue = item.text;
+		this.value = item.value || item.text;
+		this._highlightedId = '';
+		this._closeMenu();
+		this._menu?.filter('');
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+		this._input?.focus();
+	};
+
+	private _updateActiveDescendant(): void {
+		this._highlightedId = this._menu?.getHighlightedId() ?? '';
+	}
+
+	/**
+	 * Open the menu. Focus always stays on the input — highlight moves via
+	 * aria-activedescendant rather than by moving focus to items.
+	 */
+	public _openMenu(): void {
+		if (!this._menu || this._isOpen) return;
+		if (!('showPopover' in this._menu)) {
+			console.warn('<rr-combo-box-field>: Popover API is not supported in this browser. The dropdown will not open.');
+			return;
+		}
+		this._updateMenuWidth();
+		this._menu.noAutoFocus = true;
+		(this._menu as HTMLElement).showPopover();
+	}
+
+	public _closeMenu(): void {
+		if (!this._menu || !this._isOpen) return;
+		(this._menu as HTMLElement).hidePopover();
+	}
+
+	private _pickerMousedown = false;
+
+	public _toggleMenu(): void {
+		if (this._pickerMousedown) {
+			this._pickerMousedown = false;
+			return;
+		}
+		if (this._isOpen) {
+			this._closeMenu();
+			this._input?.focus();
+		} else {
+			this._openMenu();
+			this._input?.focus();
+		}
+	}
+
+	public _handlePickerMousedown(): void {
+		if (this._isOpen) {
+			this._pickerMousedown = true;
+		}
+	}
+
+	// — Handlers ————————————————————————————————————————————————————————————
+
+	/**
+	 * Handles Tab in the menu. The menu is a popover on the top layer — Tab
+	 * would move focus to the next focusable element in DOM order, which may
+	 * not be the next logical element. Instead, close the menu and return
+	 * focus to the input so the user can Tab forward from there.
+	 */
+	private _handleMenuKeydown = (e: KeyboardEvent): void => {
+		if (e.key !== 'Tab') return;
+		e.preventDefault();
+		this._closeMenu();
+		this._input?.focus();
+	};
+
+	public _handleInput(e: Event): void {
+		const input = e.target as HTMLInputElement;
+		this._displayValue = input.value;
+		this._menu?.filter(this._displayValue);
+		this._updateActiveDescendant();
+		if (!this._isOpen) this._openMenu();
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value: this._displayValue },
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	/** Accept a custom typed value and close the menu when focus leaves the input. */
+	public _handleBlur(e: FocusEvent): void {
+		const relatedTarget = e.relatedTarget as Node | null;
+		if (!relatedTarget || !this._menu?.contains(relatedTarget)) {
+			this._closeMenu();
+		}
+		if (this._displayValue !== '' && this._displayValue !== this.value) {
+			this.value = this._displayValue;
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			}));
+		}
+	}
+
+	public _handleKeydown(e: KeyboardEvent): void {
+		if (!this._isOpen) {
+			if (e.key === 'ArrowDown') {
+				e.preventDefault();
+				this._openMenu();
+			}
+			return;
+		}
+
+		switch (e.key) {
+			case 'ArrowDown':
+				e.preventDefault();
+				this._menu?.moveHighlight('next');
+				this._updateActiveDescendant();
+				break;
+			case 'ArrowUp':
+				e.preventDefault();
+				this._menu?.moveHighlight('prev');
+				this._updateActiveDescendant();
+				break;
+			case 'Enter': {
+				e.preventDefault();
+				const highlighted = this._menu?.getHighlighted();
+				if (highlighted) {
+					highlighted.select();
+				} else {
+					this.value = this._displayValue;
+					this._closeMenu();
+					this.dispatchEvent(new CustomEvent('change', {
+						detail: { value: this.value },
+						bubbles: true,
+						composed: true,
+					}));
+				}
+				break;
+			}
+			case 'Escape':
+				e.preventDefault();
+				this._closeMenu();
+				break;
+		}
+	}
+
+	override render() {
+		return comboBoxFieldTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-combo-box-field': RRComboBoxField;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-combo-box-field': RRComboBoxField;
+	}
 }

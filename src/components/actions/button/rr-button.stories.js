@@ -17,7 +17,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/actions/button/rr-button.ts',
-			repository: 'https://github.com/regelrecht/design-system',
+			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
 			type: 'stable',
@@ -37,7 +37,7 @@ export default {
 				'neutral-transparent',
 				'danger-tinted',
 			],
-			description: 'Visual style variant',
+			description: 'Visuele stijlvariant',
 			table: {
 				defaultValue: { summary: 'neutral-tinted' },
 			},
@@ -45,26 +45,26 @@ export default {
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
-			description: 'Button size',
+			description: 'Grootte van de knop',
 			table: {
 				defaultValue: { summary: 'md' },
 			},
 		},
 		fullWidth: {
 			control: 'boolean',
-			description: 'Full width',
+			description: 'Volledige breedte',
 			table: {
 				defaultValue: { summary: false },
 			},
 		},
-		title: {
+		text: {
 			control: 'text',
-			description: 'Button label text',
+			description: 'Tekst van de knop',
 		},
 		startIcon: {
 			control: 'select',
 			options: ['', ...ICONS],
-			description: 'Icon name to show before the label.',
+			description: 'Icoon voor de tekst',
 			table: {
 				defaultValue: { summary: '' },
 			},
@@ -72,7 +72,7 @@ export default {
 		endIcon: {
 			control: 'select',
 			options: ['', ...ICONS],
-			description: 'Icon name to show after the label.',
+			description: 'Icoon na de tekst',
 			table: {
 				defaultValue: { summary: '' },
 			},
@@ -80,7 +80,7 @@ export default {
 		isExpandable: {
 			control: 'boolean',
 			name: 'is-expandable',
-			description: 'Adds a chevron to indicate this button opens a menu or popover',
+			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -88,14 +88,14 @@ export default {
 		type: {
 			control: 'select',
 			options: ['button', 'submit', 'reset'],
-			description: 'Button type attribute',
+			description: 'Type attribuut voor formulierverwerking',
 			table: {
 				defaultValue: { summary: 'button' },
 			},
 		},
 		disabled: {
 			control: 'boolean',
-			description: 'Disabled state',
+			description: 'Uitgeschakelde toestand',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -105,7 +105,7 @@ export default {
 		variant: 'neutral-tinted',
 		size: 'md',
 		fullWidth: false,
-		title: 'Button',
+		text: 'Button',
 		startIcon: '',
 		endIcon: '',
 		isExpandable: false,
@@ -114,7 +114,7 @@ export default {
 	},
 };
 
-const Template = ({ title, variant, size, fullWidth, type, startIcon, endIcon, isExpandable, disabled }) => html`
+const Template = ({ text, variant, size, fullWidth, type, startIcon, endIcon, isExpandable, disabled }) => html`
 	<rr-button
 		variant=${variant}
 		size=${size}
@@ -124,18 +124,16 @@ const Template = ({ title, variant, size, fullWidth, type, startIcon, endIcon, i
 		?disabled=${disabled}
 	>
 		${startIcon ? html`<rr-icon name=${startIcon}></rr-icon>` : ''}
-		${title}
+		${text}
 		${endIcon ? html`<rr-icon name=${endIcon}></rr-icon>` : ''}
 	</rr-button>
 `;
 
-// Main story
 export const Default = Template.bind({});
 Default.args = {
-	title: 'Button',
+	text: 'Button',
 };
 
-// All roles overview
 export const RoleBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-button variant="primary">Primary</rr-button>
@@ -144,35 +142,28 @@ export const RoleBased = () => html`
 	</div>
 `;
 RoleBased.parameters = {
-	controls: {
-		disable: true
-	},
+	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'Role based buttons zijn aliases van de appearance based buttons.',
+			story: 'Role based buttons zijn aliases van de appearance based buttons.',
 		},
 	},
 };
 
-// All variants overview
 export const AppearanceBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-button variant="accent-filled">Accent Filled</rr-button>
 		<rr-button variant="accent-outlined">Accent Outlined</rr-button>
 		<rr-button variant="accent-transparent">Accent Transparent</rr-button>
 		<rr-button variant="neutral-tinted">Neutral Tinted</rr-button>
-		<rr-button variant="neutral-transparent">Neutral Tinted</rr-button>
+		<rr-button variant="neutral-transparent">Neutral Transparent</rr-button>
 		<rr-button variant="danger-tinted">Danger Tinted</rr-button>
 	</div>
 `;
 AppearanceBased.parameters = {
-	controls: {
-		disable: true
-	},
+	controls: { disable: true },
 };
 
-// All sizes overview
 export const Sizes = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<rr-button size="md">Medium</rr-button>
@@ -181,36 +172,21 @@ export const Sizes = () => html`
 	</div>
 `;
 Sizes.parameters = {
-	controls: {
-		disable: true
-	},
+	controls: { disable: true },
 };
 
-// Icon stories
 export const WithStartIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-button
-			size="md"
-		>
-			<rr-icon
-				name="download"
-			></rr-icon>
+		<rr-button size="md">
+			<rr-icon name="download"></rr-icon>
 			Download
 		</rr-button>
-		<rr-button
-			size="sm"
-		>
-			<rr-icon
-				name="download"
-			></rr-icon>
+		<rr-button size="sm">
+			<rr-icon name="download"></rr-icon>
 			Download
 		</rr-button>
-		<rr-button
-			size="xs"
-		>
-			<rr-icon
-				name="download"
-			></rr-icon>
+		<rr-button size="xs">
+			<rr-icon name="download"></rr-icon>
 			Download
 		</rr-button>
 	</div>
@@ -219,36 +195,24 @@ WithStartIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Button met een icoon aan de linkerkant. Plaats een `rr-icon` vóór de tekst — de positie wordt automatisch gedetecteerd.',
+			story: 'Button met een icoon aan de linkerkant. Plaats een <code>rr-icon</code> vóór de tekst — de positie wordt automatisch gedetecteerd.',
 		},
 	},
 };
 
 export const WithEndIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-button
-			size="md"
-		>
+		<rr-button size="md">
 			Volgende
-			<rr-icon
-				name="arrow-right"
-			></rr-icon>
+			<rr-icon name="arrow-right"></rr-icon>
 		</rr-button>
-		<rr-button
-			size="sm"
-		>
+		<rr-button size="sm">
 			Volgende
-			<rr-icon
-				name="arrow-right"
-			></rr-icon>
+			<rr-icon name="arrow-right"></rr-icon>
 		</rr-button>
-		<rr-button
-			size="xs"
-		>
+		<rr-button size="xs">
 			Volgende
-			<rr-icon
-				name="arrow-right"
-			></rr-icon>
+			<rr-icon name="arrow-right"></rr-icon>
 		</rr-button>
 	</div>
 `;
@@ -256,52 +220,35 @@ WithEndIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Button met een icoon aan de rechterkant. Plaats een `rr-icon` ná de tekst — de positie wordt automatisch gedetecteerd.',
+			story: 'Button met een icoon aan de rechterkant. Plaats een <code>rr-icon</code> ná de tekst — de positie wordt automatisch gedetecteerd.',
 		},
 	},
 };
 
 export const WithBothIcons = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-button
-			size="md">
-			<rr-icon
-				name="download"
-			></rr-icon>
+		<rr-button size="md">
+			<rr-icon name="download"></rr-icon>
 			Download bestand
-			<rr-icon
-				name="arrow-right"
-			></rr-icon>
+			<rr-icon name="arrow-right"></rr-icon>
 		</rr-button>
-		<rr-button
-			size="sm">
-			<rr-icon
-				name="download"
-			></rr-icon>
+		<rr-button size="sm">
+			<rr-icon name="download"></rr-icon>
 			Download bestand
-			<rr-icon
-				name="arrow-right"
-			></rr-icon>
+			<rr-icon name="arrow-right"></rr-icon>
 		</rr-button>
-		<rr-button
-			size="xs">
-			<rr-icon
-				name="download"
-			></rr-icon>
+		<rr-button size="xs">
+			<rr-icon name="download"></rr-icon>
 			Download bestand
-			<rr-icon
-				name="arrow-right"
-			></rr-icon>
+			<rr-icon name="arrow-right"></rr-icon>
 		</rr-button>
 	</div>
 `;
 WithBothIcons.parameters = {
-	controls: {
-		disable: true
-	},
+	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Button met zowel een start als end icoon. Plaats een `rr-icon` vóór én ná de tekst — beide posities worden automatisch gedetecteerd.',
+			story: 'Button met zowel een start als end icoon. Plaats een <code>rr-icon</code> vóór én ná de tekst — beide posities worden automatisch gedetecteerd.',
 		},
 	},
 };
@@ -314,13 +261,10 @@ export const WithDisclosureIcon = () => html`
 	</div>
 `;
 WithDisclosureIcon.parameters = {
-	controls: {
-		disable: true
-	},
+	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'Button die een menu of popover opent. Gebruik de `is-expandable` attribute om aan te geven dat deze button een menu of popover opent.',
+			story: 'Button die een menu of popover opent. Gebruik de <code>is-expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
 		},
 	},
 };

@@ -1,241 +1,164 @@
 /**
  * RegelRecht Toggle Button Component (Lit + TypeScript)
  *
+ * A selectable button that toggles between selected and unselected.
+ * Available as a button (aria-pressed), checkbox, or radio input.
+ *
+ * Place an rr-icon before the text to add an icon — position is auto-detected.
+ *
  * @element rr-toggle-button
- * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
- * @attr {boolean} selected - Selected state
- * @attr {boolean} disabled - Disabled state
  *
- * @slot - Default slot for button content
- * @slot icon - Slot for icon
+ * @attr {'button' | 'checkbox' | 'radio'} type - Underlying element (default: 'button')
+ * @attr {'xs' | 'sm' | 'md'}              size - Button size (default: 'md')
+ * @attr {boolean}                         selected         - Selected state
+ * @attr {boolean}                         disabled         - Disabled state
+ * @attr {string}                          value            - Value for form submission (checkbox/radio)
+ * @attr {string}                          name             - Name for form submission (checkbox/radio)
+ * @attr {string}                          accessible-label - Accessible label; required for icon-only usage
  *
- * @fires toggle - When button is toggled (detail: { selected: boolean })
+ * @slot - Button content: place an rr-icon before the text for an icon
  *
- * @csspart button - The native button element
- * @csspart content - The content wrapper
- *
- * @cssprop --rr-toggle-button-background-color - Override background color
- * @cssprop --rr-toggle-button-content-color - Override content color
+ * @fires change - When selection changes; detail: { selected: boolean, value: string }
  */
 
-import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { LitElement } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { toggleButtonStyles } from './rr-toggle-button.styles.ts';
+import { toggleButtonTemplate } from './rr-toggle-button.template.ts';
+import './../../content/icon/rr-icon.ts';
 
-type Size = 'xs' | 'sm' | 'md';
+export type ToggleButtonType = 'button' | 'checkbox' | 'radio';
+export type ToggleButtonSize = 'xs' | 'sm' | 'md';
 
 @customElement('rr-toggle-button')
 export class RRToggleButton extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = toggleButtonStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String, reflect: true })
+	type: ToggleButtonType = 'button';
 
-    .button {
-      /* Reset */
-      appearance: none;
-      border: none;
-      margin: 0;
-      padding: 0;
-      background: none;
-      font: inherit;
-      cursor: pointer;
+	@property({ type: String, reflect: true })
+	size: ToggleButtonSize = 'md';
 
-      /* Layout */
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+	@property({ type: Boolean, reflect: true })
+	selected = false;
 
-      /* Typography */
-      /* font-weight is included in font shorthand token */
-      text-decoration: none;
-      white-space: nowrap;
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-      /* Animation */
-      transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+	@property({ type: String })
+	value = 'on';
 
-      /* Default state - using component tokens */
-      background-color: var(--rr-toggle-button-background-color, var(--semantics-buttons-neutral-tinted-background-color));
-      color: var(--rr-toggle-button-content-color, var(--semantics-buttons-neutral-tinted-content-color));
-    }
+	@property({ type: String })
+	name = '';
 
-    .button:active:not(:disabled) {
-      transform: scale(0.98);
-    }
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-    /* Size: XS */
-    :host([size="xs"]) .button {
-      min-height: var(--semantics-controls-xs-min-size);
-      /* Horizontal padding includes compensation for Figma's spacer gaps (2px × 2) */
-      padding: var(--primitives-space-4) var(--primitives-space-14);
-      font: var(--semantics-buttons-xs-font);
-      border-radius: var(--semantics-controls-xs-corner-radius);
-      gap: var(--primitives-space-2);
-    }
+	@state()
+	_iconName: string | null = null;
 
-    /* Size: SM */
-    :host([size="sm"]) .button {
-      min-height: var(--semantics-controls-sm-min-size);
-      /* Horizontal padding includes compensation for Figma's spacer gaps (2px × 2) */
-      padding: var(--primitives-space-6) var(--primitives-space-8);
-      font: var(--semantics-buttons-sm-font);
-      border-radius: var(--semantics-controls-sm-corner-radius);
-      gap: var(--primitives-space-2);
-    }
+	@state()
+	_hasText = false;
 
-    /* Size: MD (default) */
-    :host([size="md"]) .button,
-    :host(:not([size])) .button {
-      min-height: var(--semantics-controls-md-min-size);
-      /* Horizontal padding includes compensation for Figma's spacer gaps (4px × 2) */
-      padding: var(--primitives-space-8) var(--primitives-space-14);
-      font: var(--semantics-buttons-md-font);
-      border-radius: var(--semantics-controls-md-corner-radius);
-      gap: var(--primitives-space-4);
-    }
+	private _observer: MutationObserver | null = null;
 
-    /* Hover state */
-    .button:hover:not(:disabled) {
-      background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-      color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
-    }
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._observer = new MutationObserver(() => this._detectIcon());
+		// Observe only direct child additions/removals.
+		// Icon name changes do not affect whether an icon is present,
+		// and slot assignments are handled by @slotchange in the template.
+		this._observer.observe(this, { childList: true });
+		this.updateComplete.then(() => this._detectIcon());
+	}
 
-    /* Selected state */
-    :host([selected]) .button {
-      background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
-      color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
-    }
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._observer?.disconnect();
+		this._observer = null;
+	}
 
-    /* Selected hover state - stays selected color on hover */
-    :host([selected]) .button:hover:not(:disabled) {
-      background-color: var(--primitives-color-accent-75);
-      color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
-    }
+	override firstUpdated(): void {
+		this._detectIcon();
+		const iconOnly = this._iconName !== null && !this._hasText;
+		if (iconOnly && !this.accessibleLabel) {
+			console.warn('<rr-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
+		}
+	}
 
-    /* Focus state */
-    .button:focus-visible {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
+	override updated(): void {
+		const iconOnly = this._iconName !== null && !this._hasText;
+		this.toggleAttribute('icon-only', iconOnly);
+	}
 
-    /* Disabled state */
-    :host([disabled]) .button {
-      opacity: var(--primitives-opacity-disabled);
-      cursor: not-allowed;
-      pointer-events: none;
-    }
+	private _getEffectiveNodes(): Node[] {
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot');
+		if (!slot) return Array.from(this.childNodes);
+		return slot.assignedNodes({ flatten: true });
+	}
 
-    /* Icon slot */
-    ::slotted([slot="icon"]) {
-      width: 1em;
-      height: 1em;
-      flex-shrink: 0;
-    }
+	_detectIcon(): void {
+		const nodes = this._getEffectiveNodes();
 
-    .content {
-      display: inline-flex;
-      align-items: center;
-      gap: inherit;
-    }
+		const icon = nodes.find(
+			(n): n is Element =>
+				n.nodeType === Node.ELEMENT_NODE &&
+				(n as Element).tagName.toLowerCase() === 'rr-icon'
+		) ?? null;
 
-    /* Accessibility: Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .button {
-        transition: none;
-      }
-    }
+		this._iconName = icon?.getAttribute('name') ?? null;
 
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .button:focus-visible {
-        outline: 2px solid CanvasText !important;
-        outline-offset: 2px !important;
-      }
+		this._hasText = nodes.some(n => {
+			if (n.nodeType === Node.TEXT_NODE) return n.textContent?.trim() !== '';
+			if (n.nodeType === Node.ELEMENT_NODE && (n as Element).tagName.toLowerCase() !== 'rr-icon') {
+				return (n as Element).textContent?.trim() !== '';
+			}
+			return false;
+		});
+	}
 
-      :host([selected]) .button {
-        forced-color-adjust: none;
-        background-color: Highlight !important;
-        color: HighlightText !important;
-      }
+	_handleButtonClick(): void {
+		if (this.disabled) return;
+		this._toggle();
+	}
 
-      :host([disabled]) .button {
-        opacity: 0.5 !important;
-      }
-    }
-  `;
+	_handleInputChange(e: Event): void {
+		const input = e.target as HTMLInputElement;
+		this.selected = input.checked;
+		this._dispatchChange();
+	}
 
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
+	private _toggle(): void {
+		this.selected = !this.selected;
+		this._dispatchChange();
+	}
 
-  @property({ type: Boolean, reflect: true })
-  selected = false;
+	private _dispatchChange(): void {
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { selected: this.selected, value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
 
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
+	/**
+	 * Toggle selected state programmatically.
+	 * For type="radio", the button can only be selected, never deselected (native behavior).
+	 */
+	toggle(): void {
+		if (this.disabled) return;
+		if (this.type === 'radio' && this.selected) return;
+		this._toggle();
+	}
 
-  private _handleClick(e: MouseEvent): void {
-    if (this.disabled) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
-    this._toggle();
-  }
-
-  private _handleKeyDown(e: KeyboardEvent): void {
-    if (this.disabled) return;
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      this._toggle();
-    }
-  }
-
-  private _toggle(): void {
-    this.selected = !this.selected;
-    this.dispatchEvent(
-      new CustomEvent('toggle', {
-        detail: { selected: this.selected },
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  /**
-   * Public method to toggle programmatically
-   */
-  toggle(): void {
-    if (this.disabled) return;
-    this._toggle();
-  }
-
-  override render() {
-    return html`
-      <button
-        class="button"
-        part="button"
-        type="button"
-        aria-pressed=${this.selected}
-        ?disabled=${this.disabled}
-        tabindex=${this.disabled ? -1 : 0}
-        @click=${this._handleClick}
-        @keydown=${this._handleKeyDown}
-      >
-        <span class="content" part="content">
-          <slot name="icon"></slot>
-          <slot></slot>
-        </span>
-      </button>
-    `;
-  }
+	override render() {
+		return toggleButtonTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-toggle-button': RRToggleButton;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-toggle-button': RRToggleButton;
+	}
 }

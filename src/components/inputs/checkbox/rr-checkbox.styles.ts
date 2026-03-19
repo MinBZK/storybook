@@ -115,6 +115,10 @@ export const checkboxStyles = css`
 		display: block;
 	}
 
+	.checkbox__input:checked:indeterminate ~ .checkbox__box .checkbox__check-icon {
+		display: none;
+	}
+
 	.checkbox__input:indeterminate ~ .checkbox__box .checkbox__indeterminate-icon {
 		display: block;
 	}

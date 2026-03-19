@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 export const styles = css`
 	/* # Host */
+
 	:host {
 		display: inline-block;
 	}
@@ -15,6 +16,7 @@ export const styles = css`
 		cursor: not-allowed;
 		pointer-events: none;
 	}
+
 
 	/* # Base */
 
@@ -41,6 +43,7 @@ export const styles = css`
 		}
 	}
 
+
 	/* # Focus */
 
 	.icon-button:focus-visible {
@@ -51,6 +54,7 @@ export const styles = css`
 	.icon-button:focus:not(:focus-visible) {
 		outline: none;
 	}
+
 
 	/* # Sizes */
 
@@ -144,6 +148,7 @@ export const styles = css`
 		height: var(--primitives-space-20);
 		margin-right: calc(var(--primitives-space-2) * -1);
 	}
+
 
 	/* # Variants */
 
@@ -277,6 +282,7 @@ export const styles = css`
 		color: var(--semantics-buttons-danger-tinted-is-active-content-color);
 	}
 
+
 	/* # Elements */
 
 	.icon-button__icon-area {
@@ -298,7 +304,7 @@ export const styles = css`
 		flex-shrink: 0;
 	}
 
-	.icon-button__title {
+	.icon-button__text {
 		display: none;
 		text-align: center;
 		white-space: nowrap;
@@ -306,7 +312,7 @@ export const styles = css`
 		font: var(--primitives-font-body-xxs-bold-flat);
 	}
 
-	:host([size='lg']) .icon-button__title {
+	:host([size='lg']) .icon-button__text {
 		display: block;
 	}
 `;

@@ -185,6 +185,6 @@ describe('rr-checkbox – accessibility', () => {
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.focus();
-		expect(document.activeElement).toBe(el);
+		expect(input.matches(':focus')).toBe(true);
 	});
 });

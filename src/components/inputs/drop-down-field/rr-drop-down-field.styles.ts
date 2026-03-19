@@ -1,0 +1,124 @@
+import { css } from 'lit';
+
+export const dropDownFieldStyles = css`
+	/* # Host */
+
+	:host {
+		display: block;
+		--_md-icon-size: var(--primitives-space-24);
+		--_sm-icon-size: var(--primitives-space-20);
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+	:host([disabled]) {
+		opacity: var(--primitives-opacity-disabled);
+		pointer-events: none;
+	}
+
+
+	/* # Container */
+
+	.drop-down-field {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		box-sizing: border-box;
+		width: 100%;
+		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		color: var(--semantics-buttons-neutral-tinted-content-color);
+	}
+
+	:host([size='md']) .drop-down-field,
+	:host(:not([size])) .drop-down-field {
+		min-height: var(--semantics-controls-md-min-size);
+		border-radius: var(--semantics-controls-md-corner-radius);
+	}
+
+	:host([size='sm']) .drop-down-field {
+		min-height: var(--semantics-controls-sm-min-size);
+		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
+	.drop-down-field:focus-within {
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+	}
+
+
+	/* # Slotted select */
+
+	::slotted(select) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		appearance: none;
+		border: none;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		outline: none;
+		box-sizing: border-box;
+	}
+
+	:host([size='md']) ::slotted(select),
+	:host(:not([size])) ::slotted(select) {
+		font: var(--semantics-input-fields-md-text-font);
+	}
+
+	:host([size='sm']) ::slotted(select) {
+		font: var(--semantics-input-fields-sm-text-font);
+	}
+
+
+	/* # Value */
+
+	.drop-down-field__value {
+		flex: 1;
+		min-width: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		color: inherit;
+	}
+
+	:host([size='md']) .drop-down-field__value,
+	:host(:not([size])) .drop-down-field__value {
+		padding: 0 var(--primitives-space-12);
+		font: var(--semantics-input-fields-md-text-font);
+	}
+
+	:host([size='sm']) .drop-down-field__value {
+		padding: 0 var(--primitives-space-10);
+		font: var(--semantics-input-fields-sm-text-font);
+	}
+
+
+	/* # Picker icon */
+
+	.drop-down-field__picker-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		color: inherit;
+	}
+
+	:host([size='md']) .drop-down-field__picker-icon,
+	:host(:not([size])) .drop-down-field__picker-icon {
+		width: var(--_md-icon-size);
+		height: var(--_md-icon-size);
+		padding-right: calc((var(--semantics-controls-md-min-size) - var(--_md-icon-size)) / 2);
+	}
+
+	:host([size='sm']) .drop-down-field__picker-icon {
+		width: var(--_sm-icon-size);
+		height: var(--_sm-icon-size);
+		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--_sm-icon-size)) / 2);
+	}
+`;

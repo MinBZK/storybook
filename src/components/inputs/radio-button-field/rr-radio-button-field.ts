@@ -40,7 +40,7 @@ export class RRRadioButtonField extends LitElement {
 	required = false;
 
 	@state()
-	public _labelText = '';
+	_labelText = '';
 
 	override firstUpdated(): void {
 		this._onSlotChange();
@@ -54,8 +54,9 @@ export class RRRadioButtonField extends LitElement {
 			.trim() ?? '';
 	}
 
-	public _handleLabelClick(): void {
+	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;
+		if ((e.target as HTMLElement).closest?.('rr-radio-button')) return;
 		const radioButton = this.shadowRoot?.querySelector('rr-radio-button') as RRRadioButton | null;
 		radioButton?.select();
 	}

@@ -38,21 +38,17 @@ export { RRSearchField } from './inputs/search-field/rr-search-field.ts';
 export { RRNumberField } from './inputs/number-field/rr-number-field.ts';
 export { RRDropDownField } from './inputs/drop-down-field/rr-drop-down-field.ts';
 export { RRComboBoxField } from './inputs/combo-box-field/rr-combo-box-field.ts';
-
 export { RRStepper } from './inputs/stepper/rr-stepper.ts';
-
 export { RRCheckbox } from './inputs/checkbox/rr-checkbox.ts';
 export { RRCheckboxField } from './inputs/checkbox-field/rr-checkbox-field.ts';
-
 export { RRRadioButton } from './inputs/radio-button/rr-radio-button.ts';
 export { RRRadioButtonField } from './inputs/radio-button-field/rr-radio-button-field.ts';
 export { RRRadioButtonGroup } from './inputs/radio-button-group/rr-radio-button-group.ts';
-
 export { RRSwitch } from './inputs/switch/rr-switch.ts';
 export { RRSwitchField } from './inputs/switch-field/rr-switch-field.ts';
-
 export { RRSegmentedControl } from './inputs/segmented-control/rr-segmented-control.ts';
 export { RRToggleButton } from './inputs/toggle-button/rr-toggle-button.ts';
+export { RRToggleButtonGroup } from './inputs/toggle-button-group/rr-toggle-button-group.ts';
 
 export { RRToken } from './inputs/token/rr-token.ts';
 

@@ -52,15 +52,6 @@ const Template = ({ checked, disabled, value }) => html`
 export const Standaard = Template.bind({});
 Standaard.args = {};
 
-export const Geselecteerd = Template.bind({});
-Geselecteerd.args = { checked: true };
-
-export const Uitgeschakeld = Template.bind({});
-Uitgeschakeld.args = { disabled: true };
-
-export const GeselecteerdUitgeschakeld = Template.bind({});
-GeselecteerdUitgeschakeld.args = { checked: true, disabled: true };
-
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
 		<rr-radio-button-field value="1">Niet geselecteerd</rr-radio-button-field>
