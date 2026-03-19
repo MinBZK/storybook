@@ -77,7 +77,7 @@ export class RRMenuItem extends LitElement {
 	}
 
 	/** Set by rr-menu. Not part of the public API. */
-	@property({ attribute: false })
+	@state()
 	menuVariant: 'menu' | 'listbox' = 'menu';
 
 	private static _counter = 0;
