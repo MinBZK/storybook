@@ -80,8 +80,13 @@ export class RRMenuItem extends LitElement {
 	@property({ attribute: false })
 	menuVariant: 'menu' | 'listbox' = 'menu';
 
+	private static _counter = 0;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
+		if (!this.id) {
+			this.id = `rr-menu-item-${RRMenuItem._counter++}`;
+		}
 		this.addEventListener('focusin', () => {
 			this.setAttribute('data-focused', '');
 			this.dispatchEvent(new CustomEvent('menu-item-focused', {
@@ -442,6 +447,11 @@ export class RRMenu extends LitElement {
 	/** Returns the currently highlighted item, or null if none. */
 	public getHighlighted(): RRMenuItem | null {
 		return this.querySelector('rr-menu-item[highlighted]') as RRMenuItem | null;
+	}
+
+	/** Returns the ID of the currently highlighted item, or empty string if none. */
+	public getHighlightedId(): string {
+		return this.getHighlighted()?.id ?? '';
 	}
 
 	/** Recalculate position and size relative to the anchor element. */

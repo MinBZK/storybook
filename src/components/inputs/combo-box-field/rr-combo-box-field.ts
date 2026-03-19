@@ -63,9 +63,9 @@ export class RRComboBoxField extends LitElement {
 	@property({ type: String })
 	name = '';
 
+	/** Maximum number of visible menu items before scrolling. Defaults to 8. */
 	@property({ type: Number, attribute: 'max-items' })
 	maxItems = 8;
-
 	@property({ type: Object })
 	translations: Partial<RRComboBoxFieldTranslations> = {};
 
@@ -75,6 +75,10 @@ export class RRComboBoxField extends LitElement {
 	/** Display value shown in the input. May differ from value (form value). */
 	@state()
 	_displayValue = '';
+
+	/** ID of the currently highlighted menu item for aria-activedescendant. */
+	@state()
+	_highlightedId = '';
 
 	private static _counter = 0;
 	readonly _menuId = `rr-combo-box-menu-${RRComboBoxField._counter++}`;
@@ -163,12 +167,21 @@ export class RRComboBoxField extends LitElement {
 
 	private _handleMenuToggle = (e: Event): void => {
 		this._isOpen = (e as ToggleEvent).newState === 'open';
+		if (!this._isOpen) {
+			this._highlightedId = '';
+		} else {
+			// Update highlight ID after menu opens and first item is highlighted
+			requestAnimationFrame(() => {
+				this._highlightedId = this._menu?.getHighlightedId() ?? '';
+			});
+		}
 	};
 
 	private _handleMenuSelect = (e: Event): void => {
 		const item = e.target as RRMenuItem;
 		this._displayValue = item.text;
 		this.value = item.value || item.text;
+		this._highlightedId = '';
 		this._closeMenu();
 		this._menu?.filter('');
 		this.dispatchEvent(new CustomEvent('change', {
@@ -179,18 +192,22 @@ export class RRComboBoxField extends LitElement {
 		this._input?.focus();
 	};
 
+	private _updateActiveDescendant(): void {
+		this._highlightedId = this._menu?.getHighlightedId() ?? '';
+	}
+
 	/**
-	 * Open the menu. Pass moveFocus=true to move focus to the first item
-	 * (used when activating via the picker button).
+	 * Open the menu. Focus always stays on the input — highlight moves via
+	 * aria-activedescendant rather than by moving focus to items.
 	 */
-	public _openMenu(moveFocus = false): void {
+	public _openMenu(): void {
 		if (!this._menu || this._isOpen) return;
 		if (!('showPopover' in this._menu)) {
 			console.warn('<rr-combo-box-field>: Popover API is not supported in this browser. The dropdown will not open.');
 			return;
 		}
 		this._updateMenuWidth();
-		this._menu.noAutoFocus = !moveFocus;
+		this._menu.noAutoFocus = true;
 		(this._menu as HTMLElement).showPopover();
 	}
 
@@ -210,7 +227,8 @@ export class RRComboBoxField extends LitElement {
 			this._closeMenu();
 			this._input?.focus();
 		} else {
-			this._openMenu(true);
+			this._openMenu();
+			this._input?.focus();
 		}
 	}
 
@@ -239,7 +257,8 @@ export class RRComboBoxField extends LitElement {
 		const input = e.target as HTMLInputElement;
 		this._displayValue = input.value;
 		this._menu?.filter(this._displayValue);
-		if (!this._isOpen) this._openMenu(false);
+		this._updateActiveDescendant();
+		if (!this._isOpen) this._openMenu();
 		this.dispatchEvent(new CustomEvent('input', {
 			detail: { value: this._displayValue },
 			bubbles: true,
@@ -267,7 +286,7 @@ export class RRComboBoxField extends LitElement {
 		if (!this._isOpen) {
 			if (e.key === 'ArrowDown') {
 				e.preventDefault();
-				this._openMenu(false);
+				this._openMenu();
 			}
 			return;
 		}
@@ -275,11 +294,13 @@ export class RRComboBoxField extends LitElement {
 		switch (e.key) {
 			case 'ArrowDown':
 				e.preventDefault();
-				this._menu?.focusItem('next');
+				this._menu?.moveHighlight('next');
+				this._updateActiveDescendant();
 				break;
 			case 'ArrowUp':
 				e.preventDefault();
-				this._menu?.focusItem('prev');
+				this._menu?.moveHighlight('prev');
+				this._updateActiveDescendant();
 				break;
 			case 'Enter': {
 				e.preventDefault();

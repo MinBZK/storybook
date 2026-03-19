@@ -13,6 +13,7 @@ export function comboBoxFieldTemplate(component: RRComboBoxField): TemplateResul
 				aria-controls=${component._menuId}
 				aria-autocomplete="list"
 				aria-haspopup="listbox"
+				aria-activedescendant=${component._highlightedId || nothing}
 				.value=${component._displayValue}
 				placeholder=${component.placeholder || nothing}
 				?disabled=${component.disabled}
