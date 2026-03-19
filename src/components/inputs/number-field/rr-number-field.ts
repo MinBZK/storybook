@@ -68,6 +68,12 @@ export class RRNumberField extends LitElement {
 	@property({ type: Object })
 	translations: Partial<RRNumberFieldTranslations> = {};
 
+	override firstUpdated(): void {
+		if (!this.accessibleLabel) {
+			console.warn('<rr-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input\'s purpose.');
+		}
+	}
+
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
 			if (this.width) {

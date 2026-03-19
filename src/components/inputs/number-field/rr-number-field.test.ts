@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRNumberField } from './rr-number-field.ts';
 import './rr-number-field.ts';
@@ -204,5 +204,35 @@ describe('rr-number-field – change event', () => {
 		el.addEventListener('input', () => { eventFired = true; });
 		el._handleIncrease();
 		expect(eventFired).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   Accessibility
+   ============================================================ */
+
+describe('rr-number-field – accessibility', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('warns when accessible-label is not provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture('<rr-number-field></rr-number-field>');
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('accessible-label')
+		);
+	});
+
+	it('does not warn when accessible-label is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture('<rr-number-field accessible-label="Aantal"></rr-number-field>');
+		await waitForUpdate(el);
+		expect(warnSpy).not.toHaveBeenCalled();
 	});
 });
