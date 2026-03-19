@@ -6,23 +6,29 @@ export function segmentedControlTemplate(component: RRSegmentedControl): Templat
 }
 
 export function segmentedControlItemTemplate(component: RRSegmentedControlItem): TemplateResult {
+	const isIcon = component.contentType === 'icon';
+	const labelText = component._labelText || nothing;
+
 	return html`
-		<input class="segmented-control__item-input"
-			type=${component.inputType}
-			name=${component.groupName || nothing}
-			value=${component.value}
-			.checked=${component.selected}
-			?disabled=${component.disabled}
-			@change=${component._handleChange}
+		<label class="segmented-control__item-label"
+			title=${isIcon ? labelText : nothing}
 		>
-		<div class="segmented-control__item-indicator"></div>
-		<div class="segmented-control__item-label">
+			<input class="segmented-control__item-input"
+				type=${component.inputType}
+				name=${component.groupName || nothing}
+				value=${component.value}
+				.checked=${component.selected}
+				?disabled=${component.disabled}
+				aria-label=${isIcon ? labelText : nothing}
+				@change=${component._handleChange}
+			>
 			<span class="segmented-control__item-icon">
 				<slot name="icon"></slot>
 			</span>
 			<span class="segmented-control__item-text">
-				<slot></slot>
+				<slot @slotchange=${component._onDefaultSlotChange}></slot>
 			</span>
-		</div>
+			<div class="segmented-control__item-indicator"></div>
+		</label>
 	`;
 }

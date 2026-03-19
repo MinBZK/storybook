@@ -25,10 +25,11 @@
  * @attr {boolean} selected     - Whether this item is selected (set by parent)
  * @attr {boolean} disabled     - Disabled state
  *
- * @slot         - Text label content (shown when parent content-type="text")
+ * @slot         - Text label content (shown when parent content-type="text",
+ *                 always used as aria-label and tooltip for icon items)
  * @slot icon    - Icon content (shown when parent content-type="icon")
  *
- * @fires select - When item is activated; detail: { value: string, checked: boolean }
+ * @fires item-change - When item is activated; detail: { value: string, checked: boolean }
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -77,6 +78,22 @@ export class RRSegmentedControlItem extends LitElement {
 	/** Set by rr-segmented-control. Not part of the public API. */
 	@property({ type: String })
 	groupName = '';
+
+	/**
+	 * Text content of the default slot.
+	 * Used as aria-label and title tooltip for icon items so screen readers
+	 * and pointer users can identify the option.
+	 */
+	@state()
+	_labelText = '';
+
+	public _onDefaultSlotChange(e: Event): void {
+		const slot = e.target as HTMLSlotElement;
+		this._labelText = slot.assignedNodes({ flatten: true })
+			.map(node => node.textContent ?? '')
+			.join('')
+			.trim();
+	}
 
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;

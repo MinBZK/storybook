@@ -87,7 +87,7 @@ export const segmentedControlItemStyles = css`
 		width: 100%;
 		box-sizing: border-box;
 		color: var(--semantics-buttons-neutral-tinted-content-color);
-		pointer-events: none;
+		cursor: default;
 	}
 
 	:host([size='md']) .segmented-control__item-label,
@@ -128,6 +128,7 @@ export const segmentedControlItemStyles = css`
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		z-index: 2;
+		pointer-events: none;
 	}
 
 
@@ -139,6 +140,7 @@ export const segmentedControlItemStyles = css`
 		align-items: center;
 		justify-content: center;
 		z-index: 2;
+		pointer-events: none;
 	}
 
 	:host([size='md']) .segmented-control__item-icon,
