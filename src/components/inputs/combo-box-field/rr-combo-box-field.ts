@@ -178,14 +178,18 @@ export class RRComboBoxField extends LitElement {
 	 */
 	public _openMenu(moveFocus = false): void {
 		if (!this._menu || this._isOpen) return;
+		if (!('showPopover' in this._menu)) {
+			console.warn('<rr-combo-box-field>: Popover API is not supported in this browser. The dropdown will not open.');
+			return;
+		}
 		this._updateMenuWidth();
 		this._menu.noAutoFocus = !moveFocus;
-		(this._menu as HTMLElement).showPopover?.();
+		(this._menu as HTMLElement).showPopover();
 	}
 
 	public _closeMenu(): void {
 		if (!this._menu || !this._isOpen) return;
-		(this._menu as HTMLElement).hidePopover?.();
+		(this._menu as HTMLElement).hidePopover();
 	}
 
 	public _toggleMenu(): void {
