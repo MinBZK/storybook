@@ -40,7 +40,7 @@ export class RRCheckboxField extends LitElement {
 	name = '';
 
 	@state()
-	public _labelText = '';
+	_labelText = '';
 
 	override firstUpdated(): void {
 		this._onSlotChange();
