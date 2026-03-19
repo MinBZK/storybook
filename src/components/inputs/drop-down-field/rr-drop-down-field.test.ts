@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRDropDownField } from './rr-drop-down-field.ts';
 import './rr-drop-down-field.ts';
@@ -107,7 +107,42 @@ describe('rr-drop-down-field – state', () => {
    Change event
    ============================================================ */
 
-describe('rr-drop-down-field – change event', () => {
+describe('rr-drop-down-field – accessibility', () => {
+	let el: RRDropDownField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('warns when slotted select has no accessible name', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRDropDownField>(`
+			<rr-drop-down-field>
+				<select name="land">
+					<option value="nl">Nederland</option>
+				</select>
+			</rr-drop-down-field>
+		`);
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('accessible name')
+		);
+	});
+
+	it('does not warn when slotted select has aria-label', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRDropDownField>(`
+			<rr-drop-down-field>
+				<select name="land" aria-label="Land">
+					<option value="nl">Nederland</option>
+				</select>
+			</rr-drop-down-field>
+		`);
+		await waitForUpdate(el);
+		expect(warnSpy).not.toHaveBeenCalled();
+	});
+});
 	let el: RRDropDownField;
 
 	afterEach(() => {

@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRComboBoxField } from './rr-combo-box-field.ts';
 import './rr-combo-box-field.ts';
@@ -192,5 +192,45 @@ describe('rr-combo-box-field – filtering', () => {
 		const items = menu.querySelectorAll('rr-menu-item');
 		expect(items[0].hasAttribute('hidden')).toBe(false);
 		expect(items[1].hasAttribute('hidden')).toBe(true);
+	});
+});
+
+
+/* ============================================================
+   Popover API
+   ============================================================ */
+
+describe('rr-combo-box-field – Popover API', () => {
+	let el: RRComboBoxField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('warns when Popover API is unavailable', async () => {
+		el = await fixture<RRComboBoxField>(`
+			<rr-combo-box-field>
+				<rr-menu>
+					<rr-menu-item text="Nederland" value="nl"></rr-menu-item>
+				</rr-menu>
+			</rr-combo-box-field>
+		`);
+		await waitForUpdate(el);
+
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+		// Simulate missing Popover API on the menu element
+		const menu = document.getElementById(el._menuId)!;
+		const original = Object.getOwnPropertyDescriptor(menu, 'showPopover');
+		Object.defineProperty(menu, 'showPopover', { value: undefined, configurable: true });
+
+		el._openMenu(false);
+
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('Popover API')
+		);
+
+		if (original) Object.defineProperty(menu, 'showPopover', original);
 	});
 });

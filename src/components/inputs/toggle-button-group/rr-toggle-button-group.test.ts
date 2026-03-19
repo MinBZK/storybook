@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRToggleButtonGroup } from './rr-toggle-button-group.ts';
 import type { RRToggleButton } from '../toggle-button/rr-toggle-button.ts';
@@ -39,6 +39,24 @@ describe('rr-toggle-button-group', () => {
 		el = await fixture('<rr-toggle-button-group type="button"></rr-toggle-button-group>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.toggle-button-group')!.getAttribute('role')).toBe('group');
+	});
+
+	it('warns when no accessible name is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture('<rr-toggle-button-group></rr-toggle-button-group>');
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('accessible name')
+		);
+		warnSpy.mockRestore();
+	});
+
+	it('does not warn when accessible-label is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture('<rr-toggle-button-group accessible-label="Filters"></rr-toggle-button-group>');
+		await waitForUpdate(el);
+		expect(warnSpy).not.toHaveBeenCalled();
+		warnSpy.mockRestore();
 	});
 });
 
