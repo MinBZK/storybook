@@ -71,6 +71,11 @@ export class RRMenuItem extends LitElement {
 	@state()
 	_displayText = '';
 
+	/** Set by rr-menu during filtering to apply bold markers to matching text. */
+	setDisplayText(text: string): void {
+		this._displayText = text;
+	}
+
 	/** Set by rr-menu. Not part of the public API. */
 	@property({ type: String, attribute: 'menu-variant' })
 	menuVariant: 'menu' | 'listbox' = 'menu';
@@ -367,7 +372,7 @@ export class RRMenu extends LitElement {
 			const matches = !query || this.filterFn(query, item);
 			item.toggleAttribute('hidden', !matches);
 			if (!query) {
-				item._displayText = '';
+				item.setDisplayText('');
 			} else if (matches) {
 				const q = query.toLowerCase();
 				let remaining = item.text;
@@ -386,7 +391,7 @@ export class RRMenu extends LitElement {
 					remainingLower = remaining.toLowerCase();
 				}
 
-				item._displayText = parts.join('');
+				item.setDisplayText(parts.join(''));
 			}
 		});
 		this._updateHighlight();
