@@ -5,7 +5,8 @@
  * Exports both RRSegmentedControl and RRSegmentedControlItem.
  *
  * @element rr-segmented-control
- * @attr {string}  value         - Selected value (radio) or space-separated values (checkbox)
+ * @attr {string}  value         - Selected value for radio type
+ * @prop {string[]} values        - Selected values for checkbox type (property binding only, not an attribute)
  * @attr {string}  size          - Control size: 'sm' | 'md' (default: 'md')
  * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio')
  * @attr {string}  content-type  - Content type for all items: 'text' | 'icon' (default: 'text')
@@ -116,9 +117,17 @@ export class RRSegmentedControlItem extends LitElement {
 export class RRSegmentedControl extends LitElement {
 	static override styles = segmentedControlStyles;
 
-	/** Selected value for radio, or space-separated selected values for checkbox. */
+	/** Selected value for radio type. */
 	@property({ type: String, reflect: true })
 	value = '';
+
+	/**
+	 * Selected values for checkbox type.
+	 * Use property binding: .values=${['New York', 'Amsterdam']}
+	 * Does not reflect to an attribute — safe for values containing spaces or special characters.
+	 */
+	@property({ type: Array, attribute: false })
+	values: string[] = [];
 
 	@property({ type: String, reflect: true })
 	size: SegmentedControlSize = 'md';
@@ -161,6 +170,7 @@ export class RRSegmentedControl extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (
 			changedProperties.has('value') ||
+			changedProperties.has('values') ||
 			changedProperties.has('size') ||
 			changedProperties.has('disabled') ||
 			changedProperties.has('type') ||
@@ -187,7 +197,7 @@ export class RRSegmentedControl extends LitElement {
 	}
 
 	private _getSelectedValues(): string[] {
-		return this.value ? this.value.split(' ').filter(Boolean) : [];
+		return this.type === 'checkbox' ? this.values : (this.value ? [this.value] : []);
 	}
 
 	private _syncItems(): void {
@@ -237,11 +247,11 @@ export class RRSegmentedControl extends LitElement {
 		if (this.disabled) return;
 
 		if (this.type === 'checkbox') {
-			const current = this._getSelectedValues();
+			const current = this.values;
 			const updated = e.detail.checked
 				? [...current, e.detail.value]
 				: current.filter(v => v !== e.detail.value);
-			this.value = updated.join(' ');
+			this.values = updated;
 			this._syncItems();
 			this.dispatchEvent(new CustomEvent('change', {
 				detail: { values: updated },

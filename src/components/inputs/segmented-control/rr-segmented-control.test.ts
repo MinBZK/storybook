@@ -232,11 +232,12 @@ describe('rr-segmented-control – checkbox change', () => {
 
 	it('removes value from values when item is unchecked', async () => {
 		el = await fixture<RRSegmentedControl>(`
-			<rr-segmented-control type="checkbox" value="a b">
+			<rr-segmented-control type="checkbox">
 				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
 				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
+		(el as RRSegmentedControl).values = ['a', 'b'];
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
