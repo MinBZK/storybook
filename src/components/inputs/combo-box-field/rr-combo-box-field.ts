@@ -19,6 +19,10 @@
  * @attr {number}  max-items    - Maximum visible items before scrolling (default: 8)
  * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
  *
+ * @note Free-text values: if the user types a value that does not match any menu option
+ *       and presses Enter or moves focus away, the typed text is emitted as-is via the
+ *       `change` event. Consumers are responsible for validating emitted values.
+ *
  * @slot - An rr-menu element with rr-menu-item and rr-menu-divider children
  *
  * @fires input  - When the input value changes; detail: { value: string }
