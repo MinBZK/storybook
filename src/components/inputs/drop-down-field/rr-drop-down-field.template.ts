@@ -1,21 +1,15 @@
-import { html, nothing, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import type { RRDropDownField } from './rr-drop-down-field.js';
 import './../../content/icon/rr-icon.ts';
 
 export function dropDownFieldTemplate(component: RRDropDownField): TemplateResult {
 	return html`
 		<div class="drop-down-field">
-			<select class="drop-down-field__native"
-				aria-label=${component.accessibleLabel || nothing}
-				?disabled=${component.disabled}
-				name=${component.name || nothing}
-				@change=${component._handleChange}
-			></select>
+			<slot @slotchange=${component._onSlotChange}></slot>
 			<span class="drop-down-field__value">${component._displayValue}</span>
-			<div class="drop-down-field__icon">
+			<div class="drop-down-field__picker-icon">
 				<rr-icon name="chevron-up-down"></rr-icon>
 			</div>
 		</div>
-		<slot @slotchange=${component._onSlotChange}></slot>
 	`;
 }

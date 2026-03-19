@@ -5,7 +5,8 @@ export const dropDownFieldStyles = css`
 
 	:host {
 		display: block;
-		width: 100%;
+		--_md-icon-size: var(--primitives-space-24);
+		--_sm-icon-size: var(--primitives-space-20);
 	}
 
 	:host([hidden]) {
@@ -48,9 +49,9 @@ export const dropDownFieldStyles = css`
 	}
 
 
-	/* # Native select */
+	/* # Slotted select */
 
-	.drop-down-field__select {
+	::slotted(select) {
 		position: absolute;
 		inset: 0;
 		width: 100%;
@@ -65,12 +66,13 @@ export const dropDownFieldStyles = css`
 		box-sizing: border-box;
 	}
 
-	:host([size='md']) .drop-down-field__select,
-	:host(:not([size])) .drop-down-field__select {
+	:host([size='md']) ::slotted(select),
+	:host(:not([size])) ::slotted(select) {
 		font: var(--semantics-input-fields-md-text-font);
+		font-size: 16px;
 	}
 
-	:host([size='sm']) .drop-down-field__select {
+	:host([size='sm']) ::slotted(select) {
 		font: var(--semantics-input-fields-sm-text-font);
 	}
 
@@ -98,9 +100,9 @@ export const dropDownFieldStyles = css`
 	}
 
 
-	/* # Icon */
+	/* # Picker icon */
 
-	.drop-down-field__icon {
+	.drop-down-field__picker-icon {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -108,23 +110,16 @@ export const dropDownFieldStyles = css`
 		color: inherit;
 	}
 
-	:host([size='md']) .drop-down-field__icon,
-	:host(:not([size])) .drop-down-field__icon {
-		width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
-		padding-right: calc((var(--semantics-controls-md-min-size) - var(--primitives-space-24)) / 2);
+	:host([size='md']) .drop-down-field__picker-icon,
+	:host(:not([size])) .drop-down-field__picker-icon {
+		width: var(--_md-icon-size);
+		height: var(--_md-icon-size);
+		padding-right: calc((var(--semantics-controls-md-min-size) - var(--_md-icon-size)) / 2);
 	}
 
-	:host([size='sm']) .drop-down-field__icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--primitives-space-20)) / 2);
-	}
-
-
-	/* # Slot */
-
-	slot {
-		display: none;
+	:host([size='sm']) .drop-down-field__picker-icon {
+		width: var(--_sm-icon-size);
+		height: var(--_sm-icon-size);
+		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--_sm-icon-size)) / 2);
 	}
 `;
