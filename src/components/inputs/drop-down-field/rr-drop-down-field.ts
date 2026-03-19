@@ -75,6 +75,10 @@ export class RRDropDownField extends LitElement {
 			return;
 		}
 
+		if (!select.hasAttribute('aria-label') && !select.hasAttribute('aria-labelledby') && !select.labels?.length) {
+			console.warn('<rr-drop-down-field>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.');
+		}
+
 		select.addEventListener('change', this._handleSelectChange);
 		this._syncDisabled();
 		this._syncDisplayValue();
