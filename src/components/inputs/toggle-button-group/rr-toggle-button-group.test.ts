@@ -320,6 +320,23 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 		expect(buttons[0].selected).toBe(true);
 	});
 
+	it('ArrowLeft selects last button when nothing is selected', async () => {
+		el = await fixture<RRToggleButtonGroup>(`
+			<rr-toggle-button-group type="radio" name="nav">
+				<rr-toggle-button value="a">A</rr-toggle-button>
+				<rr-toggle-button value="b">B</rr-toggle-button>
+				<rr-toggle-button value="c">C</rr-toggle-button>
+			</rr-toggle-button-group>
+		`);
+		await waitForUpdate(el);
+
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+		await waitForUpdate(el);
+
+		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
+		expect(buttons[2].selected).toBe(true);
+	});
+
 	it('ArrowRight selects next button', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="nav">

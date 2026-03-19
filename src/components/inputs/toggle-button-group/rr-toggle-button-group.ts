@@ -132,7 +132,7 @@ export class RRToggleButtonGroup extends LitElement {
 		const isNext = e.key === 'ArrowDown' || e.key === 'ArrowRight';
 		const nextIndex = isNext
 			? (currentIndex + 1) % buttons.length
-			: (currentIndex - 1 + buttons.length) % buttons.length;
+			: currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1;
 
 		const nextButton = buttons[nextIndex];
 		if (!nextButton) return;
