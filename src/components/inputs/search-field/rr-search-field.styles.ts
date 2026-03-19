@@ -158,8 +158,8 @@ export const searchFieldStyles = css`
 		gap: var(--primitives-space-4);
 	}
 
-	rr-icon-button:focus-within,
-	rr-button:focus-within {
+	.search-field__dismiss-action:focus-within,
+	.search-field__search-action:focus-within {
 		position: relative;
 		z-index: 1;
 	}
