@@ -13,13 +13,12 @@ export function numberFieldTemplate(component: RRNumberField): TemplateResult {
 			aria-label=${component._t('components.number-field.to-adjust-value-action')}
 		>
 			${!component.hideSpinButtons ? html`
-				<div class="number-field__decrement-control"
-					@click=${component._handleDecrease}
-				>
+				<div class="number-field__decrement-control">
 					<rr-icon-button
 						variant="neutral-tinted"
 						size="sm"
 						?disabled=${component.disabled || !canDecrease}
+						@click=${component._handleDecrease}
 					>
 						<rr-icon name="minus"></rr-icon>
 						${component._t('components.number-field.decrement-action')}
@@ -38,13 +37,12 @@ export function numberFieldTemplate(component: RRNumberField): TemplateResult {
 				@input=${component._handleInput}
 			>
 			${!component.hideSpinButtons ? html`
-				<div class="number-field__increment-control"
-					@click=${component._handleIncrease}
-				>
+				<div class="number-field__increment-control">
 					<rr-icon-button
 						variant="neutral-tinted"
 						size="sm"
 						?disabled=${component.disabled || !canIncrease}
+						@click=${component._handleIncrease}
 					>
 						<rr-icon name="plus"></rr-icon>
 						${component._t('components.number-field.increment-action')}
