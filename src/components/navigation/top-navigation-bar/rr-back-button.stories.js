@@ -19,7 +19,7 @@ export default {
     layout: 'centered',
     componentSource: {
       file: 'src/components/navigation/top-navigation-bar/rr-back-button.js',
-      repository: 'https://github.com/regelrecht/design-system',
+      repository: 'https://github.com/MinBZK/storybook',
     },
     status: {
       type: 'stable',

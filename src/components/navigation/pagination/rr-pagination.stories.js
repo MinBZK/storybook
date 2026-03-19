@@ -16,7 +16,7 @@ export default {
   parameters: {
     componentSource: {
       file: 'src/components/navigation/pagination/rr-pagination.ts',
-      repository: 'https://github.com/regelrecht/design-system',
+      repository: 'https://github.com/MinBZK/storybook',
     },
     status: {
       type: 'stable',

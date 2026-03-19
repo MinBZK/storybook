@@ -22,7 +22,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/inputs/toggle-button-group/rr-toggle-button-group.ts',
-			repository: 'https://github.com/regelrecht/design-system',
+			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
 			type: 'stable',

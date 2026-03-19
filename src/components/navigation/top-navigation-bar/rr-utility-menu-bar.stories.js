@@ -22,7 +22,7 @@ export default {
     layout: 'centered',
     componentSource: {
       file: 'src/components/navigation/top-navigation-bar/rr-utility-menu-bar.ts',
-      repository: 'https://github.com/regelrecht/design-system',
+      repository: 'https://github.com/MinBZK/storybook',
     },
     status: {
       type: 'stable',
