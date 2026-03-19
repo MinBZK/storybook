@@ -13,7 +13,7 @@ export const menuStyles = css`
 		overflow: visible;
 		--_viewport-margin: 16px;
 		--_menu-width: var(--primitives-area-280);
-		--_menu-max-height: 9999px;
+		--_menu-max-height: calc(infinity * 1px);
 		--_menu-max-items: 9999;
 		--_menu-item-size: var(--semantics-controls-md-min-size);
 		--_menu-padding: var(--primitives-space-8);
