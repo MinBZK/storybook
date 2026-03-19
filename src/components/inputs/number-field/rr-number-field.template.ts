@@ -28,7 +28,6 @@ export function numberFieldTemplate(component: RRNumberField): TemplateResult {
 			` : nothing}
 			<input class="number-field__input"
 				type="number"
-				aria-live="polite"
 				.value=${String(component.value)}
 				min=${component.min}
 				max=${component.max}
