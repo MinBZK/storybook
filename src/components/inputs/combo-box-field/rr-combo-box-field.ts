@@ -110,9 +110,6 @@ export class RRComboBoxField extends LitElement {
 			this._menu.removeEventListener('toggle', this._handleMenuToggle);
 			this._menu.removeEventListener('select', this._handleMenuSelect);
 			this._menu.removeEventListener('keydown', this._handleMenuKeydown);
-			// Return the menu to the host's light DOM so _onSlotChange can
-			// pick it up again if this component is reconnected.
-			this.appendChild(this._menu);
 			this._menu = null;
 		}
 	}
@@ -138,7 +135,6 @@ export class RRComboBoxField extends LitElement {
 		menu.addEventListener('toggle', this._handleMenuToggle);
 		menu.addEventListener('select', this._handleMenuSelect);
 		menu.addEventListener('keydown', this._handleMenuKeydown);
-		document.body.appendChild(menu);
 		this._updateMenuWidth();
 	}
 
@@ -204,9 +200,10 @@ export class RRComboBoxField extends LitElement {
 	// — Handlers ————————————————————————————————————————————————————————————
 
 	/**
-	 * Handles Tab in the menu. Since the menu lives at document.body, the browser's
-	 * natural Tab order would skip to the browser chrome. Instead, close the menu
-	 * and return focus to the input so the user can Tab forward from there.
+	 * Handles Tab in the menu. The menu is a popover on the top layer — Tab
+	 * would move focus to the next focusable element in DOM order, which may
+	 * not be the next logical element. Instead, close the menu and return
+	 * focus to the input so the user can Tab forward from there.
 	 */
 	private _handleMenuKeydown = (e: KeyboardEvent): void => {
 		if (e.key !== 'Tab') return;
