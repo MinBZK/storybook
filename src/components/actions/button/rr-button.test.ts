@@ -100,7 +100,7 @@ describe('rr-button – icon detection', () => {
 		expect(endIcon!.getAttribute('name')).toBe('chevron-down-small');
 	});
 
-	it('warns and falls back when two icons are not surrounding the title', async () => {
+	it('warns and falls back when two icons are not surrounding the text', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 		el = await fixture<RRButton>(`
@@ -113,7 +113,7 @@ describe('rr-button – icon detection', () => {
 		await waitForUpdate(el);
 
 		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining('Two rr-icon elements detected but they are not surrounding the title')
+			expect.stringContaining('Two rr-icon elements detected but they are not surrounding the text')
 		);
 
 		const startIcon = el.shadowRoot!.querySelector('.button__start-icon');
