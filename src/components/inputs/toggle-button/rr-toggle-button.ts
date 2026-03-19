@@ -66,7 +66,10 @@ export class RRToggleButton extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this._observer = new MutationObserver(() => this._detectIcon());
-		this._observer.observe(this, { childList: true, subtree: true, attributes: true });
+		// Observe only direct child additions/removals.
+		// Icon name changes do not affect whether an icon is present,
+		// and slot assignments are handled by @slotchange in the template.
+		this._observer.observe(this, { childList: true });
 		this.updateComplete.then(() => this._detectIcon());
 	}
 
