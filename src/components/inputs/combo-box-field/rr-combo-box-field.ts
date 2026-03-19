@@ -26,10 +26,10 @@
  *
  * @example
  * ```html
- * <rr-combo-box-field placeholder="Search a country" name="country">
+ * <rr-combo-box-field placeholder="Zoek een land" name="land">
  *   <rr-menu>
- *     <rr-menu-item text="Netherlands" value="nl"></rr-menu-item>
- *     <rr-menu-item text="Belgium" value="be"></rr-menu-item>
+ *     <rr-menu-item text="Nederland" value="nl"></rr-menu-item>
+ *     <rr-menu-item text="België" value="be"></rr-menu-item>
  *   </rr-menu>
  * </rr-combo-box-field>
  * ```
@@ -44,6 +44,9 @@ import type { RRMenu, RRMenuItem } from '../../lists-and-menus/menu/rr-menu.js';
 import '../../lists-and-menus/menu/rr-menu.ts';
 import '../../actions/icon-button/rr-icon-button.ts';
 import '../../content/icon/rr-icon.ts';
+
+/** Maximum number of visible menu items before scrolling. */
+const COMBO_BOX_MAX_ITEMS = 8;
 
 @customElement('rr-combo-box-field')
 export class RRComboBoxField extends LitElement {
@@ -123,6 +126,7 @@ export class RRComboBoxField extends LitElement {
 		menu.id = this._menuId;
 		menu.anchorElement = this;
 		menu.placement = 'bottom-start';
+		menu.maxItems = COMBO_BOX_MAX_ITEMS;
 		// Always prevent auto-focus so typing keeps focus on the input.
 		// The picker button moves focus explicitly when activated.
 		menu.noAutoFocus = true;

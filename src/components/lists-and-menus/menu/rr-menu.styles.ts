@@ -13,7 +13,14 @@ export const menuStyles = css`
 		overflow: visible;
 		--_viewport-margin: 16px;
 		--_menu-width: var(--primitives-area-280);
-		--_menu-max-height: none;
+		--_menu-max-height: 9999px;
+		--_menu-max-items: 9999;
+		--_menu-item-size: var(--semantics-controls-md-min-size);
+		--_menu-padding: var(--primitives-space-8);
+		@media (pointer: fine) {
+			--_menu-item-size: var(--semantics-controls-sm-min-size);
+			--_menu-padding: var(--primitives-space-6);
+		}
 	}
 
 	:host(:not(:popover-open)) {
@@ -26,17 +33,17 @@ export const menuStyles = css`
 	.menu {
 		display: flex;
 		flex-direction: column;
-		padding: var(--primitives-space-8);
+		padding: var(--_menu-padding);
 		background: var(--semantics-surfaces-background-color);
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--primitives-box-shadows-level-5);
 		box-sizing: border-box;
 		width: var(--_menu-width);
-		max-height: var(--_menu-max-height);
+		max-height: min(
+			var(--_menu-max-height),
+			calc(var(--_menu-max-items) * var(--_menu-item-size) + var(--_menu-padding) * 2)
+		);
 		overflow-y: auto;
-		@media (pointer: fine) {
-			padding: var(--primitives-space-6);
-		}
 	}
 
 
@@ -70,7 +77,7 @@ export const menuItemStyles = css`
 		flex-direction: row;
 		align-items: center;
 		width: 100%;
-		min-height: var(--semantics-controls-md-min-size);
+		min-height: var(--_menu-item-size);
 		padding: var(--primitives-space-8);
 		box-sizing: border-box;
 		border: none;
@@ -81,7 +88,6 @@ export const menuItemStyles = css`
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-md-regular-tight);
 		@media (pointer: fine) {
-			min-height: var(--semantics-controls-sm-min-size);
 			padding: var(--primitives-space-4) var(--primitives-space-8);
 			border-radius: var(--semantics-controls-sm-corner-radius);
 		}

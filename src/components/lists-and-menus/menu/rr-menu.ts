@@ -31,7 +31,8 @@ if (!customElements.get('rr-menu-divider')) {
 /**
  * A single item within an rr-menu.
  *
- * @attr {string}  text     - Display text. Supports **bold** markdown syntax.
+ * @attr {string}  text     - Display text. Supports **bold** markdown syntax when set
+ *                            programmatically by rr-menu's filter method. See filter() for details.
  * @attr {string}  value    - Form value. Falls back to text when not set.
  * @attr {string}  search   - Space-separated alternative search terms.
  * @attr {string}  details  - Secondary label shown on the right side.
@@ -126,6 +127,8 @@ const defaultFilterFn = (query: string, item: RRMenuItem): boolean => {
  * @attr {string}  empty-text     - Text shown when all items are hidden or no items exist.
  * @attr {boolean} no-auto-focus  - When set, the first item is not focused on open.
  * @attr {string}  width          - Explicit width. Sets --_menu-width internally.
+ * @attr {number}  max-items      - Maximum number of visible items before scrolling.
+ *                                  Sets --_menu-max-items internally. Default: 0 (no limit).
  * @attr {object}  translations   - Override one or more translation keys.
  * @attr {Function} filterFn      - Custom filter function (query, item) => boolean.
  *
@@ -153,6 +156,13 @@ export class RRMenu extends LitElement {
 	/** Explicit width. Sets --_menu-width internally. */
 	@property({ type: String, reflect: true })
 	width = '';
+
+	/**
+	 * Maximum number of visible items before the menu scrolls.
+	 * Sets --_menu-max-items internally. Default: 0 (no limit).
+	 */
+	@property({ type: Number, attribute: 'max-items' })
+	maxItems = 0;
 
 	/**
 	 * Override one or more translation keys.
@@ -192,6 +202,13 @@ export class RRMenu extends LitElement {
 				this.style.setProperty('--_menu-width', this.width);
 			} else {
 				this.style.removeProperty('--_menu-width');
+			}
+		}
+		if (changedProperties.has('maxItems')) {
+			if (this.maxItems > 0) {
+				this.style.setProperty('--_menu-max-items', String(this.maxItems));
+			} else {
+				this.style.removeProperty('--_menu-max-items');
 			}
 		}
 	}
@@ -311,8 +328,16 @@ export class RRMenu extends LitElement {
 
 	/**
 	 * Filter items based on a query string.
-	 * Hides non-matching items, applies bold markers to matching text,
-	 * updates the highlight and empty state, and repositions the menu.
+	 *
+	 * Matching items are kept visible. Non-matching items are hidden.
+	 *
+	 * For visible items, the non-typed portion of the text is marked bold using
+	 * **markdown** syntax, which the template renders as <b> tags. This follows
+	 * the principle that the typed characters are already known to the user —
+	 * emphasising the predictive completion helps users scan the differences
+	 * between suggestions and identify the new information at a glance.
+	 *
+	 * When the query is empty, all items are shown and bold markers are cleared.
 	 */
 	public filter(query: string): void {
 		const allItems = Array.from(this.querySelectorAll('rr-menu-item')) as RRMenuItem[];
