@@ -69,7 +69,6 @@ export const dropDownFieldStyles = css`
 	:host([size='md']) ::slotted(select),
 	:host(:not([size])) ::slotted(select) {
 		font: var(--semantics-input-fields-md-text-font);
-		font-size: 16px;
 	}
 
 	:host([size='sm']) ::slotted(select) {

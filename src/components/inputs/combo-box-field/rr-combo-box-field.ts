@@ -16,6 +16,7 @@
  * @attr {string}  placeholder  - Placeholder text for the input
  * @attr {boolean} disabled     - Disabled state
  * @attr {string}  name         - Input name for form submission
+ * @attr {number}  max-items    - Maximum visible items before scrolling (default: 8)
  * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
  *
  * @slot - An rr-menu element with rr-menu-item and rr-menu-divider children
@@ -45,8 +46,6 @@ import '../../lists-and-menus/menu/rr-menu.ts';
 import '../../actions/icon-button/rr-icon-button.ts';
 import '../../content/icon/rr-icon.ts';
 
-/** Maximum number of visible menu items before scrolling. */
-const COMBO_BOX_MAX_ITEMS = 8;
 
 @customElement('rr-combo-box-field')
 export class RRComboBoxField extends LitElement {
@@ -64,7 +63,9 @@ export class RRComboBoxField extends LitElement {
 	@property({ type: String })
 	name = '';
 
-	/** Override one or more translation keys. Unset keys fall back to Dutch. */
+	@property({ type: Number, attribute: 'max-items' })
+	maxItems = 8;
+
 	@property({ type: Object })
 	translations: Partial<RRComboBoxFieldTranslations> = {};
 
@@ -91,6 +92,12 @@ export class RRComboBoxField extends LitElement {
 	}
 
 	// — Lifecycle ————————————————————————————————————————————————————————————
+
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('maxItems') && this._menu) {
+			this._menu.maxItems = this.maxItems;
+		}
+	}
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -127,7 +134,7 @@ export class RRComboBoxField extends LitElement {
 		menu.id = this._menuId;
 		menu.anchorElement = this;
 		menu.placement = 'bottom-start';
-		menu.maxItems = COMBO_BOX_MAX_ITEMS;
+		menu.maxItems = this.maxItems;
 		menu.variant = 'listbox';
 		// Always prevent auto-focus so typing keeps focus on the input.
 		// The picker button moves focus explicitly when activated.
