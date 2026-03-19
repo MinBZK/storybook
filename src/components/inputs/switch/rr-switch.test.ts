@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRSwitch } from './rr-switch.ts';
 import './rr-switch.ts';
@@ -8,16 +8,17 @@ describe('rr-switch', () => {
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		vi.restoreAllMocks();
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<rr-switch></rr-switch>');
+		el = await fixture('<rr-switch accessible-label="Test"></rr-switch>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a native checkbox input', async () => {
-		el = await fixture('<rr-switch></rr-switch>');
+		el = await fixture('<rr-switch accessible-label="Test"></rr-switch>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input[type="checkbox"]')).not.toBeNull();
 	});
@@ -33,31 +34,32 @@ describe('rr-switch – state', () => {
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		vi.restoreAllMocks();
 	});
 
 	it('is unchecked by default', async () => {
-		el = await fixture<RRSwitch>('<rr-switch></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test"></rr-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.checked).toBe(false);
 	});
 
 	it('is checked when checked attribute is set', async () => {
-		el = await fixture<RRSwitch>('<rr-switch checked></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test" checked></rr-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.checked).toBe(true);
 	});
 
 	it('is disabled when disabled attribute is set', async () => {
-		el = await fixture<RRSwitch>('<rr-switch disabled></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test" disabled></rr-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.disabled).toBe(true);
 	});
 
 	it('has role="switch" on the native input', async () => {
-		el = await fixture<RRSwitch>('<rr-switch></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test"></rr-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('role')).toBe('switch');
@@ -81,10 +83,11 @@ describe('rr-switch – change event', () => {
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		vi.restoreAllMocks();
 	});
 
 	it('updates checked property when native input changes', async () => {
-		el = await fixture<RRSwitch>('<rr-switch></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test"></rr-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.checked = true;
@@ -94,7 +97,7 @@ describe('rr-switch – change event', () => {
 	});
 
 	it('dispatches a change event with checked detail', async () => {
-		el = await fixture<RRSwitch>('<rr-switch></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test"></rr-switch>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -111,7 +114,7 @@ describe('rr-switch – change event', () => {
 	});
 
 	it('does not toggle when disabled', async () => {
-		el = await fixture<RRSwitch>('<rr-switch disabled></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test" disabled></rr-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -130,10 +133,11 @@ describe('rr-switch – toggle', () => {
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		vi.restoreAllMocks();
 	});
 
 	it('toggle() flips checked and dispatches change', async () => {
-		el = await fixture<RRSwitch>('<rr-switch></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test"></rr-switch>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -147,14 +151,14 @@ describe('rr-switch – toggle', () => {
 	});
 
 	it('toggle() does nothing when disabled', async () => {
-		el = await fixture<RRSwitch>('<rr-switch disabled></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test" disabled></rr-switch>');
 		await waitForUpdate(el);
 		el.toggle();
 		expect(el.checked).toBe(false);
 	});
 
 	it('toggle() does not dispatch change when disabled', async () => {
-		el = await fixture<RRSwitch>('<rr-switch disabled></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test" disabled></rr-switch>');
 		await waitForUpdate(el);
 		let changeFired = false;
 		el.addEventListener('change', () => { changeFired = true; });
@@ -173,10 +177,11 @@ describe('rr-switch – disabled keyboard guard', () => {
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		vi.restoreAllMocks();
 	});
 
 	it('does not toggle when disabled and Space is pressed', async () => {
-		el = await fixture<RRSwitch>('<rr-switch disabled></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test" disabled></rr-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
@@ -195,13 +200,30 @@ describe('rr-switch – accessibility', () => {
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		vi.restoreAllMocks();
 	});
 
 	it('focus lands on the native input', async () => {
-		el = await fixture<RRSwitch>('<rr-switch></rr-switch>');
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Test"></rr-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.focus();
 		expect(input.matches(':focus')).toBe(true);
+	});
+
+	it('warns when accessible-label is not provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRSwitch>('<rr-switch></rr-switch>');
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('accessible-label')
+		);
+	});
+
+	it('does not warn when accessible-label is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRSwitch>('<rr-switch accessible-label="Meldingen"></rr-switch>');
+		await waitForUpdate(el);
+		expect(warnSpy).not.toHaveBeenCalled();
 	});
 });
