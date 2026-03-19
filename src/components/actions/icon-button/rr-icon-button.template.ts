@@ -3,7 +3,7 @@ import type { RRIconButton } from './rr-icon-button.ts';
 
 export function template(this: RRIconButton) {
 	const label = this.accessibleLabel || this._text || nothing;
-	const tooltip = this.size !== 'lg' ? (this.accessibleLabel || this._text) : '';
+	const tooltip = this.size !== 'lg' ? (this.accessibleLabel || this._text || nothing) : nothing;
 
 	return html`
 		<button class="icon-button"
