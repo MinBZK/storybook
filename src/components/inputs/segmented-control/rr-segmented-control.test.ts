@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRSegmentedControl, RRSegmentedControlItem } from './rr-segmented-control.ts';
 import './rr-segmented-control.ts';
@@ -350,5 +350,53 @@ describe('rr-segmented-control – ARIA', () => {
 		const items = getItems(el);
 		expect(getInput(items[0]).checked).toBe(false);
 		expect(getInput(items[1]).checked).toBe(true);
+	});
+});
+
+
+/* ============================================================
+   Accessibility
+   ============================================================ */
+
+describe('rr-segmented-control – accessibility', () => {
+	let el: RRSegmentedControl;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('warns when no accessible name is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control>
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('accessible name')
+		);
+	});
+
+	it('does not warn when accessible-label is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control accessible-label="Weergave">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(warnSpy).not.toHaveBeenCalled();
+	});
+
+	it('sets aria-label on host from accessible-label', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control accessible-label="Weergave">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Weergave');
 	});
 });

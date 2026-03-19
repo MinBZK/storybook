@@ -148,11 +148,21 @@ export class RRSegmentedControl extends LitElement {
 	@property({ type: String })
 	name = '';
 
+	/** Accessible name for the group (aria-label). */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
+	/** ID of an external label element (aria-labelledby). */
+	@property({ type: String, attribute: 'accessible-labelledby' })
+	accessibleLabelledBy = '';
+
 	// — Lifecycle ——————————————————————————————————————————————————————————————
 
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
+		if (this.accessibleLabel) this.setAttribute('aria-label', this.accessibleLabel);
+		if (this.accessibleLabelledBy) this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
 		this.addEventListener('item-change', this._handleItemChange as EventListener);
 		this.addEventListener('keydown', this._handleKeydown);
 	}
@@ -165,6 +175,9 @@ export class RRSegmentedControl extends LitElement {
 
 	override firstUpdated(): void {
 		this._syncItems();
+		if (!this.accessibleLabel && !this.accessibleLabelledBy) {
+			console.warn('<rr-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+		}
 	}
 
 	override updated(changedProperties: Map<string, unknown>): void {
@@ -181,6 +194,20 @@ export class RRSegmentedControl extends LitElement {
 		}
 		if (changedProperties.has('type')) {
 			this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');
+		}
+		if (changedProperties.has('accessibleLabel')) {
+			if (this.accessibleLabel) {
+				this.setAttribute('aria-label', this.accessibleLabel);
+			} else {
+				this.removeAttribute('aria-label');
+			}
+		}
+		if (changedProperties.has('accessibleLabelledBy')) {
+			if (this.accessibleLabelledBy) {
+				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+			} else {
+				this.removeAttribute('aria-labelledby');
+			}
 		}
 	}
 
