@@ -112,14 +112,6 @@ export const tokenStyles = css`
 		padding-right: 0;
 	}
 
-
-	/* # Dismiss button */
-
-	.token__dismiss {
-		margin: var(--primitives-space-2) var(--primitives-space-2) var(--primitives-space-2) 0;
-	}
-
-
 	/* # Accessibility */
 
 	@media (forced-colors: active) {

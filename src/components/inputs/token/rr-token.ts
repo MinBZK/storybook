@@ -61,13 +61,6 @@ export class RRToken extends LitElement {
 		}));
 	}
 
-	_handleMenuKeyDown(e: KeyboardEvent): void {
-		if (e.key === 'Enter' || e.key === ' ') {
-			e.preventDefault();
-			this._handleMenuClick();
-		}
-	}
-
 	override render() {
 		return tokenTemplate(this);
 	}

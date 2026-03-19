@@ -22,17 +22,18 @@ export function tokenTemplate(component: RRToken): TemplateResult {
 		<div class="token">
 			<span class="token__text"><slot></slot></span>
 			${component.control === 'dismiss' ? html`
-				<rr-icon-button
-					class="token__dismiss"
-					size="sm"
-					variant="neutral-tinted"
-					accessible-label=${component.dismissLabel}
-					?disabled=${component.disabled}
-					@click=${component._handleDismiss}
-				>
-					<rr-icon name="dismiss-small"></rr-icon>
-					${component.dismissLabel}
-				</rr-icon-button>
+				<div class="token__dismiss-action">
+					<rr-icon-button
+						size="sm"
+						variant="neutral-tinted"
+						accessible-label=${component.dismissLabel}
+						?disabled=${component.disabled}
+						@click=${component._handleDismiss}
+					>
+						<rr-icon name="dismiss-small"></rr-icon>
+						${component.dismissLabel}
+					</rr-icon-button>
+				</div>
 			` : nothing}
 		</div>
 	`;
