@@ -40,7 +40,7 @@ export class RRSwitch extends LitElement {
 	@property({ type: String })
 	value = 'on';
 
-	override updated(changedProperties: Map<string, unknown>): void {
+	override firstUpdated(): void {
 		if (!this.accessibleLabel) {
 			console.warn('<rr-switch>: No accessible-label provided. Use rr-switch-field for labeled usage, or provide an accessible-label attribute for screen reader accessibility.');
 		}
