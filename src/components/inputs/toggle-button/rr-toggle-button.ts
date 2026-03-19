@@ -105,11 +105,13 @@ export class RRToggleButton extends LitElement {
 
 		this._iconName = icon?.getAttribute('name') ?? null;
 
-		this._hasText = nodes.some(
-			n =>
-				n.nodeType === Node.TEXT_NODE &&
-				n.textContent?.trim() !== ''
-		);
+		this._hasText = nodes.some(n => {
+			if (n.nodeType === Node.TEXT_NODE) return n.textContent?.trim() !== '';
+			if (n.nodeType === Node.ELEMENT_NODE && (n as Element).tagName.toLowerCase() !== 'rr-icon') {
+				return (n as Element).textContent?.trim() !== '';
+			}
+			return false;
+		});
 	}
 
 	_handleButtonClick(): void {
