@@ -70,20 +70,6 @@ export class RRToggleButtonGroup extends LitElement {
 		if (changed.has('type') || changed.has('name') || changed.has('size') || changed.has('disabled')) {
 			this._syncButtons();
 		}
-		if (changed.has('accessibleLabel')) {
-			if (this.accessibleLabel) {
-				this.setAttribute('aria-label', this.accessibleLabel);
-			} else {
-				this.removeAttribute('aria-label');
-			}
-		}
-		if (changed.has('accessibleLabelledBy')) {
-			if (this.accessibleLabelledBy) {
-				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
-			} else {
-				this.removeAttribute('aria-labelledby');
-			}
-		}
 	}
 
 	private _getButtons(): RRToggleButton[] {
