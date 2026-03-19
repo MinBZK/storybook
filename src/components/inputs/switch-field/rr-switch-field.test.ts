@@ -17,10 +17,10 @@ describe('rr-switch-field', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders a label element', async () => {
+	it('renders a label span element', async () => {
 		el = await fixture('<rr-switch-field>Optie 1</rr-switch-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('label')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.switch-field__label')).not.toBeNull();
 	});
 
 	it('renders rr-switch in shadow DOM', async () => {
@@ -128,20 +128,20 @@ describe('rr-switch-field – label click', () => {
 		if (el) cleanup(el);
 	});
 
-	it('toggles checked when label is clicked', async () => {
+	it('toggles checked when label span is clicked', async () => {
 		el = await fixture<RRSwitchField>('<rr-switch-field>Optie 1</rr-switch-field>');
 		await waitForUpdate(el);
-		const label = el.shadowRoot!.querySelector('label')!;
-		label.click();
+		const labelSpan = el.shadowRoot!.querySelector<HTMLElement>('.switch-field__label')!;
+		labelSpan.click();
 		await waitForUpdate(el);
 		expect(el.checked).toBe(true);
 	});
 
-	it('does not toggle when disabled and label is clicked', async () => {
+	it('does not toggle when disabled and label span is clicked', async () => {
 		el = await fixture<RRSwitchField>('<rr-switch-field disabled>Optie 1</rr-switch-field>');
 		await waitForUpdate(el);
-		const label = el.shadowRoot!.querySelector('label')!;
-		label.click();
+		const labelSpan = el.shadowRoot!.querySelector<HTMLElement>('.switch-field__label')!;
+		labelSpan.click();
 		await waitForUpdate(el);
 		expect(el.checked).toBe(false);
 	});

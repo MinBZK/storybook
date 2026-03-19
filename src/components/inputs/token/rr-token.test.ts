@@ -40,16 +40,16 @@ describe('rr-token', () => {
 		expect(el.shadowRoot!.querySelector('button.token')).not.toBeNull();
 	});
 
-	it('renders a dismiss button for control=dismiss', async () => {
+	it('renders a dismiss action for control=dismiss', async () => {
 		el = await fixture('<rr-token control="dismiss">Label</rr-token>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.token__dismiss')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.token__dismiss-action')).not.toBeNull();
 	});
 
-	it('does not render a dismiss button for control=none', async () => {
+	it('does not render a dismiss action for control=none', async () => {
 		el = await fixture('<rr-token>Label</rr-token>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.token__dismiss')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.token__dismiss-action')).toBeNull();
 	});
 });
 
@@ -108,7 +108,7 @@ describe('rr-token – state', () => {
 	it('dismiss rr-icon-button is disabled when token is disabled', async () => {
 		el = await fixture<RRToken>('<rr-token control="dismiss" disabled>Label</rr-token>');
 		await waitForUpdate(el);
-		const dismiss = el.shadowRoot!.querySelector<HTMLElement>('.token__dismiss')!;
+		const dismiss = el.shadowRoot!.querySelector<HTMLElement>('.token__dismiss-action rr-icon-button')!;
 		expect(dismiss.hasAttribute('disabled')).toBe(true);
 	});
 
@@ -139,7 +139,7 @@ describe('rr-token – dismiss', () => {
 		let fired = false;
 		el.addEventListener('dismiss', () => { fired = true; });
 
-		el.shadowRoot!.querySelector<HTMLElement>('.token__dismiss')!.click();
+		el.shadowRoot!.querySelector<HTMLElement>('.token__dismiss-action rr-icon-button')!.click();
 		expect(fired).toBe(true);
 	});
 
@@ -150,21 +150,21 @@ describe('rr-token – dismiss', () => {
 		let fired = false;
 		el.addEventListener('dismiss', () => { fired = true; });
 
-		el.shadowRoot!.querySelector<HTMLElement>('.token__dismiss')!.click();
+		el.shadowRoot!.querySelector<HTMLElement>('.token__dismiss-action rr-icon-button')!.click();
 		expect(fired).toBe(false);
 	});
 
 	it('dismiss button has default accessible-label', async () => {
 		el = await fixture<RRToken>('<rr-token control="dismiss">Label</rr-token>');
 		await waitForUpdate(el);
-		const dismiss = el.shadowRoot!.querySelector('.token__dismiss')!;
+		const dismiss = el.shadowRoot!.querySelector('.token__dismiss-action rr-icon-button')!;
 		expect(dismiss.getAttribute('accessible-label')).toBe('Verwijder');
 	});
 
 	it('dismiss button uses custom dismiss-label', async () => {
 		el = await fixture<RRToken>('<rr-token control="dismiss" dismiss-label="Remove filter">Label</rr-token>');
 		await waitForUpdate(el);
-		const dismiss = el.shadowRoot!.querySelector('.token__dismiss')!;
+		const dismiss = el.shadowRoot!.querySelector('.token__dismiss-action rr-icon-button')!;
 		expect(dismiss.getAttribute('accessible-label')).toBe('Remove filter');
 	});
 });

@@ -60,10 +60,10 @@ describe('rr-combo-box-field – ARIA', () => {
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-autocomplete')).toBe('list');
 	});
 
-	it('sets aria-haspopup="menu"', async () => {
+	it('sets aria-haspopup="listbox"', async () => {
 		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-haspopup')).toBe('menu');
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-haspopup')).toBe('listbox');
 	});
 
 	it('sets aria-controls to the menu id', async () => {

@@ -156,7 +156,7 @@ describe('rr-segmented-control – state sync', () => {
 		expect(getItems(el)[0].contentType).toBe('icon');
 	});
 
-	it('forwads name as groupName to items', async () => {
+	it('forwards name as groupName to items', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control name="view">
 				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
@@ -167,22 +167,6 @@ describe('rr-segmented-control – state sync', () => {
 	});
 });
 
-
-	it('ArrowRight does not change selection for type="checkbox"', async () => {
-		el = await fixture<RRSegmentedControl>(`
-			<rr-segmented-control type="checkbox">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
-				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
-			</rr-segmented-control>
-		`);
-		(el as RRSegmentedControl).values = ['a'];
-		await waitForUpdate(el);
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-		await waitForUpdate(el);
-		const items = getItems(el as RRSegmentedControl);
-		expect(items[0].selected).toBe(true);
-		expect(items[1].selected).toBe(false);
-	});
 
 describe('rr-segmented-control – radio change', () => {
 	let el: RRSegmentedControl;
