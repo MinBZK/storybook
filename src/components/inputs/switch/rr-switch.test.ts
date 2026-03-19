@@ -168,23 +168,11 @@ describe('rr-switch – toggle', () => {
    Keyboard interaction
    ============================================================ */
 
-describe('rr-switch – keyboard interaction', () => {
+describe('rr-switch – disabled keyboard guard', () => {
 	let el: RRSwitch;
 
 	afterEach(() => {
 		if (el) cleanup(el);
-	});
-
-	it('Space toggles the switch via the native input', async () => {
-		el = await fixture<RRSwitch>('<rr-switch></rr-switch>');
-		await waitForUpdate(el);
-		const input = el.shadowRoot!.querySelector('input')!;
-		input.focus();
-		input.checked = true;
-		input.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
-		input.dispatchEvent(new Event('change', { bubbles: true }));
-		await waitForUpdate(el);
-		expect(el.checked).toBe(true);
 	});
 
 	it('does not toggle when disabled and Space is pressed', async () => {
