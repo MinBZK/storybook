@@ -12,7 +12,7 @@ export function checkboxFieldTemplate(component: RRCheckboxField): TemplateResul
 					?checked=${component.checked}
 					?indeterminate=${component.indeterminate}
 					?disabled=${component.disabled}
-					name=${component.name || ''}
+					name=${component.name || nothing}
 					value=${component.value}
 					accessible-label=${component._labelText || nothing}
 					@change=${component._handleChange}
