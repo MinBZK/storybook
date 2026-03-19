@@ -34,6 +34,18 @@ describe('rr-toggle-button-group', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('role')).toBe('radiogroup');
 	});
+
+	it('has role=toolbar for type=button', async () => {
+		el = await fixture('<rr-toggle-button-group type="button"></rr-toggle-button-group>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('toolbar');
+	});
+
+	it('has role=toolbar for type=button', async () => {
+		el = await fixture('<rr-toggle-button-group type="button"></rr-toggle-button-group>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('toolbar');
+	});
 });
 
 
@@ -49,7 +61,7 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 	});
 
 	it('does not sync name to child buttons when type=button', async () => {
-		el = await fixture<RRToggleGroup>(`
+		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="button" name="toolbar">
 				<rr-toggle-button value="bold">Bold</rr-toggle-button>
 				<rr-toggle-button value="italic">Italic</rr-toggle-button>
@@ -205,7 +217,6 @@ describe('rr-toggle-button-group – single-select (radio)', () => {
 
 		const [buttonA, buttonB] = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
 
-		// Event van een deselectie — group mag niet ingrijpen
 		buttonA.selected = false;
 		buttonA.dispatchEvent(new CustomEvent('change', {
 			detail: { selected: false, value: 'a' },

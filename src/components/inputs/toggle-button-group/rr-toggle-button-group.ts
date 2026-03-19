@@ -91,7 +91,8 @@ export class RRToggleButtonGroup extends LitElement {
 	}
 
 	private _updateRole(): void {
-		this.setAttribute('role', this.type === 'radio' ? 'radiogroup' : 'group');
+		const role = this.type === 'radio' ? 'radiogroup' : this.type === 'button' ? 'toolbar' : 'group';
+		this.setAttribute('role', role);
 	}
 
 	private _getButtons(): RRToggleButton[] {
