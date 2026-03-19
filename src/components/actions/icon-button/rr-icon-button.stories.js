@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './rr-icon-button.ts';
 import { ICONS } from './../../content/icon/rr-icon.ts';
 
@@ -113,7 +113,7 @@ const Template = ({ variant, size, icon, text, accessibleLabel, isExpandable, ty
 		?is-expandable=${isExpandable}
 		type=${type}
 		?disabled=${disabled}
-		accessible-label=${accessibleLabel || ''}
+		accessible-label=${accessibleLabel || nothing}
 	>
 		<rr-icon name=${icon}></rr-icon>
 		${text}
