@@ -89,10 +89,12 @@ export class RRNumberField extends LitElement {
 	// — Actions ——————————————————————————————————————————————————————————————
 
 	public _handleDecrease(): void {
+		if (this.disabled) return;
 		this._updateValue(this.value - this.step);
 	}
 
 	public _handleIncrease(): void {
+		if (this.disabled) return;
 		this._updateValue(this.value + this.step);
 	}
 
