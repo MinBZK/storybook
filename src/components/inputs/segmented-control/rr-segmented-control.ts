@@ -231,9 +231,11 @@ export class RRSegmentedControl extends LitElement {
 		});
 	}
 
+	private static _counter = 0;
+
 	private get _autoName(): string {
 		if (!this._generatedName) {
-			this._generatedName = `rr-segmented-${Math.random().toString(36).slice(2)}`;
+			this._generatedName = `rr-segmented-${RRSegmentedControl._counter++}`;
 		}
 		return this._generatedName;
 	}
