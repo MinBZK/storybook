@@ -263,6 +263,7 @@ describe('rr-segmented-control – checkbox change', () => {
 
 
 describe('rr-segmented-control – keyboard navigation', () => {
+	let el: RRSegmentedControl;
 
 	afterEach(() => {
 		if (el) cleanup(el);

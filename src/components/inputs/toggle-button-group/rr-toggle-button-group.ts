@@ -156,7 +156,7 @@ export class RRToggleButtonGroup extends LitElement {
 
 		e.preventDefault();
 
-		activeButton.selected = false;
+		if (activeButton) activeButton.selected = false;
 		nextButton.selected = true;
 
 		const input = nextButton.shadowRoot?.querySelector<HTMLInputElement>('.toggle-button__input');

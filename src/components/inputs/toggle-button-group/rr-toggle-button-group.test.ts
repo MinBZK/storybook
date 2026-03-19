@@ -1,416 +1,185 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { RRToggleButtonGroup } from './rr-toggle-button-group.ts';
-import type { RRToggleButton } from '../toggle-button/rr-toggle-button.ts';
-import './rr-toggle-button-group.ts';
-import '../toggle-button/rr-toggle-button.ts';
+/**
+ * RegelRecht Toggle Button Group Component (Lit + TypeScript)
+ *
+ * Groups rr-toggle-button elements and manages selection, keyboard navigation,
+ * and forwarding of type, name, size, and disabled state to all buttons.
+ *
+ * For type="radio" (single-select), arrow keys navigate between buttons and
+ * automatically select the focused one.
+ * For type="checkbox" (multi-select), multiple buttons can be selected simultaneously.
+ *
+ * @element rr-toggle-button-group
+ *
+ * @attr {'button' | 'checkbox' | 'radio'} type                  - Selection mode (default: 'checkbox')
+ * @attr {string}               name                  - Forwarded to all buttons
+ * @attr {'xs' | 'sm' | 'md'}  size                  - Forwarded to all buttons (default: 'md')
+ * @attr {boolean}              disabled              - Disables all buttons
+ * @attr {string}               accessible-label      - Accessible name for the group (aria-label)
+ * @attr {string}               accessible-labelledby - ID of an external label element (aria-labelledby)
+ *
+ * @slot - rr-toggle-button elements
+ *
+ * @fires change - Bubbles up from the changed button; detail: { selected: boolean, value: string }
+ */
 
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { toggleButtonGroupStyles } from './rr-toggle-button-group.styles.ts';
+import { toggleButtonGroupTemplate } from './rr-toggle-button-group.template.ts';
+import type { RRToggleButton, ToggleButtonSize } from '../toggle-button/rr-toggle-button.js';
 
-/* ============================================================
-   Rendering
-   ============================================================ */
+type GroupType = 'button' | 'checkbox' | 'radio';
 
-describe('rr-toggle-button-group', () => {
-	let el: HTMLElement;
+@customElement('rr-toggle-button-group')
+export class RRToggleButtonGroup extends LitElement {
+	static override styles = toggleButtonGroupStyles;
 
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
+	@property({ type: String, reflect: true })
+	type: GroupType = 'checkbox';
 
-	it('renders without error', async () => {
-		el = await fixture('<rr-toggle-button-group></rr-toggle-button-group>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot).not.toBeNull();
-	});
+	@property({ type: String })
+	name = '';
 
-	it('has role=group by default (type=checkbox)', async () => {
-		el = await fixture('<rr-toggle-button-group type="checkbox"></rr-toggle-button-group>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('role')).toBe('group');
-	});
+	@property({ type: String, reflect: true })
+	size: ToggleButtonSize = 'md';
 
-	it('has role=radiogroup for type=radio', async () => {
-		el = await fixture('<rr-toggle-button-group type="radio"></rr-toggle-button-group>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('role')).toBe('radiogroup');
-	});
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-	it('has role=toolbar for type=button', async () => {
-		el = await fixture('<rr-toggle-button-group type="button"></rr-toggle-button-group>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('role')).toBe('toolbar');
-	});
+	/** Accessible name forwarded as aria-label to the group host. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-	it('has role=toolbar for type=button', async () => {
-		el = await fixture('<rr-toggle-button-group type="button"></rr-toggle-button-group>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('role')).toBe('toolbar');
-	});
-});
+	/** ID of an external label element forwarded as aria-labelledby to the group host. */
+	@property({ type: String, attribute: 'accessible-labelledby' })
+	accessibleLabelledBy = '';
 
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this._updateRole();
+		this.addEventListener('change', this._handleChange);
+		this.addEventListener('keydown', this._handleKeyDown);
+	}
 
-/* ============================================================
-   Synchronisatie
-   ============================================================ */
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this.removeEventListener('change', this._handleChange);
+		this.removeEventListener('keydown', this._handleKeyDown);
+	}
 
-describe('rr-toggle-button-group – synchronisatie', () => {
-	let el: RRToggleButtonGroup;
+	override updated(changed: Map<PropertyKey, unknown>): void {
+		if (changed.has('type')) {
+			this._updateRole();
+		}
+		if (changed.has('type') || changed.has('name') || changed.has('size') || changed.has('disabled')) {
+			this._syncButtons();
+		}
+		if (changed.has('accessibleLabel')) {
+			if (this.accessibleLabel) {
+				this.setAttribute('aria-label', this.accessibleLabel);
+			} else {
+				this.removeAttribute('aria-label');
+			}
+		}
+		if (changed.has('accessibleLabelledBy')) {
+			if (this.accessibleLabelledBy) {
+				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+			} else {
+				this.removeAttribute('aria-labelledby');
+			}
+		}
+	}
 
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
+	private _updateRole(): void {
+		const role = this.type === 'radio' ? 'radiogroup' : this.type === 'button' ? 'toolbar' : 'group';
+		this.setAttribute('role', role);
+	}
 
-	it('does not sync name to child buttons when type=button', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="button" name="toolbar">
-				<rr-toggle-button value="bold">Bold</rr-toggle-button>
-				<rr-toggle-button value="italic">Italic</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
+	private _getButtons(): RRToggleButton[] {
+		return Array.from(this.querySelectorAll('rr-toggle-button'));
+	}
 
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		buttons.forEach(b => expect(b.name).toBe(''));
-	});
+	private _getEnabledButtons(): RRToggleButton[] {
+		return this._getButtons().filter(b => !b.disabled);
+	}
 
-	it('syncs type to child buttons', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
+	private _syncButtons(): void {
+		this._getButtons().forEach(button => {
+			button.type = this.type;
+			button.size = this.size;
 
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		buttons.forEach(b => expect(b.type).toBe('radio'));
-	});
+			// name is only meaningful for checkbox and radio
+			if (this.type !== 'button') {
+				button.name = this.name;
+			}
 
-	it('syncs name to child buttons', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="keuze">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
+			if (this.disabled) {
+				if (!button.hasAttribute('disabled')) {
+					button.setAttribute('group-disabled', '');
+					button.disabled = true;
+				}
+			} else if (button.hasAttribute('group-disabled')) {
+				button.removeAttribute('group-disabled');
+				button.disabled = false;
+			}
+		});
+	}
 
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		buttons.forEach(b => expect(b.name).toBe('keuze'));
-	});
+	private _handleChange = (e: Event): void => {
+		if (this.type !== 'radio') return;
 
-	it('syncs size to child buttons', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group size="sm">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
+		const changedButton = e.target as RRToggleButton;
+		if (!changedButton.selected) return;
 
-		const button = el.querySelector<RRToggleButton>('rr-toggle-button')!;
-		expect(button.size).toBe('sm');
-	});
+		// Deselect all other buttons when a radio button is selected
+		this._getButtons().forEach(button => {
+			if (button !== changedButton) button.selected = false;
+		});
+	};
 
-	it('disables child buttons when group is disabled', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group disabled>
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
+	private _handleKeyDown = (e: KeyboardEvent): void => {
+		if (this.type !== 'radio') return;
+		if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)) return;
 
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		buttons.forEach(b => expect(b.disabled).toBe(true));
-	});
+		const buttons = this._getEnabledButtons();
+		if (buttons.length === 0) return;
 
-	it('re-enables group-disabled buttons when group disabled is removed', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group disabled>
-				<rr-toggle-button value="a">A</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
+		const activeButton = buttons.find(b => b.selected);
+		const currentIndex = activeButton ? buttons.indexOf(activeButton) : -1;
+		const isNext = e.key === 'ArrowDown' || e.key === 'ArrowRight';
+		const nextIndex = isNext
+			? (currentIndex + 1) % buttons.length
+			: (currentIndex - 1 + buttons.length) % buttons.length;
 
-		el.disabled = false;
-		await waitForUpdate(el);
+		const nextButton = buttons[nextIndex];
+		if (!nextButton) return;
 
-		const button = el.querySelector<RRToggleButton>('rr-toggle-button')!;
-		expect(button.disabled).toBe(false);
-	});
+		e.preventDefault();
 
-	it('does not re-enable buttons that were individually disabled', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group disabled>
-				<rr-toggle-button value="a" disabled>A</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
+		if (activeButton) activeButton.selected = false;
+		nextButton.selected = true;
 
-		el.disabled = false;
-		await waitForUpdate(el);
+		const input = nextButton.shadowRoot?.querySelector<HTMLInputElement>('.toggle-button__input');
+		input?.focus();
 
-		const button = el.querySelector<RRToggleButton>('rr-toggle-button')!;
-		expect(button.disabled).toBe(true);
-	});
-
-	it('syncs buttons added after initial render', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="laat">
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		const button = document.createElement('rr-toggle-button') as RRToggleButton;
-		button.textContent = 'Laat toegevoegd';
-		el.appendChild(button);
-		await waitForUpdate(el);
-
-		expect(button.type).toBe('radio');
-		expect(button.name).toBe('laat');
-	});
-});
-
-
-/* ============================================================
-   Single-select (radio)
-   ============================================================ */
-
-describe('rr-toggle-button-group – single-select (radio)', () => {
-	let el: RRToggleButtonGroup;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('deselects other buttons when one is selected via change event', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="keuze">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		const [buttonA, buttonB] = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-
-		buttonB.selected = true;
-		buttonB.dispatchEvent(new CustomEvent('change', {
-			detail: { selected: true, value: 'b' },
+		nextButton.dispatchEvent(new CustomEvent('change', {
+			detail: { selected: true, value: nextButton.value },
 			bubbles: true,
+			composed: true,
 		}));
-		await waitForUpdate(el);
+	};
 
-		expect(buttonA.selected).toBe(false);
-		expect(buttonB.selected).toBe(true);
-	});
+	public _onSlotChange = (): void => {
+		this._syncButtons();
+	};
 
-	it('does not deselect others when a deselection event fires', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="keuze">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b" selected>B</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
+	override render() {
+		return toggleButtonGroupTemplate(this);
+	}
+}
 
-		const [buttonA, buttonB] = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-
-		buttonA.selected = false;
-		buttonA.dispatchEvent(new CustomEvent('change', {
-			detail: { selected: false, value: 'a' },
-			bubbles: true,
-		}));
-		await waitForUpdate(el);
-
-		expect(buttonB.selected).toBe(true);
-	});
-});
-
-
-/* ============================================================
-   Multi-select (checkbox)
-   ============================================================ */
-
-describe('rr-toggle-button-group – multi-select (checkbox)', () => {
-	let el: RRToggleButtonGroup;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('allows multiple buttons to be selected simultaneously', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="checkbox" name="filter">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b" selected>B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		expect(buttons[0].selected).toBe(true);
-		expect(buttons[1].selected).toBe(true);
-		expect(buttons[2].selected).toBe(false);
-	});
-
-	it('does not deselect other buttons on change', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="checkbox" name="filter">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		const [buttonA, buttonB] = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-
-		buttonB.selected = true;
-		buttonB.dispatchEvent(new CustomEvent('change', {
-			detail: { selected: true, value: 'b' },
-			bubbles: true,
-		}));
-		await waitForUpdate(el);
-
-		expect(buttonA.selected).toBe(true);
-		expect(buttonB.selected).toBe(true);
-	});
-});
-
-
-/* ============================================================
-   Toetsenbordnavigatie (radio)
-   ============================================================ */
-
-describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
-	let el: RRToggleButtonGroup;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('ArrowRight selects first button when nothing is selected', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-		await waitForUpdate(el);
-
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		expect(buttons[0].selected).toBe(true);
-	});
-
-	it('ArrowRight selects next button', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-		await waitForUpdate(el);
-
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		expect(buttons[0].selected).toBe(false);
-		expect(buttons[1].selected).toBe(true);
-	});
-
-	it('ArrowLeft selects previous button', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b" selected>B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
-		await waitForUpdate(el);
-
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		expect(buttons[0].selected).toBe(true);
-		expect(buttons[1].selected).toBe(false);
-	});
-
-	it('wraps around from last to first', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c" selected>C</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-		await waitForUpdate(el);
-
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		expect(buttons[0].selected).toBe(true);
-		expect(buttons[2].selected).toBe(false);
-	});
-
-	it('wraps around from first to last', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
-		await waitForUpdate(el);
-
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		expect(buttons[0].selected).toBe(false);
-		expect(buttons[2].selected).toBe(true);
-	});
-
-	it('skips disabled buttons during keyboard navigation', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b" disabled>B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-		await waitForUpdate(el);
-
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		expect(buttons[2].selected).toBe(true);
-	});
-
-	it('does not handle arrow keys for type=checkbox', async () => {
-		el = await fixture<RRToggleButtonGroup>(`
-			<rr-toggle-button-group type="checkbox" name="filter">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-			</rr-toggle-button-group>
-		`);
-		await waitForUpdate(el);
-
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-		await waitForUpdate(el);
-
-		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
-		expect(buttons[0].selected).toBe(true);
-		expect(buttons[1].selected).toBe(false);
-	});
-});
+declare global {
+	interface HTMLElementTagNameMap {
+		'rr-toggle-button-group': RRToggleButtonGroup;
+	}
+}

@@ -182,7 +182,7 @@ describe('rr-icon-button – title tooltip', () => {
 		expect(btn.getAttribute('title')).toBe('Toon wachtwoord');
 	});
 
-	it('sets empty title for lg size', async () => {
+	it('omits title attribute for lg size', async () => {
 		el = await fixture<RRIconButton>(`
 			<rr-icon-button size="lg">
 				<rr-icon name="download"></rr-icon>
@@ -191,10 +191,10 @@ describe('rr-icon-button – title tooltip', () => {
 		`);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
-		expect(btn.getAttribute('title')).toBe('');
+		expect(btn.getAttribute('title')).toBeNull();
 	});
 
-	it('sets empty title for lg size even when accessible-label is set', async () => {
+	it('omits title attribute for lg size even when accessible-label is set', async () => {
 		el = await fixture<RRIconButton>(`
 			<rr-icon-button size="lg" accessible-label="Toon wachtwoord">
 				<rr-icon name="eye"></rr-icon>
@@ -203,7 +203,7 @@ describe('rr-icon-button – title tooltip', () => {
 		`);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
-		expect(btn.getAttribute('title')).toBe('');
+		expect(btn.getAttribute('title')).toBeNull();
 	});
 });
 
