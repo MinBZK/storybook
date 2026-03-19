@@ -152,7 +152,7 @@ export class RRToggleButtonGroup extends LitElement {
 		}));
 	};
 
-	public _onSlotChange = (): void => {
+	_onSlotChange = (): void => {
 		this._syncButtons();
 	};
 
