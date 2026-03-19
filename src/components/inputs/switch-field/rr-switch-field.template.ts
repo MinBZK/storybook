@@ -11,6 +11,7 @@ export function switchFieldTemplate(component: RRSwitchField): TemplateResult {
 				<rr-switch
 					size="sm"
 					name=${component.name || nothing}
+					value=${component.value}
 					?checked=${component.checked}
 					?disabled=${component.disabled}
 					accessible-label=${component._labelText || nothing}
