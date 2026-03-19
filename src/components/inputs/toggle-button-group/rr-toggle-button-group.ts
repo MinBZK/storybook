@@ -66,12 +66,15 @@ export class RRToggleButtonGroup extends LitElement {
 		this.removeEventListener('keydown', this._handleKeyDown);
 	}
 
+	override firstUpdated(): void {
+		if (!this.accessibleLabel && !this.accessibleLabelledBy) {
+			console.warn('<rr-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+		}
+	}
+
 	override updated(changed: Map<PropertyKey, unknown>): void {
 		if (changed.has('type') || changed.has('name') || changed.has('size') || changed.has('disabled')) {
 			this._syncButtons();
-		}
-		if (!this.accessibleLabel && !this.accessibleLabelledBy) {
-			console.warn('<rr-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
 		}
 	}
 
