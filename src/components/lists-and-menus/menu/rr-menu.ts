@@ -96,6 +96,11 @@ export class RRMenuItem extends LitElement {
 		(this.closest('rr-menu') as unknown as { hidePopover?: () => void })?.hidePopover?.();
 	}
 
+	/** Programmatically select this item. */
+	select(): void {
+		this._handleClick();
+	}
+
 	override render() {
 		return menuItemTemplate.call(this, this.menuVariant);
 	}

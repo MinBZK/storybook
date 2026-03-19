@@ -262,7 +262,7 @@ export class RRComboBoxField extends LitElement {
 				e.preventDefault();
 				const highlighted = this._menu?.getHighlighted();
 				if (highlighted) {
-					highlighted._handleClick();
+					highlighted.select();
 				} else {
 					this.value = this._displayValue;
 					this._closeMenu();
