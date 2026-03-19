@@ -130,6 +130,7 @@ export class RRComboBoxField extends LitElement {
 		menu.anchorElement = this;
 		menu.placement = 'bottom-start';
 		menu.maxItems = COMBO_BOX_MAX_ITEMS;
+		menu.variant = 'listbox';
 		// Always prevent auto-focus so typing keeps focus on the input.
 		// The picker button moves focus explicitly when activated.
 		menu.noAutoFocus = true;

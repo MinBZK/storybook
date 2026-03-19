@@ -71,6 +71,10 @@ export class RRMenuItem extends LitElement {
 	@state()
 	_displayText = '';
 
+	/** Set by rr-menu. Not part of the public API. */
+	@property({ type: String, attribute: 'menu-variant' })
+	menuVariant: 'menu' | 'listbox' = 'menu';
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.addEventListener('focusin', () => {
@@ -93,7 +97,7 @@ export class RRMenuItem extends LitElement {
 	}
 
 	override render() {
-		return menuItemTemplate.call(this);
+		return menuItemTemplate.call(this, this.menuVariant);
 	}
 }
 
@@ -145,6 +149,14 @@ export class RRMenu extends LitElement {
 
 	@property({ type: String, reflect: true })
 	placement: string = 'bottom-start';
+
+	/**
+	 * Render variant. Use 'listbox' when the menu serves as a combobox popup —
+	 * this switches role to "listbox" and item roles to "option" per ARIA spec.
+	 * Default: 'menu'.
+	 */
+	@property({ type: String, reflect: true })
+	variant: 'menu' | 'listbox' = 'menu';
 
 	@property({ type: String, attribute: 'empty-text' })
 	emptyText = '';
@@ -210,6 +222,11 @@ export class RRMenu extends LitElement {
 			} else {
 				this.style.removeProperty('--_menu-max-items');
 			}
+		}
+		if (changedProperties.has('variant')) {
+			Array.from(this.querySelectorAll('rr-menu-item')).forEach(item => {
+				(item as RRMenuItem).menuVariant = this.variant;
+			});
 		}
 	}
 
@@ -506,6 +523,9 @@ export class RRMenu extends LitElement {
 		this._updateDividerVisibility();
 		this._updateHighlight();
 		this._updateEmptyState();
+		Array.from(this.querySelectorAll('rr-menu-item')).forEach(item => {
+			(item as RRMenuItem).menuVariant = this.variant;
+		});
 
 		await this.reposition();
 
@@ -519,7 +539,7 @@ export class RRMenu extends LitElement {
 	};
 
 	override render() {
-		return menuTemplate.call(this, this._isEmpty);
+		return menuTemplate.call(this, this._isEmpty, this.variant);
 	}
 }
 

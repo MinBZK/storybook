@@ -1,10 +1,15 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { RRMenuItem, RRMenu } from './rr-menu.js';
 
-const roleMap = {
-	button: 'menuitem',
-	checkbox: 'menuitemcheckbox',
-	radio: 'menuitemradio',
+const menuRoleMap = {
+	menu: 'menu',
+	listbox: 'listbox',
+} as const;
+
+const itemRoleMap = {
+	button: { menu: 'menuitem', listbox: 'option' },
+	checkbox: { menu: 'menuitemcheckbox', listbox: 'option' },
+	radio: { menu: 'menuitemradio', listbox: 'option' },
 } as const;
 
 function parseBold(text: string): TemplateResult {
@@ -12,10 +17,10 @@ function parseBold(text: string): TemplateResult {
 	return html`${parts.map((part, i) => i % 2 === 1 ? html`<b>${part}</b>` : part)}`;
 }
 
-export function menuTemplate(this: RRMenu, isEmpty: boolean) {
+export function menuTemplate(this: RRMenu, isEmpty: boolean, variant: 'menu' | 'listbox') {
 	return html`
 		<div class="menu"
-			role="menu"
+			role=${menuRoleMap[variant]}
 			tabindex="-1"
 		>
 			<slot></slot>
@@ -26,14 +31,16 @@ export function menuTemplate(this: RRMenu, isEmpty: boolean) {
 	`;
 }
 
-export function menuItemTemplate(this: RRMenuItem) {
-	const hasCheckState = this.type !== 'button';
+export function menuItemTemplate(this: RRMenuItem, variant: 'menu' | 'listbox' = 'menu') {
+	const hasCheckState = this.type !== 'button' && variant === 'menu';
+	const role = itemRoleMap[this.type][variant];
 	return html`
 		<button class="menu__item"
 			type="button"
-			role=${roleMap[this.type]}
+			role=${role}
 			?disabled=${this.disabled}
 			aria-checked=${hasCheckState ? String(this.selected) : nothing}
+			aria-selected=${variant === 'listbox' ? String(this.selected) : nothing}
 			@click=${this._handleClick}
 		>
 			${hasCheckState ? html`
