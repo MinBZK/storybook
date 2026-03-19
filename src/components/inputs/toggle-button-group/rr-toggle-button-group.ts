@@ -144,8 +144,8 @@ export class RRToggleButtonGroup extends LitElement {
 		const buttons = this._getEnabledButtons();
 		if (buttons.length === 0) return;
 
-		const activeButton = buttons.find(b => b.selected) ?? buttons[0];
-		const currentIndex = buttons.indexOf(activeButton);
+		const activeButton = buttons.find(b => b.selected);
+		const currentIndex = activeButton ? buttons.indexOf(activeButton) : -1;
 		const isNext = e.key === 'ArrowDown' || e.key === 'ArrowRight';
 		const nextIndex = isNext
 			? (currentIndex + 1) % buttons.length
