@@ -56,7 +56,6 @@ export class RRToggleButtonGroup extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		this._updateRole();
 		this.addEventListener('change', this._handleChange);
 		this.addEventListener('keydown', this._handleKeyDown);
 	}
@@ -68,9 +67,6 @@ export class RRToggleButtonGroup extends LitElement {
 	}
 
 	override updated(changed: Map<PropertyKey, unknown>): void {
-		if (changed.has('type')) {
-			this._updateRole();
-		}
 		if (changed.has('type') || changed.has('name') || changed.has('size') || changed.has('disabled')) {
 			this._syncButtons();
 		}
@@ -88,11 +84,6 @@ export class RRToggleButtonGroup extends LitElement {
 				this.removeAttribute('aria-labelledby');
 			}
 		}
-	}
-
-	private _updateRole(): void {
-		const role = this.type === 'radio' ? 'radiogroup' : this.type === 'button' ? 'toolbar' : 'group';
-		this.setAttribute('role', role);
 	}
 
 	private _getButtons(): RRToggleButton[] {
