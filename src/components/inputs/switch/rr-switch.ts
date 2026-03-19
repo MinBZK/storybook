@@ -12,7 +12,7 @@
  * @attr {string}  accessible-label  - Accessible label forwarded as aria-label to the native input.
  *                                     Required when using rr-switch without rr-switch-field.
  *
- * @fires change - When the switch state changes; detail: { checked: boolean }
+ * @fires change - When the switch state changes; detail: { checked: boolean, value: string }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -37,6 +37,9 @@ export class RRSwitch extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
+	@property({ type: String })
+	value = 'on';
+
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (!this.accessibleLabel) {
 			console.warn('<rr-switch>: No accessible-label provided. Use rr-switch-field for labeled usage, or provide an accessible-label attribute for screen reader accessibility.');
@@ -47,7 +50,7 @@ export class RRSwitch extends LitElement {
 		if (this.disabled) return;
 		this.checked = !this.checked;
 		this.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: this.checked },
+			detail: { checked: this.checked, value: this.value },
 			bubbles: true,
 			composed: true,
 		}));
@@ -58,7 +61,7 @@ export class RRSwitch extends LitElement {
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
 		this.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: this.checked },
+			detail: { checked: this.checked, value: this.value },
 			bubbles: true,
 			composed: true,
 		}));

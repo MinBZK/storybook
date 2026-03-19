@@ -9,6 +9,7 @@ export function switchTemplate(component: RRSwitch): TemplateResult {
 			role="switch"
 			.checked=${component.checked}
 			?disabled=${component.disabled}
+			value=${component.value}
 			aria-label=${component.accessibleLabel || nothing}
 			@change=${component._handleChange}
 		>

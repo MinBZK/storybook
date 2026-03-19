@@ -111,6 +111,7 @@ describe('rr-switch – change event', () => {
 
 		expect(detail).toBeDefined();
 		expect(detail.checked).toBe(true);
+		expect(detail.value).toBe('on');
 	});
 
 	it('does not toggle when disabled', async () => {
