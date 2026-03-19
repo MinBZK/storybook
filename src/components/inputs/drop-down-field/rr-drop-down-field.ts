@@ -9,6 +9,7 @@
  * @attr {string}  size     - Grootte: 'sm' | 'md' (standaard: 'md')
  * @attr {boolean} disabled - Uitgeschakelde toestand
  * @attr {string}  name     - Naam voor formulierverwerking
+ * @attr {string}  accessible-label - Toegankelijk label (aria-label) voor de native select
  *
  * @slot - Native <option> elementen
  *
@@ -47,10 +48,14 @@ export class RRDropDownField extends LitElement {
 	@property({ type: String })
 	name = '';
 
+	/** Accessible label forwarded as aria-label to the native select. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
 	@state()
 	_displayValue = '';
 
-	@query('.drop-down-field__select')
+	@query('.drop-down-field__native')
 	_select!: HTMLSelectElement;
 
 	override firstUpdated(): void {
