@@ -299,6 +299,12 @@ export class RRSegmentedControl extends LitElement {
 		}
 	};
 
+	/**
+	 * Handles arrow key navigation for radio type.
+	 * For checkbox type, keyboard navigation is intentionally omitted —
+	 * each native checkbox input is individually Tab-focusable and
+	 * Space-toggleable per the native checkbox interaction pattern.
+	 */
 	private _handleKeydown = (e: KeyboardEvent): void => {
 		if (this.disabled || this.type === 'checkbox') return;
 
