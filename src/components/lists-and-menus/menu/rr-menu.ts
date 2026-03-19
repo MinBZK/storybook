@@ -98,7 +98,7 @@ export class RRMenuItem extends LitElement {
 			bubbles: true,
 			composed: true,
 		}));
-		(this.closest('rr-menu') as unknown as { hidePopover?: () => void })?.hidePopover?.();
+		(this.closest('rr-menu') as HTMLElement)?.hidePopover?.();
 	}
 
 	/** Programmatically select this item. */
@@ -257,9 +257,9 @@ export class RRMenu extends LitElement {
 		const path = event.composedPath();
 		if (!path.includes(anchorEl)) return;
 		if (this._isOpen) {
-			(this as unknown as { hidePopover: () => void }).hidePopover();
+			(this as HTMLElement).hidePopover();
 		} else {
-			(this as unknown as { showPopover: () => void }).showPopover();
+			(this as HTMLElement).showPopover();
 		}
 	};
 
@@ -507,7 +507,7 @@ export class RRMenu extends LitElement {
 			}
 			case 'Escape': {
 				event.preventDefault();
-				(this as unknown as { hidePopover: () => void }).hidePopover();
+				(this as HTMLElement).hidePopover();
 				const anchorEl = this._getAnchorEl();
 				(anchorEl as HTMLElement | null)?.focus();
 				break;
