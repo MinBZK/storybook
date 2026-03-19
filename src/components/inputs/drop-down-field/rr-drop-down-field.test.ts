@@ -143,6 +143,13 @@ describe('rr-drop-down-field – accessibility', () => {
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 });
+
+
+/* ============================================================
+   Change event
+   ============================================================ */
+
+describe('rr-drop-down-field – change event', () => {
 	let el: RRDropDownField;
 
 	afterEach(() => {

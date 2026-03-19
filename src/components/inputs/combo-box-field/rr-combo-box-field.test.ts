@@ -220,10 +220,11 @@ describe('rr-combo-box-field – Popover API', () => {
 
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-		// Simulate missing Popover API on the menu element
-		const menu = document.getElementById(el._menuId)!;
-		const original = Object.getOwnPropertyDescriptor(menu, 'showPopover');
-		Object.defineProperty(menu, 'showPopover', { value: undefined, configurable: true });
+		// Simulate missing Popover API by deleting showPopover from the prototype
+		const proto = HTMLElement.prototype;
+		const original = proto.showPopover;
+		// @ts-ignore
+		delete proto.showPopover;
 
 		el._openMenu(false);
 
@@ -231,6 +232,6 @@ describe('rr-combo-box-field – Popover API', () => {
 			expect.stringContaining('Popover API')
 		);
 
-		if (original) Object.defineProperty(menu, 'showPopover', original);
+		proto.showPopover = original;
 	});
 });
