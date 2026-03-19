@@ -3,7 +3,7 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { RRDropDownField } from './rr-drop-down-field.ts';
 import './rr-drop-down-field.ts';
 
-function selectFixture(selectedValue = ''): string {
+function selectFixture(): string {
 	return `
 		<rr-drop-down-field>
 			<select name="land" aria-label="Land">
