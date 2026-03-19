@@ -108,7 +108,10 @@ export class RRComboBoxField extends LitElement {
 		if (this._menu) {
 			this._menu.removeEventListener('toggle', this._handleMenuToggle);
 			this._menu.removeEventListener('select', this._handleMenuSelect);
-			this._menu.remove();
+			this._menu.removeEventListener('keydown', this._handleMenuKeydown);
+			// Return the menu to the host's light DOM so _onSlotChange can
+			// pick it up again if this component is reconnected.
+			this.appendChild(this._menu);
 			this._menu = null;
 		}
 	}
@@ -132,6 +135,7 @@ export class RRComboBoxField extends LitElement {
 		menu.noAutoFocus = true;
 		menu.addEventListener('toggle', this._handleMenuToggle);
 		menu.addEventListener('select', this._handleMenuSelect);
+		menu.addEventListener('keydown', this._handleMenuKeydown);
 		document.body.appendChild(menu);
 		this._updateMenuWidth();
 	}
@@ -197,6 +201,18 @@ export class RRComboBoxField extends LitElement {
 
 	// — Handlers ————————————————————————————————————————————————————————————
 
+	/**
+	 * Handles Tab in the menu. Since the menu lives at document.body, the browser's
+	 * natural Tab order would skip to the browser chrome. Instead, close the menu
+	 * and return focus to the input so the user can Tab forward from there.
+	 */
+	private _handleMenuKeydown = (e: KeyboardEvent): void => {
+		if (e.key !== 'Tab') return;
+		e.preventDefault();
+		this._closeMenu();
+		this._input?.focus();
+	};
+
 	public _handleInput(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this._displayValue = input.value;
@@ -209,8 +225,12 @@ export class RRComboBoxField extends LitElement {
 		}));
 	}
 
-	/** Accept a custom typed value when focus leaves the input. */
-	public _handleBlur(): void {
+	/** Accept a custom typed value and close the menu when focus leaves the input. */
+	public _handleBlur(e: FocusEvent): void {
+		const relatedTarget = e.relatedTarget as Node | null;
+		if (!relatedTarget || !this._menu?.contains(relatedTarget)) {
+			this._closeMenu();
+		}
 		if (this._displayValue !== '' && this._displayValue !== this.value) {
 			this.value = this._displayValue;
 			this.dispatchEvent(new CustomEvent('change', {
@@ -238,10 +258,6 @@ export class RRComboBoxField extends LitElement {
 			case 'ArrowUp':
 				e.preventDefault();
 				this._menu?.focusItem('prev');
-				break;
-			case 'Tab':
-				e.preventDefault();
-				this._menu?.focusItem('first');
 				break;
 			case 'Enter': {
 				e.preventDefault();
