@@ -70,6 +70,9 @@ export class RRToggleButtonGroup extends LitElement {
 		if (changed.has('type') || changed.has('name') || changed.has('size') || changed.has('disabled')) {
 			this._syncButtons();
 		}
+		if (!this.accessibleLabel && !this.accessibleLabelledBy) {
+			console.warn('<rr-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+		}
 	}
 
 	private _getButtons(): RRToggleButton[] {
