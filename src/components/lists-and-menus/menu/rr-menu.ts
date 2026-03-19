@@ -77,7 +77,7 @@ export class RRMenuItem extends LitElement {
 	}
 
 	/** Set by rr-menu. Not part of the public API. */
-	@property({ type: String, attribute: 'menu-variant' })
+	@property({ attribute: false })
 	menuVariant: 'menu' | 'listbox' = 'menu';
 
 	override connectedCallback(): void {
