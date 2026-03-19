@@ -14,6 +14,7 @@
  * @attr {boolean} full-width       - Stretches to fill the container width
  * @attr {string}  width            - Fixed width; the input stretches to fill remaining space
  * @attr {boolean} hide-spin-buttons - When set, hides the decrement and increment buttons
+ * @attr {string}  accessible-label  - Accessible label (aria-label) forwarded to the native input
  *
  * @fires input  - Wanneer de waarde verandert; detail: { value: number }
  * @fires change - Wanneer de waarde wordt bevestigd; detail: { value: number }
@@ -58,6 +59,10 @@ export class RRNumberField extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'hide-spin-buttons' })
 	hideSpinButtons = false;
+
+	/** Accessible label forwarded as aria-label to the native input. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
 	/** Overschrijf een of meer vertalingssleutels. Niet-opgegeven sleutels vallen terug op Nederlands. */
 	@property({ type: Object })
