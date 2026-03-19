@@ -120,7 +120,33 @@ describe('rr-segmented-control – state sync', () => {
 		expect(items[1].disabled).toBe(true);
 	});
 
-	it('propagates content-type to items', async () => {
+	it('re-enables group-disabled items when parent disabled is removed', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control disabled>
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		el.disabled = false;
+		await waitForUpdate(el);
+		getItems(el).forEach(item => expect(item.disabled).toBe(false));
+	});
+
+	it('does not re-enable individually disabled items when parent disabled is removed', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control disabled>
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="b" disabled>B</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		await waitForUpdate(el);
+		el.disabled = false;
+		await waitForUpdate(el);
+		const items = getItems(el);
+		expect(items[0].disabled).toBe(false);
+		expect(items[1].disabled).toBe(true);
+	});
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control content-type="icon">
 				<rr-segmented-control-item value="a">A</rr-segmented-control-item>

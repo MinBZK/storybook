@@ -173,22 +173,23 @@ export class RRSegmentedControl extends LitElement {
 		return this.value ? this.value.split(' ').filter(Boolean) : [];
 	}
 
-	private _individuallyDisabled = new WeakSet<RRSegmentedControlItem>();
-
 	private _syncItems(): void {
 		const items = this._getItems();
 		const selectedValues = this._getSelectedValues();
 
 		if (this.disabled) {
 			items.forEach(item => {
-				if (item.hasAttribute('disabled') && !this._individuallyDisabled.has(item)) {
-					this._individuallyDisabled.add(item);
+				if (!item.hasAttribute('disabled')) {
+					item.setAttribute('group-disabled', '');
+					item.disabled = true;
 				}
-				item.disabled = true;
 			});
 		} else {
 			items.forEach(item => {
-				item.disabled = this._individuallyDisabled.has(item) || item.hasAttribute('disabled');
+				if (item.hasAttribute('group-disabled')) {
+					item.removeAttribute('group-disabled');
+					item.disabled = false;
+				}
 			});
 		}
 

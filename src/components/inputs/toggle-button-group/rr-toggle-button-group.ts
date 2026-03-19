@@ -91,11 +91,11 @@ export class RRToggleButtonGroup extends LitElement {
 			if (this.disabled) {
 				if (!button.hasAttribute('disabled')) {
 					// Mark as group-disabled so we can restore it when the group re-enables
-					button.setAttribute('data-group-disabled', '');
+					button.setAttribute('group-disabled', '');
 					button.disabled = true;
 				}
-			} else if (button.hasAttribute('data-group-disabled')) {
-				button.removeAttribute('data-group-disabled');
+			} else if (button.hasAttribute('group-disabled')) {
+				button.removeAttribute('group-disabled');
 				button.disabled = false;
 			}
 		});
