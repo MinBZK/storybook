@@ -79,13 +79,17 @@ export class RRToggleButton extends LitElement {
 		this._observer = null;
 	}
 
-	override updated(): void {
+	override firstUpdated(): void {
+		this._detectIcon();
 		const iconOnly = this._iconName !== null && !this._hasText;
-		this.toggleAttribute('icon-only', iconOnly);
-
 		if (iconOnly && !this.accessibleLabel) {
 			console.warn('<rr-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
 		}
+	}
+
+	override updated(): void {
+		const iconOnly = this._iconName !== null && !this._hasText;
+		this.toggleAttribute('icon-only', iconOnly);
 	}
 
 	private _getEffectiveNodes(): Node[] {
