@@ -313,7 +313,7 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
@@ -330,7 +330,7 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
@@ -347,7 +347,7 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
@@ -365,7 +365,7 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
@@ -383,7 +383,7 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
@@ -401,7 +401,7 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
@@ -419,7 +419,7 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
@@ -435,7 +435,7 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<RRToggleButton>('rr-toggle-button');
