@@ -9,6 +9,7 @@ export function comboBoxFieldTemplate(component: RRComboBoxField): TemplateResul
 			<input class="combo-box-field__input"
 				type="text"
 				role="combobox"
+				aria-label=${component.accessibleLabel || nothing}
 				aria-expanded=${component._isOpen ? 'true' : 'false'}
 				aria-controls=${component._menuId}
 				aria-autocomplete="list"

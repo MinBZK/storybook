@@ -16,6 +16,7 @@
  * @attr {string}  placeholder  - Placeholder text for the input
  * @attr {boolean} disabled     - Disabled state
  * @attr {string}  name         - Input name for form submission
+ * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the input. Required for screen reader accessibility.
  * @attr {number}  max-items    - Maximum visible items before scrolling (default: 8)
  * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
  *
@@ -70,6 +71,10 @@ export class RRComboBoxField extends LitElement {
 	/** Maximum number of visible menu items before scrolling. Defaults to 8. */
 	@property({ type: Number, attribute: 'max-items' })
 	maxItems = 8;
+
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
 	@property({ type: Object })
 	translations: Partial<RRComboBoxFieldTranslations> = {};
 
@@ -100,6 +105,12 @@ export class RRComboBoxField extends LitElement {
 	}
 
 	// — Lifecycle ————————————————————————————————————————————————————————————
+
+	override firstUpdated(): void {
+		if (!this.accessibleLabel) {
+			console.warn('<rr-combo-box-field>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
+		}
+	}
 
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('maxItems') && this._menu) {
