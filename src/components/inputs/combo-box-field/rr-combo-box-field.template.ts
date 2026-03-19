@@ -21,13 +21,12 @@ export function comboBoxFieldTemplate(component: RRComboBoxField): TemplateResul
 				@keydown=${component._handleKeydown}
 				@blur=${component._handleBlur}
 			>
-			<div class="combo-box-field__picker"
-				@click=${component._toggleMenu}
-			>
+			<div class="combo-box-field__picker">
 				<rr-icon-button
 					variant="neutral-tinted"
 					size="sm"
 					?disabled=${component.disabled}
+					@click=${component._toggleMenu}
 				>
 					<rr-icon name="chevron-down"></rr-icon>
 					${component._t('components.combo-box-field.open-picker-action')}
