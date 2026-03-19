@@ -139,6 +139,8 @@ export class RRToggleButtonGroup extends LitElement {
 
 		e.preventDefault();
 
+		// Directly mutate selected rather than calling toggle() to avoid triggering
+		// _handleChange which would attempt to deselect other buttons a second time.
 		if (activeButton) activeButton.selected = false;
 		nextButton.selected = true;
 
