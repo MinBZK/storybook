@@ -26,19 +26,19 @@ describe('rr-toggle-button-group', () => {
 	it('has role=group by default (type=checkbox)', async () => {
 		el = await fixture('<rr-toggle-button-group type="checkbox"></rr-toggle-button-group>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.toggle-button-group')!.getAttribute('role')).toBe('group');
+		expect(el.getAttribute('role')).toBe('group');
 	});
 
 	it('has role=radiogroup for type=radio', async () => {
 		el = await fixture('<rr-toggle-button-group type="radio"></rr-toggle-button-group>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.toggle-button-group')!.getAttribute('role')).toBe('radiogroup');
+		expect(el.getAttribute('role')).toBe('radiogroup');
 	});
 
 	it('has role=group for type=button', async () => {
 		el = await fixture('<rr-toggle-button-group type="button"></rr-toggle-button-group>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.toggle-button-group')!.getAttribute('role')).toBe('group');
+		expect(el.getAttribute('role')).toBe('group');
 	});
 
 	it('warns when no accessible name is provided', async () => {

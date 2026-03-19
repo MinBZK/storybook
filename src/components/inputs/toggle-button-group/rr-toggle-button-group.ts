@@ -56,6 +56,7 @@ export class RRToggleButtonGroup extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
+		this._syncRole();
 		this.addEventListener('change', this._handleChange);
 		this.addEventListener('keydown', this._handleKeyDown);
 	}
@@ -64,6 +65,10 @@ export class RRToggleButtonGroup extends LitElement {
 		super.disconnectedCallback();
 		this.removeEventListener('change', this._handleChange);
 		this.removeEventListener('keydown', this._handleKeyDown);
+	}
+
+	private _syncRole(): void {
+		this.setAttribute('role', this.type === 'radio' ? 'radiogroup' : 'group');
 	}
 
 	override firstUpdated(): void {
@@ -75,6 +80,23 @@ export class RRToggleButtonGroup extends LitElement {
 	override updated(changed: Map<PropertyKey, unknown>): void {
 		if (changed.has('type') || changed.has('name') || changed.has('size') || changed.has('disabled')) {
 			this._syncButtons();
+		}
+		if (changed.has('type')) {
+			this._syncRole();
+		}
+		if (changed.has('accessibleLabel')) {
+			if (this.accessibleLabel) {
+				this.setAttribute('aria-label', this.accessibleLabel);
+			} else {
+				this.removeAttribute('aria-label');
+			}
+		}
+		if (changed.has('accessibleLabelledBy')) {
+			if (this.accessibleLabelledBy) {
+				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+			} else {
+				this.removeAttribute('aria-labelledby');
+			}
 		}
 	}
 
@@ -154,7 +176,7 @@ export class RRToggleButtonGroup extends LitElement {
 		}));
 	};
 
-	_onSlotChange = (): void => {
+	public _onSlotChange = (): void => {
 		this._syncButtons();
 	};
 
