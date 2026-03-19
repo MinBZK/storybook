@@ -48,7 +48,7 @@ export { RRSwitch } from './inputs/switch/rr-switch.ts';
 export { RRSwitchField } from './inputs/switch-field/rr-switch-field.ts';
 export { RRSegmentedControl } from './inputs/segmented-control/rr-segmented-control.ts';
 export { RRToggleButton } from './inputs/toggle-button/rr-toggle-button.ts';
-export { RRToggleButton } from './inputs/toggle-button-group/rr-toggle-button-group.ts';
+export { RRToggleButtonGroup } from './inputs/toggle-button-group/rr-toggle-button-group.ts';
 
 export { RRToken } from './inputs/token/rr-token.ts';
 
