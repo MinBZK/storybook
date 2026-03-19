@@ -181,7 +181,20 @@ describe('rr-token – menu', () => {
 		if (el) cleanup(el);
 	});
 
-	it('clicking menu toggles open state', async () => {
+	it('sets aria-controls on menu button when controls attribute is set', async () => {
+		el = await fixture<RRToken>('<rr-token control="menu" controls="my-menu">Label</rr-token>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button.token')!;
+		expect(button.getAttribute('aria-controls')).toBe('my-menu');
+	});
+
+	it('does not set aria-controls when controls attribute is not set', async () => {
+		el = await fixture<RRToken>('<rr-token control="menu">Label</rr-token>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button.token')!;
+		expect(button.hasAttribute('aria-controls')).toBe(false);
+	});
+});
 		el = await fixture<RRToken>('<rr-token control="menu">Label</rr-token>');
 		await waitForUpdate(el);
 

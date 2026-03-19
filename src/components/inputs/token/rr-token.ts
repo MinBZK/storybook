@@ -10,13 +10,14 @@
  * @attr {boolean}                        open          - Whether the menu is open (menu only)
  * @attr {boolean}                        disabled      - Disabled state
  * @attr {string}                         dismiss-label - Accessible label for the dismiss button (default: 'Verwijder')
+ * @attr {string}                         controls      - ID of the associated popup element (aria-controls).
+ *                                                        Required for ARIA compliance when control="menu".
  *
  * @slot - Token text
  *
  * @fires dismiss - When the dismiss button is clicked
  * @fires toggle  - When the menu is clicked; detail: { open: boolean }
  */
-
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { tokenStyles } from './rr-token.styles.ts';
@@ -41,6 +42,10 @@ export class RRToken extends LitElement {
 
 	@property({ type: String, attribute: 'dismiss-label' })
 	dismissLabel = 'Verwijder';
+
+	/** ID of the associated popup element. Required for ARIA compliance when control="menu". */
+	@property({ type: String, reflect: true })
+	controls = '';
 
 	_handleDismiss(e: Event): void {
 		e.stopPropagation();

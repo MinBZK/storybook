@@ -1,7 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { RRToken } from './rr-token.js';
 
-
 export function tokenTemplate(component: RRToken): TemplateResult {
 	if (component.control === 'menu') {
 		return html`
@@ -10,6 +9,7 @@ export function tokenTemplate(component: RRToken): TemplateResult {
 				type="button"
 				?disabled=${component.disabled}
 				aria-expanded=${component.open}
+				aria-controls=${component.controls || nothing}
 				@click=${component._handleMenuClick}
 			>
 				<span class="token__text"><slot></slot></span>
