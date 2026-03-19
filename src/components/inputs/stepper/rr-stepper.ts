@@ -77,6 +77,35 @@ export class RRStepper extends LitElement {
 		}
 	}
 
+	public _handleKeydown(e: KeyboardEvent): void {
+		switch (e.key) {
+			case 'ArrowUp':
+			case 'ArrowRight':
+				e.preventDefault();
+				this._increment();
+				break;
+			case 'ArrowDown':
+			case 'ArrowLeft':
+				e.preventDefault();
+				this._decrement();
+				break;
+			case 'Home':
+				e.preventDefault();
+				if (isFinite(this.min)) {
+					this.value = this.min;
+					this._dispatchChange();
+				}
+				break;
+			case 'End':
+				e.preventDefault();
+				if (isFinite(this.max)) {
+					this.value = this.max;
+					this._dispatchChange();
+				}
+				break;
+		}
+	}
+
 	private _dispatchChange(): void {
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: this.value },
