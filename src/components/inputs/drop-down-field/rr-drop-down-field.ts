@@ -92,7 +92,8 @@ export class RRDropDownField extends LitElement {
 		this._displayValue = this._select.selectedOptions[0]?.text ?? '';
 	}
 
-	private _handleSelectChange = (): void => {
+	private _handleSelectChange = (e: Event): void => {
+		e.stopPropagation();
 		this._syncDisplayValue();
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: this._select?.value ?? '' },
