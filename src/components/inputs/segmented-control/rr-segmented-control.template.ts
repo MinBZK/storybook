@@ -22,10 +22,14 @@ export function segmentedControlItemTemplate(component: RRSegmentedControlItem):
 				aria-label=${isIcon ? labelText : nothing}
 				@change=${component._handleChange}
 			>
-			<span class="segmented-control__item-icon">
+			<span class="segmented-control__item-icon"
+				aria-hidden=${component.contentType === 'icon' ? nothing : 'true'}
+			>
 				<slot name="icon"></slot>
 			</span>
-			<span class="segmented-control__item-text">
+			<span class="segmented-control__item-text"
+				aria-hidden=${component.contentType === 'text' ? nothing : 'true'}
+			>
 				<slot @slotchange=${component._onDefaultSlotChange}></slot>
 			</span>
 			<div class="segmented-control__item-indicator"></div>
