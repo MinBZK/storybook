@@ -6,23 +6,21 @@ import '../../content/icon/rr-icon.ts';
 export function comboBoxFieldTemplate(component: RRComboBoxField): TemplateResult {
 	return html`
 		<div class="combo-box-field">
-			<div class="combo-box-field__input">
-				<input class="combo-box-field__native"
-					type="text"
-					role="combobox"
-					aria-expanded=${component._isOpen ? 'true' : 'false'}
-					aria-controls=${component._menuId}
-					aria-autocomplete="list"
-					aria-haspopup="listbox"
-					.value=${component._displayValue}
-					placeholder=${component.placeholder || nothing}
-					?disabled=${component.disabled}
-					name=${component.name || nothing}
-					@input=${component._handleInput}
-					@keydown=${component._handleKeydown}
-					@blur=${component._handleBlur}
-				>
-			</div>
+			<input class="combo-box-field__input"
+				type="text"
+				role="combobox"
+				aria-expanded=${component._isOpen ? 'true' : 'false'}
+				aria-controls=${component._menuId}
+				aria-autocomplete="list"
+				aria-haspopup="listbox"
+				.value=${component._displayValue}
+				placeholder=${component.placeholder || nothing}
+				?disabled=${component.disabled}
+				name=${component.name || nothing}
+				@input=${component._handleInput}
+				@keydown=${component._handleKeydown}
+				@blur=${component._handleBlur}
+			>
 			<div class="combo-box-field__picker"
 				@click=${component._toggleMenu}
 			>

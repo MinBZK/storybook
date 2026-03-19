@@ -81,7 +81,7 @@ export class RRComboBoxField extends LitElement {
 	private _menu: RRMenu | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
 
-	@query('.combo-box-field__native')
+	@query('.combo-box-field__input')
 	_input!: HTMLInputElement;
 
 	// — i18n ——————————————————————————————————————————————————————————————————

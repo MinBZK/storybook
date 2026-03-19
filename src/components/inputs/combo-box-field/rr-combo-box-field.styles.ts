@@ -37,7 +37,7 @@ export const comboBoxFieldStyles = css`
 		--_background-color: var(--semantics-input-fields-is-autofill-background-color);
 	}
 
-	.combo-box-field:focus-within {
+	.combo-box-field:has(.combo-box-field__input:focus-visible) {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
@@ -46,30 +46,26 @@ export const comboBoxFieldStyles = css`
 	/* # Input */
 
 	.combo-box-field__input {
-		flex: 1;
-		min-width: 0;
-		padding: 0 var(--primitives-space-12);
-	}
-
-	.combo-box-field__native {
 		appearance: none;
 		border: none;
 		background: transparent;
 		margin: 0;
-		padding: 0;
+		padding: 0 var(--primitives-space-12);
 		outline: none;
 		box-sizing: border-box;
+		flex: 1;
+		min-width: 0;
 		width: 100%;
 		font: var(--semantics-input-fields-md-text-font);
 		color: var(--semantics-content-color);
 	}
 
-	.combo-box-field__native::placeholder {
+	.combo-box-field__input::placeholder {
 		color: var(--semantics-input-fields-placeholder-color);
 	}
 
-	.combo-box-field__native:-webkit-autofill,
-	.combo-box-field__native:autofill {
+	.combo-box-field__input:-webkit-autofill,
+	.combo-box-field__input:autofill {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
 
