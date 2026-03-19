@@ -194,7 +194,8 @@ describe('rr-token – menu', () => {
 		const button = el.shadowRoot!.querySelector('button.token')!;
 		expect(button.hasAttribute('aria-controls')).toBe(false);
 	});
-});
+
+	it('clicking menu toggles open state', async () => {
 		el = await fixture<RRToken>('<rr-token control="menu">Label</rr-token>');
 		await waitForUpdate(el);
 
