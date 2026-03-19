@@ -20,7 +20,7 @@ describe('rr-radio-button-field', () => {
 	it('renders a label element', async () => {
 		el = await fixture('<rr-radio-button-field>Optie 1</rr-radio-button-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('label')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.radio-button-field__label')).not.toBeNull();
 	});
 
 	it('renders rr-radio-button in shadow DOM', async () => {
