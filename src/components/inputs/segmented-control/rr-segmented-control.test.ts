@@ -168,9 +168,21 @@ describe('rr-segmented-control – state sync', () => {
 });
 
 
-/* ============================================================
-   Radio change event
-   ============================================================ */
+	it('ArrowRight does not change selection for type="checkbox"', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control type="checkbox">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		(el as RRSegmentedControl).values = ['a'];
+		await waitForUpdate(el);
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		await waitForUpdate(el);
+		const items = getItems(el as RRSegmentedControl);
+		expect(items[0].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
 
 describe('rr-segmented-control – radio change', () => {
 	let el: RRSegmentedControl;
@@ -250,12 +262,7 @@ describe('rr-segmented-control – checkbox change', () => {
 });
 
 
-/* ============================================================
-   Keyboard navigation
-   ============================================================ */
-
 describe('rr-segmented-control – keyboard navigation', () => {
-	let el: RRSegmentedControl;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -264,6 +271,22 @@ describe('rr-segmented-control – keyboard navigation', () => {
 	function pressKey(key: string) {
 		el.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
 	}
+
+	it('ArrowRight does nothing in checkbox mode', async () => {
+		el = await fixture<RRSegmentedControl>(`
+			<rr-segmented-control type="checkbox">
+				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+			</rr-segmented-control>
+		`);
+		(el as RRSegmentedControl).values = ['a'];
+		await waitForUpdate(el);
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		await waitForUpdate(el);
+		const items = getItems(el as RRSegmentedControl);
+		expect(items[0].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
 
 	it('ArrowRight selects next item', async () => {
 		el = await fixture<RRSegmentedControl>(radioFixture('a'));
