@@ -187,3 +187,38 @@ describe('rr-stepper – change event', () => {
 		expect(changeFired).toBe(false);
 	});
 });
+
+
+/* ============================================================
+   Translations
+   ============================================================ */
+
+describe('rr-stepper – translations', () => {
+	let el: RRStepper;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('uses Dutch defaults when no translations are set', async () => {
+		el = await fixture<RRStepper>('<rr-stepper></rr-stepper>');
+		await waitForUpdate(el);
+		expect(el._t('components.stepper.decrement-action')).toBe('Verlaag aantal');
+		expect(el._t('components.stepper.increment-action')).toBe('Verhoog aantal');
+		expect(el._t('components.stepper.to-adjust-value-action')).toBe('Aantal aanpassen');
+	});
+
+	it('overrides a single translation key', async () => {
+		el = await fixture<RRStepper>('<rr-stepper></rr-stepper>');
+		await waitForUpdate(el);
+		el.translations = { 'components.stepper.decrement-action': 'Decrease' };
+		expect(el._t('components.stepper.decrement-action')).toBe('Decrease');
+	});
+
+	it('falls back to Dutch for keys not present in translations override', async () => {
+		el = await fixture<RRStepper>('<rr-stepper></rr-stepper>');
+		await waitForUpdate(el);
+		el.translations = { 'components.stepper.decrement-action': 'Decrease' };
+		expect(el._t('components.stepper.increment-action')).toBe('Verhoog aantal');
+	});
+});
