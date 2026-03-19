@@ -10,10 +10,12 @@
  *
  * @element rr-toggle-button-group
  *
- * @attr {'button' | 'checkbox' | 'radio'} type     - Selection mode (default: 'checkbox')
- * @attr {string}               name     - Forwarded to all buttons
- * @attr {'xs' | 'sm' | 'md'}  size     - Forwarded to all buttons (default: 'md')
- * @attr {boolean}              disabled - Disables all buttons
+ * @attr {'button' | 'checkbox' | 'radio'} type                  - Selection mode (default: 'checkbox')
+ * @attr {string}               name                  - Forwarded to all buttons
+ * @attr {'xs' | 'sm' | 'md'}  size                  - Forwarded to all buttons (default: 'md')
+ * @attr {boolean}              disabled              - Disables all buttons
+ * @attr {string}               accessible-label      - Accessible name for the group (aria-label)
+ * @attr {string}               accessible-labelledby - ID of an external label element (aria-labelledby)
  *
  * @slot - rr-toggle-button elements
  *
@@ -44,6 +46,14 @@ export class RRToggleButtonGroup extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
+	/** Accessible name forwarded as aria-label to the group host. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
+	/** ID of an external label element forwarded as aria-labelledby to the group host. */
+	@property({ type: String, attribute: 'accessible-labelledby' })
+	accessibleLabelledBy = '';
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this._updateRole();
@@ -63,6 +73,20 @@ export class RRToggleButtonGroup extends LitElement {
 		}
 		if (changed.has('type') || changed.has('name') || changed.has('size') || changed.has('disabled')) {
 			this._syncButtons();
+		}
+		if (changed.has('accessibleLabel')) {
+			if (this.accessibleLabel) {
+				this.setAttribute('aria-label', this.accessibleLabel);
+			} else {
+				this.removeAttribute('aria-label');
+			}
+		}
+		if (changed.has('accessibleLabelledBy')) {
+			if (this.accessibleLabelledBy) {
+				this.setAttribute('aria-labelledby', this.accessibleLabelledBy);
+			} else {
+				this.removeAttribute('aria-labelledby');
+			}
 		}
 	}
 
@@ -90,7 +114,6 @@ export class RRToggleButtonGroup extends LitElement {
 
 			if (this.disabled) {
 				if (!button.hasAttribute('disabled')) {
-					// Mark as group-disabled so we can restore it when the group re-enables
 					button.setAttribute('group-disabled', '');
 					button.disabled = true;
 				}
