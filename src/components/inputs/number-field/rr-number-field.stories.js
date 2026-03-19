@@ -47,6 +47,22 @@ export default {
 			control: 'text',
 			description: 'Naam voor formulierverwerking',
 		},
+		hideSpinButtons: {
+			control: 'boolean',
+			name: 'hide-spin-buttons',
+			description: 'Verbergt de plus- en minknoppen',
+			table: { defaultValue: { summary: false } },
+		},
+		fullWidth: {
+			control: 'boolean',
+			name: 'full-width',
+			description: 'Vult de volledige breedte van de container',
+			table: { defaultValue: { summary: false } },
+		},
+		width: {
+			control: 'text',
+			description: 'Vaste breedte van het veld; het invoervak rekt mee',
+		},
 	},
 	args: {
 		value: 1,
@@ -55,10 +71,13 @@ export default {
 		step: 1,
 		disabled: false,
 		name: '',
+		hideSpinButtons: false,
+		fullWidth: false,
+		width: '',
 	},
 };
 
-const Template = ({ value, min, max, step, disabled, name }) => html`
+const Template = ({ value, min, max, step, disabled, name, hideSpinButtons, fullWidth, width }) => html`
 	<rr-number-field
 		value=${value}
 		min=${min}
@@ -66,6 +85,9 @@ const Template = ({ value, min, max, step, disabled, name }) => html`
 		step=${step}
 		?disabled=${disabled}
 		name=${name}
+		?hide-spin-buttons=${hideSpinButtons}
+		?full-width=${fullWidth}
+		width=${width}
 	></rr-number-field>
 `;
 
@@ -78,6 +100,16 @@ export const AlleToestanden = () => html`
 		<rr-number-field value="0" min="0" max="10"></rr-number-field>
 		<rr-number-field value="10" min="0" max="10"></rr-number-field>
 		<rr-number-field value="5" min="0" max="10" disabled></rr-number-field>
+		<rr-number-field value="5" min="0" max="10" hide-spin-buttons></rr-number-field>
+		<rr-number-field value="5" min="0" max="10" hide-spin-buttons disabled></rr-number-field>
+		<rr-number-field value="5" min="0" max="10" width="240px"></rr-number-field>
+		<rr-number-field value="5" min="0" max="10" hide-spin-buttons width="240px"></rr-number-field>
+		<div style="width: 400px;">
+			<rr-number-field value="5" min="0" max="10" full-width></rr-number-field>
+		</div>
+		<div style="width: 400px;">
+			<rr-number-field value="5" min="0" max="10" hide-spin-buttons full-width></rr-number-field>
+		</div>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

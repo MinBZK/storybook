@@ -11,6 +11,9 @@
  * @attr {boolean} disabled     - Uitgeschakelde toestand
  * @attr {string}  name         - Naam voor formulierverwerking
  * @attr {object}  translations - Vertalingen; niet-opgegeven sleutels vallen terug op Nederlands
+ * @attr {boolean} full-width       - Stretches to fill the container width
+ * @attr {string}  width            - Fixed width; the input stretches to fill remaining space
+ * @attr {boolean} hide-spin-buttons - When set, hides the decrement and increment buttons
  *
  * @fires input  - Wanneer de waarde verandert; detail: { value: number }
  * @fires change - Wanneer de waarde wordt bevestigd; detail: { value: number }
@@ -46,9 +49,31 @@ export class RRNumberField extends LitElement {
 	@property({ type: String })
 	name = '';
 
+	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
+	fullWidth = false;
+
+	/** Sets a fixed width on the component. The input stretches to fill the available space. */
+	@property({ type: String })
+	width = '';
+
+	@property({ type: Boolean, reflect: true, attribute: 'hide-spin-buttons' })
+	hideSpinButtons = false;
+
 	/** Overschrijf een of meer vertalingssleutels. Niet-opgegeven sleutels vallen terug op Nederlands. */
 	@property({ type: Object })
 	translations: Partial<RRNumberFieldTranslations> = {};
+
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('width')) {
+			if (this.width) {
+				this.style.setProperty('--_width', this.width);
+				this.setAttribute('width', this.width);
+			} else {
+				this.style.removeProperty('--_width');
+				this.removeAttribute('width');
+			}
+		}
+	}
 
 	// — i18n —————————————————————————————————————————————————————————————————
 

@@ -1,10 +1,13 @@
 import { css } from 'lit';
 
 export const numberFieldStyles = css`
+
+
 	/* # Host */
 
 	:host {
 		display: inline-block;
+		--_width: auto;
 	}
 
 	:host([hidden]) {
@@ -18,6 +21,15 @@ export const numberFieldStyles = css`
 
 	:host([disabled]) rr-icon-button {
 		opacity: 1;
+	}
+
+	:host([full-width]) {
+		display: block;
+		width: 100%;
+	}
+
+	:host([width]) {
+		width: var(--_width);
 	}
 
 
@@ -34,7 +46,12 @@ export const numberFieldStyles = css`
 		box-sizing: border-box;
 	}
 
-	.number-field:has(input:focus-visible) {
+	:host([full-width]) .number-field,
+	:host([width]) .number-field {
+		width: 100%;
+	}
+
+	.number-field:has(.number-field__input:focus-visible) {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
@@ -60,17 +77,11 @@ export const numberFieldStyles = css`
 	/* # Input */
 
 	.number-field__input {
-		display: flex;
-		justify-content: center;
-		padding: 0 var(--primitives-space-6);
-	}
-
-	.number-field__native {
 		appearance: none;
 		border: none;
 		background: transparent;
 		margin: 0;
-		padding: 0;
+		padding: 0 var(--primitives-space-6);
 		outline: none;
 		box-sizing: border-box;
 		font: var(--semantics-input-fields-md-text-font);
@@ -79,13 +90,23 @@ export const numberFieldStyles = css`
 		min-width: var(--semantics-controls-md-min-size);
 	}
 
-	.number-field__native::-webkit-outer-spin-button,
-	.number-field__native::-webkit-inner-spin-button {
+	.number-field__input[type='number'] {
+		-moz-appearance: textfield;
+	}
+
+	.number-field__input::-webkit-outer-spin-button,
+	.number-field__input::-webkit-inner-spin-button {
 		-webkit-appearance: none;
 		margin: 0;
 	}
 
-	.number-field__native[type='number'] {
-		-moz-appearance: textfield;
+	:host([hide-spin-buttons]) .number-field__input {
+		min-width: var(--primitives-space-80);
+	}
+
+	:host([full-width]) .number-field__input,
+	:host([width]) .number-field__input {
+		flex: 1;
+		min-width: 0;
 	}
 `;
