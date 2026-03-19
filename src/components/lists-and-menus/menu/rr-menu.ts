@@ -460,7 +460,7 @@ export class RRMenu extends LitElement {
 
 		const viewportMargin = parseInt(
 			getComputedStyle(this).getPropertyValue('--_viewport-margin')
-		) || 16;
+		);
 
 		const { x, y } = await computePosition(anchorEl, this, {
 			placement: this.placement as import('@floating-ui/dom').Placement,
