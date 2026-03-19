@@ -147,6 +147,8 @@ describe('rr-segmented-control – state sync', () => {
 		expect(items[0].disabled).toBe(false);
 		expect(items[1].disabled).toBe(true);
 	});
+
+	it('propagates content-type to items', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control content-type="icon">
 				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
