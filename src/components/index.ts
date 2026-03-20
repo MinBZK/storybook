@@ -37,7 +37,7 @@ export { RRPasswordField } from './inputs/password-field/rr-password-field.ts';
 export { RRSearchField } from './inputs/search-field/rr-search-field.ts';
 export { RRNumberField } from './inputs/number-field/rr-number-field.ts';
 export { RRDropDownField } from './inputs/drop-down-field/rr-drop-down-field.ts';
-export { RRComboBoxField } from './inputs/combo-box-field/rr-combo-box-field.ts';
+export { RRComboBox } from './inputs/combo-box/rr-combo-box.ts';
 export { RRStepper } from './inputs/stepper/rr-stepper.ts';
 export { RRCheckbox } from './inputs/checkbox/rr-checkbox.ts';
 export { RRCheckboxField } from './inputs/checkbox-field/rr-checkbox-field.ts';

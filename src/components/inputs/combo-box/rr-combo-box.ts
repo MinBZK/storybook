@@ -1,5 +1,5 @@
 /**
- * RegelRecht Combo Box Field Component (Lit + TypeScript)
+ * RegelRecht Combo Box Component (Lit + TypeScript)
  *
  * A text input with autocomplete dropdown via rr-menu.
  * Add a slotted rr-menu with rr-menu-item children to provide options.
@@ -11,7 +11,7 @@
  * Note: Only rr-menu-item type="button" is supported. Radio and checkbox
  * types are not supported in this context.
  *
- * @element rr-combo-box-field
+ * @element rr-combo-box
  * @attr {string}  value        - The selected form value
  * @attr {string}  placeholder  - Placeholder text for the input
  * @attr {boolean} disabled     - Disabled state
@@ -32,29 +32,29 @@
  *
  * @example
  * ```html
- * <rr-combo-box-field placeholder="Zoek een land" name="land">
+ * <rr-combo-box placeholder="Zoek een land" name="land">
  *   <rr-menu>
  *     <rr-menu-item text="Nederland" value="nl"></rr-menu-item>
  *     <rr-menu-item text="België" value="be"></rr-menu-item>
  *   </rr-menu>
- * </rr-combo-box-field>
+ * </rr-combo-box>
  * ```
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
-import { comboBoxFieldStyles } from './rr-combo-box-field.styles.ts';
-import { comboBoxFieldTemplate } from './rr-combo-box-field.template.ts';
-import { rrComboBoxFieldTranslations } from './rr-combo-box-field.i18n.ts';
-import type { RRComboBoxFieldTranslations } from './rr-combo-box-field.i18n.ts';
+import { comboBoxStyles } from './rr-combo-box.styles.ts';
+import { comboBoxTemplate } from './rr-combo-box.template.ts';
+import { rrComboBoxTranslations } from './rr-combo-box.i18n.ts';
+import type { RRComboBoxTranslations } from './rr-combo-box.i18n.ts';
 import type { RRMenu, RRMenuItem } from '../../lists-and-menus/menu/rr-menu.js';
 import '../../lists-and-menus/menu/rr-menu.ts';
 import '../../actions/icon-button/rr-icon-button.ts';
 import '../../content/icon/rr-icon.ts';
 
 
-@customElement('rr-combo-box-field')
-export class RRComboBoxField extends LitElement {
-	static override styles = comboBoxFieldStyles;
+@customElement('rr-combo-box')
+export class RRComboBox extends LitElement {
+	static override styles = comboBoxStyles;
 
 	@property({ type: String })
 	value = '';
@@ -76,7 +76,7 @@ export class RRComboBoxField extends LitElement {
 	accessibleLabel = '';
 
 	@property({ type: Object })
-	translations: Partial<RRComboBoxFieldTranslations> = {};
+	translations: Partial<RRComboBoxTranslations> = {};
 
 	@state()
 	_isOpen = false;
@@ -90,25 +90,25 @@ export class RRComboBoxField extends LitElement {
 	_highlightedId = '';
 
 	private static _counter = 0;
-	readonly _menuId = `rr-combo-box-menu-${RRComboBoxField._counter++}`;
+	readonly _menuId = `rr-combo-box-menu-${RRComboBox._counter++}`;
 
 	private _menu: RRMenu | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
 
-	@query('.combo-box-field__input')
+	@query('.combo-box__input')
 	_input!: HTMLInputElement;
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
-	public _t(key: keyof RRComboBoxFieldTranslations): string {
-		return this.translations[key] ?? rrComboBoxFieldTranslations[key];
+	public _t(key: keyof RRComboBoxTranslations): string {
+		return this.translations[key] ?? rrComboBoxTranslations[key];
 	}
 
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
 	override firstUpdated(): void {
 		if (!this.accessibleLabel) {
-			console.warn('<rr-combo-box-field>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
+			console.warn('<rr-combo-box>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
 		}
 	}
 
@@ -218,7 +218,7 @@ export class RRComboBoxField extends LitElement {
 	public _openMenu(): void {
 		if (!this._menu || this._isOpen) return;
 		if (!('showPopover' in this._menu)) {
-			console.warn('<rr-combo-box-field>: Popover API is not supported in this browser. The dropdown will not open.');
+			console.warn('<rr-combo-box>: Popover API is not supported in this browser. The dropdown will not open.');
 			return;
 		}
 		this._updateMenuWidth();
@@ -341,12 +341,12 @@ export class RRComboBoxField extends LitElement {
 	}
 
 	override render() {
-		return comboBoxFieldTemplate(this);
+		return comboBoxTemplate(this);
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-combo-box-field': RRComboBoxField;
+		'rr-combo-box': RRComboBox;
 	}
 }
