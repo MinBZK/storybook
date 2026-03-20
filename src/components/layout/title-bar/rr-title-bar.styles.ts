@@ -78,17 +78,19 @@ export const titleBarStyles = css`
 
 	/* # Size 1 */
 
-	:host([size='1']) ::slotted(:not([slot])) {
-		font: var(--primitives-font-display-1-sm);
+	@container layout-area (max-width: ${smMax}) {
+		:host([size='1']) ::slotted(:not([slot])) {
+			font: var(--primitives-font-display-1-sm);
+		}
 	}
 
-	@container (min-width: ${mdMin}) {
+	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
 		:host([size='1']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-1-md);
 		}
 	}
 
-	@container (min-width: ${lgMin}) {
+	@container layout-area (min-width: ${lgMin}) {
 		:host([size='1']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-1-lg);
 		}
@@ -97,17 +99,19 @@ export const titleBarStyles = css`
 
 	/* # Size 2 */
 
-	:host([size='2']) ::slotted(:not([slot])) {
-		font: var(--primitives-font-display-2-sm);
+	@container layout-area (max-width: ${smMax}) {
+		:host([size='2']) ::slotted(:not([slot])) {
+			font: var(--primitives-font-display-2-sm);
+		}
 	}
 
-	@container (min-width: ${mdMin}) {
+	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
 		:host([size='2']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-2-md);
 		}
 	}
 
-	@container (min-width: ${lgMin}) {
+	@container layout-area (min-width: ${lgMin}) {
 		:host([size='2']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-2-lg);
 		}
@@ -116,19 +120,21 @@ export const titleBarStyles = css`
 
 	/* # Size 3 */
 
-	:host([size='3']) ::slotted(:not([slot])),
-	:host(:not([size])) ::slotted(:not([slot])) {
-		font: var(--primitives-font-display-3-sm);
+	@container layout-area (max-width: ${smMax}) {
+		:host([size='3']) ::slotted(:not([slot])),
+		:host(:not([size])) ::slotted(:not([slot])) {
+			font: var(--primitives-font-display-3-sm);
+		}
 	}
 
-	@container (min-width: ${mdMin}) {
+	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
 		:host([size='3']) ::slotted(:not([slot])),
 		:host(:not([size])) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-3-md);
 		}
 	}
 
-	@container (min-width: ${lgMin}) {
+	@container layout-area (min-width: ${lgMin}) {
 		:host([size='3']) ::slotted(:not([slot])),
 		:host(:not([size])) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-3-lg);
@@ -138,17 +144,19 @@ export const titleBarStyles = css`
 
 	/* # Size 4 */
 
-	:host([size='4']) ::slotted(:not([slot])) {
-		font: var(--primitives-font-display-4-sm);
+	@container layout-area (max-width: ${smMax}) {
+		:host([size='4']) ::slotted(:not([slot])) {
+			font: var(--primitives-font-display-4-sm);
+		}
 	}
 
-	@container (min-width: ${mdMin}) {
+	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
 		:host([size='4']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-4-md);
 		}
 	}
 
-	@container (min-width: ${lgMin}) {
+	@container layout-area (min-width: ${lgMin}) {
 		:host([size='4']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-4-lg);
 		}
@@ -157,17 +165,19 @@ export const titleBarStyles = css`
 
 	/* # Size 5 */
 
-	:host([size='5']) ::slotted(:not([slot])) {
-		font: var(--primitives-font-display-5-sm);
+	@container layout-area (max-width: ${smMax}) {
+		:host([size='5']) ::slotted(:not([slot])) {
+			font: var(--primitives-font-display-5-sm);
+		}
 	}
 
-	@container (min-width: ${mdMin}) {
+	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
 		:host([size='5']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-5-md);
 		}
 	}
 
-	@container (min-width: ${lgMin}) {
+	@container layout-area (min-width: ${lgMin}) {
 		:host([size='5']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-5-lg);
 		}
@@ -176,17 +186,19 @@ export const titleBarStyles = css`
 
 	/* # Size 6 */
 
-	:host([size='6']) ::slotted(:not([slot])) {
-		font: var(--primitives-font-display-6-sm);
+	@container layout-area (max-width: ${smMax}) {
+		:host([size='6']) ::slotted(:not([slot])) {
+			font: var(--primitives-font-display-6-sm);
+		}
 	}
 
-	@container (min-width: ${mdMin}) {
+	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
 		:host([size='6']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-6-md);
 		}
 	}
 
-	@container (min-width: ${lgMin}) {
+	@container layout-area (min-width: ${lgMin}) {
 		:host([size='6']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-6-lg);
 		}

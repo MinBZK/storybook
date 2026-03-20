@@ -14,6 +14,8 @@ export const pageStyles = css`
 		overflow-y: auto;
 		overflow-x: hidden;
 		background-color: var(--_bg);
+		container-type: inline-size;
+		container-name: layout-area;
 	}
 
 	:host([tinted]) {

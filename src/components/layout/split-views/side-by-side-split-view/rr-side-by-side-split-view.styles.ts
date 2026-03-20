@@ -36,6 +36,8 @@ export const sideBySideSplitViewStyles = css`
 		min-height: 0;
 		min-width: var(--primitives-area-320);
 		overflow: hidden;
+		container-type: inline-size;
+		container-name: layout-area;
 	}
 
 	::slotted(*) {

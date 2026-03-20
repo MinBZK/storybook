@@ -37,6 +37,8 @@ export const stackedSplitViewStyles = css`
 		min-height: var(--primitives-area-320);
 		min-width: 0;
 		overflow: hidden;
+		container-type: inline-size;
+		container-name: layout-area;
 	}
 
 	::slotted(*) {

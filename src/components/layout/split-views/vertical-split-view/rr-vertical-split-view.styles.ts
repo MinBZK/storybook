@@ -36,6 +36,8 @@ export const verticalSplitViewStyles = css`
 		flex-shrink: 0;
 		min-width: 0;
 		overflow: hidden;
+		container-type: inline-size;
+		container-name: layout-area;
 	}
 
 
@@ -48,6 +50,8 @@ export const verticalSplitViewStyles = css`
 		min-height: var(--primitives-area-320);
 		min-width: 0;
 		overflow: hidden;
+		container-type: inline-size;
+		container-name: layout-area;
 	}
 
 
@@ -59,6 +63,8 @@ export const verticalSplitViewStyles = css`
 		flex-shrink: 0;
 		min-width: 0;
 		overflow: hidden;
+		container-type: inline-size;
+		container-name: layout-area;
 	}
 
 	::slotted(*) {
