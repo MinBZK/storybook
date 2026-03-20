@@ -1,10 +1,10 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { RRComboBoxField } from './rr-combo-box-field.ts';
-import './rr-combo-box-field.ts';
+import type { RRComboBox } from './rr-combo-box.ts';
+import './rr-combo-box.ts';
 import '../../lists-and-menus/menu/rr-menu.ts';
 
-describe('rr-combo-box-field', () => {
+describe('rr-combo-box', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -12,19 +12,19 @@ describe('rr-combo-box-field', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a native text input', async () => {
-		el = await fixture('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input[type="text"]')).not.toBeNull();
 	});
 
 	it('renders rr-icon-button for the picker', async () => {
-		el = await fixture('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('rr-icon-button')).not.toBeNull();
 	});
@@ -35,39 +35,39 @@ describe('rr-combo-box-field', () => {
    ARIA
    ============================================================ */
 
-describe('rr-combo-box-field – ARIA', () => {
-	let el: RRComboBoxField;
+describe('rr-combo-box – ARIA', () => {
+	let el: RRComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('sets role="combobox" on the native input', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('role')).toBe('combobox');
 	});
 
 	it('sets aria-expanded="false" when closed', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-expanded')).toBe('false');
 	});
 
 	it('sets aria-autocomplete="list"', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-autocomplete')).toBe('list');
 	});
 
 	it('sets aria-haspopup="listbox"', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-haspopup')).toBe('listbox');
 	});
 
 	it('sets aria-controls to the menu id', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-controls')).toBe(el._menuId);
 	});
@@ -78,27 +78,27 @@ describe('rr-combo-box-field – ARIA', () => {
    State
    ============================================================ */
 
-describe('rr-combo-box-field – state', () => {
-	let el: RRComboBoxField;
+describe('rr-combo-box – state', () => {
+	let el: RRComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('forwards placeholder to native input', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field placeholder="Zoek..."></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box placeholder="Zoek..."></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('placeholder')).toBe('Zoek...');
 	});
 
 	it('forwards name to native input', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field name="land"></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box name="land"></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.name).toBe('land');
 	});
 
 	it('disables native input when disabled', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field disabled></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box disabled></rr-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.disabled).toBe(true);
 	});
@@ -109,15 +109,15 @@ describe('rr-combo-box-field – state', () => {
    Input event
    ============================================================ */
 
-describe('rr-combo-box-field – input event', () => {
-	let el: RRComboBoxField;
+describe('rr-combo-box – input event', () => {
+	let el: RRComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('updates _displayValue on input', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		(input as any).value = 'Neder';
@@ -127,7 +127,7 @@ describe('rr-combo-box-field – input event', () => {
 	});
 
 	it('dispatches input event with displayValue detail', async () => {
-		el = await fixture<RRComboBoxField>('<rr-combo-box-field></rr-combo-box-field>');
+		el = await fixture<RRComboBox>('<rr-combo-box></rr-combo-box>');
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('input', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
@@ -143,21 +143,21 @@ describe('rr-combo-box-field – input event', () => {
    Filtering
    ============================================================ */
 
-describe('rr-combo-box-field – filtering', () => {
-	let el: RRComboBoxField;
+describe('rr-combo-box – filtering', () => {
+	let el: RRComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('filters rr-menu-item elements on input', async () => {
-		el = await fixture<RRComboBoxField>(`
-			<rr-combo-box-field>
+		el = await fixture<RRComboBox>(`
+			<rr-combo-box>
 				<rr-menu>
 					<rr-menu-item text="Nederland" value="nl"></rr-menu-item>
 					<rr-menu-item text="België" value="be"></rr-menu-item>
 				</rr-menu>
-			</rr-combo-box-field>
+			</rr-combo-box>
 		`);
 		await waitForUpdate(el);
 
@@ -173,13 +173,13 @@ describe('rr-combo-box-field – filtering', () => {
 	});
 
 	it('matches on search attribute', async () => {
-		el = await fixture<RRComboBoxField>(`
-			<rr-combo-box-field>
+		el = await fixture<RRComboBox>(`
+			<rr-combo-box>
 				<rr-menu>
 					<rr-menu-item text="Nederland" value="nl" search="dutch holland"></rr-menu-item>
 					<rr-menu-item text="België" value="be"></rr-menu-item>
 				</rr-menu>
-			</rr-combo-box-field>
+			</rr-combo-box>
 		`);
 		await waitForUpdate(el);
 
@@ -200,8 +200,8 @@ describe('rr-combo-box-field – filtering', () => {
    Popover API
    ============================================================ */
 
-describe('rr-combo-box-field – Popover API', () => {
-	let el: RRComboBoxField;
+describe('rr-combo-box – Popover API', () => {
+	let el: RRComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -209,12 +209,12 @@ describe('rr-combo-box-field – Popover API', () => {
 	});
 
 	it('warns when Popover API is unavailable', async () => {
-		el = await fixture<RRComboBoxField>(`
-			<rr-combo-box-field>
+		el = await fixture<RRComboBox>(`
+			<rr-combo-box>
 				<rr-menu>
 					<rr-menu-item text="Nederland" value="nl"></rr-menu-item>
 				</rr-menu>
-			</rr-combo-box-field>
+			</rr-combo-box>
 		`);
 		await waitForUpdate(el);
 

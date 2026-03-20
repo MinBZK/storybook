@@ -1,17 +1,17 @@
 import { html } from 'lit';
-import './rr-combo-box-field.ts';
+import './rr-combo-box.ts';
 
 /**
- * De Combo Box Field component is een tekstveld met autocomplete/dropdown functionaliteit.
+ * De Combo Box component is een tekstveld met autocomplete/dropdown functionaliteit.
  * Voeg een `rr-menu` met `rr-menu-item` elementen toe als child.
  */
 export default {
-	title: 'Components/Inputs/Combo Box Field',
-	component: 'rr-combo-box-field',
+	title: 'Components/Inputs/Combo Box',
+	component: 'rr-combo-box',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/combo-box-field/rr-combo-box-field.ts',
+			file: 'src/components/inputs/combo-box/rr-combo-box.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -48,7 +48,7 @@ export default {
 };
 
 const Template = (args) => html`
-	<rr-combo-box-field
+	<rr-combo-box
 		placeholder=${args.placeholder}
 		?disabled=${args.disabled}
 		name=${args.name}
@@ -60,21 +60,21 @@ const Template = (args) => html`
 			<rr-menu-item text="Frankrijk" value="fr"></rr-menu-item>
 			<rr-menu-item text="Verenigd Koninkrijk" value="uk"></rr-menu-item>
 		</rr-menu>
-	</rr-combo-box-field>
+	</rr-combo-box>
 `;
 
 export const Standaard = Template.bind({});
 Standaard.args = {};
 
 export const MetZoektermen = () => html`
-	<rr-combo-box-field placeholder="Zoek een land (probeer 'dutch' of 'holland')">
+	<rr-combo-box placeholder="Zoek een land (probeer 'dutch' of 'holland')">
 		<rr-menu empty-text="Geen resultaten">
 			<rr-menu-item text="Nederland" value="nl" search="dutch holland"></rr-menu-item>
 			<rr-menu-item text="België" value="be" search="belgique belgie"></rr-menu-item>
 			<rr-menu-item text="Duitsland" value="de" search="germany deutschland"></rr-menu-item>
 			<rr-menu-item text="Frankrijk" value="fr" search="france frankrijk"></rr-menu-item>
 		</rr-menu>
-	</rr-combo-box-field>
+	</rr-combo-box>
 `;
 MetZoektermen.parameters = {
 	controls: { disable: true },
@@ -86,7 +86,7 @@ MetZoektermen.parameters = {
 };
 
 export const AlleLanden = () => html`
-	<rr-combo-box-field placeholder="Zoek een land">
+	<rr-combo-box placeholder="Zoek een land">
 		<rr-menu empty-text="Geen resultaten">
 			<rr-menu-item text="Afghanistan" value="af"></rr-menu-item>
 			<rr-menu-item text="Albanië" value="al"></rr-menu-item>
@@ -137,25 +137,25 @@ export const AlleLanden = () => html`
 			<rr-menu-item text="Zweden" value="se"></rr-menu-item>
 			<rr-menu-item text="Zwitserland" value="ch"></rr-menu-item>
 		</rr-menu>
-	</rr-combo-box-field>
+	</rr-combo-box>
 `;
 AlleLanden.parameters = { controls: { disable: true } };
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<rr-combo-box-field placeholder="Zoek een land">
+		<rr-combo-box placeholder="Zoek een land">
 			<rr-menu empty-text="Geen resultaten">
 				<rr-menu-item text="Nederland" value="nl"></rr-menu-item>
 				<rr-menu-item text="België" value="be"></rr-menu-item>
 				<rr-menu-item text="Duitsland" value="de"></rr-menu-item>
 			</rr-menu>
-		</rr-combo-box-field>
-		<rr-combo-box-field placeholder="Zoek een land" disabled>
+		</rr-combo-box>
+		<rr-combo-box placeholder="Zoek een land" disabled>
 			<rr-menu empty-text="Geen resultaten">
 				<rr-menu-item text="Nederland" value="nl"></rr-menu-item>
 				<rr-menu-item text="België" value="be"></rr-menu-item>
 			</rr-menu>
-		</rr-combo-box-field>
+		</rr-combo-box>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };
