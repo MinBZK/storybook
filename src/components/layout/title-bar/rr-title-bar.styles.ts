@@ -1,7 +1,9 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
+const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
+const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
@@ -84,7 +86,7 @@ export const titleBarStyles = css`
 		}
 	}
 
-	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
+	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 		:host([size='1']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-1-md);
 		}
@@ -105,7 +107,7 @@ export const titleBarStyles = css`
 		}
 	}
 
-	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
+	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 		:host([size='2']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-2-md);
 		}
@@ -127,7 +129,7 @@ export const titleBarStyles = css`
 		}
 	}
 
-	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
+	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 		:host([size='3']) ::slotted(:not([slot])),
 		:host(:not([size])) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-3-md);
@@ -150,7 +152,7 @@ export const titleBarStyles = css`
 		}
 	}
 
-	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
+	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 		:host([size='4']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-4-md);
 		}
@@ -171,7 +173,7 @@ export const titleBarStyles = css`
 		}
 	}
 
-	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
+	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 		:host([size='5']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-5-md);
 		}
@@ -192,7 +194,7 @@ export const titleBarStyles = css`
 		}
 	}
 
-	@container layout-area (min-width: ${mdMin} and max-width: ${mdMax}) {
+	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 		:host([size='6']) ::slotted(:not([slot])) {
 			font: var(--primitives-font-display-6-md);
 		}
