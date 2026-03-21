@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const dropDownFieldStyles = css`
+export const dropdownStyles = css`
 	/* # Host */
 
 	:host {
@@ -21,7 +21,7 @@ export const dropDownFieldStyles = css`
 
 	/* # Container */
 
-	.drop-down-field {
+	.dropdown {
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -32,18 +32,18 @@ export const dropDownFieldStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 	}
 
-	:host([size='md']) .drop-down-field,
-	:host(:not([size])) .drop-down-field {
+	:host([size='md']) .dropdown,
+	:host(:not([size])) .dropdown {
 		min-height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
-	:host([size='sm']) .drop-down-field {
+	:host([size='sm']) .dropdown {
 		min-height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
-	.drop-down-field:focus-within {
+	.dropdown:focus-within {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
@@ -78,7 +78,7 @@ export const dropDownFieldStyles = css`
 
 	/* # Value */
 
-	.drop-down-field__value {
+	.dropdown__value {
 		flex: 1;
 		min-width: 0;
 		white-space: nowrap;
@@ -87,13 +87,13 @@ export const dropDownFieldStyles = css`
 		color: inherit;
 	}
 
-	:host([size='md']) .drop-down-field__value,
-	:host(:not([size])) .drop-down-field__value {
+	:host([size='md']) .dropdown__value,
+	:host(:not([size])) .dropdown__value {
 		padding: 0 var(--primitives-space-12);
 		font: var(--semantics-input-fields-md-text-font);
 	}
 
-	:host([size='sm']) .drop-down-field__value {
+	:host([size='sm']) .dropdown__value {
 		padding: 0 var(--primitives-space-10);
 		font: var(--semantics-input-fields-sm-text-font);
 	}
@@ -101,7 +101,7 @@ export const dropDownFieldStyles = css`
 
 	/* # Picker icon */
 
-	.drop-down-field__picker-icon {
+	.dropdown__picker-icon {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -109,14 +109,14 @@ export const dropDownFieldStyles = css`
 		color: inherit;
 	}
 
-	:host([size='md']) .drop-down-field__picker-icon,
-	:host(:not([size])) .drop-down-field__picker-icon {
+	:host([size='md']) .dropdown__picker-icon,
+	:host(:not([size])) .dropdown__picker-icon {
 		width: var(--_md-icon-size);
 		height: var(--_md-icon-size);
 		padding-right: calc((var(--semantics-controls-md-min-size) - var(--_md-icon-size)) / 2);
 	}
 
-	:host([size='sm']) .drop-down-field__picker-icon {
+	:host([size='sm']) .dropdown__picker-icon {
 		width: var(--_sm-icon-size);
 		height: var(--_sm-icon-size);
 		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--_sm-icon-size)) / 2);
