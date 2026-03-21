@@ -1,18 +1,18 @@
 import { html } from 'lit';
-import './rr-drop-down-field.ts';
+import './rr-dropdown.ts';
 
 /**
- * De Drop Down Field component is een visuele wrapper om een native `<select>` element.
+ * De Dropdown component is een visuele wrapper om een native `<select>` element.
  * Geef een native `<select>` als slotted child — de browser behoudt volledige controle
  * over formulierverwerking, toegankelijkheid en keyboard navigatie.
  */
 export default {
-	title: 'Components/Inputs/Drop Down Field',
-	component: 'rr-drop-down-field',
+	title: 'Components/Inputs/Dropdown',
+	component: 'rr-dropdown',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/drop-down-field/rr-drop-down-field.ts',
+			file: 'src/components/inputs/dropdown/rr-dropdown.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -39,14 +39,14 @@ export default {
 };
 
 const Template = ({ size, disabled }) => html`
-	<rr-drop-down-field size=${size} ?disabled=${disabled}>
+	<rr-dropdown size=${size} ?disabled=${disabled}>
 		<select name="optie" aria-label="Selecteer een optie">
 			<option value="" disabled selected>Selecteer een optie</option>
 			<option value="optie-1">Optie 1</option>
 			<option value="optie-2">Optie 2</option>
 			<option value="optie-3">Optie 3</option>
 		</select>
-	</rr-drop-down-field>
+	</rr-dropdown>
 `;
 
 export const Standaard = Template.bind({});
@@ -54,33 +54,33 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<rr-drop-down-field size="md">
+		<rr-dropdown size="md">
 			<select name="optie-1" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>
-		</rr-drop-down-field>
-		<rr-drop-down-field size="md">
+		</rr-dropdown>
+		<rr-dropdown size="md">
 			<select name="optie-2" aria-label="Selecteer een optie">
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>
-		</rr-drop-down-field>
-		<rr-drop-down-field size="sm">
+		</rr-dropdown>
+		<rr-dropdown size="sm">
 			<select name="optie-3" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>
-		</rr-drop-down-field>
-		<rr-drop-down-field size="md" disabled>
+		</rr-dropdown>
+		<rr-dropdown size="md" disabled>
 			<select name="optie-4" aria-label="Selecteer een optie">
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>
-		</rr-drop-down-field>
-		<rr-drop-down-field size="md">
+		</rr-dropdown>
+		<rr-dropdown size="md">
 			<select name="optie-5" aria-label="Selecteer een categorie">
 				<optgroup label="Groep A">
 					<option value="a1">A1</option>
@@ -91,7 +91,7 @@ export const AlleToestanden = () => html`
 					<option value="b2">B2</option>
 				</optgroup>
 			</select>
-		</rr-drop-down-field>
+		</rr-dropdown>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

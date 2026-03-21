@@ -1,5 +1,5 @@
 /**
- * RegelRecht Drop Down Field Component (Lit + TypeScript)
+ * RegelRecht Dropdown Component (Lit + TypeScript)
  *
  * Een visuele wrapper om een native `<select>` element.
  * De consumer geeft een native `<select>` als slotted child — zo behoudt
@@ -7,7 +7,7 @@
  * en keyboard navigatie, inclusief `<optgroup>`, `data-*` attributen en
  * dynamische wijzigingen aan opties.
  *
- * @element rr-drop-down-field
+ * @element rr-dropdown
  * @attr {string}  size     - Grootte: 'sm' | 'md' (standaard: 'md')
  * @attr {boolean} disabled - Uitgeschakelde toestand; wordt ook doorgestuurd naar de slotted select
  *
@@ -17,29 +17,29 @@
  *
  * @example
  * ```html
- * <rr-drop-down-field>
+ * <rr-dropdown>
  *   <select name="land" aria-label="Land">
  *     <option value="" disabled selected>Selecteer een land</option>
  *     <option value="nl">Nederland</option>
  *     <option value="be">België</option>
  *   </select>
- * </rr-drop-down-field>
+ * </rr-dropdown>
  * ```
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { dropDownFieldStyles } from './rr-drop-down-field.styles.ts';
-import { dropDownFieldTemplate } from './rr-drop-down-field.template.ts';
+import { dropdownStyles } from './rr-dropdown.styles.ts';
+import { dropdownTemplate } from './rr-dropdown.template.ts';
 import './../../content/icon/rr-icon.ts';
 
-export type DropDownFieldSize = 'sm' | 'md';
+export type DropdownSize = 'sm' | 'md';
 
-@customElement('rr-drop-down-field')
-export class RRDropDownField extends LitElement {
-	static override styles = dropDownFieldStyles;
+@customElement('rr-dropdown')
+export class RRDropdown extends LitElement {
+	static override styles = dropdownStyles;
 
 	@property({ type: String, reflect: true })
-	size: DropDownFieldSize = 'md';
+	size: DropdownSize = 'md';
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
@@ -76,7 +76,7 @@ export class RRDropDownField extends LitElement {
 		}
 
 		if (!select.hasAttribute('aria-label') && !select.hasAttribute('aria-labelledby') && !select.labels?.length) {
-			console.warn('<rr-drop-down-field>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.');
+			console.warn('<rr-dropdown>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.');
 		}
 
 		select.addEventListener('change', this._handleSelectChange);
@@ -107,12 +107,12 @@ export class RRDropDownField extends LitElement {
 	};
 
 	override render() {
-		return dropDownFieldTemplate(this);
+		return dropdownTemplate(this);
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-drop-down-field': RRDropDownField;
+		'rr-dropdown': RRDropdown;
 	}
 }
