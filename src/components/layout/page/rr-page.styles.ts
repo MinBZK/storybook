@@ -14,8 +14,6 @@ export const pageStyles = css`
 		overflow-y: auto;
 		overflow-x: hidden;
 		background-color: var(--_bg);
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 	:host([tinted]) {
@@ -32,12 +30,14 @@ export const pageStyles = css`
 	.page__header {
 		flex-shrink: 0;
 		position: relative;
+		container-type: inline-size;
+		container-name: layout-area;
 	}
 
 	:host([sticky-header]) .page__header {
 		position: sticky;
 		top: 0;
-		z-index: 10;
+		z-index: 1;
 		background-color: color-mix(in srgb, var(--_bg) 95%, transparent);
 	}
 
@@ -52,6 +52,7 @@ export const pageStyles = css`
 		pointer-events: none;
 		opacity: 0;
 		transition: opacity 200ms ease;
+		z-index: -1;
 	}
 
 	:host([sticky-header]) .page__header--scrolled::after {
@@ -65,6 +66,8 @@ export const pageStyles = css`
 		display: flex;
 		flex-direction: column;
 		flex: 1;
+		container-type: inline-size;
+		container-name: layout-area;
 	}
 
 
@@ -73,12 +76,14 @@ export const pageStyles = css`
 	.page__footer {
 		flex-shrink: 0;
 		position: relative;
+		container-type: inline-size;
+		container-name: layout-area;
 	}
 
 	:host([sticky-footer]) .page__footer {
 		position: sticky;
 		bottom: 0;
-		z-index: 10;
+		z-index: 1;
 		background-color: color-mix(in srgb, var(--_bg) 95%, transparent);
 	}
 
