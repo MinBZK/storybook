@@ -891,6 +891,8 @@
 	--components-title-bar-lg-overline-font: var(--primitives-font-body-md-regular-tight);
 	--components-title-bar-lg-subtitle-font: var(--primitives-font-body-md-regular-tight);
 
+	--components-sheet-box-shadow: var(--primitives-box-shadows-level-5);
+
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 
