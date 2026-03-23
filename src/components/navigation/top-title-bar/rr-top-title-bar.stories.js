@@ -9,22 +9,19 @@ import '../../layout/title-bar/rr-title-bar.ts';
 /**
  * De Top Title Bar is de werkbalk van een pagina of container.
  * Hij toont een titel en optionele navigatie- en actieknoppen.
- * De component is standaard compact: de titel staat in de werkbalk.
  *
  * ## Gebruik
  * ```html
  * <rr-top-title-bar title="Paginatitel"></rr-top-title-bar>
  * ```
  *
- * ## Titel verbergen bij scrollen
- * Stel `title-anchor` in op het id van een titelelement in de pagina-inhoud.
- * Zolang dat element zichtbaar is verdwijnt de werkbalktitel; zodra het buiten
- * beeld scrolt keert hij terug.
+ * ## Compact stand
+ * De component schakelt automatisch naar de compacte stand (`is-compact`) zodra
+ * de bovenkant van het ankerelement de bovenkant van de scrollcontainer bereikt.
+ * Stel `title-anchor` in op het id van het titelelement in de pagina-inhoud.
  *
  * ## Terugknop
- * Stel `back-label` in om de terugknop te tonen. Als de werkbalktitel zichtbaar
- * is (compact) wordt de terugknop als icoonknop getoond. Als de paginatitel
- * zichtbaar is wordt de terugknop als tekstknop met label getoond.
+ * In de standaard stand: tekstknop met `back-label`. In de compacte stand: icoonknop.
  *
  * ## Sluitknop
  * Stel `dismiss-label` in op 'Sluit', 'Annuleer' of 'Klaar'.
@@ -45,11 +42,11 @@ export default {
 	argTypes: {
 		title: {
 			control: 'text',
-			description: 'Titel weergegeven in de werkbalk',
+			description: 'Titel weergegeven in de werkbalk (compact stand)',
 		},
 		subtitle: {
 			control: 'text',
-			description: 'Optionele subtitel in de werkbalk',
+			description: 'Optionele subtitel in de werkbalk (compact stand)',
 		},
 		backLabel: {
 			control: 'text',
@@ -60,7 +57,7 @@ export default {
 		backHref: {
 			control: 'text',
 			name: 'back-href',
-			description: 'Wanneer ingesteld, rendert de terugknop als ankerlink',
+			description: 'Wanneer ingesteld rendert de terugknop als ankerlink',
 			table: { defaultValue: { summary: '' } },
 		},
 		dismissLabel: {
@@ -72,7 +69,7 @@ export default {
 		titleAnchor: {
 			control: 'text',
 			name: 'title-anchor',
-			description: 'ID van het titelelement in de pagina-inhoud',
+			description: 'ID van het ankerelement in de pagina-inhoud',
 			table: { defaultValue: { summary: '' } },
 		},
 	},
@@ -103,35 +100,45 @@ const Template = (args) => html`
 `;
 
 export const Standaard = Template.bind({});
-Standaard.args = {
-	title: 'Paginatitel',
-};
+Standaard.args = { title: 'Paginatitel' };
 
 export const MetTerugknop = Template.bind({});
-MetTerugknop.args = {
-	title: 'Detailpagina',
-	backLabel: 'Overzicht',
-};
+MetTerugknop.args = { title: 'Detailpagina', backLabel: 'Overzicht' };
 MetTerugknop.parameters = {
 	docs: {
 		description: {
-			story: 'In de compacte toestand (standaard) wordt de terugknop als icoonknop weergegeven.',
+			story: 'In de standaard stand wordt de terugknop als tekstknop weergegeven.',
+		},
+	},
+};
+
+export const Compact = () => html`
+	<rr-page tinted style="height: 120px;">
+		<rr-top-title-bar
+			class="is-compact"
+			slot="header"
+			title="Detailpagina"
+			back-label="Overzicht"
+			dismiss-label="Sluit"
+			@back=${() => console.log('back')}
+			@dismiss=${() => console.log('dismiss')}
+		></rr-top-title-bar>
+	</rr-page>
+`;
+Compact.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: 'Compacte stand via de <code>is-compact</code>-klasse: icoonknop, scheider en werkbalktitel.',
 		},
 	},
 };
 
 export const MetSluitknop = Template.bind({});
-MetSluitknop.args = {
-	title: 'Formulier',
-	dismissLabel: 'Sluit',
-};
+MetSluitknop.args = { title: 'Formulier', dismissLabel: 'Sluit' };
 
 export const MetBeideKnoppen = Template.bind({});
-MetBeideKnoppen.args = {
-	title: 'Detailpagina',
-	backLabel: 'Overzicht',
-	dismissLabel: 'Annuleer',
-};
+MetBeideKnoppen.args = { title: 'Detailpagina', backLabel: 'Overzicht', dismissLabel: 'Annuleer' };
 
 export const MetSubtitel = Template.bind({});
 MetSubtitel.args = {
@@ -164,7 +171,7 @@ MetWerkbalkActies.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Extra knoppen links van de sluitknop via de <code>toolbar</code>-slot.',
+			story: 'Extra knoppen via de <code>toolbar</code>-slot.',
 		},
 	},
 };
@@ -180,10 +187,10 @@ export const MetTitelAnker = () => html`
 			@back=${() => console.log('back')}
 			@dismiss=${() => console.log('dismiss')}
 		></rr-top-title-bar>
-		<div style="padding: 16px;">
+		<div style="padding-inline: 16px;">
 			<rr-title-bar id="page-title-bar" size="2">
 				<h1>Paginatitel</h1>
-				<p slot="subtitle">Scroll omlaag om te zien hoe de werkbalktitel verschijnt en de terugknop omschakelt.</p>
+				<p slot="subtitle">Scroll omlaag om te zien hoe de compacte stand wordt geactiveerd.</p>
 			</rr-title-bar>
 			<div style="height: 600px;"></div>
 		</div>
@@ -193,7 +200,29 @@ MetTitelAnker.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Stel <code>title-anchor</code> in op het id van de paginatitel. Zolang de titel zichtbaar is verdwijnt de werkbalktitel en wordt de terugknop als tekstknop getoond. Zodra de titel buiten beeld scrolt keert de werkbalktitel terug en schakelt de terugknop over naar een icoonknop.',
+			story: 'Automatische compacte stand via <code>title-anchor</code>.',
 		},
 	},
+};
+
+export const MetTitelAnkerZonderActies = () => html`
+	<rr-page tinted sticky-header style="height: 400px;">
+		<rr-top-title-bar
+			slot="header"
+			title="Paginatitel"
+			title-anchor="page-title-bar-2"
+			@back=${() => console.log('back')}
+			@dismiss=${() => console.log('dismiss')}
+		></rr-top-title-bar>
+		<div style="padding-inline: 16px;">
+			<rr-title-bar id="page-title-bar-2" size="2">
+				<h1>Paginatitel</h1>
+				<p slot="subtitle">Zonder terugknop of sluitknop.</p>
+			</rr-title-bar>
+			<div style="height: 600px;"></div>
+		</div>
+	</rr-page>
+`;
+MetTitelAnkerZonderActies.parameters = {
+	controls: { disable: true },
 };
