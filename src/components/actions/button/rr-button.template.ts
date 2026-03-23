@@ -6,37 +6,58 @@ interface TemplateHelpers {
 	detectIconPosition: () => void;
 }
 
-export function template(this: RRButton, helpers: TemplateHelpers) {
+function renderContent(component: RRButton, detectIconPosition: () => void) {
 	return html`
-		<button
-			class="button"
+		<span class="button__content">
+			${component._iconStart ? html`
+				<rr-icon class="button__start-icon"
+					name=${component._iconStart.name}
+				></rr-icon>
+			` : nothing}
+			<slot @slotchange=${detectIconPosition}></slot>
+			${component._iconEnd ? html`
+				<rr-icon class="button__end-icon"
+					name=${component._iconEnd.name}
+				></rr-icon>
+			` : nothing}
+			${component.isExpandable ? html`
+				<rr-icon class="button__disclosure-icon"
+					name="chevron-down-small"
+				></rr-icon>
+			` : nothing}
+		</span>
+	`;
+}
+
+export function template(this: RRButton, helpers: TemplateHelpers) {
+	const content = renderContent(this, helpers.detectIconPosition);
+
+	if (this.href) {
+		const resolvedRel = this._resolvedRel();
+		return html`
+			<a class="button"
+				href=${this.disabled ? nothing : this.href}
+				target=${this.target || nothing}
+				rel=${resolvedRel || nothing}
+				aria-disabled=${this.disabled ? 'true' : nothing}
+				aria-label=${this.accessibleLabel || nothing}
+				@click=${helpers.handleClick}
+			>
+				${content}
+			</a>
+		`;
+	}
+
+	return html`
+		<button class="button"
 			type=${this.type}
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled ? 'true' : nothing}
 			aria-label=${this.accessibleLabel || nothing}
+			popovertarget=${this.popovertarget || nothing}
 			@click=${helpers.handleClick}
 		>
-			<span class="button__content">
-				${this._iconStart ? html`
-					<rr-icon
-						class="button__start-icon"
-						name=${this._iconStart.name}
-					></rr-icon>
-				` : nothing}
-				<slot @slotchange=${helpers.detectIconPosition}></slot>
-				${this._iconEnd ? html`
-					<rr-icon
-						class="button__end-icon"
-						name=${this._iconEnd.name}
-					></rr-icon>
-				` : nothing}
-				${this.isExpandable ? html`
-					<rr-icon
-						class="button__disclosure-icon"
-						name="chevron-down-small"
-					></rr-icon>
-				` : nothing}
-			</span>
+			${content}
 		</button>
 	`;
 }

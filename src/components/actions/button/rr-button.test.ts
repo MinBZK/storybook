@@ -222,3 +222,81 @@ describe('rr-button – icon detection', () => {
 		expect((el as any)._observer).not.toBeNull();
 	});
 });
+
+describe('rr-button – href / link rendering', () => {
+	let el: RRButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders a <button> by default', async () => {
+		el = await fixture<RRButton>('<rr-button>Click</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('a')).toBeNull();
+	});
+
+	it('renders an <a> when href is set', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('button')).toBeNull();
+	});
+
+	it('sets href on the anchor element', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('href')).toBe('/overzicht');
+	});
+
+	it('forwards target and rel to the anchor element', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht" target="_blank" rel="noopener">Terug</rr-button>');
+		await waitForUpdate(el);
+		const a = el.shadowRoot!.querySelector('a')!;
+		expect(a.getAttribute('target')).toBe('_blank');
+		expect(a.getAttribute('rel')).toBe('noopener');
+	});
+
+	it('defaults rel to noopener noreferrer when target is _blank and rel is not set', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht" target="_blank">Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('rel')).toBe('noopener noreferrer');
+	});
+
+	it('does not set href on the anchor when disabled', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled>Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('href')).toBe(false);
+	});
+
+	it('sets aria-disabled on the anchor when disabled', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled>Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-disabled')).toBe('true');
+	});
+
+	it('does not set aria-disabled on the anchor when not disabled', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('aria-disabled')).toBe(false);
+	});
+
+	it('forwards accessible-label to the anchor element', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht" accessible-label="Ga terug naar overzicht">Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe('Ga terug naar overzicht');
+	});
+
+	it('switches from <button> to <a> when href is set dynamically', async () => {
+		el = await fixture<RRButton>('<rr-button>Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
+
+		el.href = '/overzicht';
+		await waitForUpdate(el);
+
+		expect(el.shadowRoot!.querySelector('a')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('button')).toBeNull();
+	});
+});

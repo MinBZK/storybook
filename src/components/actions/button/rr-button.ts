@@ -5,10 +5,13 @@
  * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'danger-tinted'
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
- * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset'
+ * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} is-expandable - Whether the button has a icon to indicate it opens a menu or popover
  * @attr {boolean} full-width - Whether the button stretches to fill its container width
  * @attr {string} accessible-label - Accessible label for the button, overrides slot text for screen readers
+ * @attr {string} href - When set, renders an <a> element instead of <button>
+ * @attr {string} target - Link target (e.g. '_blank'); only used when href is set
+ * @attr {string} rel - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
  *
  * @slot - Slot for button text
  * @slot (auto) - Place an rr-icon before or after the text to auto-detect position
@@ -65,9 +68,24 @@ export class RRButton extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	/** Accessible label forwarded to the inner <button>. Use when visible text alone lacks context. */
+	/** Accessible label forwarded to the inner <button> or <a>. Use when visible text alone lacks context. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	/** When set, renders an <a> element instead of <button>. */
+	@property({ type: String, reflect: true })
+	href = '';
+
+	/** Link target (e.g. '_blank'). Only used when href is set. */
+	@property({ type: String, reflect: true })
+	target = '';
+
+	/**
+	 * Link rel attribute. Only used when href is set.
+	 * Defaults to 'noopener noreferrer' when target is '_blank' and rel is not explicitly set.
+	 */
+	@property({ type: String, reflect: true })
+	rel = '';
 
 	@state()
 	_iconStart: IconState | null = null;
@@ -183,6 +201,13 @@ export class RRButton extends LitElement {
 			e.stopPropagation();
 			return;
 		}
+	}
+
+	/** Resolves the effective rel value for link rendering. */
+	_resolvedRel(): string {
+		if (this.rel) return this.rel;
+		if (this.target === '_blank') return 'noopener noreferrer';
+		return '';
 	}
 
 	override render() {
