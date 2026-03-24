@@ -1,18 +1,17 @@
 /**
  * RegelRecht Stacked Split View Component (Lit + TypeScript)
  *
- * Een verticale split view met meerdere gestapelde panelen.
- * Het aantal panelen wordt ingesteld via het `panes` attribuut. Elk paneel
- * krijgt automatisch een genummerde slot: pane-1, pane-2, etc.
- * Panelen zijn minimaal 320px hoog; panelen die niet passen worden verborgen.
+ * A vertical split view with multiple stacked panes.
+ * The number of panes is set via the `panes` attribute. Each pane
+ * automatically gets a numbered slot: pane-1, pane-2, etc.
  *
  * @element rr-stacked-split-view
  *
- * @attr {number} panes - Aantal panelen (standaard: 2)
+ * @attr {number} panes - Number of panes (default: 2)
  *
- * @slot pane-1 - Eerste paneel
- * @slot pane-2 - Tweede paneel
- * @slot pane-n - Elk volgend paneel op basis van het `panes` attribuut
+ * @slot pane-1 - First pane
+ * @slot pane-2 - Second pane
+ * @slot pane-n - Each subsequent pane based on the `panes` attribute
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

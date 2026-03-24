@@ -9,10 +9,7 @@ export function sideBySideSplitViewTemplate(component: RRSideBySideSplitView): T
 		<div class="side-by-side-split-view">
 			${panes.map((n, i) => html`
 				${i > 0 ? html`
-					<rr-split-view-divider
-						orientation="vertical"
-						data-index=${i}
-					></rr-split-view-divider>
+					<rr-split-view-divider orientation="vertical"></rr-split-view-divider>
 				` : nothing}
 				<div class="side-by-side-split-view__pane">
 					<slot name="pane-${n}"></slot>

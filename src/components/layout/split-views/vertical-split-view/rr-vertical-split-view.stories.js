@@ -1,21 +1,22 @@
 import { html } from 'lit';
 import './rr-vertical-split-view.ts';
-import '../../../layout/page/rr-page.ts';
-import '../../../layout/page-sections/simple-section/rr-simple-section.ts';
+import '../split-view-pane/rr-split-view-pane.ts';
+import '../../page/rr-page.ts';
+import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
 
 /**
- * Gebruik een vertical split view voor een drierijige layout met een koptekst,
- * inhoudsgebied en voettekst. De koptekst biedt ruimte voor tools en
- * acties; het voettekst voor uitvoer, logboeken of statusinformatie.
- * Het inhoudsgebied is altijd zichtbaar en neemt de resterende ruimte in.
+ * Use a vertical split view for a three-row layout with a header,
+ * main content area, and footer. The header provides space for tools and
+ * actions; the footer for output, logs, or status information.
+ * The main area is always visible and takes up the remaining space.
  *
  * ## Gebruik
  * ```html
  * <rr-vertical-split-view>
- *   <rr-page slot="header">...</rr-page>
- *   <rr-page slot="main">...</rr-page>
- *   <rr-page slot="footer">...</rr-page>
+ *   <rr-split-view-pane slot="header">...</rr-split-view-pane>
+ *   <rr-split-view-pane slot="main">...</rr-split-view-pane>
+ *   <rr-split-view-pane slot="footer">...</rr-split-view-pane>
  * </rr-vertical-split-view>
  * ```
  */
@@ -57,42 +58,48 @@ export const Standaard = ({ showHeader, showFooter }) => html`
 		?show-header=${showHeader}
 		?show-footer=${showFooter}
 	>
-		<rr-page sticky-header slot="header">
-			<rr-rich-text slot="header" style="padding: 16px;">
-				<strong>Koptekst</strong>
-			</rr-rich-text>
-			<rr-simple-section>
-				<rr-rich-text>
-					<p>Acties, filters en tools voor het inhoudsgebied.</p>
+		<rr-split-view-pane slot="header">
+			<rr-page sticky-header>
+				<rr-rich-text slot="header" style="padding: 16px;">
+					<strong>Koptekst</strong>
 				</rr-rich-text>
-			</rr-simple-section>
-		</rr-page>
+				<rr-simple-section>
+					<rr-rich-text>
+						<p>Acties, filters en tools voor het inhoudsgebied.</p>
+					</rr-rich-text>
+				</rr-simple-section>
+			</rr-page>
+		</rr-split-view-pane>
 
-		<rr-page sticky-header slot="main">
-			<rr-rich-text slot="header" style="padding: 16px;">
-				<strong>Inhoud</strong>
-			</rr-rich-text>
-			<rr-simple-section>
-				<rr-rich-text>
-					<h2>Primaire inhoud</h2>
-					<p>Het hoofdgebied voor bewerkbare of weer te geven inhoud.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-					<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+		<rr-split-view-pane slot="main">
+			<rr-page sticky-header>
+				<rr-rich-text slot="header" style="padding: 16px;">
+					<strong>Inhoud</strong>
 				</rr-rich-text>
-			</rr-simple-section>
-		</rr-page>
+				<rr-simple-section>
+					<rr-rich-text>
+						<h2>Primaire inhoud</h2>
+						<p>Het hoofdgebied voor bewerkbare of weer te geven inhoud.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+						<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+					</rr-rich-text>
+				</rr-simple-section>
+			</rr-page>
+		</rr-split-view-pane>
 
-		<rr-page sticky-header slot="footer">
-			<rr-rich-text slot="header" style="padding: 16px;">
-				<strong>Uitvoer</strong>
-			</rr-rich-text>
-			<rr-simple-section>
-				<rr-rich-text>
-					<p>Logboeken, validatieresultaten en statusinformatie.</p>
-					<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<rr-split-view-pane slot="footer">
+			<rr-page sticky-header>
+				<rr-rich-text slot="header" style="padding: 16px;">
+					<strong>Uitvoer</strong>
 				</rr-rich-text>
-			</rr-simple-section>
-		</rr-page>
+				<rr-simple-section>
+					<rr-rich-text>
+						<p>Logboeken, validatieresultaten en statusinformatie.</p>
+						<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					</rr-rich-text>
+				</rr-simple-section>
+			</rr-page>
+		</rr-split-view-pane>
 	</rr-vertical-split-view>
 `;

@@ -1,20 +1,20 @@
 /**
  * RegelRecht Vertical Split View Component (Lit + TypeScript)
  *
- * Een drierijige layout met een koptekst, inhoudsgebied en voettekst.
- * De koptekst biedt ruimte voor tools en acties boven de inhoud; het
- * inhoudsgebied toont de primaire inhoud; het voettekst biedt ruimte
- * voor uitvoer, logboeken of aanvullende panelen onder de inhoud.
- * Het inhoudsgebied blijft altijd zichtbaar.
+ * A three-row layout with a header, main content area, and footer.
+ * The header provides space for tools and actions above the content;
+ * the main area shows primary content; the footer provides space
+ * for output, logs, or additional panels below the content.
+ * The main area is always visible.
  *
  * @element rr-vertical-split-view
  *
- * @attr {boolean} show-header - Toon de koptekst (standaard: true)
- * @attr {boolean} show-footer - Toon het voettekst (standaard: true)
+ * @attr {boolean} show-header - Show the header (default: true)
+ * @attr {boolean} show-footer - Show the footer (default: true)
  *
- * @slot header - Bovenste paneel voor kopteksten en acties
- * @slot content - Middelste paneel voor de primaire inhoud
- * @slot footer - Onderste paneel voor uitvoer, logboeken of statusinformatie
+ * @slot header - Top pane for headers and actions
+ * @slot main   - Center pane for primary content
+ * @slot footer - Bottom pane for output, logs, or status information
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

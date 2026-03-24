@@ -1,21 +1,21 @@
 import { html } from 'lit';
 import './rr-stacked-split-view.ts';
-import '../../../layout/page/rr-page.ts';
-import '../../../layout/page-sections/simple-section/rr-simple-section.ts';
+import '../split-view-pane/rr-split-view-pane.ts';
+import '../../page/rr-page.ts';
+import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
 
 /**
- * Gebruik een stacked split view om meerdere panelen verticaal gestapeld te tonen,
- * elk met een eigen scrollbaar gebied. Typisch gebruikt voor editors waarbij
- * de gebruiker twee of meer weergaven boven elkaar nodig heeft.
- * Panelen zijn minimaal 320px hoog; panelen die niet passen worden automatisch verborgen.
- * Het aantal panelen wordt bepaald door het `panes` attribuut.
+ * Use a stacked split view to show multiple panes stacked vertically,
+ * each with its own scrollable area. Typically used for editors where
+ * the user needs two or more views above each other.
+ * The number of panes is set via the <code>panes</code> attribute.
  *
  * ## Gebruik
  * ```html
  * <rr-stacked-split-view panes="2">
- *   <rr-page slot="pane-1">...</rr-page>
- *   <rr-page slot="pane-2">...</rr-page>
+ *   <rr-split-view-pane slot="pane-1">...</rr-split-view-pane>
+ *   <rr-split-view-pane slot="pane-2">...</rr-split-view-pane>
  * </rr-stacked-split-view>
  * ```
  */
@@ -46,21 +46,23 @@ export default {
 };
 
 const paneContent = (title, slot) => html`
-	<rr-page sticky-header slot=${slot}>
-		<rr-rich-text slot="header" style="padding: 16px;">
-			<strong>${title}</strong>
-		</rr-rich-text>
-		<rr-simple-section>
-			<rr-rich-text>
-				<h2>Sectietitel</h2>
-				<p>Dit is de inhoud van ${title}. Elke pagina heeft een eigen scrollbaar gebied.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-				<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-				<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-				<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+	<rr-split-view-pane slot=${slot}>
+		<rr-page sticky-header>
+			<rr-rich-text slot="header" style="padding: 16px;">
+				<strong>${title}</strong>
 			</rr-rich-text>
-		</rr-simple-section>
-	</rr-page>
+			<rr-simple-section>
+				<rr-rich-text>
+					<h2>Sectietitel</h2>
+					<p>Dit is de inhoud van ${title}. Elke pagina heeft een eigen scrollbaar gebied.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+					<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				</rr-rich-text>
+			</rr-simple-section>
+		</rr-page>
+	</rr-split-view-pane>
 `;
 
 export const Standaard = ({ panes }) => html`

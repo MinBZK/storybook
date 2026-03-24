@@ -9,19 +9,13 @@ export function verticalSplitViewTemplate(component: RRVerticalSplitView): Templ
 				<div class="vertical-split-view__header">
 					<slot name="header"></slot>
 				</div>
-				<rr-split-view-divider
-					orientation="horizontal"
-					data-index="0"
-				></rr-split-view-divider>
+				<rr-split-view-divider orientation="horizontal"></rr-split-view-divider>
 			` : nothing}
 			<div class="vertical-split-view__main">
 				<slot name="main"></slot>
 			</div>
 			${component.showFooter ? html`
-				<rr-split-view-divider
-					orientation="horizontal"
-					data-index="1"
-				></rr-split-view-divider>
+				<rr-split-view-divider orientation="horizontal"></rr-split-view-divider>
 				<div class="vertical-split-view__footer">
 					<slot name="footer"></slot>
 				</div>

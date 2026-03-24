@@ -1,18 +1,17 @@
 /**
  * RegelRecht Side-by-Side Split View Component (Lit + TypeScript)
  *
- * Een horizontale split view met meerdere gelijke panelen naast elkaar.
- * Het aantal panelen wordt ingesteld via het `panes` attribuut. Elk paneel
- * krijgt automatisch een genummerde slot: pane-1, pane-2, etc.
- * Panelen zijn minimaal 320px breed; panelen die niet passen worden verborgen.
+ * A horizontal split view with multiple equal panes side by side.
+ * The number of panes is set via the `panes` attribute. Each pane
+ * automatically gets a numbered slot: pane-1, pane-2, etc.
  *
  * @element rr-side-by-side-split-view
  *
- * @attr {number} panes - Aantal panelen (standaard: 2)
+ * @attr {number} panes - Number of panes (default: 2)
  *
- * @slot pane-1 - Eerste paneel
- * @slot pane-2 - Tweede paneel
- * @slot pane-n - Elk volgend paneel op basis van het `panes` attribuut
+ * @slot pane-1 - First pane
+ * @slot pane-2 - Second pane
+ * @slot pane-n - Each subsequent pane based on the `panes` attribute
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
