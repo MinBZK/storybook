@@ -8,6 +8,9 @@ export const sideBySideSplitViewStyles = css`
 		display: flex;
 		width: 100%;
 		height: 100%;
+
+		/* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_pane-min-width: var(--primitives-area-320);
 	}
 
 	:host([hidden]) {
@@ -34,10 +37,14 @@ export const sideBySideSplitViewStyles = css`
 		flex-direction: column;
 		flex: 1;
 		min-height: 0;
-		min-width: var(--primitives-area-320);
+		min-width: var(--_pane-min-width);
 		overflow: hidden;
 		container-type: inline-size;
 		container-name: layout-area;
+	}
+
+	.side-by-side-split-view__pane[hidden] {
+		display: none;
 	}
 
 	::slotted(*) {

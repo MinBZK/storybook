@@ -66,7 +66,7 @@ const paneContent = (title, slot) => html`
 `;
 
 export const Standaard = ({ panes }) => html`
-	<rr-stacked-split-view panes=${panes} style="height: 600px;">
+	<rr-stacked-split-view panes=${panes} style="height: 640px;">
 		${Array.from({ length: panes }, (_, i) => paneContent(`Paneel ${i + 1}`, `pane-${i + 1}`))}
 	</rr-stacked-split-view>
 `;
