@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './rr-horizontal-split-view.ts';
 import '../split-view-pane/rr-split-view-pane.ts';
+import '../vertical-split-view/rr-vertical-split-view.ts';
 import '../../page/rr-page.ts';
 import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
@@ -55,31 +56,48 @@ export default {
 			description: 'Toon de inspecteur altijd als sheet, ongeacht beschikbare ruimte',
 			table: { defaultValue: { summary: 'false' } },
 		},
+		sidebarAsSheet: {
+			control: 'boolean',
+			description: 'Toon de zijbalk altijd als sheet, inhoudsgebied blijft altijd zichtbaar',
+			table: { defaultValue: { summary: 'false' } },
+		},
 	},
 	args: {
 		maxLevels: 3,
 		inspectorAsSheet: false,
+		sidebarAsSheet: false,
 	},
 };
 
-export const Standaard = ({ maxLevels, inspectorAsSheet }) => {
+export const Standaard = ({ maxLevels, inspectorAsSheet, sidebarAsSheet }) => {
 	setTimeout(() => {
 		const splitView = document.getElementById('split-view-demo');
-		const button = document.getElementById('inspector-toggle');
-		if (!splitView || !button) return;
+		const inspectorButton = document.getElementById('inspector-toggle');
+		const navButton = document.getElementById('sidebar-toggle');
+		if (!splitView) return;
 
-		const updateButton = () => {
-			button.hidden = !splitView.hasAttribute('inspector-auto-hidden') && !splitView.hasAttribute('inspector-as-sheet');
+		const updateInspectorButton = () => {
+			if (inspectorButton) {
+				inspectorButton.hidden = !splitView.hasAttribute('inspector-auto-hidden') && !splitView.hasAttribute('inspector-as-sheet');
+			}
 		};
 
-		updateButton();
+		const updateNavButton = () => {
+			if (navButton) {
+				navButton.hidden = !splitView.hasAttribute('sidebar-as-sheet');
+			}
+		};
 
-		new MutationObserver(updateButton).observe(splitView, {
+		updateInspectorButton();
+		updateNavButton();
+
+		new MutationObserver(() => { updateInspectorButton(); updateNavButton(); }).observe(splitView, {
 			attributes: true,
-			attributeFilter: ['inspector-auto-hidden', 'inspector-as-sheet'],
+			attributeFilter: ['inspector-auto-hidden', 'inspector-as-sheet', 'sidebar-as-sheet'],
 		});
 
-		button.addEventListener('click', () => splitView.showInspectorSheet());
+		inspectorButton?.addEventListener('click', () => splitView.showInspectorSheet());
+		navButton?.addEventListener('click', () => splitView.showSidebarSheet());
 	}, 0);
 
 	return html`
@@ -88,12 +106,14 @@ export const Standaard = ({ maxLevels, inspectorAsSheet }) => {
 			style="height: 600px;"
 			max-levels=${maxLevels}
 			?inspector-as-sheet=${inspectorAsSheet}
+			?sidebar-as-sheet=${sidebarAsSheet}
 		>
 			<rr-split-view-pane slot="sidebar">
 				<rr-page sticky-header>
 					<rr-top-title-bar
 						slot="header"
 						title="Zijbalk"
+						dismiss-label="Sluit"
 					></rr-top-title-bar>
 					<rr-simple-section>
 						<rr-rich-text>
@@ -105,12 +125,13 @@ export const Standaard = ({ maxLevels, inspectorAsSheet }) => {
 				</rr-page>
 			</rr-split-view-pane>
 
-			<rr-split-view-pane slot="secondary-sidebar">
+			<rr-split-view-pane slot="secondary-sidebar" has-content>
 				<rr-page sticky-header>
 					<rr-top-title-bar
 						slot="header"
 						title="Secundaire zijbalk"
 						back-label="Zijbalk"
+						dismiss-label="Sluit"
 					></rr-top-title-bar>
 					<rr-simple-section>
 						<rr-rich-text>
@@ -129,6 +150,13 @@ export const Standaard = ({ maxLevels, inspectorAsSheet }) => {
 						title="Inhoud"
 						back-label="Terug"
 					>
+						<rr-button
+							id="sidebar-toggle"
+							slot="toolbar"
+							variant="accent-transparent"
+						>
+							Navigatie
+						</rr-button>
 						<rr-button
 							id="inspector-toggle"
 							slot="toolbar"
@@ -167,3 +195,67 @@ export const Standaard = ({ maxLevels, inspectorAsSheet }) => {
 		</rr-horizontal-split-view>
 	`;
 };
+
+/**
+ * Split views can be nested. Here a vertical split view is placed inside
+ * the main pane of a horizontal split view, creating an editor-like layout
+ * with a sidebar, an editor area, and an output panel below it.
+ */
+export const GenestdeSplitView = () => html`
+	<rr-horizontal-split-view
+		style="height: 600px;"
+		max-levels="2"
+	>
+		<rr-split-view-pane slot="sidebar">
+			<rr-page sticky-header>
+				<rr-top-title-bar
+					slot="header"
+					title="Zijbalk"
+					dismiss-label="Sluit"
+				></rr-top-title-bar>
+				<rr-simple-section>
+					<rr-rich-text>
+						<h2>Navigatie</h2>
+						<p>Wetten, regelingen en andere bronnen.</p>
+					</rr-rich-text>
+				</rr-simple-section>
+			</rr-page>
+		</rr-split-view-pane>
+
+		<rr-split-view-pane slot="main" has-content>
+			<rr-vertical-split-view>
+				<rr-split-view-pane slot="main">
+					<rr-page sticky-header>
+						<rr-top-title-bar
+							slot="header"
+							title="Inhoud"
+							back-label="Terug"
+						></rr-top-title-bar>
+						<rr-simple-section>
+							<rr-rich-text>
+								<h2>Primaire inhoud</h2>
+								<p>Het hoofdgebied voor bewerkbare of weer te geven inhoud.</p>
+								<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</rr-rich-text>
+						</rr-simple-section>
+					</rr-page>
+				</rr-split-view-pane>
+
+				<rr-split-view-pane slot="footer">
+					<rr-page sticky-header>
+						<rr-top-title-bar
+							slot="header"
+							title="Uitvoer"
+						></rr-top-title-bar>
+						<rr-simple-section>
+							<rr-rich-text>
+								<p>Logboeken, validatieresultaten en statusinformatie.</p>
+							</rr-rich-text>
+						</rr-simple-section>
+					</rr-page>
+				</rr-split-view-pane>
+			</rr-vertical-split-view>
+		</rr-split-view-pane>
+	</rr-horizontal-split-view>
+`;
+GenestdeSplitView.parameters = { controls: { disable: true } };

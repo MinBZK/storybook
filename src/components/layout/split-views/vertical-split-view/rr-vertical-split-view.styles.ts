@@ -47,7 +47,7 @@ export const verticalSplitViewStyles = css`
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		min-height: var(--primitives-area-320);
+		min-height: 0;
 		min-width: 0;
 		overflow: hidden;
 		container-type: inline-size;

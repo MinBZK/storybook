@@ -20,6 +20,7 @@
  * @attr {number}  max-levels            - Number of navigation levels including main content (default: 1)
  * @attr {boolean} inspector-auto-hidden - Inspector hidden to free up space for other panes (read-only, set by the split view)
  * @attr {boolean} inspector-as-sheet    - Always show the inspector as a sheet regardless of available space
+ * @attr {boolean} sidebar-as-sheet      - Always show the sidebar as a sheet, keeping main visible at full width
  *
  * @slot sidebar           - Left pane for primary navigation (requires max-levels >= 2)
  * @slot secondary-sidebar - Second pane for secondary navigation (requires max-levels === 3)
@@ -28,6 +29,8 @@
  *
  * @method showInspectorSheet() - Opens the inspector as a sheet; only has effect when inspector-auto-hidden or inspector-as-sheet is active
  * @method hideInspectorSheet() - Closes the inspector sheet
+ * @method showSidebarSheet()   - Opens the sidebar as a sheet; only has effect when sidebar-as-sheet is active
+ * @method hideSidebarSheet()   - Closes the sidebar sheet
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -46,6 +49,9 @@ export class RRHorizontalSplitView extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'inspector-as-sheet' })
 	inspectorAsSheet = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'sidebar-as-sheet' })
+	sidebarAsSheet = false;
 
 	// Internal visibility driven by layout algorithm — not part of public API
 	@state()
@@ -72,6 +78,10 @@ export class RRHorizontalSplitView extends LitElement {
 		return this.shadowRoot?.querySelector('.horizontal-split-view__inspector-sheet') ?? null;
 	}
 
+	private get _sidebarSheet(): HTMLDialogElement | null {
+		return this.shadowRoot?.querySelector('.horizontal-split-view__sidebar-sheet') ?? null;
+	}
+
 	// Effective levels — clamp to minimum 1, accessible from template
 	get _effectiveLevels(): number {
 		return Math.max(1, this.maxLevels);
@@ -86,18 +96,18 @@ export class RRHorizontalSplitView extends LitElement {
 	}
 
 	private get _hasInspector(): boolean {
-		return this.querySelector('[slot="inspector"]') !== null;
+		return this.querySelector(':scope > [slot="inspector"]') !== null;
 	}
 
-	private _paneHasContent(slot: string): boolean {
-		return this.querySelector(`rr-split-view-pane[slot="${slot}"]`)?.hasAttribute('has-content') ?? false;
+	_paneHasContent(slot: string): boolean {
+		return this.querySelector(`:scope > rr-split-view-pane[slot="${slot}"]`)?.hasAttribute('has-content') ?? false;
 	}
 
 	override connectedCallback() {
 		super.connectedCallback();
 		this._resizeObserver = new ResizeObserver(() => this._updateLayout());
 		this._resizeObserver.observe(this);
-		this.addEventListener('dismiss', this._handleInspectorSheetDismiss);
+		this.addEventListener('dismiss', this._handleDismiss);
 
 		this._paneObserver = new MutationObserver(() => this._updateLayout());
 		this._hostObserver = new MutationObserver(() => {
@@ -116,12 +126,12 @@ export class RRHorizontalSplitView extends LitElement {
 		this._paneObserver = null;
 		this._hostObserver?.disconnect();
 		this._hostObserver = null;
-		this.removeEventListener('dismiss', this._handleInspectorSheetDismiss);
+		this.removeEventListener('dismiss', this._handleDismiss);
 	}
 
 	private _observePanes() {
 		this._paneObserver?.disconnect();
-		this.querySelectorAll('rr-split-view-pane').forEach(pane => {
+		this.querySelectorAll(':scope > rr-split-view-pane').forEach(pane => {
 			this._paneObserver!.observe(pane, {
 				attributes: true,
 				attributeFilter: ['has-content'],
@@ -143,12 +153,12 @@ export class RRHorizontalSplitView extends LitElement {
 	}
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('maxLevels') || changed.has('inspectorAsSheet')) {
+		if (changed.has('maxLevels') || changed.has('inspectorAsSheet') || changed.has('sidebarAsSheet')) {
 			this._updateLayout();
 		}
-		// Close sheet immediately when inspector-auto-hidden clears and inspector-as-sheet is not set
+		// Close inspector sheet immediately when inspector-auto-hidden clears and inspector-as-sheet is not set
 		if (changed.has('inspectorAutoHidden') && !this.inspectorAutoHidden && !this.inspectorAsSheet) {
-			this._closeInspectorSheetImmediate();
+			this._closeSheetImmediate(this._inspectorSheet);
 		}
 	}
 
@@ -156,8 +166,9 @@ export class RRHorizontalSplitView extends LitElement {
 		const width = this.getBoundingClientRect().width;
 		const { sidebar: sidebarMin, secondarySidebar: secondarySidebarMin, main: mainMin, inspector: inspectorMin } = this._paneMinWidths;
 
-		let sidebar = this._hasSidebar;
-		let secondarySidebar = this._hasSecondarySidebar;
+		// When sidebar-as-sheet, sidebars never render inline — main always fills full width
+		let sidebar = this.sidebarAsSheet ? false : this._hasSidebar;
+		let secondarySidebar = this.sidebarAsSheet ? false : this._hasSecondarySidebar;
 		let main = true;
 		let inspector = this._hasInspector;
 
@@ -227,12 +238,21 @@ export class RRHorizontalSplitView extends LitElement {
 
 	private _updatePaneBackButtons() {
 		const panes = {
-			sidebar: this.querySelector('rr-split-view-pane[slot="sidebar"]'),
-			secondarySidebar: this.querySelector('rr-split-view-pane[slot="secondary-sidebar"]'),
-			main: this.querySelector('rr-split-view-pane[slot="main"]'),
+			sidebar: this.querySelector(':scope > rr-split-view-pane[slot="sidebar"]'),
+			secondarySidebar: this.querySelector(':scope > rr-split-view-pane[slot="secondary-sidebar"]'),
+			main: this.querySelector(':scope > rr-split-view-pane[slot="main"]'),
 		};
 
 		const all = Object.values(panes).filter(Boolean) as Element[];
+
+		// When sidebar-as-sheet, main is always the only visible inline pane — no back buttons
+		// Secondary sidebar in the sheet can go back to sidebar — keep its back button
+		if (this.sidebarAsSheet) {
+			panes.sidebar?.setAttribute('hide-back', '');
+			panes.secondarySidebar?.removeAttribute('hide-back');
+			panes.main?.setAttribute('hide-back', '');
+			return;
+		}
 
 		if (this._mode === 'spatial') {
 			// All panes visible side by side — no back buttons
@@ -268,12 +288,76 @@ export class RRHorizontalSplitView extends LitElement {
 		}
 	}
 
+	// ----------------------------------------------------------------
+	// Sidebar sheet
+	// ----------------------------------------------------------------
+
+	showSidebarSheet() {
+		if (!this.sidebarAsSheet) return;
+		this.updateComplete.then(() => {
+			this._sidebarSheet?.showModal();
+			this._manageSidebarSheetFocus();
+		});
+	}
+
+	hideSidebarSheet() {
+		this._hideSheet(this._sidebarSheet);
+	}
+
+	private _manageSidebarSheetFocus() {
+		// Focus the active slot — secondary sidebar when it has content, sidebar otherwise
+		const activeSlotName = this._hasSecondarySidebar && this._paneHasContent('secondary-sidebar')
+			? 'secondary-sidebar'
+			: 'sidebar';
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>(`slot[name="${activeSlotName}"]`);
+		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
+
+		if (assigned.some(el => el.querySelector('[autofocus]'))) return;
+
+		const topTitleBar = assigned.flatMap(el => [
+			el.tagName === 'RR-TOP-TITLE-BAR' ? el : null,
+			el.querySelector('rr-top-title-bar'),
+		]).find(Boolean) as HTMLElement | null;
+
+		const heading = (
+			topTitleBar?.shadowRoot?.querySelector('h1,h2,h3,h4,h5,h6') as HTMLElement | null
+		) ?? (
+			assigned.map(el => el.querySelector('h1,h2,h3,h4,h5,h6')).find(Boolean) as HTMLElement | null
+		);
+
+		if (heading) {
+			heading.setAttribute('tabindex', '-1');
+			heading.focus();
+			heading.addEventListener('blur', () => heading.removeAttribute('tabindex'), { once: true });
+			return;
+		}
+
+		this._sidebarSheet?.focus();
+	}
+
+	_handleSidebarSheetClick(e: MouseEvent) {
+		if (e.target === this._sidebarSheet) this.hideSidebarSheet();
+	}
+
+	_handleSidebarSheetCancel(e: Event) {
+		e.preventDefault();
+		this.hideSidebarSheet();
+	}
+
+	// ----------------------------------------------------------------
+	// Inspector sheet
+	// ----------------------------------------------------------------
+
 	showInspectorSheet() {
 		if (!this.inspectorAutoHidden && !this.inspectorAsSheet) return;
 		this.updateComplete.then(() => {
 			this._inspectorSheet?.showModal();
 			this._manageInspectorSheetFocus();
 		});
+	}
+
+	hideInspectorSheet() {
+		this._hideSheet(this._inspectorSheet);
 	}
 
 	private _manageInspectorSheetFocus() {
@@ -307,14 +391,30 @@ export class RRHorizontalSplitView extends LitElement {
 		this._inspectorSheet?.focus();
 	}
 
-	private _handleInspectorSheetDismiss = () => {
-		if (this.inspectorAutoHidden || this.inspectorAsSheet) {
+	_handleInspectorSheetClick(e: MouseEvent) {
+		if (e.target === this._inspectorSheet) this.hideInspectorSheet();
+	}
+
+	_handleInspectorSheetCancel(e: Event) {
+		e.preventDefault();
+		this.hideInspectorSheet();
+	}
+
+	// ----------------------------------------------------------------
+	// Shared sheet helpers
+	// ----------------------------------------------------------------
+
+	private _handleDismiss = (e: Event) => {
+		// Route dismiss events to the correct sheet based on which dialog contains the target
+		const path = e.composedPath();
+		if (path.some(el => el === this._sidebarSheet || (el as Element)?.closest?.('.horizontal-split-view__sidebar-sheet-body'))) {
+			this.hideSidebarSheet();
+		} else if (this.inspectorAutoHidden || this.inspectorAsSheet) {
 			this.hideInspectorSheet();
 		}
 	};
 
-	hideInspectorSheet() {
-		const dialog = this._inspectorSheet;
+	private _hideSheet(dialog: HTMLDialogElement | null) {
 		if (!dialog?.open) return;
 
 		dialog.classList.add('is-closing');
@@ -332,20 +432,10 @@ export class RRHorizontalSplitView extends LitElement {
 		});
 	}
 
-	private _closeInspectorSheetImmediate() {
-		const dialog = this._inspectorSheet;
+	private _closeSheetImmediate(dialog: HTMLDialogElement | null) {
 		if (!dialog?.open) return;
 		dialog.classList.remove('is-closing');
 		dialog.close();
-	}
-
-	_handleInspectorSheetClick(e: MouseEvent) {
-		if (e.target === this._inspectorSheet) this.hideInspectorSheet();
-	}
-
-	_handleInspectorSheetCancel(e: Event) {
-		e.preventDefault();
-		this.hideInspectorSheet();
 	}
 
 	override render() {

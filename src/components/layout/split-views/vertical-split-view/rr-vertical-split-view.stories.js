@@ -10,6 +10,7 @@ import '../../../content/rich-text/rr-rich-text.ts';
  * main content area, and footer. The header provides space for tools and
  * actions; the footer for output, logs, or status information.
  * The main area is always visible and takes up the remaining space.
+ * Header and footer are shown automatically when content is slotted into them.
  *
  * ## Gebruik
  * ```html
@@ -34,30 +35,10 @@ export default {
 			type: 'stable',
 		},
 	},
-	argTypes: {
-		showHeader: {
-			control: 'boolean',
-			description: 'Toon de koptekst',
-			table: { defaultValue: { summary: 'true' } },
-		},
-		showFooter: {
-			control: 'boolean',
-			description: 'Toon het voettekst',
-			table: { defaultValue: { summary: 'true' } },
-		},
-	},
-	args: {
-		showHeader: true,
-		showFooter: true,
-	},
 };
 
-export const Standaard = ({ showHeader, showFooter }) => html`
-	<rr-vertical-split-view
-		style="height: 600px;"
-		?show-header=${showHeader}
-		?show-footer=${showFooter}
-	>
+export const Standaard = () => html`
+	<rr-vertical-split-view style="height: 600px;">
 		<rr-split-view-pane slot="header">
 			<rr-page sticky-header>
 				<rr-rich-text slot="header" style="padding: 16px;">
@@ -103,3 +84,35 @@ export const Standaard = ({ showHeader, showFooter }) => html`
 		</rr-split-view-pane>
 	</rr-vertical-split-view>
 `;
+
+export const ZonderKoptekst = () => html`
+	<rr-vertical-split-view style="height: 600px;">
+		<rr-split-view-pane slot="main">
+			<rr-page sticky-header>
+				<rr-rich-text slot="header" style="padding: 16px;">
+					<strong>Inhoud</strong>
+				</rr-rich-text>
+				<rr-simple-section>
+					<rr-rich-text>
+						<h2>Primaire inhoud</h2>
+						<p>Geen koptekst — header slot is leeg.</p>
+					</rr-rich-text>
+				</rr-simple-section>
+			</rr-page>
+		</rr-split-view-pane>
+
+		<rr-split-view-pane slot="footer">
+			<rr-page sticky-header>
+				<rr-rich-text slot="header" style="padding: 16px;">
+					<strong>Uitvoer</strong>
+				</rr-rich-text>
+				<rr-simple-section>
+					<rr-rich-text>
+						<p>Logboeken, validatieresultaten en statusinformatie.</p>
+					</rr-rich-text>
+				</rr-simple-section>
+			</rr-page>
+		</rr-split-view-pane>
+	</rr-vertical-split-view>
+`;
+ZonderKoptekst.parameters = { controls: { disable: true } };

@@ -15,42 +15,58 @@ describe('rr-vertical-split-view', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders header, main and footer panes', async () => {
+	it('always renders main pane', async () => {
 		el = await fixture('<rr-vertical-split-view></rr-vertical-split-view>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.vertical-split-view__header')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('.vertical-split-view__main')).not.toBeNull();
+	});
+
+	it('does not render header when slot is empty', async () => {
+		el = await fixture('<rr-vertical-split-view></rr-vertical-split-view>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.vertical-split-view__header')).toBeNull();
+	});
+
+	it('does not render footer when slot is empty', async () => {
+		el = await fixture('<rr-vertical-split-view></rr-vertical-split-view>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.vertical-split-view__footer')).toBeNull();
+	});
+
+	it('renders header when content is slotted', async () => {
+		el = await fixture(`
+			<rr-vertical-split-view>
+				<div slot="header">Header</div>
+			</rr-vertical-split-view>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.vertical-split-view__header')).not.toBeNull();
+	});
+
+	it('renders footer when content is slotted', async () => {
+		el = await fixture(`
+			<rr-vertical-split-view>
+				<div slot="footer">Footer</div>
+			</rr-vertical-split-view>
+		`);
+		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.vertical-split-view__footer')).not.toBeNull();
 	});
 
-	it('renders 2 dividers', async () => {
-		el = await fixture('<rr-vertical-split-view></rr-vertical-split-view>');
+	it('renders dividers only when header and footer are present', async () => {
+		el = await fixture(`
+			<rr-vertical-split-view>
+				<div slot="header">Header</div>
+				<div slot="footer">Footer</div>
+			</rr-vertical-split-view>
+		`);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelectorAll('rr-split-view-divider').length).toBe(2);
 	});
 
-	it('hides header and its divider when show-header is false', async () => {
+	it('renders no dividers when header and footer are absent', async () => {
 		el = await fixture('<rr-vertical-split-view></rr-vertical-split-view>');
-		(el as any).showHeader = false;
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.vertical-split-view__header')).toBeNull();
-		expect(el.shadowRoot!.querySelectorAll('rr-split-view-divider').length).toBe(1);
-	});
-
-	it('hides footer and its divider when show-footer is false', async () => {
-		el = await fixture('<rr-vertical-split-view></rr-vertical-split-view>');
-		(el as any).showFooter = false;
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.vertical-split-view__footer')).toBeNull();
-		expect(el.shadowRoot!.querySelectorAll('rr-split-view-divider').length).toBe(1);
-	});
-
-	it('always renders main pane', async () => {
-		el = await fixture('<rr-vertical-split-view></rr-vertical-split-view>');
-		(el as any).showHeader = false;
-		(el as any).showFooter = false;
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.vertical-split-view__main')).not.toBeNull();
 		expect(el.shadowRoot!.querySelectorAll('rr-split-view-divider').length).toBe(0);
 	});
 });

@@ -5,19 +5,17 @@
  * The header provides space for tools and actions above the content;
  * the main area shows primary content; the footer provides space
  * for output, logs, or additional panels below the content.
- * The main area is always visible.
+ * The main area is always visible. Header and footer are shown only
+ * when content is slotted into them.
  *
  * @element rr-vertical-split-view
- *
- * @attr {boolean} show-header - Show the header (default: true)
- * @attr {boolean} show-footer - Show the footer (default: true)
  *
  * @slot header - Top pane for headers and actions
  * @slot main   - Center pane for primary content
  * @slot footer - Bottom pane for output, logs, or status information
  */
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { verticalSplitViewStyles } from './rr-vertical-split-view.styles.ts';
 import { verticalSplitViewTemplate } from './rr-vertical-split-view.template.ts';
 
@@ -25,11 +23,28 @@ import { verticalSplitViewTemplate } from './rr-vertical-split-view.template.ts'
 export class RRVerticalSplitView extends LitElement {
 	static override styles = verticalSplitViewStyles;
 
-	@property({ type: Boolean, reflect: true, attribute: 'show-header' })
-	showHeader = true;
+	get _hasHeader(): boolean {
+		return this.querySelector(':scope > [slot="header"]') !== null;
+	}
 
-	@property({ type: Boolean, reflect: true, attribute: 'show-footer' })
-	showFooter = true;
+	get _hasFooter(): boolean {
+		return this.querySelector(':scope > [slot="footer"]') !== null;
+	}
+
+	override connectedCallback() {
+		super.connectedCallback();
+		// Re-render when slotted children change
+		this._observer = new MutationObserver(() => this.requestUpdate());
+		this._observer.observe(this, { childList: true });
+	}
+
+	override disconnectedCallback() {
+		super.disconnectedCallback();
+		this._observer?.disconnect();
+		this._observer = null;
+	}
+
+	private _observer: MutationObserver | null = null;
 
 	override render() {
 		return verticalSplitViewTemplate(this);

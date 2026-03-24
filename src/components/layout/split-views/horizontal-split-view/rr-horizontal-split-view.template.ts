@@ -16,7 +16,7 @@ export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): T
 					<slot name="secondary-sidebar"></slot>
 				</div>
 				<rr-split-view-divider orientation="vertical"></rr-split-view-divider>
-			` : component._effectiveLevels === 3 ? html`<slot name="secondary-sidebar" style="display:none"></slot>` : nothing}
+			` : !component.sidebarAsSheet && component._effectiveLevels === 3 ? html`<slot name="secondary-sidebar" style="display:none"></slot>` : nothing}
 			${component._showMain ? html`
 				<div class="horizontal-split-view__main-pane">
 					<slot name="main"></slot>
@@ -34,6 +34,20 @@ export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): T
 				>
 					<div class="horizontal-split-view__inspector-sheet-body">
 						<slot name="inspector"></slot>
+					</div>
+				</dialog>
+			` : nothing}
+			${component.sidebarAsSheet ? html`
+				<dialog class="horizontal-split-view__sidebar-sheet"
+					@click=${component._handleSidebarSheetClick}
+					@cancel=${component._handleSidebarSheetCancel}
+				>
+					<div class="horizontal-split-view__sidebar-sheet-body">
+						${component._hasSecondarySidebar && component._paneHasContent('secondary-sidebar') ? html`
+							<slot name="secondary-sidebar"></slot>
+						` : html`
+							<slot name="sidebar"></slot>
+						`}
 					</div>
 				</dialog>
 			` : nothing}
