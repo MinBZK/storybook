@@ -1,23 +1,20 @@
 /**
  * RegelRecht Split View Pane Component (Lit + TypeScript)
  *
- * Een eenvoudige paneel-container voor gebruik binnen split views.
- * De split view stelt automatisch de context in: welke modus actief is
- * en of de terugknop verborgen moet worden.
+ * A simple pane container for use inside split views.
+ * The split view automatically sets context: whether a back button should be shown.
  *
- * De consumer stelt `has-content` in om aan te geven dat het paneel inhoud bevat.
- * De consumer stelt `back-label` in op de `rr-top-title-bar` binnen het paneel.
- * De split view stelt `hide-back` in wanneer de terugknop niet van toepassing is.
- * De pane verbergt de terugknop automatisch via CSS wanneer `hide-back` actief is.
+ * The consumer sets `has-content` to indicate the pane has content.
+ * The consumer sets `back-label` on the `rr-top-title-bar` inside the pane.
+ * The split view sets `hide-back` when the back button is not applicable.
+ * The pane automatically hides the back button via CSS when `hide-back` is active.
  *
  * @element rr-split-view-pane
  *
- * @attr {boolean}                          has-content - Het paneel heeft inhoud (standaard: false)
- * @attr {boolean}                          hide-back   - Verberg de terugknop (automatisch ingesteld door de split view)
- * @attr {'spatial'|'sidebar-stack'|
- *         'full-stack'}                    mode        - Huidige weergavemodus (automatisch ingesteld door de split view)
+ * @attr {boolean} has-content - The pane has content (default: false)
+ * @attr {boolean} hide-back   - Hide the back button (set automatically by the split view)
  *
- * @slot - Inhoud van het paneel
+ * @slot - Pane content
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -33,9 +30,6 @@ export class RRSplitViewPane extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'hide-back' })
 	hideBack = false;
-
-	@property({ type: String, reflect: true })
-	mode: 'spatial' | 'sidebar-stack' | 'full-stack' = 'spatial';
 
 	override render() {
 		return splitViewPaneTemplate(this);

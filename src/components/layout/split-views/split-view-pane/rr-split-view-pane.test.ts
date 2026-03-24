@@ -48,19 +48,6 @@ describe('rr-split-view-pane', () => {
 		expect(el.hasAttribute('hide-back')).toBe(true);
 	});
 
-	it('defaults mode to spatial', async () => {
-		el = await fixture('<rr-split-view-pane></rr-split-view-pane>');
-		await waitForUpdate(el);
-		expect(el.mode).toBe('spatial');
-	});
-
-	it('reflects mode attribute', async () => {
-		el = await fixture('<rr-split-view-pane></rr-split-view-pane>');
-		el.mode = 'full-stack';
-		await waitForUpdate(el);
-		expect(el.getAttribute('mode')).toBe('full-stack');
-	});
-
 	it('renders slotted content', async () => {
 		el = await fixture('<rr-split-view-pane><div id="child"></div></rr-split-view-pane>');
 		await waitForUpdate(el);

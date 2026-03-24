@@ -12,20 +12,13 @@ import '../../../navigation/top-title-bar/rr-top-title-bar.ts';
  * een zijbalk, secundaire zijbalk, inhoudsgebied en inspecteur.
  *
  * Gebruik <code>rr-split-view-pane</code> als directe kinderen. De split view stelt
- * automatisch <code>mode</code> en <code>hide-back</code> in op elk paneel.
+ * automatisch <code>hide-back</code> in op elk paneel op basis van de beschikbare ruimte.
  *
  * Stel <code>max-levels</code> in om de navigatiestructuur te bepalen:
  * - <code>1</code> (standaard): alleen inhoudsgebied
  * - <code>2</code>: zijbalk + inhoudsgebied
  * - <code>3</code>: zijbalk + secundaire zijbalk + inhoudsgebied
- * - <code>>3</code> of <code>Infinity</code>: zijbalk + inhoudsgebied, consumer beheert diepte
- *
- * Voeg de volgende CSS toe voor automatisch terugknopbeheer:
- * ```css
- * rr-split-view-pane[hide-back] rr-top-title-bar {
- *   --rr-top-title-bar-back-button-display: none;
- * }
- * ```
+ * - <code>&gt;3</code>: zijbalk + inhoudsgebied, consumer beheert navigatiediepte
  *
  * ## Gebruik
  * ```html
@@ -149,7 +142,7 @@ export const Standaard = ({ maxLevels, inspectorAsSheet }) => {
 							<h2>Primaire inhoud</h2>
 							<p>Artikelen, artikellijsten en primaire weergave.</p>
 							<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-							<p>Verklein het venster om de modi en terugknopgedrag te zien.</p>
+							<p>Verklein het venster om de terugknopgedrag te zien.</p>
 						</rr-rich-text>
 					</rr-simple-section>
 				</rr-page>

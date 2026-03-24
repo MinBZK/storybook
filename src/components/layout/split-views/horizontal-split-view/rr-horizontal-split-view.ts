@@ -1,33 +1,33 @@
 /**
  * RegelRecht Horizontal Split View Component (Lit + TypeScript)
  *
- * Een vierkoloms layout met een zijbalk, secundaire zijbalk, inhoudsgebied en inspecteur.
- * De zijbalken tonen navigatie of lijsten, het inhoudsgebied de primaire inhoud,
- * en de inspecteur aanvullende details of eigenschappen van de selectie.
+ * A four-column layout with a sidebar, secondary sidebar, main content area, and inspector.
+ * The sidebars show navigation or lists, the main area shows primary content,
+ * and the inspector shows additional details or properties of the selection.
  *
  * @element rr-horizontal-split-view
  *
- * Gebruik <code>rr-split-view-pane</code> als directe kinderen voor automatische
- * terugknop- en modusafhandeling.
+ * Use <code>rr-split-view-pane</code> as direct children for automatic
+ * back button and mode handling.
  *
- * Stel <code>max-levels</code> in om de navigatiestructuur te bepalen. Levels omvatten
- * alle navigeerbare panelen inclusief het inhoudsgebied:
- * - 1 (standaard): alleen inhoudsgebied
- * - 2: zijbalk + inhoudsgebied
- * - 3: zijbalk + secundaire zijbalk + inhoudsgebied
- * - >3: zijbalk + inhoudsgebied, consumer beheert eigen navigatiediepte
+ * Set <code>max-levels</code> to define the navigation structure. Levels include
+ * all navigable panes including the main content area:
+ * - 1 (default): main content only
+ * - 2: sidebar + main
+ * - 3: sidebar + secondary sidebar + main
+ * - >3: sidebar + main, consumer manages own navigation depth
  *
- * @attr {number}                       max-levels            - Aantal navigatieniveaus inclusief inhoud (standaard: 1)
- * @attr {boolean}                      inspector-auto-hidden - Inspecteur verborgen om ruimte vrij te maken voor andere panelen (alleen-lezen, ingesteld door de split view)
- * @attr {boolean}                      inspector-as-sheet    - Toon de inspecteur altijd als sheet, ongeacht beschikbare ruimte
+ * @attr {number}  max-levels            - Number of navigation levels including main content (default: 1)
+ * @attr {boolean} inspector-auto-hidden - Inspector hidden to free up space for other panes (read-only, set by the split view)
+ * @attr {boolean} inspector-as-sheet    - Always show the inspector as a sheet regardless of available space
  *
- * @slot sidebar           - Linker paneel voor primaire navigatie (vereist max-levels >= 2)
- * @slot secondary-sidebar - Tweede paneel voor secundaire navigatie (vereist max-levels === 3)
- * @slot main              - Middelste paneel voor de primaire inhoud
- * @slot inspector         - Rechter paneel voor details of eigenschappen
+ * @slot sidebar           - Left pane for primary navigation (requires max-levels >= 2)
+ * @slot secondary-sidebar - Second pane for secondary navigation (requires max-levels === 3)
+ * @slot main              - Center pane for primary content
+ * @slot inspector         - Right pane for details or properties
  *
- * @method showInspectorSheet() - Opent de inspecteur als sheet; heeft alleen effect wanneer inspector-auto-hidden of inspector-as-sheet actief is
- * @method hideInspectorSheet() - Sluit de inspecteur sheet
+ * @method showInspectorSheet() - Opens the inspector as a sheet; only has effect when inspector-auto-hidden or inspector-as-sheet is active
+ * @method hideInspectorSheet() - Closes the inspector sheet
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -41,21 +41,11 @@ export class RRHorizontalSplitView extends LitElement {
 	@property({ type: Number, reflect: true, attribute: 'max-levels' })
 	maxLevels = 1;
 
-	private get _hasInspector(): boolean {
-		return this.querySelector('[slot="inspector"]') !== null;
-	}
-
-	@state()
-	private _mode: 'spatial' | 'sidebar-stack' | 'full-stack' = 'spatial';
-
 	@property({ type: Boolean, reflect: true, attribute: 'inspector-auto-hidden' })
 	inspectorAutoHidden = false;
 
 	@property({ type: Boolean, reflect: true, attribute: 'inspector-as-sheet' })
 	inspectorAsSheet = false;
-
-	@state()
-	private _inspectorMode: 'inline' | 'sheet' = 'inline';
 
 	// Internal visibility driven by layout algorithm — not part of public API
 	@state()
@@ -70,9 +60,7 @@ export class RRHorizontalSplitView extends LitElement {
 	@state()
 	_showInspector = true;
 
-	@state()
-	_inspectorSheetOpen = false;
-
+	private _mode: 'spatial' | 'sidebar-stack' | 'full-stack' = 'spatial';
 	private _resizeObserver: ResizeObserver | null = null;
 	private _paneObserver: MutationObserver | null = null;
 	private _hostObserver: MutationObserver | null = null;
@@ -82,10 +70,6 @@ export class RRHorizontalSplitView extends LitElement {
 
 	private get _inspectorSheet(): HTMLDialogElement | null {
 		return this.shadowRoot?.querySelector('.horizontal-split-view__inspector-sheet') ?? null;
-	}
-
-	private get _inspectorSlot(): HTMLSlotElement | null {
-		return this.shadowRoot?.querySelector('slot[name="inspector"]') ?? null;
 	}
 
 	// Effective levels — clamp to minimum 1, accessible from template
@@ -101,16 +85,12 @@ export class RRHorizontalSplitView extends LitElement {
 		return this._effectiveLevels === 3;
 	}
 
-	private get _mainHasContent(): boolean {
-		return this.querySelector('rr-split-view-pane[slot="main"]')?.hasAttribute('has-content') ?? false;
+	private get _hasInspector(): boolean {
+		return this.querySelector('[slot="inspector"]') !== null;
 	}
 
-	private get _sidebarHasContent(): boolean {
-		return this.querySelector('rr-split-view-pane[slot="sidebar"]')?.hasAttribute('has-content') ?? false;
-	}
-
-	private get _secondarySidebarHasContent(): boolean {
-		return this.querySelector('rr-split-view-pane[slot="secondary-sidebar"]')?.hasAttribute('has-content') ?? false;
+	private _paneHasContent(slot: string): boolean {
+		return this.querySelector(`rr-split-view-pane[slot="${slot}"]`)?.hasAttribute('has-content') ?? false;
 	}
 
 	override connectedCallback() {
@@ -166,7 +146,8 @@ export class RRHorizontalSplitView extends LitElement {
 		if (changed.has('maxLevels') || changed.has('inspectorAsSheet')) {
 			this._updateLayout();
 		}
-		if (changed.has('inspectorAutoHidden') && !this.inspectorAutoHidden) {
+		// Close sheet immediately when inspector-auto-hidden clears and inspector-as-sheet is not set
+		if (changed.has('inspectorAutoHidden') && !this.inspectorAutoHidden && !this.inspectorAsSheet) {
 			this._closeInspectorSheetImmediate();
 		}
 	}
@@ -180,7 +161,7 @@ export class RRHorizontalSplitView extends LitElement {
 		let main = true;
 		let inspector = this._hasInspector;
 
-		// Calculate total min-width of requested panes
+		// Sum min-widths of currently requested panes
 		const requestedWidth = () => [
 			sidebar && sidebarMin,
 			secondarySidebar && secondarySidebarMin,
@@ -189,22 +170,19 @@ export class RRHorizontalSplitView extends LitElement {
 		].reduce((sum: number, v) => sum + (v || 0), 0);
 
 		// Step 1: hide inspector if not enough space
-		if (inspector && requestedWidth() > width) {
-			inspector = false;
-		}
+		if (inspector && requestedWidth() > width) inspector = false;
 
-		// Step 2: collapse sidebar into secondary-sidebar when not enough space
-		if (sidebar && secondarySidebar && requestedWidth() > width) {
-			sidebar = false;
-		}
+		// Step 2: collapse sidebar into secondary sidebar if still not enough space
+		if (sidebar && secondarySidebar && requestedWidth() > width) sidebar = false;
 
 		// Determine mode
 		const sidebarCollapsed = this._hasSidebar && this._hasSecondarySidebar && !sidebar && secondarySidebar;
+		const fits = requestedWidth() <= width;
 
 		let mode: 'spatial' | 'sidebar-stack' | 'full-stack';
-		if (sidebarCollapsed && requestedWidth() <= width) {
+		if (sidebarCollapsed && fits) {
 			mode = 'sidebar-stack';
-		} else if (!sidebarCollapsed && requestedWidth() <= width) {
+		} else if (!sidebarCollapsed && fits) {
 			mode = 'spatial';
 		} else {
 			mode = 'full-stack';
@@ -217,98 +195,76 @@ export class RRHorizontalSplitView extends LitElement {
 			main = false;
 			inspector = false;
 
-			if (this._hasSecondarySidebar) {
-				// Priority: main > secondary-sidebar > sidebar
-				if (this._mainHasContent) {
-					main = true;
-				} else if (this._secondarySidebarHasContent) {
-					secondarySidebar = true;
-				} else if (this._sidebarHasContent) {
-					sidebar = true;
-				} else {
-					main = true; // fallback empty state
-				}
-			} else if (this._hasSidebar) {
-				// Priority: main > sidebar
-				if (this._mainHasContent) {
-					main = true;
-				} else if (this._sidebarHasContent) {
-					sidebar = true;
-				} else {
-					main = true; // fallback empty state
-				}
-			} else {
+			// Priority: main > secondary sidebar (if available) > sidebar (if available) > main fallback
+			if (this._paneHasContent('main')) {
 				main = true;
+			} else if (this._hasSecondarySidebar && this._paneHasContent('secondary-sidebar')) {
+				secondarySidebar = true;
+			} else if (this._hasSidebar && this._paneHasContent('sidebar')) {
+				sidebar = true;
+			} else {
+				main = true; // fallback to empty state
 			}
 		}
 
-		// No nav, inspector requested, main has no content — hide inspector
-		if (!sidebar && !secondarySidebar && inspector && !this._mainHasContent) {
+		// No nav and no content — hide inspector
+		if (!sidebar && !secondarySidebar && inspector && !this._paneHasContent('main')) {
 			inspector = false;
 		}
 
 		this._showSidebar = sidebar;
 		this._showSecondarySidebar = secondarySidebar;
 		this._showMain = main;
-		// Inspector shown inline only when it fits AND consumer hasn't forced sheet mode
+		// Inspector shown inline only when it fits AND consumer has not forced sheet mode
 		this._showInspector = inspector && !this.inspectorAsSheet;
 
 		this.inspectorAutoHidden = this._hasInspector && !inspector;
-		this._inspectorMode = (inspector && !this.inspectorAsSheet) ? 'inline' : 'sheet';
 		this._mode = mode;
 		this.classList.toggle('full-stack', mode === 'full-stack');
 
-		this._updatePanes();
+		this._updatePaneBackButtons();
 	}
 
-	private _updatePanes() {
-		const sidebarPane = this.querySelector('rr-split-view-pane[slot="sidebar"]');
-		const secondarySidebarPane = this.querySelector('rr-split-view-pane[slot="secondary-sidebar"]');
-		const mainPane = this.querySelector('rr-split-view-pane[slot="main"]');
+	private _updatePaneBackButtons() {
+		const panes = {
+			sidebar: this.querySelector('rr-split-view-pane[slot="sidebar"]'),
+			secondarySidebar: this.querySelector('rr-split-view-pane[slot="secondary-sidebar"]'),
+			main: this.querySelector('rr-split-view-pane[slot="main"]'),
+		};
 
-		// Set mode on all panes
-		[sidebarPane, secondarySidebarPane, mainPane].forEach(pane => {
-			if (pane) pane.setAttribute('mode', this._mode);
-		});
+		const all = Object.values(panes).filter(Boolean) as Element[];
 
 		if (this._mode === 'spatial') {
-			// Spatial: all panes visible side by side — no back buttons
-			[sidebarPane, secondarySidebarPane, mainPane].forEach(pane => {
-				if (pane) pane.setAttribute('hide-back', '');
-			});
+			// All panes visible side by side — no back buttons
+			all.forEach(pane => pane.setAttribute('hide-back', ''));
 			return;
 		}
 
 		if (this._mode === 'sidebar-stack') {
-			// Secondary-sidebar is leftmost — hide-back (nothing to go back to)
-			// Main has secondary-sidebar to its left — hide-back (both still visible side by side)
-			// Secondary-sidebar has sidebar in consumer intent behind it — no hide-back
-			if (sidebarPane) sidebarPane.setAttribute('hide-back', '');
-			if (secondarySidebarPane) secondarySidebarPane.removeAttribute('hide-back');
-			if (mainPane) mainPane.setAttribute('hide-back', '');
+			// Sidebar is hidden — secondary sidebar can go back to it
+			// Main is visible alongside secondary sidebar — no sequential navigation
+			panes.sidebar?.setAttribute('hide-back', '');
+			panes.secondarySidebar?.removeAttribute('hide-back');
+			panes.main?.setAttribute('hide-back', '');
 			return;
 		}
 
-		if (this._mode === 'full-stack') {
-			if (this._hasSecondarySidebar) {
-				// max-levels === 3: sidebar is root — hide-back; others have predecessors
-				if (sidebarPane) sidebarPane.setAttribute('hide-back', '');
-				if (secondarySidebarPane) secondarySidebarPane.removeAttribute('hide-back');
-				if (mainPane) mainPane.removeAttribute('hide-back');
-			} else if (this._hasSidebar && this._effectiveLevels === 2) {
-				// max-levels === 2: sidebar is root — hide-back; main has sidebar behind it
-				if (sidebarPane) sidebarPane.setAttribute('hide-back', '');
-				if (mainPane) mainPane.removeAttribute('hide-back');
-			} else {
-				// max-levels === 1 or >3 or Infinity: consumer owns depth — never hide-back
-				[sidebarPane, secondarySidebarPane, mainPane].forEach(pane => {
-					if (pane) pane.removeAttribute('hide-back');
-				});
-				// Exception: no nav at all — main is root
-				if (!this._hasSidebar && mainPane) {
-					mainPane.setAttribute('hide-back', '');
-				}
-			}
+		// full-stack
+		if (this._effectiveLevels === 2) {
+			// Sidebar is root — no back; main can go back to sidebar
+			panes.sidebar?.setAttribute('hide-back', '');
+			panes.main?.removeAttribute('hide-back');
+		} else if (this._effectiveLevels === 3) {
+			// Sidebar is root; secondary sidebar and main have predecessors
+			panes.sidebar?.setAttribute('hide-back', '');
+			panes.secondarySidebar?.removeAttribute('hide-back');
+			panes.main?.removeAttribute('hide-back');
+		} else if (!this._hasSidebar) {
+			// No nav — main is root
+			panes.main?.setAttribute('hide-back', '');
+		} else {
+			// max-levels > 3: consumer owns navigation depth — never hide-back on sidebar
+			all.forEach(pane => pane.removeAttribute('hide-back'));
 		}
 	}
 
@@ -316,13 +272,13 @@ export class RRHorizontalSplitView extends LitElement {
 		if (!this.inspectorAutoHidden && !this.inspectorAsSheet) return;
 		this.updateComplete.then(() => {
 			this._inspectorSheet?.showModal();
-			this._inspectorSheetOpen = true;
 			this._manageInspectorSheetFocus();
 		});
 	}
 
 	private _manageInspectorSheetFocus() {
-		const assigned = this._inspectorSlot?.assignedElements({ flatten: true }) ?? [];
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="inspector"]');
+		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
 
 		// 1. autofocus element present — let the browser handle it natively
 		if (assigned.some(el => el.querySelector('[autofocus]'))) return;
@@ -365,14 +321,13 @@ export class RRHorizontalSplitView extends LitElement {
 		dialog.addEventListener('animationend', () => {
 			dialog.classList.remove('is-closing');
 			dialog.close();
-			this._inspectorSheetOpen = false;
 		}, { once: true });
 
+		// Fallback for prefers-reduced-motion — no animation fires
 		requestAnimationFrame(() => {
 			if (dialog.classList.contains('is-closing') && getComputedStyle(dialog).animationName === 'none') {
 				dialog.classList.remove('is-closing');
 				dialog.close();
-				this._inspectorSheetOpen = false;
 			}
 		});
 	}
@@ -382,13 +337,10 @@ export class RRHorizontalSplitView extends LitElement {
 		if (!dialog?.open) return;
 		dialog.classList.remove('is-closing');
 		dialog.close();
-		this._inspectorSheetOpen = false;
 	}
 
 	_handleInspectorSheetClick(e: MouseEvent) {
-		if (e.target === this._inspectorSheet) {
-			this.hideInspectorSheet();
-		}
+		if (e.target === this._inspectorSheet) this.hideInspectorSheet();
 	}
 
 	_handleInspectorSheetCancel(e: Event) {
