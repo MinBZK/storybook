@@ -53,6 +53,12 @@ export const styles = css`
 
 	/* # Back button — text variant (default state) */
 
+	.top-title-bar__back-button {
+		display: var(--back-button-display, flex);
+		flex-direction: row;
+		align-items: center;
+	}
+
 	.top-title-bar__text-back-button {
 		display: flex;
 	}
@@ -138,6 +144,13 @@ export const styles = css`
 
 	:host(.is-compact) .top-title-bar__subtitle {
 		display: block;
+	}
+
+
+	/* # Dismiss button */
+
+	.top-title-bar__dismiss-button {
+		display: var(--dismiss-button-display, block);
 	}
 
 

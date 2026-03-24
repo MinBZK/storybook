@@ -1,21 +1,39 @@
 import { html } from 'lit';
 import './rr-horizontal-split-view.ts';
-import '../../../layout/page/rr-page.ts';
-import '../../../layout/page-sections/simple-section/rr-simple-section.ts';
+import '../split-view-pane/rr-split-view-pane.ts';
+import '../../page/rr-page.ts';
+import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
+import '../../../actions/button/rr-button.ts';
+import '../../../navigation/top-title-bar/rr-top-title-bar.ts';
 
 /**
- * Gebruik een horizontal split view voor een driekoloms navigatiepatroon met
- * een zijbalk, inhoudsgebied en inspecteur. De zijbalk en inspecteur hebben
- * een vaste breedte; het inhoudsgebied neemt de resterende ruimte in.
- * Panelen zijn minimaal 320px breed; panelen die niet passen worden automatisch verborgen.
+ * Gebruik een horizontal split view voor een vierkoloms navigatiepatroon met
+ * een zijbalk, secundaire zijbalk, inhoudsgebied en inspecteur.
+ *
+ * Gebruik <code>rr-split-view-pane</code> als directe kinderen. De split view stelt
+ * automatisch <code>mode</code> en <code>hide-back</code> in op elk paneel.
+ *
+ * Stel <code>max-levels</code> in om de navigatiestructuur te bepalen:
+ * - <code>1</code> (standaard): alleen inhoudsgebied
+ * - <code>2</code>: zijbalk + inhoudsgebied
+ * - <code>3</code>: zijbalk + secundaire zijbalk + inhoudsgebied
+ * - <code>>3</code> of <code>Infinity</code>: zijbalk + inhoudsgebied, consumer beheert diepte
+ *
+ * Voeg de volgende CSS toe voor automatisch terugknopbeheer:
+ * ```css
+ * rr-split-view-pane[hide-back] rr-top-title-bar {
+ *   --rr-top-title-bar-back-button-display: none;
+ * }
+ * ```
  *
  * ## Gebruik
  * ```html
- * <rr-horizontal-split-view>
- *   <rr-page slot="sidebar">...</rr-page>
- *   <rr-page slot="main">...</rr-page>
- *   <rr-page slot="inspector">...</rr-page>
+ * <rr-horizontal-split-view max-levels="3">
+ *   <rr-split-view-pane slot="sidebar">...</rr-split-view-pane>
+ *   <rr-split-view-pane slot="secondary-sidebar">...</rr-split-view-pane>
+ *   <rr-split-view-pane slot="main" has-content>...</rr-split-view-pane>
+ *   <rr-split-view-pane slot="inspector">...</rr-split-view-pane>
  * </rr-horizontal-split-view>
  * ```
  */
@@ -34,67 +52,125 @@ export default {
 		},
 	},
 	argTypes: {
-		showSidebar: {
-			control: 'boolean',
-			description: 'Toon de zijbalk',
-			table: { defaultValue: { summary: 'true' } },
+		maxLevels: {
+			control: 'number',
+			description: 'Aantal navigatieniveaus inclusief inhoud (1 = alleen inhoud, 2 = zijbalk + inhoud, 3 = zijbalk + secundaire zijbalk + inhoud)',
+			table: { defaultValue: { summary: '1' } },
 		},
-		showInspector: {
+		inspectorAsSheet: {
 			control: 'boolean',
-			description: 'Toon de inspecteur',
-			table: { defaultValue: { summary: 'true' } },
+			description: 'Toon de inspecteur altijd als sheet, ongeacht beschikbare ruimte',
+			table: { defaultValue: { summary: 'false' } },
 		},
 	},
 	args: {
-		showSidebar: true,
-		showInspector: true,
+		maxLevels: 3,
+		inspectorAsSheet: false,
 	},
 };
 
-export const Standaard = ({ showSidebar, showInspector }) => html`
-	<rr-horizontal-split-view
-		style="height: 600px;"
-		?show-sidebar=${showSidebar}
-		?show-inspector=${showInspector}
-	>
-		<rr-page sticky-header slot="sidebar">
-			<rr-rich-text slot="header" style="padding: 16px;">
-				<strong>Zijbalk</strong>
-			</rr-rich-text>
-			<rr-simple-section>
-				<rr-rich-text>
-					<h2>Navigatie</h2>
-					<p>Wetten, regelingen en andere bronnen.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-				</rr-rich-text>
-			</rr-simple-section>
-		</rr-page>
+export const Standaard = ({ maxLevels, inspectorAsSheet }) => {
+	setTimeout(() => {
+		const splitView = document.getElementById('split-view-demo');
+		const button = document.getElementById('inspector-toggle');
+		if (!splitView || !button) return;
 
-		<rr-page sticky-header slot="main">
-			<rr-rich-text slot="header" style="padding: 16px;">
-				<strong>Inhoud</strong>
-			</rr-rich-text>
-			<rr-simple-section>
-				<rr-rich-text>
-					<h2>Primaire inhoud</h2>
-					<p>Artikelen, artikellijsten en primaire weergave.</p>
-					<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-				</rr-rich-text>
-			</rr-simple-section>
-		</rr-page>
+		const updateButton = () => {
+			button.hidden = !splitView.hasAttribute('inspector-auto-hidden') && !splitView.hasAttribute('inspector-as-sheet');
+		};
 
-		<rr-page sticky-header slot="inspector">
-			<rr-rich-text slot="header" style="padding: 16px;">
-				<strong>Inspecteur</strong>
-			</rr-rich-text>
-			<rr-simple-section>
-				<rr-rich-text>
-					<h2>Details</h2>
-					<p>Eigenschappen en aanvullende informatie over de selectie.</p>
-					<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-				</rr-rich-text>
-			</rr-simple-section>
-		</rr-page>
-	</rr-horizontal-split-view>
-`;
+		updateButton();
+
+		new MutationObserver(updateButton).observe(splitView, {
+			attributes: true,
+			attributeFilter: ['inspector-auto-hidden', 'inspector-as-sheet'],
+		});
+
+		button.addEventListener('click', () => splitView.showInspectorSheet());
+	}, 0);
+
+	return html`
+		<rr-horizontal-split-view
+			id="split-view-demo"
+			style="height: 600px;"
+			max-levels=${maxLevels}
+			?inspector-as-sheet=${inspectorAsSheet}
+		>
+			<rr-split-view-pane slot="sidebar">
+				<rr-page sticky-header>
+					<rr-top-title-bar
+						slot="header"
+						title="Zijbalk"
+					></rr-top-title-bar>
+					<rr-simple-section>
+						<rr-rich-text>
+							<h2>Navigatie</h2>
+							<p>Wetten, regelingen en andere bronnen.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+						</rr-rich-text>
+					</rr-simple-section>
+				</rr-page>
+			</rr-split-view-pane>
+
+			<rr-split-view-pane slot="secondary-sidebar">
+				<rr-page sticky-header>
+					<rr-top-title-bar
+						slot="header"
+						title="Secundaire zijbalk"
+						back-label="Zijbalk"
+					></rr-top-title-bar>
+					<rr-simple-section>
+						<rr-rich-text>
+							<h2>Subnavigatie</h2>
+							<p>Artikelen, hoofdstukken of andere subitems.</p>
+							<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</p>
+						</rr-rich-text>
+					</rr-simple-section>
+				</rr-page>
+			</rr-split-view-pane>
+
+			<rr-split-view-pane slot="main" has-content>
+				<rr-page sticky-header>
+					<rr-top-title-bar
+						slot="header"
+						title="Inhoud"
+						back-label="Terug"
+					>
+						<rr-button
+							id="inspector-toggle"
+							slot="toolbar"
+							variant="accent-transparent"
+						>
+							Inspecteur
+						</rr-button>
+					</rr-top-title-bar>
+					<rr-simple-section>
+						<rr-rich-text>
+							<h2>Primaire inhoud</h2>
+							<p>Artikelen, artikellijsten en primaire weergave.</p>
+							<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+							<p>Verklein het venster om de modi en terugknopgedrag te zien.</p>
+						</rr-rich-text>
+					</rr-simple-section>
+				</rr-page>
+			</rr-split-view-pane>
+
+			<rr-split-view-pane slot="inspector">
+				<rr-page sticky-header>
+					<rr-top-title-bar
+						slot="header"
+						title="Inspecteur"
+						dismiss-label="Sluit"
+					></rr-top-title-bar>
+					<rr-simple-section>
+						<rr-rich-text>
+							<h2>Details</h2>
+							<p>Eigenschappen en aanvullende informatie over de selectie.</p>
+							<p>Excepteur sint occaecat cupidatat non proident.</p>
+						</rr-rich-text>
+					</rr-simple-section>
+				</rr-page>
+			</rr-split-view-pane>
+		</rr-horizontal-split-view>
+	`;
+};

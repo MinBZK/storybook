@@ -11,28 +11,30 @@ export function template(this: RRTopTitleBar) {
 		<div class="top-title-bar">
 			<div class="top-title-bar__start">
 				${showBack ? html`
-					<div class="top-title-bar__text-back-button">
-						<rr-button
-							variant="accent-transparent"
-							href=${this.backHref || nothing}
-							@click=${this._handleBack}
-						>
-							<rr-icon name="chevron-left"></rr-icon>
-							${this.backLabel}
-						</rr-button>
+					<div class="top-title-bar__back-button">
+						<div class="top-title-bar__text-back-button">
+							<rr-button
+								variant="accent-transparent"
+								href=${this.backHref || nothing}
+								@click=${this._handleBack}
+							>
+								<rr-icon name="chevron-left"></rr-icon>
+								${this.backLabel}
+							</rr-button>
+						</div>
+						<div class="top-title-bar__icon-back-button">
+							<rr-icon-button
+								variant="accent-transparent"
+								accessible-label=${this.backLabel || nothing}
+								href=${this.backHref || nothing}
+								@click=${this._handleBack}
+							>
+								<rr-icon name="chevron-left"></rr-icon>
+								${this.backLabel}
+							</rr-icon-button>
+						</div>
+						<div class="top-title-bar__divider"></div>
 					</div>
-					<div class="top-title-bar__icon-back-button">
-						<rr-icon-button
-							variant="accent-transparent"
-							accessible-label=${this.backLabel || nothing}
-							href=${this.backHref || nothing}
-							@click=${this._handleBack}
-						>
-							<rr-icon name="chevron-left"></rr-icon>
-							${this.backLabel}
-						</rr-icon-button>
-					</div>
-					<div class="top-title-bar__divider"></div>
 				` : nothing}
 				<div class="top-title-bar__title-group">
 					<h1 class="top-title-bar__title">${this.title}</h1>
