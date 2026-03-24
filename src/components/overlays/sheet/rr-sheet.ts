@@ -64,8 +64,35 @@ export class RRSheet extends LitElement {
 			} else {
 				dialog.show();
 			}
+			this._manageFocus();
 			this.dispatchEvent(new CustomEvent('open', { bubbles: true, composed: true }));
 		});
+	}
+
+	private _manageFocus(): void {
+		// 1. autofocus element present — let the browser handle it natively
+		if (this.querySelector('[autofocus]')) return;
+
+		// 2. Focus the first heading — check shadow roots of known components first,
+		// then fall back to light DOM headings
+		const heading = (
+			this.querySelector('rr-top-title-bar')?.shadowRoot?.querySelector('h1, h2, h3, h4, h5, h6') as HTMLElement | null
+		) ?? (
+			this.querySelector('h1, h2, h3, h4, h5, h6') as HTMLElement | null
+		);
+
+		if (heading) {
+			heading.setAttribute('tabindex', '-1');
+			heading.focus();
+			// Remove tabindex on blur so heading stays out of tab order
+			heading.addEventListener('blur', () => {
+				heading.removeAttribute('tabindex');
+			}, { once: true });
+			return;
+		}
+
+		// 3. Fallback — focus the dialog itself
+		this._dialog?.focus();
 	}
 
 	hide(): void {

@@ -123,7 +123,11 @@ export const NietModaal = {
 	`,
 	parameters: {
 		controls: { disable: true },
-		docs: { description: { story: 'Niet-modale sheet zonder backdrop en focusvergrendeling.' } },
+		docs: {
+			description: {
+				story: 'Niet-modale sheet zonder backdrop en focusvergrendeling. Bekijk deze story in het canvas voor het juiste resultaat — in de docs-weergave kan de positie afwijken door de containerstructuur van Storybook.',
+			},
+		},
 	},
 };
 
