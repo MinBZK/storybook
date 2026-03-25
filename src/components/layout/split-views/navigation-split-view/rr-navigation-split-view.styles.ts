@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
+
+const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
 /* # rr-navigation-split-view styles */
