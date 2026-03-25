@@ -37,7 +37,7 @@ export class RRSheet extends LitElement {
 	placement: Placement = 'right';
 
 	@property({ type: Boolean, reflect: true })
-	modal = false;
+	modal = true;
 
 	private get _dialog(): HTMLDialogElement | null {
 		return this.shadowRoot?.querySelector('dialog') ?? null;

@@ -30,7 +30,7 @@ export default {
 		modal: {
 			control: 'boolean',
 			description: 'Modaal (met backdrop en focusvergrendeling)',
-			table: { defaultValue: { summary: false } },
+			table: { defaultValue: { summary: true } },
 		},
 	},
 	args: { placement: 'right', modal: true },
