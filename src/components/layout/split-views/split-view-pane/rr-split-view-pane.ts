@@ -9,10 +9,16 @@
  * The split view sets `hide-back` when the back button is not applicable.
  * The pane automatically hides the back button via CSS when `hide-back` is active.
  *
+ * ## Background color
+ * The pane sets `--background-color` which cascades down to all descendants.
+ * Set `background="tinted"` on a pane to give it a tinted background independently of sibling panes.
+ * Descendants such as `rr-page` read `--background-color` automatically.
+ *
  * @element rr-split-view-pane
  *
  * @attr {boolean} has-content - The pane has content (default: false)
  * @attr {boolean} hide-back   - Hide the back button (set automatically by the split view)
+ * @attr {'inherit'|'default'|'tinted'} background      - Use a tinted background color (cascades to descendants)
  *
  * @slot - Pane content
  */
@@ -30,6 +36,9 @@ export class RRSplitViewPane extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'hide-back' })
 	hideBack = false;
+
+	@property({ type: String, reflect: true })
+	background: 'inherit' | 'default' | 'tinted' = 'inherit';
 
 	override render() {
 		return splitViewPaneTemplate(this);

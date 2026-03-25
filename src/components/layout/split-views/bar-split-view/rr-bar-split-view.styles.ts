@@ -11,6 +11,19 @@ export const barSplitViewStyles = css`
 		flex-direction: column;
 		width: 100%;
 		height: 100%;
+		background-color: var(--_background-color);
+
+		--_background-color: var(--background-color, var(--semantics-surfaces-background-color));
+	}
+
+	:host([background="default"]) {
+		--background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--background-color);
+	}
+
+	:host([background="tinted"]) {
+		--background-color: var(--semantics-surfaces-tinted-background-color);
+		--_background-color: var(--background-color);
 	}
 
 	:host([hidden]) {
@@ -27,8 +40,6 @@ export const barSplitViewStyles = css`
 		min-height: 0;
 		min-width: 0;
 		position: relative;
-		container-type: inline-size;
-		container-name: bar-split-view;
 	}
 
 
@@ -43,7 +54,7 @@ export const barSplitViewStyles = css`
 		container-type: inline-size;
 		container-name: layout-area;
 
-		@container bar-split-view (max-width: ${smMax}) {
+		@media (max-width: ${smMax}) {
 			position: absolute;
 			bottom: 0;
 			left: 0;
@@ -58,7 +69,7 @@ export const barSplitViewStyles = css`
 	.bar-split-view__primary-bar-divider {
 		flex-shrink: 0;
 
-		@container bar-split-view (max-width: ${smMax}) {
+		@media (max-width: ${smMax}) {
 			display: none;
 		}
 	}
@@ -76,19 +87,21 @@ export const barSplitViewStyles = css`
 		container-type: inline-size;
 		container-name: layout-area;
 
-		&::after {
-			content: '';
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			z-index: 1;
-			height: calc(var(--rr-bar-split-view-bars-height) + var(--primitives-space-32));
-			background: linear-gradient(
-				to top,
-				color-mix(in srgb, var(--semantics-surfaces-background-color) 95%, transparent) var(--rr-bar-split-view-bars-height),
-				transparent);
-			pointer-events: none;
+		@media (max-width: ${smMax}) {
+			&::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				z-index: 1;
+				height: calc(var(--rr-bar-split-view-bars-height) + var(--primitives-space-32));
+				background: linear-gradient(
+					to top,
+					color-mix(in srgb, var(--_background-color) 95%, transparent) var(--rr-bar-split-view-bars-height),
+					transparent);
+				pointer-events: none;
+			}
 		}
 	}
 
@@ -98,7 +111,7 @@ export const barSplitViewStyles = css`
 	.bar-split-view__secondary-bar-divider {
 		flex-shrink: 0;
 
-		@container bar-split-view (max-width: ${smMax}) {
+		@media (max-width: ${smMax}) {
 			display: none;
 		}
 	}
@@ -115,7 +128,7 @@ export const barSplitViewStyles = css`
 		container-type: inline-size;
 		container-name: layout-area;
 
-		@container bar-split-view (max-width: ${smMax}) {
+		@media (max-width: ${smMax}) {
 			position: absolute;
 			bottom: var(--rr-bar-split-view-primary-bar-height, 0px);
 			left: 0;

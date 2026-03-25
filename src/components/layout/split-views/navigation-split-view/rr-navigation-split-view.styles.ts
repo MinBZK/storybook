@@ -8,14 +8,24 @@ export const navigationSplitViewStyles = css`
 		display: flex;
 		width: 100%;
 		height: 100%;
+		background-color: var(--_background-color);
 
-		/* Pane min-widths — read by JS via getComputedStyle in firstUpdated */
-		--_sidebar-min-width: var(--primitives-area-320);
-		--_secondary-sidebar-min-width: var(--primitives-area-320);
-		--_main-min-width: var(--primitives-area-480);
-		--_inspector-min-width: var(--primitives-area-320);
+		--_sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_secondary-sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_main-min-width: var(--primitives-area-480); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_inspector-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_background-color: var(--background-color, var(--semantics-surfaces-background-color));
 	}
 
+	:host([background="default"]) {
+		--background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--background-color);
+	}
+
+	:host([background="tinted"]) {
+		--background-color: var(--semantics-surfaces-tinted-background-color);
+		--_background-color: var(--background-color);
+	}
 
 
 	/* # Split view */

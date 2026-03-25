@@ -37,16 +37,26 @@ export default {
 			type: 'stable',
 		},
 	},
+	argTypes: {
+		background: {
+			control: { type: 'select' },
+			options: ['inherit', 'default', 'tinted'],
+			description: 'Tinted achtergrond — cascade van --background-color naar alle afstammelingen inclusief rr-page en de fade overlay',
+			table: { defaultValue: { summary: 'inherit' } },
+		},
+	},
+	args: {
+		background: 'inherit',
+	},
 };
 
-export const Standaard = () => html`
-	<rr-bar-split-view style="height: 600px;">
+export const Standaard = ({ background }) => html`
+	<rr-bar-split-view style="height: 600px;" background=${background}>
 		<rr-split-view-pane slot="primary-bar">
 			<rr-container padding="12">
-				<rr-button variant="primary" full-width>Primary bar</rr-button>
+				<rr-button variant="primary" full-width>Primaire balk</rr-button>
 			</rr-container>
 		</rr-split-view-pane>
-
 		<rr-split-view-pane slot="main">
 			<rr-page sticky-header>
 				<rr-rich-text slot="header" style="padding: 16px;">
@@ -59,14 +69,16 @@ export const Standaard = () => html`
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 						<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 						<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+						<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
 					</rr-rich-text>
 				</rr-simple-section>
 			</rr-page>
 		</rr-split-view-pane>
-
 		<rr-split-view-pane slot="secondary-bar">
 			<rr-container padding="12">
-				<rr-search-field></rr-search-field>
+				<rr-search-field placeholder="Secundaire balk"></rr-search-field>
 			</rr-container>
 		</rr-split-view-pane>
 	</rr-bar-split-view>
@@ -74,24 +86,13 @@ export const Standaard = () => html`
 
 export const AlleenPrimaireBalk = () => html`
 	<rr-bar-split-view style="height: 600px;">
-		<rr-split-view-pane slot="primary-bar">
-			<rr-page sticky-header>
-				<rr-rich-text slot="header" style="padding: 16px;">
-					<strong>Primaire balk</strong>
-				</rr-rich-text>
-				<rr-simple-section>
-					<rr-rich-text>
-						<p>Acties, filters en tools voor het inhoudsgebied.</p>
-					</rr-rich-text>
-				</rr-simple-section>
-			</rr-page>
+		<rr-split-view-pane slot="primary-bar" background="tinted">
+			<rr-container padding="12">
+				<rr-button variant="primary" full-width>Primary bar</rr-button>
+			</rr-container>
 		</rr-split-view-pane>
-
 		<rr-split-view-pane slot="main">
-			<rr-page sticky-header>
-				<rr-rich-text slot="header" style="padding: 16px;">
-					<strong>Inhoud</strong>
-				</rr-rich-text>
+			<rr-page>
 				<rr-simple-section>
 					<rr-rich-text>
 						<h2>Primaire inhoud</h2>

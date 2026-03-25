@@ -10,14 +10,21 @@
  * so that scroll containers (e.g. rr-page) can add padding-bottom to prevent
  * content from being hidden behind the bars.
  *
+ * ## Background color
+ * Sets --background-color which cascades down to all descendants including rr-page.
+ * Set background="tinted" to give the whole layout a tinted background.
+ * The fade overlay behind the bars uses --background-color automatically.
+ *
  * @element rr-bar-split-view
+ *
+ * @attr {'inherit'|'default'|'tinted'} background        - Use a tinted background color (cascades to descendants)
  *
  * @slot primary-bar   - Top pane for toolbars, actions, or navigation
  * @slot main          - Center pane for primary content
  * @slot secondary-bar - Bottom pane for output, logs, status, or bottom navigation
  */
 import { LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { barSplitViewStyles } from './rr-bar-split-view.styles.ts';
 import { barSplitViewTemplate } from './rr-bar-split-view.template.ts';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
@@ -27,6 +34,9 @@ const smMaxPx = parseInt(breakpoints.smMax);
 @customElement('rr-bar-split-view')
 export class RRBarSplitView extends LitElement {
 	static override styles = barSplitViewStyles;
+
+	@property({ type: String, reflect: true })
+	background: 'inherit' | 'default' | 'tinted' = 'inherit';
 
 	get _hasPrimaryBar(): boolean {
 		return this.querySelector(':scope > [slot="primary-bar"]') !== null;
@@ -81,7 +91,7 @@ export class RRBarSplitView extends LitElement {
 		if (!isMobile) {
 			// Reset on desktop — bars are in flow, no overlay
 			this.style.removeProperty('--rr-bar-split-view-bars-height');
-		this.style.removeProperty('--rr-bar-split-view-primary-bar-height');
+			this.style.removeProperty('--rr-bar-split-view-primary-bar-height');
 			return;
 		}
 

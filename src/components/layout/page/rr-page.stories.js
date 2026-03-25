@@ -45,8 +45,9 @@ export default {
 			description: 'Sticky footer',
 			table: { defaultValue: { summary: 'false' } },
 		},
-		tinted: {
-			control: 'boolean',
+		background: {
+			control: { type: 'select' },
+			options: ['inherit', 'default', 'tinted'],
 			description: 'Grijze achtergrond',
 			table: { defaultValue: { summary: 'false' } },
 		},
@@ -54,7 +55,7 @@ export default {
 	args: {
 		stickyHeader: false,
 		stickyFooter: false,
-		tinted: false,
+		background: 'inherit',
 	},
 };
 
@@ -92,11 +93,11 @@ const content = html`
 	</rr-rich-text>
 `;
 
-export const Standaard = ({ stickyHeader, stickyFooter, tinted }) => html`
+export const Standaard = ({ stickyHeader, stickyFooter, background }) => html`
 	<rr-page
 		?sticky-header=${stickyHeader}
 		?sticky-footer=${stickyFooter}
-		?tinted=${tinted}
+		background=${background}
 		style="height: 400px;"
 	>
 		<div slot="header">${header}</div>

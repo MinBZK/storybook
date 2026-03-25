@@ -8,6 +8,7 @@
  *
  * @element rr-stacked-split-view
  *
+ * @attr {'inherit'|'default'|'tinted'} background - Use a tinted background color (cascades to descendants)
  * @attr {number} panes - Number of panes (default: 2)
  *
  * @slot pane-1 - First pane
@@ -22,6 +23,9 @@ import { stackedSplitViewTemplate } from './rr-stacked-split-view.template.ts';
 @customElement('rr-stacked-split-view')
 export class RRStackedSplitView extends LitElement {
 	static override styles = stackedSplitViewStyles;
+
+	@property({ type: String, reflect: true })
+	background: 'inherit' | 'default' | 'tinted' = 'inherit';
 
 	@property({ type: Number, reflect: true })
 	panes = 2;

@@ -9,9 +9,20 @@ export const stackedSplitViewStyles = css`
 		flex-direction: column;
 		width: 100%;
 		height: 100%;
+		background-color: var(--_background-color);
 
-		/* Pane min-height — read by JS via getComputedStyle in firstUpdated */
-		--_pane-min-height: var(--primitives-area-200);
+		--_pane-min-height: var(--primitives-area-200); /* Pane min-height — read by JS via getComputedStyle in firstUpdated */
+		--_background-color: var(--background-color, var(--semantics-surfaces-background-color));
+	}
+
+	:host([background="default"]) {
+		--background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--background-color);
+	}
+
+	:host([background="tinted"]) {
+		--background-color: var(--semantics-surfaces-tinted-background-color);
+		--_background-color: var(--background-color);
 	}
 
 	:host([hidden]) {

@@ -5,9 +5,19 @@ import { css } from 'lit';
 
 export const appViewStyles = css`
 	:host {
+		--background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--background-color);
+
 		display: flex;
 		width: 100%;
 		height: 100%;
+		background-color: var(--_background-color);
+	}
+
+
+	:host([background="tinted"]) {
+		--background-color: var(--semantics-surfaces-tinted-background-color);
+		--_background-color: var(--semantics-surfaces-tinted-background-color);
 	}
 
 	:host([hidden]) {

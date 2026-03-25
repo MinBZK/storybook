@@ -8,6 +8,7 @@
  *
  * @element rr-side-by-side-split-view
  *
+ * @attr {'inherit'|'default'|'tinted'} background - Use a tinted background color (cascades to descendants)
  * @attr {number} panes - Number of panes (default: 2)
  *
  * @slot pane-1 - First pane
@@ -22,6 +23,9 @@ import { sideBySideSplitViewTemplate } from './rr-side-by-side-split-view.templa
 @customElement('rr-side-by-side-split-view')
 export class RRSideBySideSplitView extends LitElement {
 	static override styles = sideBySideSplitViewStyles;
+
+	@property({ type: String, reflect: true })
+	background: 'inherit' | 'default' | 'tinted' = 'inherit';
 
 	@property({ type: Number, reflect: true })
 	panes = 2;

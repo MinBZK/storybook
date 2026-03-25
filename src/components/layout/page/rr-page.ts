@@ -10,7 +10,7 @@
  *
  * @attr {boolean} sticky-header - Sticky header
  * @attr {boolean} sticky-footer - Sticky footer
- * @attr {boolean} tinted - Gebruik een grijze achtergrond in plaats van wit
+ * @attr {'inherit'|'default'|'tinted'} background - Gebruik een grijze achtergrond in plaats van wit
  *
  * @slot header - Inhoud van de header
  * @slot - Hoofdinhoud (scrollbaar)
@@ -31,8 +31,8 @@ export class RRPage extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'sticky-footer' })
 	stickyFooter = false;
 
-	@property({ type: Boolean, reflect: true })
-	tinted = false;
+	@property({ type: String, reflect: true })
+	background: 'inherit' | 'default' | 'tinted' = 'inherit';
 
 	@state()
 	_scrolled = false;

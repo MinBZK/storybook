@@ -30,10 +30,21 @@ export default {
 			type: 'stable',
 		},
 	},
+	argTypes: {
+		background: {
+			control: { type: 'select' },
+			options: ['default', 'tinted'],
+			description: 'Tinted achtergrond — cascade van --background-color naar alle afstammelingen',
+			table: { defaultValue: { summary: 'default' } },
+		},
+	},
+	args: {
+		background: 'default',
+	},
 };
 
-export const MetHorizontalSplitView = () => html`
-	<rr-app-view style="height: 600px;">
+export const MetHorizontalSplitView = ({ background }) => html`
+	<rr-app-view style="height: 600px;" background=${background}>
 		<rr-navigation-split-view>
 			<rr-page sticky-header slot="sidebar">
 				<rr-rich-text slot="header" style="padding: 16px;">
@@ -101,3 +112,39 @@ export const MetPagina = () => html`
 		</rr-page>
 	</rr-app-view>
 `;
+
+/**
+ * Each split view pane can have its own background color independently.
+ * Setting tinted on a pane cascades --background-color only to that pane's descendants.
+ * Sibling panes remain unaffected.
+ */
+export const TintedPerPaneel = () => html`
+	<rr-app-view style="height: 600px;">
+		<rr-navigation-split-view>
+			<rr-page sticky-header slot="sidebar" background="tinted">
+				<rr-rich-text slot="header" style="padding: 16px;">
+					<strong>Zijbalk (tinted)</strong>
+				</rr-rich-text>
+				<rr-simple-section>
+					<rr-rich-text>
+						<h2>Navigatie</h2>
+						<p>Deze zijbalk heeft een tinted achtergrond.</p>
+					</rr-rich-text>
+				</rr-simple-section>
+			</rr-page>
+
+			<rr-page sticky-header slot="main">
+				<rr-rich-text slot="header" style="padding: 16px;">
+					<strong>Inhoud (normaal)</strong>
+				</rr-rich-text>
+				<rr-simple-section>
+					<rr-rich-text>
+						<h2>Primaire inhoud</h2>
+						<p>Dit paneel heeft een normale achtergrond.</p>
+					</rr-rich-text>
+				</rr-simple-section>
+			</rr-page>
+		</rr-navigation-split-view>
+	</rr-app-view>
+`;
+TintedPerPaneel.parameters = { controls: { disable: true } };

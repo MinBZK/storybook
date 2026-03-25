@@ -33,6 +33,12 @@ export default {
 		},
 	},
 	argTypes: {
+		background: {
+			control: { type: 'select' },
+			options: ['inherit', 'default', 'tinted'],
+			description: 'Tinted achtergrond — cascade van --background-color naar alle afstammelingen inclusief rr-page en de fade overlay',
+			table: { defaultValue: { summary: 'inherit' } },
+		},
 		panes: {
 			control: { type: 'number' },
 			description: 'Aantal panelen',
@@ -40,6 +46,7 @@ export default {
 		},
 	},
 	args: {
+		background: 'inherit',
 		panes: 2,
 	},
 };
@@ -64,8 +71,8 @@ const paneContent = (title, slot) => html`
 	</rr-split-view-pane>
 `;
 
-export const Standaard = ({ panes }) => html`
-	<rr-stacked-split-view panes=${panes} style="height: 640px;">
+export const Standaard = ({ panes, background }) => html`
+	<rr-stacked-split-view panes=${panes} background=${background} style="height: 640px;">
 		${Array.from({ length: panes }, (_, i) => paneContent(`Paneel ${i + 1}`, `pane-${i + 1}`))}
 	</rr-stacked-split-view>
 `;
