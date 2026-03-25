@@ -3,7 +3,6 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 
-
 /* # rr-bar-split-view styles */
 
 export const barSplitViewStyles = css`
@@ -27,7 +26,7 @@ export const barSplitViewStyles = css`
 		flex: 1;
 		min-height: 0;
 		min-width: 0;
-		overflow: hidden;
+		position: relative;
 		container-type: inline-size;
 		container-name: bar-split-view;
 	}
@@ -41,12 +40,15 @@ export const barSplitViewStyles = css`
 		flex-shrink: 0;
 		min-width: 0;
 		overflow: hidden;
-		order: 1;
 		container-type: inline-size;
 		container-name: layout-area;
 
 		@container bar-split-view (max-width: ${smMax}) {
-			order: 5;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 2;
 		}
 	}
 
@@ -55,10 +57,9 @@ export const barSplitViewStyles = css`
 
 	.bar-split-view__primary-bar-divider {
 		flex-shrink: 0;
-		order: 2;
 
 		@container bar-split-view (max-width: ${smMax}) {
-			order: 4;
+			display: none;
 		}
 	}
 
@@ -72,12 +73,22 @@ export const barSplitViewStyles = css`
 		min-height: 0;
 		min-width: 0;
 		overflow: hidden;
-		order: 3;
 		container-type: inline-size;
 		container-name: layout-area;
 
-		@container bar-split-view (max-width: ${smMax}) {
-			order: 1;
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 1;
+			height: calc(var(--rr-bar-split-view-bars-height) + var(--primitives-space-32));
+			background: linear-gradient(
+				to top,
+				color-mix(in srgb, var(--semantics-surfaces-background-color) 95%, transparent) var(--rr-bar-split-view-bars-height),
+				transparent);
+			pointer-events: none;
 		}
 	}
 
@@ -86,10 +97,9 @@ export const barSplitViewStyles = css`
 
 	.bar-split-view__secondary-bar-divider {
 		flex-shrink: 0;
-		order: 4;
 
 		@container bar-split-view (max-width: ${smMax}) {
-			order: 2;
+			display: none;
 		}
 	}
 
@@ -98,16 +108,19 @@ export const barSplitViewStyles = css`
 
 	.bar-split-view__secondary-bar {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		flex-shrink: 0;
 		min-width: 0;
 		overflow: hidden;
-		order: 5;
 		container-type: inline-size;
 		container-name: layout-area;
 
 		@container bar-split-view (max-width: ${smMax}) {
-			order: 3;
+			position: absolute;
+			bottom: var(--rr-bar-split-view-primary-bar-height, 0px);
+			left: 0;
+			right: 0;
+			z-index: 2;
 		}
 	}
 

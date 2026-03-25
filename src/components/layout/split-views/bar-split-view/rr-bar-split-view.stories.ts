@@ -1,9 +1,11 @@
 import { html } from 'lit';
 import './rr-bar-split-view.ts';
 import '../split-view-pane/rr-split-view-pane.ts';
+import '../../container/rr-container.ts';
 import '../../page/rr-page.ts';
 import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
+import '../../../inputs/search-field/rr-search-field.ts';
 
 /**
  * Use a bar split view for a vertical layout with a primary bar, main content area,
@@ -40,16 +42,9 @@ export default {
 export const Standaard = () => html`
 	<rr-bar-split-view style="height: 600px;">
 		<rr-split-view-pane slot="primary-bar">
-			<rr-page sticky-header>
-				<rr-rich-text slot="header" style="padding: 16px;">
-					<strong>Primaire balk</strong>
-				</rr-rich-text>
-				<rr-simple-section>
-					<rr-rich-text>
-						<p>Acties, filters en tools voor het inhoudsgebied.</p>
-					</rr-rich-text>
-				</rr-simple-section>
-			</rr-page>
+			<rr-container padding="12">
+				<rr-button variant="primary" full-width>Primary bar</rr-button>
+			</rr-container>
 		</rr-split-view-pane>
 
 		<rr-split-view-pane slot="main">
@@ -70,17 +65,9 @@ export const Standaard = () => html`
 		</rr-split-view-pane>
 
 		<rr-split-view-pane slot="secondary-bar">
-			<rr-page sticky-header>
-				<rr-rich-text slot="header" style="padding: 16px;">
-					<strong>Secundaire balk</strong>
-				</rr-rich-text>
-				<rr-simple-section>
-					<rr-rich-text>
-						<p>Logboeken, validatieresultaten en statusinformatie.</p>
-						<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					</rr-rich-text>
-				</rr-simple-section>
-			</rr-page>
+			<rr-container padding="12">
+				<rr-search-field></rr-search-field>
+			</rr-container>
 		</rr-split-view-pane>
 	</rr-bar-split-view>
 `;

@@ -6,11 +6,11 @@ export function barSplitViewTemplate(component: RRBarSplitView): TemplateResult 
 	return html`
 		<div class="bar-split-view">
 			${component._hasPrimaryBar ? html`
-				<div class="bar-split-view__primary-bar-divider">
-					<rr-split-view-divider orientation="horizontal"></rr-split-view-divider>
-				</div>
 				<div class="bar-split-view__primary-bar">
 					<slot name="primary-bar"></slot>
+				</div>
+				<div class="bar-split-view__primary-bar-divider">
+					<rr-split-view-divider orientation="horizontal"></rr-split-view-divider>
 				</div>
 			` : nothing}
 			<div class="bar-split-view__main">
