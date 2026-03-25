@@ -5,8 +5,8 @@ import { css } from 'lit';
 
 export const appViewStyles = css`
 	:host {
-		--background-color: var(--semantics-surfaces-background-color);
-		--_background-color: var(--background-color);
+		--context-background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--context-background-color);
 
 		display: flex;
 		width: 100%;
@@ -16,7 +16,7 @@ export const appViewStyles = css`
 
 
 	:host([background="tinted"]) {
-		--background-color: var(--semantics-surfaces-tinted-background-color);
+		--context-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
 	}
 

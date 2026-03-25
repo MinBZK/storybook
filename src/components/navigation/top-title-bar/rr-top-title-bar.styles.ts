@@ -54,7 +54,7 @@ export const styles = css`
 	/* # Back button — text variant (default state) */
 
 	.top-title-bar__back-button {
-		display: var(--back-button-display, flex);
+		display: var(--context-back-button-display, flex);
 		flex-direction: row;
 		align-items: center;
 	}
@@ -150,7 +150,7 @@ export const styles = css`
 	/* # Dismiss button */
 
 	.top-title-bar__dismiss-button {
-		display: var(--dismiss-button-display, block);
+		display: var(--context-dismiss-button-display, block);
 	}
 
 

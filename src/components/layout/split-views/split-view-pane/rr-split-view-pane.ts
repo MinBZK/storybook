@@ -10,9 +10,9 @@
  * The pane automatically hides the back button via CSS when `hide-back` is active.
  *
  * ## Background color
- * The pane sets `--background-color` which cascades down to all descendants.
+ * The pane sets `--context-background-color` which cascades down to all descendants.
  * Set `background="tinted"` on a pane to give it a tinted background independently of sibling panes.
- * Descendants such as `rr-page` read `--background-color` automatically.
+ * Descendants such as `rr-page` read `--context-background-color` automatically.
  *
  * @element rr-split-view-pane
  *

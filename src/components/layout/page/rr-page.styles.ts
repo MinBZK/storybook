@@ -5,7 +5,7 @@ import { css } from 'lit';
 
 export const pageStyles = css`
 	:host {
-		--_background-color: var(--background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(--context-background-color, var(--semantics-surfaces-background-color));
 
 		display: flex;
 		flex-direction: column;
@@ -18,13 +18,13 @@ export const pageStyles = css`
 	}
 
 	:host([background="default"]) {
-		--background-color: var(--semantics-surfaces-background-color);
-		--_background-color: var(--background-color);
+		--context-background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--context-background-color);
 	}
 
 	:host([background="tinted"]) {
-		--background-color: var(--semantics-surfaces-tinted-background-color);
-		--_background-color: var(--background-color);
+		--context-background-color: var(--semantics-surfaces-tinted-background-color);
+		--_background-color: var(--context-background-color);
 	}
 
 	:host([hidden]) {

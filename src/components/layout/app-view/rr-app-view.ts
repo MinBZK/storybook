@@ -6,7 +6,7 @@
  *
  * ## Background color
  * Set background="tinted" to give the whole application a tinted background.
- * All descendants read --background-color via --_background-color automatically.
+ * All descendants read --context-background-color via --_background-color automatically.
  * Individual components can override locally with their own background attribute.
  *
  * @element rr-app-view

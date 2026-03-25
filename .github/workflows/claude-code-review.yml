@@ -74,6 +74,7 @@ jobs:
             - Are semantic tokens preferred over primitives?
             - No fallback values on design tokens (strict validation)?
             - Override hooks use `--rr-*` prefix?
+            - Context hooks use `--context-*` prefix?
             - Internal variables use `--_*` prefix?
 
             ### 4. CSS and styling

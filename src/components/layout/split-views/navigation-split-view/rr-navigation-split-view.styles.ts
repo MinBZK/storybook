@@ -17,17 +17,17 @@ export const navigationSplitViewStyles = css`
 		--_secondary-sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_main-min-width: var(--primitives-area-480); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_inspector-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_background-color: var(--background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(--context-background-color, var(--semantics-surfaces-background-color));
 	}
 
 	:host([background="default"]) {
-		--background-color: var(--semantics-surfaces-background-color);
-		--_background-color: var(--background-color);
+		--context-background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--context-background-color);
 	}
 
 	:host([background="tinted"]) {
-		--background-color: var(--semantics-surfaces-tinted-background-color);
-		--_background-color: var(--background-color);
+		--context-background-color: var(--semantics-surfaces-tinted-background-color);
+		--_background-color: var(--context-background-color);
 	}
 
 
@@ -97,7 +97,7 @@ export const navigationSplitViewStyles = css`
 
 	.navigation-split-view__sidebar-pane,
 	.navigation-split-view__secondary-sidebar-pane {
-		--dismiss-button-display: none;
+		--context-dismiss-button-display: none;
 	}
 
 	.navigation-split-view__inspector-pane {
@@ -111,7 +111,7 @@ export const navigationSplitViewStyles = css`
 		container-name: layout-area;
 
 		/* Suppress dismiss button — inspector is always dismissable as a sheet, not inline */
-		--dismiss-button-display: none;
+		--context-dismiss-button-display: none;
 	}
 
 
@@ -232,7 +232,7 @@ export const navigationSplitViewStyles = css`
 		height: 100%;
 
 		/* Show dismiss button inside sidebar sheet */
-		--dismiss-button-display: block;
+		--context-dismiss-button-display: block;
 	}
 
 

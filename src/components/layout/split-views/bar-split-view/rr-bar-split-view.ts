@@ -11,9 +11,9 @@
  * content from being hidden behind the bars.
  *
  * ## Background color
- * Sets --background-color which cascades down to all descendants including rr-page.
+ * Sets --context-background-color which cascades down to all descendants including rr-page.
  * Set background="tinted" to give the whole layout a tinted background.
- * The fade overlay behind the bars uses --background-color automatically.
+ * The fade overlay behind the bars uses --context-background-color automatically.
  *
  * @element rr-bar-split-view
  *
