@@ -1,10 +1,10 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
-import type { RRHorizontalSplitView } from './rr-horizontal-split-view.js';
-import './rr-horizontal-split-view.ts';
+import type { RRNavigationSplitView } from './rr-navigation-split-view.js';
+import './rr-navigation-split-view.ts';
 import '../split-view-pane/rr-split-view-pane.ts';
 
-async function setWidth(el: RRHorizontalSplitView, width: number) {
+async function setWidth(el: RRNavigationSplitView, width: number) {
 	vi.spyOn(el, 'getBoundingClientRect').mockReturnValue({ width } as DOMRect);
 	el._updateLayout();
 	await waitForUpdate(el);
@@ -12,13 +12,13 @@ async function setWidth(el: RRHorizontalSplitView, width: number) {
 
 // max-levels="3" — all panes
 async function fixtureLevel3(width = 1280) {
-	const el = await fixture<RRHorizontalSplitView>(`
-		<rr-horizontal-split-view max-levels="3">
+	const el = await fixture<RRNavigationSplitView>(`
+		<rr-navigation-split-view max-levels="3">
 			<rr-split-view-pane slot="sidebar"></rr-split-view-pane>
 			<rr-split-view-pane slot="secondary-sidebar"></rr-split-view-pane>
 			<rr-split-view-pane slot="main" has-content></rr-split-view-pane>
 			<rr-split-view-pane slot="inspector"></rr-split-view-pane>
-		</rr-horizontal-split-view>
+		</rr-navigation-split-view>
 	`);
 	await setWidth(el, width);
 	return el;
@@ -26,11 +26,11 @@ async function fixtureLevel3(width = 1280) {
 
 // max-levels="2" — sidebar + main
 async function fixtureLevel2(width = 640) {
-	const el = await fixture<RRHorizontalSplitView>(`
-		<rr-horizontal-split-view max-levels="2">
+	const el = await fixture<RRNavigationSplitView>(`
+		<rr-navigation-split-view max-levels="2">
 			<rr-split-view-pane slot="sidebar"></rr-split-view-pane>
 			<rr-split-view-pane slot="main" has-content></rr-split-view-pane>
-		</rr-horizontal-split-view>
+		</rr-navigation-split-view>
 	`);
 	await setWidth(el, width);
 	return el;
@@ -41,37 +41,37 @@ async function fixtureLevel2(width = 640) {
    Smoke tests
    ============================================================ */
 
-describe('rr-horizontal-split-view', () => {
-	let el: RRHorizontalSplitView;
+describe('rr-navigation-split-view', () => {
+	let el: RRNavigationSplitView;
 
 	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
 
 	it('renders without error', async () => {
-		el = await fixture('<rr-horizontal-split-view></rr-horizontal-split-view>');
+		el = await fixture('<rr-navigation-split-view></rr-navigation-split-view>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('defaults max-levels to 1', async () => {
-		el = await fixture('<rr-horizontal-split-view></rr-horizontal-split-view>');
+		el = await fixture('<rr-navigation-split-view></rr-navigation-split-view>');
 		await waitForUpdate(el);
 		expect(el.maxLevels).toBe(1);
 	});
 
 	it('clamps max-levels <= 0 to effective level 1', async () => {
-		el = await fixture('<rr-horizontal-split-view max-levels="0"></rr-horizontal-split-view>');
+		el = await fixture('<rr-navigation-split-view max-levels="0"></rr-navigation-split-view>');
 		await waitForUpdate(el);
 		expect((el as any)._effectiveLevels).toBe(1);
 	});
 
 	it('defaults to mode spatial', async () => {
-		el = await fixture('<rr-horizontal-split-view></rr-horizontal-split-view>');
+		el = await fixture('<rr-navigation-split-view></rr-navigation-split-view>');
 		await waitForUpdate(el);
 		expect(el.mode).toBe('spatial');
 	});
 
 	it('defaults inspector-auto-hidden to false', async () => {
-		el = await fixture('<rr-horizontal-split-view></rr-horizontal-split-view>');
+		el = await fixture('<rr-navigation-split-view></rr-navigation-split-view>');
 		await waitForUpdate(el);
 		expect(el.inspectorAutoHidden).toBe(false);
 	});
@@ -82,8 +82,8 @@ describe('rr-horizontal-split-view', () => {
    max-levels="3" — spatial (≥ 1280px)
    ============================================================ */
 
-describe('rr-horizontal-split-view – max-levels="3" spatial', () => {
-	let el: RRHorizontalSplitView;
+describe('rr-navigation-split-view – max-levels="3" spatial', () => {
+	let el: RRNavigationSplitView;
 
 	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
 
@@ -113,8 +113,8 @@ describe('rr-horizontal-split-view – max-levels="3" spatial', () => {
    max-levels="3" — sidebar-stack (640–959px)
    ============================================================ */
 
-describe('rr-horizontal-split-view – max-levels="3" sidebar-stack', () => {
-	let el: RRHorizontalSplitView;
+describe('rr-navigation-split-view – max-levels="3" sidebar-stack', () => {
+	let el: RRNavigationSplitView;
 
 	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
 
@@ -148,8 +148,8 @@ describe('rr-horizontal-split-view – max-levels="3" sidebar-stack', () => {
    max-levels="3" — full-stack (< 320px)
    ============================================================ */
 
-describe('rr-horizontal-split-view – max-levels="3" full-stack', () => {
-	let el: RRHorizontalSplitView;
+describe('rr-navigation-split-view – max-levels="3" full-stack', () => {
+	let el: RRNavigationSplitView;
 
 	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
 
@@ -166,12 +166,12 @@ describe('rr-horizontal-split-view – max-levels="3" full-stack', () => {
 	});
 
 	it('shows secondary-sidebar when it has-content and main does not', async () => {
-		const el2 = await fixture<RRHorizontalSplitView>(`
-			<rr-horizontal-split-view max-levels="3">
+		const el2 = await fixture<RRNavigationSplitView>(`
+			<rr-navigation-split-view max-levels="3">
 				<rr-split-view-pane slot="sidebar"></rr-split-view-pane>
 				<rr-split-view-pane slot="secondary-sidebar" has-content></rr-split-view-pane>
 				<rr-split-view-pane slot="main"></rr-split-view-pane>
-			</rr-horizontal-split-view>
+			</rr-navigation-split-view>
 		`);
 		await setWidth(el2, 300);
 		expect(el2._showSecondarySidebar).toBe(true);
@@ -180,12 +180,12 @@ describe('rr-horizontal-split-view – max-levels="3" full-stack', () => {
 	});
 
 	it('shows sidebar when only sidebar has-content', async () => {
-		const el2 = await fixture<RRHorizontalSplitView>(`
-			<rr-horizontal-split-view max-levels="3">
+		const el2 = await fixture<RRNavigationSplitView>(`
+			<rr-navigation-split-view max-levels="3">
 				<rr-split-view-pane slot="sidebar" has-content></rr-split-view-pane>
 				<rr-split-view-pane slot="secondary-sidebar"></rr-split-view-pane>
 				<rr-split-view-pane slot="main"></rr-split-view-pane>
-			</rr-horizontal-split-view>
+			</rr-navigation-split-view>
 		`);
 		await setWidth(el2, 300);
 		expect(el2._showSidebar).toBe(true);
@@ -194,12 +194,12 @@ describe('rr-horizontal-split-view – max-levels="3" full-stack', () => {
 	});
 
 	it('sets hide-back on sidebar (root)', async () => {
-		const el2 = await fixture<RRHorizontalSplitView>(`
-			<rr-horizontal-split-view max-levels="3">
+		const el2 = await fixture<RRNavigationSplitView>(`
+			<rr-navigation-split-view max-levels="3">
 				<rr-split-view-pane slot="sidebar" has-content></rr-split-view-pane>
 				<rr-split-view-pane slot="secondary-sidebar"></rr-split-view-pane>
 				<rr-split-view-pane slot="main"></rr-split-view-pane>
-			</rr-horizontal-split-view>
+			</rr-navigation-split-view>
 		`);
 		await setWidth(el2, 300);
 		const sidebar = el2.querySelector('rr-split-view-pane[slot="sidebar"]');
@@ -225,8 +225,8 @@ describe('rr-horizontal-split-view – max-levels="3" full-stack', () => {
    max-levels="2" — sidebar + main
    ============================================================ */
 
-describe('rr-horizontal-split-view – max-levels="2"', () => {
-	let el: RRHorizontalSplitView;
+describe('rr-navigation-split-view – max-levels="2"', () => {
+	let el: RRNavigationSplitView;
 
 	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
 
@@ -248,17 +248,17 @@ describe('rr-horizontal-split-view – max-levels="2"', () => {
    max-levels > 3 — consumer owns depth, never hide-back on sidebar
    ============================================================ */
 
-describe('rr-horizontal-split-view – max-levels > 3', () => {
-	let el: RRHorizontalSplitView;
+describe('rr-navigation-split-view – max-levels > 3', () => {
+	let el: RRNavigationSplitView;
 
 	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
 
 	it('never sets hide-back on sidebar in full-stack', async () => {
-		el = await fixture<RRHorizontalSplitView>(`
-			<rr-horizontal-split-view max-levels="5">
+		el = await fixture<RRNavigationSplitView>(`
+			<rr-navigation-split-view max-levels="5">
 				<rr-split-view-pane slot="sidebar" has-content></rr-split-view-pane>
 				<rr-split-view-pane slot="main" has-content></rr-split-view-pane>
-			</rr-horizontal-split-view>
+			</rr-navigation-split-view>
 		`);
 		await setWidth(el, 300);
 		const sidebar = el.querySelector('rr-split-view-pane[slot="sidebar"]');
@@ -266,11 +266,11 @@ describe('rr-horizontal-split-view – max-levels > 3', () => {
 	});
 
 	it('does not render secondary-sidebar slot', async () => {
-		el = await fixture<RRHorizontalSplitView>(`
-			<rr-horizontal-split-view max-levels="5">
+		el = await fixture<RRNavigationSplitView>(`
+			<rr-navigation-split-view max-levels="5">
 				<rr-split-view-pane slot="sidebar"></rr-split-view-pane>
 				<rr-split-view-pane slot="main" has-content></rr-split-view-pane>
-			</rr-horizontal-split-view>
+			</rr-navigation-split-view>
 		`);
 		await setWidth(el, 1280);
 		expect(el._showSecondarySidebar).toBe(false);
@@ -282,16 +282,16 @@ describe('rr-horizontal-split-view – max-levels > 3', () => {
    max-levels="1" — no sidebar, main is root
    ============================================================ */
 
-describe('rr-horizontal-split-view – max-levels="1"', () => {
-	let el: RRHorizontalSplitView;
+describe('rr-navigation-split-view – max-levels="1"', () => {
+	let el: RRNavigationSplitView;
 
 	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
 
 	it('sets hide-back on main in full-stack (no nav)', async () => {
-		el = await fixture<RRHorizontalSplitView>(`
-			<rr-horizontal-split-view>
+		el = await fixture<RRNavigationSplitView>(`
+			<rr-navigation-split-view>
 				<rr-split-view-pane slot="main" has-content></rr-split-view-pane>
-			</rr-horizontal-split-view>
+			</rr-navigation-split-view>
 		`);
 		await setWidth(el, 300);
 		const main = el.querySelector('rr-split-view-pane[slot="main"]');
@@ -304,8 +304,8 @@ describe('rr-horizontal-split-view – max-levels="1"', () => {
    Inspector sheet
    ============================================================ */
 
-describe('rr-horizontal-split-view – inspector sheet', () => {
-	let el: RRHorizontalSplitView;
+describe('rr-navigation-split-view – inspector sheet', () => {
+	let el: RRNavigationSplitView;
 
 	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
 
@@ -316,14 +316,14 @@ describe('rr-horizontal-split-view – inspector sheet', () => {
 
 	it('renders inspector dialog when inspector-auto-hidden', async () => {
 		el = await fixtureLevel3(640);
-		expect(el.shadowRoot!.querySelector('.horizontal-split-view__inspector-sheet')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.navigation-split-view__inspector-sheet')).not.toBeNull();
 	});
 
 	it('showInspectorSheet() opens the dialog', async () => {
 		el = await fixtureLevel3(640);
 		el.showInspectorSheet();
 		await waitForUpdate(el);
-		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>('.horizontal-split-view__inspector-sheet')!;
+		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>('.navigation-split-view__inspector-sheet')!;
 		expect(dialog.open).toBe(true);
 	});
 
@@ -332,15 +332,15 @@ describe('rr-horizontal-split-view – inspector sheet', () => {
 		el.showInspectorSheet();
 		await waitForUpdate(el);
 		el.hideInspectorSheet();
-		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>('.horizontal-split-view__inspector-sheet')!;
+		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>('.navigation-split-view__inspector-sheet')!;
 		expect(dialog.classList.contains('is-closing')).toBe(true);
 	});
 
 	it('does not set inspector-auto-hidden when no inspector slotted', async () => {
-		el = await fixture<RRHorizontalSplitView>(`
-			<rr-horizontal-split-view max-levels="3">
+		el = await fixture<RRNavigationSplitView>(`
+			<rr-navigation-split-view max-levels="3">
 				<rr-split-view-pane slot="main" has-content></rr-split-view-pane>
-			</rr-horizontal-split-view>
+			</rr-navigation-split-view>
 		`);
 		await setWidth(el, 1280);
 		expect(el.inspectorAutoHidden).toBe(false);

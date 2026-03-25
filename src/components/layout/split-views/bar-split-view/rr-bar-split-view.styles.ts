@@ -1,9 +1,9 @@
 import { css } from 'lit';
 
 
-/* # rr-vertical-split-view styles */
+/* # rr-bar-split-view styles */
 
-export const verticalSplitViewStyles = css`
+export const barSplitViewStyles = css`
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -16,9 +16,9 @@ export const verticalSplitViewStyles = css`
 	}
 
 
-	/* # Split view */
+	/* # App view */
 
-	.vertical-split-view {
+	.bar-split-view {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -28,9 +28,9 @@ export const verticalSplitViewStyles = css`
 	}
 
 
-	/* # Toolbar */
+	/* # Primary bar */
 
-	.vertical-split-view__header {
+	.bar-split-view__primary-bar {
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
@@ -41,9 +41,9 @@ export const verticalSplitViewStyles = css`
 	}
 
 
-	/* # Content */
+	/* # Main */
 
-	.vertical-split-view__main {
+	.bar-split-view__main {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -55,9 +55,9 @@ export const verticalSplitViewStyles = css`
 	}
 
 
-	/* # Accessory */
+	/* # Secondary bar */
 
-	.vertical-split-view__footer {
+	.bar-split-view__secondary-bar {
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;

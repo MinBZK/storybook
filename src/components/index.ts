@@ -55,10 +55,11 @@ export { RRToken } from './inputs/token/rr-token.ts';
 
 // # Layout components
 
-export { RRAppView } from './layout/split-views/app-view/rr-app-view.ts';
+export { RRAppView } from './layout/app-view/rr-app-view.ts';
 
 export { RRHSplitViewPane } from './layout/split-views/split-view-pane/rr-split-view-pane.ts';
-export { RRHorizontalSplitView } from './layout/split-views/horizontal-split-view/rr-horizontal-split-view.ts';
+export { RRNavigationSplitView } from './layout/split-views/bar-split-view/rr-bar-split-view.ts';
+export { RRNavigationSplitView } from './layout/split-views/navigation-split-view/rr-navigation-split-view.ts';
 export { RRSideBySideSplitView } from './layout/split-views/side-by-side-split-view/rr-side-by-side-split-view.ts';
 export { RRVerticalSplitView } from './layout/split-views/vertical-split-view/rr-vertical-split-view.ts';
 export { RRStackedSplitView } from './layout/split-views/stacked-split-view/rr-stacked-split-view.ts';

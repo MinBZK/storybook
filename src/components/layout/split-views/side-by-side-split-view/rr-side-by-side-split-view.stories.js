@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import './rr-side-by-side-split-view.ts';
-import '../split-view-pane/rr-split-view-pane.ts';
 import '../../page/rr-page.ts';
 import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';

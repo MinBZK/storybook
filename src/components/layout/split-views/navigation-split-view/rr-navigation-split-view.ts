@@ -1,12 +1,12 @@
 /**
- * RegelRecht Horizontal Split View Component (Lit + TypeScript)
+ * RegelRecht Navigation Split View Component (Lit + TypeScript)
  *
  * A four-column layout with a sidebar, secondary sidebar, main content area, and inspector.
  * The sidebars show navigation or lists, the main area shows primary content,
  * and the inspector shows additional details or properties of the selection.
  * Panes are shown automatically when content is slotted into them.
  *
- * @element rr-horizontal-split-view
+ * @element rr-navigation-split-view
  *
  * Use <code>rr-split-view-pane</code> as direct children for automatic
  * back button handling.
@@ -27,12 +27,12 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { horizontalSplitViewStyles } from './rr-horizontal-split-view.styles.ts';
-import { horizontalSplitViewTemplate } from './rr-horizontal-split-view.template.ts';
+import { navigationSplitViewStyles } from './rr-navigation-split-view.styles.ts';
+import { navigationSplitViewTemplate } from './rr-navigation-split-view.template.ts';
 
-@customElement('rr-horizontal-split-view')
-export class RRHorizontalSplitView extends LitElement {
-	static override styles = horizontalSplitViewStyles;
+@customElement('rr-navigation-split-view')
+export class RRNavigationSplitView extends LitElement {
+	static override styles = navigationSplitViewStyles;
 
 	@property({ type: Boolean, reflect: true, attribute: 'inspector-auto-hidden' })
 	inspectorAutoHidden = false;
@@ -65,11 +65,11 @@ export class RRHorizontalSplitView extends LitElement {
 	private _paneMinWidths = { sidebar: 320, secondarySidebar: 320, main: 480, inspector: 320 };
 
 	private get _inspectorSheet(): HTMLDialogElement | null {
-		return this.shadowRoot?.querySelector('.horizontal-split-view__inspector-sheet') ?? null;
+		return this.shadowRoot?.querySelector('.navigation-split-view__inspector-sheet') ?? null;
 	}
 
 	private get _sidebarSheet(): HTMLDialogElement | null {
-		return this.shadowRoot?.querySelector('.horizontal-split-view__sidebar-sheet') ?? null;
+		return this.shadowRoot?.querySelector('.navigation-split-view__sidebar-sheet') ?? null;
 	}
 
 	private get _hasSidebar(): boolean {
@@ -384,7 +384,7 @@ export class RRHorizontalSplitView extends LitElement {
 	private _handleDismiss = (e: Event) => {
 		// Route dismiss events to the correct sheet based on which dialog contains the target
 		const path = e.composedPath();
-		if (path.some(el => el === this._sidebarSheet || (el as Element)?.closest?.('.horizontal-split-view__sidebar-sheet-body'))) {
+		if (path.some(el => el === this._sidebarSheet || (el as Element)?.closest?.('.navigation-split-view__sidebar-sheet-body'))) {
 			this.hideSidebarSheet();
 		} else if (this.inspectorAutoHidden || this.inspectorAsSheet) {
 			this.hideInspectorSheet();
@@ -416,12 +416,12 @@ export class RRHorizontalSplitView extends LitElement {
 	}
 
 	override render() {
-		return horizontalSplitViewTemplate(this);
+		return navigationSplitViewTemplate(this);
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'rr-horizontal-split-view': RRHorizontalSplitView;
+		'rr-navigation-split-view': RRNavigationSplitView;
 	}
 }

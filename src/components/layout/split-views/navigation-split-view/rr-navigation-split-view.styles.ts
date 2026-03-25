@@ -1,9 +1,9 @@
 import { css } from 'lit';
 
 
-/* # rr-horizontal-split-view styles */
+/* # rr-navigation-split-view styles */
 
-export const horizontalSplitViewStyles = css`
+export const navigationSplitViewStyles = css`
 	:host {
 		display: flex;
 		width: 100%;
@@ -20,7 +20,7 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Split view */
 
-	.horizontal-split-view {
+	.navigation-split-view {
 		display: flex;
 		flex-direction: row;
 		flex: 1;
@@ -32,7 +32,7 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Sidebar */
 
-	.horizontal-split-view__sidebar-pane {
+	.navigation-split-view__sidebar-pane {
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
@@ -46,7 +46,7 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Secondary sidebar */
 
-	.horizontal-split-view__secondary-sidebar-pane {
+	.navigation-split-view__secondary-sidebar-pane {
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
@@ -60,7 +60,7 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Main */
 
-	.horizontal-split-view__main-pane {
+	.navigation-split-view__main-pane {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -74,20 +74,20 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Full-stack: single pane fills available space, no minimum */
 
-	:host(.full-stack) .horizontal-split-view__sidebar-pane,
-	:host(.full-stack) .horizontal-split-view__secondary-sidebar-pane,
-	:host(.full-stack) .horizontal-split-view__main-pane {
+	:host(.full-stack) .navigation-split-view__sidebar-pane,
+	:host(.full-stack) .navigation-split-view__secondary-sidebar-pane,
+	:host(.full-stack) .navigation-split-view__main-pane {
 		min-width: 0;
 	}
 
 	/* # Sidebar — inline pane suppresses dismiss button */
 
-	.horizontal-split-view__sidebar-pane,
-	.horizontal-split-view__secondary-sidebar-pane {
+	.navigation-split-view__sidebar-pane,
+	.navigation-split-view__secondary-sidebar-pane {
 		--dismiss-button-display: none;
 	}
 
-	.horizontal-split-view__inspector-pane {
+	.navigation-split-view__inspector-pane {
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
@@ -104,17 +104,17 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Inspector — sheet (dialog) */
 
-	@keyframes horizontal-split-view-inspector-slide-in {
+	@keyframes navigation-split-view-inspector-slide-in {
 		from { transform: translateX(100%); }
 		to { transform: translateX(0); }
 	}
 
-	@keyframes horizontal-split-view-inspector-slide-out {
+	@keyframes navigation-split-view-inspector-slide-out {
 		from { transform: translateX(0); }
 		to { transform: translateX(100%); }
 	}
 
-	.horizontal-split-view__inspector-sheet {
+	.navigation-split-view__inspector-sheet {
 		border: none;
 		padding: 0;
 		margin: 0;
@@ -141,15 +141,15 @@ export const horizontalSplitViewStyles = css`
 		}
 
 		&[open] {
-			animation: horizontal-split-view-inspector-slide-in 0.3s ease both;
+			animation: navigation-split-view-inspector-slide-in 0.3s ease both;
 		}
 
 		&.is-closing {
-			animation: horizontal-split-view-inspector-slide-out 0.3s ease both;
+			animation: navigation-split-view-inspector-slide-out 0.3s ease both;
 		}
 	}
 
-	.horizontal-split-view__inspector-sheet-body {
+	.navigation-split-view__inspector-sheet-body {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
@@ -159,17 +159,17 @@ export const horizontalSplitViewStyles = css`
 
 	/* # Sidebar — sheet (dialog) */
 
-	@keyframes horizontal-split-view-sidebar-slide-in {
+	@keyframes navigation-split-view-sidebar-slide-in {
 		from { transform: translateX(-100%); }
 		to { transform: translateX(0); }
 	}
 
-	@keyframes horizontal-split-view-sidebar-slide-out {
+	@keyframes navigation-split-view-sidebar-slide-out {
 		from { transform: translateX(0); }
 		to { transform: translateX(-100%); }
 	}
 
-	.horizontal-split-view__sidebar-sheet {
+	.navigation-split-view__sidebar-sheet {
 		border: none;
 		padding: 0;
 		margin: 0;
@@ -196,15 +196,15 @@ export const horizontalSplitViewStyles = css`
 		}
 
 		&[open] {
-			animation: horizontal-split-view-sidebar-slide-in 0.3s ease both;
+			animation: navigation-split-view-sidebar-slide-in 0.3s ease both;
 		}
 
 		&.is-closing {
-			animation: horizontal-split-view-sidebar-slide-out 0.3s ease both;
+			animation: navigation-split-view-sidebar-slide-out 0.3s ease both;
 		}
 	}
 
-	.horizontal-split-view__sidebar-sheet-body {
+	.navigation-split-view__sidebar-sheet-body {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
@@ -218,10 +218,10 @@ export const horizontalSplitViewStyles = css`
 	/* # Reduced motion */
 
 	@media (prefers-reduced-motion: reduce) {
-		.horizontal-split-view__inspector-sheet[open],
-		.horizontal-split-view__inspector-sheet.is-closing,
-		.horizontal-split-view__sidebar-sheet[open],
-		.horizontal-split-view__sidebar-sheet.is-closing {
+		.navigation-split-view__inspector-sheet[open],
+		.navigation-split-view__inspector-sheet.is-closing,
+		.navigation-split-view__sidebar-sheet[open],
+		.navigation-split-view__sidebar-sheet.is-closing {
 			animation: none;
 		}
 	}

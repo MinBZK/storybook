@@ -1,7 +1,6 @@
 import { html } from 'lit';
-import './rr-horizontal-split-view.ts';
-import '../split-view-pane/rr-split-view-pane.ts';
-import '../vertical-split-view/rr-vertical-split-view.ts';
+import './rr-navigation-split-view.ts';
+import '../../app-view/rr-app-view.ts';
 import '../../page/rr-page.ts';
 import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
@@ -9,7 +8,7 @@ import '../../../actions/button/rr-button.ts';
 import '../../../navigation/top-title-bar/rr-top-title-bar.ts';
 
 /**
- * Gebruik een horizontal split view voor een vierkoloms navigatiepatroon met
+ * Gebruik een navigation split view voor een vierkoloms navigatiepatroon met
  * een zijbalk, secundaire zijbalk, inhoudsgebied en inspecteur.
  *
  * Gebruik <code>rr-split-view-pane</code> als directe kinderen. De split view stelt
@@ -18,22 +17,22 @@ import '../../../navigation/top-title-bar/rr-top-title-bar.ts';
  *
  * ## Gebruik
  * ```html
- * <rr-horizontal-split-view>
+ * <rr-navigation-split-view>
  *   <rr-split-view-pane slot="sidebar">...</rr-split-view-pane>
  *   <rr-split-view-pane slot="secondary-sidebar">...</rr-split-view-pane>
  *   <rr-split-view-pane slot="main" has-content>...</rr-split-view-pane>
  *   <rr-split-view-pane slot="inspector">...</rr-split-view-pane>
- * </rr-horizontal-split-view>
+ * </rr-navigation-split-view>
  * ```
  */
 export default {
-	title: 'Components/Layout/Split Views/Horizontal Split View',
-	component: 'rr-horizontal-split-view',
+	title: 'Components/Layout/Split Views/Navigation Split View',
+	component: 'rr-navigation-split-view',
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'fullscreen',
 		componentSource: {
-			file: 'src/components/layout/split-views/horizontal-split-view/rr-horizontal-split-view.ts',
+			file: 'src/components/layout/split-views/navigation-split-view/rr-navigation-split-view.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -90,7 +89,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 	}, 0);
 
 	return html`
-		<rr-horizontal-split-view
+		<rr-navigation-split-view
 			id="split-view-demo"
 			style="height: 600px;"
 			?inspector-as-sheet=${inspectorAsSheet}
@@ -180,17 +179,17 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 					</rr-simple-section>
 				</rr-page>
 			</rr-split-view-pane>
-		</rr-horizontal-split-view>
+		</rr-navigation-split-view>
 	`;
 };
 
 /**
- * Split views can be nested. Here a vertical split view is placed inside
- * the main pane of a horizontal split view, creating an editor-like layout
+ * Split views can be nested. Here a bar split view is placed inside
+ * the main pane of a navigation split view, creating an editor-like layout
  * with a sidebar, an editor area, and an output panel below it.
  */
 export const GenestdeSplitView = () => html`
-	<rr-horizontal-split-view
+	<rr-navigation-split-view
 		style="height: 600px;"
 	>
 		<rr-split-view-pane slot="sidebar">
@@ -210,7 +209,7 @@ export const GenestdeSplitView = () => html`
 		</rr-split-view-pane>
 
 		<rr-split-view-pane slot="main" has-content>
-			<rr-vertical-split-view>
+			<rr-bar-split-view>
 				<rr-split-view-pane slot="main">
 					<rr-page sticky-header>
 						<rr-top-title-bar
@@ -228,7 +227,7 @@ export const GenestdeSplitView = () => html`
 					</rr-page>
 				</rr-split-view-pane>
 
-				<rr-split-view-pane slot="footer">
+				<rr-split-view-pane slot="secondary-bar">
 					<rr-page sticky-header>
 						<rr-top-title-bar
 							slot="header"
@@ -241,8 +240,8 @@ export const GenestdeSplitView = () => html`
 						</rr-simple-section>
 					</rr-page>
 				</rr-split-view-pane>
-			</rr-vertical-split-view>
+			</rr-bar-split-view>
 		</rr-split-view-pane>
-	</rr-horizontal-split-view>
+	</rr-navigation-split-view>
 `;
 GenestdeSplitView.parameters = { controls: { disable: true } };

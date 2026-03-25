@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-app-view.ts';
-import '../split-views/horizontal-split-view/rr-horizontal-split-view.ts';
+import '../split-views/navigation-split-view/rr-navigation-split-view.ts';
 import '../page/rr-page.ts';
 import '../page-sections/simple-section/rr-simple-section.ts';
 import '../../content/rich-text/rr-rich-text.ts';
@@ -12,7 +12,7 @@ import '../../content/rich-text/rr-rich-text.ts';
  * ## Gebruik
  * ```html
  * <rr-app-view>
- *   <rr-horizontal-split-view>...</rr-horizontal-split-view>
+ *   <rr-navigation-split-view>...</rr-navigation-split-view>
  * </rr-app-view>
  * ```
  */
@@ -34,7 +34,7 @@ export default {
 
 export const MetHorizontalSplitView = () => html`
 	<rr-app-view style="height: 600px;">
-		<rr-horizontal-split-view>
+		<rr-navigation-split-view>
 			<rr-page sticky-header slot="sidebar">
 				<rr-rich-text slot="header" style="padding: 16px;">
 					<strong>Zijbalk</strong>
@@ -82,7 +82,7 @@ export const MetHorizontalSplitView = () => html`
 					</rr-rich-text>
 				</rr-simple-section>
 			</rr-page>
-		</rr-horizontal-split-view>
+		</rr-navigation-split-view>
 	</rr-app-view>
 `;
 

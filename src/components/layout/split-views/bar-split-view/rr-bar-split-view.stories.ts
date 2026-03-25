@@ -1,34 +1,33 @@
 import { html } from 'lit';
-import './rr-vertical-split-view.ts';
-import '../split-view-pane/rr-split-view-pane.ts';
+import './rr-bar-split-view.ts';
 import '../../page/rr-page.ts';
 import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
 
 /**
- * Use a vertical split view for a three-row layout with a header,
- * main content area, and footer. The header provides space for tools and
- * actions; the footer for output, logs, or status information.
- * The main area is always visible and takes up the remaining space.
- * Header and footer are shown automatically when content is slotted into them.
+ * Use an app view for an app shell layout with a primary bar, main content area,
+ * and secondary bar. The primary bar provides space for tools and actions;
+ * the secondary bar for output, logs, status, or bottom navigation.
+ * The main area is always visible. Bars are shown automatically when
+ * content is slotted into them.
  *
  * ## Gebruik
  * ```html
- * <rr-vertical-split-view>
- *   <rr-split-view-pane slot="header">...</rr-split-view-pane>
+ * <rr-bar-split-view>
+ *   <rr-split-view-pane slot="primary-bar">...</rr-split-view-pane>
  *   <rr-split-view-pane slot="main">...</rr-split-view-pane>
- *   <rr-split-view-pane slot="footer">...</rr-split-view-pane>
- * </rr-vertical-split-view>
+ *   <rr-split-view-pane slot="secondary-bar">...</rr-split-view-pane>
+ * </rr-bar-split-view>
  * ```
  */
 export default {
-	title: 'Components/Layout/Split Views/Vertical Split View',
-	component: 'rr-vertical-split-view',
+	title: 'Components/Layout/Split Views/Bar Split View',
+	component: 'rr-bar-split-view',
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'fullscreen',
 		componentSource: {
-			file: 'src/components/layout/split-views/vertical-split-view/rr-vertical-split-view.ts',
+			file: 'src/components/layout/split-views/bar-split-view/rr-bar-split-view.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -38,11 +37,11 @@ export default {
 };
 
 export const Standaard = () => html`
-	<rr-vertical-split-view style="height: 600px;">
-		<rr-split-view-pane slot="header">
+	<rr-bar-split-view style="height: 600px;">
+		<rr-split-view-pane slot="primary-bar">
 			<rr-page sticky-header>
 				<rr-rich-text slot="header" style="padding: 16px;">
-					<strong>Koptekst</strong>
+					<strong>Primaire balk</strong>
 				</rr-rich-text>
 				<rr-simple-section>
 					<rr-rich-text>
@@ -69,10 +68,10 @@ export const Standaard = () => html`
 			</rr-page>
 		</rr-split-view-pane>
 
-		<rr-split-view-pane slot="footer">
+		<rr-split-view-pane slot="secondary-bar">
 			<rr-page sticky-header>
 				<rr-rich-text slot="header" style="padding: 16px;">
-					<strong>Uitvoer</strong>
+					<strong>Secundaire balk</strong>
 				</rr-rich-text>
 				<rr-simple-section>
 					<rr-rich-text>
@@ -82,11 +81,24 @@ export const Standaard = () => html`
 				</rr-simple-section>
 			</rr-page>
 		</rr-split-view-pane>
-	</rr-vertical-split-view>
+	</rr-bar-split-view>
 `;
 
-export const ZonderKoptekst = () => html`
-	<rr-vertical-split-view style="height: 600px;">
+export const AlleenPrimaireBalk = () => html`
+	<rr-bar-split-view style="height: 600px;">
+		<rr-split-view-pane slot="primary-bar">
+			<rr-page sticky-header>
+				<rr-rich-text slot="header" style="padding: 16px;">
+					<strong>Primaire balk</strong>
+				</rr-rich-text>
+				<rr-simple-section>
+					<rr-rich-text>
+						<p>Acties, filters en tools voor het inhoudsgebied.</p>
+					</rr-rich-text>
+				</rr-simple-section>
+			</rr-page>
+		</rr-split-view-pane>
+
 		<rr-split-view-pane slot="main">
 			<rr-page sticky-header>
 				<rr-rich-text slot="header" style="padding: 16px;">
@@ -95,24 +107,11 @@ export const ZonderKoptekst = () => html`
 				<rr-simple-section>
 					<rr-rich-text>
 						<h2>Primaire inhoud</h2>
-						<p>Geen koptekst — header slot is leeg.</p>
+						<p>Geen secundaire balk — secondary-bar slot is leeg.</p>
 					</rr-rich-text>
 				</rr-simple-section>
 			</rr-page>
 		</rr-split-view-pane>
-
-		<rr-split-view-pane slot="footer">
-			<rr-page sticky-header>
-				<rr-rich-text slot="header" style="padding: 16px;">
-					<strong>Uitvoer</strong>
-				</rr-rich-text>
-				<rr-simple-section>
-					<rr-rich-text>
-						<p>Logboeken, validatieresultaten en statusinformatie.</p>
-					</rr-rich-text>
-				</rr-simple-section>
-			</rr-page>
-		</rr-split-view-pane>
-	</rr-vertical-split-view>
+	</rr-bar-split-view>
 `;
-ZonderKoptekst.parameters = { controls: { disable: true } };
+AlleenPrimaireBalk.parameters = { controls: { disable: true } };

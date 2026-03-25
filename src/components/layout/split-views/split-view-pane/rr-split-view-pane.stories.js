@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './rr-split-view-pane.ts';
-import '../horizontal-split-view/rr-horizontal-split-view.ts';
+import '../navigation-split-view/rr-navigation-split-view.ts';
 import '../../page/rr-page.ts';
 import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
@@ -58,7 +58,7 @@ export default {
 };
 
 export const Standaard = ({ hasContent }) => html`
-	<rr-horizontal-split-view
+	<rr-navigation-split-view
 		style="height: 600px;"
 
 	>
@@ -127,5 +127,5 @@ export const Standaard = ({ hasContent }) => html`
 				</rr-simple-section>
 			</rr-page>
 		</rr-split-view-pane>
-	</rr-horizontal-split-view>
+	</rr-navigation-split-view>
 `;

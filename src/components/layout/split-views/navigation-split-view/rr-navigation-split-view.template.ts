@@ -1,48 +1,48 @@
 import { html, TemplateResult, nothing } from 'lit';
-import type { RRHorizontalSplitView } from './rr-horizontal-split-view.js';
+import type { RRNavigationSplitView } from './rr-navigation-split-view.js';
 import '../split-view-divider/rr-split-view-divider.ts';
 
-export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): TemplateResult {
+export function navigationSplitViewTemplate(component: RRNavigationSplitView): TemplateResult {
 	return html`
-		<div class="horizontal-split-view">
+		<div class="navigation-split-view">
 			${component._showSidebar ? html`
-				<div class="horizontal-split-view__sidebar-pane">
+				<div class="navigation-split-view__sidebar-pane">
 					<slot name="sidebar"></slot>
 				</div>
 				<rr-split-view-divider orientation="vertical"></rr-split-view-divider>
 			` : nothing}
 			${component._showSecondarySidebar ? html`
-				<div class="horizontal-split-view__secondary-sidebar-pane">
+				<div class="navigation-split-view__secondary-sidebar-pane">
 					<slot name="secondary-sidebar"></slot>
 				</div>
 				<rr-split-view-divider orientation="vertical"></rr-split-view-divider>
 			` : nothing}
 			${component._showMain ? html`
-				<div class="horizontal-split-view__main-pane">
+				<div class="navigation-split-view__main-pane">
 					<slot name="main"></slot>
 				</div>
 			` : nothing}
 			${component._showInspector ? html`
 				<rr-split-view-divider orientation="vertical"></rr-split-view-divider>
-				<div class="horizontal-split-view__inspector-pane">
+				<div class="navigation-split-view__inspector-pane">
 					<slot name="inspector"></slot>
 				</div>
 			` : component.inspectorAutoHidden || component.inspectorAsSheet ? html`
-				<dialog class="horizontal-split-view__inspector-sheet"
+				<dialog class="navigation-split-view__inspector-sheet"
 					@click=${component._handleInspectorSheetClick}
 					@cancel=${component._handleInspectorSheetCancel}
 				>
-					<div class="horizontal-split-view__inspector-sheet-body">
+					<div class="navigation-split-view__inspector-sheet-body">
 						<slot name="inspector"></slot>
 					</div>
 				</dialog>
 			` : nothing}
 			${component.sidebarAsSheet ? html`
-				<dialog class="horizontal-split-view__sidebar-sheet"
+				<dialog class="navigation-split-view__sidebar-sheet"
 					@click=${component._handleSidebarSheetClick}
 					@cancel=${component._handleSidebarSheetCancel}
 				>
-					<div class="horizontal-split-view__sidebar-sheet-body">
+					<div class="navigation-split-view__sidebar-sheet-body">
 						${component._hasSecondarySidebar && component._paneHasContent('secondary-sidebar') ? html`
 							<slot name="secondary-sidebar"></slot>
 						` : html`
