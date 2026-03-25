@@ -1,12 +1,9 @@
 /**
  * RegelRecht Bar Split View Component (Lit + TypeScript)
  *
- * An app shell layout with a primary bar, main content area, and secondary bar.
- * The primary bar provides space for tools and actions above the content;
- * the main area shows primary content; the secondary bar provides space
- * for output, logs, status information, or a bottom navigation bar.
- * The main area is always visible. Primary and secondary bars are shown
- * only when content is slotted into them.
+ * A vertical split view with a primary bar, main content area, and secondary bar.
+ * The primary bar and secondary bar are shown only when content is slotted into them.
+ * The main area is always visible.
  *
  * @element rr-bar-split-view
  *

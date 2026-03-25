@@ -1,11 +1,12 @@
 import { html } from 'lit';
 import './rr-bar-split-view.ts';
+import '../split-view-pane/rr-split-view-pane.ts';
 import '../../page/rr-page.ts';
 import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
 
 /**
- * Use an app view for an app shell layout with a primary bar, main content area,
+ * Use a bar split view for a vertical layout with a primary bar, main content area,
  * and secondary bar. The primary bar provides space for tools and actions;
  * the secondary bar for output, logs, status, or bottom navigation.
  * The main area is always visible. Bars are shown automatically when
