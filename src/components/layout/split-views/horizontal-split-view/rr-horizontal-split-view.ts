@@ -4,26 +4,19 @@
  * A four-column layout with a sidebar, secondary sidebar, main content area, and inspector.
  * The sidebars show navigation or lists, the main area shows primary content,
  * and the inspector shows additional details or properties of the selection.
+ * Panes are shown automatically when content is slotted into them.
  *
  * @element rr-horizontal-split-view
  *
  * Use <code>rr-split-view-pane</code> as direct children for automatic
- * back button and mode handling.
+ * back button handling.
  *
- * Set <code>max-levels</code> to define the navigation structure. Levels include
- * all navigable panes including the main content area:
- * - 1 (default): main content only
- * - 2: sidebar + main
- * - 3: sidebar + secondary sidebar + main
- * - >3: sidebar + main, consumer manages own navigation depth
- *
- * @attr {number}  max-levels            - Number of navigation levels including main content (default: 1)
  * @attr {boolean} inspector-auto-hidden - Inspector hidden to free up space for other panes (read-only, set by the split view)
  * @attr {boolean} inspector-as-sheet    - Always show the inspector as a sheet regardless of available space
  * @attr {boolean} sidebar-as-sheet      - Always show the sidebar as a sheet, keeping main visible at full width
  *
- * @slot sidebar           - Left pane for primary navigation (requires max-levels >= 2)
- * @slot secondary-sidebar - Second pane for secondary navigation (requires max-levels === 3)
+ * @slot sidebar           - Left pane for primary navigation
+ * @slot secondary-sidebar - Second pane for secondary navigation (shown when slotted)
  * @slot main              - Center pane for primary content
  * @slot inspector         - Right pane for details or properties
  *
@@ -40,9 +33,6 @@ import { horizontalSplitViewTemplate } from './rr-horizontal-split-view.template
 @customElement('rr-horizontal-split-view')
 export class RRHorizontalSplitView extends LitElement {
 	static override styles = horizontalSplitViewStyles;
-
-	@property({ type: Number, reflect: true, attribute: 'max-levels' })
-	maxLevels = 1;
 
 	@property({ type: Boolean, reflect: true, attribute: 'inspector-auto-hidden' })
 	inspectorAutoHidden = false;
@@ -72,7 +62,7 @@ export class RRHorizontalSplitView extends LitElement {
 	private _hostObserver: MutationObserver | null = null;
 
 	// Cached pane min-widths — read from CSS in firstUpdated
-	private _paneMinWidths = { sidebar: 320, secondarySidebar: 320, main: 320, inspector: 320 };
+	private _paneMinWidths = { sidebar: 320, secondarySidebar: 320, main: 480, inspector: 320 };
 
 	private get _inspectorSheet(): HTMLDialogElement | null {
 		return this.shadowRoot?.querySelector('.horizontal-split-view__inspector-sheet') ?? null;
@@ -82,17 +72,12 @@ export class RRHorizontalSplitView extends LitElement {
 		return this.shadowRoot?.querySelector('.horizontal-split-view__sidebar-sheet') ?? null;
 	}
 
-	// Effective levels — clamp to minimum 1, accessible from template
-	get _effectiveLevels(): number {
-		return Math.max(1, this.maxLevels);
-	}
-
 	private get _hasSidebar(): boolean {
-		return this._effectiveLevels >= 2;
+		return this.querySelector(':scope > [slot="sidebar"]') !== null;
 	}
 
 	private get _hasSecondarySidebar(): boolean {
-		return this._effectiveLevels === 3;
+		return this.querySelector(':scope > [slot="secondary-sidebar"]') !== null;
 	}
 
 	private get _hasInspector(): boolean {
@@ -142,18 +127,18 @@ export class RRHorizontalSplitView extends LitElement {
 	override firstUpdated() {
 		// Read pane min-widths from CSS after first render — styles are guaranteed applied
 		const style = getComputedStyle(this);
-		const read = (prop: string) => parseFloat(style.getPropertyValue(prop)) || 320;
+		const read = (prop: string) => parseFloat(style.getPropertyValue(prop));
 		this._paneMinWidths = {
-			sidebar: read('--_sidebar-min-width'),
-			secondarySidebar: read('--_secondary-sidebar-min-width'),
-			main: read('--_main-min-width'),
-			inspector: read('--_inspector-min-width'),
+			sidebar: read('--_sidebar-min-width') || this._paneMinWidths.sidebar,
+			secondarySidebar: read('--_secondary-sidebar-min-width') || this._paneMinWidths.secondarySidebar,
+			main: read('--_main-min-width') || this._paneMinWidths.main,
+			inspector: read('--_inspector-min-width') || this._paneMinWidths.inspector,
 		};
 		this._updateLayout();
 	}
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('maxLevels') || changed.has('inspectorAsSheet') || changed.has('sidebarAsSheet')) {
+		if (changed.has('inspectorAsSheet') || changed.has('sidebarAsSheet')) {
 			this._updateLayout();
 		}
 		// Close inspector sheet immediately when inspector-auto-hidden clears and inspector-as-sheet is not set
@@ -243,48 +228,40 @@ export class RRHorizontalSplitView extends LitElement {
 			main: this.querySelector(':scope > rr-split-view-pane[slot="main"]'),
 		};
 
-		const all = Object.values(panes).filter(Boolean) as Element[];
-
 		// When sidebar-as-sheet, main is always the only visible inline pane — no back buttons
 		// Secondary sidebar in the sheet can go back to sidebar — keep its back button
 		if (this.sidebarAsSheet) {
-			panes.sidebar?.setAttribute('hide-back', '');
 			panes.secondarySidebar?.removeAttribute('hide-back');
 			panes.main?.setAttribute('hide-back', '');
 			return;
 		}
 
 		if (this._mode === 'spatial') {
-			// All panes visible side by side — no back buttons
-			all.forEach(pane => pane.setAttribute('hide-back', ''));
+			// All panes visible side by side — no back buttons needed on secondary sidebar or main
+			panes.secondarySidebar?.setAttribute('hide-back', '');
+			panes.main?.setAttribute('hide-back', '');
 			return;
 		}
 
 		if (this._mode === 'sidebar-stack') {
 			// Sidebar is hidden — secondary sidebar can go back to it
 			// Main is visible alongside secondary sidebar — no sequential navigation
-			panes.sidebar?.setAttribute('hide-back', '');
 			panes.secondarySidebar?.removeAttribute('hide-back');
 			panes.main?.setAttribute('hide-back', '');
 			return;
 		}
 
 		// full-stack
-		if (this._effectiveLevels === 2) {
-			// Sidebar is root — no back; main can go back to sidebar
-			panes.sidebar?.setAttribute('hide-back', '');
-			panes.main?.removeAttribute('hide-back');
-		} else if (this._effectiveLevels === 3) {
+		if (this._hasSecondarySidebar) {
 			// Sidebar is root; secondary sidebar and main have predecessors
-			panes.sidebar?.setAttribute('hide-back', '');
 			panes.secondarySidebar?.removeAttribute('hide-back');
 			panes.main?.removeAttribute('hide-back');
-		} else if (!this._hasSidebar) {
+		} else if (this._hasSidebar) {
+			// Sidebar is root — no back; main can go back to sidebar
+			panes.main?.removeAttribute('hide-back');
+		} else {
 			// No nav — main is root
 			panes.main?.setAttribute('hide-back', '');
-		} else {
-			// max-levels > 3: consumer owns navigation depth — never hide-back on sidebar
-			all.forEach(pane => pane.removeAttribute('hide-back'));
 		}
 	}
 

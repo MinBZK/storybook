@@ -16,7 +16,7 @@ export function horizontalSplitViewTemplate(component: RRHorizontalSplitView): T
 					<slot name="secondary-sidebar"></slot>
 				</div>
 				<rr-split-view-divider orientation="vertical"></rr-split-view-divider>
-			` : !component.sidebarAsSheet && component._effectiveLevels === 3 ? html`<slot name="secondary-sidebar" style="display:none"></slot>` : nothing}
+			` : nothing}
 			${component._showMain ? html`
 				<div class="horizontal-split-view__main-pane">
 					<slot name="main"></slot>

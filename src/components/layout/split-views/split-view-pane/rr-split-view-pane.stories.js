@@ -60,7 +60,7 @@ export default {
 export const Standaard = ({ hasContent }) => html`
 	<rr-horizontal-split-view
 		style="height: 600px;"
-		max-levels="3"
+
 	>
 		<rr-split-view-pane slot="sidebar">
 			<rr-page sticky-header>

@@ -12,7 +12,7 @@ export const horizontalSplitViewStyles = css`
 		/* Pane min-widths — read by JS via getComputedStyle in firstUpdated */
 		--_sidebar-min-width: var(--primitives-area-320);
 		--_secondary-sidebar-min-width: var(--primitives-area-320);
-		--_main-min-width: var(--primitives-area-400);
+		--_main-min-width: var(--primitives-area-480);
 		--_inspector-min-width: var(--primitives-area-320);
 	}
 

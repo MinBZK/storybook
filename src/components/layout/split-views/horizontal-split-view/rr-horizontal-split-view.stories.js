@@ -14,16 +14,11 @@ import '../../../navigation/top-title-bar/rr-top-title-bar.ts';
  *
  * Gebruik <code>rr-split-view-pane</code> als directe kinderen. De split view stelt
  * automatisch <code>hide-back</code> in op elk paneel op basis van de beschikbare ruimte.
- *
- * Stel <code>max-levels</code> in om de navigatiestructuur te bepalen:
- * - <code>1</code> (standaard): alleen inhoudsgebied
- * - <code>2</code>: zijbalk + inhoudsgebied
- * - <code>3</code>: zijbalk + secundaire zijbalk + inhoudsgebied
- * - <code>&gt;3</code>: zijbalk + inhoudsgebied, consumer beheert navigatiediepte
+ * Panelen worden automatisch getoond wanneer inhoud in de bijbehorende slot wordt geplaatst.
  *
  * ## Gebruik
  * ```html
- * <rr-horizontal-split-view max-levels="3">
+ * <rr-horizontal-split-view>
  *   <rr-split-view-pane slot="sidebar">...</rr-split-view-pane>
  *   <rr-split-view-pane slot="secondary-sidebar">...</rr-split-view-pane>
  *   <rr-split-view-pane slot="main" has-content>...</rr-split-view-pane>
@@ -46,11 +41,6 @@ export default {
 		},
 	},
 	argTypes: {
-		maxLevels: {
-			control: 'number',
-			description: 'Aantal navigatieniveaus inclusief inhoud (1 = alleen inhoud, 2 = zijbalk + inhoud, 3 = zijbalk + secundaire zijbalk + inhoud)',
-			table: { defaultValue: { summary: '1' } },
-		},
 		inspectorAsSheet: {
 			control: 'boolean',
 			description: 'Toon de inspecteur altijd als sheet, ongeacht beschikbare ruimte',
@@ -63,13 +53,12 @@ export default {
 		},
 	},
 	args: {
-		maxLevels: 3,
 		inspectorAsSheet: false,
 		sidebarAsSheet: false,
 	},
 };
 
-export const Standaard = ({ maxLevels, inspectorAsSheet, sidebarAsSheet }) => {
+export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 	setTimeout(() => {
 		const splitView = document.getElementById('split-view-demo');
 		const inspectorButton = document.getElementById('inspector-toggle');
@@ -104,7 +93,6 @@ export const Standaard = ({ maxLevels, inspectorAsSheet, sidebarAsSheet }) => {
 		<rr-horizontal-split-view
 			id="split-view-demo"
 			style="height: 600px;"
-			max-levels=${maxLevels}
 			?inspector-as-sheet=${inspectorAsSheet}
 			?sidebar-as-sheet=${sidebarAsSheet}
 		>
@@ -204,7 +192,6 @@ export const Standaard = ({ maxLevels, inspectorAsSheet, sidebarAsSheet }) => {
 export const GenestdeSplitView = () => html`
 	<rr-horizontal-split-view
 		style="height: 600px;"
-		max-levels="2"
 	>
 		<rr-split-view-pane slot="sidebar">
 			<rr-page sticky-header>
