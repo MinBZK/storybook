@@ -131,7 +131,7 @@ export const navigationSplitViewStyles = css`
 		border: none;
 		padding: 0;
 		margin: 0;
-		background: var(--semantics-surfaces-overlay-background-color);
+		background: var(--semantics-surfaces-background-color);
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
@@ -190,7 +190,7 @@ export const navigationSplitViewStyles = css`
 		border: none;
 		padding: 0;
 		margin: 0;
-		background: var(--semantics-surfaces-overlay-background-color);
+		background: var(--semantics-surfaces-background-color);
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
