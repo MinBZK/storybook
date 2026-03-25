@@ -53,7 +53,7 @@ export default {
 export const Standaard = ({ background }) => html`
 	<rr-bar-split-view style="height: 600px;" background=${background}>
 		<rr-split-view-pane slot="primary-bar">
-			<rr-container padding="12">
+			<rr-container padding-inline="16" padding-block="12">
 				<rr-button variant="primary" full-width>Primaire balk</rr-button>
 			</rr-container>
 		</rr-split-view-pane>
@@ -77,7 +77,7 @@ export const Standaard = ({ background }) => html`
 			</rr-page>
 		</rr-split-view-pane>
 		<rr-split-view-pane slot="secondary-bar">
-			<rr-container padding="12">
+			<rr-container padding-inline="16" padding-block="12" sm-padding-bottom="none">
 				<rr-search-field placeholder="Secundaire balk"></rr-search-field>
 			</rr-container>
 		</rr-split-view-pane>
