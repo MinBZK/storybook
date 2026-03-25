@@ -3,6 +3,7 @@ import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
+const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
@@ -62,7 +63,7 @@ export const styles = css`
 		border: none;
 		padding: 0;
 		margin: 0;
-		background: var(--semantics-surfaces-overlay-background-color);
+		background: var(--semantics-surfaces-background-color);
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
@@ -78,7 +79,7 @@ export const styles = css`
 	}
 
 	.sheet::backdrop {
-		background: rgba(0, 0, 0, 0.2);
+		background: var(--semantics-overlays-backdrop-color);
 	}
 
 	:host(:not([modal])) .sheet::backdrop {
@@ -90,21 +91,21 @@ export const styles = css`
 
 	:host([placement='right']) .sheet,
 	:host(:not([placement])) .sheet {
-		inset: 16px 16px 16px auto;
-		width: 360px;
-		height: calc(100vh - 32px);
+		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
+		width: var(--components-sheet-side-md-width);
+		height: calc(100vh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: 480px;
+			width: var(--components-sheet-side-lg-width);
 		}
 
 		&[open] {
-			animation: sheet-slide-in-right 0.3s ease both;
+			animation: sheet-slide-in-right var(--components-sheet-side-animation-duration) ease both;
 		}
 
 		&.is-closing {
-			animation: sheet-slide-out-right 0.3s ease both;
+			animation: sheet-slide-out-right var(--components-sheet-side-animation-duration) ease both;
 		}
 	}
 
@@ -112,21 +113,21 @@ export const styles = css`
 	/* # Placement: left */
 
 	:host([placement='left']) .sheet {
-		inset: 16px auto 16px 16px;
-		width: 360px;
-		height: calc(100vh - 32px);
+		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
+		width: var(--components-sheet-side-md-width);
+		height: calc(100vh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: 480px;
+			width: var(--components-sheet-side-lg-width);
 		}
 
 		&[open] {
-			animation: sheet-slide-in-left 0.3s ease both;
+			animation: sheet-slide-in-left var(--components-sheet-side-animation-duration) ease both;
 		}
 
 		&.is-closing {
-			animation: sheet-slide-out-left 0.3s ease both;
+			animation: sheet-slide-out-left var(--components-sheet-side-animation-duration) ease both;
 		}
 	}
 
@@ -135,33 +136,31 @@ export const styles = css`
 
 	:host([placement='bottom']) .sheet {
 		inset: auto 0 0 0;
-		width: calc(100% - 80px);
 		max-width: var(--semantics-page-sections-body-max-width);
-		max-height: calc(100vh - 48px);
-		height: calc(100vh - 48px);
+		max-height: calc(100vh - var(--components-sheet-bottom-top-inset));
+		height: calc(100vh - var(--components-sheet-bottom-top-inset));
 		margin-inline: auto;
 		border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
 		@media (max-width: ${smMax}) {
 			width: 100%;
 			max-width: 100%;
-			inset-inline: 0;
 		}
 
 		@media (min-width: ${mdMin}) {
-			width: calc(100% - 48px);
+			width: calc(100% - var(--components-sheet-bottom-md-inline-inset));
 		}
 
 		@media (min-width: ${lgMin}) {
-			width: calc(100% - 80px);
+			width: calc(100% - var(--components-sheet-bottom-lg-inline-inset));
 		}
 
 		&[open] {
-			animation: sheet-slide-in-bottom 0.3s ease both;
+			animation: sheet-slide-in-bottom var(--components-sheet-side-animation-duration) ease both;
 		}
 
 		&.is-closing {
-			animation: sheet-slide-out-bottom 0.3s ease both;
+			animation: sheet-slide-out-bottom var(--components-sheet-side-animation-duration) ease both;
 		}
 	}
 
@@ -175,15 +174,15 @@ export const styles = css`
 			inset: auto 0 0 0;
 			width: 100%;
 			height: auto;
-			max-height: calc(100vh - 48px);
+			max-height: calc(100vh - var(--components-sheet-bottom-top-inset));
 			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
 			&[open] {
-				animation: sheet-slide-in-bottom 0.3s ease both;
+				animation: sheet-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
 			}
 
 			&.is-closing {
-				animation: sheet-slide-out-bottom 0.3s ease both;
+				animation: sheet-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
 			}
 		}
 	}

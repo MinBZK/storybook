@@ -132,10 +132,14 @@ export const navigationSplitViewStyles = css`
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
-		inset: 16px 16px 16px auto;
-		width: 360px;
-		height: calc(100vh - 32px);
+		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
+		width: var(--primitives-area-360);
+		height: calc(100vh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
+
+		@media (min-width: ${lgMin}) {
+			width: var(--components-sheet-side-lg-width);
+		}
 
 		&:focus-visible {
 			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-sheet-box-shadow);
@@ -147,15 +151,15 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&::backdrop {
-			background: rgba(0, 0, 0, 0.2);
+			background: var(--semantics-overlays-backdrop-color);
 		}
 
 		&[open] {
-			animation: navigation-split-view-inspector-slide-in 0.3s ease both;
+			animation: navigation-split-view-inspector-slide-in var(--components-sheet-side-animation-duration) ease both;
 		}
 
 		&.is-closing {
-			animation: navigation-split-view-inspector-slide-out 0.3s ease both;
+			animation: navigation-split-view-inspector-slide-out var(--components-sheet-side-animation-duration) ease both;
 		}
 	}
 
@@ -187,10 +191,14 @@ export const navigationSplitViewStyles = css`
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
-		inset: 16px auto 16px 16px;
-		width: 360px;
-		height: calc(100vh - 32px);
+		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
+		width: var(--components-sheet-side-md-width);
+		height: calc(100vh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
+
+		@media (min-width: ${lgMin}) {
+			width: var(--components-sheet-side-lg-width);
+		}
 
 		&:focus-visible {
 			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-sheet-box-shadow);
@@ -202,15 +210,15 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&::backdrop {
-			background: rgba(0, 0, 0, 0.2);
+			background: var(--semantics-overlays-backdrop-color);
 		}
 
 		&[open] {
-			animation: navigation-split-view-sidebar-slide-in 0.3s ease both;
+			animation: navigation-split-view-sidebar-slide-in var(--components-sheet-side-animation-duration) ease both;
 		}
 
 		&.is-closing {
-			animation: navigation-split-view-sidebar-slide-out 0.3s ease both;
+			animation: navigation-split-view-sidebar-slide-out var(--components-sheet-side-animation-duration) ease both;
 		}
 	}
 
