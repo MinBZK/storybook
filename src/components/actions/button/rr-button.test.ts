@@ -270,10 +270,10 @@ describe('rr-button – href / link rendering', () => {
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('rel')).toBe('noopener noreferrer');
 	});
 
-	it('does not set href on the anchor when disabled', async () => {
+	it('keeps href on the anchor when disabled so it remains keyboard-discoverable', async () => {
 		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled>Terug</rr-button>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('href')).toBe(false);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('href')).toBe('/overzicht');
 	});
 
 	it('sets aria-disabled on the anchor when disabled', async () => {
@@ -286,18 +286,6 @@ describe('rr-button – href / link rendering', () => {
 		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('aria-disabled')).toBe(false);
-	});
-
-	it('sets tabindex="0" on the anchor when disabled to keep it keyboard-discoverable', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled>Terug</rr-button>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('a')!.getAttribute('tabindex')).toBe('0');
-	});
-
-	it('does not set tabindex on the anchor when not disabled', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('tabindex')).toBe(false);
 	});
 
 	it('forwards accessible-label to the anchor element', async () => {

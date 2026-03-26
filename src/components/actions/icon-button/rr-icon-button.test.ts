@@ -258,6 +258,17 @@ describe('rr-icon-button – href / link rendering', () => {
 		expect(el.shadowRoot!.querySelector('a')).toBeNull();
 	});
 
+	it('does not reflect href attribute when not set', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button>
+				<rr-icon name="dismiss"></rr-icon>
+				Sluiten
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('href')).toBe(false);
+	});
+
 	it('renders an <a> when href is set', async () => {
 		el = await fixture<RRIconButton>(`
 			<rr-icon-button href="/overzicht">
@@ -305,7 +316,7 @@ describe('rr-icon-button – href / link rendering', () => {
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('rel')).toBe('noopener noreferrer');
 	});
 
-	it('does not set href on the anchor when disabled', async () => {
+	it('keeps href on the anchor when disabled so it remains keyboard-discoverable', async () => {
 		el = await fixture<RRIconButton>(`
 			<rr-icon-button href="/overzicht" disabled>
 				<rr-icon name="arrow-left"></rr-icon>
@@ -313,7 +324,7 @@ describe('rr-icon-button – href / link rendering', () => {
 			</rr-icon-button>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('href')).toBe(false);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('href')).toBe('/overzicht');
 	});
 
 	it('sets aria-disabled on the anchor when disabled', async () => {

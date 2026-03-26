@@ -28,7 +28,7 @@ export function template(this: RRIconButton) {
 		const resolvedRel = this._resolvedRel();
 		return html`
 			<a class="icon-button"
-				href=${this.disabled ? nothing : this.href}
+				href=${this.href}
 				target=${this.target || nothing}
 				rel=${resolvedRel || nothing}
 				aria-disabled=${this.disabled ? 'true' : nothing}
