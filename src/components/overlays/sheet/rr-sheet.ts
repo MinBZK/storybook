@@ -1,25 +1,26 @@
 /**
  * RegelRecht Sheet Component (Lit + TypeScript)
  *
- * Een overlay-component die vanuit de zijkant of onderkant van het scherm inschuift.
- * Gebaseerd op het native <dialog>-element voor ingebouwde toegankelijkheid,
- * focusbeheer en Escape-toetsondersteuning.
+ * An overlay component that slides in from the side or bottom of the screen.
+ * Based on the native <dialog> element for built-in accessibility,
+ * focus management, and Escape key support.
  *
- * Op een sm-viewport wordt de sheet altijd als een bottom sheet weergegeven,
- * ongeacht de ingestelde placement.
+ * On small (sm) viewports the sheet always renders as a bottom sheet,
+ * regardless of the configured placement.
  *
  * @element rr-sheet
  *
- * @attr {string}  placement - Positie van de sheet: 'left' | 'right' | 'bottom' (standaard: 'right')
- * @attr {boolean} modeless  - Niet-modaal (geen backdrop of focusvergrendeling); standaard is de sheet modaal
+ * @attr {string}  placement        - Sheet position: 'left' | 'right' | 'bottom' (default: 'right')
+ * @attr {boolean} modeless         - Non-modal (no backdrop or focus lock); the sheet is modal by default
+ * @attr {string}  accessible-label - Accessible name for the dialog, forwarded as aria-label
  *
- * @slot - Inhoud van de sheet
+ * @slot - Sheet content
  *
- * @fires open  - Wanneer de sheet volledig geopend is
- * @fires close - Wanneer de sheet volledig gesloten is
+ * @fires open  - Fired when the sheet is opened
+ * @fires close - Fired when the sheet is fully closed
  *
- * @method show() - Opent de sheet
- * @method hide() - Sluit de sheet met een sluitanimatie
+ * @method show() - Opens the sheet
+ * @method hide() - Closes the sheet with a closing animation
  */
 
 import { LitElement } from 'lit';
@@ -38,6 +39,10 @@ export class RRSheet extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	modeless = false;
+
+	/** Accessible name for the dialog — forwarded as aria-label to the dialog element. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
 	private get _dialog(): HTMLDialogElement | null {
 		return this.shadowRoot?.querySelector('dialog') ?? null;

@@ -11,9 +11,11 @@
  * Use <code>rr-split-view-pane</code> as direct children for automatic
  * back button handling.
  *
- * @attr {boolean} inspector-auto-hidden - Inspector hidden to free up space for other panes (read-only, set by the split view)
- * @attr {boolean} inspector-as-sheet    - Always show the inspector as a sheet regardless of available space
- * @attr {boolean} sidebar-as-sheet      - Always show the sidebar as a sheet, keeping main visible at full width
+ * @attr {boolean} inspector-auto-hidden       - Inspector hidden to free up space for other panes (read-only, set by the split view)
+ * @attr {boolean} inspector-as-sheet          - Always show the inspector as a sheet regardless of available space
+ * @attr {boolean} sidebar-as-sheet            - Always show the sidebar as a sheet, keeping main visible at full width
+ * @attr {string}  inspector-accessible-label  - Accessible name for the inspector sheet dialog (default: 'Details')
+ * @attr {string}  sidebar-accessible-label    - Accessible name for the sidebar sheet dialog (default: 'Navigatie')
  *
  * @slot sidebar           - Left pane for primary navigation
  * @slot secondary-sidebar - Second pane for secondary navigation (shown when slotted)
@@ -42,6 +44,14 @@ export class RRNavigationSplitView extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'sidebar-as-sheet' })
 	sidebarAsSheet = false;
+
+	/** Accessible name for the inspector sheet dialog. */
+	@property({ type: String, attribute: 'inspector-accessible-label' })
+	inspectorAccessibleLabel = 'Details';
+
+	/** Accessible name for the sidebar sheet dialog. */
+	@property({ type: String, attribute: 'sidebar-accessible-label' })
+	sidebarAccessibleLabel = 'Navigatie';
 
 	// Internal visibility driven by layout algorithm — not part of public API
 	@state()
