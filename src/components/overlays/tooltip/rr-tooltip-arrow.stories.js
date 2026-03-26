@@ -54,19 +54,27 @@ Default.args = {
 export const AllDirections = () => html`
   <div style="display: flex; gap: 2rem; align-items: center; padding: 2rem;">
     <div style="text-align: center;">
-      <p style="margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--semantics-content-color);">Up</p>
+      <p style="margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--semantics-content-color);">
+        Up
+      </p>
       <rr-tooltip-arrow direction="up"></rr-tooltip-arrow>
     </div>
     <div style="text-align: center;">
-      <p style="margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--semantics-content-color);">Down</p>
+      <p style="margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--semantics-content-color);">
+        Down
+      </p>
       <rr-tooltip-arrow direction="down"></rr-tooltip-arrow>
     </div>
     <div style="text-align: center;">
-      <p style="margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--semantics-content-color);">Left</p>
+      <p style="margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--semantics-content-color);">
+        Left
+      </p>
       <rr-tooltip-arrow direction="left"></rr-tooltip-arrow>
     </div>
     <div style="text-align: center;">
-      <p style="margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--semantics-content-color);">Right</p>
+      <p style="margin: 0 0 0.5rem; font-size: 0.75rem; color: var(--semantics-content-color);">
+        Right
+      </p>
       <rr-tooltip-arrow direction="right"></rr-tooltip-arrow>
     </div>
   </div>

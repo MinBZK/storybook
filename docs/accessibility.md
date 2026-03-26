@@ -29,6 +29,7 @@ All components are built with Lit and implement accessibility features directly 
 Screen reader-only content should be hidden visually while remaining accessible to assistive technologies. Since components use shadow DOM, visually-hidden styles must be defined in each component's `static styles` or applied via global stylesheet to light DOM content.
 
 **Recommended CSS (add to component styles or global stylesheet):**
+
 ```css
 .visually-hidden,
 .sr-only {
@@ -45,6 +46,7 @@ Screen reader-only content should be hidden visually while remaining accessible 
 ```
 
 **Usage:**
+
 ```html
 <button>
   <svg aria-hidden="true">...</svg>
@@ -61,15 +63,16 @@ Screen reader-only content should be hidden visually while remaining accessible 
 Respects user preferences for reduced motion to accommodate users with vestibular disorders. Add to each component's `static styles` where animations or transitions are used.
 
 **Implementation:**
+
 ```css
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-	animation-duration: 0.01ms !important;
-	animation-iteration-count: 1 !important;
-	transition-duration: 0.01ms !important;
-	scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 ```
@@ -83,28 +86,30 @@ Respects user preferences for reduced motion to accommodate users with vestibula
 All components are tested and optimized for Windows High Contrast Mode and other forced color schemes. Add to each component's `static styles`.
 
 **Features:**
+
 - Ensures focus rings remain visible with system colors
 - Form controls maintain visible borders
 - Selected states use system highlight colors
 - Disabled states use system gray colors
 
 **Implementation:**
+
 ```css
 @media (forced-colors: active) {
   :focus-visible {
-	outline: 2px solid CanvasText !important;
-	outline-offset: 2px !important;
+    outline: 2px solid CanvasText !important;
+    outline-offset: 2px !important;
   }
 
-  [role="checkbox"],
-  [role="radio"],
-  [role="switch"] {
-	border: 2px solid CanvasText !important;
+  [role='checkbox'],
+  [role='radio'],
+  [role='switch'] {
+    border: 2px solid CanvasText !important;
   }
 
-  [aria-checked="true"] {
-	background-color: Highlight !important;
-	color: HighlightText !important;
+  [aria-checked='true'] {
+    background-color: Highlight !important;
+    color: HighlightText !important;
   }
 }
 ```
@@ -116,22 +121,25 @@ All components are tested and optimized for Windows High Contrast Mode and other
 Consistent, visible focus indicators across all interactive components. Each component implements focus styles in its `static styles`.
 
 **Focus Ring Specifications:**
+
 - **Inner ring**: 2px solid, color via `--semantics-focus-ring-center-color` (#0f172a)
 - **Outer ring**: 2px double, color via `--semantics-focus-ring-edge-color` (#ffffff)
 - **Thickness tokens**: `--semantics-focus-ring-center-thickness`, `--semantics-focus-ring-edge-thickness`
 - **Strategy**: `:focus-visible` to avoid showing focus on mouse clicks
 
 **Standard implementation in Lit component styles:**
+
 ```css
 .my-element:focus-within {
-  box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+  box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+    var(--semantics-focus-ring-center-color);
   outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 }
 
 @media (forced-colors: active) {
   .my-element:focus-within {
-	outline: 2px solid CanvasText !important;
-	outline-offset: 2px !important;
+    outline: 2px solid CanvasText !important;
+    outline-offset: 2px !important;
   }
 }
 ```
@@ -179,16 +187,19 @@ disabled = false;
 #### Checkbox (`rr-checkbox`)
 
 **ARIA Attributes:**
+
 - `role="checkbox"` - Identifies as checkbox
 - `aria-checked="true|false|mixed"` - Indicates checked state (mixed for indeterminate)
 - `aria-disabled="true|false"` - Indicates disabled state
 - `tabindex="0"` - Makes keyboard focusable (removed when disabled)
 
 **Keyboard Interaction:**
+
 - `Space`: Toggle checked state
 - `Tab`: Move to next focusable element
 
 **Usage:**
+
 ```html
 <label>
   <rr-checkbox checked aria-label="Accept terms"></rr-checkbox>
@@ -203,18 +214,21 @@ disabled = false;
 #### Radio Button (`rr-radio`)
 
 **ARIA Attributes:**
+
 - `role="radio"` - Identifies as radio button
 - `aria-checked="true|false"` - Indicates selected state
 - `aria-disabled="true|false"` - Indicates disabled state
 - Container must have `role="radiogroup"` with `aria-labelledby`
 
 **Keyboard Interaction:**
+
 - `Space` / `Enter`: Select radio button
 - `Arrow Up` / `Arrow Left`: Select previous radio in group
 - `Arrow Down` / `Arrow Right`: Select next radio in group
 - `Tab`: Move to next focusable element (only one radio in group is tabbable)
 
 **Usage:**
+
 ```html
 <div role="radiogroup" aria-labelledby="payment-label">
   <span id="payment-label">Payment method</span>
@@ -231,16 +245,19 @@ disabled = false;
 #### Switch (`rr-switch`)
 
 **ARIA Attributes:**
+
 - `role="switch"` - Identifies as toggle switch
 - `aria-checked="true|false"` - Indicates on/off state
 - `aria-disabled="true|false"` - Indicates disabled state
 - `aria-label` or `aria-labelledby` required for accessible name
 
 **Keyboard Interaction:**
+
 - `Space` / `Enter`: Toggle switch state
 - `Tab`: Move to next focusable element
 
 **Usage:**
+
 ```html
 <label>
   <rr-switch checked aria-label="Enable notifications"></rr-switch>
@@ -257,11 +274,13 @@ disabled = false;
 #### Menu Bar (`rr-menu-bar`)
 
 **ARIA Attributes:**
+
 - Menu items should be placed inside for semantic navigation
 - Overflow menu: `aria-haspopup="menu"`, `aria-expanded="true|false"`, `aria-controls="menu-id"`
 - Dropdown items: `role="menu"` with `role="menuitem"` children
 
 **Keyboard Interaction:**
+
 - `Arrow Left`: Move to previous menu item
 - `Arrow Right`: Move to next menu item
 - `Home`: Jump to first menu item
@@ -271,12 +290,13 @@ disabled = false;
 - `Escape`: Close overflow menu and return focus to button
 
 **Usage:**
+
 ```html
 <nav aria-label="Main navigation">
   <rr-menu-bar has-overflow-menu overflow-label="Meer">
-	<rr-menu-item selected>Home</rr-menu-item>
-	<rr-menu-item>Over ons</rr-menu-item>
-	<rr-menu-item>Contact</rr-menu-item>
+    <rr-menu-item selected>Home</rr-menu-item>
+    <rr-menu-item>Over ons</rr-menu-item>
+    <rr-menu-item>Contact</rr-menu-item>
   </rr-menu-bar>
 </nav>
 ```
@@ -290,19 +310,20 @@ disabled = false;
 #### Button (`rr-button`)
 
 **ARIA Attributes:**
+
 - Native `<button>` element (no additional role needed)
 - `aria-disabled="true|false"` - Mirrors disabled state
 - `type="button|submit|reset"` - Indicates button purpose
 
 **Keyboard Interaction:**
+
 - `Space` / `Enter`: Activate button
 - `Tab`: Move to next focusable element
 
 **Usage:**
+
 ```html
-<rr-button variant="accent-filled" size="md">
-  Verzenden
-</rr-button>
+<rr-button variant="accent-filled" size="md"> Verzenden </rr-button>
 ```
 
 ---
@@ -310,18 +331,19 @@ disabled = false;
 #### Icon Button (`rr-icon-button`)
 
 **ARIA Attributes:**
+
 - `aria-label` - **Required** accessible label for icon-only buttons
 - `aria-disabled="true|false"` - Indicates disabled state
 
 **Keyboard Interaction:**
+
 - `Space` / `Enter`: Activate button
 - `Tab`: Move to next focusable element
 
 **Usage:**
+
 ```html
-<rr-icon-button
-  variant="accent-transparent"
-  aria-label="Sluiten">
+<rr-icon-button variant="accent-transparent" aria-label="Sluiten">
   <svg><!-- Close icon --></svg>
 </rr-icon-button>
 ```
@@ -336,35 +358,35 @@ disabled = false;
 
 ### Global Navigation
 
-| Shortcut | Action |
-|----------|--------|
-| `Tab` | Move focus to next focusable element |
-| `Shift` + `Tab` | Move focus to previous focusable element |
-| `Enter` | Activate button, link, or focused element |
-| `Space` | Activate button, toggle checkbox/switch |
-| `Escape` | Close modal, dropdown, or overlay |
+| Shortcut        | Action                                    |
+| --------------- | ----------------------------------------- |
+| `Tab`           | Move focus to next focusable element      |
+| `Shift` + `Tab` | Move focus to previous focusable element  |
+| `Enter`         | Activate button, link, or focused element |
+| `Space`         | Activate button, toggle checkbox/switch   |
+| `Escape`        | Close modal, dropdown, or overlay         |
 
 ### Form Controls
 
-| Component | Shortcut | Action |
-|-----------|----------|--------|
-| Checkbox | `Space` | Toggle checked state |
-| Radio Button | `Space` / `Enter` | Select radio |
-| Radio Button | `Arrow Up` / `Arrow Left` | Select previous radio |
-| Radio Button | `Arrow Down` / `Arrow Right` | Select next radio |
-| Switch | `Space` / `Enter` | Toggle on/off |
+| Component    | Shortcut                     | Action                |
+| ------------ | ---------------------------- | --------------------- |
+| Checkbox     | `Space`                      | Toggle checked state  |
+| Radio Button | `Space` / `Enter`            | Select radio          |
+| Radio Button | `Arrow Up` / `Arrow Left`    | Select previous radio |
+| Radio Button | `Arrow Down` / `Arrow Right` | Select next radio     |
+| Switch       | `Space` / `Enter`            | Toggle on/off         |
 
 ### Navigation Components
 
-| Component | Shortcut | Action |
-|-----------|----------|--------|
-| Menu Bar | `Arrow Left` | Previous menu item |
-| Menu Bar | `Arrow Right` | Next menu item |
-| Menu Bar | `Home` | First menu item |
-| Menu Bar | `End` | Last menu item |
-| Overflow Menu | `Arrow Down` | Next dropdown item |
-| Overflow Menu | `Arrow Up` | Previous dropdown item |
-| Overflow Menu | `Escape` | Close menu, return focus |
+| Component     | Shortcut      | Action                   |
+| ------------- | ------------- | ------------------------ |
+| Menu Bar      | `Arrow Left`  | Previous menu item       |
+| Menu Bar      | `Arrow Right` | Next menu item           |
+| Menu Bar      | `Home`        | First menu item          |
+| Menu Bar      | `End`         | Last menu item           |
+| Overflow Menu | `Arrow Down`  | Next dropdown item       |
+| Overflow Menu | `Arrow Up`    | Previous dropdown item   |
+| Overflow Menu | `Escape`      | Close menu, return focus |
 
 ---
 
@@ -383,6 +405,7 @@ npm run lint:a11y
 ```
 
 **What it checks:**
+
 - Missing `aria-label` on icon buttons
 - Correct ARIA role usage
 - Valid ARIA attribute values
@@ -398,6 +421,7 @@ npm run test:a11y:storybook
 ```
 
 **What it checks:**
+
 - Color contrast ratios (WCAG AA: 4.5:1 for text)
 - Missing alt text on images
 - Form label associations
@@ -438,10 +462,12 @@ Test with VoiceOver (macOS built-in screen reader).
 #### Getting Started with VoiceOver
 
 **Activate VoiceOver:**
+
 - `Cmd` + `F5` - Toggle VoiceOver on/off
 - `Cmd` + `Fn` + `F5` - On newer Macs
 
 **Basic Navigation:**
+
 - `Control` + `Option` + `Arrow Right` - Next element
 - `Control` + `Option` + `Arrow Left` - Previous element
 - `Control` + `Option` + `Space` - Activate element
@@ -460,21 +486,27 @@ Test with VoiceOver (macOS built-in screen reader).
 #### Testing Specific Components
 
 **Checkbox:**
+
 - Should announce "Checkbox, [label], [checked/unchecked]"
 
 **Radio Button:**
+
 - Should announce "Radio button, [label], [1 of 3], [selected/not selected]"
 
 **Switch:**
+
 - Should announce "Switch, [label], [on/off]"
 
 **Button:**
+
 - Should announce "Button, [label]"
 
 **Icon Button:**
+
 - Should announce "Button, [aria-label]"
 
 **Menu:**
+
 - Should announce "Menu, [item count]" and navigate with arrows
 
 **WCAG Reference:** WCAG 1.3.1 Info and Relationships, WCAG 4.1.2 Name, Role, Value
@@ -497,6 +529,7 @@ Cmd + '0' (reset)
 ```
 
 **Checklist:**
+
 - [ ] Content doesn't overflow or get cut off
 - [ ] Horizontal scrolling is not required
 - [ ] Text remains readable
@@ -512,19 +545,22 @@ Cmd + '0' (reset)
 Ensure sufficient contrast ratios:
 
 **WCAG AA Requirements:**
+
 - **Normal text** (< 18pt): 4.5:1 contrast ratio
 - **Large text** (≥ 18pt or 14pt bold): 3:1 contrast ratio
 - **UI components**: 3:1 contrast ratio (borders, icons)
 - **Focus indicators**: 3:1 contrast ratio
 
 **Design Tokens:**
+
 ```css
---primitives-color-accent-100: #154273    /* Lintblauw - primary accent */
---primitives-color-neutral-800: #0f172a  /* Dark text on light backgrounds */
---primitives-color-neutral-0: #ffffff    /* Light backgrounds */
+--primitives-color-accent-100: #154273 /* Lintblauw - primary accent */
+  --primitives-color-neutral-800: #0f172a /* Dark text on light backgrounds */
+  --primitives-color-neutral-0: #ffffff /* Light backgrounds */;
 ```
 
 **Testing Tools:**
+
 - Chrome DevTools: Contrast ratio shown in color picker
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 - Browser extensions: axe DevTools, WAVE

@@ -58,9 +58,25 @@ export const Default = () => {
   return html`
     <rr-button variant="accent-filled" @click=${openDialog}>Open Dialog</rr-button>
     <rr-dialog id="demo-dialog" heading="Bevestiging vereist">
-      <p style="margin: 0;">Weet u zeker dat u door wilt gaan met deze actie? Dit kan niet ongedaan worden gemaakt.</p>
-      <rr-button slot="footer" variant="accent-filled" @click=${() => { document.querySelector('#demo-dialog').open = false; }}>Bevestigen</rr-button>
-      <rr-button slot="footer" variant="neutral-tinted" @click=${() => { document.querySelector('#demo-dialog').open = false; }}>Annuleren</rr-button>
+      <p style="margin: 0;">
+        Weet u zeker dat u door wilt gaan met deze actie? Dit kan niet ongedaan worden gemaakt.
+      </p>
+      <rr-button
+        slot="footer"
+        variant="accent-filled"
+        @click=${() => {
+          document.querySelector('#demo-dialog').open = false;
+        }}
+        >Bevestigen</rr-button
+      >
+      <rr-button
+        slot="footer"
+        variant="neutral-tinted"
+        @click=${() => {
+          document.querySelector('#demo-dialog').open = false;
+        }}
+        >Annuleren</rr-button
+      >
     </rr-dialog>
   `;
 };
@@ -79,11 +95,24 @@ export const WithIcon = () => {
     <rr-button variant="accent-filled" @click=${openDialog}>Open Dialog met Icoon</rr-button>
     <rr-dialog id="icon-dialog" heading="Succesvol opgeslagen">
       <svg slot="icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <circle cx="24" cy="24" r="24" fill="#E8F5E9"/>
-        <path d="M20 25l3 3 6-6" stroke="#2E7D32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="24" cy="24" r="24" fill="#E8F5E9" />
+        <path
+          d="M20 25l3 3 6-6"
+          stroke="#2E7D32"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       </svg>
       <p style="margin: 0;">Uw wijzigingen zijn succesvol opgeslagen.</p>
-      <rr-button slot="footer" variant="accent-filled" @click=${() => { document.querySelector('#icon-dialog').open = false; }}>OK</rr-button>
+      <rr-button
+        slot="footer"
+        variant="accent-filled"
+        @click=${() => {
+          document.querySelector('#icon-dialog').open = false;
+        }}
+        >OK</rr-button
+      >
     </rr-dialog>
   `;
 };
@@ -91,7 +120,8 @@ WithIcon.parameters = {
   controls: { disable: true },
   docs: {
     description: {
-      story: 'Een dialog met een icoon boven de heading, bijvoorbeeld voor een succes- of waarschuwingsbericht.',
+      story:
+        'Een dialog met een icoon boven de heading, bijvoorbeeld voor een succes- of waarschuwingsbericht.',
     },
   },
 };

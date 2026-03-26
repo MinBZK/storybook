@@ -9,13 +9,13 @@ Implementeer een web component: $ARGUMENTS
 
 ## Tech Stack
 
-| Aspect | Technologie |
-|--------|-------------|
-| **Framework** | [Lit](https://lit.dev/) (LitElement) |
-| **Taal** | TypeScript (`.ts`) |
-| **Component bestand** | `src/components/{name}/rr-{name}.ts` |
-| **Stories bestand** | `src/components/{name}/rr-{name}.stories.js` |
-| **Referentie** | `src/components/inputs/toggle-button/rr-toggle-button.ts` |
+| Aspect                | Technologie                                               |
+| --------------------- | --------------------------------------------------------- |
+| **Framework**         | [Lit](https://lit.dev/) (LitElement)                      |
+| **Taal**              | TypeScript (`.ts`)                                        |
+| **Component bestand** | `src/components/{name}/rr-{name}.ts`                      |
+| **Stories bestand**   | `src/components/{name}/rr-{name}.stories.js`              |
+| **Referentie**        | `src/components/inputs/toggle-button/rr-toggle-button.ts` |
 
 **BELANGRIJK:** Componenten worden ALTIJD geschreven in Lit + TypeScript. Gebruik de toggle-button als referentie implementatie.
 
@@ -26,6 +26,7 @@ Implementeer een web component: $ARGUMENTS
 ### Stap 1: Input Parsing
 
 **Bepaal component naam:**
+
 1. Als gebruiker naam opgaf → gebruik die
 2. Converteer naar kebab-case: "Toggle Button" → "toggle-button"
 3. Voeg `rr-` prefix toe: → "rr-toggle-button"
@@ -34,25 +35,28 @@ Implementeer een web component: $ARGUMENTS
 
 Lees `docs/component-map.json` en check of component al bestaat.
 
-| Situatie | Mode |
-|----------|------|
-| Component bestaat niet | **CREATE** - nieuwe bestanden aanmaken |
-| Component bestaat al | **UPDATE** - bestaande bestanden bijwerken |
+| Situatie               | Mode                                       |
+| ---------------------- | ------------------------------------------ |
+| Component bestaat niet | **CREATE** - nieuwe bestanden aanmaken     |
+| Component bestaat al   | **UPDATE** - bestaande bestanden bijwerken |
 
 ### Stap 3: Tokens Identificeren
 
 **Token hiërarchie (voorkeursvolgorde):**
+
 1. `--components-{name}-*` (component-specifiek)
 2. `--semantics-*` (betekenisvol)
 3. `--primitives-*` (alleen als backup)
 
 **Zoek tokens in `src/assets/styles/settings.css`:**
+
 ```bash
 grep -i "{component-naam}" src/assets/styles/settings.css
 grep -i "controls.*min-size" src/assets/styles/settings.css
 ```
 
 **Controleer ook bestaande componenten voor patronen:**
+
 - `src/components/inputs/toggle-button/rr-toggle-button.ts` (referentie implementatie)
 
 ### Spacer Component Gebruik
@@ -75,6 +79,7 @@ grep -i "controls.*min-size" src/assets/styles/settings.css
 ### Stap 4: Component Genereren/Updaten
 
 **Bestanden:**
+
 - Component: `src/components/{name}/rr-{name}.ts` (TypeScript)
 - Stories: `src/components/{name}/rr-{name}.stories.js` (JavaScript)
 
@@ -285,21 +290,25 @@ grep -i "opacity" src/assets/styles/settings.css
 ## CHECKLIST
 
 **Tokens:**
+
 - [ ] Semantics tokens waar mogelijk
 - [ ] Geen fallback waarden op design tokens (enige uitzondering: override hooks `--rr-*`)
 - [ ] Opacity: `var(--token)`
 
 **Accessibility:**
+
 - [ ] ARIA attributes
 - [ ] Keyboard navigation
 - [ ] `@media (prefers-reduced-motion)`
 - [ ] `@media (forced-colors: active)`
 
 **Code:**
+
 - [ ] TypeScript types correct
 - [ ] `declare global` block
 - [ ] Private methods met underscore
 
 **Verificatie:**
+
 - [ ] Storybook gestart
 - [ ] Component visueel gecontroleerd in Storybook
