@@ -119,9 +119,8 @@ export class RRTopTitleBar extends LitElement {
 		this.classList.toggle('is-compact', anchorTop <= pageTop);
 	}
 
-	_handleBack(e: MouseEvent): void {
+	_handleBack(): void {
 		if (this.backHref) return;
-		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('back', { bubbles: true, composed: true }));
 	}
 

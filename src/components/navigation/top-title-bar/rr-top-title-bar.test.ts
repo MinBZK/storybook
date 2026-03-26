@@ -121,7 +121,7 @@ describe('rr-top-title-bar – terugknop', () => {
 		await waitForUpdate(el);
 		const listener = vi.fn();
 		el.addEventListener('back', listener);
-		el._handleBack(new MouseEvent('click', { bubbles: true }));
+		el._handleBack();
 		expect(listener).toHaveBeenCalledOnce();
 	});
 
@@ -130,7 +130,7 @@ describe('rr-top-title-bar – terugknop', () => {
 		await waitForUpdate(el);
 		const listener = vi.fn();
 		el.addEventListener('back', listener);
-		el._handleBack(new MouseEvent('click', { bubbles: true }));
+		el._handleBack();
 		expect(listener).not.toHaveBeenCalled();
 	});
 });
