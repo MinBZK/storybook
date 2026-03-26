@@ -293,35 +293,7 @@ export class RRNavigationSplitView extends LitElement {
 			: 'sidebar';
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>(`slot[name="${activeSlotName}"]`);
 		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
-
-		// 1. autofocus element present — let the browser handle it natively
-		if (assigned.some(el => el.querySelector('[autofocus]'))) return;
-
-		// 2. Focus the first heading — check rr-top-title-bar shadow root first,
-		// then fall back to light DOM headings inside assigned elements
-		const topTitleBar = assigned.flatMap(el => [
-			el.tagName === 'RR-TOP-TITLE-BAR' ? el : null,
-			el.querySelector('rr-top-title-bar'),
-		]).find(Boolean) as HTMLElement | null;
-
-		const heading = (
-			topTitleBar?.shadowRoot?.querySelector('h1,h2,h3,h4,h5,h6') as HTMLElement | null
-		) ?? (
-			assigned.map(el => el.querySelector('h1,h2,h3,h4,h5,h6')).find(Boolean) as HTMLElement | null
-		);
-
-		if (heading) {
-			const hadTabindex = heading.hasAttribute('tabindex');
-			if (!hadTabindex) heading.setAttribute('tabindex', '-1');
-			heading.focus();
-			if (!hadTabindex) {
-				heading.addEventListener('blur', () => heading.removeAttribute('tabindex'), { once: true });
-			}
-			return;
-		}
-
-		// 3. Fallback — focus the dialog itself
-		this._sidebarSheet?.focus();
+		this._manageFocusForSlot(assigned, this._sidebarSheet);
 	}
 
 	_handleSidebarSheetClick(e: MouseEvent) {
@@ -352,7 +324,23 @@ export class RRNavigationSplitView extends LitElement {
 	private _manageInspectorSheetFocus() {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="inspector"]');
 		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
+		this._manageFocusForSlot(assigned, this._inspectorSheet);
+	}
 
+	_handleInspectorSheetClick(e: MouseEvent) {
+		if (e.target === this._inspectorSheet) this.hideInspectorSheet();
+	}
+
+	_handleInspectorSheetCancel(e: Event) {
+		e.preventDefault();
+		this.hideInspectorSheet();
+	}
+
+	// ----------------------------------------------------------------
+	// Shared focus helper
+	// ----------------------------------------------------------------
+
+	private _manageFocusForSlot(assigned: Element[], fallback: HTMLDialogElement | null) {
 		// 1. autofocus element present — let the browser handle it natively
 		if (assigned.some(el => el.querySelector('[autofocus]'))) return;
 
@@ -380,16 +368,7 @@ export class RRNavigationSplitView extends LitElement {
 		}
 
 		// 3. Fallback — focus the dialog itself
-		this._inspectorSheet?.focus();
-	}
-
-	_handleInspectorSheetClick(e: MouseEvent) {
-		if (e.target === this._inspectorSheet) this.hideInspectorSheet();
-	}
-
-	_handleInspectorSheetCancel(e: Event) {
-		e.preventDefault();
-		this.hideInspectorSheet();
+		fallback?.focus();
 	}
 
 	// ----------------------------------------------------------------
