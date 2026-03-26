@@ -2,6 +2,10 @@
   "branches": ["main"],
   "plugins": [
     ["@semantic-release/commit-analyzer", {
+      "parserOpts": {
+        "headerPattern": "^(?:(\\w+)(?:\\(([^)]*)\\))?!?:\\s*)?(.+)$",
+        "headerCorrespondence": ["type", "scope", "subject"]
+      },
       "releaseRules": [
         { "type": "feat", "release": "patch" },
         { "type": "fix", "release": "patch" },
