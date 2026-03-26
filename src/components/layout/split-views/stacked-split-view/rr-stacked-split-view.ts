@@ -31,7 +31,7 @@ export class RRStackedSplitView extends LitElement {
 	panes = 2;
 
 	@state()
-	_visiblePanes = 2;
+	_visiblePanes = Infinity;
 
 	// Cached pane min-height — read from CSS in firstUpdated
 	private _paneMinHeight = 0;
