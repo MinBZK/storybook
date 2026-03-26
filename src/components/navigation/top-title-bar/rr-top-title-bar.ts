@@ -1,30 +1,30 @@
 /**
  * RegelRecht Top Title Bar Component (Lit + TypeScript)
  *
- * Een werkbalk voor pagina- en containerkoppen met optionele navigatie- en actieknoppen.
+ * A toolbar for page and container headings with optional navigation and action buttons.
  *
- * De component heeft twee standen:
- * - Standaard: de terugknop toont het label van de vorige pagina als tekstknop
- * - Compact (klasse `is-compact`): de terugknop is een icoonknop, een scheider en de
- *   werkbalktitel zijn zichtbaar
+ * The component has two states:
+ * - Default: the back button shows the previous page label as a text button
+ * - Compact (class `is-compact`): the back button is an icon button, a divider and the
+ *   toolbar title are visible
  *
- * Wanneer `title-anchor` is ingesteld wordt de `is-compact`-klasse automatisch toegepast
- * zodra de bovenkant van het ankerelement de bovenkant van de scrollcontainer bereikt.
+ * When `title-anchor` is set, the `is-compact` class is automatically applied
+ * as soon as the top of the anchor element reaches the top of the scroll container.
  *
- * @slot toolbar - Optionele knoppen links van de sluitknop
+ * @slot toolbar - Optional buttons to the left of the dismiss button
  *
- * @fires back    - Wanneer de terugknop wordt geklikt (niet afgevuurd als back-href is ingesteld)
- * @fires dismiss - Wanneer de sluitknop wordt geklikt
+ * @fires back    - Fired when the back button is clicked (not fired when back-href is set)
+ * @fires dismiss - Fired when the dismiss button is clicked
  */
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './rr-top-title-bar.styles.ts';
-import { template } from './rr-top-title-bar.template.ts';
+import { topTitleBarStyles } from './rr-top-title-bar.styles.ts';
+import { topTitleBarTemplate } from './rr-top-title-bar.template.ts';
 
 @customElement('rr-top-title-bar')
 export class RRTopTitleBar extends LitElement {
-	static override styles = styles;
+	static override styles = topTitleBarStyles;
 
 	@property({ type: String })
 	title = '';
@@ -75,13 +75,18 @@ export class RRTopTitleBar extends LitElement {
 	}
 
 	private _connectPage(): void {
-		let el: Element | null = this.parentElement;
+		let el: Element | null = this;
 		while (el) {
 			if (el.tagName.toLowerCase() === 'rr-page') {
 				this._pageElement = el;
 				return;
 			}
-			el = el.parentElement;
+			// Traverse up, piercing shadow DOM boundaries via getRootNode().host
+			el = el.parentElement ?? (
+				el.getRootNode() instanceof ShadowRoot
+					? (el.getRootNode() as ShadowRoot).host
+					: null
+			);
 		}
 	}
 
@@ -125,7 +130,7 @@ export class RRTopTitleBar extends LitElement {
 	}
 
 	override render() {
-		return template.call(this);
+		return topTitleBarTemplate(this);
 	}
 }
 

@@ -4,8 +4,8 @@ import '../../actions/button/rr-button.ts';
 import '../../actions/icon-button/rr-icon-button.ts';
 import '../../content/icon/rr-icon.ts';
 
-export function template(this: RRTopTitleBar) {
-	const showBack = !!this.backLabel;
+export function topTitleBarTemplate(component: RRTopTitleBar) {
+	const showBack = !!component.backLabel;
 
 	return html`
 		<div class="top-title-bar">
@@ -15,43 +15,43 @@ export function template(this: RRTopTitleBar) {
 						<div class="top-title-bar__text-back-button">
 							<rr-button
 								variant="accent-transparent"
-								href=${this.backHref || nothing}
-								@click=${this._handleBack}
+								href=${component.backHref || nothing}
+								@click=${component._handleBack}
 							>
 								<rr-icon name="chevron-left"></rr-icon>
-								${this.backLabel}
+								${component.backLabel}
 							</rr-button>
 						</div>
 						<div class="top-title-bar__icon-back-button">
 							<rr-icon-button
 								variant="accent-transparent"
-								accessible-label=${this.backLabel || nothing}
-								href=${this.backHref || nothing}
-								@click=${this._handleBack}
+								accessible-label=${component.backLabel || nothing}
+								href=${component.backHref || nothing}
+								@click=${component._handleBack}
 							>
 								<rr-icon name="chevron-left"></rr-icon>
-								${this.backLabel}
+								${component.backLabel}
 							</rr-icon-button>
 						</div>
 						<div class="top-title-bar__divider"></div>
 					</div>
 				` : nothing}
 				<div class="top-title-bar__title-group">
-					<h1 class="top-title-bar__title">${this.title}</h1>
-					${this.subtitle ? html`
-						<p class="top-title-bar__subtitle">${this.subtitle}</p>
+					<h1 class="top-title-bar__title">${component.title}</h1>
+					${component.subtitle ? html`
+						<p class="top-title-bar__subtitle">${component.subtitle}</p>
 					` : nothing}
 				</div>
 			</div>
 			<div class="top-title-bar__end">
 				<slot name="toolbar"></slot>
-				${this.dismissLabel ? html`
+				${component.dismissLabel ? html`
 					<div class="top-title-bar__dismiss-button">
 						<rr-button
 							variant="accent-transparent"
-							@click=${this._handleDismiss}
+							@click=${component._handleDismiss}
 						>
-							${this.dismissLabel}
+							${component.dismissLabel}
 						</rr-button>
 					</div>
 				` : nothing}
