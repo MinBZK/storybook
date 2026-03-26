@@ -201,7 +201,7 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 Design tokens worden gevalideerd tijdens de build (`npm run validate:tokens`):
 
 **Token categorieën:**
-- `--rr-*` - Override hooks voor consumers (niet gevalideerd, niet in tokens.css)
+- `--context-*` - Context hooks voor consumers (niet gevalideerd, niet in tokens.css)
 - `--_*` - Interne variabelen (gevalideerd binnen hetzelfde bestand)
 - `--primitives-*`, `--semantics-*`, `--components-*` - Design tokens (gevalideerd tegen tokens.css)
 

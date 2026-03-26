@@ -111,7 +111,7 @@ npm run storybook
 | `disabled`      | boolean | `false`          | Disabled state                                                                                                                                            |
 | `type`          | string  | `button`         | `button`, `submit`, `reset`                                                                                                                               |
 | `full-width`    | boolean | `false`          | Stretches button to fill container width                                                                                                                  |
-| `is-expandable` | boolean | `false`          | Adds an icon indicating the button opens a menu or popover                                                                                                |
+| `expandable` | boolean | `false`          | Adds an icon indicating the button opens a menu or popover                                                                                                |
 | `popovertarget` | string  | `''`             | ID of the popover element to target                                                                                                                       |
 
 ## Token Structuur

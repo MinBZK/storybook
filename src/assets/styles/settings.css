@@ -767,7 +767,7 @@
 	--semantics-page-sections-lg-margin-block: var(--primitives-space-32);
 	--semantics-page-sections-lg-gap: var(--primitives-space-24);
 
-
+	--semantics-overlays-backdrop-color: rgba(0, 0, 0, 0.2);
 	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
 
 
@@ -890,6 +890,16 @@
 
 	--components-title-bar-lg-overline-font: var(--primitives-font-body-md-regular-tight);
 	--components-title-bar-lg-subtitle-font: var(--primitives-font-body-md-regular-tight);
+
+	--components-sheet-box-shadow: var(--primitives-box-shadows-level-5);
+	--components-sheet-side-inset: var(--primitives-space-16);
+	--components-sheet-side-animation-duration: 250ms;
+	--components-sheet-side-md-width: var(--primitives-area-360);
+	--components-sheet-side-lg-width: var(--primitives-area-480);
+	--components-sheet-bottom-top-inset: var(--primitives-space-48);
+	--components-sheet-bottom-md-inline-inset: var(--primitives-space-48);
+	--components-sheet-bottom-lg-inline-inset: var(--primitives-space-80);
+	--components-sheet-bottom-animation-duration: 350ms;
 
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);

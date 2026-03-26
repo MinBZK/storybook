@@ -45,49 +45,59 @@ export default {
 };
 
 export const Standaard = ({ size }) => html`
-	<rr-title-bar size=${size} style="padding: 24px;">
-		<h1>Paginatitel</h1>
-		<rr-button slot="actions" variant="secondary" size="sm">Actie</rr-button>
-	</rr-title-bar>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+		<rr-title-bar size=${size}>
+			<h1>Paginatitel</h1>
+			<rr-button slot="actions" variant="secondary" size="sm">Actie</rr-button>
+		</rr-title-bar>
+	</div>
 `;
 
 export const MetOverline = () => html`
-	<rr-title-bar style="padding: 24px;">
-		<p slot="overline">Wet op de zorgtoeslag</p>
-		<h1>Artikel 1</h1>
-	</rr-title-bar>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+		<rr-title-bar>
+			<p slot="overline">Wet op de zorgtoeslag</p>
+			<h1>Artikel 1</h1>
+		</rr-title-bar>
+	</div>
 `;
 MetOverline.parameters = { controls: { disable: true } };
 
 export const MetOndertitel = () => html`
-	<rr-title-bar style="padding: 24px;">
-		<h1>Wet op de zorgtoeslag</h1>
-		<p slot="subtitle">Laatste wijziging: 1 januari 2024</p>
-	</rr-title-bar>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+		<rr-title-bar>
+			<h1>Wet op de zorgtoeslag</h1>
+			<p slot="subtitle">Laatste wijziging: 1 januari 2024</p>
+		</rr-title-bar>
+	</div>
 `;
 MetOndertitel.parameters = { controls: { disable: true } };
 
 export const MetOverlineEnOndertitel = () => html`
-	<rr-title-bar style="padding: 24px;">
-		<p slot="overline">Hoofdstuk 1</p>
-		<h1>Begripsbepalingen</h1>
-		<p slot="subtitle">Ingangsdatum: 1 januari 2024</p>
-	</rr-title-bar>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+		<rr-title-bar>
+			<p slot="overline">Hoofdstuk 1</p>
+			<h1>Begripsbepalingen</h1>
+			<p slot="subtitle">Ingangsdatum: 1 januari 2024</p>
+		</rr-title-bar>
+	</div>
 `;
 MetOverlineEnOndertitel.parameters = { controls: { disable: true } };
 
 export const MetActies = () => html`
-	<rr-title-bar style="padding: 24px;">
-		<h1>Wet op de zorgtoeslag</h1>
-		<rr-button slot="actions" variant="secondary" size="sm">Bewerken</rr-button>
-		<rr-spacer slot="actions" size="8"></rr-spacer>
-		<rr-button slot="actions" size="sm">Opslaan</rr-button>
-	</rr-title-bar>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+		<rr-title-bar>
+			<h1>Wet op de zorgtoeslag</h1>
+			<rr-button slot="actions" variant="secondary" size="sm">Bewerken</rr-button>
+			<rr-spacer slot="actions" size="8"></rr-spacer>
+			<rr-button slot="actions" size="sm">Opslaan</rr-button>
+		</rr-title-bar>
+	</div>
 `;
 MetActies.parameters = { controls: { disable: true } };
 
 export const AlleGrootten = () => html`
-	<div style="display: flex; flex-direction: column; gap: 24px; padding: 24px;">
+	<div style="display: flex; flex-direction: column; gap: 24px; padding: 24px; container-type: inline-size; container-name: layout-area;">
 		${[1, 2, 3, 4, 5, 6].map(s => html`
 			<rr-title-bar size=${s}>
 				<h1>Grootte ${s}</h1>

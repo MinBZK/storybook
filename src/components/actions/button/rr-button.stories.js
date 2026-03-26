@@ -77,9 +77,9 @@ export default {
 				defaultValue: { summary: '' },
 			},
 		},
-		isExpandable: {
+		expandable: {
 			control: 'boolean',
-			name: 'is-expandable',
+			name: 'expandable',
 			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
 			table: {
 				defaultValue: { summary: false },
@@ -108,19 +108,19 @@ export default {
 		text: 'Button',
 		startIcon: '',
 		endIcon: '',
-		isExpandable: false,
+		expandable: false,
 		type: 'button',
 		disabled: false,
 	},
 };
 
-const Template = ({ text, variant, size, fullWidth, type, startIcon, endIcon, isExpandable, disabled }) => html`
+const Template = ({ text, variant, size, fullWidth, type, startIcon, endIcon, expandable, disabled }) => html`
 	<rr-button
 		variant=${variant}
 		size=${size}
 		?full-width=${fullWidth}
 		type=${type}
-		?is-expandable=${isExpandable}
+		?expandable=${expandable}
 		?disabled=${disabled}
 	>
 		${startIcon ? html`<rr-icon name=${startIcon}></rr-icon>` : ''}
@@ -255,16 +255,16 @@ WithBothIcons.parameters = {
 
 export const WithDisclosureIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-button is-expandable size="md">Opties</rr-button>
-		<rr-button is-expandable size="sm">Opties</rr-button>
-		<rr-button is-expandable size="xs">Opties</rr-button>
+		<rr-button expandable size="md">Opties</rr-button>
+		<rr-button expandable size="sm">Opties</rr-button>
+		<rr-button expandable size="xs">Opties</rr-button>
 	</div>
 `;
 WithDisclosureIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Button die een menu of popover opent. Gebruik de <code>is-expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
+			story: 'Button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
 		},
 	},
 };

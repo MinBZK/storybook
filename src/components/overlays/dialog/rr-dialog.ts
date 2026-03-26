@@ -53,8 +53,7 @@ export class RRDialog extends LitElement {
     }
 
     .dialog::backdrop {
-      /* TODO: tokenize — no dedicated overlay/backdrop token exists yet */
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--semantics-overlays-backdrop-color);
     }
 
     .dialog__panel {

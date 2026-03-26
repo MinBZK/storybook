@@ -70,9 +70,9 @@ export default {
 			name: 'accessible-label',
 			description: 'Overschrijft de tekst als aria-label en title tooltip voor schermlezer-context. Gebruik als de zichtbare tekst onvoldoende context biedt (bijv. tekst "Toon", accessible-label "Toon wachtwoord"). De tekst blijft zichtbaar in lg formaat.',
 		},
-		isExpandable: {
+		expandable: {
 			control: 'boolean',
-			name: 'is-expandable',
+			name: 'expandable',
 			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
 			table: {
 				defaultValue: { summary: false },
@@ -100,17 +100,17 @@ export default {
 		icon: 'dismiss',
 		text: 'Annuleer',
 		accessibleLabel: '',
-		isExpandable: false,
+		expandable: false,
 		type: 'button',
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, icon, text, accessibleLabel, isExpandable, type, disabled }) => html`
+const Template = ({ variant, size, icon, text, accessibleLabel, expandable, type, disabled }) => html`
 	<rr-icon-button
 		variant=${variant}
 		size=${size}
-		?is-expandable=${isExpandable}
+		?expandable=${expandable}
 		type=${type}
 		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
@@ -255,19 +255,19 @@ WithAccessibleLabel.parameters = {
 
 export const WithDisclosureIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-icon-button is-expandable size="lg">
+		<rr-icon-button expandable size="lg">
 			<rr-icon name="global-settings"></rr-icon>
 			Instellingen
 		</rr-icon-button>
-		<rr-icon-button is-expandable size="md">
+		<rr-icon-button expandable size="md">
 			<rr-icon name="global-settings"></rr-icon>
 			Instellingen
 		</rr-icon-button>
-		<rr-icon-button is-expandable size="sm">
+		<rr-icon-button expandable size="sm">
 			<rr-icon name="global-settings"></rr-icon>
 			Instellingen
 		</rr-icon-button>
-		<rr-icon-button is-expandable size="xs">
+		<rr-icon-button expandable size="xs">
 			<rr-icon name="global-settings"></rr-icon>
 			Instellingen
 		</rr-icon-button>
@@ -277,7 +277,7 @@ WithDisclosureIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Icon button die een menu of popover opent. Gebruik de <code>is-expandable</code> attribute om aan te geven dat deze button een menu of popover toont.',
+			story: 'Icon button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover toont.',
 		},
 	},
 };

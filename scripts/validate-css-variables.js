@@ -111,6 +111,7 @@ function parseComponentFile(filePath) {
  */
 function categorizeVariable(varName) {
   if (varName.startsWith('--rr-')) return 'override';
+  if (varName.startsWith('--context-')) return 'context';
   if (varName.startsWith('--_')) return 'internal';
   if (varName.startsWith('--components-')) return 'token';
   if (varName.startsWith('--semantics-')) return 'token';

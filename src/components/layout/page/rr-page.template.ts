@@ -3,7 +3,7 @@ import type { RRPage } from './rr-page.js';
 
 export function pageTemplate(component: RRPage): TemplateResult {
 	return html`
-		<header class="page__header ${component._scrolled ? 'page__header--scrolled' : ''}">
+		<header class="page__header ${component._scrolled ? 'is-scrolled' : ''}">
 			<slot name="header"></slot>
 		</header>
 		<main class="page__main">
