@@ -311,9 +311,12 @@ export class RRNavigationSplitView extends LitElement {
 		);
 
 		if (heading) {
-			heading.setAttribute('tabindex', '-1');
+			const hadTabindex = heading.hasAttribute('tabindex');
+			if (!hadTabindex) heading.setAttribute('tabindex', '-1');
 			heading.focus();
-			heading.addEventListener('blur', () => heading.removeAttribute('tabindex'), { once: true });
+			if (!hadTabindex) {
+				heading.addEventListener('blur', () => heading.removeAttribute('tabindex'), { once: true });
+			}
 			return;
 		}
 
@@ -367,9 +370,12 @@ export class RRNavigationSplitView extends LitElement {
 		);
 
 		if (heading) {
-			heading.setAttribute('tabindex', '-1');
+			const hadTabindex = heading.hasAttribute('tabindex');
+			if (!hadTabindex) heading.setAttribute('tabindex', '-1');
 			heading.focus();
-			heading.addEventListener('blur', () => heading.removeAttribute('tabindex'), { once: true });
+			if (!hadTabindex) {
+				heading.addEventListener('blur', () => heading.removeAttribute('tabindex'), { once: true });
+			}
 			return;
 		}
 

@@ -84,12 +84,16 @@ export class RRSheet extends LitElement {
 		);
 
 		if (heading) {
-			heading.setAttribute('tabindex', '-1');
+			// Only add tabindex if the consumer hasn't already set one
+			const hadTabindex = heading.hasAttribute('tabindex');
+			if (!hadTabindex) heading.setAttribute('tabindex', '-1');
 			heading.focus();
-			// Remove tabindex on blur so heading stays out of tab order
-			heading.addEventListener('blur', () => {
-				heading.removeAttribute('tabindex');
-			}, { once: true });
+			// Only remove tabindex on blur if we added it ourselves
+			if (!hadTabindex) {
+				heading.addEventListener('blur', () => {
+					heading.removeAttribute('tabindex');
+				}, { once: true });
+			}
 			return;
 		}
 
