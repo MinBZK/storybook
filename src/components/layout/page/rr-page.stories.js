@@ -134,7 +134,7 @@ export const StickyBeide = () => html`
 StickyBeide.parameters = { controls: { disable: true } };
 
 export const Tinted = () => html`
-	<rr-page sticky-header sticky-footer tinted style="height: 400px;">
+	<rr-page sticky-header sticky-footer background="tinted" style="height: 400px;">
 		<div slot="header">${header}</div>
 		${content}
 		<div slot="footer">${footer}</div>
