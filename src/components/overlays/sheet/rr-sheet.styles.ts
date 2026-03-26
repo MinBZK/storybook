@@ -156,11 +156,11 @@ export const styles = css`
 		}
 
 		&[open] {
-			animation: sheet-slide-in-bottom var(--components-sheet-side-animation-duration) ease both;
+			animation: sheet-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
 		}
 
 		&.is-closing {
-			animation: sheet-slide-out-bottom var(--components-sheet-side-animation-duration) ease both;
+			animation: sheet-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
 		}
 	}
 
