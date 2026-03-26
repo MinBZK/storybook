@@ -397,9 +397,9 @@ export class RRNavigationSplitView extends LitElement {
 	// ----------------------------------------------------------------
 
 	private _handleDismiss = (e: Event) => {
-		// Route dismiss events to the correct sheet based on which dialog contains the target
+		// Route dismiss events to the correct sheet based on composed path
 		const path = e.composedPath();
-		if (path.some(el => el === this._sidebarSheet || (el as Element)?.closest?.('.navigation-split-view__sidebar-sheet-body'))) {
+		if (path.some(el => el === this._sidebarSheet)) {
 			this.hideSidebarSheet();
 		} else if (this.inspectorAutoHidden || this.inspectorAsSheet) {
 			this.hideInspectorSheet();
