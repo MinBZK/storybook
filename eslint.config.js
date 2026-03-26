@@ -70,6 +70,7 @@ export default [
       'node_modules/**',
       'storybook-static/**',
       '.storybook/**',
+      '.claude/**',
       'scripts/**',
       '*.config.js',
     ],
