@@ -12,7 +12,7 @@
  *
  * @attr {string}  placement        - Sheet position: 'left' | 'right' | 'bottom' (default: 'right')
  * @attr {boolean} modeless         - Non-modal (no backdrop or focus lock); the sheet is modal by default
- * @attr {string}  accessible-label - Accessible name for the dialog, forwarded as aria-label
+ * @attr {string}  accessible-label - Accessible name for the dialog, forwarded as aria-label (default: 'Dialoogvenster')
  *
  * @slot - Sheet content
  *
@@ -42,7 +42,7 @@ export class RRSheet extends LitElement {
 
 	/** Accessible name for the dialog — forwarded as aria-label to the dialog element. */
 	@property({ type: String, attribute: 'accessible-label' })
-	accessibleLabel = '';
+	accessibleLabel = 'Dialoogvenster';
 
 	private get _dialog(): HTMLDialogElement | null {
 		return this.shadowRoot?.querySelector('dialog') ?? null;
@@ -62,6 +62,12 @@ export class RRSheet extends LitElement {
 	show(): void {
 		const dialog = this._dialog;
 		if (!dialog) return;
+
+		// Warn when the consumer has not provided a meaningful accessible label
+		if (this.accessibleLabel === 'Dialoogvenster') {
+			console.warn('<rr-sheet>: No accessible-label provided. Screen readers will announce this dialog as "Dialoogvenster". Set accessible-label to a descriptive name matching the dialog title.');
+		}
+
 		if (this.modeless) {
 			dialog.show();
 		} else {
