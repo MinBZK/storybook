@@ -371,7 +371,20 @@ describe('rr-icon-button – href / link rendering', () => {
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('title')).toBeNull();
 	});
 
-	it('switches from <button> to <a> when href is set dynamically', async () => {
+	it('prevents default click on disabled anchor to block navigation', async () => {
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button href="/overzicht" disabled>
+				<rr-icon name="arrow-left"></rr-icon>
+				Terug
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a')!;
+		const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+		const preventSpy = vi.spyOn(event, 'preventDefault');
+		anchor.dispatchEvent(event);
+		expect(preventSpy).toHaveBeenCalled();
+	});
 		el = await fixture<RRIconButton>(`
 			<rr-icon-button>
 				<rr-icon name="arrow-left"></rr-icon>

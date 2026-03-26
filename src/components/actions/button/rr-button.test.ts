@@ -294,7 +294,15 @@ describe('rr-button – href / link rendering', () => {
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe('Ga terug naar overzicht');
 	});
 
-	it('switches from <button> to <a> when href is set dynamically', async () => {
+	it('prevents default click on disabled anchor to block navigation', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled>Terug</rr-button>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a')!;
+		const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+		const preventSpy = vi.spyOn(event, 'preventDefault');
+		anchor.dispatchEvent(event);
+		expect(preventSpy).toHaveBeenCalled();
+	});
 		el = await fixture<RRButton>('<rr-button>Terug</rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
