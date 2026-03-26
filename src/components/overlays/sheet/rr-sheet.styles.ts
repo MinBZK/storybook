@@ -137,7 +137,6 @@ export const sheetStyles = css`
 		inset: auto 0 0 0;
 		max-width: var(--semantics-page-sections-body-max-width);
 		max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
-		height: calc(100dvh - var(--components-sheet-bottom-top-inset));
 		margin-inline: auto;
 		border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
