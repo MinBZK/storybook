@@ -14,13 +14,14 @@ npm run build            # Full build
 
 **Gebruik ALTIJD deze skills voor de juiste workflow:**
 
-| Taak | Skill | Beschrijving |
-|------|-------|--------------|
-| Nieuwe branch starten | `/worktree <branch>` | Maakt worktree + kopieert .env en .claude/ |
-| Component maken/updaten | `/component <naam>` | Genereert Lit+TS component |
-| Storybook beheren | `/storybook-manager` | Start/stop/status van Storybook instances |
+| Taak                    | Skill                | Beschrijving                               |
+| ----------------------- | -------------------- | ------------------------------------------ |
+| Nieuwe branch starten   | `/worktree <branch>` | Maakt worktree + kopieert .env en .claude/ |
+| Component maken/updaten | `/component <naam>`  | Genereert Lit+TS component                 |
+| Storybook beheren       | `/storybook-manager` | Start/stop/status van Storybook instances  |
 
 **Typische flow voor nieuwe feature:**
+
 ```
 /worktree feat/my-component
 /component my-component
@@ -29,9 +30,10 @@ npm run build            # Full build
 ## Gotchas
 
 **Asymmetric Padding:** Components may use different top/bottom padding. Check design specs for each value:
+
 ```css
 /* Button sm-size: top=8, right=8, bottom=6, left=8 */
-padding: 8px 8px 6px 8px;  /* NOT symmetric! */
+padding: 8px 8px 6px 8px; /* NOT symmetric! */
 ```
 
 **Disabled Opacity:** Always use `var(--primitives-opacity-disabled)` - the token is a decimal fraction (0.38).
@@ -62,43 +64,30 @@ src/components/{category}/{name}/
 ## Components Maken/Updaten
 
 Gebruik `/component <naam>` voor het maken of updaten van componenten. Dit command:
+
 - Genereert Lit + TypeScript component
 - Maakt Storybook stories
 
 ## Button Sizes
 
 | Size | Min Height | Padding | Gap | Border-radius |
-|------|------------|---------|-----|---------------|
-| xs | 24px | 4px 6px | 2px | 4px |
-| sm | 32px | 6px 8px | 2px | 6px |
-| md | 44px | 12px | 4px | 8px |
+| ---- | ---------- | ------- | --- | ------------- |
+| xs   | 24px       | 4px 6px | 2px | 4px           |
+| sm   | 32px       | 6px 8px | 2px | 6px           |
+| md   | 44px       | 12px    | 4px | 8px           |
 
 ## Key Tokens
 
 ```css
 /* Controls */
---semantics-controls-xs-min-size: 24px
---semantics-controls-sm-min-size: 32px
---semantics-controls-md-min-size: 44px
---semantics-controls-{xs|sm|md}-corner-radius
-
-/* Focus */
---semantics-focus-ring-center-thickness: 2px
---semantics-focus-ring-center-color: #0f172a
---semantics-focus-ring-edge-thickness: 2px
---semantics-focus-ring-edge-color: #ffffff
-
-/* Buttons */
---semantics-buttons-accent-filled-background-color
---semantics-buttons-accent-filled-color
-
-/* Components */
---components-button-{xs|sm|md}-font
---components-checkbox-*
---components-radio-button-*
---components-switch-*
---components-toggle-button-*
---components-menu-bar-*
+--semantics-controls-xs-min-size: 24px --semantics-controls-sm-min-size: 32px
+  --semantics-controls-md-min-size: 44px --semantics-controls-{xs|sm|md}-corner-radius /* Focus */
+  --semantics-focus-ring-center-thickness: 2px --semantics-focus-ring-center-color: #0f172a
+  --semantics-focus-ring-edge-thickness: 2px --semantics-focus-ring-edge-color: #ffffff
+  /* Buttons */ --semantics-buttons-accent-filled-background-color
+  --semantics-buttons-accent-filled-color /* Components */ --components-button-{xs|sm|md}-font
+  --components-checkbox- * --components-radio-button- * --components-switch- *
+  --components-toggle-button- * --components-menu-bar- *;
 ```
 
 ## Component Testing
@@ -106,12 +95,14 @@ Gebruik `/component <naam>` voor het maken of updaten van componenten. Dit comma
 Elk component MOET minimaal een **smoke test** hebben. Run tests met `npm test`.
 
 **Minimale vereisten:**
+
 1. **Smoke test** (verplicht): rendert zonder errors, heeft een shadowRoot
 2. **Logic tests** (verplicht bij complexe logica): test MutationObservers, slot management, attribuut propagatie, event handlers, state transitions
 
 **Test bestand:** `src/components/{category}/{name}/rr-{name}.test.ts`
 
 **Smoke test patroon:**
+
 ```typescript
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
@@ -121,19 +112,20 @@ describe('rr-{name}', () => {
   let el: HTMLElement;
 
   afterEach(() => {
-	if (el) cleanup(el);
+    if (el) cleanup(el);
   });
 
   it('renders without error', async () => {
-	el = await fixture('<rr-{name}></rr-{name}>');
-	await waitForUpdate(el);
+    el = await fixture('<rr-{name}></rr-{name}>');
+    await waitForUpdate(el);
 
-	expect(el.shadowRoot).not.toBeNull();
+    expect(el.shadowRoot).not.toBeNull();
   });
 });
 ```
 
 **Test helpers** (`src/test-utils.ts`):
+
 - `fixture<T>(html)` — maakt DOM element, wacht op Lit updateComplete
 - `cleanup(el)` — verwijdert fixture wrapper uit DOM (gebruik in afterEach)
 - `waitForUpdate(el)` — wacht op MutationObserver + Lit re-render cycle
@@ -148,12 +140,12 @@ describe('rr-{name}', () => {
 
 Versions are **automatically** bumped by semantic-release on merge to main.
 
-| Commit Type | Version Bump |
-|-------------|--------------|
-| `feat:` | Patch (0.5.0 → 0.5.1) |
-| `fix:`, `perf:` | Patch (0.5.0 → 0.5.1) |
-| `feat!:` or `BREAKING CHANGE:` | Patch (0.5.0 → 0.5.1) |
-| `docs:`, `chore:`, `ci:`, etc. | No bump |
+| Commit Type                           | Version Bump            |
+| ------------------------------------- | ----------------------- |
+| `feat:`                               | Patch (0.5.0 → 0.5.1)   |
+| `fix:`, `perf:`                       | Patch (0.5.0 → 0.5.1)   |
+| `feat!:` or `BREAKING CHANGE:`        | Patch (0.5.0 → 0.5.1)   |
+| `docs:`, `chore:`, `ci:`, etc.        | No bump                 |
 | Unrecognized (no conventional prefix) | Patch (treated as feat) |
 
 **Manual version bumping is not needed.** Use conventional commits and CI handles the rest.
@@ -174,22 +166,24 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 ```html
 <!-- Block -->
 <button class="button">
+  <!-- Block met modifier -->
+  <button class="button button--primary">
+    <button class="button button--sm">
+      <!-- Element binnen block -->
+      <button class="button">
+        <span class="button__icon"></span>
+        <span class="button__label">Tekst</span>
+      </button>
 
-<!-- Block met modifier -->
-<button class="button button--primary">
-<button class="button button--sm">
-
-<!-- Element binnen block -->
-<button class="button">
-  <span class="button__icon"></span>
-  <span class="button__label">Tekst</span>
+      <!-- Element met modifier -->
+      <span class="button__icon button__icon--large"></span>
+    </button>
+  </button>
 </button>
-
-<!-- Element met modifier -->
-<span class="button__icon button__icon--large"></span>
 ```
 
 **Regels:**
+
 - Block: `rr-{naam}` of simpelweg de component naam
 - Element: dubbele underscore `__`
 - Modifier: dubbele hyphen `--`
@@ -201,11 +195,13 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 Design tokens worden gevalideerd tijdens de build (`npm run validate:tokens`):
 
 **Token categorieën:**
+
 - `--rr-*` - Override hooks voor consumers (niet gevalideerd, niet in tokens.css)
 - `--_*` - Interne variabelen (gevalideerd binnen hetzelfde bestand)
 - `--primitives-*`, `--semantics-*`, `--components-*` - Design tokens (gevalideerd tegen tokens.css)
 
 **Stricte aanpak - GEEN fallbacks:**
+
 ```css
 /* FOUT */
 min-height: var(--semantics-controls-md-min-size, 44px);
@@ -215,6 +211,7 @@ min-height: var(--semantics-controls-md-min-size);
 ```
 
 **Uitzonderingen (behoud fallbacks):**
+
 - Override hooks: `var(--rr-button-background-color, var(--_bg-color))`
 - Font-family: `var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif)`
 

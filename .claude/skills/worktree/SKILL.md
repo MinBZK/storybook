@@ -33,10 +33,10 @@ git worktree add .worktrees/<branch-name> <branch-name>
 
 **Vereiste bestanden:**
 
-| Bestand | Doel |
-|---------|------|
-| `.env` | Environment variables (Figma token, etc.) |
-| `.claude/settings.local.json` | Claude Code lokale permissies |
+| Bestand                       | Doel                                      |
+| ----------------------------- | ----------------------------------------- |
+| `.env`                        | Environment variables (Figma token, etc.) |
+| `.claude/settings.local.json` | Claude Code lokale permissies             |
 
 ```bash
 # Kopieer .env
@@ -114,9 +114,9 @@ jq -s '.[0] * .[1]' .claude/settings.local.json .worktrees/<branch-name>/.claude
 
 ## Troubleshooting
 
-| Probleem | Oplossing |
-|----------|-----------|
-| Figma images laden niet | Check of `.env` is gekopieerd |
-| Permission denied errors | Check of `.claude/settings.local.json` is gekopieerd |
-| Build faalt | Run `npm install` eerst |
-| Port conflict bij Storybook | Gebruik `npm run sb:status` om poorten te checken |
+| Probleem                    | Oplossing                                            |
+| --------------------------- | ---------------------------------------------------- |
+| Figma images laden niet     | Check of `.env` is gekopieerd                        |
+| Permission denied errors    | Check of `.claude/settings.local.json` is gekopieerd |
+| Build faalt                 | Run `npm install` eerst                              |
+| Port conflict bij Storybook | Gebruik `npm run sb:status` om poorten te checken    |

@@ -12,26 +12,26 @@ import '../../content/rich-text/rr-rich-text.ts';
  * ```
  */
 export default {
-	title: 'Components/Layout/Divider',
-	component: 'rr-divider',
-	tags: ['autodocs'],
-	parameters: {
-		componentSource: {
-			file: 'src/components/layout/divider/rr-divider.ts',
-			repository: 'https://github.com/MinBZK/storybook',
-		},
-		status: {
-			type: 'stable',
-		},
-	},
+  title: 'Components/Layout/Divider',
+  component: 'rr-divider',
+  tags: ['autodocs'],
+  parameters: {
+    componentSource: {
+      file: 'src/components/layout/divider/rr-divider.ts',
+      repository: 'https://github.com/MinBZK/storybook',
+    },
+    status: {
+      type: 'stable',
+    },
+  },
 };
 
 export const Standaard = () => html`
-	<rr-rich-text>
-		<p>Inhoud boven de scheidingslijn.</p>
-	</rr-rich-text>
-	<rr-divider></rr-divider>
-	<rr-rich-text>
-		<p>Inhoud onder de scheidingslijn.</p>
-	</rr-rich-text>
+  <rr-rich-text>
+    <p>Inhoud boven de scheidingslijn.</p>
+  </rr-rich-text>
+  <rr-divider></rr-divider>
+  <rr-rich-text>
+    <p>Inhoud onder de scheidingslijn.</p>
+  </rr-rich-text>
 `;

@@ -28,114 +28,140 @@ import '../../content/rich-text/rr-rich-text.ts';
  * ```
  */
 export default {
-	title: 'Components/Layout/Show',
-	component: 'rr-show',
-	tags: ['autodocs'],
-	parameters: {
-		componentSource: {
-			file: 'src/components/layout/show/rr-show.ts',
-			repository: 'https://github.com/MinBZK/storybook',
-		},
-		status: {
-			type: 'stable',
-		},
-	},
-	argTypes: {
-		above: {
-			control: 'select',
-			options: ['sm', 'md', 'lg'],
-			description: 'Toon vanaf dit breekpunt en groter',
-		},
-		below: {
-			control: 'select',
-			options: ['sm', 'md', 'lg'],
-			description: 'Toon tot en met dit breekpunt',
-		},
-		only: {
-			control: 'select',
-			options: ['sm', 'md', 'lg'],
-			description: 'Toon alleen op dit breekpunt',
-		},
-		query: {
-			control: 'select',
-			options: ['viewport', 'container'],
-			description: 'Type query: viewport (standaard) of container',
-		},
-	},
+  title: 'Components/Layout/Show',
+  component: 'rr-show',
+  tags: ['autodocs'],
+  parameters: {
+    componentSource: {
+      file: 'src/components/layout/show/rr-show.ts',
+      repository: 'https://github.com/MinBZK/storybook',
+    },
+    status: {
+      type: 'stable',
+    },
+  },
+  argTypes: {
+    above: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+      description: 'Toon vanaf dit breekpunt en groter',
+    },
+    below: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+      description: 'Toon tot en met dit breekpunt',
+    },
+    only: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+      description: 'Toon alleen op dit breekpunt',
+    },
+    query: {
+      control: 'select',
+      options: ['viewport', 'container'],
+      description: 'Type query: viewport (standaard) of container',
+    },
+  },
 };
 
 export const Standaard = {
-	args: {
-		above: 'md',
-		query: 'container',
-	},
-	render: (args) => html`
-		<rr-show above=${args.above} below=${args.below} only=${args.only} query=${args.query}>
-			<rr-rich-text><p>Verklein of vergroot het venster om het effect te zien.</p></rr-rich-text>
-		</rr-show>
-	`,
+  args: {
+    above: 'md',
+    query: 'container',
+  },
+  render: (args) => html`
+    <rr-show above=${args.above} below=${args.below} only=${args.only} query=${args.query}>
+      <rr-rich-text><p>Verklein of vergroot het venster om het effect te zien.</p></rr-rich-text>
+    </rr-show>
+  `,
 };
 
 export const AboveMd = () => html`
-	<rr-show above="md">
-		<rr-rich-text><p>Zichtbaar op <strong>md en groter</strong>.</p></rr-rich-text>
-	</rr-show>
+  <rr-show above="md">
+    <rr-rich-text
+      ><p>Zichtbaar op <strong>md en groter</strong>.</p></rr-rich-text
+    >
+  </rr-show>
 `;
 AboveMd.storyName = 'above="md"';
 
 export const BelowMd = () => html`
-	<rr-show below="md">
-		<rr-rich-text><p>Zichtbaar op <strong>sm en md</strong>.</p></rr-rich-text>
-	</rr-show>
+  <rr-show below="md">
+    <rr-rich-text
+      ><p>Zichtbaar op <strong>sm en md</strong>.</p></rr-rich-text
+    >
+  </rr-show>
 `;
 BelowMd.storyName = 'below="md"';
 
 export const OnlySm = () => html`
-	<rr-show only="sm">
-		<rr-rich-text><p>Alleen zichtbaar op <strong>sm</strong>.</p></rr-rich-text>
-	</rr-show>
+  <rr-show only="sm">
+    <rr-rich-text
+      ><p>Alleen zichtbaar op <strong>sm</strong>.</p></rr-rich-text
+    >
+  </rr-show>
 `;
 OnlySm.storyName = 'only="sm"';
 
 export const OnlyMd = () => html`
-	<rr-show only="md">
-		<rr-rich-text><p>Alleen zichtbaar op <strong>md</strong>.</p></rr-rich-text>
-	</rr-show>
+  <rr-show only="md">
+    <rr-rich-text
+      ><p>Alleen zichtbaar op <strong>md</strong>.</p></rr-rich-text
+    >
+  </rr-show>
 `;
 OnlyMd.storyName = 'only="md"';
 
 export const OnlyLg = () => html`
-	<rr-show only="lg">
-		<rr-rich-text><p>Alleen zichtbaar op <strong>lg</strong>.</p></rr-rich-text>
-	</rr-show>
+  <rr-show only="lg">
+    <rr-rich-text
+      ><p>Alleen zichtbaar op <strong>lg</strong>.</p></rr-rich-text
+    >
+  </rr-show>
 `;
 OnlyLg.storyName = 'only="lg"';
 
 export const MeerdereZones = () => html`
-	<rr-show only="sm">
-		<rr-rich-text><p>Alleen op <strong>sm</strong>.</p></rr-rich-text>
-	</rr-show>
-	<rr-show only="md">
-		<rr-rich-text><p>Alleen op <strong>md</strong>.</p></rr-rich-text>
-	</rr-show>
-	<rr-show only="lg">
-		<rr-rich-text><p>Alleen op <strong>lg</strong>.</p></rr-rich-text>
-	</rr-show>
+  <rr-show only="sm">
+    <rr-rich-text
+      ><p>Alleen op <strong>sm</strong>.</p></rr-rich-text
+    >
+  </rr-show>
+  <rr-show only="md">
+    <rr-rich-text
+      ><p>Alleen op <strong>md</strong>.</p></rr-rich-text
+    >
+  </rr-show>
+  <rr-show only="lg">
+    <rr-rich-text
+      ><p>Alleen op <strong>lg</strong>.</p></rr-rich-text
+    >
+  </rr-show>
 `;
 MeerdereZones.storyName = 'Meerdere zones naast elkaar';
 
 export const ContainerQuery = () => html`
-	<div style="container-type: inline-size; width: 400px; resize: horizontal; overflow: auto; border: 1px dashed var(--color-neutral-400); padding: 8px;">
-		<rr-show only="sm" query="container">
-			<rr-rich-text><p>Alleen zichtbaar wanneer de container <strong>sm</strong> breed is.</p></rr-rich-text>
-		</rr-show>
-		<rr-show only="md" query="container">
-			<rr-rich-text><p>Alleen zichtbaar wanneer de container <strong>md</strong> breed is.</p></rr-rich-text>
-		</rr-show>
-		<rr-show only="lg" query="container">
-			<rr-rich-text><p>Alleen zichtbaar wanneer de container <strong>lg</strong> breed is.</p></rr-rich-text>
-		</rr-show>
-	</div>
-	<rr-rich-text><p><em>Sleep de rechterhoek om de container te vergroten of verkleinen.</em></p></rr-rich-text>
+  <div
+    style="container-type: inline-size; width: 400px; resize: horizontal; overflow: auto; border: 1px dashed var(--color-neutral-400); padding: 8px;"
+  >
+    <rr-show only="sm" query="container">
+      <rr-rich-text
+        ><p>Alleen zichtbaar wanneer de container <strong>sm</strong> breed is.</p></rr-rich-text
+      >
+    </rr-show>
+    <rr-show only="md" query="container">
+      <rr-rich-text
+        ><p>Alleen zichtbaar wanneer de container <strong>md</strong> breed is.</p></rr-rich-text
+      >
+    </rr-show>
+    <rr-show only="lg" query="container">
+      <rr-rich-text
+        ><p>Alleen zichtbaar wanneer de container <strong>lg</strong> breed is.</p></rr-rich-text
+      >
+    </rr-show>
+  </div>
+  <rr-rich-text
+    ><p><em>Sleep de rechterhoek om de container te vergroten of verkleinen.</em></p></rr-rich-text
+  >
 `;
 ContainerQuery.storyName = 'Container queries';

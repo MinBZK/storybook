@@ -5,8 +5,7 @@ export default {
   title: 'Components/Navigation/Top Title Bar',
   component: 'rr-top-title-bar',
   tags: ['autodocs'],
-  parameters: {
-  },
+  parameters: {},
   argTypes: {
     container: {
       control: 'select',
@@ -61,7 +60,12 @@ export const ContainerSmall = {
     title: 'Small Container Title',
   },
   render: (args) => html`
-    <rr-top-title-bar container=${args.container} ?compact=${args.compact} toolbar=${args.toolbar} title=${args.title}>
+    <rr-top-title-bar
+      container=${args.container}
+      ?compact=${args.compact}
+      toolbar=${args.toolbar}
+      title=${args.title}
+    >
     </rr-top-title-bar>
   `,
 };
@@ -74,7 +78,12 @@ export const ContainerMedium = {
     title: 'Medium Container Title',
   },
   render: (args) => html`
-    <rr-top-title-bar container=${args.container} ?compact=${args.compact} toolbar=${args.toolbar} title=${args.title}>
+    <rr-top-title-bar
+      container=${args.container}
+      ?compact=${args.compact}
+      toolbar=${args.toolbar}
+      title=${args.title}
+    >
     </rr-top-title-bar>
   `,
 };
@@ -87,7 +96,12 @@ export const ContainerLarge = {
     title: 'Large Container Title',
   },
   render: (args) => html`
-    <rr-top-title-bar container=${args.container} ?compact=${args.compact} toolbar=${args.toolbar} title=${args.title}>
+    <rr-top-title-bar
+      container=${args.container}
+      ?compact=${args.compact}
+      toolbar=${args.toolbar}
+      title=${args.title}
+    >
     </rr-top-title-bar>
   `,
 };
@@ -100,7 +114,12 @@ export const Compact = {
     title: 'Compact Title',
   },
   render: (args) => html`
-    <rr-top-title-bar container=${args.container} ?compact=${args.compact} toolbar=${args.toolbar} title=${args.title}>
+    <rr-top-title-bar
+      container=${args.container}
+      ?compact=${args.compact}
+      toolbar=${args.toolbar}
+      title=${args.title}
+    >
     </rr-top-title-bar>
   `,
 };
@@ -113,7 +132,12 @@ export const NoToolbar = {
     title: 'Title Without Toolbar',
   },
   render: (args) => html`
-    <rr-top-title-bar container=${args.container} ?compact=${args.compact} toolbar=${args.toolbar} title=${args.title}>
+    <rr-top-title-bar
+      container=${args.container}
+      ?compact=${args.compact}
+      toolbar=${args.toolbar}
+      title=${args.title}
+    >
     </rr-top-title-bar>
   `,
 };
@@ -126,7 +150,12 @@ export const CustomToolbar = {
     title: 'Custom Toolbar Title',
   },
   render: (args) => html`
-    <rr-top-title-bar container=${args.container} ?compact=${args.compact} toolbar=${args.toolbar} title=${args.title}>
+    <rr-top-title-bar
+      container=${args.container}
+      ?compact=${args.compact}
+      toolbar=${args.toolbar}
+      title=${args.title}
+    >
       <rr-button slot="toolbar-start" variant="accent-transparent">Back</rr-button>
       <rr-button slot="toolbar-end" variant="accent-transparent">Save</rr-button>
       <rr-button slot="toolbar-end" variant="accent-transparent">Close</rr-button>

@@ -5,8 +5,7 @@ export default {
   title: 'Components/Lists & Menus/Cells/Timeline Track Cell',
   component: 'rr-timeline-track-cell',
   tags: ['autodocs'],
-  parameters: {
-  },
+  parameters: {},
   argTypes: {
     step: {
       control: 'select',
@@ -38,11 +37,31 @@ export const Default = {
 export const Timeline = {
   render: () => html`
     <div style="display: flex; flex-direction: column;">
-      <rr-timeline-track-cell step="past" child="first" style="height: 50px;"></rr-timeline-track-cell>
-      <rr-timeline-track-cell step="past" child="between" style="height: 50px;"></rr-timeline-track-cell>
-      <rr-timeline-track-cell step="future" child="between" style="height: 50px;"></rr-timeline-track-cell>
-      <rr-timeline-track-cell step="none" child="between" style="height: 50px;"></rr-timeline-track-cell>
-      <rr-timeline-track-cell step="future" child="last" style="height: 50px;"></rr-timeline-track-cell>
+      <rr-timeline-track-cell
+        step="past"
+        child="first"
+        style="height: 50px;"
+      ></rr-timeline-track-cell>
+      <rr-timeline-track-cell
+        step="past"
+        child="between"
+        style="height: 50px;"
+      ></rr-timeline-track-cell>
+      <rr-timeline-track-cell
+        step="future"
+        child="between"
+        style="height: 50px;"
+      ></rr-timeline-track-cell>
+      <rr-timeline-track-cell
+        step="none"
+        child="between"
+        style="height: 50px;"
+      ></rr-timeline-track-cell>
+      <rr-timeline-track-cell
+        step="future"
+        child="last"
+        style="height: 50px;"
+      ></rr-timeline-track-cell>
     </div>
   `,
 };

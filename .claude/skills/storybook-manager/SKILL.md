@@ -11,12 +11,12 @@ Beheert meerdere Storybook instances, handig bij werken met git worktrees.
 
 ## Commands
 
-| Command | Beschrijving |
-|---------|-------------|
-| `npm run sb:start` | Start Storybook vanuit huidige directory (auto-port) |
-| `npm run sb:stop` | Stop Storybook voor huidige directory |
-| `npm run sb:status` | Toon alle draaiende Storybook instances |
-| `npm run sb:stop-all` | Stop alle Storybook instances |
+| Command               | Beschrijving                                         |
+| --------------------- | ---------------------------------------------------- |
+| `npm run sb:start`    | Start Storybook vanuit huidige directory (auto-port) |
+| `npm run sb:stop`     | Stop Storybook voor huidige directory                |
+| `npm run sb:status`   | Toon alle draaiende Storybook instances              |
+| `npm run sb:stop-all` | Stop alle Storybook instances                        |
 
 ## Hoe het werkt
 
@@ -39,6 +39,7 @@ Running Storybook instances:
 Script: `scripts/storybook-manager.js`
 
 Het script:
+
 1. Detecteert huidige git branch
 2. Zoekt eerste vrije poort vanaf 6006
 3. Start Storybook als detached process

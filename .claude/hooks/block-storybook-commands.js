@@ -29,24 +29,24 @@ process.stdin.on('end', () => {
     const allowedPatterns = [
       /storybook-manager/i,
       /node\s+scripts\/storybook-manager/i,
-      /npm\s+run\s+sb:/i,  // npm run sb:start, sb:stop, sb:status, sb:stop-all
+      /npm\s+run\s+sb:/i, // npm run sb:start, sb:stop, sb:status, sb:stop-all
     ];
 
-    const isAllowed = allowedPatterns.some(pattern => pattern.test(command));
+    const isAllowed = allowedPatterns.some((pattern) => pattern.test(command));
     if (isAllowed) {
       process.exit(0);
     }
 
-    const isBlocked = blockedPatterns.some(pattern => pattern.test(command));
+    const isBlocked = blockedPatterns.some((pattern) => pattern.test(command));
     if (isBlocked) {
       const decision = {
-        decision: "block",
+        decision: 'block',
         reason: `⚠️  Direct Storybook commands zijn niet toegestaan.
 
 Gebruik in plaats daarvan /storybook-manager:
   /storybook-manager start [port]  - Start Storybook
   /storybook-manager stop [port]   - Stop Storybook
-  /storybook-manager status        - Bekijk actieve instances`
+  /storybook-manager status        - Bekijk actieve instances`,
       };
       console.log(JSON.stringify(decision));
       process.exit(0);

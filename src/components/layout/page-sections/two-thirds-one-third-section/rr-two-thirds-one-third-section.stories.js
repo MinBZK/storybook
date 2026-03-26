@@ -19,50 +19,50 @@ import '../../../content/rich-text/rr-rich-text.ts';
  * ```
  */
 export default {
-	title: 'Components/Layout/Page Sections/Two Thirds One Third Section',
-	component: 'rr-two-thirds-one-third-section',
-	tags: ['autodocs'],
-	parameters: {
-		componentSource: {
-			file: 'src/components/layout/page-sections/two-thirds-one-third-section/rr-two-thirds-one-third-section.ts',
-			repository: 'https://github.com/MinBZK/storybook',
-		},
-		status: {
-			type: 'stable',
-		},
-	},
+  title: 'Components/Layout/Page Sections/Two Thirds One Third Section',
+  component: 'rr-two-thirds-one-third-section',
+  tags: ['autodocs'],
+  parameters: {
+    componentSource: {
+      file: 'src/components/layout/page-sections/two-thirds-one-third-section/rr-two-thirds-one-third-section.ts',
+      repository: 'https://github.com/MinBZK/storybook',
+    },
+    status: {
+      type: 'stable',
+    },
+  },
 };
 
 export const Standaard = () => html`
-	<rr-two-thirds-one-third-section>
-		<rr-rich-text slot="header">
-			<h2>Sectietitel</h2>
-		</rr-rich-text>
-		<rr-rich-text>
-			<h3>Hoofdinhoud</h3>
-			<p>Dit is de hoofdinhoud van de sectie. Deze kolom neemt twee derde van de breedte in.</p>
-			<p>De kolommen wrappen automatisch wanneer de beschikbare breedte te klein wordt.</p>
-		</rr-rich-text>
-		<rr-rich-text slot="right">
-			<h3>Zijkolom</h3>
-			<p>Gebruik de zijkolom voor gerelateerde informatie, uitleg of aanvullende acties.</p>
-		</rr-rich-text>
-		<rr-rich-text slot="footer">
-			<p>Voetnoot of aanvullende informatie.</p>
-		</rr-rich-text>
-	</rr-two-thirds-one-third-section>
+  <rr-two-thirds-one-third-section>
+    <rr-rich-text slot="header">
+      <h2>Sectietitel</h2>
+    </rr-rich-text>
+    <rr-rich-text>
+      <h3>Hoofdinhoud</h3>
+      <p>Dit is de hoofdinhoud van de sectie. Deze kolom neemt twee derde van de breedte in.</p>
+      <p>De kolommen wrappen automatisch wanneer de beschikbare breedte te klein wordt.</p>
+    </rr-rich-text>
+    <rr-rich-text slot="right">
+      <h3>Zijkolom</h3>
+      <p>Gebruik de zijkolom voor gerelateerde informatie, uitleg of aanvullende acties.</p>
+    </rr-rich-text>
+    <rr-rich-text slot="footer">
+      <p>Voetnoot of aanvullende informatie.</p>
+    </rr-rich-text>
+  </rr-two-thirds-one-third-section>
 `;
 
 export const ZonderHeaderEnFooter = () => html`
-	<rr-two-thirds-one-third-section>
-		<rr-rich-text>
-			<h3>Hoofdinhoud</h3>
-			<p>De hoofdinhoud van de sectie zonder header en footer.</p>
-		</rr-rich-text>
-		<rr-rich-text slot="right">
-			<h3>Zijkolom</h3>
-			<p>Aanvullende informatie.</p>
-		</rr-rich-text>
-	</rr-two-thirds-one-third-section>
+  <rr-two-thirds-one-third-section>
+    <rr-rich-text>
+      <h3>Hoofdinhoud</h3>
+      <p>De hoofdinhoud van de sectie zonder header en footer.</p>
+    </rr-rich-text>
+    <rr-rich-text slot="right">
+      <h3>Zijkolom</h3>
+      <p>Aanvullende informatie.</p>
+    </rr-rich-text>
+  </rr-two-thirds-one-third-section>
 `;
 ZonderHeaderEnFooter.parameters = { controls: { disable: true } };
