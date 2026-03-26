@@ -20,7 +20,7 @@ function renderContent(component: RRButton, detectIconPosition: () => void) {
 					name=${component._iconEnd.name}
 				></rr-icon>
 			` : nothing}
-			${component.isExpandable ? html`
+			${component.expandable ? html`
 				<rr-icon class="button__disclosure-icon"
 					name="chevron-down-small"
 				></rr-icon>

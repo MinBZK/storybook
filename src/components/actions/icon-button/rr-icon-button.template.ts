@@ -7,11 +7,11 @@ function renderContent(component: RRIconButton) {
 			<span class="icon-button__icon">
 				<slot name="__icon"></slot>
 			</span>
-			${component.isExpandable ? html`
+			${component.expandable ? html`
 				<span class="icon-button__disclosure-icon">
 					<rr-icon name="chevron-down-small"></rr-icon>
 				</span>
-			` : ''}
+			` : nothing}
 		</span>
 		${component._text ? html`
 			<span class="icon-button__text">${component._text}</span>

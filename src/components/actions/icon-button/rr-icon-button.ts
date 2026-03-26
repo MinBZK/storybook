@@ -6,7 +6,7 @@
  * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
- * @attr {boolean} is-expandable     - Whether the button opens a menu or popover and shows chevron next to the icon
+ * @attr {boolean} expandable     - Whether the button opens a menu or popover and shows chevron next to the icon
  * @attr {string}  accessible-label  - Accessible label for screen readers. Overrides the slot text as aria-label
  *                                     and title tooltip. Use when the visible text alone lacks context for screen
  *                                     readers (e.g. text "Toon", accessible-label "Toon wachtwoord").
@@ -63,8 +63,8 @@ export class RRIconButton extends LitElement {
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';
 
-	@property({ type: Boolean, reflect: true, attribute: 'is-expandable' })
-	isExpandable = false;
+	@property({ type: Boolean, reflect: true, attribute: 'expandable' })
+	expandable = false;
 
 	@property({ type: String })
 	popovertarget: string | undefined = undefined;
