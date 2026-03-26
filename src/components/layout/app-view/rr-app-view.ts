@@ -1,8 +1,8 @@
 /**
  * RegelRecht App View Component (Lit + TypeScript)
  *
- * De root shell van een RegelRecht applicatie. Bevat altijd een
- * split view of een rr-page als directe inhoud.
+ * The required root shell of a RegelRecht application. Always contains
+ * a split view or an rr-page as direct content.
  *
  * ## Background color
  * Set background="tinted" to give the whole application a tinted background.
@@ -13,7 +13,7 @@
  *
  * @attr {'default'|'tinted'} background - Background color (cascades to descendants)
  *
- * @slot - Standaard slot voor de inhoud van de applicatie
+ * @slot - Default slot for the application content
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
