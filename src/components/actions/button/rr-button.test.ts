@@ -303,6 +303,8 @@ describe('rr-button – href / link rendering', () => {
 		anchor.dispatchEvent(event);
 		expect(preventSpy).toHaveBeenCalled();
 	});
+
+	it('switches from <button> to <a> when href is set dynamically', async () => {
 		el = await fixture<RRButton>('<rr-button>Terug</rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();

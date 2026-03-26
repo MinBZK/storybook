@@ -385,6 +385,8 @@ describe('rr-icon-button – href / link rendering', () => {
 		anchor.dispatchEvent(event);
 		expect(preventSpy).toHaveBeenCalled();
 	});
+
+	it('switches from <button> to <a> when href is set dynamically', async () => {
 		el = await fixture<RRIconButton>(`
 			<rr-icon-button>
 				<rr-icon name="arrow-left"></rr-icon>
