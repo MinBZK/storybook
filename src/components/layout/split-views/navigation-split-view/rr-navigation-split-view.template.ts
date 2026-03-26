@@ -30,6 +30,7 @@ export function navigationSplitViewTemplate(component: RRNavigationSplitView): T
 			` : component.inspectorAutoHidden || component.inspectorAsSheet ? html`
 				<dialog class="navigation-split-view__inspector-sheet"
 					aria-label=${component.inspectorAccessibleLabel}
+					aria-modal="true"
 					@click=${component._handleInspectorSheetClick}
 					@cancel=${component._handleInspectorSheetCancel}
 				>
@@ -41,6 +42,7 @@ export function navigationSplitViewTemplate(component: RRNavigationSplitView): T
 			${component.sidebarAsSheet ? html`
 				<dialog class="navigation-split-view__sidebar-sheet"
 					aria-label=${component.sidebarAccessibleLabel}
+					aria-modal="true"
 					@click=${component._handleSidebarSheetClick}
 					@cancel=${component._handleSidebarSheetCancel}
 				>

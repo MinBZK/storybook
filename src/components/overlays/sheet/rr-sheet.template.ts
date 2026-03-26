@@ -5,6 +5,7 @@ export function sheetTemplate(component: RRSheet) {
 	return html`
 		<dialog class="sheet"
 			aria-label=${component.accessibleLabel}
+			aria-modal=${component.modeless ? nothing : 'true'}
 			@click=${component._handleDialogClick}
 			@cancel=${component._handleCancel}
 		>
