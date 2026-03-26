@@ -9,7 +9,7 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 
 /* # rr-sheet styles */
 
-export const styles = css`
+export const sheetStyles = css`
 
 	/* # Host */
 

@@ -25,14 +25,14 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './rr-sheet.styles.ts';
-import { template } from './rr-sheet.template.ts';
+import { sheetStyles } from './rr-sheet.styles.ts';
+import { sheetTemplate } from './rr-sheet.template.ts';
 
 type Placement = 'left' | 'right' | 'bottom';
 
 @customElement('rr-sheet')
 export class RRSheet extends LitElement {
-	static override styles = styles;
+	static override styles = sheetStyles;
 
 	@property({ type: String, reflect: true })
 	placement: Placement = 'right';
@@ -147,7 +147,7 @@ export class RRSheet extends LitElement {
 	};
 
 	override render() {
-		return template.call(this);
+		return sheetTemplate(this);
 	}
 }
 
