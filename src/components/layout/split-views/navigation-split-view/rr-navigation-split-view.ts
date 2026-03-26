@@ -388,16 +388,22 @@ export class RRNavigationSplitView extends LitElement {
 	private _hideSheet(dialog: HTMLDialogElement | null) {
 		if (!dialog?.open) return;
 
+		// Guard against double close event dispatch
+		if (dialog.dataset['closing'] === 'true') return;
+		dialog.dataset['closing'] = 'true';
+
 		dialog.classList.add('is-closing');
 		dialog.addEventListener('animationend', () => {
 			dialog.classList.remove('is-closing');
+			delete dialog.dataset['closing'];
 			dialog.close();
 		}, { once: true });
 
 		// Fallback for prefers-reduced-motion — no animation fires
 		requestAnimationFrame(() => {
-			if (dialog.classList.contains('is-closing') && getComputedStyle(dialog).animationName === 'none') {
+			if (dialog.dataset['closing'] === 'true' && getComputedStyle(dialog).animationName === 'none') {
 				dialog.classList.remove('is-closing');
+				delete dialog.dataset['closing'];
 				dialog.close();
 			}
 		});

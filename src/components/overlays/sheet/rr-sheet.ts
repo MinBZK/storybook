@@ -46,6 +46,8 @@ export class RRSheet extends LitElement {
 
 	private _hasWarnedLabel = false;
 
+	private _closing = false;
+
 	private get _dialog(): HTMLDialogElement | null {
 		return this.shadowRoot?.querySelector('dialog') ?? null;
 	}
@@ -112,11 +114,13 @@ export class RRSheet extends LitElement {
 
 	hide(): void {
 		const dialog = this._dialog;
-		if (!dialog || !dialog.open) return;
+		if (!dialog || !dialog.open || this._closing) return;
 
+		this._closing = true;
 		dialog.classList.add('is-closing');
 		dialog.addEventListener('animationend', () => {
 			dialog.classList.remove('is-closing');
+			this._closing = false;
 			dialog.close();
 			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
 		}, { once: true });
@@ -124,8 +128,9 @@ export class RRSheet extends LitElement {
 		// Fallback for prefers-reduced-motion (no animation fires)
 		// Use requestAnimationFrame to let CSS skip the animation first
 		requestAnimationFrame(() => {
-			if (dialog.classList.contains('is-closing') && getComputedStyle(dialog).animationName === 'none') {
+			if (this._closing && getComputedStyle(dialog).animationName === 'none') {
 				dialog.classList.remove('is-closing');
+				this._closing = false;
 				dialog.close();
 				this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
 			}
