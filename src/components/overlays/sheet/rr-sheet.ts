@@ -44,6 +44,8 @@ export class RRSheet extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = 'Dialoogvenster';
 
+	private _hasWarnedLabel = false;
+
 	private get _dialog(): HTMLDialogElement | null {
 		return this.shadowRoot?.querySelector('dialog') ?? null;
 	}
@@ -63,8 +65,9 @@ export class RRSheet extends LitElement {
 		const dialog = this._dialog;
 		if (!dialog) return;
 
-		// Warn when the consumer has not provided a meaningful accessible label
-		if (this.accessibleLabel === 'Dialoogvenster') {
+		// Warn once per instance when the consumer has not provided a meaningful accessible label
+		if (this.accessibleLabel === 'Dialoogvenster' && !this._hasWarnedLabel) {
+			this._hasWarnedLabel = true;
 			console.warn('<rr-sheet>: No accessible-label provided. Screen readers will announce this dialog as "Dialoogvenster". Set accessible-label to a descriptive name matching the dialog title.');
 		}
 
