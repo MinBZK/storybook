@@ -282,6 +282,18 @@ describe('rr-button – href / link rendering', () => {
 		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('aria-disabled')).toBe(false);
 	});
 
+	it('sets tabindex="0" on the anchor when disabled to keep it keyboard-discoverable', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled>Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('tabindex')).toBe('0');
+	});
+
+	it('does not set tabindex on the anchor when not disabled', async () => {
+		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('tabindex')).toBe(false);
+	});
+
 	it('forwards accessible-label to the anchor element', async () => {
 		el = await fixture<RRButton>('<rr-button href="/overzicht" accessible-label="Ga terug naar overzicht">Terug</rr-button>');
 		await waitForUpdate(el);

@@ -37,6 +37,7 @@ export function template(this: RRButton, helpers: TemplateHelpers) {
 		return html`
 			<a class="button"
 				href=${this.disabled ? nothing : this.href}
+				tabindex=${this.disabled ? '0' : nothing}
 				target=${this.target || nothing}
 				rel=${resolvedRel || nothing}
 				aria-disabled=${this.disabled ? 'true' : nothing}
