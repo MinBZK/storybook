@@ -3,7 +3,6 @@ import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
-const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
@@ -156,11 +155,11 @@ export const sheetStyles = css`
 		}
 
 		&[open] {
-			animation: sheet-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
+			animation: sheet-slide-in-bottom var(--components-sheet-side-animation-duration) ease both;
 		}
 
 		&.is-closing {
-			animation: sheet-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
+			animation: sheet-slide-out-bottom var(--components-sheet-side-animation-duration) ease both;
 		}
 	}
 
