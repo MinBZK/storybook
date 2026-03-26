@@ -137,7 +137,7 @@ export const navigationSplitViewStyles = css`
 		position: fixed;
 		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
 		width: var(--components-sheet-side-md-width);
-		height: calc(100vh - var(--components-sheet-side-inset) * 2);
+		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
@@ -196,7 +196,7 @@ export const navigationSplitViewStyles = css`
 		position: fixed;
 		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
 		width: var(--components-sheet-side-md-width);
-		height: calc(100vh - var(--components-sheet-side-inset) * 2);
+		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {

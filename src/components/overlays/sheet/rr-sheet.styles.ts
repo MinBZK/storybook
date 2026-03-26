@@ -93,7 +93,7 @@ export const styles = css`
 	:host(:not([placement])) .sheet {
 		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
 		width: var(--components-sheet-side-md-width);
-		height: calc(100vh - var(--components-sheet-side-inset) * 2);
+		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
@@ -115,7 +115,7 @@ export const styles = css`
 	:host([placement='left']) .sheet {
 		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
 		width: var(--components-sheet-side-md-width);
-		height: calc(100vh - var(--components-sheet-side-inset) * 2);
+		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
@@ -137,8 +137,8 @@ export const styles = css`
 	:host([placement='bottom']) .sheet {
 		inset: auto 0 0 0;
 		max-width: var(--semantics-page-sections-body-max-width);
-		max-height: calc(100vh - var(--components-sheet-bottom-top-inset));
-		height: calc(100vh - var(--components-sheet-bottom-top-inset));
+		max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
+		height: calc(100dvh - var(--components-sheet-bottom-top-inset));
 		margin-inline: auto;
 		border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
@@ -174,7 +174,7 @@ export const styles = css`
 			inset: auto 0 0 0;
 			width: 100%;
 			height: auto;
-			max-height: calc(100vh - var(--components-sheet-bottom-top-inset));
+			max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
 			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
 			&[open] {
