@@ -237,6 +237,12 @@ describe('rr-button – href / link rendering', () => {
 		expect(el.shadowRoot!.querySelector('a')).toBeNull();
 	});
 
+	it('does not reflect href attribute when not set', async () => {
+		el = await fixture<RRButton>('<rr-button>Click</rr-button>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('href')).toBe(false);
+	});
+
 	it('renders an <a> when href is set', async () => {
 		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
 		await waitForUpdate(el);

@@ -74,18 +74,18 @@ export class RRButton extends LitElement {
 
 	/** When set, renders an <a> element instead of <button>. */
 	@property({ type: String, reflect: true })
-	href = '';
+	href: string | undefined = undefined;
 
 	/** Link target (e.g. '_blank'). Only used when href is set. */
-	@property({ type: String, reflect: true })
-	target = '';
+	@property({ type: String })
+	target: string | undefined = undefined;
 
 	/**
 	 * Link rel attribute. Only used when href is set.
 	 * Defaults to 'noopener noreferrer' when target is '_blank' and rel is not explicitly set.
 	 */
-	@property({ type: String, reflect: true })
-	rel = '';
+	@property({ type: String })
+	rel: string | undefined = undefined;
 
 	@state()
 	_iconStart: IconState | null = null;
