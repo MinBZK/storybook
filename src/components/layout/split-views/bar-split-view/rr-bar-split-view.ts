@@ -6,7 +6,7 @@
  * The main area is always visible.
  *
  * On small viewports the bars overlay the bottom of the main area.
- * The CSS custom property --rr-bar-split-view-bars-height is set on the host
+ * The CSS custom property --context-bar-split-view-bars-height is set on the host
  * so that scroll containers (e.g. rr-page) can add padding-bottom to prevent
  * content from being hidden behind the bars.
  *
@@ -90,8 +90,8 @@ export class RRBarSplitView extends LitElement {
 
 		if (!isMobile) {
 			// Reset on desktop — bars are in flow, no overlay
-			this.style.removeProperty('--rr-bar-split-view-bars-height');
-			this.style.removeProperty('--rr-bar-split-view-primary-bar-height');
+			this.style.removeProperty('--context-bar-split-view-bars-height');
+			this.style.removeProperty('--context-bar-split-view-primary-bar-height');
 			return;
 		}
 
@@ -101,8 +101,8 @@ export class RRBarSplitView extends LitElement {
 		const secondaryHeight = secondaryBar?.getBoundingClientRect().height ?? 0;
 		const total = primaryHeight + secondaryHeight;
 
-		this.style.setProperty('--rr-bar-split-view-bars-height', `${total}px`);
-		this.style.setProperty('--rr-bar-split-view-primary-bar-height', `${primaryHeight}px`);
+		this.style.setProperty('--context-bar-split-view-bars-height', `${total}px`);
+		this.style.setProperty('--context-bar-split-view-primary-bar-height', `${primaryHeight}px`);
 	}
 
 	override render() {

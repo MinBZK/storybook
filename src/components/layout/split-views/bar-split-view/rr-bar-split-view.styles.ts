@@ -95,10 +95,10 @@ export const barSplitViewStyles = css`
 				left: 0;
 				right: 0;
 				z-index: 1;
-				height: calc(var(--rr-bar-split-view-bars-height) + var(--primitives-space-32));
+				height: calc(var(--context-bar-split-view-bars-height) + var(--primitives-space-32));
 				background: linear-gradient(
 					to top,
-					color-mix(in srgb, var(--_background-color) 95%, transparent) var(--rr-bar-split-view-bars-height),
+					color-mix(in srgb, var(--_background-color) 95%, transparent) var(--context-bar-split-view-bars-height),
 					transparent);
 				pointer-events: none;
 			}
@@ -130,7 +130,7 @@ export const barSplitViewStyles = css`
 
 		@media (max-width: ${smMax}) {
 			position: absolute;
-			bottom: var(--rr-bar-split-view-primary-bar-height, 0px);
+			bottom: var(--context-bar-split-view-primary-bar-height, 0px);
 			left: 0;
 			right: 0;
 			z-index: 2;

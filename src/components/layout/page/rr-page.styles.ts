@@ -14,7 +14,7 @@ export const pageStyles = css`
 		overflow-y: auto;
 		overflow-x: hidden;
 		background-color: var(--_background-color);
-		padding-bottom: var(--rr-bar-split-view-bars-height, 0px);
+		padding-bottom: var(--context-bar-split-view-bars-height, 0px);
 	}
 
 	:host([background="default"]) {
