@@ -34,7 +34,7 @@ export default {
 		background: {
 			control: { type: 'select' },
 			options: ['default', 'tinted'],
-			description: 'Tinted achtergrond — cascade van --context-background-color naar alle afstammelingen',
+			description: 'Tinted achtergrond — cascade van --context-parent-background-color naar alle afstammelingen',
 			table: { defaultValue: { summary: 'default' } },
 		},
 	},
@@ -115,7 +115,7 @@ export const MetPagina = () => html`
 
 /**
  * Each split view pane can have its own background color independently.
- * Setting tinted on a pane cascades --context-background-color only to that pane's descendants.
+ * Setting tinted on a pane cascades --context-parent-background-color only to that pane's descendants.
  * Sibling panes remain unaffected.
  */
 export const TintedPerPaneel = () => html`

@@ -5,7 +5,7 @@ import { css } from 'lit';
 
 export const pageStyles = css`
 	:host {
-		--_background-color: var(--context-background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 
 		display: flex;
 		flex-direction: column;
@@ -18,13 +18,13 @@ export const pageStyles = css`
 	}
 
 	:host([background="default"]) {
-		--context-background-color: var(--semantics-surfaces-background-color);
-		--_background-color: var(--context-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--context-parent-background-color);
 	}
 
 	:host([background="tinted"]) {
-		--context-background-color: var(--semantics-surfaces-tinted-background-color);
-		--_background-color: var(--context-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
+		--_background-color: var(--context-parent-background-color);
 	}
 
 	:host([hidden]) {
@@ -44,7 +44,6 @@ export const pageStyles = css`
 	:host([sticky-header]) .page__header {
 		position: sticky;
 		top: 0;
-		z-index: 1;
 		background-color: color-mix(in srgb, var(--_background-color) 95%, transparent);
 	}
 
@@ -54,15 +53,14 @@ export const pageStyles = css`
 		top: 100%;
 		left: 0;
 		right: 0;
-		height: 32px;
+		height: var(--primitives-space-32);
 		background: linear-gradient(to bottom, color-mix(in srgb, var(--_background-color) 95%, transparent), transparent);
 		pointer-events: none;
 		opacity: 0;
 		transition: opacity 200ms ease;
-		z-index: -1;
 	}
 
-	:host([sticky-header]) .page__header--scrolled::after {
+	:host([sticky-header]) .page__header.is-scrolled::after {
 		opacity: 1;
 	}
 
@@ -90,7 +88,6 @@ export const pageStyles = css`
 	:host([sticky-footer]) .page__footer {
 		position: sticky;
 		bottom: 0;
-		z-index: 1;
 		background-color: color-mix(in srgb, var(--_background-color) 95%, transparent);
 	}
 
@@ -100,27 +97,8 @@ export const pageStyles = css`
 		bottom: 100%;
 		left: 0;
 		right: 0;
-		height: 32px;
+		height: var(--primitives-space-32);
 		background: linear-gradient(to top, color-mix(in srgb, var(--_background-color) 95%, transparent), transparent);
 		pointer-events: none;
-	}
-
-
-	/* # High contrast */
-
-	@media (forced-colors: active) {
-		:host {
-			background-color: Canvas;
-		}
-
-		:host([sticky-header]) .page__header,
-		:host([sticky-footer]) .page__footer {
-			background-color: Canvas;
-		}
-
-		:host([sticky-header]) .page__header::after,
-		:host([sticky-footer]) .page__footer::before {
-			display: none;
-		}
 	}
 `;

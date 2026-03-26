@@ -17,17 +17,17 @@ export const navigationSplitViewStyles = css`
 		--_secondary-sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_main-min-width: var(--primitives-area-480); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_inspector-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_background-color: var(--context-background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 	}
 
 	:host([background="default"]) {
-		--context-background-color: var(--semantics-surfaces-background-color);
-		--_background-color: var(--context-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--context-parent-background-color);
 	}
 
 	:host([background="tinted"]) {
-		--context-background-color: var(--semantics-surfaces-tinted-background-color);
-		--_background-color: var(--context-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
+		--_background-color: var(--context-parent-background-color);
 	}
 
 

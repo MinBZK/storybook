@@ -36,7 +36,7 @@ export default {
 		background: {
 			control: { type: 'select' },
 			options: ['inherit', 'default', 'tinted'],
-			description: 'Tinted achtergrond — cascade van --context-background-color naar alle afstammelingen inclusief rr-page en de fade overlay',
+			description: 'Tinted achtergrond — cascade van --context-parent-background-color naar alle afstammelingen inclusief rr-page en de fade overlay',
 			table: { defaultValue: { summary: 'inherit' } },
 		},
 		panes: {

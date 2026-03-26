@@ -8,7 +8,7 @@ const mdMin = unsafeCSS(breakpoints.mdMin);
 
 export const splitViewPaneStyles = css`
 	:host {
-		--_background-color: var(--context-background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 
 		display: flex;
 		width: 100%;
@@ -20,13 +20,13 @@ export const splitViewPaneStyles = css`
 	}
 
 	:host([background="default"]) {
-		--context-background-color: var(--semantics-surfaces-background-color);
-		--_background-color: var(--context-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-background-color);
+		--_background-color: var(--context-parent-background-color);
 	}
 
 	:host([background="tinted"]) {
-		--context-background-color: var(--semantics-surfaces-tinted-background-color);
-		--_background-color: var(--context-background-color);
+		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
+		--_background-color: var(--context-parent-background-color);
 	}
 
 	:host([hidden]) {
