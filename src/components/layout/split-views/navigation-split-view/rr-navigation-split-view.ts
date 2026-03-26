@@ -236,32 +236,27 @@ export class RRNavigationSplitView extends LitElement {
 			return;
 		}
 
+		// All panes visible side by side — sidebar never gets hide-back,
+		// secondary sidebar gets hide-back because sidebar is visible alongside it
 		if (this._mode === 'spatial') {
-			// All panes visible side by side — no back buttons needed on secondary sidebar or main
 			panes.secondarySidebar?.setAttribute('hide-back', '');
 			panes.main?.setAttribute('hide-back', '');
 			return;
 		}
 
+		// Sidebar is hidden — secondary sidebar can go back to it
+		// Main is visible alongside secondary sidebar — no sequential navigation
 		if (this._mode === 'sidebar-stack') {
-			// Sidebar is hidden — secondary sidebar can go back to it
-			// Main is visible alongside secondary sidebar — no sequential navigation
 			panes.secondarySidebar?.removeAttribute('hide-back');
 			panes.main?.setAttribute('hide-back', '');
 			return;
 		}
 
-		// full-stack
-		if (this._hasSecondarySidebar) {
-			// Sidebar is root; secondary sidebar and main have predecessors
+		// Sidebar never gets hide-back — consumer controls navigation depth
+		if (this._mode === 'full-stack') {
 			panes.secondarySidebar?.removeAttribute('hide-back');
 			panes.main?.removeAttribute('hide-back');
-		} else if (this._hasSidebar) {
-			// Sidebar is root — no back; main can go back to sidebar
-			panes.main?.removeAttribute('hide-back');
-		} else {
-			// No nav — main is root
-			panes.main?.setAttribute('hide-back', '');
+			return;
 		}
 	}
 
@@ -289,8 +284,11 @@ export class RRNavigationSplitView extends LitElement {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>(`slot[name="${activeSlotName}"]`);
 		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
 
+		// 1. autofocus element present — let the browser handle it natively
 		if (assigned.some(el => el.querySelector('[autofocus]'))) return;
 
+		// 2. Focus the first heading — check rr-top-title-bar shadow root first,
+		// then fall back to light DOM headings inside assigned elements
 		const topTitleBar = assigned.flatMap(el => [
 			el.tagName === 'RR-TOP-TITLE-BAR' ? el : null,
 			el.querySelector('rr-top-title-bar'),
@@ -309,6 +307,7 @@ export class RRNavigationSplitView extends LitElement {
 			return;
 		}
 
+		// 3. Fallback — focus the dialog itself
 		this._sidebarSheet?.focus();
 	}
 
