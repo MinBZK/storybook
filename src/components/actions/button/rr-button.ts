@@ -62,8 +62,8 @@ export class RRButton extends LitElement {
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';
 
-	@property({ type: String, reflect: true, attribute: 'popovertarget' })
-	popovertarget = '';
+	@property({ type: String })
+	popovertarget: string | undefined = undefined;
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;

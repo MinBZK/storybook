@@ -48,6 +48,7 @@ export function template(this: RRIconButton) {
 			aria-disabled=${this.disabled ? 'true' : nothing}
 			title=${tooltip}
 			aria-label=${label}
+			popovertarget=${this.popovertarget || nothing}
 			@click=${this._handleClick}
 		>
 			${content}

@@ -14,6 +14,7 @@
  * @attr {string}  href              - When set, renders an <a> element instead of <button>
  * @attr {string}  target            - Link target (e.g. '_blank'); only used when href is set
  * @attr {string}  rel               - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
+ * @attr {string}  popovertarget     - ID of a popover element to toggle; forwarded to the inner <button>
  *
  * @slot - Place an rr-icon and a text label. The text is used as aria-label and shown below the icon in lg size.
  *
@@ -65,8 +66,8 @@ export class RRIconButton extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'is-expandable' })
 	isExpandable = false;
 
-	@property({ type: String, reflect: true, attribute: 'popovertarget' })
-	popovertarget = '';
+	@property({ type: String })
+	popovertarget: string | undefined = undefined;
 
 	/** Accessible label for screen readers. Overrides slot text as aria-label and title tooltip.
 	 *  The slot text is still shown visually in lg size regardless. */
