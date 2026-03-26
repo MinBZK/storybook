@@ -12,14 +12,9 @@ import '../../../navigation/top-title-bar/rr-top-title-bar.ts';
  * <code>hide-back</code> in op basis van de beschikbare ruimte en de paneelconfiguratie.
  *
  * De consumer stelt <code>has-content</code> in en plaatst een <code>rr-page</code>
- * met een <code>rr-top-title-bar</code> binnenin.
- *
- * Voeg de volgende CSS toe om de terugknop te verbergen wanneer <code>hide-back</code> actief is:
- * ```css
- * rr-split-view-pane[hide-back] rr-top-title-bar {
- *   --rr-top-title-bar-back-button-display: none;
- * }
- * ```
+ * met een <code>rr-top-title-bar</code> binnenin. Wanneer <code>hide-back</code> actief is,
+ * verbergt het paneel automatisch de terugknop via de <code>--context-back-button-display</code>
+ * CSS-variabele.
  *
  * ## Gebruik
  * ```html
