@@ -69,16 +69,14 @@ describe('rr-navigation-split-view – inspector sheet', () => {
 
 	it('showInspectorSheet() opens the dialog', async () => {
 		el = await fixtureAllPanes(640);
-		el.showInspectorSheet();
-		await waitForUpdate(el);
+		await el.showInspectorSheet();
 		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>('.navigation-split-view__inspector-sheet')!;
 		expect(dialog.open).toBe(true);
 	});
 
 	it('hideInspectorSheet() adds is-closing class', async () => {
 		el = await fixtureAllPanes(640);
-		el.showInspectorSheet();
-		await waitForUpdate(el);
+		await el.showInspectorSheet();
 		el.hideInspectorSheet();
 		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>('.navigation-split-view__inspector-sheet')!;
 		expect(dialog.classList.contains('is-closing')).toBe(true);

@@ -22,9 +22,9 @@
  * @slot main              - Center pane for primary content
  * @slot inspector         - Right pane for details or properties
  *
- * @method showInspectorSheet() - Opens the inspector as a sheet; only has effect when inspector-auto-hidden or inspector-as-sheet is active
+ * @method showInspectorSheet() - Opens the inspector as a sheet (async); only has effect when inspector-auto-hidden or inspector-as-sheet is active
  * @method hideInspectorSheet() - Closes the inspector sheet
- * @method showSidebarSheet()   - Opens the sidebar as a sheet; only has effect when sidebar-as-sheet is active
+ * @method showSidebarSheet()   - Opens the sidebar as a sheet (async); only has effect when sidebar-as-sheet is active
  * @method hideSidebarSheet()   - Closes the sidebar sheet
  */
 import { LitElement } from 'lit';
@@ -274,12 +274,12 @@ export class RRNavigationSplitView extends LitElement {
 	// Sidebar sheet
 	// ----------------------------------------------------------------
 
-	showSidebarSheet() {
+	/** Opens the sidebar as a sheet. Awaitable — resolves once the dialog is open. */
+	async showSidebarSheet(): Promise<void> {
 		if (!this.sidebarAsSheet) return;
-		this.updateComplete.then(() => {
-			this._sidebarSheet?.showModal();
-			this._manageSidebarSheetFocus();
-		});
+		await this.updateComplete;
+		this._sidebarSheet?.showModal();
+		this._manageSidebarSheetFocus();
 	}
 
 	hideSidebarSheet() {
@@ -337,12 +337,12 @@ export class RRNavigationSplitView extends LitElement {
 	// Inspector sheet
 	// ----------------------------------------------------------------
 
-	showInspectorSheet() {
+	/** Opens the inspector as a sheet. Awaitable — resolves once the dialog is open. */
+	async showInspectorSheet(): Promise<void> {
 		if (!this.inspectorAutoHidden && !this.inspectorAsSheet) return;
-		this.updateComplete.then(() => {
-			this._inspectorSheet?.showModal();
-			this._manageInspectorSheetFocus();
-		});
+		await this.updateComplete;
+		this._inspectorSheet?.showModal();
+		this._manageInspectorSheetFocus();
 	}
 
 	hideInspectorSheet() {
