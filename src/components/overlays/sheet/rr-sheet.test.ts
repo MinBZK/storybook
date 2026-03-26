@@ -33,10 +33,11 @@ describe('rr-sheet', () => {
 		expect(el.getAttribute('placement')).toBe('right');
 	});
 
-	it('defaults to modal true', async () => {
+	it('defaults to modal (modeless attribute absent)', async () => {
 		el = await fixture('<rr-sheet></rr-sheet>');
 		await waitForUpdate(el);
-		expect((el as RRSheet).modal).toBe(true);
+		expect((el as RRSheet).modeless).toBe(false);
+		expect(el.hasAttribute('modeless')).toBe(false);
 	});
 
 	it('reflects placement attribute', async () => {
@@ -105,10 +106,8 @@ describe('rr-sheet – tonen en verbergen', () => {
 		expect(() => el.hide()).not.toThrow();
 	});
 
-	it('uses show() for non-modal sheets', async () => {
-		el = await fixture<RRSheet>('<rr-sheet ?modal=${false}></rr-sheet>');
-		await waitForUpdate(el);
-		el.modal = false;
+	it('uses show() for modeless sheets', async () => {
+		el = await fixture<RRSheet>('<rr-sheet modeless></rr-sheet>');
 		await waitForUpdate(el);
 		el.show();
 		const dialog = el.shadowRoot!.querySelector('dialog')!;

@@ -82,7 +82,7 @@ export const styles = css`
 		background: var(--semantics-overlays-backdrop-color);
 	}
 
-	:host(:not([modal])) .sheet::backdrop {
+	:host([modeless]) .sheet::backdrop {
 		background: transparent;
 	}
 

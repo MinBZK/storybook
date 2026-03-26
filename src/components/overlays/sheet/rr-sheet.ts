@@ -11,7 +11,7 @@
  * @element rr-sheet
  *
  * @attr {string}  placement - Positie van de sheet: 'left' | 'right' | 'bottom' (standaard: 'right')
- * @attr {boolean} modal     - Modaal (standaard: true); niet-modaal heeft geen backdrop of focusvergrendeling
+ * @attr {boolean} modeless  - Niet-modaal (geen backdrop of focusvergrendeling); standaard is de sheet modaal
  *
  * @slot - Inhoud van de sheet
  *
@@ -37,7 +37,7 @@ export class RRSheet extends LitElement {
 	placement: Placement = 'right';
 
 	@property({ type: Boolean, reflect: true })
-	modal = true;
+	modeless = false;
 
 	private get _dialog(): HTMLDialogElement | null {
 		return this.shadowRoot?.querySelector('dialog') ?? null;
@@ -55,18 +55,15 @@ export class RRSheet extends LitElement {
 	}
 
 	show(): void {
-		this.updateComplete.then(() => {
-			const dialog = this._dialog;
-			if (!dialog) return;
-			// Use hasAttribute for reliable check — ?modal=${false} removes the attribute
-			if (this.hasAttribute('modal')) {
-				dialog.showModal();
-			} else {
-				dialog.show();
-			}
-			this._manageFocus();
-			this.dispatchEvent(new CustomEvent('open', { bubbles: true, composed: true }));
-		});
+		const dialog = this._dialog;
+		if (!dialog) return;
+		if (this.modeless) {
+			dialog.show();
+		} else {
+			dialog.showModal();
+		}
+		this._manageFocus();
+		this.dispatchEvent(new CustomEvent('open', { bubbles: true, composed: true }));
 	}
 
 	private _manageFocus(): void {
@@ -118,7 +115,7 @@ export class RRSheet extends LitElement {
 	}
 
 	_handleDialogClick(e: MouseEvent): void {
-		if (!this.hasAttribute('modal')) return;
+		if (this.modeless) return;
 		if (e.target === this._dialog) {
 			this.hide();
 		}

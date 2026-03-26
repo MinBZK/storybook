@@ -27,13 +27,13 @@ export default {
 			description: 'Positie van de sheet',
 			table: { defaultValue: { summary: 'right' } },
 		},
-		modal: {
+		modeless: {
 			control: 'boolean',
-			description: 'Modaal (met backdrop en focusvergrendeling)',
-			table: { defaultValue: { summary: true } },
+			description: 'Niet-modaal (geen backdrop of focusvergrendeling); standaard is de sheet modaal',
+			table: { defaultValue: { summary: false } },
 		},
 	},
-	args: { placement: 'right', modal: true },
+	args: { placement: 'right', modeless: false },
 };
 
 const openNext = (e) => e.currentTarget.nextElementSibling.show();
@@ -51,7 +51,7 @@ const pageContent = html`
 
 const Template = (args) => html`
 	<rr-button @click=${openNext}>Open sheet</rr-button>
-	<rr-sheet placement=${args.placement} ?modal=${args.modal}>
+	<rr-sheet placement=${args.placement} ?modeless=${args.modeless}>
 		<rr-page sticky-header>
 			<rr-top-title-bar
 				slot="header"
@@ -65,31 +65,31 @@ const Template = (args) => html`
 
 export const Standaard = {
 	render: Template,
-	args: { placement: 'right', modal: true },
+	args: { placement: 'right', modeless: false },
 };
 
 export const Rechts = {
 	render: Template,
-	args: { placement: 'right', modal: true },
+	args: { placement: 'right', modeless: false },
 	parameters: { controls: { disable: true } },
 };
 
 export const Links = {
 	render: Template,
-	args: { placement: 'left', modal: true },
+	args: { placement: 'left', modeless: false },
 	parameters: { controls: { disable: true } },
 };
 
 export const Onder = {
 	render: Template,
-	args: { placement: 'bottom', modal: true },
+	args: { placement: 'bottom', modeless: false },
 	parameters: { controls: { disable: true } },
 };
 
 export const MetTerugknop = {
 	render: () => html`
 		<rr-button @click=${openNext}>Open sheet</rr-button>
-		<rr-sheet placement="right" modal>
+		<rr-sheet placement="right">
 			<rr-page sticky-header>
 				<rr-top-title-bar
 					slot="header"
@@ -110,7 +110,7 @@ export const MetTerugknop = {
 export const NietModaal = {
 	render: () => html`
 		<rr-button @click=${openNext}>Open niet-modale sheet</rr-button>
-		<rr-sheet placement="right">
+		<rr-sheet placement="right" modeless>
 			<rr-page sticky-header>
 				<rr-top-title-bar
 					slot="header"
@@ -134,7 +134,7 @@ export const NietModaal = {
 export const MetStickyFooter = {
 	render: () => html`
 		<rr-button @click=${openNext}>Open sheet</rr-button>
-		<rr-sheet placement="right" modal>
+		<rr-sheet placement="right">
 			<rr-page sticky-header sticky-footer>
 				<rr-top-title-bar
 					slot="header"
