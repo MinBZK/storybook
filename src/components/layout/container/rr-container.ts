@@ -35,8 +35,7 @@ import { containerStyles } from './rr-container.styles.ts';
 import { containerTemplate } from './rr-container.template.ts';
 
 type PaddingSize =
-	| 'none'
-	| 'md'
+	| '0'
 	| '2'
 	| '4'
 	| '6'

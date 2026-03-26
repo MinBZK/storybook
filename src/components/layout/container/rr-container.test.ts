@@ -81,8 +81,8 @@ describe('rr-container', () => {
 		expect(el.getAttribute('layout-area-lg-padding')).toBe('24');
 	});
 	it('accepts none as padding value', async () => {
-		el = await fixture('<rr-container padding="none"></rr-container>');
+		el = await fixture('<rr-container padding="0"></rr-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('padding')).toBe('none');
+		expect(el.getAttribute('padding')).toBe('0');
 	});
 });
