@@ -226,19 +226,10 @@ export const GenestdeSplitView = () => html`
 						</rr-simple-section>
 					</rr-page>
 				</rr-split-view-pane>
-
 				<rr-split-view-pane slot="secondary-bar">
-					<rr-page sticky-header>
-						<rr-top-title-bar
-							slot="header"
-							title="Uitvoer"
-						></rr-top-title-bar>
-						<rr-simple-section>
-							<rr-rich-text>
-								<p>Logboeken, validatieresultaten en statusinformatie.</p>
-							</rr-rich-text>
-						</rr-simple-section>
-					</rr-page>
+					<rr-container padding="16">
+						<rr-button variant="primary" full-width>Secondaire balk</rr-button>
+					</rr-container>
 				</rr-split-view-pane>
 			</rr-bar-split-view>
 		</rr-split-view-pane>

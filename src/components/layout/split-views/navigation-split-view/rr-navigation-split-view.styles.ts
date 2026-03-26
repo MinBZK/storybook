@@ -135,7 +135,7 @@ export const navigationSplitViewStyles = css`
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
-		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
+		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
 		width: var(--primitives-area-360);
 		height: calc(100vh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
@@ -194,7 +194,7 @@ export const navigationSplitViewStyles = css`
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
-		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
+		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
 		width: var(--components-sheet-side-md-width);
 		height: calc(100vh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
