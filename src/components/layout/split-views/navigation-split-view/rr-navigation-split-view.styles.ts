@@ -136,7 +136,7 @@ export const navigationSplitViewStyles = css`
 		overflow: hidden;
 		position: fixed;
 		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
-		width: var(--primitives-area-360);
+		width: var(--components-sheet-side-md-width);
 		height: calc(100vh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
