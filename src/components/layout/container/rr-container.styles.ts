@@ -25,7 +25,6 @@ export const containerStyles = css`
 	/* # Padding — base */
 
 	:host([padding="none"]) .container { padding: 0; }
-	:host([padding="md"]) .container { padding: var(--primitives-space-16); }
 	:host([padding="2"]) .container { padding: var(--primitives-space-2); }
 	:host([padding="4"]) .container { padding: var(--primitives-space-4); }
 	:host([padding="6"]) .container { padding: var(--primitives-space-6); }
@@ -48,7 +47,6 @@ export const containerStyles = css`
 	/* # Padding — sm viewport */
 
 	:host([sm-padding="none"]) .container { @media (max-width: ${smMax}) { padding: 0; } }
-	:host([sm-padding="md"]) .container { @media (max-width: ${smMax}) { padding: var(--primitives-space-24); } }
 	:host([sm-padding="2"]) .container { @media (max-width: ${smMax}) { padding: var(--primitives-space-2); } }
 	:host([sm-padding="4"]) .container { @media (max-width: ${smMax}) { padding: var(--primitives-space-4); } }
 	:host([sm-padding="6"]) .container { @media (max-width: ${smMax}) { padding: var(--primitives-space-6); } }
@@ -71,7 +69,6 @@ export const containerStyles = css`
 	/* # Padding — md viewport */
 
 	:host([md-padding="none"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: 0; } }
-	:host([md-padding="md"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-24); } }
 	:host([md-padding="2"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-2); } }
 	:host([md-padding="4"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-4); } }
 	:host([md-padding="6"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-6); } }
@@ -94,7 +91,6 @@ export const containerStyles = css`
 	/* # Padding — lg viewport */
 
 	:host([lg-padding="none"]) .container { @media (min-width: ${lgMin}) { padding: 0; } }
-	:host([lg-padding="md"]) .container { @media (min-width: ${lgMin}) { padding: var(--primitives-space-24); } }
 	:host([lg-padding="2"]) .container { @media (min-width: ${lgMin}) { padding: var(--primitives-space-2); } }
 	:host([lg-padding="4"]) .container { @media (min-width: ${lgMin}) { padding: var(--primitives-space-4); } }
 	:host([lg-padding="6"]) .container { @media (min-width: ${lgMin}) { padding: var(--primitives-space-6); } }
@@ -117,7 +113,6 @@ export const containerStyles = css`
 	/* # Padding — sm container */
 
 	:host([layout-area-sm-padding="none"]) .container { @container layout-area (max-width: ${smMax}) { padding: 0; } }
-	:host([layout-area-sm-padding="md"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-24); } }
 	:host([layout-area-sm-padding="2"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-2); } }
 	:host([layout-area-sm-padding="4"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-4); } }
 	:host([layout-area-sm-padding="6"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-6); } }
@@ -140,7 +135,6 @@ export const containerStyles = css`
 	/* # Padding — md container */
 
 	:host([layout-area-md-padding="none"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: 0; } }
-	:host([layout-area-md-padding="md"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-24); } }
 	:host([layout-area-md-padding="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-2); } }
 	:host([layout-area-md-padding="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-4); } }
 	:host([layout-area-md-padding="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-6); } }
@@ -163,7 +157,6 @@ export const containerStyles = css`
 	/* # Padding — lg container */
 
 	:host([layout-area-lg-padding="none"]) .container { @container layout-area (min-width: ${lgMin}) { padding: 0; } }
-	:host([layout-area-lg-padding="md"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-24); } }
 	:host([layout-area-lg-padding="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-2); } }
 	:host([layout-area-lg-padding="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-4); } }
 	:host([layout-area-lg-padding="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-6); } }
@@ -186,7 +179,6 @@ export const containerStyles = css`
 	/* # Padding Inline — base */
 
 	:host([padding-inline="none"]) .container { padding-inline: 0; }
-	:host([padding-inline="md"]) .container { padding-inline: var(--primitives-space-16); }
 	:host([padding-inline="2"]) .container { padding-inline: var(--primitives-space-2); }
 	:host([padding-inline="4"]) .container { padding-inline: var(--primitives-space-4); }
 	:host([padding-inline="6"]) .container { padding-inline: var(--primitives-space-6); }
@@ -209,7 +201,6 @@ export const containerStyles = css`
 	/* # Padding Inline — sm viewport */
 
 	:host([sm-padding-inline="none"]) .container { @media (max-width: ${smMax}) { padding-inline: 0; } }
-	:host([sm-padding-inline="md"]) .container { @media (max-width: ${smMax}) { padding-inline: var(--primitives-space-24); } }
 	:host([sm-padding-inline="2"]) .container { @media (max-width: ${smMax}) { padding-inline: var(--primitives-space-2); } }
 	:host([sm-padding-inline="4"]) .container { @media (max-width: ${smMax}) { padding-inline: var(--primitives-space-4); } }
 	:host([sm-padding-inline="6"]) .container { @media (max-width: ${smMax}) { padding-inline: var(--primitives-space-6); } }
@@ -232,7 +223,6 @@ export const containerStyles = css`
 	/* # Padding Inline — md viewport */
 
 	:host([md-padding-inline="none"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: 0; } }
-	:host([md-padding-inline="md"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-24); } }
 	:host([md-padding-inline="2"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-2); } }
 	:host([md-padding-inline="4"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-4); } }
 	:host([md-padding-inline="6"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-6); } }
@@ -255,7 +245,6 @@ export const containerStyles = css`
 	/* # Padding Inline — lg viewport */
 
 	:host([lg-padding-inline="none"]) .container { @media (min-width: ${lgMin}) { padding-inline: 0; } }
-	:host([lg-padding-inline="md"]) .container { @media (min-width: ${lgMin}) { padding-inline: var(--primitives-space-24); } }
 	:host([lg-padding-inline="2"]) .container { @media (min-width: ${lgMin}) { padding-inline: var(--primitives-space-2); } }
 	:host([lg-padding-inline="4"]) .container { @media (min-width: ${lgMin}) { padding-inline: var(--primitives-space-4); } }
 	:host([lg-padding-inline="6"]) .container { @media (min-width: ${lgMin}) { padding-inline: var(--primitives-space-6); } }
@@ -278,7 +267,6 @@ export const containerStyles = css`
 	/* # Padding Inline — sm container */
 
 	:host([layout-area-sm-padding-inline="none"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: 0; } }
-	:host([layout-area-sm-padding-inline="md"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-24); } }
 	:host([layout-area-sm-padding-inline="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-2); } }
 	:host([layout-area-sm-padding-inline="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-4); } }
 	:host([layout-area-sm-padding-inline="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-6); } }
@@ -301,7 +289,6 @@ export const containerStyles = css`
 	/* # Padding Inline — md container */
 
 	:host([layout-area-md-padding-inline="none"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: 0; } }
-	:host([layout-area-md-padding-inline="md"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-24); } }
 	:host([layout-area-md-padding-inline="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-2); } }
 	:host([layout-area-md-padding-inline="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-4); } }
 	:host([layout-area-md-padding-inline="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-6); } }
@@ -324,7 +311,6 @@ export const containerStyles = css`
 	/* # Padding Inline — lg container */
 
 	:host([layout-area-lg-padding-inline="none"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: 0; } }
-	:host([layout-area-lg-padding-inline="md"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-24); } }
 	:host([layout-area-lg-padding-inline="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-2); } }
 	:host([layout-area-lg-padding-inline="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-4); } }
 	:host([layout-area-lg-padding-inline="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-6); } }
@@ -347,7 +333,6 @@ export const containerStyles = css`
 	/* # Padding Block — base */
 
 	:host([padding-block="none"]) .container { padding-block: 0; }
-	:host([padding-block="md"]) .container { padding-block: var(--primitives-space-16); }
 	:host([padding-block="2"]) .container { padding-block: var(--primitives-space-2); }
 	:host([padding-block="4"]) .container { padding-block: var(--primitives-space-4); }
 	:host([padding-block="6"]) .container { padding-block: var(--primitives-space-6); }
@@ -370,7 +355,6 @@ export const containerStyles = css`
 	/* # Padding Block — sm viewport */
 
 	:host([sm-padding-block="none"]) .container { @media (max-width: ${smMax}) { padding-block: 0; } }
-	:host([sm-padding-block="md"]) .container { @media (max-width: ${smMax}) { padding-block: var(--primitives-space-24); } }
 	:host([sm-padding-block="2"]) .container { @media (max-width: ${smMax}) { padding-block: var(--primitives-space-2); } }
 	:host([sm-padding-block="4"]) .container { @media (max-width: ${smMax}) { padding-block: var(--primitives-space-4); } }
 	:host([sm-padding-block="6"]) .container { @media (max-width: ${smMax}) { padding-block: var(--primitives-space-6); } }
@@ -393,7 +377,6 @@ export const containerStyles = css`
 	/* # Padding Block — md viewport */
 
 	:host([md-padding-block="none"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: 0; } }
-	:host([md-padding-block="md"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-24); } }
 	:host([md-padding-block="2"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-2); } }
 	:host([md-padding-block="4"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-4); } }
 	:host([md-padding-block="6"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-6); } }
@@ -416,7 +399,6 @@ export const containerStyles = css`
 	/* # Padding Block — lg viewport */
 
 	:host([lg-padding-block="none"]) .container { @media (min-width: ${lgMin}) { padding-block: 0; } }
-	:host([lg-padding-block="md"]) .container { @media (min-width: ${lgMin}) { padding-block: var(--primitives-space-24); } }
 	:host([lg-padding-block="2"]) .container { @media (min-width: ${lgMin}) { padding-block: var(--primitives-space-2); } }
 	:host([lg-padding-block="4"]) .container { @media (min-width: ${lgMin}) { padding-block: var(--primitives-space-4); } }
 	:host([lg-padding-block="6"]) .container { @media (min-width: ${lgMin}) { padding-block: var(--primitives-space-6); } }
@@ -439,7 +421,6 @@ export const containerStyles = css`
 	/* # Padding Block — sm container */
 
 	:host([layout-area-sm-padding-block="none"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: 0; } }
-	:host([layout-area-sm-padding-block="md"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-24); } }
 	:host([layout-area-sm-padding-block="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-2); } }
 	:host([layout-area-sm-padding-block="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-4); } }
 	:host([layout-area-sm-padding-block="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-6); } }
@@ -462,7 +443,6 @@ export const containerStyles = css`
 	/* # Padding Block — md container */
 
 	:host([layout-area-md-padding-block="none"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: 0; } }
-	:host([layout-area-md-padding-block="md"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-24); } }
 	:host([layout-area-md-padding-block="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-2); } }
 	:host([layout-area-md-padding-block="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-4); } }
 	:host([layout-area-md-padding-block="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-6); } }
@@ -485,7 +465,6 @@ export const containerStyles = css`
 	/* # Padding Block — lg container */
 
 	:host([layout-area-lg-padding-block="none"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: 0; } }
-	:host([layout-area-lg-padding-block="md"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-24); } }
 	:host([layout-area-lg-padding-block="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-2); } }
 	:host([layout-area-lg-padding-block="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-4); } }
 	:host([layout-area-lg-padding-block="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-6); } }
@@ -508,7 +487,6 @@ export const containerStyles = css`
 	/* # Padding Top — base */
 
 	:host([padding-top="none"]) .container { padding-top: 0; }
-	:host([padding-top="md"]) .container { padding-top: var(--primitives-space-16); }
 	:host([padding-top="2"]) .container { padding-top: var(--primitives-space-2); }
 	:host([padding-top="4"]) .container { padding-top: var(--primitives-space-4); }
 	:host([padding-top="6"]) .container { padding-top: var(--primitives-space-6); }
@@ -531,7 +509,6 @@ export const containerStyles = css`
 	/* # Padding Top — sm viewport */
 
 	:host([sm-padding-top="none"]) .container { @media (max-width: ${smMax}) { padding-top: 0; } }
-	:host([sm-padding-top="md"]) .container { @media (max-width: ${smMax}) { padding-top: var(--primitives-space-24); } }
 	:host([sm-padding-top="2"]) .container { @media (max-width: ${smMax}) { padding-top: var(--primitives-space-2); } }
 	:host([sm-padding-top="4"]) .container { @media (max-width: ${smMax}) { padding-top: var(--primitives-space-4); } }
 	:host([sm-padding-top="6"]) .container { @media (max-width: ${smMax}) { padding-top: var(--primitives-space-6); } }
@@ -554,7 +531,6 @@ export const containerStyles = css`
 	/* # Padding Top — md viewport */
 
 	:host([md-padding-top="none"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: 0; } }
-	:host([md-padding-top="md"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-24); } }
 	:host([md-padding-top="2"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-2); } }
 	:host([md-padding-top="4"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-4); } }
 	:host([md-padding-top="6"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-6); } }
@@ -577,7 +553,6 @@ export const containerStyles = css`
 	/* # Padding Top — lg viewport */
 
 	:host([lg-padding-top="none"]) .container { @media (min-width: ${lgMin}) { padding-top: 0; } }
-	:host([lg-padding-top="md"]) .container { @media (min-width: ${lgMin}) { padding-top: var(--primitives-space-24); } }
 	:host([lg-padding-top="2"]) .container { @media (min-width: ${lgMin}) { padding-top: var(--primitives-space-2); } }
 	:host([lg-padding-top="4"]) .container { @media (min-width: ${lgMin}) { padding-top: var(--primitives-space-4); } }
 	:host([lg-padding-top="6"]) .container { @media (min-width: ${lgMin}) { padding-top: var(--primitives-space-6); } }
@@ -600,7 +575,6 @@ export const containerStyles = css`
 	/* # Padding Top — sm container */
 
 	:host([layout-area-sm-padding-top="none"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: 0; } }
-	:host([layout-area-sm-padding-top="md"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-24); } }
 	:host([layout-area-sm-padding-top="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-2); } }
 	:host([layout-area-sm-padding-top="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-4); } }
 	:host([layout-area-sm-padding-top="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-6); } }
@@ -623,7 +597,6 @@ export const containerStyles = css`
 	/* # Padding Top — md container */
 
 	:host([layout-area-md-padding-top="none"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: 0; } }
-	:host([layout-area-md-padding-top="md"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-24); } }
 	:host([layout-area-md-padding-top="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-2); } }
 	:host([layout-area-md-padding-top="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-4); } }
 	:host([layout-area-md-padding-top="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-6); } }
@@ -646,7 +619,6 @@ export const containerStyles = css`
 	/* # Padding Top — lg container */
 
 	:host([layout-area-lg-padding-top="none"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: 0; } }
-	:host([layout-area-lg-padding-top="md"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-24); } }
 	:host([layout-area-lg-padding-top="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-2); } }
 	:host([layout-area-lg-padding-top="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-4); } }
 	:host([layout-area-lg-padding-top="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-6); } }
@@ -669,7 +641,6 @@ export const containerStyles = css`
 	/* # Padding Right — base */
 
 	:host([padding-right="none"]) .container { padding-right: 0; }
-	:host([padding-right="md"]) .container { padding-right: var(--primitives-space-16); }
 	:host([padding-right="2"]) .container { padding-right: var(--primitives-space-2); }
 	:host([padding-right="4"]) .container { padding-right: var(--primitives-space-4); }
 	:host([padding-right="6"]) .container { padding-right: var(--primitives-space-6); }
@@ -692,7 +663,6 @@ export const containerStyles = css`
 	/* # Padding Right — sm viewport */
 
 	:host([sm-padding-right="none"]) .container { @media (max-width: ${smMax}) { padding-right: 0; } }
-	:host([sm-padding-right="md"]) .container { @media (max-width: ${smMax}) { padding-right: var(--primitives-space-24); } }
 	:host([sm-padding-right="2"]) .container { @media (max-width: ${smMax}) { padding-right: var(--primitives-space-2); } }
 	:host([sm-padding-right="4"]) .container { @media (max-width: ${smMax}) { padding-right: var(--primitives-space-4); } }
 	:host([sm-padding-right="6"]) .container { @media (max-width: ${smMax}) { padding-right: var(--primitives-space-6); } }
@@ -715,7 +685,6 @@ export const containerStyles = css`
 	/* # Padding Right — md viewport */
 
 	:host([md-padding-right="none"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: 0; } }
-	:host([md-padding-right="md"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-24); } }
 	:host([md-padding-right="2"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-2); } }
 	:host([md-padding-right="4"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-4); } }
 	:host([md-padding-right="6"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-6); } }
@@ -738,7 +707,6 @@ export const containerStyles = css`
 	/* # Padding Right — lg viewport */
 
 	:host([lg-padding-right="none"]) .container { @media (min-width: ${lgMin}) { padding-right: 0; } }
-	:host([lg-padding-right="md"]) .container { @media (min-width: ${lgMin}) { padding-right: var(--primitives-space-24); } }
 	:host([lg-padding-right="2"]) .container { @media (min-width: ${lgMin}) { padding-right: var(--primitives-space-2); } }
 	:host([lg-padding-right="4"]) .container { @media (min-width: ${lgMin}) { padding-right: var(--primitives-space-4); } }
 	:host([lg-padding-right="6"]) .container { @media (min-width: ${lgMin}) { padding-right: var(--primitives-space-6); } }
@@ -761,7 +729,6 @@ export const containerStyles = css`
 	/* # Padding Right — sm container */
 
 	:host([layout-area-sm-padding-right="none"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: 0; } }
-	:host([layout-area-sm-padding-right="md"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-24); } }
 	:host([layout-area-sm-padding-right="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-2); } }
 	:host([layout-area-sm-padding-right="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-4); } }
 	:host([layout-area-sm-padding-right="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-6); } }
@@ -784,7 +751,6 @@ export const containerStyles = css`
 	/* # Padding Right — md container */
 
 	:host([layout-area-md-padding-right="none"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: 0; } }
-	:host([layout-area-md-padding-right="md"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-24); } }
 	:host([layout-area-md-padding-right="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-2); } }
 	:host([layout-area-md-padding-right="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-4); } }
 	:host([layout-area-md-padding-right="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-6); } }
@@ -807,7 +773,6 @@ export const containerStyles = css`
 	/* # Padding Right — lg container */
 
 	:host([layout-area-lg-padding-right="none"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: 0; } }
-	:host([layout-area-lg-padding-right="md"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-24); } }
 	:host([layout-area-lg-padding-right="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-2); } }
 	:host([layout-area-lg-padding-right="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-4); } }
 	:host([layout-area-lg-padding-right="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-6); } }
@@ -830,7 +795,6 @@ export const containerStyles = css`
 	/* # Padding Bottom — base */
 
 	:host([padding-bottom="none"]) .container { padding-bottom: 0; }
-	:host([padding-bottom="md"]) .container { padding-bottom: var(--primitives-space-16); }
 	:host([padding-bottom="2"]) .container { padding-bottom: var(--primitives-space-2); }
 	:host([padding-bottom="4"]) .container { padding-bottom: var(--primitives-space-4); }
 	:host([padding-bottom="6"]) .container { padding-bottom: var(--primitives-space-6); }
@@ -853,7 +817,6 @@ export const containerStyles = css`
 	/* # Padding Bottom — sm viewport */
 
 	:host([sm-padding-bottom="none"]) .container { @media (max-width: ${smMax}) { padding-bottom: 0; } }
-	:host([sm-padding-bottom="md"]) .container { @media (max-width: ${smMax}) { padding-bottom: var(--primitives-space-24); } }
 	:host([sm-padding-bottom="2"]) .container { @media (max-width: ${smMax}) { padding-bottom: var(--primitives-space-2); } }
 	:host([sm-padding-bottom="4"]) .container { @media (max-width: ${smMax}) { padding-bottom: var(--primitives-space-4); } }
 	:host([sm-padding-bottom="6"]) .container { @media (max-width: ${smMax}) { padding-bottom: var(--primitives-space-6); } }
@@ -876,7 +839,6 @@ export const containerStyles = css`
 	/* # Padding Bottom — md viewport */
 
 	:host([md-padding-bottom="none"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: 0; } }
-	:host([md-padding-bottom="md"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-24); } }
 	:host([md-padding-bottom="2"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-2); } }
 	:host([md-padding-bottom="4"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-4); } }
 	:host([md-padding-bottom="6"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-6); } }
@@ -899,7 +861,6 @@ export const containerStyles = css`
 	/* # Padding Bottom — lg viewport */
 
 	:host([lg-padding-bottom="none"]) .container { @media (min-width: ${lgMin}) { padding-bottom: 0; } }
-	:host([lg-padding-bottom="md"]) .container { @media (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-24); } }
 	:host([lg-padding-bottom="2"]) .container { @media (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-2); } }
 	:host([lg-padding-bottom="4"]) .container { @media (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-4); } }
 	:host([lg-padding-bottom="6"]) .container { @media (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-6); } }
@@ -922,7 +883,6 @@ export const containerStyles = css`
 	/* # Padding Bottom — sm container */
 
 	:host([layout-area-sm-padding-bottom="none"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: 0; } }
-	:host([layout-area-sm-padding-bottom="md"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-24); } }
 	:host([layout-area-sm-padding-bottom="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-2); } }
 	:host([layout-area-sm-padding-bottom="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-4); } }
 	:host([layout-area-sm-padding-bottom="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-6); } }
@@ -945,7 +905,6 @@ export const containerStyles = css`
 	/* # Padding Bottom — md container */
 
 	:host([layout-area-md-padding-bottom="none"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: 0; } }
-	:host([layout-area-md-padding-bottom="md"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-24); } }
 	:host([layout-area-md-padding-bottom="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-2); } }
 	:host([layout-area-md-padding-bottom="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-4); } }
 	:host([layout-area-md-padding-bottom="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-6); } }
@@ -968,7 +927,6 @@ export const containerStyles = css`
 	/* # Padding Bottom — lg container */
 
 	:host([layout-area-lg-padding-bottom="none"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: 0; } }
-	:host([layout-area-lg-padding-bottom="md"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-24); } }
 	:host([layout-area-lg-padding-bottom="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-2); } }
 	:host([layout-area-lg-padding-bottom="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-4); } }
 	:host([layout-area-lg-padding-bottom="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-6); } }
@@ -991,7 +949,6 @@ export const containerStyles = css`
 	/* # Padding Left — base */
 
 	:host([padding-left="none"]) .container { padding-left: 0; }
-	:host([padding-left="md"]) .container { padding-left: var(--primitives-space-16); }
 	:host([padding-left="2"]) .container { padding-left: var(--primitives-space-2); }
 	:host([padding-left="4"]) .container { padding-left: var(--primitives-space-4); }
 	:host([padding-left="6"]) .container { padding-left: var(--primitives-space-6); }
@@ -1014,7 +971,6 @@ export const containerStyles = css`
 	/* # Padding Left — sm viewport */
 
 	:host([sm-padding-left="none"]) .container { @media (max-width: ${smMax}) { padding-left: 0; } }
-	:host([sm-padding-left="md"]) .container { @media (max-width: ${smMax}) { padding-left: var(--primitives-space-24); } }
 	:host([sm-padding-left="2"]) .container { @media (max-width: ${smMax}) { padding-left: var(--primitives-space-2); } }
 	:host([sm-padding-left="4"]) .container { @media (max-width: ${smMax}) { padding-left: var(--primitives-space-4); } }
 	:host([sm-padding-left="6"]) .container { @media (max-width: ${smMax}) { padding-left: var(--primitives-space-6); } }
@@ -1037,7 +993,6 @@ export const containerStyles = css`
 	/* # Padding Left — md viewport */
 
 	:host([md-padding-left="none"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: 0; } }
-	:host([md-padding-left="md"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-24); } }
 	:host([md-padding-left="2"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-2); } }
 	:host([md-padding-left="4"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-4); } }
 	:host([md-padding-left="6"]) .container { @media (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-6); } }
@@ -1060,7 +1015,6 @@ export const containerStyles = css`
 	/* # Padding Left — lg viewport */
 
 	:host([lg-padding-left="none"]) .container { @media (min-width: ${lgMin}) { padding-left: 0; } }
-	:host([lg-padding-left="md"]) .container { @media (min-width: ${lgMin}) { padding-left: var(--primitives-space-24); } }
 	:host([lg-padding-left="2"]) .container { @media (min-width: ${lgMin}) { padding-left: var(--primitives-space-2); } }
 	:host([lg-padding-left="4"]) .container { @media (min-width: ${lgMin}) { padding-left: var(--primitives-space-4); } }
 	:host([lg-padding-left="6"]) .container { @media (min-width: ${lgMin}) { padding-left: var(--primitives-space-6); } }
@@ -1083,7 +1037,6 @@ export const containerStyles = css`
 	/* # Padding Left — sm container */
 
 	:host([layout-area-sm-padding-left="none"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: 0; } }
-	:host([layout-area-sm-padding-left="md"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-24); } }
 	:host([layout-area-sm-padding-left="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-2); } }
 	:host([layout-area-sm-padding-left="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-4); } }
 	:host([layout-area-sm-padding-left="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-6); } }
@@ -1106,7 +1059,6 @@ export const containerStyles = css`
 	/* # Padding Left — md container */
 
 	:host([layout-area-md-padding-left="none"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: 0; } }
-	:host([layout-area-md-padding-left="md"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-24); } }
 	:host([layout-area-md-padding-left="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-2); } }
 	:host([layout-area-md-padding-left="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-4); } }
 	:host([layout-area-md-padding-left="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-6); } }
@@ -1129,7 +1081,6 @@ export const containerStyles = css`
 	/* # Padding Left — lg container */
 
 	:host([layout-area-lg-padding-left="none"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: 0; } }
-	:host([layout-area-lg-padding-left="md"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-24); } }
 	:host([layout-area-lg-padding-left="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-2); } }
 	:host([layout-area-lg-padding-left="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-4); } }
 	:host([layout-area-lg-padding-left="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-6); } }
