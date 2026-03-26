@@ -31,7 +31,7 @@ export class RRSideBySideSplitView extends LitElement {
 	panes = 2;
 
 	@state()
-	_visiblePanes = 2;
+	_visiblePanes = Infinity;
 
 	// Cached pane min-width — read from CSS in firstUpdated
 	private _paneMinWidth = 0;
