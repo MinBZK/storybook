@@ -84,7 +84,7 @@ export default {
 };
 
 const Template = (args) => html`
-	<rr-page tinted style="height: 120px;">
+	<rr-page background="tinted" style="height: 120px;">
 		<rr-top-title-bar
 			slot="header"
 			title=${args.title}
@@ -113,7 +113,7 @@ MetTerugknop.parameters = {
 };
 
 export const Compact = () => html`
-	<rr-page tinted style="height: 120px;">
+	<rr-page background="tinted" style="height: 120px;">
 		<rr-top-title-bar
 			class="is-compact"
 			slot="header"
@@ -149,7 +149,7 @@ MetSubtitel.args = {
 };
 
 export const MetWerkbalkActies = () => html`
-	<rr-page tinted style="height: 120px;">
+	<rr-page background="tinted" style="height: 120px;">
 		<rr-top-title-bar
 			slot="header"
 			title="Document"
@@ -177,7 +177,7 @@ MetWerkbalkActies.parameters = {
 };
 
 export const MetTitelAnker = () => html`
-	<rr-page tinted sticky-header style="height: 400px;">
+	<rr-page background="tinted" sticky-header style="height: 400px;">
 		<rr-top-title-bar
 			slot="header"
 			title="Paginatitel"
@@ -206,7 +206,7 @@ MetTitelAnker.parameters = {
 };
 
 export const MetTitelAnkerZonderActies = () => html`
-	<rr-page tinted sticky-header style="height: 400px;">
+	<rr-page background="tinted" sticky-header style="height: 400px;">
 		<rr-top-title-bar
 			slot="header"
 			title="Paginatitel"

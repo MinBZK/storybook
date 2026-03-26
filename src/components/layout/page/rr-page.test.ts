@@ -28,7 +28,7 @@ describe('rr-page', () => {
 	});
 
 	it('reflects tinted attribute', async () => {
-		el = await fixture('<rr-page tinted></rr-page>');
+		el = await fixture('<rr-page background="tinted"></rr-page>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('tinted')).toBe(true);
 	});

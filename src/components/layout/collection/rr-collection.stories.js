@@ -137,7 +137,7 @@ HorizontaalScrollend.parameters = { controls: { disable: true } };
 
 
 export const InSimpleSectie = () => html`
-	<rr-page tinted style="height: 500px;">
+	<rr-page background="tinted" style="height: 500px;">
 		<rr-simple-section>
 			<rr-rich-text size="flat">
 				<h2>Sectietitel</h2>
