@@ -254,3 +254,82 @@ describe('rr-sheet – slot', () => {
 		expect(slot.assignedElements().length).toBe(1);
 	});
 });
+
+
+/* ============================================================
+   Focus management
+   ============================================================ */
+
+describe('rr-sheet – focus management', () => {
+	let el: RRSheet;
+
+	afterEach(() => {
+		if (el) {
+			const dialog = el.shadowRoot?.querySelector('dialog');
+			if (dialog?.open) dialog.close();
+			cleanup(el);
+		}
+	});
+
+	it('focuses the first heading in light DOM when show() is called', async () => {
+		el = await fixture<RRSheet>(`
+			<rr-sheet>
+				<h2 id="heading">Sheet titel</h2>
+			</rr-sheet>
+		`);
+		await waitForUpdate(el);
+		el.show();
+		const heading = el.querySelector<HTMLElement>('#heading')!;
+		expect(document.activeElement === heading || el.shadowRoot!.activeElement === heading).toBe(true);
+	});
+
+	it('adds tabindex="-1" to heading on show() when not already set', async () => {
+		el = await fixture<RRSheet>(`
+			<rr-sheet>
+				<h2 id="heading">Sheet titel</h2>
+			</rr-sheet>
+		`);
+		await waitForUpdate(el);
+		el.show();
+		const heading = el.querySelector<HTMLElement>('#heading')!;
+		expect(heading.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('removes tabindex from heading on blur when it was added by show()', async () => {
+		el = await fixture<RRSheet>(`
+			<rr-sheet>
+				<h2 id="heading">Sheet titel</h2>
+			</rr-sheet>
+		`);
+		await waitForUpdate(el);
+		el.show();
+		const heading = el.querySelector<HTMLElement>('#heading')!;
+		heading.dispatchEvent(new Event('blur'));
+		expect(heading.hasAttribute('tabindex')).toBe(false);
+	});
+
+	it('preserves pre-existing tabindex on heading after blur', async () => {
+		el = await fixture<RRSheet>(`
+			<rr-sheet>
+				<h2 id="heading" tabindex="0">Sheet titel</h2>
+			</rr-sheet>
+		`);
+		await waitForUpdate(el);
+		el.show();
+		const heading = el.querySelector<HTMLElement>('#heading')!;
+		heading.dispatchEvent(new Event('blur'));
+		expect(heading.getAttribute('tabindex')).toBe('0');
+	});
+
+	it('falls back to focusing the dialog when no heading is present', async () => {
+		el = await fixture<RRSheet>(`
+			<rr-sheet>
+				<p>Geen heading</p>
+			</rr-sheet>
+		`);
+		await waitForUpdate(el);
+		el.show();
+		const dialog = el.shadowRoot!.querySelector('dialog')!;
+		expect(document.activeElement === dialog || el.shadowRoot!.activeElement === dialog).toBe(true);
+	});
+});
