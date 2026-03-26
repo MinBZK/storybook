@@ -61,151 +61,151 @@ export class RRContainer extends LitElement {
 	static override styles = containerStyles;
 
 
-	@property({ type: String, reflect: true, attribute: 'padding' })
+	@property({ type: String, reflect: true })
 	padding: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'padding-inline' })
+	@property({ type: String, reflect: true })
 	paddingInline: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'padding-block' })
+	@property({ type: String, reflect: true })
 	paddingBlock: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'padding-top' })
+	@property({ type: String, reflect: true })
 	paddingTop: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'padding-right' })
+	@property({ type: String, reflect: true })
 	paddingRight: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'padding-bottom' })
+	@property({ type: String, reflect: true })
 	paddingBottom: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'padding-left' })
+	@property({ type: String, reflect: true })
 	paddingLeft: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'sm-padding' })
+	@property({ type: String, reflect: true })
 	smPadding: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'sm-padding-inline' })
+	@property({ type: String, reflect: true })
 	smPaddingInline: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'sm-padding-block' })
+	@property({ type: String, reflect: true })
 	smPaddingBlock: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'sm-padding-top' })
+	@property({ type: String, reflect: true })
 	smPaddingTop: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'sm-padding-right' })
+	@property({ type: String, reflect: true })
 	smPaddingRight: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'sm-padding-bottom' })
+	@property({ type: String, reflect: true })
 	smPaddingBottom: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'sm-padding-left' })
+	@property({ type: String, reflect: true })
 	smPaddingLeft: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'md-padding' })
+	@property({ type: String, reflect: true })
 	mdPadding: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'md-padding-inline' })
+	@property({ type: String, reflect: true })
 	mdPaddingInline: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'md-padding-block' })
+	@property({ type: String, reflect: true })
 	mdPaddingBlock: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'md-padding-top' })
+	@property({ type: String, reflect: true })
 	mdPaddingTop: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'md-padding-right' })
+	@property({ type: String, reflect: true })
 	mdPaddingRight: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'md-padding-bottom' })
+	@property({ type: String, reflect: true })
 	mdPaddingBottom: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'md-padding-left' })
+	@property({ type: String, reflect: true })
 	mdPaddingLeft: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'lg-padding' })
+	@property({ type: String, reflect: true })
 	lgPadding: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'lg-padding-inline' })
+	@property({ type: String, reflect: true })
 	lgPaddingInline: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'lg-padding-block' })
+	@property({ type: String, reflect: true })
 	lgPaddingBlock: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'lg-padding-top' })
+	@property({ type: String, reflect: true })
 	lgPaddingTop: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'lg-padding-right' })
+	@property({ type: String, reflect: true })
 	lgPaddingRight: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'lg-padding-bottom' })
+	@property({ type: String, reflect: true })
 	lgPaddingBottom: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'lg-padding-left' })
+	@property({ type: String, reflect: true })
 	lgPaddingLeft: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-sm-padding' })
+	@property({ type: String, reflect: true })
 	layoutAreaSmPadding: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-sm-padding-inline' })
+	@property({ type: String, reflect: true })
 	layoutAreaSmPaddingInline: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-sm-padding-block' })
+	@property({ type: String, reflect: true })
 	layoutAreaSmPaddingBlock: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-sm-padding-top' })
+	@property({ type: String, reflect: true })
 	layoutAreaSmPaddingTop: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-sm-padding-right' })
+	@property({ type: String, reflect: true })
 	layoutAreaSmPaddingRight: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-sm-padding-bottom' })
+	@property({ type: String, reflect: true })
 	layoutAreaSmPaddingBottom: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-sm-padding-left' })
+	@property({ type: String, reflect: true })
 	layoutAreaSmPaddingLeft: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-md-padding' })
+	@property({ type: String, reflect: true })
 	layoutAreaMdPadding: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-md-padding-inline' })
+	@property({ type: String, reflect: true })
 	layoutAreaMdPaddingInline: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-md-padding-block' })
+	@property({ type: String, reflect: true })
 	layoutAreaMdPaddingBlock: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-md-padding-top' })
+	@property({ type: String, reflect: true })
 	layoutAreaMdPaddingTop: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-md-padding-right' })
+	@property({ type: String, reflect: true })
 	layoutAreaMdPaddingRight: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-md-padding-bottom' })
+	@property({ type: String, reflect: true })
 	layoutAreaMdPaddingBottom: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-md-padding-left' })
+	@property({ type: String, reflect: true })
 	layoutAreaMdPaddingLeft: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-lg-padding' })
+	@property({ type: String, reflect: true })
 	layoutAreaLgPadding: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-lg-padding-inline' })
+	@property({ type: String, reflect: true })
 	layoutAreaLgPaddingInline: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-lg-padding-block' })
+	@property({ type: String, reflect: true })
 	layoutAreaLgPaddingBlock: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-lg-padding-top' })
+	@property({ type: String, reflect: true })
 	layoutAreaLgPaddingTop: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-lg-padding-right' })
+	@property({ type: String, reflect: true })
 	layoutAreaLgPaddingRight: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-lg-padding-bottom' })
+	@property({ type: String, reflect: true })
 	layoutAreaLgPaddingBottom: PaddingSize | undefined = undefined;
 
-	@property({ type: String, reflect: true, attribute: 'layout-area-lg-padding-left' })
+	@property({ type: String, reflect: true })
 	layoutAreaLgPaddingLeft: PaddingSize | undefined = undefined;
 
 	override render() {
