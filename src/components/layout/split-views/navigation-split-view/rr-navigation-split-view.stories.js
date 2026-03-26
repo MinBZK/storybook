@@ -58,7 +58,7 @@ export default {
 };
 
 export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
-	setTimeout(() => {
+	customElements.whenDefined('rr-navigation-split-view').then(() => {
 		const splitView = document.getElementById('split-view-demo');
 		const inspectorButton = document.getElementById('inspector-toggle');
 		const navButton = document.getElementById('sidebar-toggle');
@@ -86,7 +86,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 
 		inspectorButton?.addEventListener('click', () => splitView.showInspectorSheet());
 		navButton?.addEventListener('click', () => splitView.showSidebarSheet());
-	}, 0);
+	});
 
 	return html`
 		<rr-navigation-split-view
