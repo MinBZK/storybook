@@ -43,7 +43,7 @@ export default {
 	},
 };
 
-export const MetHorizontalSplitView = ({ background }) => html`
+export const MetHorizontalSplitView = ({ background }: { background: string }) => html`
 	<rr-app-view style="height: 600px;" background=${background}>
 		<rr-navigation-split-view>
 			<rr-page sticky-header slot="sidebar">
