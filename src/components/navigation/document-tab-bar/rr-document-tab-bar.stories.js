@@ -1,36 +1,170 @@
 import { html } from 'lit';
 import './rr-document-tab-bar.ts';
-import '../document-tab-bar-item/rr-document-tab-bar-item.ts';
-import '../../actions/icon-button/rr-icon-button.ts';
-
-const moreIcon = html`<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="4" cy="10" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/></svg>`;
-const plusIcon = html`<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4v12M4 10h12"/></svg>`;
+import './../../actions/icon-button/rr-icon-button.ts';
+import './../../content/icon/rr-icon.ts';
 
 export default {
-  title: 'Components/Navigation/Document Tab Bar',
-  component: 'rr-document-tab-bar',
-  tags: ['autodocs'],
+	title: 'Components/Navigation/Document Tab Bar',
+	component: 'rr-document-tab-bar',
+	tags: ['autodocs'],
+	parameters: {
+		componentSource: {
+			file: 'src/components/navigation/document-tab-bar/rr-document-tab-bar.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: { type: 'stable' },
+	},
+	argTypes: {
+		overflowButtonLabel: {
+			control: 'text',
+			name: 'overflow-button-label',
+			description: 'Label voor de automatische overloopknop',
+			table: { defaultValue: { summary: 'Meer' } },
+		},
+		accessibleLabel: {
+			control: 'text',
+			name: 'accessible-label',
+			description: 'Toegankelijke naam voor de navigatieregio',
+			table: { defaultValue: { summary: 'Tabbladen' } },
+		},
+	},
+	args: {
+		overflowButtonLabel: 'Meer',
+		accessibleLabel: 'Documenten',
+	},
 };
 
-export const Default = () => html`
-  <rr-document-tab-bar>
-    <rr-document-tab-bar-item selected subtitle="Wet op de Zorgtoeslag">Artikel 2</rr-document-tab-bar-item>
-    <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 1</rr-document-tab-bar-item>
-    <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 68b</rr-document-tab-bar-item>
-    <rr-icon-button slot="end" variant="neutral-tinted" size="md" label="Meer">${moreIcon}</rr-icon-button>
-    <rr-icon-button slot="end" variant="neutral-tinted" size="md" label="Nieuw">${plusIcon}</rr-icon-button>
-  </rr-document-tab-bar>
+const Template = ({ overflowButtonLabel, accessibleLabel }) => html`
+	<rr-document-tab-bar
+		overflow-button-label=${overflowButtonLabel}
+		accessible-label=${accessibleLabel}
+	>
+		<rr-document-tab-bar-item
+			selected
+			title="Artikel 2"
+			subtitle="Wet op de Zorgtoeslag"
+			short-title="Art. 2"
+			short-subtitle="WZT"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 1"
+			subtitle="Zorgverzekeringswet"
+			short-title="Art. 1"
+			short-subtitle="Zvw"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 3:2"
+			subtitle="Algemene wet bestuursrecht"
+			short-title="Art. 3:2"
+			short-subtitle="Awb"
+		></rr-document-tab-bar-item>
+		<rr-icon-button slot="end" variant="neutral-tinted" label="Nieuw tabblad">
+			<rr-icon name="plus"></rr-icon>
+		</rr-icon-button>
+	</rr-document-tab-bar>
 `;
 
-export const ManyTabs = () => html`
-  <rr-document-tab-bar>
-    <rr-document-tab-bar-item selected subtitle="Wet op de Zorgtoeslag">Artikel 2</rr-document-tab-bar-item>
-    <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 1</rr-document-tab-bar-item>
-    <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 68b</rr-document-tab-bar-item>
-    <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 69</rr-document-tab-bar-item>
-    <rr-document-tab-bar-item subtitle="Zorgverzekeringswet">Artikel 24</rr-document-tab-bar-item>
-    <rr-document-tab-bar-item subtitle="WML">Artikel 8</rr-document-tab-bar-item>
-    <rr-icon-button slot="end" variant="neutral-tinted" size="md" label="Meer">${moreIcon}</rr-icon-button>
-  </rr-document-tab-bar>
-`;
+export const Standaard = Template.bind({});
 
+export const VeelTabbladen = () => html`
+	<rr-document-tab-bar accessible-label="Documenten">
+		<rr-document-tab-bar-item
+			selected
+			title="Artikel 2"
+			subtitle="Wet op de Zorgtoeslag"
+			short-title="Art. 2"
+			short-subtitle="WZT"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 1"
+			subtitle="Zorgverzekeringswet"
+			short-title="Art. 1"
+			short-subtitle="Zvw"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 68b"
+			subtitle="Zorgverzekeringswet"
+			short-title="Art. 68b"
+			short-subtitle="Zvw"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 3:2"
+			subtitle="Algemene wet bestuursrecht"
+			short-title="Art. 3:2"
+			short-subtitle="Awb"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 7"
+			subtitle="Algemene wet inkomensafhankelijke regelingen"
+			short-title="Art. 7"
+			short-subtitle="Awir"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 67"
+			subtitle="Algemene wet inzake rijksbelastingen"
+			short-title="Art. 67"
+			short-subtitle="AWR"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 18"
+			subtitle="Algemene Kinderbijslagwet"
+			short-title="Art. 18"
+			short-subtitle="AKW"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 4:3"
+			subtitle="Algemene wet bestuursrecht"
+			short-title="Art. 4:3"
+			short-subtitle="Awb"
+		></rr-document-tab-bar-item>
+		<rr-icon-button slot="end" variant="neutral-tinted" label="Nieuw tabblad">
+			<rr-icon name="plus"></rr-icon>
+		</rr-icon-button>
+	</rr-document-tab-bar>
+`;
+VeelTabbladen.parameters = { controls: { disable: true } };
+
+export const ZonderSubtitel = () => html`
+	<rr-document-tab-bar accessible-label="Documenten">
+		<rr-document-tab-bar-item
+			selected
+			title="Artikel 2"
+			short-title="Art. 2"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 1"
+			short-title="Art. 1"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 3:2"
+			short-title="Art. 3:2"
+		></rr-document-tab-bar-item>
+	</rr-document-tab-bar>
+`;
+ZonderSubtitel.parameters = { controls: { disable: true } };
+
+export const Uitgeschakeld = () => html`
+	<rr-document-tab-bar accessible-label="Documenten">
+		<rr-document-tab-bar-item
+			selected
+			title="Artikel 2"
+			subtitle="Wet op de Zorgtoeslag"
+			short-title="Art. 2"
+			short-subtitle="WZT"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			disabled
+			title="Artikel 1"
+			subtitle="Zorgverzekeringswet"
+			short-title="Art. 1"
+			short-subtitle="Zvw"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			title="Artikel 3:2"
+			subtitle="Algemene wet bestuursrecht"
+			short-title="Art. 3:2"
+			short-subtitle="Awb"
+		></rr-document-tab-bar-item>
+	</rr-document-tab-bar>
+`;
+Uitgeschakeld.parameters = { controls: { disable: true } };

@@ -1,199 +1,525 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { RRDocumentTabBar } from './rr-document-tab-bar.ts';
+import type { RRDocumentTabBar, RRDocumentTabBarItem } from './rr-document-tab-bar.ts';
 import './rr-document-tab-bar.ts';
 
 function threeTabBar(): string {
-  return `
-    <rr-document-tab-bar>
-      <rr-document-tab-bar-item selected>Doc A</rr-document-tab-bar-item>
-      <rr-document-tab-bar-item>Doc B</rr-document-tab-bar-item>
-      <rr-document-tab-bar-item>Doc C</rr-document-tab-bar-item>
-    </rr-document-tab-bar>
-  `;
+	return `
+		<rr-document-tab-bar accessible-label="Documenten">
+			<rr-document-tab-bar-item selected title="Artikel 1" subtitle="Wet A"></rr-document-tab-bar-item>
+			<rr-document-tab-bar-item title="Artikel 2" subtitle="Wet B"></rr-document-tab-bar-item>
+			<rr-document-tab-bar-item title="Artikel 3" subtitle="Wet C"></rr-document-tab-bar-item>
+		</rr-document-tab-bar>
+	`;
 }
 
-function clickInner(item: Element) {
-  const inner = item.shadowRoot!.querySelector('[part="item"]') as HTMLElement;
-  inner.click();
+function getItems(el: RRDocumentTabBar): RRDocumentTabBarItem[] {
+	return Array.from(el.querySelectorAll('rr-document-tab-bar-item'));
+}
+
+function clickItem(item: Element) {
+	item.shadowRoot!.querySelector('.document-tab-bar__item')!.dispatchEvent(
+		new MouseEvent('click', { bubbles: true, composed: true })
+	);
+}
+
+function clickDismiss(item: Element) {
+	item.shadowRoot!.querySelector('.document-tab-bar__item-dismiss-button')!.dispatchEvent(
+		new MouseEvent('click', { bubbles: true, composed: true })
+	);
 }
 
 function pressKey(target: Element, key: string) {
-  target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
+	target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
 }
 
+
+/* ============================================================
+   rr-document-tab-bar-item – render
+   ============================================================ */
+
+describe('rr-document-tab-bar-item', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders without error', async () => {
+		el = await fixture('<rr-document-tab-bar-item></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('renders subtitle when provided', async () => {
+		el = await fixture('<rr-document-tab-bar-item title="Artikel 1" subtitle="Wet A"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+		const subtitle = el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--regular');
+		expect(subtitle).not.toBeNull();
+		expect(subtitle!.textContent?.trim()).toBe('Wet A');
+	});
+
+	it('does not render subtitle when not provided', async () => {
+		el = await fixture('<rr-document-tab-bar-item title="Artikel 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--regular')).toBeNull();
+	});
+
+	it('renders short-title in short slot', async () => {
+		el = await fixture('<rr-document-tab-bar-item title="Artikel 1" short-title="Art. 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-title--short')!.textContent?.trim()).toBe('Art. 1');
+	});
+
+	it('falls back to title in short slot when short-title not provided', async () => {
+		el = await fixture('<rr-document-tab-bar-item title="Artikel 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-title--short')!.textContent?.trim()).toBe('Artikel 1');
+	});
+
+	it('falls back to subtitle in short subtitle slot when short-subtitle not provided', async () => {
+		el = await fixture('<rr-document-tab-bar-item title="Artikel 1" subtitle="Wet A"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--short')!.textContent?.trim()).toBe('Wet A');
+	});
+
+	it('sets role="none" on host', async () => {
+		el = await fixture('<rr-document-tab-bar-item title="Artikel 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('none');
+	});
+
+	it('sets role="tab" on inner element', async () => {
+		el = await fixture('<rr-document-tab-bar-item title="Artikel 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tab"]')).not.toBeNull();
+	});
+});
+
+
+/* ============================================================
+   rr-document-tab-bar-item – events
+   ============================================================ */
+
+describe('rr-document-tab-bar-item – events', () => {
+	let el: RRDocumentTabBarItem;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('fires select event on click', async () => {
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item title="Artikel 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+
+		let detail: any;
+		el.addEventListener('select', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		clickItem(el);
+
+		expect(detail).toBeDefined();
+		expect(detail.item).toBe(el);
+	});
+
+	it('does not fire select when disabled', async () => {
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item disabled title="Artikel 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+
+		let fired = false;
+		el.addEventListener('select', () => { fired = true; });
+		clickItem(el);
+
+		expect(fired).toBe(false);
+	});
+
+	it('does not set selected on itself after click', async () => {
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item title="Artikel 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+
+		clickItem(el);
+		await waitForUpdate(el);
+
+		expect(el.selected).toBe(false);
+	});
+
+	it('fires dismiss event on dismiss button click', async () => {
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item title="Artikel 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+
+		let detail: any;
+		el.addEventListener('dismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		clickDismiss(el);
+
+		expect(detail).toBeDefined();
+		expect(detail.item).toBe(el);
+	});
+
+	it('dismiss does not fire select', async () => {
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item title="Artikel 1"></rr-document-tab-bar-item>');
+		await waitForUpdate(el);
+
+		let selectFired = false;
+		el.addEventListener('select', () => { selectFired = true; });
+		clickDismiss(el);
+
+		expect(selectFired).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   rr-document-tab-bar – render & ARIA
+   ============================================================ */
+
 describe('rr-document-tab-bar', () => {
-  let el: HTMLElement;
+	let el: HTMLElement;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('renders without error', async () => {
-    el = await fixture('<rr-document-tab-bar></rr-document-tab-bar>');
-    await waitForUpdate(el);
+	it('renders without error', async () => {
+		el = await fixture('<rr-document-tab-bar accessible-label="Docs"></rr-document-tab-bar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
 
-    expect(el.shadowRoot).not.toBeNull();
-  });
+	it('renders a nav element', async () => {
+		el = await fixture(threeTabBar());
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nav')).not.toBeNull();
+	});
+
+	it('sets role="tablist" on items container', async () => {
+		el = await fixture(threeTabBar());
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__items')!.getAttribute('role')).toBe('tablist');
+	});
+
+	it('does not set role on host', async () => {
+		el = await fixture(threeTabBar());
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBeNull();
+	});
 });
 
-describe('rr-document-tab-bar – ARIA & structure', () => {
-  let el: RRDocumentTabBar;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+/* ============================================================
+   rr-document-tab-bar – accessible label
+   ============================================================ */
 
-  it('sets role="tablist" on host', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
+describe('rr-document-tab-bar – accessible label', () => {
+	let el: RRDocumentTabBar;
 
-    expect(el.getAttribute('role')).toBe('tablist');
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('falls back to "Tabbladen" when no accessible-label is provided', async () => {
+		vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar></rr-document-tab-bar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Tabbladen');
+	});
+
+	it('warns once when no accessible-label is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar></rr-document-tab-bar>');
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledOnce();
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
+	});
+
+	it('does not warn when accessible-label is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar accessible-label="Documenten"></rr-document-tab-bar>');
+		await waitForUpdate(el);
+		expect(warnSpy).not.toHaveBeenCalled();
+	});
+
+	it('forwards accessible-label to nav aria-label', async () => {
+		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar accessible-label="Mijn documenten"></rr-document-tab-bar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Mijn documenten');
+	});
 });
+
+
+/* ============================================================
+   rr-document-tab-bar – item selection
+   ============================================================ */
 
 describe('rr-document-tab-bar – item selection', () => {
-  let el: RRDocumentTabBar;
+	let el: RRDocumentTabBar;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-  it('deselects other items when one is selected via click', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
+	it('deselects other items when one is selected', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
 
-    const items = el.querySelectorAll('rr-document-tab-bar-item');
-    expect(items[0].hasAttribute('selected')).toBe(true);
+		const items = getItems(el);
+		expect(items[0].selected).toBe(true);
 
-    // Click the inner element of the second item
-    clickInner(items[1]);
-    await waitForUpdate(el);
+		clickItem(items[1]);
+		await waitForUpdate(el);
 
-    expect(items[0].hasAttribute('selected')).toBe(false);
-    expect(items[1].hasAttribute('selected')).toBe(true);
-  });
+		expect(items[0].selected).toBe(false);
+		expect(items[1].selected).toBe(true);
+	});
 
-  it('dispatches tabchange event on selection', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
+	it('dispatches tabchange event with item detail', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
 
-    let detail: any;
-    el.addEventListener('tabchange', ((e: CustomEvent) => {
-      detail = e.detail;
-    }) as EventListener);
+		let detail: any;
+		el.addEventListener('tabchange', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 
-    clickInner(el.querySelectorAll('rr-document-tab-bar-item')[1]);
-    await waitForUpdate(el);
+		clickItem(getItems(el)[1]);
+		await waitForUpdate(el);
 
-    expect(detail).toBeDefined();
-    expect(detail.item).toBe(el.querySelectorAll('rr-document-tab-bar-item')[1]);
-  });
+		expect(detail).toBeDefined();
+		expect(detail.item).toBe(getItems(el)[1]);
+	});
+
+	it('select event does not bubble past the tab bar', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		let selectBubbled = false;
+		document.addEventListener('select', () => { selectBubbled = true; }, { once: true });
+
+		clickItem(getItems(el)[0]);
+		await waitForUpdate(el);
+
+		expect(selectBubbled).toBe(false);
+	});
 });
 
-describe('rr-document-tab-bar – tab dismissal', () => {
-  let el: RRDocumentTabBar;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-  });
+/* ============================================================
+   rr-document-tab-bar – dismiss
+   ============================================================ */
 
-  it('dispatches tabdismiss event when dismiss button is clicked', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
+describe('rr-document-tab-bar – dismiss', () => {
+	let el: RRDocumentTabBar;
 
-    let detail: any;
-    el.addEventListener('tabdismiss', ((e: CustomEvent) => {
-      detail = e.detail;
-    }) as EventListener);
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
 
-    // Click the dismiss button in the first item's shadow DOM
-    const firstItem = el.querySelectorAll('rr-document-tab-bar-item')[0];
-    const dismissBtn = firstItem.shadowRoot!.querySelector('[part="dismiss"]') as HTMLElement;
-    dismissBtn.click();
-    await waitForUpdate(el);
+	it('dispatches tabdismiss with item and nextItem', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
 
-    expect(detail).toBeDefined();
-    expect(detail.item).toBe(firstItem);
-  });
+		let detail: any;
+		el.addEventListener('tabdismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 
-  it('dismiss click does not trigger tab selection', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
+		const items = getItems(el);
+		clickDismiss(items[0]);
+		await waitForUpdate(el);
 
-    let tabchangeFired = false;
-    el.addEventListener('tabchange', () => { tabchangeFired = true; });
+		expect(detail.item).toBe(items[0]);
+	});
 
-    const secondItem = el.querySelectorAll('rr-document-tab-bar-item')[1];
-    const dismissBtn = secondItem.shadowRoot!.querySelector('[part="dismiss"]') as HTMLElement;
-    dismissBtn.click();
-    await waitForUpdate(el);
+	it('selects right neighbour when selected item is dismissed', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
 
-    // Selection should not change because dismiss stops propagation
-    expect(tabchangeFired).toBe(false);
-  });
+		const items = getItems(el);
+		expect(items[0].selected).toBe(true);
+
+		let detail: any;
+		el.addEventListener('tabdismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+
+		clickDismiss(items[0]);
+		await waitForUpdate(el);
+
+		expect(detail.nextItem).toBe(items[1]);
+		expect(items[1].selected).toBe(true);
+	});
+
+	it('selects left neighbour when rightmost selected item is dismissed', async () => {
+		el = await fixture<RRDocumentTabBar>(`
+			<rr-document-tab-bar accessible-label="Docs">
+				<rr-document-tab-bar-item title="A"></rr-document-tab-bar-item>
+				<rr-document-tab-bar-item selected title="B"></rr-document-tab-bar-item>
+			</rr-document-tab-bar>
+		`);
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		let detail: any;
+		el.addEventListener('tabdismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+
+		clickDismiss(items[1]);
+		await waitForUpdate(el);
+
+		expect(detail.nextItem).toBe(items[0]);
+		expect(items[0].selected).toBe(true);
+	});
+
+	it('nextItem is null when unselected item is dismissed', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		let detail: any;
+		el.addEventListener('tabdismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+
+		clickDismiss(getItems(el)[1]);
+		await waitForUpdate(el);
+
+		expect(detail.nextItem).toBeNull();
+	});
+
+	it('dispatches tabempty when last item is dismissed', async () => {
+		el = await fixture<RRDocumentTabBar>(`
+			<rr-document-tab-bar accessible-label="Docs">
+				<rr-document-tab-bar-item selected title="A"></rr-document-tab-bar-item>
+			</rr-document-tab-bar>
+		`);
+		await waitForUpdate(el);
+
+		let emptyFired = false;
+		el.addEventListener('tabempty', () => { emptyFired = true; });
+
+		clickDismiss(getItems(el)[0]);
+		await waitForUpdate(el);
+
+		expect(emptyFired).toBe(true);
+	});
+
+	it('dismiss event does not bubble past the tab bar', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		let dismissBubbled = false;
+		document.addEventListener('dismiss', () => { dismissBubbled = true; }, { once: true });
+
+		clickDismiss(getItems(el)[0]);
+		await waitForUpdate(el);
+
+		expect(dismissBubbled).toBe(false);
+	});
 });
+
+
+/* ============================================================
+   rr-document-tab-bar – display order
+   ============================================================ */
+
+describe('rr-document-tab-bar – display order', () => {
+	let el: RRDocumentTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('initialises _itemOrder from DOM order', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		expect(el._itemOrder).toHaveLength(3);
+	});
+
+	it('assigns slot attributes to all items', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		getItems(el).forEach(item => {
+			expect(item.getAttribute('slot')).toMatch(/^item-rr-document-tab-bar-item-/);
+		});
+	});
+
+	it('updates _itemOrder when an item is added', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		expect(el._itemOrder).toHaveLength(3);
+
+		const newItem = document.createElement('rr-document-tab-bar-item');
+		newItem.textContent = 'Artikel 4';
+		el.appendChild(newItem);
+
+		await new Promise(resolve => setTimeout(resolve, 20));
+		await waitForUpdate(el);
+
+		expect(el._itemOrder).toHaveLength(4);
+	});
+
+	it('updates _itemOrder when an item is removed', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		const item = getItems(el)[2];
+		el.removeChild(item);
+
+		await new Promise(resolve => setTimeout(resolve, 20));
+		await waitForUpdate(el);
+
+		expect(el._itemOrder).toHaveLength(2);
+	});
+});
+
+
+/* ============================================================
+   rr-document-tab-bar – keyboard navigation
+   ============================================================ */
 
 describe('rr-document-tab-bar – keyboard navigation', () => {
-  let el: RRDocumentTabBar;
+	let el: RRDocumentTabBar;
 
-  afterEach(() => {
-    if (el) cleanup(el);
-    vi.restoreAllMocks();
-  });
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
 
-  it('ArrowRight calls focus on next item', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
+	it('ArrowRight calls focus on next item', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
 
-    const items = el.querySelectorAll('rr-document-tab-bar-item');
-    const spy = vi.spyOn(items[1] as HTMLElement, 'focus');
+		const items = getItems(el);
+		const spy = vi.spyOn(items[1] as HTMLElement, 'focus');
+		pressKey(items[0], 'ArrowRight');
+		expect(spy).toHaveBeenCalled();
+	});
 
-    pressKey(items[0], 'ArrowRight');
-    expect(spy).toHaveBeenCalled();
-  });
+	it('ArrowLeft calls focus on previous item', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
 
-  it('ArrowLeft calls focus on previous item', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
+		const items = getItems(el);
+		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+		pressKey(items[1], 'ArrowLeft');
+		expect(spy).toHaveBeenCalled();
+	});
 
-    const items = el.querySelectorAll('rr-document-tab-bar-item');
-    const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+	it('ArrowRight wraps from last to first', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
 
-    pressKey(items[1], 'ArrowLeft');
-    expect(spy).toHaveBeenCalled();
-  });
+		const items = getItems(el);
+		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+		pressKey(items[2], 'ArrowRight');
+		expect(spy).toHaveBeenCalled();
+	});
 
-  it('ArrowRight wraps from last to first', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
+	it('Home calls focus on first item', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
 
-    const items = el.querySelectorAll('rr-document-tab-bar-item');
-    const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+		const items = getItems(el);
+		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+		pressKey(items[2], 'Home');
+		expect(spy).toHaveBeenCalled();
+	});
 
-    pressKey(items[2], 'ArrowRight');
-    expect(spy).toHaveBeenCalled();
-  });
+	it('End calls focus on last item', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
 
-  it('Home calls focus on first item', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
-
-    const items = el.querySelectorAll('rr-document-tab-bar-item');
-    const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
-
-    pressKey(items[2], 'Home');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('End calls focus on last item', async () => {
-    el = await fixture<RRDocumentTabBar>(threeTabBar());
-    await waitForUpdate(el);
-
-    const items = el.querySelectorAll('rr-document-tab-bar-item');
-    const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
-
-    pressKey(items[0], 'End');
-    expect(spy).toHaveBeenCalled();
-  });
+		const items = getItems(el);
+		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
+		pressKey(items[0], 'End');
+		expect(spy).toHaveBeenCalled();
+	});
 });
