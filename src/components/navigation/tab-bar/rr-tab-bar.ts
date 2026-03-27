@@ -1,127 +1,303 @@
 /**
  * RegelRecht Tab Bar Component (Lit + TypeScript)
  *
+ * Een horizontale navigatiebalk met wederzijds exclusieve tabbladen.
+ * Exporteert zowel RRTabBar als RRTabBarItem.
+ *
  * @element rr-tab-bar
+ * @attr {boolean} compact           - Toont items in compact weergave: icoon boven label gestapeld
+ * @attr {boolean} responsive        - Schakelt automatisch over naar compact onder 480px containerbreedte
+ * @attr {boolean} disabled          - Schakelt alle items uit
+ * @attr {string}  accessible-label  - Toegankelijke naam voor de navigatieregio; standaard 'Tabs'
  *
- * @slot - Default slot for tab bar items (rr-tab-bar-item components)
+ * @slot - rr-tab-bar-item elementen
  *
- * @fires tabchange - When a tab is selected
+ * @fires tabchange - Wanneer een tab wordt geselecteerd; detail: { item: RRTabBarItem }
  *
- * @csspart container - The tab bar container
- * @csspart items - The items wrapper
+ * ---
+ *
+ * @element rr-tab-bar-item
+ * @attr {boolean} selected  - Geselecteerde toestand (beheerd door rr-tab-bar)
+ * @attr {boolean} disabled  - Uitgeschakelde toestand
+ * @attr {string}  href      - Optionele link-URL; rendert een anker in plaats van een knop
+ *
+ * @slot      - Tekstlabel; ook gebruikt als toegankelijke naam voor icoon-only items
+ * @slot icon - Icooninhoud
+ *
+ * @fires select - Wanneer het item wordt geactiveerd; detail: { item: RRTabBarItem }
  */
+import { LitElement } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { tabBarStyles, tabBarItemStyles } from './rr-tab-bar.styles.ts';
+import { tabBarTemplate, tabBarItemTemplate } from './rr-tab-bar.template.ts';
 
-import { LitElement, html, css } from 'lit';
-import { customElement } from 'lit/decorators.js';
-import './rr-tab-bar-item.ts';
+
+// # rr-tab-bar-item
+
+@customElement('rr-tab-bar-item')
+export class RRTabBarItem extends LitElement {
+	static override styles = tabBarItemStyles;
+
+	@property({ type: Boolean, reflect: true })
+	selected = false;
+
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
+
+	@property({ type: String })
+	href = '';
+
+	/** Set by rr-tab-bar. Not part of the public API. */
+	@property({ type: Boolean, reflect: true })
+	compact = false;
+
+	/** Set by rr-tab-bar. Not part of the public API. */
+	@property({ type: Boolean, reflect: true })
+	responsive = false;
+
+	/** Set by rr-tab-bar. Not part of the public API. */
+	@property({ type: String })
+	_groupVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
+
+	// Author-set variant captured once in connectedCallback.
+	// Not a Lit property to avoid a feedback loop with the setAttribute
+	// call in updated() which writes the resolved value to the same attribute.
+	private _authorVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
+
+	@state()
+	_hasText = false;
+
+	@state()
+	_hasIcon = false;
+
+	@state()
+	_labelText = '';
+
+	get _effectiveVariant(): 'icon-and-text' | 'text' | 'icon' | 'compact' {
+		if (this.compact) return 'compact';
+		if (this._authorVariant) return this._authorVariant;
+		if (this._groupVariant) return this._groupVariant;
+		if (this._hasText && this._hasIcon) return 'icon-and-text';
+		if (this._hasText) return 'text';
+		return 'icon';
+	}
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this.setAttribute('role', 'none');
+		// Capture author intent before updated() overwrites the attribute with the resolved value
+		const attr = this.getAttribute('variant');
+		if (attr === 'text' || attr === 'icon' || attr === 'icon-and-text') {
+			this._authorVariant = attr;
+		}
+	}
+
+	override updated(): void {
+		this.setAttribute('variant', this._effectiveVariant);
+	}
+
+	_onDefaultSlotChange(e: Event): void {
+		const slot = e.target as HTMLSlotElement;
+		const text = slot.assignedNodes({ flatten: true })
+			.map(node => node.textContent ?? '')
+			.join('')
+			.trim();
+		this._hasText = text.length > 0;
+		this._labelText = text;
+	}
+
+	_onIconSlotChange(e: Event): void {
+		const slot = e.target as HTMLSlotElement;
+		this._hasIcon = slot.assignedElements({ flatten: true }).length > 0;
+	}
+
+	_sanitizeUrl(url: string): string | null {
+		if (!url) return null;
+		const trimmed = url.trim().toLowerCase();
+		if (
+			trimmed.startsWith('javascript:') ||
+			trimmed.startsWith('data:') ||
+			trimmed.startsWith('vbscript:')
+		) return null;
+		return url;
+	}
+
+	_handleClick(event: Event): void {
+		if (this.disabled) {
+			event.preventDefault();
+			event.stopPropagation();
+			return;
+		}
+		if (!this._sanitizeUrl(this.href)) {
+			event.preventDefault();
+		}
+		this.dispatchEvent(new CustomEvent('select', {
+			bubbles: true,
+			composed: true,
+			detail: { item: this },
+		}));
+	}
+
+	override render() {
+		return tabBarItemTemplate(this);
+	}
+}
+
+
+// # rr-tab-bar
 
 @customElement('rr-tab-bar')
 export class RRTabBar extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-block;
-      font-family: var(--rr-font-family-body);
-    }
+	static override styles = tabBarStyles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: Boolean, reflect: true })
+	compact = false;
 
-    .tab-bar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+	@property({ type: Boolean, reflect: true })
+	responsive = false;
 
-    .tab-bar__items {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      padding: 0 var(--primitives-space-2);
-      background-color: var(--primitives-color-neutral-100);
-      border-radius: var(--semantics-controls-md-corner-radius);
-    }
-  `;
+	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
+	fullWidth = false;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.setAttribute('role', 'tablist');
-    this.addEventListener('select', this._handleItemSelect as EventListener);
-    this.addEventListener('keydown', this._handleKeyDown);
-  }
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.removeEventListener('select', this._handleItemSelect as EventListener);
-    this.removeEventListener('keydown', this._handleKeyDown);
-  }
+	@property({ type: String, reflect: true })
+	variant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
-  private _handleItemSelect = (event: CustomEvent): void => {
-    const items = this.querySelectorAll('rr-tab-bar-item');
-    items.forEach((item) => {
-      if (item !== event.detail.item) {
-        (item as HTMLElement).removeAttribute('selected');
-      }
-    });
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-    this.dispatchEvent(
-      new CustomEvent('tabchange', {
-        bubbles: true,
-        composed: true,
-        detail: event.detail,
-      })
-    );
-  };
+	// Tracks whether the author provided an explicit accessible label
+	private _hasCustomLabel = false;
 
-  private _handleKeyDown = (event: KeyboardEvent): void => {
-    const items = Array.from(this.querySelectorAll('rr-tab-bar-item:not([disabled])'));
-    if (items.length === 0) return;
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this.addEventListener('select', this._handleItemSelect as EventListener);
+		this.addEventListener('keydown', this._handleKeyDown);
+	}
 
-    const currentIndex = items.findIndex(
-      (item) => item === event.target || item.contains(event.target as Node)
-    );
-    let newIndex = -1;
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this.removeEventListener('select', this._handleItemSelect as EventListener);
+		this.removeEventListener('keydown', this._handleKeyDown);
+	}
 
-    switch (event.key) {
-      case 'ArrowLeft':
-        event.preventDefault();
-        newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-        break;
-      case 'ArrowRight':
-        event.preventDefault();
-        newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-        break;
-      case 'Home':
-        event.preventDefault();
-        newIndex = 0;
-        break;
-      case 'End':
-        event.preventDefault();
-        newIndex = items.length - 1;
-        break;
-      default:
-        return;
-    }
+	override firstUpdated(): void {
+		this._hasCustomLabel = Boolean(this.accessibleLabel);
+		if (!this._hasCustomLabel) {
+			console.warn('<rr-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabs".');
+		}
+		this._syncItems();
+	}
 
-    if (newIndex >= 0 && newIndex < items.length) {
-      (items[newIndex] as HTMLElement).focus();
-    }
-  };
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (
+			changedProperties.has('compact') ||
+			changedProperties.has('responsive') ||
+			changedProperties.has('disabled') ||
+			changedProperties.has('variant')
+		) {
+			this._syncItems();
+		}
+	}
 
-  override render() {
-    return html`
-      <div class="tab-bar" part="container">
-        <div class="tab-bar__items" part="items">
-          <slot></slot>
-        </div>
-      </div>
-    `;
-  }
+	private _getItems(): RRTabBarItem[] {
+		const slot = this.shadowRoot?.querySelector('slot');
+		if (!slot) return [];
+		return slot
+			.assignedElements()
+			.filter((el): el is RRTabBarItem =>
+				el.tagName.toLowerCase() === 'rr-tab-bar-item'
+			);
+	}
+
+	private _syncItems(): void {
+		const items = this._getItems();
+
+		if (this.disabled) {
+			items.forEach(item => {
+				if (!item.hasAttribute('disabled')) {
+					item.setAttribute('group-disabled', '');
+					item.disabled = true;
+				}
+			});
+		} else {
+			items.forEach(item => {
+				if (item.hasAttribute('group-disabled')) {
+					item.removeAttribute('group-disabled');
+					item.disabled = false;
+				}
+			});
+		}
+
+		items.forEach(item => {
+			item.compact = this.compact;
+			item.responsive = this.responsive;
+			item._groupVariant = this.variant;
+		});
+	}
+
+	_onSlotChange(): void {
+		this._syncItems();
+	}
+
+	private _handleItemSelect = (event: CustomEvent): void => {
+		event.stopPropagation();
+		const items = this._getItems();
+		items.forEach(item => {
+			item.selected = item === event.detail.item;
+		});
+		this.dispatchEvent(new CustomEvent('tabchange', {
+			bubbles: true,
+			composed: true,
+			detail: event.detail,
+		}));
+	};
+
+	private _handleKeyDown = (event: KeyboardEvent): void => {
+		const items = this._getItems().filter(item => !item.disabled);
+		if (items.length === 0) return;
+
+		const currentIndex = items.findIndex(
+			item => item === event.target || item.contains(event.target as Node)
+		);
+		let newIndex = -1;
+
+		switch (event.key) {
+			case 'ArrowLeft':
+				event.preventDefault();
+				newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+				break;
+			case 'ArrowRight':
+				event.preventDefault();
+				newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+				break;
+			case 'Home':
+				event.preventDefault();
+				newIndex = 0;
+				break;
+			case 'End':
+				event.preventDefault();
+				newIndex = items.length - 1;
+				break;
+			default:
+				return;
+		}
+
+		if (newIndex >= 0 && newIndex < items.length) {
+			items[newIndex].focus();
+		}
+	};
+
+	override render() {
+		return tabBarTemplate(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-tab-bar': RRTabBar;
-  }
+	interface HTMLElementTagNameMap {
+		'rr-tab-bar': RRTabBar;
+		'rr-tab-bar-item': RRTabBarItem;
+	}
 }

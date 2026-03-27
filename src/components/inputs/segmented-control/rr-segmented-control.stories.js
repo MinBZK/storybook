@@ -36,10 +36,10 @@ export default {
 			description: 'Type selectie: radio (enkelvoudig) of checkbox (meervoudig)',
 			table: { defaultValue: { summary: 'radio' } },
 		},
-		contentType: {
+		variant: {
 			control: 'select',
 			options: ['text', 'icon'],
-			name: 'content-type',
+			name: 'variant',
 			description: 'Inhoudstype van alle items: tekst of icoon. Combineren is niet ondersteund.',
 			table: { defaultValue: { summary: 'text' } },
 		},
@@ -59,18 +59,18 @@ export default {
 		value: 'vet',
 		size: 'md',
 		type: 'radio',
-		contentType: 'text',
+		variant: 'text',
 		disabled: false,
 		fullWidth: false,
 	},
 };
 
-const Template = ({ value, size, type, contentType, disabled, fullWidth }) => html`
+const Template = ({ value, size, type, variant, disabled, fullWidth }) => html`
 	<rr-segmented-control
 		value=${value}
 		size=${size}
 		type=${type}
-		content-type=${contentType}
+		variant=${variant}
 		?disabled=${disabled}
 		?full-width=${fullWidth}
 	>
@@ -150,7 +150,7 @@ export const AlleToestanden = () => html`
 				Onderstreept
 			</rr-segmented-control-item>
 		</rr-segmented-control>
-		<rr-segmented-control value="vet" content-type="icon" size="md">
+		<rr-segmented-control value="vet" variant="icon" size="md">
 			<rr-segmented-control-item value="vet">
 				<rr-icon slot="icon" name="bold"></rr-icon>
 				Vet
@@ -164,7 +164,7 @@ export const AlleToestanden = () => html`
 				Onderstreept
 			</rr-segmented-control-item>
 		</rr-segmented-control>
-		<rr-segmented-control value="vet" content-type="icon" size="sm">
+		<rr-segmented-control value="vet" variant="icon" size="sm">
 			<rr-segmented-control-item value="vet">
 				<rr-icon slot="icon" name="bold"></rr-icon>
 				Vet
@@ -235,7 +235,7 @@ export const AlleToestanden = () => html`
 					Onderstreept
 				</rr-segmented-control-item>
 			</rr-segmented-control>
-			<rr-segmented-control value="vet" content-type="icon" full-width size="md">
+			<rr-segmented-control value="vet" variant="icon" full-width size="md">
 				<rr-segmented-control-item value="vet">
 					<rr-icon slot="icon" name="bold"></rr-icon>
 					Vet
@@ -249,7 +249,7 @@ export const AlleToestanden = () => html`
 					Onderstreept
 				</rr-segmented-control-item>
 			</rr-segmented-control>
-			<rr-segmented-control value="vet" content-type="icon" full-width size="sm">
+			<rr-segmented-control value="vet" variant="icon" full-width size="sm">
 				<rr-segmented-control-item value="vet">
 					<rr-icon slot="icon" name="bold"></rr-icon>
 					Vet
