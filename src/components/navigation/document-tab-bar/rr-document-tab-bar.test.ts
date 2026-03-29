@@ -5,10 +5,10 @@ import './rr-document-tab-bar.ts';
 
 function threeTabBar(): string {
 	return `
-		<rr-document-tab-bar accessible-label="Documenten">
-			<rr-document-tab-bar-item selected label="Artikel 1" supporting-label="Wet A"></rr-document-tab-bar-item>
-			<rr-document-tab-bar-item label="Artikel 2" supporting-label="Wet B"></rr-document-tab-bar-item>
-			<rr-document-tab-bar-item label="Artikel 3" supporting-label="Wet C"></rr-document-tab-bar-item>
+		<rr-document-tab-bar accessible-text="Documenten">
+			<rr-document-tab-bar-item selected text="Artikel 1" supporting-text="Wet A"></rr-document-tab-bar-item>
+			<rr-document-tab-bar-item text="Artikel 2" supporting-text="Wet B"></rr-document-tab-bar-item>
+			<rr-document-tab-bar-item text="Artikel 3" supporting-text="Wet C"></rr-document-tab-bar-item>
 		</rr-document-tab-bar>
 	`;
 }
@@ -52,7 +52,7 @@ describe('rr-document-tab-bar-item', () => {
 	});
 
 	it('renders subtitle when provided', async () => {
-		el = await fixture('<rr-document-tab-bar-item label="Artikel 1" supporting-label="Wet A"></rr-document-tab-bar-item>');
+		el = await fixture('<rr-document-tab-bar-item text="Artikel 1" supporting-text="Wet A"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 		const subtitle = el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--regular');
 		expect(subtitle).not.toBeNull();
@@ -60,37 +60,37 @@ describe('rr-document-tab-bar-item', () => {
 	});
 
 	it('does not render subtitle when not provided', async () => {
-		el = await fixture('<rr-document-tab-bar-item label="Artikel 1"></rr-document-tab-bar-item>');
+		el = await fixture('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--regular')).toBeNull();
 	});
 
 	it('renders short-title in short slot', async () => {
-		el = await fixture('<rr-document-tab-bar-item label="Artikel 1" short-label="Art. 1"></rr-document-tab-bar-item>');
+		el = await fixture('<rr-document-tab-bar-item text="Artikel 1" short-text="Art. 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-title--short')!.textContent?.trim()).toBe('Art. 1');
 	});
 
 	it('falls back to title in short slot when short-title not provided', async () => {
-		el = await fixture('<rr-document-tab-bar-item label="Artikel 1"></rr-document-tab-bar-item>');
+		el = await fixture('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-title--short')!.textContent?.trim()).toBe('Artikel 1');
 	});
 
 	it('falls back to subtitle in short subtitle slot when short-subtitle not provided', async () => {
-		el = await fixture('<rr-document-tab-bar-item label="Artikel 1" supporting-label="Wet A"></rr-document-tab-bar-item>');
+		el = await fixture('<rr-document-tab-bar-item text="Artikel 1" supporting-text="Wet A"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--short')!.textContent?.trim()).toBe('Wet A');
 	});
 
 	it('sets role="none" on host', async () => {
-		el = await fixture('<rr-document-tab-bar-item label="Artikel 1"></rr-document-tab-bar-item>');
+		el = await fixture('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('role')).toBe('none');
 	});
 
 	it('sets role="tab" on inner element', async () => {
-		el = await fixture('<rr-document-tab-bar-item label="Artikel 1"></rr-document-tab-bar-item>');
+		el = await fixture('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('[role="tab"]')).not.toBeNull();
 	});
@@ -109,7 +109,7 @@ describe('rr-document-tab-bar-item – events', () => {
 	});
 
 	it('fires select event on click', async () => {
-		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item label="Artikel 1"></rr-document-tab-bar-item>');
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -130,7 +130,7 @@ describe('rr-document-tab-bar-item – events', () => {
 	});
 
 	it('does not set selected on itself after click', async () => {
-		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item label="Artikel 1"></rr-document-tab-bar-item>');
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 
 		clickItem(el);
@@ -140,7 +140,7 @@ describe('rr-document-tab-bar-item – events', () => {
 	});
 
 	it('fires dismiss event on dismiss button click', async () => {
-		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item label="Artikel 1"></rr-document-tab-bar-item>');
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -152,7 +152,7 @@ describe('rr-document-tab-bar-item – events', () => {
 	});
 
 	it('dismiss does not fire select', async () => {
-		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item label="Artikel 1"></rr-document-tab-bar-item>');
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 
 		let selectFired = false;
@@ -176,7 +176,7 @@ describe('rr-document-tab-bar', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<rr-document-tab-bar accessible-label="Docs"></rr-document-tab-bar>');
+		el = await fixture('<rr-document-tab-bar accessible-text="Docs"></rr-document-tab-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
@@ -230,13 +230,13 @@ describe('rr-document-tab-bar – accessible label', () => {
 
 	it('does not warn when accessible-label is provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar accessible-label="Documenten"></rr-document-tab-bar>');
+		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar accessible-text="Documenten"></rr-document-tab-bar>');
 		await waitForUpdate(el);
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 
 	it('forwards accessible-label to nav aria-label', async () => {
-		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar accessible-label="Mijn documenten"></rr-document-tab-bar>');
+		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar accessible-text="Mijn documenten"></rr-document-tab-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Mijn documenten');
 	});
@@ -341,9 +341,9 @@ describe('rr-document-tab-bar – dismiss', () => {
 
 	it('selects left neighbour when rightmost selected item is dismissed', async () => {
 		el = await fixture<RRDocumentTabBar>(`
-			<rr-document-tab-bar accessible-label="Docs">
-				<rr-document-tab-bar-item label="A"></rr-document-tab-bar-item>
-				<rr-document-tab-bar-item selected label="B"></rr-document-tab-bar-item>
+			<rr-document-tab-bar accessible-text="Docs">
+				<rr-document-tab-bar-item text="A"></rr-document-tab-bar-item>
+				<rr-document-tab-bar-item selected text="B"></rr-document-tab-bar-item>
 			</rr-document-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -374,8 +374,8 @@ describe('rr-document-tab-bar – dismiss', () => {
 
 	it('dispatches tabempty when last item is dismissed', async () => {
 		el = await fixture<RRDocumentTabBar>(`
-			<rr-document-tab-bar accessible-label="Docs">
-				<rr-document-tab-bar-item selected label="A"></rr-document-tab-bar-item>
+			<rr-document-tab-bar accessible-text="Docs">
+				<rr-document-tab-bar-item selected text="A"></rr-document-tab-bar-item>
 			</rr-document-tab-bar>
 		`);
 		await waitForUpdate(el);

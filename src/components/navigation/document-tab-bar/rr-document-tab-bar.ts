@@ -20,11 +20,11 @@
  * ---
  *
  * @element rr-document-tab-bar-item
- * @attr {boolean} selected       - Geselecteerde toestand (beheerd door rr-document-tab-bar)
- * @attr {string}  title          - Titel
- * @attr {string}  subtitle       - Ondertitelregel
- * @attr {string}  short-label    - Kort label (zichtbaar onder 200px breedte)
- * @attr {string}  short-supporting-label - Kort ondersteunend label (zichtbaar onder 200px breedte)
+ * @attr {boolean} selected              - Geselecteerde toestand (beheerd door rr-document-tab-bar)
+ * @attr {string}  text                  - Primaire tekst
+ * @attr {string}  supporting-text       - Ondersteunende tekst
+ * @attr {string}  short-text            - Korte primaire tekst (zichtbaar onder 200px breedte)
+ * @attr {string}  short-supporting-text - Korte ondersteunende tekst (zichtbaar onder 200px breedte)
  *
  * @fires select  - Wanneer het item wordt geactiveerd; detail: { item }
  * @fires dismiss - Wanneer de sluitknop wordt geklikt; detail: { item }
@@ -62,17 +62,17 @@ export class RRDocumentTabBarItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	@property({ type: String, attribute: 'label' })
-	label = '';
+	@property({ type: String, attribute: 'text' })
+	text = '';
 
-	@property({ type: String, attribute: 'supporting-label' })
-	supportingLabel = '';
+	@property({ type: String, attribute: 'supporting-text' })
+	supportingText = '';
 
-	@property({ type: String, attribute: 'short-label' })
-	shortLabel = '';
+	@property({ type: String, attribute: 'short-text' })
+	shortText = '';
 
-	@property({ type: String, attribute: 'short-supporting-label' })
-	shortSupportingLabel = '';
+	@property({ type: String, attribute: 'short-supporting-text' })
+	shortSupportingText = '';
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -361,35 +361,30 @@ export class RRDocumentTabBar extends LitElement {
 		document.documentElement.style.cursor = 'grabbing';
 
 			// Read threshold from CSS so there is one place to update it
-			const threshold = parseFloat(getComputedStyle(item).getPropertyValue('--_short-label-threshold'));
+			const threshold = parseFloat(getComputedStyle(item).getPropertyValue('--_short-text-threshold'));
 			const useShort = rect.width < threshold;
-			const displayTitle = useShort ? (item.shortLabel || item.label) : item.label;
-			const displaySubtitle = useShort ? (item.shortSupportingLabel || item.supportingLabel) : item.supportingLabel;
+			const displayTitle = useShort ? (item.shortText || item.text) : item.text;
+			const displaySubtitle = useShort ? (item.shortSupportingText || item.supportingText) : item.supportingText;
 
 			const cloneInner = document.createElement('div');
 			cloneInner.className = 'document-tab-bar__item';
-			cloneInner.style.cssText = `
-				display: flex; flex-direction: row; align-items: center;
-				gap: 6px; padding: 6px 6px 6px 10px;
-				width: 100%; height: 100%; box-sizing: border-box;
-			`;
 
-			const titleArea = document.createElement('div');
-			titleArea.style.cssText = 'flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: center;';
+			const cloneTab = document.createElement('div');
+			cloneTab.className = 'document-tab-bar__item-tab';
 
 			const titleEl = document.createElement('span');
+			titleEl.className = 'document-tab-bar__item-text';
 			titleEl.textContent = displayTitle;
-			titleEl.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: var(--components-document-tab-bar-tab-title-font);';
-			titleArea.appendChild(titleEl);
+			cloneTab.appendChild(titleEl);
 
 			if (displaySubtitle) {
 				const subtitleEl = document.createElement('span');
+				subtitleEl.className = 'document-tab-bar__item-supporting-text';
 				subtitleEl.textContent = displaySubtitle;
-				subtitleEl.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: var(--primitives-font-body-xs-regular-flat); color: var(--semantics-content-secondary-color);';
-				titleArea.appendChild(subtitleEl);
+				cloneTab.appendChild(subtitleEl);
 			}
 
-		cloneInner.appendChild(titleArea);
+			cloneInner.appendChild(cloneTab);
 
 		this._clone = document.createElement('div');
 		this._clone.className = 'document-tab-bar__drag-clone';
@@ -570,10 +565,11 @@ export class RRDocumentTabBar extends LitElement {
 		const visibleCount = items.length - this._overflowCount;
 
 		items.slice(visibleCount).forEach(item => {
-			const title = item.label || '–';
-			const label = item.supportingLabel ? `${title} · ${item.supportingLabel}` : title;
+			const menuItemText = item.supportingText
+				? `${item.text || '–'} · ${item.supportingText}`
+				: item.text || '–';
 			const menuItem = document.createElement('rr-menu-item');
-			menuItem.setAttribute('text', label);
+			menuItem.setAttribute('text', menuItemText);
 			menuItem.addEventListener('click', () => {
 				this._selectAndPromote(item);
 				this._closeMenu();

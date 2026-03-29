@@ -48,34 +48,34 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 }
 
 export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): TemplateResult {
-	const shortLabelText = component.shortLabel || component.label;
-	const shortSupportingLabelText = component.shortSupportingLabel || component.supportingLabel;
-	const fullLabel = component.supportingLabel
-		? `${component.label} · ${component.supportingLabel}`
-		: component.label;
+	const shortTextValue = component.shortText || component.text;
+	const shortSupportingTextValue = component.shortSupportingText || component.supportingText;
+	const fullText = component.supportingText
+		? `${component.text} · ${component.supportingText}`
+		: component.text;
 
 	return html`
 		<div class="document-tab-bar__item">
 			<div class="document-tab-bar__item-tab"
 				role="tab"
 				aria-selected=${component.selected}
-				aria-label=${fullLabel || nothing}
+				aria-label=${fullText || nothing}
 				aria-keyshortcuts="Shift+ArrowLeft Shift+ArrowRight"
-				title=${fullLabel || nothing}
+				title=${fullText || nothing}
 				tabindex="0"
 				@click=${component._handleClick}
 			>
-				<span class="document-tab-bar__item-label">
-					${component.label}
+				<span class="document-tab-bar__item-text">
+					${component.text}
 				</span>
-				<span class="document-tab-bar__item-short-label">
-					${shortLabelText}
+				<span class="document-tab-bar__item-short-text">
+					${shortTextValue}
 				</span>
-				${component.supportingLabel
-					? html`<span class="document-tab-bar__item-supporting-label">${component.supportingLabel}</span>`
+				${component.supportingText
+					? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
 					: nothing}
-				${shortSupportingLabelText
-					? html`<span class="document-tab-bar__item-short-supporting-label">${shortSupportingLabelText}</span>`
+				${shortSupportingTextValue
+					? html`<span class="document-tab-bar__item-short-supporting-text">${shortSupportingTextValue}</span>`
 					: nothing}
 			</div>
 			<button class="document-tab-bar__item-dismiss-button"
