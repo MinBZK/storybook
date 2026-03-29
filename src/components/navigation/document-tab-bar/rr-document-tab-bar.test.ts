@@ -6,9 +6,9 @@ import './rr-document-tab-bar.ts';
 function threeTabBar(): string {
 	return `
 		<rr-document-tab-bar accessible-label="Documenten">
-			<rr-document-tab-bar-item selected label="Artikel 1" sublabel="Wet A"></rr-document-tab-bar-item>
-			<rr-document-tab-bar-item label="Artikel 2" sublabel="Wet B"></rr-document-tab-bar-item>
-			<rr-document-tab-bar-item label="Artikel 3" sublabel="Wet C"></rr-document-tab-bar-item>
+			<rr-document-tab-bar-item selected label="Artikel 1" supporting-label="Wet A"></rr-document-tab-bar-item>
+			<rr-document-tab-bar-item label="Artikel 2" supporting-label="Wet B"></rr-document-tab-bar-item>
+			<rr-document-tab-bar-item label="Artikel 3" supporting-label="Wet C"></rr-document-tab-bar-item>
 		</rr-document-tab-bar>
 	`;
 }
@@ -52,7 +52,7 @@ describe('rr-document-tab-bar-item', () => {
 	});
 
 	it('renders subtitle when provided', async () => {
-		el = await fixture('<rr-document-tab-bar-item label="Artikel 1" sublabel="Wet A"></rr-document-tab-bar-item>');
+		el = await fixture('<rr-document-tab-bar-item label="Artikel 1" supporting-label="Wet A"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 		const subtitle = el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--regular');
 		expect(subtitle).not.toBeNull();
@@ -78,7 +78,7 @@ describe('rr-document-tab-bar-item', () => {
 	});
 
 	it('falls back to subtitle in short subtitle slot when short-subtitle not provided', async () => {
-		el = await fixture('<rr-document-tab-bar-item label="Artikel 1" sublabel="Wet A"></rr-document-tab-bar-item>');
+		el = await fixture('<rr-document-tab-bar-item label="Artikel 1" supporting-label="Wet A"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--short')!.textContent?.trim()).toBe('Wet A');
 	});
@@ -120,8 +120,6 @@ describe('rr-document-tab-bar-item – events', () => {
 		expect(detail.item).toBe(el);
 	});
 
-	it('does not fire select when disabled', async () => {
-		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item disabled label="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 
 		let fired = false;

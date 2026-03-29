@@ -62,7 +62,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 				aria-label=${fullLabel || nothing}
 				aria-keyshortcuts="Shift+ArrowLeft Shift+ArrowRight"
 				title=${fullLabel || nothing}
-				tabindex=${component.disabled ? '-1' : '0'}
+				tabindex="0"
 				@click=${component._handleClick}
 			>
 				<span class="document-tab-bar__item-label">

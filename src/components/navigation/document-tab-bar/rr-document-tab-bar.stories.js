@@ -143,31 +143,6 @@ export const ZonderSubtitel = () => html`
 `;
 ZonderSubtitel.parameters = { controls: { disable: true } };
 
-export const Uitgeschakeld = () => html`
-	<rr-document-tab-bar accessible-label="Documenten">
-		<rr-document-tab-bar-item
-			selected
-			label="Artikel 2"
-			supporting-label="Wet op de Zorgtoeslag"
-			short-label="Art. 2"
-			short-supporting-label="WZT"
-		></rr-document-tab-bar-item>
-		<rr-document-tab-bar-item
-			disabled
-			label="Artikel 1"
-			supporting-label="Zorgverzekeringswet"
-			short-label="Art. 1"
-			short-supporting-label="Zvw"
-		></rr-document-tab-bar-item>
-		<rr-document-tab-bar-item
-			label="Artikel 3:2"
-			supporting-label="Algemene wet bestuursrecht"
-			short-label="Art. 3:2"
-			short-supporting-label="Awb"
-		></rr-document-tab-bar-item>
-	</rr-document-tab-bar>
-`;
-Uitgeschakeld.parameters = { controls: { disable: true } };
 
 export const Herschikbaar = {
 	render: () => {

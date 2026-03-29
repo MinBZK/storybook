@@ -204,12 +204,6 @@ export const documentTabBarItemStyles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 	}
 
-	:host([disabled]) .document-tab-bar__item-tab {
-		opacity: var(--primitives-opacity-disabled);
-		cursor: not-allowed;
-		pointer-events: none;
-	}
-
 	/* ## Focus */
 
 	.document-tab-bar__item-tab:focus-visible {

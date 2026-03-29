@@ -21,7 +21,6 @@
  *
  * @element rr-document-tab-bar-item
  * @attr {boolean} selected       - Geselecteerde toestand (beheerd door rr-document-tab-bar)
- * @attr {boolean} disabled       - Uitgeschakelde toestand
  * @attr {string}  title          - Titel
  * @attr {string}  subtitle       - Ondertitelregel
  * @attr {string}  short-label    - Kort label (zichtbaar onder 200px breedte)
@@ -63,9 +62,6 @@ export class RRDocumentTabBarItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	@property({ type: Boolean, reflect: true })
-	disabled = false;
-
 	@property({ type: String, attribute: 'label' })
 	label = '';
 
@@ -84,7 +80,6 @@ export class RRDocumentTabBarItem extends LitElement {
 	}
 
 	_handleClick(): void {
-		if (this.disabled) return;
 		this.dispatchEvent(new CustomEvent('select', {
 			bubbles: true,
 			composed: true,
@@ -94,7 +89,6 @@ export class RRDocumentTabBarItem extends LitElement {
 
 	_handleDismiss(event: Event): void {
 		event.stopPropagation();
-		if (this.disabled) return;
 		this.dispatchEvent(new CustomEvent('dismiss', {
 			bubbles: true,
 			composed: true,
@@ -246,7 +240,7 @@ export class RRDocumentTabBar extends LitElement {
 		const item = path.find(
 			el => el instanceof Element && el.tagName.toLowerCase() === 'rr-document-tab-bar-item'
 		) as RRDocumentTabBarItem | undefined;
-		if (!item || item.disabled || item.hidden) return;
+		if (!item || item.hidden) return;
 
 		// Record pending drag — only commit once pointer moves beyond threshold
 		this._pendingDragItem = item;
@@ -703,7 +697,7 @@ export class RRDocumentTabBar extends LitElement {
 		const item = path.find(
 			el => el instanceof Element && el.tagName.toLowerCase() === 'rr-document-tab-bar-item'
 		) as RRDocumentTabBarItem | undefined;
-		if (!item || item.disabled || item.hidden) return;
+		if (!item || item.hidden) return;
 
 		const onDismiss = path.some(el =>
 			el instanceof Element && el.classList?.contains('document-tab-bar__item-dismiss-button')
@@ -748,7 +742,7 @@ export class RRDocumentTabBar extends LitElement {
 		}
 
 		// — Arrow keys: move focus —
-		const items = this._getVisibleItems().filter(i => !i.disabled);
+		const items = this._getVisibleItems();
 		if (items.length === 0) return;
 
 		const currentIndex = items.findIndex(
