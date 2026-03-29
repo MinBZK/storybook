@@ -143,7 +143,6 @@ export class RRDocumentTabBar extends LitElement {
 	private _draggingFromIndex = -1;
 	private _placeholder: HTMLDivElement | null = null;
 	private _currentDropIndex = -1;
-	private _keyboardDragging = false;
 	private _pointerId: number | null = null;
 	private _clone: HTMLDivElement | null = null;
 	private _cloneOffsetX = 0;
@@ -351,7 +350,7 @@ export class RRDocumentTabBar extends LitElement {
 		this._currentDropIndex = visibleIndex;
 		this._lastPointerX = clientX;
 
-		const inner = item.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item') ?? item;
+		const inner = item.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab') ?? item;
 		const rect = inner.getBoundingClientRect();
 
 		// Insert placeholder at item's current position
@@ -362,16 +361,13 @@ export class RRDocumentTabBar extends LitElement {
 		item.after(this._placeholder);
 
 		item.classList.add('is-dragging');
+		this._tabBarRect = this.getBoundingClientRect();
+		this._cloneOffsetX = clientX - rect.left;
 
-		if (!this._keyboardDragging) {
-			item.classList.add('is-dragging-pointer');
-			this._tabBarRect = this.getBoundingClientRect();
-			this._cloneOffsetX = clientX - rect.left;
-
-			document.documentElement.style.cursor = 'grabbing';
+		document.documentElement.style.cursor = 'grabbing';
 
 			// Read threshold from CSS so there is one place to update it
-			const threshold = parseFloat(getComputedStyle(item).getPropertyValue('--_short-label-threshold')) || 200;
+			const threshold = parseFloat(getComputedStyle(item).getPropertyValue('--_short-label-threshold'));
 			const useShort = rect.width < threshold;
 			const displayTitle = useShort ? (item.shortLabel || item.label) : item.label;
 			const displaySubtitle = useShort ? (item.shortSupportingLabel || item.supportingLabel) : item.supportingLabel;
@@ -399,17 +395,16 @@ export class RRDocumentTabBar extends LitElement {
 				titleArea.appendChild(subtitleEl);
 			}
 
-			cloneInner.appendChild(titleArea);
+		cloneInner.appendChild(titleArea);
 
-			this._clone = document.createElement('div');
-			this._clone.className = 'document-tab-bar__drag-clone';
-			this._clone.style.setProperty('--_drag-clone-left', `${clientX - this._tabBarRect.left - this._cloneOffsetX}px`);
-			this._clone.style.setProperty('--_drag-clone-top', `${rect.top - this._tabBarRect.top}px`);
-			this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
-			this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
-			this._clone.appendChild(cloneInner);
-			this.renderRoot.appendChild(this._clone);
-		}
+		this._clone = document.createElement('div');
+		this._clone.className = 'document-tab-bar__drag-clone';
+		this._clone.style.setProperty('--_drag-clone-left', `${clientX - this._tabBarRect.left - this._cloneOffsetX}px`);
+		this._clone.style.setProperty('--_drag-clone-top', `${rect.top - this._tabBarRect.top}px`);
+		this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
+		this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
+		this._clone.appendChild(cloneInner);
+		this.renderRoot.appendChild(this._clone);
 	}
 
 	private _setDropIndex(toIndex: number): void {
@@ -461,7 +456,7 @@ export class RRDocumentTabBar extends LitElement {
 			this._announce(this._t('components.document-tab-bar.drag-dropped-text', { position: toIndex + 1 }));
 
 			requestAnimationFrame(() => {
-				const inner = movedItem.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item');
+				const inner = movedItem.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab');
 				inner?.focus();
 			});
 		} else {
@@ -479,13 +474,9 @@ export class RRDocumentTabBar extends LitElement {
 		this._clearPendingDrag();
 
 		this._draggingEl?.classList.remove('is-dragging');
-		this._draggingEl?.classList.remove('is-dragging-pointer');
 		this._placeholder?.remove();
 		this._clone?.remove();
 		document.documentElement.style.cursor = '';
-
-		// Reset drag handle aria-label
-		if (this._draggingEl) this._setTabItemLabel(this._draggingEl);
 
 		if (this._pointerId !== null) {
 			try { this.releasePointerCapture(this._pointerId); } catch (e) { if (!(e instanceof DOMException)) throw e; }
@@ -504,7 +495,6 @@ export class RRDocumentTabBar extends LitElement {
 		this._tabBarRect = null;
 		this._lastPointerX = 0;
 		this._currentDropIndex = -1;
-		this._keyboardDragging = false;
 	}
 
 	// — i18n ——————————————————————————————————————————————————————————————————
@@ -520,31 +510,6 @@ export class RRDocumentTabBar extends LitElement {
 	}
 
 	// — Accessibility ——————————————————————————————————————————————————————————
-
-	private _dragPositionLabel(): string {
-		const items = this._getVisibleItems();
-		const pos = this._getDropIndex() + 1;
-		return this._t('components.document-tab-bar.drag-handle-active-label-text', { position: pos, total: items.length });
-	}
-
-	private _dragPositionAnnouncement(): string {
-		const items = this._getVisibleItems();
-		const pos = this._getDropIndex() + 1;
-		return this._t('components.document-tab-bar.drag-position-text', { position: pos, total: items.length });
-	}
-
-	private _setTabItemLabel(item: RRDocumentTabBarItem, label?: string): void {
-		const inner = item.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item');
-		if (!inner) return;
-		if (label) {
-			inner.setAttribute('aria-label', label);
-		} else {
-			// Restore the original fullLabel
-			const fullLabel = item.supportingLabel ? `${item.label} · ${item.supportingLabel}` : item.label;
-			if (fullLabel) inner.setAttribute('aria-label', fullLabel);
-			else inner.removeAttribute('aria-label');
-		}
-	}
 
 	private _announce(message: string, assertive = false): void {
 		const selector = assertive
@@ -733,64 +698,61 @@ export class RRDocumentTabBar extends LitElement {
 	};
 
 	private _handleKeyDown = (event: KeyboardEvent): void => {
-		// — Keyboard drag mode —
-		if (this._keyboardDragging) {
-			switch (event.key) {
-				case 'ArrowLeft': {
-					event.preventDefault();
-					this._setDropIndex(Math.max(0, this._getDropIndex() - 1));
-					this._announce(this._dragPositionAnnouncement());
-					if (this._draggingEl) this._setTabItemLabel(this._draggingEl, this._dragPositionLabel());
-					break;
-				}
-				case 'ArrowRight': {
-					event.preventDefault();
-					const visItems = this._getVisibleItems();
-					this._setDropIndex(Math.min(visItems.length - 1, this._getDropIndex() + 1));
-					this._announce(this._dragPositionAnnouncement());
-					if (this._draggingEl) this._setTabItemLabel(this._draggingEl, this._dragPositionLabel());
-					break;
-				}
-				case 'Enter':
-				case ' ':
-					event.preventDefault();
-					this._endDrag();
-					break;
-				case 'Escape':
-					event.preventDefault();
-					this._cancelDrag();
-					break;
+		const path = event.composedPath() as Element[];
+
+		const item = path.find(
+			el => el instanceof Element && el.tagName.toLowerCase() === 'rr-document-tab-bar-item'
+		) as RRDocumentTabBarItem | undefined;
+		if (!item || item.disabled || item.hidden) return;
+
+		const onDismiss = path.some(el =>
+			el instanceof Element && el.classList?.contains('document-tab-bar__item-dismiss-button')
+		);
+		if (onDismiss) return;
+
+		// — Shift+Arrow: reorder —
+		if (event.shiftKey && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+			event.preventDefault();
+			const visibleItems = this._getVisibleItems();
+			const allItems = this._getItems();
+			const currentIndex = visibleItems.indexOf(item);
+			if (currentIndex === -1) return;
+
+			const targetIndex = event.key === 'ArrowLeft' ? currentIndex - 1 : currentIndex + 1;
+			if (targetIndex < 0 || targetIndex >= visibleItems.length) return;
+
+			const sibling = visibleItems[targetIndex];
+			if (event.key === 'ArrowLeft') {
+				sibling.before(item);
+			} else {
+				sibling.after(item);
 			}
+
+			const fromIndex = allItems.indexOf(item);
+			const newAllItems = this._getItems();
+			const toIndex = newAllItems.indexOf(item);
+
+			this.dispatchEvent(new CustomEvent<RRReorderEventDetail>('rr-reorder', {
+				detail: { fromIndex, toIndex },
+				bubbles: true,
+				composed: true,
+			}));
+
+			this._announce(this._t('components.document-tab-bar.drag-dropped-text', { position: toIndex + 1 }));
+
+			// Restore focus after DOM move
+			requestAnimationFrame(() => {
+				item.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab')?.focus();
+			});
 			return;
 		}
 
-		// — Normal navigation: Space grabs the focused item for keyboard drag —
-		if (event.key === ' ') {
-			const path = event.composedPath() as Element[];
-			const item = path.find(
-				el => el instanceof Element && el.tagName.toLowerCase() === 'rr-document-tab-bar-item'
-			) as RRDocumentTabBarItem | undefined;
-
-			// Only start drag if the target is the tab item inner div (not dismiss button)
-			const onDismiss = path.some(el =>
-				el instanceof Element && el.classList?.contains('document-tab-bar__item-dismiss-button')
-			);
-			if (item && !item.disabled && !item.hidden && !onDismiss) {
-				event.preventDefault();
-				this._keyboardDragging = true;
-				this._startDrag(item);
-				this._announce(this._t('components.document-tab-bar.drag-grabbed-text'), true);
-				this._setTabItemLabel(item, this._dragPositionLabel());
-				return;
-			}
-		}
-
-		// — Normal navigation: arrow keys move focus —
-		const items = this._getVisibleItems().filter(item => !item.disabled);
+		// — Arrow keys: move focus —
+		const items = this._getVisibleItems().filter(i => !i.disabled);
 		if (items.length === 0) return;
 
 		const currentIndex = items.findIndex(
-			item => item === event.target || item.contains(event.target as Node)
+			i => i === event.target || i.contains(event.target as Node)
 		);
 		let newIndex = -1;
 

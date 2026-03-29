@@ -55,15 +55,16 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 		: component.label;
 
 	return html`
-		<div class="document-tab-bar__item"
-			role="tab"
-			aria-selected=${component.selected}
-			aria-label=${fullLabel || nothing}
-			title=${fullLabel || nothing}
-			tabindex=${component.disabled ? '-1' : '0'}
-			@click=${component._handleClick}
-		>
-			<div class="document-tab-bar__item-label-area">
+		<div class="document-tab-bar__item">
+			<div class="document-tab-bar__item-tab"
+				role="tab"
+				aria-selected=${component.selected}
+				aria-label=${fullLabel || nothing}
+				aria-keyshortcuts="Shift+ArrowLeft Shift+ArrowRight"
+				title=${fullLabel || nothing}
+				tabindex=${component.disabled ? '-1' : '0'}
+				@click=${component._handleClick}
+			>
 				<span class="document-tab-bar__item-label">
 					${component.label}
 				</span>
