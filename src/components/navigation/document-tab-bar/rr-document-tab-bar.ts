@@ -15,15 +15,17 @@
  * @fires tabchange  - Wanneer een tabblad wordt geselecteerd; detail: { item }
  * @fires tabdismiss - Wanneer een tabblad wordt gesloten; detail: { item, nextItem }
  * @fires tabempty   - Wanneer het laatste tabblad wordt gesloten
+ * @fires rr-reorder - Wanneer tabbladen worden herschikt via slepen; detail: { fromIndex, toIndex }
  *
  * ---
  *
  * @element rr-document-tab-bar-item
- * @attr {boolean} selected  - Geselecteerde toestand (beheerd door rr-document-tab-bar)
- * @attr {boolean} disabled  - Uitgeschakelde toestand
- * @attr {string}  subtitle  - Ondertitelregel
- *
- * @slot - Titeltekst
+ * @attr {boolean} selected       - Geselecteerde toestand (beheerd door rr-document-tab-bar)
+ * @attr {boolean} disabled       - Uitgeschakelde toestand
+ * @attr {string}  title          - Titel
+ * @attr {string}  subtitle       - Ondertitelregel
+ * @attr {string}  short-label    - Kort label (zichtbaar onder 200px breedte)
+ * @attr {string}  short-supporting-label - Kort ondersteunend label (zichtbaar onder 200px breedte)
  *
  * @fires select  - Wanneer het item wordt geactiveerd; detail: { item }
  * @fires dismiss - Wanneer de sluitknop wordt geklikt; detail: { item }
@@ -32,12 +34,21 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { documentTabBarStyles, documentTabBarItemStyles } from './rr-document-tab-bar.styles.ts';
 import { documentTabBarTemplate, documentTabBarItemTemplate } from './rr-document-tab-bar.template.ts';
+import { rrDocumentTabBarTranslations } from './rr-document-tab-bar.i18n.ts';
+import type { RRDocumentTabBarTranslations } from './rr-document-tab-bar.i18n.ts';
 import './../../lists-and-menus/menu/rr-menu.ts';
 
 // Reserved width in px for the overflow button during resize calculation.
-// Prevents layout feedback loops by always subtracting this from available width
-// even when the button is visually hidden.
 const OVERFLOW_BUTTON_RESERVE = 52;
+
+// Pointer movement threshold in px before drag mode activates.
+// Distinguishes a click (select) from a drag (reorder).
+const DRAG_THRESHOLD = 5;
+
+export interface RRReorderEventDetail {
+	fromIndex: number;
+	toIndex: number;
+}
 
 
 // # rr-document-tab-bar-item
@@ -55,17 +66,17 @@ export class RRDocumentTabBarItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String })
-	title = '';
+	@property({ type: String, attribute: 'label' })
+	label = '';
 
-	@property({ type: String })
-	subtitle = '';
+	@property({ type: String, attribute: 'supporting-label' })
+	supportingLabel = '';
 
-	@property({ type: String, attribute: 'short-title' })
-	shortTitle = '';
+	@property({ type: String, attribute: 'short-label' })
+	shortLabel = '';
 
-	@property({ type: String, attribute: 'short-subtitle' })
-	shortSubtitle = '';
+	@property({ type: String, attribute: 'short-supporting-label' })
+	shortSupportingLabel = '';
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -112,6 +123,9 @@ export class RRDocumentTabBar extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
+	@property({ type: Object })
+	translations: Partial<RRDocumentTabBarTranslations> = {};
+
 	@state()
 	_overflowCount = 0;
 
@@ -121,12 +135,31 @@ export class RRDocumentTabBar extends LitElement {
 	private _menu: Element | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
 	private _hasCustomLabel = false;
+	private _mergedTranslations = { ...rrDocumentTabBarTranslations };
+
+	// — Drag state ——————————————————————————————————————————————————————————
+
+	private _draggingEl: RRDocumentTabBarItem | null = null;
+	private _draggingFromIndex = -1;
+	private _placeholder: HTMLDivElement | null = null;
+	private _currentDropIndex = -1;
+	private _keyboardDragging = false;
+	private _pointerId: number | null = null;
+	private _clone: HTMLDivElement | null = null;
+	private _cloneOffsetX = 0;
+	private _tabBarRect: DOMRect | null = null;
+
+	// Pending drag: set on pointerdown, committed once DRAG_THRESHOLD is exceeded
+	private _pendingDragItem: RRDocumentTabBarItem | null = null;
+	private _pendingDragStartX = 0;
+	private _pendingPointerId: number | null = null;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.addEventListener('select', this._handleItemSelect as EventListener);
 		this.addEventListener('dismiss', this._handleItemDismiss as EventListener);
 		this.addEventListener('keydown', this._handleKeyDown);
+		this.addEventListener('pointerdown', this._onPointerDown);
 		this._createMenu();
 	}
 
@@ -135,12 +168,15 @@ export class RRDocumentTabBar extends LitElement {
 		this.removeEventListener('select', this._handleItemSelect as EventListener);
 		this.removeEventListener('dismiss', this._handleItemDismiss as EventListener);
 		this.removeEventListener('keydown', this._handleKeyDown);
+		this.removeEventListener('pointerdown', this._onPointerDown);
 
 		this._menu?.remove();
 		this._menu = null;
 
 		this._resizeObserver?.disconnect();
 		this._resizeObserver = null;
+
+		this._cancelDrag();
 	}
 
 	override firstUpdated(): void {
@@ -164,6 +200,9 @@ export class RRDocumentTabBar extends LitElement {
 			this._applyItemVisibility();
 			this._updateMenu();
 		}
+		if (changedProperties.has('translations')) {
+			this._mergedTranslations = { ...rrDocumentTabBarTranslations, ...this.translations };
+		}
 	}
 
 	// — Items ——————————————————————————————————————————————————————————————————
@@ -173,8 +212,13 @@ export class RRDocumentTabBar extends LitElement {
 		if (!slot) return [];
 		return slot.assignedElements()
 			.filter((el): el is RRDocumentTabBarItem =>
-				el.tagName.toLowerCase() === 'rr-document-tab-bar-item'
+				el.tagName.toLowerCase() === 'rr-document-tab-bar-item' &&
+				!el.hasAttribute('data-rr-placeholder')
 			);
+	}
+
+	private _getVisibleItems(): RRDocumentTabBarItem[] {
+		return this._getItems().filter(item => !item.hidden);
 	}
 
 	_onSlotChange(): void {
@@ -187,6 +231,331 @@ export class RRDocumentTabBar extends LitElement {
 		items.forEach((item, index) => {
 			item.hidden = index >= visibleCount;
 		});
+	}
+
+	// — Drag: pointer ————————————————————————————————————————————————————————
+
+	private _onPointerDown = (event: PointerEvent): void => {
+		const path = event.composedPath() as Element[];
+
+		// Do not start drag when clicking the dismiss button
+		const onDismiss = path.some(el =>
+			el instanceof Element && el.classList?.contains('document-tab-bar__item-dismiss-button')
+		);
+		if (onDismiss) return;
+
+		const item = path.find(
+			el => el instanceof Element && el.tagName.toLowerCase() === 'rr-document-tab-bar-item'
+		) as RRDocumentTabBarItem | undefined;
+		if (!item || item.disabled || item.hidden) return;
+
+		// Record pending drag — only commit once pointer moves beyond threshold
+		this._pendingDragItem = item;
+		this._pendingDragStartX = event.clientX;
+		this._pendingPointerId = event.pointerId;
+
+		this.addEventListener('pointermove', this._onPointerMovePending);
+		this.addEventListener('pointerup', this._onPointerUpPending);
+		this.addEventListener('pointercancel', this._onPointerCancelPending);
+	};
+
+	private _onPointerMovePending = (event: PointerEvent): void => {
+		if (!this._pendingDragItem) return;
+		// Prevent text selection during potential drag
+		event.preventDefault();
+		if (Math.abs(event.clientX - this._pendingDragStartX) < DRAG_THRESHOLD) return;
+
+		// Threshold exceeded — commit to drag
+		const item = this._pendingDragItem;
+		this._clearPendingDrag();
+
+		event.preventDefault();
+		this._startDrag(item, event.clientX);
+		this._pointerId = event.pointerId;
+		this.setPointerCapture(event.pointerId);
+		this.addEventListener('pointermove', this._onPointerMove);
+		this.addEventListener('pointerup', this._onPointerUp);
+		this.addEventListener('pointercancel', this._onPointerCancel);
+	};
+
+	private _onPointerUpPending = (): void => {
+		this._clearPendingDrag();
+	};
+
+	private _onPointerCancelPending = (): void => {
+		this._clearPendingDrag();
+	};
+
+	private _clearPendingDrag(): void {
+		this._pendingDragItem = null;
+		this._pendingDragStartX = 0;
+		this._pendingPointerId = null;
+		this.removeEventListener('pointermove', this._onPointerMovePending);
+		this.removeEventListener('pointerup', this._onPointerUpPending);
+		this.removeEventListener('pointercancel', this._onPointerCancelPending);
+	}
+
+	private _lastPointerX = 0;
+
+	private _onPointerMove = (event: PointerEvent): void => {
+		if (!this._draggingEl || !this._placeholder) return;
+
+		// Move floating clone horizontally
+		if (this._clone) {
+			this._tabBarRect = this.getBoundingClientRect();
+			this._clone.style.setProperty(
+				'--_drag-clone-left',
+				`${event.clientX - this._tabBarRect.left - this._cloneOffsetX}px`
+			);
+		}
+
+		const draggingRight = event.clientX >= this._lastPointerX;
+		this._lastPointerX = event.clientX;
+
+		const visibleItems = this._getVisibleItems().filter(i => i !== this._draggingEl);
+		const pointerX = event.clientX;
+		let toIndex = visibleItems.length; // default: end
+
+		for (let i = 0; i < visibleItems.length; i++) {
+			const inner = visibleItems[i].shadowRoot?.querySelector('.document-tab-bar__item') ?? visibleItems[i];
+			const rect = inner.getBoundingClientRect();
+			const threshold = draggingRight ? rect.left : rect.right;
+			if (pointerX < threshold) {
+				toIndex = i;
+				break;
+			}
+		}
+
+		this._setDropIndex(toIndex);
+	};
+
+	private _onPointerUp = (): void => {
+		this._endDrag();
+	};
+
+	private _onPointerCancel = (): void => {
+		this._cancelDrag();
+	};
+
+	// — Drag: keyboard ————————————————————————————————————————————————————————
+
+	// — Drag: core ————————————————————————————————————————————————————————————
+
+	private _startDrag(item: RRDocumentTabBarItem, clientX = 0): void {
+		const visibleItems = this._getVisibleItems();
+		const visibleIndex = visibleItems.indexOf(item);
+		if (visibleIndex === -1) return;
+
+		this._draggingEl = item;
+		this._draggingFromIndex = visibleIndex;
+		this._currentDropIndex = visibleIndex;
+		this._lastPointerX = clientX;
+
+		const inner = item.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item') ?? item;
+		const rect = inner.getBoundingClientRect();
+
+		// Insert placeholder at item's current position
+		this._placeholder = document.createElement('div');
+		this._placeholder.className = 'rr-document-tab-bar-drag-placeholder';
+		this._placeholder.setAttribute('aria-hidden', 'true');
+		this._placeholder.setAttribute('data-rr-placeholder', '');
+		item.after(this._placeholder);
+
+		item.classList.add('is-dragging');
+
+		if (!this._keyboardDragging) {
+			item.classList.add('is-dragging-pointer');
+			this._tabBarRect = this.getBoundingClientRect();
+			this._cloneOffsetX = clientX - rect.left;
+
+			document.documentElement.style.cursor = 'grabbing';
+
+			// Read threshold from CSS so there is one place to update it
+			const threshold = parseFloat(getComputedStyle(item).getPropertyValue('--_short-label-threshold')) || 200;
+			const useShort = rect.width < threshold;
+			const displayTitle = useShort ? (item.shortLabel || item.label) : item.label;
+			const displaySubtitle = useShort ? (item.shortSupportingLabel || item.supportingLabel) : item.supportingLabel;
+
+			const cloneInner = document.createElement('div');
+			cloneInner.className = 'document-tab-bar__item';
+			cloneInner.style.cssText = `
+				display: flex; flex-direction: row; align-items: center;
+				gap: 6px; padding: 6px 6px 6px 10px;
+				width: 100%; height: 100%; box-sizing: border-box;
+			`;
+
+			const titleArea = document.createElement('div');
+			titleArea.style.cssText = 'flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: center;';
+
+			const titleEl = document.createElement('span');
+			titleEl.textContent = displayTitle;
+			titleEl.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: var(--components-document-tab-bar-tab-title-font);';
+			titleArea.appendChild(titleEl);
+
+			if (displaySubtitle) {
+				const subtitleEl = document.createElement('span');
+				subtitleEl.textContent = displaySubtitle;
+				subtitleEl.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: var(--primitives-font-body-xs-regular-flat); color: var(--semantics-content-secondary-color);';
+				titleArea.appendChild(subtitleEl);
+			}
+
+			cloneInner.appendChild(titleArea);
+
+			this._clone = document.createElement('div');
+			this._clone.className = 'document-tab-bar__drag-clone';
+			this._clone.style.setProperty('--_drag-clone-left', `${clientX - this._tabBarRect.left - this._cloneOffsetX}px`);
+			this._clone.style.setProperty('--_drag-clone-top', `${rect.top - this._tabBarRect.top}px`);
+			this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
+			this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
+			this._clone.appendChild(cloneInner);
+			this.renderRoot.appendChild(this._clone);
+		}
+	}
+
+	private _setDropIndex(toIndex: number): void {
+		if (!this._placeholder || !this._draggingEl) return;
+
+		const nonDragging = this._getVisibleItems().filter(i => i !== this._draggingEl);
+		const clamped = Math.max(0, Math.min(nonDragging.length, toIndex));
+		this._currentDropIndex = clamped;
+		this._placeholder.remove();
+
+		if (nonDragging.length === 0) {
+			this._draggingEl.after(this._placeholder);
+			return;
+		}
+
+		if (clamped === 0) {
+			nonDragging[0].before(this._placeholder);
+		} else {
+			nonDragging[clamped - 1].after(this._placeholder);
+		}
+	}
+
+	private _getDropIndex(): number {
+		return this._currentDropIndex;
+	}
+
+	private _endDrag(): void {
+		if (!this._draggingEl || !this._placeholder) return;
+
+		const allItems = this._getItems();
+		const movedItem = this._draggingEl;
+		const fromIndex = allItems.indexOf(movedItem);
+
+		// Move item to where the placeholder is before cleanup removes it
+		this._placeholder.replaceWith(movedItem);
+
+		// toIndex is now movedItem's new position in DOM
+		const newAllItems = this._getItems();
+		const toIndex = newAllItems.indexOf(movedItem);
+
+		this._cleanupDrag();
+
+		if (fromIndex !== toIndex) {
+			this.dispatchEvent(new CustomEvent<RRReorderEventDetail>('rr-reorder', {
+				detail: { fromIndex, toIndex },
+				bubbles: true,
+				composed: true,
+			}));
+			this._announce(this._t('components.document-tab-bar.drag-dropped-text', { position: toIndex + 1 }));
+
+			requestAnimationFrame(() => {
+				const inner = movedItem.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item');
+				inner?.focus();
+			});
+		} else {
+			this._announce(this._t('components.document-tab-bar.drag-no-change-text'));
+		}
+	}
+
+	private _cancelDrag(): void {
+		if (!this._draggingEl) return;
+		this._cleanupDrag();
+		this._announce(this._t('components.document-tab-bar.drag-cancelled-text'));
+	}
+
+	private _cleanupDrag(): void {
+		this._clearPendingDrag();
+
+		this._draggingEl?.classList.remove('is-dragging');
+		this._draggingEl?.classList.remove('is-dragging-pointer');
+		this._placeholder?.remove();
+		this._clone?.remove();
+		document.documentElement.style.cursor = '';
+
+		// Reset drag handle aria-label
+		if (this._draggingEl) this._setTabItemLabel(this._draggingEl);
+
+		if (this._pointerId !== null) {
+			try { this.releasePointerCapture(this._pointerId); } catch (e) { if (!(e instanceof DOMException)) throw e; }
+			this._pointerId = null;
+		}
+
+		this.removeEventListener('pointermove', this._onPointerMove);
+		this.removeEventListener('pointerup', this._onPointerUp);
+		this.removeEventListener('pointercancel', this._onPointerCancel);
+
+		this._draggingEl = null;
+		this._draggingFromIndex = -1;
+		this._placeholder = null;
+		this._clone = null;
+		this._cloneOffsetX = 0;
+		this._tabBarRect = null;
+		this._lastPointerX = 0;
+		this._currentDropIndex = -1;
+		this._keyboardDragging = false;
+	}
+
+	// — i18n ——————————————————————————————————————————————————————————————————
+
+	private _t(key: keyof RRDocumentTabBarTranslations, vars?: Record<string, string | number>): string {
+		let str = this._mergedTranslations[key];
+		if (vars) {
+			for (const [k, v] of Object.entries(vars)) {
+				str = str.replace(`{${k}}`, String(v));
+			}
+		}
+		return str;
+	}
+
+	// — Accessibility ——————————————————————————————————————————————————————————
+
+	private _dragPositionLabel(): string {
+		const items = this._getVisibleItems();
+		const pos = this._getDropIndex() + 1;
+		return this._t('components.document-tab-bar.drag-handle-active-label-text', { position: pos, total: items.length });
+	}
+
+	private _dragPositionAnnouncement(): string {
+		const items = this._getVisibleItems();
+		const pos = this._getDropIndex() + 1;
+		return this._t('components.document-tab-bar.drag-position-text', { position: pos, total: items.length });
+	}
+
+	private _setTabItemLabel(item: RRDocumentTabBarItem, label?: string): void {
+		const inner = item.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item');
+		if (!inner) return;
+		if (label) {
+			inner.setAttribute('aria-label', label);
+		} else {
+			// Restore the original fullLabel
+			const fullLabel = item.supportingLabel ? `${item.label} · ${item.supportingLabel}` : item.label;
+			if (fullLabel) inner.setAttribute('aria-label', fullLabel);
+			else inner.removeAttribute('aria-label');
+		}
+	}
+
+	private _announce(message: string, assertive = false): void {
+		const selector = assertive
+			? '.document-tab-bar__assertive-announcer'
+			: '.document-tab-bar__polite-announcer';
+		const region = this.shadowRoot?.querySelector<HTMLElement>(selector);
+		if (!region) return;
+		region.textContent = '';
+		requestAnimationFrame(() => requestAnimationFrame(() => {
+			region.textContent = message;
+		}));
 	}
 
 	private _calculateOverflow(): void {
@@ -242,8 +611,8 @@ export class RRDocumentTabBar extends LitElement {
 		const visibleCount = items.length - this._overflowCount;
 
 		items.slice(visibleCount).forEach(item => {
-			const title = item.title || '–';
-			const label = item.subtitle ? `${title} · ${item.subtitle}` : title;
+			const title = item.label || '–';
+			const label = item.supportingLabel ? `${title} · ${item.supportingLabel}` : title;
 			const menuItem = document.createElement('rr-menu-item');
 			menuItem.setAttribute('text', label);
 			menuItem.addEventListener('click', () => {
@@ -364,7 +733,60 @@ export class RRDocumentTabBar extends LitElement {
 	};
 
 	private _handleKeyDown = (event: KeyboardEvent): void => {
-		const items = this._getItems().filter(item => !item.disabled && !item.hidden);
+		// — Keyboard drag mode —
+		if (this._keyboardDragging) {
+			switch (event.key) {
+				case 'ArrowLeft': {
+					event.preventDefault();
+					this._setDropIndex(Math.max(0, this._getDropIndex() - 1));
+					this._announce(this._dragPositionAnnouncement());
+					if (this._draggingEl) this._setTabItemLabel(this._draggingEl, this._dragPositionLabel());
+					break;
+				}
+				case 'ArrowRight': {
+					event.preventDefault();
+					const visItems = this._getVisibleItems();
+					this._setDropIndex(Math.min(visItems.length - 1, this._getDropIndex() + 1));
+					this._announce(this._dragPositionAnnouncement());
+					if (this._draggingEl) this._setTabItemLabel(this._draggingEl, this._dragPositionLabel());
+					break;
+				}
+				case 'Enter':
+				case ' ':
+					event.preventDefault();
+					this._endDrag();
+					break;
+				case 'Escape':
+					event.preventDefault();
+					this._cancelDrag();
+					break;
+			}
+			return;
+		}
+
+		// — Normal navigation: Space grabs the focused item for keyboard drag —
+		if (event.key === ' ') {
+			const path = event.composedPath() as Element[];
+			const item = path.find(
+				el => el instanceof Element && el.tagName.toLowerCase() === 'rr-document-tab-bar-item'
+			) as RRDocumentTabBarItem | undefined;
+
+			// Only start drag if the target is the tab item inner div (not dismiss button)
+			const onDismiss = path.some(el =>
+				el instanceof Element && el.classList?.contains('document-tab-bar__item-dismiss-button')
+			);
+			if (item && !item.disabled && !item.hidden && !onDismiss) {
+				event.preventDefault();
+				this._keyboardDragging = true;
+				this._startDrag(item);
+				this._announce(this._t('components.document-tab-bar.drag-grabbed-text'), true);
+				this._setTabItemLabel(item, this._dragPositionLabel());
+				return;
+			}
+		}
+
+		// — Normal navigation: arrow keys move focus —
+		const items = this._getVisibleItems().filter(item => !item.disabled);
 		if (items.length === 0) return;
 
 		const currentIndex = items.findIndex(

@@ -41,22 +41,22 @@ const Template = ({ overflowButtonLabel, accessibleLabel }) => html`
 	>
 		<rr-document-tab-bar-item
 			selected
-			title="Artikel 2"
-			subtitle="Wet op de Zorgtoeslag"
-			short-title="Art. 2"
-			short-subtitle="WZT"
+			label="Artikel 2"
+			supporting-label="Wet op de Zorgtoeslag"
+			short-label="Art. 2"
+			short-supporting-label="WZT"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 1"
-			subtitle="Zorgverzekeringswet"
-			short-title="Art. 1"
-			short-subtitle="Zvw"
+			label="Artikel 1"
+			supporting-label="Zorgverzekeringswet"
+			short-label="Art. 1"
+			short-supporting-label="Zvw"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 3:2"
-			subtitle="Algemene wet bestuursrecht"
-			short-title="Art. 3:2"
-			short-subtitle="Awb"
+			label="Artikel 3:2"
+			supporting-label="Algemene wet bestuursrecht"
+			short-label="Art. 3:2"
+			short-supporting-label="Awb"
 		></rr-document-tab-bar-item>
 		<rr-icon-button slot="end" variant="neutral-tinted" label="Nieuw tabblad">
 			<rr-icon name="plus"></rr-icon>
@@ -70,52 +70,52 @@ export const VeelTabbladen = () => html`
 	<rr-document-tab-bar accessible-label="Documenten">
 		<rr-document-tab-bar-item
 			selected
-			title="Artikel 2"
-			subtitle="Wet op de Zorgtoeslag"
-			short-title="Art. 2"
-			short-subtitle="WZT"
+			label="Artikel 2"
+			supporting-label="Wet op de Zorgtoeslag"
+			short-label="Art. 2"
+			short-supporting-label="WZT"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 1"
-			subtitle="Zorgverzekeringswet"
-			short-title="Art. 1"
-			short-subtitle="Zvw"
+			label="Artikel 1"
+			supporting-label="Zorgverzekeringswet"
+			short-label="Art. 1"
+			short-supporting-label="Zvw"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 68b"
-			subtitle="Zorgverzekeringswet"
-			short-title="Art. 68b"
-			short-subtitle="Zvw"
+			label="Artikel 68b"
+			supporting-label="Zorgverzekeringswet"
+			short-label="Art. 68b"
+			short-supporting-label="Zvw"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 3:2"
-			subtitle="Algemene wet bestuursrecht"
-			short-title="Art. 3:2"
-			short-subtitle="Awb"
+			label="Artikel 3:2"
+			supporting-label="Algemene wet bestuursrecht"
+			short-label="Art. 3:2"
+			short-supporting-label="Awb"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 7"
-			subtitle="Algemene wet inkomensafhankelijke regelingen"
-			short-title="Art. 7"
-			short-subtitle="Awir"
+			label="Artikel 7"
+			supporting-label="Algemene wet inkomensafhankelijke regelingen"
+			short-label="Art. 7"
+			short-supporting-label="Awir"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 67"
-			subtitle="Algemene wet inzake rijksbelastingen"
-			short-title="Art. 67"
-			short-subtitle="AWR"
+			label="Artikel 67"
+			supporting-label="Algemene wet inzake rijksbelastingen"
+			short-label="Art. 67"
+			short-supporting-label="AWR"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 18"
-			subtitle="Algemene Kinderbijslagwet"
-			short-title="Art. 18"
-			short-subtitle="AKW"
+			label="Artikel 18"
+			supporting-label="Algemene Kinderbijslagwet"
+			short-label="Art. 18"
+			short-supporting-label="AKW"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 4:3"
-			subtitle="Algemene wet bestuursrecht"
-			short-title="Art. 4:3"
-			short-subtitle="Awb"
+			label="Artikel 4:3"
+			supporting-label="Algemene wet bestuursrecht"
+			short-label="Art. 4:3"
+			short-supporting-label="Awb"
 		></rr-document-tab-bar-item>
 		<rr-icon-button slot="end" variant="neutral-tinted" label="Nieuw tabblad">
 			<rr-icon name="plus"></rr-icon>
@@ -128,16 +128,16 @@ export const ZonderSubtitel = () => html`
 	<rr-document-tab-bar accessible-label="Documenten">
 		<rr-document-tab-bar-item
 			selected
-			title="Artikel 2"
-			short-title="Art. 2"
+			label="Artikel 2"
+			short-label="Art. 2"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 1"
-			short-title="Art. 1"
+			label="Artikel 1"
+			short-label="Art. 1"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 3:2"
-			short-title="Art. 3:2"
+			label="Artikel 3:2"
+			short-label="Art. 3:2"
 		></rr-document-tab-bar-item>
 	</rr-document-tab-bar>
 `;
@@ -147,24 +147,40 @@ export const Uitgeschakeld = () => html`
 	<rr-document-tab-bar accessible-label="Documenten">
 		<rr-document-tab-bar-item
 			selected
-			title="Artikel 2"
-			subtitle="Wet op de Zorgtoeslag"
-			short-title="Art. 2"
-			short-subtitle="WZT"
+			label="Artikel 2"
+			supporting-label="Wet op de Zorgtoeslag"
+			short-label="Art. 2"
+			short-supporting-label="WZT"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
 			disabled
-			title="Artikel 1"
-			subtitle="Zorgverzekeringswet"
-			short-title="Art. 1"
-			short-subtitle="Zvw"
+			label="Artikel 1"
+			supporting-label="Zorgverzekeringswet"
+			short-label="Art. 1"
+			short-supporting-label="Zvw"
 		></rr-document-tab-bar-item>
 		<rr-document-tab-bar-item
-			title="Artikel 3:2"
-			subtitle="Algemene wet bestuursrecht"
-			short-title="Art. 3:2"
-			short-subtitle="Awb"
+			label="Artikel 3:2"
+			supporting-label="Algemene wet bestuursrecht"
+			short-label="Art. 3:2"
+			short-supporting-label="Awb"
 		></rr-document-tab-bar-item>
 	</rr-document-tab-bar>
 `;
 Uitgeschakeld.parameters = { controls: { disable: true } };
+
+export const Herschikbaar = {
+	render: () => {
+		const el = document.createElement('div');
+		el.innerHTML = `
+			<rr-document-tab-bar accessible-label="Documenten">
+				<rr-document-tab-bar-item selected label="Artikel 2" supporting-label="Wet op de Zorgtoeslag" short-label="Art. 2" short-supporting-label="WZT"></rr-document-tab-bar-item>
+				<rr-document-tab-bar-item label="Artikel 1" supporting-label="Zorgverzekeringswet" short-label="Art. 1" short-supporting-label="Zvw"></rr-document-tab-bar-item>
+				<rr-document-tab-bar-item label="Artikel 3:2" supporting-label="Algemene wet bestuursrecht" short-label="Art. 3:2" short-supporting-label="Awb"></rr-document-tab-bar-item>
+				<rr-document-tab-bar-item label="Artikel 7" supporting-label="Algemene wet inkomensafhankelijke regelingen" short-label="Art. 7" short-supporting-label="Awir"></rr-document-tab-bar-item>
+			</rr-document-tab-bar>
+		`;
+		return el;
+	},
+};
+Herschikbaar.parameters = { controls: { disable: true } };

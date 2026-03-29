@@ -34,15 +34,25 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 				<slot name="end"></slot>
 			</div>
 		</nav>
+		<div class="document-tab-bar__polite-announcer"
+			role="status"
+			aria-live="polite"
+			aria-atomic="true"
+		></div>
+		<div class="document-tab-bar__assertive-announcer"
+			role="alert"
+			aria-live="assertive"
+			aria-atomic="true"
+		></div>
 	`;
 }
 
 export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): TemplateResult {
-	const shortTitle = component.shortTitle || component.title;
-	const shortSubtitle = component.shortSubtitle || component.subtitle;
-	const fullLabel = component.subtitle
-		? `${component.title} · ${component.subtitle}`
-		: component.title;
+	const shortLabelText = component.shortLabel || component.label;
+	const shortSupportingLabelText = component.shortSupportingLabel || component.supportingLabel;
+	const fullLabel = component.supportingLabel
+		? `${component.label} · ${component.supportingLabel}`
+		: component.label;
 
 	return html`
 		<div class="document-tab-bar__item"
@@ -53,23 +63,22 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 			tabindex=${component.disabled ? '-1' : '0'}
 			@click=${component._handleClick}
 		>
-			<div class="document-tab-bar__item-title-area">
-				<span class="document-tab-bar__item-title document-tab-bar__item-title--regular">
-					${component.title}
+			<div class="document-tab-bar__item-label-area">
+				<span class="document-tab-bar__item-label">
+					${component.label}
 				</span>
-				<span class="document-tab-bar__item-title document-tab-bar__item-title--short">
-					${shortTitle}
+				<span class="document-tab-bar__item-short-label">
+					${shortLabelText}
 				</span>
-				${component.subtitle
-					? html`<span class="document-tab-bar__item-subtitle document-tab-bar__item-subtitle--regular">${component.subtitle}</span>`
+				${component.supportingLabel
+					? html`<span class="document-tab-bar__item-supporting-label">${component.supportingLabel}</span>`
 					: nothing}
-				${shortSubtitle
-					? html`<span class="document-tab-bar__item-subtitle document-tab-bar__item-subtitle--short">${shortSubtitle}</span>`
+				${shortSupportingLabelText
+					? html`<span class="document-tab-bar__item-short-supporting-label">${shortSupportingLabelText}</span>`
 					: nothing}
 			</div>
 			<button class="document-tab-bar__item-dismiss-button"
 				aria-label="Sluiten"
-				tabindex="-1"
 				@click=${component._handleDismiss}
 			>
 				<span class="document-tab-bar__item-dismiss-icon">
