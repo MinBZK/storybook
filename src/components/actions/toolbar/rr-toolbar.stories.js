@@ -41,29 +41,40 @@ export const Default = {
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}
 		>
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Vorige/Volgende">
-					<rr-button-bar>
-						<rr-icon-button>
-							<rr-icon name="chevron-left"></rr-icon>
-							Vorige
-						</rr-icon-button>
-						<rr-button-bar-divider></rr-button-bar-divider>
-						<rr-icon-button>
-							<rr-icon name="chevron-right"></rr-icon>
-							Volgende
-						</rr-icon-button>
-					</rr-button-bar>
-					<rr-menu-item text="Vorige"></rr-menu-item>
-					<rr-menu-item text="Volgende"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Vorige/Volgende"
+			>
+				<rr-button-bar>
+					<rr-icon-button>
+						<rr-icon name="chevron-left"></rr-icon>
+						Vorige
+					</rr-icon-button>
+					<rr-button-bar-divider></rr-button-bar-divider>
+					<rr-icon-button>
+						<rr-icon name="chevron-right"></rr-icon>
+						Volgende
+					</rr-icon-button>
+				</rr-button-bar>
+				<rr-menu-item
+					slot="overflow"
+					text="Vorige"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Volgende"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
 		</rr-toolbar>
 	`),
 };
@@ -75,38 +86,64 @@ export const WithLabels = {
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}
 		>
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Tekststijl">
-					<rr-segmented-control
-						type="checkbox"
-						variant="icon"
-						size=${args.size}
-						accessible-label="Tekststijl"
-					>
-						<rr-segmented-control-item value="vet">
-							<rr-icon slot="icon" name="bold"></rr-icon>
-							Vet
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="cursief">
-							<rr-icon slot="icon" name="italic"></rr-icon>
-							Cursief
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="onderstrepen">
-							<rr-icon slot="icon" name="underlined"></rr-icon>
-							Onderstrepen
-						</rr-segmented-control-item>
-					</rr-segmented-control>
-					<rr-menu-item text="Vet" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Cursief" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Onderstrepen" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Tekststijl"
+			>
+				<rr-segmented-control
+					type="checkbox"
+					variant="icon"
+					size=${args.size}
+					accessible-label="Tekststijl"
+				>
+					<rr-segmented-control-item value="vet">
+						<rr-icon
+							slot="icon"
+							name="bold"
+						></rr-icon>
+						Vet
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief">
+						<rr-icon
+							slot="icon"
+							name="italic"
+						></rr-icon>
+						Cursief
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="onderstrepen">
+						<rr-icon
+							slot="icon"
+							name="underlined"
+						></rr-icon>
+						Onderstrepen
+					</rr-segmented-control-item>
+				</rr-segmented-control>
+				<rr-menu-item
+					slot="overflow"
+					text="Vet"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Cursief"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Onderstrepen"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
 		</rr-toolbar>
 	`),
 };
@@ -118,29 +155,44 @@ export const WithTitleGroup = {
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}
 		>
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Terug">
-					<rr-icon-button>
-						<rr-icon name="chevron-left"></rr-icon>
-						Terug
-					</rr-icon-button>
-					<rr-menu-item text="Terug"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-title-group
-					text="Document titel"
-					subtext="Laatste wijziging: vandaag"
-				></rr-toolbar-title-group>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Annuleren">
-					<rr-button>Annuleren</rr-button>
-					<rr-menu-item text="Annuleren"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Terug"
+			>
+				<rr-icon-button>
+					<rr-icon name="chevron-left"></rr-icon>
+					Terug
+				</rr-icon-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Terug"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-title-group
+				slot="start"
+				text="Document titel"
+				subtext="Laatste wijziging: vandaag"
+			></rr-toolbar-title-group>
+			<rr-toolbar-item
+				slot="end"
+				label="Annuleer"
+			>
+				<rr-button>Annuleer</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Annuleer"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
 		</rr-toolbar>
 	`),
 };
@@ -152,28 +204,35 @@ export const WithTitleGroupCentered = {
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}
 		>
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Terug">
-					<rr-icon-button>
-						<rr-icon name="chevron-left"></rr-icon>
-						Terug
-					</rr-icon-button>
-					<rr-menu-item text="Terug"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-center-area>
-				<rr-toolbar-title-group
-					text="Document titel"
-					subtext="Laatste wijziging: vandaag"
-					align="center"
-				></rr-toolbar-title-group>
-			</rr-toolbar-center-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Terug"
+			>
+				<rr-icon-button>
+					<rr-icon name="chevron-left"></rr-icon>
+					Terug
+				</rr-icon-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Terug"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-title-group
+				slot="center"
+				text="Document titel"
+				subtext="Laatste wijziging: vandaag"
+				align="center"
+			></rr-toolbar-title-group>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
 		</rr-toolbar>
 	`),
 };
@@ -185,22 +244,36 @@ export const SizeSmall = {
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}
 		>
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Bewerk">
-					<rr-button>Bewerk</rr-button>
-					<rr-menu-item text="Bewerk"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Dupliceer">
-					<rr-button>Dupliceer</rr-button>
-					<rr-menu-item text="Dupliceer"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Bewerken"
+			>
+				<rr-button>Bewerken</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Bewerken"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="start"
+				label="Dupliceer"
+			>
+				<rr-button>Dupliceer</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Dupliceer"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
 		</rr-toolbar>
 	`),
 };
@@ -212,22 +285,36 @@ export const Sizes = {
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">md (default)</p>
 				${resizable(html`
 					<rr-toolbar size="md">
-						<rr-toolbar-start-area>
-							<rr-toolbar-item label="Bewerk">
-								<rr-button>Bewerk</rr-button>
-								<rr-menu-item text="Bewerk"></rr-menu-item>
-							</rr-toolbar-item>
-							<rr-toolbar-item label="Dupliceer">
-								<rr-button>Dupliceer</rr-button>
-								<rr-menu-item text="Dupliceer"></rr-menu-item>
-							</rr-toolbar-item>
-						</rr-toolbar-start-area>
-						<rr-toolbar-end-area>
-							<rr-toolbar-item label="Opslaan">
-								<rr-button variant="primary">Opslaan</rr-button>
-								<rr-menu-item text="Opslaan"></rr-menu-item>
-							</rr-toolbar-item>
-						</rr-toolbar-end-area>
+						<rr-toolbar-item
+							slot="start"
+							label="Bewerken"
+						>
+							<rr-button>Bewerken</rr-button>
+							<rr-menu-item
+								slot="overflow"
+								text="Bewerken"
+							></rr-menu-item>
+						</rr-toolbar-item>
+						<rr-toolbar-item
+							slot="start"
+							label="Dupliceer"
+						>
+							<rr-button>Dupliceer</rr-button>
+							<rr-menu-item
+								slot="overflow"
+								text="Dupliceer"
+							></rr-menu-item>
+						</rr-toolbar-item>
+						<rr-toolbar-item
+							slot="end"
+							label="Sla op"
+						>
+							<rr-button variant="primary">Sla op</rr-button>
+							<rr-menu-item
+								slot="overflow"
+								text="Sla op"
+							></rr-menu-item>
+						</rr-toolbar-item>
 					</rr-toolbar>
 				`)}
 			</div>
@@ -235,22 +322,36 @@ export const Sizes = {
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">sm</p>
 				${resizable(html`
 					<rr-toolbar size="sm">
-						<rr-toolbar-start-area>
-							<rr-toolbar-item label="Bewerk">
-								<rr-button>Bewerk</rr-button>
-								<rr-menu-item text="Bewerk"></rr-menu-item>
-							</rr-toolbar-item>
-							<rr-toolbar-item label="Dupliceer">
-								<rr-button>Dupliceer</rr-button>
-								<rr-menu-item text="Dupliceer"></rr-menu-item>
-							</rr-toolbar-item>
-						</rr-toolbar-start-area>
-						<rr-toolbar-end-area>
-							<rr-toolbar-item label="Opslaan">
-								<rr-button variant="primary">Opslaan</rr-button>
-								<rr-menu-item text="Opslaan"></rr-menu-item>
-							</rr-toolbar-item>
-						</rr-toolbar-end-area>
+						<rr-toolbar-item
+							slot="start"
+							label="Bewerken"
+						>
+							<rr-button>Bewerken</rr-button>
+							<rr-menu-item
+								slot="overflow"
+								text="Bewerken"
+							></rr-menu-item>
+						</rr-toolbar-item>
+						<rr-toolbar-item
+							slot="start"
+							label="Dupliceer"
+						>
+							<rr-button>Dupliceer</rr-button>
+							<rr-menu-item
+								slot="overflow"
+								text="Dupliceer"
+							></rr-menu-item>
+						</rr-toolbar-item>
+						<rr-toolbar-item
+							slot="end"
+							label="Sla op"
+						>
+							<rr-button variant="primary">Sla op</rr-button>
+							<rr-menu-item
+								slot="overflow"
+								text="Sla op"
+							></rr-menu-item>
+						</rr-toolbar-item>
 					</rr-toolbar>
 				`)}
 			</div>
@@ -265,63 +366,110 @@ export const LabelsToggle = {
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">Zonder labels</p>
 				${resizable(html`
 					<rr-toolbar size="md">
-						<rr-toolbar-start-area>
-							<rr-toolbar-item label="Tekststijl">
-								<rr-segmented-control
-									type="checkbox"
-									variant="icon"
-									accessible-label="Tekststijl"
-								>
-									<rr-segmented-control-item value="vet">
-										<rr-icon slot="icon" name="bold"></rr-icon>
-										Vet
-									</rr-segmented-control-item>
-									<rr-segmented-control-item value="cursief">
-										<rr-icon slot="icon" name="italic"></rr-icon>
-										Cursief
-									</rr-segmented-control-item>
-									<rr-segmented-control-item value="onderstrepen">
-										<rr-icon slot="icon" name="underlined"></rr-icon>
-										Onderstrepen
-									</rr-segmented-control-item>
-								</rr-segmented-control>
-								<rr-menu-item text="Vet" type="checkbox"></rr-menu-item>
-								<rr-menu-item text="Cursief" type="checkbox"></rr-menu-item>
-								<rr-menu-item text="Onderstrepen" type="checkbox"></rr-menu-item>
-							</rr-toolbar-item>
-						</rr-toolbar-start-area>
+						<rr-toolbar-item
+							slot="start"
+							label="Tekststijl"
+						>
+							<rr-segmented-control
+								type="checkbox"
+								variant="icon"
+								accessible-label="Tekststijl"
+							>
+								<rr-segmented-control-item value="vet">
+									<rr-icon
+										slot="icon"
+										name="bold"
+									></rr-icon>
+									Vet
+								</rr-segmented-control-item>
+								<rr-segmented-control-item value="cursief">
+									<rr-icon
+										slot="icon"
+										name="italic"
+									></rr-icon>
+									Cursief
+								</rr-segmented-control-item>
+								<rr-segmented-control-item value="onderstrepen">
+									<rr-icon
+										slot="icon"
+										name="underlined"
+									></rr-icon>
+									Onderstrepen
+								</rr-segmented-control-item>
+							</rr-segmented-control>
+							<rr-menu-item
+								slot="overflow"
+								text="Vet"
+								type="checkbox"
+							></rr-menu-item>
+							<rr-menu-item
+								slot="overflow"
+								text="Cursief"
+								type="checkbox"
+							></rr-menu-item>
+							<rr-menu-item
+								slot="overflow"
+								text="Onderstrepen"
+								type="checkbox"
+							></rr-menu-item>
+						</rr-toolbar-item>
 					</rr-toolbar>
 				`)}
 			</div>
 			<div>
 				<p style="font-size: 0.75rem; color: var(--semantics-content-color); margin: 0 0 8px;">Met labels</p>
 				${resizable(html`
-					<rr-toolbar size="md" show-item-labels>
-						<rr-toolbar-start-area>
-							<rr-toolbar-item label="Tekststijl">
-								<rr-segmented-control
-									type="checkbox"
-									variant="icon"
-									accessible-label="Tekststijl"
-								>
-									<rr-segmented-control-item value="vet">
-										<rr-icon slot="icon" name="bold"></rr-icon>
-										Vet
-									</rr-segmented-control-item>
-									<rr-segmented-control-item value="cursief">
-										<rr-icon slot="icon" name="italic"></rr-icon>
-										Cursief
-									</rr-segmented-control-item>
-									<rr-segmented-control-item value="onderstrepen">
-										<rr-icon slot="icon" name="underlined"></rr-icon>
-										Onderstrepen
-									</rr-segmented-control-item>
-								</rr-segmented-control>
-								<rr-menu-item text="Vet" type="checkbox"></rr-menu-item>
-								<rr-menu-item text="Cursief" type="checkbox"></rr-menu-item>
-								<rr-menu-item text="Onderstrepen" type="checkbox"></rr-menu-item>
-							</rr-toolbar-item>
-						</rr-toolbar-start-area>
+					<rr-toolbar
+						size="md"
+						show-item-labels
+					>
+						<rr-toolbar-item
+							slot="start"
+							label="Tekststijl"
+						>
+							<rr-segmented-control
+								type="checkbox"
+								variant="icon"
+								accessible-label="Tekststijl"
+							>
+								<rr-segmented-control-item value="vet">
+									<rr-icon
+										slot="icon"
+										name="bold"
+									></rr-icon>
+									Vet
+								</rr-segmented-control-item>
+								<rr-segmented-control-item value="cursief">
+									<rr-icon
+										slot="icon"
+										name="italic"
+									></rr-icon>
+									Cursief
+								</rr-segmented-control-item>
+								<rr-segmented-control-item value="onderstrepen">
+									<rr-icon
+										slot="icon"
+										name="underlined"
+									></rr-icon>
+									Onderstrepen
+								</rr-segmented-control-item>
+							</rr-segmented-control>
+							<rr-menu-item
+								slot="overflow"
+								text="Vet"
+								type="checkbox"
+							></rr-menu-item>
+							<rr-menu-item
+								slot="overflow"
+								text="Cursief"
+								type="checkbox"
+							></rr-menu-item>
+							<rr-menu-item
+								slot="overflow"
+								text="Onderstrepen"
+								type="checkbox"
+							></rr-menu-item>
+						</rr-toolbar-item>
 					</rr-toolbar>
 				`)}
 			</div>
@@ -332,64 +480,120 @@ export const LabelsToggle = {
 export const WithOverflow = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Tekststijl">
-					<rr-segmented-control
-						type="checkbox"
-						variant="icon"
-						accessible-label="Tekststijl"
-					>
-						<rr-segmented-control-item value="vet">
-							<rr-icon slot="icon" name="bold"></rr-icon>
-							Vet
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="cursief">
-							<rr-icon slot="icon" name="italic"></rr-icon>
-							Cursief
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="onderstrepen">
-							<rr-icon slot="icon" name="underlined"></rr-icon>
-							Onderstrepen
-						</rr-segmented-control-item>
-					</rr-segmented-control>
-					<rr-menu-item text="Vet" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Cursief" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Onderstrepen" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Lijst">
-					<rr-segmented-control
-						type="radio"
-						variant="icon"
-						accessible-label="Lijsttype"
-					>
-						<rr-segmented-control-item value="none">
-							<rr-icon slot="icon" name="minus-small"></rr-icon>
-							Geen
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="bullet">
-							<rr-icon slot="icon" name="bullet-list"></rr-icon>
-							Lijst
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="numbered">
-							<rr-icon slot="icon" name="numbered-list"></rr-icon>
-							Genummerd
-						</rr-segmented-control-item>
-					</rr-segmented-control>
-					<rr-menu-item text="Geen" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Lijst" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Genummerd" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Annuleren">
-					<rr-button>Annuleren</rr-button>
-					<rr-menu-item text="Annuleren"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Tekststijl"
+			>
+				<rr-segmented-control
+					type="checkbox"
+					variant="icon"
+					accessible-label="Tekststijl"
+				>
+					<rr-segmented-control-item value="vet">
+						<rr-icon
+							slot="icon"
+							name="bold"
+						></rr-icon>
+						Vet
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief">
+						<rr-icon
+							slot="icon"
+							name="italic"
+						></rr-icon>
+						Cursief
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="onderstrepen">
+						<rr-icon
+							slot="icon"
+							name="underlined"
+						></rr-icon>
+						Onderstrepen
+					</rr-segmented-control-item>
+				</rr-segmented-control>
+				<rr-menu-item
+					slot="overflow"
+					text="Vet"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Cursief"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Onderstrepen"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="start"
+				label="Lijst"
+			>
+				<rr-segmented-control
+					type="radio"
+					variant="icon"
+					accessible-label="Lijsttype"
+				>
+					<rr-segmented-control-item value="none">
+						<rr-icon
+							slot="icon"
+							name="minus-small"
+						></rr-icon>
+						Geen
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="bullet">
+						<rr-icon
+							slot="icon"
+							name="bullet-list"
+						></rr-icon>
+						Lijst
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="numbered">
+						<rr-icon
+							slot="icon"
+							name="numbered-list"
+						></rr-icon>
+						Genummerd
+					</rr-segmented-control-item>
+				</rr-segmented-control>
+				<rr-menu-item
+					slot="overflow"
+					text="Geen"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Lijst"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Genummerd"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Annuleer"
+			>
+				<rr-button>Annuleer</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Annuleer"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
 		</rr-toolbar>
 	`),
 };
@@ -397,35 +601,54 @@ export const WithOverflow = {
 export const WithOverflowPartial = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Vet">
-					<rr-icon-button>
-						<rr-icon name="bold"></rr-icon>
-						Vet
-					</rr-icon-button>
-					<rr-menu-item text="Vet" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Cursief">
-					<rr-icon-button>
-						<rr-icon name="italic"></rr-icon>
-						Cursief
-					</rr-icon-button>
-					<!-- Geen overflow slot: wordt stilzwijgend overgeslagen in het menu -->
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Onderstrepen">
-					<rr-icon-button>
-						<rr-icon name="underlined"></rr-icon>
-						Onderstrepen
-					</rr-icon-button>
-					<rr-menu-item text="Onderstrepen" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Vet"
+			>
+				<rr-icon-button>
+					<rr-icon name="bold"></rr-icon>
+					Vet
+				</rr-icon-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Vet"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="start"
+				label="Cursief"
+			>
+				<rr-icon-button>
+					<rr-icon name="italic"></rr-icon>
+					Cursief
+				</rr-icon-button>
+				<!-- Geen overflow slot: wordt stilzwijgend overgeslagen in het menu -->
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="start"
+				label="Onderstrepen"
+			>
+				<rr-icon-button>
+					<rr-icon name="underlined"></rr-icon>
+					Onderstrepen
+				</rr-icon-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Onderstrepen"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
 		</rr-toolbar>
 	`),
 };
@@ -433,71 +656,130 @@ export const WithOverflowPartial = {
 export const WithPriority = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Tekststijl" priority="1">
-					<rr-segmented-control
-						type="checkbox"
-						variant="icon"
-						accessible-label="Tekststijl"
-					>
-						<rr-segmented-control-item value="vet">
-							<rr-icon slot="icon" name="bold"></rr-icon>
-							Vet
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="cursief">
-							<rr-icon slot="icon" name="italic"></rr-icon>
-							Cursief
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="onderstrepen">
-							<rr-icon slot="icon" name="underlined"></rr-icon>
-							Onderstrepen
-						</rr-segmented-control-item>
-					</rr-segmented-control>
-					<rr-menu-item text="Vet" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Cursief" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Onderstrepen" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Lijst" priority="2">
-					<rr-segmented-control
-						type="radio"
-						variant="icon"
-						accessible-label="Lijsttype"
-					>
-						<rr-segmented-control-item value="none">
-							<rr-icon slot="icon" name="minus-small"></rr-icon>
-							Geen
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="bullet">
-							<rr-icon slot="icon" name="bullet-list"></rr-icon>
-							Lijst
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="numbered">
-							<rr-icon slot="icon" name="numbered-list"></rr-icon>
-							Genummerd
-						</rr-segmented-control-item>
-					</rr-segmented-control>
-					<rr-menu-item text="Geen" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Lijst" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Genummerd" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-center-area>
-				<rr-toolbar-title-group
-					text="Document titel"
-					subtext="Laatste wijziging: vandaag"
-					align="center"
-				></rr-toolbar-title-group>
-			</rr-toolbar-center-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Annuleren" priority="3">
-					<rr-button>Annuleren</rr-button>
-					<rr-menu-item text="Annuleren"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Opslaan" priority="10">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Tekststijl"
+				priority="1"
+			>
+				<rr-segmented-control
+					type="checkbox"
+					variant="icon"
+					accessible-label="Tekststijl"
+				>
+					<rr-segmented-control-item value="vet">
+						<rr-icon
+							slot="icon"
+							name="bold"
+						></rr-icon>
+						Vet
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief">
+						<rr-icon
+							slot="icon"
+							name="italic"
+						></rr-icon>
+						Cursief
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="onderstrepen">
+						<rr-icon
+							slot="icon"
+							name="underlined"
+						></rr-icon>
+						Onderstrepen
+					</rr-segmented-control-item>
+				</rr-segmented-control>
+				<rr-menu-item
+					slot="overflow"
+					text="Vet"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Cursief"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Onderstrepen"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="start"
+				label="Lijst"
+				priority="2"
+			>
+				<rr-segmented-control
+					type="radio"
+					variant="icon"
+					accessible-label="Lijsttype"
+				>
+					<rr-segmented-control-item value="none">
+						<rr-icon
+							slot="icon"
+							name="minus-small"
+						></rr-icon>
+						Geen
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="bullet">
+						<rr-icon
+							slot="icon"
+							name="bullet-list"
+						></rr-icon>
+						Lijst
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="numbered">
+						<rr-icon
+							slot="icon"
+							name="numbered-list"
+						></rr-icon>
+						Genummerd
+					</rr-segmented-control-item>
+				</rr-segmented-control>
+				<rr-menu-item
+					slot="overflow"
+					text="Geen"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Lijst"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Genummerd"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-title-group
+				slot="center"
+				text="Document titel"
+				subtext="Laatste wijziging: vandaag"
+				align="center"
+			></rr-toolbar-title-group>
+			<rr-toolbar-item
+				slot="end"
+				label="Annuleer"
+				priority="3"
+			>
+				<rr-button>Annuleer</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Annuleer"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+				priority="10"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
 		</rr-toolbar>
 	`),
 };
@@ -505,36 +787,54 @@ export const WithPriority = {
 export const WithFluidItem = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Terug" priority="1">
-					<rr-icon-button>
-						<rr-icon name="chevron-left"></rr-icon>
-						Terug
-					</rr-icon-button>
-					<rr-menu-item text="Terug"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-center-area>
-				<rr-toolbar-item
-					label="Zoeken"
-					min-width="240px"
-					width="40%"
-					priority="3"
-				>
-					<rr-search-field placeholder="Zoeken..."></rr-search-field>
-					<rr-menu-item text="Zoeken"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-center-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Annuleren">
-					<rr-button>Annuleren</rr-button>
-					<rr-menu-item text="Annuleren"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Opslaan" priority="2">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Terug"
+				priority="1"
+			>
+				<rr-icon-button>
+					<rr-icon name="chevron-left"></rr-icon>
+					Terug
+				</rr-icon-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Terug"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="center"
+				label="Zoeken"
+				min-width="240px"
+				width="40%"
+				priority="3"
+			>
+				<rr-search-field placeholder="Zoeken..."></rr-search-field>
+				<rr-menu-item
+					slot="overflow"
+					text="Zoeken"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Annuleer"
+			>
+				<rr-button>Annuleer</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Annuleer"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+				priority="2"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
 		</rr-toolbar>
 	`),
 };
@@ -542,37 +842,60 @@ export const WithFluidItem = {
 export const WithPinnedOverflow = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Tekststijl">
-					<rr-segmented-control
-						type="checkbox"
-						variant="icon"
-						accessible-label="Tekststijl"
-					>
-						<rr-segmented-control-item value="vet">
-							<rr-icon slot="icon" name="bold"></rr-icon>
-							Vet
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="cursief">
-							<rr-icon slot="icon" name="italic"></rr-icon>
-							Cursief
-						</rr-segmented-control-item>
-					</rr-segmented-control>
-					<rr-menu-item text="Vet" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Cursief" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
-			<rr-toolbar-overflow-area>
-				<rr-menu-divider></rr-menu-divider>
-				<rr-menu-item text="Instellingen"></rr-menu-item>
-				<rr-menu-item text="Help"></rr-menu-item>
-			</rr-toolbar-overflow-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Tekststijl"
+			>
+				<rr-segmented-control
+					type="checkbox"
+					variant="icon"
+					accessible-label="Tekststijl"
+				>
+					<rr-segmented-control-item value="vet">
+						<rr-icon
+							slot="icon"
+							name="bold"
+						></rr-icon>
+						Vet
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief">
+						<rr-icon
+							slot="icon"
+							name="italic"
+						></rr-icon>
+						Cursief
+					</rr-segmented-control-item>
+				</rr-segmented-control>
+				<rr-menu-item
+					slot="overflow"
+					text="Vet"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Cursief"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-menu-divider slot="overflow"></rr-menu-divider>
+			<rr-menu-item
+				slot="overflow"
+				text="Instellingen"
+			></rr-menu-item>
+			<rr-menu-item
+				slot="overflow"
+				text="Help"
+			></rr-menu-item>
 		</rr-toolbar>
 	`),
 };
@@ -580,30 +903,40 @@ export const WithPinnedOverflow = {
 export const WithPinnedOverflowOnly = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Terug">
-					<rr-icon-button>
-						<rr-icon name="chevron-left"></rr-icon>
-						Terug
-					</rr-icon-button>
-				</rr-toolbar-item>
-				<rr-toolbar-title-group
-					text="Document titel"
-					subtext="Laatste wijziging: vandaag"
-				></rr-toolbar-title-group>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan">
-					<rr-button variant="primary">Opslaan</rr-button>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
-			<rr-toolbar-overflow-area>
-				<rr-menu-divider></rr-menu-divider>
-				<rr-menu-item text="Exporteren"></rr-menu-item>
-				<rr-menu-item text="Delen"></rr-menu-item>
-				<rr-menu-divider></rr-menu-divider>
-				<rr-menu-item text="Verwijderen"></rr-menu-item>
-			</rr-toolbar-overflow-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Terug"
+			>
+				<rr-icon-button>
+					<rr-icon name="chevron-left"></rr-icon>
+					Terug
+				</rr-icon-button>
+			</rr-toolbar-item>
+			<rr-toolbar-title-group
+				slot="start"
+				text="Document titel"
+				subtext="Laatste wijziging: vandaag"
+			></rr-toolbar-title-group>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+			</rr-toolbar-item>
+			<rr-menu-divider slot="overflow"></rr-menu-divider>
+			<rr-menu-item
+				slot="overflow"
+				text="Exporteren"
+			></rr-menu-item>
+			<rr-menu-item
+				slot="overflow"
+				text="Delen"
+			></rr-menu-item>
+			<rr-menu-divider slot="overflow"></rr-menu-divider>
+			<rr-menu-item
+				slot="overflow"
+				text="Verwijder"
+			></rr-menu-item>
 		</rr-toolbar>
 	`),
 };
@@ -611,67 +944,127 @@ export const WithPinnedOverflowOnly = {
 export const WithPinnedAndDynamicOverflow = {
 	render: () => resizable(html`
 		<rr-toolbar size="md">
-			<rr-toolbar-start-area>
-				<rr-toolbar-item label="Tekststijl" priority="1">
-					<rr-segmented-control
-						type="checkbox"
-						variant="icon"
-						accessible-label="Tekststijl"
-					>
-						<rr-segmented-control-item value="vet">
-							<rr-icon slot="icon" name="bold"></rr-icon>
-							Vet
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="cursief">
-							<rr-icon slot="icon" name="italic"></rr-icon>
-							Cursief
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="onderstrepen">
-							<rr-icon slot="icon" name="underlined"></rr-icon>
-							Onderstrepen
-						</rr-segmented-control-item>
-					</rr-segmented-control>
-					<rr-menu-item text="Vet" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Cursief" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Onderstrepen" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-				<rr-toolbar-item label="Lijst" priority="2">
-					<rr-segmented-control
-						type="radio"
-						variant="icon"
-						accessible-label="Lijsttype"
-					>
-						<rr-segmented-control-item value="none">
-							<rr-icon slot="icon" name="minus-small"></rr-icon>
-							Geen
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="bullet">
-							<rr-icon slot="icon" name="bullet-list"></rr-icon>
-							Lijst
-						</rr-segmented-control-item>
-						<rr-segmented-control-item value="numbered">
-							<rr-icon slot="icon" name="numbered-list"></rr-icon>
-							Genummerd
-						</rr-segmented-control-item>
-					</rr-segmented-control>
-					<rr-menu-item text="Geen" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Lijst" type="checkbox"></rr-menu-item>
-					<rr-menu-item text="Genummerd" type="checkbox"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-start-area>
-			<rr-toolbar-end-area>
-				<rr-toolbar-item label="Opslaan" priority="10">
-					<rr-button variant="primary">Opslaan</rr-button>
-					<rr-menu-item text="Opslaan"></rr-menu-item>
-				</rr-toolbar-item>
-			</rr-toolbar-end-area>
-			<rr-toolbar-overflow-area>
-				<rr-menu-divider></rr-menu-divider>
-				<rr-menu-item text="Exporteren"></rr-menu-item>
-				<rr-menu-item text="Instellingen"></rr-menu-item>
-				<rr-menu-divider></rr-menu-divider>
-				<rr-menu-item text="Verwijderen"></rr-menu-item>
-			</rr-toolbar-overflow-area>
+			<rr-toolbar-item
+				slot="start"
+				label="Tekststijl"
+				priority="1"
+			>
+				<rr-segmented-control
+					type="checkbox"
+					variant="icon"
+					accessible-label="Tekststijl"
+				>
+					<rr-segmented-control-item value="vet">
+						<rr-icon
+							slot="icon"
+							name="bold"
+						></rr-icon>
+						Vet
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief">
+						<rr-icon
+							slot="icon"
+							name="italic"
+						></rr-icon>
+						Cursief
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="onderstrepen">
+						<rr-icon
+							slot="icon"
+							name="underlined"
+						></rr-icon>
+						Onderstrepen
+					</rr-segmented-control-item>
+				</rr-segmented-control>
+				<rr-menu-item
+					slot="overflow"
+					text="Vet"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Cursief"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Onderstrepen"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="start"
+				label="Lijst"
+				priority="2"
+			>
+				<rr-segmented-control
+					type="radio"
+					variant="icon"
+					accessible-label="Lijsttype"
+				>
+					<rr-segmented-control-item value="none">
+						<rr-icon
+							slot="icon"
+							name="minus-small"
+						></rr-icon>
+						Geen
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="bullet">
+						<rr-icon
+							slot="icon"
+							name="bullet-list"
+						></rr-icon>
+						Lijst
+					</rr-segmented-control-item>
+					<rr-segmented-control-item value="numbered">
+						<rr-icon
+							slot="icon"
+							name="numbered-list"
+						></rr-icon>
+						Genummerd
+					</rr-segmented-control-item>
+				</rr-segmented-control>
+				<rr-menu-item
+					slot="overflow"
+					text="Geen"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Lijst"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Genummerd"
+					type="checkbox"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+				priority="10"
+			>
+				<rr-button variant="primary">Sla op</rr-button>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
+			</rr-toolbar-item>
+			<rr-menu-divider slot="overflow"></rr-menu-divider>
+			<rr-menu-item
+				slot="overflow"
+				text="Exporteren"
+			></rr-menu-item>
+			<rr-menu-item
+				slot="overflow"
+				text="Instellingen"
+			></rr-menu-item>
+			<rr-menu-divider slot="overflow"></rr-menu-divider>
+			<rr-menu-item
+				slot="overflow"
+				text="Verwijder"
+			></rr-menu-item>
 		</rr-toolbar>
 	`),
 };

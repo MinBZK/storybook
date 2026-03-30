@@ -5,10 +5,11 @@ import '../../page/rr-page.ts';
 import '../../page-sections/simple-section/rr-simple-section.ts';
 import '../../../content/rich-text/rr-rich-text.ts';
 import '../../container/rr-container.ts';
-import '../../../inputs/search-field/rr-search-field.ts';
 import '../../../actions/toolbar/rr-toolbar.ts';
 import '../../../inputs/segmented-control/rr-segmented-control.ts';
+import '../../../inputs/search-field/rr-search-field.ts';
 import '../../../content/icon/rr-icon.ts';
+import '../../../lists-and-menus/menu/rr-menu.ts';
 
 /**
  * Gebruik een bar split view voor een verticale layout met een main-gebied en een
@@ -60,74 +61,136 @@ export default {
 
 // Reusable toolbar matching the WithPriority story from rr-toolbar
 const toolbar = html`
-	<rr-container padding-inline="16" padding-block="12">
+	<rr-container
+		padding-inline="16"
+		padding-block="12"
+	>
 		<rr-toolbar>
-		<rr-toolbar-start-area>
-			<rr-toolbar-item label="Tekststijl" priority="1">
+			<rr-toolbar-item
+				slot="start"
+				label="Tekststijl"
+				priority="1"
+			>
 				<rr-segmented-control
 					type="checkbox"
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
 					<rr-segmented-control-item value="vet">
-						<rr-icon slot="icon" name="bold"></rr-icon>
+						<rr-icon
+							slot="icon"
+							name="bold"
+						></rr-icon>
 						Vet
 					</rr-segmented-control-item>
 					<rr-segmented-control-item value="cursief">
-						<rr-icon slot="icon" name="italic"></rr-icon>
+						<rr-icon
+							slot="icon"
+							name="italic"
+						></rr-icon>
 						Cursief
 					</rr-segmented-control-item>
 					<rr-segmented-control-item value="onderstrepen">
-						<rr-icon slot="icon" name="underlined"></rr-icon>
+						<rr-icon
+							slot="icon"
+							name="underlined"
+						></rr-icon>
 						Onderstrepen
 					</rr-segmented-control-item>
 				</rr-segmented-control>
-				<rr-menu-item text="Vet" type="checkbox"></rr-menu-item>
-				<rr-menu-item text="Cursief" type="checkbox"></rr-menu-item>
-				<rr-menu-item text="Onderstrepen" type="checkbox"></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Vet"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Cursief"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Onderstrepen"
+					type="checkbox"
+				></rr-menu-item>
 			</rr-toolbar-item>
-			<rr-toolbar-item label="Lijst" priority="2">
+			<rr-toolbar-item
+				slot="start"
+				label="Lijst"
+				priority="2"
+			>
 				<rr-segmented-control
 					type="radio"
 					variant="icon"
 					accessible-label="Lijsttype"
 				>
 					<rr-segmented-control-item value="none">
-						<rr-icon slot="icon" name="minus-small"></rr-icon>
+						<rr-icon
+							slot="icon"
+							name="minus-small"
+						></rr-icon>
 						Geen
 					</rr-segmented-control-item>
 					<rr-segmented-control-item value="bullet">
-						<rr-icon slot="icon" name="bullet-list"></rr-icon>
+						<rr-icon
+							slot="icon"
+							name="bullet-list"
+						></rr-icon>
 						Lijst
 					</rr-segmented-control-item>
 					<rr-segmented-control-item value="numbered">
-						<rr-icon slot="icon" name="numbered-list"></rr-icon>
+						<rr-icon
+							slot="icon"
+							name="numbered-list"
+						></rr-icon>
 						Genummerd
 					</rr-segmented-control-item>
 				</rr-segmented-control>
-				<rr-menu-item text="Geen" type="checkbox"></rr-menu-item>
-				<rr-menu-item text="Lijst" type="checkbox"></rr-menu-item>
-				<rr-menu-item text="Genummerd" type="checkbox"></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Geen"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Lijst"
+					type="checkbox"
+				></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Genummerd"
+					type="checkbox"
+				></rr-menu-item>
 			</rr-toolbar-item>
-		</rr-toolbar-start-area>
-		<rr-toolbar-center-area>
 			<rr-toolbar-title-group
+				slot="center"
 				text="Document titel"
 				subtext="Laatste wijziging: vandaag"
 				align="center"
 			></rr-toolbar-title-group>
-		</rr-toolbar-center-area>
-		<rr-toolbar-end-area>
-			<rr-toolbar-item label="Annuleer" priority="3">
+			<rr-toolbar-item
+				slot="end"
+				label="Annuleer"
+				priority="3"
+			>
 				<rr-button>Annuleer</rr-button>
-				<rr-menu-item text="Annuleer"></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Annuleer"
+				></rr-menu-item>
 			</rr-toolbar-item>
-			<rr-toolbar-item label="Sla op" priority="10">
+			<rr-toolbar-item
+				slot="end"
+				label="Sla op"
+				priority="10"
+			>
 				<rr-button variant="primary">Sla op</rr-button>
-				<rr-menu-item text="Sla op"></rr-menu-item>
+				<rr-menu-item
+					slot="overflow"
+					text="Sla op"
+				></rr-menu-item>
 			</rr-toolbar-item>
-		</rr-toolbar-end-area>
-	</rr-toolbar>
+		</rr-toolbar>
 	</rr-container>
 `;
 
@@ -150,48 +213,75 @@ const mainContent = html`
 `;
 
 export const Standaard = (args) => html`
-	<rr-bar-split-view style="height: 600px;" background=${args.background}>
-		<rr-split-view-pane slot="toolbar"
+	<rr-bar-split-view
+		style="height: 600px;"
+		background=${args.background}
+	>
+		<rr-split-view-pane
+			slot="toolbar"
 			sm-order="1"
 			md-order="1"
-			lg-order="1">
+			lg-order="1"
+		>
 			${toolbar}
 		</rr-split-view-pane>
-		<rr-split-view-pane slot="main"
+		<rr-split-view-pane
+			slot="main"
 			sm-order="2"
 			md-order="2"
-			lg-order="2">
+			lg-order="2"
+		>
 			${mainContent}
 		</rr-split-view-pane>
 	</rr-bar-split-view>
 `;
 
 export const MetStatusbalk = (args) => html`
-	<rr-bar-split-view style="height: 600px;" background=${args.background}>
-		<rr-split-view-pane slot="toolbar"
+	<rr-bar-split-view
+		style="height: 600px;"
+		background=${args.background}
+	>
+		<rr-split-view-pane
+			slot="toolbar"
 			sm-order="1"
 			md-order="1"
-			lg-order="1">
+			lg-order="1"
+		>
 			${toolbar}
 		</rr-split-view-pane>
-		<rr-split-view-pane slot="main"
+		<rr-split-view-pane
+			slot="main"
 			sm-order="2"
 			md-order="2"
-			lg-order="2">
+			lg-order="2"
+		>
 			${mainContent}
 		</rr-split-view-pane>
-		<rr-split-view-pane slot="status-bar"
+		<rr-split-view-pane
+			slot="status-bar"
 			sm-order="3"
 			md-order="3"
-			lg-order="3">
-			<rr-container padding-inline="16" padding-block="12" sm-padding-bottom="none">
+			lg-order="3"
+		>
+			<rr-container
+				padding-inline="16"
+				padding-block="12"
+				sm-padding-bottom="none"
+			>
 				<rr-toolbar>
-					<rr-toolbar-center-area>
-						<rr-toolbar-item label="Zoeken" min-width="240px" width="40%" priority="3">
-							<rr-search-field placeholder="Zoeken..."></rr-search-field>
-							<rr-menu-item text="Zoeken"></rr-menu-item>
-						</rr-toolbar-item>
-					</rr-toolbar-start-area>
+					<rr-toolbar-item
+						slot="center"
+						label="Zoeken"
+						min-width="240px"
+						width="70%"
+						priority="3"
+					>
+						<rr-search-field placeholder="Zoeken..."></rr-search-field>
+						<rr-menu-item
+							slot="overflow"
+							text="Zoeken"
+						></rr-menu-item>
+					</rr-toolbar-item>
 				</rr-toolbar>
 			</rr-container>
 		</rr-split-view-pane>
@@ -203,16 +293,20 @@ MetStatusbalk.parameters = { controls: { disable: true } };
 // On md/lg: toolbar is above main, matching DOM order.
 export const WisselVolgorde = () => html`
 	<rr-bar-split-view style="height: 600px;">
-		<rr-split-view-pane slot="toolbar"
+		<rr-split-view-pane
+			slot="toolbar"
 			sm-order="2"
 			md-order="1"
-			lg-order="1">
+			lg-order="1"
+		>
 			${toolbar}
 		</rr-split-view-pane>
-		<rr-split-view-pane slot="main"
+		<rr-split-view-pane
+			slot="main"
 			sm-order="1"
 			md-order="2"
-			lg-order="2">
+			lg-order="2"
+		>
 			<rr-page>
 				<rr-simple-section>
 					<rr-rich-text>
