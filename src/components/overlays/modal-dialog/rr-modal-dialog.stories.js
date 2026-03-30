@@ -1,6 +1,7 @@
 import { html, nothing } from 'lit';
 import './rr-modal-dialog.ts';
 import '../../actions/button/rr-button.ts';
+import { ICONS } from '../../content/icon/rr-icon.ts';
 
 /**
  * De Modal Dialog is een modaal venster met overlay backdrop.
@@ -36,7 +37,8 @@ export default {
 			table: { defaultValue: { summary: '' } },
 		},
 		iconName: {
-			control: 'text',
+			control: 'select',
+			options: ['', ...ICONS],
 			name: 'icon-name',
 			description: 'Naam van het rr-icon icoon; afwezig wanneer niet ingesteld',
 		},

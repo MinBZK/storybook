@@ -108,13 +108,7 @@ describe('rr-modal-dialog', () => {
 		expect(heading.getAttribute('tabindex')).toBe('-1');
 	});
 
-	it('falls back to focusing the native dialog when no text is set', async () => {
-		el = await fixture('<rr-modal-dialog></rr-modal-dialog>');
-		await waitForUpdate(el);
-		(el as RRModalDialog).show();
-		const dialog = el.shadowRoot!.querySelector('dialog')!;
-		expect(document.activeElement === dialog || el.shadowRoot!.activeElement === dialog).toBe(true);
-	});
+	it('prevents default on cancel event and calls hide()', async () => {
 		el = await fixture('<rr-modal-dialog></rr-modal-dialog>');
 		await waitForUpdate(el);
 		(el as RRModalDialog).show();

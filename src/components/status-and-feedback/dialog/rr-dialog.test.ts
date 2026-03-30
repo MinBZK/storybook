@@ -60,11 +60,11 @@ describe('rr-dialog', () => {
 		expect(icon?.getAttribute('name')).toBe('alert');
 	});
 
-	it('uses explicit icon-name over variant default', async () => {
+	it('variant="alert" always overrides explicit icon-name', async () => {
 		el = await fixture('<rr-dialog variant="alert" icon-name="info-circle"></rr-dialog>');
 		await waitForUpdate(el);
 		const icon = el.shadowRoot!.querySelector('rr-icon');
-		expect(icon?.getAttribute('name')).toBe('info-circle');
+		expect(icon?.getAttribute('name')).toBe('alert');
 	});
 
 	it('reflects variant attribute', async () => {

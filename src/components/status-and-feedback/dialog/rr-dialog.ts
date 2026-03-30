@@ -7,7 +7,7 @@
  * @element rr-dialog
  *
  * @attr {'alert'} variant       - Semantische variant; 'alert' dwingt icon-name="alert" af en kleurt het icoon
- * @attr {string}  icon-name     - Naam van het rr-icon icoon boven de tekst; afwezig wanneer niet ingesteld
+ * @attr {string}  icon-name     - Naam van het rr-icon icoon boven de tekst; afwezig wanneer niet ingesteld. Wordt genegeerd wanneer variant is ingesteld.
  * @attr {string}  text          - Hoofdtekst (heading)
  * @attr {string}  supporting-text - Ondersteunende tekst onder de heading
  *
@@ -40,8 +40,8 @@ export class RRDialog extends LitElement {
 	supportingText = '';
 
 	get _resolvedIconName(): string {
-		if (this.iconName) return this.iconName;
 		if (this.variant === 'alert') return 'alert';
+		if (this.iconName) return this.iconName;
 		return '';
 	}
 

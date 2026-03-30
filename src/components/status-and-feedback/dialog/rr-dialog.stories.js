@@ -1,6 +1,7 @@
 import { html, nothing } from 'lit';
 import './rr-dialog.ts';
 import '../../actions/button/rr-button.ts';
+import { ICONS } from '../../content/icon/rr-icon.ts';
 
 /**
  * De Dialog is een inline statuscomponent voor lege toestanden, bevestigingen en feedback.
@@ -37,7 +38,8 @@ export default {
 			table: { defaultValue: { summary: '' } },
 		},
 		iconName: {
-			control: 'text',
+			control: 'select',
+			options: ['', ...ICONS],
 			name: 'icon-name',
 			description: 'Naam van het rr-icon icoon; afwezig wanneer niet ingesteld. Overschrijft het variant-icoon.',
 		},
