@@ -109,6 +109,7 @@ describe('rr-bar-split-view', () => {
 		expect(el.shadowRoot!.querySelectorAll('slot[name=""]').length).toBe(0);
 		warn.mockRestore();
 	});
+	it('falls back to DOM order when no order attributes are set', async () => {
 		el = await fixture(`
 			<rr-bar-split-view>
 				<div slot="toolbar">Toolbar</div>
@@ -121,5 +122,88 @@ describe('rr-bar-split-view', () => {
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
 		const slotNames = slots.map(s => s.getAttribute('name'));
 		expect(slotNames).toEqual(['toolbar', 'main', 'status']);
+	});
+
+	it('hides a bar with only="md" on sm viewports', async () => {
+		el = await fixture(`
+			<rr-bar-split-view>
+				<div slot="toolbar" only="md">Toolbar</div>
+				<div slot="main">Main</div>
+			</rr-bar-split-view>
+		`);
+		// jsdom width is 0 → sm breakpoint
+		await waitForUpdate(el);
+		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
+		const slotNames = slots.map(s => s.getAttribute('name'));
+		expect(slotNames).not.toContain('toolbar');
+	});
+
+	it('shows a bar with only="sm" on sm viewports', async () => {
+		el = await fixture(`
+			<rr-bar-split-view>
+				<div slot="toolbar" only="sm">Toolbar</div>
+				<div slot="main">Main</div>
+			</rr-bar-split-view>
+		`);
+		await waitForUpdate(el);
+		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
+		const slotNames = slots.map(s => s.getAttribute('name'));
+		expect(slotNames).toContain('toolbar');
+	});
+
+	it('hides a bar with above="md" on sm viewports', async () => {
+		el = await fixture(`
+			<rr-bar-split-view>
+				<div slot="toolbar" above="md">Toolbar</div>
+				<div slot="main">Main</div>
+			</rr-bar-split-view>
+		`);
+		await waitForUpdate(el);
+		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
+		const slotNames = slots.map(s => s.getAttribute('name'));
+		expect(slotNames).not.toContain('toolbar');
+	});
+
+	it('shows a bar with above="md" on md viewports', async () => {
+		el = await fixture(`
+			<rr-bar-split-view>
+				<div slot="toolbar" above="md">Toolbar</div>
+				<div slot="main">Main</div>
+			</rr-bar-split-view>
+		`);
+		(el as RRBarSplitView)._currentBreakpoint = 'md';
+		(el as RRBarSplitView).requestUpdate();
+		await waitForUpdate(el);
+		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
+		const slotNames = slots.map(s => s.getAttribute('name'));
+		expect(slotNames).toContain('toolbar');
+	});
+
+	it('hides a bar with below="sm" on md viewports', async () => {
+		el = await fixture(`
+			<rr-bar-split-view>
+				<div slot="mobile-bar" below="sm">Mobile</div>
+				<div slot="main">Main</div>
+			</rr-bar-split-view>
+		`);
+		(el as RRBarSplitView)._currentBreakpoint = 'md';
+		(el as RRBarSplitView).requestUpdate();
+		await waitForUpdate(el);
+		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
+		const slotNames = slots.map(s => s.getAttribute('name'));
+		expect(slotNames).not.toContain('mobile-bar');
+	});
+
+	it('shows a bar with below="sm" on sm viewports', async () => {
+		el = await fixture(`
+			<rr-bar-split-view>
+				<div slot="mobile-bar" below="sm">Mobile</div>
+				<div slot="main">Main</div>
+			</rr-bar-split-view>
+		`);
+		await waitForUpdate(el);
+		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
+		const slotNames = slots.map(s => s.getAttribute('name'));
+		expect(slotNames).toContain('mobile-bar');
 	});
 });

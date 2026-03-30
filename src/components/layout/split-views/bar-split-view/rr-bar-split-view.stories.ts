@@ -319,3 +319,61 @@ export const WisselVolgorde = () => html`
 	</rr-bar-split-view>
 `;
 WisselVolgorde.parameters = { controls: { disable: true } };
+
+// Toolbar only visible on md and lg; mobile bar only visible on sm.
+export const ResponsieveBalken = () => html`
+	<rr-bar-split-view style="height: 600px;">
+		<rr-split-view-pane
+			slot="toolbar"
+			above="md"
+			sm-order="1"
+			md-order="1"
+			lg-order="1"
+		>
+			${toolbar}
+		</rr-split-view-pane>
+		<rr-split-view-pane
+			slot="mobile-bar"
+			only="sm"
+			sm-order="3"
+		>
+			<rr-container
+				padding-inline="16"
+				padding-block="12"
+				sm-padding-bottom="none"
+			>
+				<rr-toolbar>
+					<rr-toolbar-item
+						slot="start"
+						label="Sla op"
+					>
+						<rr-button variant="primary">Sla op</rr-button>
+						<rr-menu-item
+							slot="overflow"
+							text="Sla op"
+						></rr-menu-item>
+					</rr-toolbar-item>
+					<rr-toolbar-item
+						slot="end"
+						label="Annuleer"
+					>
+						<rr-button>Annuleer</rr-button>
+						<rr-menu-item
+							slot="overflow"
+							text="Annuleer"
+						></rr-menu-item>
+					</rr-toolbar-item>
+				</rr-toolbar>
+			</rr-container>
+		</rr-split-view-pane>
+		<rr-split-view-pane
+			slot="main"
+			sm-order="2"
+			md-order="2"
+			lg-order="2"
+		>
+			${mainContent}
+		</rr-split-view-pane>
+	</rr-bar-split-view>
+`;
+ResponsieveBalken.parameters = { controls: { disable: true } };

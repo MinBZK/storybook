@@ -27,6 +27,11 @@
  *
  * @attr {'inherit'|'default'|'tinted'} background  - Achtergrondkleurvariant (standaard: inherit)
  *
+ * Responsieve zichtbaarheid per kind (directe children van rr-bar-split-view):
+ * @attr {'sm'|'md'|'lg'} above - Toon dit paneel vanaf dit breekpunt en groter
+ * @attr {'sm'|'md'|'lg'} below - Toon dit paneel tot en met dit breekpunt
+ * @attr {'sm'|'md'|'lg'} only  - Toon dit paneel alleen op dit breekpunt
+ *
  * @slot main  - Centraal paneel voor primaire inhoud
  * @slot *     - Elke andere unieke slotnaam creëert een balkpaneel
  */
@@ -79,7 +84,7 @@ export class RRBarSplitView extends LitElement {
 			this._updateLayout();
 			this.requestUpdate();
 		});
-		this._observer.observe(this, { childList: true });
+		this._observer.observe(this, { childList: true, attributes: true, attributeFilter: ['above', 'below', 'only', 'sm-order', 'md-order', 'lg-order'], subtree: false });
 
 		this._resizeObserver = new ResizeObserver(() => {
 			const bp = this._getBreakpoint(this.getBoundingClientRect().width);
@@ -111,13 +116,31 @@ export class RRBarSplitView extends LitElement {
 		return 'lg';
 	}
 
+	private _isChildVisible(el: Element): boolean {
+		if (this._currentBreakpoint === null) return true;
+		const bp = this._currentBreakpoint;
+		const order: Breakpoint[] = ['sm', 'md', 'lg'];
+		const bpIndex = order.indexOf(bp);
+
+		const only = el.getAttribute('only') as Breakpoint | null;
+		if (only) return bp === only;
+
+		const above = el.getAttribute('above') as Breakpoint | null;
+		if (above) return bpIndex >= order.indexOf(above);
+
+		const below = el.getAttribute('below') as Breakpoint | null;
+		if (below) return bpIndex <= order.indexOf(below);
+
+		return true;
+	}
+
 	_getSortedChildren(): Element[] {
 		const all = Array.from(this.children).filter(el => {
 			if (!el.slot) {
 				console.warn('<rr-bar-split-view>: every child must have a slot attribute (e.g. slot="toolbar", slot="status-bar", or slot="bar-1" if no meaningful name applies). Child without slot attribute is ignored:', el);
 				return false;
 			}
-			return true;
+			return this._isChildVisible(el);
 		});
 		if (this._currentBreakpoint === null) return all;
 		const attr = `${this._currentBreakpoint}-order`;
