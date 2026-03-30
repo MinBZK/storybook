@@ -348,11 +348,11 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-dismiss-button:hover {
-		background-color: var(--primitives-color-neutral-200);
+		background-color: var(--primitives-color-neutral-150);
 	}
 
 	.document-tab-bar__item-dismiss-button:active {
-		background-color: var(--primitives-color-neutral-250);
+		background-color: var(--primitives-color-neutral-200);
 	}
 
 	:host([selected]) .document-tab-bar__item-dismiss-button {
