@@ -1,27 +1,34 @@
 /**
  * RegelRecht Bar Split View Component (Lit + TypeScript)
  *
- * A vertical split view with a primary bar, main content area, and secondary bar.
- * The primary bar and secondary bar are shown only when content is slotted into them.
- * The main area is always visible.
+ * Een verticale split view met een main-gebied en een onbeperkt aantal balkpanelen.
+ * Elk kind bepaalt zijn volgorde per breekpunt via sm-order, md-order en lg-order.
+ * Kinderen zonder orderattributen worden gesorteerd op DOM-volgorde.
  *
- * On small viewports the bars overlay the bottom of the main area.
- * The CSS custom property --context-bar-split-view-bars-height is set on the host
- * so that scroll containers (e.g. rr-page) can add padding-bottom to prevent
- * content from being hidden behind the bars.
+ * Op sm-viewports worden balken absoluut gepositioneerd over het main-gebied:
+ * balken vóór main (op basis van volgorde) stapelen van boven naar beneden,
+ * balken ná main stapelen van onder naar boven. Op md en lg staan alle panelen
+ * in de flow met een scheiding tussen elk aangrenzend paar.
  *
- * ## Background color
- * Sets --context-parent-background-color which cascades down to all descendants including rr-page.
- * Set background="tinted" to give the whole layout a tinted background.
- * The fade overlay behind the bars uses --context-parent-background-color automatically.
+ * CSS custom properties op de host voor consumers zoals rr-page:
+ *   --context-bar-split-view-top-bars-height
+ *   --context-bar-split-view-bottom-bars-height
+ *
+ * ## Slotnamen
+ * Geef elke balk een unieke slotnaam (bijv. slot="toolbar", slot="status-bar").
+ * Gebruik slot="bar-1", slot="bar-2" als er geen betekenisvolle naam van toepassing is.
+ * Het main-paneel gebruikt altijd slot="main".
+ *
+ * ## Achtergrondkleur
+ * Stelt --context-parent-background-color in, die cascadet naar alle afstammelingen
+ * inclusief rr-page en de fade-overlays.
  *
  * @element rr-bar-split-view
  *
- * @attr {'inherit'|'default'|'tinted'} background        - Use a tinted background color (cascades to descendants)
+ * @attr {'inherit'|'default'|'tinted'} background  - Achtergrondkleurvariant (standaard: inherit)
  *
- * @slot primary-bar   - Top pane for toolbars, actions, or navigation
- * @slot main          - Center pane for primary content
- * @slot secondary-bar - Bottom pane for output, logs, status, or bottom navigation
+ * @slot main  - Centraal paneel voor primaire inhoud
+ * @slot *     - Elke andere unieke slotnaam creëert een balkpaneel
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -30,6 +37,10 @@ import { barSplitViewTemplate } from './rr-bar-split-view.template.ts';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 const smMaxPx = parseInt(breakpoints.smMax);
+const mdMaxPx = parseInt(breakpoints.mdMax);
+
+export type Breakpoint = 'sm' | 'md' | 'lg';
+type BreakpointOrUnmeasured = Breakpoint | null;
 
 @customElement('rr-bar-split-view')
 export class RRBarSplitView extends LitElement {
@@ -38,32 +49,50 @@ export class RRBarSplitView extends LitElement {
 	@property({ type: String, reflect: true })
 	background: 'inherit' | 'default' | 'tinted' = 'inherit';
 
-	get _hasPrimaryBar(): boolean {
-		return this.querySelector(':scope > [slot="primary-bar"]') !== null;
-	}
+	// null until connectedCallback measures the viewport. Before measurement the
+	// template falls back to DOM order with dividers — no breakpoint-specific
+	// sorting or mobile overlay behaviour is applied.
+	_currentBreakpoint: BreakpointOrUnmeasured = null;
 
-	get _hasSecondaryBar(): boolean {
-		return this.querySelector(':scope > [slot="secondary-bar"]') !== null;
-	}
+	// Bars that sit above main in the sm sort order. Used as a membership test in
+	// the template: bars not in this Set are implicitly bottom bars. Only populated
+	// on sm viewports — on md/lg bars are in normal flow and need no offset.
+	_smTopBars = new Set<Element>();
+
+	// Computed top or bottom pixel offset for every bar on sm viewports. Holds both
+	// top-bar and bottom-bar values in the same Map — the template uses _smTopBars
+	// to know which CSS property (top vs bottom) to apply the value to. Cleared on
+	// md/lg where absolute positioning is not used.
+	_smOffsets = new Map<Element, number>();
 
 	private _observer: MutationObserver | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
-	private _barResizeObserver: ResizeObserver | null = null;
+	private _childResizeObserver: ResizeObserver | null = null;
 
 	override connectedCallback() {
 		super.connectedCallback();
+
+		this._currentBreakpoint = this._getBreakpoint(this.getBoundingClientRect().width);
+
 		this._observer = new MutationObserver(() => {
+			this._observeChildren();
+			this._updateLayout();
 			this.requestUpdate();
-			this._observeBars();
-			this._updateBarsHeight();
 		});
 		this._observer.observe(this, { childList: true });
 
-		this._resizeObserver = new ResizeObserver(() => this._updateBarsHeight());
+		this._resizeObserver = new ResizeObserver(() => {
+			const bp = this._getBreakpoint(this.getBoundingClientRect().width);
+			if (bp !== this._currentBreakpoint) {
+				this._currentBreakpoint = bp;
+				this.requestUpdate();
+			}
+			this._updateLayout();
+		});
 		this._resizeObserver.observe(this);
 
-		this._barResizeObserver = new ResizeObserver(() => this._updateBarsHeight());
-		this._observeBars();
+		this._childResizeObserver = new ResizeObserver(() => this._updateLayout());
+		this._observeChildren();
 	}
 
 	override disconnectedCallback() {
@@ -72,37 +101,79 @@ export class RRBarSplitView extends LitElement {
 		this._observer = null;
 		this._resizeObserver?.disconnect();
 		this._resizeObserver = null;
-		this._barResizeObserver?.disconnect();
-		this._barResizeObserver = null;
+		this._childResizeObserver?.disconnect();
+		this._childResizeObserver = null;
 	}
 
-	private _observeBars() {
-		this._barResizeObserver?.disconnect();
-		const primaryBar = this.querySelector(':scope > [slot="primary-bar"]');
-		const secondaryBar = this.querySelector(':scope > [slot="secondary-bar"]');
-		if (primaryBar) this._barResizeObserver?.observe(primaryBar);
-		if (secondaryBar) this._barResizeObserver?.observe(secondaryBar);
+	private _getBreakpoint(width: number): Breakpoint {
+		if (width <= smMaxPx) return 'sm';
+		if (width <= mdMaxPx) return 'md';
+		return 'lg';
 	}
 
-	private _updateBarsHeight() {
+	_getSortedChildren(): Element[] {
+		const all = Array.from(this.children).filter(el => {
+			if (!el.slot) {
+				console.warn('<rr-bar-split-view>: every child must have a slot attribute (e.g. slot="toolbar", slot="status-bar", or slot="bar-1" if no meaningful name applies). Child without slot attribute is ignored:', el);
+				return false;
+			}
+			return true;
+		});
+		if (this._currentBreakpoint === null) return all;
+		const attr = `${this._currentBreakpoint}-order`;
+		return [...all].sort((a, b) => {
+			const aVal = a.hasAttribute(attr) ? parseInt(a.getAttribute(attr)!) : all.indexOf(a);
+			const bVal = b.hasAttribute(attr) ? parseInt(b.getAttribute(attr)!) : all.indexOf(b);
+			return aVal - bVal;
+		});
+	}
+
+	private _observeChildren() {
+		this._childResizeObserver?.disconnect();
+		for (const child of Array.from(this.children)) {
+			this._childResizeObserver?.observe(child);
+		}
+	}
+
+	private _updateLayout() {
 		const width = this.getBoundingClientRect().width;
-		const isMobile = width <= smMaxPx;
 
-		if (!isMobile) {
-			// Reset on desktop — bars are in flow, no overlay
-			this.style.removeProperty('--context-bar-split-view-bars-height');
-			this.style.removeProperty('--context-bar-split-view-primary-bar-height');
+		if (width > smMaxPx) {
+			this.style.removeProperty('--context-bar-split-view-top-bars-height');
+			this.style.removeProperty('--context-bar-split-view-bottom-bars-height');
+			this._smTopBars = new Set();
+			this._smOffsets = new Map();
 			return;
 		}
 
-		const primaryBar = this.querySelector(':scope > [slot="primary-bar"]');
-		const secondaryBar = this.querySelector(':scope > [slot="secondary-bar"]');
-		const primaryHeight = primaryBar?.getBoundingClientRect().height ?? 0;
-		const secondaryHeight = secondaryBar?.getBoundingClientRect().height ?? 0;
-		const total = primaryHeight + secondaryHeight;
+		const sorted = this._getSortedChildren();
+		const mainIndex = sorted.findIndex(el => el.slot === 'main');
 
-		this.style.setProperty('--context-bar-split-view-bars-height', `${total}px`);
-		this.style.setProperty('--context-bar-split-view-primary-bar-height', `${primaryHeight}px`);
+		// Bars before main stack downward from the top; bars after main stack upward from the bottom
+		const topBars = mainIndex > 0 ? sorted.slice(0, mainIndex) : [];
+		const bottomBars = mainIndex >= 0 ? sorted.slice(mainIndex + 1) : sorted;
+
+		this._smTopBars = new Set(topBars);
+
+		const newOffsets = new Map<Element, number>();
+
+		let topOffset = 0;
+		for (const el of topBars) {
+			newOffsets.set(el, topOffset);
+			topOffset += el.getBoundingClientRect().height;
+		}
+
+		let bottomOffset = 0;
+		for (const el of [...bottomBars].reverse()) {
+			newOffsets.set(el, bottomOffset);
+			bottomOffset += el.getBoundingClientRect().height;
+		}
+
+		this._smOffsets = newOffsets;
+		this.style.setProperty('--context-bar-split-view-top-bars-height', `${topOffset}px`);
+		this.style.setProperty('--context-bar-split-view-bottom-bars-height', `${bottomOffset}px`);
+
+		this.requestUpdate();
 	}
 
 	override render() {

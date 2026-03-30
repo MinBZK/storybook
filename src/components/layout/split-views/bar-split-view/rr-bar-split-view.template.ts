@@ -1,29 +1,39 @@
 import { html, TemplateResult, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import type { RRBarSplitView } from './rr-bar-split-view.js';
 import '../split-view-divider/rr-split-view-divider.ts';
 
 export function barSplitViewTemplate(component: RRBarSplitView): TemplateResult {
+	const sorted = component._getSortedChildren();
+	const isSm = component._currentBreakpoint === 'sm';
+
+
 	return html`
 		<div class="bar-split-view">
-			${component._hasPrimaryBar ? html`
-				<div class="bar-split-view__primary-bar">
-					<slot name="primary-bar"></slot>
-				</div>
-				<div class="bar-split-view__primary-bar-divider">
-					<rr-split-view-divider orientation="horizontal"></rr-split-view-divider>
-				</div>
-			` : nothing}
-			<div class="bar-split-view__main">
-				<slot name="main"></slot>
-			</div>
-			${component._hasSecondaryBar ? html`
-				<div class="bar-split-view__secondary-bar-divider">
-					<rr-split-view-divider orientation="horizontal"></rr-split-view-divider>
-				</div>
-				<div class="bar-split-view__secondary-bar">
-					<slot name="secondary-bar"></slot>
-				</div>
-			` : nothing}
+			${sorted.map((el, index) => {
+				const isMain = el.slot === 'main';
+				const isLast = index === sorted.length - 1;
+
+				// Inline position is only applied to bars on sm viewports
+				const barStyles = !isMain && isSm
+					? component._smTopBars.has(el)
+						? { top: `${component._smOffsets.get(el) ?? 0}px` }
+						: { bottom: `${component._smOffsets.get(el) ?? 0}px` }
+					: {};
+
+				return html`
+					<div class=${classMap({ 'bar-split-view__main': isMain, 'bar-split-view__bar': !isMain })}
+						style=${styleMap(barStyles)}>
+						<slot name=${el.slot}></slot>
+					</div>
+					${!isSm && !isLast ? html`
+						<div class="bar-split-view__divider">
+							<rr-split-view-divider orientation="horizontal"></rr-split-view-divider>
+						</div>
+					` : nothing}
+				`;
+			})}
 		</div>
 	`;
 }
