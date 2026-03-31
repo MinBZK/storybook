@@ -8,7 +8,6 @@
  * @attr {boolean} compact           - Toont items in compact weergave: icoon boven tekst gestapeld
  * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
  * @attr {boolean} responsive        - Schakelt automatisch over naar compact onder 480px containerbreedte
- * @attr {boolean} disabled          - Schakelt alle items uit
  * @attr {string}  accessible-label  - Toegankelijke naam voor de navigatieregio; standaard 'Tabs'
  *
  * @slot - rr-tab-bar-item elementen
@@ -19,7 +18,6 @@
  *
  * @element rr-tab-bar-item
  * @attr {boolean} selected  - Geselecteerde toestand (beheerd door rr-tab-bar)
- * @attr {boolean} disabled  - Uitgeschakelde toestand
  * @attr {string}  text      - Tekst van het tabblad; ook gebruikt als toegankelijke naam voor icoon-only items
  * @attr {string}  href      - Optionele link-URL; rendert een anker in plaats van een knop
  *
@@ -41,9 +39,6 @@ export class RRTabBarItem extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;
-
-	@property({ type: Boolean, reflect: true })
-	disabled = false;
 
 	@property({ type: String })
 	href = '';
@@ -119,11 +114,6 @@ export class RRTabBarItem extends LitElement {
 	}
 
 	_handleClick(event: Event): void {
-		if (this.disabled) {
-			event.preventDefault();
-			event.stopPropagation();
-			return;
-		}
 		if (!this._sanitizeUrl(this.href)) {
 			event.preventDefault();
 		}
@@ -154,9 +144,6 @@ export class RRTabBar extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
 	fullWidth = false;
-
-	@property({ type: Boolean, reflect: true })
-	disabled = false;
 
 	@property({ type: String, reflect: true })
 	variant: 'icon-and-text' | 'text' | 'icon' | '' = '';
@@ -194,7 +181,6 @@ export class RRTabBar extends LitElement {
 		if (
 			changedProperties.has('compact') ||
 			changedProperties.has('responsive') ||
-			changedProperties.has('disabled') ||
 			changedProperties.has('variant') ||
 			changedProperties.has('navigation')
 		) {
@@ -215,28 +201,20 @@ export class RRTabBar extends LitElement {
 	private _syncItems(): void {
 		const items = this._getItems();
 
-		if (this.disabled) {
-			items.forEach(item => {
-				if (!item.hasAttribute('disabled')) {
-					item.setAttribute('group-disabled', '');
-					item.disabled = true;
-				}
-			});
-		} else {
-			items.forEach(item => {
-				if (item.hasAttribute('group-disabled')) {
-					item.removeAttribute('group-disabled');
-					item.disabled = false;
-				}
-			});
-		}
-
 		items.forEach(item => {
 			item.compact = this.compact;
 			item.responsive = this.responsive;
 			item._groupVariant = this.variant;
 			item._navigation = this.navigation;
 		});
+
+		// Ensure keyboard entry point
+		const hasSelected = items.some(item => item.selected);
+		const firstItem = items[0] ?? null;
+		items.forEach(item => {
+			item._isFallbackFocusable = !hasSelected && item === firstItem;
+		});
+	}
 	}
 
 	_onSlotChange(): void {
@@ -257,7 +235,7 @@ export class RRTabBar extends LitElement {
 	};
 
 	private _handleKeyDown = (event: KeyboardEvent): void => {
-		const items = this._getItems().filter(item => !item.disabled);
+		const items = this._getItems();
 		if (items.length === 0) return;
 
 		const currentIndex = items.findIndex(

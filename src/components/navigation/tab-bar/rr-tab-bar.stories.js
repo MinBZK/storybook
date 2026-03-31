@@ -36,18 +36,12 @@ export default {
 			description: 'Vult de volledige breedte van de container; items blijven gecentreerd',
 			table: { defaultValue: { summary: false } },
 		},
-		disabled: {
-			control: 'boolean',
-			description: 'Schakelt alle items uit',
-			table: { defaultValue: { summary: false } },
-		},
 	},
 	args: {
 		variant: '',
 		compact: false,
 		responsive: false,
 		fullWidth: false,
-		disabled: false,
 	},
 };
 
@@ -68,14 +62,13 @@ const tabBarItems = html`
 	</rr-tab-bar-item>
 `;
 
-const Template = ({ variant, compact, responsive, fullWidth, disabled }) => html`
+const Template = ({ variant, compact, responsive, fullWidth }) => html`
 	<div style="container-type: inline-size; container-name: layout-area;">
 		<rr-tab-bar
 			variant=${variant || nothing}
 			?compact=${compact}
 			?responsive=${responsive}
 			?full-width=${fullWidth}
-			?disabled=${disabled}
 		>
 			${tabBarItems}
 		</rr-tab-bar>
@@ -161,13 +154,6 @@ export const Gemengd = () => html`
 	</rr-tab-bar>
 `;
 Gemengd.parameters = { controls: { disable: true } };
-
-export const Uitgeschakeld = () => html`
-	<rr-tab-bar disabled>
-		${tabBarItems}
-	</rr-tab-bar>
-`;
-Uitgeschakeld.parameters = { controls: { disable: true } };
 
 export const Navigatie = () => html`
 	<rr-tab-bar navigation accessible-label="Hoofdnavigatie">

@@ -125,11 +125,6 @@ export const tabBarItemStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
-	:host([disabled]) .tab-bar__item {
-		opacity: var(--primitives-opacity-disabled);
-		pointer-events: none;
-	}
-
 	.tab-bar__item:focus-visible {
 		outline: none;
 	}

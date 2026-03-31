@@ -33,7 +33,7 @@ export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 	const safeHref = component._sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
 	const isNavigation = component._navigation;
-	const tabindex = component.disabled ? '-1' : (component.selected || component._isFallbackFocusable) ? '0' : '-1';
+	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';
 	const isIconVariant = component._effectiveVariant === 'icon';
 	const iconLabel = isIconVariant ? component.text || nothing : nothing;
 
@@ -54,7 +54,6 @@ export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 				role=${isNavigation ? nothing : 'tab'}
 				aria-current=${isNavigation && component.selected ? 'page' : nothing}
 				aria-selected=${!isNavigation ? (component.selected ? 'true' : 'false') : nothing}
-				aria-disabled=${component.disabled || nothing}
 				aria-label=${iconLabel}
 				title=${iconLabel}
 				tabindex=${tabindex}
@@ -68,7 +67,6 @@ export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 			type="button"
 			role="tab"
 			aria-selected=${component.selected ? 'true' : 'false'}
-			?disabled=${component.disabled}
 			aria-label=${iconLabel}
 			title=${iconLabel}
 			tabindex=${tabindex}

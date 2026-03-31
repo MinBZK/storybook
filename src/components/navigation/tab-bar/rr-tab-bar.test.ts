@@ -220,18 +220,6 @@ describe('rr-tab-bar-item – events', () => {
 		expect(detail.item).toBe(el);
 	});
 
-	it('does not fire select event when disabled', async () => {
-		el = await fixture<RRTabBarItem>('<rr-tab-bar-item disabled>Tab</rr-tab-bar-item>');
-		await waitForUpdate(el);
-
-		let fired = false;
-		el.addEventListener('select', () => { fired = true; });
-
-		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
-
-		expect(fired).toBe(false);
-	});
-
 	it('does not set selected on itself after click', async () => {
 		el = await fixture<RRTabBarItem>('<rr-tab-bar-item text="Tab"></rr-tab-bar-item>');
 		await waitForUpdate(el);
@@ -360,24 +348,6 @@ describe('rr-tab-bar – item selection', () => {
 
 		expect(detail).toBeDefined();
 		expect(detail.item).toBe(getItems(el)[0]);
-	});
-
-	it('does not dispatch tabchange when a disabled item is clicked', async () => {
-		el = await fixture<RRTabBar>(`
-			<rr-tab-bar>
-				<rr-tab-bar-item selected text="A"></rr-tab-bar-item>
-				<rr-tab-bar-item text="B" disabled></rr-tab-bar-item>
-			</rr-tab-bar>
-		`);
-		await waitForUpdate(el);
-
-		let fired = false;
-		el.addEventListener('tabchange', () => { fired = true; });
-
-		clickInner(getItems(el)[1]);
-		await waitForUpdate(el);
-
-		expect(fired).toBe(false);
 	});
 
 	it('select event does not bubble past the tab bar', async () => {
@@ -567,71 +537,6 @@ describe('rr-tab-bar – full-width', () => {
 
 
 /* ============================================================
-   rr-tab-bar – disabled propagation
-   ============================================================ */
-
-describe('rr-tab-bar – disabled propagation', () => {
-	let el: RRTabBar;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('disables all items when parent is disabled', async () => {
-		el = await fixture<RRTabBar>(`
-			<rr-tab-bar disabled>
-				<rr-tab-bar-item text="A"></rr-tab-bar-item>
-				<rr-tab-bar-item text="B"></rr-tab-bar-item>
-			</rr-tab-bar>
-		`);
-		await waitForUpdate(el);
-		getItems(el).forEach(item => expect(item.disabled).toBe(true));
-	});
-
-	it('preserves item-level disabled when parent is not disabled', async () => {
-		el = await fixture<RRTabBar>(`
-			<rr-tab-bar>
-				<rr-tab-bar-item text="A"></rr-tab-bar-item>
-				<rr-tab-bar-item text="B" disabled></rr-tab-bar-item>
-			</rr-tab-bar>
-		`);
-		await waitForUpdate(el);
-		const items = getItems(el);
-		expect(items[0].disabled).toBe(false);
-		expect(items[1].disabled).toBe(true);
-	});
-
-	it('re-enables group-disabled items when parent disabled is removed', async () => {
-		el = await fixture<RRTabBar>(`
-			<rr-tab-bar disabled>
-				<rr-tab-bar-item text="A"></rr-tab-bar-item>
-				<rr-tab-bar-item text="B"></rr-tab-bar-item>
-			</rr-tab-bar>
-		`);
-		await waitForUpdate(el);
-		el.disabled = false;
-		await waitForUpdate(el);
-		getItems(el).forEach(item => expect(item.disabled).toBe(false));
-	});
-
-	it('does not re-enable individually disabled items when parent disabled is removed', async () => {
-		el = await fixture<RRTabBar>(`
-			<rr-tab-bar disabled>
-				<rr-tab-bar-item text="A"></rr-tab-bar-item>
-				<rr-tab-bar-item text="B" disabled></rr-tab-bar-item>
-			</rr-tab-bar>
-		`);
-		await waitForUpdate(el);
-		el.disabled = false;
-		await waitForUpdate(el);
-		const items = getItems(el);
-		expect(items[0].disabled).toBe(false);
-		expect(items[1].disabled).toBe(true);
-	});
-});
-
-
-/* ============================================================
    rr-tab-bar – keyboard navigation
    ============================================================ */
 
@@ -756,21 +661,6 @@ describe('rr-tab-bar – keyboard navigation', () => {
 		expect(spy).toHaveBeenCalled();
 	});
 
-	it('skips disabled items during navigation', async () => {
-		el = await fixture<RRTabBar>(`
-			<rr-tab-bar>
-				<rr-tab-bar-item text="A"></rr-tab-bar-item>
-				<rr-tab-bar-item text="B" disabled></rr-tab-bar-item>
-				<rr-tab-bar-item text="C"></rr-tab-bar-item>
-			</rr-tab-bar>
-		`);
-		await waitForUpdate(el);
-
-		const items = getItems(el);
-		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
-		pressKey(items[0], 'ArrowRight');
-		expect(spy).toHaveBeenCalled();
-	});
 });
 
 /* ============================================================
