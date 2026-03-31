@@ -13,6 +13,7 @@ export const documentTabBarStyles = css`
 		--_drag-clone-height: 0px;
 		--_drag-clone-opacity: 0.95;
 		--_drag-clone-z-index: 100;
+		--_short-text-threshold: 200px;
 	}
 
 	:host([hidden]) {
