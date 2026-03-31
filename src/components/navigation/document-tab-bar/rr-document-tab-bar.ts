@@ -1,33 +1,33 @@
 /**
  * RegelRecht Document Tab Bar Component (Lit + TypeScript)
  *
- * Een horizontale tabbalk voor documenttabbladen met een automatische overloopknop
- * en een eindslot voor actieknoppen.
- * Exporteert zowel RRDocumentTabBar als RRDocumentTabBarItem.
+ * A horizontal tab bar for document tabs with an automatic overflow button
+ * and an end slot for action buttons.
+ * Exports both RRDocumentTabBar and RRDocumentTabBarItem.
  *
  * @element rr-document-tab-bar
- * @attr {string}  overflow-button-label  - Label voor de overloopknop (standaard: 'Meer')
- * @attr {string}  accessible-label       - Toegankelijke naam voor de navigatieregio
+ * @attr {string}  overflow-button-label  - Label for the overflow button (default: 'Meer')
+ * @attr {string}  accessible-label       - Accessible name for the navigation landmark
  *
- * @slot     - rr-document-tab-bar-item elementen
- * @slot end - Actieknoppen (bijv. nieuw tabblad)
+ * @slot     - rr-document-tab-bar-item elements
+ * @slot end - Action buttons (e.g. new tab)
  *
- * @fires tabchange  - Wanneer een tabblad wordt geselecteerd; detail: { item }
- * @fires tabdismiss - Wanneer een tabblad wordt gesloten; detail: { item, nextItem }
- * @fires tabempty   - Wanneer het laatste tabblad wordt gesloten
- * @fires rr-reorder - Wanneer tabbladen worden herschikt via slepen; detail: { fromIndex, toIndex }
+ * @fires tabchange  - Fired when a tab is selected; detail: { item }
+ * @fires tabdismiss - Fired when a tab is dismissed; detail: { item, nextItem }
+ * @fires tabempty   - Fired when the last tab is dismissed
+ * @fires rr-reorder - Fired when tabs are reordered via drag; detail: { fromIndex, toIndex }
  *
  * ---
  *
  * @element rr-document-tab-bar-item
- * @attr {boolean} selected              - Geselecteerde toestand (beheerd door rr-document-tab-bar)
- * @attr {string}  text                  - Primaire tekst
- * @attr {string}  supporting-text       - Ondersteunende tekst
- * @attr {string}  short-text            - Korte primaire tekst (zichtbaar onder 200px breedte)
- * @attr {string}  short-supporting-text - Korte ondersteunende tekst (zichtbaar onder 200px breedte)
+ * @attr {boolean} selected              - Selected state (managed by rr-document-tab-bar)
+ * @attr {string}  text                  - Primary text
+ * @attr {string}  supporting-text       - Supporting text
+ * @attr {string}  short-text            - Short primary text (visible below 200px width)
+ * @attr {string}  short-supporting-text - Short supporting text (visible below 200px width)
  *
- * @fires select  - Wanneer het item wordt geactiveerd; detail: { item }
- * @fires dismiss - Wanneer de sluitknop wordt geklikt; detail: { item }
+ * @fires select  - Fired when the item is activated; detail: { item }
+ * @fires dismiss - Fired when the dismiss button is clicked; detail: { item }
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
