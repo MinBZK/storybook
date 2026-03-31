@@ -14,7 +14,6 @@ export const styles = css`
 	:host([disabled]) {
 		opacity: var(--primitives-opacity-disabled);
 		pointer-events: none;
-		cursor: not-allowed;
 	}
 
 	:host([disabled]) ::slotted(rr-button),

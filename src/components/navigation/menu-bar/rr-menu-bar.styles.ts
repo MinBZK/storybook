@@ -98,7 +98,6 @@ export const menuBarItemStyles = css`
 
 	:host([disabled]) .menu-bar-item {
 		opacity: var(--primitives-opacity-disabled);
-		cursor: not-allowed;
 		pointer-events: none;
 	}
 

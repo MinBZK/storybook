@@ -51,7 +51,6 @@ export const passwordFieldStyles = css`
 
 	:host([disabled]) .password-field {
 		opacity: var(--primitives-opacity-disabled);
-		cursor: not-allowed;
 	}
 
 	.password-field:has(input:-webkit-autofill),
@@ -102,7 +101,6 @@ export const passwordFieldStyles = css`
 
 	:host([disabled]) .password-field__input {
 		pointer-events: none;
-		cursor: not-allowed;
 	}
 
 	.password-field__input::placeholder {

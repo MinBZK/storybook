@@ -50,7 +50,6 @@ export const textFieldStyles = css`
 
 	:host([disabled]) .text-field {
 		opacity: var(--primitives-opacity-disabled);
-		cursor: not-allowed;
 	}
 
 	.text-field:has(input:-webkit-autofill),
@@ -89,7 +88,6 @@ export const textFieldStyles = css`
 
 	:host([disabled]) .text-field__input {
 		pointer-events: none;
-		cursor: not-allowed;
 	}
 
 	.text-field__input::placeholder {

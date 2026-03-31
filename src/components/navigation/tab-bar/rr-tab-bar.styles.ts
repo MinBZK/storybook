@@ -128,7 +128,6 @@ export const tabBarItemStyles = css`
 
 	:host([disabled]) .tab-bar__item {
 		opacity: var(--primitives-opacity-disabled);
-		cursor: not-allowed;
 		pointer-events: none;
 	}
 

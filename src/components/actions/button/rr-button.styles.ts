@@ -19,7 +19,6 @@ export const styles = css`
 
 	:host([disabled]) {
 		opacity: var(--primitives-opacity-disabled);
-		cursor: not-allowed;
 		pointer-events: none;
 	}
 
