@@ -643,6 +643,21 @@ describe('rr-tab-bar – keyboard navigation', () => {
 		vi.restoreAllMocks();
 	});
 
+	it('first enabled item has tabindex="0" when no tab is selected', async () => {
+		el = await fixture<RRTabBar>(`
+			<rr-tab-bar>
+				<rr-tab-bar-item text="A"></rr-tab-bar-item>
+				<rr-tab-bar-item text="B"></rr-tab-bar-item>
+			</rr-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const innerA = items[0].shadowRoot!.querySelector('[role="tab"]')!;
+		const innerB = items[1].shadowRoot!.querySelector('[role="tab"]')!;
+		expect(innerA.getAttribute('tabindex')).toBe('0');
+		expect(innerB.getAttribute('tabindex')).toBe('-1');
+	});
+
 	it('selected tab has tabindex="0"', async () => {
 		el = await fixture<RRTabBar>(threeTabBar());
 		await waitForUpdate(el);

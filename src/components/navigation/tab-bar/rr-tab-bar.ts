@@ -79,6 +79,10 @@ export class RRTabBarItem extends LitElement {
 	@state()
 	_hasIcon = false;
 
+	/** Set by rr-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
+	@property({ type: Boolean })
+	_isFallbackFocusable = false;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.setAttribute('role', 'none');
@@ -227,6 +231,14 @@ export class RRTabBar extends LitElement {
 			item.responsive = this.responsive;
 			item._groupVariant = this.variant;
 		});
+
+		// Ensure keyboard entry point: if no item is selected, mark the first
+		// enabled item as the fallback so the tablist is always reachable by Tab.
+		const hasSelected = items.some(item => item.selected);
+		const firstEnabled = items.find(item => !item.disabled) ?? null;
+		items.forEach(item => {
+			item._isFallbackFocusable = !hasSelected && item === firstEnabled;
+		});
 	}
 
 	_onSlotChange(): void {
@@ -239,6 +251,7 @@ export class RRTabBar extends LitElement {
 		items.forEach(item => {
 			item.selected = item === event.detail.item;
 		});
+		this._syncItems();
 		this.dispatchEvent(new CustomEvent('tabchange', {
 			bubbles: true,
 			composed: true,

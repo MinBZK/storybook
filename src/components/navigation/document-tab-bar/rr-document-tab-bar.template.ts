@@ -60,12 +60,18 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 				@click=${component._handleClick}
 			>
 				<span class="document-tab-bar__item-text">${component.text}</span>
-				<span class="document-tab-bar__item-short-text" aria-label="${component.text}">${shortTextValue}</span>
+				<span class="document-tab-bar__item-short-text"
+					aria-label=${component.text}
+					title=${component.text}
+				>${shortTextValue}</span>
 				${component.supportingText
 					? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
 					: nothing}
 				${shortSupportingTextValue
-					? html`<span class="document-tab-bar__item-short-supporting-text" aria-label="${component.supportingText}">${shortSupportingTextValue}</span>`
+					? html`<span class="document-tab-bar__item-short-supporting-text"
+						aria-label=${component.supportingText}
+						title=${component.supportingText}
+					>${shortSupportingTextValue}</span>`
 					: nothing}
 			</div>
 			<button class="document-tab-bar__item-dismiss-button"
