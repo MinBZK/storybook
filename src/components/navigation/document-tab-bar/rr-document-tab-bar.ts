@@ -593,6 +593,10 @@ export class RRDocumentTabBar extends LitElement {
 
 	private _updateMenu(): void {
 		if (!this._menu) return;
+		// Rebuilds menu DOM from scratch on every overflow recalculation.
+		// Any event listeners added directly to rr-menu-item elements by consumers
+		// will be lost. Consumers should listen on the rr-document-tab-bar itself
+		// using event delegation rather than on individual menu items.
 		this._menu.innerHTML = '';
 
 		const items = this._getItems();
