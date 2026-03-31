@@ -80,7 +80,7 @@ export class RRDocumentTabBarItem extends LitElement {
 	}
 
 	/** Set by rr-document-tab-bar. Not part of the public API. */
-	@property({ type: String })
+	@state()
 	_dismissButtonAccessibilityLabel = 'Sluit';
 
 	override focus(options?: FocusOptions): void {
