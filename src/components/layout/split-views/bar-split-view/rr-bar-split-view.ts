@@ -36,7 +36,7 @@
  * @slot *     - Elke andere unieke slotnaam creëert een balkpaneel
  */
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { barSplitViewStyles } from './rr-bar-split-view.styles.ts';
 import { barSplitViewTemplate } from './rr-bar-split-view.template.ts';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
@@ -57,6 +57,7 @@ export class RRBarSplitView extends LitElement {
 	// null until connectedCallback measures the viewport. Before measurement the
 	// template falls back to DOM order with dividers — no breakpoint-specific
 	// sorting or mobile overlay behaviour is applied.
+	@state()
 	_currentBreakpoint: BreakpointOrUnmeasured = null;
 
 	// Bars that sit above main in the sm sort order. Used as a membership test in
