@@ -142,7 +142,6 @@ export class RRDocumentTabBar extends LitElement {
 	// — Drag state ——————————————————————————————————————————————————————————
 
 	private _draggingEl: RRDocumentTabBarItem | null = null;
-	private _draggingFromIndex = -1;
 	private _placeholder: HTMLDivElement | null = null;
 	private _currentDropIndex = -1;
 	private _pointerId: number | null = null;
@@ -355,7 +354,6 @@ export class RRDocumentTabBar extends LitElement {
 		if (visibleIndex === -1) return;
 
 		this._draggingEl = item;
-		this._draggingFromIndex = visibleIndex;
 		this._currentDropIndex = visibleIndex;
 		this._lastPointerX = clientX;
 
@@ -492,7 +490,6 @@ export class RRDocumentTabBar extends LitElement {
 		this.removeEventListener('pointercancel', this._onPointerCancel);
 
 		this._draggingEl = null;
-		this._draggingFromIndex = -1;
 		this._placeholder = null;
 		this._clone = null;
 		this._cloneOffsetX = 0;
