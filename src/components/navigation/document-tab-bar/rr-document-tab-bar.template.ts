@@ -79,13 +79,13 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 				href=${component.href}
 				role=${isNavigation ? nothing : 'tab'}
 				aria-current=${isNavigation && component.selected ? 'page' : nothing}
-				aria-selected=${!isNavigation ? component.selected : nothing}
+				aria-selected=${!isNavigation ? (component.selected ? 'true' : 'false') : nothing}
 				tabindex=${tabindex}
 				@click=${component._handleClick}
 			>${tabContent}</a>`
 		: html`<div class="document-tab-bar__item-tab"
 				role="tab"
-				aria-selected=${component.selected}
+				aria-selected=${component.selected ? 'true' : 'false'}
 				tabindex=${tabindex}
 				@click=${component._handleClick}
 			>${tabContent}</div>`;

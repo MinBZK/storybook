@@ -53,7 +53,7 @@ export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 				href=${safeHref!}
 				role=${isNavigation ? nothing : 'tab'}
 				aria-current=${isNavigation && component.selected ? 'page' : nothing}
-				aria-selected=${!isNavigation ? component.selected : nothing}
+				aria-selected=${!isNavigation ? (component.selected ? 'true' : 'false') : nothing}
 				aria-disabled=${component.disabled || nothing}
 				aria-label=${iconLabel}
 				title=${iconLabel}
@@ -67,7 +67,7 @@ export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 		<button class="tab-bar__item"
 			type="button"
 			role="tab"
-			aria-selected=${component.selected}
+			aria-selected=${component.selected ? 'true' : 'false'}
 			?disabled=${component.disabled}
 			aria-label=${iconLabel}
 			title=${iconLabel}
