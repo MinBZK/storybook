@@ -62,6 +62,10 @@ export class RRDocumentTabBarItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
+	/** Set by rr-document-tab-bar. Not part of the public API. */
+	@property({ type: String })
+	_dismissButtonAccessibilityLabel = 'Sluit';
+
 	@property({ type: String, attribute: 'text' })
 	text = '';
 
@@ -199,6 +203,7 @@ export class RRDocumentTabBar extends LitElement {
 		}
 		if (changedProperties.has('translations')) {
 			this._mergedTranslations = { ...rrDocumentTabBarTranslations, ...this.translations };
+			this._propagateDismissLabel();
 		}
 	}
 
@@ -218,8 +223,14 @@ export class RRDocumentTabBar extends LitElement {
 		return this._getItems().filter(item => !item.hidden);
 	}
 
+	private _propagateDismissLabel(): void {
+		const label = this._mergedTranslations['components.document-tab-bar.dismiss-action'];
+		this._getItems().forEach(item => { item._dismissButtonAccessibilityLabel = label; });
+	}
+
 	_onSlotChange(): void {
 		this._calculateOverflow();
+		this._propagateDismissLabel();
 	}
 
 	private _applyItemVisibility(): void {

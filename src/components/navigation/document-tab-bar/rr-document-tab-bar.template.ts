@@ -78,7 +78,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 					: nothing}
 			</div>
 			<button class="document-tab-bar__item-dismiss-button"
-				aria-label="Sluiten"
+				aria-label=${component._dismissButtonAccessibilityLabel}
 				tabindex=${component.selected ? '0' : '-1'}
 				@click=${component._handleDismiss}
 			>
