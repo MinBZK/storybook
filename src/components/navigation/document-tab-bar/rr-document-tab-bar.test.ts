@@ -120,6 +120,8 @@ describe('rr-document-tab-bar-item – events', () => {
 		expect(detail.item).toBe(el);
 	});
 
+	it('does not fire select when disabled', async () => {
+		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item text="Artikel 1" disabled></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
 
 		let fired = false;
