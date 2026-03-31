@@ -266,6 +266,16 @@ export const documentTabBarItemStyles = css`
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+
+		@container document-tab-bar (max-width: 200px) {
+			clip: rect(0 0 0 0);
+			clip-path: inset(50%);
+			height: 1px;
+			overflow: hidden;
+			position: absolute;
+			white-space: nowrap;
+			width: 1px;
+		}
 	}
 
 	:host([selected]) .document-tab-bar__item-text {
@@ -273,26 +283,19 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-short-text {
-		display: none;
 		font: var(--components-document-tab-bar-tab-title-font);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+
+		@container document-tab-bar (min-width: 201px) {
+			display: none;
+		}
 	}
 
 	:host([selected]) .document-tab-bar__item-short-text {
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
-	}
-
-	@container document-tab-bar (max-width: 200px) {
-		.document-tab-bar__item-text {
-			display: none;
-		}
-
-		.document-tab-bar__item-short-text {
-			display: block;
-		}
 	}
 
 
@@ -304,6 +307,16 @@ export const documentTabBarItemStyles = css`
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+
+		@container document-tab-bar (max-width: 200px) {
+			clip: rect(0 0 0 0);
+			clip-path: inset(50%);
+			height: 1px;
+			overflow: hidden;
+			position: absolute;
+			white-space: nowrap;
+			width: 1px;
+		}
 	}
 
 	:host([selected]) .document-tab-bar__item-supporting-text {
@@ -311,26 +324,19 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-short-supporting-text {
-		display: none;
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-content-secondary-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+
+		@container document-tab-bar (min-width: 201px) {
+			display: none;
+		}
 	}
 
 	:host([selected]) .document-tab-bar__item-short-supporting-text {
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
-	}
-
-	@container document-tab-bar (max-width: 200px) {
-		.document-tab-bar__item-supporting-text {
-			display: none;
-		}
-
-		.document-tab-bar__item-short-supporting-text {
-			display: block;
-		}
 	}
 
 

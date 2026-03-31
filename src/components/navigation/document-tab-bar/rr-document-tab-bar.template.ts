@@ -62,7 +62,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 	const tabContent = html`
 		<span class="document-tab-bar__item-text">${component.text}</span>
 		<span class="document-tab-bar__item-short-text"
-			aria-label=${component.text}
+			aria-hidden="true"
 			title=${component.text}
 		>${shortTextValue}</span>
 		${component.supportingText
@@ -70,7 +70,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 			: nothing}
 		${shortSupportingTextValue
 			? html`<span class="document-tab-bar__item-short-supporting-text"
-				aria-label=${component.supportingText || nothing}
+				aria-hidden="true"
 				title=${component.supportingText || nothing}
 			>${shortSupportingTextValue}</span>`
 			: nothing}
