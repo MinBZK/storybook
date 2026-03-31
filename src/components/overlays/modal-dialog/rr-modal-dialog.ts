@@ -20,7 +20,7 @@
  * @method show() - Opent het modale venster
  * @method hide() - Sluit het modale venster met sluitanimatie
  */
-import { LitElement, nothing } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { modalDialogStyles } from './rr-modal-dialog.styles.ts';
 import { modalDialogTemplate } from './rr-modal-dialog.template.ts';
@@ -58,7 +58,10 @@ export class RRModalDialog extends LitElement {
 	}
 
 	private _manageFocus(): void {
-		// Focus the dialog__text heading inside rr-dialog's shadow DOM
+		// 1. autofocus element present — let the browser handle it natively
+		if (this.querySelector('[autofocus]')) return;
+
+		// 2. Focus the dialog__text heading inside rr-dialog's shadow DOM
 		const inner = this.shadowRoot?.querySelector('rr-dialog');
 		const heading = inner?.shadowRoot?.querySelector<HTMLElement>('.dialog__text') ?? null;
 
@@ -74,7 +77,7 @@ export class RRModalDialog extends LitElement {
 			return;
 		}
 
-		// Fallback — focus the native dialog itself
+		// 3. Fallback — focus the native dialog itself
 		this._dialog?.focus();
 	}
 
