@@ -60,7 +60,6 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 				role="tab"
 				aria-selected=${component.selected}
 				aria-label=${fullText || nothing}
-				aria-keyshortcuts="Shift+ArrowLeft Shift+ArrowRight"
 				title=${fullText || nothing}
 				tabindex=${component.selected ? '0' : '-1'}
 				@click=${component._handleClick}
