@@ -692,11 +692,11 @@ export class RRDocumentTabBar extends LitElement {
 			const index = items.indexOf(dismissedItem);
 			// Try right first, then left
 			for (let i = index + 1; i < items.length; i++) {
-				if (!items[i].disabled && !items[i].hidden) { nextItem = items[i]; break; }
+				if (!items[i].hidden) { nextItem = items[i]; break; }
 			}
 			if (!nextItem) {
 				for (let i = index - 1; i >= 0; i--) {
-					if (!items[i].disabled && !items[i].hidden) { nextItem = items[i]; break; }
+					if (!items[i].hidden) { nextItem = items[i]; break; }
 				}
 			}
 			if (nextItem) {
