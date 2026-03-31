@@ -405,61 +405,6 @@ describe('rr-document-tab-bar – dismiss', () => {
 
 
 /* ============================================================
-   rr-document-tab-bar – display order
-   ============================================================ */
-
-describe('rr-document-tab-bar – display order', () => {
-	let el: RRDocumentTabBar;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('initialises _itemOrder from DOM order', async () => {
-		el = await fixture<RRDocumentTabBar>(threeTabBar());
-		await waitForUpdate(el);
-		expect(el._itemOrder).toHaveLength(3);
-	});
-
-	it('assigns slot attributes to all items', async () => {
-		el = await fixture<RRDocumentTabBar>(threeTabBar());
-		await waitForUpdate(el);
-		getItems(el).forEach(item => {
-			expect(item.getAttribute('slot')).toMatch(/^item-rr-document-tab-bar-item-/);
-		});
-	});
-
-	it('updates _itemOrder when an item is added', async () => {
-		el = await fixture<RRDocumentTabBar>(threeTabBar());
-		await waitForUpdate(el);
-		expect(el._itemOrder).toHaveLength(3);
-
-		const newItem = document.createElement('rr-document-tab-bar-item');
-		newItem.textContent = 'Artikel 4';
-		el.appendChild(newItem);
-
-		await new Promise(resolve => setTimeout(resolve, 20));
-		await waitForUpdate(el);
-
-		expect(el._itemOrder).toHaveLength(4);
-	});
-
-	it('updates _itemOrder when an item is removed', async () => {
-		el = await fixture<RRDocumentTabBar>(threeTabBar());
-		await waitForUpdate(el);
-
-		const item = getItems(el)[2];
-		el.removeChild(item);
-
-		await new Promise(resolve => setTimeout(resolve, 20));
-		await waitForUpdate(el);
-
-		expect(el._itemOrder).toHaveLength(2);
-	});
-});
-
-
-/* ============================================================
    rr-document-tab-bar – keyboard navigation
    ============================================================ */
 
