@@ -40,7 +40,7 @@ export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 				href=${safeHref!}
 				role="tab"
 				aria-selected=${component.selected}
-				aria-disabled=${component.disabled}
+				aria-disabled=${component.disabled || nothing}
 				aria-label=${iconLabel}
 				title=${iconLabel}
 				tabindex=${tabindex}
