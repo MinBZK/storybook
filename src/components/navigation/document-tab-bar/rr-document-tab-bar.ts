@@ -186,7 +186,7 @@ export class RRDocumentTabBar extends LitElement {
 	override firstUpdated(): void {
 		this._hasCustomLabel = Boolean(this.accessibleLabel);
 		if (!this._hasCustomLabel) {
-			console.warn('<rr-document-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabbladen".');
+			import.meta.env?.DEV && console.warn('<rr-document-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabbladen".');
 		}
 
 		const container = this.shadowRoot?.querySelector('.document-tab-bar__items') as HTMLElement;

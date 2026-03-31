@@ -181,7 +181,7 @@ export class RRTabBar extends LitElement {
 	override firstUpdated(): void {
 		this._hasCustomLabel = Boolean(this.accessibleLabel);
 		if (!this._hasCustomLabel) {
-			console.warn('<rr-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabs".');
+			import.meta.env?.DEV && console.warn('<rr-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabs".');
 		}
 		this._syncItems();
 	}
