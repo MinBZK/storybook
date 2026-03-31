@@ -62,10 +62,6 @@ export class RRDocumentTabBarItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	/** Set by rr-document-tab-bar. Not part of the public API. */
-	@property({ type: String })
-	_dismissButtonAccessibilityLabel = 'Sluit';
-
 	@property({ type: String, attribute: 'text' })
 	text = '';
 
@@ -82,6 +78,10 @@ export class RRDocumentTabBarItem extends LitElement {
 		super.connectedCallback();
 		this.setAttribute('role', 'none');
 	}
+
+	/** Set by rr-document-tab-bar. Not part of the public API. */
+	@property({ type: String })
+	_dismissButtonAccessibilityLabel = 'Sluit';
 
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab')?.focus(options);
@@ -183,7 +183,7 @@ export class RRDocumentTabBar extends LitElement {
 	override firstUpdated(): void {
 		this._hasCustomLabel = Boolean(this.accessibleLabel);
 		if (!this._hasCustomLabel) {
-			console.warn('<rr-document-tab-bar>: Geen accessible-label opgegeven. Voeg een accessible-label attribuut toe voor een betekenisvolle navigatielandmark. Valt terug op "Tabbladen".');
+			console.warn('<rr-document-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabbladen".');
 		}
 
 		const container = this.shadowRoot?.querySelector('.document-tab-bar__items') as HTMLElement;
