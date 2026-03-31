@@ -11,6 +11,8 @@ export const documentTabBarStyles = css`
 		--_drag-clone-left: 0px;
 		--_drag-clone-width: 0px;
 		--_drag-clone-height: 0px;
+		--_drag-clone-opacity: 0.95;
+		--_drag-clone-z-index: 100;
 	}
 
 	:host([hidden]) {
@@ -100,7 +102,7 @@ export const documentTabBarStyles = css`
 		flex-shrink: 1;
 		flex-basis: 0;
 		min-width: 100px;
-		opacity: 0.4;
+		opacity: var(--primitives-opacity-40);
 	}
 
 
@@ -116,10 +118,10 @@ export const documentTabBarStyles = css`
 		flex-direction: row;
 		align-items: stretch;
 		pointer-events: none;
-		opacity: 0.95;
+		opacity: var(--_drag-clone-opacity);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background: var(--semantics-buttons-neutral-tinted-background-color);
-		z-index: 100;
+		z-index: var(--_drag-clone-z-index);
 		overflow: hidden;
 		cursor: grabbing;
 	}

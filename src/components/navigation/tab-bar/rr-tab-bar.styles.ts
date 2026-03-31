@@ -141,7 +141,7 @@ export const tabBarItemStyles = css`
 
 	.tab-bar__item-indicator {
 		position: absolute;
-		inset: 4px 2px;
+		inset: var(--primitives-space-4) var(--primitives-space-2);
 		border-radius: var(--primitives-corner-radius-sm);
 		background-color: transparent;
 		z-index: 0;
