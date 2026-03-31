@@ -50,31 +50,22 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): TemplateResult {
 	const shortTextValue = component.shortText || component.text;
 	const shortSupportingTextValue = component.shortSupportingText || component.supportingText;
-	const fullText = component.supportingText
-		? `${component.text} · ${component.supportingText}`
-		: component.text;
 
 	return html`
 		<div class="document-tab-bar__item">
 			<div class="document-tab-bar__item-tab"
 				role="tab"
 				aria-selected=${component.selected}
-				aria-label=${fullText || nothing}
-				title=${fullText || nothing}
 				tabindex=${component.selected ? '0' : '-1'}
 				@click=${component._handleClick}
 			>
-				<span class="document-tab-bar__item-text">
-					${component.text}
-				</span>
-				<span class="document-tab-bar__item-short-text">
-					${shortTextValue}
-				</span>
+				<span class="document-tab-bar__item-text">${component.text}</span>
+				<span class="document-tab-bar__item-short-text"aria-label="${component.text}">${shortTextValue}</span>
 				${component.supportingText
 					? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
 					: nothing}
 				${shortSupportingTextValue
-					? html`<span class="document-tab-bar__item-short-supporting-text">${shortSupportingTextValue}</span>`
+					? html`<span class="document-tab-bar__item-short-supporting-text" aria-label="${component.supportingText}">${shortSupportingTextValue}</span>`
 					: nothing}
 			</div>
 			<button class="document-tab-bar__item-dismiss-button"
