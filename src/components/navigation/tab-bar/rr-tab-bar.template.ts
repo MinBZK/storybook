@@ -8,7 +8,7 @@ export function tabBarTemplate(component: RRTabBar): TemplateResult {
 	const itemsContainer = html`
 		<div class="tab-bar__items"
 			role=${isNavigation ? nothing : 'tablist'}
-			aria-label=${isNavigation ? label : nothing}
+			aria-label=${isNavigation ? nothing : label}
 		>
 			<slot @slotchange=${component._onSlotChange}></slot>
 		</div>
