@@ -14,6 +14,12 @@ describe('rr-modal-dialog', () => {
 		}
 	});
 
+	it('renders without error', async () => {
+		el = await fixture('<rr-modal-dialog></rr-modal-dialog>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
 	it('sets role="alertdialog" when variant is alert', async () => {
 		el = await fixture('<rr-modal-dialog variant="alert"></rr-modal-dialog>');
 		await waitForUpdate(el);
@@ -24,12 +30,6 @@ describe('rr-modal-dialog', () => {
 		el = await fixture('<rr-modal-dialog></rr-modal-dialog>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('dialog')!.getAttribute('role')).toBeNull();
-	});
-
-	it('renders without error', async () => {
-		el = await fixture('<rr-modal-dialog></rr-modal-dialog>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a native dialog element', async () => {
