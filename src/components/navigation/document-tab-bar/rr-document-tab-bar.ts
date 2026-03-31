@@ -541,7 +541,9 @@ export class RRDocumentTabBar extends LitElement {
 
 		const gap = parseFloat(getComputedStyle(container).gap) || 8;
 		const firstItem = this._getItems()[0];
-		const minItemWidth = firstItem ? parseFloat(getComputedStyle(firstItem).minWidth) || 100 : 100;
+		const minItemWidth = firstItem
+			? parseFloat(getComputedStyle(firstItem).minWidth) || parseFloat(getComputedStyle(this).getPropertyValue('--_item-min-width'))
+			: parseFloat(getComputedStyle(this).getPropertyValue('--_item-min-width'));
 
 		// (containerWidth - overflowButtonWidth + gap) / (minItemWidth + gap)
 		const visible = Math.floor((containerWidth - OVERFLOW_BUTTON_RESERVE + gap) / (minItemWidth + gap));
