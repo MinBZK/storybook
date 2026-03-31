@@ -96,6 +96,10 @@ export class RRTabBarItem extends LitElement {
 		this.setAttribute('variant', this._effectiveVariant);
 	}
 
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLElement>('[role="tab"]')?.focus(options);
+	}
+
 	_onDefaultSlotChange(e: Event): void {
 		const slot = e.target as HTMLSlotElement;
 		const text = slot.assignedNodes({ flatten: true })
@@ -287,6 +291,13 @@ export class RRTabBar extends LitElement {
 
 		if (newIndex >= 0 && newIndex < items.length) {
 			items[newIndex].focus();
+			// Auto-activate: select the focused tab
+			items.forEach(item => { item.selected = item === items[newIndex]; });
+			this.dispatchEvent(new CustomEvent('tabchange', {
+				bubbles: true,
+				composed: true,
+				detail: { item: items[newIndex] },
+			}));
 		}
 	};
 

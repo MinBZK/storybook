@@ -20,7 +20,7 @@ export function tabBarTemplate(component: RRTabBar): TemplateResult {
 export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 	const safeHref = component._sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
-	const tabindex = component.disabled ? '-1' : '0';
+	const tabindex = component.disabled ? '-1' : component.selected ? '0' : '-1';
 	const isIconVariant = component._effectiveVariant === 'icon';
 	const iconLabel = isIconVariant ? component._labelText || nothing : nothing;
 

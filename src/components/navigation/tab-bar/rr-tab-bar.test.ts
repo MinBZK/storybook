@@ -652,6 +652,44 @@ describe('rr-tab-bar – keyboard navigation', () => {
 		vi.restoreAllMocks();
 	});
 
+	it('selected tab has tabindex="0"', async () => {
+		el = await fixture<RRTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const inner = items[1].shadowRoot!.querySelector('[role="tab"]')!;
+		expect(inner.getAttribute('tabindex')).toBe('0');
+	});
+
+	it('non-selected tabs have tabindex="-1"', async () => {
+		el = await fixture<RRTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const innerA = items[0].shadowRoot!.querySelector('[role="tab"]')!;
+		const innerC = items[2].shadowRoot!.querySelector('[role="tab"]')!;
+		expect(innerA.getAttribute('tabindex')).toBe('-1');
+		expect(innerC.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('ArrowRight auto-activates next tab', async () => {
+		el = await fixture<RRTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const items = getItems(el);
+		pressKey(items[1], 'ArrowRight');
+		await waitForUpdate(el);
+		expect(items[2].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
+
+	it('ArrowLeft auto-activates previous tab', async () => {
+		el = await fixture<RRTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const items = getItems(el);
+		pressKey(items[1], 'ArrowLeft');
+		await waitForUpdate(el);
+		expect(items[0].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
+
 	it('ArrowRight calls focus on next item', async () => {
 		el = await fixture<RRTabBar>(threeTabBar());
 		await waitForUpdate(el);

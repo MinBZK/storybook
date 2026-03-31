@@ -79,6 +79,10 @@ export class RRDocumentTabBarItem extends LitElement {
 		this.setAttribute('role', 'none');
 	}
 
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab')?.focus(options);
+	}
+
 	_handleClick(): void {
 		this.dispatchEvent(new CustomEvent('select', {
 			bubbles: true,
@@ -670,7 +674,10 @@ export class RRDocumentTabBar extends LitElement {
 					if (!items[i].disabled && !items[i].hidden) { nextItem = items[i]; break; }
 				}
 			}
-			if (nextItem) nextItem.selected = true;
+			if (nextItem) {
+				nextItem.selected = true;
+				nextItem.focus();
+			}
 			dismissedItem.selected = false;
 		}
 
@@ -767,7 +774,16 @@ export class RRDocumentTabBar extends LitElement {
 				return;
 		}
 
-		if (newIndex >= 0) items[newIndex].focus();
+		if (newIndex >= 0) {
+			items[newIndex].focus();
+			// Auto-activate: select the focused tab
+			this._getItems().forEach(item => { item.selected = item === items[newIndex]; });
+			this.dispatchEvent(new CustomEvent('tabchange', {
+				bubbles: true,
+				composed: true,
+				detail: { item: items[newIndex] },
+			}));
+		}
 	};
 
 	override render() {

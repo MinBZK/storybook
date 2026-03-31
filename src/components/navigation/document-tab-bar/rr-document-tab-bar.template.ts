@@ -62,7 +62,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 				aria-label=${fullText || nothing}
 				aria-keyshortcuts="Shift+ArrowLeft Shift+ArrowRight"
 				title=${fullText || nothing}
-				tabindex="0"
+				tabindex=${component.selected ? '0' : '-1'}
 				@click=${component._handleClick}
 			>
 				<span class="document-tab-bar__item-text">
@@ -80,6 +80,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 			</div>
 			<button class="document-tab-bar__item-dismiss-button"
 				aria-label="Sluiten"
+				tabindex=${component.selected ? '0' : '-1'}
 				@click=${component._handleDismiss}
 			>
 				<span class="document-tab-bar__item-dismiss-icon">
