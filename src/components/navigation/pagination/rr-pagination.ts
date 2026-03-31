@@ -68,7 +68,6 @@ export class RRPagination extends LitElement {
 
     .pagination__button:disabled {
       opacity: var(--primitives-opacity-disabled);
-      cursor: not-allowed;
     }
 
     .pagination__button--active {

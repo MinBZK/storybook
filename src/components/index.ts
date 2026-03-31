@@ -113,6 +113,9 @@ export { RRPagination } from './navigation/pagination/rr-pagination.ts';
 
 export { RRTooltip } from './overlays/tooltip/rr-tooltip.ts';
 export { RRSheet } from './overlays/sheet/rr-sheet.ts';
-export { RRDialog } from './overlays/dialog/rr-dialog.ts';
+export { RRModalDialog } from './overlays/modal-dialog/rr-modal-dialog.ts';
+
+
+export { RRDialog } from './status-and-feedback/dialog/rr-dialog.ts';
 
 // Auto-register happens on import of individual component files

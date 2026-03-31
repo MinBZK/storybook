@@ -119,9 +119,8 @@ export const topTitleBarStyles = css`
 	}
 
 	.top-title-bar__title:focus-visible {
-		border-radius: var(--primitives-corner-radius-xxs);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: none;
+		outline: none;
 	}
 
 	:host(.is-compact) .top-title-bar__title {

@@ -6,27 +6,18 @@
  * @attr {boolean} show-item-labels - When true, shows a text label below each toolbar item and the overflow button
  * @attr {string} label - Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page
  *
- * @slot - Place area elements (rr-toolbar-start-area, rr-toolbar-center-area, rr-toolbar-end-area, rr-toolbar-overflow-area) here
+ * @slot start    - rr-toolbar-item and rr-toolbar-title-group elements placed at the start
+ * @slot center   - rr-toolbar-item and rr-toolbar-title-group elements placed at the center
+ * @slot end      - rr-toolbar-item and rr-toolbar-title-group elements placed at the end
+ * @slot overflow - rr-menu-item and rr-menu-divider elements always shown in the overflow menu
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './rr-toolbar.styles.js';
-import { template, type ToolbarChild } from './rr-toolbar.template.js';
-import { RRMenu } from '../../lists-and-menus/menu/rr-menu.js';
+import { styles } from './rr-toolbar.styles.ts';
+import { template, type ToolbarChild } from './rr-toolbar.template.ts';
+import { RRMenu } from '../../lists-and-menus/menu/rr-menu.ts';
 
 // # Marker elements
-if (!customElements.get('rr-toolbar-start-area')) {
-	customElements.define('rr-toolbar-start-area', class extends HTMLElement {});
-}
-if (!customElements.get('rr-toolbar-center-area')) {
-	customElements.define('rr-toolbar-center-area', class extends HTMLElement {});
-}
-if (!customElements.get('rr-toolbar-end-area')) {
-	customElements.define('rr-toolbar-end-area', class extends HTMLElement {});
-}
-if (!customElements.get('rr-toolbar-overflow-area')) {
-	customElements.define('rr-toolbar-overflow-area', class extends HTMLElement {});
-}
 if (!customElements.get('rr-toolbar-item')) {
 	customElements.define('rr-toolbar-item', class extends HTMLElement {
 		constructor() {
@@ -110,27 +101,15 @@ export class RRToolbar extends LitElement {
 		super.connectedCallback();
 		this._observer = new MutationObserver((mutations) => {
 			if (this._isBuilding) return;
-			const areaTags = new Set([
-				'rr-toolbar-start-area',
-				'rr-toolbar-center-area',
-				'rr-toolbar-end-area',
-				'rr-toolbar-overflow-area',
-			]);
 			const onlyInternalMoves = mutations.every(m => {
 				// Attribute change — only rebuild for toolbar-structural elements.
-				// The watched attributeFilter values (label, priority, min-width, width,
-				// text, disabled, selected, type) only affect toolbar layout when they
-				// change on rr-toolbar-item or rr-toolbar-title-group. Changes on area
-				// elements or deeply nested descendants (e.g. rr-segmented-control-item)
+				// Changes on deeply nested descendants (e.g. rr-segmented-control-item)
 				// are safe to ignore.
 				if (m.type === 'attributes') {
 					const tag = (m.target as Element).tagName.toLowerCase();
 					return tag !== 'rr-toolbar-item' && tag !== 'rr-toolbar-title-group';
 				}
-				// childList change on the toolbar root — ignore if it's just internal slot moves
-				if (m.target !== this) return false;
-				const nodes = [...Array.from(m.addedNodes), ...Array.from(m.removedNodes)];
-				return nodes.every(n => n instanceof Element && !areaTags.has(n.tagName.toLowerCase()));
+				return false;
 			});
 			if (onlyInternalMoves) return;
 			this._buildChildren();
@@ -465,90 +444,74 @@ export class RRToolbar extends LitElement {
 		this._updateAreaVars();
 	}
 
-	private _buildChildrenForArea(areaTag: string): ToolbarChild[] {
-		const areaEl = this.querySelector(areaTag);
-		if (!areaEl) return [];
+	private _buildChildrenForSlot(slotName: string): ToolbarChild[] {
+		return Array.from(this.children)
+			.filter(el => el.getAttribute('slot') === slotName)
+			.map(el => {
+				const tag = el.tagName.toLowerCase();
 
-		return Array.from(areaEl.children).map(el => {
-			const tag = el.tagName.toLowerCase();
+				if (tag === 'rr-toolbar-title-group') {
+					const id = this._getId(el);
+					(el as HTMLElement).dataset.toolbarSlot = slotName;
+					el.setAttribute('slot', `child-${id}`);
+					return {
+						type: 'title-group',
+						title: el.getAttribute('text') ?? '',
+						subtitle: el.getAttribute('subtext') ?? '',
+						align: el.getAttribute('align') ?? 'left',
+						minWidth: el.getAttribute('min-width') ?? '200px',
+						id,
+					} as ToolbarChild;
+				}
 
-			if (tag === 'rr-toolbar-title-group') {
+				if (tag === 'rr-toolbar-item') {
+					const id = this._getId(el);
+					const label = el.getAttribute('label') ?? '';
+					const priority = parseInt(el.getAttribute('priority') ?? '0', 10);
+					const minWidth = el.getAttribute('min-width') ?? '';
+					const width = el.getAttribute('width') ?? '';
+					const isFluid = !!(minWidth || width);
+
+					Array.from(el.children).forEach(child => {
+						if (child.getAttribute('slot') !== 'overflow') {
+							child.setAttribute('size', this.size);
+						}
+					});
+
+					(el as HTMLElement).dataset.toolbarSlot = slotName;
+					el.setAttribute('slot', `child-${id}`);
+
+					const overflowItems = Array.from(el.children).filter(child => {
+						const childTag = child.tagName.toLowerCase();
+						return childTag === 'rr-menu-item' || childTag === 'rr-menu-divider';
+					});
+					overflowItems.forEach(child => child.setAttribute('slot', 'overflow'));
+
+					return { type: 'item', element: el, label, id, priority, overflowItems, minWidth, width, isFluid } as ToolbarChild;
+				}
+
 				const id = this._getId(el);
-				if (el.parentElement !== this) this.appendChild(el);
+				(el as HTMLElement).dataset.toolbarSlot = slotName;
 				el.setAttribute('slot', `child-${id}`);
-				(el as HTMLElement).dataset.toolbarArea = areaTag;
-				return {
-					type: 'title-group',
-					title: el.getAttribute('text') ?? '',
-					subtitle: el.getAttribute('subtext') ?? '',
-					align: el.getAttribute('align') ?? 'left',
-					minWidth: el.getAttribute('min-width') ?? '200px',
-					id,
-				} as ToolbarChild;
-			}
-
-			if (tag === 'rr-toolbar-item') {
-				const id = this._getId(el);
-				const label = el.getAttribute('label') ?? '';
-				const priority = parseInt(el.getAttribute('priority') ?? '0', 10);
-				const minWidth = el.getAttribute('min-width') ?? '';
-				const width = el.getAttribute('width') ?? '';
-				const isFluid = !!(minWidth || width);
-
-				Array.from(el.children).forEach(child => {
-					if (child.getAttribute('slot') !== 'overflow') {
-						child.setAttribute('size', this.size);
-					}
-				});
-
-				if (el.parentElement !== this) this.appendChild(el);
-				el.setAttribute('slot', `child-${id}`);
-				(el as HTMLElement).dataset.toolbarArea = areaTag;
-
-				const overflowItems = Array.from(el.children).filter(child => {
-					const childTag = child.tagName.toLowerCase();
-					return childTag === 'rr-menu-item' || childTag === 'rr-menu-divider';
-				});
-				overflowItems.forEach(child => child.setAttribute('slot', 'overflow'));
-
-				return { type: 'item', element: el, label, id, priority, overflowItems, minWidth, width, isFluid } as ToolbarChild;
-			}
-
-			const id = this._getId(el);
-			if (el.parentElement !== this) this.appendChild(el);
-			el.setAttribute('slot', `child-${id}`);
-			(el as HTMLElement).dataset.toolbarArea = areaTag;
-			return { type: 'other', element: el, id } as ToolbarChild;
-		});
+				return { type: 'other', element: el, id } as ToolbarChild;
+			});
 	}
 
 	private _buildPinnedOverflowItems(): void {
-		const areaEl = this.querySelector('rr-toolbar-overflow-area');
-		if (!areaEl) {
-			this._pinnedOverflowItems = [];
-			return;
-		}
-		this._pinnedOverflowItems = Array.from(areaEl.children).filter(el => {
+		this._pinnedOverflowItems = Array.from(this.children).filter(el => {
 			const tag = el.tagName.toLowerCase();
-			return tag === 'rr-menu-item' || tag === 'rr-menu-divider';
+			return el.getAttribute('slot') === 'overflow' &&
+				(tag === 'rr-menu-item' || tag === 'rr-menu-divider');
 		});
 	}
 
-	private _restoreItemsToAreas(): void {
-		const reparented = Array.from(this.children).filter(
-			(child): child is HTMLElement => child instanceof HTMLElement && !!child.dataset.toolbarArea
-		);
-		for (const el of reparented) {
-			const areaTag = el.dataset.toolbarArea!;
-			const area = this.querySelector(areaTag);
-			if (area) {
-				el.removeAttribute('slot');
-				delete el.dataset.toolbarArea;
-				area.appendChild(el);
-			} else {
-				delete el.dataset.toolbarArea;
-			}
-		}
+	private _restoreSlots(): void {
+		Array.from(this.children)
+			.filter((el): el is HTMLElement => el instanceof HTMLElement && !!el.dataset.toolbarSlot)
+			.forEach(el => {
+				el.setAttribute('slot', el.dataset.toolbarSlot!);
+				delete el.dataset.toolbarSlot;
+			});
 	}
 
 	private _buildChildren(): void {
@@ -557,26 +520,16 @@ export class RRToolbar extends LitElement {
 
 		this._observer?.disconnect();
 
-		this._restoreItemsToAreas();
+		this._restoreSlots();
 
-		this._startChildren = this._buildChildrenForArea('rr-toolbar-start-area');
-		this._centerChildren = this._buildChildrenForArea('rr-toolbar-center-area');
-		this._endChildren = this._buildChildrenForArea('rr-toolbar-end-area');
+		this._startChildren = this._buildChildrenForSlot('start');
+		this._centerChildren = this._buildChildrenForSlot('center');
+		this._endChildren = this._buildChildrenForSlot('end');
 		this._buildPinnedOverflowItems();
 		this._prioritizedItemsCache = null;
 
-		const areas = [
-			this.querySelector('rr-toolbar-start-area'),
-			this.querySelector('rr-toolbar-center-area'),
-			this.querySelector('rr-toolbar-end-area'),
-			this.querySelector('rr-toolbar-overflow-area'),
-		].filter(Boolean) as Element[];
-
 		const itemAttributeFilter = ['label', 'priority', 'min-width', 'width', 'text', 'disabled', 'selected', 'type'];
 		this._observer?.observe(this, { childList: true, attributes: true, subtree: true, attributeFilter: itemAttributeFilter });
-		areas.forEach(area => {
-			this._observer?.observe(area, { childList: true, attributes: true, subtree: true, attributeFilter: itemAttributeFilter });
-		});
 
 		this._isBuilding = false;
 	}
@@ -606,6 +559,7 @@ export class RRToolbar extends LitElement {
 			this.label,
 			this._menu?.id ?? '',
 			() => this._handleOverflowButtonClick(),
+			this._startChildren.length === 0 && this._endChildren.length === 0 && this._centerChildren.length > 0,
 		);
 	}
 }
@@ -613,10 +567,6 @@ export class RRToolbar extends LitElement {
 declare global {
 	interface HTMLElementTagNameMap {
 		'rr-toolbar': RRToolbar;
-		'rr-toolbar-start-area': HTMLElement;
-		'rr-toolbar-center-area': HTMLElement;
-		'rr-toolbar-end-area': HTMLElement;
-		'rr-toolbar-overflow-area': HTMLElement;
 		'rr-toolbar-item': HTMLElement;
 		'rr-toolbar-title-group': HTMLElement;
 	}

@@ -42,12 +42,9 @@ describe('rr-toolbar', () => {
 		expect(el.hasAttribute('show-item-labels')).toBe(true);
 	});
 
-	it('registers marker elements as custom elements', () => {
+	it('registers rr-toolbar-item and rr-toolbar-title-group as custom elements', () => {
 		expect(customElements.get('rr-toolbar-item')).toBeDefined();
 		expect(customElements.get('rr-toolbar-title-group')).toBeDefined();
-		expect(customElements.get('rr-toolbar-start-area')).toBeDefined();
-		expect(customElements.get('rr-toolbar-end-area')).toBeDefined();
-		expect(customElements.get('rr-toolbar-overflow-area')).toBeDefined();
 	});
 
 	// ## Priority-based collapsing order
@@ -55,18 +52,14 @@ describe('rr-toolbar', () => {
 	it('collapses end items before start items (end has lower priority area order)', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="Start" priority="1">
-						<rr-icon-button aria-label="Start"></rr-icon-button>
-						<rr-menu-item slot="overflow" text="Start"></rr-menu-item>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
-				<rr-toolbar-end-area>
-					<rr-toolbar-item label="End" priority="1">
-						<rr-icon-button aria-label="End"></rr-icon-button>
-						<rr-menu-item slot="overflow" text="End"></rr-menu-item>
-					</rr-toolbar-item>
-				</rr-toolbar-end-area>
+				<rr-toolbar-item slot="start" label="Start" priority="1">
+					<rr-icon-button aria-label="Start"></rr-icon-button>
+					<rr-menu-item slot="overflow" text="Start"></rr-menu-item>
+				</rr-toolbar-item>
+				<rr-toolbar-item slot="end" label="End" priority="1">
+					<rr-icon-button aria-label="End"></rr-icon-button>
+					<rr-menu-item slot="overflow" text="End"></rr-menu-item>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -79,14 +72,12 @@ describe('rr-toolbar', () => {
 	it('collapses lower priority number items first', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="High" priority="5">
-						<rr-icon-button aria-label="High"></rr-icon-button>
-					</rr-toolbar-item>
-					<rr-toolbar-item label="Low" priority="1">
-						<rr-icon-button aria-label="Low"></rr-icon-button>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
+				<rr-toolbar-item slot="start" label="High" priority="5">
+					<rr-icon-button aria-label="High"></rr-icon-button>
+				</rr-toolbar-item>
+				<rr-toolbar-item slot="start" label="Low" priority="1">
+					<rr-icon-button aria-label="Low"></rr-icon-button>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -98,17 +89,15 @@ describe('rr-toolbar', () => {
 
 	// ## Children building
 
-	it('builds start children from rr-toolbar-start-area', async () => {
+	it('builds start children from slot="start"', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="Item A">
-						<rr-icon-button aria-label="A"></rr-icon-button>
-					</rr-toolbar-item>
-					<rr-toolbar-item label="Item B">
-						<rr-icon-button aria-label="B"></rr-icon-button>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
+				<rr-toolbar-item slot="start" label="Item A">
+					<rr-icon-button aria-label="A"></rr-icon-button>
+				</rr-toolbar-item>
+				<rr-toolbar-item slot="start" label="Item B">
+					<rr-icon-button aria-label="B"></rr-icon-button>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -117,12 +106,10 @@ describe('rr-toolbar', () => {
 		expect(toolbar._startChildren[0].label).toBe('Item A');
 	});
 
-	it('builds center children from rr-toolbar-center-area', async () => {
+	it('builds center children from slot="center"', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-center-area>
-					<rr-toolbar-title-group text="Titel"></rr-toolbar-title-group>
-				</rr-toolbar-center-area>
+				<rr-toolbar-title-group slot="center" text="Titel"></rr-toolbar-title-group>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -131,14 +118,12 @@ describe('rr-toolbar', () => {
 		expect(toolbar._centerChildren[0].type).toBe('title-group');
 	});
 
-	it('builds end children from rr-toolbar-end-area', async () => {
+	it('builds end children from slot="end"', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-end-area>
-					<rr-toolbar-item label="End Item">
-						<rr-icon-button aria-label="End"></rr-icon-button>
-					</rr-toolbar-item>
-				</rr-toolbar-end-area>
+				<rr-toolbar-item slot="end" label="End Item">
+					<rr-icon-button aria-label="End"></rr-icon-button>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -152,12 +137,10 @@ describe('rr-toolbar', () => {
 	it('separates overflow items from toolbar-item children', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="Item">
-						<rr-icon-button aria-label="Item"></rr-icon-button>
-						<rr-menu-item slot="overflow" text="Item overflow"></rr-menu-item>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
+				<rr-toolbar-item slot="start" label="Item">
+					<rr-icon-button aria-label="Item"></rr-icon-button>
+					<rr-menu-item slot="overflow" text="Item overflow"></rr-menu-item>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -165,12 +148,10 @@ describe('rr-toolbar', () => {
 		expect(toolbar._startChildren[0].overflowItems.length).toBe(1);
 	});
 
-	it('builds pinned overflow items from rr-toolbar-overflow-area', async () => {
+	it('builds pinned overflow items from slot="overflow"', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-overflow-area>
-					<rr-menu-item text="Altijd zichtbaar"></rr-menu-item>
-				</rr-toolbar-overflow-area>
+				<rr-menu-item slot="overflow" text="Altijd zichtbaar"></rr-menu-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -183,11 +164,9 @@ describe('rr-toolbar', () => {
 	it('propagates size to toolbar item children', async () => {
 		el = await fixture(`
 			<rr-toolbar size="sm">
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="Item">
-						<rr-icon-button aria-label="Item"></rr-icon-button>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
+				<rr-toolbar-item slot="start" label="Item">
+					<rr-icon-button aria-label="Item"></rr-icon-button>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -198,12 +177,10 @@ describe('rr-toolbar', () => {
 	it('does not propagate size to overflow slot children', async () => {
 		el = await fixture(`
 			<rr-toolbar size="sm">
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="Item">
-						<rr-icon-button aria-label="Item"></rr-icon-button>
-						<rr-menu-item slot="overflow" text="Overflow"></rr-menu-item>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
+				<rr-toolbar-item slot="start" label="Item">
+					<rr-icon-button aria-label="Item"></rr-icon-button>
+					<rr-menu-item slot="overflow" text="Overflow"></rr-menu-item>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -216,11 +193,9 @@ describe('rr-toolbar', () => {
 	it('rebuilds children when a new item is added', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="Item A">
-						<rr-icon-button aria-label="A"></rr-icon-button>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
+				<rr-toolbar-item slot="start" label="Item A">
+					<rr-icon-button aria-label="A"></rr-icon-button>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -231,7 +206,8 @@ describe('rr-toolbar', () => {
 		const spy = vi.spyOn(toolbar, '_buildChildren');
 		const newItem = document.createElement('rr-toolbar-item');
 		newItem.setAttribute('label', 'Item B');
-		el.querySelector('rr-toolbar-start-area')!.appendChild(newItem);
+		newItem.setAttribute('slot', 'start');
+		el.appendChild(newItem);
 
 		await new Promise(resolve => setTimeout(resolve, 50));
 		expect(spy).toHaveBeenCalled();
@@ -240,11 +216,9 @@ describe('rr-toolbar', () => {
 	it('preserves children when a descendant selected attribute changes', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="Item">
-						<button selected>Toggle</button>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
+				<rr-toolbar-item slot="start" label="Item">
+					<button selected>Toggle</button>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -252,15 +226,12 @@ describe('rr-toolbar', () => {
 		const toolbar = el as unknown as { _startChildren: unknown[] };
 		expect(toolbar._startChildren.length).toBe(1);
 
-		// Simulate a descendant attribute change (like rr-segmented-control-item)
 		const button = el.querySelector('button')!;
 		button.removeAttribute('selected');
 		await waitForUpdate(el);
 
-		// Toolbar children must still be intact
 		expect(toolbar._startChildren.length).toBe(1);
 
-		// Slot must still exist in shadow DOM
 		const slot = el.shadowRoot?.querySelector('slot[name^="child-"]');
 		expect(slot).not.toBeNull();
 	});
@@ -284,7 +255,6 @@ describe('rr-toolbar', () => {
 		const toolbar = el as unknown as {
 			_computeSpacerZeros: (h: number, g: number, o: number, s: number, c: number, e: number) => { leftZero: boolean; rightZero: boolean };
 		};
-		// startWidth=500, centerWidth=200 — left spacer = 400 - 500 - 100 - 8 < 0
 		const result = toolbar._computeSpacerZeros(800, 8, 0, 500, 200, 100);
 		expect(result.leftZero).toBe(true);
 	});
@@ -297,7 +267,6 @@ describe('rr-toolbar', () => {
 		const toolbar = el as unknown as { _menu: Element | null };
 		expect(toolbar._menu).not.toBeNull();
 		expect(toolbar._menu?.tagName.toLowerCase()).toBe('rr-menu');
-		// cleanup menu from body
 		toolbar._menu?.remove();
 	});
 
@@ -317,11 +286,9 @@ describe('rr-toolbar', () => {
 	it('marks item as fluid when min-width attribute is set', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="Fluid" min-width="120px">
-						<rr-icon-button aria-label="Fluid"></rr-icon-button>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
+				<rr-toolbar-item slot="start" label="Fluid" min-width="120px">
+					<rr-icon-button aria-label="Fluid"></rr-icon-button>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);
@@ -332,11 +299,9 @@ describe('rr-toolbar', () => {
 	it('does not mark item as fluid without min-width or width', async () => {
 		el = await fixture(`
 			<rr-toolbar>
-				<rr-toolbar-start-area>
-					<rr-toolbar-item label="Normal">
-						<rr-icon-button aria-label="Normal"></rr-icon-button>
-					</rr-toolbar-item>
-				</rr-toolbar-start-area>
+				<rr-toolbar-item slot="start" label="Normal">
+					<rr-icon-button aria-label="Normal"></rr-icon-button>
+				</rr-toolbar-item>
 			</rr-toolbar>
 		`);
 		await waitForUpdate(el);

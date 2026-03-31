@@ -9,7 +9,7 @@
  * @prop {string[]} values        - Selected values for checkbox type (property binding only, not an attribute)
  * @attr {string}  size          - Control size: 'sm' | 'md' (default: 'md')
  * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio')
- * @attr {string}  content-type  - Content type for all items: 'text' | 'icon' (default: 'text')
+ * @attr {string}  variant       - Content type for all items: 'text' | 'icon' (default: 'text')
  * @attr {boolean} disabled      - Disabled state for all items
  * @attr {boolean} full-width    - Stretches to fill the container width
  * @attr {string}  name          - Name for form submission, forwarded to native inputs
@@ -26,9 +26,9 @@
  * @attr {boolean} selected     - Whether this item is selected (set by parent)
  * @attr {boolean} disabled     - Disabled state
  *
- * @slot         - Text label content (shown when parent content-type="text",
+ * @slot         - Text label content (shown when parent variant="text",
  *                 always used as aria-label and tooltip for icon items)
- * @slot icon    - Icon content (shown when parent content-type="icon")
+ * @slot icon    - Icon content (shown when parent variant="icon")
  *
  * @fires item-change - When item is activated; detail: { value: string, checked: boolean }
  */
@@ -46,7 +46,7 @@ import './../../content/icon/rr-icon.ts';
 
 export type SegmentedControlSize = 'sm' | 'md';
 export type SegmentedControlType = 'radio' | 'checkbox';
-export type SegmentedControlContentType = 'text' | 'icon';
+export type SegmentedControlVariant = 'text' | 'icon';
 
 
 // # rr-segmented-control-item
@@ -69,8 +69,8 @@ export class RRSegmentedControlItem extends LitElement {
 	size: SegmentedControlSize = 'md';
 
 	/** Set by rr-segmented-control. Not part of the public API. */
-	@property({ type: String, reflect: true, attribute: 'content-type' })
-	contentType: SegmentedControlContentType = 'text';
+	@property({ type: String, reflect: true, attribute: 'variant' })
+	variant: SegmentedControlVariant = 'text';
 
 	/** Set by rr-segmented-control. Not part of the public API. */
 	@property({ type: String, reflect: true, attribute: 'input-type' })
@@ -136,8 +136,8 @@ export class RRSegmentedControl extends LitElement {
 	type: SegmentedControlType = 'radio';
 
 	/** Content type applied to all items. Mixing text and icon items is not supported. */
-	@property({ type: String, reflect: true, attribute: 'content-type' })
-	contentType: SegmentedControlContentType = 'text';
+	@property({ type: String, reflect: true, attribute: 'variant' })
+	variant: SegmentedControlVariant = 'text';
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
@@ -187,7 +187,7 @@ export class RRSegmentedControl extends LitElement {
 			changedProperties.has('size') ||
 			changedProperties.has('disabled') ||
 			changedProperties.has('type') ||
-			changedProperties.has('contentType') ||
+			changedProperties.has('variant') ||
 			changedProperties.has('name')
 		) {
 			this._syncItems();
@@ -250,7 +250,7 @@ export class RRSegmentedControl extends LitElement {
 		items.forEach(item => {
 			item.size = this.size;
 			item.inputType = this.type;
-			item.contentType = this.contentType;
+			item.variant = this.variant;
 			item.groupName = this.name || this._autoName;
 			item.selected = this.type === 'checkbox'
 				? selectedValues.includes(item.value)

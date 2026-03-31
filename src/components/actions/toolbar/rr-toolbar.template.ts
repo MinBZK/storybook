@@ -23,6 +23,7 @@ function renderChildren(
 	children: ToolbarChild[],
 	allChildren: ToolbarChild[],
 	overflowIds: Set<number>,
+	suppressSoloFluid = false,
 ) {
 	return children.map((child) => {
 		if (child.type === 'title-group') {
@@ -49,7 +50,7 @@ function renderChildren(
 			const visibleItems = allChildren.filter(c =>
 				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
 			);
-			const soloFluid = !isOverflowed && child.isFluid && visibleItems.length === 1 && visibleItems[0].id === child.id;
+			const soloFluid = !suppressSoloFluid && !isOverflowed && child.isFluid && visibleItems.length === 1 && visibleItems[0].id === child.id;
 			const cssVars: Record<string, string> = {};
 			if (!soloFluid && child.isFluid) {
 				if (child.minWidth) cssVars['--_item-min-width'] = child.minWidth;
@@ -94,6 +95,7 @@ export function template(
 	label: string,
 	menuId: string,
 	onOverflowClick: () => void,
+	centerOnly: boolean,
 ) {
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 
@@ -105,9 +107,15 @@ export function template(
 			<div class="toolbar__items">
 				${renderChildren(startChildren, allChildren, overflowIds)}
 				${hasCenterChildren ? html`
-					${leftSpacerZero ? nothing : html`<div class="toolbar__left-spacer"></div>`}
-					${renderChildren(centerChildren, allChildren, overflowIds)}
-					${rightSpacerZero ? nothing : html`<div class="toolbar__right-spacer"></div>`}
+					${centerOnly ? html`
+						<div class="toolbar__center-fill">
+							${renderChildren(centerChildren, allChildren, overflowIds, true)}
+						</div>
+					` : html`
+						${leftSpacerZero ? nothing : html`<div class="toolbar__left-spacer"></div>`}
+						${renderChildren(centerChildren, allChildren, overflowIds)}
+						${rightSpacerZero ? nothing : html`<div class="toolbar__right-spacer"></div>`}
+					`}
 				` : isSoloFluidItem ? nothing : html`
 					<div class="toolbar__flexible-spacer"></div>
 				`}

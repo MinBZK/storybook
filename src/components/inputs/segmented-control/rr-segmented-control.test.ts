@@ -148,14 +148,14 @@ describe('rr-segmented-control – state sync', () => {
 		expect(items[1].disabled).toBe(true);
 	});
 
-	it('propagates content-type to items', async () => {
+	it('propagates variant to items', async () => {
 		el = await fixture<RRSegmentedControl>(`
-			<rr-segmented-control content-type="icon">
+			<rr-segmented-control variant="icon">
 				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
-		expect(getItems(el)[0].contentType).toBe('icon');
+		expect(getItems(el)[0].variant).toBe('icon');
 	});
 
 	it('forwards name as groupName to items', async () => {

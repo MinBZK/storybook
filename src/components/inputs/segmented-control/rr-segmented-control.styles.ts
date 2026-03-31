@@ -103,12 +103,12 @@ export const segmentedControlItemStyles = css`
 		font: var(--semantics-buttons-sm-font);
 	}
 
-	:host([content-type='icon'][size='md']) .segmented-control__item-label,
-	:host([content-type='icon']:not([size])) .segmented-control__item-label {
+	:host([variant='icon'][size='md']) .segmented-control__item-label,
+	:host([variant='icon']:not([size])) .segmented-control__item-label {
 		padding-inline: calc((var(--semantics-controls-md-min-size) - var(--_segmented-control-md-item-icon-size) - var(--_segmented-control-md-inset-size) * 2 + var(--_segmented-control-md-gap-size)) / 2);
 	}
 
-	:host([content-type='icon'][size='sm']) .segmented-control__item-label {
+	:host([variant='icon'][size='sm']) .segmented-control__item-label {
 		padding-inline: calc((var(--semantics-controls-sm-min-size) - var(--_segmented-control-sm-item-icon-size) - var(--_segmented-control-sm-inset-size) * 2 + var(--_segmented-control-sm-gap-size)) / 2);
 	}
 
@@ -163,11 +163,11 @@ export const segmentedControlItemStyles = css`
 
 	/* # Slot visibility */
 
-	:host([content-type='text']) .segmented-control__item-icon {
+	:host([variant='text']) .segmented-control__item-icon {
 		display: none;
 	}
 
-	:host([content-type='icon']) .segmented-control__item-text {
+	:host([variant='icon']) .segmented-control__item-text {
 		display: none;
 	}
 
@@ -177,8 +177,8 @@ export const segmentedControlItemStyles = css`
 	.segmented-control__item-indicator {
 		position: absolute;
 		inset: 0;
-		opacity: 0;
 		pointer-events: none;
+		background-color: transparent;
 	}
 
 	:host([size='md']) .segmented-control__item-indicator,
@@ -196,12 +196,10 @@ export const segmentedControlItemStyles = css`
 
 	:host([selected]) .segmented-control__item-indicator {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
-		opacity: 1;
 	}
 
 	:host(:not([selected])) .segmented-control__item-input:hover ~ .segmented-control__item-indicator {
 		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-		opacity: 1;
 	}
 
 
@@ -210,7 +208,5 @@ export const segmentedControlItemStyles = css`
 	.segmented-control__item-input:focus-visible ~ .segmented-control__item-indicator {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		opacity: 1;
-		z-index: 1;
 	}
 `;

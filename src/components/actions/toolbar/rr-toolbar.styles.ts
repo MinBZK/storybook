@@ -65,6 +65,16 @@ export const styles = css`
 		margin-left: calc(-1 * var(--components-toolbar-sm-gap));
 	}
 
+	.toolbar__center-fill {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		flex-grow: 1;
+		flex-shrink: 1;
+		min-width: 0;
+		justify-content: center;
+	}
+
 	.toolbar__left-spacer {
 		flex-shrink: 1;
 		flex-grow: 0;
