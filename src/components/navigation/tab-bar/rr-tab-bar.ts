@@ -215,7 +215,6 @@ export class RRTabBar extends LitElement {
 			item._isFallbackFocusable = !hasSelected && item === firstItem;
 		});
 	}
-	}
 
 	_onSlotChange(): void {
 		this._syncItems();
