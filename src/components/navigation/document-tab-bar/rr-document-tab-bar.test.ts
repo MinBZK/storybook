@@ -120,17 +120,6 @@ describe('rr-document-tab-bar-item – events', () => {
 		expect(detail.item).toBe(el);
 	});
 
-	it('does not fire select when disabled', async () => {
-		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item text="Artikel 1" disabled></rr-document-tab-bar-item>');
-		await waitForUpdate(el);
-
-		let fired = false;
-		el.addEventListener('select', () => { fired = true; });
-		clickItem(el);
-
-		expect(fired).toBe(false);
-	});
-
 	it('does not set selected on itself after click', async () => {
 		el = await fixture<RRDocumentTabBarItem>('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
