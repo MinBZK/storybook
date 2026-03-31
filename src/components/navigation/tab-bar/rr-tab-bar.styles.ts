@@ -41,7 +41,7 @@ export const tabBarStyles = css`
 		padding: 0 var(--primitives-space-2);
 	}
 
-	:host([variant='compact']) .tab-bar__items {
+	:host([compact]) .tab-bar__items {
 		border-radius: var(--semantics-controls-lg-corner-radius);
 	}
 
