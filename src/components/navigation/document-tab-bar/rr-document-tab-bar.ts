@@ -379,11 +379,19 @@ export class RRDocumentTabBar extends LitElement {
 	};
 
 	private _onPointerUp = (): void => {
-		this._endDrag();
+		try {
+			this._endDrag();
+		} finally {
+			document.documentElement.style.cursor = '';
+		}
 	};
 
 	private _onPointerCancel = (): void => {
-		this._cancelDrag();
+		try {
+			this._cancelDrag();
+		} finally {
+			document.documentElement.style.cursor = '';
+		}
 	};
 
 	// — Drag: keyboard ————————————————————————————————————————————————————————
