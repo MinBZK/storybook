@@ -373,31 +373,31 @@ export class RRDocumentTabBar extends LitElement {
 
 		document.documentElement.style.cursor = 'grabbing';
 
-			// Read threshold from CSS so there is one place to update it
-			const threshold = parseFloat(getComputedStyle(item).getPropertyValue('--_short-text-threshold'));
-			const useShort = rect.width < threshold;
-			const displayTitle = useShort ? (item.shortText || item.text) : item.text;
-			const displaySubtitle = useShort ? (item.shortSupportingText || item.supportingText) : item.supportingText;
+		// Read threshold from CSS so there is one place to update it
+		const threshold = parseFloat(getComputedStyle(item).getPropertyValue('--_short-text-threshold'));
+		const useShort = rect.width < threshold;
+		const displayTitle = useShort ? (item.shortText || item.text) : item.text;
+		const displaySubtitle = useShort ? (item.shortSupportingText || item.supportingText) : item.supportingText;
 
-			const cloneInner = document.createElement('div');
-			cloneInner.className = 'document-tab-bar__item';
+		const cloneInner = document.createElement('div');
+		cloneInner.className = 'document-tab-bar__item';
 
-			const cloneTab = document.createElement('div');
-			cloneTab.className = 'document-tab-bar__item-tab';
+		const cloneTab = document.createElement('div');
+		cloneTab.className = 'document-tab-bar__item-tab';
 
-			const titleEl = document.createElement('span');
-			titleEl.className = 'document-tab-bar__item-text';
-			titleEl.textContent = displayTitle;
-			cloneTab.appendChild(titleEl);
+		const titleEl = document.createElement('span');
+		titleEl.className = 'document-tab-bar__item-text';
+		titleEl.textContent = displayTitle;
+		cloneTab.appendChild(titleEl);
 
-			if (displaySubtitle) {
-				const subtitleEl = document.createElement('span');
-				subtitleEl.className = 'document-tab-bar__item-supporting-text';
-				subtitleEl.textContent = displaySubtitle;
-				cloneTab.appendChild(subtitleEl);
-			}
+		if (displaySubtitle) {
+			const subtitleEl = document.createElement('span');
+			subtitleEl.className = 'document-tab-bar__item-supporting-text';
+			subtitleEl.textContent = displaySubtitle;
+			cloneTab.appendChild(subtitleEl);
+		}
 
-			cloneInner.appendChild(cloneTab);
+		cloneInner.appendChild(cloneTab);
 
 		this._clone = document.createElement('div');
 		this._clone.className = 'document-tab-bar__drag-clone';
