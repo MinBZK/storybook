@@ -471,6 +471,21 @@ describe('rr-document-tab-bar – keyboard navigation', () => {
 		vi.restoreAllMocks();
 	});
 
+	it('first item has tabindex="0" when no tab is selected', async () => {
+		el = await fixture<RRDocumentTabBar>(`
+			<rr-document-tab-bar>
+				<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>
+				<rr-document-tab-bar-item text="Artikel 2"></rr-document-tab-bar-item>
+			</rr-document-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const tabA = items[0].shadowRoot!.querySelector('.document-tab-bar__item-tab')!;
+		const tabB = items[1].shadowRoot!.querySelector('.document-tab-bar__item-tab')!;
+		expect(tabA.getAttribute('tabindex')).toBe('0');
+		expect(tabB.getAttribute('tabindex')).toBe('-1');
+	});
+
 	it('selected tab has tabindex="0"', async () => {
 		el = await fixture<RRDocumentTabBar>(threeTabBar());
 		await waitForUpdate(el);

@@ -83,6 +83,10 @@ export class RRDocumentTabBarItem extends LitElement {
 	@state()
 	_dismissButtonAccessibilityLabel = 'Sluit';
 
+	/** Set by rr-document-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
+	@state()
+	_isFallbackFocusable = false;
+
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab')?.focus(options);
 	}
@@ -227,9 +231,19 @@ export class RRDocumentTabBar extends LitElement {
 		this._getItems().forEach(item => { item._dismissButtonAccessibilityLabel = label; });
 	}
 
+	private _syncFallbackFocusable(): void {
+		const items = this._getVisibleItems();
+		const hasSelected = items.some(item => item.selected);
+		const firstEnabled = items.find(item => !item.hidden) ?? null;
+		items.forEach(item => {
+			item._isFallbackFocusable = !hasSelected && item === firstEnabled;
+		});
+	}
+
 	_onSlotChange(): void {
 		this._calculateOverflow();
 		this._propagateDismissLabel();
+		this._syncFallbackFocusable();
 	}
 
 	private _applyItemVisibility(): void {
@@ -660,6 +674,7 @@ export class RRDocumentTabBar extends LitElement {
 		event.stopPropagation();
 		const selectedItem = event.detail.item as RRDocumentTabBarItem;
 		this._getItems().forEach(item => { item.selected = item === selectedItem; });
+		this._syncFallbackFocusable();
 		this.dispatchEvent(new CustomEvent('tabchange', {
 			bubbles: true,
 			composed: true,
@@ -702,6 +717,8 @@ export class RRDocumentTabBar extends LitElement {
 		if (isLastItem) {
 			this.dispatchEvent(new CustomEvent('tabempty', { bubbles: true, composed: true }));
 		}
+
+		this._syncFallbackFocusable();
 	};
 
 	private _handleKeyDown = (event: KeyboardEvent): void => {

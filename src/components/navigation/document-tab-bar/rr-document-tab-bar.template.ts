@@ -56,7 +56,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 			<div class="document-tab-bar__item-tab"
 				role="tab"
 				aria-selected=${component.selected}
-				tabindex=${component.selected ? '0' : '-1'}
+				tabindex=${component.selected || component._isFallbackFocusable ? '0' : '-1'}
 				@click=${component._handleClick}
 			>
 				<span class="document-tab-bar__item-text">${component.text}</span>
@@ -76,7 +76,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 			</div>
 			<button class="document-tab-bar__item-dismiss-button"
 				aria-label=${component._dismissButtonAccessibilityLabel}
-				tabindex=${component.selected ? '0' : '-1'}
+				tabindex=${component.selected || component._isFallbackFocusable ? '0' : '-1'}
 				@click=${component._handleDismiss}
 			>
 				<span class="document-tab-bar__item-dismiss-icon">
