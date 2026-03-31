@@ -214,6 +214,10 @@ export const documentTabBarItemStyles = css`
 	/* # Item tab */
 
 	.document-tab-bar__item-tab {
+		appearance: none;
+		border: none;
+		margin: 0;
+		text-align: left;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -226,14 +230,8 @@ export const documentTabBarItemStyles = css`
 		padding-inline-end: calc(var(--semantics-controls-sm-min-size) + var(--primitives-space-6) * 2);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		box-sizing: border-box;
-		cursor: default;
 		overflow: hidden;
 		text-decoration: none;
-		user-select: none;
-	}
-
-	a.document-tab-bar__item-tab {
-		cursor: pointer;
 	}
 
 	.document-tab-bar__item-tab:hover {
