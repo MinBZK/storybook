@@ -4,7 +4,7 @@ import type { RRModalDialog } from './rr-modal-dialog.ts';
 export function modalDialogTemplate(component: RRModalDialog) {
 	return html`
 		<dialog class="modal-dialog"
-			role=${component.variant === 'alert' ? 'alertdialog' : 'dialog'}
+			role=${component.variant === 'alert' ? 'alertdialog' : nothing}
 			@click=${component._handleBackdropClick}
 			@cancel=${component._handleCancel}
 		>

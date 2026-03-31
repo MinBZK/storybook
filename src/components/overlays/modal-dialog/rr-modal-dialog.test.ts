@@ -20,10 +20,10 @@ describe('rr-modal-dialog', () => {
 		expect(el.shadowRoot!.querySelector('dialog')!.getAttribute('role')).toBe('alertdialog');
 	});
 
-	it('sets role="dialog" when no variant is set', async () => {
+	it('does not set role attribute when no variant is set', async () => {
 		el = await fixture('<rr-modal-dialog></rr-modal-dialog>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('dialog')!.getAttribute('role')).toBe('dialog');
+		expect(el.shadowRoot!.querySelector('dialog')!.getAttribute('role')).toBeNull();
 	});
 
 	it('renders without error', async () => {
