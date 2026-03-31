@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoints } from '../../../assets/styles/breakpoints.ts';
+
+const smMax = unsafeCSS(breakpoints.smMax);
 
 export const tabBarStyles = css`
 
@@ -106,25 +109,16 @@ export const tabBarItemStyles = css`
 
 	:host([variant='compact']) .tab-bar__item {
 		flex-direction: column;
-		gap: 1px;
 		padding: var(--primitives-space-8);
 		height: var(--semantics-controls-lg-min-size);
 	}
 
-	@container layout-area (max-width: 480px) {
-		:host([responsive]) .tab-bar__item {
+	:host([responsive]) .tab-bar__item {
+		@container layout-area (max-width: ${smMax}) {
 			flex-direction: column;
-			gap: 1px;
+			gap: 0;
 			padding: var(--primitives-space-8);
 			height: var(--semantics-controls-lg-min-size);
-		}
-
-		:host([responsive]) .tab-bar__item-label {
-			font: var(--primitives-font-body-xxs-bold-flat);
-		}
-
-		:host([responsive][variant='icon']) .tab-bar__item-label {
-			display: none;
 		}
 	}
 
@@ -212,6 +206,12 @@ export const tabBarItemStyles = css`
 
 	:host([variant='icon']) .tab-bar__item-label {
 		display: none;
+	}
+
+	:host([responsive]) .tab-bar__item-label {
+		@container layout-area (max-width: ${smMax}) {
+			font: var(--primitives-font-body-xxs-bold-flat);
+		}
 	}
 
 `;

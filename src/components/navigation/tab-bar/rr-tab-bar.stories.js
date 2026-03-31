@@ -110,7 +110,7 @@ export const Responsief = () => html`
 	<div style="display: flex; flex-direction: column; gap: 2rem;">
 		<div>
 			<p style="margin: 0 0 0.5rem 0; font-size: 12px; color: #666;">Breed (regular weergave)</p>
-			<div style="container-type: inline-size; container-name: layout-area; width: 600px;">
+			<div style="container-type: inline-size; container-name: layout-area; width: 680px;">
 				<rr-tab-bar responsive full-width>
 					${tabBarItems}
 				</rr-tab-bar>

@@ -60,7 +60,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 				@click=${component._handleClick}
 			>
 				<span class="document-tab-bar__item-text">${component.text}</span>
-				<span class="document-tab-bar__item-short-text"aria-label="${component.text}">${shortTextValue}</span>
+				<span class="document-tab-bar__item-short-text" aria-label="${component.text}">${shortTextValue}</span>
 				${component.supportingText
 					? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
 					: nothing}

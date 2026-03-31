@@ -135,7 +135,6 @@ export const styles = css`
 		min-height: var(--semantics-controls-lg-min-size);
 		padding: var(--primitives-space-8);
 		border-radius: var(--semantics-controls-lg-corner-radius);
-		gap: 1px;
 	}
 
 	:host([size='lg']) .icon-button__icon {
