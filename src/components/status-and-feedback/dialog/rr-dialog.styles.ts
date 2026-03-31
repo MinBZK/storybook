@@ -75,4 +75,8 @@ export const dialogStyles = css`
 		width: 100%;
 		padding-top: var(--primitives-space-16);
 	}
+
+	.dialog__actions:not(:has(*)) {
+		display: none;
+	}
 `;
