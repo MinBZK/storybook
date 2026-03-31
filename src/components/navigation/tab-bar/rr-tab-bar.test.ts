@@ -249,10 +249,11 @@ describe('rr-tab-bar', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders a nav element', async () => {
+	it('renders a div container by default (not nav)', async () => {
 		el = await fixture(threeTabBar());
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('nav')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.tab-bar')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('nav')).toBeNull();
 	});
 
 	it('sets role="tablist" on tab-bar__items', async () => {
@@ -285,7 +286,7 @@ describe('rr-tab-bar – accessible label', () => {
 		vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<RRTabBar>('<rr-tab-bar></rr-tab-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Tabs');
+		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe('Tabs');
 	});
 
 	it('warns once when no accessible-label is provided', async () => {
@@ -303,10 +304,10 @@ describe('rr-tab-bar – accessible label', () => {
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 
-	it('forwards accessible-label to the nav aria-label', async () => {
+	it('forwards accessible-label to the tablist aria-label', async () => {
 		el = await fixture<RRTabBar>('<rr-tab-bar accessible-label="Hoofdnavigatie"></rr-tab-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
+		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
 	});
 });
 
