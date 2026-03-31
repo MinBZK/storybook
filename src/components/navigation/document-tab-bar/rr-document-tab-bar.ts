@@ -570,6 +570,12 @@ export class RRDocumentTabBar extends LitElement {
 	}
 
 	private _ensureSelectedVisible(): void {
+		// Deliberately performs a silent light DOM reorder without firing rr-reorder.
+		// This is triggered by the ResizeObserver when overflow recalculates, not by
+		// user action. Firing rr-reorder here would cause consumers tracking tab order
+		// (e.g. persisting to a server) to receive spurious events on window resize.
+		// Consumers should treat DOM order as the source of truth for tab order and
+		// not rely on rr-reorder being exhaustive.
 		const items = this._getItems();
 		const visibleCount = items.length - this._overflowCount;
 		const selectedIndex = items.findIndex(i => i.selected);
