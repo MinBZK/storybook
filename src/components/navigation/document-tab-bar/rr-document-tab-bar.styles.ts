@@ -191,7 +191,6 @@ export const documentTabBarItemStyles = css`
 		min-width: 0;
 		container-name: document-tab-bar;
 		container-type: inline-size;
-		--_short-text-threshold: 200px; /* Used in component to switch to short text/supporting-text variants */
 	}
 
 	:host([hidden]) {
