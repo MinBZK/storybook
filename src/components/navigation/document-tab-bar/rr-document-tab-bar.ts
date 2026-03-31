@@ -662,12 +662,17 @@ export class RRDocumentTabBar extends LitElement {
 
 	private _createMenu(): void {
 		if (this._menu) return;
+		// SSR guard — document is not available in server-side rendering contexts
+		if (typeof document === 'undefined') return;
 		const menu = document.createElement('rr-menu');
 		menu.setAttribute('placement', 'bottom-end');
 		menu.id = `${this._id}-menu`;
 		menu.addEventListener('toggle', (event: Event) => {
 			this._menuOpen = (event as ToggleEvent).newState === 'open';
 		});
+		// TODO: appending to document.body and accessing rr-menu internals via any-cast
+		// is a known limitation. Fix: define a typed public API on rr-menu (anchorElement,
+		// showPopover, hidePopover) or use a popover anchor approach within renderRoot.
 		document.body.appendChild(menu);
 		this._menu = menu;
 	}
