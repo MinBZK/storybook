@@ -56,7 +56,7 @@ export class RRTabBarItem extends LitElement {
 	responsive = false;
 
 	/** Set by rr-tab-bar. Not part of the public API. */
-	@property({ type: String })
+	@state()
 	_groupVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
 	// Author-set variant captured once in connectedCallback.
