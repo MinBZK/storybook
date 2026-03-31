@@ -15,6 +15,7 @@ export const documentTabBarStyles = css`
 		--_drag-clone-z-index: 100;
 		--_short-text-threshold: 200px;
 		--_item-min-width: 100px;
+		--_overflow-button-reserve: calc(var(--semantics-controls-md-min-size) + var(--primitives-space-8));
 	}
 
 	:host([hidden]) {

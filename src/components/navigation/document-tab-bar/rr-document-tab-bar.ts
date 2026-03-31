@@ -39,9 +39,6 @@ import { rrDocumentTabBarTranslations } from './rr-document-tab-bar.i18n.ts';
 import type { RRDocumentTabBarTranslations } from './rr-document-tab-bar.i18n.ts';
 import './../../lists-and-menus/menu/rr-menu.ts';
 
-// Reserved width in px for the overflow button during resize calculation.
-const OVERFLOW_BUTTON_RESERVE = 52;
-
 // Pointer movement threshold in px before drag mode activates.
 // Distinguishes a click (select) from a drag (reorder).
 const DRAG_THRESHOLD = 5;
@@ -579,8 +576,9 @@ export class RRDocumentTabBar extends LitElement {
 			? parseFloat(getComputedStyle(firstItem).minWidth) || parseFloat(getComputedStyle(this).getPropertyValue('--_item-min-width'))
 			: parseFloat(getComputedStyle(this).getPropertyValue('--_item-min-width'));
 
+		const overflowButtonReserve = parseFloat(getComputedStyle(this).getPropertyValue('--_overflow-button-reserve'));
 		// (containerWidth - overflowButtonWidth + gap) / (minItemWidth + gap)
-		const visible = Math.floor((containerWidth - OVERFLOW_BUTTON_RESERVE + gap) / (minItemWidth + gap));
+		const visible = Math.floor((containerWidth - overflowButtonReserve + gap) / (minItemWidth + gap));
 		const newOverflowCount = Math.max(0, totalItems - Math.max(1, visible));
 
 		if (newOverflowCount !== this._overflowCount) {
