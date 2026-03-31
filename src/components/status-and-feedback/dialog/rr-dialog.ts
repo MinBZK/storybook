@@ -8,8 +8,9 @@
  *
  * @attr {'alert'} variant       - Semantische variant; 'alert' dwingt icon-name="alert" af en kleurt het icoon
  * @attr {string}  icon-name     - Naam van het rr-icon icoon boven de tekst; afwezig wanneer niet ingesteld. Wordt genegeerd wanneer variant is ingesteld.
- * @attr {string}  text          - Hoofdtekst (heading)
+ * @attr {string}  text          - Hoofdtekst (heading of paragraaf, afhankelijk van heading-level)
  * @attr {string}  supporting-text - Ondersteunende tekst onder de heading
+ * @attr {1|2|3|4|5|6} heading-level - Rendert tekst als h1–h6; afwezig rendert een p
  *
  * @slot         - Optionele aangepaste inhoud tussen tekst en acties
  * @slot actions - rr-button elementen, gewrapped in rr-button-group (max 3)
@@ -38,6 +39,9 @@ export class RRDialog extends LitElement {
 
 	@property({ type: String, reflect: true, attribute: 'supporting-text' })
 	supportingText = '';
+
+	@property({ type: Number, reflect: true, attribute: 'heading-level' })
+	headingLevel: 1 | 2 | 3 | 4 | 5 | 6 | null = null;
 
 	get _resolvedIconName(): string {
 		if (this.variant === 'alert') return 'alert';

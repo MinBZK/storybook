@@ -1,4 +1,5 @@
 import { html, nothing } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { RRDialog } from './rr-dialog.ts';
 
 export function dialogTemplate(component: RRDialog) {
@@ -9,7 +10,9 @@ export function dialogTemplate(component: RRDialog) {
 			</div>
 		` : nothing}
 		${component.text ? html`
-			<h2 class="dialog__text">${component.text}</h2>
+			${component.headingLevel
+				? unsafeHTML(`<h${component.headingLevel} class="dialog__text">${component.text}</h${component.headingLevel}>`)
+				: html`<p class="dialog__text">${component.text}</p>`}
 		` : nothing}
 		${component.supportingText ? html`
 			<p class="dialog__supporting-text">${component.supportingText}</p>

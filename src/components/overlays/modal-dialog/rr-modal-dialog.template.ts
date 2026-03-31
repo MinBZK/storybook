@@ -4,7 +4,6 @@ import type { RRModalDialog } from './rr-modal-dialog.ts';
 export function modalDialogTemplate(component: RRModalDialog) {
 	return html`
 		<dialog class="modal-dialog"
-			role=${component.variant === 'alert' ? 'alertdialog' : 'dialog'}
 			@click=${component._handleBackdropClick}
 			@cancel=${component._handleCancel}
 		>
@@ -13,6 +12,7 @@ export function modalDialogTemplate(component: RRModalDialog) {
 				icon-name=${component.iconName || nothing}
 				text=${component.text || nothing}
 				supporting-text=${component.supportingText || nothing}
+				heading-level="2"
 			>
 				<slot></slot>
 				<slot slot="actions" name="actions"></slot>

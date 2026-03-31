@@ -107,8 +107,15 @@ describe('rr-modal-dialog', () => {
 		await waitForUpdate(el);
 		(el as RRModalDialog).show();
 		const inner = el.shadowRoot!.querySelector('rr-dialog');
-		const heading = inner?.shadowRoot?.querySelector('.dialog__text') as HTMLElement;
+		const heading = inner?.shadowRoot?.querySelector('h2.dialog__text') as HTMLElement;
 		expect(document.activeElement === heading || inner?.shadowRoot?.activeElement === heading).toBe(true);
+	});
+
+	it('inner rr-dialog receives heading-level="2"', async () => {
+		el = await fixture('<rr-modal-dialog text="Test"></rr-modal-dialog>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('rr-dialog');
+		expect(inner?.getAttribute('heading-level')).toBe('2');
 	});
 
 	it('adds tabindex="-1" to dialog__text heading on show()', async () => {
