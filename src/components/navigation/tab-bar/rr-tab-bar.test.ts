@@ -6,9 +6,9 @@ import './rr-tab-bar.ts';
 function threeTabBar(): string {
 	return `
 		<rr-tab-bar>
-			<rr-tab-bar-item>Tab A</rr-tab-bar-item>
-			<rr-tab-bar-item selected>Tab B</rr-tab-bar-item>
-			<rr-tab-bar-item>Tab C</rr-tab-bar-item>
+			<rr-tab-bar-item text="Tab A"></rr-tab-bar-item>
+			<rr-tab-bar-item selected text="Tab B"></rr-tab-bar-item>
+			<rr-tab-bar-item text="Tab C"></rr-tab-bar-item>
 		</rr-tab-bar>
 	`;
 }
@@ -45,7 +45,7 @@ describe('rr-tab-bar-item', () => {
 	});
 
 	it('renders a button by default', async () => {
-		el = await fixture('<rr-tab-bar-item>Tab</rr-tab-bar-item>');
+		el = await fixture('<rr-tab-bar-item text="Tab"></rr-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.tagName.toLowerCase()).toBe('button');
 	});
@@ -75,19 +75,18 @@ describe('rr-tab-bar-item – content variant detection', () => {
 		if (el) cleanup(el);
 	});
 
-	it('sets variant to icon-and-text when both slots are filled', async () => {
+	it('sets variant to icon-and-text when both text and icon are present', async () => {
 		el = await fixture<RRTabBarItem>(`
-			<rr-tab-bar-item>
+			<rr-tab-bar-item text="Tab">
 				<svg slot="icon"></svg>
-				Tab
 			</rr-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('icon-and-text');
 	});
 
-	it('sets variant to text when only text is present', async () => {
-		el = await fixture<RRTabBarItem>('<rr-tab-bar-item>Tab</rr-tab-bar-item>');
+	it('sets variant to text when only text attribute is present', async () => {
+		el = await fixture<RRTabBarItem>('<rr-tab-bar-item text="Tab"></rr-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('text');
 	});
@@ -102,22 +101,20 @@ describe('rr-tab-bar-item – content variant detection', () => {
 		expect(el.getAttribute('variant')).toBe('icon');
 	});
 
-	it('respects explicit variant="text" even when both slots are filled', async () => {
+	it('respects explicit variant="text" even when both text and icon are present', async () => {
 		el = await fixture<RRTabBarItem>(`
-			<rr-tab-bar-item variant="text">
+			<rr-tab-bar-item variant="text" text="Tab">
 				<svg slot="icon"></svg>
-				Tab
 			</rr-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('text');
 	});
 
-	it('respects explicit variant="icon" even when both slots are filled', async () => {
+	it('respects explicit variant="icon" even when both text and icon are present', async () => {
 		el = await fixture<RRTabBarItem>(`
-			<rr-tab-bar-item variant="icon">
+			<rr-tab-bar-item variant="icon" text="Tab">
 				<svg slot="icon"></svg>
-				Tab
 			</rr-tab-bar-item>
 		`);
 		await waitForUpdate(el);
@@ -126,9 +123,8 @@ describe('rr-tab-bar-item – content variant detection', () => {
 
 	it('sets variant to compact when compact attribute is set', async () => {
 		el = await fixture<RRTabBarItem>(`
-			<rr-tab-bar-item compact>
+			<rr-tab-bar-item compact text="Tab">
 				<svg slot="icon"></svg>
-				Tab
 			</rr-tab-bar-item>
 		`);
 		await waitForUpdate(el);
@@ -137,9 +133,8 @@ describe('rr-tab-bar-item – content variant detection', () => {
 
 	it('compact overrides explicit variant', async () => {
 		el = await fixture<RRTabBarItem>(`
-			<rr-tab-bar-item compact variant="text">
+			<rr-tab-bar-item compact variant="text" text="Tab">
 				<svg slot="icon"></svg>
-				Tab
 			</rr-tab-bar-item>
 		`);
 		await waitForUpdate(el);
@@ -159,22 +154,20 @@ describe('rr-tab-bar-item – icon variant accessibility', () => {
 		if (el) cleanup(el);
 	});
 
-	it('sets aria-label from text slot when variant is icon', async () => {
+	it('sets aria-label from text attribute when variant is icon', async () => {
 		el = await fixture<RRTabBarItem>(`
-			<rr-tab-bar-item variant="icon">
+			<rr-tab-bar-item variant="icon" text="Home">
 				<svg slot="icon"></svg>
-				Home
 			</rr-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('aria-label')).toBe('Home');
 	});
 
-	it('sets title from text slot when variant is icon', async () => {
+	it('sets title from text attribute when variant is icon', async () => {
 		el = await fixture<RRTabBarItem>(`
-			<rr-tab-bar-item variant="icon">
+			<rr-tab-bar-item variant="icon" text="Home">
 				<svg slot="icon"></svg>
-				Home
 			</rr-tab-bar-item>
 		`);
 		await waitForUpdate(el);
@@ -183,9 +176,8 @@ describe('rr-tab-bar-item – icon variant accessibility', () => {
 
 	it('does not set aria-label when variant is icon-and-text', async () => {
 		el = await fixture<RRTabBarItem>(`
-			<rr-tab-bar-item>
+			<rr-tab-bar-item text="Home">
 				<svg slot="icon"></svg>
-				Home
 			</rr-tab-bar-item>
 		`);
 		await waitForUpdate(el);
@@ -194,9 +186,8 @@ describe('rr-tab-bar-item – icon variant accessibility', () => {
 
 	it('does not set title when variant is text', async () => {
 		el = await fixture<RRTabBarItem>(`
-			<rr-tab-bar-item variant="text">
+			<rr-tab-bar-item variant="text" text="Home">
 				<svg slot="icon"></svg>
-				Home
 			</rr-tab-bar-item>
 		`);
 		await waitForUpdate(el);
@@ -217,7 +208,7 @@ describe('rr-tab-bar-item – events', () => {
 	});
 
 	it('fires select event on click', async () => {
-		el = await fixture<RRTabBarItem>('<rr-tab-bar-item>Tab</rr-tab-bar-item>');
+		el = await fixture<RRTabBarItem>('<rr-tab-bar-item text="Tab"></rr-tab-bar-item>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -242,7 +233,7 @@ describe('rr-tab-bar-item – events', () => {
 	});
 
 	it('does not set selected on itself after click', async () => {
-		el = await fixture<RRTabBarItem>('<rr-tab-bar-item>Tab</rr-tab-bar-item>');
+		el = await fixture<RRTabBarItem>('<rr-tab-bar-item text="Tab"></rr-tab-bar-item>');
 		await waitForUpdate(el);
 
 		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
@@ -374,8 +365,8 @@ describe('rr-tab-bar – item selection', () => {
 	it('does not dispatch tabchange when a disabled item is clicked', async () => {
 		el = await fixture<RRTabBar>(`
 			<rr-tab-bar>
-				<rr-tab-bar-item selected>A</rr-tab-bar-item>
-				<rr-tab-bar-item disabled>B</rr-tab-bar-item>
+				<rr-tab-bar-item selected text="A"></rr-tab-bar-item>
+				<rr-tab-bar-item text="B" disabled></rr-tab-bar-item>
 			</rr-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -541,7 +532,7 @@ describe('rr-tab-bar – responsive propagation', () => {
 	it('removes responsive from items when parent responsive is removed', async () => {
 		el = await fixture<RRTabBar>(`
 			<rr-tab-bar responsive>
-				<rr-tab-bar-item>Home</rr-tab-bar-item>
+				<rr-tab-bar-item text="Home"></rr-tab-bar-item>
 			</rr-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -566,7 +557,7 @@ describe('rr-tab-bar – full-width', () => {
 	it('reflects full-width attribute on host', async () => {
 		el = await fixture<RRTabBar>(`
 			<rr-tab-bar full-width>
-				<rr-tab-bar-item>Home</rr-tab-bar-item>
+				<rr-tab-bar-item text="Home"></rr-tab-bar-item>
 			</rr-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -589,8 +580,8 @@ describe('rr-tab-bar – disabled propagation', () => {
 	it('disables all items when parent is disabled', async () => {
 		el = await fixture<RRTabBar>(`
 			<rr-tab-bar disabled>
-				<rr-tab-bar-item>A</rr-tab-bar-item>
-				<rr-tab-bar-item>B</rr-tab-bar-item>
+				<rr-tab-bar-item text="A"></rr-tab-bar-item>
+				<rr-tab-bar-item text="B"></rr-tab-bar-item>
 			</rr-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -600,8 +591,8 @@ describe('rr-tab-bar – disabled propagation', () => {
 	it('preserves item-level disabled when parent is not disabled', async () => {
 		el = await fixture<RRTabBar>(`
 			<rr-tab-bar>
-				<rr-tab-bar-item>A</rr-tab-bar-item>
-				<rr-tab-bar-item disabled>B</rr-tab-bar-item>
+				<rr-tab-bar-item text="A"></rr-tab-bar-item>
+				<rr-tab-bar-item text="B" disabled></rr-tab-bar-item>
 			</rr-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -613,8 +604,8 @@ describe('rr-tab-bar – disabled propagation', () => {
 	it('re-enables group-disabled items when parent disabled is removed', async () => {
 		el = await fixture<RRTabBar>(`
 			<rr-tab-bar disabled>
-				<rr-tab-bar-item>A</rr-tab-bar-item>
-				<rr-tab-bar-item>B</rr-tab-bar-item>
+				<rr-tab-bar-item text="A"></rr-tab-bar-item>
+				<rr-tab-bar-item text="B"></rr-tab-bar-item>
 			</rr-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -626,8 +617,8 @@ describe('rr-tab-bar – disabled propagation', () => {
 	it('does not re-enable individually disabled items when parent disabled is removed', async () => {
 		el = await fixture<RRTabBar>(`
 			<rr-tab-bar disabled>
-				<rr-tab-bar-item>A</rr-tab-bar-item>
-				<rr-tab-bar-item disabled>B</rr-tab-bar-item>
+				<rr-tab-bar-item text="A"></rr-tab-bar-item>
+				<rr-tab-bar-item text="B" disabled></rr-tab-bar-item>
 			</rr-tab-bar>
 		`);
 		await waitForUpdate(el);
@@ -753,9 +744,9 @@ describe('rr-tab-bar – keyboard navigation', () => {
 	it('skips disabled items during navigation', async () => {
 		el = await fixture<RRTabBar>(`
 			<rr-tab-bar>
-				<rr-tab-bar-item>A</rr-tab-bar-item>
-				<rr-tab-bar-item disabled>B</rr-tab-bar-item>
-				<rr-tab-bar-item>C</rr-tab-bar-item>
+				<rr-tab-bar-item text="A"></rr-tab-bar-item>
+				<rr-tab-bar-item text="B" disabled></rr-tab-bar-item>
+				<rr-tab-bar-item text="C"></rr-tab-bar-item>
 			</rr-tab-bar>
 		`);
 		await waitForUpdate(el);

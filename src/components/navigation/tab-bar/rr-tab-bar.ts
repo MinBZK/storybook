@@ -5,7 +5,7 @@
  * Exporteert zowel RRTabBar als RRTabBarItem.
  *
  * @element rr-tab-bar
- * @attr {boolean} compact           - Toont items in compact weergave: icoon boven label gestapeld
+ * @attr {boolean} compact           - Toont items in compact weergave: icoon boven tekst gestapeld
  * @attr {boolean} responsive        - Schakelt automatisch over naar compact onder 480px containerbreedte
  * @attr {boolean} disabled          - Schakelt alle items uit
  * @attr {string}  accessible-label  - Toegankelijke naam voor de navigatieregio; standaard 'Tabs'
@@ -19,9 +19,9 @@
  * @element rr-tab-bar-item
  * @attr {boolean} selected  - Geselecteerde toestand (beheerd door rr-tab-bar)
  * @attr {boolean} disabled  - Uitgeschakelde toestand
+ * @attr {string}  text      - Tekst van het tabblad; ook gebruikt als toegankelijke naam voor icoon-only items
  * @attr {string}  href      - Optionele link-URL; rendert een anker in plaats van een knop
  *
- * @slot      - Tekstlabel; ook gebruikt als toegankelijke naam voor icoon-only items
  * @slot icon - Icooninhoud
  *
  * @fires select - Wanneer het item wordt geactiveerd; detail: { item: RRTabBarItem }
@@ -64,23 +64,20 @@ export class RRTabBarItem extends LitElement {
 	// call in updated() which writes the resolved value to the same attribute.
 	private _authorVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
-	@state()
-	_hasText = false;
-
-	@state()
-	_hasIcon = false;
-
-	@state()
-	_labelText = '';
+	@property({ type: String })
+	text = '';
 
 	get _effectiveVariant(): 'icon-and-text' | 'text' | 'icon' | 'compact' {
 		if (this.compact) return 'compact';
 		if (this._authorVariant) return this._authorVariant;
 		if (this._groupVariant) return this._groupVariant;
-		if (this._hasText && this._hasIcon) return 'icon-and-text';
-		if (this._hasText) return 'text';
+		if (this.text && this._hasIcon) return 'icon-and-text';
+		if (this.text) return 'text';
 		return 'icon';
 	}
+
+	@state()
+	_hasIcon = false;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -98,16 +95,6 @@ export class RRTabBarItem extends LitElement {
 
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<HTMLElement>('[role="tab"]')?.focus(options);
-	}
-
-	_onDefaultSlotChange(e: Event): void {
-		const slot = e.target as HTMLSlotElement;
-		const text = slot.assignedNodes({ flatten: true })
-			.map(node => node.textContent ?? '')
-			.join('')
-			.trim();
-		this._hasText = text.length > 0;
-		this._labelText = text;
 	}
 
 	_onIconSlotChange(e: Event): void {

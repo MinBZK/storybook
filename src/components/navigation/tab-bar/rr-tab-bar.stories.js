@@ -22,7 +22,7 @@ export default {
 		},
 		compact: {
 			control: 'boolean',
-			description: 'Toont items in compact weergave: icoon boven label gestapeld. Overschrijft variant op de parent én individuele variant attributen op items.',
+			description: 'Toont items in compact weergave: icoon boven tekst gestapeld. Overschrijft variant op de parent én individuele variant attributen op items.',
 			table: { defaultValue: { summary: false } },
 		},
 		responsive: {
@@ -54,17 +54,17 @@ export default {
 // Every item always has both icon and text for accessible, complete markup.
 // variant on the item forces a specific visual presentation.
 const tabBarItems = html`
-	<rr-tab-bar-item selected>
+	<rr-tab-bar-item
+		selected
+		text="Home"
+	>
 		<rr-icon slot="icon" name="home"></rr-icon>
-		Home
 	</rr-tab-bar-item>
-	<rr-tab-bar-item>
+	<rr-tab-bar-item text="Profiel">
 		<rr-icon slot="icon" name="profile"></rr-icon>
-		Profiel
 	</rr-tab-bar-item>
-	<rr-tab-bar-item>
+	<rr-tab-bar-item text="Zoeken">
 		<rr-icon slot="icon" name="search"></rr-icon>
-		Zoeken
 	</rr-tab-bar-item>
 `;
 
@@ -139,17 +139,24 @@ VolleBreedte.parameters = { controls: { disable: true } };
 
 export const Gemengd = () => html`
 	<rr-tab-bar>
-		<rr-tab-bar-item selected variant="text">
+		<rr-tab-bar-item
+			selected
+			variant="text"
+			text="Home"
+		>
 			<rr-icon slot="icon" name="home"></rr-icon>
-			Home
 		</rr-tab-bar-item>
-		<rr-tab-bar-item variant="text">
+		<rr-tab-bar-item
+			variant="text"
+			text="Profiel"
+		>
 			<rr-icon slot="icon" name="profile"></rr-icon>
-			Profiel
 		</rr-tab-bar-item>
-		<rr-tab-bar-item variant="icon">
+		<rr-tab-bar-item
+			variant="icon"
+			text="Zoeken"
+		>
 			<rr-icon slot="icon" name="search"></rr-icon>
-			Zoeken
 		</rr-tab-bar-item>
 	</rr-tab-bar>
 `;

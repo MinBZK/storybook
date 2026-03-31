@@ -22,15 +22,15 @@ export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 	const isLink = Boolean(safeHref);
 	const tabindex = component.disabled ? '-1' : component.selected ? '0' : '-1';
 	const isIconVariant = component._effectiveVariant === 'icon';
-	const iconLabel = isIconVariant ? component._labelText || nothing : nothing;
+	const iconLabel = isIconVariant ? component.text || nothing : nothing;
 
 	const content = html`
 		<span class="tab-bar__item-indicator"></span>
 		<span class="tab-bar__item-icon" aria-hidden="true">
 			<slot name="icon" @slotchange=${component._onIconSlotChange}></slot>
 		</span>
-		<span class="tab-bar__item-label">
-			<slot @slotchange=${component._onDefaultSlotChange}></slot>
+		<span class="tab-bar__item-text">
+			${component.text}
 		</span>
 	`;
 

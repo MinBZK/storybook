@@ -178,8 +178,8 @@ export const tabBarItemStyles = css`
 		position: relative;
 		z-index: 1;
 		flex-shrink: 0;
-		width: 24px;
-		height: 24px;
+		width: var(--primitives-space-24);
+		height: var(--primitives-space-24);
 	}
 
 	:host([variant='text']) .tab-bar__item-icon {
@@ -195,20 +195,20 @@ export const tabBarItemStyles = css`
 
 	/* # Label */
 
-	.tab-bar__item-label {
+	.tab-bar__item-text {
 		position: relative;
 		z-index: 1;
 	}
 
-	:host([variant='compact']) .tab-bar__item-label {
+	:host([variant='compact']) .tab-bar__item-text {
 		font: var(--primitives-font-body-xxs-bold-flat);
 	}
 
-	:host([variant='icon']) .tab-bar__item-label {
+	:host([variant='icon']) .tab-bar__item-text {
 		display: none;
 	}
 
-	:host([responsive]) .tab-bar__item-label {
+	:host([responsive]) .tab-bar__item-text {
 		@container layout-area (max-width: ${smMax}) {
 			font: var(--primitives-font-body-xxs-bold-flat);
 		}
