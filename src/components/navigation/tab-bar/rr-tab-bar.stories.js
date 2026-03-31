@@ -102,7 +102,7 @@ Compact.parameters = { controls: { disable: true } };
 export const Responsief = () => html`
 	<div style="display: flex; flex-direction: column; gap: 2rem;">
 		<div>
-			<p style="margin: 0 0 0.5rem 0; font-size: 12px; color: #666;">Breed (regular weergave)</p>
+			<small>Breed (regular weergave)</small>
 			<div style="container-type: inline-size; container-name: layout-area; width: 680px;">
 				<rr-tab-bar responsive full-width>
 					${tabBarItems}
@@ -110,7 +110,7 @@ export const Responsief = () => html`
 			</div>
 		</div>
 		<div>
-			<p style="margin: 0 0 0.5rem 0; font-size: 12px; color: #666;">Smal onder 480px (compact weergave)</p>
+			<small>Smal onder 480px (compact weergave)</small>
 			<div style="container-type: inline-size; container-name: layout-area; width: 320px;">
 				<rr-tab-bar responsive full-width>
 					${tabBarItems}
