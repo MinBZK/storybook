@@ -7,7 +7,6 @@ import './../../content/icon/rr-icon.ts';
 export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateResult {
 	const hasOverflow = component._overflowCount > 0;
 	const label = component.accessibleLabel || 'Tabbladen';
-	const menuId = `${component._id}-menu`;
 	const isNavigation = component.navigation;
 
 	const inner = html`
@@ -23,9 +22,12 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 				variant="neutral-tinted"
 				aria-haspopup="menu"
 				aria-expanded=${component._menuOpen ? 'true' : 'false'}
-				aria-controls=${menuId}
 				@click=${component._onOverflowButtonClick}
 			>
+				<!-- aria-controls omitted: ARIA IDREF attributes cannot cross shadow DOM boundaries.
+					 aria-haspopup + aria-expanded provide sufficient AT context for WCAG 2.1 AA.
+					 Restore aria-controls once rr-menu moves into the shadow root or CSS Anchor
+					 Positioning allows the menu to escape stacking context without document.body. -->
 				<rr-icon name="ellipsis"></rr-icon>
 			</rr-icon-button>
 		</div>
