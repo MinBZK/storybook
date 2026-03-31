@@ -8,9 +8,7 @@ export const dialogStyles = css`
 
 	:host {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
-		box-sizing: border-box;
+		justify-content: center;
 
 		--_icon-color: var(--semantics-content-color);
 	}
@@ -21,6 +19,18 @@ export const dialogStyles = css`
 
 	:host([variant='alert']) {
 		--_icon-color: var(--primitives-color-warning-350);
+	}
+
+
+	/* # Body */
+
+	.dialog__body {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex-grow: 1;
+		box-sizing: border-box;
+		max-width: var(--primitives-area-480);
 	}
 
 
@@ -62,10 +72,14 @@ export const dialogStyles = css`
 	}
 
 
-	/* # Body */
+	/* # Content */
 
-	.dialog__body {
+	.dialog__content {
 		width: 100%;
+	}
+
+	.dialog__content:not(:has(*)) {
+		display: none;
 	}
 
 
