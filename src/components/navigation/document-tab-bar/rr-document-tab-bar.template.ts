@@ -55,7 +55,8 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 	const shortTextValue = component.shortText || component.text;
 	const shortSupportingTextValue = component.shortSupportingText || component.supportingText;
 	const isNavigation = component._navigation;
-	const isLink = Boolean(component.href);
+	const safeHref = component._sanitizeUrl(component.href);
+	const isLink = Boolean(safeHref);
 	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';
 
 	const tabContent = html`
@@ -77,7 +78,7 @@ export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): Tem
 
 	const tab = isLink
 		? html`<a class="document-tab-bar__item-tab"
-				href=${component.href}
+				href=${safeHref!}
 				role=${isNavigation ? nothing : 'tab'}
 				aria-current=${isNavigation && component.selected ? 'page' : nothing}
 				aria-selected=${!isNavigation ? (component.selected ? 'true' : 'false') : nothing}

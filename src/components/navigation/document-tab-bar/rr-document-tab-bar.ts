@@ -97,6 +97,17 @@ export class RRDocumentTabBarItem extends LitElement {
 		this.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab')?.focus(options);
 	}
 
+	_sanitizeUrl(url: string): string | null {
+		if (!url) return null;
+		const trimmed = url.trim().toLowerCase();
+		if (
+			trimmed.startsWith('javascript:') ||
+			trimmed.startsWith('data:') ||
+			trimmed.startsWith('vbscript:')
+		) return null;
+		return url;
+	}
+
 	_handleClick(): void {
 		this.dispatchEvent(new CustomEvent('select', {
 			bubbles: true,
