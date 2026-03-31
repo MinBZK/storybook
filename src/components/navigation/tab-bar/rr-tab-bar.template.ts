@@ -3,23 +3,36 @@ import type { RRTabBar, RRTabBarItem } from './rr-tab-bar.ts';
 
 export function tabBarTemplate(component: RRTabBar): TemplateResult {
 	const label = component.accessibleLabel || 'Tabs';
+	const isNavigation = component.navigation;
+
+	const itemsContainer = html`
+		<div class="tab-bar__items"
+			role=${isNavigation ? nothing : 'tablist'}
+			aria-label=${isNavigation ? label : nothing}
+		>
+			<slot @slotchange=${component._onSlotChange}></slot>
+		</div>
+	`;
+
+	if (isNavigation) {
+		return html`
+			<nav class="tab-bar" aria-label=${label}>
+				${itemsContainer}
+			</nav>
+		`;
+	}
 
 	return html`
-		<nav class="tab-bar"
-			aria-label=${label}
-		>
-			<div class="tab-bar__items"
-				role="tablist"
-			>
-				<slot @slotchange=${component._onSlotChange}></slot>
-			</div>
-		</nav>
+		<div class="tab-bar">
+			${itemsContainer}
+		</div>
 	`;
 }
 
 export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 	const safeHref = component._sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
+	const isNavigation = component._navigation;
 	const tabindex = component.disabled ? '-1' : (component.selected || component._isFallbackFocusable) ? '0' : '-1';
 	const isIconVariant = component._effectiveVariant === 'icon';
 	const iconLabel = isIconVariant ? component.text || nothing : nothing;
@@ -38,8 +51,9 @@ export function tabBarItemTemplate(component: RRTabBarItem): TemplateResult {
 		return html`
 			<a class="tab-bar__item"
 				href=${safeHref!}
-				role="tab"
-				aria-selected=${component.selected}
+				role=${isNavigation ? nothing : 'tab'}
+				aria-current=${isNavigation && component.selected ? 'page' : nothing}
+				aria-selected=${!isNavigation ? component.selected : nothing}
 				aria-disabled=${component.disabled || nothing}
 				aria-label=${iconLabel}
 				title=${iconLabel}

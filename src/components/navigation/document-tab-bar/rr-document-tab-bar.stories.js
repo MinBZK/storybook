@@ -159,3 +159,31 @@ export const Herschikbaar = {
 	},
 };
 Herschikbaar.parameters = { controls: { disable: true } };
+
+export const Navigatie = () => html`
+	<rr-document-tab-bar navigation accessible-label="Documenten">
+		<rr-document-tab-bar-item
+			selected
+			text="Artikel 2"
+			supporting-text="Wet op de Zorgtoeslag"
+			short-text="Art. 2"
+			short-supporting-text="WZT"
+			href="/artikel-2"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			text="Artikel 1"
+			supporting-text="Zorgverzekeringswet"
+			short-text="Art. 1"
+			short-supporting-text="Zvw"
+			href="/artikel-1"
+		></rr-document-tab-bar-item>
+		<rr-document-tab-bar-item
+			text="Artikel 3:2"
+			supporting-text="Algemene wet bestuursrecht"
+			short-text="Art. 3:2"
+			short-supporting-text="Awb"
+			href="/artikel-3-2"
+		></rr-document-tab-bar-item>
+	</rr-document-tab-bar>
+`;
+Navigatie.parameters = { controls: { disable: true } };

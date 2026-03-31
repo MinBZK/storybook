@@ -8,32 +8,35 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 	const hasOverflow = component._overflowCount > 0;
 	const label = component.accessibleLabel || 'Tabbladen';
 	const menuId = `${component._id}-menu`;
+	const isNavigation = component.navigation;
+
+	const inner = html`
+		<div class="document-tab-bar__items"
+			role=${isNavigation ? nothing : 'tablist'}
+		>
+			<slot @slotchange=${component._onSlotChange}></slot>
+		</div>
+		<div class=${classMap({ 'document-tab-bar__overflow': true, 'is-hidden': !hasOverflow })}>
+			<rr-icon-button
+				label=${component.overflowButtonLabel}
+				variant="neutral-tinted"
+				aria-haspopup="menu"
+				aria-expanded=${component._menuOpen ? 'true' : 'false'}
+				aria-controls=${menuId}
+				@click=${component._onOverflowButtonClick}
+			>
+				<rr-icon name="ellipsis"></rr-icon>
+			</rr-icon-button>
+		</div>
+		<div class="document-tab-bar__end">
+			<slot name="end"></slot>
+		</div>
+	`;
 
 	return html`
-		<nav class="document-tab-bar"
-			aria-label=${label}
-		>
-			<div class="document-tab-bar__items"
-				role="tablist"
-			>
-				<slot @slotchange=${component._onSlotChange}></slot>
-			</div>
-			<div class=${classMap({ 'document-tab-bar__overflow': true, 'is-hidden': !hasOverflow })}>
-				<rr-icon-button
-					label=${component.overflowButtonLabel}
-					variant="neutral-tinted"
-					aria-haspopup="menu"
-					aria-expanded=${component._menuOpen ? 'true' : 'false'}
-					aria-controls=${menuId}
-					@click=${component._onOverflowButtonClick}
-				>
-					<rr-icon name="ellipsis"></rr-icon>
-				</rr-icon-button>
-			</div>
-			<div class="document-tab-bar__end">
-				<slot name="end"></slot>
-			</div>
-		</nav>
+		${isNavigation
+			? html`<nav class="document-tab-bar" aria-label=${label}>${inner}</nav>`
+			: html`<div class="document-tab-bar" aria-label=${label}>${inner}</div>`}
 		<div class="document-tab-bar__polite-announcer"
 			role="status"
 			aria-live="polite"
@@ -50,30 +53,46 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 export function documentTabBarItemTemplate(component: RRDocumentTabBarItem): TemplateResult {
 	const shortTextValue = component.shortText || component.text;
 	const shortSupportingTextValue = component.shortSupportingText || component.supportingText;
+	const isNavigation = component._navigation;
+	const isLink = Boolean(component.href);
+	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';
+
+	const tabContent = html`
+		<span class="document-tab-bar__item-text">${component.text}</span>
+		<span class="document-tab-bar__item-short-text"
+			aria-label=${component.text}
+			title=${component.text}
+		>${shortTextValue}</span>
+		${component.supportingText
+			? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
+			: nothing}
+		${shortSupportingTextValue
+			? html`<span class="document-tab-bar__item-short-supporting-text"
+				aria-label=${component.supportingText || nothing}
+				title=${component.supportingText || nothing}
+			>${shortSupportingTextValue}</span>`
+			: nothing}
+	`;
+
+	const tab = isLink
+		? html`<a class="document-tab-bar__item-tab"
+				href=${component.href}
+				role=${isNavigation ? nothing : 'tab'}
+				aria-current=${isNavigation && component.selected ? 'page' : nothing}
+				aria-selected=${!isNavigation ? component.selected : nothing}
+				tabindex=${tabindex}
+				@click=${component._handleClick}
+			>${tabContent}</a>`
+		: html`<div class="document-tab-bar__item-tab"
+				role="tab"
+				aria-selected=${component.selected}
+				tabindex=${tabindex}
+				@click=${component._handleClick}
+			>${tabContent}</div>`;
 
 	return html`
 		<div class="document-tab-bar__item">
-			<div class="document-tab-bar__item-tab"
-				role="tab"
-				aria-selected=${component.selected}
-				tabindex=${component.selected || component._isFallbackFocusable ? '0' : '-1'}
-				@click=${component._handleClick}
-			>
-				<span class="document-tab-bar__item-text">${component.text}</span>
-				<span class="document-tab-bar__item-short-text"
-					aria-label=${component.text}
-					title=${component.text}
-				>${shortTextValue}</span>
-				${component.supportingText
-					? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
-					: nothing}
-				${shortSupportingTextValue
-					? html`<span class="document-tab-bar__item-short-supporting-text"
-						aria-label=${component.supportingText || nothing}
-						title=${component.supportingText || nothing}
-					>${shortSupportingTextValue}</span>`
-					: nothing}
-			</div>
+			${tab}
 			<button class="document-tab-bar__item-dismiss-button"
 				aria-label=${component._dismissButtonAccessibilityLabel}
 				tabindex=${component.selected || component._isFallbackFocusable ? '0' : '-1'}

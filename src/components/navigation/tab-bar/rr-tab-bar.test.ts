@@ -772,3 +772,78 @@ describe('rr-tab-bar – keyboard navigation', () => {
 		expect(spy).toHaveBeenCalled();
 	});
 });
+
+/* ============================================================
+   rr-tab-bar – navigation mode
+   ============================================================ */
+
+describe('rr-tab-bar – navigation mode', () => {
+	let el: RRTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('renders a nav element when navigation is set', async () => {
+		el = await fixture<RRTabBar>(`
+			<rr-tab-bar navigation accessible-label="Navigatie">
+				<rr-tab-bar-item text="Home" href="/home" selected></rr-tab-bar-item>
+			</rr-tab-bar>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nav')).not.toBeNull();
+	});
+
+	it('does not render role="tablist" when navigation is set', async () => {
+		el = await fixture<RRTabBar>(`
+			<rr-tab-bar navigation accessible-label="Navigatie">
+				<rr-tab-bar-item text="Home" href="/home"></rr-tab-bar-item>
+			</rr-tab-bar>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tablist"]')).toBeNull();
+	});
+
+	it('sets aria-current="page" on selected link item in navigation mode', async () => {
+		el = await fixture<RRTabBar>(`
+			<rr-tab-bar navigation accessible-label="Navigatie">
+				<rr-tab-bar-item text="Home" href="/home" selected></rr-tab-bar-item>
+				<rr-tab-bar-item text="Profiel" href="/profiel"></rr-tab-bar-item>
+			</rr-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const linkA = items[0].shadowRoot!.querySelector('a')!;
+		const linkB = items[1].shadowRoot!.querySelector('a')!;
+		expect(linkA.getAttribute('aria-current')).toBe('page');
+		expect(linkB.getAttribute('aria-current')).toBeNull();
+	});
+
+	it('does not set aria-selected on link items in navigation mode', async () => {
+		el = await fixture<RRTabBar>(`
+			<rr-tab-bar navigation accessible-label="Navigatie">
+				<rr-tab-bar-item text="Home" href="/home" selected></rr-tab-bar-item>
+			</rr-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const link = items[0].shadowRoot!.querySelector('a')!;
+		expect(link.getAttribute('aria-selected')).toBeNull();
+	});
+
+	it('does not auto-activate on ArrowRight in navigation mode', async () => {
+		el = await fixture<RRTabBar>(`
+			<rr-tab-bar navigation accessible-label="Navigatie">
+				<rr-tab-bar-item text="Home" href="/home" selected></rr-tab-bar-item>
+				<rr-tab-bar-item text="Profiel" href="/profiel"></rr-tab-bar-item>
+			</rr-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		pressKey(items[0], 'ArrowRight');
+		await waitForUpdate(el);
+		expect(items[0].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
+});

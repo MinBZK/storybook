@@ -225,8 +225,8 @@ export const documentTabBarItemStyles = css`
 		padding-inline-end: calc(var(--semantics-controls-sm-min-size) + var(--primitives-space-6) * 2);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		box-sizing: border-box;
-		cursor: default;
 		overflow: hidden;
+		text-decoration: none;
 	}
 
 	.document-tab-bar__item-tab:hover {

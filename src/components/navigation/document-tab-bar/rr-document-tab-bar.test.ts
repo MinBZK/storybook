@@ -547,3 +547,75 @@ describe('rr-document-tab-bar – keyboard navigation', () => {
 		expect(spy).toHaveBeenCalled();
 	});
 });
+
+
+/* ============================================================
+   rr-document-tab-bar – navigation mode
+   ============================================================ */
+
+describe('rr-document-tab-bar – navigation mode', () => {
+	let el: RRDocumentTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders a nav element when navigation is set', async () => {
+		el = await fixture<RRDocumentTabBar>(`
+			<rr-document-tab-bar navigation accessible-label="Documenten">
+				<rr-document-tab-bar-item text="Artikel 1" href="/artikel-1"></rr-document-tab-bar-item>
+			</rr-document-tab-bar>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nav')).not.toBeNull();
+	});
+
+	it('does not render role="tablist" when navigation is set', async () => {
+		el = await fixture<RRDocumentTabBar>(`
+			<rr-document-tab-bar navigation accessible-label="Documenten">
+				<rr-document-tab-bar-item text="Artikel 1" href="/artikel-1"></rr-document-tab-bar-item>
+			</rr-document-tab-bar>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tablist"]')).toBeNull();
+	});
+
+	it('renders an anchor when href is set on item', async () => {
+		el = await fixture<RRDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const items = getItems(el);
+		items[0].href = '/artikel-1';
+		await waitForUpdate(el);
+		expect(items[0].shadowRoot!.querySelector('a')).not.toBeNull();
+	});
+
+	it('sets aria-current="page" on selected item in navigation mode', async () => {
+		el = await fixture<RRDocumentTabBar>(`
+			<rr-document-tab-bar navigation accessible-label="Documenten">
+				<rr-document-tab-bar-item selected text="Artikel 1" href="/artikel-1"></rr-document-tab-bar-item>
+				<rr-document-tab-bar-item text="Artikel 2" href="/artikel-2"></rr-document-tab-bar-item>
+			</rr-document-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const linkA = items[0].shadowRoot!.querySelector('a')!;
+		const linkB = items[1].shadowRoot!.querySelector('a')!;
+		expect(linkA.getAttribute('aria-current')).toBe('page');
+		expect(linkB.getAttribute('aria-current')).toBeNull();
+	});
+
+	it('does not auto-activate on ArrowRight in navigation mode', async () => {
+		el = await fixture<RRDocumentTabBar>(`
+			<rr-document-tab-bar navigation accessible-label="Documenten">
+				<rr-document-tab-bar-item selected text="Artikel 1" href="/artikel-1"></rr-document-tab-bar-item>
+				<rr-document-tab-bar-item text="Artikel 2" href="/artikel-2"></rr-document-tab-bar-item>
+			</rr-document-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		pressKey(items[0], 'ArrowRight');
+		await waitForUpdate(el);
+		expect(items[0].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
+});

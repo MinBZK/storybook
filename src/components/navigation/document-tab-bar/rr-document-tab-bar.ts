@@ -8,6 +8,7 @@
  * @element rr-document-tab-bar
  * @attr {string}  overflow-button-label  - Label for the overflow button (default: 'Meer')
  * @attr {string}  accessible-label       - Accessible name for the navigation landmark
+ * @attr {boolean} navigation             - Renders a nav landmark instead of tablist; use when items have hrefs
  *
  * @slot     - rr-document-tab-bar-item elements
  * @slot end - Action buttons (e.g. new tab)
@@ -25,6 +26,7 @@
  * @attr {string}  supporting-text       - Supporting text
  * @attr {string}  short-text            - Short primary text (visible below 200px width)
  * @attr {string}  short-supporting-text - Short supporting text (visible below 200px width)
+ * @attr {string}  href                  - Optional link URL; renders an anchor instead of a div
  *
  * @fires select  - Fired when the item is activated; detail: { item }
  * @fires dismiss - Fired when the dismiss button is clicked; detail: { item }
@@ -74,6 +76,9 @@ export class RRDocumentTabBarItem extends LitElement {
 	@property({ type: String, attribute: 'short-supporting-text' })
 	shortSupportingText = '';
 
+	@property({ type: String })
+	href = '';
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.setAttribute('role', 'none');
@@ -86,6 +91,10 @@ export class RRDocumentTabBarItem extends LitElement {
 	/** Set by rr-document-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
 	@state()
 	_isFallbackFocusable = false;
+
+	/** Set by rr-document-tab-bar. Not part of the public API. */
+	@state()
+	_navigation = false;
 
 	override focus(options?: FocusOptions): void {
 		this.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab')?.focus(options);
@@ -128,6 +137,9 @@ export class RRDocumentTabBar extends LitElement {
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	@property({ type: Boolean, reflect: true })
+	navigation = false;
 
 	@property({ type: Object })
 	translations: Partial<RRDocumentTabBarTranslations> = {};
@@ -208,6 +220,9 @@ export class RRDocumentTabBar extends LitElement {
 			this._mergedTranslations = { ...rrDocumentTabBarTranslations, ...this.translations };
 			this._propagateDismissLabel();
 		}
+		if (changedProperties.has('navigation')) {
+			this._propagateNavigation();
+		}
 	}
 
 	// — Items ——————————————————————————————————————————————————————————————————
@@ -224,6 +239,10 @@ export class RRDocumentTabBar extends LitElement {
 
 	private _getVisibleItems(): RRDocumentTabBarItem[] {
 		return this._getItems().filter(item => !item.hidden);
+	}
+
+	private _propagateNavigation(): void {
+		this._getItems().forEach(item => { item._navigation = this.navigation; });
 	}
 
 	private _propagateDismissLabel(): void {
@@ -244,6 +263,7 @@ export class RRDocumentTabBar extends LitElement {
 		this._calculateOverflow();
 		this._propagateDismissLabel();
 		this._syncFallbackFocusable();
+		this._propagateNavigation();
 	}
 
 	private _applyItemVisibility(): void {
@@ -813,13 +833,15 @@ export class RRDocumentTabBar extends LitElement {
 
 		if (newIndex >= 0) {
 			items[newIndex].focus();
-			// Auto-activate: select the focused tab
-			this._getItems().forEach(item => { item.selected = item === items[newIndex]; });
-			this.dispatchEvent(new CustomEvent('tabchange', {
-				bubbles: true,
-				composed: true,
-				detail: { item: items[newIndex] },
-			}));
+			// Auto-activate only for content-switching tabs, not navigation tabs
+			if (!this.navigation) {
+				this._getItems().forEach(item => { item.selected = item === items[newIndex]; });
+				this.dispatchEvent(new CustomEvent('tabchange', {
+					bubbles: true,
+					composed: true,
+					detail: { item: items[newIndex] },
+				}));
+			}
 		}
 	};
 

@@ -1,30 +1,31 @@
 /**
  * RegelRecht Tab Bar Component (Lit + TypeScript)
  *
- * A horizontal navigation bar with mutually exclusive tabs.
- * Exports both RRTabBar and RRTabBarItem.
+ * Een horizontale navigatiebalk met wederzijds exclusieve tabbladen.
+ * Exporteert zowel RRTabBar als RRTabBarItem.
  *
  * @element rr-tab-bar
- * @attr {boolean} compact           - Shows items in compact layout: icon stacked above text
- * @attr {boolean} responsive        - Switches automatically to compact below 480px container width
- * @attr {boolean} disabled          - Disables all items
- * @attr {string}  accessible-label  - Accessible name for the navigation landmark; defaults to 'Tabs'
+ * @attr {boolean} compact           - Toont items in compact weergave: icoon boven tekst gestapeld
+ * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
+ * @attr {boolean} responsive        - Schakelt automatisch over naar compact onder 480px containerbreedte
+ * @attr {boolean} disabled          - Schakelt alle items uit
+ * @attr {string}  accessible-label  - Toegankelijke naam voor de navigatieregio; standaard 'Tabs'
  *
- * @slot - rr-tab-bar-item elements
+ * @slot - rr-tab-bar-item elementen
  *
- * @fires tabchange - Fired when a tab is selected; detail: { item: RRTabBarItem }
+ * @fires tabchange - Wanneer een tab wordt geselecteerd; detail: { item: RRTabBarItem }
  *
  * ---
  *
  * @element rr-tab-bar-item
- * @attr {boolean} selected  - Selected state (managed by rr-tab-bar)
- * @attr {boolean} disabled  - Disabled state
- * @attr {string}  text      - Tab text; also used as accessible name for icon-only items
- * @attr {string}  href      - Optional link URL; renders an anchor instead of a button
+ * @attr {boolean} selected  - Geselecteerde toestand (beheerd door rr-tab-bar)
+ * @attr {boolean} disabled  - Uitgeschakelde toestand
+ * @attr {string}  text      - Tekst van het tabblad; ook gebruikt als toegankelijke naam voor icoon-only items
+ * @attr {string}  href      - Optionele link-URL; rendert een anker in plaats van een knop
  *
- * @slot icon - Icon content
+ * @slot icon - Icooninhoud
  *
- * @fires select - Fired when the item is activated; detail: { item: RRTabBarItem }
+ * @fires select - Wanneer het item wordt geactiveerd; detail: { item: RRTabBarItem }
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -56,7 +57,7 @@ export class RRTabBarItem extends LitElement {
 	responsive = false;
 
 	/** Set by rr-tab-bar. Not part of the public API. */
-	@state()
+	@property({ type: String })
 	_groupVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
 	// Author-set variant captured once in connectedCallback.
@@ -79,9 +80,9 @@ export class RRTabBarItem extends LitElement {
 	@state()
 	_hasIcon = false;
 
-	/** Set by rr-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
+	/** Set by rr-tab-bar. Not part of the public API. */
 	@state()
-	_isFallbackFocusable = false;
+	_navigation = false;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -95,8 +96,6 @@ export class RRTabBarItem extends LitElement {
 
 	override updated(): void {
 		this.setAttribute('variant', this._effectiveVariant);
-		import.meta.env?.DEV && this._effectiveVariant === 'icon' && !this.text &&
-			console.warn('<rr-tab-bar-item>: Icon-only item has no text attribute. Add a text attribute to provide an accessible name for screen readers.');
 	}
 
 	override focus(options?: FocusOptions): void {
@@ -162,6 +161,9 @@ export class RRTabBar extends LitElement {
 	@property({ type: String, reflect: true })
 	variant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
+	@property({ type: Boolean, reflect: true })
+	navigation = false;
+
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
@@ -183,7 +185,7 @@ export class RRTabBar extends LitElement {
 	override firstUpdated(): void {
 		this._hasCustomLabel = Boolean(this.accessibleLabel);
 		if (!this._hasCustomLabel) {
-			import.meta.env?.DEV && console.warn('<rr-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabs".');
+			console.warn('<rr-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabs".');
 		}
 		this._syncItems();
 	}
@@ -193,7 +195,8 @@ export class RRTabBar extends LitElement {
 			changedProperties.has('compact') ||
 			changedProperties.has('responsive') ||
 			changedProperties.has('disabled') ||
-			changedProperties.has('variant')
+			changedProperties.has('variant') ||
+			changedProperties.has('navigation')
 		) {
 			this._syncItems();
 		}
@@ -232,14 +235,7 @@ export class RRTabBar extends LitElement {
 			item.compact = this.compact;
 			item.responsive = this.responsive;
 			item._groupVariant = this.variant;
-		});
-
-		// Ensure keyboard entry point: if no item is selected, mark the first
-		// enabled item as the fallback so the tablist is always reachable by Tab.
-		const hasSelected = items.some(item => item.selected);
-		const firstEnabled = items.find(item => !item.disabled) ?? null;
-		items.forEach(item => {
-			item._isFallbackFocusable = !hasSelected && item === firstEnabled;
+			item._navigation = this.navigation;
 		});
 	}
 
@@ -253,7 +249,6 @@ export class RRTabBar extends LitElement {
 		items.forEach(item => {
 			item.selected = item === event.detail.item;
 		});
-		this._syncItems();
 		this.dispatchEvent(new CustomEvent('tabchange', {
 			bubbles: true,
 			composed: true,
@@ -293,13 +288,15 @@ export class RRTabBar extends LitElement {
 
 		if (newIndex >= 0 && newIndex < items.length) {
 			items[newIndex].focus();
-			// Auto-activate: select the focused tab
-			items.forEach(item => { item.selected = item === items[newIndex]; });
-			this.dispatchEvent(new CustomEvent('tabchange', {
-				bubbles: true,
-				composed: true,
-				detail: { item: items[newIndex] },
-			}));
+			// Auto-activate only for content-switching tabs, not navigation tabs
+			if (!this.navigation) {
+				items.forEach(item => { item.selected = item === items[newIndex]; });
+				this.dispatchEvent(new CustomEvent('tabchange', {
+					bubbles: true,
+					composed: true,
+					detail: { item: items[newIndex] },
+				}));
+			}
 		}
 	};
 

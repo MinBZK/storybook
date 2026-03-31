@@ -168,3 +168,28 @@ export const Uitgeschakeld = () => html`
 	</rr-tab-bar>
 `;
 Uitgeschakeld.parameters = { controls: { disable: true } };
+
+export const Navigatie = () => html`
+	<rr-tab-bar navigation accessible-label="Hoofdnavigatie">
+		<rr-tab-bar-item
+			selected
+			text="Home"
+			href="/home"
+		>
+			<rr-icon slot="icon" name="home"></rr-icon>
+		</rr-tab-bar-item>
+		<rr-tab-bar-item
+			text="Profiel"
+			href="/profiel"
+		>
+			<rr-icon slot="icon" name="profile"></rr-icon>
+		</rr-tab-bar-item>
+		<rr-tab-bar-item
+			text="Zoeken"
+			href="/zoeken"
+		>
+			<rr-icon slot="icon" name="search"></rr-icon>
+		</rr-tab-bar-item>
+	</rr-tab-bar>
+`;
+Navigatie.parameters = { controls: { disable: true } };

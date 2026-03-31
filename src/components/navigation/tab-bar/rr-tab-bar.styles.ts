@@ -78,7 +78,6 @@ export const tabBarItemStyles = css`
 		padding: 0;
 		background: none;
 		text-decoration: none;
-		cursor: default;
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
