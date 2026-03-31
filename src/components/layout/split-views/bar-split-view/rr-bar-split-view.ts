@@ -193,10 +193,17 @@ export class RRBarSplitView extends LitElement {
 		}
 
 		this._smOffsets = newOffsets;
-		this.style.setProperty('--context-bar-split-view-top-bars-height', `${topOffset}px`);
-		this.style.setProperty('--context-bar-split-view-bottom-bars-height', `${bottomOffset}px`);
 
-		this.requestUpdate();
+		const prevTop = this.style.getPropertyValue('--context-bar-split-view-top-bars-height');
+		const prevBottom = this.style.getPropertyValue('--context-bar-split-view-bottom-bars-height');
+		const nextTop = `${topOffset}px`;
+		const nextBottom = `${bottomOffset}px`;
+
+		if (prevTop !== nextTop || prevBottom !== nextBottom) {
+			this.style.setProperty('--context-bar-split-view-top-bars-height', nextTop);
+			this.style.setProperty('--context-bar-split-view-bottom-bars-height', nextBottom);
+			this.requestUpdate();
+		}
 	}
 
 	override render() {
