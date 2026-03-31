@@ -209,7 +209,7 @@ describe('rr-document-tab-bar – accessible label', () => {
 		vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar></rr-document-tab-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar')!.getAttribute('aria-label')).toBe('Tabbladen');
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__items')!.getAttribute('aria-label')).toBe('Tabbladen');
 	});
 
 	it('warns once when no accessible-label is provided', async () => {
@@ -230,7 +230,7 @@ describe('rr-document-tab-bar – accessible label', () => {
 	it('forwards accessible-label to container aria-label', async () => {
 		el = await fixture<RRDocumentTabBar>('<rr-document-tab-bar accessible-label="Mijn documenten"></rr-document-tab-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar')!.getAttribute('aria-label')).toBe('Mijn documenten');
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__items')!.getAttribute('aria-label')).toBe('Mijn documenten');
 	});
 });
 

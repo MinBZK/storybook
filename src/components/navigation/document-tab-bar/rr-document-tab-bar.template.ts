@@ -13,6 +13,7 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 	const inner = html`
 		<div class="document-tab-bar__items"
 			role=${isNavigation ? nothing : 'tablist'}
+			aria-label=${isNavigation ? nothing : label}
 		>
 			<slot @slotchange=${component._onSlotChange}></slot>
 		</div>
@@ -36,7 +37,7 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 	return html`
 		${isNavigation
 			? html`<nav class="document-tab-bar" aria-label=${label}>${inner}</nav>`
-			: html`<div class="document-tab-bar" aria-label=${label}>${inner}</div>`}
+			: html`<div class="document-tab-bar">${inner}</div>`}
 		<div class="document-tab-bar__polite-announcer"
 			role="status"
 			aria-live="polite"
