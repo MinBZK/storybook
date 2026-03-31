@@ -47,7 +47,7 @@ export const documentTabBarStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
-		min-width: 100px;
+		min-width: var(--_item-min-width);
 	}
 
 	::slotted(rr-document-tab-bar-item[hidden]) {
@@ -103,7 +103,7 @@ export const documentTabBarStyles = css`
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
-		min-width: 100px;
+		min-width: var(--_item-min-width);
 		opacity: var(--primitives-opacity-40);
 	}
 
