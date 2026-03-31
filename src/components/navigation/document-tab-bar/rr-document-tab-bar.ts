@@ -309,6 +309,7 @@ export class RRDocumentTabBar extends LitElement {
 	};
 
 	private _onPointerMovePending = (event: PointerEvent): void => {
+		if (event.pointerId !== this._pendingPointerId) return;
 		if (!this._pendingDragItem) return;
 		// Prevent text selection during potential drag
 		event.preventDefault();
