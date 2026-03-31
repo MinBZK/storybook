@@ -95,6 +95,8 @@ export class RRTabBarItem extends LitElement {
 
 	override updated(): void {
 		this.setAttribute('variant', this._effectiveVariant);
+		import.meta.env?.DEV && this._effectiveVariant === 'icon' && !this.text &&
+			console.warn('<rr-tab-bar-item>: Icon-only item has no text attribute. Add a text attribute to provide an accessible name for screen readers.');
 	}
 
 	override focus(options?: FocusOptions): void {
