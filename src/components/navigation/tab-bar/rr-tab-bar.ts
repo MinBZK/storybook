@@ -98,7 +98,7 @@ export class RRTabBarItem extends LitElement {
 	}
 
 	override focus(options?: FocusOptions): void {
-		this.shadowRoot?.querySelector<HTMLElement>('[role="tab"]')?.focus(options);
+		this.shadowRoot?.querySelector<HTMLElement>('.tab-bar__item')?.focus(options);
 	}
 
 	_onIconSlotChange(e: Event): void {
