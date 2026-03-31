@@ -44,6 +44,13 @@ describe('rr-modal-dialog', () => {
 		expect(el.shadowRoot!.querySelector('rr-dialog')).not.toBeNull();
 	});
 
+	it('does not throw when show() is called on an already-open dialog', async () => {
+		el = await fixture('<rr-modal-dialog></rr-modal-dialog>');
+		await waitForUpdate(el);
+		(el as RRModalDialog).show();
+		expect(() => (el as RRModalDialog).show()).not.toThrow();
+	});
+
 	it('opens the native dialog on show()', async () => {
 		el = await fixture('<rr-modal-dialog></rr-modal-dialog>');
 		await waitForUpdate(el);

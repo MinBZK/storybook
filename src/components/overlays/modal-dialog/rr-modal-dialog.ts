@@ -51,7 +51,7 @@ export class RRModalDialog extends LitElement {
 
 	show(): void {
 		const dialog = this._dialog;
-		if (!dialog) return;
+		if (!dialog || dialog.open) return;
 		dialog.showModal();
 		this._manageFocus();
 		this.dispatchEvent(new CustomEvent('open', { bubbles: true, composed: true }));
