@@ -8,7 +8,6 @@ export function barSplitViewTemplate(component: RRBarSplitView): TemplateResult 
 	const sorted = component._getSortedChildren();
 	const isSm = component._currentBreakpoint === 'sm';
 
-
 	return html`
 		<div class="bar-split-view">
 			${sorted.map((el, index) => {
@@ -34,6 +33,11 @@ export function barSplitViewTemplate(component: RRBarSplitView): TemplateResult 
 					` : nothing}
 				`;
 			})}
+			${!sorted.some(el => el.slot === 'main') ? html`
+				<div class="bar-split-view__main">
+					<slot name="main"></slot>
+				</div>
+			` : nothing}
 		</div>
 	`;
 }
