@@ -18,7 +18,7 @@ function getItems(el: RRDocumentTabBar): RRDocumentTabBarItem[] {
 }
 
 function clickItem(item: Element) {
-	item.shadowRoot!.querySelector('.document-tab-bar__item')!.dispatchEvent(
+	item.shadowRoot!.querySelector('.document-tab-bar__item-tab')!.dispatchEvent(
 		new MouseEvent('click', { bubbles: true, composed: true })
 	);
 }
@@ -54,7 +54,7 @@ describe('rr-document-tab-bar-item', () => {
 	it('renders subtitle when provided', async () => {
 		el = await fixture('<rr-document-tab-bar-item text="Artikel 1" supporting-text="Wet A"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
-		const subtitle = el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--regular');
+		const subtitle = el.shadowRoot!.querySelector('.document-tab-bar__item-supporting-text');
 		expect(subtitle).not.toBeNull();
 		expect(subtitle!.textContent?.trim()).toBe('Wet A');
 	});
@@ -62,25 +62,25 @@ describe('rr-document-tab-bar-item', () => {
 	it('does not render subtitle when not provided', async () => {
 		el = await fixture('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--regular')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-supporting-text')).toBeNull();
 	});
 
 	it('renders short-title in short slot', async () => {
 		el = await fixture('<rr-document-tab-bar-item text="Artikel 1" short-text="Art. 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-title--short')!.textContent?.trim()).toBe('Art. 1');
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-short-text')!.textContent?.trim()).toBe('Art. 1');
 	});
 
 	it('falls back to title in short slot when short-title not provided', async () => {
 		el = await fixture('<rr-document-tab-bar-item text="Artikel 1"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-title--short')!.textContent?.trim()).toBe('Artikel 1');
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-short-text')!.textContent?.trim()).toBe('Artikel 1');
 	});
 
 	it('falls back to subtitle in short subtitle slot when short-subtitle not provided', async () => {
 		el = await fixture('<rr-document-tab-bar-item text="Artikel 1" supporting-text="Wet A"></rr-document-tab-bar-item>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-subtitle--short')!.textContent?.trim()).toBe('Wet A');
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-short-supporting-text')!.textContent?.trim()).toBe('Wet A');
 	});
 
 	it('sets role="none" on host', async () => {
