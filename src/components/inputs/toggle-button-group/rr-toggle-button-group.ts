@@ -26,7 +26,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { toggleButtonGroupStyles } from './rr-toggle-button-group.styles.ts';
 import { toggleButtonGroupTemplate } from './rr-toggle-button-group.template.ts';
-import type { RRToggleButton, ToggleButtonSize } from '../toggle-button/rr-toggle-button.js';
+import type { RRToggleButton, ToggleButtonSize } from '../toggle-button/rr-toggle-button.ts';
 
 type GroupType = 'button' | 'checkbox' | 'radio';
 
@@ -72,9 +72,8 @@ export class RRToggleButtonGroup extends LitElement {
 	}
 
 	override firstUpdated(): void {
-		if (!this.accessibleLabel && !this.accessibleLabelledBy) {
+		import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy &&
 			console.warn('<rr-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
-		}
 	}
 
 	override updated(changed: Map<PropertyKey, unknown>): void {
