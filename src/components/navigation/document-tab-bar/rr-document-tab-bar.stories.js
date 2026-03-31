@@ -67,7 +67,7 @@ const Template = ({ overflowButtonLabel, accessibleLabel }) => html`
 export const Standaard = Template.bind({});
 
 export const VeelTabbladen = () => html`
-	<rr-document-tab-bar accessible-text="Documenten">
+	<rr-document-tab-bar accessible-label="Documenten">
 		<rr-document-tab-bar-item
 			selected
 			text="Artikel 2"
@@ -125,7 +125,7 @@ export const VeelTabbladen = () => html`
 VeelTabbladen.parameters = { controls: { disable: true } };
 
 export const ZonderSubtitel = () => html`
-	<rr-document-tab-bar accessible-text="Documenten">
+	<rr-document-tab-bar accessible-label="Documenten">
 		<rr-document-tab-bar-item
 			selected
 			text="Artikel 2"
@@ -148,7 +148,7 @@ export const Herschikbaar = {
 	render: () => {
 		const el = document.createElement('div');
 		el.innerHTML = `
-			<rr-document-tab-bar accessible-text="Documenten">
+			<rr-document-tab-bar accessible-label="Documenten">
 				<rr-document-tab-bar-item selected text="Artikel 2" supporting-text="Wet op de Zorgtoeslag" short-text="Art. 2" short-supporting-text="WZT"></rr-document-tab-bar-item>
 				<rr-document-tab-bar-item text="Artikel 1" supporting-text="Zorgverzekeringswet" short-text="Art. 1" short-supporting-text="Zvw"></rr-document-tab-bar-item>
 				<rr-document-tab-bar-item text="Artikel 3:2" supporting-text="Algemene wet bestuursrecht" short-text="Art. 3:2" short-supporting-text="Awb"></rr-document-tab-bar-item>
