@@ -105,7 +105,7 @@ export const documentTabBarStyles = css`
 		flex-shrink: 1;
 		flex-basis: 0;
 		min-width: var(--_item-min-width);
-		opacity: var(--primitives-opacity-40);
+		opacity: var(--primitives-opacity-dragging);
 	}
 
 
