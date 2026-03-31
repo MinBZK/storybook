@@ -9,6 +9,8 @@ export const modalDialogStyles = css`
 	:host {
 		display: contents;
 		--_max-height: 90vh;
+		--_animation-duration: 150ms;
+		--_animation-easing: ease;
 	}
 
 	:host([hidden]) {
@@ -70,11 +72,11 @@ export const modalDialogStyles = css`
 	}
 
 	.modal-dialog[open] {
-		animation: modal-dialog-in 150ms ease both;
+		animation: modal-dialog-in var(--_animation-duration) var(--_animation-easing) both;
 	}
 
 	.modal-dialog.is-closing {
-		animation: modal-dialog-out 150ms ease both;
+		animation: modal-dialog-out var(--_animation-duration) var(--_animation-easing) both;
 	}
 
 
