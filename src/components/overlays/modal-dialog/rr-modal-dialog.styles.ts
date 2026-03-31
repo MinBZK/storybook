@@ -8,6 +8,7 @@ export const modalDialogStyles = css`
 
 	:host {
 		display: contents;
+		--_max-height: 90vh;
 	}
 
 	:host([hidden]) {
@@ -22,7 +23,7 @@ export const modalDialogStyles = css`
 		padding: var(--primitives-space-24) var(--primitives-space-16);
 		max-width: var(--primitives-area-480);
 		width: 100%;
-		max-height: 90vh;
+		max-height: var(--_max-height);
 		overflow-y: auto;
 		background-color: var(--semantics-surfaces-background-color);
 		border-radius: var(--semantics-overlays-corner-radius);
