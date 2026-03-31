@@ -79,6 +79,10 @@ export class RRTabBarItem extends LitElement {
 	@state()
 	_navigation = false;
 
+	/** Set by rr-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
+	@state()
+	_isFallbackFocusable = false;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.setAttribute('role', 'none');
