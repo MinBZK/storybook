@@ -15,12 +15,6 @@ export default {
 		status: { type: 'stable' },
 	},
 	argTypes: {
-		overflowButtonLabel: {
-			control: 'text',
-			name: 'overflow-button-label',
-			description: 'Label voor de automatische overloopknop',
-			table: { defaultValue: { summary: 'Meer' } },
-		},
 		accessibleLabel: {
 			control: 'text',
 			name: 'accessible-label',
@@ -29,14 +23,12 @@ export default {
 		},
 	},
 	args: {
-		overflowButtonLabel: 'Meer',
 		accessibleLabel: 'Documenten',
 	},
 };
 
-const Template = ({ overflowButtonLabel, accessibleLabel }) => html`
+const Template = ({ accessibleLabel }) => html`
 	<rr-document-tab-bar
-		overflow-button-label=${overflowButtonLabel}
 		accessible-label=${accessibleLabel}
 	>
 		<rr-document-tab-bar-item
