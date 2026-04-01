@@ -62,6 +62,30 @@ describe('rr-icon-button – icon & text attributes', () => {
 		const textEl = el.shadowRoot!.querySelector('.icon-button__text');
 		expect(textEl).toBeNull();
 	});
+
+	it('warns when slot-based icon-only has no accessible name', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button>
+				<svg slot="icon" width="20" height="20"><circle cx="10" cy="10" r="8"/></svg>
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
+		warnSpy.mockRestore();
+	});
+
+	it('does not warn when slot-based icon has text', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<RRIconButton>(`
+			<rr-icon-button text="Custom">
+				<svg slot="icon" width="20" height="20"><circle cx="10" cy="10" r="8"/></svg>
+			</rr-icon-button>
+		`);
+		await waitForUpdate(el);
+		expect(warnSpy).not.toHaveBeenCalled();
+		warnSpy.mockRestore();
+	});
 });
 
 
