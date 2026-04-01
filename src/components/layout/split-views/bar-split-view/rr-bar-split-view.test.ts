@@ -6,6 +6,14 @@ import type { RRBarSplitView } from './rr-bar-split-view.ts';
 // jsdom returns 0 for getBoundingClientRect().width, so the component always
 // initialises at the 'sm' breakpoint in tests. Breakpoint-specific rendering
 // (e.g. dividers on md/lg) is tested by setting _currentBreakpoint directly.
+// The ResizeObserver must be disconnected first to prevent it from resetting
+// the breakpoint back to 'sm' on the next observation cycle.
+
+async function setBreakpoint(el: HTMLElement, bp: 'sm' | 'md' | 'lg') {
+	(el as any)._resizeObserver?.disconnect();
+	(el as RRBarSplitView)._currentBreakpoint = bp;
+	await waitForUpdate(el);
+}
 
 describe('rr-bar-split-view', () => {
 	let el: HTMLElement;
@@ -64,17 +72,13 @@ describe('rr-bar-split-view', () => {
 				<div slot="status">Status</div>
 			</rr-bar-split-view>
 		`);
-		(el as RRBarSplitView)._currentBreakpoint = 'md';
-		(el as RRBarSplitView).requestUpdate();
-		await waitForUpdate(el);
+		await setBreakpoint(el, 'md');
 		expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(2);
 	});
 
 	it('renders no dividers when no bars are present, even on md', async () => {
 		el = await fixture('<rr-bar-split-view><div slot="main">Main</div></rr-bar-split-view>');
-		(el as RRBarSplitView)._currentBreakpoint = 'md';
-		(el as RRBarSplitView).requestUpdate();
-		await waitForUpdate(el);
+		await setBreakpoint(el, 'md');
 		expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(0);
 	});
 
@@ -171,9 +175,7 @@ describe('rr-bar-split-view', () => {
 				<div slot="main">Main</div>
 			</rr-bar-split-view>
 		`);
-		(el as RRBarSplitView)._currentBreakpoint = 'md';
-		(el as RRBarSplitView).requestUpdate();
-		await waitForUpdate(el);
+		await setBreakpoint(el, 'md');
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
 		const slotNames = slots.map(s => s.getAttribute('name'));
 		expect(slotNames).toContain('toolbar');
@@ -186,9 +188,7 @@ describe('rr-bar-split-view', () => {
 				<div slot="main">Main</div>
 			</rr-bar-split-view>
 		`);
-		(el as RRBarSplitView)._currentBreakpoint = 'md';
-		(el as RRBarSplitView).requestUpdate();
-		await waitForUpdate(el);
+		await setBreakpoint(el, 'md');
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
 		const slotNames = slots.map(s => s.getAttribute('name'));
 		expect(slotNames).not.toContain('mobile-bar');
