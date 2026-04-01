@@ -70,9 +70,10 @@ export class RRToggleButton extends LitElement {
 		}
 	}
 
-	override updated(): void {
-		const iconOnly = !!this.icon && !this.text;
-		this.toggleAttribute('icon-only', iconOnly);
+	override updated(changed: Map<string, unknown>): void {
+		if (changed.has('icon') || changed.has('text')) {
+			this.toggleAttribute('icon-only', !!this.icon && !this.text);
+		}
 	}
 
 	_handleButtonClick(): void {
