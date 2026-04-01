@@ -1,0 +1,740 @@
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import type { NDDTabBar, NDDTabBarItem } from './ndd-tab-bar.ts';
+import './ndd-tab-bar.ts';
+
+function threeTabBar(): string {
+	return `
+		<ndd-tab-bar>
+			<ndd-tab-bar-item text="Tab A"></ndd-tab-bar-item>
+			<ndd-tab-bar-item selected text="Tab B"></ndd-tab-bar-item>
+			<ndd-tab-bar-item text="Tab C"></ndd-tab-bar-item>
+		</ndd-tab-bar>
+	`;
+}
+
+function getItems(el: NDDTabBar): NDDTabBarItem[] {
+	return Array.from(el.querySelectorAll('ndd-tab-bar-item'));
+}
+
+function clickInner(item: Element) {
+	const inner = item.shadowRoot!.querySelector('[role="tab"]') as HTMLElement;
+	inner.click();
+}
+
+function pressKey(target: Element, key: string) {
+	target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
+}
+
+
+/* ============================================================
+   ndd-tab-bar-item – render
+   ============================================================ */
+
+describe('ndd-tab-bar-item', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders without error', async () => {
+		el = await fixture('<ndd-tab-bar-item></ndd-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('renders a button by default', async () => {
+		el = await fixture('<ndd-tab-bar-item text="Tab"></ndd-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tab"]')!.tagName.toLowerCase()).toBe('button');
+	});
+
+	it('renders an anchor when href is provided', async () => {
+		el = await fixture('<ndd-tab-bar-item href="/page">Tab</ndd-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tab"]')!.tagName.toLowerCase()).toBe('a');
+	});
+
+	it('does not render an anchor for unsafe hrefs', async () => {
+		el = await fixture('<ndd-tab-bar-item href="javascript:void(0)">Tab</ndd-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tab"]')!.tagName.toLowerCase()).toBe('button');
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar-item – content variant detection
+   ============================================================ */
+
+describe('ndd-tab-bar-item – content variant detection', () => {
+	let el: NDDTabBarItem;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('sets variant to icon-and-text when both text and icon are present', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item text="Tab">
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('icon-and-text');
+	});
+
+	it('sets variant to text when only text attribute is present', async () => {
+		el = await fixture<NDDTabBarItem>('<ndd-tab-bar-item text="Tab"></ndd-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('text');
+	});
+
+	it('sets variant to icon when only an icon slot is filled', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item>
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('icon');
+	});
+
+	it('respects explicit variant="text" even when both text and icon are present', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item variant="text" text="Tab">
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('text');
+	});
+
+	it('respects explicit variant="icon" even when both text and icon are present', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item variant="icon" text="Tab">
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('icon');
+	});
+
+	it('sets variant to compact when compact attribute is set', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item compact text="Tab">
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('compact');
+	});
+
+	it('compact overrides explicit variant', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item compact variant="text" text="Tab">
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('compact');
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar-item – icon variant accessibility
+   ============================================================ */
+
+describe('ndd-tab-bar-item – icon variant accessibility', () => {
+	let el: NDDTabBarItem;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('sets aria-label from text attribute when variant is icon', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item variant="icon" text="Home">
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('aria-label')).toBe('Home');
+	});
+
+	it('sets title from text attribute when variant is icon', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item variant="icon" text="Home">
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('title')).toBe('Home');
+	});
+
+	it('does not set aria-label when variant is icon-and-text', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item text="Home">
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('aria-label')).toBeNull();
+	});
+
+	it('does not set title when variant is text', async () => {
+		el = await fixture<NDDTabBarItem>(`
+			<ndd-tab-bar-item variant="text" text="Home">
+				<svg slot="icon"></svg>
+			</ndd-tab-bar-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('title')).toBeNull();
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar-item – events
+   ============================================================ */
+
+describe('ndd-tab-bar-item – events', () => {
+	let el: NDDTabBarItem;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('fires select event on click', async () => {
+		el = await fixture<NDDTabBarItem>('<ndd-tab-bar-item text="Tab"></ndd-tab-bar-item>');
+		await waitForUpdate(el);
+
+		let detail: any;
+		el.addEventListener('select', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+
+		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+
+		expect(detail).toBeDefined();
+		expect(detail.item).toBe(el);
+	});
+
+	it('does not set selected on itself after click', async () => {
+		el = await fixture<NDDTabBarItem>('<ndd-tab-bar-item text="Tab"></ndd-tab-bar-item>');
+		await waitForUpdate(el);
+
+		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		expect(el.selected).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar – render & ARIA
+   ============================================================ */
+
+describe('ndd-tab-bar', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders without error', async () => {
+		el = await fixture('<ndd-tab-bar></ndd-tab-bar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('renders a div container by default (not nav)', async () => {
+		el = await fixture(threeTabBar());
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.tab-bar')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('nav')).toBeNull();
+	});
+
+	it('sets role="tablist" on tab-bar__items', async () => {
+		el = await fixture(threeTabBar());
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('role')).toBe('tablist');
+	});
+
+	it('does not set role on host', async () => {
+		el = await fixture(threeTabBar());
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBeNull();
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar – accessible label
+   ============================================================ */
+
+describe('ndd-tab-bar – accessible label', () => {
+	let el: NDDTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('falls back to "Tabs" when no accessible-label is provided', async () => {
+		vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<NDDTabBar>('<ndd-tab-bar></ndd-tab-bar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe('Tabs');
+	});
+
+	it('warns once when no accessible-label is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<NDDTabBar>('<ndd-tab-bar></ndd-tab-bar>');
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledOnce();
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
+	});
+
+	it('does not warn when accessible-label is provided', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<NDDTabBar>('<ndd-tab-bar accessible-label="Navigatie"></ndd-tab-bar>');
+		await waitForUpdate(el);
+		expect(warnSpy).not.toHaveBeenCalled();
+	});
+
+	it('forwards accessible-label to the tablist aria-label', async () => {
+		el = await fixture<NDDTabBar>('<ndd-tab-bar accessible-label="Hoofdnavigatie"></ndd-tab-bar>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar – item selection
+   ============================================================ */
+
+describe('ndd-tab-bar – item selection', () => {
+	let el: NDDTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('deselects other items when one is selected', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		expect(items[1].hasAttribute('selected')).toBe(true);
+
+		clickInner(items[2]);
+		await waitForUpdate(el);
+
+		expect(items[1].hasAttribute('selected')).toBe(false);
+		expect(items[2].hasAttribute('selected')).toBe(true);
+	});
+
+	it('dispatches tabchange event with item detail', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		let detail: any;
+		el.addEventListener('tabchange', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+
+		clickInner(getItems(el)[0]);
+		await waitForUpdate(el);
+
+		expect(detail).toBeDefined();
+		expect(detail.item).toBe(getItems(el)[0]);
+	});
+
+	it('select event does not bubble past the tab bar', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		let selectBubbled = false;
+		document.addEventListener('select', () => { selectBubbled = true; }, { once: true });
+
+		clickInner(getItems(el)[0]);
+		await waitForUpdate(el);
+
+		expect(selectBubbled).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar – variant propagation
+   ============================================================ */
+
+describe('ndd-tab-bar – variant propagation', () => {
+	let el: NDDTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('propagates variant="text" to all items as default', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar variant="text">
+				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
+				<ndd-tab-bar-item><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		getItems(el).forEach(item => {
+			expect(item.getAttribute('variant')).toBe('text');
+		});
+	});
+
+	it('propagates variant="icon" to all items as default', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar variant="icon">
+				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
+				<ndd-tab-bar-item><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		getItems(el).forEach(item => {
+			expect(item.getAttribute('variant')).toBe('icon');
+		});
+	});
+
+	it('item-level variant overrides parent variant', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar variant="text">
+				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
+				<ndd-tab-bar-item variant="icon"><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		expect(items[0].getAttribute('variant')).toBe('text');
+		expect(items[1].getAttribute('variant')).toBe('icon');
+	});
+
+	it('compact still overrides parent variant', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar compact variant="text">
+				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		expect(getItems(el)[0].getAttribute('variant')).toBe('compact');
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar – compact propagation
+   ============================================================ */
+
+describe('ndd-tab-bar – compact propagation', () => {
+	let el: NDDTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('propagates compact to all items', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar compact>
+				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
+				<ndd-tab-bar-item><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		getItems(el).forEach(item => {
+			expect(item.hasAttribute('compact')).toBe(true);
+		});
+	});
+
+	it('compact overrides explicit variant on items', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar compact>
+				<ndd-tab-bar-item variant="text"><svg slot="icon"></svg>Home</ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		expect(getItems(el)[0].getAttribute('variant')).toBe('compact');
+	});
+
+	it('removes compact from items when parent compact is removed', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar compact>
+				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		el.compact = false;
+		await waitForUpdate(el);
+		expect(getItems(el)[0].hasAttribute('compact')).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar – responsive propagation
+   ============================================================ */
+
+describe('ndd-tab-bar – responsive propagation', () => {
+	let el: NDDTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('propagates responsive attribute to all items', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar responsive>
+				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
+				<ndd-tab-bar-item><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		getItems(el).forEach(item => {
+			expect(item.hasAttribute('responsive')).toBe(true);
+		});
+	});
+
+	it('removes responsive from items when parent responsive is removed', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar responsive>
+				<ndd-tab-bar-item text="Home"></ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		el.responsive = false;
+		await waitForUpdate(el);
+		expect(getItems(el)[0].hasAttribute('responsive')).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar – full-width
+   ============================================================ */
+
+describe('ndd-tab-bar – full-width', () => {
+	let el: NDDTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('reflects full-width attribute on host', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar full-width>
+				<ndd-tab-bar-item text="Home"></ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		expect(el.hasAttribute('full-width')).toBe(true);
+	});
+});
+
+
+/* ============================================================
+   ndd-tab-bar – keyboard navigation
+   ============================================================ */
+
+describe('ndd-tab-bar – keyboard navigation', () => {
+	let el: NDDTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('first enabled item has tabindex="0" when no tab is selected', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar>
+				<ndd-tab-bar-item text="A"></ndd-tab-bar-item>
+				<ndd-tab-bar-item text="B"></ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const innerA = items[0].shadowRoot!.querySelector('[role="tab"]')!;
+		const innerB = items[1].shadowRoot!.querySelector('[role="tab"]')!;
+		expect(innerA.getAttribute('tabindex')).toBe('0');
+		expect(innerB.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('selected tab has tabindex="0"', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const inner = items[1].shadowRoot!.querySelector('[role="tab"]')!;
+		expect(inner.getAttribute('tabindex')).toBe('0');
+	});
+
+	it('non-selected tabs have tabindex="-1"', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const innerA = items[0].shadowRoot!.querySelector('[role="tab"]')!;
+		const innerC = items[2].shadowRoot!.querySelector('[role="tab"]')!;
+		expect(innerA.getAttribute('tabindex')).toBe('-1');
+		expect(innerC.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('ArrowRight auto-activates next tab', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const items = getItems(el);
+		pressKey(items[1], 'ArrowRight');
+		await waitForUpdate(el);
+		expect(items[2].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
+
+	it('ArrowLeft auto-activates previous tab', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const items = getItems(el);
+		pressKey(items[1], 'ArrowLeft');
+		await waitForUpdate(el);
+		expect(items[0].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
+
+	it('ArrowRight calls focus on next item', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		const spy = vi.spyOn(items[1] as HTMLElement, 'focus');
+		pressKey(items[0], 'ArrowRight');
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('ArrowLeft calls focus on previous item', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+		pressKey(items[1], 'ArrowLeft');
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('ArrowRight wraps from last to first', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+		pressKey(items[2], 'ArrowRight');
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('ArrowLeft wraps from first to last', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
+		pressKey(items[0], 'ArrowLeft');
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('Home calls focus on first item', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+		pressKey(items[2], 'Home');
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('End calls focus on last item', async () => {
+		el = await fixture<NDDTabBar>(threeTabBar());
+		await waitForUpdate(el);
+
+		const items = getItems(el);
+		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
+		pressKey(items[0], 'End');
+		expect(spy).toHaveBeenCalled();
+	});
+
+});
+
+/* ============================================================
+   ndd-tab-bar – navigation mode
+   ============================================================ */
+
+describe('ndd-tab-bar – navigation mode', () => {
+	let el: NDDTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('renders a nav element when navigation is set', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar navigation accessible-label="Navigatie">
+				<ndd-tab-bar-item text="Home" href="/home" selected></ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nav')).not.toBeNull();
+	});
+
+	it('does not render role="tablist" when navigation is set', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar navigation accessible-label="Navigatie">
+				<ndd-tab-bar-item text="Home" href="/home"></ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('[role="tablist"]')).toBeNull();
+	});
+
+	it('sets aria-current="page" on selected link item in navigation mode', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar navigation accessible-label="Navigatie">
+				<ndd-tab-bar-item text="Home" href="/home" selected></ndd-tab-bar-item>
+				<ndd-tab-bar-item text="Profiel" href="/profiel"></ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const linkA = items[0].shadowRoot!.querySelector('a')!;
+		const linkB = items[1].shadowRoot!.querySelector('a')!;
+		expect(linkA.getAttribute('aria-current')).toBe('page');
+		expect(linkB.getAttribute('aria-current')).toBeNull();
+	});
+
+	it('does not set aria-selected on link items in navigation mode', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar navigation accessible-label="Navigatie">
+				<ndd-tab-bar-item text="Home" href="/home" selected></ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		const link = items[0].shadowRoot!.querySelector('a')!;
+		expect(link.getAttribute('aria-selected')).toBeNull();
+	});
+
+	it('does not auto-activate on ArrowRight in navigation mode', async () => {
+		el = await fixture<NDDTabBar>(`
+			<ndd-tab-bar navigation accessible-label="Navigatie">
+				<ndd-tab-bar-item text="Home" href="/home" selected></ndd-tab-bar-item>
+				<ndd-tab-bar-item text="Profiel" href="/profiel"></ndd-tab-bar-item>
+			</ndd-tab-bar>
+		`);
+		await waitForUpdate(el);
+		const items = getItems(el);
+		pressKey(items[0], 'ArrowRight');
+		await waitForUpdate(el);
+		expect(items[0].selected).toBe(true);
+		expect(items[1].selected).toBe(false);
+	});
+});

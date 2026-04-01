@@ -1,120 +1,120 @@
 /**
- * RegelRecht Design System Components
+ * Nederlandse Digitale Dienst Design System Components
  *
  * Import this file to register all components:
- * import '@regelrecht/design-system';
+ * import '@minbzk/storybook';
  *
  * Or import individual components:
- * import '@regelrecht/design-system/components/actions/button';
+ * import '@minbzk/storybook/components/actions/button';
  */
 
 
 // # Action components
 
-export { RRButton } from './actions/button/rr-button.ts';
-export { RRIconButton } from './actions/icon-button/rr-icon-button.ts';
-export { RRSplitButton } from './actions/split-button/rr-split-button.ts';
-export { RRButtonGroup } from './actions/button-group/rr-button-group.ts';
-export { RRButtonBar } from './actions/button-bar/rr-button-bar.ts';
-export { RRToolbar } from './actions/toolbar/rr-toolbar.ts';
+export { NDDButton } from './actions/button/ndd-button.ts';
+export { NDDIconButton } from './actions/icon-button/ndd-icon-button.ts';
+export { NDDSplitButton } from './actions/split-button/ndd-split-button.ts';
+export { NDDButtonGroup } from './actions/button-group/ndd-button-group.ts';
+export { NDDButtonBar } from './actions/button-bar/ndd-button-bar.ts';
+export { NDDToolbar } from './actions/toolbar/ndd-toolbar.ts';
 
 
 // # Content components
 
-export { RRIcon } from './content/icon/rr-icon.ts';
-export { RRRichText } from './content/rich-text/rr-rich-text.ts';
+export { NDDIcon } from './content/icon/ndd-icon.ts';
+export { NDDRichText } from './content/rich-text/ndd-rich-text.ts';
 
 
 // # Forms components
 
-export { RRFormField } from './forms/form-field/rr-form-field.ts';
+export { NDDFormField } from './forms/form-field/ndd-form-field.ts';
 
 
 // # Input components
 
-export { RRTextField } from './inputs/text-field/rr-text-field.ts';
-export { RRPasswordField } from './inputs/password-field/rr-password-field.ts';
-export { RRSearchField } from './inputs/search-field/rr-search-field.ts';
-export { RRNumberField } from './inputs/number-field/rr-number-field.ts';
-export { RRDropdown } from './inputs/dropdown/rr-dropdown.ts';
-export { RRComboBox } from './inputs/combo-box/rr-combo-box.ts';
-export { RRStepper } from './inputs/stepper/rr-stepper.ts';
-export { RRCheckbox } from './inputs/checkbox/rr-checkbox.ts';
-export { RRCheckboxField } from './inputs/checkbox-field/rr-checkbox-field.ts';
-export { RRRadioButton } from './inputs/radio-button/rr-radio-button.ts';
-export { RRRadioButtonField } from './inputs/radio-button-field/rr-radio-button-field.ts';
-export { RRRadioButtonGroup } from './inputs/radio-button-group/rr-radio-button-group.ts';
-export { RRSwitch } from './inputs/switch/rr-switch.ts';
-export { RRSwitchField } from './inputs/switch-field/rr-switch-field.ts';
-export { RRSegmentedControl } from './inputs/segmented-control/rr-segmented-control.ts';
-export { RRToggleButton } from './inputs/toggle-button/rr-toggle-button.ts';
-export { RRToggleButtonGroup } from './inputs/toggle-button-group/rr-toggle-button-group.ts';
+export { NDDTextField } from './inputs/text-field/ndd-text-field.ts';
+export { NDDPasswordField } from './inputs/password-field/ndd-password-field.ts';
+export { NDDSearchField } from './inputs/search-field/ndd-search-field.ts';
+export { NDDNumberField } from './inputs/number-field/ndd-number-field.ts';
+export { NDDDropdown } from './inputs/dropdown/ndd-dropdown.ts';
+export { NDDComboBox } from './inputs/combo-box/ndd-combo-box.ts';
+export { NDDStepper } from './inputs/stepper/ndd-stepper.ts';
+export { NDDCheckbox } from './inputs/checkbox/ndd-checkbox.ts';
+export { NDDCheckboxField } from './inputs/checkbox-field/ndd-checkbox-field.ts';
+export { NDDRadioButton } from './inputs/radio-button/ndd-radio-button.ts';
+export { NDDRadioButtonField } from './inputs/radio-button-field/ndd-radio-button-field.ts';
+export { NDDRadioButtonGroup } from './inputs/radio-button-group/ndd-radio-button-group.ts';
+export { NDDSwitch } from './inputs/switch/ndd-switch.ts';
+export { NDDSwitchField } from './inputs/switch-field/ndd-switch-field.ts';
+export { NDDSegmentedControl } from './inputs/segmented-control/ndd-segmented-control.ts';
+export { NDDToggleButton } from './inputs/toggle-button/ndd-toggle-button.ts';
+export { NDDToggleButtonGroup } from './inputs/toggle-button-group/ndd-toggle-button-group.ts';
 
-export { RRToken } from './inputs/token/rr-token.ts';
+export { NDDToken } from './inputs/token/ndd-token.ts';
 
 
 // # Layout components
 
-export { RRAppView } from './layout/app-view/rr-app-view.ts';
+export { NDDAppView } from './layout/app-view/ndd-app-view.ts';
 
-export { RRBarSplitView } from './layout/split-views/bar-split-view/rr-bar-split-view.ts';
-export { RRNavigationSplitView } from './layout/split-views/navigation-split-view/rr-navigation-split-view.ts';
-export { RRSideBySideSplitView } from './layout/split-views/side-by-side-split-view/rr-side-by-side-split-view.ts';
-export { RRStackedSplitView } from './layout/split-views/stacked-split-view/rr-stacked-split-view.ts';
+export { NDDBarSplitView } from './layout/split-views/bar-split-view/ndd-bar-split-view.ts';
+export { NDDNavigationSplitView } from './layout/split-views/navigation-split-view/ndd-navigation-split-view.ts';
+export { NDDSideBySideSplitView } from './layout/split-views/side-by-side-split-view/ndd-side-by-side-split-view.ts';
+export { NDDStackedSplitView } from './layout/split-views/stacked-split-view/ndd-stacked-split-view.ts';
 
-export { RRSplitViewPane } from './layout/split-views/split-view-pane/rr-split-view-pane.ts';
+export { NDDSplitViewPane } from './layout/split-views/split-view-pane/ndd-split-view-pane.ts';
 
-export { RRPage } from './layout/page/rr-page.ts';
+export { NDDPage } from './layout/page/ndd-page.ts';
 
-export { RRSimpleSection } from './layout/page-sections/simple-section/rr-simple-section.ts';
-export { RRFullBleedSection } from './layout/page-sections/full-bleed-section/rr-full-bleed-section.ts';
-export { RROneThirdTwoThirdsSection } from './layout/page-sections/one-third-two-thirds-section/rr-one-third-two-thirds-section.ts';
-export { RRTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/rr-two-thirds-one-third-section.ts';
-export { RROneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/rr-one-half-one-half-section.ts';
+export { NDDSimpleSection } from './layout/page-sections/simple-section/ndd-simple-section.ts';
+export { NDDFullBleedSection } from './layout/page-sections/full-bleed-section/ndd-full-bleed-section.ts';
+export { NDDOneThirdTwoThirdsSection } from './layout/page-sections/one-third-two-thirds-section/ndd-one-third-two-thirds-section.ts';
+export { NDDTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/ndd-two-thirds-one-third-section.ts';
+export { NDDOneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/ndd-one-half-one-half-section.ts';
 
-export { RRTitleBar } from './layout/title-bar/rr-title-bar.ts';
+export { NDDTitleBar } from './layout/title-bar/ndd-title-bar.ts';
 
-export { RRBox } from './layout/box/rr-box.ts';
-export { RRCollection } from './layout/collection/rr-collection.ts';
+export { NDDBox } from './layout/box/ndd-box.ts';
+export { NDDCollection } from './layout/collection/ndd-collection.ts';
 
-export { RRSpacer } from './layout/spacer/rr-spacer.ts';
-export { RRContainer } from './layout/container/rr-container.ts';
-export { RRDivider } from './layout/divider/rr-divider.ts';
+export { NDDSpacer } from './layout/spacer/ndd-spacer.ts';
+export { NDDContainer } from './layout/container/ndd-container.ts';
+export { NDDDivider } from './layout/divider/ndd-divider.ts';
 
 
 // # List and Menu components
 
-export { RRMenu } from './lists-and-menus/menu/rr-menu.ts';
-export { RRList } from './lists-and-menus/list/rr-list.ts';
-export { RRListItem } from './lists-and-menus/list-item/rr-list-item.ts';
+export { NDDMenu } from './lists-and-menus/menu/ndd-menu.ts';
+export { NDDList } from './lists-and-menus/list/ndd-list.ts';
+export { NDDListItem } from './lists-and-menus/list-item/ndd-list-item.ts';
 
-export { RRCell } from './lists-and-menus/cells/cell/rr-cell.ts';
-export { RRSpacerCell } from './lists-and-menus/cells/spacer-cell/rr-spacer-cell.ts';
-export { RRIconCell } from './lists-and-menus/cells/icon-cell/rr-icon-cell.ts';
-export { RRTitleCell } from './lists-and-menus/cells/title-cell/rr-title-cell.ts';
-export { RRTextCell } from './lists-and-menus/cells/text-cell/rr-text-cell.ts';
-export { RRDescriptionCell } from './lists-and-menus/cells/description-cell/rr-description-cell.ts';
+export { NDDCell } from './lists-and-menus/cells/cell/ndd-cell.ts';
+export { NDDSpacerCell } from './lists-and-menus/cells/spacer-cell/ndd-spacer-cell.ts';
+export { NDDIconCell } from './lists-and-menus/cells/icon-cell/ndd-icon-cell.ts';
+export { NDDTitleCell } from './lists-and-menus/cells/title-cell/ndd-title-cell.ts';
+export { NDDTextCell } from './lists-and-menus/cells/text-cell/ndd-text-cell.ts';
+export { NDDDescriptionCell } from './lists-and-menus/cells/description-cell/ndd-description-cell.ts';
 
-export { RRDragHandleCell } from './lists-and-menus/cells/drag-handle-cell/rr-drag-handle-cell.ts';
-export { RRTimelineTrackCell } from './lists-and-menus/cells/timeline-track-cell/rr-timeline-track-cell.ts';
+export { NDDDragHandleCell } from './lists-and-menus/cells/drag-handle-cell/ndd-drag-handle-cell.ts';
+export { NDDTimelineTrackCell } from './lists-and-menus/cells/timeline-track-cell/ndd-timeline-track-cell.ts';
 
 
 // # Navigation components
 
-export { RRTopNavigationBar } from './navigation/top-navigation-bar/rr-top-navigation-bar.ts';
-export { RRTopTitleBar } from './navigation/top-title-bar/rr-top-title-bar.ts';
-export { RRTabBar } from './navigation/tab-bar/rr-tab-bar.ts';
-export { RRDocumentTabBar } from './navigation/document-tab-bar/rr-document-tab-bar.ts';
-export { RRPagination } from './navigation/pagination/rr-pagination.ts';
+export { NDDTopNavigationBar } from './navigation/top-navigation-bar/ndd-top-navigation-bar.ts';
+export { NDDTopTitleBar } from './navigation/top-title-bar/ndd-top-title-bar.ts';
+export { NDDTabBar } from './navigation/tab-bar/ndd-tab-bar.ts';
+export { NDDDocumentTabBar } from './navigation/document-tab-bar/ndd-document-tab-bar.ts';
+export { NDDPagination } from './navigation/pagination/ndd-pagination.ts';
 
 
 // # Overlay components
 
-export { RRTooltip } from './overlays/tooltip/rr-tooltip.ts';
-export { RRSheet } from './overlays/sheet/rr-sheet.ts';
-export { RRModalDialog } from './overlays/modal-dialog/rr-modal-dialog.ts';
+export { NDDTooltip } from './overlays/tooltip/ndd-tooltip.ts';
+export { NDDSheet } from './overlays/sheet/ndd-sheet.ts';
+export { NDDModalDialog } from './overlays/modal-dialog/ndd-modal-dialog.ts';
 
 
-export { RRDialog } from './status-and-feedback/dialog/rr-dialog.ts';
+export { NDDDialog } from './status-and-feedback/dialog/ndd-dialog.ts';
 
 // Auto-register happens on import of individual component files

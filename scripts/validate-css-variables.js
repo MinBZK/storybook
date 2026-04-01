@@ -5,7 +5,7 @@
  *
  * Validates that all CSS custom properties used in components are defined.
  * Token categories:
- * - --rr-* : Override hooks for consumers (SKIPPED - not defined in tokens)
+ * - --ndd-* : Override hooks for consumers (SKIPPED - not defined in tokens)
  * - --_* : Internal variables (validated within same file)
  * - --components-*, --semantics-*, --primitives-* : Design tokens (validated against settings.css)
  */
@@ -65,7 +65,7 @@ function findComponentFiles(dir) {
         (entry.name.endsWith('.ts') || entry.name.endsWith('.js')) &&
         !entry.name.endsWith('.stories.js') &&
         !entry.name.endsWith('.stories.ts') &&
-        entry.name.startsWith('rr-')
+        entry.name.startsWith('ndd-')
       ) {
         files.push(fullPath);
       }
@@ -110,7 +110,7 @@ function parseComponentFile(filePath) {
  * Categorize a CSS variable by its prefix
  */
 function categorizeVariable(varName) {
-  if (varName.startsWith('--rr-')) return 'override';
+  if (varName.startsWith('--ndd-')) return 'override';
   if (varName.startsWith('--context-')) return 'context';
   if (varName.startsWith('--_')) return 'internal';
   if (varName.startsWith('--components-')) return 'token';
@@ -154,7 +154,7 @@ function validate() {
 
       switch (category) {
         case 'override':
-          // --rr-* variables are consumer hooks, skip validation
+          // --ndd-* variables are consumer hooks, skip validation
           stats.overrideVars++;
           break;
 
@@ -198,7 +198,7 @@ function validate() {
   // Print statistics
   console.log('📊 Statistics:');
   console.log(`   Total variable usages: ${stats.totalUsages}`);
-  console.log(`   Override hooks (--rr-*): ${stats.overrideVars} (skipped)`);
+  console.log(`   Override hooks (--ndd-*): ${stats.overrideVars} (skipped)`);
   console.log(`   Internal variables (--_*): ${stats.internalVars}`);
   console.log(`   Design tokens: ${stats.tokenVars}`);
   if (stats.unknownVars > 0) {

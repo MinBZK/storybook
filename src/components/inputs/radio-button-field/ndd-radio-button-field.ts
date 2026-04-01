@@ -1,0 +1,69 @@
+/**
+ * Nederlandse Digitale Dienst Radio Button Field Component (Lit + TypeScript)
+ *
+ * A radio button with an inline label. Use inside ndd-radio-button-group
+ * for keyboard navigation and group semantics. The group sets the name.
+ *
+ * @element ndd-radio-button-field
+ * @attr {boolean} checked  - Checked state
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string}  value    - Value for form submission
+ * @attr {string}  label    - Label text for the radio button
+ *
+ * @fires change - When checked state changes; detail: { checked: boolean, value: string }
+ */
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { radioButtonFieldStyles } from './ndd-radio-button-field.styles.ts';
+import { radioButtonFieldTemplate } from './ndd-radio-button-field.template.ts';
+import type { NDDRadioButton } from '../radio-button/ndd-radio-button.js';
+
+@customElement('ndd-radio-button-field')
+export class NDDRadioButtonField extends LitElement {
+	static override styles = radioButtonFieldStyles;
+
+	@property({ type: Boolean, reflect: true })
+	checked = false;
+
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
+
+	@property({ type: String })
+	value = '';
+
+	/** Set by ndd-radio-button-group. Not part of the public API. */
+	@property({ type: String })
+	name = '';
+
+	@property({ type: Boolean, reflect: true })
+	required = false;
+
+	@property({ type: String })
+	label = '';
+
+	public _handleLabelClick(e: Event): void {
+		if (this.disabled) return;
+		if ((e.target as HTMLElement).closest?.('ndd-radio-button')) return;
+		const radioButton = this.shadowRoot?.querySelector('ndd-radio-button') as NDDRadioButton | null;
+		radioButton?.select();
+	}
+
+	public _handleChange(e: Event): void {
+		this.checked = (e as CustomEvent<{ checked: boolean }>).detail.checked;
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { checked: this.checked, value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	override render() {
+		return radioButtonFieldTemplate(this);
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'ndd-radio-button-field': NDDRadioButtonField;
+	}
+}
