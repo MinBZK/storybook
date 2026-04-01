@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
+import type { RRToolbarTranslations } from './rr-toolbar.i18n.ts';
 import '../icon-button/rr-icon-button.js';
 
 // # Types
@@ -95,7 +96,7 @@ export function template(
 	menuId: string,
 	onOverflowClick: () => void,
 	centerOnly: boolean,
-	t: (key: string) => string,
+	t: (key: keyof RRToolbarTranslations) => string,
 ) {
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 

@@ -571,7 +571,7 @@ export class RRToolbar extends LitElement {
 			this._menu?.id ?? '',
 			() => this._handleOverflowButtonClick(),
 			this._startChildren.length === 0 && this._endChildren.length === 0 && this._centerChildren.length > 0,
-			(key: string) => this._t(key as keyof RRToolbarTranslations),
+			(key) => this._t(key),
 		);
 	}
 }
