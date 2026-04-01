@@ -1,6 +1,5 @@
 import { html, nothing } from 'lit';
-import { unsafeStatic } from 'lit/static-html.js';
-import { html as staticHtml } from 'lit/static-html.js';
+import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
 import type { RRTitleCell } from './rr-title-cell.js';
 
 // SAFETY: whitelist of allowed heading tags for unsafeStatic.
