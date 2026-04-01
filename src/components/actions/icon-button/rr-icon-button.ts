@@ -103,9 +103,15 @@ export class RRIconButton extends LitElement {
 		return (slot?.assignedElements().length ?? 0) > 0;
 	}
 
+	private _warnedA11y = false;
+
 	override updated(): void {
-		if (this._hasIcon && !this.text && !this.accessibleLabel) {
+		const inaccessible = this._hasIcon && !this.text && !this.accessibleLabel;
+		if (inaccessible && !this._warnedA11y) {
+			this._warnedA11y = true;
 			console.warn('<rr-icon-button>: icon is set without text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2). Add a text or accessible-label attribute.');
+		} else if (!inaccessible) {
+			this._warnedA11y = false;
 		}
 	}
 

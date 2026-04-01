@@ -70,11 +70,17 @@ export class RRToggleButton extends LitElement {
 		return (slot?.assignedElements().length ?? 0) > 0;
 	}
 
+	private _warnedA11y = false;
+
 	override updated(): void {
 		const iconOnly = this._hasIcon && !this.text;
 		this.toggleAttribute('icon-only', iconOnly);
-		if (iconOnly && !this.accessibleLabel) {
+		const inaccessible = iconOnly && !this.accessibleLabel;
+		if (inaccessible && !this._warnedA11y) {
+			this._warnedA11y = true;
 			console.warn('<rr-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
+		} else if (!inaccessible) {
+			this._warnedA11y = false;
 		}
 	}
 
