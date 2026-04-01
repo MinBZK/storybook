@@ -96,6 +96,12 @@ export class RRIconButton extends LitElement {
 	@property({ type: String })
 	rel: string | undefined = undefined;
 
+	override firstUpdated(): void {
+		if (this.icon && !this.text && !this.accessibleLabel) {
+			console.warn('<rr-icon-button>: icon is set without text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2). Add a text or accessible-label attribute.');
+		}
+	}
+
 	/** Resolves the effective rel value for link rendering. */
 	_resolvedRel(): string {
 		if (this.rel) return this.rel;
