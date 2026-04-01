@@ -18,15 +18,29 @@ describe('rr-switch-field', () => {
 	});
 
 	it('renders a label span element', async () => {
-		el = await fixture('<rr-switch-field>Optie 1</rr-switch-field>');
+		el = await fixture('<rr-switch-field label="Optie 1"></rr-switch-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.switch-field__label')).not.toBeNull();
+	});
+
+	it('renders label text from attribute', async () => {
+		el = await fixture('<rr-switch-field label="Optie 1"></rr-switch-field>');
+		await waitForUpdate(el);
+		const label = el.shadowRoot!.querySelector('.switch-field__label')!;
+		expect(label.textContent).toBe('Optie 1');
 	});
 
 	it('renders rr-switch in shadow DOM', async () => {
 		el = await fixture('<rr-switch-field></rr-switch-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('rr-switch')).not.toBeNull();
+	});
+
+	it('forwards label as accessible-label to rr-switch', async () => {
+		el = await fixture('<rr-switch-field label="Meldingen"></rr-switch-field>');
+		await waitForUpdate(el);
+		const switchEl = el.shadowRoot!.querySelector('rr-switch')!;
+		expect(switchEl.getAttribute('accessible-label')).toBe('Meldingen');
 	});
 });
 
@@ -129,7 +143,7 @@ describe('rr-switch-field – label click', () => {
 	});
 
 	it('toggles checked when label span is clicked', async () => {
-		el = await fixture<RRSwitchField>('<rr-switch-field>Optie 1</rr-switch-field>');
+		el = await fixture<RRSwitchField>('<rr-switch-field label="Optie 1"></rr-switch-field>');
 		await waitForUpdate(el);
 		const labelSpan = el.shadowRoot!.querySelector<HTMLElement>('.switch-field__label')!;
 		labelSpan.click();
@@ -138,7 +152,7 @@ describe('rr-switch-field – label click', () => {
 	});
 
 	it('does not toggle when disabled and label span is clicked', async () => {
-		el = await fixture<RRSwitchField>('<rr-switch-field disabled>Optie 1</rr-switch-field>');
+		el = await fixture<RRSwitchField>('<rr-switch-field label="Optie 1" disabled></rr-switch-field>');
 		await waitForUpdate(el);
 		const labelSpan = el.shadowRoot!.querySelector<HTMLElement>('.switch-field__label')!;
 		labelSpan.click();

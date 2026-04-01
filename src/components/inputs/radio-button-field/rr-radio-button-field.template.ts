@@ -14,13 +14,11 @@ export function radioButtonFieldTemplate(component: RRRadioButtonField): Templat
 					?required=${component.required}
 					name=${component.name || ''}
 					value=${component.value}
-					accessible-label=${component._labelText || nothing}
+					accessible-label=${component.label || nothing}
 					@change=${component._handleChange}
 				></rr-radio-button>
 			</div>
-			<span class="radio-button-field__label">
-				<slot @slotchange=${component._onSlotChange}></slot>
-			</span>
+			<span class="radio-button-field__label">${component.label}</span>
 		</div>
 	`;
 }

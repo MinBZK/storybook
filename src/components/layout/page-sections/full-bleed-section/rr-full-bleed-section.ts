@@ -1,15 +1,15 @@
 /**
  * RegelRecht Full Bleed Section Component (Lit + TypeScript)
  *
- * Een sectie die de volledige breedte beslaat zonder horizontale padding.
- * Nuttig voor achtergrondkleuren, afbeeldingen of andere inhoud die van rand
- * tot rand loopt. Verticale padding en gap passen zich aan via container queries.
+ * A section that spans the full width without horizontal padding.
+ * Useful for background colors, images, or other content that runs
+ * edge to edge. Vertical padding and gap adjust via container queries.
  *
  * @element rr-full-bleed-section
  *
- * @slot header - Inhoud boven de hoofdinhoud
- * @slot - Hoofdinhoud
- * @slot footer - Inhoud onder de hoofdinhoud
+ * @slot header - Content above the main content
+ * @slot - Main content
+ * @slot footer - Content below the main content
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';

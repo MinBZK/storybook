@@ -8,13 +8,12 @@
  * @attr {boolean} checked  - Checked state
  * @attr {boolean} disabled - Disabled state
  * @attr {string}  value    - Value for form submission
- *
- * @slot - Label text
+ * @attr {string}  label    - Label text for the radio button
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
 import { LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { radioButtonFieldStyles } from './rr-radio-button-field.styles.ts';
 import { radioButtonFieldTemplate } from './rr-radio-button-field.template.ts';
 import type { RRRadioButton } from '../radio-button/rr-radio-button.js';
@@ -39,20 +38,8 @@ export class RRRadioButtonField extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@state()
-	_labelText = '';
-
-	override firstUpdated(): void {
-		this._onSlotChange();
-	}
-
-	public _onSlotChange(): void {
-		const slot = this.shadowRoot?.querySelector('slot');
-		this._labelText = slot?.assignedNodes({ flatten: true })
-			.map(n => n.textContent ?? '')
-			.join('')
-			.trim() ?? '';
-	}
+	@property({ type: String })
+	label = '';
 
 	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;

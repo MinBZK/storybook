@@ -1,29 +1,36 @@
 /**
  * RegelRecht Collection Component (Lit + TypeScript)
  *
- * Een container voor het weergeven van verzamelingen items.
- * Ondersteunt grid-, lijst- en horizontale scrolllay-outs.
- * Bij grid en list worden items gepagineerd getoond via een laad-meer-knop.
- * Met `lazy-load` worden de volgende items automatisch geladen wanneer
- * de laad-meer-knop in beeld komt.
+ * A container for displaying collections of items.
+ * Supports grid, list, and horizontal scroll layouts.
+ * In grid and list modes, items are paginated via a load-more button.
+ * With `lazy-load`, the next items are automatically loaded when
+ * the load-more button comes into view.
  *
  * @element rr-collection
  *
- * @attr {string} layout - Lay-outmodus: 'grid' | 'list' | 'horizontal-scroll' (standaard: 'grid')
- * @attr {boolean} show-load-more - Toon laad-meer-knop bij grid/list (standaard: false)
- * @attr {string} load-more-label - Label voor de laad-meer-knop (standaard: 'Toon meer')
- * @attr {number} max-items - Aantal zichtbare items per pagina (standaard: 24)
- * @attr {boolean} lazy-load - Laad automatisch meer items wanneer de knop zichtbaar wordt
+ * @attr {string} layout - Layout mode: 'grid' | 'list' | 'horizontal-scroll' (default: 'grid')
+ * @attr {boolean} show-load-more - Show load-more button in grid/list (default: false)
+ * @attr {number} max-items - Number of visible items per page (default: 24)
+ * @attr {boolean} lazy-load - Automatically load more items when the button becomes visible
+ * @attr {object} translations - Translation overrides; unset keys fall back to Dutch.
+ *                               Available keys: 'components.collection.previous-action',
+ *                               'components.collection.next-action', 'components.collection.load-more-action'
  *
- * @slot - Standaard slot voor collectie-items
- * @slot footer - Slot voor aangepaste voettekstinhoud
+ * @migration The `load-more-label` attribute has been removed.
+ *            Use `translations` property instead: `.translations=${{ 'components.collection.load-more-action': 'Show more' }}`
  *
- * @fires load-more - Wanneer de laad-meer-knop wordt aangeklikt
+ * @slot - Default slot for collection items
+ * @slot footer - Slot for custom footer content
+ *
+ * @fires load-more - When the load-more button is clicked
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { collectionStyles } from './rr-collection.styles.ts';
 import { collectionTemplate } from './rr-collection.template.ts';
+import { rrCollectionTranslations } from './rr-collection.i18n.ts';
+import type { RRCollectionTranslations } from './rr-collection.i18n.ts';
 import '../../actions/button/rr-button.ts';
 import '../../actions/button-bar/rr-button-bar.ts';
 import '../../actions/icon-button/rr-icon-button.ts';
@@ -41,14 +48,20 @@ export class RRCollection extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'show-load-more' })
 	showLoadMore = false;
 
-	@property({ type: String, attribute: 'load-more-label' })
-	loadMoreLabel = 'Toon meer';
-
 	@property({ type: Number, attribute: 'max-items' })
 	maxItems = 24;
 
 	@property({ type: Boolean, reflect: true, attribute: 'lazy-load' })
 	lazyLoad = false;
+
+	@property({ type: Object })
+	translations: Partial<RRCollectionTranslations> = {};
+
+	// — i18n —————————————————————————————————————————————————————————————————
+
+	public _t(key: keyof RRCollectionTranslations): string {
+		return this.translations[key] ?? rrCollectionTranslations[key];
+	}
 
 	@state()
 	_visibleCount = 0;

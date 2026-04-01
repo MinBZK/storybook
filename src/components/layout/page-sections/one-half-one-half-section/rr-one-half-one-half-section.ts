@@ -1,17 +1,17 @@
 /**
  * RegelRecht One Half One Half Section Component (Lit + TypeScript)
  *
- * Een sectie met twee gelijke kolommen naast elkaar.
- * De kolommen wrappen automatisch wanneer ze kleiner worden dan 280px.
- * Padding en gap passen zich aan via container queries.
+ * A section with two equal columns side by side.
+ * The columns wrap automatically when they become smaller than 280px.
+ * Padding and gap adjust via container queries.
  *
  * @element rr-one-half-one-half-section
  *
- * @slot header - Inhoud boven de kolommen
- * @slot - Linkerkolom (1/2), alternatief voor slot="left"
- * @slot left - Linkerkolom (1/2)
- * @slot right - Rechterkolom (1/2)
- * @slot footer - Inhoud onder de kolommen
+ * @slot header - Content above the columns
+ * @slot - Left column (1/2), alternative for slot="left"
+ * @slot left - Left column (1/2)
+ * @slot right - Right column (1/2)
+ * @slot footer - Content below the columns
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';

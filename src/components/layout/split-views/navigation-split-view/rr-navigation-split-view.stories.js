@@ -141,16 +141,14 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 							id="sidebar-toggle"
 							slot="toolbar"
 							variant="accent-transparent"
-						>
-							Navigatie
-						</rr-button>
+							text="Navigatie"
+						></rr-button>
 						<rr-button
 							id="inspector-toggle"
 							slot="toolbar"
 							variant="accent-transparent"
-						>
-							Inspecteur
-						</rr-button>
+							text="Inspecteur"
+						></rr-button>
 					</rr-top-title-bar>
 					<rr-simple-section>
 						<rr-rich-text>
@@ -228,7 +226,7 @@ export const GenestdeSplitView = () => html`
 				</rr-split-view-pane>
 				<rr-split-view-pane slot="secondary-bar">
 					<rr-container padding="16">
-						<rr-button variant="primary" full-width>Secondaire balk</rr-button>
+						<rr-button variant="primary" full-width text="Secondaire balk"></rr-button>
 					</rr-container>
 				</rr-split-view-pane>
 			</rr-bar-split-view>

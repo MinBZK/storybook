@@ -18,6 +18,10 @@ export default {
 		},
 	},
 	argTypes: {
+		label: {
+			control: 'text',
+			description: 'Label tekst',
+		},
 		checked: {
 			control: 'boolean',
 			description: 'Aangevinkte toestand',
@@ -44,6 +48,7 @@ export default {
 		},
 	},
 	args: {
+		label: 'Checkbox field',
 		checked: false,
 		indeterminate: false,
 		disabled: false,
@@ -51,13 +56,14 @@ export default {
 	},
 };
 
-const Template = ({ checked, indeterminate, disabled, value }) => html`
+const Template = ({ label, checked, indeterminate, disabled, value }) => html`
 	<rr-checkbox-field
+		label=${label}
 		?checked=${checked}
 		?indeterminate=${indeterminate}
 		?disabled=${disabled}
 		value=${value}
-	>Checkbox field</rr-checkbox-field>
+	></rr-checkbox-field>
 `;
 
 export const Standaard = Template.bind({});
@@ -65,12 +71,12 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
-		<rr-checkbox-field value="1">Niet aangevinkt</rr-checkbox-field>
-		<rr-checkbox-field value="2" checked>Aangevinkt</rr-checkbox-field>
-		<rr-checkbox-field value="3" indeterminate>Onbepaald</rr-checkbox-field>
-		<rr-checkbox-field value="4" disabled>Uitgeschakeld</rr-checkbox-field>
-		<rr-checkbox-field value="5" checked disabled>Aangevinkt en uitgeschakeld</rr-checkbox-field>
-		<rr-checkbox-field value="6" indeterminate disabled>Onbepaald en uitgeschakeld</rr-checkbox-field>
+		<rr-checkbox-field label="Niet aangevinkt" value="1"></rr-checkbox-field>
+		<rr-checkbox-field label="Aangevinkt" value="2" checked></rr-checkbox-field>
+		<rr-checkbox-field label="Onbepaald" value="3" indeterminate></rr-checkbox-field>
+		<rr-checkbox-field label="Uitgeschakeld" value="4" disabled></rr-checkbox-field>
+		<rr-checkbox-field label="Aangevinkt en uitgeschakeld" value="5" checked disabled></rr-checkbox-field>
+		<rr-checkbox-field label="Onbepaald en uitgeschakeld" value="6" indeterminate disabled></rr-checkbox-field>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

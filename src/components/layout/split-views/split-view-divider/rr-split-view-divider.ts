@@ -1,15 +1,15 @@
 /**
  * RegelRecht Split View Divider Component (Lit + TypeScript)
  *
- * Een scheidingslijn tussen panelen in een split view.
- * De verdeler loopt van rand tot rand in de richting die loodrecht staat op
- * de oriëntatie. Een optioneel sleephandvat geeft aan dat de verdeler
- * versleepbaar is (toekomstige functionaliteit).
+ * A divider line between panels in a split view.
+ * The divider runs from edge to edge in the direction perpendicular to
+ * the orientation. An optional drag handle indicates that the divider
+ * is draggable (future functionality).
  *
  * @element rr-split-view-divider
  *
- * @attr {string} orientation - Oriëntatie: 'vertical' | 'horizontal'
- * @attr {boolean} has-drag-handle - Toon een sleephandvat
+ * @attr {string} orientation - Orientation: 'vertical' | 'horizontal'
+ * @attr {boolean} has-drag-handle - Show a drag handle
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

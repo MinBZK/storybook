@@ -11,7 +11,7 @@ export default {
 export const Default = {
 	tags: ['!autodocs'],
 	render: () => html`
-		<rr-button id="button-default" expandable>Open menu</rr-button>
+		<rr-button id="button-default" expandable text="Open menu"></rr-button>
 		<rr-menu id="menu-default" anchor="button-default">
 			<rr-menu-item text="Menu item"></rr-menu-item>
 		</rr-menu>
@@ -20,7 +20,7 @@ export const Default = {
 
 export const WithDetails = {
 	render: () => html`
-		<rr-button id="button-details" expandable>Open menu</rr-button>
+		<rr-button id="button-details" expandable text="Open menu"></rr-button>
 		<rr-menu id="menu-details" anchor="button-details">
 			<rr-menu-item text="Bewerk" details="Cmd+E"></rr-menu-item>
 			<rr-menu-item text="Kopieer" details="Cmd+C"></rr-menu-item>
@@ -31,7 +31,7 @@ export const WithDetails = {
 
 export const WithDivider = {
 	render: () => html`
-		<rr-button id="button-divider" expandable>Open menu</rr-button>
+		<rr-button id="button-divider" expandable text="Open menu"></rr-button>
 		<rr-menu id="menu-divider" anchor="button-divider">
 			<rr-menu-item text="Bewerk" details="Cmd+E"></rr-menu-item>
 			<rr-menu-item text="Kopieer" details="Cmd+C"></rr-menu-item>
@@ -44,7 +44,7 @@ export const WithDivider = {
 
 export const Checkbox = {
 	render: () => html`
-		<rr-button id="button-checkbox" expandable>Open menu</rr-button>
+		<rr-button id="button-checkbox" expandable text="Open menu"></rr-button>
 		<rr-menu id="menu-checkbox" anchor="button-checkbox">
 			<rr-menu-item type="checkbox" text="Optie 1" selected></rr-menu-item>
 			<rr-menu-item type="checkbox" text="Optie 2"></rr-menu-item>
@@ -55,7 +55,7 @@ export const Checkbox = {
 
 export const Radio = {
 	render: () => html`
-		<rr-button id="button-radio" expandable>Open menu</rr-button>
+		<rr-button id="button-radio" expandable text="Open menu"></rr-button>
 		<rr-menu id="menu-radio" anchor="button-radio">
 			<rr-menu-item type="radio" text="Optie A" selected></rr-menu-item>
 			<rr-menu-item type="radio" text="Optie B"></rr-menu-item>
@@ -66,7 +66,7 @@ export const Radio = {
 
 export const Disabled = {
 	render: () => html`
-		<rr-button id="button-disabled" expandable>Open menu</rr-button>
+		<rr-button id="button-disabled" expandable text="Open menu"></rr-button>
 		<rr-menu id="menu-disabled" anchor="button-disabled">
 			<rr-menu-item text="Bewerk"></rr-menu-item>
 			<rr-menu-item text="Uitgeschakeld" disabled></rr-menu-item>

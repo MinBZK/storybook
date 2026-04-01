@@ -117,21 +117,76 @@ describe('rr-title-cell', () => {
 		expect(el.hasAttribute('selected')).toBe(true);
 	});
 
-	it('renders slotted title content', async () => {
-		el = await fixture('<rr-title-cell><h2>My title</h2></rr-title-cell>');
+	it('renders text in shadow DOM', async () => {
+		el = await fixture('<rr-title-cell text="My title"></rr-title-cell>');
 		await waitForUpdate(el);
-		expect(el.querySelector('h2')?.textContent?.trim()).toBe('My title');
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title).not.toBeNull();
+		expect(title!.textContent?.trim()).toBe('My title');
 	});
 
-	it('renders slotted overline content', async () => {
-		el = await fixture('<rr-title-cell><p slot="overline">Overline</p></rr-title-cell>');
+	it('renders overline in shadow DOM', async () => {
+		el = await fixture('<rr-title-cell overline="Overline"></rr-title-cell>');
 		await waitForUpdate(el);
-		expect(el.querySelector('[slot="overline"]')?.textContent?.trim()).toBe('Overline');
+		const p = el.shadowRoot!.querySelector('.title-cell__overline');
+		expect(p).not.toBeNull();
+		expect(p!.textContent?.trim()).toBe('Overline');
 	});
 
-	it('renders slotted subtitle content', async () => {
-		el = await fixture('<rr-title-cell><p slot="subtitle">Subtitle</p></rr-title-cell>');
+	it('renders supporting-text in shadow DOM', async () => {
+		el = await fixture('<rr-title-cell supporting-text="Supporting"></rr-title-cell>');
 		await waitForUpdate(el);
-		expect(el.querySelector('[slot="subtitle"]')?.textContent?.trim()).toBe('Subtitle');
+		const p = el.shadowRoot!.querySelector('.title-cell__supporting-text');
+		expect(p).not.toBeNull();
+		expect(p!.textContent?.trim()).toBe('Supporting');
+	});
+
+	it('does not render title element when text is empty', async () => {
+		el = await fixture('<rr-title-cell></rr-title-cell>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.title-cell__title')).toBeNull();
+	});
+
+	it('renders a <p> by default (no heading-level)', async () => {
+		el = await fixture('<rr-title-cell text="Title"></rr-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title).not.toBeNull();
+		expect(title!.tagName.toLowerCase()).toBe('p');
+	});
+
+	it('renders an <h1> when heading-level="1"', async () => {
+		el = await fixture('<rr-title-cell text="Title" heading-level="1"></rr-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title!.tagName.toLowerCase()).toBe('h1');
+	});
+
+	it('renders an <h2> when heading-level="2"', async () => {
+		el = await fixture('<rr-title-cell text="Title" heading-level="2"></rr-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title!.tagName.toLowerCase()).toBe('h2');
+	});
+
+	it('renders an <h6> when heading-level="6"', async () => {
+		el = await fixture('<rr-title-cell text="Title" heading-level="6"></rr-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title!.tagName.toLowerCase()).toBe('h6');
+	});
+
+	it('falls back to <p> when heading-level="0"', async () => {
+		el = await fixture('<rr-title-cell text="Title" heading-level="0"></rr-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title!.tagName.toLowerCase()).toBe('p');
+	});
+
+	it('falls back to <p> when heading-level="7"', async () => {
+		el = await fixture('<rr-title-cell text="Title" heading-level="7"></rr-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title!.tagName.toLowerCase()).toBe('p');
 	});
 });

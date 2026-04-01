@@ -61,7 +61,7 @@ describe('rr-top-title-bar – toolbar slot', () => {
 	it('renders the toolbar slot', async () => {
 		el = await fixture<RRTopTitleBar>(`
 			<rr-top-title-bar title="Titel">
-				<rr-button slot="toolbar">Actie</rr-button>
+				<rr-button slot="toolbar" text="Actie"></rr-button>
 			</rr-top-title-bar>
 		`);
 		await waitForUpdate(el);
@@ -162,7 +162,7 @@ describe('rr-top-title-bar – sluitknop', () => {
 	it('renders the dismiss label text', async () => {
 		el = await fixture<RRTopTitleBar>('<rr-top-title-bar title="Titel" dismiss-label="Annuleer"></rr-top-title-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.top-title-bar__dismiss-button rr-button')?.textContent?.trim()).toBe('Annuleer');
+		expect(el.shadowRoot!.querySelector('.top-title-bar__dismiss-button rr-button')?.getAttribute('text')).toBe('Annuleer');
 	});
 
 	it('fires a dismiss event when _handleDismiss is called', async () => {

@@ -8,19 +8,22 @@
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable - Whether the button has a icon to indicate it opens a menu or popover
  * @attr {boolean} full-width - Whether the button stretches to fill its container width
- * @attr {string} accessible-label - Accessible label for the button, overrides slot text for screen readers
+ * @attr {string} text - Button text
+ * @attr {string} start-icon - Icon name for the start icon (before text)
+ * @attr {string} end-icon - Icon name for the end icon (after text)
+ * @attr {string} accessible-label - Accessible label for the button, overrides text for screen readers
  * @attr {string} href - When set, renders an <a> element instead of <button>
  * @attr {string} target - Link target (e.g. '_blank'); only used when href is set
  * @attr {string} rel - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
  *
- * @slot - Slot for button text
- * @slot (auto) - Place an rr-icon before or after the text to auto-detect position
+ * @slot start-icon - Slot for a custom start icon (e.g. custom SVG). Only used when start-icon attribute is not set.
+ * @slot end-icon - Slot for a custom end icon (e.g. custom SVG). Only used when end-icon attribute is not set.
  *
  * @fires click - When button is clicked (not fired when disabled)
  */
 
 import { LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { styles } from './rr-button.styles.ts';
 import { template } from './rr-button.template.ts';
 import './../../content/icon/rr-icon.ts';
@@ -37,11 +40,6 @@ type Variant =
 	| 'danger-tinted';
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
-
-interface IconState {
-	name: string;
-	attributes: Record<string, string>;
-}
 
 @customElement('rr-button')
 export class RRButton extends LitElement {
@@ -68,6 +66,18 @@ export class RRButton extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
+	/** Button text. */
+	@property({ type: String })
+	text = '';
+
+	/** Icon name for the start icon (before text). When not set, the start-icon slot is used. */
+	@property({ type: String, attribute: 'start-icon' })
+	startIcon = '';
+
+	/** Icon name for the end icon (after text). When not set, the end-icon slot is used. */
+	@property({ type: String, attribute: 'end-icon' })
+	endIcon = '';
+
 	/** Accessible label forwarded to the inner <button> or <a>. Use when visible text alone lacks context. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
@@ -87,111 +97,15 @@ export class RRButton extends LitElement {
 	@property({ type: String })
 	rel: string | undefined = undefined;
 
-	@state()
-	_iconStart: IconState | null = null;
+	private _warnedA11y = false;
 
-	@state()
-	_iconEnd: IconState | null = null;
-
-	private _observer: MutationObserver | null = null;
-
-	override connectedCallback(): void {
-		super.connectedCallback();
-		this._observer = new MutationObserver(() => this._detectIconPosition());
-		this._observer.observe(this, { childList: true, subtree: true, attributes: true });
-		this.updateComplete.then(() => this._detectIconPosition());
-	}
-
-	override disconnectedCallback(): void {
-		super.disconnectedCallback();
-		this._observer?.disconnect();
-		this._observer = null;
-	}
-
-	private _extractAttributes(el: Element): Record<string, string> {
-		const attrs: Record<string, string> = {};
-		for (const attr of Array.from(el.attributes)) {
-			if (attr.name !== 'slot') {
-				attrs[attr.name] = attr.value;
-			}
-		}
-		return attrs;
-	}
-
-	private _getEffectiveNodes(): Node[] {
-		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
-		if (!slot) {
-			return Array.from(this.childNodes);
-		}
-		return slot.assignedNodes({ flatten: true });
-	}
-
-	private _detectIconPosition(): void {
-		const effectiveNodes = this._getEffectiveNodes();
-
-		const icons = effectiveNodes.filter(
-			(n): n is Element =>
-				n.nodeType === Node.ELEMENT_NODE &&
-				(n as Element).tagName.toLowerCase() === 'rr-icon'
-		);
-
-		if (icons.length === 0) {
-			this._iconStart = null;
-			this._iconEnd = null;
-			return;
-		}
-
-		if (icons.length > 2) {
-			console.warn('<rr-button>: Too many rr-icon elements provided. Maximum is one before and one after the text. Extra icons will be ignored.');
-			icons.splice(2);
-		}
-
-		const significantNodes = effectiveNodes.filter(
-			n =>
-				n.nodeType === Node.ELEMENT_NODE ||
-				(n.nodeType === Node.TEXT_NODE && n.textContent?.trim() !== '')
-		);
-
-		if (icons.length === 2) {
-			const first = significantNodes[0];
-			const last = significantNodes[significantNodes.length - 1];
-			const firstIsIcon = (first as Element)?.tagName?.toLowerCase() === 'rr-icon';
-			const lastIsIcon = (last as Element)?.tagName?.toLowerCase() === 'rr-icon';
-
-			if (!firstIsIcon || !lastIsIcon) {
-				console.warn('<rr-button>: Two rr-icon elements detected but they are not surrounding the text. Expected pattern: <rr-icon> text <rr-icon>. Falling back to using the first icon as a start icon.');
-				this._iconStart = {
-					name: icons[0].getAttribute('name') ?? '',
-					attributes: this._extractAttributes(icons[0]),
-				};
-				this._iconEnd = null;
-				return;
-			}
-
-			this._iconStart = {
-				name: icons[0].getAttribute('name') ?? '',
-				attributes: this._extractAttributes(icons[0]),
-			};
-			this._iconEnd = {
-				name: icons[1].getAttribute('name') ?? '',
-				attributes: this._extractAttributes(icons[1]),
-			};
-			return;
-		}
-
-		const icon = icons[0];
-		const isFirst = significantNodes[0] === icon;
-		const iconState: IconState = {
-			name: icon.getAttribute('name') ?? '',
-			attributes: this._extractAttributes(icon),
-		};
-
-		if (isFirst) {
-			this._iconStart = iconState;
-			this._iconEnd = null;
-		} else {
-			this._iconStart = null;
-			this._iconEnd = iconState;
+	override updated(): void {
+		const isEmpty = !this.text && !this.accessibleLabel;
+		if (isEmpty && !this._warnedA11y) {
+			this._warnedA11y = true;
+			console.warn('<rr-button>: button has no text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2).');
+		} else if (!isEmpty) {
+			this._warnedA11y = false;
 		}
 	}
 
@@ -213,7 +127,6 @@ export class RRButton extends LitElement {
 	override render() {
 		return template.call(this, {
 			handleClick: this._handleClick.bind(this),
-			detectIconPosition: this._detectIconPosition.bind(this),
 		});
 	}
 }

@@ -78,50 +78,45 @@ export const styles = css`
 
 	/* # Overline */
 
-	::slotted([slot='overline']) {
+	.text-cell__overline {
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
 		color: var(--semantics-content-secondary-color);
 	}
 
-	:host([size='md']) ::slotted([slot='overline']),
-	:host(:not([size])) ::slotted([slot='overline']) {
+	:host([size='md']) .text-cell__overline,
+	:host(:not([size])) .text-cell__overline {
 		font: var(--primitives-font-body-xs-regular-tight);
 	}
 
-	:host([size='sm']) ::slotted([slot='overline']) {
+	:host([size='sm']) .text-cell__overline {
 		font: var(--primitives-font-body-xxs-regular-tight);
 	}
 
-	:host([horizontal-alignment='right']) ::slotted([slot='overline']) {
+	:host([horizontal-alignment='right']) .text-cell__overline {
 		text-align: right;
 	}
 
 
 	/* # Text */
 
-	::slotted([slot='text']),
-	::slotted(:not([slot])) {
+	.text-cell__text {
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
 	}
 
-	:host([size='md']) ::slotted([slot='text']),
-	:host(:not([size])) ::slotted([slot='text']),
-	:host([size='md']) ::slotted(:not([slot])),
-	:host(:not([size])) ::slotted(:not([slot])) {
+	:host([size='md']) .text-cell__text,
+	:host(:not([size])) .text-cell__text {
 		font: var(--primitives-font-body-md-regular-tight);
 	}
 
-	:host([size='sm']) ::slotted([slot='text']),
-	:host([size='sm']) ::slotted(:not([slot])) {
+	:host([size='sm']) .text-cell__text {
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
 
-	:host([horizontal-alignment='right']) ::slotted([slot='text']),
-	:host([horizontal-alignment='right']) ::slotted(:not([slot])) {
+	:host([horizontal-alignment='right']) .text-cell__text {
 		text-align: right;
 	}
 
@@ -130,59 +125,54 @@ export const styles = css`
 
 	/* ## Color: default */
 
-	:host([color='default']) ::slotted([slot='text']),
-	:host(:not([color])) ::slotted([slot='text']),
-	:host([color='default']) ::slotted(:not([slot])),
-	:host(:not([color])) ::slotted(:not([slot])) {
+	:host([color='default']) .text-cell__text,
+	:host(:not([color])) .text-cell__text {
 		color: var(--semantics-content-color);
 	}
 
 	/* ## Color: secondary */
 
-	:host([color='secondary']) ::slotted([slot='text']),
-	:host([color='secondary']) ::slotted(:not([slot])) {
+	:host([color='secondary']) .text-cell__text {
 		color: var(--semantics-content-secondary-color);
 	}
 
 	/* ## Color: inherit */
 
-	:host([color='inherit']) ::slotted([slot='text']),
-	:host([color='inherit']) ::slotted(:not([slot])),
-	:host([color='inherit']) ::slotted([slot='overline']),
-	:host([color='inherit']) ::slotted([slot='supporting-text']) {
+	:host([color='inherit']) .text-cell__text,
+	:host([color='inherit']) .text-cell__overline,
+	:host([color='inherit']) .text-cell__supporting-text {
 		color: inherit;
 	}
 
 
 	/* # Supporting text */
 
-	::slotted([slot='supporting-text']) {
+	.text-cell__supporting-text {
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
 		color: var(--semantics-content-secondary-color);
 	}
 
-	:host([size='md']) ::slotted([slot='supporting-text']),
-	:host(:not([size])) ::slotted([slot='supporting-text']) {
+	:host([size='md']) .text-cell__supporting-text,
+	:host(:not([size])) .text-cell__supporting-text {
 		font: var(--primitives-font-body-xs-regular-tight);
 	}
 
-	:host([size='sm']) ::slotted([slot='supporting-text']) {
+	:host([size='sm']) .text-cell__supporting-text {
 		font: var(--primitives-font-body-xxs-regular-tight);
 	}
 
-	:host([horizontal-alignment='right']) ::slotted([slot='supporting-text']) {
+	:host([horizontal-alignment='right']) .text-cell__supporting-text {
 		text-align: right;
 	}
 
 
 	/* # Selected */
 
-	:host([selected]) ::slotted([slot='text']),
-	:host([selected]) ::slotted(:not([slot])),
-	:host([selected]) ::slotted([slot='overline']),
-	:host([selected]) ::slotted([slot='supporting-text']) {
+	:host([selected]) .text-cell__text,
+	:host([selected]) .text-cell__overline,
+	:host([selected]) .text-cell__supporting-text {
 		color: var(--semantics-controls-is-selected-contrast-color);
 	}
 
@@ -190,8 +180,7 @@ export const styles = css`
 	/* # Forced colors */
 
 	@media (forced-colors: active) {
-		::slotted([slot='text']),
-		::slotted(:not([slot])) {
+		.text-cell__text {
 			forced-color-adjust: none;
 		}
 	}

@@ -105,25 +105,59 @@ describe('rr-text-cell', () => {
 		expect(el.getAttribute('vertical-alignment')).toBe('bottom');
 	});
 
-	it('renders slotted text content', async () => {
-		el = await fixture('<rr-text-cell><p slot="text">Hallo</p></rr-text-cell>');
+	it('renders text in shadow DOM', async () => {
+		el = await fixture('<rr-text-cell text="Hallo"></rr-text-cell>');
 		await waitForUpdate(el);
-		const p = el.querySelector('[slot="text"]');
-		expect(p?.textContent?.trim()).toBe('Hallo');
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p).not.toBeNull();
+		expect(p!.textContent?.trim()).toBe('Hallo');
 	});
 
-	it('renders slotted overline content', async () => {
-		el = await fixture('<rr-text-cell><p slot="overline">Overline</p></rr-text-cell>');
+	it('renders overline in shadow DOM', async () => {
+		el = await fixture('<rr-text-cell overline="Overline"></rr-text-cell>');
 		await waitForUpdate(el);
-		const p = el.querySelector('[slot="overline"]');
-		expect(p?.textContent?.trim()).toBe('Overline');
+		const p = el.shadowRoot!.querySelector('.text-cell__overline');
+		expect(p).not.toBeNull();
+		expect(p!.textContent?.trim()).toBe('Overline');
 	});
 
-	it('renders slotted supporting-text content', async () => {
-		el = await fixture('<rr-text-cell><p slot="supporting-text">Supporting</p></rr-text-cell>');
+	it('renders supporting-text in shadow DOM', async () => {
+		el = await fixture('<rr-text-cell supporting-text="Supporting"></rr-text-cell>');
 		await waitForUpdate(el);
-		const p = el.querySelector('[slot="supporting-text"]');
-		expect(p?.textContent?.trim()).toBe('Supporting');
+		const p = el.shadowRoot!.querySelector('.text-cell__supporting-text');
+		expect(p).not.toBeNull();
+		expect(p!.textContent?.trim()).toBe('Supporting');
+	});
+
+	it('does not render text element when text is empty', async () => {
+		el = await fixture('<rr-text-cell></rr-text-cell>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.text-cell__text')).toBeNull();
+	});
+
+	it('renders **bold** markers as <b> elements', async () => {
+		el = await fixture('<rr-text-cell text="Hello **world**"></rr-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p).not.toBeNull();
+		expect(p!.querySelector('b')?.textContent).toBe('world');
+		expect(p!.textContent?.trim()).toBe('Hello world');
+	});
+
+	it('renders unbalanced ** as plain text', async () => {
+		el = await fixture('<rr-text-cell text="Hello **world"></rr-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p!.querySelector('b')).toBeNull();
+		expect(p!.textContent?.trim()).toBe('Hello **world');
+	});
+
+	it('renders plain text without bold when no ** markers', async () => {
+		el = await fixture('<rr-text-cell text="No bold here"></rr-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p!.querySelector('b')).toBeNull();
+		expect(p!.textContent?.trim()).toBe('No bold here');
 	});
 
 	it('defaults selected to false', async () => {

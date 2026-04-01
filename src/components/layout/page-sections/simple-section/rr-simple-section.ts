@@ -1,15 +1,15 @@
 /**
  * RegelRecht Simple Section Component (Lit + TypeScript)
  *
- * Een basissectie met responsieve padding en gap op basis van containergrootte.
- * Bevat optionele header- en footerslots. De padding en ruimte tussen de slots
- * passen zich automatisch aan via container queries.
+ * A basic section with responsive padding and gap based on container size.
+ * Contains optional header and footer slots. The padding and spacing between
+ * slots adjust automatically via container queries.
  *
  * @element rr-simple-section
  *
- * @slot header - Inhoud boven de hoofdinhoud
- * @slot - Hoofdinhoud
- * @slot footer - Inhoud onder de hoofdinhoud
+ * @slot header - Content above the main content
+ * @slot - Main content
+ * @slot footer - Content below the main content
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';

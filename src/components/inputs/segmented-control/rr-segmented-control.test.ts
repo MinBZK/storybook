@@ -6,9 +6,9 @@ import './rr-segmented-control.ts';
 function radioFixture(selectedValue = 'a'): string {
 	return `
 		<rr-segmented-control value="${selectedValue}" name="test">
-			<rr-segmented-control-item value="a">Alpha</rr-segmented-control-item>
-			<rr-segmented-control-item value="b">Beta</rr-segmented-control-item>
-			<rr-segmented-control-item value="c">Gamma</rr-segmented-control-item>
+			<rr-segmented-control-item value="a" text="Alpha"></rr-segmented-control-item>
+			<rr-segmented-control-item value="b" text="Beta"></rr-segmented-control-item>
+			<rr-segmented-control-item value="c" text="Gamma"></rr-segmented-control-item>
 		</rr-segmented-control>
 	`;
 }
@@ -89,7 +89,7 @@ describe('rr-segmented-control – state sync', () => {
 	it('propagates size to items', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control size="sm">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -99,8 +99,8 @@ describe('rr-segmented-control – state sync', () => {
 	it('disables all items when parent is disabled', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control disabled>
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
-				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
+				<rr-segmented-control-item value="b" text="B"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -110,8 +110,8 @@ describe('rr-segmented-control – state sync', () => {
 	it('preserves item-level disabled when parent is not disabled', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control>
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
-				<rr-segmented-control-item value="b" disabled>B</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
+				<rr-segmented-control-item value="b" disabled text="B"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -123,8 +123,8 @@ describe('rr-segmented-control – state sync', () => {
 	it('re-enables group-disabled items when parent disabled is removed', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control disabled>
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
-				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
+				<rr-segmented-control-item value="b" text="B"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -136,8 +136,8 @@ describe('rr-segmented-control – state sync', () => {
 	it('does not re-enable individually disabled items when parent disabled is removed', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control disabled>
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
-				<rr-segmented-control-item value="b" disabled>B</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
+				<rr-segmented-control-item value="b" disabled text="B"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -151,7 +151,7 @@ describe('rr-segmented-control – state sync', () => {
 	it('propagates variant to items', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control variant="icon">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -161,7 +161,7 @@ describe('rr-segmented-control – state sync', () => {
 	it('forwards name as groupName to items', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control name="view">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -215,8 +215,8 @@ describe('rr-segmented-control – checkbox change', () => {
 	it('fires change with values array when item is checked', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control type="checkbox">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
-				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
+				<rr-segmented-control-item value="b" text="B"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -231,8 +231,8 @@ describe('rr-segmented-control – checkbox change', () => {
 	it('removes value from values when item is unchecked', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control type="checkbox">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
-				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
+				<rr-segmented-control-item value="b" text="B"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		(el as RRSegmentedControl).values = ['a', 'b'];
@@ -262,8 +262,8 @@ describe('rr-segmented-control – keyboard navigation', () => {
 	it('ArrowRight does nothing in checkbox mode', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control type="checkbox">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
-				<rr-segmented-control-item value="b">B</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
+				<rr-segmented-control-item value="b" text="B"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		(el as RRSegmentedControl).values = ['a'];
@@ -337,7 +337,7 @@ describe('rr-segmented-control – ARIA', () => {
 	it('has role="group" for checkbox type', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control type="checkbox">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -370,7 +370,7 @@ describe('rr-segmented-control – accessibility', () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control>
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -383,7 +383,7 @@ describe('rr-segmented-control – accessibility', () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control accessible-label="Weergave">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);
@@ -393,7 +393,7 @@ describe('rr-segmented-control – accessibility', () => {
 	it('sets aria-label on host from accessible-label', async () => {
 		el = await fixture<RRSegmentedControl>(`
 			<rr-segmented-control accessible-label="Weergave">
-				<rr-segmented-control-item value="a">A</rr-segmented-control-item>
+				<rr-segmented-control-item value="a" text="A"></rr-segmented-control-item>
 			</rr-segmented-control>
 		`);
 		await waitForUpdate(el);

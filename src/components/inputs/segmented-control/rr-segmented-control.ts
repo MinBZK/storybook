@@ -25,15 +25,16 @@
  * @attr {string}  value        - Value for this item
  * @attr {boolean} selected     - Whether this item is selected (set by parent)
  * @attr {boolean} disabled     - Disabled state
+ * @attr {string}  text         - Text label (shown when parent variant="text",
+ *                                always used as aria-label and tooltip for icon items)
+ * @attr {string}  icon         - Icon name for rr-icon
  *
- * @slot         - Text label content (shown when parent variant="text",
- *                 always used as aria-label and tooltip for icon items)
- * @slot icon    - Icon content (shown when parent variant="icon")
+ * @slot icon    - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
  * @fires item-change - When item is activated; detail: { value: string, checked: boolean }
  */
 import { LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import {
 	segmentedControlStyles,
 	segmentedControlItemStyles,
@@ -80,21 +81,13 @@ export class RRSegmentedControlItem extends LitElement {
 	@property({ type: String })
 	groupName = '';
 
-	/**
-	 * Text content of the default slot.
-	 * Used as aria-label and title tooltip for icon items so screen readers
-	 * and pointer users can identify the option.
-	 */
-	@state()
-	_labelText = '';
+	/** Text label for the item. Used as visible text and as aria-label/tooltip for icon variant. */
+	@property({ type: String })
+	text = '';
 
-	public _onDefaultSlotChange(e: Event): void {
-		const slot = e.target as HTMLSlotElement;
-		this._labelText = slot.assignedNodes({ flatten: true })
-			.map(node => node.textContent ?? '')
-			.join('')
-			.trim();
-	}
+	/** Icon name for rr-icon. When not set, the icon slot is used. */
+	@property({ type: String })
+	icon = '';
 
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;

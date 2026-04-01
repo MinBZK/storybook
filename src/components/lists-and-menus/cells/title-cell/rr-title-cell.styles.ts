@@ -78,7 +78,7 @@ export const styles = css`
 
 	/* # Overline */
 
-	::slotted([slot='overline']) {
+	.title-cell__overline {
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
@@ -86,65 +86,65 @@ export const styles = css`
 		color: var(--semantics-content-secondary-color);
 	}
 
-	:host([horizontal-alignment='right']) ::slotted([slot='overline']) {
+	:host([horizontal-alignment='right']) .title-cell__overline {
 		text-align: right;
 	}
 
 
 	/* # Title */
 
-	::slotted(:not([slot])) {
+	.title-cell__title {
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
 		color: var(--semantics-content-color);
 	}
 
-	:host([horizontal-alignment='right']) ::slotted(:not([slot])) {
+	:host([horizontal-alignment='right']) .title-cell__title {
 		text-align: right;
 	}
 
 	/* ## Size 1 */
 
-	:host([size='1']) ::slotted(:not([slot])) {
+	:host([size='1']) .title-cell__title {
 		font: var(--primitives-font-display-1-sm);
 	}
 
 	/* ## Size 2 */
 
-	:host([size='2']) ::slotted(:not([slot])) {
+	:host([size='2']) .title-cell__title {
 		font: var(--primitives-font-display-2-sm);
 	}
 
 	/* ## Size 3 */
 
-	:host([size='3']) ::slotted(:not([slot])) {
+	:host([size='3']) .title-cell__title {
 		font: var(--primitives-font-display-3-sm);
 	}
 
 	/* ## Size 4 */
 
-	:host([size='4']) ::slotted(:not([slot])) {
+	:host([size='4']) .title-cell__title {
 		font: var(--primitives-font-display-4-sm);
 	}
 
 	/* ## Size 5 */
 
-	:host([size='5']) ::slotted(:not([slot])),
-	:host(:not([size])) ::slotted(:not([slot])) {
+	:host([size='5']) .title-cell__title,
+	:host(:not([size])) .title-cell__title {
 		font: var(--primitives-font-display-5-sm);
 	}
 
 	/* ## Size 6 */
 
-	:host([size='6']) ::slotted(:not([slot])) {
+	:host([size='6']) .title-cell__title {
 		font: var(--primitives-font-display-6-sm);
 	}
 
 
 	/* # Subtitle */
 
-	::slotted([slot='subtitle']) {
+	.title-cell__supporting-text {
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
@@ -152,25 +152,25 @@ export const styles = css`
 		color: var(--semantics-content-secondary-color);
 	}
 
-	:host([horizontal-alignment='right']) ::slotted([slot='subtitle']) {
+	:host([horizontal-alignment='right']) .title-cell__supporting-text {
 		text-align: right;
 	}
 
 
 	/* # Color: inherit */
 
-	:host([color='inherit']) ::slotted(:not([slot])),
-	:host([color='inherit']) ::slotted([slot='overline']),
-	:host([color='inherit']) ::slotted([slot='subtitle']) {
+	:host([color='inherit']) .title-cell__title,
+	:host([color='inherit']) .title-cell__overline,
+	:host([color='inherit']) .title-cell__supporting-text {
 		color: inherit;
 	}
 
 
 	/* # Selected */
 
-	:host([selected]) ::slotted(:not([slot])),
-	:host([selected]) ::slotted([slot='overline']),
-	:host([selected]) ::slotted([slot='subtitle']) {
+	:host([selected]) .title-cell__title,
+	:host([selected]) .title-cell__overline,
+	:host([selected]) .title-cell__supporting-text {
 		color: var(--semantics-controls-is-selected-contrast-color);
 	}
 
@@ -178,7 +178,7 @@ export const styles = css`
 	/* # Forced colors */
 
 	@media (forced-colors: active) {
-		::slotted(:not([slot])) {
+		.title-cell__title {
 			forced-color-adjust: none;
 		}
 	}

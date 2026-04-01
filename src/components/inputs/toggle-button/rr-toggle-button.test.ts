@@ -22,14 +22,14 @@ describe('rr-toggle-button', () => {
 	});
 
 	it('renders a button element by default', async () => {
-		el = await fixture('<rr-toggle-button>Label</rr-toggle-button>');
+		el = await fixture('<rr-toggle-button text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('input')).toBeNull();
 	});
 
 	it('type=checkbox renders an input[type=checkbox]', async () => {
-		el = await fixture('<rr-toggle-button type="checkbox">Label</rr-toggle-button>');
+		el = await fixture('<rr-toggle-button type="checkbox" text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input');
 		expect(input).not.toBeNull();
@@ -37,7 +37,7 @@ describe('rr-toggle-button', () => {
 	});
 
 	it('type=radio renders an input[type=radio]', async () => {
-		el = await fixture('<rr-toggle-button type="radio">Label</rr-toggle-button>');
+		el = await fixture('<rr-toggle-button type="radio" text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input');
 		expect(input).not.toBeNull();
@@ -45,9 +45,36 @@ describe('rr-toggle-button', () => {
 	});
 
 	it('checkbox/radio renders a label wrapper', async () => {
-		el = await fixture('<rr-toggle-button type="checkbox">Label</rr-toggle-button>');
+		el = await fixture('<rr-toggle-button type="checkbox" text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('label')).not.toBeNull();
+	});
+
+	it('renders text from text attribute', async () => {
+		el = await fixture('<rr-toggle-button text="Bewaren"></rr-toggle-button>');
+		await waitForUpdate(el);
+		const textEl = el.shadowRoot!.querySelector('.toggle-button__text');
+		expect(textEl).not.toBeNull();
+		expect(textEl!.textContent).toBe('Bewaren');
+	});
+
+	it('renders icon from icon attribute', async () => {
+		el = await fixture('<rr-toggle-button text="Bewaren" icon="heart"></rr-toggle-button>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.toggle-button__icon');
+		expect(icon).not.toBeNull();
+		expect(icon!.getAttribute('name')).toBe('heart');
+	});
+
+	it('renders icon slot when icon attribute is not set', async () => {
+		el = await fixture(`
+			<rr-toggle-button text="Custom">
+				<svg slot="icon" width="20" height="20"><circle cx="10" cy="10" r="8"/></svg>
+			</rr-toggle-button>
+		`);
+		await waitForUpdate(el);
+		const slot = el.shadowRoot!.querySelector('slot[name="icon"]') as HTMLSlotElement;
+		expect(slot).not.toBeNull();
 	});
 });
 
@@ -82,141 +109,45 @@ describe('rr-toggle-button – state', () => {
 	});
 
 	it('button type: button has aria-pressed=false when not selected', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('button')!;
 		expect(button.getAttribute('aria-pressed')).toBe('false');
 	});
 
 	it('button type: button has aria-pressed=true when selected', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button selected>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label" selected></rr-toggle-button>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('button')!;
 		expect(button.getAttribute('aria-pressed')).toBe('true');
 	});
 
 	it('checkbox type: input.checked matches selected property', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" selected>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" text="Label" selected></rr-toggle-button>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
 		expect(input.checked).toBe(true);
 	});
 
 	it('checkbox type: input is disabled when disabled attribute is set', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" disabled>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" text="Label" disabled></rr-toggle-button>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
 		expect(input.disabled).toBe(true);
 	});
 
 	it('forwards name to the input', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" name="filter">Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" name="filter" text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
 		expect(input.name).toBe('filter');
 	});
 
 	it('forwards value to the input', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" value="optie-a">Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" value="optie-a" text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
 		expect(input.value).toBe('optie-a');
-	});
-});
-
-
-/* ============================================================
-   Icon detection
-   ============================================================ */
-
-describe('rr-toggle-button – icon detection', () => {
-	let el: RRToggleButton;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('renders no shadow icon when there is no rr-icon', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.toggle-button__icon')).toBeNull();
-	});
-
-	it('renders a shadow icon when rr-icon is present', async () => {
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button>
-				<rr-icon name="heart"></rr-icon>
-				Label
-			</rr-toggle-button>
-		`);
-		await waitForUpdate(el);
-		const icon = el.shadowRoot!.querySelector('.toggle-button__icon');
-		expect(icon).not.toBeNull();
-		expect(icon!.getAttribute('name')).toBe('heart');
-	});
-
-	it('hides the slotted rr-icon', async () => {
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button>
-				<rr-icon name="heart"></rr-icon>
-				Label
-			</rr-toggle-button>
-		`);
-		await waitForUpdate(el);
-		// The slotted icon should be hidden via ::slotted(rr-icon) { display: none }
-		// We verify _iconName is set correctly instead
-		expect(el._iconName).toBe('heart');
-	});
-
-	it('re-detects when an icon is dynamically added', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
-		await waitForUpdate(el);
-		expect(el._iconName).toBeNull();
-
-		const icon = document.createElement('rr-icon');
-		icon.setAttribute('name', 'plus');
-		el.prepend(icon);
-		await waitForUpdate(el);
-
-		expect(el._iconName).toBe('plus');
-	});
-
-	it('re-detects when an icon is dynamically removed', async () => {
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button>
-				<rr-icon name="heart"></rr-icon>
-				Label
-			</rr-toggle-button>
-		`);
-		await waitForUpdate(el);
-		expect(el._iconName).toBe('heart');
-
-		el.querySelector('rr-icon')!.remove();
-		await waitForUpdate(el);
-
-		expect(el._iconName).toBeNull();
-	});
-
-	it('disconnects observer when removed from DOM', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
-		await waitForUpdate(el);
-		expect((el as any)._observer).not.toBeNull();
-
-		el.remove();
-		expect((el as any)._observer).toBeNull();
-	});
-
-	it('re-creates observer when re-inserted into DOM', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
-		await waitForUpdate(el);
-
-		const parent = el.parentElement!;
-		el.remove();
-		expect((el as any)._observer).toBeNull();
-
-		parent.appendChild(el);
-		await waitForUpdate(el);
-		expect((el as any)._observer).not.toBeNull();
 	});
 });
 
@@ -232,29 +163,20 @@ describe('rr-toggle-button – icon-only', () => {
 		if (el) cleanup(el);
 	});
 
-	it('sets icon-only attribute when only an icon is present', async () => {
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button accessible-label="Favoriet">
-				<rr-icon name="heart"></rr-icon>
-			</rr-toggle-button>
-		`);
+	it('sets icon-only attribute when only icon is set (no text)', async () => {
+		el = await fixture<RRToggleButton>('<rr-toggle-button icon="heart" accessible-label="Favoriet"></rr-toggle-button>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('icon-only')).toBe(true);
 	});
 
 	it('does not set icon-only when there is text', async () => {
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button>
-				<rr-icon name="heart"></rr-icon>
-				Label
-			</rr-toggle-button>
-		`);
+		el = await fixture<RRToggleButton>('<rr-toggle-button icon="heart" text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('icon-only')).toBe(false);
 	});
 
 	it('does not set icon-only when there is no icon', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('icon-only')).toBe(false);
 	});
@@ -262,11 +184,7 @@ describe('rr-toggle-button – icon-only', () => {
 	it('warns when icon-only without accessible-label', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button>
-				<rr-icon name="heart"></rr-icon>
-			</rr-toggle-button>
-		`);
+		el = await fixture<RRToggleButton>('<rr-toggle-button icon="heart"></rr-toggle-button>');
 		await waitForUpdate(el);
 
 		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
@@ -276,11 +194,7 @@ describe('rr-toggle-button – icon-only', () => {
 	it('does not warn when icon-only with accessible-label', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-		el = await fixture<RRToggleButton>(`
-			<rr-toggle-button accessible-label="Favoriet">
-				<rr-icon name="heart"></rr-icon>
-			</rr-toggle-button>
-		`);
+		el = await fixture<RRToggleButton>('<rr-toggle-button icon="heart" accessible-label="Favoriet"></rr-toggle-button>');
 		await waitForUpdate(el);
 
 		expect(warnSpy).not.toHaveBeenCalled();
@@ -301,7 +215,7 @@ describe('rr-toggle-button – interaction (button)', () => {
 	});
 
 	it('clicking toggles selected', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		el.shadowRoot!.querySelector('button')!.click();
 		await waitForUpdate(el);
@@ -309,7 +223,7 @@ describe('rr-toggle-button – interaction (button)', () => {
 	});
 
 	it('clicking again deselects', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button selected>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label" selected></rr-toggle-button>');
 		await waitForUpdate(el);
 		el.shadowRoot!.querySelector('button')!.click();
 		await waitForUpdate(el);
@@ -317,7 +231,7 @@ describe('rr-toggle-button – interaction (button)', () => {
 	});
 
 	it('click dispatches change event with correct detail', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button value="optie">Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label" value="optie"></rr-toggle-button>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -329,7 +243,7 @@ describe('rr-toggle-button – interaction (button)', () => {
 	});
 
 	it('disabled button does not toggle when clicked', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button disabled>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label" disabled></rr-toggle-button>');
 		await waitForUpdate(el);
 		el.shadowRoot!.querySelector('button')!.click();
 		await waitForUpdate(el);
@@ -350,7 +264,7 @@ describe('rr-toggle-button – interaction (checkbox)', () => {
 	});
 
 	it('input change syncs selected property', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox">Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
@@ -362,7 +276,7 @@ describe('rr-toggle-button – interaction (checkbox)', () => {
 	});
 
 	it('input change dispatches change event', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" value="check">Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" value="check" text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -390,7 +304,7 @@ describe('rr-toggle-button – interaction (radio)', () => {
 	});
 
 	it('toggle() on selected radio does nothing', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button type="radio" selected>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button type="radio" text="Label" selected></rr-toggle-button>');
 		await waitForUpdate(el);
 		el.toggle();
 		await waitForUpdate(el);
@@ -398,7 +312,7 @@ describe('rr-toggle-button – interaction (radio)', () => {
 	});
 
 	it('toggle() on unselected radio selects it', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button type="radio">Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button type="radio" text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		el.toggle();
 		await waitForUpdate(el);
@@ -419,7 +333,7 @@ describe('rr-toggle-button – toggle()', () => {
 	});
 
 	it('toggle() toggles button type', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		el.toggle();
 		expect(el.selected).toBe(true);
@@ -428,7 +342,7 @@ describe('rr-toggle-button – toggle()', () => {
 	});
 
 	it('toggle() does nothing when disabled', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button disabled>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label" disabled></rr-toggle-button>');
 		await waitForUpdate(el);
 		el.toggle();
 		expect(el.selected).toBe(false);
@@ -448,21 +362,21 @@ describe('rr-toggle-button – accessibility', () => {
 	});
 
 	it('forwards accessible-label to button aria-label', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button accessible-label="Sluiten">✕</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button accessible-label="Sluiten" text="✕"></rr-toggle-button>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('button')!;
 		expect(button.getAttribute('aria-label')).toBe('Sluiten');
 	});
 
 	it('forwards accessible-label to input aria-label', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" accessible-label="Sluiten">✕</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button type="checkbox" accessible-label="Sluiten" text="✕"></rr-toggle-button>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('aria-label')).toBe('Sluiten');
 	});
 
 	it('does not set aria-label when accessible-label is empty', async () => {
-		el = await fixture<RRToggleButton>('<rr-toggle-button>Label</rr-toggle-button>');
+		el = await fixture<RRToggleButton>('<rr-toggle-button text="Label"></rr-toggle-button>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('button')!;
 		expect(button.hasAttribute('aria-label')).toBe(false);

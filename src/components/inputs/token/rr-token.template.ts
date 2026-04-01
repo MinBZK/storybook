@@ -26,13 +26,12 @@ export function tokenTemplate(component: RRToken): TemplateResult {
 					<rr-icon-button
 						size="sm"
 						variant="neutral-tinted"
+						icon="dismiss-small"
+						text=${component.dismissLabel}
 						accessible-label=${component.dismissLabel}
 						?disabled=${component.disabled}
 						@click=${component._handleDismiss}
-					>
-						<rr-icon name="dismiss-small"></rr-icon>
-						${component.dismissLabel}
-					</rr-icon-button>
+					></rr-icon-button>
 				</div>
 			` : nothing}
 		</div>

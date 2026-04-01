@@ -130,6 +130,7 @@ export class RRList extends LitElement {
 		if (!item) return;
 
 		event.preventDefault();
+		this._lastPointerY = event.clientY;
 		this._startDrag(item, event.clientY);
 		// Restore focus suppressed by preventDefault
 		const handle = path.find(
@@ -143,6 +144,8 @@ export class RRList extends LitElement {
 		this.addEventListener('pointercancel', this._onPointerCancel);
 	};
 
+	private _lastPointerY = 0;
+
 	private _onPointerMove = (event: PointerEvent) => {
 		if (!this._draggingEl || !this._placeholder) return;
 
@@ -151,6 +154,9 @@ export class RRList extends LitElement {
 			this._listRect = this.getBoundingClientRect();
 			this._clone.style.setProperty('--_drag-clone-top', `${event.clientY - this._listRect.top - this._cloneOffsetY}px`);
 		}
+
+		const draggingDown = event.clientY >= this._lastPointerY;
+		this._lastPointerY = event.clientY;
 
 		const items = this._getItems();
 		const nonDragging = items.filter((i) => i !== this._draggingEl);
@@ -162,7 +168,8 @@ export class RRList extends LitElement {
 			// rr-list-item is display:contents so its own rect is zero — use the inner element
 			const inner = nonDragging[i].shadowRoot?.querySelector('.list-item') ?? nonDragging[i];
 			const rect = inner.getBoundingClientRect();
-			if (pointerY < rect.top + rect.height / 2) {
+			const threshold = draggingDown ? rect.top : rect.bottom;
+			if (pointerY < threshold) {
 				toIndex = i;
 				break;
 			}

@@ -8,7 +8,7 @@ import '../../container/rr-container.ts';
 import '../../../actions/toolbar/rr-toolbar.ts';
 import '../../../inputs/segmented-control/rr-segmented-control.ts';
 import '../../../inputs/search-field/rr-search-field.ts';
-import '../../../content/icon/rr-icon.ts';
+
 import '../../../lists-and-menus/menu/rr-menu.ts';
 
 /**
@@ -76,27 +76,9 @@ const toolbar = html`
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<rr-segmented-control-item value="vet">
-						<rr-icon
-							slot="icon"
-							name="bold"
-						></rr-icon>
-						Vet
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="cursief">
-						<rr-icon
-							slot="icon"
-							name="italic"
-						></rr-icon>
-						Cursief
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="onderstrepen">
-						<rr-icon
-							slot="icon"
-							name="underlined"
-						></rr-icon>
-						Onderstrepen
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+					<rr-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -124,27 +106,9 @@ const toolbar = html`
 					variant="icon"
 					accessible-label="Lijsttype"
 				>
-					<rr-segmented-control-item value="none">
-						<rr-icon
-							slot="icon"
-							name="minus-small"
-						></rr-icon>
-						Geen
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="bullet">
-						<rr-icon
-							slot="icon"
-							name="bullet-list"
-						></rr-icon>
-						Lijst
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="numbered">
-						<rr-icon
-							slot="icon"
-							name="numbered-list"
-						></rr-icon>
-						Genummerd
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="none" text="Geen" icon="minus-small"></rr-segmented-control-item>
+					<rr-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></rr-segmented-control-item>
+					<rr-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -173,7 +137,7 @@ const toolbar = html`
 				label="Annuleer"
 				priority="3"
 			>
-				<rr-button>Annuleer</rr-button>
+				<rr-button text="Annuleer"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Annuleer"
@@ -184,7 +148,7 @@ const toolbar = html`
 				label="Sla op"
 				priority="10"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -347,7 +311,7 @@ export const ResponsieveBalken = () => html`
 						slot="start"
 						label="Sla op"
 					>
-						<rr-button variant="primary">Sla op</rr-button>
+						<rr-button variant="primary" text="Sla op"></rr-button>
 						<rr-menu-item
 							slot="overflow"
 							text="Sla op"
@@ -357,7 +321,7 @@ export const ResponsieveBalken = () => html`
 						slot="end"
 						label="Annuleer"
 					>
-						<rr-button>Annuleer</rr-button>
+						<rr-button text="Annuleer"></rr-button>
 						<rr-menu-item
 							slot="overflow"
 							text="Annuleer"

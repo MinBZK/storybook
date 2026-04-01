@@ -75,8 +75,8 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 	it('does not sync name to child buttons when type=button', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="button" name="toolbar">
-				<rr-toggle-button value="bold">Bold</rr-toggle-button>
-				<rr-toggle-button value="italic">Italic</rr-toggle-button>
+				<rr-toggle-button value="bold" text="Bold"></rr-toggle-button>
+				<rr-toggle-button value="italic" text="Italic"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -88,8 +88,8 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 	it('syncs type to child buttons', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
+				<rr-toggle-button value="a" text="A"></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -101,8 +101,8 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 	it('syncs name to child buttons', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="keuze">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
+				<rr-toggle-button value="a" text="A"></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -114,7 +114,7 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 	it('syncs size to child buttons', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group size="sm">
-				<rr-toggle-button value="a">A</rr-toggle-button>
+				<rr-toggle-button value="a" text="A"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -126,8 +126,8 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 	it('disables child buttons when group is disabled', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group disabled>
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
+				<rr-toggle-button value="a" text="A"></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -139,7 +139,7 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 	it('re-enables group-disabled buttons when group disabled is removed', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group disabled>
-				<rr-toggle-button value="a">A</rr-toggle-button>
+				<rr-toggle-button value="a" text="A"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -154,7 +154,7 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 	it('does not re-enable buttons that were individually disabled', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group disabled>
-				<rr-toggle-button value="a" disabled>A</rr-toggle-button>
+				<rr-toggle-button value="a" text="A" disabled></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -174,7 +174,7 @@ describe('rr-toggle-button-group – synchronisatie', () => {
 		await waitForUpdate(el);
 
 		const button = document.createElement('rr-toggle-button') as RRToggleButton;
-		button.textContent = 'Laat toegevoegd';
+		button.setAttribute('text', 'Laat toegevoegd');
 		el.appendChild(button);
 		await waitForUpdate(el);
 
@@ -198,9 +198,9 @@ describe('rr-toggle-button-group – single-select (radio)', () => {
 	it('deselects other buttons when one is selected via change event', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="keuze">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
+				<rr-toggle-button value="a" text="A" selected></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
+				<rr-toggle-button value="c" text="C"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -221,8 +221,8 @@ describe('rr-toggle-button-group – single-select (radio)', () => {
 	it('does not deselect others when a deselection event fires', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="keuze">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b" selected>B</rr-toggle-button>
+				<rr-toggle-button value="a" text="A" selected></rr-toggle-button>
+				<rr-toggle-button value="b" text="B" selected></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -255,9 +255,9 @@ describe('rr-toggle-button-group – multi-select (checkbox)', () => {
 	it('allows multiple buttons to be selected simultaneously', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="checkbox" name="filter">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b" selected>B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
+				<rr-toggle-button value="a" text="A" selected></rr-toggle-button>
+				<rr-toggle-button value="b" text="B" selected></rr-toggle-button>
+				<rr-toggle-button value="c" text="C"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -271,8 +271,8 @@ describe('rr-toggle-button-group – multi-select (checkbox)', () => {
 	it('does not deselect other buttons on change', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="checkbox" name="filter">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
+				<rr-toggle-button value="a" text="A" selected></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -306,9 +306,9 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 	it('ArrowRight selects first button when nothing is selected', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
+				<rr-toggle-button value="a" text="A"></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
+				<rr-toggle-button value="c" text="C"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -323,9 +323,9 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 	it('ArrowLeft selects last button when nothing is selected', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
+				<rr-toggle-button value="a" text="A"></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
+				<rr-toggle-button value="c" text="C"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -340,9 +340,9 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 	it('ArrowRight selects next button', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
+				<rr-toggle-button value="a" text="A" selected></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
+				<rr-toggle-button value="c" text="C"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -358,9 +358,9 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 	it('ArrowLeft selects previous button', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b" selected>B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
+				<rr-toggle-button value="a" text="A"></rr-toggle-button>
+				<rr-toggle-button value="b" text="B" selected></rr-toggle-button>
+				<rr-toggle-button value="c" text="C"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -376,9 +376,9 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 	it('wraps around from last to first', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a">A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c" selected>C</rr-toggle-button>
+				<rr-toggle-button value="a" text="A"></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
+				<rr-toggle-button value="c" text="C" selected></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -394,9 +394,9 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 	it('wraps around from first to last', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
+				<rr-toggle-button value="a" text="A" selected></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
+				<rr-toggle-button value="c" text="C"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -412,9 +412,9 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 	it('skips disabled buttons during keyboard navigation', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="radio" name="nav">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b" disabled>B</rr-toggle-button>
-				<rr-toggle-button value="c">C</rr-toggle-button>
+				<rr-toggle-button value="a" text="A" selected></rr-toggle-button>
+				<rr-toggle-button value="b" text="B" disabled></rr-toggle-button>
+				<rr-toggle-button value="c" text="C"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);
@@ -429,8 +429,8 @@ describe('rr-toggle-button-group – toetsenbordnavigatie', () => {
 	it('does not handle arrow keys for type=checkbox', async () => {
 		el = await fixture<RRToggleButtonGroup>(`
 			<rr-toggle-button-group type="checkbox" name="filter">
-				<rr-toggle-button value="a" selected>A</rr-toggle-button>
-				<rr-toggle-button value="b">B</rr-toggle-button>
+				<rr-toggle-button value="a" text="A" selected></rr-toggle-button>
+				<rr-toggle-button value="b" text="B"></rr-toggle-button>
 			</rr-toggle-button-group>
 		`);
 		await waitForUpdate(el);

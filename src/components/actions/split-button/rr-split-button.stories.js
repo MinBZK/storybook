@@ -6,7 +6,7 @@ import './rr-split-button.ts';
  *
  * ## Gebruik
  * ```html
- * <rr-split-button>Opslaan</rr-split-button>
+ * <rr-split-button text="Opslaan"></rr-split-button>
  * ```
  */
 export default {
@@ -23,6 +23,10 @@ export default {
 		},
 	},
 	argTypes: {
+		text: {
+			control: 'text',
+			description: 'Tekst van de primaire actieknop',
+		},
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
@@ -40,20 +44,20 @@ export default {
 		},
 	},
 	args: {
+		text: 'Opslaan',
 		size: 'md',
 		disabled: false,
 	},
 };
 
-const Template = ({ size, disabled }) => html`
+const Template = ({ text, size, disabled }) => html`
 	<rr-split-button
+		text=${text}
 		size=${size}
 		?disabled=${disabled}
 		@action-click=${() => console.log('Action clicked')}
 		@menu-click=${() => console.log('Menu clicked')}
-	>
-		Opslaan
-	</rr-split-button>
+	></rr-split-button>
 `;
 
 export const Default = Template.bind({});
@@ -62,9 +66,9 @@ Default.args = {};
 // All sizes overview
 export const Sizes = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-split-button size="md">Opslaan</rr-split-button>
-		<rr-split-button size="sm">Opslaan</rr-split-button>
-		<rr-split-button size="xs">Opslaan</rr-split-button>
+		<rr-split-button text="Opslaan" size="md"></rr-split-button>
+		<rr-split-button text="Opslaan" size="sm"></rr-split-button>
+		<rr-split-button text="Opslaan" size="xs"></rr-split-button>
 	</div>
 `;
 Sizes.parameters = {
@@ -74,9 +78,9 @@ Sizes.parameters = {
 // Disabled
 export const Disabled = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-split-button disabled size="md">Opslaan</rr-split-button>
-		<rr-split-button disabled size="sm">Opslaan</rr-split-button>
-		<rr-split-button disabled size="xs">Opslaan</rr-split-button>
+		<rr-split-button text="Opslaan" disabled size="md"></rr-split-button>
+		<rr-split-button text="Opslaan" disabled size="sm"></rr-split-button>
+		<rr-split-button text="Opslaan" disabled size="xs"></rr-split-button>
 	</div>
 `;
 Disabled.parameters = {

@@ -20,9 +20,10 @@
  * @attr {'top' | 'center' | 'bottom'} vertical-alignment - Vertical alignment (default: 'center')
  * @attr {boolean} selected - Selected state
  *
- * @slot overline - Optional overline text displayed above the title
- * @slot - Title text content
- * @slot subtitle - Optional subtitle text displayed below the title
+ * @attr {string} text - Title text content
+ * @attr {string} overline - Optional overline text displayed above the title
+ * @attr {string} supporting-text - Optional supporting text displayed below the title
+ * @attr {number} heading-level - Heading level for the title element: 1–6 (default: none, renders a <p>)
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -77,6 +78,19 @@ export class RRTitleCell extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
+	@property({ type: String })
+	text = '';
+
+	@property({ type: String })
+	overline = '';
+
+	@property({ type: String, attribute: 'supporting-text' })
+	supportingText = '';
+
+	/** Heading level for the title element (1–6). When not set, renders a <p>. */
+	@property({ type: Number, attribute: 'heading-level' })
+	headingLevel: number | undefined = undefined;
+
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('width') || changed.has('minWidth') || changed.has('maxWidth') || changed.has('minHeight')) {
 			this._applyDimensionStyles();
@@ -107,7 +121,7 @@ export class RRTitleCell extends LitElement {
 	}
 
 	override render() {
-		return template();
+		return template.call(this);
 	}
 }
 

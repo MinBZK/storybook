@@ -14,13 +14,11 @@ export function switchFieldTemplate(component: RRSwitchField): TemplateResult {
 					value=${component.value}
 					?checked=${component.checked}
 					?disabled=${component.disabled}
-					accessible-label=${component._labelText || nothing}
+					accessible-label=${component.label || nothing}
 					@change=${component._handleChange}
 				></rr-switch>
 			</div>
-			<span class="switch-field__label">
-				<slot @slotchange=${component._onSlotChange}></slot>
-			</span>
+			<span class="switch-field__label">${component.label}</span>
 		</div>
 	`;
 }

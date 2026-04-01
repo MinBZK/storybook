@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
+import type { RRToolbarTranslations } from './rr-toolbar.i18n.ts';
 import '../icon-button/rr-icon-button.js';
-import '../../content/icon/rr-icon.js';
 
 // # Types
 export type ToolbarChild =
@@ -96,6 +96,7 @@ export function template(
 	menuId: string,
 	onOverflowClick: () => void,
 	centerOnly: boolean,
+	t: (key: keyof RRToolbarTranslations) => string,
 ) {
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 
@@ -123,15 +124,14 @@ export function template(
 			</div>
 			<div class="toolbar__overflow-button ${hasOverflow ? '' : 'is-hidden'}">
 				<rr-icon-button size=${size}
+					icon="ellipsis"
+					text=${t('components.toolbar.overflow-action')}
 					aria-haspopup="menu"
 					aria-expanded=${menuOpen ? 'true' : 'false'}
 					aria-controls=${menuId}
 					@click=${onOverflowClick}
-				>
-					<rr-icon name="ellipsis"></rr-icon>
-					Meer
-				</rr-icon-button>
-				<span class="toolbar__item-label">Meer</span>
+				></rr-icon-button>
+				<span class="toolbar__item-label">${t('components.toolbar.overflow-action')}</span>
 			</div>
 		</div>
 	`;

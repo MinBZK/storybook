@@ -1,19 +1,19 @@
 /**
  * RegelRecht Dialog Component (Lit + TypeScript)
  *
- * Een inline statuscomponent voor lege toestand, bevestigingen en feedback.
- * Vult de container en heeft geen minimale breedte.
+ * An inline status component for empty state, confirmations and feedback.
+ * Fills the container and has no minimum width.
  *
  * @element rr-dialog
  *
- * @attr {'alert'} variant       - Semantische variant; 'alert' dwingt icon-name="alert" af en kleurt het icoon
- * @attr {string}  icon-name     - Naam van het rr-icon icoon boven de tekst; afwezig wanneer niet ingesteld. Wordt genegeerd wanneer variant is ingesteld.
- * @attr {string}  text          - Hoofdtekst (heading of paragraaf, afhankelijk van heading-level)
- * @attr {string}  supporting-text - Ondersteunende tekst onder de heading
- * @attr {1|2|3|4|5|6} heading-level - Rendert tekst als h1–h6; afwezig rendert een p
+ * @attr {'alert'} variant       - Semantic variant; 'alert' forces icon-name="alert" and colors the icon
+ * @attr {string}  icon-name     - Name of the rr-icon icon above the text; absent when not set. Ignored when variant is set.
+ * @attr {string}  text          - Main text (heading or paragraph, depending on heading-level)
+ * @attr {string}  supporting-text - Supporting text below the heading
+ * @attr {1|2|3|4|5|6} heading-level - Renders text as h1–h6; absent renders a p
  *
- * @slot         - Optionele aangepaste inhoud tussen tekst en acties
- * @slot actions - rr-button elementen, gewrapped in rr-button-group (max 3)
+ * @slot         - Optional custom content between text and actions
+ * @slot actions - rr-button elements, wrapped in rr-button-group (max 3)
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

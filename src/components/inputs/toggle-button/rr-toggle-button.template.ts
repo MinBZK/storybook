@@ -5,11 +5,13 @@ import type { RRToggleButton } from './rr-toggle-button.js';
 export function toggleButtonTemplate(component: RRToggleButton): TemplateResult {
 	const label = component.accessibleLabel || nothing;
 
-	const icon = component._iconName
-		? html`<rr-icon class="toggle-button__icon" name=${component._iconName}></rr-icon>`
-		: nothing;
+	const icon = component.icon
+		? html`<rr-icon class="toggle-button__icon" name=${component.icon}></rr-icon>`
+		: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`;
 
-	const slot = html`<slot @slotchange=${component._detectIcon}></slot>`;
+	const textContent = component.text
+		? html`<span class="toggle-button__text">${component.text}</span>`
+		: nothing;
 
 	if (component.type === 'checkbox' || component.type === 'radio') {
 		return html`
@@ -25,7 +27,7 @@ export function toggleButtonTemplate(component: RRToggleButton): TemplateResult 
 					@change=${component._handleInputChange}
 				>
 				${icon}
-				${slot}
+				${textContent}
 			</label>
 		`;
 	}
@@ -40,7 +42,7 @@ export function toggleButtonTemplate(component: RRToggleButton): TemplateResult 
 			@click=${component._handleButtonClick}
 		>
 			${icon}
-			${slot}
+			${textContent}
 		</button>
 	`;
 }

@@ -74,18 +74,9 @@ const Template = ({ value, size, type, variant, disabled, fullWidth }) => html`
 		?disabled=${disabled}
 		?full-width=${fullWidth}
 	>
-		<rr-segmented-control-item value="vet">
-			<rr-icon slot="icon" name="bold"></rr-icon>
-			Vet
-		</rr-segmented-control-item>
-		<rr-segmented-control-item value="cursief">
-			<rr-icon slot="icon" name="italic"></rr-icon>
-			Cursief
-		</rr-segmented-control-item>
-		<rr-segmented-control-item value="onderstreept">
-			<rr-icon slot="icon" name="underlined"></rr-icon>
-			Onderstreept
-		</rr-segmented-control-item>
+		<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+		<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+		<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 	</rr-segmented-control>
 `;
 
@@ -95,173 +86,65 @@ Standaard.args = { value: 'vet' };
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; align-items: start; gap: 1rem;">
 		<rr-segmented-control value="vet" size="md">
-			<rr-segmented-control-item value="vet">
-				<rr-icon slot="icon" name="bold"></rr-icon>
-				Vet
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="cursief">
-				<rr-icon slot="icon" name="italic"></rr-icon>
-				Cursief
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="onderstreept">
-				<rr-icon slot="icon" name="underlined"></rr-icon>
-				Onderstreept
-			</rr-segmented-control-item>
+			<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+			<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+			<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 		</rr-segmented-control>
 		<rr-segmented-control value="vet" size="sm">
-			<rr-segmented-control-item value="vet">
-				<rr-icon slot="icon" name="bold"></rr-icon>
-				Vet
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="cursief">
-				<rr-icon slot="icon" name="italic"></rr-icon>
-				Cursief
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="onderstreept">
-				<rr-icon slot="icon" name="underlined"></rr-icon>
-				Onderstreept
-			</rr-segmented-control-item>
+			<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+			<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+			<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 		</rr-segmented-control>
 		<rr-segmented-control .values=${["vet", "cursief"]} type="checkbox" size="md">
-			<rr-segmented-control-item value="vet">
-				<rr-icon slot="icon" name="bold"></rr-icon>
-				Vet
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="cursief">
-				<rr-icon slot="icon" name="italic"></rr-icon>
-				Cursief
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="onderstreept">
-				<rr-icon slot="icon" name="underlined"></rr-icon>
-				Onderstreept
-			</rr-segmented-control-item>
+			<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+			<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+			<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 		</rr-segmented-control>
 		<rr-segmented-control value="vet" disabled size="md">
-			<rr-segmented-control-item value="vet">
-				<rr-icon slot="icon" name="bold"></rr-icon>
-				Vet
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="cursief">
-				<rr-icon slot="icon" name="italic"></rr-icon>
-				Cursief
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="onderstreept">
-				<rr-icon slot="icon" name="underlined"></rr-icon>
-				Onderstreept
-			</rr-segmented-control-item>
+			<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+			<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+			<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 		</rr-segmented-control>
 		<rr-segmented-control value="vet" variant="icon" size="md">
-			<rr-segmented-control-item value="vet">
-				<rr-icon slot="icon" name="bold"></rr-icon>
-				Vet
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="cursief">
-				<rr-icon slot="icon" name="italic"></rr-icon>
-				Cursief
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="onderstreept">
-				<rr-icon slot="icon" name="underlined"></rr-icon>
-				Onderstreept
-			</rr-segmented-control-item>
+			<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+			<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+			<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 		</rr-segmented-control>
 		<rr-segmented-control value="vet" variant="icon" size="sm">
-			<rr-segmented-control-item value="vet">
-				<rr-icon slot="icon" name="bold"></rr-icon>
-				Vet
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="cursief">
-				<rr-icon slot="icon" name="italic"></rr-icon>
-				Cursief
-			</rr-segmented-control-item>
-			<rr-segmented-control-item value="onderstreept">
-				<rr-icon slot="icon" name="underlined"></rr-icon>
-				Onderstreept
-			</rr-segmented-control-item>
+			<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+			<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+			<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 		</rr-segmented-control>
 		<div style="width: 400px; display: flex; flex-direction: column; gap: 1rem;">
 			<rr-segmented-control value="vet" full-width size="md">
-				<rr-segmented-control-item value="vet">
-					<rr-icon slot="icon" name="bold"></rr-icon>
-					Vet
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="cursief">
-					<rr-icon slot="icon" name="italic"></rr-icon>
-					Cursief
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="onderstreept">
-					<rr-icon slot="icon" name="underlined"></rr-icon>
-					Onderstreept
-				</rr-segmented-control-item>
+				<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+				<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+				<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 			</rr-segmented-control>
 			<rr-segmented-control value="vet" full-width size="sm">
-				<rr-segmented-control-item value="vet">
-					<rr-icon slot="icon" name="bold"></rr-icon>
-					Vet
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="cursief">
-					<rr-icon slot="icon" name="italic"></rr-icon>
-					Cursief
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="onderstreept">
-					<rr-icon slot="icon" name="underlined"></rr-icon>
-					Onderstreept
-				</rr-segmented-control-item>
+				<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+				<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+				<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 			</rr-segmented-control>
 			<rr-segmented-control .values=${["vet", "cursief"]} type="checkbox" full-width size="md">
-				<rr-segmented-control-item value="vet">
-					<rr-icon slot="icon" name="bold"></rr-icon>
-					Vet
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="cursief">
-					<rr-icon slot="icon" name="italic"></rr-icon>
-					Cursief
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="onderstreept">
-					<rr-icon slot="icon" name="underlined"></rr-icon>
-					Onderstreept
-				</rr-segmented-control-item>
+				<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+				<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+				<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 			</rr-segmented-control>
 			<rr-segmented-control value="vet" disabled full-width size="md">
-				<rr-segmented-control-item value="vet">
-					<rr-icon slot="icon" name="bold"></rr-icon>
-					Vet
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="cursief">
-					<rr-icon slot="icon" name="italic"></rr-icon>
-					Cursief
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="onderstreept">
-					<rr-icon slot="icon" name="underlined"></rr-icon>
-					Onderstreept
-				</rr-segmented-control-item>
+				<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+				<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+				<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 			</rr-segmented-control>
 			<rr-segmented-control value="vet" variant="icon" full-width size="md">
-				<rr-segmented-control-item value="vet">
-					<rr-icon slot="icon" name="bold"></rr-icon>
-					Vet
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="cursief">
-					<rr-icon slot="icon" name="italic"></rr-icon>
-					Cursief
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="onderstreept">
-					<rr-icon slot="icon" name="underlined"></rr-icon>
-					Onderstreept
-				</rr-segmented-control-item>
+				<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+				<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+				<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 			</rr-segmented-control>
 			<rr-segmented-control value="vet" variant="icon" full-width size="sm">
-				<rr-segmented-control-item value="vet">
-					<rr-icon slot="icon" name="bold"></rr-icon>
-					Vet
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="cursief">
-					<rr-icon slot="icon" name="italic"></rr-icon>
-					Cursief
-				</rr-segmented-control-item>
-				<rr-segmented-control-item value="onderstreept">
-					<rr-icon slot="icon" name="underlined"></rr-icon>
-					Onderstreept
-				</rr-segmented-control-item>
+				<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+				<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+				<rr-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></rr-segmented-control-item>
 			</rr-segmented-control>
 		</div>
 	</div>

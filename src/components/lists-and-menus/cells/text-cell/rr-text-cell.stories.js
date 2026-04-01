@@ -72,78 +72,49 @@ export const Default = {
 			horizontal-alignment=${args.horizontalAlignment}
 			vertical-alignment=${args.verticalAlignment}
 			?selected=${args.selected}
-		>
-			<p slot="text">Text cell</p>
-		</rr-text-cell>
+			text="Text cell"
+		/>
 	`,
 };
 
 export const WithOverline = {
 	render: () => html`
-		<rr-text-cell>
-			<p slot="overline">Overline</p>
-			<p slot="text">Text cell</p>
-		</rr-text-cell>
+		<rr-text-cell overline="Overline" text="Text cell" />
 	`,
 };
 
 export const WithSupportingText = {
 	render: () => html`
-		<rr-text-cell>
-			<p slot="text">Text cell</p>
-			<p slot="supporting-text">Supporting text</p>
-		</rr-text-cell>
+		<rr-text-cell text="Text cell" supporting-text="Supporting text" />
 	`,
 };
 
 export const WithOverlineAndSupportingText = {
 	render: () => html`
-		<rr-text-cell>
-			<p slot="overline">Overline</p>
-			<p slot="text">Text cell</p>
-			<p slot="supporting-text">Supporting text</p>
-		</rr-text-cell>
+		<rr-text-cell overline="Overline" text="Text cell" supporting-text="Supporting text" />
 	`,
 };
 
 export const Selected = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<rr-text-cell>
-				<p slot="overline">Overline</p>
-				<p slot="text">Text cell</p>
-				<p slot="supporting-text">Supporting text</p>
-			</rr-text-cell>
-			<rr-text-cell selected>
-				<p slot="overline">Overline</p>
-				<p slot="text">Text cell (selected)</p>
-				<p slot="supporting-text">Supporting text</p>
-			</rr-text-cell>
+			<rr-text-cell overline="Overline" text="Text cell" supporting-text="Supporting text" />
+			<rr-text-cell selected overline="Overline" text="Text cell (selected)" supporting-text="Supporting text" />
 		</div>
 	`,
 };
 
 export const Secondary = {
 	render: () => html`
-		<rr-text-cell color="secondary">
-			<p slot="text">Text cell (secondary)</p>
-		</rr-text-cell>
+		<rr-text-cell color="secondary" text="Text cell (secondary)" />
 	`,
 };
 
 export const Sizes = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<rr-text-cell size="md">
-				<p slot="overline">Overline</p>
-				<p slot="text">Text cell (md)</p>
-				<p slot="supporting-text">Supporting text</p>
-			</rr-text-cell>
-			<rr-text-cell size="sm">
-				<p slot="overline">Overline</p>
-				<p slot="text">Text cell (sm)</p>
-				<p slot="supporting-text">Supporting text</p>
-			</rr-text-cell>
+			<rr-text-cell size="md" overline="Overline" text="Text cell (md)" supporting-text="Supporting text" />
+			<rr-text-cell size="sm" overline="Overline" text="Text cell (sm)" supporting-text="Supporting text" />
 		</div>
 	`,
 };
@@ -151,15 +122,9 @@ export const Sizes = {
 export const Width = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px; width: 300px; border: 1px dashed var(--primitives-color-neutral-150); padding: 8px;">
-			<rr-text-cell width="stretch">
-				<p slot="text">Stretch (default)</p>
-			</rr-text-cell>
-			<rr-text-cell width="fit-content">
-				<p slot="text">Fit content</p>
-			</rr-text-cell>
-			<rr-text-cell width=${120}>
-				<p slot="text">120px fixed</p>
-			</rr-text-cell>
+			<rr-text-cell width="stretch" text="Stretch (default)" />
+			<rr-text-cell width="fit-content" text="Fit content" />
+			<rr-text-cell width=${120} text="120px fixed" />
 		</div>
 	`,
 };
@@ -167,13 +132,8 @@ export const Width = {
 export const MinHeight = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; align-items: flex-start;">
-			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="text">Min height 44px</p>
-			</rr-text-cell>
-			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="text">With supporting text</p>
-				<p slot="supporting-text">Supporting text</p>
-			</rr-text-cell>
+			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed var(--primitives-color-neutral-150);" text="Min height 44px" />
+			<rr-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed var(--primitives-color-neutral-150);" text="With supporting text" supporting-text="Supporting text" />
 		</div>
 	`,
 };
@@ -181,16 +141,8 @@ export const MinHeight = {
 export const HorizontalAlignment = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<rr-text-cell horizontal-alignment="left" style="width: 200px; border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="overline">Overline</p>
-				<p slot="text">Text cell (left)</p>
-				<p slot="supporting-text">Supporting text</p>
-			</rr-text-cell>
-			<rr-text-cell horizontal-alignment="right" style="width: 200px; border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="overline">Overline</p>
-				<p slot="text">Text cell (right)</p>
-				<p slot="supporting-text">Supporting text</p>
-			</rr-text-cell>
+			<rr-text-cell horizontal-alignment="left" style="width: 200px; border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Text cell (left)" supporting-text="Supporting text" />
+			<rr-text-cell horizontal-alignment="right" style="width: 200px; border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Text cell (right)" supporting-text="Supporting text" />
 		</div>
 	`,
 };
@@ -198,15 +150,9 @@ export const HorizontalAlignment = {
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<rr-text-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="text">Center</p>
-			</rr-text-cell>
-			<rr-text-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="text">Top</p>
-			</rr-text-cell>
-			<rr-text-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="text">Bottom</p>
-			</rr-text-cell>
+			<rr-text-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Center" />
+			<rr-text-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Top" />
+			<rr-text-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Bottom" />
 		</div>
 	`,
 };

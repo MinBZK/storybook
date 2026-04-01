@@ -97,7 +97,7 @@ describe('rr-list-item', () => {
 		const wrapper = await fixture(`
 			<rr-list variant="simple">
 				<rr-list-item selected>
-					<rr-text-cell><p slot="text">Item</p></rr-text-cell>
+					<rr-text-cell text="Item"></rr-text-cell>
 				</rr-list-item>
 			</rr-list>
 		`);
@@ -112,7 +112,7 @@ describe('rr-list-item', () => {
 		const wrapper = await fixture(`
 			<rr-list variant="simple">
 				<rr-list-item selected>
-					<rr-text-cell><p slot="text">Item</p></rr-text-cell>
+					<rr-text-cell text="Item"></rr-text-cell>
 				</rr-list-item>
 			</rr-list>
 		`);

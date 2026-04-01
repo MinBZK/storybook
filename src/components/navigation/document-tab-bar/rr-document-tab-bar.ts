@@ -6,8 +6,12 @@
  * Exports both RRDocumentTabBar and RRDocumentTabBarItem.
  *
  * @element rr-document-tab-bar
- * @attr {string}  overflow-button-label  - Label for the overflow button (default: 'Meer')
  * @attr {string}  accessible-label       - Accessible name for the navigation landmark
+ * @attr {object}  translations           - Translation overrides; unset keys fall back to Dutch.
+ *                                          Available keys: 'components.document-tab-bar.overflow-action' (default: 'Meer')
+ *
+ * @migration The `overflow-button-label` attribute has been removed.
+ *            Use `translations` property instead: `.translations=${{ 'components.document-tab-bar.overflow-action': 'Tabs' }}`
  * @attr {boolean} navigation             - Renders a nav landmark instead of tablist; use when items have hrefs
  *
  * @slot     - rr-document-tab-bar-item elements
@@ -139,9 +143,6 @@ export class RRDocumentTabBar extends LitElement {
 
 	private static _counter = 0;
 	readonly _id = `rr-document-tab-bar-${RRDocumentTabBar._counter++}`;
-
-	@property({ type: String, attribute: 'overflow-button-label' })
-	overflowButtonLabel = 'Meer';
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';

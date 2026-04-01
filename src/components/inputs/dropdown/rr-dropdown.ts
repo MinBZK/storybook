@@ -1,19 +1,19 @@
 /**
  * RegelRecht Dropdown Component (Lit + TypeScript)
  *
- * Een visuele wrapper om een native `<select>` element.
- * De consumer geeft een native `<select>` als slotted child — zo behoudt
- * de browser volledige controle over formulierverwerking, toegankelijkheid
- * en keyboard navigatie, inclusief `<optgroup>`, `data-*` attributen en
- * dynamische wijzigingen aan opties.
+ * A visual wrapper around a native `<select>` element.
+ * The consumer provides a native `<select>` as a slotted child — this way
+ * the browser retains full control over form submission, accessibility
+ * and keyboard navigation, including `<optgroup>`, `data-*` attributes and
+ * dynamic changes to options.
  *
  * @element rr-dropdown
- * @attr {string}  size     - Grootte: 'sm' | 'md' (standaard: 'md')
- * @attr {boolean} disabled - Uitgeschakelde toestand; wordt ook doorgestuurd naar de slotted select
+ * @attr {string}  size     - Size: 'sm' | 'md' (default: 'md')
+ * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
  *
- * @slot - Een native `<select>` element met `<option>` en/of `<optgroup>` kinderen
+ * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
  *
- * @fires change - Bubbles up van de slotted select; detail: { value: string }
+ * @fires change - Bubbles up from the slotted select; detail: { value: string }
  *
  * @example
  * ```html

@@ -15,6 +15,8 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './rr-toolbar.styles.ts';
 import { template, type ToolbarChild } from './rr-toolbar.template.ts';
+import { rrToolbarTranslations } from './rr-toolbar.i18n.ts';
+import type { RRToolbarTranslations } from './rr-toolbar.i18n.ts';
 import { RRMenu } from '../../lists-and-menus/menu/rr-menu.ts';
 
 // # Marker elements
@@ -54,6 +56,15 @@ export class RRToolbar extends LitElement {
 	 */
 	@property({ type: String, reflect: true })
 	label = '';
+
+	@property({ type: Object })
+	translations: Partial<RRToolbarTranslations> = {};
+
+	// — i18n —————————————————————————————————————————————————————————————————
+
+	public _t(key: keyof RRToolbarTranslations): string {
+		return this.translations[key] ?? rrToolbarTranslations[key];
+	}
 
 	@state()
 	private _menuOpen = false;
@@ -560,6 +571,7 @@ export class RRToolbar extends LitElement {
 			this._menu?.id ?? '',
 			() => this._handleOverflowButtonClick(),
 			this._startChildren.length === 0 && this._endChildren.length === 0 && this._centerChildren.length > 0,
+			(key) => this._t(key),
 		);
 	}
 }

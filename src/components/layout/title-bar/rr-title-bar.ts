@@ -1,17 +1,17 @@
 /**
  * RegelRecht Title Bar Component (Lit + TypeScript)
  *
- * Een titelbalk met een optionele overline, titel en ondertitel links,
- * en een slot voor acties rechts.
+ * A title bar with an optional overline, title, and subtitle on the left,
+ * and a slot for actions on the right.
  *
  * @element rr-title-bar
  *
- * @attr {number} size - Visuele grootte van de titel: 1–6 (standaard: 3)
+ * @attr {number} size - Visual size of the title: 1–6 (default: 3)
  *
- * @slot overline - Optionele overline boven de titel
- * @slot - Titeltekst (gebruik h1–h6 voor semantiek)
- * @slot subtitle - Optionele ondertitel onder de titel
- * @slot actions - Acties rechts van de titel (knoppen, menu's, etc.)
+ * @slot overline - Optional overline above the title
+ * @slot - Title text (use h1–h6 for semantics)
+ * @slot subtitle - Optional subtitle below the title
+ * @slot actions - Actions to the right of the title (buttons, menus, etc.)
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

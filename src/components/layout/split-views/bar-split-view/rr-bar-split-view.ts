@@ -1,39 +1,39 @@
 /**
  * RegelRecht Bar Split View Component (Lit + TypeScript)
  *
- * Een verticale split view met een main-gebied en een onbeperkt aantal balkpanelen.
- * Elk kind bepaalt zijn volgorde per breekpunt via sm-order, md-order en lg-order.
- * Kinderen zonder orderattributen worden gesorteerd op DOM-volgorde.
+ * A vertical split view with a main area and an unlimited number of bar panels.
+ * Each child determines its order per breakpoint via sm-order, md-order, and lg-order.
+ * Children without order attributes are sorted by DOM order.
  *
- * Op sm-viewports worden balken absoluut gepositioneerd over het main-gebied:
- * balken vóór main (op basis van volgorde) stapelen van boven naar beneden,
- * balken ná main stapelen van onder naar boven. Op md en lg staan alle panelen
- * in de flow met een scheiding tussen elk aangrenzend paar.
+ * On sm viewports, bars are absolutely positioned over the main area:
+ * bars before main (based on order) stack from top to bottom,
+ * bars after main stack from bottom to top. On md and lg, all panels
+ * are in normal flow with a divider between each adjacent pair.
  *
- * CSS custom properties op de host voor consumers zoals rr-page:
+ * CSS custom properties on the host for consumers like rr-page:
  *   --context-bar-split-view-top-bars-height
  *   --context-bar-split-view-bottom-bars-height
  *
- * ## Slotnamen
- * Geef elke balk een unieke slotnaam (bijv. slot="toolbar", slot="status-bar").
- * Gebruik slot="bar-1", slot="bar-2" als er geen betekenisvolle naam van toepassing is.
- * Het main-paneel gebruikt altijd slot="main".
+ * ## Slot names
+ * Give each bar a unique slot name (e.g. slot="toolbar", slot="status-bar").
+ * Use slot="bar-1", slot="bar-2" if no meaningful name applies.
+ * The main panel always uses slot="main".
  *
- * ## Achtergrondkleur
- * Stelt --context-parent-background-color in, die cascadet naar alle afstammelingen
- * inclusief rr-page en de fade-overlays.
+ * ## Background color
+ * Sets --context-parent-background-color, which cascades to all descendants
+ * including rr-page and the fade overlays.
  *
  * @element rr-bar-split-view
  *
- * @attr {'inherit'|'default'|'tinted'} background  - Achtergrondkleurvariant (standaard: inherit)
+ * @attr {'inherit'|'default'|'tinted'} background  - Background color variant (default: inherit)
  *
- * Responsieve zichtbaarheid per kind (directe children van rr-bar-split-view):
- * @attr {'sm'|'md'|'lg'} above - Toon dit paneel vanaf dit breekpunt en groter
- * @attr {'sm'|'md'|'lg'} below - Toon dit paneel tot en met dit breekpunt
- * @attr {'sm'|'md'|'lg'} only  - Toon dit paneel alleen op dit breekpunt
+ * Responsive visibility per child (direct children of rr-bar-split-view):
+ * @attr {'sm'|'md'|'lg'} above - Show this panel from this breakpoint and larger
+ * @attr {'sm'|'md'|'lg'} below - Show this panel up to and including this breakpoint
+ * @attr {'sm'|'md'|'lg'} only  - Show this panel only at this breakpoint
  *
- * @slot main  - Centraal paneel voor primaire inhoud
- * @slot *     - Elke andere unieke slotnaam creëert een balkpaneel
+ * @slot main  - Central panel for primary content
+ * @slot *     - Any other unique slot name creates a bar panel
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';

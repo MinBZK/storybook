@@ -46,15 +46,9 @@ export const Default = {
 				label="Vorige/Volgende"
 			>
 				<rr-button-bar>
-					<rr-icon-button>
-						<rr-icon name="chevron-left"></rr-icon>
-						Vorige
-					</rr-icon-button>
+					<rr-icon-button text="Vorige" icon="chevron-left"></rr-icon-button>
 					<rr-button-bar-divider></rr-button-bar-divider>
-					<rr-icon-button>
-						<rr-icon name="chevron-right"></rr-icon>
-						Volgende
-					</rr-icon-button>
+					<rr-icon-button text="Volgende" icon="chevron-right"></rr-icon-button>
 				</rr-button-bar>
 				<rr-menu-item
 					slot="overflow"
@@ -69,7 +63,7 @@ export const Default = {
 				slot="end"
 				label="Sla op"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -96,27 +90,9 @@ export const WithLabels = {
 					size=${args.size}
 					accessible-label="Tekststijl"
 				>
-					<rr-segmented-control-item value="vet">
-						<rr-icon
-							slot="icon"
-							name="bold"
-						></rr-icon>
-						Vet
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="cursief">
-						<rr-icon
-							slot="icon"
-							name="italic"
-						></rr-icon>
-						Cursief
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="onderstrepen">
-						<rr-icon
-							slot="icon"
-							name="underlined"
-						></rr-icon>
-						Onderstrepen
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+					<rr-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -138,7 +114,7 @@ export const WithLabels = {
 				slot="end"
 				label="Sla op"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -159,10 +135,7 @@ export const WithTitleGroup = {
 				slot="start"
 				label="Terug"
 			>
-				<rr-icon-button>
-					<rr-icon name="chevron-left"></rr-icon>
-					Terug
-				</rr-icon-button>
+				<rr-icon-button text="Terug" icon="chevron-left"></rr-icon-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Terug"
@@ -177,7 +150,7 @@ export const WithTitleGroup = {
 				slot="end"
 				label="Annuleer"
 			>
-				<rr-button>Annuleer</rr-button>
+				<rr-button text="Annuleer"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Annuleer"
@@ -187,7 +160,7 @@ export const WithTitleGroup = {
 				slot="end"
 				label="Sla op"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -208,10 +181,7 @@ export const WithTitleGroupCentered = {
 				slot="start"
 				label="Terug"
 			>
-				<rr-icon-button>
-					<rr-icon name="chevron-left"></rr-icon>
-					Terug
-				</rr-icon-button>
+				<rr-icon-button text="Terug" icon="chevron-left"></rr-icon-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Terug"
@@ -227,7 +197,7 @@ export const WithTitleGroupCentered = {
 				slot="end"
 				label="Sla op"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -248,7 +218,7 @@ export const SizeSmall = {
 				slot="start"
 				label="Bewerken"
 			>
-				<rr-button>Bewerken</rr-button>
+				<rr-button text="Bewerken"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Bewerken"
@@ -258,7 +228,7 @@ export const SizeSmall = {
 				slot="start"
 				label="Dupliceer"
 			>
-				<rr-button>Dupliceer</rr-button>
+				<rr-button text="Dupliceer"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Dupliceer"
@@ -268,7 +238,7 @@ export const SizeSmall = {
 				slot="end"
 				label="Sla op"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -289,7 +259,7 @@ export const Sizes = {
 							slot="start"
 							label="Bewerken"
 						>
-							<rr-button>Bewerken</rr-button>
+							<rr-button text="Bewerken"></rr-button>
 							<rr-menu-item
 								slot="overflow"
 								text="Bewerken"
@@ -299,7 +269,7 @@ export const Sizes = {
 							slot="start"
 							label="Dupliceer"
 						>
-							<rr-button>Dupliceer</rr-button>
+							<rr-button text="Dupliceer"></rr-button>
 							<rr-menu-item
 								slot="overflow"
 								text="Dupliceer"
@@ -309,7 +279,7 @@ export const Sizes = {
 							slot="end"
 							label="Sla op"
 						>
-							<rr-button variant="primary">Sla op</rr-button>
+							<rr-button variant="primary" text="Sla op"></rr-button>
 							<rr-menu-item
 								slot="overflow"
 								text="Sla op"
@@ -326,7 +296,7 @@ export const Sizes = {
 							slot="start"
 							label="Bewerken"
 						>
-							<rr-button>Bewerken</rr-button>
+							<rr-button text="Bewerken"></rr-button>
 							<rr-menu-item
 								slot="overflow"
 								text="Bewerken"
@@ -336,7 +306,7 @@ export const Sizes = {
 							slot="start"
 							label="Dupliceer"
 						>
-							<rr-button>Dupliceer</rr-button>
+							<rr-button text="Dupliceer"></rr-button>
 							<rr-menu-item
 								slot="overflow"
 								text="Dupliceer"
@@ -346,7 +316,7 @@ export const Sizes = {
 							slot="end"
 							label="Sla op"
 						>
-							<rr-button variant="primary">Sla op</rr-button>
+							<rr-button variant="primary" text="Sla op"></rr-button>
 							<rr-menu-item
 								slot="overflow"
 								text="Sla op"
@@ -375,27 +345,9 @@ export const LabelsToggle = {
 								variant="icon"
 								accessible-label="Tekststijl"
 							>
-								<rr-segmented-control-item value="vet">
-									<rr-icon
-										slot="icon"
-										name="bold"
-									></rr-icon>
-									Vet
-								</rr-segmented-control-item>
-								<rr-segmented-control-item value="cursief">
-									<rr-icon
-										slot="icon"
-										name="italic"
-									></rr-icon>
-									Cursief
-								</rr-segmented-control-item>
-								<rr-segmented-control-item value="onderstrepen">
-									<rr-icon
-										slot="icon"
-										name="underlined"
-									></rr-icon>
-									Onderstrepen
-								</rr-segmented-control-item>
+								<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+								<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+								<rr-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></rr-segmented-control-item>
 							</rr-segmented-control>
 							<rr-menu-item
 								slot="overflow"
@@ -432,27 +384,9 @@ export const LabelsToggle = {
 								variant="icon"
 								accessible-label="Tekststijl"
 							>
-								<rr-segmented-control-item value="vet">
-									<rr-icon
-										slot="icon"
-										name="bold"
-									></rr-icon>
-									Vet
-								</rr-segmented-control-item>
-								<rr-segmented-control-item value="cursief">
-									<rr-icon
-										slot="icon"
-										name="italic"
-									></rr-icon>
-									Cursief
-								</rr-segmented-control-item>
-								<rr-segmented-control-item value="onderstrepen">
-									<rr-icon
-										slot="icon"
-										name="underlined"
-									></rr-icon>
-									Onderstrepen
-								</rr-segmented-control-item>
+								<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+								<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+								<rr-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></rr-segmented-control-item>
 							</rr-segmented-control>
 							<rr-menu-item
 								slot="overflow"
@@ -489,27 +423,9 @@ export const WithOverflow = {
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<rr-segmented-control-item value="vet">
-						<rr-icon
-							slot="icon"
-							name="bold"
-						></rr-icon>
-						Vet
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="cursief">
-						<rr-icon
-							slot="icon"
-							name="italic"
-						></rr-icon>
-						Cursief
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="onderstrepen">
-						<rr-icon
-							slot="icon"
-							name="underlined"
-						></rr-icon>
-						Onderstrepen
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+					<rr-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -536,27 +452,9 @@ export const WithOverflow = {
 					variant="icon"
 					accessible-label="Lijsttype"
 				>
-					<rr-segmented-control-item value="none">
-						<rr-icon
-							slot="icon"
-							name="minus-small"
-						></rr-icon>
-						Geen
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="bullet">
-						<rr-icon
-							slot="icon"
-							name="bullet-list"
-						></rr-icon>
-						Lijst
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="numbered">
-						<rr-icon
-							slot="icon"
-							name="numbered-list"
-						></rr-icon>
-						Genummerd
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="none" text="Geen" icon="minus-small"></rr-segmented-control-item>
+					<rr-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></rr-segmented-control-item>
+					<rr-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -578,7 +476,7 @@ export const WithOverflow = {
 				slot="end"
 				label="Annuleer"
 			>
-				<rr-button>Annuleer</rr-button>
+				<rr-button text="Annuleer"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Annuleer"
@@ -588,7 +486,7 @@ export const WithOverflow = {
 				slot="end"
 				label="Sla op"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -605,10 +503,7 @@ export const WithOverflowPartial = {
 				slot="start"
 				label="Vet"
 			>
-				<rr-icon-button>
-					<rr-icon name="bold"></rr-icon>
-					Vet
-				</rr-icon-button>
+				<rr-icon-button text="Vet" icon="bold"></rr-icon-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Vet"
@@ -619,20 +514,14 @@ export const WithOverflowPartial = {
 				slot="start"
 				label="Cursief"
 			>
-				<rr-icon-button>
-					<rr-icon name="italic"></rr-icon>
-					Cursief
-				</rr-icon-button>
+				<rr-icon-button text="Cursief" icon="italic"></rr-icon-button>
 				<!-- Geen overflow slot: wordt stilzwijgend overgeslagen in het menu -->
 			</rr-toolbar-item>
 			<rr-toolbar-item
 				slot="start"
 				label="Onderstrepen"
 			>
-				<rr-icon-button>
-					<rr-icon name="underlined"></rr-icon>
-					Onderstrepen
-				</rr-icon-button>
+				<rr-icon-button text="Onderstrepen" icon="underlined"></rr-icon-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Onderstrepen"
@@ -643,7 +532,7 @@ export const WithOverflowPartial = {
 				slot="end"
 				label="Sla op"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -666,27 +555,9 @@ export const WithPriority = {
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<rr-segmented-control-item value="vet">
-						<rr-icon
-							slot="icon"
-							name="bold"
-						></rr-icon>
-						Vet
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="cursief">
-						<rr-icon
-							slot="icon"
-							name="italic"
-						></rr-icon>
-						Cursief
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="onderstrepen">
-						<rr-icon
-							slot="icon"
-							name="underlined"
-						></rr-icon>
-						Onderstrepen
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+					<rr-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -714,27 +585,9 @@ export const WithPriority = {
 					variant="icon"
 					accessible-label="Lijsttype"
 				>
-					<rr-segmented-control-item value="none">
-						<rr-icon
-							slot="icon"
-							name="minus-small"
-						></rr-icon>
-						Geen
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="bullet">
-						<rr-icon
-							slot="icon"
-							name="bullet-list"
-						></rr-icon>
-						Lijst
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="numbered">
-						<rr-icon
-							slot="icon"
-							name="numbered-list"
-						></rr-icon>
-						Genummerd
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="none" text="Geen" icon="minus-small"></rr-segmented-control-item>
+					<rr-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></rr-segmented-control-item>
+					<rr-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -763,7 +616,7 @@ export const WithPriority = {
 				label="Annuleer"
 				priority="3"
 			>
-				<rr-button>Annuleer</rr-button>
+				<rr-button text="Annuleer"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Annuleer"
@@ -774,7 +627,7 @@ export const WithPriority = {
 				label="Sla op"
 				priority="10"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -792,10 +645,7 @@ export const WithFluidItem = {
 				label="Terug"
 				priority="1"
 			>
-				<rr-icon-button>
-					<rr-icon name="chevron-left"></rr-icon>
-					Terug
-				</rr-icon-button>
+				<rr-icon-button text="Terug" icon="chevron-left"></rr-icon-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Terug"
@@ -818,7 +668,7 @@ export const WithFluidItem = {
 				slot="end"
 				label="Annuleer"
 			>
-				<rr-button>Annuleer</rr-button>
+				<rr-button text="Annuleer"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Annuleer"
@@ -829,7 +679,7 @@ export const WithFluidItem = {
 				label="Sla op"
 				priority="2"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -851,20 +701,8 @@ export const WithPinnedOverflow = {
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<rr-segmented-control-item value="vet">
-						<rr-icon
-							slot="icon"
-							name="bold"
-						></rr-icon>
-						Vet
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="cursief">
-						<rr-icon
-							slot="icon"
-							name="italic"
-						></rr-icon>
-						Cursief
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -881,7 +719,7 @@ export const WithPinnedOverflow = {
 				slot="end"
 				label="Sla op"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"
@@ -907,10 +745,7 @@ export const WithPinnedOverflowOnly = {
 				slot="start"
 				label="Terug"
 			>
-				<rr-icon-button>
-					<rr-icon name="chevron-left"></rr-icon>
-					Terug
-				</rr-icon-button>
+				<rr-icon-button text="Terug" icon="chevron-left"></rr-icon-button>
 			</rr-toolbar-item>
 			<rr-toolbar-title-group
 				slot="start"
@@ -921,7 +756,7 @@ export const WithPinnedOverflowOnly = {
 				slot="end"
 				label="Sla op"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 			</rr-toolbar-item>
 			<rr-menu-divider slot="overflow"></rr-menu-divider>
 			<rr-menu-item
@@ -954,27 +789,9 @@ export const WithPinnedAndDynamicOverflow = {
 					variant="icon"
 					accessible-label="Tekststijl"
 				>
-					<rr-segmented-control-item value="vet">
-						<rr-icon
-							slot="icon"
-							name="bold"
-						></rr-icon>
-						Vet
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="cursief">
-						<rr-icon
-							slot="icon"
-							name="italic"
-						></rr-icon>
-						Cursief
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="onderstrepen">
-						<rr-icon
-							slot="icon"
-							name="underlined"
-						></rr-icon>
-						Onderstrepen
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="vet" text="Vet" icon="bold"></rr-segmented-control-item>
+					<rr-segmented-control-item value="cursief" text="Cursief" icon="italic"></rr-segmented-control-item>
+					<rr-segmented-control-item value="onderstrepen" text="Onderstrepen" icon="underlined"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -1002,27 +819,9 @@ export const WithPinnedAndDynamicOverflow = {
 					variant="icon"
 					accessible-label="Lijsttype"
 				>
-					<rr-segmented-control-item value="none">
-						<rr-icon
-							slot="icon"
-							name="minus-small"
-						></rr-icon>
-						Geen
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="bullet">
-						<rr-icon
-							slot="icon"
-							name="bullet-list"
-						></rr-icon>
-						Lijst
-					</rr-segmented-control-item>
-					<rr-segmented-control-item value="numbered">
-						<rr-icon
-							slot="icon"
-							name="numbered-list"
-						></rr-icon>
-						Genummerd
-					</rr-segmented-control-item>
+					<rr-segmented-control-item value="none" text="Geen" icon="minus-small"></rr-segmented-control-item>
+					<rr-segmented-control-item value="bullet" text="Lijst" icon="bullet-list"></rr-segmented-control-item>
+					<rr-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></rr-segmented-control-item>
 				</rr-segmented-control>
 				<rr-menu-item
 					slot="overflow"
@@ -1045,7 +844,7 @@ export const WithPinnedAndDynamicOverflow = {
 				label="Sla op"
 				priority="10"
 			>
-				<rr-button variant="primary">Sla op</rr-button>
+				<rr-button variant="primary" text="Sla op"></rr-button>
 				<rr-menu-item
 					slot="overflow"
 					text="Sla op"

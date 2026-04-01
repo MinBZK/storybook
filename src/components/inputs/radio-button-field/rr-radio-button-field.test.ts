@@ -18,15 +18,29 @@ describe('rr-radio-button-field', () => {
 	});
 
 	it('renders a label element', async () => {
-		el = await fixture('<rr-radio-button-field>Optie 1</rr-radio-button-field>');
+		el = await fixture('<rr-radio-button-field label="Optie 1"></rr-radio-button-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.radio-button-field__label')).not.toBeNull();
+	});
+
+	it('renders label text from attribute', async () => {
+		el = await fixture('<rr-radio-button-field label="Optie 1"></rr-radio-button-field>');
+		await waitForUpdate(el);
+		const label = el.shadowRoot!.querySelector('.radio-button-field__label')!;
+		expect(label.textContent).toBe('Optie 1');
 	});
 
 	it('renders rr-radio-button in shadow DOM', async () => {
 		el = await fixture('<rr-radio-button-field></rr-radio-button-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('rr-radio-button')).not.toBeNull();
+	});
+
+	it('forwards label as accessible-label to rr-radio-button', async () => {
+		el = await fixture('<rr-radio-button-field label="Optie A"></rr-radio-button-field>');
+		await waitForUpdate(el);
+		const radio = el.shadowRoot!.querySelector('rr-radio-button')!;
+		expect(radio.getAttribute('accessible-label')).toBe('Optie A');
 	});
 });
 
