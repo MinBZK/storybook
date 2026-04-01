@@ -144,6 +144,14 @@ describe('rr-text-cell', () => {
 		expect(p!.textContent?.trim()).toBe('Hello world');
 	});
 
+	it('renders unbalanced ** as plain text', async () => {
+		el = await fixture('<rr-text-cell text="Hello **world"></rr-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p!.querySelector('b')).toBeNull();
+		expect(p!.textContent?.trim()).toBe('Hello **world');
+	});
+
 	it('renders plain text without bold when no ** markers', async () => {
 		el = await fixture('<rr-text-cell text="No bold here"></rr-text-cell>');
 		await waitForUpdate(el);
