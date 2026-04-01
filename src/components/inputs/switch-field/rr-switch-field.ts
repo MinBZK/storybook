@@ -1,14 +1,14 @@
 /**
  * RegelRecht Switch Field Component (Lit + TypeScript)
  *
- * Een switch toggle met een inline label voor gebruik in formulieren.
+ * A switch toggle with an inline label for use in forms.
  *
  * @element rr-switch-field
- * @attr {boolean} checked  - Aangevinkte toestand
- * @attr {boolean} disabled - Uitgeschakelde toestand
- * @attr {string}  value    - Waarde voor formulierverwerking
- * @attr {string}  name     - Naam voor formulierverwerking
- * @attr {string}  label    - Label tekst voor de switch
+ * @attr {boolean} checked  - Checked state
+ * @attr {boolean} disabled - Disabled state
+ * @attr {string}  value    - Value for form submission
+ * @attr {string}  name     - Name for form submission
+ * @attr {string}  label    - Label text for the switch
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */

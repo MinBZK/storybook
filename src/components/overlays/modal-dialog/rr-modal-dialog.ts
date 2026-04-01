@@ -1,24 +1,24 @@
 /**
  * RegelRecht Modal Dialog Component (Lit + TypeScript)
  *
- * Een modaal venster met overlay backdrop, gebaseerd op het native <dialog>-element.
- * Rendert intern een <rr-dialog> voor de visuele structuur.
+ * A modal window with overlay backdrop, based on the native <dialog> element.
+ * Internally renders an <rr-dialog> for the visual structure.
  *
  * @element rr-modal-dialog
  *
- * @attr {'alert'} variant          - Doorgegeven aan rr-dialog; 'alert' dwingt icoon en kleur af
- * @attr {string}  icon-name        - Doorgegeven aan rr-dialog; afwezig wanneer niet ingesteld
- * @attr {string}  text             - Doorgegeven aan rr-dialog; hoofdtekst
- * @attr {string}  supporting-text  - Doorgegeven aan rr-dialog; ondersteunende tekst
+ * @attr {'alert'} variant          - Forwarded to rr-dialog; 'alert' forces icon and color
+ * @attr {string}  icon-name        - Forwarded to rr-dialog; absent when not set
+ * @attr {string}  text             - Forwarded to rr-dialog; main text
+ * @attr {string}  supporting-text  - Forwarded to rr-dialog; supporting text
  *
- * @slot         - Optionele aangepaste inhoud, doorgegeven aan rr-dialog
- * @slot actions - rr-button elementen, doorgegeven aan rr-dialog
+ * @slot         - Optional custom content, forwarded to rr-dialog
+ * @slot actions - rr-button elements, forwarded to rr-dialog
  *
- * @fires open  - Wanneer het venster wordt geopend
- * @fires close - Wanneer het venster volledig is gesloten
+ * @fires open  - When the dialog is opened
+ * @fires close - When the dialog is fully closed
  *
- * @method show() - Opent het modale venster
- * @method hide() - Sluit het modale venster met sluitanimatie
+ * @method show() - Opens the modal dialog
+ * @method hide() - Closes the modal dialog with a closing animation
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

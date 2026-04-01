@@ -1,18 +1,18 @@
 /**
  * RegelRecht Stepper Component (Lit + TypeScript)
  *
- * Een numerieke control met increment en decrement knoppen.
+ * A numeric control with increment and decrement buttons.
  *
  * @element rr-stepper
- * @attr {number}  value        - Huidige waarde
- * @attr {number}  min          - Minimale waarde (standaard: 0)
- * @attr {number}  max          - Maximale waarde (standaard: Infinity)
- * @attr {number}  step         - Stapgrootte (standaard: 1)
- * @attr {boolean} disabled     - Uitgeschakelde toestand
- * @attr {string}  size         - Grootte: 'sm' | 'md' (standaard: 'md')
- * @attr {object}  translations - Vertalingen; niet-opgegeven sleutels vallen terug op Nederlands
+ * @attr {number}  value        - Current value
+ * @attr {number}  min          - Minimum value (default: 0)
+ * @attr {number}  max          - Maximum value (default: Infinity)
+ * @attr {number}  step         - Step size (default: 1)
+ * @attr {boolean} disabled     - Disabled state
+ * @attr {string}  size         - Size: 'sm' | 'md' (default: 'md')
+ * @attr {object}  translations - Translations; unspecified keys fall back to Dutch
  *
- * @fires change - Wanneer de waarde verandert; detail: { value: number }
+ * @fires change - When the value changes; detail: { value: number }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -47,7 +47,7 @@ export class RRStepper extends LitElement {
 	@property({ type: String, reflect: true })
 	size: StepperSize = 'md';
 
-	/** Overschrijf een of meer vertalingssleutels. Niet-opgegeven sleutels vallen terug op Nederlands. */
+	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
 	translations: Partial<RRStepperTranslations> = {};
 

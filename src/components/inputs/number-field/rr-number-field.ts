@@ -1,23 +1,23 @@
 /**
  * RegelRecht Number Field Component (Lit + TypeScript)
  *
- * Een numeriek invoerveld met decrement en increment knoppen.
+ * A numeric input field with decrement and increment buttons.
  *
  * @element rr-number-field
- * @attr {number}  value        - Huidige waarde
- * @attr {number}  min          - Minimale waarde (standaard: -∞)
- * @attr {number}  max          - Maximale waarde (standaard: ∞)
- * @attr {number}  step         - Stapgrootte (standaard: 1)
- * @attr {boolean} disabled     - Uitgeschakelde toestand
- * @attr {string}  name         - Naam voor formulierverwerking
- * @attr {object}  translations - Vertalingen; niet-opgegeven sleutels vallen terug op Nederlands
+ * @attr {number}  value        - Current value
+ * @attr {number}  min          - Minimum value (default: -Infinity)
+ * @attr {number}  max          - Maximum value (default: Infinity)
+ * @attr {number}  step         - Step size (default: 1)
+ * @attr {boolean} disabled     - Disabled state
+ * @attr {string}  name         - Name for form submission
+ * @attr {object}  translations - Translations; unspecified keys fall back to Dutch
  * @attr {boolean} full-width       - Stretches to fill the container width
  * @attr {string}  width            - Fixed width; the input stretches to fill remaining space
  * @attr {boolean} hide-spin-buttons - When set, hides the decrement and increment buttons
  * @attr {string}  accessible-label  - Accessible label (aria-label) forwarded to the native input
  *
- * @fires input  - Wanneer de waarde verandert; detail: { value: number }
- * @fires change - Wanneer de waarde wordt bevestigd; detail: { value: number }
+ * @fires input  - When the value changes; detail: { value: number }
+ * @fires change - When the value is confirmed; detail: { value: number }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -64,7 +64,7 @@ export class RRNumberField extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	/** Overschrijf een of meer vertalingssleutels. Niet-opgegeven sleutels vallen terug op Nederlands. */
+	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
 	translations: Partial<RRNumberFieldTranslations> = {};
 

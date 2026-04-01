@@ -1,17 +1,17 @@
 /**
  * RegelRecht One Third Two Thirds Section Component (Lit + TypeScript)
  *
- * Een sectie met een 1/3 zijkolom links en 2/3 hoofdinhoud rechts.
- * De kolommen wrappen automatisch wanneer ze kleiner worden dan 280px.
- * Padding en gap passen zich aan via container queries.
+ * A section with a 1/3 sidebar on the left and 2/3 main content on the right.
+ * The columns wrap automatically when they become smaller than 280px.
+ * Padding and gap adjust via container queries.
  *
  * @element rr-one-third-two-thirds-section
  *
- * @slot header - Inhoud boven de kolommen
- * @slot left - Linkerkolom (1/3)
- * @slot - Rechterkolom (2/3), alternatief voor slot="right"
- * @slot right - Rechterkolom (2/3)
- * @slot footer - Inhoud onder de kolommen
+ * @slot header - Content above the columns
+ * @slot left - Left column (1/3)
+ * @slot - Right column (2/3), alternative for slot="right"
+ * @slot right - Right column (2/3)
+ * @slot footer - Content below the columns
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';

@@ -1,24 +1,24 @@
 /**
  * RegelRecht Collection Component (Lit + TypeScript)
  *
- * Een container voor het weergeven van verzamelingen items.
- * Ondersteunt grid-, lijst- en horizontale scrolllay-outs.
- * Bij grid en list worden items gepagineerd getoond via een laad-meer-knop.
- * Met `lazy-load` worden de volgende items automatisch geladen wanneer
- * de laad-meer-knop in beeld komt.
+ * A container for displaying collections of items.
+ * Supports grid, list, and horizontal scroll layouts.
+ * In grid and list modes, items are paginated via a load-more button.
+ * With `lazy-load`, the next items are automatically loaded when
+ * the load-more button comes into view.
  *
  * @element rr-collection
  *
- * @attr {string} layout - Lay-outmodus: 'grid' | 'list' | 'horizontal-scroll' (standaard: 'grid')
- * @attr {boolean} show-load-more - Toon laad-meer-knop bij grid/list (standaard: false)
- * @attr {string} load-more-label - Label voor de laad-meer-knop (standaard: 'Toon meer')
- * @attr {number} max-items - Aantal zichtbare items per pagina (standaard: 24)
- * @attr {boolean} lazy-load - Laad automatisch meer items wanneer de knop zichtbaar wordt
+ * @attr {string} layout - Layout mode: 'grid' | 'list' | 'horizontal-scroll' (default: 'grid')
+ * @attr {boolean} show-load-more - Show load-more button in grid/list (default: false)
+ * @attr {string} load-more-label - Label for the load-more button (default: 'Toon meer')
+ * @attr {number} max-items - Number of visible items per page (default: 24)
+ * @attr {boolean} lazy-load - Automatically load more items when the button becomes visible
  *
- * @slot - Standaard slot voor collectie-items
- * @slot footer - Slot voor aangepaste voettekstinhoud
+ * @slot - Default slot for collection items
+ * @slot footer - Slot for custom footer content
  *
- * @fires load-more - Wanneer de laad-meer-knop wordt aangeklikt
+ * @fires load-more - When the load-more button is clicked
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';

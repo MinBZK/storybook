@@ -1,20 +1,20 @@
 /**
  * RegelRecht Page Component (Lit + TypeScript)
  *
- * Een pagina-layout met optioneel sticky header en footer.
- * Het scrollgebied is de host zelf. Sticky secties krijgen een doorschijnende
- * achtergrond met een vervagend verloop dat buiten de sectie uitsteekt.
- * De header toont het verloop pas na het scrollen, met een overgang.
+ * A page layout with optional sticky header and footer.
+ * The scroll area is the host itself. Sticky sections receive a translucent
+ * background with a fading gradient that extends beyond the section.
+ * The header only shows the gradient after scrolling, with a transition.
  *
  * @element rr-page
  *
  * @attr {boolean} sticky-header - Sticky header
  * @attr {boolean} sticky-footer - Sticky footer
- * @attr {'inherit'|'default'|'tinted'} background - Gebruik een grijze achtergrond in plaats van wit
+ * @attr {'inherit'|'default'|'tinted'} background - Use a grey background instead of white
  *
- * @slot header - Inhoud van de header
- * @slot - Hoofdinhoud (scrollbaar)
- * @slot footer - Inhoud van de footer
+ * @slot header - Header content
+ * @slot - Main content (scrollable)
+ * @slot footer - Footer content
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';

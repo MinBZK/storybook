@@ -1,29 +1,29 @@
 /**
  * RegelRecht Tab Bar Component (Lit + TypeScript)
  *
- * Een horizontale navigatiebalk met wederzijds exclusieve tabbladen.
- * Exporteert zowel RRTabBar als RRTabBarItem.
+ * A horizontal navigation bar with mutually exclusive tabs.
+ * Exports both RRTabBar and RRTabBarItem.
  *
  * @element rr-tab-bar
- * @attr {boolean} compact           - Toont items in compact weergave: icoon boven tekst gestapeld
+ * @attr {boolean} compact           - Shows items in compact view: icon stacked above text
  * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
- * @attr {boolean} responsive        - Schakelt automatisch over naar compact onder 480px containerbreedte
- * @attr {string}  accessible-label  - Toegankelijke naam voor de navigatieregio; standaard 'Tabs'
+ * @attr {boolean} responsive        - Automatically switches to compact below 480px container width
+ * @attr {string}  accessible-label  - Accessible name for the navigation region; defaults to 'Tabs'
  *
- * @slot - rr-tab-bar-item elementen
+ * @slot - rr-tab-bar-item elements
  *
- * @fires tabchange - Wanneer een tab wordt geselecteerd; detail: { item: RRTabBarItem }
+ * @fires tabchange - When a tab is selected; detail: { item: RRTabBarItem }
  *
  * ---
  *
  * @element rr-tab-bar-item
- * @attr {boolean} selected  - Geselecteerde toestand (beheerd door rr-tab-bar)
- * @attr {string}  text      - Tekst van het tabblad; ook gebruikt als toegankelijke naam voor icoon-only items
- * @attr {string}  href      - Optionele link-URL; rendert een anker in plaats van een knop
+ * @attr {boolean} selected  - Selected state (managed by rr-tab-bar)
+ * @attr {string}  text      - Tab text; also used as accessible name for icon-only items
+ * @attr {string}  href      - Optional link URL; renders an anchor instead of a button
  *
- * @slot icon - Icooninhoud
+ * @slot icon - Icon content
  *
- * @fires select - Wanneer het item wordt geactiveerd; detail: { item: RRTabBarItem }
+ * @fires select - When the item is activated; detail: { item: RRTabBarItem }
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
