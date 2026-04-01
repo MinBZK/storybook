@@ -130,6 +130,7 @@ export class RRList extends LitElement {
 		if (!item) return;
 
 		event.preventDefault();
+		this._lastPointerY = event.clientY;
 		this._startDrag(item, event.clientY);
 		// Restore focus suppressed by preventDefault
 		const handle = path.find(
