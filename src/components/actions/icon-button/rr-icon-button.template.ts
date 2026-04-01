@@ -7,7 +7,7 @@ function renderContent(component: RRIconButton) {
 			<span class="icon-button__icon">
 				${component.icon
 					? html`<rr-icon name=${component.icon}></rr-icon>`
-					: html`<slot name="icon" @slotchange=${() => component.requestUpdate()}></slot>`}
+					: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`}
 			</span>
 			${component.expandable ? html`
 				<span class="icon-button__disclosure-icon">
