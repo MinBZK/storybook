@@ -64,12 +64,11 @@ export class RRToggleButton extends LitElement {
 	accessibleLabel = '';
 
 	override updated(changed: Map<string, unknown>): void {
-		if (changed.has('icon') || changed.has('text') || changed.has('accessibleLabel')) {
-			const iconOnly = !!this.icon && !this.text;
-			this.toggleAttribute('icon-only', iconOnly);
-			if (iconOnly && !this.accessibleLabel) {
-				console.warn('<rr-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
-			}
+		if (changed.has('icon') || changed.has('text')) {
+			this.toggleAttribute('icon-only', !!this.icon && !this.text);
+		}
+		if (this.icon && !this.text && !this.accessibleLabel) {
+			console.warn('<rr-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
 		}
 	}
 
