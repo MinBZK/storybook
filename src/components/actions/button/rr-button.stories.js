@@ -53,7 +53,8 @@ export default {
 		},
 		fullWidth: {
 			control: 'boolean',
-			description: 'Volledige breedte',
+			name: 'full-width',
+			description: 'Full width',
 			table: {
 				defaultValue: { summary: false },
 			},
