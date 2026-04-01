@@ -40,11 +40,11 @@ export class RRSplitButton extends LitElement {
 	disabled = false;
 
 	/** Button text for the primary action. */
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	text = '';
 
 	/** Icon name for the start icon (before text) on the primary action button. */
-	@property({ type: String, reflect: true, attribute: 'start-icon' })
+	@property({ type: String, attribute: 'start-icon' })
 	startIcon = '';
 
 	@property({ type: Object })

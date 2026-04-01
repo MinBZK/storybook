@@ -82,11 +82,11 @@ export class RRSegmentedControlItem extends LitElement {
 	groupName = '';
 
 	/** Text label for the item. Used as visible text and as aria-label/tooltip for icon variant. */
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	text = '';
 
 	/** Icon name for rr-icon. When not set, the icon slot is used. */
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	icon = '';
 
 	public _handleChange(e: Event): void {

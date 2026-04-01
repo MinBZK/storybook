@@ -67,15 +67,15 @@ export class RRButton extends LitElement {
 	disabled = false;
 
 	/** Button text. */
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	text = '';
 
 	/** Icon name for the start icon (before text). When not set, the start-icon slot is used. */
-	@property({ type: String, reflect: true, attribute: 'start-icon' })
+	@property({ type: String, attribute: 'start-icon' })
 	startIcon = '';
 
 	/** Icon name for the end icon (after text). When not set, the end-icon slot is used. */
-	@property({ type: String, reflect: true, attribute: 'end-icon' })
+	@property({ type: String, attribute: 'end-icon' })
 	endIcon = '';
 
 	/** Accessible label forwarded to the inner <button> or <a>. Use when visible text alone lacks context. */

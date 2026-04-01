@@ -69,11 +69,11 @@ export class RRIconButton extends LitElement {
 	popovertarget: string | undefined = undefined;
 
 	/** Button text, used as aria-label and shown below the icon in lg size. */
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	text = '';
 
 	/** Icon name for the rr-icon element. When not set, the icon slot is used. */
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	icon = '';
 
 	/** Accessible label for screen readers. Overrides text as aria-label and title tooltip.

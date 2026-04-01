@@ -53,11 +53,11 @@ export class RRToggleButton extends LitElement {
 	name = '';
 
 	/** Button text. */
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	text = '';
 
 	/** Icon name for the rr-icon element. When not set, the icon slot is used. */
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	icon = '';
 
 	@property({ type: String, attribute: 'accessible-label' })

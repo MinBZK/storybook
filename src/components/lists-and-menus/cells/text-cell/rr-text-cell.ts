@@ -78,13 +78,13 @@ export class RRTextCell extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	text = '';
 
-	@property({ type: String, reflect: true })
+	@property({ type: String })
 	overline = '';
 
-	@property({ type: String, reflect: true, attribute: 'supporting-text' })
+	@property({ type: String, attribute: 'supporting-text' })
 	supportingText = '';
 
 	override updated(changed: Map<string, unknown>) {
