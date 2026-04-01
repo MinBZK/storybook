@@ -15,21 +15,25 @@ export function collectionTemplate(component: RRCollection): TemplateResult {
 					<rr-button-bar>
 						<rr-icon-button
 							icon="chevron-left"
-							text="Vorige"
+							text=${component._t('components.collection.previous-action')}
 							?disabled=${component._atStart}
 							@click=${() => component._scrollBy(-1)}
 						></rr-icon-button>
 						<rr-button-bar-divider></rr-button-bar-divider>
 						<rr-icon-button
 							icon="chevron-right"
-							text="Volgende"
+							text=${component._t('components.collection.next-action')}
 							?disabled=${component._atEnd}
 							@click=${() => component._scrollBy(1)}
 						></rr-icon-button>
 					</rr-button-bar>
 				` : nothing}
 				${showLoadMore ? html`
-					<rr-button class="load-more" variant="neutral-tinted" text=${component.loadMoreLabel} @click=${() => component._loadMore()}></rr-button>
+					<rr-button
+						variant="neutral-tinted"
+						text=${component._t('components.collection.load-more-action')}
+						@click=${() => component._loadMore()}
+					></rr-button>
 				` : nothing}
 			</slot>
 		</footer>

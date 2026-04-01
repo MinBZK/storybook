@@ -11,9 +11,14 @@
  *
  * @attr {string} layout - Layout mode: 'grid' | 'list' | 'horizontal-scroll' (default: 'grid')
  * @attr {boolean} show-load-more - Show load-more button in grid/list (default: false)
- * @attr {string} load-more-label - Label for the load-more button (default: 'Toon meer')
  * @attr {number} max-items - Number of visible items per page (default: 24)
  * @attr {boolean} lazy-load - Automatically load more items when the button becomes visible
+ * @attr {object} translations - Translation overrides; unset keys fall back to Dutch.
+ *                               Available keys: 'components.collection.previous-action',
+ *                               'components.collection.next-action', 'components.collection.load-more-action'
+ *
+ * @migration The `load-more-label` attribute has been removed.
+ *            Use `translations` property instead: `.translations=${{ 'components.collection.load-more-action': 'Show more' }}`
  *
  * @slot - Default slot for collection items
  * @slot footer - Slot for custom footer content
@@ -24,6 +29,8 @@ import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { collectionStyles } from './rr-collection.styles.ts';
 import { collectionTemplate } from './rr-collection.template.ts';
+import { rrCollectionTranslations } from './rr-collection.i18n.ts';
+import type { RRCollectionTranslations } from './rr-collection.i18n.ts';
 import '../../actions/button/rr-button.ts';
 import '../../actions/button-bar/rr-button-bar.ts';
 import '../../actions/icon-button/rr-icon-button.ts';
@@ -41,14 +48,20 @@ export class RRCollection extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'show-load-more' })
 	showLoadMore = false;
 
-	@property({ type: String, attribute: 'load-more-label' })
-	loadMoreLabel = 'Toon meer';
-
 	@property({ type: Number, attribute: 'max-items' })
 	maxItems = 24;
 
 	@property({ type: Boolean, reflect: true, attribute: 'lazy-load' })
 	lazyLoad = false;
+
+	@property({ type: Object })
+	translations: Partial<RRCollectionTranslations> = {};
+
+	// — i18n —————————————————————————————————————————————————————————————————
+
+	public _t(key: keyof RRCollectionTranslations): string {
+		return this.translations[key] ?? rrCollectionTranslations[key];
+	}
 
 	@state()
 	_visibleCount = 0;

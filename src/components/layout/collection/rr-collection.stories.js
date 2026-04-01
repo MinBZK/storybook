@@ -42,11 +42,6 @@ export default {
 			description: 'Toon laad-meer-knop (alleen bij grid en list)',
 			table: { defaultValue: { summary: 'false' } },
 		},
-		loadMoreLabel: {
-			control: { type: 'text' },
-			description: 'Label voor de laad-meer-knop',
-			table: { defaultValue: { summary: 'Toon meer' } },
-		},
 		maxItems: {
 			control: { type: 'number' },
 			description: 'Aantal items per pagina',
@@ -61,7 +56,6 @@ export default {
 	args: {
 		layout: 'grid',
 		showLoadMore: false,
-		loadMoreLabel: 'Toon meer',
 		maxItems: 6,
 		lazyLoad: false,
 	},
@@ -94,11 +88,11 @@ const scrollItems = Array.from({ length: 12 }, (_, i) => html`
 	</div>
 `);
 
-export const Standaard = ({ layout, showLoadMore, loadMoreLabel, maxItems, lazyLoad }) => html`
+export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad }) => html`
 	<rr-collection
 		layout=${layout}
 		?show-load-more=${showLoadMore}
-		load-more-label=${loadMoreLabel}
+
 		max-items=${maxItems}
 		?lazy-load=${lazyLoad}
 	>
