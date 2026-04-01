@@ -1,7 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { RRNumberField } from './rr-number-field.js';
 import './../../actions/icon-button/rr-icon-button.ts';
-import './../../content/icon/rr-icon.ts';
 
 export function numberFieldTemplate(component: RRNumberField): TemplateResult {
 	const canDecrease = component.value > component.min;
@@ -17,12 +16,11 @@ export function numberFieldTemplate(component: RRNumberField): TemplateResult {
 					<rr-icon-button
 						variant="neutral-tinted"
 						size="sm"
+						icon="minus"
+						text=${component._t('components.number-field.decrement-action')}
 						?disabled=${component.disabled || !canDecrease}
 						@click=${component._handleDecrease}
-					>
-						<rr-icon name="minus"></rr-icon>
-						${component._t('components.number-field.decrement-action')}
-					</rr-icon-button>
+					></rr-icon-button>
 				</div>
 			` : nothing}
 			<input class="number-field__input"
@@ -41,12 +39,11 @@ export function numberFieldTemplate(component: RRNumberField): TemplateResult {
 					<rr-icon-button
 						variant="neutral-tinted"
 						size="sm"
+						icon="plus"
+						text=${component._t('components.number-field.increment-action')}
 						?disabled=${component.disabled || !canIncrease}
 						@click=${component._handleIncrease}
-					>
-						<rr-icon name="plus"></rr-icon>
-						${component._t('components.number-field.increment-action')}
-					</rr-icon-button>
+					></rr-icon-button>
 				</div>
 			` : nothing}
 		</div>

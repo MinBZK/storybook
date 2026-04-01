@@ -1,4 +1,4 @@
-import { html, nothing, TemplateResult } from 'lit';
+import { html, nothing } from 'lit';
 import type { RRMenuItem, RRMenu } from './rr-menu.js';
 
 const menuRoleMap = {
@@ -11,11 +11,6 @@ const itemRoleMap = {
 	checkbox: { menu: 'menuitemcheckbox', listbox: 'option' },
 	radio: { menu: 'menuitemradio', listbox: 'option' },
 } as const;
-
-function parseBold(text: string): TemplateResult {
-	const parts = text.split(/\*\*(.+?)\*\*/g);
-	return html`${parts.map((part, i) => i % 2 === 1 ? html`<b>${part}</b>` : part)}`;
-}
 
 export function menuTemplate(this: RRMenu, isEmpty: boolean, variant: 'menu' | 'listbox') {
 	return html`
@@ -55,18 +50,15 @@ export function menuItemTemplate(this: RRMenuItem, variant: 'menu' | 'listbox' =
 				</rr-icon-cell>
 				<rr-spacer-cell size="8"></rr-spacer-cell>
 			` : nothing}
-			<rr-text-cell color="inherit">
-				<p slot="text">${parseBold(this._displayText || this.text)}</p>
-			</rr-text-cell>
+			<rr-text-cell class="menu__item-text" color="inherit" text=${this._displayText || this.text}></rr-text-cell>
 			${this.details ? html`
 				<rr-spacer-cell size="8"></rr-spacer-cell>
 				<rr-text-cell class="menu__item-details"
 					width="fit-content"
 					horizontal-alignment="right"
 					color="secondary"
-				>
-					<p slot="text">${this.details}</p>
-				</rr-text-cell>
+					text=${this.details}
+				></rr-text-cell>
 			` : nothing}
 		</button>
 	`;

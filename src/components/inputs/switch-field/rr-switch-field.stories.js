@@ -18,6 +18,10 @@ export default {
 		},
 	},
 	argTypes: {
+		label: {
+			control: 'text',
+			description: 'Label tekst',
+		},
 		checked: {
 			control: 'boolean',
 			description: 'Aangevinkte toestand',
@@ -39,18 +43,20 @@ export default {
 		},
 	},
 	args: {
+		label: 'Switch field',
 		checked: false,
 		disabled: false,
 		value: 'on',
 	},
 };
 
-const Template = ({ checked, disabled, value }) => html`
+const Template = ({ label, checked, disabled, value }) => html`
 	<rr-switch-field
+		label=${label}
 		?checked=${checked}
 		?disabled=${disabled}
 		value=${value}
-	>Switch field</rr-switch-field>
+	></rr-switch-field>
 `;
 
 export const Standaard = Template.bind({});
@@ -58,10 +64,10 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
-		<rr-switch-field value="1">Niet aan</rr-switch-field>
-		<rr-switch-field value="2" checked>Aan</rr-switch-field>
-		<rr-switch-field value="3" disabled>Uitgeschakeld</rr-switch-field>
-		<rr-switch-field value="4" checked disabled>Aan en uitgeschakeld</rr-switch-field>
+		<rr-switch-field label="Niet aan" value="1"></rr-switch-field>
+		<rr-switch-field label="Aan" value="2" checked></rr-switch-field>
+		<rr-switch-field label="Uitgeschakeld" value="3" disabled></rr-switch-field>
+		<rr-switch-field label="Aan en uitgeschakeld" value="4" checked disabled></rr-switch-field>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

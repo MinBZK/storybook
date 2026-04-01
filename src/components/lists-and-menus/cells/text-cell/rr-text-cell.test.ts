@@ -105,25 +105,22 @@ describe('rr-text-cell', () => {
 		expect(el.getAttribute('vertical-alignment')).toBe('bottom');
 	});
 
-	it('renders slotted text content', async () => {
-		el = await fixture('<rr-text-cell><p slot="text">Hallo</p></rr-text-cell>');
+	it('renders text attribute content', async () => {
+		el = await fixture('<rr-text-cell text="Hallo"></rr-text-cell>');
 		await waitForUpdate(el);
-		const p = el.querySelector('[slot="text"]');
-		expect(p?.textContent?.trim()).toBe('Hallo');
+		expect(el.getAttribute('text')).toBe('Hallo');
 	});
 
-	it('renders slotted overline content', async () => {
-		el = await fixture('<rr-text-cell><p slot="overline">Overline</p></rr-text-cell>');
+	it('renders overline attribute content', async () => {
+		el = await fixture('<rr-text-cell overline="Overline"></rr-text-cell>');
 		await waitForUpdate(el);
-		const p = el.querySelector('[slot="overline"]');
-		expect(p?.textContent?.trim()).toBe('Overline');
+		expect(el.getAttribute('overline')).toBe('Overline');
 	});
 
-	it('renders slotted supporting-text content', async () => {
-		el = await fixture('<rr-text-cell><p slot="supporting-text">Supporting</p></rr-text-cell>');
+	it('renders supporting-text attribute content', async () => {
+		el = await fixture('<rr-text-cell supporting-text="Supporting"></rr-text-cell>');
 		await waitForUpdate(el);
-		const p = el.querySelector('[slot="supporting-text"]');
-		expect(p?.textContent?.trim()).toBe('Supporting');
+		expect(el.getAttribute('supporting-text')).toBe('Supporting');
 	});
 
 	it('defaults selected to false', async () => {

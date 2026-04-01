@@ -37,11 +37,12 @@ function renderVisibilityToggle(component: RRPasswordField): TemplateResult {
 			<rr-button
 				size=${buttonSize}
 				type="button"
+				text=${label}
 				accessible-label=${accessibleLabel}
 				?disabled=${component.disabled}
 				@click=${component._handleToggle}
 				@mousedown=${(e: Event) => e.preventDefault()}
-			>${label}</rr-button>
+			></rr-button>
 		</div>
 	`;
 }

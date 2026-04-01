@@ -14,20 +14,22 @@ export function collectionTemplate(component: RRCollection): TemplateResult {
 				${isHorizontal ? html`
 					<rr-button-bar>
 						<rr-icon-button
+							icon="chevron-left"
+							text="Vorige"
 							?disabled=${component._atStart}
 							@click=${() => component._scrollBy(-1)}
-						><rr-icon name="chevron-left"></rr-icon>Vorige</rr-icon-button>
+						></rr-icon-button>
 						<rr-button-bar-divider></rr-button-bar-divider>
 						<rr-icon-button
+							icon="chevron-right"
+							text="Volgende"
 							?disabled=${component._atEnd}
 							@click=${() => component._scrollBy(1)}
-						><rr-icon name="chevron-right"></rr-icon>Volgende</rr-icon-button>
+						></rr-icon-button>
 					</rr-button-bar>
 				` : nothing}
 				${showLoadMore ? html`
-					<rr-button class="load-more" variant="neutral-tinted" @click=${() => component._loadMore()}>
-						${component.loadMoreLabel}
-					</rr-button>
+					<rr-button class="load-more" variant="neutral-tinted" text=${component.loadMoreLabel} @click=${() => component._loadMore()}></rr-button>
 				` : nothing}
 			</slot>
 		</footer>

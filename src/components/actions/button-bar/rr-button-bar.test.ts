@@ -30,8 +30,8 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('assigns slot="child-N" to button children', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar>
-        <rr-button>A</rr-button>
-        <rr-button>B</rr-button>
+        <rr-button text="A"></rr-button>
+        <rr-button text="B"></rr-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);
@@ -44,9 +44,9 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('renders divider as separator in shadow DOM without slot on light DOM', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar>
-        <rr-button>A</rr-button>
+        <rr-button text="A"></rr-button>
         <rr-button-bar-divider></rr-button-bar-divider>
-        <rr-button>B</rr-button>
+        <rr-button text="B"></rr-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);
@@ -63,8 +63,8 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('treats rr-icon-button the same as rr-button', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar>
-        <rr-icon-button><rr-icon name="heart"></rr-icon>Like</rr-icon-button>
-        <rr-button>Text</rr-button>
+        <rr-icon-button icon="heart" text="Like"></rr-icon-button>
+        <rr-button text="Text"></rr-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);
@@ -79,8 +79,8 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('cleans stale slot attrs before rebuild', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar>
-        <rr-button>A</rr-button>
-        <rr-button>B</rr-button>
+        <rr-button text="A"></rr-button>
+        <rr-button text="B"></rr-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);
@@ -90,7 +90,7 @@ describe('rr-button-bar – child building & attribute propagation', () => {
 
     // Add a third button — triggers rebuild via MO
     const btnC = document.createElement('rr-button');
-    btnC.textContent = 'C';
+    btnC.setAttribute('text', 'C');
     el.appendChild(btnC);
 
     await waitForUpdate(el);
@@ -105,8 +105,8 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('propagates initial size to button children', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar size="sm">
-        <rr-button>A</rr-button>
-        <rr-icon-button><rr-icon name="x"></rr-icon>Close</rr-icon-button>
+        <rr-button text="A"></rr-button>
+        <rr-icon-button icon="x" text="Close"></rr-icon-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);
@@ -118,7 +118,7 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('propagates size change to children', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar size="md">
-        <rr-button>A</rr-button>
+        <rr-button text="A"></rr-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);
@@ -134,7 +134,7 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('propagates disabled to children', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar disabled>
-        <rr-button>A</rr-button>
+        <rr-button text="A"></rr-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);
@@ -145,7 +145,7 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('removes disabled from children when bar is re-enabled', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar disabled>
-        <rr-button>A</rr-button>
+        <rr-button text="A"></rr-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);
@@ -161,13 +161,13 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('updates slots when a child is added after mount', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar>
-        <rr-button>A</rr-button>
+        <rr-button text="A"></rr-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);
 
     const newBtn = document.createElement('rr-button');
-    newBtn.textContent = 'B';
+    newBtn.setAttribute('text', 'B');
     el.appendChild(newBtn);
 
     await waitForUpdate(el);
@@ -181,8 +181,8 @@ describe('rr-button-bar – child building & attribute propagation', () => {
   it('updates slots when a child is removed after mount', async () => {
     el = await fixture<RRButtonBar>(`
       <rr-button-bar>
-        <rr-button>A</rr-button>
-        <rr-button>B</rr-button>
+        <rr-button text="A"></rr-button>
+        <rr-button text="B"></rr-button>
       </rr-button-bar>
     `);
     await waitForUpdate(el);

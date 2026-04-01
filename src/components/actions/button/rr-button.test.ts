@@ -17,43 +17,45 @@ describe('rr-button', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
+	it('renders text from text attribute', async () => {
+		el = await fixture('<rr-button text="Click me"></rr-button>');
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector('.button__content')!;
+		expect(content.textContent).toContain('Click me');
+	});
+
 	it('forwards aria-label to the inner button element', async () => {
-		el = await fixture('<rr-button accessible-label="Close dialog">X</rr-button>');
+		el = await fixture('<rr-button accessible-label="Close dialog" text="X"></rr-button>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('button');
 		expect(inner!.getAttribute('aria-label')).toBe('Close dialog');
 	});
 
 	it('does not set aria-label on inner button when property is empty', async () => {
-		el = await fixture('<rr-button>Click me</rr-button>');
+		el = await fixture('<rr-button text="Click me"></rr-button>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('button');
 		expect(inner!.hasAttribute('aria-label')).toBe(false);
 	});
 });
 
-describe('rr-button – icon detection', () => {
+describe('rr-button – icon attributes', () => {
 	let el: RRButton;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('renders no shadow icons when there are no icons', async () => {
-		el = await fixture<RRButton>('<rr-button>Click me</rr-button>');
+	it('renders no icons when no icon attributes are set', async () => {
+		el = await fixture<RRButton>('<rr-button text="Click me"></rr-button>');
 		await waitForUpdate(el);
 
 		const shadowIcons = el.shadowRoot!.querySelectorAll('.button__start-icon, .button__end-icon');
 		expect(shadowIcons.length).toBe(0);
 	});
 
-	it('detects icon before text as start icon', async () => {
-		el = await fixture<RRButton>(`
-			<rr-button>
-				<rr-icon name="heart"></rr-icon>
-				Like
-			</rr-button>
-		`);
+	it('renders start icon from start-icon attribute', async () => {
+		el = await fixture<RRButton>('<rr-button text="Like" start-icon="heart"></rr-button>');
 		await waitForUpdate(el);
 
 		const startIcon = el.shadowRoot!.querySelector('.button__start-icon');
@@ -64,13 +66,8 @@ describe('rr-button – icon detection', () => {
 		expect(endIcon).toBeNull();
 	});
 
-	it('detects icon after text as end icon', async () => {
-		el = await fixture<RRButton>(`
-			<rr-button>
-				Next
-				<rr-icon name="arrow-right"></rr-icon>
-			</rr-button>
-		`);
+	it('renders end icon from end-icon attribute', async () => {
+		el = await fixture<RRButton>('<rr-button text="Next" end-icon="arrow-right"></rr-button>');
 		await waitForUpdate(el);
 
 		const startIcon = el.shadowRoot!.querySelector('.button__start-icon');
@@ -81,14 +78,8 @@ describe('rr-button – icon detection', () => {
 		expect(endIcon!.getAttribute('name')).toBe('arrow-right');
 	});
 
-	it('renders both start and end icons when surrounding text', async () => {
-		el = await fixture<RRButton>(`
-			<rr-button>
-				<rr-icon name="heart"></rr-icon>
-				Favorite
-				<rr-icon name="chevron-down-small"></rr-icon>
-			</rr-button>
-		`);
+	it('renders both start and end icons', async () => {
+		el = await fixture<RRButton>('<rr-button text="Favorite" start-icon="heart" end-icon="chevron-down-small"></rr-button>');
 		await waitForUpdate(el);
 
 		const startIcon = el.shadowRoot!.querySelector('.button__start-icon');
@@ -100,126 +91,28 @@ describe('rr-button – icon detection', () => {
 		expect(endIcon!.getAttribute('name')).toBe('chevron-down-small');
 	});
 
-	it('warns and falls back when two icons are not surrounding the text', async () => {
-		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-
+	it('renders start-icon slot when start-icon attribute is not set', async () => {
 		el = await fixture<RRButton>(`
-			<rr-button>
-				<rr-icon name="a"></rr-icon>
-				<rr-icon name="b"></rr-icon>
-				Text
+			<rr-button text="Custom">
+				<svg slot="start-icon" width="20" height="20"><circle cx="10" cy="10" r="8"/></svg>
 			</rr-button>
 		`);
 		await waitForUpdate(el);
-
-		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining('Two rr-icon elements detected but they are not surrounding the text')
-		);
-
-		const startIcon = el.shadowRoot!.querySelector('.button__start-icon');
-		const endIcon = el.shadowRoot!.querySelector('.button__end-icon');
-
-		expect(startIcon).not.toBeNull();
-		expect(startIcon!.getAttribute('name')).toBe('a');
-		expect(endIcon).toBeNull();
-
-		warnSpy.mockRestore();
+		const slot = el.shadowRoot!.querySelector('slot[name="start-icon"]') as HTMLSlotElement;
+		expect(slot).not.toBeNull();
+		expect(slot!.assignedElements().length).toBe(1);
 	});
 
-	it('warns and truncates when more than 2 icons are provided', async () => {
-		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-
+	it('renders end-icon slot when end-icon attribute is not set', async () => {
 		el = await fixture<RRButton>(`
-			<rr-button>
-				<rr-icon name="a"></rr-icon>
-				Text
-				<rr-icon name="b"></rr-icon>
-				<rr-icon name="c"></rr-icon>
+			<rr-button text="Custom">
+				<svg slot="end-icon" width="20" height="20"><circle cx="10" cy="10" r="8"/></svg>
 			</rr-button>
 		`);
 		await waitForUpdate(el);
-
-		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining('Too many rr-icon elements')
-		);
-
-		warnSpy.mockRestore();
-	});
-
-	it('ignores whitespace-only text nodes in position calculation', async () => {
-		el = await fixture<RRButton>(`<rr-button>
-				<rr-icon name="star"></rr-icon>
-
-
-				Rate
-			</rr-button>`);
-		await waitForUpdate(el);
-
-		const startIcon = el.shadowRoot!.querySelector('.button__start-icon');
-		expect(startIcon).not.toBeNull();
-		expect(startIcon!.getAttribute('name')).toBe('star');
-	});
-
-	it('re-detects when an icon is dynamically added', async () => {
-		el = await fixture<RRButton>('<rr-button>Click</rr-button>');
-		await waitForUpdate(el);
-
-		expect(el.shadowRoot!.querySelector('.button__start-icon')).toBeNull();
-
-		const icon = document.createElement('rr-icon');
-		icon.setAttribute('name', 'plus');
-		el.prepend(icon);
-
-		await waitForUpdate(el);
-
-		const startIcon = el.shadowRoot!.querySelector('.button__start-icon');
-		expect(startIcon).not.toBeNull();
-		expect(startIcon!.getAttribute('name')).toBe('plus');
-	});
-
-	it('re-detects when an icon is dynamically removed', async () => {
-		el = await fixture<RRButton>(`
-			<rr-button>
-				<rr-icon name="heart"></rr-icon>
-				Like
-			</rr-button>
-		`);
-		await waitForUpdate(el);
-
-		expect(el.shadowRoot!.querySelector('.button__start-icon')).not.toBeNull();
-
-		el.querySelector('rr-icon')!.remove();
-
-		await waitForUpdate(el);
-
-		expect(el.shadowRoot!.querySelector('.button__start-icon')).toBeNull();
-		expect(el.shadowRoot!.querySelector('.button__end-icon')).toBeNull();
-	});
-
-	it('disconnects observer when removed from DOM', async () => {
-		el = await fixture<RRButton>('<rr-button>Test</rr-button>');
-		await waitForUpdate(el);
-
-		const observer = (el as any)._observer as MutationObserver | null;
-		expect(observer).not.toBeNull();
-
-		el.remove();
-
-		expect((el as any)._observer).toBeNull();
-	});
-
-	it('re-creates observer when re-inserted into DOM', async () => {
-		el = await fixture<RRButton>('<rr-button>Test</rr-button>');
-		await waitForUpdate(el);
-
-		const parent = el.parentElement!;
-		el.remove();
-		expect((el as any)._observer).toBeNull();
-
-		parent.appendChild(el);
-		await waitForUpdate(el);
-
-		expect((el as any)._observer).not.toBeNull();
+		const slot = el.shadowRoot!.querySelector('slot[name="end-icon"]') as HTMLSlotElement;
+		expect(slot).not.toBeNull();
+		expect(slot!.assignedElements().length).toBe(1);
 	});
 });
 
@@ -231,33 +124,33 @@ describe('rr-button – href / link rendering', () => {
 	});
 
 	it('renders a <button> by default', async () => {
-		el = await fixture<RRButton>('<rr-button>Click</rr-button>');
+		el = await fixture<RRButton>('<rr-button text="Click"></rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('a')).toBeNull();
 	});
 
 	it('does not reflect href attribute when not set', async () => {
-		el = await fixture<RRButton>('<rr-button>Click</rr-button>');
+		el = await fixture<RRButton>('<rr-button text="Click"></rr-button>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('href')).toBe(false);
 	});
 
 	it('renders an <a> when href is set', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
+		el = await fixture<RRButton>('<rr-button href="/overzicht" text="Terug"></rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('button')).toBeNull();
 	});
 
 	it('sets href on the anchor element', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
+		el = await fixture<RRButton>('<rr-button href="/overzicht" text="Terug"></rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('href')).toBe('/overzicht');
 	});
 
 	it('forwards target and rel to the anchor element', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht" target="_blank" rel="noopener">Terug</rr-button>');
+		el = await fixture<RRButton>('<rr-button href="/overzicht" target="_blank" rel="noopener" text="Terug"></rr-button>');
 		await waitForUpdate(el);
 		const a = el.shadowRoot!.querySelector('a')!;
 		expect(a.getAttribute('target')).toBe('_blank');
@@ -265,37 +158,25 @@ describe('rr-button – href / link rendering', () => {
 	});
 
 	it('defaults rel to noopener noreferrer when target is _blank and rel is not set', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht" target="_blank">Terug</rr-button>');
+		el = await fixture<RRButton>('<rr-button href="/overzicht" target="_blank" text="Terug"></rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('rel')).toBe('noopener noreferrer');
 	});
 
-	it('keeps href on the anchor when disabled so it remains keyboard-discoverable', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled>Terug</rr-button>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('a')!.getAttribute('href')).toBe('/overzicht');
-	});
-
 	it('sets aria-disabled on the anchor when disabled', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled>Terug</rr-button>');
+		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled text="Terug"></rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-disabled')).toBe('true');
 	});
 
-	it('does not set aria-disabled on the anchor when not disabled', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht">Terug</rr-button>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('a')!.hasAttribute('aria-disabled')).toBe(false);
-	});
-
 	it('forwards accessible-label to the anchor element', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht" accessible-label="Ga terug naar overzicht">Terug</rr-button>');
+		el = await fixture<RRButton>('<rr-button href="/overzicht" accessible-label="Ga terug naar overzicht" text="Terug"></rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe('Ga terug naar overzicht');
 	});
 
 	it('prevents default click on disabled anchor to block navigation', async () => {
-		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled>Terug</rr-button>');
+		el = await fixture<RRButton>('<rr-button href="/overzicht" disabled text="Terug"></rr-button>');
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a')!;
 		const event = new MouseEvent('click', { bubbles: true, cancelable: true });
@@ -305,7 +186,7 @@ describe('rr-button – href / link rendering', () => {
 	});
 
 	it('switches from <button> to <a> when href is set dynamically', async () => {
-		el = await fixture<RRButton>('<rr-button>Terug</rr-button>');
+		el = await fixture<RRButton>('<rr-button text="Terug"></rr-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
 

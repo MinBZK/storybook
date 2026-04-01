@@ -19,6 +19,10 @@ export default {
 		},
 	},
 	argTypes: {
+		label: {
+			control: 'text',
+			description: 'Label tekst',
+		},
 		checked: {
 			control: 'boolean',
 			description: 'Aangevinkte toestand',
@@ -35,18 +39,20 @@ export default {
 		},
 	},
 	args: {
+		label: 'Radio button field',
 		checked: false,
 		disabled: false,
 		value: 'optie-1',
 	},
 };
 
-const Template = ({ checked, disabled, value }) => html`
+const Template = ({ label, checked, disabled, value }) => html`
 	<rr-radio-button-field
+		label=${label}
 		?checked=${checked}
 		?disabled=${disabled}
 		value=${value}
-	>Radio button field</rr-radio-button-field>
+	></rr-radio-button-field>
 `;
 
 export const Standaard = Template.bind({});
@@ -54,10 +60,10 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
-		<rr-radio-button-field value="1">Niet geselecteerd</rr-radio-button-field>
-		<rr-radio-button-field value="2" checked>Geselecteerd</rr-radio-button-field>
-		<rr-radio-button-field value="3" disabled>Uitgeschakeld</rr-radio-button-field>
-		<rr-radio-button-field value="4" checked disabled>Geselecteerd en uitgeschakeld</rr-radio-button-field>
+		<rr-radio-button-field label="Niet geselecteerd" value="1"></rr-radio-button-field>
+		<rr-radio-button-field label="Geselecteerd" value="2" checked></rr-radio-button-field>
+		<rr-radio-button-field label="Uitgeschakeld" value="3" disabled></rr-radio-button-field>
+		<rr-radio-button-field label="Geselecteerd en uitgeschakeld" value="4" checked disabled></rr-radio-button-field>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

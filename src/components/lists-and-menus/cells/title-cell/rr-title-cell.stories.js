@@ -6,6 +6,25 @@ export default {
 	component: 'rr-title-cell',
 	tags: ['autodocs'],
 	argTypes: {
+		headingLevel: {
+			control: 'select',
+			options: [undefined, 1, 2, 3, 4, 5, 6],
+			name: 'heading-level',
+			description: 'Heading level (1–6). When not set, renders a <p>.',
+		},
+		text: {
+			control: 'text',
+			description: 'Title text content',
+		},
+		overline: {
+			control: 'text',
+			description: 'Optional overline text',
+		},
+		supportingText: {
+			control: 'text',
+			name: 'supporting-text',
+			description: 'Optional supporting text below the title',
+		},
 		size: {
 			control: 'select',
 			options: [1, 2, 3, 4, 5, 6],
@@ -72,37 +91,26 @@ export const Default = {
 			horizontal-alignment=${args.horizontalAlignment}
 			vertical-alignment=${args.verticalAlignment}
 			?selected=${args.selected}
-		>
-			<h2>Title cell</h2>
-		</rr-title-cell>
+			text="Title cell"
+		/>
 	`,
 };
 
 export const WithOverline = {
 	render: () => html`
-		<rr-title-cell>
-			<p slot="overline">Overline</p>
-			<h2>Title cell</h2>
-		</rr-title-cell>
+		<rr-title-cell overline="Overline" text="Title cell" />
 	`,
 };
 
-export const WithSubtitle = {
+export const WithSupportingText = {
 	render: () => html`
-		<rr-title-cell>
-			<h2>Title cell</h2>
-			<p slot="subtitle">Subtitle</p>
-		</rr-title-cell>
+		<rr-title-cell text="Title cell" supporting-text="Subtitle" />
 	`,
 };
 
-export const WithOverlineAndSubtitle = {
+export const WithOverlineAndSupportingText = {
 	render: () => html`
-		<rr-title-cell>
-			<p slot="overline">Overline</p>
-			<h2>Title cell</h2>
-			<p slot="subtitle">Subtitle</p>
-		</rr-title-cell>
+		<rr-title-cell overline="Overline" text="Title cell" supporting-text="Subtitle" />
 	`,
 };
 
@@ -110,9 +118,7 @@ export const AllSizes = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			${[1, 2, 3, 4, 5, 6].map(s => html`
-				<rr-title-cell size=${s}>
-					<h2>Title cell (size ${s})</h2>
-				</rr-title-cell>
+				<rr-title-cell size=${s} text="Title cell (size ${s})" />
 			`)}
 		</div>
 	`,
@@ -121,28 +127,8 @@ export const AllSizes = {
 export const Selected = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<rr-title-cell>
-				<p slot="overline">Overline</p>
-				<h2>Title cell</h2>
-				<p slot="subtitle">Subtitle</p>
-			</rr-title-cell>
-			<rr-title-cell selected>
-				<p slot="overline">Overline</p>
-				<h2>Title cell (selected)</h2>
-				<p slot="subtitle">Subtitle</p>
-			</rr-title-cell>
-		</div>
-	`,
-};
-
-export const ColorInherit = {
-	render: () => html`
-		<div style="color: var(--semantics-feedback-success-color);">
-			<rr-title-cell color="inherit">
-				<p slot="overline">Overline</p>
-				<h2>Title cell (inherit)</h2>
-				<p slot="subtitle">Subtitle</p>
-			</rr-title-cell>
+			<rr-title-cell overline="Overline" text="Title cell" supporting-text="Subtitle" />
+			<rr-title-cell selected overline="Overline" text="Title cell (selected)" supporting-text="Subtitle" />
 		</div>
 	`,
 };
@@ -150,16 +136,8 @@ export const ColorInherit = {
 export const HorizontalAlignment = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<rr-title-cell horizontal-alignment="left" style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="overline">Overline</p>
-				<h2>Title cell (left)</h2>
-				<p slot="subtitle">Subtitle</p>
-			</rr-title-cell>
-			<rr-title-cell horizontal-alignment="right" style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="overline">Overline</p>
-				<h2>Title cell (right)</h2>
-				<p slot="subtitle">Subtitle</p>
-			</rr-title-cell>
+			<rr-title-cell horizontal-alignment="left" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Title cell (left)" supporting-text="Subtitle" />
+			<rr-title-cell horizontal-alignment="right" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Title cell (right)" supporting-text="Subtitle" />
 		</div>
 	`,
 };
@@ -167,15 +145,9 @@ export const HorizontalAlignment = {
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<rr-title-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<h2>Center</h2>
-			</rr-title-cell>
-			<rr-title-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<h2>Top</h2>
-			</rr-title-cell>
-			<rr-title-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<h2>Bottom</h2>
-			</rr-title-cell>
+			<rr-title-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Center" />
+			<rr-title-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Top" />
+			<rr-title-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Bottom" />
 		</div>
 	`,
 };

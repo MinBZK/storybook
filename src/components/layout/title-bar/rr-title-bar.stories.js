@@ -14,7 +14,7 @@ import '../spacer/rr-spacer.ts';
  *   <p slot="overline">Overline</p>
  *   <h1>Paginatitel</h1>
  *   <p slot="subtitle">Ondertitel</p>
- *   <rr-button slot="actions">Actie</rr-button>
+ *   <rr-button slot="actions" text="Actie"></rr-button>
  * </rr-title-bar>
  * ```
  */
@@ -48,7 +48,7 @@ export const Standaard = ({ size }) => html`
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
 		<rr-title-bar size=${size}>
 			<h1>Paginatitel</h1>
-			<rr-button slot="actions" variant="secondary" size="sm">Actie</rr-button>
+			<rr-button slot="actions" variant="secondary" size="sm" text="Actie"></rr-button>
 		</rr-title-bar>
 	</div>
 `;
@@ -88,9 +88,9 @@ export const MetActies = () => html`
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
 		<rr-title-bar>
 			<h1>Wet op de zorgtoeslag</h1>
-			<rr-button slot="actions" variant="secondary" size="sm">Bewerken</rr-button>
+			<rr-button slot="actions" variant="secondary" size="sm" text="Bewerken"></rr-button>
 			<rr-spacer slot="actions" size="8"></rr-spacer>
-			<rr-button slot="actions" size="sm">Opslaan</rr-button>
+			<rr-button slot="actions" size="sm" text="Opslaan"></rr-button>
 		</rr-title-bar>
 	</div>
 `;

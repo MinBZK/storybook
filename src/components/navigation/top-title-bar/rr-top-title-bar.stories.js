@@ -2,7 +2,6 @@ import { html } from 'lit';
 import './rr-top-title-bar.ts';
 import '../../actions/button/rr-button.ts';
 import '../../actions/icon-button/rr-icon-button.ts';
-import '../../content/icon/rr-icon.ts';
 import '../../layout/page/rr-page.ts';
 import '../../layout/title-bar/rr-title-bar.ts';
 
@@ -156,14 +155,8 @@ export const MetWerkbalkActies = () => html`
 			back-label="Overzicht"
 			dismiss-label="Sluit"
 		>
-			<rr-icon-button slot="toolbar" variant="accent-transparent">
-				<rr-icon name="share"></rr-icon>
-				Delen
-			</rr-icon-button>
-			<rr-icon-button slot="toolbar" variant="accent-transparent">
-				<rr-icon name="edit"></rr-icon>
-				Bewerken
-			</rr-icon-button>
+			<rr-icon-button slot="toolbar" variant="accent-transparent" icon="share" text="Delen"></rr-icon-button>
+			<rr-icon-button slot="toolbar" variant="accent-transparent" icon="edit" text="Bewerken"></rr-icon-button>
 		</rr-top-title-bar>
 	</rr-page>
 `;

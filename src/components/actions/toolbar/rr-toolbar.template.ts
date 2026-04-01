@@ -1,7 +1,6 @@
 import { html, nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 import '../icon-button/rr-icon-button.js';
-import '../../content/icon/rr-icon.js';
 
 // # Types
 export type ToolbarChild =
@@ -123,14 +122,13 @@ export function template(
 			</div>
 			<div class="toolbar__overflow-button ${hasOverflow ? '' : 'is-hidden'}">
 				<rr-icon-button size=${size}
+					icon="ellipsis"
+					text="Meer"
 					aria-haspopup="menu"
 					aria-expanded=${menuOpen ? 'true' : 'false'}
 					aria-controls=${menuId}
 					@click=${onOverflowClick}
-				>
-					<rr-icon name="ellipsis"></rr-icon>
-					Meer
-				</rr-icon-button>
+				></rr-icon-button>
 				<span class="toolbar__item-label">Meer</span>
 			</div>
 		</div>

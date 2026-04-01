@@ -7,7 +7,7 @@ export function segmentedControlTemplate(component: RRSegmentedControl): Templat
 
 export function segmentedControlItemTemplate(component: RRSegmentedControlItem): TemplateResult {
 	const isIcon = component.variant === 'icon';
-	const labelText = component._labelText || nothing;
+	const labelText = component.text || nothing;
 
 	return html`
 		<label class="segmented-control__item-label"
@@ -25,12 +25,14 @@ export function segmentedControlItemTemplate(component: RRSegmentedControlItem):
 			<span class="segmented-control__item-icon"
 				aria-hidden=${component.variant === 'icon' ? nothing : 'true'}
 			>
-				<slot name="icon"></slot>
+				${component.icon
+					? html`<rr-icon name=${component.icon}></rr-icon>`
+					: html`<slot name="icon"></slot>`}
 			</span>
 			<span class="segmented-control__item-text"
 				aria-hidden=${component.variant === 'text' ? nothing : 'true'}
 			>
-				<slot @slotchange=${component._onDefaultSlotChange}></slot>
+				${component.text}
 			</span>
 			<div class="segmented-control__item-indicator"></div>
 		</label>

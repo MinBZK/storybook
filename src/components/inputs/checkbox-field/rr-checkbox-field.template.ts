@@ -14,13 +14,11 @@ export function checkboxFieldTemplate(component: RRCheckboxField): TemplateResul
 					?disabled=${component.disabled}
 					name=${component.name || nothing}
 					value=${component.value}
-					accessible-label=${component._labelText || nothing}
+					accessible-label=${component.label || nothing}
 					@change=${component._handleChange}
 				></rr-checkbox>
 			</div>
-			<span class="checkbox-field__label">
-				<slot @slotchange=${component._onSlotChange}></slot>
-			</span>
+			<span class="checkbox-field__label">${component.label}</span>
 		</div>
 	`;
 }

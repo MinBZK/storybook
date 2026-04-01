@@ -50,7 +50,7 @@ const pageContent = html`
 `;
 
 const Template = (args) => html`
-	<rr-button @click=${openNext}>Open sheet</rr-button>
+	<rr-button text="Open sheet" @click=${openNext}></rr-button>
 	<rr-sheet placement=${args.placement} ?modeless=${args.modeless}>
 		<rr-page sticky-header>
 			<rr-top-title-bar
@@ -88,7 +88,7 @@ export const Onder = {
 
 export const MetTerugknop = {
 	render: () => html`
-		<rr-button @click=${openNext}>Open sheet</rr-button>
+		<rr-button text="Open sheet" @click=${openNext}></rr-button>
 		<rr-sheet placement="right">
 			<rr-page sticky-header>
 				<rr-top-title-bar
@@ -109,7 +109,7 @@ export const MetTerugknop = {
 
 export const NietModaal = {
 	render: () => html`
-		<rr-button @click=${openNext}>Open niet-modale sheet</rr-button>
+		<rr-button text="Open niet-modale sheet" @click=${openNext}></rr-button>
 		<rr-sheet placement="right" modeless>
 			<rr-page sticky-header>
 				<rr-top-title-bar
@@ -133,7 +133,7 @@ export const NietModaal = {
 
 export const MetStickyFooter = {
 	render: () => html`
-		<rr-button @click=${openNext}>Open sheet</rr-button>
+		<rr-button text="Open sheet" @click=${openNext}></rr-button>
 		<rr-sheet placement="right">
 			<rr-page sticky-header sticky-footer>
 				<rr-top-title-bar
@@ -143,8 +143,8 @@ export const MetStickyFooter = {
 				></rr-top-title-bar>
 				${pageContent}
 				<div slot="footer" style="padding: 16px; display: flex; justify-content: flex-end; gap: 8px;">
-					<rr-button variant="secondary">Annuleer</rr-button>
-					<rr-button variant="primary">Opslaan</rr-button>
+					<rr-button variant="secondary" text="Annuleer"></rr-button>
+					<rr-button variant="primary" text="Opslaan"></rr-button>
 				</div>
 			</rr-page>
 		</rr-sheet>

@@ -13,7 +13,7 @@
  * <rr-list reorderable>
  *   <rr-list-item>
  *     <rr-drag-handle-cell slot="start" draggable-only></rr-drag-handle-cell>
- *     <rr-text-cell><p slot="text">Item</p></rr-text-cell>
+ *     <rr-text-cell text="Item"></rr-text-cell>
  *   </rr-list-item>
  * </rr-list>
  * ```

@@ -18,15 +18,29 @@ describe('rr-checkbox-field', () => {
 	});
 
 	it('renders a label span element', async () => {
-		el = await fixture('<rr-checkbox-field>Optie 1</rr-checkbox-field>');
+		el = await fixture('<rr-checkbox-field label="Optie 1"></rr-checkbox-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.checkbox-field__label')).not.toBeNull();
+	});
+
+	it('renders label text from attribute', async () => {
+		el = await fixture('<rr-checkbox-field label="Optie 1"></rr-checkbox-field>');
+		await waitForUpdate(el);
+		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
+		expect(label.textContent).toBe('Optie 1');
 	});
 
 	it('renders rr-checkbox in shadow DOM', async () => {
 		el = await fixture('<rr-checkbox-field></rr-checkbox-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('rr-checkbox')).not.toBeNull();
+	});
+
+	it('forwards label as accessible-label to rr-checkbox', async () => {
+		el = await fixture('<rr-checkbox-field label="Akkoord"></rr-checkbox-field>');
+		await waitForUpdate(el);
+		const checkbox = el.shadowRoot!.querySelector('rr-checkbox')!;
+		expect(checkbox.getAttribute('accessible-label')).toBe('Akkoord');
 	});
 });
 
@@ -156,7 +170,7 @@ describe('rr-checkbox-field – label click', () => {
 	});
 
 	it('toggles checked when label is clicked', async () => {
-		el = await fixture<RRCheckboxField>('<rr-checkbox-field>Optie 1</rr-checkbox-field>');
+		el = await fixture<RRCheckboxField>('<rr-checkbox-field label="Optie 1"></rr-checkbox-field>');
 		await waitForUpdate(el);
 		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
 		label.click();
@@ -165,7 +179,7 @@ describe('rr-checkbox-field – label click', () => {
 	});
 
 	it('does not toggle when disabled and label is clicked', async () => {
-		el = await fixture<RRCheckboxField>('<rr-checkbox-field disabled>Optie 1</rr-checkbox-field>');
+		el = await fixture<RRCheckboxField>('<rr-checkbox-field label="Optie 1" disabled></rr-checkbox-field>');
 		await waitForUpdate(el);
 		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
 		label.click();
@@ -174,7 +188,7 @@ describe('rr-checkbox-field – label click', () => {
 	});
 
 	it('clears indeterminate when label is clicked', async () => {
-		el = await fixture<RRCheckboxField>('<rr-checkbox-field indeterminate>Optie 1</rr-checkbox-field>');
+		el = await fixture<RRCheckboxField>('<rr-checkbox-field label="Optie 1" indeterminate></rr-checkbox-field>');
 		await waitForUpdate(el);
 		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
 		label.click();

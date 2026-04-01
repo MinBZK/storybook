@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import './rr-toggle-button-group.js';
 import '../toggle-button/rr-toggle-button.js';
-import '../../content/icon/rr-icon.ts';
 
 /**
  * De Toggle Button Group component groepeert `rr-toggle-button` elementen en beheert
@@ -10,8 +9,8 @@ import '../../content/icon/rr-icon.ts';
  * ## Gebruik
  * ```html
  * <rr-toggle-button-group type="radio" name="weergave">
- *   <rr-toggle-button value="lijst">Lijst</rr-toggle-button>
- *   <rr-toggle-button value="kaart" selected>Kaart</rr-toggle-button>
+ *   <rr-toggle-button value="lijst" text="Lijst"></rr-toggle-button>
+ *   <rr-toggle-button value="kaart" text="Kaart" selected></rr-toggle-button>
  * </rr-toggle-button-group>
  * ```
  */
@@ -72,18 +71,9 @@ const Template = (args) => html`
 		size=${args.size}
 		?disabled=${args.disabled}
 	>
-		<rr-toggle-button value="mijn-zaken">
-			<rr-icon name="person"></rr-icon>
-			Mijn zaken
-		</rr-toggle-button>
-		<rr-toggle-button value="inbox" selected>
-			<rr-icon name="inbox"></rr-icon>
-			Inbox
-		</rr-toggle-button>
-		<rr-toggle-button value="agenda">
-			<rr-icon name="calendar-event"></rr-icon>
-			Agenda
-		</rr-toggle-button>
+		<rr-toggle-button value="mijn-zaken" text="Mijn zaken" icon="person"></rr-toggle-button>
+		<rr-toggle-button value="inbox" text="Inbox" icon="inbox" selected></rr-toggle-button>
+		<rr-toggle-button value="agenda" text="Agenda" icon="calendar-event"></rr-toggle-button>
 	</rr-toggle-button-group>
 `;
 
@@ -101,21 +91,11 @@ export const TypeButton = () => html`
 			Met <code>type="button"</code> beheert elke knop zijn eigen <code>aria-pressed</code> toestand onafhankelijk. Ideaal voor teksteditor-toolbars.
 		</p>
 		<rr-toggle-button-group type="button" aria-label="Tekst opmaken">
-			<rr-toggle-button value="bold" accessible-label="Vet">
-				<rr-icon name="bold"></rr-icon>
-			</rr-toggle-button>
-			<rr-toggle-button value="italic" accessible-label="Cursief" selected>
-				<rr-icon name="italic"></rr-icon>
-			</rr-toggle-button>
-			<rr-toggle-button value="underlined" accessible-label="Onderstreept">
-				<rr-icon name="underlined"></rr-icon>
-			</rr-toggle-button>
-			<rr-toggle-button value="bullet-list" accessible-label="Opsomming">
-				<rr-icon name="bullet-list"></rr-icon>
-			</rr-toggle-button>
-			<rr-toggle-button value="numbered-list" accessible-label="Genummerde lijst">
-				<rr-icon name="numbered-list"></rr-icon>
-			</rr-toggle-button>
+			<rr-toggle-button value="bold" accessible-label="Vet" icon="bold"></rr-toggle-button>
+			<rr-toggle-button value="italic" accessible-label="Cursief" icon="italic" selected></rr-toggle-button>
+			<rr-toggle-button value="underlined" accessible-label="Onderstreept" icon="underlined"></rr-toggle-button>
+			<rr-toggle-button value="bullet-list" accessible-label="Opsomming" icon="bullet-list"></rr-toggle-button>
+			<rr-toggle-button value="numbered-list" accessible-label="Genummerde lijst" icon="numbered-list"></rr-toggle-button>
 		</rr-toggle-button-group>
 	</div>
 `;
@@ -134,22 +114,10 @@ export const MultiSelect = () => html`
 			Met <code>type="checkbox"</code> kunnen meerdere opties tegelijk geselecteerd zijn.
 		</p>
 		<rr-toggle-button-group type="checkbox" name="filter" aria-label="Filters">
-			<rr-toggle-button value="mijn-zaken" selected>
-				<rr-icon name="person"></rr-icon>
-				Mijn zaken
-			</rr-toggle-button>
-			<rr-toggle-button value="inbox">
-				<rr-icon name="inbox"></rr-icon>
-				Inbox
-			</rr-toggle-button>
-			<rr-toggle-button value="agenda" selected>
-				<rr-icon name="calendar-event"></rr-icon>
-				Agenda
-			</rr-toggle-button>
-			<rr-toggle-button value="documenten">
-				<rr-icon name="file-text"></rr-icon>
-				Documenten
-			</rr-toggle-button>
+			<rr-toggle-button value="mijn-zaken" text="Mijn zaken" icon="person" selected></rr-toggle-button>
+			<rr-toggle-button value="inbox" text="Inbox" icon="inbox"></rr-toggle-button>
+			<rr-toggle-button value="agenda" text="Agenda" icon="calendar-event" selected></rr-toggle-button>
+			<rr-toggle-button value="documenten" text="Documenten" icon="file-text"></rr-toggle-button>
 		</rr-toggle-button-group>
 	</div>
 `;
@@ -169,18 +137,9 @@ export const SingleSelect = () => html`
 			Navigeer met de pijltoetsen.
 		</p>
 		<rr-toggle-button-group type="radio" name="sortering" aria-label="Sortering">
-			<rr-toggle-button value="oplopend">
-				<rr-icon name="sort-ascending"></rr-icon>
-				Oplopend
-			</rr-toggle-button>
-			<rr-toggle-button value="aflopend" selected>
-				<rr-icon name="sort-descending"></rr-icon>
-				Aflopend
-			</rr-toggle-button>
-			<rr-toggle-button value="relevant">
-				<rr-icon name="arrows-sort"></rr-icon>
-				Relevant
-			</rr-toggle-button>
+			<rr-toggle-button value="oplopend" text="Oplopend" icon="sort-ascending"></rr-toggle-button>
+			<rr-toggle-button value="aflopend" text="Aflopend" icon="sort-descending" selected></rr-toggle-button>
+			<rr-toggle-button value="relevant" text="Relevant" icon="arrows-sort"></rr-toggle-button>
 		</rr-toggle-button-group>
 	</div>
 `;
@@ -201,34 +160,16 @@ SingleSelect.parameters = {
 export const Grootten = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<rr-toggle-button-group type="radio" name="sortering-xs" size="xs" aria-label="Sortering (extra klein)">
-			<rr-toggle-button value="oplopend">
-				<rr-icon name="sort-ascending"></rr-icon>
-				Oplopend
-			</rr-toggle-button>
-			<rr-toggle-button value="aflopend" selected>
-				<rr-icon name="sort-descending"></rr-icon>
-				Aflopend
-			</rr-toggle-button>
+			<rr-toggle-button value="oplopend" text="Oplopend" icon="sort-ascending"></rr-toggle-button>
+			<rr-toggle-button value="aflopend" text="Aflopend" icon="sort-descending" selected></rr-toggle-button>
 		</rr-toggle-button-group>
 		<rr-toggle-button-group type="radio" name="sortering-sm" size="sm" aria-label="Sortering (klein)">
-			<rr-toggle-button value="oplopend">
-				<rr-icon name="sort-ascending"></rr-icon>
-				Oplopend
-			</rr-toggle-button>
-			<rr-toggle-button value="aflopend" selected>
-				<rr-icon name="sort-descending"></rr-icon>
-				Aflopend
-			</rr-toggle-button>
+			<rr-toggle-button value="oplopend" text="Oplopend" icon="sort-ascending"></rr-toggle-button>
+			<rr-toggle-button value="aflopend" text="Aflopend" icon="sort-descending" selected></rr-toggle-button>
 		</rr-toggle-button-group>
 		<rr-toggle-button-group type="radio" name="sortering-md" size="md" aria-label="Sortering (middel)">
-			<rr-toggle-button value="oplopend">
-				<rr-icon name="sort-ascending"></rr-icon>
-				Oplopend
-			</rr-toggle-button>
-			<rr-toggle-button value="aflopend" selected>
-				<rr-icon name="sort-descending"></rr-icon>
-				Aflopend
-			</rr-toggle-button>
+			<rr-toggle-button value="oplopend" text="Oplopend" icon="sort-ascending"></rr-toggle-button>
+			<rr-toggle-button value="aflopend" text="Aflopend" icon="sort-descending" selected></rr-toggle-button>
 		</rr-toggle-button-group>
 	</div>
 `;
@@ -242,18 +183,9 @@ Grootten.parameters = { controls: { disable: true } };
 export const Uitgeschakeld = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<rr-toggle-button-group type="checkbox" name="filter-uit" disabled aria-label="Filters (uitgeschakeld)">
-			<rr-toggle-button value="mijn-zaken">
-				<rr-icon name="person"></rr-icon>
-				Mijn zaken
-			</rr-toggle-button>
-			<rr-toggle-button value="inbox" selected>
-				<rr-icon name="inbox"></rr-icon>
-				Inbox
-			</rr-toggle-button>
-			<rr-toggle-button value="agenda">
-				<rr-icon name="calendar-event"></rr-icon>
-				Agenda
-			</rr-toggle-button>
+			<rr-toggle-button value="mijn-zaken" text="Mijn zaken" icon="person"></rr-toggle-button>
+			<rr-toggle-button value="inbox" text="Inbox" icon="inbox" selected></rr-toggle-button>
+			<rr-toggle-button value="agenda" text="Agenda" icon="calendar-event"></rr-toggle-button>
 		</rr-toggle-button-group>
 	</div>
 `;
@@ -273,15 +205,9 @@ Uitgeschakeld.parameters = {
 
 export const MetIconen = () => html`
 	<rr-toggle-button-group type="radio" name="weergave" aria-label="Weergave">
-		<rr-toggle-button value="lijst" accessible-label="Lijstweergave" selected>
-			<rr-icon name="list"></rr-icon>
-		</rr-toggle-button>
-		<rr-toggle-button value="compact" accessible-label="Compacte weergave">
-			<rr-icon name="list-decreasing-lines"></rr-icon>
-		</rr-toggle-button>
-		<rr-toggle-button value="uitgebreid" accessible-label="Uitgebreide weergave">
-			<rr-icon name="stack"></rr-icon>
-		</rr-toggle-button>
+		<rr-toggle-button value="lijst" accessible-label="Lijstweergave" icon="list" selected></rr-toggle-button>
+		<rr-toggle-button value="compact" accessible-label="Compacte weergave" icon="list-decreasing-lines"></rr-toggle-button>
+		<rr-toggle-button value="uitgebreid" accessible-label="Uitgebreide weergave" icon="stack"></rr-toggle-button>
 	</rr-toggle-button-group>
 `;
 MetIconen.parameters = {

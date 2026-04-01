@@ -7,10 +7,7 @@ import { ICONS } from './../../content/icon/rr-icon.ts';
  *
  * ## Gebruik
  * ```html
- * <rr-icon-button>
- *   <rr-icon name="dismiss"></rr-icon>
- *   Annuleer
- * </rr-icon-button>
+ * <rr-icon-button text="Annuleer" icon="dismiss"></rr-icon-button>
  * ```
  */
 export default {
@@ -56,7 +53,7 @@ export default {
 		icon: {
 			control: 'select',
 			options: ICONS,
-			description: 'Icoon dat wordt weergegeven — als rr-icon in de knop geplaatst',
+			description: 'Icoon naam voor rr-icon',
 			table: {
 				defaultValue: { summary: 'dismiss' },
 			},
@@ -110,14 +107,13 @@ const Template = ({ variant, size, icon, text, accessibleLabel, expandable, type
 	<rr-icon-button
 		variant=${variant}
 		size=${size}
+		icon=${icon}
+		text=${text}
 		?expandable=${expandable}
 		type=${type}
 		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
-	>
-		<rr-icon name=${icon}></rr-icon>
-		${text}
-	</rr-icon-button>
+	></rr-icon-button>
 `;
 
 export const Default = Template.bind({});
@@ -128,18 +124,9 @@ Default.args = {
 
 export const RoleBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-icon-button variant="primary">
-			<rr-icon name="add"></rr-icon>
-			Voeg toe
-		</rr-icon-button>
-		<rr-icon-button variant="secondary">
-			<rr-icon name="add"></rr-icon>
-			Voeg toe
-		</rr-icon-button>
-		<rr-icon-button variant="destructive">
-			<rr-icon name="delete"></rr-icon>
-			Verwijder
-		</rr-icon-button>
+		<rr-icon-button variant="primary" icon="add" text="Voeg toe"></rr-icon-button>
+		<rr-icon-button variant="secondary" icon="add" text="Voeg toe"></rr-icon-button>
+		<rr-icon-button variant="destructive" icon="delete" text="Verwijder"></rr-icon-button>
 	</div>
 `;
 RoleBased.parameters = {
@@ -153,30 +140,12 @@ RoleBased.parameters = {
 
 export const AppearanceBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-icon-button variant="accent-filled">
-			<rr-icon name="add"></rr-icon>
-			Voeg toe
-		</rr-icon-button>
-		<rr-icon-button variant="accent-outlined">
-			<rr-icon name="add"></rr-icon>
-			Voeg toe
-		</rr-icon-button>
-		<rr-icon-button variant="accent-transparent">
-			<rr-icon name="add"></rr-icon>
-			Voeg toe
-		</rr-icon-button>
-		<rr-icon-button variant="neutral-tinted">
-			<rr-icon name="add"></rr-icon>
-			Voeg toe
-		</rr-icon-button>
-		<rr-icon-button variant="neutral-transparent">
-			<rr-icon name="add"></rr-icon>
-			Voeg toe
-		</rr-icon-button>
-		<rr-icon-button variant="danger-tinted">
-			<rr-icon name="delete"></rr-icon>
-			Verwijder
-		</rr-icon-button>
+		<rr-icon-button variant="accent-filled" icon="add" text="Voeg toe"></rr-icon-button>
+		<rr-icon-button variant="accent-outlined" icon="add" text="Voeg toe"></rr-icon-button>
+		<rr-icon-button variant="accent-transparent" icon="add" text="Voeg toe"></rr-icon-button>
+		<rr-icon-button variant="neutral-tinted" icon="add" text="Voeg toe"></rr-icon-button>
+		<rr-icon-button variant="neutral-transparent" icon="add" text="Voeg toe"></rr-icon-button>
+		<rr-icon-button variant="danger-tinted" icon="delete" text="Verwijder"></rr-icon-button>
 	</div>
 `;
 AppearanceBased.parameters = {
@@ -185,22 +154,10 @@ AppearanceBased.parameters = {
 
 export const Sizes = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-icon-button size="lg">
-			<rr-icon name="dismiss"></rr-icon>
-			Annuleer
-		</rr-icon-button>
-		<rr-icon-button size="md">
-			<rr-icon name="dismiss"></rr-icon>
-			Annuleer
-		</rr-icon-button>
-		<rr-icon-button size="sm">
-			<rr-icon name="dismiss"></rr-icon>
-			Annuleer
-		</rr-icon-button>
-		<rr-icon-button size="xs">
-			<rr-icon name="dismiss"></rr-icon>
-			Annuleer
-		</rr-icon-button>
+		<rr-icon-button size="lg" icon="dismiss" text="Annuleer"></rr-icon-button>
+		<rr-icon-button size="md" icon="dismiss" text="Annuleer"></rr-icon-button>
+		<rr-icon-button size="sm" icon="dismiss" text="Annuleer"></rr-icon-button>
+		<rr-icon-button size="xs" icon="dismiss" text="Annuleer"></rr-icon-button>
 	</div>
 `;
 Sizes.parameters = {
@@ -209,18 +166,9 @@ Sizes.parameters = {
 
 export const Large = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-icon-button size="lg">
-			<rr-icon name="download"></rr-icon>
-			Download
-		</rr-icon-button>
-		<rr-icon-button size="lg">
-			<rr-icon name="global-settings"></rr-icon>
-			Instellingen
-		</rr-icon-button>
-		<rr-icon-button size="lg">
-			<rr-icon name="search"></rr-icon>
-			Zoeken
-		</rr-icon-button>
+		<rr-icon-button size="lg" icon="download" text="Download"></rr-icon-button>
+		<rr-icon-button size="lg" icon="global-settings" text="Instellingen"></rr-icon-button>
+		<rr-icon-button size="lg" icon="search" text="Zoeken"></rr-icon-button>
 	</div>
 `;
 Large.parameters = {
@@ -234,14 +182,8 @@ Large.parameters = {
 
 export const WithAccessibleLabel = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-icon-button accessible-label="Toon wachtwoord">
-			<rr-icon name="eye"></rr-icon>
-			Toon
-		</rr-icon-button>
-		<rr-icon-button accessible-label="Verberg wachtwoord">
-			<rr-icon name="eye-slash"></rr-icon>
-			Verberg
-		</rr-icon-button>
+		<rr-icon-button icon="eye" text="Toon" accessible-label="Toon wachtwoord"></rr-icon-button>
+		<rr-icon-button icon="eye-slash" text="Verberg" accessible-label="Verberg wachtwoord"></rr-icon-button>
 	</div>
 `;
 WithAccessibleLabel.parameters = {
@@ -255,22 +197,10 @@ WithAccessibleLabel.parameters = {
 
 export const WithDisclosureIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-icon-button expandable size="lg">
-			<rr-icon name="global-settings"></rr-icon>
-			Instellingen
-		</rr-icon-button>
-		<rr-icon-button expandable size="md">
-			<rr-icon name="global-settings"></rr-icon>
-			Instellingen
-		</rr-icon-button>
-		<rr-icon-button expandable size="sm">
-			<rr-icon name="global-settings"></rr-icon>
-			Instellingen
-		</rr-icon-button>
-		<rr-icon-button expandable size="xs">
-			<rr-icon name="global-settings"></rr-icon>
-			Instellingen
-		</rr-icon-button>
+		<rr-icon-button expandable size="lg" icon="global-settings" text="Instellingen"></rr-icon-button>
+		<rr-icon-button expandable size="md" icon="global-settings" text="Instellingen"></rr-icon-button>
+		<rr-icon-button expandable size="sm" icon="global-settings" text="Instellingen"></rr-icon-button>
+		<rr-icon-button expandable size="xs" icon="global-settings" text="Instellingen"></rr-icon-button>
 	</div>
 `;
 WithDisclosureIcon.parameters = {
@@ -284,24 +214,30 @@ WithDisclosureIcon.parameters = {
 
 export const Disabled = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<rr-icon-button disabled variant="accent-filled">
-			<rr-icon name="remove"></rr-icon>
-			Verwijderen
-		</rr-icon-button>
-		<rr-icon-button disabled variant="accent-outlined">
-			<rr-icon name="remove"></rr-icon>
-			Verwijderen
-		</rr-icon-button>
-		<rr-icon-button disabled variant="neutral-tinted">
-			<rr-icon name="remove"></rr-icon>
-			Verwijderen
-		</rr-icon-button>
-		<rr-icon-button disabled variant="danger-tinted">
-			<rr-icon name="remove"></rr-icon>
-			Verwijderen
-		</rr-icon-button>
+		<rr-icon-button disabled variant="accent-filled" icon="remove" text="Verwijderen"></rr-icon-button>
+		<rr-icon-button disabled variant="accent-outlined" icon="remove" text="Verwijderen"></rr-icon-button>
+		<rr-icon-button disabled variant="neutral-tinted" icon="remove" text="Verwijderen"></rr-icon-button>
+		<rr-icon-button disabled variant="danger-tinted" icon="remove" text="Verwijderen"></rr-icon-button>
 	</div>
 `;
 Disabled.parameters = {
 	controls: { disable: true },
+};
+
+export const CustomIconSlot = () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<rr-icon-button text="Custom">
+			<svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+				<circle cx="10" cy="10" r="8"/>
+			</svg>
+		</rr-icon-button>
+	</div>
+`;
+CustomIconSlot.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: 'Gebruik de <code>icon</code> slot om een custom SVG icoon te plaatsen in plaats van het <code>icon</code> attribute.',
+		},
+	},
 };

@@ -87,7 +87,7 @@ describe('rr-dialog', () => {
 	it('renders actions slot wrapped in rr-button-group', async () => {
 		el = await fixture(`
 			<rr-dialog>
-				<rr-button slot="actions" variant="primary">Bevestig</rr-button>
+				<rr-button slot="actions" variant="primary" text="Bevestig"></rr-button>
 			</rr-dialog>
 		`);
 		await waitForUpdate(el);

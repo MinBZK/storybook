@@ -6,12 +6,10 @@ import './rr-toggle-button.js';
  * Beschikbaar als `button` (met `aria-pressed`), `checkbox` of `radio` als onderliggend element,
  * zodat de semantiek aansluit bij het gebruik.
  *
- * Plaats een `rr-icon` vóór de tekst om een icoon toe te voegen — de positie wordt automatisch gedetecteerd.
- *
  * ## Gebruik
  * ```html
- * <rr-toggle-button>Label</rr-toggle-button>
- * <rr-toggle-button><rr-icon name="heart"></rr-icon> Bewaren</rr-toggle-button>
+ * <rr-toggle-button text="Label"></rr-toggle-button>
+ * <rr-toggle-button text="Bewaren" icon="heart"></rr-toggle-button>
  * ```
  */
 export default {
@@ -58,9 +56,13 @@ export default {
 				defaultValue: { summary: false },
 			},
 		},
-		label: {
+		text: {
 			control: 'text',
 			description: 'Tekst van de knop',
+		},
+		icon: {
+			control: 'text',
+			description: 'Icoon naam voor rr-icon',
 		},
 	},
 	args: {
@@ -68,7 +70,8 @@ export default {
 		size: 'md',
 		selected: false,
 		disabled: false,
-		label: 'Toggle',
+		text: 'Toggle',
+		icon: '',
 	},
 };
 
@@ -78,12 +81,14 @@ const Template = (args) => html`
 		size=${args.size}
 		?selected=${args.selected}
 		?disabled=${args.disabled}
-	>${args.label}</rr-toggle-button>
+		text=${args.text}
+		icon=${args.icon}
+	></rr-toggle-button>
 `;
 
 export const Standaard = Template.bind({});
 Standaard.args = {
-	label: 'Toggle button',
+	text: 'Toggle button',
 };
 Standaard.parameters = {
 	docs: {
@@ -105,14 +110,8 @@ export const AlleTypes = () => html`
 				type="button" (standaard) — aria-pressed, geen formulierparticipatie
 			</p>
 			<div style="display: flex; gap: 0.5rem;">
-				<rr-toggle-button type="button">
-					<rr-icon name="eye"></rr-icon>
-					Voorbeeld
-				</rr-toggle-button>
-				<rr-toggle-button type="button" selected>
-					<rr-icon name="pencil"></rr-icon>
-					Bewerken
-				</rr-toggle-button>
+				<rr-toggle-button type="button" text="Voorbeeld" icon="eye"></rr-toggle-button>
+				<rr-toggle-button type="button" text="Bewerken" icon="pencil" selected></rr-toggle-button>
 			</div>
 		</div>
 		<div>
@@ -120,18 +119,9 @@ export const AlleTypes = () => html`
 				type="checkbox" — native checkbox input, meerdere tegelijk selecteerbaar
 			</p>
 			<div style="display: flex; gap: 0.5rem;">
-				<rr-toggle-button type="checkbox" name="filter" value="mijn-zaken">
-					<rr-icon name="person"></rr-icon>
-					Mijn zaken
-				</rr-toggle-button>
-				<rr-toggle-button type="checkbox" name="filter" value="inbox" selected>
-					<rr-icon name="inbox"></rr-icon>
-					Inbox
-				</rr-toggle-button>
-				<rr-toggle-button type="checkbox" name="filter" value="agenda">
-					<rr-icon name="calendar-event"></rr-icon>
-					Agenda
-				</rr-toggle-button>
+				<rr-toggle-button type="checkbox" name="filter" value="mijn-zaken" text="Mijn zaken" icon="person"></rr-toggle-button>
+				<rr-toggle-button type="checkbox" name="filter" value="inbox" text="Inbox" icon="inbox" selected></rr-toggle-button>
+				<rr-toggle-button type="checkbox" name="filter" value="agenda" text="Agenda" icon="calendar-event"></rr-toggle-button>
 			</div>
 		</div>
 		<div>
@@ -139,18 +129,9 @@ export const AlleTypes = () => html`
 				type="radio" — native radio input, wederzijdse uitsluiting via name-groep
 			</p>
 			<div style="display: flex; gap: 0.5rem;" role="radiogroup" aria-label="Sortering">
-				<rr-toggle-button type="radio" name="sortering" value="oplopend">
-					<rr-icon name="sort-ascending"></rr-icon>
-					Oplopend
-				</rr-toggle-button>
-				<rr-toggle-button type="radio" name="sortering" value="aflopend" selected>
-					<rr-icon name="sort-descending"></rr-icon>
-					Aflopend
-				</rr-toggle-button>
-				<rr-toggle-button type="radio" name="sortering" value="relevant">
-					<rr-icon name="arrows-sort"></rr-icon>
-					Relevant
-				</rr-toggle-button>
+				<rr-toggle-button type="radio" name="sortering" value="oplopend" text="Oplopend" icon="sort-ascending"></rr-toggle-button>
+				<rr-toggle-button type="radio" name="sortering" value="aflopend" text="Aflopend" icon="sort-descending" selected></rr-toggle-button>
+				<rr-toggle-button type="radio" name="sortering" value="relevant" text="Relevant" icon="arrows-sort"></rr-toggle-button>
 			</div>
 		</div>
 	</div>
@@ -171,22 +152,10 @@ AlleTypes.parameters = {
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-		<rr-toggle-button>
-			<rr-icon name="heart"></rr-icon>
-			Bewaren
-		</rr-toggle-button>
-		<rr-toggle-button selected>
-			<rr-icon name="heart-filled"></rr-icon>
-			Bewaard
-		</rr-toggle-button>
-		<rr-toggle-button disabled>
-			<rr-icon name="heart"></rr-icon>
-			Bewaren
-		</rr-toggle-button>
-		<rr-toggle-button selected disabled>
-			<rr-icon name="heart-filled"></rr-icon>
-			Bewaard
-		</rr-toggle-button>
+		<rr-toggle-button text="Bewaren" icon="heart"></rr-toggle-button>
+		<rr-toggle-button text="Bewaard" icon="heart-filled" selected></rr-toggle-button>
+		<rr-toggle-button text="Bewaren" icon="heart" disabled></rr-toggle-button>
+		<rr-toggle-button text="Bewaard" icon="heart-filled" selected disabled></rr-toggle-button>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };
@@ -198,18 +167,9 @@ AlleToestanden.parameters = { controls: { disable: true } };
 
 export const AlleGrootten = () => html`
 	<div style="display: flex; gap: 1rem; align-items: center;">
-		<rr-toggle-button size="xs">
-			<rr-icon name="magnifier"></rr-icon>
-			Zoeken
-		</rr-toggle-button>
-		<rr-toggle-button size="sm">
-			<rr-icon name="magnifier"></rr-icon>
-			Zoeken
-		</rr-toggle-button>
-		<rr-toggle-button size="md">
-			<rr-icon name="magnifier"></rr-icon>
-			Zoeken
-		</rr-toggle-button>
+		<rr-toggle-button size="xs" text="Zoeken" icon="magnifier"></rr-toggle-button>
+		<rr-toggle-button size="sm" text="Zoeken" icon="magnifier"></rr-toggle-button>
+		<rr-toggle-button size="md" text="Zoeken" icon="magnifier"></rr-toggle-button>
 	</div>
 `;
 AlleGrootten.parameters = { controls: { disable: true } };
@@ -221,54 +181,29 @@ AlleGrootten.parameters = { controls: { disable: true } };
 
 export const MetIcoon = () => html`
 	<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-		<rr-toggle-button>
-			<rr-icon name="heart"></rr-icon>
-			Bewaren
-		</rr-toggle-button>
-		<rr-toggle-button selected>
-			<rr-icon name="heart-filled"></rr-icon>
-			Bewaard
-		</rr-toggle-button>
-		<rr-toggle-button>
-			<rr-icon name="square-and-arrow-up"></rr-icon>
-			Delen
-		</rr-toggle-button>
-		<rr-toggle-button>
-			<rr-icon name="eye"></rr-icon>
-			Tonen
-		</rr-toggle-button>
-		<rr-toggle-button selected>
-			<rr-icon name="eye-slash"></rr-icon>
-			Verborgen
-		</rr-toggle-button>
+		<rr-toggle-button text="Bewaren" icon="heart"></rr-toggle-button>
+		<rr-toggle-button text="Bewaard" icon="heart-filled" selected></rr-toggle-button>
+		<rr-toggle-button text="Delen" icon="square-and-arrow-up"></rr-toggle-button>
+		<rr-toggle-button text="Tonen" icon="eye"></rr-toggle-button>
+		<rr-toggle-button text="Verborgen" icon="eye-slash" selected></rr-toggle-button>
 	</div>
 `;
 MetIcoon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Plaats een `rr-icon` vóór de tekst — de positie wordt automatisch gedetecteerd.',
+			story: 'Gebruik het `icon` attribute om een icoon toe te voegen.',
 		},
 	},
 };
 
 export const AlleenIcoon = () => html`
 	<div style="display: flex; gap: 0.5rem; align-items: center;">
-		<rr-toggle-button size="md" accessible-label="Vet">
-			<rr-icon name="bold"></rr-icon>
-		</rr-toggle-button>
-		<rr-toggle-button size="md" selected accessible-label="Cursief">
-			<rr-icon name="italic"></rr-icon>
-		</rr-toggle-button>
-		<rr-toggle-button size="md" accessible-label="Onderstreept">
-			<rr-icon name="underlined"></rr-icon>
-		</rr-toggle-button>
-		<rr-toggle-button size="md" accessible-label="Opsomming">
-			<rr-icon name="bullet-list"></rr-icon>
-		</rr-toggle-button>
-		<rr-toggle-button size="md" accessible-label="Genummerde lijst">
-			<rr-icon name="numbered-list"></rr-icon>
-		</rr-toggle-button>
+		<rr-toggle-button size="md" icon="bold" accessible-label="Vet"></rr-toggle-button>
+		<rr-toggle-button size="md" icon="italic" accessible-label="Cursief" selected></rr-toggle-button>
+		<rr-toggle-button size="md" icon="underlined" accessible-label="Onderstreept"></rr-toggle-button>
+		<rr-toggle-button size="md" icon="bullet-list" accessible-label="Opsomming"></rr-toggle-button>
+		<rr-toggle-button size="md" icon="numbered-list" accessible-label="Genummerde lijst"></rr-toggle-button>
 	</div>
 `;
 AlleenIcoon.parameters = {
@@ -291,20 +226,10 @@ export const TypeButton = () => html`
 			<code>type="button"</code> is de standaard. Gebruikt <code>aria-pressed</code> voor de geselecteerde toestand en neemt niet deel aan formulierverwerking.
 		</p>
 		<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-			<rr-toggle-button type="button" accessible-label="Opsomming">
-				<rr-icon name="bullet-list"></rr-icon>
-			</rr-toggle-button>
-			<rr-toggle-button type="button" selected accessible-label="Genummerde lijst">
-				<rr-icon name="numbered-list"></rr-icon>
-			</rr-toggle-button>
-			<rr-toggle-button type="button">
-				<rr-icon name="eye"></rr-icon>
-				Voorbeeld
-			</rr-toggle-button>
-			<rr-toggle-button type="button" selected>
-				<rr-icon name="pencil"></rr-icon>
-				Bewerken
-			</rr-toggle-button>
+			<rr-toggle-button type="button" icon="bullet-list" accessible-label="Opsomming"></rr-toggle-button>
+			<rr-toggle-button type="button" icon="numbered-list" accessible-label="Genummerde lijst" selected></rr-toggle-button>
+			<rr-toggle-button type="button" text="Voorbeeld" icon="eye"></rr-toggle-button>
+			<rr-toggle-button type="button" text="Bewerken" icon="pencil" selected></rr-toggle-button>
 		</div>
 	</div>
 `;
@@ -328,22 +253,10 @@ export const TypeCheckbox = () => html`
 			<code>type="checkbox"</code> voor filter-chips en multi-select acties met formulierparticipatie.
 		</p>
 		<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-			<rr-toggle-button type="checkbox" name="filter" value="mijn-zaken">
-				<rr-icon name="person"></rr-icon>
-				Mijn zaken
-			</rr-toggle-button>
-			<rr-toggle-button type="checkbox" name="filter" value="inbox" selected>
-				<rr-icon name="inbox"></rr-icon>
-				Inbox
-			</rr-toggle-button>
-			<rr-toggle-button type="checkbox" name="filter" value="agenda" selected>
-				<rr-icon name="calendar-event"></rr-icon>
-				Agenda
-			</rr-toggle-button>
-			<rr-toggle-button type="checkbox" name="filter" value="documenten">
-				<rr-icon name="file-text"></rr-icon>
-				Documenten
-			</rr-toggle-button>
+			<rr-toggle-button type="checkbox" name="filter" value="mijn-zaken" text="Mijn zaken" icon="person"></rr-toggle-button>
+			<rr-toggle-button type="checkbox" name="filter" value="inbox" text="Inbox" icon="inbox" selected></rr-toggle-button>
+			<rr-toggle-button type="checkbox" name="filter" value="agenda" text="Agenda" icon="calendar-event" selected></rr-toggle-button>
+			<rr-toggle-button type="checkbox" name="filter" value="documenten" text="Documenten" icon="file-text"></rr-toggle-button>
 		</div>
 	</div>
 `;
@@ -367,18 +280,9 @@ export const TypeRadio = () => html`
 			<code>type="radio"</code> voor single-select keuzes. Gebruik <code>rr-toggle-button-group</code> voor beheer via JavaScript.
 		</p>
 		<div style="display: flex; gap: 0.5rem;" role="radiogroup" aria-label="Sortering">
-			<rr-toggle-button type="radio" name="sortering" value="oplopend">
-				<rr-icon name="sort-ascending"></rr-icon>
-				Oplopend
-			</rr-toggle-button>
-			<rr-toggle-button type="radio" name="sortering" value="aflopend" selected>
-				<rr-icon name="sort-descending"></rr-icon>
-				Aflopend
-			</rr-toggle-button>
-			<rr-toggle-button type="radio" name="sortering" value="relevant">
-				<rr-icon name="arrows-sort"></rr-icon>
-				Relevant
-			</rr-toggle-button>
+			<rr-toggle-button type="radio" name="sortering" value="oplopend" text="Oplopend" icon="sort-ascending"></rr-toggle-button>
+			<rr-toggle-button type="radio" name="sortering" value="aflopend" text="Aflopend" icon="sort-descending" selected></rr-toggle-button>
+			<rr-toggle-button type="radio" name="sortering" value="relevant" text="Relevant" icon="arrows-sort"></rr-toggle-button>
 		</div>
 	</div>
 `;

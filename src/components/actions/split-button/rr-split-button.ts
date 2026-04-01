@@ -8,8 +8,8 @@
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {string} variant - Button variant (default: 'neutral-tinted')
  * @attr {boolean} disabled - Disabled state
- *
- * @slot - Default slot for button label text and optional icons
+ * @attr {string} text - Button text for the primary action
+ * @attr {string} start-icon - Icon name for the start icon (before text)
  *
  * @fires action-click - Fired when the main button is clicked
  * @fires menu-click - Fired when the dropdown trigger is clicked
@@ -35,6 +35,14 @@ export class RRSplitButton extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+
+	/** Button text for the primary action. */
+	@property({ type: String })
+	text = '';
+
+	/** Icon name for the start icon (before text) on the primary action button. */
+	@property({ type: String, attribute: 'start-icon' })
+	startIcon = '';
 
 	_handleActionClick(e: MouseEvent): void {
 		if (this.disabled) return;

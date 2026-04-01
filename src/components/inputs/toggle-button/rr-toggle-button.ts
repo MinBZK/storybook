@@ -4,8 +4,6 @@
  * A selectable button that toggles between selected and unselected.
  * Available as a button (aria-pressed), checkbox, or radio input.
  *
- * Place an rr-icon before the text to add an icon — position is auto-detected.
- *
  * @element rr-toggle-button
  *
  * @attr {'button' | 'checkbox' | 'radio'} type - Underlying element (default: 'button')
@@ -14,15 +12,17 @@
  * @attr {boolean}                         disabled         - Disabled state
  * @attr {string}                          value            - Value for form submission (checkbox/radio)
  * @attr {string}                          name             - Name for form submission (checkbox/radio)
+ * @attr {string}                          text             - Button text
+ * @attr {string}                          icon             - Icon name for rr-icon
  * @attr {string}                          accessible-label - Accessible label; required for icon-only usage
  *
- * @slot - Button content: place an rr-icon before the text for an icon
+ * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
  * @fires change - When selection changes; detail: { selected: boolean, value: string }
  */
 
 import { LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { toggleButtonStyles } from './rr-toggle-button.styles.ts';
 import { toggleButtonTemplate } from './rr-toggle-button.template.ts';
 import './../../content/icon/rr-icon.ts';
@@ -52,70 +52,27 @@ export class RRToggleButton extends LitElement {
 	@property({ type: String })
 	name = '';
 
+	/** Button text. */
+	@property({ type: String })
+	text = '';
+
+	/** Icon name for the rr-icon element. When not set, the icon slot is used. */
+	@property({ type: String })
+	icon = '';
+
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	@state()
-	_iconName: string | null = null;
-
-	@state()
-	_hasText = false;
-
-	private _observer: MutationObserver | null = null;
-
-	override connectedCallback(): void {
-		super.connectedCallback();
-		this._observer = new MutationObserver(() => this._detectIcon());
-		// Observe only direct child additions/removals.
-		// Icon name changes do not affect whether an icon is present,
-		// and slot assignments are handled by @slotchange in the template.
-		this._observer.observe(this, { childList: true });
-		this.updateComplete.then(() => this._detectIcon());
-	}
-
-	override disconnectedCallback(): void {
-		super.disconnectedCallback();
-		this._observer?.disconnect();
-		this._observer = null;
-	}
-
 	override firstUpdated(): void {
-		this._detectIcon();
-		const iconOnly = this._iconName !== null && !this._hasText;
+		const iconOnly = this.icon && !this.text;
 		if (iconOnly && !this.accessibleLabel) {
 			console.warn('<rr-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
 		}
 	}
 
 	override updated(): void {
-		const iconOnly = this._iconName !== null && !this._hasText;
+		const iconOnly = !!this.icon && !this.text;
 		this.toggleAttribute('icon-only', iconOnly);
-	}
-
-	private _getEffectiveNodes(): Node[] {
-		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot');
-		if (!slot) return Array.from(this.childNodes);
-		return slot.assignedNodes({ flatten: true });
-	}
-
-	_detectIcon(): void {
-		const nodes = this._getEffectiveNodes();
-
-		const icon = nodes.find(
-			(n): n is Element =>
-				n.nodeType === Node.ELEMENT_NODE &&
-				(n as Element).tagName.toLowerCase() === 'rr-icon'
-		) ?? null;
-
-		this._iconName = icon?.getAttribute('name') ?? null;
-
-		this._hasText = nodes.some(n => {
-			if (n.nodeType === Node.TEXT_NODE) return n.textContent?.trim() !== '';
-			if (n.nodeType === Node.ELEMENT_NODE && (n as Element).tagName.toLowerCase() !== 'rr-icon') {
-				return (n as Element).textContent?.trim() !== '';
-			}
-			return false;
-		});
 	}
 
 	_handleButtonClick(): void {

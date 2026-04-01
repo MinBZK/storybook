@@ -21,10 +21,9 @@
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')
  * @attr {boolean} selected - Selected state
  *
- * @slot overline - Optional overline text displayed above the main content
- * @slot text - Main text content
- * @slot - Fallback default slot for main text content
- * @slot supporting-text - Optional supporting text displayed below the main content
+ * @attr {string} text - Main text content
+ * @attr {string} overline - Optional overline text displayed above the main content
+ * @attr {string} supporting-text - Optional supporting text displayed below the main content
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -78,6 +77,15 @@ export class RRTextCell extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;
+
+	@property({ type: String })
+	text = '';
+
+	@property({ type: String })
+	overline = '';
+
+	@property({ type: String, attribute: 'supporting-text' })
+	supportingText = '';
 
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('width') || changed.has('minWidth') || changed.has('maxWidth') || changed.has('minHeight')) {

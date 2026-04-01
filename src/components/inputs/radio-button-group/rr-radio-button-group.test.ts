@@ -7,9 +7,9 @@ import '../radio-button-field/rr-radio-button-field.ts';
 function groupFixture(name = 'group'): string {
 	return `
 		<rr-radio-button-group name="${name}">
-			<rr-radio-button-field value="1" checked>Optie 1</rr-radio-button-field>
-			<rr-radio-button-field value="2">Optie 2</rr-radio-button-field>
-			<rr-radio-button-field value="3">Optie 3</rr-radio-button-field>
+			<rr-radio-button-field value="1" checked label="Optie 1"></rr-radio-button-field>
+			<rr-radio-button-field value="2" label="Optie 2"></rr-radio-button-field>
+			<rr-radio-button-field value="3" label="Optie 3"></rr-radio-button-field>
 		</rr-radio-button-group>
 	`;
 }
@@ -56,8 +56,8 @@ describe('rr-radio-button-group – field sync', () => {
 	it('forwards disabled to all child fields', async () => {
 		el = await fixture<RRRadioButtonGroup>(`
 			<rr-radio-button-group name="g" disabled>
-				<rr-radio-button-field value="1">Optie 1</rr-radio-button-field>
-				<rr-radio-button-field value="2">Optie 2</rr-radio-button-field>
+				<rr-radio-button-field value="1" label="Optie 1"></rr-radio-button-field>
+				<rr-radio-button-field value="2" label="Optie 2"></rr-radio-button-field>
 			</rr-radio-button-group>
 		`);
 		await waitForUpdate(el);
@@ -97,9 +97,9 @@ describe('rr-radio-button-group – keyboard navigation', () => {
 	it('ArrowUp moves to previous field', async () => {
 		el = await fixture<RRRadioButtonGroup>(`
 			<rr-radio-button-group name="g">
-				<rr-radio-button-field value="1">Optie 1</rr-radio-button-field>
-				<rr-radio-button-field value="2" checked>Optie 2</rr-radio-button-field>
-				<rr-radio-button-field value="3">Optie 3</rr-radio-button-field>
+				<rr-radio-button-field value="1" label="Optie 1"></rr-radio-button-field>
+				<rr-radio-button-field value="2" checked label="Optie 2"></rr-radio-button-field>
+				<rr-radio-button-field value="3" label="Optie 3"></rr-radio-button-field>
 			</rr-radio-button-group>
 		`);
 		await waitForUpdate(el);
@@ -115,9 +115,9 @@ describe('rr-radio-button-group – keyboard navigation', () => {
 	it('ArrowDown wraps from last to first', async () => {
 		el = await fixture<RRRadioButtonGroup>(`
 			<rr-radio-button-group name="g">
-				<rr-radio-button-field value="1">Optie 1</rr-radio-button-field>
-				<rr-radio-button-field value="2">Optie 2</rr-radio-button-field>
-				<rr-radio-button-field value="3" checked>Optie 3</rr-radio-button-field>
+				<rr-radio-button-field value="1" label="Optie 1"></rr-radio-button-field>
+				<rr-radio-button-field value="2" label="Optie 2"></rr-radio-button-field>
+				<rr-radio-button-field value="3" checked label="Optie 3"></rr-radio-button-field>
 			</rr-radio-button-group>
 		`);
 		await waitForUpdate(el);
@@ -133,9 +133,9 @@ describe('rr-radio-button-group – keyboard navigation', () => {
 	it('skips disabled fields during navigation', async () => {
 		el = await fixture<RRRadioButtonGroup>(`
 			<rr-radio-button-group name="g">
-				<rr-radio-button-field value="1" checked>Optie 1</rr-radio-button-field>
-				<rr-radio-button-field value="2" disabled>Optie 2</rr-radio-button-field>
-				<rr-radio-button-field value="3">Optie 3</rr-radio-button-field>
+				<rr-radio-button-field value="1" checked label="Optie 1"></rr-radio-button-field>
+				<rr-radio-button-field value="2" disabled label="Optie 2"></rr-radio-button-field>
+				<rr-radio-button-field value="3" label="Optie 3"></rr-radio-button-field>
 			</rr-radio-button-group>
 		`);
 		await waitForUpdate(el);

@@ -67,9 +67,9 @@ const header = html`
 
 const footer = html`
 	<div style="padding: 16px; display: flex; justify-content: flex-end;">
-		<rr-button variant="secondary">Annuleren</rr-button>
+		<rr-button variant="secondary" text="Annuleren"></rr-button>
 		<rr-spacer size="8" direction="horizontal"></rr-spacer>
-		<rr-button>Opslaan</rr-button>
+		<rr-button text="Opslaan"></rr-button>
 	</div>
 `;
 

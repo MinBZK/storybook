@@ -24,7 +24,7 @@ export const modalDialogStyles = css`
 		border: none;
 		padding: var(--primitives-space-24) var(--primitives-space-16);
 		max-width: var(--primitives-area-480);
-		width: 100%;
+		width: calc(100% - var(--primitives-space-16) * 2);
 		max-height: var(--_max-height);
 		overflow-y: auto;
 		background-color: var(--semantics-surfaces-background-color);

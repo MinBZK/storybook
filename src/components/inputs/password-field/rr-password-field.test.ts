@@ -47,7 +47,7 @@ describe('rr-password-field', () => {
 		el = await fixture('<rr-password-field></rr-password-field>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('rr-button');
-		expect(button!.textContent?.trim()).toBe('Toon');
+		expect(button!.getAttribute('text')).toBe('Toon');
 	});
 
 	it('shows default visible label "Verberg" when unmasked', async () => {
@@ -56,7 +56,7 @@ describe('rr-password-field', () => {
 		(el as any).masked = false;
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('rr-button');
-		expect(button!.textContent?.trim()).toBe('Verberg');
+		expect(button!.getAttribute('text')).toBe('Verberg');
 	});
 
 	it('sets default aria-label "Toon wachtwoord" on toggle button when masked', async () => {
@@ -79,7 +79,7 @@ describe('rr-password-field', () => {
 		el = await fixture('<rr-password-field show-label="Show" show-accessible-label="Show password"></rr-password-field>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('rr-button');
-		expect(button!.textContent?.trim()).toBe('Show');
+		expect(button!.getAttribute('text')).toBe('Show');
 		expect(button!.getAttribute('accessible-label')).toBe('Show password');
 	});
 

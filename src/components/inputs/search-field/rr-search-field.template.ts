@@ -30,11 +30,10 @@ export function searchFieldTemplate(component: RRSearchField): TemplateResult {
 						<rr-icon-button
 							variant="neutral-transparent"
 							size=${buttonSize}
+							icon="dismiss"
+							text=${component._t('components.search-field.dismiss-action')}
 							@click=${component._handleDismiss}
-						>
-							<rr-icon name="dismiss"></rr-icon>
-							${component._t('components.search-field.dismiss-action')}
-						</rr-icon-button>
+						></rr-icon-button>
 					</div>
 				` : nothing}
 				${component.hasSearchButton ? html`
@@ -42,10 +41,9 @@ export function searchFieldTemplate(component: RRSearchField): TemplateResult {
 						<rr-button
 							variant="neutral-tinted"
 							size=${buttonSize}
+							text=${component._t('components.search-field.search-action')}
 							@click=${component._handleSearch}
-						>
-							${component._t('components.search-field.search-action')}
-						</rr-button>
+						></rr-button>
 					</div>
 				` : nothing}
 			</div>

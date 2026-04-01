@@ -8,13 +8,12 @@
  * @attr {boolean} disabled - Uitgeschakelde toestand
  * @attr {string}  value    - Waarde voor formulierverwerking
  * @attr {string}  name     - Naam voor formulierverwerking
- *
- * @slot - Label tekst
+ * @attr {string}  label    - Label tekst voor de switch
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string }
  */
 import { LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { switchFieldStyles } from './rr-switch-field.styles.ts';
 import { switchFieldTemplate } from './rr-switch-field.template.ts';
 import type { RRSwitch } from '../switch/rr-switch.js';
@@ -35,20 +34,8 @@ export class RRSwitchField extends LitElement {
 	@property({ type: String })
 	name = '';
 
-	@state()
-	_labelText = '';
-
-	override firstUpdated(): void {
-		this._onSlotChange();
-	}
-
-	public _onSlotChange(): void {
-		const slot = this.shadowRoot?.querySelector('slot');
-		this._labelText = slot?.assignedNodes({ flatten: true })
-			.map(n => n.textContent ?? '')
-			.join('')
-			.trim() ?? '';
-	}
+	@property({ type: String })
+	label = '';
 
 	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;

@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './rr-document-tab-bar.ts';
 import './../../actions/icon-button/rr-icon-button.ts';
-import './../../content/icon/rr-icon.ts';
+
 
 export default {
 	title: 'Components/Navigation/Document Tab Bar',
@@ -58,9 +58,7 @@ const Template = ({ overflowButtonLabel, accessibleLabel }) => html`
 			short-text="Art. 3:2"
 			short-supporting-text="Awb"
 		></rr-document-tab-bar-item>
-		<rr-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad">
-			<rr-icon name="plus"></rr-icon>
-		</rr-icon-button>
+		<rr-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad" icon="plus"></rr-icon-button>
 	</rr-document-tab-bar>
 `;
 
@@ -117,9 +115,7 @@ export const VeelTabbladen = () => html`
 			short-text="Art. 4:3"
 			short-supporting-text="Awb"
 		></rr-document-tab-bar-item>
-		<rr-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad">
-			<rr-icon name="plus"></rr-icon>
-		</rr-icon-button>
+		<rr-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad" icon="plus"></rr-icon-button>
 	</rr-document-tab-bar>
 `;
 VeelTabbladen.parameters = { controls: { disable: true } };

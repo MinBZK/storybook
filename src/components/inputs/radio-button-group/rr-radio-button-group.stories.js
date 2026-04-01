@@ -11,8 +11,8 @@ import '../../forms/form-field/rr-form-field.ts';
  * ```html
  * <rr-form-field label="Kies een optie">
  *   <rr-radio-button-group name="optie">
- *     <rr-radio-button-field value="1">Optie 1</rr-radio-button-field>
- *     <rr-radio-button-field value="2">Optie 2</rr-radio-button-field>
+ *     <rr-radio-button-field value="1" label="Optie 1"></rr-radio-button-field>
+ *     <rr-radio-button-field value="2" label="Optie 2"></rr-radio-button-field>
  *   </rr-radio-button-group>
  * </rr-form-field>
  * ```
@@ -60,9 +60,9 @@ const Template = ({ name, disabled, required }) => html`
 			?disabled=${disabled}
 			?required=${required}
 		>
-			<rr-radio-button-field value="1" checked>Optie 1</rr-radio-button-field>
-			<rr-radio-button-field value="2">Optie 2</rr-radio-button-field>
-			<rr-radio-button-field value="3">Optie 3</rr-radio-button-field>
+			<rr-radio-button-field value="1" checked label="Optie 1"></rr-radio-button-field>
+			<rr-radio-button-field value="2" label="Optie 2"></rr-radio-button-field>
+			<rr-radio-button-field value="3" label="Optie 3"></rr-radio-button-field>
 		</rr-radio-button-group>
 	</rr-form-field>
 `;
@@ -76,9 +76,9 @@ Uitgeschakeld.args = { disabled: true };
 export const MetUitgeschakeldVeld = () => html`
 	<rr-form-field label="Kies een optie">
 		<rr-radio-button-group name="demo">
-			<rr-radio-button-field value="1" checked>Optie 1</rr-radio-button-field>
-			<rr-radio-button-field value="2">Optie 2</rr-radio-button-field>
-			<rr-radio-button-field value="3" disabled>Optie 3 (uitgeschakeld)</rr-radio-button-field>
+			<rr-radio-button-field value="1" checked label="Optie 1"></rr-radio-button-field>
+			<rr-radio-button-field value="2" label="Optie 2"></rr-radio-button-field>
+			<rr-radio-button-field value="3" label="Optie 3 (uitgeschakeld)" disabled></rr-radio-button-field>
 		</rr-radio-button-group>
 	</rr-form-field>
 `;

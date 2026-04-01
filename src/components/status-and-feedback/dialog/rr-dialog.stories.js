@@ -14,8 +14,8 @@ import { ICONS } from '../../content/icon/rr-icon.ts';
  *   text="Bevestiging vereist"
  *   supporting-text="Dit kan niet ongedaan worden gemaakt."
  * >
- *   <rr-button slot="actions" variant="primary">Bevestig</rr-button>
- *   <rr-button slot="actions" variant="neutral-tinted">Annuleer</rr-button>
+ *   <rr-button slot="actions" variant="primary" text="Bevestig"></rr-button>
+ *   <rr-button slot="actions" variant="neutral-tinted" text="Annuleer"></rr-button>
  * </rr-dialog>
  * ```
  */
@@ -70,8 +70,8 @@ export const Standaard = (args) => html`
 		text=${args.text}
 		supporting-text=${args.supportingText}
 	>
-		<rr-button slot="actions" variant="primary">Bevestig</rr-button>
-		<rr-button slot="actions" variant="neutral-tinted">Annuleer</rr-button>
+		<rr-button slot="actions" variant="primary" text="Bevestig"></rr-button>
+		<rr-button slot="actions" variant="neutral-tinted" text="Annuleer"></rr-button>
 	</rr-dialog>
 `;
 
@@ -80,8 +80,8 @@ export const ZonderIcoon = () => html`
 		text="Bevestiging vereist"
 		supporting-text="Weet u zeker dat u door wilt gaan? Dit kan niet ongedaan worden gemaakt."
 	>
-		<rr-button slot="actions" variant="primary">Bevestig</rr-button>
-		<rr-button slot="actions" variant="neutral-tinted">Annuleer</rr-button>
+		<rr-button slot="actions" variant="primary" text="Bevestig"></rr-button>
+		<rr-button slot="actions" variant="neutral-tinted" text="Annuleer"></rr-button>
 	</rr-dialog>
 `;
 ZonderIcoon.parameters = { controls: { disable: true } };
@@ -92,7 +92,7 @@ export const MetIcoon = () => html`
 		text="Succesvol opgeslagen"
 		supporting-text="Uw wijzigingen zijn opgeslagen."
 	>
-		<rr-button slot="actions" variant="primary">Sluiten</rr-button>
+		<rr-button slot="actions" variant="primary" text="Sluiten"></rr-button>
 	</rr-dialog>
 `;
 MetIcoon.parameters = { controls: { disable: true } };
@@ -103,8 +103,8 @@ export const Alert = () => html`
 		text="Niet opgeslagen"
 		supporting-text="Als u doorgaat gaan uw wijzigingen verloren."
 	>
-		<rr-button slot="actions" variant="primary">Doorgaan</rr-button>
-		<rr-button slot="actions" variant="neutral-tinted">Annuleer</rr-button>
+		<rr-button slot="actions" variant="primary" text="Doorgaan"></rr-button>
+		<rr-button slot="actions" variant="neutral-tinted" text="Annuleer"></rr-button>
 	</rr-dialog>
 `;
 Alert.parameters = { controls: { disable: true } };
@@ -116,7 +116,7 @@ export const LegeToestand = () => html`
 			text="Geen resultaten"
 			supporting-text="Er zijn geen items gevonden die overeenkomen met uw zoekopdracht."
 		>
-			<rr-button slot="actions" variant="neutral-tinted">Zoekopdracht wissen</rr-button>
+			<rr-button slot="actions" variant="neutral-tinted" text="Zoekopdracht wissen"></rr-button>
 		</rr-dialog>
 	</div>
 `;

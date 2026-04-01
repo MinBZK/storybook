@@ -20,6 +20,7 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 			<rr-icon-button
 				label=${component.overflowButtonLabel}
 				variant="neutral-tinted"
+				icon="ellipsis"
 				aria-haspopup="menu"
 				aria-expanded=${component._menuOpen ? 'true' : 'false'}
 				@click=${component._onOverflowButtonClick}
@@ -28,7 +29,6 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 					 aria-haspopup + aria-expanded provide sufficient AT context for WCAG 2.1 AA.
 					 Restore aria-controls once rr-menu moves into the shadow root or CSS Anchor
 					 Positioning allows the menu to escape stacking context without document.body. -->
-				<rr-icon name="ellipsis"></rr-icon>
 			</rr-icon-button>
 		</div>
 		<div class="document-tab-bar__end">

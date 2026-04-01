@@ -2,7 +2,6 @@ import { html, nothing } from 'lit';
 import type { RRTopTitleBar } from './rr-top-title-bar.ts';
 import '../../actions/button/rr-button.ts';
 import '../../actions/icon-button/rr-icon-button.ts';
-import '../../content/icon/rr-icon.ts';
 
 export function topTitleBarTemplate(component: RRTopTitleBar) {
 	const showBack = !!component.backLabel;
@@ -15,23 +14,21 @@ export function topTitleBarTemplate(component: RRTopTitleBar) {
 						<div class="top-title-bar__text-back-button">
 							<rr-button
 								variant="accent-transparent"
+								start-icon="chevron-left"
+								text=${component.backLabel}
 								href=${component.backHref || nothing}
 								@click=${component._handleBack}
-							>
-								<rr-icon name="chevron-left"></rr-icon>
-								${component.backLabel}
-							</rr-button>
+							></rr-button>
 						</div>
 						<div class="top-title-bar__icon-back-button">
 							<rr-icon-button
 								variant="accent-transparent"
+								icon="chevron-left"
+								text=${component.backLabel}
 								accessible-label=${component.backLabel || nothing}
 								href=${component.backHref || nothing}
 								@click=${component._handleBack}
-							>
-								<rr-icon name="chevron-left"></rr-icon>
-								${component.backLabel}
-							</rr-icon-button>
+							></rr-icon-button>
 						</div>
 						<div class="top-title-bar__divider"></div>
 					</div>
@@ -49,10 +46,9 @@ export function topTitleBarTemplate(component: RRTopTitleBar) {
 					<div class="top-title-bar__dismiss-button">
 						<rr-button
 							variant="accent-transparent"
+							text=${component.dismissLabel}
 							@click=${component._handleDismiss}
-						>
-							${component.dismissLabel}
-						</rr-button>
+						></rr-button>
 					</div>
 				` : nothing}
 			</div>

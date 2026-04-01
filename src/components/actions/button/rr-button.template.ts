@@ -3,23 +3,22 @@ import type { RRButton } from './rr-button.ts';
 
 interface TemplateHelpers {
 	handleClick: (e: MouseEvent) => void;
-	detectIconPosition: () => void;
 }
 
-function renderContent(component: RRButton, detectIconPosition: () => void) {
+function renderContent(component: RRButton) {
 	return html`
 		<span class="button__content">
-			${component._iconStart ? html`
+			${component.startIcon ? html`
 				<rr-icon class="button__start-icon"
-					name=${component._iconStart.name}
+					name=${component.startIcon}
 				></rr-icon>
-			` : nothing}
-			<slot @slotchange=${detectIconPosition}></slot>
-			${component._iconEnd ? html`
+			` : html`<slot name="start-icon"></slot>`}
+			${component.text}
+			${component.endIcon ? html`
 				<rr-icon class="button__end-icon"
-					name=${component._iconEnd.name}
+					name=${component.endIcon}
 				></rr-icon>
-			` : nothing}
+			` : html`<slot name="end-icon"></slot>`}
 			${component.expandable ? html`
 				<rr-icon class="button__disclosure-icon"
 					name="chevron-down-small"
@@ -30,7 +29,7 @@ function renderContent(component: RRButton, detectIconPosition: () => void) {
 }
 
 export function template(this: RRButton, helpers: TemplateHelpers) {
-	const content = renderContent(this, helpers.detectIconPosition);
+	const content = renderContent(this);
 
 	if (this.href) {
 		const resolvedRel = this._resolvedRel();

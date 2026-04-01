@@ -1,7 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { RRComboBox } from './rr-combo-box.js';
 import '../../actions/icon-button/rr-icon-button.ts';
-import '../../content/icon/rr-icon.ts';
 
 export function comboBoxTemplate(component: RRComboBox): TemplateResult {
 	return html`
@@ -27,13 +26,12 @@ export function comboBoxTemplate(component: RRComboBox): TemplateResult {
 				<rr-icon-button
 					variant="neutral-tinted"
 					size="sm"
+					icon="chevron-down"
+					text=${component._t('components.combo-box.open-picker-action')}
 					?disabled=${component.disabled}
 					@mousedown=${component._handlePickerMousedown}
 					@click=${component._toggleMenu}
-				>
-					<rr-icon name="chevron-down"></rr-icon>
-					${component._t('components.combo-box.open-picker-action')}
-				</rr-icon-button>
+				></rr-icon-button>
 			</div>
 		</div>
 		<slot @slotchange=${component._onSlotChange}></slot>

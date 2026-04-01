@@ -28,19 +28,13 @@ export const Default = {
 	render: (args) => html`
 		<rr-list variant=${args.variant}>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Item 1</p>
-				</rr-text-cell>
+				<rr-text-cell text="Item 1" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Item 2</p>
-				</rr-text-cell>
+				<rr-text-cell text="Item 2" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Item 3</p>
-				</rr-text-cell>
+				<rr-text-cell text="Item 3" />
 			</rr-list-item>
 		</rr-list>
 	`,
@@ -50,19 +44,13 @@ export const VariantSimple = {
 	render: () => html`
 		<rr-list variant="simple">
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Simple list item 1</p>
-				</rr-text-cell>
+				<rr-text-cell text="Simple list item 1" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Simple list item 2</p>
-				</rr-text-cell>
+				<rr-text-cell text="Simple list item 2" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Simple list item 3</p>
-				</rr-text-cell>
+				<rr-text-cell text="Simple list item 3" />
 			</rr-list-item>
 		</rr-list>
 	`,
@@ -72,19 +60,13 @@ export const VariantBox = {
 	render: () => html`
 		<rr-list variant="box">
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Box list item 1</p>
-				</rr-text-cell>
+				<rr-text-cell text="Box list item 1" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Box list item 2</p>
-				</rr-text-cell>
+				<rr-text-cell text="Box list item 2" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Box list item 3</p>
-				</rr-text-cell>
+				<rr-text-cell text="Box list item 3" />
 			</rr-list-item>
 		</rr-list>
 	`,
@@ -95,19 +77,13 @@ export const VariantInset = {
 		<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
 			<rr-list variant="inset">
 				<rr-list-item>
-					<rr-text-cell>
-						<p slot="text">Inset item 1</p>
-					</rr-text-cell>
+					<rr-text-cell text="Inset item 1" />
 				</rr-list-item>
 				<rr-list-item>
-					<rr-text-cell>
-						<p slot="text">Inset item 2</p>
-					</rr-text-cell>
+					<rr-text-cell text="Inset item 2" />
 				</rr-list-item>
 				<rr-list-item>
-					<rr-text-cell>
-						<p slot="text">Inset item 3</p>
-					</rr-text-cell>
+					<rr-text-cell text="Inset item 3" />
 				</rr-list-item>
 			</rr-list>
 		</div>
@@ -121,19 +97,13 @@ export const WithHeaderAndFooter = {
 				<h5>Notifications</h5>
 			</rr-title-bar>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Allow notifications</p>
-				</rr-text-cell>
+				<rr-text-cell text="Allow notifications" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Sounds</p>
-				</rr-text-cell>
+				<rr-text-cell text="Sounds" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Badges</p>
-				</rr-text-cell>
+				<rr-text-cell text="Badges" />
 			</rr-list-item>
 			<rr-rich-text slot="footer">
 				<p>Notifications will only be sent when the app is active on your device.</p>
@@ -146,19 +116,13 @@ export const WithSelection = {
 	render: () => html`
 		<rr-list variant="simple">
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Not selected</p>
-				</rr-text-cell>
+				<rr-text-cell text="Not selected" />
 			</rr-list-item>
 			<rr-list-item selected>
-				<rr-text-cell>
-					<p slot="text">Selected item</p>
-				</rr-text-cell>
+				<rr-text-cell text="Selected item" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Not selected</p>
-				</rr-text-cell>
+				<rr-text-cell text="Not selected" />
 			</rr-list-item>
 		</rr-list>
 	`,
@@ -168,19 +132,13 @@ export const SizeSmall = {
 	render: () => html`
 		<rr-list variant="simple">
 			<rr-list-item size="sm">
-				<rr-text-cell size="sm">
-					<p slot="text">Small item 1</p>
-				</rr-text-cell>
+				<rr-text-cell size="sm" text="Small item 1" />
 			</rr-list-item>
 			<rr-list-item size="sm">
-				<rr-text-cell size="sm">
-					<p slot="text">Small item 2</p>
-				</rr-text-cell>
+				<rr-text-cell size="sm" text="Small item 2" />
 			</rr-list-item>
 			<rr-list-item size="sm">
-				<rr-text-cell size="sm">
-					<p slot="text">Small item 3</p>
-				</rr-text-cell>
+				<rr-text-cell size="sm" text="Small item 3" />
 			</rr-list-item>
 		</rr-list>
 	`,
@@ -190,16 +148,10 @@ export const WithSupportingText = {
 	render: () => html`
 		<rr-list variant="box">
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Primary title</p>
-					<p slot="supporting-text">Supporting text below</p>
-				</rr-text-cell>
+				<rr-text-cell text="Primary title" supporting-text="Supporting text below" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Another title</p>
-					<p slot="supporting-text">More description here</p>
-				</rr-text-cell>
+				<rr-text-cell text="Another title" supporting-text="More description here" />
 			</rr-list-item>
 		</rr-list>
 	`,
@@ -209,30 +161,24 @@ export const WithTitleAndDetail = {
 	render: () => html`
 		<rr-list variant="box">
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Primary title</p>
-				</rr-text-cell>
+				<rr-text-cell text="Primary title" />
 				<rr-spacer-cell></rr-spacer-cell>
 				<rr-text-cell
 					color="secondary"
 					horizontal-alignment="right"
 					width="fit-content"
-				>
-					<p slot="text">Detail</p>
-				</rr-text-cell>
+					text="Detail"
+				/>
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Another title</p>
-				</rr-text-cell>
+				<rr-text-cell text="Another title" />
 				<rr-spacer-cell size="8"></rr-spacer-cell>
 				<rr-text-cell
 					color="secondary"
 					horizontal-alignment="right"
 					width="fit-content"
-				>
-					<p slot="text">More detail</p>
-				</rr-text-cell>
+					text="More detail"
+				/>
 			</rr-list-item>
 		</rr-list>
 	`,
@@ -242,19 +188,13 @@ export const WithInteractiveItems = {
 	render: () => html`
 		<rr-list variant="box">
 			<rr-list-item type="button">
-				<rr-text-cell>
-					<p slot="text">Button item</p>
-				</rr-text-cell>
+				<rr-text-cell text="Button item" />
 			</rr-list-item>
 			<rr-list-item type="link" href="/settings">
-				<rr-text-cell>
-					<p slot="text">Link item</p>
-				</rr-text-cell>
+				<rr-text-cell text="Link item" />
 			</rr-list-item>
 			<rr-list-item>
-				<rr-text-cell>
-					<p slot="text">Non-interactive item</p>
-				</rr-text-cell>
+				<rr-text-cell text="Non-interactive item" />
 			</rr-list-item>
 		</rr-list>
 	`,
@@ -288,9 +228,7 @@ export const DraggableList = {
 						<rr-spacer-cell slot="start" size="12"></rr-spacer-cell>
 						<rr-drag-handle-cell size="sm" slot="start" draggable-only></rr-drag-handle-cell>
 						<rr-spacer-cell slot="start" draggable-only size="8"></rr-spacer-cell>
-						<rr-text-cell>
-							<p slot="text">${label}</p>
-						</rr-text-cell>
+						<rr-text-cell text="${label}" />
 					</rr-list-item>
 				`)}
 			</rr-list>

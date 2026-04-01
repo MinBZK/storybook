@@ -117,21 +117,37 @@ describe('rr-title-cell', () => {
 		expect(el.hasAttribute('selected')).toBe(true);
 	});
 
-	it('renders slotted title content', async () => {
-		el = await fixture('<rr-title-cell><h2>My title</h2></rr-title-cell>');
+	it('renders text attribute content', async () => {
+		el = await fixture('<rr-title-cell text="My title"></rr-title-cell>');
 		await waitForUpdate(el);
-		expect(el.querySelector('h2')?.textContent?.trim()).toBe('My title');
+		expect(el.getAttribute('text')).toBe('My title');
 	});
 
-	it('renders slotted overline content', async () => {
-		el = await fixture('<rr-title-cell><p slot="overline">Overline</p></rr-title-cell>');
+	it('renders overline attribute content', async () => {
+		el = await fixture('<rr-title-cell overline="Overline"></rr-title-cell>');
 		await waitForUpdate(el);
-		expect(el.querySelector('[slot="overline"]')?.textContent?.trim()).toBe('Overline');
+		expect(el.getAttribute('overline')).toBe('Overline');
 	});
 
-	it('renders slotted subtitle content', async () => {
-		el = await fixture('<rr-title-cell><p slot="subtitle">Subtitle</p></rr-title-cell>');
+	it('renders supporting-text attribute content', async () => {
+		el = await fixture('<rr-title-cell supporting-text="Supporting"></rr-title-cell>');
 		await waitForUpdate(el);
-		expect(el.querySelector('[slot="subtitle"]')?.textContent?.trim()).toBe('Subtitle');
+		expect(el.getAttribute('supporting-text')).toBe('Supporting');
+	});
+
+	it('renders a <p> by default (no heading-level)', async () => {
+		el = await fixture('<rr-title-cell text="Title"></rr-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title).not.toBeNull();
+		expect(title!.tagName.toLowerCase()).toBe('p');
+	});
+
+	it('renders an <h2> when heading-level="2"', async () => {
+		el = await fixture('<rr-title-cell text="Title" heading-level="2"></rr-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title).not.toBeNull();
+		expect(title!.tagName.toLowerCase()).toBe('h2');
 	});
 });

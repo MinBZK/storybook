@@ -5,7 +5,9 @@ function renderContent(component: RRIconButton) {
 	return html`
 		<span class="icon-button__icon-area">
 			<span class="icon-button__icon">
-				<slot name="__icon"></slot>
+				${component.icon
+					? html`<rr-icon name=${component.icon}></rr-icon>`
+					: html`<slot name="icon"></slot>`}
 			</span>
 			${component.expandable ? html`
 				<span class="icon-button__disclosure-icon">
@@ -13,15 +15,15 @@ function renderContent(component: RRIconButton) {
 				</span>
 			` : nothing}
 		</span>
-		${component._text ? html`
-			<span class="icon-button__text">${component._text}</span>
+		${component.text ? html`
+			<span class="icon-button__text">${component.text}</span>
 		` : ''}
 	`;
 }
 
 export function template(this: RRIconButton) {
-	const label = this.accessibleLabel || this._text || nothing;
-	const tooltip = this.size !== 'lg' ? (this.accessibleLabel || this._text || nothing) : nothing;
+	const label = this.accessibleLabel || this.text || nothing;
+	const tooltip = this.size !== 'lg' ? (this.accessibleLabel || this.text || nothing) : nothing;
 	const content = renderContent(this);
 
 	if (this.href) {
