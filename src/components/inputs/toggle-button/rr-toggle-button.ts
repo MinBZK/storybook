@@ -63,11 +63,17 @@ export class RRToggleButton extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	override updated(changed: Map<string, unknown>): void {
-		if (changed.has('icon') || changed.has('text')) {
-			this.toggleAttribute('icon-only', !!this.icon && !this.text);
-		}
-		if (this.icon && !this.text && !this.accessibleLabel) {
+	/** Whether an icon is present via attribute or slot. */
+	private get _hasIcon(): boolean {
+		if (this.icon) return true;
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="icon"]');
+		return (slot?.assignedElements().length ?? 0) > 0;
+	}
+
+	override updated(): void {
+		const iconOnly = this._hasIcon && !this.text;
+		this.toggleAttribute('icon-only', iconOnly);
+		if (iconOnly && !this.accessibleLabel) {
 			console.warn('<rr-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
 		}
 	}

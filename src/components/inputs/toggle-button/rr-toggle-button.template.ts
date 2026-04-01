@@ -7,7 +7,7 @@ export function toggleButtonTemplate(component: RRToggleButton): TemplateResult 
 
 	const icon = component.icon
 		? html`<rr-icon class="toggle-button__icon" name=${component.icon}></rr-icon>`
-		: html`<slot name="icon"></slot>`;
+		: html`<slot name="icon" @slotchange=${() => component.requestUpdate()}></slot>`;
 
 	const textContent = component.text
 		? html`<span class="toggle-button__text">${component.text}</span>`

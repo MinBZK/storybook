@@ -96,8 +96,15 @@ export class RRIconButton extends LitElement {
 	@property({ type: String })
 	rel: string | undefined = undefined;
 
+	/** Whether an icon is present via attribute or slot. */
+	private get _hasIcon(): boolean {
+		if (this.icon) return true;
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="icon"]');
+		return (slot?.assignedElements().length ?? 0) > 0;
+	}
+
 	override updated(): void {
-		if (this.icon && !this.text && !this.accessibleLabel) {
+		if (this._hasIcon && !this.text && !this.accessibleLabel) {
 			console.warn('<rr-icon-button>: icon is set without text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2). Add a text or accessible-label attribute.');
 		}
 	}
