@@ -95,6 +95,7 @@ export function template(
 	menuId: string,
 	onOverflowClick: () => void,
 	centerOnly: boolean,
+	t: (key: string) => string,
 ) {
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 
@@ -123,13 +124,13 @@ export function template(
 			<div class="toolbar__overflow-button ${hasOverflow ? '' : 'is-hidden'}">
 				<rr-icon-button size=${size}
 					icon="ellipsis"
-					text="Meer"
+					text=${t('components.toolbar.overflow-action')}
 					aria-haspopup="menu"
 					aria-expanded=${menuOpen ? 'true' : 'false'}
 					aria-controls=${menuId}
 					@click=${onOverflowClick}
 				></rr-icon-button>
-				<span class="toolbar__item-label">Meer</span>
+				<span class="toolbar__item-label">${t('components.toolbar.overflow-action')}</span>
 			</div>
 		</div>
 	`;

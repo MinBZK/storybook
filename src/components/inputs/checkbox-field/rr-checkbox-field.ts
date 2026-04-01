@@ -38,7 +38,7 @@ export class RRCheckboxField extends LitElement {
 	@property({ type: String })
 	name = '';
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	label = '';
 
 	public _handleLabelClick(e: Event): void {

@@ -18,7 +18,7 @@ export function documentTabBarTemplate(component: RRDocumentTabBar): TemplateRes
 		</div>
 		<div class=${classMap({ 'document-tab-bar__overflow': true, 'is-hidden': !hasOverflow })}>
 			<rr-icon-button
-				label=${component.overflowButtonLabel}
+				text=${component._t('components.document-tab-bar.overflow-action')}
 				variant="neutral-tinted"
 				icon="ellipsis"
 				aria-haspopup="menu"

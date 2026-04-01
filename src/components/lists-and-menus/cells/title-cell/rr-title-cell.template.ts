@@ -6,8 +6,11 @@ import type { RRTitleCell } from './rr-title-cell.js';
 function renderTitle(component: RRTitleCell) {
 	if (!component.text) return nothing;
 
-	if (component.headingLevel && component.headingLevel >= 1 && component.headingLevel <= 6) {
-		const tag = unsafeStatic(`h${component.headingLevel}`);
+	const level = component.headingLevel;
+	if (level != null && Number.isInteger(level) && level >= 1 && level <= 6) {
+		// SAFETY: unsafeStatic is safe here because level is validated to integers 1–6.
+		// Do not use unsafeStatic with unvalidated input — it is an XSS vector.
+		const tag = unsafeStatic(`h${level}`);
 		return staticHtml`<${tag} class="title-cell__title">${component.text}</${tag}>`;
 	}
 

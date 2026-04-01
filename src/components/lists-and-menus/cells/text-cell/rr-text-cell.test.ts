@@ -105,22 +105,51 @@ describe('rr-text-cell', () => {
 		expect(el.getAttribute('vertical-alignment')).toBe('bottom');
 	});
 
-	it('renders text attribute content', async () => {
+	it('renders text in shadow DOM', async () => {
 		el = await fixture('<rr-text-cell text="Hallo"></rr-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('text')).toBe('Hallo');
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p).not.toBeNull();
+		expect(p!.textContent?.trim()).toBe('Hallo');
 	});
 
-	it('renders overline attribute content', async () => {
+	it('renders overline in shadow DOM', async () => {
 		el = await fixture('<rr-text-cell overline="Overline"></rr-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('overline')).toBe('Overline');
+		const p = el.shadowRoot!.querySelector('.text-cell__overline');
+		expect(p).not.toBeNull();
+		expect(p!.textContent?.trim()).toBe('Overline');
 	});
 
-	it('renders supporting-text attribute content', async () => {
+	it('renders supporting-text in shadow DOM', async () => {
 		el = await fixture('<rr-text-cell supporting-text="Supporting"></rr-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('supporting-text')).toBe('Supporting');
+		const p = el.shadowRoot!.querySelector('.text-cell__supporting-text');
+		expect(p).not.toBeNull();
+		expect(p!.textContent?.trim()).toBe('Supporting');
+	});
+
+	it('does not render text element when text is empty', async () => {
+		el = await fixture('<rr-text-cell></rr-text-cell>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.text-cell__text')).toBeNull();
+	});
+
+	it('renders **bold** markers as <b> elements', async () => {
+		el = await fixture('<rr-text-cell text="Hello **world**"></rr-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p).not.toBeNull();
+		expect(p!.querySelector('b')?.textContent).toBe('world');
+		expect(p!.textContent?.trim()).toBe('Hello world');
+	});
+
+	it('renders plain text without bold when no ** markers', async () => {
+		el = await fixture('<rr-text-cell text="No bold here"></rr-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p!.querySelector('b')).toBeNull();
+		expect(p!.textContent?.trim()).toBe('No bold here');
 	});
 
 	it('defaults selected to false', async () => {

@@ -140,9 +140,6 @@ export class RRDocumentTabBar extends LitElement {
 	private static _counter = 0;
 	readonly _id = `rr-document-tab-bar-${RRDocumentTabBar._counter++}`;
 
-	@property({ type: String, attribute: 'overflow-button-label' })
-	overflowButtonLabel = 'Meer';
-
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 

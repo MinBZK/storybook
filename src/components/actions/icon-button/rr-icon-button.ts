@@ -69,11 +69,11 @@ export class RRIconButton extends LitElement {
 	popovertarget: string | undefined = undefined;
 
 	/** Button text, used as aria-label and shown below the icon in lg size. */
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	text = '';
 
 	/** Icon name for the rr-icon element. When not set, the icon slot is used. */
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	icon = '';
 
 	/** Accessible label for screen readers. Overrides text as aria-label and title tooltip.
@@ -96,9 +96,11 @@ export class RRIconButton extends LitElement {
 	@property({ type: String })
 	rel: string | undefined = undefined;
 
-	override firstUpdated(): void {
-		if (this.icon && !this.text && !this.accessibleLabel) {
-			console.warn('<rr-icon-button>: icon is set without text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2). Add a text or accessible-label attribute.');
+	override updated(changed: Map<string, unknown>): void {
+		if (changed.has('icon') || changed.has('text') || changed.has('accessibleLabel')) {
+			if (this.icon && !this.text && !this.accessibleLabel) {
+				console.warn('<rr-icon-button>: icon is set without text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2). Add a text or accessible-label attribute.');
+			}
 		}
 	}
 

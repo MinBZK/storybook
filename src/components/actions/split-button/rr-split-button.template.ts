@@ -17,7 +17,7 @@ export function template(this: RRSplitButton) {
 				variant=${this.variant}
 				size=${this.size}
 				icon="chevron-down-small"
-				text="Meer opties"
+				text=${this._t('components.split-button.menu-action')}
 				?disabled=${this.disabled}
 				aria-haspopup="menu"
 				@click=${this._handleMenuClick}

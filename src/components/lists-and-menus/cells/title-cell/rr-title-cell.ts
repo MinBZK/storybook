@@ -78,17 +78,17 @@ export class RRTitleCell extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	text = '';
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	overline = '';
 
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ type: String, reflect: true, attribute: 'supporting-text' })
 	supportingText = '';
 
 	/** Heading level for the title element (1–6). When not set, renders a <p>. */
-	@property({ type: Number, attribute: 'heading-level' })
+	@property({ type: Number, reflect: true, attribute: 'heading-level' })
 	headingLevel: number | undefined = undefined;
 
 	override updated(changed: Map<string, unknown>) {

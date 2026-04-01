@@ -10,6 +10,7 @@
  * @attr {boolean} disabled - Disabled state
  * @attr {string} text - Button text for the primary action
  * @attr {string} start-icon - Icon name for the start icon (before text)
+ * @attr {object} translations - Translations; unset keys fall back to Dutch
  *
  * @fires action-click - Fired when the main button is clicked
  * @fires menu-click - Fired when the dropdown trigger is clicked
@@ -18,6 +19,8 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styles } from './rr-split-button.styles.ts';
 import { template } from './rr-split-button.template.ts';
+import { rrSplitButtonTranslations } from './rr-split-button.i18n.ts';
+import type { RRSplitButtonTranslations } from './rr-split-button.i18n.ts';
 import './../button/rr-button.ts';
 import './../icon-button/rr-icon-button.ts';
 
@@ -37,12 +40,21 @@ export class RRSplitButton extends LitElement {
 	disabled = false;
 
 	/** Button text for the primary action. */
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	text = '';
 
 	/** Icon name for the start icon (before text) on the primary action button. */
-	@property({ type: String, attribute: 'start-icon' })
+	@property({ type: String, reflect: true, attribute: 'start-icon' })
 	startIcon = '';
+
+	@property({ type: Object })
+	translations: Partial<RRSplitButtonTranslations> = {};
+
+	// — i18n —————————————————————————————————————————————————————————————————
+
+	public _t(key: keyof RRSplitButtonTranslations): string {
+		return this.translations[key] ?? rrSplitButtonTranslations[key];
+	}
 
 	_handleActionClick(e: MouseEvent): void {
 		if (this.disabled) return;

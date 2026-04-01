@@ -21,7 +21,7 @@
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')
  * @attr {boolean} selected - Selected state
  *
- * @attr {string} text - Main text content
+ * @attr {string} text - Main text content. Supports **bold** syntax for inline bold segments.
  * @attr {string} overline - Optional overline text displayed above the main content
  * @attr {string} supporting-text - Optional supporting text displayed below the main content
  */
@@ -78,13 +78,13 @@ export class RRTextCell extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	text = '';
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	overline = '';
 
-	@property({ type: String, attribute: 'supporting-text' })
+	@property({ type: String, reflect: true, attribute: 'supporting-text' })
 	supportingText = '';
 
 	override updated(changed: Map<string, unknown>) {

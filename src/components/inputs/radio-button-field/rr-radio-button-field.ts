@@ -38,7 +38,7 @@ export class RRRadioButtonField extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	label = '';
 
 	public _handleLabelClick(e: Event): void {
