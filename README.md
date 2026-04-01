@@ -1,6 +1,6 @@
-# RegelRecht Design System
+# Nederlandse Digitale Dienst Design System
 
-Design tokens en Web Components voor RegelRecht.
+Design tokens en Web Components voor Nederlandse Digitale Dienst.
 
 ## Installation
 
@@ -37,14 +37,14 @@ import '@minbzk/storybook/css';
 import '@minbzk/storybook';
 
 // Or import specific components
-import { RRButton, RRCheckbox, RRSwitch } from '@minbzk/storybook';
+import { NDDButton, NDDCheckbox, NDDSwitch } from '@minbzk/storybook';
 ```
 
 ```html
 <!-- Use in HTML -->
-<rr-button variant="accent-filled">Click me</rr-button>
-<rr-checkbox label="Accept terms"></rr-checkbox>
-<rr-switch label="Enable notifications"></rr-switch>
+<ndd-button variant="accent-filled">Click me</ndd-button>
+<ndd-checkbox label="Accept terms"></ndd-checkbox>
+<ndd-switch label="Enable notifications"></ndd-switch>
 ```
 
 ## Storybook
@@ -88,21 +88,21 @@ npm run storybook
 
 ```html
 <script type="module">
-  import './src/components/actions/button/rr-button.ts';
+  import './src/components/actions/button/ndd-button.ts';
 </script>
 ```
 
 ### 3. Gebruik componenten
 
 ```html
-<rr-button variant="primary">Primary Action</rr-button>
-<rr-button variant="secondary">Secondary Action</rr-button>
-<rr-button size="sm">Small Button</rr-button>
+<ndd-button variant="primary">Primary Action</ndd-button>
+<ndd-button variant="secondary">Secondary Action</ndd-button>
+<ndd-button size="sm">Small Button</ndd-button>
 ```
 
 ## Componenten
 
-### rr-button
+### ndd-button
 
 | Attribuut       | Type    | Default          | Beschrijving                                                                                                                                              |
 | --------------- | ------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -146,11 +146,11 @@ Tokens zijn georganiseerd in drie lagen:
 
 1. Maak een directory in `src/components/{category}/{component-name}/`
 2. Maak de volgende bestanden aan:
-   - `rr-{component-name}.ts` — component class (extends `LitElement`)
-   - `rr-{component-name}.styles.ts` — component styles
-   - `rr-{component-name}.template.ts` — render template
-   - `rr-{component-name}.stories.ts` — Storybook stories
-   - `rr-{component-name}.test.ts` — unit tests
+   - `ndd-{component-name}.ts` — component class (extends `LitElement`)
+   - `ndd-{component-name}.styles.ts` — component styles
+   - `ndd-{component-name}.template.ts` — render template
+   - `ndd-{component-name}.stories.ts` — Storybook stories
+   - `ndd-{component-name}.test.ts` — unit tests
 3. Exporteer de component class in `src/index.ts`
 
 Zie `CLAUDE.md` voor conventies en richtlijnen.

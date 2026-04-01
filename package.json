@@ -1,12 +1,12 @@
 {
   "name": "@minbzk/storybook",
   "version": "0.8.15",
-  "description": "Design System voor RegelRecht - Nederlandse Overheid",
+  "description": "Design System voor Nederlandse Digitale Dienst",
   "type": "module",
-  "main": "dist/components/rr-components.js",
-  "module": "dist/components/rr-components.js",
+  "main": "dist/components/ndd-components.js",
+  "module": "dist/components/ndd-components.js",
   "exports": {
-    ".": "./dist/components/rr-components.js",
+    ".": "./dist/components/ndd-components.js",
     "./css": "./dist/css/tokens.css"
   },
   "files": [
@@ -73,7 +73,7 @@
     "design-system",
     "web-components",
     "rijksoverheid",
-    "regelrecht"
+    "ndd"
   ],
   "license": "EUPL-1.2",
   "dependencies": {

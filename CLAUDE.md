@@ -1,4 +1,4 @@
-# RegelRecht Design System
+# Nederlandse Digitale Dienst Design System
 
 Vanilla Web Components for Dutch Government (Rijksoverheid) apps. Single source of truth: **Storybook**.
 
@@ -52,11 +52,11 @@ Always prefer semantic tokens. Only use primitives when no semantic exists.
 
 ```
 src/components/{category}/{name}/
-  rr-{name}.ts           # Lit + TypeScript component
-  rr-{name}.styles.ts    # Component styles
-  rr-{name}.template.ts  # Render template
-  rr-{name}.stories.ts   # Storybook stories
-  rr-{name}.test.ts      # Unit tests
+  ndd-{name}.ts           # Lit + TypeScript component
+  ndd-{name}.styles.ts    # Component styles
+  ndd-{name}.template.ts  # Render template
+  ndd-{name}.stories.ts   # Storybook stories
+  ndd-{name}.test.ts      # Unit tests
 ```
 
 ## Components Maken/Updaten
@@ -109,15 +109,15 @@ Elk component MOET minimaal een **smoke test** hebben. Run tests met `npm test`.
 1. **Smoke test** (verplicht): rendert zonder errors, heeft een shadowRoot
 2. **Logic tests** (verplicht bij complexe logica): test MutationObservers, slot management, attribuut propagatie, event handlers, state transitions
 
-**Test bestand:** `src/components/{category}/{name}/rr-{name}.test.ts`
+**Test bestand:** `src/components/{category}/{name}/ndd-{name}.test.ts`
 
 **Smoke test patroon:**
 ```typescript
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './rr-{name}.ts';
+import './ndd-{name}.ts';
 
-describe('rr-{name}', () => {
+describe('ndd-{name}', () => {
   let el: HTMLElement;
 
   afterEach(() => {
@@ -125,7 +125,7 @@ describe('rr-{name}', () => {
   });
 
   it('renders without error', async () => {
-	el = await fixture('<rr-{name}></rr-{name}>');
+	el = await fixture('<ndd-{name}></ndd-{name}>');
 	await waitForUpdate(el);
 
 	expect(el.shadowRoot).not.toBeNull();
@@ -190,7 +190,7 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 ```
 
 **Regels:**
-- Block: `rr-{naam}` of simpelweg de component naam
+- Block: `ndd-{naam}` of simpelweg de component naam
 - Element: dubbele underscore `__`
 - Modifier: dubbele hyphen `--`
 - Geen nesting van blocks binnen element namen (niet: `block__element__subelement`)
@@ -215,8 +215,8 @@ min-height: var(--semantics-controls-md-min-size);
 ```
 
 **Uitzonderingen (behoud fallbacks):**
-- Override hooks: `var(--rr-button-background-color, var(--_bg-color))`
-- Font-family: `var(--rr-font-family-sans, 'RijksSansVF', system-ui, sans-serif)`
+- Override hooks: `var(--ndd-button-background-color, var(--_bg-color))`
+- Font-family: `var(--ndd-font-family-sans, 'RijksSansVF', system-ui, sans-serif)`
 
 CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `src/assets/styles/settings.css`.
 

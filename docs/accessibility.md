@@ -2,7 +2,7 @@
 
 ## Overview
 
-The RegelRecht Design System is built with accessibility at its core, ensuring compliance with **DigiToegankelijk** (Dutch Digital Accessibility Standard) and **WCAG 2.1 Level AA** requirements. All components are developed following WAI-ARIA authoring practices and are designed to work seamlessly with assistive technologies.
+The Nederlandse Digitale Dienst Design System is built with accessibility at its core, ensuring compliance with **DigiToegankelijk** (Dutch Digital Accessibility Standard) and **WCAG 2.1 Level AA** requirements. All components are developed following WAI-ARIA authoring practices and are designed to work seamlessly with assistive technologies.
 
 ### Core Principles
 
@@ -176,7 +176,7 @@ disabled = false;
 
 ### Form Controls
 
-#### Checkbox (`rr-checkbox`)
+#### Checkbox (`ndd-checkbox`)
 
 **ARIA Attributes:**
 - `role="checkbox"` - Identifies as checkbox
@@ -191,7 +191,7 @@ disabled = false;
 **Usage:**
 ```html
 <label>
-  <rr-checkbox checked aria-label="Accept terms"></rr-checkbox>
+  <ndd-checkbox checked aria-label="Accept terms"></ndd-checkbox>
   I accept the terms and conditions
 </label>
 ```
@@ -200,7 +200,7 @@ disabled = false;
 
 ---
 
-#### Radio Button (`rr-radio`)
+#### Radio Button (`ndd-radio`)
 
 **ARIA Attributes:**
 - `role="radio"` - Identifies as radio button
@@ -218,9 +218,9 @@ disabled = false;
 ```html
 <div role="radiogroup" aria-labelledby="payment-label">
   <span id="payment-label">Payment method</span>
-  <rr-radio name="payment" value="card" checked>Credit card</rr-radio>
-  <rr-radio name="payment" value="ideal">iDEAL</rr-radio>
-  <rr-radio name="payment" value="paypal">PayPal</rr-radio>
+  <ndd-radio name="payment" value="card" checked>Credit card</ndd-radio>
+  <ndd-radio name="payment" value="ideal">iDEAL</ndd-radio>
+  <ndd-radio name="payment" value="paypal">PayPal</ndd-radio>
 </div>
 ```
 
@@ -228,7 +228,7 @@ disabled = false;
 
 ---
 
-#### Switch (`rr-switch`)
+#### Switch (`ndd-switch`)
 
 **ARIA Attributes:**
 - `role="switch"` - Identifies as toggle switch
@@ -243,7 +243,7 @@ disabled = false;
 **Usage:**
 ```html
 <label>
-  <rr-switch checked aria-label="Enable notifications"></rr-switch>
+  <ndd-switch checked aria-label="Enable notifications"></ndd-switch>
   Enable push notifications
 </label>
 ```
@@ -254,7 +254,7 @@ disabled = false;
 
 ### Navigation
 
-#### Menu Bar (`rr-menu-bar`)
+#### Menu Bar (`ndd-menu-bar`)
 
 **ARIA Attributes:**
 - Menu items should be placed inside for semantic navigation
@@ -273,11 +273,11 @@ disabled = false;
 **Usage:**
 ```html
 <nav aria-label="Main navigation">
-  <rr-menu-bar has-overflow-menu overflow-label="Meer">
-	<rr-menu-item selected>Home</rr-menu-item>
-	<rr-menu-item>Over ons</rr-menu-item>
-	<rr-menu-item>Contact</rr-menu-item>
-  </rr-menu-bar>
+  <ndd-menu-bar has-overflow-menu overflow-label="Meer">
+	<ndd-menu-item selected>Home</ndd-menu-item>
+	<ndd-menu-item>Over ons</ndd-menu-item>
+	<ndd-menu-item>Contact</ndd-menu-item>
+  </ndd-menu-bar>
 </nav>
 ```
 
@@ -287,7 +287,7 @@ disabled = false;
 
 ### Buttons
 
-#### Button (`rr-button`)
+#### Button (`ndd-button`)
 
 **ARIA Attributes:**
 - Native `<button>` element (no additional role needed)
@@ -300,14 +300,14 @@ disabled = false;
 
 **Usage:**
 ```html
-<rr-button variant="accent-filled" size="md">
+<ndd-button variant="accent-filled" size="md">
   Verzenden
-</rr-button>
+</ndd-button>
 ```
 
 ---
 
-#### Icon Button (`rr-icon-button`)
+#### Icon Button (`ndd-icon-button`)
 
 **ARIA Attributes:**
 - `aria-label` - **Required** accessible label for icon-only buttons
@@ -319,11 +319,11 @@ disabled = false;
 
 **Usage:**
 ```html
-<rr-icon-button
+<ndd-icon-button
   variant="accent-transparent"
   aria-label="Sluiten">
   <svg><!-- Close icon --></svg>
-</rr-icon-button>
+</ndd-icon-button>
 ```
 
 **Important:** Icon buttons MUST have an `aria-label` since there is no visible text.
