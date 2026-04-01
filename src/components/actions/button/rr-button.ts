@@ -97,6 +97,18 @@ export class RRButton extends LitElement {
 	@property({ type: String })
 	rel: string | undefined = undefined;
 
+	private _warnedA11y = false;
+
+	override updated(): void {
+		const isEmpty = !this.text && !this.accessibleLabel;
+		if (isEmpty && !this._warnedA11y) {
+			this._warnedA11y = true;
+			console.warn('<rr-button>: button has no text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2).');
+		} else if (!isEmpty) {
+			this._warnedA11y = false;
+		}
+	}
+
 	private _handleClick(e: MouseEvent): void {
 		if (this.disabled) {
 			e.preventDefault();
