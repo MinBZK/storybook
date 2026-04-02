@@ -47,7 +47,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 						@change=${(e: Event) => component._goToPage(Number((e.target as HTMLSelectElement).value))}
 					>
 						${Array.from({ length: component.total }, (_, i) => i + 1).map((page) => html`
-							<option value=${page} ?selected=${page === component.current}>${page}</option>
+							<option value=${page} ?selected=${page === component.current}>${page} / ${component.total}</option>
 						`)}
 					</select>
 					<div class="pagination__select-picker-icon">

@@ -93,49 +93,6 @@ export class NDDPagination extends LitElement {
 		);
 	}
 
-	_handleKeyDown = (e: KeyboardEvent): void => {
-		const buttons = Array.from(
-			this.shadowRoot!.querySelectorAll<HTMLButtonElement>('.pagination__page-button')
-		);
-		const target = e.composedPath()[0] as HTMLElement;
-		const index = buttons.indexOf(target as HTMLButtonElement);
-
-		if (index === -1) return;
-
-		let next: number | undefined;
-
-		switch (e.key) {
-			case 'ArrowRight':
-				next = index < buttons.length - 1 ? index + 1 : undefined;
-				break;
-			case 'ArrowLeft':
-				next = index > 0 ? index - 1 : undefined;
-				break;
-			case 'Home':
-				next = 0;
-				break;
-			case 'End':
-				next = buttons.length - 1;
-				break;
-			default:
-				return;
-		}
-
-		if (next === undefined) return;
-		e.preventDefault();
-		buttons[next].focus();
-	}
-
-	override connectedCallback(): void {
-		super.connectedCallback();
-		this.addEventListener('keydown', this._handleKeyDown);
-	}
-
-	override disconnectedCallback(): void {
-		super.disconnectedCallback();
-		this.removeEventListener('keydown', this._handleKeyDown);
-	}
-
 	override render() {
 		return paginationTemplate(this);
 	}

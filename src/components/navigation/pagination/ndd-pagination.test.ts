@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach, vi } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { NDDPagination } from './ndd-pagination.ts';
 import './ndd-pagination.ts';
@@ -170,74 +170,3 @@ describe('ndd-pagination – navigation', () => {
 	});
 });
 
-describe('ndd-pagination – keyboard navigation', () => {
-	let el: NDDPagination;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('ArrowRight calls focus on next page button', async () => {
-		el = await fixture<NDDPagination>('<ndd-pagination current="1" total="5"></ndd-pagination>');
-		await waitForUpdate(el);
-
-		const buttons = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.pagination__page-button');
-		const focusSpy = vi.spyOn(buttons[1], 'focus');
-		buttons[0].focus();
-		buttons[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
-
-		expect(focusSpy).toHaveBeenCalled();
-	});
-
-	it('ArrowLeft stops at first page button', async () => {
-		el = await fixture<NDDPagination>('<ndd-pagination current="1" total="5"></ndd-pagination>');
-		await waitForUpdate(el);
-
-		const buttons = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.pagination__page-button');
-		const focusSpy = vi.spyOn(buttons[buttons.length - 1], 'focus');
-		buttons[0].focus();
-		buttons[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
-
-		expect(focusSpy).not.toHaveBeenCalled();
-	});
-
-	it('Home calls focus on first page button', async () => {
-		el = await fixture<NDDPagination>('<ndd-pagination current="3" total="5"></ndd-pagination>');
-		await waitForUpdate(el);
-
-		const buttons = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.pagination__page-button');
-		const focusSpy = vi.spyOn(buttons[0], 'focus');
-		buttons[2].focus();
-		buttons[2].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true, composed: true }));
-
-		expect(focusSpy).toHaveBeenCalled();
-	});
-
-	it('End calls focus on last page button', async () => {
-		el = await fixture<NDDPagination>('<ndd-pagination current="1" total="5"></ndd-pagination>');
-		await waitForUpdate(el);
-
-		const buttons = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.pagination__page-button');
-		const focusSpy = vi.spyOn(buttons[buttons.length - 1], 'focus');
-		buttons[0].focus();
-		buttons[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true, composed: true }));
-
-		expect(focusSpy).toHaveBeenCalled();
-	});
-
-	it('ArrowRight navigates across ellipsis gap', async () => {
-		el = await fixture<NDDPagination>('<ndd-pagination current="6" total="20"></ndd-pagination>');
-		await waitForUpdate(el);
-
-		// With ellipsis: page buttons are [1, 5, 6, 7, 20] (ellipses are not buttons)
-		const buttons = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.pagination__page-button');
-		expect(buttons.length).toBe(5);
-
-		// Navigate from first visible page button (1) to second (5) — skips ellipsis
-		const focusSpy = vi.spyOn(buttons[1], 'focus');
-		buttons[0].focus();
-		buttons[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
-
-		expect(focusSpy).toHaveBeenCalled();
-	});
-});
