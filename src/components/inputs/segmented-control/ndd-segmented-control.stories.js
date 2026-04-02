@@ -75,16 +75,8 @@ const Template = ({ value, size, type, variant, disabled, fullWidth }) => html`
 		?full-width=${fullWidth}
 	>
 		<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-		<ndd-segmented-control-item
-			value="cursief"
-			text="Cursief"
-			icon="italic"
-		></ndd-segmented-control-item>
-		<ndd-segmented-control-item
-			value="onderstreept"
-			text="Onderstreept"
-			icon="underlined"
-		></ndd-segmented-control-item>
+		<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+		<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 	</ndd-segmented-control>
 `;
 
@@ -95,160 +87,64 @@ export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; align-items: start; gap: 1rem;">
 		<ndd-segmented-control value="vet" size="md">
 			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="cursief"
-				text="Cursief"
-				icon="italic"
-			></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="onderstreept"
-				text="Onderstreept"
-				icon="underlined"
-			></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 		</ndd-segmented-control>
 		<ndd-segmented-control value="vet" size="sm">
 			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="cursief"
-				text="Cursief"
-				icon="italic"
-			></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="onderstreept"
-				text="Onderstreept"
-				icon="underlined"
-			></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 		</ndd-segmented-control>
-		<ndd-segmented-control .values=${['vet', 'cursief']} type="checkbox" size="md">
+		<ndd-segmented-control .values=${["vet", "cursief"]} type="checkbox" size="md">
 			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="cursief"
-				text="Cursief"
-				icon="italic"
-			></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="onderstreept"
-				text="Onderstreept"
-				icon="underlined"
-			></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 		</ndd-segmented-control>
 		<ndd-segmented-control value="vet" disabled size="md">
 			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="cursief"
-				text="Cursief"
-				icon="italic"
-			></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="onderstreept"
-				text="Onderstreept"
-				icon="underlined"
-			></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 		</ndd-segmented-control>
 		<ndd-segmented-control value="vet" variant="icon" size="md">
 			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="cursief"
-				text="Cursief"
-				icon="italic"
-			></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="onderstreept"
-				text="Onderstreept"
-				icon="underlined"
-			></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 		</ndd-segmented-control>
 		<ndd-segmented-control value="vet" variant="icon" size="sm">
 			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="cursief"
-				text="Cursief"
-				icon="italic"
-			></ndd-segmented-control-item>
-			<ndd-segmented-control-item
-				value="onderstreept"
-				text="Onderstreept"
-				icon="underlined"
-			></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 		</ndd-segmented-control>
 		<div style="width: 400px; display: flex; flex-direction: column; gap: 1rem;">
 			<ndd-segmented-control value="vet" full-width size="md">
 				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="cursief"
-					text="Cursief"
-					icon="italic"
-				></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="onderstreept"
-					text="Onderstreept"
-					icon="underlined"
-				></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 			</ndd-segmented-control>
 			<ndd-segmented-control value="vet" full-width size="sm">
 				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="cursief"
-					text="Cursief"
-					icon="italic"
-				></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="onderstreept"
-					text="Onderstreept"
-					icon="underlined"
-				></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 			</ndd-segmented-control>
-			<ndd-segmented-control .values=${['vet', 'cursief']} type="checkbox" full-width size="md">
+			<ndd-segmented-control .values=${["vet", "cursief"]} type="checkbox" full-width size="md">
 				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="cursief"
-					text="Cursief"
-					icon="italic"
-				></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="onderstreept"
-					text="Onderstreept"
-					icon="underlined"
-				></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 			</ndd-segmented-control>
 			<ndd-segmented-control value="vet" disabled full-width size="md">
 				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="cursief"
-					text="Cursief"
-					icon="italic"
-				></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="onderstreept"
-					text="Onderstreept"
-					icon="underlined"
-				></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 			</ndd-segmented-control>
 			<ndd-segmented-control value="vet" variant="icon" full-width size="md">
 				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="cursief"
-					text="Cursief"
-					icon="italic"
-				></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="onderstreept"
-					text="Onderstreept"
-					icon="underlined"
-				></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 			</ndd-segmented-control>
 			<ndd-segmented-control value="vet" variant="icon" full-width size="sm">
 				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="cursief"
-					text="Cursief"
-					icon="italic"
-				></ndd-segmented-control-item>
-				<ndd-segmented-control-item
-					value="onderstreept"
-					text="Onderstreept"
-					icon="underlined"
-				></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
+				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
 			</ndd-segmented-control>
 		</div>
 	</div>

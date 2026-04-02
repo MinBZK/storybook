@@ -95,11 +95,7 @@ export const AlleToestanden = () => html`
 		<ndd-radio-button accessible-label="Niet geselecteerd"></ndd-radio-button>
 		<ndd-radio-button checked accessible-label="Geselecteerd"></ndd-radio-button>
 		<ndd-radio-button disabled accessible-label="Uitgeschakeld"></ndd-radio-button>
-		<ndd-radio-button
-			checked
-			disabled
-			accessible-label="Geselecteerd en uitgeschakeld"
-		></ndd-radio-button>
+		<ndd-radio-button checked disabled accessible-label="Geselecteerd en uitgeschakeld"></ndd-radio-button>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

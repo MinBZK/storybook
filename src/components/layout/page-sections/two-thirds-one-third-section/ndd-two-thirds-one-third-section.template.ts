@@ -1,9 +1,7 @@
 import { html, TemplateResult } from 'lit';
 import type { NDDTwoThirdsOneThirdSection } from './ndd-two-thirds-one-third-section.js';
 
-export function twoThirdsOneThirdSectionTemplate(
-	_component: NDDTwoThirdsOneThirdSection
-): TemplateResult {
+export function twoThirdsOneThirdSectionTemplate(_component: NDDTwoThirdsOneThirdSection): TemplateResult {
 	return html`
 		<section class="two-thirds-one-third-section">
 			<div class="two-thirds-one-third-section__body">

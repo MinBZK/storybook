@@ -21,6 +21,7 @@ export const styles = css`
 		display: none;
 	}
 
+
 	/* # Width */
 
 	:host([width='stretch']),
@@ -39,6 +40,7 @@ export const styles = css`
 	:host([width]:not([width='stretch']):not([width='fit-content'])) {
 		flex-shrink: 0;
 	}
+
 
 	/* # Vertical alignment
 	 *
@@ -61,6 +63,7 @@ export const styles = css`
 		align-self: flex-end;
 	}
 
+
 	/* # Title */
 
 	::slotted([slot='title']) {
@@ -70,6 +73,7 @@ export const styles = css`
 		font: var(--primitives-font-body-sm-regular-flat);
 		color: var(--semantics-content-secondary-color);
 	}
+
 
 	/* # Description */
 
@@ -81,12 +85,14 @@ export const styles = css`
 		color: var(--semantics-content-color);
 	}
 
+
 	/* # Selected */
 
 	:host([selected]) ::slotted([slot='title']),
 	:host([selected]) ::slotted([slot='description']) {
 		color: var(--semantics-controls-is-selected-contrast-color);
 	}
+
 
 	/* # Forced colors */
 

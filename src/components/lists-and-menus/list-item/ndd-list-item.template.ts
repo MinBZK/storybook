@@ -24,16 +24,20 @@ export const template = (
 	type: string | undefined,
 	href: string | undefined,
 	showStart: boolean,
-	showEnd: boolean
+	showEnd: boolean,
 ) => {
 	if (type === 'link') {
 		return html`<div class="list-item">
-			<a class="list-item__action" href=${ifDefined(href)}>${areas(showStart, showEnd)}</a>
+			<a class="list-item__action"
+				href=${ifDefined(href)}
+			>${areas(showStart, showEnd)}</a>
 		</div>`;
 	}
 	if (type === 'button') {
 		return html`<div class="list-item">
-			<button class="list-item__action" type="button">${areas(showStart, showEnd)}</button>
+			<button class="list-item__action"
+				type="button"
+			>${areas(showStart, showEnd)}</button>
 		</div>`;
 	}
 	return html`<div class="list-item">${areas(showStart, showEnd)}</div>`;

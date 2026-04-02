@@ -48,7 +48,11 @@ export default {
 };
 
 const Template = (args) => html`
-	<ndd-combo-box placeholder=${args.placeholder} ?disabled=${args.disabled} name=${args.name}>
+	<ndd-combo-box
+		placeholder=${args.placeholder}
+		?disabled=${args.disabled}
+		name=${args.name}
+	>
 		<ndd-menu empty-text="Geen resultaten">
 			<ndd-menu-item text="Nederland" value="nl"></ndd-menu-item>
 			<ndd-menu-item text="België" value="be"></ndd-menu-item>
@@ -76,8 +80,7 @@ MetZoektermen.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'Gebruik het <code>search</code> attribuut op <code>ndd-menu-item</code> voor alternatieve zoektermen.',
+			story: 'Gebruik het <code>search</code> attribuut op <code>ndd-menu-item</code> voor alternatieve zoektermen.',
 		},
 	},
 };
@@ -127,11 +130,7 @@ export const AlleLanden = () => html`
 			<ndd-menu-item text="Tsjechië" value="cz"></ndd-menu-item>
 			<ndd-menu-item text="Turkije" value="tr"></ndd-menu-item>
 			<ndd-menu-item text="Venezuela" value="ve"></ndd-menu-item>
-			<ndd-menu-item
-				text="Verenigd Koninkrijk"
-				value="gb"
-				search="england uk britain"
-			></ndd-menu-item>
+			<ndd-menu-item text="Verenigd Koninkrijk" value="gb" search="england uk britain"></ndd-menu-item>
 			<ndd-menu-item text="Verenigde Staten" value="us" search="usa america"></ndd-menu-item>
 			<ndd-menu-item text="Vietnam" value="vn"></ndd-menu-item>
 			<ndd-menu-item text="Zuid-Afrika" value="za"></ndd-menu-item>

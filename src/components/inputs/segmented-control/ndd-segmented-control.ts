@@ -49,6 +49,7 @@ export type SegmentedControlSize = 'sm' | 'md';
 export type SegmentedControlType = 'radio' | 'checkbox';
 export type SegmentedControlVariant = 'text' | 'icon';
 
+
 // # ndd-segmented-control-item
 
 @customElement('ndd-segmented-control-item')
@@ -90,19 +91,18 @@ export class NDDSegmentedControlItem extends LitElement {
 
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
-		this.dispatchEvent(
-			new CustomEvent('item-change', {
-				detail: { value: this.value, checked: input.checked },
-				bubbles: true,
-				composed: true,
-			})
-		);
+		this.dispatchEvent(new CustomEvent('item-change', {
+			detail: { value: this.value, checked: input.checked },
+			bubbles: true,
+			composed: true,
+		}));
 	}
 
 	override render() {
 		return segmentedControlItemTemplate(this);
 	}
 }
+
 
 // # ndd-segmented-control
 
@@ -169,9 +169,7 @@ export class NDDSegmentedControl extends LitElement {
 	override firstUpdated(): void {
 		this._syncItems();
 		if (!this.accessibleLabel && !this.accessibleLabelledBy) {
-			console.warn(
-				'<ndd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.'
-			);
+			console.warn('<ndd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
 		}
 	}
 
@@ -213,14 +211,13 @@ export class NDDSegmentedControl extends LitElement {
 		if (!slot) return [];
 		return slot
 			.assignedElements()
-			.filter(
-				(el): el is NDDSegmentedControlItem =>
-					el.tagName.toLowerCase() === 'ndd-segmented-control-item'
+			.filter((el): el is NDDSegmentedControlItem =>
+				el.tagName.toLowerCase() === 'ndd-segmented-control-item'
 			);
 	}
 
 	private _getSelectedValues(): string[] {
-		return this.type === 'checkbox' ? this.values : this.value ? [this.value] : [];
+		return this.type === 'checkbox' ? this.values : (this.value ? [this.value] : []);
 	}
 
 	private _syncItems(): void {
@@ -228,14 +225,14 @@ export class NDDSegmentedControl extends LitElement {
 		const selectedValues = this._getSelectedValues();
 
 		if (this.disabled) {
-			items.forEach((item) => {
+			items.forEach(item => {
 				if (!item.hasAttribute('disabled')) {
 					item.setAttribute('group-disabled', '');
 					item.disabled = true;
 				}
 			});
 		} else {
-			items.forEach((item) => {
+			items.forEach(item => {
 				if (item.hasAttribute('group-disabled')) {
 					item.removeAttribute('group-disabled');
 					item.disabled = false;
@@ -243,13 +240,14 @@ export class NDDSegmentedControl extends LitElement {
 			});
 		}
 
-		items.forEach((item) => {
+		items.forEach(item => {
 			item.size = this.size;
 			item.inputType = this.type;
 			item.variant = this.variant;
 			item.groupName = this.name || this._autoName;
-			item.selected =
-				this.type === 'checkbox' ? selectedValues.includes(item.value) : item.value === this.value;
+			item.selected = this.type === 'checkbox'
+				? selectedValues.includes(item.value)
+				: item.value === this.value;
 		});
 	}
 
@@ -274,27 +272,23 @@ export class NDDSegmentedControl extends LitElement {
 			const current = this.values;
 			const updated = e.detail.checked
 				? [...current, e.detail.value]
-				: current.filter((v) => v !== e.detail.value);
+				: current.filter(v => v !== e.detail.value);
 			this.values = updated;
 			this._syncItems();
-			this.dispatchEvent(
-				new CustomEvent('change', {
-					detail: { values: updated },
-					bubbles: true,
-					composed: true,
-				})
-			);
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { values: updated },
+				bubbles: true,
+				composed: true,
+			}));
 		} else {
 			if (e.detail.value === this.value) return;
 			this.value = e.detail.value;
 			this._syncItems();
-			this.dispatchEvent(
-				new CustomEvent('change', {
-					detail: { value: this.value },
-					bubbles: true,
-					composed: true,
-				})
-			);
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			}));
 		}
 	};
 
@@ -307,10 +301,10 @@ export class NDDSegmentedControl extends LitElement {
 	private _handleKeydown = (e: KeyboardEvent): void => {
 		if (this.disabled || this.type === 'checkbox') return;
 
-		const items = this._getItems().filter((item) => !item.disabled);
+		const items = this._getItems().filter(item => !item.disabled);
 		if (items.length === 0) return;
 
-		const currentIndex = items.findIndex((item) => item.selected);
+		const currentIndex = items.findIndex(item => item.selected);
 
 		let nextIndex = currentIndex;
 
@@ -341,13 +335,11 @@ export class NDDSegmentedControl extends LitElement {
 			this.value = items[nextIndex].value;
 			this._syncItems();
 			items[nextIndex].shadowRoot?.querySelector('input')?.focus();
-			this.dispatchEvent(
-				new CustomEvent('change', {
-					detail: { value: this.value },
-					bubbles: true,
-					composed: true,
-				})
-			);
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			}));
 		}
 	};
 

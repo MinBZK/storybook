@@ -95,11 +95,7 @@ export class NDDNavigationSplitView extends LitElement {
 	}
 
 	_paneHasContent(slot: string): boolean {
-		return (
-			this.querySelector(`:scope > ndd-split-view-pane[slot="${slot}"]`)?.hasAttribute(
-				'has-content'
-			) ?? false
-		);
+		return this.querySelector(`:scope > ndd-split-view-pane[slot="${slot}"]`)?.hasAttribute('has-content') ?? false;
 	}
 
 	override connectedCallback() {
@@ -130,7 +126,7 @@ export class NDDNavigationSplitView extends LitElement {
 
 	private _observePanes() {
 		this._paneObserver?.disconnect();
-		this.querySelectorAll(':scope > ndd-split-view-pane').forEach((pane) => {
+		this.querySelectorAll(':scope > ndd-split-view-pane').forEach(pane => {
 			this._paneObserver!.observe(pane, {
 				attributes: true,
 				attributeFilter: ['has-content'],
@@ -144,8 +140,7 @@ export class NDDNavigationSplitView extends LitElement {
 		const read = (prop: string) => parseFloat(style.getPropertyValue(prop));
 		this._paneMinWidths = {
 			sidebar: read('--_sidebar-min-width') || this._paneMinWidths.sidebar,
-			secondarySidebar:
-				read('--_secondary-sidebar-min-width') || this._paneMinWidths.secondarySidebar,
+			secondarySidebar: read('--_secondary-sidebar-min-width') || this._paneMinWidths.secondarySidebar,
 			main: read('--_main-min-width') || this._paneMinWidths.main,
 			inspector: read('--_inspector-min-width') || this._paneMinWidths.inspector,
 		};
@@ -164,12 +159,7 @@ export class NDDNavigationSplitView extends LitElement {
 
 	_updateLayout() {
 		const width = this.getBoundingClientRect().width;
-		const {
-			sidebar: sidebarMin,
-			secondarySidebar: secondarySidebarMin,
-			main: mainMin,
-			inspector: inspectorMin,
-		} = this._paneMinWidths;
+		const { sidebar: sidebarMin, secondarySidebar: secondarySidebarMin, main: mainMin, inspector: inspectorMin } = this._paneMinWidths;
 
 		// When sidebar-as-sheet, sidebars never render inline — main always fills full width
 		let sidebar = this.sidebarAsSheet ? false : this._hasSidebar;
@@ -178,13 +168,12 @@ export class NDDNavigationSplitView extends LitElement {
 		let inspector = this._hasInspector;
 
 		// Sum min-widths of currently requested panes
-		const requestedWidth = () =>
-			[
-				sidebar && sidebarMin,
-				secondarySidebar && secondarySidebarMin,
-				main && mainMin,
-				inspector && inspectorMin,
-			].reduce((sum: number, v) => sum + (v || 0), 0);
+		const requestedWidth = () => [
+			sidebar && sidebarMin,
+			secondarySidebar && secondarySidebarMin,
+			main && mainMin,
+			inspector && inspectorMin,
+		].reduce((sum: number, v) => sum + (v || 0), 0);
 
 		// Step 1: hide inspector if not enough space
 		if (inspector && requestedWidth() > width) inspector = false;
@@ -193,8 +182,7 @@ export class NDDNavigationSplitView extends LitElement {
 		if (sidebar && secondarySidebar && requestedWidth() > width) sidebar = false;
 
 		// Determine mode
-		const sidebarCollapsed =
-			this._hasSidebar && this._hasSecondarySidebar && !sidebar && secondarySidebar;
+		const sidebarCollapsed = this._hasSidebar && this._hasSecondarySidebar && !sidebar && secondarySidebar;
 		const fits = requestedWidth() <= width;
 
 		let mode: 'spatial' | 'sidebar-stack' | 'full-stack';
@@ -246,9 +234,7 @@ export class NDDNavigationSplitView extends LitElement {
 	private _updatePaneBackButtons() {
 		const panes = {
 			sidebar: this.querySelector(':scope > ndd-split-view-pane[slot="sidebar"]'),
-			secondarySidebar: this.querySelector(
-				':scope > ndd-split-view-pane[slot="secondary-sidebar"]'
-			),
+			secondarySidebar: this.querySelector(':scope > ndd-split-view-pane[slot="secondary-sidebar"]'),
 			main: this.querySelector(':scope > ndd-split-view-pane[slot="main"]'),
 		};
 
@@ -302,10 +288,9 @@ export class NDDNavigationSplitView extends LitElement {
 
 	private _manageSidebarSheetFocus() {
 		// Focus the active slot — secondary sidebar when it has content, sidebar otherwise
-		const activeSlotName =
-			this._hasSecondarySidebar && this._paneHasContent('secondary-sidebar')
-				? 'secondary-sidebar'
-				: 'sidebar';
+		const activeSlotName = this._hasSecondarySidebar && this._paneHasContent('secondary-sidebar')
+			? 'secondary-sidebar'
+			: 'sidebar';
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>(`slot[name="${activeSlotName}"]`);
 		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
 		this._manageFocusForSlot(assigned, this._sidebarSheet);
@@ -357,22 +342,20 @@ export class NDDNavigationSplitView extends LitElement {
 
 	private _manageFocusForSlot(assigned: Element[], fallback: HTMLDialogElement | null) {
 		// 1. autofocus element present — let the browser handle it natively
-		if (assigned.some((el) => el.querySelector('[autofocus]'))) return;
+		if (assigned.some(el => el.querySelector('[autofocus]'))) return;
 
 		// 2. Focus the first heading — check ndd-top-title-bar shadow root first,
 		// then fall back to light DOM headings inside assigned elements
-		const topTitleBar = assigned
-			.flatMap((el) => [
-				el.tagName === 'NDD-TOP-TITLE-BAR' ? el : null,
-				el.querySelector('ndd-top-title-bar'),
-			])
-			.find(Boolean) as HTMLElement | null;
+		const topTitleBar = assigned.flatMap(el => [
+			el.tagName === 'NDD-TOP-TITLE-BAR' ? el : null,
+			el.querySelector('ndd-top-title-bar'),
+		]).find(Boolean) as HTMLElement | null;
 
-		const heading =
-			(topTitleBar?.shadowRoot?.querySelector('h1,h2,h3,h4,h5,h6') as HTMLElement | null) ??
-			(assigned
-				.map((el) => el.querySelector('h1,h2,h3,h4,h5,h6'))
-				.find(Boolean) as HTMLElement | null);
+		const heading = (
+			topTitleBar?.shadowRoot?.querySelector('h1,h2,h3,h4,h5,h6') as HTMLElement | null
+		) ?? (
+			assigned.map(el => el.querySelector('h1,h2,h3,h4,h5,h6')).find(Boolean) as HTMLElement | null
+		);
 
 		if (heading) {
 			const hadTabindex = heading.hasAttribute('tabindex');
@@ -395,7 +378,7 @@ export class NDDNavigationSplitView extends LitElement {
 	private _handleDismiss = (e: Event) => {
 		// Route dismiss events to the correct sheet based on composed path
 		const path = e.composedPath();
-		if (path.some((el) => el === this._sidebarSheet)) {
+		if (path.some(el => el === this._sidebarSheet)) {
 			this.hideSidebarSheet();
 		} else if (this.inspectorAutoHidden || this.inspectorAsSheet) {
 			this.hideInspectorSheet();
@@ -410,22 +393,15 @@ export class NDDNavigationSplitView extends LitElement {
 		dialog.dataset['closing'] = 'true';
 
 		dialog.classList.add('is-closing');
-		dialog.addEventListener(
-			'animationend',
-			() => {
-				dialog.classList.remove('is-closing');
-				delete dialog.dataset['closing'];
-				dialog.close();
-			},
-			{ once: true }
-		);
+		dialog.addEventListener('animationend', () => {
+			dialog.classList.remove('is-closing');
+			delete dialog.dataset['closing'];
+			dialog.close();
+		}, { once: true });
 
 		// Fallback for prefers-reduced-motion — no animation fires
 		requestAnimationFrame(() => {
-			if (
-				dialog.dataset['closing'] === 'true' &&
-				getComputedStyle(dialog).animationName === 'none'
-			) {
+			if (dialog.dataset['closing'] === 'true' && getComputedStyle(dialog).animationName === 'none') {
 				dialog.classList.remove('is-closing');
 				delete dialog.dataset['closing'];
 				dialog.close();

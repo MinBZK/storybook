@@ -1,6 +1,7 @@
 import { css } from 'lit';
 
 export const topTitleBarStyles = css`
+
 	/* # Host */
 
 	:host {
@@ -11,6 +12,7 @@ export const topTitleBarStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
 
 	/* # Top title bar */
 
@@ -24,6 +26,7 @@ export const topTitleBarStyles = css`
 		padding-inline: var(--primitives-space-6);
 	}
 
+
 	/* # Start */
 
 	.top-title-bar__start {
@@ -36,6 +39,7 @@ export const topTitleBarStyles = css`
 		min-width: 0;
 	}
 
+
 	/* # End */
 
 	.top-title-bar__end {
@@ -45,6 +49,7 @@ export const topTitleBarStyles = css`
 		flex-grow: 0;
 		flex-shrink: 0;
 	}
+
 
 	/* # Back button — text variant (default state) */
 
@@ -62,6 +67,7 @@ export const topTitleBarStyles = css`
 		display: none;
 	}
 
+
 	/* # Back button — icon variant (compact state) */
 
 	.top-title-bar__icon-back-button {
@@ -71,6 +77,7 @@ export const topTitleBarStyles = css`
 	:host(.is-compact) .top-title-bar__icon-back-button {
 		display: flex;
 	}
+
 
 	/* # Divider */
 
@@ -85,6 +92,7 @@ export const topTitleBarStyles = css`
 	:host(.is-compact) .top-title-bar__divider {
 		display: block;
 	}
+
 
 	/* # Title group */
 
@@ -137,11 +145,13 @@ export const topTitleBarStyles = css`
 		display: block;
 	}
 
+
 	/* # Dismiss button */
 
 	.top-title-bar__dismiss-button {
 		display: var(--context-dismiss-button-display, block);
 	}
+
 
 	/* # Accessibility: High Contrast Mode */
 

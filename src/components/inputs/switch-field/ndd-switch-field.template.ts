@@ -4,7 +4,9 @@ import '../switch/ndd-switch.ts';
 
 export function switchFieldTemplate(component: NDDSwitchField): TemplateResult {
 	return html`
-		<div class="switch-field" @click=${component._handleLabelClick}>
+		<div class="switch-field"
+			@click=${component._handleLabelClick}
+		>
 			<div class="switch-field__control">
 				<ndd-switch
 					size="sm"

@@ -11,6 +11,7 @@ export const checkboxFieldStyles = css`
 		display: none;
 	}
 
+
 	/* # Container */
 
 	.checkbox-field {
@@ -21,6 +22,7 @@ export const checkboxFieldStyles = css`
 		min-height: var(--semantics-controls-md-min-size);
 	}
 
+
 	/* # Control */
 
 	.checkbox-field__control {
@@ -30,12 +32,11 @@ export const checkboxFieldStyles = css`
 		align-items: center;
 	}
 
+
 	/* # Label */
 
 	.checkbox-field__label {
-		padding-top: calc(
-			(var(--semantics-controls-md-min-size) - 1em * var(--primitives-line-height-snug)) / 2
-		);
+		padding-top: calc((var(--semantics-controls-md-min-size) - 1em * var(--primitives-line-height-snug)) / 2);
 		display: flex;
 		flex-grow: 1;
 		font: var(--primitives-font-body-md-regular-snug);

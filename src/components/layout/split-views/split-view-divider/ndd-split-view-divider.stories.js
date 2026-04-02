@@ -46,33 +46,35 @@ export default {
 
 export const Verticaal = ({ orientation, hasDragHandle }) => html`
 	<div style="display: flex; flex-direction: row; height: 200px;">
-		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);"></div>
+		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
+		</div>
 		<ndd-split-view-divider
 			orientation=${orientation}
 			?has-drag-handle=${hasDragHandle}
 		></ndd-split-view-divider>
-		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);"></div>
+		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
+		</div>
 	</div>
 `;
 
 export const Horizontaal = () => html`
 	<div style="display: flex; flex-direction: column; width: 400px;">
-		<div
-			style="height: 100px; background: var(--semantics-surfaces-tinted-background-color);"
-		></div>
+		<div style="height: 100px; background: var(--semantics-surfaces-tinted-background-color);">
+		</div>
 		<ndd-split-view-divider orientation="horizontal"></ndd-split-view-divider>
-		<div
-			style="height: 100px; background: var(--semantics-surfaces-tinted-background-color);"
-		></div>
+		<div style="height: 100px; background: var(--semantics-surfaces-tinted-background-color);">
+		</div>
 	</div>
 `;
 Horizontaal.parameters = { controls: { disable: true } };
 
 export const MetSleepHandvat = () => html`
 	<div style="display: flex; flex-direction: row; height: 200px;">
-		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);"></div>
+		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
+		</div>
 		<ndd-split-view-divider orientation="vertical" has-drag-handle></ndd-split-view-divider>
-		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);"></div>
+		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
+		</div>
 	</div>
 `;
 MetSleepHandvat.parameters = { controls: { disable: true } };

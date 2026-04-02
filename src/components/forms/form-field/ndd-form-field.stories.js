@@ -111,11 +111,7 @@ export const WithHelpText = () => html`
 `;
 
 export const Optional = () => html`
-	<ndd-form-field
-		label="Telefoonnummer"
-		optional
-		supporting-label="Alleen gebruikt voor tweestapsverificatie."
-	>
+	<ndd-form-field label="Telefoonnummer" optional supporting-label="Alleen gebruikt voor tweestapsverificatie.">
 		<ndd-text-field type="tel"></ndd-text-field>
 	</ndd-form-field>
 `;
@@ -123,9 +119,7 @@ export const Optional = () => html`
 export const Invalid = () => html`
 	<ndd-form-field label="E-mailadres">
 		<ndd-text-field invalid error-message="endd-email"></ndd-text-field>
-		<ndd-form-field-error-text id="endd-email"
-			>Voer een geldig e-mailadres in.</ndd-form-field-error-text
-		>
+		<ndd-form-field-error-text id="endd-email">Voer een geldig e-mailadres in.</ndd-form-field-error-text>
 	</ndd-form-field>
 `;
 
@@ -135,31 +129,19 @@ export const MultipleErrors = () => html`
 			Minimaal 8 tekens. <a href="/help">Vereisten</a>.
 		</ndd-form-field-help-text>
 		<ndd-text-field invalid error-message="endd-verplicht endd-lengte"></ndd-text-field>
-		<ndd-form-field-error-text id="endd-verplicht"
-			>Dit veld is verplicht.</ndd-form-field-error-text
-		>
-		<ndd-form-field-error-text id="endd-lengte"
-			>Minimaal 8 tekens vereist.</ndd-form-field-error-text
-		>
+		<ndd-form-field-error-text id="endd-verplicht">Dit veld is verplicht.</ndd-form-field-error-text>
+		<ndd-form-field-error-text id="endd-lengte">Minimaal 8 tekens vereist.</ndd-form-field-error-text>
 	</ndd-form-field>
 `;
 
 export const LabelAlignmentRight = () => html`
-	<ndd-form-field
-		label="Volledige naam"
-		label-alignment="right"
-		supporting-label="Zoals vermeld in uw paspoort."
-	>
+	<ndd-form-field label="Volledige naam" label-alignment="right" supporting-label="Zoals vermeld in uw paspoort.">
 		<ndd-text-field></ndd-text-field>
 	</ndd-form-field>
 `;
 
 export const LabelAlignmentLeft = () => html`
-	<ndd-form-field
-		label="Volledige naam"
-		label-alignment="left"
-		supporting-label="Zoals vermeld in uw paspoort."
-	>
+	<ndd-form-field label="Volledige naam" label-alignment="left" supporting-label="Zoals vermeld in uw paspoort.">
 		<ndd-text-field></ndd-text-field>
 	</ndd-form-field>
 `;
@@ -172,26 +154,16 @@ export const CompleteFormTop = () => html`
 		<ndd-form-field label="E-mailadres" supporting-label="We sturen een bevestigingsmail.">
 			<ndd-text-field type="email" input-id="top-email"></ndd-text-field>
 		</ndd-form-field>
-		<ndd-form-field
-			label="Telefoonnummer"
-			optional
-			supporting-label="Alleen gebruikt voor tweestapsverificatie."
-		>
+		<ndd-form-field label="Telefoonnummer" optional supporting-label="Alleen gebruikt voor tweestapsverificatie.">
 			<ndd-text-field
 				type="tel"
 				input-id="top-telefoon"
 				invalid
 				error-message="endd-telefoon"
 			></ndd-text-field>
-			<ndd-form-field-error-text id="endd-telefoon"
-				>Voer een geldig telefoonnummer in.</ndd-form-field-error-text
-			>
+			<ndd-form-field-error-text id="endd-telefoon">Voer een geldig telefoonnummer in.</ndd-form-field-error-text>
 		</ndd-form-field>
-		<ndd-form-field
-			label="Opmerkingen"
-			optional
-			supporting-label="Eventuele aanvullende opmerkingen."
-		>
+		<ndd-form-field label="Opmerkingen" optional supporting-label="Eventuele aanvullende opmerkingen.">
 			<ndd-text-field input-id="top-opmerkingen"></ndd-text-field>
 		</ndd-form-field>
 	</div>
@@ -199,18 +171,10 @@ export const CompleteFormTop = () => html`
 
 export const CompleteFormRight = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem; container-type: inline-size;">
-		<ndd-form-field
-			label="Volledige naam"
-			label-alignment="right"
-			supporting-label="Zoals vermeld in uw paspoort."
-		>
+		<ndd-form-field label="Volledige naam" label-alignment="right" supporting-label="Zoals vermeld in uw paspoort.">
 			<ndd-text-field input-id="rechts-volledige-naam"></ndd-text-field>
 		</ndd-form-field>
-		<ndd-form-field
-			label="E-mailadres"
-			label-alignment="right"
-			supporting-label="We sturen een bevestigingsmail."
-		>
+		<ndd-form-field label="E-mailadres" label-alignment="right" supporting-label="We sturen een bevestigingsmail.">
 			<ndd-text-field type="email" input-id="rechts-email"></ndd-text-field>
 		</ndd-form-field>
 		<ndd-form-field label="Telefoonnummer" label-alignment="right" optional>
@@ -220,16 +184,9 @@ export const CompleteFormRight = () => html`
 				invalid
 				error-message="endd-telefoon-rechts"
 			></ndd-text-field>
-			<ndd-form-field-error-text id="endd-telefoon-rechts"
-				>Voer een geldig telefoonnummer in.</ndd-form-field-error-text
-			>
+			<ndd-form-field-error-text id="endd-telefoon-rechts">Voer een geldig telefoonnummer in.</ndd-form-field-error-text>
 		</ndd-form-field>
-		<ndd-form-field
-			label="Opmerkingen"
-			label-alignment="right"
-			optional
-			supporting-label="Eventuele aanvullende opmerkingen."
-		>
+		<ndd-form-field label="Opmerkingen" label-alignment="right" optional supporting-label="Eventuele aanvullende opmerkingen.">
 			<ndd-text-field input-id="rechts-opmerkingen"></ndd-text-field>
 		</ndd-form-field>
 	</div>

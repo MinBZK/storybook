@@ -3,6 +3,7 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
+
 /* # ndd-navigation-split-view styles */
 
 export const navigationSplitViewStyles = css`
@@ -12,33 +13,23 @@ export const navigationSplitViewStyles = css`
 		height: 100%;
 		background-color: var(--_background-color);
 
-		--_sidebar-min-width: var(
-			--primitives-area-320
-		); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_secondary-sidebar-min-width: var(
-			--primitives-area-320
-		); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_main-min-width: var(
-			--primitives-area-480
-		); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_inspector-min-width: var(
-			--primitives-area-320
-		); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_background-color: var(
-			--context-parent-background-color,
-			var(--semantics-surfaces-background-color)
-		);
+		--_sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_secondary-sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_main-min-width: var(--primitives-area-480); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_inspector-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 	}
 
-	:host([background='default']) {
+	:host([background="default"]) {
 		--context-parent-background-color: var(--semantics-surfaces-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
 
-	:host([background='tinted']) {
+	:host([background="tinted"]) {
 		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
+
 
 	/* # Split view */
 
@@ -50,6 +41,7 @@ export const navigationSplitViewStyles = css`
 		min-width: 0;
 		overflow: hidden;
 	}
+
 
 	/* # Sidebar */
 
@@ -64,6 +56,7 @@ export const navigationSplitViewStyles = css`
 		container-name: layout-area;
 	}
 
+
 	/* # Secondary sidebar */
 
 	.navigation-split-view__secondary-sidebar-pane {
@@ -77,6 +70,7 @@ export const navigationSplitViewStyles = css`
 		container-name: layout-area;
 	}
 
+
 	/* # Main */
 
 	.navigation-split-view__main-pane {
@@ -89,6 +83,7 @@ export const navigationSplitViewStyles = css`
 		container-type: inline-size;
 		container-name: layout-area;
 	}
+
 
 	/* # Full-stack: single pane fills available space, no minimum */
 
@@ -119,24 +114,17 @@ export const navigationSplitViewStyles = css`
 		--context-dismiss-button-display: none;
 	}
 
+
 	/* # Inspector — sheet (dialog) */
 
 	@keyframes navigation-split-view-inspector-slide-in {
-		from {
-			transform: translateX(100%);
-		}
-		to {
-			transform: translateX(0);
-		}
+		from { transform: translateX(100%); }
+		to { transform: translateX(0); }
 	}
 
 	@keyframes navigation-split-view-inspector-slide-out {
-		from {
-			transform: translateX(0);
-		}
-		to {
-			transform: translateX(100%);
-		}
+		from { transform: translateX(0); }
+		to { transform: translateX(100%); }
 	}
 
 	.navigation-split-view__inspector-sheet {
@@ -147,8 +135,7 @@ export const navigationSplitViewStyles = css`
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
-		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset)
-			var(--components-sheet-side-inset) auto;
+		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
 		width: var(--components-sheet-side-md-width);
 		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
@@ -158,11 +145,8 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&:focus-visible {
-			box-shadow:
-				0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color),
-				var(--components-sheet-box-shadow);
-			outline: var(--semantics-focus-ring-edge-thickness) double
-				var(--semantics-focus-ring-edge-color);
+			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-sheet-box-shadow);
+			outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 		}
 
 		&:not([open]) {
@@ -174,13 +158,11 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&[open] {
-			animation: navigation-split-view-inspector-slide-in
-				var(--components-sheet-side-animation-duration) ease both;
+			animation: navigation-split-view-inspector-slide-in var(--components-sheet-side-animation-duration) ease both;
 		}
 
 		&.is-closing {
-			animation: navigation-split-view-inspector-slide-out
-				var(--components-sheet-side-animation-duration) ease both;
+			animation: navigation-split-view-inspector-slide-out var(--components-sheet-side-animation-duration) ease both;
 		}
 	}
 
@@ -191,24 +173,17 @@ export const navigationSplitViewStyles = css`
 		height: 100%;
 	}
 
+
 	/* # Sidebar — sheet (dialog) */
 
 	@keyframes navigation-split-view-sidebar-slide-in {
-		from {
-			transform: translateX(-100%);
-		}
-		to {
-			transform: translateX(0);
-		}
+		from { transform: translateX(-100%); }
+		to { transform: translateX(0); }
 	}
 
 	@keyframes navigation-split-view-sidebar-slide-out {
-		from {
-			transform: translateX(0);
-		}
-		to {
-			transform: translateX(-100%);
-		}
+		from { transform: translateX(0); }
+		to { transform: translateX(-100%); }
 	}
 
 	.navigation-split-view__sidebar-sheet {
@@ -219,8 +194,7 @@ export const navigationSplitViewStyles = css`
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
-		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset)
-			var(--components-sheet-side-inset);
+		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
 		width: var(--components-sheet-side-md-width);
 		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
@@ -230,11 +204,8 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&:focus-visible {
-			box-shadow:
-				0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color),
-				var(--components-sheet-box-shadow);
-			outline: var(--semantics-focus-ring-edge-thickness) double
-				var(--semantics-focus-ring-edge-color);
+			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-sheet-box-shadow);
+			outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 		}
 
 		&:not([open]) {
@@ -246,13 +217,11 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&[open] {
-			animation: navigation-split-view-sidebar-slide-in
-				var(--components-sheet-side-animation-duration) ease both;
+			animation: navigation-split-view-sidebar-slide-in var(--components-sheet-side-animation-duration) ease both;
 		}
 
 		&.is-closing {
-			animation: navigation-split-view-sidebar-slide-out
-				var(--components-sheet-side-animation-duration) ease both;
+			animation: navigation-split-view-sidebar-slide-out var(--components-sheet-side-animation-duration) ease both;
 		}
 	}
 
@@ -266,6 +235,7 @@ export const navigationSplitViewStyles = css`
 		--context-dismiss-button-display: block;
 	}
 
+
 	/* # Reduced motion */
 
 	@media (prefers-reduced-motion: reduce) {
@@ -276,6 +246,7 @@ export const navigationSplitViewStyles = css`
 			animation: none;
 		}
 	}
+
 
 	/* # Slotted */
 

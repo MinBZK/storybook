@@ -1,5 +1,7 @@
 import { css } from 'lit';
 export const textFieldStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -11,6 +13,7 @@ export const textFieldStyles = css`
 		display: none;
 	}
 
+
 	/* # Container */
 
 	.text-field {
@@ -21,8 +24,7 @@ export const textFieldStyles = css`
 		box-sizing: border-box;
 		padding-left: var(--primitives-space-12);
 		min-height: var(--semantics-controls-md-min-size);
-		border: var(--semantics-input-fields-border-thickness) solid
-			var(--semantics-input-fields-border-color);
+		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background-color: var(--_background-color);
 	}
@@ -56,11 +58,10 @@ export const textFieldStyles = css`
 	}
 
 	.text-field:focus-within {
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 	}
+
 
 	/* # Input */
 
@@ -71,9 +72,7 @@ export const textFieldStyles = css`
 		box-sizing: border-box;
 		padding: 0;
 		margin: 0;
-		min-height: calc(
-			var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2
-		);
+		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		font: var(--semantics-input-fields-md-text-font);
 		color: var(--semantics-content-color);
 		background: transparent;
@@ -83,9 +82,7 @@ export const textFieldStyles = css`
 	}
 
 	:host([size='sm']) .text-field__input {
-		min-height: calc(
-			var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2
-		);
+		min-height: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		font: var(--semantics-input-fields-sm-text-font);
 	}
 
@@ -101,6 +98,7 @@ export const textFieldStyles = css`
 	.text-field__input:autofill {
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
+
 
 	/* # Fade */
 
@@ -119,17 +117,14 @@ export const textFieldStyles = css`
 		right: 0;
 		width: var(--primitives-space-8);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		background: linear-gradient(
-			90deg,
-			color-mix(in oklch, var(--_background-color) 0%, transparent) 0%,
-			var(--_background-color) 100%
-		);
+		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
 		pointer-events: none;
 	}
 
 	:host([size='sm']) .text-field__fade::after {
 		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
+
 
 	/* # Validation icon area */
 
@@ -138,16 +133,12 @@ export const textFieldStyles = css`
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		width: calc(
-			var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2
-		);
+		width: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		height: 100%;
 	}
 
 	:host([size='sm']) .text-field__validation-icon-area {
-		width: calc(
-			var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2
-		);
+		width: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 	}
 
 	:host([valid]) .text-field__validation-icon-area {
@@ -157,6 +148,7 @@ export const textFieldStyles = css`
 	:host([invalid]) .text-field__validation-icon-area {
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
+
 
 	/* # Validation icon */
 

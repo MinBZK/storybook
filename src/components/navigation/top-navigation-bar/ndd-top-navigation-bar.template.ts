@@ -3,9 +3,18 @@ import type { NDDTopNavigationBar } from './ndd-top-navigation-bar.js';
 
 export function template(this: NDDTopNavigationBar) {
 	return html`
-		<a href=${this.skipLinkTarget} class="skip-link">Ga naar hoofdinhoud</a>
-		<div class="container" part="container">
-			<div class="logo-bar" part="logo-bar">
+		<a
+			href=${this.skipLinkTarget}
+			class="skip-link"
+		>Ga naar hoofdinhoud</a>
+		<div
+			class="container"
+			part="container"
+		>
+			<div
+				class="logo-bar"
+				part="logo-bar"
+			>
 				<ndd-nav-logo
 					container=${this.container}
 					?has-wordmark=${this.logoHasWordmark}
@@ -15,10 +24,17 @@ export function template(this: NDDTopNavigationBar) {
 					supporting-text-2=${this.logoSupportingText2}
 				></ndd-nav-logo>
 			</div>
-			<nav class="nav-bar" part="nav-bar" aria-label="Hoofdnavigatie">
-				${this._spacerSize
-					? html` <ndd-spacer size=${this._spacerSize} direction="horizontal"></ndd-spacer> `
-					: nothing}
+			<nav
+				class="nav-bar"
+				part="nav-bar"
+				aria-label="Hoofdnavigatie"
+			>
+				${this._spacerSize ? html`
+					<ndd-spacer
+						size=${this._spacerSize}
+						direction="horizontal"
+					></ndd-spacer>
+				` : nothing}
 				<div class="nav-bar-inner">
 					<div class="nav-left">
 						<ndd-back-button
@@ -28,7 +44,11 @@ export function template(this: NDDTopNavigationBar) {
 						></ndd-back-button>
 						<span class="nav-title">${this.title}</span>
 						<div class="global-menu">
-							<ndd-menu-bar size=${this._menuBarSize} has-overflow-menu overflow-label="Meer">
+							<ndd-menu-bar
+								size=${this._menuBarSize}
+								has-overflow-menu
+								overflow-label="Meer"
+							>
 								<slot name="menu"></slot>
 							</ndd-menu-bar>
 						</div>
@@ -46,9 +66,12 @@ export function template(this: NDDTopNavigationBar) {
 						></ndd-utility-menu-bar>
 					</div>
 				</div>
-				${this._spacerSize
-					? html` <ndd-spacer size=${this._spacerSize} direction="horizontal"></ndd-spacer> `
-					: nothing}
+				${this._spacerSize ? html`
+					<ndd-spacer
+						size=${this._spacerSize}
+						direction="horizontal"
+					></ndd-spacer>
+				` : nothing}
 			</nav>
 		</div>
 	`;

@@ -7,8 +7,7 @@ function renderValidationIcon(component: NDDPasswordField): TemplateResult | typ
 	if (component.valid) {
 		return html`
 			<div class="password-field__validation-icon-area">
-				<ndd-icon
-					class="password-field__validation-icon"
+				<ndd-icon class="password-field__validation-icon"
 					name="valid"
 					aria-hidden="true"
 				></ndd-icon>
@@ -18,8 +17,7 @@ function renderValidationIcon(component: NDDPasswordField): TemplateResult | typ
 	if (component.invalid) {
 		return html`
 			<div class="password-field__validation-icon-area">
-				<ndd-icon
-					class="password-field__validation-icon"
+				<ndd-icon class="password-field__validation-icon"
 					name="invalid"
 					aria-hidden="true"
 				></ndd-icon>
@@ -32,9 +30,7 @@ function renderValidationIcon(component: NDDPasswordField): TemplateResult | typ
 function renderVisibilityToggle(component: NDDPasswordField): TemplateResult {
 	const buttonSize = component.size === 'sm' ? 'xs' : 'sm';
 	const label = component.masked ? component.showLabel : component.hideLabel;
-	const accessibleLabel = component.masked
-		? component.showAccessibleLabel
-		: component.hideAccessibleLabel;
+	const accessibleLabel = component.masked ? component.showAccessibleLabel : component.hideAccessibleLabel;
 
 	return html`
 		<div class="password-field__visibility-toggle">
@@ -54,8 +50,7 @@ function renderVisibilityToggle(component: NDDPasswordField): TemplateResult {
 export function passwordFieldTemplate(component: NDDPasswordField): TemplateResult {
 	return html`
 		<div class="password-field">
-			<input
-				class="password-field__input ${component.masked ? 'is-masked' : ''}"
+			<input class="password-field__input ${component.masked ? 'is-masked' : ''}"
 				id=${component.inputId || nothing}
 				type=${component.masked ? 'password' : 'text'}
 				.value=${component.value}
@@ -72,7 +67,8 @@ export function passwordFieldTemplate(component: NDDPasswordField): TemplateResu
 				@change=${component._handleChange}
 			/>
 			<div class="password-field__fade"></div>
-			${renderValidationIcon(component)} ${renderVisibilityToggle(component)}
+			${renderValidationIcon(component)}
+			${renderVisibilityToggle(component)}
 		</div>
 	`;
 }

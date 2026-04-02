@@ -21,21 +21,19 @@ export function tokenTemplate(component: NDDToken): TemplateResult {
 	return html`
 		<div class="token">
 			<span class="token__text"><slot></slot></span>
-			${component.control === 'dismiss'
-				? html`
-						<div class="token__dismiss-action">
-							<ndd-icon-button
-								size="sm"
-								variant="neutral-tinted"
-								icon="dismiss-small"
-								text=${component.dismissLabel}
-								accessible-label=${component.dismissLabel}
-								?disabled=${component.disabled}
-								@click=${component._handleDismiss}
-							></ndd-icon-button>
-						</div>
-					`
-				: nothing}
+			${component.control === 'dismiss' ? html`
+				<div class="token__dismiss-action">
+					<ndd-icon-button
+						size="sm"
+						variant="neutral-tinted"
+						icon="dismiss-small"
+						text=${component.dismissLabel}
+						accessible-label=${component.dismissLabel}
+						?disabled=${component.disabled}
+						@click=${component._handleDismiss}
+					></ndd-icon-button>
+				</div>
+			` : nothing}
 		</div>
 	`;
 }

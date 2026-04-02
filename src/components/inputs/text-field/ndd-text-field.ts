@@ -82,6 +82,7 @@ export class NDDTextField extends LitElement {
 	@property({ type: String, attribute: 'error-message-ids' })
 	errorMessageIds = '';
 
+
 	@query('.text-field__input')
 	private _input!: HTMLInputElement;
 
@@ -89,26 +90,22 @@ export class NDDTextField extends LitElement {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
-		this.dispatchEvent(
-			new CustomEvent('input', {
-				detail: { value: this.value },
-				bubbles: true,
-				composed: true,
-			})
-		);
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
 	}
 
 	public _handleChange(e: Event): void {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
-		this.dispatchEvent(
-			new CustomEvent('change', {
-				detail: { value: this.value },
-				bubbles: true,
-				composed: true,
-			})
-		);
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
 	}
 
 	public focus(): void {

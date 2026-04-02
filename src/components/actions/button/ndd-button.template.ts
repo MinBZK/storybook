@@ -8,16 +8,22 @@ interface TemplateHelpers {
 function renderContent(component: NDDButton) {
 	return html`
 		<span class="button__content">
-			${component.startIcon
-				? html` <ndd-icon class="button__start-icon" name=${component.startIcon}></ndd-icon> `
-				: html`<slot name="start-icon"></slot>`}
+			${component.startIcon ? html`
+				<ndd-icon class="button__start-icon"
+					name=${component.startIcon}
+				></ndd-icon>
+			` : html`<slot name="start-icon"></slot>`}
 			${component.text}
-			${component.endIcon
-				? html` <ndd-icon class="button__end-icon" name=${component.endIcon}></ndd-icon> `
-				: html`<slot name="end-icon"></slot>`}
-			${component.expandable
-				? html` <ndd-icon class="button__disclosure-icon" name="chevron-down-small"></ndd-icon> `
-				: nothing}
+			${component.endIcon ? html`
+				<ndd-icon class="button__end-icon"
+					name=${component.endIcon}
+				></ndd-icon>
+			` : html`<slot name="end-icon"></slot>`}
+			${component.expandable ? html`
+				<ndd-icon class="button__disclosure-icon"
+					name="chevron-down-small"
+				></ndd-icon>
+			` : nothing}
 		</span>
 	`;
 }
@@ -28,8 +34,7 @@ export function template(this: NDDButton, helpers: TemplateHelpers) {
 	if (this.href) {
 		const resolvedRel = this._resolvedRel();
 		return html`
-			<a
-				class="button"
+			<a class="button"
 				href=${this.href}
 				target=${this.target || nothing}
 				rel=${resolvedRel || nothing}
@@ -43,8 +48,7 @@ export function template(this: NDDButton, helpers: TemplateHelpers) {
 	}
 
 	return html`
-		<button
-			class="button"
+		<button class="button"
 			type=${this.type}
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled ? 'true' : nothing}

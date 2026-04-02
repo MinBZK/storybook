@@ -82,8 +82,8 @@ export class NDDButtonBar extends LitElement {
 		} else if (changedProperties.has('_children') && this.disabled) {
 			// New children added while bar is disabled — disable them
 			Array.from(this.children)
-				.filter((el) => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
-				.forEach((el) => el.setAttribute('disabled', ''));
+				.filter(el => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
+				.forEach(el => el.setAttribute('disabled', ''));
 		}
 	}
 
@@ -103,30 +103,30 @@ export class NDDButtonBar extends LitElement {
 
 	private _propagateSize(): void {
 		Array.from(this.children)
-			.filter((el) => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
-			.forEach((el) => el.setAttribute('size', this.size));
+			.filter(el => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
+			.forEach(el => el.setAttribute('size', this.size));
 	}
 
 	private _propagateVariant(): void {
 		Array.from(this.children)
-			.filter((el) => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
-			.forEach((el) => el.setAttribute('variant', this.variant));
+			.filter(el => BUTTON_TAGS.includes(el.tagName.toLowerCase()))
+			.forEach(el => el.setAttribute('variant', this.variant));
 	}
 
 	private _propagateDisabled(): void {
-		const buttons = Array.from(this.children).filter((el) =>
+		const buttons = Array.from(this.children).filter(el =>
 			BUTTON_TAGS.includes(el.tagName.toLowerCase())
 		);
 
 		if (this.disabled) {
-			buttons.forEach((el) => {
+			buttons.forEach(el => {
 				if (el.hasAttribute('disabled')) {
 					this._individuallyDisabled.add(el);
 				}
 			});
-			buttons.forEach((el) => el.setAttribute('disabled', ''));
+			buttons.forEach(el => el.setAttribute('disabled', ''));
 		} else {
-			buttons.forEach((el) => {
+			buttons.forEach(el => {
 				if (!this._individuallyDisabled.has(el)) {
 					el.removeAttribute('disabled');
 				}
@@ -140,7 +140,7 @@ export class NDDButtonBar extends LitElement {
 		this._building = true;
 		this._idCounter = 0;
 
-		this._children = Array.from(this.children).map((el) => {
+		this._children = Array.from(this.children).map(el => {
 			const tag = el.tagName.toLowerCase();
 
 			if (tag === 'ndd-button-bar-divider') {

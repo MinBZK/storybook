@@ -93,11 +93,11 @@ Standaard.args = {
 Standaard.parameters = {
 	docs: {
 		description: {
-			story:
-				'Standaard toggle button met `type="button"` (de default). Gebruikt `aria-pressed` voor de geselecteerde toestand en neemt niet deel aan formulierverwerking.',
+			story: 'Standaard toggle button met `type="button"` (de default). Gebruikt `aria-pressed` voor de geselecteerde toestand en neemt niet deel aan formulierverwerking.',
 		},
 	},
 };
+
 
 /* ============================================================
    Types
@@ -106,9 +106,7 @@ Standaard.parameters = {
 export const AlleTypes = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
 		<div>
-			<p
-				style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;"
-			>
+			<p style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;">
 				type="button" (standaard) — aria-pressed, geen formulierparticipatie
 			</p>
 			<div style="display: flex; gap: 0.5rem;">
@@ -117,65 +115,23 @@ export const AlleTypes = () => html`
 			</div>
 		</div>
 		<div>
-			<p
-				style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;"
-			>
+			<p style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;">
 				type="checkbox" — native checkbox input, meerdere tegelijk selecteerbaar
 			</p>
 			<div style="display: flex; gap: 0.5rem;">
-				<ndd-toggle-button
-					type="checkbox"
-					name="filter"
-					value="mijn-zaken"
-					text="Mijn zaken"
-					icon="person"
-				></ndd-toggle-button>
-				<ndd-toggle-button
-					type="checkbox"
-					name="filter"
-					value="inbox"
-					text="Inbox"
-					icon="inbox"
-					selected
-				></ndd-toggle-button>
-				<ndd-toggle-button
-					type="checkbox"
-					name="filter"
-					value="agenda"
-					text="Agenda"
-					icon="calendar-event"
-				></ndd-toggle-button>
+				<ndd-toggle-button type="checkbox" name="filter" value="mijn-zaken" text="Mijn zaken" icon="person"></ndd-toggle-button>
+				<ndd-toggle-button type="checkbox" name="filter" value="inbox" text="Inbox" icon="inbox" selected></ndd-toggle-button>
+				<ndd-toggle-button type="checkbox" name="filter" value="agenda" text="Agenda" icon="calendar-event"></ndd-toggle-button>
 			</div>
 		</div>
 		<div>
-			<p
-				style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;"
-			>
+			<p style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;">
 				type="radio" — native radio input, wederzijdse uitsluiting via name-groep
 			</p>
 			<div style="display: flex; gap: 0.5rem;" role="radiogroup" aria-label="Sortering">
-				<ndd-toggle-button
-					type="radio"
-					name="sortering"
-					value="oplopend"
-					text="Oplopend"
-					icon="sort-ascending"
-				></ndd-toggle-button>
-				<ndd-toggle-button
-					type="radio"
-					name="sortering"
-					value="aflopend"
-					text="Aflopend"
-					icon="sort-descending"
-					selected
-				></ndd-toggle-button>
-				<ndd-toggle-button
-					type="radio"
-					name="sortering"
-					value="relevant"
-					text="Relevant"
-					icon="arrows-sort"
-				></ndd-toggle-button>
+				<ndd-toggle-button type="radio" name="sortering" value="oplopend" text="Oplopend" icon="sort-ascending"></ndd-toggle-button>
+				<ndd-toggle-button type="radio" name="sortering" value="aflopend" text="Aflopend" icon="sort-descending" selected></ndd-toggle-button>
+				<ndd-toggle-button type="radio" name="sortering" value="relevant" text="Relevant" icon="arrows-sort"></ndd-toggle-button>
 			</div>
 		</div>
 	</div>
@@ -184,11 +140,11 @@ AlleTypes.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'Overzicht van alle drie de types. Gebruik `type="button"` voor UI-acties, `type="checkbox"` voor multi-select filters en `type="radio"` voor single-select keuzes met formulierparticipatie.',
+			story: 'Overzicht van alle drie de types. Gebruik `type="button"` voor UI-acties, `type="checkbox"` voor multi-select filters en `type="radio"` voor single-select keuzes met formulierparticipatie.',
 		},
 	},
 };
+
 
 /* ============================================================
    Toestanden
@@ -204,6 +160,7 @@ export const AlleToestanden = () => html`
 `;
 AlleToestanden.parameters = { controls: { disable: true } };
 
+
 /* ============================================================
    Grootten
    ============================================================ */
@@ -216,6 +173,7 @@ export const AlleGrootten = () => html`
 	</div>
 `;
 AlleGrootten.parameters = { controls: { disable: true } };
+
 
 /* ============================================================
    Met icoon
@@ -242,38 +200,21 @@ MetIcoon.parameters = {
 export const AlleenIcoon = () => html`
 	<div style="display: flex; gap: 0.5rem; align-items: center;">
 		<ndd-toggle-button size="md" icon="bold" accessible-label="Vet"></ndd-toggle-button>
-		<ndd-toggle-button
-			size="md"
-			icon="italic"
-			accessible-label="Cursief"
-			selected
-		></ndd-toggle-button>
-		<ndd-toggle-button
-			size="md"
-			icon="underlined"
-			accessible-label="Onderstreept"
-		></ndd-toggle-button>
-		<ndd-toggle-button
-			size="md"
-			icon="bullet-list"
-			accessible-label="Opsomming"
-		></ndd-toggle-button>
-		<ndd-toggle-button
-			size="md"
-			icon="numbered-list"
-			accessible-label="Genummerde lijst"
-		></ndd-toggle-button>
+		<ndd-toggle-button size="md" icon="italic" accessible-label="Cursief" selected></ndd-toggle-button>
+		<ndd-toggle-button size="md" icon="underlined" accessible-label="Onderstreept"></ndd-toggle-button>
+		<ndd-toggle-button size="md" icon="bullet-list" accessible-label="Opsomming"></ndd-toggle-button>
+		<ndd-toggle-button size="md" icon="numbered-list" accessible-label="Genummerde lijst"></ndd-toggle-button>
 	</div>
 `;
 AlleenIcoon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'Zonder tekst wordt de knop automatisch vierkant. Het `accessible-label` attribuut is verplicht voor toegankelijkheid.',
+			story: 'Zonder tekst wordt de knop automatisch vierkant. Het `accessible-label` attribuut is verplicht voor toegankelijkheid.',
 		},
 	},
 };
+
 
 /* ============================================================
    Type: button
@@ -282,21 +223,11 @@ AlleenIcoon.parameters = {
 export const TypeButton = () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
-			<code>type="button"</code> is de standaard. Gebruikt <code>aria-pressed</code> voor de
-			geselecteerde toestand en neemt niet deel aan formulierverwerking.
+			<code>type="button"</code> is de standaard. Gebruikt <code>aria-pressed</code> voor de geselecteerde toestand en neemt niet deel aan formulierverwerking.
 		</p>
 		<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-			<ndd-toggle-button
-				type="button"
-				icon="bullet-list"
-				accessible-label="Opsomming"
-			></ndd-toggle-button>
-			<ndd-toggle-button
-				type="button"
-				icon="numbered-list"
-				accessible-label="Genummerde lijst"
-				selected
-			></ndd-toggle-button>
+			<ndd-toggle-button type="button" icon="bullet-list" accessible-label="Opsomming"></ndd-toggle-button>
+			<ndd-toggle-button type="button" icon="numbered-list" accessible-label="Genummerde lijst" selected></ndd-toggle-button>
 			<ndd-toggle-button type="button" text="Voorbeeld" icon="eye"></ndd-toggle-button>
 			<ndd-toggle-button type="button" text="Bewerken" icon="pencil" selected></ndd-toggle-button>
 		</div>
@@ -306,11 +237,11 @@ TypeButton.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'`type="button"` (de default) — `aria-pressed` geeft de geselecteerde toestand door aan hulptechnologie.',
+			story: '`type="button"` (de default) — `aria-pressed` geeft de geselecteerde toestand door aan hulptechnologie.',
 		},
 	},
 };
+
 
 /* ============================================================
    Type: checkbox
@@ -319,40 +250,13 @@ TypeButton.parameters = {
 export const TypeCheckbox = () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
-			<code>type="checkbox"</code> voor filter-chips en multi-select acties met
-			formulierparticipatie.
+			<code>type="checkbox"</code> voor filter-chips en multi-select acties met formulierparticipatie.
 		</p>
 		<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-			<ndd-toggle-button
-				type="checkbox"
-				name="filter"
-				value="mijn-zaken"
-				text="Mijn zaken"
-				icon="person"
-			></ndd-toggle-button>
-			<ndd-toggle-button
-				type="checkbox"
-				name="filter"
-				value="inbox"
-				text="Inbox"
-				icon="inbox"
-				selected
-			></ndd-toggle-button>
-			<ndd-toggle-button
-				type="checkbox"
-				name="filter"
-				value="agenda"
-				text="Agenda"
-				icon="calendar-event"
-				selected
-			></ndd-toggle-button>
-			<ndd-toggle-button
-				type="checkbox"
-				name="filter"
-				value="documenten"
-				text="Documenten"
-				icon="file-text"
-			></ndd-toggle-button>
+			<ndd-toggle-button type="checkbox" name="filter" value="mijn-zaken" text="Mijn zaken" icon="person"></ndd-toggle-button>
+			<ndd-toggle-button type="checkbox" name="filter" value="inbox" text="Inbox" icon="inbox" selected></ndd-toggle-button>
+			<ndd-toggle-button type="checkbox" name="filter" value="agenda" text="Agenda" icon="calendar-event" selected></ndd-toggle-button>
+			<ndd-toggle-button type="checkbox" name="filter" value="documenten" text="Documenten" icon="file-text"></ndd-toggle-button>
 		</div>
 	</div>
 `;
@@ -365,6 +269,7 @@ TypeCheckbox.parameters = {
 	},
 };
 
+
 /* ============================================================
    Type: radio
    ============================================================ */
@@ -372,32 +277,12 @@ TypeCheckbox.parameters = {
 export const TypeRadio = () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
-			<code>type="radio"</code> voor single-select keuzes. Gebruik
-			<code>ndd-toggle-button-group</code> voor beheer via JavaScript.
+			<code>type="radio"</code> voor single-select keuzes. Gebruik <code>ndd-toggle-button-group</code> voor beheer via JavaScript.
 		</p>
 		<div style="display: flex; gap: 0.5rem;" role="radiogroup" aria-label="Sortering">
-			<ndd-toggle-button
-				type="radio"
-				name="sortering"
-				value="oplopend"
-				text="Oplopend"
-				icon="sort-ascending"
-			></ndd-toggle-button>
-			<ndd-toggle-button
-				type="radio"
-				name="sortering"
-				value="aflopend"
-				text="Aflopend"
-				icon="sort-descending"
-				selected
-			></ndd-toggle-button>
-			<ndd-toggle-button
-				type="radio"
-				name="sortering"
-				value="relevant"
-				text="Relevant"
-				icon="arrows-sort"
-			></ndd-toggle-button>
+			<ndd-toggle-button type="radio" name="sortering" value="oplopend" text="Oplopend" icon="sort-ascending"></ndd-toggle-button>
+			<ndd-toggle-button type="radio" name="sortering" value="aflopend" text="Aflopend" icon="sort-descending" selected></ndd-toggle-button>
+			<ndd-toggle-button type="radio" name="sortering" value="relevant" text="Relevant" icon="arrows-sort"></ndd-toggle-button>
 		</div>
 	</div>
 `;
@@ -405,8 +290,7 @@ TypeRadio.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'`type="radio"` — native browser-gedrag zorgt voor wederzijdse uitsluiting binnen dezelfde `name`-groep.',
+			story: '`type="radio"` — native browser-gedrag zorgt voor wederzijdse uitsluiting binnen dezelfde `name`-groep.',
 		},
 	},
 };

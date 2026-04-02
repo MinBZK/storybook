@@ -45,9 +45,7 @@ export default {
 };
 
 export const Standaard = ({ size }) => html`
-	<div
-		style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;"
-	>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
 		<ndd-title-bar size=${size}>
 			<h1>Paginatitel</h1>
 			<ndd-button slot="actions" variant="secondary" size="sm" text="Actie"></ndd-button>
@@ -56,9 +54,7 @@ export const Standaard = ({ size }) => html`
 `;
 
 export const MetOverline = () => html`
-	<div
-		style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;"
-	>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
 		<ndd-title-bar>
 			<p slot="overline">Wet op de zorgtoeslag</p>
 			<h1>Artikel 1</h1>
@@ -68,9 +64,7 @@ export const MetOverline = () => html`
 MetOverline.parameters = { controls: { disable: true } };
 
 export const MetOndertitel = () => html`
-	<div
-		style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;"
-	>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
 		<ndd-title-bar>
 			<h1>Wet op de zorgtoeslag</h1>
 			<p slot="subtitle">Laatste wijziging: 1 januari 2024</p>
@@ -80,9 +74,7 @@ export const MetOndertitel = () => html`
 MetOndertitel.parameters = { controls: { disable: true } };
 
 export const MetOverlineEnOndertitel = () => html`
-	<div
-		style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;"
-	>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
 		<ndd-title-bar>
 			<p slot="overline">Hoofdstuk 1</p>
 			<h1>Begripsbepalingen</h1>
@@ -93,9 +85,7 @@ export const MetOverlineEnOndertitel = () => html`
 MetOverlineEnOndertitel.parameters = { controls: { disable: true } };
 
 export const MetActies = () => html`
-	<div
-		style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;"
-	>
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
 		<ndd-title-bar>
 			<h1>Wet op de zorgtoeslag</h1>
 			<ndd-button slot="actions" variant="secondary" size="sm" text="Bewerken"></ndd-button>
@@ -107,16 +97,12 @@ export const MetActies = () => html`
 MetActies.parameters = { controls: { disable: true } };
 
 export const AlleGrootten = () => html`
-	<div
-		style="display: flex; flex-direction: column; gap: 24px; padding: 24px; container-type: inline-size; container-name: layout-area;"
-	>
-		${[1, 2, 3, 4, 5, 6].map(
-			(s) => html`
-				<ndd-title-bar size=${s}>
-					<h1>Grootte ${s}</h1>
-				</ndd-title-bar>
-			`
-		)}
+	<div style="display: flex; flex-direction: column; gap: 24px; padding: 24px; container-type: inline-size; container-name: layout-area;">
+		${[1, 2, 3, 4, 5, 6].map(s => html`
+			<ndd-title-bar size=${s}>
+				<h1>Grootte ${s}</h1>
+			</ndd-title-bar>
+		`)}
 	</div>
 `;
 AlleGrootten.parameters = { controls: { disable: true } };

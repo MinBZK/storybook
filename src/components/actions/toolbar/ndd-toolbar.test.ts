@@ -81,9 +81,7 @@ describe('ndd-toolbar', () => {
 			</ndd-toolbar>
 		`);
 		await waitForUpdate(el);
-		const toolbar = el as unknown as {
-			_getPrioritizedItems: () => { label: string; priority: number }[];
-		};
+		const toolbar = el as unknown as { _getPrioritizedItems: () => { label: string; priority: number }[] };
 		const prioritized = toolbar._getPrioritizedItems();
 		expect(prioritized[0].label).toBe('Low');
 		expect(prioritized[1].label).toBe('High');
@@ -211,7 +209,7 @@ describe('ndd-toolbar', () => {
 		newItem.setAttribute('slot', 'start');
 		el.appendChild(newItem);
 
-		await new Promise((resolve) => setTimeout(resolve, 50));
+		await new Promise(resolve => setTimeout(resolve, 50));
 		expect(spy).toHaveBeenCalled();
 	});
 
@@ -244,14 +242,7 @@ describe('ndd-toolbar', () => {
 		el = await fixture('<ndd-toolbar></ndd-toolbar>');
 		await waitForUpdate(el);
 		const toolbar = el as unknown as {
-			_computeSpacerZeros: (
-				h: number,
-				g: number,
-				o: number,
-				s: number,
-				c: number,
-				e: number
-			) => { leftZero: boolean; rightZero: boolean };
+			_computeSpacerZeros: (h: number, g: number, o: number, s: number, c: number, e: number) => { leftZero: boolean; rightZero: boolean };
 		};
 		const result = toolbar._computeSpacerZeros(800, 8, 0, 0, 200, 0);
 		expect(result.leftZero).toBe(true);
@@ -262,14 +253,7 @@ describe('ndd-toolbar', () => {
 		el = await fixture('<ndd-toolbar></ndd-toolbar>');
 		await waitForUpdate(el);
 		const toolbar = el as unknown as {
-			_computeSpacerZeros: (
-				h: number,
-				g: number,
-				o: number,
-				s: number,
-				c: number,
-				e: number
-			) => { leftZero: boolean; rightZero: boolean };
+			_computeSpacerZeros: (h: number, g: number, o: number, s: number, c: number, e: number) => { leftZero: boolean; rightZero: boolean };
 		};
 		const result = toolbar._computeSpacerZeros(800, 8, 0, 500, 200, 100);
 		expect(result.leftZero).toBe(true);

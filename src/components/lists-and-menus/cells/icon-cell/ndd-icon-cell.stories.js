@@ -81,11 +81,7 @@ export const Selected = {
 
 export const VerticalTop = {
 	render: () => html`
-		<ndd-icon-cell
-			vertical-alignment="top"
-			size="24"
-			style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);"
-		>
+		<ndd-icon-cell vertical-alignment="top" size="24" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
 			<ndd-icon name="icon-placeholder"></ndd-icon>
 		</ndd-icon-cell>
 	`,

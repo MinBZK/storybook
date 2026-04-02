@@ -70,9 +70,7 @@ export class NDDNumberField extends LitElement {
 
 	override firstUpdated(): void {
 		if (!this.accessibleLabel) {
-			console.warn(
-				"<ndd-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input's purpose."
-			);
+			console.warn('<ndd-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input\'s purpose.');
 		}
 	}
 
@@ -118,20 +116,16 @@ export class NDDNumberField extends LitElement {
 		const clampedValue = Math.max(this.min, Math.min(this.max, newValue));
 		if (clampedValue !== this.value) {
 			this.value = clampedValue;
-			this.dispatchEvent(
-				new CustomEvent('input', {
-					detail: { value: this.value },
-					bubbles: true,
-					composed: true,
-				})
-			);
-			this.dispatchEvent(
-				new CustomEvent('change', {
-					detail: { value: this.value },
-					bubbles: true,
-					composed: true,
-				})
-			);
+			this.dispatchEvent(new CustomEvent('input', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			}));
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			}));
 		}
 	}
 

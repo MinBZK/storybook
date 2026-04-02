@@ -10,26 +10,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styles } from './ndd-spacer-cell.styles.js';
 
-type Size =
-	| '2'
-	| '4'
-	| '6'
-	| '8'
-	| '10'
-	| '12'
-	| '16'
-	| '20'
-	| '24'
-	| '28'
-	| '32'
-	| '40'
-	| '44'
-	| '48'
-	| '56'
-	| '64'
-	| '80'
-	| '96'
-	| 'flexible';
+type Size = '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96' | 'flexible';
 
 @customElement('ndd-spacer-cell')
 export class NDDSpacerCell extends LitElement {

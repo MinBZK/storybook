@@ -29,8 +29,7 @@ export default {
 		},
 		modeless: {
 			control: 'boolean',
-			description:
-				'Niet-modaal (geen backdrop of focusvergrendeling); standaard is de sheet modaal',
+			description: 'Niet-modaal (geen backdrop of focusvergrendeling); standaard is de sheet modaal',
 			table: { defaultValue: { summary: false } },
 		},
 	},
@@ -126,8 +125,7 @@ export const NietModaal = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story:
-					'Niet-modale sheet zonder backdrop en focusvergrendeling. Bekijk deze story in het canvas voor het juiste resultaat — in de docs-weergave kan de positie afwijken door de containerstructuur van Storybook.',
+				story: 'Niet-modale sheet zonder backdrop en focusvergrendeling. Bekijk deze story in het canvas voor het juiste resultaat — in de docs-weergave kan de positie afwijken door de containerstructuur van Storybook.',
 			},
 		},
 	},
@@ -144,10 +142,7 @@ export const MetStickyFooter = {
 					dismiss-label="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
-				<div
-					slot="footer"
-					style="padding: 16px; display: flex; justify-content: flex-end; gap: 8px;"
-				>
+				<div slot="footer" style="padding: 16px; display: flex; justify-content: flex-end; gap: 8px;">
 					<ndd-button variant="secondary" text="Annuleer"></ndd-button>
 					<ndd-button variant="primary" text="Opslaan"></ndd-button>
 				</div>

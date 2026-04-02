@@ -119,9 +119,7 @@ Interactive.parameters = { controls: { disable: true } };
 export const AllStates = () => html`
 	<div style="display: flex; flex-direction: column; gap: 2rem;">
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">
-				Default state
-			</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Default state</h3>
 			<ndd-menu-bar>
 				<ndd-menu-bar-item>Home</ndd-menu-bar-item>
 				<ndd-menu-bar-item>Diensten</ndd-menu-bar-item>
@@ -129,9 +127,7 @@ export const AllStates = () => html`
 			</ndd-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">
-				With selection
-			</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">With selection</h3>
 			<ndd-menu-bar>
 				<ndd-menu-bar-item>Home</ndd-menu-bar-item>
 				<ndd-menu-bar-item selected>Diensten</ndd-menu-bar-item>
@@ -139,9 +135,7 @@ export const AllStates = () => html`
 			</ndd-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">
-				With disabled item
-			</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">With disabled item</h3>
 			<ndd-menu-bar>
 				<ndd-menu-bar-item>Home</ndd-menu-bar-item>
 				<ndd-menu-bar-item disabled>Diensten</ndd-menu-bar-item>
@@ -149,9 +143,7 @@ export const AllStates = () => html`
 			</ndd-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">
-				With title (size m)
-			</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">With title (size m)</h3>
 			<ndd-menu-bar size="m">
 				<h2 slot="title" style="margin: 0;">Navigatie</h2>
 				<ndd-menu-bar-item>Home</ndd-menu-bar-item>
@@ -166,9 +158,7 @@ AllStates.parameters = { controls: { disable: true } };
 export const TitleSizes = () => html`
 	<div style="display: flex; flex-direction: column; gap: 2rem;">
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">
-				Small (18px)
-			</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Small (18px)</h3>
 			<ndd-menu-bar size="s">
 				<h2 slot="title" style="margin: 0;">Navigatie</h2>
 				<ndd-menu-bar-item selected>Home</ndd-menu-bar-item>
@@ -177,9 +167,7 @@ export const TitleSizes = () => html`
 			</ndd-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">
-				Medium (20px, default)
-			</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Medium (20px, default)</h3>
 			<ndd-menu-bar size="m">
 				<h2 slot="title" style="margin: 0;">Navigatie</h2>
 				<ndd-menu-bar-item selected>Home</ndd-menu-bar-item>
@@ -188,9 +176,7 @@ export const TitleSizes = () => html`
 			</ndd-menu-bar>
 		</div>
 		<div>
-			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">
-				Large (23px)
-			</h3>
+			<h3 style="margin: 0 0 0.5rem 0; font-size: 14px; color: var(--semantics-content-color);">Large (23px)</h3>
 			<ndd-menu-bar size="l">
 				<h2 slot="title" style="margin: 0;">Navigatie</h2>
 				<ndd-menu-bar-item selected>Home</ndd-menu-bar-item>

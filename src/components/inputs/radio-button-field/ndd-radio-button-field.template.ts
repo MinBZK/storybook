@@ -4,7 +4,9 @@ import '../radio-button/ndd-radio-button.ts';
 
 export function radioButtonFieldTemplate(component: NDDRadioButtonField): TemplateResult {
 	return html`
-		<div class="radio-button-field" @click=${component._handleLabelClick}>
+		<div class="radio-button-field"
+			@click=${component._handleLabelClick}
+		>
 			<div class="radio-button-field__control">
 				<ndd-radio-button
 					?checked=${component.checked}

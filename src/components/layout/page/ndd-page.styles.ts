@@ -1,13 +1,11 @@
 import { css } from 'lit';
 
+
 /* # ndd-page styles */
 
 export const pageStyles = css`
 	:host {
-		--_background-color: var(
-			--context-parent-background-color,
-			var(--semantics-surfaces-background-color)
-		);
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 
 		display: flex;
 		flex-direction: column;
@@ -20,12 +18,12 @@ export const pageStyles = css`
 		padding-bottom: var(--context-bar-split-view-bottom-bars-height, 0px);
 	}
 
-	:host([background='default']) {
+	:host([background="default"]) {
 		--context-parent-background-color: var(--semantics-surfaces-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
 
-	:host([background='tinted']) {
+	:host([background="tinted"]) {
 		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
@@ -33,6 +31,7 @@ export const pageStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
 
 	/* # Header */
 
@@ -56,11 +55,7 @@ export const pageStyles = css`
 		left: 0;
 		right: 0;
 		height: var(--primitives-space-32);
-		background: linear-gradient(
-			to bottom,
-			color-mix(in srgb, var(--_background-color) 95%, transparent),
-			transparent
-		);
+		background: linear-gradient(to bottom, color-mix(in srgb, var(--_background-color) 95%, transparent), transparent);
 		pointer-events: none;
 		opacity: 0;
 		transition: opacity 200ms ease;
@@ -69,6 +64,7 @@ export const pageStyles = css`
 	:host([sticky-header]) .page__header.is-scrolled::after {
 		opacity: 1;
 	}
+
 
 	/* # Main */
 
@@ -79,6 +75,7 @@ export const pageStyles = css`
 		container-type: inline-size;
 		container-name: layout-area;
 	}
+
 
 	/* # Footer */
 
@@ -102,11 +99,7 @@ export const pageStyles = css`
 		left: 0;
 		right: 0;
 		height: var(--primitives-space-32);
-		background: linear-gradient(
-			to top,
-			color-mix(in srgb, var(--_background-color) 95%, transparent),
-			transparent
-		);
+		background: linear-gradient(to top, color-mix(in srgb, var(--_background-color) 95%, transparent), transparent);
 		pointer-events: none;
 	}
 `;

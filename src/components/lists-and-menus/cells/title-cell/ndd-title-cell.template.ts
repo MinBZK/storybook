@@ -30,8 +30,6 @@ export const template = function (this: NDDTitleCell) {
 	return html`
 		${this.overline ? html`<p class="title-cell__overline">${this.overline}</p>` : nothing}
 		${renderTitle(this)}
-		${this.supportingText
-			? html`<p class="title-cell__supporting-text">${this.supportingText}</p>`
-			: nothing}
+		${this.supportingText ? html`<p class="title-cell__supporting-text">${this.supportingText}</p>` : nothing}
 	`;
 };

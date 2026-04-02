@@ -5,11 +5,7 @@ import type { NDDButtonBar, BarChild } from './ndd-button-bar.ts';
 export function template(this: NDDButtonBar) {
 	return html`
 		<div class="button-bar" part="bar" role="group">
-			${repeat(
-				this._children,
-				(c) => c.id,
-				(c) => renderChild.call(this, c)
-			)}
+			${repeat(this._children, c => c.id, c => renderChild.call(this, c))}
 		</div>
 	`;
 }

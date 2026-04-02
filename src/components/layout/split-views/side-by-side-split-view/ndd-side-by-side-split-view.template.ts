@@ -8,16 +8,17 @@ export function sideBySideSplitViewTemplate(component: NDDSideBySideSplitView): 
 
 	return html`
 		<div class="side-by-side-split-view">
-			${panes.map(
-				(n, i) => html`
-					${i > 0 && i < component._visiblePanes
-						? html` <ndd-split-view-divider orientation="vertical"></ndd-split-view-divider> `
-						: nothing}
-					<div class="side-by-side-split-view__pane" ?hidden=${i >= component._visiblePanes}>
-						<slot name="pane-${n}"></slot>
-					</div>
-				`
-			)}
+			${panes.map((n, i) => html`
+				${i > 0 && i < component._visiblePanes ? html`
+					<ndd-split-view-divider orientation="vertical"></ndd-split-view-divider>
+				` : nothing}
+				<div
+					class="side-by-side-split-view__pane"
+					?hidden=${i >= component._visiblePanes}
+				>
+					<slot name="pane-${n}"></slot>
+				</div>
+			`)}
 		</div>
 	`;
 }

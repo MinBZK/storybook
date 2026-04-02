@@ -85,12 +85,7 @@ export class NDDBarSplitView extends LitElement {
 			this._updateLayout();
 			this.requestUpdate();
 		});
-		this._observer.observe(this, {
-			childList: true,
-			attributes: true,
-			attributeFilter: ['above', 'below', 'only', 'sm-order', 'md-order', 'lg-order'],
-			subtree: false,
-		});
+		this._observer.observe(this, { childList: true, attributes: true, attributeFilter: ['above', 'below', 'only', 'sm-order', 'md-order', 'lg-order'], subtree: false });
 
 		this._resizeObserver = new ResizeObserver(() => {
 			const bp = this._getBreakpoint(this.getBoundingClientRect().width);
@@ -141,12 +136,9 @@ export class NDDBarSplitView extends LitElement {
 	}
 
 	_getSortedChildren(): Element[] {
-		const all = Array.from(this.children).filter((el) => {
+		const all = Array.from(this.children).filter(el => {
 			if (!el.slot) {
-				console.warn(
-					'<ndd-bar-split-view>: every child must have a slot attribute (e.g. slot="toolbar", slot="status-bar", or slot="bar-1" if no meaningful name applies). Child without slot attribute is ignored:',
-					el
-				);
+				console.warn('<ndd-bar-split-view>: every child must have a slot attribute (e.g. slot="toolbar", slot="status-bar", or slot="bar-1" if no meaningful name applies). Child without slot attribute is ignored:', el);
 				return false;
 			}
 			return this._isChildVisible(el);
@@ -179,7 +171,7 @@ export class NDDBarSplitView extends LitElement {
 		}
 
 		const sorted = this._getSortedChildren();
-		const mainIndex = sorted.findIndex((el) => el.slot === 'main');
+		const mainIndex = sorted.findIndex(el => el.slot === 'main');
 
 		// Bars before main stack downward from the top; bars after main stack upward from the bottom
 		const topBars = mainIndex > 0 ? sorted.slice(0, mainIndex) : [];

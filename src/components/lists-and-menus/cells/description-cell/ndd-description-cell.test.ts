@@ -88,9 +88,7 @@ describe('ndd-description-cell', () => {
 	});
 
 	it('renders slotted description content', async () => {
-		el = await fixture(
-			'<ndd-description-cell><p slot="description">Description</p></ndd-description-cell>'
-		);
+		el = await fixture('<ndd-description-cell><p slot="description">Description</p></ndd-description-cell>');
 		await waitForUpdate(el);
 		expect(el.querySelector('[slot="description"]')?.textContent?.trim()).toBe('Description');
 	});

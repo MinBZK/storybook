@@ -1,6 +1,7 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
+
 /* # ndd-one-half-one-half-section styles */
 
 export const oneHalfOneHalfSectionStyles = css`
@@ -16,6 +17,7 @@ export const oneHalfOneHalfSectionStyles = css`
 		display: none;
 	}
 
+
 	/* # Section */
 
 	.one-half-one-half-section {
@@ -30,9 +32,7 @@ export const oneHalfOneHalfSectionStyles = css`
 			padding-block: var(--semantics-page-sections-sm-margin-block);
 		}
 
-		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(
-			breakpoints.mdMax
-		)}) {
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-block: var(--semantics-page-sections-md-margin-block);
 		}
@@ -42,6 +42,7 @@ export const oneHalfOneHalfSectionStyles = css`
 			padding-block: var(--semantics-page-sections-lg-margin-block);
 		}
 	}
+
 
 	/* # Body */
 
@@ -55,9 +56,7 @@ export const oneHalfOneHalfSectionStyles = css`
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(
-			breakpoints.mdMax
-		)}) {
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
@@ -65,6 +64,7 @@ export const oneHalfOneHalfSectionStyles = css`
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
+
 
 	/* # Columns */
 
@@ -76,9 +76,7 @@ export const oneHalfOneHalfSectionStyles = css`
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(
-			breakpoints.mdMax
-		)}) {
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 

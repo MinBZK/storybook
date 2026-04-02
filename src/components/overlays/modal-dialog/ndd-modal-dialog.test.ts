@@ -89,9 +89,7 @@ describe('ndd-modal-dialog', () => {
 	});
 
 	it('forwards supporting-text attribute to ndd-dialog', async () => {
-		el = await fixture(
-			'<ndd-modal-dialog supporting-text="Ondersteunende tekst"></ndd-modal-dialog>'
-		);
+		el = await fixture('<ndd-modal-dialog supporting-text="Ondersteunende tekst"></ndd-modal-dialog>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('ndd-dialog');
 		expect(inner?.getAttribute('supporting-text')).toBe('Ondersteunende tekst');
@@ -117,9 +115,7 @@ describe('ndd-modal-dialog', () => {
 		(el as NDDModalDialog).show();
 		const inner = el.shadowRoot!.querySelector('ndd-dialog');
 		const heading = inner?.shadowRoot?.querySelector('h2.dialog__text') as HTMLElement;
-		expect(document.activeElement === heading || inner?.shadowRoot?.activeElement === heading).toBe(
-			true
-		);
+		expect(document.activeElement === heading || inner?.shadowRoot?.activeElement === heading).toBe(true);
 	});
 
 	it('inner ndd-dialog receives heading-level="2"', async () => {

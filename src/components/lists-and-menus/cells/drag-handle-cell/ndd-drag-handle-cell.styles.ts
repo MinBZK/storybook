@@ -19,6 +19,7 @@ export const styles = css`
 		cursor: grabbing;
 	}
 
+
 	/* # Control */
 
 	.drag-handle-cell__control {
@@ -35,28 +36,29 @@ export const styles = css`
 	}
 
 	.drag-handle-cell__control:focus-visible {
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 	}
+
 
 	/* ## Size: MD (default) */
 
-	:host([size='md']) .drag-handle-cell__control,
+	:host([size="md"]) .drag-handle-cell__control,
 	:host(:not([size])) .drag-handle-cell__control {
 		width: var(--semantics-controls-sm-min-size);
 		height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
+
 	/* ## Size: SM */
 
-	:host([size='sm']) .drag-handle-cell__control {
+	:host([size="sm"]) .drag-handle-cell__control {
 		width: var(--semantics-controls-xs-min-size);
 		height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
+
 
 	/* # Grip */
 

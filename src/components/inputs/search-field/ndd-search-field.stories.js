@@ -32,8 +32,7 @@ export default {
 		accessibleLabel: {
 			control: 'text',
 			name: 'accessible-label',
-			description:
-				'Toegankelijkheidslabel voor de input. Valt automatisch terug op de placeholder als niet ingevuld.',
+			description: 'Toegankelijkheidslabel voor de input. Valt automatisch terug op de placeholder als niet ingevuld.',
 		},
 		size: {
 			control: 'select',
@@ -68,15 +67,7 @@ export default {
 	},
 };
 
-const Template = ({
-	value,
-	placeholder,
-	accessibleLabel,
-	size,
-	disabled,
-	hasSearchButton,
-	name,
-}) => html`
+const Template = ({ value, placeholder, accessibleLabel, size, disabled, hasSearchButton, name }) => html`
 	<ndd-search-field
 		value=${value}
 		placeholder=${placeholder}
@@ -99,21 +90,11 @@ export const AlleToestanden = () => html`
 		<ndd-search-field size="md" placeholder="Zoeken"></ndd-search-field>
 		<ndd-search-field size="md" placeholder="Zoeken" value="Zoekterm"></ndd-search-field>
 		<ndd-search-field size="md" placeholder="Zoeken" has-search-button></ndd-search-field>
-		<ndd-search-field
-			size="md"
-			placeholder="Zoeken"
-			value="Zoekterm"
-			has-search-button
-		></ndd-search-field>
+		<ndd-search-field size="md" placeholder="Zoeken" value="Zoekterm" has-search-button></ndd-search-field>
 		<ndd-search-field size="sm" placeholder="Zoeken"></ndd-search-field>
 		<ndd-search-field size="sm" placeholder="Zoeken" value="Zoekterm"></ndd-search-field>
 		<ndd-search-field size="sm" placeholder="Zoeken" has-search-button></ndd-search-field>
-		<ndd-search-field
-			size="sm"
-			placeholder="Zoeken"
-			value="Zoekterm"
-			has-search-button
-		></ndd-search-field>
+		<ndd-search-field size="sm" placeholder="Zoeken" value="Zoekterm" has-search-button></ndd-search-field>
 		<ndd-search-field size="md" placeholder="Zoeken" disabled></ndd-search-field>
 		<ndd-search-field size="md" placeholder="Zoeken" value="Zoekterm" disabled></ndd-search-field>
 	</div>

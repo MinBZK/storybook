@@ -41,8 +41,7 @@ export default {
 			control: 'select',
 			options: ['', ...ICONS],
 			name: 'icon-name',
-			description:
-				'Naam van het ndd-icon icoon; afwezig wanneer niet ingesteld. Overschrijft het variant-icoon.',
+			description: 'Naam van het ndd-icon icoon; afwezig wanneer niet ingesteld. Overschrijft het variant-icoon.',
 		},
 		text: {
 			control: 'text',
@@ -111,9 +110,7 @@ export const Alert = () => html`
 Alert.parameters = { controls: { disable: true } };
 
 export const LegeToestand = () => html`
-	<div
-		style="height: 400px; display: flex; align-items: center; justify-content: center; background: var(--semantics-surfaces-tinted-background-color); border-radius: 8px;"
-	>
+	<div style="height: 400px; display: flex; align-items: center; justify-content: center; background: var(--semantics-surfaces-tinted-background-color); border-radius: 8px;">
 		<ndd-dialog
 			icon-name="inbox"
 			text="Geen resultaten"

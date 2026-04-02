@@ -8,16 +8,17 @@ export function stackedSplitViewTemplate(component: NDDStackedSplitView): Templa
 
 	return html`
 		<div class="stacked-split-view">
-			${panes.map(
-				(n, i) => html`
-					${i > 0 && i < component._visiblePanes
-						? html` <ndd-split-view-divider orientation="horizontal"></ndd-split-view-divider> `
-						: nothing}
-					<div class="stacked-split-view__pane" ?hidden=${i >= component._visiblePanes}>
-						<slot name="pane-${n}"></slot>
-					</div>
-				`
-			)}
+			${panes.map((n, i) => html`
+				${i > 0 && i < component._visiblePanes ? html`
+					<ndd-split-view-divider orientation="horizontal"></ndd-split-view-divider>
+				` : nothing}
+				<div
+					class="stacked-split-view__pane"
+					?hidden=${i >= component._visiblePanes}
+				>
+					<slot name="pane-${n}"></slot>
+				</div>
+			`)}
 		</div>
 	`;
 }

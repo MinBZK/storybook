@@ -66,6 +66,7 @@ function generateId(): string {
 	return `ndd-field-input-${uuid}`;
 }
 
+
 /* ============================================================
    ndd-form-field
    ============================================================ */
@@ -199,10 +200,8 @@ export class NDDFormField extends LitElement {
 
 		// Ensure each help text element has an id so it can be referenced in aria-describedby
 		Array.from(this.children)
-			.filter((el) => el.tagName.toLowerCase() === 'ndd-form-field-help-text')
-			.forEach((el) => {
-				if (!el.id) el.id = generateId();
-			});
+			.filter(el => el.tagName.toLowerCase() === 'ndd-form-field-help-text')
+			.forEach(el => { if (!el.id) el.id = generateId(); });
 
 		this._observer = new MutationObserver(() => this._syncErrorText());
 		this._observer.observe(input, {
@@ -215,7 +214,8 @@ export class NDDFormField extends LitElement {
 
 	/** First child element that is not a form field helper component. */
 	private _findInput(): Element | undefined {
-		return Array.from(this.children).find((el) => !HELPER_TAGS.includes(el.tagName.toLowerCase()));
+		return Array.from(this.children)
+			.find(el => !HELPER_TAGS.includes(el.tagName.toLowerCase()));
 	}
 
 	/**
@@ -235,15 +235,16 @@ export class NDDFormField extends LitElement {
 
 		const isCustomInput = 'inputId' in input;
 		const isInvalid = input.hasAttribute('invalid');
-		const referencedIds = (input.getAttribute('error-message') ?? '').split(' ').filter(Boolean);
+		const referencedIds = (input.getAttribute('error-message') ?? '')
+			.split(' ')
+			.filter(Boolean);
 
-		const allErrorTexts = Array.from(this.children).filter(
-			(el) => el.tagName.toLowerCase() === 'ndd-form-field-error-text'
-		);
+		const allErrorTexts = Array.from(this.children)
+			.filter(el => el.tagName.toLowerCase() === 'ndd-form-field-error-text');
 
 		const helpIds = Array.from(this.children)
-			.filter((el) => el.tagName.toLowerCase() === 'ndd-form-field-help-text' && el.id)
-			.map((el) => el.id);
+			.filter(el => el.tagName.toLowerCase() === 'ndd-form-field-help-text' && el.id)
+			.map(el => el.id);
 
 		const visibleErrorIds: string[] = [];
 
@@ -261,8 +262,7 @@ export class NDDFormField extends LitElement {
 			// For custom elements (ndd-text-field, ndd-password-field), set error-message-ids
 			// so they can forward it to the inner <input aria-describedby>. IDs do not cross
 			// shadow DOM boundaries so setting aria-describedby on the host is not sufficient.
-			(input as unknown as HTMLElement & { errorMessageIds: string }).errorMessageIds =
-				describedByValue;
+			(input as unknown as HTMLElement & { errorMessageIds: string }).errorMessageIds = describedByValue;
 		} else {
 			if (describedByIds.length > 0) {
 				input.setAttribute('aria-describedby', describedByValue);
@@ -274,6 +274,7 @@ export class NDDFormField extends LitElement {
 		this._hasErrors = visibleErrorIds.length > 0;
 	}
 }
+
 
 /* ============================================================
    ndd-form-field-help-text
@@ -294,6 +295,7 @@ export class NDDFormFieldHelpText extends LitElement {
 		return formFieldHelpTextTemplate(this);
 	}
 }
+
 
 /* ============================================================
    ndd-form-field-error-text
@@ -321,6 +323,7 @@ export class NDDFormFieldErrorText extends LitElement {
 		return formFieldErrorTextTemplate(this);
 	}
 }
+
 
 declare global {
 	interface HTMLElementTagNameMap {

@@ -29,6 +29,7 @@ describe('ndd-search-field', () => {
 	});
 });
 
+
 /* ============================================================
    State
    ============================================================ */
@@ -41,23 +42,15 @@ describe('ndd-search-field – state', () => {
 	});
 
 	it('forwards placeholder to native input', async () => {
-		el = await fixture<NDDSearchField>(
-			'<ndd-search-field placeholder="Zoek documenten"></ndd-search-field>'
-		);
+		el = await fixture<NDDSearchField>('<ndd-search-field placeholder="Zoek documenten"></ndd-search-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.getAttribute('placeholder')).toBe(
-			'Zoek documenten'
-		);
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('placeholder')).toBe('Zoek documenten');
 	});
 
 	it('forwards accessible-label as aria-label to native input', async () => {
-		el = await fixture<NDDSearchField>(
-			'<ndd-search-field accessible-label="Zoek een document"></ndd-search-field>'
-		);
+		el = await fixture<NDDSearchField>('<ndd-search-field accessible-label="Zoek een document"></ndd-search-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-label')).toBe(
-			'Zoek een document'
-		);
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-label')).toBe('Zoek een document');
 	});
 
 	it('is disabled when disabled attribute is set', async () => {
@@ -97,6 +90,7 @@ describe('ndd-search-field – state', () => {
 	});
 });
 
+
 /* ============================================================
    Input & change events
    ============================================================ */
@@ -122,15 +116,14 @@ describe('ndd-search-field – input & change events', () => {
 		el = await fixture<NDDSearchField>('<ndd-search-field></ndd-search-field>');
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('input', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
+		el.addEventListener('input', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		const input = el.shadowRoot!.querySelector('input')!;
 		(input as any).value = 'hello';
 		input.dispatchEvent(new Event('input', { bubbles: true }));
 		expect(detail?.value).toBe('hello');
 	});
 });
+
 
 /* ============================================================
    Search event
@@ -147,27 +140,22 @@ describe('ndd-search-field – search event', () => {
 		el = await fixture<NDDSearchField>('<ndd-search-field value="test"></ndd-search-field>');
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('search', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
+		el.addEventListener('search', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
 		expect(detail?.value).toBe('test');
 	});
 
 	it('dispatches search event on search button click', async () => {
-		el = await fixture<NDDSearchField>(
-			'<ndd-search-field value="test" has-search-button></ndd-search-field>'
-		);
+		el = await fixture<NDDSearchField>('<ndd-search-field value="test" has-search-button></ndd-search-field>');
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('search', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
+		el.addEventListener('search', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		el._handleSearch();
 		expect(detail?.value).toBe('test');
 	});
 });
+
 
 /* ============================================================
    Dismiss
@@ -192,9 +180,7 @@ describe('ndd-search-field – dismiss', () => {
 		el = await fixture<NDDSearchField>('<ndd-search-field value="test"></ndd-search-field>');
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('change', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		el._handleDismiss();
 		expect(detail?.value).toBe('');
 	});

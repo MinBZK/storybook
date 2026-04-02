@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './ndd-document-tab-bar.ts';
 import './../../actions/icon-button/ndd-icon-button.ts';
 
+
 export default {
 	title: 'Components/Navigation/Document Tab Bar',
 	component: 'ndd-document-tab-bar',
@@ -27,7 +28,9 @@ export default {
 };
 
 const Template = ({ accessibleLabel }) => html`
-	<ndd-document-tab-bar accessible-label=${accessibleLabel}>
+	<ndd-document-tab-bar
+		accessible-label=${accessibleLabel}
+	>
 		<ndd-document-tab-bar-item
 			selected
 			text="Artikel 2"
@@ -47,12 +50,7 @@ const Template = ({ accessibleLabel }) => html`
 			short-text="Art. 3:2"
 			short-supporting-text="Awb"
 		></ndd-document-tab-bar-item>
-		<ndd-icon-button
-			slot="end"
-			variant="neutral-tinted"
-			text="Nieuw tabblad"
-			icon="plus"
-		></ndd-icon-button>
+		<ndd-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad" icon="plus"></ndd-icon-button>
 	</ndd-document-tab-bar>
 `;
 
@@ -109,12 +107,7 @@ export const VeelTabbladen = () => html`
 			short-text="Art. 4:3"
 			short-supporting-text="Awb"
 		></ndd-document-tab-bar-item>
-		<ndd-icon-button
-			slot="end"
-			variant="neutral-tinted"
-			text="Nieuw tabblad"
-			icon="plus"
-		></ndd-icon-button>
+		<ndd-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad" icon="plus"></ndd-icon-button>
 	</ndd-document-tab-bar>
 `;
 VeelTabbladen.parameters = { controls: { disable: true } };
@@ -126,11 +119,18 @@ export const ZonderSubtitel = () => html`
 			text="Artikel 2"
 			short-text="Art. 2"
 		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item text="Artikel 1" short-text="Art. 1"></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item text="Artikel 3:2" short-text="Art. 3:2"></ndd-document-tab-bar-item>
+		<ndd-document-tab-bar-item
+			text="Artikel 1"
+			short-text="Art. 1"
+		></ndd-document-tab-bar-item>
+		<ndd-document-tab-bar-item
+			text="Artikel 3:2"
+			short-text="Art. 3:2"
+		></ndd-document-tab-bar-item>
 	</ndd-document-tab-bar>
 `;
 ZonderSubtitel.parameters = { controls: { disable: true } };
+
 
 export const Herschikbaar = {
 	render: () => {

@@ -1,6 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NDDToggleButton } from './ndd-toggle-button.js';
 
+
 export function toggleButtonTemplate(component: NDDToggleButton): TemplateResult {
 	const label = component.accessibleLabel || nothing;
 
@@ -24,8 +25,9 @@ export function toggleButtonTemplate(component: NDDToggleButton): TemplateResult
 					value=${component.value}
 					aria-label=${label}
 					@change=${component._handleInputChange}
-				/>
-				${icon} ${textContent}
+				>
+				${icon}
+				${textContent}
 			</label>
 		`;
 	}
@@ -39,7 +41,8 @@ export function toggleButtonTemplate(component: NDDToggleButton): TemplateResult
 			aria-label=${label}
 			@click=${component._handleButtonClick}
 		>
-			${icon} ${textContent}
+			${icon}
+			${textContent}
 		</button>
 	`;
 }

@@ -1,6 +1,7 @@
 import { css } from 'lit';
 
 export const menuBarItemStyles = css`
+
 	/* # Host */
 
 	:host {
@@ -89,10 +90,8 @@ export const menuBarItemStyles = css`
 	/* # Focus */
 
 	.menu-bar-item:focus-visible {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
 	/* # Disabled */
@@ -114,6 +113,7 @@ export const menuBarItemStyles = css`
 `;
 
 export const styles = css`
+
 	/* # Host */
 
 	:host {
@@ -144,20 +144,20 @@ export const styles = css`
 		color: var(--components-menu-bar-menu-item-color);
 	}
 
-	:host([size='s']) .title {
+	:host([size="s"]) .title {
 		font: var(--components-menu-bar-title-item-s-font);
 	}
 
-	:host([size='m']) .title,
+	:host([size="m"]) .title,
 	:host(:not([size])) .title {
 		font: var(--components-menu-bar-title-item-m-font);
 	}
 
-	:host([size='l']) .title {
+	:host([size="l"]) .title {
 		font: var(--components-menu-bar-title-item-l-font);
 	}
 
-	::slotted([slot='title']) {
+	::slotted([slot="title"]) {
 		color: inherit;
 	}
 
@@ -207,10 +207,8 @@ export const styles = css`
 	}
 
 	.overflow-button:focus-visible {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
 	.overflow-icon {
@@ -219,7 +217,7 @@ export const styles = css`
 		transition: transform 0.2s ease;
 	}
 
-	.overflow-button[aria-expanded='true'] .overflow-icon {
+	.overflow-button[aria-expanded="true"] .overflow-icon {
 		transform: rotate(180deg);
 	}
 
@@ -264,10 +262,8 @@ export const styles = css`
 	}
 
 	.overflow-item:focus-visible {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
 	/* # Reduced motion */

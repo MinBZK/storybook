@@ -23,6 +23,7 @@ describe('ndd-radio-button', () => {
 	});
 });
 
+
 /* ============================================================
    State
    ============================================================ */
@@ -65,6 +66,7 @@ describe('ndd-radio-button – state', () => {
 	});
 });
 
+
 /* ============================================================
    Change event
    ============================================================ */
@@ -87,9 +89,7 @@ describe('ndd-radio-button – change event', () => {
 	});
 
 	it('dispatches a change event with checked, value and name detail', async () => {
-		el = await fixture<NDDRadioButton>(
-			'<ndd-radio-button name="group1" value="option-a"></ndd-radio-button>'
-		);
+		el = await fixture<NDDRadioButton>('<ndd-radio-button name="group1" value="option-a"></ndd-radio-button>');
 		await waitForUpdate(el);
 
 		let detail: any;

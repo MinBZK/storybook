@@ -8,27 +8,7 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: [
-				'2',
-				'4',
-				'6',
-				'8',
-				'10',
-				'12',
-				'16',
-				'20',
-				'24',
-				'28',
-				'32',
-				'40',
-				'44',
-				'48',
-				'56',
-				'64',
-				'80',
-				'96',
-				'flexible',
-			],
+			options: ['2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96', 'flexible'],
 			description: 'Spacer size in pixels, or "flexible" to fill remaining space',
 		},
 	},
@@ -61,39 +41,16 @@ export const Flexible = {
 export const AllFixedSizes = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;">
-			${[
-				'2',
-				'4',
-				'6',
-				'8',
-				'10',
-				'12',
-				'16',
-				'20',
-				'24',
-				'28',
-				'32',
-				'40',
-				'44',
-				'48',
-				'56',
-				'64',
-				'80',
-				'96',
-			].map(
-				(size) => html`
-					<div style="display: flex; align-items: center; gap: 8px;">
-						<span style="width: 40px; font-size: 12px; color: var(--semantics-content-color);"
-							>${size}px</span
-						>
-						<div style=${containerStyle}>
-							<span>|</span>
-							<ndd-spacer-cell size=${size} style=${debugStyle}></ndd-spacer-cell>
-							<span>|</span>
-						</div>
+			${['2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'].map(size => html`
+				<div style="display: flex; align-items: center; gap: 8px;">
+					<span style="width: 40px; font-size: 12px; color: var(--semantics-content-color);">${size}px</span>
+					<div style=${containerStyle}>
+						<span>|</span>
+						<ndd-spacer-cell size=${size} style=${debugStyle}></ndd-spacer-cell>
+						<span>|</span>
 					</div>
-				`
-			)}
+				</div>
+			`)}
 		</div>
 	`,
 };

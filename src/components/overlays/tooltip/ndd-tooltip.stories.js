@@ -10,36 +10,36 @@ import './ndd-tooltip.ts';
  * ```
  */
 export default {
-	title: 'Components/Overlays/Tooltip',
-	component: 'ndd-tooltip',
-	tags: ['autodocs'],
-	parameters: {
-		componentSource: {
-			file: 'src/components/overlays/tooltip/ndd-tooltip.ts',
-			repository: 'https://github.com/MinBZK/storybook',
-		},
-		status: {
-			type: 'stable',
-		},
-	},
-	argTypes: {
-		text: {
-			control: 'text',
-			description: 'Tooltip text content',
-		},
-	},
-	args: {
-		text: 'Tooltip tekst',
-	},
+  title: 'Components/Overlays/Tooltip',
+  component: 'ndd-tooltip',
+  tags: ['autodocs'],
+  parameters: {
+    componentSource: {
+      file: 'src/components/overlays/tooltip/ndd-tooltip.ts',
+      repository: 'https://github.com/MinBZK/storybook',
+    },
+    status: {
+      type: 'stable',
+    },
+  },
+  argTypes: {
+    text: {
+      control: 'text',
+      description: 'Tooltip text content',
+    },
+  },
+  args: {
+    text: 'Tooltip tekst',
+  },
 };
 
 const Template = ({ text }) => html`
-	<div style="padding: 2rem; display: flex; justify-content: center;">
-		<ndd-tooltip text=${text}></ndd-tooltip>
-	</div>
+  <div style="padding: 2rem; display: flex; justify-content: center;">
+    <ndd-tooltip text=${text}></ndd-tooltip>
+  </div>
 `;
 
 export const Default = Template.bind({});
 Default.args = {
-	text: 'Dit is een tooltip',
+  text: 'Dit is een tooltip',
 };

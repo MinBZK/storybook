@@ -1,6 +1,7 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
+
 /* # ndd-two-thirds-one-third-section styles */
 
 export const twoThirdsOneThirdSectionStyles = css`
@@ -16,6 +17,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 		display: none;
 	}
 
+
 	/* # Section */
 
 	.two-thirds-one-third-section {
@@ -30,9 +32,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 			padding-block: var(--semantics-page-sections-sm-margin-block);
 		}
 
-		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(
-			breakpoints.mdMax
-		)}) {
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-block: var(--semantics-page-sections-md-margin-block);
 		}
@@ -42,6 +42,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 			padding-block: var(--semantics-page-sections-lg-margin-block);
 		}
 	}
+
 
 	/* # Body */
 
@@ -55,9 +56,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(
-			breakpoints.mdMax
-		)}) {
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
@@ -65,6 +64,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
+
 
 	/* # Columns */
 
@@ -76,9 +76,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(
-			breakpoints.mdMax
-		)}) {
+		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
@@ -96,4 +94,5 @@ export const twoThirdsOneThirdSectionStyles = css`
 		flex: 1;
 		min-width: var(--primitives-area-280);
 	}
+
 `;

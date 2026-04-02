@@ -27,185 +27,185 @@ let cachedRijkswapen: string | null = null;
 
 @customElement('ndd-nav-logo')
 export class NDDNavLogo extends LitElement {
-	// Configurable asset path (can be overridden per-project)
-	static assetBasePath = '/assets';
+  // Configurable asset path (can be overridden per-project)
+  static assetBasePath = '/assets';
 
-	static override styles = css`
-		:host {
-			display: flex;
-			align-items: center;
-			gap: var(--primitives-space-16);
-		}
+  static override styles = css`
+    :host {
+      display: flex;
+      align-items: center;
+      gap: var(--primitives-space-16);
+    }
 
-		.logo-container {
-			display: flex;
-			align-items: center;
-			gap: var(--primitives-space-16);
-		}
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: var(--primitives-space-16);
+    }
 
-		.logo {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-shrink: 0;
-			color: var(--primitives-color-accent-100);
-		}
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--primitives-color-accent-100);
+    }
 
-		/* Logo sizes per container */
-		:host([container='sm']) .logo,
-		:host(:not([container])) .logo {
-			width: 40px;
-			height: 80px;
-		}
+    /* Logo sizes per container */
+    :host([container='sm']) .logo,
+    :host(:not([container])) .logo {
+      width: 40px;
+      height: 80px;
+    }
 
-		:host([container='md']) .logo {
-			width: 44px;
-			height: 88px;
-		}
+    :host([container='md']) .logo {
+      width: 44px;
+      height: 88px;
+    }
 
-		:host([container='lg']) .logo {
-			width: 48px;
-			height: 96px;
-		}
+    :host([container='lg']) .logo {
+      width: 48px;
+      height: 96px;
+    }
 
-		.logo svg {
-			width: 100%;
-			height: 100%;
-		}
+    .logo svg {
+      width: 100%;
+      height: 100%;
+    }
 
-		/* Wordmark styles */
-		.wordmark {
-			display: flex;
-			flex-direction: column;
-			gap: var(--primitives-space-2);
-		}
+    /* Wordmark styles */
+    .wordmark {
+      display: flex;
+      flex-direction: column;
+      gap: var(--primitives-space-2);
+    }
 
-		:host(:not([has-wordmark])) .wordmark {
-			display: none;
-		}
+    :host(:not([has-wordmark])) .wordmark {
+      display: none;
+    }
 
-		.title {
-			font: var(--components-menu-bar-title-item-m-font);
-			color: var(--primitives-color-neutral-900);
-			margin: 0;
-		}
+    .title {
+      font: var(--components-menu-bar-title-item-m-font);
+      color: var(--primitives-color-neutral-900);
+      margin: 0;
+    }
 
-		:host([container='sm']) .title {
-			font: var(--components-menu-bar-title-item-s-font);
-		}
+    :host([container='sm']) .title {
+      font: var(--components-menu-bar-title-item-s-font);
+    }
 
-		:host([container='lg']) .title {
-			font: var(--components-menu-bar-title-item-l-font);
-		}
+    :host([container='lg']) .title {
+      font: var(--components-menu-bar-title-item-l-font);
+    }
 
-		.subtitle {
-			font: 400 16px/1.25 var(--ndd-font-family-body);
-			color: var(--primitives-color-neutral-700);
-			margin: 0;
-		}
+    .subtitle {
+      font: 400 16px/1.25 var(--ndd-font-family-body);
+      color: var(--primitives-color-neutral-700);
+      margin: 0;
+    }
 
-		:host([container='sm']) .subtitle {
-			font-size: 14px;
-		}
+    :host([container='sm']) .subtitle {
+      font-size: 14px;
+    }
 
-		:host([container='lg']) .subtitle {
-			font-size: 18px;
-		}
+    :host([container='lg']) .subtitle {
+      font-size: 18px;
+    }
 
-		.supporting-text {
-			font: 400 14px/1.25 var(--ndd-font-family-body);
-			color: var(--primitives-color-accent-100);
-			margin: 0;
-		}
+    .supporting-text {
+      font: 400 14px/1.25 var(--ndd-font-family-body);
+      color: var(--primitives-color-accent-100);
+      margin: 0;
+    }
 
-		:host([container='sm']) .supporting-text {
-			font-size: 12px;
-		}
+    :host([container='sm']) .supporting-text {
+      font-size: 12px;
+    }
 
-		:host([container='lg']) .supporting-text {
-			font-size: 16px;
-		}
-	`;
+    :host([container='lg']) .supporting-text {
+      font-size: 16px;
+    }
+  `;
 
-	@property({ type: String, reflect: true })
-	container: ContainerSize = 'md';
+  @property({ type: String, reflect: true })
+  container: ContainerSize = 'md';
 
-	@property({ type: Boolean, attribute: 'has-wordmark', reflect: true })
-	hasWordmark = false;
+  @property({ type: Boolean, attribute: 'has-wordmark', reflect: true })
+  hasWordmark = false;
 
-	@property({ type: String })
-	override title = '';
+  @property({ type: String })
+  override title = '';
 
-	@property({ type: String })
-	subtitle = '';
+  @property({ type: String })
+  subtitle = '';
 
-	@property({ type: String, attribute: 'supporting-text-1' })
-	supportingText1 = '';
+  @property({ type: String, attribute: 'supporting-text-1' })
+  supportingText1 = '';
 
-	@property({ type: String, attribute: 'supporting-text-2' })
-	supportingText2 = '';
+  @property({ type: String, attribute: 'supporting-text-2' })
+  supportingText2 = '';
 
-	@state()
-	private _logoSvg: string | null = null;
+  @state()
+  private _logoSvg: string | null = null;
 
-	override async connectedCallback(): Promise<void> {
-		super.connectedCallback();
-		await this._loadRijkswapen();
-	}
+  override async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    await this._loadRijkswapen();
+  }
 
-	/**
-	 * Loads the official Rijkswapen SVG and caches it.
-	 */
-	private async _loadRijkswapen(): Promise<void> {
-		// If already cached, use it
-		if (cachedRijkswapen) {
-			this._logoSvg = cachedRijkswapen;
-			return;
-		}
+  /**
+   * Loads the official Rijkswapen SVG and caches it.
+   */
+  private async _loadRijkswapen(): Promise<void> {
+    // If already cached, use it
+    if (cachedRijkswapen) {
+      this._logoSvg = cachedRijkswapen;
+      return;
+    }
 
-		try {
-			const url = `${NDDNavLogo.assetBasePath}/rijkswapen.svg`;
-			const response = await fetch(url);
+    try {
+      const url = `${NDDNavLogo.assetBasePath}/rijkswapen.svg`;
+      const response = await fetch(url);
 
-			if (!response.ok) {
-				throw new Error(`Failed to load logo: ${response.status}`);
-			}
+      if (!response.ok) {
+        throw new Error(`Failed to load logo: ${response.status}`);
+      }
 
-			const svgText = await response.text();
-			cachedRijkswapen = svgText;
-			this._logoSvg = svgText;
-		} catch (error) {
-			console.error('Failed to load Rijkswapen:', (error as Error).message);
-		}
-	}
+      const svgText = await response.text();
+      cachedRijkswapen = svgText;
+      this._logoSvg = svgText;
+    } catch (error) {
+      console.error('Failed to load Rijkswapen:', (error as Error).message);
+    }
+  }
 
-	override render() {
-		return html`
-			<div class="logo-container" part="container">
-				<div class="logo" part="logo" role="img" aria-label="Rijkswapen - Rijksoverheid">
-					${this._logoSvg ? unsafeHTML(this._logoSvg) : nothing}
-				</div>
-				${this.hasWordmark
-					? html`
-							<div class="wordmark" part="wordmark">
-								${this.title ? html`<p class="title">${this.title}</p>` : nothing}
-								${this.subtitle ? html`<p class="subtitle">${this.subtitle}</p>` : nothing}
-								${this.supportingText1
-									? html`<p class="supporting-text">${this.supportingText1}</p>`
-									: nothing}
-								${this.supportingText2
-									? html`<p class="supporting-text">${this.supportingText2}</p>`
-									: nothing}
-							</div>
-						`
-					: nothing}
-			</div>
-		`;
-	}
+  override render() {
+    return html`
+      <div class="logo-container" part="container">
+        <div class="logo" part="logo" role="img" aria-label="Rijkswapen - Rijksoverheid">
+          ${this._logoSvg ? unsafeHTML(this._logoSvg) : nothing}
+        </div>
+        ${this.hasWordmark
+          ? html`
+              <div class="wordmark" part="wordmark">
+                ${this.title ? html`<p class="title">${this.title}</p>` : nothing}
+                ${this.subtitle ? html`<p class="subtitle">${this.subtitle}</p>` : nothing}
+                ${this.supportingText1
+                  ? html`<p class="supporting-text">${this.supportingText1}</p>`
+                  : nothing}
+                ${this.supportingText2
+                  ? html`<p class="supporting-text">${this.supportingText2}</p>`
+                  : nothing}
+              </div>
+            `
+          : nothing}
+      </div>
+    `;
+  }
 }
 
 declare global {
-	interface HTMLElementTagNameMap {
-		'ndd-nav-logo': NDDNavLogo;
-	}
+  interface HTMLElementTagNameMap {
+    'ndd-nav-logo': NDDNavLogo;
+  }
 }

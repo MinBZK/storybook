@@ -6,18 +6,18 @@
  * Returns the first element child, typed as T.
  */
 export async function fixture<T extends HTMLElement = HTMLElement>(html: string): Promise<T> {
-	const wrapper = document.createElement('div');
-	wrapper.innerHTML = html;
-	document.body.appendChild(wrapper);
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  document.body.appendChild(wrapper);
 
-	const el = wrapper.firstElementChild as T;
+  const el = wrapper.firstElementChild as T;
 
-	// Wait for the element's Lit lifecycle to settle
-	if ('updateComplete' in el) {
-		await (el as T & { updateComplete: Promise<boolean> }).updateComplete;
-	}
+  // Wait for the element's Lit lifecycle to settle
+  if ('updateComplete' in el) {
+    await (el as T & { updateComplete: Promise<boolean> }).updateComplete;
+  }
 
-	return el;
+  return el;
 }
 
 /**
@@ -25,7 +25,7 @@ export async function fixture<T extends HTMLElement = HTMLElement>(html: string)
  * Call this in `afterEach` to clean up.
  */
 export function cleanup(el: Element): void {
-	el.parentElement?.remove();
+  el.parentElement?.remove();
 }
 
 /**
@@ -39,8 +39,8 @@ export function cleanup(el: Element): void {
  *   3. Awaiting updateComplete again (covers MO-triggered re-renders)
  */
 export async function waitForUpdate(el: HTMLElement): Promise<void> {
-	const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
-	await litEl.updateComplete;
-	await new Promise((r) => setTimeout(r, 0));
-	await litEl.updateComplete;
+  const litEl = el as HTMLElement & { updateComplete: Promise<boolean> };
+  await litEl.updateComplete;
+  await new Promise(r => setTimeout(r, 0));
+  await litEl.updateComplete;
 }

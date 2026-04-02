@@ -38,12 +38,7 @@ export const Default = {
 	},
 	render: (args) => html`
 		<ndd-list variant="simple">
-			<ndd-list-item
-				size=${args.size}
-				?selected=${args.selected}
-				type=${args.type}
-				href=${args.href}
-			>
+			<ndd-list-item size=${args.size} ?selected=${args.selected} type=${args.type} href=${args.href}>
 				<ndd-text-cell text="Text cell" supporting-text="Supporting text" />
 			</ndd-list-item>
 		</ndd-list>
@@ -130,10 +125,7 @@ export const WithStartAndEnd = {
 		<ndd-list variant="box">
 			<ndd-list-item>
 				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
-				<div
-					slot="start"
-					style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"
-				></div>
+				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
 				<ndd-spacer-cell slot="start" size="8"></ndd-spacer-cell>
 				<ndd-text-cell text="Item with start icon" />
 				<ndd-spacer-cell slot="end" size="8"></ndd-spacer-cell>
@@ -144,10 +136,7 @@ export const WithStartAndEnd = {
 			</ndd-list-item>
 			<ndd-list-item>
 				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
-				<div
-					slot="start"
-					style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"
-				></div>
+				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
 				<ndd-spacer-cell slot="start" size="8"></ndd-spacer-cell>
 				<ndd-text-cell text="Another item" />
 			</ndd-list-item>
@@ -182,14 +171,30 @@ export const WithDragHandle = {
 		<ndd-list variant="box" reorderable>
 			<ndd-list-item>
 				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
-				<ndd-drag-handle-cell size="sm" slot="start" draggable-only></ndd-drag-handle-cell>
-				<ndd-spacer-cell slot="start" draggable-only size="8"></ndd-spacer-cell>
+				<ndd-drag-handle-cell
+					size="sm"
+					slot="start"
+					draggable-only
+				></ndd-drag-handle-cell>
+				<ndd-spacer-cell
+					slot="start"
+					draggable-only
+					size="8"
+				></ndd-spacer-cell>
 				<ndd-text-cell text="Versleepbaar item" />
 			</ndd-list-item>
 			<ndd-list-item>
 				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
-				<ndd-drag-handle-cell size="sm" slot="start" draggable-only></ndd-drag-handle-cell>
-				<ndd-spacer-cell slot="start" draggable-only size="8"></ndd-spacer-cell>
+				<ndd-drag-handle-cell
+					size="sm"
+					slot="start"
+					draggable-only
+				></ndd-drag-handle-cell>
+				<ndd-spacer-cell
+					slot="start"
+					draggable-only
+					size="8"
+				></ndd-spacer-cell>
 				<ndd-text-cell text="Nog een item" />
 			</ndd-list-item>
 		</ndd-list>

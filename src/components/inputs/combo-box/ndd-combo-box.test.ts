@@ -30,6 +30,7 @@ describe('ndd-combo-box', () => {
 	});
 });
 
+
 /* ============================================================
    ARIA
    ============================================================ */
@@ -72,6 +73,7 @@ describe('ndd-combo-box – ARIA', () => {
 	});
 });
 
+
 /* ============================================================
    State
    ============================================================ */
@@ -102,6 +104,7 @@ describe('ndd-combo-box – state', () => {
 	});
 });
 
+
 /* ============================================================
    Input event
    ============================================================ */
@@ -127,15 +130,14 @@ describe('ndd-combo-box – input event', () => {
 		el = await fixture<NDDComboBox>('<ndd-combo-box></ndd-combo-box>');
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('input', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
+		el.addEventListener('input', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		const input = el.shadowRoot!.querySelector('input')!;
 		(input as any).value = 'test';
 		input.dispatchEvent(new Event('input', { bubbles: true }));
 		expect(detail?.value).toBe('test');
 	});
 });
+
 
 /* ============================================================
    Filtering
@@ -193,6 +195,7 @@ describe('ndd-combo-box – filtering', () => {
 	});
 });
 
+
 /* ============================================================
    Popover API
    ============================================================ */
@@ -225,7 +228,9 @@ describe('ndd-combo-box – Popover API', () => {
 
 		el._openMenu(false);
 
-		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Popover API'));
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('Popover API')
+		);
 
 		proto.showPopover = original;
 	});

@@ -35,6 +35,7 @@ export const segmentedControlStyles = css`
 		padding-inline: var(--primitives-space-2);
 	}
 
+
 	/* # Focus */
 
 	::slotted(ndd-segmented-control-item:focus-within) {
@@ -62,6 +63,7 @@ export const segmentedControlItemStyles = css`
 		display: none;
 	}
 
+
 	/* # Input */
 
 	.segmented-control__item-input {
@@ -73,6 +75,7 @@ export const segmentedControlItemStyles = css`
 		opacity: 0;
 		z-index: 1;
 	}
+
 
 	/* # Label */
 
@@ -102,27 +105,11 @@ export const segmentedControlItemStyles = css`
 
 	:host([variant='icon'][size='md']) .segmented-control__item-label,
 	:host([variant='icon']:not([size])) .segmented-control__item-label {
-		padding-inline: calc(
-			(
-					var(--semantics-controls-md-min-size) - var(--_segmented-control-md-item-icon-size) - var(
-							--_segmented-control-md-inset-size
-						) *
-						2 + var(--_segmented-control-md-gap-size)
-				) /
-				2
-		);
+		padding-inline: calc((var(--semantics-controls-md-min-size) - var(--_segmented-control-md-item-icon-size) - var(--_segmented-control-md-inset-size) * 2 + var(--_segmented-control-md-gap-size)) / 2);
 	}
 
 	:host([variant='icon'][size='sm']) .segmented-control__item-label {
-		padding-inline: calc(
-			(
-					var(--semantics-controls-sm-min-size) - var(--_segmented-control-sm-item-icon-size) - var(
-							--_segmented-control-sm-inset-size
-						) *
-						2 + var(--_segmented-control-sm-gap-size)
-				) /
-				2
-		);
+		padding-inline: calc((var(--semantics-controls-sm-min-size) - var(--_segmented-control-sm-item-icon-size) - var(--_segmented-control-sm-inset-size) * 2 + var(--_segmented-control-sm-gap-size)) / 2);
 	}
 
 	:host([selected]) .segmented-control__item-label {
@@ -133,6 +120,7 @@ export const segmentedControlItemStyles = css`
 		opacity: var(--primitives-opacity-disabled);
 	}
 
+
 	/* # Text */
 
 	.segmented-control__item-text {
@@ -142,6 +130,7 @@ export const segmentedControlItemStyles = css`
 		z-index: 2;
 		pointer-events: none;
 	}
+
 
 	/* # Icon slot */
 
@@ -171,6 +160,7 @@ export const segmentedControlItemStyles = css`
 		height: 100%;
 	}
 
+
 	/* # Slot visibility */
 
 	:host([variant='text']) .segmented-control__item-icon {
@@ -180,6 +170,7 @@ export const segmentedControlItemStyles = css`
 	:host([variant='icon']) .segmented-control__item-text {
 		display: none;
 	}
+
 
 	/* # Indicator */
 
@@ -194,35 +185,28 @@ export const segmentedControlItemStyles = css`
 	:host(:not([size])) .segmented-control__item-indicator {
 		inset-block: var(--_segmented-control-md-inset-size);
 		inset-inline: calc(var(--_segmented-control-md-gap-size) / 2);
-		border-radius: calc(
-			var(--semantics-controls-md-corner-radius) - (var(--_segmented-control-md-inset-size) / 2)
-		);
+		border-radius: calc(var(--semantics-controls-md-corner-radius) - (var(--_segmented-control-md-inset-size) / 2));
 	}
 
 	:host([size='sm']) .segmented-control__item-indicator {
 		inset-block: var(--_segmented-control-sm-inset-size);
 		inset-inline: calc(var(--_segmented-control-sm-gap-size) / 2);
-		border-radius: calc(
-			var(--semantics-controls-sm-corner-radius) - (var(--_segmented-control-sm-inset-size) / 2)
-		);
+		border-radius: calc(var(--semantics-controls-sm-corner-radius) - (var(--_segmented-control-sm-inset-size) / 2));
 	}
 
 	:host([selected]) .segmented-control__item-indicator {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 	}
 
-	:host(:not([selected]))
-		.segmented-control__item-input:hover
-		~ .segmented-control__item-indicator {
+	:host(:not([selected])) .segmented-control__item-input:hover ~ .segmented-control__item-indicator {
 		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 	}
+
 
 	/* # Focus */
 
 	.segmented-control__item-input:focus-visible ~ .segmented-control__item-indicator {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 `;

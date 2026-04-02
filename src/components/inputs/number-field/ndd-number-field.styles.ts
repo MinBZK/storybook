@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const numberFieldStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -30,6 +32,7 @@ export const numberFieldStyles = css`
 		width: var(--_width);
 	}
 
+
 	/* # Container */
 
 	.number-field {
@@ -38,8 +41,7 @@ export const numberFieldStyles = css`
 		align-items: center;
 		height: var(--semantics-controls-md-min-size);
 		background-color: var(--semantics-input-fields-background-color);
-		border: var(--semantics-input-fields-border-thickness) solid
-			var(--semantics-input-fields-border-color);
+		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		box-sizing: border-box;
 	}
@@ -50,11 +52,10 @@ export const numberFieldStyles = css`
 	}
 
 	.number-field:has(.number-field__input:focus-visible) {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
+
 
 	/* # Controls */
 
@@ -62,21 +63,16 @@ export const numberFieldStyles = css`
 		display: flex;
 		align-items: center;
 		height: 100%;
-		padding-left: calc(
-			(var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) /
-				2 - var(--semantics-input-fields-border-thickness)
-		);
+		padding-left: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
 	.number-field__increment-control {
 		display: flex;
 		align-items: center;
 		height: 100%;
-		padding-right: calc(
-			(var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) /
-				2 - var(--semantics-input-fields-border-thickness)
-		);
+		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
+
 
 	/* # Input */
 

@@ -62,12 +62,8 @@ describe('ndd-collection', () => {
 		await waitForUpdate(el);
 		await waitForUpdate(el); // wait for slotchange to trigger re-render
 		let fired = false;
-		el.addEventListener('load-more', () => {
-			fired = true;
-		});
-		el.shadowRoot!.querySelector('ndd-button')!.dispatchEvent(
-			new MouseEvent('click', { bubbles: true, composed: true })
-		);
+		el.addEventListener('load-more', () => { fired = true; });
+		el.shadowRoot!.querySelector('ndd-button')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 		expect(fired).toBe(true);
 	});
 });

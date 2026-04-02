@@ -61,10 +61,8 @@ export class NDDDropdown extends LitElement {
 
 	public _onSlotChange(): void {
 		const slot = this.shadowRoot?.querySelector('slot');
-		const select =
-			slot
-				?.assignedElements({ flatten: true })
-				.find((el): el is HTMLSelectElement => el.tagName === 'SELECT') ?? null;
+		const select = slot?.assignedElements({ flatten: true })
+			.find((el): el is HTMLSelectElement => el.tagName === 'SELECT') ?? null;
 
 		if (this._select && this._select !== select) {
 			this._select.removeEventListener('change', this._handleSelectChange);
@@ -77,14 +75,8 @@ export class NDDDropdown extends LitElement {
 			return;
 		}
 
-		if (
-			!select.hasAttribute('aria-label') &&
-			!select.hasAttribute('aria-labelledby') &&
-			!select.labels?.length
-		) {
-			console.warn(
-				'<ndd-dropdown>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.'
-			);
+		if (!select.hasAttribute('aria-label') && !select.hasAttribute('aria-labelledby') && !select.labels?.length) {
+			console.warn('<ndd-dropdown>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.');
 		}
 
 		select.addEventListener('change', this._handleSelectChange);
@@ -107,13 +99,11 @@ export class NDDDropdown extends LitElement {
 	private _handleSelectChange = (e: Event): void => {
 		e.stopPropagation();
 		this._syncDisplayValue();
-		this.dispatchEvent(
-			new CustomEvent('change', {
-				detail: { value: this._select?.value ?? '' },
-				bubbles: true,
-				composed: true,
-			})
-		);
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: this._select?.value ?? '' },
+			bubbles: true,
+			composed: true,
+		}));
 	};
 
 	override render() {

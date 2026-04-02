@@ -55,6 +55,7 @@ describe('ndd-segmented-control-item', () => {
 	});
 });
 
+
 /* ============================================================
    State sync
    ============================================================ */
@@ -103,7 +104,7 @@ describe('ndd-segmented-control – state sync', () => {
 			</ndd-segmented-control>
 		`);
 		await waitForUpdate(el);
-		getItems(el).forEach((item) => expect(item.disabled).toBe(true));
+		getItems(el).forEach(item => expect(item.disabled).toBe(true));
 	});
 
 	it('preserves item-level disabled when parent is not disabled', async () => {
@@ -129,7 +130,7 @@ describe('ndd-segmented-control – state sync', () => {
 		await waitForUpdate(el);
 		el.disabled = false;
 		await waitForUpdate(el);
-		getItems(el).forEach((item) => expect(item.disabled).toBe(false));
+		getItems(el).forEach(item => expect(item.disabled).toBe(false));
 	});
 
 	it('does not re-enable individually disabled items when parent disabled is removed', async () => {
@@ -168,6 +169,7 @@ describe('ndd-segmented-control – state sync', () => {
 	});
 });
 
+
 describe('ndd-segmented-control – radio change', () => {
 	let el: NDDSegmentedControl;
 
@@ -179,9 +181,7 @@ describe('ndd-segmented-control – radio change', () => {
 		el = await fixture<NDDSegmentedControl>(radioFixture('a'));
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('change', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		const input = getInput(getItems(el)[1]);
 		input.checked = true;
 		input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -192,15 +192,14 @@ describe('ndd-segmented-control – radio change', () => {
 		el = await fixture<NDDSegmentedControl>(radioFixture('a'));
 		await waitForUpdate(el);
 		let fired = false;
-		el.addEventListener('change', () => {
-			fired = true;
-		});
+		el.addEventListener('change', () => { fired = true; });
 		const input = getInput(getItems(el)[0]);
 		input.checked = true;
 		input.dispatchEvent(new Event('change', { bubbles: true }));
 		expect(fired).toBe(false);
 	});
 });
+
 
 /* ============================================================
    Checkbox change event
@@ -222,9 +221,7 @@ describe('ndd-segmented-control – checkbox change', () => {
 		`);
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('change', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		const input = getInput(getItems(el)[0]);
 		input.checked = true;
 		input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -241,9 +238,7 @@ describe('ndd-segmented-control – checkbox change', () => {
 		(el as NDDSegmentedControl).values = ['a', 'b'];
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('change', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		const input = getInput(getItems(el)[0]);
 		input.checked = false;
 		input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -251,6 +246,7 @@ describe('ndd-segmented-control – checkbox change', () => {
 		expect(detail?.values).toContain('b');
 	});
 });
+
 
 describe('ndd-segmented-control – keyboard navigation', () => {
 	let el: NDDSegmentedControl;
@@ -320,6 +316,7 @@ describe('ndd-segmented-control – keyboard navigation', () => {
 	});
 });
 
+
 /* ============================================================
    ARIA
    ============================================================ */
@@ -356,6 +353,7 @@ describe('ndd-segmented-control – ARIA', () => {
 	});
 });
 
+
 /* ============================================================
    Accessibility
    ============================================================ */
@@ -376,7 +374,9 @@ describe('ndd-segmented-control – accessibility', () => {
 			</ndd-segmented-control>
 		`);
 		await waitForUpdate(el);
-		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible name'));
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('accessible name')
+		);
 	});
 
 	it('does not warn when accessible-label is provided', async () => {

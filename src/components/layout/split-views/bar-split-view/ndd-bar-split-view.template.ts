@@ -15,36 +15,29 @@ export function barSplitViewTemplate(component: NDDBarSplitView): TemplateResult
 				const isLast = index === sorted.length - 1;
 
 				// Inline position is only applied to bars on sm viewports
-				const barStyles =
-					!isMain && isSm
-						? component._smTopBars.has(el)
-							? { top: `${component._smOffsets.get(el) ?? 0}px` }
-							: { bottom: `${component._smOffsets.get(el) ?? 0}px` }
-						: {};
+				const barStyles = !isMain && isSm
+					? component._smTopBars.has(el)
+						? { top: `${component._smOffsets.get(el) ?? 0}px` }
+						: { bottom: `${component._smOffsets.get(el) ?? 0}px` }
+					: {};
 
 				return html`
-					<div
-						class=${classMap({ 'bar-split-view__main': isMain, 'bar-split-view__bar': !isMain })}
-						style=${styleMap(barStyles)}
-					>
+					<div class=${classMap({ 'bar-split-view__main': isMain, 'bar-split-view__bar': !isMain })}
+						style=${styleMap(barStyles)}>
 						<slot name=${el.slot}></slot>
 					</div>
-					${!isSm && !isLast
-						? html`
-								<div class="bar-split-view__divider">
-									<ndd-split-view-divider orientation="horizontal"></ndd-split-view-divider>
-								</div>
-							`
-						: nothing}
+					${!isSm && !isLast ? html`
+						<div class="bar-split-view__divider">
+							<ndd-split-view-divider orientation="horizontal"></ndd-split-view-divider>
+						</div>
+					` : nothing}
 				`;
 			})}
-			${!sorted.some((el) => el.slot === 'main')
-				? html`
-						<div class="bar-split-view__main">
-							<slot name="main"></slot>
-						</div>
-					`
-				: nothing}
+			${!sorted.some(el => el.slot === 'main') ? html`
+				<div class="bar-split-view__main">
+					<slot name="main"></slot>
+				</div>
+			` : nothing}
 		</div>
 	`;
 }

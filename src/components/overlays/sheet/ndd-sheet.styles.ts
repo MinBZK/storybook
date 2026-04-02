@@ -5,74 +5,56 @@ const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
+
 /* # ndd-sheet styles */
 
 export const sheetStyles = css`
+
 	/* # Host */
 
 	:host {
 		display: block;
 	}
 
+
 	/* # Keyframes — right */
 
 	@keyframes sheet-slide-in-right {
-		from {
-			transform: translateX(100%);
-		}
-		to {
-			transform: translateX(0);
-		}
+		from { transform: translateX(100%); }
+		to { transform: translateX(0); }
 	}
 
 	@keyframes sheet-slide-out-right {
-		from {
-			transform: translateX(0);
-		}
-		to {
-			transform: translateX(100%);
-		}
+		from { transform: translateX(0); }
+		to { transform: translateX(100%); }
 	}
+
 
 	/* # Keyframes — left */
 
 	@keyframes sheet-slide-in-left {
-		from {
-			transform: translateX(-100%);
-		}
-		to {
-			transform: translateX(0);
-		}
+		from { transform: translateX(-100%); }
+		to { transform: translateX(0); }
 	}
 
 	@keyframes sheet-slide-out-left {
-		from {
-			transform: translateX(0);
-		}
-		to {
-			transform: translateX(-100%);
-		}
+		from { transform: translateX(0); }
+		to { transform: translateX(-100%); }
 	}
+
 
 	/* # Keyframes — bottom */
 
 	@keyframes sheet-slide-in-bottom {
-		from {
-			transform: translateY(100%);
-		}
-		to {
-			transform: translateY(0);
-		}
+		from { transform: translateY(100%); }
+		to { transform: translateY(0); }
 	}
 
 	@keyframes sheet-slide-out-bottom {
-		from {
-			transform: translateY(0);
-		}
-		to {
-			transform: translateY(100%);
-		}
+		from { transform: translateY(0); }
+		to { transform: translateY(100%); }
 	}
+
 
 	/* # Sheet base */
 
@@ -87,11 +69,8 @@ export const sheetStyles = css`
 	}
 
 	.sheet:focus-visible {
-		box-shadow:
-			0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color),
-			var(--components-sheet-box-shadow);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-sheet-box-shadow);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
 	.sheet:not([open]) {
@@ -106,12 +85,12 @@ export const sheetStyles = css`
 		background: transparent;
 	}
 
+
 	/* # Placement: right (default) */
 
 	:host([placement='right']) .sheet,
 	:host(:not([placement])) .sheet {
-		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset)
-			var(--components-sheet-side-inset) auto;
+		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
 		width: var(--components-sheet-side-md-width);
 		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
@@ -129,11 +108,11 @@ export const sheetStyles = css`
 		}
 	}
 
+
 	/* # Placement: left */
 
 	:host([placement='left']) .sheet {
-		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset)
-			var(--components-sheet-side-inset);
+		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
 		width: var(--components-sheet-side-md-width);
 		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
@@ -151,6 +130,7 @@ export const sheetStyles = css`
 		}
 	}
 
+
 	/* # Placement: bottom */
 
 	:host([placement='bottom']) .sheet {
@@ -159,8 +139,7 @@ export const sheetStyles = css`
 		max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
 		height: auto;
 		margin-inline: auto;
-		border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0
-			0;
+		border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
 		@media (max-width: ${smMax}) {
 			width: 100%;
@@ -184,6 +163,7 @@ export const sheetStyles = css`
 		}
 	}
 
+
 	/* # Responsive: sm viewport — all placements become bottom sheet */
 
 	@media (max-width: ${smMax}) {
@@ -195,19 +175,18 @@ export const sheetStyles = css`
 			max-width: 100%;
 			height: auto;
 			max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
-			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius)
-				0 0;
+			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
 			&[open] {
 				animation: sheet-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
 			}
 
 			&.is-closing {
-				animation: sheet-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease
-					both;
+				animation: sheet-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
 			}
 		}
 	}
+
 
 	/* # Reduced motion */
 
@@ -217,6 +196,7 @@ export const sheetStyles = css`
 			animation: none;
 		}
 	}
+
 
 	/* # Sheet body */
 

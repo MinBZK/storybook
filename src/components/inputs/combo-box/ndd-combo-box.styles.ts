@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const comboBoxStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -16,6 +18,7 @@ export const comboBoxStyles = css`
 		pointer-events: none;
 	}
 
+
 	/* # Container */
 
 	.combo-box {
@@ -26,8 +29,7 @@ export const comboBoxStyles = css`
 		width: 100%;
 		min-height: var(--semantics-controls-md-min-size);
 		background-color: var(--_background-color);
-		border: var(--semantics-input-fields-border-thickness) solid
-			var(--semantics-input-fields-border-color);
+		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		--_background-color: var(--semantics-input-fields-background-color);
 	}
@@ -38,11 +40,10 @@ export const comboBoxStyles = css`
 	}
 
 	.combo-box:has(.combo-box__input:focus-visible) {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
+
 
 	/* # Input */
 
@@ -70,15 +71,13 @@ export const comboBoxStyles = css`
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
 
+
 	/* # Picker */
 
 	.combo-box__picker {
 		display: flex;
 		align-items: center;
 		flex-shrink: 0;
-		padding-right: calc(
-			(var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) /
-				2 - var(--semantics-input-fields-border-thickness)
-		);
+		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 `;

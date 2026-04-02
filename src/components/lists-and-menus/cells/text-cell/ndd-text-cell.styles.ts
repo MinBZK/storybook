@@ -21,6 +21,7 @@ export const styles = css`
 		display: none;
 	}
 
+
 	/* # Width */
 
 	:host([width='stretch']),
@@ -39,6 +40,7 @@ export const styles = css`
 	:host([width]:not([width='stretch']):not([width='fit-content'])) {
 		flex-shrink: 0;
 	}
+
 
 	/* # Vertical alignment
 	 *
@@ -61,6 +63,7 @@ export const styles = css`
 		align-self: flex-end;
 	}
 
+
 	/* # Horizontal alignment */
 
 	:host([horizontal-alignment='left']),
@@ -71,6 +74,7 @@ export const styles = css`
 	:host([horizontal-alignment='right']) {
 		align-items: flex-end;
 	}
+
 
 	/* # Overline */
 
@@ -94,6 +98,7 @@ export const styles = css`
 		text-align: right;
 	}
 
+
 	/* # Text */
 
 	.text-cell__text {
@@ -114,6 +119,7 @@ export const styles = css`
 	:host([horizontal-alignment='right']) .text-cell__text {
 		text-align: right;
 	}
+
 
 	/* # Color */
 
@@ -138,6 +144,7 @@ export const styles = css`
 		color: inherit;
 	}
 
+
 	/* # Supporting text */
 
 	.text-cell__supporting-text {
@@ -160,6 +167,7 @@ export const styles = css`
 		text-align: right;
 	}
 
+
 	/* # Selected */
 
 	:host([selected]) .text-cell__text,
@@ -167,6 +175,7 @@ export const styles = css`
 	:host([selected]) .text-cell__supporting-text {
 		color: var(--semantics-controls-is-selected-contrast-color);
 	}
+
 
 	/* # Forced colors */
 

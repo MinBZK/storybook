@@ -35,6 +35,7 @@ describe('ndd-dropdown', () => {
 	});
 });
 
+
 /* ============================================================
    State
    ============================================================ */
@@ -101,6 +102,7 @@ describe('ndd-dropdown – state', () => {
 	});
 });
 
+
 /* ============================================================
    Accessibility
    ============================================================ */
@@ -123,7 +125,9 @@ describe('ndd-dropdown – accessibility', () => {
 			</ndd-dropdown>
 		`);
 		await waitForUpdate(el);
-		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible name'));
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('accessible name')
+		);
 	});
 
 	it('does not warn when slotted select has aria-label', async () => {
@@ -139,6 +143,7 @@ describe('ndd-dropdown – accessibility', () => {
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 });
+
 
 /* ============================================================
    Change event
@@ -166,9 +171,7 @@ describe('ndd-dropdown – change event', () => {
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('change', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 
 		const select = el.querySelector('select')!;
 		select.value = 'be';

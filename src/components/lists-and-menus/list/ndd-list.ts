@@ -66,7 +66,7 @@ export class NDDList extends LitElement {
 
 		const headerSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="header"]');
 		headerSlot?.addEventListener('slotchange', () => {
-			this._hasHeader = headerSlot.assignedElements().length > 0;
+			this._hasHeader = (headerSlot.assignedElements().length > 0);
 		});
 	}
 
@@ -97,8 +97,7 @@ export class NDDList extends LitElement {
 	private _getItems(): NDDListItem[] {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		return (slot?.assignedElements() ?? []).filter(
-			(el) =>
-				el.tagName.toLowerCase() === 'ndd-list-item' && !el.hasAttribute('data-ndd-placeholder')
+			(el) => el.tagName.toLowerCase() === 'ndd-list-item' && !el.hasAttribute('data-ndd-placeholder'),
 		) as NDDListItem[];
 	}
 
@@ -121,12 +120,12 @@ export class NDDList extends LitElement {
 
 		const path = event.composedPath() as Element[];
 		const hasDragHandle = path.some(
-			(el) => el instanceof Element && el.hasAttribute('draggable-only')
+			(el) => el instanceof Element && el.hasAttribute('draggable-only'),
 		);
 		if (!hasDragHandle) return;
 
 		const item = path.find(
-			(el) => el instanceof Element && el.tagName.toLowerCase() === 'ndd-list-item'
+			(el) => el instanceof Element && el.tagName.toLowerCase() === 'ndd-list-item',
 		) as NDDListItem | undefined;
 		if (!item) return;
 
@@ -134,9 +133,9 @@ export class NDDList extends LitElement {
 		this._lastPointerY = event.clientY;
 		this._startDrag(item, event.clientY);
 		// Restore focus suppressed by preventDefault
-		const handle = path.find((el) => el instanceof HTMLButtonElement) as
-			| HTMLButtonElement
-			| undefined;
+		const handle = path.find(
+			(el) => el instanceof HTMLButtonElement,
+		) as HTMLButtonElement | undefined;
 		handle?.focus();
 		this._pointerId = event.pointerId;
 		this.setPointerCapture(event.pointerId);
@@ -153,10 +152,7 @@ export class NDDList extends LitElement {
 		// Move floating clone
 		if (this._clone) {
 			this._listRect = this.getBoundingClientRect();
-			this._clone.style.setProperty(
-				'--_drag-clone-top',
-				`${event.clientY - this._listRect.top - this._cloneOffsetY}px`
-			);
+			this._clone.style.setProperty('--_drag-clone-top', `${event.clientY - this._listRect.top - this._cloneOffsetY}px`);
 		}
 
 		const draggingDown = event.clientY >= this._lastPointerY;
@@ -202,8 +198,7 @@ export class NDDList extends LitElement {
 					const current = this._getDropIndex();
 					this._setDropIndex(Math.max(0, current - 1));
 					this._announce(this._dragPositionAnnouncement());
-					if (this._draggingEl)
-						this._setDragHandleLabel(this._draggingEl, this._dragPositionLabel());
+					if (this._draggingEl) this._setDragHandleLabel(this._draggingEl, this._dragPositionLabel());
 					break;
 				}
 				case 'ArrowDown': {
@@ -212,8 +207,7 @@ export class NDDList extends LitElement {
 					const current = this._getDropIndex();
 					this._setDropIndex(Math.min(items.length - 1, current + 1));
 					this._announce(this._dragPositionAnnouncement());
-					if (this._draggingEl)
-						this._setDragHandleLabel(this._draggingEl, this._dragPositionLabel());
+					if (this._draggingEl) this._setDragHandleLabel(this._draggingEl, this._dragPositionLabel());
 					break;
 				}
 				case 'Enter':
@@ -233,12 +227,12 @@ export class NDDList extends LitElement {
 
 		const path = event.composedPath() as Element[];
 		const hasDragHandle = path.some(
-			(el) => el instanceof Element && el.hasAttribute('draggable-only')
+			(el) => el instanceof Element && el.hasAttribute('draggable-only'),
 		);
 		if (!hasDragHandle) return;
 
 		const item = path.find(
-			(el) => el instanceof Element && el.tagName.toLowerCase() === 'ndd-list-item'
+			(el) => el instanceof Element && el.tagName.toLowerCase() === 'ndd-list-item',
 		) as NDDListItem | undefined;
 		if (!item) return;
 
@@ -289,10 +283,7 @@ export class NDDList extends LitElement {
 
 			this._clone = document.createElement('div');
 			this._clone.className = 'list__drag-clone';
-			this._clone.style.setProperty(
-				'--_drag-clone-top',
-				`${clientY - this._listRect.top - this._cloneOffsetY}px`
-			);
+			this._clone.style.setProperty('--_drag-clone-top', `${clientY - this._listRect.top - this._cloneOffsetY}px`);
 			this._clone.style.setProperty('--_drag-clone-left', `${rect.left - this._listRect.left}px`);
 			this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
 			this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
@@ -345,7 +336,7 @@ export class NDDList extends LitElement {
 					detail: { fromIndex, toIndex },
 					bubbles: true,
 					composed: true,
-				})
+				}),
 			);
 			this._announce(this._t('components.list.drag-dropped-text', { position: toIndex + 1 }));
 
@@ -376,11 +367,7 @@ export class NDDList extends LitElement {
 		this._clone?.remove();
 
 		if (this._pointerId !== null) {
-			try {
-				this.releasePointerCapture(this._pointerId);
-			} catch (e) {
-				if (!(e instanceof DOMException)) throw e;
-			}
+			try { this.releasePointerCapture(this._pointerId); } catch (e) { if (!(e instanceof DOMException)) throw e; }
 			this._pointerId = null;
 		}
 
@@ -410,6 +397,7 @@ export class NDDList extends LitElement {
 		return str;
 	}
 
+
 	// Sets or clears the aria-label on the active keyboard drag handle button directly
 	private _setDragHandleLabel(item: NDDListItem, label?: string) {
 		const handle = item
@@ -428,10 +416,7 @@ export class NDDList extends LitElement {
 	private _dragPositionLabel(): string {
 		const items = this._getItems();
 		const pos = this._getDropIndex() + 1;
-		return this._t('components.list.drag-handle-active-label-text', {
-			position: pos,
-			total: items.length,
-		});
+		return this._t('components.list.drag-handle-active-label-text', { position: pos, total: items.length });
 	}
 
 	private _dragPositionAnnouncement(): string {
@@ -446,11 +431,9 @@ export class NDDList extends LitElement {
 		if (!region) return;
 		region.textContent = '';
 		// Double rAF forces screen readers to register the content change across browsers
-		requestAnimationFrame(() =>
-			requestAnimationFrame(() => {
-				region.textContent = message;
-			})
-		);
+		requestAnimationFrame(() => requestAnimationFrame(() => {
+			region.textContent = message;
+		}));
 	}
 
 	override render() {

@@ -44,6 +44,7 @@ describe('ndd-radio-button-field', () => {
 	});
 });
 
+
 /* ============================================================
    State
    ============================================================ */
@@ -62,17 +63,13 @@ describe('ndd-radio-button-field – state', () => {
 	});
 
 	it('is checked when checked attribute is set', async () => {
-		el = await fixture<NDDRadioButtonField>(
-			'<ndd-radio-button-field checked></ndd-radio-button-field>'
-		);
+		el = await fixture<NDDRadioButtonField>('<ndd-radio-button-field checked></ndd-radio-button-field>');
 		await waitForUpdate(el);
 		expect(el.checked).toBe(true);
 	});
 
 	it('is disabled when disabled attribute is set', async () => {
-		el = await fixture<NDDRadioButtonField>(
-			'<ndd-radio-button-field disabled></ndd-radio-button-field>'
-		);
+		el = await fixture<NDDRadioButtonField>('<ndd-radio-button-field disabled></ndd-radio-button-field>');
 		await waitForUpdate(el);
 		const radioButton = el.shadowRoot!.querySelector('ndd-radio-button') as any;
 		await waitForUpdate(radioButton);
@@ -80,9 +77,7 @@ describe('ndd-radio-button-field – state', () => {
 	});
 
 	it('forwards value to ndd-radio-button', async () => {
-		el = await fixture<NDDRadioButtonField>(
-			'<ndd-radio-button-field value="option-a"></ndd-radio-button-field>'
-		);
+		el = await fixture<NDDRadioButtonField>('<ndd-radio-button-field value="option-a"></ndd-radio-button-field>');
 		await waitForUpdate(el);
 		const radioButton = el.shadowRoot!.querySelector('ndd-radio-button') as any;
 		await waitForUpdate(radioButton);

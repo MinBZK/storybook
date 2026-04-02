@@ -72,21 +72,12 @@ export class NDDToggleButtonGroup extends LitElement {
 	}
 
 	override firstUpdated(): void {
-		import.meta.env?.DEV &&
-			!this.accessibleLabel &&
-			!this.accessibleLabelledBy &&
-			console.warn(
-				'<ndd-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.'
-			);
+		import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy &&
+			console.warn('<ndd-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
 	}
 
 	override updated(changed: Map<PropertyKey, unknown>): void {
-		if (
-			changed.has('type') ||
-			changed.has('name') ||
-			changed.has('size') ||
-			changed.has('disabled')
-		) {
+		if (changed.has('type') || changed.has('name') || changed.has('size') || changed.has('disabled')) {
 			this._syncButtons();
 		}
 		if (changed.has('type')) {
@@ -113,11 +104,11 @@ export class NDDToggleButtonGroup extends LitElement {
 	}
 
 	private _getEnabledButtons(): NDDToggleButton[] {
-		return this._getButtons().filter((b) => !b.disabled);
+		return this._getButtons().filter(b => !b.disabled);
 	}
 
 	private _syncButtons(): void {
-		this._getButtons().forEach((button) => {
+		this._getButtons().forEach(button => {
 			button.type = this.type;
 			button.size = this.size;
 
@@ -145,7 +136,7 @@ export class NDDToggleButtonGroup extends LitElement {
 		if (!changedButton.selected) return;
 
 		// Deselect all other buttons when a radio button is selected
-		this._getButtons().forEach((button) => {
+		this._getButtons().forEach(button => {
 			if (button !== changedButton) button.selected = false;
 		});
 	};
@@ -157,14 +148,12 @@ export class NDDToggleButtonGroup extends LitElement {
 		const buttons = this._getEnabledButtons();
 		if (buttons.length === 0) return;
 
-		const activeButton = buttons.find((b) => b.selected);
+		const activeButton = buttons.find(b => b.selected);
 		const currentIndex = activeButton ? buttons.indexOf(activeButton) : -1;
 		const isNext = e.key === 'ArrowDown' || e.key === 'ArrowRight';
 		const nextIndex = isNext
 			? (currentIndex + 1) % buttons.length
-			: currentIndex <= 0
-				? buttons.length - 1
-				: currentIndex - 1;
+			: currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1;
 
 		const nextButton = buttons[nextIndex];
 		if (!nextButton) return;
@@ -179,13 +168,11 @@ export class NDDToggleButtonGroup extends LitElement {
 		const input = nextButton.shadowRoot?.querySelector<HTMLInputElement>('.toggle-button__input');
 		input?.focus();
 
-		nextButton.dispatchEvent(
-			new CustomEvent('change', {
-				detail: { selected: true, value: nextButton.value },
-				bubbles: true,
-				composed: true,
-			})
-		);
+		nextButton.dispatchEvent(new CustomEvent('change', {
+			detail: { selected: true, value: nextButton.value },
+			bubbles: true,
+			composed: true,
+		}));
 	};
 
 	public _onSlotChange = (): void => {

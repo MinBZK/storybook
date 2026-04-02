@@ -66,12 +66,7 @@ export const AlleToestanden = () => html`
 			<ndd-switch accessible-label="Niet aan klein" size="xs"></ndd-switch>
 			<ndd-switch accessible-label="Aan klein" size="xs" checked></ndd-switch>
 			<ndd-switch accessible-label="Uitgeschakeld klein" size="xs" disabled></ndd-switch>
-			<ndd-switch
-				accessible-label="Aan en uitgeschakeld klein"
-				size="xs"
-				checked
-				disabled
-			></ndd-switch>
+			<ndd-switch accessible-label="Aan en uitgeschakeld klein" size="xs" checked disabled></ndd-switch>
 		</div>
 	</div>
 `;

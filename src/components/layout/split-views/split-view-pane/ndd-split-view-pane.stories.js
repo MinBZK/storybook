@@ -53,10 +53,16 @@ export default {
 };
 
 export const Standaard = ({ hasContent }) => html`
-	<ndd-navigation-split-view style="height: 600px;">
+	<ndd-navigation-split-view
+		style="height: 600px;"
+
+	>
 		<ndd-split-view-pane slot="sidebar">
 			<ndd-page sticky-header>
-				<ndd-top-title-bar slot="header" title="Zijbalk"></ndd-top-title-bar>
+				<ndd-top-title-bar
+					slot="header"
+					title="Zijbalk"
+				></ndd-top-title-bar>
 				<ndd-simple-section>
 					<ndd-rich-text>
 						<h2>Navigatie</h2>
@@ -82,9 +88,16 @@ export const Standaard = ({ hasContent }) => html`
 			</ndd-page>
 		</ndd-split-view-pane>
 
-		<ndd-split-view-pane slot="main" ?has-content=${hasContent}>
+		<ndd-split-view-pane
+			slot="main"
+			?has-content=${hasContent}
+		>
 			<ndd-page sticky-header>
-				<ndd-top-title-bar slot="header" title="Inhoud" back-label="Terug"></ndd-top-title-bar>
+				<ndd-top-title-bar
+					slot="header"
+					title="Inhoud"
+					back-label="Terug"
+				></ndd-top-title-bar>
 				<ndd-simple-section>
 					<ndd-rich-text>
 						<h2>Primaire inhoud</h2>

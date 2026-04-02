@@ -36,8 +36,7 @@ export default {
 		background: {
 			control: { type: 'select' },
 			options: ['inherit', 'default', 'tinted'],
-			description:
-				'Tinted achtergrond — cascade van --context-parent-background-color naar alle afstammelingen inclusief ndd-page en de fade overlay',
+			description: 'Tinted achtergrond — cascade van --context-parent-background-color naar alle afstammelingen inclusief ndd-page en de fade overlay',
 			table: { defaultValue: { summary: 'inherit' } },
 		},
 		panes: {
@@ -62,22 +61,10 @@ const paneContent = (title, slot) => html`
 				<ndd-rich-text>
 					<h2>Sectietitel</h2>
 					<p>Dit is de inhoud van ${title}. Elke pagina heeft een eigen scrollbaar gebied.</p>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua.
-					</p>
-					<p>
-						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-						commodo consequat.
-					</p>
-					<p>
-						Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-						nulla pariatur.
-					</p>
-					<p>
-						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-						mollit anim id est laborum.
-					</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+					<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 				</ndd-rich-text>
 			</ndd-simple-section>
 		</ndd-page>
@@ -92,7 +79,7 @@ export const Standaard = ({ panes, background }) => html`
 
 export const DrieKolommen = () => html`
 	<ndd-side-by-side-split-view panes="3" style="height: 500px;">
-		${[1, 2, 3].map((n) => paneContent(`Paneel ${n}`, `pane-${n}`))}
+		${[1, 2, 3].map(n => paneContent(`Paneel ${n}`, `pane-${n}`))}
 	</ndd-side-by-side-split-view>
 `;
 DrieKolommen.parameters = { controls: { disable: true } };

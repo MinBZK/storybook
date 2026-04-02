@@ -1,5 +1,6 @@
 import { css } from 'lit';
 
+
 /* # ndd-split-view-divider styles */
 
 export const splitViewDividerStyles = css`
@@ -13,6 +14,7 @@ export const splitViewDividerStyles = css`
 		display: none;
 	}
 
+
 	/* # Divider */
 
 	.split-view-divider {
@@ -23,6 +25,7 @@ export const splitViewDividerStyles = css`
 		background-color: var(--semantics-dividers-color);
 	}
 
+
 	/* # Drag handle */
 
 	.split-view-divider__drag-handle {
@@ -30,6 +33,7 @@ export const splitViewDividerStyles = css`
 		border-radius: 9999px;
 		position: absolute;
 	}
+
 
 	/* # Vertical */
 
@@ -46,6 +50,7 @@ export const splitViewDividerStyles = css`
 		width: 4px;
 		height: 40px;
 	}
+
 
 	/* # Horizontal */
 
@@ -65,6 +70,7 @@ export const splitViewDividerStyles = css`
 		width: 40px;
 		height: 4px;
 	}
+
 
 	/* # High contrast */
 

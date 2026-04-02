@@ -110,9 +110,7 @@ export class NDDCollection extends LitElement {
 
 		if (this.lazyLoad && this._loadMoreBtn && !this._intersectionObserver) {
 			this._intersectionObserver = new IntersectionObserver(
-				([entry]) => {
-					if (entry.isIntersecting) this._loadMore();
-				},
+				([entry]) => { if (entry.isIntersecting) this._loadMore(); },
 				{ threshold: 0.1 }
 			);
 			this._intersectionObserver.observe(this._loadMoreBtn);
@@ -151,7 +149,7 @@ export class NDDCollection extends LitElement {
 
 	private _applyVisibility(items?: HTMLElement[]): void {
 		const slot = this._itemsEl?.querySelector('slot') as HTMLSlotElement | null;
-		const elements = items ?? (slot?.assignedElements() as HTMLElement[]) ?? [];
+		const elements = items ?? (slot?.assignedElements() as HTMLElement[] ?? []);
 		elements.forEach((el, i) => {
 			el.hidden = i >= this._visibleCount;
 		});

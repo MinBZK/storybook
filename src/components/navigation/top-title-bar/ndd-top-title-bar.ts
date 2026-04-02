@@ -82,9 +82,11 @@ export class NDDTopTitleBar extends LitElement {
 				return;
 			}
 			// Traverse up, piercing shadow DOM boundaries via getRootNode().host
-			el =
-				el.parentElement ??
-				(el.getRootNode() instanceof ShadowRoot ? (el.getRootNode() as ShadowRoot).host : null);
+			el = el.parentElement ?? (
+				el.getRootNode() instanceof ShadowRoot
+					? (el.getRootNode() as ShadowRoot).host
+					: null
+			);
 		}
 	}
 
@@ -92,9 +94,8 @@ export class NDDTopTitleBar extends LitElement {
 		if (!this.titleAnchor) return;
 
 		const root = this.getRootNode() as Document | ShadowRoot;
-		this._anchorElement =
-			(root as Document).getElementById?.(this.titleAnchor) ??
-			root.querySelector(`#${this.titleAnchor}`);
+		this._anchorElement = (root as Document).getElementById?.(this.titleAnchor)
+			?? root.querySelector(`#${this.titleAnchor}`);
 
 		if (!this._anchorElement) return;
 

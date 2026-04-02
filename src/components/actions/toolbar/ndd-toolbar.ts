@@ -21,16 +21,12 @@ import { NDDMenu } from '../../lists-and-menus/menu/ndd-menu.ts';
 
 // # Marker elements
 if (!customElements.get('ndd-toolbar-item')) {
-	customElements.define(
-		'ndd-toolbar-item',
-		class extends HTMLElement {
-			constructor() {
-				super();
-				this.attachShadow({ mode: 'open' }).innerHTML =
-					'<slot></slot><slot name="overflow" style="display:none"></slot>';
-			}
+	customElements.define('ndd-toolbar-item', class extends HTMLElement {
+		constructor() {
+			super();
+			this.attachShadow({ mode: 'open' }).innerHTML = '<slot></slot><slot name="overflow" style="display:none"></slot>';
 		}
-	);
+	});
 }
 if (!customElements.get('ndd-toolbar-title-group')) {
 	customElements.define('ndd-toolbar-title-group', class extends HTMLElement {});
@@ -116,7 +112,7 @@ export class NDDToolbar extends LitElement {
 		super.connectedCallback();
 		this._observer = new MutationObserver((mutations) => {
 			if (this._isBuilding) return;
-			const onlyInternalMoves = mutations.every((m) => {
+			const onlyInternalMoves = mutations.every(m => {
 				// Attribute change — only rebuild for toolbar-structural elements.
 				// Changes on deeply nested descendants (e.g. ndd-segmented-control-item)
 				// are safe to ignore.
@@ -166,7 +162,10 @@ export class NDDToolbar extends LitElement {
 		) {
 			this.updateComplete.then(() => this._measureAndUpdate());
 		}
-		if (changedProperties.has('_overflowIds') || changedProperties.has('_pinnedOverflowItems')) {
+		if (
+			changedProperties.has('_overflowIds') ||
+			changedProperties.has('_pinnedOverflowItems')
+		) {
 			this._syncMenuItems();
 			this._syncMenuAnchor();
 			if (!this._hasMeasured) {
@@ -198,9 +197,7 @@ export class NDDToolbar extends LitElement {
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
-		const overflowButton = this.shadowRoot?.querySelector(
-			'.toolbar__overflow-button ndd-icon-button'
-		) as HTMLElement | null;
+		const overflowButton = this.shadowRoot?.querySelector('.toolbar__overflow-button ndd-icon-button') as HTMLElement | null;
 		if (overflowButton) {
 			this._menu.anchorElement = overflowButton;
 		}
@@ -218,10 +215,10 @@ export class NDDToolbar extends LitElement {
 
 		const prioritized = [...this._getPrioritizedItems()].reverse();
 
-		prioritized.forEach((child) => {
+		prioritized.forEach(child => {
 			if (!this._overflowIds.has(child.id)) return;
 			if (child.overflowItems.length === 0) return;
-			child.overflowItems.forEach((el) => {
+			child.overflowItems.forEach(el => {
 				const clone = el.cloneNode(true) as Element;
 				clone.removeAttribute('slot');
 				this._menu!.appendChild(clone);
@@ -229,7 +226,7 @@ export class NDDToolbar extends LitElement {
 		});
 
 		if (this._pinnedOverflowItems.length > 0) {
-			this._pinnedOverflowItems.forEach((el) => {
+			this._pinnedOverflowItems.forEach(el => {
 				const clone = el.cloneNode(true) as Element;
 				this._menu!.appendChild(clone);
 			});
@@ -237,8 +234,8 @@ export class NDDToolbar extends LitElement {
 	}
 
 	private _propagateSize(): void {
-		Array.from(this.querySelectorAll('ndd-toolbar-item')).forEach((item) => {
-			Array.from(item.children).forEach((child) => {
+		Array.from(this.querySelectorAll('ndd-toolbar-item')).forEach(item => {
+			Array.from(item.children).forEach(child => {
 				if (child.getAttribute('slot') !== 'overflow') {
 					child.setAttribute('size', this.size);
 				}
@@ -248,15 +245,12 @@ export class NDDToolbar extends LitElement {
 
 	private _getPrioritizedItems(): Extract<ToolbarChild, { type: 'item' }>[] {
 		if (this._prioritizedItemsCache) return this._prioritizedItemsCache;
-		const endItems = this._endChildren.filter(
-			(c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item'
-		);
-		const startItems = this._startChildren.filter(
-			(c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item'
-		);
-		const centerItems = this._centerChildren.filter(
-			(c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item'
-		);
+		const endItems = this._endChildren
+			.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
+		const startItems = this._startChildren
+			.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
+		const centerItems = this._centerChildren
+			.filter((c): c is Extract<ToolbarChild, { type: 'item' }> => c.type === 'item');
 
 		const result = [
 			...endItems.map((item, index) => ({ item, areaOrder: 0, index })),
@@ -275,18 +269,16 @@ export class NDDToolbar extends LitElement {
 
 	private _measureItemWidths(): void {
 		const measurableEls = Array.from(
-			this.shadowRoot?.querySelectorAll(
-				'.toolbar__item[data-child-id], .toolbar__title-group[data-child-id]'
-			) ?? []
+			this.shadowRoot?.querySelectorAll('.toolbar__item[data-child-id], .toolbar__title-group[data-child-id]') ?? []
 		) as HTMLElement[];
-		measurableEls.forEach((el) => {
+		measurableEls.forEach(el => {
 			const id = Number(el.dataset.childId);
 			this._itemWidths.set(id, el.getBoundingClientRect().width);
 		});
 	}
 
 	private _computeAreaWidth(children: ToolbarChild[], itemGap: number): number {
-		const visible = children.filter((c) => !this._overflowIds.has(c.id));
+		const visible = children.filter(c => !this._overflowIds.has(c.id));
 		const gaps = Math.max(0, visible.length - 1) * itemGap;
 		const itemsWidth = visible.reduce((sum, child) => {
 			if (child.type === 'item' || child.type === 'title-group') {
@@ -303,7 +295,7 @@ export class NDDToolbar extends LitElement {
 		overflowButtonWidth: number,
 		startWidth: number,
 		centerWidth: number,
-		endWidth: number
+		endWidth: number,
 	): { leftZero: boolean; rightZero: boolean } {
 		if (startWidth === 0 && endWidth === 0) {
 			return { leftZero: true, rightZero: true };
@@ -324,18 +316,11 @@ export class NDDToolbar extends LitElement {
 		const itemGap = parseFloat(getComputedStyle(itemsEl).gap ?? '0');
 		const hostGap = parseFloat(getComputedStyle(this).gap ?? '0');
 
-		const overflowButtonContainerEl = this.shadowRoot?.querySelector(
-			'.toolbar__overflow-button'
-		) as HTMLElement | null;
-		const overflowButtonEl = this.shadowRoot?.querySelector(
-			'.toolbar__overflow-button ndd-icon-button'
-		) as HTMLElement | null;
-		const overflowButtonWidth =
-			overflowButtonContainerEl &&
-			!overflowButtonContainerEl.classList.contains('is-hidden') &&
-			overflowButtonEl
-				? overflowButtonEl.getBoundingClientRect().width + hostGap
-				: 0;
+		const overflowButtonContainerEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
+		const overflowButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button ndd-icon-button') as HTMLElement | null;
+		const overflowButtonWidth = (overflowButtonContainerEl && !overflowButtonContainerEl.classList.contains('is-hidden') && overflowButtonEl)
+			? overflowButtonEl.getBoundingClientRect().width + hostGap
+			: 0;
 
 		this.style.setProperty('--ndd-toolbar-overflow-button-width', `${overflowButtonWidth}px`);
 
@@ -348,12 +333,7 @@ export class NDDToolbar extends LitElement {
 		this.style.setProperty('--ndd-toolbar-end-width', `${endWidth}px`);
 
 		const { leftZero, rightZero } = this._computeSpacerZeros(
-			hostWidth,
-			itemGap,
-			overflowButtonWidth,
-			startWidth,
-			centerWidth,
-			endWidth
+			hostWidth, itemGap, overflowButtonWidth, startWidth, centerWidth, endWidth
 		);
 		if (leftZero !== this._leftSpacerZero) this._leftSpacerZero = leftZero;
 		if (rightZero !== this._rightSpacerZero) this._rightSpacerZero = rightZero;
@@ -373,9 +353,7 @@ export class NDDToolbar extends LitElement {
 	}
 
 	private _measureOverflow(itemsEl: HTMLElement): void {
-		const overflowButtonEl = this.shadowRoot?.querySelector(
-			'.toolbar__overflow-button'
-		) as HTMLElement | null;
+		const overflowButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
 		const allItemEls = Array.from(
 			this.shadowRoot?.querySelectorAll('.toolbar__item[data-child-id]') ?? []
 		) as HTMLElement[];
@@ -385,18 +363,18 @@ export class NDDToolbar extends LitElement {
 		const allChildren = [...this._startChildren, ...this._centerChildren, ...this._endChildren];
 
 		// Show all items, reset solo-fluid to is-fluid with min-width restored
-		allItemEls.forEach((el) => {
+		allItemEls.forEach(el => {
 			el.classList.remove('is-hidden');
 			if (el.classList.contains('is-solo-fluid')) {
 				el.classList.replace('is-solo-fluid', 'is-fluid');
 				const id = Number(el.dataset.childId);
-				const child = allChildren.find((c) => c.id === id);
+				const child = allChildren.find(c => c.id === id);
 				if (child?.type === 'item' && child.minWidth) {
 					el.style.setProperty('--_item-min-width', child.minWidth);
 				}
 			}
 		});
-		allTitleGroupEls.forEach((el) => {
+		allTitleGroupEls.forEach(el => {
 			if (el.classList.contains('is-solo-fluid')) {
 				el.classList.remove('is-solo-fluid');
 				el.style.removeProperty('min-width');
@@ -431,11 +409,10 @@ export class NDDToolbar extends LitElement {
 			if (!isOverflowing()) break;
 
 			if (child.isFluid) {
-				const remainingVisible = allItemEls.filter(
-					(el) =>
-						!el.classList.contains('is-hidden') &&
-						!el.classList.contains('is-fluid') &&
-						!el.classList.contains('is-solo-fluid')
+				const remainingVisible = allItemEls.filter(el =>
+					!el.classList.contains('is-hidden') &&
+					!el.classList.contains('is-fluid') &&
+					!el.classList.contains('is-solo-fluid')
 				);
 				if (remainingVisible.length === 0) break;
 			}
@@ -452,16 +429,14 @@ export class NDDToolbar extends LitElement {
 			overflowButtonEl?.classList.add('is-hidden');
 		}
 
-		const remainingVisible = allItemEls.filter((el) => !el.classList.contains('is-hidden'));
+		const remainingVisible = allItemEls.filter(el => !el.classList.contains('is-hidden'));
 		if (remainingVisible.length === 1 && remainingVisible[0].classList.contains('is-fluid')) {
 			remainingVisible[0].classList.replace('is-fluid', 'is-solo-fluid');
 			remainingVisible[0].style.removeProperty('--_item-min-width');
 			void itemsEl.offsetWidth;
 		}
 
-		const remainingTitleGroups = allTitleGroupEls.filter(
-			(el) => !el.classList.contains('is-hidden')
-		);
+		const remainingTitleGroups = allTitleGroupEls.filter(el => !el.classList.contains('is-hidden'));
 		if (remainingVisible.length === 0 && remainingTitleGroups.length === 1) {
 			remainingTitleGroups[0].classList.add('is-solo-fluid');
 			remainingTitleGroups[0].style.setProperty('min-width', '0px');
@@ -470,7 +445,7 @@ export class NDDToolbar extends LitElement {
 
 		const changed =
 			newOverflowIds.size !== this._overflowIds.size ||
-			[...newOverflowIds].some((id) => !this._overflowIds.has(id));
+			[...newOverflowIds].some(id => !this._overflowIds.has(id));
 
 		if (changed) {
 			this._overflowIds = newOverflowIds;
@@ -482,8 +457,8 @@ export class NDDToolbar extends LitElement {
 
 	private _buildChildrenForSlot(slotName: string): ToolbarChild[] {
 		return Array.from(this.children)
-			.filter((el) => el.getAttribute('slot') === slotName)
-			.map((el) => {
+			.filter(el => el.getAttribute('slot') === slotName)
+			.map(el => {
 				const tag = el.tagName.toLowerCase();
 
 				if (tag === 'ndd-toolbar-title-group') {
@@ -508,7 +483,7 @@ export class NDDToolbar extends LitElement {
 					const width = el.getAttribute('width') ?? '';
 					const isFluid = !!(minWidth || width);
 
-					Array.from(el.children).forEach((child) => {
+					Array.from(el.children).forEach(child => {
 						if (child.getAttribute('slot') !== 'overflow') {
 							child.setAttribute('size', this.size);
 						}
@@ -517,23 +492,13 @@ export class NDDToolbar extends LitElement {
 					(el as HTMLElement).dataset.toolbarSlot = slotName;
 					el.setAttribute('slot', `child-${id}`);
 
-					const overflowItems = Array.from(el.children).filter((child) => {
+					const overflowItems = Array.from(el.children).filter(child => {
 						const childTag = child.tagName.toLowerCase();
 						return childTag === 'ndd-menu-item' || childTag === 'ndd-menu-divider';
 					});
-					overflowItems.forEach((child) => child.setAttribute('slot', 'overflow'));
+					overflowItems.forEach(child => child.setAttribute('slot', 'overflow'));
 
-					return {
-						type: 'item',
-						element: el,
-						label,
-						id,
-						priority,
-						overflowItems,
-						minWidth,
-						width,
-						isFluid,
-					} as ToolbarChild;
+					return { type: 'item', element: el, label, id, priority, overflowItems, minWidth, width, isFluid } as ToolbarChild;
 				}
 
 				const id = this._getId(el);
@@ -544,19 +509,17 @@ export class NDDToolbar extends LitElement {
 	}
 
 	private _buildPinnedOverflowItems(): void {
-		this._pinnedOverflowItems = Array.from(this.children).filter((el) => {
+		this._pinnedOverflowItems = Array.from(this.children).filter(el => {
 			const tag = el.tagName.toLowerCase();
-			return (
-				el.getAttribute('slot') === 'overflow' &&
-				(tag === 'ndd-menu-item' || tag === 'ndd-menu-divider')
-			);
+			return el.getAttribute('slot') === 'overflow' &&
+				(tag === 'ndd-menu-item' || tag === 'ndd-menu-divider');
 		});
 	}
 
 	private _restoreSlots(): void {
 		Array.from(this.children)
 			.filter((el): el is HTMLElement => el instanceof HTMLElement && !!el.dataset.toolbarSlot)
-			.forEach((el) => {
+			.forEach(el => {
 				el.setAttribute('slot', el.dataset.toolbarSlot!);
 				delete el.dataset.toolbarSlot;
 			});
@@ -576,33 +539,21 @@ export class NDDToolbar extends LitElement {
 		this._buildPinnedOverflowItems();
 		this._prioritizedItemsCache = null;
 
-		const itemAttributeFilter = [
-			'label',
-			'priority',
-			'min-width',
-			'width',
-			'text',
-			'disabled',
-			'selected',
-			'type',
-		];
-		this._observer?.observe(this, {
-			childList: true,
-			attributes: true,
-			subtree: true,
-			attributeFilter: itemAttributeFilter,
-		});
+		const itemAttributeFilter = ['label', 'priority', 'min-width', 'width', 'text', 'disabled', 'selected', 'type'];
+		this._observer?.observe(this, { childList: true, attributes: true, subtree: true, attributeFilter: itemAttributeFilter });
 
 		this._isBuilding = false;
 	}
 
 	override render() {
 		const allChildren = [...this._startChildren, ...this._centerChildren, ...this._endChildren];
-		const visibleNonDivider = allChildren.filter((c) => !this._overflowIds.has(c.id));
-		const isSoloFluid =
-			visibleNonDivider.length === 1 &&
-			(visibleNonDivider[0].type === 'title-group' ||
-				(visibleNonDivider[0].type === 'item' && visibleNonDivider[0].isFluid));
+		const visibleNonDivider = allChildren.filter(c =>
+			!this._overflowIds.has(c.id)
+		);
+		const isSoloFluid = visibleNonDivider.length === 1 && (
+			visibleNonDivider[0].type === 'title-group' ||
+			(visibleNonDivider[0].type === 'item' && visibleNonDivider[0].isFluid)
+		);
 
 		return template(
 			this._startChildren,
@@ -619,10 +570,8 @@ export class NDDToolbar extends LitElement {
 			this.label,
 			this._menu?.id ?? '',
 			() => this._handleOverflowButtonClick(),
-			this._startChildren.length === 0 &&
-				this._endChildren.length === 0 &&
-				this._centerChildren.length > 0,
-			(key) => this._t(key)
+			this._startChildren.length === 0 && this._endChildren.length === 0 && this._centerChildren.length > 0,
+			(key) => this._t(key),
 		);
 	}
 }

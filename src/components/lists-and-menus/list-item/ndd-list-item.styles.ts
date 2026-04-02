@@ -14,6 +14,7 @@ export const styles = css`
 		display: none;
 	}
 
+
 	/* ## Dragging */
 
 	:host(.is-dragging) {
@@ -37,6 +38,7 @@ export const styles = css`
 		cursor: grabbing;
 	}
 
+
 	/* # List item */
 
 	.list-item {
@@ -52,6 +54,7 @@ export const styles = css`
 	:host([size='sm']) .list-item {
 		min-height: var(--semantics-controls-sm-min-size);
 	}
+
 
 	/* # Action */
 
@@ -70,10 +73,8 @@ export const styles = css`
 	}
 
 	.list-item__action:focus-visible {
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
@@ -90,14 +91,11 @@ export const styles = css`
 		top: var(--semantics-focus-ring-edge-thickness);
 		right: var(--semantics-focus-ring-edge-thickness);
 		bottom: var(--semantics-focus-ring-edge-thickness);
-		border-radius: calc(
-			var(--components-list-corner-radius) - var(--semantics-focus-ring-edge-thickness)
-		);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
+		border-radius: calc(var(--components-list-corner-radius) - var(--semantics-focus-ring-edge-thickness));
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 	}
+
 
 	/* # Start & end area */
 
@@ -122,6 +120,7 @@ export const styles = css`
 		padding-block: var(--components-list-item-sm-padding-block);
 	}
 
+
 	/* # Main area */
 
 	.list-item__main-area {
@@ -139,6 +138,7 @@ export const styles = css`
 		padding-block: var(--components-list-item-sm-padding-block);
 	}
 
+
 	/* # Divider */
 
 	.list-item__divider {
@@ -154,16 +154,14 @@ export const styles = css`
 		display: none;
 	}
 
+
 	/* # Indicator */
 
 	.list-item__indicator {
 		display: none;
 		position: absolute;
 		inset-block: 0;
-		inset-inline: min(
-			calc(var(--primitives-space-8) * -1),
-			calc(var(--components-list-item-indicator-corner-radius) * -1)
-		);
+		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
 		border-radius: var(--components-list-item-indicator-corner-radius);
 		z-index: var(--_z-index-indicator);
 	}

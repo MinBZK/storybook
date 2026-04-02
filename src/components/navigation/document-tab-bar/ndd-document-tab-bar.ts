@@ -38,10 +38,7 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { documentTabBarStyles, documentTabBarItemStyles } from './ndd-document-tab-bar.styles.ts';
-import {
-	documentTabBarTemplate,
-	documentTabBarItemTemplate,
-} from './ndd-document-tab-bar.template.ts';
+import { documentTabBarTemplate, documentTabBarItemTemplate } from './ndd-document-tab-bar.template.ts';
 import { nddDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
 import type { NDDDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
 import './../../lists-and-menus/menu/ndd-menu.ts';
@@ -54,6 +51,7 @@ export interface NDDReorderEventDetail {
 	fromIndex: number;
 	toIndex: number;
 }
+
 
 // # ndd-document-tab-bar-item
 
@@ -110,36 +108,32 @@ export class NDDDocumentTabBarItem extends LitElement {
 			trimmed.startsWith('javascript:') ||
 			trimmed.startsWith('data:') ||
 			trimmed.startsWith('vbscript:')
-		)
-			return null;
+		) return null;
 		return url;
 	}
 
 	_handleClick(): void {
-		this.dispatchEvent(
-			new CustomEvent('select', {
-				bubbles: true,
-				composed: true,
-				detail: { item: this },
-			})
-		);
+		this.dispatchEvent(new CustomEvent('select', {
+			bubbles: true,
+			composed: true,
+			detail: { item: this },
+		}));
 	}
 
 	_handleDismiss(event: Event): void {
 		event.stopPropagation();
-		this.dispatchEvent(
-			new CustomEvent('dismiss', {
-				bubbles: true,
-				composed: true,
-				detail: { item: this },
-			})
-		);
+		this.dispatchEvent(new CustomEvent('dismiss', {
+			bubbles: true,
+			composed: true,
+			detail: { item: this },
+		}));
 	}
 
 	override render() {
 		return documentTabBarItemTemplate(this);
 	}
 }
+
 
 // # ndd-document-tab-bar
 
@@ -213,10 +207,7 @@ export class NDDDocumentTabBar extends LitElement {
 	override firstUpdated(): void {
 		this._hasCustomLabel = Boolean(this.accessibleLabel);
 		if (!this._hasCustomLabel) {
-			import.meta.env?.DEV &&
-				console.warn(
-					'<ndd-document-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabbladen".'
-				);
+			import.meta.env?.DEV && console.warn('<ndd-document-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabbladen".');
 		}
 
 		const container = this.shadowRoot?.querySelector('.document-tab-bar__items') as HTMLElement;
@@ -248,37 +239,31 @@ export class NDDDocumentTabBar extends LitElement {
 	private _getItems(): NDDDocumentTabBarItem[] {
 		const slot = this.shadowRoot?.querySelector('slot:not([name])') as HTMLSlotElement;
 		if (!slot) return [];
-		return slot
-			.assignedElements()
-			.filter(
-				(el): el is NDDDocumentTabBarItem =>
-					el.tagName.toLowerCase() === 'ndd-document-tab-bar-item' &&
-					!el.hasAttribute('data-ndd-placeholder')
+		return slot.assignedElements()
+			.filter((el): el is NDDDocumentTabBarItem =>
+				el.tagName.toLowerCase() === 'ndd-document-tab-bar-item' &&
+				!el.hasAttribute('data-ndd-placeholder')
 			);
 	}
 
 	private _getVisibleItems(): NDDDocumentTabBarItem[] {
-		return this._getItems().filter((item) => !item.hidden);
+		return this._getItems().filter(item => !item.hidden);
 	}
 
 	private _propagateNavigation(): void {
-		this._getItems().forEach((item) => {
-			item._navigation = this.navigation;
-		});
+		this._getItems().forEach(item => { item._navigation = this.navigation; });
 	}
 
 	private _propagateDismissLabel(): void {
 		const label = this._mergedTranslations['components.document-tab-bar.dismiss-action'];
-		this._getItems().forEach((item) => {
-			item._dismissButtonAccessibilityLabel = label;
-		});
+		this._getItems().forEach(item => { item._dismissButtonAccessibilityLabel = label; });
 	}
 
 	private _syncFallbackFocusable(): void {
 		const items = this._getVisibleItems();
-		const hasSelected = items.some((item) => item.selected);
-		const firstEnabled = items.find((item) => !item.hidden) ?? null;
-		items.forEach((item) => {
+		const hasSelected = items.some(item => item.selected);
+		const firstEnabled = items.find(item => !item.hidden) ?? null;
+		items.forEach(item => {
 			item._isFallbackFocusable = !hasSelected && item === firstEnabled;
 		});
 	}
@@ -304,14 +289,13 @@ export class NDDDocumentTabBar extends LitElement {
 		const path = event.composedPath() as Element[];
 
 		// Do not start drag when clicking the dismiss button
-		const onDismiss = path.some(
-			(el) =>
-				el instanceof Element && el.classList?.contains('document-tab-bar__item-dismiss-button')
+		const onDismiss = path.some(el =>
+			el instanceof Element && el.classList?.contains('document-tab-bar__item-dismiss-button')
 		);
 		if (onDismiss) return;
 
 		const item = path.find(
-			(el) => el instanceof Element && el.tagName.toLowerCase() === 'ndd-document-tab-bar-item'
+			el => el instanceof Element && el.tagName.toLowerCase() === 'ndd-document-tab-bar-item'
 		) as NDDDocumentTabBarItem | undefined;
 		if (!item || item.hidden) return;
 
@@ -379,13 +363,12 @@ export class NDDDocumentTabBar extends LitElement {
 		const draggingRight = event.clientX >= this._lastPointerX;
 		this._lastPointerX = event.clientX;
 
-		const visibleItems = this._getVisibleItems().filter((i) => i !== this._draggingEl);
+		const visibleItems = this._getVisibleItems().filter(i => i !== this._draggingEl);
 		const pointerX = event.clientX;
 		let toIndex = visibleItems.length; // default: end
 
 		for (let i = 0; i < visibleItems.length; i++) {
-			const inner =
-				visibleItems[i].shadowRoot?.querySelector('.document-tab-bar__item') ?? visibleItems[i];
+			const inner = visibleItems[i].shadowRoot?.querySelector('.document-tab-bar__item') ?? visibleItems[i];
 			const rect = inner.getBoundingClientRect();
 			const threshold = draggingRight ? rect.left : rect.right;
 			if (pointerX < threshold) {
@@ -426,8 +409,7 @@ export class NDDDocumentTabBar extends LitElement {
 		this._currentDropIndex = visibleIndex;
 		this._lastPointerX = clientX;
 
-		const inner =
-			item.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab') ?? item;
+		const inner = item.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab') ?? item;
 		const rect = inner.getBoundingClientRect();
 
 		// Insert placeholder at item's current position
@@ -444,14 +426,10 @@ export class NDDDocumentTabBar extends LitElement {
 		document.documentElement.style.cursor = 'grabbing';
 
 		// Read threshold from CSS so there is one place to update it
-		const threshold = parseFloat(
-			getComputedStyle(item).getPropertyValue('--_short-text-threshold')
-		);
+		const threshold = parseFloat(getComputedStyle(item).getPropertyValue('--_short-text-threshold'));
 		const useShort = rect.width < threshold;
-		const displayTitle = useShort ? item.shortText || item.text : item.text;
-		const displaySubtitle = useShort
-			? item.shortSupportingText || item.supportingText
-			: item.supportingText;
+		const displayTitle = useShort ? (item.shortText || item.text) : item.text;
+		const displaySubtitle = useShort ? (item.shortSupportingText || item.supportingText) : item.supportingText;
 
 		const cloneInner = document.createElement('div');
 		cloneInner.className = 'document-tab-bar__item';
@@ -475,10 +453,7 @@ export class NDDDocumentTabBar extends LitElement {
 
 		this._clone = document.createElement('div');
 		this._clone.className = 'document-tab-bar__drag-clone';
-		this._clone.style.setProperty(
-			'--_drag-clone-left',
-			`${clientX - this._tabBarRect.left - this._cloneOffsetX}px`
-		);
+		this._clone.style.setProperty('--_drag-clone-left', `${clientX - this._tabBarRect.left - this._cloneOffsetX}px`);
 		this._clone.style.setProperty('--_drag-clone-top', `${rect.top - this._tabBarRect.top}px`);
 		this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
 		this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
@@ -489,7 +464,7 @@ export class NDDDocumentTabBar extends LitElement {
 	private _setDropIndex(toIndex: number): void {
 		if (!this._placeholder || !this._draggingEl) return;
 
-		const nonDragging = this._getVisibleItems().filter((i) => i !== this._draggingEl);
+		const nonDragging = this._getVisibleItems().filter(i => i !== this._draggingEl);
 		const clamped = Math.max(0, Math.min(nonDragging.length, toIndex));
 		this._currentDropIndex = clamped;
 		this._placeholder.remove();
@@ -527,21 +502,15 @@ export class NDDDocumentTabBar extends LitElement {
 		this._cleanupDrag();
 
 		if (fromIndex !== toIndex) {
-			this.dispatchEvent(
-				new CustomEvent<NDDReorderEventDetail>('ndd-reorder', {
-					detail: { fromIndex, toIndex },
-					bubbles: true,
-					composed: true,
-				})
-			);
-			this._announce(
-				this._t('components.document-tab-bar.drag-dropped-text', { position: toIndex + 1 })
-			);
+			this.dispatchEvent(new CustomEvent<NDDReorderEventDetail>('ndd-reorder', {
+				detail: { fromIndex, toIndex },
+				bubbles: true,
+				composed: true,
+			}));
+			this._announce(this._t('components.document-tab-bar.drag-dropped-text', { position: toIndex + 1 }));
 
 			requestAnimationFrame(() => {
-				const inner = movedItem.shadowRoot?.querySelector<HTMLElement>(
-					'.document-tab-bar__item-tab'
-				);
+				const inner = movedItem.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab');
 				inner?.focus();
 			});
 		} else {
@@ -564,11 +533,7 @@ export class NDDDocumentTabBar extends LitElement {
 		document.documentElement.style.cursor = '';
 
 		if (this._pointerId !== null) {
-			try {
-				this.releasePointerCapture(this._pointerId);
-			} catch (e) {
-				if (!(e instanceof DOMException)) throw e;
-			}
+			try { this.releasePointerCapture(this._pointerId); } catch (e) { if (!(e instanceof DOMException)) throw e; }
 			this._pointerId = null;
 		}
 
@@ -587,10 +552,7 @@ export class NDDDocumentTabBar extends LitElement {
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
-	private _t(
-		key: keyof NDDDocumentTabBarTranslations,
-		vars?: Record<string, string | number>
-	): string {
+	private _t(key: keyof NDDDocumentTabBarTranslations, vars?: Record<string, string | number>): string {
 		let str = this._mergedTranslations[key];
 		if (vars) {
 			for (const [k, v] of Object.entries(vars)) {
@@ -609,11 +571,9 @@ export class NDDDocumentTabBar extends LitElement {
 		const region = this.shadowRoot?.querySelector<HTMLElement>(selector);
 		if (!region) return;
 		region.textContent = '';
-		requestAnimationFrame(() =>
-			requestAnimationFrame(() => {
-				region.textContent = message;
-			})
-		);
+		requestAnimationFrame(() => requestAnimationFrame(() => {
+			region.textContent = message;
+		}));
 	}
 
 	private _calculateOverflow(): void {
@@ -634,17 +594,12 @@ export class NDDDocumentTabBar extends LitElement {
 		const gap = parseFloat(getComputedStyle(container).gap) || 8;
 		const firstItem = this._getItems()[0];
 		const minItemWidth = firstItem
-			? parseFloat(getComputedStyle(firstItem).minWidth) ||
-				parseFloat(getComputedStyle(this).getPropertyValue('--_item-min-width'))
+			? parseFloat(getComputedStyle(firstItem).minWidth) || parseFloat(getComputedStyle(this).getPropertyValue('--_item-min-width'))
 			: parseFloat(getComputedStyle(this).getPropertyValue('--_item-min-width'));
 
-		const overflowButtonReserve = parseFloat(
-			getComputedStyle(this).getPropertyValue('--_overflow-button-reserve')
-		);
+		const overflowButtonReserve = parseFloat(getComputedStyle(this).getPropertyValue('--_overflow-button-reserve'));
 		// (containerWidth - overflowButtonWidth + gap) / (minItemWidth + gap)
-		const visible = Math.floor(
-			(containerWidth - overflowButtonReserve + gap) / (minItemWidth + gap)
-		);
+		const visible = Math.floor((containerWidth - overflowButtonReserve + gap) / (minItemWidth + gap));
 		const newOverflowCount = Math.max(0, totalItems - Math.max(1, visible));
 
 		if (newOverflowCount !== this._overflowCount) {
@@ -662,7 +617,7 @@ export class NDDDocumentTabBar extends LitElement {
 		// not rely on ndd-reorder being exhaustive.
 		const items = this._getItems();
 		const visibleCount = items.length - this._overflowCount;
-		const selectedIndex = items.findIndex((i) => i.selected);
+		const selectedIndex = items.findIndex(i => i.selected);
 
 		if (selectedIndex >= visibleCount && visibleCount > 0) {
 			// Move selected item to last visible position via DOM reorder
@@ -686,7 +641,7 @@ export class NDDDocumentTabBar extends LitElement {
 		const items = this._getItems();
 		const visibleCount = items.length - this._overflowCount;
 
-		items.slice(visibleCount).forEach((item) => {
+		items.slice(visibleCount).forEach(item => {
 			const menuItemText = item.supportingText
 				? `${item.text || '–'} · ${item.supportingText}`
 				: item.text || '–';
@@ -705,9 +660,7 @@ export class NDDDocumentTabBar extends LitElement {
 		const visibleCount = items.length - this._overflowCount;
 
 		// Update selection
-		items.forEach((item) => {
-			item.selected = item === targetItem;
-		});
+		items.forEach(item => { item.selected = item === targetItem; });
 
 		// Promote: swap target with last visible item in DOM order
 		if (visibleCount > 0 && visibleCount < items.length) {
@@ -721,13 +674,11 @@ export class NDDDocumentTabBar extends LitElement {
 		this._applyItemVisibility();
 		this._updateMenu();
 
-		this.dispatchEvent(
-			new CustomEvent('tabchange', {
-				bubbles: true,
-				composed: true,
-				detail: { item: targetItem },
-			})
-		);
+		this.dispatchEvent(new CustomEvent('tabchange', {
+			bubbles: true,
+			composed: true,
+			detail: { item: targetItem },
+		}));
 	}
 
 	private _createMenu(): void {
@@ -749,9 +700,7 @@ export class NDDDocumentTabBar extends LitElement {
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
-		const button = this.shadowRoot?.querySelector(
-			'.document-tab-bar__overflow ndd-icon-button'
-		) as HTMLElement | null;
+		const button = this.shadowRoot?.querySelector('.document-tab-bar__overflow ndd-icon-button') as HTMLElement | null;
 		if (button) {
 			(this._menu as any).anchorElement = button;
 		}
@@ -772,22 +721,19 @@ export class NDDDocumentTabBar extends LitElement {
 		}
 	}
 
+
 	// — Event handlers —————————————————————————————————————————————————————————
 
 	private _handleItemSelect = (event: CustomEvent): void => {
 		event.stopPropagation();
 		const selectedItem = event.detail.item as NDDDocumentTabBarItem;
-		this._getItems().forEach((item) => {
-			item.selected = item === selectedItem;
-		});
+		this._getItems().forEach(item => { item.selected = item === selectedItem; });
 		this._syncFallbackFocusable();
-		this.dispatchEvent(
-			new CustomEvent('tabchange', {
-				bubbles: true,
-				composed: true,
-				detail: event.detail,
-			})
-		);
+		this.dispatchEvent(new CustomEvent('tabchange', {
+			bubbles: true,
+			composed: true,
+			detail: event.detail,
+		}));
 	};
 
 	private _handleItemDismiss = (event: CustomEvent): void => {
@@ -800,17 +746,11 @@ export class NDDDocumentTabBar extends LitElement {
 			const index = items.indexOf(dismissedItem);
 			// Try right first, then left
 			for (let i = index + 1; i < items.length; i++) {
-				if (!items[i].hidden) {
-					nextItem = items[i];
-					break;
-				}
+				if (!items[i].hidden) { nextItem = items[i]; break; }
 			}
 			if (!nextItem) {
 				for (let i = index - 1; i >= 0; i--) {
-					if (!items[i].hidden) {
-						nextItem = items[i];
-						break;
-					}
+					if (!items[i].hidden) { nextItem = items[i]; break; }
 				}
 			}
 			if (nextItem) {
@@ -822,13 +762,11 @@ export class NDDDocumentTabBar extends LitElement {
 
 		const isLastItem = items.length === 1;
 
-		this.dispatchEvent(
-			new CustomEvent('tabdismiss', {
-				bubbles: true,
-				composed: true,
-				detail: { item: dismissedItem, nextItem },
-			})
-		);
+		this.dispatchEvent(new CustomEvent('tabdismiss', {
+			bubbles: true,
+			composed: true,
+			detail: { item: dismissedItem, nextItem },
+		}));
 
 		if (isLastItem) {
 			this.dispatchEvent(new CustomEvent('tabempty', { bubbles: true, composed: true }));
@@ -841,13 +779,12 @@ export class NDDDocumentTabBar extends LitElement {
 		const path = event.composedPath() as Element[];
 
 		const item = path.find(
-			(el) => el instanceof Element && el.tagName.toLowerCase() === 'ndd-document-tab-bar-item'
+			el => el instanceof Element && el.tagName.toLowerCase() === 'ndd-document-tab-bar-item'
 		) as NDDDocumentTabBarItem | undefined;
 		if (!item || item.hidden) return;
 
-		const onDismiss = path.some(
-			(el) =>
-				el instanceof Element && el.classList?.contains('document-tab-bar__item-dismiss-button')
+		const onDismiss = path.some(el =>
+			el instanceof Element && el.classList?.contains('document-tab-bar__item-dismiss-button')
 		);
 		if (onDismiss) return;
 
@@ -873,17 +810,13 @@ export class NDDDocumentTabBar extends LitElement {
 			const newAllItems = this._getItems();
 			const toIndex = newAllItems.indexOf(item);
 
-			this.dispatchEvent(
-				new CustomEvent<NDDReorderEventDetail>('ndd-reorder', {
-					detail: { fromIndex, toIndex },
-					bubbles: true,
-					composed: true,
-				})
-			);
+			this.dispatchEvent(new CustomEvent<NDDReorderEventDetail>('ndd-reorder', {
+				detail: { fromIndex, toIndex },
+				bubbles: true,
+				composed: true,
+			}));
 
-			this._announce(
-				this._t('components.document-tab-bar.drag-dropped-text', { position: toIndex + 1 })
-			);
+			this._announce(this._t('components.document-tab-bar.drag-dropped-text', { position: toIndex + 1 }));
 
 			// Restore focus after DOM move
 			requestAnimationFrame(() => {
@@ -897,7 +830,7 @@ export class NDDDocumentTabBar extends LitElement {
 		if (items.length === 0) return;
 
 		const currentIndex = items.findIndex(
-			(i) => i === event.target || i.contains(event.target as Node)
+			i => i === event.target || i.contains(event.target as Node)
 		);
 		let newIndex = -1;
 
@@ -926,16 +859,12 @@ export class NDDDocumentTabBar extends LitElement {
 			items[newIndex].focus();
 			// Auto-activate only for content-switching tabs, not navigation tabs
 			if (!this.navigation) {
-				this._getItems().forEach((item) => {
-					item.selected = item === items[newIndex];
-				});
-				this.dispatchEvent(
-					new CustomEvent('tabchange', {
-						bubbles: true,
-						composed: true,
-						detail: { item: items[newIndex] },
-					})
-				);
+				this._getItems().forEach(item => { item.selected = item === items[newIndex]; });
+				this.dispatchEvent(new CustomEvent('tabchange', {
+					bubbles: true,
+					composed: true,
+					detail: { item: items[newIndex] },
+				}));
 			}
 		}
 	};

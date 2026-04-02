@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const tokenStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -15,6 +17,7 @@ export const tokenStyles = css`
 		opacity: var(--primitives-opacity-disabled);
 		pointer-events: none;
 	}
+
 
 	/* # Base */
 
@@ -49,6 +52,7 @@ export const tokenStyles = css`
 		}
 	}
 
+
 	/* # Text */
 
 	.token__text {
@@ -56,6 +60,7 @@ export const tokenStyles = css`
 		align-items: center;
 		padding: 0 var(--primitives-space-2);
 	}
+
 
 	/* # Icon */
 
@@ -66,11 +71,12 @@ export const tokenStyles = css`
 		height: var(--primitives-space-16);
 	}
 
+
 	/* # States */
 
 	/* ## Hover — menu */
 
-	:host([control='menu']) .token:hover:not(:disabled) {
+	:host([control="menu"]) .token:hover:not(:disabled) {
 		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 	}
@@ -89,21 +95,20 @@ export const tokenStyles = css`
 
 	/* ## Focus — menu */
 
-	:host([control='menu']) .token:focus-visible {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
+	:host([control="menu"]) .token:focus-visible {
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
-	:host([control='menu']) .token:focus:not(:focus-visible) {
+	:host([control="menu"]) .token:focus:not(:focus-visible) {
 		outline: none;
 	}
+
 
 	/* # Dismiss — padding compensation */
 
 	/* Remove right padding so the ndd-icon-button flush-fits the token edge */
-	:host([control='dismiss']) .token {
+	:host([control="dismiss"]) .token {
 		padding-right: 0;
 	}
 
@@ -114,7 +119,7 @@ export const tokenStyles = css`
 			border: 1px solid CanvasText;
 		}
 
-		:host([control='menu']) .token:focus-visible,
+		:host([control="menu"]) .token:focus-visible,
 		.token__dismiss:focus-visible {
 			outline: 2px solid CanvasText;
 			outline-offset: 2px;

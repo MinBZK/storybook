@@ -4,6 +4,7 @@ import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 const smMax = unsafeCSS(breakpoints.smMax);
 
 export const tabBarStyles = css`
+
 	/* # Host */
 
 	:host {
@@ -19,6 +20,7 @@ export const tabBarStyles = css`
 		display: block;
 		width: 100%;
 	}
+
 
 	/* # Tab bar */
 
@@ -43,15 +45,18 @@ export const tabBarStyles = css`
 		border-radius: var(--semantics-controls-lg-corner-radius);
 	}
 
+
 	/* # Focus */
 
 	::slotted(ndd-tab-bar-item:focus-within) {
 		position: relative;
 		z-index: 1;
 	}
+
 `;
 
 export const tabBarItemStyles = css`
+
 	/* # Host */
 
 	:host {
@@ -62,6 +67,7 @@ export const tabBarItemStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
 
 	/* # Item */
 
@@ -123,6 +129,7 @@ export const tabBarItemStyles = css`
 		outline: none;
 	}
 
+
 	/* # Indicator */
 
 	.tab-bar__item-indicator {
@@ -146,14 +153,14 @@ export const tabBarItemStyles = css`
 		}
 	}
 
+
 	/* # Focus */
 
 	.tab-bar__item:focus-visible .tab-bar__item-indicator {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
+
 
 	/* # Icon */
 
@@ -178,6 +185,7 @@ export const tabBarItemStyles = css`
 		height: 100%;
 	}
 
+
 	/* # Label */
 
 	.tab-bar__item-text {
@@ -198,4 +206,5 @@ export const tabBarItemStyles = css`
 			font: var(--primitives-font-body-xxs-bold-flat);
 		}
 	}
+
 `;

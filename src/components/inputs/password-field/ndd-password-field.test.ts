@@ -76,9 +76,7 @@ describe('ndd-password-field', () => {
 	});
 
 	it('uses custom show-label and show-accessible-label when provided', async () => {
-		el = await fixture(
-			'<ndd-password-field show-label="Show" show-accessible-label="Show password"></ndd-password-field>'
-		);
+		el = await fixture('<ndd-password-field show-label="Show" show-accessible-label="Show password"></ndd-password-field>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('ndd-button');
 		expect(button!.getAttribute('text')).toBe('Show');
@@ -189,17 +187,13 @@ describe('ndd-password-field', () => {
 	});
 
 	it('accepts aria-describedby on the host element', async () => {
-		el = await fixture(
-			'<ndd-password-field aria-describedby="help-1 endd-1"></ndd-password-field>'
-		);
+		el = await fixture('<ndd-password-field aria-describedby="help-1 endd-1"></ndd-password-field>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('aria-describedby')).toBe('help-1 endd-1');
 	});
 
 	it('forwards error-message-ids to inner input aria-describedby', async () => {
-		el = await fixture(
-			'<ndd-password-field error-message-ids="help-1 endd-1"></ndd-password-field>'
-		);
+		el = await fixture('<ndd-password-field error-message-ids="help-1 endd-1"></ndd-password-field>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('aria-describedby')).toBe('help-1 endd-1');

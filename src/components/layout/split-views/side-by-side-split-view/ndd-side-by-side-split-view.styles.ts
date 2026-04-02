@@ -1,5 +1,6 @@
 import { css } from 'lit';
 
+
 /* # ndd-side-by-side-split-view styles */
 
 export const sideBySideSplitViewStyles = css`
@@ -9,21 +10,16 @@ export const sideBySideSplitViewStyles = css`
 		height: 100%;
 		background-color: var(--_background-color);
 
-		--_pane-min-width: var(
-			--primitives-area-320
-		); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
-		--_background-color: var(
-			--context-parent-background-color,
-			var(--semantics-surfaces-background-color)
-		);
+		--_pane-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 	}
 
-	:host([background='default']) {
+	:host([background="default"]) {
 		--context-parent-background-color: var(--semantics-surfaces-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
 
-	:host([background='tinted']) {
+	:host([background="tinted"]) {
 		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
@@ -31,6 +27,7 @@ export const sideBySideSplitViewStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
 
 	/* # Split view */
 
@@ -42,6 +39,7 @@ export const sideBySideSplitViewStyles = css`
 		min-width: 0;
 		overflow: hidden;
 	}
+
 
 	/* # Pane */
 

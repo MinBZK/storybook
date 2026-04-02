@@ -69,12 +69,12 @@ const Template = (args) => html`
 		?disabled=${args.disabled}
 		@dismiss=${() => console.log('dismiss')}
 		@toggle=${(e) => console.log('toggle:', e.detail)}
-		>${args.label}</ndd-token
-	>
+	>${args.label}</ndd-token>
 `;
 
 export const Standaard = Template.bind({});
 Standaard.args = {};
+
 
 /* ============================================================
    Controls
@@ -102,8 +102,7 @@ MetDismiss.args = { control: 'dismiss', label: 'Status: Actief' };
 MetDismiss.parameters = {
 	docs: {
 		description: {
-			story:
-				'Gebruik `control="dismiss"` voor verwijderbare tokens. De dismiss-knop dispatcht een `dismiss` event waarmee de consumer de token kan verwijderen.',
+			story: 'Gebruik `control="dismiss"` voor verwijderbare tokens. De dismiss-knop dispatcht een `dismiss` event waarmee de consumer de token kan verwijderen.',
 		},
 	},
 };
@@ -113,14 +112,14 @@ MetMenu.args = { control: 'menu', label: 'Datum' };
 MetMenu.parameters = {
 	docs: {
 		description: {
-			story:
-				'Gebruik `control="menu"` voor tokens die een contextueel menu openen over de gerepresenteerde data (bijv. kopieer e-mailadres, bewerk, verwijder). Dispatcht een `toggle` event met `{ open: boolean }`.',
+			story: 'Gebruik `control="menu"` voor tokens die een contextueel menu openen over de gerepresenteerde data (bijv. kopieer e-mailadres, bewerk, verwijder). Dispatcht een `toggle` event met `{ open: boolean }`.',
 		},
 	},
 };
 
 export const MenuOpen = Template.bind({});
 MenuOpen.args = { control: 'menu', open: true, label: 'Datum' };
+
 
 /* ============================================================
    Toestanden
@@ -135,20 +134,19 @@ export const Uitgeschakeld = () => html`
 `;
 Uitgeschakeld.parameters = { controls: { disable: true } };
 
+
 /* ============================================================
    Gebruik
    ============================================================ */
 
 export const FilterVoorbeeld = () => {
 	const handleDismiss = (e) => {
-		e.target.closest('ndd-token')?.remove();
+		(e.target).closest('ndd-token')?.remove();
 	};
 
 	return html`
 		<div style="display: flex; flex-direction: column; gap: 1rem;">
-			<p
-				style="margin: 0; font: var(--primitives-font-body-md-regular-snug); color: var(--semantics-content-color);"
-			>
+			<p style="margin: 0; font: var(--primitives-font-body-md-regular-snug); color: var(--semantics-content-color);">
 				Actieve tokens — klik op × om een waarde te verwijderen:
 			</p>
 			<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -171,23 +169,22 @@ FilterVoorbeeld.parameters = {
 
 export const MenuVoorbeeld = () => html`
 	<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-		<ndd-token control="menu" @toggle=${(e) => console.log('Periode:', e.detail)}
-			>Periode: Laatste maand</ndd-token
-		>
-		<ndd-token control="menu" open @toggle=${(e) => console.log('Status:', e.detail)}
-			>Status: Actief</ndd-token
-		>
-		<ndd-token control="menu" @toggle=${(e) => console.log('Afdeling:', e.detail)}
-			>Afdeling: Juridisch</ndd-token
-		>
+		<ndd-token control="menu"
+			@toggle=${(e) => console.log('Periode:', e.detail)}
+		>Periode: Laatste maand</ndd-token>
+		<ndd-token control="menu" open
+			@toggle=${(e) => console.log('Status:', e.detail)}
+		>Status: Actief</ndd-token>
+		<ndd-token control="menu"
+			@toggle=${(e) => console.log('Afdeling:', e.detail)}
+		>Afdeling: Juridisch</ndd-token>
 	</div>
 `;
 MenuVoorbeeld.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'Voorbeeld van tokens met een contextueel menu. Klik op het token om acties te tonen over de gerepresenteerde data. De `open` toestand wordt door de consumer beheerd.',
+			story: 'Voorbeeld van tokens met een contextueel menu. Klik op het token om acties te tonen over de gerepresenteerde data. De `open` toestand wordt door de consumer beheerd.',
 		},
 	},
 };

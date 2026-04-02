@@ -18,17 +18,17 @@ export function formFieldTemplate(component: NDDFormField): TemplateResult {
 
 	const headerEl = html`
 		<div class="form-field__header ${isHeaderEmpty ? 'is-empty' : ''}">
-			${hasLabel
-				? html`
-						<label class="form-field__label" @click=${(e: Event) => component._focusInput(e)}>
-							${component.label}
-							${component.optional ? renderOptional(component.optionalLabel) : nothing}
-						</label>
-					`
-				: nothing}
-			${hasSupportingLabel
-				? html` <span class="form-field__supporting-label">${component.supportingLabel}</span> `
-				: nothing}
+			${hasLabel ? html`
+				<label class="form-field__label"
+					@click=${(e: Event) => component._focusInput(e)}
+				>
+					${component.label}
+					${component.optional ? renderOptional(component.optionalLabel) : nothing}
+				</label>
+			` : nothing}
+			${hasSupportingLabel ? html`
+				<span class="form-field__supporting-label">${component.supportingLabel}</span>
+			` : nothing}
 		</div>
 	`;
 
@@ -37,7 +37,9 @@ export function formFieldTemplate(component: NDDFormField): TemplateResult {
 			${headerEl}
 			<div class="form-field__main">
 				<slot></slot>
-				<div class="form-field__errors" aria-live="polite">
+				<div class="form-field__errors"
+					aria-live="polite"
+				>
 					<slot name="errors"></slot>
 				</div>
 				<slot name="help"></slot>

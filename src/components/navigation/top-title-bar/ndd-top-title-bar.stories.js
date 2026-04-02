@@ -128,8 +128,7 @@ Compact.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story:
-				'Compacte stand via de <code>is-compact</code>-klasse: icoonknop, scheider en werkbalktitel.',
+			story: 'Compacte stand via de <code>is-compact</code>-klasse: icoonknop, scheider en werkbalktitel.',
 		},
 	},
 };
@@ -150,19 +149,14 @@ MetSubtitel.args = {
 
 export const MetWerkbalkActies = () => html`
 	<ndd-page background="tinted" style="height: 120px;">
-		<ndd-top-title-bar slot="header" title="Document" back-label="Overzicht" dismiss-label="Sluit">
-			<ndd-icon-button
-				slot="toolbar"
-				variant="accent-transparent"
-				icon="share"
-				text="Delen"
-			></ndd-icon-button>
-			<ndd-icon-button
-				slot="toolbar"
-				variant="accent-transparent"
-				icon="edit"
-				text="Bewerken"
-			></ndd-icon-button>
+		<ndd-top-title-bar
+			slot="header"
+			title="Document"
+			back-label="Overzicht"
+			dismiss-label="Sluit"
+		>
+			<ndd-icon-button slot="toolbar" variant="accent-transparent" icon="share" text="Delen"></ndd-icon-button>
+			<ndd-icon-button slot="toolbar" variant="accent-transparent" icon="edit" text="Bewerken"></ndd-icon-button>
 		</ndd-top-title-bar>
 	</ndd-page>
 `;

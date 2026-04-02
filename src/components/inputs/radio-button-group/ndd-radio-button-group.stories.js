@@ -55,7 +55,11 @@ export default {
 
 const Template = ({ name, disabled, required }) => html`
 	<ndd-form-field label="Kies een optie">
-		<ndd-radio-button-group name=${name} ?disabled=${disabled} ?required=${required}>
+		<ndd-radio-button-group
+			name=${name}
+			?disabled=${disabled}
+			?required=${required}
+		>
 			<ndd-radio-button-field value="1" checked label="Optie 1"></ndd-radio-button-field>
 			<ndd-radio-button-field value="2" label="Optie 2"></ndd-radio-button-field>
 			<ndd-radio-button-field value="3" label="Optie 3"></ndd-radio-button-field>
@@ -74,11 +78,7 @@ export const MetUitgeschakeldVeld = () => html`
 		<ndd-radio-button-group name="demo">
 			<ndd-radio-button-field value="1" checked label="Optie 1"></ndd-radio-button-field>
 			<ndd-radio-button-field value="2" label="Optie 2"></ndd-radio-button-field>
-			<ndd-radio-button-field
-				value="3"
-				label="Optie 3 (uitgeschakeld)"
-				disabled
-			></ndd-radio-button-field>
+			<ndd-radio-button-field value="3" label="Optie 3 (uitgeschakeld)" disabled></ndd-radio-button-field>
 		</ndd-radio-button-group>
 	</ndd-form-field>
 `;

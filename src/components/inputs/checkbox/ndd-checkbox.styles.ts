@@ -1,6 +1,7 @@
 import { css } from 'lit';
 
 export const checkboxStyles = css`
+
 	/* # Host */
 
 	:host {
@@ -16,6 +17,7 @@ export const checkboxStyles = css`
 		display: none;
 	}
 
+
 	/* # Native input */
 
 	.checkbox__input {
@@ -28,6 +30,7 @@ export const checkboxStyles = css`
 		z-index: 1;
 	}
 
+
 	/* # Visual box */
 
 	.checkbox__box {
@@ -36,11 +39,11 @@ export const checkboxStyles = css`
 		width: var(--semantics-controls-xs-min-size);
 		height: var(--semantics-controls-xs-min-size);
 		border-radius: var(--semantics-controls-xs-corner-radius);
-		border: var(--components-checkbox-border-thickness) solid
-			var(--components-checkbox-border-color);
+		border: var(--components-checkbox-border-thickness) solid var(--components-checkbox-border-color);
 		background-color: var(--components-checkbox-background-color);
 		color: transparent;
 	}
+
 
 	/* # Selected */
 
@@ -50,6 +53,7 @@ export const checkboxStyles = css`
 		background-color: var(--components-checkbox-is-selected-background-color);
 		color: var(--components-checkbox-is-selected-icon-color);
 	}
+
 
 	/* # Hover */
 
@@ -64,6 +68,7 @@ export const checkboxStyles = css`
 		color: var(--components-checkbox-is-selected-is-hovered-icon-color);
 	}
 
+
 	/* # Active */
 
 	.checkbox__input:active:not(:disabled) ~ .checkbox__box {
@@ -77,20 +82,21 @@ export const checkboxStyles = css`
 		color: var(--components-checkbox-is-selected-is-active-icon-color);
 	}
 
+
 	/* # Focus */
 
 	.checkbox__input:focus-visible ~ .checkbox__box {
-		outline: var(--semantics-focus-ring-edge-thickness) double
-			var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
-			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 	}
+
 
 	/* # Disabled */
 
 	.checkbox__input:disabled ~ .checkbox__box {
 		opacity: var(--primitives-opacity-disabled);
 	}
+
 
 	/* # Icons */
 

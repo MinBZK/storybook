@@ -104,20 +104,7 @@ export default {
 	},
 };
 
-const Template = ({
-	value,
-	placeholder,
-	size,
-	valid,
-	invalid,
-	disabled,
-	masked,
-	showLabel,
-	hideLabel,
-	showAccessibleLabel,
-	hideAccessibleLabel,
-	name,
-}) => html`
+const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, showLabel, hideLabel, showAccessibleLabel, hideAccessibleLabel, name }) => html`
 	<ndd-password-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -163,10 +150,10 @@ Disabled.args = {
 export const AllStates = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<ndd-password-field placeholder="Neutral"></ndd-password-field>
-		<ndd-password-field .value=${'strong-password'} valid></ndd-password-field>
-		<ndd-password-field .value=${'123'} invalid></ndd-password-field>
-		<ndd-password-field .value=${'disabled'} disabled></ndd-password-field>
-		<ndd-password-field .value=${'unmasked'} .masked=${false}></ndd-password-field>
+		<ndd-password-field .value=${"strong-password"} valid></ndd-password-field>
+		<ndd-password-field .value=${"123"} invalid></ndd-password-field>
+		<ndd-password-field .value=${"disabled"} disabled></ndd-password-field>
+		<ndd-password-field .value=${"unmasked"} .masked=${false}></ndd-password-field>
 	</div>
 `;
 AllStates.parameters = { controls: { disable: true } };

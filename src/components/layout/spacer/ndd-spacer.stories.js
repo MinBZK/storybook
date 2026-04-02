@@ -106,12 +106,8 @@ Flexibel.parameters = { controls: { disable: true } };
 
 export const Responsief = () => html`
 	<div style="display: flex; flex-direction: column; align-items: flex-start;">
-		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">
-			sm — 16px
-		</p>
-		<div
-			style="display: flex; flex-direction: column; align-items: flex-start; width: 320px; border: 1px dashed #cbd5e1; padding: 8px;"
-		>
+		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">sm — 16px</p>
+		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 320px; border: 1px dashed #cbd5e1; padding: 8px;">
 			<ndd-button text="Knop"></ndd-button>
 			<ndd-spacer size="md"></ndd-spacer>
 			<ndd-button text="Knop"></ndd-button>
@@ -119,12 +115,8 @@ export const Responsief = () => html`
 
 		<ndd-spacer size="24" direction="vertical"></ndd-spacer>
 
-		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">
-			md — 24px
-		</p>
-		<div
-			style="display: flex; flex-direction: column; align-items: flex-start; width: 641px; border: 1px dashed #cbd5e1; padding: 8px;"
-		>
+		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">md — 24px</p>
+		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 641px; border: 1px dashed #cbd5e1; padding: 8px;">
 			<ndd-button text="Knop"></ndd-button>
 			<ndd-spacer size="md"></ndd-spacer>
 			<ndd-button text="Knop"></ndd-button>
@@ -132,12 +124,8 @@ export const Responsief = () => html`
 
 		<ndd-spacer size="24" direction="vertical"></ndd-spacer>
 
-		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">
-			lg — 24px
-		</p>
-		<div
-			style="display: flex; flex-direction: column; align-items: flex-start; width: 1008px; border: 1px dashed #cbd5e1; padding: 8px;"
-		>
+		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">lg — 24px</p>
+		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 1008px; border: 1px dashed #cbd5e1; padding: 8px;">
 			<ndd-button text="Knop"></ndd-button>
 			<ndd-spacer size="md"></ndd-spacer>
 			<ndd-button text="Knop"></ndd-button>
@@ -148,33 +136,14 @@ Responsief.parameters = { controls: { disable: true } };
 
 export const VasteGroottes = () => html`
 	<div style="display: flex; flex-direction: column;">
-		${[
-			'2',
-			'4',
-			'6',
-			'8',
-			'10',
-			'12',
-			'16',
-			'20',
-			'24',
-			'28',
-			'32',
-			'40',
-			'44',
-			'48',
-			'56',
-			'64',
-			'80',
-			'96',
-		].map(
+		${['2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'].map(
 			(size) => html`
 				<div style="display: flex; align-items: center;">
 					<ndd-button text="${size}"></ndd-button>
 					<ndd-spacer size=${size} direction="horizontal"></ndd-spacer>
 					<ndd-button text="${size}"></ndd-button>
 				</div>
-			`
+			`,
 		)}
 	</div>
 `;

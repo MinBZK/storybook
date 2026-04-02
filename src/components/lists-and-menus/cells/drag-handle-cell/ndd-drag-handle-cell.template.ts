@@ -36,7 +36,10 @@ const gripSm = svg`
 
 export function template(size: 'sm' | 'md', label: string) {
 	return html`
-		<button class="drag-handle-cell__control" type="button" aria-label=${label}>
+		<button class="drag-handle-cell__control"
+			type="button"
+			aria-label=${label}
+		>
 			${size === 'sm' ? gripSm : gripMd}
 		</button>
 	`;
