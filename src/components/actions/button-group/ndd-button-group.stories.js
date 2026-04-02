@@ -3,23 +3,22 @@ import './ndd-button-group.ts';
 import '../button/ndd-button.ts';
 
 export default {
-  title: 'Components/Actions/Button Group',
-  component: 'ndd-button-group',
-  tags: ['autodocs'],
-  parameters: {
-  },
-  argTypes: {
-    size: {
-      control: 'select',
-      options: ['sm', 'md'],
-      description: 'Button group size',
-    },
-    flow: {
-      control: 'select',
-      options: ['horizontal', 'vertical'],
-      description: 'Layout direction',
-    },
-  },
+    title: 'Components/Actions/Button Group',
+    component: 'ndd-button-group',
+    tags: ['autodocs'],
+
+    argTypes: {
+      size: {
+        control: 'select',
+        options: ['sm', 'md'],
+        description: 'Button group size',
+      },
+      flow: {
+        control: 'select',
+        options: ['horizontal', 'vertical'],
+        description: 'Layout direction',
+      },
+    }
 };
 
 export const Default = {

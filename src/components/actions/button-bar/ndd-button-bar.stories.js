@@ -4,12 +4,11 @@ import '../button/ndd-button.ts';
 import '../icon-button/ndd-icon-button.ts';
 
 export default {
-	title: 'Components/Actions/Button Bar',
-	component: 'ndd-button-bar',
-	tags: ['autodocs'],
-	parameters: {
-	},
-	argTypes: {
+    title: 'Components/Actions/Button Bar',
+    component: 'ndd-button-bar',
+    tags: ['autodocs'],
+
+    argTypes: {
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
@@ -19,7 +18,7 @@ export default {
 			control: 'boolean',
 			description: 'Disabled state',
 		},
-	},
+	}
 };
 
 export const Default = {

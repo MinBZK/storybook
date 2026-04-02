@@ -5,8 +5,7 @@ export default {
   title: 'Components/Lists & Menus/Cells/Timeline Track Cell',
   component: 'ndd-timeline-track-cell',
   tags: ['autodocs'],
-  parameters: {
-  },
+
   argTypes: {
     step: {
       control: 'select',
@@ -18,7 +17,7 @@ export default {
       options: ['first', 'between', 'last'],
       description: 'Position in timeline sequence',
     },
-  },
+  }
 };
 
 export const Default = {
