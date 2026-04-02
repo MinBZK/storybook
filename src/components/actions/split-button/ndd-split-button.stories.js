@@ -55,8 +55,8 @@ const Template = ({ text, size, disabled }) => html`
 		text=${text}
 		size=${size}
 		?disabled=${disabled}
-		@action-click=${() => console.log('Action clicked')}
-		@menu-click=${() => console.log('Menu clicked')}
+		@action-click=${() => console.warn('Action clicked')}
+		@menu-click=${() => console.warn('Menu clicked')}
 	></ndd-split-button>
 `;
 

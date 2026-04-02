@@ -67,8 +67,8 @@ const Template = (args) => html`
 		control=${args.control}
 		?open=${args.open}
 		?disabled=${args.disabled}
-		@dismiss=${() => console.log('dismiss')}
-		@toggle=${(e) => console.log('toggle:', e.detail)}
+		@dismiss=${() => console.warn('dismiss')}
+		@toggle=${(e) => console.warn('toggle:', e.detail)}
 	>${args.label}</ndd-token>
 `;
 
@@ -170,13 +170,13 @@ FilterVoorbeeld.parameters = {
 export const MenuVoorbeeld = () => html`
 	<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
 		<ndd-token control="menu"
-			@toggle=${(e) => console.log('Periode:', e.detail)}
+			@toggle=${(e) => console.warn('Periode:', e.detail)}
 		>Periode: Laatste maand</ndd-token>
 		<ndd-token control="menu" open
-			@toggle=${(e) => console.log('Status:', e.detail)}
+			@toggle=${(e) => console.warn('Status:', e.detail)}
 		>Status: Actief</ndd-token>
 		<ndd-token control="menu"
-			@toggle=${(e) => console.log('Afdeling:', e.detail)}
+			@toggle=${(e) => console.warn('Afdeling:', e.detail)}
 		>Afdeling: Juridisch</ndd-token>
 	</div>
 `;

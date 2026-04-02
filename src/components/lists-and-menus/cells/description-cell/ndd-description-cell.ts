@@ -73,17 +73,17 @@ export class NDDDescriptionCell extends LitElement {
 		} else {
 			this.style.removeProperty('--_width');
 		}
-		if (this.minWidth != null) {
+		if (this.minWidth !== undefined) {
 			this.style.setProperty('--_min-width', `${this.minWidth}px`);
 		} else {
 			this.style.removeProperty('--_min-width');
 		}
-		if (this.maxWidth != null) {
+		if (this.maxWidth !== undefined) {
 			this.style.setProperty('--_max-width', `${this.maxWidth}px`);
 		} else {
 			this.style.removeProperty('--_max-width');
 		}
-		if (this.minHeight != null) {
+		if (this.minHeight !== undefined) {
 			this.style.setProperty('--_min-height', `${this.minHeight}px`);
 		} else {
 			this.style.removeProperty('--_min-height');

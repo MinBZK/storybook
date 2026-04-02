@@ -142,22 +142,22 @@ export const InteractiveExample = () => html`
 		<ndd-text-field
 			name="name"
 			placeholder="Full name"
-			@input=${(e) => console.log('Input:', e.detail.value)}
-			@change=${(e) => console.log('Change:', e.detail.value)}
+			@input=${(e) => console.warn('Input:', e.detail.value)}
+			@change=${(e) => console.warn('Change:', e.detail.value)}
 		></ndd-text-field>
 		<ndd-text-field
 			name="email"
 			type="email"
 			placeholder="your@email.com"
-			@input=${(e) => console.log('Input:', e.detail.value)}
-			@change=${(e) => console.log('Change:', e.detail.value)}
+			@input=${(e) => console.warn('Input:', e.detail.value)}
+			@change=${(e) => console.warn('Change:', e.detail.value)}
 		></ndd-text-field>
 		<ndd-text-field
 			name="phone"
 			type="tel"
 			placeholder="+31 6 12345678"
-			@input=${(e) => console.log('Input:', e.detail.value)}
-			@change=${(e) => console.log('Change:', e.detail.value)}
+			@input=${(e) => console.warn('Input:', e.detail.value)}
+			@change=${(e) => console.warn('Change:', e.detail.value)}
 		></ndd-text-field>
 	</div>
 `;

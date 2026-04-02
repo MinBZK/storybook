@@ -97,7 +97,7 @@ WithTitleLarge.parameters = { controls: { disable: true } };
 
 export const Interactive = () => {
 	const handleItemSelect = (event) => {
-		console.log('Selected item:', event.detail.item.textContent);
+		console.warn('Selected item:', event.detail.item.textContent);
 	};
 	return html`
 		<ndd-menu-bar @itemselect=${handleItemSelect}>

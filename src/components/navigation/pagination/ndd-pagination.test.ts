@@ -4,11 +4,6 @@ import type { NDDPagination } from './ndd-pagination.ts';
 import './ndd-pagination.ts';
 
 function getPageLabels(el: NDDPagination): (string | '...')[] {
-	const buttons = el.shadowRoot!.querySelectorAll(
-		'.pagination__button:not(.pagination__button--nav):not(.pagination__button--ellipsis)'
-	);
-	const ellipses = el.shadowRoot!.querySelectorAll('.pagination__button--ellipsis');
-
 	// Collect all page buttons and ellipses in DOM order
 	const allItems = el.shadowRoot!.querySelectorAll(
 		'.pagination__button:not(.pagination__button--nav)'

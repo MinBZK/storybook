@@ -92,8 +92,8 @@ const Template = (args) => html`
 			back-href=${args.backHref}
 			dismiss-label=${args.dismissLabel}
 			title-anchor=${args.titleAnchor}
-			@back=${() => console.log('back')}
-			@dismiss=${() => console.log('dismiss')}
+			@back=${() => console.warn('back')}
+			@dismiss=${() => console.warn('dismiss')}
 		></ndd-top-title-bar>
 	</ndd-page>
 `;
@@ -119,8 +119,8 @@ export const Compact = () => html`
 			title="Detailpagina"
 			back-label="Overzicht"
 			dismiss-label="Sluit"
-			@back=${() => console.log('back')}
-			@dismiss=${() => console.log('dismiss')}
+			@back=${() => console.warn('back')}
+			@dismiss=${() => console.warn('dismiss')}
 		></ndd-top-title-bar>
 	</ndd-page>
 `;
@@ -177,8 +177,8 @@ export const MetTitelAnker = () => html`
 			back-label="Overzicht"
 			dismiss-label="Sluit"
 			title-anchor="page-title-bar"
-			@back=${() => console.log('back')}
-			@dismiss=${() => console.log('dismiss')}
+			@back=${() => console.warn('back')}
+			@dismiss=${() => console.warn('dismiss')}
 		></ndd-top-title-bar>
 		<div style="padding-inline: 16px;">
 			<ndd-title-bar id="page-title-bar" size="2">
@@ -204,8 +204,8 @@ export const MetTitelAnkerZonderActies = () => html`
 			slot="header"
 			title="Paginatitel"
 			title-anchor="page-title-bar-2"
-			@back=${() => console.log('back')}
-			@dismiss=${() => console.log('dismiss')}
+			@back=${() => console.warn('back')}
+			@dismiss=${() => console.warn('dismiss')}
 		></ndd-top-title-bar>
 		<div style="padding-inline: 16px;">
 			<ndd-title-bar id="page-title-bar-2" size="2">
