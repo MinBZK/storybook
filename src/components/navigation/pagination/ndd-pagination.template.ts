@@ -9,6 +9,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 	const atLast = component.current >= component.total;
 	const t = component._t.bind(component);
 	const hasHref = !!component.hrefPattern;
+	const isDisabled = component.disabled;
 
 	const renderPageButton = (page: number) => {
 		const isCurrent = page === component.current;
@@ -20,6 +21,8 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 					href=${component._hrefForPage(page)}
 					aria-label=${label}
 					aria-current=${isCurrent ? 'page' : nothing}
+					tabindex=${isDisabled ? -1 : nothing}
+					aria-disabled=${isDisabled ? 'true' : nothing}
 				>
 					<div class="pagination__page-button-indicator"></div>
 					<div class="pagination__page-button-text">${page}</div>
@@ -32,6 +35,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				type="button"
 				aria-label=${label}
 				aria-current=${isCurrent ? 'page' : nothing}
+				?disabled=${isDisabled}
 				@click=${() => component._goToPage(page)}
 			>
 				<div class="pagination__page-button-indicator"></div>
@@ -48,7 +52,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				icon="chevron-left-small"
 				text=${t('components.pagination.previous-action')}
 				variant="neutral-tinted"
-				?disabled=${atFirst}
+				?disabled=${isDisabled || atFirst}
 				href=${hasHref && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
 				@click=${hasHref ? nothing : () => component._goToPage(component.current - 1)}
 			></ndd-icon-button>
@@ -66,6 +70,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				<div class="pagination__select-wrapper">
 					<select class="pagination__select"
 						aria-label=${t('components.pagination.go-to-page-action')}
+						?disabled=${isDisabled}
 						@change=${(e: Event) => {
 							const page = Number((e.target as HTMLSelectElement).value);
 							if (hasHref) {
@@ -91,7 +96,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				icon="chevron-right-small"
 				text=${t('components.pagination.next-action')}
 				variant="neutral-tinted"
-				?disabled=${atLast}
+				?disabled=${isDisabled || atLast}
 				href=${hasHref && !atLast ? component._hrefForPage(component.current + 1) : nothing}
 				@click=${hasHref ? nothing : () => component._goToPage(component.current + 1)}
 			></ndd-icon-button>
