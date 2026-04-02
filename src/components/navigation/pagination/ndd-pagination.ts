@@ -84,7 +84,7 @@ export class NDDPagination extends LitElement {
 
 	_hrefForPage(page: number): string {
 		const href = this.hrefPattern.replace('{page}', String(page));
-		if (/^(https?:\/\/|\/|\.|\?|#)/.test(href)) return href;
+		if (/^(https?:\/\/|[^:]+$)/.test(href)) return href;
 		return '';
 	}
 
@@ -110,8 +110,8 @@ export class NDDPagination extends LitElement {
 		const proceeded = this.dispatchEvent(event);
 
 		// In href mode, navigate unless consumer called preventDefault()
-		if (this.hrefPattern && proceeded) {
-			window.location.href = detail.href!;
+		if (this.hrefPattern && proceeded && detail.href) {
+			window.location.href = detail.href;
 		}
 	}
 

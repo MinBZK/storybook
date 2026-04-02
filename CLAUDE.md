@@ -93,7 +93,7 @@ Gebruik `/component <naam>` voor het maken of updaten van componenten. Dit comma
 --semantics-buttons-accent-filled-color
 
 /* Components */
---components-button-{xs|sm|md}-font
+--semantics-buttons-{xs|sm|md}-font
 --components-checkbox-*
 --components-radio-button-*
 --components-switch-*
