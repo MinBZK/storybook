@@ -93,28 +93,30 @@ export class NDDTextCell extends LitElement {
 		}
 	}
 
+	/* eslint-disable eqeqeq -- != null is intentional: guards both null and undefined */
 	private _applyDimensionStyles() {
 		if (typeof this.width === 'number') {
 			this.style.setProperty('--_width', `${this.width}px`);
 		} else {
 			this.style.removeProperty('--_width');
 		}
-		if (this.minWidth !== undefined) {
+		if (this.minWidth != null) {
 			this.style.setProperty('--_min-width', `${this.minWidth}px`);
 		} else {
 			this.style.removeProperty('--_min-width');
 		}
-		if (this.maxWidth !== undefined) {
+		if (this.maxWidth != null) {
 			this.style.setProperty('--_max-width', `${this.maxWidth}px`);
 		} else {
 			this.style.removeProperty('--_max-width');
 		}
-		if (this.minHeight !== undefined) {
+		if (this.minHeight != null) {
 			this.style.setProperty('--_min-height', `${this.minHeight}px`);
 		} else {
 			this.style.removeProperty('--_min-height');
 		}
 	}
+	/* eslint-enable eqeqeq */
 
 	override render() {
 		return template.call(this);

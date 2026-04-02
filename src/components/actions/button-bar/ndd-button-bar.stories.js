@@ -18,7 +18,7 @@ export default {
 			control: 'boolean',
 			description: 'Disabled state',
 		},
-	}
+	},
 };
 
 export const Default = {
