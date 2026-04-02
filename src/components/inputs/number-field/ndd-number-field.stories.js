@@ -77,7 +77,17 @@ export default {
 	},
 };
 
-const Template = ({ value, min, max, step, disabled, name, hideSpinButtons, fullWidth, width }) => html`
+const Template = ({
+	value,
+	min,
+	max,
+	step,
+	disabled,
+	name,
+	hideSpinButtons,
+	fullWidth,
+	width,
+}) => html`
 	<ndd-number-field
 		value=${value}
 		min=${min}

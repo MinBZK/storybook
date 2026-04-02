@@ -75,11 +75,10 @@ export const styles = css`
 
 	/* ## Variant: Neutral Tintend (Default) */
 
-	:host([variant="neutral-tinted"]) .split-button,
+	:host([variant='neutral-tinted']) .split-button,
 	:host(:not([variant])) .split-button {
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 	}
-
 
 	/* # Elements */
 

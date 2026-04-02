@@ -62,7 +62,8 @@ export default {
 
 const Template = ({ value, min, max, step, disabled, size }) => html`
 	<div style="display: flex; gap: 1rem; align-items: center;">
-		<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;"
+		<span
+			style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;"
 			.textContent=${String(value)}
 		></span>
 		<ndd-stepper
@@ -87,26 +88,50 @@ export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">5</span>
-			<ndd-stepper value="5" min="0" max="10" size="md"
-				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+			<ndd-stepper
+				value="5"
+				min="0"
+				max="10"
+				size="md"
+				@change=${(e) => {
+					e.target.previousElementSibling.textContent = e.detail.value;
+				}}
 			></ndd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">5</span>
-			<ndd-stepper value="5" min="0" max="10" size="sm"
-				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+			<ndd-stepper
+				value="5"
+				min="0"
+				max="10"
+				size="sm"
+				@change=${(e) => {
+					e.target.previousElementSibling.textContent = e.detail.value;
+				}}
 			></ndd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">0</span>
-			<ndd-stepper value="0" min="0" max="10" size="md"
-				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+			<ndd-stepper
+				value="0"
+				min="0"
+				max="10"
+				size="md"
+				@change=${(e) => {
+					e.target.previousElementSibling.textContent = e.detail.value;
+				}}
 			></ndd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">10</span>
-			<ndd-stepper value="10" min="0" max="10" size="md"
-				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+			<ndd-stepper
+				value="10"
+				min="0"
+				max="10"
+				size="md"
+				@change=${(e) => {
+					e.target.previousElementSibling.textContent = e.detail.value;
+				}}
 			></ndd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">

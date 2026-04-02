@@ -38,8 +38,14 @@ export const Standaard = () => html`
 			<h2>Sectietitel</h2>
 		</ndd-rich-text>
 		<ndd-rich-text>
-			<p>Dit is de hoofdinhoud van de sectie. De inhoud loopt van rand tot rand zonder horizontale padding.</p>
-			<p>Gebruik deze sectie voor achtergrondkleuren, afbeeldingen of andere inhoud die de volledige breedte beslaat.</p>
+			<p>
+				Dit is de hoofdinhoud van de sectie. De inhoud loopt van rand tot rand zonder horizontale
+				padding.
+			</p>
+			<p>
+				Gebruik deze sectie voor achtergrondkleuren, afbeeldingen of andere inhoud die de volledige
+				breedte beslaat.
+			</p>
 		</ndd-rich-text>
 		<ndd-rich-text slot="footer">
 			<p>Voetnoot of aanvullende informatie.</p>

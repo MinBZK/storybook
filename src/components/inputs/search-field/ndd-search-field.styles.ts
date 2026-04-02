@@ -17,7 +17,6 @@ export const searchFieldStyles = css`
 		pointer-events: none;
 	}
 
-
 	/* # Container */
 
 	.search-field {
@@ -28,7 +27,8 @@ export const searchFieldStyles = css`
 		box-sizing: border-box;
 		width: 100%;
 		background-color: var(--_background-color);
-		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
+		border: var(--semantics-input-fields-border-thickness) solid
+			var(--semantics-input-fields-border-color);
 	}
 
 	:host([size='md']) .search-field,
@@ -43,15 +43,16 @@ export const searchFieldStyles = css`
 	}
 
 	.search-field:has(.search-field__input:focus-visible) {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
 
 	.search-field:has(input:-webkit-autofill),
 	.search-field:has(input:autofill) {
 		--_background-color: var(--semantics-input-fields-is-autofill-background-color);
 	}
-
 
 	/* # Search icon */
 
@@ -67,15 +68,20 @@ export const searchFieldStyles = css`
 	:host(:not([size])) .search-field__search-icon {
 		width: var(--primitives-space-24);
 		height: var(--primitives-space-24);
-		margin-inline: calc((var(--semantics-controls-md-min-size) - var(--primitives-space-24)) / 2 - var(--semantics-input-fields-border-thickness));
+		margin-inline: calc(
+			(var(--semantics-controls-md-min-size) - var(--primitives-space-24)) /
+				2 - var(--semantics-input-fields-border-thickness)
+		);
 	}
 
 	:host([size='sm']) .search-field__search-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
-		margin-inline: calc((var(--semantics-controls-sm-min-size) - var(--primitives-space-20)) / 2 - var(--semantics-input-fields-border-thickness));
+		margin-inline: calc(
+			(var(--semantics-controls-sm-min-size) - var(--primitives-space-20)) /
+				2 - var(--semantics-input-fields-border-thickness)
+		);
 	}
-
 
 	/* # Input */
 
@@ -114,7 +120,6 @@ export const searchFieldStyles = css`
 		-webkit-appearance: none;
 	}
 
-
 	/* # Fade */
 
 	.search-field__fade {
@@ -132,10 +137,13 @@ export const searchFieldStyles = css`
 		right: 0;
 		width: var(--primitives-space-8);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
+		background: linear-gradient(
+			90deg,
+			color-mix(in oklch, var(--_background-color) 0%, transparent) 0%,
+			var(--_background-color) 100%
+		);
 		pointer-events: none;
 	}
-
 
 	/* # Actions */
 
@@ -149,12 +157,18 @@ export const searchFieldStyles = css`
 
 	:host([size='md']) .search-field__actions,
 	:host(:not([size])) .search-field__actions {
-		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		padding-right: calc(
+			(var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) /
+				2 - var(--semantics-input-fields-border-thickness)
+		);
 		gap: var(--primitives-space-6);
 	}
 
 	:host([size='sm']) .search-field__actions {
-		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		padding-right: calc(
+			(var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) /
+				2 - var(--semantics-input-fields-border-thickness)
+		);
 		gap: var(--primitives-space-4);
 	}
 

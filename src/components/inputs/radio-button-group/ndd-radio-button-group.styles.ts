@@ -1,8 +1,6 @@
 import { css } from 'lit';
 
 export const radioButtonGroupStyles = css`
-
-
 	/* # Host */
 
 	:host {
@@ -12,7 +10,6 @@ export const radioButtonGroupStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # Group */
 

@@ -17,17 +17,20 @@ export default {
 		variant: {
 			control: 'select',
 			options: ['', 'icon-and-text', 'text', 'icon'],
-			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Wordt genegeerd wanneer compact actief is.',
+			description:
+				'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Wordt genegeerd wanneer compact actief is.',
 			table: { defaultValue: { summary: '' } },
 		},
 		compact: {
 			control: 'boolean',
-			description: 'Toont items in compact weergave: icoon boven tekst gestapeld. Overschrijft variant op de parent én individuele variant attributen op items.',
+			description:
+				'Toont items in compact weergave: icoon boven tekst gestapeld. Overschrijft variant op de parent én individuele variant attributen op items.',
 			table: { defaultValue: { summary: false } },
 		},
 		responsive: {
 			control: 'boolean',
-			description: 'Schakelt automatisch over naar compact via de layout-area container query (onder 480px)',
+			description:
+				'Schakelt automatisch over naar compact via de layout-area container query (onder 480px)',
 			table: { defaultValue: { summary: false } },
 		},
 		fullWidth: {
@@ -48,10 +51,7 @@ export default {
 // Every item always has both icon and text for accessible, complete markup.
 // variant on the item forces a specific visual presentation.
 const tabBarItems = html`
-	<ndd-tab-bar-item
-		selected
-		text="Home"
-	>
+	<ndd-tab-bar-item selected text="Home">
 		<ndd-icon slot="icon" name="home"></ndd-icon>
 	</ndd-tab-bar-item>
 	<ndd-tab-bar-item text="Profiel">
@@ -78,25 +78,16 @@ const Template = ({ variant, compact, responsive, fullWidth }) => html`
 export const Standaard = Template.bind({});
 
 export const MetTekstVariant = () => html`
-	<ndd-tab-bar variant="text">
-		${tabBarItems}
-	</ndd-tab-bar>
+	<ndd-tab-bar variant="text"> ${tabBarItems} </ndd-tab-bar>
 `;
 MetTekstVariant.parameters = { controls: { disable: true } };
 
 export const MetIconenVariant = () => html`
-	<ndd-tab-bar variant="icon">
-		${tabBarItems}
-	</ndd-tab-bar>
+	<ndd-tab-bar variant="icon"> ${tabBarItems} </ndd-tab-bar>
 `;
 MetIconenVariant.parameters = { controls: { disable: true } };
 
-
-export const Compact = () => html`
-	<ndd-tab-bar compact>
-		${tabBarItems}
-	</ndd-tab-bar>
-`;
+export const Compact = () => html` <ndd-tab-bar compact> ${tabBarItems} </ndd-tab-bar> `;
 Compact.parameters = { controls: { disable: true } };
 
 export const Responsief = () => html`
@@ -104,17 +95,13 @@ export const Responsief = () => html`
 		<div>
 			<small>Breed (regular weergave)</small>
 			<div style="container-type: inline-size; container-name: layout-area; width: 680px;">
-				<ndd-tab-bar responsive full-width>
-					${tabBarItems}
-				</ndd-tab-bar>
+				<ndd-tab-bar responsive full-width> ${tabBarItems} </ndd-tab-bar>
 			</div>
 		</div>
 		<div>
 			<small>Smal onder 480px (compact weergave)</small>
 			<div style="container-type: inline-size; container-name: layout-area; width: 320px;">
-				<ndd-tab-bar responsive full-width>
-					${tabBarItems}
-				</ndd-tab-bar>
+				<ndd-tab-bar responsive full-width> ${tabBarItems} </ndd-tab-bar>
 			</div>
 		</div>
 	</div>
@@ -123,32 +110,20 @@ Responsief.parameters = { controls: { disable: true } };
 
 export const VolleBreedte = () => html`
 	<div style="container-type: inline-size; container-name: layout-area;">
-		<ndd-tab-bar full-width>
-			${tabBarItems}
-		</ndd-tab-bar>
+		<ndd-tab-bar full-width> ${tabBarItems} </ndd-tab-bar>
 	</div>
 `;
 VolleBreedte.parameters = { controls: { disable: true } };
 
 export const Gemengd = () => html`
 	<ndd-tab-bar>
-		<ndd-tab-bar-item
-			selected
-			variant="text"
-			text="Home"
-		>
+		<ndd-tab-bar-item selected variant="text" text="Home">
 			<ndd-icon slot="icon" name="home"></ndd-icon>
 		</ndd-tab-bar-item>
-		<ndd-tab-bar-item
-			variant="text"
-			text="Profiel"
-		>
+		<ndd-tab-bar-item variant="text" text="Profiel">
 			<ndd-icon slot="icon" name="profile"></ndd-icon>
 		</ndd-tab-bar-item>
-		<ndd-tab-bar-item
-			variant="icon"
-			text="Zoeken"
-		>
+		<ndd-tab-bar-item variant="icon" text="Zoeken">
 			<ndd-icon slot="icon" name="search"></ndd-icon>
 		</ndd-tab-bar-item>
 	</ndd-tab-bar>
@@ -157,23 +132,13 @@ Gemengd.parameters = { controls: { disable: true } };
 
 export const Navigatie = () => html`
 	<ndd-tab-bar navigation accessible-label="Hoofdnavigatie">
-		<ndd-tab-bar-item
-			selected
-			text="Home"
-			href="/home"
-		>
+		<ndd-tab-bar-item selected text="Home" href="/home">
 			<ndd-icon slot="icon" name="home"></ndd-icon>
 		</ndd-tab-bar-item>
-		<ndd-tab-bar-item
-			text="Profiel"
-			href="/profiel"
-		>
+		<ndd-tab-bar-item text="Profiel" href="/profiel">
 			<ndd-icon slot="icon" name="profile"></ndd-icon>
 		</ndd-tab-bar-item>
-		<ndd-tab-bar-item
-			text="Zoeken"
-			href="/zoeken"
-		>
+		<ndd-tab-bar-item text="Zoeken" href="/zoeken">
 			<ndd-icon slot="icon" name="search"></ndd-icon>
 		</ndd-tab-bar-item>
 	</ndd-tab-bar>

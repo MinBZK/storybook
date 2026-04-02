@@ -21,7 +21,6 @@ export const styles = css`
 		display: none;
 	}
 
-
 	/* # Width */
 
 	:host([width='stretch']),
@@ -40,7 +39,6 @@ export const styles = css`
 	:host([width]:not([width='stretch']):not([width='fit-content'])) {
 		flex-shrink: 0;
 	}
-
 
 	/* # Vertical alignment
 	 *
@@ -63,7 +61,6 @@ export const styles = css`
 		align-self: flex-end;
 	}
 
-
 	/* # Horizontal alignment */
 
 	:host([horizontal-alignment='left']),
@@ -74,7 +71,6 @@ export const styles = css`
 	:host([horizontal-alignment='right']) {
 		align-items: flex-end;
 	}
-
 
 	/* # Overline */
 
@@ -89,7 +85,6 @@ export const styles = css`
 	:host([horizontal-alignment='right']) .title-cell__overline {
 		text-align: right;
 	}
-
 
 	/* # Title */
 
@@ -141,7 +136,6 @@ export const styles = css`
 		font: var(--primitives-font-display-6-sm);
 	}
 
-
 	/* # Subtitle */
 
 	.title-cell__supporting-text {
@@ -156,7 +150,6 @@ export const styles = css`
 		text-align: right;
 	}
 
-
 	/* # Color: inherit */
 
 	:host([color='inherit']) .title-cell__title,
@@ -165,7 +158,6 @@ export const styles = css`
 		color: inherit;
 	}
 
-
 	/* # Selected */
 
 	:host([selected]) .title-cell__title,
@@ -173,7 +165,6 @@ export const styles = css`
 	:host([selected]) .title-cell__supporting-text {
 		color: var(--semantics-controls-is-selected-contrast-color);
 	}
-
 
 	/* # Forced colors */
 

@@ -20,7 +20,6 @@ export const stepperStyles = css`
 		opacity: 1;
 	}
 
-
 	/* # Container */
 
 	.stepper {
@@ -40,10 +39,11 @@ export const stepperStyles = css`
 	}
 
 	.stepper:focus-visible {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
-
 
 	/* # Divider */
 
@@ -61,7 +61,6 @@ export const stepperStyles = css`
 	:host(:not([size])) .stepper__divider {
 		height: var(--semantics-buttons-md-divider-length);
 	}
-
 
 	/* # Focus */
 

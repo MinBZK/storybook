@@ -34,7 +34,6 @@ describe('ndd-radio-button-group', () => {
 	});
 });
 
-
 /* ============================================================
    Name and disabled forwarding
    ============================================================ */
@@ -50,7 +49,7 @@ describe('ndd-radio-button-group – field sync', () => {
 		el = await fixture<NDDRadioButtonGroup>(groupFixture('mygroup'));
 		await waitForUpdate(el);
 		const fields = Array.from(el.querySelectorAll('ndd-radio-button-field')) as any[];
-		fields.forEach(f => expect(f.name).toBe('mygroup'));
+		fields.forEach((f) => expect(f.name).toBe('mygroup'));
 	});
 
 	it('forwards disabled to all child fields', async () => {
@@ -62,10 +61,9 @@ describe('ndd-radio-button-group – field sync', () => {
 		`);
 		await waitForUpdate(el);
 		const fields = Array.from(el.querySelectorAll('ndd-radio-button-field')) as any[];
-		fields.forEach(f => expect(f.disabled).toBe(true));
+		fields.forEach((f) => expect(f.disabled).toBe(true));
 	});
 });
-
 
 /* ============================================================
    Keyboard navigation
@@ -148,7 +146,6 @@ describe('ndd-radio-button-group – keyboard navigation', () => {
 		expect(fields[2].checked).toBe(true);
 	});
 });
-
 
 /* ============================================================
    Accessibility

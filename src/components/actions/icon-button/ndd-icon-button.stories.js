@@ -60,12 +60,14 @@ export default {
 		},
 		text: {
 			control: 'text',
-			description: 'Tekst die als aria-label en title tooltip wordt gebruikt, en zichtbaar is als label onder het icoon in lg formaat',
+			description:
+				'Tekst die als aria-label en title tooltip wordt gebruikt, en zichtbaar is als label onder het icoon in lg formaat',
 		},
 		accessibleLabel: {
 			control: 'text',
 			name: 'accessible-label',
-			description: 'Overschrijft de tekst als aria-label en title tooltip voor schermlezer-context. Gebruik als de zichtbare tekst onvoldoende context biedt (bijv. tekst "Toon", accessible-label "Toon wachtwoord"). De tekst blijft zichtbaar in lg formaat.',
+			description:
+				'Overschrijft de tekst als aria-label en title tooltip voor schermlezer-context. Gebruik als de zichtbare tekst onvoldoende context biedt (bijv. tekst "Toon", accessible-label "Toon wachtwoord"). De tekst blijft zichtbaar in lg formaat.',
 		},
 		expandable: {
 			control: 'boolean',
@@ -103,7 +105,16 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, icon, text, accessibleLabel, expandable, type, disabled }) => html`
+const Template = ({
+	variant,
+	size,
+	icon,
+	text,
+	accessibleLabel,
+	expandable,
+	type,
+	disabled,
+}) => html`
 	<ndd-icon-button
 		variant=${variant}
 		size=${size}
@@ -183,41 +194,87 @@ Large.parameters = {
 export const WithAccessibleLabel = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<ndd-icon-button icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>
-		<ndd-icon-button icon="eye-slash" text="Verberg" accessible-label="Verberg wachtwoord"></ndd-icon-button>
+		<ndd-icon-button
+			icon="eye-slash"
+			text="Verberg"
+			accessible-label="Verberg wachtwoord"
+		></ndd-icon-button>
 	</div>
 `;
 WithAccessibleLabel.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Gebruik <code>accessible-label</code> als de zichtbare tekst onvoldoende context biedt voor schermlezers. De zichtbare tekst blijft ongewijzigd.',
+			story:
+				'Gebruik <code>accessible-label</code> als de zichtbare tekst onvoldoende context biedt voor schermlezers. De zichtbare tekst blijft ongewijzigd.',
 		},
 	},
 };
 
 export const WithDisclosureIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button expandable size="lg" icon="global-settings" text="Instellingen"></ndd-icon-button>
-		<ndd-icon-button expandable size="md" icon="global-settings" text="Instellingen"></ndd-icon-button>
-		<ndd-icon-button expandable size="sm" icon="global-settings" text="Instellingen"></ndd-icon-button>
-		<ndd-icon-button expandable size="xs" icon="global-settings" text="Instellingen"></ndd-icon-button>
+		<ndd-icon-button
+			expandable
+			size="lg"
+			icon="global-settings"
+			text="Instellingen"
+		></ndd-icon-button>
+		<ndd-icon-button
+			expandable
+			size="md"
+			icon="global-settings"
+			text="Instellingen"
+		></ndd-icon-button>
+		<ndd-icon-button
+			expandable
+			size="sm"
+			icon="global-settings"
+			text="Instellingen"
+		></ndd-icon-button>
+		<ndd-icon-button
+			expandable
+			size="xs"
+			icon="global-settings"
+			text="Instellingen"
+		></ndd-icon-button>
 	</div>
 `;
 WithDisclosureIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Icon button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover toont.',
+			story:
+				'Icon button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover toont.',
 		},
 	},
 };
 
 export const Disabled = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button disabled variant="accent-filled" icon="remove" text="Verwijderen"></ndd-icon-button>
-		<ndd-icon-button disabled variant="accent-outlined" icon="remove" text="Verwijderen"></ndd-icon-button>
-		<ndd-icon-button disabled variant="neutral-tinted" icon="remove" text="Verwijderen"></ndd-icon-button>
-		<ndd-icon-button disabled variant="danger-tinted" icon="remove" text="Verwijderen"></ndd-icon-button>
+		<ndd-icon-button
+			disabled
+			variant="accent-filled"
+			icon="remove"
+			text="Verwijderen"
+		></ndd-icon-button>
+		<ndd-icon-button
+			disabled
+			variant="accent-outlined"
+			icon="remove"
+			text="Verwijderen"
+		></ndd-icon-button>
+		<ndd-icon-button
+			disabled
+			variant="neutral-tinted"
+			icon="remove"
+			text="Verwijderen"
+		></ndd-icon-button>
+		<ndd-icon-button
+			disabled
+			variant="danger-tinted"
+			icon="remove"
+			text="Verwijderen"
+		></ndd-icon-button>
 	</div>
 `;
 Disabled.parameters = {
@@ -228,7 +285,7 @@ export const CustomIconSlot = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<ndd-icon-button text="Custom">
 			<svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-				<circle cx="10" cy="10" r="8"/>
+				<circle cx="10" cy="10" r="8" />
 			</svg>
 		</ndd-icon-button>
 	</div>
@@ -237,7 +294,8 @@ CustomIconSlot.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Gebruik de <code>icon</code> slot om een custom SVG icoon te plaatsen in plaats van het <code>icon</code> attribute.',
+			story:
+				'Gebruik de <code>icon</code> slot om een custom SVG icoon te plaatsen in plaats van het <code>icon</code> attribute.',
 		},
 	},
 };

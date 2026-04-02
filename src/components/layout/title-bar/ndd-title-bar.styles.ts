@@ -6,7 +6,6 @@ const mdMin = unsafeCSS(breakpoints.mdMin);
 const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
-
 /* # ndd-title-bar styles */
 
 export const titleBarStyles = css`
@@ -19,7 +18,6 @@ export const titleBarStyles = css`
 		display: none;
 	}
 
-
 	/* # Title bar */
 
 	.title-bar {
@@ -30,7 +28,6 @@ export const titleBarStyles = css`
 		width: 100%;
 	}
 
-
 	/* # Title group */
 
 	.title-bar__title-group {
@@ -40,7 +37,6 @@ export const titleBarStyles = css`
 		min-width: 0;
 	}
 
-
 	/* # Overline */
 
 	::slotted([slot='overline']) {
@@ -48,7 +44,6 @@ export const titleBarStyles = css`
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
-
 
 	/* # Title */
 
@@ -58,7 +53,6 @@ export const titleBarStyles = css`
 		color: var(--semantics-content-color);
 	}
 
-
 	/* # Subtitle */
 
 	::slotted([slot='subtitle']) {
@@ -66,7 +60,6 @@ export const titleBarStyles = css`
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
-
 
 	/* # Actions */
 
@@ -76,7 +69,6 @@ export const titleBarStyles = css`
 		align-items: center;
 		flex-shrink: 0;
 	}
-
 
 	/* # Size 1 */
 
@@ -98,7 +90,6 @@ export const titleBarStyles = css`
 		}
 	}
 
-
 	/* # Size 2 */
 
 	@container layout-area (max-width: ${smMax}) {
@@ -118,7 +109,6 @@ export const titleBarStyles = css`
 			font: var(--primitives-font-display-2-lg);
 		}
 	}
-
 
 	/* # Size 3 */
 
@@ -143,7 +133,6 @@ export const titleBarStyles = css`
 		}
 	}
 
-
 	/* # Size 4 */
 
 	@container layout-area (max-width: ${smMax}) {
@@ -164,7 +153,6 @@ export const titleBarStyles = css`
 		}
 	}
 
-
 	/* # Size 5 */
 
 	@container layout-area (max-width: ${smMax}) {
@@ -184,7 +172,6 @@ export const titleBarStyles = css`
 			font: var(--primitives-font-display-5-lg);
 		}
 	}
-
 
 	/* # Size 6 */
 

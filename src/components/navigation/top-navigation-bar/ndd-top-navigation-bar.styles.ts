@@ -1,7 +1,6 @@
 import { css } from 'lit';
 
 export const styles = css`
-
 	/* # Host */
 
 	:host {
@@ -32,8 +31,10 @@ export const styles = css`
 
 	.skip-link:focus {
 		top: var(--primitives-space-8);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
 
 	/* # Container */
@@ -48,16 +49,16 @@ export const styles = css`
 		box-sizing: border-box;
 	}
 
-	:host([container="sm"]) .container {
+	:host([container='sm']) .container {
 		min-width: var(--primitives-breakpoint-sm-min);
 	}
 
-	:host([container="md"]) .container,
+	:host([container='md']) .container,
 	:host(:not([container])) .container {
 		min-width: var(--primitives-breakpoint-md-min);
 	}
 
-	:host([container="lg"]) .container {
+	:host([container='lg']) .container {
 		min-width: var(--primitives-breakpoint-lg-min);
 	}
 
@@ -84,16 +85,16 @@ export const styles = css`
 		background-color: var(--semantics-surfaces-background-color);
 	}
 
-	:host([container="sm"]) .nav-bar {
+	:host([container='sm']) .nav-bar {
 		padding: 0 var(--primitives-space-4);
 	}
 
-	:host([container="md"]) .nav-bar,
+	:host([container='md']) .nav-bar,
 	:host(:not([container])) .nav-bar {
 		padding: 0 var(--primitives-space-8);
 	}
 
-	:host([container="lg"]) .nav-bar {
+	:host([container='lg']) .nav-bar {
 		padding: 0 var(--primitives-space-8);
 	}
 
@@ -137,11 +138,11 @@ export const styles = css`
 		white-space: nowrap;
 	}
 
-	:host([container="sm"]) .nav-title {
+	:host([container='sm']) .nav-title {
 		font: var(--components-menu-bar-title-item-s-font);
 	}
 
-	:host([container="lg"]) .nav-title {
+	:host([container='lg']) .nav-title {
 		font: var(--components-menu-bar-title-item-l-font);
 	}
 
@@ -157,7 +158,7 @@ export const styles = css`
 		overflow: visible;
 	}
 
-	:host([container="sm"]) .global-menu,
+	:host([container='sm']) .global-menu,
 	:host([no-menu]) .global-menu {
 		display: none;
 	}

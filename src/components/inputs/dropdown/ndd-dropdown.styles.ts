@@ -18,7 +18,6 @@ export const dropdownStyles = css`
 		pointer-events: none;
 	}
 
-
 	/* # Container */
 
 	.dropdown {
@@ -44,10 +43,11 @@ export const dropdownStyles = css`
 	}
 
 	.dropdown:focus-within {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
-
 
 	/* # Slotted select */
 
@@ -75,7 +75,6 @@ export const dropdownStyles = css`
 		font: var(--semantics-input-fields-sm-text-font);
 	}
 
-
 	/* # Value */
 
 	.dropdown__value {
@@ -97,7 +96,6 @@ export const dropdownStyles = css`
 		padding: 0 var(--primitives-space-10);
 		font: var(--semantics-input-fields-sm-text-font);
 	}
-
 
 	/* # Picker icon */
 

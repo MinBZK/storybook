@@ -56,7 +56,12 @@ export class NDDCell extends LitElement {
 	verticalAlignment: CellVerticalAlignment = 'center';
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('width') || changed.has('minWidth') || changed.has('maxWidth') || changed.has('minHeight')) {
+		if (
+			changed.has('width') ||
+			changed.has('minWidth') ||
+			changed.has('maxWidth') ||
+			changed.has('minHeight')
+		) {
 			this._applyDimensionStyles();
 		}
 	}

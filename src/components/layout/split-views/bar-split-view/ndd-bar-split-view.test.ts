@@ -93,7 +93,7 @@ describe('ndd-bar-split-view', () => {
 
 		// On sm (jsdom default): main (sm-order=1) should be rendered before toolbar (sm-order=2)
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
-		const slotNames = slots.map(s => s.getAttribute('name'));
+		const slotNames = slots.map((s) => s.getAttribute('name'));
 		expect(slotNames.indexOf('main')).toBeLessThan(slotNames.indexOf('toolbar'));
 	});
 
@@ -124,7 +124,7 @@ describe('ndd-bar-split-view', () => {
 		await waitForUpdate(el);
 
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
-		const slotNames = slots.map(s => s.getAttribute('name'));
+		const slotNames = slots.map((s) => s.getAttribute('name'));
 		expect(slotNames).toEqual(['toolbar', 'main', 'status']);
 	});
 
@@ -138,7 +138,7 @@ describe('ndd-bar-split-view', () => {
 		// jsdom width is 0 → sm breakpoint
 		await waitForUpdate(el);
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
-		const slotNames = slots.map(s => s.getAttribute('name'));
+		const slotNames = slots.map((s) => s.getAttribute('name'));
 		expect(slotNames).not.toContain('toolbar');
 	});
 
@@ -151,7 +151,7 @@ describe('ndd-bar-split-view', () => {
 		`);
 		await waitForUpdate(el);
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
-		const slotNames = slots.map(s => s.getAttribute('name'));
+		const slotNames = slots.map((s) => s.getAttribute('name'));
 		expect(slotNames).toContain('toolbar');
 	});
 
@@ -164,7 +164,7 @@ describe('ndd-bar-split-view', () => {
 		`);
 		await waitForUpdate(el);
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
-		const slotNames = slots.map(s => s.getAttribute('name'));
+		const slotNames = slots.map((s) => s.getAttribute('name'));
 		expect(slotNames).not.toContain('toolbar');
 	});
 
@@ -177,7 +177,7 @@ describe('ndd-bar-split-view', () => {
 		`);
 		await setBreakpoint(el, 'md');
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
-		const slotNames = slots.map(s => s.getAttribute('name'));
+		const slotNames = slots.map((s) => s.getAttribute('name'));
 		expect(slotNames).toContain('toolbar');
 	});
 
@@ -190,7 +190,7 @@ describe('ndd-bar-split-view', () => {
 		`);
 		await setBreakpoint(el, 'md');
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
-		const slotNames = slots.map(s => s.getAttribute('name'));
+		const slotNames = slots.map((s) => s.getAttribute('name'));
 		expect(slotNames).not.toContain('mobile-bar');
 	});
 
@@ -203,7 +203,7 @@ describe('ndd-bar-split-view', () => {
 		`);
 		await waitForUpdate(el);
 		const slots = Array.from(el.shadowRoot!.querySelectorAll('slot'));
-		const slotNames = slots.map(s => s.getAttribute('name'));
+		const slotNames = slots.map((s) => s.getAttribute('name'));
 		expect(slotNames).toContain('mobile-bar');
 	});
 });

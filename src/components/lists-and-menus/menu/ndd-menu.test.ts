@@ -205,7 +205,9 @@ describe('ndd-menu-item', () => {
 		el = await fixture('<ndd-menu-item text="Item"></ndd-menu-item>');
 		await waitForUpdate(el);
 		let fired = false;
-		el.addEventListener('select', () => { fired = true; });
+		el.addEventListener('select', () => {
+			fired = true;
+		});
 		getButton(el)?.click();
 		expect(fired).toBe(true);
 	});
@@ -214,7 +216,9 @@ describe('ndd-menu-item', () => {
 		el = await fixture('<ndd-menu-item text="Item" disabled></ndd-menu-item>');
 		await waitForUpdate(el);
 		let fired = false;
-		el.addEventListener('select', () => { fired = true; });
+		el.addEventListener('select', () => {
+			fired = true;
+		});
 		getButton(el)?.click();
 		expect(fired).toBe(false);
 	});

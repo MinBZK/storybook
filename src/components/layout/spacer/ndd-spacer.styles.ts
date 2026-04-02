@@ -1,7 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
-
 /* # ndd-spacer styles */
 
 export const spacerStyles = css`
@@ -13,7 +12,6 @@ export const spacerStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # Flexible and responsive */
 
@@ -32,7 +30,6 @@ export const spacerStyles = css`
 			height: var(--primitives-space-24);
 		}
 	}
-
 
 	/* # Fixed sizes */
 
@@ -131,7 +128,6 @@ export const spacerStyles = css`
 		width: var(--primitives-space-96);
 		height: var(--primitives-space-96);
 	}
-
 
 	/* # Direction modifiers */
 

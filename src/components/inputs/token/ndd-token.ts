@@ -50,20 +50,24 @@ export class NDDToken extends LitElement {
 	_handleDismiss(e: Event): void {
 		e.stopPropagation();
 		if (this.disabled) return;
-		this.dispatchEvent(new CustomEvent('dismiss', {
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('dismiss', {
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	_handleMenuClick(): void {
 		if (this.disabled) return;
 		this.open = !this.open;
-		this.dispatchEvent(new CustomEvent('toggle', {
-			detail: { open: this.open },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('toggle', {
+				detail: { open: this.open },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	override render() {

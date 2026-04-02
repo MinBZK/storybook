@@ -5,7 +5,6 @@ import type { NDDToggleButton } from '../toggle-button/ndd-toggle-button.ts';
 import './ndd-toggle-button-group.ts';
 import '../toggle-button/ndd-toggle-button.ts';
 
-
 /* ============================================================
    Rendering
    ============================================================ */
@@ -45,21 +44,20 @@ describe('ndd-toggle-button-group', () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture('<ndd-toggle-button-group></ndd-toggle-button-group>');
 		await waitForUpdate(el);
-		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining('accessible name')
-		);
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible name'));
 		warnSpy.mockRestore();
 	});
 
 	it('does not warn when accessible-label is provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture('<ndd-toggle-button-group accessible-label="Filters"></ndd-toggle-button-group>');
+		el = await fixture(
+			'<ndd-toggle-button-group accessible-label="Filters"></ndd-toggle-button-group>'
+		);
 		await waitForUpdate(el);
 		expect(warnSpy).not.toHaveBeenCalled();
 		warnSpy.mockRestore();
 	});
 });
-
 
 /* ============================================================
    Synchronisatie
@@ -82,7 +80,7 @@ describe('ndd-toggle-button-group – synchronisatie', () => {
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
-		buttons.forEach(b => expect(b.name).toBe(''));
+		buttons.forEach((b) => expect(b.name).toBe(''));
 	});
 
 	it('syncs type to child buttons', async () => {
@@ -95,7 +93,7 @@ describe('ndd-toggle-button-group – synchronisatie', () => {
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
-		buttons.forEach(b => expect(b.type).toBe('radio'));
+		buttons.forEach((b) => expect(b.type).toBe('radio'));
 	});
 
 	it('syncs name to child buttons', async () => {
@@ -108,7 +106,7 @@ describe('ndd-toggle-button-group – synchronisatie', () => {
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
-		buttons.forEach(b => expect(b.name).toBe('keuze'));
+		buttons.forEach((b) => expect(b.name).toBe('keuze'));
 	});
 
 	it('syncs size to child buttons', async () => {
@@ -133,7 +131,7 @@ describe('ndd-toggle-button-group – synchronisatie', () => {
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
-		buttons.forEach(b => expect(b.disabled).toBe(true));
+		buttons.forEach((b) => expect(b.disabled).toBe(true));
 	});
 
 	it('re-enables group-disabled buttons when group disabled is removed', async () => {
@@ -183,7 +181,6 @@ describe('ndd-toggle-button-group – synchronisatie', () => {
 	});
 });
 
-
 /* ============================================================
    Single-select (radio)
    ============================================================ */
@@ -208,10 +205,12 @@ describe('ndd-toggle-button-group – single-select (radio)', () => {
 		const [buttonA, buttonB] = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
 
 		buttonB.selected = true;
-		buttonB.dispatchEvent(new CustomEvent('change', {
-			detail: { selected: true, value: 'b' },
-			bubbles: true,
-		}));
+		buttonB.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { selected: true, value: 'b' },
+				bubbles: true,
+			})
+		);
 		await waitForUpdate(el);
 
 		expect(buttonA.selected).toBe(false);
@@ -230,16 +229,17 @@ describe('ndd-toggle-button-group – single-select (radio)', () => {
 		const [buttonA, buttonB] = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
 
 		buttonA.selected = false;
-		buttonA.dispatchEvent(new CustomEvent('change', {
-			detail: { selected: false, value: 'a' },
-			bubbles: true,
-		}));
+		buttonA.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { selected: false, value: 'a' },
+				bubbles: true,
+			})
+		);
 		await waitForUpdate(el);
 
 		expect(buttonB.selected).toBe(true);
 	});
 });
-
 
 /* ============================================================
    Multi-select (checkbox)
@@ -280,17 +280,18 @@ describe('ndd-toggle-button-group – multi-select (checkbox)', () => {
 		const [buttonA, buttonB] = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
 
 		buttonB.selected = true;
-		buttonB.dispatchEvent(new CustomEvent('change', {
-			detail: { selected: true, value: 'b' },
-			bubbles: true,
-		}));
+		buttonB.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { selected: true, value: 'b' },
+				bubbles: true,
+			})
+		);
 		await waitForUpdate(el);
 
 		expect(buttonA.selected).toBe(true);
 		expect(buttonB.selected).toBe(true);
 	});
 });
-
 
 /* ============================================================
    Toetsenbordnavigatie (radio)
@@ -313,7 +314,9 @@ describe('ndd-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
@@ -330,7 +333,9 @@ describe('ndd-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
@@ -347,7 +352,9 @@ describe('ndd-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
@@ -365,7 +372,9 @@ describe('ndd-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
@@ -383,7 +392,9 @@ describe('ndd-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
@@ -401,7 +412,9 @@ describe('ndd-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
@@ -419,7 +432,9 @@ describe('ndd-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');
@@ -435,7 +450,9 @@ describe('ndd-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		const buttons = el.querySelectorAll<NDDToggleButton>('ndd-toggle-button');

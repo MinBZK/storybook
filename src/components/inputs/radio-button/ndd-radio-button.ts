@@ -57,11 +57,13 @@ export class NDDRadioButton extends LitElement {
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: this.checked, value: this.value, name: this.name },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: this.checked, value: this.value, name: this.name },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	override render() {

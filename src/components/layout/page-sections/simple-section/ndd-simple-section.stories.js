@@ -37,7 +37,9 @@ export const Standaard = () => html`
 			<h2>Sectietitel</h2>
 		</ndd-rich-text>
 		<ndd-rich-text>
-			<p>Dit is de hoofdinhoud van de sectie. Voeg hier tekst, formulieren of andere componenten toe.</p>
+			<p>
+				Dit is de hoofdinhoud van de sectie. Voeg hier tekst, formulieren of andere componenten toe.
+			</p>
 			<p>De ruimte tussen header, inhoud en footer wordt bepaald door de breedte van de sectie.</p>
 		</ndd-rich-text>
 		<ndd-rich-text slot="footer">

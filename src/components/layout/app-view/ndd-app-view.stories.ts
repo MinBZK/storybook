@@ -34,7 +34,8 @@ export default {
 		background: {
 			control: { type: 'select' },
 			options: ['default', 'tinted'],
-			description: 'Tinted achtergrond — cascade van --context-parent-background-color naar alle afstammelingen',
+			description:
+				'Tinted achtergrond — cascade van --context-parent-background-color naar alle afstammelingen',
 			table: { defaultValue: { summary: 'default' } },
 		},
 	},

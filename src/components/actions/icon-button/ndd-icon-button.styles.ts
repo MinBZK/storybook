@@ -16,7 +16,6 @@ export const styles = css`
 		pointer-events: none;
 	}
 
-
 	/* # Base */
 
 	.icon-button {
@@ -42,18 +41,18 @@ export const styles = css`
 		}
 	}
 
-
 	/* # Focus */
 
 	.icon-button:focus-visible {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
 
 	.icon-button:focus:not(:focus-visible) {
 		outline: none;
 	}
-
 
 	/* # Sizes */
 
@@ -147,7 +146,6 @@ export const styles = css`
 		margin-right: calc(var(--primitives-space-2) * -1);
 	}
 
-
 	/* # Variants */
 
 	/* ## Variant: neutral-tinted (secondary, default) */
@@ -220,19 +218,27 @@ export const styles = css`
 	}
 
 	:host([variant='accent-outlined'][size='lg']) .icon-button {
-		padding: calc(var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness));
+		padding: calc(
+			var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness)
+		);
 	}
 
 	:host([variant='accent-outlined'][size='md']) .icon-button {
-		padding: calc(var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness));
+		padding: calc(
+			var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness)
+		);
 	}
 
 	:host([variant='accent-outlined'][size='sm']) .icon-button {
-		padding: calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness));
+		padding: calc(
+			var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness)
+		);
 	}
 
 	:host([variant='accent-outlined'][size='xs']) .icon-button {
-		padding: calc(var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness));
+		padding: calc(
+			var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness)
+		);
 	}
 
 	:host([variant='accent-outlined']) .icon-button:hover {
@@ -279,7 +285,6 @@ export const styles = css`
 		background-color: var(--semantics-buttons-danger-tinted-is-active-background-color);
 		color: var(--semantics-buttons-danger-tinted-is-active-content-color);
 	}
-
 
 	/* # Elements */
 

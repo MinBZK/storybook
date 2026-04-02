@@ -221,18 +221,23 @@ export const DraggableList = {
 		const labels = ['Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten'];
 
 		const el = document.createElement('div');
-		render(html`
-			<ndd-list variant="box" reorderable @ndd-reorder=${onReorder}>
-				${labels.map((label) => html`
-					<ndd-list-item>
-						<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
-						<ndd-drag-handle-cell size="sm" slot="start" draggable-only></ndd-drag-handle-cell>
-						<ndd-spacer-cell slot="start" draggable-only size="8"></ndd-spacer-cell>
-						<ndd-text-cell text="${label}" />
-					</ndd-list-item>
-				`)}
-			</ndd-list>
-		`, el);
+		render(
+			html`
+				<ndd-list variant="box" reorderable @ndd-reorder=${onReorder}>
+					${labels.map(
+						(label) => html`
+							<ndd-list-item>
+								<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
+								<ndd-drag-handle-cell size="sm" slot="start" draggable-only></ndd-drag-handle-cell>
+								<ndd-spacer-cell slot="start" draggable-only size="8"></ndd-spacer-cell>
+								<ndd-text-cell text="${label}" />
+							</ndd-list-item>
+						`
+					)}
+				</ndd-list>
+			`,
+			el
+		);
 		return el;
 	},
 };

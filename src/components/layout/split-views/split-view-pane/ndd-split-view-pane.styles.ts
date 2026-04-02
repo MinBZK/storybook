@@ -3,12 +3,14 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
-
 /* # ndd-split-view-pane styles */
 
 export const splitViewPaneStyles = css`
 	:host {
-		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(
+			--context-parent-background-color,
+			var(--semantics-surfaces-background-color)
+		);
 
 		display: flex;
 		width: 100%;
@@ -19,12 +21,12 @@ export const splitViewPaneStyles = css`
 		}
 	}
 
-	:host([background="default"]) {
+	:host([background='default']) {
 		--context-parent-background-color: var(--semantics-surfaces-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
 
-	:host([background="tinted"]) {
+	:host([background='tinted']) {
 		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
@@ -36,7 +38,6 @@ export const splitViewPaneStyles = css`
 	:host([hide-back]) {
 		--context-back-button-display: none;
 	}
-
 
 	/* # Pane */
 

@@ -5,8 +5,25 @@ import '../icon-button/ndd-icon-button.js';
 
 // # Types
 export type ToolbarChild =
-	| { type: 'title-group'; title: string; subtitle: string; align: string; minWidth: string; id: number }
-	| { type: 'item'; element: Element; label: string; id: number; priority: number; overflowItems: Element[]; minWidth: string; width: string; isFluid: boolean }
+	| {
+			type: 'title-group';
+			title: string;
+			subtitle: string;
+			align: string;
+			minWidth: string;
+			id: number;
+	  }
+	| {
+			type: 'item';
+			element: Element;
+			label: string;
+			id: number;
+			priority: number;
+			overflowItems: Element[];
+			minWidth: string;
+			width: string;
+			isFluid: boolean;
+	  }
 	| { type: 'other'; element: Element; id: number };
 
 // # Helpers
@@ -23,15 +40,16 @@ function renderChildren(
 	children: ToolbarChild[],
 	allChildren: ToolbarChild[],
 	overflowIds: Set<number>,
-	suppressSoloFluid = false,
+	suppressSoloFluid = false
 ) {
 	return children.map((child) => {
 		if (child.type === 'title-group') {
-			const alignClass = child.align === 'center'
-				? 'toolbar__title-group--center-text-align'
-				: 'toolbar__title-group--left-text-align';
-			const visibleItems = allChildren.filter(c =>
-				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
+			const alignClass =
+				child.align === 'center'
+					? 'toolbar__title-group--center-text-align'
+					: 'toolbar__title-group--left-text-align';
+			const visibleItems = allChildren.filter(
+				(c) => !overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
 			);
 			const solo = visibleItems.length === 1 && visibleItems[0].id === child.id;
 			return html`
@@ -47,10 +65,15 @@ function renderChildren(
 		}
 		if (child.type === 'item') {
 			const isOverflowed = overflowIds.has(child.id);
-			const visibleItems = allChildren.filter(c =>
-				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
+			const visibleItems = allChildren.filter(
+				(c) => !overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
 			);
-			const soloFluid = !suppressSoloFluid && !isOverflowed && child.isFluid && visibleItems.length === 1 && visibleItems[0].id === child.id;
+			const soloFluid =
+				!suppressSoloFluid &&
+				!isOverflowed &&
+				child.isFluid &&
+				visibleItems.length === 1 &&
+				visibleItems[0].id === child.id;
 			const cssVars: Record<string, string> = {};
 			if (!soloFluid && child.isFluid) {
 				if (child.minWidth) cssVars['--_item-min-width'] = child.minWidth;
@@ -60,7 +83,9 @@ function renderChildren(
 				'toolbar__item',
 				soloFluid ? 'is-solo-fluid' : child.isFluid ? 'is-fluid' : '',
 				isOverflowed ? 'is-hidden' : '',
-			].filter(Boolean).join(' ');
+			]
+				.filter(Boolean)
+				.join(' ');
 			return html`
 				<div
 					class=${classes}
@@ -96,34 +121,36 @@ export function template(
 	menuId: string,
 	onOverflowClick: () => void,
 	centerOnly: boolean,
-	t: (key: keyof NDDToolbarTranslations) => string,
+	t: (key: keyof NDDToolbarTranslations) => string
 ) {
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 
 	return html`
-		<div class="toolbar"
-			role="toolbar"
-			aria-label=${label || nothing}
-		>
+		<div class="toolbar" role="toolbar" aria-label=${label || nothing}>
 			<div class="toolbar__items">
 				${renderChildren(startChildren, allChildren, overflowIds)}
-				${hasCenterChildren ? html`
-					${centerOnly ? html`
-						<div class="toolbar__center-fill">
-							${renderChildren(centerChildren, allChildren, overflowIds, true)}
-						</div>
-					` : html`
-						${leftSpacerZero ? nothing : html`<div class="toolbar__left-spacer"></div>`}
-						${renderChildren(centerChildren, allChildren, overflowIds)}
-						${rightSpacerZero ? nothing : html`<div class="toolbar__right-spacer"></div>`}
-					`}
-				` : isSoloFluidItem ? nothing : html`
-					<div class="toolbar__flexible-spacer"></div>
-				`}
+				${hasCenterChildren
+					? html`
+							${centerOnly
+								? html`
+										<div class="toolbar__center-fill">
+											${renderChildren(centerChildren, allChildren, overflowIds, true)}
+										</div>
+									`
+								: html`
+										${leftSpacerZero ? nothing : html`<div class="toolbar__left-spacer"></div>`}
+										${renderChildren(centerChildren, allChildren, overflowIds)}
+										${rightSpacerZero ? nothing : html`<div class="toolbar__right-spacer"></div>`}
+									`}
+						`
+					: isSoloFluidItem
+						? nothing
+						: html` <div class="toolbar__flexible-spacer"></div> `}
 				${renderChildren(endChildren, allChildren, overflowIds)}
 			</div>
 			<div class="toolbar__overflow-button ${hasOverflow ? '' : 'is-hidden'}">
-				<ndd-icon-button size=${size}
+				<ndd-icon-button
+					size=${size}
 					icon="ellipsis"
 					text=${t('components.toolbar.overflow-action')}
 					aria-haspopup="menu"

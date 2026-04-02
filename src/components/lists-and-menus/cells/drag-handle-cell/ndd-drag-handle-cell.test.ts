@@ -27,7 +27,7 @@ describe('ndd-drag-handle-cell', () => {
 		await waitForUpdate(el);
 		const control = el.shadowRoot!.querySelector('.drag-handle-cell__control');
 		expect(control?.getAttribute('aria-label')).toBe(
-			nddDragHandleCellTranslations['components.drag-handle-cell.label-text'],
+			nddDragHandleCellTranslations['components.drag-handle-cell.label-text']
 		);
 	});
 

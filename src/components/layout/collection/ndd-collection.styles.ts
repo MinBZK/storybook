@@ -1,6 +1,5 @@
 import { css } from 'lit';
 
-
 /* # ndd-collection styles */
 
 export const collectionStyles = css`
@@ -16,7 +15,6 @@ export const collectionStyles = css`
 		display: none;
 	}
 
-
 	/* # Items */
 
 	.collection__items {
@@ -24,7 +22,6 @@ export const collectionStyles = css`
 		width: 100%;
 		gap: 16px;
 	}
-
 
 	/* # Grid */
 
@@ -34,13 +31,11 @@ export const collectionStyles = css`
 		grid-template-columns: repeat(auto-fill, minmax(var(--primitives-area-280), 1fr));
 	}
 
-
 	/* # List */
 
 	:host([layout='list']) .collection__items {
 		flex-direction: column;
 	}
-
 
 	/* # Horizontal scroll */
 
@@ -81,14 +76,12 @@ export const collectionStyles = css`
 		scroll-snap-align: start;
 	}
 
-
 	/* # Footer */
 
 	.collection__footer {
 		display: flex;
 		width: 100%;
 	}
-
 
 	/* # Load more (grid/list) */
 
@@ -109,7 +102,6 @@ export const collectionStyles = css`
 	:host(:not([layout])) .collection__footer ndd-button::part(button) {
 		width: 100%;
 	}
-
 
 	/* # Scroll navigation (horizontal scroll) */
 

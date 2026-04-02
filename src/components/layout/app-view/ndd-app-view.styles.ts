@@ -1,6 +1,5 @@
 import { css } from 'lit';
 
-
 /* # ndd-app-view styles */
 
 export const appViewStyles = css`
@@ -14,8 +13,7 @@ export const appViewStyles = css`
 		background-color: var(--_background-color);
 	}
 
-
-	:host([background="tinted"]) {
+	:host([background='tinted']) {
 		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--semantics-surfaces-tinted-background-color);
 	}
@@ -23,7 +21,6 @@ export const appViewStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # App view */
 

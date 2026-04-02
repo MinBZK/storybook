@@ -110,27 +110,33 @@ export class NDDPasswordField extends LitElement {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
-		this.dispatchEvent(new CustomEvent('input', {
-			detail: { value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('input', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	public _handleChange(e: Event): void {
 		e.stopPropagation();
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	public _handleToggle(): void {
 		this.masked = !this.masked;
-		this.updateComplete.then(() => { this._input?.focus(); });
+		this.updateComplete.then(() => {
+			this._input?.focus();
+		});
 	}
 
 	public focus(): void {

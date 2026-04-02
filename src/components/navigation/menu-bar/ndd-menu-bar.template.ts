@@ -57,39 +57,33 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 
 export function template(this: NDDMenuBar) {
 	return html`
-		<div
-			class="container"
-			part="container"
-		>
+		<div class="container" part="container">
 			<slot name="title"></slot>
-			<nav
-				class="menu"
-				part="menu"
-				role="none"
-			>
+			<nav class="menu" part="menu" role="none">
 				<slot></slot>
-				${this.hasOverflowMenu ? html`
-					<div class="overflow-wrapper">
-						<button
-							class="overflow-button"
-							part="overflow-button"
-							aria-expanded="false"
-							aria-haspopup="menu"
-							aria-controls=${this._overflowMenuId}
-							@click=${this._toggleOverflowMenu}
-							@keydown=${this._handleOverflowButtonKeyDown}
-						>
-							${this.overflowLabel}
-							${chevronDownIcon}
-						</button>
-						<div
-							class="overflow-dropdown"
-							part="overflow-menu"
-							id=${this._overflowMenuId}
-							aria-label=${this.overflowLabel}
-						></div>
-					</div>
-				` : ''}
+				${this.hasOverflowMenu
+					? html`
+							<div class="overflow-wrapper">
+								<button
+									class="overflow-button"
+									part="overflow-button"
+									aria-expanded="false"
+									aria-haspopup="menu"
+									aria-controls=${this._overflowMenuId}
+									@click=${this._toggleOverflowMenu}
+									@keydown=${this._handleOverflowButtonKeyDown}
+								>
+									${this.overflowLabel} ${chevronDownIcon}
+								</button>
+								<div
+									class="overflow-dropdown"
+									part="overflow-menu"
+									id=${this._overflowMenuId}
+									aria-label=${this.overflowLabel}
+								></div>
+							</div>
+						`
+					: ''}
 			</nav>
 		</div>
 	`;

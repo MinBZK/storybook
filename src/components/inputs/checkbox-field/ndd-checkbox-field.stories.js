@@ -75,8 +75,18 @@ export const AlleToestanden = () => html`
 		<ndd-checkbox-field label="Aangevinkt" value="2" checked></ndd-checkbox-field>
 		<ndd-checkbox-field label="Onbepaald" value="3" indeterminate></ndd-checkbox-field>
 		<ndd-checkbox-field label="Uitgeschakeld" value="4" disabled></ndd-checkbox-field>
-		<ndd-checkbox-field label="Aangevinkt en uitgeschakeld" value="5" checked disabled></ndd-checkbox-field>
-		<ndd-checkbox-field label="Onbepaald en uitgeschakeld" value="6" indeterminate disabled></ndd-checkbox-field>
+		<ndd-checkbox-field
+			label="Aangevinkt en uitgeschakeld"
+			value="5"
+			checked
+			disabled
+		></ndd-checkbox-field>
+		<ndd-checkbox-field
+			label="Onbepaald en uitgeschakeld"
+			value="6"
+			indeterminate
+			disabled
+		></ndd-checkbox-field>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

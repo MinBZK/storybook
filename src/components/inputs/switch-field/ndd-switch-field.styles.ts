@@ -11,7 +11,6 @@ export const switchFieldStyles = css`
 		display: none;
 	}
 
-
 	/* # Container */
 
 	.switch-field {
@@ -22,7 +21,6 @@ export const switchFieldStyles = css`
 		min-height: var(--semantics-controls-md-min-size);
 	}
 
-
 	/* # Control */
 
 	.switch-field__control {
@@ -32,11 +30,12 @@ export const switchFieldStyles = css`
 		align-items: center;
 	}
 
-
 	/* # Label */
 
 	.switch-field__label {
-		padding-top: calc((var(--semantics-controls-md-min-size) - 1em * var(--primitives-line-height-snug)) / 2);
+		padding-top: calc(
+			(var(--semantics-controls-md-min-size) - 1em * var(--primitives-line-height-snug)) / 2
+		);
 		display: flex;
 		flex-grow: 1;
 		font: var(--primitives-font-body-md-regular-snug);

@@ -4,7 +4,6 @@ import './ndd-form-field.ts';
 import '../../inputs/text-field/ndd-text-field.ts';
 import '../../inputs/password-field/ndd-password-field.ts';
 
-
 /* ============================================================
    ndd-form-field
    ============================================================ */
@@ -71,7 +70,9 @@ describe('ndd-form-field', () => {
 	});
 
 	it('renders a custom optional label when optional-label is set', async () => {
-		el = await fixture('<ndd-form-field label="Phone" optional optional-label="Optional"></ndd-form-field>');
+		el = await fixture(
+			'<ndd-form-field label="Phone" optional optional-label="Optional"></ndd-form-field>'
+		);
 		await waitForUpdate(el);
 		const optional = el.shadowRoot!.querySelector('.form-field__optional');
 		expect(optional!.textContent).toContain('Optional');
@@ -143,7 +144,9 @@ describe('ndd-form-field', () => {
 	});
 
 	it('forwards aria-label to the inner input of a slotted ndd-text-field', async () => {
-		el = await fixture('<ndd-form-field label="Email"><ndd-text-field></ndd-text-field></ndd-form-field>');
+		el = await fixture(
+			'<ndd-form-field label="Email"><ndd-text-field></ndd-text-field></ndd-form-field>'
+		);
 		await waitForUpdate(el);
 		const textField = el.querySelector('ndd-text-field') as any;
 		if (!textField) throw new Error('ndd-text-field not found');
@@ -153,7 +156,9 @@ describe('ndd-form-field', () => {
 	});
 
 	it('forwards aria-label to the inner input of a slotted ndd-password-field', async () => {
-		el = await fixture('<ndd-form-field label="Wachtwoord"><ndd-password-field></ndd-password-field></ndd-form-field>');
+		el = await fixture(
+			'<ndd-form-field label="Wachtwoord"><ndd-password-field></ndd-password-field></ndd-form-field>'
+		);
 		await waitForUpdate(el);
 		const passwordField = el.querySelector('ndd-password-field') as any;
 		if (!passwordField) throw new Error('ndd-password-field not found');
@@ -162,7 +167,6 @@ describe('ndd-form-field', () => {
 		expect(innerInput.getAttribute('aria-label')).toBe('Wachtwoord');
 	});
 });
-
 
 /* ============================================================
    ndd-form-field error text wiring
@@ -300,7 +304,6 @@ describe('ndd-form-field error text wiring', () => {
 	});
 });
 
-
 /* ============================================================
    ndd-form-field-help-text
    ============================================================ */
@@ -319,12 +322,13 @@ describe('ndd-form-field-help-text', () => {
 	});
 
 	it('renders slotted links', async () => {
-		el = await fixture('<ndd-form-field-help-text>Read <a href="/help">more</a>.</ndd-form-field-help-text>');
+		el = await fixture(
+			'<ndd-form-field-help-text>Read <a href="/help">more</a>.</ndd-form-field-help-text>'
+		);
 		await waitForUpdate(el);
 		expect(el.querySelector('a')).not.toBeNull();
 	});
 });
-
 
 /* ============================================================
    ndd-form-field-error-text
@@ -350,7 +354,9 @@ describe('ndd-form-field-error-text', () => {
 	});
 
 	it('renders slotted content', async () => {
-		el = await fixture('<ndd-form-field-error-text invalid>Must be at least 8 characters.</ndd-form-field-error-text>');
+		el = await fixture(
+			'<ndd-form-field-error-text invalid>Must be at least 8 characters.</ndd-form-field-error-text>'
+		);
 		await waitForUpdate(el);
 		expect(el.textContent).toContain('Must be at least 8 characters.');
 	});

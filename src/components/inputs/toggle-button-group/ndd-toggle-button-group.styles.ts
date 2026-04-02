@@ -1,8 +1,6 @@
 import { css } from 'lit';
 
 export const toggleButtonGroupStyles = css`
-
-
 	/* # Host */
 
 	:host {
@@ -13,7 +11,6 @@ export const toggleButtonGroupStyles = css`
 		display: none;
 	}
 
-
 	/* # Group */
 
 	.toggle-button-group {
@@ -22,11 +19,11 @@ export const toggleButtonGroupStyles = css`
 		gap: var(--components-toggle-button-group-md-gap);
 	}
 
-	:host([size="sm"]) .toggle-button-group {
+	:host([size='sm']) .toggle-button-group {
 		gap: var(--components-toggle-button-group-sm-gap);
 	}
 
-	:host([size="xs"]) .toggle-button-group {
+	:host([size='xs']) .toggle-button-group {
 		gap: var(--components-toggle-button-group-xs-gap);
 	}
 `;

@@ -29,7 +29,6 @@ describe('ndd-number-field', () => {
 	});
 });
 
-
 /* ============================================================
    State
    ============================================================ */
@@ -94,7 +93,6 @@ describe('ndd-number-field – state', () => {
 		expect((increment as any).disabled).toBe(true);
 	});
 });
-
 
 /* ============================================================
    Increment & decrement
@@ -161,7 +159,6 @@ describe('ndd-number-field – increment & decrement', () => {
 	});
 });
 
-
 /* ============================================================
    Change event
    ============================================================ */
@@ -178,8 +175,12 @@ describe('ndd-number-field – change event', () => {
 		await waitForUpdate(el);
 		let inputDetail: any;
 		let changeDetail: any;
-		el.addEventListener('input', ((e: CustomEvent) => { inputDetail = e.detail; }) as EventListener);
-		el.addEventListener('change', ((e: CustomEvent) => { changeDetail = e.detail; }) as EventListener);
+		el.addEventListener('input', ((e: CustomEvent) => {
+			inputDetail = e.detail;
+		}) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => {
+			changeDetail = e.detail;
+		}) as EventListener);
 		el._handleIncrease();
 		expect(inputDetail?.value).toBe(6);
 		expect(changeDetail?.value).toBe(6);
@@ -190,8 +191,12 @@ describe('ndd-number-field – change event', () => {
 		await waitForUpdate(el);
 		let inputDetail: any;
 		let changeDetail: any;
-		el.addEventListener('input', ((e: CustomEvent) => { inputDetail = e.detail; }) as EventListener);
-		el.addEventListener('change', ((e: CustomEvent) => { changeDetail = e.detail; }) as EventListener);
+		el.addEventListener('input', ((e: CustomEvent) => {
+			inputDetail = e.detail;
+		}) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => {
+			changeDetail = e.detail;
+		}) as EventListener);
 		el._handleDecrease();
 		expect(inputDetail?.value).toBe(4);
 		expect(changeDetail?.value).toBe(4);
@@ -201,12 +206,13 @@ describe('ndd-number-field – change event', () => {
 		el = await fixture<NDDNumberField>('<ndd-number-field value="10" max="10"></ndd-number-field>');
 		await waitForUpdate(el);
 		let eventFired = false;
-		el.addEventListener('input', () => { eventFired = true; });
+		el.addEventListener('input', () => {
+			eventFired = true;
+		});
 		el._handleIncrease();
 		expect(eventFired).toBe(false);
 	});
 });
-
 
 /* ============================================================
    Accessibility
@@ -224,9 +230,7 @@ describe('ndd-number-field – accessibility', () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture('<ndd-number-field></ndd-number-field>');
 		await waitForUpdate(el);
-		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining('accessible-label')
-		);
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
 	});
 
 	it('does not warn when accessible-label is provided', async () => {

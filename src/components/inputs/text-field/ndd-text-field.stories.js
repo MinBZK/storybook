@@ -101,7 +101,18 @@ export default {
 	},
 };
 
-const Template = ({ value, placeholder, size, valid, invalid, disabled, type, name, readonly, required }) => html`
+const Template = ({
+	value,
+	placeholder,
+	size,
+	valid,
+	invalid,
+	disabled,
+	type,
+	name,
+	readonly,
+	required,
+}) => html`
 	<ndd-text-field
 		.value=${value}
 		.placeholder=${placeholder}

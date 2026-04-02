@@ -66,7 +66,9 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 
 		const updateInspectorButton = () => {
 			if (inspectorButton) {
-				inspectorButton.hidden = !splitView.hasAttribute('inspector-auto-hidden') && !splitView.hasAttribute('inspector-as-sheet');
+				inspectorButton.hidden =
+					!splitView.hasAttribute('inspector-auto-hidden') &&
+					!splitView.hasAttribute('inspector-as-sheet');
 			}
 		};
 
@@ -79,7 +81,10 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 		updateInspectorButton();
 		updateNavButton();
 
-		new MutationObserver(() => { updateInspectorButton(); updateNavButton(); }).observe(splitView, {
+		new MutationObserver(() => {
+			updateInspectorButton();
+			updateNavButton();
+		}).observe(splitView, {
 			attributes: true,
 			attributeFilter: ['inspector-auto-hidden', 'inspector-as-sheet', 'sidebar-as-sheet'],
 		});
@@ -132,11 +137,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 
 			<ndd-split-view-pane slot="main" has-content>
 				<ndd-page sticky-header>
-					<ndd-top-title-bar
-						slot="header"
-						title="Inhoud"
-						back-label="Terug"
-					>
+					<ndd-top-title-bar slot="header" title="Inhoud" back-label="Terug">
 						<ndd-button
 							id="sidebar-toggle"
 							slot="toolbar"
@@ -154,7 +155,9 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 						<ndd-rich-text>
 							<h2>Primaire inhoud</h2>
 							<p>Artikelen, artikellijsten en primaire weergave.</p>
-							<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+							<p>
+								Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+							</p>
 							<p>Verklein het venster om de terugknopgedrag te zien.</p>
 						</ndd-rich-text>
 					</ndd-simple-section>
@@ -187,16 +190,10 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
  * with a sidebar, an editor area, and an output panel below it.
  */
 export const GenestdeSplitView = () => html`
-	<ndd-navigation-split-view
-		style="height: 600px;"
-	>
+	<ndd-navigation-split-view style="height: 600px;">
 		<ndd-split-view-pane slot="sidebar">
 			<ndd-page sticky-header>
-				<ndd-top-title-bar
-					slot="header"
-					title="Zijbalk"
-					dismiss-label="Sluit"
-				></ndd-top-title-bar>
+				<ndd-top-title-bar slot="header" title="Zijbalk" dismiss-label="Sluit"></ndd-top-title-bar>
 				<ndd-simple-section>
 					<ndd-rich-text>
 						<h2>Navigatie</h2>
@@ -210,16 +207,15 @@ export const GenestdeSplitView = () => html`
 			<ndd-bar-split-view>
 				<ndd-split-view-pane slot="main">
 					<ndd-page sticky-header>
-						<ndd-top-title-bar
-							slot="header"
-							title="Inhoud"
-							back-label="Terug"
-						></ndd-top-title-bar>
+						<ndd-top-title-bar slot="header" title="Inhoud" back-label="Terug"></ndd-top-title-bar>
 						<ndd-simple-section>
 							<ndd-rich-text>
 								<h2>Primaire inhoud</h2>
 								<p>Het hoofdgebied voor bewerkbare of weer te geven inhoud.</p>
-								<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+								<p>
+									Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+									ex ea commodo consequat.
+								</p>
 							</ndd-rich-text>
 						</ndd-simple-section>
 					</ndd-page>

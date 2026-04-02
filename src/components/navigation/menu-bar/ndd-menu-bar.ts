@@ -52,11 +52,13 @@ export class NDDMenuBarItem extends LitElement {
 		if (!this.href) {
 			event.preventDefault();
 			this.selected = true;
-			this.dispatchEvent(new CustomEvent('select', {
-				bubbles: true,
-				composed: true,
-				detail: { item: this },
-			}));
+			this.dispatchEvent(
+				new CustomEvent('select', {
+					bubbles: true,
+					composed: true,
+					detail: { item: this },
+				})
+			);
 		}
 	};
 
@@ -139,24 +141,26 @@ export class NDDMenuBar extends LitElement {
 	private _handleItemSelect = (event: Event): void => {
 		const detail = (event as CustomEvent).detail;
 		const items = this.querySelectorAll('ndd-menu-bar-item');
-		items.forEach(item => {
+		items.forEach((item) => {
 			if (item !== detail.item) {
 				(item as HTMLElement).removeAttribute('selected');
 			}
 		});
-		this.dispatchEvent(new CustomEvent('itemselect', {
-			bubbles: true,
-			composed: true,
-			detail,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('itemselect', {
+				bubbles: true,
+				composed: true,
+				detail,
+			})
+		);
 	};
 
 	private _handleKeyDown = (event: KeyboardEvent): void => {
 		const items = Array.from(this.querySelectorAll('ndd-menu-bar-item:not([disabled])'));
 		if (items.length === 0) return;
 
-		const currentIndex = items.findIndex(item =>
-			item === event.target || item.contains(event.target as Node)
+		const currentIndex = items.findIndex(
+			(item) => item === event.target || item.contains(event.target as Node)
 		);
 		let newIndex = -1;
 
@@ -230,19 +234,29 @@ export class NDDMenuBar extends LitElement {
 			try {
 				this._doHandleOverflow();
 			} finally {
-				requestAnimationFrame(() => { this._isHandlingOverflow = false; });
+				requestAnimationFrame(() => {
+					this._isHandlingOverflow = false;
+				});
 			}
 		});
 	};
 
 	private _doHandleOverflow(): void {
-		if (!this._menuContainer || !this._overflowWrapper || !this._overflowButton || !this._overflowDropdown) return;
+		if (
+			!this._menuContainer ||
+			!this._overflowWrapper ||
+			!this._overflowButton ||
+			!this._overflowDropdown
+		)
+			return;
 
 		const slottedElements = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
-		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as HTMLElement[];
+		const items = slottedElements.filter(
+			(el) => el.tagName === 'NDD-MENU-BAR-ITEM'
+		) as HTMLElement[];
 		if (items.length === 0) return;
 
-		items.forEach(item => {
+		items.forEach((item) => {
 			item.style.display = '';
 			item.style.visibility = 'visible';
 			item.removeAttribute('data-overflow');
@@ -343,7 +357,7 @@ export class NDDMenuBar extends LitElement {
 		const items = Array.from(this._overflowDropdown.querySelectorAll('.overflow-item'));
 		if (items.length === 0) return;
 
-		const currentIndex = items.findIndex(item => item === this.shadowRoot?.activeElement);
+		const currentIndex = items.findIndex((item) => item === this.shadowRoot?.activeElement);
 		let newIndex = -1;
 
 		switch (event.key) {
@@ -387,7 +401,7 @@ export class NDDMenuBar extends LitElement {
 		requestAnimationFrame(() => {
 			const items = this._overflowDropdown.querySelectorAll('.overflow-item');
 			if (items.length > 0) {
-				(focusLast ? items[items.length - 1] as HTMLElement : items[0] as HTMLElement).focus();
+				(focusLast ? (items[items.length - 1] as HTMLElement) : (items[0] as HTMLElement)).focus();
 			}
 		});
 	}

@@ -42,29 +42,35 @@ export class NDDSwitch extends LitElement {
 
 	override firstUpdated(): void {
 		if (!this.accessibleLabel) {
-			console.warn('<ndd-switch>: No accessible-label provided. Use ndd-switch-field for labeled usage, or provide an accessible-label attribute for screen reader accessibility.');
+			console.warn(
+				'<ndd-switch>: No accessible-label provided. Use ndd-switch-field for labeled usage, or provide an accessible-label attribute for screen reader accessibility.'
+			);
 		}
 	}
 
 	public toggle(): void {
 		if (this.disabled) return;
 		this.checked = !this.checked;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: this.checked, value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: this.checked, value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	public _handleChange(e: Event): void {
 		if (this.disabled) return;
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: this.checked, value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: this.checked, value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	override render() {

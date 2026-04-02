@@ -63,11 +63,7 @@ export default {
 const openNext = (e) => e.currentTarget.nextElementSibling.show();
 
 export const Standaard = (args) => html`
-	<ndd-button
-		variant="primary"
-		text="Open modal dialog"
-		@click=${openNext}
-	></ndd-button>
+	<ndd-button variant="primary" text="Open modal dialog" @click=${openNext}></ndd-button>
 	<ndd-modal-dialog
 		variant=${args.variant || nothing}
 		icon-name=${args.iconName || nothing}
@@ -90,11 +86,7 @@ export const Standaard = (args) => html`
 `;
 
 export const ZonderIcoon = () => html`
-	<ndd-button
-		variant="primary"
-		text="Open modal dialog"
-		@click=${openNext}
-	></ndd-button>
+	<ndd-button variant="primary" text="Open modal dialog" @click=${openNext}></ndd-button>
 	<ndd-modal-dialog
 		text="Bevestiging vereist"
 		supporting-text="Weet u zeker dat u door wilt gaan? Dit kan niet ongedaan worden gemaakt."
@@ -116,11 +108,7 @@ export const ZonderIcoon = () => html`
 ZonderIcoon.parameters = { controls: { disable: true } };
 
 export const MetIcoon = () => html`
-	<ndd-button
-		variant="primary"
-		text="Open modal dialog"
-		@click=${openNext}
-	></ndd-button>
+	<ndd-button variant="primary" text="Open modal dialog" @click=${openNext}></ndd-button>
 	<ndd-modal-dialog
 		icon-name="check-mark-circle"
 		text="Succesvol opgeslagen"
@@ -137,11 +125,7 @@ export const MetIcoon = () => html`
 MetIcoon.parameters = { controls: { disable: true } };
 
 export const Alert = () => html`
-	<ndd-button
-		variant="primary"
-		text="Open modal dialog"
-		@click=${openNext}
-	></ndd-button>
+	<ndd-button variant="primary" text="Open modal dialog" @click=${openNext}></ndd-button>
 	<ndd-modal-dialog
 		variant="alert"
 		text="Niet opgeslagen"

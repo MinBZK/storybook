@@ -10,7 +10,8 @@ export function documentTabBarTemplate(component: NDDDocumentTabBar): TemplateRe
 	const isNavigation = component.navigation;
 
 	const inner = html`
-		<div class="document-tab-bar__items"
+		<div
+			class="document-tab-bar__items"
 			role=${isNavigation ? nothing : 'tablist'}
 			aria-label=${isNavigation ? nothing : label}
 		>
@@ -40,12 +41,14 @@ export function documentTabBarTemplate(component: NDDDocumentTabBar): TemplateRe
 		${isNavigation
 			? html`<nav class="document-tab-bar" aria-label=${label}>${inner}</nav>`
 			: html`<div class="document-tab-bar">${inner}</div>`}
-		<div class="document-tab-bar__polite-announcer"
+		<div
+			class="document-tab-bar__polite-announcer"
 			role="status"
 			aria-live="polite"
 			aria-atomic="true"
 		></div>
-		<div class="document-tab-bar__assertive-announcer"
+		<div
+			class="document-tab-bar__assertive-announcer"
 			role="alert"
 			aria-live="assertive"
 			aria-atomic="true"
@@ -63,42 +66,51 @@ export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): Te
 
 	const tabContent = html`
 		<span class="document-tab-bar__item-text">${component.text}</span>
-		<span class="document-tab-bar__item-short-text"
-			aria-hidden="true"
-			title=${component.text}
-		>${shortTextValue}</span>
+		<span class="document-tab-bar__item-short-text" aria-hidden="true" title=${component.text}
+			>${shortTextValue}</span
+		>
 		${component.supportingText
-			? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
+			? html`<span class="document-tab-bar__item-supporting-text"
+					>${component.supportingText}</span
+				>`
 			: nothing}
 		${shortSupportingTextValue
-			? html`<span class="document-tab-bar__item-short-supporting-text"
-				aria-hidden="true"
-				title=${component.supportingText || nothing}
-			>${shortSupportingTextValue}</span>`
+			? html`<span
+					class="document-tab-bar__item-short-supporting-text"
+					aria-hidden="true"
+					title=${component.supportingText || nothing}
+					>${shortSupportingTextValue}</span
+				>`
 			: nothing}
 	`;
 
 	const tab = isLink
-		? html`<a class="document-tab-bar__item-tab"
+		? html`<a
+				class="document-tab-bar__item-tab"
 				href=${safeHref!}
 				role=${isNavigation ? nothing : 'tab'}
 				aria-current=${isNavigation && component.selected ? 'page' : nothing}
 				aria-selected=${!isNavigation ? (component.selected ? 'true' : 'false') : nothing}
 				tabindex=${tabindex}
 				@click=${component._handleClick}
-			>${tabContent}</a>`
-		: html`<button class="document-tab-bar__item-tab"
+				>${tabContent}</a
+			>`
+		: html`<button
+				class="document-tab-bar__item-tab"
 				type="button"
 				role="tab"
 				aria-selected=${component.selected ? 'true' : 'false'}
 				tabindex=${tabindex}
 				@click=${component._handleClick}
-			>${tabContent}</button>`;
+			>
+				${tabContent}
+			</button>`;
 
 	return html`
 		<div class="document-tab-bar__item">
 			${tab}
-			<button class="document-tab-bar__item-dismiss-button"
+			<button
+				class="document-tab-bar__item-dismiss-button"
 				aria-label=${component._dismissButtonAccessibilityLabel}
 				tabindex=${component.selected || component._isFallbackFocusable ? '0' : '-1'}
 				@click=${component._handleDismiss}

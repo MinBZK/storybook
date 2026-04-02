@@ -59,7 +59,6 @@ type PaddingSize =
 export class NDDContainer extends LitElement {
 	static override styles = containerStyles;
 
-
 	@property({ type: String, reflect: true })
 	padding: PaddingSize | undefined = undefined;
 

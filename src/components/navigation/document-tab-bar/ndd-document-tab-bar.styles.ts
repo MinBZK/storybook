@@ -1,7 +1,6 @@
 import { css } from 'lit';
 
 export const documentTabBarStyles = css`
-
 	/* # Host */
 
 	:host {
@@ -21,7 +20,6 @@ export const documentTabBarStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # Document tab bar */
 
@@ -77,7 +75,6 @@ export const documentTabBarStyles = css`
 		flex-shrink: 0;
 	}
 
-
 	/* # Focus */
 
 	::slotted(ndd-document-tab-bar-item:focus-within) {
@@ -85,13 +82,11 @@ export const documentTabBarStyles = css`
 		z-index: 4;
 	}
 
-
 	/* # Drag states */
 
 	::slotted(ndd-document-tab-bar-item.is-dragging) {
 		display: none;
 	}
-
 
 	/* # Drag placeholder */
 
@@ -107,7 +102,6 @@ export const documentTabBarStyles = css`
 		min-width: var(--_item-min-width);
 		opacity: var(--primitives-opacity-dragging);
 	}
-
 
 	/* # Drag clone */
 
@@ -167,7 +161,6 @@ export const documentTabBarStyles = css`
 		white-space: nowrap;
 	}
 
-
 	/* # Announcers */
 
 	.document-tab-bar__polite-announcer,
@@ -182,11 +175,9 @@ export const documentTabBarStyles = css`
 		white-space: nowrap;
 		border: 0;
 	}
-
 `;
 
 export const documentTabBarItemStyles = css`
-
 	/* # Host */
 
 	:host {
@@ -200,7 +191,6 @@ export const documentTabBarItemStyles = css`
 		display: none;
 	}
 
-
 	/* # Item */
 
 	.document-tab-bar__item {
@@ -209,7 +199,6 @@ export const documentTabBarItemStyles = css`
 		width: 100%;
 		box-sizing: border-box;
 	}
-
 
 	/* # Item tab */
 
@@ -253,10 +242,11 @@ export const documentTabBarItemStyles = css`
 	/* ## Focus */
 
 	.document-tab-bar__item-tab:focus-visible {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
-
 
 	/* # Item label */
 
@@ -298,7 +288,6 @@ export const documentTabBarItemStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
-
 	/* # Item supporting label */
 
 	.document-tab-bar__item-supporting-text {
@@ -338,7 +327,6 @@ export const documentTabBarItemStyles = css`
 	:host([selected]) .document-tab-bar__item-short-supporting-text {
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
-
 
 	/* # Item dismiss button */
 
@@ -382,10 +370,11 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-dismiss-button:focus-visible {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
-
 
 	/* # Item dismiss icon */
 
@@ -394,5 +383,4 @@ export const documentTabBarItemStyles = css`
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
 	}
-
 `;

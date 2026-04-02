@@ -23,7 +23,6 @@ describe('ndd-stepper', () => {
 	});
 });
 
-
 /* ============================================================
    State
    ============================================================ */
@@ -51,7 +50,7 @@ describe('ndd-stepper – state', () => {
 		el = await fixture<NDDStepper>('<ndd-stepper disabled></ndd-stepper>');
 		await waitForUpdate(el);
 		const buttons = el.shadowRoot!.querySelectorAll('ndd-icon-button');
-		buttons.forEach(async btn => {
+		buttons.forEach(async (btn) => {
 			await waitForUpdate(btn);
 			expect((btn as any).disabled).toBe(true);
 		});
@@ -74,7 +73,6 @@ describe('ndd-stepper – state', () => {
 		expect((increment as any).disabled).toBe(true);
 	});
 });
-
 
 /* ============================================================
    Increment & decrement
@@ -137,7 +135,6 @@ describe('ndd-stepper – increment & decrement', () => {
 	});
 });
 
-
 /* ============================================================
    Change event
    ============================================================ */
@@ -153,7 +150,9 @@ describe('ndd-stepper – change event', () => {
 		el = await fixture<NDDStepper>('<ndd-stepper value="5" max="10"></ndd-stepper>');
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 		el._increment();
 		expect(detail).toBeDefined();
 		expect(detail.value).toBe(6);
@@ -163,7 +162,9 @@ describe('ndd-stepper – change event', () => {
 		el = await fixture<NDDStepper>('<ndd-stepper value="5" min="0"></ndd-stepper>');
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 		el._decrement();
 		expect(detail).toBeDefined();
 		expect(detail.value).toBe(4);
@@ -173,7 +174,9 @@ describe('ndd-stepper – change event', () => {
 		el = await fixture<NDDStepper>('<ndd-stepper value="10" max="10"></ndd-stepper>');
 		await waitForUpdate(el);
 		let changeFired = false;
-		el.addEventListener('change', () => { changeFired = true; });
+		el.addEventListener('change', () => {
+			changeFired = true;
+		});
 		el._increment();
 		expect(changeFired).toBe(false);
 	});
@@ -182,12 +185,13 @@ describe('ndd-stepper – change event', () => {
 		el = await fixture<NDDStepper>('<ndd-stepper value="0" min="0"></ndd-stepper>');
 		await waitForUpdate(el);
 		let changeFired = false;
-		el.addEventListener('change', () => { changeFired = true; });
+		el.addEventListener('change', () => {
+			changeFired = true;
+		});
 		el._decrement();
 		expect(changeFired).toBe(false);
 	});
 });
-
 
 /* ============================================================
    Translations

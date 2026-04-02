@@ -21,9 +21,7 @@ export const Default = {
 	args: {
 		size: 'md',
 	},
-	render: (args) => html`
-		<ndd-drag-handle-cell size=${args.size}></ndd-drag-handle-cell>
-	`,
+	render: (args) => html` <ndd-drag-handle-cell size=${args.size}></ndd-drag-handle-cell> `,
 };
 
 export const AllSizes = {

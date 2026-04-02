@@ -18,21 +18,20 @@ function getItems(el: NDDDocumentTabBar): NDDDocumentTabBarItem[] {
 }
 
 function clickItem(item: Element) {
-	item.shadowRoot!.querySelector('.document-tab-bar__item-tab')!.dispatchEvent(
-		new MouseEvent('click', { bubbles: true, composed: true })
-	);
+	item
+		.shadowRoot!.querySelector('.document-tab-bar__item-tab')!
+		.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 }
 
 function clickDismiss(item: Element) {
-	item.shadowRoot!.querySelector('.document-tab-bar__item-dismiss-button')!.dispatchEvent(
-		new MouseEvent('click', { bubbles: true, composed: true })
-	);
+	item
+		.shadowRoot!.querySelector('.document-tab-bar__item-dismiss-button')!
+		.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 }
 
 function pressKey(target: Element, key: string) {
 	target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
 }
-
 
 /* ============================================================
    ndd-document-tab-bar-item – render
@@ -52,7 +51,9 @@ describe('ndd-document-tab-bar-item', () => {
 	});
 
 	it('renders subtitle when provided', async () => {
-		el = await fixture('<ndd-document-tab-bar-item text="Artikel 1" supporting-text="Wet A"></ndd-document-tab-bar-item>');
+		el = await fixture(
+			'<ndd-document-tab-bar-item text="Artikel 1" supporting-text="Wet A"></ndd-document-tab-bar-item>'
+		);
 		await waitForUpdate(el);
 		const subtitle = el.shadowRoot!.querySelector('.document-tab-bar__item-supporting-text');
 		expect(subtitle).not.toBeNull();
@@ -66,21 +67,33 @@ describe('ndd-document-tab-bar-item', () => {
 	});
 
 	it('renders short-title in short slot', async () => {
-		el = await fixture('<ndd-document-tab-bar-item text="Artikel 1" short-text="Art. 1"></ndd-document-tab-bar-item>');
+		el = await fixture(
+			'<ndd-document-tab-bar-item text="Artikel 1" short-text="Art. 1"></ndd-document-tab-bar-item>'
+		);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-short-text')!.textContent?.trim()).toBe('Art. 1');
+		expect(
+			el.shadowRoot!.querySelector('.document-tab-bar__item-short-text')!.textContent?.trim()
+		).toBe('Art. 1');
 	});
 
 	it('falls back to title in short slot when short-title not provided', async () => {
 		el = await fixture('<ndd-document-tab-bar-item text="Artikel 1"></ndd-document-tab-bar-item>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-short-text')!.textContent?.trim()).toBe('Artikel 1');
+		expect(
+			el.shadowRoot!.querySelector('.document-tab-bar__item-short-text')!.textContent?.trim()
+		).toBe('Artikel 1');
 	});
 
 	it('falls back to subtitle in short subtitle slot when short-subtitle not provided', async () => {
-		el = await fixture('<ndd-document-tab-bar-item text="Artikel 1" supporting-text="Wet A"></ndd-document-tab-bar-item>');
+		el = await fixture(
+			'<ndd-document-tab-bar-item text="Artikel 1" supporting-text="Wet A"></ndd-document-tab-bar-item>'
+		);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__item-short-supporting-text')!.textContent?.trim()).toBe('Wet A');
+		expect(
+			el
+				.shadowRoot!.querySelector('.document-tab-bar__item-short-supporting-text')!
+				.textContent?.trim()
+		).toBe('Wet A');
 	});
 
 	it('sets role="none" on host', async () => {
@@ -96,7 +109,6 @@ describe('ndd-document-tab-bar-item', () => {
 	});
 });
 
-
 /* ============================================================
    ndd-document-tab-bar-item – events
    ============================================================ */
@@ -109,11 +121,15 @@ describe('ndd-document-tab-bar-item – events', () => {
 	});
 
 	it('fires select event on click', async () => {
-		el = await fixture<NDDDocumentTabBarItem>('<ndd-document-tab-bar-item text="Artikel 1"></ndd-document-tab-bar-item>');
+		el = await fixture<NDDDocumentTabBarItem>(
+			'<ndd-document-tab-bar-item text="Artikel 1"></ndd-document-tab-bar-item>'
+		);
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('select', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('select', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 		clickItem(el);
 
 		expect(detail).toBeDefined();
@@ -121,7 +137,9 @@ describe('ndd-document-tab-bar-item – events', () => {
 	});
 
 	it('does not set selected on itself after click', async () => {
-		el = await fixture<NDDDocumentTabBarItem>('<ndd-document-tab-bar-item text="Artikel 1"></ndd-document-tab-bar-item>');
+		el = await fixture<NDDDocumentTabBarItem>(
+			'<ndd-document-tab-bar-item text="Artikel 1"></ndd-document-tab-bar-item>'
+		);
 		await waitForUpdate(el);
 
 		clickItem(el);
@@ -131,11 +149,15 @@ describe('ndd-document-tab-bar-item – events', () => {
 	});
 
 	it('fires dismiss event on dismiss button click', async () => {
-		el = await fixture<NDDDocumentTabBarItem>('<ndd-document-tab-bar-item text="Artikel 1"></ndd-document-tab-bar-item>');
+		el = await fixture<NDDDocumentTabBarItem>(
+			'<ndd-document-tab-bar-item text="Artikel 1"></ndd-document-tab-bar-item>'
+		);
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('dismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('dismiss', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 		clickDismiss(el);
 
 		expect(detail).toBeDefined();
@@ -143,17 +165,20 @@ describe('ndd-document-tab-bar-item – events', () => {
 	});
 
 	it('dismiss does not fire select', async () => {
-		el = await fixture<NDDDocumentTabBarItem>('<ndd-document-tab-bar-item text="Artikel 1"></ndd-document-tab-bar-item>');
+		el = await fixture<NDDDocumentTabBarItem>(
+			'<ndd-document-tab-bar-item text="Artikel 1"></ndd-document-tab-bar-item>'
+		);
 		await waitForUpdate(el);
 
 		let selectFired = false;
-		el.addEventListener('select', () => { selectFired = true; });
+		el.addEventListener('select', () => {
+			selectFired = true;
+		});
 		clickDismiss(el);
 
 		expect(selectFired).toBe(false);
 	});
 });
-
 
 /* ============================================================
    ndd-document-tab-bar – render & ARIA
@@ -182,7 +207,9 @@ describe('ndd-document-tab-bar', () => {
 	it('sets role="tablist" on items container', async () => {
 		el = await fixture(threeTabBar());
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__items')!.getAttribute('role')).toBe('tablist');
+		expect(el.shadowRoot!.querySelector('.document-tab-bar__items')!.getAttribute('role')).toBe(
+			'tablist'
+		);
 	});
 
 	it('does not set role on host', async () => {
@@ -191,7 +218,6 @@ describe('ndd-document-tab-bar', () => {
 		expect(el.getAttribute('role')).toBeNull();
 	});
 });
-
 
 /* ============================================================
    ndd-document-tab-bar – accessible label
@@ -209,7 +235,9 @@ describe('ndd-document-tab-bar – accessible label', () => {
 		vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<NDDDocumentTabBar>('<ndd-document-tab-bar></ndd-document-tab-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__items')!.getAttribute('aria-label')).toBe('Tabbladen');
+		expect(
+			el.shadowRoot!.querySelector('.document-tab-bar__items')!.getAttribute('aria-label')
+		).toBe('Tabbladen');
 	});
 
 	it('warns once when no accessible-label is provided', async () => {
@@ -222,18 +250,23 @@ describe('ndd-document-tab-bar – accessible label', () => {
 
 	it('does not warn when accessible-label is provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture<NDDDocumentTabBar>('<ndd-document-tab-bar accessible-label="Documenten"></ndd-document-tab-bar>');
+		el = await fixture<NDDDocumentTabBar>(
+			'<ndd-document-tab-bar accessible-label="Documenten"></ndd-document-tab-bar>'
+		);
 		await waitForUpdate(el);
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 
 	it('forwards accessible-label to container aria-label', async () => {
-		el = await fixture<NDDDocumentTabBar>('<ndd-document-tab-bar accessible-label="Mijn documenten"></ndd-document-tab-bar>');
+		el = await fixture<NDDDocumentTabBar>(
+			'<ndd-document-tab-bar accessible-label="Mijn documenten"></ndd-document-tab-bar>'
+		);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.document-tab-bar__items')!.getAttribute('aria-label')).toBe('Mijn documenten');
+		expect(
+			el.shadowRoot!.querySelector('.document-tab-bar__items')!.getAttribute('aria-label')
+		).toBe('Mijn documenten');
 	});
 });
-
 
 /* ============================================================
    ndd-document-tab-bar – item selection
@@ -265,7 +298,9 @@ describe('ndd-document-tab-bar – item selection', () => {
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('tabchange', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('tabchange', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 
 		clickItem(getItems(el)[1]);
 		await waitForUpdate(el);
@@ -279,7 +314,13 @@ describe('ndd-document-tab-bar – item selection', () => {
 		await waitForUpdate(el);
 
 		let selectBubbled = false;
-		document.addEventListener('select', () => { selectBubbled = true; }, { once: true });
+		document.addEventListener(
+			'select',
+			() => {
+				selectBubbled = true;
+			},
+			{ once: true }
+		);
 
 		clickItem(getItems(el)[0]);
 		await waitForUpdate(el);
@@ -287,7 +328,6 @@ describe('ndd-document-tab-bar – item selection', () => {
 		expect(selectBubbled).toBe(false);
 	});
 });
-
 
 /* ============================================================
    ndd-document-tab-bar – dismiss
@@ -305,7 +345,9 @@ describe('ndd-document-tab-bar – dismiss', () => {
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('tabdismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('tabdismiss', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 
 		const items = getItems(el);
 		clickDismiss(items[0]);
@@ -322,7 +364,9 @@ describe('ndd-document-tab-bar – dismiss', () => {
 		expect(items[0].selected).toBe(true);
 
 		let detail: any;
-		el.addEventListener('tabdismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('tabdismiss', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 
 		clickDismiss(items[0]);
 		await waitForUpdate(el);
@@ -342,7 +386,9 @@ describe('ndd-document-tab-bar – dismiss', () => {
 
 		const items = getItems(el);
 		let detail: any;
-		el.addEventListener('tabdismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('tabdismiss', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 
 		clickDismiss(items[1]);
 		await waitForUpdate(el);
@@ -356,7 +402,9 @@ describe('ndd-document-tab-bar – dismiss', () => {
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('tabdismiss', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('tabdismiss', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 
 		clickDismiss(getItems(el)[1]);
 		await waitForUpdate(el);
@@ -373,7 +421,9 @@ describe('ndd-document-tab-bar – dismiss', () => {
 		await waitForUpdate(el);
 
 		let emptyFired = false;
-		el.addEventListener('tabempty', () => { emptyFired = true; });
+		el.addEventListener('tabempty', () => {
+			emptyFired = true;
+		});
 
 		clickDismiss(getItems(el)[0]);
 		await waitForUpdate(el);
@@ -386,7 +436,13 @@ describe('ndd-document-tab-bar – dismiss', () => {
 		await waitForUpdate(el);
 
 		let dismissBubbled = false;
-		document.addEventListener('dismiss', () => { dismissBubbled = true; }, { once: true });
+		document.addEventListener(
+			'dismiss',
+			() => {
+				dismissBubbled = true;
+			},
+			{ once: true }
+		);
 
 		clickDismiss(getItems(el)[0]);
 		await waitForUpdate(el);
@@ -394,7 +450,6 @@ describe('ndd-document-tab-bar – dismiss', () => {
 		expect(dismissBubbled).toBe(false);
 	});
 });
-
 
 /* ============================================================
    ndd-document-tab-bar – keyboard navigation
@@ -455,7 +510,9 @@ describe('ndd-document-tab-bar – keyboard navigation', () => {
 		el = await fixture<NDDDocumentTabBar>(threeTabBar());
 		await waitForUpdate(el);
 		const items = getItems(el);
-		const dismissBtn = items[1].shadowRoot!.querySelector('.document-tab-bar__item-dismiss-button')!;
+		const dismissBtn = items[1].shadowRoot!.querySelector(
+			'.document-tab-bar__item-dismiss-button'
+		)!;
 		expect(dismissBtn.getAttribute('tabindex')).toBe('-1');
 	});
 
@@ -463,7 +520,9 @@ describe('ndd-document-tab-bar – keyboard navigation', () => {
 		el = await fixture<NDDDocumentTabBar>(threeTabBar());
 		await waitForUpdate(el);
 		const items = getItems(el);
-		const dismissBtn = items[0].shadowRoot!.querySelector('.document-tab-bar__item-dismiss-button')!;
+		const dismissBtn = items[0].shadowRoot!.querySelector(
+			'.document-tab-bar__item-dismiss-button'
+		)!;
 		expect(dismissBtn.getAttribute('tabindex')).toBe('0');
 	});
 
@@ -537,7 +596,6 @@ describe('ndd-document-tab-bar – keyboard navigation', () => {
 		expect(spy).toHaveBeenCalled();
 	});
 });
-
 
 /* ============================================================
    ndd-document-tab-bar – navigation mode

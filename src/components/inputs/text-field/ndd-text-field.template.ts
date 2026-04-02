@@ -6,20 +6,14 @@ function renderValidationIcon(component: NDDTextField): TemplateResult | typeof 
 	if (component.valid) {
 		return html`
 			<div class="text-field__validation-icon-area">
-				<ndd-icon class="text-field__validation-icon"
-					name="valid"
-					aria-hidden="true"
-				></ndd-icon>
+				<ndd-icon class="text-field__validation-icon" name="valid" aria-hidden="true"></ndd-icon>
 			</div>
 		`;
 	}
 	if (component.invalid) {
 		return html`
 			<div class="text-field__validation-icon-area">
-				<ndd-icon class="text-field__validation-icon"
-					name="invalid"
-					aria-hidden="true"
-				></ndd-icon>
+				<ndd-icon class="text-field__validation-icon" name="invalid" aria-hidden="true"></ndd-icon>
 			</div>
 		`;
 	}
@@ -29,7 +23,8 @@ function renderValidationIcon(component: NDDTextField): TemplateResult | typeof 
 export function textFieldTemplate(component: NDDTextField): TemplateResult {
 	return html`
 		<div class="text-field">
-			<input class="text-field__input"
+			<input
+				class="text-field__input"
 				id=${component.inputId || nothing}
 				type=${component.type}
 				.value=${component.value}

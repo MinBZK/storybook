@@ -9,27 +9,28 @@ function renderContent(component: NDDIconButton) {
 					? html`<ndd-icon name=${component.icon}></ndd-icon>`
 					: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`}
 			</span>
-			${component.expandable ? html`
-				<span class="icon-button__disclosure-icon">
-					<ndd-icon name="chevron-down-small"></ndd-icon>
-				</span>
-			` : nothing}
+			${component.expandable
+				? html`
+						<span class="icon-button__disclosure-icon">
+							<ndd-icon name="chevron-down-small"></ndd-icon>
+						</span>
+					`
+				: nothing}
 		</span>
-		${component.text ? html`
-			<span class="icon-button__text">${component.text}</span>
-		` : ''}
+		${component.text ? html` <span class="icon-button__text">${component.text}</span> ` : ''}
 	`;
 }
 
 export function template(this: NDDIconButton) {
 	const label = this.accessibleLabel || this.text || nothing;
-	const tooltip = this.size !== 'lg' ? (this.accessibleLabel || this.text || nothing) : nothing;
+	const tooltip = this.size !== 'lg' ? this.accessibleLabel || this.text || nothing : nothing;
 	const content = renderContent(this);
 
 	if (this.href) {
 		const resolvedRel = this._resolvedRel();
 		return html`
-			<a class="icon-button"
+			<a
+				class="icon-button"
 				href=${this.href}
 				target=${this.target || nothing}
 				rel=${resolvedRel || nothing}
@@ -44,7 +45,8 @@ export function template(this: NDDIconButton) {
 	}
 
 	return html`
-		<button class="icon-button"
+		<button
+			class="icon-button"
 			type=${this.type}
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled ? 'true' : nothing}

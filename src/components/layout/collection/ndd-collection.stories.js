@@ -61,38 +61,52 @@ export default {
 	},
 };
 
-const gridItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="padding: 24px; background: var(--primitives-color-neutral-150); border-radius: 8px; min-height: 120px;">
-		<ndd-rich-text size="flat">
-			<h3>Item ${i + 1}</h3>
-			<p>Omschrijving van item ${i + 1}.</p>
-		</ndd-rich-text>
-	</div>
-`);
+const gridItems = Array.from(
+	{ length: 12 },
+	(_, i) => html`
+		<div
+			style="padding: 24px; background: var(--primitives-color-neutral-150); border-radius: 8px; min-height: 120px;"
+		>
+			<ndd-rich-text size="flat">
+				<h3>Item ${i + 1}</h3>
+				<p>Omschrijving van item ${i + 1}.</p>
+			</ndd-rich-text>
+		</div>
+	`
+);
 
-const listItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="padding: 16px; background: var(--primitives-color-neutral-150); border-radius: 8px;">
-		<ndd-rich-text size="flat">
-			<h3>Item ${i + 1}</h3>
-			<p>Omschrijving van item ${i + 1}.</p>
-		</ndd-rich-text>
-	</div>
-`);
+const listItems = Array.from(
+	{ length: 12 },
+	(_, i) => html`
+		<div
+			style="padding: 16px; background: var(--primitives-color-neutral-150); border-radius: 8px;"
+		>
+			<ndd-rich-text size="flat">
+				<h3>Item ${i + 1}</h3>
+				<p>Omschrijving van item ${i + 1}.</p>
+			</ndd-rich-text>
+		</div>
+	`
+);
 
-const scrollItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="width: 280px; min-height: 200px; padding: 24px; background: var(--primitives-color-neutral-150); border-radius: 8px; flex-shrink: 0; box-sizing: border-box;">
-		<ndd-rich-text size="flat">
-			<h3>Item ${i + 1}</h3>
-			<p>Omschrijving van item ${i + 1}.</p>
-		</ndd-rich-text>
-	</div>
-`);
+const scrollItems = Array.from(
+	{ length: 12 },
+	(_, i) => html`
+		<div
+			style="width: 280px; min-height: 200px; padding: 24px; background: var(--primitives-color-neutral-150); border-radius: 8px; flex-shrink: 0; box-sizing: border-box;"
+		>
+			<ndd-rich-text size="flat">
+				<h3>Item ${i + 1}</h3>
+				<p>Omschrijving van item ${i + 1}.</p>
+			</ndd-rich-text>
+		</div>
+	`
+);
 
 export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad }) => html`
 	<ndd-collection
 		layout=${layout}
 		?show-load-more=${showLoadMore}
-
 		max-items=${maxItems}
 		?lazy-load=${lazyLoad}
 	>
@@ -101,9 +115,7 @@ export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad }) => html`
 `;
 
 export const Grid = () => html`
-	<ndd-collection layout="grid" show-load-more max-items="6">
-		${gridItems}
-	</ndd-collection>
+	<ndd-collection layout="grid" show-load-more max-items="6"> ${gridItems} </ndd-collection>
 `;
 Grid.parameters = { controls: { disable: true } };
 
@@ -115,20 +127,14 @@ export const GridLazyLoad = () => html`
 GridLazyLoad.parameters = { controls: { disable: true } };
 
 export const Lijst = () => html`
-	<ndd-collection layout="list" show-load-more max-items="6">
-		${listItems}
-	</ndd-collection>
+	<ndd-collection layout="list" show-load-more max-items="6"> ${listItems} </ndd-collection>
 `;
 Lijst.parameters = { controls: { disable: true } };
 
 export const HorizontaalScrollend = () => html`
-	<ndd-collection layout="horizontal-scroll">
-		${scrollItems}
-	</ndd-collection>
+	<ndd-collection layout="horizontal-scroll"> ${scrollItems} </ndd-collection>
 `;
 HorizontaalScrollend.parameters = { controls: { disable: true } };
-
-
 
 export const InSimpleSectie = () => html`
 	<ndd-page background="tinted" style="height: 500px;">
@@ -137,9 +143,7 @@ export const InSimpleSectie = () => html`
 				<h2>Sectietitel</h2>
 				<p>Tekst boven de collectie om de uitlijning te zien.</p>
 			</ndd-rich-text>
-			<ndd-collection layout="horizontal-scroll">
-				${scrollItems}
-			</ndd-collection>
+			<ndd-collection layout="horizontal-scroll"> ${scrollItems} </ndd-collection>
 		</ndd-simple-section>
 	</ndd-page>
 `;

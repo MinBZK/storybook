@@ -44,7 +44,6 @@ describe('ndd-checkbox-field', () => {
 	});
 });
 
-
 /* ============================================================
    State
    ============================================================ */
@@ -99,7 +98,6 @@ describe('ndd-checkbox-field – state', () => {
 	});
 });
 
-
 /* ============================================================
    Change event
    ============================================================ */
@@ -115,10 +113,12 @@ describe('ndd-checkbox-field – change event', () => {
 		el = await fixture<NDDCheckboxField>('<ndd-checkbox-field value="agree"></ndd-checkbox-field>');
 		await waitForUpdate(el);
 		const checkbox = el.shadowRoot!.querySelector('ndd-checkbox')!;
-		checkbox.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: true, value: 'agree' },
-			bubbles: true,
-		}));
+		checkbox.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: true, value: 'agree' },
+				bubbles: true,
+			})
+		);
 		await waitForUpdate(el);
 		expect(el.checked).toBe(true);
 	});
@@ -133,10 +133,12 @@ describe('ndd-checkbox-field – change event', () => {
 		}) as EventListener);
 
 		const checkbox = el.shadowRoot!.querySelector('ndd-checkbox')!;
-		checkbox.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: true, value: 'agree' },
-			bubbles: true,
-		}));
+		checkbox.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: true, value: 'agree' },
+				bubbles: true,
+			})
+		);
 
 		expect(detail).toBeDefined();
 		expect(detail.checked).toBe(true);
@@ -147,16 +149,17 @@ describe('ndd-checkbox-field – change event', () => {
 		el = await fixture<NDDCheckboxField>('<ndd-checkbox-field indeterminate></ndd-checkbox-field>');
 		await waitForUpdate(el);
 		const checkbox = el.shadowRoot!.querySelector('ndd-checkbox')!;
-		checkbox.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: true, value: 'on' },
-			bubbles: true,
-		}));
+		checkbox.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: true, value: 'on' },
+				bubbles: true,
+			})
+		);
 		await waitForUpdate(el);
 		expect(el.indeterminate).toBe(false);
 		expect(el.checked).toBe(true);
 	});
 });
-
 
 /* ============================================================
    Label click
@@ -170,7 +173,9 @@ describe('ndd-checkbox-field – label click', () => {
 	});
 
 	it('toggles checked when label is clicked', async () => {
-		el = await fixture<NDDCheckboxField>('<ndd-checkbox-field label="Optie 1"></ndd-checkbox-field>');
+		el = await fixture<NDDCheckboxField>(
+			'<ndd-checkbox-field label="Optie 1"></ndd-checkbox-field>'
+		);
 		await waitForUpdate(el);
 		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
 		label.click();
@@ -179,7 +184,9 @@ describe('ndd-checkbox-field – label click', () => {
 	});
 
 	it('does not toggle when disabled and label is clicked', async () => {
-		el = await fixture<NDDCheckboxField>('<ndd-checkbox-field label="Optie 1" disabled></ndd-checkbox-field>');
+		el = await fixture<NDDCheckboxField>(
+			'<ndd-checkbox-field label="Optie 1" disabled></ndd-checkbox-field>'
+		);
 		await waitForUpdate(el);
 		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
 		label.click();
@@ -188,7 +195,9 @@ describe('ndd-checkbox-field – label click', () => {
 	});
 
 	it('clears indeterminate when label is clicked', async () => {
-		el = await fixture<NDDCheckboxField>('<ndd-checkbox-field label="Optie 1" indeterminate></ndd-checkbox-field>');
+		el = await fixture<NDDCheckboxField>(
+			'<ndd-checkbox-field label="Optie 1" indeterminate></ndd-checkbox-field>'
+		);
 		await waitForUpdate(el);
 		const label = el.shadowRoot!.querySelector('.checkbox-field__label')!;
 		label.click();

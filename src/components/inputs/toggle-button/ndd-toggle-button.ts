@@ -78,7 +78,9 @@ export class NDDToggleButton extends LitElement {
 		const inaccessible = iconOnly && !this.accessibleLabel;
 		if (inaccessible && !this._warnedA11y) {
 			this._warnedA11y = true;
-			console.warn('<ndd-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
+			console.warn(
+				'<ndd-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.'
+			);
 		} else if (!inaccessible) {
 			this._warnedA11y = false;
 		}
@@ -101,11 +103,13 @@ export class NDDToggleButton extends LitElement {
 	}
 
 	private _dispatchChange(): void {
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { selected: this.selected, value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { selected: this.selected, value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	/**

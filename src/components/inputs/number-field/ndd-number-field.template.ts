@@ -7,23 +7,27 @@ export function numberFieldTemplate(component: NDDNumberField): TemplateResult {
 	const canIncrease = component.value < component.max;
 
 	return html`
-		<div class="number-field"
+		<div
+			class="number-field"
 			role="group"
 			aria-label=${component._t('components.number-field.to-adjust-value-action')}
 		>
-			${!component.hideSpinButtons ? html`
-				<div class="number-field__decrement-control">
-					<ndd-icon-button
-						variant="neutral-tinted"
-						size="sm"
-						icon="minus"
-						text=${component._t('components.number-field.decrement-action')}
-						?disabled=${component.disabled || !canDecrease}
-						@click=${component._handleDecrease}
-					></ndd-icon-button>
-				</div>
-			` : nothing}
-			<input class="number-field__input"
+			${!component.hideSpinButtons
+				? html`
+						<div class="number-field__decrement-control">
+							<ndd-icon-button
+								variant="neutral-tinted"
+								size="sm"
+								icon="minus"
+								text=${component._t('components.number-field.decrement-action')}
+								?disabled=${component.disabled || !canDecrease}
+								@click=${component._handleDecrease}
+							></ndd-icon-button>
+						</div>
+					`
+				: nothing}
+			<input
+				class="number-field__input"
 				type="number"
 				aria-label=${component.accessibleLabel || nothing}
 				.value=${String(component.value)}
@@ -33,19 +37,21 @@ export function numberFieldTemplate(component: NDDNumberField): TemplateResult {
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
 				@input=${component._handleInput}
-			>
-			${!component.hideSpinButtons ? html`
-				<div class="number-field__increment-control">
-					<ndd-icon-button
-						variant="neutral-tinted"
-						size="sm"
-						icon="plus"
-						text=${component._t('components.number-field.increment-action')}
-						?disabled=${component.disabled || !canIncrease}
-						@click=${component._handleIncrease}
-					></ndd-icon-button>
-				</div>
-			` : nothing}
+			/>
+			${!component.hideSpinButtons
+				? html`
+						<div class="number-field__increment-control">
+							<ndd-icon-button
+								variant="neutral-tinted"
+								size="sm"
+								icon="plus"
+								text=${component._t('components.number-field.increment-action')}
+								?disabled=${component.disabled || !canIncrease}
+								@click=${component._handleIncrease}
+							></ndd-icon-button>
+						</div>
+					`
+				: nothing}
 		</div>
 	`;
 }

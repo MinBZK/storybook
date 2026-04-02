@@ -23,7 +23,6 @@ describe('ndd-checkbox', () => {
 	});
 });
 
-
 /* ============================================================
    State
    ============================================================ */
@@ -78,7 +77,6 @@ describe('ndd-checkbox – state', () => {
 	});
 });
 
-
 /* ============================================================
    Change event
    ============================================================ */
@@ -131,8 +129,6 @@ describe('ndd-checkbox – change event', () => {
 	});
 });
 
-
-
 /* ============================================================
    Keyboard interaction
    ============================================================ */
@@ -174,7 +170,9 @@ describe('ndd-checkbox – accessibility', () => {
 	});
 
 	it('forwards aria-label to the native input', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox accessible-label="Accepteer voorwaarden"></ndd-checkbox>');
+		el = await fixture<NDDCheckbox>(
+			'<ndd-checkbox accessible-label="Accepteer voorwaarden"></ndd-checkbox>'
+		);
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('aria-label')).toBe('Accepteer voorwaarden');

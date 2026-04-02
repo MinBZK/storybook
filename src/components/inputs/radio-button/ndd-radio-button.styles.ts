@@ -1,7 +1,6 @@
 import { css } from 'lit';
 
 export const radioButtonStyles = css`
-
 	/* # Host */
 
 	:host {
@@ -17,7 +16,6 @@ export const radioButtonStyles = css`
 		display: none;
 	}
 
-
 	/* # Native input */
 
 	.radio-button__input {
@@ -30,7 +28,6 @@ export const radioButtonStyles = css`
 		z-index: 1;
 	}
 
-
 	/* # Outer shape */
 
 	.radio-button__outer-shape {
@@ -39,10 +36,10 @@ export const radioButtonStyles = css`
 		width: var(--semantics-controls-xs-min-size);
 		height: var(--semantics-controls-xs-min-size);
 		border-radius: 50%;
-		border: var(--components-radio-button-border-thickness) solid var(--components-radio-button-border-color);
+		border: var(--components-radio-button-border-thickness) solid
+			var(--components-radio-button-border-color);
 		background-color: var(--components-radio-button-background-color);
 	}
-
 
 	/* # Inner shape */
 
@@ -54,10 +51,10 @@ export const radioButtonStyles = css`
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		border-radius: 50%;
-		border: var(--components-radio-button-is-selected-inner-shape-border-thickness) solid var(--components-radio-button-is-selected-inner-shape-border-color);
+		border: var(--components-radio-button-is-selected-inner-shape-border-thickness) solid
+			var(--components-radio-button-is-selected-inner-shape-border-color);
 		box-sizing: border-box;
 	}
-
 
 	/* # Selected */
 
@@ -70,7 +67,6 @@ export const radioButtonStyles = css`
 		transform: translate(-50%, -50%) scale(1);
 	}
 
-
 	/* # Hover */
 
 	.radio-button__input:hover:not(:disabled) ~ .radio-button__outer-shape {
@@ -82,10 +78,11 @@ export const radioButtonStyles = css`
 		background-color: var(--components-radio-button-is-selected-is-hovered-background-color);
 	}
 
-	.radio-button__input:checked:hover:not(:disabled) ~ .radio-button__outer-shape .radio-button__inner-shape {
+	.radio-button__input:checked:hover:not(:disabled)
+		~ .radio-button__outer-shape
+		.radio-button__inner-shape {
 		border-color: var(--components-radio-button-is-selected-is-hovered-inner-shape-border-color);
 	}
-
 
 	/* # Active */
 
@@ -98,18 +95,20 @@ export const radioButtonStyles = css`
 		background-color: var(--components-radio-button-is-selected-is-active-background-color);
 	}
 
-	.radio-button__input:checked:active:not(:disabled) ~ .radio-button__outer-shape .radio-button__inner-shape {
+	.radio-button__input:checked:active:not(:disabled)
+		~ .radio-button__outer-shape
+		.radio-button__inner-shape {
 		border-color: var(--components-radio-button-is-selected-is-active-inner-shape-border-color);
 	}
-
 
 	/* # Focus */
 
 	.radio-button__input:focus-visible ~ .radio-button__outer-shape {
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
 	}
-
 
 	/* # Disabled */
 

@@ -1,8 +1,6 @@
 import { css } from 'lit';
 
 export const passwordFieldStyles = css`
-
-
 	/* # Host */
 
 	:host {
@@ -14,7 +12,6 @@ export const passwordFieldStyles = css`
 		display: none;
 	}
 
-
 	/* # Container */
 
 	.password-field {
@@ -25,7 +22,8 @@ export const passwordFieldStyles = css`
 		box-sizing: border-box;
 		padding-left: var(--primitives-space-12);
 		min-height: var(--semantics-controls-md-min-size);
-		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
+		border: var(--semantics-input-fields-border-thickness) solid
+			var(--semantics-input-fields-border-color);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		background-color: var(--_background-color);
 	}
@@ -59,14 +57,15 @@ export const passwordFieldStyles = css`
 	}
 
 	.password-field:focus-within:not(:has(.password-field__visibility-toggle:focus-within)) {
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
 	}
 
 	.password-field:has(.password-field__visibility-toggle:focus-within) {
 		overflow: visible;
 	}
-
 
 	/* # Input */
 
@@ -77,7 +76,9 @@ export const passwordFieldStyles = css`
 		box-sizing: border-box;
 		padding: 0;
 		margin: 0;
-		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		min-height: calc(
+			var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2
+		);
 		font: var(--semantics-input-fields-md-text-font);
 		color: var(--semantics-content-color);
 		background: transparent;
@@ -91,7 +92,9 @@ export const passwordFieldStyles = css`
 	}
 
 	:host([size='sm']) .password-field__input {
-		min-height: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		min-height: calc(
+			var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2
+		);
 		font: var(--semantics-input-fields-sm-text-font);
 	}
 
@@ -118,7 +121,6 @@ export const passwordFieldStyles = css`
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
 
-
 	/* # Fade */
 
 	.password-field__fade {
@@ -136,10 +138,13 @@ export const passwordFieldStyles = css`
 		right: 0;
 		width: var(--primitives-space-8);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
+		background: linear-gradient(
+			90deg,
+			color-mix(in oklch, var(--_background-color) 0%, transparent) 0%,
+			var(--_background-color) 100%
+		);
 		pointer-events: none;
 	}
-
 
 	/* # Validation icon area */
 
@@ -148,12 +153,16 @@ export const passwordFieldStyles = css`
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		width: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		width: calc(
+			var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2
+		);
 		height: 100%;
 	}
 
 	:host([size='sm']) .password-field__validation-icon-area {
-		width: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		width: calc(
+			var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2
+		);
 	}
 
 	:host([valid]) .password-field__validation-icon-area {
@@ -163,7 +172,6 @@ export const passwordFieldStyles = css`
 	:host([invalid]) .password-field__validation-icon-area {
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
-
 
 	/* # Validation icon */
 
@@ -177,7 +185,6 @@ export const passwordFieldStyles = css`
 		height: var(--primitives-space-20);
 	}
 
-
 	/* # Toggle button */
 
 	.password-field__visibility-toggle {
@@ -187,13 +194,37 @@ export const passwordFieldStyles = css`
 		flex-shrink: 0;
 		height: 100%;
 		/* (field height - 2 x border - sm button height) / 2 */
-		padding-block: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
-		padding-inline-end: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
+		padding-block: calc(
+			(
+					var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) *
+						2 - var(--semantics-controls-sm-min-size)
+				) /
+				2
+		);
+		padding-inline-end: calc(
+			(
+					var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) *
+						2 - var(--semantics-controls-sm-min-size)
+				) /
+				2
+		);
 	}
 
 	:host([size='sm']) .password-field__visibility-toggle {
 		/* (field height - 2 x border - xs button height) / 2 */
-		padding-block: calc((var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-xs-min-size)) / 2);
-		padding-inline-end: calc((var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-xs-min-size)) / 2);
+		padding-block: calc(
+			(
+					var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) *
+						2 - var(--semantics-controls-xs-min-size)
+				) /
+				2
+		);
+		padding-inline-end: calc(
+			(
+					var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) *
+						2 - var(--semantics-controls-xs-min-size)
+				) /
+				2
+		);
 	}
 `;

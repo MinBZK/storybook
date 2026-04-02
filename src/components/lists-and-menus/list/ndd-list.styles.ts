@@ -14,7 +14,6 @@ export const styles = css`
 		--_drag-clone-z-index: 100;
 	}
 
-
 	/* # Body */
 
 	.list__body {
@@ -23,14 +22,12 @@ export const styles = css`
 		gap: var(--primitives-space-8);
 	}
 
-
 	/* # Header & footer */
 
 	.list__header,
 	.list__footer {
 		display: contents;
 	}
-
 
 	/* # Items */
 
@@ -39,13 +36,11 @@ export const styles = css`
 		flex-direction: column;
 	}
 
-
 	/* # Variant: simple */
 
 	:host([variant='simple']) .list__items {
 		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	}
-
 
 	/* # Variant: box */
 
@@ -55,7 +50,6 @@ export const styles = css`
 		overflow: hidden;
 	}
 
-
 	/* # Variant: inset */
 
 	:host([variant='inset']) .list__items {
@@ -63,7 +57,6 @@ export const styles = css`
 		border-radius: var(--components-list-corner-radius);
 		overflow: hidden;
 	}
-
 
 	/* # Drag placeholder */
 
@@ -73,7 +66,6 @@ export const styles = css`
 		pointer-events: none;
 		border-radius: var(--components-list-item-indicator-corner-radius);
 	}
-
 
 	/* # Drag clone */
 
@@ -93,7 +85,6 @@ export const styles = css`
 		z-index: var(--_drag-clone-z-index);
 		overflow: hidden;
 	}
-
 
 	/* # Announcer */
 

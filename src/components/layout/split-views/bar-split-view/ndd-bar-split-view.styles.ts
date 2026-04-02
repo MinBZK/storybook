@@ -13,17 +13,20 @@ export const barSplitViewStyles = css`
 		height: 100%;
 		background-color: var(--_background-color);
 
-		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		--_background-color: var(
+			--context-parent-background-color,
+			var(--semantics-surfaces-background-color)
+		);
 		--context-bar-split-view-top-bars-height: 0px;
 		--context-bar-split-view-bottom-bars-height: 0px;
 	}
 
-	:host([background="default"]) {
+	:host([background='default']) {
 		--context-parent-background-color: var(--semantics-surfaces-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
 
-	:host([background="tinted"]) {
+	:host([background='tinted']) {
 		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
@@ -31,7 +34,6 @@ export const barSplitViewStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # Bar split view */
 
@@ -43,7 +45,6 @@ export const barSplitViewStyles = css`
 		min-width: 0;
 		position: relative;
 	}
-
 
 	/* # Bar */
 
@@ -64,13 +65,11 @@ export const barSplitViewStyles = css`
 		}
 	}
 
-
 	/* # Divider */
 
 	.bar-split-view__divider {
 		flex-shrink: 0;
 	}
-
 
 	/* # Main */
 
@@ -95,8 +94,10 @@ export const barSplitViewStyles = css`
 				height: calc(var(--context-bar-split-view-top-bars-height) + var(--primitives-space-32));
 				background: linear-gradient(
 					to bottom,
-					color-mix(in srgb, var(--_background-color) 95%, transparent) var(--context-bar-split-view-top-bars-height),
-					transparent);
+					color-mix(in srgb, var(--_background-color) 95%, transparent)
+						var(--context-bar-split-view-top-bars-height),
+					transparent
+				);
 				pointer-events: none;
 			}
 
@@ -110,13 +111,14 @@ export const barSplitViewStyles = css`
 				height: calc(var(--context-bar-split-view-bottom-bars-height) + var(--primitives-space-32));
 				background: linear-gradient(
 					to top,
-					color-mix(in srgb, var(--_background-color) 95%, transparent) var(--context-bar-split-view-bottom-bars-height),
-					transparent);
+					color-mix(in srgb, var(--_background-color) 95%, transparent)
+						var(--context-bar-split-view-bottom-bars-height),
+					transparent
+				);
 				pointer-events: none;
 			}
 		}
 	}
-
 
 	/* # Slotted */
 

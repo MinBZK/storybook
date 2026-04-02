@@ -74,11 +74,11 @@ export class NDDRadioButtonGroup extends LitElement {
 	}
 
 	private _getEnabledFields(): NDDRadioButtonField[] {
-		return this._getFields().filter(f => !f.disabled);
+		return this._getFields().filter((f) => !f.disabled);
 	}
 
 	private _syncFields(): void {
-		this._getFields().forEach(field => {
+		this._getFields().forEach((field) => {
 			field.name = this.name;
 			field.required = this.required;
 			if (this.disabled) {
@@ -96,19 +96,24 @@ export class NDDRadioButtonGroup extends LitElement {
 	private _handleChange = (e: Event): void => {
 		const changedField = e.target as NDDRadioButtonField;
 		if (!changedField.checked) return;
-		this._getFields().forEach(field => {
+		this._getFields().forEach((field) => {
 			if (field !== changedField) field.checked = false;
 		});
 	};
 
 	private _handleKeyDown = (e: KeyboardEvent): void => {
-		if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' &&
-			e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+		if (
+			e.key !== 'ArrowDown' &&
+			e.key !== 'ArrowUp' &&
+			e.key !== 'ArrowRight' &&
+			e.key !== 'ArrowLeft'
+		)
+			return;
 
 		const fields = this._getEnabledFields();
 		if (fields.length === 0) return;
 
-		const activeField = fields.find(f => f.checked) ?? fields[0];
+		const activeField = fields.find((f) => f.checked) ?? fields[0];
 		const currentIndex = fields.indexOf(activeField);
 		const isNext = e.key === 'ArrowDown' || e.key === 'ArrowRight';
 		const nextIndex = isNext
@@ -128,11 +133,13 @@ export class NDDRadioButtonGroup extends LitElement {
 			?.shadowRoot?.querySelector('input');
 		input?.focus();
 
-		nextField.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: true, value: nextField.value },
-			bubbles: true,
-			composed: true,
-		}));
+		nextField.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: true, value: nextField.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	};
 
 	_onSlotChange = (): void => {

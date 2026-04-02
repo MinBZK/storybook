@@ -3,7 +3,6 @@ import { css } from 'lit';
 /* # ndd-modal-dialog styles */
 
 export const modalDialogStyles = css`
-
 	/* # Host */
 
 	:host {
@@ -16,7 +15,6 @@ export const modalDialogStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # Modal dialog */
 
@@ -38,14 +36,16 @@ export const modalDialogStyles = css`
 	}
 
 	.modal-dialog:focus-visible {
-		box-shadow: var(--components-sheet-box-shadow), 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow:
+			var(--components-sheet-box-shadow),
+			0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
 
 	.modal-dialog::backdrop {
 		background: var(--semantics-overlays-backdrop-color);
 	}
-
 
 	/* # Keyframes */
 
@@ -78,7 +78,6 @@ export const modalDialogStyles = css`
 	.modal-dialog.is-closing {
 		animation: modal-dialog-out var(--_animation-duration) var(--_animation-easing) both;
 	}
-
 
 	/* # Reduced motion */
 

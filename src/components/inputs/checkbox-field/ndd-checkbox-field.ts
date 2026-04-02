@@ -52,11 +52,13 @@ export class NDDCheckboxField extends LitElement {
 		const { checked } = (e as CustomEvent<{ checked: boolean }>).detail;
 		this.checked = checked;
 		this.indeterminate = false;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: this.checked, value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: this.checked, value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	override render() {

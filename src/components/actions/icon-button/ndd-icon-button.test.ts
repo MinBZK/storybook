@@ -17,7 +17,6 @@ describe('ndd-icon-button', () => {
 	});
 });
 
-
 /* ============================================================
    Icon & text attributes
    ============================================================ */
@@ -30,14 +29,20 @@ describe('ndd-icon-button – icon & text attributes', () => {
 	});
 
 	it('renders ndd-icon from icon attribute', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button icon="download" text="Download"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button icon="download" text="Download"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
-		const icon = el.shadowRoot!.querySelector('ndd-icon.icon-button__icon ndd-icon, .icon-button__icon ndd-icon');
+		const icon = el.shadowRoot!.querySelector(
+			'ndd-icon.icon-button__icon ndd-icon, .icon-button__icon ndd-icon'
+		);
 		expect(icon).not.toBeNull();
 	});
 
 	it('renders text from text attribute', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button icon="download" text="Download"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button icon="download" text="Download"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const textEl = el.shadowRoot!.querySelector('.icon-button__text');
 		expect(textEl).not.toBeNull();
@@ -88,7 +93,6 @@ describe('ndd-icon-button – icon & text attributes', () => {
 	});
 });
 
-
 /* ============================================================
    Accessible label & aria-label
    ============================================================ */
@@ -101,14 +105,18 @@ describe('ndd-icon-button – accessible label & aria-label', () => {
 	});
 
 	it('uses text as aria-label when no accessible-label is set', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button icon="download" text="Download"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button icon="download" text="Download"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
 		expect(btn.getAttribute('aria-label')).toBe('Download');
 	});
 
 	it('uses accessible-label as aria-label when set', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
 		expect(btn.getAttribute('aria-label')).toBe('Toon wachtwoord');
@@ -123,7 +131,6 @@ describe('ndd-icon-button – accessible label & aria-label', () => {
 	});
 });
 
-
 /* ============================================================
    Title tooltip
    ============================================================ */
@@ -136,34 +143,41 @@ describe('ndd-icon-button – title tooltip', () => {
 	});
 
 	it('uses text as title tooltip for non-lg sizes', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button size="md" icon="download" text="Download"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button size="md" icon="download" text="Download"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
 		expect(btn.getAttribute('title')).toBe('Download');
 	});
 
 	it('uses accessible-label as title tooltip when set', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button size="md" icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button size="md" icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
 		expect(btn.getAttribute('title')).toBe('Toon wachtwoord');
 	});
 
 	it('omits title attribute for lg size', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button size="lg" icon="download" text="Download"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button size="lg" icon="download" text="Download"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
 		expect(btn.getAttribute('title')).toBeNull();
 	});
 
 	it('omits title attribute for lg size even when accessible-label is set', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button size="lg" icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button size="lg" icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
 		expect(btn.getAttribute('title')).toBeNull();
 	});
 });
-
 
 /* ============================================================
    Disabled & aria-disabled
@@ -177,20 +191,23 @@ describe('ndd-icon-button – disabled & aria-disabled', () => {
 	});
 
 	it('does not set aria-disabled when not disabled', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button icon="dismiss" text="Close"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button icon="dismiss" text="Close"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
 		expect(btn.hasAttribute('aria-disabled')).toBe(false);
 	});
 
 	it('sets aria-disabled="true" when disabled', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button icon="dismiss" text="Close" disabled></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button icon="dismiss" text="Close" disabled></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const btn = el.shadowRoot!.querySelector('button')!;
 		expect(btn.getAttribute('aria-disabled')).toBe('true');
 	});
 });
-
 
 /* ============================================================
    href / link rendering
@@ -204,27 +221,35 @@ describe('ndd-icon-button – href / link rendering', () => {
 	});
 
 	it('renders a <button> by default', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button icon="dismiss" text="Sluiten"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button icon="dismiss" text="Sluiten"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('a')).toBeNull();
 	});
 
 	it('renders an <a> when href is set', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button href="/overzicht" icon="arrow-left" text="Terug"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button href="/overzicht" icon="arrow-left" text="Terug"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('button')).toBeNull();
 	});
 
 	it('sets href on the anchor element', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button href="/overzicht" icon="arrow-left" text="Terug"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button href="/overzicht" icon="arrow-left" text="Terug"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('href')).toBe('/overzicht');
 	});
 
 	it('forwards target and rel to the anchor element', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button href="/overzicht" target="_blank" rel="noopener" icon="arrow-left" text="Terug"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button href="/overzicht" target="_blank" rel="noopener" icon="arrow-left" text="Terug"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const a = el.shadowRoot!.querySelector('a')!;
 		expect(a.getAttribute('target')).toBe('_blank');
@@ -232,25 +257,35 @@ describe('ndd-icon-button – href / link rendering', () => {
 	});
 
 	it('defaults rel to noopener noreferrer when target is _blank and rel is not set', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button href="/overzicht" target="_blank" icon="arrow-left" text="Terug"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button href="/overzicht" target="_blank" icon="arrow-left" text="Terug"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('rel')).toBe('noopener noreferrer');
 	});
 
 	it('sets aria-disabled on the anchor when disabled', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button href="/overzicht" disabled icon="arrow-left" text="Terug"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button href="/overzicht" disabled icon="arrow-left" text="Terug"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-disabled')).toBe('true');
 	});
 
 	it('forwards accessible-label to the anchor as aria-label', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button href="/overzicht" accessible-label="Ga terug naar overzicht" icon="arrow-left" text="Terug"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button href="/overzicht" accessible-label="Ga terug naar overzicht" icon="arrow-left" text="Terug"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe('Ga terug naar overzicht');
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe(
+			'Ga terug naar overzicht'
+		);
 	});
 
 	it('prevents default click on disabled anchor to block navigation', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button href="/overzicht" disabled icon="arrow-left" text="Terug"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button href="/overzicht" disabled icon="arrow-left" text="Terug"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a')!;
 		const event = new MouseEvent('click', { bubbles: true, cancelable: true });
@@ -260,7 +295,9 @@ describe('ndd-icon-button – href / link rendering', () => {
 	});
 
 	it('switches from <button> to <a> when href is set dynamically', async () => {
-		el = await fixture<NDDIconButton>('<ndd-icon-button icon="arrow-left" text="Terug"></ndd-icon-button>');
+		el = await fixture<NDDIconButton>(
+			'<ndd-icon-button icon="arrow-left" text="Terug"></ndd-icon-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
 

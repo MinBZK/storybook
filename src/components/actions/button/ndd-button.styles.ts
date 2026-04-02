@@ -39,8 +39,7 @@ export const styles = css`
 		width: 100%;
 		transition:
 			background-color 0.15s ease-out,
-			color 0.15s ease-out
-		;
+			color 0.15s ease-out;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -52,8 +51,10 @@ export const styles = css`
 	/* # Focus */
 
 	.button:focus-visible {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
 
 	.button:focus:not(:focus-visible) {
@@ -64,7 +65,7 @@ export const styles = css`
 
 	/* ## Size: XS */
 
-	:host([size="xs"]) .button {
+	:host([size='xs']) .button {
 		min-height: var(--semantics-controls-xs-min-size);
 		min-width: var(--semantics-controls-xs-min-size);
 		padding: var(--primitives-space-4) var(--primitives-space-6);
@@ -75,7 +76,7 @@ export const styles = css`
 
 	/* ## Size: SM */
 
-	:host([size="sm"]) .button {
+	:host([size='sm']) .button {
 		min-height: var(--semantics-controls-sm-min-size);
 		min-width: var(--semantics-controls-sm-min-size);
 		padding: var(--primitives-space-6) var(--primitives-space-10);
@@ -86,7 +87,7 @@ export const styles = css`
 
 	/* ## Size: MD (Default) */
 
-	:host([size="md"]) .button,
+	:host([size='md']) .button,
 	:host(:not([size])) .button {
 		min-height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
@@ -100,22 +101,22 @@ export const styles = css`
 
 	/* ## Variant: Neutral Tintend (Secondary, Default) */
 
-	:host([variant="neutral-tinted"]) .button,
-	:host([variant="secondary"]) .button,
+	:host([variant='neutral-tinted']) .button,
+	:host([variant='secondary']) .button,
 	:host(:not([variant])) .button {
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 	}
 
-	:host([variant="neutral-tinted"]) .button:hover,
-	:host([variant="secondary"]) .button:hover,
+	:host([variant='neutral-tinted']) .button:hover,
+	:host([variant='secondary']) .button:hover,
 	:host(:not([variant])) .button:hover {
 		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
 	}
 
-	:host([variant="neutral-tinted"]) .button:active,
-	:host([variant="secondary"]) .button:active,
+	:host([variant='neutral-tinted']) .button:active,
+	:host([variant='secondary']) .button:active,
 	:host(:not([variant])) .button:active {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
@@ -123,109 +124,113 @@ export const styles = css`
 
 	/* ## Variant: Neutral Transparent */
 
-	:host([variant="neutral-transparent"]) .button {
+	:host([variant='neutral-transparent']) .button {
 		background-color: transparent;
 		color: var(--semantics-buttons-neutral-transparent-content-color);
 	}
 
-	:host([variant="neutral-transparent"]) .button:hover {
+	:host([variant='neutral-transparent']) .button:hover {
 		color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
 	}
 
-	:host([variant="neutral-transparent"]) .button:active {
+	:host([variant='neutral-transparent']) .button:active {
 		color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
 	}
 
 	/* ## Variant: Accent Filled (Primary) */
 
-	:host([variant="accent-filled"]) .button,
-	:host([variant="primary"]) .button {
+	:host([variant='accent-filled']) .button,
+	:host([variant='primary']) .button {
 		background-color: var(--semantics-buttons-accent-filled-background-color);
 		color: var(--semantics-buttons-accent-filled-content-color);
 	}
 
-	:host([variant="accent-filled"]) .button:hover,
-	:host([variant="primary"]) .button:hover {
+	:host([variant='accent-filled']) .button:hover,
+	:host([variant='primary']) .button:hover {
 		background-color: var(--semantics-buttons-accent-filled-is-hovered-background-color);
 		color: var(--semantics-buttons-accent-filled-is-hovered-content-color);
 	}
 
-	:host([variant="accent-filled"]) .button:active,
-	:host([variant="primary"]) .button:active {
+	:host([variant='accent-filled']) .button:active,
+	:host([variant='primary']) .button:active {
 		background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
 		color: var(--semantics-buttons-accent-filled-is-active-content-color);
 	}
 
 	/* ## Variant: Accent Outlined */
 
-	:host([variant="accent-outlined"]) .button {
+	:host([variant='accent-outlined']) .button {
 		background-color: transparent;
-		padding: calc(var(--primitives-space-12) - var(--semantics-buttons-accent-outlined-border-thickness));
+		padding: calc(
+			var(--primitives-space-12) - var(--semantics-buttons-accent-outlined-border-thickness)
+		);
 		color: var(--semantics-buttons-accent-outlined-content-color);
 		border-width: var(--semantics-buttons-accent-outlined-border-thickness);
 		border-style: solid;
 		border-color: var(--semantics-buttons-accent-outlined-border-color);
 	}
 
-	:host([variant="accent-outlined"][size="md"]) .button {
-		padding: calc(var(--primitives-space-12) - var(--semantics-buttons-accent-outlined-border-thickness));
+	:host([variant='accent-outlined'][size='md']) .button {
+		padding: calc(
+			var(--primitives-space-12) - var(--semantics-buttons-accent-outlined-border-thickness)
+		);
 	}
 
-	:host([variant="accent-outlined"][size="sm"]) .button {
-		padding:
-			calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness))
-			calc(var(--primitives-space-10) - var(--semantics-buttons-accent-outlined-border-thickness))
-		;
+	:host([variant='accent-outlined'][size='sm']) .button {
+		padding: calc(
+				var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness)
+			)
+			calc(var(--primitives-space-10) - var(--semantics-buttons-accent-outlined-border-thickness));
 	}
 
-	:host([variant="accent-outlined"][size="xs"]) .button {
-		padding:
-			calc(var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness))
-			calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness))
-		;
+	:host([variant='accent-outlined'][size='xs']) .button {
+		padding: calc(
+				var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness)
+			)
+			calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness));
 	}
 
-	:host([variant="accent-outlined"]) .button:hover {
+	:host([variant='accent-outlined']) .button:hover {
 		color: var(--semantics-buttons-accent-outlined-is-hovered-content-color);
 		border-color: var(--semantics-buttons-accent-outlined-is-hovered-border-color);
 	}
 
-	:host([variant="accent-outlined"]) .button:active {
+	:host([variant='accent-outlined']) .button:active {
 		color: var(--semantics-buttons-accent-outlined-is-active-content-color);
 		border-color: var(--semantics-buttons-accent-outlined-is-active-border-color);
 	}
 
 	/* ## Variant: Accent Transparent */
 
-	:host([variant="accent-transparent"]) .button {
+	:host([variant='accent-transparent']) .button {
 		background-color: transparent;
 		color: var(--semantics-buttons-accent-transparent-content-color);
 	}
 
-	:host([variant="accent-transparent"]) .button:hover {
+	:host([variant='accent-transparent']) .button:hover {
 		color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
 	}
 
-	:host([variant="accent-transparent"]) .button:active {
+	:host([variant='accent-transparent']) .button:active {
 		color: var(--semantics-buttons-accent-transparent-is-active-content-color);
 	}
 
 	/* ## Variant: Danger Tinted */
 
-	:host([variant="danger-tinted"]) .button,
-	:host([variant="destructive"]) .button {
+	:host([variant='danger-tinted']) .button,
+	:host([variant='destructive']) .button {
 		background-color: var(--semantics-buttons-danger-tinted-background-color);
 		color: var(--semantics-buttons-danger-tinted-content-color);
 	}
 
-	:host([variant="danger-tinted"]) .button:hover,
-	:host([variant="destructive"]) .button:hover {
+	:host([variant='danger-tinted']) .button:hover,
+	:host([variant='destructive']) .button:hover {
 		background-color: var(--semantics-buttons-danger-tinted-is-hovered-background-color);
 		color: var(--semantics-buttons-danger-tinted-is-hovered-content-color);
 	}
 
-	:host([variant="danger-tinted"]) .button:active,
-	:host([variant="destructive"]) .button:active {
+	:host([variant='danger-tinted']) .button:active,
+	:host([variant='destructive']) .button:active {
 		background-color: var(--semantics-buttons-danger-tinted-is-active-background-color);
 		color: var(--semantics-buttons-danger-tinted-is-active-content-color);
 	}
@@ -246,22 +251,22 @@ export const styles = css`
 		flex-shrink: 0;
 	}
 
-	:host([size="md"]) .button__start-icon,
+	:host([size='md']) .button__start-icon,
 	:host(:not([size])) .button__start-icon,
-	:host([size="md"]) .button__end-icon,
+	:host([size='md']) .button__end-icon,
 	:host(:not([size])) .button__end-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 	}
 
-	:host([size="sm"]) .button__start-icon,
-	:host([size="sm"]) .button__end-icon {
+	:host([size='sm']) .button__start-icon,
+	:host([size='sm']) .button__end-icon {
 		width: var(--primitives-space-18);
 		height: var(--primitives-space-18);
 	}
 
-	:host([size="xs"]) .button__start-icon,
-	:host([size="xs"]) .button__end-icon {
+	:host([size='xs']) .button__start-icon,
+	:host([size='xs']) .button__end-icon {
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
 	}
@@ -271,7 +276,7 @@ export const styles = css`
 		flex-shrink: 0;
 	}
 
-	:host([size="md"]) .button__disclosure-icon,
+	:host([size='md']) .button__disclosure-icon,
 	:host(:not([size])) .button__disclosure-icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
@@ -279,14 +284,14 @@ export const styles = css`
 		margin-right: -2px;
 	}
 
-	:host([size="sm"]) .button__disclosure-icon {
+	:host([size='sm']) .button__disclosure-icon {
 		width: var(--primitives-space-18);
 		height: var(--primitives-space-18);
 		margin-left: -1px;
 		margin-right: -2px;
 	}
 
-	:host([size="xs"]) .button__disclosure-icon {
+	:host([size='xs']) .button__disclosure-icon {
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
 		margin-left: -1px;

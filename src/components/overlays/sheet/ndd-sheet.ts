@@ -70,7 +70,9 @@ export class NDDSheet extends LitElement {
 		// Warn once per instance when the consumer has not provided a meaningful accessible label
 		if (this.accessibleLabel === 'Dialoogvenster' && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
-			console.warn('<ndd-sheet>: No accessible-label provided. Screen readers will announce this dialog as "Dialoogvenster". Set accessible-label to a descriptive name matching the dialog title.');
+			console.warn(
+				'<ndd-sheet>: No accessible-label provided. Screen readers will announce this dialog as "Dialoogvenster". Set accessible-label to a descriptive name matching the dialog title.'
+			);
 		}
 
 		if (this.modeless) {
@@ -88,11 +90,11 @@ export class NDDSheet extends LitElement {
 
 		// 2. Focus the first heading — check shadow roots of known components first,
 		// then fall back to light DOM headings
-		const heading = (
-			this.querySelector('ndd-top-title-bar')?.shadowRoot?.querySelector('h1, h2, h3, h4, h5, h6') as HTMLElement | null
-		) ?? (
-			this.querySelector('h1, h2, h3, h4, h5, h6') as HTMLElement | null
-		);
+		const heading =
+			(this.querySelector('ndd-top-title-bar')?.shadowRoot?.querySelector(
+				'h1, h2, h3, h4, h5, h6'
+			) as HTMLElement | null) ??
+			(this.querySelector('h1, h2, h3, h4, h5, h6') as HTMLElement | null);
 
 		if (heading) {
 			// Only add tabindex if the consumer hasn't already set one
@@ -101,9 +103,13 @@ export class NDDSheet extends LitElement {
 			heading.focus();
 			// Only remove tabindex on blur if we added it ourselves
 			if (!hadTabindex) {
-				heading.addEventListener('blur', () => {
-					heading.removeAttribute('tabindex');
-				}, { once: true });
+				heading.addEventListener(
+					'blur',
+					() => {
+						heading.removeAttribute('tabindex');
+					},
+					{ once: true }
+				);
 			}
 			return;
 		}
@@ -118,12 +124,16 @@ export class NDDSheet extends LitElement {
 
 		this._closing = true;
 		dialog.classList.add('is-closing');
-		dialog.addEventListener('animationend', () => {
-			dialog.classList.remove('is-closing');
-			this._closing = false;
-			dialog.close();
-			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
-		}, { once: true });
+		dialog.addEventListener(
+			'animationend',
+			() => {
+				dialog.classList.remove('is-closing');
+				this._closing = false;
+				dialog.close();
+				this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+			},
+			{ once: true }
+		);
 
 		// Fallback for prefers-reduced-motion (no animation fires)
 		// Use requestAnimationFrame to let CSS skip the animation first

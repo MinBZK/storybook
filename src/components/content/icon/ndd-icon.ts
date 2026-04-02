@@ -4,7 +4,10 @@ import { styles } from './ndd-icon.styles.js';
 import { template } from './ndd-icon.template.js';
 import { aliases } from './ndd-icon-aliases.js';
 
-const iconModules = import.meta.glob('./ndd-icons/*.svg', { query: '?raw', eager: true }) as Record<string, { default: string }>;
+const iconModules = import.meta.glob('./ndd-icons/*.svg', { query: '?raw', eager: true }) as Record<
+	string,
+	{ default: string }
+>;
 
 const iconRegistry = new Map<string, string>();
 for (const [path, module] of Object.entries(iconModules)) {
@@ -14,10 +17,7 @@ for (const [path, module] of Object.entries(iconModules)) {
 
 export { aliases };
 
-export const ICONS: string[] = [
-	...iconRegistry.keys(),
-	...Object.keys(aliases),
-].sort();
+export const ICONS: string[] = [...iconRegistry.keys(), ...Object.keys(aliases)].sort();
 
 /**
  * A customizable icon component that renders SVG icons from a predefined library.

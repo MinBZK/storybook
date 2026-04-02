@@ -3,7 +3,6 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { NDDToken } from './ndd-token.ts';
 import './ndd-token.ts';
 
-
 /* ============================================================
    Rendering
    ============================================================ */
@@ -52,7 +51,6 @@ describe('ndd-token', () => {
 		expect(el.shadowRoot!.querySelector('.token__dismiss-action')).toBeNull();
 	});
 });
-
 
 /* ============================================================
    State
@@ -108,7 +106,9 @@ describe('ndd-token – state', () => {
 	it('dismiss ndd-icon-button is disabled when token is disabled', async () => {
 		el = await fixture<NDDToken>('<ndd-token control="dismiss" disabled>Label</ndd-token>');
 		await waitForUpdate(el);
-		const dismiss = el.shadowRoot!.querySelector<HTMLElement>('.token__dismiss-action ndd-icon-button')!;
+		const dismiss = el.shadowRoot!.querySelector<HTMLElement>(
+			'.token__dismiss-action ndd-icon-button'
+		)!;
 		expect(dismiss.hasAttribute('disabled')).toBe(true);
 	});
 
@@ -119,7 +119,6 @@ describe('ndd-token – state', () => {
 		expect(button.disabled).toBe(true);
 	});
 });
-
 
 /* ============================================================
    Dismiss
@@ -137,7 +136,9 @@ describe('ndd-token – dismiss', () => {
 		await waitForUpdate(el);
 
 		let fired = false;
-		el.addEventListener('dismiss', () => { fired = true; });
+		el.addEventListener('dismiss', () => {
+			fired = true;
+		});
 
 		el.shadowRoot!.querySelector<HTMLElement>('.token__dismiss-action ndd-icon-button')!.click();
 		expect(fired).toBe(true);
@@ -148,7 +149,9 @@ describe('ndd-token – dismiss', () => {
 		await waitForUpdate(el);
 
 		let fired = false;
-		el.addEventListener('dismiss', () => { fired = true; });
+		el.addEventListener('dismiss', () => {
+			fired = true;
+		});
 
 		el.shadowRoot!.querySelector<HTMLElement>('.token__dismiss-action ndd-icon-button')!.click();
 		expect(fired).toBe(false);
@@ -162,13 +165,14 @@ describe('ndd-token – dismiss', () => {
 	});
 
 	it('dismiss button uses custom dismiss-label', async () => {
-		el = await fixture<NDDToken>('<ndd-token control="dismiss" dismiss-label="Remove filter">Label</ndd-token>');
+		el = await fixture<NDDToken>(
+			'<ndd-token control="dismiss" dismiss-label="Remove filter">Label</ndd-token>'
+		);
 		await waitForUpdate(el);
 		const dismiss = el.shadowRoot!.querySelector('.token__dismiss-action ndd-icon-button')!;
 		expect(dismiss.getAttribute('accessible-label')).toBe('Remove filter');
 	});
 });
-
 
 /* ============================================================
    Menu
@@ -213,7 +217,9 @@ describe('ndd-token – menu', () => {
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('toggle', (e: Event) => { detail = (e as CustomEvent).detail; });
+		el.addEventListener('toggle', (e: Event) => {
+			detail = (e as CustomEvent).detail;
+		});
 
 		el.shadowRoot!.querySelector<HTMLButtonElement>('button.token')!.click();
 		expect(detail?.open).toBe(true);

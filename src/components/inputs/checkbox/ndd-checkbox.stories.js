@@ -90,7 +90,11 @@ export const AlleToestanden = () => html`
 		<ndd-checkbox indeterminate accessible-label="Onbepaald"></ndd-checkbox>
 		<ndd-checkbox disabled accessible-label="Uitgeschakeld"></ndd-checkbox>
 		<ndd-checkbox checked disabled accessible-label="Aangevinkt en uitgeschakeld"></ndd-checkbox>
-		<ndd-checkbox indeterminate disabled accessible-label="Onbepaald en uitgeschakeld"></ndd-checkbox>
+		<ndd-checkbox
+			indeterminate
+			disabled
+			accessible-label="Onbepaald en uitgeschakeld"
+		></ndd-checkbox>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

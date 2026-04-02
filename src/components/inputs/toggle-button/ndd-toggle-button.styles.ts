@@ -1,8 +1,6 @@
 import { css } from 'lit';
 
 export const toggleButtonStyles = css`
-
-
 	/* # Host */
 
 	:host {
@@ -17,7 +15,6 @@ export const toggleButtonStyles = css`
 		opacity: var(--primitives-opacity-disabled);
 		pointer-events: none;
 	}
-
 
 	/* # Base */
 
@@ -46,7 +43,7 @@ export const toggleButtonStyles = css`
 
 	/* ## Sizes */
 
-	:host([size="xs"]) .toggle-button {
+	:host([size='xs']) .toggle-button {
 		min-height: var(--semantics-controls-xs-min-size);
 		padding: var(--primitives-space-4) var(--primitives-space-6);
 		font: var(--semantics-buttons-xs-font);
@@ -54,7 +51,7 @@ export const toggleButtonStyles = css`
 		gap: var(--primitives-space-2);
 	}
 
-	:host([size="sm"]) .toggle-button {
+	:host([size='sm']) .toggle-button {
 		min-height: var(--semantics-controls-sm-min-size);
 		padding: var(--primitives-space-6) var(--primitives-space-8);
 		font: var(--semantics-buttons-sm-font);
@@ -62,7 +59,7 @@ export const toggleButtonStyles = css`
 		gap: var(--primitives-space-2);
 	}
 
-	:host([size="md"]) .toggle-button,
+	:host([size='md']) .toggle-button,
 	:host(:not([size])) .toggle-button {
 		min-height: var(--semantics-controls-md-min-size);
 		padding: var(--primitives-space-8) var(--primitives-space-14);
@@ -73,17 +70,17 @@ export const toggleButtonStyles = css`
 
 	/* ## Icon-only sizes */
 
-	:host([icon-only][size="xs"]) .toggle-button {
+	:host([icon-only][size='xs']) .toggle-button {
 		width: var(--semantics-controls-xs-min-size);
 		padding: 0;
 	}
 
-	:host([icon-only][size="sm"]) .toggle-button {
+	:host([icon-only][size='sm']) .toggle-button {
 		width: var(--semantics-controls-sm-min-size);
 		padding: 0;
 	}
 
-	:host([icon-only][size="md"]) .toggle-button,
+	:host([icon-only][size='md']) .toggle-button,
 	:host([icon-only]:not([size])) .toggle-button {
 		width: var(--semantics-controls-md-min-size);
 		padding: 0;
@@ -106,7 +103,9 @@ export const toggleButtonStyles = css`
 
 	:host([selected]) .toggle-button:hover,
 	:host([selected]) .toggle-button:has(.toggle-button__input:hover) {
-		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
+		background-color: var(
+			--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color
+		);
 		color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
 	}
 
@@ -114,14 +113,15 @@ export const toggleButtonStyles = css`
 
 	.toggle-button:focus-visible,
 	.toggle-button:has(.toggle-button__input:focus-visible) {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
 
 	.toggle-button:focus:not(:focus-visible) {
 		outline: none;
 	}
-
 
 	/* # Icon */
 
@@ -135,22 +135,21 @@ export const toggleButtonStyles = css`
 		flex-shrink: 0;
 	}
 
-	:host([size="md"]) .toggle-button__icon,
+	:host([size='md']) .toggle-button__icon,
 	:host(:not([size])) .toggle-button__icon {
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 	}
 
-	:host([size="sm"]) .toggle-button__icon {
+	:host([size='sm']) .toggle-button__icon {
 		width: var(--primitives-space-18);
 		height: var(--primitives-space-18);
 	}
 
-	:host([size="xs"]) .toggle-button__icon {
+	:host([size='xs']) .toggle-button__icon {
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
 	}
-
 
 	/* # Input */
 

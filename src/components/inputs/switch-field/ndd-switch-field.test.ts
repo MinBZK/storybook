@@ -44,7 +44,6 @@ describe('ndd-switch-field', () => {
 	});
 });
 
-
 /* ============================================================
    State
    ============================================================ */
@@ -80,16 +79,19 @@ describe('ndd-switch-field – state', () => {
 		el = await fixture<NDDSwitchField>('<ndd-switch-field value="meldingen"></ndd-switch-field>');
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 		const switchEl = el.shadowRoot!.querySelector('ndd-switch')!;
-		switchEl.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: true },
-			bubbles: true,
-		}));
+		switchEl.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: true },
+				bubbles: true,
+			})
+		);
 		expect(detail?.value).toBe('meldingen');
 	});
 });
-
 
 /* ============================================================
    Change event
@@ -106,10 +108,12 @@ describe('ndd-switch-field – change event', () => {
 		el = await fixture<NDDSwitchField>('<ndd-switch-field></ndd-switch-field>');
 		await waitForUpdate(el);
 		const switchEl = el.shadowRoot!.querySelector('ndd-switch')!;
-		switchEl.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: true },
-			bubbles: true,
-		}));
+		switchEl.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: true },
+				bubbles: true,
+			})
+		);
 		await waitForUpdate(el);
 		expect(el.checked).toBe(true);
 	});
@@ -118,18 +122,21 @@ describe('ndd-switch-field – change event', () => {
 		el = await fixture<NDDSwitchField>('<ndd-switch-field value="aan"></ndd-switch-field>');
 		await waitForUpdate(el);
 		let detail: any;
-		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('change', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 		const switchEl = el.shadowRoot!.querySelector('ndd-switch')!;
-		switchEl.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: true },
-			bubbles: true,
-		}));
+		switchEl.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: true },
+				bubbles: true,
+			})
+		);
 		expect(detail).toBeDefined();
 		expect(detail.checked).toBe(true);
 		expect(detail.value).toBe('aan');
 	});
 });
-
 
 /* ============================================================
    Label click
@@ -152,7 +159,9 @@ describe('ndd-switch-field – label click', () => {
 	});
 
 	it('does not toggle when disabled and label span is clicked', async () => {
-		el = await fixture<NDDSwitchField>('<ndd-switch-field label="Optie 1" disabled></ndd-switch-field>');
+		el = await fixture<NDDSwitchField>(
+			'<ndd-switch-field label="Optie 1" disabled></ndd-switch-field>'
+		);
 		await waitForUpdate(el);
 		const labelSpan = el.shadowRoot!.querySelector<HTMLElement>('.switch-field__label')!;
 		labelSpan.click();

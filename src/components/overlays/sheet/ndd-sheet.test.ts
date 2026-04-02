@@ -3,7 +3,6 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { NDDSheet } from './ndd-sheet.ts';
 import './ndd-sheet.ts';
 
-
 /* ============================================================
    Smoke tests
    ============================================================ */
@@ -46,7 +45,6 @@ describe('ndd-sheet', () => {
 		expect(el.getAttribute('placement')).toBe('bottom');
 	});
 });
-
 
 /* ============================================================
    show() / hide()
@@ -115,7 +113,6 @@ describe('ndd-sheet – tonen en verbergen', () => {
 	});
 });
 
-
 /* ============================================================
    Backdrop click
    ============================================================ */
@@ -145,7 +142,6 @@ describe('ndd-sheet – backdrop klik', () => {
 		expect(hideSpy).toHaveBeenCalledOnce();
 	});
 });
-
 
 /* ============================================================
    Escape key / cancel event
@@ -178,7 +174,6 @@ describe('ndd-sheet – Escape-toets', () => {
 	});
 });
 
-
 /* ============================================================
    Dismiss event
    ============================================================ */
@@ -206,7 +201,6 @@ describe('ndd-sheet – dismiss event', () => {
 	});
 });
 
-
 /* ============================================================
    Placement
    ============================================================ */
@@ -231,7 +225,6 @@ describe('ndd-sheet – placement', () => {
 	});
 });
 
-
 /* ============================================================
    Slot
    ============================================================ */
@@ -254,7 +247,6 @@ describe('ndd-sheet – slot', () => {
 		expect(slot.assignedElements().length).toBe(1);
 	});
 });
-
 
 /* ============================================================
    Focus management
@@ -280,7 +272,9 @@ describe('ndd-sheet – focus management', () => {
 		await waitForUpdate(el);
 		el.show();
 		const heading = el.querySelector<HTMLElement>('#heading')!;
-		expect(document.activeElement === heading || el.shadowRoot!.activeElement === heading).toBe(true);
+		expect(document.activeElement === heading || el.shadowRoot!.activeElement === heading).toBe(
+			true
+		);
 	});
 
 	it('adds tabindex="-1" to heading on show() when not already set', async () => {

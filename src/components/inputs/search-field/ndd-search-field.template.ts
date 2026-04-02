@@ -12,7 +12,8 @@ export function searchFieldTemplate(component: NDDSearchField): TemplateResult {
 			<div class="search-field__search-icon">
 				<ndd-icon name="search"></ndd-icon>
 			</div>
-			<input class="search-field__input"
+			<input
+				class="search-field__input"
 				type="search"
 				.value=${component.value}
 				placeholder=${component.placeholder}
@@ -22,30 +23,34 @@ export function searchFieldTemplate(component: NDDSearchField): TemplateResult {
 				@input=${component._handleInput}
 				@change=${component._handleChange}
 				@keydown=${component._handleKeydown}
-			>
+			/>
 			<div class="search-field__fade"></div>
 			<div class="search-field__actions">
-				${component.value ? html`
-					<div class="search-field__dismiss-action">
-						<ndd-icon-button
-							variant="neutral-transparent"
-							size=${buttonSize}
-							icon="dismiss"
-							text=${component._t('components.search-field.dismiss-action')}
-							@click=${component._handleDismiss}
-						></ndd-icon-button>
-					</div>
-				` : nothing}
-				${component.hasSearchButton ? html`
-					<div class="search-field__search-action">
-						<ndd-button
-							variant="neutral-tinted"
-							size=${buttonSize}
-							text=${component._t('components.search-field.search-action')}
-							@click=${component._handleSearch}
-						></ndd-button>
-					</div>
-				` : nothing}
+				${component.value
+					? html`
+							<div class="search-field__dismiss-action">
+								<ndd-icon-button
+									variant="neutral-transparent"
+									size=${buttonSize}
+									icon="dismiss"
+									text=${component._t('components.search-field.dismiss-action')}
+									@click=${component._handleDismiss}
+								></ndd-icon-button>
+							</div>
+						`
+					: nothing}
+				${component.hasSearchButton
+					? html`
+							<div class="search-field__search-action">
+								<ndd-button
+									variant="neutral-tinted"
+									size=${buttonSize}
+									text=${component._t('components.search-field.search-action')}
+									@click=${component._handleSearch}
+								></ndd-button>
+							</div>
+						`
+					: nothing}
 			</div>
 		</div>
 	`;

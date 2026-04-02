@@ -1,6 +1,5 @@
 import { css } from 'lit';
 
-
 /* # ndd-stacked-split-view styles */
 
 export const stackedSplitViewStyles = css`
@@ -11,16 +10,21 @@ export const stackedSplitViewStyles = css`
 		height: 100%;
 		background-color: var(--_background-color);
 
-		--_pane-min-height: var(--primitives-area-200); /* Pane min-height — read by JS via getComputedStyle in firstUpdated */
-		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		--_pane-min-height: var(
+			--primitives-area-200
+		); /* Pane min-height — read by JS via getComputedStyle in firstUpdated */
+		--_background-color: var(
+			--context-parent-background-color,
+			var(--semantics-surfaces-background-color)
+		);
 	}
 
-	:host([background="default"]) {
+	:host([background='default']) {
 		--context-parent-background-color: var(--semantics-surfaces-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
 
-	:host([background="tinted"]) {
+	:host([background='tinted']) {
 		--context-parent-background-color: var(--semantics-surfaces-tinted-background-color);
 		--_background-color: var(--context-parent-background-color);
 	}
@@ -28,7 +32,6 @@ export const stackedSplitViewStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # Split view */
 
@@ -40,7 +43,6 @@ export const stackedSplitViewStyles = css`
 		min-width: 0;
 		overflow: hidden;
 	}
-
 
 	/* # Pane */
 

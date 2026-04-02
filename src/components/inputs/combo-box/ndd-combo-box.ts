@@ -51,7 +51,6 @@ import '../../lists-and-menus/menu/ndd-menu.ts';
 import '../../actions/icon-button/ndd-icon-button.ts';
 import '../../content/icon/ndd-icon.ts';
 
-
 @customElement('ndd-combo-box')
 export class NDDComboBox extends LitElement {
 	static override styles = comboBoxStyles;
@@ -108,7 +107,9 @@ export class NDDComboBox extends LitElement {
 
 	override firstUpdated(): void {
 		if (!this.accessibleLabel) {
-			console.warn('<ndd-combo-box>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
+			console.warn(
+				'<ndd-combo-box>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.'
+			);
 		}
 	}
 
@@ -144,8 +145,9 @@ export class NDDComboBox extends LitElement {
 
 	public _onSlotChange(): void {
 		const slot = this.shadowRoot?.querySelector('slot');
-		const menu = slot?.assignedElements({ flatten: true })
-			.find(el => el.tagName.toLowerCase() === 'ndd-menu') as NDDMenu | undefined;
+		const menu = slot
+			?.assignedElements({ flatten: true })
+			.find((el) => el.tagName.toLowerCase() === 'ndd-menu') as NDDMenu | undefined;
 
 		if (!menu || menu === this._menu) return;
 
@@ -199,11 +201,13 @@ export class NDDComboBox extends LitElement {
 		this._highlightedId = '';
 		this._closeMenu();
 		this._menu?.filter('');
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 		this._input?.focus();
 	};
 
@@ -218,7 +222,9 @@ export class NDDComboBox extends LitElement {
 	public _openMenu(): void {
 		if (!this._menu || this._isOpen) return;
 		if (!('showPopover' in this._menu)) {
-			console.warn('<ndd-combo-box>: Popover API is not supported in this browser. The dropdown will not open.');
+			console.warn(
+				'<ndd-combo-box>: Popover API is not supported in this browser. The dropdown will not open.'
+			);
 			return;
 		}
 		this._updateMenuWidth();
@@ -274,11 +280,13 @@ export class NDDComboBox extends LitElement {
 		this._menu?.filter(this._displayValue);
 		this._updateActiveDescendant();
 		if (!this._isOpen) this._openMenu();
-		this.dispatchEvent(new CustomEvent('input', {
-			detail: { value: this._displayValue },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('input', {
+				detail: { value: this._displayValue },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	/** Accept a custom typed value and close the menu when focus leaves the input. */
@@ -289,11 +297,13 @@ export class NDDComboBox extends LitElement {
 		}
 		if (this._displayValue !== '' && this._displayValue !== this.value) {
 			this.value = this._displayValue;
-			this.dispatchEvent(new CustomEvent('change', {
-				detail: { value: this.value },
-				bubbles: true,
-				composed: true,
-			}));
+			this.dispatchEvent(
+				new CustomEvent('change', {
+					detail: { value: this.value },
+					bubbles: true,
+					composed: true,
+				})
+			);
 		}
 	}
 
@@ -325,11 +335,13 @@ export class NDDComboBox extends LitElement {
 				} else {
 					this.value = this._displayValue;
 					this._closeMenu();
-					this.dispatchEvent(new CustomEvent('change', {
-						detail: { value: this.value },
-						bubbles: true,
-						composed: true,
-					}));
+					this.dispatchEvent(
+						new CustomEvent('change', {
+							detail: { value: this.value },
+							bubbles: true,
+							composed: true,
+						})
+					);
 				}
 				break;
 			}

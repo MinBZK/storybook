@@ -5,7 +5,8 @@ import '../../actions/icon-button/ndd-icon-button.ts';
 export function comboBoxTemplate(component: NDDComboBox): TemplateResult {
 	return html`
 		<div class="combo-box">
-			<input class="combo-box__input"
+			<input
+				class="combo-box__input"
 				type="text"
 				role="combobox"
 				aria-label=${component.accessibleLabel || nothing}
@@ -21,7 +22,7 @@ export function comboBoxTemplate(component: NDDComboBox): TemplateResult {
 				@input=${component._handleInput}
 				@keydown=${component._handleKeydown}
 				@blur=${component._handleBlur}
-			>
+			/>
 			<div class="combo-box__picker">
 				<ndd-icon-button
 					variant="neutral-tinted"

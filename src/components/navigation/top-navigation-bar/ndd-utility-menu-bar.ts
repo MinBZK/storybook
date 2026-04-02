@@ -88,239 +88,246 @@ const chevronIcon = svg`
 
 @customElement('ndd-utility-menu-bar')
 export class NDDUtilityMenuBar extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      align-items: center;
-      /* No gap - Figma layout_KINDDSF has no gap between utility items */
-    }
+	static override styles = css`
+		:host {
+			display: flex;
+			align-items: center;
+			/* No gap - Figma layout_KINDDSF has no gap between utility items */
+		}
 
-    :host([hidden]) {
-      display: none;
-    }
+		:host([hidden]) {
+			display: none;
+		}
 
-    * {
-      box-sizing: border-box;
-    }
+		* {
+			box-sizing: border-box;
+		}
 
-    .container {
-      display: flex;
-      align-items: center;
-      /* No gap - Figma layout_KINDDSF has no gap between utility items */
-    }
+		.container {
+			display: flex;
+			align-items: center;
+			/* No gap - Figma layout_KINDDSF has no gap between utility items */
+		}
 
-    /* Utility buttons */
-    .utility-button {
-      display: flex;
-      align-items: center;
-      gap: var(--primitives-space-4);
-      padding: 0 var(--primitives-space-8);
-      height: 44px;
-      background: none;
-      border: none;
-      color: var(--components-menu-bar-menu-item-color);
-      font: var(--components-menu-bar-menu-item-font);
-      cursor: pointer;
-      border-radius: 0;
-      transition: background-color 0.15s ease;
-      white-space: nowrap;
-    }
+		/* Utility buttons */
+		.utility-button {
+			display: flex;
+			align-items: center;
+			gap: var(--primitives-space-4);
+			padding: 0 var(--primitives-space-8);
+			height: 44px;
+			background: none;
+			border: none;
+			color: var(--components-menu-bar-menu-item-color);
+			font: var(--components-menu-bar-menu-item-font);
+			cursor: pointer;
+			border-radius: 0;
+			transition: background-color 0.15s ease;
+			white-space: nowrap;
+		}
 
-    .utility-button:hover {
-      background-color: var(--primitives-color-neutral-100);
-    }
+		.utility-button:hover {
+			background-color: var(--primitives-color-neutral-100);
+		}
 
-    .utility-button:focus-visible {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
+		.utility-button:focus-visible {
+			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+				var(--semantics-focus-ring-center-color);
+			outline: var(--semantics-focus-ring-edge-thickness) double
+				var(--semantics-focus-ring-edge-color);
+		}
 
-    .utility-button svg {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
+		.utility-button svg {
+			width: 20px;
+			height: 20px;
+			flex-shrink: 0;
+		}
 
-    .utility-button .chevron {
-      width: 16px;
-      height: 16px;
-    }
+		.utility-button .chevron {
+			width: 16px;
+			height: 16px;
+		}
 
-    /* Hide text on small screens */
-    :host([container='sm']) .utility-button span {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
+		/* Hide text on small screens */
+		:host([container='sm']) .utility-button span {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+			border: 0;
+		}
 
-    :host([container='sm']) .utility-button .chevron {
-      display: none;
-    }
+		:host([container='sm']) .utility-button .chevron {
+			display: none;
+		}
 
-    /* Size adjustments */
-    :host([container='sm']) .utility-button {
-      padding: var(--primitives-space-8);
-    }
+		/* Size adjustments */
+		:host([container='sm']) .utility-button {
+			padding: var(--primitives-space-8);
+		}
 
-    /* Accessibility: Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .utility-button {
-        transition: none;
-      }
-    }
-  `;
+		/* Accessibility: Reduced motion */
+		@media (prefers-reduced-motion: reduce) {
+			.utility-button {
+				transition: none;
+			}
+		}
+	`;
 
-  @property({ type: String, reflect: true })
-  container: ContainerSize = 'md';
+	@property({ type: String, reflect: true })
+	container: ContainerSize = 'md';
 
-  // Default buttons: shown unless no-* attribute is present
-  @property({ type: Boolean, reflect: true, attribute: 'no-language-switch' })
-  noLanguageSwitch = false;
+	// Default buttons: shown unless no-* attribute is present
+	@property({ type: Boolean, reflect: true, attribute: 'no-language-switch' })
+	noLanguageSwitch = false;
 
-  @property({ type: Boolean, reflect: true, attribute: 'no-search' })
-  noSearch = false;
+	@property({ type: Boolean, reflect: true, attribute: 'no-search' })
+	noSearch = false;
 
-  @property({ type: Boolean, reflect: true, attribute: 'no-account' })
-  noAccount = false;
+	@property({ type: Boolean, reflect: true, attribute: 'no-account' })
+	noAccount = false;
 
-  // Optional buttons: hidden unless has-* attribute is present
-  @property({ type: Boolean, reflect: true, attribute: 'has-help' })
-  hasHelp = false;
+	// Optional buttons: hidden unless has-* attribute is present
+	@property({ type: Boolean, reflect: true, attribute: 'has-help' })
+	hasHelp = false;
 
-  @property({ type: Boolean, reflect: true, attribute: 'has-settings' })
-  hasSettings = false;
+	@property({ type: Boolean, reflect: true, attribute: 'has-settings' })
+	hasSettings = false;
 
-  // Configuration
-  @property({ type: String })
-  language = 'NL';
+	// Configuration
+	@property({ type: String })
+	language = 'NL';
 
-  @property({ type: String, attribute: 'account-label' })
-  accountLabel = 'Mijn';
+	@property({ type: String, attribute: 'account-label' })
+	accountLabel = 'Mijn';
 
-  private _expandedButton: string | null = null;
+	private _expandedButton: string | null = null;
 
-  /**
-   * Toggle aria-expanded state for dropdown buttons
-   * @param action - The button action ('language' or 'account')
-   * @param expanded - Whether the dropdown is expanded
-   */
-  toggleDropdown(action: string, expanded: boolean): void {
-    const button = this.shadowRoot?.querySelector(`button[data-action="${action}"]`);
-    if (button && button.hasAttribute('aria-haspopup')) {
-      button.setAttribute('aria-expanded', String(expanded));
-      this._expandedButton = expanded ? action : null;
-    }
-  }
+	/**
+	 * Toggle aria-expanded state for dropdown buttons
+	 * @param action - The button action ('language' or 'account')
+	 * @param expanded - Whether the dropdown is expanded
+	 */
+	toggleDropdown(action: string, expanded: boolean): void {
+		const button = this.shadowRoot?.querySelector(`button[data-action="${action}"]`);
+		if (button && button.hasAttribute('aria-haspopup')) {
+			button.setAttribute('aria-expanded', String(expanded));
+			this._expandedButton = expanded ? action : null;
+		}
+	}
 
-  /**
-   * Close all dropdowns
-   */
-  closeAllDropdowns(): void {
-    const dropdownButtons = this.shadowRoot?.querySelectorAll('button[aria-haspopup="true"]');
-    dropdownButtons?.forEach((button) => {
-      button.setAttribute('aria-expanded', 'false');
-    });
-    this._expandedButton = null;
-  }
+	/**
+	 * Close all dropdowns
+	 */
+	closeAllDropdowns(): void {
+		const dropdownButtons = this.shadowRoot?.querySelectorAll('button[aria-haspopup="true"]');
+		dropdownButtons?.forEach((button) => {
+			button.setAttribute('aria-expanded', 'false');
+		});
+		this._expandedButton = null;
+	}
 
-  private _handleClick = (e: Event): void => {
-    const button = (e.target as HTMLElement).closest('button');
-    if (!button) return;
+	private _handleClick = (e: Event): void => {
+		const button = (e.target as HTMLElement).closest('button');
+		if (!button) return;
 
-    const action = button.dataset.action;
-    if (action) {
-      this.dispatchEvent(
-        new CustomEvent(`${action}-click`, {
-          bubbles: true,
-          composed: true,
-        })
-      );
-    }
-  };
+		const action = button.dataset.action;
+		if (action) {
+			this.dispatchEvent(
+				new CustomEvent(`${action}-click`, {
+					bubbles: true,
+					composed: true,
+				})
+			);
+		}
+	};
 
-  /**
-   * Escape HTML to prevent XSS
-   */
-  private _escapeHtml(text: string): string {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
+	/**
+	 * Escape HTML to prevent XSS
+	 */
+	private _escapeHtml(text: string): string {
+		const div = document.createElement('div');
+		div.textContent = text;
+		return div.innerHTML;
+	}
 
-  override render() {
-    const safeLanguage = this._escapeHtml(this.language);
-    const safeAccountLabel = this._escapeHtml(this.accountLabel);
+	override render() {
+		const safeLanguage = this._escapeHtml(this.language);
+		const safeAccountLabel = this._escapeHtml(this.accountLabel);
 
-    return html`
-      <div class="container" part="container" @click="${this._handleClick}">
-        ${!this.noLanguageSwitch
-          ? html`
-              <button
-                class="utility-button"
-                part="button"
-                data-action="language"
-                aria-label="${safeLanguage} - Taal selecteren"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <span>${safeLanguage}</span>
-                ${chevronIcon}
-              </button>
-            `
-          : nothing}
-        ${!this.noSearch
-          ? html`
-              <button class="utility-button" part="button" data-action="search" aria-label="Zoeken">
-                ${searchIcon}
-                <span>Zoeken</span>
-              </button>
-            `
-          : nothing}
-        ${this.hasHelp
-          ? html`
-              <button class="utility-button" part="button" data-action="help" aria-label="Hulp">
-                ${helpIcon}
-                <span>Hulp</span>
-              </button>
-            `
-          : nothing}
-        ${this.hasSettings
-          ? html`
-              <button class="utility-button" part="button" data-action="settings" aria-label="Instellingen">
-                ${settingsIcon}
-                <span>Instellingen</span>
-              </button>
-            `
-          : nothing}
-        ${!this.noAccount
-          ? html`
-              <button
-                class="utility-button"
-                part="button"
-                data-action="account"
-                aria-label="${safeAccountLabel} - Account menu"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                ${userIcon}
-                <span>${safeAccountLabel}</span>
-                ${chevronIcon}
-              </button>
-            `
-          : nothing}
-      </div>
-    `;
-  }
+		return html`
+			<div class="container" part="container" @click="${this._handleClick}">
+				${!this.noLanguageSwitch
+					? html`
+							<button
+								class="utility-button"
+								part="button"
+								data-action="language"
+								aria-label="${safeLanguage} - Taal selecteren"
+								aria-haspopup="true"
+								aria-expanded="false"
+							>
+								<span>${safeLanguage}</span>
+								${chevronIcon}
+							</button>
+						`
+					: nothing}
+				${!this.noSearch
+					? html`
+							<button class="utility-button" part="button" data-action="search" aria-label="Zoeken">
+								${searchIcon}
+								<span>Zoeken</span>
+							</button>
+						`
+					: nothing}
+				${this.hasHelp
+					? html`
+							<button class="utility-button" part="button" data-action="help" aria-label="Hulp">
+								${helpIcon}
+								<span>Hulp</span>
+							</button>
+						`
+					: nothing}
+				${this.hasSettings
+					? html`
+							<button
+								class="utility-button"
+								part="button"
+								data-action="settings"
+								aria-label="Instellingen"
+							>
+								${settingsIcon}
+								<span>Instellingen</span>
+							</button>
+						`
+					: nothing}
+				${!this.noAccount
+					? html`
+							<button
+								class="utility-button"
+								part="button"
+								data-action="account"
+								aria-label="${safeAccountLabel} - Account menu"
+								aria-haspopup="true"
+								aria-expanded="false"
+							>
+								${userIcon}
+								<span>${safeAccountLabel}</span>
+								${chevronIcon}
+							</button>
+						`
+					: nothing}
+			</div>
+		`;
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'ndd-utility-menu-bar': NDDUtilityMenuBar;
-  }
+	interface HTMLElementTagNameMap {
+		'ndd-utility-menu-bar': NDDUtilityMenuBar;
+	}
 }

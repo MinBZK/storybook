@@ -70,9 +70,13 @@ export class NDDModalDialog extends LitElement {
 			if (!hadTabindex) heading.setAttribute('tabindex', '-1');
 			heading.focus();
 			if (!hadTabindex) {
-				heading.addEventListener('blur', () => {
-					heading.removeAttribute('tabindex');
-				}, { once: true });
+				heading.addEventListener(
+					'blur',
+					() => {
+						heading.removeAttribute('tabindex');
+					},
+					{ once: true }
+				);
 			}
 			return;
 		}
@@ -87,12 +91,16 @@ export class NDDModalDialog extends LitElement {
 
 		this._closing = true;
 		dialog.classList.add('is-closing');
-		dialog.addEventListener('animationend', () => {
-			dialog.classList.remove('is-closing');
-			this._closing = false;
-			dialog.close();
-			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
-		}, { once: true });
+		dialog.addEventListener(
+			'animationend',
+			() => {
+				dialog.classList.remove('is-closing');
+				this._closing = false;
+				dialog.close();
+				this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+			},
+			{ once: true }
+		);
 
 		requestAnimationFrame(() => {
 			if (this._closing && getComputedStyle(dialog).animationName === 'none') {

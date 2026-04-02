@@ -24,7 +24,6 @@ async function fixtureAllPanes(width = 1280) {
 	return el;
 }
 
-
 /* ============================================================
    Smoke tests
    ============================================================ */
@@ -32,7 +31,10 @@ async function fixtureAllPanes(width = 1280) {
 describe('ndd-navigation-split-view', () => {
 	let el: NDDNavigationSplitView;
 
-	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
+	afterEach(() => {
+		cleanup(el);
+		vi.restoreAllMocks();
+	});
 
 	it('renders without error', async () => {
 		el = await fixture('<ndd-navigation-split-view></ndd-navigation-split-view>');
@@ -47,7 +49,6 @@ describe('ndd-navigation-split-view', () => {
 	});
 });
 
-
 /* ============================================================
    Inspector sheet
    ============================================================ */
@@ -55,7 +56,10 @@ describe('ndd-navigation-split-view', () => {
 describe('ndd-navigation-split-view – inspector sheet', () => {
 	let el: NDDNavigationSplitView;
 
-	afterEach(() => { cleanup(el); vi.restoreAllMocks(); });
+	afterEach(() => {
+		cleanup(el);
+		vi.restoreAllMocks();
+	});
 
 	it('sets inspector-auto-hidden when inspector does not fit', async () => {
 		el = await fixtureAllPanes(640);
@@ -70,7 +74,9 @@ describe('ndd-navigation-split-view – inspector sheet', () => {
 	it('showInspectorSheet() opens the dialog', async () => {
 		el = await fixtureAllPanes(640);
 		await el.showInspectorSheet();
-		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>('.navigation-split-view__inspector-sheet')!;
+		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>(
+			'.navigation-split-view__inspector-sheet'
+		)!;
 		expect(dialog.open).toBe(true);
 	});
 
@@ -78,7 +84,9 @@ describe('ndd-navigation-split-view – inspector sheet', () => {
 		el = await fixtureAllPanes(640);
 		await el.showInspectorSheet();
 		el.hideInspectorSheet();
-		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>('.navigation-split-view__inspector-sheet')!;
+		const dialog = el.shadowRoot!.querySelector<HTMLDialogElement>(
+			'.navigation-split-view__inspector-sheet'
+		)!;
 		expect(dialog.classList.contains('is-closing')).toBe(true);
 	});
 

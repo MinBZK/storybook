@@ -27,7 +27,6 @@ export const menuStyles = css`
 		display: none;
 	}
 
-
 	/* # Menu */
 
 	.menu {
@@ -45,7 +44,6 @@ export const menuStyles = css`
 		);
 		overflow-y: auto;
 	}
-
 
 	/* # Empty text */
 
@@ -68,7 +66,6 @@ export const menuItemStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # Item */
 
@@ -93,7 +90,6 @@ export const menuItemStyles = css`
 		}
 	}
 
-
 	/* # Highlighted */
 
 	:host([highlighted]) .menu__item {
@@ -102,16 +98,16 @@ export const menuItemStyles = css`
 		--semantics-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);
 	}
 
-
 	/* # Focus */
 
 	.menu__item:focus-visible {
 		position: relative;
 		z-index: 1;
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
-
 
 	/* # Disabled */
 
@@ -120,7 +116,6 @@ export const menuItemStyles = css`
 		pointer-events: none;
 	}
 
-
 	/* # Reduced motion */
 
 	@media (prefers-reduced-motion: reduce) {
@@ -128,7 +123,6 @@ export const menuItemStyles = css`
 			transition: none;
 		}
 	}
-
 
 	/* # Forced colors */
 
@@ -155,7 +149,6 @@ export const menuDividerStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # Divider */
 

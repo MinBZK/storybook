@@ -33,21 +33,21 @@ export const styles = css`
 
 	/* # Size: XS */
 
-	:host([size="xs"]) .button-bar {
+	:host([size='xs']) .button-bar {
 		height: var(--semantics-controls-xs-min-size);
 		border-radius: var(--semantics-controls-xs-corner-radius);
 	}
 
 	/* # Size: SM */
 
-	:host([size="sm"]) .button-bar {
+	:host([size='sm']) .button-bar {
 		height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
 	/* # Size: MD */
 
-	:host([size="md"]) .button-bar,
+	:host([size='md']) .button-bar,
 	:host(:not([size])) .button-bar {
 		height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
@@ -62,15 +62,15 @@ export const styles = css`
 		flex-shrink: 0;
 	}
 
-	:host([size="xs"]) .button-bar__divider {
+	:host([size='xs']) .button-bar__divider {
 		height: var(--semantics-controls-xs-min-size);
 	}
 
-	:host([size="sm"]) .button-bar__divider {
+	:host([size='sm']) .button-bar__divider {
 		height: var(--semantics-controls-sm-min-size);
 	}
 
-	:host([size="md"]) .button-bar__divider,
+	:host([size='md']) .button-bar__divider,
 	:host(:not([size])) .button-bar__divider {
 		height: var(--semantics-controls-md-min-size);
 	}
@@ -80,15 +80,15 @@ export const styles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
 	}
 
-	:host([size="xs"]) .button-bar__divider-line {
+	:host([size='xs']) .button-bar__divider-line {
 		height: var(--semantics-buttons-xs-divider-length);
 	}
 
-	:host([size="sm"]) .button-bar__divider-line {
+	:host([size='sm']) .button-bar__divider-line {
 		height: var(--semantics-buttons-sm-divider-length);
 	}
 
-	:host([size="md"]) .button-bar__divider-line,
+	:host([size='md']) .button-bar__divider-line,
 	:host(:not([size])) .button-bar__divider-line {
 		height: var(--semantics-buttons-md-divider-length);
 	}

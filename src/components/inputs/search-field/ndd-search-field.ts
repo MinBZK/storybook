@@ -81,21 +81,25 @@ export class NDDSearchField extends LitElement {
 	public _handleInput(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
-		this.dispatchEvent(new CustomEvent('input', {
-			detail: { value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('input', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.value = input.value;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	public _handleKeydown(e: KeyboardEvent): void {
@@ -106,11 +110,13 @@ export class NDDSearchField extends LitElement {
 
 	public _handleDismiss(): void {
 		this.value = '';
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { value: '' },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { value: '' },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	public _handleSearch(): void {
@@ -118,11 +124,13 @@ export class NDDSearchField extends LitElement {
 	}
 
 	private _dispatchSearch(): void {
-		this.dispatchEvent(new CustomEvent('search', {
-			detail: { value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('search', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	override render() {

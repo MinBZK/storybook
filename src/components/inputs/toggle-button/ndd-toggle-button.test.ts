@@ -3,7 +3,6 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { NDDToggleButton } from './ndd-toggle-button.ts';
 import './ndd-toggle-button.ts';
 
-
 /* ============================================================
    Rendering
    ============================================================ */
@@ -78,7 +77,6 @@ describe('ndd-toggle-button', () => {
 	});
 });
 
-
 /* ============================================================
    State
    ============================================================ */
@@ -116,41 +114,50 @@ describe('ndd-toggle-button – state', () => {
 	});
 
 	it('button type: button has aria-pressed=true when selected', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button text="Label" selected></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button text="Label" selected></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('button')!;
 		expect(button.getAttribute('aria-pressed')).toBe('true');
 	});
 
 	it('checkbox type: input.checked matches selected property', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button type="checkbox" text="Label" selected></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button type="checkbox" text="Label" selected></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
 		expect(input.checked).toBe(true);
 	});
 
 	it('checkbox type: input is disabled when disabled attribute is set', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button type="checkbox" text="Label" disabled></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button type="checkbox" text="Label" disabled></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
 		expect(input.disabled).toBe(true);
 	});
 
 	it('forwards name to the input', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button type="checkbox" name="filter" text="Label"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button type="checkbox" name="filter" text="Label"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
 		expect(input.name).toBe('filter');
 	});
 
 	it('forwards value to the input', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button type="checkbox" value="optie-a" text="Label"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button type="checkbox" value="optie-a" text="Label"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
 		expect(input.value).toBe('optie-a');
 	});
 });
-
 
 /* ============================================================
    Icon-only detection
@@ -164,13 +171,17 @@ describe('ndd-toggle-button – icon-only', () => {
 	});
 
 	it('sets icon-only attribute when only icon is set (no text)', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button icon="heart" accessible-label="Favoriet"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button icon="heart" accessible-label="Favoriet"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.hasAttribute('icon-only')).toBe(true);
 	});
 
 	it('does not set icon-only when there is text', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button icon="heart" text="Label"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button icon="heart" text="Label"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.hasAttribute('icon-only')).toBe(false);
 	});
@@ -194,14 +205,15 @@ describe('ndd-toggle-button – icon-only', () => {
 	it('does not warn when icon-only with accessible-label', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button icon="heart" accessible-label="Favoriet"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button icon="heart" accessible-label="Favoriet"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 
 		expect(warnSpy).not.toHaveBeenCalled();
 		warnSpy.mockRestore();
 	});
 });
-
 
 /* ============================================================
    Interaction – type=button
@@ -223,7 +235,9 @@ describe('ndd-toggle-button – interaction (button)', () => {
 	});
 
 	it('clicking again deselects', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button text="Label" selected></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button text="Label" selected></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		el.shadowRoot!.querySelector('button')!.click();
 		await waitForUpdate(el);
@@ -231,11 +245,15 @@ describe('ndd-toggle-button – interaction (button)', () => {
 	});
 
 	it('click dispatches change event with correct detail', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button text="Label" value="optie"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button text="Label" value="optie"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('change', (e: Event) => { detail = (e as CustomEvent).detail; });
+		el.addEventListener('change', (e: Event) => {
+			detail = (e as CustomEvent).detail;
+		});
 		el.shadowRoot!.querySelector('button')!.click();
 
 		expect(detail?.selected).toBe(true);
@@ -243,14 +261,15 @@ describe('ndd-toggle-button – interaction (button)', () => {
 	});
 
 	it('disabled button does not toggle when clicked', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button text="Label" disabled></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button text="Label" disabled></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		el.shadowRoot!.querySelector('button')!.click();
 		await waitForUpdate(el);
 		expect(el.selected).toBe(false);
 	});
 });
-
 
 /* ============================================================
    Interaction – type=checkbox
@@ -264,7 +283,9 @@ describe('ndd-toggle-button – interaction (checkbox)', () => {
 	});
 
 	it('input change syncs selected property', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button type="checkbox" text="Label"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button type="checkbox" text="Label"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
@@ -276,11 +297,15 @@ describe('ndd-toggle-button – interaction (checkbox)', () => {
 	});
 
 	it('input change dispatches change event', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button type="checkbox" value="check" text="Label"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button type="checkbox" value="check" text="Label"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('change', (e: Event) => { detail = (e as CustomEvent).detail; });
+		el.addEventListener('change', (e: Event) => {
+			detail = (e as CustomEvent).detail;
+		});
 
 		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
 		input.checked = true;
@@ -290,7 +315,6 @@ describe('ndd-toggle-button – interaction (checkbox)', () => {
 		expect(detail?.value).toBe('check');
 	});
 });
-
 
 /* ============================================================
    Interaction – type=radio
@@ -304,7 +328,9 @@ describe('ndd-toggle-button – interaction (radio)', () => {
 	});
 
 	it('toggle() on selected radio does nothing', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button type="radio" text="Label" selected></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button type="radio" text="Label" selected></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		el.toggle();
 		await waitForUpdate(el);
@@ -312,14 +338,15 @@ describe('ndd-toggle-button – interaction (radio)', () => {
 	});
 
 	it('toggle() on unselected radio selects it', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button type="radio" text="Label"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button type="radio" text="Label"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		el.toggle();
 		await waitForUpdate(el);
 		expect(el.selected).toBe(true);
 	});
 });
-
 
 /* ============================================================
    toggle() method
@@ -342,13 +369,14 @@ describe('ndd-toggle-button – toggle()', () => {
 	});
 
 	it('toggle() does nothing when disabled', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button text="Label" disabled></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button text="Label" disabled></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		el.toggle();
 		expect(el.selected).toBe(false);
 	});
 });
-
 
 /* ============================================================
    Accessibility
@@ -362,14 +390,18 @@ describe('ndd-toggle-button – accessibility', () => {
 	});
 
 	it('forwards accessible-label to button aria-label', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button accessible-label="Sluiten" text="✕"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button accessible-label="Sluiten" text="✕"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('button')!;
 		expect(button.getAttribute('aria-label')).toBe('Sluiten');
 	});
 
 	it('forwards accessible-label to input aria-label', async () => {
-		el = await fixture<NDDToggleButton>('<ndd-toggle-button type="checkbox" accessible-label="Sluiten" text="✕"></ndd-toggle-button>');
+		el = await fixture<NDDToggleButton>(
+			'<ndd-toggle-button type="checkbox" accessible-label="Sluiten" text="✕"></ndd-toggle-button>'
+		);
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('aria-label')).toBe('Sluiten');

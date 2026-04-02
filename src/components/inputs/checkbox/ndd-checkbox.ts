@@ -43,22 +43,26 @@ export class NDDCheckbox extends LitElement {
 		if (this.disabled) return;
 		this.checked = !this.checked;
 		this.indeterminate = false;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: this.checked, value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: this.checked, value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
 		this.checked = input.checked;
 		this.indeterminate = input.indeterminate;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { checked: this.checked, value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { checked: this.checked, value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	override render() {

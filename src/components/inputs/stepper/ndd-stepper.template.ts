@@ -7,7 +7,8 @@ export function stepperTemplate(component: NDDStepper): TemplateResult {
 	const atMax = component.value >= component.max;
 
 	return html`
-		<div class="stepper"
+		<div
+			class="stepper"
 			role="spinbutton"
 			tabindex=${component.disabled ? nothing : '0'}
 			aria-valuenow=${component.value}
@@ -27,9 +28,7 @@ export function stepperTemplate(component: NDDStepper): TemplateResult {
 				tabindex="-1"
 				@click=${component._decrement}
 			></ndd-icon-button>
-			<div class="stepper__divider"
-				aria-hidden="true"
-			></div>
+			<div class="stepper__divider" aria-hidden="true"></div>
 			<ndd-icon-button
 				variant="neutral-tinted"
 				size=${component.size}

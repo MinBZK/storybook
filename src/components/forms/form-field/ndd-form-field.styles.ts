@@ -5,8 +5,6 @@ import { css } from 'lit';
    ============================================================ */
 
 export const formFieldStyles = css`
-
-
 	/* # Host */
 
 	:host {
@@ -17,7 +15,6 @@ export const formFieldStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-
 
 	/* # Form field */
 
@@ -35,7 +32,6 @@ export const formFieldStyles = css`
 			gap: var(--primitives-space-8);
 		}
 	}
-
 
 	/* # Header */
 
@@ -75,7 +71,6 @@ export const formFieldStyles = css`
 		}
 	}
 
-
 	/* # Label */
 
 	.form-field__label {
@@ -103,7 +98,6 @@ export const formFieldStyles = css`
 		}
 	}
 
-
 	/* # Optional indicator */
 
 	.form-field__optional {
@@ -111,14 +105,12 @@ export const formFieldStyles = css`
 		font: var(--primitives-font-body-xs-regular-tight);
 	}
 
-
 	/* # Supporting label */
 
 	.form-field__supporting-label {
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-xs-regular-tight);
 	}
-
 
 	/* # Main */
 
@@ -130,7 +122,6 @@ export const formFieldStyles = css`
 		flex-basis: 0;
 		min-width: 0;
 	}
-
 
 	/* # Errors */
 
@@ -149,14 +140,11 @@ export const formFieldStyles = css`
    ============================================================ */
 
 export const formFieldHelpTextStyles = css`
-
-
 	/* # Host */
 
 	:host {
 		display: contents;
 	}
-
 
 	/* # Help text */
 
@@ -165,7 +153,6 @@ export const formFieldHelpTextStyles = css`
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
-
 
 	/* # Links */
 
@@ -185,8 +172,10 @@ export const formFieldHelpTextStyles = css`
 	}
 
 	::slotted(a:focus-visible) {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
 
 	::slotted(a:focus:not(:focus-visible)) {
@@ -199,8 +188,6 @@ export const formFieldHelpTextStyles = css`
    ============================================================ */
 
 export const formFieldErrorTextStyles = css`
-
-
 	/* # Host */
 
 	:host {
@@ -211,7 +198,6 @@ export const formFieldErrorTextStyles = css`
 		display: block;
 	}
 
-
 	/* # Error text */
 
 	.form-field__error-text {
@@ -219,7 +205,6 @@ export const formFieldErrorTextStyles = css`
 		color: var(--semantics-content-error-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
-
 
 	/* # Links */
 
@@ -239,8 +224,10 @@ export const formFieldErrorTextStyles = css`
 	}
 
 	::slotted(a:focus-visible) {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
 	}
 
 	::slotted(a:focus:not(:focus-visible)) {

@@ -107,11 +107,13 @@ export class NDDStepper extends LitElement {
 	}
 
 	private _dispatchChange(): void {
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: { value: this.value },
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: { value: this.value },
+				bubbles: true,
+				composed: true,
+			})
+		);
 	}
 
 	override render() {

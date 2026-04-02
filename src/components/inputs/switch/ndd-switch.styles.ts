@@ -12,8 +12,14 @@ export const switchStyles = css`
 		--_switch-sm-width: var(--semantics-controls-lg-min-size);
 		--_switch-sm-height: var(--semantics-controls-sm-min-size);
 		--_switch-padding: var(--primitives-space-2);
-		--_switch-xs-thumb-size: calc(var(--_switch-xs-height) - var(--_switch-padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
-		--_switch-sm-thumb-size: calc(var(--_switch-sm-height) - var(--_switch-padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
+		--_switch-xs-thumb-size: calc(
+			var(--_switch-xs-height) - var(--_switch-padding) *
+				2 - var(--components-switch-thumb-border-thickness) * 2
+		);
+		--_switch-sm-thumb-size: calc(
+			var(--_switch-sm-height) - var(--_switch-padding) *
+				2 - var(--components-switch-thumb-border-thickness) * 2
+		);
 		--_transition-duration: 150ms;
 	}
 
@@ -36,7 +42,6 @@ export const switchStyles = css`
 		height: var(--_switch-sm-height);
 	}
 
-
 	/* # Input */
 
 	.switch__input {
@@ -48,7 +53,6 @@ export const switchStyles = css`
 		margin: 0;
 		opacity: 0;
 	}
-
 
 	/* # Track */
 
@@ -62,7 +66,9 @@ export const switchStyles = css`
 		padding: var(--_switch-padding);
 		background-color: var(--components-switch-background-color);
 		border: var(--components-switch-border-thickness) solid var(--components-switch-border-color);
-		transition: background-color var(--_transition-duration) ease, border-color var(--_transition-duration) ease;
+		transition:
+			background-color var(--_transition-duration) ease,
+			border-color var(--_transition-duration) ease;
 	}
 
 	:host([size='xs']) .switch__track {
@@ -80,10 +86,11 @@ export const switchStyles = css`
 	}
 
 	.switch__input:focus-visible ~ .switch__track {
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double
+			var(--semantics-focus-ring-edge-color);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+			var(--semantics-focus-ring-center-color);
 	}
-
 
 	/* # Thumb */
 
@@ -93,8 +100,14 @@ export const switchStyles = css`
 		box-sizing: border-box;
 		border-radius: 50%;
 		background-color: var(--components-switch-thumb-background-color);
-		border: var(--components-switch-thumb-border-thickness) solid var(--components-switch-thumb-border-color);
-		transition: width var(--_transition-duration) ease, height var(--_transition-duration) ease, left var(--_transition-duration) ease, background-color var(--_transition-duration) ease, border-color var(--_transition-duration) ease;
+		border: var(--components-switch-thumb-border-thickness) solid
+			var(--components-switch-thumb-border-color);
+		transition:
+			width var(--_transition-duration) ease,
+			height var(--_transition-duration) ease,
+			left var(--_transition-duration) ease,
+			background-color var(--_transition-duration) ease,
+			border-color var(--_transition-duration) ease;
 		will-change: width, height, left;
 	}
 
@@ -115,18 +128,23 @@ export const switchStyles = css`
 	}
 
 	:host([size='xs']) .switch__input:checked ~ .switch__track .switch__thumb {
-		left: calc(var(--_switch-xs-width) - var(--components-switch-thumb-border-thickness) * 2 - var(--_switch-xs-thumb-size) - var(--_switch-padding) * 2);
+		left: calc(
+			var(--_switch-xs-width) - var(--components-switch-thumb-border-thickness) *
+				2 - var(--_switch-xs-thumb-size) - var(--_switch-padding) * 2
+		);
 		width: calc(var(--_switch-xs-thumb-size) + var(--_switch-padding) * 2);
 		height: calc(var(--_switch-xs-thumb-size) + var(--_switch-padding) * 2);
 	}
 
 	:host([size='sm']) .switch__input:checked ~ .switch__track .switch__thumb,
 	:host(:not([size])) .switch__input:checked ~ .switch__track .switch__thumb {
-		left: calc(var(--_switch-sm-width) - var(--components-switch-thumb-border-thickness) * 2 - var(--_switch-sm-thumb-size) - var(--_switch-padding) * 2);
+		left: calc(
+			var(--_switch-sm-width) - var(--components-switch-thumb-border-thickness) *
+				2 - var(--_switch-sm-thumb-size) - var(--_switch-padding) * 2
+		);
 		width: calc(var(--_switch-sm-thumb-size) + var(--_switch-padding) * 2);
 		height: calc(var(--_switch-sm-thumb-size) + var(--_switch-padding) * 2);
 	}
-
 
 	/* # Check */
 

@@ -50,7 +50,6 @@ describe('ndd-list', () => {
 		expect(footer?.textContent).toBe('Footer content');
 	});
 
-
 	// — Drag: keyboard ———————————————————————————————————————————————————————
 
 	it('fires ndd-reorder with correct fromIndex and toIndex after keyboard drop', async () => {
@@ -73,10 +72,14 @@ describe('ndd-list', () => {
 		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		expect(reorderDetail).not.toBeNull();
@@ -96,12 +99,16 @@ describe('ndd-list', () => {
 		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
 
 		let fired = false;
-		el.addEventListener('ndd-reorder', () => { fired = true; });
+		el.addEventListener('ndd-reorder', () => {
+			fired = true;
+		});
 
 		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		expect(fired).toBe(false);
@@ -127,14 +134,22 @@ describe('ndd-list', () => {
 		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		// Net effect: 2 down, 1 up = toIndex 1
@@ -158,13 +173,14 @@ describe('ndd-list', () => {
 
 		expect(firstItem.classList.contains('is-dragging')).toBe(true);
 
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		expect(firstItem.classList.contains('is-dragging')).toBe(false);
 		expect(el.querySelector('.ndd-list-drag-placeholder')).toBeNull();
 	});
-
 
 	// — Drag: pointer ————————————————————————————————————————————————————————
 
@@ -185,13 +201,19 @@ describe('ndd-list', () => {
 			reorderDetail = (e as CustomEvent).detail;
 		});
 
-		handle.dispatchEvent(new PointerEvent('pointerdown', { clientY: 10, pointerId: 1, bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new PointerEvent('pointerdown', { clientY: 10, pointerId: 1, bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new PointerEvent('pointermove', { clientY: 100, pointerId: 1, bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new PointerEvent('pointermove', { clientY: 100, pointerId: 1, bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
-		el.dispatchEvent(new PointerEvent('pointerup', { pointerId: 1, bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new PointerEvent('pointerup', { pointerId: 1, bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		expect(reorderDetail).not.toBeNull();
@@ -210,12 +232,16 @@ describe('ndd-list', () => {
 		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
 		const firstItem = el.querySelectorAll('ndd-list-item')[0];
 
-		handle.dispatchEvent(new PointerEvent('pointerdown', { clientY: 10, pointerId: 1, bubbles: true, composed: true }));
+		handle.dispatchEvent(
+			new PointerEvent('pointerdown', { clientY: 10, pointerId: 1, bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		expect(firstItem.classList.contains('is-dragging')).toBe(true);
 
-		el.dispatchEvent(new PointerEvent('pointercancel', { pointerId: 1, bubbles: true, composed: true }));
+		el.dispatchEvent(
+			new PointerEvent('pointercancel', { pointerId: 1, bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		expect(firstItem.classList.contains('is-dragging')).toBe(false);

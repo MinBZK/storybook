@@ -36,17 +36,19 @@ export const Standaard = () => html`
 		<ndd-rich-text>
 			<h3>Wanneer gebruik je een box?</h3>
 			<p>
-				Een box groepeert gerelateerde componenten visueel in een afgebakend gebied.
-				Gebruik een box wanneer een set van inhoud of acties bij elkaar hoort en
-				duidelijk onderscheiden moet worden van de rest van de pagina.
+				Een box groepeert gerelateerde componenten visueel in een afgebakend gebied. Gebruik een box
+				wanneer een set van inhoud of acties bij elkaar hoort en duidelijk onderscheiden moet worden
+				van de rest van de pagina.
 			</p>
 			<p>
-				De box past zich aan aan de breedte van zijn container en heeft geen vaste hoogte.
-				De achtergrondkleur, padding en afronding komen uit de design tokens.
+				De box past zich aan aan de breedte van zijn container en heeft geen vaste hoogte. De
+				achtergrondkleur, padding en afronding komen uit de design tokens.
 			</p>
 			<h4>Richtlijnen</h4>
 			<ul>
-				<li>Gebruik een box voor het groeperen van formuliervelden, acties of informatieve inhoud.</li>
+				<li>
+					Gebruik een box voor het groeperen van formuliervelden, acties of informatieve inhoud.
+				</li>
 				<li>Plaats niet te veel verschillende soorten inhoud in één box.</li>
 				<li>Gebruik geen geneste boxes.</li>
 			</ul>

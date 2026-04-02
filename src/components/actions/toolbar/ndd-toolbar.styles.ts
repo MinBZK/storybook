@@ -1,6 +1,5 @@
 import { css } from 'lit';
 export const styles = css`
-
 	/* # Host */
 
 	:host {
@@ -25,11 +24,11 @@ export const styles = css`
 		width: 100%;
 	}
 
-	:host([size="sm"]) .toolbar {
+	:host([size='sm']) .toolbar {
 		gap: var(--components-toolbar-sm-gap);
 	}
 
-	:host([size="md"]) .toolbar,
+	:host([size='md']) .toolbar,
 	:host(:not([size])) .toolbar {
 		gap: var(--components-toolbar-md-gap);
 	}
@@ -44,11 +43,11 @@ export const styles = css`
 		min-width: 0;
 	}
 
-	:host([size="sm"]) .toolbar__items {
+	:host([size='sm']) .toolbar__items {
 		gap: var(--components-toolbar-sm-gap);
 	}
 
-	:host([size="md"]) .toolbar__items,
+	:host([size='md']) .toolbar__items,
 	:host(:not([size])) .toolbar__items {
 		gap: var(--components-toolbar-md-gap);
 	}
@@ -61,7 +60,7 @@ export const styles = css`
 		margin-left: calc(-1 * var(--components-toolbar-md-gap));
 	}
 
-	:host([size="sm"]) .toolbar__flexible-spacer {
+	:host([size='sm']) .toolbar__flexible-spacer {
 		margin-left: calc(-1 * var(--components-toolbar-sm-gap));
 	}
 
@@ -81,20 +80,18 @@ export const styles = css`
 		min-width: 0;
 		margin-right: calc(-1 * var(--components-toolbar-md-gap));
 		flex-basis: calc(
-			var(--ndd-toolbar-width) / 2
-			- var(--ndd-toolbar-start-width)
-			- var(--ndd-toolbar-center-width) / 2
-			- var(--components-toolbar-md-gap)
+			var(--ndd-toolbar-width) /
+				2 - var(--ndd-toolbar-start-width) - var(--ndd-toolbar-center-width) /
+				2 - var(--components-toolbar-md-gap)
 		);
 	}
 
-	:host([size="sm"]) .toolbar__left-spacer {
+	:host([size='sm']) .toolbar__left-spacer {
 		margin-right: calc(-1 * var(--components-toolbar-sm-gap));
 		flex-basis: calc(
-			var(--ndd-toolbar-width) / 2
-			- var(--ndd-toolbar-start-width)
-			- var(--ndd-toolbar-center-width) / 2
-			- var(--components-toolbar-sm-gap)
+			var(--ndd-toolbar-width) /
+				2 - var(--ndd-toolbar-start-width) - var(--ndd-toolbar-center-width) /
+				2 - var(--components-toolbar-sm-gap)
 		);
 	}
 
@@ -104,22 +101,18 @@ export const styles = css`
 		min-width: 0;
 		margin-left: calc(-1 * var(--components-toolbar-md-gap));
 		flex-basis: calc(
-			var(--ndd-toolbar-width) / 2
-			- var(--ndd-toolbar-end-width)
-			- var(--ndd-toolbar-center-width) / 2
-			- var(--components-toolbar-md-gap)
-			- var(--ndd-toolbar-overflow-button-width, 0px)
+			var(--ndd-toolbar-width) /
+				2 - var(--ndd-toolbar-end-width) - var(--ndd-toolbar-center-width) /
+				2 - var(--components-toolbar-md-gap) - var(--ndd-toolbar-overflow-button-width, 0px)
 		);
 	}
 
-	:host([size="sm"]) .toolbar__right-spacer {
+	:host([size='sm']) .toolbar__right-spacer {
 		margin-left: calc(-1 * var(--components-toolbar-sm-gap));
 		flex-basis: calc(
-			var(--ndd-toolbar-width) / 2
-			- var(--ndd-toolbar-end-width)
-			- var(--ndd-toolbar-center-width) / 2
-			- var(--components-toolbar-sm-gap)
-			- var(--ndd-toolbar-overflow-button-width, 0px)
+			var(--ndd-toolbar-width) /
+				2 - var(--ndd-toolbar-end-width) - var(--ndd-toolbar-center-width) /
+				2 - var(--components-toolbar-sm-gap) - var(--ndd-toolbar-overflow-button-width, 0px)
 		);
 	}
 
@@ -213,11 +206,11 @@ export const styles = css`
 		min-width: 0;
 	}
 
-	:host([size="sm"]) .toolbar__title-group {
+	:host([size='sm']) .toolbar__title-group {
 		height: var(--semantics-controls-sm-min-size);
 	}
 
-	:host([size="md"]) .toolbar__title-group,
+	:host([size='md']) .toolbar__title-group,
 	:host(:not([size])) .toolbar__title-group {
 		height: var(--semantics-controls-md-min-size);
 	}
@@ -241,12 +234,12 @@ export const styles = css`
 		max-width: 100%;
 	}
 
-	:host([size="md"]) .toolbar__title,
+	:host([size='md']) .toolbar__title,
 	:host(:not([size])) .toolbar__title {
 		font: var(--primitives-font-body-lg-bold-flat);
 	}
 
-	:host([size="sm"]) .toolbar__title {
+	:host([size='sm']) .toolbar__title {
 		font: var(--primitives-font-body-sm-bold-flat);
 	}
 
@@ -259,12 +252,12 @@ export const styles = css`
 		max-width: 100%;
 	}
 
-	:host([size="md"]) .toolbar__subtitle,
+	:host([size='md']) .toolbar__subtitle,
 	:host(:not([size])) .toolbar__subtitle {
 		font: var(--primitives-font-body-xs-regular-flat);
 	}
 
-	:host([size="sm"]) .toolbar__subtitle {
+	:host([size='sm']) .toolbar__subtitle {
 		font: var(--primitives-font-body-xxs-regular-flat);
 	}
 `;

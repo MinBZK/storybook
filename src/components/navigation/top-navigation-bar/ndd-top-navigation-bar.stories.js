@@ -133,11 +133,7 @@ export const Default = {
 
 export const WithLogoWordmark = {
 	render: () => html`
-		<ndd-top-navigation-bar
-			title="DigID"
-			logo-has-wordmark
-			logo-title="Rijksoverheid"
-		>
+		<ndd-top-navigation-bar title="DigID" logo-has-wordmark logo-title="Rijksoverheid">
 			<ndd-menu-bar-item slot="menu" selected>Home</ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="menu">Aanvragen & activeren</ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="menu">Manieren van inloggen</ndd-menu-bar-item>
@@ -176,10 +172,7 @@ export const WithBackButton = {
 
 export const LargeContainer = {
 	render: () => html`
-		<ndd-top-navigation-bar
-			container="lg"
-			title="DigID"
-		>
+		<ndd-top-navigation-bar container="lg" title="DigID">
 			<ndd-menu-bar-item slot="menu" selected>Home</ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="menu">Aanvragen & activeren</ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="menu">Manieren van inloggen</ndd-menu-bar-item>
@@ -191,10 +184,7 @@ export const LargeContainer = {
 
 export const SmallContainer = {
 	render: () => html`
-		<ndd-top-navigation-bar
-			container="sm"
-			title="DigID"
-		>
+		<ndd-top-navigation-bar container="sm" title="DigID">
 			<ndd-menu-bar-item slot="menu" selected>Home</ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="menu">Aanvragen & activeren</ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="menu">Manieren van inloggen</ndd-menu-bar-item>
@@ -214,21 +204,13 @@ export const WithoutTitle = {
 
 export const MinimalLogo = {
 	render: () => html`
-		<ndd-top-navigation-bar
-			no-title
-			no-menu
-			no-utility-bar
-		></ndd-top-navigation-bar>
+		<ndd-top-navigation-bar no-title no-menu no-utility-bar></ndd-top-navigation-bar>
 	`,
 };
 
 export const MijnOverheid = {
 	render: () => html`
-		<ndd-top-navigation-bar
-			title="Mijn Overheid"
-			logo-has-wordmark
-			logo-title="Rijksoverheid"
-		>
+		<ndd-top-navigation-bar title="Mijn Overheid" logo-has-wordmark logo-title="Rijksoverheid">
 			<ndd-menu-bar-item slot="menu" selected>Overzicht</ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="menu">Berichten</ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="menu">Lopende zaken</ndd-menu-bar-item>
@@ -242,10 +224,7 @@ export const AllStates = {
 		<div style="display: flex; flex-direction: column; gap: 32px;">
 			<div>
 				<h3 style="margin: 0 0 8px; font-family: system-ui;">Container L (Desktop)</h3>
-				<ndd-top-navigation-bar
-					container="lg"
-					title="DigID"
-				>
+				<ndd-top-navigation-bar container="lg" title="DigID">
 					<ndd-menu-bar-item slot="menu" selected>Home</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="menu">Aanvragen & activeren</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="menu">Manieren van inloggen</ndd-menu-bar-item>
@@ -255,10 +234,7 @@ export const AllStates = {
 			</div>
 			<div>
 				<h3 style="margin: 0 0 8px; font-family: system-ui;">Container M (Tablet)</h3>
-				<ndd-top-navigation-bar
-					container="md"
-					title="DigID"
-				>
+				<ndd-top-navigation-bar container="md" title="DigID">
 					<ndd-menu-bar-item slot="menu" selected>Home</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="menu">Aanvragen & activeren</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="menu">Manieren van inloggen</ndd-menu-bar-item>
@@ -268,10 +244,7 @@ export const AllStates = {
 			</div>
 			<div>
 				<h3 style="margin: 0 0 8px; font-family: system-ui;">Container S (Mobile)</h3>
-				<ndd-top-navigation-bar
-					container="sm"
-					title="DigID"
-				>
+				<ndd-top-navigation-bar container="sm" title="DigID">
 					<ndd-menu-bar-item slot="menu" selected>Home</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="menu">Aanvragen & activeren</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="menu">Manieren van inloggen</ndd-menu-bar-item>

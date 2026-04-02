@@ -7,24 +7,22 @@ ndd-rich-text {
 	font: var(--primitives-font-body-md-regular-snug);
 }
 
-ndd-rich-text[spacing="flat"] {
+ndd-rich-text[spacing='flat'] {
 	--components-rich-text-spacing: var(--components-rich-text-spacing-flat);
 }
 
-ndd-rich-text[spacing="tight"] {
+ndd-rich-text[spacing='tight'] {
 	--components-rich-text-spacing: var(--components-rich-text-spacing-tight);
 }
 
-ndd-rich-text[spacing="snug"] {
+ndd-rich-text[spacing='snug'] {
 	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
 }
 
-ndd-rich-text[spacing="loose"] {
+ndd-rich-text[spacing='loose'] {
 	--components-rich-text-spacing: var(--components-rich-text-spacing-loose);
 }
-En de tok
-
-ndd-rich-text[hidden] {
+En de tok ndd-rich-text[hidden] {
 	display: none;
 }
 
@@ -38,10 +36,9 @@ ndd-rich-text > :last-child {
 	margin-bottom: 0;
 }
 
-
-
 ndd-rich-text *:focus-visible {
-	box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+	box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness)
+		var(--semantics-focus-ring-center-color);
 	outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 }
 

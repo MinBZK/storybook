@@ -79,7 +79,9 @@ describe('ndd-button – icon attributes', () => {
 	});
 
 	it('renders both start and end icons', async () => {
-		el = await fixture<NDDButton>('<ndd-button text="Favorite" start-icon="heart" end-icon="chevron-down-small"></ndd-button>');
+		el = await fixture<NDDButton>(
+			'<ndd-button text="Favorite" start-icon="heart" end-icon="chevron-down-small"></ndd-button>'
+		);
 		await waitForUpdate(el);
 
 		const startIcon = el.shadowRoot!.querySelector('.button__start-icon');
@@ -150,7 +152,9 @@ describe('ndd-button – href / link rendering', () => {
 	});
 
 	it('forwards target and rel to the anchor element', async () => {
-		el = await fixture<NDDButton>('<ndd-button href="/overzicht" target="_blank" rel="noopener" text="Terug"></ndd-button>');
+		el = await fixture<NDDButton>(
+			'<ndd-button href="/overzicht" target="_blank" rel="noopener" text="Terug"></ndd-button>'
+		);
 		await waitForUpdate(el);
 		const a = el.shadowRoot!.querySelector('a')!;
 		expect(a.getAttribute('target')).toBe('_blank');
@@ -158,25 +162,35 @@ describe('ndd-button – href / link rendering', () => {
 	});
 
 	it('defaults rel to noopener noreferrer when target is _blank and rel is not set', async () => {
-		el = await fixture<NDDButton>('<ndd-button href="/overzicht" target="_blank" text="Terug"></ndd-button>');
+		el = await fixture<NDDButton>(
+			'<ndd-button href="/overzicht" target="_blank" text="Terug"></ndd-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('rel')).toBe('noopener noreferrer');
 	});
 
 	it('sets aria-disabled on the anchor when disabled', async () => {
-		el = await fixture<NDDButton>('<ndd-button href="/overzicht" disabled text="Terug"></ndd-button>');
+		el = await fixture<NDDButton>(
+			'<ndd-button href="/overzicht" disabled text="Terug"></ndd-button>'
+		);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-disabled')).toBe('true');
 	});
 
 	it('forwards accessible-label to the anchor element', async () => {
-		el = await fixture<NDDButton>('<ndd-button href="/overzicht" accessible-label="Ga terug naar overzicht" text="Terug"></ndd-button>');
+		el = await fixture<NDDButton>(
+			'<ndd-button href="/overzicht" accessible-label="Ga terug naar overzicht" text="Terug"></ndd-button>'
+		);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe('Ga terug naar overzicht');
+		expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-label')).toBe(
+			'Ga terug naar overzicht'
+		);
 	});
 
 	it('prevents default click on disabled anchor to block navigation', async () => {
-		el = await fixture<NDDButton>('<ndd-button href="/overzicht" disabled text="Terug"></ndd-button>');
+		el = await fixture<NDDButton>(
+			'<ndd-button href="/overzicht" disabled text="Terug"></ndd-button>'
+		);
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a')!;
 		const event = new MouseEvent('click', { bubbles: true, cancelable: true });

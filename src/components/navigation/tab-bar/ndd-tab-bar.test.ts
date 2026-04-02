@@ -26,7 +26,6 @@ function pressKey(target: Element, key: string) {
 	target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
 }
 
-
 /* ============================================================
    ndd-tab-bar-item – render
    ============================================================ */
@@ -62,7 +61,6 @@ describe('ndd-tab-bar-item', () => {
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.tagName.toLowerCase()).toBe('button');
 	});
 });
-
 
 /* ============================================================
    ndd-tab-bar-item – content variant detection
@@ -142,7 +140,6 @@ describe('ndd-tab-bar-item – content variant detection', () => {
 	});
 });
 
-
 /* ============================================================
    ndd-tab-bar-item – icon variant accessibility
    ============================================================ */
@@ -195,7 +192,6 @@ describe('ndd-tab-bar-item – icon variant accessibility', () => {
 	});
 });
 
-
 /* ============================================================
    ndd-tab-bar-item – events
    ============================================================ */
@@ -212,9 +208,13 @@ describe('ndd-tab-bar-item – events', () => {
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('select', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('select', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 
-		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(
+			new MouseEvent('click', { bubbles: true, composed: true })
+		);
 
 		expect(detail).toBeDefined();
 		expect(detail.item).toBe(el);
@@ -224,13 +224,14 @@ describe('ndd-tab-bar-item – events', () => {
 		el = await fixture<NDDTabBarItem>('<ndd-tab-bar-item text="Tab"></ndd-tab-bar-item>');
 		await waitForUpdate(el);
 
-		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(
+			new MouseEvent('click', { bubbles: true, composed: true })
+		);
 		await waitForUpdate(el);
 
 		expect(el.selected).toBe(false);
 	});
 });
-
 
 /* ============================================================
    ndd-tab-bar – render & ARIA
@@ -269,7 +270,6 @@ describe('ndd-tab-bar', () => {
 	});
 });
 
-
 /* ============================================================
    ndd-tab-bar – accessible label
    ============================================================ */
@@ -286,7 +286,9 @@ describe('ndd-tab-bar – accessible label', () => {
 		vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<NDDTabBar>('<ndd-tab-bar></ndd-tab-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe('Tabs');
+		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe(
+			'Tabs'
+		);
 	});
 
 	it('warns once when no accessible-label is provided', async () => {
@@ -307,10 +309,11 @@ describe('ndd-tab-bar – accessible label', () => {
 	it('forwards accessible-label to the tablist aria-label', async () => {
 		el = await fixture<NDDTabBar>('<ndd-tab-bar accessible-label="Hoofdnavigatie"></ndd-tab-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
+		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe(
+			'Hoofdnavigatie'
+		);
 	});
 });
-
 
 /* ============================================================
    ndd-tab-bar – item selection
@@ -342,7 +345,9 @@ describe('ndd-tab-bar – item selection', () => {
 		await waitForUpdate(el);
 
 		let detail: any;
-		el.addEventListener('tabchange', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el.addEventListener('tabchange', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
 
 		clickInner(getItems(el)[0]);
 		await waitForUpdate(el);
@@ -356,7 +361,13 @@ describe('ndd-tab-bar – item selection', () => {
 		await waitForUpdate(el);
 
 		let selectBubbled = false;
-		document.addEventListener('select', () => { selectBubbled = true; }, { once: true });
+		document.addEventListener(
+			'select',
+			() => {
+				selectBubbled = true;
+			},
+			{ once: true }
+		);
 
 		clickInner(getItems(el)[0]);
 		await waitForUpdate(el);
@@ -364,7 +375,6 @@ describe('ndd-tab-bar – item selection', () => {
 		expect(selectBubbled).toBe(false);
 	});
 });
-
 
 /* ============================================================
    ndd-tab-bar – variant propagation
@@ -385,7 +395,7 @@ describe('ndd-tab-bar – variant propagation', () => {
 			</ndd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		getItems(el).forEach(item => {
+		getItems(el).forEach((item) => {
 			expect(item.getAttribute('variant')).toBe('text');
 		});
 	});
@@ -398,7 +408,7 @@ describe('ndd-tab-bar – variant propagation', () => {
 			</ndd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		getItems(el).forEach(item => {
+		getItems(el).forEach((item) => {
 			expect(item.getAttribute('variant')).toBe('icon');
 		});
 	});
@@ -427,7 +437,6 @@ describe('ndd-tab-bar – variant propagation', () => {
 	});
 });
 
-
 /* ============================================================
    ndd-tab-bar – compact propagation
    ============================================================ */
@@ -447,7 +456,7 @@ describe('ndd-tab-bar – compact propagation', () => {
 			</ndd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		getItems(el).forEach(item => {
+		getItems(el).forEach((item) => {
 			expect(item.hasAttribute('compact')).toBe(true);
 		});
 	});
@@ -475,7 +484,6 @@ describe('ndd-tab-bar – compact propagation', () => {
 	});
 });
 
-
 /* ============================================================
    ndd-tab-bar – responsive propagation
    ============================================================ */
@@ -495,7 +503,7 @@ describe('ndd-tab-bar – responsive propagation', () => {
 			</ndd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		getItems(el).forEach(item => {
+		getItems(el).forEach((item) => {
 			expect(item.hasAttribute('responsive')).toBe(true);
 		});
 	});
@@ -512,7 +520,6 @@ describe('ndd-tab-bar – responsive propagation', () => {
 		expect(getItems(el)[0].hasAttribute('responsive')).toBe(false);
 	});
 });
-
 
 /* ============================================================
    ndd-tab-bar – full-width
@@ -535,7 +542,6 @@ describe('ndd-tab-bar – full-width', () => {
 		expect(el.hasAttribute('full-width')).toBe(true);
 	});
 });
-
 
 /* ============================================================
    ndd-tab-bar – keyboard navigation
@@ -661,7 +667,6 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 		pressKey(items[0], 'End');
 		expect(spy).toHaveBeenCalled();
 	});
-
 });
 
 /* ============================================================

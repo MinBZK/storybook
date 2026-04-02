@@ -3,7 +3,8 @@ import type { NDDRadioButton } from './ndd-radio-button.js';
 
 export function radioButtonTemplate(component: NDDRadioButton): TemplateResult {
 	return html`
-		<input class="radio-button__input"
+		<input
+			class="radio-button__input"
 			type="radio"
 			.checked=${component.checked}
 			?disabled=${component.disabled}
@@ -12,7 +13,7 @@ export function radioButtonTemplate(component: NDDRadioButton): TemplateResult {
 			value=${component.value}
 			aria-label=${component.accessibleLabel || nothing}
 			@change=${component._handleChange}
-		>
+		/>
 		<div class="radio-button__outer-shape" aria-hidden="true">
 			<div class="radio-button__inner-shape"></div>
 		</div>

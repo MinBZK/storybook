@@ -4,9 +4,7 @@ import '../checkbox/ndd-checkbox.ts';
 
 export function checkboxFieldTemplate(component: NDDCheckboxField): TemplateResult {
 	return html`
-		<div class="checkbox-field"
-			@click=${component._handleLabelClick}
-		>
+		<div class="checkbox-field" @click=${component._handleLabelClick}>
 			<div class="checkbox-field__control">
 				<ndd-checkbox
 					?checked=${component.checked}

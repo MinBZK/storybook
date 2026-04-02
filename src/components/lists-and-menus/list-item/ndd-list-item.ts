@@ -89,7 +89,9 @@ export class NDDListItem extends LitElement {
 		const list = this.closest<NDDList>('ndd-list');
 		if (!list) {
 			if (import.meta.env?.DEV) {
-				console.warn('ndd-list-item: no parent ndd-list found. Variant sync will not work if appended into a list after first render.');
+				console.warn(
+					'ndd-list-item: no parent ndd-list found. Variant sync will not work if appended into a list after first render.'
+				);
 			}
 			return;
 		}

@@ -3,7 +3,6 @@ import { css } from 'lit';
 /* # ndd-dialog styles */
 
 export const dialogStyles = css`
-
 	/* # Host */
 
 	:host {
@@ -21,7 +20,6 @@ export const dialogStyles = css`
 		--_icon-color: var(--primitives-color-warning-350);
 	}
 
-
 	/* # Body */
 
 	.dialog__body {
@@ -32,7 +30,6 @@ export const dialogStyles = css`
 		box-sizing: border-box;
 		max-width: var(--primitives-area-480);
 	}
-
 
 	/* # Icon */
 
@@ -45,7 +42,6 @@ export const dialogStyles = css`
 		color: var(--_icon-color);
 		flex-shrink: 0;
 	}
-
 
 	/* # Text */
 
@@ -61,7 +57,6 @@ export const dialogStyles = css`
 		outline: none;
 	}
 
-
 	/* # Supporting text */
 
 	.dialog__supporting-text {
@@ -70,7 +65,6 @@ export const dialogStyles = css`
 		color: var(--semantics-content-color);
 		text-align: center;
 	}
-
 
 	/* # Content */
 
@@ -81,7 +75,6 @@ export const dialogStyles = css`
 	.dialog__content:not(:has(*)) {
 		display: none;
 	}
-
 
 	/* # Actions */
 

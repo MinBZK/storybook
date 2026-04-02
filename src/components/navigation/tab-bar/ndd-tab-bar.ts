@@ -30,7 +30,6 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { tabBarStyles, tabBarItemStyles } from './ndd-tab-bar.styles.ts';
 import { tabBarTemplate, tabBarItemTemplate } from './ndd-tab-bar.template.ts';
 
-
 // # ndd-tab-bar-item
 
 @customElement('ndd-tab-bar-item')
@@ -113,7 +112,8 @@ export class NDDTabBarItem extends LitElement {
 			trimmed.startsWith('javascript:') ||
 			trimmed.startsWith('data:') ||
 			trimmed.startsWith('vbscript:')
-		) return null;
+		)
+			return null;
 		return url;
 	}
 
@@ -121,18 +121,19 @@ export class NDDTabBarItem extends LitElement {
 		if (!this._sanitizeUrl(this.href)) {
 			event.preventDefault();
 		}
-		this.dispatchEvent(new CustomEvent('select', {
-			bubbles: true,
-			composed: true,
-			detail: { item: this },
-		}));
+		this.dispatchEvent(
+			new CustomEvent('select', {
+				bubbles: true,
+				composed: true,
+				detail: { item: this },
+			})
+		);
 	}
 
 	override render() {
 		return tabBarItemTemplate(this);
 	}
 }
-
 
 // # ndd-tab-bar
 
@@ -175,8 +176,11 @@ export class NDDTabBar extends LitElement {
 
 	override firstUpdated(): void {
 		this._hasCustomLabel = Boolean(this.accessibleLabel);
-		import.meta.env?.DEV && !this._hasCustomLabel &&
-			console.warn('<ndd-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabs".');
+		import.meta.env?.DEV &&
+			!this._hasCustomLabel &&
+			console.warn(
+				'<ndd-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabs".'
+			);
 		this._syncItems();
 	}
 
@@ -196,15 +200,13 @@ export class NDDTabBar extends LitElement {
 		if (!slot) return [];
 		return slot
 			.assignedElements()
-			.filter((el): el is NDDTabBarItem =>
-				el.tagName.toLowerCase() === 'ndd-tab-bar-item'
-			);
+			.filter((el): el is NDDTabBarItem => el.tagName.toLowerCase() === 'ndd-tab-bar-item');
 	}
 
 	private _syncItems(): void {
 		const items = this._getItems();
 
-		items.forEach(item => {
+		items.forEach((item) => {
 			item.compact = this.compact;
 			item.responsive = this.responsive;
 			item._groupVariant = this.variant;
@@ -212,9 +214,9 @@ export class NDDTabBar extends LitElement {
 		});
 
 		// Ensure keyboard entry point
-		const hasSelected = items.some(item => item.selected);
+		const hasSelected = items.some((item) => item.selected);
 		const firstItem = items[0] ?? null;
-		items.forEach(item => {
+		items.forEach((item) => {
 			item._isFallbackFocusable = !hasSelected && item === firstItem;
 		});
 	}
@@ -226,14 +228,16 @@ export class NDDTabBar extends LitElement {
 	private _handleItemSelect = (event: CustomEvent): void => {
 		event.stopPropagation();
 		const items = this._getItems();
-		items.forEach(item => {
+		items.forEach((item) => {
 			item.selected = item === event.detail.item;
 		});
-		this.dispatchEvent(new CustomEvent('tabchange', {
-			bubbles: true,
-			composed: true,
-			detail: event.detail,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('tabchange', {
+				bubbles: true,
+				composed: true,
+				detail: event.detail,
+			})
+		);
 	};
 
 	private _handleKeyDown = (event: KeyboardEvent): void => {
@@ -241,7 +245,7 @@ export class NDDTabBar extends LitElement {
 		if (items.length === 0) return;
 
 		const currentIndex = items.findIndex(
-			item => item === event.target || item.contains(event.target as Node)
+			(item) => item === event.target || item.contains(event.target as Node)
 		);
 		let newIndex = -1;
 
@@ -270,12 +274,16 @@ export class NDDTabBar extends LitElement {
 			items[newIndex].focus();
 			// Auto-activate only for content-switching tabs, not navigation tabs
 			if (!this.navigation) {
-				items.forEach(item => { item.selected = item === items[newIndex]; });
-				this.dispatchEvent(new CustomEvent('tabchange', {
-					bubbles: true,
-					composed: true,
-					detail: { item: items[newIndex] },
-				}));
+				items.forEach((item) => {
+					item.selected = item === items[newIndex];
+				});
+				this.dispatchEvent(
+					new CustomEvent('tabchange', {
+						bubbles: true,
+						composed: true,
+						detail: { item: items[newIndex] },
+					})
+				);
 			}
 		}
 	};

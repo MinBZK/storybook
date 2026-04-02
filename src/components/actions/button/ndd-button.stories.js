@@ -118,7 +118,17 @@ export default {
 	},
 };
 
-const Template = ({ text, variant, size, fullWidth, type, startIcon, endIcon, expandable, disabled }) => html`
+const Template = ({
+	text,
+	variant,
+	size,
+	fullWidth,
+	type,
+	startIcon,
+	endIcon,
+	expandable,
+	disabled,
+}) => html`
 	<ndd-button
 		variant=${variant}
 		size=${size}
@@ -212,16 +222,32 @@ WithEndIcon.parameters = {
 
 export const WithBothIcons = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-button size="md" text="Download bestand" start-icon="download" end-icon="arrow-right"></ndd-button>
-		<ndd-button size="sm" text="Download bestand" start-icon="download" end-icon="arrow-right"></ndd-button>
-		<ndd-button size="xs" text="Download bestand" start-icon="download" end-icon="arrow-right"></ndd-button>
+		<ndd-button
+			size="md"
+			text="Download bestand"
+			start-icon="download"
+			end-icon="arrow-right"
+		></ndd-button>
+		<ndd-button
+			size="sm"
+			text="Download bestand"
+			start-icon="download"
+			end-icon="arrow-right"
+		></ndd-button>
+		<ndd-button
+			size="xs"
+			text="Download bestand"
+			start-icon="download"
+			end-icon="arrow-right"
+		></ndd-button>
 	</div>
 `;
 WithBothIcons.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Button met zowel een start als end icoon via de <code>start-icon</code> en <code>end-icon</code> attributes.',
+			story:
+				'Button met zowel een start als end icoon via de <code>start-icon</code> en <code>end-icon</code> attributes.',
 		},
 	},
 };
@@ -237,7 +263,8 @@ WithDisclosureIcon.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
+			story:
+				'Button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
 		},
 	},
 };
@@ -246,12 +273,12 @@ export const CustomIconSlot = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<ndd-button text="Custom start">
 			<svg slot="start-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-				<circle cx="10" cy="10" r="8"/>
+				<circle cx="10" cy="10" r="8" />
 			</svg>
 		</ndd-button>
 		<ndd-button text="Custom end">
 			<svg slot="end-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-				<polygon points="10,2 18,18 2,18"/>
+				<polygon points="10,2 18,18 2,18" />
 			</svg>
 		</ndd-button>
 	</div>
@@ -260,7 +287,8 @@ CustomIconSlot.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Gebruik de <code>start-icon</code> en <code>end-icon</code> slots om custom SVG iconen te plaatsen in plaats van de icon attributes.',
+			story:
+				'Gebruik de <code>start-icon</code> en <code>end-icon</code> slots om custom SVG iconen te plaatsen in plaats van de icon attributes.',
 		},
 	},
 };

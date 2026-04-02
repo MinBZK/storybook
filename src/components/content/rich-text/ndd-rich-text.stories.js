@@ -23,8 +23,14 @@ export const Default = {
 				<p>In deze wet en de daarop berustende bepalingen wordt verstaan onder:</p>
 				<ul>
 					<li><strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</li>
-					<li><strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert;</li>
-					<li><strong>berekeningsjaar:</strong> het kalenderjaar waarover de zorgtoeslag wordt berekend;</li>
+					<li>
+						<strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding
+						voert;
+					</li>
+					<li>
+						<strong>berekeningsjaar:</strong> het kalenderjaar waarover de zorgtoeslag wordt
+						berekend;
+					</li>
 				</ul>
 			</ndd-rich-text>
 		</div>
@@ -53,9 +59,18 @@ export const Paragraph = {
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<ndd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 2. Zorgtoeslag</h3>
-				<p>De verzekerde die op de eerste dag van het berekeningsjaar de leeftijd van achttien jaar heeft bereikt, heeft aanspraak op een zorgtoeslag.</p>
-				<p>De zorgtoeslag wordt berekend op basis van het toetsingsinkomen van de verzekerde en, indien van toepassing, diens partner.</p>
-				<p>Bij algemene maatregel van bestuur worden regels gesteld omtrent de wijze waarop de zorgtoeslag wordt berekend.</p>
+				<p>
+					De verzekerde die op de eerste dag van het berekeningsjaar de leeftijd van achttien jaar
+					heeft bereikt, heeft aanspraak op een zorgtoeslag.
+				</p>
+				<p>
+					De zorgtoeslag wordt berekend op basis van het toetsingsinkomen van de verzekerde en,
+					indien van toepassing, diens partner.
+				</p>
+				<p>
+					Bij algemene maatregel van bestuur worden regels gesteld omtrent de wijze waarop de
+					zorgtoeslag wordt berekend.
+				</p>
 			</ndd-rich-text>
 		</div>
 	`,
@@ -76,13 +91,15 @@ export const Lists = {
 				</ul>
 				<h3>Geneste en ongeordende lijst</h3>
 				<ul>
-					<li>Hoofdcategorie A
+					<li>
+						Hoofdcategorie A
 						<ul>
 							<li>Subcategorie A1</li>
 							<li>Subcategorie A2</li>
 						</ul>
 					</li>
-					<li>Hoofdcategorie B
+					<li>
+						Hoofdcategorie B
 						<ul>
 							<li>Subcategorie B1</li>
 							<li>Subcategorie B2</li>
@@ -100,13 +117,15 @@ export const Lists = {
 				</ol>
 				<h3>Geneste en geordende lijst</h3>
 				<ol>
-					<li>Hoofdcategorie A
+					<li>
+						Hoofdcategorie A
 						<ol>
 							<li>Subcategorie A1</li>
 							<li>Subcategorie A2</li>
 						</ol>
 					</li>
-					<li>Hoofdcategorie B
+					<li>
+						Hoofdcategorie B
 						<ol>
 							<li>Subcategorie B1</li>
 							<li>Subcategorie B2</li>
@@ -124,11 +143,18 @@ export const InlineElements = {
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<ndd-rich-text spacing=${args.spacing}>
 				<h3>Inline elementen</h3>
-				<p>Dit is een paragraaf met <strong>vetgedrukte tekst</strong> en <em>schuingedrukte tekst</em>.</p>
+				<p>
+					Dit is een paragraaf met <strong>vetgedrukte tekst</strong> en
+					<em>schuingedrukte tekst</em>.
+				</p>
 				<p>Hier staat een <a href="#">hyperlink naar een pagina</a> in de tekst.</p>
 				<p>Dit is een stukje <code>inline code</code> in een paragraaf.</p>
 				<p>Dit is <mark>gemarkeerde tekst</mark> die extra aandacht verdient.</p>
-				<p>Combinaties zijn ook mogelijk: <strong>vet en <em>vet schuins</em></strong> of een <a href="#"><strong>vetgedrukte link</strong></a>.</p>
+				<p>
+					Combinaties zijn ook mogelijk: <strong>vet en <em>vet schuins</em></strong> of een
+					<a href="#"><strong>vetgedrukte link</strong></a
+					>.
+				</p>
 			</ndd-rich-text>
 		</div>
 	`,
@@ -142,7 +168,9 @@ export const Blockquote = {
 				<h3>Artikel 3. Citaat</h3>
 				<p>In de memorie van toelichting staat het volgende vermeld:</p>
 				<blockquote>
-					De zorgtoeslag is bedoeld als tegemoetkoming in de kosten van de zorgverzekering voor mensen met een laag inkomen. Het doel is om de toegankelijkheid van de zorg voor iedereen te waarborgen, ongeacht de financiële situatie van de verzekerde.
+					De zorgtoeslag is bedoeld als tegemoetkoming in de kosten van de zorgverzekering voor
+					mensen met een laag inkomen. Het doel is om de toegankelijkheid van de zorg voor iedereen
+					te waarborgen, ongeacht de financiële situatie van de verzekerde.
 				</blockquote>
 				<p>Dit citaat vormt de basis voor de interpretatie van artikel 2.</p>
 			</ndd-rich-text>
@@ -156,7 +184,10 @@ export const Figure = {
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<ndd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 4. Toelichting met afbeelding</h3>
-				<p>Onderstaande afbeelding toont de verdeling van de zorgtoeslag over de verschillende inkomensgroepen.</p>
+				<p>
+					Onderstaande afbeelding toont de verdeling van de zorgtoeslag over de verschillende
+					inkomensgroepen.
+				</p>
 				<figure>
 					<img src="https://placehold.co/800x400" alt="Verdeling zorgtoeslag per inkomensgroep" />
 					<figcaption>Figuur 1 — Verdeling van de zorgtoeslag per inkomensgroep (2024)</figcaption>
@@ -207,10 +238,16 @@ export const Divider = {
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<ndd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 6. Eerste onderdeel</h3>
-				<p>De verzekerde heeft recht op zorgtoeslag indien het toetsingsinkomen niet hoger is dan de vastgestelde inkomensgrens.</p>
-				<hr>
+				<p>
+					De verzekerde heeft recht op zorgtoeslag indien het toetsingsinkomen niet hoger is dan de
+					vastgestelde inkomensgrens.
+				</p>
+				<hr />
 				<h3>Artikel 7. Tweede onderdeel</h3>
-				<p>De zorgtoeslag wordt maandelijks als voorschot uitbetaald op basis van het geschatte jaarinkomen.</p>
+				<p>
+					De zorgtoeslag wordt maandelijks als voorschot uitbetaald op basis van het geschatte
+					jaarinkomen.
+				</p>
 			</ndd-rich-text>
 		</div>
 	`,
@@ -218,48 +255,78 @@ export const Divider = {
 
 export const Spacing = {
 	render: () => html`
-		<div style="display: flex; flex-direction: column; gap: 3rem; container-type: inline-size; container-name: layout-area;">
+		<div
+			style="display: flex; flex-direction: column; gap: 3rem; container-type: inline-size; container-name: layout-area;"
+		>
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">flat</p>
+				<p
+					style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;"
+				>
+					flat
+				</p>
 				<ndd-rich-text spacing="flat">
 					<h3>Artikel 1. Algemene begrippen</h3>
 					<p>In deze wet wordt verstaan onder:</p>
 					<ul>
 						<li><strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</li>
-						<li><strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert;</li>
+						<li>
+							<strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke
+							huishouding voert;
+						</li>
 					</ul>
 				</ndd-rich-text>
 			</div>
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">tight</p>
+				<p
+					style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;"
+				>
+					tight
+				</p>
 				<ndd-rich-text spacing="tight">
 					<h3>Artikel 1. Algemene begrippen</h3>
 					<p>In deze wet wordt verstaan onder:</p>
 					<ul>
 						<li><strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</li>
-						<li><strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert;</li>
+						<li>
+							<strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke
+							huishouding voert;
+						</li>
 					</ul>
 				</ndd-rich-text>
 			</div>
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">snug (default)</p>
+				<p
+					style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;"
+				>
+					snug (default)
+				</p>
 				<ndd-rich-text spacing="snug">
 					<h3>Artikel 1. Algemene begrippen</h3>
 					<p>In deze wet wordt verstaan onder:</p>
 					<ul>
 						<li><strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</li>
-						<li><strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert;</li>
+						<li>
+							<strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke
+							huishouding voert;
+						</li>
 					</ul>
 				</ndd-rich-text>
 			</div>
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">loose</p>
+				<p
+					style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;"
+				>
+					loose
+				</p>
 				<ndd-rich-text spacing="loose">
 					<h3>Artikel 1. Algemene begrippen</h3>
 					<p>In deze wet wordt verstaan onder:</p>
 					<ul>
 						<li><strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</li>
-						<li><strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert;</li>
+						<li>
+							<strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke
+							huishouding voert;
+						</li>
 					</ul>
 				</ndd-rich-text>
 			</div>
@@ -278,19 +345,29 @@ export const FullArticle = {
 				<p>In deze wet en de daarop berustende bepalingen wordt verstaan onder:</p>
 				<ul>
 					<li><strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</li>
-					<li><strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert;</li>
-					<li><strong>berekeningsjaar:</strong> het kalenderjaar waarover de zorgtoeslag wordt berekend;</li>
+					<li>
+						<strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding
+						voert;
+					</li>
+					<li>
+						<strong>berekeningsjaar:</strong> het kalenderjaar waarover de zorgtoeslag wordt
+						berekend;
+					</li>
 					<li><strong>toetsingsinkomen:</strong> het inkomen als bedoeld in artikel 8;</li>
 				</ul>
 				<h3>Artikel 2. Aanspraak op zorgtoeslag</h3>
-				<p>De verzekerde die op de eerste dag van het berekeningsjaar de leeftijd van achttien jaar heeft bereikt, heeft aanspraak op een zorgtoeslag indien:</p>
+				<p>
+					De verzekerde die op de eerste dag van het berekeningsjaar de leeftijd van achttien jaar
+					heeft bereikt, heeft aanspraak op een zorgtoeslag indien:
+				</p>
 				<ol>
 					<li>hij op die datum in Nederland woont;</li>
 					<li>hij verzekerd is op grond van de Zorgverzekeringswet;</li>
 					<li>zijn toetsingsinkomen de inkomensgrens niet overschrijdt.</li>
 				</ol>
 				<blockquote>
-					De zorgtoeslag is bedoeld als tegemoetkoming in de kosten van de zorgverzekering voor mensen met een laag inkomen.
+					De zorgtoeslag is bedoeld als tegemoetkoming in de kosten van de zorgverzekering voor
+					mensen met een laag inkomen.
 				</blockquote>
 				<h2>Hoofdstuk 2. Berekening</h2>
 				<h3>Artikel 3. Toeslagbedragen</h3>
@@ -313,7 +390,10 @@ export const FullArticle = {
 					</tr>
 				</table>
 				<h3>Artikel 4. Meer informatie</h3>
-				<p>Voor meer informatie verwijzen wij naar de <a href="#">website van de Belastingdienst</a> of het <a href="#">Besluit zorgtoeslag</a>.</p>
+				<p>
+					Voor meer informatie verwijzen wij naar de
+					<a href="#">website van de Belastingdienst</a> of het <a href="#">Besluit zorgtoeslag</a>.
+				</p>
 				<figure>
 					<img src="https://placehold.co/800x400" alt="Overzicht zorgtoeslag" />
 					<figcaption>Figuur 1 — Schematisch overzicht van de zorgtoeslag berekening</figcaption>
@@ -328,40 +408,67 @@ export const AllSizes = {
 	render: (args) => html`
 		<div style="display: flex; flex-direction: column; gap: 2rem;">
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">sm (&lt; 641px) — constrained to 393px</p>
-				<div style="width: 393px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-area;">
+				<p
+					style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;"
+				>
+					sm (&lt; 641px) — constrained to 393px
+				</p>
+				<div
+					style="width: 393px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-area;"
+				>
 					<ndd-rich-text spacing=${args.spacing}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
 						<ul>
 							<li><strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</li>
-							<li><strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert;</li>
+							<li>
+								<strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke
+								huishouding voert;
+							</li>
 						</ul>
 					</ndd-rich-text>
 				</div>
 			</div>
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">md (≥ 641px) — constrained to 834px</p>
-				<div style="width: 834px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-area;">
+				<p
+					style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;"
+				>
+					md (≥ 641px) — constrained to 834px
+				</p>
+				<div
+					style="width: 834px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-area;"
+				>
 					<ndd-rich-text spacing=${args.spacing}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
 						<ul>
 							<li><strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</li>
-							<li><strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert;</li>
+							<li>
+								<strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke
+								huishouding voert;
+							</li>
 						</ul>
 					</ndd-rich-text>
 				</div>
 			</div>
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">lg (≥ 1008px) — constrained to 1200px</p>
-				<div style="width: 1200px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-area;">
+				<p
+					style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;"
+				>
+					lg (≥ 1008px) — constrained to 1200px
+				</p>
+				<div
+					style="width: 1200px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-area;"
+				>
 					<ndd-rich-text spacing=${args.spacing}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
 						<ul>
 							<li><strong>alleenstaande:</strong> de verzekerde die geen partner heeft;</li>
-							<li><strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke huishouding voert;</li>
+							<li>
+								<strong>partner:</strong> de persoon die met de verzekerde een gezamenlijke
+								huishouding voert;
+							</li>
 						</ul>
 					</ndd-rich-text>
 				</div>

@@ -92,7 +92,12 @@ export class NDDTitleCell extends LitElement {
 	headingLevel: number | undefined = undefined;
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('width') || changed.has('minWidth') || changed.has('maxWidth') || changed.has('minHeight')) {
+		if (
+			changed.has('width') ||
+			changed.has('minWidth') ||
+			changed.has('maxWidth') ||
+			changed.has('minHeight')
+		) {
 			this._applyDimensionStyles();
 		}
 	}

@@ -23,7 +23,6 @@ export const styles = css`
 		display: none;
 	}
 
-
 	/* # Width */
 
 	:host([width='stretch']) {
@@ -41,7 +40,6 @@ export const styles = css`
 	:host([width]:not([width='stretch']):not([width='fit-content'])) {
 		flex-shrink: 0;
 	}
-
 
 	/* # Vertical alignment
 	 *
@@ -63,7 +61,6 @@ export const styles = css`
 	:host([vertical-alignment='bottom']) {
 		align-self: flex-end;
 	}
-
 
 	/* # Slotted content */
 

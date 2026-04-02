@@ -10,7 +10,6 @@ import '../../lists-and-menus/cells/spacer-cell/ndd-spacer-cell.js';
 import '../../lists-and-menus/cells/text-cell/ndd-text-cell.js';
 import '../../content/icon/ndd-icon.js';
 
-
 // # ndd-menu-divider
 
 export class NDDMenuDivider extends LitElement {
@@ -24,7 +23,6 @@ export class NDDMenuDivider extends LitElement {
 if (!customElements.get('ndd-menu-divider')) {
 	customElements.define('ndd-menu-divider', NDDMenuDivider);
 }
-
 
 // # ndd-menu-item
 
@@ -89,20 +87,24 @@ export class NDDMenuItem extends LitElement {
 		}
 		this.addEventListener('focusin', () => {
 			this.setAttribute('data-focused', '');
-			this.dispatchEvent(new CustomEvent('menu-item-focused', {
-				bubbles: true,
-				composed: true,
-			}));
+			this.dispatchEvent(
+				new CustomEvent('menu-item-focused', {
+					bubbles: true,
+					composed: true,
+				})
+			);
 		});
 		this.addEventListener('focusout', () => this.removeAttribute('data-focused'));
 	}
 
 	_handleClick(): void {
 		if (this.disabled) return;
-		this.dispatchEvent(new CustomEvent('select', {
-			bubbles: true,
-			composed: true,
-		}));
+		this.dispatchEvent(
+			new CustomEvent('select', {
+				bubbles: true,
+				composed: true,
+			})
+		);
 		(this.closest('ndd-menu') as HTMLElement)?.hidePopover?.();
 	}
 
@@ -120,14 +122,14 @@ if (!customElements.get('ndd-menu-item')) {
 	customElements.define('ndd-menu-item', NDDMenuItem);
 }
 
-
 // # ndd-menu
 
 const defaultFilterFn = (query: string, item: NDDMenuItem): boolean => {
 	const q = query.toLowerCase();
 	const textMatch = item.text.toLowerCase().includes(q);
 	const valueMatch = item.value !== '' && item.value.toLowerCase().includes(q);
-	const searchMatch = item.search !== '' && item.search.split(' ').some(s => s.toLowerCase().includes(q));
+	const searchMatch =
+		item.search !== '' && item.search.split(' ').some((s) => s.toLowerCase().includes(q));
 	return textMatch || valueMatch || searchMatch;
 };
 
@@ -239,7 +241,7 @@ export class NDDMenu extends LitElement {
 			}
 		}
 		if (changedProperties.has('variant')) {
-			Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
+			Array.from(this.querySelectorAll('ndd-menu-item')).forEach((item) => {
 				(item as NDDMenuItem).menuVariant = this.variant;
 			});
 		}
@@ -312,11 +314,11 @@ export class NDDMenu extends LitElement {
 	}
 
 	private _getFocusedIndex(items: NDDMenuItem[]): number {
-		return items.findIndex(item => item.hasAttribute('data-focused'));
+		return items.findIndex((item) => item.hasAttribute('data-focused'));
 	}
 
 	private _setHighlight(target: NDDMenuItem | null): void {
-		Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
+		Array.from(this.querySelectorAll('ndd-menu-item')).forEach((item) => {
 			item.removeAttribute('highlighted');
 		});
 		const resolved = target ?? this._getVisibleItems()[0] ?? null;
@@ -329,18 +331,19 @@ export class NDDMenu extends LitElement {
 
 	private _updateDividerVisibility(): void {
 		const children = Array.from(this.children) as Element[];
-		children.forEach(el => {
+		children.forEach((el) => {
 			if (el.tagName.toLowerCase() === 'ndd-menu-divider') {
 				el.removeAttribute('hidden');
 			}
 		});
 
-		const visible = children.filter(el => !el.hasAttribute('hidden'));
+		const visible = children.filter((el) => !el.hasAttribute('hidden'));
 		visible.forEach((el, index) => {
 			if (el.tagName.toLowerCase() !== 'ndd-menu-divider') return;
 			const isFirst = index === 0;
 			const isLast = index === visible.length - 1;
-			const prevIsDivider = index > 0 && visible[index - 1].tagName.toLowerCase() === 'ndd-menu-divider';
+			const prevIsDivider =
+				index > 0 && visible[index - 1].tagName.toLowerCase() === 'ndd-menu-divider';
 			if (isFirst || isLast || prevIsDivider) {
 				el.setAttribute('hidden', '');
 			}
@@ -364,7 +367,7 @@ export class NDDMenu extends LitElement {
 	 */
 	public filter(query: string): void {
 		const allItems = Array.from(this.querySelectorAll('ndd-menu-item')) as NDDMenuItem[];
-		allItems.forEach(item => {
+		allItems.forEach((item) => {
 			const matches = !query || this.filterFn(query, item);
 			item.toggleAttribute('hidden', !matches);
 			if (!query) {
@@ -408,17 +411,18 @@ export class NDDMenu extends LitElement {
 		if (direction === 'first') {
 			targetIndex = 0;
 		} else {
-			const current = items.findIndex(item =>
-				item.hasAttribute('highlighted') || item.hasAttribute('data-focused')
+			const current = items.findIndex(
+				(item) => item.hasAttribute('highlighted') || item.hasAttribute('data-focused')
 			);
 			if (direction === 'next') {
 				targetIndex = current === -1 ? 0 : current < items.length - 1 ? current + 1 : 0;
 			} else {
-				targetIndex = current === -1 ? items.length - 1 : current > 0 ? current - 1 : items.length - 1;
+				targetIndex =
+					current === -1 ? items.length - 1 : current > 0 ? current - 1 : items.length - 1;
 			}
 		}
 
-		items.forEach(item => item.removeAttribute('highlighted'));
+		items.forEach((item) => item.removeAttribute('highlighted'));
 		items[targetIndex].setAttribute('highlighted', '');
 		items[targetIndex].shadowRoot?.querySelector('button')?.focus();
 	}
@@ -431,7 +435,7 @@ export class NDDMenu extends LitElement {
 		const items = this._getVisibleItems();
 		if (items.length === 0) return;
 
-		const current = items.findIndex(item => item.hasAttribute('highlighted'));
+		const current = items.findIndex((item) => item.hasAttribute('highlighted'));
 		let next: number;
 
 		if (direction === 'next') {
@@ -440,7 +444,7 @@ export class NDDMenu extends LitElement {
 			next = current === -1 ? items.length - 1 : current > 0 ? current - 1 : items.length - 1;
 		}
 
-		items.forEach(item => item.removeAttribute('highlighted'));
+		items.forEach((item) => item.removeAttribute('highlighted'));
 		items[next].setAttribute('highlighted', '');
 	}
 
@@ -459,9 +463,7 @@ export class NDDMenu extends LitElement {
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl || !this._isOpen) return;
 
-		const viewportMargin = parseInt(
-			getComputedStyle(this).getPropertyValue('--_viewport-margin')
-		);
+		const viewportMargin = parseInt(getComputedStyle(this).getPropertyValue('--_viewport-margin'));
 
 		const { x, y } = await computePosition(anchorEl, this, {
 			placement: this.placement as import('@floating-ui/dom').Placement,
@@ -534,7 +536,7 @@ export class NDDMenu extends LitElement {
 		this._updateDividerVisibility();
 		this._setHighlight(null);
 		this._updateEmptyState();
-		Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
+		Array.from(this.querySelectorAll('ndd-menu-item')).forEach((item) => {
 			(item as NDDMenuItem).menuVariant = this.variant;
 		});
 

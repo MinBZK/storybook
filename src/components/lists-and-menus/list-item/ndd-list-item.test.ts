@@ -90,7 +90,6 @@ describe('ndd-list-item', () => {
 		expect(endArea?.classList.contains('is-visible')).toBe(true);
 	});
 
-
 	// — Selected propagation ————————————————————————————————————————————————
 
 	it('propagates selected attribute to slotted elements when selected', async () => {

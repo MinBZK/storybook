@@ -24,7 +24,6 @@ describe('ndd-switch', () => {
 	});
 });
 
-
 /* ============================================================
    State
    ============================================================ */
@@ -72,7 +71,6 @@ describe('ndd-switch – state', () => {
 		expect(input.getAttribute('aria-label')).toBe('Meldingen aan');
 	});
 });
-
 
 /* ============================================================
    Change event
@@ -124,7 +122,6 @@ describe('ndd-switch – change event', () => {
 	});
 });
 
-
 /* ============================================================
    Toggle
    ============================================================ */
@@ -162,12 +159,13 @@ describe('ndd-switch – toggle', () => {
 		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" disabled></ndd-switch>');
 		await waitForUpdate(el);
 		let changeFired = false;
-		el.addEventListener('change', () => { changeFired = true; });
+		el.addEventListener('change', () => {
+			changeFired = true;
+		});
 		el.toggle();
 		expect(changeFired).toBe(false);
 	});
 });
-
 
 /* ============================================================
    Keyboard interaction
@@ -190,7 +188,6 @@ describe('ndd-switch – disabled keyboard guard', () => {
 		expect(el.checked).toBe(false);
 	});
 });
-
 
 /* ============================================================
    Accessibility
@@ -216,9 +213,7 @@ describe('ndd-switch – accessibility', () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		el = await fixture<NDDSwitch>('<ndd-switch></ndd-switch>');
 		await waitForUpdate(el);
-		expect(warnSpy).toHaveBeenCalledWith(
-			expect.stringContaining('accessible-label')
-		);
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
 	});
 
 	it('does not warn when accessible-label is provided', async () => {
