@@ -198,7 +198,7 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 
 ## CSS Variable Validation
 
-Design tokens worden gevalideerd tijdens de build (`npm run validate:tokens`):
+CSS variabelen worden gevalideerd tijdens de build (`npm run validate:styles`):
 
 **Token categorieën:**
 - `--context-*` - Context hooks voor consumers (niet gevalideerd, niet in settings.css)

@@ -37,14 +37,14 @@ function parseStylesFile(filePath) {
   }
 
   const content = fs.readFileSync(filePath, 'utf-8');
-  const tokens = new Set();
+  const variables = new Set();
 
   let match;
   while ((match = VAR_DEFINITION_PATTERN.exec(content)) !== null) {
-    tokens.add(match[1]);
+    variables.add(match[1]);
   }
 
-  return tokens;
+  return variables;
 }
 
 /**
@@ -113,9 +113,9 @@ function categorizeVariable(varName) {
   if (varName.startsWith('--ndd-')) return 'override';
   if (varName.startsWith('--context-')) return 'context';
   if (varName.startsWith('--_')) return 'internal';
-  if (varName.startsWith('--components-')) return 'token';
-  if (varName.startsWith('--semantics-')) return 'token';
-  if (varName.startsWith('--primitives-')) return 'token';
+  if (varName.startsWith('--components-')) return 'style';
+  if (varName.startsWith('--semantics-')) return 'style';
+  if (varName.startsWith('--primitives-')) return 'style';
   return 'unknown';
 }
 
@@ -125,9 +125,9 @@ function categorizeVariable(varName) {
 function validate() {
   console.log('🔍 Validating CSS variables...\n');
 
-  // Parse tokens
-  const tokens = parseStylesFile(STYLES_FILE);
-  console.log(`📦 Found ${tokens.size} tokens in settings.css\n`);
+  // Parse styles
+  const variables = parseStylesFile(STYLES_FILE);
+  console.log(`📦 Found ${variables.size} variables in settings.css\n`);
 
   // Find component files
   const componentFiles = findComponentFiles(COMPONENTS_DIR);
@@ -139,7 +139,7 @@ function validate() {
     totalUsages: 0,
     overrideVars: 0,
     internalVars: 0,
-    tokenVars: 0,
+    styleVars: 0,
     unknownVars: 0,
   };
 
@@ -170,14 +170,14 @@ function validate() {
           }
           break;
 
-        case 'token':
-          // Design tokens must exist in settings.css
-          stats.tokenVars++;
-          if (!tokens.has(varName)) {
+        case 'style':
+          // CSS variables must exist in settings.css
+          stats.styleVars++;
+          if (!variables.has(varName)) {
             errors.push({
               file: relativePath,
               variable: varName,
-              message: `Token "${varName}" is not defined in settings.css`,
+              message: `Variable "${varName}" is not defined in settings.css`,
             });
           }
           break;
@@ -200,7 +200,7 @@ function validate() {
   console.log(`   Total variable usages: ${stats.totalUsages}`);
   console.log(`   Override hooks (--ndd-*): ${stats.overrideVars} (skipped)`);
   console.log(`   Internal variables (--_*): ${stats.internalVars}`);
-  console.log(`   Design tokens: ${stats.tokenVars}`);
+  console.log(`   CSS variables: ${stats.styleVars}`);
   if (stats.unknownVars > 0) {
     console.log(`   Unknown prefix: ${stats.unknownVars}`);
   }

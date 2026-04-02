@@ -20,9 +20,9 @@
     "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
-    "build": "npm run build:styles && npm run validate:tokens && npm run build:components",
+    "build": "npm run build:styles && npm run validate:styles && npm run build:components",
     "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/fonts/* dist/fonts/",
-    "validate:tokens": "node scripts/validate-css-variables.js",
+    "validate:styles": "node scripts/validate-css-variables.js",
     "build:components": "npm run clean:components && vite build",
     "clean": "rm -rf dist",
     "clean:components": "rm -rf dist/components",
