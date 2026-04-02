@@ -225,8 +225,10 @@ CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn i
 Geen automatische formatter. Handmatige regels:
 
 - **Tabs** voor indentatie, enkele aanhalingstekens, puntkomma's
-- **CSS:** property waarden altijd op één regel (niet afbreken)
-- **Templates:** `class` op dezelfde regel als element, overige attributen op eigen regels
+- **HTML:** gebruik `>` niet `/>` (HTML, geen XHTML)
+- **CSS:** property waarden altijd op één regel, CSS nesting voor @container/@media, defaults in `:host` niet als fallback, geen flex shorthand, state classes (`.is-dragging`) ipv BEM modifiers
+- **CSS headings:** Level 1 (`/* # */`): 2 lege regels ervoor, 1 erna. Level 2 (`/* ## */`): 1 lege regel ervoor en erna
+- **Templates:** `class` op dezelfde regel als element, elementen met 1 attribuut op één regel, `<slot>` altijd compact, overige attributen op eigen regels
 - **Stories:** alle attributen van een element op één regel
 
 Zie `/component` skill voor volledige formatting voorbeelden.

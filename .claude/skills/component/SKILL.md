@@ -292,8 +292,28 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 - Puntkomma's aan einde van statements
 - Trailing comma's in objecten en arrays
 
+### HTML
+- Gebruik HTML, niet XHTML: `>` niet `/>` voor void elements:
+```html
+<!-- GOED -->
+<input class="checkbox__input" type="checkbox">
+<hr class="divider">
+
+<!-- FOUT — geen XHTML self-closing -->
+<input class="checkbox__input" type="checkbox" />
+<hr class="divider" />
+```
+
 ### CSS (`.styles.ts` en `.css`)
-- Property waarden altijd op **één regel**, ook als ze lang zijn:
+- Property waarden altijd op **één regel**, ook als ze lang zijn
+- Sorteer rules per element; houd alle gedrag voor een element bij elkaar
+- Gebruik **CSS nesting** voor `@container` en `@media` varianten — nest ze in de element rule block
+- Declareer CSS variable defaults in `:host`, nooit als fallback: `var(--_foo)` niet `var(--_foo, 100)`
+- Gebruik **nooit** flex shorthand (`flex: 1`), schrijf altijd de losse properties
+- Level 1 headings (`/* # Section */`): 2 lege regels ervoor, 1 erna
+- Level 2 headings (`/* ## Subsection */`): 1 lege regel ervoor en erna
+- BEM voor blocks/elements; gebruik state classes (`.is-dragging`) niet BEM modifiers voor state
+
 ```css
 /* GOED */
 outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
@@ -304,31 +324,89 @@ outline: var(--semantics-focus-ring-edge-thickness) double
 	var(--semantics-focus-ring-edge-color);
 ```
 
+```css
+/* GOED — CSS nesting */
+.button {
+	display: inline-flex;
+	min-height: var(--_min-height);
+
+	@container (min-width: 641px) {
+		padding: var(--_md-padding);
+	}
+}
+
+/* FOUT — niet nesten */
+.button {
+	display: inline-flex;
+}
+@container (min-width: 641px) {
+	.button {
+		padding: var(--_md-padding);
+	}
+}
+```
+
+```css
+/* GOED — defaults in :host */
+:host {
+	--_min-height: var(--semantics-controls-md-min-size);
+}
+.button {
+	min-height: var(--_min-height);
+}
+
+/* FOUT — fallback in var() */
+.button {
+	min-height: var(--_min-height, 44px);
+}
+```
+
+```css
+/* GOED — state class */
+.list-item.is-dragging { opacity: 0.5; }
+
+/* FOUT — BEM modifier voor state */
+.list-item--dragging { opacity: 0.5; }
+```
+
+```css
+/* GOED — geen flex shorthand */
+flex-grow: 1;
+flex-shrink: 0;
+
+/* FOUT */
+flex: 1 0 auto;
+```
+
 ### Templates (`.template.ts`)
 - `class` attribuut op **dezelfde regel** als het element
-- Alle andere attributen op **eigen regels**:
+- Elementen met één attribuut (naast `class`) blijven op één regel
+- `<slot>` elementen zijn altijd compact
+- Alle overige attributen op **eigen regels**:
 ```html
-<!-- GOED -->
+<!-- GOED — meerdere attributen -->
 <input class="checkbox__input"
 	type="checkbox"
 	.checked=${component.checked}
 	?disabled=${component.disabled}
 	@change=${component._handleChange}
-/>
+>
+
+<!-- GOED — één attribuut naast class, past op één regel -->
+<div class="checkbox__box" aria-hidden="true">
+
+<!-- GOED — slot is altijd compact -->
+<slot></slot>
+<slot name="header"></slot>
+
+<!-- GOED — kort element -->
+<ndd-icon class="checkbox__icon" name="check-mark-small"></ndd-icon>
 
 <!-- FOUT — class op aparte regel -->
 <input
 	class="checkbox__input"
 	type="checkbox"
-/>
-
-<!-- FOUT — alles op één regel -->
-<input class="checkbox__input" type="checkbox" .checked=${component.checked} ?disabled=${component.disabled} />
-```
-- Korte elementen zonder extra attributen mogen op één regel:
-```html
-<slot></slot>
-<ndd-icon class="checkbox__icon" name="check-mark-small"></ndd-icon>
+>
 ```
 
 ### Stories (`.stories.ts` en `.stories.js`)
