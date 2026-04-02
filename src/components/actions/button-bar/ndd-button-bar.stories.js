@@ -4,11 +4,11 @@ import '../button/ndd-button.ts';
 import '../icon-button/ndd-icon-button.ts';
 
 export default {
-    title: 'Components/Actions/Button Bar',
-    component: 'ndd-button-bar',
-    tags: ['autodocs'],
+	title: 'Components/Actions/Button Bar',
+	component: 'ndd-button-bar',
+	tags: ['autodocs'],
 
-    argTypes: {
+	argTypes: {
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
