@@ -170,3 +170,64 @@ describe('ndd-pagination – navigation', () => {
 	});
 });
 
+describe('ndd-pagination – href-pattern', () => {
+	let el: NDDPagination;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders anchor elements when href-pattern is set', async () => {
+		el = await fixture<NDDPagination>('<ndd-pagination current="2" total="5" href-pattern="/page/{page}"></ndd-pagination>');
+		await waitForUpdate(el);
+
+		const anchors = el.shadowRoot!.querySelectorAll('a.pagination__page-button');
+		expect(anchors.length).toBeGreaterThan(0);
+		expect(anchors[0].getAttribute('href')).toBe('/page/1');
+	});
+
+	it('renders no buttons when href-pattern is set', async () => {
+		el = await fixture<NDDPagination>('<ndd-pagination current="2" total="5" href-pattern="/page/{page}"></ndd-pagination>');
+		await waitForUpdate(el);
+
+		const buttons = el.shadowRoot!.querySelectorAll('button.pagination__page-button');
+		expect(buttons.length).toBe(0);
+	});
+
+	it('omits href on anchors when disabled', async () => {
+		el = await fixture<NDDPagination>('<ndd-pagination current="2" total="5" href-pattern="/page/{page}" disabled></ndd-pagination>');
+		await waitForUpdate(el);
+
+		const anchors = el.shadowRoot!.querySelectorAll('a.pagination__page-button');
+		for (const anchor of anchors) {
+			expect(anchor.hasAttribute('href')).toBe(false);
+			expect(anchor.getAttribute('aria-disabled')).toBe('true');
+		}
+	});
+});
+
+describe('ndd-pagination – translations', () => {
+	let el: NDDPagination;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('uses default Dutch labels', async () => {
+		el = await fixture<NDDPagination>('<ndd-pagination current="1" total="5"></ndd-pagination>');
+		await waitForUpdate(el);
+
+		const nav = el.shadowRoot!.querySelector('nav');
+		expect(nav!.getAttribute('aria-label')).toBe('Paginering');
+	});
+
+	it('overrides translations via property', async () => {
+		el = await fixture<NDDPagination>('<ndd-pagination current="1" total="5"></ndd-pagination>');
+		el.translations = { 'components.pagination.label-text': 'Pagination' };
+		await waitForUpdate(el);
+
+		const nav = el.shadowRoot!.querySelector('nav');
+		expect(nav!.getAttribute('aria-label')).toBe('Pagination');
+	});
+});
+

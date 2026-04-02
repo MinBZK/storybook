@@ -18,7 +18,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 		if (hasHref) {
 			return html`
 				<a class="pagination__page-button ${isCurrent ? 'is-current' : ''}"
-					href=${component._hrefForPage(page)}
+					href=${!isDisabled ? component._hrefForPage(page) : nothing}
 					aria-label=${label}
 					aria-current=${isCurrent ? 'page' : nothing}
 					tabindex=${isDisabled ? -1 : nothing}
@@ -53,7 +53,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				text=${t('components.pagination.previous-action')}
 				variant="neutral-tinted"
 				?disabled=${isDisabled || atFirst}
-				href=${hasHref && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
+				href=${hasHref && !isDisabled && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
 				@click=${hasHref ? nothing : () => component._goToPage(component.current - 1)}
 			></ndd-icon-button>
 			<div class="pagination__divider" aria-hidden="true">
@@ -97,7 +97,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				text=${t('components.pagination.next-action')}
 				variant="neutral-tinted"
 				?disabled=${isDisabled || atLast}
-				href=${hasHref && !atLast ? component._hrefForPage(component.current + 1) : nothing}
+				href=${hasHref && !isDisabled && !atLast ? component._hrefForPage(component.current + 1) : nothing}
 				@click=${hasHref ? nothing : () => component._goToPage(component.current + 1)}
 			></ndd-icon-button>
 		</nav>
