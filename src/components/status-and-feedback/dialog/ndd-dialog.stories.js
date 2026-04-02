@@ -1,6 +1,7 @@
 import { html, nothing } from 'lit';
 import './ndd-dialog.ts';
 import '../../actions/button/ndd-button.ts';
+import '../../layout/box/ndd-box.ts';
 import { ICONS } from '../../content/icon/ndd-icon.ts';
 
 /**
@@ -110,7 +111,7 @@ export const Alert = () => html`
 Alert.parameters = { controls: { disable: true } };
 
 export const LegeToestand = () => html`
-	<div style="height: 400px; display: flex; align-items: center; justify-content: center; background: var(--semantics-surfaces-tinted-background-color); border-radius: 8px;">
+	<ndd-box style="height: 400px; display: flex; align-items: center; justify-content: center;">
 		<ndd-dialog
 			icon-name="inbox"
 			text="Geen resultaten"
@@ -118,6 +119,6 @@ export const LegeToestand = () => html`
 		>
 			<ndd-button slot="actions" variant="neutral-tinted" text="Zoekopdracht wissen"></ndd-button>
 		</ndd-dialog>
-	</div>
+	</ndd-box>
 `;
 LegeToestand.parameters = { controls: { disable: true } };

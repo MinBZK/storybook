@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './ndd-side-by-side-split-view.ts';
 import '../../page/ndd-page.ts';
 import '../../page-sections/simple-section/ndd-simple-section.ts';
+import '../../container/ndd-container.ts';
 import '../../../content/rich-text/ndd-rich-text.ts';
 
 /**
@@ -54,9 +55,11 @@ export default {
 const paneContent = (title, slot) => html`
 	<ndd-split-view-pane slot=${slot}>
 		<ndd-page sticky-header>
-			<ndd-rich-text slot="header" style="padding: 16px;">
-				<strong>${title}</strong>
-			</ndd-rich-text>
+			<ndd-container slot="header" padding="16">
+				<ndd-rich-text>
+					<strong>${title}</strong>
+				</ndd-rich-text>
+			</ndd-container>
 			<ndd-simple-section>
 				<ndd-rich-text>
 					<h2>Sectietitel</h2>

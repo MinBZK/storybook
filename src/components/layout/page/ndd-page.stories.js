@@ -1,5 +1,7 @@
 import { html } from 'lit';
 import './ndd-page.ts';
+import '../container/ndd-container.ts';
+import '../page-sections/simple-section/ndd-simple-section.ts';
 import '../../actions/button/ndd-button.ts';
 import '../../layout/spacer/ndd-spacer.ts';
 import '../../content/rich-text/ndd-rich-text.ts';
@@ -60,37 +62,41 @@ export default {
 };
 
 const header = html`
-	<ndd-rich-text spacing="tight" style="padding: 16px;">
-		<strong>Header</strong>
-	</ndd-rich-text>
+	<ndd-container padding="16">
+		<ndd-rich-text spacing="tight">
+			<strong>Header</strong>
+		</ndd-rich-text>
+	</ndd-container>
 `;
 
 const footer = html`
-	<div style="padding: 16px; display: flex; justify-content: flex-end;">
+	<ndd-container padding="16">
 		<ndd-button variant="secondary" text="Annuleren"></ndd-button>
 		<ndd-spacer size="8" direction="horizontal"></ndd-spacer>
 		<ndd-button text="Opslaan"></ndd-button>
-	</div>
+	</ndd-container>
 `;
 
 const content = html`
-	<ndd-rich-text style="padding: 16px;">
-		<h1>Paginatitel</h1>
-		<p>
-			Dit is het scrollbare hoofdgebied van de pagina. Voeg hier de inhoud van de pagina toe.
-			Wanneer de inhoud langer is dan de viewport, wordt het gebied scrollbaar.
-		</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-		<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-		<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-		<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-		<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-		<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-		<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-		<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-	</ndd-rich-text>
+	<ndd-simple-section>
+		<ndd-rich-text>
+			<h1>Paginatitel</h1>
+			<p>
+				Dit is het scrollbare hoofdgebied van de pagina. Voeg hier de inhoud van de pagina toe.
+				Wanneer de inhoud langer is dan de viewport, wordt het gebied scrollbaar.
+			</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+			<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+			<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+			<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+			<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+		</ndd-rich-text>
+	</ndd-simple-section>
 `;
 
 export const Standaard = ({ stickyHeader, stickyFooter, background }) => html`

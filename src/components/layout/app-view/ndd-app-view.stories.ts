@@ -3,6 +3,7 @@ import './ndd-app-view.ts';
 import '../split-views/navigation-split-view/ndd-navigation-split-view.ts';
 import '../page/ndd-page.ts';
 import '../page-sections/simple-section/ndd-simple-section.ts';
+import '../container/ndd-container.ts';
 import '../../content/rich-text/ndd-rich-text.ts';
 
 /**
@@ -47,9 +48,11 @@ export const MetHorizontalSplitView = ({ background }: { background: string }) =
 	<ndd-app-view style="height: 600px;" background=${background}>
 		<ndd-navigation-split-view>
 			<ndd-page sticky-header slot="sidebar">
-				<ndd-rich-text slot="header" style="padding: 16px;">
-					<strong>Zijbalk</strong>
-				</ndd-rich-text>
+				<ndd-container slot="header" padding="16">
+					<ndd-rich-text>
+						<strong>Zijbalk</strong>
+					</ndd-rich-text>
+				</ndd-container>
 				<ndd-simple-section>
 					<ndd-rich-text>
 						<h2>Navigatie</h2>
@@ -59,9 +62,11 @@ export const MetHorizontalSplitView = ({ background }: { background: string }) =
 			</ndd-page>
 
 			<ndd-page sticky-header slot="secondary-sidebar">
-				<ndd-rich-text slot="header" style="padding: 16px;">
-					<strong>Secundaire zijbalk</strong>
-				</ndd-rich-text>
+				<ndd-container slot="header" padding="16">
+					<ndd-rich-text>
+						<strong>Secundaire zijbalk</strong>
+					</ndd-rich-text>
+				</ndd-container>
 				<ndd-simple-section>
 					<ndd-rich-text>
 						<h2>Subnavigatie</h2>
@@ -71,9 +76,11 @@ export const MetHorizontalSplitView = ({ background }: { background: string }) =
 			</ndd-page>
 
 			<ndd-page sticky-header slot="main">
-				<ndd-rich-text slot="header" style="padding: 16px;">
-					<strong>Inhoud</strong>
-				</ndd-rich-text>
+				<ndd-container slot="header" padding="16">
+					<ndd-rich-text>
+						<strong>Inhoud</strong>
+					</ndd-rich-text>
+				</ndd-container>
 				<ndd-simple-section>
 					<ndd-rich-text>
 						<h2>Primaire inhoud</h2>
@@ -83,9 +90,11 @@ export const MetHorizontalSplitView = ({ background }: { background: string }) =
 			</ndd-page>
 
 			<ndd-page sticky-header slot="inspector">
-				<ndd-rich-text slot="header" style="padding: 16px;">
-					<strong>Inspecteur</strong>
-				</ndd-rich-text>
+				<ndd-container slot="header" padding="16">
+					<ndd-rich-text>
+						<strong>Inspecteur</strong>
+					</ndd-rich-text>
+				</ndd-container>
 				<ndd-simple-section>
 					<ndd-rich-text>
 						<h2>Details</h2>
@@ -100,9 +109,11 @@ export const MetHorizontalSplitView = ({ background }: { background: string }) =
 export const MetPagina = () => html`
 	<ndd-app-view style="height: 600px;">
 		<ndd-page sticky-header>
-			<ndd-rich-text slot="header" style="padding: 16px;">
-				<strong>Pagina</strong>
-			</ndd-rich-text>
+			<ndd-container slot="header" padding="16">
+				<ndd-rich-text>
+					<strong>Pagina</strong>
+				</ndd-rich-text>
+			</ndd-container>
 			<ndd-simple-section>
 				<ndd-rich-text>
 					<h2>Inhoud</h2>
@@ -122,9 +133,11 @@ export const TintedPerPaneel = () => html`
 	<ndd-app-view style="height: 600px;">
 		<ndd-navigation-split-view>
 			<ndd-page sticky-header slot="sidebar" background="tinted">
-				<ndd-rich-text slot="header" style="padding: 16px;">
-					<strong>Zijbalk (tinted)</strong>
-				</ndd-rich-text>
+				<ndd-container slot="header" padding="16">
+					<ndd-rich-text>
+						<strong>Zijbalk (tinted)</strong>
+					</ndd-rich-text>
+				</ndd-container>
 				<ndd-simple-section>
 					<ndd-rich-text>
 						<h2>Navigatie</h2>
@@ -134,9 +147,11 @@ export const TintedPerPaneel = () => html`
 			</ndd-page>
 
 			<ndd-page sticky-header slot="main">
-				<ndd-rich-text slot="header" style="padding: 16px;">
-					<strong>Inhoud (normaal)</strong>
-				</ndd-rich-text>
+				<ndd-container slot="header" padding="16">
+					<ndd-rich-text>
+						<strong>Inhoud (normaal)</strong>
+					</ndd-rich-text>
+				</ndd-container>
 				<ndd-simple-section>
 					<ndd-rich-text>
 						<h2>Primaire inhoud</h2>
