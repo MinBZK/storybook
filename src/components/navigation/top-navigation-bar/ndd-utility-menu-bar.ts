@@ -33,7 +33,7 @@
  * @attr {boolean} has-help - Show help button
  * @attr {boolean} has-settings - Show settings button
  * @attr {string} language - Current language code (default: 'NL')
- * @attr {string} account-label - Account button label (default: 'Mijn')
+ * @attr {string} account-text - Account button text (default: 'Mijn')
  *
  * @fires language-click - When language button is clicked
  * @fires search-click - When search button is clicked
@@ -201,8 +201,8 @@ export class NDDUtilityMenuBar extends LitElement {
 	@property({ type: String })
 	language = 'NL';
 
-	@property({ type: String, attribute: 'account-label' })
-	accountLabel = 'Mijn';
+	@property({ type: String, attribute: 'account-text' })
+	accountText = 'Mijn';
 
 	private _expandedButton: string | null = null;
 
@@ -256,7 +256,7 @@ export class NDDUtilityMenuBar extends LitElement {
 
 	override render() {
 		const safeLanguage = this._escapeHtml(this.language);
-		const safeAccountLabel = this._escapeHtml(this.accountLabel);
+		const safeAccountText = this._escapeHtml(this.accountText);
 
 		return html`
 			<div class="container" part="container" @click="${this._handleClick}">
@@ -305,12 +305,12 @@ export class NDDUtilityMenuBar extends LitElement {
 								class="utility-button"
 								part="button"
 								data-action="account"
-								aria-label="${safeAccountLabel} - Account menu"
+								aria-label="${safeAccountText} - Account menu"
 								aria-haspopup="true"
 								aria-expanded="false"
 							>
 								${userIcon}
-								<span>${safeAccountLabel}</span>
+								<span>${safeAccountText}</span>
 								${chevronIcon}
 							</button>
 						`

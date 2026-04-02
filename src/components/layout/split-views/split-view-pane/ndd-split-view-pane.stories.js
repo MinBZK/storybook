@@ -20,7 +20,7 @@ import '../../../navigation/top-title-bar/ndd-top-title-bar.ts';
  * ```html
  * <ndd-split-view-pane slot="main" has-content>
  *   <ndd-page sticky-header>
- *     <ndd-top-title-bar slot="header" title="Inhoud" back-label="Terug"></ndd-top-title-bar>
+ *     <ndd-top-title-bar slot="header" title="Inhoud" back-text="Terug"></ndd-top-title-bar>
  *     ...
  *   </ndd-page>
  * </ndd-split-view-pane>
@@ -77,7 +77,7 @@ export const Standaard = ({ hasContent }) => html`
 				<ndd-top-title-bar
 					slot="header"
 					title="Secundaire zijbalk"
-					back-label="Zijbalk"
+					back-text="Zijbalk"
 				></ndd-top-title-bar>
 				<ndd-simple-section>
 					<ndd-rich-text>
@@ -96,7 +96,7 @@ export const Standaard = ({ hasContent }) => html`
 				<ndd-top-title-bar
 					slot="header"
 					title="Inhoud"
-					back-label="Terug"
+					back-text="Terug"
 				></ndd-top-title-bar>
 				<ndd-simple-section>
 					<ndd-rich-text>
@@ -112,7 +112,7 @@ export const Standaard = ({ hasContent }) => html`
 				<ndd-top-title-bar
 					slot="header"
 					title="Inspecteur"
-					dismiss-label="Sluit"
+					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				<ndd-simple-section>
 					<ndd-rich-text>

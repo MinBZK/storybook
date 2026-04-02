@@ -13,8 +13,8 @@
  * @attr {boolean} invalid     - Marks the field as invalid
  * @attr {boolean} disabled    - Disabled state
  * @attr {boolean} masked                  - Whether the password is masked (default: true)
- * @attr {string} show-label               - Visible toggle button label when masked (default: 'Toon')
- * @attr {string} hide-label               - Visible toggle button label when unmasked (default: 'Verberg')
+ * @attr {string} show-text               - Visible toggle button text when masked (default: 'Toon')
+ * @attr {string} hide-text               - Visible toggle button text when unmasked (default: 'Verberg')
  * @attr {string} show-accessible-label    - aria-label for toggle when masked (default: 'Toon wachtwoord')
  * @attr {string} hide-accessible-label    - aria-label for toggle when unmasked (default: 'Verberg wachtwoord')
  * @attr {boolean} readonly    - Readonly state
@@ -69,12 +69,12 @@ export class NDDPasswordField extends LitElement {
 	masked = true;
 
 	/** Visible button label when the field is masked. Override for localisation. */
-	@property({ type: String, attribute: 'show-label' })
-	showLabel = 'Toon';
+	@property({ type: String, attribute: 'show-text' })
+	showText = 'Toon';
 
 	/** Visible button label when the field is unmasked. Override for localisation. */
-	@property({ type: String, attribute: 'hide-label' })
-	hideLabel = 'Verberg';
+	@property({ type: String, attribute: 'hide-text' })
+	hideText = 'Verberg';
 
 	/** Accessible aria-label for the toggle button when the field is masked. Override for localisation. */
 	@property({ type: String, attribute: 'show-accessible-label' })

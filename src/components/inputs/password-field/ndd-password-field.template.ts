@@ -29,7 +29,7 @@ function renderValidationIcon(component: NDDPasswordField): TemplateResult | typ
 
 function renderVisibilityToggle(component: NDDPasswordField): TemplateResult {
 	const buttonSize = component.size === 'sm' ? 'xs' : 'sm';
-	const label = component.masked ? component.showLabel : component.hideLabel;
+	const label = component.masked ? component.showText : component.hideText;
 	const accessibleLabel = component.masked ? component.showAccessibleLabel : component.hideAccessibleLabel;
 
 	return html`

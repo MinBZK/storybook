@@ -4,7 +4,7 @@
  * A toolbar for page and container headings with optional navigation and action buttons.
  *
  * The component has two states:
- * - Default: the back button shows the previous page label as a text button
+ * - Default: the back button shows the previous page title as a text button
  * - Compact (class `is-compact`): the back button is an icon button, a divider and the
  *   toolbar title are visible
  *
@@ -35,14 +35,14 @@ export class NDDTopTitleBar extends LitElement {
 	@property({ type: String, attribute: 'title-anchor' })
 	titleAnchor = '';
 
-	@property({ type: String, attribute: 'back-label' })
-	backLabel = '';
+	@property({ type: String, attribute: 'back-text' })
+	backText = '';
 
 	@property({ type: String, attribute: 'back-href' })
 	backHref = '';
 
-	@property({ type: String, attribute: 'dismiss-label' })
-	dismissLabel = '';
+	@property({ type: String, attribute: 'dismiss-text' })
+	dismissText = '';
 
 	private _pageElement: Element | null = null;
 	private _anchorElement: Element | null = null;

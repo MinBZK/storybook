@@ -44,10 +44,10 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		dismissLabel: {
+		dismissText: {
 			control: 'text',
-			name: 'dismiss-label',
-			description: 'Toegankelijk label voor de dismiss knop',
+			name: 'dismiss-text',
+			description: 'Tekst van de dismiss-knop',
 			table: { defaultValue: { summary: 'Verwijder' } },
 		},
 		label: {

@@ -58,9 +58,9 @@ export default {
 			control: 'text',
 			description: 'Current language code',
 		},
-		'account-label': {
+		'account-text': {
 			control: 'text',
-			description: 'Account button label text',
+			description: 'Tekst van de account-knop',
 		},
 	},
 };
@@ -69,7 +69,7 @@ export default {
  * Default utility menu bar with Language, Search, and Account buttons.
  */
 export const Default = {
-	render: () => html` <ndd-utility-menu-bar account-label="Mijn DigID"></ndd-utility-menu-bar> `,
+	render: () => html` <ndd-utility-menu-bar account-text="Mijn DigID"></ndd-utility-menu-bar> `,
 };
 
 /**
@@ -83,7 +83,7 @@ export const AllButtons = {
 			has-help
 			has-settings
 			has-account
-			account-label="Mijn Account"
+			account-text="Mijn Account"
 		></ndd-utility-menu-bar>
 	`,
 };
@@ -100,7 +100,7 @@ export const SearchOnly = {
  */
 export const SmallContainer = {
 	render: () => html`
-		<ndd-utility-menu-bar container="sm" account-label="Mijn DigID"></ndd-utility-menu-bar>
+		<ndd-utility-menu-bar container="sm" account-text="Mijn DigID"></ndd-utility-menu-bar>
 	`,
 };
 
@@ -109,7 +109,7 @@ export const SmallContainer = {
  */
 export const LargeContainer = {
 	render: () => html`
-		<ndd-utility-menu-bar container="lg" account-label="Mijn DigID"></ndd-utility-menu-bar>
+		<ndd-utility-menu-bar container="lg" account-text="Mijn DigID"></ndd-utility-menu-bar>
 	`,
 };
 
@@ -118,7 +118,7 @@ export const LargeContainer = {
  */
 export const EnglishLanguage = {
 	render: () => html`
-		<ndd-utility-menu-bar language="EN" account-label="My Account"></ndd-utility-menu-bar>
+		<ndd-utility-menu-bar language="EN" account-text="My Account"></ndd-utility-menu-bar>
 	`,
 };
 
@@ -127,7 +127,7 @@ export const EnglishLanguage = {
  */
 export const WithHelpAndSettings = {
 	render: () => html`
-		<ndd-utility-menu-bar has-help has-settings account-label="Mijn DigID"></ndd-utility-menu-bar>
+		<ndd-utility-menu-bar has-help has-settings account-text="Mijn DigID"></ndd-utility-menu-bar>
 	`,
 };
 
@@ -141,19 +141,19 @@ export const AllSizes = {
 				<p style="margin: 0 0 8px; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">
 					Container S (icons only)
 				</p>
-				<ndd-utility-menu-bar container="sm" account-label="Mijn DigID"></ndd-utility-menu-bar>
+				<ndd-utility-menu-bar container="sm" account-text="Mijn DigID"></ndd-utility-menu-bar>
 			</div>
 			<div>
 				<p style="margin: 0 0 8px; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">
 					Container M (default)
 				</p>
-				<ndd-utility-menu-bar container="md" account-label="Mijn DigID"></ndd-utility-menu-bar>
+				<ndd-utility-menu-bar container="md" account-text="Mijn DigID"></ndd-utility-menu-bar>
 			</div>
 			<div>
 				<p style="margin: 0 0 8px; font-family: system-ui; color: var(--semantics-content-color); font-size: 12px;">
 					Container L
 				</p>
-				<ndd-utility-menu-bar container="lg" account-label="Mijn DigID"></ndd-utility-menu-bar>
+				<ndd-utility-menu-bar container="lg" account-text="Mijn DigID"></ndd-utility-menu-bar>
 			</div>
 		</div>
 	`,
@@ -163,7 +163,7 @@ export const AllSizes = {
  * Mijn Overheid branding.
  */
 export const MijnOverheidBranding = {
-	render: () => html` <ndd-utility-menu-bar account-label="Mijn Overheid"></ndd-utility-menu-bar> `,
+	render: () => html` <ndd-utility-menu-bar account-text="Mijn Overheid"></ndd-utility-menu-bar> `,
 };
 
 /**
@@ -173,7 +173,7 @@ export const MijnOverheidBranding = {
 export const DropdownStateDemo = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 24px;">
-			<ndd-utility-menu-bar id="demo-utility-bar" account-label="Mijn DigID"></ndd-utility-menu-bar>
+			<ndd-utility-menu-bar id="demo-utility-bar" account-text="Mijn DigID"></ndd-utility-menu-bar>
 
 			<div style="display: flex; gap: 8px; flex-wrap: wrap;">
 				<button

@@ -70,17 +70,17 @@ export class NDDTopNavigationBar extends LitElement {
 	@property({ type: String, attribute: 'utility-language' })
 	utilityLanguage = 'NL';
 
-	@property({ type: String, attribute: 'utility-account-label' })
-	utilityAccountLabel = '';
+	@property({ type: String, attribute: 'utility-account-text' })
+	utilityAccountText = '';
 
 	@property({ type: String, attribute: 'back-href' })
 	backHref = '';
 
-	@property({ type: String, attribute: 'back-label' })
-	backLabel = 'Terug';
+	@property({ type: String, attribute: 'back-text' })
+	backText = 'Terug';
 
-	get _accountLabel(): string {
-		return this.utilityAccountLabel || `Mijn ${this.title}`;
+	get _accountText(): string {
+		return this.utilityAccountText || `Mijn ${this.title}`;
 	}
 
 	get _spacerSize(): '32' | '16' | null {

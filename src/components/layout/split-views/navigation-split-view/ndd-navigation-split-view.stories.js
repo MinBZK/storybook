@@ -100,7 +100,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 					<ndd-top-title-bar
 						slot="header"
 						title="Zijbalk"
-						dismiss-label="Sluit"
+						dismiss-text="Sluit"
 					></ndd-top-title-bar>
 					<ndd-simple-section>
 						<ndd-rich-text>
@@ -117,8 +117,8 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 					<ndd-top-title-bar
 						slot="header"
 						title="Secundaire zijbalk"
-						back-label="Zijbalk"
-						dismiss-label="Sluit"
+						back-text="Zijbalk"
+						dismiss-text="Sluit"
 					></ndd-top-title-bar>
 					<ndd-simple-section>
 						<ndd-rich-text>
@@ -135,7 +135,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 					<ndd-top-title-bar
 						slot="header"
 						title="Inhoud"
-						back-label="Terug"
+						back-text="Terug"
 					>
 						<ndd-button
 							id="sidebar-toggle"
@@ -166,7 +166,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 					<ndd-top-title-bar
 						slot="header"
 						title="Inspecteur"
-						dismiss-label="Sluit"
+						dismiss-text="Sluit"
 					></ndd-top-title-bar>
 					<ndd-simple-section>
 						<ndd-rich-text>
@@ -195,7 +195,7 @@ export const GenestdeSplitView = () => html`
 				<ndd-top-title-bar
 					slot="header"
 					title="Zijbalk"
-					dismiss-label="Sluit"
+					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				<ndd-simple-section>
 					<ndd-rich-text>
@@ -213,7 +213,7 @@ export const GenestdeSplitView = () => html`
 						<ndd-top-title-bar
 							slot="header"
 							title="Inhoud"
-							back-label="Terug"
+							back-text="Terug"
 						></ndd-top-title-bar>
 						<ndd-simple-section>
 							<ndd-rich-text>

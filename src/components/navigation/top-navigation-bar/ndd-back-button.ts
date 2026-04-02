@@ -6,7 +6,7 @@
  *
  * @element ndd-back-button
  * @attr {string} href - Link destination URL
- * @attr {string} label - Button text (default: 'Terug')
+ * @attr {string} label - Button text (standaard: 'Terug')
  * @attr {string} container - Size variant: 'sm' | 'md' | 'lg' (default: 'md')
  *
  * @fires back-click - When button is clicked (for SPA navigation)

@@ -9,7 +9,7 @@
  * @attr {'none' | 'dismiss' | 'menu'} control       - Control type (default: 'none')
  * @attr {boolean}                        open          - Whether the menu is open (menu only)
  * @attr {boolean}                        disabled      - Disabled state
- * @attr {string}                         dismiss-label - Accessible label for the dismiss button (default: 'Verwijder')
+ * @attr {string}                         dismiss-text - Text for the dismiss button (default: 'Verwijder')
  * @attr {string}                         controls      - ID of the associated popup element (aria-controls).
  *                                                        Required for ARIA compliance when control="menu".
  *
@@ -40,8 +40,8 @@ export class NDDToken extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String, attribute: 'dismiss-label' })
-	dismissLabel = 'Verwijder';
+	@property({ type: String, attribute: 'dismiss-text' })
+	dismissText = 'Verwijder';
 
 	/** ID of the associated popup element. Required for ARIA compliance when control="menu". */
 	@property({ type: String, reflect: true })

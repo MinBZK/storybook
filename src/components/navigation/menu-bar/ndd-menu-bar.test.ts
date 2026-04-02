@@ -175,9 +175,9 @@ describe('ndd-menu-bar – overflow menu', () => {
 		expect(overflowBtn).toBeNull();
 	});
 
-	it('uses custom overflow-label', async () => {
+	it('uses custom overflow-text', async () => {
 		el = await fixture<NDDMenuBar>(`
-			<ndd-menu-bar has-overflow-menu overflow-label="More">
+			<ndd-menu-bar has-overflow-menu overflow-text="More">
 				<ndd-menu-bar-item>Home</ndd-menu-bar-item>
 			</ndd-menu-bar>
 		`);

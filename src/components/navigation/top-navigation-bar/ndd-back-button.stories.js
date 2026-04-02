@@ -32,7 +32,7 @@ export default {
 		},
 		label: {
 			control: 'text',
-			description: 'Button text label',
+			description: 'Knoptekst',
 		},
 		container: {
 			control: 'select',

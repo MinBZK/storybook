@@ -83,22 +83,22 @@ describe('ndd-top-title-bar – terugknop', () => {
 		if (el) cleanup(el);
 	});
 
-	it('hides the back button when back-label is not set', async () => {
+	it('hides the back button when back-text is not set', async () => {
 		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.top-title-bar__text-back-button')).toBeNull();
 		expect(el.shadowRoot!.querySelector('.top-title-bar__icon-back-button')).toBeNull();
 	});
 
-	it('renders both back button variants when back-label is set', async () => {
-		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-label="Overzicht"></ndd-top-title-bar>');
+	it('renders both back button variants when back-text is set', async () => {
+		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-text="Overzicht"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.top-title-bar__text-back-button')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('.top-title-bar__icon-back-button')).not.toBeNull();
 	});
 
 	it('shows icon back button when is-compact class is set', async () => {
-		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-label="Overzicht"></ndd-top-title-bar>');
+		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-text="Overzicht"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		el.classList.add('is-compact');
 		await waitForUpdate(el);
@@ -108,7 +108,7 @@ describe('ndd-top-title-bar – terugknop', () => {
 	});
 
 	it('sets href on back buttons when back-href is set', async () => {
-		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-label="Overzicht" back-href="/overzicht"></ndd-top-title-bar>');
+		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-text="Overzicht" back-href="/overzicht"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		const textBtn = el.shadowRoot!.querySelector('.top-title-bar__text-back-button ndd-button');
 		const iconBtn = el.shadowRoot!.querySelector('.top-title-bar__icon-back-button ndd-icon-button');
@@ -117,7 +117,7 @@ describe('ndd-top-title-bar – terugknop', () => {
 	});
 
 	it('fires a back event when _handleBack is called without backHref', async () => {
-		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-label="Overzicht"></ndd-top-title-bar>');
+		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-text="Overzicht"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		const listener = vi.fn();
 		el.addEventListener('back', listener);
@@ -126,7 +126,7 @@ describe('ndd-top-title-bar – terugknop', () => {
 	});
 
 	it('does not fire a back event when back-href is set', async () => {
-		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-label="Overzicht" back-href="/overzicht"></ndd-top-title-bar>');
+		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" back-text="Overzicht" back-href="/overzicht"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		const listener = vi.fn();
 		el.addEventListener('back', listener);
@@ -147,26 +147,26 @@ describe('ndd-top-title-bar – sluitknop', () => {
 		if (el) cleanup(el);
 	});
 
-	it('hides the dismiss button when dismiss-label is not set', async () => {
+	it('hides the dismiss button when dismiss-text is not set', async () => {
 		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.top-title-bar__dismiss-button')).toBeNull();
 	});
 
-	it('shows the dismiss button when dismiss-label is set', async () => {
-		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" dismiss-label="Sluit"></ndd-top-title-bar>');
+	it('shows the dismiss button when dismiss-text is set', async () => {
+		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" dismiss-text="Sluit"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.top-title-bar__dismiss-button')).not.toBeNull();
 	});
 
-	it('renders the dismiss label text', async () => {
-		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" dismiss-label="Annuleer"></ndd-top-title-bar>');
+	it('renders the dismiss text', async () => {
+		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" dismiss-text="Annuleer"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.top-title-bar__dismiss-button ndd-button')?.getAttribute('text')).toBe('Annuleer');
 	});
 
 	it('fires a dismiss event when _handleDismiss is called', async () => {
-		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" dismiss-label="Sluit"></ndd-top-title-bar>');
+		el = await fixture<NDDTopTitleBar>('<ndd-top-title-bar title="Titel" dismiss-text="Sluit"></ndd-top-title-bar>');
 		await waitForUpdate(el);
 		const listener = vi.fn();
 		el.addEventListener('dismiss', listener);

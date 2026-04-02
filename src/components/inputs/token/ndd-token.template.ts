@@ -27,8 +27,8 @@ export function tokenTemplate(component: NDDToken): TemplateResult {
 						size="sm"
 						variant="neutral-tinted"
 						icon="dismiss-small"
-						text=${component.dismissLabel}
-						accessible-label=${component.dismissLabel}
+						text=${component.dismissText}
+						accessible-label=${component.dismissText}
 						?disabled=${component.disabled}
 						@click=${component._handleDismiss}
 					></ndd-icon-button>

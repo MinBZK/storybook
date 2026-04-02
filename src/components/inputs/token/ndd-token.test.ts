@@ -161,8 +161,8 @@ describe('ndd-token – dismiss', () => {
 		expect(dismiss.getAttribute('accessible-label')).toBe('Verwijder');
 	});
 
-	it('dismiss button uses custom dismiss-label', async () => {
-		el = await fixture<NDDToken>('<ndd-token control="dismiss" dismiss-label="Remove filter">Label</ndd-token>');
+	it('dismiss button uses custom dismiss-text', async () => {
+		el = await fixture<NDDToken>('<ndd-token control="dismiss" dismiss-text="Remove filter">Label</ndd-token>');
 		await waitForUpdate(el);
 		const dismiss = el.shadowRoot!.querySelector('.token__dismiss-action ndd-icon-button')!;
 		expect(dismiss.getAttribute('accessible-label')).toBe('Remove filter');

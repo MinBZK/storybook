@@ -56,7 +56,7 @@ const Template = (args) => html`
 			<ndd-top-title-bar
 				slot="header"
 				title="Sheet titel"
-				dismiss-label="Sluit"
+				dismiss-text="Sluit"
 			></ndd-top-title-bar>
 			${pageContent}
 		</ndd-page>
@@ -94,8 +94,8 @@ export const MetTerugknop = {
 				<ndd-top-title-bar
 					slot="header"
 					title="Detailpagina"
-					back-label="Overzicht"
-					dismiss-label="Sluit"
+					back-text="Overzicht"
+					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
 			</ndd-page>
@@ -115,7 +115,7 @@ export const NietModaal = {
 				<ndd-top-title-bar
 					slot="header"
 					title="Niet-modale sheet"
-					dismiss-label="Sluit"
+					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
 			</ndd-page>
@@ -139,7 +139,7 @@ export const MetStickyFooter = {
 				<ndd-top-title-bar
 					slot="header"
 					title="Sheet met footer"
-					dismiss-label="Sluit"
+					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
 				<div slot="footer" style="padding: 16px; display: flex; justify-content: flex-end; gap: 8px;">

@@ -21,10 +21,10 @@ import '../../layout/title-bar/ndd-title-bar.ts';
  * Stel `title-anchor` in op het id van het titelelement in de pagina-inhoud.
  *
  * ## Terugknop
- * In de standaard stand: tekstknop met `back-label`. In de compacte stand: icoonknop.
+ * In de standaard stand: tekstknop met `back-text`. In de compacte stand: icoonknop.
  *
  * ## Sluitknop
- * Stel `dismiss-label` in op 'Sluit', 'Annuleer' of 'Klaar'.
+ * Stel `dismiss-text` in op 'Sluit', 'Annuleer' of 'Klaar'.
  */
 export default {
 	title: 'Components/Navigation/Top Title Bar',
@@ -48,10 +48,10 @@ export default {
 			control: 'text',
 			description: 'Optionele subtitel in de werkbalk (compact stand)',
 		},
-		backLabel: {
+		backText: {
 			control: 'text',
-			name: 'back-label',
-			description: 'Label voor de terugknop; weglaten verbergt de knop',
+			name: 'back-text',
+			description: 'Tekst voor de terugknop; weglaten verbergt de knop',
 			table: { defaultValue: { summary: '' } },
 		},
 		backHref: {
@@ -60,10 +60,10 @@ export default {
 			description: 'Wanneer ingesteld rendert de terugknop als ankerlink',
 			table: { defaultValue: { summary: '' } },
 		},
-		dismissLabel: {
+		dismissText: {
 			control: 'text',
-			name: 'dismiss-label',
-			description: "Label voor de sluitknop: 'Sluit', 'Annuleer' of 'Klaar'",
+			name: 'dismiss-text',
+			description: "Tekst voor de sluitknop: 'Sluit', 'Annuleer' of 'Klaar'",
 			table: { defaultValue: { summary: '' } },
 		},
 		titleAnchor: {
@@ -76,9 +76,9 @@ export default {
 	args: {
 		title: 'Paginatitel',
 		subtitle: '',
-		backLabel: '',
+		backText: '',
 		backHref: '',
-		dismissLabel: '',
+		dismissText: '',
 		titleAnchor: '',
 	},
 };
@@ -89,9 +89,9 @@ const Template = (args) => html`
 			slot="header"
 			title=${args.title}
 			subtitle=${args.subtitle}
-			back-label=${args.backLabel}
+			back-text=${args.backText}
 			back-href=${args.backHref}
-			dismiss-label=${args.dismissLabel}
+			dismiss-text=${args.dismissText}
 			title-anchor=${args.titleAnchor}
 			@back=${action('back')}
 			@dismiss=${action('dismiss')}
@@ -103,7 +103,7 @@ export const Standaard = Template.bind({});
 Standaard.args = { title: 'Paginatitel' };
 
 export const MetTerugknop = Template.bind({});
-MetTerugknop.args = { title: 'Detailpagina', backLabel: 'Overzicht' };
+MetTerugknop.args = { title: 'Detailpagina', backText: 'Overzicht' };
 MetTerugknop.parameters = {
 	docs: {
 		description: {
@@ -118,8 +118,8 @@ export const Compact = () => html`
 			class="is-compact"
 			slot="header"
 			title="Detailpagina"
-			back-label="Overzicht"
-			dismiss-label="Sluit"
+			back-text="Overzicht"
+			dismiss-text="Sluit"
 			@back=${action('back')}
 			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
@@ -135,17 +135,17 @@ Compact.parameters = {
 };
 
 export const MetSluitknop = Template.bind({});
-MetSluitknop.args = { title: 'Formulier', dismissLabel: 'Sluit' };
+MetSluitknop.args = { title: 'Formulier', dismissText: 'Sluit' };
 
 export const MetBeideKnoppen = Template.bind({});
-MetBeideKnoppen.args = { title: 'Detailpagina', backLabel: 'Overzicht', dismissLabel: 'Annuleer' };
+MetBeideKnoppen.args = { title: 'Detailpagina', backText: 'Overzicht', dismissText: 'Annuleer' };
 
 export const MetSubtitel = Template.bind({});
 MetSubtitel.args = {
 	title: 'Paginatitel',
 	subtitle: 'Aanvullende informatie',
-	backLabel: 'Overzicht',
-	dismissLabel: 'Sluit',
+	backText: 'Overzicht',
+	dismissText: 'Sluit',
 };
 
 export const MetWerkbalkActies = () => html`
@@ -153,8 +153,8 @@ export const MetWerkbalkActies = () => html`
 		<ndd-top-title-bar
 			slot="header"
 			title="Document"
-			back-label="Overzicht"
-			dismiss-label="Sluit"
+			back-text="Overzicht"
+			dismiss-text="Sluit"
 		>
 			<ndd-icon-button slot="toolbar" variant="accent-transparent" icon="share" text="Delen"></ndd-icon-button>
 			<ndd-icon-button slot="toolbar" variant="accent-transparent" icon="edit" text="Bewerken"></ndd-icon-button>
@@ -175,8 +175,8 @@ export const MetTitelAnker = () => html`
 		<ndd-top-title-bar
 			slot="header"
 			title="Paginatitel"
-			back-label="Overzicht"
-			dismiss-label="Sluit"
+			back-text="Overzicht"
+			dismiss-text="Sluit"
 			title-anchor="page-title-bar"
 			@back=${action('back')}
 			@dismiss=${action('dismiss')}
