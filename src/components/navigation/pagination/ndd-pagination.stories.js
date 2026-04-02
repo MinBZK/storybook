@@ -7,6 +7,9 @@ import './ndd-pagination.ts';
  * ## Gebruik
  * ```html
  * <ndd-pagination current="1" total="10"></ndd-pagination>
+ *
+ * <!-- Met links in plaats van buttons -->
+ * <ndd-pagination current="1" total="10" href-pattern="/resultaten?pagina={page}"></ndd-pagination>
  * ```
  */
 export default {
@@ -68,3 +71,15 @@ WeinigPaginas.args = { current: 2, total: 3 };
 
 export const Uitgeschakeld = Template.bind({});
 Uitgeschakeld.args = { current: 3, total: 10, disabled: true };
+
+export const MetLinks = () => html`
+	<ndd-pagination current="3" total="10" href-pattern="/resultaten?pagina={page}"></ndd-pagination>
+`;
+MetLinks.parameters = {
+	controls: { disable: true },
+	docs: {
+		description: {
+			story: 'Met <code>href-pattern</code> worden pagina-knoppen als links gerenderd in plaats van buttons. Beter voor SEO en bookmarkbare pagina\'s.',
+		},
+	},
+};

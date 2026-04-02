@@ -8,6 +8,37 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 	const atFirst = component.current <= 1;
 	const atLast = component.current >= component.total;
 	const t = component._t.bind(component);
+	const hasHref = !!component.hrefPattern;
+
+	const renderPageButton = (page: number) => {
+		const isCurrent = page === component.current;
+		const label = t('components.pagination.page-number-text', { page });
+
+		if (hasHref) {
+			return html`
+				<a class="pagination__page-button ${isCurrent ? 'is-current' : ''}"
+					href=${component._hrefForPage(page)}
+					aria-label=${label}
+					aria-current=${isCurrent ? 'page' : nothing}
+				>
+					<div class="pagination__page-button-indicator"></div>
+					<div class="pagination__page-button-text">${page}</div>
+				</a>
+			`;
+		}
+
+		return html`
+			<button class="pagination__page-button ${isCurrent ? 'is-current' : ''}"
+				type="button"
+				aria-label=${label}
+				aria-current=${isCurrent ? 'page' : nothing}
+				@click=${() => component._goToPage(page)}
+			>
+				<div class="pagination__page-button-indicator"></div>
+				<div class="pagination__page-button-text">${page}</div>
+			</button>
+		`;
+	};
 
 	return html`
 		<nav class="pagination"
@@ -18,7 +49,8 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				text=${t('components.pagination.previous-action')}
 				variant="neutral-tinted"
 				?disabled=${atFirst}
-				@click=${() => component._goToPage(component.current - 1)}
+				href=${hasHref && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
+				@click=${hasHref ? nothing : () => component._goToPage(component.current - 1)}
 			></ndd-icon-button>
 			<div class="pagination__divider" aria-hidden="true">
 				<div class="pagination__divider-line"></div>
@@ -27,24 +59,21 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				${pages.map((page) =>
 					page === 'ellipsis'
 						? html`<div class="pagination__ellipsis" aria-hidden="true">&hellip;</div>`
-						: html`
-							<button class="pagination__page-button ${page === component.current ? 'is-current' : ''}"
-								type="button"
-								aria-label=${t('components.pagination.page-number-text', { page })}
-								aria-current=${page === component.current ? 'page' : nothing}
-								@click=${() => component._goToPage(page as number)}
-							>
-								<div class="pagination__page-button-indicator"></div>
-								<div class="pagination__page-button-text">${page}</div>
-							</button>
-						`
+						: renderPageButton(page as number)
 				)}
 			</div>
 			<div class="pagination__compact">
 				<div class="pagination__select-wrapper">
 					<select class="pagination__select"
 						aria-label=${t('components.pagination.go-to-page-action')}
-						@change=${(e: Event) => component._goToPage(Number((e.target as HTMLSelectElement).value))}
+						@change=${(e: Event) => {
+							const page = Number((e.target as HTMLSelectElement).value);
+							if (hasHref) {
+								window.location.href = component._hrefForPage(page);
+							} else {
+								component._goToPage(page);
+							}
+						}}
 					>
 						${Array.from({ length: component.total }, (_, i) => i + 1).map((page) => html`
 							<option value=${page} ?selected=${page === component.current}>${page} / ${component.total}</option>
@@ -63,7 +92,8 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				text=${t('components.pagination.next-action')}
 				variant="neutral-tinted"
 				?disabled=${atLast}
-				@click=${() => component._goToPage(component.current + 1)}
+				href=${hasHref && !atLast ? component._hrefForPage(component.current + 1) : nothing}
+				@click=${hasHref ? nothing : () => component._goToPage(component.current + 1)}
 			></ndd-icon-button>
 		</nav>
 	`;

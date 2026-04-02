@@ -55,6 +55,11 @@ export const paginationStyles = css`
 		margin: 0;
 	}
 
+	a.pagination__page-button {
+		text-decoration: none;
+		color: inherit;
+	}
+
 	.pagination__page-button:hover,
 	.pagination__page-button:focus-visible {
 		z-index: 1;

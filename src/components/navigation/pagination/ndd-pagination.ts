@@ -8,6 +8,7 @@
  * @attr {number} total - Total number of pages (recommended max: 200 for compact select performance)
  * @attr {boolean} disabled - Disabled state
  * @attr {boolean} full-width - Centreert de pagination in de container
+ * @attr {string} href-pattern - URL patroon met {page} placeholder, rendert links in plaats van buttons
  *
  * @fires page-change - When the page changes (detail: { page: number })
  */
@@ -35,6 +36,9 @@ export class NDDPagination extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
 	fullWidth = false;
+
+	@property({ type: String, attribute: 'href-pattern' })
+	hrefPattern = '';
 
 	@property({ type: Object })
 	translations: Partial<NDDPaginationTranslations> = {};
@@ -76,6 +80,10 @@ export class NDDPagination extends LitElement {
 		}
 
 		return [1, 'ellipsis', this.current - 1, this.current, this.current + 1, 'ellipsis', this.total];
+	}
+
+	_hrefForPage(page: number): string {
+		return this.hrefPattern.replace('{page}', String(page));
 	}
 
 	_goToPage(page: number): void {
