@@ -35,9 +35,7 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "lint:a11y": "eslint src/ --rule 'lit-a11y/*: error'",
-    "format": "prettier --write \"src/**/*.{js,json,css,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,json,css,md}\"",
-    "prepare": "pre-commit install || true",
+"prepare": "pre-commit install || true",
     "test": "vitest",
     "test:run": "vitest run",
     "typecheck": "tsc --noEmit"
@@ -59,7 +57,6 @@
     "eslint-plugin-storybook": "^10.3.4",
     "globals": "^15.14.0",
     "playwright": "^1.57.0",
-    "prettier": "^3.4.2",
     "semantic-release": "^25.0.2",
     "storybook": "^10.3.4",
     "typescript": "^5.3.0",
