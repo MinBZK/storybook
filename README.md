@@ -49,7 +49,7 @@ import { NDDButton, NDDCheckbox, NDDSwitch } from '@minbzk/storybook';
 
 Bekijk de live component documentatie: **https://minbzk.github.io/storybook/**
 
-## Quickstart
+## Development setup
 
 ```bash
 # Dependencies installeren
