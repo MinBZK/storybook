@@ -4,6 +4,7 @@ import storybook from "eslint-plugin-storybook";
 import js from '@eslint/js';
 import globals from 'globals';
 import litA11y from 'eslint-plugin-lit-a11y';
+import tseslint from 'typescript-eslint';
 
 export default [js.configs.recommended, {
   languageOptions: {
@@ -62,6 +63,18 @@ export default [js.configs.recommended, {
     'lit-a11y/scope': 'error',
     'lit-a11y/tabindex-no-positive': 'error',
     'lit-a11y/valid-lang': 'error',
+  },
+}, {
+  files: ['**/*.ts'],
+  languageOptions: {
+    parser: tseslint.parser,
+  },
+  plugins: {
+    '@typescript-eslint': tseslint.plugin,
+  },
+  rules: {
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
   },
 }, {
   // Ignore patterns
