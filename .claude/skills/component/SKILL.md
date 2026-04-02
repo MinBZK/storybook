@@ -282,6 +282,71 @@ grep -i "opacity" src/assets/styles/settings.css
 
 ---
 
+## FORMATTING REGELS
+
+Er is geen automatische formatter. Volg deze regels handmatig.
+
+### Algemeen
+- Gebruik **tabs** voor indentatie
+- Enkele aanhalingstekens voor strings
+- Puntkomma's aan einde van statements
+- Trailing comma's in objecten en arrays
+
+### CSS (`.styles.ts` en `.css`)
+- Property waarden altijd op **één regel**, ook als ze lang zijn:
+```css
+/* GOED */
+outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+
+/* FOUT — niet afbreken */
+outline: var(--semantics-focus-ring-edge-thickness) double
+	var(--semantics-focus-ring-edge-color);
+```
+
+### Templates (`.template.ts`)
+- `class` attribuut op **dezelfde regel** als het element
+- Alle andere attributen op **eigen regels**:
+```html
+<!-- GOED -->
+<input class="checkbox__input"
+	type="checkbox"
+	.checked=${component.checked}
+	?disabled=${component.disabled}
+	@change=${component._handleChange}
+/>
+
+<!-- FOUT — class op aparte regel -->
+<input
+	class="checkbox__input"
+	type="checkbox"
+/>
+
+<!-- FOUT — alles op één regel -->
+<input class="checkbox__input" type="checkbox" .checked=${component.checked} ?disabled=${component.disabled} />
+```
+- Korte elementen zonder extra attributen mogen op één regel:
+```html
+<slot></slot>
+<ndd-icon class="checkbox__icon" name="check-mark-small"></ndd-icon>
+```
+
+### Stories (`.stories.ts` en `.stories.js`)
+- Alle attributen van een element op **één regel**:
+```html
+<!-- GOED -->
+<ndd-button variant="primary" size="md" text="Opslaan" ?disabled=${args.disabled}></ndd-button>
+
+<!-- FOUT — niet opsplitsen in stories -->
+<ndd-button
+	variant="primary"
+	size="md"
+	text="Opslaan"
+></ndd-button>
+```
+
+---
+
 ## CHECKLIST
 
 **Tokens:**

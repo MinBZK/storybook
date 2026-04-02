@@ -140,7 +140,7 @@ describe('ndd-{name}', () => {
 
 ## Code Quality
 
-- Pre-commit hooks: ESLint, Prettier, commitlint
+- Pre-commit hooks: ESLint, commitlint
 - Conventional commits: `feat(button): add variant`, `fix(checkbox): focus ring`
 - No hardcoded values, no !important, no frameworks
 
@@ -219,6 +219,17 @@ min-height: var(--semantics-controls-md-min-size);
 - Font-family: `var(--ndd-font-family-sans, 'RijksSansVF', system-ui, sans-serif)`
 
 CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `src/assets/styles/settings.css`.
+
+## Formatting
+
+Geen automatische formatter. Handmatige regels:
+
+- **Tabs** voor indentatie, enkele aanhalingstekens, puntkomma's
+- **CSS:** property waarden altijd op één regel (niet afbreken)
+- **Templates:** `class` op dezelfde regel als element, overige attributen op eigen regels
+- **Stories:** alle attributen van een element op één regel
+
+Zie `/component` skill voor volledige formatting voorbeelden.
 
 ## Rules
 
