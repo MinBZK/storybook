@@ -90,8 +90,8 @@ export class NDDMenuBar extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'has-overflow-menu' })
 	hasOverflowMenu = false;
 
-	@property({ type: String, attribute: 'overflow-label' })
-	overflowLabel = 'Meer';
+	@property({ type: String, attribute: 'overflow-text' })
+	overflowText = 'Meer';
 
 	@state()
 	private _overflowMenuOpen = false;

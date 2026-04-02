@@ -75,8 +75,8 @@ describe('ndd-password-field', () => {
 		expect(button!.getAttribute('accessible-label')).toBe('Verberg wachtwoord');
 	});
 
-	it('uses custom show-label and show-accessible-label when provided', async () => {
-		el = await fixture('<ndd-password-field show-label="Show" show-accessible-label="Show password"></ndd-password-field>');
+	it('uses custom show-text and show-accessible-label when provided', async () => {
+		el = await fixture('<ndd-password-field show-text="Show" show-accessible-label="Show password"></ndd-password-field>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('ndd-button');
 		expect(button!.getAttribute('text')).toBe('Show');

@@ -7,11 +7,10 @@
   "module": "dist/components/ndd-components.js",
   "exports": {
     ".": "./dist/components/ndd-components.js",
-    "./css": "./dist/css/tokens.css"
+    "./styles": "./dist/css/settings.css"
   },
   "files": [
-    "dist",
-    "fonts"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -21,9 +20,9 @@
     "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
-    "build": "npm run build:tokens && npm run validate:tokens && npm run build:components",
-    "build:tokens": "mkdir -p dist/css && cp src/assets/styles/settings.css dist/css/tokens.css",
-    "validate:tokens": "node scripts/validate-css-variables.js",
+    "build": "npm run build:styles && npm run validate:styles && npm run build:components",
+    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
+    "validate:styles": "node scripts/validate-css-variables.js",
     "build:components": "npm run clean:components && vite build",
     "clean": "rm -rf dist",
     "clean:components": "rm -rf dist/components",
@@ -36,8 +35,6 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "lint:a11y": "eslint src/ --rule 'lit-a11y/*: error'",
-    "format": "prettier --write \"src/**/*.{js,json,css,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,json,css,md}\"",
     "prepare": "pre-commit install || true",
     "test": "vitest",
     "test:run": "vitest run",
@@ -48,21 +45,22 @@
     "@commitlint/config-conventional": "^19.6.0",
     "@eslint/js": "^9.17.0",
     "@semantic-release/git": "^10.0.1",
-    "@storybook/addon-a11y": "^10.1.10",
-    "@storybook/addon-docs": "^10.1.10",
-    "@storybook/addon-themes": "^10.1.10",
-    "@storybook/addon-vitest": "^10.1.10",
-    "@storybook/web-components-vite": "^10.1.10",
+    "@storybook/addon-a11y": "^10.3.4",
+    "@storybook/addon-docs": "^10.3.4",
+    "@storybook/addon-themes": "^10.3.4",
+    "@storybook/addon-vitest": "^10.3.4",
+    "@storybook/web-components-vite": "^10.3.4",
     "@vitest/browser-playwright": "^4.0.16",
     "@vitest/coverage-v8": "^4.0.16",
     "eslint": "^9.17.0",
     "eslint-plugin-lit-a11y": "^5.1.1",
+    "eslint-plugin-storybook": "^10.3.4",
     "globals": "^15.14.0",
     "playwright": "^1.57.0",
-    "prettier": "^3.4.2",
     "semantic-release": "^25.0.2",
-    "storybook": "^10.1.10",
+    "storybook": "^10.3.4",
     "typescript": "^5.3.0",
+    "typescript-eslint": "^8.58.0",
     "vite": "^7.3.1",
     "vitest": "^4.0.16"
   },

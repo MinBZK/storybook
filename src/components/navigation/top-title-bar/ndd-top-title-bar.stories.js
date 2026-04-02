@@ -1,8 +1,10 @@
+import { action } from 'storybook/actions';
 import { html } from 'lit';
 import './ndd-top-title-bar.ts';
 import '../../actions/button/ndd-button.ts';
 import '../../actions/icon-button/ndd-icon-button.ts';
 import '../../layout/page/ndd-page.ts';
+import '../../layout/page-sections/simple-section/ndd-simple-section.ts';
 import '../../layout/title-bar/ndd-title-bar.ts';
 
 /**
@@ -11,19 +13,19 @@ import '../../layout/title-bar/ndd-title-bar.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-top-title-bar title="Paginatitel"></ndd-top-title-bar>
+ * <ndd-top-title-bar text="Paginatitel"></ndd-top-title-bar>
  * ```
  *
  * ## Compact stand
  * De component schakelt automatisch naar de compacte stand (`is-compact`) zodra
  * de bovenkant van het ankerelement de bovenkant van de scrollcontainer bereikt.
- * Stel `title-anchor` in op het id van het titelelement in de pagina-inhoud.
+ * Stel `collapse-anchor` in op het id van het titelelement in de pagina-inhoud.
  *
  * ## Terugknop
- * In de standaard stand: tekstknop met `back-label`. In de compacte stand: icoonknop.
+ * In de standaard stand: tekstknop met `back-text`. In de compacte stand: icoonknop.
  *
  * ## Sluitknop
- * Stel `dismiss-label` in op 'Sluit', 'Annuleer' of 'Klaar'.
+ * Stel `dismiss-text` in op 'Sluit', 'Annuleer' of 'Klaar'.
  */
 export default {
 	title: 'Components/Navigation/Top Title Bar',
@@ -39,18 +41,19 @@ export default {
 		},
 	},
 	argTypes: {
-		title: {
+		text: {
 			control: 'text',
-			description: 'Titel weergegeven in de werkbalk (compact stand)',
+			description: 'Tekst weergegeven in de werkbalk (compact stand)',
 		},
-		subtitle: {
+		supportingText: {
 			control: 'text',
-			description: 'Optionele subtitel in de werkbalk (compact stand)',
+			name: 'supporting-text',
+			description: 'Optionele ondersteunende tekst in de werkbalk (compact stand)',
 		},
-		backLabel: {
+		backText: {
 			control: 'text',
-			name: 'back-label',
-			description: 'Label voor de terugknop; weglaten verbergt de knop',
+			name: 'back-text',
+			description: 'Tekst voor de terugknop; weglaten verbergt de knop',
 			table: { defaultValue: { summary: '' } },
 		},
 		backHref: {
@@ -59,26 +62,26 @@ export default {
 			description: 'Wanneer ingesteld rendert de terugknop als ankerlink',
 			table: { defaultValue: { summary: '' } },
 		},
-		dismissLabel: {
+		dismissText: {
 			control: 'text',
-			name: 'dismiss-label',
-			description: "Label voor de sluitknop: 'Sluit', 'Annuleer' of 'Klaar'",
+			name: 'dismiss-text',
+			description: "Tekst voor de sluitknop: 'Sluit', 'Annuleer' of 'Klaar'",
 			table: { defaultValue: { summary: '' } },
 		},
-		titleAnchor: {
+		collapseAnchor: {
 			control: 'text',
-			name: 'title-anchor',
+			name: 'collapse-anchor',
 			description: 'ID van het ankerelement in de pagina-inhoud',
 			table: { defaultValue: { summary: '' } },
 		},
 	},
 	args: {
-		title: 'Paginatitel',
-		subtitle: '',
-		backLabel: '',
+		text: 'Paginatitel',
+		supportingText: '',
+		backText: '',
 		backHref: '',
-		dismissLabel: '',
-		titleAnchor: '',
+		dismissText: '',
+		collapseAnchor: '',
 	},
 };
 
@@ -86,23 +89,23 @@ const Template = (args) => html`
 	<ndd-page background="tinted" style="height: 120px;">
 		<ndd-top-title-bar
 			slot="header"
-			title=${args.title}
-			subtitle=${args.subtitle}
-			back-label=${args.backLabel}
+			text=${args.text}
+			supporting-text=${args.supportingText}
+			back-text=${args.backText}
 			back-href=${args.backHref}
-			dismiss-label=${args.dismissLabel}
-			title-anchor=${args.titleAnchor}
-			@back=${() => console.log('back')}
-			@dismiss=${() => console.log('dismiss')}
+			dismiss-text=${args.dismissText}
+			collapse-anchor=${args.collapseAnchor}
+			@back=${action('back')}
+			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
 	</ndd-page>
 `;
 
 export const Standaard = Template.bind({});
-Standaard.args = { title: 'Paginatitel' };
+Standaard.args = { text: 'Paginatitel' };
 
 export const MetTerugknop = Template.bind({});
-MetTerugknop.args = { title: 'Detailpagina', backLabel: 'Overzicht' };
+MetTerugknop.args = { text: 'Detailpagina', backText: 'Overzicht' };
 MetTerugknop.parameters = {
 	docs: {
 		description: {
@@ -116,11 +119,11 @@ export const Compact = () => html`
 		<ndd-top-title-bar
 			class="is-compact"
 			slot="header"
-			title="Detailpagina"
-			back-label="Overzicht"
-			dismiss-label="Sluit"
-			@back=${() => console.log('back')}
-			@dismiss=${() => console.log('dismiss')}
+			text="Detailpagina"
+			back-text="Overzicht"
+			dismiss-text="Sluit"
+			@back=${action('back')}
+			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
 	</ndd-page>
 `;
@@ -134,26 +137,26 @@ Compact.parameters = {
 };
 
 export const MetSluitknop = Template.bind({});
-MetSluitknop.args = { title: 'Formulier', dismissLabel: 'Sluit' };
+MetSluitknop.args = { text: 'Formulier', dismissText: 'Sluit' };
 
 export const MetBeideKnoppen = Template.bind({});
-MetBeideKnoppen.args = { title: 'Detailpagina', backLabel: 'Overzicht', dismissLabel: 'Annuleer' };
+MetBeideKnoppen.args = { text: 'Detailpagina', backText: 'Overzicht', dismissText: 'Annuleer' };
 
 export const MetSubtitel = Template.bind({});
 MetSubtitel.args = {
-	title: 'Paginatitel',
-	subtitle: 'Aanvullende informatie',
-	backLabel: 'Overzicht',
-	dismissLabel: 'Sluit',
+	text: 'Paginatitel',
+	supportingText: 'Aanvullende informatie',
+	backText: 'Overzicht',
+	dismissText: 'Sluit',
 };
 
 export const MetWerkbalkActies = () => html`
 	<ndd-page background="tinted" style="height: 120px;">
 		<ndd-top-title-bar
 			slot="header"
-			title="Document"
-			back-label="Overzicht"
-			dismiss-label="Sluit"
+			text="Document"
+			back-text="Overzicht"
+			dismiss-text="Sluit"
 		>
 			<ndd-icon-button slot="toolbar" variant="accent-transparent" icon="share" text="Delen"></ndd-icon-button>
 			<ndd-icon-button slot="toolbar" variant="accent-transparent" icon="edit" text="Bewerken"></ndd-icon-button>
@@ -173,27 +176,27 @@ export const MetTitelAnker = () => html`
 	<ndd-page background="tinted" sticky-header style="height: 400px;">
 		<ndd-top-title-bar
 			slot="header"
-			title="Paginatitel"
-			back-label="Overzicht"
-			dismiss-label="Sluit"
-			title-anchor="page-title-bar"
-			@back=${() => console.log('back')}
-			@dismiss=${() => console.log('dismiss')}
+			text="Paginatitel"
+			back-text="Overzicht"
+			dismiss-text="Sluit"
+			collapse-anchor="page-title-bar"
+			@back=${action('back')}
+			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
-		<div style="padding-inline: 16px;">
+		<ndd-simple-section>
 			<ndd-title-bar id="page-title-bar" size="2">
 				<h1>Paginatitel</h1>
 				<p slot="subtitle">Scroll omlaag om te zien hoe de compacte stand wordt geactiveerd.</p>
 			</ndd-title-bar>
 			<div style="height: 600px;"></div>
-		</div>
+		</ndd-simple-section>
 	</ndd-page>
 `;
 MetTitelAnker.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Automatische compacte stand via <code>title-anchor</code>.',
+			story: 'Automatische compacte stand via <code>collapse-anchor</code>.',
 		},
 	},
 };
@@ -202,18 +205,18 @@ export const MetTitelAnkerZonderActies = () => html`
 	<ndd-page background="tinted" sticky-header style="height: 400px;">
 		<ndd-top-title-bar
 			slot="header"
-			title="Paginatitel"
-			title-anchor="page-title-bar-2"
-			@back=${() => console.log('back')}
-			@dismiss=${() => console.log('dismiss')}
+			text="Paginatitel"
+			collapse-anchor="page-title-bar-2"
+			@back=${action('back')}
+			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
-		<div style="padding-inline: 16px;">
+		<ndd-simple-section>
 			<ndd-title-bar id="page-title-bar-2" size="2">
 				<h1>Paginatitel</h1>
 				<p slot="subtitle">Zonder terugknop of sluitknop.</p>
 			</ndd-title-bar>
 			<div style="height: 600px;"></div>
-		</div>
+		</ndd-simple-section>
 	</ndd-page>
 `;
 MetTitelAnkerZonderActies.parameters = {

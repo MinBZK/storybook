@@ -59,16 +59,16 @@ export default {
 			description: 'Whether the password is masked',
 			table: { defaultValue: { summary: true } },
 		},
-		showLabel: {
+		showText: {
 			control: 'text',
-			name: 'show-label',
-			description: 'Visible toggle button label when masked',
+			name: 'show-text',
+			description: 'Zichtbare knoptekst wanneer gemaskeerd',
 			table: { defaultValue: { summary: 'Toon' } },
 		},
-		hideLabel: {
+		hideText: {
 			control: 'text',
-			name: 'hide-label',
-			description: 'Visible toggle button label when unmasked',
+			name: 'hide-text',
+			description: 'Zichtbare knoptekst wanneer zichtbaar',
 			table: { defaultValue: { summary: 'Verberg' } },
 		},
 		showAccessibleLabel: {
@@ -96,15 +96,15 @@ export default {
 		invalid: false,
 		disabled: false,
 		masked: true,
-		showLabel: 'Toon',
-		hideLabel: 'Verberg',
+		showText: 'Toon',
+		hideText: 'Verberg',
 		showAccessibleLabel: 'Toon wachtwoord',
 		hideAccessibleLabel: 'Verberg wachtwoord',
 		name: 'password',
 	},
 };
 
-const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, showLabel, hideLabel, showAccessibleLabel, hideAccessibleLabel, name }) => html`
+const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, showText, hideText, showAccessibleLabel, hideAccessibleLabel, name }) => html`
 	<ndd-password-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -113,8 +113,8 @@ const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, 
 		?invalid=${invalid}
 		?disabled=${disabled}
 		.masked=${masked}
-		show-label=${showLabel}
-		hide-label=${hideLabel}
+		show-text=${showText}
+		hide-text=${hideText}
 		show-accessible-label=${showAccessibleLabel}
 		hide-accessible-label=${hideAccessibleLabel}
 		name=${name}

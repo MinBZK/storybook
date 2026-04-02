@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events -- label delegates to inner input */
 import { html, nothing, TemplateResult } from 'lit';
 import type { NDDFormField } from './ndd-form-field.js';
 import type { NDDFormFieldHelpText } from './ndd-form-field.js';

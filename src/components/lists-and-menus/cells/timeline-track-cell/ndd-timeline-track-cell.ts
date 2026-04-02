@@ -11,7 +11,7 @@
  * @csspart track - The timeline track container
  */
 
-import { LitElement, html, css, svg } from 'lit';
+import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 type Step = 'past' | 'future' | 'none';
@@ -19,121 +19,121 @@ type Child = 'first' | 'between' | 'last';
 
 @customElement('ndd-timeline-track-cell')
 export class NDDTimelineTrackCell extends LitElement {
-  static override styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 18px;
-    }
+	static override styles = css`
+		:host {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 18px;
+		}
 
-    :host([hidden]) {
-      display: none;
-    }
+		:host([hidden]) {
+			display: none;
+		}
 
-    .timeline-track {
-      position: relative;
-      width: 18px;
-      height: 100%;
-      min-height: 50px;
-    }
+		.timeline-track {
+			position: relative;
+			width: 18px;
+			height: 100%;
+			min-height: 50px;
+		}
 
-    /* Vertical lines */
-    .timeline-track__line-top,
-    .timeline-track__line-bottom {
-      position: absolute;
-      left: 50%;
-      width: 2px;
-      margin-left: -1px;
-      background-color: var(--semantics-buttons-accent-filled-background-color);
-    }
+		/* Vertical lines */
+		.timeline-track__line-top,
+		.timeline-track__line-bottom {
+			position: absolute;
+			left: 50%;
+			width: 2px;
+			margin-left: -1px;
+			background-color: var(--semantics-buttons-accent-filled-background-color);
+		}
 
-    .timeline-track__line-top {
-      bottom: 50%;
-      height: 59px;
-    }
+		.timeline-track__line-top {
+			bottom: 50%;
+			height: 59px;
+		}
 
-    .timeline-track__line-bottom {
-      top: 50%;
-      height: 59px;
-    }
+		.timeline-track__line-bottom {
+			top: 50%;
+			height: 59px;
+		}
 
-    /* Dot indicator */
-    .timeline-track__dot {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 18px;
-      height: 18px;
-      margin-top: -9px;
-      border-radius: 50%;
-      box-sizing: border-box;
-      border: 2px solid var(--semantics-buttons-accent-filled-background-color);
-    }
+		/* Dot indicator */
+		.timeline-track__dot {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			width: 18px;
+			height: 18px;
+			margin-top: -9px;
+			border-radius: 50%;
+			box-sizing: border-box;
+			border: 2px solid var(--semantics-buttons-accent-filled-background-color);
+		}
 
-    /* Step: past (filled dot) */
-    :host([step="past"]) .timeline-track__dot,
-    :host(:not([step])) .timeline-track__dot {
-      background-color: var(--semantics-buttons-accent-filled-background-color);
-    }
+		/* Step: past (filled dot) */
+		:host([step="past"]) .timeline-track__dot,
+		:host(:not([step])) .timeline-track__dot {
+			background-color: var(--semantics-buttons-accent-filled-background-color);
+		}
 
-    /* Step: future (hollow dot with white fill) */
-    :host([step="future"]) .timeline-track__dot {
-      background-color: var(--semantics-surfaces-background-color);
-    }
+		/* Step: future (hollow dot with white fill) */
+		:host([step="future"]) .timeline-track__dot {
+			background-color: var(--semantics-surfaces-background-color);
+		}
 
-    /* Step: none - continuous line, no dot */
-    .timeline-track__line-full {
-      position: absolute;
-      left: 50%;
-      width: 2px;
-      margin-left: -1px;
-      top: -34px;
-      bottom: -34px;
-      background-color: var(--semantics-buttons-accent-filled-background-color);
-    }
+		/* Step: none - continuous line, no dot */
+		.timeline-track__line-full {
+			position: absolute;
+			left: 50%;
+			width: 2px;
+			margin-left: -1px;
+			top: -34px;
+			bottom: -34px;
+			background-color: var(--semantics-buttons-accent-filled-background-color);
+		}
 
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .timeline-track__dot,
-      .timeline-track__line-top,
-      .timeline-track__line-bottom,
-      .timeline-track__line-full {
-        forced-color-adjust: none;
-      }
-    }
-  `;
+		/* Accessibility: High Contrast Mode */
+		@media (forced-colors: active) {
+			.timeline-track__dot,
+			.timeline-track__line-top,
+			.timeline-track__line-bottom,
+			.timeline-track__line-full {
+				forced-color-adjust: none;
+			}
+		}
+	`;
 
-  @property({ type: String, reflect: true })
-  step: Step = 'past';
+	@property({ type: String, reflect: true })
+	step: Step = 'past';
 
-  @property({ type: String, reflect: true })
-  child: Child = 'between';
+	@property({ type: String, reflect: true })
+	child: Child = 'between';
 
-  override render() {
-    if (this.step === 'none') {
-      return html`
-        <div class="timeline-track" part="track">
-          <div class="timeline-track__line-full"></div>
-        </div>
-      `;
-    }
+	override render() {
+		if (this.step === 'none') {
+			return html`
+				<div class="timeline-track" part="track">
+					<div class="timeline-track__line-full"></div>
+				</div>
+			`;
+		}
 
-    const showTopLine = this.child === 'between' || this.child === 'last';
-    const showBottomLine = this.child === 'between' || this.child === 'first';
+		const showTopLine = this.child === 'between' || this.child === 'last';
+		const showBottomLine = this.child === 'between' || this.child === 'first';
 
-    return html`
-      <div class="timeline-track" part="track">
-        ${showTopLine ? html`<div class="timeline-track__line-top"></div>` : ''}
-        <div class="timeline-track__dot"></div>
-        ${showBottomLine ? html`<div class="timeline-track__line-bottom"></div>` : ''}
-      </div>
-    `;
-  }
+		return html`
+			<div class="timeline-track" part="track">
+				${showTopLine ? html`<div class="timeline-track__line-top"></div>` : ''}
+				<div class="timeline-track__dot"></div>
+				${showBottomLine ? html`<div class="timeline-track__line-bottom"></div>` : ''}
+			</div>
+		`;
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'ndd-timeline-track-cell': NDDTimelineTrackCell;
-  }
+	interface HTMLElementTagNameMap {
+		'ndd-timeline-track-cell': NDDTimelineTrackCell;
+	}
 }

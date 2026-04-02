@@ -2,6 +2,7 @@ import { html, nothing, TemplateResult } from 'lit';
 import type { NDDRadioButtonField } from './ndd-radio-button-field.js';
 import '../radio-button/ndd-radio-button.ts';
 
+/* eslint-disable lit-a11y/click-events-have-key-events -- label wrapper delegates to inner radio button */
 export function radioButtonFieldTemplate(component: NDDRadioButtonField): TemplateResult {
 	return html`
 		<div class="radio-button-field"

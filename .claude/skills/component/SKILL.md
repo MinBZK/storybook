@@ -143,7 +143,7 @@ export class RR{PascalName} extends LitElement {
     :host([size="xs"]) .{name} {
       min-height: var(--semantics-controls-xs-min-size);
       border-radius: var(--semantics-controls-xs-corner-radius);
-      /* padding en font: haal uit design tokens */
+      /* padding en font: haal uit CSS variabelen */
     }
 
     :host([size="sm"]) .{name} {
@@ -282,11 +282,154 @@ grep -i "opacity" src/assets/styles/settings.css
 
 ---
 
+## FORMATTING REGELS
+
+Er is geen automatische formatter. Volg deze regels handmatig.
+
+### Algemeen
+- Gebruik **tabs** voor indentatie
+- Enkele aanhalingstekens voor strings
+- Puntkomma's aan einde van statements
+- Trailing comma's in objecten en arrays
+
+### HTML
+- Gebruik HTML, niet XHTML: `>` niet `/>` voor void elements:
+```html
+<!-- GOED -->
+<input class="checkbox__input" type="checkbox">
+<hr class="divider">
+
+<!-- FOUT — geen XHTML self-closing -->
+<input class="checkbox__input" type="checkbox" />
+<hr class="divider" />
+```
+
+### CSS (`.styles.ts` en `.css`)
+- Property waarden altijd op **één regel**, ook als ze lang zijn
+- Sorteer rules per element; houd alle gedrag voor een element bij elkaar
+- Gebruik **CSS nesting** voor `@container` en `@media` varianten — nest ze in de element rule block
+- Declareer CSS variable defaults in `:host`, nooit als fallback: `var(--_foo)` niet `var(--_foo, 100)`
+- Gebruik **nooit** flex shorthand (`flex: 1`), schrijf altijd de losse properties
+- Level 1 headings (`/* # Section */`): 2 lege regels ervoor, 1 erna
+- Level 2 headings (`/* ## Subsection */`): 1 lege regel ervoor en erna
+- BEM voor blocks/elements; gebruik state classes (`.is-dragging`) niet BEM modifiers voor state
+
+```css
+/* GOED */
+outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+
+/* FOUT — niet afbreken */
+outline: var(--semantics-focus-ring-edge-thickness) double
+	var(--semantics-focus-ring-edge-color);
+```
+
+```css
+/* GOED — CSS nesting */
+.button {
+	display: inline-flex;
+	min-height: var(--_min-height);
+
+	@container (min-width: 641px) {
+		padding: var(--_md-padding);
+	}
+}
+
+/* FOUT — niet nesten */
+.button {
+	display: inline-flex;
+}
+@container (min-width: 641px) {
+	.button {
+		padding: var(--_md-padding);
+	}
+}
+```
+
+```css
+/* GOED — defaults in :host */
+:host {
+	--_min-height: var(--semantics-controls-md-min-size);
+}
+.button {
+	min-height: var(--_min-height);
+}
+
+/* FOUT — fallback in var() */
+.button {
+	min-height: var(--_min-height, 44px);
+}
+```
+
+```css
+/* GOED — state class */
+.list-item.is-dragging { opacity: 0.5; }
+
+/* FOUT — BEM modifier voor state */
+.list-item--dragging { opacity: 0.5; }
+```
+
+```css
+/* GOED — geen flex shorthand */
+flex-grow: 1;
+flex-shrink: 0;
+
+/* FOUT */
+flex: 1 0 auto;
+```
+
+### Templates (`.template.ts`)
+- `class` attribuut op **dezelfde regel** als het element
+- Elementen met één attribuut (naast `class`) blijven op één regel
+- `<slot>` elementen zijn altijd compact
+- Alle overige attributen op **eigen regels**:
+```html
+<!-- GOED — meerdere attributen -->
+<input class="checkbox__input"
+	type="checkbox"
+	.checked=${component.checked}
+	?disabled=${component.disabled}
+	@change=${component._handleChange}
+>
+
+<!-- GOED — één attribuut naast class, past op één regel -->
+<div class="checkbox__box" aria-hidden="true">
+
+<!-- GOED — slot is altijd compact -->
+<slot></slot>
+<slot name="header"></slot>
+
+<!-- GOED — kort element -->
+<ndd-icon class="checkbox__icon" name="check-mark-small"></ndd-icon>
+
+<!-- FOUT — class op aparte regel -->
+<input
+	class="checkbox__input"
+	type="checkbox"
+>
+```
+
+### Stories (`.stories.ts` en `.stories.js`)
+- Alle attributen van een element op **één regel**:
+```html
+<!-- GOED -->
+<ndd-button variant="primary" size="md" text="Opslaan" ?disabled=${args.disabled}></ndd-button>
+
+<!-- FOUT — niet opsplitsen in stories -->
+<ndd-button
+	variant="primary"
+	size="md"
+	text="Opslaan"
+></ndd-button>
+```
+
+---
+
 ## CHECKLIST
 
 **Tokens:**
 - [ ] Semantics tokens waar mogelijk
-- [ ] Geen fallback waarden op design tokens (enige uitzondering: override hooks `--rr-*`)
+- [ ] Geen fallback waarden op CSS variabelen (enige uitzondering: override hooks `--rr-*`)
 - [ ] Opacity: `var(--token)`
 
 **Accessibility:**

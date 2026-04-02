@@ -101,9 +101,9 @@ export default {
 			description: 'Language code (e.g., NL, EN)',
 			table: { category: 'Utility Menu' },
 		},
-		'utility-account-label': {
+		'utility-account-text': {
 			control: 'text',
-			description: 'Account button label',
+			description: 'Tekst van de account-knop',
 			table: { category: 'Utility Menu' },
 		},
 		'back-href': {
@@ -111,9 +111,9 @@ export default {
 			description: 'Back button link destination',
 			table: { category: 'Back Button' },
 		},
-		'back-label': {
+		'back-text': {
 			control: 'text',
-			description: 'Back button text label',
+			description: 'Tekst van de terugknop',
 			table: { category: 'Back Button' },
 		},
 	},
@@ -167,7 +167,7 @@ export const WithBackButton = {
 			title="DigID"
 			has-back-button
 			back-href="/"
-			back-label="Terug naar overzicht"
+			back-text="Terug naar overzicht"
 		>
 			<ndd-menu-bar-item slot="menu">Aanvragen & activeren</ndd-menu-bar-item>
 		</ndd-top-navigation-bar>

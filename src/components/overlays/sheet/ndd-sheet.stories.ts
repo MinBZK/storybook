@@ -4,6 +4,8 @@ import '../../navigation/top-title-bar/ndd-top-title-bar.ts';
 import '../../layout/page/ndd-page.ts';
 import '../../actions/button/ndd-button.ts';
 import '../../content/rich-text/ndd-rich-text.ts';
+import '../../layout/page-sections/simple-section/ndd-simple-section.ts';
+import '../../layout/container/ndd-container.ts';
 
 /**
  * De Sheet is een overlay-component die vanuit een zijkant of de onderkant van
@@ -39,14 +41,16 @@ export default {
 const openNext = (e) => e.currentTarget.nextElementSibling.show();
 
 const pageContent = html`
-	<ndd-rich-text style="padding: 16px;">
-		<p>Dit is de inhoud van de sheet.</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-		<p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-		<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-		<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
-		<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa.</p>
-	</ndd-rich-text>
+	<ndd-simple-section>
+		<ndd-rich-text>
+			<p>Dit is de inhoud van de sheet.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			<p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+			<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
+			<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa.</p>
+		</ndd-rich-text>
+	</ndd-simple-section>
 `;
 
 const Template = (args) => html`
@@ -55,8 +59,8 @@ const Template = (args) => html`
 		<ndd-page sticky-header>
 			<ndd-top-title-bar
 				slot="header"
-				title="Sheet titel"
-				dismiss-label="Sluit"
+				text="Sheet titel"
+				dismiss-text="Sluit"
 			></ndd-top-title-bar>
 			${pageContent}
 		</ndd-page>
@@ -93,9 +97,9 @@ export const MetTerugknop = {
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					title="Detailpagina"
-					back-label="Overzicht"
-					dismiss-label="Sluit"
+					text="Detailpagina"
+					back-text="Overzicht"
+					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
 			</ndd-page>
@@ -114,8 +118,8 @@ export const NietModaal = {
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					title="Niet-modale sheet"
-					dismiss-label="Sluit"
+					text="Niet-modale sheet"
+					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
 			</ndd-page>
@@ -138,14 +142,14 @@ export const MetStickyFooter = {
 			<ndd-page sticky-header sticky-footer>
 				<ndd-top-title-bar
 					slot="header"
-					title="Sheet met footer"
-					dismiss-label="Sluit"
+					text="Sheet met footer"
+					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
-				<div slot="footer" style="padding: 16px; display: flex; justify-content: flex-end; gap: 8px;">
+				<ndd-container slot="footer" padding="16">
 					<ndd-button variant="secondary" text="Annuleer"></ndd-button>
 					<ndd-button variant="primary" text="Opslaan"></ndd-button>
-				</div>
+				</ndd-container>
 			</ndd-page>
 		</ndd-sheet>
 	`,

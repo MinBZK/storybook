@@ -67,6 +67,7 @@ export class NDDDescriptionCell extends LitElement {
 		}
 	}
 
+	/* eslint-disable eqeqeq -- != null is intentional: guards both null and undefined */
 	private _applyDimensionStyles() {
 		if (typeof this.width === 'number') {
 			this.style.setProperty('--_width', `${this.width}px`);
@@ -89,6 +90,7 @@ export class NDDDescriptionCell extends LitElement {
 			this.style.removeProperty('--_min-height');
 		}
 	}
+	/* eslint-enable eqeqeq */
 
 	override render() {
 		return template();

@@ -79,14 +79,14 @@ export function template(this: NDDMenuBar) {
 							@click=${this._toggleOverflowMenu}
 							@keydown=${this._handleOverflowButtonKeyDown}
 						>
-							${this.overflowLabel}
+							${this.overflowText}
 							${chevronDownIcon}
 						</button>
 						<div
 							class="overflow-dropdown"
 							part="overflow-menu"
 							id=${this._overflowMenuId}
-							aria-label=${this.overflowLabel}
+							aria-label=${this.overflowText}
 						></div>
 					</div>
 				` : ''}

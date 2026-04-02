@@ -40,14 +40,14 @@ export function template(this: NDDTopNavigationBar) {
 						<ndd-back-button
 							container=${this.container}
 							href=${this.backHref}
-							label=${this.backLabel}
+							label=${this.backText}
 						></ndd-back-button>
 						<span class="nav-title">${this.title}</span>
 						<div class="global-menu">
 							<ndd-menu-bar
 								size=${this._menuBarSize}
 								has-overflow-menu
-								overflow-label="Meer"
+								overflow-text="Meer"
 							>
 								<slot name="menu"></slot>
 							</ndd-menu-bar>
@@ -62,7 +62,7 @@ export function template(this: NDDTopNavigationBar) {
 							?has-help=${this.utilityHasHelp}
 							?has-settings=${this.utilityHasSettings}
 							language=${this.utilityLanguage}
-							account-label=${this._accountLabel}
+							account-text=${this._accountText}
 						></ndd-utility-menu-bar>
 					</div>
 				</div>

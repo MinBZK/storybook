@@ -7,8 +7,7 @@ export default {
 	title: 'Components/Actions/Button Bar',
 	component: 'ndd-button-bar',
 	tags: ['autodocs'],
-	parameters: {
-	},
+
 	argTypes: {
 		size: {
 			control: 'select',

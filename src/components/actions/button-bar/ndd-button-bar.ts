@@ -18,7 +18,6 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './ndd-button-bar.styles.ts';
 import { template } from './ndd-button-bar.template.ts';
-import { repeat } from 'lit/directives/repeat.js';
 
 if (!customElements.get('ndd-button-bar-divider')) {
 	customElements.define('ndd-button-bar-divider', class extends HTMLElement {});

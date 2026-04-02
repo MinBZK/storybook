@@ -42,7 +42,7 @@ export const Standaard = () => html`
 			</p>
 			<p>
 				De box past zich aan aan de breedte van zijn container en heeft geen vaste hoogte.
-				De achtergrondkleur, padding en afronding komen uit de design tokens.
+				De achtergrondkleur, padding en afronding komen uit de CSS variabelen.
 			</p>
 			<h4>Richtlijnen</h4>
 			<ul>

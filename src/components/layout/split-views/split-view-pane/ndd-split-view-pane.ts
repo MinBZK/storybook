@@ -5,7 +5,7 @@
  * The split view automatically sets context: whether a back button should be shown.
  *
  * The consumer sets `has-content` to indicate the pane has content.
- * The consumer sets `back-label` on the `ndd-top-title-bar` inside the pane.
+ * The consumer sets `back-text` on the `ndd-top-title-bar` inside the pane.
  * The split view sets `hide-back` when the back button is not applicable.
  * The pane automatically hides the back button via CSS when `hide-back` is active.
  *

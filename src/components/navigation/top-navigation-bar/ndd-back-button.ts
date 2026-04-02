@@ -6,7 +6,7 @@
  *
  * @element ndd-back-button
  * @attr {string} href - Link destination URL
- * @attr {string} label - Button text (default: 'Terug')
+ * @attr {string} label - Button text (standaard: 'Terug')
  * @attr {string} container - Size variant: 'sm' | 'md' | 'lg' (default: 'md')
  *
  * @fires back-click - When button is clicked (for SPA navigation)
@@ -23,140 +23,140 @@ type ContainerSize = 'sm' | 'md' | 'lg';
 
 // Arrow left icon
 const arrowLeftIcon = svg`
-  <svg class="icon" part="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m12 19-7-7 7-7"/>
-    <path d="M19 12H5"/>
-  </svg>
+	<svg class="icon" part="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<path d="m12 19-7-7 7-7"/>
+		<path d="M19 12H5"/>
+	</svg>
 `;
 
 @customElement('ndd-back-button')
 export class NDDBackButton extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-flex;
-    }
+	static override styles = css`
+		:host {
+			display: inline-flex;
+		}
 
-    :host([hidden]) {
-      display: none;
-    }
+		:host([hidden]) {
+			display: none;
+		}
 
-    * {
-      box-sizing: border-box;
-    }
+		* {
+			box-sizing: border-box;
+		}
 
-    .back-button {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--primitives-space-8);
-      padding: var(--primitives-space-8) var(--primitives-space-16);
-      background: none;
-      border: none;
-      color: var(--primitives-color-accent-100);
-      font: var(--components-menu-bar-menu-item-font);
-      text-decoration: none;
-      cursor: pointer;
-      border-radius: var(--semantics-controls-md-corner-radius);
-      transition: background-color 0.15s ease;
-      white-space: nowrap;
-    }
+		.back-button {
+			display: inline-flex;
+			align-items: center;
+			gap: var(--primitives-space-8);
+			padding: var(--primitives-space-8) var(--primitives-space-16);
+			background: none;
+			border: none;
+			color: var(--primitives-color-accent-100);
+			font: var(--components-menu-bar-menu-item-font);
+			text-decoration: none;
+			cursor: pointer;
+			border-radius: var(--semantics-controls-md-corner-radius);
+			transition: background-color 0.15s ease;
+			white-space: nowrap;
+		}
 
-    .back-button:hover {
-      background-color: var(--primitives-color-neutral-100);
-    }
+		.back-button:hover {
+			background-color: var(--primitives-color-neutral-100);
+		}
 
-    .back-button:focus-visible {
-      box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-      outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-    }
+		.back-button:focus-visible {
+			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+			outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		}
 
-    .icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
+		.icon {
+			width: 20px;
+			height: 20px;
+			flex-shrink: 0;
+		}
 
-    /* Size variants */
-    :host([container='sm']) .back-button {
-      padding: var(--primitives-space-8);
-      font-size: 16px;
-    }
+		/* Size variants */
+		:host([container='sm']) .back-button {
+			padding: var(--primitives-space-8);
+			font-size: 16px;
+		}
 
-    :host([container='sm']) .label {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
+		:host([container='sm']) .label {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+			border: 0;
+		}
 
-    :host([container='lg']) .back-button {
-      font-size: 20px;
-    }
+		:host([container='lg']) .back-button {
+			font-size: 20px;
+		}
 
-    :host([container='lg']) .icon {
-      width: 24px;
-      height: 24px;
-    }
-  `;
+		:host([container='lg']) .icon {
+			width: 24px;
+			height: 24px;
+		}
+	`;
 
-  @property({ type: String })
-  href = '';
+	@property({ type: String })
+	href = '';
 
-  @property({ type: String })
-  label = 'Terug';
+	@property({ type: String })
+	label = 'Terug';
 
-  @property({ type: String, reflect: true })
-  container: ContainerSize = 'md';
+	@property({ type: String, reflect: true })
+	container: ContainerSize = 'md';
 
-  private _handleClick(e: Event): void {
-    // If no href, dispatch event for SPA navigation
-    if (!this.href) {
-      e.preventDefault();
-      this.dispatchEvent(
-        new CustomEvent('back-click', {
-          bubbles: true,
-          composed: true,
-        })
-      );
-    }
-  }
+	private _handleClick(e: Event): void {
+		// If no href, dispatch event for SPA navigation
+		if (!this.href) {
+			e.preventDefault();
+			this.dispatchEvent(
+				new CustomEvent('back-click', {
+					bubbles: true,
+					composed: true,
+				})
+			);
+		}
+	}
 
-  override render() {
-    if (this.href) {
-      return html`
-        <a
-          class="back-button"
-          part="button"
-          href="${this.href}"
-          aria-label="${this.label}"
-          @click="${this._handleClick}"
-        >
-          ${arrowLeftIcon}
-          <span class="label" part="label">${this.label}</span>
-        </a>
-      `;
-    }
+	override render() {
+		if (this.href) {
+			return html`
+				<a
+					class="back-button"
+					part="button"
+					href="${this.href}"
+					aria-label="${this.label}"
+					@click="${this._handleClick}"
+				>
+					${arrowLeftIcon}
+					<span class="label" part="label">${this.label}</span>
+				</a>
+			`;
+		}
 
-    return html`
-      <button
-        class="back-button"
-        part="button"
-        aria-label="${this.label}"
-        @click="${this._handleClick}"
-      >
-        ${arrowLeftIcon}
-        <span class="label" part="label">${this.label}</span>
-      </button>
-    `;
-  }
+		return html`
+			<button
+				class="back-button"
+				part="button"
+				aria-label="${this.label}"
+				@click="${this._handleClick}"
+			>
+				${arrowLeftIcon}
+				<span class="label" part="label">${this.label}</span>
+			</button>
+		`;
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'ndd-back-button': NDDBackButton;
-  }
+	interface HTMLElementTagNameMap {
+		'ndd-back-button': NDDBackButton;
+	}
 }

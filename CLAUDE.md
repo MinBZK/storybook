@@ -6,7 +6,7 @@ Vanilla Web Components for Dutch Government (Rijksoverheid) apps. Single source 
 
 ```bash
 npm run storybook        # Dev server at localhost:6006
-npm run build:tokens     # Copy tokens CSS to dist
+npm run build:styles     # Copy CSS + fonts to dist
 npm run build            # Full build
 ```
 
@@ -140,7 +140,7 @@ describe('ndd-{name}', () => {
 
 ## Code Quality
 
-- Pre-commit hooks: ESLint, Prettier, commitlint
+- Pre-commit hooks: ESLint, commitlint
 - Conventional commits: `feat(button): add variant`, `fix(checkbox): focus ring`
 - No hardcoded values, no !important, no frameworks
 
@@ -198,12 +198,12 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 
 ## CSS Variable Validation
 
-Design tokens worden gevalideerd tijdens de build (`npm run validate:tokens`):
+CSS variabelen worden gevalideerd tijdens de build (`npm run validate:styles`):
 
 **Token categorieën:**
-- `--context-*` - Context hooks voor consumers (niet gevalideerd, niet in tokens.css)
+- `--context-*` - Context hooks voor consumers (niet gevalideerd, niet in settings.css)
 - `--_*` - Interne variabelen (gevalideerd binnen hetzelfde bestand)
-- `--primitives-*`, `--semantics-*`, `--components-*` - Design tokens (gevalideerd tegen tokens.css)
+- `--primitives-*`, `--semantics-*`, `--components-*` - CSS variabelen (gevalideerd tegen settings.css)
 
 **Stricte aanpak - GEEN fallbacks:**
 ```css
@@ -220,11 +220,24 @@ min-height: var(--semantics-controls-md-min-size);
 
 CI faalt als tokens ontbreken. Dit dwingt af dat alle tokens gedefinieerd zijn in `src/assets/styles/settings.css`.
 
+## Formatting
+
+Geen automatische formatter. Handmatige regels:
+
+- **Tabs** voor indentatie, enkele aanhalingstekens, puntkomma's
+- **HTML:** gebruik `>` niet `/>` (HTML, geen XHTML)
+- **CSS:** property waarden altijd op één regel, CSS nesting voor @container/@media, defaults in `:host` niet als fallback, geen flex shorthand, state classes (`.is-dragging`) ipv BEM modifiers
+- **CSS headings:** Level 1 (`/* # */`): 2 lege regels ervoor, 1 erna. Level 2 (`/* ## */`): 1 lege regel ervoor en erna
+- **Templates:** `class` op dezelfde regel als element, elementen met 1 attribuut op één regel, `<slot>` altijd compact, overige attributen op eigen regels
+- **Stories:** alle attributen van een element op één regel
+
+Zie `/component` skill voor volledige formatting voorbeelden.
+
 ## Rules
 
 1. Extend `LitElement`
 2. Use Shadow DOM
-3. Only design tokens - never hardcode
+3. Only CSS variabelen - never hardcode
 4. DigiToegankelijk (WCAG 2.1 AA) compliant
 5. RijksSansVF font with system-ui fallback
 6. BEM naamgeving voor alle class namen

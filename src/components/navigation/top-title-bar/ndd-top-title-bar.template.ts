@@ -4,7 +4,7 @@ import '../../actions/button/ndd-button.ts';
 import '../../actions/icon-button/ndd-icon-button.ts';
 
 export function topTitleBarTemplate(component: NDDTopTitleBar) {
-	const showBack = !!component.backLabel;
+	const showBack = !!component.backText;
 
 	return html`
 		<div class="top-title-bar">
@@ -15,7 +15,7 @@ export function topTitleBarTemplate(component: NDDTopTitleBar) {
 							<ndd-button
 								variant="accent-transparent"
 								start-icon="chevron-left"
-								text=${component.backLabel}
+								text=${component.backText}
 								href=${component.backHref || nothing}
 								@click=${component._handleBack}
 							></ndd-button>
@@ -24,8 +24,8 @@ export function topTitleBarTemplate(component: NDDTopTitleBar) {
 							<ndd-icon-button
 								variant="accent-transparent"
 								icon="chevron-left"
-								text=${component.backLabel}
-								accessible-label=${component.backLabel || nothing}
+								text=${component.backText}
+								accessible-label=${component.backText || nothing}
 								href=${component.backHref || nothing}
 								@click=${component._handleBack}
 							></ndd-icon-button>
@@ -34,19 +34,19 @@ export function topTitleBarTemplate(component: NDDTopTitleBar) {
 					</div>
 				` : nothing}
 				<div class="top-title-bar__title-group">
-					<h1 class="top-title-bar__title">${component.title}</h1>
-					${component.subtitle ? html`
-						<p class="top-title-bar__subtitle">${component.subtitle}</p>
+					<h1 class="top-title-bar__title">${component.text}</h1>
+					${component.supportingText ? html`
+						<p class="top-title-bar__subtitle">${component.supportingText}</p>
 					` : nothing}
 				</div>
 			</div>
 			<div class="top-title-bar__end">
 				<slot name="toolbar"></slot>
-				${component.dismissLabel ? html`
+				${component.dismissText ? html`
 					<div class="top-title-bar__dismiss-button">
 						<ndd-button
 							variant="accent-transparent"
-							text=${component.dismissLabel}
+							text=${component.dismissText}
 							@click=${component._handleDismiss}
 						></ndd-button>
 					</div>

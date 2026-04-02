@@ -2,6 +2,7 @@ import { html, nothing, TemplateResult } from 'lit';
 import type { NDDSwitchField } from './ndd-switch-field.js';
 import '../switch/ndd-switch.ts';
 
+/* eslint-disable lit-a11y/click-events-have-key-events -- label wrapper delegates to inner switch */
 export function switchFieldTemplate(component: NDDSwitchField): TemplateResult {
 	return html`
 		<div class="switch-field"

@@ -1,6 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDDialog } from './ndd-dialog.ts';
 import './ndd-dialog.ts';
 
 describe('ndd-dialog', () => {

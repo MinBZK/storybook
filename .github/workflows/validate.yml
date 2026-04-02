@@ -24,8 +24,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build tokens
-        run: npm run build:tokens
-
       - name: Validate CSS variables
-        run: npm run validate:tokens
+        run: npm run validate:styles
