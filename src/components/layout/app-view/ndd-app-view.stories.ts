@@ -114,9 +114,9 @@ export const MetPagina = () => html`
 `;
 
 /**
- * Each split view pane can have its own background color independently.
- * Setting tinted on a pane cascades --context-parent-background-color only to that pane's descendants.
- * Sibling panes remain unaffected.
+ * Elk split-view-paneel kan een eigen achtergrondkleur hebben.
+ * Het instellen van tinted op een paneel laat --context-parent-background-color alleen
+ * doorwerken naar de afstammelingen van dat paneel. Naburige panelen blijven ongewijzigd.
  */
 export const TintedPerPaneel = () => html`
 	<ndd-app-view style="height: 600px;">
