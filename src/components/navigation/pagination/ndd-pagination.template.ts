@@ -1,6 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NDDPagination } from './ndd-pagination.ts';
 import '../../actions/icon-button/ndd-icon-button.ts';
+import '../../content/icon/ndd-icon.ts';
 
 export function paginationTemplate(component: NDDPagination): TemplateResult {
 	const pages = component._getVisiblePages();

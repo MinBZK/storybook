@@ -189,7 +189,7 @@ describe('ndd-pagination – keyboard navigation', () => {
 		expect(focusSpy).toHaveBeenCalled();
 	});
 
-	it('ArrowLeft wraps focus to last page button', async () => {
+	it('ArrowLeft stops at first page button', async () => {
 		el = await fixture<NDDPagination>('<ndd-pagination current="1" total="5"></ndd-pagination>');
 		await waitForUpdate(el);
 
@@ -198,7 +198,7 @@ describe('ndd-pagination – keyboard navigation', () => {
 		buttons[0].focus();
 		buttons[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }));
 
-		expect(focusSpy).toHaveBeenCalled();
+		expect(focusSpy).not.toHaveBeenCalled();
 	});
 
 	it('Home calls focus on first page button', async () => {

@@ -13,6 +13,7 @@
  */
 
 import { LitElement } from 'lit';
+import type { PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { paginationStyles } from './ndd-pagination.styles.ts';
 import { paginationTemplate } from './ndd-pagination.template.ts';
@@ -40,7 +41,7 @@ export class NDDPagination extends LitElement {
 
 	private _mergedTranslations = { ...nddPaginationTranslations };
 
-	override willUpdate(changed: Map<string, unknown>): void {
+	override willUpdate(changed: PropertyValues): void {
 		if (changed.has('translations')) {
 			this._mergedTranslations = { ...nddPaginationTranslations, ...this.translations };
 		}
@@ -105,10 +106,10 @@ export class NDDPagination extends LitElement {
 
 		switch (e.key) {
 			case 'ArrowRight':
-				next = index < buttons.length - 1 ? index + 1 : 0;
+				next = index < buttons.length - 1 ? index + 1 : undefined;
 				break;
 			case 'ArrowLeft':
-				next = index > 0 ? index - 1 : buttons.length - 1;
+				next = index > 0 ? index - 1 : undefined;
 				break;
 			case 'Home':
 				next = 0;
