@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
 import type { NDDBox } from './ndd-box.js';
 
-export function boxTemplate(component: NDDBox): TemplateResult {
+export function boxTemplate(_component: NDDBox): TemplateResult {
 	return html`
 		<div class="box">
 			<slot></slot>

@@ -73,6 +73,7 @@ export default [js.configs.recommended, {
     '@typescript-eslint': tseslint.plugin,
   },
   rules: {
+    'no-undef': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
   },
