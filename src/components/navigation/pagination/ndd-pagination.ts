@@ -121,6 +121,7 @@ export class NDDPagination extends LitElement {
 				return;
 		}
 
+		if (next === undefined) return;
 		e.preventDefault();
 		buttons[next].focus();
 	}
