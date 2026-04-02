@@ -1,65 +1,53 @@
-# Nederlandse Digitale Dienst Design System
+# NDD Design System
 
-Design tokens en Web Components voor Nederlandse Digitale Dienst.
+Web Components voor Nederlandse Digitale Dienst (Rijksoverheid).
 
-## Installation
+## Installatie
 
 ### Via npm (GitHub Packages)
 
-1. Add `.npmrc` to your project for GitHub Packages authentication:
+1. Voeg `.npmrc` toe aan je project voor GitHub Packages authenticatie:
 
 ```
 @minbzk:registry=https://npm.pkg.github.com
 ```
 
-2. Authenticate with GitHub Packages (one-time setup):
+2. Authenticeer bij GitHub Packages (eenmalig):
 
 ```bash
 npm login --registry=https://npm.pkg.github.com
-# Use your GitHub username and a personal access token with `read:packages` scope
+# Gebruik je GitHub-gebruikersnaam en een personal access token met `read:packages` scope
 ```
 
-3. Install the package:
+3. Installeer het pakket:
 
 ```bash
 npm install @minbzk/storybook
 ```
 
-### Usage
-
-**Important:** You must import the CSS tokens for proper styling.
+### Gebruik
 
 ```javascript
-// Import CSS tokens (required for styling)
-import '@minbzk/storybook/css';
+// Importeer CSS variabelen en fonts (vereist voor styling)
+import '@minbzk/storybook/styles';
 
-// Import all components
+// Importeer alle componenten
 import '@minbzk/storybook';
 
-// Or import specific components
+// Of importeer specifieke componenten
 import { NDDButton, NDDCheckbox, NDDSwitch } from '@minbzk/storybook';
 ```
 
 ```html
-<!-- Use in HTML -->
-<ndd-button variant="accent-filled">Click me</ndd-button>
-<ndd-checkbox label="Accept terms"></ndd-checkbox>
-<ndd-switch label="Enable notifications"></ndd-switch>
+<!-- Gebruik in HTML -->
+<ndd-button variant="accent-filled" text="Opslaan"></ndd-button>
+<ndd-checkbox text="Akkoord met voorwaarden"></ndd-checkbox>
+<ndd-switch text="Meldingen inschakelen"></ndd-switch>
 ```
 
 ## Storybook
 
-View the live component documentation: **https://minbzk.github.io/storybook/**
-
-## Architectuur
-
-```
-src/assets/styles/settings.css (CSS custom properties)
-	↓
-dist/css/tokens.css
-	↓
-Web Components (Lit)
-```
+Bekijk de live component documentatie: **https://minbzk.github.io/storybook/**
 
 ## Quickstart
 
@@ -67,94 +55,69 @@ Web Components (Lit)
 # Dependencies installeren
 npm install
 
-# Tokens bouwen
-npm run build:tokens
-
 # Storybook starten
 npm run storybook
 
 # Open http://localhost:6006 voor de component documentatie
 ```
 
-## Gebruik
-
-### 1. Laad de tokens CSS
-
-```html
-<link rel="stylesheet" href="dist/css/tokens.css" />
-```
-
-### 2. Importeer componenten
-
-```html
-<script type="module">
-  import './src/components/actions/button/ndd-button.ts';
-</script>
-```
-
-### 3. Gebruik componenten
-
-```html
-<ndd-button variant="primary">Primary Action</ndd-button>
-<ndd-button variant="secondary">Secondary Action</ndd-button>
-<ndd-button size="sm">Small Button</ndd-button>
-```
-
 ## Componenten
 
 ### ndd-button
 
-| Attribuut       | Type    | Default          | Beschrijving                                                                                                                                              |
-| --------------- | ------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant`       | string  | `neutral-tinted` | `primary`, `secondary`, `destructive`, `accent-filled`, `accent-outlined`, `accent-transparent`, `neutral-tinted`, `neutral-transparent`, `danger-tinted` |
-| `size`          | string  | `md`             | `xs`, `sm`, `md`                                                                                                                                          |
-| `disabled`      | boolean | `false`          | Disabled state                                                                                                                                            |
-| `type`          | string  | `button`         | `button`, `submit`, `reset`                                                                                                                               |
-| `full-width`    | boolean | `false`          | Stretches button to fill container width                                                                                                                  |
-| `expandable` | boolean | `false`          | Adds an icon indicating the button opens a menu or popover                                                                                                |
-| `popovertarget` | string  | `''`             | ID of the popover element to target                                                                                                                       |
+| Attribuut          | Type    | Default          | Beschrijving                                                                                                                                             |
+| ------------------ | ------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `text`             | string  | `''`             | Tekst van de button                                                                                                                                      |
+| `variant`          | string  | `neutral-tinted` | `primary`, `secondary`, `destructive`, `accent-filled`, `accent-outlined`, `accent-transparent`, `neutral-tinted`, `neutral-transparent`, `danger-tinted` |
+| `size`             | string  | `md`             | `xs`, `sm`, `md`                                                                                                                                         |
+| `disabled`         | boolean | `false`          | Uitgeschakelde staat                                                                                                                                     |
+| `type`             | string  | `button`         | `button`, `submit`, `reset`                                                                                                                              |
+| `full-width`       | boolean | `false`          | Rekt de button uit over de volledige breedte van de container                                                                                             |
+| `start-icon`       | string  | `''`             | Icoon aan het begin van de button                                                                                                                        |
+| `end-icon`         | string  | `''`             | Icoon aan het einde van de button                                                                                                                        |
+| `expandable`       | boolean | `false`          | Voegt een icoon toe dat aangeeft dat de button een menu of popover opent                                                                                 |
+| `href`             | string  | `undefined`      | Rendert als link (`<a>`) in plaats van een button                                                                                                        |
+| `accessible-label` | string  | `''`             | Toegankelijk label voor schermlezers                                                                                                                     |
+| `popovertarget`    | string  | `''`             | ID van het popover-element                                                                                                                               |
 
-## Token Structuur
+Zie de [Storybook-documentatie](https://minbzk.github.io/storybook/) voor alle componenten.
 
-Tokens zijn georganiseerd in drie lagen:
+## Styling structuur
 
-- **Primitives** - Basis waarden (kleuren, spacing, typography)
-- **Semantics** - Betekenisvolle tokens (buttons, controls, views)
-- **Components** - Component-specifieke tokens
+CSS variabelen zijn georganiseerd in vijf lagen:
+
+| Laag | Prefix | Beschrijving |
+| ---- | ------ | ------------ |
+| **Primitives** | `--primitives-*` | Basis waarden (kleuren, spacing, typography) |
+| **Semantics** | `--semantics-*` | Betekenisvolle variabelen (buttons, controls, surfaces) |
+| **Components** | `--components-*` | Component-specifieke variabelen |
+| **Context** | `--context-*` | Gedeelde variabelen voor communicatie tussen componenten |
+| **Local** | `--_*` | Interne variabelen binnen een component (niet bedoeld voor extern gebruik) |
 
 ```css
-/* Primitives */
+/* Primitives — basis waarden */
 --primitives-color-accent-100: #154273;
 --primitives-space-16: 16px;
 
-/* Semantics */
---semantics-buttons-accent-filled-background-color: #154273;
---semantics-controls-md-min-size: 44px;
+/* Semantics — verwijzen naar primitives */
+--semantics-buttons-accent-filled-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+--semantics-controls-md-min-size: var(--primitives-space-44);
 
-/* Components */
---components-button-md-font: 600 18px/1.125 RijksSansVF, system-ui;
+/* Components — verwijzen naar semantics of primitives */
+--components-list-corner-radius: var(--semantics-controls-md-corner-radius);
+--components-button-group-sm-gap: var(--primitives-space-6);
+
+/* Context — communicatie tussen componenten */
+--context-parent-background-color: var(--semantics-surfaces-background-color);
+
+/* Local — intern binnen een component */
+--_background-color: var(--context-parent-background-color);
 ```
 
-## Development
+## Feedback en verzoeken
 
-### Tokens updaten
+Mis je een component of wil je een wijziging voorstellen? [Maak een issue aan](https://github.com/MinBZK/storybook/issues).
 
-1. Bewerk `src/assets/styles/settings.css`
-2. Run `npm run build:tokens`
-
-### Nieuwe component maken
-
-1. Maak een directory in `src/components/{category}/{component-name}/`
-2. Maak de volgende bestanden aan:
-   - `ndd-{component-name}.ts` — component class (extends `LitElement`)
-   - `ndd-{component-name}.styles.ts` — component styles
-   - `ndd-{component-name}.template.ts` — render template
-   - `ndd-{component-name}.stories.ts` — Storybook stories
-   - `ndd-{component-name}.test.ts` — unit tests
-3. Exporteer de component class in `src/index.ts`
-
-Zie `CLAUDE.md` voor conventies en richtlijnen.
-
-## Licentie
+## Licentie (License)
 
 EUPL-1.2

@@ -27,12 +27,12 @@ const VAR_USAGE_PATTERN = /var\(\s*(--[\w-]+)/g;
 const VAR_DEFINITION_PATTERN = /(--[\w-]+)\s*:/g;
 
 /**
- * Parse tokens.css to extract all defined CSS variables
+ * Parse settings.css to extract all defined CSS variables
  */
 function parseTokensFile(filePath) {
   if (!fs.existsSync(filePath)) {
     console.error(`❌ Tokens file not found: ${filePath}`);
-    console.error('   Run "npm run build:tokens" first.');
+    console.error('   Run "npm run build:styles" first.');
     process.exit(1);
   }
 

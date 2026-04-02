@@ -1,4 +1,3 @@
-import '../src/assets/styles/fonts.css';
 import '../src/assets/styles/settings.css';
 import '../src/components/content/rich-text/ndd-rich-text.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';

@@ -53,10 +53,10 @@ cd .worktrees/<branch-name>
 npm install
 ```
 
-### Stap 4: Build tokens en components
+### Stap 4: Build styles en components
 
 ```bash
-npm run build:tokens
+npm run build:styles
 npm run build
 ```
 

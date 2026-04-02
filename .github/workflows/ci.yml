@@ -24,7 +24,7 @@ jobs:
         run: npm run lint
       - name: Run unit tests
         run: npm run test:run
-      - name: Build tokens
-        run: npm run build:tokens
+      - name: Build styles
+        run: npm run build:styles
       - name: Build components
         run: npm run build:components

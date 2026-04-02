@@ -6,7 +6,7 @@ Vanilla Web Components for Dutch Government (Rijksoverheid) apps. Single source 
 
 ```bash
 npm run storybook        # Dev server at localhost:6006
-npm run build:tokens     # Copy tokens CSS to dist
+npm run build:styles     # Copy CSS + fonts to dist
 npm run build            # Full build
 ```
 
@@ -201,9 +201,9 @@ Gebruik BEM (Block Element Modifier) voor alle class namen in HTML/CSS:
 Design tokens worden gevalideerd tijdens de build (`npm run validate:tokens`):
 
 **Token categorieën:**
-- `--context-*` - Context hooks voor consumers (niet gevalideerd, niet in tokens.css)
+- `--context-*` - Context hooks voor consumers (niet gevalideerd, niet in settings.css)
 - `--_*` - Interne variabelen (gevalideerd binnen hetzelfde bestand)
-- `--primitives-*`, `--semantics-*`, `--components-*` - Design tokens (gevalideerd tegen tokens.css)
+- `--primitives-*`, `--semantics-*`, `--components-*` - CSS variabelen (gevalideerd tegen settings.css)
 
 **Stricte aanpak - GEEN fallbacks:**
 ```css
