@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { html } from 'lit';
 import './ndd-token.js';
 
@@ -67,8 +68,8 @@ const Template = (args) => html`
 		control=${args.control}
 		?open=${args.open}
 		?disabled=${args.disabled}
-		@dismiss=${() => console.warn('dismiss')}
-		@toggle=${(e) => console.warn('toggle:', e.detail)}
+		@dismiss=${action('dismiss')}
+		@toggle=${action('toggle')}
 	>${args.label}</ndd-token>
 `;
 
@@ -170,13 +171,13 @@ FilterVoorbeeld.parameters = {
 export const MenuVoorbeeld = () => html`
 	<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
 		<ndd-token control="menu"
-			@toggle=${(e) => console.warn('Periode:', e.detail)}
+			@toggle=${action('toggle-periode')}
 		>Periode: Laatste maand</ndd-token>
 		<ndd-token control="menu" open
-			@toggle=${(e) => console.warn('Status:', e.detail)}
+			@toggle=${action('toggle-status')}
 		>Status: Actief</ndd-token>
 		<ndd-token control="menu"
-			@toggle=${(e) => console.warn('Afdeling:', e.detail)}
+			@toggle=${action('toggle-afdeling')}
 		>Afdeling: Juridisch</ndd-token>
 	</div>
 `;

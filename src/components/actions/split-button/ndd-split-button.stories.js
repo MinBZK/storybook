@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { html } from 'lit';
 import './ndd-split-button.ts';
 
@@ -55,8 +56,8 @@ const Template = ({ text, size, disabled }) => html`
 		text=${text}
 		size=${size}
 		?disabled=${disabled}
-		@action-click=${() => console.warn('Action clicked')}
-		@menu-click=${() => console.warn('Menu clicked')}
+		@action-click=${action('action-click')}
+		@menu-click=${action('menu-click')}
 	></ndd-split-button>
 `;
 

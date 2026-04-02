@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { html } from 'lit';
 import './ndd-menu-bar.ts';
 
@@ -96,11 +97,8 @@ export const WithTitleLarge = () => html`
 WithTitleLarge.parameters = { controls: { disable: true } };
 
 export const Interactive = () => {
-	const handleItemSelect = (event) => {
-		console.warn('Selected item:', event.detail.item.textContent);
-	};
 	return html`
-		<ndd-menu-bar @itemselect=${handleItemSelect}>
+		<ndd-menu-bar @itemselect=${action('itemselect')}>
 			<ndd-menu-bar-item selected>Home</ndd-menu-bar-item>
 			<ndd-menu-bar-item>Diensten</ndd-menu-bar-item>
 			<ndd-menu-bar-item>Projecten</ndd-menu-bar-item>

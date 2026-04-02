@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { html } from 'lit';
 import './ndd-top-title-bar.ts';
 import '../../actions/button/ndd-button.ts';
@@ -92,8 +93,8 @@ const Template = (args) => html`
 			back-href=${args.backHref}
 			dismiss-label=${args.dismissLabel}
 			title-anchor=${args.titleAnchor}
-			@back=${() => console.warn('back')}
-			@dismiss=${() => console.warn('dismiss')}
+			@back=${action('back')}
+			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
 	</ndd-page>
 `;
@@ -119,8 +120,8 @@ export const Compact = () => html`
 			title="Detailpagina"
 			back-label="Overzicht"
 			dismiss-label="Sluit"
-			@back=${() => console.warn('back')}
-			@dismiss=${() => console.warn('dismiss')}
+			@back=${action('back')}
+			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
 	</ndd-page>
 `;
@@ -177,8 +178,8 @@ export const MetTitelAnker = () => html`
 			back-label="Overzicht"
 			dismiss-label="Sluit"
 			title-anchor="page-title-bar"
-			@back=${() => console.warn('back')}
-			@dismiss=${() => console.warn('dismiss')}
+			@back=${action('back')}
+			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
 		<div style="padding-inline: 16px;">
 			<ndd-title-bar id="page-title-bar" size="2">
@@ -204,8 +205,8 @@ export const MetTitelAnkerZonderActies = () => html`
 			slot="header"
 			title="Paginatitel"
 			title-anchor="page-title-bar-2"
-			@back=${() => console.warn('back')}
-			@dismiss=${() => console.warn('dismiss')}
+			@back=${action('back')}
+			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
 		<div style="padding-inline: 16px;">
 			<ndd-title-bar id="page-title-bar-2" size="2">
