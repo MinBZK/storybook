@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { html } from 'lit';
 import './ndd-top-title-bar.ts';
 import '../../actions/button/ndd-button.ts';
