@@ -204,6 +204,40 @@ describe('ndd-pagination – href-pattern', () => {
 			expect(anchor.getAttribute('aria-disabled')).toBe('true');
 		}
 	});
+
+	it('dispatches page-change with href in detail', async () => {
+		el = await fixture<NDDPagination>('<ndd-pagination current="1" total="5" href-pattern="/page/{page}"></ndd-pagination>');
+		await waitForUpdate(el);
+
+		let detail: any;
+		el.addEventListener('page-change', ((e: CustomEvent) => {
+			e.preventDefault();
+			detail = e.detail;
+		}) as EventListener);
+
+		const anchors = el.shadowRoot!.querySelectorAll('a.pagination__page-button');
+		(anchors[2] as HTMLElement).click();
+		await waitForUpdate(el);
+
+		expect(detail).toBeDefined();
+		expect(detail.page).toBe(3);
+		expect(detail.href).toBe('/page/3');
+	});
+
+	it('updates current after anchor click', async () => {
+		el = await fixture<NDDPagination>('<ndd-pagination current="1" total="5" href-pattern="/page/{page}"></ndd-pagination>');
+		await waitForUpdate(el);
+
+		el.addEventListener('page-change', ((e: CustomEvent) => {
+			e.preventDefault();
+		}) as EventListener);
+
+		const anchors = el.shadowRoot!.querySelectorAll('a.pagination__page-button');
+		(anchors[2] as HTMLElement).click();
+		await waitForUpdate(el);
+
+		expect(el.current).toBe(3);
+	});
 });
 
 describe('ndd-pagination – translations', () => {

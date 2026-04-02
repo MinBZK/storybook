@@ -23,9 +23,10 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 					aria-current=${isCurrent ? 'page' : nothing}
 					tabindex=${isDisabled ? -1 : nothing}
 					aria-disabled=${isDisabled ? 'true' : nothing}
+					@click=${(e: Event) => { e.preventDefault(); component._goToPage(page); }}
 				>
-					<div class="pagination__page-button-indicator"></div>
-					<div class="pagination__page-button-text">${page}</div>
+					<span class="pagination__page-button-indicator"></span>
+					<span class="pagination__page-button-text">${page}</span>
 				</a>
 			`;
 		}
@@ -38,8 +39,8 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				?disabled=${isDisabled}
 				@click=${() => component._goToPage(page)}
 			>
-				<div class="pagination__page-button-indicator"></div>
-				<div class="pagination__page-button-text">${page}</div>
+				<span class="pagination__page-button-indicator"></span>
+				<span class="pagination__page-button-text">${page}</span>
 			</button>
 		`;
 	};
@@ -54,7 +55,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				variant="neutral-tinted"
 				?disabled=${isDisabled || atFirst}
 				href=${hasHref && !isDisabled && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
-				@click=${hasHref ? nothing : () => component._goToPage(component.current - 1)}
+				@click=${(e: Event) => { e.preventDefault(); component._goToPage(component.current - 1); }}
 			></ndd-icon-button>
 			<div class="pagination__divider" aria-hidden="true">
 				<div class="pagination__divider-line"></div>
@@ -71,14 +72,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 					<select class="pagination__select"
 						aria-label=${t('components.pagination.go-to-page-action')}
 						?disabled=${isDisabled}
-						@change=${(e: Event) => {
-							const page = Number((e.target as HTMLSelectElement).value);
-							if (hasHref) {
-								window.location.href = component._hrefForPage(page);
-							} else {
-								component._goToPage(page);
-							}
-						}}
+						@change=${(e: Event) => component._goToPage(Number((e.target as HTMLSelectElement).value))}
 					>
 						${Array.from({ length: component.total }, (_, i) => i + 1).map((page) => html`
 							<option value=${page} ?selected=${page === component.current}>${page} / ${component.total}</option>
@@ -98,7 +92,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				variant="neutral-tinted"
 				?disabled=${isDisabled || atLast}
 				href=${hasHref && !isDisabled && !atLast ? component._hrefForPage(component.current + 1) : nothing}
-				@click=${hasHref ? nothing : () => component._goToPage(component.current + 1)}
+				@click=${(e: Event) => { e.preventDefault(); component._goToPage(component.current + 1); }}
 			></ndd-icon-button>
 		</nav>
 	`;
