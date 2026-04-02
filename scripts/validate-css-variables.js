@@ -5,9 +5,9 @@
  *
  * Validates that all CSS custom properties used in components are defined.
  * Token categories:
- * - --ndd-* : Override hooks for consumers (SKIPPED - not defined in tokens)
+ * - --ndd-* : Override hooks for consumers (SKIPPED - not defined in styles)
  * - --_* : Internal variables (validated within same file)
- * - --components-*, --semantics-*, --primitives-* : Design tokens (validated against settings.css)
+ * - --components-*, --semantics-*, --primitives-* : CSS variables (validated against settings.css)
  */
 
 import fs from 'fs';
@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
 
 // Configuration
-const TOKENS_FILE = path.join(ROOT_DIR, 'src/assets/styles/settings.css');
+const STYLES_FILE = path.join(ROOT_DIR, 'src/assets/styles/settings.css');
 const COMPONENTS_DIR = path.join(ROOT_DIR, 'src/components');
 
 // Patterns
@@ -29,9 +29,9 @@ const VAR_DEFINITION_PATTERN = /(--[\w-]+)\s*:/g;
 /**
  * Parse settings.css to extract all defined CSS variables
  */
-function parseTokensFile(filePath) {
+function parseStylesFile(filePath) {
   if (!fs.existsSync(filePath)) {
-    console.error(`❌ Tokens file not found: ${filePath}`);
+    console.error(`❌ Styles file not found: ${filePath}`);
     console.error('   Run "npm run build:styles" first.');
     process.exit(1);
   }
@@ -126,7 +126,7 @@ function validate() {
   console.log('🔍 Validating CSS variables...\n');
 
   // Parse tokens
-  const tokens = parseTokensFile(TOKENS_FILE);
+  const tokens = parseStylesFile(STYLES_FILE);
   console.log(`📦 Found ${tokens.size} tokens in settings.css\n`);
 
   // Find component files
