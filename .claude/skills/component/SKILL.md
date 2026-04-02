@@ -143,7 +143,7 @@ export class RR{PascalName} extends LitElement {
     :host([size="xs"]) .{name} {
       min-height: var(--semantics-controls-xs-min-size);
       border-radius: var(--semantics-controls-xs-corner-radius);
-      /* padding en font: haal uit design tokens */
+      /* padding en font: haal uit CSS variabelen */
     }
 
     :host([size="sm"]) .{name} {
@@ -429,7 +429,7 @@ flex: 1 0 auto;
 
 **Tokens:**
 - [ ] Semantics tokens waar mogelijk
-- [ ] Geen fallback waarden op design tokens (enige uitzondering: override hooks `--rr-*`)
+- [ ] Geen fallback waarden op CSS variabelen (enige uitzondering: override hooks `--rr-*`)
 - [ ] Opacity: `var(--token)`
 
 **Accessibility:**

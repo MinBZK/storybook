@@ -38,15 +38,15 @@ jobs:
 
             **Key architecture:**
             - `src/components/` — Lit + TypeScript web components using Shadow DOM
-            - `src/assets/styles/settings.css` — Design tokens (primitives, semantics, components)
-            - Components follow BEM naming, use design tokens (never hardcoded values)
+            - `src/assets/styles/settings.css` — CSS variabelen (primitives, semantics, components)
+            - Components follow BEM naming, use CSS variables (never hardcoded values)
             - Must be DigiToegankelijk (WCAG 2.1 AA) compliant
             - Uses RijksSansVF font with system-ui fallback
 
-            **Token hierarchy:**
+            **CSS variable hierarchy:**
             - `--primitives-*` → base values (colors, spacing)
-            - `--semantics-*` → meaningful tokens (buttons, controls)
-            - `--components-*` → component-specific tokens
+            - `--semantics-*` → meaningful variables (buttons, controls)
+            - `--components-*` → component-specific variables
 
             ## Review dimensions
 
@@ -59,7 +59,7 @@ jobs:
             - Is Shadow DOM used properly?
             - Are properties/attributes declared and reflected correctly?
             - Are slots, events, and lifecycle hooks used appropriately?
-            - No hardcoded values — all styling via design tokens.
+            - No hardcoded values — all styling via CSS variables.
 
             ### 2. Accessibility (WCAG 2.1 AA)
 
@@ -69,10 +69,10 @@ jobs:
             - Color contrast meets AA requirements?
             - Screen reader compatibility?
 
-            ### 3. Design token usage
+            ### 3. CSS variable usage
 
-            - Are semantic tokens preferred over primitives?
-            - No fallback values on design tokens (strict validation)?
+            - Are semantic variables preferred over primitives?
+            - No fallback values on CSS variables (strict validation)?
             - Override hooks use `--rr-*` prefix?
             - Context hooks use `--context-*` prefix?
             - Internal variables use `--_*` prefix?

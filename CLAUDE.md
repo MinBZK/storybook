@@ -237,7 +237,7 @@ Zie `/component` skill voor volledige formatting voorbeelden.
 
 1. Extend `LitElement`
 2. Use Shadow DOM
-3. Only design tokens - never hardcode
+3. Only CSS variabelen - never hardcode
 4. DigiToegankelijk (WCAG 2.1 AA) compliant
 5. RijksSansVF font with system-ui fallback
 6. BEM naamgeving voor alle class namen

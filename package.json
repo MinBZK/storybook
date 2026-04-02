@@ -21,7 +21,7 @@
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run build:components",
-    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/fonts/* dist/fonts/",
+    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
     "validate:styles": "node scripts/validate-css-variables.js",
     "build:components": "npm run clean:components && vite build",
     "clean": "rm -rf dist",

@@ -517,7 +517,7 @@ Ensure sufficient contrast ratios:
 - **UI components**: 3:1 contrast ratio (borders, icons)
 - **Focus indicators**: 3:1 contrast ratio
 
-**Design Tokens:**
+**CSS variabelen:**
 ```css
 --primitives-color-accent-100: #154273    /* Lintblauw - primary accent */
 --primitives-color-neutral-800: #0f172a  /* Dark text on light backgrounds */
