@@ -8,7 +8,7 @@
  * - Compact (class `is-compact`): the back button is an icon button, a divider and the
  *   toolbar title are visible
  *
- * When `title-anchor` is set, the `is-compact` class is automatically applied
+ * When `collapse-anchor` is set, the `is-compact` class is automatically applied
  * as soon as the top of the anchor element reaches the top of the scroll container.
  *
  * @slot toolbar - Optional buttons to the left of the dismiss button
@@ -27,13 +27,13 @@ export class NDDTopTitleBar extends LitElement {
 	static override styles = topTitleBarStyles;
 
 	@property({ type: String })
-	title = '';
+	text = '';
 
-	@property({ type: String })
-	subtitle = '';
+	@property({ type: String, attribute: 'supporting-text' })
+	supportingText = '';
 
-	@property({ type: String, attribute: 'title-anchor' })
-	titleAnchor = '';
+	@property({ type: String, attribute: 'collapse-anchor' })
+	collapseAnchor = '';
 
 	@property({ type: String, attribute: 'back-text' })
 	backText = '';
@@ -52,8 +52,8 @@ export class NDDTopTitleBar extends LitElement {
 		super.connectedCallback();
 		this._connectPage();
 		this._connectAnchor();
-		// Without a title-anchor there is no scroll trigger — always compact
-		if (!this.titleAnchor) {
+		// Without a collapse-anchor there is no scroll trigger — always compact
+		if (!this.collapseAnchor) {
 			this.classList.add('is-compact');
 		}
 	}
@@ -64,9 +64,9 @@ export class NDDTopTitleBar extends LitElement {
 	}
 
 	override updated(changed: Map<string, unknown>): void {
-		if (changed.has('titleAnchor')) {
+		if (changed.has('collapseAnchor')) {
 			this._teardownAnchor();
-			if (this.titleAnchor) {
+			if (this.collapseAnchor) {
 				this._connectAnchor();
 			} else {
 				this.classList.add('is-compact');
@@ -91,11 +91,11 @@ export class NDDTopTitleBar extends LitElement {
 	}
 
 	private _connectAnchor(): void {
-		if (!this.titleAnchor) return;
+		if (!this.collapseAnchor) return;
 
 		const root = this.getRootNode() as Document | ShadowRoot;
-		this._anchorElement = (root as Document).getElementById?.(this.titleAnchor)
-			?? root.querySelector(`#${this.titleAnchor}`);
+		this._anchorElement = (root as Document).getElementById?.(this.collapseAnchor)
+			?? root.querySelector(`#${this.collapseAnchor}`);
 
 		if (!this._anchorElement) return;
 

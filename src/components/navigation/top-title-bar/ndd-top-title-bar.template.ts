@@ -34,9 +34,9 @@ export function topTitleBarTemplate(component: NDDTopTitleBar) {
 					</div>
 				` : nothing}
 				<div class="top-title-bar__title-group">
-					<h1 class="top-title-bar__title">${component.title}</h1>
-					${component.subtitle ? html`
-						<p class="top-title-bar__subtitle">${component.subtitle}</p>
+					<h1 class="top-title-bar__title">${component.text}</h1>
+					${component.supportingText ? html`
+						<p class="top-title-bar__subtitle">${component.supportingText}</p>
 					` : nothing}
 				</div>
 			</div>

@@ -20,7 +20,7 @@ import '../../../navigation/top-title-bar/ndd-top-title-bar.ts';
  * ```html
  * <ndd-split-view-pane slot="main" has-content>
  *   <ndd-page sticky-header>
- *     <ndd-top-title-bar slot="header" title="Inhoud" back-text="Terug"></ndd-top-title-bar>
+ *     <ndd-top-title-bar slot="header" text="Inhoud" back-text="Terug"></ndd-top-title-bar>
  *     ...
  *   </ndd-page>
  * </ndd-split-view-pane>
@@ -61,7 +61,7 @@ export const Standaard = ({ hasContent }) => html`
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					title="Zijbalk"
+					text="Zijbalk"
 				></ndd-top-title-bar>
 				<ndd-simple-section>
 					<ndd-rich-text>
@@ -76,7 +76,7 @@ export const Standaard = ({ hasContent }) => html`
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					title="Secundaire zijbalk"
+					text="Secundaire zijbalk"
 					back-text="Zijbalk"
 				></ndd-top-title-bar>
 				<ndd-simple-section>
@@ -95,7 +95,7 @@ export const Standaard = ({ hasContent }) => html`
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					title="Inhoud"
+					text="Inhoud"
 					back-text="Terug"
 				></ndd-top-title-bar>
 				<ndd-simple-section>
@@ -111,7 +111,7 @@ export const Standaard = ({ hasContent }) => html`
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					title="Inspecteur"
+					text="Inspecteur"
 					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				<ndd-simple-section>

@@ -55,7 +55,7 @@ const Template = (args) => html`
 		<ndd-page sticky-header>
 			<ndd-top-title-bar
 				slot="header"
-				title="Sheet titel"
+				text="Sheet titel"
 				dismiss-text="Sluit"
 			></ndd-top-title-bar>
 			${pageContent}
@@ -93,7 +93,7 @@ export const MetTerugknop = {
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					title="Detailpagina"
+					text="Detailpagina"
 					back-text="Overzicht"
 					dismiss-text="Sluit"
 				></ndd-top-title-bar>
@@ -114,7 +114,7 @@ export const NietModaal = {
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					title="Niet-modale sheet"
+					text="Niet-modale sheet"
 					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
@@ -138,7 +138,7 @@ export const MetStickyFooter = {
 			<ndd-page sticky-header sticky-footer>
 				<ndd-top-title-bar
 					slot="header"
-					title="Sheet met footer"
+					text="Sheet met footer"
 					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}

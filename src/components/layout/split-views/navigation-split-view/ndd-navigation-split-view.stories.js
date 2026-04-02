@@ -99,7 +99,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 				<ndd-page sticky-header>
 					<ndd-top-title-bar
 						slot="header"
-						title="Zijbalk"
+						text="Zijbalk"
 						dismiss-text="Sluit"
 					></ndd-top-title-bar>
 					<ndd-simple-section>
@@ -116,7 +116,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 				<ndd-page sticky-header>
 					<ndd-top-title-bar
 						slot="header"
-						title="Secundaire zijbalk"
+						text="Secundaire zijbalk"
 						back-text="Zijbalk"
 						dismiss-text="Sluit"
 					></ndd-top-title-bar>
@@ -134,7 +134,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 				<ndd-page sticky-header>
 					<ndd-top-title-bar
 						slot="header"
-						title="Inhoud"
+						text="Inhoud"
 						back-text="Terug"
 					>
 						<ndd-button
@@ -165,7 +165,7 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 				<ndd-page sticky-header>
 					<ndd-top-title-bar
 						slot="header"
-						title="Inspecteur"
+						text="Inspecteur"
 						dismiss-text="Sluit"
 					></ndd-top-title-bar>
 					<ndd-simple-section>
@@ -194,7 +194,7 @@ export const GenestdeSplitView = () => html`
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					title="Zijbalk"
+					text="Zijbalk"
 					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				<ndd-simple-section>
@@ -212,7 +212,7 @@ export const GenestdeSplitView = () => html`
 					<ndd-page sticky-header>
 						<ndd-top-title-bar
 							slot="header"
-							title="Inhoud"
+							text="Inhoud"
 							back-text="Terug"
 						></ndd-top-title-bar>
 						<ndd-simple-section>
