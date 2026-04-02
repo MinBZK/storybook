@@ -382,6 +382,7 @@ flex: 1 0 auto;
 - `class` attribuut op **dezelfde regel** als het element
 - Elementen met één attribuut (naast `class`) blijven op één regel
 - `<slot>` elementen zijn altijd compact
+- **Nooit een class op een child component** — gebruik altijd een wrapper element vanuit het parent:
 - Alle overige attributen op **eigen regels**:
 ```html
 <!-- GOED — meerdere attributen -->
@@ -399,7 +400,12 @@ flex: 1 0 auto;
 <slot></slot>
 <slot name="header"></slot>
 
-<!-- GOED — kort element -->
+<!-- GOED — child component in wrapper voor styling -->
+<span class="checkbox__icon">
+	<ndd-icon name="check-mark-small"></ndd-icon>
+</span>
+
+<!-- FOUT — class direct op child component -->
 <ndd-icon class="checkbox__icon" name="check-mark-small"></ndd-icon>
 
 <!-- FOUT — class op aparte regel -->
