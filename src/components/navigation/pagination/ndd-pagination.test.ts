@@ -224,4 +224,20 @@ describe('ndd-pagination – keyboard navigation', () => {
 
 		expect(focusSpy).toHaveBeenCalled();
 	});
+
+	it('ArrowRight navigates across ellipsis gap', async () => {
+		el = await fixture<NDDPagination>('<ndd-pagination current="6" total="20"></ndd-pagination>');
+		await waitForUpdate(el);
+
+		// With ellipsis: page buttons are [1, 5, 6, 7, 20] (ellipses are not buttons)
+		const buttons = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.pagination__page-button');
+		expect(buttons.length).toBe(5);
+
+		// Navigate from first visible page button (1) to second (5) — skips ellipsis
+		const focusSpy = vi.spyOn(buttons[1], 'focus');
+		buttons[0].focus();
+		buttons[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, composed: true }));
+
+		expect(focusSpy).toHaveBeenCalled();
+	});
 });

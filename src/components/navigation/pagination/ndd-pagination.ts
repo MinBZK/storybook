@@ -5,7 +5,7 @@
  *
  * @element ndd-pagination
  * @attr {number} current - Currently active page (1-based)
- * @attr {number} total - Total number of pages
+ * @attr {number} total - Total number of pages (recommended max: 200 for compact select performance)
  * @attr {boolean} disabled - Disabled state
  * @attr {boolean} full-width - Centreert de pagination in de container
  *

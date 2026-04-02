@@ -10,7 +10,6 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 
 	return html`
 		<nav class="pagination"
-			role="navigation"
 			aria-label=${t('components.pagination.label-text')}
 		>
 			<ndd-icon-button
