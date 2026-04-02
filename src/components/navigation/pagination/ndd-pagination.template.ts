@@ -42,7 +42,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 			<div class="pagination__compact">
 				<div class="pagination__select-wrapper">
 					<select class="pagination__select"
-						aria-label=${t('components.pagination.page-of-total-text', { page: component.current, total: component.total })}
+						aria-label=${t('components.pagination.go-to-page-action')}
 						@change=${(e: Event) => component._goToPage(Number((e.target as HTMLSelectElement).value))}
 					>
 						${Array.from({ length: component.total }, (_, i) => i + 1).map((page) => html`

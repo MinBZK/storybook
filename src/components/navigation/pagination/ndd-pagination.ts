@@ -40,7 +40,7 @@ export class NDDPagination extends LitElement {
 
 	private _mergedTranslations = { ...nddPaginationTranslations };
 
-	override updated(changed: Map<string, unknown>): void {
+	override willUpdate(changed: Map<string, unknown>): void {
 		if (changed.has('translations')) {
 			this._mergedTranslations = { ...nddPaginationTranslations, ...this.translations };
 		}

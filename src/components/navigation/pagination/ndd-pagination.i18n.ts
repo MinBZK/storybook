@@ -3,7 +3,7 @@ export const nddPaginationTranslations = {
 	'components.pagination.previous-action': 'Vorige pagina',
 	'components.pagination.next-action': 'Volgende pagina',
 	'components.pagination.page-number-text': 'Pagina {page}',
-	'components.pagination.page-of-total-text': 'Pagina {page} van {total}',
+	'components.pagination.go-to-page-action': 'Ga naar pagina',
 };
 
 export type NDDPaginationTranslations = typeof nddPaginationTranslations;
