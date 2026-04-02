@@ -83,7 +83,9 @@ export class NDDPagination extends LitElement {
 	}
 
 	_hrefForPage(page: number): string {
-		return this.hrefPattern.replace('{page}', String(page));
+		const href = this.hrefPattern.replace('{page}', String(page));
+		if (/^(https?:\/\/|\/|\.|\?|#)/.test(href)) return href;
+		return '';
 	}
 
 	_goToPage(page: number): void {

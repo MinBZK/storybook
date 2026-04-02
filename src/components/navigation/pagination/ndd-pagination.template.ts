@@ -55,7 +55,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				variant="neutral-tinted"
 				?disabled=${isDisabled || atFirst}
 				href=${hasHref && !isDisabled && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
-				@click=${(e: Event) => { e.preventDefault(); component._goToPage(component.current - 1); }}
+				@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current - 1); }}
 			></ndd-icon-button>
 			<div class="pagination__divider" aria-hidden="true">
 				<div class="pagination__divider-line"></div>
@@ -92,7 +92,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				variant="neutral-tinted"
 				?disabled=${isDisabled || atLast}
 				href=${hasHref && !isDisabled && !atLast ? component._hrefForPage(component.current + 1) : nothing}
-				@click=${(e: Event) => { e.preventDefault(); component._goToPage(component.current + 1); }}
+				@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current + 1); }}
 			></ndd-icon-button>
 		</nav>
 	`;
