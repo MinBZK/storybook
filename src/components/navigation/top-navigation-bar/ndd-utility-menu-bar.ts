@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events -- event delegation, child buttons are keyboard accessible */
 /**
  * Nederlandse Digitale Dienst Utility Menu Bar Component (Lit + TypeScript)
  *

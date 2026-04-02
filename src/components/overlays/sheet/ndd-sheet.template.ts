@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events -- native dialog handles keyboard via @cancel */
 import { html, nothing } from 'lit';
 import type { NDDSheet } from './ndd-sheet.ts';
 

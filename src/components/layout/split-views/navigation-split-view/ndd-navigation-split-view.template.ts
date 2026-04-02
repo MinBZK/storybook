@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events -- native dialog handles keyboard via @cancel */
 import { html, TemplateResult, nothing } from 'lit';
 import type { NDDNavigationSplitView } from './ndd-navigation-split-view.js';
 import '../split-view-divider/ndd-split-view-divider.ts';

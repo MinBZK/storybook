@@ -8,6 +8,7 @@ export function switchTemplate(component: NDDSwitch): TemplateResult {
 			type="checkbox"
 			role="switch"
 			.checked=${component.checked}
+			aria-checked=${component.checked}
 			?disabled=${component.disabled}
 			value=${component.value}
 			aria-label=${component.accessibleLabel || nothing}

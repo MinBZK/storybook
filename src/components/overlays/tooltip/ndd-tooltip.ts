@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/accessible-name -- text content provides the accessible name */
 /**
  * Nederlandse Digitale Dienst Tooltip Component (Lit + TypeScript)
  *

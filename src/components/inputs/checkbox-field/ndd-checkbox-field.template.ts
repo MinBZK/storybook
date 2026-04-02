@@ -2,6 +2,7 @@ import { html, nothing, TemplateResult } from 'lit';
 import type { NDDCheckboxField } from './ndd-checkbox-field.js';
 import '../checkbox/ndd-checkbox.ts';
 
+/* eslint-disable lit-a11y/click-events-have-key-events -- label wrapper delegates to inner checkbox */
 export function checkboxFieldTemplate(component: NDDCheckboxField): TemplateResult {
 	return html`
 		<div class="checkbox-field"
