@@ -5,7 +5,7 @@ import '../cells/title-cell/ndd-title-cell.ts';
 import '../cells/text-cell/ndd-text-cell.ts';
 import '../cells/spacer-cell/ndd-spacer-cell.ts';
 import '../cells/drag-handle-cell/ndd-drag-handle-cell.ts';
-import '../../layout/title-bar/ndd-title-bar.ts';
+import '../../content/title/ndd-title.ts';
 import '../../content/rich-text/ndd-rich-text.ts';
 
 export default {
@@ -93,9 +93,9 @@ export const VariantInset = {
 export const WithHeaderAndFooter = {
 	render: () => html`
 		<ndd-list variant="box">
-			<ndd-title-bar slot="header" size="4">
+			<ndd-title slot="header" size="4">
 				<h5>Notifications</h5>
-			</ndd-title-bar>
+			</ndd-title>
 			<ndd-list-item>
 				<ndd-text-cell text="Allow notifications" />
 			</ndd-list-item>

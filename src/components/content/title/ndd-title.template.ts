@@ -1,14 +1,14 @@
 import { html, TemplateResult } from 'lit';
 
-export function titleBarTemplate(): TemplateResult {
+export function titleTemplate(): TemplateResult {
 	return html`
-		<div class="title-bar">
-			<div class="title-bar__title-group">
+		<div class="title">
+			<div class="title__title-group">
 				<slot name="overline"></slot>
 				<slot></slot>
 				<slot name="subtitle"></slot>
 			</div>
-			<div class="title-bar__actions">
+			<div class="title__actions">
 				<slot name="actions"></slot>
 			</div>
 		</div>

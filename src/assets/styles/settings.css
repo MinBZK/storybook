@@ -927,14 +927,14 @@
 	--components-page-fixed-area-tinted-background-gradient-color-3: rgba(245, 246, 249, 0);
 
 
-	--components-title-bar-sm-overline-font: var(--primitives-font-body-sm-regular-tight);
-	--components-title-bar-sm-subtitle-font: var(--primitives-font-body-md-regular-tight);
+	--components-title-sm-overline-font: var(--primitives-font-body-sm-regular-tight);
+	--components-title-sm-subtitle-font: var(--primitives-font-body-md-regular-tight);
 
-	--components-title-bar-md-overline-font: var(--primitives-font-body-sm-regular-tight);
-	--components-title-bar-md-subtitle-font: var(--primitives-font-body-md-regular-tight);
+	--components-title-md-overline-font: var(--primitives-font-body-sm-regular-tight);
+	--components-title-md-subtitle-font: var(--primitives-font-body-md-regular-tight);
 
-	--components-title-bar-lg-overline-font: var(--primitives-font-body-md-regular-tight);
-	--components-title-bar-lg-subtitle-font: var(--primitives-font-body-md-regular-tight);
+	--components-title-lg-overline-font: var(--primitives-font-body-md-regular-tight);
+	--components-title-lg-subtitle-font: var(--primitives-font-body-md-regular-tight);
 
 	--components-sheet-box-shadow: var(--primitives-box-shadows-level-5);
 	--components-sheet-side-inset: var(--primitives-space-16);

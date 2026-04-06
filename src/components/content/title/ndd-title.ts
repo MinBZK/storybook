@@ -4,7 +4,7 @@
  * A title bar with an optional overline, title, and subtitle on the left,
  * and a slot for actions on the right.
  *
- * @element ndd-title-bar
+ * @element ndd-title
  *
  * @attr {number} size - Visual size of the title: 1–6 (default: 3)
  *
@@ -15,25 +15,25 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { titleBarStyles } from './ndd-title-bar.styles.ts';
-import { titleBarTemplate } from './ndd-title-bar.template.ts';
+import { titleStyles } from './ndd-title.styles.ts';
+import { titleTemplate } from './ndd-title.template.ts';
 
 type Size = 1 | 2 | 3 | 4 | 5 | 6;
 
-@customElement('ndd-title-bar')
-export class NDDTitleBar extends LitElement {
-	static override styles = titleBarStyles;
+@customElement('ndd-title')
+export class NDDTitle extends LitElement {
+	static override styles = titleStyles;
 
 	@property({ type: Number, reflect: true })
 	size: Size = 3;
 
 	override render() {
-		return titleBarTemplate();
+		return titleTemplate();
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-title-bar': NDDTitleBar;
+		'ndd-title': NDDTitle;
 	}
 }

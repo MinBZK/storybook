@@ -72,7 +72,7 @@ export { NDDOneThirdTwoThirdsSection } from './layout/page-sections/one-third-tw
 export { NDDTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/ndd-two-thirds-one-third-section.ts';
 export { NDDOneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/ndd-one-half-one-half-section.ts';
 
-export { NDDTitleBar } from './layout/title-bar/ndd-title-bar.ts';
+export { NDDTitle } from './content/title/ndd-title.ts';
 
 export { NDDBox } from './layout/box/ndd-box.ts';
 export { NDDCollection } from './layout/collection/ndd-collection.ts';
