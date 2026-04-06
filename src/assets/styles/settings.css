@@ -947,6 +947,9 @@
 	--components-sheet-bottom-animation-duration: 350ms;
 
 
+	--components-dialog-box-shadow: var(--primitives-box-shadows-level-5);
+
+
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 
 	--components-rich-text-grid-size: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));--components-rich-text-spacing-flat: 0px;

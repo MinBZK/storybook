@@ -10,12 +10,12 @@ import './ndd-tooltip.ts';
  * ```
  */
 export default {
-	title: 'Components/Overlays/Tooltip',
+	title: 'Components/Content/Tooltip',
 	component: 'ndd-tooltip',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/overlays/tooltip/ndd-tooltip.ts',
+			file: 'src/components/content/tooltip/ndd-tooltip.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
