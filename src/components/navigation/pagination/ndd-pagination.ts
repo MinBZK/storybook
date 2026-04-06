@@ -10,7 +10,7 @@
  * @attr {boolean} full-width - Centreert de pagination in de container
  * @attr {string} href-pattern - URL patroon met {page} placeholder, rendert links in plaats van buttons
  *
- * @fires page-change - When the page changes (detail: { page: number, href?: string }). In href mode, call event.preventDefault() to handle navigation yourself (SPA).
+ * @fires page-change - Bij paginawisseling (detail: { page: number, href?: string }). Alleen cancelable in href-mode: preventDefault() voorkomt navigatie (SPA).
  */
 
 import { LitElement } from 'lit';
@@ -93,21 +93,21 @@ export class NDDPagination extends LitElement {
 			return;
 		}
 
-		this.current = page;
-
-		const detail: { page: number; href?: string } = { page: this.current };
+		const detail: { page: number; href?: string } = { page };
 		if (this.hrefPattern) {
-			detail.href = this._hrefForPage(this.current);
+			detail.href = this._hrefForPage(page);
 		}
 
+		const cancelable = !!this.hrefPattern;
 		const event = new CustomEvent('page-change', {
 			detail,
 			bubbles: true,
 			composed: true,
-			cancelable: true,
+			cancelable,
 		});
 
 		const proceeded = this.dispatchEvent(event);
+		this.current = page;
 
 		// In href mode, navigate unless consumer called preventDefault()
 		if (this.hrefPattern && proceeded && detail.href) {

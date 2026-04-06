@@ -57,7 +57,12 @@ export default {
 };
 
 const Template = ({ current, total, disabled, fullWidth }) => html`
-	<ndd-pagination current=${current} total=${total} ?disabled=${disabled} ?full-width=${fullWidth}></ndd-pagination>
+	<ndd-pagination
+		current=${current}
+		total=${total}
+		?disabled=${disabled}
+		?full-width=${fullWidth}
+	></ndd-pagination>
 `;
 
 export const Standaard = Template.bind({});

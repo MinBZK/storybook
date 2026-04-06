@@ -57,7 +57,6 @@ export const paginationStyles = css`
 
 	a.pagination__page-button {
 		text-decoration: none;
-		color: inherit;
 	}
 
 	.pagination__page-button:hover,
