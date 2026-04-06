@@ -23,6 +23,8 @@ export { NDDToolbar } from './actions/toolbar/ndd-toolbar.ts';
 
 export { NDDIcon } from './content/icon/ndd-icon.ts';
 export { NDDRichText } from './content/rich-text/ndd-rich-text.ts';
+export { NDDTitle } from './content/title/ndd-title.ts';
+export { NDDTooltip } from './content/tooltip/ndd-tooltip.ts';
 
 
 // # Forms components
@@ -72,14 +74,13 @@ export { NDDOneThirdTwoThirdsSection } from './layout/page-sections/one-third-tw
 export { NDDTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/ndd-two-thirds-one-third-section.ts';
 export { NDDOneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/ndd-one-half-one-half-section.ts';
 
-export { NDDTitle } from './content/title/ndd-title.ts';
-
 export { NDDBox } from './layout/box/ndd-box.ts';
 export { NDDCollection } from './layout/collection/ndd-collection.ts';
 
 export { NDDSpacer } from './layout/spacer/ndd-spacer.ts';
 export { NDDContainer } from './layout/container/ndd-container.ts';
 export { NDDDivider } from './layout/divider/ndd-divider.ts';
+export { NDDSheet } from './layout/sheet/ndd-sheet.ts';
 
 
 // # List and Menu components
@@ -108,13 +109,9 @@ export { NDDDocumentTabBar } from './navigation/document-tab-bar/ndd-document-ta
 export { NDDPagination } from './navigation/pagination/ndd-pagination.ts';
 
 
-// # Overlay components
-
-export { NDDTooltip } from './overlays/tooltip/ndd-tooltip.ts';
-export { NDDSheet } from './overlays/sheet/ndd-sheet.ts';
-export { NDDModalDialog } from './overlays/modal-dialog/ndd-modal-dialog.ts';
-
+// # Status and Feedback components
 
 export { NDDDialog } from './status-and-feedback/dialog/ndd-dialog.ts';
+export { NDDInlineDialog } from './status-and-feedback/inline-dialog/ndd-inline-dialog.ts';
 
 // Auto-register happens on import of individual component files

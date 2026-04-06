@@ -1,35 +1,38 @@
 /**
- * Nederlandse Digitale Dienst Dialog Component (Lit + TypeScript)
+ * Nederlandse Digitale Dienst Modal Dialog Component (Lit + TypeScript)
  *
- * An inline status component for empty state, confirmations and feedback.
- * Fills the container and has no minimum width.
+ * A modal window with overlay backdrop, based on the native <dialog> element.
+ * Internally renders an <ndd-inline-dialog> for the visual structure.
  *
  * @element ndd-dialog
  *
- * @attr {'alert'} variant       - Semantic variant; 'alert' forces icon-name="alert" and colors the icon
- * @attr {string}  icon-name     - Name of the ndd-icon icon above the text; absent when not set. Ignored when variant is set.
- * @attr {string}  text          - Main text (heading or paragraph, depending on heading-level)
- * @attr {string}  supporting-text - Supporting text below the heading
- * @attr {1|2|3|4|5|6} heading-level - Renders text as h1–h6; absent renders a p
+ * @attr {'alert'} variant          - Forwarded to ndd-inline-dialog; 'alert' forces icon and color
+ * @attr {string}  icon-name        - Forwarded to ndd-inline-dialog; absent when not set
+ * @attr {string}  text             - Forwarded to ndd-inline-dialog; main text
+ * @attr {string}  supporting-text  - Forwarded to ndd-inline-dialog; supporting text
  *
- * @slot         - Optional custom content between text and actions
- * @slot actions - ndd-button elements, wrapped in ndd-button-group (max 3)
+ * @slot         - Optional custom content, forwarded to ndd-inline-dialog
+ * @slot actions - ndd-button elements, forwarded to ndd-inline-dialog
+ *
+ * @fires open  - When the dialog is opened
+ * @fires close - When the dialog is fully closed
+ *
+ * @method show() - Opens the modal dialog
+ * @method hide() - Closes the modal dialog with a closing animation
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { dialogStyles } from './ndd-dialog.styles.ts';
 import { dialogTemplate } from './ndd-dialog.template.ts';
-import '../../content/icon/ndd-icon.ts';
-import '../../actions/button-group/ndd-button-group.ts';
-
-export type DialogVariant = 'alert';
+import type { InlineDialogVariant } from '../inline-dialog/ndd-inline-dialog.ts';
+import '../inline-dialog/ndd-inline-dialog.ts';
 
 @customElement('ndd-dialog')
 export class NDDDialog extends LitElement {
 	static override styles = dialogStyles;
 
 	@property({ type: String, reflect: true })
-	variant: DialogVariant | '' = '';
+	variant: InlineDialogVariant | '' = '';
 
 	@property({ type: String, reflect: true, attribute: 'icon-name' })
 	iconName = '';
@@ -40,13 +43,74 @@ export class NDDDialog extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'supporting-text' })
 	supportingText = '';
 
-	@property({ type: Number, reflect: true, attribute: 'heading-level' })
-	headingLevel: 1 | 2 | 3 | 4 | 5 | 6 | null = null;
+	private _closing = false;
 
-	get _resolvedIconName(): string {
-		if (this.variant === 'alert') return 'alert';
-		if (this.iconName) return this.iconName;
-		return '';
+	private get _dialog(): HTMLDialogElement | null {
+		return this.shadowRoot?.querySelector('dialog') ?? null;
+	}
+
+	show(): void {
+		const dialog = this._dialog;
+		if (!dialog || dialog.open) return;
+		dialog.showModal();
+		this._manageFocus();
+		this.dispatchEvent(new CustomEvent('open', { bubbles: true, composed: true }));
+	}
+
+	private _manageFocus(): void {
+		// 1. autofocus element present — let the browser handle it natively
+		if (this.querySelector('[autofocus]')) return;
+
+		// 2. Focus the inline-dialog__text heading inside ndd-inline-dialog's shadow DOM
+		const inner = this.shadowRoot?.querySelector('ndd-inline-dialog');
+		const heading = inner?.shadowRoot?.querySelector<HTMLElement>('.inline-dialog__text') ?? null;
+
+		if (heading) {
+			const hadTabindex = heading.hasAttribute('tabindex');
+			if (!hadTabindex) heading.setAttribute('tabindex', '-1');
+			heading.focus();
+			if (!hadTabindex) {
+				heading.addEventListener('blur', () => {
+					heading.removeAttribute('tabindex');
+				}, { once: true });
+			}
+			return;
+		}
+
+		// 3. Fallback — focus the native dialog itself
+		this._dialog?.focus();
+	}
+
+	hide(): void {
+		const dialog = this._dialog;
+		if (!dialog || !dialog.open || this._closing) return;
+
+		this._closing = true;
+		dialog.classList.add('is-closing');
+		dialog.addEventListener('animationend', () => {
+			dialog.classList.remove('is-closing');
+			this._closing = false;
+			dialog.close();
+			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+		}, { once: true });
+
+		requestAnimationFrame(() => {
+			if (this._closing && getComputedStyle(dialog).animationName === 'none') {
+				dialog.classList.remove('is-closing');
+				this._closing = false;
+				dialog.close();
+				this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+			}
+		});
+	}
+
+	_handleBackdropClick(e: MouseEvent): void {
+		if (e.target === this._dialog) this.hide();
+	}
+
+	_handleCancel(e: Event): void {
+		e.preventDefault();
+		this.hide();
 	}
 
 	override render() {

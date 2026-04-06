@@ -12,12 +12,12 @@ import '../../layout/container/ndd-container.ts';
  * het scherm inschuift. Hij is gebaseerd op het native `<dialog>`-element.
  */
 export default {
-	title: 'Components/Overlays/Sheet',
+	title: 'Components/Layout/Sheet',
 	component: 'ndd-sheet',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/overlays/sheet/ndd-sheet.ts',
+			file: 'src/components/layout/sheet/ndd-sheet.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'stable' },

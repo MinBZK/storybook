@@ -7,90 +7,85 @@ export const dialogStyles = css`
 	/* # Host */
 
 	:host {
-		display: flex;
-		justify-content: center;
-
-		--_icon-color: var(--semantics-content-color);
+		display: contents;
+		--_max-height: 90vh;
+		--_animation-duration: 150ms;
+		--_animation-easing: ease;
 	}
 
 	:host([hidden]) {
 		display: none;
 	}
 
-	:host([variant='alert']) {
-		--_icon-color: var(--primitives-color-warning-350);
-	}
 
+	/* # Modal dialog */
 
-	/* # Body */
-
-	.dialog__body {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		flex-grow: 1;
-		box-sizing: border-box;
+	.dialog {
+		border: none;
+		padding: var(--primitives-space-24) var(--primitives-space-16);
 		max-width: var(--primitives-area-480);
+		width: calc(100% - var(--primitives-space-16) * 2);
+		max-height: var(--_max-height);
+		overflow-y: auto;
+		background-color: var(--semantics-surfaces-background-color);
+		border-radius: var(--semantics-overlays-corner-radius);
+		box-shadow: var(--components-dialog-box-shadow);
+		box-sizing: border-box;
 	}
 
-
-	/* # Icon */
-
-	.dialog__icon {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: var(--primitives-space-48);
-		height: var(--primitives-space-48);
-		color: var(--_icon-color);
-		flex-shrink: 0;
-	}
-
-
-	/* # Text */
-
-	.dialog__text {
-		margin: 0;
-		font: var(--primitives-font-body-md-bold-tight);
-		color: var(--semantics-content-color);
-		text-align: center;
-	}
-
-	.dialog__text:focus-visible {
-		box-shadow: none;
-		outline: none;
-	}
-
-
-	/* # Supporting text */
-
-	.dialog__supporting-text {
-		margin: 0;
-		font: var(--primitives-font-body-sm-regular-tight);
-		color: var(--semantics-content-color);
-		text-align: center;
-	}
-
-
-	/* # Content */
-
-	.dialog__content {
-		width: 100%;
-	}
-
-	.dialog__content:not(:has(*)) {
+	.dialog:not([open]) {
 		display: none;
 	}
 
-
-	/* # Actions */
-
-	.dialog__actions {
-		width: 100%;
-		padding-top: var(--primitives-space-16);
+	.dialog:focus-visible {
+		box-shadow: var(--components-dialog-box-shadow), 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
-	.dialog__actions:not(:has(*)) {
-		display: none;
+	.dialog::backdrop {
+		background: var(--semantics-overlays-backdrop-color);
+	}
+
+
+	/* # Keyframes */
+
+	@keyframes dialog-in {
+		from {
+			opacity: 0;
+			transform: scale(0.95);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	@keyframes dialog-out {
+		from {
+			opacity: 1;
+			transform: scale(1);
+		}
+		to {
+			opacity: 0;
+			transform: scale(0.95);
+		}
+	}
+
+	.dialog[open] {
+		animation: dialog-in var(--_animation-duration) var(--_animation-easing) both;
+	}
+
+	.dialog.is-closing {
+		animation: dialog-out var(--_animation-duration) var(--_animation-easing) both;
+	}
+
+
+	/* # Reduced motion */
+
+	@media (prefers-reduced-motion: reduce) {
+		.dialog[open],
+		.dialog.is-closing {
+			animation: none;
+		}
 	}
 `;
