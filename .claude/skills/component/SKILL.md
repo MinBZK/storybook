@@ -13,205 +13,234 @@ Implementeer een web component: $ARGUMENTS
 |--------|-------------|
 | **Framework** | [Lit](https://lit.dev/) (LitElement) |
 | **Taal** | TypeScript (`.ts`) |
-| **Component bestand** | `src/components/{name}/rr-{name}.ts` |
-| **Stories bestand** | `src/components/{name}/rr-{name}.stories.js` |
-| **Referentie** | `src/components/inputs/toggle-button/rr-toggle-button.ts` |
-
-**BELANGRIJK:** Componenten worden ALTIJD geschreven in Lit + TypeScript. Gebruik de toggle-button als referentie implementatie.
-
----
+| **Prefix** | `ndd-` |
 
 ## WORKFLOW
 
-### Stap 1: Input Parsing
+### Stap 1: Bepaal component naam
 
-**Bepaal component naam:**
 1. Als gebruiker naam opgaf → gebruik die
 2. Converteer naar kebab-case: "Toggle Button" → "toggle-button"
-3. Voeg `rr-` prefix toe: → "rr-toggle-button"
+3. Voeg `ndd-` prefix toe: → "ndd-toggle-button"
+4. Class naam: `NDDToggleButton`
 
-### Stap 2: Bestaand Component Check
+### Stap 2: Bestaand component check
 
-Lees `docs/component-map.json` en check of component al bestaat.
+Zoek in `src/components/` of het component al bestaat.
 
 | Situatie | Mode |
 |----------|------|
-| Component bestaat niet | **CREATE** - nieuwe bestanden aanmaken |
-| Component bestaat al | **UPDATE** - bestaande bestanden bijwerken |
+| Component bestaat niet | **CREATE** — nieuwe bestanden aanmaken |
+| Component bestaat al | **UPDATE** — bestaande bestanden bijwerken |
 
-### Stap 3: Tokens Identificeren
+### Stap 3: CSS variabelen identificeren
 
-**Token hiërarchie (voorkeursvolgorde):**
+**Voorkeursvolgorde:**
 1. `--components-{name}-*` (component-specifiek)
 2. `--semantics-*` (betekenisvol)
 3. `--primitives-*` (alleen als backup)
 
-**Zoek tokens in `src/assets/styles/settings.css`:**
+**Naamconventies:**
+
+- **Primitives:** `--primitives-{property}-{variant}-{scale}`
+  bijv. `--primitives-color-accent-750`
+- **Semantics:** `--semantics-{group}-{variant}-{state}-{element}-{element-variant}-{element-state}-{property}`
+  bijv. `--semantics-buttons-neutral-tinted-is-hovered-background-color`
+- **Components:** `--components-{component}-{variant}-{state}-{element}-{element-variant}-{element-state}-{property}`
+  bijv. `--components-checkbox-md-check-icon-size`
+- **Context:** `--context-{context}-{property}`
+  Gedeelde variabelen voor communicatie tussen componenten. Niet gedefinieerd in settings.css.
+  bijv. `--context-parent-background-color`
+- **Lokaal:** `--_{variant}-{state}-{element}-{element-variant}-{element-state}-{property}`
+  Interne variabelen binnen een component. Definieer defaults in `:host`.
+  bijv. `--_background-color`
+
+Primitives zijn basiswaarden — gebruik ze niet direct in componenten. Semantics geven context voor een groep componenten. Component variabelen zijn specifiek voor één component.
+
+Zoek in `src/assets/styles/settings.css`:
 ```bash
 grep -i "{component-naam}" src/assets/styles/settings.css
-grep -i "controls.*min-size" src/assets/styles/settings.css
+grep -i "controls.*min-size\|controls.*corner-radius" src/assets/styles/settings.css
+grep -i "focus-ring" src/assets/styles/settings.css
 ```
 
-**Controleer ook bestaande componenten voor patronen:**
-- `src/components/inputs/toggle-button/rr-toggle-button.ts` (referentie implementatie)
+### Stap 4: Bestanden aanmaken
 
-### Spacer Component Gebruik
-
-**Gebruik `<rr-spacer>` voor spacing in componenten waar spacer elementen nodig zijn.**
-
-```html
-<!-- Vaste spacing -->
-<rr-spacer size="32"></rr-spacer>
-
-<!-- Flexibele spacing (vult beschikbare ruimte) -->
-<rr-spacer size="flexible"></rr-spacer>
-
-<!-- Container-responsive spacing -->
-<rr-spacer size="m" container="l"></rr-spacer>
 ```
-
-**Beschikbare sizes:** 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 44, 48, 64, 80, 96, m, flexible
-
-### Stap 4: Component Genereren/Updaten
-
-**Bestanden:**
-- Component: `src/components/{name}/rr-{name}.ts` (TypeScript)
-- Stories: `src/components/{name}/rr-{name}.stories.js` (JavaScript)
+src/components/{categorie}/{naam}/
+  ndd-{naam}.ts           # Component class
+  ndd-{naam}.styles.ts    # Styles
+  ndd-{naam}.template.ts  # Render template
+  ndd-{naam}.i18n.ts      # Vertalingen (optioneel, bij gebruikersgerichte tekst)
+  ndd-{naam}.stories.ts   # Storybook stories
+  ndd-{naam}.test.ts      # Tests
+```
 
 ---
 
-## COMPONENT TEMPLATE (Lit + TypeScript)
+## COMPONENT TEMPLATE
 
-**Locatie:** `src/components/{name}/rr-{name}.ts`
+**`ndd-{naam}.ts`:**
 
 ```typescript
 /**
- * RegelRecht {DisplayName} Component (Lit + TypeScript)
+ * Nederlandse Digitale Dienst {DisplayName} Component (Lit + TypeScript)
  *
- * @element rr-{name}
- * @attr {string} size - Component size: 'xs' | 'sm' | 'md' (default: 'md')
- * @attr {boolean} disabled - Disabled state
+ * @element ndd-{naam}
+ * @attr {string} size - Component size: 'xs' | 'sm' | 'md' (standaard: 'md')
+ * @attr {boolean} disabled - Uitgeschakelde staat
  *
- * @slot - Default slot for content
+ * @slot - Default slot voor content
  *
- * @fires {event-name} - Description of event (detail: { ... })
- *
- * @csspart {part-name} - Description of CSS part
+ * @fires {event-naam} - Beschrijving (detail: { ... })
  */
 
-import { LitElement, html, css } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { styles } from './ndd-{naam}.styles.ts';
+import { template } from './ndd-{naam}.template.ts';
 
 type Size = 'xs' | 'sm' | 'md';
 
-@customElement('rr-{name}')
-export class RR{PascalName} extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-block;
-      font-family: var(--rr-font-family-body);
-    }
+@customElement('ndd-{naam}')
+export class NDD{PascalName} extends LitElement {
+	static override styles = styles;
 
-    :host([hidden]) {
-      display: none;
-    }
+	@property({ type: String, reflect: true })
+	size: Size = 'md';
 
-    .{name} {
-      /* Reset */
-      appearance: none;
-      border: none;
-      margin: 0;
-      padding: 0;
-      background: none;
-      font: inherit;
-      cursor: pointer;
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
 
-      /* Layout */
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      /* Animation */
-      transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
-    }
-
-    .{name}:active:not(:disabled) {
-      transform: scale(0.98);
-    }
-
-    /* Size variants - ZOEK TOKENS OP in src/assets/styles/settings.css */
-    :host([size="xs"]) .{name} {
-      min-height: var(--semantics-controls-xs-min-size);
-      border-radius: var(--semantics-controls-xs-corner-radius);
-      /* padding en font: haal uit CSS variabelen */
-    }
-
-    :host([size="sm"]) .{name} {
-      min-height: var(--semantics-controls-sm-min-size);
-      border-radius: var(--semantics-controls-sm-corner-radius);
-    }
-
-    :host([size="md"]) .{name},
-    :host(:not([size])) .{name} {
-      min-height: var(--semantics-controls-md-min-size);
-      border-radius: var(--semantics-controls-md-corner-radius);
-    }
-
-    /* Focus state */
-    .{name}:focus-visible {
-      outline: var(--semantics-focus-ring-thickness) solid var(--semantics-focus-ring-color);
-      outline-offset: 2px;
-    }
-
-    /* Disabled state */
-    :host([disabled]) .{name} {
-      opacity: var(--primitives-opacity-disabled);
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
-    /* Accessibility: Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .{name} {
-        transition: none;
-      }
-    }
-
-    /* Accessibility: High Contrast Mode */
-    @media (forced-colors: active) {
-      .{name}:focus-visible {
-        outline: 2px solid CanvasText !important;
-        outline-offset: 2px !important;
-      }
-    }
-  `;
-
-  @property({ type: String, reflect: true })
-  size: Size = 'md';
-
-  @property({ type: Boolean, reflect: true })
-  disabled = false;
-
-  override render() {
-    return html`
-      <button
-        class="{name}"
-        part="{name}"
-        type="button"
-        ?disabled=${this.disabled}
-        aria-disabled=${this.disabled}
-        tabindex=${this.disabled ? -1 : 0}
-      >
-        <slot></slot>
-      </button>
-    `;
-  }
+	override render() {
+		return template(this);
+	}
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'rr-{name}': RR{PascalName};
-  }
+	interface HTMLElementTagNameMap {
+		'ndd-{naam}': NDD{PascalName};
+	}
+}
+```
+
+**`ndd-{naam}.styles.ts`:**
+
+```typescript
+import { css } from 'lit';
+import { unsafeCSS } from 'lit';
+import { breakpoints } from '../../../assets/styles/breakpoints.ts';
+
+const smMax = unsafeCSS(breakpoints.smMax);
+const mdMin = unsafeCSS(breakpoints.mdMin);
+const mdMax = unsafeCSS(breakpoints.mdMax);
+const lgMin = unsafeCSS(breakpoints.lgMin);
+
+export const styles = css`
+
+
+	/* # Host */
+
+	:host {
+		display: inline-block;
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+	:host([disabled]) {
+		opacity: var(--primitives-opacity-disabled);
+		pointer-events: none;
+	}
+
+
+	/* # Element */
+
+	.{naam} {
+		appearance: none;
+		border: none;
+		margin: 0;
+		padding: 0;
+		background: none;
+		font: inherit;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		container-name: layout-area;
+		container-type: inline-size;
+	}
+
+	:host([size="md"]) .{naam},
+	:host(:not([size])) .{naam} {
+		min-height: var(--semantics-controls-md-min-size);
+		border-radius: var(--semantics-controls-md-corner-radius);
+	}
+
+
+	/* ## Responsive — container queries (binnen layout-area) */
+
+	.{naam}__content {
+		@container layout-area (max-width: ${smMax}) {
+			/* sm: compact weergave */
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			/* md */
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			/* lg */
+		}
+	}
+
+
+	/* # Focus */
+
+	.{naam}:focus-visible {
+		outline: none;
+	}
+
+	.{naam}__indicator {
+		position: absolute;
+		inset: var(--primitives-space-4);
+		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--primitives-space-4) / 2);
+		background-color: transparent;
+		pointer-events: none;
+	}
+
+	.{naam}:focus-visible .{naam}__indicator {
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+	}
+
+
+	/* # Toegankelijkheid */
+
+	@media (forced-colors: active) {
+		.{naam}:focus-visible .{naam}__indicator {
+			outline: 2px solid CanvasText;
+		}
+	}
+`;
+```
+
+**`ndd-{naam}.template.ts`:**
+
+```typescript
+import { html, TemplateResult } from 'lit';
+import type { NDD{PascalName} } from './ndd-{naam}.ts';
+
+export function template(component: NDD{PascalName}): TemplateResult {
+	return html`
+		<button class="{naam}"
+			type="button"
+			?disabled=${component.disabled}
+		>
+			<span class="{naam}__indicator"></span>
+			<slot></slot>
+		</button>
+	`;
 }
 ```
 
@@ -219,70 +248,96 @@ declare global {
 
 ## STORY TEMPLATE
 
-**Locatie:** `src/components/{name}/rr-{name}.stories.js`
+**`ndd-{naam}.stories.ts`:**
 
 ```javascript
 import { html } from 'lit';
-import './rr-{name}.js';
+import './ndd-{naam}.ts';
 
+/**
+ * Beschrijving van het component.
+ */
 export default {
-  title: 'Components/{DisplayName}',
-  component: 'rr-{name}',
-  tags: ['autodocs'],
-  argTypes: {
-    size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md'],
-    },
-    disabled: {
-      control: 'boolean',
-    },
-  },
+	title: 'Components/{Categorie}/{DisplayName}',
+	component: 'ndd-{naam}',
+	tags: ['autodocs'],
+	parameters: {
+		componentSource: {
+			file: 'src/components/{categorie}/{naam}/ndd-{naam}.ts',
+			repository: 'https://github.com/MinBZK/storybook',
+		},
+		status: { type: 'stable' },
+	},
+	argTypes: {
+		size: {
+			control: 'select',
+			options: ['xs', 'sm', 'md'],
+			description: 'Componentmaat',
+		},
+		disabled: {
+			control: 'boolean',
+			description: 'Uitgeschakelde staat',
+		},
+	},
+	args: {
+		size: 'md',
+		disabled: false,
+	},
 };
 
-export const Default = {
-  args: { size: 'md', disabled: false },
-  render: (args) => html`<rr-{name} size=${args.size} ?disabled=${args.disabled}>Label</rr-{name}>`,
+export const Standaard = {
+	render: (args) => html`<ndd-{naam} size=${args.size} ?disabled=${args.disabled}>Label</ndd-{naam}>`,
 };
 ```
 
 ---
 
-## EXPORTS UPDATEN (alleen bij CREATE mode)
+## TEST TEMPLATE
 
-**Bestand:** `src/components/index.ts`
+**`ndd-{naam}.test.ts`:**
 
 ```typescript
-export { RR{PascalName} } from './{name}/rr-{name}.js';
+import { describe, it, expect, afterEach } from 'vitest';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import './ndd-{naam}.ts';
+
+describe('ndd-{naam}', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('rendert zonder fouten', async () => {
+		el = await fixture('<ndd-{naam}></ndd-{naam}>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+});
 ```
 
 ---
 
-## COMPONENT-MAP UPDATEN
+## i18n
 
-**Bestand:** `docs/component-map.json`
-
-Voeg nieuwe entry toe of update bestaande met `lastUpdated`.
+Zie `/translation-keys` skill voor alle conventies rond translation keys, types en implementatie.
 
 ---
 
-## TOKENS OPZOEKEN
+## SPACER COMPONENT
 
-**Zoek ALTIJD actuele token waarden op in `src/assets/styles/settings.css`:**
+Gebruik `<ndd-spacer>` voor ruimte tussen verschillende soorten componenten die elkaar direct opvolgen:
 
-```bash
-grep -i "{component-naam}" src/assets/styles/settings.css
-grep -i "controls.*min-size\|controls.*corner-radius" src/assets/styles/settings.css
-grep -i "focus-ring" src/assets/styles/settings.css
-grep -i "primitives-space" src/assets/styles/settings.css
-grep -i "opacity" src/assets/styles/settings.css
+```html
+<ndd-spacer size="32"></ndd-spacer>
+<ndd-spacer size="flexible"></ndd-spacer>
 ```
 
-**LET OP:** Opacity tokens zijn decimale fracties (0-1). Gebruik: `var(--token)`
+**Beschikbare sizes:** 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 44, 48, 64, 80, 96, m, flexible
 
 ---
 
-## FORMATTING REGELS
+## FORMATTING
 
 Er is geen automatische formatter. Volg deze regels handmatig.
 
@@ -297,32 +352,19 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 ```html
 <!-- GOED -->
 <input class="checkbox__input" type="checkbox">
-<hr class="divider">
 
-<!-- FOUT — geen XHTML self-closing -->
+<!-- FOUT -->
 <input class="checkbox__input" type="checkbox" />
-<hr class="divider" />
 ```
 
-### CSS (`.styles.ts` en `.css`)
+### CSS (`.styles.ts`)
 - Property waarden altijd op **één regel**, ook als ze lang zijn
 - Sorteer rules per element; houd alle gedrag voor een element bij elkaar
-- Gebruik **CSS nesting** voor `@container` en `@media` varianten — nest ze in de element rule block
+- Gebruik **CSS nesting** voor `@container` en `@media` — nest in de element rule block
 - Declareer CSS variable defaults in `:host`, nooit als fallback: `var(--_foo)` niet `var(--_foo, 100)`
-- Gebruik **nooit** flex shorthand (`flex: 1`), schrijf altijd de losse properties
+- Gebruik **nooit** flex shorthand (`flex: 1`), schrijf de losse properties
 - Level 1 headings (`/* # Section */`): 2 lege regels ervoor, 1 erna
 - Level 2 headings (`/* ## Subsection */`): 1 lege regel ervoor en erna
-- BEM voor blocks/elements; gebruik state classes (`.is-dragging`) niet BEM modifiers voor state
-
-```css
-/* GOED */
-outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-
-/* FOUT — niet afbreken */
-outline: var(--semantics-focus-ring-edge-thickness) double
-	var(--semantics-focus-ring-edge-color);
-```
 
 ```css
 /* GOED — CSS nesting */
@@ -336,13 +378,9 @@ outline: var(--semantics-focus-ring-edge-thickness) double
 }
 
 /* FOUT — niet nesten */
-.button {
-	display: inline-flex;
-}
+.button { display: inline-flex; }
 @container (min-width: 641px) {
-	.button {
-		padding: var(--_md-padding);
-	}
+	.button { padding: var(--_md-padding); }
 }
 ```
 
@@ -361,30 +399,15 @@ outline: var(--semantics-focus-ring-edge-thickness) double
 }
 ```
 
-```css
-/* GOED — state class */
-.list-item.is-dragging { opacity: 0.5; }
-
-/* FOUT — BEM modifier voor state */
-.list-item--dragging { opacity: 0.5; }
-```
-
-```css
-/* GOED — geen flex shorthand */
-flex-grow: 1;
-flex-shrink: 0;
-
-/* FOUT */
-flex: 1 0 auto;
-```
-
 ### Templates (`.template.ts`)
-- `class` attribuut op **dezelfde regel** als het element
-- Elementen met één attribuut (naast `class`) blijven op één regel
-- `<slot>` elementen zijn altijd compact
-- Alle overige attributen op **eigen regels**:
+- Elk attribuut op een **eigen regel**, met twee uitzonderingen:
+  - `class` staat altijd op **dezelfde regel** als het element
+  - Een element met **één enkel attribuut** mag op één regel
+- **Nooit een class op een child component** — gebruik een wrapper element
+- Geen lege regels in templates
+
 ```html
-<!-- GOED — meerdere attributen -->
+<!-- GOED — class + meerdere attributen -->
 <input class="checkbox__input"
 	type="checkbox"
 	.checked=${component.checked}
@@ -392,14 +415,20 @@ flex: 1 0 auto;
 	@change=${component._handleChange}
 >
 
-<!-- GOED — één attribuut naast class, past op één regel -->
-<div class="checkbox__box" aria-hidden="true">
+<!-- GOED — class + één attribuut: attribuut op eigen regel -->
+<div class="checkbox__box"
+	aria-hidden="true"
+>
 
-<!-- GOED — slot is altijd compact -->
-<slot></slot>
+<!-- GOED — één attribuut zonder class: op één regel -->
 <slot name="header"></slot>
 
-<!-- GOED — kort element -->
+<!-- GOED — child component in wrapper -->
+<span class="checkbox__icon">
+	<ndd-icon name="check-mark-small"></ndd-icon>
+</span>
+
+<!-- FOUT — class op child component -->
 <ndd-icon class="checkbox__icon" name="check-mark-small"></ndd-icon>
 
 <!-- FOUT — class op aparte regel -->
@@ -409,28 +438,47 @@ flex: 1 0 auto;
 >
 ```
 
-### Stories (`.stories.ts` en `.stories.js`)
-- Alle attributen van een element op **één regel**:
-```html
-<!-- GOED -->
-<ndd-button variant="primary" size="md" text="Opslaan" ?disabled=${args.disabled}></ndd-button>
+### Stories (`.stories.ts`)
+- Zelfde formatting conventies als templates
 
-<!-- FOUT — niet opsplitsen in stories -->
-<ndd-button
-	variant="primary"
-	size="md"
-	text="Opslaan"
-></ndd-button>
+---
+
+## BEM NAAMGEVING
+
+Gebruik BEM (Block Element Modifier) + state classes:
+
+```
+.block                    /* Zelfstandig component */
+.block__element           /* Onderdeel van block */
+.block--modifier          /* Variant van block */
+```
+
+- Block: logische naam (`.pagination`, `.checkbox`, `.button`)
+- Element: na dubbele underscore `__` (`.pagination__page-button`)
+- Modifier: na dubbele hyphen `--` (`.button--primary`)
+- Geen nesting: niet `.block__element__subelement`
+- Modifiers zijn aanvullend, nooit vervanging van base class
+
+**Varianten vs states:**
+- **BEM modifiers** voor varianten (vast): `button--primary`, `button--sm`
+- **State classes** voor wisselende toestanden: `list-item.is-dragging`, `page-button.is-current`
+
+```html
+<button class="button button--primary">
+<div class="list-item is-dragging">
+<button class="pagination__page-button is-current">
 ```
 
 ---
 
 ## CHECKLIST
 
-**Tokens:**
-- [ ] Semantics tokens waar mogelijk
-- [ ] Geen fallback waarden op CSS variabelen (enige uitzondering: override hooks `--rr-*`)
-- [ ] Opacity: `var(--token)`
+**CSS:**
+- [ ] Components → semantics → primitives volgorde
+- [ ] Geen fallback waarden
+- [ ] Geen hardcoded waarden, geen !important
+- [ ] Geen `cursor: pointer`
+- [ ] Disabled: `var(--primitives-opacity-disabled)`
 
 **Accessibility:**
 - [ ] ARIA attributes
@@ -438,10 +486,18 @@ flex: 1 0 auto;
 - [ ] `@media (prefers-reduced-motion)`
 - [ ] `@media (forced-colors: active)`
 
-**Code:**
+**TypeScript:**
 - [ ] TypeScript types correct
 - [ ] `declare global` block
 - [ ] Private methods met underscore
+- [ ] Geen inline styles of templates in de component class
+
+**Taal:**
+- [ ] Story namen, JSDoc en component docs in het Nederlands
+- [ ] Code comments in het Engels
+
+**Shadow DOM:**
+- [ ] Geen `part` attributen op shadow DOM elementen
 
 **Verificatie:**
 - [ ] Storybook gestart
