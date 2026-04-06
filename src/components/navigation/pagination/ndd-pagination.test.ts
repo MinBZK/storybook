@@ -257,7 +257,7 @@ describe('ndd-pagination – translations', () => {
 
 	it('overrides translations via property', async () => {
 		el = await fixture<NDDPagination>('<ndd-pagination current="1" total="5"></ndd-pagination>');
-		el.translations = { 'components.pagination.label-text': 'Pagination' };
+		el.translations = { 'components.pagination.accessibility-label': 'Pagination' };
 		await waitForUpdate(el);
 
 		const nav = el.shadowRoot!.querySelector('nav');

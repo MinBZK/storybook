@@ -13,7 +13,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 
 	const renderPageButton = (page: number) => {
 		const isCurrent = page === component.current;
-		const label = t('components.pagination.page-number-text', { page });
+		const label = t('components.pagination.page-action', { page });
 
 		if (hasHref) {
 			return html`
@@ -47,7 +47,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 
 	return html`
 		<nav class="pagination"
-			aria-label=${t('components.pagination.label-text')}
+			aria-label=${t('components.pagination.accessibility-label')}
 		>
 			<ndd-icon-button
 				icon="chevron-left-small"
@@ -70,7 +70,7 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 			<div class="pagination__compact">
 				<div class="pagination__select-wrapper">
 					<select class="pagination__select"
-						aria-label=${t('components.pagination.go-to-page-action')}
+						aria-label=${t('components.pagination.go-to-page-label')}
 						?disabled=${isDisabled}
 						@change=${(e: Event) => component._goToPage(Number((e.target as HTMLSelectElement).value))}
 					>

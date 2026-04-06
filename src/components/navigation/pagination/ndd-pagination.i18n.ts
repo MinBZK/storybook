@@ -1,9 +1,9 @@
 export const nddPaginationTranslations = {
-	'components.pagination.label-text': 'Paginering',
-	'components.pagination.previous-action': 'Vorige pagina',
-	'components.pagination.next-action': 'Volgende pagina',
-	'components.pagination.page-number-text': 'Pagina {page}',
-	'components.pagination.go-to-page-action': 'Ga naar pagina',
+	'components.pagination.accessibility-label': 'Paginering',
+	'components.pagination.previous-action': 'Ga naar vorige pagina',
+	'components.pagination.next-action': 'Ga naar volgende pagina',
+	'components.pagination.page-action': 'Ga naar pagina {page}',
+	'components.pagination.go-to-page-label': 'Ga naar pagina',
 };
 
 export type NDDPaginationTranslations = typeof nddPaginationTranslations;
