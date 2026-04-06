@@ -18,7 +18,7 @@ export interface NDDReorderEventDetail {
  * When `reorderable` is set, items can be reordered by drag or keyboard.
  *
  * @slot         - List items (`ndd-list-item`)
- * @slot header  - Content above the list body (e.g. `ndd-title-bar`)
+ * @slot header  - Content above the list body (e.g. `ndd-title`)
  * @slot footer  - Content below the list body (e.g. a short description)
  *
  * @fires ndd-reorder - Fired on successful drop: `{ fromIndex, toIndex }`

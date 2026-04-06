@@ -7,9 +7,9 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
-/* # ndd-title-bar styles */
+/* # ndd-title styles */
 
-export const titleBarStyles = css`
+export const titleStyles = css`
 	:host {
 		display: flex;
 		container-type: inline-size;
@@ -22,7 +22,7 @@ export const titleBarStyles = css`
 
 	/* # Title bar */
 
-	.title-bar {
+	.title {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -33,7 +33,7 @@ export const titleBarStyles = css`
 
 	/* # Title group */
 
-	.title-bar__title-group {
+	.title__title-group {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
@@ -70,7 +70,7 @@ export const titleBarStyles = css`
 
 	/* # Actions */
 
-	.title-bar__actions {
+	.title__actions {
 		display: flex;
 		flex-direction: row;
 		align-items: center;

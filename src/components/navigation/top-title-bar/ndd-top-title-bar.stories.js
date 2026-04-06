@@ -5,7 +5,7 @@ import '../../actions/button/ndd-button.ts';
 import '../../actions/icon-button/ndd-icon-button.ts';
 import '../../layout/page/ndd-page.ts';
 import '../../layout/page-sections/simple-section/ndd-simple-section.ts';
-import '../../layout/title-bar/ndd-title-bar.ts';
+import '../../content/title/ndd-title.ts';
 
 /**
  * De Top Title Bar is de werkbalk van een pagina of container.
@@ -184,10 +184,10 @@ export const MetTitelAnker = () => html`
 			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
 		<ndd-simple-section>
-			<ndd-title-bar id="page-title-bar" size="2">
+			<ndd-title id="page-title-bar" size="2">
 				<h1>Paginatitel</h1>
 				<p slot="subtitle">Scroll omlaag om te zien hoe de compacte stand wordt geactiveerd.</p>
-			</ndd-title-bar>
+			</ndd-title>
 			<div style="height: 600px;"></div>
 		</ndd-simple-section>
 	</ndd-page>
@@ -211,10 +211,10 @@ export const MetTitelAnkerZonderActies = () => html`
 			@dismiss=${action('dismiss')}
 		></ndd-top-title-bar>
 		<ndd-simple-section>
-			<ndd-title-bar id="page-title-bar-2" size="2">
+			<ndd-title id="page-title-bar-2" size="2">
 				<h1>Paginatitel</h1>
 				<p slot="subtitle">Zonder terugknop of sluitknop.</p>
-			</ndd-title-bar>
+			</ndd-title>
 			<div style="height: 600px;"></div>
 		</ndd-simple-section>
 	</ndd-page>
