@@ -6,6 +6,7 @@ export function dialogTemplate(component: NDDDialog) {
 	return html`
 		<dialog class="dialog"
 			role=${component.variant === 'alert' ? 'alertdialog' : nothing}
+			aria-modal="true"
 			@click=${component._handleBackdropClick}
 			@cancel=${component._handleCancel}
 		>
