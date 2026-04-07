@@ -27,4 +27,10 @@ describe('ndd-one-half-one-half-section', () => {
 		expect(el.shadowRoot!.querySelector('.one-half-one-half-section__left-column')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('.one-half-one-half-section__right-column')).not.toBeNull();
 	});
+
+	it('reflects align attribute to the host', async () => {
+		el = await fixture('<ndd-one-half-one-half-section align="center"></ndd-one-half-one-half-section>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('align')).toBe('center');
+	});
 });

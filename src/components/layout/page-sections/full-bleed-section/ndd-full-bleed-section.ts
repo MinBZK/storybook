@@ -12,13 +12,16 @@
  * @slot footer - Content below the main content
  */
 import { LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { fullBleedSectionStyles } from './ndd-full-bleed-section.styles.ts';
 import { fullBleedSectionTemplate } from './ndd-full-bleed-section.template.ts';
 
 @customElement('ndd-full-bleed-section')
 export class NDDFullBleedSection extends LitElement {
 	static override styles = fullBleedSectionStyles;
+
+	@property({ type: String, reflect: true })
+	align?: 'center';
 
 	override render() {
 		return fullBleedSectionTemplate(this);

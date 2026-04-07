@@ -14,13 +14,16 @@
  * @slot footer - Content below the columns
  */
 import { LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { twoThirdsOneThirdSectionStyles } from './ndd-two-thirds-one-third-section.styles.ts';
 import { twoThirdsOneThirdSectionTemplate } from './ndd-two-thirds-one-third-section.template.ts';
 
 @customElement('ndd-two-thirds-one-third-section')
 export class NDDTwoThirdsOneThirdSection extends LitElement {
 	static override styles = twoThirdsOneThirdSectionStyles;
+
+	@property({ type: String, reflect: true })
+	align?: 'center';
 
 	override render() {
 		return twoThirdsOneThirdSectionTemplate(this);
