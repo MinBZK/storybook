@@ -30,7 +30,6 @@ export const documentTabBarStyles = css`
 		flex-direction: row;
 		align-items: center;
 		gap: var(--primitives-space-8);
-		padding: var(--primitives-space-8) var(--primitives-space-16);
 	}
 
 	.document-tab-bar__items {
