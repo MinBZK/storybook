@@ -45,6 +45,7 @@ export const pageStyles = css`
 	:host([sticky-header]) .page__header {
 		position: sticky;
 		top: 0;
+		z-index: 1;
 		background-color: color-mix(in srgb, var(--_background-color) 95%, transparent);
 	}
 
@@ -76,6 +77,10 @@ export const pageStyles = css`
 		container-name: layout-area;
 	}
 
+	.page__main ::slotted(:last-child) {
+		flex: 1;
+	}
+
 
 	/* # Footer */
 
@@ -89,6 +94,7 @@ export const pageStyles = css`
 	:host([sticky-footer]) .page__footer {
 		position: sticky;
 		bottom: 0;
+		z-index: 1;
 		background-color: color-mix(in srgb, var(--_background-color) 95%, transparent);
 	}
 

@@ -20,4 +20,12 @@ describe('ndd-full-bleed-section', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.full-bleed-section')).not.toBeNull();
 	});
+
+	it('reflects align property to attribute', async () => {
+		el = await fixture('<ndd-full-bleed-section></ndd-full-bleed-section>');
+		await waitForUpdate(el);
+		(el as any).align = 'center';
+		await waitForUpdate(el);
+		expect(el.getAttribute('align')).toBe('center');
+	});
 });

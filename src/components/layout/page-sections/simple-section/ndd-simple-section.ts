@@ -12,13 +12,16 @@
  * @slot footer - Content below the main content
  */
 import { LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { simpleSectionStyles } from './ndd-simple-section.styles.ts';
 import { simpleSectionTemplate } from './ndd-simple-section.template.ts';
 
 @customElement('ndd-simple-section')
 export class NDDSimpleSection extends LitElement {
 	static override styles = simpleSectionStyles;
+
+	@property({ type: String, reflect: true })
+	align?: string;
 
 	override render() {
 		return simpleSectionTemplate(this);
