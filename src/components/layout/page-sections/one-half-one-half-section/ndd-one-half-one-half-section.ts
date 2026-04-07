@@ -23,7 +23,7 @@ export class NDDOneHalfOneHalfSection extends LitElement {
 	static override styles = oneHalfOneHalfSectionStyles;
 
 	@property({ type: String, reflect: true })
-	align?: 'center';
+	align?: string;
 
 	override render() {
 		return oneHalfOneHalfSectionTemplate(this);

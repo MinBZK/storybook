@@ -23,7 +23,7 @@ export class NDDOneThirdTwoThirdsSection extends LitElement {
 	static override styles = oneThirdTwoThirdsSectionStyles;
 
 	@property({ type: String, reflect: true })
-	align?: 'center';
+	align?: string;
 
 	override render() {
 		return oneThirdTwoThirdsSectionTemplate(this);

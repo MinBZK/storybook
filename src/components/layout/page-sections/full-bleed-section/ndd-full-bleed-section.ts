@@ -21,7 +21,7 @@ export class NDDFullBleedSection extends LitElement {
 	static override styles = fullBleedSectionStyles;
 
 	@property({ type: String, reflect: true })
-	align?: 'center';
+	align?: string;
 
 	override render() {
 		return fullBleedSectionTemplate(this);

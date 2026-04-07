@@ -21,7 +21,7 @@ export class NDDSimpleSection extends LitElement {
 	static override styles = simpleSectionStyles;
 
 	@property({ type: String, reflect: true })
-	align?: 'center';
+	align?: string;
 
 	override render() {
 		return simpleSectionTemplate(this);
