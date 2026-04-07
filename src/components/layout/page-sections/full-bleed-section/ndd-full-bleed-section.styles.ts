@@ -45,6 +45,13 @@ export const fullBleedSectionStyles = css`
 	}
 
 
+	/* # Header */
+
+	.full-bleed-section__header:not(:has(::slotted(*))) {
+		display: none;
+	}
+
+
 	/* # Body */
 
 	.full-bleed-section__body {
@@ -64,6 +71,13 @@ export const fullBleedSectionStyles = css`
 		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
+	}
+
+
+	/* # Footer */
+
+	.full-bleed-section__footer:not(:has(::slotted(*))) {
+		display: none;
 	}
 
 

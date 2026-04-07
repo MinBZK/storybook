@@ -49,6 +49,13 @@ export const simpleSectionStyles = css`
 	}
 
 
+	/* # Header */
+
+	.simple-section__header:not(:has(::slotted(*))) {
+		display: none;
+	}
+
+
 	/* # Body */
 
 	.simple-section__body {
@@ -69,6 +76,13 @@ export const simpleSectionStyles = css`
 		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
+	}
+
+
+	/* # Footer */
+
+	.simple-section__footer:not(:has(::slotted(*))) {
+		display: none;
 	}
 
 

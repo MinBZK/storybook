@@ -12,20 +12,15 @@
  * @slot left - Left column (2/3)
  * @slot right - Right column (1/3)
  * @slot footer - Content below the columns
- *
- * @attr {string} [align] - Set to "center" to vertically center section content
  */
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import { twoThirdsOneThirdSectionStyles } from './ndd-two-thirds-one-third-section.styles.ts';
 import { twoThirdsOneThirdSectionTemplate } from './ndd-two-thirds-one-third-section.template.ts';
 
 @customElement('ndd-two-thirds-one-third-section')
 export class NDDTwoThirdsOneThirdSection extends LitElement {
 	static override styles = twoThirdsOneThirdSectionStyles;
-
-	@property({ type: String, reflect: true })
-	align?: string;
 
 	override render() {
 		return twoThirdsOneThirdSectionTemplate(this);
