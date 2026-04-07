@@ -288,7 +288,7 @@ export class NDDList extends LitElement {
 			this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
 			this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
 			this._clone.appendChild(hostClone);
-			this.renderRoot.appendChild(this._clone);
+			this.renderRoot.querySelector('.list__body')!.appendChild(this._clone);
 		}
 	}
 
