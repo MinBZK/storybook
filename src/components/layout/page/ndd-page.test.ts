@@ -32,4 +32,12 @@ describe('ndd-page', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('background')).toBe('tinted');
 	});
+
+	it('stretches the last slotted child in main with flex: 1', async () => {
+		el = await fixture('<ndd-page><div id="section">content</div></ndd-page>');
+		await waitForUpdate(el);
+		const section = el.querySelector('#section') as HTMLElement;
+		const style = getComputedStyle(section);
+		expect(style.flexGrow).toBe('1');
+	});
 });

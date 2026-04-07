@@ -21,8 +21,10 @@ describe('ndd-simple-section', () => {
 		expect(el.shadowRoot!.querySelector('.simple-section')).not.toBeNull();
 	});
 
-	it('reflects align attribute to the host', async () => {
-		el = await fixture('<ndd-simple-section align="center"></ndd-simple-section>');
+	it('reflects align property to attribute', async () => {
+		el = await fixture('<ndd-simple-section></ndd-simple-section>');
+		await waitForUpdate(el);
+		(el as any).align = 'center';
 		await waitForUpdate(el);
 		expect(el.getAttribute('align')).toBe('center');
 	});
