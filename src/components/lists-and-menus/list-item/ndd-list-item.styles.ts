@@ -48,6 +48,7 @@ export const styles = css`
 		flex-direction: row;
 		align-items: stretch;
 		position: relative;
+		isolation: isolate;
 		width: 100%;
 	}
 
