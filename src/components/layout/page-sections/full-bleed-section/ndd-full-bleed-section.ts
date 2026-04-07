@@ -25,6 +25,12 @@ export class NDDFullBleedSection extends LitElement {
 	@property({ type: String, reflect: true })
 	align?: string;
 
+	_onSlotChange(e: Event) {
+		const slot = e.target as HTMLSlotElement;
+		const wrapper = slot.parentElement as HTMLElement;
+		wrapper.hidden = slot.assignedElements().length === 0;
+	}
+
 	override render() {
 		return fullBleedSectionTemplate(this);
 	}

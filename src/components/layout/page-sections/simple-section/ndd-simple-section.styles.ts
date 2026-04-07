@@ -49,9 +49,10 @@ export const simpleSectionStyles = css`
 	}
 
 
+
 	/* # Header */
 
-	.simple-section__header:not(:has(::slotted(*))) {
+	.simple-section__header[hidden] {
 		display: none;
 	}
 
@@ -79,9 +80,10 @@ export const simpleSectionStyles = css`
 	}
 
 
+
 	/* # Footer */
 
-	.simple-section__footer:not(:has(::slotted(*))) {
+	.simple-section__footer[hidden] {
 		display: none;
 	}
 

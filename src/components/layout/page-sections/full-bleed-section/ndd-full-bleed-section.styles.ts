@@ -45,9 +45,10 @@ export const fullBleedSectionStyles = css`
 	}
 
 
+
 	/* # Header */
 
-	.full-bleed-section__header:not(:has(::slotted(*))) {
+	.full-bleed-section__header[hidden] {
 		display: none;
 	}
 
@@ -74,9 +75,10 @@ export const fullBleedSectionStyles = css`
 	}
 
 
+
 	/* # Footer */
 
-	.full-bleed-section__footer:not(:has(::slotted(*))) {
+	.full-bleed-section__footer[hidden] {
 		display: none;
 	}
 
