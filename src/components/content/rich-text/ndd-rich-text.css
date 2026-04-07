@@ -22,7 +22,6 @@ ndd-rich-text[spacing="snug"] {
 ndd-rich-text[spacing="loose"] {
 	--components-rich-text-spacing: var(--components-rich-text-spacing-loose);
 }
-En de tok
 
 ndd-rich-text[hidden] {
 	display: none;

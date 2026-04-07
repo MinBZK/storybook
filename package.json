@@ -7,7 +7,8 @@
   "module": "dist/components/ndd-components.js",
   "exports": {
     ".": "./dist/components/ndd-components.js",
-    "./styles": "./dist/css/settings.css"
+    "./styles": "./dist/css/global.css",
+    "./styles/tokens": "./dist/css/settings.css"
   },
   "files": [
     "dist"
@@ -21,7 +22,7 @@
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run build:components",
-    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
+    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/components/content/rich-text/ndd-rich-text.css dist/css/ndd-rich-text.css && printf '@import \"./settings.css\";\\n@import \"./ndd-rich-text.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
     "validate:styles": "node scripts/validate-css-variables.js",
     "build:components": "npm run clean:components && vite build",
     "clean": "rm -rf dist",
