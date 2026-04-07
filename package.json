@@ -7,7 +7,8 @@
   "module": "dist/components/ndd-components.js",
   "exports": {
     ".": "./dist/components/ndd-components.js",
-    "./styles": "./dist/css/global.css"
+    "./styles": "./dist/css/global.css",
+    "./styles/tokens": "./dist/css/settings.css"
   },
   "files": [
     "dist"
