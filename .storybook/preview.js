@@ -1,5 +1,4 @@
-import '../src/assets/styles/settings.css';
-import '../src/components/content/rich-text/ndd-rich-text.css';
+import '../src/assets/styles/global.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 /** @type { import('@storybook/web-components-vite').Preview } */
