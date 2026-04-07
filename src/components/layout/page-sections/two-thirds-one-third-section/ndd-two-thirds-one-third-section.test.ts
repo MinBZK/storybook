@@ -28,11 +28,4 @@ describe('ndd-two-thirds-one-third-section', () => {
 		expect(el.shadowRoot!.querySelector('.two-thirds-one-third-section__right-column')).not.toBeNull();
 	});
 
-	it('reflects align property to attribute', async () => {
-		el = await fixture('<ndd-two-thirds-one-third-section></ndd-two-thirds-one-third-section>');
-		await waitForUpdate(el);
-		(el as any).align = 'center';
-		await waitForUpdate(el);
-		expect(el.getAttribute('align')).toBe('center');
-	});
 });

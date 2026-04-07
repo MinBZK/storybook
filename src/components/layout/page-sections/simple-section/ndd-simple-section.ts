@@ -10,6 +10,8 @@
  * @slot header - Content above the main content
  * @slot - Main content
  * @slot footer - Content below the main content
+ *
+ * @attr {string} [align] - Set to "center" to vertically center section content
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

@@ -18,7 +18,7 @@ export const simpleSectionStyles = css`
 	}
 
 	:host([align="center"]) {
-		justify-content: center;
+		flex-grow: 1;
 	}
 
 
@@ -27,6 +27,7 @@ export const simpleSectionStyles = css`
 	.simple-section {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		align-items: center;
 		width: 100%;
 		box-sizing: border-box;
@@ -48,11 +49,19 @@ export const simpleSectionStyles = css`
 	}
 
 
+	/* # Header */
+
+	.simple-section__header:not(:has(::slotted(*))) {
+		display: none;
+	}
+
+
 	/* # Body */
 
 	.simple-section__body {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		width: 100%;
 		max-width: var(--semantics-page-sections-body-max-width);
 
@@ -67,5 +76,25 @@ export const simpleSectionStyles = css`
 		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
+	}
+
+
+	/* # Footer */
+
+	.simple-section__footer:not(:has(::slotted(*))) {
+		display: none;
+	}
+
+
+	/* # Main */
+
+	.simple-section__main {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+	}
+
+	:host([align="center"]) .simple-section__main {
+		justify-content: center;
 	}
 `;

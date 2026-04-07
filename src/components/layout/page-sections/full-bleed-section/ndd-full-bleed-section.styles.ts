@@ -18,7 +18,7 @@ export const fullBleedSectionStyles = css`
 	}
 
 	:host([align="center"]) {
-		justify-content: center;
+		flex-grow: 1;
 	}
 
 
@@ -27,6 +27,7 @@ export const fullBleedSectionStyles = css`
 	.full-bleed-section {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		width: 100%;
 		box-sizing: border-box;
 
@@ -44,11 +45,19 @@ export const fullBleedSectionStyles = css`
 	}
 
 
+	/* # Header */
+
+	.full-bleed-section__header:not(:has(::slotted(*))) {
+		display: none;
+	}
+
+
 	/* # Body */
 
 	.full-bleed-section__body {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
 		width: 100%;
 
 		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
@@ -62,6 +71,26 @@ export const fullBleedSectionStyles = css`
 		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
+	}
+
+
+	/* # Footer */
+
+	.full-bleed-section__footer:not(:has(::slotted(*))) {
+		display: none;
+	}
+
+
+	/* # Main */
+
+	.full-bleed-section__main {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+	}
+
+	:host([align="center"]) .full-bleed-section__main {
+		justify-content: center;
 	}
 
 `;
