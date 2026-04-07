@@ -5,6 +5,7 @@ export const styles = css`
 
 	:host {
 		display: block;
+		position: relative;
 		--_drag-clone-top: 0px;
 		--_drag-clone-left: 0px;
 		--_drag-clone-width: 0px;
@@ -19,7 +20,6 @@ export const styles = css`
 	.list__body {
 		display: flex;
 		flex-direction: column;
-		position: relative;
 		gap: var(--primitives-space-8);
 	}
 
