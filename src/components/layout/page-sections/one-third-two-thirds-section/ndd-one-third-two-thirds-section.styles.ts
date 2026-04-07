@@ -17,6 +17,10 @@ export const oneThirdTwoThirdsSectionStyles = css`
 		display: none;
 	}
 
+	:host([align="center"]) {
+		justify-content: center;
+	}
+
 
 	/* # Section */
 
