@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
-import './ndd-one-half-one-half-section.ts';
+import { NDDOneHalfOneHalfSection } from './ndd-one-half-one-half-section.ts';
 
 describe('ndd-one-half-one-half-section', () => {
 	let el: HTMLElement;
@@ -31,7 +31,7 @@ describe('ndd-one-half-one-half-section', () => {
 	it('reflects align property to attribute', async () => {
 		el = await fixture('<ndd-one-half-one-half-section></ndd-one-half-one-half-section>');
 		await waitForUpdate(el);
-		(el as any).align = 'center';
+		(el as NDDOneHalfOneHalfSection).align = 'center';
 		await waitForUpdate(el);
 		expect(el.getAttribute('align')).toBe('center');
 	});

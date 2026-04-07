@@ -5,6 +5,7 @@ import '../page-sections/simple-section/ndd-simple-section.ts';
 import '../../actions/button/ndd-button.ts';
 import '../../layout/spacer/ndd-spacer.ts';
 import '../../content/rich-text/ndd-rich-text.ts';
+import '../../status-and-feedback/inline-dialog/ndd-inline-dialog.ts';
 
 /**
  * Gebruik de page-component als buitenste wrapper van een pagina.
@@ -147,3 +148,18 @@ export const Tinted = () => html`
 	</ndd-page>
 `;
 Tinted.parameters = { controls: { disable: true } };
+
+export const GecentreerdeDialoog = () => html`
+	<ndd-page sticky-header sticky-footer style="height: 400px;">
+		<div slot="header">${header}</div>
+		<ndd-simple-section align="center">
+			<ndd-inline-dialog
+				icon-name="search"
+				text="Geen resultaten"
+				supporting-text="Probeer een andere zoekopdracht."
+			></ndd-inline-dialog>
+		</ndd-simple-section>
+		<div slot="footer">${footer}</div>
+	</ndd-page>
+`;
+GecentreerdeDialoog.parameters = { controls: { disable: true } };

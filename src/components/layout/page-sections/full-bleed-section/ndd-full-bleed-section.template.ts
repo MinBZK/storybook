@@ -5,9 +5,15 @@ export function fullBleedSectionTemplate(_component: NDDFullBleedSection): Templ
 	return html`
 		<section class="full-bleed-section">
 			<div class="full-bleed-section__body">
-				<slot name="header"></slot>
-				<slot></slot>
-				<slot name="footer"></slot>
+				<header class="full-bleed-section__header">
+					<slot name="header"></slot>
+				</header>
+				<div class="full-bleed-section__main">
+					<slot></slot>
+				</div>
+				<footer class="full-bleed-section__footer">
+					<slot name="footer"></slot>
+				</footer>
 			</div>
 		</section>
 	`;

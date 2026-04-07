@@ -12,6 +12,8 @@
  * @slot left - Left column (1/2)
  * @slot right - Right column (1/2)
  * @slot footer - Content below the columns
+ *
+ * @attr {string} [align] - Set to "center" to vertically center section content
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';

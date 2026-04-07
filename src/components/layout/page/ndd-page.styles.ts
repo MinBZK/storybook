@@ -77,10 +77,6 @@ export const pageStyles = css`
 		container-name: layout-area;
 	}
 
-	.page__main ::slotted(:last-child) {
-		flex: 1;
-	}
-
 
 	/* # Footer */
 

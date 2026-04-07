@@ -5,9 +5,15 @@ export function simpleSectionTemplate(_component: NDDSimpleSection): TemplateRes
 	return html`
 		<section class="simple-section">
 			<div class="simple-section__body">
-				<slot name="header"></slot>
-				<slot></slot>
-				<slot name="footer"></slot>
+				<header class="simple-section__header">
+					<slot name="header"></slot>
+				</header>
+				<div class="simple-section__main">
+					<slot></slot>
+				</div>
+				<footer class="simple-section__footer">
+					<slot name="footer"></slot>
+				</footer>
 			</div>
 		</section>
 	`;
