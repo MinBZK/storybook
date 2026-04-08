@@ -268,6 +268,12 @@ export class NDDDocumentTabBar extends LitElement {
 		});
 	}
 
+	_onEndSlotChange(e: Event): void {
+		const slot = e.target as HTMLSlotElement;
+		const wrapper = slot.parentElement as HTMLElement;
+		wrapper.hidden = slot.assignedElements().length === 0;
+	}
+
 	_onSlotChange(): void {
 		this._calculateOverflow();
 		this._propagateDismissLabel();
