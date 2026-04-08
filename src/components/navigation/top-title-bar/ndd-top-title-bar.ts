@@ -18,7 +18,7 @@
  */
 
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { topTitleBarStyles } from './ndd-top-title-bar.styles.ts';
 import { topTitleBarTemplate } from './ndd-top-title-bar.template.ts';
 
@@ -43,6 +43,9 @@ export class NDDTopTitleBar extends LitElement {
 
 	@property({ type: String, attribute: 'dismiss-text' })
 	dismissText = '';
+
+	@state()
+	_hasToolbarItems = false;
 
 	private _pageElement: Element | null = null;
 	private _anchorElement: Element | null = null;
@@ -99,15 +102,20 @@ export class NDDTopTitleBar extends LitElement {
 
 		if (!this._anchorElement) return;
 
-		const scrollTarget = this._pageElement ?? window;
+		const scrollTarget = this._getScrollTarget();
 		scrollTarget.addEventListener('scroll', this._boundOnScroll, { passive: true });
 
 		// Initial check after layout is complete
 		this.updateComplete.then(() => this._onScroll());
 	}
 
+	private _getScrollTarget(): EventTarget {
+		const page = this._pageElement as any;
+		return page?.scrollTarget ?? this._pageElement ?? window;
+	}
+
 	private _teardownAnchor(): void {
-		const scrollTarget = this._pageElement ?? window;
+		const scrollTarget = this._getScrollTarget();
 		scrollTarget.removeEventListener('scroll', this._boundOnScroll);
 		this._anchorElement = null;
 	}
@@ -117,6 +125,11 @@ export class NDDTopTitleBar extends LitElement {
 		const pageTop = this._pageElement.getBoundingClientRect().top;
 		const anchorTop = this._anchorElement.getBoundingClientRect().top;
 		this.classList.toggle('is-compact', anchorTop <= pageTop);
+	}
+
+	_onToolbarSlotChange(e: Event) {
+		const slot = e.target as HTMLSlotElement;
+		this._hasToolbarItems = slot.assignedElements().length > 0;
 	}
 
 	_handleBack(): void {

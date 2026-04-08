@@ -4,8 +4,8 @@
  * A page layout with optional sticky header and footer.
  * Without sticky-header, the host itself is the scroll container.
  * With sticky-header, the header becomes absolute-positioned and a
- * scroll wrapper (.page__scroll) takes over scrolling. A ResizeObserver
- * measures the header height to set padding-top on the scroll wrapper.
+ * scroll wrapper (.page__scroll) takes over scrolling. The initial
+ * header height is measured once to set padding-top on the scroll wrapper.
  *
  * @element ndd-page
  *
@@ -38,8 +38,11 @@ export class NDDPage extends LitElement {
 	@state()
 	_scrolled = false;
 
-	private _headerObserver: ResizeObserver | null = null;
 	private _scrollTarget: EventTarget | null = null;
+
+	get scrollTarget(): HTMLElement {
+		return (this.stickyHeader ? this._scrollEl : this) as HTMLElement;
+	}
 
 	private get _headerEl(): HTMLElement | null {
 		return this.shadowRoot?.querySelector('.page__header') ?? null;
@@ -49,20 +52,15 @@ export class NDDPage extends LitElement {
 		return this.shadowRoot?.querySelector('.page__scroll') ?? null;
 	}
 
-	override connectedCallback() {
-		super.connectedCallback();
-	}
-
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this._teardownScrollListener();
-		this._teardownHeaderObserver();
 	}
 
 	override firstUpdated() {
 		this._setupScrollListener();
 		if (this.stickyHeader) {
-			this._setupHeaderObserver();
+			this._measureInitialHeaderHeight();
 		}
 	}
 
@@ -72,10 +70,9 @@ export class NDDPage extends LitElement {
 			this._setupScrollListener();
 
 			if (this.stickyHeader) {
-				this._setupHeaderObserver();
+				this._measureInitialHeaderHeight();
 			} else {
-				this._teardownHeaderObserver();
-				this.style.removeProperty('--_header-height');
+				this.style.removeProperty('--_initial-header-height');
 			}
 		}
 	}
@@ -94,22 +91,15 @@ export class NDDPage extends LitElement {
 		}
 	}
 
-	private _setupHeaderObserver() {
-		const header = this._headerEl;
-		if (!header) return;
-		this._headerObserver = new ResizeObserver((entries) => {
-			for (const entry of entries) {
-				this.style.setProperty('--_header-height', `${entry.borderBoxSize[0].blockSize}px`);
-			}
+	private _measureInitialHeaderHeight() {
+		// Double rAF ensures slotted Lit components have rendered their shadow DOM
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				const header = this._headerEl;
+				if (!header) return;
+				this.style.setProperty('--_initial-header-height', `${header.offsetHeight}px`);
+			});
 		});
-		this._headerObserver.observe(header);
-	}
-
-	private _teardownHeaderObserver() {
-		if (this._headerObserver) {
-			this._headerObserver.disconnect();
-			this._headerObserver = null;
-		}
 	}
 
 	private _onScroll = (e: Event) => {

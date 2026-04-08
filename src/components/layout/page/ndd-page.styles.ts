@@ -6,7 +6,7 @@ import { css } from 'lit';
 export const pageStyles = css`
 	:host {
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
-		--_header-height: 0px;
+		--_initial-header-height: 0px;
 
 		display: flex;
 		flex-direction: column;
@@ -20,6 +20,7 @@ export const pageStyles = css`
 	}
 
 	:host([sticky-header]) {
+		position: relative;
 		overflow: hidden;
 	}
 
@@ -86,7 +87,7 @@ export const pageStyles = css`
 	:host([sticky-header]) .page__scroll {
 		overflow-y: auto;
 		overflow-x: hidden;
-		padding-top: var(--_header-height);
+		padding-top: var(--_initial-header-height);
 	}
 
 
