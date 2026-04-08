@@ -1,6 +1,7 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
+const smMax = unsafeCSS(breakpoints.smMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
@@ -128,6 +129,8 @@ export const navigationSplitViewStyles = css`
 	}
 
 	.navigation-split-view__inspector-sheet {
+		display: flex;
+		flex-direction: column;
 		border: none;
 		padding: 0;
 		margin: 0;
@@ -169,8 +172,9 @@ export const navigationSplitViewStyles = css`
 	.navigation-split-view__inspector-sheet-body {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
 		width: 100%;
-		height: 100%;
 	}
 
 
@@ -187,6 +191,8 @@ export const navigationSplitViewStyles = css`
 	}
 
 	.navigation-split-view__sidebar-sheet {
+		display: flex;
+		flex-direction: column;
 		border: none;
 		padding: 0;
 		margin: 0;
@@ -228,11 +234,61 @@ export const navigationSplitViewStyles = css`
 	.navigation-split-view__sidebar-sheet-body {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
 		width: 100%;
-		height: 100%;
 
 		/* Show dismiss button inside sidebar sheet */
 		--context-dismiss-button-display: block;
+	}
+
+
+	/* # Responsive: sm viewport — sheets become bottom sheets */
+
+	@keyframes navigation-split-view-slide-in-bottom {
+		from { transform: translateY(100%); }
+		to { transform: translateY(0); }
+	}
+
+	@keyframes navigation-split-view-slide-out-bottom {
+		from { transform: translateY(0); }
+		to { transform: translateY(100%); }
+	}
+
+	@media (max-width: ${smMax}) {
+		.navigation-split-view__inspector-sheet {
+			inset: auto 0 0 0;
+			width: 100%;
+			max-width: 100%;
+			height: auto;
+			max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
+			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
+
+			&[open] {
+				animation: navigation-split-view-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
+			}
+
+			&.is-closing {
+				animation: navigation-split-view-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
+			}
+		}
+
+		.navigation-split-view__sidebar-sheet {
+			inset: auto 0 0 0;
+			width: 100%;
+			max-width: 100%;
+			height: auto;
+			max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
+			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
+
+			&[open] {
+				animation: navigation-split-view-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
+			}
+
+			&.is-closing {
+				animation: navigation-split-view-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
+			}
+		}
 	}
 
 

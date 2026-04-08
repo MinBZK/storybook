@@ -900,7 +900,7 @@
 	--components-box-padding: var(--primitives-space-16);
 
 
-	--components-top-title-bar-button-bar-divider-color: #c9ced8;
+	--components-top-title-bar-divider-color: light-dark(var(--primitives-color-neutral-150),var(--primitives-color-neutral-350));
 
 
 	--components-form-gap: var(--primitives-space-16);

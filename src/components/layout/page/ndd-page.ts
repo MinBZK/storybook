@@ -2,10 +2,10 @@
  * Nederlandse Digitale Dienst Page Component (Lit + TypeScript)
  *
  * A page layout with optional sticky header and footer.
- * Without sticky-header, the host itself is the scroll container.
- * With sticky-header, the header becomes absolute-positioned and a
- * scroll wrapper (.page__scroll) takes over scrolling. The initial
- * header height is measured once to set padding-top on the scroll wrapper.
+ * Without sticky-header, the host is the scroll container and the header
+ * is in normal flow. With sticky-header, the header becomes absolute and
+ * .page__scroll takes over scrolling. A ResizeObserver on the header
+ * sets padding-top on the scroll wrapper (only when not scrolled).
  *
  * @element ndd-page
  *
@@ -39,10 +39,9 @@ export class NDDPage extends LitElement {
 	_scrolled = false;
 
 	private _scrollTarget: EventTarget | null = null;
+	private _headerObserver: ResizeObserver | null = null;
 
-	/** Only valid after firstUpdated — before that, falls back to the host. */
 	get scrollTarget(): HTMLElement {
-		if (!this.hasUpdated) return this;
 		return (this.stickyHeader ? (this._scrollEl ?? this) : this);
 	}
 
@@ -58,19 +57,19 @@ export class NDDPage extends LitElement {
 		super.connectedCallback();
 		if (this.hasUpdated) {
 			this._setupScrollListener();
+			if (this.stickyHeader) this._setupHeaderObserver();
 		}
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this._teardownScrollListener();
+		this._teardownHeaderObserver();
 	}
 
 	override firstUpdated() {
 		this._setupScrollListener();
-		if (this.stickyHeader) {
-			this._measureInitialHeaderHeight();
-		}
+		if (this.stickyHeader) this._setupHeaderObserver();
 	}
 
 	override updated(changed: PropertyValues) {
@@ -79,9 +78,10 @@ export class NDDPage extends LitElement {
 			this._setupScrollListener();
 
 			if (this.stickyHeader) {
-				this._measureInitialHeaderHeight();
+				this._setupHeaderObserver();
 			} else {
-				this.style.removeProperty('--_initial-header-height');
+				this._teardownHeaderObserver();
+				if (this._scrollEl) this._scrollEl.style.paddingTop = '';
 			}
 		}
 	}
@@ -100,19 +100,27 @@ export class NDDPage extends LitElement {
 		}
 	}
 
-	private _measureInitialHeaderHeight() {
-		// Double rAF ensures slotted Lit components have rendered their shadow DOM
-		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				const header = this._headerEl;
-				if (!header) return;
-				this.style.setProperty('--_initial-header-height', `${header.offsetHeight}px`);
-			});
+	private _setupHeaderObserver() {
+		const header = this._headerEl;
+		const scroll = this._scrollEl;
+		if (!header || !scroll) return;
+
+		this._headerObserver = new ResizeObserver(() => {
+			if (scroll.scrollTop > 0) return;
+			scroll.style.paddingTop = `${header.offsetHeight}px`;
 		});
+		this._headerObserver.observe(header);
 	}
 
-	private _onScroll = (e: Event) => {
-		const target = e.target as HTMLElement;
+	private _teardownHeaderObserver() {
+		if (this._headerObserver) {
+			this._headerObserver.disconnect();
+			this._headerObserver = null;
+		}
+	}
+
+	private _onScroll = () => {
+		const target = (this.stickyHeader ? this._scrollEl : this) as HTMLElement;
 		this._scrolled = target.scrollTop > 0;
 	};
 

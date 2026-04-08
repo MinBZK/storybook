@@ -13,10 +13,12 @@ export default {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
 			description: 'Button bar size',
+			table: { defaultValue: { summary: 'md' } },
 		},
 		disabled: {
 			control: 'boolean',
 			description: 'Disabled state',
+			table: { defaultValue: { summary: 'false' } },
 		},
 	},
 };

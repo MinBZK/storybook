@@ -39,12 +39,4 @@ describe('ndd-page', () => {
 		expect(el.shadowRoot!.querySelector('.page__scroll')).not.toBeNull();
 	});
 
-	it('sets --_initial-header-height when sticky-header is set', async () => {
-		el = await fixture('<ndd-page sticky-header><div slot="header" style="height: 48px;">Header</div></ndd-page>');
-		await waitForUpdate(el);
-		await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-		const value = el.style.getPropertyValue('--_initial-header-height');
-		expect(value).not.toBe('');
-	});
-
 });

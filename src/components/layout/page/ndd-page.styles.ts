@@ -6,7 +6,6 @@ import { css } from 'lit';
 export const pageStyles = css`
 	:host {
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
-		--_initial-header-height: 0px;
 
 		display: flex;
 		flex-direction: column;
@@ -19,9 +18,6 @@ export const pageStyles = css`
 		padding-bottom: var(--context-bar-split-view-bottom-bars-height, 0px);
 	}
 
-	/* Overflow hidden prevents content from escaping the scroll wrapper.
-	   Overlays inside slotted content should use popover, dialog, or
-	   position: fixed to render in the top layer. */
 	:host([sticky-header]) {
 		position: relative;
 		overflow: hidden;
@@ -90,7 +86,6 @@ export const pageStyles = css`
 	:host([sticky-header]) .page__scroll {
 		overflow-y: auto;
 		overflow-x: hidden;
-		padding-top: var(--_initial-header-height);
 	}
 
 

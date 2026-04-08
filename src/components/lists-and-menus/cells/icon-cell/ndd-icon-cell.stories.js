@@ -11,15 +11,18 @@ export default {
 			control: 'select',
 			options: ['center', 'top'],
 			description: 'Vertical alignment of the icon',
+			table: { defaultValue: { summary: 'center' } },
 		},
 		size: {
 			control: 'select',
 			options: ['16', '20', '24', '32'],
 			description: 'Icon size in pixels',
+			table: { defaultValue: { summary: '24' } },
 		},
 		selected: {
 			control: 'boolean',
 			description: 'Selected state',
+			table: { defaultValue: { summary: 'false' } },
 		},
 		icon: {
 			control: 'select',

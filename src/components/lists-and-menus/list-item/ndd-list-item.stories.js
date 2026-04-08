@@ -14,15 +14,18 @@ export default {
 			control: 'select',
 			options: ['sm', 'md'],
 			description: 'Size of the list item',
+			table: { defaultValue: { summary: 'md' } },
 		},
 		selected: {
 			control: 'boolean',
 			description: 'Whether the item is selected',
+			table: { defaultValue: { summary: 'false' } },
 		},
 		type: {
 			control: 'select',
 			options: [undefined, 'button', 'link'],
 			description: 'Interactive mode of the list item',
+			table: { defaultValue: { summary: '-' } },
 		},
 		href: {
 			control: 'text',

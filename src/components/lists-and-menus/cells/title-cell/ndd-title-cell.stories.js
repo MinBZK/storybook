@@ -10,7 +10,8 @@ export default {
 			control: 'select',
 			options: [undefined, 1, 2, 3, 4, 5, 6],
 			name: 'heading-level',
-			description: 'Heading level (1–6). When not set, renders a <p>.',
+			description: 'Heading level (1–6). When not set, renders a &lt;p&gt;.',
+			table: { defaultValue: { summary: '-' } },
 		},
 		text: {
 			control: 'text',

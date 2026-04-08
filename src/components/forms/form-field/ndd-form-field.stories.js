@@ -59,7 +59,7 @@ export default {
 		labelAlignment: {
 			control: 'select',
 			options: ['top', 'right', 'left'],
-			table: { order: 1 },
+			table: { order: 1, defaultValue: { summary: 'top' } },
 		},
 		label: {
 			control: 'text',
@@ -71,7 +71,7 @@ export default {
 		},
 		optional: {
 			control: 'boolean',
-			table: { order: 4 },
+			table: { order: 4, defaultValue: { summary: 'false' } },
 		},
 	},
 	args: {

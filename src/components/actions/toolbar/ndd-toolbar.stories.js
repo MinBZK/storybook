@@ -17,10 +17,12 @@ export default {
 			control: 'select',
 			options: ['sm', 'md'],
 			description: 'Toolbar size',
+			table: { defaultValue: { summary: 'md' } },
 		},
 		showItemLabels: {
 			control: 'boolean',
 			description: 'Show labels below toolbar items',
+			table: { defaultValue: { summary: 'false' } },
 		},
 	},
 };

@@ -10,6 +10,7 @@ export default {
 			control: 'select',
 			options: ['flat', 'tight', 'snug', 'loose'],
 			description: 'Spacing between elements',
+			table: { defaultValue: { summary: 'snug' } },
 		},
 	},
 };

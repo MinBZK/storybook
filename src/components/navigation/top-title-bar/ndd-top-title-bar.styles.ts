@@ -90,7 +90,7 @@ export const topTitleBarStyles = css`
 		display: none;
 		width: var(--semantics-dividers-thickness);
 		height: var(--primitives-space-24);
-		background-color: var(--components-top-title-bar-button-bar-divider-color);
+		background-color: var(--components-top-title-bar-divider-color);
 		flex-shrink: 0;
 	}
 

@@ -5,7 +5,7 @@
  *
  * @element ndd-button-group
  * @attr {string} size - Button group size: 'sm' | 'md' (default: 'md')
- * @attr {string} flow - Layout direction: 'horizontal' | 'vertical' (default: 'horizontal')
+ * @attr {string} orientation - Layout direction: 'horizontal' | 'vertical' (default: 'horizontal')
  *
  * @slot - Default slot for buttons (max 3)
  *
@@ -17,7 +17,7 @@ import { styles } from './ndd-button-group.styles.ts';
 import { template } from './ndd-button-group.template.ts';
 
 type Size = 'sm' | 'md';
-type Flow = 'horizontal' | 'vertical';
+type Orientation = 'horizontal' | 'vertical';
 
 @customElement('ndd-button-group')
 export class NDDButtonGroup extends LitElement {
@@ -27,7 +27,7 @@ export class NDDButtonGroup extends LitElement {
 	size: Size = 'md';
 
 	@property({ type: String, reflect: true })
-	flow: Flow = 'vertical';
+	orientation: Orientation = 'vertical';
 
 	@query('slot')
 	private _slot!: HTMLSlotElement;
@@ -43,7 +43,7 @@ export class NDDButtonGroup extends LitElement {
 				console.warn('ndd-button-group: Only 3 buttons are allowed. Extra buttons will be hidden.');
 			}
 
-			if (this.flow === 'vertical') {
+			if (this.orientation === 'vertical') {
 				el.setAttribute('full-width', '');
 			} else {
 				el.removeAttribute('full-width');
@@ -54,7 +54,7 @@ export class NDDButtonGroup extends LitElement {
 	}
 
 	override updated(changedProperties: Map<string, unknown>) {
-		if (changedProperties.has('flow') || changedProperties.has('size')) {
+		if (changedProperties.has('orientation') || changedProperties.has('size')) {
 			this.handleSlotChange();
 		}
 	}
