@@ -112,7 +112,7 @@ export class NDDTopTitleBar extends LitElement {
 
 	private _getScrollTarget(): EventTarget {
 		const page = this._pageElement as NDDPage | null;
-		return page ? page.scrollTarget : (this._pageElement ?? window);
+		return page ? page.scrollTarget : window;
 	}
 
 	private _teardownAnchor(): void {
@@ -128,10 +128,10 @@ export class NDDTopTitleBar extends LitElement {
 		this.classList.toggle('is-compact', anchorTop <= pageTop);
 	}
 
-	_onToolbarSlotChange(e: Event) {
+	_onToolbarSlotChange = (e: Event) => {
 		const slot = e.target as HTMLSlotElement;
 		this._hasToolbarItems = slot.assignedElements().length > 0;
-	}
+	};
 
 	_handleBack(): void {
 		if (this.backHref) return;

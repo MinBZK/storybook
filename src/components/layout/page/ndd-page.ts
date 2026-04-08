@@ -52,6 +52,13 @@ export class NDDPage extends LitElement {
 		return this.shadowRoot?.querySelector('.page__scroll') ?? null;
 	}
 
+	override connectedCallback() {
+		super.connectedCallback();
+		if (this.hasUpdated) {
+			this._setupScrollListener();
+		}
+	}
+
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this._teardownScrollListener();
