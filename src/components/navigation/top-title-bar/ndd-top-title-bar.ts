@@ -112,7 +112,7 @@ export class NDDTopTitleBar extends LitElement {
 
 	private _getScrollTarget(): EventTarget {
 		const page = this._pageElement as NDDPage | null;
-		return page?.scrollTarget ?? this._pageElement ?? window;
+		return page ? page.scrollTarget : (this._pageElement ?? window);
 	}
 
 	private _teardownAnchor(): void {
