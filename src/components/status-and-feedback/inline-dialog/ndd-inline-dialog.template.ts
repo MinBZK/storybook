@@ -25,7 +25,7 @@ export function inlineDialogTemplate(component: NDDInlineDialog) {
 				<slot></slot>
 			</div>
 			<div class="inline-dialog__actions">
-				<ndd-button-group flow="vertical">
+				<ndd-button-group orientation="vertical">
 					<slot name="actions"></slot>
 				</ndd-button-group>
 			</div>

@@ -3,6 +3,7 @@ import './ndd-sheet.ts';
 import '../../navigation/top-title-bar/ndd-top-title-bar.ts';
 import '../../layout/page/ndd-page.ts';
 import '../../actions/button/ndd-button.ts';
+import '../../actions/button-group/ndd-button-group.ts';
 import '../../content/rich-text/ndd-rich-text.ts';
 import '../../layout/page-sections/simple-section/ndd-simple-section.ts';
 import '../../layout/container/ndd-container.ts';
@@ -147,8 +148,10 @@ export const MetStickyFooter = {
 				></ndd-top-title-bar>
 				${pageContent}
 				<ndd-container slot="footer" padding="16">
-					<ndd-button variant="secondary" text="Annuleer"></ndd-button>
-					<ndd-button variant="primary" text="Opslaan"></ndd-button>
+					<ndd-button-group orientation="vertical">
+						<ndd-button variant="primary" text="Opslaan" full-width></ndd-button>
+						<ndd-button variant="secondary" text="Annuleer" full-width></ndd-button>
+					</ndd-button-group>
 				</ndd-container>
 			</ndd-page>
 		</ndd-sheet>

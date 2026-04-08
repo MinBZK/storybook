@@ -12,19 +12,21 @@ export default {
 		control: 'select',
 		options: ['sm', 'md'],
 		description: 'Button group size',
+		table: { defaultValue: { summary: 'md' } },
 	  },
-	  flow: {
+	  orientation: {
 		control: 'select',
 		options: ['horizontal', 'vertical'],
 		description: 'Layout direction',
+		table: { defaultValue: { summary: 'vertical' } },
 	  },
 	}
 };
 
 export const Default = {
-	args: { size: 'md', flow: 'vertical' },
+	args: { size: 'md', orientation: 'vertical' },
 	render: (args) => html`
-	<ndd-button-group size=${args.size} flow=${args.flow}>
+	<ndd-button-group size=${args.size} orientation=${args.orientation}>
 		<ndd-button variant="primary" text="Bewaar"></ndd-button>
 		<ndd-button variant="secondary" text="Bewaar en maak nieuwe"></ndd-button>
 	</ndd-button-group>
@@ -32,9 +34,9 @@ export const Default = {
 };
 
 export const Horizontal = {
-	args: { size: 'md', flow: 'horizontal' },
+	args: { size: 'md', orientation: 'horizontal' },
 	render: (args) => html`
-	<ndd-button-group size=${args.size} flow=${args.flow}>
+	<ndd-button-group size=${args.size} orientation=${args.orientation}>
 		<ndd-button variant="primary" text="Bewaar"></ndd-button>
 		<ndd-button variant="secondary" text="Bewaar en maak nieuwe"></ndd-button>
 	</ndd-button-group>
@@ -42,9 +44,9 @@ export const Horizontal = {
 };
 
 export const SizeSmall = {
-	args: { size: 'sm', flow: 'horizontal' },
+	args: { size: 'sm', orientation: 'horizontal' },
 	render: (args) => html`
-	<ndd-button-group size=${args.size} flow=${args.flow}>
+	<ndd-button-group size=${args.size} orientation=${args.orientation}>
 		<ndd-button variant="primary" text="Bewaar"></ndd-button>
 		<ndd-button variant="secondary" text="Bewaar en maak nieuwe"></ndd-button>
 	</ndd-button-group>
@@ -52,9 +54,9 @@ export const SizeSmall = {
 };
 
 export const ThreeButtons = {
-	args: { size: 'md', flow: 'vertical' },
+	args: { size: 'md', orientation: 'vertical' },
 	render: (args) => html`
-	<ndd-button-group size=${args.size} flow=${args.flow}>
+	<ndd-button-group size=${args.size} orientation=${args.orientation}>
 		<ndd-button variant="primary" text="Bewaar"></ndd-button>
 		<ndd-button variant="secondary" text="Bewaar en maak nieuwe"></ndd-button>
 		<ndd-button variant="destructive" text="Verwijder"></ndd-button>
@@ -63,9 +65,9 @@ export const ThreeButtons = {
 };
 
 export const MaxEnforced = {
-	args: { size: 'md', flow: 'vertical' },
+	args: { size: 'md', orientation: 'vertical' },
 	render: (args) => html`
-	<ndd-button-group size=${args.size} flow=${args.flow}>
+	<ndd-button-group size=${args.size} orientation=${args.orientation}>
 		<ndd-button variant="primary" text="Bewaar"></ndd-button>
 		<ndd-button variant="secondary" text="Bewaar en maak nieuwe"></ndd-button>
 		<ndd-button variant="destructive" text="Verwijder"></ndd-button>

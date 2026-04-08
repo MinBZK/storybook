@@ -4,8 +4,11 @@ import '../container/ndd-container.ts';
 import '../page-sections/simple-section/ndd-simple-section.ts';
 import '../../actions/button/ndd-button.ts';
 import '../../layout/spacer/ndd-spacer.ts';
+import '../../actions/button-group/ndd-button-group.ts';
 import '../../content/rich-text/ndd-rich-text.ts';
 import '../../status-and-feedback/inline-dialog/ndd-inline-dialog.ts';
+import '../../navigation/top-title-bar/ndd-top-title-bar.ts';
+import '../../content/title/ndd-title.ts';
 
 /**
  * Gebruik de page-component als buitenste wrapper van een pagina.
@@ -63,25 +66,30 @@ export default {
 };
 
 const header = html`
-	<ndd-container padding="16">
-		<ndd-rich-text spacing="tight">
-			<strong>Header</strong>
-		</ndd-rich-text>
-	</ndd-container>
+	<ndd-top-title-bar
+		slot="header"
+		text="Paginatitel"
+		back-text="Overzicht"
+		collapse-anchor="page-title"
+	></ndd-top-title-bar>
 `;
 
 const footer = html`
 	<ndd-container padding="16">
-		<ndd-button variant="secondary" text="Annuleren"></ndd-button>
-		<ndd-spacer size="8" direction="horizontal"></ndd-spacer>
-		<ndd-button text="Opslaan"></ndd-button>
+		<ndd-button-group orientation="horizontal">
+			<ndd-button variant="primary" text="Opslaan"></ndd-button>
+			<ndd-button variant="secondary" text="Annuleren"></ndd-button>
+		</ndd-button-group>
 	</ndd-container>
 `;
 
 const content = html`
 	<ndd-simple-section>
-		<ndd-rich-text>
+		<ndd-title id="page-title" size="2">
 			<h1>Paginatitel</h1>
+		</ndd-title>
+		<ndd-spacer size="16"></ndd-spacer>
+		<ndd-rich-text>
 			<p>
 				Dit is het scrollbare hoofdgebied van de pagina. Voeg hier de inhoud van de pagina toe.
 				Wanneer de inhoud langer is dan de viewport, wordt het gebied scrollbaar.
@@ -107,7 +115,7 @@ export const Standaard = ({ stickyHeader, stickyFooter, background }) => html`
 		background=${background}
 		style="height: 400px;"
 	>
-		<div slot="header">${header}</div>
+		${header}
 		${content}
 		<div slot="footer">${footer}</div>
 	</ndd-page>
@@ -115,7 +123,7 @@ export const Standaard = ({ stickyHeader, stickyFooter, background }) => html`
 
 export const StickyHeader = () => html`
 	<ndd-page sticky-header style="height: 400px;">
-		<div slot="header">${header}</div>
+		${header}
 		${content}
 		<div slot="footer">${footer}</div>
 	</ndd-page>
@@ -124,7 +132,7 @@ StickyHeader.parameters = { controls: { disable: true } };
 
 export const StickyFooter = () => html`
 	<ndd-page sticky-footer style="height: 400px;">
-		<div slot="header">${header}</div>
+		${header}
 		${content}
 		<div slot="footer">${footer}</div>
 	</ndd-page>
@@ -133,7 +141,7 @@ StickyFooter.parameters = { controls: { disable: true } };
 
 export const StickyBeide = () => html`
 	<ndd-page sticky-header sticky-footer style="height: 400px;">
-		<div slot="header">${header}</div>
+		${header}
 		${content}
 		<div slot="footer">${footer}</div>
 	</ndd-page>
@@ -142,7 +150,7 @@ StickyBeide.parameters = { controls: { disable: true } };
 
 export const Tinted = () => html`
 	<ndd-page sticky-header sticky-footer background="tinted" style="height: 400px;">
-		<div slot="header">${header}</div>
+		${header}
 		${content}
 		<div slot="footer">${footer}</div>
 	</ndd-page>
@@ -151,7 +159,7 @@ Tinted.parameters = { controls: { disable: true } };
 
 export const GecentreerdeDialoog = () => html`
 	<ndd-page sticky-header sticky-footer style="height: 400px;">
-		<div slot="header">${header}</div>
+		${header}
 		<ndd-simple-section align="center">
 			<ndd-inline-dialog
 				icon-name="search"

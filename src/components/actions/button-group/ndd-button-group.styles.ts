@@ -18,22 +18,21 @@ export const styles = css`
 		justify-content: center;
 	}
 
-	/* # Flow: Horizontal */
+	/* # Orientation: Horizontal */
 
-	:host([flow="horizontal"]) .button-group,
-	:host(:not([flow])) .button-group {
+	:host([orientation="horizontal"]) .button-group {
 		flex-direction: row;
 		flex-wrap: wrap;
 	}
 
-	/* # Flow: Vertical */
+	/* # Orientation: Vertical */
 
-	:host([flow="vertical"]) {
+	:host([orientation="vertical"]) {
 		display: flex;
 		width: 100%;
 	}
 
-	:host([flow="vertical"]) .button-group {
+	:host([orientation="vertical"]) .button-group {
 		flex-direction: column;
 		width: 100%;
 	}

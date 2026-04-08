@@ -17,6 +17,7 @@ export default {
 			control: 'select',
 			options: ['simple', 'box', 'inset'],
 			description: 'Visual style of the list',
+			table: { defaultValue: { summary: 'simple' } },
 		},
 	},
 };

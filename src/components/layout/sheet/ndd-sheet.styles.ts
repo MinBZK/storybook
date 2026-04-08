@@ -59,6 +59,8 @@ export const sheetStyles = css`
 	/* # Sheet base */
 
 	.sheet {
+		display: flex;
+		flex-direction: column;
 		border: none;
 		padding: 0;
 		margin: 0;
@@ -203,8 +205,9 @@ export const sheetStyles = css`
 	.sheet__body {
 		display: flex;
 		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
 		width: 100%;
-		height: 100%;
 	}
 
 	::slotted(*) {
