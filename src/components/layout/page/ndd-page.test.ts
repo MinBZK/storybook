@@ -39,4 +39,12 @@ describe('ndd-page', () => {
 		expect(el.shadowRoot!.querySelector('.page__scroll')).not.toBeNull();
 	});
 
+	it('sets paddingTop on scroll wrapper when sticky-header is set', async () => {
+		el = await fixture('<ndd-page sticky-header><div slot="header" style="height: 48px;">Header</div></ndd-page>');
+		await waitForUpdate(el);
+		await new Promise(r => requestAnimationFrame(r));
+		const scroll = el.shadowRoot!.querySelector('.page__scroll') as HTMLElement;
+		expect(scroll.style.paddingTop).not.toBe('');
+	});
+
 });

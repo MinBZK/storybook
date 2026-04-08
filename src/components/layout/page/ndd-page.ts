@@ -101,6 +101,7 @@ export class NDDPage extends LitElement {
 	}
 
 	private _setupHeaderObserver() {
+		this._teardownHeaderObserver();
 		const header = this._headerEl;
 		const scroll = this._scrollEl;
 		if (!header || !scroll) return;
