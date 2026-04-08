@@ -18,15 +18,14 @@ export const styles = css`
 		justify-content: center;
 	}
 
-	/* # Flow: Horizontal */
+	/* # Orientation: Horizontal */
 
-	:host([orientation="horizontal"]) .button-group,
-	:host(:not([orientation])) .button-group {
+	:host([orientation="horizontal"]) .button-group {
 		flex-direction: row;
 		flex-wrap: wrap;
 	}
 
-	/* # Flow: Vertical */
+	/* # Orientation: Vertical */
 
 	:host([orientation="vertical"]) {
 		display: flex;

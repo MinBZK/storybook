@@ -5,7 +5,7 @@
  *
  * @element ndd-button-group
  * @attr {string} size - Button group size: 'sm' | 'md' (default: 'md')
- * @attr {string} orientation - Layout direction: 'horizontal' | 'vertical' (default: 'horizontal')
+ * @attr {string} orientation - Layout direction: 'horizontal' | 'vertical' (default: 'vertical')
  *
  * @slot - Default slot for buttons (max 3)
  *

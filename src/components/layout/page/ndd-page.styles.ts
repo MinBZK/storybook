@@ -18,6 +18,9 @@ export const pageStyles = css`
 		padding-bottom: var(--context-bar-split-view-bottom-bars-height, 0px);
 	}
 
+	/* Overflow hidden prevents content from escaping the scroll wrapper.
+	   Overlays inside slotted content should use popover, dialog, or
+	   position: fixed to render in the top layer. */
 	:host([sticky-header]) {
 		position: relative;
 		overflow: hidden;
