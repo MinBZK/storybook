@@ -40,7 +40,9 @@ export class NDDPage extends LitElement {
 
 	private _scrollTarget: EventTarget | null = null;
 
+	/** Only valid after firstUpdated — before that, falls back to the host. */
 	get scrollTarget(): HTMLElement {
+		if (!this.hasUpdated) return this;
 		return (this.stickyHeader ? (this._scrollEl ?? this) : this);
 	}
 
