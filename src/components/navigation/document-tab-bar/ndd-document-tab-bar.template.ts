@@ -31,8 +31,8 @@ export function documentTabBarTemplate(component: NDDDocumentTabBar): TemplateRe
 					 Positioning allows the menu to escape stacking context without document.body. -->
 			</ndd-icon-button>
 		</div>
-		<div class="document-tab-bar__end">
-			<slot name="end"></slot>
+		<div class="document-tab-bar__end" hidden>
+			<slot name="end" @slotchange=${component._onEndSlotChange}></slot>
 		</div>
 	`;
 

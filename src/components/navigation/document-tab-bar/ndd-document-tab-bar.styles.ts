@@ -76,6 +76,10 @@ export const documentTabBarStyles = css`
 		flex-shrink: 0;
 	}
 
+	.document-tab-bar__end[hidden] {
+		display: none;
+	}
+
 
 	/* # Focus */
 
