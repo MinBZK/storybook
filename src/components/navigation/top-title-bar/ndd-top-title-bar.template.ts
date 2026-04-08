@@ -40,8 +40,8 @@ export function topTitleBarTemplate(component: NDDTopTitleBar) {
 					` : nothing}
 				</div>
 			</div>
-			<div class="top-title-bar__end">
-				<slot name="toolbar"></slot>
+			<div class="top-title-bar__end" ?hidden=${!component.dismissText && !component._hasToolbarItems}>
+				<slot name="toolbar" @slotchange=${component._onToolbarSlotChange}></slot>
 				${component.dismissText ? html`
 					<div class="top-title-bar__dismiss-button">
 						<ndd-button

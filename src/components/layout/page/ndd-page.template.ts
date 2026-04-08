@@ -6,11 +6,13 @@ export function pageTemplate(component: NDDPage): TemplateResult {
 		<header class="page__header ${component._scrolled ? 'is-scrolled' : ''}">
 			<slot name="header"></slot>
 		</header>
-		<main class="page__main">
-			<slot></slot>
-		</main>
-		<footer class="page__footer">
-			<slot name="footer"></slot>
-		</footer>
+		<div class="page__scroll">
+			<main class="page__main">
+				<slot></slot>
+			</main>
+			<footer class="page__footer">
+				<slot name="footer"></slot>
+			</footer>
+		</div>
 	`;
 }

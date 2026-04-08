@@ -2,9 +2,10 @@
  * Nederlandse Digitale Dienst Page Component (Lit + TypeScript)
  *
  * A page layout with optional sticky header and footer.
- * The scroll area is the host itself. Sticky sections receive a translucent
- * background with a fading gradient that extends beyond the section.
- * The header only shows the gradient after scrolling, with a transition.
+ * Without sticky-header, the host itself is the scroll container.
+ * With sticky-header, the header becomes absolute-positioned and a
+ * scroll wrapper (.page__scroll) takes over scrolling. The initial
+ * header height is measured once to set padding-top on the scroll wrapper.
  *
  * @element ndd-page
  *
@@ -16,7 +17,7 @@
  * @slot - Main content (scrollable)
  * @slot footer - Footer content
  */
-import { LitElement } from 'lit';
+import { LitElement, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { pageStyles } from './ndd-page.styles.ts';
 import { pageTemplate } from './ndd-page.template.ts';
@@ -37,18 +38,82 @@ export class NDDPage extends LitElement {
 	@state()
 	_scrolled = false;
 
+	private _scrollTarget: EventTarget | null = null;
+
+	/** Only valid after firstUpdated — before that, falls back to the host. */
+	get scrollTarget(): HTMLElement {
+		if (!this.hasUpdated) return this;
+		return (this.stickyHeader ? (this._scrollEl ?? this) : this);
+	}
+
+	private get _headerEl(): HTMLElement | null {
+		return this.shadowRoot?.querySelector('.page__header') ?? null;
+	}
+
+	private get _scrollEl(): HTMLElement | null {
+		return this.shadowRoot?.querySelector('.page__scroll') ?? null;
+	}
+
 	override connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('scroll', this._onScroll);
+		if (this.hasUpdated) {
+			this._setupScrollListener();
+		}
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback();
-		this.removeEventListener('scroll', this._onScroll);
+		this._teardownScrollListener();
 	}
 
-	private _onScroll = () => {
-		this._scrolled = this.scrollTop > 0;
+	override firstUpdated() {
+		this._setupScrollListener();
+		if (this.stickyHeader) {
+			this._measureInitialHeaderHeight();
+		}
+	}
+
+	override updated(changed: PropertyValues) {
+		if (changed.has('stickyHeader')) {
+			this._teardownScrollListener();
+			this._setupScrollListener();
+
+			if (this.stickyHeader) {
+				this._measureInitialHeaderHeight();
+			} else {
+				this.style.removeProperty('--_initial-header-height');
+			}
+		}
+	}
+
+	private _setupScrollListener() {
+		const target = this.stickyHeader ? this._scrollEl : this;
+		if (!target) return;
+		target.addEventListener('scroll', this._onScroll);
+		this._scrollTarget = target;
+	}
+
+	private _teardownScrollListener() {
+		if (this._scrollTarget) {
+			this._scrollTarget.removeEventListener('scroll', this._onScroll);
+			this._scrollTarget = null;
+		}
+	}
+
+	private _measureInitialHeaderHeight() {
+		// Double rAF ensures slotted Lit components have rendered their shadow DOM
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				const header = this._headerEl;
+				if (!header) return;
+				this.style.setProperty('--_initial-header-height', `${header.offsetHeight}px`);
+			});
+		});
+	}
+
+	private _onScroll = (e: Event) => {
+		const target = e.target as HTMLElement;
+		this._scrolled = target.scrollTop > 0;
 	};
 
 	override render() {

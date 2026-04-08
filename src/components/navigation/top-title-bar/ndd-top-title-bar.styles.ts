@@ -22,7 +22,6 @@ export const topTitleBarStyles = css`
 		align-items: center;
 		width: 100%;
 		box-sizing: border-box;
-		padding-top: var(--primitives-space-6);
 		padding-inline: var(--primitives-space-6);
 	}
 
@@ -48,6 +47,11 @@ export const topTitleBarStyles = css`
 		align-items: center;
 		flex-grow: 0;
 		flex-shrink: 0;
+		margin-top: var(--primitives-space-6);
+	}
+
+	.top-title-bar__end[hidden] {
+		display: none;
 	}
 
 
@@ -57,6 +61,7 @@ export const topTitleBarStyles = css`
 		display: var(--context-back-button-display, flex);
 		flex-direction: row;
 		align-items: center;
+		margin-top: var(--primitives-space-6);
 	}
 
 	.top-title-bar__text-back-button {
@@ -97,19 +102,23 @@ export const topTitleBarStyles = css`
 	/* # Title group */
 
 	.top-title-bar__title-group {
-		display: flex;
+		display: none;
 		flex-direction: column;
 		justify-content: center;
 		flex-grow: 1;
 		flex-shrink: 1;
 		min-width: 0;
 		min-height: var(--semantics-controls-md-min-size);
+		margin-top: var(--primitives-space-6);
+		padding-inline: var(--primitives-space-10);
 		overflow: hidden;
-		padding: 0 var(--primitives-space-10);
+	}
+
+	:host(.is-compact) .top-title-bar__title-group {
+		display: flex;
 	}
 
 	.top-title-bar__title {
-		display: none;
 		margin: 0;
 		font: var(--primitives-font-body-lg-bold-flat);
 		color: var(--semantics-content-color);
@@ -123,26 +132,17 @@ export const topTitleBarStyles = css`
 		outline: none;
 	}
 
-	:host(.is-compact) .top-title-bar__title {
-		display: block;
-	}
-
 	.top-title-bar__title:has(+ .top-title-bar__subtitle) {
 		font: var(--primitives-font-body-md-bold-flat);
 	}
 
 	.top-title-bar__subtitle {
-		display: none;
 		margin: 0;
 		font: var(--primitives-font-body-xxs-regular-flat);
 		color: var(--semantics-content-secondary-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-	}
-
-	:host(.is-compact) .top-title-bar__subtitle {
-		display: block;
 	}
 
 

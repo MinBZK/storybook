@@ -18,9 +18,10 @@
  */
 
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { topTitleBarStyles } from './ndd-top-title-bar.styles.ts';
 import { topTitleBarTemplate } from './ndd-top-title-bar.template.ts';
+import type { NDDPage } from '../../layout/page/ndd-page.ts';
 
 @customElement('ndd-top-title-bar')
 export class NDDTopTitleBar extends LitElement {
@@ -44,8 +45,12 @@ export class NDDTopTitleBar extends LitElement {
 	@property({ type: String, attribute: 'dismiss-text' })
 	dismissText = '';
 
+	@state()
+	_hasToolbarItems = false;
+
 	private _pageElement: Element | null = null;
 	private _anchorElement: Element | null = null;
+	private _activeScrollTarget: EventTarget | null = null;
 	private _boundOnScroll = this._onScroll.bind(this);
 
 	override connectedCallback(): void {
@@ -99,16 +104,17 @@ export class NDDTopTitleBar extends LitElement {
 
 		if (!this._anchorElement) return;
 
-		const scrollTarget = this._pageElement ?? window;
-		scrollTarget.addEventListener('scroll', this._boundOnScroll, { passive: true });
+		const page = this._pageElement as NDDPage | null;
+		this._activeScrollTarget = page ? page.scrollTarget : window;
+		this._activeScrollTarget.addEventListener('scroll', this._boundOnScroll, { passive: true });
 
 		// Initial check after layout is complete
 		this.updateComplete.then(() => this._onScroll());
 	}
 
 	private _teardownAnchor(): void {
-		const scrollTarget = this._pageElement ?? window;
-		scrollTarget.removeEventListener('scroll', this._boundOnScroll);
+		this._activeScrollTarget?.removeEventListener('scroll', this._boundOnScroll);
+		this._activeScrollTarget = null;
 		this._anchorElement = null;
 	}
 
@@ -118,6 +124,11 @@ export class NDDTopTitleBar extends LitElement {
 		const anchorTop = this._anchorElement.getBoundingClientRect().top;
 		this.classList.toggle('is-compact', anchorTop <= pageTop);
 	}
+
+	_onToolbarSlotChange = (e: Event) => {
+		const slot = e.target as HTMLSlotElement;
+		this._hasToolbarItems = slot.assignedElements().length > 0;
+	};
 
 	_handleBack(): void {
 		if (this.backHref) return;

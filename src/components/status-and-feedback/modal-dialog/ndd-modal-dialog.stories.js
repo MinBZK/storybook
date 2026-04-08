@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './ndd-dialog.ts';
+import './ndd-modal-dialog.ts';
 import '../../actions/button/ndd-button.ts';
 import { ICONS } from '../../content/icon/ndd-icon.ts';
 
@@ -9,22 +9,22 @@ import { ICONS } from '../../content/icon/ndd-icon.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-dialog
+ * <ndd-modal-dialog
  *   text="Bevestiging vereist"
  *   supporting-text="Dit kan niet ongedaan worden gemaakt."
  * >
  *   <ndd-button slot="actions" variant="primary" text="Bevestig"></ndd-button>
  *   <ndd-button slot="actions" variant="neutral-tinted" text="Annuleer"></ndd-button>
- * </ndd-dialog>
+ * </ndd-modal-dialog>
  * ```
  */
 export default {
-	title: 'Components/Status and Feedback/Dialog',
-	component: 'ndd-dialog',
+	title: 'Components/Status and Feedback/Modal Dialog',
+	component: 'ndd-modal-dialog',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/status-and-feedback/dialog/ndd-dialog.ts',
+			file: 'src/components/status-and-feedback/modal-dialog/ndd-modal-dialog.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'stable' },
@@ -68,7 +68,7 @@ export const Standaard = (args) => html`
 		text="Open modal dialog"
 		@click=${openNext}
 	></ndd-button>
-	<ndd-dialog
+	<ndd-modal-dialog
 		variant=${args.variant || nothing}
 		icon-name=${args.iconName || nothing}
 		text=${args.text}
@@ -78,15 +78,15 @@ export const Standaard = (args) => html`
 			slot="actions"
 			variant="primary"
 			text="Bevestig"
-			@click=${(e) => e.target.closest('ndd-dialog').hide()}
+			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
 		></ndd-button>
 		<ndd-button
 			slot="actions"
 			variant="neutral-tinted"
 			text="Annuleer"
-			@click=${(e) => e.target.closest('ndd-dialog').hide()}
+			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
 		></ndd-button>
-	</ndd-dialog>
+	</ndd-modal-dialog>
 `;
 
 export const ZonderIcoon = () => html`
@@ -95,7 +95,7 @@ export const ZonderIcoon = () => html`
 		text="Open modal dialog"
 		@click=${openNext}
 	></ndd-button>
-	<ndd-dialog
+	<ndd-modal-dialog
 		text="Bevestiging vereist"
 		supporting-text="Weet u zeker dat u door wilt gaan? Dit kan niet ongedaan worden gemaakt."
 	>
@@ -103,15 +103,15 @@ export const ZonderIcoon = () => html`
 			slot="actions"
 			variant="primary"
 			text="Bevestig"
-			@click=${(e) => e.target.closest('ndd-dialog').hide()}
+			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
 		></ndd-button>
 		<ndd-button
 			slot="actions"
 			variant="neutral-tinted"
 			text="Annuleer"
-			@click=${(e) => e.target.closest('ndd-dialog').hide()}
+			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
 		></ndd-button>
-	</ndd-dialog>
+	</ndd-modal-dialog>
 `;
 ZonderIcoon.parameters = { controls: { disable: true } };
 
@@ -121,7 +121,7 @@ export const MetIcoon = () => html`
 		text="Open modal dialog"
 		@click=${openNext}
 	></ndd-button>
-	<ndd-dialog
+	<ndd-modal-dialog
 		icon-name="check-mark-circle"
 		text="Succesvol opgeslagen"
 		supporting-text="Uw wijzigingen zijn opgeslagen."
@@ -130,9 +130,9 @@ export const MetIcoon = () => html`
 			slot="actions"
 			variant="primary"
 			text="Sluiten"
-			@click=${(e) => e.target.closest('ndd-dialog').hide()}
+			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
 		></ndd-button>
-	</ndd-dialog>
+	</ndd-modal-dialog>
 `;
 MetIcoon.parameters = { controls: { disable: true } };
 
@@ -142,7 +142,7 @@ export const Alert = () => html`
 		text="Open modal dialog"
 		@click=${openNext}
 	></ndd-button>
-	<ndd-dialog
+	<ndd-modal-dialog
 		variant="alert"
 		text="Niet opgeslagen"
 		supporting-text="Als u doorgaat gaan uw wijzigingen verloren."
@@ -151,14 +151,14 @@ export const Alert = () => html`
 			slot="actions"
 			variant="primary"
 			text="Doorgaan"
-			@click=${(e) => e.target.closest('ndd-dialog').hide()}
+			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
 		></ndd-button>
 		<ndd-button
 			slot="actions"
 			variant="neutral-tinted"
 			text="Annuleer"
-			@click=${(e) => e.target.closest('ndd-dialog').hide()}
+			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
 		></ndd-button>
-	</ndd-dialog>
+	</ndd-modal-dialog>
 `;
 Alert.parameters = { controls: { disable: true } };

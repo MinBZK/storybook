@@ -6,6 +6,7 @@ import { css } from 'lit';
 export const pageStyles = css`
 	:host {
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		--_initial-header-height: 0px;
 
 		display: flex;
 		flex-direction: column;
@@ -16,6 +17,14 @@ export const pageStyles = css`
 		background-color: var(--_background-color);
 		padding-top: var(--context-bar-split-view-top-bars-height, 0px);
 		padding-bottom: var(--context-bar-split-view-bottom-bars-height, 0px);
+	}
+
+	/* Overflow hidden prevents content from escaping the scroll wrapper.
+	   Overlays inside slotted content should use popover, dialog, or
+	   position: fixed to render in the top layer. */
+	:host([sticky-header]) {
+		position: relative;
+		overflow: hidden;
 	}
 
 	:host([background="default"]) {
@@ -43,8 +52,10 @@ export const pageStyles = css`
 	}
 
 	:host([sticky-header]) .page__header {
-		position: sticky;
+		position: absolute;
 		top: 0;
+		left: 0;
+		right: 0;
 		z-index: 1;
 		background-color: color-mix(in srgb, var(--_background-color) 95%, transparent);
 	}
@@ -67,12 +78,28 @@ export const pageStyles = css`
 	}
 
 
+	/* # Scroll */
+
+	.page__scroll {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
+	}
+
+	:host([sticky-header]) .page__scroll {
+		overflow-y: auto;
+		overflow-x: hidden;
+		padding-top: var(--_initial-header-height);
+	}
+
+
 	/* # Main */
 
 	.page__main {
 		display: flex;
 		flex-direction: column;
-		flex: 1;
+		flex-grow: 1;
 		container-type: inline-size;
 		container-name: layout-area;
 	}
