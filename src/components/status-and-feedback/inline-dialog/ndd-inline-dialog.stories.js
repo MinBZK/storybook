@@ -7,7 +7,7 @@ import { ICONS } from '../../content/icon/ndd-icon.ts';
 /**
  * De Dialog is een inline statuscomponent voor lege toestanden, bevestigingen en feedback.
  * Hij vult zijn container en heeft geen overlay of backdrop.
- * Gebruik `ndd-dialog` voor een modaal venster met backdrop.
+ * Gebruik `ndd-modal-dialog` voor een modaal venster met backdrop.
  *
  * ## Gebruik
  * ```html

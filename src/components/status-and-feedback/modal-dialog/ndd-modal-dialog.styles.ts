@@ -1,8 +1,8 @@
 import { css } from 'lit';
 
-/* # ndd-dialog styles */
+/* # ndd-modal-dialog styles */
 
-export const dialogStyles = css`
+export const modalDialogStyles = css`
 
 	/* # Host */
 
@@ -20,7 +20,7 @@ export const dialogStyles = css`
 
 	/* # Modal dialog */
 
-	.dialog {
+	.modal-dialog {
 		border: none;
 		padding: var(--primitives-space-24) var(--primitives-space-16);
 		max-width: var(--primitives-area-480);
@@ -33,23 +33,23 @@ export const dialogStyles = css`
 		box-sizing: border-box;
 	}
 
-	.dialog:not([open]) {
+	.modal-dialog:not([open]) {
 		display: none;
 	}
 
-	.dialog:focus-visible {
+	.modal-dialog:focus-visible {
 		box-shadow: var(--components-dialog-box-shadow), 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
-	.dialog::backdrop {
+	.modal-dialog::backdrop {
 		background: var(--semantics-overlays-backdrop-color);
 	}
 
 
 	/* # Keyframes */
 
-	@keyframes dialog-in {
+	@keyframes modal-dialog-in {
 		from {
 			opacity: 0;
 			transform: scale(0.95);
@@ -60,7 +60,7 @@ export const dialogStyles = css`
 		}
 	}
 
-	@keyframes dialog-out {
+	@keyframes modal-dialog-out {
 		from {
 			opacity: 1;
 			transform: scale(1);
@@ -71,20 +71,20 @@ export const dialogStyles = css`
 		}
 	}
 
-	.dialog[open] {
-		animation: dialog-in var(--_animation-duration) var(--_animation-easing) both;
+	.modal-dialog[open] {
+		animation: modal-dialog-in var(--_animation-duration) var(--_animation-easing) both;
 	}
 
-	.dialog.is-closing {
-		animation: dialog-out var(--_animation-duration) var(--_animation-easing) both;
+	.modal-dialog.is-closing {
+		animation: modal-dialog-out var(--_animation-duration) var(--_animation-easing) both;
 	}
 
 
 	/* # Reduced motion */
 
 	@media (prefers-reduced-motion: reduce) {
-		.dialog[open],
-		.dialog.is-closing {
+		.modal-dialog[open],
+		.modal-dialog.is-closing {
 			animation: none;
 		}
 	}

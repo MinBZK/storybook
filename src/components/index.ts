@@ -111,7 +111,7 @@ export { NDDPagination } from './navigation/pagination/ndd-pagination.ts';
 
 // # Status and Feedback components
 
-export { NDDDialog } from './status-and-feedback/dialog/ndd-dialog.ts';
+export { NDDModalDialog } from './status-and-feedback/modal-dialog/ndd-modal-dialog.ts';
 export { NDDInlineDialog } from './status-and-feedback/inline-dialog/ndd-inline-dialog.ts';
 
 // Auto-register happens on import of individual component files

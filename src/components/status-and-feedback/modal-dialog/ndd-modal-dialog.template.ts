@@ -1,10 +1,10 @@
 /* eslint-disable lit-a11y/click-events-have-key-events -- native dialog handles keyboard via @cancel */
 import { html, nothing } from 'lit';
-import type { NDDDialog } from './ndd-dialog.ts';
+import type { NDDModalDialog } from './ndd-modal-dialog.ts';
 
-export function dialogTemplate(component: NDDDialog) {
+export function modalDialogTemplate(component: NDDModalDialog) {
 	return html`
-		<dialog class="dialog"
+		<dialog class="modal-dialog"
 			role=${component.variant === 'alert' ? 'alertdialog' : nothing}
 			aria-modal="true"
 			@click=${component._handleBackdropClick}

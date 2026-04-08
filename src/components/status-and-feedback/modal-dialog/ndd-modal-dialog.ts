@@ -4,7 +4,7 @@
  * A modal window with overlay backdrop, based on the native <dialog> element.
  * Internally renders an <ndd-inline-dialog> for the visual structure.
  *
- * @element ndd-dialog
+ * @element ndd-modal-dialog
  *
  * @attr {'alert'} variant          - Forwarded to ndd-inline-dialog; 'alert' forces icon and color
  * @attr {string}  icon-name        - Forwarded to ndd-inline-dialog; absent when not set
@@ -22,14 +22,14 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { dialogStyles } from './ndd-dialog.styles.ts';
-import { dialogTemplate } from './ndd-dialog.template.ts';
+import { modalDialogStyles } from './ndd-modal-dialog.styles.ts';
+import { modalDialogTemplate } from './ndd-modal-dialog.template.ts';
 import type { InlineDialogVariant } from '../inline-dialog/ndd-inline-dialog.ts';
 import '../inline-dialog/ndd-inline-dialog.ts';
 
-@customElement('ndd-dialog')
-export class NDDDialog extends LitElement {
-	static override styles = dialogStyles;
+@customElement('ndd-modal-dialog')
+export class NDDModalDialog extends LitElement {
+	static override styles = modalDialogStyles;
 
 	@property({ type: String, reflect: true })
 	variant: InlineDialogVariant | '' = '';
@@ -114,12 +114,12 @@ export class NDDDialog extends LitElement {
 	}
 
 	override render() {
-		return dialogTemplate(this);
+		return modalDialogTemplate(this);
 	}
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-dialog': NDDDialog;
+		'ndd-modal-dialog': NDDModalDialog;
 	}
 }
