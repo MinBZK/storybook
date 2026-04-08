@@ -50,6 +50,7 @@ export class NDDTopTitleBar extends LitElement {
 
 	private _pageElement: Element | null = null;
 	private _anchorElement: Element | null = null;
+	private _activeScrollTarget: EventTarget | null = null;
 	private _boundOnScroll = this._onScroll.bind(this);
 
 	override connectedCallback(): void {
@@ -103,21 +104,17 @@ export class NDDTopTitleBar extends LitElement {
 
 		if (!this._anchorElement) return;
 
-		const scrollTarget = this._getScrollTarget();
-		scrollTarget.addEventListener('scroll', this._boundOnScroll, { passive: true });
+		const page = this._pageElement as NDDPage | null;
+		this._activeScrollTarget = page ? page.scrollTarget : window;
+		this._activeScrollTarget.addEventListener('scroll', this._boundOnScroll, { passive: true });
 
 		// Initial check after layout is complete
 		this.updateComplete.then(() => this._onScroll());
 	}
 
-	private _getScrollTarget(): EventTarget {
-		const page = this._pageElement as NDDPage | null;
-		return page ? page.scrollTarget : window;
-	}
-
 	private _teardownAnchor(): void {
-		const scrollTarget = this._getScrollTarget();
-		scrollTarget.removeEventListener('scroll', this._boundOnScroll);
+		this._activeScrollTarget?.removeEventListener('scroll', this._boundOnScroll);
+		this._activeScrollTarget = null;
 		this._anchorElement = null;
 	}
 
