@@ -41,7 +41,7 @@ export class NDDPage extends LitElement {
 	private _scrollTarget: EventTarget | null = null;
 
 	get scrollTarget(): HTMLElement {
-		return (this.stickyHeader ? this._scrollEl : this) as HTMLElement;
+		return (this.stickyHeader ? (this._scrollEl ?? this) : this);
 	}
 
 	private get _headerEl(): HTMLElement | null {

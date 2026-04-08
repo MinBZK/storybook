@@ -21,6 +21,7 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { topTitleBarStyles } from './ndd-top-title-bar.styles.ts';
 import { topTitleBarTemplate } from './ndd-top-title-bar.template.ts';
+import type { NDDPage } from '../../layout/page/ndd-page.ts';
 
 @customElement('ndd-top-title-bar')
 export class NDDTopTitleBar extends LitElement {
@@ -110,7 +111,7 @@ export class NDDTopTitleBar extends LitElement {
 	}
 
 	private _getScrollTarget(): EventTarget {
-		const page = this._pageElement as any;
+		const page = this._pageElement as NDDPage | null;
 		return page?.scrollTarget ?? this._pageElement ?? window;
 	}
 

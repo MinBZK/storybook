@@ -30,6 +30,7 @@ __screenshots__/
 # Temporary files
 tmp/
 temp/
+*.tgz
 
 *storybook.log
 storybook-static

@@ -47,7 +47,7 @@ export const topTitleBarStyles = css`
 		align-items: center;
 		flex-grow: 0;
 		flex-shrink: 0;
-		padding-top: var(--primitives-space-6);
+		margin-top: var(--primitives-space-6);
 	}
 
 	.top-title-bar__end[hidden] {
@@ -61,7 +61,7 @@ export const topTitleBarStyles = css`
 		display: var(--context-back-button-display, flex);
 		flex-direction: row;
 		align-items: center;
-		padding-top: var(--primitives-space-6);
+		margin-top: var(--primitives-space-6);
 	}
 
 	.top-title-bar__text-back-button {
