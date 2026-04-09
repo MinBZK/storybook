@@ -12,11 +12,11 @@ export const tooltipStyles = css`
 		--_show-duration: 150ms;
 		--_hide-delay: 50ms;
 		--_hide-duration: 150ms;
-		--_background-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-750));
-		--_content-color: var(--primitives-color-neutral-0);
+		--_background-color: var(--components-tooltip-background-color);
+		--_content-color: var(--components-tooltip-content-color);
 		--_offset: var(--primitives-space-4);
 		--_shift-padding: var(--primitives-space-8);
-		--_box-shadow: var(--primitives-box-shadows-level-2);
+		--_box-shadow: var(--components-tooltip-box-shadow);
 		--_max-width: var(--primitives-area-280);
 	}
 

@@ -950,6 +950,11 @@
 	--components-dialog-box-shadow: var(--primitives-box-shadows-level-5);
 
 
+	--components-tooltip-background-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-750));
+	--components-tooltip-content-color: var(--primitives-color-neutral-0);
+	--components-tooltip-box-shadow: var(--primitives-box-shadows-level-2);
+
+
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 
 	--components-rich-text-grid-size: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));--components-rich-text-spacing-flat: 0px;
