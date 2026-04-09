@@ -10,6 +10,9 @@
  *
  * @slot - Het element waarop de tooltip wordt getoond
  *
+ * @note Gebruikt position: fixed + floating-ui strategy: 'fixed'. Positionering kan
+ * breken wanneer een voorouder-element transform, filter of will-change heeft.
+ *
  * @note aria-describedby werkt alleen wanneer het trigger element in de light DOM staat.
  * Bij web components als trigger (met eigen shadow DOM) is de koppeling een bekende
  * limitatie van shadow DOM + ARIA. Voor ndd-icon-button is dit niet relevant omdat
@@ -44,6 +47,7 @@ export class NDDTooltip extends LitElement {
 	private _hideDelay = 50;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _descriptionEl: HTMLSpanElement | null = null;
+	private _boundSlotChange = () => this._syncAriaDescribedBy();
 
 	override connectedCallback(): void {
 		super.connectedCallback();
@@ -52,9 +56,7 @@ export class NDDTooltip extends LitElement {
 
 	override firstUpdated(): void {
 		this._syncAriaDescribedBy();
-		this.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', () => {
-			this._syncAriaDescribedBy();
-		});
+		this.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this._boundSlotChange);
 	}
 
 	override updated(changed: PropertyValues): void {
@@ -143,6 +145,7 @@ export class NDDTooltip extends LitElement {
 
 		const { x, y } = await computePosition(trigger, tooltip, {
 			placement: this.placement,
+			strategy: 'fixed',
 			middleware: [
 				offset(8),
 				flip(),
@@ -157,11 +160,14 @@ export class NDDTooltip extends LitElement {
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this.removeEventListener('keydown', this._handleKeyDown);
+		this.shadowRoot?.querySelector('slot')?.removeEventListener('slotchange', this._boundSlotChange);
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
 		}
-		// Clean up the light DOM description span
+		// Clean up aria-describedby on trigger and remove light DOM description span
+		const trigger = this._getTriggerElement();
+		trigger?.removeAttribute('aria-describedby');
 		this._descriptionEl?.remove();
 		this._descriptionEl = null;
 	}
