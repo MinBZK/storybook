@@ -28,10 +28,12 @@ export const tooltipStyles = css`
 		position: fixed;
 		z-index: var(--_z-index);
 		opacity: 0;
+		pointer-events: none;
 		transition: opacity var(--_hide-duration) ease;
 	}
 
 	.tooltip.is-visible {
+		pointer-events: auto;
 		animation: tooltip-show var(--_show-duration) ease var(--_show-delay) forwards;
 	}
 

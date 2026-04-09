@@ -9,6 +9,11 @@
  * @attr {string} placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'top')
  *
  * @slot - Het element waarop de tooltip wordt getoond
+ *
+ * @note aria-describedby werkt alleen wanneer het trigger element in de light DOM staat.
+ * Bij web components als trigger (met eigen shadow DOM) is de koppeling een bekende
+ * limitatie van shadow DOM + ARIA. Voor ndd-icon-button is dit niet relevant omdat
+ * aria-label al op de interne button staat.
  */
 
 import { LitElement } from 'lit';
@@ -47,6 +52,9 @@ export class NDDTooltip extends LitElement {
 
 	override firstUpdated(): void {
 		this._syncAriaDescribedBy();
+		this.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', () => {
+			this._syncAriaDescribedBy();
+		});
 	}
 
 	override updated(changed: PropertyValues): void {

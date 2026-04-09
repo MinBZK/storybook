@@ -67,9 +67,8 @@ describe('ndd-tooltip – show/hide', () => {
 		el._handleTriggerEnter();
 		await waitForUpdate(el);
 		el._handleTriggerLeave();
+		await new Promise(resolve => setTimeout(resolve, 150));
 
-		// Wait for hide delay
-		await new Promise(resolve => setTimeout(resolve, 100));
 		expect(el._visible).toBe(false);
 	});
 
@@ -81,8 +80,8 @@ describe('ndd-tooltip – show/hide', () => {
 		await waitForUpdate(el);
 		el._handleTriggerLeave();
 		el._handleTooltipEnter();
+		await new Promise(resolve => setTimeout(resolve, 150));
 
-		await new Promise(resolve => setTimeout(resolve, 100));
 		expect(el._visible).toBe(true);
 	});
 
