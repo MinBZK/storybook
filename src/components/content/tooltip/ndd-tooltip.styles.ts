@@ -10,7 +10,7 @@ export const tooltipStyles = css`
 		--_z-index: 10000;
 		--_show-delay: 700ms;
 		--_show-duration: 150ms;
-		--_hide-delay: 50ms;
+		--_hide-delay: 50; /* unitless ms, read by JavaScript */
 		--_hide-duration: 150ms;
 		--_offset: var(--primitives-space-4);
 		--_shift-padding: var(--primitives-space-8);

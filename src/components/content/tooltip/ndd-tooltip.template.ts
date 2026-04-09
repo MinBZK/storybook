@@ -1,4 +1,5 @@
-import { html, TemplateResult } from 'lit';
+import { html } from 'lit';
+import type { TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import type { NDDTooltip } from './ndd-tooltip.ts';
 

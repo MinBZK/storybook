@@ -28,8 +28,7 @@ export function template(this: NDDIconButton) {
 
 	// Tooltip text: accessible-label always, or text when not visible (non-lg)
 	const tooltipText = this.accessibleLabel
-		|| (this.size !== 'lg' ? this.text : '')
-		|| '';
+		|| (this.size !== 'lg' ? this.text : '');
 
 	const renderButton = () => {
 		if (this.href) {
