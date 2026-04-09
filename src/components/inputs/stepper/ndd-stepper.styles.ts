@@ -5,6 +5,7 @@ export const stepperStyles = css`
 
 	:host {
 		display: inline-flex;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

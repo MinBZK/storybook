@@ -10,6 +10,7 @@ export const tabBarStyles = css`
 	:host {
 		display: inline-block;
 		position: relative;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -62,6 +63,7 @@ export const tabBarItemStyles = css`
 	:host {
 		display: inline-block;
 		position: relative;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

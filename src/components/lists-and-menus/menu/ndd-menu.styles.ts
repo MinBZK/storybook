@@ -21,6 +21,7 @@ export const menuStyles = css`
 			--_menu-item-size: var(--semantics-controls-sm-min-size);
 			--_menu-padding: var(--primitives-space-6);
 		}
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host(:not(:popover-open)) {
@@ -63,6 +64,7 @@ export const menuItemStyles = css`
 	:host {
 		display: block;
 		font-family: var(--ndd-font-family-body);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

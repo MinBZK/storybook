@@ -8,6 +8,7 @@ export const styles = css`
 		width: 100%;
 		--_z-index-content: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

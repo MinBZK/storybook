@@ -16,6 +16,7 @@ export const documentTabBarStyles = css`
 		--_short-text-threshold: 200px;
 		--_item-min-width: 100px;
 		--_overflow-button-reserve: 52px; /* Used for overflowButtonReserve. Overflow button width + spacing */
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -197,6 +198,7 @@ export const documentTabBarItemStyles = css`
 		min-width: 0;
 		container-name: document-tab-bar;
 		container-type: inline-size;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

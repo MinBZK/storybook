@@ -8,6 +8,7 @@ export const numberFieldStyles = css`
 	:host {
 		display: inline-block;
 		--_width: auto;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

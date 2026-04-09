@@ -5,6 +5,7 @@ export const styles = css`
 
 	:host {
 		display: inline-block;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([full-width]) {

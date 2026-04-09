@@ -8,6 +8,7 @@ export const segmentedControlStyles = css`
 		grid-auto-columns: 1fr;
 		grid-auto-flow: column;
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -57,6 +58,7 @@ export const segmentedControlItemStyles = css`
 		--_segmented-control-sm-inset-size: var(--primitives-space-3);
 		--_segmented-control-sm-gap-size: var(--primitives-space-2);
 		--_segmented-control-sm-item-icon-size: var(--primitives-space-20);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

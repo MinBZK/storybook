@@ -7,6 +7,7 @@ export const dropdownStyles = css`
 		display: block;
 		--_md-icon-size: var(--primitives-space-24);
 		--_sm-icon-size: var(--primitives-space-20);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
