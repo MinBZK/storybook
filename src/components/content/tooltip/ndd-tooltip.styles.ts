@@ -13,7 +13,7 @@ export const tooltipStyles = css`
 		--_hide-duration: 50ms;
 		--_background-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-750));
 		--_content-color: var(--primitives-color-neutral-0);
-		--_offset: var(--primitives-space-6);
+		--_offset: var(--primitives-space-4);
 		--_box-shadow: var(--primitives-box-shadows-level-2);
 		--_max-width: var(--primitives-area-280);
 	}
