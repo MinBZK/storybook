@@ -272,6 +272,10 @@ export class NDDMenu extends LitElement {
 		this._setHighlight(item);
 	};
 
+	private _handleMouseleave = (): void => {
+		if (this.variant !== 'listbox') this._clearHighlight();
+	};
+
 	private _handleMenuItemFocused = (event: Event): void => {
 		const item = (event.target as Element).closest('ndd-menu-item') as NDDMenuItem | null;
 		if (!item || item.disabled || item.hasAttribute('hidden')) return;
@@ -288,6 +292,7 @@ export class NDDMenu extends LitElement {
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
 		this.addEventListener('mouseenter', this._handleMenuItemMouseenter, true);
+		this.addEventListener('mouseleave', this._handleMouseleave);
 		this.addEventListener('menu-item-focused', this._handleMenuItemFocused);
 		document.addEventListener('click', this._handleDocumentClick);
 	}
@@ -297,6 +302,7 @@ export class NDDMenu extends LitElement {
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
 		this.removeEventListener('mouseenter', this._handleMenuItemMouseenter, true);
+		this.removeEventListener('mouseleave', this._handleMouseleave);
 		this.removeEventListener('menu-item-focused', this._handleMenuItemFocused);
 		document.removeEventListener('click', this._handleDocumentClick);
 	}

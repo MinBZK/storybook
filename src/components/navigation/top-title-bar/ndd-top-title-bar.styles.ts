@@ -127,11 +127,6 @@ export const topTitleBarStyles = css`
 		white-space: nowrap;
 	}
 
-	.top-title-bar__title:focus-visible {
-		box-shadow: none;
-		outline: none;
-	}
-
 	.top-title-bar__title:has(+ .top-title-bar__subtitle) {
 		font: var(--primitives-font-body-md-bold-flat);
 	}
