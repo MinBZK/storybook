@@ -52,6 +52,10 @@ export class NDDTooltip extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.addEventListener('keydown', this._handleKeyDown);
+		// Re-register slotchange after reconnect (firstUpdated only runs once)
+		if (this.hasUpdated) {
+			this.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this._boundSlotChange);
+		}
 	}
 
 	override firstUpdated(): void {
