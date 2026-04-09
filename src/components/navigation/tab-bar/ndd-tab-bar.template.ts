@@ -38,7 +38,6 @@ export function tabBarItemTemplate(component: NDDTabBarItem): TemplateResult {
 	const iconLabel = isIconVariant ? component.text || nothing : nothing;
 
 	const content = html`
-		<span class="tab-bar__item-indicator"></span>
 		<span class="tab-bar__item-icon" aria-hidden="true">
 			<slot name="icon" @slotchange=${component._onIconSlotChange}></slot>
 		</span>

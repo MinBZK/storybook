@@ -132,7 +132,8 @@ export const tabBarItemStyles = css`
 
 	/* # Indicator */
 
-	.tab-bar__item-indicator {
+	.tab-bar__item::before {
+		content: '';
 		position: absolute;
 		inset: var(--primitives-space-4) var(--primitives-space-2);
 		border-radius: var(--primitives-corner-radius-sm);
@@ -141,11 +142,11 @@ export const tabBarItemStyles = css`
 		pointer-events: none;
 	}
 
-	.tab-bar__item:hover .tab-bar__item-indicator {
+	.tab-bar__item:hover::before {
 		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 	}
 
-	:host([selected]) .tab-bar__item-indicator {
+	:host([selected]) .tab-bar__item::before {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 
 		@media (forced-colors: active) {
@@ -156,7 +157,7 @@ export const tabBarItemStyles = css`
 
 	/* # Focus */
 
-	.tab-bar__item:focus-visible .tab-bar__item-indicator {
+	.tab-bar__item:focus-visible::before {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}

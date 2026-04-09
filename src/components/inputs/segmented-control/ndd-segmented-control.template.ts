@@ -34,7 +34,6 @@ export function segmentedControlItemTemplate(component: NDDSegmentedControlItem)
 			>
 				${component.text}
 			</span>
-			<div class="segmented-control__item-indicator"></div>
 		</label>
 	`;
 }

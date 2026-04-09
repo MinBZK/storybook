@@ -3,7 +3,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 const areas = (showStart: boolean, showEnd: boolean) => html`
-	<div class="list-item__indicator"></div>
 	<div class=${classMap({ 'list-item__start-area': true, 'is-visible': showStart })}>
 		<slot name="start">
 			<ndd-spacer-cell size="12"></ndd-spacer-cell>
