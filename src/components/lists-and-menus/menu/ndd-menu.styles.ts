@@ -37,7 +37,7 @@ export const menuStyles = css`
 		padding: var(--_menu-padding);
 		background: var(--semantics-surfaces-background-color);
 		border-radius: var(--semantics-overlays-corner-radius);
-		box-shadow: var(--primitives-box-shadows-level-5);
+		box-shadow: var(--components-menu-box-shadow);
 		box-sizing: border-box;
 		width: var(--_menu-width);
 		max-height: min(
@@ -52,7 +52,7 @@ export const menuStyles = css`
 	}
 
 	.menu.is-keyboard-focus:focus {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--primitives-box-shadows-level-5);
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-menu-box-shadow);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 

@@ -4,6 +4,7 @@ import { isKeyboardMode, _resetKeyboardModeForTesting } from './keyboard-mode.ts
 describe('isKeyboardMode', () => {
 	beforeEach(() => {
 		_resetKeyboardModeForTesting();
+		isKeyboardMode(); // re-register listeners
 	});
 
 	it('returns false by default', () => {

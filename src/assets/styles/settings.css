@@ -833,6 +833,7 @@
 	--components-list-item-is-dragging-opacity: var(--primitives-opacity-dragging);
 
 
+	--components-menu-box-shadow: var(--primitives-box-shadows-level-5);
 	--components-menu-item-is-highlighted-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--components-menu-item-is-highlighted-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 
