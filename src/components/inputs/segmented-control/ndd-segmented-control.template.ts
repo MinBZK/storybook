@@ -1,5 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NDDSegmentedControl, NDDSegmentedControlItem } from './ndd-segmented-control.js';
+import '../../content/tooltip/ndd-tooltip.js';
 
 export function segmentedControlTemplate(component: NDDSegmentedControl): TemplateResult {
 	return html`<slot @slotchange=${component._onSlotChange}></slot>`;
@@ -9,10 +10,8 @@ export function segmentedControlItemTemplate(component: NDDSegmentedControlItem)
 	const isIcon = component.variant === 'icon';
 	const labelText = component.text || nothing;
 
-	return html`
-		<label class="segmented-control__item-label"
-			title=${isIcon ? labelText : nothing}
-		>
+	const label = html`
+		<label class="segmented-control__item-label">
 			<input class="segmented-control__item-input"
 				type=${component.inputType}
 				name=${component.groupName || nothing}
@@ -34,6 +33,10 @@ export function segmentedControlItemTemplate(component: NDDSegmentedControlItem)
 			>
 				${component.text}
 			</span>
-		</label>
-	`;
+		</label>`;
+
+	if (isIcon && labelText) {
+		return html`<ndd-tooltip text=${labelText}>${label}</ndd-tooltip>`;
+	}
+	return label;
 }

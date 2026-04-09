@@ -3,6 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import type { NDDDocumentTabBar, NDDDocumentTabBarItem } from './ndd-document-tab-bar.ts';
 import './../../actions/icon-button/ndd-icon-button.ts';
 import './../../content/icon/ndd-icon.ts';
+import './../../content/tooltip/ndd-tooltip.ts';
 
 export function documentTabBarTemplate(component: NDDDocumentTabBar): TemplateResult {
 	const hasOverflow = component._overflowCount > 0;
@@ -61,21 +62,25 @@ export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): Te
 	const isLink = Boolean(safeHref);
 	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';
 
+	const tooltipText = component.supportingText
+		? `${component.text} · ${component.supportingText}`
+		: component.text;
+
 	const tabContent = html`
-		<span class="document-tab-bar__item-text">${component.text}</span>
-		<span class="document-tab-bar__item-short-text"
-			aria-hidden="true"
-			title=${component.text}
-		>${shortTextValue}</span>
-		${component.supportingText
-			? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
-			: nothing}
-		${shortSupportingTextValue
-			? html`<span class="document-tab-bar__item-short-supporting-text"
-				aria-hidden="true"
-				title=${component.supportingText || nothing}
-			>${shortSupportingTextValue}</span>`
-			: nothing}
+		<span class="document-tab-bar__item-normal">
+			<span class="document-tab-bar__item-text">${component.text}</span>
+			${component.supportingText
+				? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
+				: nothing}
+		</span>
+		<span class="document-tab-bar__item-short">
+			<ndd-tooltip text=${tooltipText}>
+				<span class="document-tab-bar__item-short-text">${shortTextValue}</span>
+				${shortSupportingTextValue
+					? html`<span class="document-tab-bar__item-short-supporting-text">${shortSupportingTextValue}</span>`
+					: nothing}
+			</ndd-tooltip>
+		</span>
 	`;
 
 	const tab = isLink

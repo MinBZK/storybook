@@ -164,14 +164,16 @@ describe('ndd-tab-bar-item – icon variant accessibility', () => {
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('aria-label')).toBe('Home');
 	});
 
-	it('sets title from text attribute when variant is icon', async () => {
+	it('wraps in ndd-tooltip when variant is icon', async () => {
 		el = await fixture<NDDTabBarItem>(`
 			<ndd-tab-bar-item variant="icon" text="Home">
 				<svg slot="icon"></svg>
 			</ndd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('title')).toBe('Home');
+		const tooltip = el.shadowRoot!.querySelector('ndd-tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('text')).toBe('Home');
 	});
 
 	it('does not set aria-label when variant is icon-and-text', async () => {
@@ -184,14 +186,14 @@ describe('ndd-tab-bar-item – icon variant accessibility', () => {
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('aria-label')).toBeNull();
 	});
 
-	it('does not set title when variant is text', async () => {
+	it('does not wrap in ndd-tooltip when variant is text', async () => {
 		el = await fixture<NDDTabBarItem>(`
 			<ndd-tab-bar-item variant="text" text="Home">
 				<svg slot="icon"></svg>
 			</ndd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('title')).toBeNull();
+		expect(el.shadowRoot!.querySelector('ndd-tooltip')).toBeNull();
 	});
 });
 

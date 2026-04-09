@@ -1,5 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NDDTabBar, NDDTabBarItem } from './ndd-tab-bar.ts';
+import '../../content/tooltip/ndd-tooltip.js';
 
 export function tabBarTemplate(component: NDDTabBar): TemplateResult {
 	const label = component.accessibleLabel || 'Tabs';
@@ -46,30 +47,35 @@ export function tabBarItemTemplate(component: NDDTabBarItem): TemplateResult {
 		</span>
 	`;
 
+	let result: TemplateResult;
+
 	if (isLink) {
-		return html`
+		result = html`
 			<a class="tab-bar__item"
 				href=${safeHref!}
 				role=${isNavigation ? nothing : 'tab'}
 				aria-current=${isNavigation && component.selected ? 'page' : nothing}
 				aria-selected=${!isNavigation ? (component.selected ? 'true' : 'false') : nothing}
 				aria-label=${iconLabel}
-				title=${iconLabel}
 				tabindex=${tabindex}
 				@click=${component._handleClick}
 			>${content}</a>
 		`;
+	} else {
+		result = html`
+			<button class="tab-bar__item"
+				type="button"
+				role="tab"
+				aria-selected=${component.selected ? 'true' : 'false'}
+				aria-label=${iconLabel}
+				tabindex=${tabindex}
+				@click=${component._handleClick}
+			>${content}</button>
+		`;
 	}
 
-	return html`
-		<button class="tab-bar__item"
-			type="button"
-			role="tab"
-			aria-selected=${component.selected ? 'true' : 'false'}
-			aria-label=${iconLabel}
-			title=${iconLabel}
-			tabindex=${tabindex}
-			@click=${component._handleClick}
-		>${content}</button>
-	`;
+	if (isIconVariant && component.text) {
+		return html`<ndd-tooltip text=${component.text}>${result}</ndd-tooltip>`;
+	}
+	return result;
 }
