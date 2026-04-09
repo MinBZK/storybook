@@ -98,13 +98,11 @@ export const Posities = {
 
 export const MetTekst = {
 	render: () => html`
-		<div style="display: flex; justify-content: center; padding: 4rem;">
-			<ndd-tooltip text="Artikel 1 van de Grondwet">
-				<ndd-rich-text>
-					<p>Hover over deze <strong>tekst</strong> voor meer informatie.</p>
-				</ndd-rich-text>
-			</ndd-tooltip>
-		</div>
+		<ndd-tooltip text="Artikel 1 van de Grondwet">
+			<ndd-rich-text>
+				<p>Hover over deze <strong>tekst</strong> voor meer informatie.</p>
+			</ndd-rich-text>
+		</ndd-tooltip>
 	`,
 	parameters: {
 		controls: { disable: true },
