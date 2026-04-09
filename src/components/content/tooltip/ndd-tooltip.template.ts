@@ -8,10 +8,10 @@ export function tooltipTemplate(component: NDDTooltip): TemplateResult {
 		<slot
 			@mouseenter=${component._handleTriggerEnter}
 			@mouseleave=${component._handleTriggerLeave}
-			@focusin=${component._handleTriggerEnter}
+			@focusin=${component._handleFocusIn}
 			@focusout=${component._handleFocusOut}
 		></slot>
-		<div class=${classMap({ tooltip: true, 'is-visible': component._visible })}
+		<div class=${classMap({ tooltip: true, 'is-visible': component._visible && !component._focusVisible, 'is-focus-visible': component._visible && component._focusVisible })}
 			aria-hidden="true"
 			@mouseenter=${component._handleTooltipEnter}
 			@mouseleave=${component._handleTooltipLeave}

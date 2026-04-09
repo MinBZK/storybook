@@ -4,7 +4,8 @@ import type { NDDTooltip } from './ndd-tooltip.ts';
 import './ndd-tooltip.ts';
 
 function isTooltipVisible(el: NDDTooltip): boolean {
-	return el.shadowRoot!.querySelector('.tooltip')?.classList.contains('is-visible') ?? false;
+	const tooltip = el.shadowRoot!.querySelector('.tooltip');
+	return tooltip?.classList.contains('is-visible') || tooltip?.classList.contains('is-focus-visible') || false;
 }
 
 describe('ndd-tooltip', () => {

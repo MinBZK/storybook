@@ -12,8 +12,8 @@ export const tooltipStyles = css`
 		--_show-duration: 150ms;
 		--_hide-delay: 50; /* unitless ms, read by JavaScript */
 		--_hide-duration: 150ms;
-		--_offset: var(--primitives-space-4);
-		--_shift-padding: var(--primitives-space-8);
+		--_offset: 4; /* px, unitless — read by JS */
+		--_shift-padding: 8; /* px, unitless — read by JS */
 		--_max-width: var(--primitives-area-280);
 	}
 
@@ -29,15 +29,32 @@ export const tooltipStyles = css`
 		z-index: var(--_z-index);
 		opacity: 0;
 		pointer-events: none;
-		transition: opacity var(--_hide-duration) ease, visibility 0ms linear var(--_hide-duration);
 		visibility: hidden;
+		transition:
+			opacity var(--_hide-duration) ease,
+			visibility 0ms linear var(--_hide-duration),
+			pointer-events 0ms linear var(--_hide-duration);
 	}
 
 	.tooltip.is-visible {
-		pointer-events: auto;
 		opacity: 1;
 		visibility: visible;
-		transition: opacity var(--_show-duration) ease var(--_show-delay), visibility 0ms linear;
+		pointer-events: auto;
+		transition:
+			opacity var(--_show-duration) ease var(--_show-delay),
+			visibility 0ms linear,
+			pointer-events 0ms linear var(--_show-delay);
+	}
+
+	/* Focus triggers: geen show delay */
+	.tooltip.is-focus-visible {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transition:
+			opacity var(--_show-duration) ease,
+			visibility 0ms linear,
+			pointer-events 0ms linear;
 	}
 
 

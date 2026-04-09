@@ -48,6 +48,9 @@ export class NDDTooltip extends LitElement {
 	@state()
 	_visible = false;
 
+	@state()
+	_focusVisible = false;
+
 	private _tooltipId = `ndd-tooltip-${++tooltipCounter}`;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _descriptionEl: HTMLSpanElement | null = null;
@@ -132,6 +135,17 @@ export class NDDTooltip extends LitElement {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
 		}
+		this._focusVisible = false;
+		this._visible = true;
+	}
+
+	_handleFocusIn(): void {
+		if (!this.text) return;
+		if (this._hideTimeout) {
+			clearTimeout(this._hideTimeout);
+			this._hideTimeout = null;
+		}
+		this._focusVisible = true;
 		this._visible = true;
 	}
 
@@ -146,6 +160,7 @@ export class NDDTooltip extends LitElement {
 		}, hideDelay);
 	}
 
+	/** Focus guard checks one shadow root level deep for composite triggers. */
 	_handleFocusOut(e: FocusEvent): void {
 		const slot = this.shadowRoot?.querySelector('slot');
 		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
@@ -170,6 +185,7 @@ export class NDDTooltip extends LitElement {
 	private _handleKeyDown = (e: KeyboardEvent): void => {
 		if (e.key === 'Escape' && this._visible) {
 			this._visible = false;
+			this._focusVisible = false;
 		}
 	};
 
