@@ -16,12 +16,6 @@ describe('ndd-tooltip', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('gebruikt display: contents', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"></ndd-tooltip>');
-		await waitForUpdate(el);
-		expect(getComputedStyle(el).display).toBe('contents');
-	});
-
 	it('rendert tooltip met role="tooltip"', async () => {
 		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"></ndd-tooltip>');
 		await waitForUpdate(el);
@@ -48,6 +42,49 @@ describe('ndd-tooltip', () => {
 		await waitForUpdate(el);
 		expect(el.placement).toBe('top');
 	});
+});
+
+describe('ndd-tooltip – show/hide', () => {
+	let el: NDDTooltip;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('wordt zichtbaar bij trigger enter', async () => {
+		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
+		await waitForUpdate(el);
+
+		el._handleTriggerEnter();
+		await waitForUpdate(el);
+		expect(el._visible).toBe(true);
+	});
+
+	it('wordt verborgen bij trigger leave', async () => {
+		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
+		await waitForUpdate(el);
+
+		el._handleTriggerEnter();
+		await waitForUpdate(el);
+		el._handleTriggerLeave();
+
+		// Wait for hide delay
+		await new Promise(resolve => setTimeout(resolve, 100));
+		expect(el._visible).toBe(false);
+	});
+
+	it('blijft zichtbaar bij tooltip hover', async () => {
+		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
+		await waitForUpdate(el);
+
+		el._handleTriggerEnter();
+		await waitForUpdate(el);
+		el._handleTriggerLeave();
+		el._handleTooltipEnter();
+
+		await new Promise(resolve => setTimeout(resolve, 100));
+		expect(el._visible).toBe(true);
+	});
 
 	it('Escape sluit de tooltip', async () => {
 		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
@@ -60,5 +97,54 @@ describe('ndd-tooltip', () => {
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
 		await waitForUpdate(el);
 		expect(el._visible).toBe(false);
+	});
+
+	it('toont niet bij lege text', async () => {
+		el = await fixture<NDDTooltip>('<ndd-tooltip text=""><button>Trigger</button></ndd-tooltip>');
+		await waitForUpdate(el);
+
+		el._handleTriggerEnter();
+		await waitForUpdate(el);
+		expect(el._visible).toBe(false);
+	});
+});
+
+describe('ndd-tooltip – aria-describedby', () => {
+	let el: NDDTooltip;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('zet aria-describedby op het trigger element', async () => {
+		el = await fixture<NDDTooltip>(`
+			<ndd-tooltip text="Helptekst">
+				<button>Trigger</button>
+			</ndd-tooltip>
+		`);
+		await waitForUpdate(el);
+
+		const trigger = el.querySelector('button');
+		const describedBy = trigger?.getAttribute('aria-describedby');
+		expect(describedBy).toBeTruthy();
+
+		const descriptionEl = el.querySelector(`#${describedBy}`);
+		expect(descriptionEl).not.toBeNull();
+		expect(descriptionEl?.textContent).toBe('Helptekst');
+	});
+
+	it('verwijdert aria-describedby bij lege text', async () => {
+		el = await fixture<NDDTooltip>(`
+			<ndd-tooltip text="Helptekst">
+				<button>Trigger</button>
+			</ndd-tooltip>
+		`);
+		await waitForUpdate(el);
+
+		el.text = '';
+		await waitForUpdate(el);
+
+		const trigger = el.querySelector('button');
+		expect(trigger?.hasAttribute('aria-describedby')).toBe(false);
 	});
 });

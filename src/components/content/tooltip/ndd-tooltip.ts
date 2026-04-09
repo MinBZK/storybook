@@ -20,6 +20,8 @@ import { tooltipTemplate } from './ndd-tooltip.template.ts';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 
+let tooltipCounter = 0;
+
 @customElement('ndd-tooltip')
 export class NDDTooltip extends LitElement {
 	static override styles = tooltipStyles;
@@ -33,25 +35,57 @@ export class NDDTooltip extends LitElement {
 	@state()
 	_visible = false;
 
+	private _tooltipId = `ndd-tooltip-${++tooltipCounter}`;
 	private _hideDelay = 50;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
-	private _boundHandleKeyDown = this._handleKeyDown.bind(this);
+	private _descriptionEl: HTMLSpanElement | null = null;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		this.addEventListener('keydown', this._boundHandleKeyDown);
+		this.addEventListener('keydown', this._handleKeyDown);
+	}
+
+	override firstUpdated(): void {
+		this._syncAriaDescribedBy();
 	}
 
 	override updated(changed: PropertyValues): void {
-		if (changed.has('_visible') && this._visible) {
-			this._updatePosition();
+		if (changed.has('_visible')) {
+			if (this._visible) {
+				this._updatePosition();
+			}
+		}
+		if (changed.has('text')) {
+			this._syncAriaDescribedBy();
+		}
+	}
+
+	private _syncAriaDescribedBy(): void {
+		const trigger = this._getTriggerElement();
+		if (!trigger) return;
+
+		if (this.text) {
+			// Create or update a hidden span in the light DOM for aria-describedby
+			if (!this._descriptionEl) {
+				this._descriptionEl = document.createElement('span');
+				this._descriptionEl.id = this._tooltipId;
+				this._descriptionEl.hidden = true;
+				this.appendChild(this._descriptionEl);
+			}
+			this._descriptionEl.textContent = this.text;
+			trigger.setAttribute('aria-describedby', this._tooltipId);
+		} else {
+			trigger.removeAttribute('aria-describedby');
+			this._descriptionEl?.remove();
+			this._descriptionEl = null;
 		}
 	}
 
 	private _getTriggerElement(): Element | null {
 		const slot = this.shadowRoot?.querySelector('slot');
 		const assigned = slot?.assignedElements({ flatten: true });
-		return assigned?.[0] ?? null;
+		// Skip the hidden description span
+		return assigned?.find(el => el !== this._descriptionEl) ?? null;
 	}
 
 	private _getTooltipElement(): HTMLElement | null {
@@ -88,12 +122,11 @@ export class NDDTooltip extends LitElement {
 		this._handleTriggerLeave();
 	}
 
-	private _handleKeyDown(e: KeyboardEvent): void {
+	private _handleKeyDown = (e: KeyboardEvent): void => {
 		if (e.key === 'Escape' && this._visible) {
 			this._visible = false;
-			e.stopPropagation();
 		}
-	}
+	};
 
 	private async _updatePosition(): Promise<void> {
 		const trigger = this._getTriggerElement();
@@ -115,11 +148,14 @@ export class NDDTooltip extends LitElement {
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
-		this.removeEventListener('keydown', this._boundHandleKeyDown);
+		this.removeEventListener('keydown', this._handleKeyDown);
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
 		}
+		// Clean up the light DOM description span
+		this._descriptionEl?.remove();
+		this._descriptionEl = null;
 	}
 
 	override render() {
