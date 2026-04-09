@@ -6,4 +6,4 @@
  * first (closing the popover), then the click handler fires and would
  * reopen it. This guard prevents reopening within the threshold.
  */
-export const POPOVER_REOPEN_GUARD_MS = 50;
+export const POPOVER_REOPEN_GUARD_MS = 100;

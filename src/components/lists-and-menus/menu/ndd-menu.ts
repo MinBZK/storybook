@@ -554,8 +554,12 @@ export class NDDMenu extends LitElement {
 
 		await this.updateComplete;
 		if (this.variant !== 'listbox') {
+			const keyboard = isKeyboardMode();
+			if (keyboard) {
+				this._setHighlight(null);
+			}
 			const menu = this.shadowRoot?.querySelector<HTMLElement>('.menu');
-			menu?.classList.toggle('is-keyboard-focus', isKeyboardMode());
+			menu?.classList.toggle('is-keyboard-focus', keyboard);
 			menu?.focus();
 		}
 	};

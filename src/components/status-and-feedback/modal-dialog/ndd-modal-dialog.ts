@@ -10,6 +10,7 @@
  * @attr {string}  icon-name        - Forwarded to ndd-inline-dialog; absent when not set
  * @attr {string}  text             - Forwarded to ndd-inline-dialog; main text
  * @attr {string}  supporting-text  - Forwarded to ndd-inline-dialog; supporting text
+ * @attr {string}  accessible-label - Accessible name for the dialog (aria-label); falls back to text
  *
  * @slot         - Optional custom content, forwarded to ndd-inline-dialog
  * @slot actions - ndd-button elements, forwarded to ndd-inline-dialog
@@ -43,6 +44,10 @@ export class NDDModalDialog extends LitElement {
 
 	@property({ type: String, reflect: true, attribute: 'supporting-text' })
 	supportingText = '';
+
+	/** Accessible name for the dialog — forwarded as aria-label. Falls back to text. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
 	private _closing = false;
 

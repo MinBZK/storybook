@@ -34,6 +34,7 @@ import { tooltipTemplate } from './ndd-tooltip.template.ts';
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 
 let tooltipCounter = 0;
+const coarsePointerQuery = matchMedia('(pointer: coarse)');
 
 @customElement('ndd-tooltip')
 export class NDDTooltip extends LitElement {
@@ -47,8 +48,7 @@ export class NDDTooltip extends LitElement {
 
 	private get _effectivePlacement(): Placement {
 		if (this._focusVisible) return this.placement;
-		const isTouch = matchMedia('(pointer: coarse)').matches;
-		return isTouch ? 'top' : this.placement;
+		return coarsePointerQuery.matches ? 'top' : this.placement;
 	}
 
 	@state()
