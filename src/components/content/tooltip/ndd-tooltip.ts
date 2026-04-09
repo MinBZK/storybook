@@ -199,8 +199,8 @@ export class NDDTooltip extends LitElement {
 			this._hideTimeout = null;
 		}
 		// Clean up aria-describedby on trigger and remove description span from body
-		const trigger = this._getTriggerElement();
-		trigger?.removeAttribute('aria-describedby');
+		this._currentTrigger?.removeAttribute('aria-describedby');
+		this._currentTrigger = null;
 		this._descriptionEl?.remove();
 		this._descriptionEl = null;
 	}
