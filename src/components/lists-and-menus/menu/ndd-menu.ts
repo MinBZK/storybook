@@ -209,6 +209,7 @@ export class NDDMenu extends LitElement {
 	private _isEmpty = false;
 
 	private _isOpen = false;
+	private _closedAt = 0;
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
@@ -263,7 +264,7 @@ export class NDDMenu extends LitElement {
 		if (!path.includes(anchorEl)) return;
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
-		} else {
+		} else if (Date.now() - this._closedAt > 50) {
 			(this as HTMLElement).showPopover();
 		}
 	};
@@ -529,7 +530,10 @@ export class NDDMenu extends LitElement {
 		const toggleEvent = event as ToggleEvent;
 		this._isOpen = toggleEvent.newState === 'open';
 
-		if (toggleEvent.newState !== 'open') return;
+		if (toggleEvent.newState !== 'open') {
+			this._closedAt = Date.now();
+			return;
+		}
 
 		this._updateDividerVisibility();
 		this._setHighlight(null);
