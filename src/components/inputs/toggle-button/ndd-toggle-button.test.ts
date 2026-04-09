@@ -382,3 +382,30 @@ describe('ndd-toggle-button – accessibility', () => {
 		expect(button.hasAttribute('aria-label')).toBe(false);
 	});
 });
+
+
+/* ============================================================
+   Tooltip
+   ============================================================ */
+
+describe('ndd-toggle-button – tooltip', () => {
+	let el: NDDToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('wraps in ndd-tooltip when icon-only', async () => {
+		el = await fixture<NDDToggleButton>('<ndd-toggle-button icon="star" accessible-label="Favoriet"></ndd-toggle-button>');
+		await waitForUpdate(el);
+		const tooltip = el.shadowRoot!.querySelector('ndd-tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('text')).toBe('Favoriet');
+	});
+
+	it('does not wrap in ndd-tooltip when text is present', async () => {
+		el = await fixture<NDDToggleButton>('<ndd-toggle-button icon="star" text="Favoriet"></ndd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('ndd-tooltip')).toBeNull();
+	});
+});

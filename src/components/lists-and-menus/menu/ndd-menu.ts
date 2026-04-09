@@ -99,6 +99,11 @@ export class NDDMenuItem extends LitElement {
 		this.addEventListener('focusout', () => this.removeAttribute('data-focused'));
 	}
 
+	override focus(options?: FocusOptions): void {
+		const focusable = this.shadowRoot?.querySelector<HTMLElement>('button, a');
+		focusable?.focus(options);
+	}
+
 	_handleClick(): void {
 		if (this.disabled) return;
 		this.dispatchEvent(new CustomEvent('select', {
@@ -429,7 +434,7 @@ export class NDDMenu extends LitElement {
 
 		items.forEach(item => item.removeAttribute('highlighted'));
 		items[targetIndex].setAttribute('highlighted', '');
-		items[targetIndex].shadowRoot?.querySelector('button')?.focus();
+		items[targetIndex].focus();
 	}
 
 	/**
@@ -505,23 +510,23 @@ export class NDDMenu extends LitElement {
 			case 'ArrowDown': {
 				event.preventDefault();
 				const next = index === -1 ? 0 : index < items.length - 1 ? index + 1 : 0;
-				items[next].shadowRoot?.querySelector('button')?.focus();
+				items[next].focus();
 				break;
 			}
 			case 'ArrowUp': {
 				event.preventDefault();
 				const prev = index === -1 ? items.length - 1 : index > 0 ? index - 1 : items.length - 1;
-				items[prev].shadowRoot?.querySelector('button')?.focus();
+				items[prev].focus();
 				break;
 			}
 			case 'Home': {
 				event.preventDefault();
-				items[0].shadowRoot?.querySelector('button')?.focus();
+				items[0].focus();
 				break;
 			}
 			case 'End': {
 				event.preventDefault();
-				items[items.length - 1].shadowRoot?.querySelector('button')?.focus();
+				items[items.length - 1].focus();
 				break;
 			}
 			case 'Escape': {
@@ -558,7 +563,7 @@ export class NDDMenu extends LitElement {
 			const items = this._getVisibleItems();
 			if (keyboard && items.length > 0) {
 				this._setHighlight(items[0]);
-				items[0].shadowRoot?.querySelector('button')?.focus();
+				items[0].focus();
 			} else {
 				const menu = this.shadowRoot?.querySelector<HTMLElement>('.menu');
 				menu?.classList.toggle('is-keyboard-focus', keyboard);

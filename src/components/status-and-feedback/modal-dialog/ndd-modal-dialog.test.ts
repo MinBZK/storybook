@@ -109,6 +109,18 @@ describe('ndd-modal-dialog', () => {
 		expect(inner?.getAttribute('icon-name')).toBe('check-mark-circle');
 	});
 
+	it('sets aria-label from accessible-label', async () => {
+		el = await fixture('<ndd-modal-dialog accessible-label="Bevestig actie" text="Weet u het zeker?"></ndd-modal-dialog>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('dialog')!.getAttribute('aria-label')).toBe('Bevestig actie');
+	});
+
+	it('falls back to text for aria-label when no accessible-label', async () => {
+		el = await fixture('<ndd-modal-dialog text="Bevestiging vereist"></ndd-modal-dialog>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('dialog')!.getAttribute('aria-label')).toBe('Bevestiging vereist');
+	});
+
 	it('focuses the dialog on show()', async () => {
 		el = await fixture('<ndd-modal-dialog text="Bevestiging vereist"></ndd-modal-dialog>');
 		await waitForUpdate(el);
