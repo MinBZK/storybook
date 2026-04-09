@@ -13,6 +13,7 @@ export function tooltipTemplate(component: NDDTooltip): TemplateResult {
 		></slot>
 		<div class=${classMap({ tooltip: true, 'is-visible': component._visible })}
 			role="tooltip"
+			aria-hidden=${!component._visible ? 'true' : 'false'}
 			@mouseenter=${component._handleTooltipEnter}
 			@mouseleave=${component._handleTooltipLeave}
 		>

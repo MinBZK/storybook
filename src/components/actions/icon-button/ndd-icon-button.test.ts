@@ -128,6 +128,10 @@ describe('ndd-icon-button – accessible label & aria-label', () => {
    Title tooltip
    ============================================================ */
 
+// Note: aria-describedby from ndd-tooltip does not reach the inner <button>
+// in ndd-icon-button's shadow DOM. This is a known shadow DOM + ARIA limitation.
+// The tooltip is visual-only for custom element triggers; aria-label on the
+// inner button provides the accessible name.
 describe('ndd-icon-button – tooltip', () => {
 	let el: NDDIconButton;
 

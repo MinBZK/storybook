@@ -52,10 +52,11 @@ export class NDDTooltip extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.addEventListener('keydown', this._handleKeyDown);
-		this.updateComplete.then(() => {
-			this._syncAriaDescribedBy();
-			this.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this._boundSlotChange);
-		});
+	}
+
+	override firstUpdated(): void {
+		this._syncAriaDescribedBy();
+		this.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this._boundSlotChange);
 	}
 
 	override updated(changed: PropertyValues): void {
@@ -142,13 +143,14 @@ export class NDDTooltip extends LitElement {
 		const tooltip = this._getTooltipElement();
 		if (!trigger || !tooltip) return;
 
+		const styles = getComputedStyle(this);
 		const { x, y } = await computePosition(trigger, tooltip, {
 			placement: this.placement,
 			strategy: 'fixed',
 			middleware: [
-				offset(parseInt(getComputedStyle(this).getPropertyValue('--_offset'))),
+				offset(parseInt(styles.getPropertyValue('--_offset'), 10)),
 				flip(),
-				shift({ padding: 8 }),
+				shift({ padding: parseInt(styles.getPropertyValue('--_shift-padding'), 10) }),
 			],
 		});
 

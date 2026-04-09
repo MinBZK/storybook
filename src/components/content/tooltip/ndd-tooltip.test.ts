@@ -82,7 +82,7 @@ describe('ndd-tooltip – show/hide', () => {
 		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
 		await waitForUpdate(el);
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 150));
+		await new Promise(resolve => setTimeout(resolve, 250));
 
 		expect(isTooltipVisible(el)).toBe(false);
 	});
@@ -98,7 +98,7 @@ describe('ndd-tooltip – show/hide', () => {
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
 		const tooltipEl = el.shadowRoot!.querySelector('.tooltip')!;
 		tooltipEl.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 150));
+		await new Promise(resolve => setTimeout(resolve, 250));
 
 		expect(isTooltipVisible(el)).toBe(true);
 	});
