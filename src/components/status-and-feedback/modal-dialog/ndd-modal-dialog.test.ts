@@ -109,13 +109,12 @@ describe('ndd-modal-dialog', () => {
 		expect(inner?.getAttribute('icon-name')).toBe('check-mark-circle');
 	});
 
-	it('focuses the dialog__text heading on show()', async () => {
+	it('focuses the dialog on show()', async () => {
 		el = await fixture('<ndd-modal-dialog text="Bevestiging vereist"></ndd-modal-dialog>');
 		await waitForUpdate(el);
 		(el as NDDModalDialog).show();
-		const inner = el.shadowRoot!.querySelector('ndd-inline-dialog');
-		const heading = inner?.shadowRoot?.querySelector('h2.inline-dialog__text') as HTMLElement;
-		expect(document.activeElement === heading || inner?.shadowRoot?.activeElement === heading).toBe(true);
+		const dialog = el.shadowRoot!.querySelector('dialog')!;
+		expect(document.activeElement === dialog || el.shadowRoot!.activeElement === dialog).toBe(true);
 	});
 
 	it('inner ndd-inline-dialog receives heading-level="2"', async () => {
@@ -125,13 +124,12 @@ describe('ndd-modal-dialog', () => {
 		expect(inner?.getAttribute('heading-level')).toBe('2');
 	});
 
-	it('adds tabindex="-1" to dialog__text heading on show()', async () => {
-		el = await fixture('<ndd-modal-dialog text="Bevestiging vereist"></ndd-modal-dialog>');
+	it('respects autofocus attribute on slotted content', async () => {
+		el = await fixture('<ndd-modal-dialog><button slot="actions" autofocus>OK</button></ndd-modal-dialog>');
 		await waitForUpdate(el);
 		(el as NDDModalDialog).show();
-		const inner = el.shadowRoot!.querySelector('ndd-inline-dialog');
-		const heading = inner?.shadowRoot?.querySelector('.inline-dialog__text') as HTMLElement;
-		expect(heading.getAttribute('tabindex')).toBe('-1');
+		const button = el.querySelector<HTMLElement>('button')!;
+		expect(document.activeElement === button).toBe(true);
 	});
 
 	it('prevents default on cancel event and calls hide()', async () => {

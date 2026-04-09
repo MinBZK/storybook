@@ -45,6 +45,10 @@ export const modalDialogStyles = css`
 	}
 
 	.modal-dialog:focus-visible {
+		outline: none;
+	}
+
+	.modal-dialog.is-keyboard-focus:focus {
 		box-shadow: var(--components-dialog-box-shadow), 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}

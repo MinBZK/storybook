@@ -9,6 +9,7 @@ import '../../lists-and-menus/cells/icon-cell/ndd-icon-cell.js';
 import '../../lists-and-menus/cells/spacer-cell/ndd-spacer-cell.js';
 import '../../lists-and-menus/cells/text-cell/ndd-text-cell.js';
 import '../../content/icon/ndd-icon.js';
+import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
 
 
 // # ndd-menu-divider
@@ -144,7 +145,6 @@ const defaultFilterFn = (query: string, item: NDDMenuItem): boolean => {
  * @attr {string}  anchor         - ID of the anchor element.
  * @attr {string}  placement      - Floating UI placement. Default: 'bottom-start'.
  * @attr {string}  empty-text     - Text shown when all items are hidden or no items exist.
- * @attr {boolean} no-auto-focus  - When set, the first item is not focused on open.
  * @attr {string}  width          - Explicit width. Sets --_menu-width internally.
  * @attr {number}  max-items      - Maximum number of visible items before scrolling.
  *                                  Sets --_menu-max-items internally. Default: 0 (no limit).
@@ -176,9 +176,6 @@ export class NDDMenu extends LitElement {
 	@property({ type: String, attribute: 'empty-text' })
 	emptyText = '';
 
-	/** When set, the first item is not focused automatically on open. */
-	@property({ type: Boolean, attribute: 'no-auto-focus' })
-	noAutoFocus = false;
 
 	/** Explicit width. Sets --_menu-width internally. */
 	@property({ type: String, reflect: true })
@@ -316,10 +313,14 @@ export class NDDMenu extends LitElement {
 		return items.findIndex(item => item.hasAttribute('data-focused'));
 	}
 
-	private _setHighlight(target: NDDMenuItem | null): void {
+	private _clearHighlight(): void {
 		Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
 			item.removeAttribute('highlighted');
 		});
+	}
+
+	private _setHighlight(target: NDDMenuItem | null): void {
+		this._clearHighlight();
 		const resolved = target ?? this._getVisibleItems()[0] ?? null;
 		resolved?.setAttribute('highlighted', '');
 	}
@@ -536,7 +537,7 @@ export class NDDMenu extends LitElement {
 		}
 
 		this._updateDividerVisibility();
-		this._setHighlight(null);
+		this._clearHighlight();
 		this._updateEmptyState();
 		Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
 			(item as NDDMenuItem).menuVariant = this.variant;
@@ -544,12 +545,11 @@ export class NDDMenu extends LitElement {
 
 		await this.reposition();
 
-		if (!this.noAutoFocus) {
-			await this.updateComplete;
-			const items = this._getVisibleItems();
-			if (items.length > 0) {
-				items[0].shadowRoot?.querySelector('button')?.focus();
-			}
+		await this.updateComplete;
+		if (this.variant !== 'listbox') {
+			const menu = this.shadowRoot?.querySelector<HTMLElement>('.menu');
+			menu?.classList.toggle('is-keyboard-focus', isKeyboardMode());
+			menu?.focus();
 		}
 	};
 

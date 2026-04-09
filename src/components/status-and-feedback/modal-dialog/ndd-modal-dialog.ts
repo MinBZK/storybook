@@ -24,6 +24,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { modalDialogStyles } from './ndd-modal-dialog.styles.ts';
 import { modalDialogTemplate } from './ndd-modal-dialog.template.ts';
+import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
 import type { InlineDialogVariant } from '../inline-dialog/ndd-inline-dialog.ts';
 import '../inline-dialog/ndd-inline-dialog.ts';
 
@@ -61,24 +62,11 @@ export class NDDModalDialog extends LitElement {
 		// 1. autofocus element present — let the browser handle it natively
 		if (this.querySelector('[autofocus]')) return;
 
-		// 2. Focus the inline-dialog__text heading inside ndd-inline-dialog's shadow DOM
-		const inner = this.shadowRoot?.querySelector('ndd-inline-dialog');
-		const heading = inner?.shadowRoot?.querySelector<HTMLElement>('.inline-dialog__text') ?? null;
-
-		if (heading) {
-			const hadTabindex = heading.hasAttribute('tabindex');
-			if (!hadTabindex) heading.setAttribute('tabindex', '-1');
-			heading.focus();
-			if (!hadTabindex) {
-				heading.addEventListener('blur', () => {
-					heading.removeAttribute('tabindex');
-				}, { once: true });
-			}
-			return;
-		}
-
-		// 3. Fallback — focus the native dialog itself
-		this._dialog?.focus();
+		// 2. Focus the dialog — show focus ring only when opened via keyboard
+		const dialog = this._dialog;
+		if (!dialog) return;
+		dialog.classList.toggle('is-keyboard-focus', isKeyboardMode());
+		dialog.focus();
 	}
 
 	hide(): void {
