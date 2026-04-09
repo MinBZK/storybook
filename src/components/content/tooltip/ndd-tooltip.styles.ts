@@ -7,6 +7,10 @@ export const tooltipStyles = css`
 
 	:host {
 		display: contents;
+		--_show-delay: 400ms;
+		--_show-duration: 50ms;
+		--_box-shadow: var(--primitives-box-shadows-level-2);
+		--_max-width: var(--primitives-area-280);
 	}
 
 	:host([hidden]) {
@@ -21,25 +25,29 @@ export const tooltipStyles = css`
 		z-index: 10000;
 		pointer-events: none;
 		opacity: 0;
-		transition: opacity 0.15s ease;
 	}
 
 	.tooltip.is-visible {
-		opacity: 1;
+		animation: tooltip-show var(--_show-duration) ease var(--_show-delay) forwards;
+	}
+
+	@keyframes tooltip-show {
+		to { opacity: 1; }
 	}
 
 
 	/* ## Tooltip body */
 
 	.tooltip__body {
-		background-color: var(--primitives-color-neutral-0);
+		background-color: var(--semantics-surfaces-background-color);
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-xs-regular-tight);
 		padding-block: var(--primitives-space-4);
 		padding-inline: var(--primitives-space-8);
-		white-space: nowrap;
-		box-shadow: var(--primitives-box-shadows-level-2);
-		border-radius: var(--primitives-corner-radius-sm);
+		max-width: var(--_max-width);
+		white-space: normal;
+		box-shadow: var(--_box-shadow);
+		border-radius: var(--primitives-corner-radius-xs);
 	}
 
 
@@ -52,8 +60,9 @@ export const tooltipStyles = css`
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.tooltip {
-			transition: none;
+		.tooltip.is-visible {
+			animation: none;
+			opacity: 1;
 		}
 	}
 `;

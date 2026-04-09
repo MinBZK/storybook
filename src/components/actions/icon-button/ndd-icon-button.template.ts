@@ -1,5 +1,6 @@
 import { html, nothing } from 'lit';
 import type { NDDIconButton } from './ndd-icon-button.ts';
+import '../../content/tooltip/ndd-tooltip.ts';
 
 function renderContent(component: NDDIconButton) {
 	return html`
@@ -23,37 +24,51 @@ function renderContent(component: NDDIconButton) {
 
 export function template(this: NDDIconButton) {
 	const label = this.accessibleLabel || this.text || nothing;
-	const tooltip = this.size !== 'lg' ? (this.accessibleLabel || this.text || nothing) : nothing;
 	const content = renderContent(this);
 
-	if (this.href) {
-		const resolvedRel = this._resolvedRel();
+	// Tooltip text: accessible-label always, or text when not visible (non-lg)
+	const tooltipText = this.accessibleLabel
+		|| (this.size !== 'lg' ? this.text : '')
+		|| '';
+
+	const renderButton = () => {
+		if (this.href) {
+			const resolvedRel = this._resolvedRel();
+			return html`
+				<a class="icon-button"
+					href=${this.href}
+					target=${this.target || nothing}
+					rel=${resolvedRel || nothing}
+					aria-disabled=${this.disabled ? 'true' : nothing}
+					aria-label=${label}
+					@click=${this._handleClick}
+				>
+					${content}
+				</a>
+			`;
+		}
+
 		return html`
-			<a class="icon-button"
-				href=${this.href}
-				target=${this.target || nothing}
-				rel=${resolvedRel || nothing}
+			<button class="icon-button"
+				type=${this.type}
+				?disabled=${this.disabled}
 				aria-disabled=${this.disabled ? 'true' : nothing}
-				title=${tooltip}
 				aria-label=${label}
+				popovertarget=${this.popovertarget || nothing}
 				@click=${this._handleClick}
 			>
 				${content}
-			</a>
+			</button>
+		`;
+	};
+
+	if (tooltipText) {
+		return html`
+			<ndd-tooltip text=${tooltipText}>
+				${renderButton()}
+			</ndd-tooltip>
 		`;
 	}
 
-	return html`
-		<button class="icon-button"
-			type=${this.type}
-			?disabled=${this.disabled}
-			aria-disabled=${this.disabled ? 'true' : nothing}
-			title=${tooltip}
-			aria-label=${label}
-			popovertarget=${this.popovertarget || nothing}
-			@click=${this._handleClick}
-		>
-			${content}
-		</button>
-	`;
+	return renderButton();
 }

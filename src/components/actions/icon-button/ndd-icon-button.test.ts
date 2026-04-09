@@ -128,39 +128,42 @@ describe('ndd-icon-button – accessible label & aria-label', () => {
    Title tooltip
    ============================================================ */
 
-describe('ndd-icon-button – title tooltip', () => {
+describe('ndd-icon-button – tooltip', () => {
 	let el: NDDIconButton;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('uses text as title tooltip for non-lg sizes', async () => {
+	it('renders ndd-tooltip with text for non-lg sizes', async () => {
 		el = await fixture<NDDIconButton>('<ndd-icon-button size="md" icon="download" text="Download"></ndd-icon-button>');
 		await waitForUpdate(el);
-		const btn = el.shadowRoot!.querySelector('button')!;
-		expect(btn.getAttribute('title')).toBe('Download');
+		const tooltip = el.shadowRoot!.querySelector('ndd-tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('text')).toBe('Download');
 	});
 
-	it('uses accessible-label as title tooltip when set', async () => {
+	it('renders ndd-tooltip with accessible-label when set', async () => {
 		el = await fixture<NDDIconButton>('<ndd-icon-button size="md" icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>');
 		await waitForUpdate(el);
-		const btn = el.shadowRoot!.querySelector('button')!;
-		expect(btn.getAttribute('title')).toBe('Toon wachtwoord');
+		const tooltip = el.shadowRoot!.querySelector('ndd-tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('text')).toBe('Toon wachtwoord');
 	});
 
-	it('omits title attribute for lg size', async () => {
+	it('omits ndd-tooltip for lg size without accessible-label', async () => {
 		el = await fixture<NDDIconButton>('<ndd-icon-button size="lg" icon="download" text="Download"></ndd-icon-button>');
 		await waitForUpdate(el);
-		const btn = el.shadowRoot!.querySelector('button')!;
-		expect(btn.getAttribute('title')).toBeNull();
+		const tooltip = el.shadowRoot!.querySelector('ndd-tooltip');
+		expect(tooltip).toBeNull();
 	});
 
-	it('omits title attribute for lg size even when accessible-label is set', async () => {
+	it('renders ndd-tooltip for lg size when accessible-label is set', async () => {
 		el = await fixture<NDDIconButton>('<ndd-icon-button size="lg" icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>');
 		await waitForUpdate(el);
-		const btn = el.shadowRoot!.querySelector('button')!;
-		expect(btn.getAttribute('title')).toBeNull();
+		const tooltip = el.shadowRoot!.querySelector('ndd-tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('text')).toBe('Toon wachtwoord');
 	});
 });
 

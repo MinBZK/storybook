@@ -37,9 +37,7 @@ export class NDDTooltip extends LitElement {
 
 	_tooltipId = `ndd-tooltip-${++tooltipCounter}`;
 
-	private _showDelay = 400;
-	private _hideDelay = 100;
-	private _showTimeout: ReturnType<typeof setTimeout> | null = null;
+	private _hideDelay = 50;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	override updated(changed: PropertyValues): void {
@@ -76,28 +74,21 @@ export class NDDTooltip extends LitElement {
 
 	_handleTriggerEnter(): void {
 		if (!this.text) return;
-		this._clearTimeouts();
-		this._showTimeout = setTimeout(() => {
-			this._visible = true;
-		}, this._showDelay);
-	}
-
-	_handleTriggerLeave(): void {
-		this._clearTimeouts();
-		this._hideTimeout = setTimeout(() => {
-			this._visible = false;
-		}, this._hideDelay);
-	}
-
-	private _clearTimeouts(): void {
-		if (this._showTimeout) {
-			clearTimeout(this._showTimeout);
-			this._showTimeout = null;
-		}
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
 		}
+		this._visible = true;
+	}
+
+	_handleTriggerLeave(): void {
+		if (this._hideTimeout) {
+			clearTimeout(this._hideTimeout);
+		}
+		this._hideTimeout = setTimeout(() => {
+			this._visible = false;
+			this._hideTimeout = null;
+		}, this._hideDelay);
 	}
 
 	private async _updatePosition(): Promise<void> {
@@ -120,7 +111,10 @@ export class NDDTooltip extends LitElement {
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
-		this._clearTimeouts();
+		if (this._hideTimeout) {
+			clearTimeout(this._hideTimeout);
+			this._hideTimeout = null;
+		}
 	}
 
 	override render() {
