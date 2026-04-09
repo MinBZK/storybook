@@ -169,4 +169,13 @@ describe('ndd-tooltip – aria-describedby', () => {
 		const trigger = el.querySelector('button');
 		expect(trigger?.hasAttribute('aria-describedby')).toBe(false);
 	});
+
+	it('verwijdert description span bij disconnect', async () => {
+		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>T</button></ndd-tooltip>');
+		await waitForUpdate(el);
+		const id = el.querySelector('button')!.getAttribute('aria-describedby')!;
+		expect(document.getElementById(id)).not.toBeNull();
+		cleanup(el);
+		expect(document.getElementById(id)).toBeNull();
+	});
 });

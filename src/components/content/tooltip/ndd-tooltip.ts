@@ -18,6 +18,10 @@
  * limitatie van shadow DOM + ARIA. Voor ndd-icon-button is dit niet relevant omdat
  * aria-label al op de interne button staat. Tooltip tekst op icon-button mag daarom
  * geen informatie bevatten die niet al in aria-label zit.
+ *
+ * @note Bij disabled triggers (bijv. disabled ndd-icon-button) wordt de tooltip niet
+ * getoond omdat disabled buttons geen mouseenter/focusin events afvuren en display:
+ * contents geen eigen layout box heeft om events op te vangen.
  */
 
 import { LitElement } from 'lit';
@@ -35,7 +39,7 @@ let tooltipCounter = 0;
 export class NDDTooltip extends LitElement {
 	static override styles = tooltipStyles;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	text = '';
 
 	@property({ type: String, reflect: true })
