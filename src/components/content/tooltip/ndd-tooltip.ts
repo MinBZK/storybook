@@ -51,6 +51,7 @@ export class NDDTooltip extends LitElement {
 	private _tooltipId = `ndd-tooltip-${++tooltipCounter}`;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _descriptionEl: HTMLSpanElement | null = null;
+	private _currentTrigger: Element | null = null;
 	private _boundSlotChange = () => this._syncAriaDescribedBy();
 
 	override connectedCallback(): void {
@@ -77,10 +78,22 @@ export class NDDTooltip extends LitElement {
 
 	private _syncAriaDescribedBy(): void {
 		const trigger = this._getTriggerElement();
+
+		// Clean up previous trigger if it changed
+		if (this._currentTrigger && this._currentTrigger !== trigger) {
+			this._currentTrigger.removeAttribute('aria-describedby');
+		}
+		this._currentTrigger = trigger;
+
 		if (!trigger) return;
 
+		// aria-describedby ID refs are scoped to the element's root.
+		// Only works for triggers in the light DOM (document scope).
+		if (trigger.getRootNode() !== document) {
+			return;
+		}
+
 		if (this.text) {
-			// Create or update a visually-hidden span in document.body for aria-describedby
 			if (!this._descriptionEl) {
 				this._descriptionEl = document.createElement('span');
 				this._descriptionEl.id = this._tooltipId;
@@ -126,7 +139,7 @@ export class NDDTooltip extends LitElement {
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 		}
-		const hideDelay = parseInt(getComputedStyle(this).getPropertyValue('--_hide-delay'), 10) || 50;
+		const hideDelay = parseInt(getComputedStyle(this).getPropertyValue('--_hide-delay'), 10);
 		this._hideTimeout = setTimeout(() => {
 			this._visible = false;
 			this._hideTimeout = null;
