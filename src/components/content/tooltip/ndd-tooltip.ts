@@ -146,7 +146,7 @@ export class NDDTooltip extends LitElement {
 			placement: this.placement,
 			strategy: 'fixed',
 			middleware: [
-				offset(parseInt(getComputedStyle(this).getPropertyValue('--_offset')) || 6),
+				offset(parseInt(getComputedStyle(this).getPropertyValue('--_offset'))),
 				flip(),
 				shift({ padding: 8 }),
 			],
