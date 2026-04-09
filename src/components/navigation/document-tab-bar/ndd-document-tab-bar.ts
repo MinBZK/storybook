@@ -160,6 +160,7 @@ export class NDDDocumentTabBar extends LitElement {
 	_menuOpen = false;
 
 	private _menu: Element | null = null;
+	private _menuClosedAt = 0;
 	private _resizeObserver: ResizeObserver | null = null;
 	private _hasCustomLabel = false;
 	private _mergedTranslations = { ...nddDocumentTabBarTranslations };
@@ -458,7 +459,7 @@ export class NDDDocumentTabBar extends LitElement {
 		cloneInner.appendChild(cloneTab);
 
 		this._clone = document.createElement('div');
-		this._clone.className = 'document-tab-bar__drag-clone';
+		this._clone.className = `document-tab-bar__drag-clone${item.selected ? ' is-selected' : ''}`;
 		this._clone.style.setProperty('--_drag-clone-left', `${clientX - this._tabBarRect.left - this._cloneOffsetX}px`);
 		this._clone.style.setProperty('--_drag-clone-top', `${rect.top - this._tabBarRect.top}px`);
 		this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
@@ -695,7 +696,9 @@ export class NDDDocumentTabBar extends LitElement {
 		menu.setAttribute('placement', 'bottom-end');
 		menu.id = `${this._id}-menu`;
 		menu.addEventListener('toggle', (event: Event) => {
-			this._menuOpen = (event as ToggleEvent).newState === 'open';
+			const open = (event as ToggleEvent).newState === 'open';
+			this._menuOpen = open;
+			if (!open) this._menuClosedAt = Date.now();
 		});
 		// TODO: appending to document.body and accessing ndd-menu internals via any-cast
 		// is a known limitation. Fix: define a typed public API on ndd-menu (anchorElement,
@@ -722,7 +725,7 @@ export class NDDDocumentTabBar extends LitElement {
 		this._updateMenu();
 		if (this._menuOpen) {
 			(this._menu as any).hidePopover?.();
-		} else {
+		} else if (Date.now() - this._menuClosedAt > 50) {
 			(this._menu as any).showPopover?.();
 		}
 	}

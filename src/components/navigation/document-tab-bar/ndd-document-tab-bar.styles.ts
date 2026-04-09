@@ -163,6 +163,15 @@ export const documentTabBarStyles = css`
 		white-space: nowrap;
 	}
 
+	.document-tab-bar__drag-clone.is-selected .document-tab-bar__item-tab {
+		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
+	}
+
+	.document-tab-bar__drag-clone.is-selected .document-tab-bar__item-text,
+	.document-tab-bar__drag-clone.is-selected .document-tab-bar__item-supporting-text {
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+	}
+
 	.document-tab-bar__drag-clone .document-tab-bar__item-supporting-text {
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-content-secondary-color);
@@ -198,6 +207,7 @@ export const documentTabBarItemStyles = css`
 		min-width: 0;
 		container-name: document-tab-bar;
 		container-type: inline-size;
+		touch-action: pan-y;
 		-webkit-tap-highlight-color: transparent;
 	}
 
