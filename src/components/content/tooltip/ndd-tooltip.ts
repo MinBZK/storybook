@@ -52,11 +52,10 @@ export class NDDTooltip extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.addEventListener('keydown', this._handleKeyDown);
-	}
-
-	override firstUpdated(): void {
-		this._syncAriaDescribedBy();
-		this.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this._boundSlotChange);
+		this.updateComplete.then(() => {
+			this._syncAriaDescribedBy();
+			this.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this._boundSlotChange);
+		});
 	}
 
 	override updated(changed: PropertyValues): void {

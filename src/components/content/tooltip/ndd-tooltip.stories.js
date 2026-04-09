@@ -2,6 +2,7 @@ import { html } from 'lit';
 import './ndd-tooltip.ts';
 import '../../actions/button/ndd-button.ts';
 import '../../actions/icon-button/ndd-icon-button.ts';
+import '../rich-text/ndd-rich-text.ts';
 
 /**
  * De Tooltip toont informatieve tekst bij hover of focus op een child element.
@@ -93,4 +94,24 @@ export const Posities = {
 		</div>
 	`,
 	parameters: { controls: { disable: true } },
+};
+
+export const MetTekst = {
+	render: () => html`
+		<div style="display: flex; justify-content: center; padding: 4rem;">
+			<ndd-tooltip text="Artikel 1 van de Grondwet">
+				<ndd-rich-text>
+					<p>Hover over deze <strong>tekst</strong> voor meer informatie.</p>
+				</ndd-rich-text>
+			</ndd-tooltip>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'De tooltip kan om elk element gewrapt worden, niet alleen knoppen.',
+			},
+		},
+	},
 };
