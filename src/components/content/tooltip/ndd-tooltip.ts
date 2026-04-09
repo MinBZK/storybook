@@ -78,7 +78,14 @@ export class NDDTooltip extends LitElement {
 			if (!this._descriptionEl) {
 				this._descriptionEl = document.createElement('span');
 				this._descriptionEl.id = this._tooltipId;
-				this._descriptionEl.hidden = true;
+				Object.assign(this._descriptionEl.style, {
+					position: 'absolute',
+					width: '1px',
+					height: '1px',
+					overflow: 'hidden',
+					clipPath: 'inset(50%)',
+					whiteSpace: 'nowrap',
+				});
 				this.appendChild(this._descriptionEl);
 			}
 			this._descriptionEl.textContent = this.text;
@@ -119,6 +126,13 @@ export class NDDTooltip extends LitElement {
 			this._visible = false;
 			this._hideTimeout = null;
 		}, hideDelay);
+	}
+
+	_handleFocusOut(e: FocusEvent): void {
+		const slot = this.shadowRoot?.querySelector('slot');
+		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
+		const stillInside = assigned.some(el => el.contains(e.relatedTarget as Node));
+		if (!stillInside) this._handleTriggerLeave();
 	}
 
 	_handleTooltipEnter(): void {
