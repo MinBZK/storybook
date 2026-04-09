@@ -22,7 +22,6 @@ export const modalDialogStyles = css`
 
 	.modal-dialog {
 		border: none;
-		padding: var(--primitives-space-24) var(--primitives-space-16);
 		max-width: var(--primitives-area-480);
 		width: calc(100% - var(--primitives-space-16) * 2);
 		max-height: var(--_max-height);
@@ -31,6 +30,14 @@ export const modalDialogStyles = css`
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-dialog-box-shadow);
 		box-sizing: border-box;
+
+		@media (max-width: 640px) {
+			padding: var(--primitives-space-16);
+		}
+
+		@media (min-width: 641px) {
+			padding: var(--primitives-space-24);
+		}
 	}
 
 	.modal-dialog:not([open]) {
