@@ -6,7 +6,9 @@ function init(): void {
 	initialized = true;
 
 	document.addEventListener('keydown', (e: KeyboardEvent) => {
-		if (e.key === 'Tab') keyboardMode = true;
+		if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' ', 'Escape'].includes(e.key)) {
+			keyboardMode = true;
+		}
 	});
 
 	document.addEventListener('mousedown', () => {

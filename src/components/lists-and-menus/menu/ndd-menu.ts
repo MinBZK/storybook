@@ -10,6 +10,7 @@ import '../../lists-and-menus/cells/spacer-cell/ndd-spacer-cell.js';
 import '../../lists-and-menus/cells/text-cell/ndd-text-cell.js';
 import '../../content/icon/ndd-icon.js';
 import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
+import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 
 // # ndd-menu-divider
@@ -261,7 +262,7 @@ export class NDDMenu extends LitElement {
 		if (!path.includes(anchorEl)) return;
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
-		} else if (Date.now() - this._closedAt > 50) {
+		} else if (Date.now() - this._closedAt > POPOVER_REOPEN_GUARD_MS) {
 			(this as HTMLElement).showPopover();
 		}
 	};

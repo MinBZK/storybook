@@ -277,7 +277,6 @@ export const documentTabBarItemStyles = css`
 
 	.document-tab-bar__item-normal {
 		display: contents;
-		padding-right: var(--primitives-space-6);
 
 		@container document-tab-bar (max-width: 200px) {
 			display: none;
@@ -289,7 +288,6 @@ export const documentTabBarItemStyles = css`
 
 		@container document-tab-bar (max-width: 200px) {
 			display: contents;
-			padding-right: var(--primitives-space-6);
 		}
 	}
 
@@ -297,7 +295,7 @@ export const documentTabBarItemStyles = css`
 	/* # Item label */
 
 	.document-tab-bar__item-text {
-		padding-right: var(--primitives-space-6);
+		padding-inline-end: var(--primitives-space-6);
 		font: var(--components-document-tab-bar-tab-title-font);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 		overflow: hidden;
@@ -310,7 +308,7 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-short-text {
-		padding-right: var(--primitives-space-6);
+		padding-inline-end: var(--primitives-space-6);
 		font: var(--components-document-tab-bar-tab-title-font);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 		overflow: hidden;
@@ -326,7 +324,7 @@ export const documentTabBarItemStyles = css`
 	/* # Item supporting label */
 
 	.document-tab-bar__item-supporting-text {
-		padding-right: var(--primitives-space-6);
+		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-content-secondary-color);
 		overflow: hidden;
@@ -339,7 +337,7 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-short-supporting-text {
-		padding-right: var(--primitives-space-6);
+		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-content-secondary-color);
 		overflow: hidden;

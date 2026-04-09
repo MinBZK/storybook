@@ -31,9 +31,7 @@ export const modalDialogStyles = css`
 		box-shadow: var(--components-dialog-box-shadow);
 		box-sizing: border-box;
 
-		@media (max-width: 640px) {
-			padding: var(--primitives-space-16);
-		}
+		padding: var(--primitives-space-16);
 
 		@media (min-width: 641px) {
 			padding: var(--primitives-space-24);

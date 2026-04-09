@@ -42,6 +42,7 @@ import { documentTabBarTemplate, documentTabBarItemTemplate } from './ndd-docume
 import { nddDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
 import type { NDDDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
 import './../../lists-and-menus/menu/ndd-menu.ts';
+import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 // Pointer movement threshold in px before drag mode activates.
 // Distinguishes a click (select) from a drag (reorder).
@@ -725,7 +726,7 @@ export class NDDDocumentTabBar extends LitElement {
 		this._updateMenu();
 		if (this._menuOpen) {
 			(this._menu as any).hidePopover?.();
-		} else if (Date.now() - this._menuClosedAt > 50) {
+		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
 			(this._menu as any).showPopover?.();
 		}
 	}
