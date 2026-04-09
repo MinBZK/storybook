@@ -44,7 +44,6 @@ export class NDDTooltip extends LitElement {
 	_visible = false;
 
 	private _tooltipId = `ndd-tooltip-${++tooltipCounter}`;
-	private _hideDelay = 50;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _descriptionEl: HTMLSpanElement | null = null;
 	private _boundSlotChange = () => this._syncAriaDescribedBy();
@@ -115,10 +114,11 @@ export class NDDTooltip extends LitElement {
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 		}
+		const hideDelay = parseInt(getComputedStyle(this).getPropertyValue('--_hide-delay'), 10) || 50;
 		this._hideTimeout = setTimeout(() => {
 			this._visible = false;
 			this._hideTimeout = null;
-		}, this._hideDelay);
+		}, hideDelay);
 	}
 
 	_handleTooltipEnter(): void {

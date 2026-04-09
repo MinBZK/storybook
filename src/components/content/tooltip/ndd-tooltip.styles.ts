@@ -10,6 +10,7 @@ export const tooltipStyles = css`
 		--_z-index: 10000;
 		--_show-delay: 700ms;
 		--_show-duration: 150ms;
+		--_hide-delay: 50ms;
 		--_hide-duration: 150ms;
 		--_background-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-750));
 		--_content-color: var(--primitives-color-neutral-0);
@@ -51,8 +52,9 @@ export const tooltipStyles = css`
 		font: var(--primitives-font-body-xs-regular-tight);
 		padding-block: var(--primitives-space-4);
 		padding-inline: var(--primitives-space-8);
+		width: max-content;
 		max-width: var(--_max-width);
-		white-space: nowrap;
+		overflow-wrap: break-word;
 		box-shadow: var(--_box-shadow);
 		border-radius: var(--primitives-corner-radius-xs);
 	}
