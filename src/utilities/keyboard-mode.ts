@@ -24,3 +24,8 @@ export function isKeyboardMode(): boolean {
 	init();
 	return keyboardMode;
 }
+
+/** @internal Reset state for testing only. */
+export function _resetKeyboardModeForTesting(): void {
+	keyboardMode = false;
+}

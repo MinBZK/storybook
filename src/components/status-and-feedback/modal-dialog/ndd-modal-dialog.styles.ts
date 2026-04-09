@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoints } from '../../../assets/styles/breakpoints.ts';
+
+const mdMin = unsafeCSS(breakpoints.mdMin);
 
 /* # ndd-modal-dialog styles */
 
@@ -33,7 +36,7 @@ export const modalDialogStyles = css`
 
 		padding: var(--primitives-space-16);
 
-		@media (min-width: 641px) {
+		@media (min-width: ${mdMin}) {
 			padding: var(--primitives-space-24);
 		}
 	}

@@ -67,7 +67,7 @@ export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): Te
 		: component.text;
 
 	const tabContent = html`
-		<span class="document-tab-bar__item-normal">
+		<span class="document-tab-bar__item-normal" aria-hidden="true">
 			<span class="document-tab-bar__item-text">${component.text}</span>
 			${component.supportingText
 				? html`<span class="document-tab-bar__item-supporting-text">${component.supportingText}</span>`
@@ -89,6 +89,7 @@ export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): Te
 				role=${isNavigation ? nothing : 'tab'}
 				aria-current=${isNavigation && component.selected ? 'page' : nothing}
 				aria-selected=${!isNavigation ? (component.selected ? 'true' : 'false') : nothing}
+				aria-label=${tooltipText}
 				tabindex=${tabindex}
 				@click=${component._handleClick}
 			>${tabContent}</a>`
@@ -96,6 +97,7 @@ export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): Te
 				type="button"
 				role="tab"
 				aria-selected=${component.selected ? 'true' : 'false'}
+				aria-label=${tooltipText}
 				tabindex=${tabindex}
 				@click=${component._handleClick}
 			>${tabContent}</button>`;
