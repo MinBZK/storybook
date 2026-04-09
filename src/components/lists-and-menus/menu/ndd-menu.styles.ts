@@ -21,6 +21,7 @@ export const menuStyles = css`
 			--_menu-item-size: var(--semantics-controls-sm-min-size);
 			--_menu-padding: var(--primitives-space-6);
 		}
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host(:not(:popover-open)) {
@@ -36,7 +37,7 @@ export const menuStyles = css`
 		padding: var(--_menu-padding);
 		background: var(--semantics-surfaces-background-color);
 		border-radius: var(--semantics-overlays-corner-radius);
-		box-shadow: var(--primitives-box-shadows-level-5);
+		box-shadow: var(--components-menu-box-shadow);
 		box-sizing: border-box;
 		width: var(--_menu-width);
 		max-height: min(
@@ -44,6 +45,15 @@ export const menuStyles = css`
 			calc(var(--_menu-max-items) * var(--_menu-item-size) + var(--_menu-padding) * 2)
 		);
 		overflow-y: auto;
+	}
+
+	.menu:focus-visible {
+		outline: none;
+	}
+
+	.menu.is-keyboard-focus:focus {
+		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-menu-box-shadow);
+		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
 
@@ -63,6 +73,7 @@ export const menuItemStyles = css`
 	:host {
 		display: block;
 		font-family: var(--ndd-font-family-body);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

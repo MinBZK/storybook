@@ -19,15 +19,21 @@ export default {
 			description: 'Visual style of the list',
 			table: { defaultValue: { summary: 'simple' } },
 		},
+		'no-dividers': {
+			control: 'boolean',
+			description: 'Hides dividers between list items',
+			table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+		},
 	},
 };
 
 export const Default = {
 	args: {
 		variant: 'simple',
+		'no-dividers': false,
 	},
 	render: (args) => html`
-		<ndd-list variant=${args.variant}>
+		<ndd-list variant=${args.variant} ?no-dividers=${args['no-dividers']}>
 			<ndd-list-item>
 				<ndd-text-cell text="Item 1" />
 			</ndd-list-item>

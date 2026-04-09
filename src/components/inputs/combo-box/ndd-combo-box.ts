@@ -4,7 +4,7 @@
  * A text input with autocomplete dropdown via ndd-menu.
  * Add a slotted ndd-menu with ndd-menu-item children to provide options.
  *
- * The component automatically sets no-auto-focus on the slotted ndd-menu
+ * The slotted ndd-menu keeps its default focus behavior (menu container receives focus)
  * so that typing keeps focus on the input. The picker button moves focus
  * to the menu explicitly on activation.
  *
@@ -155,9 +155,7 @@ export class NDDComboBox extends LitElement {
 		menu.placement = 'bottom-start';
 		menu.maxItems = this.maxItems;
 		menu.variant = 'listbox';
-		// Always prevent auto-focus so typing keeps focus on the input.
-		// The picker button moves focus explicitly when activated.
-		menu.noAutoFocus = true;
+		// Focus stays on the input — default menu behavior (no auto-focus-item).
 		menu.addEventListener('toggle', this._handleMenuToggle);
 		menu.addEventListener('select', this._handleMenuSelect);
 		menu.addEventListener('keydown', this._handleMenuKeydown);
@@ -222,7 +220,6 @@ export class NDDComboBox extends LitElement {
 			return;
 		}
 		this._updateMenuWidth();
-		this._menu.noAutoFocus = true;
 		(this._menu as HTMLElement).showPopover();
 	}
 

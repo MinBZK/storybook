@@ -7,6 +7,7 @@ export const toggleButtonStyles = css`
 
 	:host {
 		display: inline-block;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

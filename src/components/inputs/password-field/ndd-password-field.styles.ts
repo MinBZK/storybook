@@ -8,6 +8,7 @@ export const passwordFieldStyles = css`
 	:host {
 		display: block;
 		--_background-color: var(--semantics-input-fields-background-color);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

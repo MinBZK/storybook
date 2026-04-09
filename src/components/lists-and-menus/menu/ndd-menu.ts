@@ -9,6 +9,8 @@ import '../../lists-and-menus/cells/icon-cell/ndd-icon-cell.js';
 import '../../lists-and-menus/cells/spacer-cell/ndd-spacer-cell.js';
 import '../../lists-and-menus/cells/text-cell/ndd-text-cell.js';
 import '../../content/icon/ndd-icon.js';
+import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
+import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 
 // # ndd-menu-divider
@@ -97,6 +99,11 @@ export class NDDMenuItem extends LitElement {
 		this.addEventListener('focusout', () => this.removeAttribute('data-focused'));
 	}
 
+	override focus(options?: FocusOptions): void {
+		const focusable = this.shadowRoot?.querySelector<HTMLElement>('button, a');
+		focusable?.focus(options);
+	}
+
 	_handleClick(): void {
 		if (this.disabled) return;
 		this.dispatchEvent(new CustomEvent('select', {
@@ -144,7 +151,6 @@ const defaultFilterFn = (query: string, item: NDDMenuItem): boolean => {
  * @attr {string}  anchor         - ID of the anchor element.
  * @attr {string}  placement      - Floating UI placement. Default: 'bottom-start'.
  * @attr {string}  empty-text     - Text shown when all items are hidden or no items exist.
- * @attr {boolean} no-auto-focus  - When set, the first item is not focused on open.
  * @attr {string}  width          - Explicit width. Sets --_menu-width internally.
  * @attr {number}  max-items      - Maximum number of visible items before scrolling.
  *                                  Sets --_menu-max-items internally. Default: 0 (no limit).
@@ -176,9 +182,6 @@ export class NDDMenu extends LitElement {
 	@property({ type: String, attribute: 'empty-text' })
 	emptyText = '';
 
-	/** When set, the first item is not focused automatically on open. */
-	@property({ type: Boolean, attribute: 'no-auto-focus' })
-	noAutoFocus = false;
 
 	/** Explicit width. Sets --_menu-width internally. */
 	@property({ type: String, reflect: true })
@@ -209,6 +212,7 @@ export class NDDMenu extends LitElement {
 	private _isEmpty = false;
 
 	private _isOpen = false;
+	private _closedAt = 0;
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
@@ -263,7 +267,7 @@ export class NDDMenu extends LitElement {
 		if (!path.includes(anchorEl)) return;
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
-		} else {
+		} else if (Date.now() - this._closedAt > POPOVER_REOPEN_GUARD_MS) {
 			(this as HTMLElement).showPopover();
 		}
 	};
@@ -272,6 +276,10 @@ export class NDDMenu extends LitElement {
 		const item = (event.target as Element).closest('ndd-menu-item') as NDDMenuItem | null;
 		if (!item || item.disabled || item.hasAttribute('hidden')) return;
 		this._setHighlight(item);
+	};
+
+	private _handleMouseleave = (): void => {
+		if (this.variant !== 'listbox') this._clearHighlight();
 	};
 
 	private _handleMenuItemFocused = (event: Event): void => {
@@ -290,6 +298,7 @@ export class NDDMenu extends LitElement {
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
 		this.addEventListener('mouseenter', this._handleMenuItemMouseenter, true);
+		this.addEventListener('mouseleave', this._handleMouseleave);
 		this.addEventListener('menu-item-focused', this._handleMenuItemFocused);
 		document.addEventListener('click', this._handleDocumentClick);
 	}
@@ -299,6 +308,7 @@ export class NDDMenu extends LitElement {
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
 		this.removeEventListener('mouseenter', this._handleMenuItemMouseenter, true);
+		this.removeEventListener('mouseleave', this._handleMouseleave);
 		this.removeEventListener('menu-item-focused', this._handleMenuItemFocused);
 		document.removeEventListener('click', this._handleDocumentClick);
 	}
@@ -315,10 +325,14 @@ export class NDDMenu extends LitElement {
 		return items.findIndex(item => item.hasAttribute('data-focused'));
 	}
 
-	private _setHighlight(target: NDDMenuItem | null): void {
+	private _clearHighlight(): void {
 		Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
 			item.removeAttribute('highlighted');
 		});
+	}
+
+	private _setHighlight(target: NDDMenuItem | null): void {
+		this._clearHighlight();
 		const resolved = target ?? this._getVisibleItems()[0] ?? null;
 		resolved?.setAttribute('highlighted', '');
 	}
@@ -420,7 +434,7 @@ export class NDDMenu extends LitElement {
 
 		items.forEach(item => item.removeAttribute('highlighted'));
 		items[targetIndex].setAttribute('highlighted', '');
-		items[targetIndex].shadowRoot?.querySelector('button')?.focus();
+		items[targetIndex].focus();
 	}
 
 	/**
@@ -496,23 +510,23 @@ export class NDDMenu extends LitElement {
 			case 'ArrowDown': {
 				event.preventDefault();
 				const next = index === -1 ? 0 : index < items.length - 1 ? index + 1 : 0;
-				items[next].shadowRoot?.querySelector('button')?.focus();
+				items[next].focus();
 				break;
 			}
 			case 'ArrowUp': {
 				event.preventDefault();
 				const prev = index === -1 ? items.length - 1 : index > 0 ? index - 1 : items.length - 1;
-				items[prev].shadowRoot?.querySelector('button')?.focus();
+				items[prev].focus();
 				break;
 			}
 			case 'Home': {
 				event.preventDefault();
-				items[0].shadowRoot?.querySelector('button')?.focus();
+				items[0].focus();
 				break;
 			}
 			case 'End': {
 				event.preventDefault();
-				items[items.length - 1].shadowRoot?.querySelector('button')?.focus();
+				items[items.length - 1].focus();
 				break;
 			}
 			case 'Escape': {
@@ -529,10 +543,13 @@ export class NDDMenu extends LitElement {
 		const toggleEvent = event as ToggleEvent;
 		this._isOpen = toggleEvent.newState === 'open';
 
-		if (toggleEvent.newState !== 'open') return;
+		if (toggleEvent.newState !== 'open') {
+			this._closedAt = Date.now();
+			return;
+		}
 
 		this._updateDividerVisibility();
-		this._setHighlight(null);
+		this._clearHighlight();
 		this._updateEmptyState();
 		Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
 			(item as NDDMenuItem).menuVariant = this.variant;
@@ -540,11 +557,17 @@ export class NDDMenu extends LitElement {
 
 		await this.reposition();
 
-		if (!this.noAutoFocus) {
-			await this.updateComplete;
+		await this.updateComplete;
+		if (this.variant !== 'listbox') {
+			const keyboard = isKeyboardMode();
 			const items = this._getVisibleItems();
-			if (items.length > 0) {
-				items[0].shadowRoot?.querySelector('button')?.focus();
+			if (keyboard && items.length > 0) {
+				this._setHighlight(items[0]);
+				items[0].focus();
+			} else {
+				const menu = this.shadowRoot?.querySelector<HTMLElement>('.menu');
+				menu?.classList.toggle('is-keyboard-focus', keyboard);
+				menu?.focus();
 			}
 		}
 	};

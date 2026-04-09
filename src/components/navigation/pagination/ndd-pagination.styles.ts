@@ -8,6 +8,7 @@ export const paginationStyles = css`
 	:host {
 		display: block;
 		container-type: inline-size;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -75,7 +76,8 @@ export const paginationStyles = css`
 
 	/* ## Page button indicator */
 
-	.pagination__page-button-indicator {
+	.pagination__page-button::before {
+		content: '';
 		position: absolute;
 		inset: var(--primitives-space-4);
 		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--primitives-space-4) / 2);
@@ -83,15 +85,15 @@ export const paginationStyles = css`
 		pointer-events: none;
 	}
 
-	.pagination__page-button:hover:not(.is-current) .pagination__page-button-indicator {
+	.pagination__page-button:hover:not(.is-current)::before {
 		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 	}
 
-	.pagination__page-button.is-current .pagination__page-button-indicator {
+	.pagination__page-button.is-current::before {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 	}
 
-	.pagination__page-button:focus-visible .pagination__page-button-indicator {
+	.pagination__page-button:focus-visible::before {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
@@ -211,11 +213,11 @@ export const paginationStyles = css`
 			color: HighlightText;
 		}
 
-		.pagination__page-button.is-current .pagination__page-button-indicator {
+		.pagination__page-button.is-current::before {
 			background-color: Highlight;
 		}
 
-		.pagination__page-button:focus-visible .pagination__page-button-indicator {
+		.pagination__page-button:focus-visible::before {
 			outline: 2px solid CanvasText;
 		}
 	}

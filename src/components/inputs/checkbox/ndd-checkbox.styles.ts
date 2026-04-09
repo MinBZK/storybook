@@ -11,6 +11,7 @@ export const checkboxStyles = css`
 		position: relative;
 		width: var(--semantics-controls-xs-min-size);
 		height: var(--semantics-controls-xs-min-size);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

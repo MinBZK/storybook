@@ -10,6 +10,7 @@ export const menuBarItemStyles = css`
 		width: fit-content;
 		font-family: var(--ndd-font-family-body);
 		--_color: var(--components-menu-bar-menu-item-color);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

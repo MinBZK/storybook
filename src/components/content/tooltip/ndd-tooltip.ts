@@ -6,7 +6,7 @@
  *
  * @element ndd-tooltip
  * @attr {string} text - Tooltip tekst
- * @attr {string} placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'top')
+ * @attr {string} placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')
  *
  * @slot - Het element waarop de tooltip wordt getoond
  *
@@ -34,6 +34,7 @@ import { tooltipTemplate } from './ndd-tooltip.template.ts';
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 
 let tooltipCounter = 0;
+const coarsePointerQuery = matchMedia('(pointer: coarse)');
 
 @customElement('ndd-tooltip')
 export class NDDTooltip extends LitElement {
@@ -43,7 +44,12 @@ export class NDDTooltip extends LitElement {
 	text = '';
 
 	@property({ type: String, reflect: true })
-	placement: Placement = 'top';
+	placement: Placement = 'bottom';
+
+	private get _effectivePlacement(): Placement {
+		if (this._focusVisible) return this.placement;
+		return coarsePointerQuery.matches ? 'top' : this.placement;
+	}
 
 	@state()
 	_visible = false;
@@ -196,7 +202,7 @@ export class NDDTooltip extends LitElement {
 
 		const styles = getComputedStyle(this);
 		const { x, y } = await computePosition(trigger, tooltip, {
-			placement: this.placement,
+			placement: this._effectivePlacement,
 			strategy: 'fixed',
 			middleware: [
 				offset(parseInt(styles.getPropertyValue('--_offset'), 10)),

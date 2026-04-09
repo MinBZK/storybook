@@ -39,6 +39,18 @@ describe('ndd-list', () => {
 		expect(header?.textContent).toBe('Header content');
 	});
 
+	it('reflects no-dividers attribute', async () => {
+		el = await fixture('<ndd-list no-dividers></ndd-list>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('no-dividers')).toBe(true);
+	});
+
+	it('sets --context-list-divider-display when no-dividers is set', async () => {
+		el = await fixture('<ndd-list no-dividers></ndd-list>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).getPropertyValue('--context-list-divider-display').trim()).toBe('none');
+	});
+
 	it('renders footer slot', async () => {
 		el = await fixture(`
 			<ndd-list>

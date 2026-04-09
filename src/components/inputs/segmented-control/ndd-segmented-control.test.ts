@@ -400,3 +400,34 @@ describe('ndd-segmented-control – accessibility', () => {
 		expect(el.getAttribute('aria-label')).toBe('Weergave');
 	});
 });
+
+
+/* ============================================================
+   Tooltip
+   ============================================================ */
+
+describe('ndd-segmented-control-item – tooltip', () => {
+	let el: NDDSegmentedControlItem;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('wraps in ndd-tooltip when variant is icon', async () => {
+		el = await fixture<NDDSegmentedControlItem>(`
+			<ndd-segmented-control-item variant="icon" text="Zoom in" icon="zoom-in"></ndd-segmented-control-item>
+		`);
+		await waitForUpdate(el);
+		const tooltip = el.shadowRoot!.querySelector('ndd-tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('text')).toBe('Zoom in');
+	});
+
+	it('does not wrap in ndd-tooltip when variant is text', async () => {
+		el = await fixture<NDDSegmentedControlItem>(`
+			<ndd-segmented-control-item variant="text" text="Label"></ndd-segmented-control-item>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('ndd-tooltip')).toBeNull();
+	});
+});

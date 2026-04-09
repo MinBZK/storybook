@@ -8,6 +8,7 @@ export const segmentedControlStyles = css`
 		grid-auto-columns: 1fr;
 		grid-auto-flow: column;
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -57,6 +58,7 @@ export const segmentedControlItemStyles = css`
 		--_segmented-control-sm-inset-size: var(--primitives-space-3);
 		--_segmented-control-sm-gap-size: var(--primitives-space-2);
 		--_segmented-control-sm-item-icon-size: var(--primitives-space-20);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -174,38 +176,39 @@ export const segmentedControlItemStyles = css`
 
 	/* # Indicator */
 
-	.segmented-control__item-indicator {
+	.segmented-control__item-label::before {
+		content: '';
 		position: absolute;
 		inset: 0;
 		pointer-events: none;
 		background-color: transparent;
 	}
 
-	:host([size='md']) .segmented-control__item-indicator,
-	:host(:not([size])) .segmented-control__item-indicator {
+	:host([size='md']) .segmented-control__item-label::before,
+	:host(:not([size])) .segmented-control__item-label::before {
 		inset-block: var(--_segmented-control-md-inset-size);
 		inset-inline: calc(var(--_segmented-control-md-gap-size) / 2);
 		border-radius: calc(var(--semantics-controls-md-corner-radius) - (var(--_segmented-control-md-inset-size) / 2));
 	}
 
-	:host([size='sm']) .segmented-control__item-indicator {
+	:host([size='sm']) .segmented-control__item-label::before {
 		inset-block: var(--_segmented-control-sm-inset-size);
 		inset-inline: calc(var(--_segmented-control-sm-gap-size) / 2);
 		border-radius: calc(var(--semantics-controls-sm-corner-radius) - (var(--_segmented-control-sm-inset-size) / 2));
 	}
 
-	:host([selected]) .segmented-control__item-indicator {
+	:host([selected]) .segmented-control__item-label::before {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 	}
 
-	:host(:not([selected])) .segmented-control__item-input:hover ~ .segmented-control__item-indicator {
+	:host(:not([selected])) .segmented-control__item-label:hover::before {
 		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 	}
 
 
 	/* # Focus */
 
-	.segmented-control__item-input:focus-visible ~ .segmented-control__item-indicator {
+	.segmented-control__item-label:has(:focus-visible)::before {
 		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}

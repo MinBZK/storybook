@@ -8,6 +8,7 @@ export const styles = css`
 		width: 100%;
 		--_z-index-content: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -143,6 +144,7 @@ export const styles = css`
 	/* # Divider */
 
 	.list-item__divider {
+		display: var(--context-list-divider-display, block);
 		position: absolute;
 		inset-block-end: 0;
 		inset-inline: 0;
@@ -158,7 +160,8 @@ export const styles = css`
 
 	/* # Indicator */
 
-	.list-item__indicator {
+	.list-item::before {
+		content: '';
 		display: none;
 		position: absolute;
 		inset-block: 0;
@@ -167,17 +170,17 @@ export const styles = css`
 		z-index: var(--_z-index-indicator);
 	}
 
-	:host([selected]) .list-item__indicator {
+	:host([selected]) .list-item::before {
 		display: block;
 		background-color: var(--components-list-item-is-selected-background-color);
 	}
 
-	.list-item__action:hover .list-item__indicator {
+	.list-item:has(.list-item__action:hover)::before {
 		display: block;
 		background-color: var(--components-list-item-is-hovered-background-color);
 	}
 
-	:host([selected]) .list-item__action:hover .list-item__indicator {
+	:host([selected]) .list-item:has(.list-item__action:hover)::before {
 		background-color: var(--components-list-item-is-selected-background-color);
 	}
 `;

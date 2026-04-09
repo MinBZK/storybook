@@ -1,9 +1,12 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NDDToggleButton } from './ndd-toggle-button.js';
+import '../../content/tooltip/ndd-tooltip.js';
 
 
 export function toggleButtonTemplate(component: NDDToggleButton): TemplateResult {
 	const label = component.accessibleLabel || nothing;
+	const iconOnly = !!component.icon && !component.text;
+	const tooltipText = iconOnly ? (component.accessibleLabel || component.text) : '';
 
 	const icon = component.icon
 		? html`<ndd-icon class="toggle-button__icon" name=${component.icon}></ndd-icon>`
@@ -13,8 +16,10 @@ export function toggleButtonTemplate(component: NDDToggleButton): TemplateResult
 		? html`<span class="toggle-button__text">${component.text}</span>`
 		: nothing;
 
+	let result: TemplateResult;
+
 	if (component.type === 'checkbox' || component.type === 'radio') {
-		return html`
+		result = html`
 			<label class="toggle-button">
 				<input
 					class="toggle-button__input"
@@ -30,19 +35,24 @@ export function toggleButtonTemplate(component: NDDToggleButton): TemplateResult
 				${textContent}
 			</label>
 		`;
+	} else {
+		result = html`
+			<button
+				class="toggle-button"
+				type="button"
+				aria-pressed=${component.selected}
+				?disabled=${component.disabled}
+				aria-label=${label}
+				@click=${component._handleButtonClick}
+			>
+				${icon}
+				${textContent}
+			</button>
+		`;
 	}
 
-	return html`
-		<button
-			class="toggle-button"
-			type="button"
-			aria-pressed=${component.selected}
-			?disabled=${component.disabled}
-			aria-label=${label}
-			@click=${component._handleButtonClick}
-		>
-			${icon}
-			${textContent}
-		</button>
-	`;
+	if (tooltipText) {
+		return html`<ndd-tooltip text=${tooltipText}>${result}</ndd-tooltip>`;
+	}
+	return result;
 }

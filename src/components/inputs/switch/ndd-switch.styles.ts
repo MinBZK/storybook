@@ -15,6 +15,7 @@ export const switchStyles = css`
 		--_switch-xs-thumb-size: calc(var(--_switch-xs-height) - var(--_switch-padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
 		--_switch-sm-thumb-size: calc(var(--_switch-sm-height) - var(--_switch-padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
 		--_transition-duration: 150ms;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {

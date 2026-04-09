@@ -16,6 +16,7 @@ export const documentTabBarStyles = css`
 		--_short-text-threshold: 200px;
 		--_item-min-width: 100px;
 		--_overflow-button-reserve: 52px; /* Used for overflowButtonReserve. Overflow button width + spacing */
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -162,6 +163,15 @@ export const documentTabBarStyles = css`
 		white-space: nowrap;
 	}
 
+	.document-tab-bar__drag-clone.is-selected .document-tab-bar__item-tab {
+		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
+	}
+
+	.document-tab-bar__drag-clone.is-selected .document-tab-bar__item-text,
+	.document-tab-bar__drag-clone.is-selected .document-tab-bar__item-supporting-text {
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+	}
+
 	.document-tab-bar__drag-clone .document-tab-bar__item-supporting-text {
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-content-secondary-color);
@@ -197,6 +207,8 @@ export const documentTabBarItemStyles = css`
 		min-width: 0;
 		container-name: document-tab-bar;
 		container-type: inline-size;
+		touch-action: pan-y;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
@@ -230,7 +242,7 @@ export const documentTabBarItemStyles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 		padding-block: var(--primitives-space-6);
 		padding-inline-start: var(--primitives-space-10);
-		padding-inline-end: calc(var(--semantics-controls-sm-min-size) + var(--primitives-space-6) * 2);
+		padding-inline-end: calc(var(--semantics-controls-sm-min-size) + var(--primitives-space-6));
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		box-sizing: border-box;
 		overflow: hidden;
@@ -261,24 +273,34 @@ export const documentTabBarItemStyles = css`
 	}
 
 
+	/* # Item text wrappers */
+
+	.document-tab-bar__item-normal {
+		display: contents;
+
+		@container document-tab-bar (max-width: 200px) {
+			display: none;
+		}
+	}
+
+	.document-tab-bar__item-short {
+		display: none;
+
+		@container document-tab-bar (max-width: 200px) {
+			display: contents;
+		}
+	}
+
+
 	/* # Item label */
 
 	.document-tab-bar__item-text {
+		padding-inline-end: var(--primitives-space-6);
 		font: var(--components-document-tab-bar-tab-title-font);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-
-		@container document-tab-bar (max-width: 200px) {
-			clip: rect(0 0 0 0);
-			clip-path: inset(50%);
-			height: 1px;
-			overflow: hidden;
-			position: absolute;
-			white-space: nowrap;
-			width: 1px;
-		}
 	}
 
 	:host([selected]) .document-tab-bar__item-text {
@@ -286,15 +308,12 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-short-text {
+		padding-inline-end: var(--primitives-space-6);
 		font: var(--components-document-tab-bar-tab-title-font);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-
-		@container document-tab-bar (min-width: 201px) {
-			display: none;
-		}
 	}
 
 	:host([selected]) .document-tab-bar__item-short-text {
@@ -305,21 +324,12 @@ export const documentTabBarItemStyles = css`
 	/* # Item supporting label */
 
 	.document-tab-bar__item-supporting-text {
+		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-content-secondary-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-
-		@container document-tab-bar (max-width: 200px) {
-			clip: rect(0 0 0 0);
-			clip-path: inset(50%);
-			height: 1px;
-			overflow: hidden;
-			position: absolute;
-			white-space: nowrap;
-			width: 1px;
-		}
 	}
 
 	:host([selected]) .document-tab-bar__item-supporting-text {
@@ -327,15 +337,12 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-short-supporting-text {
+		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
 		color: var(--semantics-content-secondary-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-
-		@container document-tab-bar (min-width: 201px) {
-			display: none;
-		}
 	}
 
 	:host([selected]) .document-tab-bar__item-short-supporting-text {

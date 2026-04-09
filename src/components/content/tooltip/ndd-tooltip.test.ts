@@ -41,10 +41,10 @@ describe('ndd-tooltip', () => {
 		expect(isTooltipVisible(el)).toBe(false);
 	});
 
-	it('standaard placement is top', async () => {
+	it('standaard placement is bottom', async () => {
 		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"></ndd-tooltip>');
 		await waitForUpdate(el);
-		expect(el.placement).toBe('top');
+		expect(el.placement).toBe('bottom');
 	});
 });
 

@@ -25,7 +25,6 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 					aria-disabled=${isDisabled ? 'true' : nothing}
 					@click=${(e: Event) => { e.preventDefault(); component._goToPage(page); }}
 				>
-					<span class="pagination__page-button-indicator"></span>
 					<span class="pagination__page-button-text">${page}</span>
 				</a>
 			`;
@@ -39,7 +38,6 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 				?disabled=${isDisabled}
 				@click=${() => component._goToPage(page)}
 			>
-				<span class="pagination__page-button-indicator"></span>
 				<span class="pagination__page-button-text">${page}</span>
 			</button>
 		`;

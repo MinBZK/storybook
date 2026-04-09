@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoints } from '../../../assets/styles/breakpoints.ts';
+
+const mdMin = unsafeCSS(breakpoints.mdMin);
 
 /* # ndd-modal-dialog styles */
 
@@ -22,7 +25,6 @@ export const modalDialogStyles = css`
 
 	.modal-dialog {
 		border: none;
-		padding: var(--primitives-space-24) var(--primitives-space-16);
 		max-width: var(--primitives-area-480);
 		width: calc(100% - var(--primitives-space-16) * 2);
 		max-height: var(--_max-height);
@@ -31,6 +33,12 @@ export const modalDialogStyles = css`
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-dialog-box-shadow);
 		box-sizing: border-box;
+
+		padding: var(--primitives-space-16);
+
+		@media (min-width: ${mdMin}) {
+			padding: var(--primitives-space-24);
+		}
 	}
 
 	.modal-dialog:not([open]) {
@@ -38,6 +46,10 @@ export const modalDialogStyles = css`
 	}
 
 	.modal-dialog:focus-visible {
+		outline: none;
+	}
+
+	.modal-dialog.is-keyboard-focus:focus {
 		box-shadow: var(--components-dialog-box-shadow), 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}

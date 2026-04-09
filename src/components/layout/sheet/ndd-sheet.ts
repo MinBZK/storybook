@@ -27,6 +27,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { sheetStyles } from './ndd-sheet.styles.ts';
 import { sheetTemplate } from './ndd-sheet.template.ts';
+import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
 
 type Placement = 'left' | 'right' | 'bottom';
 
@@ -86,30 +87,11 @@ export class NDDSheet extends LitElement {
 		// 1. autofocus element present — let the browser handle it natively
 		if (this.querySelector('[autofocus]')) return;
 
-		// 2. Focus the first heading — check shadow roots of known components first,
-		// then fall back to light DOM headings
-		const heading = (
-			this.querySelector('ndd-top-title-bar')?.shadowRoot?.querySelector('h1, h2, h3, h4, h5, h6') as HTMLElement | null
-		) ?? (
-			this.querySelector('h1, h2, h3, h4, h5, h6') as HTMLElement | null
-		);
-
-		if (heading) {
-			// Only add tabindex if the consumer hasn't already set one
-			const hadTabindex = heading.hasAttribute('tabindex');
-			if (!hadTabindex) heading.setAttribute('tabindex', '-1');
-			heading.focus();
-			// Only remove tabindex on blur if we added it ourselves
-			if (!hadTabindex) {
-				heading.addEventListener('blur', () => {
-					heading.removeAttribute('tabindex');
-				}, { once: true });
-			}
-			return;
-		}
-
-		// 3. Fallback — focus the dialog itself
-		this._dialog?.focus();
+		// 2. Focus the dialog — show focus ring only when opened via keyboard
+		const dialog = this._dialog;
+		if (!dialog) return;
+		dialog.classList.toggle('is-keyboard-focus', isKeyboardMode());
+		dialog.focus();
 	}
 
 	hide(): void {

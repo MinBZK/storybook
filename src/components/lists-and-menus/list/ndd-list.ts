@@ -35,6 +35,10 @@ export class NDDList extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	reorderable = false;
 
+	/** Hides dividers between list items. */
+	@property({ type: Boolean, reflect: true, attribute: 'no-dividers' })
+	noDividers = false;
+
 	/** Override one or more translation keys. Unset keys fall back to the Dutch default. */
 	@property({ type: Object })
 	translations: Partial<NDDListTranslations> = {};

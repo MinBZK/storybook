@@ -6,6 +6,7 @@ export function modalDialogTemplate(component: NDDModalDialog) {
 	return html`
 		<dialog class="modal-dialog"
 			role=${component.variant === 'alert' ? 'alertdialog' : nothing}
+			aria-label=${component.accessibleLabel || component.text || nothing}
 			aria-modal="true"
 			@click=${component._handleBackdropClick}
 			@cancel=${component._handleCancel}

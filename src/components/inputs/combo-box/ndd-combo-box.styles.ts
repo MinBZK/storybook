@@ -7,6 +7,7 @@ export const comboBoxStyles = css`
 
 	:host {
 		display: block;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
