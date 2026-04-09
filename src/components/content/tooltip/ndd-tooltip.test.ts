@@ -20,10 +20,12 @@ describe('ndd-tooltip', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('rendert tooltip met role="tooltip"', async () => {
+	it('rendert tooltip met aria-hidden', async () => {
 		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"></ndd-tooltip>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('[role="tooltip"]')).not.toBeNull();
+		const tooltip = el.shadowRoot!.querySelector('.tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('aria-hidden')).toBe('true');
 	});
 
 	it('toont de tooltip tekst', async () => {
@@ -148,7 +150,7 @@ describe('ndd-tooltip – aria-describedby', () => {
 		const describedBy = trigger?.getAttribute('aria-describedby');
 		expect(describedBy).toBeTruthy();
 
-		const descriptionEl = el.querySelector(`#${describedBy}`);
+		const descriptionEl = document.getElementById(describedBy!);
 		expect(descriptionEl).not.toBeNull();
 		expect(descriptionEl?.textContent).toBe('Helptekst');
 	});

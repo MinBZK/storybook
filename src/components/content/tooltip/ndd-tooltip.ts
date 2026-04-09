@@ -16,7 +16,8 @@
  * @note aria-describedby werkt alleen wanneer het trigger element in de light DOM staat.
  * Bij web components als trigger (met eigen shadow DOM) is de koppeling een bekende
  * limitatie van shadow DOM + ARIA. Voor ndd-icon-button is dit niet relevant omdat
- * aria-label al op de interne button staat.
+ * aria-label al op de interne button staat. Tooltip tekst op icon-button mag daarom
+ * geen informatie bevatten die niet al in aria-label zit.
  */
 
 import { LitElement } from 'lit';
@@ -54,15 +55,12 @@ export class NDDTooltip extends LitElement {
 	}
 
 	override firstUpdated(): void {
-		this._syncAriaDescribedBy();
 		this.shadowRoot?.querySelector('slot')?.addEventListener('slotchange', this._boundSlotChange);
 	}
 
 	override updated(changed: PropertyValues): void {
-		if (changed.has('_visible')) {
-			if (this._visible) {
-				this._updatePosition();
-			}
+		if (changed.has('_visible') && this._visible) {
+			this._updatePosition();
 		}
 		if (changed.has('text')) {
 			this._syncAriaDescribedBy();
@@ -74,7 +72,7 @@ export class NDDTooltip extends LitElement {
 		if (!trigger) return;
 
 		if (this.text) {
-			// Create or update a hidden span in the light DOM for aria-describedby
+			// Create or update a visually-hidden span in document.body for aria-describedby
 			if (!this._descriptionEl) {
 				this._descriptionEl = document.createElement('span');
 				this._descriptionEl.id = this._tooltipId;
@@ -86,7 +84,7 @@ export class NDDTooltip extends LitElement {
 					clipPath: 'inset(50%)',
 					whiteSpace: 'nowrap',
 				});
-				this.appendChild(this._descriptionEl);
+				document.body.appendChild(this._descriptionEl);
 			}
 			this._descriptionEl.textContent = this.text;
 			trigger.setAttribute('aria-describedby', this._tooltipId);
@@ -100,8 +98,7 @@ export class NDDTooltip extends LitElement {
 	private _getTriggerElement(): Element | null {
 		const slot = this.shadowRoot?.querySelector('slot');
 		const assigned = slot?.assignedElements({ flatten: true });
-		// Skip the hidden description span
-		return assigned?.find(el => el !== this._descriptionEl) ?? null;
+		return assigned?.[0] ?? null;
 	}
 
 	private _getTooltipElement(): HTMLElement | null {
@@ -180,7 +177,7 @@ export class NDDTooltip extends LitElement {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
 		}
-		// Clean up aria-describedby on trigger and remove light DOM description span
+		// Clean up aria-describedby on trigger and remove description span from body
 		const trigger = this._getTriggerElement();
 		trigger?.removeAttribute('aria-describedby');
 		this._descriptionEl?.remove();

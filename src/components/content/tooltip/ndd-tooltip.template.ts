@@ -1,5 +1,4 @@
-/* eslint-disable lit-a11y/accessible-name -- text content provides the accessible name */
-import { html, nothing, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import type { NDDTooltip } from './ndd-tooltip.ts';
 
@@ -12,8 +11,7 @@ export function tooltipTemplate(component: NDDTooltip): TemplateResult {
 			@focusout=${component._handleFocusOut}
 		></slot>
 		<div class=${classMap({ tooltip: true, 'is-visible': component._visible })}
-			role="tooltip"
-			aria-hidden=${!component._visible ? 'true' : nothing}
+			aria-hidden="true"
 			@mouseenter=${component._handleTooltipEnter}
 			@mouseleave=${component._handleTooltipLeave}
 		>
