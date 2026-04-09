@@ -554,14 +554,14 @@ export class NDDMenu extends LitElement {
 
 		await this.updateComplete;
 		if (this.variant !== 'listbox') {
-			if (isKeyboardMode()) {
-				const items = this._getVisibleItems();
-				if (items.length > 0) {
-					this._setHighlight(items[0]);
-					items[0].shadowRoot?.querySelector('button')?.focus();
-				}
+			const keyboard = isKeyboardMode();
+			const items = this._getVisibleItems();
+			if (keyboard && items.length > 0) {
+				this._setHighlight(items[0]);
+				items[0].shadowRoot?.querySelector('button')?.focus();
 			} else {
 				const menu = this.shadowRoot?.querySelector<HTMLElement>('.menu');
+				menu?.classList.toggle('is-keyboard-focus', keyboard);
 				menu?.focus();
 			}
 		}
