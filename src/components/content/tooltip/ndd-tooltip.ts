@@ -20,8 +20,6 @@ import { tooltipTemplate } from './ndd-tooltip.template.ts';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 
-let tooltipCounter = 0;
-
 @customElement('ndd-tooltip')
 export class NDDTooltip extends LitElement {
 	static override styles = tooltipStyles;
@@ -35,30 +33,18 @@ export class NDDTooltip extends LitElement {
 	@state()
 	_visible = false;
 
-	_tooltipId = `ndd-tooltip-${++tooltipCounter}`;
-
 	private _hideDelay = 50;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
+	private _boundHandleKeyDown = this._handleKeyDown.bind(this);
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this.addEventListener('keydown', this._boundHandleKeyDown);
+	}
 
 	override updated(changed: PropertyValues): void {
 		if (changed.has('_visible') && this._visible) {
 			this._updatePosition();
-		}
-
-		// Set aria-describedby on the trigger element
-		if (changed.has('_tooltipId') || changed.has('text')) {
-			this._syncAriaDescribedBy();
-		}
-	}
-
-	override firstUpdated(): void {
-		this._syncAriaDescribedBy();
-	}
-
-	private _syncAriaDescribedBy(): void {
-		const trigger = this._getTriggerElement();
-		if (trigger && this.text) {
-			trigger.setAttribute('aria-describedby', this._tooltipId);
 		}
 	}
 
@@ -91,6 +77,24 @@ export class NDDTooltip extends LitElement {
 		}, this._hideDelay);
 	}
 
+	_handleTooltipEnter(): void {
+		if (this._hideTimeout) {
+			clearTimeout(this._hideTimeout);
+			this._hideTimeout = null;
+		}
+	}
+
+	_handleTooltipLeave(): void {
+		this._handleTriggerLeave();
+	}
+
+	private _handleKeyDown(e: KeyboardEvent): void {
+		if (e.key === 'Escape' && this._visible) {
+			this._visible = false;
+			e.stopPropagation();
+		}
+	}
+
 	private async _updatePosition(): Promise<void> {
 		const trigger = this._getTriggerElement();
 		const tooltip = this._getTooltipElement();
@@ -111,6 +115,7 @@ export class NDDTooltip extends LitElement {
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
+		this.removeEventListener('keydown', this._boundHandleKeyDown);
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;

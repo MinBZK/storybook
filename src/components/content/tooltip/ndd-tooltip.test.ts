@@ -43,20 +43,22 @@ describe('ndd-tooltip', () => {
 		expect(tooltip?.classList.contains('is-visible')).toBe(false);
 	});
 
-	it('zet aria-describedby op het child element', async () => {
-		el = await fixture<NDDTooltip>(`
-			<ndd-tooltip text="Helptekst">
-				<button>Trigger</button>
-			</ndd-tooltip>
-		`);
-		await waitForUpdate(el);
-		const trigger = el.querySelector('button');
-		expect(trigger?.getAttribute('aria-describedby')).toBe(el._tooltipId);
-	});
-
 	it('standaard placement is top', async () => {
 		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"></ndd-tooltip>');
 		await waitForUpdate(el);
 		expect(el.placement).toBe('top');
+	});
+
+	it('Escape sluit de tooltip', async () => {
+		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
+		await waitForUpdate(el);
+
+		el._handleTriggerEnter();
+		await waitForUpdate(el);
+		expect(el._visible).toBe(true);
+
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+		await waitForUpdate(el);
+		expect(el._visible).toBe(false);
 	});
 });

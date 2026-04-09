@@ -59,15 +59,20 @@ export const Standaard = {
 export const MetIconButton = {
 	render: () => html`
 		<div style="display: flex; justify-content: center; padding: 4rem;">
-			<ndd-tooltip text="Meer informatie">
-				<ndd-icon-button
-					icon="info"
-					text="Info"
-				></ndd-icon-button>
-			</ndd-tooltip>
+			<ndd-icon-button
+				icon="info"
+				text="Info"
+			></ndd-icon-button>
 		</div>
 	`,
-	parameters: { controls: { disable: true } },
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Icon-button rendert intern een ndd-tooltip wanneer de tekst niet zichtbaar is.',
+			},
+		},
+	},
 };
 
 export const Posities = {

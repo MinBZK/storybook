@@ -7,8 +7,11 @@ export const tooltipStyles = css`
 
 	:host {
 		display: contents;
+		--_z-index: 10000;
 		--_show-delay: 400ms;
 		--_show-duration: 50ms;
+		--_background-color: light-dark(var(--primitives-color-neutral-350), var(--primitives-color-neutral-350));
+		--_color: var(--semantics-surfaces-background-color);
 		--_box-shadow: var(--primitives-box-shadows-level-2);
 		--_max-width: var(--primitives-area-280);
 	}
@@ -22,8 +25,7 @@ export const tooltipStyles = css`
 
 	.tooltip {
 		position: fixed;
-		z-index: 10000;
-		pointer-events: none;
+		z-index: var(--_z-index);
 		opacity: 0;
 	}
 
@@ -39,8 +41,8 @@ export const tooltipStyles = css`
 	/* ## Tooltip body */
 
 	.tooltip__body {
-		background-color: var(--semantics-surfaces-background-color);
-		color: var(--semantics-content-color);
+		background-color: var(--_background-color);
+		color: var(--_color);
 		font: var(--primitives-font-body-xs-regular-tight);
 		padding-block: var(--primitives-space-4);
 		padding-inline: var(--primitives-space-8);
