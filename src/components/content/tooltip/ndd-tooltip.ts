@@ -149,7 +149,10 @@ export class NDDTooltip extends LitElement {
 	_handleFocusOut(e: FocusEvent): void {
 		const slot = this.shadowRoot?.querySelector('slot');
 		const assigned = slot?.assignedElements({ flatten: true }) ?? [];
-		const stillInside = assigned.some(el => el.contains(e.relatedTarget as Node));
+		const related = e.relatedTarget as Node | null;
+		const stillInside = related && assigned.some(el =>
+			el.contains(related) || (el as HTMLElement).shadowRoot?.contains(related)
+		);
 		if (!stillInside) this._handleTriggerLeave();
 	}
 

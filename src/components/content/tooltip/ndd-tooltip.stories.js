@@ -96,19 +96,22 @@ export const Posities = {
 	parameters: { controls: { disable: true } },
 };
 
-export const MetTekst = {
+export const MetLink = {
 	render: () => html`
-		<ndd-tooltip text="Artikel 1 van de Grondwet">
-			<ndd-rich-text>
-				<p>Hover over deze <strong>tekst</strong> voor meer informatie.</p>
-			</ndd-rich-text>
-		</ndd-tooltip>
+		<ndd-rich-text>
+			<p>Lees meer over
+				<ndd-tooltip text="Artikel 1: Allen die zich in Nederland bevinden, worden in gelijke gevallen gelijk behandeld.">
+					<a href="#">de Grondwet</a>
+				</ndd-tooltip>
+				voor meer informatie.
+			</p>
+		</ndd-rich-text>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'De tooltip kan om elk element gewrapt worden, niet alleen knoppen.',
+				story: 'De tooltip kan om elk focusbaar element gewrapt worden, zoals een link.',
 			},
 		},
 	},
