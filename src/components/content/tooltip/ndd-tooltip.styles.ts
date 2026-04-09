@@ -10,8 +10,8 @@ export const tooltipStyles = css`
 		--_z-index: 10000;
 		--_show-delay: 400ms;
 		--_show-duration: 50ms;
-		--_background-color: light-dark(var(--primitives-color-neutral-350), var(--primitives-color-neutral-350));
-		--_color: var(--semantics-surfaces-background-color);
+		--_background-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-600));
+		--_color: var(--primitives-color-neutral-0);
 		--_box-shadow: var(--primitives-box-shadows-level-2);
 		--_max-width: var(--primitives-area-280);
 	}
