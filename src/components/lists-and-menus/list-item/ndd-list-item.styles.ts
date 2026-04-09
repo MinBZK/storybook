@@ -144,6 +144,7 @@ export const styles = css`
 	/* # Divider */
 
 	.list-item__divider {
+		display: var(--context-list-divider-display, block);
 		position: absolute;
 		inset-block-end: 0;
 		inset-inline: 0;
