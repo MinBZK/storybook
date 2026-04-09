@@ -84,7 +84,8 @@ export const tooltipStyles = css`
 
 	@media (prefers-reduced-motion: reduce) {
 		.tooltip,
-		.tooltip.is-visible {
+		.tooltip.is-visible,
+		.tooltip.is-focus-visible {
 			transition: none;
 		}
 	}
