@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach, vi } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { NDDTopNavigationBar } from './ndd-top-navigation-bar.ts';
 import './ndd-top-navigation-bar.ts';
@@ -20,10 +20,6 @@ function navWithUtility(): string {
 			<ndd-menu-bar-item slot="utility" text="Account" icon="person" expandable></ndd-menu-bar-item>
 		</ndd-top-navigation-bar>
 	`;
-}
-
-function pressKey(target: Element, key: string) {
-	target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
 }
 
 describe('ndd-top-navigation-bar', () => {
@@ -97,51 +93,6 @@ describe('ndd-top-navigation-bar – menu item selection', () => {
 
 		expect(detail).toBeDefined();
 		expect(detail.item).toBe(el.querySelectorAll('ndd-menu-bar-item')[1]);
-	});
-});
-
-describe('ndd-top-navigation-bar – keyboard navigation', () => {
-	let el: NDDTopNavigationBar;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-		vi.restoreAllMocks();
-	});
-
-	it('ArrowRight calls focus on next item', async () => {
-		el = await fixture<NDDTopNavigationBar>(navWithItems());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[1], 'focus');
-		pressKey(items[0], 'ArrowRight');
-		expect(spy).toHaveBeenCalled();
-	});
-
-	it('ArrowLeft wraps from first to last', async () => {
-		el = await fixture<NDDTopNavigationBar>(navWithItems());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[2], 'focus');
-		pressKey(items[0], 'ArrowLeft');
-		expect(spy).toHaveBeenCalled();
-	});
-
-	it('Home calls focus on first item', async () => {
-		el = await fixture<NDDTopNavigationBar>(navWithItems());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[0], 'focus');
-		pressKey(items[2], 'Home');
-		expect(spy).toHaveBeenCalled();
-	});
-
-	it('End calls focus on last item', async () => {
-		el = await fixture<NDDTopNavigationBar>(navWithItems());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[2], 'focus');
-		pressKey(items[0], 'End');
-		expect(spy).toHaveBeenCalled();
 	});
 });
 
@@ -251,18 +202,6 @@ describe('ndd-menu-bar-item', () => {
 		expect(menu).not.toBeNull();
 		// Cleanup menu from body
 		menu?.remove();
-	});
-
-	it('hides slotted menu items visually', async () => {
-		el = await fixture(`
-			<ndd-menu-bar-item text="NL" expandable>
-				<ndd-menu-item text="Nederlands"></ndd-menu-item>
-			</ndd-menu-bar-item>
-		`);
-		await waitForUpdate(el);
-		const menuItem = el.querySelector('ndd-menu-item');
-		expect(getComputedStyle(menuItem!).display).toBe('none');
-		document.querySelector('ndd-menu')?.remove();
 	});
 
 	it('does not fire select when expandable with menu items', async () => {

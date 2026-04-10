@@ -103,7 +103,7 @@ function renderLogo(this: NDDTopNavigationBar) {
 		</div>
 		${this.logoTitle ? html`
 			<div class="top-navigation-bar__wordmark">
-				${this.logoTitle ? html`<p class="top-navigation-bar__wordmark-title">${this.logoTitle}</p>` : nothing}
+				<p class="top-navigation-bar__wordmark-title">${this.logoTitle}</p>
 				${this.logoSubtitle ? html`<p class="top-navigation-bar__wordmark-subtitle">${this.logoSubtitle}</p>` : nothing}
 				${this.logoSupportingText1 ? html`<p class="top-navigation-bar__wordmark-supporting-text">${this.logoSupportingText1}</p>` : nothing}
 				${this.logoSupportingText2 ? html`<p class="top-navigation-bar__wordmark-supporting-text">${this.logoSupportingText2}</p>` : nothing}

@@ -293,13 +293,11 @@ export class NDDTopNavigationBar extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.addEventListener('select', this._handleItemSelect);
-		this.addEventListener('keydown', this._handleMenuKeyDown);
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this.removeEventListener('select', this._handleItemSelect);
-		this.removeEventListener('keydown', this._handleMenuKeyDown);
 		this._cleanupOverflowDetection();
 		this._overflowMenu?.remove();
 		this._overflowMenu = null;
@@ -336,65 +334,6 @@ export class NDDTopNavigationBar extends LitElement {
 	};
 
 	// ## Menu keyboard navigation
-
-	private _getNavigableItems(): HTMLElement[] {
-		const globalItems = Array.from(
-			this.querySelectorAll('ndd-menu-bar-item[slot="global"]:not([disabled]):not([data-overflow])')
-		) as HTMLElement[];
-
-		const globalOverflow = this._overflowMenuItem?.querySelector('ndd-menu-bar-item') as HTMLElement | null;
-		if (globalOverflow && getComputedStyle(this._overflowMenuItem!).display !== 'none') {
-			globalItems.push(globalOverflow);
-		}
-
-		const utilityItems = Array.from(
-			this.querySelectorAll('ndd-menu-bar-item[slot="utility"]:not([disabled]):not([data-utility-overflow])')
-		) as HTMLElement[];
-
-		const utilityOverflow = this._utilityOverflowMenuItem?.querySelector('ndd-menu-bar-item') as HTMLElement | null;
-		if (utilityOverflow && getComputedStyle(this._utilityOverflowMenuItem!).display !== 'none') {
-			utilityItems.push(utilityOverflow);
-		}
-
-		return [...globalItems, ...utilityItems];
-	}
-
-	private _handleMenuKeyDown = (event: KeyboardEvent): void => {
-		const items = this._getNavigableItems();
-		if (items.length === 0) return;
-
-		const path = event.composedPath();
-		const currentItem = items.find(item => path.includes(item));
-		if (!currentItem) return;
-		const currentIndex = items.indexOf(currentItem);
-
-		let newIndex = -1;
-
-		switch (event.key) {
-			case 'ArrowLeft':
-				event.preventDefault();
-				newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-				break;
-			case 'ArrowRight':
-				event.preventDefault();
-				newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-				break;
-			case 'Home':
-				event.preventDefault();
-				newIndex = 0;
-				break;
-			case 'End':
-				event.preventDefault();
-				newIndex = items.length - 1;
-				break;
-			default:
-				return;
-		}
-
-		if (newIndex >= 0) {
-			items[newIndex].focus();
-		}
-	};
 
 	// ## Overflow detection
 
@@ -613,6 +552,8 @@ export class NDDTopNavigationBar extends LitElement {
 		for (const item of overflowItems) {
 			const menuItem = document.createElement('ndd-menu-item');
 			menuItem.setAttribute('text', item.text);
+			if (item.current) menuItem.setAttribute('selected', '');
+			if (item.disabled) menuItem.setAttribute('disabled', '');
 			menuItem.addEventListener('click', () => {
 				item.click();
 			});
@@ -733,7 +674,12 @@ export class NDDTopNavigationBar extends LitElement {
 
 	private _onMenuButtonClick = async (): Promise<void> => {
 		if (!this._menuSheet) {
-			await this._loadSheetDependencies();
+			try {
+				await this._loadSheetDependencies();
+			} catch (error) {
+				console.error('Failed to load menu sheet dependencies:', error);
+				return;
+			}
 			this._menuSheet = this._createMenuSheet();
 			const menuButtonItem = this._menuButton?.querySelector('ndd-menu-bar-item');
 			this._menuSheet.addEventListener('open', () => {
