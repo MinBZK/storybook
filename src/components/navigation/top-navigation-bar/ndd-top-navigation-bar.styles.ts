@@ -1,7 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
-const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
@@ -54,7 +53,6 @@ export const menuBarItemStyles = css`
 		bottom: var(--primitives-space-6);
 		left: 0;
 		right: 0;
-		height: var(--components-menu-bar-menu-item-is-hovered-indicator-height);
 		border-radius: var(--semantics-controls-sm-corner-radius);
 		pointer-events: none;
 		z-index: 0;
@@ -271,7 +269,7 @@ export const styles = css`
 
 	.top-navigation-bar__wordmark-title {
 		font: var(--components-menu-bar-title-item-s-font);
-		color: var(--primitives-color-neutral-900);
+		color: var(--semantics-content-color);
 		margin: 0;
 
 		@container top-navigation-bar (min-width: ${mdMin}) {
@@ -342,7 +340,7 @@ export const styles = css`
 
 	.top-navigation-bar__title {
 		font: var(--components-menu-bar-title-item-s-font);
-		color: var(--primitives-color-neutral-900);
+		color: var(--semantics-content-color);
 		padding: 0 var(--primitives-space-8);
 		white-space: nowrap;
 

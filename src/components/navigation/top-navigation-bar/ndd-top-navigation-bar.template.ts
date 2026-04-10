@@ -75,7 +75,6 @@ export function template(this: NDDTopNavigationBar) {
 								aria-label="${this._t('components.top-navigation-bar.overflow-label')}"
 								aria-haspopup="menu"
 								@click=${this._onUtilityOverflowClick}
-								@select=${this._onUtilityOverflowClick}
 							></ndd-menu-bar-item>
 						</div>
 					</div>
@@ -129,6 +128,8 @@ function renderGlobalBar(this: NDDTopNavigationBar) {
 				<ndd-menu-bar-item
 					icon="menu"
 					text="${this._menuText}"
+					aria-haspopup="dialog"
+					aria-expanded="false"
 					@click=${this._onMenuButtonClick}
 				></ndd-menu-bar-item>
 			</div>
@@ -143,7 +144,6 @@ function renderGlobalBar(this: NDDTopNavigationBar) {
 					aria-label="${this._t('components.top-navigation-bar.overflow-label')}"
 					aria-haspopup="menu"
 					@click=${this._onOverflowClick}
-					@select=${this._onOverflowClick}
 				></ndd-menu-bar-item>
 			</div>
 		</div>

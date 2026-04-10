@@ -6,13 +6,7 @@ import { nddTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.j
 import type { NDDTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.js';
 import '../../content/icon/ndd-icon.js';
 import '../../lists-and-menus/menu/ndd-menu.js';
-import '../../layout/sheet/ndd-sheet.js';
-import '../../layout/page/ndd-page.js';
-import '../../layout/page-sections/simple-section/ndd-simple-section.js';
-import '../../navigation/top-title-bar/ndd-top-title-bar.js';
-import '../../lists-and-menus/list/ndd-list.js';
-import '../../lists-and-menus/list-item/ndd-list-item.js';
-import '../../lists-and-menus/cells/text-cell/ndd-text-cell.js';
+// Sheet dependencies loaded lazily in _createMenuSheet()
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
@@ -59,7 +53,6 @@ export class NDDMenuBarItem extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.addEventListener('click', this._handleClick);
-		this.addEventListener('keydown', this._handleKeyDown);
 		if (this.expandable) {
 			this._createMenu();
 		}
@@ -68,7 +61,6 @@ export class NDDMenuBarItem extends LitElement {
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this.removeEventListener('click', this._handleClick);
-		this.removeEventListener('keydown', this._handleKeyDown);
 		this._menu?.remove();
 		this._menu = null;
 	}
@@ -81,6 +73,37 @@ export class NDDMenuBarItem extends LitElement {
 				this._menu.remove();
 				this._menu = null;
 			}
+		}
+
+		// Forward ARIA attributes to the inner interactive element
+		this._syncAriaToInner();
+	}
+
+	private _syncAriaToInner(): void {
+		const inner = this.shadowRoot?.querySelector<HTMLElement>('button, a');
+		if (!inner) return;
+
+		const ariaLabel = this.getAttribute('aria-label');
+		if (ariaLabel) {
+			inner.setAttribute('aria-label', ariaLabel);
+		} else {
+			inner.removeAttribute('aria-label');
+		}
+
+		const ariaHaspopup = this.getAttribute('aria-haspopup');
+		if (ariaHaspopup) {
+			inner.setAttribute('aria-haspopup', ariaHaspopup);
+		} else {
+			inner.removeAttribute('aria-haspopup');
+		}
+
+		const ariaExpanded = this.getAttribute('aria-expanded');
+		if (ariaExpanded !== null) {
+			inner.setAttribute('aria-expanded', ariaExpanded);
+		} else if (this.expandable) {
+			inner.setAttribute('aria-expanded', 'false');
+		} else {
+			inner.removeAttribute('aria-expanded');
 		}
 	}
 
@@ -130,14 +153,6 @@ export class NDDMenuBarItem extends LitElement {
 				composed: true,
 				detail: { item: this },
 			}));
-		}
-	};
-
-	private _handleKeyDown = (event: KeyboardEvent): void => {
-		if (this.disabled) return;
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault();
-			this._handleClick(event);
 		}
 	};
 
@@ -648,6 +663,7 @@ export class NDDTopNavigationBar extends LitElement {
 				this._overflowMenuOpen = open;
 				if (!open) this._overflowMenuClosedAt = Date.now();
 				menuBarItem?.toggleAttribute('open', open);
+				menuBarItem?.setAttribute('aria-expanded', String(open));
 			});
 		}
 		this._populateOverflowMenu(this._overflowMenu, this._menuSlot, 'data-overflow');
@@ -664,6 +680,7 @@ export class NDDTopNavigationBar extends LitElement {
 				this._utilityOverflowMenuOpen = open;
 				if (!open) this._utilityOverflowMenuClosedAt = Date.now();
 				menuBarItem?.toggleAttribute('open', open);
+				menuBarItem?.setAttribute('aria-expanded', String(open));
 			});
 		}
 		this._populateOverflowMenu(this._utilityOverflowMenu, this._utilitySlot, 'data-utility-overflow');
@@ -676,6 +693,18 @@ export class NDDTopNavigationBar extends LitElement {
 	// ## Menu sheet
 
 	private _menuSheetList: HTMLElement | null = null;
+
+	private async _loadSheetDependencies(): Promise<void> {
+		await Promise.all([
+			import('../../layout/sheet/ndd-sheet.js'),
+			import('../../layout/page/ndd-page.js'),
+			import('../../layout/page-sections/simple-section/ndd-simple-section.js'),
+			import('../../navigation/top-title-bar/ndd-top-title-bar.js'),
+			import('../../lists-and-menus/list/ndd-list.js'),
+			import('../../lists-and-menus/list-item/ndd-list-item.js'),
+			import('../../lists-and-menus/cells/text-cell/ndd-text-cell.js'),
+		]);
+	}
 
 	private _createMenuSheet(): HTMLElement {
 		const sheet = document.createElement('ndd-sheet');
@@ -728,9 +757,19 @@ export class NDDTopNavigationBar extends LitElement {
 		}
 	}
 
-	private _onMenuButtonClick = (): void => {
+	private _onMenuButtonClick = async (): Promise<void> => {
 		if (!this._menuSheet) {
+			await this._loadSheetDependencies();
 			this._menuSheet = this._createMenuSheet();
+			const menuButtonItem = this._menuButton?.querySelector('ndd-menu-bar-item');
+			this._menuSheet.addEventListener('open', () => {
+				menuButtonItem?.setAttribute('aria-expanded', 'true');
+				menuButtonItem?.toggleAttribute('open', true);
+			});
+			this._menuSheet.addEventListener('close', () => {
+				menuButtonItem?.setAttribute('aria-expanded', 'false');
+				menuButtonItem?.toggleAttribute('open', false);
+			});
 		}
 		this._syncMenuSheetItems();
 		// Defer show() so the current click event completes before the modal backdrop appears

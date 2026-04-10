@@ -177,7 +177,7 @@ describe('ndd-top-navigation-bar – back button', () => {
 
 	it('renders back button with href when back-href is set', async () => {
 		el = await fixture<NDDTopNavigationBar>(`
-			<ndd-top-navigation-bar back-text="Terug" back-href="/home" back-text="Home"></ndd-top-navigation-bar>
+			<ndd-top-navigation-bar back-href="/home" back-text="Home"></ndd-top-navigation-bar>
 		`);
 		await waitForUpdate(el);
 		const backItem = el.shadowRoot!.querySelector('ndd-menu-bar-item[icon="arrow-left"]') as HTMLElement;
