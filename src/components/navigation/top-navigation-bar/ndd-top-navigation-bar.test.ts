@@ -256,6 +256,24 @@ describe('ndd-menu-bar-item – _sanitizeUrl', () => {
 		expect(el._sanitizeUrl('vbscript:MsgBox("XSS")')).toBeNull();
 	});
 
+	it('blocks uppercase javascript: URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('JAVASCRIPT:alert(1)')).toBeNull();
+	});
+
+	it('blocks mixed case JavaScript: URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('JavaScript:alert(1)')).toBeNull();
+	});
+
+	it('blocks whitespace-prefixed javascript: URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('  javascript:alert(1)')).toBeNull();
+	});
+
 	it('returns null for empty input', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);

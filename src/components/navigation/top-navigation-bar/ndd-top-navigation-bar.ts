@@ -165,6 +165,7 @@ export class NDDMenuBarItem extends LitElement {
 			const open = (event as ToggleEvent).newState === 'open';
 			this._menuOpen = open;
 			this.open = open;
+			if (open) this._syncMenuItems();
 			if (!open) this._menuClosedAt = Date.now();
 		});
 		document.body.appendChild(menu);
@@ -326,25 +327,35 @@ export class NDDTopNavigationBar extends LitElement {
 		this._setupOverflowDetection();
 	}
 
-	// ## Menu item selection
-
+	/**
+	 * Handles selection of global menu items.
+	 * Sets `current` on the clicked item and removes it from siblings.
+	 * Dispatches `itemselect` event so consumers can override or react.
+	 * To manage state externally, listen for `itemselect` and call
+	 * `event.preventDefault()` to prevent automatic current management.
+	 */
 	private _handleItemSelect = (event: Event): void => {
 		const detail = (event as CustomEvent).detail;
 		if (!detail?.item) return;
 		const slottedItems = this._menuSlot?.assignedElements({ flatten: true }) ?? [];
 		if (!slottedItems.includes(detail.item)) return;
 
-		detail.item.current = true;
-		slottedItems.forEach(item => {
-			if (item !== detail.item) {
-				(item as HTMLElement).removeAttribute('current');
-			}
-		});
-		this.dispatchEvent(new CustomEvent('itemselect', {
+		const selectEvent = new CustomEvent('itemselect', {
 			bubbles: true,
 			composed: true,
+			cancelable: true,
 			detail,
-		}));
+		});
+		this.dispatchEvent(selectEvent);
+
+		if (!selectEvent.defaultPrevented) {
+			detail.item.current = true;
+			slottedItems.forEach(item => {
+				if (item !== detail.item) {
+					(item as HTMLElement).removeAttribute('current');
+				}
+			});
+		}
 	};
 
 	// ## Menu keyboard navigation
