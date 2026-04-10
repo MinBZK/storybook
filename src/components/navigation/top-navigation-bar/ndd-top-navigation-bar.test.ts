@@ -1,6 +1,30 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import type { NDDTopNavigationBar } from './ndd-top-navigation-bar.ts';
 import './ndd-top-navigation-bar.ts';
+
+function navWithItems(): string {
+	return `
+		<ndd-top-navigation-bar website-title="DigID">
+			<ndd-menu-bar-item slot="global" text="Home"></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="global" text="About"></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="global" text="Contact"></ndd-menu-bar-item>
+		</ndd-top-navigation-bar>
+	`;
+}
+
+function navWithUtility(): string {
+	return `
+		<ndd-top-navigation-bar website-title="DigID">
+			<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="utility" text="Account" icon="person" expandable></ndd-menu-bar-item>
+		</ndd-top-navigation-bar>
+	`;
+}
+
+function pressKey(target: Element, key: string) {
+	target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
+}
 
 describe('ndd-top-navigation-bar', () => {
 	let el: HTMLElement;
@@ -13,5 +37,212 @@ describe('ndd-top-navigation-bar', () => {
 		el = await fixture('<ndd-top-navigation-bar></ndd-top-navigation-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('renders logo by default', async () => {
+		el = await fixture('<ndd-top-navigation-bar></ndd-top-navigation-bar>');
+		await waitForUpdate(el);
+		const logoBar = el.shadowRoot!.querySelector('.top-navigation-bar__logo-bar');
+		expect(logoBar).not.toBeNull();
+	});
+
+	it('hides logo when no-logo is set', async () => {
+		el = await fixture('<ndd-top-navigation-bar no-logo></ndd-top-navigation-bar>');
+		await waitForUpdate(el);
+		const logoBar = el.shadowRoot!.querySelector('.top-navigation-bar__logo-bar');
+		expect(logoBar).toBeNull();
+	});
+
+	it('renders utility slot items', async () => {
+		el = await fixture(navWithUtility());
+		await waitForUpdate(el);
+		const utilityItems = el.querySelectorAll('ndd-menu-bar-item[slot="utility"]');
+		expect(utilityItems.length).toBe(2);
+	});
+
+	it('renders menu-bar-end for utility slot', async () => {
+		el = await fixture(navWithUtility());
+		await waitForUpdate(el);
+		const menuBarEnd = el.shadowRoot!.querySelector('.top-navigation-bar__menu-bar-end');
+		expect(menuBarEnd).not.toBeNull();
+	});
+});
+
+describe('ndd-top-navigation-bar – menu item selection', () => {
+	let el: NDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('deselects other items when one is selected', async () => {
+		el = await fixture<NDDTopNavigationBar>(navWithItems());
+		await waitForUpdate(el);
+
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		items[0].click();
+		await waitForUpdate(el);
+		expect(items[0].hasAttribute('selected')).toBe(true);
+
+		items[1].click();
+		await waitForUpdate(el);
+		expect(items[0].hasAttribute('selected')).toBe(false);
+		expect(items[1].hasAttribute('selected')).toBe(true);
+	});
+
+	it('dispatches itemselect event on item click', async () => {
+		el = await fixture<NDDTopNavigationBar>(navWithItems());
+		await waitForUpdate(el);
+
+		let detail: any;
+		el.addEventListener('itemselect', ((e: CustomEvent) => {
+			detail = e.detail;
+		}) as EventListener);
+
+		el.querySelectorAll('ndd-menu-bar-item')[1].click();
+		await waitForUpdate(el);
+
+		expect(detail).toBeDefined();
+		expect(detail.item).toBe(el.querySelectorAll('ndd-menu-bar-item')[1]);
+	});
+});
+
+describe('ndd-top-navigation-bar – keyboard navigation', () => {
+	let el: NDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('ArrowRight calls focus on next item', async () => {
+		el = await fixture<NDDTopNavigationBar>(navWithItems());
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		const spy = vi.spyOn(items[1] as HTMLElement, 'focus');
+		pressKey(items[0], 'ArrowRight');
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('ArrowLeft wraps from first to last', async () => {
+		el = await fixture<NDDTopNavigationBar>(navWithItems());
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
+		pressKey(items[0], 'ArrowLeft');
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('Home calls focus on first item', async () => {
+		el = await fixture<NDDTopNavigationBar>(navWithItems());
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+		pressKey(items[2], 'Home');
+		expect(spy).toHaveBeenCalled();
+	});
+
+	it('End calls focus on last item', async () => {
+		el = await fixture<NDDTopNavigationBar>(navWithItems());
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
+		pressKey(items[0], 'End');
+		expect(spy).toHaveBeenCalled();
+	});
+});
+
+describe('ndd-top-navigation-bar – back button', () => {
+	let el: NDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders back button when has-back-button is set', async () => {
+		el = await fixture<NDDTopNavigationBar>(`
+			<ndd-top-navigation-bar has-back-button></ndd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+		const backBtn = el.shadowRoot!.querySelector('ndd-menu-bar-item[icon="arrow-left"]');
+		expect(backBtn).not.toBeNull();
+	});
+
+	it('dispatches back-click when back button without href is clicked', async () => {
+		el = await fixture<NDDTopNavigationBar>(`
+			<ndd-top-navigation-bar has-back-button></ndd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+
+		let fired = false;
+		el.addEventListener('back-click', () => { fired = true; });
+
+		const backBtn = el.shadowRoot!.querySelector('ndd-menu-bar-item[icon="arrow-left"]') as HTMLElement;
+		backBtn?.click();
+		expect(fired).toBe(true);
+	});
+
+	it('renders back button with href when back-href is set', async () => {
+		el = await fixture<NDDTopNavigationBar>(`
+			<ndd-top-navigation-bar has-back-button back-href="/home" back-text="Home"></ndd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+		const backItem = el.shadowRoot!.querySelector('ndd-menu-bar-item[icon="arrow-left"]') as HTMLElement;
+		expect(backItem).not.toBeNull();
+		expect(backItem.getAttribute('href')).toBe('/home');
+	});
+});
+
+describe('ndd-top-navigation-bar – i18n', () => {
+	let el: NDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('uses default Dutch translations', async () => {
+		el = await fixture<NDDTopNavigationBar>('<ndd-top-navigation-bar></ndd-top-navigation-bar>');
+		await waitForUpdate(el);
+		const nav = el.shadowRoot!.querySelector('.top-navigation-bar__menu-bar');
+		expect(nav!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
+	});
+
+	it('accepts custom translations', async () => {
+		el = await fixture<NDDTopNavigationBar>('<ndd-top-navigation-bar></ndd-top-navigation-bar>');
+		(el as NDDTopNavigationBar).translations = {
+			'components.top-navigation-bar.main-navigation': 'Main navigation',
+		};
+		await waitForUpdate(el);
+		const nav = el.shadowRoot!.querySelector('.top-navigation-bar__menu-bar');
+		expect(nav!.getAttribute('aria-label')).toBe('Main navigation');
+	});
+});
+
+describe('ndd-menu-bar-item', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders without error', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Test"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('renders text from attribute', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Hello"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector('.top-navigation-bar__menu-item-content');
+		expect(content!.textContent).toBe('Hello');
+	});
+
+	it('does not set selected on click', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Test"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		el.click();
+		await waitForUpdate(el);
+		expect(el.hasAttribute('selected')).toBe(false);
 	});
 });
