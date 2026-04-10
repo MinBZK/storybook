@@ -1,7 +1,6 @@
 import { html, nothing } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { NDDTopNavigationBar, NDDMenuBarItem } from './ndd-top-navigation-bar.js';
-// @ts-expect-error Vite raw import
 import logoSvg from './logo.svg?raw';
 
 // # Menu bar item template
@@ -17,6 +16,9 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 				href=${safeHref!}
 				aria-disabled=${this.disabled}
 				aria-current=${this.current ? 'page' : nothing}
+				aria-label=${this.accessibleLabel || nothing}
+				aria-haspopup=${this.haspopup || nothing}
+				aria-expanded=${this.haspopup ? String(this.open) : nothing}
 				tabindex=${tabindex}
 			>
 				${this.icon ? html`<span class="top-navigation-bar__menu-item-icon"><ndd-icon name=${this.icon}></ndd-icon></span>` : nothing}
@@ -32,6 +34,9 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 			type="button"
 			?disabled=${this.disabled}
 			aria-current=${this.current ? 'page' : nothing}
+			aria-label=${this.accessibleLabel || nothing}
+			aria-haspopup=${this.haspopup || nothing}
+			aria-expanded=${this.haspopup ? String(this.open) : nothing}
 			tabindex=${tabindex}
 		>
 			${this.icon ? html`<span class="top-navigation-bar__menu-item-icon"><ndd-icon name=${this.icon}></ndd-icon></span>` : nothing}
@@ -63,7 +68,9 @@ export function template(this: NDDTopNavigationBar) {
 						${this._hasBackButton ? renderBackButton.call(this) : nothing}
 						${renderGlobalBar.call(this)}
 					</div>
-					<div class="top-navigation-bar__menu-bar-end">
+					<nav class="top-navigation-bar__menu-bar-end"
+						aria-label="${this._t('components.top-navigation-bar.utility-navigation-label')}"
+					>
 						<slot name="utility"></slot>
 						<div class="top-navigation-bar__overflow-button"
 							id="utility-overflow-button"
@@ -72,12 +79,12 @@ export function template(this: NDDTopNavigationBar) {
 								text="${this._overflowText}"
 								icon="ellipsis"
 								icon-only
-								aria-label="${this._t('components.top-navigation-bar.overflow-label')}"
-								aria-haspopup="menu"
+								accessible-label="${this._t('components.top-navigation-bar.overflow-label')}"
+								haspopup="menu"
 								@click=${this._onUtilityOverflowClick}
 							></ndd-menu-bar-item>
 						</div>
-					</div>
+					</nav>
 				</nav>
 			</div>
 		</div>
@@ -98,8 +105,8 @@ function renderLogo(this: NDDTopNavigationBar) {
 			<div class="top-navigation-bar__wordmark">
 				${this.logoTitle ? html`<p class="top-navigation-bar__wordmark-title">${this.logoTitle}</p>` : nothing}
 				${this.logoSubtitle ? html`<p class="top-navigation-bar__wordmark-subtitle">${this.logoSubtitle}</p>` : nothing}
-				${this.logoSupportingText1 ? html`<p class="top-navigation-bar__wordmark-supporting">${this.logoSupportingText1}</p>` : nothing}
-				${this.logoSupportingText2 ? html`<p class="top-navigation-bar__wordmark-supporting">${this.logoSupportingText2}</p>` : nothing}
+				${this.logoSupportingText1 ? html`<p class="top-navigation-bar__wordmark-supporting-text">${this.logoSupportingText1}</p>` : nothing}
+				${this.logoSupportingText2 ? html`<p class="top-navigation-bar__wordmark-supporting-text">${this.logoSupportingText2}</p>` : nothing}
 			</div>
 		` : nothing}
 	`;
@@ -113,7 +120,7 @@ function renderBackButton(this: NDDTopNavigationBar) {
 			icon="arrow-left"
 			text="${this._backText}"
 			href=${this.backHref || nothing}
-			aria-label="${this._backText}"
+			accessible-label="${this._backText}"
 			@click="${this._handleBackClick}"
 		></ndd-menu-bar-item>
 	`;
@@ -128,8 +135,7 @@ function renderGlobalBar(this: NDDTopNavigationBar) {
 				<ndd-menu-bar-item
 					icon="menu"
 					text="${this._menuText}"
-					aria-haspopup="dialog"
-					aria-expanded="false"
+					haspopup="dialog"
 					@click=${this._onMenuButtonClick}
 				></ndd-menu-bar-item>
 			</div>
@@ -141,8 +147,8 @@ function renderGlobalBar(this: NDDTopNavigationBar) {
 					text="${this._overflowText}"
 					icon="ellipsis"
 					icon-only
-					aria-label="${this._t('components.top-navigation-bar.overflow-label')}"
-					aria-haspopup="menu"
+					accessible-label="${this._t('components.top-navigation-bar.overflow-label')}"
+					haspopup="menu"
 					@click=${this._onOverflowClick}
 				></ndd-menu-bar-item>
 			</div>

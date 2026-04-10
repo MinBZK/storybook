@@ -59,7 +59,7 @@ const Template = ({
 			<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-				<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
+				<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 				<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 				<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
 			</ndd-menu-bar-item>
@@ -136,7 +136,7 @@ export const SmallViewport = {
 				<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-					<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
+					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
 				</ndd-menu-bar-item>
@@ -166,7 +166,7 @@ export const ManyGlobalItems = {
 				<ndd-menu-bar-item slot="global" text="Vraag en antwoord"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Wetten en regelgeving"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-					<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
+					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
 				</ndd-menu-bar-item>
@@ -203,7 +203,7 @@ export const AllStates = {
 					<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-						<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
+						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
@@ -219,7 +219,7 @@ export const AllStates = {
 					<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-						<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
+						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>

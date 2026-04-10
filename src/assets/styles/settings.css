@@ -838,18 +838,17 @@
 	--components-menu-item-is-highlighted-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 
 
-	--components-menu-bar-menu-item-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-750));
-	--components-menu-bar-menu-item-is-selected-color: var(--semantics-controls-is-selected-indicator-color);
-	--components-menu-bar-menu-item-is-selected-indicator-background-color: var(--semantics-controls-is-selected-indicator-color);
-	--components-menu-bar-menu-item-is-selected-indicator-height: var(--primitives-space-4);
-	--components-menu-bar-menu-item-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-200));
-	--components-menu-bar-menu-item-is-hovered-indicator-height: var(--primitives-space-32);
-	--components-menu-bar-menu-item-is-open-indicator-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-300));
-	--components-menu-bar-menu-item-is-open-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-350));
-	--components-menu-bar-menu-item-font: 550 18px/1.125 RijksSansVF, system-ui;
-	--components-menu-bar-title-item-s-font: 550 18px/1.125 RijksSansVF, system-ui;
-	--components-menu-bar-title-item-m-font: 550 20px/1.125 RijksSansVF, system-ui;
-	--components-menu-bar-title-item-l-font: 550 23px/1.125 RijksSansVF, system-ui;
+	--components-top-navigation-bar-menu-bar-item-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-750));
+	--components-top-navigation-bar-menu-bar-item-is-selected-content-color: var(--semantics-controls-is-selected-indicator-color);
+	--components-top-navigation-bar-menu-bar-item-is-selected-indicator-background-color: var(--semantics-controls-is-selected-indicator-color);
+	--components-top-navigation-bar-menu-bar-item-is-selected-indicator-height: var(--primitives-space-4);
+	--components-top-navigation-bar-menu-bar-item-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-200));
+	--components-top-navigation-bar-menu-bar-item-is-open-indicator-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
+	--components-top-navigation-bar-menu-bar-item-is-open-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
+	--components-top-navigation-bar-menu-bar-item-font: var(--primitives-font-body-md-bold-flat);
+	--components-top-navigation-bar-title-sm-font: var(--primitives-font-display-6-sm);
+	--components-top-navigation-bar-title-md-font: var(--primitives-font-display-5-sm);
+	--components-top-navigation-bar-title-lg-font: var(--primitives-font-display-4-sm);
 
 
 	--components-checkbox-border-thickness: var(--primitives-space-2);

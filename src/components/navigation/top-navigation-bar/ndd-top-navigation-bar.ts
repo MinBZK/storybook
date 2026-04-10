@@ -42,6 +42,15 @@ export class NDDMenuBarItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
+	@property({ type: String })
+	haspopup = '';
+
+	@property({ type: Boolean, reflect: true })
+	open = false;
+
 	// ## Menu popover state
 
 	private _menu: HTMLElement | null = null;
@@ -73,37 +82,6 @@ export class NDDMenuBarItem extends LitElement {
 				this._menu.remove();
 				this._menu = null;
 			}
-		}
-
-		// Forward ARIA attributes to the inner interactive element
-		this._syncAriaToInner();
-	}
-
-	private _syncAriaToInner(): void {
-		const inner = this.shadowRoot?.querySelector<HTMLElement>('button, a');
-		if (!inner) return;
-
-		const ariaLabel = this.getAttribute('aria-label');
-		if (ariaLabel) {
-			inner.setAttribute('aria-label', ariaLabel);
-		} else {
-			inner.removeAttribute('aria-label');
-		}
-
-		const ariaHaspopup = this.getAttribute('aria-haspopup');
-		if (ariaHaspopup) {
-			inner.setAttribute('aria-haspopup', ariaHaspopup);
-		} else {
-			inner.removeAttribute('aria-haspopup');
-		}
-
-		const ariaExpanded = this.getAttribute('aria-expanded');
-		if (ariaExpanded !== null) {
-			inner.setAttribute('aria-expanded', ariaExpanded);
-		} else if (this.expandable) {
-			inner.setAttribute('aria-expanded', 'false');
-		} else {
-			inner.removeAttribute('aria-expanded');
 		}
 	}
 
@@ -168,9 +146,8 @@ export class NDDMenuBarItem extends LitElement {
 		menu.addEventListener('toggle', (event: Event) => {
 			const open = (event as ToggleEvent).newState === 'open';
 			this._menuOpen = open;
+			this.open = open;
 			if (!open) this._menuClosedAt = Date.now();
-			this.setAttribute('aria-expanded', String(open));
-			this.toggleAttribute('open', open);
 		});
 		document.body.appendChild(menu);
 		this._menu = menu;
@@ -198,7 +175,7 @@ export class NDDMenuBarItem extends LitElement {
 		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
 			(this._menu as any).showPopover?.();
 		}
-	};
+	}
 
 	override render() {
 		return menuBarItemTemplate.call(this);
@@ -273,6 +250,7 @@ export class NDDTopNavigationBar extends LitElement {
 	private _utilityOverflowMenuClosedAt = 0;
 
 	private _menuSheet: HTMLElement | null = null;
+	private _menuSheetList: HTMLElement | null = null;
 
 	private _resizeObserver: ResizeObserver | null = null;
 	private _isHandlingOverflow = false;
@@ -662,8 +640,7 @@ export class NDDTopNavigationBar extends LitElement {
 			this._overflowMenu = this._createPopoverMenu((open) => {
 				this._overflowMenuOpen = open;
 				if (!open) this._overflowMenuClosedAt = Date.now();
-				menuBarItem?.toggleAttribute('open', open);
-				menuBarItem?.setAttribute('aria-expanded', String(open));
+				if (menuBarItem) (menuBarItem as any).open = open;
 			});
 		}
 		this._populateOverflowMenu(this._overflowMenu, this._menuSlot, 'data-overflow');
@@ -679,8 +656,7 @@ export class NDDTopNavigationBar extends LitElement {
 			this._utilityOverflowMenu = this._createPopoverMenu((open) => {
 				this._utilityOverflowMenuOpen = open;
 				if (!open) this._utilityOverflowMenuClosedAt = Date.now();
-				menuBarItem?.toggleAttribute('open', open);
-				menuBarItem?.setAttribute('aria-expanded', String(open));
+				if (menuBarItem) (menuBarItem as any).open = open;
 			});
 		}
 		this._populateOverflowMenu(this._utilityOverflowMenu, this._utilitySlot, 'data-utility-overflow');
@@ -691,8 +667,6 @@ export class NDDTopNavigationBar extends LitElement {
 	};
 
 	// ## Menu sheet
-
-	private _menuSheetList: HTMLElement | null = null;
 
 	private async _loadSheetDependencies(): Promise<void> {
 		await Promise.all([
@@ -763,12 +737,10 @@ export class NDDTopNavigationBar extends LitElement {
 			this._menuSheet = this._createMenuSheet();
 			const menuButtonItem = this._menuButton?.querySelector('ndd-menu-bar-item');
 			this._menuSheet.addEventListener('open', () => {
-				menuButtonItem?.setAttribute('aria-expanded', 'true');
-				menuButtonItem?.toggleAttribute('open', true);
+				if (menuButtonItem) (menuButtonItem as any).open = true;
 			});
 			this._menuSheet.addEventListener('close', () => {
-				menuButtonItem?.setAttribute('aria-expanded', 'false');
-				menuButtonItem?.toggleAttribute('open', false);
+				if (menuButtonItem) (menuButtonItem as any).open = false;
 			});
 		}
 		this._syncMenuSheetItems();

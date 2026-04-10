@@ -361,7 +361,7 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 - Property waarden altijd op **één regel**, ook als ze lang zijn
 - Sorteer rules per element; houd alle gedrag voor een element bij elkaar
 - Gebruik **CSS nesting** voor `@container` en `@media` — nest in de element rule block
-- Declareer CSS variable defaults in `:host`, nooit als fallback: `var(--_foo)` niet `var(--_foo, 100)`
+- Declareer **alle** lokale CSS variabelen (`--_*`) in `:host`, inclusief responsive overrides via `@container` nesting. Elementen gebruiken alleen `var(--_foo)`, nooit fallbacks: niet `var(--_foo, 100)`
 - Gebruik **nooit** flex shorthand (`flex: 1`), schrijf de losse properties
 - Level 1 headings (`/* # Section */`): 2 lege regels ervoor, 1 erna
 - Level 2 headings (`/* ## Subsection */`): 1 lege regel ervoor en erna
@@ -385,12 +385,26 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 ```
 
 ```css
-/* GOED — defaults in :host */
+/* GOED — alle lokale vars in :host, inclusief responsive overrides */
 :host {
 	--_min-height: var(--semantics-controls-md-min-size);
+	--_logo-width: var(--primitives-space-40);
+
+	@container layout-area (min-width: 641px) {
+		--_logo-width: var(--primitives-space-44);
+	}
 }
 .button {
 	min-height: var(--_min-height);
+}
+.logo {
+	width: var(--_logo-width);
+	height: calc(var(--_logo-width) * 2);
+}
+
+/* FOUT — lokale var op element ipv :host */
+.logo {
+	--_logo-width: var(--primitives-space-40);
 }
 
 /* FOUT — fallback in var() */

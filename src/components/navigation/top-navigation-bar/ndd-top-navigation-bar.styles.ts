@@ -12,8 +12,13 @@ export const menuBarItemStyles = css`
 	/* ## Host */
 
 	:host {
+		--_indicator-z-index: 0;
+		--_content-z-index: 1;
 		display: inline-block;
 		position: relative;
+		flex-grow: 0;
+		flex-shrink: 0;
+		flex-basis: auto;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -37,8 +42,8 @@ export const menuBarItemStyles = css`
 		justify-content: center;
 		align-items: center;
 		gap: var(--primitives-space-4);
-		font: var(--components-menu-bar-menu-item-font);
-		color: var(--components-menu-bar-menu-item-color);
+		font: var(--components-top-navigation-bar-menu-bar-item-font);
+		color: var(--components-top-navigation-bar-menu-bar-item-content-color);
 		text-align: center;
 		padding: 0 var(--primitives-space-8);
 		white-space: nowrap;
@@ -55,19 +60,19 @@ export const menuBarItemStyles = css`
 		right: 0;
 		border-radius: var(--semantics-controls-sm-corner-radius);
 		pointer-events: none;
-		z-index: 0;
+		z-index: var(--_indicator-z-index);
 	}
 
 	.top-navigation-bar__menu-item:hover::before {
-		background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-background-color);
+		background-color: var(--components-top-navigation-bar-menu-bar-item-is-hovered-indicator-background-color);
 	}
 
 	:host([open]) .top-navigation-bar__menu-item::before {
-		background-color: var(--components-menu-bar-menu-item-is-open-indicator-background-color);
+		background-color: var(--components-top-navigation-bar-menu-bar-item-is-open-indicator-background-color);
 	}
 
 	:host([open]) .top-navigation-bar__menu-item:hover::before {
-		background-color: var(--components-menu-bar-menu-item-is-open-is-hovered-indicator-background-color);
+		background-color: var(--components-top-navigation-bar-menu-bar-item-is-open-is-hovered-indicator-background-color);
 	}
 
 	/* ## Current indicator (::after) */
@@ -78,17 +83,17 @@ export const menuBarItemStyles = css`
 		bottom: 0;
 		left: var(--primitives-space-8);
 		right: var(--primitives-space-8);
-		height: var(--components-menu-bar-menu-item-is-selected-indicator-height);
-		background-color: var(--components-menu-bar-menu-item-is-selected-indicator-background-color);
+		height: var(--components-top-navigation-bar-menu-bar-item-is-selected-indicator-height);
+		background-color: var(--components-top-navigation-bar-menu-bar-item-is-selected-indicator-background-color);
 		pointer-events: none;
-		z-index: 1;
+		z-index: var(--_indicator-z-index);
 	}
 
 	/* ## Text */
 
 	.top-navigation-bar__menu-item-text {
 		position: relative;
-		z-index: 2;
+		z-index: var(--_content-z-index);
 	}
 
 	/* ## Icon */
@@ -97,7 +102,7 @@ export const menuBarItemStyles = css`
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		flex-shrink: 0;
-		z-index: 2;
+		z-index: var(--_content-z-index);
 	}
 
 	/* ## Disclosure icon */
@@ -105,7 +110,7 @@ export const menuBarItemStyles = css`
 	.top-navigation-bar__menu-item-disclosure-icon {
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
-		z-index: 2;
+		z-index: var(--_content-z-index);
 	}
 
 	/* ## Focus */
@@ -155,10 +160,6 @@ export const menuBarItemStyles = css`
 		border: 0;
 	}
 
-	:host([icon-only]) .top-navigation-bar__menu-item-disclosure-icon {
-		display: none;
-	}
-
 	/* ## Icon-only when compact (opt-in via sm-icon-only, requires icon to be set) */
 
 	:host([sm-icon-only][compact][icon]:not([icon=""])) .top-navigation-bar__menu-item {
@@ -191,8 +192,17 @@ export const styles = css`
 	/* ## Host */
 
 	:host {
+		--_logo-width: var(--primitives-space-40);
 		display: block;
 		width: 100%;
+
+		@container layout-area (min-width: ${mdMin}) {
+			--_logo-width: var(--primitives-space-44);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			--_logo-width: var(--primitives-space-48);
+		}
 	}
 
 	:host([hidden]) {
@@ -238,18 +248,8 @@ export const styles = css`
 		align-items: center;
 		justify-content: center;
 		color: var(--primitives-color-accent-100);
-		width: 40px;
-		height: 80px;
-
-		@container top-navigation-bar (min-width: ${mdMin}) {
-			width: 44px;
-			height: 88px;
-		}
-
-		@container top-navigation-bar (min-width: ${lgMin}) {
-			width: 48px;
-			height: 96px;
-		}
+		width: var(--_logo-width);
+		height: calc(var(--_logo-width) * 2);
 	}
 
 	.top-navigation-bar__logo svg {
@@ -268,16 +268,16 @@ export const styles = css`
 	}
 
 	.top-navigation-bar__wordmark-title {
-		font: var(--components-menu-bar-title-item-s-font);
+		font: var(--components-top-navigation-bar-title-sm-font);
 		color: var(--semantics-content-color);
 		margin: 0;
 
 		@container top-navigation-bar (min-width: ${mdMin}) {
-			font: var(--components-menu-bar-title-item-m-font);
+			font: var(--components-top-navigation-bar-title-md-font);
 		}
 
 		@container top-navigation-bar (min-width: ${lgMin}) {
-			font: var(--components-menu-bar-title-item-l-font);
+			font: var(--components-top-navigation-bar-title-lg-font);
 		}
 	}
 
@@ -291,7 +291,7 @@ export const styles = css`
 		}
 	}
 
-	.top-navigation-bar__wordmark-supporting {
+	.top-navigation-bar__wordmark-supporting-text {
 		font: var(--primitives-font-body-xxs-regular-flat);
 		color: var(--semantics-content-secondary-color);
 		margin: 0;
@@ -301,7 +301,7 @@ export const styles = css`
 		}
 	}
 
-	/* ## Bar wrapper (title-bar + menu-bar, column on sm, row on md+) */
+	/* ## Main bar (wraps title-bar and menu-bar, column on sm, row on md+) */
 
 	.top-navigation-bar__main-bar {
 		display: flex;
@@ -339,17 +339,17 @@ export const styles = css`
 	/* ## Title item */
 
 	.top-navigation-bar__title {
-		font: var(--components-menu-bar-title-item-s-font);
+		font: var(--components-top-navigation-bar-title-sm-font);
 		color: var(--semantics-content-color);
 		padding: 0 var(--primitives-space-8);
 		white-space: nowrap;
 
 		@container top-navigation-bar (min-width: ${mdMin}) {
-			font: var(--components-menu-bar-title-item-m-font);
+			font: var(--components-top-navigation-bar-title-md-font);
 		}
 
 		@container top-navigation-bar (min-width: ${lgMin}) {
-			font: var(--components-menu-bar-title-item-l-font);
+			font: var(--components-top-navigation-bar-title-lg-font);
 		}
 	}
 
@@ -360,7 +360,7 @@ export const styles = css`
 		align-items: center;
 		justify-content: space-between;
 		flex: 1;
-		min-height: 44px;
+		min-height: var(--semantics-controls-md-min-size);
 		min-width: 0;
 	}
 
@@ -394,8 +394,6 @@ export const styles = css`
 	}
 
 	::slotted(ndd-menu-bar-item[slot="global"]) {
-		flex: 0 0 auto;
-
 		@container top-navigation-bar (max-width: ${mdMax}) {
 			display: none;
 		}
@@ -415,11 +413,5 @@ export const styles = css`
 
 	.top-navigation-bar__overflow-button {
 		display: none;
-	}
-
-	/* ## Utility slot */
-
-	::slotted(ndd-menu-bar-item[slot="utility"]) {
-		flex: 0 0 auto;
 	}
 `;
