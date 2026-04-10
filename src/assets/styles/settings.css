@@ -844,7 +844,6 @@
 	--components-top-navigation-bar-menu-bar-item-is-selected-indicator-height: var(--primitives-space-4);
 	--components-top-navigation-bar-menu-bar-item-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-200));
 	--components-top-navigation-bar-menu-bar-item-is-open-indicator-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
-	--components-top-navigation-bar-menu-bar-item-is-open-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
 	--components-top-navigation-bar-menu-bar-item-font: var(--primitives-font-body-md-bold-flat);
 	--components-top-navigation-bar-title-sm-font: var(--primitives-font-display-6-sm);
 	--components-top-navigation-bar-title-md-font: var(--primitives-font-display-5-sm);

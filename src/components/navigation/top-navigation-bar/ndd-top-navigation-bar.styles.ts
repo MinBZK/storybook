@@ -72,7 +72,7 @@ export const menuBarItemStyles = css`
 	}
 
 	:host([open]) .top-navigation-bar__menu-item:hover::before {
-		background-color: var(--components-top-navigation-bar-menu-bar-item-is-open-is-hovered-indicator-background-color);
+		background-color: var(--components-top-navigation-bar-menu-bar-item-is-hovered-indicator-background-color);
 	}
 
 	/* ## Current indicator (::after) */
@@ -367,7 +367,7 @@ export const styles = css`
 
 	/* ## Global bar */
 
-	.top-navigation-bar__global-bar {
+	.top-navigation-bar__global-menu-bar {
 		display: flex;
 		flex-direction: row;
 		align-items: stretch;
@@ -391,6 +391,13 @@ export const styles = css`
 		@container top-navigation-bar (max-width: ${mdMax}) {
 			display: inline-block;
 		}
+	}
+
+	/* ## Utility menu bar */
+
+	.top-navigation-bar__utility-menu-bar {
+		display: flex;
+		align-items: center;
 	}
 
 	/* ## Overflow items (global bar + utility) */

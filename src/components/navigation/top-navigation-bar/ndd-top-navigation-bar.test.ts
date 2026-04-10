@@ -147,17 +147,17 @@ describe('ndd-top-navigation-bar – i18n', () => {
 	it('uses default Dutch translations', async () => {
 		el = await fixture<NDDTopNavigationBar>('<ndd-top-navigation-bar></ndd-top-navigation-bar>');
 		await waitForUpdate(el);
-		const nav = el.shadowRoot!.querySelector('.top-navigation-bar__menu-bar');
+		const nav = el.shadowRoot!.querySelector('.top-navigation-bar__global-menu-bar');
 		expect(nav!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
 	});
 
 	it('accepts custom translations', async () => {
 		el = await fixture<NDDTopNavigationBar>('<ndd-top-navigation-bar></ndd-top-navigation-bar>');
 		(el as NDDTopNavigationBar).translations = {
-			'components.top-navigation-bar.main-navigation-label': 'Main navigation',
+			'components.top-navigation-bar.global-menu-bar-label': 'Main navigation',
 		};
 		await waitForUpdate(el);
-		const nav = el.shadowRoot!.querySelector('.top-navigation-bar__menu-bar');
+		const nav = el.shadowRoot!.querySelector('.top-navigation-bar__global-menu-bar');
 		expect(nav!.getAttribute('aria-label')).toBe('Main navigation');
 	});
 });
@@ -179,7 +179,7 @@ describe('ndd-menu-bar-item', () => {
 		el = await fixture('<ndd-menu-bar-item text="Hello"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
 		const content = el.shadowRoot!.querySelector('.top-navigation-bar__menu-item-text');
-		expect(content!.textContent).toBe('Hello');
+		expect(content!.textContent!.trim()).toBe('Hello');
 	});
 
 	it('does not set current on click', async () => {

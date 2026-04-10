@@ -236,7 +236,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 	// ## Internal state
 
-	@query('.top-navigation-bar__global-bar')
+	@query('.top-navigation-bar__global-menu-bar')
 	private _globalBarContainer!: HTMLElement;
 
 	@query('.top-navigation-bar__menu-button')
@@ -651,7 +651,7 @@ export class NDDTopNavigationBar extends LitElement {
 		const titleBar = document.createElement('ndd-top-title-bar');
 		titleBar.setAttribute('slot', 'header');
 		titleBar.setAttribute('text', this._menuText);
-		titleBar.setAttribute('dismiss-text', this._t('components.top-navigation-bar.dismiss-action'));
+		titleBar.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));
 		page.appendChild(titleBar);
 
 		const section = document.createElement('ndd-simple-section');
