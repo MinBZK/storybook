@@ -838,11 +838,11 @@
 	--components-menu-item-is-highlighted-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 
 
-	--components-menu-bar-menu-item-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--components-menu-bar-menu-item-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-750));
 	--components-menu-bar-menu-item-is-selected-color: var(--semantics-controls-is-selected-indicator-color);
 	--components-menu-bar-menu-item-is-selected-indicator-background-color: var(--semantics-controls-is-selected-indicator-color);
 	--components-menu-bar-menu-item-is-selected-indicator-height: var(--primitives-space-4);
-	--components-menu-bar-menu-item-is-hovered-indicator-background-color: #d9dee4;
+	--components-menu-bar-menu-item-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-200));
 	--components-menu-bar-menu-item-is-hovered-indicator-height: var(--primitives-space-32);
 	--components-menu-bar-menu-item-font: 550 18px/1.125 RijksSansVF, system-ui;
 	--components-menu-bar-title-item-s-font: 550 18px/1.125 RijksSansVF, system-ui;

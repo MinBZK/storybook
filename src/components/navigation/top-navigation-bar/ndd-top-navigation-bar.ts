@@ -1,4 +1,4 @@
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { styles, menuBarItemStyles } from './ndd-top-navigation-bar.styles.js';
 import { template, menuBarItemTemplate } from './ndd-top-navigation-bar.template.js';
@@ -6,6 +6,13 @@ import { nddTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.j
 import type { NDDTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.js';
 import '../../content/icon/ndd-icon.js';
 import '../../lists-and-menus/menu/ndd-menu.js';
+import '../../layout/sheet/ndd-sheet.js';
+import '../../layout/page/ndd-page.js';
+import '../../layout/page-sections/simple-section/ndd-simple-section.js';
+import '../../navigation/top-title-bar/ndd-top-title-bar.js';
+import '../../lists-and-menus/list/ndd-list.js';
+import '../../lists-and-menus/list-item/ndd-list-item.js';
+import '../../lists-and-menus/cells/text-cell/ndd-text-cell.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
@@ -41,18 +48,44 @@ export class NDDMenuBarItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
+	// ## Menu popover state
+
+	private _menu: HTMLElement | null = null;
+	private _menuOpen = false;
+	private _menuClosedAt = 0;
+
+	// ## Lifecycle
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.setAttribute('role', 'none');
 		this.addEventListener('click', this._handleClick);
 		this.addEventListener('keydown', this._handleKeyDown);
+		if (this.expandable) {
+			this._createMenu();
+		}
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this.removeEventListener('click', this._handleClick);
 		this.removeEventListener('keydown', this._handleKeyDown);
+		this._menu?.remove();
+		this._menu = null;
 	}
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('expandable')) {
+			if (this.expandable && !this._menu) {
+				this._createMenu();
+			} else if (!this.expandable && this._menu) {
+				this._menu.remove();
+				this._menu = null;
+			}
+		}
+	}
+
+	// ## Helpers
 
 	_sanitizeUrl(url: string | null): string | null {
 		if (!url) return null;
@@ -67,12 +100,25 @@ export class NDDMenuBarItem extends LitElement {
 		return url;
 	}
 
+	private _hasMenuItems(): boolean {
+		return this.querySelector('ndd-menu-item, ndd-menu-divider') !== null;
+	}
+
+	// ## Event handlers
+
 	private _handleClick = (event: Event): void => {
 		if (this.disabled) {
 			event.preventDefault();
 			event.stopPropagation();
 			return;
 		}
+
+		if (this.expandable && this._hasMenuItems()) {
+			event.preventDefault();
+			this._toggleMenu();
+			return;
+		}
+
 		if (!this.href) {
 			event.preventDefault();
 			this.dispatchEvent(new CustomEvent('select', {
@@ -88,6 +134,49 @@ export class NDDMenuBarItem extends LitElement {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
 			this._handleClick(event);
+		}
+	};
+
+	// ## Menu popover
+
+	private _createMenu(): void {
+		if (this._menu) return;
+		if (typeof document === 'undefined') return;
+
+		const menu = document.createElement('ndd-menu');
+		menu.setAttribute('placement', 'bottom-start');
+		menu.style.setProperty('--_menu-width', 'auto');
+		menu.addEventListener('toggle', (event: Event) => {
+			const open = (event as ToggleEvent).newState === 'open';
+			this._menuOpen = open;
+			if (!open) this._menuClosedAt = Date.now();
+			this.setAttribute('aria-expanded', String(open));
+		});
+		document.body.appendChild(menu);
+		this._menu = menu;
+	}
+
+	private _syncMenuItems(): void {
+		if (!this._menu) return;
+		this._menu.innerHTML = '';
+
+		const items = this.querySelectorAll('ndd-menu-item, ndd-menu-divider');
+		items.forEach(item => {
+			const clone = item.cloneNode(true) as Element;
+			this._menu!.appendChild(clone);
+		});
+	}
+
+	private _toggleMenu(): void {
+		if (!this._menu) return;
+
+		(this._menu as any).anchorElement = this;
+		this._syncMenuItems();
+
+		if (this._menuOpen) {
+			(this._menu as any).hidePopover?.();
+		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
+			(this._menu as any).showPopover?.();
 		}
 	};
 
@@ -110,19 +199,7 @@ export class NDDTopNavigationBar extends LitElement {
 	@property({ type: String, attribute: 'website-title' })
 	websiteTitle = '';
 
-	@property({ type: Boolean, attribute: 'no-logo', reflect: true })
-	noLogo = false;
-
-	@property({ type: Boolean, attribute: 'no-title', reflect: true })
-	noTitle = false;
-
-	@property({ type: Boolean, attribute: 'has-back-button', reflect: true })
-	hasBackButton = false;
-
 	// ## Logo properties
-
-	@property({ type: Boolean, attribute: 'logo-has-wordmark' })
-	logoHasWordmark = false;
 
 	@property({ type: String, attribute: 'logo-title' })
 	logoTitle = '';
@@ -157,10 +234,10 @@ export class NDDTopNavigationBar extends LitElement {
 	@query('.top-navigation-bar__menu-button')
 	private _menuButton!: HTMLElement;
 
-	@query('.top-navigation-bar__overflow-menu-item')
+	@query('#global-overflow-button')
 	private _overflowMenuItem!: HTMLElement;
 
-	@query('.top-navigation-bar__utility-overflow-menu-item')
+	@query('#utility-overflow-button')
 	private _utilityOverflowMenuItem!: HTMLElement;
 
 	@query('slot[name="global"]')
@@ -177,28 +254,42 @@ export class NDDTopNavigationBar extends LitElement {
 	private _utilityOverflowMenuOpen = false;
 	private _utilityOverflowMenuClosedAt = 0;
 
+	private _menuSheet: HTMLElement | null = null;
+
 	private _resizeObserver: ResizeObserver | null = null;
 	private _isHandlingOverflow = false;
 	private _overflowRAF: number | null = null;
 
-	// ## i18n helper
+	// ## i18n
+
+	private _mergedTranslations = { ...nddTopNavigationBarTranslations };
 
 	_t(key: keyof NDDTopNavigationBarTranslations): string {
-		return this.translations[key] ?? nddTopNavigationBarTranslations[key];
+		return this._mergedTranslations[key] ?? key;
+	}
+
+	override willUpdate(changed: PropertyValues): void {
+		if (changed.has('translations')) {
+			this._mergedTranslations = { ...nddTopNavigationBarTranslations, ...this.translations };
+		}
 	}
 
 	// ## Computed properties
 
+	get _hasBackButton(): boolean {
+		return Boolean(this.backHref || this.backText);
+	}
+
 	get _backText(): string {
-		return this.backText || this._t('components.top-navigation-bar.back-text');
+		return this.backText || this._t('components.top-navigation-bar.back-action');
 	}
 
 	get _overflowText(): string {
-		return this._t('components.top-navigation-bar.overflow-text');
+		return this._t('components.top-navigation-bar.overflow-action');
 	}
 
 	get _menuText(): string {
-		return this._t('components.top-navigation-bar.menu-text');
+		return this._t('components.top-navigation-bar.menu-action');
 	}
 
 	// ## Lifecycle
@@ -218,6 +309,8 @@ export class NDDTopNavigationBar extends LitElement {
 		this._overflowMenu = null;
 		this._utilityOverflowMenu?.remove();
 		this._utilityOverflowMenu = null;
+		this._menuSheet?.remove();
+		this._menuSheet = null;
 	}
 
 	override firstUpdated(): void {
@@ -544,6 +637,69 @@ export class NDDTopNavigationBar extends LitElement {
 			this._utilityOverflowMenu, this._utilityOverflowMenuItem,
 			this._utilityOverflowMenuOpen, this._utilityOverflowMenuClosedAt,
 		);
+	};
+
+	// ## Menu sheet
+
+	private _menuSheetList: HTMLElement | null = null;
+
+	private _createMenuSheet(): HTMLElement {
+		const sheet = document.createElement('ndd-sheet');
+		sheet.setAttribute('placement', 'left');
+		sheet.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
+
+		const page = document.createElement('ndd-page');
+		page.setAttribute('sticky-header', '');
+
+		const titleBar = document.createElement('ndd-top-title-bar');
+		titleBar.setAttribute('slot', 'header');
+		titleBar.setAttribute('text', this._menuText);
+		titleBar.setAttribute('dismiss-text', '');
+		page.appendChild(titleBar);
+
+		const section = document.createElement('ndd-simple-section');
+
+		this._menuSheetList = document.createElement('ndd-list');
+		this._menuSheetList.setAttribute('variant', 'simple');
+		section.appendChild(this._menuSheetList);
+
+		page.appendChild(section);
+		sheet.appendChild(page);
+		document.body.appendChild(sheet);
+		return sheet;
+	}
+
+	private _syncMenuSheetItems(): void {
+		if (!this._menuSheetList) return;
+		this._menuSheetList.innerHTML = '';
+
+		const slottedElements = this._menuSlot?.assignedElements({ flatten: true }) ?? [];
+		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as NDDMenuBarItem[];
+
+		for (const item of items) {
+			const listItem = document.createElement('ndd-list-item');
+			listItem.setAttribute('type', 'button');
+			if (item.selected) listItem.setAttribute('selected', '');
+
+			const textCell = document.createElement('ndd-text-cell');
+			textCell.setAttribute('text', item.text);
+			listItem.appendChild(textCell);
+
+			listItem.addEventListener('click', () => {
+				item.click();
+				(this._menuSheet as any)?.hide?.();
+			});
+
+			this._menuSheetList!.appendChild(listItem);
+		}
+	}
+
+	_onMenuButtonClick = (): void => {
+		if (!this._menuSheet) {
+			this._menuSheet = this._createMenuSheet();
+		}
+		this._syncMenuSheetItems();
+		(this._menuSheet as any).show?.();
 	};
 
 	// ## Back button

@@ -46,13 +46,6 @@ describe('ndd-top-navigation-bar', () => {
 		expect(logoBar).not.toBeNull();
 	});
 
-	it('hides logo when no-logo is set', async () => {
-		el = await fixture('<ndd-top-navigation-bar no-logo></ndd-top-navigation-bar>');
-		await waitForUpdate(el);
-		const logoBar = el.shadowRoot!.querySelector('.top-navigation-bar__logo-bar');
-		expect(logoBar).toBeNull();
-	});
-
 	it('renders utility slot items', async () => {
 		el = await fixture(navWithUtility());
 		await waitForUpdate(el);
@@ -159,9 +152,9 @@ describe('ndd-top-navigation-bar – back button', () => {
 		if (el) cleanup(el);
 	});
 
-	it('renders back button when has-back-button is set', async () => {
+	it('renders back button when back-text="Terug" is set', async () => {
 		el = await fixture<NDDTopNavigationBar>(`
-			<ndd-top-navigation-bar has-back-button></ndd-top-navigation-bar>
+			<ndd-top-navigation-bar back-text="Terug"></ndd-top-navigation-bar>
 		`);
 		await waitForUpdate(el);
 		const backBtn = el.shadowRoot!.querySelector('ndd-menu-bar-item[icon="arrow-left"]');
@@ -170,7 +163,7 @@ describe('ndd-top-navigation-bar – back button', () => {
 
 	it('dispatches back-click when back button without href is clicked', async () => {
 		el = await fixture<NDDTopNavigationBar>(`
-			<ndd-top-navigation-bar has-back-button></ndd-top-navigation-bar>
+			<ndd-top-navigation-bar back-text="Terug"></ndd-top-navigation-bar>
 		`);
 		await waitForUpdate(el);
 
@@ -184,7 +177,7 @@ describe('ndd-top-navigation-bar – back button', () => {
 
 	it('renders back button with href when back-href is set', async () => {
 		el = await fixture<NDDTopNavigationBar>(`
-			<ndd-top-navigation-bar has-back-button back-href="/home" back-text="Home"></ndd-top-navigation-bar>
+			<ndd-top-navigation-bar back-text="Terug" back-href="/home" back-text="Home"></ndd-top-navigation-bar>
 		`);
 		await waitForUpdate(el);
 		const backItem = el.shadowRoot!.querySelector('ndd-menu-bar-item[icon="arrow-left"]') as HTMLElement;
@@ -210,7 +203,7 @@ describe('ndd-top-navigation-bar – i18n', () => {
 	it('accepts custom translations', async () => {
 		el = await fixture<NDDTopNavigationBar>('<ndd-top-navigation-bar></ndd-top-navigation-bar>');
 		(el as NDDTopNavigationBar).translations = {
-			'components.top-navigation-bar.main-navigation': 'Main navigation',
+			'components.top-navigation-bar.main-navigation-label': 'Main navigation',
 		};
 		await waitForUpdate(el);
 		const nav = el.shadowRoot!.querySelector('.top-navigation-bar__menu-bar');
@@ -234,7 +227,7 @@ describe('ndd-menu-bar-item', () => {
 	it('renders text from attribute', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Hello"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		const content = el.shadowRoot!.querySelector('.top-navigation-bar__menu-item-content');
+		const content = el.shadowRoot!.querySelector('.top-navigation-bar__menu-item-text');
 		expect(content!.textContent).toBe('Hello');
 	});
 
@@ -244,5 +237,46 @@ describe('ndd-menu-bar-item', () => {
 		el.click();
 		await waitForUpdate(el);
 		expect(el.hasAttribute('selected')).toBe(false);
+	});
+
+	it('creates popover menu when expandable with menu items', async () => {
+		el = await fixture(`
+			<ndd-menu-bar-item text="NL" expandable>
+				<ndd-menu-item text="Nederlands"></ndd-menu-item>
+				<ndd-menu-item text="English"></ndd-menu-item>
+			</ndd-menu-bar-item>
+		`);
+		await waitForUpdate(el);
+		const menu = document.querySelector('ndd-menu');
+		expect(menu).not.toBeNull();
+		// Cleanup menu from body
+		menu?.remove();
+	});
+
+	it('hides slotted menu items visually', async () => {
+		el = await fixture(`
+			<ndd-menu-bar-item text="NL" expandable>
+				<ndd-menu-item text="Nederlands"></ndd-menu-item>
+			</ndd-menu-bar-item>
+		`);
+		await waitForUpdate(el);
+		const menuItem = el.querySelector('ndd-menu-item');
+		expect(getComputedStyle(menuItem!).display).toBe('none');
+		document.querySelector('ndd-menu')?.remove();
+	});
+
+	it('does not fire select when expandable with menu items', async () => {
+		el = await fixture(`
+			<ndd-menu-bar-item text="NL" expandable>
+				<ndd-menu-item text="Nederlands"></ndd-menu-item>
+			</ndd-menu-bar-item>
+		`);
+		await waitForUpdate(el);
+		let fired = false;
+		el.addEventListener('select', () => { fired = true; });
+		el.click();
+		await waitForUpdate(el);
+		expect(fired).toBe(false);
+		document.querySelector('ndd-menu')?.remove();
 	});
 });

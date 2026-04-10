@@ -78,9 +78,9 @@ export const menuBarItemStyles = css`
 		z-index: 1;
 	}
 
-	/* ## Content */
+	/* ## Text */
 
-	.top-navigation-bar__menu-item-content {
+	.top-navigation-bar__menu-item-text {
 		position: relative;
 		z-index: 2;
 	}
@@ -113,6 +113,13 @@ export const menuBarItemStyles = css`
 		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
 	}
 
+	/* ## Slotted menu items (hidden, used by expandable popover) */
+
+	::slotted(ndd-menu-item),
+	::slotted(ndd-menu-divider) {
+		display: none;
+	}
+
 	/* ## Disabled */
 
 	:host([disabled]) .top-navigation-bar__menu-item {
@@ -126,7 +133,7 @@ export const menuBarItemStyles = css`
 		padding: var(--primitives-space-8);
 	}
 
-	:host([icon-only]) .top-navigation-bar__menu-item-content {
+	:host([icon-only]) .top-navigation-bar__menu-item-text {
 		position: absolute;
 		width: 1px;
 		height: 1px;
@@ -148,7 +155,7 @@ export const menuBarItemStyles = css`
 		padding: var(--primitives-space-8);
 	}
 
-	:host([sm-icon-only][compact][icon]:not([icon=""])) .top-navigation-bar__menu-item-content {
+	:host([sm-icon-only][compact][icon]:not([icon=""])) .top-navigation-bar__menu-item-text {
 		position: absolute;
 		width: 1px;
 		height: 1px;
@@ -197,21 +204,29 @@ export const styles = css`
 	/* ## Logo bar */
 
 	.top-navigation-bar__logo-bar {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: var(--primitives-space-8);
 		align-items: center;
-		gap: var(--primitives-space-16);
-		background-color: var(--semantics-surfaces-background-color);
+		padding-inline: var(--semantics-page-sections-sm-margin-inline);
+
+		@container layout-area (min-width: ${mdMin}) {
+			padding-inline: var(--semantics-page-sections-md-margin-inline);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			padding-inline: var(--semantics-page-sections-lg-margin-inline);
+		}
 	}
 
 	/* ## Logo */
 
 	.top-navigation-bar__logo {
+		grid-column: 2;
+		align-self: start;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		flex-shrink: 0;
 		color: var(--primitives-color-accent-100);
 		width: 40px;
 		height: 80px;
@@ -235,9 +250,11 @@ export const styles = css`
 	/* ## Wordmark */
 
 	.top-navigation-bar__wordmark {
+		grid-column: 3;
 		display: flex;
 		flex-direction: column;
 		gap: var(--primitives-space-2);
+		padding-block: var(--primitives-space-8);
 	}
 
 	.top-navigation-bar__wordmark-title {
@@ -255,50 +272,63 @@ export const styles = css`
 	}
 
 	.top-navigation-bar__wordmark-subtitle {
-		font: 400 14px/1.25 var(--ndd-font-family-body);
-		color: var(--primitives-color-neutral-700);
+		font: var(--primitives-font-body-xs-regular-flat);
+		color: var(--semantics-content-secondary-color);
 		margin: 0;
 
 		@container top-navigation-bar (min-width: ${mdMin}) {
-			font-size: 16px;
-		}
-
-		@container top-navigation-bar (min-width: ${lgMin}) {
-			font-size: 18px;
+			font: var(--primitives-font-body-sm-regular-flat);
 		}
 	}
 
 	.top-navigation-bar__wordmark-supporting {
-		font: 400 12px/1.25 var(--ndd-font-family-body);
-		color: var(--primitives-color-accent-100);
+		font: var(--primitives-font-body-xxs-regular-flat);
+		color: var(--semantics-content-secondary-color);
 		margin: 0;
 
 		@container top-navigation-bar (min-width: ${mdMin}) {
-			font-size: 14px;
-		}
-
-		@container top-navigation-bar (min-width: ${lgMin}) {
-			font-size: 16px;
+			font: var(--primitives-font-body-xs-regular-flat);
 		}
 	}
 
-	/* ## Title bar (own row on mobile, hidden on desktop) */
+	/* ## Bar wrapper (title-bar + menu-bar, column on sm, row on md+) */
+
+	.top-navigation-bar__main-bar {
+		display: flex;
+		flex-direction: column;
+		padding-inline: var(--semantics-page-sections-sm-margin-inline);
+
+		@container layout-area (min-width: ${mdMin}) {
+			padding-inline: var(--semantics-page-sections-md-margin-inline);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			padding-inline: var(--semantics-page-sections-lg-margin-inline);
+		}
+
+		@container top-navigation-bar (min-width: ${mdMin}) {
+			flex-direction: row;
+			align-items: center;
+		}
+	}
+
+	/* ## Title bar */
 
 	.top-navigation-bar__title-bar {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		padding: var(--primitives-space-4) var(--primitives-space-8);
-		background-color: var(--semantics-surfaces-background-color);
 
 		@container top-navigation-bar (min-width: ${mdMin}) {
-			display: none;
+			justify-content: flex-start;
+			padding: 0;
 		}
 	}
 
 	/* ## Title item */
 
-	.top-navigation-bar__title-item {
+	.top-navigation-bar__title {
 		font: var(--components-menu-bar-title-item-s-font);
 		color: var(--primitives-color-neutral-900);
 		padding: 0 var(--primitives-space-8);
@@ -313,33 +343,15 @@ export const styles = css`
 		}
 	}
 
-	/* ## Title item inline (in menu-bar-start, hidden on mobile, visible on desktop) */
-
-	.top-navigation-bar__title-item--inline {
-		display: none;
-
-		@container top-navigation-bar (min-width: ${mdMin}) {
-			display: inline;
-		}
-	}
-
 	/* ## Menu bar */
 
 	.top-navigation-bar__menu-bar {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		flex: 1;
 		min-height: 44px;
-		background-color: var(--semantics-surfaces-background-color);
-		padding-inline: var(--semantics-page-sections-sm-margin-inline);
-
-		@container layout-area (min-width: ${mdMin}) {
-			padding-inline: var(--semantics-page-sections-md-margin-inline);
-		}
-
-		@container layout-area (min-width: ${lgMin}) {
-			padding-inline: var(--semantics-page-sections-lg-margin-inline);
-		}
+		min-width: 0;
 	}
 
 	/* ## Menu bar start */
@@ -389,15 +401,9 @@ export const styles = css`
 		}
 	}
 
-	/* ## Overflow menu item (global bar) */
+	/* ## Overflow items (global bar + utility) */
 
-	.top-navigation-bar__overflow-menu-item {
-		display: none;
-	}
-
-	/* ## Utility overflow menu item */
-
-	.top-navigation-bar__utility-overflow-menu-item {
+	.top-navigation-bar__overflow-button {
 		display: none;
 	}
 

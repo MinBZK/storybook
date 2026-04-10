@@ -2,7 +2,7 @@ import { html, nothing } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { NDDTopNavigationBar, NDDMenuBarItem } from './ndd-top-navigation-bar.js';
 // @ts-expect-error Vite raw import
-import rijkswapenSvg from './rijkswapen.svg?raw';
+import logoSvg from './logo.svg?raw';
 
 // # Menu bar item template
 
@@ -10,18 +10,6 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 	const safeHref = this._sanitizeUrl(this.href);
 	const isLink = Boolean(safeHref);
 	const tabindex = this.disabled ? '-1' : '0';
-
-	const iconPart = this.icon ? html`
-		<span class="top-navigation-bar__menu-item-icon">
-			<ndd-icon name=${this.icon}></ndd-icon>
-		</span>
-	` : nothing;
-
-	const disclosurePart = this.expandable ? html`
-		<span class="top-navigation-bar__menu-item-disclosure-icon">
-			<ndd-icon name="chevron-down-small"></ndd-icon>
-		</span>
-	` : nothing;
 
 	if (isLink) {
 		return html`
@@ -31,10 +19,11 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 				aria-current=${this.selected ? 'page' : nothing}
 				tabindex=${tabindex}
 			>
-				${iconPart}
-				<span class="top-navigation-bar__menu-item-content">${this.text}</span>
-				${disclosurePart}
+				${this.icon ? html`<span class="top-navigation-bar__menu-item-icon"><ndd-icon name=${this.icon}></ndd-icon></span>` : nothing}
+				<span class="top-navigation-bar__menu-item-text">${this.text}</span>
+				${this.expandable ? html`<span class="top-navigation-bar__menu-item-disclosure-icon"><ndd-icon name="chevron-down-small"></ndd-icon></span>` : nothing}
 			</a>
+			<slot></slot>
 		`;
 	}
 
@@ -45,10 +34,11 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 			aria-current=${this.selected ? 'page' : nothing}
 			tabindex=${tabindex}
 		>
-			${iconPart}
-			<span class="top-navigation-bar__menu-item-content">${this.text}</span>
-			${disclosurePart}
+			${this.icon ? html`<span class="top-navigation-bar__menu-item-icon"><ndd-icon name=${this.icon}></ndd-icon></span>` : nothing}
+			<span class="top-navigation-bar__menu-item-text">${this.text}</span>
+			${this.expandable ? html`<span class="top-navigation-bar__menu-item-disclosure-icon"><ndd-icon name="chevron-down-small"></ndd-icon></span>` : nothing}
 		</button>
+		<slot></slot>
 	`;
 }
 
@@ -57,37 +47,38 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 export function template(this: NDDTopNavigationBar) {
 	return html`
 		<div class="top-navigation-bar">
-			${!this.noLogo ? html`
-				<div class="top-navigation-bar__logo-bar">
-					${renderLogo.call(this)}
-				</div>
-			` : nothing}
-			${!this.noTitle ? html`
-				<div class="top-navigation-bar__title-bar">
-					<span class="top-navigation-bar__title-item">${this.websiteTitle}</span>
-				</div>
-			` : nothing}
-			<nav class="top-navigation-bar__menu-bar"
-				aria-label="${this._t('components.top-navigation-bar.main-navigation')}"
-			>
-				<div class="top-navigation-bar__menu-bar-start">
-					${this.hasBackButton ? renderBackButton.call(this) : nothing}
-					${!this.noTitle ? html`
-						<span class="top-navigation-bar__title-item top-navigation-bar__title-item--inline">${this.websiteTitle}</span>
-					` : nothing}
-					${renderGlobalBar.call(this)}
-				</div>
-				<div class="top-navigation-bar__menu-bar-end">
-					<slot name="utility"></slot>
-					<ndd-menu-bar-item class="top-navigation-bar__utility-overflow-menu-item"
-						text="${this._overflowText}"
-						icon="ellipsis"
-						icon-only
-						aria-haspopup="menu"
-						@click=${this._onUtilityOverflowClick}
-					></ndd-menu-bar-item>
-				</div>
-			</nav>
+			<div class="top-navigation-bar__logo-bar">
+				${renderLogo.call(this)}
+			</div>
+			<div class="top-navigation-bar__main-bar">
+				${this.websiteTitle ? html`
+					<div class="top-navigation-bar__title-bar">
+						<span class="top-navigation-bar__title">${this.websiteTitle}</span>
+					</div>
+				` : nothing}
+				<nav class="top-navigation-bar__menu-bar"
+					aria-label="${this._t('components.top-navigation-bar.main-navigation-label')}"
+				>
+					<div class="top-navigation-bar__menu-bar-start">
+						${this._hasBackButton ? renderBackButton.call(this) : nothing}
+						${renderGlobalBar.call(this)}
+					</div>
+					<div class="top-navigation-bar__menu-bar-end">
+						<slot name="utility"></slot>
+						<div class="top-navigation-bar__overflow-button"
+							id="utility-overflow-button"
+						>
+							<ndd-menu-bar-item
+								text="${this._overflowText}"
+								icon="ellipsis"
+								icon-only
+								aria-haspopup="menu"
+								@click=${this._onUtilityOverflowClick}
+							></ndd-menu-bar-item>
+						</div>
+					</div>
+				</nav>
+			</div>
 		</div>
 	`;
 }
@@ -100,9 +91,9 @@ function renderLogo(this: NDDTopNavigationBar) {
 			role="img"
 			aria-label="${this._t('components.top-navigation-bar.logo-label')}"
 		>
-			${unsafeHTML(rijkswapenSvg)}
+			${unsafeHTML(logoSvg)}
 		</div>
-		${this.logoHasWordmark ? html`
+		${this.logoTitle ? html`
 			<div class="top-navigation-bar__wordmark">
 				${this.logoTitle ? html`<p class="top-navigation-bar__wordmark-title">${this.logoTitle}</p>` : nothing}
 				${this.logoSubtitle ? html`<p class="top-navigation-bar__wordmark-subtitle">${this.logoSubtitle}</p>` : nothing}
@@ -131,19 +122,26 @@ function renderBackButton(this: NDDTopNavigationBar) {
 
 function renderGlobalBar(this: NDDTopNavigationBar) {
 	return html`
-		<nav class="top-navigation-bar__global-bar" role="none">
-			<ndd-menu-bar-item class="top-navigation-bar__menu-button"
-				icon="list"
-				text="${this._menuText}"
-			></ndd-menu-bar-item>
+		<div class="top-navigation-bar__global-bar">
+			<div class="top-navigation-bar__menu-button">
+				<ndd-menu-bar-item
+					icon="menu"
+					text="${this._menuText}"
+					@click=${this._onMenuButtonClick}
+				></ndd-menu-bar-item>
+			</div>
 			<slot name="global"></slot>
-			<ndd-menu-bar-item class="top-navigation-bar__overflow-menu-item"
-				text="${this._overflowText}"
-				icon="ellipsis"
-				icon-only
-				aria-haspopup="menu"
-				@click=${this._onOverflowClick}
-			></ndd-menu-bar-item>
-		</nav>
+			<div class="top-navigation-bar__overflow-button"
+				id="global-overflow-button"
+			>
+				<ndd-menu-bar-item
+					text="${this._overflowText}"
+					icon="ellipsis"
+					icon-only
+					aria-haspopup="menu"
+					@click=${this._onOverflowClick}
+				></ndd-menu-bar-item>
+			</div>
+		</div>
 	`;
 }

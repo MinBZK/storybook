@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './ndd-top-navigation-bar.ts';
 
 export default {
@@ -8,117 +8,105 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
+	args: {
+		'website-title': 'DigID',
+		'logo-title': '',
+		'logo-subtitle': '',
+		'logo-supporting-text-1': '',
+		'logo-supporting-text-2': '',
+		'back-href': '',
+		'back-text': '',
+	},
 	argTypes: {
-		'website-title': {
-			control: 'text',
-			description: 'Website/application name shown in navigation bar',
-			table: { category: 'Main' },
-		},
-		'no-logo': {
-			control: 'boolean',
-			description: 'Hide the Rijksoverheid coat of arms logo',
-			table: { category: 'Main' },
-		},
-		'no-title': {
-			control: 'boolean',
-			description: 'Hide the title text',
-			table: { category: 'Main' },
-		},
-		'has-back-button': {
-			control: 'boolean',
-			description: 'Show back navigation button',
-			table: { category: 'Main' },
-		},
-		'logo-has-wordmark': {
-			control: 'boolean',
-			description: 'Show wordmark text beside the logo',
-			table: { category: 'Logo' },
-		},
-		'logo-title': {
-			control: 'text',
-			description: 'Logo wordmark title',
-			table: { category: 'Logo' },
-		},
-		'logo-subtitle': {
-			control: 'text',
-			description: 'Logo wordmark subtitle',
-			table: { category: 'Logo' },
-		},
-		'logo-supporting-text-1': {
-			control: 'text',
-			description: 'Logo supporting text line 1',
-			table: { category: 'Logo' },
-		},
-		'logo-supporting-text-2': {
-			control: 'text',
-			description: 'Logo supporting text line 2',
-			table: { category: 'Logo' },
-		},
-		'back-href': {
-			control: 'text',
-			description: 'Back button link destination',
-			table: { category: 'Back Button' },
-		},
-		'back-text': {
-			control: 'text',
-			description: 'Back button text (default: "Terug")',
-			table: { category: 'Back Button' },
-		},
+		'website-title': { control: 'text', description: 'Naam van de website of applicatie' },
+		'logo-title': { control: 'text', description: 'Woordmerk titel (toont woordmerk naast logo)' },
+		'logo-subtitle': { control: 'text', description: 'Woordmerk subtitel' },
+		'logo-supporting-text-1': { control: 'text', description: 'Woordmerk ondersteunende tekst regel 1' },
+		'logo-supporting-text-2': { control: 'text', description: 'Woordmerk ondersteunende tekst regel 2' },
+		'back-href': { control: 'text', description: 'URL van de terugknop' },
+		'back-text': { control: 'text', description: 'Tekst van de terugknop (standaard: "Terug")' },
 	},
 };
 
 // ## Layout area wrapper (simulates ndd-page container)
 
-const layoutArea = 'container-type: inline-size; container-name: layout-area;';
+const layoutArea = 'container-type: inline-size; container-name: layout-area; background-color: var(--semantics-surfaces-background-color);';
 
-// ## Default utility items (reusable pattern for stories)
+// ## Template
 
-const defaultUtilityItems = html`
-	<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only></ndd-menu-bar-item>
-	<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
-	<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only></ndd-menu-bar-item>
+const Template = ({
+	'website-title': websiteTitle,
+	'logo-title': logoTitle,
+	'logo-subtitle': logoSubtitle,
+	'logo-supporting-text-1': logoSupportingText1,
+	'logo-supporting-text-2': logoSupportingText2,
+	'back-href': backHref,
+	'back-text': backText,
+}: Record<string, unknown>) => html`
+	<div style=${layoutArea}>
+		<ndd-top-navigation-bar
+			website-title=${websiteTitle || nothing}
+			logo-title=${logoTitle || nothing}
+			logo-subtitle=${logoSubtitle || nothing}
+			logo-supporting-text-1=${logoSupportingText1 || nothing}
+			logo-supporting-text-2=${logoSupportingText2 || nothing}
+			back-href=${backHref || nothing}
+			back-text=${backText || nothing}
+		>
+			<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+				<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+				<ndd-menu-item text="English" type="radio"></ndd-menu-item>
+				<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
+			</ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+				<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
+				<ndd-menu-item text="Instellingen"></ndd-menu-item>
+				<ndd-menu-divider></ndd-menu-divider>
+				<ndd-menu-item text="Uitloggen"></ndd-menu-item>
+			</ndd-menu-bar-item>
+		</ndd-top-navigation-bar>
+	</div>
 `;
 
-export const Default = {
-	render: () => html`
-		<div style=${layoutArea}>
-			<ndd-top-navigation-bar website-title="DigID">
-				<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
-				${defaultUtilityItems}
-			</ndd-top-navigation-bar>
-		</div>
-	`,
+export const Default = Template.bind({});
+
+export const WithLogoWordmark = Template.bind({});
+WithLogoWordmark.args = {
+	'logo-title': 'DigID',
 };
 
-export const WithLogoWordmark = {
-	render: () => html`
-		<div style=${layoutArea}>
-			<ndd-top-navigation-bar
-				website-title="DigID"
-				logo-has-wordmark
-				logo-title="DigID"
-			>
-				<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-				${defaultUtilityItems}
-			</ndd-top-navigation-bar>
-		</div>
-	`,
+export const WithBackButton = Template.bind({});
+WithBackButton.args = {
+	'back-href': '/',
+	'back-text': 'Terug naar overzicht',
 };
 
 export const MijnOverheidZakelijk = {
 	render: () => html`
 		<div style=${layoutArea}>
 			<ndd-top-navigation-bar website-title="Mijn overheid zakelijk">
-				<ndd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="global" text="Over MOZa"></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="global" text="Contact"></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable>
+					<ndd-menu-item text="Bedrijfsprofiel"></ndd-menu-item>
+					<ndd-menu-item text="Instellingen"></ndd-menu-item>
+					<ndd-menu-divider></ndd-menu-divider>
+					<ndd-menu-item text="Uitloggen"></ndd-menu-item>
+				</ndd-menu-bar-item>
 			</ndd-top-navigation-bar>
 		</div>
 	`,
+	parameters: { controls: { disable: true } },
 };
 
 export const RegelRecht = {
@@ -126,15 +114,18 @@ export const RegelRecht = {
 		<div style=${layoutArea}>
 			<ndd-top-navigation-bar
 				website-title="RegelRecht"
-				has-back-button
 				back-href="/"
 				back-text="Bibliotheek"
-				no-logo
 			>
-				<ndd-menu-bar-item slot="utility" text="J. Jansen" icon="person" expandable></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="J. Jansen" icon="person" expandable>
+					<ndd-menu-item text="Mijn profiel"></ndd-menu-item>
+					<ndd-menu-divider></ndd-menu-divider>
+					<ndd-menu-item text="Uitloggen"></ndd-menu-item>
+				</ndd-menu-bar-item>
 			</ndd-top-navigation-bar>
 		</div>
 	`,
+	parameters: { controls: { disable: true } },
 };
 
 export const SmallViewport = {
@@ -144,10 +135,22 @@ export const SmallViewport = {
 				<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-				${defaultUtilityItems}
+				<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
+					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
+				</ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+					<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
+					<ndd-menu-item text="Instellingen"></ndd-menu-item>
+					<ndd-menu-divider></ndd-menu-divider>
+					<ndd-menu-item text="Uitloggen"></ndd-menu-item>
+				</ndd-menu-bar-item>
 			</ndd-top-navigation-bar>
 		</div>
 	`,
+	parameters: { controls: { disable: true } },
 };
 
 export const ManyGlobalItems = {
@@ -162,59 +165,94 @@ export const ManyGlobalItems = {
 				<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Vraag en antwoord"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Wetten en regelgeving"></ndd-menu-bar-item>
-				${defaultUtilityItems}
+				<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
+					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
+				</ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+					<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
+					<ndd-menu-item text="Instellingen"></ndd-menu-item>
+					<ndd-menu-divider></ndd-menu-divider>
+					<ndd-menu-item text="Uitloggen"></ndd-menu-item>
+				</ndd-menu-bar-item>
 			</ndd-top-navigation-bar>
 		</div>
 	`,
+	parameters: { controls: { disable: true } },
 };
 
 export const MinimalLogo = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<ndd-top-navigation-bar no-title></ndd-top-navigation-bar>
+			<ndd-top-navigation-bar></ndd-top-navigation-bar>
 		</div>
 	`,
+	parameters: { controls: { disable: true } },
 };
 
 export const AllStates = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 32px;">
 			<div style=${layoutArea}>
-				<h3 style="margin: 0 0 8px; font-family: system-ui;">DigID (Full width)</h3>
-				<ndd-top-navigation-bar website-title="DigID">
+				<ndd-top-navigation-bar website-title="DigID (Full width)">
 					<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
-					${defaultUtilityItems}
+					<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
+					</ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+						<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
+						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
+					</ndd-menu-bar-item>
 				</ndd-top-navigation-bar>
 			</div>
 			<div style="${layoutArea} max-width: 400px;">
-				<h3 style="margin: 0 0 8px; font-family: system-ui;">DigID (Small viewport)</h3>
-				<ndd-top-navigation-bar website-title="DigID">
+				<ndd-top-navigation-bar website-title="DigID (Small viewport)">
 					<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-					${defaultUtilityItems}
+					<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
+					</ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+						<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
+						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
+					</ndd-menu-bar-item>
 				</ndd-top-navigation-bar>
 			</div>
 			<div style=${layoutArea}>
-				<h3 style="margin: 0 0 8px; font-family: system-ui;">Mijn overheid zakelijk</h3>
 				<ndd-top-navigation-bar website-title="Mijn overheid zakelijk">
-					<ndd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="global" text="Over MOZa"></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="global" text="Contact"></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable>
+						<ndd-menu-item text="Bedrijfsprofiel"></ndd-menu-item>
+						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
+					</ndd-menu-bar-item>
 				</ndd-top-navigation-bar>
 			</div>
 			<div style=${layoutArea}>
-				<h3 style="margin: 0 0 8px; font-family: system-ui;">RegelRecht</h3>
 				<ndd-top-navigation-bar
 					website-title="RegelRecht"
-					has-back-button
 					back-href="/"
 					back-text="Bibliotheek"
-					no-logo
 				>
-					<ndd-menu-bar-item slot="utility" text="J. Jansen" icon="person" expandable></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="J. Jansen" icon="person" expandable>
+						<ndd-menu-item text="Mijn profiel"></ndd-menu-item>
+						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
+					</ndd-menu-bar-item>
 				</ndd-top-navigation-bar>
 			</div>
 		</div>
