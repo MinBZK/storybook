@@ -64,6 +64,10 @@ export const menuBarItemStyles = css`
 		background-color: var(--components-menu-bar-menu-item-is-hovered-indicator-background-color);
 	}
 
+	:host([open]) .top-navigation-bar__menu-item::before {
+		background-color: var(--components-menu-bar-menu-item-is-open-indicator-background-color);
+	}
+
 	/* ## Selection indicator (::after) */
 
 	:host([selected]) .top-navigation-bar__menu-item::after {

@@ -112,7 +112,7 @@ describe('ndd-top-navigation-bar – keyboard navigation', () => {
 		el = await fixture<NDDTopNavigationBar>(navWithItems());
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[1] as HTMLElement, 'focus');
+		const spy = vi.spyOn(items[1], 'focus');
 		pressKey(items[0], 'ArrowRight');
 		expect(spy).toHaveBeenCalled();
 	});
@@ -121,7 +121,7 @@ describe('ndd-top-navigation-bar – keyboard navigation', () => {
 		el = await fixture<NDDTopNavigationBar>(navWithItems());
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
+		const spy = vi.spyOn(items[2], 'focus');
 		pressKey(items[0], 'ArrowLeft');
 		expect(spy).toHaveBeenCalled();
 	});
@@ -130,7 +130,7 @@ describe('ndd-top-navigation-bar – keyboard navigation', () => {
 		el = await fixture<NDDTopNavigationBar>(navWithItems());
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
+		const spy = vi.spyOn(items[0], 'focus');
 		pressKey(items[2], 'Home');
 		expect(spy).toHaveBeenCalled();
 	});
@@ -139,7 +139,7 @@ describe('ndd-top-navigation-bar – keyboard navigation', () => {
 		el = await fixture<NDDTopNavigationBar>(navWithItems());
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
+		const spy = vi.spyOn(items[2], 'focus');
 		pressKey(items[0], 'End');
 		expect(spy).toHaveBeenCalled();
 	});

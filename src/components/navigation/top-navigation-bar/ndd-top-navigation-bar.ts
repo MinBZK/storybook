@@ -58,7 +58,6 @@ export class NDDMenuBarItem extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		this.setAttribute('role', 'none');
 		this.addEventListener('click', this._handleClick);
 		this.addEventListener('keydown', this._handleKeyDown);
 		if (this.expandable) {
@@ -83,6 +82,11 @@ export class NDDMenuBarItem extends LitElement {
 				this._menu = null;
 			}
 		}
+	}
+
+	override focus(options?: FocusOptions): void {
+		const focusable = this.shadowRoot?.querySelector<HTMLElement>('button, a');
+		focusable?.focus(options);
 	}
 
 	// ## Helpers
@@ -151,6 +155,7 @@ export class NDDMenuBarItem extends LitElement {
 			this._menuOpen = open;
 			if (!open) this._menuClosedAt = Date.now();
 			this.setAttribute('aria-expanded', String(open));
+			this.toggleAttribute('open', open);
 		});
 		document.body.appendChild(menu);
 		this._menu = menu;
@@ -220,8 +225,6 @@ export class NDDTopNavigationBar extends LitElement {
 
 	@property({ type: String, attribute: 'back-text' })
 	backText = '';
-
-	// ## i18n
 
 	@property({ type: Object })
 	translations: Partial<NDDTopNavigationBarTranslations> = {};
@@ -311,18 +314,11 @@ export class NDDTopNavigationBar extends LitElement {
 		this._utilityOverflowMenu = null;
 		this._menuSheet?.remove();
 		this._menuSheet = null;
+		this._menuSheetList = null;
 	}
 
 	override firstUpdated(): void {
 		this._setupOverflowDetection();
-		this._overflowMenu = this._createPopoverMenu((open) => {
-			this._overflowMenuOpen = open;
-			if (!open) this._overflowMenuClosedAt = Date.now();
-		});
-		this._utilityOverflowMenu = this._createPopoverMenu((open) => {
-			this._utilityOverflowMenuOpen = open;
-			if (!open) this._utilityOverflowMenuClosedAt = Date.now();
-		});
 	}
 
 	// ## Menu item selection
@@ -348,13 +344,37 @@ export class NDDTopNavigationBar extends LitElement {
 
 	// ## Menu keyboard navigation
 
+	private _getNavigableItems(): HTMLElement[] {
+		const globalItems = Array.from(
+			this.querySelectorAll('ndd-menu-bar-item[slot="global"]:not([disabled]):not([data-overflow])')
+		) as HTMLElement[];
+
+		const globalOverflow = this._overflowMenuItem?.querySelector('ndd-menu-bar-item') as HTMLElement | null;
+		if (globalOverflow && getComputedStyle(this._overflowMenuItem!).display !== 'none') {
+			globalItems.push(globalOverflow);
+		}
+
+		const utilityItems = Array.from(
+			this.querySelectorAll('ndd-menu-bar-item[slot="utility"]:not([disabled]):not([data-utility-overflow])')
+		) as HTMLElement[];
+
+		const utilityOverflow = this._utilityOverflowMenuItem?.querySelector('ndd-menu-bar-item') as HTMLElement | null;
+		if (utilityOverflow && getComputedStyle(this._utilityOverflowMenuItem!).display !== 'none') {
+			utilityItems.push(utilityOverflow);
+		}
+
+		return [...globalItems, ...utilityItems];
+	}
+
 	private _handleMenuKeyDown = (event: KeyboardEvent): void => {
-		const items = Array.from(this.querySelectorAll('ndd-menu-bar-item:not([disabled])'));
+		const items = this._getNavigableItems();
 		if (items.length === 0) return;
 
-		const currentIndex = items.findIndex(item =>
-			item === event.target || item.contains(event.target as Node)
-		);
+		const path = event.composedPath();
+		const currentItem = items.find(item => path.includes(item));
+		if (!currentItem) return;
+		const currentIndex = items.indexOf(currentItem);
+
 		let newIndex = -1;
 
 		switch (event.key) {
@@ -379,7 +399,7 @@ export class NDDTopNavigationBar extends LitElement {
 		}
 
 		if (newIndex >= 0) {
-			(items[newIndex] as HTMLElement).focus();
+			items[newIndex].focus();
 		}
 	};
 
@@ -621,8 +641,15 @@ export class NDDTopNavigationBar extends LitElement {
 		}
 	}
 
-	_onOverflowClick = (): void => {
-		if (!this._overflowMenu) return;
+	private _onOverflowClick = (): void => {
+		const menuBarItem = this._overflowMenuItem?.querySelector('ndd-menu-bar-item');
+		if (!this._overflowMenu) {
+			this._overflowMenu = this._createPopoverMenu((open) => {
+				this._overflowMenuOpen = open;
+				if (!open) this._overflowMenuClosedAt = Date.now();
+				menuBarItem?.toggleAttribute('open', open);
+			});
+		}
 		this._populateOverflowMenu(this._overflowMenu, this._menuSlot, 'data-overflow');
 		this._togglePopoverMenu(
 			this._overflowMenu, this._overflowMenuItem,
@@ -630,8 +657,15 @@ export class NDDTopNavigationBar extends LitElement {
 		);
 	};
 
-	_onUtilityOverflowClick = (): void => {
-		if (!this._utilityOverflowMenu) return;
+	private _onUtilityOverflowClick = (): void => {
+		const menuBarItem = this._utilityOverflowMenuItem?.querySelector('ndd-menu-bar-item');
+		if (!this._utilityOverflowMenu) {
+			this._utilityOverflowMenu = this._createPopoverMenu((open) => {
+				this._utilityOverflowMenuOpen = open;
+				if (!open) this._utilityOverflowMenuClosedAt = Date.now();
+				menuBarItem?.toggleAttribute('open', open);
+			});
+		}
 		this._populateOverflowMenu(this._utilityOverflowMenu, this._utilitySlot, 'data-utility-overflow');
 		this._togglePopoverMenu(
 			this._utilityOverflowMenu, this._utilityOverflowMenuItem,
@@ -654,7 +688,7 @@ export class NDDTopNavigationBar extends LitElement {
 		const titleBar = document.createElement('ndd-top-title-bar');
 		titleBar.setAttribute('slot', 'header');
 		titleBar.setAttribute('text', this._menuText);
-		titleBar.setAttribute('dismiss-text', '');
+		titleBar.setAttribute('dismiss-text', this._t('components.top-navigation-bar.dismiss-action'));
 		page.appendChild(titleBar);
 
 		const section = document.createElement('ndd-simple-section');
@@ -694,7 +728,7 @@ export class NDDTopNavigationBar extends LitElement {
 		}
 	}
 
-	_onMenuButtonClick = (): void => {
+	private _onMenuButtonClick = (): void => {
 		if (!this._menuSheet) {
 			this._menuSheet = this._createMenuSheet();
 		}
@@ -707,7 +741,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 	// ## Back button
 
-	_handleBackClick = (e: Event): void => {
+	private _handleBackClick = (e: Event): void => {
 		if (!this.backHref) {
 			e.preventDefault();
 			this.dispatchEvent(
