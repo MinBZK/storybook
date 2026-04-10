@@ -142,30 +142,14 @@ export const menuBarItemStyles = css`
 		pointer-events: none;
 	}
 
-	/* ## Icon-only (always, via icon-only attribute) */
+	/* ## Icon-only (always or compact) */
 
-	:host([icon-only]) .top-navigation-bar__menu-item {
-		padding: var(--primitives-space-8);
-	}
-
-	:host([icon-only]) .top-navigation-bar__menu-item-text {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
-	}
-
-	/* ## Icon-only when compact (opt-in via sm-icon-only, requires icon to be set) */
-
+	:host([icon-only]) .top-navigation-bar__menu-item,
 	:host([sm-icon-only][compact][icon]:not([icon=""])) .top-navigation-bar__menu-item {
 		padding: var(--primitives-space-8);
 	}
 
+	:host([icon-only]) .top-navigation-bar__menu-item-text,
 	:host([sm-icon-only][compact][icon]:not([icon=""])) .top-navigation-bar__menu-item-text {
 		position: absolute;
 		width: 1px;

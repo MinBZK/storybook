@@ -10,6 +10,19 @@ import '../../lists-and-menus/menu/ndd-menu.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
+/** Minimal typed interface for ndd-menu popover API. */
+interface PopoverMenu extends HTMLElement {
+	anchorElement: Element | null;
+	showPopover(): void;
+	hidePopover(): void;
+}
+
+/** Minimal typed interface for ndd-sheet API. */
+interface Sheet extends HTMLElement {
+	show(): void;
+	hide(): void;
+}
+
 // # ndd-menu-bar-item
 
 export class NDDMenuBarItem extends LitElement {
@@ -53,7 +66,7 @@ export class NDDMenuBarItem extends LitElement {
 
 	// ## Menu popover state
 
-	private _menu: HTMLElement | null = null;
+	private _menu: PopoverMenu | null = null;
 	private _menuOpen = false;
 	private _menuClosedAt = 0;
 
@@ -140,7 +153,7 @@ export class NDDMenuBarItem extends LitElement {
 		if (this._menu) return;
 		if (typeof document === 'undefined') return;
 
-		const menu = document.createElement('ndd-menu');
+		const menu = document.createElement('ndd-menu') as unknown as PopoverMenu;
 		menu.setAttribute('placement', 'bottom-start');
 		menu.style.setProperty('--_menu-width', 'auto');
 		menu.addEventListener('toggle', (event: Event) => {
@@ -167,13 +180,13 @@ export class NDDMenuBarItem extends LitElement {
 	private _toggleMenu(): void {
 		if (!this._menu) return;
 
-		(this._menu as any).anchorElement = this;
+		this._menu.anchorElement = this;
 		this._syncMenuItems();
 
 		if (this._menuOpen) {
-			(this._menu as any).hidePopover?.();
+			this._menu.hidePopover();
 		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
-			(this._menu as any).showPopover?.();
+			this._menu.showPopover();
 		}
 	}
 
@@ -241,15 +254,15 @@ export class NDDTopNavigationBar extends LitElement {
 	@query('slot[name="utility"]')
 	private _utilitySlot!: HTMLSlotElement;
 
-	private _overflowMenu: HTMLElement | null = null;
+	private _overflowMenu: PopoverMenu | null = null;
 	private _overflowMenuOpen = false;
 	private _overflowMenuClosedAt = 0;
 
-	private _utilityOverflowMenu: HTMLElement | null = null;
+	private _utilityOverflowMenu: PopoverMenu | null = null;
 	private _utilityOverflowMenuOpen = false;
 	private _utilityOverflowMenuClosedAt = 0;
 
-	private _menuSheet: HTMLElement | null = null;
+	private _menuSheet: Sheet | null = null;
 	private _menuSheetList: HTMLElement | null = null;
 
 	private _resizeObserver: ResizeObserver | null = null;
@@ -426,6 +439,11 @@ export class NDDTopNavigationBar extends LitElement {
 		return getComputedStyle(this._menuButton).display !== 'none';
 	}
 
+	/**
+	 * Calculate which global items overflow and hide them.
+	 * Note: not unit-tested — JSDOM lacks layout support (offsetWidth, clientWidth).
+	 * Covered by visual/E2E testing via Storybook ManyGlobalItems story.
+	 */
 	private _doHandleGlobalBarOverflow(): void {
 		if (!this._globalBarContainer || !this._overflowMenuItem) return;
 
@@ -473,6 +491,7 @@ export class NDDTopNavigationBar extends LitElement {
 		}
 	}
 
+	/** @see _doHandleGlobalBarOverflow for testing note. */
 	private _doHandleUtilityOverflow(): void {
 		if (!this._utilityOverflowMenuItem) return;
 
@@ -531,8 +550,8 @@ export class NDDTopNavigationBar extends LitElement {
 
 	// ## Popover menus
 
-	private _createPopoverMenu(onToggle: (open: boolean) => void): HTMLElement {
-		const menu = document.createElement('ndd-menu');
+	private _createPopoverMenu(onToggle: (open: boolean) => void): PopoverMenu {
+		const menu = document.createElement('ndd-menu') as unknown as PopoverMenu;
 		menu.setAttribute('placement', 'bottom-end');
 		menu.style.setProperty('--_menu-width', 'auto');
 		menu.addEventListener('toggle', (event: Event) => {
@@ -542,7 +561,7 @@ export class NDDTopNavigationBar extends LitElement {
 		return menu;
 	}
 
-	private _populateOverflowMenu(menu: HTMLElement, slot: HTMLSlotElement | undefined, dataAttr: string): void {
+	private _populateOverflowMenu(menu: PopoverMenu, slot: HTMLSlotElement | undefined, dataAttr: string): void {
 		menu.innerHTML = '';
 		const slottedElements = slot?.assignedElements({ flatten: true }) ?? [];
 		const overflowItems = slottedElements.filter(
@@ -562,16 +581,16 @@ export class NDDTopNavigationBar extends LitElement {
 	}
 
 	private _togglePopoverMenu(
-		menu: HTMLElement,
+		menu: PopoverMenu,
 		anchor: HTMLElement,
 		isOpen: boolean,
 		closedAt: number,
 	): void {
-		(menu as any).anchorElement = anchor;
+		menu.anchorElement = anchor;
 		if (isOpen) {
-			(menu as any).hidePopover?.();
+			menu.hidePopover();
 		} else if (Date.now() - closedAt > POPOVER_REOPEN_GUARD_MS) {
-			(menu as any).showPopover?.();
+			menu.showPopover();
 		}
 	}
 
@@ -581,7 +600,7 @@ export class NDDTopNavigationBar extends LitElement {
 			this._overflowMenu = this._createPopoverMenu((open) => {
 				this._overflowMenuOpen = open;
 				if (!open) this._overflowMenuClosedAt = Date.now();
-				if (menuBarItem) (menuBarItem as any).open = open;
+				if (menuBarItem) (menuBarItem as NDDMenuBarItem).open = open;
 			});
 		}
 		this._populateOverflowMenu(this._overflowMenu, this._menuSlot, 'data-overflow');
@@ -597,7 +616,7 @@ export class NDDTopNavigationBar extends LitElement {
 			this._utilityOverflowMenu = this._createPopoverMenu((open) => {
 				this._utilityOverflowMenuOpen = open;
 				if (!open) this._utilityOverflowMenuClosedAt = Date.now();
-				if (menuBarItem) (menuBarItem as any).open = open;
+				if (menuBarItem) (menuBarItem as NDDMenuBarItem).open = open;
 			});
 		}
 		this._populateOverflowMenu(this._utilityOverflowMenu, this._utilitySlot, 'data-utility-overflow');
@@ -621,8 +640,8 @@ export class NDDTopNavigationBar extends LitElement {
 		]);
 	}
 
-	private _createMenuSheet(): HTMLElement {
-		const sheet = document.createElement('ndd-sheet');
+	private _createMenuSheet(): Sheet {
+		const sheet = document.createElement('ndd-sheet') as unknown as Sheet;
 		sheet.setAttribute('placement', 'left');
 		sheet.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
 
@@ -665,7 +684,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 			listItem.addEventListener('click', () => {
 				item.click();
-				(this._menuSheet as any)?.hide?.();
+				this._menuSheet?.hide();
 			});
 
 			this._menuSheetList!.appendChild(listItem);
@@ -683,16 +702,16 @@ export class NDDTopNavigationBar extends LitElement {
 			this._menuSheet = this._createMenuSheet();
 			const menuButtonItem = this._menuButton?.querySelector('ndd-menu-bar-item');
 			this._menuSheet.addEventListener('open', () => {
-				if (menuButtonItem) (menuButtonItem as any).open = true;
+				if (menuButtonItem) (menuButtonItem as NDDMenuBarItem).open = true;
 			});
 			this._menuSheet.addEventListener('close', () => {
-				if (menuButtonItem) (menuButtonItem as any).open = false;
+				if (menuButtonItem) (menuButtonItem as NDDMenuBarItem).open = false;
 			});
 		}
 		this._syncMenuSheetItems();
 		// Defer show() so the current click event completes before the modal backdrop appears
 		requestAnimationFrame(() => {
-			(this._menuSheet as any)?.show?.();
+			this._menuSheet?.show();
 		});
 	};
 

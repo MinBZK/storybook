@@ -17,8 +17,8 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 				aria-disabled=${this.disabled}
 				aria-current=${this.current ? 'page' : nothing}
 				aria-label=${this.accessibleLabel || nothing}
-				aria-haspopup=${this.haspopup || nothing}
-				aria-expanded=${this.haspopup ? String(this.open) : nothing}
+				aria-haspopup=${this.expandable ? 'menu' : (this.haspopup || nothing)}
+				aria-expanded=${(this.expandable || this.haspopup) ? String(this.open) : nothing}
 				tabindex=${tabindex}
 			>
 				${this.icon ? html`<span class="top-navigation-bar__menu-item-icon"><ndd-icon name=${this.icon}></ndd-icon></span>` : nothing}
