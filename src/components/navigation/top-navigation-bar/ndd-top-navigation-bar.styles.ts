@@ -70,8 +70,8 @@ export const menuBarItemStyles = css`
 		content: '';
 		position: absolute;
 		bottom: 0;
-		left: 0;
-		right: 0;
+		left: var(--primitives-space-8);
+		right: var(--primitives-space-8);
 		height: var(--components-menu-bar-menu-item-is-selected-indicator-height);
 		background-color: var(--components-menu-bar-menu-item-is-selected-indicator-background-color);
 		pointer-events: none;
@@ -103,6 +103,10 @@ export const menuBarItemStyles = css`
 	}
 
 	/* ## Focus */
+
+	:host(:focus-within) {
+		z-index: 1;
+	}
 
 	.top-navigation-bar__menu-item:focus-visible {
 		outline: none;

@@ -90,7 +90,7 @@ WithBackButton.args = {
 export const MijnOverheidZakelijk = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<ndd-top-navigation-bar website-title="Mijn overheid zakelijk">
+			<ndd-top-navigation-bar logo-title="Mijn overheid zakelijk">
 				<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Over MOZa"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
@@ -156,7 +156,7 @@ export const SmallViewport = {
 export const ManyGlobalItems = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<ndd-top-navigation-bar website-title="Rijksoverheid">
+			<ndd-top-navigation-bar logo-title="Rijksoverheid">
 				<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Documenten en publicaties"></ndd-menu-bar-item>
@@ -230,7 +230,7 @@ export const AllStates = {
 				</ndd-top-navigation-bar>
 			</div>
 			<div style=${layoutArea}>
-				<ndd-top-navigation-bar website-title="Mijn overheid zakelijk">
+				<ndd-top-navigation-bar logo-title="Mijn overheid zakelijk">
 					<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Over MOZa"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>

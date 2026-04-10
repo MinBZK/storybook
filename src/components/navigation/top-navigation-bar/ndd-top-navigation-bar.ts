@@ -699,7 +699,10 @@ export class NDDTopNavigationBar extends LitElement {
 			this._menuSheet = this._createMenuSheet();
 		}
 		this._syncMenuSheetItems();
-		(this._menuSheet as any).show?.();
+		// Defer show() so the current click event completes before the modal backdrop appears
+		requestAnimationFrame(() => {
+			(this._menuSheet as any)?.show?.();
+		});
 	};
 
 	// ## Back button
