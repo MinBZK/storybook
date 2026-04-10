@@ -10,7 +10,12 @@ import '../../lists-and-menus/menu/ndd-menu.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
-/** Minimal typed interface for ndd-menu popover API. */
+/**
+ * Minimal typed interfaces for ndd-menu and ndd-sheet.
+ * Double-cast (as unknown as) is required because createElement returns HTMLElement,
+ * and these custom element classes are not registered in HTMLElementTagNameMap
+ * for this component's compilation unit.
+ */
 interface PopoverMenu extends HTMLElement {
 	anchorElement: Element | null;
 	showPopover(): void;
@@ -291,10 +296,6 @@ export class NDDTopNavigationBar extends LitElement {
 
 	get _backText(): string {
 		return this.backText || this._t('components.top-navigation-bar.back-action');
-	}
-
-	get _overflowText(): string {
-		return this._t('components.top-navigation-bar.overflow-action');
 	}
 
 	get _menuText(): string {

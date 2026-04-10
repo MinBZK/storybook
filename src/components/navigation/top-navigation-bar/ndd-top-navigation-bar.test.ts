@@ -167,6 +167,8 @@ describe('ndd-menu-bar-item', () => {
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		// Clean up any popover menus appended to document.body
+		document.querySelectorAll('ndd-menu').forEach(m => m.remove());
 	});
 
 	it('renders without error', async () => {
@@ -200,8 +202,6 @@ describe('ndd-menu-bar-item', () => {
 		await waitForUpdate(el);
 		const menu = document.querySelector('ndd-menu');
 		expect(menu).not.toBeNull();
-		// Cleanup menu from body
-		menu?.remove();
 	});
 
 	it('does not fire select when expandable with menu items', async () => {
@@ -216,6 +216,50 @@ describe('ndd-menu-bar-item', () => {
 		el.click();
 		await waitForUpdate(el);
 		expect(fired).toBe(false);
-		document.querySelector('ndd-menu')?.remove();
+	});
+});
+
+describe('ndd-menu-bar-item – _sanitizeUrl', () => {
+	let el: any;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('allows valid relative URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link" href="/page"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('/page')).toBe('/page');
+	});
+
+	it('allows valid https URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('https://example.com')).toBe('https://example.com');
+	});
+
+	it('blocks javascript: URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('javascript:alert(1)')).toBeNull();
+	});
+
+	it('blocks data: URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('data:text/html,<script>alert(1)</script>')).toBeNull();
+	});
+
+	it('blocks vbscript: URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('vbscript:MsgBox("XSS")')).toBeNull();
+	});
+
+	it('returns null for empty input', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('')).toBeNull();
+		expect(el._sanitizeUrl(null)).toBeNull();
 	});
 });

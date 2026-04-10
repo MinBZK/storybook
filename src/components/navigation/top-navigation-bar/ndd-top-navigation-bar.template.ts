@@ -13,10 +13,10 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 	if (isLink) {
 		return html`
 			<a class="top-navigation-bar__menu-item"
-				href=${safeHref!}
+				href=${safeHref as string}
 				aria-disabled=${this.disabled}
-				aria-current=${this.current ? 'page' : nothing}
-				aria-label=${this.accessibleLabel || nothing}
+				aria-current=${this.current && !this.expandable ? 'page' : nothing}
+				aria-label=${this.accessibleLabel || this.text || nothing}
 				aria-haspopup=${this.haspopup || nothing}
 				aria-expanded=${this.haspopup ? String(this.open) : nothing}
 				tabindex=${tabindex}
@@ -43,8 +43,8 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 		<button class="top-navigation-bar__menu-item"
 			type="button"
 			?disabled=${this.disabled}
-			aria-current=${this.current ? 'page' : nothing}
-			aria-label=${this.accessibleLabel || nothing}
+			aria-current=${this.current && !this.expandable ? 'page' : nothing}
+			aria-label=${this.accessibleLabel || this.text || nothing}
 			aria-haspopup=${this.haspopup || nothing}
 			aria-expanded=${this.haspopup ? String(this.open) : nothing}
 			tabindex=${tabindex}
@@ -137,10 +137,9 @@ export function template(this: NDDTopNavigationBar) {
 								id="global-overflow-button"
 							>
 								<ndd-menu-bar-item
-									text="${this._overflowText}"
+									text="${this._t('components.top-navigation-bar.overflow-action')}"
 									icon="ellipsis"
 									icon-only
-									accessible-label="${this._t('components.top-navigation-bar.overflow-action')}"
 									haspopup="menu"
 									@click=${this._onOverflowClick}
 								></ndd-menu-bar-item>
@@ -156,10 +155,9 @@ export function template(this: NDDTopNavigationBar) {
 								id="utility-overflow-button"
 							>
 								<ndd-menu-bar-item
-									text="${this._overflowText}"
+									text="${this._t('components.top-navigation-bar.overflow-action')}"
 									icon="ellipsis"
 									icon-only
-									accessible-label="${this._t('components.top-navigation-bar.overflow-action')}"
 									haspopup="menu"
 									@click=${this._onUtilityOverflowClick}
 								></ndd-menu-bar-item>
