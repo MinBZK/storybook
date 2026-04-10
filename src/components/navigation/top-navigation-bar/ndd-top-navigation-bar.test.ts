@@ -68,19 +68,19 @@ describe('ndd-top-navigation-bar – menu item selection', () => {
 		if (el) cleanup(el);
 	});
 
-	it('deselects other items when one is selected', async () => {
+	it('deselects other items when one is current', async () => {
 		el = await fixture<NDDTopNavigationBar>(navWithItems());
 		await waitForUpdate(el);
 
 		const items = el.querySelectorAll('ndd-menu-bar-item');
 		items[0].click();
 		await waitForUpdate(el);
-		expect(items[0].hasAttribute('selected')).toBe(true);
+		expect(items[0].hasAttribute('current')).toBe(true);
 
 		items[1].click();
 		await waitForUpdate(el);
-		expect(items[0].hasAttribute('selected')).toBe(false);
-		expect(items[1].hasAttribute('selected')).toBe(true);
+		expect(items[0].hasAttribute('current')).toBe(false);
+		expect(items[1].hasAttribute('current')).toBe(true);
 	});
 
 	it('dispatches itemselect event on item click', async () => {
@@ -231,12 +231,12 @@ describe('ndd-menu-bar-item', () => {
 		expect(content!.textContent).toBe('Hello');
 	});
 
-	it('does not set selected on click', async () => {
+	it('does not set current on click', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Test"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
 		el.click();
 		await waitForUpdate(el);
-		expect(el.hasAttribute('selected')).toBe(false);
+		expect(el.hasAttribute('current')).toBe(false);
 	});
 
 	it('creates popover menu when expandable with menu items', async () => {

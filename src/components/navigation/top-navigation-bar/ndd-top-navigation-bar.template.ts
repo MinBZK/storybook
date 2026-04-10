@@ -16,7 +16,7 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 			<a class="top-navigation-bar__menu-item"
 				href=${safeHref!}
 				aria-disabled=${this.disabled}
-				aria-current=${this.selected ? 'page' : nothing}
+				aria-current=${this.current ? 'page' : nothing}
 				tabindex=${tabindex}
 			>
 				${this.icon ? html`<span class="top-navigation-bar__menu-item-icon"><ndd-icon name=${this.icon}></ndd-icon></span>` : nothing}
@@ -31,7 +31,7 @@ export function menuBarItemTemplate(this: NDDMenuBarItem) {
 		<button class="top-navigation-bar__menu-item"
 			type="button"
 			?disabled=${this.disabled}
-			aria-current=${this.selected ? 'page' : nothing}
+			aria-current=${this.current ? 'page' : nothing}
 			tabindex=${tabindex}
 		>
 			${this.icon ? html`<span class="top-navigation-bar__menu-item-icon"><ndd-icon name=${this.icon}></ndd-icon></span>` : nothing}

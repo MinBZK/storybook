@@ -25,7 +25,7 @@ export class NDDMenuBarItem extends LitElement {
 	text = '';
 
 	@property({ type: Boolean, reflect: true })
-	selected = false;
+	current = false;
 
 	@property({ type: String })
 	href = '';
@@ -329,10 +329,10 @@ export class NDDTopNavigationBar extends LitElement {
 		const slottedItems = this._menuSlot?.assignedElements({ flatten: true }) ?? [];
 		if (!slottedItems.includes(detail.item)) return;
 
-		detail.item.selected = true;
+		detail.item.current = true;
 		slottedItems.forEach(item => {
 			if (item !== detail.item) {
-				(item as HTMLElement).removeAttribute('selected');
+				(item as HTMLElement).removeAttribute('current');
 			}
 		});
 		this.dispatchEvent(new CustomEvent('itemselect', {
@@ -713,7 +713,7 @@ export class NDDTopNavigationBar extends LitElement {
 		for (const item of items) {
 			const listItem = document.createElement('ndd-list-item');
 			listItem.setAttribute('type', 'button');
-			if (item.selected) listItem.setAttribute('selected', '');
+			if (item.current) listItem.setAttribute('selected', '');
 
 			const textCell = document.createElement('ndd-text-cell');
 			textCell.setAttribute('text', item.text);

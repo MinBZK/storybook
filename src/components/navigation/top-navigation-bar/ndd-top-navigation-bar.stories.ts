@@ -53,13 +53,13 @@ const Template = ({
 			back-href=${backHref || nothing}
 			back-text=${backText || nothing}
 		>
-			<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-				<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+				<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
 				<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 				<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
 			</ndd-menu-bar-item>
@@ -91,7 +91,7 @@ export const MijnOverheidZakelijk = {
 	render: () => html`
 		<div style=${layoutArea}>
 			<ndd-top-navigation-bar logo-title="Mijn overheid zakelijk">
-				<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Over MOZa"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
@@ -132,11 +132,11 @@ export const SmallViewport = {
 	render: () => html`
 		<div style="${layoutArea} max-width: 400px;">
 			<ndd-top-navigation-bar website-title="DigID">
-				<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+					<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
 					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
 				</ndd-menu-bar-item>
@@ -157,7 +157,7 @@ export const ManyGlobalItems = {
 	render: () => html`
 		<div style=${layoutArea}>
 			<ndd-top-navigation-bar logo-title="Rijksoverheid">
-				<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Documenten en publicaties"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Ministeries"></ndd-menu-bar-item>
@@ -166,7 +166,7 @@ export const ManyGlobalItems = {
 				<ndd-menu-bar-item slot="global" text="Vraag en antwoord"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Wetten en regelgeving"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+					<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
 					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
 				</ndd-menu-bar-item>
@@ -197,13 +197,13 @@ export const AllStates = {
 		<div style="display: flex; flex-direction: column; gap: 32px;">
 			<div style=${layoutArea}>
 				<ndd-top-navigation-bar website-title="DigID (Full width)">
-					<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+						<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
 						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
@@ -215,11 +215,11 @@ export const AllStates = {
 			</div>
 			<div style="${layoutArea} max-width: 400px;">
 				<ndd-top-navigation-bar website-title="DigID (Small viewport)">
-					<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
-						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
+						<ndd-menu-item text="Nederlands" type="radio" current></ndd-menu-item>
 						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					</ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
@@ -231,7 +231,7 @@ export const AllStates = {
 			</div>
 			<div style=${layoutArea}>
 				<ndd-top-navigation-bar logo-title="Mijn overheid zakelijk">
-					<ndd-menu-bar-item slot="global" text="Home" selected></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Over MOZa"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
