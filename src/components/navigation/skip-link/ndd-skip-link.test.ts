@@ -44,4 +44,16 @@ describe('ndd-skip-link', () => {
 		expect(anchor!.tagName).toBe('A');
 		expect(anchor!.getAttribute('href')).toBe('#main');
 	});
+
+	it('focust volgende sibling bij klik zonder href', async () => {
+		const wrapper = document.createElement('div');
+		document.body.appendChild(wrapper);
+		wrapper.innerHTML = '<ndd-skip-link></ndd-skip-link><main tabindex="-1">Content</main>';
+		const skipLink = wrapper.querySelector('ndd-skip-link')!;
+		await waitForUpdate(skipLink);
+		const btn = skipLink.shadowRoot!.querySelector('button') as HTMLButtonElement;
+		btn.click();
+		expect(document.activeElement).toBe(wrapper.querySelector('main'));
+		wrapper.remove();
+	});
 });

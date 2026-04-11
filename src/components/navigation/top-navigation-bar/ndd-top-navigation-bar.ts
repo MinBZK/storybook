@@ -112,7 +112,7 @@ export class NDDTopNavigationBarMenuItem extends LitElement {
 
 	_sanitizeUrl(url: string | null): string | null {
 		if (!url) return null;
-		const trimmed = url.trim().toLowerCase();
+		const trimmed = url.replace(/^[\s\u00A0\u200B\u2028\u2029]+/, '').toLowerCase();
 		if (
 			trimmed.startsWith('javascript:') ||
 			trimmed.startsWith('data:') ||

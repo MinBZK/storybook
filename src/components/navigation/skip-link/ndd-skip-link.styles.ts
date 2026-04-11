@@ -8,6 +8,7 @@ export const styles = css`
 
 	:host {
 		--_z-index: 1000;
+		--_focus-outline-offset: -6px;
 		display: block;
 		position: relative;
 	}
@@ -57,8 +58,8 @@ export const styles = css`
 	}
 
 	.skip-link__control:focus-visible {
-		box-shadow: inset 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		box-shadow: inset var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
-		outline-offset: calc(var(--semantics-focus-ring-edge-thickness) * -1);
+		outline-offset: var(--_focus-outline-offset);
 	}
 `;

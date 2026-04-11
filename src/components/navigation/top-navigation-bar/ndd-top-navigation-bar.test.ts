@@ -97,8 +97,10 @@ describe('ndd-top-navigation-bar – menu item selection', () => {
 });
 
 describe('ndd-top-navigation-bar – overflow detection', () => {
-	it.todo('verbergt global items achter overflow button bij smalle breedte (JSDOM mist layout support)');
-	it.todo('verbergt utility items achter overflow button bij smalle breedte (JSDOM mist layout support)');
+	// TODO: E2E tests nodig — JSDOM mist layout support (offsetWidth, clientWidth).
+	// Tracked in: https://github.com/MinBZK/storybook/issues (volgnummer toekennen)
+	it.todo('verbergt global items achter overflow button bij smalle breedte');
+	it.todo('verbergt utility items achter overflow button bij smalle breedte');
 	it.todo('toont overflow menu bij klik op overflow button');
 });
 
@@ -279,6 +281,18 @@ describe('ndd-menu-bar-item – _sanitizeUrl', () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
 		expect(el._sanitizeUrl('  javascript:alert(1)')).toBeNull();
+	});
+
+	it('blocks non-breaking-space-prefixed javascript: URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('\u00A0javascript:alert(1)')).toBeNull();
+	});
+
+	it('blocks zero-width-space-prefixed javascript: URLs', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		expect(el._sanitizeUrl('\u200Bjavascript:alert(1)')).toBeNull();
 	});
 
 	it('returns null for empty input', async () => {
