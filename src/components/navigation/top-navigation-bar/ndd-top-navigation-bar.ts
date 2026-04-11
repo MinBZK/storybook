@@ -6,7 +6,7 @@ import { nddTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.j
 import type { NDDTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.js';
 import '../../content/icon/ndd-icon.js';
 import '../../lists-and-menus/menu/ndd-menu.js';
-// Sheet dependencies loaded lazily in _createMenuSheet()
+// Sheet dependencies loaded lazily in _createGlobalMenuSheet()
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
@@ -243,33 +243,36 @@ export class NDDTopNavigationBar extends LitElement {
 	// ## Internal state
 
 	@query('.top-navigation-bar__global-menu-bar')
-	private _globalBarContainer!: HTMLElement;
+	private _globalMenuBar!: HTMLElement;
+
+	@query('.top-navigation-bar__utility-menu-bar')
+	private _utilityMenuBar!: HTMLElement;
 
 	@query('.top-navigation-bar__menu-button')
 	private _menuButton!: HTMLElement;
 
 	@query('#global-overflow-button')
-	private _overflowMenuItem!: HTMLElement;
+	private _globalOverflowMenuItem!: HTMLElement;
 
 	@query('#utility-overflow-button')
 	private _utilityOverflowMenuItem!: HTMLElement;
 
 	@query('slot[name="global"]')
-	private _menuSlot!: HTMLSlotElement;
+	private _globalSlot!: HTMLSlotElement;
 
 	@query('slot[name="utility"]')
 	private _utilitySlot!: HTMLSlotElement;
 
-	private _overflowMenu: PopoverMenu | null = null;
-	private _overflowMenuOpen = false;
-	private _overflowMenuClosedAt = 0;
+	private _globalOverflowMenu: PopoverMenu | null = null;
+	private _globalOverflowMenuOpen = false;
+	private _globalOverflowMenuClosedAt = 0;
 
 	private _utilityOverflowMenu: PopoverMenu | null = null;
 	private _utilityOverflowMenuOpen = false;
 	private _utilityOverflowMenuClosedAt = 0;
 
-	private _menuSheet: Sheet | null = null;
-	private _menuSheetList: HTMLElement | null = null;
+	private _globalMenuSheet: Sheet | null = null;
+	private _globalMenuSheetList: HTMLElement | null = null;
 
 	private _resizeObserver: ResizeObserver | null = null;
 	private _isHandlingOverflow = false;
@@ -286,6 +289,8 @@ export class NDDTopNavigationBar extends LitElement {
 	override willUpdate(changed: PropertyValues): void {
 		if (changed.has('translations')) {
 			this._mergedTranslations = { ...nddTopNavigationBarTranslations, ...this.translations };
+			// Update sheet label if already created
+			this._globalMenuSheet?.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
 		}
 	}
 
@@ -314,13 +319,13 @@ export class NDDTopNavigationBar extends LitElement {
 		super.disconnectedCallback();
 		this.removeEventListener('select', this._handleItemSelect);
 		this._cleanupOverflowDetection();
-		this._overflowMenu?.remove();
-		this._overflowMenu = null;
+		this._globalOverflowMenu?.remove();
+		this._globalOverflowMenu = null;
 		this._utilityOverflowMenu?.remove();
 		this._utilityOverflowMenu = null;
-		this._menuSheet?.remove();
-		this._menuSheet = null;
-		this._menuSheetList = null;
+		this._globalMenuSheet?.remove();
+		this._globalMenuSheet = null;
+		this._globalMenuSheetList = null;
 	}
 
 	override firstUpdated(): void {
@@ -337,7 +342,7 @@ export class NDDTopNavigationBar extends LitElement {
 	private _handleItemSelect = (event: Event): void => {
 		const detail = (event as CustomEvent).detail;
 		if (!detail?.item) return;
-		const slottedItems = this._menuSlot?.assignedElements({ flatten: true }) ?? [];
+		const slottedItems = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
 		if (!slottedItems.includes(detail.item)) return;
 
 		const selectEvent = new CustomEvent('itemselect', {
@@ -366,16 +371,16 @@ export class NDDTopNavigationBar extends LitElement {
 		this._cleanupOverflowDetection();
 		requestAnimationFrame(() => {
 			this._resizeObserver = new ResizeObserver(() => {
-				this._handleOverflow();
+				this._scheduleOverflowUpdate();
 			});
 			this._resizeObserver.observe(this);
-			if (this._menuSlot) {
-				this._menuSlot.addEventListener('slotchange', this._handleOverflow);
+			if (this._globalSlot) {
+				this._globalSlot.addEventListener('slotchange', this._scheduleOverflowUpdate);
 			}
 			if (this._utilitySlot) {
-				this._utilitySlot.addEventListener('slotchange', this._handleOverflow);
+				this._utilitySlot.addEventListener('slotchange', this._scheduleOverflowUpdate);
 			}
-			this._handleOverflow();
+			this._scheduleOverflowUpdate();
 		});
 	}
 
@@ -388,23 +393,23 @@ export class NDDTopNavigationBar extends LitElement {
 			this._resizeObserver.disconnect();
 			this._resizeObserver = null;
 		}
-		if (this._menuSlot) {
-			this._menuSlot.removeEventListener('slotchange', this._handleOverflow);
+		if (this._globalSlot) {
+			this._globalSlot.removeEventListener('slotchange', this._scheduleOverflowUpdate);
 		}
 		if (this._utilitySlot) {
-			this._utilitySlot.removeEventListener('slotchange', this._handleOverflow);
+			this._utilitySlot.removeEventListener('slotchange', this._scheduleOverflowUpdate);
 		}
 	}
 
-	private _handleOverflow = (): void => {
+	private _scheduleOverflowUpdate = (): void => {
 		if (this._isHandlingOverflow) return;
 		if (this._overflowRAF) cancelAnimationFrame(this._overflowRAF);
 		this._overflowRAF = requestAnimationFrame(() => {
 			this._isHandlingOverflow = true;
 			try {
 				this._syncCompactAttribute();
-				this._doHandleGlobalBarOverflow();
-				this._doHandleUtilityOverflow();
+				this._updateOverflow(this._globalMenuBar, this._globalOverflowMenuItem, this._globalSlot, 'data-global-overflow', true);
+				this._updateOverflow(this._utilityMenuBar, this._utilityOverflowMenuItem, this._utilitySlot, 'data-utility-overflow');
 			} finally {
 				requestAnimationFrame(() => { this._isHandlingOverflow = false; });
 			}
@@ -416,7 +421,7 @@ export class NDDTopNavigationBar extends LitElement {
 		const isCompact = this._isSmBreakpoint();
 
 		// Slotted items
-		const slots = [this._menuSlot, this._utilitySlot];
+		const slots = [this._globalSlot, this._utilitySlot];
 		for (const slot of slots) {
 			const items = slot?.assignedElements({ flatten: true }) ?? [];
 			for (const item of items) {
@@ -432,7 +437,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 		// Hide menu-button when there are no global slot items
 		if (this._menuButton) {
-			const globalItems = this._menuSlot?.assignedElements({ flatten: true }) ?? [];
+			const globalItems = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
 			const hasGlobalItems = globalItems.some(el => el.tagName === 'NDD-MENU-BAR-ITEM');
 			this._menuButton.style.display = hasGlobalItems ? '' : 'none';
 		}
@@ -452,19 +457,24 @@ export class NDDTopNavigationBar extends LitElement {
 	}
 
 	/**
-	 * Calculate which global items overflow and hide them.
+	 * Calculate which slotted items overflow and hide them behind an overflow button.
 	 * Note: not unit-tested — JSDOM lacks layout support (offsetWidth, clientWidth).
 	 * Covered by visual/E2E testing via Storybook ManyGlobalItems story.
 	 */
-	private _doHandleGlobalBarOverflow(): void {
-		if (!this._globalBarContainer || !this._overflowMenuItem) return;
+	private _updateOverflow(
+		container: HTMLElement | undefined,
+		overflowButton: HTMLElement | undefined,
+		slot: HTMLSlotElement | undefined,
+		dataAttr: string,
+		skipWhenMenuButtonVisible = false,
+	): void {
+		if (!container || !overflowButton) return;
 
-		const slottedElements = this._menuSlot?.assignedElements({ flatten: true }) ?? [];
+		const slottedElements = slot?.assignedElements({ flatten: true }) ?? [];
 		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as HTMLElement[];
 
-		// On mobile (menu-button visible), hide overflow - menu-button handles navigation
-		if (this._isMenuButtonVisible() || items.length === 0) {
-			this._overflowMenuItem.style.display = 'none';
+		if ((skipWhenMenuButtonVisible && this._isMenuButtonVisible()) || items.length === 0) {
+			overflowButton.style.display = 'none';
 			return;
 		}
 
@@ -472,13 +482,13 @@ export class NDDTopNavigationBar extends LitElement {
 		items.forEach(item => {
 			item.style.display = '';
 			item.style.visibility = 'visible';
-			item.removeAttribute('data-overflow');
+			item.removeAttribute(dataAttr);
 		});
 
-		this._overflowMenuItem.style.display = 'inline-block';
+		overflowButton.style.display = 'inline-block';
 
-		const containerWidth = this._globalBarContainer.clientWidth;
-		const overflowButtonWidth = this._overflowMenuItem.offsetWidth;
+		const containerWidth = container.clientWidth;
+		const overflowButtonWidth = overflowButton.offsetWidth;
 
 		let usedWidth = 0;
 		let overflowStartIndex = -1;
@@ -496,67 +506,10 @@ export class NDDTopNavigationBar extends LitElement {
 		if (overflowStartIndex >= 0) {
 			for (let i = overflowStartIndex; i < items.length; i++) {
 				items[i].style.display = 'none';
-				items[i].setAttribute('data-overflow', 'true');
+				items[i].setAttribute(dataAttr, 'true');
 			}
 		} else {
-			this._overflowMenuItem.style.display = 'none';
-		}
-	}
-
-	/** @see _doHandleGlobalBarOverflow for testing note. */
-	private _doHandleUtilityOverflow(): void {
-		if (!this._utilityOverflowMenuItem) return;
-
-		const menuBarEl = this.shadowRoot?.querySelector('.top-navigation-bar__menu-bar') as HTMLElement;
-		const menuBarStart = this.shadowRoot?.querySelector('.top-navigation-bar__menu-bar-start') as HTMLElement;
-		if (!menuBarEl || !menuBarStart) return;
-
-		const slottedElements = this._utilitySlot?.assignedElements({ flatten: true }) ?? [];
-		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as HTMLElement[];
-		if (items.length === 0) {
-			this._utilityOverflowMenuItem.style.display = 'none';
-			return;
-		}
-
-		// Reset: show all items, hide overflow button
-		items.forEach(item => {
-			item.style.display = '';
-			item.removeAttribute('data-utility-overflow');
-		});
-		this._utilityOverflowMenuItem.style.display = 'none';
-
-		// Calculate natural widths: start section + all utility items
-		const startWidth = menuBarStart.scrollWidth;
-		const totalItemsWidth = items.reduce((sum, item) => sum + item.offsetWidth, 0);
-		const containerWidth = menuBarEl.clientWidth;
-
-		// If everything fits, we're done
-		if (startWidth + totalItemsWidth <= containerWidth) return;
-
-		// Overflow: show overflow button, hide items from the end until it fits
-		this._utilityOverflowMenuItem.style.display = 'inline-block';
-		const overflowBtnWidth = this._utilityOverflowMenuItem.offsetWidth;
-
-		let visibleWidth = 0;
-		let overflowStartIndex = -1;
-		const availableForItems = containerWidth - startWidth - overflowBtnWidth;
-
-		for (let i = 0; i < items.length; i++) {
-			if (visibleWidth + items[i].offsetWidth > availableForItems) {
-				overflowStartIndex = i;
-				break;
-			}
-			visibleWidth += items[i].offsetWidth;
-		}
-
-		if (overflowStartIndex >= 0) {
-			for (let i = overflowStartIndex; i < items.length; i++) {
-				items[i].style.display = 'none';
-				items[i].setAttribute('data-utility-overflow', 'true');
-			}
-		} else {
-			// All items fit after all (rounding)
-			this._utilityOverflowMenuItem.style.display = 'none';
+			overflowButton.style.display = 'none';
 		}
 	}
 
@@ -606,19 +559,19 @@ export class NDDTopNavigationBar extends LitElement {
 		}
 	}
 
-	private _onOverflowClick = (): void => {
-		const menuBarItem = this._overflowMenuItem?.querySelector('ndd-menu-bar-item');
-		if (!this._overflowMenu) {
-			this._overflowMenu = this._createPopoverMenu((open) => {
-				this._overflowMenuOpen = open;
-				if (!open) this._overflowMenuClosedAt = Date.now();
+	private _onGlobalOverflowClick = (): void => {
+		const menuBarItem = this._globalOverflowMenuItem?.querySelector('ndd-menu-bar-item');
+		if (!this._globalOverflowMenu) {
+			this._globalOverflowMenu = this._createPopoverMenu((open) => {
+				this._globalOverflowMenuOpen = open;
+				if (!open) this._globalOverflowMenuClosedAt = Date.now();
 				if (menuBarItem) (menuBarItem as NDDMenuBarItem).open = open;
 			});
 		}
-		this._populateOverflowMenu(this._overflowMenu, this._menuSlot, 'data-overflow');
+		this._populateOverflowMenu(this._globalOverflowMenu, this._globalSlot, 'data-global-overflow');
 		this._togglePopoverMenu(
-			this._overflowMenu, this._overflowMenuItem,
-			this._overflowMenuOpen, this._overflowMenuClosedAt,
+			this._globalOverflowMenu, this._globalOverflowMenuItem,
+			this._globalOverflowMenuOpen, this._globalOverflowMenuClosedAt,
 		);
 	};
 
@@ -640,7 +593,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 	// ## Menu sheet
 
-	private async _loadSheetDependencies(): Promise<void> {
+	private async _loadGlobalMenuSheetDependencies(): Promise<void> {
 		await Promise.all([
 			import('../../layout/sheet/ndd-sheet.js'),
 			import('../../layout/page/ndd-page.js'),
@@ -652,7 +605,7 @@ export class NDDTopNavigationBar extends LitElement {
 		]);
 	}
 
-	private _createMenuSheet(): Sheet {
+	private _createGlobalMenuSheet(): Sheet {
 		const sheet = document.createElement('ndd-sheet') as unknown as Sheet;
 		sheet.setAttribute('placement', 'left');
 		sheet.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
@@ -668,9 +621,9 @@ export class NDDTopNavigationBar extends LitElement {
 
 		const section = document.createElement('ndd-simple-section');
 
-		this._menuSheetList = document.createElement('ndd-list');
-		this._menuSheetList.setAttribute('variant', 'simple');
-		section.appendChild(this._menuSheetList);
+		this._globalMenuSheetList = document.createElement('ndd-list');
+		this._globalMenuSheetList.setAttribute('variant', 'simple');
+		section.appendChild(this._globalMenuSheetList);
 
 		page.appendChild(section);
 		sheet.appendChild(page);
@@ -678,11 +631,11 @@ export class NDDTopNavigationBar extends LitElement {
 		return sheet;
 	}
 
-	private _syncMenuSheetItems(): void {
-		if (!this._menuSheetList) return;
-		this._menuSheetList.innerHTML = '';
+	private _syncGlobalMenuSheetItems(): void {
+		if (!this._globalMenuSheetList) return;
+		this._globalMenuSheetList.innerHTML = '';
 
-		const slottedElements = this._menuSlot?.assignedElements({ flatten: true }) ?? [];
+		const slottedElements = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
 		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as NDDMenuBarItem[];
 
 		for (const item of items) {
@@ -696,34 +649,34 @@ export class NDDTopNavigationBar extends LitElement {
 
 			listItem.addEventListener('click', () => {
 				item.click();
-				this._menuSheet?.hide();
+				this._globalMenuSheet?.hide();
 			});
 
-			this._menuSheetList!.appendChild(listItem);
+			this._globalMenuSheetList!.appendChild(listItem);
 		}
 	}
 
 	private _onMenuButtonClick = async (): Promise<void> => {
-		if (!this._menuSheet) {
+		if (!this._globalMenuSheet) {
 			try {
-				await this._loadSheetDependencies();
+				await this._loadGlobalMenuSheetDependencies();
 			} catch (error) {
 				console.error('Failed to load menu sheet dependencies:', error);
 				return;
 			}
-			this._menuSheet = this._createMenuSheet();
+			this._globalMenuSheet = this._createGlobalMenuSheet();
 			const menuButtonItem = this._menuButton?.querySelector('ndd-menu-bar-item');
-			this._menuSheet.addEventListener('open', () => {
+			this._globalMenuSheet.addEventListener('open', () => {
 				if (menuButtonItem) (menuButtonItem as NDDMenuBarItem).open = true;
 			});
-			this._menuSheet.addEventListener('close', () => {
+			this._globalMenuSheet.addEventListener('close', () => {
 				if (menuButtonItem) (menuButtonItem as NDDMenuBarItem).open = false;
 			});
 		}
-		this._syncMenuSheetItems();
+		this._syncGlobalMenuSheetItems();
 		// Defer show() so the current click event completes before the modal backdrop appears
 		requestAnimationFrame(() => {
-			this._menuSheet?.show();
+			this._globalMenuSheet?.show();
 		});
 	};
 

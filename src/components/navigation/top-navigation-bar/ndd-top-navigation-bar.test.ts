@@ -175,6 +175,7 @@ describe('ndd-menu-bar-item', () => {
 		el = await fixture('<ndd-menu-bar-item text="Test"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
+		expect(el).toBeInstanceOf(customElements.get('ndd-menu-bar-item'));
 	});
 
 	it('renders text from attribute', async () => {
