@@ -12,7 +12,7 @@
  */
 
 import { LitElement, type PropertyValues } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { styles } from './ndd-skip-link.styles.js';
 import { template } from './ndd-skip-link.template.js';
 import { nddSkipLinkTranslations } from './ndd-skip-link.i18n.js';

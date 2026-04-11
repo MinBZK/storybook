@@ -30,10 +30,18 @@ describe('ndd-skip-link', () => {
 		expect(button!.textContent!.trim()).toBe('Ga naar inhoud');
 	});
 
-	it('rendert een button element', async () => {
+	it('rendert een button element zonder href', async () => {
 		el = await fixture('<ndd-skip-link></ndd-skip-link>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('.skip-link__control');
 		expect(button!.tagName).toBe('BUTTON');
+	});
+
+	it('rendert een anchor element met href', async () => {
+		el = await fixture('<ndd-skip-link href="#main"></ndd-skip-link>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('.skip-link__control');
+		expect(anchor!.tagName).toBe('A');
+		expect(anchor!.getAttribute('href')).toBe('#main');
 	});
 });
