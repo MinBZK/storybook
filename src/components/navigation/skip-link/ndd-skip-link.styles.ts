@@ -8,6 +8,7 @@ export const styles = css`
 
 	:host {
 		--_z-index: 1000;
+		--_box-shadow: var(--primitives-box-shadows-level-3);
 		--_focus-outline-offset: -6px;
 		display: block;
 		position: relative;
@@ -28,7 +29,7 @@ export const styles = css`
 		display: flex;
 		justify-content: center;
 		background-color: var(--semantics-surfaces-background-color);
-		box-shadow: var(--primitives-box-shadows-level-3);
+		box-shadow: var(--_box-shadow);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		opacity: 0;
 		pointer-events: none;

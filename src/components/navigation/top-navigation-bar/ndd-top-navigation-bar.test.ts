@@ -33,6 +33,7 @@ describe('ndd-top-navigation-bar', () => {
 		el = await fixture('<ndd-top-navigation-bar></ndd-top-navigation-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
+		expect(el).toBeInstanceOf(customElements.get('ndd-top-navigation-bar'));
 	});
 
 	it('renders logo by default', async () => {

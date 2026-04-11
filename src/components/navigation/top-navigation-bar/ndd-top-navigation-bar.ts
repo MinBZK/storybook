@@ -215,6 +215,9 @@ export class NDDTopNavigationBar extends LitElement {
 	@property({ type: String, attribute: 'website-title' })
 	websiteTitle = '';
 
+	@property({ type: Boolean, attribute: 'no-logo', reflect: true })
+	noLogo = false;
+
 	// ## Logo properties
 
 	@property({ type: String, attribute: 'logo-title' })
@@ -329,6 +332,7 @@ export class NDDTopNavigationBar extends LitElement {
 	}
 
 	override firstUpdated(): void {
+		this._syncCompactAttribute();
 		this._setupOverflowDetection();
 	}
 
@@ -551,12 +555,12 @@ export class NDDTopNavigationBar extends LitElement {
 	}
 
 	private _onGlobalOverflowClick = (): void => {
-		const menuBarItem = this._globalOverflowMenuItem?.querySelector('ndd-menu-bar-item');
 		if (!this._globalOverflowMenu) {
 			this._globalOverflowMenu = this._createPopoverMenu((open) => {
 				this._globalOverflowMenuOpen = open;
 				if (!open) this._globalOverflowMenuClosedAt = Date.now();
-				if (menuBarItem) (menuBarItem as NDDTopNavigationBarMenuItem).open = open;
+				const item = this._globalOverflowMenuItem?.querySelector('ndd-menu-bar-item');
+				if (item) (item as NDDTopNavigationBarMenuItem).open = open;
 			});
 		}
 		this._populateOverflowMenu(this._globalOverflowMenu, this._globalSlot, 'data-global-overflow');
@@ -567,12 +571,12 @@ export class NDDTopNavigationBar extends LitElement {
 	};
 
 	private _onUtilityOverflowClick = (): void => {
-		const menuBarItem = this._utilityOverflowMenuItem?.querySelector('ndd-menu-bar-item');
 		if (!this._utilityOverflowMenu) {
 			this._utilityOverflowMenu = this._createPopoverMenu((open) => {
 				this._utilityOverflowMenuOpen = open;
 				if (!open) this._utilityOverflowMenuClosedAt = Date.now();
-				if (menuBarItem) (menuBarItem as NDDTopNavigationBarMenuItem).open = open;
+				const item = this._utilityOverflowMenuItem?.querySelector('ndd-menu-bar-item');
+				if (item) (item as NDDTopNavigationBarMenuItem).open = open;
 			});
 		}
 		this._populateOverflowMenu(this._utilityOverflowMenu, this._utilitySlot, 'data-utility-overflow');
@@ -614,6 +618,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 		this._globalMenuSheetList = document.createElement('ndd-list');
 		this._globalMenuSheetList.setAttribute('variant', 'simple');
+		this._globalMenuSheetList.setAttribute('no-dividers', '');
 		section.appendChild(this._globalMenuSheetList);
 
 		page.appendChild(section);

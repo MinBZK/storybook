@@ -10,6 +10,7 @@ export default {
 	},
 	args: {
 		'website-title': 'DigID',
+		'no-logo': false,
 		'logo-title': '',
 		'logo-subtitle': '',
 		'logo-supporting-text-1': '',
@@ -19,6 +20,7 @@ export default {
 	},
 	argTypes: {
 		'website-title': { control: 'text', description: 'Naam van de website of applicatie' },
+		'no-logo': { control: 'boolean', description: 'Verberg het logo' },
 		'logo-title': { control: 'text', description: 'Woordmerk titel (toont woordmerk naast logo)' },
 		'logo-subtitle': { control: 'text', description: 'Woordmerk subtitel' },
 		'logo-supporting-text-1': { control: 'text', description: 'Woordmerk ondersteunende tekst regel 1' },
@@ -36,6 +38,7 @@ const layoutArea = 'container-type: inline-size; container-name: layout-area; ba
 
 const Template = ({
 	'website-title': websiteTitle,
+	'no-logo': noLogo,
 	'logo-title': logoTitle,
 	'logo-subtitle': logoSubtitle,
 	'logo-supporting-text-1': logoSupportingText1,
@@ -46,6 +49,7 @@ const Template = ({
 	<div style=${layoutArea}>
 		<ndd-top-navigation-bar
 			website-title=${websiteTitle || nothing}
+			?no-logo=${noLogo}
 			logo-title=${logoTitle || nothing}
 			logo-subtitle=${logoSubtitle || nothing}
 			logo-supporting-text-1=${logoSupportingText1 || nothing}
