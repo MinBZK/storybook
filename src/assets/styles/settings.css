@@ -812,14 +812,14 @@
 	--semantics-page-sections-lg-margin-block: var(--primitives-space-32);
 	--semantics-page-sections-lg-gap: var(--primitives-space-24);
 
+
 	--semantics-overlays-backdrop-color: rgba(0, 0, 0, 0.2);
 	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
 
 
-	--semantics-focus-ring-edge-color: var(--semantics-surfaces-background-color);
-	--semantics-focus-ring-edge-thickness: 6px;
-	--semantics-focus-ring-center-color:  light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
-	--semantics-focus-ring-center-thickness: 4px;
+	--semantics-focus-ring-box-shadow: 0 0 0 4px light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
+	--semantics-focus-ring-outline: 6px double var(--semantics-surfaces-background-color);
+
 
 	--components-list-corner-radius: var(--semantics-controls-md-corner-radius);
 	--components-list-drag-placeholder-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));

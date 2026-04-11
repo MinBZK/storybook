@@ -148,8 +148,8 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&:focus-visible {
-			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-sheet-box-shadow);
-			outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+			box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-sheet-box-shadow);
+			outline: var(--semantics-focus-ring-outline);
 		}
 
 		&:not([open]) {
@@ -210,8 +210,8 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&:focus-visible {
-			box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-sheet-box-shadow);
-			outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+			box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-sheet-box-shadow);
+			outline: var(--semantics-focus-ring-outline);
 		}
 
 		&:not([open]) {

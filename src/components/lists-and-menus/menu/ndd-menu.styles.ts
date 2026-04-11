@@ -52,8 +52,8 @@ export const menuStyles = css`
 	}
 
 	.menu.is-keyboard-focus:focus {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color), var(--components-menu-box-shadow);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-menu-box-shadow);
+		outline: var(--semantics-focus-ring-outline);
 	}
 
 
@@ -119,8 +119,8 @@ export const menuItemStyles = css`
 	.menu__item:focus-visible {
 		position: relative;
 		z-index: 1;
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+		outline: var(--semantics-focus-ring-outline);
 	}
 
 

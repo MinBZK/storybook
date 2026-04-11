@@ -75,8 +75,8 @@ export const styles = css`
 	}
 
 	.list-item__action:focus-visible {
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
@@ -94,8 +94,8 @@ export const styles = css`
 		right: var(--semantics-focus-ring-edge-thickness);
 		bottom: var(--semantics-focus-ring-edge-thickness);
 		border-radius: calc(var(--components-list-corner-radius) - var(--semantics-focus-ring-edge-thickness));
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 

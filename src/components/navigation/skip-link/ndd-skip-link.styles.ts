@@ -58,7 +58,7 @@ export const styles = css`
 
 	.skip-link__control:focus-visible {
 		box-shadow: inset 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		outline: var(--semantics-focus-ring-outline);
 		outline-offset: calc(var(--semantics-focus-ring-edge-thickness) * -1);
 	}
 `;
