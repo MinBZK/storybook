@@ -84,8 +84,8 @@ export const menuBarItemStyles = css`
 		bottom: 0;
 		left: var(--primitives-space-8);
 		right: var(--primitives-space-8);
-		height: var(--components-top-navigation-bar-menu-bar-item-is-selected-indicator-height);
-		background-color: var(--components-top-navigation-bar-menu-bar-item-is-selected-indicator-background-color);
+		height: var(--components-top-navigation-bar-menu-bar-item-is-current-indicator-height);
+		background-color: var(--components-top-navigation-bar-menu-bar-item-is-current-indicator-background-color);
 		pointer-events: none;
 		z-index: var(--_indicator-z-index);
 	}

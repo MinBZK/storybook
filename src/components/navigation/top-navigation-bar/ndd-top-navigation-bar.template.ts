@@ -8,7 +8,7 @@ import logoSvg from './logo.svg?raw';
 export function menuBarItemTemplate(this: NDDTopNavigationBarMenuItem) {
 	const safeHref = this._sanitizeUrl(this.href);
 	const isLink = Boolean(safeHref);
-	const tabindex = this.disabled ? '-1' : '0';
+	const tabindex = this.disabled ? '-1' : nothing;
 
 	if (isLink) {
 		return html`

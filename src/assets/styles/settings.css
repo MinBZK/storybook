@@ -839,8 +839,8 @@
 
 
 	--components-top-navigation-bar-menu-bar-item-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-750));
-	--components-top-navigation-bar-menu-bar-item-is-selected-indicator-background-color: var(--semantics-controls-is-selected-indicator-color);
-	--components-top-navigation-bar-menu-bar-item-is-selected-indicator-height: var(--primitives-space-4);
+	--components-top-navigation-bar-menu-bar-item-is-current-indicator-background-color: var(--semantics-controls-is-selected-indicator-color);
+	--components-top-navigation-bar-menu-bar-item-is-current-indicator-height: var(--primitives-space-4);
 	--components-top-navigation-bar-menu-bar-item-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-200));
 	--components-top-navigation-bar-menu-bar-item-is-open-indicator-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
 	--components-top-navigation-bar-menu-bar-item-font: var(--primitives-font-body-md-bold-flat);

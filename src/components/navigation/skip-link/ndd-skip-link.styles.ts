@@ -7,6 +7,7 @@ export const styles = css`
 	/* # Host */
 
 	:host {
+		--_z-index: 1000;
 		display: block;
 		position: relative;
 	}
@@ -22,7 +23,7 @@ export const styles = css`
 		position: absolute;
 		top: 0;
 		left: 0;
-		z-index: 1000;
+		z-index: var(--_z-index);
 		display: flex;
 		justify-content: center;
 		background-color: var(--semantics-surfaces-background-color);
@@ -47,7 +48,6 @@ export const styles = css`
 		appearance: none;
 		border: none;
 		background: none;
-		cursor: pointer;
 		color: var(--semantics-links-color);
 		font: var(--primitives-font-body-md-bold-flat);
 		text-decoration: underline;
