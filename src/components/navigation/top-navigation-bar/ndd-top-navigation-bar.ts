@@ -408,7 +408,7 @@ export class NDDTopNavigationBar extends LitElement {
 			this._isHandlingOverflow = true;
 			try {
 				this._syncCompactAttribute();
-				this._updateOverflow(this._globalMenuBar, this._globalOverflowMenuItem, this._globalSlot, 'data-global-overflow', true);
+				this._updateOverflow(this._globalMenuBar, this._globalOverflowMenuItem, this._globalSlot, 'data-global-overflow');
 				this._updateOverflow(this._utilityMenuBar, this._utilityOverflowMenuItem, this._utilitySlot, 'data-utility-overflow');
 			} finally {
 				requestAnimationFrame(() => { this._isHandlingOverflow = false; });
@@ -435,12 +435,10 @@ export class NDDTopNavigationBar extends LitElement {
 			item.toggleAttribute('compact', isCompact);
 		}
 
-		// Hide menu-button when there are no global slot items
-		if (this._menuButton) {
-			const globalItems = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
-			const hasGlobalItems = globalItems.some(el => el.tagName === 'NDD-MENU-BAR-ITEM');
-			this._menuButton.style.display = hasGlobalItems ? '' : 'none';
-		}
+		// Toggle class on host for menu-button visibility (CSS handles display)
+		const globalItems = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
+		const hasGlobalItems = globalItems.some(el => el.tagName === 'NDD-MENU-BAR-ITEM');
+		this.classList.toggle('has-global-items', hasGlobalItems);
 	}
 
 	/** Check if the container is at the sm breakpoint (<= smMax). */
@@ -450,11 +448,6 @@ export class NDDTopNavigationBar extends LitElement {
 		return container.clientWidth <= parseInt(breakpoints.smMax);
 	}
 
-	/** Check if the menu-button is currently visible (sm/md breakpoint). */
-	private _isMenuButtonVisible(): boolean {
-		if (!this._menuButton) return false;
-		return getComputedStyle(this._menuButton).display !== 'none';
-	}
 
 	/**
 	 * Calculate which slotted items overflow and hide them behind an overflow button.
@@ -466,14 +459,13 @@ export class NDDTopNavigationBar extends LitElement {
 		overflowButton: HTMLElement | undefined,
 		slot: HTMLSlotElement | undefined,
 		dataAttr: string,
-		skipWhenMenuButtonVisible = false,
 	): void {
 		if (!container || !overflowButton) return;
 
 		const slottedElements = slot?.assignedElements({ flatten: true }) ?? [];
 		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as HTMLElement[];
 
-		if ((skipWhenMenuButtonVisible && this._isMenuButtonVisible()) || items.length === 0) {
+		if (items.length === 0) {
 			overflowButton.style.display = 'none';
 			return;
 		}

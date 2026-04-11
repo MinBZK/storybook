@@ -342,9 +342,7 @@ export const styles = css`
 	.top-navigation-bar__menu-bar {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		flex: 1;
-		min-height: var(--semantics-controls-md-min-size);
+		flex-grow: 1;
 		min-width: 0;
 	}
 
@@ -353,7 +351,7 @@ export const styles = css`
 	.top-navigation-bar__menu-bar-start {
 		display: flex;
 		align-items: center;
-		flex: 1;
+		flex-grow: 1;
 		min-width: 0;
 	}
 
@@ -362,34 +360,37 @@ export const styles = css`
 	.top-navigation-bar__menu-bar-end {
 		display: flex;
 		align-items: center;
-		flex-shrink: 0;
+
+		@container top-navigation-bar (max-width: ${mdMax}) {
+			min-width: 0;
+		}
 	}
 
 	/* ## Global bar */
 
 	.top-navigation-bar__global-menu-bar {
-		display: flex;
+		display: none;
 		flex-direction: row;
-		align-items: stretch;
-		position: relative;
-		flex: 1;
+		align-items: center;
+		flex-grow: 1;
+		flex-shrink: 1;
 		min-width: 0;
-		overflow: visible;
-	}
-
-	::slotted(ndd-menu-bar-item[slot="global"]) {
-		@container top-navigation-bar (max-width: ${mdMax}) {
-			display: none;
+		@container top-navigation-bar (min-width: ${lgMin}) {
+			:host(.has-global-items) & {
+				display: flex;
+			}
 		}
 	}
 
-	/* ## Menu button (visible on sm and md, hidden on lg) */
+	/* ## Menu button */
 
 	.top-navigation-bar__menu-button {
 		display: none;
 
 		@container top-navigation-bar (max-width: ${mdMax}) {
-			display: inline-block;
+			:host(.has-global-items) & {
+				display: inline-block;
+			}
 		}
 	}
 
@@ -397,7 +398,11 @@ export const styles = css`
 
 	.top-navigation-bar__utility-menu-bar {
 		display: flex;
+		flex-direction: row;
 		align-items: center;
+		flex-grow: 1;
+		flex-shrink: 1;
+		min-width: 0;
 	}
 
 	/* ## Overflow items (global bar + utility) */

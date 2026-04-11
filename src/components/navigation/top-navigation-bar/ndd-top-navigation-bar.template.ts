@@ -113,25 +113,27 @@ export function template(this: NDDTopNavigationBar) {
 				<div class="top-navigation-bar__menu-bar">
 					<div class="top-navigation-bar__menu-bar-start">
 						${this._hasBackButton ? html`
-							<ndd-menu-bar-item
-								icon="arrow-left"
-								text="${this._backText}"
-								href=${this.backHref || nothing}
-								accessible-label="${this._backText}"
-								@click="${this._handleBackClick}"
-							></ndd-menu-bar-item>
+							<div class="top-navigation-bar__back-button">
+								<ndd-menu-bar-item
+									icon="arrow-left"
+									text="${this._backText}"
+									href=${this.backHref || nothing}
+									accessible-label="${this._backText}"
+									@click="${this._handleBackClick}"
+								></ndd-menu-bar-item>
+							</div>
 						` : nothing}
+						<div class="top-navigation-bar__menu-button">
+							<ndd-menu-bar-item
+								icon="menu"
+								text="${this._menuText}"
+								haspopup="dialog"
+								@click=${this._onMenuButtonClick}
+							></ndd-menu-bar-item>
+						</div>
 						<nav class="top-navigation-bar__global-menu-bar"
 							aria-label="${this._t('components.top-navigation-bar.global-menu-bar-label')}"
 						>
-							<div class="top-navigation-bar__menu-button">
-								<ndd-menu-bar-item
-									icon="menu"
-									text="${this._menuText}"
-									haspopup="dialog"
-									@click=${this._onMenuButtonClick}
-								></ndd-menu-bar-item>
-							</div>
 							<slot name="global"></slot>
 							<div class="top-navigation-bar__overflow-button"
 								id="global-overflow-button"
