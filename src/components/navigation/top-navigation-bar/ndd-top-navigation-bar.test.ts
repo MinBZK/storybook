@@ -96,6 +96,12 @@ describe('ndd-top-navigation-bar – menu item selection', () => {
 	});
 });
 
+describe('ndd-top-navigation-bar – overflow detection', () => {
+	it.todo('verbergt global items achter overflow button bij smalle breedte (JSDOM mist layout support)');
+	it.todo('verbergt utility items achter overflow button bij smalle breedte (JSDOM mist layout support)');
+	it.todo('toont overflow menu bij klik op overflow button');
+});
+
 describe('ndd-top-navigation-bar – back button', () => {
 	let el: NDDTopNavigationBar;
 

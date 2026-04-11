@@ -1,11 +1,11 @@
 import { html, nothing } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import type { NDDTopNavigationBar, NDDMenuBarItem } from './ndd-top-navigation-bar.js';
+import type { NDDTopNavigationBar, NDDTopNavigationBarMenuItem } from './ndd-top-navigation-bar.js';
 import logoSvg from './logo.svg?raw';
 
 // # Menu bar item template
 
-export function menuBarItemTemplate(this: NDDMenuBarItem) {
+export function menuBarItemTemplate(this: NDDTopNavigationBarMenuItem) {
 	const safeHref = this._sanitizeUrl(this.href);
 	const isLink = Boolean(safeHref);
 	const tabindex = this.disabled ? '-1' : '0';

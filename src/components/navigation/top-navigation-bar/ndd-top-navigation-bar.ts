@@ -30,7 +30,7 @@ interface Sheet extends HTMLElement {
 
 // # ndd-menu-bar-item
 
-export class NDDMenuBarItem extends LitElement {
+export class NDDTopNavigationBarMenuItem extends LitElement {
 	static override styles = menuBarItemStyles;
 
 	@property({ type: String, reflect: true })
@@ -160,7 +160,7 @@ export class NDDMenuBarItem extends LitElement {
 
 		const menu = document.createElement('ndd-menu') as unknown as PopoverMenu;
 		menu.setAttribute('placement', 'bottom-start');
-		menu.style.setProperty('--_menu-width', 'auto');
+
 		menu.addEventListener('toggle', (event: Event) => {
 			const open = (event as ToggleEvent).newState === 'open';
 			this._menuOpen = open;
@@ -202,7 +202,7 @@ export class NDDMenuBarItem extends LitElement {
 }
 
 if (!customElements.get('ndd-menu-bar-item')) {
-	customElements.define('ndd-menu-bar-item', NDDMenuBarItem);
+	customElements.define('ndd-menu-bar-item', NDDTopNavigationBarMenuItem);
 }
 
 // # ndd-top-navigation-bar
@@ -473,7 +473,6 @@ export class NDDTopNavigationBar extends LitElement {
 		// Reset all items to visible
 		items.forEach(item => {
 			item.style.display = '';
-			item.style.visibility = 'visible';
 			item.removeAttribute(dataAttr);
 		});
 
@@ -510,7 +509,7 @@ export class NDDTopNavigationBar extends LitElement {
 	private _createPopoverMenu(onToggle: (open: boolean) => void): PopoverMenu {
 		const menu = document.createElement('ndd-menu') as unknown as PopoverMenu;
 		menu.setAttribute('placement', 'bottom-end');
-		menu.style.setProperty('--_menu-width', 'auto');
+
 		menu.addEventListener('toggle', (event: Event) => {
 			onToggle((event as ToggleEvent).newState === 'open');
 		});
@@ -523,7 +522,7 @@ export class NDDTopNavigationBar extends LitElement {
 		const slottedElements = slot?.assignedElements({ flatten: true }) ?? [];
 		const overflowItems = slottedElements.filter(
 			el => el.tagName === 'NDD-MENU-BAR-ITEM' && el.hasAttribute(dataAttr)
-		) as NDDMenuBarItem[];
+		) as NDDTopNavigationBarMenuItem[];
 
 		for (const item of overflowItems) {
 			const menuItem = document.createElement('ndd-menu-item');
@@ -557,7 +556,7 @@ export class NDDTopNavigationBar extends LitElement {
 			this._globalOverflowMenu = this._createPopoverMenu((open) => {
 				this._globalOverflowMenuOpen = open;
 				if (!open) this._globalOverflowMenuClosedAt = Date.now();
-				if (menuBarItem) (menuBarItem as NDDMenuBarItem).open = open;
+				if (menuBarItem) (menuBarItem as NDDTopNavigationBarMenuItem).open = open;
 			});
 		}
 		this._populateOverflowMenu(this._globalOverflowMenu, this._globalSlot, 'data-global-overflow');
@@ -573,7 +572,7 @@ export class NDDTopNavigationBar extends LitElement {
 			this._utilityOverflowMenu = this._createPopoverMenu((open) => {
 				this._utilityOverflowMenuOpen = open;
 				if (!open) this._utilityOverflowMenuClosedAt = Date.now();
-				if (menuBarItem) (menuBarItem as NDDMenuBarItem).open = open;
+				if (menuBarItem) (menuBarItem as NDDTopNavigationBarMenuItem).open = open;
 			});
 		}
 		this._populateOverflowMenu(this._utilityOverflowMenu, this._utilitySlot, 'data-utility-overflow');
@@ -628,7 +627,7 @@ export class NDDTopNavigationBar extends LitElement {
 		this._globalMenuSheetList.innerHTML = '';
 
 		const slottedElements = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
-		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as NDDMenuBarItem[];
+		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as NDDTopNavigationBarMenuItem[];
 
 		for (const item of items) {
 			const listItem = document.createElement('ndd-list-item');
@@ -659,10 +658,10 @@ export class NDDTopNavigationBar extends LitElement {
 			this._globalMenuSheet = this._createGlobalMenuSheet();
 			const menuButtonItem = this._menuButton?.querySelector('ndd-menu-bar-item');
 			this._globalMenuSheet.addEventListener('open', () => {
-				if (menuButtonItem) (menuButtonItem as NDDMenuBarItem).open = true;
+				if (menuButtonItem) (menuButtonItem as NDDTopNavigationBarMenuItem).open = true;
 			});
 			this._globalMenuSheet.addEventListener('close', () => {
-				if (menuButtonItem) (menuButtonItem as NDDMenuBarItem).open = false;
+				if (menuButtonItem) (menuButtonItem as NDDTopNavigationBarMenuItem).open = false;
 			});
 		}
 		this._syncGlobalMenuSheetItems();
@@ -700,6 +699,6 @@ if (!customElements.get('ndd-top-navigation-bar')) {
 declare global {
 	interface HTMLElementTagNameMap {
 		'ndd-top-navigation-bar': NDDTopNavigationBar;
-		'ndd-menu-bar-item': NDDMenuBarItem;
+		'ndd-menu-bar-item': NDDTopNavigationBarMenuItem;
 	}
 }

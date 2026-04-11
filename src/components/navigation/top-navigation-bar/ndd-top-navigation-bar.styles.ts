@@ -14,6 +14,7 @@ export const menuBarItemStyles = css`
 	:host {
 		--_indicator-z-index: 0;
 		--_content-z-index: 1;
+		--_focus-z-index: 1;
 		display: inline-block;
 		position: relative;
 		flex-grow: 0;
@@ -116,7 +117,7 @@ export const menuBarItemStyles = css`
 	/* ## Focus */
 
 	:host(:focus-within) {
-		z-index: 1;
+		z-index: var(--_focus-z-index);
 	}
 
 	.top-navigation-bar__menu-item:focus-visible {
@@ -231,7 +232,6 @@ export const styles = css`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: var(--primitives-color-accent-100);
 		width: var(--_logo-width);
 		height: calc(var(--_logo-width) * 2);
 	}
