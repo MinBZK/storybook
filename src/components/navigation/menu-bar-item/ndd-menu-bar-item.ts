@@ -180,7 +180,7 @@ export class NDDMenuBarItem extends LitElement {
 
 	private _syncMenuItems(): void {
 		if (!this._menu) return;
-		this._menu.innerHTML = '';
+		this._menu.replaceChildren();
 
 		const items = this.querySelectorAll('ndd-menu-item, ndd-menu-divider');
 		items.forEach(item => {

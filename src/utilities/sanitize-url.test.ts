@@ -53,4 +53,12 @@ describe('sanitizeUrl', () => {
 	it('returns null for null', () => {
 		expect(sanitizeUrl(null)).toBeNull();
 	});
+
+	it('trims leading/trailing whitespace from safe URLs', () => {
+		expect(sanitizeUrl('  /page  ')).toBe('/page');
+	});
+
+	it('trims unicode whitespace from safe URLs', () => {
+		expect(sanitizeUrl('\u00A0/page')).toBe('/page');
+	});
 });

@@ -95,6 +95,21 @@ describe('ndd-top-navigation-bar – menu item selection', () => {
 		expect(detail).toBeDefined();
 		expect(detail.item).toBe(el.querySelectorAll('ndd-menu-bar-item')[1]);
 	});
+
+	it('does not set current when itemselect is prevented', async () => {
+		el = await fixture<NDDTopNavigationBar>(navWithItems());
+		await waitForUpdate(el);
+
+		el.addEventListener('itemselect', ((e: CustomEvent) => {
+			e.preventDefault();
+		}) as EventListener);
+
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		items[1].click();
+		await waitForUpdate(el);
+
+		expect(items[1].hasAttribute('current')).toBe(false);
+	});
 });
 
 describe('ndd-top-navigation-bar – overflow detection', () => {

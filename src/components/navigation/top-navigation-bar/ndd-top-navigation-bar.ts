@@ -72,6 +72,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 	private _resizeObserver: ResizeObserver | null = null;
 	private _compactRAF: number | null = null;
+	private _setupRAF: number | null = null;
 
 	// ## i18n
 
@@ -164,7 +165,9 @@ export class NDDTopNavigationBar extends LitElement {
 
 	private _setupCompactDetection(): void {
 		this._cleanupCompactDetection();
-		requestAnimationFrame(() => {
+		this._setupRAF = requestAnimationFrame(() => {
+			this._setupRAF = null;
+			if (!this.isConnected) return;
 			this._resizeObserver = new ResizeObserver(() => {
 				this._scheduleCompactUpdate();
 			});
@@ -177,6 +180,10 @@ export class NDDTopNavigationBar extends LitElement {
 	}
 
 	private _cleanupCompactDetection(): void {
+		if (this._setupRAF) {
+			cancelAnimationFrame(this._setupRAF);
+			this._setupRAF = null;
+		}
 		if (this._compactRAF) {
 			cancelAnimationFrame(this._compactRAF);
 			this._compactRAF = null;
@@ -277,7 +284,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 	private _syncGlobalMenuSheetItems(): void {
 		if (!this._globalMenuSheetList) return;
-		this._globalMenuSheetList.innerHTML = '';
+		this._globalMenuSheetList.replaceChildren();
 
 		const slottedElements = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
 		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as NDDMenuBarItem[];

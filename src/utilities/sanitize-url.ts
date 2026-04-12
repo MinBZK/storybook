@@ -12,14 +12,15 @@
  */
 export function sanitizeUrl(url: string | null): string | null {
 	if (!url) return null;
-	const trimmed = url.replace(/^[\s\u00A0\u200B\u2028\u2029]+|[\s\u00A0\u200B\u2028\u2029]+$/g, '').toLowerCase();
+	const trimmed = url.replace(/^[\s\u00A0\u200B\u2028\u2029]+|[\s\u00A0\u200B\u2028\u2029]+$/g, '');
+	const lower = trimmed.toLowerCase();
 	if (
-		trimmed.startsWith('javascript:') ||
-		trimmed.startsWith('data:') ||
-		trimmed.startsWith('vbscript:') ||
-		trimmed.startsWith('blob:')
+		lower.startsWith('javascript:') ||
+		lower.startsWith('data:') ||
+		lower.startsWith('vbscript:') ||
+		lower.startsWith('blob:')
 	) {
 		return null;
 	}
-	return url;
+	return trimmed;
 }

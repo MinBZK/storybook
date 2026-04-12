@@ -66,6 +66,7 @@ export class NDDMenuBar extends LitElement {
 	private _resizeObserver: ResizeObserver | null = null;
 	private _isHandlingOverflow = false;
 	private _overflowRAF: number | null = null;
+	private _setupRAF: number | null = null;
 
 	// ## i18n
 
@@ -102,21 +103,16 @@ export class NDDMenuBar extends LitElement {
 		this._cleanupOverflowDetection();
 		this._overflowMenu?.remove();
 		this._overflowMenu = null;
-		if (this._defaultSlot) {
-			this._defaultSlot.removeEventListener('slotchange', this._onSlotChange);
-		}
 	}
 
 	override firstUpdated(): void {
 		this._setupOverflowDetection();
-		if (this._defaultSlot) {
-			this._defaultSlot.addEventListener('slotchange', this._onSlotChange);
-		}
 		this._syncCompactAttribute();
 	}
 
 	private _onSlotChange = (): void => {
 		this._syncCompactAttribute();
+		this._scheduleOverflowUpdate();
 	};
 
 	/** Propagate compact attribute to slotted items and internal overflow button. */
@@ -137,19 +133,25 @@ export class NDDMenuBar extends LitElement {
 
 	private _setupOverflowDetection(): void {
 		this._cleanupOverflowDetection();
-		requestAnimationFrame(() => {
+		this._setupRAF = requestAnimationFrame(() => {
+			this._setupRAF = null;
+			if (!this.isConnected) return;
 			this._resizeObserver = new ResizeObserver(() => {
 				this._scheduleOverflowUpdate();
 			});
 			this._resizeObserver.observe(this);
 			if (this._defaultSlot) {
-				this._defaultSlot.addEventListener('slotchange', this._scheduleOverflowUpdate);
+				this._defaultSlot.addEventListener('slotchange', this._onSlotChange);
 			}
 			this._scheduleOverflowUpdate();
 		});
 	}
 
 	private _cleanupOverflowDetection(): void {
+		if (this._setupRAF) {
+			cancelAnimationFrame(this._setupRAF);
+			this._setupRAF = null;
+		}
 		if (this._overflowRAF) {
 			cancelAnimationFrame(this._overflowRAF);
 			this._overflowRAF = null;
@@ -159,7 +161,7 @@ export class NDDMenuBar extends LitElement {
 			this._resizeObserver = null;
 		}
 		if (this._defaultSlot) {
-			this._defaultSlot.removeEventListener('slotchange', this._scheduleOverflowUpdate);
+			this._defaultSlot.removeEventListener('slotchange', this._onSlotChange);
 		}
 	}
 
@@ -246,7 +248,7 @@ export class NDDMenuBar extends LitElement {
 
 	private _populateOverflowMenu(): void {
 		if (!this._overflowMenu) return;
-		this._overflowMenu.innerHTML = '';
+		this._overflowMenu.replaceChildren();
 
 		const slottedElements = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
 		const overflowItems = slottedElements.filter(
