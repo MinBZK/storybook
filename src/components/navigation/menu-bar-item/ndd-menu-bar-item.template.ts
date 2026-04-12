@@ -12,7 +12,7 @@ export function template(component: NDDMenuBarItem) {
 				href=${safeHref as string}
 				aria-disabled=${component.disabled || nothing}
 				tabindex=${component.disabled ? '-1' : nothing}
-				aria-current=${component.current && !component.expandable ? component.currentType : nothing}
+				aria-current=${component.current ? component.currentType : nothing}
 				aria-label=${component.accessibleLabel || (((component.iconOnly || (component.contentPriority === 'icon' && component.compact)) && component.text) ? component.text : nothing)}
 				aria-haspopup=${component.expandable ? 'menu' : (component.haspopup || nothing)}
 				aria-expanded=${(component.expandable || component.haspopup) ? String(component.open) : nothing}
@@ -39,7 +39,7 @@ export function template(component: NDDMenuBarItem) {
 		<button class="menu-bar-item"
 			type="button"
 			?disabled=${component.disabled}
-			aria-current=${component.current && !component.expandable ? component.currentType : nothing}
+			aria-current=${component.current ? component.currentType : nothing}
 			aria-label=${component.accessibleLabel || (((component.iconOnly || (component.contentPriority === 'icon' && component.compact)) && component.text) ? component.text : nothing)}
 			aria-haspopup=${component.expandable ? 'menu' : (component.haspopup || nothing)}
 			aria-expanded=${(component.expandable || component.haspopup) ? String(component.open) : nothing}

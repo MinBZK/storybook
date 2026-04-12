@@ -161,7 +161,7 @@ export class NDDMenuBarItem extends LitElement {
 	// ## Menu popover
 
 	private _createMenu(): void {
-		if (this._menu) return;
+		if (this._menu || !this._hasMenuItems()) return;
 		if (typeof document === 'undefined') return;
 
 		const menu = document.createElement('ndd-menu') as unknown as PopoverMenu;
@@ -181,8 +181,8 @@ export class NDDMenuBarItem extends LitElement {
 	/**
 	 * Clone slotted menu items into the popover menu.
 	 * Note: cloneNode(true) copies DOM structure and attributes but not JS event
-	 * listeners registered via addEventListener(). Consumers should use declarative
-	 * event attributes or listen on the popover menu itself.
+	 * listeners. Custom click handlers on slotted ndd-menu-item elements won't
+	 * fire in the popover. Use event delegation on a parent element instead.
 	 */
 	private _syncMenuItems(): void {
 		if (!this._menu) return;

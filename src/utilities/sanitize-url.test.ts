@@ -61,4 +61,20 @@ describe('sanitizeUrl', () => {
 	it('trims unicode whitespace from safe URLs', () => {
 		expect(sanitizeUrl('\u00A0/page')).toBe('/page');
 	});
+
+	it('blocks javascript: with embedded newline', () => {
+		expect(sanitizeUrl('java\nscript:alert(1)')).toBeNull();
+	});
+
+	it('blocks javascript: with embedded tab', () => {
+		expect(sanitizeUrl('java\tscript:alert(1)')).toBeNull();
+	});
+
+	it('blocks javascript: with embedded carriage return', () => {
+		expect(sanitizeUrl('java\rscript:alert(1)')).toBeNull();
+	});
+
+	it('strips embedded control chars from safe URLs', () => {
+		expect(sanitizeUrl('/pa\nge')).toBe('/page');
+	});
 });
