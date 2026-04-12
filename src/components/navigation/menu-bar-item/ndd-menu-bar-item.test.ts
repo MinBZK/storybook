@@ -48,6 +48,37 @@ describe('ndd-menu-bar-item', () => {
 		expect(document.querySelector('ndd-menu')).not.toBeNull();
 	});
 
+	it('removes popover menu on disconnect', async () => {
+		el = await fixture(`
+			<ndd-menu-bar-item text="NL" expandable>
+				<ndd-menu-item text="Nederlands"></ndd-menu-item>
+			</ndd-menu-bar-item>
+		`);
+		await waitForUpdate(el);
+		el.click();
+		await waitForUpdate(el);
+		expect(document.querySelector('ndd-menu')).not.toBeNull();
+		cleanup(el);
+		expect(document.querySelector('ndd-menu')).toBeNull();
+		// Prevent afterEach double-cleanup
+		el = null as any;
+	});
+
+	it('removes popover menu when expandable is removed', async () => {
+		el = await fixture(`
+			<ndd-menu-bar-item text="NL" expandable>
+				<ndd-menu-item text="Nederlands"></ndd-menu-item>
+			</ndd-menu-bar-item>
+		`);
+		await waitForUpdate(el);
+		el.click();
+		await waitForUpdate(el);
+		expect(document.querySelector('ndd-menu')).not.toBeNull();
+		el.removeAttribute('expandable');
+		await waitForUpdate(el);
+		expect(document.querySelector('ndd-menu')).toBeNull();
+	});
+
 	it('does not fire select when expandable with menu items', async () => {
 		el = await fixture(`
 			<ndd-menu-bar-item text="NL" expandable>
