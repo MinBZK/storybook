@@ -46,14 +46,11 @@ describe('ndd-skip-link', () => {
 	});
 
 	it('focust volgende sibling bij klik zonder href', async () => {
-		const wrapper = document.createElement('div');
-		document.body.appendChild(wrapper);
-		wrapper.innerHTML = '<ndd-skip-link></ndd-skip-link><main tabindex="-1">Content</main>';
-		const skipLink = wrapper.querySelector('ndd-skip-link')!;
+		el = await fixture('<div><ndd-skip-link></ndd-skip-link><main tabindex="-1">Content</main></div>');
+		const skipLink = el.querySelector('ndd-skip-link')!;
 		await waitForUpdate(skipLink);
 		const btn = skipLink.shadowRoot!.querySelector('button') as HTMLButtonElement;
 		btn.click();
-		expect(document.activeElement).toBe(wrapper.querySelector('main'));
-		wrapper.remove();
+		expect(document.activeElement).toBe(el.querySelector('main'));
 	});
 });

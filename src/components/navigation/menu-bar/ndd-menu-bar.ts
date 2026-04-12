@@ -256,8 +256,12 @@ export class NDDMenuBar extends LitElement {
 		) as NDDMenuBarItem[];
 
 		for (const item of overflowItems) {
+			// Skip expandable items — they have submenus that can't be represented in a flat overflow menu
+			if (item.expandable) continue;
+
 			const menuItem = document.createElement('ndd-menu-item');
 			menuItem.setAttribute('text', item.text);
+			if (item.icon) menuItem.setAttribute('icon', item.icon);
 			if (item.current) menuItem.setAttribute('selected', '');
 			if (item.disabled) menuItem.setAttribute('disabled', '');
 			menuItem.addEventListener('click', () => {

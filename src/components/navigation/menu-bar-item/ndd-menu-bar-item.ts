@@ -178,6 +178,12 @@ export class NDDMenuBarItem extends LitElement {
 		this._menu = menu;
 	}
 
+	/**
+	 * Clone slotted menu items into the popover menu.
+	 * Note: cloneNode(true) copies DOM structure and attributes but not JS event
+	 * listeners registered via addEventListener(). Consumers should use declarative
+	 * event attributes or listen on the popover menu itself.
+	 */
 	private _syncMenuItems(): void {
 		if (!this._menu) return;
 		this._menu.replaceChildren();
