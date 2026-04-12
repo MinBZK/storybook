@@ -112,7 +112,7 @@ export class NDDTopNavigationBarMenuItem extends LitElement {
 
 	_sanitizeUrl(url: string | null): string | null {
 		if (!url) return null;
-		const trimmed = url.replace(/^[\s\u00A0\u200B\u2028\u2029]+/, '').toLowerCase();
+		const trimmed = url.replace(/^[\s\u00A0\u200B\u2028\u2029]+|[\s\u00A0\u200B\u2028\u2029]+$/g, '').toLowerCase();
 		if (
 			trimmed.startsWith('javascript:') ||
 			trimmed.startsWith('data:') ||
@@ -197,7 +197,7 @@ export class NDDTopNavigationBarMenuItem extends LitElement {
 	}
 
 	override render() {
-		return menuBarItemTemplate.call(this);
+		return menuBarItemTemplate(this);
 	}
 }
 

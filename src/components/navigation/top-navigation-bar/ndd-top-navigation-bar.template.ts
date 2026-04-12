@@ -5,31 +5,30 @@ import logoSvg from './logo.svg?raw';
 
 // # Menu bar item template
 
-export function menuBarItemTemplate(this: NDDTopNavigationBarMenuItem) {
-	const safeHref = this._sanitizeUrl(this.href);
+export function menuBarItemTemplate(component: NDDTopNavigationBarMenuItem) {
+	const safeHref = component._sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
-	const tabindex = this.disabled ? '-1' : nothing;
 
 	if (isLink) {
 		return html`
 			<a class="top-navigation-bar__menu-item"
 				href=${safeHref as string}
-				aria-disabled=${this.disabled || nothing}
-				aria-current=${this.current && !this.expandable ? 'page' : nothing}
-				aria-label=${this.accessibleLabel || (this.iconOnly ? this.text : nothing)}
-				aria-haspopup=${this.expandable ? 'menu' : (this.haspopup || nothing)}
-				aria-expanded=${(this.expandable || this.haspopup) ? String(this.open) : nothing}
-				tabindex=${tabindex}
+				aria-disabled=${component.disabled || nothing}
+				tabindex=${component.disabled ? '-1' : nothing}
+				aria-current=${component.current && !component.expandable ? 'page' : nothing}
+				aria-label=${component.accessibleLabel || ((component.iconOnly || (component.smIconOnly && component.hasAttribute('compact'))) ? component.text : nothing)}
+				aria-haspopup=${component.expandable ? 'menu' : (component.haspopup || nothing)}
+				aria-expanded=${(component.expandable || component.haspopup) ? String(component.open) : nothing}
 			>
-				${this.icon ? html`
+				${component.icon ? html`
 					<span class="top-navigation-bar__menu-item-icon">
-						<ndd-icon name=${this.icon}></ndd-icon>
+						<ndd-icon name=${component.icon}></ndd-icon>
 					</span>
 				` : nothing}
 				<span class="top-navigation-bar__menu-item-text">
-					${this.text}
+					${component.text}
 				</span>
-				${this.expandable ? html`
+				${component.expandable ? html`
 					<span class="top-navigation-bar__menu-item-disclosure-icon">
 						<ndd-icon name="chevron-down-small"></ndd-icon>
 					</span>
@@ -42,21 +41,21 @@ export function menuBarItemTemplate(this: NDDTopNavigationBarMenuItem) {
 	return html`
 		<button class="top-navigation-bar__menu-item"
 			type="button"
-			?disabled=${this.disabled}
-			aria-current=${this.current && !this.expandable ? 'page' : nothing}
-			aria-label=${this.accessibleLabel || (this.iconOnly ? this.text : nothing)}
-			aria-haspopup=${this.expandable ? 'menu' : (this.haspopup || nothing)}
-			aria-expanded=${(this.expandable || this.haspopup) ? String(this.open) : nothing}
+			?disabled=${component.disabled}
+			aria-current=${component.current && !component.expandable ? 'page' : nothing}
+			aria-label=${component.accessibleLabel || ((component.iconOnly || (component.smIconOnly && component.hasAttribute('compact'))) ? component.text : nothing)}
+			aria-haspopup=${component.expandable ? 'menu' : (component.haspopup || nothing)}
+			aria-expanded=${(component.expandable || component.haspopup) ? String(component.open) : nothing}
 		>
-			${this.icon ? html`
+			${component.icon ? html`
 				<span class="top-navigation-bar__menu-item-icon">
-					<ndd-icon name=${this.icon}></ndd-icon>
+					<ndd-icon name=${component.icon}></ndd-icon>
 				</span>
 			` : nothing}
 			<span class="top-navigation-bar__menu-item-text">
-				${this.text}
+				${component.text}
 			</span>
-			${this.expandable ? html`
+			${component.expandable ? html`
 				<span class="top-navigation-bar__menu-item-disclosure-icon">
 					<ndd-icon name="chevron-down-small"></ndd-icon>
 				</span>

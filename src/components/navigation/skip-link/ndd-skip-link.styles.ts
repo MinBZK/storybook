@@ -9,6 +9,7 @@ export const styles = css`
 	:host {
 		--_z-index: 1000;
 		--_box-shadow: var(--primitives-box-shadows-level-3);
+		--_focus-box-shadow: inset var(--semantics-focus-ring-box-shadow);
 		--_focus-outline-offset: -6px;
 		display: block;
 		position: relative;
@@ -59,7 +60,7 @@ export const styles = css`
 	}
 
 	.skip-link__control:focus-visible {
-		box-shadow: inset var(--semantics-focus-ring-box-shadow);
+		box-shadow: var(--_focus-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--_focus-outline-offset);
 	}
