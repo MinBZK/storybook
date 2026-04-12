@@ -43,7 +43,6 @@ import { nddDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
 import type { NDDDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
 import './../../lists-and-menus/menu/ndd-menu.ts';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
-import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 // Pointer movement threshold in px before drag mode activates.
 // Distinguishes a click (select) from a drag (reorder).
