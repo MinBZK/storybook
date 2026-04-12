@@ -30,6 +30,22 @@ describe('ndd-menu-bar', () => {
 		expect(items.length).toBe(2);
 	});
 
+	it('renders nav landmark', async () => {
+		el = await fixture('<ndd-menu-bar accessible-label="Hoofdnavigatie"></ndd-menu-bar>');
+		await waitForUpdate(el);
+		const nav = el.shadowRoot!.querySelector('nav');
+		expect(nav).not.toBeNull();
+		expect(nav!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
+	});
+
+	it('renders nav without aria-label when accessible-label is empty', async () => {
+		el = await fixture('<ndd-menu-bar></ndd-menu-bar>');
+		await waitForUpdate(el);
+		const nav = el.shadowRoot!.querySelector('nav');
+		expect(nav).not.toBeNull();
+		expect(nav!.hasAttribute('aria-label')).toBe(false);
+	});
+
 	it('renders overflow button in shadow DOM', async () => {
 		el = await fixture('<ndd-menu-bar></ndd-menu-bar>');
 		await waitForUpdate(el);

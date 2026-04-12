@@ -70,22 +70,22 @@ export function template(component: NDDTopNavigationBar) {
 								@click=${component._onMenuButtonClick}
 							></ndd-menu-bar-item>
 						</div>
-						<nav class="top-navigation-bar__global-menu-bar"
-							aria-label="${component._t('components.top-navigation-bar.global-menu-bar-label')}"
-						>
-							<ndd-menu-bar>
+						<div class="top-navigation-bar__global-menu-bar">
+							<ndd-menu-bar
+								accessible-label="${component._t('components.top-navigation-bar.global-menu-bar-label')}"
+							>
 								<slot name="global"></slot>
 							</ndd-menu-bar>
-						</nav>
+						</div>
 					</div>
 					<div class="top-navigation-bar__menu-bar-end">
-						<nav class="top-navigation-bar__utility-menu-bar"
-							aria-label="${component._t('components.top-navigation-bar.utility-menu-bar-label')}"
-						>
-							<ndd-menu-bar>
+						<div class="top-navigation-bar__utility-menu-bar">
+							<ndd-menu-bar
+								accessible-label="${component._t('components.top-navigation-bar.utility-menu-bar-label')}"
+							>
 								<slot name="utility"></slot>
 							</ndd-menu-bar>
-						</nav>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -7,6 +7,7 @@
  *
  * @element ndd-menu-bar
  * @attr {string} overflow-text - Tekst voor de overflow button (standaard via i18n)
+ * @attr {string} accessible-label - aria-label voor de nav landmark
  * @attr {boolean} compact - Propageert compact attribuut naar slotted items (activeert content-priority)
  *
  * @slot - ndd-menu-bar-item elementen
@@ -38,6 +39,9 @@ export class NDDMenuBar extends LitElement {
 
 	@property({ type: String, attribute: 'overflow-text' })
 	overflowText = '';
+
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
 	@property({ type: Boolean, reflect: true })
 	compact = false;

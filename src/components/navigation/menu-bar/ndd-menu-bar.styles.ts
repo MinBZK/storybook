@@ -6,8 +6,6 @@ export const styles = css`
 
 	:host {
 		display: flex;
-		flex-direction: row;
-		align-items: center;
 		flex-grow: 1;
 		flex-shrink: 1;
 		min-width: 0;
@@ -15,6 +13,17 @@ export const styles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	/* ## Block */
+
+	.menu-bar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		flex-grow: 1;
+		flex-shrink: 1;
+		min-width: 0;
 	}
 
 	/* ## Overflow button */

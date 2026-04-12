@@ -156,8 +156,8 @@ describe('ndd-top-navigation-bar – i18n', () => {
 	it('uses default Dutch translations', async () => {
 		el = await fixture<NDDTopNavigationBar>('<ndd-top-navigation-bar></ndd-top-navigation-bar>');
 		await waitForUpdate(el);
-		const nav = el.shadowRoot!.querySelector('.top-navigation-bar__global-menu-bar');
-		expect(nav!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
+		const menuBar = el.shadowRoot!.querySelector('.top-navigation-bar__global-menu-bar ndd-menu-bar');
+		expect(menuBar!.getAttribute('accessible-label')).toBe('Hoofdnavigatie');
 	});
 
 	it('accepts custom translations', async () => {
@@ -166,7 +166,7 @@ describe('ndd-top-navigation-bar – i18n', () => {
 			'components.top-navigation-bar.global-menu-bar-label': 'Main navigation',
 		};
 		await waitForUpdate(el);
-		const nav = el.shadowRoot!.querySelector('.top-navigation-bar__global-menu-bar');
-		expect(nav!.getAttribute('aria-label')).toBe('Main navigation');
+		const menuBar = el.shadowRoot!.querySelector('.top-navigation-bar__global-menu-bar ndd-menu-bar');
+		expect(menuBar!.getAttribute('accessible-label')).toBe('Main navigation');
 	});
 });

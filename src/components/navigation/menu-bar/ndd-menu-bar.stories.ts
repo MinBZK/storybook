@@ -6,10 +6,12 @@ export default {
 	component: 'ndd-menu-bar',
 	tags: ['autodocs'],
 	args: {
+		accessibleLabel: 'Navigatie',
 		overflowText: 'Meer opties',
 		compact: false,
 	},
 	argTypes: {
+		accessibleLabel: { name: 'accessible-label', control: 'text', description: 'aria-label voor de nav landmark', table: { defaultValue: { summary: '' } } },
 		overflowText: { name: 'overflow-text', control: 'text', description: 'Tekst voor de overflow button', table: { defaultValue: { summary: 'Meer opties' } } },
 		compact: { control: 'boolean', description: 'Propageert compact naar slotted items', table: { defaultValue: { summary: false } } },
 	},
@@ -18,11 +20,13 @@ export default {
 const layoutArea = 'container-type: inline-size; container-name: layout-area; background-color: var(--semantics-surfaces-background-color);';
 
 const Template = ({
+	accessibleLabel,
 	overflowText,
 	compact,
 }: Record<string, unknown>) => html`
 	<div style=${layoutArea}>
 		<ndd-menu-bar
+			accessible-label=${(accessibleLabel as string) || nothing}
 			overflow-text=${(overflowText as string) || nothing}
 			?compact=${compact}
 		>

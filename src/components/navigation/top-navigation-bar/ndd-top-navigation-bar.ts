@@ -277,7 +277,14 @@ export class NDDTopNavigationBar extends LitElement {
 
 		for (const item of items) {
 			const listItem = document.createElement('ndd-list-item');
-			listItem.setAttribute('type', 'button');
+			const safeHref = item._sanitizeUrl(item.href);
+
+			if (safeHref) {
+				listItem.setAttribute('type', 'link');
+				listItem.setAttribute('href', safeHref);
+			} else {
+				listItem.setAttribute('type', 'button');
+			}
 			if (item.current) listItem.setAttribute('selected', '');
 
 			const textCell = document.createElement('ndd-text-cell');
@@ -285,7 +292,7 @@ export class NDDTopNavigationBar extends LitElement {
 			listItem.appendChild(textCell);
 
 			listItem.addEventListener('click', () => {
-				item.click();
+				if (!safeHref) item.click();
 				this._globalMenuSheet?.hide();
 			});
 
