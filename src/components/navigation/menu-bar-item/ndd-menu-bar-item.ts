@@ -31,6 +31,7 @@ import { template } from './ndd-menu-bar-item.template.js';
 import '../../content/icon/ndd-icon.js';
 import '../../lists-and-menus/menu/ndd-menu.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 /**
  * Minimal typed interface for ndd-menu.
@@ -125,17 +126,9 @@ export class NDDMenuBarItem extends LitElement {
 
 	// ## Helpers
 
-	_sanitizeUrl(url: string | null): string | null {
-		if (!url) return null;
-		const trimmed = url.replace(/^[\s\u00A0\u200B\u2028\u2029]+|[\s\u00A0\u200B\u2028\u2029]+$/g, '').toLowerCase();
-		if (
-			trimmed.startsWith('javascript:') ||
-			trimmed.startsWith('data:') ||
-			trimmed.startsWith('vbscript:')
-		) {
-			return null;
-		}
-		return url;
+	/** Sanitize a URL, blocking dangerous protocols. Returns null for unsafe URLs. */
+	sanitizeUrl(url: string | null): string | null {
+		return sanitizeUrl(url);
 	}
 
 	private _hasMenuItems(): boolean {

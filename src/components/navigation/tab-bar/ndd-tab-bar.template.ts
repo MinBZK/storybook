@@ -31,7 +31,7 @@ export function tabBarTemplate(component: NDDTabBar): TemplateResult {
 }
 
 export function tabBarItemTemplate(component: NDDTabBarItem): TemplateResult {
-	const safeHref = component._sanitizeUrl(component.href);
+	const safeHref = component.sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
 	const isNavigation = component._navigation;
 	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';

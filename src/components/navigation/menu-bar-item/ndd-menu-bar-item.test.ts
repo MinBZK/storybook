@@ -146,7 +146,7 @@ describe('ndd-menu-bar-item', () => {
 	});
 });
 
-describe('ndd-menu-bar-item – _sanitizeUrl', () => {
+describe('ndd-menu-bar-item – sanitizeUrl', () => {
 	let el: any;
 
 	afterEach(() => {
@@ -156,67 +156,67 @@ describe('ndd-menu-bar-item – _sanitizeUrl', () => {
 	it('allows valid relative URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link" href="/page"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('/page')).toBe('/page');
+		expect(el.sanitizeUrl('/page')).toBe('/page');
 	});
 
 	it('allows valid https URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('https://example.com')).toBe('https://example.com');
+		expect(el.sanitizeUrl('https://example.com')).toBe('https://example.com');
 	});
 
 	it('blocks javascript: URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('javascript:alert(1)')).toBeNull();
+		expect(el.sanitizeUrl('javascript:alert(1)')).toBeNull();
 	});
 
 	it('blocks data: URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('data:text/html,<script>alert(1)</script>')).toBeNull();
+		expect(el.sanitizeUrl('data:text/html,<script>alert(1)</script>')).toBeNull();
 	});
 
 	it('blocks vbscript: URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('vbscript:MsgBox("XSS")')).toBeNull();
+		expect(el.sanitizeUrl('vbscript:MsgBox("XSS")')).toBeNull();
 	});
 
 	it('blocks uppercase javascript: URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('JAVASCRIPT:alert(1)')).toBeNull();
+		expect(el.sanitizeUrl('JAVASCRIPT:alert(1)')).toBeNull();
 	});
 
 	it('blocks mixed case JavaScript: URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('JavaScript:alert(1)')).toBeNull();
+		expect(el.sanitizeUrl('JavaScript:alert(1)')).toBeNull();
 	});
 
 	it('blocks whitespace-prefixed javascript: URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('  javascript:alert(1)')).toBeNull();
+		expect(el.sanitizeUrl('  javascript:alert(1)')).toBeNull();
 	});
 
 	it('blocks non-breaking-space-prefixed javascript: URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('\u00A0javascript:alert(1)')).toBeNull();
+		expect(el.sanitizeUrl('\u00A0javascript:alert(1)')).toBeNull();
 	});
 
 	it('blocks zero-width-space-prefixed javascript: URLs', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('\u200Bjavascript:alert(1)')).toBeNull();
+		expect(el.sanitizeUrl('\u200Bjavascript:alert(1)')).toBeNull();
 	});
 
 	it('returns null for empty input', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el._sanitizeUrl('')).toBeNull();
-		expect(el._sanitizeUrl(null)).toBeNull();
+		expect(el.sanitizeUrl('')).toBeNull();
+		expect(el.sanitizeUrl(null)).toBeNull();
 	});
 });

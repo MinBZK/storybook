@@ -1,3 +1,0 @@
-- [Vraag voordat je code wijzigt](feedback_ask_before_code.md) — altijd eerst aanpak voorleggen voordat je code wijzigt
-- [Vraag voordat je pusht](feedback_ask_before_push.md) — altijd toestemming vragen voor git push
-- [Geen amend en force push](feedback_no_amend.md) — gebruik aparte commits, nooit --amend of --force

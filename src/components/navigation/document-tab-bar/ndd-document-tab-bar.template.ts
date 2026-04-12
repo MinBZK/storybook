@@ -58,7 +58,7 @@ export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): Te
 	const shortTextValue = component.shortText || component.text;
 	const shortSupportingTextValue = component.shortSupportingText || component.supportingText;
 	const isNavigation = component._navigation;
-	const safeHref = component._sanitizeUrl(component.href);
+	const safeHref = component.sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
 	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';
 

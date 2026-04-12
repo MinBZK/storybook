@@ -9,6 +9,7 @@ import { NDDMenuBarItem } from '../menu-bar-item/ndd-menu-bar-item.js';
 import '../menu-bar/ndd-menu-bar.js';
 import '../../content/icon/ndd-icon.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 /** Minimal typed interface for ndd-sheet API. */
 interface Sheet extends HTMLElement {
@@ -119,6 +120,8 @@ export class NDDTopNavigationBar extends LitElement {
 	}
 
 	override firstUpdated(): void {
+		// Sync has-global-items immediately to prevent layout flash
+		this._syncHasGlobalItems();
 		this._setupCompactDetection();
 	}
 
@@ -277,7 +280,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 		for (const item of items) {
 			const listItem = document.createElement('ndd-list-item');
-			const safeHref = item._sanitizeUrl(item.href);
+			const safeHref = sanitizeUrl(item.href);
 
 			if (safeHref) {
 				listItem.setAttribute('type', 'link');

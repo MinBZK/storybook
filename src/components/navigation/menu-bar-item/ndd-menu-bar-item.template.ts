@@ -2,7 +2,7 @@ import { html, nothing } from 'lit';
 import type { NDDMenuBarItem } from './ndd-menu-bar-item.js';
 
 export function template(component: NDDMenuBarItem) {
-	const safeHref = component._sanitizeUrl(component.href);
+	const safeHref = component.sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
 
 	if (isLink) {

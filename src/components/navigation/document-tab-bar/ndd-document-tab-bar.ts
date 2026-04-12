@@ -43,6 +43,7 @@ import { nddDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
 import type { NDDDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
 import './../../lists-and-menus/menu/ndd-menu.ts';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 // Pointer movement threshold in px before drag mode activates.
 // Distinguishes a click (select) from a drag (reorder).
@@ -102,15 +103,9 @@ export class NDDDocumentTabBarItem extends LitElement {
 		this.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab')?.focus(options);
 	}
 
-	_sanitizeUrl(url: string): string | null {
-		if (!url) return null;
-		const trimmed = url.trim().toLowerCase();
-		if (
-			trimmed.startsWith('javascript:') ||
-			trimmed.startsWith('data:') ||
-			trimmed.startsWith('vbscript:')
-		) return null;
-		return url;
+	/** Sanitize a URL, blocking dangerous protocols. Returns null for unsafe URLs. */
+	sanitizeUrl(url: string | null): string | null {
+		return sanitizeUrl(url);
 	}
 
 	_handleClick(): void {
