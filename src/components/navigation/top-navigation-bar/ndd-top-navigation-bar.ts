@@ -1,5 +1,5 @@
 import { LitElement, type PropertyValues } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import { styles } from './ndd-top-navigation-bar.styles.js';
 import { template } from './ndd-top-navigation-bar.template.js';
 import { nddTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.js';
@@ -18,6 +18,7 @@ interface Sheet extends HTMLElement {
 
 // # ndd-top-navigation-bar
 
+@customElement('ndd-top-navigation-bar')
 export class NDDTopNavigationBar extends LitElement {
 	static override styles = styles;
 
@@ -333,12 +334,8 @@ export class NDDTopNavigationBar extends LitElement {
 	// ## Render
 
 	override render() {
-		return template.call(this);
+		return template(this);
 	}
-}
-
-if (!customElements.get('ndd-top-navigation-bar')) {
-	customElements.define('ndd-top-navigation-bar', NDDTopNavigationBar);
 }
 
 declare global {

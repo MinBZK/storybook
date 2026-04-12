@@ -13,6 +13,7 @@ export const styles = css`
 
 	:host {
 		--_logo-width: var(--primitives-space-40);
+		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
 		display: block;
 		width: 100%;
 
@@ -82,42 +83,37 @@ export const styles = css`
 		grid-column: 3;
 		display: flex;
 		flex-direction: column;
-		gap: var(--primitives-space-2);
-		padding-block: var(--primitives-space-8);
+		height: calc(var(--_logo-width) * 2);
+		color: var(--_wordmark-content-color);
+	}
+
+	.top-navigation-bar__wordmark-spacer {
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 50%;
+	}
+
+	.top-navigation-bar__wordmark-content {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 50%;
 	}
 
 	.top-navigation-bar__wordmark-title {
-		font: var(--components-top-navigation-bar-title-sm-font);
-		color: var(--semantics-content-color);
+		font: var(--primitives-font-body-md-bold-flat);
 		margin: 0;
-
-		@container top-navigation-bar (min-width: ${mdMin}) {
-			font: var(--components-top-navigation-bar-title-md-font);
-		}
-
-		@container top-navigation-bar (min-width: ${lgMin}) {
-			font: var(--components-top-navigation-bar-title-lg-font);
-		}
 	}
 
 	.top-navigation-bar__wordmark-subtitle {
 		font: var(--primitives-font-body-xs-regular-flat);
-		color: var(--semantics-content-secondary-color);
 		margin: 0;
-
-		@container top-navigation-bar (min-width: ${mdMin}) {
-			font: var(--primitives-font-body-sm-regular-flat);
-		}
 	}
 
 	.top-navigation-bar__wordmark-supporting-text {
 		font: var(--primitives-font-body-xxs-regular-flat);
-		color: var(--semantics-content-secondary-color);
 		margin: 0;
-
-		@container top-navigation-bar (min-width: ${mdMin}) {
-			font: var(--primitives-font-body-xs-regular-flat);
-		}
 	}
 
 	/* ## Main bar (wraps title-bar and menu-bar, column on sm, row on md+) */

@@ -2,7 +2,8 @@ import { css } from 'lit';
 
 export const styles = css`
 
-	/* ## Host */
+
+	/* # Host */
 
 	:host {
 		--_indicator-z-index: 0;
@@ -20,7 +21,8 @@ export const styles = css`
 		display: none;
 	}
 
-	/* ## Item */
+
+	/* # Item */
 
 	.menu-bar-item {
 		appearance: none;
@@ -107,7 +109,8 @@ export const styles = css`
 		z-index: var(--_content-z-index);
 	}
 
-	/* ## Focus */
+
+	/* # Focus */
 
 	:host(:focus-within) {
 		z-index: var(--_focus-z-index);
@@ -122,21 +125,24 @@ export const styles = css`
 		outline: var(--semantics-focus-ring-outline);
 	}
 
-	/* ## Slotted menu items (hidden, used by expandable popover) */
+
+	/* # Slotted */
 
 	::slotted(ndd-menu-item),
 	::slotted(ndd-menu-divider) {
 		display: none;
 	}
 
-	/* ## Disabled */
+
+	/* # Disabled */
 
 	:host([disabled]) .menu-bar-item {
 		opacity: var(--primitives-opacity-disabled);
 		pointer-events: none;
 	}
 
-	/* ## Icon-only (always, or content-priority="icon" when compact) */
+
+	/* # Icon-only */
 
 	:host([icon-only]) .menu-bar-item,
 	:host([content-priority="icon"][compact][icon]:not([icon=""])) .menu-bar-item {
@@ -156,7 +162,7 @@ export const styles = css`
 		border: 0;
 	}
 
-	/* ## Text-only when compact (content-priority="text") */
+	/* ## Text-only when compact */
 
 	:host([content-priority="text"][compact]) .menu-bar-item__icon {
 		display: none;

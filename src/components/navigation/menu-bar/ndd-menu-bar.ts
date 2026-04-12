@@ -13,7 +13,7 @@
  */
 
 import { LitElement, type PropertyValues } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { customElement, property, query } from 'lit/decorators.js';
 import { styles } from './ndd-menu-bar.styles.js';
 import { template } from './ndd-menu-bar.template.js';
 import { nddMenuBarTranslations } from './ndd-menu-bar.i18n.js';
@@ -32,6 +32,7 @@ interface PopoverMenu extends HTMLElement {
 	hidePopover(): void;
 }
 
+@customElement('ndd-menu-bar')
 export class NDDMenuBar extends LitElement {
 	static override styles = styles;
 
@@ -278,10 +279,6 @@ export class NDDMenuBar extends LitElement {
 	override render() {
 		return template(this);
 	}
-}
-
-if (!customElements.get('ndd-menu-bar')) {
-	customElements.define('ndd-menu-bar', NDDMenuBar);
 }
 
 declare global {

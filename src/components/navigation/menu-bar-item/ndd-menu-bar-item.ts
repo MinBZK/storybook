@@ -25,7 +25,7 @@
  */
 
 import { LitElement, type PropertyValues } from 'lit';
-import { property } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { styles } from './ndd-menu-bar-item.styles.js';
 import { template } from './ndd-menu-bar-item.template.js';
 import '../../content/icon/ndd-icon.js';
@@ -44,6 +44,7 @@ interface PopoverMenu extends HTMLElement {
 	hidePopover(): void;
 }
 
+@customElement('ndd-menu-bar-item')
 export class NDDMenuBarItem extends LitElement {
 	static override styles = styles;
 
@@ -213,10 +214,6 @@ export class NDDMenuBarItem extends LitElement {
 	override render() {
 		return template(this);
 	}
-}
-
-if (!customElements.get('ndd-menu-bar-item')) {
-	customElements.define('ndd-menu-bar-item', NDDMenuBarItem);
 }
 
 declare global {
