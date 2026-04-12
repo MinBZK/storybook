@@ -58,7 +58,7 @@ export class NDDMenuBarItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	current = false;
 
-	@property({ type: String, attribute: 'current-type' })
+	@property({ type: String, attribute: 'current-type', reflect: true })
 	currentType = 'page';
 
 	@property({ type: String })
