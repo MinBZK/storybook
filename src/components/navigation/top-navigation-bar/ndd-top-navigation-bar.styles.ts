@@ -5,171 +5,6 @@ const mdMin = unsafeCSS(breakpoints.mdMin);
 const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
-// # Menu bar item styles
-
-export const menuBarItemStyles = css`
-
-	/* ## Host */
-
-	:host {
-		--_indicator-z-index: 0;
-		--_content-z-index: 1;
-		--_focus-z-index: 1;
-		display: inline-block;
-		position: relative;
-		flex-grow: 0;
-		flex-shrink: 0;
-		flex-basis: auto;
-		-webkit-tap-highlight-color: transparent;
-	}
-
-	:host([hidden]) {
-		display: none;
-	}
-
-	/* ## Item */
-
-	.top-navigation-bar__menu-item {
-		appearance: none;
-		border: none;
-		margin: 0;
-		background: none;
-		text-decoration: none;
-		display: flex;
-		position: relative;
-		height: var(--semantics-controls-md-min-size);
-		min-width: var(--semantics-controls-md-min-size);
-		box-sizing: border-box;
-		justify-content: center;
-		align-items: center;
-		gap: var(--primitives-space-4);
-		font: var(--components-top-navigation-bar-menu-bar-item-font);
-		color: var(--components-top-navigation-bar-menu-bar-item-content-color);
-		text-align: center;
-		padding: 0 var(--primitives-space-8);
-		white-space: nowrap;
-	}
-
-	/* ## Hover indicator (::before) */
-
-	.top-navigation-bar__menu-item::before {
-		content: '';
-		position: absolute;
-		top: var(--primitives-space-6);
-		bottom: var(--primitives-space-6);
-		left: 0;
-		right: 0;
-		border-radius: var(--semantics-controls-sm-corner-radius);
-		pointer-events: none;
-		z-index: var(--_indicator-z-index);
-	}
-
-	.top-navigation-bar__menu-item:hover::before {
-		background-color: var(--components-top-navigation-bar-menu-bar-item-is-hovered-indicator-background-color);
-	}
-
-	:host([open]) .top-navigation-bar__menu-item::before {
-		background-color: var(--components-top-navigation-bar-menu-bar-item-is-open-indicator-background-color);
-	}
-
-	:host([open]) .top-navigation-bar__menu-item:hover::before {
-		background-color: var(--components-top-navigation-bar-menu-bar-item-is-hovered-indicator-background-color);
-	}
-
-	/* ## Current indicator (::after) */
-
-	:host([current]) .top-navigation-bar__menu-item::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: var(--primitives-space-8);
-		right: var(--primitives-space-8);
-		height: var(--components-top-navigation-bar-menu-bar-item-is-current-indicator-height);
-		background-color: var(--components-top-navigation-bar-menu-bar-item-is-current-indicator-background-color);
-		pointer-events: none;
-		z-index: var(--_indicator-z-index);
-	}
-
-	/* ## Text */
-
-	.top-navigation-bar__menu-item-text {
-		position: relative;
-		z-index: var(--_content-z-index);
-	}
-
-	/* ## Icon */
-
-	.top-navigation-bar__menu-item-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		flex-shrink: 0;
-		z-index: var(--_content-z-index);
-	}
-
-	/* ## Disclosure icon */
-
-	.top-navigation-bar__menu-item-disclosure-icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
-		z-index: var(--_content-z-index);
-	}
-
-	/* ## Focus */
-
-	:host(:focus-within) {
-		z-index: var(--_focus-z-index);
-	}
-
-	.top-navigation-bar__menu-item:focus-visible {
-		outline: none;
-	}
-
-	.top-navigation-bar__menu-item:focus-visible::before {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
-		outline: var(--semantics-focus-ring-outline);
-	}
-
-	/* ## Slotted menu items (hidden, used by expandable popover) */
-
-	::slotted(ndd-menu-item),
-	::slotted(ndd-menu-divider) {
-		display: none;
-	}
-
-	/* ## Disabled */
-
-	:host([disabled]) .top-navigation-bar__menu-item {
-		opacity: var(--primitives-opacity-disabled);
-		pointer-events: none;
-	}
-
-	/* ## Icon-only (always or compact) */
-
-	:host([icon-only]) .top-navigation-bar__menu-item,
-	:host([sm-icon-only][compact][icon]:not([icon=""])) .top-navigation-bar__menu-item {
-		padding: var(--primitives-space-8);
-	}
-
-	:host([icon-only]) .top-navigation-bar__menu-item-text,
-	:host([sm-icon-only][compact][icon]:not([icon=""])) .top-navigation-bar__menu-item-text {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
-	}
-
-	/* ## Text-only when compact (opt-in via sm-text-only, activated by compact attribute from parent) */
-
-	:host([sm-text-only][compact]) .top-navigation-bar__menu-item-icon {
-		display: none;
-	}
-`;
-
 // # Top navigation bar styles
 
 export const styles = css`
@@ -370,8 +205,6 @@ export const styles = css`
 
 	.top-navigation-bar__global-menu-bar {
 		display: none;
-		flex-direction: row;
-		align-items: center;
 		flex-grow: 1;
 		flex-shrink: 1;
 		min-width: 0;
@@ -398,16 +231,8 @@ export const styles = css`
 
 	.top-navigation-bar__utility-menu-bar {
 		display: flex;
-		flex-direction: row;
-		align-items: center;
 		flex-grow: 1;
 		flex-shrink: 1;
 		min-width: 0;
-	}
-
-	/* ## Overflow items (global bar + utility) */
-
-	.top-navigation-bar__overflow-button {
-		display: none;
 	}
 `;

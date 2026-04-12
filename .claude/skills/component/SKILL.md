@@ -250,13 +250,19 @@ export function template(component: NDD{PascalName}): TemplateResult {
 
 **`ndd-{naam}.stories.ts`:**
 
-```javascript
-import { html } from 'lit';
-import './ndd-{naam}.ts';
+### Controls conventies
 
-/**
- * Beschrijving van het component.
- */
+- **Args keys:** altijd camelCase (bijv. `startIcon`, `fullWidth`)
+- **`name:`** het HTML attribuut in kebab-case (bijv. `name: 'start-icon'`, `name: 'full-width'`)
+- **`table.defaultValue.summary:`** altijd invullen met de default waarde
+- **`description:`** korte Nederlandse beschrijving
+- **Icon controls:** gebruik `control: 'select'` met `options: ['', ...ICONS]` — importeer `ICONS` uit `../../content/icon/ndd-icon.ts`. Nooit een text input voor iconen.
+
+```typescript
+import { html, nothing } from 'lit';
+import './ndd-{naam}.ts';
+import { ICONS } from '../../content/icon/ndd-icon.ts';
+
 export default {
 	title: 'Components/{Categorie}/{DisplayName}',
 	component: 'ndd-{naam}',
@@ -268,26 +274,55 @@ export default {
 		},
 		status: { type: 'stable' },
 	},
+	args: {
+		size: 'md',
+		startIcon: '',
+		fullWidth: false,
+		disabled: false,
+	},
 	argTypes: {
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
 			description: 'Componentmaat',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		startIcon: {
+			name: 'start-icon',
+			control: 'select',
+			options: ['', ...ICONS],
+			description: 'Icoon voor de tekst',
+			table: { defaultValue: { summary: '' } },
+		},
+		fullWidth: {
+			name: 'full-width',
+			control: 'boolean',
+			description: 'Full width',
+			table: { defaultValue: { summary: false } },
 		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde staat',
+			table: { defaultValue: { summary: false } },
 		},
-	},
-	args: {
-		size: 'md',
-		disabled: false,
 	},
 };
 
-export const Standaard = {
-	render: (args) => html`<ndd-{naam} size=${args.size} ?disabled=${args.disabled}>Label</ndd-{naam}>`,
-};
+const Template = ({
+	size,
+	startIcon,
+	fullWidth,
+	disabled,
+}: Record<string, unknown>) => html`
+	<ndd-{naam}
+		size=${size || nothing}
+		start-icon=${startIcon || nothing}
+		?full-width=${fullWidth}
+		?disabled=${disabled}
+	>Label</ndd-{naam}>
+`;
+
+export const Default = Template.bind({});
 ```
 
 ---

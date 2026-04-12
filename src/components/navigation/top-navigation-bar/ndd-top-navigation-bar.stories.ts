@@ -9,24 +9,24 @@ export default {
 		layout: 'fullscreen',
 	},
 	args: {
-		'website-title': 'DigID',
-		'no-logo': false,
-		'logo-title': '',
-		'logo-subtitle': '',
-		'logo-supporting-text-1': '',
-		'logo-supporting-text-2': '',
-		'back-href': '',
-		'back-text': '',
+		websiteTitle: 'DigID',
+		noLogo: false,
+		logoTitle: '',
+		logoSubtitle: '',
+		logoSupportingText1: '',
+		logoSupportingText2: '',
+		backHref: '',
+		backText: '',
 	},
 	argTypes: {
-		'website-title': { control: 'text', description: 'Naam van de website of applicatie' },
-		'no-logo': { control: 'boolean', description: 'Verberg het logo' },
-		'logo-title': { control: 'text', description: 'Woordmerk titel (toont woordmerk naast logo)' },
-		'logo-subtitle': { control: 'text', description: 'Woordmerk subtitel' },
-		'logo-supporting-text-1': { control: 'text', description: 'Woordmerk ondersteunende tekst regel 1' },
-		'logo-supporting-text-2': { control: 'text', description: 'Woordmerk ondersteunende tekst regel 2' },
-		'back-href': { control: 'text', description: 'URL van de terugknop' },
-		'back-text': { control: 'text', description: 'Tekst van de terugknop (standaard: "Terug")' },
+		websiteTitle: { name: 'website-title', control: 'text', description: 'Naam van de website of applicatie' },
+		noLogo: { name: 'no-logo', control: 'boolean', description: 'Verberg het logo', table: { defaultValue: { summary: false } } },
+		logoTitle: { name: 'logo-title', control: 'text', description: 'Woordmerk titel (toont woordmerk naast logo)', table: { defaultValue: { summary: '' } } },
+		logoSubtitle: { name: 'logo-subtitle', control: 'text', description: 'Woordmerk subtitel', table: { defaultValue: { summary: '' } } },
+		logoSupportingText1: { name: 'logo-supporting-text-1', control: 'text', description: 'Woordmerk ondersteunende tekst regel 1', table: { defaultValue: { summary: '' } } },
+		logoSupportingText2: { name: 'logo-supporting-text-2', control: 'text', description: 'Woordmerk ondersteunende tekst regel 2', table: { defaultValue: { summary: '' } } },
+		backHref: { name: 'back-href', control: 'text', description: 'URL van de terugknop', table: { defaultValue: { summary: '' } } },
+		backText: { name: 'back-text', control: 'text', description: 'Tekst van de terugknop (standaard: "Terug")', table: { defaultValue: { summary: '' } } },
 	},
 };
 
@@ -37,14 +37,14 @@ const layoutArea = 'container-type: inline-size; container-name: layout-area; ba
 // ## Template
 
 const Template = ({
-	'website-title': websiteTitle,
-	'no-logo': noLogo,
-	'logo-title': logoTitle,
-	'logo-subtitle': logoSubtitle,
-	'logo-supporting-text-1': logoSupportingText1,
-	'logo-supporting-text-2': logoSupportingText2,
-	'back-href': backHref,
-	'back-text': backText,
+	websiteTitle,
+	noLogo,
+	logoTitle,
+	logoSubtitle,
+	logoSupportingText1,
+	logoSupportingText2,
+	backHref,
+	backText,
 }: Record<string, unknown>) => html`
 	<div style=${layoutArea}>
 		<ndd-top-navigation-bar
@@ -62,13 +62,13 @@ const Template = ({
 			<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
 			<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+			<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
 				<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 				<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 				<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
 			</ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+			<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
+			<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
 				<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
 				<ndd-menu-item text="Instellingen"></ndd-menu-item>
 				<ndd-menu-divider></ndd-menu-divider>
@@ -82,13 +82,13 @@ export const Default = Template.bind({});
 
 export const WithLogoWordmark = Template.bind({});
 WithLogoWordmark.args = {
-	'logo-title': 'DigID',
+	logoTitle: 'DigID',
 };
 
 export const WithBackButton = Template.bind({});
 WithBackButton.args = {
-	'back-href': '/',
-	'back-text': 'Terug naar overzicht',
+	backHref: '/',
+	backText: 'Terug naar overzicht',
 };
 
 export const MijnOverheidZakelijk = {
@@ -100,7 +100,7 @@ export const MijnOverheidZakelijk = {
 				<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Contact"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable>
 					<ndd-menu-item text="Bedrijfsprofiel"></ndd-menu-item>
 					<ndd-menu-item text="Instellingen"></ndd-menu-item>
@@ -139,13 +139,13 @@ export const SmallViewport = {
 				<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+				<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
 					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
 				</ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
 					<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
 					<ndd-menu-item text="Instellingen"></ndd-menu-item>
 					<ndd-menu-divider></ndd-menu-divider>
@@ -169,13 +169,13 @@ export const ManyGlobalItems = {
 				<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Vraag en antwoord"></ndd-menu-bar-item>
 				<ndd-menu-bar-item slot="global" text="Wetten en regelgeving"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+				<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
 					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
 				</ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
+				<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
 					<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
 					<ndd-menu-item text="Instellingen"></ndd-menu-item>
 					<ndd-menu-divider></ndd-menu-divider>
@@ -206,12 +206,12 @@ export const AllStates = {
 					<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+					<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
 						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					</ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
 						<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
 						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
 					</ndd-menu-bar-item>
@@ -222,12 +222,12 @@ export const AllStates = {
 					<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="NL" expandable sm-icon-only>
+					<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
 						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
 						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
 					</ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable sm-text-only>
+					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
 						<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
 						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
 					</ndd-menu-bar-item>
@@ -240,7 +240,7 @@ export const AllStates = {
 					<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="global" text="Contact"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" sm-icon-only></ndd-menu-bar-item>
+					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
 					<ndd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable>
 						<ndd-menu-item text="Bedrijfsprofiel"></ndd-menu-item>
 						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
