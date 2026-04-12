@@ -1,12 +1,15 @@
 import { html } from 'lit';
 import type { NDDSkipLink } from './ndd-skip-link.js';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 export function template(component: NDDSkipLink) {
+	const safeHref = sanitizeUrl(component.href);
+
 	return html`
 		<div class="skip-link">
-			${component.href ? html`
+			${safeHref ? html`
 				<a class="skip-link__control"
-					href=${component.href}
+					href=${safeHref}
 				>
 					${component._text}
 				</a>
