@@ -69,10 +69,10 @@ Standaard.args = {};
 export const MetZoektermen = () => html`
 	<ndd-combo-box placeholder="Zoek een land (probeer 'dutch' of 'holland')">
 		<ndd-menu empty-text="Geen resultaten">
-			<ndd-menu-item text="Nederland" value="nl" search="dutch holland"></ndd-menu-item>
-			<ndd-menu-item text="België" value="be" search="belgique belgie"></ndd-menu-item>
-			<ndd-menu-item text="Duitsland" value="de" search="germany deutschland"></ndd-menu-item>
-			<ndd-menu-item text="Frankrijk" value="fr" search="france frankrijk"></ndd-menu-item>
+			<ndd-menu-item text="Nederland" value="nl" aliases="dutch holland"></ndd-menu-item>
+			<ndd-menu-item text="België" value="be" aliases="belgique belgie"></ndd-menu-item>
+			<ndd-menu-item text="Duitsland" value="de" aliases="germany deutschland"></ndd-menu-item>
+			<ndd-menu-item text="Frankrijk" value="fr" aliases="france frankrijk"></ndd-menu-item>
 		</ndd-menu>
 	</ndd-combo-box>
 `;
@@ -80,7 +80,7 @@ MetZoektermen.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Gebruik het <code>search</code> attribuut op <code>ndd-menu-item</code> voor alternatieve zoektermen.',
+			story: 'Gebruik het <code>aliases</code> attribuut op <code>ndd-menu-item</code> voor alternatieve zoektermen.',
 		},
 	},
 };
@@ -98,10 +98,10 @@ export const AlleLanden = () => html`
 			<ndd-menu-item text="Canada" value="ca"></ndd-menu-item>
 			<ndd-menu-item text="China" value="cn"></ndd-menu-item>
 			<ndd-menu-item text="Denemarken" value="dk"></ndd-menu-item>
-			<ndd-menu-item text="Duitsland" value="de" search="germany deutschland"></ndd-menu-item>
+			<ndd-menu-item text="Duitsland" value="de" aliases="germany deutschland"></ndd-menu-item>
 			<ndd-menu-item text="Egypte" value="eg"></ndd-menu-item>
 			<ndd-menu-item text="Finland" value="fi"></ndd-menu-item>
-			<ndd-menu-item text="Frankrijk" value="fr" search="france frankrijk"></ndd-menu-item>
+			<ndd-menu-item text="Frankrijk" value="fr" aliases="france frankrijk"></ndd-menu-item>
 			<ndd-menu-item text="Griekenland" value="gr"></ndd-menu-item>
 			<ndd-menu-item text="India" value="in"></ndd-menu-item>
 			<ndd-menu-item text="Indonesië" value="id"></ndd-menu-item>
@@ -113,7 +113,7 @@ export const AlleLanden = () => html`
 			<ndd-menu-item text="Kenia" value="ke"></ndd-menu-item>
 			<ndd-menu-item text="Marokko" value="ma"></ndd-menu-item>
 			<ndd-menu-item text="Mexico" value="mx"></ndd-menu-item>
-			<ndd-menu-item text="Nederland" value="nl" search="dutch holland"></ndd-menu-item>
+			<ndd-menu-item text="Nederland" value="nl" aliases="dutch holland"></ndd-menu-item>
 			<ndd-menu-item text="Nieuw-Zeeland" value="nz"></ndd-menu-item>
 			<ndd-menu-item text="Nigeria" value="ng"></ndd-menu-item>
 			<ndd-menu-item text="Noorwegen" value="no"></ndd-menu-item>
@@ -125,13 +125,13 @@ export const AlleLanden = () => html`
 			<ndd-menu-item text="Roemenië" value="ro"></ndd-menu-item>
 			<ndd-menu-item text="Rusland" value="ru"></ndd-menu-item>
 			<ndd-menu-item text="Saoedi-Arabië" value="sa"></ndd-menu-item>
-			<ndd-menu-item text="Spanje" value="es" search="spain espana"></ndd-menu-item>
+			<ndd-menu-item text="Spanje" value="es" aliases="spain espana"></ndd-menu-item>
 			<ndd-menu-item text="Suriname" value="sr"></ndd-menu-item>
 			<ndd-menu-item text="Tsjechië" value="cz"></ndd-menu-item>
 			<ndd-menu-item text="Turkije" value="tr"></ndd-menu-item>
 			<ndd-menu-item text="Venezuela" value="ve"></ndd-menu-item>
-			<ndd-menu-item text="Verenigd Koninkrijk" value="gb" search="england uk britain"></ndd-menu-item>
-			<ndd-menu-item text="Verenigde Staten" value="us" search="usa america"></ndd-menu-item>
+			<ndd-menu-item text="Verenigd Koninkrijk" value="gb" aliases="england uk britain"></ndd-menu-item>
+			<ndd-menu-item text="Verenigde Staten" value="us" aliases="usa america"></ndd-menu-item>
 			<ndd-menu-item text="Vietnam" value="vn"></ndd-menu-item>
 			<ndd-menu-item text="Zuid-Afrika" value="za"></ndd-menu-item>
 			<ndd-menu-item text="Zweden" value="se"></ndd-menu-item>

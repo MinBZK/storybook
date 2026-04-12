@@ -3,6 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import type { NDDDocumentTabBar, NDDDocumentTabBarItem } from './ndd-document-tab-bar.ts';
 import './../../actions/icon-button/ndd-icon-button.ts';
 import './../../content/icon/ndd-icon.ts';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 import './../../content/tooltip/ndd-tooltip.ts';
 
 export function documentTabBarTemplate(component: NDDDocumentTabBar): TemplateResult {
@@ -58,7 +59,7 @@ export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): Te
 	const shortTextValue = component.shortText || component.text;
 	const shortSupportingTextValue = component.shortSupportingText || component.supportingText;
 	const isNavigation = component._navigation;
-	const safeHref = component._sanitizeUrl(component.href);
+	const safeHref = sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
 	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';
 

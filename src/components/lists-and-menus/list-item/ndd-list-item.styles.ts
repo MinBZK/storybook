@@ -8,6 +8,7 @@ export const styles = css`
 		width: 100%;
 		--_z-index-content: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
+		--_focus-outline-offset: 6px;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -75,8 +76,8 @@ export const styles = css`
 	}
 
 	.list-item__action:focus-visible {
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
@@ -89,13 +90,13 @@ export const styles = css`
 		content: '';
 		display: block;
 		position: absolute;
-		left: var(--semantics-focus-ring-edge-thickness);
-		top: var(--semantics-focus-ring-edge-thickness);
-		right: var(--semantics-focus-ring-edge-thickness);
-		bottom: var(--semantics-focus-ring-edge-thickness);
-		border-radius: calc(var(--components-list-corner-radius) - var(--semantics-focus-ring-edge-thickness));
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		left: var(--_focus-outline-offset);
+		top: var(--_focus-outline-offset);
+		right: var(--_focus-outline-offset);
+		bottom: var(--_focus-outline-offset);
+		border-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 

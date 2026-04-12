@@ -29,6 +29,7 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { tabBarStyles, tabBarItemStyles } from './ndd-tab-bar.styles.ts';
 import { tabBarTemplate, tabBarItemTemplate } from './ndd-tab-bar.template.ts';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 
 // # ndd-tab-bar-item
@@ -106,19 +107,8 @@ export class NDDTabBarItem extends LitElement {
 		this._hasIcon = slot.assignedElements({ flatten: true }).length > 0;
 	}
 
-	_sanitizeUrl(url: string): string | null {
-		if (!url) return null;
-		const trimmed = url.trim().toLowerCase();
-		if (
-			trimmed.startsWith('javascript:') ||
-			trimmed.startsWith('data:') ||
-			trimmed.startsWith('vbscript:')
-		) return null;
-		return url;
-	}
-
 	_handleClick(event: Event): void {
-		if (!this._sanitizeUrl(this.href)) {
+		if (!sanitizeUrl(this.href)) {
 			event.preventDefault();
 		}
 		this.dispatchEvent(new CustomEvent('select', {

@@ -1,210 +1,169 @@
-import { LitElement } from 'lit';
-import { property, state, query } from 'lit/decorators.js';
-import { styles, menuBarItemStyles } from './ndd-menu-bar.styles.js';
-import { template, menuBarItemTemplate } from './ndd-menu-bar.template.js';
+/**
+ * Menu Bar Component (Lit + TypeScript)
+ *
+ * Horizontale rij van ndd-menu-bar-item elementen met automatische overflow
+ * detectie. Items die niet passen worden verborgen achter een overflow button
+ * met een popover menu.
+ *
+ * @element ndd-menu-bar
+ * @attr {string} overflow-text - Tekst voor de overflow button (standaard via i18n)
+ * @attr {string} accessible-label - aria-label voor de nav landmark
+ * @attr {boolean} compact - Propageert compact attribuut naar slotted items (activeert content-priority)
+ *
+ * @slot - ndd-menu-bar-item elementen
+ */
 
-// # ndd-menu-bar-item
+import { LitElement, type PropertyValues } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
+import { styles } from './ndd-menu-bar.styles.js';
+import { template } from './ndd-menu-bar.template.js';
+import { nddMenuBarTranslations } from './ndd-menu-bar.i18n.js';
+import type { NDDMenuBarTranslations } from './ndd-menu-bar.i18n.js';
+import '../menu-bar-item/ndd-menu-bar-item.js';
+import { NDDMenuBarItem } from '../menu-bar-item/ndd-menu-bar-item.js';
+import '../../lists-and-menus/menu/ndd-menu.js';
+import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
-export class NDDMenuBarItem extends LitElement {
-	static override styles = menuBarItemStyles;
-
-	@property({ type: Boolean, reflect: true })
-	selected = false;
-
-	@property({ type: String })
-	href = '';
-
-	@property({ type: Boolean, reflect: true })
-	disabled = false;
-
-	override connectedCallback(): void {
-		super.connectedCallback();
-		this.setAttribute('role', 'none');
-		this.addEventListener('click', this._handleClick);
-		this.addEventListener('keydown', this._handleKeyDown);
-	}
-
-	override disconnectedCallback(): void {
-		super.disconnectedCallback();
-		this.removeEventListener('click', this._handleClick);
-		this.removeEventListener('keydown', this._handleKeyDown);
-	}
-
-	_sanitizeUrl(url: string | null): string | null {
-		if (!url) return null;
-		const trimmed = url.trim().toLowerCase();
-		if (
-			trimmed.startsWith('javascript:') ||
-			trimmed.startsWith('data:') ||
-			trimmed.startsWith('vbscript:')
-		) {
-			return null;
-		}
-		return url;
-	}
-
-	private _handleClick = (event: Event): void => {
-		if (this.disabled) {
-			event.preventDefault();
-			event.stopPropagation();
-			return;
-		}
-		if (!this.href) {
-			event.preventDefault();
-			this.selected = true;
-			this.dispatchEvent(new CustomEvent('select', {
-				bubbles: true,
-				composed: true,
-				detail: { item: this },
-			}));
-		}
-	};
-
-	private _handleKeyDown = (event: KeyboardEvent): void => {
-		if (this.disabled) return;
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault();
-			this._handleClick(event);
-		}
-	};
-
-	override render() {
-		return menuBarItemTemplate.call(this);
-	}
+/**
+ * Minimal typed interface for ndd-menu.
+ */
+interface PopoverMenu extends HTMLElement {
+	anchorElement: Element | null;
+	showPopover(): void;
+	hidePopover(): void;
 }
 
-if (!customElements.get('ndd-menu-bar-item')) {
-	customElements.define('ndd-menu-bar-item', NDDMenuBarItem);
-}
-
-// # ndd-menu-bar
-
-type Size = 's' | 'm' | 'l';
-
+@customElement('ndd-menu-bar')
 export class NDDMenuBar extends LitElement {
 	static override styles = styles;
 
-	@property({ type: String, reflect: true })
-	size: Size = 'm';
-
-	@property({ type: Boolean, reflect: true, attribute: 'has-overflow-menu' })
-	hasOverflowMenu = false;
-
 	@property({ type: String, attribute: 'overflow-text' })
-	overflowText = 'Meer';
+	overflowText = '';
 
-	@state()
-	private _overflowMenuOpen = false;
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
-	@query('.menu')
-	private _menuContainer!: HTMLElement;
+	@property({ type: Boolean, reflect: true })
+	compact = false;
 
-	@query('.overflow-wrapper')
-	private _overflowWrapper!: HTMLElement;
+	@property({ type: Object })
+	translations: Partial<NDDMenuBarTranslations> = {};
 
-	@query('.overflow-button')
-	private _overflowButton!: HTMLButtonElement;
-
-	@query('.overflow-dropdown')
-	private _overflowDropdown!: HTMLElement;
+	// ## Internal references
 
 	@query('slot:not([name])')
 	private _defaultSlot!: HTMLSlotElement;
 
-	_overflowMenuId = `ndd-overflow-${Math.random().toString(36).substring(2, 11)}`;
-	private _resizeObserver: ResizeObserver | null = null;
-	private _isHandlingOverflow = false;
-	private _overflowRAF: number | null = null;
-	private _documentListenerAttached = false;
+	@query('.menu-bar__overflow-button')
+	private _overflowButton!: HTMLElement;
 
-	override connectedCallback(): void {
-		super.connectedCallback();
-		this.addEventListener('select', this._handleItemSelect);
-		this.addEventListener('keydown', this._handleKeyDown);
+	// ## Overflow state
+
+	private _overflowMenu: PopoverMenu | null = null;
+	private _overflowMenuOpen = false;
+	private _overflowMenuClosedAt = 0;
+
+	private _resizeObserver: ResizeObserver | null = null;
+	private _overflowRAF: number | null = null;
+	private _setupRAF: number | null = null;
+
+	// ## i18n
+
+	private _mergedTranslations = { ...nddMenuBarTranslations };
+
+	_t(key: keyof NDDMenuBarTranslations): string {
+		return this._mergedTranslations[key] ?? key;
 	}
+
+	override willUpdate(changed: PropertyValues): void {
+		if (changed.has('translations')) {
+			this._mergedTranslations = { ...nddMenuBarTranslations, ...this.translations };
+		}
+		if (changed.has('compact')) {
+			this._syncCompactAttribute();
+		}
+	}
+
+	// ## Computed properties
+
+	/** @internal Used by template */
+	get _overflowText(): string {
+		return this.overflowText || this._t('components.menu-bar.overflow-action');
+	}
+
+	// ## Lifecycle
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
-		this.removeEventListener('select', this._handleItemSelect);
-		this.removeEventListener('keydown', this._handleKeyDown);
 		this._cleanupOverflowDetection();
+		this._overflowMenu?.remove();
+		this._overflowMenu = null;
 	}
 
 	override firstUpdated(): void {
-		if (this.hasOverflowMenu) {
-			this._setupOverflowDetection();
+		this._setupOverflowDetection();
+		this._syncCompactAttribute();
+		this._syncEmpty();
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this.hasAttribute('empty')) {
+			console.warn('ndd-menu-bar: accessible-label is niet gezet. Pagina\'s met meerdere nav landmarks moeten elke nav een uniek label geven (WCAG 1.3.1).');
 		}
 	}
 
-	private _handleItemSelect = (event: Event): void => {
-		const detail = (event as CustomEvent).detail;
-		const items = this.querySelectorAll('ndd-menu-bar-item');
-		items.forEach(item => {
-			if (item !== detail.item) {
-				(item as HTMLElement).removeAttribute('selected');
-			}
-		});
-		this.dispatchEvent(new CustomEvent('itemselect', {
-			bubbles: true,
-			composed: true,
-			detail,
-		}));
+	/** Request a recalculation of overflow state. Call from parent when layout changes. */
+	requestOverflowUpdate(): void {
+		this._scheduleOverflowUpdate();
+	}
+
+	private _onSlotChange = (): void => {
+		this._syncCompactAttribute();
+		this._scheduleOverflowUpdate();
+		this._syncEmpty();
 	};
 
-	private _handleKeyDown = (event: KeyboardEvent): void => {
-		const items = Array.from(this.querySelectorAll('ndd-menu-bar-item:not([disabled])'));
-		if (items.length === 0) return;
+	/** Hide the component when no items are slotted to avoid empty nav landmarks. */
+	private _syncEmpty(): void {
+		const items = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
+		const hasItems = items.some(el => el.tagName === 'NDD-MENU-BAR-ITEM');
+		this.toggleAttribute('empty', !hasItems);
+	}
 
-		const currentIndex = items.findIndex(item =>
-			item === event.target || item.contains(event.target as Node)
-		);
-		let newIndex = -1;
-
-		switch (event.key) {
-			case 'ArrowLeft':
-				event.preventDefault();
-				newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-				break;
-			case 'ArrowRight':
-				event.preventDefault();
-				newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-				break;
-			case 'Home':
-				event.preventDefault();
-				newIndex = 0;
-				break;
-			case 'End':
-				event.preventDefault();
-				newIndex = items.length - 1;
-				break;
-			default:
-				return;
+	/** Propagate compact attribute to slotted items and internal overflow button. */
+	private _syncCompactAttribute(): void {
+		const items = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
+		for (const item of items) {
+			item.toggleAttribute('compact', this.compact);
 		}
 
-		if (newIndex >= 0) {
-			(items[newIndex] as HTMLElement).focus();
+		// Internal overflow button item
+		const overflowItem = this._overflowButton?.querySelector('ndd-menu-bar-item');
+		if (overflowItem) {
+			overflowItem.toggleAttribute('compact', this.compact);
 		}
-	};
+	}
+
+	// ## Overflow detection
 
 	private _setupOverflowDetection(): void {
 		this._cleanupOverflowDetection();
-		requestAnimationFrame(() => {
+		this._setupRAF = requestAnimationFrame(() => {
+			this._setupRAF = null;
+			if (!this.isConnected) return;
 			this._resizeObserver = new ResizeObserver(() => {
-				this._handleOverflow();
+				this._scheduleOverflowUpdate();
 			});
 			this._resizeObserver.observe(this);
 			if (this._defaultSlot) {
-				this._defaultSlot.addEventListener('slotchange', this._handleOverflow);
+				this._defaultSlot.addEventListener('slotchange', this._onSlotChange);
 			}
-			this._handleOverflow();
-			if (!this._documentListenerAttached) {
-				document.addEventListener('click', this._closeOverflowMenu);
-				this._documentListenerAttached = true;
-			}
+			this._scheduleOverflowUpdate();
 		});
 	}
 
 	private _cleanupOverflowDetection(): void {
+		if (this._setupRAF) {
+			cancelAnimationFrame(this._setupRAF);
+			this._setupRAF = null;
+		}
 		if (this._overflowRAF) {
 			cancelAnimationFrame(this._overflowRAF);
 			this._overflowRAF = null;
@@ -214,45 +173,45 @@ export class NDDMenuBar extends LitElement {
 			this._resizeObserver = null;
 		}
 		if (this._defaultSlot) {
-			this._defaultSlot.removeEventListener('slotchange', this._handleOverflow);
-		}
-		if (this._documentListenerAttached) {
-			document.removeEventListener('click', this._closeOverflowMenu);
-			this._documentListenerAttached = false;
+			this._defaultSlot.removeEventListener('slotchange', this._onSlotChange);
 		}
 	}
 
-	private _handleOverflow = (): void => {
-		if (!this.hasOverflowMenu || this._isHandlingOverflow) return;
+	private _scheduleOverflowUpdate = (): void => {
 		if (this._overflowRAF) cancelAnimationFrame(this._overflowRAF);
 		this._overflowRAF = requestAnimationFrame(() => {
-			this._isHandlingOverflow = true;
-			try {
-				this._doHandleOverflow();
-			} finally {
-				requestAnimationFrame(() => { this._isHandlingOverflow = false; });
-			}
+			this._overflowRAF = null;
+			this._updateOverflow();
 		});
 	};
 
-	private _doHandleOverflow(): void {
-		if (!this._menuContainer || !this._overflowWrapper || !this._overflowButton || !this._overflowDropdown) return;
+	/**
+	 * Calculate which slotted items overflow and hide them behind an overflow button.
+	 * Note: not unit-tested — JSDOM lacks layout support (offsetWidth, clientWidth).
+	 * Covered by visual/E2E testing via Storybook stories.
+	 */
+	private _updateOverflow(): void {
+		const overflowButton = this._overflowButton;
+		if (!overflowButton) return;
 
 		const slottedElements = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
 		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as HTMLElement[];
-		if (items.length === 0) return;
 
+		if (items.length === 0) {
+			overflowButton.style.display = 'none';
+			return;
+		}
+
+		// Reset all items to visible
 		items.forEach(item => {
 			item.style.display = '';
-			item.style.visibility = 'visible';
 			item.removeAttribute('data-overflow');
 		});
 
-		this._overflowButton.style.display = 'flex';
-		this._overflowDropdown.innerHTML = '';
+		overflowButton.style.display = 'inline-block';
 
 		const containerWidth = this.clientWidth;
-		const overflowButtonWidth = this._overflowWrapper.offsetWidth;
+		const overflowButtonWidth = overflowButton.offsetWidth;
 
 		let usedWidth = 0;
 		let overflowStartIndex = -1;
@@ -268,151 +227,97 @@ export class NDDMenuBar extends LitElement {
 		}
 
 		if (overflowStartIndex >= 0) {
-			this._overflowButton.style.display = 'flex';
-			this._overflowDropdown.setAttribute('role', 'menu');
-
 			for (let i = overflowStartIndex; i < items.length; i++) {
 				items[i].style.display = 'none';
 				items[i].setAttribute('data-overflow', 'true');
-
-				const dropdownItem = document.createElement('button');
-				dropdownItem.className = 'overflow-item';
-				dropdownItem.setAttribute('role', 'menuitem');
-				dropdownItem.setAttribute('tabindex', '-1');
-				dropdownItem.textContent = items[i].textContent;
-				dropdownItem.addEventListener('click', (e) => {
-					e.stopPropagation();
-					items[i].click();
-					this._closeOverflowMenu();
-				});
-				dropdownItem.addEventListener('keydown', this._handleOverflowKeyDown);
-				this._overflowDropdown.appendChild(dropdownItem);
 			}
 		} else {
-			this._overflowButton.style.display = 'none';
-			this._overflowDropdown.removeAttribute('role');
-			if (this._overflowMenuOpen) {
-				this._overflowMenuOpen = false;
-				this._overflowDropdown.classList.remove('open');
-				this._overflowButton.setAttribute('aria-expanded', 'false');
-			}
+			overflowButton.style.display = 'none';
 		}
 	}
 
-	_toggleOverflowMenu = (e: Event): void => {
-		e.stopPropagation();
-		this._overflowMenuOpen = !this._overflowMenuOpen;
-		if (this._overflowDropdown && this._overflowButton) {
-			this._overflowDropdown.classList.toggle('open', this._overflowMenuOpen);
-			this._overflowButton.setAttribute('aria-expanded', String(this._overflowMenuOpen));
-		}
-	};
+	// ## Overflow popover menu
 
-	private _closeOverflowMenu = (e?: Event): void => {
-		if (e && this.shadowRoot?.contains(e.target as Node)) return;
-		this._overflowMenuOpen = false;
-		if (this._overflowDropdown && this._overflowButton) {
-			this._overflowDropdown.classList.remove('open');
-			this._overflowButton.setAttribute('aria-expanded', 'false');
-		}
-	};
+	private _createOverflowMenu(): PopoverMenu {
+		const menu = document.createElement('ndd-menu') as unknown as PopoverMenu;
+		menu.setAttribute('placement', 'bottom-end');
 
-	_handleOverflowButtonKeyDown = (event: KeyboardEvent): void => {
-		switch (event.key) {
-			case 'Enter':
-			case ' ':
-			case 'ArrowDown':
-				event.preventDefault();
-				this._openOverflowMenuWithFocus();
-				break;
-			case 'ArrowUp':
-				event.preventDefault();
-				this._openOverflowMenuWithFocus(true);
-				break;
-			case 'Escape':
-				if (this._overflowMenuOpen) {
-					event.preventDefault();
-					this._closeOverflowMenuAndFocusButton();
-				}
-				break;
-		}
-	};
-
-	private _handleOverflowKeyDown = (event: KeyboardEvent): void => {
-		if (!this._overflowDropdown) return;
-		const items = Array.from(this._overflowDropdown.querySelectorAll('.overflow-item'));
-		if (items.length === 0) return;
-
-		const currentIndex = items.findIndex(item => item === this.shadowRoot?.activeElement);
-		let newIndex = -1;
-
-		switch (event.key) {
-			case 'ArrowDown':
-				event.preventDefault();
-				newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-				break;
-			case 'ArrowUp':
-				event.preventDefault();
-				newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-				break;
-			case 'Home':
-				event.preventDefault();
-				newIndex = 0;
-				break;
-			case 'End':
-				event.preventDefault();
-				newIndex = items.length - 1;
-				break;
-			case 'Escape':
-				event.preventDefault();
-				this._closeOverflowMenuAndFocusButton();
-				return;
-			case 'Tab':
-				this._closeOverflowMenu();
-				return;
-		}
-
-		if (newIndex >= 0) {
-			(items[newIndex] as HTMLElement).focus();
-		}
-	};
-
-	private _openOverflowMenuWithFocus(focusLast = false): void {
-		if (!this._overflowDropdown || !this._overflowButton) return;
-		if (!this._overflowMenuOpen) {
-			this._overflowMenuOpen = true;
-			this._overflowDropdown.classList.add('open');
-			this._overflowButton.setAttribute('aria-expanded', 'true');
-		}
-		requestAnimationFrame(() => {
-			const items = this._overflowDropdown.querySelectorAll('.overflow-item');
-			if (items.length > 0) {
-				(focusLast ? items[items.length - 1] as HTMLElement : items[0] as HTMLElement).focus();
-			}
+		menu.addEventListener('toggle', (event: Event) => {
+			const open = (event as ToggleEvent).newState === 'open';
+			this._overflowMenuOpen = open;
+			if (!open) this._overflowMenuClosedAt = Date.now();
+			const item = this._overflowButton?.querySelector('ndd-menu-bar-item');
+			if (item) (item as NDDMenuBarItem).open = open;
 		});
+		document.body.appendChild(menu);
+		return menu;
 	}
 
-	private _closeOverflowMenuAndFocusButton(): void {
-		this._overflowMenuOpen = false;
-		if (this._overflowDropdown && this._overflowButton) {
-			this._overflowDropdown.classList.remove('open');
-			this._overflowButton.setAttribute('aria-expanded', 'false');
-			this._overflowButton.focus();
+	private _populateOverflowMenu(): void {
+		if (!this._overflowMenu) return;
+		this._overflowMenu.replaceChildren();
+
+		const slottedElements = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
+		const overflowItems = slottedElements.filter(
+			el => el.tagName === 'NDD-MENU-BAR-ITEM' && el.hasAttribute('data-overflow')
+		) as NDDMenuBarItem[];
+
+		for (const item of overflowItems) {
+			const menuItem = document.createElement('ndd-menu-item');
+			menuItem.setAttribute('text', item.text);
+			if (item.icon) menuItem.setAttribute('icon', item.icon);
+			if (item.current) menuItem.setAttribute('selected', '');
+			if (item.disabled) menuItem.setAttribute('disabled', '');
+
+			if (item.expandable) {
+				// Expandable items: clone sub-items as a submenu group
+				const children = item.querySelectorAll('ndd-menu-item, ndd-menu-divider');
+				if (children.length > 0) {
+					const divider = document.createElement('ndd-menu-divider');
+					this._overflowMenu!.appendChild(menuItem);
+					this._overflowMenu!.appendChild(divider);
+					children.forEach(child => {
+						const clone = child.cloneNode(true) as HTMLElement;
+						clone.addEventListener('click', () => {
+							(child as HTMLElement).click();
+						});
+						this._overflowMenu!.appendChild(clone);
+					});
+					continue;
+				}
+			}
+
+			menuItem.addEventListener('click', () => {
+				item.click();
+			});
+			this._overflowMenu!.appendChild(menuItem);
 		}
 	}
+
+	/** @internal Used by template */
+	_onOverflowClick = (): void => {
+		if (!this._overflowMenu) {
+			this._overflowMenu = this._createOverflowMenu();
+		}
+		this._populateOverflowMenu();
+
+		this._overflowMenu.anchorElement = this._overflowButton;
+		if (this._overflowMenuOpen) {
+			this._overflowMenu.hidePopover();
+		} else if (Date.now() - this._overflowMenuClosedAt > POPOVER_REOPEN_GUARD_MS) {
+			this._overflowMenu.showPopover();
+		}
+	};
+
+	// ## Render
 
 	override render() {
-		return template.call(this);
+		return template(this);
 	}
-}
-
-if (!customElements.get('ndd-menu-bar')) {
-	customElements.define('ndd-menu-bar', NDDMenuBar);
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
 		'ndd-menu-bar': NDDMenuBar;
-		'ndd-menu-bar-item': NDDMenuBarItem;
 	}
 }

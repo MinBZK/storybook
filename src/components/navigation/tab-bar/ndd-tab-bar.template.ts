@@ -1,6 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NDDTabBar, NDDTabBarItem } from './ndd-tab-bar.ts';
 import '../../content/tooltip/ndd-tooltip.js';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 export function tabBarTemplate(component: NDDTabBar): TemplateResult {
 	const label = component.accessibleLabel || 'Tabs';
@@ -31,7 +32,7 @@ export function tabBarTemplate(component: NDDTabBar): TemplateResult {
 }
 
 export function tabBarItemTemplate(component: NDDTabBarItem): TemplateResult {
-	const safeHref = component._sanitizeUrl(component.href);
+	const safeHref = sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
 	const isNavigation = component._navigation;
 	const tabindex = component.selected || component._isFallbackFocusable ? '0' : '-1';

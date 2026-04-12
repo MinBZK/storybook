@@ -3,197 +3,179 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { NDDMenuBar } from './ndd-menu-bar.ts';
 import './ndd-menu-bar.ts';
 
-function threeItemBar(): string {
-	return `
-		<ndd-menu-bar>
-			<ndd-menu-bar-item>Home</ndd-menu-bar-item>
-			<ndd-menu-bar-item>About</ndd-menu-bar-item>
-			<ndd-menu-bar-item>Contact</ndd-menu-bar-item>
-		</ndd-menu-bar>
-	`;
-}
-
-function pressKey(target: Element, key: string) {
-	target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true }));
-}
-
 describe('ndd-menu-bar', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		document.querySelectorAll('ndd-menu').forEach(m => m.remove());
 	});
 
 	it('renders without error', async () => {
 		el = await fixture('<ndd-menu-bar></ndd-menu-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
-	});
-});
-
-describe('ndd-menu-bar – item selection', () => {
-	let el: NDDMenuBar;
-
-	afterEach(() => {
-		if (el) cleanup(el);
+		expect(el).toBeInstanceOf(customElements.get('ndd-menu-bar'));
 	});
 
-	it('deselects other items when one is selected', async () => {
-		el = await fixture<NDDMenuBar>(threeItemBar());
+	it('renders slotted menu-bar-items', async () => {
+		el = await fixture(`
+			<ndd-menu-bar>
+				<ndd-menu-bar-item text="Home"></ndd-menu-bar-item>
+				<ndd-menu-bar-item text="About"></ndd-menu-bar-item>
+			</ndd-menu-bar>
+		`);
 		await waitForUpdate(el);
-
 		const items = el.querySelectorAll('ndd-menu-bar-item');
-		items[0].click();
-		await waitForUpdate(el);
-		expect(items[0].hasAttribute('selected')).toBe(true);
-
-		items[1].click();
-		await waitForUpdate(el);
-		expect(items[0].hasAttribute('selected')).toBe(false);
-		expect(items[1].hasAttribute('selected')).toBe(true);
+		expect(items.length).toBe(2);
 	});
 
-	it('dispatches itemselect event on item click', async () => {
-		el = await fixture<NDDMenuBar>(threeItemBar());
+	it('renders nav landmark', async () => {
+		el = await fixture('<ndd-menu-bar accessible-label="Hoofdnavigatie"></ndd-menu-bar>');
 		await waitForUpdate(el);
+		const nav = el.shadowRoot!.querySelector('nav');
+		expect(nav).not.toBeNull();
+		expect(nav!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
+	});
 
-		let detail: any;
-		el.addEventListener('itemselect', ((e: CustomEvent) => {
-			detail = e.detail;
-		}) as EventListener);
-
-		el.querySelectorAll('ndd-menu-bar-item')[1].click();
+	it('renders nav without aria-label when accessible-label is empty', async () => {
+		el = await fixture('<ndd-menu-bar></ndd-menu-bar>');
 		await waitForUpdate(el);
+		const nav = el.shadowRoot!.querySelector('nav');
+		expect(nav).not.toBeNull();
+		expect(nav!.hasAttribute('aria-label')).toBe(false);
+	});
 
-		expect(detail).toBeDefined();
-		expect(detail.item).toBe(el.querySelectorAll('ndd-menu-bar-item')[1]);
+	it('renders overflow button in shadow DOM', async () => {
+		el = await fixture('<ndd-menu-bar></ndd-menu-bar>');
+		await waitForUpdate(el);
+		const overflowButton = el.shadowRoot!.querySelector('.menu-bar__overflow-button');
+		expect(overflowButton).not.toBeNull();
+	});
+
+	it('uses default Dutch translation for overflow text', async () => {
+		el = await fixture('<ndd-menu-bar></ndd-menu-bar>');
+		await waitForUpdate(el);
+		const overflowItem = el.shadowRoot!.querySelector('.menu-bar__overflow-button ndd-menu-bar-item');
+		expect(overflowItem!.getAttribute('text')).toBe('Meer opties');
+	});
+
+	it('accepts custom overflow-text attribute', async () => {
+		el = await fixture('<ndd-menu-bar overflow-text="More"></ndd-menu-bar>');
+		await waitForUpdate(el);
+		const overflowItem = el.shadowRoot!.querySelector('.menu-bar__overflow-button ndd-menu-bar-item');
+		expect(overflowItem!.getAttribute('text')).toBe('More');
+	});
+
+	it('accepts custom translations', async () => {
+		el = await fixture('<ndd-menu-bar></ndd-menu-bar>');
+		(el as NDDMenuBar).translations = {
+			'components.menu-bar.overflow-action': 'More options',
+		};
+		await waitForUpdate(el);
+		const overflowItem = el.shadowRoot!.querySelector('.menu-bar__overflow-button ndd-menu-bar-item');
+		expect(overflowItem!.getAttribute('text')).toBe('More options');
 	});
 });
 
-describe('ndd-menu-bar – keyboard navigation', () => {
-	let el: NDDMenuBar;
+describe('ndd-menu-bar – compact propagation', () => {
+	let el: HTMLElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);
+		document.querySelectorAll('ndd-menu').forEach(m => m.remove());
+	});
+
+	it('propagates compact attribute to slotted items', async () => {
+		el = await fixture(`
+			<ndd-menu-bar compact>
+				<ndd-menu-bar-item text="Home"></ndd-menu-bar-item>
+				<ndd-menu-bar-item text="About"></ndd-menu-bar-item>
+			</ndd-menu-bar>
+		`);
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		expect(items[0].hasAttribute('compact')).toBe(true);
+		expect(items[1].hasAttribute('compact')).toBe(true);
+	});
+
+	it('removes compact attribute from items when compact is removed', async () => {
+		el = await fixture(`
+			<ndd-menu-bar compact>
+				<ndd-menu-bar-item text="Home"></ndd-menu-bar-item>
+			</ndd-menu-bar>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('ndd-menu-bar-item')!.hasAttribute('compact')).toBe(true);
+
+		(el as NDDMenuBar).compact = false;
+		await waitForUpdate(el);
+		expect(el.querySelector('ndd-menu-bar-item')!.hasAttribute('compact')).toBe(false);
+	});
+});
+
+describe('ndd-menu-bar – overflow detection', () => {
+	// Visual regression via Storybook stories: Menu Bar > NarrowContainer, ManyItems.
+	// Zie ook Top Navigation Bar > ManyGlobalItems en SmallViewport.
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		document.querySelectorAll('ndd-menu').forEach(m => m.remove());
 		vi.restoreAllMocks();
 	});
 
-	it('ArrowRight calls focus on next item', async () => {
-		el = await fixture<NDDMenuBar>(threeItemBar());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[1] as HTMLElement, 'focus');
-		pressKey(items[0], 'ArrowRight');
-		expect(spy).toHaveBeenCalled();
-	});
-
-	it('ArrowLeft calls focus on previous item', async () => {
-		el = await fixture<NDDMenuBar>(threeItemBar());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
-		pressKey(items[1], 'ArrowLeft');
-		expect(spy).toHaveBeenCalled();
-	});
-
-	it('ArrowRight wraps from last to first', async () => {
-		el = await fixture<NDDMenuBar>(threeItemBar());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
-		pressKey(items[2], 'ArrowRight');
-		expect(spy).toHaveBeenCalled();
-	});
-
-	it('ArrowLeft wraps from first to last', async () => {
-		el = await fixture<NDDMenuBar>(threeItemBar());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
-		pressKey(items[0], 'ArrowLeft');
-		expect(spy).toHaveBeenCalled();
-	});
-
-	it('Home calls focus on first item', async () => {
-		el = await fixture<NDDMenuBar>(threeItemBar());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[0] as HTMLElement, 'focus');
-		pressKey(items[2], 'Home');
-		expect(spy).toHaveBeenCalled();
-	});
-
-	it('End calls focus on last item', async () => {
-		el = await fixture<NDDMenuBar>(threeItemBar());
-		await waitForUpdate(el);
-		const items = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(items[2] as HTMLElement, 'focus');
-		pressKey(items[0], 'End');
-		expect(spy).toHaveBeenCalled();
-	});
-
-	it('skips disabled items in navigation', async () => {
-		el = await fixture<NDDMenuBar>(`
+	it('hides items that overflow and shows overflow button', async () => {
+		el = await fixture(`
 			<ndd-menu-bar>
-				<ndd-menu-bar-item>A</ndd-menu-bar-item>
-				<ndd-menu-bar-item disabled>B</ndd-menu-bar-item>
-				<ndd-menu-bar-item>C</ndd-menu-bar-item>
+				<ndd-menu-bar-item text="Home"></ndd-menu-bar-item>
+				<ndd-menu-bar-item text="About"></ndd-menu-bar-item>
+				<ndd-menu-bar-item text="Contact"></ndd-menu-bar-item>
 			</ndd-menu-bar>
 		`);
 		await waitForUpdate(el);
-		const allItems = el.querySelectorAll('ndd-menu-bar-item');
-		const spy = vi.spyOn(allItems[2] as HTMLElement, 'focus');
-		pressKey(allItems[0], 'ArrowRight');
-		expect(spy).toHaveBeenCalled();
+
+		// Mock layout: container 200px, each item 100px, overflow button 44px
+		vi.spyOn(el, 'clientWidth', 'get').mockReturnValue(200);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		items.forEach(item => {
+			vi.spyOn(item, 'offsetWidth', 'get').mockReturnValue(100);
+		});
+		const overflowButton = el.shadowRoot!.querySelector('.menu-bar__overflow-button') as HTMLElement;
+		vi.spyOn(overflowButton, 'offsetWidth', 'get').mockReturnValue(44);
+
+		// Call _updateOverflow directly to bypass RAF timing
+		(el as any)._updateOverflow();
+
+		// First item fits (100 < 200-44=156), second doesn't (200 > 156)
+		expect(items[0].style.display).not.toBe('none');
+		expect(items[1].hasAttribute('data-overflow')).toBe(true);
+		expect(items[2].hasAttribute('data-overflow')).toBe(true);
+		expect(overflowButton.style.display).toBe('inline-block');
 	});
-});
 
-describe('ndd-menu-bar – overflow menu', () => {
-	let el: NDDMenuBar;
-
-	afterEach(() => {
-		if (el) cleanup(el);
-	});
-
-	it('renders overflow button when has-overflow-menu is set', async () => {
-		el = await fixture<NDDMenuBar>(`
-			<ndd-menu-bar has-overflow-menu>
-				<ndd-menu-bar-item>Home</ndd-menu-bar-item>
+	it('hides overflow button when all items fit', async () => {
+		el = await fixture(`
+			<ndd-menu-bar>
+				<ndd-menu-bar-item text="Home"></ndd-menu-bar-item>
+				<ndd-menu-bar-item text="About"></ndd-menu-bar-item>
 			</ndd-menu-bar>
 		`);
 		await waitForUpdate(el);
-		const overflowBtn = el.shadowRoot!.querySelector('.overflow-button');
-		expect(overflowBtn).not.toBeNull();
-		expect(overflowBtn!.getAttribute('aria-haspopup')).toBe('menu');
-		expect(overflowBtn!.getAttribute('aria-expanded')).toBe('false');
-	});
 
-	it('does not render overflow button without has-overflow-menu', async () => {
-		el = await fixture<NDDMenuBar>(threeItemBar());
-		await waitForUpdate(el);
-		const overflowBtn = el.shadowRoot!.querySelector('.overflow-button');
-		expect(overflowBtn).toBeNull();
-	});
+		// Mock layout: container 500px, each item 100px, overflow button 44px
+		vi.spyOn(el, 'clientWidth', 'get').mockReturnValue(500);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		items.forEach(item => {
+			vi.spyOn(item, 'offsetWidth', 'get').mockReturnValue(100);
+		});
+		const overflowButton = el.shadowRoot!.querySelector('.menu-bar__overflow-button') as HTMLElement;
+		vi.spyOn(overflowButton, 'offsetWidth', 'get').mockReturnValue(44);
 
-	it('uses custom overflow-text', async () => {
-		el = await fixture<NDDMenuBar>(`
-			<ndd-menu-bar has-overflow-menu overflow-text="More">
-				<ndd-menu-bar-item>Home</ndd-menu-bar-item>
-			</ndd-menu-bar>
-		`);
-		await waitForUpdate(el);
-		const overflowBtn = el.shadowRoot!.querySelector('.overflow-button');
-		expect(overflowBtn!.textContent).toContain('More');
-	});
+		(el as any)._updateOverflow();
 
-	it('cleans up ResizeObserver on disconnect', async () => {
-		el = await fixture<NDDMenuBar>(`
-			<ndd-menu-bar has-overflow-menu>
-				<ndd-menu-bar-item>Home</ndd-menu-bar-item>
-			</ndd-menu-bar>
-		`);
-		await waitForUpdate(el);
-		el.remove();
-		expect((el as any)._resizeObserver).toBeNull();
+		expect(items[0].hasAttribute('data-overflow')).toBe(false);
+		expect(items[1].hasAttribute('data-overflow')).toBe(false);
+		expect(overflowButton.style.display).toBe('none');
 	});
 });

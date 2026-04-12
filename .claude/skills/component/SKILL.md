@@ -210,8 +210,8 @@ export const styles = css`
 	}
 
 	.{naam}:focus-visible .{naam}__indicator {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+		outline: var(--semantics-focus-ring-outline);
 	}
 
 
@@ -250,13 +250,19 @@ export function template(component: NDD{PascalName}): TemplateResult {
 
 **`ndd-{naam}.stories.ts`:**
 
-```javascript
-import { html } from 'lit';
-import './ndd-{naam}.ts';
+### Controls conventies
 
-/**
- * Beschrijving van het component.
- */
+- **Args keys:** altijd camelCase (bijv. `startIcon`, `fullWidth`)
+- **`name:`** het HTML attribuut in kebab-case (bijv. `name: 'start-icon'`, `name: 'full-width'`)
+- **`table.defaultValue.summary:`** altijd invullen met de default waarde
+- **`description:`** korte Nederlandse beschrijving
+- **Icon controls:** gebruik `control: 'select'` met `options: ['', ...ICONS]` — importeer `ICONS` uit `../../content/icon/ndd-icon.ts`. Nooit een text input voor iconen.
+
+```typescript
+import { html, nothing } from 'lit';
+import './ndd-{naam}.ts';
+import { ICONS } from '../../content/icon/ndd-icon.ts';
+
 export default {
 	title: 'Components/{Categorie}/{DisplayName}',
 	component: 'ndd-{naam}',
@@ -268,26 +274,55 @@ export default {
 		},
 		status: { type: 'stable' },
 	},
+	args: {
+		size: 'md',
+		startIcon: '',
+		fullWidth: false,
+		disabled: false,
+	},
 	argTypes: {
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
 			description: 'Componentmaat',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		startIcon: {
+			name: 'start-icon',
+			control: 'select',
+			options: ['', ...ICONS],
+			description: 'Icoon voor de tekst',
+			table: { defaultValue: { summary: '' } },
+		},
+		fullWidth: {
+			name: 'full-width',
+			control: 'boolean',
+			description: 'Full width',
+			table: { defaultValue: { summary: false } },
 		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde staat',
+			table: { defaultValue: { summary: false } },
 		},
-	},
-	args: {
-		size: 'md',
-		disabled: false,
 	},
 };
 
-export const Standaard = {
-	render: (args) => html`<ndd-{naam} size=${args.size} ?disabled=${args.disabled}>Label</ndd-{naam}>`,
-};
+const Template = ({
+	size,
+	startIcon,
+	fullWidth,
+	disabled,
+}: Record<string, unknown>) => html`
+	<ndd-{naam}
+		size=${size || nothing}
+		start-icon=${startIcon || nothing}
+		?full-width=${fullWidth}
+		?disabled=${disabled}
+	>Label</ndd-{naam}>
+`;
+
+export const Default = Template.bind({});
 ```
 
 ---
@@ -361,7 +396,7 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 - Property waarden altijd op **één regel**, ook als ze lang zijn
 - Sorteer rules per element; houd alle gedrag voor een element bij elkaar
 - Gebruik **CSS nesting** voor `@container` en `@media` — nest in de element rule block
-- Declareer CSS variable defaults in `:host`, nooit als fallback: `var(--_foo)` niet `var(--_foo, 100)`
+- Declareer **alle** lokale CSS variabelen (`--_*`) in `:host`, inclusief responsive overrides via `@container` nesting. Elementen gebruiken alleen `var(--_foo)`, nooit fallbacks: niet `var(--_foo, 100)`
 - Gebruik **nooit** flex shorthand (`flex: 1`), schrijf de losse properties
 - Level 1 headings (`/* # Section */`): 2 lege regels ervoor, 1 erna
 - Level 2 headings (`/* ## Subsection */`): 1 lege regel ervoor en erna
@@ -385,12 +420,26 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 ```
 
 ```css
-/* GOED — defaults in :host */
+/* GOED — alle lokale vars in :host, inclusief responsive overrides */
 :host {
 	--_min-height: var(--semantics-controls-md-min-size);
+	--_logo-width: var(--primitives-space-40);
+
+	@container layout-area (min-width: 641px) {
+		--_logo-width: var(--primitives-space-44);
+	}
 }
 .button {
 	min-height: var(--_min-height);
+}
+.logo {
+	width: var(--_logo-width);
+	height: calc(var(--_logo-width) * 2);
+}
+
+/* FOUT — lokale var op element ipv :host */
+.logo {
+	--_logo-width: var(--primitives-space-40);
 }
 
 /* FOUT — fallback in var() */

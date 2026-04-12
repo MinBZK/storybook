@@ -1,78 +1,96 @@
 import { html, nothing } from 'lit';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { NDDTopNavigationBar } from './ndd-top-navigation-bar.js';
+import logoSvg from './logo.svg?raw';
 
-export function template(this: NDDTopNavigationBar) {
+// # Top navigation bar template
+
+export function template(component: NDDTopNavigationBar) {
 	return html`
-		<a
-			href=${this.skipLinkTarget}
-			class="skip-link"
-		>Ga naar hoofdinhoud</a>
-		<div
-			class="container"
-			part="container"
-		>
-			<div
-				class="logo-bar"
-				part="logo-bar"
-			>
-				<ndd-nav-logo
-					container=${this.container}
-					?has-wordmark=${this.logoHasWordmark}
-					title=${this.logoTitle}
-					subtitle=${this.logoSubtitle}
-					supporting-text-1=${this.logoSupportingText1}
-					supporting-text-2=${this.logoSupportingText2}
-				></ndd-nav-logo>
-			</div>
-			<nav
-				class="nav-bar"
-				part="nav-bar"
-				aria-label="Hoofdnavigatie"
-			>
-				${this._spacerSize ? html`
-					<ndd-spacer
-						size=${this._spacerSize}
-						direction="horizontal"
-					></ndd-spacer>
+		<div class="top-navigation-bar">
+			${!component.noLogo ? html`<div class="top-navigation-bar__logo-bar">
+				<div class="top-navigation-bar__logo"
+					role="img"
+					aria-label="${component._t('components.top-navigation-bar.logo-label')}"
+				>
+					${/* xss-safe: logoSvg is a bundled static asset (logo.svg?raw), never user input.
+						If the source changes to dynamic/user-supplied, replace unsafeHTML with a safe alternative. */ ''}
+					${unsafeHTML(logoSvg)}
+				</div>
+				${component.logoTitle ? html`
+					<div class="top-navigation-bar__wordmark">
+						<div class="top-navigation-bar__wordmark-spacer"></div>
+						<div class="top-navigation-bar__wordmark-content">
+							<p class="top-navigation-bar__wordmark-title">
+								${component.logoTitle}
+							</p>
+							${component.logoSubtitle ? html`
+								<p class="top-navigation-bar__wordmark-subtitle">
+									${component.logoSubtitle}
+								</p>
+							` : nothing}
+							${component.logoSupportingText1 ? html`
+								<p class="top-navigation-bar__wordmark-supporting-text">
+									${component.logoSupportingText1}
+								</p>
+							` : nothing}
+							${component.logoSupportingText2 ? html`
+								<p class="top-navigation-bar__wordmark-supporting-text">
+									${component.logoSupportingText2}
+								</p>
+							` : nothing}
+						</div>
+					</div>
 				` : nothing}
-				<div class="nav-bar-inner">
-					<div class="nav-left">
-						<ndd-back-button
-							container=${this.container}
-							href=${this.backHref}
-							label=${this.backText}
-						></ndd-back-button>
-						<span class="nav-title">${this.title}</span>
-						<div class="global-menu">
+			</div>` : nothing}
+			<div class="top-navigation-bar__main-bar">
+				${component.websiteTitle ? html`
+					<div class="top-navigation-bar__title-bar">
+						<span class="top-navigation-bar__title">
+							${component.websiteTitle}
+						</span>
+					</div>
+				` : nothing}
+				<div class="top-navigation-bar__menu-bar">
+					<div class="top-navigation-bar__menu-bar-start">
+						${component._hasBackButton ? html`
+							<div class="top-navigation-bar__back-button">
+								<ndd-menu-bar-item
+									icon="arrow-left"
+									text="${component._backText}"
+									href=${component.backHref || nothing}
+									accessible-label="${component._backText}"
+									@click=${component._handleBackClick}
+								></ndd-menu-bar-item>
+							</div>
+						` : nothing}
+						<div class="top-navigation-bar__menu-button">
+							<ndd-menu-bar-item
+								icon="menu"
+								text="${component._menuText}"
+								haspopup="dialog"
+								@click=${component._onMenuButtonClick}
+							></ndd-menu-bar-item>
+						</div>
+						<div class="top-navigation-bar__global-menu-bar">
 							<ndd-menu-bar
-								size=${this._menuBarSize}
-								has-overflow-menu
-								overflow-text="Meer"
+								accessible-label="${component._t('components.top-navigation-bar.global-menu-bar-label')}"
 							>
-								<slot name="menu"></slot>
+								<slot name="global"></slot>
 							</ndd-menu-bar>
 						</div>
 					</div>
-					<div class="nav-right">
-						<ndd-utility-menu-bar
-							container=${this.container}
-							?no-language-switch=${this.utilityNoLanguageSwitch}
-							?no-search=${this.utilityNoSearch}
-							?no-account=${this.utilityNoAccount}
-							?has-help=${this.utilityHasHelp}
-							?has-settings=${this.utilityHasSettings}
-							language=${this.utilityLanguage}
-							account-text=${this._accountText}
-						></ndd-utility-menu-bar>
+					<div class="top-navigation-bar__menu-bar-end">
+						<div class="top-navigation-bar__utility-menu-bar">
+							<ndd-menu-bar
+								accessible-label="${component._t('components.top-navigation-bar.utility-menu-bar-label')}"
+							>
+								<slot name="utility"></slot>
+							</ndd-menu-bar>
+						</div>
 					</div>
 				</div>
-				${this._spacerSize ? html`
-					<ndd-spacer
-						size=${this._spacerSize}
-						direction="horizontal"
-					></ndd-spacer>
-				` : nothing}
-			</nav>
+			</div>
 		</div>
 	`;
 }

@@ -176,7 +176,7 @@ describe('ndd-combo-box – filtering', () => {
 		el = await fixture<NDDComboBox>(`
 			<ndd-combo-box>
 				<ndd-menu>
-					<ndd-menu-item text="Nederland" value="nl" search="dutch holland"></ndd-menu-item>
+					<ndd-menu-item text="Nederland" value="nl" aliases="dutch holland"></ndd-menu-item>
 					<ndd-menu-item text="België" value="be"></ndd-menu-item>
 				</ndd-menu>
 			</ndd-combo-box>

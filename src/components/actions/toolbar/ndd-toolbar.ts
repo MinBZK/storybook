@@ -18,6 +18,7 @@ import { template, type ToolbarChild } from './ndd-toolbar.template.ts';
 import { nddToolbarTranslations } from './ndd-toolbar.i18n.ts';
 import type { NDDToolbarTranslations } from './ndd-toolbar.i18n.ts';
 import { NDDMenu } from '../../lists-and-menus/menu/ndd-menu.ts';
+import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 // # Marker elements
 if (!customElements.get('ndd-toolbar-item')) {
@@ -174,11 +175,13 @@ export class NDDToolbar extends LitElement {
 		}
 	}
 
+	private _menuClosedAt = 0;
+
 	private _handleOverflowButtonClick(): void {
 		if (!this._menu) return;
 		if (this._menuOpen) {
 			(this._menu as unknown as { hidePopover: () => void }).hidePopover();
-		} else {
+		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
 			(this._menu as unknown as { showPopover: () => void }).showPopover();
 		}
 	}
@@ -189,7 +192,9 @@ export class NDDToolbar extends LitElement {
 		menu.setAttribute('placement', 'bottom-end');
 		menu.id = `ndd-toolbar-overflow-menu-${this._idCounter++}`;
 		menu.addEventListener('toggle', (event: Event) => {
-			this._menuOpen = (event as ToggleEvent).newState === 'open';
+			const open = (event as ToggleEvent).newState === 'open';
+			this._menuOpen = open;
+			if (!open) this._menuClosedAt = Date.now();
 		});
 		document.body.appendChild(menu);
 		this._menu = menu;

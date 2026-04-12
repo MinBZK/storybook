@@ -45,8 +45,8 @@ export const dropdownStyles = css`
 	}
 
 	.dropdown:focus-within {
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+		outline: var(--semantics-focus-ring-outline);
 	}
 
 

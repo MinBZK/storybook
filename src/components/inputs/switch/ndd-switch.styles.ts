@@ -81,8 +81,8 @@ export const switchStyles = css`
 	}
 
 	.switch__input:focus-visible ~ .switch__track {
-		outline: var(--semantics-focus-ring-edge-thickness) double var(--semantics-focus-ring-edge-color);
-		box-shadow: 0 0 0 var(--semantics-focus-ring-center-thickness) var(--semantics-focus-ring-center-color);
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 

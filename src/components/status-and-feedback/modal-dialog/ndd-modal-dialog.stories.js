@@ -19,7 +19,7 @@ import { ICONS } from '../../content/icon/ndd-icon.ts';
  * ```
  */
 export default {
-	title: 'Components/Status and Feedback/Modal Dialog',
+	title: 'Components/Status & Feedback/Modal Dialog',
 	component: 'ndd-modal-dialog',
 	tags: ['autodocs'],
 	parameters: {
