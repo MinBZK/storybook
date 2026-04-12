@@ -77,4 +77,8 @@ describe('sanitizeUrl', () => {
 	it('strips embedded control chars from safe URLs', () => {
 		expect(sanitizeUrl('/pa\nge')).toBe('/page');
 	});
+
+	it('blocks javascript: with embedded null byte', () => {
+		expect(sanitizeUrl('java\u0000script:alert(1)')).toBeNull();
+	});
 });

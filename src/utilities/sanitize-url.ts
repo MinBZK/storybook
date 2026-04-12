@@ -16,7 +16,7 @@ export function sanitizeUrl(url: string | null): string | null {
 	if (!url) return null;
 	const trimmed = url
 		.replace(/^[\s\u00A0\u200B\u2028\u2029]+|[\s\u00A0\u200B\u2028\u2029]+$/g, '')
-		.replace(/[\t\n\r]/g, '');
+		.replace(/[\0\t\n\r]/g, '');
 	const lower = trimmed.toLowerCase();
 	if (
 		lower.startsWith('javascript:') ||
