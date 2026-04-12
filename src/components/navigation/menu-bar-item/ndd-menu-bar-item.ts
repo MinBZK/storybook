@@ -196,6 +196,7 @@ export class NDDMenuBarItem extends LitElement {
 	}
 
 	private _toggleMenu(): void {
+		if (!this._menu) this._createMenu();
 		if (!this._menu) return;
 
 		this._menu.anchorElement = this;
