@@ -21,7 +21,7 @@ import { ICONS } from '../../content/icon/ndd-icon.ts';
  * ```
  */
 export default {
-	title: 'Components/Status and Feedback/Inline Dialog',
+	title: 'Components/Status & Feedback/Inline Dialog',
 	component: 'ndd-inline-dialog',
 	tags: ['autodocs'],
 	parameters: {
