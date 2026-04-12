@@ -73,7 +73,7 @@ export const MetHref = {
 			</div>
 			<form id="contact-form"
 				tabindex="-1"
-				style="padding: 16px; border: 1px solid var(--semantics-dividers-color, #ccc); font-family: system-ui;"
+				style="padding: 16px; border: 1px solid var(--semantics-dividers-color); font-family: system-ui;"
 			>
 				<h2>Contactformulier</h2>
 				<label>Naam: <input type="text"></label>

@@ -52,7 +52,13 @@ export class NDDSkipLink extends LitElement {
 	_handleClick = (): void => {
 		const next = this.nextElementSibling as HTMLElement | null;
 		if (next) {
-			if (!next.hasAttribute('tabindex')) next.setAttribute('tabindex', '-1');
+			const hadTabindex = next.hasAttribute('tabindex');
+			if (!hadTabindex) {
+				next.setAttribute('tabindex', '-1');
+				next.addEventListener('blur', () => {
+					next.removeAttribute('tabindex');
+				}, { once: true });
+			}
 			next.focus();
 		}
 	};
