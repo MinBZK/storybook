@@ -33,7 +33,7 @@ describe('ndd-menu-bar-item', () => {
 		expect(el.hasAttribute('current')).toBe(false);
 	});
 
-	it('creates popover menu when expandable with menu items', async () => {
+	it('creates popover menu lazily on first click when expandable', async () => {
 		el = await fixture(`
 			<ndd-menu-bar-item text="NL" expandable>
 				<ndd-menu-item text="Nederlands"></ndd-menu-item>
@@ -41,8 +41,11 @@ describe('ndd-menu-bar-item', () => {
 			</ndd-menu-bar-item>
 		`);
 		await waitForUpdate(el);
-		const menu = document.querySelector('ndd-menu');
-		expect(menu).not.toBeNull();
+		// Menu is not created until first click (lazy creation)
+		expect(document.querySelector('ndd-menu')).toBeNull();
+		el.click();
+		await waitForUpdate(el);
+		expect(document.querySelector('ndd-menu')).not.toBeNull();
 	});
 
 	it('does not fire select when expandable with menu items', async () => {

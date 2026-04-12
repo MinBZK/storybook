@@ -119,6 +119,7 @@ export class NDDTopNavigationBar extends LitElement {
 		super.disconnectedCallback();
 		this.removeEventListener('select', this._handleItemSelect);
 		this._cleanupCompactDetection();
+		// remove() detaches the sheet from DOM; browser GC handles remaining references
 		this._globalMenuSheet?.remove();
 		this._globalMenuSheet = null;
 		this._globalMenuSheetList = null;

@@ -94,10 +94,6 @@ export class NDDMenuBar extends LitElement {
 
 	// ## Lifecycle
 
-	override connectedCallback(): void {
-		super.connectedCallback();
-	}
-
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this._cleanupOverflowDetection();
@@ -108,6 +104,9 @@ export class NDDMenuBar extends LitElement {
 	override firstUpdated(): void {
 		this._setupOverflowDetection();
 		this._syncCompactAttribute();
+		if (!this.accessibleLabel) {
+			console.warn('ndd-menu-bar: accessible-label is niet gezet. Pagina\'s met meerdere nav landmarks moeten elke nav een uniek label geven (WCAG 1.3.1).');
+		}
 	}
 
 	private _onSlotChange = (): void => {

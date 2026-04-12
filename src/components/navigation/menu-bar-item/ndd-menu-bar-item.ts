@@ -22,7 +22,10 @@
  *
  * @fires select - Bij klik op non-expandable button item (bubbles, composed)
  *
- * @slot - Slotted ndd-menu-item en ndd-menu-divider voor expandable popover
+ * @slot - Slotted ndd-menu-item en ndd-menu-divider voor expandable popover.
+ *   Items worden gekloond naar het popover menu (cloneNode). JS event listeners
+ *   op slotted items worden niet meegenomen. Gebruik event delegation op een
+ *   parent element als custom click handlers nodig zijn.
  */
 
 import { LitElement, type PropertyValues } from 'lit';
@@ -99,9 +102,6 @@ export class NDDMenuBarItem extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.addEventListener('click', this._handleClick);
-		if (this.expandable) {
-			this._createMenu();
-		}
 	}
 
 	override disconnectedCallback(): void {
@@ -112,13 +112,10 @@ export class NDDMenuBarItem extends LitElement {
 	}
 
 	override updated(changed: PropertyValues): void {
-		if (changed.has('expandable')) {
-			if (this.expandable && !this._menu) {
-				this._createMenu();
-			} else if (!this.expandable && this._menu) {
-				this._menu.remove();
-				this._menu = null;
-			}
+		// Clean up menu when expandable is removed; creation is lazy in _toggleMenu()
+		if (changed.has('expandable') && !this.expandable && this._menu) {
+			this._menu.remove();
+			this._menu = null;
 		}
 	}
 
