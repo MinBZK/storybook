@@ -115,7 +115,9 @@ describe('ndd-menu-bar – compact propagation', () => {
 });
 
 describe('ndd-menu-bar – overflow detection', () => {
-	// TODO: E2E tests nodig — JSDOM mist layout support (offsetWidth, clientWidth).
+	// JSDOM mist layout support (offsetWidth, clientWidth). Overflow wordt visueel
+	// getest via Storybook stories: Menu Bar > NarrowContainer en Menu Bar > ManyItems.
+	// Zie ook Top Navigation Bar > ManyGlobalItems en SmallViewport.
 	it.todo('verbergt items achter overflow button bij smalle breedte');
 	it.todo('toont overflow menu bij klik op overflow button');
 	it.todo('synchroniseert overflow menu items met verborgen items');

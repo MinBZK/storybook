@@ -113,8 +113,9 @@ describe('ndd-top-navigation-bar – menu item selection', () => {
 });
 
 describe('ndd-top-navigation-bar – overflow detection', () => {
-	// TODO: E2E tests nodig — JSDOM mist layout support (offsetWidth, clientWidth).
-	// Tracked in: https://github.com/MinBZK/storybook/issues (volgnummer toekennen)
+	// JSDOM mist layout support (offsetWidth, clientWidth). Overflow wordt visueel
+	// getest via Storybook stories: Top Navigation Bar > ManyGlobalItems en SmallViewport.
+	// Overflow logica zit in ndd-menu-bar, zie menu-bar tests voor details.
 	it.todo('verbergt global items achter overflow button bij smalle breedte');
 	it.todo('verbergt utility items achter overflow button bij smalle breedte');
 	it.todo('toont overflow menu bij klik op overflow button');

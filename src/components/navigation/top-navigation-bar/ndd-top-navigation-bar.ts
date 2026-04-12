@@ -330,6 +330,7 @@ export class NDDTopNavigationBar extends LitElement {
 				}
 				return;
 			}
+			if (!this.isConnected) return; // guard against disconnect during async load
 			if (this._globalMenuSheet) return; // guard against double-click race
 			this._globalMenuSheet = this._createGlobalMenuSheet();
 			const menuButtonItem = this._menuButton?.querySelector('ndd-menu-bar-item');

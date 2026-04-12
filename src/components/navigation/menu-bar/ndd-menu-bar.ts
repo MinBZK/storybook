@@ -104,7 +104,7 @@ export class NDDMenuBar extends LitElement {
 		this._setupOverflowDetection();
 		this._syncCompactAttribute();
 		this._syncEmpty();
-		if (import.meta.env?.DEV && !this.accessibleLabel) {
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this.hasAttribute('empty')) {
 			console.warn('ndd-menu-bar: accessible-label is niet gezet. Pagina\'s met meerdere nav landmarks moeten elke nav een uniek label geven (WCAG 1.3.1).');
 		}
 	}
