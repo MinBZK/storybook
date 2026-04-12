@@ -5,6 +5,11 @@ import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 export function template(component: NDDMenuBarItem) {
 	const safeHref = sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
+	const isIconOnly = (component.iconOnly || (component.contentPriority === 'icon' && component.compact)) && component.text;
+	const ariaLabel = component.accessibleLabel || (isIconOnly ? component.text : nothing);
+	const ariaCurrent = component.current ? component.currentType : nothing;
+	const ariaHaspopup = component.expandable ? 'menu' : (component.haspopup || nothing);
+	const ariaExpanded = (component.expandable || component.haspopup) ? String(component.open) : nothing;
 
 	if (isLink) {
 		return html`
@@ -12,10 +17,10 @@ export function template(component: NDDMenuBarItem) {
 				href=${safeHref as string}
 				aria-disabled=${component.disabled || nothing}
 				tabindex=${component.disabled ? '-1' : nothing}
-				aria-current=${component.current ? component.currentType : nothing}
-				aria-label=${component.accessibleLabel || (((component.iconOnly || (component.contentPriority === 'icon' && component.compact)) && component.text) ? component.text : nothing)}
-				aria-haspopup=${component.expandable ? 'menu' : (component.haspopup || nothing)}
-				aria-expanded=${(component.expandable || component.haspopup) ? String(component.open) : nothing}
+				aria-current=${ariaCurrent}
+				aria-label=${ariaLabel}
+				aria-haspopup=${ariaHaspopup}
+				aria-expanded=${ariaExpanded}
 			>
 				${component.icon ? html`
 					<span class="menu-bar-item__icon">
@@ -39,10 +44,10 @@ export function template(component: NDDMenuBarItem) {
 		<button class="menu-bar-item"
 			type="button"
 			?disabled=${component.disabled}
-			aria-current=${component.current ? component.currentType : nothing}
-			aria-label=${component.accessibleLabel || (((component.iconOnly || (component.contentPriority === 'icon' && component.compact)) && component.text) ? component.text : nothing)}
-			aria-haspopup=${component.expandable ? 'menu' : (component.haspopup || nothing)}
-			aria-expanded=${(component.expandable || component.haspopup) ? String(component.open) : nothing}
+			aria-current=${ariaCurrent}
+			aria-label=${ariaLabel}
+			aria-haspopup=${ariaHaspopup}
+			aria-expanded=${ariaExpanded}
 		>
 			${component.icon ? html`
 				<span class="menu-bar-item__icon">
