@@ -121,6 +121,36 @@ describe('ndd-top-navigation-bar – overflow detection', () => {
 	it.todo('toont overflow menu bij klik op overflow button');
 });
 
+describe('ndd-top-navigation-bar – menu sheet async guards', () => {
+	let el: NDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		document.querySelectorAll('ndd-sheet').forEach(s => s.remove());
+	});
+
+	it('does not create sheet after disconnect during async load', async () => {
+		el = await fixture<NDDTopNavigationBar>(`
+			<ndd-top-navigation-bar website-title="Test">
+				<ndd-menu-bar-item slot="global" text="Home"></ndd-menu-bar-item>
+			</ndd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+
+		// Trigger menu button click (starts async load)
+		const menuButton = el.shadowRoot!.querySelector('.top-navigation-bar__menu-button ndd-menu-bar-item') as HTMLElement;
+		if (menuButton) {
+			const clickPromise = (el as any)._onMenuButtonClick();
+			// Disconnect before load resolves
+			cleanup(el);
+			el = null as any;
+			await clickPromise.catch(() => {});
+			// Sheet should not be appended to body
+			expect(document.querySelector('ndd-sheet')).toBeNull();
+		}
+	});
+});
+
 describe('ndd-top-navigation-bar – back button', () => {
 	let el: NDDTopNavigationBar;
 

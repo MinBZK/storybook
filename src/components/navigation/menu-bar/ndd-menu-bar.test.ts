@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { NDDMenuBar } from './ndd-menu-bar.ts';
 import './ndd-menu-bar.ts';
@@ -115,10 +115,67 @@ describe('ndd-menu-bar – compact propagation', () => {
 });
 
 describe('ndd-menu-bar – overflow detection', () => {
-	// JSDOM mist layout support (offsetWidth, clientWidth). Overflow wordt visueel
-	// getest via Storybook stories: Menu Bar > NarrowContainer en Menu Bar > ManyItems.
+	// Visual regression via Storybook stories: Menu Bar > NarrowContainer, ManyItems.
 	// Zie ook Top Navigation Bar > ManyGlobalItems en SmallViewport.
-	it.todo('verbergt items achter overflow button bij smalle breedte');
-	it.todo('toont overflow menu bij klik op overflow button');
-	it.todo('synchroniseert overflow menu items met verborgen items');
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		document.querySelectorAll('ndd-menu').forEach(m => m.remove());
+		vi.restoreAllMocks();
+	});
+
+	it('hides items that overflow and shows overflow button', async () => {
+		el = await fixture(`
+			<ndd-menu-bar>
+				<ndd-menu-bar-item text="Home"></ndd-menu-bar-item>
+				<ndd-menu-bar-item text="About"></ndd-menu-bar-item>
+				<ndd-menu-bar-item text="Contact"></ndd-menu-bar-item>
+			</ndd-menu-bar>
+		`);
+		await waitForUpdate(el);
+
+		// Mock layout: container 200px, each item 100px, overflow button 44px
+		vi.spyOn(el, 'clientWidth', 'get').mockReturnValue(200);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		items.forEach(item => {
+			vi.spyOn(item, 'offsetWidth', 'get').mockReturnValue(100);
+		});
+		const overflowButton = el.shadowRoot!.querySelector('.menu-bar__overflow-button') as HTMLElement;
+		vi.spyOn(overflowButton, 'offsetWidth', 'get').mockReturnValue(44);
+
+		// Call _updateOverflow directly to bypass RAF timing
+		(el as any)._updateOverflow();
+
+		// First item fits (100 < 200-44=156), second doesn't (200 > 156)
+		expect(items[0].style.display).not.toBe('none');
+		expect(items[1].hasAttribute('data-overflow')).toBe(true);
+		expect(items[2].hasAttribute('data-overflow')).toBe(true);
+		expect(overflowButton.style.display).toBe('inline-block');
+	});
+
+	it('hides overflow button when all items fit', async () => {
+		el = await fixture(`
+			<ndd-menu-bar>
+				<ndd-menu-bar-item text="Home"></ndd-menu-bar-item>
+				<ndd-menu-bar-item text="About"></ndd-menu-bar-item>
+			</ndd-menu-bar>
+		`);
+		await waitForUpdate(el);
+
+		// Mock layout: container 500px, each item 100px, overflow button 44px
+		vi.spyOn(el, 'clientWidth', 'get').mockReturnValue(500);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		items.forEach(item => {
+			vi.spyOn(item, 'offsetWidth', 'get').mockReturnValue(100);
+		});
+		const overflowButton = el.shadowRoot!.querySelector('.menu-bar__overflow-button') as HTMLElement;
+		vi.spyOn(overflowButton, 'offsetWidth', 'get').mockReturnValue(44);
+
+		(el as any)._updateOverflow();
+
+		expect(items[0].hasAttribute('data-overflow')).toBe(false);
+		expect(items[1].hasAttribute('data-overflow')).toBe(false);
+		expect(overflowButton.style.display).toBe('none');
+	});
 });

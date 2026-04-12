@@ -13,7 +13,8 @@ export function template(component: NDDTopNavigationBar) {
 					role="img"
 					aria-label="${component._t('components.top-navigation-bar.logo-label')}"
 				>
-					${/* Safe: logoSvg is a bundled static asset (logo.svg?raw), not user input */ ''}
+					${/* xss-safe: logoSvg is a bundled static asset (logo.svg?raw), never user input.
+						If the source changes to dynamic/user-supplied, replace unsafeHTML with a safe alternative. */ ''}
 					${unsafeHTML(logoSvg)}
 				</div>
 				${component.logoTitle ? html`
