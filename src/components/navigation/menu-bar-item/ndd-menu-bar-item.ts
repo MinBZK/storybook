@@ -59,7 +59,7 @@ export class NDDMenuBarItem extends LitElement {
 	current = false;
 
 	@property({ type: String, attribute: 'current-type', reflect: true })
-	currentType = 'page';
+	currentType: 'page' | 'step' | 'location' | 'date' | 'time' | 'true' = 'page';
 
 	@property({ type: String })
 	href = '';
