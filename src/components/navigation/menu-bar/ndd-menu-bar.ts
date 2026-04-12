@@ -64,7 +64,6 @@ export class NDDMenuBar extends LitElement {
 	private _overflowMenuClosedAt = 0;
 
 	private _resizeObserver: ResizeObserver | null = null;
-	private _isHandlingOverflow = false;
 	private _overflowRAF: number | null = null;
 	private _setupRAF: number | null = null;
 
@@ -108,6 +107,11 @@ export class NDDMenuBar extends LitElement {
 		if (import.meta.env?.DEV && !this.accessibleLabel) {
 			console.warn('ndd-menu-bar: accessible-label is niet gezet. Pagina\'s met meerdere nav landmarks moeten elke nav een uniek label geven (WCAG 1.3.1).');
 		}
+	}
+
+	/** Request a recalculation of overflow state. Call from parent when layout changes. */
+	requestOverflowUpdate(): void {
+		this._scheduleOverflowUpdate();
 	}
 
 	private _onSlotChange = (): void => {
@@ -174,15 +178,10 @@ export class NDDMenuBar extends LitElement {
 	}
 
 	private _scheduleOverflowUpdate = (): void => {
-		if (this._isHandlingOverflow) return;
 		if (this._overflowRAF) cancelAnimationFrame(this._overflowRAF);
 		this._overflowRAF = requestAnimationFrame(() => {
-			this._isHandlingOverflow = true;
-			try {
-				this._updateOverflow();
-			} finally {
-				requestAnimationFrame(() => { this._isHandlingOverflow = false; });
-			}
+			this._overflowRAF = null;
+			this._updateOverflow();
 		});
 	};
 
@@ -264,14 +263,30 @@ export class NDDMenuBar extends LitElement {
 		) as NDDMenuBarItem[];
 
 		for (const item of overflowItems) {
-			// Skip expandable items — they have submenus that can't be represented in a flat overflow menu
-			if (item.expandable) continue;
-
 			const menuItem = document.createElement('ndd-menu-item');
 			menuItem.setAttribute('text', item.text);
 			if (item.icon) menuItem.setAttribute('icon', item.icon);
 			if (item.current) menuItem.setAttribute('selected', '');
 			if (item.disabled) menuItem.setAttribute('disabled', '');
+
+			if (item.expandable) {
+				// Expandable items: clone sub-items as a submenu group
+				const children = item.querySelectorAll('ndd-menu-item, ndd-menu-divider');
+				if (children.length > 0) {
+					const divider = document.createElement('ndd-menu-divider');
+					this._overflowMenu!.appendChild(menuItem);
+					this._overflowMenu!.appendChild(divider);
+					children.forEach(child => {
+						const clone = child.cloneNode(true) as HTMLElement;
+						clone.addEventListener('click', () => {
+							(child as HTMLElement).click();
+						});
+						this._overflowMenu!.appendChild(clone);
+					});
+					continue;
+				}
+			}
+
 			menuItem.addEventListener('click', () => {
 				item.click();
 			});

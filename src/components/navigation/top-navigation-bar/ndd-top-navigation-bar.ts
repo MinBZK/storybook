@@ -7,6 +7,7 @@ import type { NDDTopNavigationBarTranslations } from './ndd-top-navigation-bar.i
 import '../menu-bar-item/ndd-menu-bar-item.js';
 import { NDDMenuBarItem } from '../menu-bar-item/ndd-menu-bar-item.js';
 import '../menu-bar/ndd-menu-bar.js';
+import { NDDMenuBar } from '../menu-bar/ndd-menu-bar.js';
 import '../../content/icon/ndd-icon.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
@@ -222,10 +223,11 @@ export class NDDTopNavigationBar extends LitElement {
 	private _syncCompactAttribute(): void {
 		const isCompact = this._isSmBreakpoint();
 
-		// Menu bars (propagate to ndd-menu-bar, which handles its slotted items)
+		// Menu bars (propagate compact + trigger overflow recalculation)
 		const menuBars = this.shadowRoot?.querySelectorAll('ndd-menu-bar') ?? [];
 		for (const menuBar of menuBars) {
 			menuBar.toggleAttribute('compact', isCompact);
+			(menuBar as NDDMenuBar).requestOverflowUpdate();
 		}
 
 		// Internal items not inside a menu-bar (menu-button, back-button)
