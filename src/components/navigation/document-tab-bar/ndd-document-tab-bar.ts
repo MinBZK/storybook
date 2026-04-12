@@ -103,10 +103,7 @@ export class NDDDocumentTabBarItem extends LitElement {
 		this.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab')?.focus(options);
 	}
 
-	/** Sanitize a URL, blocking dangerous protocols. Returns null for unsafe URLs. */
-	sanitizeUrl(url: string | null): string | null {
-		return sanitizeUrl(url);
-	}
+
 
 	_handleClick(): void {
 		this.dispatchEvent(new CustomEvent('select', {

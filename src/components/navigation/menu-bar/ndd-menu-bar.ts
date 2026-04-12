@@ -86,6 +86,7 @@ export class NDDMenuBar extends LitElement {
 
 	// ## Computed properties
 
+	/** @internal Used by template */
 	get _overflowText(): string {
 		return this.overflowText || this._t('components.menu-bar.overflow-action');
 	}
@@ -264,6 +265,7 @@ export class NDDMenuBar extends LitElement {
 		}
 	}
 
+	/** @internal Used by template */
 	_onOverflowClick = (): void => {
 		if (!this._overflowMenu) {
 			this._overflowMenu = this._createOverflowMenu();

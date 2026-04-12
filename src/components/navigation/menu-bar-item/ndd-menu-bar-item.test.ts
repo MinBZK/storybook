@@ -146,77 +146,27 @@ describe('ndd-menu-bar-item', () => {
 	});
 });
 
-describe('ndd-menu-bar-item – sanitizeUrl', () => {
-	let el: any;
+describe('ndd-menu-bar-item – URL sanitization', () => {
+	let el: HTMLElement;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('allows valid relative URLs', async () => {
+	it('does not render link for javascript: href', async () => {
+		el = await fixture('<ndd-menu-bar-item text="Link" href="javascript:alert(1)"></ndd-menu-bar-item>');
+		await waitForUpdate(el);
+		const link = el.shadowRoot!.querySelector('a');
+		expect(link).toBeNull();
+		const button = el.shadowRoot!.querySelector('button');
+		expect(button).not.toBeNull();
+	});
+
+	it('renders link for valid href', async () => {
 		el = await fixture('<ndd-menu-bar-item text="Link" href="/page"></ndd-menu-bar-item>');
 		await waitForUpdate(el);
-		expect(el.sanitizeUrl('/page')).toBe('/page');
-	});
-
-	it('allows valid https URLs', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('https://example.com')).toBe('https://example.com');
-	});
-
-	it('blocks javascript: URLs', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('javascript:alert(1)')).toBeNull();
-	});
-
-	it('blocks data: URLs', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('data:text/html,<script>alert(1)</script>')).toBeNull();
-	});
-
-	it('blocks vbscript: URLs', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('vbscript:MsgBox("XSS")')).toBeNull();
-	});
-
-	it('blocks uppercase javascript: URLs', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('JAVASCRIPT:alert(1)')).toBeNull();
-	});
-
-	it('blocks mixed case JavaScript: URLs', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('JavaScript:alert(1)')).toBeNull();
-	});
-
-	it('blocks whitespace-prefixed javascript: URLs', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('  javascript:alert(1)')).toBeNull();
-	});
-
-	it('blocks non-breaking-space-prefixed javascript: URLs', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('\u00A0javascript:alert(1)')).toBeNull();
-	});
-
-	it('blocks zero-width-space-prefixed javascript: URLs', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('\u200Bjavascript:alert(1)')).toBeNull();
-	});
-
-	it('returns null for empty input', async () => {
-		el = await fixture('<ndd-menu-bar-item text="Link"></ndd-menu-bar-item>');
-		await waitForUpdate(el);
-		expect(el.sanitizeUrl('')).toBeNull();
-		expect(el.sanitizeUrl(null)).toBeNull();
+		const link = el.shadowRoot!.querySelector('a');
+		expect(link).not.toBeNull();
+		expect(link!.getAttribute('href')).toBe('/page');
 	});
 });

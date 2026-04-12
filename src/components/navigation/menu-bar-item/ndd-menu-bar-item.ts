@@ -8,6 +8,7 @@
  * @element ndd-menu-bar-item
  * @attr {string} text - Tekst van het item
  * @attr {boolean} current - Markeer als actief/huidig item
+ * @attr {string} current-type - aria-current waarde als current is true ('page', 'step', 'location', 'true'). Standaard: 'page'
  * @attr {string} href - Optionele link URL. Zonder href rendert als button.
  * @attr {string} icon - Optioneel icon naam (ndd-icon)
  * @attr {boolean} expandable - Toon disclosure icon en open popover bij klik
@@ -31,7 +32,6 @@ import { template } from './ndd-menu-bar-item.template.js';
 import '../../content/icon/ndd-icon.js';
 import '../../lists-and-menus/menu/ndd-menu.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
-import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 /**
  * Minimal typed interface for ndd-menu.
@@ -54,6 +54,9 @@ export class NDDMenuBarItem extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	current = false;
+
+	@property({ type: String, attribute: 'current-type' })
+	currentType = 'page';
 
 	@property({ type: String })
 	href = '';
@@ -125,11 +128,6 @@ export class NDDMenuBarItem extends LitElement {
 	}
 
 	// ## Helpers
-
-	/** Sanitize a URL, blocking dangerous protocols. Returns null for unsafe URLs. */
-	sanitizeUrl(url: string | null): string | null {
-		return sanitizeUrl(url);
-	}
 
 	private _hasMenuItems(): boolean {
 		return this.querySelector('ndd-menu-item, ndd-menu-divider') !== null;

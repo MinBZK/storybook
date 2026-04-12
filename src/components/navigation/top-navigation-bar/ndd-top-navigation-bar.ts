@@ -77,6 +77,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 	private _mergedTranslations = { ...nddTopNavigationBarTranslations };
 
+	/** @internal Used by template */
 	_t(key: keyof NDDTopNavigationBarTranslations): string {
 		return this._mergedTranslations[key] ?? key;
 	}
@@ -91,14 +92,17 @@ export class NDDTopNavigationBar extends LitElement {
 
 	// ## Computed properties
 
+	/** @internal Used by template */
 	get _hasBackButton(): boolean {
 		return Boolean(this.backHref || this.backText);
 	}
 
+	/** @internal Used by template */
 	get _backText(): string {
 		return this.backText || this._t('components.top-navigation-bar.back-action');
 	}
 
+	/** @internal Used by template */
 	get _menuText(): string {
 		return this._t('components.top-navigation-bar.menu-action');
 	}
@@ -303,6 +307,7 @@ export class NDDTopNavigationBar extends LitElement {
 		}
 	}
 
+	/** @internal Used by template */
 	_onMenuButtonClick = async (): Promise<void> => {
 		if (!this._globalMenuSheet) {
 			try {
@@ -329,6 +334,7 @@ export class NDDTopNavigationBar extends LitElement {
 
 	// ## Back button
 
+	/** @internal Used by template */
 	_handleBackClick = (e: Event): void => {
 		if (!this.backHref) {
 			e.preventDefault();

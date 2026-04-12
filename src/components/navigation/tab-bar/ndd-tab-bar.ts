@@ -107,13 +107,8 @@ export class NDDTabBarItem extends LitElement {
 		this._hasIcon = slot.assignedElements({ flatten: true }).length > 0;
 	}
 
-	/** Sanitize a URL, blocking dangerous protocols. Returns null for unsafe URLs. */
-	sanitizeUrl(url: string | null): string | null {
-		return sanitizeUrl(url);
-	}
-
 	_handleClick(event: Event): void {
-		if (!this.sanitizeUrl(this.href)) {
+		if (!sanitizeUrl(this.href)) {
 			event.preventDefault();
 		}
 		this.dispatchEvent(new CustomEvent('select', {

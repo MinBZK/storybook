@@ -1,6 +1,13 @@
 /**
- * Sanitizes a URL by stripping leading/trailing whitespace (including unicode)
- * and blocking dangerous protocols (javascript:, data:, vbscript:).
+ * Sanitizes a URL for use in href attributes by stripping leading/trailing
+ * whitespace (including unicode) and blocking dangerous protocols.
+ *
+ * Blocked protocols: javascript:, data:, vbscript:, blob:.
+ *
+ * Note: data: is blocked entirely (including data:image/) because this utility
+ * is designed for href contexts (<a>, navigation), not for <img src> or CSS
+ * where data:image/ would be legitimate.
+ *
  * Returns null for empty or dangerous URLs, the original URL otherwise.
  */
 export function sanitizeUrl(url: string | null): string | null {
@@ -9,7 +16,8 @@ export function sanitizeUrl(url: string | null): string | null {
 	if (
 		trimmed.startsWith('javascript:') ||
 		trimmed.startsWith('data:') ||
-		trimmed.startsWith('vbscript:')
+		trimmed.startsWith('vbscript:') ||
+		trimmed.startsWith('blob:')
 	) {
 		return null;
 	}
