@@ -5,7 +5,7 @@ import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 export function template(component: NDDMenuBarItem) {
 	const safeHref = sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
-	const isIconOnly = (component.iconOnly || (component.contentPriority === 'icon' && component.compact)) && component.text;
+	const isIconOnly = Boolean((component.iconOnly || (component.contentPriority === 'icon' && component.compact)) && component.text);
 	const ariaLabel = component.accessibleLabel || (isIconOnly ? component.text : nothing);
 	const ariaCurrent = component.current ? component.currentType : nothing;
 	const ariaHaspopup = component.expandable ? 'menu' : (component.haspopup || nothing);
