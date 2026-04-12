@@ -55,7 +55,7 @@ export class NDDMenuItem extends LitElement {
 
 	/** Space-separated alternative search terms used by ndd-menu's filter. */
 	@property({ type: String, reflect: true })
-	search = '';
+	aliases = '';
 
 	@property({ type: String, reflect: true })
 	details = '';
@@ -134,7 +134,7 @@ const defaultFilterFn = (query: string, item: NDDMenuItem): boolean => {
 	const q = query.toLowerCase();
 	const textMatch = item.text.toLowerCase().includes(q);
 	const valueMatch = item.value !== '' && item.value.toLowerCase().includes(q);
-	const searchMatch = item.search !== '' && item.search.split(' ').some(s => s.toLowerCase().includes(q));
+	const searchMatch = item.aliases !== '' && item.aliases.split(' ').some(s => s.toLowerCase().includes(q));
 	return textMatch || valueMatch || searchMatch;
 };
 

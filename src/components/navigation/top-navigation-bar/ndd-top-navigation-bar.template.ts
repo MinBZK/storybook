@@ -58,7 +58,7 @@ export function template(component: NDDTopNavigationBar) {
 									text="${component._backText}"
 									href=${component.backHref || nothing}
 									accessible-label="${component._backText}"
-									@click="${component._handleBackClick}"
+									@click=${component._handleBackClick}
 								></ndd-menu-bar-item>
 							</div>
 						` : nothing}

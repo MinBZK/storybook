@@ -168,7 +168,6 @@ export class NDDMenuBarItem extends LitElement {
 			const open = (event as ToggleEvent).newState === 'open';
 			this._menuOpen = open;
 			this.open = open;
-			if (open) this._syncMenuItems();
 			if (!open) this._menuClosedAt = Date.now();
 		});
 		document.body.appendChild(menu);
@@ -197,11 +196,11 @@ export class NDDMenuBarItem extends LitElement {
 		if (!this._menu) return;
 
 		this._menu.anchorElement = this;
-		this._syncMenuItems();
 
 		if (this._menuOpen) {
 			this._menu.hidePopover();
 		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
+			this._syncMenuItems();
 			this._menu.showPopover();
 		}
 	}

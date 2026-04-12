@@ -2,7 +2,8 @@ import { css } from 'lit';
 
 export const styles = css`
 
-	/* ## Host */
+
+	/* # Host */
 
 	:host {
 		display: flex;
@@ -16,7 +17,8 @@ export const styles = css`
 		display: none;
 	}
 
-	/* ## Block */
+
+	/* # Block */
 
 	.menu-bar {
 		display: flex;

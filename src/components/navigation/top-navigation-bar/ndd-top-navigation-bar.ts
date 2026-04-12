@@ -322,7 +322,10 @@ export class NDDTopNavigationBar extends LitElement {
 		if (!this._globalMenuSheet) {
 			try {
 				await this._loadGlobalMenuSheetDependencies();
-			} catch {
+			} catch (error) {
+				if (import.meta.env?.DEV) {
+					console.error('ndd-top-navigation-bar: failed to load menu sheet dependencies', error);
+				}
 				return;
 			}
 			this._globalMenuSheet = this._createGlobalMenuSheet();

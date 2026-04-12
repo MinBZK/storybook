@@ -9,7 +9,8 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const styles = css`
 
-	/* ## Host */
+
+	/* # Host */
 
 	:host {
 		--_logo-width: var(--primitives-space-40);
@@ -30,7 +31,8 @@ export const styles = css`
 		display: none;
 	}
 
-	/* ## Container */
+
+	/* # Container */
 
 	.top-navigation-bar {
 		display: flex;
@@ -42,7 +44,8 @@ export const styles = css`
 		container-name: top-navigation-bar;
 	}
 
-	/* ## Logo bar */
+
+	/* # Logo bar */
 
 	.top-navigation-bar__logo-bar {
 		display: grid;
@@ -116,7 +119,8 @@ export const styles = css`
 		margin: 0;
 	}
 
-	/* ## Main bar (wraps title-bar and menu-bar, column on sm, row on md+) */
+
+	/* # Main bar */
 
 	.top-navigation-bar__main-bar {
 		display: flex;
@@ -151,7 +155,7 @@ export const styles = css`
 		}
 	}
 
-	/* ## Title item */
+	/* ## Title */
 
 	.top-navigation-bar__title {
 		font: var(--components-top-navigation-bar-title-sm-font);
