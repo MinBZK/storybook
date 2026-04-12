@@ -104,7 +104,8 @@ export class NDDMenuBar extends LitElement {
 	override firstUpdated(): void {
 		this._setupOverflowDetection();
 		this._syncCompactAttribute();
-		if (!this.accessibleLabel) {
+		this._syncEmpty();
+		if (import.meta.env?.DEV && !this.accessibleLabel) {
 			console.warn('ndd-menu-bar: accessible-label is niet gezet. Pagina\'s met meerdere nav landmarks moeten elke nav een uniek label geven (WCAG 1.3.1).');
 		}
 	}
@@ -112,7 +113,15 @@ export class NDDMenuBar extends LitElement {
 	private _onSlotChange = (): void => {
 		this._syncCompactAttribute();
 		this._scheduleOverflowUpdate();
+		this._syncEmpty();
 	};
+
+	/** Hide the component when no items are slotted to avoid empty nav landmarks. */
+	private _syncEmpty(): void {
+		const items = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
+		const hasItems = items.some(el => el.tagName === 'NDD-MENU-BAR-ITEM');
+		this.toggleAttribute('empty', !hasItems);
+	}
 
 	/** Propagate compact attribute to slotted items and internal overflow button. */
 	private _syncCompactAttribute(): void {

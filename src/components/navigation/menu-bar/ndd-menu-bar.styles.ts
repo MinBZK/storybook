@@ -11,7 +11,8 @@ export const styles = css`
 		min-width: 0;
 	}
 
-	:host([hidden]) {
+	:host([hidden]),
+	:host([empty]) {
 		display: none;
 	}
 

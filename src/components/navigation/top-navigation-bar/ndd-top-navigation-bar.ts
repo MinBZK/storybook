@@ -86,8 +86,10 @@ export class NDDTopNavigationBar extends LitElement {
 	override willUpdate(changed: PropertyValues): void {
 		if (changed.has('translations')) {
 			this._mergedTranslations = { ...nddTopNavigationBarTranslations, ...this.translations };
-			// Update sheet label if already created
+			// Update sheet labels if already created
 			this._globalMenuSheet?.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
+			this._globalMenuSheet?.querySelector('ndd-top-title-bar')?.setAttribute('text', this._menuText);
+			this._globalMenuSheet?.querySelector('ndd-top-title-bar')?.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));
 		}
 	}
 
