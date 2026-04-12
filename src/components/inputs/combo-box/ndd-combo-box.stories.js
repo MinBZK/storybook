@@ -80,7 +80,7 @@ MetZoektermen.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Gebruik het <code>search</code> attribuut op <code>ndd-menu-item</code> voor alternatieve zoektermen.',
+			story: 'Gebruik het <code>aliases</code> attribuut op <code>ndd-menu-item</code> voor alternatieve zoektermen.',
 		},
 	},
 };

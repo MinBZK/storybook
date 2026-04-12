@@ -36,7 +36,7 @@ if (!customElements.get('ndd-menu-divider')) {
  * @attr {string}  text     - Display text. Supports **bold** markdown syntax when set
  *                            programmatically by ndd-menu's filter method. See filter() for details.
  * @attr {string}  value    - Form value. Falls back to text when not set.
- * @attr {string}  search   - Space-separated alternative search terms.
+ * @attr {string}  aliases  - Space-separated alternative search terms.
  * @attr {string}  details  - Secondary label shown on the right side.
  * @attr {string}  type     - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
  * @attr {boolean} selected - Selected state for checkbox and radio types.
@@ -134,8 +134,8 @@ const defaultFilterFn = (query: string, item: NDDMenuItem): boolean => {
 	const q = query.toLowerCase();
 	const textMatch = item.text.toLowerCase().includes(q);
 	const valueMatch = item.value !== '' && item.value.toLowerCase().includes(q);
-	const searchMatch = item.aliases !== '' && item.aliases.split(' ').some(s => s.toLowerCase().includes(q));
-	return textMatch || valueMatch || searchMatch;
+	const aliasesMatch = item.aliases !== '' && item.aliases.split(' ').some(s => s.toLowerCase().includes(q));
+	return textMatch || valueMatch || aliasesMatch;
 };
 
 /**
@@ -203,7 +203,7 @@ export class NDDMenu extends LitElement {
 
 	/**
 	 * Custom filter function. Defaults to case-insensitive substring match
-	 * on text, value, and search attributes.
+	 * on text, value, and aliases attributes.
 	 */
 	@property({ attribute: false })
 	filterFn: (query: string, item: NDDMenuItem) => boolean = defaultFilterFn;
