@@ -146,9 +146,9 @@ export const aliases = {
 	// lock-open
 	'unlocked': 'lock-open',
 
-	// logo-kubernetes
-	'k8s': 'logo-kubernetes',
-	'kubernetes': 'logo-kubernetes',
+	// ship-wheel
+	'k8s': 'ship-wheel',
+	'kubernetes': 'ship-wheel',
 
 	// magnifier
 	'search': 'magnifier',
