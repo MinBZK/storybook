@@ -86,7 +86,8 @@ export class NDDNavigationSplitView extends LitElement {
 		return this.querySelector(':scope > [slot="sidebar"]') !== null;
 	}
 
-	private get _hasSecondarySidebar(): boolean {
+	/** @internal */
+	get _hasSecondarySidebar(): boolean {
 		return this.querySelector(':scope > [slot="secondary-sidebar"]') !== null;
 	}
 

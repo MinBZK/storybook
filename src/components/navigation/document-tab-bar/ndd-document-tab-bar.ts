@@ -551,7 +551,8 @@ export class NDDDocumentTabBar extends LitElement {
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
-	private _t(key: keyof NDDDocumentTabBarTranslations, vars?: Record<string, string | number>): string {
+	/** @internal */
+	_t(key: keyof NDDDocumentTabBarTranslations, vars?: Record<string, string | number>): string {
 		let str = this._mergedTranslations[key];
 		if (vars) {
 			for (const [k, v] of Object.entries(vars)) {

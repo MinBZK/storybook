@@ -1,83 +1,359 @@
 {
-  "name": "@minbzk/storybook",
-  "version": "0.8.29",
-  "description": "Design System voor Nederlandse Digitale Dienst",
-  "type": "module",
-  "main": "dist/components/ndd-components.js",
-  "module": "dist/components/ndd-components.js",
-  "exports": {
-    ".": "./dist/components/ndd-components.js",
-    "./styles": "./dist/css/global.css",
-    "./styles/tokens": "./dist/css/settings.css"
-  },
-  "files": [
-    "dist"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/MinBZK/storybook.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
-  "scripts": {
-    "build": "npm run build:styles && npm run validate:styles && npm run build:components",
-    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/components/content/rich-text/ndd-rich-text.css dist/css/ndd-rich-text.css && printf '@import \"./settings.css\";\\n@import \"./ndd-rich-text.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
-    "validate:styles": "node scripts/validate-css-variables.js",
-    "build:components": "npm run clean:components && vite build",
-    "clean": "rm -rf dist",
-    "clean:components": "rm -rf dist/components",
-    "storybook": "storybook dev -p 6006",
-    "sb:start": "node scripts/storybook-manager.js start",
-    "sb:stop": "node scripts/storybook-manager.js stop",
-    "sb:status": "node scripts/storybook-manager.js status",
-    "sb:stop-all": "node scripts/storybook-manager.js stop-all",
-    "build-storybook": "storybook build",
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
-    "lint:a11y": "eslint src/ --rule 'lit-a11y/*: error'",
-    "prepare": "pre-commit install || true",
-    "test": "vitest",
-    "test:run": "vitest run",
-    "typecheck": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^19.6.1",
-    "@commitlint/config-conventional": "^19.6.0",
-    "@eslint/js": "^9.17.0",
-    "@semantic-release/git": "^10.0.1",
-    "@storybook/addon-a11y": "^10.3.4",
-    "@storybook/addon-docs": "^10.3.4",
-    "@storybook/addon-themes": "^10.3.4",
-    "@storybook/addon-vitest": "^10.3.4",
-    "@storybook/web-components-vite": "^10.3.4",
-    "@vitest/browser-playwright": "^4.0.16",
-    "@vitest/coverage-v8": "^4.0.16",
-    "eslint": "^9.17.0",
-    "eslint-plugin-lit-a11y": "^5.1.1",
-    "eslint-plugin-storybook": "^10.3.4",
-    "globals": "^15.14.0",
-    "playwright": "^1.57.0",
-    "semantic-release": "^25.0.2",
-    "storybook": "^10.3.4",
-    "typescript": "^5.3.0",
-    "typescript-eslint": "^8.58.0",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.16"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "keywords": [
-    "design-system",
-    "web-components",
-    "rijksoverheid",
-    "ndd"
-  ],
-  "license": "EUPL-1.2",
-  "dependencies": {
-    "@floating-ui/dom": "^1.7.6",
-    "@rijkshuisstijl-community/font": "^1.1.2",
-    "lit": "^3.3.1"
-  }
+	"name": "@minbzk/storybook",
+	"version": "0.8.29",
+	"description": "Design System voor Nederlandse Digitale Dienst",
+	"type": "module",
+	"main": "dist/components/ndd-components.js",
+	"module": "dist/components/ndd-components.js",
+	"exports": {
+		".": "./dist/components/ndd-components.js",
+		"./button": {
+			"types": "./dist/components/actions/button/ndd-button.d.ts",
+			"default": "./dist/components/actions/button/ndd-button.js"
+		},
+		"./icon-button": {
+			"types": "./dist/components/actions/icon-button/ndd-icon-button.d.ts",
+			"default": "./dist/components/actions/icon-button/ndd-icon-button.js"
+		},
+		"./split-button": {
+			"types": "./dist/components/actions/split-button/ndd-split-button.d.ts",
+			"default": "./dist/components/actions/split-button/ndd-split-button.js"
+		},
+		"./button-group": {
+			"types": "./dist/components/actions/button-group/ndd-button-group.d.ts",
+			"default": "./dist/components/actions/button-group/ndd-button-group.js"
+		},
+		"./button-bar": {
+			"types": "./dist/components/actions/button-bar/ndd-button-bar.d.ts",
+			"default": "./dist/components/actions/button-bar/ndd-button-bar.js"
+		},
+		"./toolbar": {
+			"types": "./dist/components/actions/toolbar/ndd-toolbar.d.ts",
+			"default": "./dist/components/actions/toolbar/ndd-toolbar.js"
+		},
+		"./icon": {
+			"types": "./dist/components/content/icon/ndd-icon.d.ts",
+			"default": "./dist/components/content/icon/ndd-icon.js"
+		},
+		"./rich-text": {
+			"types": "./dist/components/content/rich-text/ndd-rich-text.d.ts",
+			"default": "./dist/components/content/rich-text/ndd-rich-text.js"
+		},
+		"./title": {
+			"types": "./dist/components/content/title/ndd-title.d.ts",
+			"default": "./dist/components/content/title/ndd-title.js"
+		},
+		"./tooltip": {
+			"types": "./dist/components/content/tooltip/ndd-tooltip.d.ts",
+			"default": "./dist/components/content/tooltip/ndd-tooltip.js"
+		},
+		"./form-field": {
+			"types": "./dist/components/forms/form-field/ndd-form-field.d.ts",
+			"default": "./dist/components/forms/form-field/ndd-form-field.js"
+		},
+		"./text-field": {
+			"types": "./dist/components/inputs/text-field/ndd-text-field.d.ts",
+			"default": "./dist/components/inputs/text-field/ndd-text-field.js"
+		},
+		"./password-field": {
+			"types": "./dist/components/inputs/password-field/ndd-password-field.d.ts",
+			"default": "./dist/components/inputs/password-field/ndd-password-field.js"
+		},
+		"./search-field": {
+			"types": "./dist/components/inputs/search-field/ndd-search-field.d.ts",
+			"default": "./dist/components/inputs/search-field/ndd-search-field.js"
+		},
+		"./number-field": {
+			"types": "./dist/components/inputs/number-field/ndd-number-field.d.ts",
+			"default": "./dist/components/inputs/number-field/ndd-number-field.js"
+		},
+		"./dropdown": {
+			"types": "./dist/components/inputs/dropdown/ndd-dropdown.d.ts",
+			"default": "./dist/components/inputs/dropdown/ndd-dropdown.js"
+		},
+		"./combo-box": {
+			"types": "./dist/components/inputs/combo-box/ndd-combo-box.d.ts",
+			"default": "./dist/components/inputs/combo-box/ndd-combo-box.js"
+		},
+		"./stepper": {
+			"types": "./dist/components/inputs/stepper/ndd-stepper.d.ts",
+			"default": "./dist/components/inputs/stepper/ndd-stepper.js"
+		},
+		"./checkbox": {
+			"types": "./dist/components/inputs/checkbox/ndd-checkbox.d.ts",
+			"default": "./dist/components/inputs/checkbox/ndd-checkbox.js"
+		},
+		"./checkbox-field": {
+			"types": "./dist/components/inputs/checkbox-field/ndd-checkbox-field.d.ts",
+			"default": "./dist/components/inputs/checkbox-field/ndd-checkbox-field.js"
+		},
+		"./radio-button": {
+			"types": "./dist/components/inputs/radio-button/ndd-radio-button.d.ts",
+			"default": "./dist/components/inputs/radio-button/ndd-radio-button.js"
+		},
+		"./radio-button-field": {
+			"types": "./dist/components/inputs/radio-button-field/ndd-radio-button-field.d.ts",
+			"default": "./dist/components/inputs/radio-button-field/ndd-radio-button-field.js"
+		},
+		"./radio-button-group": {
+			"types": "./dist/components/inputs/radio-button-group/ndd-radio-button-group.d.ts",
+			"default": "./dist/components/inputs/radio-button-group/ndd-radio-button-group.js"
+		},
+		"./switch": {
+			"types": "./dist/components/inputs/switch/ndd-switch.d.ts",
+			"default": "./dist/components/inputs/switch/ndd-switch.js"
+		},
+		"./switch-field": {
+			"types": "./dist/components/inputs/switch-field/ndd-switch-field.d.ts",
+			"default": "./dist/components/inputs/switch-field/ndd-switch-field.js"
+		},
+		"./segmented-control": {
+			"types": "./dist/components/inputs/segmented-control/ndd-segmented-control.d.ts",
+			"default": "./dist/components/inputs/segmented-control/ndd-segmented-control.js"
+		},
+		"./toggle-button": {
+			"types": "./dist/components/inputs/toggle-button/ndd-toggle-button.d.ts",
+			"default": "./dist/components/inputs/toggle-button/ndd-toggle-button.js"
+		},
+		"./toggle-button-group": {
+			"types": "./dist/components/inputs/toggle-button-group/ndd-toggle-button-group.d.ts",
+			"default": "./dist/components/inputs/toggle-button-group/ndd-toggle-button-group.js"
+		},
+		"./token": {
+			"types": "./dist/components/inputs/token/ndd-token.d.ts",
+			"default": "./dist/components/inputs/token/ndd-token.js"
+		},
+		"./app-view": {
+			"types": "./dist/components/layout/app-view/ndd-app-view.d.ts",
+			"default": "./dist/components/layout/app-view/ndd-app-view.js"
+		},
+		"./bar-split-view": {
+			"types": "./dist/components/layout/split-views/bar-split-view/ndd-bar-split-view.d.ts",
+			"default": "./dist/components/layout/split-views/bar-split-view/ndd-bar-split-view.js"
+		},
+		"./navigation-split-view": {
+			"types": "./dist/components/layout/split-views/navigation-split-view/ndd-navigation-split-view.d.ts",
+			"default": "./dist/components/layout/split-views/navigation-split-view/ndd-navigation-split-view.js"
+		},
+		"./side-by-side-split-view": {
+			"types": "./dist/components/layout/split-views/side-by-side-split-view/ndd-side-by-side-split-view.d.ts",
+			"default": "./dist/components/layout/split-views/side-by-side-split-view/ndd-side-by-side-split-view.js"
+		},
+		"./stacked-split-view": {
+			"types": "./dist/components/layout/split-views/stacked-split-view/ndd-stacked-split-view.d.ts",
+			"default": "./dist/components/layout/split-views/stacked-split-view/ndd-stacked-split-view.js"
+		},
+		"./split-view-pane": {
+			"types": "./dist/components/layout/split-views/split-view-pane/ndd-split-view-pane.d.ts",
+			"default": "./dist/components/layout/split-views/split-view-pane/ndd-split-view-pane.js"
+		},
+		"./page": {
+			"types": "./dist/components/layout/page/ndd-page.d.ts",
+			"default": "./dist/components/layout/page/ndd-page.js"
+		},
+		"./simple-section": {
+			"types": "./dist/components/layout/page-sections/simple-section/ndd-simple-section.d.ts",
+			"default": "./dist/components/layout/page-sections/simple-section/ndd-simple-section.js"
+		},
+		"./full-bleed-section": {
+			"types": "./dist/components/layout/page-sections/full-bleed-section/ndd-full-bleed-section.d.ts",
+			"default": "./dist/components/layout/page-sections/full-bleed-section/ndd-full-bleed-section.js"
+		},
+		"./one-third-two-thirds-section": {
+			"types": "./dist/components/layout/page-sections/one-third-two-thirds-section/ndd-one-third-two-thirds-section.d.ts",
+			"default": "./dist/components/layout/page-sections/one-third-two-thirds-section/ndd-one-third-two-thirds-section.js"
+		},
+		"./two-thirds-one-third-section": {
+			"types": "./dist/components/layout/page-sections/two-thirds-one-third-section/ndd-two-thirds-one-third-section.d.ts",
+			"default": "./dist/components/layout/page-sections/two-thirds-one-third-section/ndd-two-thirds-one-third-section.js"
+		},
+		"./one-half-one-half-section": {
+			"types": "./dist/components/layout/page-sections/one-half-one-half-section/ndd-one-half-one-half-section.d.ts",
+			"default": "./dist/components/layout/page-sections/one-half-one-half-section/ndd-one-half-one-half-section.js"
+		},
+		"./box": {
+			"types": "./dist/components/layout/box/ndd-box.d.ts",
+			"default": "./dist/components/layout/box/ndd-box.js"
+		},
+		"./collection": {
+			"types": "./dist/components/layout/collection/ndd-collection.d.ts",
+			"default": "./dist/components/layout/collection/ndd-collection.js"
+		},
+		"./spacer": {
+			"types": "./dist/components/layout/spacer/ndd-spacer.d.ts",
+			"default": "./dist/components/layout/spacer/ndd-spacer.js"
+		},
+		"./container": {
+			"types": "./dist/components/layout/container/ndd-container.d.ts",
+			"default": "./dist/components/layout/container/ndd-container.js"
+		},
+		"./divider": {
+			"types": "./dist/components/layout/divider/ndd-divider.d.ts",
+			"default": "./dist/components/layout/divider/ndd-divider.js"
+		},
+		"./sheet": {
+			"types": "./dist/components/layout/sheet/ndd-sheet.d.ts",
+			"default": "./dist/components/layout/sheet/ndd-sheet.js"
+		},
+		"./menu": {
+			"types": "./dist/components/lists-and-menus/menu/ndd-menu.d.ts",
+			"default": "./dist/components/lists-and-menus/menu/ndd-menu.js"
+		},
+		"./list": {
+			"types": "./dist/components/lists-and-menus/list/ndd-list.d.ts",
+			"default": "./dist/components/lists-and-menus/list/ndd-list.js"
+		},
+		"./list-item": {
+			"types": "./dist/components/lists-and-menus/list-item/ndd-list-item.d.ts",
+			"default": "./dist/components/lists-and-menus/list-item/ndd-list-item.js"
+		},
+		"./cell": {
+			"types": "./dist/components/lists-and-menus/cells/cell/ndd-cell.d.ts",
+			"default": "./dist/components/lists-and-menus/cells/cell/ndd-cell.js"
+		},
+		"./spacer-cell": {
+			"types": "./dist/components/lists-and-menus/cells/spacer-cell/ndd-spacer-cell.d.ts",
+			"default": "./dist/components/lists-and-menus/cells/spacer-cell/ndd-spacer-cell.js"
+		},
+		"./icon-cell": {
+			"types": "./dist/components/lists-and-menus/cells/icon-cell/ndd-icon-cell.d.ts",
+			"default": "./dist/components/lists-and-menus/cells/icon-cell/ndd-icon-cell.js"
+		},
+		"./title-cell": {
+			"types": "./dist/components/lists-and-menus/cells/title-cell/ndd-title-cell.d.ts",
+			"default": "./dist/components/lists-and-menus/cells/title-cell/ndd-title-cell.js"
+		},
+		"./text-cell": {
+			"types": "./dist/components/lists-and-menus/cells/text-cell/ndd-text-cell.d.ts",
+			"default": "./dist/components/lists-and-menus/cells/text-cell/ndd-text-cell.js"
+		},
+		"./description-cell": {
+			"types": "./dist/components/lists-and-menus/cells/description-cell/ndd-description-cell.d.ts",
+			"default": "./dist/components/lists-and-menus/cells/description-cell/ndd-description-cell.js"
+		},
+		"./drag-handle-cell": {
+			"types": "./dist/components/lists-and-menus/cells/drag-handle-cell/ndd-drag-handle-cell.d.ts",
+			"default": "./dist/components/lists-and-menus/cells/drag-handle-cell/ndd-drag-handle-cell.js"
+		},
+		"./timeline-track-cell": {
+			"types": "./dist/components/lists-and-menus/cells/timeline-track-cell/ndd-timeline-track-cell.d.ts",
+			"default": "./dist/components/lists-and-menus/cells/timeline-track-cell/ndd-timeline-track-cell.js"
+		},
+		"./menu-bar": {
+			"types": "./dist/components/navigation/menu-bar/ndd-menu-bar.d.ts",
+			"default": "./dist/components/navigation/menu-bar/ndd-menu-bar.js"
+		},
+		"./menu-bar-item": {
+			"types": "./dist/components/navigation/menu-bar-item/ndd-menu-bar-item.d.ts",
+			"default": "./dist/components/navigation/menu-bar-item/ndd-menu-bar-item.js"
+		},
+		"./skip-link": {
+			"types": "./dist/components/navigation/skip-link/ndd-skip-link.d.ts",
+			"default": "./dist/components/navigation/skip-link/ndd-skip-link.js"
+		},
+		"./top-navigation-bar": {
+			"types": "./dist/components/navigation/top-navigation-bar/ndd-top-navigation-bar.d.ts",
+			"default": "./dist/components/navigation/top-navigation-bar/ndd-top-navigation-bar.js"
+		},
+		"./top-title-bar": {
+			"types": "./dist/components/navigation/top-title-bar/ndd-top-title-bar.d.ts",
+			"default": "./dist/components/navigation/top-title-bar/ndd-top-title-bar.js"
+		},
+		"./tab-bar": {
+			"types": "./dist/components/navigation/tab-bar/ndd-tab-bar.d.ts",
+			"default": "./dist/components/navigation/tab-bar/ndd-tab-bar.js"
+		},
+		"./document-tab-bar": {
+			"types": "./dist/components/navigation/document-tab-bar/ndd-document-tab-bar.d.ts",
+			"default": "./dist/components/navigation/document-tab-bar/ndd-document-tab-bar.js"
+		},
+		"./pagination": {
+			"types": "./dist/components/navigation/pagination/ndd-pagination.d.ts",
+			"default": "./dist/components/navigation/pagination/ndd-pagination.js"
+		},
+		"./modal-dialog": {
+			"types": "./dist/components/status-and-feedback/modal-dialog/ndd-modal-dialog.d.ts",
+			"default": "./dist/components/status-and-feedback/modal-dialog/ndd-modal-dialog.js"
+		},
+		"./inline-dialog": {
+			"types": "./dist/components/status-and-feedback/inline-dialog/ndd-inline-dialog.d.ts",
+			"default": "./dist/components/status-and-feedback/inline-dialog/ndd-inline-dialog.js"
+		},
+		"./styles": "./dist/css/global.css",
+		"./styles/tokens": "./dist/css/settings.css"
+	},
+	"files": [
+		"dist"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/MinBZK/storybook.git"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	},
+	"scripts": {
+		"build": "npm run build:styles && npm run validate:styles && npm run build:components",
+		"build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/components/content/rich-text/ndd-rich-text.css dist/css/ndd-rich-text.css && printf '@import \"./settings.css\";\\n@import \"./ndd-rich-text.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
+		"validate:styles": "node scripts/validate-css-variables.js",
+		"build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:exports",
+		"build:icons": "node scripts/generate-icon-registry.js",
+		"build:components:modules": "tsc -p tsconfig.build.json",
+		"build:components:bundle": "vite build",
+		"build:exports": "node scripts/generate-exports.js",
+		"clean": "rm -rf dist",
+		"clean:components": "rm -rf dist/components",
+		"storybook": "storybook dev -p 6006",
+		"sb:start": "node scripts/storybook-manager.js start",
+		"sb:stop": "node scripts/storybook-manager.js stop",
+		"sb:status": "node scripts/storybook-manager.js status",
+		"sb:stop-all": "node scripts/storybook-manager.js stop-all",
+		"build-storybook": "storybook build",
+		"lint": "eslint src/",
+		"lint:fix": "eslint src/ --fix",
+		"lint:a11y": "eslint src/ --rule 'lit-a11y/*: error'",
+		"prepare": "pre-commit install || true",
+		"test": "vitest",
+		"test:run": "vitest run",
+		"typecheck": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^19.6.1",
+		"@commitlint/config-conventional": "^19.6.0",
+		"@eslint/js": "^9.17.0",
+		"@semantic-release/git": "^10.0.1",
+		"@storybook/addon-a11y": "^10.3.4",
+		"@storybook/addon-docs": "^10.3.4",
+		"@storybook/addon-themes": "^10.3.4",
+		"@storybook/addon-vitest": "^10.3.4",
+		"@storybook/web-components-vite": "^10.3.4",
+		"@vitest/browser-playwright": "^4.0.16",
+		"@vitest/coverage-v8": "^4.0.16",
+		"eslint": "^9.17.0",
+		"eslint-plugin-lit-a11y": "^5.1.1",
+		"eslint-plugin-storybook": "^10.3.4",
+		"globals": "^15.14.0",
+		"playwright": "^1.57.0",
+		"semantic-release": "^25.0.2",
+		"storybook": "^10.3.4",
+		"typescript": "^5.3.0",
+		"typescript-eslint": "^8.58.0",
+		"vite": "^7.3.1",
+		"vitest": "^4.0.16"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"keywords": [
+		"design-system",
+		"web-components",
+		"rijksoverheid",
+		"ndd"
+	],
+	"license": "EUPL-1.2",
+	"dependencies": {
+		"@floating-ui/dom": "^1.7.6",
+		"@rijkshuisstijl-community/font": "^1.1.2",
+		"lit": "^3.3.1"
+	}
 }
