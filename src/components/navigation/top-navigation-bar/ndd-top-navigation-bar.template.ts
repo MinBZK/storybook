@@ -1,6 +1,7 @@
 import { html, nothing } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { NDDTopNavigationBar } from './ndd-top-navigation-bar.js';
+import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 import logoSvg from './logo.svg?raw';
 
 // # Top navigation bar template
@@ -9,46 +10,99 @@ export function template(component: NDDTopNavigationBar) {
 	return html`
 		<div class="top-navigation-bar">
 			${!component.noLogo ? html`<div class="top-navigation-bar__logo-bar">
-				<div class="top-navigation-bar__logo"
-					role="img"
-					aria-label="${component._t('components.top-navigation-bar.logo-label')}"
-				>
-					${/* xss-safe: logoSvg is a bundled static asset (logo.svg?raw), never user input.
-						If the source changes to dynamic/user-supplied, replace unsafeHTML with a safe alternative. */ ''}
-					${unsafeHTML(logoSvg)}
-				</div>
-				${component.logoTitle ? html`
-					<div class="top-navigation-bar__wordmark">
-						<div class="top-navigation-bar__wordmark-spacer"></div>
-						<div class="top-navigation-bar__wordmark-content">
-							<p class="top-navigation-bar__wordmark-title">
-								${component.logoTitle}
-							</p>
-							${component.logoSubtitle ? html`
-								<p class="top-navigation-bar__wordmark-subtitle">
-									${component.logoSubtitle}
+				${component.logoTitle && component.logoHref ? html`
+					<a class="top-navigation-bar__logo-and-wordmark" href="${sanitizeUrl(component.logoHref) || nothing}">
+						<div class="top-navigation-bar__logo"
+							role="img"
+							aria-label="${component._t('components.top-navigation-bar.logo-label')}"
+						>
+							${unsafeHTML(logoSvg)}
+						</div>
+						<div class="top-navigation-bar__wordmark">
+							<div class="top-navigation-bar__wordmark-spacer"></div>
+							<div class="top-navigation-bar__wordmark-content">
+								<p class="top-navigation-bar__wordmark-title">
+									${component.logoTitle}
 								</p>
-							` : nothing}
-							${component.logoSupportingText1 ? html`
-								<p class="top-navigation-bar__wordmark-supporting-text">
-									${component.logoSupportingText1}
+								${component.logoSubtitle ? html`
+									<p class="top-navigation-bar__wordmark-subtitle">
+										${component.logoSubtitle}
+									</p>
+								` : nothing}
+								${component.logoSupportingText1 ? html`
+									<p class="top-navigation-bar__wordmark-supporting-text">
+										${component.logoSupportingText1}
+									</p>
+								` : nothing}
+								${component.logoSupportingText2 ? html`
+									<p class="top-navigation-bar__wordmark-supporting-text">
+										${component.logoSupportingText2}
+									</p>
+								` : nothing}
+							</div>
+						</div>
+					</a>
+				` : component.logoTitle ? html`
+					<div class="top-navigation-bar__logo-and-wordmark">
+						<div class="top-navigation-bar__logo"
+							role="img"
+							aria-label="${component._t('components.top-navigation-bar.logo-label')}"
+						>
+							${unsafeHTML(logoSvg)}
+						</div>
+						<div class="top-navigation-bar__wordmark">
+							<div class="top-navigation-bar__wordmark-spacer"></div>
+							<div class="top-navigation-bar__wordmark-content">
+								<p class="top-navigation-bar__wordmark-title">
+									${component.logoTitle}
 								</p>
-							` : nothing}
-							${component.logoSupportingText2 ? html`
-								<p class="top-navigation-bar__wordmark-supporting-text">
-									${component.logoSupportingText2}
-								</p>
-							` : nothing}
+								${component.logoSubtitle ? html`
+									<p class="top-navigation-bar__wordmark-subtitle">
+										${component.logoSubtitle}
+									</p>
+								` : nothing}
+								${component.logoSupportingText1 ? html`
+									<p class="top-navigation-bar__wordmark-supporting-text">
+										${component.logoSupportingText1}
+									</p>
+								` : nothing}
+								${component.logoSupportingText2 ? html`
+									<p class="top-navigation-bar__wordmark-supporting-text">
+										${component.logoSupportingText2}
+									</p>
+								` : nothing}
+							</div>
 						</div>
 					</div>
-				` : nothing}
+				` : component.logoHref ? html`
+					<a class="top-navigation-bar__logo"
+						href="${sanitizeUrl(component.logoHref) || nothing}"
+						role="img"
+						aria-label="${component._t('components.top-navigation-bar.logo-label')}"
+					>
+						${unsafeHTML(logoSvg)}
+					</a>
+				` : html`
+					<div class="top-navigation-bar__logo"
+						role="img"
+						aria-label="${component._t('components.top-navigation-bar.logo-label')}"
+					>
+						${unsafeHTML(logoSvg)}
+					</div>
+				`}
 			</div>` : nothing}
 			<div class="top-navigation-bar__main-bar">
 				${component.websiteTitle ? html`
-					<div class="top-navigation-bar__title-bar">
-						<span class="top-navigation-bar__title">
-							${component.websiteTitle}
-						</span>
+					<div class="top-navigation-bar__website-title-bar">
+						${component.siteHref ? html`
+							<a class="top-navigation-bar__website-title" href="${sanitizeUrl(component.siteHref) || nothing}">
+								${component.websiteTitle}
+							</a>
+						` : html`
+							<span class="top-navigation-bar__website-title">
+								${component.websiteTitle}
+							</span>
+						`}
 					</div>
 				` : nothing}
 				<div class="top-navigation-bar__menu-bar">

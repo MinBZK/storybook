@@ -46,6 +46,14 @@ export class NDDTopNavigationBar extends LitElement {
 	@property({ type: String, attribute: 'logo-supporting-text-2' })
 	logoSupportingText2 = '';
 
+	// ## Link properties
+
+	@property({ type: String, attribute: 'logo-href' })
+	logoHref = '';
+
+	@property({ type: String, attribute: 'site-href' })
+	siteHref = '';
+
 	// ## Back button properties
 
 	@property({ type: String, attribute: 'back-href' })
