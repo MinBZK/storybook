@@ -52,7 +52,7 @@ export const toggleButtonStyles = css`
 		padding: var(--primitives-space-4) var(--primitives-space-6);
 		font: var(--semantics-buttons-xs-font);
 		border-radius: var(--semantics-controls-xs-corner-radius);
-		gap: var(--primitives-space-2);
+		gap: var(--semantics-buttons-xs-gap);
 	}
 
 	:host([size="sm"]) .toggle-button {
@@ -60,7 +60,7 @@ export const toggleButtonStyles = css`
 		padding: var(--primitives-space-6) var(--primitives-space-8);
 		font: var(--semantics-buttons-sm-font);
 		border-radius: var(--semantics-controls-sm-corner-radius);
-		gap: var(--primitives-space-2);
+		gap: var(--semantics-buttons-sm-gap);
 	}
 
 	:host([size="md"]) .toggle-button,
@@ -69,7 +69,7 @@ export const toggleButtonStyles = css`
 		padding: var(--primitives-space-8) var(--primitives-space-14);
 		font: var(--semantics-buttons-md-font);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		gap: var(--primitives-space-4);
+		gap: var(--semantics-buttons-md-gap);
 	}
 
 	/* ## Icon-only sizes */
