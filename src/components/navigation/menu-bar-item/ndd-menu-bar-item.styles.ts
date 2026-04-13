@@ -41,7 +41,7 @@ export const styles = css`
 		font: var(--components-menu-bar-item-font);
 		color: var(--components-menu-bar-item-content-color);
 		text-align: center;
-		padding: 0 var(--primitives-space-8);
+		padding: 0 var(--components-menu-bar-item-inline-padding);
 		white-space: nowrap;
 	}
 

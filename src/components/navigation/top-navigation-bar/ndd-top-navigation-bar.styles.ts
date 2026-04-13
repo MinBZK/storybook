@@ -1,6 +1,7 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
+const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
@@ -125,7 +126,7 @@ export const styles = css`
 	.top-navigation-bar__main-bar {
 		display: flex;
 		flex-direction: column;
-		padding-inline: var(--semantics-page-sections-sm-margin-inline);
+		padding-inline: calc(var(--semantics-page-sections-sm-margin-inline) - var(--components-menu-bar-item-inline-padding));
 
 		@container layout-area (min-width: ${mdMin}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
@@ -187,7 +188,12 @@ export const styles = css`
 		display: flex;
 		align-items: center;
 		flex-grow: 1;
+		flex-shrink: 1;
 		min-width: 0;
+
+		@container top-navigation-bar (max-width: ${smMax}) {
+			flex-shrink: 0;
+		}
 	}
 
 	/* ## Menu bar end */
@@ -195,8 +201,10 @@ export const styles = css`
 	.top-navigation-bar__menu-bar-end {
 		display: flex;
 		align-items: center;
+		flex-shrink: 0;
 
-		@container top-navigation-bar (max-width: ${mdMax}) {
+		@container top-navigation-bar (max-width: ${smMax}) {
+			flex-shrink: 1;
 			min-width: 0;
 		}
 	}
