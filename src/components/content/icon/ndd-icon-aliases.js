@@ -36,6 +36,7 @@ export const aliases = {
 
 	// chart-x-y-axis-line
 	'analytics': 'chart-x-y-axis-line',
+	'chart-line': 'chart-x-y-axis-line',
 	'graph': 'chart-x-y-axis-line',
 
 	// check-mark
@@ -70,7 +71,6 @@ export const aliases = {
 
 	// cylinder-split
 	'database': 'cylinder-split',
-	'db': 'cylinder-split',
 
 	// cylinder-split-slash
 	'database-disabled': 'cylinder-split-slash',
@@ -129,6 +129,12 @@ export const aliases = {
 	// list
 	'menu': 'list',
 
+	// list-arrow-down
+	'sort-descending': 'list-arrow-down',
+
+	// list-arrow-up
+	'sort-ascending': 'list-arrow-up',
+
 	// list-decreasing-lines
 	'filter': 'list-decreasing-lines',
 
@@ -136,6 +142,9 @@ export const aliases = {
 	'lock': 'lock-closed',
 	'locked': 'lock-closed',
 	'secure': 'lock-closed',
+
+	// lock-open
+	'unlocked': 'lock-open',
 
 	// logo-kubernetes
 	'k8s': 'logo-kubernetes',
