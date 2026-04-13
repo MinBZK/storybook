@@ -1,7 +1,7 @@
 /** @type {Record<string, string>} */
 export const aliases = {
-	// appartment-building
-	'office': 'appartment-building',
+	// apartment-building
+	'office': 'apartment-building',
 
 	// arrow-2-counter-clockwise
 	'refresh': 'arrow-2-counter-clockwise',
