@@ -71,7 +71,7 @@ export const styles = css`
 		padding: var(--primitives-space-4) var(--primitives-space-6);
 		font: var(--semantics-buttons-xs-font);
 		border-radius: var(--semantics-controls-xs-corner-radius);
-		gap: var(--primitives-space-2);
+		gap: var(--primitives-space-3);
 	}
 
 	/* ## Size: SM */
@@ -82,7 +82,7 @@ export const styles = css`
 		padding: var(--primitives-space-6) var(--primitives-space-10);
 		font: var(--semantics-buttons-sm-font);
 		border-radius: var(--semantics-controls-sm-corner-radius);
-		gap: var(--primitives-space-2);
+		gap: var(--primitives-space-4);
 	}
 
 	/* ## Size: MD (Default) */
@@ -94,7 +94,7 @@ export const styles = css`
 		padding: var(--primitives-space-12);
 		font: var(--semantics-buttons-md-font);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		gap: var(--primitives-space-4);
+		gap: var(--primitives-space-6);
 	}
 
 	/* # Variants */
