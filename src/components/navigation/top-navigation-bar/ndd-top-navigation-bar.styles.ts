@@ -100,6 +100,14 @@ export const styles = css`
 		align-items: center;
 	}
 
+	.top-navigation-bar__logo-and-wordmark > .top-navigation-bar__logo {
+		grid-column: 1;
+	}
+
+	.top-navigation-bar__logo-and-wordmark > .top-navigation-bar__wordmark {
+		grid-column: 2;
+	}
+
 	a.top-navigation-bar__logo-and-wordmark {
 		color: inherit;
 		text-decoration: none;

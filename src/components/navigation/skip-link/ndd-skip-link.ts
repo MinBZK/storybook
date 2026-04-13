@@ -13,15 +13,15 @@
  * @slot - Content die overgeslagen kan worden
  */
 
-import { LitElement, type PropertyValues } from 'lit';
+import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styles } from './ndd-skip-link.styles.js';
 import { template } from './ndd-skip-link.template.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
 import { nddSkipLinkTranslations } from './ndd-skip-link.i18n.js';
-import type { NDDSkipLinkTranslations } from './ndd-skip-link.i18n.js';
 
 @customElement('ndd-skip-link')
-export class NDDSkipLink extends LitElement {
+export class NDDSkipLink extends withTranslations(LitElement, nddSkipLinkTranslations) {
 	static override styles = styles;
 
 	@property({ type: String })
@@ -29,21 +29,6 @@ export class NDDSkipLink extends LitElement {
 
 	@property({ type: String })
 	href = '';
-
-	@property({ type: Object })
-	translations: Partial<NDDSkipLinkTranslations> = {};
-
-	private _mergedTranslations = { ...nddSkipLinkTranslations };
-
-	_t(key: keyof NDDSkipLinkTranslations): string {
-		return this._mergedTranslations[key] ?? key;
-	}
-
-	override willUpdate(changed: PropertyValues): void {
-		if (changed.has('translations')) {
-			this._mergedTranslations = { ...nddSkipLinkTranslations, ...this.translations };
-		}
-	}
 
 	get _text(): string {
 		return this.text || this._t('components.skip-link.action');

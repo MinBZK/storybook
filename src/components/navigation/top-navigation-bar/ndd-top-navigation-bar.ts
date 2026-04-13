@@ -2,8 +2,8 @@ import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { styles } from './ndd-top-navigation-bar.styles.js';
 import { template } from './ndd-top-navigation-bar.template.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
 import { nddTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.js';
-import type { NDDTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.js';
 import '../menu-bar-item/ndd-menu-bar-item.js';
 import { NDDMenuBarItem } from '../menu-bar-item/ndd-menu-bar-item.js';
 import '../menu-bar/ndd-menu-bar.js';
@@ -21,7 +21,7 @@ interface Sheet extends HTMLElement {
 // # ndd-top-navigation-bar
 
 @customElement('ndd-top-navigation-bar')
-export class NDDTopNavigationBar extends LitElement {
+export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavigationBarTranslations) {
 	static override styles = styles;
 
 	// ## Main properties
@@ -62,9 +62,6 @@ export class NDDTopNavigationBar extends LitElement {
 	@property({ type: String, attribute: 'back-text' })
 	backText = '';
 
-	@property({ type: Object })
-	translations: Partial<NDDTopNavigationBarTranslations> = {};
-
 	// ## Internal state
 
 	@query('.top-navigation-bar__menu-button')
@@ -83,19 +80,9 @@ export class NDDTopNavigationBar extends LitElement {
 	private _compactRAF: number | null = null;
 	private _setupRAF: number | null = null;
 
-	// ## i18n
-
-	private _mergedTranslations = { ...nddTopNavigationBarTranslations };
-
-	/** @internal Used by template */
-	_t(key: keyof NDDTopNavigationBarTranslations): string {
-		return this._mergedTranslations[key] ?? key;
-	}
-
 	override willUpdate(changed: PropertyValues): void {
+		super.willUpdate(changed);
 		if (changed.has('translations')) {
-			this._mergedTranslations = { ...nddTopNavigationBarTranslations, ...this.translations };
-			// Update sheet labels if already created
 			this._globalMenuSheet?.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
 			this._globalMenuSheet?.querySelector('ndd-top-title-bar')?.setAttribute('text', this._menuText);
 			this._globalMenuSheet?.querySelector('ndd-top-title-bar')?.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));

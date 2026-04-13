@@ -39,8 +39,8 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { documentTabBarStyles, documentTabBarItemStyles } from './ndd-document-tab-bar.styles.ts';
 import { documentTabBarTemplate, documentTabBarItemTemplate } from './ndd-document-tab-bar.template.ts';
+import { withTranslations } from '../../../utilities/with-translations.js';
 import { nddDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
-import type { NDDDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
 import './../../lists-and-menus/menu/ndd-menu.ts';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
@@ -130,7 +130,7 @@ export class NDDDocumentTabBarItem extends LitElement {
 // # ndd-document-tab-bar
 
 @customElement('ndd-document-tab-bar')
-export class NDDDocumentTabBar extends LitElement {
+export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentTabBarTranslations) {
 	static override styles = documentTabBarStyles;
 
 	private static _counter = 0;
@@ -142,9 +142,6 @@ export class NDDDocumentTabBar extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	navigation = false;
 
-	@property({ type: Object })
-	translations: Partial<NDDDocumentTabBarTranslations> = {};
-
 	@state()
 	_overflowCount = 0;
 
@@ -155,7 +152,6 @@ export class NDDDocumentTabBar extends LitElement {
 	private _menuClosedAt = 0;
 	private _resizeObserver: ResizeObserver | null = null;
 	private _hasCustomLabel = false;
-	private _mergedTranslations = { ...nddDocumentTabBarTranslations };
 
 	// — Drag state ——————————————————————————————————————————————————————————
 
@@ -219,7 +215,6 @@ export class NDDDocumentTabBar extends LitElement {
 			this._updateMenu();
 		}
 		if (changedProperties.has('translations')) {
-			this._mergedTranslations = { ...nddDocumentTabBarTranslations, ...this.translations };
 			this._propagateDismissLabel();
 		}
 		if (changedProperties.has('navigation')) {
@@ -248,7 +243,7 @@ export class NDDDocumentTabBar extends LitElement {
 	}
 
 	private _propagateDismissLabel(): void {
-		const label = this._mergedTranslations['components.document-tab-bar.dismiss-action'];
+		const label = this._t('components.document-tab-bar.dismiss-action');
 		this._getItems().forEach(item => { item._dismissButtonAccessibilityLabel = label; });
 	}
 
@@ -549,18 +544,6 @@ export class NDDDocumentTabBar extends LitElement {
 		this._currentDropIndex = -1;
 	}
 
-	// — i18n ——————————————————————————————————————————————————————————————————
-
-	/** @internal */
-	_t(key: keyof NDDDocumentTabBarTranslations, vars?: Record<string, string | number>): string {
-		let str = this._mergedTranslations[key];
-		if (vars) {
-			for (const [k, v] of Object.entries(vars)) {
-				str = str.replace(`{${k}}`, String(v));
-			}
-		}
-		return str;
-	}
 
 	// — Accessibility ——————————————————————————————————————————————————————————
 

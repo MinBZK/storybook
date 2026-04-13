@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import type { NDDTopNavigationBar } from './ndd-top-navigation-bar.ts';
 import './ndd-top-navigation-bar.ts';
@@ -112,13 +112,46 @@ describe('ndd-top-navigation-bar – menu item selection', () => {
 	});
 });
 
-describe('ndd-top-navigation-bar – overflow detection', () => {
-	// JSDOM mist layout support (offsetWidth, clientWidth). Overflow wordt visueel
-	// getest via Storybook stories: Top Navigation Bar > ManyGlobalItems en SmallViewport.
-	// Overflow logica zit in ndd-menu-bar, zie menu-bar tests voor details.
-	it.todo('verbergt global items achter overflow button bij smalle breedte');
-	it.todo('verbergt utility items achter overflow button bij smalle breedte');
-	it.todo('toont overflow menu bij klik op overflow button');
+describe('ndd-top-navigation-bar – compact breakpoint', () => {
+	let el: NDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('sets compact on inner menu-bars at small breakpoint', async () => {
+		el = await fixture<NDDTopNavigationBar>(navWithItems());
+		await waitForUpdate(el);
+
+		// Mock container width below smMax (640px)
+		const container = el.shadowRoot!.querySelector('.top-navigation-bar') as HTMLElement;
+		vi.spyOn(container, 'clientWidth', 'get').mockReturnValue(400);
+
+		(el as any)._syncCompactAttribute();
+		await waitForUpdate(el);
+
+		const menuBars = el.shadowRoot!.querySelectorAll('ndd-menu-bar');
+		for (const bar of menuBars) {
+			expect(bar.hasAttribute('compact')).toBe(true);
+		}
+	});
+
+	it('removes compact from inner menu-bars above small breakpoint', async () => {
+		el = await fixture<NDDTopNavigationBar>(navWithItems());
+		await waitForUpdate(el);
+
+		const container = el.shadowRoot!.querySelector('.top-navigation-bar') as HTMLElement;
+		vi.spyOn(container, 'clientWidth', 'get').mockReturnValue(900);
+
+		(el as any)._syncCompactAttribute();
+		await waitForUpdate(el);
+
+		const menuBars = el.shadowRoot!.querySelectorAll('ndd-menu-bar');
+		for (const bar of menuBars) {
+			expect(bar.hasAttribute('compact')).toBe(false);
+		}
+	});
 });
 
 describe('ndd-top-navigation-bar – menu sheet async guards', () => {
