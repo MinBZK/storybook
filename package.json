@@ -313,8 +313,8 @@
 		"lint:fix": "eslint src/ --fix",
 		"lint:a11y": "eslint src/ --rule 'lit-a11y/*: error'",
 		"prepare": "pre-commit install || true",
-		"pretest": "node scripts/generate-icon-registry.js",
-		"pretest:run": "node scripts/generate-icon-registry.js",
+		"pretest": "npm run build:icons",
+		"pretest:run": "npm run build:icons",
 		"test": "vitest",
 		"test:run": "vitest run",
 		"typecheck": "tsc --noEmit"
