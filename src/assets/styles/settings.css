@@ -49,11 +49,12 @@
 :root {
 	color-scheme: light dark;
 
+
 	/* # Primitives */
 
 	/* ## Colors */
 
-	/* ### 1. Neutral (Blue-Gray) - 253.4° with reduced chroma */
+	/* ### Neutral (Blue-Gray) - 253.4° with reduced chroma */
 
 	--primitives-color-neutral-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-neutral-25: light-dark(oklch(0.974 0.004 253.4), oklch(0.158 0.009 253.4)); /* light: #F4F6F9 | dark: #0A0D10 */
@@ -79,7 +80,7 @@
 	--primitives-color-neutral-950: light-dark(oklch(0.202 0.011 253.4), oklch(0.948 0.007 253.4)); /* light: #13171B | dark: #EBEEF2 */
 	--primitives-color-neutral-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 
-	/* ### 2. Accent (Blue) - 253.4° */
+	/* ### Accent (Blue) - 253.4° */
 
 	--primitives-color-accent-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-accent-25: light-dark(oklch(0.973 0.013 253.4), oklch(0.159 0.050 253.4)); /* light: #F0F7FF | dark: #000D21 */
@@ -105,7 +106,7 @@
 	--primitives-color-accent-950: light-dark(oklch(0.203 0.063 253.4), oklch(0.947 0.026 253.4)); /* light: #001632 | dark: #E2EFFF */
 	--primitives-color-accent-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 
-	/* ### 3. Success (Green) - 137.9° */
+	/* ### Success (Green) - 137.9° */
 
 	--primitives-color-success-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-success-25: light-dark(oklch(0.967 0.062 137.9), oklch(0.154 0.047 137.9)); /* light: #E0FFD6 | dark: #031000 */
@@ -131,7 +132,7 @@
 	--primitives-color-success-950: light-dark(oklch(0.197 0.061 137.9), oklch(0.935 0.133 137.9)); /* light: #061B00 | dark: #BDFFA7 */
 	--primitives-color-success-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 
-	/* ### 4. Warning (Orange) - 52.9° */
+	/* ### Warning (Orange) - 52.9° */
 
 	--primitives-color-warning-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-warning-25: light-dark(oklch(0.975 0.014 52.9), oklch(0.162 0.041 52.9)); /* light: #FFF4EE | dark: #1B0800 */
@@ -157,7 +158,7 @@
 	--primitives-color-warning-950: light-dark(oklch(0.206 0.052 52.9), oklch(0.950 0.029 52.9)); /* light: #290F00 | dark: #FFEADD */
 	--primitives-color-warning-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 
-	/* ### 5. Danger (Red) - 29.5° */
+	/* ### Danger (Red) - 29.5° */
 
 	--primitives-color-danger-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-danger-25: light-dark(oklch(0.975 0.012 29.5), oklch(0.166 0.068 29.5)); /* light: #FFF4F2 | dark: #250000 */
@@ -183,7 +184,7 @@
 	--primitives-color-danger-950: light-dark(oklch(0.212 0.086 29.5), oklch(0.951 0.025 29.5)); /* light: #370000 | dark: #FFE9E5 */
 	--primitives-color-danger-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 
-	/* ### 6. Highlight (Yellow) - 79.0° */
+	/* ### Highlight (Yellow) - 79.0° */
 
 	--primitives-color-highlight-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-highlight-25: light-dark(oklch(0.974 0.023 79.0), oklch(0.159 0.033 79.0)); /* light: #FFF5E6 | dark: #150B00 */
@@ -707,6 +708,7 @@
 		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
 	;
 
+
 	/* # Semantics */
 
 	/* ## Surfaces */
@@ -802,7 +804,7 @@
 	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-250));
 	--semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-750), var(--primitives-color-danger-800));
 
-	/* ## Grab */
+	/* ## Grab handles */
 
 	--semantics-grab-handles-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
 	--semantics-grab-handles-grip-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-750));
@@ -854,6 +856,7 @@
 	--semantics-focus-ring-box-shadow: 0 0 0 4px light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
 	--semantics-focus-ring-outline: 6px double var(--semantics-surfaces-background-color);
 
+
 	/* # Components */
 
 	/* ## Box */
@@ -889,7 +892,7 @@
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 
-	/* ## Form field */
+	/* ## Form */
 
 	--components-form-gap: var(--primitives-space-16);
 
