@@ -225,6 +225,42 @@ describe('ndd-top-navigation-bar – back button', () => {
 	});
 });
 
+describe('ndd-top-navigation-bar – href sanitization', () => {
+	let el: NDDTopNavigationBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders logo as non-link when logo-href is a javascript: URI', async () => {
+		el = await fixture<NDDTopNavigationBar>(`
+			<ndd-top-navigation-bar logo-href="javascript:alert(1)"></ndd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+		const link = el.shadowRoot!.querySelector('a.top-navigation-bar__logo');
+		expect(link).toBeNull();
+	});
+
+	it('renders title as non-link when site-href is a javascript: URI', async () => {
+		el = await fixture<NDDTopNavigationBar>(`
+			<ndd-top-navigation-bar website-title="Test" site-href="javascript:void(0)"></ndd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+		const link = el.shadowRoot!.querySelector('a.top-navigation-bar__website-title');
+		expect(link).toBeNull();
+	});
+
+	it('renders logo link with safe href', async () => {
+		el = await fixture<NDDTopNavigationBar>(`
+			<ndd-top-navigation-bar logo-href="/"></ndd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+		const link = el.shadowRoot!.querySelector('a.top-navigation-bar__logo');
+		expect(link).not.toBeNull();
+		expect(link!.getAttribute('href')).toBe('/');
+	});
+});
+
 describe('ndd-top-navigation-bar – i18n', () => {
 	let el: NDDTopNavigationBar;
 

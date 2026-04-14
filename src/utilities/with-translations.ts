@@ -37,10 +37,10 @@ export function withTranslations<T extends Record<string, string>>(
 
 		/** @internal */
 		_t(key: keyof T, vars?: Record<string, string | number>): string {
-			let str = this._mergedTranslations[key] ?? String(key);
+			let str: string = this._mergedTranslations[key] ?? String(key);
 			if (vars) {
 				for (const [k, v] of Object.entries(vars)) {
-					str = str.replace(`{${k}}`, String(v)) as T[keyof T];
+					str = str.replace(`{${k}}`, String(v));
 				}
 			}
 			return str;

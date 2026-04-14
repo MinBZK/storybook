@@ -31,7 +31,15 @@ for (const match of indexContent.matchAll(exportRegex)) {
 	// Build dist path: ./actions/button/ndd-button.ts → ./dist/components/actions/button/ndd-button.js
 	const distPath = `./dist/components/${sourcePath.replace(/^\.\//, '').replace(/\.ts$/, '')}`;
 
-	componentExports[`./${componentName}`] = {
+	const exportKey = `./${componentName}`;
+	if (componentExports[exportKey]) {
+		console.error(`ERROR: Export key collision for "${exportKey}":`);
+		console.error(`  Existing: ${componentExports[exportKey].default}`);
+		console.error(`  New:      ${distPath}.js`);
+		process.exit(1);
+	}
+
+	componentExports[exportKey] = {
 		types: `${distPath}.d.ts`,
 		default: `${distPath}.js`,
 	};

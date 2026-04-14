@@ -7,11 +7,14 @@ import logoSvg from './logo.svg?raw';
 // # Top navigation bar template
 
 export function template(component: NDDTopNavigationBar) {
+	const safeLogoHref = sanitizeUrl(component.logoHref);
+	const safeSiteHref = sanitizeUrl(component.siteHref);
+
 	return html`
 		<div class="top-navigation-bar">
 			${!component.noLogo ? html`<div class="top-navigation-bar__logo-bar">
-				${component.logoTitle && component.logoHref ? html`
-					<a class="top-navigation-bar__logo-and-wordmark" href="${sanitizeUrl(component.logoHref) || nothing}">
+				${component.logoTitle && safeLogoHref ? html`
+					<a class="top-navigation-bar__logo-and-wordmark" href="${safeLogoHref}">
 						<div class="top-navigation-bar__logo"
 							role="img"
 							aria-label="${component._t('components.top-navigation-bar.logo-label')}"
@@ -74,13 +77,12 @@ export function template(component: NDDTopNavigationBar) {
 							</div>
 						</div>
 					</div>
-				` : component.logoHref ? html`
+				` : safeLogoHref ? html`
 					<a class="top-navigation-bar__logo"
-						href="${sanitizeUrl(component.logoHref) || nothing}"
-						role="img"
+						href="${safeLogoHref}"
 						aria-label="${component._t('components.top-navigation-bar.logo-label')}"
 					>
-						${unsafeHTML(logoSvg)}
+						<span aria-hidden="true">${unsafeHTML(logoSvg)}</span>
 					</a>
 				` : html`
 					<div class="top-navigation-bar__logo"
@@ -94,8 +96,8 @@ export function template(component: NDDTopNavigationBar) {
 			<div class="top-navigation-bar__main-bar">
 				${component.websiteTitle ? html`
 					<div class="top-navigation-bar__website-title-bar">
-						${component.siteHref ? html`
-							<a class="top-navigation-bar__website-title" href="${sanitizeUrl(component.siteHref) || nothing}">
+						${safeSiteHref ? html`
+							<a class="top-navigation-bar__website-title" href="${safeSiteHref}">
 								${component.websiteTitle}
 							</a>
 						` : html`
