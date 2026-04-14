@@ -16,6 +16,7 @@ export function switchTemplate(component: NDDSwitch): TemplateResult {
 			@pointerdown=${component._handlePointerDown}
 			@pointermove=${component._handlePointerMove}
 			@pointerup=${component._handlePointerUp}
+			@pointercancel=${component._handlePointerCancel}
 			@click=${component._handleClick}
 		>
 		<div class="switch__track"

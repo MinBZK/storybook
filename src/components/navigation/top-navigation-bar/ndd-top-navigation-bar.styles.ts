@@ -198,7 +198,7 @@ export const styles = css`
 	.top-navigation-bar__website-title {
 		font: var(--components-top-navigation-bar-title-sm-font);
 		color: var(--semantics-content-color);
-		margin-right: var(--primitives-space-8);
+		margin-inline-end: var(--primitives-space-8);
 		white-space: nowrap;
 
 		@container top-navigation-bar (min-width: ${mdMin}) {

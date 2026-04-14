@@ -81,6 +81,11 @@ export class NDDSwitch extends LitElement {
 		}
 	}
 
+	_handlePointerCancel(): void {
+		this._pointerStartX = null;
+		this._swiped = false;
+	}
+
 	_handleClick(e: Event): void {
 		if (this._swiped) {
 			e.preventDefault();

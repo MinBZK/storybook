@@ -6,6 +6,34 @@ import logoSvg from './logo.svg?raw';
 
 // # Top navigation bar template
 
+function wordmarkContent(component: NDDTopNavigationBar) {
+	return html`
+		<div class="top-navigation-bar__wordmark">
+			<div class="top-navigation-bar__wordmark-spacer"></div>
+			<div class="top-navigation-bar__wordmark-content">
+				<p class="top-navigation-bar__wordmark-title">
+					${component.logoTitle}
+				</p>
+				${component.logoSubtitle ? html`
+					<p class="top-navigation-bar__wordmark-subtitle">
+						${component.logoSubtitle}
+					</p>
+				` : nothing}
+				${component.logoSupportingText1 ? html`
+					<p class="top-navigation-bar__wordmark-supporting-text">
+						${component.logoSupportingText1}
+					</p>
+				` : nothing}
+				${component.logoSupportingText2 ? html`
+					<p class="top-navigation-bar__wordmark-supporting-text">
+						${component.logoSupportingText2}
+					</p>
+				` : nothing}
+			</div>
+		</div>
+	`;
+}
+
 export function template(component: NDDTopNavigationBar) {
 	const safeLogoHref = sanitizeUrl(component.logoHref);
 	const safeSiteHref = sanitizeUrl(component.siteHref);
@@ -15,68 +43,19 @@ export function template(component: NDDTopNavigationBar) {
 			${!component.noLogo ? html`<div class="top-navigation-bar__logo-bar">
 				${component.logoTitle && safeLogoHref ? html`
 					<a class="top-navigation-bar__logo-and-wordmark" href="${safeLogoHref}">
-						<div class="top-navigation-bar__logo"
-							role="img"
-							aria-label="${component._t('components.top-navigation-bar.logo-label')}"
-						>
+						<div class="top-navigation-bar__logo" aria-hidden="true">
 							${unsafeHTML(logoSvg)}
 						</div>
-						<div class="top-navigation-bar__wordmark">
-							<div class="top-navigation-bar__wordmark-spacer"></div>
-							<div class="top-navigation-bar__wordmark-content">
-								<p class="top-navigation-bar__wordmark-title">
-									${component.logoTitle}
-								</p>
-								${component.logoSubtitle ? html`
-									<p class="top-navigation-bar__wordmark-subtitle">
-										${component.logoSubtitle}
-									</p>
-								` : nothing}
-								${component.logoSupportingText1 ? html`
-									<p class="top-navigation-bar__wordmark-supporting-text">
-										${component.logoSupportingText1}
-									</p>
-								` : nothing}
-								${component.logoSupportingText2 ? html`
-									<p class="top-navigation-bar__wordmark-supporting-text">
-										${component.logoSupportingText2}
-									</p>
-								` : nothing}
-							</div>
-						</div>
+						${wordmarkContent(component)}
 					</a>
 				` : component.logoTitle ? html`
-					<div class="top-navigation-bar__logo-and-wordmark">
-						<div class="top-navigation-bar__logo"
-							role="img"
-							aria-label="${component._t('components.top-navigation-bar.logo-label')}"
-						>
-							${unsafeHTML(logoSvg)}
-						</div>
-						<div class="top-navigation-bar__wordmark">
-							<div class="top-navigation-bar__wordmark-spacer"></div>
-							<div class="top-navigation-bar__wordmark-content">
-								<p class="top-navigation-bar__wordmark-title">
-									${component.logoTitle}
-								</p>
-								${component.logoSubtitle ? html`
-									<p class="top-navigation-bar__wordmark-subtitle">
-										${component.logoSubtitle}
-									</p>
-								` : nothing}
-								${component.logoSupportingText1 ? html`
-									<p class="top-navigation-bar__wordmark-supporting-text">
-										${component.logoSupportingText1}
-									</p>
-								` : nothing}
-								${component.logoSupportingText2 ? html`
-									<p class="top-navigation-bar__wordmark-supporting-text">
-										${component.logoSupportingText2}
-									</p>
-								` : nothing}
-							</div>
-						</div>
+					<div class="top-navigation-bar__logo"
+						role="img"
+						aria-label="${component._t('components.top-navigation-bar.logo-label')}"
+					>
+						${unsafeHTML(logoSvg)}
 					</div>
+					${wordmarkContent(component)}
 				` : safeLogoHref ? html`
 					<a class="top-navigation-bar__logo"
 						href="${safeLogoHref}"
