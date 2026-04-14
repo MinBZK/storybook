@@ -47,8 +47,7 @@ export class NDDTooltip extends LitElement {
 	placement: Placement = 'bottom';
 
 	private get _effectivePlacement(): Placement {
-		if (this._focusVisible) return this.placement;
-		return coarsePointerQuery.matches ? 'top' : this.placement;
+		return this.placement;
 	}
 
 	@state()
@@ -137,6 +136,7 @@ export class NDDTooltip extends LitElement {
 
 	_handleTriggerEnter(): void {
 		if (!this.text) return;
+		if (coarsePointerQuery.matches) return;
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
