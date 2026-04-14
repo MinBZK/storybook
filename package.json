@@ -297,7 +297,7 @@
 		"build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/components/content/rich-text/ndd-rich-text.css dist/css/ndd-rich-text.css && printf '@import \"./settings.css\";\\n@import \"./ndd-rich-text.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
 		"validate:styles": "node scripts/validate-css-variables.js",
 		"build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:exports",
-		"build:icons": "node scripts/generate-icon-registry.js",
+		"build:icons": "node scripts/generate-icon-registry.js && node scripts/generate-logo.js",
 		"build:components:modules": "tsc -p tsconfig.build.json",
 		"build:components:bundle": "vite build",
 		"build:exports": "node scripts/generate-exports.js",

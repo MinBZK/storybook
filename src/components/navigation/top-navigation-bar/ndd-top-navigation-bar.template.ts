@@ -2,7 +2,7 @@ import { html, nothing } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { NDDTopNavigationBar } from './ndd-top-navigation-bar.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
-import logoSvg from './logo.svg?raw';
+import logoSvg from './logo.js';
 
 // # Top navigation bar template
 
