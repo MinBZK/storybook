@@ -163,6 +163,12 @@ Suffixen worden in vaste volgorde toegevoegd:
 | `-small` | Verkleinde variant (+2px padding) | `check-mark-small`, `caret-down-small` |
 | `-extra-small` | Extra verkleind (+4px padding) | `chevron-right-extra-small`, `minus-extra-small` |
 
+Een **badge** is een klein overlay-element op het icoon. De badge-naam beschrijft de inhoud van de badge en staat als suffix vóór de grootte:
+
+| Suffix | Voorbeeld |
+|--------|-----------|
+| `-badge-{inhoud}` | `person-badge-gear`, `table-badge-arrow-down` |
+
 Richting staat in de naam zelf (niet als los suffix):
 
 | Suffix | Voorbeeld |
