@@ -46,6 +46,50 @@ export class NDDSwitch extends LitElement {
 		}
 	}
 
+	// ## Swipe gesture
+
+	private _pointerStartX: number | null = null;
+	private _swiped = false;
+	private static readonly SWIPE_THRESHOLD = 10;
+
+	_handlePointerDown(e: PointerEvent): void {
+		this._pointerStartX = e.clientX;
+		this._swiped = false;
+	}
+
+	_handlePointerMove(e: PointerEvent): void {
+		if (this._pointerStartX === null) return;
+		const dx = e.clientX - this._pointerStartX;
+		if (Math.abs(dx) >= NDDSwitch.SWIPE_THRESHOLD) {
+			this._swiped = true;
+		}
+	}
+
+	_handlePointerUp(e: PointerEvent): void {
+		if (this._pointerStartX === null) return;
+		const dx = e.clientX - this._pointerStartX;
+		this._pointerStartX = null;
+
+		if (!this._swiped) return;
+
+		e.preventDefault();
+		const isRtl = getComputedStyle(this).direction === 'rtl';
+		const shouldCheck = isRtl ? dx < 0 : dx > 0;
+
+		if (shouldCheck !== this.checked) {
+			this.toggle();
+		}
+	}
+
+	_handleClick(e: Event): void {
+		if (this._swiped) {
+			e.preventDefault();
+			this._swiped = false;
+		}
+	}
+
+	// ## Public API
+
 	public toggle(): void {
 		if (this.disabled) return;
 		this.checked = !this.checked;
