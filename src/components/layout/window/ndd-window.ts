@@ -11,14 +11,14 @@
  * @element ndd-window
  *
  * @attr {boolean} modeless         - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
- * @attr {boolean} draggable        - Versleepbaar (op sm altijd uitgeschakeld)
+ * @attr {boolean} drag-enabled     - Versleepbaar (op sm altijd uitgeschakeld)
  * @attr {string}  accessible-label - Toegankelijke naam (aria-label, standaard: 'Venster')
  * @attr {string}  top              - CSS top waarde (bijv. '0', '50%', 'calc(100% - 200px)')
  * @attr {string}  left             - CSS left waarde
  * @attr {string}  right            - CSS right waarde
  * @attr {string}  bottom           - CSS bottom waarde
- * @attr {string}  width            - CSS max-width (window krimpt mee op kleine schermen)
- * @attr {string}  height           - CSS max-height
+ * @attr {string}  width            - CSS width (standaard: var(--components-window-default-width))
+ * @attr {string}  height           - CSS height (standaard: content height)
  *
  * @slot - Volledige window content (bijv. ndd-page)
  *
@@ -34,6 +34,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { windowStyles } from './ndd-window.styles.ts';
 import { windowTemplate } from './ndd-window.template.ts';
 import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
+import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
 @customElement('ndd-window')
 export class NDDWindow extends LitElement {
@@ -42,8 +43,8 @@ export class NDDWindow extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	modeless = false;
 
-	@property({ type: Boolean, reflect: true })
-	override draggable = false;
+	@property({ type: Boolean, reflect: true, attribute: 'drag-enabled' })
+	dragEnabled = false;
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = 'Venster';
@@ -78,10 +79,10 @@ export class NDDWindow extends LitElement {
 		return this.shadowRoot?.querySelector('dialog') ?? null;
 	}
 
-	private get _isDraggableActive(): boolean {
-		if (!this.draggable) return false;
+	private get _isDragActive(): boolean {
+		if (!this.dragEnabled) return false;
 		// Disable dragging on small viewports
-		return window.matchMedia('(min-width: 641px)').matches;
+		return window.matchMedia(`(min-width: ${breakpoints.mdMin})`).matches;
 	}
 
 	override connectedCallback(): void {
@@ -140,7 +141,7 @@ export class NDDWindow extends LitElement {
 		if (!dialog) return;
 
 		// On small viewports: clear position styles, keep width/height
-		const isSmall = window.matchMedia('(max-width: 640px)').matches;
+		const isSmall = window.matchMedia(`(max-width: ${breakpoints.smMax})`).matches;
 		if (isSmall) {
 			dialog.style.top = '';
 			dialog.style.bottom = '';
@@ -153,19 +154,19 @@ export class NDDWindow extends LitElement {
 			return;
 		}
 
-		const hasPosition = this.top !== null || this.left !== null || this.right !== null || this.bottom !== null;
+		const hasPosition = this.top !== undefined || this.left !== undefined || this.right !== undefined || this.bottom !== undefined;
 
 		// Set explicit 'auto' on opposing axis when only one side is set,
 		// to override the UA stylesheet defaults on <dialog>
-		dialog.style.top = this.top ?? (this.bottom !== null ? 'auto' : '');
-		dialog.style.bottom = this.bottom ?? (this.top !== null ? 'auto' : '');
-		dialog.style.left = this.left ?? (this.right !== null ? 'auto' : '');
-		dialog.style.right = this.right ?? (this.left !== null ? 'auto' : '');
+		dialog.style.top = this.top ?? (this.bottom !== undefined ? 'auto' : '');
+		dialog.style.bottom = this.bottom ?? (this.top !== undefined ? 'auto' : '');
+		dialog.style.left = this.left ?? (this.right !== undefined ? 'auto' : '');
+		dialog.style.right = this.right ?? (this.left !== undefined ? 'auto' : '');
 		dialog.style.width = this.width ?? '';
 		dialog.style.height = this.height ?? '';
 
 		// When left+top are set, use translate so they define the center point
-		const hasCenterPosition = this.left !== null && this.top !== null;
+		const hasCenterPosition = this.left !== undefined && this.top !== undefined;
 		dialog.style.transform = hasCenterPosition ? 'translate(-50%, -50%)' : '';
 
 		// Reset margin when custom position is set; keep margin: auto for centering
@@ -198,7 +199,7 @@ export class NDDWindow extends LitElement {
 	}
 
 	_handlePointerDown(e: PointerEvent): void {
-		if (!this._isDraggableActive) return;
+		if (!this._isDragActive) return;
 
 		// Ignore pointerdown on backdrop (outside dialog rect)
 		const dialog = this._dialog;
@@ -274,6 +275,11 @@ export class NDDWindow extends LitElement {
 
 	private _removeDragListeners(): void {
 		this._dragging = false;
+		if (this._dragHandle) {
+			this._dragHandle.removeEventListener('pointermove', this._handlePointerMove as EventListener);
+			this._dragHandle.removeEventListener('pointerup', this._handlePointerUp as EventListener);
+			this._dragHandle = null;
+		}
 	}
 
 	_detectDragHandle(): void {

@@ -61,11 +61,11 @@ export const windowStyles = css`
 
 	/* # Draggable — whole window as drag target (no handle) */
 
-	:host([draggable]:not([has-drag-handle])) .window__body {
+	:host([drag-enabled]:not([has-drag-handle])) .window__body {
 		cursor: grab;
 	}
 
-	:host([draggable]:not([has-drag-handle])) .window__body:active {
+	:host([drag-enabled]:not([has-drag-handle])) .window__body:active {
 		cursor: grabbing;
 	}
 
@@ -90,11 +90,11 @@ export const windowStyles = css`
 			width: calc(100vw - var(--components-window-inset) * 2);
 		}
 
-		:host([draggable]:not([has-drag-handle])) .window__body {
+		:host([drag-enabled]:not([has-drag-handle])) .window__body {
 			cursor: default;
 		}
 
-		:host([draggable]:not([has-drag-handle])) .window__body:active {
+		:host([drag-enabled]:not([has-drag-handle])) .window__body:active {
 			cursor: default;
 		}
 

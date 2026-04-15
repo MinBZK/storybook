@@ -73,4 +73,16 @@ describe('ndd-window', () => {
 		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 		expect(dialog.getAttribute('aria-label')).toBe('Instellingen');
 	});
+
+	it('detecteert drag handle en zet has-drag-handle attribuut', async () => {
+		el = await fixture<NDDWindow>('<ndd-window><div window-drag-handle>Handle</div></ndd-window>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('has-drag-handle')).toBe(true);
+	});
+
+	it('heeft geen has-drag-handle attribuut zonder drag handle', async () => {
+		el = await fixture<NDDWindow>('<ndd-window><div>Content</div></ndd-window>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('has-drag-handle')).toBe(false);
+	});
 });

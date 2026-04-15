@@ -42,7 +42,8 @@ export default {
 			description: 'Niet-modaal (geen backdrop of focusvergrendeling)',
 			table: { defaultValue: { summary: false } },
 		},
-		draggable: {
+		dragEnabled: {
+			name: 'drag-enabled',
 			control: 'boolean',
 			description: 'Versleepbaar (op sm uitgeschakeld)',
 			table: { defaultValue: { summary: false } },
@@ -60,13 +61,13 @@ export default {
 	},
 	args: {
 		modeless: false,
-		draggable: false,
+		dragEnabled: false,
 		width: '',
 		height: '',
 	},
 };
 
-const openNext = (e) => e.currentTarget.nextElementSibling.show();
+const openNext = (e: Event) => ((e.currentTarget as HTMLElement).nextElementSibling as HTMLElement & { show(): void }).show();
 
 const pageContent = html`
 	<ndd-simple-section>
@@ -78,11 +79,11 @@ const pageContent = html`
 	</ndd-simple-section>
 `;
 
-const Template = (args) => html`
+const Template = (args: Record<string, unknown>) => html`
 	<ndd-button text="Open venster" @click=${openNext}></ndd-button>
 	<ndd-window
 		?modeless=${args.modeless}
-		?draggable=${args.draggable}
+		?drag-enabled=${args.dragEnabled}
 		width=${args.width || nothing}
 		height=${args.height || nothing}
 		accessible-label="Voorbeeldvenster"
@@ -133,7 +134,7 @@ export const Versleepbaar = {
 	render: () => html`
 		<ndd-button text="Open versleepbaar venster" @click=${openNext}></ndd-button>
 		<ndd-window
-			draggable
+			drag-enabled
 			accessible-label="Versleepbaar venster"
 		>
 			<ndd-page sticky-header>
