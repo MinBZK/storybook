@@ -75,12 +75,14 @@ export { NDDTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-o
 export { NDDOneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/ndd-one-half-one-half-section.ts';
 
 export { NDDBox } from './layout/box/ndd-box.ts';
+export { NDDCard } from './layout/card/ndd-card.ts';
 export { NDDCollection } from './layout/collection/ndd-collection.ts';
 
 export { NDDSpacer } from './layout/spacer/ndd-spacer.ts';
 export { NDDContainer } from './layout/container/ndd-container.ts';
 export { NDDDivider } from './layout/divider/ndd-divider.ts';
 export { NDDSheet } from './layout/sheet/ndd-sheet.ts';
+export { NDDWindow } from './layout/window/ndd-window.ts';
 
 
 // # List and Menu components
