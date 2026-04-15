@@ -174,7 +174,7 @@ export class NDDWindow extends LitElement {
 		dialog.style.margin = hasPosition ? '0' : '';
 	}
 
-	_handleDialogClick(e: MouseEvent): void {
+	_handleDialogClick = (e: MouseEvent): void => {
 		// Suppress click after a drag gesture
 		if (this._didDrag) {
 			this._didDrag = false;
@@ -191,15 +191,15 @@ export class NDDWindow extends LitElement {
 		if (outside) {
 			this.hide();
 		}
-	}
+	};
 
-	_handleCancel(e: Event): void {
+	_handleCancel = (e: Event): void => {
 		// Intercept Escape key — close via hide() for consistent behavior
 		e.preventDefault();
 		this.hide();
-	}
+	};
 
-	_handlePointerDown(e: PointerEvent): void {
+	_handlePointerDown = (e: PointerEvent): void => {
 		if (!this._isDragActive) return;
 
 		// Ignore pointerdown on backdrop (outside dialog rect)
@@ -223,7 +223,7 @@ export class NDDWindow extends LitElement {
 		// Don't capture yet — wait for first pointermove so clicks pass through
 		handle.addEventListener('pointermove', this._handlePointerMove as EventListener);
 		handle.addEventListener('pointerup', this._handlePointerUp as EventListener);
-	}
+	};
 
 	private _findDragHandle(e: PointerEvent): Element | null {
 		// Look for an element with [window-drag-handle] attribute in light DOM
@@ -283,10 +283,10 @@ export class NDDWindow extends LitElement {
 		}
 	}
 
-	_detectDragHandle(): void {
+	_detectDragHandle = (): void => {
 		const hasHandle = this.querySelector('[window-drag-handle]') !== null;
 		this.toggleAttribute('has-drag-handle', hasHandle);
-	}
+	};
 
 	private _handleResize = (): void => {
 		this._applyPositionStyles();

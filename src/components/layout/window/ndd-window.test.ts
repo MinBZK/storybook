@@ -87,4 +87,28 @@ describe('ndd-window', () => {
 		await waitForUpdate(el);
 		expect(el.hasAttribute('has-drag-handle')).toBe(false);
 	});
+
+	it('sluit bij cancel event (Escape)', async () => {
+		el = await fixture<NDDWindow>('<ndd-window modeless></ndd-window>');
+		await waitForUpdate(el);
+		el.show();
+		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+		dialog.dispatchEvent(new Event('cancel'));
+		expect(dialog.open).toBe(false);
+	});
+
+	it('reset _didDrag bij hide zodat clicks na heropening werken', async () => {
+		el = await fixture<NDDWindow>('<ndd-window modeless></ndd-window>');
+		await waitForUpdate(el);
+		el.show();
+		// Simulate a drag flag being set
+		(el as unknown as { _didDrag: boolean })._didDrag = true;
+		el.hide();
+		el.show();
+		// Click should not be swallowed
+		let clickHandled = false;
+		el.addEventListener('click', () => { clickHandled = true; });
+		el.click();
+		expect(clickHandled).toBe(true);
+	});
 });
