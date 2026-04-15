@@ -55,6 +55,7 @@ export class NDDSwitch extends LitElement {
 	_handlePointerDown(e: PointerEvent): void {
 		this._pointerStartX = e.clientX;
 		this._swiped = false;
+		(e.target as Element).setPointerCapture(e.pointerId);
 	}
 
 	_handlePointerMove(e: PointerEvent): void {
@@ -73,7 +74,7 @@ export class NDDSwitch extends LitElement {
 		if (!this._swiped) return;
 
 		e.preventDefault();
-		const isRtl = getComputedStyle(this).direction === 'rtl';
+		const isRtl = this.closest('[dir]')?.getAttribute('dir') === 'rtl';
 		const shouldCheck = isRtl ? dx < 0 : dx > 0;
 
 		if (shouldCheck !== this.checked) {
