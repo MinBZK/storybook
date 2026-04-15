@@ -259,6 +259,29 @@ describe('ndd-top-navigation-bar – href sanitization', () => {
 		expect(link).not.toBeNull();
 		expect(link!.getAttribute('href')).toBe('/');
 	});
+
+	it('renders logo+wordmark as combined link when both logo-title and logo-href are set', async () => {
+		el = await fixture<NDDTopNavigationBar>(`
+			<ndd-top-navigation-bar logo-title="DigID" logo-href="/"></ndd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+		const link = el.shadowRoot!.querySelector('a.top-navigation-bar__logo-and-wordmark');
+		expect(link).not.toBeNull();
+		expect(link!.getAttribute('href')).toBe('/');
+		const logo = link!.querySelector('.top-navigation-bar__logo');
+		expect(logo!.getAttribute('aria-hidden')).toBe('true');
+		const wordmark = link!.querySelector('.top-navigation-bar__wordmark-title');
+		expect(wordmark!.textContent!.trim()).toBe('DigID');
+	});
+
+	it('renders logo+wordmark as non-link when logo-href is a javascript: URI', async () => {
+		el = await fixture<NDDTopNavigationBar>(`
+			<ndd-top-navigation-bar logo-title="DigID" logo-href="javascript:alert(1)"></ndd-top-navigation-bar>
+		`);
+		await waitForUpdate(el);
+		const link = el.shadowRoot!.querySelector('a.top-navigation-bar__logo-and-wordmark');
+		expect(link).toBeNull();
+	});
 });
 
 describe('ndd-top-navigation-bar – i18n', () => {

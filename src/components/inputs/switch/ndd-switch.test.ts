@@ -229,6 +229,14 @@ describe('ndd-switch – swipe gesture', () => {
 		swipe(input, 0, 20);
 		expect(el.checked).toBe(false);
 	});
+
+	it('swipe left turns on in RTL mode', async () => {
+		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" dir="rtl"></ndd-switch>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		swipe(input, 20, 0);
+		expect(el.checked).toBe(true);
+	});
 });
 
 
