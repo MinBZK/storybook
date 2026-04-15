@@ -73,7 +73,6 @@ jobs:
 
             - Are semantic variables preferred over primitives?
             - No fallback values on CSS variables (strict validation)?
-            - Override hooks use `--rr-*` prefix?
             - Context hooks use `--context-*` prefix?
             - Internal variables use `--_*` prefix?
 
