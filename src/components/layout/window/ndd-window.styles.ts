@@ -33,6 +33,7 @@ export const windowStyles = css`
 		overflow: hidden;
 		position: fixed;
 		margin: auto;
+		width: var(--components-window-default-width);
 		max-width: calc(100vw - var(--components-window-inset) * 2);
 		max-height: calc(100dvh - var(--components-window-inset) * 2);
 	}
@@ -86,9 +87,7 @@ export const windowStyles = css`
 		.window {
 			left: var(--components-window-inset);
 			right: var(--components-window-inset);
-			width: auto;
-			max-width: none;
-			margin-inline: 0;
+			width: calc(100vw - var(--components-window-inset) * 2);
 		}
 
 		:host([draggable]:not([has-drag-handle])) .window__body {
@@ -117,7 +116,6 @@ export const windowStyles = css`
 		flex-grow: 1;
 		min-height: 0;
 		width: 100%;
-		height: 100%;
 	}
 
 	::slotted(*) {

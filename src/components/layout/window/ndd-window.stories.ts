@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './ndd-window.ts';
 import '../../layout/page/ndd-page.ts';
 import '../../navigation/top-title-bar/ndd-top-title-bar.ts';
@@ -15,7 +15,7 @@ import '../../layout/container/ndd-container.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-window width="480px" height="360px">
+ * <ndd-window>
  *   <ndd-page sticky-header>
  *     <ndd-top-title-bar slot="header" text="Venster" dismiss-text="Sluit"></ndd-top-title-bar>
  *     <ndd-simple-section>
@@ -37,9 +37,9 @@ export default {
 		status: { type: 'experimental' },
 	},
 	argTypes: {
-		modal: {
+		modeless: {
 			control: 'boolean',
-			description: 'Modaal met backdrop en focusvergrendeling',
+			description: 'Niet-modaal (geen backdrop of focusvergrendeling)',
 			table: { defaultValue: { summary: false } },
 		},
 		draggable: {
@@ -49,20 +49,20 @@ export default {
 		},
 		width: {
 			control: 'text',
-			description: 'CSS max-width',
-			table: { defaultValue: { summary: '' } },
+			description: 'CSS width',
+			table: { defaultValue: { summary: '640px' } },
 		},
 		height: {
 			control: 'text',
-			description: 'CSS max-height',
+			description: 'CSS height (standaard: content height)',
 			table: { defaultValue: { summary: '' } },
 		},
 	},
 	args: {
-		modal: false,
+		modeless: false,
 		draggable: false,
-		width: '480px',
-		height: '360px',
+		width: '',
+		height: '',
 	},
 };
 
@@ -81,10 +81,10 @@ const pageContent = html`
 const Template = (args) => html`
 	<ndd-button text="Open venster" @click=${openNext}></ndd-button>
 	<ndd-window
-		?modal=${args.modal}
+		?modeless=${args.modeless}
 		?draggable=${args.draggable}
-		width=${args.width}
-		height=${args.height}
+		width=${args.width || nothing}
+		height=${args.height || nothing}
 		accessible-label="Voorbeeldvenster"
 	>
 		<ndd-page sticky-header>
@@ -100,39 +100,40 @@ const Template = (args) => html`
 
 export const Standaard = {
 	render: Template,
-	args: { modal: false, draggable: false, width: '480px', height: '360px' },
 };
 
-export const Modaal = {
-	render: (args) => html`
-		<ndd-button text="Open modaal venster" @click=${openNext}></ndd-button>
+export const NietModaal = {
+	render: () => html`
+		<ndd-button text="Open niet-modaal venster" @click=${openNext}></ndd-button>
 		<ndd-window
-			modal
-			width=${args.width}
-			height=${args.height}
-			accessible-label="Modaal venster"
+			modeless
+			accessible-label="Niet-modaal venster"
 		>
 			<ndd-page sticky-header>
 				<ndd-top-title-bar
 					slot="header"
-					text="Modaal venster"
+					text="Niet-modaal venster"
 					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
 			</ndd-page>
 		</ndd-window>
 	`,
-	args: { width: '480px', height: '360px' },
-	parameters: { controls: { disable: true } },
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Niet-modaal venster zonder backdrop en focusvergrendeling.',
+			},
+		},
+	},
 };
 
 export const Versleepbaar = {
-	render: (args) => html`
+	render: () => html`
 		<ndd-button text="Open versleepbaar venster" @click=${openNext}></ndd-button>
 		<ndd-window
 			draggable
-			width=${args.width}
-			height=${args.height}
 			accessible-label="Versleepbaar venster"
 		>
 			<ndd-page sticky-header>
@@ -146,7 +147,6 @@ export const Versleepbaar = {
 			</ndd-page>
 		</ndd-window>
 	`,
-	args: { width: '480px', height: '360px' },
 	parameters: {
 		controls: { disable: true },
 		docs: {
@@ -164,7 +164,6 @@ export const Gepositioneerd = {
 			right="32px"
 			bottom="32px"
 			width="400px"
-			height="300px"
 			accessible-label="Gepositioneerd venster"
 		>
 			<ndd-page sticky-header>
@@ -191,8 +190,6 @@ export const MetFooter = {
 	render: () => html`
 		<ndd-button text="Open venster met footer" @click=${openNext}></ndd-button>
 		<ndd-window
-			modal
-			width="480px"
 			height="400px"
 			accessible-label="Venster met footer"
 		>
@@ -203,7 +200,7 @@ export const MetFooter = {
 					dismiss-text="Sluit"
 				></ndd-top-title-bar>
 				${pageContent}
-				<ndd-container slot="footer" padding="16">
+				<ndd-container slot="footer" padding-inline="16" padding-bottom="16">
 					<ndd-button-group orientation="horizontal">
 						<ndd-button variant="primary" text="Opslaan"></ndd-button>
 						<ndd-button variant="secondary" text="Annuleer"></ndd-button>
@@ -216,7 +213,7 @@ export const MetFooter = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Modaal venster met sticky footer voor acties, via ndd-page met sticky-footer.',
+				story: 'Modaal venster met sticky footer voor acties, via ndd-page met sticky-footer. Hier is `height` gezet zodat de footer onderaan kleeft.',
 			},
 		},
 	},

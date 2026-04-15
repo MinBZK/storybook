@@ -1030,6 +1030,7 @@
 
 	--components-window-box-shadow: var(--primitives-box-shadows-level-5);
 	--components-window-inset: var(--primitives-space-16);
+	--components-window-default-width: var(--primitives-area-640);
 }
 
 :root[data-scheme="light"] {

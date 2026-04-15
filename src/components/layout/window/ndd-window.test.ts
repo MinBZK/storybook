@@ -23,7 +23,7 @@ describe('ndd-window', () => {
 		expect(dialog).not.toBeNull();
 	});
 
-	it('opent niet-modaal met show()', async () => {
+	it('opent modaal met show() als standaard', async () => {
 		el = await fixture<NDDWindow>('<ndd-window></ndd-window>');
 		await waitForUpdate(el);
 		el.show();
@@ -31,8 +31,8 @@ describe('ndd-window', () => {
 		expect(dialog.open).toBe(true);
 	});
 
-	it('opent modaal met show() als modal is ingesteld', async () => {
-		el = await fixture<NDDWindow>('<ndd-window modal></ndd-window>');
+	it('opent niet-modaal met show() als modeless is ingesteld', async () => {
+		el = await fixture<NDDWindow>('<ndd-window modeless></ndd-window>');
 		await waitForUpdate(el);
 		el.show();
 		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
@@ -40,7 +40,7 @@ describe('ndd-window', () => {
 	});
 
 	it('sluit met hide()', async () => {
-		el = await fixture<NDDWindow>('<ndd-window></ndd-window>');
+		el = await fixture<NDDWindow>('<ndd-window modeless></ndd-window>');
 		await waitForUpdate(el);
 		el.show();
 		el.hide();
@@ -49,7 +49,7 @@ describe('ndd-window', () => {
 	});
 
 	it('stuurt open event bij show()', async () => {
-		el = await fixture<NDDWindow>('<ndd-window></ndd-window>');
+		el = await fixture<NDDWindow>('<ndd-window modeless></ndd-window>');
 		await waitForUpdate(el);
 		let fired = false;
 		el.addEventListener('open', () => { fired = true; });
@@ -58,7 +58,7 @@ describe('ndd-window', () => {
 	});
 
 	it('stuurt close event bij hide()', async () => {
-		el = await fixture<NDDWindow>('<ndd-window></ndd-window>');
+		el = await fixture<NDDWindow>('<ndd-window modeless></ndd-window>');
 		await waitForUpdate(el);
 		el.show();
 		let fired = false;

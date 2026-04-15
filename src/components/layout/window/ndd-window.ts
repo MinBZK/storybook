@@ -10,7 +10,7 @@
  *
  * @element ndd-window
  *
- * @attr {boolean} modal            - Modaal met backdrop en focusvergrendeling (standaard: niet-modaal)
+ * @attr {boolean} modeless         - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
  * @attr {boolean} draggable        - Versleepbaar (op sm altijd uitgeschakeld)
  * @attr {string}  accessible-label - Toegankelijke naam (aria-label, standaard: 'Venster')
  * @attr {string}  top              - CSS top waarde (bijv. '0', '50%', 'calc(100% - 200px)')
@@ -40,7 +40,7 @@ export class NDDWindow extends LitElement {
 	static override styles = windowStyles;
 
 	@property({ type: Boolean, reflect: true })
-	modal = false;
+	modeless = false;
 
 	@property({ type: Boolean, reflect: true })
 	override draggable = false;
@@ -70,8 +70,6 @@ export class NDDWindow extends LitElement {
 	private _dragging = false;
 	private _dragStartX = 0;
 	private _dragStartY = 0;
-	private _translateX = 0;
-	private _translateY = 0;
 	private _didDrag = false;
 	private _dragHandle: Element | null = null;
 	private _dragPointerId = 0;
@@ -100,25 +98,18 @@ export class NDDWindow extends LitElement {
 		window.removeEventListener('resize', this._handleResize);
 	}
 
-	override updated(changed: PropertyValues): void {
+	override updated(_changed: PropertyValues): void {
 		this._applyPositionStyles();
-
-		if (changed.has('draggable')) {
-			// Reset transform when draggable changes
-			this._translateX = 0;
-			this._translateY = 0;
-			this._applyTransform();
-		}
 	}
 
 	show(): void {
 		const dialog = this._dialog;
 		if (!dialog) return;
 
-		if (this.modal) {
-			dialog.showModal();
-		} else {
+		if (this.modeless) {
 			dialog.show();
+		} else {
+			dialog.showModal();
 		}
 		this._applyPositionStyles();
 		this._manageFocus();
@@ -132,10 +123,6 @@ export class NDDWindow extends LitElement {
 		this._closing = true;
 		dialog.close();
 		this._closing = false;
-		// Reset drag position on close
-		this._translateX = 0;
-		this._translateY = 0;
-		this._applyTransform();
 		this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
 	}
 
@@ -152,16 +139,17 @@ export class NDDWindow extends LitElement {
 		const dialog = this._dialog;
 		if (!dialog) return;
 
-		// On small viewports: clear inline styles, let CSS handle positioning
+		// On small viewports: clear position styles, keep width/height
 		const isSmall = window.matchMedia('(max-width: 640px)').matches;
 		if (isSmall) {
 			dialog.style.top = '';
 			dialog.style.bottom = '';
 			dialog.style.left = '';
 			dialog.style.right = '';
-			dialog.style.width = '';
-			dialog.style.height = '';
 			dialog.style.margin = '';
+			dialog.style.transform = '';
+			dialog.style.width = this.width ?? '';
+			dialog.style.height = this.height ?? '';
 			return;
 		}
 
@@ -176,19 +164,12 @@ export class NDDWindow extends LitElement {
 		dialog.style.width = this.width ?? '';
 		dialog.style.height = this.height ?? '';
 
+		// When left+top are set, use translate so they define the center point
+		const hasCenterPosition = this.left != null && this.top != null;
+		dialog.style.transform = hasCenterPosition ? 'translate(-50%, -50%)' : '';
+
 		// Reset margin when custom position is set; keep margin: auto for centering
 		dialog.style.margin = hasPosition ? '0' : '';
-	}
-
-	private _applyTransform(): void {
-		const dialog = this._dialog;
-		if (!dialog) return;
-
-		if (this._translateX === 0 && this._translateY === 0) {
-			dialog.style.transform = '';
-		} else {
-			dialog.style.transform = `translate(${this._translateX}px, ${this._translateY}px)`;
-		}
 	}
 
 	_handleDialogClick(e: MouseEvent): void {
@@ -197,7 +178,7 @@ export class NDDWindow extends LitElement {
 			this._didDrag = false;
 			return;
 		}
-		if (!this.modal) return;
+		if (this.modeless) return;
 
 		// Detect backdrop click: check if click landed outside the dialog rect
 		const dialog = this._dialog;
@@ -232,8 +213,8 @@ export class NDDWindow extends LitElement {
 		const handle = this._findDragHandle(e);
 		if (!handle) return;
 
-		this._dragStartX = e.clientX - this._translateX;
-		this._dragStartY = e.clientY - this._translateY;
+		this._dragStartX = e.clientX;
+		this._dragStartY = e.clientY;
 		this._dragHandle = handle;
 		this._dragPointerId = e.pointerId;
 
@@ -260,11 +241,24 @@ export class NDDWindow extends LitElement {
 		if (!this._dragging && this._dragHandle) {
 			this._dragging = true;
 			this._dragHandle.setPointerCapture(this._dragPointerId);
+
+			// Record initial center of the dialog
+			const dialog = this._dialog;
+			if (dialog) {
+				const rect = dialog.getBoundingClientRect();
+				this._dragStartX = e.clientX - (rect.left + rect.width / 2);
+				this._dragStartY = e.clientY - (rect.top + rect.height / 2);
+			}
 		}
 		this._didDrag = true;
-		this._translateX = e.clientX - this._dragStartX;
-		this._translateY = e.clientY - this._dragStartY;
-		this._applyTransform();
+
+		// Update left/top to new center position
+		const centerX = e.clientX - this._dragStartX;
+		const centerY = e.clientY - this._dragStartY;
+		this.left = `${centerX}px`;
+		this.top = `${centerY}px`;
+		this.right = undefined;
+		this.bottom = undefined;
 	};
 
 	private _handlePointerUp = (e: PointerEvent): void => {
