@@ -187,20 +187,26 @@ describe('ndd-switch – swipe gesture', () => {
 		target.dispatchEvent(new PointerEvent('pointerup', { clientX: endX, bubbles: true }));
 	}
 
-	it('swipe right turns on when unchecked', async () => {
+	it('swipe right turns on when unchecked and dispatches change', async () => {
 		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
+		let detail: any;
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		swipe(input, 0, 20);
 		expect(el.checked).toBe(true);
+		expect(detail?.checked).toBe(true);
 	});
 
-	it('swipe left turns off when checked', async () => {
+	it('swipe left turns off when checked and dispatches change', async () => {
 		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" checked></ndd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
+		let detail: any;
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
 		swipe(input, 20, 0);
 		expect(el.checked).toBe(false);
+		expect(detail?.checked).toBe(false);
 	});
 
 	it('swipe right does nothing when already checked', async () => {
@@ -230,6 +236,7 @@ describe('ndd-switch – swipe gesture', () => {
 		expect(el.checked).toBe(false);
 	});
 
+	// Note: relies on JSDOM computing direction from the dir attribute.
 	it('swipe left turns on in RTL mode', async () => {
 		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" dir="rtl"></ndd-switch>');
 		await waitForUpdate(el);

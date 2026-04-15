@@ -303,6 +303,7 @@
 		"build:exports": "node scripts/generate-exports.js",
 		"clean": "rm -rf dist",
 		"clean:components": "rm -rf dist/components",
+		"prestorybook": "npm run build:icons",
 		"storybook": "storybook dev -p 6006",
 		"sb:start": "node scripts/storybook-manager.js start",
 		"sb:stop": "node scripts/storybook-manager.js stop",
