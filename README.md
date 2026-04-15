@@ -41,8 +41,8 @@ import { NDDButton, NDDCheckbox, NDDSwitch } from '@minbzk/storybook';
 ```html
 <!-- Gebruik in HTML -->
 <ndd-button variant="accent-filled" text="Opslaan"></ndd-button>
-<ndd-checkbox text="Akkoord met voorwaarden"></ndd-checkbox>
-<ndd-switch text="Meldingen inschakelen"></ndd-switch>
+<ndd-checkbox-field label="Akkoord met voorwaarden"></ndd-checkbox-field>
+<ndd-switch-field label="Meldingen inschakelen"></ndd-switch-field>
 ```
 
 ## Storybook

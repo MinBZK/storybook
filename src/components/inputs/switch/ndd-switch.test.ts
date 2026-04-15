@@ -237,8 +237,10 @@ describe('ndd-switch – swipe gesture', () => {
 	});
 
 	// Note: relies on JSDOM computing direction from the dir attribute.
+	// Wraps in a dir="rtl" ancestor to match real-world usage (dir on <html> or wrapper).
 	it('swipe left turns on in RTL mode', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" dir="rtl"></ndd-switch>');
+		el = await fixture<NDDSwitch>('<div dir="rtl"><ndd-switch accessible-label="Test"></ndd-switch></div>' as any);
+		el = el.querySelector('ndd-switch') as NDDSwitch;
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		swipe(input, 20, 0);

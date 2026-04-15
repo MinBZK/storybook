@@ -34,6 +34,7 @@ for (const match of indexContent.matchAll(exportRegex)) {
 	const componentName = fileName.replace(/^ndd-/, '');
 
 	// Build dist path: ./actions/button/ndd-button.ts → ./dist/components/actions/button/ndd-button.js
+	// Assumes tsconfig.build.json rootDir=src, outDir=dist — src/components/… maps to dist/components/….
 	const distPath = `./dist/components/${sourcePath.replace(/^\.\//, '').replace(/\.ts$/, '')}`;
 
 	const exportKey = `./${componentName}`;
