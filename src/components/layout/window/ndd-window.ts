@@ -153,19 +153,19 @@ export class NDDWindow extends LitElement {
 			return;
 		}
 
-		const hasPosition = this.top != null || this.left != null || this.right != null || this.bottom != null;
+		const hasPosition = this.top !== null || this.left !== null || this.right !== null || this.bottom !== null;
 
 		// Set explicit 'auto' on opposing axis when only one side is set,
 		// to override the UA stylesheet defaults on <dialog>
-		dialog.style.top = this.top ?? (this.bottom != null ? 'auto' : '');
-		dialog.style.bottom = this.bottom ?? (this.top != null ? 'auto' : '');
-		dialog.style.left = this.left ?? (this.right != null ? 'auto' : '');
-		dialog.style.right = this.right ?? (this.left != null ? 'auto' : '');
+		dialog.style.top = this.top ?? (this.bottom !== null ? 'auto' : '');
+		dialog.style.bottom = this.bottom ?? (this.top !== null ? 'auto' : '');
+		dialog.style.left = this.left ?? (this.right !== null ? 'auto' : '');
+		dialog.style.right = this.right ?? (this.left !== null ? 'auto' : '');
 		dialog.style.width = this.width ?? '';
 		dialog.style.height = this.height ?? '';
 
 		// When left+top are set, use translate so they define the center point
-		const hasCenterPosition = this.left != null && this.top != null;
+		const hasCenterPosition = this.left !== null && this.top !== null;
 		dialog.style.transform = hasCenterPosition ? 'translate(-50%, -50%)' : '';
 
 		// Reset margin when custom position is set; keep margin: auto for centering
