@@ -1,9 +1,11 @@
-import { html, TemplateResult } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
 import type { NDDCard } from './ndd-card.js';
 
 export function cardTemplate(component: NDDCard): TemplateResult {
 	return html`
-		<article class="card">
+		<article class="card"
+			aria-label=${component.accessibleLabel ?? nothing}
+		>
 			<header class="card__header"
 				hidden
 			>

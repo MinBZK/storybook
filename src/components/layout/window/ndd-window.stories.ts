@@ -42,10 +42,9 @@ export default {
 			description: 'Niet-modaal (geen backdrop of focusvergrendeling)',
 			table: { defaultValue: { summary: false } },
 		},
-		dragEnabled: {
-			name: 'drag-enabled',
+		movable: {
 			control: 'boolean',
-			description: 'Versleepbaar (op sm uitgeschakeld)',
+			description: 'Verplaatsbaar (op sm uitgeschakeld)',
 			table: { defaultValue: { summary: false } },
 		},
 		width: {
@@ -81,7 +80,7 @@ export default {
 	},
 	args: {
 		modeless: false,
-		dragEnabled: false,
+		movable: false,
 		width: '',
 		height: '',
 		top: '',
@@ -107,7 +106,7 @@ const Template = (args: Record<string, unknown>) => html`
 	<ndd-button text="Open venster" @click=${openNext}></ndd-button>
 	<ndd-window
 		?modeless=${args.modeless}
-		?drag-enabled=${args.dragEnabled}
+		?movable=${args.movable}
 		width=${args.width || nothing}
 		height=${args.height || nothing}
 		top=${args.top || nothing}
@@ -162,7 +161,8 @@ export const Versleepbaar = {
 	render: () => html`
 		<ndd-button text="Open versleepbaar venster" @click=${openNext}></ndd-button>
 		<ndd-window
-			drag-enabled
+			modeless
+			movable
 			accessible-label="Versleepbaar venster"
 		>
 			<ndd-page sticky-header>

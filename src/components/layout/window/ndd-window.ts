@@ -11,7 +11,7 @@
  * @element ndd-window
  *
  * @attr {boolean} modeless         - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
- * @attr {boolean} drag-enabled     - Versleepbaar (op sm altijd uitgeschakeld)
+ * @attr {boolean} movable     - Versleepbaar (op sm altijd uitgeschakeld)
  * @attr {string}  accessible-label - (verplicht) Toegankelijke naam (aria-label) — zet een unieke naam per venster
  * @attr {string}  top              - CSS top positie van de bovenrand (bijv. '0', '100px')
  * @attr {string}  left             - CSS left positie van de linkerrand
@@ -40,11 +40,29 @@ import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 export class NDDWindow extends LitElement {
 	static override styles = windowStyles;
 
+	private static _dragCursorStyle: HTMLStyleElement | null = null;
+
+	private static _setGlobalDragCursor(active: boolean): void {
+		if (active) {
+			if (!NDDWindow._dragCursorStyle) {
+				const style = document.createElement('style');
+				style.textContent = '[window-drag-handle], [window-drag-handle] * { cursor: grabbing !important; }';
+				document.head.appendChild(style);
+				NDDWindow._dragCursorStyle = style;
+			}
+		} else {
+			if (NDDWindow._dragCursorStyle) {
+				NDDWindow._dragCursorStyle.remove();
+				NDDWindow._dragCursorStyle = null;
+			}
+		}
+	}
+
 	@property({ type: Boolean, reflect: true })
 	modeless = false;
 
-	@property({ type: Boolean, reflect: true, attribute: 'drag-enabled' })
-	dragEnabled = false;
+	@property({ type: Boolean, reflect: true, attribute: 'movable' })
+	movable = false;
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = 'Venster';
@@ -73,14 +91,15 @@ export class NDDWindow extends LitElement {
 	private _dragOffsetY = 0;
 	private _didDrag = false;
 	private _dragHandle: Element | null = null;
-	private _dragPointerId = 0;
+	private _dragPointerId = -1;
+	private _hasWarnedLabel = false;
 
 	private get _dialog(): HTMLDialogElement | null {
 		return this.shadowRoot?.querySelector('dialog') ?? null;
 	}
 
-	private get _isDragActive(): boolean {
-		if (!this.dragEnabled) return false;
+	private get _isMovable(): boolean {
+		if (!this.movable) return false;
 		// Disable dragging on small viewports
 		return window.matchMedia(`(min-width: ${breakpoints.mdMin})`).matches;
 	}
@@ -101,11 +120,17 @@ export class NDDWindow extends LitElement {
 
 	override updated(_changed: PropertyValues): void {
 		this._applyPositionStyles();
+		this._detectDragHandle();
 	}
 
 	show(): void {
 		const dialog = this._dialog;
 		if (!dialog) return;
+
+		if (this.accessibleLabel === 'Venster' && !this._hasWarnedLabel) {
+			this._hasWarnedLabel = true;
+			console.warn('<ndd-window>: No accessible-label provided. Screen readers will announce this window as "Venster". Set accessible-label to a unique, descriptive name.');
+		}
 
 		if (this.modeless) {
 			dialog.show();
@@ -198,7 +223,7 @@ export class NDDWindow extends LitElement {
 	};
 
 	_handlePointerDown = (e: PointerEvent): void => {
-		if (!this._isDragActive) return;
+		if (!this._isMovable) return;
 
 		// Ignore pointerdown on backdrop (outside dialog rect)
 		const dialog = this._dialog;
@@ -242,6 +267,7 @@ export class NDDWindow extends LitElement {
 		if (!this._dragging && this._dragHandle) {
 			this._dragging = true;
 			this._dragHandle.setPointerCapture(this._dragPointerId);
+			NDDWindow._setGlobalDragCursor(true);
 
 			// Record offset from pointer to top-left corner of the dialog
 			const dialog = this._dialog;
@@ -253,9 +279,12 @@ export class NDDWindow extends LitElement {
 		}
 		this._didDrag = true;
 
-		// Update left/top to new top-left position
-		this.left = `${e.clientX - this._dragOffsetX}px`;
-		this.top = `${e.clientY - this._dragOffsetY}px`;
+		// Clamp so at least 44×44px of the grab target stays in the viewport
+		const newLeft = e.clientX - this._dragOffsetX;
+		const newTop = e.clientY - this._dragOffsetY;
+		const clamped = this._clampPosition(newLeft, newTop);
+		this.left = `${clamped.left}px`;
+		this.top = `${clamped.top}px`;
 		this.right = undefined;
 		this.bottom = undefined;
 	};
@@ -266,6 +295,7 @@ export class NDDWindow extends LitElement {
 		this._dragHandle = null;
 		if (handle) {
 			try { handle.releasePointerCapture(e.pointerId); } catch { /* not captured */ }
+			NDDWindow._setGlobalDragCursor(false);
 			handle.removeEventListener('pointermove', this._handlePointerMove as EventListener);
 			handle.removeEventListener('pointerup', this._handlePointerUp as EventListener);
 			handle.removeEventListener('pointercancel', this._handlePointerUp as EventListener);
@@ -283,13 +313,67 @@ export class NDDWindow extends LitElement {
 	}
 
 	_detectDragHandle = (): void => {
-		const hasHandle = this.querySelector('[window-drag-handle]') !== null;
-		this.toggleAttribute('has-drag-handle', hasHandle);
+		const handle = this.querySelector('[window-drag-handle]') as HTMLElement | null;
+		this.toggleAttribute('has-drag-handle', handle !== null);
+
+		// Set cursor directly on the handle element since ::slotted
+		// cannot reach nested elements (e.g. title bar inside page)
+		if (handle) {
+			handle.style.cursor = this._isMovable ? 'grab' : '';
+		}
 	};
 
 	private _handleResize = (): void => {
 		this._applyPositionStyles();
+		this._clampToViewport();
+		this._detectDragHandle();
 	};
+
+	private _clampToViewport(): void {
+		// After resize, ensure the grab target stays reachable
+		if (this.left === undefined || this.top === undefined) return;
+		const dialog = this._dialog;
+		if (!dialog || !dialog.open) return;
+
+		const dialogRect = dialog.getBoundingClientRect();
+		const clamped = this._clampPosition(dialogRect.left, dialogRect.top);
+
+		if (clamped.left !== dialogRect.left || clamped.top !== dialogRect.top) {
+			this.left = `${clamped.left}px`;
+			this.top = `${clamped.top}px`;
+		}
+	}
+
+	private _clampPosition(dialogLeft: number, dialogTop: number): { left: number; top: number } {
+		const minVisible = 44;
+		const dialog = this._dialog;
+		const dialogRect = dialog?.getBoundingClientRect();
+
+		// Determine the grab region: drag handle if present, otherwise whole window
+		const handle = this.querySelector('[window-drag-handle]');
+		const handleRect = handle?.getBoundingClientRect();
+
+		// Offset of grab region within the dialog
+		const grabOffsetX = handleRect && dialogRect ? handleRect.left - dialogRect.left : 0;
+		const grabOffsetY = handleRect && dialogRect ? handleRect.top - dialogRect.top : 0;
+		const grabWidth = handleRect?.width ?? dialogRect?.width ?? 0;
+		const grabHeight = handleRect?.height ?? dialogRect?.height ?? 0;
+
+		// Ensure at least minVisible px of the grab region stays in viewport
+		// Left: grabRegion right edge must be at least minVisible into viewport
+		const minLeft = -(grabOffsetX + grabWidth - minVisible);
+		// Right: grabRegion left edge must be at least minVisible from right edge
+		const maxLeft = window.innerWidth - grabOffsetX - minVisible;
+		// Top: don't allow grab region above viewport
+		const minTop = -grabOffsetY;
+		// Bottom: grab region top must be at least minVisible from bottom
+		const maxTop = window.innerHeight - grabOffsetY - minVisible;
+
+		return {
+			left: Math.max(minLeft, Math.min(dialogLeft, maxLeft)),
+			top: Math.max(minTop, Math.min(dialogTop, maxTop)),
+		};
+	}
 
 	private _handleDismiss = (): void => {
 		this.hide();

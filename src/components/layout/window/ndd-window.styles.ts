@@ -61,24 +61,18 @@ export const windowStyles = css`
 
 	/* # Draggable — whole window as drag target (no handle) */
 
-	:host([drag-enabled]:not([has-drag-handle])) .window__body {
+	:host([movable]:not([has-drag-handle])) .window__body {
 		cursor: grab;
 	}
 
-	:host([drag-enabled]:not([has-drag-handle])) .window__body:active {
+	:host([movable]:not([has-drag-handle])) .window__body:active {
 		cursor: grabbing;
 	}
 
 
-	/* ## Draggable — drag handle only */
-
-	::slotted([window-drag-handle]) {
-		cursor: grab;
-	}
-
-	::slotted([window-drag-handle]:active) {
-		cursor: grabbing;
-	}
+	/* Drag handle cursor is set via JS in _detectDragHandle
+	   because ::slotted cannot reach nested elements
+	   (e.g. ndd-top-title-bar inside ndd-page). */
 
 
 	/* ## Responsive: sm — fixed insets, no dragging */
@@ -90,19 +84,11 @@ export const windowStyles = css`
 			width: calc(100vw - var(--components-window-inset) * 2);
 		}
 
-		:host([drag-enabled]:not([has-drag-handle])) .window__body {
+		:host([movable]:not([has-drag-handle])) .window__body {
 			cursor: default;
 		}
 
-		:host([drag-enabled]:not([has-drag-handle])) .window__body:active {
-			cursor: default;
-		}
-
-		::slotted([window-drag-handle]) {
-			cursor: default;
-		}
-
-		::slotted([window-drag-handle]:active) {
+		:host([movable]:not([has-drag-handle])) .window__body:active {
 			cursor: default;
 		}
 	}
