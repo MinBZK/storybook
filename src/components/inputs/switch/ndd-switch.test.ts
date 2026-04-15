@@ -170,6 +170,86 @@ describe('ndd-switch – toggle', () => {
 
 
 /* ============================================================
+   Swipe gesture
+   ============================================================ */
+
+describe('ndd-switch – swipe gesture', () => {
+	let el: NDDSwitch;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	function swipe(target: HTMLElement, startX: number, endX: number) {
+		target.dispatchEvent(new PointerEvent('pointerdown', { clientX: startX, bubbles: true }));
+		target.dispatchEvent(new PointerEvent('pointermove', { clientX: endX, bubbles: true }));
+		target.dispatchEvent(new PointerEvent('pointerup', { clientX: endX, bubbles: true }));
+	}
+
+	it('swipe right turns on when unchecked and dispatches change', async () => {
+		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		let detail: any;
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		swipe(input, 0, 20);
+		expect(el.checked).toBe(true);
+		expect(detail?.checked).toBe(true);
+	});
+
+	it('swipe left turns off when checked and dispatches change', async () => {
+		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" checked></ndd-switch>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		let detail: any;
+		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		swipe(input, 20, 0);
+		expect(el.checked).toBe(false);
+		expect(detail?.checked).toBe(false);
+	});
+
+	it('swipe right does nothing when already checked', async () => {
+		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" checked></ndd-switch>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		let changeFired = false;
+		el.addEventListener('change', () => { changeFired = true; });
+		swipe(input, 0, 20);
+		expect(el.checked).toBe(true);
+		expect(changeFired).toBe(false);
+	});
+
+	it('small movement does not trigger swipe', async () => {
+		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		swipe(input, 0, 5);
+		expect(el.checked).toBe(false);
+	});
+
+	it('swipe does nothing when disabled', async () => {
+		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" disabled></ndd-switch>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		swipe(input, 0, 20);
+		expect(el.checked).toBe(false);
+	});
+
+	// Note: relies on JSDOM computing direction from the dir attribute.
+	// Wraps in a dir="rtl" ancestor to match real-world usage (dir on <html> or wrapper).
+	it('swipe left turns on in RTL mode', async () => {
+		el = await fixture<NDDSwitch>('<div dir="rtl"><ndd-switch accessible-label="Test"></ndd-switch></div>' as any);
+		el = el.querySelector('ndd-switch') as NDDSwitch;
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		swipe(input, 20, 0);
+		expect(el.checked).toBe(true);
+	});
+});
+
+
+/* ============================================================
    Keyboard interaction
    ============================================================ */
 

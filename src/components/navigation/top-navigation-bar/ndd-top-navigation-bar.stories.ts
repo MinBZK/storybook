@@ -15,6 +15,8 @@ export default {
 		logoSubtitle: '',
 		logoSupportingText1: '',
 		logoSupportingText2: '',
+		logoHref: '',
+		siteHref: '',
 		backHref: '',
 		backText: '',
 	},
@@ -25,6 +27,8 @@ export default {
 		logoSubtitle: { name: 'logo-subtitle', control: 'text', description: 'Woordmerk subtitel', table: { defaultValue: { summary: '' } } },
 		logoSupportingText1: { name: 'logo-supporting-text-1', control: 'text', description: 'Woordmerk ondersteunende tekst regel 1', table: { defaultValue: { summary: '' } } },
 		logoSupportingText2: { name: 'logo-supporting-text-2', control: 'text', description: 'Woordmerk ondersteunende tekst regel 2', table: { defaultValue: { summary: '' } } },
+		logoHref: { name: 'logo-href', control: 'text', description: 'URL voor logo en woordmerk', table: { defaultValue: { summary: '' } } },
+		siteHref: { name: 'site-href', control: 'text', description: 'URL voor de site-titel', table: { defaultValue: { summary: '' } } },
 		backHref: { name: 'back-href', control: 'text', description: 'URL van de terugknop', table: { defaultValue: { summary: '' } } },
 		backText: { name: 'back-text', control: 'text', description: 'Tekst van de terugknop (standaard: "Terug")', table: { defaultValue: { summary: '' } } },
 	},
@@ -43,6 +47,8 @@ const Template = ({
 	logoSubtitle,
 	logoSupportingText1,
 	logoSupportingText2,
+	logoHref,
+	siteHref,
 	backHref,
 	backText,
 }: Record<string, unknown>) => html`
@@ -54,6 +60,8 @@ const Template = ({
 			logo-subtitle=${logoSubtitle || nothing}
 			logo-supporting-text-1=${logoSupportingText1 || nothing}
 			logo-supporting-text-2=${logoSupportingText2 || nothing}
+			logo-href=${logoHref || nothing}
+			site-href=${siteHref || nothing}
 			back-href=${backHref || nothing}
 			back-text=${backText || nothing}
 		>
@@ -83,6 +91,8 @@ export const Default = Template.bind({});
 export const WithLogoWordmark = Template.bind({});
 WithLogoWordmark.args = {
 	logoTitle: 'DigID',
+	logoHref: '/',
+	siteHref: '/',
 };
 
 export const WithBackButton = Template.bind({});

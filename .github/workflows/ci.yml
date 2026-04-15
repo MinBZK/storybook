@@ -28,3 +28,5 @@ jobs:
         run: npm run build:styles
       - name: Build components
         run: npm run build:components
+      - name: Verify exports map is up to date
+        run: node scripts/generate-exports.js && git diff --exit-code package.json

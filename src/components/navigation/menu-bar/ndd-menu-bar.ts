@@ -17,8 +17,8 @@ import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { styles } from './ndd-menu-bar.styles.js';
 import { template } from './ndd-menu-bar.template.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
 import { nddMenuBarTranslations } from './ndd-menu-bar.i18n.js';
-import type { NDDMenuBarTranslations } from './ndd-menu-bar.i18n.js';
 import '../menu-bar-item/ndd-menu-bar-item.js';
 import { NDDMenuBarItem } from '../menu-bar-item/ndd-menu-bar-item.js';
 import '../../lists-and-menus/menu/ndd-menu.js';
@@ -34,7 +34,7 @@ interface PopoverMenu extends HTMLElement {
 }
 
 @customElement('ndd-menu-bar')
-export class NDDMenuBar extends LitElement {
+export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslations) {
 	static override styles = styles;
 
 	@property({ type: String, attribute: 'overflow-text' })
@@ -45,9 +45,6 @@ export class NDDMenuBar extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	compact = false;
-
-	@property({ type: Object })
-	translations: Partial<NDDMenuBarTranslations> = {};
 
 	// ## Internal references
 
@@ -67,18 +64,8 @@ export class NDDMenuBar extends LitElement {
 	private _overflowRAF: number | null = null;
 	private _setupRAF: number | null = null;
 
-	// ## i18n
-
-	private _mergedTranslations = { ...nddMenuBarTranslations };
-
-	_t(key: keyof NDDMenuBarTranslations): string {
-		return this._mergedTranslations[key] ?? key;
-	}
-
 	override willUpdate(changed: PropertyValues): void {
-		if (changed.has('translations')) {
-			this._mergedTranslations = { ...nddMenuBarTranslations, ...this.translations };
-		}
+		super.willUpdate(changed);
 		if (changed.has('compact')) {
 			this._syncCompactAttribute();
 		}

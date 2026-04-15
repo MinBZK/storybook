@@ -154,6 +154,32 @@ describe('ndd-menu-bar – overflow detection', () => {
 		expect(overflowButton.style.display).toBe('inline-block');
 	});
 
+	it('hides all items when none fit', async () => {
+		el = await fixture(`
+			<ndd-menu-bar>
+				<ndd-menu-bar-item text="Home"></ndd-menu-bar-item>
+				<ndd-menu-bar-item text="About"></ndd-menu-bar-item>
+			</ndd-menu-bar>
+		`);
+		await waitForUpdate(el);
+
+		// Mock layout: container 80px, each item 100px, overflow button 44px
+		// Available: 80 - 44 = 36px, first item (100px) doesn't fit
+		vi.spyOn(el, 'clientWidth', 'get').mockReturnValue(80);
+		const items = el.querySelectorAll('ndd-menu-bar-item');
+		items.forEach(item => {
+			vi.spyOn(item, 'offsetWidth', 'get').mockReturnValue(100);
+		});
+		const overflowButton = el.shadowRoot!.querySelector('.menu-bar__overflow-button') as HTMLElement;
+		vi.spyOn(overflowButton, 'offsetWidth', 'get').mockReturnValue(44);
+
+		(el as any)._updateOverflow();
+
+		expect(items[0].hasAttribute('data-overflow')).toBe(true);
+		expect(items[1].hasAttribute('data-overflow')).toBe(true);
+		expect(overflowButton.style.display).toBe('inline-block');
+	});
+
 	it('hides overflow button when all items fit', async () => {
 		el = await fixture(`
 			<ndd-menu-bar>

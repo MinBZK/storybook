@@ -6,9 +6,9 @@
  *
  * Blocked protocols: javascript:, data:, vbscript:, blob:.
  *
- * Note: data: is blocked entirely (including data:image/) because this utility
- * is designed for href contexts (<a>, navigation), not for <img src> or CSS
- * where data:image/ would be legitimate.
+ * Note: data: and blob: are blocked entirely because this utility is designed
+ * for href contexts (<a>, navigation). Do not reuse for <img src>, download
+ * links, or other contexts where data: or blob: URLs are legitimate.
  *
  * Returns null for empty or dangerous URLs, the trimmed URL otherwise.
  */

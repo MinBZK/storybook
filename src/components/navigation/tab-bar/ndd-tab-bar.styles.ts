@@ -91,7 +91,7 @@ export const tabBarItemStyles = css`
 
 	:host([variant='icon-and-text']) .tab-bar__item {
 		flex-direction: row;
-		gap: var(--primitives-space-4);
+		gap: var(--semantics-buttons-md-gap);
 		padding: var(--primitives-space-8) var(--primitives-space-12);
 		height: var(--semantics-controls-md-min-size);
 	}

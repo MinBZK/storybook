@@ -45,6 +45,20 @@ describe('ndd-skip-link', () => {
 		expect(anchor!.getAttribute('href')).toBe('#main');
 	});
 
+	it('rendert button wanneer href een javascript: URI is', async () => {
+		el = await fixture('<ndd-skip-link href="javascript:void(0)"></ndd-skip-link>');
+		await waitForUpdate(el);
+		const control = el.shadowRoot!.querySelector('.skip-link__control');
+		expect(control!.tagName).toBe('BUTTON');
+	});
+
+	it('rendert button wanneer href een javascript:alert URI is', async () => {
+		el = await fixture('<ndd-skip-link href="javascript:alert(1)"></ndd-skip-link>');
+		await waitForUpdate(el);
+		const control = el.shadowRoot!.querySelector('.skip-link__control');
+		expect(control!.tagName).toBe('BUTTON');
+	});
+
 	it('focust volgende sibling bij klik zonder href', async () => {
 		el = await fixture('<div><ndd-skip-link></ndd-skip-link><main tabindex="-1">Content</main></div>');
 		const skipLink = el.querySelector('ndd-skip-link')!;

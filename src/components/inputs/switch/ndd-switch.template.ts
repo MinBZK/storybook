@@ -13,6 +13,11 @@ export function switchTemplate(component: NDDSwitch): TemplateResult {
 			value=${component.value}
 			aria-label=${component.accessibleLabel || nothing}
 			@change=${component._handleChange}
+			@pointerdown=${component._handlePointerDown}
+			@pointermove=${component._handlePointerMove}
+			@pointerup=${component._handlePointerUp}
+			@pointercancel=${component._handlePointerCancel}
+			@click=${component._handleClick}
 		>
 		<div class="switch__track"
 			aria-hidden="true"

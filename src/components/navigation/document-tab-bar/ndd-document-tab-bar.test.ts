@@ -609,3 +609,28 @@ describe('ndd-document-tab-bar – navigation mode', () => {
 		expect(items[1].selected).toBe(false);
 	});
 });
+
+describe('ndd-document-tab-bar – translations', () => {
+	let el: NDDDocumentTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('uses default Dutch overflow label', async () => {
+		el = await fixture<NDDDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const overflowBtn = el.shadowRoot!.querySelector('.document-tab-bar__overflow ndd-icon-button');
+		expect(overflowBtn?.getAttribute('text')).toBe('Toon meer tabbladen');
+	});
+
+	it('accepts custom translations via property', async () => {
+		el = await fixture<NDDDocumentTabBar>(threeTabBar());
+		(el as NDDDocumentTabBar).translations = {
+			'components.document-tab-bar.overflow-action': 'Show more tabs',
+		};
+		await waitForUpdate(el);
+		const overflowBtn = el.shadowRoot!.querySelector('.document-tab-bar__overflow ndd-icon-button');
+		expect(overflowBtn?.getAttribute('text')).toBe('Show more tabs');
+	});
+});

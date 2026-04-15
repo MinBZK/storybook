@@ -46,6 +46,61 @@ export class NDDSwitch extends LitElement {
 		}
 	}
 
+	// ## Swipe gesture
+
+	private _pointerStartX: number | null = null;
+	private _swiped = false;
+	private static readonly SWIPE_THRESHOLD = 10;
+
+	_handlePointerDown(e: PointerEvent): void {
+		this._pointerStartX = e.clientX;
+		this._swiped = false;
+		try { (e.target as Element).setPointerCapture(e.pointerId); } catch { /* synthetic events in tests have no active pointer */ }
+	}
+
+	_handlePointerMove(e: PointerEvent): void {
+		if (this._pointerStartX === null) return;
+		const dx = e.clientX - this._pointerStartX;
+		// Once the threshold is crossed, _swiped locks in — matching iOS switch
+		// behaviour where intent is set by crossing the threshold, and the final
+		// toggle direction is determined by the terminal dx in _handlePointerUp.
+		if (Math.abs(dx) >= NDDSwitch.SWIPE_THRESHOLD) {
+			this._swiped = true;
+		}
+	}
+
+	_handlePointerUp(e: PointerEvent): void {
+		if (this._pointerStartX === null) return;
+		const dx = e.clientX - this._pointerStartX;
+		this._pointerStartX = null;
+
+		if (!this._swiped) return;
+
+		e.preventDefault();
+		// Reads the dir HTML attribute from the nearest ancestor. Does not detect
+		// RTL set purely via CSS `direction: rtl` (no attribute).
+		const isRtl = this.closest('[dir]')?.getAttribute('dir') === 'rtl';
+		const shouldCheck = isRtl ? dx < 0 : dx > 0;
+
+		if (shouldCheck !== this.checked) {
+			this.toggle();
+		}
+	}
+
+	_handlePointerCancel(): void {
+		this._pointerStartX = null;
+		this._swiped = false;
+	}
+
+	_handleClick(e: Event): void {
+		if (this._swiped) {
+			e.preventDefault();
+			this._swiped = false;
+		}
+	}
+
+	// ## Public API
+
 	public toggle(): void {
 		if (this.disabled) return;
 		this.checked = !this.checked;

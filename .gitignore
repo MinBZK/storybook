@@ -27,6 +27,10 @@ coverage/
 # Vitest browser screenshots
 __screenshots__/
 
+# Generated files
+src/components/content/icon/ndd-icon-registry.ts
+src/components/navigation/top-navigation-bar/logo.ts
+
 # Temporary files
 tmp/
 temp/

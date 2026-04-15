@@ -3,14 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './ndd-icon.styles.js';
 import { template } from './ndd-icon.template.js';
 import { aliases } from './ndd-icon-aliases.js';
-
-const iconModules = import.meta.glob('./ndd-icons/*.svg', { query: '?raw', eager: true }) as Record<string, { default: string }>;
-
-const iconRegistry = new Map<string, string>();
-for (const [path, module] of Object.entries(iconModules)) {
-	const name = path.replace('./ndd-icons/', '').replace('.svg', '');
-	iconRegistry.set(name, module.default);
-}
+import { iconRegistry } from './ndd-icon-registry.js';
 
 export { aliases };
 

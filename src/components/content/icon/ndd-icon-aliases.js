@@ -177,13 +177,13 @@ export const aliases = {
 	'team': 'person-2',
 	'users': 'person-2',
 
+	// person-badge-gear
+	'user-admin': 'person-badge-gear',
+	'user-settings': 'person-badge-gear',
+
 	// person-circle
 	'account': 'person-circle',
 	'profile': 'person-circle',
-
-	// person-gear-badge
-	'user-admin': 'person-gear-badge',
-	'user-settings': 'person-gear-badge',
 
 	// plus
 	'add': 'plus',
@@ -221,8 +221,8 @@ export const aliases = {
 	'day': 'sun',
 	'light-mode': 'sun',
 
-	// table-arrow-down-badge
-	'download-table': 'table-arrow-down-badge',
+	// table-badge-arrow-down
+	'download-table': 'table-badge-arrow-down',
 
 	// terminal
 	'cli': 'terminal',
