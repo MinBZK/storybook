@@ -13,8 +13,8 @@
  * @attr {boolean} modeless         - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
  * @attr {boolean} drag-enabled     - Versleepbaar (op sm altijd uitgeschakeld)
  * @attr {string}  accessible-label - (verplicht) Toegankelijke naam (aria-label) — zet een unieke naam per venster
- * @attr {string}  top              - CSS top waarde (bijv. '0', '50%', 'calc(100% - 200px)')
- * @attr {string}  left             - CSS left waarde
+ * @attr {string}  top              - CSS top positie van de bovenrand (bijv. '0', '100px')
+ * @attr {string}  left             - CSS left positie van de linkerrand
  * @attr {string}  right            - CSS right waarde
  * @attr {string}  bottom           - CSS bottom waarde
  * @attr {string}  width            - CSS width (standaard: var(--components-window-default-width))
@@ -166,9 +166,7 @@ export class NDDWindow extends LitElement {
 		dialog.style.width = this.width ?? '';
 		dialog.style.height = this.height ?? '';
 
-		// When left+top are set, use translate so they define the center point
-		const hasCenterPosition = this.left !== undefined && this.top !== undefined;
-		dialog.style.transform = hasCenterPosition ? 'translate(-50%, -50%)' : '';
+		dialog.style.transform = '';
 
 		// Reset margin when custom position is set; keep margin: auto for centering
 		dialog.style.margin = hasPosition ? '0' : '';
@@ -223,6 +221,7 @@ export class NDDWindow extends LitElement {
 		// Don't capture yet — wait for first pointermove so clicks pass through
 		handle.addEventListener('pointermove', this._handlePointerMove as EventListener);
 		handle.addEventListener('pointerup', this._handlePointerUp as EventListener);
+		handle.addEventListener('pointercancel', this._handlePointerUp as EventListener);
 	};
 
 	private _findDragHandle(e: PointerEvent): Element | null {
@@ -244,21 +243,19 @@ export class NDDWindow extends LitElement {
 			this._dragging = true;
 			this._dragHandle.setPointerCapture(this._dragPointerId);
 
-			// Record initial center of the dialog
+			// Record offset from pointer to top-left corner of the dialog
 			const dialog = this._dialog;
 			if (dialog) {
 				const rect = dialog.getBoundingClientRect();
-				this._dragOffsetX = e.clientX - (rect.left + rect.width / 2);
-				this._dragOffsetY = e.clientY - (rect.top + rect.height / 2);
+				this._dragOffsetX = e.clientX - rect.left;
+				this._dragOffsetY = e.clientY - rect.top;
 			}
 		}
 		this._didDrag = true;
 
-		// Update left/top to new center position
-		const centerX = e.clientX - this._dragOffsetX;
-		const centerY = e.clientY - this._dragOffsetY;
-		this.left = `${centerX}px`;
-		this.top = `${centerY}px`;
+		// Update left/top to new top-left position
+		this.left = `${e.clientX - this._dragOffsetX}px`;
+		this.top = `${e.clientY - this._dragOffsetY}px`;
 		this.right = undefined;
 		this.bottom = undefined;
 	};
@@ -271,6 +268,7 @@ export class NDDWindow extends LitElement {
 			try { handle.releasePointerCapture(e.pointerId); } catch { /* not captured */ }
 			handle.removeEventListener('pointermove', this._handlePointerMove as EventListener);
 			handle.removeEventListener('pointerup', this._handlePointerUp as EventListener);
+			handle.removeEventListener('pointercancel', this._handlePointerUp as EventListener);
 		}
 	};
 
@@ -279,6 +277,7 @@ export class NDDWindow extends LitElement {
 		if (this._dragHandle) {
 			this._dragHandle.removeEventListener('pointermove', this._handlePointerMove as EventListener);
 			this._dragHandle.removeEventListener('pointerup', this._handlePointerUp as EventListener);
+			this._dragHandle.removeEventListener('pointercancel', this._handlePointerUp as EventListener);
 			this._dragHandle = null;
 		}
 	}
