@@ -40,7 +40,7 @@ export function withTranslations<T extends Record<string, string>>(
 			let str: string = this._mergedTranslations[key] ?? String(key);
 			if (vars) {
 				for (const [k, v] of Object.entries(vars)) {
-					str = str.replace(`{${k}}`, String(v));
+					str = str.split(`{${k}}`).join(String(v));
 				}
 			}
 			return str;

@@ -20,7 +20,8 @@ const packagePath = resolve(__dirname, '../package.json');
 const indexContent = readFileSync(indexPath, 'utf-8');
 const pkg = JSON.parse(readFileSync(packagePath, 'utf-8'));
 
-// Parse export lines: export { NDDButton } from './actions/button/ndd-button.ts';
+// Parse named export lines: export { NDDButton } from './actions/button/ndd-button.ts';
+// Note: does not match `export * from` barrel re-exports — only named exports are mapped.
 const exportRegex = /export\s+\{[^}]+\}\s+from\s+['"](\.\/[^'"]+)['"]/g;
 
 const componentExports = {};
@@ -58,6 +59,6 @@ const exports = {
 };
 
 pkg.exports = exports;
-writeFileSync(packagePath, JSON.stringify(pkg, null, '\t') + '\n', 'utf-8');
+writeFileSync(packagePath, JSON.stringify(pkg, null, 2) + '\n', 'utf-8');
 
 console.log(`Generated ${Object.keys(componentExports).length} component exports in package.json`);

@@ -633,7 +633,9 @@
 		var(--primitives-font-family-display)
 	;
 
-	/* ## Line height */
+	/* ## Line height
+	   Declared after font shorthands — CSS custom properties resolve lazily
+	   within the same :root block, so source order does not matter. */
 
 	--primitives-line-height-loose: 1.75;
 	--primitives-line-height-snug: 1.5;
