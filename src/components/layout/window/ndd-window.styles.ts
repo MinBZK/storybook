@@ -27,7 +27,7 @@ export const windowStyles = css`
 		flex-direction: column;
 		border: none;
 		padding: 0;
-		background: var(--semantics-surfaces-background-color);
+		background-color: var(--semantics-surfaces-background-color);
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-window-box-shadow);
 		overflow: hidden;
@@ -55,7 +55,7 @@ export const windowStyles = css`
 	/* # Backdrop (modal only) */
 
 	.window::backdrop {
-		background: var(--semantics-overlays-backdrop-color);
+		background-color: var(--semantics-overlays-backdrop-color);
 	}
 
 

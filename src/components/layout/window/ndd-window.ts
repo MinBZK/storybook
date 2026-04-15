@@ -11,7 +11,7 @@
  * @element ndd-window
  *
  * @attr {boolean} modeless         - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
- * @attr {boolean} movable     - Versleepbaar (op sm altijd uitgeschakeld)
+ * @attr {boolean} movable     - Verplaatsbaar via pointer (op sm uitgeschakeld). Geen keyboard-equivalent (WCAG 2.1.1 path-dependent exception).
  * @attr {string}  accessible-label - (verplicht) Toegankelijke naam (aria-label) — zet een unieke naam per venster
  * @attr {string}  top              - CSS top positie van de bovenrand (bijv. '0', '100px')
  * @attr {string}  left             - CSS left positie van de linkerrand
@@ -39,24 +39,6 @@ import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 @customElement('ndd-window')
 export class NDDWindow extends LitElement {
 	static override styles = windowStyles;
-
-	private static _dragCursorStyle: HTMLStyleElement | null = null;
-
-	private static _setGlobalDragCursor(active: boolean): void {
-		if (active) {
-			if (!NDDWindow._dragCursorStyle) {
-				const style = document.createElement('style');
-				style.textContent = '[window-drag-handle], [window-drag-handle] * { cursor: grabbing !important; }';
-				document.head.appendChild(style);
-				NDDWindow._dragCursorStyle = style;
-			}
-		} else {
-			if (NDDWindow._dragCursorStyle) {
-				NDDWindow._dragCursorStyle.remove();
-				NDDWindow._dragCursorStyle = null;
-			}
-		}
-	}
 
 	@property({ type: Boolean, reflect: true })
 	modeless = false;
@@ -118,9 +100,11 @@ export class NDDWindow extends LitElement {
 		window.removeEventListener('resize', this._handleResize);
 	}
 
-	override updated(_changed: PropertyValues): void {
+	override updated(changed: PropertyValues): void {
 		this._applyPositionStyles();
-		this._detectDragHandle();
+		if (changed.has('movable')) {
+			this._detectDragHandle();
+		}
 	}
 
 	show(): void {
@@ -148,6 +132,7 @@ export class NDDWindow extends LitElement {
 
 		this._closing = true;
 		this._didDrag = false;
+		this._removeDragListeners();
 		dialog.close();
 		this._closing = false;
 		this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
@@ -224,6 +209,7 @@ export class NDDWindow extends LitElement {
 
 	_handlePointerDown = (e: PointerEvent): void => {
 		if (!this._isMovable) return;
+		if (this._dragging || this._dragHandle) return;
 
 		// Ignore pointerdown on backdrop (outside dialog rect)
 		const dialog = this._dialog;
@@ -266,8 +252,11 @@ export class NDDWindow extends LitElement {
 		// Start capture on first movement so clicks still pass through
 		if (!this._dragging && this._dragHandle) {
 			this._dragging = true;
-			this._dragHandle.setPointerCapture(this._dragPointerId);
-			NDDWindow._setGlobalDragCursor(true);
+			e.preventDefault(); // Prevent touch scroll during drag
+			try { this._dragHandle.setPointerCapture(this._dragPointerId); } catch { /* pointer already released */ }
+			if (this._dragHandle instanceof HTMLElement) {
+				this._dragHandle.style.cursor = 'grabbing';
+			}
 
 			// Record offset from pointer to top-left corner of the dialog
 			const dialog = this._dialog;
@@ -295,7 +284,9 @@ export class NDDWindow extends LitElement {
 		this._dragHandle = null;
 		if (handle) {
 			try { handle.releasePointerCapture(e.pointerId); } catch { /* not captured */ }
-			NDDWindow._setGlobalDragCursor(false);
+			if (handle instanceof HTMLElement) {
+				handle.style.cursor = this._isMovable ? 'grab' : '';
+			}
 			handle.removeEventListener('pointermove', this._handlePointerMove as EventListener);
 			handle.removeEventListener('pointerup', this._handlePointerUp as EventListener);
 			handle.removeEventListener('pointercancel', this._handlePointerUp as EventListener);
@@ -305,6 +296,9 @@ export class NDDWindow extends LitElement {
 	private _removeDragListeners(): void {
 		this._dragging = false;
 		if (this._dragHandle) {
+			if (this._dragHandle instanceof HTMLElement) {
+				this._dragHandle.style.cursor = this._isMovable ? 'grab' : '';
+			}
 			this._dragHandle.removeEventListener('pointermove', this._handlePointerMove as EventListener);
 			this._dragHandle.removeEventListener('pointerup', this._handlePointerUp as EventListener);
 			this._dragHandle.removeEventListener('pointercancel', this._handlePointerUp as EventListener);
@@ -357,7 +351,6 @@ export class NDDWindow extends LitElement {
 		const grabOffsetX = handleRect && dialogRect ? handleRect.left - dialogRect.left : 0;
 		const grabOffsetY = handleRect && dialogRect ? handleRect.top - dialogRect.top : 0;
 		const grabWidth = handleRect?.width ?? dialogRect?.width ?? 0;
-		const grabHeight = handleRect?.height ?? dialogRect?.height ?? 0;
 
 		// Ensure at least minVisible px of the grab region stays in viewport
 		// Left: grabRegion right edge must be at least minVisible into viewport
