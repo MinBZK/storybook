@@ -55,7 +55,7 @@ export class NDDSwitch extends LitElement {
 	_handlePointerDown(e: PointerEvent): void {
 		this._pointerStartX = e.clientX;
 		this._swiped = false;
-		(e.target as Element).setPointerCapture(e.pointerId);
+		try { (e.target as Element).setPointerCapture(e.pointerId); } catch { /* synthetic events in tests have no active pointer */ }
 	}
 
 	_handlePointerMove(e: PointerEvent): void {
