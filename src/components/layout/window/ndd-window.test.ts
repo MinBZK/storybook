@@ -111,4 +111,39 @@ describe('ndd-window', () => {
 		el.click();
 		expect(clickHandled).toBe(true);
 	});
+
+	it('sluit modaal venster bij backdrop click (buiten dialog rect)', async () => {
+		el = await fixture<NDDWindow>('<ndd-window></ndd-window>');
+		await waitForUpdate(el);
+		el.show();
+		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+		expect(dialog.open).toBe(true);
+
+		// Simulate click outside the dialog rect (backdrop)
+		const rect = dialog.getBoundingClientRect();
+		const backdropClick = new MouseEvent('click', {
+			clientX: rect.left - 10,
+			clientY: rect.top - 10,
+			bubbles: true,
+		});
+		dialog.dispatchEvent(backdropClick);
+		expect(dialog.open).toBe(false);
+	});
+
+	it('sluit niet bij click binnen dialog rect', async () => {
+		el = await fixture<NDDWindow>('<ndd-window width="200px" height="200px"></ndd-window>');
+		await waitForUpdate(el);
+		el.show();
+		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+
+		// Simulate click inside the dialog rect
+		const rect = dialog.getBoundingClientRect();
+		const insideClick = new MouseEvent('click', {
+			clientX: rect.left + rect.width / 2,
+			clientY: rect.top + rect.height / 2,
+			bubbles: true,
+		});
+		dialog.dispatchEvent(insideClick);
+		expect(dialog.open).toBe(true);
+	});
 });

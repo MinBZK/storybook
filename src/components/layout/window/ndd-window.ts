@@ -69,8 +69,8 @@ export class NDDWindow extends LitElement {
 
 	private _closing = false;
 	private _dragging = false;
-	private _dragStartX = 0;
-	private _dragStartY = 0;
+	private _dragOffsetX = 0;
+	private _dragOffsetY = 0;
 	private _didDrag = false;
 	private _dragHandle: Element | null = null;
 	private _dragPointerId = 0;
@@ -215,8 +215,8 @@ export class NDDWindow extends LitElement {
 		const handle = this._findDragHandle(e);
 		if (!handle) return;
 
-		this._dragStartX = e.clientX;
-		this._dragStartY = e.clientY;
+		this._dragOffsetX = e.clientX;
+		this._dragOffsetY = e.clientY;
 		this._dragHandle = handle;
 		this._dragPointerId = e.pointerId;
 
@@ -248,15 +248,15 @@ export class NDDWindow extends LitElement {
 			const dialog = this._dialog;
 			if (dialog) {
 				const rect = dialog.getBoundingClientRect();
-				this._dragStartX = e.clientX - (rect.left + rect.width / 2);
-				this._dragStartY = e.clientY - (rect.top + rect.height / 2);
+				this._dragOffsetX = e.clientX - (rect.left + rect.width / 2);
+				this._dragOffsetY = e.clientY - (rect.top + rect.height / 2);
 			}
 		}
 		this._didDrag = true;
 
 		// Update left/top to new center position
-		const centerX = e.clientX - this._dragStartX;
-		const centerY = e.clientY - this._dragStartY;
+		const centerX = e.clientX - this._dragOffsetX;
+		const centerY = e.clientY - this._dragOffsetY;
 		this.left = `${centerX}px`;
 		this.top = `${centerY}px`;
 		this.right = undefined;
