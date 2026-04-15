@@ -42,20 +42,17 @@ export function template(component: NDDTopNavigationBar) {
 		<div class="top-navigation-bar">
 			${!component.noLogo ? html`<div class="top-navigation-bar__logo-bar">
 				${component.logoTitle && safeLogoHref ? html`
-					<a class="top-navigation-bar__logo-and-wordmark" href="${safeLogoHref}">
-						<div class="top-navigation-bar__logo" aria-hidden="true">
+					<a class="top-navigation-bar__logo-and-wordmark"
+						href="${safeLogoHref}"
+						aria-label="${component._t('components.top-navigation-bar.logo-label')}"
+					>
+						<div class="top-navigation-bar__logo"
+							aria-hidden="true"
+						>
 							${unsafeHTML(logoSvg)}
 						</div>
 						${wordmarkContent(component)}
 					</a>
-				` : component.logoTitle ? html`
-					<div class="top-navigation-bar__logo"
-						role="img"
-						aria-label="${component._t('components.top-navigation-bar.logo-label')}"
-					>
-						${unsafeHTML(logoSvg)}
-					</div>
-					${wordmarkContent(component)}
 				` : safeLogoHref ? html`
 					<a class="top-navigation-bar__logo"
 						href="${safeLogoHref}"
@@ -70,13 +67,16 @@ export function template(component: NDDTopNavigationBar) {
 					>
 						${unsafeHTML(logoSvg)}
 					</div>
+					${component.logoTitle ? wordmarkContent(component) : nothing}
 				`}
 			</div>` : nothing}
 			<div class="top-navigation-bar__main-bar">
 				${component.websiteTitle ? html`
 					<div class="top-navigation-bar__website-title-bar">
 						${safeSiteHref ? html`
-							<a class="top-navigation-bar__website-title" href="${safeSiteHref}">
+							<a class="top-navigation-bar__website-title"
+								href="${safeSiteHref}"
+							>
 								${component.websiteTitle}
 							</a>
 						` : html`

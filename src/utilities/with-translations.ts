@@ -56,7 +56,6 @@ export function withTranslations<T extends Record<string, string>>(
 
 	return TranslationsMixin as unknown as Constructor<LitElement & {
 		translations: Partial<T>;
-		_mergedTranslations: T;
 		_t(key: keyof T, vars?: Record<string, string | number>): string;
 	}> & typeof LitElement;
 }

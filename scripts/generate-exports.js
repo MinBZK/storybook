@@ -2,6 +2,10 @@
  * Generates the package.json "exports" field from src/components/index.ts.
  * Parses export lines to create per-component export paths.
  *
+ * WARNING: This script rewrites package.json in-place. After adding or
+ * removing a component in index.ts, run `npm run build:exports` and commit
+ * the updated package.json.
+ *
  * Usage: node scripts/generate-exports.js
  */
 
