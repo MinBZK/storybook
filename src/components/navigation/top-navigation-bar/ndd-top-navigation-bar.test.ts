@@ -250,7 +250,7 @@ describe('ndd-top-navigation-bar – href sanitization', () => {
 		expect(link).toBeNull();
 	});
 
-	it('renders logo link with safe href', async () => {
+	it('renders logo link with safe href and aria-label', async () => {
 		el = await fixture<NDDTopNavigationBar>(`
 			<ndd-top-navigation-bar logo-href="/"></ndd-top-navigation-bar>
 		`);
@@ -258,6 +258,7 @@ describe('ndd-top-navigation-bar – href sanitization', () => {
 		const link = el.shadowRoot!.querySelector('a.top-navigation-bar__logo');
 		expect(link).not.toBeNull();
 		expect(link!.getAttribute('href')).toBe('/');
+		expect(link!.getAttribute('aria-label')).toBeTruthy();
 	});
 
 	it('renders logo+wordmark as combined link when both logo-title and logo-href are set', async () => {

@@ -61,6 +61,9 @@ export class NDDSwitch extends LitElement {
 	_handlePointerMove(e: PointerEvent): void {
 		if (this._pointerStartX === null) return;
 		const dx = e.clientX - this._pointerStartX;
+		// Once the threshold is crossed, _swiped locks in — matching iOS switch
+		// behaviour where intent is set by crossing the threshold, and the final
+		// toggle direction is determined by the terminal dx in _handlePointerUp.
 		if (Math.abs(dx) >= NDDSwitch.SWIPE_THRESHOLD) {
 			this._swiped = true;
 		}
