@@ -44,7 +44,6 @@ export function template(component: NDDTopNavigationBar) {
 				${component.logoTitle && safeLogoHref ? html`
 					<a class="top-navigation-bar__logo-and-wordmark"
 						href="${safeLogoHref}"
-						aria-label="${component._t('components.top-navigation-bar.logo-label')}"
 					>
 						<div class="top-navigation-bar__logo"
 							aria-hidden="true"

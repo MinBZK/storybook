@@ -74,6 +74,8 @@ export class NDDSwitch extends LitElement {
 		if (!this._swiped) return;
 
 		e.preventDefault();
+		// Reads the dir HTML attribute from the nearest ancestor. Does not detect
+		// RTL set purely via CSS `direction: rtl` (no attribute).
 		const isRtl = this.closest('[dir]')?.getAttribute('dir') === 'rtl';
 		const shouldCheck = isRtl ? dx < 0 : dx > 0;
 
