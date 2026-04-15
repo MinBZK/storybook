@@ -84,11 +84,9 @@ export const windowStyles = css`
 
 	@media (max-width: ${smMax}) {
 		.window {
-			left: var(--components-window-inset);
-			right: var(--components-window-inset);
-			width: auto;
+			width: calc(100vw - var(--components-window-inset) * 2);
 			max-width: none;
-			margin-inline: 0;
+			margin-inline: auto;
 		}
 
 		:host([draggable]:not([has-drag-handle])) .window__body {
