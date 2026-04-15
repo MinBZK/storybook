@@ -119,7 +119,6 @@ export const windowStyles = css`
 	}
 
 	::slotted(*) {
-		flex-grow: 1;
 		min-height: 0;
 	}
 `;

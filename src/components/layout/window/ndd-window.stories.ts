@@ -58,12 +58,36 @@ export default {
 			description: 'CSS height (standaard: content height)',
 			table: { defaultValue: { summary: '' } },
 		},
+		top: {
+			control: 'text',
+			description: 'CSS top positie',
+			table: { defaultValue: { summary: '' } },
+		},
+		left: {
+			control: 'text',
+			description: 'CSS left positie',
+			table: { defaultValue: { summary: '' } },
+		},
+		right: {
+			control: 'text',
+			description: 'CSS right positie',
+			table: { defaultValue: { summary: '' } },
+		},
+		bottom: {
+			control: 'text',
+			description: 'CSS bottom positie',
+			table: { defaultValue: { summary: '' } },
+		},
 	},
 	args: {
 		modeless: false,
 		dragEnabled: false,
 		width: '',
 		height: '',
+		top: '',
+		left: '',
+		right: '',
+		bottom: '',
 	},
 };
 
@@ -86,6 +110,10 @@ const Template = (args: Record<string, unknown>) => html`
 		?drag-enabled=${args.dragEnabled}
 		width=${args.width || nothing}
 		height=${args.height || nothing}
+		top=${args.top || nothing}
+		left=${args.left || nothing}
+		right=${args.right || nothing}
+		bottom=${args.bottom || nothing}
 		accessible-label="Voorbeeldvenster"
 	>
 		<ndd-page sticky-header>

@@ -23,6 +23,8 @@ describe('ndd-window', () => {
 		expect(dialog).not.toBeNull();
 	});
 
+	// Note: showModal() focus trap, backdrop and Escape are native browser features
+	// not fully exercised in the test runner — verify in browser-based tests
 	it('opent modaal met show() als standaard', async () => {
 		el = await fixture<NDDWindow>('<ndd-window></ndd-window>');
 		await waitForUpdate(el);

@@ -12,7 +12,7 @@
  *
  * @attr {boolean} modeless         - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
  * @attr {boolean} drag-enabled     - Versleepbaar (op sm altijd uitgeschakeld)
- * @attr {string}  accessible-label - Toegankelijke naam (aria-label, standaard: 'Venster')
+ * @attr {string}  accessible-label - (verplicht) Toegankelijke naam (aria-label) — zet een unieke naam per venster
  * @attr {string}  top              - CSS top waarde (bijv. '0', '50%', 'calc(100% - 200px)')
  * @attr {string}  left             - CSS left waarde
  * @attr {string}  right            - CSS right waarde
@@ -122,6 +122,7 @@ export class NDDWindow extends LitElement {
 		if (!dialog || !dialog.open || this._closing) return;
 
 		this._closing = true;
+		this._didDrag = false;
 		dialog.close();
 		this._closing = false;
 		this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
