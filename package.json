@@ -309,6 +309,7 @@
     "sb:stop": "node scripts/storybook-manager.js stop",
     "sb:status": "node scripts/storybook-manager.js status",
     "sb:stop-all": "node scripts/storybook-manager.js stop-all",
+    "prebuild-storybook": "npm run build:icons",
     "build-storybook": "storybook build",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",

@@ -109,7 +109,6 @@ export const styles = css`
 	}
 
 	a.top-navigation-bar__logo-and-wordmark {
-		color: inherit;
 		text-decoration: none;
 	}
 
@@ -124,14 +123,14 @@ export const styles = css`
 		grid-column: 3;
 		display: flex;
 		flex-direction: column;
-		height: calc(var(--_logo-width) * 2);
+		min-height: calc(var(--_logo-width) * 2);
 		color: var(--_wordmark-content-color);
 	}
 
 	.top-navigation-bar__wordmark-spacer {
-		flex-grow: 1;
-		flex-shrink: 1;
-		flex-basis: 50%;
+		flex-grow: 0;
+		flex-shrink: 0;
+		height: var(--_logo-width);
 	}
 
 	.top-navigation-bar__wordmark-content {
