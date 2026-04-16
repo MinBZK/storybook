@@ -1,7 +1,6 @@
 import { css, unsafeCSS } from 'lit';
-import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
-const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
@@ -233,12 +232,15 @@ export const styles = css`
 	.top-navigation-bar__menu-bar-start {
 		display: flex;
 		align-items: center;
-		flex-grow: 1;
-		flex-shrink: 1;
 		min-width: 0;
+		flex-grow: 1;
 
-		@container top-navigation-bar (max-width: ${smMax}) {
+		@container top-navigation-bar (max-width: ${mdMax}) {
 			flex-shrink: 0;
+		}
+
+		@container top-navigation-bar (min-width: ${lgMin}) {
+			flex-shrink: 1;
 		}
 	}
 
@@ -247,11 +249,14 @@ export const styles = css`
 	.top-navigation-bar__menu-bar-end {
 		display: flex;
 		align-items: center;
-		flex-shrink: 0;
+		min-width: 0;
 
-		@container top-navigation-bar (max-width: ${smMax}) {
+		@container top-navigation-bar (max-width: ${mdMax}) {
 			flex-shrink: 1;
-			min-width: 0;
+		}
+
+		@container top-navigation-bar (min-width: ${lgMin}) {
+			flex-shrink: 0;
 		}
 	}
 

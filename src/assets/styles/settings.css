@@ -868,6 +868,12 @@
 	--components-box-corner-radius: var(--primitives-corner-radius-xl);
 	--components-box-padding: var(--primitives-space-16);
 
+	/* ## Card */
+
+	--components-card-background-color: var(--semantics-surfaces-background-color);
+	--components-card-corner-radius: var(--primitives-corner-radius-none);
+	--components-card-box-shadow: var(--primitives-box-shadows-level-2);
+
 	/* ## Button group */
 
 	--components-button-group-sm-gap: var(--primitives-space-6);
@@ -1019,6 +1025,12 @@
 	/* ## Top title bar */
 
 	--components-top-title-bar-divider-color: light-dark(var(--primitives-color-neutral-150),var(--primitives-color-neutral-350));
+
+	/* ## Window */
+
+	--components-window-box-shadow: var(--primitives-box-shadows-level-5);
+	--components-window-inset: var(--primitives-space-16);
+	--components-window-default-width: var(--primitives-area-640);
 }
 
 :root[data-scheme="light"] {

@@ -9,7 +9,7 @@ import { NDDMenuBarItem } from '../menu-bar-item/ndd-menu-bar-item.js';
 import '../menu-bar/ndd-menu-bar.js';
 import { NDDMenuBar } from '../menu-bar/ndd-menu-bar.js';
 import '../../content/icon/ndd-icon.js';
-import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 /** Minimal typed interface for ndd-sheet API. */

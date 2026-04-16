@@ -43,7 +43,7 @@ export class NDDSheet extends LitElement {
 
 	/** Accessible name for the dialog — forwarded as aria-label to the dialog element. */
 	@property({ type: String, attribute: 'accessible-label' })
-	accessibleLabel = 'Dialoogvenster';
+	accessibleLabel = 'Venster';
 
 	private _hasWarnedLabel = false;
 

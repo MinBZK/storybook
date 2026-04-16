@@ -175,6 +175,10 @@
       "types": "./dist/components/layout/box/ndd-box.d.ts",
       "default": "./dist/components/layout/box/ndd-box.js"
     },
+    "./card": {
+      "types": "./dist/components/layout/card/ndd-card.d.ts",
+      "default": "./dist/components/layout/card/ndd-card.js"
+    },
     "./collection": {
       "types": "./dist/components/layout/collection/ndd-collection.d.ts",
       "default": "./dist/components/layout/collection/ndd-collection.js"
@@ -194,6 +198,10 @@
     "./sheet": {
       "types": "./dist/components/layout/sheet/ndd-sheet.d.ts",
       "default": "./dist/components/layout/sheet/ndd-sheet.js"
+    },
+    "./window": {
+      "types": "./dist/components/layout/window/ndd-window.d.ts",
+      "default": "./dist/components/layout/window/ndd-window.js"
     },
     "./menu": {
       "types": "./dist/components/lists-and-menus/menu/ndd-menu.d.ts",
