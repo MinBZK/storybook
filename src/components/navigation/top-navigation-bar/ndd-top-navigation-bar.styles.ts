@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from 'lit';
-import { breakpoints } from '../../../assets/styles/breakpoints.js';
+import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const mdMax = unsafeCSS(breakpoints.mdMax);
@@ -233,6 +233,7 @@ export const styles = css`
 		display: flex;
 		align-items: center;
 		min-width: 0;
+		flex-grow: 1;
 
 		@container top-navigation-bar (max-width: ${mdMax}) {
 			flex-shrink: 0;
@@ -249,6 +250,7 @@ export const styles = css`
 		display: flex;
 		align-items: center;
 		min-width: 0;
+		flex-grow: 1;
 
 		@container top-navigation-bar (max-width: ${mdMax}) {
 			flex-shrink: 1;
