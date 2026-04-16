@@ -176,8 +176,6 @@ export class NDDWindow extends LitElement {
 		dialog.style.width = this.width ?? '';
 		dialog.style.height = this.height ?? '';
 
-		dialog.style.transform = '';
-
 		// Reset margin when custom position is set; keep margin: auto for centering
 		dialog.style.margin = hasPosition ? '0' : '';
 	}
@@ -211,6 +209,10 @@ export class NDDWindow extends LitElement {
 		if (!this._isMovable) return;
 		if (this._dragging || this._dragHandle) return;
 
+		// Don't initiate drag from interactive elements (buttons, links, inputs)
+		const target = e.composedPath()[0] as Element;
+		if (target?.closest('button, a, input, select, textarea, [role="button"]')) return;
+
 		// Ignore pointerdown on backdrop (outside dialog rect)
 		const dialog = this._dialog;
 		if (dialog) {
@@ -224,8 +226,6 @@ export class NDDWindow extends LitElement {
 		const handle = this._findDragHandle(e);
 		if (!handle) return;
 
-		this._dragOffsetX = e.clientX;
-		this._dragOffsetY = e.clientY;
 		this._dragHandle = handle;
 		this._dragPointerId = e.pointerId;
 
@@ -344,7 +344,7 @@ export class NDDWindow extends LitElement {
 		const dialogRect = dialog?.getBoundingClientRect();
 
 		// Determine the grab region: drag handle if present, otherwise whole window
-		const handle = this.querySelector('[window-drag-handle]');
+		const handle = this._dragHandle ?? this.querySelector('[window-drag-handle]');
 		const handleRect = handle?.getBoundingClientRect();
 
 		// Offset of grab region within the dialog
