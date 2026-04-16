@@ -250,7 +250,6 @@ export const styles = css`
 		display: flex;
 		align-items: center;
 		min-width: 0;
-		flex-grow: 1;
 
 		@container top-navigation-bar (max-width: ${mdMax}) {
 			flex-shrink: 1;
