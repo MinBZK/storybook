@@ -3,6 +3,8 @@ ndd-rich-text {
 	display: block;
 	color: var(--semantics-content-color);
 	container-type: inline-size;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
 	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
 	font: var(--primitives-font-body-md-regular-snug);
 }
