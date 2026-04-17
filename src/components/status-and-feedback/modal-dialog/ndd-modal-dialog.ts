@@ -25,7 +25,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { modalDialogStyles } from './ndd-modal-dialog.styles.ts';
 import { modalDialogTemplate } from './ndd-modal-dialog.template.ts';
-import { isKeyboardMode } from '../../../utilities/input-modality.js';
+import { isPointerMode } from '../../../utilities/input-modality.js';
 import type { InlineDialogVariant } from '../inline-dialog/ndd-inline-dialog.ts';
 import '../inline-dialog/ndd-inline-dialog.ts';
 
@@ -70,7 +70,7 @@ export class NDDModalDialog extends LitElement {
 		// 2. Focus the dialog — show focus ring only when opened via keyboard
 		const dialog = this._dialog;
 		if (!dialog) return;
-		dialog.classList.toggle('is-keyboard-focus', isKeyboardMode());
+		dialog.classList.toggle('is-pointer-focus', isPointerMode());
 		dialog.focus();
 	}
 

@@ -33,7 +33,7 @@ import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { windowStyles } from './ndd-window.styles.ts';
 import { windowTemplate } from './ndd-window.template.ts';
-import { isKeyboardMode } from '../../../utilities/input-modality.js';
+import { isPointerMode } from '../../../utilities/input-modality.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
 @customElement('ndd-window')
@@ -143,7 +143,7 @@ export class NDDWindow extends LitElement {
 
 		const dialog = this._dialog;
 		if (!dialog) return;
-		dialog.classList.toggle('is-keyboard-focus', isKeyboardMode());
+		dialog.classList.toggle('is-pointer-focus', isPointerMode());
 		dialog.focus();
 	}
 

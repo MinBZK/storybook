@@ -45,13 +45,10 @@ export const menuStyles = css`
 			calc(var(--_menu-max-items) * var(--_menu-item-size) + var(--_menu-padding) * 2)
 		);
 		overflow-y: auto;
-	}
-
-	.menu:focus-visible {
 		outline: none;
 	}
 
-	.menu.is-keyboard-focus:focus {
+	.menu:focus-visible:not(.is-pointer-focus) {
 		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-menu-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 	}

@@ -33,6 +33,7 @@ export const modalDialogStyles = css`
 		border-radius: var(--semantics-overlays-corner-radius);
 		box-shadow: var(--components-modal-dialog-box-shadow);
 		box-sizing: border-box;
+		outline: none;
 
 		padding: var(--primitives-space-16);
 
@@ -45,11 +46,7 @@ export const modalDialogStyles = css`
 		display: none;
 	}
 
-	.modal-dialog:focus-visible {
-		outline: none;
-	}
-
-	.modal-dialog.is-keyboard-focus:focus {
+	.modal-dialog:focus-visible:not(.is-pointer-focus) {
 		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-modal-dialog-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 	}

@@ -566,7 +566,7 @@ export class NDDMenu extends LitElement {
 				items[0].focus();
 			} else {
 				const menu = this.shadowRoot?.querySelector<HTMLElement>('.menu');
-				menu?.classList.toggle('is-keyboard-focus', keyboard);
+				menu?.classList.toggle('is-pointer-focus', !keyboard);
 				menu?.focus();
 			}
 		}

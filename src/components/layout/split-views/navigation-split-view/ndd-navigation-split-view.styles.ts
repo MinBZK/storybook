@@ -138,6 +138,7 @@ export const navigationSplitViewStyles = css`
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
+		outline: none;
 		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
 		width: var(--components-sheet-side-md-width);
 		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
@@ -147,11 +148,7 @@ export const navigationSplitViewStyles = css`
 			width: var(--components-sheet-side-lg-width);
 		}
 
-		&:focus-visible {
-			outline: none;
-		}
-
-		&.is-keyboard-focus:focus {
+		&:focus-visible:not(.is-pointer-focus) {
 			box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-sheet-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 		}
@@ -204,6 +201,7 @@ export const navigationSplitViewStyles = css`
 		box-shadow: var(--components-sheet-box-shadow);
 		overflow: hidden;
 		position: fixed;
+		outline: none;
 		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
 		width: var(--components-sheet-side-md-width);
 		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
@@ -213,11 +211,7 @@ export const navigationSplitViewStyles = css`
 			width: var(--components-sheet-side-lg-width);
 		}
 
-		&:focus-visible {
-			outline: none;
-		}
-
-		&.is-keyboard-focus:focus {
+		&:focus-visible:not(.is-pointer-focus) {
 			box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-sheet-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 		}

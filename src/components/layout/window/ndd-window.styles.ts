@@ -36,17 +36,14 @@ export const windowStyles = css`
 		width: var(--components-window-default-width);
 		max-width: calc(100vw - var(--components-window-inset) * 2);
 		max-height: calc(100dvh - var(--components-window-inset) * 2);
+		outline: none;
 	}
 
 	.window:not([open]) {
 		display: none;
 	}
 
-	.window:focus-visible {
-		outline: none;
-	}
-
-	.window.is-keyboard-focus:focus {
+	.window:focus-visible:not(.is-pointer-focus) {
 		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-window-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 	}

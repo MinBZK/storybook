@@ -29,7 +29,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { isKeyboardMode } from '../../../../utilities/input-modality.js';
+import { isPointerMode } from '../../../../utilities/input-modality.js';
 import { navigationSplitViewStyles } from './ndd-navigation-split-view.styles.ts';
 import { navigationSplitViewTemplate } from './ndd-navigation-split-view.template.ts';
 
@@ -348,7 +348,7 @@ export class NDDNavigationSplitView extends LitElement {
 
 		// 2. Focus the dialog — show focus ring only when opened via keyboard
 		if (!dialog) return;
-		dialog.classList.toggle('is-keyboard-focus', isKeyboardMode());
+		dialog.classList.toggle('is-pointer-focus', isPointerMode());
 		dialog.focus();
 	}
 

@@ -27,7 +27,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { sheetStyles } from './ndd-sheet.styles.ts';
 import { sheetTemplate } from './ndd-sheet.template.ts';
-import { isKeyboardMode } from '../../../utilities/input-modality.js';
+import { isPointerMode } from '../../../utilities/input-modality.js';
 
 type Placement = 'left' | 'right' | 'bottom';
 
@@ -90,7 +90,7 @@ export class NDDSheet extends LitElement {
 		// 2. Focus the dialog — show focus ring only when opened via keyboard
 		const dialog = this._dialog;
 		if (!dialog) return;
-		dialog.classList.toggle('is-keyboard-focus', isKeyboardMode());
+		dialog.classList.toggle('is-pointer-focus', isPointerMode());
 		dialog.focus();
 	}
 
