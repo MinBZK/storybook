@@ -120,19 +120,29 @@ export const WithHeaderAndFooter = {
 };
 
 export const WithSelection = {
-	render: () => html`
-		<ndd-list variant="simple">
-			<ndd-list-item>
-				<ndd-text-cell text="Not selected" />
-			</ndd-list-item>
-			<ndd-list-item selected>
-				<ndd-text-cell text="Selected item" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Not selected" />
-			</ndd-list-item>
-		</ndd-list>
-	`,
+	render: () => {
+		const handleClick = (e) => {
+			const item = e.target.closest('ndd-list-item');
+			if (!item) return;
+			const list = item.closest('ndd-list');
+			list.querySelectorAll('ndd-list-item').forEach(i => i.removeAttribute('selected'));
+			item.setAttribute('selected', '');
+		};
+
+		return html`
+			<ndd-list variant="simple" @click=${handleClick}>
+				<ndd-list-item type="button">
+					<ndd-text-cell text="Item 1" />
+				</ndd-list-item>
+				<ndd-list-item type="button" selected>
+					<ndd-text-cell text="Item 2 (selected)" />
+				</ndd-list-item>
+				<ndd-list-item type="button">
+					<ndd-text-cell text="Item 3" />
+				</ndd-list-item>
+			</ndd-list>
+		`;
+	},
 };
 
 export const SizeSmall = {
