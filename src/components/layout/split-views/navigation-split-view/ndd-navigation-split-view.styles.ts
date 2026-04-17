@@ -148,6 +148,10 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&:focus-visible {
+			outline: none;
+		}
+
+		&.is-keyboard-focus:focus {
 			box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-sheet-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 		}
@@ -210,6 +214,10 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&:focus-visible {
+			outline: none;
+		}
+
+		&.is-keyboard-focus:focus {
 			box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-sheet-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 		}

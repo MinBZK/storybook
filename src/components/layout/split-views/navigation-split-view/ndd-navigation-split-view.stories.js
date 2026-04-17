@@ -107,6 +107,16 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 							<h2>Navigatie</h2>
 							<p>Wetten, regelingen en andere bronnen.</p>
 							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+							<p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+							<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+							<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+							<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+							<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
+							<p>Et harum quidem rerum facilis est et expedita distinctio.</p>
+							<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet.</p>
 						</ndd-rich-text>
 					</ndd-simple-section>
 				</ndd-page>
@@ -125,6 +135,14 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 							<h2>Subnavigatie</h2>
 							<p>Artikelen, hoofdstukken of andere subitems.</p>
 							<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+							<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+							<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+							<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.</p>
+							<p>At vero eos et accusamus et iusto odio dignissimos ducimus.</p>
 						</ndd-rich-text>
 					</ndd-simple-section>
 				</ndd-page>
@@ -173,6 +191,16 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 							<h2>Details</h2>
 							<p>Eigenschappen en aanvullende informatie over de selectie.</p>
 							<p>Excepteur sint occaecat cupidatat non proident.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+							<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+							<p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+							<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+							<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
+							<p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio.</p>
+							<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.</p>
 						</ndd-rich-text>
 					</ndd-simple-section>
 				</ndd-page>
