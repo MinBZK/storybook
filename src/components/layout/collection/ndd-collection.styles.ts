@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoints } from '../../../assets/styles/breakpoints.ts';
+
+const mdMin = unsafeCSS(breakpoints.mdMin);
 
 
 /* # ndd-collection styles */
@@ -22,7 +25,11 @@ export const collectionStyles = css`
 	.collection__items {
 		display: flex;
 		width: 100%;
-		gap: 16px;
+		gap: var(--primitives-space-16);
+
+		@media (min-width: ${mdMin}) {
+			gap: var(--primitives-space-24);
+		}
 	}
 
 
@@ -52,14 +59,15 @@ export const collectionStyles = css`
 		scroll-behavior: smooth;
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: none;
-		gap: var(--primitives-space-16);
-		margin-inline-start: -16px;
-		padding-inline-start: 16px;
-		scroll-padding-inline-start: 16px;
+		margin-inline-start: calc(var(--primitives-space-16) * -1);
+		padding-inline-start: var(--primitives-space-16);
+		scroll-padding-inline-start: var(--primitives-space-16);
+		padding-block: var(--primitives-space-16);
+		margin-block: calc(var(--primitives-space-16) * -1);
 		mask-image: linear-gradient(
 			to right,
 			transparent 0,
-			black 16px,
+			black var(--primitives-space-16),
 			black calc(100% - 48px),
 			transparent 100%
 		);
