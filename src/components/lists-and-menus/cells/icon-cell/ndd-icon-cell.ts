@@ -8,7 +8,6 @@
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' (default: 'center')
  * @attr {string} size - Size: '16' | '20' | '24' | '32' (default: '24')
  * @attr {string} color - Color: 'default' | 'inherit' (default: 'default')
- * @attr {boolean} selected - Selected state
  *
  * @slot - Default slot for icon content
  */
@@ -33,9 +32,6 @@ export class NDDIconCell extends LitElement {
 
 	@property({ type: String, reflect: true })
 	color: Color = 'default';
-
-	@property({ type: Boolean, reflect: true })
-	selected = false;
 
 	override render() {
 		return template.call(this);

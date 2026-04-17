@@ -7,7 +7,7 @@ export const styles = css`
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		color: var(--semantics-content-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-color));
 	}
 
 	:host([hidden]) {
@@ -79,18 +79,6 @@ export const styles = css`
 	:host([size="32"]) ::slotted(*) {
 		width: var(--primitives-space-32);
 		height: var(--primitives-space-32);
-	}
-
-	/* # Selected */
-
-	:host([selected]) {
-		color: var(--components-list-item-is-selected-content-color);
-	}
-
-	/* # Highlighted */
-
-	:host([highlighted]) {
-		color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 	/* # color: inherit */

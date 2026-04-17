@@ -6,15 +6,41 @@ export const styles = css`
 	:host {
 		display: block;
 		width: 100%;
+		-webkit-tap-highlight-color: transparent;
 		--_z-index-content: 0;
 		--_z-index-focus: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
 		--_focus-outline-offset: 6px;
-		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
 		display: none;
+	}
+
+
+	/* # Content color context
+	   Expose the current content color as a CSS custom property so slotted
+	   cells can render with the matching color without knowing list-item state.
+	   Order matters: selected and highlighted must win over hover. */
+
+	:host([type="button"]:hover),
+	:host([href]:hover) {
+		--context-list-item-content-color: var(--components-list-item-is-hovered-content-color);
+	}
+
+	:host([selected]),
+	:host([selected][type="button"]:hover),
+	:host([selected][href]:hover) {
+		--context-list-item-content-color: var(--components-list-item-is-selected-content-color);
+	}
+
+	:host([highlighted]),
+	:host([highlighted][type="button"]:hover),
+	:host([highlighted][href]:hover),
+	:host([selected]:focus-within),
+	:host([selected]:focus-within[type="button"]:hover),
+	:host([selected]:focus-within[href]:hover) {
+		--context-list-item-content-color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 	:host(:focus-within) {

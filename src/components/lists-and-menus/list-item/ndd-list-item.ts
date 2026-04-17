@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { styles } from './ndd-list-item.styles.ts';
 import { template } from './ndd-list-item.template.ts';
 import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
@@ -48,6 +48,9 @@ export class NDDListItem extends LitElement {
 	@state()
 	private _showEnd = false;
 
+	@query('.list-item__action')
+	private _action?: HTMLElement;
+
 	private _isBoxOrInset = false;
 	private _listObserver: MutationObserver | null = null;
 
@@ -75,19 +78,7 @@ export class NDDListItem extends LitElement {
 		this._syncWithList();
 		this._observeStartSlot();
 		this._observeEndSlot();
-		this._observeHighlight();
-	}
-
-	override updated(changed: Map<string, unknown>) {
-		if (changed.has('selected')) {
-			this._propagateSelected();
-			if (this.selected && this._isFocused) {
-				this.highlighted = true;
-			}
-		}
-		if (changed.has('highlighted')) {
-			this._propagateHighlighted();
-		}
+		this._observeFocus();
 	}
 
 	/**
@@ -137,50 +128,27 @@ export class NDDListItem extends LitElement {
 		slot?.addEventListener('slotchange', () => this._updateVisibility());
 	}
 
-	private _isFocused = false;
-
-	private _observeHighlight() {
-		const action = this.shadowRoot?.querySelector<HTMLElement>('.list-item__action');
+	private _handleClick = () => {
 		// Safari and Firefox on Mac don't focus buttons on click. Force focus
-		// so :has(.list-item__action:focus) and highlight logic work consistently.
-		action?.addEventListener('click', () => action.focus());
+		// so :has(.list-item__action:focus) and :focus-within CSS work reliably.
+		this._action?.focus();
+	};
 
-		this.addEventListener('focusin', () => {
-			this._isFocused = true;
-			action?.classList.toggle('is-keyboard-focus', isKeyboardMode());
-			if (this.selected) this.highlighted = true;
-		});
-		this.addEventListener('focusout', () => {
-			this._isFocused = false;
-			action?.classList.remove('is-keyboard-focus');
-			this.highlighted = false;
-		});
-	}
+	private _handleFocusIn = () => {
+		this._action?.classList.toggle('is-keyboard-focus', isKeyboardMode());
+	};
 
-	private _propagateHighlighted() {
-		const slots = this.shadowRoot?.querySelectorAll('slot');
-		slots?.forEach((slot) => {
-			slot.assignedElements({ flatten: true }).forEach((el) => {
-				if (this.highlighted) {
-					el.setAttribute('highlighted', '');
-				} else {
-					el.removeAttribute('highlighted');
-				}
-			});
-		});
-	}
+	private _handleFocusOut = () => {
+		this._action?.classList.remove('is-keyboard-focus');
+	};
 
-	private _propagateSelected() {
-		const slots = this.shadowRoot?.querySelectorAll('slot');
-		slots?.forEach((slot) => {
-			slot.assignedElements({ flatten: true }).forEach((el) => {
-				if (this.selected) {
-					el.setAttribute('selected', '');
-				} else {
-					el.removeAttribute('selected');
-				}
-			});
-		});
+	private _observeFocus() {
+		// Attach to the host so events work regardless of shadow DOM re-renders
+		// (focusin/out and click bubble through shadow boundaries). _action is
+		// resolved lazily via @query inside the handlers.
+		this.addEventListener('focusin', this._handleFocusIn);
+		this.addEventListener('focusout', this._handleFocusOut);
+		this.addEventListener('click', this._handleClick);
 	}
 
 	override render() {

@@ -19,7 +19,6 @@
  * @attr {number} min-height - Minimum height in pixels
  * @attr {string} horizontal-alignment - Horizontal alignment: 'left' | 'right' (default: 'left')
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')
- * @attr {boolean} selected - Selected state
  *
  * @attr {string} text - Main text content. Supports **bold** syntax for inline bold segments.
  * @attr {string} overline - Optional overline text displayed above the main content
@@ -74,9 +73,6 @@ export class NDDTextCell extends LitElement {
 
 	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })
 	verticalAlignment: VerticalAlignment = 'center';
-
-	@property({ type: Boolean, reflect: true })
-	selected = false;
 
 	@property({ type: String })
 	text = '';

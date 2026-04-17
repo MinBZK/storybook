@@ -105,18 +105,6 @@ describe('ndd-title-cell', () => {
 		expect(el.getAttribute('vertical-alignment')).toBe('bottom');
 	});
 
-	it('defaults selected to false', async () => {
-		el = await fixture('<ndd-title-cell></ndd-title-cell>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('selected')).toBe(false);
-	});
-
-	it('reflects selected attribute', async () => {
-		el = await fixture('<ndd-title-cell selected></ndd-title-cell>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('selected')).toBe(true);
-	});
-
 	it('renders text in shadow DOM', async () => {
 		el = await fixture('<ndd-title-cell text="My title"></ndd-title-cell>');
 		await waitForUpdate(el);

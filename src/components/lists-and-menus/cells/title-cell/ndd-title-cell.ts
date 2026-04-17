@@ -18,7 +18,6 @@
  * @attr {number} min-height - Minimum height in pixels
  * @attr {'left' | 'right'} horizontal-alignment - Horizontal alignment (default: 'left')
  * @attr {'top' | 'center' | 'bottom'} vertical-alignment - Vertical alignment (default: 'center')
- * @attr {boolean} selected - Selected state
  *
  * @attr {string} text - Title text content
  * @attr {string} overline - Optional overline text displayed above the title
@@ -74,9 +73,6 @@ export class NDDTitleCell extends LitElement {
 
 	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })
 	verticalAlignment: VerticalAlignment = 'center';
-
-	@property({ type: Boolean, reflect: true })
-	selected = false;
 
 	@property({ type: String })
 	text = '';

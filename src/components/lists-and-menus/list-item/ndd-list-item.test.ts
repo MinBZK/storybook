@@ -91,37 +91,4 @@ describe('ndd-list-item', () => {
 	});
 
 
-	// — Selected propagation ————————————————————————————————————————————————
-
-	it('propagates selected attribute to slotted elements when selected', async () => {
-		const wrapper = await fixture(`
-			<ndd-list variant="simple">
-				<ndd-list-item selected>
-					<ndd-text-cell text="Item"></ndd-text-cell>
-				</ndd-list-item>
-			</ndd-list>
-		`);
-		await waitForUpdate(wrapper);
-		el = wrapper.querySelector('ndd-list-item')!;
-		await waitForUpdate(el);
-		const cell = el.querySelector('ndd-text-cell');
-		expect(cell?.hasAttribute('selected')).toBe(true);
-	});
-
-	it('removes selected attribute from slotted elements when deselected', async () => {
-		const wrapper = await fixture(`
-			<ndd-list variant="simple">
-				<ndd-list-item selected>
-					<ndd-text-cell text="Item"></ndd-text-cell>
-				</ndd-list-item>
-			</ndd-list>
-		`);
-		await waitForUpdate(wrapper);
-		el = wrapper.querySelector('ndd-list-item')!;
-		await waitForUpdate(el);
-		el.removeAttribute('selected');
-		await waitForUpdate(el);
-		const cell = el.querySelector('ndd-text-cell');
-		expect(cell?.hasAttribute('selected')).toBe(false);
-	});
 });

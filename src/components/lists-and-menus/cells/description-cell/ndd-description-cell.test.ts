@@ -69,18 +69,6 @@ describe('ndd-description-cell', () => {
 		expect(el.getAttribute('vertical-alignment')).toBe('bottom');
 	});
 
-	it('defaults selected to false', async () => {
-		el = await fixture('<ndd-description-cell></ndd-description-cell>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('selected')).toBe(false);
-	});
-
-	it('reflects selected attribute', async () => {
-		el = await fixture('<ndd-description-cell selected></ndd-description-cell>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('selected')).toBe(true);
-	});
-
 	it('renders slotted title content', async () => {
 		el = await fixture('<ndd-description-cell><p slot="title">Label</p></ndd-description-cell>');
 		await waitForUpdate(el);

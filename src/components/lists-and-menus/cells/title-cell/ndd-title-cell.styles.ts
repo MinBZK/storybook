@@ -83,7 +83,7 @@ export const styles = css`
 		align-self: stretch;
 		min-width: 0;
 		font: var(--primitives-font-body-xs-regular-tight);
-		color: var(--semantics-content-secondary-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([horizontal-alignment='right']) .title-cell__overline {
@@ -97,7 +97,7 @@ export const styles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
-		color: var(--semantics-content-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-color));
 	}
 
 	:host([horizontal-alignment='right']) .title-cell__title {
@@ -149,7 +149,7 @@ export const styles = css`
 		align-self: stretch;
 		min-width: 0;
 		font: var(--primitives-font-body-sm-regular-tight);
-		color: var(--semantics-content-secondary-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([horizontal-alignment='right']) .title-cell__supporting-text {
@@ -163,24 +163,6 @@ export const styles = css`
 	:host([color='inherit']) .title-cell__overline,
 	:host([color='inherit']) .title-cell__supporting-text {
 		color: inherit;
-	}
-
-
-	/* # Selected */
-
-	:host([selected]) .title-cell__title,
-	:host([selected]) .title-cell__overline,
-	:host([selected]) .title-cell__supporting-text {
-		color: var(--components-list-item-is-selected-content-color);
-	}
-
-
-	/* # Highlighted */
-
-	:host([highlighted]) .title-cell__title,
-	:host([highlighted]) .title-cell__overline,
-	:host([highlighted]) .title-cell__supporting-text {
-		color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 
