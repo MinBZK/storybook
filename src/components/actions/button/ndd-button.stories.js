@@ -97,6 +97,15 @@ export default {
 				defaultValue: { summary: 'button' },
 			},
 		},
+		href: {
+			control: 'text',
+			description: 'Wanneer gezet, wordt het element als link gerenderd in plaats van het opgegeven type',
+		},
+		target: {
+			control: 'select',
+			options: ['', '_self', '_blank', '_parent', '_top'],
+			description: 'Link target (alleen gebruikt als href is gezet)',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -114,17 +123,21 @@ export default {
 		endIcon: '',
 		expandable: false,
 		type: 'button',
+		href: '',
+		target: '',
 		disabled: false,
 	},
 };
 
-const Template = ({ text, variant, size, fullWidth, type, startIcon, endIcon, expandable, disabled }) => html`
+const Template = ({ text, variant, size, fullWidth, type, href, target, startIcon, endIcon, expandable, disabled }) => html`
 	<ndd-button
 		variant=${variant}
 		size=${size}
 		?full-width=${fullWidth}
 		type=${type}
 		text=${text}
+		href=${href || nothing}
+		target=${target || nothing}
 		start-icon=${startIcon || nothing}
 		end-icon=${endIcon || nothing}
 		?expandable=${expandable}

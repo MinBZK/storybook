@@ -44,6 +44,10 @@ export const styles = css`
 		;
 	}
 
+	a.button {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.button {
 			transition: none;

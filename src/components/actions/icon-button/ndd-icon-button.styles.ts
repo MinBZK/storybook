@@ -43,6 +43,10 @@ export const styles = css`
 		}
 	}
 
+	a.icon-button {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
 
 	/* # Focus */
 
