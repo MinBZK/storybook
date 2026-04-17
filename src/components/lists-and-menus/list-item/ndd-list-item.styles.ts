@@ -203,7 +203,9 @@ export const styles = css`
 		background-color: var(--components-list-item-is-hovered-background-color);
 	}
 
-	.list-item:has(.list-item__action:focus-visible:not(.is-pointer-focus))::before {
+	/* Boxed items use the ::after ring on the action; exclude them here to
+	   avoid a double focus ring. */
+	:host(:not(.is-boxed)) .list-item:has(.list-item__action:focus-visible:not(.is-pointer-focus))::before {
 		display: block;
 		outline: var(--semantics-focus-ring-outline);
 		box-shadow: var(--semantics-focus-ring-box-shadow);

@@ -25,9 +25,19 @@ export class NDDListItem extends LitElement {
 	@property({ reflect: true })
 	size: ListItemSize = 'md';
 
+	/**
+	 * Visual-only state: renders the item with the selected background.
+	 * Does NOT set any ARIA attribute — the correct ARIA (aria-selected in
+	 * a listbox, aria-current in navigation) depends on context and is the
+	 * consumer's responsibility.
+	 */
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
+	/**
+	 * Visual-only high-contrast state. Like `selected`, no ARIA is applied —
+	 * the consumer is responsible for the correct ARIA for their context.
+	 */
 	@property({ type: Boolean, reflect: true })
 	highlighted = false;
 
