@@ -29,7 +29,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { isKeyboardMode } from '../../../../utilities/keyboard-mode.js';
+import { isKeyboardMode } from '../../../../utilities/input-modality.js';
 import { navigationSplitViewStyles } from './ndd-navigation-split-view.styles.ts';
 import { navigationSplitViewTemplate } from './ndd-navigation-split-view.template.ts';
 

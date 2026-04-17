@@ -27,7 +27,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { sheetStyles } from './ndd-sheet.styles.ts';
 import { sheetTemplate } from './ndd-sheet.template.ts';
-import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
+import { isKeyboardMode } from '../../../utilities/input-modality.js';
 
 type Placement = 'left' | 'right' | 'bottom';
 

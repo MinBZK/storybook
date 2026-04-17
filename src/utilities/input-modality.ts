@@ -1,4 +1,6 @@
-let keyboardMode = false;
+export type InputModality = 'keyboard' | 'pointer';
+
+let modality: InputModality = 'pointer';
 let initialized = false;
 let controller: AbortController | null = null;
 
@@ -10,28 +12,36 @@ function init(): void {
 
 	document.addEventListener('keydown', (e: KeyboardEvent) => {
 		if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' ', 'Escape'].includes(e.key)) {
-			keyboardMode = true;
+			modality = 'keyboard';
 		}
 	}, { signal });
 
 	document.addEventListener('mousedown', () => {
-		keyboardMode = false;
+		modality = 'pointer';
 	}, { signal });
 
 	document.addEventListener('touchstart', () => {
-		keyboardMode = false;
+		modality = 'pointer';
 	}, { passive: true, signal });
 }
 
-export function isKeyboardMode(): boolean {
+export function getInputModality(): InputModality {
 	init();
-	return keyboardMode;
+	return modality;
+}
+
+export function isKeyboardMode(): boolean {
+	return getInputModality() === 'keyboard';
+}
+
+export function isPointerMode(): boolean {
+	return getInputModality() === 'pointer';
 }
 
 /** @internal Reset state for testing only. */
-export function _resetKeyboardModeForTesting(): void {
+export function _resetInputModalityForTesting(): void {
 	controller?.abort();
 	controller = null;
-	keyboardMode = false;
+	modality = 'pointer';
 	initialized = false;
 }

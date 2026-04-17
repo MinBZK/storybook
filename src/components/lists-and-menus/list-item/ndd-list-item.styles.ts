@@ -112,7 +112,7 @@ export const styles = css`
 		cursor: var(--semantics-controls-link-cursor);
 	}
 
-	:host(.is-boxed) .list-item__action.is-keyboard-focus:focus::after {
+	:host(.is-boxed) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
 		content: '';
 		display: block;
 		position: absolute;
@@ -203,7 +203,7 @@ export const styles = css`
 		background-color: var(--components-list-item-is-hovered-background-color);
 	}
 
-	.list-item:has(.list-item__action.is-keyboard-focus:focus)::before {
+	.list-item:has(.list-item__action:focus-visible:not(.is-pointer-focus))::before {
 		display: block;
 		outline: var(--semantics-focus-ring-outline);
 		box-shadow: var(--semantics-focus-ring-box-shadow);

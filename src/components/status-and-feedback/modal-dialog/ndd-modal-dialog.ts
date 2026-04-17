@@ -25,7 +25,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { modalDialogStyles } from './ndd-modal-dialog.styles.ts';
 import { modalDialogTemplate } from './ndd-modal-dialog.template.ts';
-import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
+import { isKeyboardMode } from '../../../utilities/input-modality.js';
 import type { InlineDialogVariant } from '../inline-dialog/ndd-inline-dialog.ts';
 import '../inline-dialog/ndd-inline-dialog.ts';
 

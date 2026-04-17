@@ -1,5 +1,6 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.ts';
 import './ndd-list-item.ts';
 import '../list/ndd-list.ts';
 import '../cells/text-cell/ndd-text-cell.ts';
@@ -91,4 +92,63 @@ describe('ndd-list-item', () => {
 	});
 
 
+	// — Highlighted ————————————————————————————————————————————————————————
+
+	it('reflects highlighted attribute', async () => {
+		el = await fixture('<ndd-list-item highlighted></ndd-list-item>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('highlighted')).toBe(true);
+	});
+
+
+	it('forces focus on the action on click (Safari/Firefox workaround)', async () => {
+		el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+		await waitForUpdate(el);
+		const action = el.shadowRoot!.querySelector<HTMLButtonElement>('.list-item__action')!;
+		action.click();
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.activeElement).toBe(action);
+	});
+
+
+	// — Mouse-focus suppression ————————————————————————————————————————————
+
+	describe('is-pointer-focus', () => {
+		beforeEach(() => {
+			_resetInputModalityForTesting();
+			getInputModality(); // re-register document listeners
+		});
+
+		it('adds is-pointer-focus class on mouse focus', async () => {
+			el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+			await waitForUpdate(el);
+			document.dispatchEvent(new MouseEvent('mousedown'));
+			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
+			action.focus();
+			await waitForUpdate(el);
+			expect(action.classList.contains('is-pointer-focus')).toBe(true);
+		});
+
+		it('does not add is-pointer-focus class on keyboard focus', async () => {
+			el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+			await waitForUpdate(el);
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
+			action.focus();
+			await waitForUpdate(el);
+			expect(action.classList.contains('is-pointer-focus')).toBe(false);
+		});
+
+		it('removes is-pointer-focus class on blur', async () => {
+			el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+			await waitForUpdate(el);
+			document.dispatchEvent(new MouseEvent('mousedown'));
+			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
+			action.focus();
+			await waitForUpdate(el);
+			action.blur();
+			await waitForUpdate(el);
+			expect(action.classList.contains('is-pointer-focus')).toBe(false);
+		});
+	});
 });

@@ -2,7 +2,7 @@ import { LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { styles } from './ndd-list-item.styles.ts';
 import { template } from './ndd-list-item.template.ts';
-import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
+import { isPointerMode } from '../../../utilities/input-modality.js';
 import type { NDDList } from '../list/ndd-list.ts';
 import '../cells/spacer-cell/ndd-spacer-cell.ts';
 
@@ -65,6 +65,9 @@ export class NDDListItem extends LitElement {
 		super.disconnectedCallback();
 		this._listObserver?.disconnect();
 		this._listObserver = null;
+		this.removeEventListener('focusin', this._handleFocusIn);
+		this.removeEventListener('focusout', this._handleFocusOut);
+		this.removeEventListener('click', this._handleClick);
 	}
 
 	override firstUpdated() {
@@ -135,17 +138,20 @@ export class NDDListItem extends LitElement {
 	};
 
 	private _handleFocusIn = () => {
-		this._action?.classList.toggle('is-keyboard-focus', isKeyboardMode());
+		// Safari treats programmatic focus (forced on click for Safari/Firefox)
+		// as focus-visible. Opt out by marking mouse-originated focus with a
+		// class the CSS uses to suppress the focus ring. If JS fails, the
+		// browser-native :focus-visible still shows the ring.
+		this._action?.classList.toggle('is-pointer-focus', isPointerMode());
 	};
 
 	private _handleFocusOut = () => {
-		this._action?.classList.remove('is-keyboard-focus');
+		this._action?.classList.remove('is-pointer-focus');
 	};
 
 	private _observeFocus() {
-		// Attach to the host so events work regardless of shadow DOM re-renders
-		// (focusin/out and click bubble through shadow boundaries). _action is
-		// resolved lazily via @query inside the handlers.
+		// Attach to the host so events bubble correctly through shadow DOM.
+		// _action is resolved lazily via @query inside the handlers.
 		this.addEventListener('focusin', this._handleFocusIn);
 		this.addEventListener('focusout', this._handleFocusOut);
 		this.addEventListener('click', this._handleClick);

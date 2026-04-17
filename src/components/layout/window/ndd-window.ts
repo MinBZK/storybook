@@ -33,7 +33,7 @@ import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { windowStyles } from './ndd-window.styles.ts';
 import { windowTemplate } from './ndd-window.template.ts';
-import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
+import { isKeyboardMode } from '../../../utilities/input-modality.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
 @customElement('ndd-window')
