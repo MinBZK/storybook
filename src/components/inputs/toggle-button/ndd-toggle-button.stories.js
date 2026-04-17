@@ -131,7 +131,7 @@ export const AlleTypes = () => html`
 			<div style="display: flex; gap: 0.5rem;" role="radiogroup" aria-label="Sortering">
 				<ndd-toggle-button type="radio" name="sortering" value="oplopend" text="Oplopend" icon="sort-ascending"></ndd-toggle-button>
 				<ndd-toggle-button type="radio" name="sortering" value="aflopend" text="Aflopend" icon="sort-descending" selected></ndd-toggle-button>
-				<ndd-toggle-button type="radio" name="sortering" value="relevant" text="Relevant" icon="arrows-sort"></ndd-toggle-button>
+				<ndd-toggle-button type="radio" name="sortering" value="relevant" text="Relevant" icon="sort"></ndd-toggle-button>
 			</div>
 		</div>
 	</div>
@@ -282,7 +282,7 @@ export const TypeRadio = () => html`
 		<div style="display: flex; gap: 0.5rem;" role="radiogroup" aria-label="Sortering">
 			<ndd-toggle-button type="radio" name="sortering" value="oplopend" text="Oplopend" icon="sort-ascending"></ndd-toggle-button>
 			<ndd-toggle-button type="radio" name="sortering" value="aflopend" text="Aflopend" icon="sort-descending" selected></ndd-toggle-button>
-			<ndd-toggle-button type="radio" name="sortering" value="relevant" text="Relevant" icon="arrows-sort"></ndd-toggle-button>
+			<ndd-toggle-button type="radio" name="sortering" value="relevant" text="Relevant" icon="sort"></ndd-toggle-button>
 		</div>
 	</div>
 `;

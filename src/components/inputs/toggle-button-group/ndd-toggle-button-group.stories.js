@@ -139,7 +139,7 @@ export const SingleSelect = () => html`
 		<ndd-toggle-button-group type="radio" name="sortering" aria-label="Sortering">
 			<ndd-toggle-button value="oplopend" text="Oplopend" icon="sort-ascending"></ndd-toggle-button>
 			<ndd-toggle-button value="aflopend" text="Aflopend" icon="sort-descending" selected></ndd-toggle-button>
-			<ndd-toggle-button value="relevant" text="Relevant" icon="arrows-sort"></ndd-toggle-button>
+			<ndd-toggle-button value="relevant" text="Relevant" icon="sort"></ndd-toggle-button>
 		</ndd-toggle-button-group>
 	</div>
 `;
