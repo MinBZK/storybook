@@ -173,7 +173,16 @@ export const styles = css`
 	:host([selected]) .text-cell__text,
 	:host([selected]) .text-cell__overline,
 	:host([selected]) .text-cell__supporting-text {
-		color: var(--semantics-controls-is-selected-contrast-color);
+		color: var(--components-list-item-is-selected-content-color);
+	}
+
+
+	/* # Highlighted */
+
+	:host([highlighted]) .text-cell__text,
+	:host([highlighted]) .text-cell__overline,
+	:host([highlighted]) .text-cell__supporting-text {
+		color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 

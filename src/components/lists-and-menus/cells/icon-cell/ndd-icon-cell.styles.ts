@@ -81,10 +81,16 @@ export const styles = css`
 		height: var(--primitives-space-32);
 	}
 
-	/* # selected */
+	/* # Selected */
 
 	:host([selected]) {
-		color: var(--semantics-controls-is-selected-contrast-color);
+		color: var(--components-list-item-is-selected-content-color);
+	}
+
+	/* # Highlighted */
+
+	:host([highlighted]) {
+		color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 	/* # color: inherit */

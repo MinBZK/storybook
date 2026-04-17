@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './ndd-list-item.ts';
 import '../list/ndd-list.ts';
 import '../cells/text-cell/ndd-text-cell.ts';
@@ -21,15 +21,20 @@ export default {
 			description: 'Whether the item is selected',
 			table: { defaultValue: { summary: 'false' } },
 		},
+		highlighted: {
+			control: 'boolean',
+			description: 'Whether the item is highlighted (high contrast accent)',
+			table: { defaultValue: { summary: 'false' } },
+		},
 		type: {
 			control: 'select',
-			options: [undefined, 'button', 'link'],
+			options: ['', 'button'],
 			description: 'Interactive mode of the list item',
 			table: { defaultValue: { summary: '-' } },
 		},
 		href: {
 			control: 'text',
-			description: 'URL for type="link"',
+			description: 'Wanneer gezet, wordt het item als link gerenderd in plaats van het opgegeven type',
 		},
 	},
 };
@@ -38,10 +43,13 @@ export const Default = {
 	args: {
 		size: 'md',
 		selected: false,
+		highlighted: false,
+		type: '',
+		href: '',
 	},
 	render: (args) => html`
 		<ndd-list variant="simple">
-			<ndd-list-item size=${args.size} ?selected=${args.selected} type=${args.type} href=${args.href}>
+			<ndd-list-item size=${args.size} ?selected=${args.selected} ?highlighted=${args.highlighted} type=${args.type || nothing} href=${args.href || nothing}>
 				<ndd-text-cell text="Text cell" supporting-text="Supporting text" />
 			</ndd-list-item>
 		</ndd-list>
@@ -100,10 +108,10 @@ export const TypeButton = {
 export const TypeLink = {
 	render: () => html`
 		<ndd-list variant="simple">
-			<ndd-list-item type="link" href="/settings">
+			<ndd-list-item href="/settings">
 				<ndd-text-cell text="Settings" />
 			</ndd-list-item>
-			<ndd-list-item type="link" href="/profile">
+			<ndd-list-item href="/profile">
 				<ndd-text-cell text="Profile" />
 			</ndd-list-item>
 		</ndd-list>

@@ -2,6 +2,7 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styles } from './ndd-list-item.styles.ts';
 import { template } from './ndd-list-item.template.ts';
+import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
 import type { NDDList } from '../list/ndd-list.ts';
 import '../cells/spacer-cell/ndd-spacer-cell.ts';
 
@@ -25,6 +26,9 @@ export class NDDListItem extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;
+
+	@property({ type: Boolean, reflect: true })
+	highlighted = false;
 
 	/** When set, renders the item as a button or link. */
 	@property({ reflect: true })
@@ -71,11 +75,18 @@ export class NDDListItem extends LitElement {
 		this._syncWithList();
 		this._observeStartSlot();
 		this._observeEndSlot();
+		this._observeHighlight();
 	}
 
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('selected')) {
 			this._propagateSelected();
+			if (this.selected && this._isFocused) {
+				this.highlighted = true;
+			}
+		}
+		if (changed.has('highlighted')) {
+			this._propagateHighlighted();
 		}
 	}
 
@@ -124,6 +135,39 @@ export class NDDListItem extends LitElement {
 	private _observeEndSlot() {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="end"]');
 		slot?.addEventListener('slotchange', () => this._updateVisibility());
+	}
+
+	private _isFocused = false;
+
+	private _observeHighlight() {
+		const action = this.shadowRoot?.querySelector<HTMLElement>('.list-item__action');
+		// Safari and Firefox on Mac don't focus buttons on click. Force focus
+		// so :has(.list-item__action:focus) and highlight logic work consistently.
+		action?.addEventListener('click', () => action.focus());
+
+		this.addEventListener('focusin', () => {
+			this._isFocused = true;
+			action?.classList.toggle('is-keyboard-focus', isKeyboardMode());
+			if (this.selected) this.highlighted = true;
+		});
+		this.addEventListener('focusout', () => {
+			this._isFocused = false;
+			action?.classList.remove('is-keyboard-focus');
+			this.highlighted = false;
+		});
+	}
+
+	private _propagateHighlighted() {
+		const slots = this.shadowRoot?.querySelectorAll('slot');
+		slots?.forEach((slot) => {
+			slot.assignedElements({ flatten: true }).forEach((el) => {
+				if (this.highlighted) {
+					el.setAttribute('highlighted', '');
+				} else {
+					el.removeAttribute('highlighted');
+				}
+			});
+		});
 	}
 
 	private _propagateSelected() {

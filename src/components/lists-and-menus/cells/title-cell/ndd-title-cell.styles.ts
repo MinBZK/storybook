@@ -171,7 +171,16 @@ export const styles = css`
 	:host([selected]) .title-cell__title,
 	:host([selected]) .title-cell__overline,
 	:host([selected]) .title-cell__supporting-text {
-		color: var(--semantics-controls-is-selected-contrast-color);
+		color: var(--components-list-item-is-selected-content-color);
+	}
+
+
+	/* # Highlighted */
+
+	:host([highlighted]) .title-cell__title,
+	:host([highlighted]) .title-cell__overline,
+	:host([highlighted]) .title-cell__supporting-text {
+		color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 

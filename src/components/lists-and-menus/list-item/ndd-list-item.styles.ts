@@ -6,7 +6,8 @@ export const styles = css`
 	:host {
 		display: block;
 		width: 100%;
-		--_z-index-content: 1;
+		--_z-index-content: 0;
+		--_z-index-focus: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
 		--_focus-outline-offset: 6px;
 		-webkit-tap-highlight-color: transparent;
@@ -14,6 +15,11 @@ export const styles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	:host(:focus-within) {
+		position: relative;
+		z-index: var(--_z-index-focus);
 	}
 
 
@@ -73,20 +79,14 @@ export const styles = css`
 		text-align: start;
 		text-decoration: none;
 		color: inherit;
-	}
-
-	.list-item__action:focus-visible {
-		outline: var(--semantics-focus-ring-outline);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
-		border-radius: var(--primitives-corner-radius-xxs);
-	}
-
-	:host(.is-boxed) .list-item__action:focus-visible {
 		outline: none;
-		box-shadow: none;
 	}
 
-	:host(.is-boxed) .list-item__action:focus-visible:after {
+	a.list-item__action {
+		cursor: var(--semantics-controls-link-cursor);
+	}
+
+	:host(.is-boxed) .list-item__action.is-keyboard-focus:focus::after {
 		content: '';
 		display: block;
 		position: absolute;
@@ -154,6 +154,7 @@ export const styles = css`
 	}
 
 	:host([selected]) .list-item__divider,
+	:host([highlighted]) .list-item__divider,
 	:host(.is-boxed.is-last) .list-item__divider {
 		display: none;
 	}
@@ -171,17 +172,36 @@ export const styles = css`
 		z-index: var(--_z-index-indicator);
 	}
 
-	:host([selected]) .list-item::before {
-		display: block;
-		background-color: var(--components-list-item-is-selected-background-color);
-	}
-
 	.list-item:has(.list-item__action:hover)::before {
 		display: block;
 		background-color: var(--components-list-item-is-hovered-background-color);
 	}
 
-	:host([selected]) .list-item:has(.list-item__action:hover)::before {
+	.list-item:has(.list-item__action.is-keyboard-focus:focus)::before {
+		display: block;
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	:host([selected]) .list-item::before {
+		display: block;
 		background-color: var(--components-list-item-is-selected-background-color);
+	}
+
+	:host([selected]) .list-item:has(.list-item__action:hover)::before {
+		display: block;
+		background-color: var(--components-list-item-is-selected-background-color);
+	}
+
+	:host([highlighted]) .list-item::before,
+	:host([selected]:focus-within) .list-item::before {
+		display: block;
+		background-color: var(--components-list-item-is-highlighted-background-color);
+	}
+
+	:host([highlighted]) .list-item:has(.list-item__action:hover)::before,
+	:host([selected]:focus-within) .list-item:has(.list-item__action:hover)::before {
+		display: block;
+		background-color: var(--components-list-item-is-highlighted-background-color);
 	}
 `;

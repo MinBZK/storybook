@@ -90,7 +90,15 @@ export const styles = css`
 
 	:host([selected]) ::slotted([slot='title']),
 	:host([selected]) ::slotted([slot='description']) {
-		color: var(--semantics-controls-is-selected-contrast-color);
+		color: var(--components-list-item-is-selected-content-color);
+	}
+
+
+	/* # Highlighted */
+
+	:host([highlighted]) ::slotted([slot='title']),
+	:host([highlighted]) ::slotted([slot='description']) {
+		color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 

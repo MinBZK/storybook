@@ -1,5 +1,4 @@
 import { html } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 const areas = (showStart: boolean, showEnd: boolean) => html`
@@ -25,10 +24,10 @@ export const template = (
 	showStart: boolean,
 	showEnd: boolean,
 ) => {
-	if (type === 'link') {
+	if (href) {
 		return html`<div class="list-item">
 			<a class="list-item__action"
-				href=${ifDefined(href)}
+				href=${href}
 			>${areas(showStart, showEnd)}</a>
 		</div>`;
 	}
