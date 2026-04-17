@@ -59,6 +59,12 @@ export class NDDListItem extends LitElement {
 		// Skip setup for drag clones — they are visual-only copies inside ndd-list's shadow root
 		if (this.hasAttribute('data-ndd-clone')) return;
 		this.setAttribute('role', 'listitem');
+		// Attach focus/click listeners here (not firstUpdated) so they are
+		// re-attached when the element is removed and re-inserted into the DOM.
+		// _action is resolved lazily via @query inside the handlers.
+		this.addEventListener('focusin', this._handleFocusIn);
+		this.addEventListener('focusout', this._handleFocusOut);
+		this.addEventListener('click', this._handleClick);
 	}
 
 	override disconnectedCallback() {
@@ -81,7 +87,6 @@ export class NDDListItem extends LitElement {
 		this._syncWithList();
 		this._observeStartSlot();
 		this._observeEndSlot();
-		this._observeFocus();
 	}
 
 	/**
@@ -149,14 +154,6 @@ export class NDDListItem extends LitElement {
 	private _handleFocusOut = () => {
 		this._action?.classList.remove('is-pointer-focus');
 	};
-
-	private _observeFocus() {
-		// Attach to the host so events bubble correctly through shadow DOM.
-		// _action is resolved lazily via @query inside the handlers.
-		this.addEventListener('focusin', this._handleFocusIn);
-		this.addEventListener('focusout', this._handleFocusOut);
-		this.addEventListener('click', this._handleClick);
-	}
 
 	override render() {
 		return template(this.type, this.href, this._showStart, this._showEnd);
