@@ -7,11 +7,12 @@ import type { NDDList } from '../list/ndd-list.ts';
 import '../cells/spacer-cell/ndd-spacer-cell.ts';
 
 export type ListItemSize = 'sm' | 'md';
-export type ListItemType = 'button' | 'link';
+export type ListItemType = 'button';
 
 /**
  * A row within an `ndd-list`, providing layout for start, main and end areas.
- * Can render as a button, link, or plain container depending on `type`.
+ * Renders as a link when `href` is set, as a button when `type="button"`, or
+ * as a plain container otherwise.
  *
  * @slot         - Main content area (cells)
  * @slot start   - Content at the start of the row
@@ -30,11 +31,11 @@ export class NDDListItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	highlighted = false;
 
-	/** When set, renders the item as a button or link. */
+	/** When set, renders the item as a button. */
 	@property({ reflect: true })
 	type?: ListItemType;
 
-	/** URL for when type="link". */
+	/** When set, renders the item as a link (overrides type). */
 	@property({ reflect: true })
 	href?: string;
 

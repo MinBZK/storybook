@@ -42,8 +42,8 @@ describe('ndd-list-item', () => {
 		expect(el.shadowRoot!.querySelector('button.list-item__action')).not.toBeNull();
 	});
 
-	it('renders an anchor when type="link"', async () => {
-		el = await fixture('<ndd-list-item type="link" href="/test"></ndd-list-item>');
+	it('renders an anchor when href is set', async () => {
+		el = await fixture('<ndd-list-item href="/test"></ndd-list-item>');
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
 		expect(anchor).not.toBeNull();

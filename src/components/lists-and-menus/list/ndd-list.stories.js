@@ -207,7 +207,7 @@ export const WithInteractiveItems = {
 			<ndd-list-item type="button">
 				<ndd-text-cell text="Button item" />
 			</ndd-list-item>
-			<ndd-list-item type="link" href="/settings">
+			<ndd-list-item href="/settings">
 				<ndd-text-cell text="Link item" />
 			</ndd-list-item>
 			<ndd-list-item>
