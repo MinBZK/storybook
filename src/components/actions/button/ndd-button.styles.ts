@@ -72,7 +72,7 @@ export const styles = css`
 	:host([size="xs"]) .button {
 		min-height: var(--semantics-controls-xs-min-size);
 		min-width: var(--semantics-controls-xs-min-size);
-		padding: var(--primitives-space-4) var(--primitives-space-6);
+		padding: var(--semantics-controls-xs-block-padding) var(--semantics-controls-xs-inline-padding);
 		font: var(--semantics-buttons-xs-font);
 		border-radius: var(--semantics-controls-xs-corner-radius);
 		gap: var(--semantics-buttons-xs-gap);
@@ -83,7 +83,7 @@ export const styles = css`
 	:host([size="sm"]) .button {
 		min-height: var(--semantics-controls-sm-min-size);
 		min-width: var(--semantics-controls-sm-min-size);
-		padding: var(--primitives-space-6) var(--primitives-space-10);
+		padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
 		font: var(--semantics-buttons-sm-font);
 		border-radius: var(--semantics-controls-sm-corner-radius);
 		gap: var(--semantics-buttons-sm-gap);
@@ -95,7 +95,7 @@ export const styles = css`
 	:host(:not([size])) .button {
 		min-height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
-		padding: var(--primitives-space-12);
+		padding: var(--semantics-controls-md-block-padding) var(--semantics-controls-md-inline-padding);
 		font: var(--semantics-buttons-md-font);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		gap: var(--semantics-buttons-md-gap);

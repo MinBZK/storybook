@@ -23,17 +23,21 @@ export const textFieldStyles = css`
 		align-items: center;
 		overflow: hidden;
 		box-sizing: border-box;
-		padding-left: var(--primitives-space-12);
-		min-height: var(--semantics-controls-md-min-size);
 		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
-		border-radius: var(--semantics-controls-md-corner-radius);
 		background-color: var(--_background-color);
 	}
 
 	:host([size='sm']) .text-field {
-		padding-left: var(--primitives-space-8);
+		padding-left: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
 		min-height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
+	:host([size='md']) .text-field,
+	:host(:not([size])) .text-field {
+		padding-left: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
+		min-height: var(--semantics-controls-md-min-size);
+		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
 	:host([valid]) .text-field {

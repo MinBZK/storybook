@@ -53,7 +53,7 @@ export const comboBoxStyles = css`
 		border: none;
 		background: transparent;
 		margin: 0;
-		padding: 0 var(--primitives-space-12);
+		padding: 0 calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 		outline: none;
 		box-sizing: border-box;
 		flex: 1;
