@@ -68,14 +68,14 @@ export const collectionStyles = css`
 			to right,
 			transparent 0,
 			black var(--primitives-space-16),
-			black calc(100% - 48px),
+			black calc(100% - var(--primitives-space-48)),
 			transparent 100%
 		);
 	}
 
 	:host([layout='horizontal-scroll']) .collection__items::after {
 		content: '';
-		flex: 0 0 48px;
+		flex: 0 0 var(--primitives-space-48);
 	}
 
 	:host([layout='horizontal-scroll']) .collection__items::-webkit-scrollbar {

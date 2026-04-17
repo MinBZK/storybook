@@ -139,9 +139,10 @@ export class NDDListItem extends LitElement {
 
 	private _handleFocusIn = () => {
 		// Safari treats programmatic focus (forced on click for Safari/Firefox)
-		// as focus-visible. Opt out by marking mouse-originated focus with a
-		// class the CSS uses to suppress the focus ring. If JS fails, the
-		// browser-native :focus-visible still shows the ring.
+		// as focus-visible. Opt out by marking pointer-originated focus with a
+		// class the CSS uses to suppress the ::before focus ring. If JS fails,
+		// is-pointer-focus is never set so the CSS selector still matches on
+		// keyboard focus and the custom ring renders — accessible by default.
 		this._action?.classList.toggle('is-pointer-focus', isPointerMode());
 	};
 
