@@ -885,6 +885,12 @@
 	--components-card-corner-radius: var(--primitives-corner-radius-none);
 	--components-card-box-shadow: var(--primitives-box-shadows-level-2);
 
+	/* ## Collection */
+
+	--components-collection-sm-gap: var(--primitives-space-16);
+	--components-collection-md-gap: var(--primitives-space-24);
+	--components-collection-lg-gap: var(--primitives-space-24);
+
 	/* ## Button group */
 
 	--components-button-group-sm-gap: var(--primitives-space-6);

@@ -2,6 +2,7 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
+const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
 /* # ndd-collection styles */
@@ -25,10 +26,14 @@ export const collectionStyles = css`
 	.collection__items {
 		display: flex;
 		width: 100%;
-		gap: var(--primitives-space-16);
+		gap: var(--components-collection-sm-gap);
 
 		@media (min-width: ${mdMin}) {
-			gap: var(--primitives-space-24);
+			gap: var(--components-collection-md-gap);
+		}
+
+		@media (min-width: ${lgMin}) {
+			gap: var(--components-collection-lg-gap);
 		}
 	}
 

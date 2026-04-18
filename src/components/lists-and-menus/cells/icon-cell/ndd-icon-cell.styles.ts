@@ -20,13 +20,22 @@ export const styles = css`
 
 	:host([vertical-alignment="center"]),
 	:host(:not([vertical-alignment])) {
+		align-self: stretch;
 		justify-content: center;
 	}
 
 	/* ## vertical-alignment: top */
 
 	:host([vertical-alignment="top"]) {
+		align-self: flex-start;
 		justify-content: flex-start;
+	}
+
+	/* ## vertical-alignment: bottom */
+
+	:host([vertical-alignment="bottom"]) {
+		align-self: flex-end;
+		justify-content: flex-end;
 	}
 
 	/* # size */
