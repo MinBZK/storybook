@@ -4,7 +4,7 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
 
-/* # ndd-split-view-pane styles */
+/* # nldd-split-view-pane styles */
 
 export const splitViewPaneStyles = css`
 	:host {

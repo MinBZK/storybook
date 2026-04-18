@@ -1,7 +1,7 @@
 import { html } from 'lit';
-import type { NDDButtonGroup } from './ndd-button-group.ts';
+import type { NLDDButtonGroup } from './button-group.ts';
 
-export function template(this: NDDButtonGroup) {
+export function template(this: NLDDButtonGroup) {
 	return html`
 	<div class="button-group">
 		<slot @slotchange=${this.handleSlotChange}></slot>

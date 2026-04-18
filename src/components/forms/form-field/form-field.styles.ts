@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 /* ============================================================
-   ndd-form-field
+   nldd-form-field
    ============================================================ */
 
 export const formFieldStyles = css`
@@ -145,7 +145,7 @@ export const formFieldStyles = css`
 `;
 
 /* ============================================================
-   ndd-form-field-help-text
+   nldd-form-field-help-text
    ============================================================ */
 
 export const formFieldHelpTextStyles = css`
@@ -195,7 +195,7 @@ export const formFieldHelpTextStyles = css`
 `;
 
 /* ============================================================
-   ndd-form-field-error-text
+   nldd-form-field-error-text
    ============================================================ */
 
 export const formFieldErrorTextStyles = css`

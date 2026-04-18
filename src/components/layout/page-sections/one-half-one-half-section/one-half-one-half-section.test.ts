@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
-import './ndd-one-half-one-half-section.ts';
+import './one-half-one-half-section.ts';
 
-describe('ndd-one-half-one-half-section', () => {
+describe('nldd-one-half-one-half-section', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -10,19 +10,19 @@ describe('ndd-one-half-one-half-section', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-one-half-one-half-section></ndd-one-half-one-half-section>');
+		el = await fixture('<nldd-one-half-one-half-section></nldd-one-half-one-half-section>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a section element in the shadow DOM', async () => {
-		el = await fixture('<ndd-one-half-one-half-section></ndd-one-half-one-half-section>');
+		el = await fixture('<nldd-one-half-one-half-section></nldd-one-half-one-half-section>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('section')).not.toBeNull();
 	});
 
 	it('renders main and aside columns', async () => {
-		el = await fixture('<ndd-one-half-one-half-section></ndd-one-half-one-half-section>');
+		el = await fixture('<nldd-one-half-one-half-section></nldd-one-half-one-half-section>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.one-half-one-half-section__left-column')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('.one-half-one-half-section__right-column')).not.toBeNull();

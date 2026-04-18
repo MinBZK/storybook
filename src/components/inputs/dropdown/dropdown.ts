@@ -7,7 +7,7 @@
  * and keyboard navigation, including `<optgroup>`, `data-*` attributes and
  * dynamic changes to options.
  *
- * @element ndd-dropdown
+ * @element nldd-dropdown
  * @attr {string}  size     - Size: 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
  *
@@ -17,25 +17,25 @@
  *
  * @example
  * ```html
- * <ndd-dropdown>
+ * <nldd-dropdown>
  *   <select name="land" aria-label="Land">
  *     <option value="" disabled selected>Selecteer een land</option>
  *     <option value="nl">Nederland</option>
  *     <option value="be">België</option>
  *   </select>
- * </ndd-dropdown>
+ * </nldd-dropdown>
  * ```
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { dropdownStyles } from './ndd-dropdown.styles.ts';
-import { dropdownTemplate } from './ndd-dropdown.template.ts';
-import './../../content/icon/ndd-icon.ts';
+import { dropdownStyles } from './dropdown.styles.ts';
+import { dropdownTemplate } from './dropdown.template.ts';
+import './../../content/icon/icon.ts';
 
 export type DropdownSize = 'sm' | 'md';
 
-@customElement('ndd-dropdown')
-export class NDDDropdown extends LitElement {
+@customElement('nldd-dropdown')
+export class NLDDDropdown extends LitElement {
 	static override styles = dropdownStyles;
 
 	@property({ type: String, reflect: true })
@@ -76,7 +76,7 @@ export class NDDDropdown extends LitElement {
 		}
 
 		if (!select.hasAttribute('aria-label') && !select.hasAttribute('aria-labelledby') && !select.labels?.length) {
-			console.warn('<ndd-dropdown>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.');
+			console.warn('<nldd-dropdown>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.');
 		}
 
 		select.addEventListener('change', this._handleSelectChange);
@@ -113,6 +113,6 @@ export class NDDDropdown extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-dropdown': NDDDropdown;
+		'nldd-dropdown': NLDDDropdown;
 	}
 }

@@ -2,25 +2,25 @@
  * Nederlandse Digitale Dienst Button Bar Component (Lit + TypeScript)
  *
  * A horizontal container for grouping buttons with a neutral background.
- * Automatically propagates its size and variant to all child ndd-button and ndd-icon-button elements.
- * Renders ndd-button-bar-divider elements as internal dividers — no separate component needed.
+ * Automatically propagates its size and variant to all child nldd-button and nldd-icon-button elements.
+ * Renders nldd-button-bar-divider elements as internal dividers — no separate component needed.
  *
- * @element ndd-button-bar
+ * @element nldd-button-bar
  * @attr {string} size - Bar size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {string} variant - Button variant (default: 'neutral-tinted')
  * @attr {boolean} disabled - Disabled state
  *
- * @slot - Default slot for ndd-button, ndd-icon-button and ndd-button-bar-divider elements
+ * @slot - Default slot for nldd-button, nldd-icon-button and nldd-button-bar-divider elements
  *
  * @csspart bar - The button bar container
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './ndd-button-bar.styles.ts';
-import { template } from './ndd-button-bar.template.ts';
+import { styles } from './button-bar.styles.ts';
+import { template } from './button-bar.template.ts';
 
-if (!customElements.get('ndd-button-bar-divider')) {
-	customElements.define('ndd-button-bar-divider', class extends HTMLElement {});
+if (!customElements.get('nldd-button-bar-divider')) {
+	customElements.define('nldd-button-bar-divider', class extends HTMLElement {});
 }
 
 export type Size = 'xs' | 'sm' | 'md';
@@ -29,10 +29,10 @@ export type BarChild =
 	| { type: 'divider'; id: number }
 	| { type: 'button'; element: Element; id: number };
 
-const BUTTON_TAGS = ['ndd-button', 'ndd-icon-button'];
+const BUTTON_TAGS = ['nldd-button', 'nldd-icon-button'];
 
-@customElement('ndd-button-bar')
-export class NDDButtonBar extends LitElement {
+@customElement('nldd-button-bar')
+export class NLDDButtonBar extends LitElement {
 	static override styles = styles;
 
 	@property({ type: String, reflect: true })
@@ -142,7 +142,7 @@ export class NDDButtonBar extends LitElement {
 		this._children = Array.from(this.children).map(el => {
 			const tag = el.tagName.toLowerCase();
 
-			if (tag === 'ndd-button-bar-divider') {
+			if (tag === 'nldd-button-bar-divider') {
 				return { type: 'divider', id: this._idCounter++ } as BarChild;
 			}
 
@@ -169,7 +169,7 @@ export class NDDButtonBar extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-button-bar': NDDButtonBar;
-		'ndd-button-bar-divider': HTMLElement;
+		'nldd-button-bar': NLDDButtonBar;
+		'nldd-button-bar-divider': HTMLElement;
 	}
 }

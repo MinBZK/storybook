@@ -1,17 +1,17 @@
 /**
  * Nederlandse Digitale Dienst Combo Box Component (Lit + TypeScript)
  *
- * A text input with autocomplete dropdown via ndd-menu.
- * Add a slotted ndd-menu with ndd-menu-item children to provide options.
+ * A text input with autocomplete dropdown via nldd-menu.
+ * Add a slotted nldd-menu with nldd-menu-item children to provide options.
  *
- * The slotted ndd-menu keeps its default focus behavior (menu container receives focus)
+ * The slotted nldd-menu keeps its default focus behavior (menu container receives focus)
  * so that typing keeps focus on the input. The picker button moves focus
  * to the menu explicitly on activation.
  *
- * Note: Only ndd-menu-item type="button" is supported. Radio and checkbox
+ * Note: Only nldd-menu-item type="button" is supported. Radio and checkbox
  * types are not supported in this context.
  *
- * @element ndd-combo-box
+ * @element nldd-combo-box
  * @attr {string}  value        - The selected form value
  * @attr {string}  placeholder  - Placeholder text for the input
  * @attr {boolean} disabled     - Disabled state
@@ -24,7 +24,7 @@
  *       and presses Enter or moves focus away, the typed text is emitted as-is via the
  *       `change` event. Consumers are responsible for validating emitted values.
  *
- * @slot - An ndd-menu element with ndd-menu-item and ndd-menu-divider children
+ * @slot - An nldd-menu element with nldd-menu-item and nldd-menu-divider children
  *
  * @fires input  - When the input value changes; detail: { value: string }
  * @fires change - When an option is selected or a custom value is committed;
@@ -32,28 +32,28 @@
  *
  * @example
  * ```html
- * <ndd-combo-box placeholder="Zoek een land" name="land">
- *   <ndd-menu>
- *     <ndd-menu-item text="Nederland" value="nl"></ndd-menu-item>
- *     <ndd-menu-item text="België" value="be"></ndd-menu-item>
- *   </ndd-menu>
- * </ndd-combo-box>
+ * <nldd-combo-box placeholder="Zoek een land" name="land">
+ *   <nldd-menu>
+ *     <nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+ *     <nldd-menu-item text="België" value="be"></nldd-menu-item>
+ *   </nldd-menu>
+ * </nldd-combo-box>
  * ```
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
-import { comboBoxStyles } from './ndd-combo-box.styles.ts';
-import { comboBoxTemplate } from './ndd-combo-box.template.ts';
-import { nddComboBoxTranslations } from './ndd-combo-box.i18n.ts';
-import type { NDDComboBoxTranslations } from './ndd-combo-box.i18n.ts';
-import type { NDDMenu, NDDMenuItem } from '../../lists-and-menus/menu/ndd-menu.js';
-import '../../lists-and-menus/menu/ndd-menu.ts';
-import '../../actions/icon-button/ndd-icon-button.ts';
-import '../../content/icon/ndd-icon.ts';
+import { comboBoxStyles } from './combo-box.styles.ts';
+import { comboBoxTemplate } from './combo-box.template.ts';
+import { nlddComboBoxTranslations } from './combo-box.i18n.ts';
+import type { NLDDComboBoxTranslations } from './combo-box.i18n.ts';
+import type { NLDDMenu, NLDDMenuItem } from '../../lists-and-menus/menu/menu.js';
+import '../../lists-and-menus/menu/menu.ts';
+import '../../actions/icon-button/icon-button.ts';
+import '../../content/icon/icon.ts';
 
 
-@customElement('ndd-combo-box')
-export class NDDComboBox extends LitElement {
+@customElement('nldd-combo-box')
+export class NLDDComboBox extends LitElement {
 	static override styles = comboBoxStyles;
 
 	@property({ type: String })
@@ -76,7 +76,7 @@ export class NDDComboBox extends LitElement {
 	accessibleLabel = '';
 
 	@property({ type: Object })
-	translations: Partial<NDDComboBoxTranslations> = {};
+	translations: Partial<NLDDComboBoxTranslations> = {};
 
 	@state()
 	_isOpen = false;
@@ -90,9 +90,9 @@ export class NDDComboBox extends LitElement {
 	_highlightedId = '';
 
 	private static _counter = 0;
-	readonly _menuId = `ndd-combo-box-menu-${NDDComboBox._counter++}`;
+	readonly _menuId = `nldd-combo-box-menu-${NLDDComboBox._counter++}`;
 
-	private _menu: NDDMenu | null = null;
+	private _menu: NLDDMenu | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
 
 	@query('.combo-box__input')
@@ -100,15 +100,15 @@ export class NDDComboBox extends LitElement {
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
-	public _t(key: keyof NDDComboBoxTranslations): string {
-		return this.translations[key] ?? nddComboBoxTranslations[key];
+	public _t(key: keyof NLDDComboBoxTranslations): string {
+		return this.translations[key] ?? nlddComboBoxTranslations[key];
 	}
 
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
 	override firstUpdated(): void {
 		if (!this.accessibleLabel) {
-			console.warn('<ndd-combo-box>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
+			console.warn('<nldd-combo-box>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
 		}
 	}
 
@@ -145,7 +145,7 @@ export class NDDComboBox extends LitElement {
 	public _onSlotChange(): void {
 		const slot = this.shadowRoot?.querySelector('slot');
 		const menu = slot?.assignedElements({ flatten: true })
-			.find(el => el.tagName.toLowerCase() === 'ndd-menu') as NDDMenu | undefined;
+			.find(el => el.tagName.toLowerCase() === 'nldd-menu') as NLDDMenu | undefined;
 
 		if (!menu || menu === this._menu) return;
 
@@ -191,7 +191,7 @@ export class NDDComboBox extends LitElement {
 	};
 
 	private _handleMenuSelect = (e: Event): void => {
-		const item = e.target as NDDMenuItem;
+		const item = e.target as NLDDMenuItem;
 		this._displayValue = item.text;
 		this.value = item.value || item.text;
 		this._highlightedId = '';
@@ -216,7 +216,7 @@ export class NDDComboBox extends LitElement {
 	public _openMenu(): void {
 		if (!this._menu || this._isOpen) return;
 		if (!('showPopover' in this._menu)) {
-			console.warn('<ndd-combo-box>: Popover API is not supported in this browser. The dropdown will not open.');
+			console.warn('<nldd-combo-box>: Popover API is not supported in this browser. The dropdown will not open.');
 			return;
 		}
 		this._updateMenuWidth();
@@ -344,6 +344,6 @@ export class NDDComboBox extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-combo-box': NDDComboBox;
+		'nldd-combo-box': NLDDComboBox;
 	}
 }

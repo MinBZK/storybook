@@ -1,4 +1,4 @@
-export const nddListTranslations = {
+export const nlddListTranslations = {
 	'components.list.items-label-text': 'Lijst',
 	'components.list.drag-grabbed-text': 'Item opgepakt. Gebruik de pijltjestoetsen om te verplaatsen, Spatie of Enter om neer te zetten, Escape om te annuleren.',
 	'components.list.drag-dropped-text': 'Item neergezet op positie {position}.',
@@ -8,4 +8,4 @@ export const nddListTranslations = {
 	'components.list.drag-handle-active-label-text': 'Positie {position} van {total} — druk Enter om te bevestigen, Escape om te annuleren.',
 };
 
-export type NDDListTranslations = typeof nddListTranslations;
+export type NLDDListTranslations = typeof nlddListTranslations;

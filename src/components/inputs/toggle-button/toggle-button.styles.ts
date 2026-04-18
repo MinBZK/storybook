@@ -126,8 +126,8 @@ export const toggleButtonStyles = css`
 
 	/* # Icon */
 
-	/* Hide the original ndd-icon in the slot — it is re-rendered in the shadow DOM */
-	::slotted(ndd-icon) {
+	/* Hide the original nldd-icon in the slot — it is re-rendered in the shadow DOM */
+	::slotted(nldd-icon) {
 		display: none;
 	}
 

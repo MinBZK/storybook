@@ -1,11 +1,11 @@
 import { html } from 'lit';
-import './ndd-button-bar.ts';
-import '../button/ndd-button.ts';
-import '../icon-button/ndd-icon-button.ts';
+import './button-bar.ts';
+import '../button/button.ts';
+import '../icon-button/icon-button.ts';
 
 export default {
 	title: 'Components/Actions/Button Bar',
-	component: 'ndd-button-bar',
+	component: 'nldd-button-bar',
 	tags: ['autodocs'],
 
 	argTypes: {
@@ -26,38 +26,38 @@ export default {
 export const Default = {
 	args: { size: 'md', disabled: false },
 	render: (args) => html`
-		<ndd-button-bar size=${args.size} ?disabled=${args.disabled}>
-			<ndd-icon-button icon="chevron-left" text="Vorige"></ndd-icon-button>
-			<ndd-button-bar-divider></ndd-button-bar-divider>
-			<ndd-icon-button icon="chevron-right" text="Volgende"></ndd-icon-button>
-		</ndd-button-bar>
+		<nldd-button-bar size=${args.size} ?disabled=${args.disabled}>
+			<nldd-icon-button icon="chevron-left" text="Vorige"></nldd-icon-button>
+			<nldd-button-bar-divider></nldd-button-bar-divider>
+			<nldd-icon-button icon="chevron-right" text="Volgende"></nldd-icon-button>
+		</nldd-button-bar>
 	`,
 };
 
 export const Sizes = {
 	render: () => html`
 		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-			<ndd-button-bar size="md">
-				<ndd-button text="Bewerk"></ndd-button>
-				<ndd-button-bar-divider></ndd-button-bar-divider>
-				<ndd-button text="Dupliceer"></ndd-button>
-				<ndd-button-bar-divider></ndd-button-bar-divider>
-				<ndd-icon-button icon="trash" text="Verwijder"></ndd-icon-button>
-			</ndd-button-bar>
-			<ndd-button-bar size="sm">
-				<ndd-button text="Bewerk"></ndd-button>
-				<ndd-button-bar-divider></ndd-button-bar-divider>
-				<ndd-button text="Dupliceer"></ndd-button>
-				<ndd-button-bar-divider></ndd-button-bar-divider>
-				<ndd-icon-button icon="trash" text="Verwijder"></ndd-icon-button>
-			</ndd-button-bar>
-			<ndd-button-bar size="xs">
-				<ndd-button text="Bewerk"></ndd-button>
-				<ndd-button-bar-divider></ndd-button-bar-divider>
-				<ndd-button text="Dupliceer"></ndd-button>
-				<ndd-button-bar-divider></ndd-button-bar-divider>
-				<ndd-icon-button icon="trash" text="Verwijder"></ndd-icon-button>
-			</ndd-button-bar>
+			<nldd-button-bar size="md">
+				<nldd-button text="Bewerk"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-button text="Dupliceer"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-icon-button icon="trash" text="Verwijder"></nldd-icon-button>
+			</nldd-button-bar>
+			<nldd-button-bar size="sm">
+				<nldd-button text="Bewerk"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-button text="Dupliceer"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-icon-button icon="trash" text="Verwijder"></nldd-icon-button>
+			</nldd-button-bar>
+			<nldd-button-bar size="xs">
+				<nldd-button text="Bewerk"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-button text="Dupliceer"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-icon-button icon="trash" text="Verwijder"></nldd-icon-button>
+			</nldd-button-bar>
 		</div>
 	`,
 };
@@ -65,24 +65,24 @@ export const Sizes = {
 export const WithoutDivider = {
 	args: { size: 'md', disabled: false },
 	render: (args) => html`
-		<ndd-button-bar size=${args.size} ?disabled=${args.disabled}>
-			<ndd-button text="Cut"></ndd-button>
-			<ndd-button text="Copy"></ndd-button>
-			<ndd-button text="Paste"></ndd-button>
-		</ndd-button-bar>
+		<nldd-button-bar size=${args.size} ?disabled=${args.disabled}>
+			<nldd-button text="Cut"></nldd-button>
+			<nldd-button text="Copy"></nldd-button>
+			<nldd-button text="Paste"></nldd-button>
+		</nldd-button-bar>
 	`,
 };
 
 export const Disabled = {
 	render: () => html`
 		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-			<ndd-button-bar size="md" disabled>
-				<ndd-button text="Bewerk"></ndd-button>
-				<ndd-button-bar-divider></ndd-button-bar-divider>
-				<ndd-button text="Dupliceer"></ndd-button>
-				<ndd-button-bar-divider></ndd-button-bar-divider>
-				<ndd-icon-button icon="trash" text="Verwijder"></ndd-icon-button>
-			</ndd-button-bar>
+			<nldd-button-bar size="md" disabled>
+				<nldd-button text="Bewerk"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-button text="Dupliceer"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-icon-button icon="trash" text="Verwijder"></nldd-icon-button>
+			</nldd-button-bar>
 		</div>
 	`,
 };

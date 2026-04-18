@@ -1,27 +1,27 @@
 /**
  * Nederlandse Digitale Dienst Radio Button Group Component (Lit + TypeScript)
  *
- * Groups ndd-radio-button-field elements, handles keyboard navigation,
+ * Groups nldd-radio-button-field elements, handles keyboard navigation,
  * and forwards name and disabled state to all child fields.
- * Use inside ndd-form-field which provides the group label.
+ * Use inside nldd-form-field which provides the group label.
  *
- * @element ndd-radio-button-group
- * @attr {string}  name     - Forwarded to all slotted ndd-radio-button-field elements
+ * @element nldd-radio-button-group
+ * @attr {string}  name     - Forwarded to all slotted nldd-radio-button-field elements
  * @attr {boolean} disabled - Disables all slotted fields
  * @attr {boolean} required - Marks the group as required
  *
- * @slot - Slot for ndd-radio-button-field elements
+ * @slot - Slot for nldd-radio-button-field elements
  *
  * @fires change - Bubbles up from the checked field; detail: { checked: boolean, value: string }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { radioButtonGroupStyles } from './ndd-radio-button-group.styles.ts';
-import { radioButtonGroupTemplate } from './ndd-radio-button-group.template.ts';
-import type { NDDRadioButtonField } from '../radio-button-field/ndd-radio-button-field.js';
+import { radioButtonGroupStyles } from './radio-button-group.styles.ts';
+import { radioButtonGroupTemplate } from './radio-button-group.template.ts';
+import type { NLDDRadioButtonField } from '../radio-button-field/radio-button-field.js';
 
-@customElement('ndd-radio-button-group')
-export class NDDRadioButtonGroup extends LitElement {
+@customElement('nldd-radio-button-group')
+export class NLDDRadioButtonGroup extends LitElement {
 	static override styles = radioButtonGroupStyles;
 
 	@property({ type: String })
@@ -69,11 +69,11 @@ export class NDDRadioButtonGroup extends LitElement {
 		}
 	}
 
-	private _getFields(): NDDRadioButtonField[] {
-		return Array.from(this.querySelectorAll('ndd-radio-button-field'));
+	private _getFields(): NLDDRadioButtonField[] {
+		return Array.from(this.querySelectorAll('nldd-radio-button-field'));
 	}
 
-	private _getEnabledFields(): NDDRadioButtonField[] {
+	private _getEnabledFields(): NLDDRadioButtonField[] {
 		return this._getFields().filter(f => !f.disabled);
 	}
 
@@ -94,7 +94,7 @@ export class NDDRadioButtonGroup extends LitElement {
 	}
 
 	private _handleChange = (e: Event): void => {
-		const changedField = e.target as NDDRadioButtonField;
+		const changedField = e.target as NLDDRadioButtonField;
 		if (!changedField.checked) return;
 		this._getFields().forEach(field => {
 			if (field !== changedField) field.checked = false;
@@ -124,7 +124,7 @@ export class NDDRadioButtonGroup extends LitElement {
 		nextField.checked = true;
 
 		const input = nextField.shadowRoot
-			?.querySelector('ndd-radio-button')
+			?.querySelector('nldd-radio-button')
 			?.shadowRoot?.querySelector('input');
 		input?.focus();
 
@@ -146,6 +146,6 @@ export class NDDRadioButtonGroup extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-radio-button-group': NDDRadioButtonGroup;
+		'nldd-radio-button-group': NLDDRadioButtonGroup;
 	}
 }

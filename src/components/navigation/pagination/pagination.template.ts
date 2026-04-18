@@ -1,9 +1,9 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDPagination } from './ndd-pagination.ts';
-import '../../actions/icon-button/ndd-icon-button.ts';
-import '../../content/icon/ndd-icon.ts';
+import type { NLDDPagination } from './pagination.ts';
+import '../../actions/icon-button/icon-button.ts';
+import '../../content/icon/icon.ts';
 
-export function paginationTemplate(component: NDDPagination): TemplateResult {
+export function paginationTemplate(component: NLDDPagination): TemplateResult {
 	const pages = component._getVisiblePages();
 	const atFirst = component.current <= 1;
 	const atLast = component.current >= component.total;
@@ -47,14 +47,14 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 		<nav class="pagination"
 			aria-label=${t('components.pagination.accessibility-label')}
 		>
-			<ndd-icon-button
+			<nldd-icon-button
 				icon="chevron-left-small"
 				text=${t('components.pagination.previous-action')}
 				variant="neutral-tinted"
 				?disabled=${isDisabled || atFirst}
 				href=${hasHref && !isDisabled && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
 				@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current - 1); }}
-			></ndd-icon-button>
+			></nldd-icon-button>
 			<div class="pagination__divider" aria-hidden="true">
 				<div class="pagination__divider-line"></div>
 			</div>
@@ -77,21 +77,21 @@ export function paginationTemplate(component: NDDPagination): TemplateResult {
 						`)}
 					</select>
 					<div class="pagination__select-picker-icon">
-						<ndd-icon name="chevron-up-down"></ndd-icon>
+						<nldd-icon name="chevron-up-down"></nldd-icon>
 					</div>
 				</div>
 			</div>
 			<div class="pagination__divider" aria-hidden="true">
 				<div class="pagination__divider-line"></div>
 			</div>
-			<ndd-icon-button
+			<nldd-icon-button
 				icon="chevron-right-small"
 				text=${t('components.pagination.next-action')}
 				variant="neutral-tinted"
 				?disabled=${isDisabled || atLast}
 				href=${hasHref && !isDisabled && !atLast ? component._hrefForPage(component.current + 1) : nothing}
 				@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current + 1); }}
-			></ndd-icon-button>
+			></nldd-icon-button>
 		</nav>
 	`;
 }

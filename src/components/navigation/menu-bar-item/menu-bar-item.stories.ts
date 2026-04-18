@@ -1,10 +1,10 @@
 import { html, nothing } from 'lit';
-import './ndd-menu-bar-item.ts';
-import { ICONS } from '../../content/icon/ndd-icon.ts';
+import './menu-bar-item.ts';
+import { ICONS } from '../../content/icon/icon.ts';
 
 export default {
 	title: 'Components/Navigation/Menu Bar Item',
-	component: 'ndd-menu-bar-item',
+	component: 'nldd-menu-bar-item',
 	tags: ['autodocs'],
 	args: {
 		text: 'Menu item',
@@ -19,7 +19,7 @@ export default {
 	},
 	argTypes: {
 		text: { control: 'text', description: 'Tekst van het item' },
-		icon: { control: 'select', options: ['', ...ICONS], description: 'Icon naam (ndd-icon)', table: { defaultValue: { summary: '' } } },
+		icon: { control: 'select', options: ['', ...ICONS], description: 'Icon naam (nldd-icon)', table: { defaultValue: { summary: '' } } },
 		href: { control: 'text', description: 'Optionele link URL', table: { defaultValue: { summary: '' } } },
 		current: { control: 'boolean', description: 'Markeer als actief/huidig', table: { defaultValue: { summary: false } } },
 		expandable: { control: 'boolean', description: 'Toon disclosure icon', table: { defaultValue: { summary: false } } },
@@ -47,7 +47,7 @@ const Template = ({
 	compact,
 	disabled,
 }: Record<string, unknown>) => html`
-	<ndd-menu-bar-item
+	<nldd-menu-bar-item
 		text=${text || nothing}
 		icon=${icon || nothing}
 		href=${href || nothing}
@@ -57,7 +57,7 @@ const Template = ({
 		content-priority=${contentPriority || nothing}
 		?compact=${compact}
 		?disabled=${disabled}
-	></ndd-menu-bar-item>
+	></nldd-menu-bar-item>
 `;
 
 export const Default = Template.bind({});
@@ -111,12 +111,12 @@ Disabled.args = {
 
 export const Expandable = {
 	render: () => html`
-		<ndd-menu-bar-item text="Account" icon="person" expandable>
-			<ndd-menu-item text="Mijn profiel"></ndd-menu-item>
-			<ndd-menu-item text="Instellingen"></ndd-menu-item>
-			<ndd-menu-divider></ndd-menu-divider>
-			<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-		</ndd-menu-bar-item>
+		<nldd-menu-bar-item text="Account" icon="person" expandable>
+			<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
+			<nldd-menu-item text="Instellingen"></nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+		</nldd-menu-bar-item>
 	`,
 	parameters: { controls: { disable: true } },
 };
@@ -124,20 +124,20 @@ export const Expandable = {
 export const AllStates = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-			<ndd-menu-bar-item text="Default"></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="Current" current></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="With Icon" icon="magnifier"></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="Icon Only" icon="magnifier" icon-only></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="Priority Icon" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="Priority Icon (compact)" icon="magnifier" content-priority="icon" compact></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="Priority Text" icon="person" content-priority="text"></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="Priority Text (compact)" icon="person" content-priority="text" compact></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="Disabled" disabled></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="Link" href="/"></ndd-menu-bar-item>
-			<ndd-menu-bar-item text="Expandable" expandable>
-				<ndd-menu-item text="Optie 1"></ndd-menu-item>
-				<ndd-menu-item text="Optie 2"></ndd-menu-item>
-			</ndd-menu-bar-item>
+			<nldd-menu-bar-item text="Default"></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Current" current></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="With Icon" icon="magnifier"></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Icon Only" icon="magnifier" icon-only></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Priority Icon" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Priority Icon (compact)" icon="magnifier" content-priority="icon" compact></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Priority Text" icon="person" content-priority="text"></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Priority Text (compact)" icon="person" content-priority="text" compact></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Disabled" disabled></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Link" href="/"></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Expandable" expandable>
+				<nldd-menu-item text="Optie 1"></nldd-menu-item>
+				<nldd-menu-item text="Optie 2"></nldd-menu-item>
+			</nldd-menu-bar-item>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },

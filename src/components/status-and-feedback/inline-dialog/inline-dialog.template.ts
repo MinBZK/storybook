@@ -1,12 +1,12 @@
 import { html, nothing } from 'lit';
-import type { NDDInlineDialog } from './ndd-inline-dialog.ts';
+import type { NLDDInlineDialog } from './inline-dialog.ts';
 
-export function inlineDialogTemplate(component: NDDInlineDialog) {
+export function inlineDialogTemplate(component: NLDDInlineDialog) {
 	return html`
 		<div class="inline-dialog__body">
 			${component._resolvedIconName ? html`
 				<div class="inline-dialog__icon">
-					<ndd-icon name=${component._resolvedIconName}></ndd-icon>
+					<nldd-icon name=${component._resolvedIconName}></nldd-icon>
 				</div>
 			` : nothing}
 			${component.text ? html`
@@ -25,9 +25,9 @@ export function inlineDialogTemplate(component: NDDInlineDialog) {
 				<slot></slot>
 			</div>
 			<div class="inline-dialog__actions">
-				<ndd-button-group orientation="vertical">
+				<nldd-button-group orientation="vertical">
 					<slot name="actions"></slot>
-				</ndd-button-group>
+				</nldd-button-group>
 			</div>
 		</div>
 	`;

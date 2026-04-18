@@ -3,18 +3,18 @@
  *
  * Interactief bouwblok voor gebruik in een menu bar. Rendert als <a> (met href)
  * of <button> (zonder href). Ondersteunt icon, text, disclosure indicator,
- * en expandable popover menu via slotted ndd-menu-item elementen.
+ * en expandable popover menu via slotted nldd-menu-item elementen.
  *
- * @element ndd-menu-bar-item
+ * @element nldd-menu-bar-item
  * @attr {string} text - Tekst van het item
  * @attr {boolean} current - Markeer als actief/huidig item
  * @attr {string} current-type - aria-current waarde als current is true ('page', 'step', 'location', 'true'). Standaard: 'page'
  * @attr {string} href - Optionele link URL. Zonder href rendert als button.
- * @attr {string} icon - Optioneel icon naam (ndd-icon)
+ * @attr {string} icon - Optioneel icon naam (nldd-icon)
  * @attr {boolean} expandable - Toon disclosure icon en open popover bij klik
  * @attr {boolean} icon-only - Verberg tekst visueel (altijd)
  * @attr {'icon'|'text'} content-priority - Bepaalt wat zichtbaar blijft in compact modus: 'icon' verbergt tekst, 'text' verbergt icon
- * @attr {boolean} compact - Activeert content-priority gedrag (gezet door parent ndd-menu-bar)
+ * @attr {boolean} compact - Activeert content-priority gedrag (gezet door parent nldd-menu-bar)
  * @attr {boolean} disabled - Schakel interactie uit
  * @attr {string} accessible-label - Overschrijf aria-label
  * @attr {string} haspopup - aria-haspopup waarde (bijv. "menu", "dialog")
@@ -22,7 +22,7 @@
  *
  * @fires select - Bij klik op non-expandable button item (bubbles, composed)
  *
- * @slot - Slotted ndd-menu-item en ndd-menu-divider voor expandable popover.
+ * @slot - Slotted nldd-menu-item en nldd-menu-divider voor expandable popover.
  *   Items worden gekloond naar het popover menu (cloneNode). JS event listeners
  *   op slotted items worden niet meegenomen. Gebruik event delegation op een
  *   parent element als custom click handlers nodig zijn.
@@ -30,14 +30,14 @@
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './ndd-menu-bar-item.styles.js';
-import { template } from './ndd-menu-bar-item.template.js';
-import '../../content/icon/ndd-icon.js';
-import '../../lists-and-menus/menu/ndd-menu.js';
+import { styles } from './menu-bar-item.styles.js';
+import { template } from './menu-bar-item.template.js';
+import '../../content/icon/icon.js';
+import '../../lists-and-menus/menu/menu.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 /**
- * Minimal typed interface for ndd-menu.
+ * Minimal typed interface for nldd-menu.
  * Double-cast (as unknown as) is required because createElement returns HTMLElement,
  * and this custom element class is not registered in HTMLElementTagNameMap
  * for this component's compilation unit.
@@ -48,8 +48,8 @@ interface PopoverMenu extends HTMLElement {
 	hidePopover(): void;
 }
 
-@customElement('ndd-menu-bar-item')
-export class NDDMenuBarItem extends LitElement {
+@customElement('nldd-menu-bar-item')
+export class NLDDMenuBarItem extends LitElement {
 	static override styles = styles;
 
 	@property({ type: String, reflect: true })
@@ -127,7 +127,7 @@ export class NDDMenuBarItem extends LitElement {
 	// ## Helpers
 
 	private _hasMenuItems(): boolean {
-		return this.querySelector('ndd-menu-item, ndd-menu-divider') !== null;
+		return this.querySelector('nldd-menu-item, nldd-menu-divider') !== null;
 	}
 
 	// ## Event handlers
@@ -161,7 +161,7 @@ export class NDDMenuBarItem extends LitElement {
 		if (this._menu || !this._hasMenuItems()) return;
 		if (typeof document === 'undefined') return;
 
-		const menu = document.createElement('ndd-menu') as unknown as PopoverMenu;
+		const menu = document.createElement('nldd-menu') as unknown as PopoverMenu;
 		menu.setAttribute('placement', 'bottom-start');
 
 		menu.addEventListener('toggle', (event: Event) => {
@@ -177,14 +177,14 @@ export class NDDMenuBarItem extends LitElement {
 	/**
 	 * Clone slotted menu items into the popover menu.
 	 * Note: cloneNode(true) copies DOM structure and attributes but not JS event
-	 * listeners. Custom click handlers on slotted ndd-menu-item elements won't
+	 * listeners. Custom click handlers on slotted nldd-menu-item elements won't
 	 * fire in the popover. Use event delegation on a parent element instead.
 	 */
 	private _syncMenuItems(): void {
 		if (!this._menu) return;
 		this._menu.replaceChildren();
 
-		const items = this.querySelectorAll('ndd-menu-item, ndd-menu-divider');
+		const items = this.querySelectorAll('nldd-menu-item, nldd-menu-divider');
 		items.forEach(item => {
 			const clone = item.cloneNode(true) as Element;
 			this._menu!.appendChild(clone);
@@ -212,6 +212,6 @@ export class NDDMenuBarItem extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-menu-bar-item': NDDMenuBarItem;
+		'nldd-menu-bar-item': NLDDMenuBarItem;
 	}
 }

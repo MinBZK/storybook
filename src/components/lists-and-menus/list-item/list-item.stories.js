@@ -1,13 +1,13 @@
 import { html, nothing } from 'lit';
-import './ndd-list-item.ts';
-import '../list/ndd-list.ts';
-import '../cells/text-cell/ndd-text-cell.ts';
-import '../cells/spacer-cell/ndd-spacer-cell.ts';
-import '../cells/drag-handle-cell/ndd-drag-handle-cell.ts';
+import './list-item.ts';
+import '../list/list.ts';
+import '../cells/text-cell/text-cell.ts';
+import '../cells/spacer-cell/spacer-cell.ts';
+import '../cells/drag-handle-cell/drag-handle-cell.ts';
 
 export default {
 	title: 'Components/Lists & Menus/List Item',
-	component: 'ndd-list-item',
+	component: 'nldd-list-item',
 	tags: ['autodocs'],
 	argTypes: {
 		size: {
@@ -48,167 +48,167 @@ export const Default = {
 		href: '',
 	},
 	render: (args) => html`
-		<ndd-list variant="simple">
-			<ndd-list-item size=${args.size} ?selected=${args.selected} ?highlighted=${args.highlighted} type=${args.type || nothing} href=${args.href || nothing}>
-				<ndd-text-cell text="Text cell" supporting-text="Supporting text" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple">
+			<nldd-list-item size=${args.size} ?selected=${args.selected} ?highlighted=${args.highlighted} type=${args.type || nothing} href=${args.href || nothing}>
+				<nldd-text-cell text="Text cell" supporting-text="Supporting text" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const SizeMD = {
 	render: () => html`
-		<ndd-list variant="simple">
-			<ndd-list-item size="md">
-				<ndd-text-cell text="Medium size item" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple">
+			<nldd-list-item size="md">
+				<nldd-text-cell text="Medium size item" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const SizeSM = {
 	render: () => html`
-		<ndd-list variant="simple">
-			<ndd-list-item size="sm">
-				<ndd-text-cell size="sm" text="Small size item" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple">
+			<nldd-list-item size="sm">
+				<nldd-text-cell size="sm" text="Small size item" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const Selected = {
 	render: () => html`
-		<ndd-list variant="simple">
-			<ndd-list-item>
-				<ndd-text-cell text="Not selected" />
-			</ndd-list-item>
-			<ndd-list-item selected>
-				<ndd-text-cell text="Selected item" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Not selected" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple">
+			<nldd-list-item>
+				<nldd-text-cell text="Not selected" />
+			</nldd-list-item>
+			<nldd-list-item selected>
+				<nldd-text-cell text="Selected item" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="Not selected" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const TypeButton = {
 	render: () => html`
-		<ndd-list variant="simple">
-			<ndd-list-item type="button">
-				<ndd-text-cell text="Clickable button item" />
-			</ndd-list-item>
-			<ndd-list-item type="button">
-				<ndd-text-cell text="Another button item" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple">
+			<nldd-list-item type="button">
+				<nldd-text-cell text="Clickable button item" />
+			</nldd-list-item>
+			<nldd-list-item type="button">
+				<nldd-text-cell text="Another button item" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const TypeLink = {
 	render: () => html`
-		<ndd-list variant="simple">
-			<ndd-list-item href="/settings">
-				<ndd-text-cell text="Settings" />
-			</ndd-list-item>
-			<ndd-list-item href="/profile">
-				<ndd-text-cell text="Profile" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple">
+			<nldd-list-item href="/settings">
+				<nldd-text-cell text="Settings" />
+			</nldd-list-item>
+			<nldd-list-item href="/profile">
+				<nldd-text-cell text="Profile" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const BoxWithGutters = {
 	render: () => html`
-		<ndd-list variant="box">
-			<ndd-list-item>
-				<ndd-text-cell text="Gutters visible (spacer)" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Gutters visible (spacer)" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="box">
+			<nldd-list-item>
+				<nldd-text-cell text="Gutters visible (spacer)" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="Gutters visible (spacer)" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const WithStartAndEnd = {
 	render: () => html`
-		<ndd-list variant="box">
-			<ndd-list-item>
-				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
+		<nldd-list variant="box">
+			<nldd-list-item>
+				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
 				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
-				<ndd-spacer-cell slot="start" size="8"></ndd-spacer-cell>
-				<ndd-text-cell text="Item with start icon" />
-				<ndd-spacer-cell slot="end" size="8"></ndd-spacer-cell>
-				<ndd-icon-cell slot="end" size="16">
-					<ndd-icon name="chevron-right"></ndd-icon>
-				</ndd-icon-cell>
-				<ndd-spacer-cell slot="end" size="12"></ndd-spacer-cell>
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
+				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
+				<nldd-text-cell text="Item with start icon" />
+				<nldd-spacer-cell slot="end" size="8"></nldd-spacer-cell>
+				<nldd-icon-cell slot="end" size="16">
+					<nldd-icon name="chevron-right"></nldd-icon>
+				</nldd-icon-cell>
+				<nldd-spacer-cell slot="end" size="12"></nldd-spacer-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
 				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
-				<ndd-spacer-cell slot="start" size="8"></ndd-spacer-cell>
-				<ndd-text-cell text="Another item" />
-			</ndd-list-item>
-		</ndd-list>
+				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
+				<nldd-text-cell text="Another item" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const SimpleWithEndOnly = {
 	render: () => html`
-		<ndd-list variant="simple">
-			<ndd-list-item>
-				<ndd-text-cell text="Only end slot filled" />
-				<ndd-spacer-cell slot="end" size="8"></ndd-spacer-cell>
-				<ndd-icon-cell slot="end" size="16">
-					<ndd-icon name="chevron-right"></ndd-icon>
-				</ndd-icon-cell>
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="No slots" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple">
+			<nldd-list-item>
+				<nldd-text-cell text="Only end slot filled" />
+				<nldd-spacer-cell slot="end" size="8"></nldd-spacer-cell>
+				<nldd-icon-cell slot="end" size="16">
+					<nldd-icon name="chevron-right"></nldd-icon>
+				</nldd-icon-cell>
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="No slots" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 /**
- * Voeg het `draggable-only` attribuut toe aan `ndd-drag-handle-cell` zodat
- * `ndd-list` de hendel herkent in het composed event path. Zonder dit attribuut
+ * Voeg het `draggable-only` attribuut toe aan `nldd-drag-handle-cell` zodat
+ * `nldd-list` de hendel herkent in het composed event path. Zonder dit attribuut
  * werkt slepen via pointer en toetsenbord niet.
  */
 export const WithDragHandle = {
 	render: () => html`
-		<ndd-list variant="box" reorderable>
-			<ndd-list-item>
-				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
-				<ndd-drag-handle-cell
+		<nldd-list variant="box" reorderable>
+			<nldd-list-item>
+				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
+				<nldd-drag-handle-cell
 					size="sm"
 					slot="start"
 					draggable-only
-				></ndd-drag-handle-cell>
-				<ndd-spacer-cell
+				></nldd-drag-handle-cell>
+				<nldd-spacer-cell
 					slot="start"
 					draggable-only
 					size="8"
-				></ndd-spacer-cell>
-				<ndd-text-cell text="Versleepbaar item" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
-				<ndd-drag-handle-cell
+				></nldd-spacer-cell>
+				<nldd-text-cell text="Versleepbaar item" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
+				<nldd-drag-handle-cell
 					size="sm"
 					slot="start"
 					draggable-only
-				></ndd-drag-handle-cell>
-				<ndd-spacer-cell
+				></nldd-drag-handle-cell>
+				<nldd-spacer-cell
 					slot="start"
 					draggable-only
 					size="8"
-				></ndd-spacer-cell>
-				<ndd-text-cell text="Nog een item" />
-			</ndd-list-item>
-		</ndd-list>
+				></nldd-spacer-cell>
+				<nldd-text-cell text="Nog een item" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 WithDragHandle.parameters = { controls: { disable: true } };

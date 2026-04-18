@@ -2,7 +2,7 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 
-/* # ndd-full-bleed-section styles */
+/* # nldd-full-bleed-section styles */
 
 export const fullBleedSectionStyles = css`
 	:host {

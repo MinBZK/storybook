@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './ndd-radio-button.ts';
+import './radio-button.ts';
 
 /**
  * De Radio Button component wordt gebruikt voor exclusieve keuzes binnen een groep opties.
@@ -9,18 +9,18 @@ import './ndd-radio-button.ts';
  * ```html
  * <fieldset>
  *   <legend>Kies een optie</legend>
- *   <ndd-radio-button name="option" value="1">Optie 1</ndd-radio-button>
- *   <ndd-radio-button name="option" value="2">Optie 2</ndd-radio-button>
+ *   <nldd-radio-button name="option" value="1">Optie 1</nldd-radio-button>
+ *   <nldd-radio-button name="option" value="2">Optie 2</nldd-radio-button>
  * </fieldset>
  * ```
  */
 export default {
 	title: 'Components/Inputs/Radio Button',
-	component: 'ndd-radio-button',
+	component: 'nldd-radio-button',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/radio-button/ndd-radio-button.ts',
+			file: 'src/components/inputs/radio-button/radio-button.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -56,13 +56,13 @@ export default {
 };
 
 const Template = ({ checked, disabled, name, value }) => html`
-	<ndd-radio-button
+	<nldd-radio-button
 		?checked=${checked}
 		?disabled=${disabled}
 		name=${name}
 		value=${value}
 		accessible-label="Radio button"
-	></ndd-radio-button>
+	></nldd-radio-button>
 `;
 
 export const Standaard = Template.bind({});
@@ -81,10 +81,10 @@ export const RadioGroep = () => html`
 	<fieldset style="border: none; padding: 0; margin: 0;">
 		<legend style="font-size: 16px; font-weight: 550; margin-bottom: 12px;">Kies een optie</legend>
 		<div style="display: flex; flex-direction: column; gap: 12px;">
-			<ndd-radio-button name="groep" value="1" checked>Optie 1</ndd-radio-button>
-			<ndd-radio-button name="groep" value="2">Optie 2</ndd-radio-button>
-			<ndd-radio-button name="groep" value="3">Optie 3</ndd-radio-button>
-			<ndd-radio-button name="groep" value="4" disabled>Optie 4 (uitgeschakeld)</ndd-radio-button>
+			<nldd-radio-button name="groep" value="1" checked>Optie 1</nldd-radio-button>
+			<nldd-radio-button name="groep" value="2">Optie 2</nldd-radio-button>
+			<nldd-radio-button name="groep" value="3">Optie 3</nldd-radio-button>
+			<nldd-radio-button name="groep" value="4" disabled>Optie 4 (uitgeschakeld)</nldd-radio-button>
 		</div>
 	</fieldset>
 `;
@@ -92,10 +92,10 @@ RadioGroep.parameters = { controls: { disable: true } };
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; gap: 2rem; align-items: center;">
-		<ndd-radio-button accessible-label="Niet geselecteerd"></ndd-radio-button>
-		<ndd-radio-button checked accessible-label="Geselecteerd"></ndd-radio-button>
-		<ndd-radio-button disabled accessible-label="Uitgeschakeld"></ndd-radio-button>
-		<ndd-radio-button checked disabled accessible-label="Geselecteerd en uitgeschakeld"></ndd-radio-button>
+		<nldd-radio-button accessible-label="Niet geselecteerd"></nldd-radio-button>
+		<nldd-radio-button checked accessible-label="Geselecteerd"></nldd-radio-button>
+		<nldd-radio-button disabled accessible-label="Uitgeschakeld"></nldd-radio-button>
+		<nldd-radio-button checked disabled accessible-label="Geselecteerd en uitgeschakeld"></nldd-radio-button>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

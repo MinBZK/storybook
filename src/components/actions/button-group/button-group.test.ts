@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './ndd-button-group.ts';
+import './button-group.ts';
 
-describe('ndd-button-group', () => {
+describe('nldd-button-group', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -10,7 +10,7 @@ describe('ndd-button-group', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-button-group></ndd-button-group>');
+		el = await fixture('<nldd-button-group></nldd-button-group>');
 		await waitForUpdate(el);
 
 		expect(el.shadowRoot).not.toBeNull();

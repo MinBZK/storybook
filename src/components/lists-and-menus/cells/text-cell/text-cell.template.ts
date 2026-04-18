@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import type { NDDTextCell } from './ndd-text-cell.js';
+import type { NLDDTextCell } from './text-cell.js';
 
 function renderText(text: string) {
 	if (!text.includes('**')) return text;
@@ -7,7 +7,7 @@ function renderText(text: string) {
 	return html`${parts.map((part, i) => i % 2 === 1 ? html`<b>${part}</b>` : part)}`;
 }
 
-export function template(this: NDDTextCell) {
+export function template(this: NLDDTextCell) {
 	return html`
 		${this.overline ? html`<p class="text-cell__overline">${this.overline}</p>` : nothing}
 		${this.text ? html`<p class="text-cell__text">${renderText(this.text)}</p>` : nothing}

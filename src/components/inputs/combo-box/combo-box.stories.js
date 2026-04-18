@@ -1,17 +1,17 @@
 import { html } from 'lit';
-import './ndd-combo-box.ts';
+import './combo-box.ts';
 
 /**
  * De Combo Box component is een tekstveld met autocomplete/dropdown functionaliteit.
- * Voeg een `ndd-menu` met `ndd-menu-item` elementen toe als child.
+ * Voeg een `nldd-menu` met `nldd-menu-item` elementen toe als child.
  */
 export default {
 	title: 'Components/Inputs/Combo Box',
-	component: 'ndd-combo-box',
+	component: 'nldd-combo-box',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/combo-box/ndd-combo-box.ts',
+			file: 'src/components/inputs/combo-box/combo-box.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -48,114 +48,114 @@ export default {
 };
 
 const Template = (args) => html`
-	<ndd-combo-box
+	<nldd-combo-box
 		placeholder=${args.placeholder}
 		?disabled=${args.disabled}
 		name=${args.name}
 	>
-		<ndd-menu empty-text="Geen resultaten">
-			<ndd-menu-item text="Nederland" value="nl"></ndd-menu-item>
-			<ndd-menu-item text="België" value="be"></ndd-menu-item>
-			<ndd-menu-item text="Duitsland" value="de"></ndd-menu-item>
-			<ndd-menu-item text="Frankrijk" value="fr"></ndd-menu-item>
-			<ndd-menu-item text="Verenigd Koninkrijk" value="uk"></ndd-menu-item>
-		</ndd-menu>
-	</ndd-combo-box>
+		<nldd-menu empty-text="Geen resultaten">
+			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+			<nldd-menu-item text="België" value="be"></nldd-menu-item>
+			<nldd-menu-item text="Duitsland" value="de"></nldd-menu-item>
+			<nldd-menu-item text="Frankrijk" value="fr"></nldd-menu-item>
+			<nldd-menu-item text="Verenigd Koninkrijk" value="uk"></nldd-menu-item>
+		</nldd-menu>
+	</nldd-combo-box>
 `;
 
 export const Standaard = Template.bind({});
 Standaard.args = {};
 
 export const MetZoektermen = () => html`
-	<ndd-combo-box placeholder="Zoek een land (probeer 'dutch' of 'holland')">
-		<ndd-menu empty-text="Geen resultaten">
-			<ndd-menu-item text="Nederland" value="nl" aliases="dutch holland"></ndd-menu-item>
-			<ndd-menu-item text="België" value="be" aliases="belgique belgie"></ndd-menu-item>
-			<ndd-menu-item text="Duitsland" value="de" aliases="germany deutschland"></ndd-menu-item>
-			<ndd-menu-item text="Frankrijk" value="fr" aliases="france frankrijk"></ndd-menu-item>
-		</ndd-menu>
-	</ndd-combo-box>
+	<nldd-combo-box placeholder="Zoek een land (probeer 'dutch' of 'holland')">
+		<nldd-menu empty-text="Geen resultaten">
+			<nldd-menu-item text="Nederland" value="nl" aliases="dutch holland"></nldd-menu-item>
+			<nldd-menu-item text="België" value="be" aliases="belgique belgie"></nldd-menu-item>
+			<nldd-menu-item text="Duitsland" value="de" aliases="germany deutschland"></nldd-menu-item>
+			<nldd-menu-item text="Frankrijk" value="fr" aliases="france frankrijk"></nldd-menu-item>
+		</nldd-menu>
+	</nldd-combo-box>
 `;
 MetZoektermen.parameters = {
 	controls: { disable: true },
 	docs: {
 		description: {
-			story: 'Gebruik het <code>aliases</code> attribuut op <code>ndd-menu-item</code> voor alternatieve zoektermen.',
+			story: 'Gebruik het <code>aliases</code> attribuut op <code>nldd-menu-item</code> voor alternatieve zoektermen.',
 		},
 	},
 };
 
 export const AlleLanden = () => html`
-	<ndd-combo-box placeholder="Zoek een land">
-		<ndd-menu empty-text="Geen resultaten">
-			<ndd-menu-item text="Afghanistan" value="af"></ndd-menu-item>
-			<ndd-menu-item text="Albanië" value="al"></ndd-menu-item>
-			<ndd-menu-item text="Algerije" value="dz"></ndd-menu-item>
-			<ndd-menu-item text="Argentinië" value="ar"></ndd-menu-item>
-			<ndd-menu-item text="Australië" value="au"></ndd-menu-item>
-			<ndd-menu-item text="België" value="be"></ndd-menu-item>
-			<ndd-menu-item text="Brazilië" value="br"></ndd-menu-item>
-			<ndd-menu-item text="Canada" value="ca"></ndd-menu-item>
-			<ndd-menu-item text="China" value="cn"></ndd-menu-item>
-			<ndd-menu-item text="Denemarken" value="dk"></ndd-menu-item>
-			<ndd-menu-item text="Duitsland" value="de" aliases="germany deutschland"></ndd-menu-item>
-			<ndd-menu-item text="Egypte" value="eg"></ndd-menu-item>
-			<ndd-menu-item text="Finland" value="fi"></ndd-menu-item>
-			<ndd-menu-item text="Frankrijk" value="fr" aliases="france frankrijk"></ndd-menu-item>
-			<ndd-menu-item text="Griekenland" value="gr"></ndd-menu-item>
-			<ndd-menu-item text="India" value="in"></ndd-menu-item>
-			<ndd-menu-item text="Indonesië" value="id"></ndd-menu-item>
-			<ndd-menu-item text="Ierland" value="ie"></ndd-menu-item>
-			<ndd-menu-item text="Israël" value="il"></ndd-menu-item>
-			<ndd-menu-item text="Italië" value="it"></ndd-menu-item>
-			<ndd-menu-item text="Japan" value="jp"></ndd-menu-item>
-			<ndd-menu-item text="Jordanië" value="jo"></ndd-menu-item>
-			<ndd-menu-item text="Kenia" value="ke"></ndd-menu-item>
-			<ndd-menu-item text="Marokko" value="ma"></ndd-menu-item>
-			<ndd-menu-item text="Mexico" value="mx"></ndd-menu-item>
-			<ndd-menu-item text="Nederland" value="nl" aliases="dutch holland"></ndd-menu-item>
-			<ndd-menu-item text="Nieuw-Zeeland" value="nz"></ndd-menu-item>
-			<ndd-menu-item text="Nigeria" value="ng"></ndd-menu-item>
-			<ndd-menu-item text="Noorwegen" value="no"></ndd-menu-item>
-			<ndd-menu-item text="Oekraïne" value="ua"></ndd-menu-item>
-			<ndd-menu-item text="Oostenrijk" value="at"></ndd-menu-item>
-			<ndd-menu-item text="Pakistan" value="pk"></ndd-menu-item>
-			<ndd-menu-item text="Polen" value="pl"></ndd-menu-item>
-			<ndd-menu-item text="Portugal" value="pt"></ndd-menu-item>
-			<ndd-menu-item text="Roemenië" value="ro"></ndd-menu-item>
-			<ndd-menu-item text="Rusland" value="ru"></ndd-menu-item>
-			<ndd-menu-item text="Saoedi-Arabië" value="sa"></ndd-menu-item>
-			<ndd-menu-item text="Spanje" value="es" aliases="spain espana"></ndd-menu-item>
-			<ndd-menu-item text="Suriname" value="sr"></ndd-menu-item>
-			<ndd-menu-item text="Tsjechië" value="cz"></ndd-menu-item>
-			<ndd-menu-item text="Turkije" value="tr"></ndd-menu-item>
-			<ndd-menu-item text="Venezuela" value="ve"></ndd-menu-item>
-			<ndd-menu-item text="Verenigd Koninkrijk" value="gb" aliases="england uk britain"></ndd-menu-item>
-			<ndd-menu-item text="Verenigde Staten" value="us" aliases="usa america"></ndd-menu-item>
-			<ndd-menu-item text="Vietnam" value="vn"></ndd-menu-item>
-			<ndd-menu-item text="Zuid-Afrika" value="za"></ndd-menu-item>
-			<ndd-menu-item text="Zweden" value="se"></ndd-menu-item>
-			<ndd-menu-item text="Zwitserland" value="ch"></ndd-menu-item>
-		</ndd-menu>
-	</ndd-combo-box>
+	<nldd-combo-box placeholder="Zoek een land">
+		<nldd-menu empty-text="Geen resultaten">
+			<nldd-menu-item text="Afghanistan" value="af"></nldd-menu-item>
+			<nldd-menu-item text="Albanië" value="al"></nldd-menu-item>
+			<nldd-menu-item text="Algerije" value="dz"></nldd-menu-item>
+			<nldd-menu-item text="Argentinië" value="ar"></nldd-menu-item>
+			<nldd-menu-item text="Australië" value="au"></nldd-menu-item>
+			<nldd-menu-item text="België" value="be"></nldd-menu-item>
+			<nldd-menu-item text="Brazilië" value="br"></nldd-menu-item>
+			<nldd-menu-item text="Canada" value="ca"></nldd-menu-item>
+			<nldd-menu-item text="China" value="cn"></nldd-menu-item>
+			<nldd-menu-item text="Denemarken" value="dk"></nldd-menu-item>
+			<nldd-menu-item text="Duitsland" value="de" aliases="germany deutschland"></nldd-menu-item>
+			<nldd-menu-item text="Egypte" value="eg"></nldd-menu-item>
+			<nldd-menu-item text="Finland" value="fi"></nldd-menu-item>
+			<nldd-menu-item text="Frankrijk" value="fr" aliases="france frankrijk"></nldd-menu-item>
+			<nldd-menu-item text="Griekenland" value="gr"></nldd-menu-item>
+			<nldd-menu-item text="India" value="in"></nldd-menu-item>
+			<nldd-menu-item text="Indonesië" value="id"></nldd-menu-item>
+			<nldd-menu-item text="Ierland" value="ie"></nldd-menu-item>
+			<nldd-menu-item text="Israël" value="il"></nldd-menu-item>
+			<nldd-menu-item text="Italië" value="it"></nldd-menu-item>
+			<nldd-menu-item text="Japan" value="jp"></nldd-menu-item>
+			<nldd-menu-item text="Jordanië" value="jo"></nldd-menu-item>
+			<nldd-menu-item text="Kenia" value="ke"></nldd-menu-item>
+			<nldd-menu-item text="Marokko" value="ma"></nldd-menu-item>
+			<nldd-menu-item text="Mexico" value="mx"></nldd-menu-item>
+			<nldd-menu-item text="Nederland" value="nl" aliases="dutch holland"></nldd-menu-item>
+			<nldd-menu-item text="Nieuw-Zeeland" value="nz"></nldd-menu-item>
+			<nldd-menu-item text="Nigeria" value="ng"></nldd-menu-item>
+			<nldd-menu-item text="Noorwegen" value="no"></nldd-menu-item>
+			<nldd-menu-item text="Oekraïne" value="ua"></nldd-menu-item>
+			<nldd-menu-item text="Oostenrijk" value="at"></nldd-menu-item>
+			<nldd-menu-item text="Pakistan" value="pk"></nldd-menu-item>
+			<nldd-menu-item text="Polen" value="pl"></nldd-menu-item>
+			<nldd-menu-item text="Portugal" value="pt"></nldd-menu-item>
+			<nldd-menu-item text="Roemenië" value="ro"></nldd-menu-item>
+			<nldd-menu-item text="Rusland" value="ru"></nldd-menu-item>
+			<nldd-menu-item text="Saoedi-Arabië" value="sa"></nldd-menu-item>
+			<nldd-menu-item text="Spanje" value="es" aliases="spain espana"></nldd-menu-item>
+			<nldd-menu-item text="Suriname" value="sr"></nldd-menu-item>
+			<nldd-menu-item text="Tsjechië" value="cz"></nldd-menu-item>
+			<nldd-menu-item text="Turkije" value="tr"></nldd-menu-item>
+			<nldd-menu-item text="Venezuela" value="ve"></nldd-menu-item>
+			<nldd-menu-item text="Verenigd Koninkrijk" value="gb" aliases="england uk britain"></nldd-menu-item>
+			<nldd-menu-item text="Verenigde Staten" value="us" aliases="usa america"></nldd-menu-item>
+			<nldd-menu-item text="Vietnam" value="vn"></nldd-menu-item>
+			<nldd-menu-item text="Zuid-Afrika" value="za"></nldd-menu-item>
+			<nldd-menu-item text="Zweden" value="se"></nldd-menu-item>
+			<nldd-menu-item text="Zwitserland" value="ch"></nldd-menu-item>
+		</nldd-menu>
+	</nldd-combo-box>
 `;
 AlleLanden.parameters = { controls: { disable: true } };
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<ndd-combo-box placeholder="Zoek een land">
-			<ndd-menu empty-text="Geen resultaten">
-				<ndd-menu-item text="Nederland" value="nl"></ndd-menu-item>
-				<ndd-menu-item text="België" value="be"></ndd-menu-item>
-				<ndd-menu-item text="Duitsland" value="de"></ndd-menu-item>
-			</ndd-menu>
-		</ndd-combo-box>
-		<ndd-combo-box placeholder="Zoek een land" disabled>
-			<ndd-menu empty-text="Geen resultaten">
-				<ndd-menu-item text="Nederland" value="nl"></ndd-menu-item>
-				<ndd-menu-item text="België" value="be"></ndd-menu-item>
-			</ndd-menu>
-		</ndd-combo-box>
+		<nldd-combo-box placeholder="Zoek een land">
+			<nldd-menu empty-text="Geen resultaten">
+				<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				<nldd-menu-item text="Duitsland" value="de"></nldd-menu-item>
+			</nldd-menu>
+		</nldd-combo-box>
+		<nldd-combo-box placeholder="Zoek een land" disabled>
+			<nldd-menu empty-text="Geen resultaten">
+				<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				<nldd-menu-item text="België" value="be"></nldd-menu-item>
+			</nldd-menu>
+		</nldd-combo-box>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

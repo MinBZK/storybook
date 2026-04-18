@@ -1,12 +1,12 @@
 /**
  * Nederlandse Digitale Dienst Text Field Component (Lit + TypeScript)
  *
- * @element ndd-text-field
+ * @element nldd-text-field
  *
  * @attr {string} value        - The input value
  * @attr {string} placeholder  - Placeholder text
- * @attr {string} input-id     - Sets the id on the native input. Set automatically by ndd-form-field.
- * @attr {string} size         - 'md' (default) | 'sm'. Set automatically by ndd-form-field.
+ * @attr {string} input-id     - Sets the id on the native input. Set automatically by nldd-form-field.
+ * @attr {string} size         - 'md' (default) | 'sm'. Set automatically by nldd-form-field.
  * @attr {boolean} invalid     - Marks the field as invalid
  * @attr {boolean} valid       - Marks the field as valid
  * @attr {boolean} disabled    - Disabled state
@@ -15,7 +15,7 @@
  * @attr {boolean} readonly    - Readonly state
  * @attr {boolean} required    - Required state
  * @attr {string} autocomplete - Autocomplete hint
- * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by ndd-form-field.
+ * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
  *
  * @fires input  - When input value changes
  * @fires change - When input value is committed
@@ -25,13 +25,13 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { textFieldStyles } from './ndd-text-field.styles.js';
-import { textFieldTemplate } from './ndd-text-field.template.js';
+import { textFieldStyles } from './text-field.styles.js';
+import { textFieldTemplate } from './text-field.template.js';
 
 export type InputType = 'text' | 'email' | 'tel' | 'url';
 
-@customElement('ndd-text-field')
-export class NDDTextField extends LitElement {
+@customElement('nldd-text-field')
+export class NLDDTextField extends LitElement {
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
 		delegatesFocus: true,
@@ -75,7 +75,7 @@ export class NDDTextField extends LitElement {
 	@property({ type: String })
 	autocomplete = '';
 
-	/** Accessible label forwarded to the inner <input>. Set automatically by ndd-form-field. */
+	/** Accessible label forwarded to the inner <input>. Set automatically by nldd-form-field. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
@@ -123,6 +123,6 @@ export class NDDTextField extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-text-field': NDDTextField;
+		'nldd-text-field': NLDDTextField;
 	}
 }

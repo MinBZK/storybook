@@ -1,40 +1,40 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDPasswordField } from './ndd-password-field.js';
-import './../../content/icon/ndd-icon.ts';
-import './../../actions/button/ndd-button.ts';
+import type { NLDDPasswordField } from './password-field.js';
+import './../../content/icon/icon.ts';
+import './../../actions/button/button.ts';
 
-function renderValidationIcon(component: NDDPasswordField): TemplateResult | typeof nothing {
+function renderValidationIcon(component: NLDDPasswordField): TemplateResult | typeof nothing {
 	if (component.valid) {
 		return html`
 			<div class="password-field__validation-icon-area">
-				<ndd-icon class="password-field__validation-icon"
+				<nldd-icon class="password-field__validation-icon"
 					name="valid"
 					aria-hidden="true"
-				></ndd-icon>
+				></nldd-icon>
 			</div>
 		`;
 	}
 	if (component.invalid) {
 		return html`
 			<div class="password-field__validation-icon-area">
-				<ndd-icon class="password-field__validation-icon"
+				<nldd-icon class="password-field__validation-icon"
 					name="invalid"
 					aria-hidden="true"
-				></ndd-icon>
+				></nldd-icon>
 			</div>
 		`;
 	}
 	return nothing;
 }
 
-function renderVisibilityToggle(component: NDDPasswordField): TemplateResult {
+function renderVisibilityToggle(component: NLDDPasswordField): TemplateResult {
 	const buttonSize = component.size === 'sm' ? 'xs' : 'sm';
 	const label = component.masked ? component.showText : component.hideText;
 	const accessibleLabel = component.masked ? component.showAccessibleLabel : component.hideAccessibleLabel;
 
 	return html`
 		<div class="password-field__visibility-toggle">
-			<ndd-button
+			<nldd-button
 				size=${buttonSize}
 				type="button"
 				text=${label}
@@ -42,12 +42,12 @@ function renderVisibilityToggle(component: NDDPasswordField): TemplateResult {
 				?disabled=${component.disabled}
 				@click=${component._handleToggle}
 				@mousedown=${(e: Event) => e.preventDefault()}
-			></ndd-button>
+			></nldd-button>
 		</div>
 	`;
 }
 
-export function passwordFieldTemplate(component: NDDPasswordField): TemplateResult {
+export function passwordFieldTemplate(component: NLDDPasswordField): TemplateResult {
 	return html`
 		<div class="password-field">
 			<input class="password-field__input ${component.masked ? 'is-masked' : ''}"

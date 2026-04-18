@@ -1,22 +1,22 @@
 import { html, nothing } from 'lit';
-import './ndd-icon-button.ts';
-import { ICONS } from './../../content/icon/ndd-icon.ts';
+import './icon-button.ts';
+import { ICONS } from './../../content/icon/icon.ts';
 
 /**
  * De Icon Button component is een vierkante knop voor icoon-only acties.
  *
  * ## Gebruik
  * ```html
- * <ndd-icon-button text="Annuleer" icon="dismiss"></ndd-icon-button>
+ * <nldd-icon-button text="Annuleer" icon="dismiss"></nldd-icon-button>
  * ```
  */
 export default {
 	title: 'Components/Actions/Icon Button',
-	component: 'ndd-icon-button',
+	component: 'nldd-icon-button',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/actions/icon-button/ndd-icon-button.ts',
+			file: 'src/components/actions/icon-button/icon-button.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -53,7 +53,7 @@ export default {
 		icon: {
 			control: 'select',
 			options: ICONS,
-			description: 'Icoon naam voor ndd-icon',
+			description: 'Icoon naam voor nldd-icon',
 			table: {
 				defaultValue: { summary: 'dismiss' },
 			},
@@ -115,7 +115,7 @@ export default {
 };
 
 const Template = ({ variant, size, icon, text, accessibleLabel, expandable, type, href, target, disabled }) => html`
-	<ndd-icon-button
+	<nldd-icon-button
 		variant=${variant}
 		size=${size}
 		icon=${icon}
@@ -126,7 +126,7 @@ const Template = ({ variant, size, icon, text, accessibleLabel, expandable, type
 		target=${target || nothing}
 		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
-	></ndd-icon-button>
+	></nldd-icon-button>
 `;
 
 export const Default = Template.bind({});
@@ -137,9 +137,9 @@ Default.args = {
 
 export const RoleBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button variant="primary" icon="add" text="Voeg toe"></ndd-icon-button>
-		<ndd-icon-button variant="secondary" icon="add" text="Voeg toe"></ndd-icon-button>
-		<ndd-icon-button variant="destructive" icon="delete" text="Verwijder"></ndd-icon-button>
+		<nldd-icon-button variant="primary" icon="add" text="Voeg toe"></nldd-icon-button>
+		<nldd-icon-button variant="secondary" icon="add" text="Voeg toe"></nldd-icon-button>
+		<nldd-icon-button variant="destructive" icon="delete" text="Verwijder"></nldd-icon-button>
 	</div>
 `;
 RoleBased.parameters = {
@@ -153,12 +153,12 @@ RoleBased.parameters = {
 
 export const AppearanceBased = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button variant="accent-filled" icon="add" text="Voeg toe"></ndd-icon-button>
-		<ndd-icon-button variant="accent-outlined" icon="add" text="Voeg toe"></ndd-icon-button>
-		<ndd-icon-button variant="accent-transparent" icon="add" text="Voeg toe"></ndd-icon-button>
-		<ndd-icon-button variant="neutral-tinted" icon="add" text="Voeg toe"></ndd-icon-button>
-		<ndd-icon-button variant="neutral-transparent" icon="add" text="Voeg toe"></ndd-icon-button>
-		<ndd-icon-button variant="danger-tinted" icon="delete" text="Verwijder"></ndd-icon-button>
+		<nldd-icon-button variant="accent-filled" icon="add" text="Voeg toe"></nldd-icon-button>
+		<nldd-icon-button variant="accent-outlined" icon="add" text="Voeg toe"></nldd-icon-button>
+		<nldd-icon-button variant="accent-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
+		<nldd-icon-button variant="neutral-tinted" icon="add" text="Voeg toe"></nldd-icon-button>
+		<nldd-icon-button variant="neutral-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
+		<nldd-icon-button variant="danger-tinted" icon="delete" text="Verwijder"></nldd-icon-button>
 	</div>
 `;
 AppearanceBased.parameters = {
@@ -167,10 +167,10 @@ AppearanceBased.parameters = {
 
 export const Sizes = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button size="lg" icon="dismiss" text="Annuleer"></ndd-icon-button>
-		<ndd-icon-button size="md" icon="dismiss" text="Annuleer"></ndd-icon-button>
-		<ndd-icon-button size="sm" icon="dismiss" text="Annuleer"></ndd-icon-button>
-		<ndd-icon-button size="xs" icon="dismiss" text="Annuleer"></ndd-icon-button>
+		<nldd-icon-button size="lg" icon="dismiss" text="Annuleer"></nldd-icon-button>
+		<nldd-icon-button size="md" icon="dismiss" text="Annuleer"></nldd-icon-button>
+		<nldd-icon-button size="sm" icon="dismiss" text="Annuleer"></nldd-icon-button>
+		<nldd-icon-button size="xs" icon="dismiss" text="Annuleer"></nldd-icon-button>
 	</div>
 `;
 Sizes.parameters = {
@@ -179,9 +179,9 @@ Sizes.parameters = {
 
 export const Large = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button size="lg" icon="download" text="Download"></ndd-icon-button>
-		<ndd-icon-button size="lg" icon="global-settings" text="Instellingen"></ndd-icon-button>
-		<ndd-icon-button size="lg" icon="search" text="Zoeken"></ndd-icon-button>
+		<nldd-icon-button size="lg" icon="download" text="Download"></nldd-icon-button>
+		<nldd-icon-button size="lg" icon="global-settings" text="Instellingen"></nldd-icon-button>
+		<nldd-icon-button size="lg" icon="search" text="Zoeken"></nldd-icon-button>
 	</div>
 `;
 Large.parameters = {
@@ -195,8 +195,8 @@ Large.parameters = {
 
 export const WithAccessibleLabel = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button icon="eye" text="Toon" accessible-label="Toon wachtwoord"></ndd-icon-button>
-		<ndd-icon-button icon="eye-slash" text="Verberg" accessible-label="Verberg wachtwoord"></ndd-icon-button>
+		<nldd-icon-button icon="eye" text="Toon" accessible-label="Toon wachtwoord"></nldd-icon-button>
+		<nldd-icon-button icon="eye-slash" text="Verberg" accessible-label="Verberg wachtwoord"></nldd-icon-button>
 	</div>
 `;
 WithAccessibleLabel.parameters = {
@@ -210,10 +210,10 @@ WithAccessibleLabel.parameters = {
 
 export const WithDisclosureIcon = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button expandable size="lg" icon="global-settings" text="Instellingen"></ndd-icon-button>
-		<ndd-icon-button expandable size="md" icon="global-settings" text="Instellingen"></ndd-icon-button>
-		<ndd-icon-button expandable size="sm" icon="global-settings" text="Instellingen"></ndd-icon-button>
-		<ndd-icon-button expandable size="xs" icon="global-settings" text="Instellingen"></ndd-icon-button>
+		<nldd-icon-button expandable size="lg" icon="global-settings" text="Instellingen"></nldd-icon-button>
+		<nldd-icon-button expandable size="md" icon="global-settings" text="Instellingen"></nldd-icon-button>
+		<nldd-icon-button expandable size="sm" icon="global-settings" text="Instellingen"></nldd-icon-button>
+		<nldd-icon-button expandable size="xs" icon="global-settings" text="Instellingen"></nldd-icon-button>
 	</div>
 `;
 WithDisclosureIcon.parameters = {
@@ -227,10 +227,10 @@ WithDisclosureIcon.parameters = {
 
 export const Disabled = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button disabled variant="accent-filled" icon="remove" text="Verwijderen"></ndd-icon-button>
-		<ndd-icon-button disabled variant="accent-outlined" icon="remove" text="Verwijderen"></ndd-icon-button>
-		<ndd-icon-button disabled variant="neutral-tinted" icon="remove" text="Verwijderen"></ndd-icon-button>
-		<ndd-icon-button disabled variant="danger-tinted" icon="remove" text="Verwijderen"></ndd-icon-button>
+		<nldd-icon-button disabled variant="accent-filled" icon="remove" text="Verwijderen"></nldd-icon-button>
+		<nldd-icon-button disabled variant="accent-outlined" icon="remove" text="Verwijderen"></nldd-icon-button>
+		<nldd-icon-button disabled variant="neutral-tinted" icon="remove" text="Verwijderen"></nldd-icon-button>
+		<nldd-icon-button disabled variant="danger-tinted" icon="remove" text="Verwijderen"></nldd-icon-button>
 	</div>
 `;
 Disabled.parameters = {
@@ -239,11 +239,11 @@ Disabled.parameters = {
 
 export const CustomIconSlot = () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<ndd-icon-button text="Custom">
+		<nldd-icon-button text="Custom">
 			<svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
 				<circle cx="10" cy="10" r="8"/>
 			</svg>
-		</ndd-icon-button>
+		</nldd-icon-button>
 	</div>
 `;
 CustomIconSlot.parameters = {

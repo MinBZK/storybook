@@ -49,7 +49,7 @@ export const tabBarStyles = css`
 
 	/* # Focus */
 
-	::slotted(ndd-tab-bar-item:focus-within) {
+	::slotted(nldd-tab-bar-item:focus-within) {
 		position: relative;
 		z-index: 1;
 	}

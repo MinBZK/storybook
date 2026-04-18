@@ -4,7 +4,7 @@
  * A selectable button that toggles between selected and unselected.
  * Available as a button (aria-pressed), checkbox, or radio input.
  *
- * @element ndd-toggle-button
+ * @element nldd-toggle-button
  *
  * @attr {'button' | 'checkbox' | 'radio'} type - Underlying element (default: 'button')
  * @attr {'xs' | 'sm' | 'md'}              size - Button size (default: 'md')
@@ -13,7 +13,7 @@
  * @attr {string}                          value            - Value for form submission (checkbox/radio)
  * @attr {string}                          name             - Name for form submission (checkbox/radio)
  * @attr {string}                          text             - Button text
- * @attr {string}                          icon             - Icon name for ndd-icon
+ * @attr {string}                          icon             - Icon name for nldd-icon
  * @attr {string}                          accessible-label - Accessible label; required for icon-only usage
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
@@ -23,15 +23,15 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { toggleButtonStyles } from './ndd-toggle-button.styles.ts';
-import { toggleButtonTemplate } from './ndd-toggle-button.template.ts';
-import './../../content/icon/ndd-icon.ts';
+import { toggleButtonStyles } from './toggle-button.styles.ts';
+import { toggleButtonTemplate } from './toggle-button.template.ts';
+import './../../content/icon/icon.ts';
 
 export type ToggleButtonType = 'button' | 'checkbox' | 'radio';
 export type ToggleButtonSize = 'xs' | 'sm' | 'md';
 
-@customElement('ndd-toggle-button')
-export class NDDToggleButton extends LitElement {
+@customElement('nldd-toggle-button')
+export class NLDDToggleButton extends LitElement {
 	static override styles = toggleButtonStyles;
 
 	@property({ type: String, reflect: true })
@@ -56,7 +56,7 @@ export class NDDToggleButton extends LitElement {
 	@property({ type: String })
 	text = '';
 
-	/** Icon name for the ndd-icon element. When not set, the icon slot is used. */
+	/** Icon name for the nldd-icon element. When not set, the icon slot is used. */
 	@property({ type: String })
 	icon = '';
 
@@ -78,7 +78,7 @@ export class NDDToggleButton extends LitElement {
 		const inaccessible = iconOnly && !this.accessibleLabel;
 		if (inaccessible && !this._warnedA11y) {
 			this._warnedA11y = true;
-			console.warn('<ndd-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
+			console.warn('<nldd-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
 		} else if (!inaccessible) {
 			this._warnedA11y = false;
 		}
@@ -125,6 +125,6 @@ export class NDDToggleButton extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-toggle-button': NDDToggleButton;
+		'nldd-toggle-button': NLDDToggleButton;
 	}
 }

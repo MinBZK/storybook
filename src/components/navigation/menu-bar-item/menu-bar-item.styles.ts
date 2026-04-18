@@ -128,8 +128,8 @@ export const styles = css`
 
 	/* # Slotted */
 
-	::slotted(ndd-menu-item),
-	::slotted(ndd-menu-divider) {
+	::slotted(nldd-menu-item),
+	::slotted(nldd-menu-divider) {
 		display: none;
 	}
 

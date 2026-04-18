@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
-import type { NDDPage } from './ndd-page.js';
+import type { NLDDPage } from './page.js';
 
-export function pageTemplate(component: NDDPage): TemplateResult {
+export function pageTemplate(component: NLDDPage): TemplateResult {
 	return html`
 		<header class="page__header ${component._scrolled ? 'is-scrolled' : ''}">
 			<slot name="header"></slot>

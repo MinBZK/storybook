@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import './ndd-container.ts';
-import '../../content/rich-text/ndd-rich-text.ts';
+import './container.ts';
+import '../../content/rich-text/rich-text.ts';
 
 /**
  * Use a container to add padding to content.
@@ -15,18 +15,18 @@ import '../../content/rich-text/ndd-rich-text.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-container padding="16" sm-padding="24" md-padding="32">
- *   <ndd-rich-text><p>Content with responsive padding.</p></ndd-rich-text>
- * </ndd-container>
+ * <nldd-container padding="16" sm-padding="24" md-padding="32">
+ *   <nldd-rich-text><p>Content with responsive padding.</p></nldd-rich-text>
+ * </nldd-container>
  * ```
  */
 export default {
 	title: 'Components/Layout/Container',
-	component: 'ndd-container',
+	component: 'nldd-container',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/layout/container/ndd-container.ts',
+			file: 'src/components/layout/container/container.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -91,7 +91,7 @@ export const Standaard = {
 		padding: '16',
 	},
 	render: (args) => html`
-		<ndd-container
+		<nldd-container
 			padding=${ifDefined(args.padding)}
 			padding-inline=${ifDefined(args.paddingInline)}
 			padding-block=${ifDefined(args.paddingBlock)}
@@ -143,74 +143,74 @@ export const Standaard = {
 			layout-area-lg-padding-left=${ifDefined(args.layoutAreaLgPaddingLeft)}
 			style="outline: 1px dashed var(--color-neutral-400);"
 		>
-			<ndd-rich-text><p>Container content.</p></ndd-rich-text>
-		</ndd-container>
+			<nldd-rich-text><p>Container content.</p></nldd-rich-text>
+		</nldd-container>
 	`,
 };
 
 export const PaddingAlleZijden = () => html`
-	<ndd-container padding="24" style="outline: 1px dashed var(--color-neutral-400);">
-		<ndd-rich-text><p>Padding aan alle zijden.</p></ndd-rich-text>
-	</ndd-container>
+	<nldd-container padding="24" style="outline: 1px dashed var(--color-neutral-400);">
+		<nldd-rich-text><p>Padding aan alle zijden.</p></nldd-rich-text>
+	</nldd-container>
 `;
 PaddingAlleZijden.storyName = 'Padding — alle zijden';
 
 export const PaddingInline = () => html`
-	<ndd-container padding-inline="32" style="outline: 1px dashed var(--color-neutral-400);">
-		<ndd-rich-text><p>Padding links en rechts.</p></ndd-rich-text>
-	</ndd-container>
+	<nldd-container padding-inline="32" style="outline: 1px dashed var(--color-neutral-400);">
+		<nldd-rich-text><p>Padding links en rechts.</p></nldd-rich-text>
+	</nldd-container>
 `;
 PaddingInline.storyName = 'Padding — inline (links/rechts)';
 
 export const PaddingBlock = () => html`
-	<ndd-container padding-block="32" style="outline: 1px dashed var(--color-neutral-400);">
-		<ndd-rich-text><p>Padding boven en onder.</p></ndd-rich-text>
-	</ndd-container>
+	<nldd-container padding-block="32" style="outline: 1px dashed var(--color-neutral-400);">
+		<nldd-rich-text><p>Padding boven en onder.</p></nldd-rich-text>
+	</nldd-container>
 `;
 PaddingBlock.storyName = 'Padding — block (boven/onder)';
 
 export const PaddingIndividueel = () => html`
-	<ndd-container
+	<nldd-container
 		padding-top="8"
 		padding-right="32"
 		padding-bottom="16"
 		padding-left="64"
 		style="outline: 1px dashed var(--color-neutral-400);"
 	>
-		<ndd-rich-text><p>Individuele padding: top=8 right=32 bottom=16 left=64.</p></ndd-rich-text>
-	</ndd-container>
+		<nldd-rich-text><p>Individuele padding: top=8 right=32 bottom=16 left=64.</p></nldd-rich-text>
+	</nldd-container>
 `;
 PaddingIndividueel.storyName = 'Padding — individuele zijden';
 
 export const PaddingResponsief = () => html`
-	<ndd-container
+	<nldd-container
 		padding="8"
 		sm-padding="16"
 		md-padding="24"
 		lg-padding="32"
 		style="outline: 1px dashed var(--color-neutral-400);"
 	>
-		<ndd-rich-text><p>Responsive viewport padding: 8 → 16 → 24 → 32.</p></ndd-rich-text>
-	</ndd-container>
+		<nldd-rich-text><p>Responsive viewport padding: 8 → 16 → 24 → 32.</p></nldd-rich-text>
+	</nldd-container>
 `;
 PaddingResponsief.storyName = 'Padding — responsive viewport';
 
 export const PaddingContainerQuery = () => html`
-	<ndd-container
+	<nldd-container
 		padding="8"
 		layout-area-sm-padding="16"
 		layout-area-md-padding="24"
 		layout-area-lg-padding="32"
 		style="outline: 1px dashed var(--color-neutral-400);"
 	>
-		<ndd-rich-text><p>Responsive container padding: 8 → 16 → 24 → 32 based on layout-area container size.</p></ndd-rich-text>
-	</ndd-container>
+		<nldd-rich-text><p>Responsive container padding: 8 → 16 → 24 → 32 based on layout-area container size.</p></nldd-rich-text>
+	</nldd-container>
 `;
 PaddingContainerQuery.storyName = 'Padding — responsive container query';
 
 export const GeenPadding = () => html`
-	<ndd-container padding="0" style="outline: 1px dashed var(--color-neutral-400);">
-		<ndd-rich-text><p>Geen padding.</p></ndd-rich-text>
-	</ndd-container>
+	<nldd-container padding="0" style="outline: 1px dashed var(--color-neutral-400);">
+		<nldd-rich-text><p>Geen padding.</p></nldd-rich-text>
+	</nldd-container>
 `;
 GeenPadding.storyName = 'Geen padding';

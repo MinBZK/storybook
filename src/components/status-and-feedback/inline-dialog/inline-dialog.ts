@@ -4,28 +4,28 @@
  * An inline status component for empty state, confirmations and feedback.
  * Fills the container and has no minimum width.
  *
- * @element ndd-inline-dialog
+ * @element nldd-inline-dialog
  *
  * @attr {'alert'} variant       - Semantic variant; 'alert' forces icon-name="alert" and colors the icon
- * @attr {string}  icon-name     - Name of the ndd-icon icon above the text; absent when not set. Ignored when variant is set.
+ * @attr {string}  icon-name     - Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set.
  * @attr {string}  text          - Main text (heading or paragraph, depending on heading-level)
  * @attr {string}  supporting-text - Supporting text below the heading
  * @attr {1|2|3|4|5|6} heading-level - Renders text as h1–h6; absent renders a p
  *
  * @slot         - Optional custom content between text and actions
- * @slot actions - ndd-button elements, wrapped in ndd-button-group (max 3)
+ * @slot actions - nldd-button elements, wrapped in nldd-button-group (max 3)
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { inlineDialogStyles } from './ndd-inline-dialog.styles.ts';
-import { inlineDialogTemplate } from './ndd-inline-dialog.template.ts';
-import '../../content/icon/ndd-icon.ts';
-import '../../actions/button-group/ndd-button-group.ts';
+import { inlineDialogStyles } from './inline-dialog.styles.ts';
+import { inlineDialogTemplate } from './inline-dialog.template.ts';
+import '../../content/icon/icon.ts';
+import '../../actions/button-group/button-group.ts';
 
 export type InlineDialogVariant = 'alert';
 
-@customElement('ndd-inline-dialog')
-export class NDDInlineDialog extends LitElement {
+@customElement('nldd-inline-dialog')
+export class NLDDInlineDialog extends LitElement {
 	static override styles = inlineDialogStyles;
 
 	@property({ type: String, reflect: true })
@@ -56,6 +56,6 @@ export class NDDInlineDialog extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-inline-dialog': NDDInlineDialog;
+		'nldd-inline-dialog': NLDDInlineDialog;
 	}
 }

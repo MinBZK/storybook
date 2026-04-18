@@ -6,7 +6,7 @@
  * na de skip-link in het DOM (nextElementSibling). Zorg dat er een focusbaar
  * element na het component staat, anders heeft de skip-link geen effect.
  *
- * @element ndd-skip-link
+ * @element nldd-skip-link
  * @attr {string} text - Tekst van de skip-link. Fallback naar i18n default.
  * @attr {string} href - Optioneel extern doel-ID. Zonder href springt naar eind van eigen content.
  *
@@ -15,13 +15,13 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './ndd-skip-link.styles.js';
-import { template } from './ndd-skip-link.template.js';
+import { styles } from './skip-link.styles.js';
+import { template } from './skip-link.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
-import { nddSkipLinkTranslations } from './ndd-skip-link.i18n.js';
+import { nlddSkipLinkTranslations } from './skip-link.i18n.js';
 
-@customElement('ndd-skip-link')
-export class NDDSkipLink extends withTranslations(LitElement, nddSkipLinkTranslations) {
+@customElement('nldd-skip-link')
+export class NLDDSkipLink extends withTranslations(LitElement, nlddSkipLinkTranslations) {
 	static override styles = styles;
 
 	@property({ type: String })
@@ -55,6 +55,6 @@ export class NDDSkipLink extends withTranslations(LitElement, nddSkipLinkTransla
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-skip-link': NDDSkipLink;
+		'nldd-skip-link': NLDDSkipLink;
 	}
 }

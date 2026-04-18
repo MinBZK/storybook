@@ -2,27 +2,27 @@
  * Nederlandse Digitale Dienst Switch Component (Lit + TypeScript)
  *
  * A toggle control for on/off settings.
- * Prefer ndd-switch-field for labeled usage — it combines the switch with a visible label.
- * Direct use of ndd-switch requires an accessible-label attribute for screen reader accessibility.
+ * Prefer nldd-switch-field for labeled usage — it combines the switch with a visible label.
+ * Direct use of nldd-switch requires an accessible-label attribute for screen reader accessibility.
  *
- * @element ndd-switch
+ * @element nldd-switch
  * @attr {boolean} checked           - Whether the switch is on/off
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  size              - Switch size: 'xs' | 'sm' (default: 'sm')
  * @attr {string}  accessible-label  - Accessible label forwarded as aria-label to the native input.
- *                                     Required when using ndd-switch without ndd-switch-field.
+ *                                     Required when using nldd-switch without nldd-switch-field.
  *
  * @fires change - When the switch state changes; detail: { checked: boolean, value: string }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { switchStyles } from './ndd-switch.styles.ts';
-import { switchTemplate } from './ndd-switch.template.ts';
+import { switchStyles } from './switch.styles.ts';
+import { switchTemplate } from './switch.template.ts';
 
 export type SwitchSize = 'xs' | 'sm';
 
-@customElement('ndd-switch')
-export class NDDSwitch extends LitElement {
+@customElement('nldd-switch')
+export class NLDDSwitch extends LitElement {
 	static override styles = switchStyles;
 
 	@property({ type: Boolean, reflect: true })
@@ -42,7 +42,7 @@ export class NDDSwitch extends LitElement {
 
 	override firstUpdated(): void {
 		if (!this.accessibleLabel) {
-			console.warn('<ndd-switch>: No accessible-label provided. Use ndd-switch-field for labeled usage, or provide an accessible-label attribute for screen reader accessibility.');
+			console.warn('<nldd-switch>: No accessible-label provided. Use nldd-switch-field for labeled usage, or provide an accessible-label attribute for screen reader accessibility.');
 		}
 	}
 
@@ -64,7 +64,7 @@ export class NDDSwitch extends LitElement {
 		// Once the threshold is crossed, _swiped locks in — matching iOS switch
 		// behaviour where intent is set by crossing the threshold, and the final
 		// toggle direction is determined by the terminal dx in _handlePointerUp.
-		if (Math.abs(dx) >= NDDSwitch.SWIPE_THRESHOLD) {
+		if (Math.abs(dx) >= NLDDSwitch.SWIPE_THRESHOLD) {
 			this._swiped = true;
 		}
 	}
@@ -129,6 +129,6 @@ export class NDDSwitch extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-switch': NDDSwitch;
+		'nldd-switch': NLDDSwitch;
 	}
 }

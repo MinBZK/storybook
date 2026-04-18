@@ -8,7 +8,7 @@
  * On small (sm) viewports the sheet always renders as a bottom sheet,
  * regardless of the configured placement.
  *
- * @element ndd-sheet
+ * @element nldd-sheet
  *
  * @attr {string}  placement        - Sheet position: 'left' | 'right' | 'bottom' (default: 'right')
  * @attr {boolean} modeless         - Non-modal (no backdrop or focus lock); the sheet is modal by default
@@ -25,14 +25,14 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { sheetStyles } from './ndd-sheet.styles.ts';
-import { sheetTemplate } from './ndd-sheet.template.ts';
+import { sheetStyles } from './sheet.styles.ts';
+import { sheetTemplate } from './sheet.template.ts';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 
 type Placement = 'left' | 'right' | 'bottom';
 
-@customElement('ndd-sheet')
-export class NDDSheet extends LitElement {
+@customElement('nldd-sheet')
+export class NLDDSheet extends LitElement {
 	static override styles = sheetStyles;
 
 	@property({ type: String, reflect: true })
@@ -55,7 +55,7 @@ export class NDDSheet extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		// Listen for dismiss events bubbling up from ndd-top-title-bar
+		// Listen for dismiss events bubbling up from nldd-top-title-bar
 		this.addEventListener('dismiss', this._handleDismiss);
 	}
 
@@ -71,7 +71,7 @@ export class NDDSheet extends LitElement {
 		// Warn once per instance when the consumer has not provided a meaningful accessible label
 		if (this.accessibleLabel === 'Dialoogvenster' && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
-			console.warn('<ndd-sheet>: No accessible-label provided. Screen readers will announce this dialog as "Dialoogvenster". Set accessible-label to a descriptive name matching the dialog title.');
+			console.warn('<nldd-sheet>: No accessible-label provided. Screen readers will announce this dialog as "Dialoogvenster". Set accessible-label to a descriptive name matching the dialog title.');
 		}
 
 		if (this.modeless) {
@@ -143,6 +143,6 @@ export class NDDSheet extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-sheet': NDDSheet;
+		'nldd-sheet': NLDDSheet;
 	}
 }

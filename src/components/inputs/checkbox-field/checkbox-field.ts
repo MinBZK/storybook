@@ -3,7 +3,7 @@
  *
  * A checkbox with an inline label for use in forms.
  *
- * @element ndd-checkbox-field
+ * @element nldd-checkbox-field
  * @attr {boolean} checked       - Checked state
  * @attr {boolean} indeterminate - Indeterminate state
  * @attr {boolean} disabled      - Disabled state
@@ -15,12 +15,12 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { checkboxFieldStyles } from './ndd-checkbox-field.styles.ts';
-import { checkboxFieldTemplate } from './ndd-checkbox-field.template.ts';
-import type { NDDCheckbox } from '../checkbox/ndd-checkbox.js';
+import { checkboxFieldStyles } from './checkbox-field.styles.ts';
+import { checkboxFieldTemplate } from './checkbox-field.template.ts';
+import type { NLDDCheckbox } from '../checkbox/checkbox.js';
 
-@customElement('ndd-checkbox-field')
-export class NDDCheckboxField extends LitElement {
+@customElement('nldd-checkbox-field')
+export class NLDDCheckboxField extends LitElement {
 	static override styles = checkboxFieldStyles;
 
 	@property({ type: Boolean, reflect: true })
@@ -43,8 +43,8 @@ export class NDDCheckboxField extends LitElement {
 
 	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;
-		if ((e.target as HTMLElement).closest?.('ndd-checkbox')) return;
-		const checkbox = this.shadowRoot?.querySelector('ndd-checkbox') as NDDCheckbox | null;
+		if ((e.target as HTMLElement).closest?.('nldd-checkbox')) return;
+		const checkbox = this.shadowRoot?.querySelector('nldd-checkbox') as NLDDCheckbox | null;
 		checkbox?.toggle();
 	}
 
@@ -66,6 +66,6 @@ export class NDDCheckboxField extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-checkbox-field': NDDCheckboxField;
+		'nldd-checkbox-field': NLDDCheckboxField;
 	}
 }

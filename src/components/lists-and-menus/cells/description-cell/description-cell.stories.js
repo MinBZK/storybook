@@ -1,10 +1,10 @@
 import { html } from 'lit';
-import './ndd-description-cell.ts';
-import '../../../content/rich-text/ndd-rich-text.ts';
+import './description-cell.ts';
+import '../../../content/rich-text/rich-text.ts';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Description Cell',
-	component: 'ndd-description-cell',
+	component: 'nldd-description-cell',
 	tags: ['autodocs'],
 	argTypes: {
 		width: {
@@ -45,58 +45,58 @@ export const Default = {
 		width: 'stretch',
 	},
 	render: (args) => html`
-		<ndd-description-cell
+		<nldd-description-cell
 			width=${args.width}
 			vertical-alignment=${args.verticalAlignment}
 			?selected=${args.selected}
 		>
 			<p slot="title">Term</p>
 			<p slot="description">Description text</p>
-		</ndd-description-cell>
+		</nldd-description-cell>
 	`,
 };
 
 export const Selected = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<ndd-description-cell>
+			<nldd-description-cell>
 				<p slot="title">Term</p>
 				<p slot="description">Description text</p>
-			</ndd-description-cell>
-			<ndd-description-cell selected>
+			</nldd-description-cell>
+			<nldd-description-cell selected>
 				<p slot="title">Term</p>
 				<p slot="description">Description text (selected)</p>
-			</ndd-description-cell>
+			</nldd-description-cell>
 		</div>
 	`,
 };
 
 export const WithRichText = {
 	render: () => html`
-		<ndd-description-cell>
+		<nldd-description-cell>
 			<p slot="title">Term</p>
-			<ndd-rich-text slot="description">
+			<nldd-rich-text slot="description">
 				<p>This description contains <strong>formatted text</strong> and <a href="#">a link</a>.</p>
-			</ndd-rich-text>
-		</ndd-description-cell>
+			</nldd-rich-text>
+		</nldd-description-cell>
 	`,
 };
 
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<ndd-description-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-description-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="title">Term</p>
 				<p slot="description">Center</p>
-			</ndd-description-cell>
-			<ndd-description-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);">
+			</nldd-description-cell>
+			<nldd-description-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="title">Term</p>
 				<p slot="description">Top</p>
-			</ndd-description-cell>
-			<ndd-description-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);">
+			</nldd-description-cell>
+			<nldd-description-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="title">Term</p>
 				<p slot="description">Bottom</p>
-			</ndd-description-cell>
+			</nldd-description-cell>
 		</div>
 	`,
 };

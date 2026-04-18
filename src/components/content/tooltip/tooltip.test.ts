@@ -1,28 +1,28 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDTooltip } from './ndd-tooltip.ts';
-import './ndd-tooltip.ts';
+import type { NLDDTooltip } from './tooltip.ts';
+import './tooltip.ts';
 
-function isTooltipVisible(el: NDDTooltip): boolean {
+function isTooltipVisible(el: NLDDTooltip): boolean {
 	const tooltip = el.shadowRoot!.querySelector('.tooltip');
 	return tooltip?.classList.contains('is-visible') || tooltip?.classList.contains('is-focus-visible') || false;
 }
 
-describe('ndd-tooltip', () => {
-	let el: NDDTooltip;
+describe('nldd-tooltip', () => {
+	let el: NLDDTooltip;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('rendert zonder fouten', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"></nldd-tooltip>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('rendert tooltip met aria-hidden', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"></nldd-tooltip>');
 		await waitForUpdate(el);
 		const tooltip = el.shadowRoot!.querySelector('.tooltip');
 		expect(tooltip).not.toBeNull();
@@ -30,33 +30,33 @@ describe('ndd-tooltip', () => {
 	});
 
 	it('toont de tooltip tekst', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Helptekst"></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Helptekst"></nldd-tooltip>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.tooltip__body')?.textContent?.trim()).toBe('Helptekst');
 	});
 
 	it('tooltip is standaard niet zichtbaar', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"></nldd-tooltip>');
 		await waitForUpdate(el);
 		expect(isTooltipVisible(el)).toBe(false);
 	});
 
 	it('standaard placement is bottom', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"></nldd-tooltip>');
 		await waitForUpdate(el);
 		expect(el.placement).toBe('bottom');
 	});
 });
 
-describe('ndd-tooltip – show/hide', () => {
-	let el: NDDTooltip;
+describe('nldd-tooltip – show/hide', () => {
+	let el: NLDDTooltip;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('wordt zichtbaar bij mouseenter op trigger', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
 
 		const trigger = el.querySelector('button')!;
@@ -67,7 +67,7 @@ describe('ndd-tooltip – show/hide', () => {
 	});
 
 	it('wordt zichtbaar bij focusin op trigger', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
 
 		const trigger = el.querySelector('button')!;
@@ -78,7 +78,7 @@ describe('ndd-tooltip – show/hide', () => {
 	});
 
 	it('wordt verborgen bij mouseleave', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
 
 		const trigger = el.querySelector('button')!;
@@ -91,7 +91,7 @@ describe('ndd-tooltip – show/hide', () => {
 	});
 
 	it('blijft zichtbaar bij tooltip hover', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
 
 		const trigger = el.querySelector('button')!;
@@ -107,7 +107,7 @@ describe('ndd-tooltip – show/hide', () => {
 	});
 
 	it('Escape sluit de tooltip', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>Trigger</button></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
 
 		const trigger = el.querySelector('button')!;
@@ -121,7 +121,7 @@ describe('ndd-tooltip – show/hide', () => {
 	});
 
 	it('toont niet bij lege text', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text=""><button>Trigger</button></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text=""><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
 
 		const trigger = el.querySelector('button')!;
@@ -132,18 +132,18 @@ describe('ndd-tooltip – show/hide', () => {
 	});
 });
 
-describe('ndd-tooltip – aria-describedby', () => {
-	let el: NDDTooltip;
+describe('nldd-tooltip – aria-describedby', () => {
+	let el: NLDDTooltip;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('zet aria-describedby op het trigger element', async () => {
-		el = await fixture<NDDTooltip>(`
-			<ndd-tooltip text="Helptekst">
+		el = await fixture<NLDDTooltip>(`
+			<nldd-tooltip text="Helptekst">
 				<button>Trigger</button>
-			</ndd-tooltip>
+			</nldd-tooltip>
 		`);
 		await waitForUpdate(el);
 
@@ -157,10 +157,10 @@ describe('ndd-tooltip – aria-describedby', () => {
 	});
 
 	it('verwijdert aria-describedby bij lege text', async () => {
-		el = await fixture<NDDTooltip>(`
-			<ndd-tooltip text="Helptekst">
+		el = await fixture<NLDDTooltip>(`
+			<nldd-tooltip text="Helptekst">
 				<button>Trigger</button>
-			</ndd-tooltip>
+			</nldd-tooltip>
 		`);
 		await waitForUpdate(el);
 
@@ -172,7 +172,7 @@ describe('ndd-tooltip – aria-describedby', () => {
 	});
 
 	it('verwijdert description span bij disconnect', async () => {
-		el = await fixture<NDDTooltip>('<ndd-tooltip text="Test"><button>T</button></ndd-tooltip>');
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>T</button></nldd-tooltip>');
 		await waitForUpdate(el);
 		const id = el.querySelector('button')!.getAttribute('aria-describedby')!;
 		expect(document.getElementById(id)).not.toBeNull();

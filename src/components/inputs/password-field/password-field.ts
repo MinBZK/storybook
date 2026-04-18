@@ -3,12 +3,12 @@
  *
  * A password input field with visibility toggle and validation states.
  *
- * @element ndd-password-field
+ * @element nldd-password-field
  *
  * @attr {string} value        - The input value
  * @attr {string} placeholder  - Placeholder text
- * @attr {string} input-id     - Sets the id on the native input. Set automatically by ndd-form-field.
- * @attr {string} size         - 'md' (default) | 'sm'. Set automatically by ndd-form-field.
+ * @attr {string} input-id     - Sets the id on the native input. Set automatically by nldd-form-field.
+ * @attr {string} size         - 'md' (default) | 'sm'. Set automatically by nldd-form-field.
  * @attr {boolean} valid       - Marks the field as valid
  * @attr {boolean} invalid     - Marks the field as invalid
  * @attr {boolean} disabled    - Disabled state
@@ -21,7 +21,7 @@
  * @attr {boolean} required    - Required state
  * @attr {string} name         - Input name for form submission
  * @attr {string} autocomplete        - Autocomplete hint
- * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by ndd-form-field.
+ * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
  *
  * @fires input  - When the input value changes ({ detail: { value } })
  * @fires change - When the input value is committed ({ detail: { value } })
@@ -32,11 +32,11 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { passwordFieldStyles } from './ndd-password-field.styles.js';
-import { passwordFieldTemplate } from './ndd-password-field.template.js';
+import { passwordFieldStyles } from './password-field.styles.js';
+import { passwordFieldTemplate } from './password-field.template.js';
 
-@customElement('ndd-password-field')
-export class NDDPasswordField extends LitElement {
+@customElement('nldd-password-field')
+export class NLDDPasswordField extends LitElement {
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
 		delegatesFocus: true,
@@ -96,7 +96,7 @@ export class NDDPasswordField extends LitElement {
 	@property({ type: String })
 	autocomplete = '';
 
-	/** Accessible label forwarded to the inner <input>. Set automatically by ndd-form-field. */
+	/** Accessible label forwarded to the inner <input>. Set automatically by nldd-form-field. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
@@ -148,6 +148,6 @@ export class NDDPasswordField extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-password-field': NDDPasswordField;
+		'nldd-password-field': NLDDPasswordField;
 	}
 }

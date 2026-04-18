@@ -1,12 +1,12 @@
 import { html, nothing } from 'lit';
-import './ndd-window.ts';
-import '../../layout/page/ndd-page.ts';
-import '../../navigation/top-title-bar/ndd-top-title-bar.ts';
-import '../../content/rich-text/ndd-rich-text.ts';
-import '../../actions/button/ndd-button.ts';
-import '../../actions/button-group/ndd-button-group.ts';
-import '../../layout/page-sections/simple-section/ndd-simple-section.ts';
-import '../../layout/container/ndd-container.ts';
+import './window.ts';
+import '../../layout/page/page.ts';
+import '../../navigation/top-title-bar/top-title-bar.ts';
+import '../../content/rich-text/rich-text.ts';
+import '../../actions/button/button.ts';
+import '../../actions/button-group/button-group.ts';
+import '../../layout/page-sections/simple-section/simple-section.ts';
+import '../../layout/container/container.ts';
 
 /**
  * Een zwevend venster gebaseerd op het native `<dialog>`-element.
@@ -15,23 +15,23 @@ import '../../layout/container/ndd-container.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-window>
- *   <ndd-page sticky-header>
- *     <ndd-top-title-bar slot="header" text="Venster" dismiss-text="Sluit"></ndd-top-title-bar>
- *     <ndd-simple-section>
+ * <nldd-window>
+ *   <nldd-page sticky-header>
+ *     <nldd-top-title-bar slot="header" text="Venster" dismiss-text="Sluit"></nldd-top-title-bar>
+ *     <nldd-simple-section>
  *       <p>Inhoud</p>
- *     </ndd-simple-section>
- *   </ndd-page>
- * </ndd-window>
+ *     </nldd-simple-section>
+ *   </nldd-page>
+ * </nldd-window>
  * ```
  */
 export default {
 	title: 'Components/Layout/Window',
-	component: 'ndd-window',
+	component: 'nldd-window',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/layout/window/ndd-window.ts',
+			file: 'src/components/layout/window/window.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'experimental' },
@@ -93,18 +93,18 @@ export default {
 const openNext = (e: Event) => ((e.currentTarget as HTMLElement).nextElementSibling as HTMLElement & { show(): void }).show();
 
 const pageContent = html`
-	<ndd-simple-section>
-		<ndd-rich-text>
+	<nldd-simple-section>
+		<nldd-rich-text>
 			<p>Dit is de inhoud van het venster.</p>
 			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 			Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-		</ndd-rich-text>
-	</ndd-simple-section>
+		</nldd-rich-text>
+	</nldd-simple-section>
 `;
 
 const Template = (args: Record<string, unknown>) => html`
-	<ndd-button text="Open venster" @click=${openNext}></ndd-button>
-	<ndd-window
+	<nldd-button text="Open venster" @click=${openNext}></nldd-button>
+	<nldd-window
 		?modeless=${args.modeless}
 		?movable=${args.movable}
 		width=${args.width || nothing}
@@ -115,15 +115,15 @@ const Template = (args: Record<string, unknown>) => html`
 		bottom=${args.bottom || nothing}
 		accessible-label="Voorbeeldvenster"
 	>
-		<ndd-page sticky-header>
-			<ndd-top-title-bar
+		<nldd-page sticky-header>
+			<nldd-top-title-bar
 				slot="header"
 				text="Venstertitel"
 				dismiss-text="Sluit"
-			></ndd-top-title-bar>
+			></nldd-top-title-bar>
 			${pageContent}
-		</ndd-page>
-	</ndd-window>
+		</nldd-page>
+	</nldd-window>
 `;
 
 export const Standaard = {
@@ -132,20 +132,20 @@ export const Standaard = {
 
 export const NietModaal = {
 	render: () => html`
-		<ndd-button text="Open niet-modaal venster" @click=${openNext}></ndd-button>
-		<ndd-window
+		<nldd-button text="Open niet-modaal venster" @click=${openNext}></nldd-button>
+		<nldd-window
 			modeless
 			accessible-label="Niet-modaal venster"
 		>
-			<ndd-page sticky-header>
-				<ndd-top-title-bar
+			<nldd-page sticky-header>
+				<nldd-top-title-bar
 					slot="header"
 					text="Niet-modaal venster"
 					dismiss-text="Sluit"
-				></ndd-top-title-bar>
+				></nldd-top-title-bar>
 				${pageContent}
-			</ndd-page>
-		</ndd-window>
+			</nldd-page>
+		</nldd-window>
 	`,
 	parameters: {
 		controls: { disable: true },
@@ -159,28 +159,28 @@ export const NietModaal = {
 
 export const Versleepbaar = {
 	render: () => html`
-		<ndd-button text="Open versleepbaar venster" @click=${openNext}></ndd-button>
-		<ndd-window
+		<nldd-button text="Open versleepbaar venster" @click=${openNext}></nldd-button>
+		<nldd-window
 			modeless
 			movable
 			accessible-label="Versleepbaar venster"
 		>
-			<ndd-page sticky-header>
-				<ndd-top-title-bar
+			<nldd-page sticky-header>
+				<nldd-top-title-bar
 					slot="header"
 					text="Versleep mij"
 					dismiss-text="Sluit"
 					window-drag-handle
-				></ndd-top-title-bar>
+				></nldd-top-title-bar>
 				${pageContent}
-			</ndd-page>
-		</ndd-window>
+			</nldd-page>
+		</nldd-window>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Versleepbaar venster. De `ndd-top-title-bar` heeft het `window-drag-handle` attribuut, waardoor alleen de titelbalk als greep functioneert.',
+				story: 'Versleepbaar venster. De `nldd-top-title-bar` heeft het `window-drag-handle` attribuut, waardoor alleen de titelbalk als greep functioneert.',
 			},
 		},
 	},
@@ -188,22 +188,22 @@ export const Versleepbaar = {
 
 export const Gepositioneerd = {
 	render: () => html`
-		<ndd-button text="Open rechtsonder" @click=${openNext}></ndd-button>
-		<ndd-window
+		<nldd-button text="Open rechtsonder" @click=${openNext}></nldd-button>
+		<nldd-window
 			right="32px"
 			bottom="32px"
 			width="400px"
 			accessible-label="Gepositioneerd venster"
 		>
-			<ndd-page sticky-header>
-				<ndd-top-title-bar
+			<nldd-page sticky-header>
+				<nldd-top-title-bar
 					slot="header"
 					text="Rechtsonder"
 					dismiss-text="Sluit"
-				></ndd-top-title-bar>
+				></nldd-top-title-bar>
 				${pageContent}
-			</ndd-page>
-		</ndd-window>
+			</nldd-page>
+		</nldd-window>
 	`,
 	parameters: {
 		controls: { disable: true },
@@ -217,32 +217,32 @@ export const Gepositioneerd = {
 
 export const MetFooter = {
 	render: () => html`
-		<ndd-button text="Open venster met footer" @click=${openNext}></ndd-button>
-		<ndd-window
+		<nldd-button text="Open venster met footer" @click=${openNext}></nldd-button>
+		<nldd-window
 			height="400px"
 			accessible-label="Venster met footer"
 		>
-			<ndd-page sticky-header sticky-footer>
-				<ndd-top-title-bar
+			<nldd-page sticky-header sticky-footer>
+				<nldd-top-title-bar
 					slot="header"
 					text="Venster met acties"
 					dismiss-text="Sluit"
-				></ndd-top-title-bar>
+				></nldd-top-title-bar>
 				${pageContent}
-				<ndd-container slot="footer" padding-inline="16" padding-bottom="16">
-					<ndd-button-group orientation="horizontal">
-						<ndd-button variant="primary" text="Opslaan"></ndd-button>
-						<ndd-button variant="secondary" text="Annuleer"></ndd-button>
-					</ndd-button-group>
-				</ndd-container>
-			</ndd-page>
-		</ndd-window>
+				<nldd-container slot="footer" padding-inline="16" padding-bottom="16">
+					<nldd-button-group orientation="horizontal">
+						<nldd-button variant="primary" text="Opslaan"></nldd-button>
+						<nldd-button variant="secondary" text="Annuleer"></nldd-button>
+					</nldd-button-group>
+				</nldd-container>
+			</nldd-page>
+		</nldd-window>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Modaal venster met sticky footer voor acties, via ndd-page met sticky-footer. Hier is `height` gezet zodat de footer onderaan kleeft.',
+				story: 'Modaal venster met sticky footer voor acties, via nldd-page met sticky-footer. Hier is `height` gezet zodat de footer onderaan kleeft.',
 			},
 		},
 	},

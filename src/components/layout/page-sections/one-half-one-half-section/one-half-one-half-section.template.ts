@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
-import type { NDDOneHalfOneHalfSection } from './ndd-one-half-one-half-section.js';
+import type { NLDDOneHalfOneHalfSection } from './one-half-one-half-section.js';
 
-export function oneHalfOneHalfSectionTemplate(_component: NDDOneHalfOneHalfSection): TemplateResult {
+export function oneHalfOneHalfSectionTemplate(_component: NLDDOneHalfOneHalfSection): TemplateResult {
 	return html`
 		<section class="one-half-one-half-section">
 			<div class="one-half-one-half-section__body">

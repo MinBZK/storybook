@@ -1,14 +1,14 @@
 import { html } from 'lit';
-import './ndd-collection.ts';
-import '../../actions/button/ndd-button.ts';
-import '../../actions/button-group/ndd-button-group.ts';
-import '../../content/rich-text/ndd-rich-text.ts';
-import '../../content/title/ndd-title.ts';
-import '../card/ndd-card.ts';
-import '../container/ndd-container.ts';
-import '../spacer/ndd-spacer.ts';
-import '../page/ndd-page.ts';
-import '../page-sections/simple-section/ndd-simple-section.ts';
+import './collection.ts';
+import '../../actions/button/button.ts';
+import '../../actions/button-group/button-group.ts';
+import '../../content/rich-text/rich-text.ts';
+import '../../content/title/title.ts';
+import '../card/card.ts';
+import '../container/container.ts';
+import '../spacer/spacer.ts';
+import '../page/page.ts';
+import '../page-sections/simple-section/simple-section.ts';
 
 /**
  * Gebruik een collection om een verzameling items weer te geven in een grid-,
@@ -18,18 +18,18 @@ import '../page-sections/simple-section/ndd-simple-section.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-collection layout="grid">
- *   <ndd-card>...</ndd-card>
- * </ndd-collection>
+ * <nldd-collection layout="grid">
+ *   <nldd-card>...</nldd-card>
+ * </nldd-collection>
  * ```
  */
 export default {
 	title: 'Components/Layout/Collection',
-	component: 'ndd-collection',
+	component: 'nldd-collection',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/layout/collection/ndd-collection.ts',
+			file: 'src/components/layout/collection/collection.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -68,38 +68,38 @@ export default {
 };
 
 const itemContent = (i) => html`
-	<ndd-title size="4"><h3>Item ${i + 1}</h3></ndd-title>
-	<ndd-spacer size="4"></ndd-spacer>
-	<ndd-rich-text spacing="flat">
+	<nldd-title size="4"><h3>Item ${i + 1}</h3></nldd-title>
+	<nldd-spacer size="4"></nldd-spacer>
+	<nldd-rich-text spacing="flat">
 		<p>Omschrijving van item ${i + 1}. Dit item bevat wat extra tekst om de kaart wat meer hoogte te geven en de layout beter tot zijn recht te laten komen.</p>
-	</ndd-rich-text>
-	<ndd-spacer size="16"></ndd-spacer>
-	<ndd-button-group orientation="horizontal">
-		<ndd-button variant="primary" text="Bekijk"></ndd-button>
-		<ndd-button variant="secondary" text="Meer info"></ndd-button>
-	</ndd-button-group>
+	</nldd-rich-text>
+	<nldd-spacer size="16"></nldd-spacer>
+	<nldd-button-group orientation="horizontal">
+		<nldd-button variant="primary" text="Bekijk"></nldd-button>
+		<nldd-button variant="secondary" text="Meer info"></nldd-button>
+	</nldd-button-group>
 `;
 
 const gridItems = Array.from({ length: 12 }, (_, i) => html`
-	<ndd-card>
-		<ndd-container padding="16">${itemContent(i)}</ndd-container>
-	</ndd-card>
+	<nldd-card>
+		<nldd-container padding="16">${itemContent(i)}</nldd-container>
+	</nldd-card>
 `);
 
 const listItems = Array.from({ length: 12 }, (_, i) => html`
-	<ndd-card>
-		<ndd-container padding="16">${itemContent(i)}</ndd-container>
-	</ndd-card>
+	<nldd-card>
+		<nldd-container padding="16">${itemContent(i)}</nldd-container>
+	</nldd-card>
 `);
 
 const scrollItems = Array.from({ length: 12 }, (_, i) => html`
-	<ndd-card>
-		<ndd-container padding="16">${itemContent(i)}</ndd-container>
-	</ndd-card>
+	<nldd-card>
+		<nldd-container padding="16">${itemContent(i)}</nldd-container>
+	</nldd-card>
 `);
 
 export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad }) => html`
-	<ndd-collection
+	<nldd-collection
 		layout=${layout}
 		?show-load-more=${showLoadMore}
 
@@ -107,51 +107,51 @@ export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad }) => html`
 		?lazy-load=${lazyLoad}
 	>
 		${gridItems}
-	</ndd-collection>
+	</nldd-collection>
 `;
 
 export const Grid = () => html`
-	<ndd-collection layout="grid" show-load-more max-items="6">
+	<nldd-collection layout="grid" show-load-more max-items="6">
 		${gridItems}
-	</ndd-collection>
+	</nldd-collection>
 `;
 Grid.parameters = { controls: { disable: true } };
 
 export const GridLazyLoad = () => html`
-	<ndd-collection layout="grid" show-load-more max-items="6" lazy-load>
+	<nldd-collection layout="grid" show-load-more max-items="6" lazy-load>
 		${gridItems}
-	</ndd-collection>
+	</nldd-collection>
 `;
 GridLazyLoad.parameters = { controls: { disable: true } };
 
 export const Lijst = () => html`
-	<ndd-collection layout="list" show-load-more max-items="6">
+	<nldd-collection layout="list" show-load-more max-items="6">
 		${listItems}
-	</ndd-collection>
+	</nldd-collection>
 `;
 Lijst.parameters = { controls: { disable: true } };
 
 export const HorizontaalScrollend = () => html`
-	<ndd-collection layout="horizontal-scroll">
+	<nldd-collection layout="horizontal-scroll">
 		${scrollItems}
-	</ndd-collection>
+	</nldd-collection>
 `;
 HorizontaalScrollend.parameters = { controls: { disable: true } };
 
 
 
 export const InSimpleSectie = () => html`
-	<ndd-page background="tinted">
-		<ndd-simple-section>
-			<ndd-title slot="header" size="2"><h2>Sectietitel</h2></ndd-title>
-			<ndd-spacer slot="header" size="4"></ndd-spacer>
-			<ndd-rich-text slot="header" spacing="flat">
+	<nldd-page background="tinted">
+		<nldd-simple-section>
+			<nldd-title slot="header" size="2"><h2>Sectietitel</h2></nldd-title>
+			<nldd-spacer slot="header" size="4"></nldd-spacer>
+			<nldd-rich-text slot="header" spacing="flat">
 				<p>Tekst boven de collectie om de uitlijning te zien.</p>
-			</ndd-rich-text>
-			<ndd-collection layout="horizontal-scroll">
+			</nldd-rich-text>
+			<nldd-collection layout="horizontal-scroll">
 				${scrollItems}
-			</ndd-collection>
-		</ndd-simple-section>
-	</ndd-page>
+			</nldd-collection>
+		</nldd-simple-section>
+	</nldd-page>
 `;
 InSimpleSectie.parameters = { controls: { disable: true } };

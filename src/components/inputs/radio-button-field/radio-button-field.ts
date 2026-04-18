@@ -1,10 +1,10 @@
 /**
  * Nederlandse Digitale Dienst Radio Button Field Component (Lit + TypeScript)
  *
- * A radio button with an inline label. Use inside ndd-radio-button-group
+ * A radio button with an inline label. Use inside nldd-radio-button-group
  * for keyboard navigation and group semantics. The group sets the name.
  *
- * @element ndd-radio-button-field
+ * @element nldd-radio-button-field
  * @attr {boolean} checked  - Checked state
  * @attr {boolean} disabled - Disabled state
  * @attr {string}  value    - Value for form submission
@@ -14,12 +14,12 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { radioButtonFieldStyles } from './ndd-radio-button-field.styles.ts';
-import { radioButtonFieldTemplate } from './ndd-radio-button-field.template.ts';
-import type { NDDRadioButton } from '../radio-button/ndd-radio-button.js';
+import { radioButtonFieldStyles } from './radio-button-field.styles.ts';
+import { radioButtonFieldTemplate } from './radio-button-field.template.ts';
+import type { NLDDRadioButton } from '../radio-button/radio-button.js';
 
-@customElement('ndd-radio-button-field')
-export class NDDRadioButtonField extends LitElement {
+@customElement('nldd-radio-button-field')
+export class NLDDRadioButtonField extends LitElement {
 	static override styles = radioButtonFieldStyles;
 
 	@property({ type: Boolean, reflect: true })
@@ -31,7 +31,7 @@ export class NDDRadioButtonField extends LitElement {
 	@property({ type: String })
 	value = '';
 
-	/** Set by ndd-radio-button-group. Not part of the public API. */
+	/** Set by nldd-radio-button-group. Not part of the public API. */
 	@property({ type: String })
 	name = '';
 
@@ -43,8 +43,8 @@ export class NDDRadioButtonField extends LitElement {
 
 	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;
-		if ((e.target as HTMLElement).closest?.('ndd-radio-button')) return;
-		const radioButton = this.shadowRoot?.querySelector('ndd-radio-button') as NDDRadioButton | null;
+		if ((e.target as HTMLElement).closest?.('nldd-radio-button')) return;
+		const radioButton = this.shadowRoot?.querySelector('nldd-radio-button') as NLDDRadioButton | null;
 		radioButton?.select();
 	}
 
@@ -64,6 +64,6 @@ export class NDDRadioButtonField extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-radio-button-field': NDDRadioButtonField;
+		'nldd-radio-button-field': NLDDRadioButtonField;
 	}
 }

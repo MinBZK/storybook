@@ -1,14 +1,14 @@
 /**
  * Nederlandse Digitale Dienst Icon Button Component (Lit + TypeScript)
  *
- * @element ndd-icon-button
+ * @element nldd-icon-button
  * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'danger-tinted' | 'primary' | 'secondary' | 'destructive'
  * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable        - Whether the button opens a menu or popover and shows chevron next to the icon
  * @attr {string}  text              - Button text, used as aria-label and shown below the icon in lg size
- * @attr {string}  icon              - Icon name for the ndd-icon element
+ * @attr {string}  icon              - Icon name for the nldd-icon element
  * @attr {string}  accessible-label  - Accessible label for screen readers. Overrides text as aria-label
  *                                     and title tooltip. Use when the visible text alone lacks context for screen
  *                                     readers (e.g. text "Toon", accessible-label "Toon wachtwoord").
@@ -22,16 +22,16 @@
  *
  * @example
  * ```html
- * <ndd-icon-button text="Download" icon="download"></ndd-icon-button>
+ * <nldd-icon-button text="Download" icon="download"></nldd-icon-button>
  * ```
  *
  * @fires click - When button is clicked (not fired when disabled)
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './ndd-icon-button.styles.ts';
-import { template } from './ndd-icon-button.template.ts';
-import './../../content/icon/ndd-icon.ts';
+import { styles } from './icon-button.styles.ts';
+import { template } from './icon-button.template.ts';
+import './../../content/icon/icon.ts';
 
 export type Size = 'xs' | 'sm' | 'md' | 'lg';
 export type Variant =
@@ -46,8 +46,8 @@ export type Variant =
 	| 'danger-tinted';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
-@customElement('ndd-icon-button')
-export class NDDIconButton extends LitElement {
+@customElement('nldd-icon-button')
+export class NLDDIconButton extends LitElement {
 	static override styles = styles;
 
 	@property({ type: String, reflect: true })
@@ -72,7 +72,7 @@ export class NDDIconButton extends LitElement {
 	@property({ type: String })
 	text = '';
 
-	/** Icon name for the ndd-icon element. When not set, the icon slot is used. */
+	/** Icon name for the nldd-icon element. When not set, the icon slot is used. */
 	@property({ type: String })
 	icon = '';
 
@@ -109,7 +109,7 @@ export class NDDIconButton extends LitElement {
 		const inaccessible = this._hasIcon && !this.text && !this.accessibleLabel;
 		if (inaccessible && !this._warnedA11y) {
 			this._warnedA11y = true;
-			console.warn('<ndd-icon-button>: icon is set without text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2). Add a text or accessible-label attribute.');
+			console.warn('<nldd-icon-button>: icon is set without text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2). Add a text or accessible-label attribute.');
 		} else if (!inaccessible) {
 			this._warnedA11y = false;
 		}
@@ -137,6 +137,6 @@ export class NDDIconButton extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-icon-button': NDDIconButton;
+		'nldd-icon-button': NLDDIconButton;
 	}
 }

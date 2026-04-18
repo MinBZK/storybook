@@ -1,9 +1,9 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDCheckbox } from './ndd-checkbox.ts';
-import './ndd-checkbox.ts';
+import type { NLDDCheckbox } from './checkbox.ts';
+import './checkbox.ts';
 
-describe('ndd-checkbox', () => {
+describe('nldd-checkbox', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -11,13 +11,13 @@ describe('ndd-checkbox', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-checkbox></ndd-checkbox>');
+		el = await fixture('<nldd-checkbox></nldd-checkbox>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a native checkbox input', async () => {
-		el = await fixture('<ndd-checkbox></ndd-checkbox>');
+		el = await fixture('<nldd-checkbox></nldd-checkbox>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input[type="checkbox"]')).not.toBeNull();
 	});
@@ -28,50 +28,50 @@ describe('ndd-checkbox', () => {
    State
    ============================================================ */
 
-describe('ndd-checkbox – state', () => {
-	let el: NDDCheckbox;
+describe('nldd-checkbox – state', () => {
+	let el: NLDDCheckbox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('is unchecked by default', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.checked).toBe(false);
 	});
 
 	it('is checked when checked attribute is set', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox checked></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox checked></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.checked).toBe(true);
 	});
 
 	it('is indeterminate when indeterminate attribute is set', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox indeterminate></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox indeterminate></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.indeterminate).toBe(true);
 	});
 
 	it('is disabled when disabled attribute is set', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox disabled></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox disabled></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.disabled).toBe(true);
 	});
 
 	it('forwards value to the native input', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox value="agree"></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox value="agree"></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.value).toBe('agree');
 	});
 
 	it('forwards name to the native input', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox name="terms"></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox name="terms"></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.name).toBe('terms');
@@ -83,15 +83,15 @@ describe('ndd-checkbox – state', () => {
    Change event
    ============================================================ */
 
-describe('ndd-checkbox – change event', () => {
-	let el: NDDCheckbox;
+describe('nldd-checkbox – change event', () => {
+	let el: NLDDCheckbox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('updates checked property when native input changes', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.checked = true;
@@ -101,7 +101,7 @@ describe('ndd-checkbox – change event', () => {
 	});
 
 	it('dispatches a change event with checked and value detail', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox value="agree"></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox value="agree"></nldd-checkbox>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -119,7 +119,7 @@ describe('ndd-checkbox – change event', () => {
 	});
 
 	it('updates indeterminate property when native input changes', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox indeterminate></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox indeterminate></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.indeterminate = false;
@@ -137,15 +137,15 @@ describe('ndd-checkbox – change event', () => {
    Keyboard interaction
    ============================================================ */
 
-describe('ndd-checkbox – keyboard interaction', () => {
-	let el: NDDCheckbox;
+describe('nldd-checkbox – keyboard interaction', () => {
+	let el: NLDDCheckbox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('toggles checked state when Space is pressed on the native input', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.focus();
@@ -157,7 +157,7 @@ describe('ndd-checkbox – keyboard interaction', () => {
 	});
 
 	it('does not toggle when disabled and Space is pressed', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox disabled></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox disabled></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
@@ -166,22 +166,22 @@ describe('ndd-checkbox – keyboard interaction', () => {
 	});
 });
 
-describe('ndd-checkbox – accessibility', () => {
-	let el: NDDCheckbox;
+describe('nldd-checkbox – accessibility', () => {
+	let el: NLDDCheckbox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('forwards aria-label to the native input', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox accessible-label="Accepteer voorwaarden"></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox accessible-label="Accepteer voorwaarden"></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('aria-label')).toBe('Accepteer voorwaarden');
 	});
 
 	it('focus lands on the native input', async () => {
-		el = await fixture<NDDCheckbox>('<ndd-checkbox></ndd-checkbox>');
+		el = await fixture<NLDDCheckbox>('<nldd-checkbox></nldd-checkbox>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.focus();

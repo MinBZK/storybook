@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
-import type { NDDToggleButtonGroup } from './ndd-toggle-button-group.ts';
+import type { NLDDToggleButtonGroup } from './toggle-button-group.ts';
 
-export function toggleButtonGroupTemplate(component: NDDToggleButtonGroup): TemplateResult {
+export function toggleButtonGroupTemplate(component: NLDDToggleButtonGroup): TemplateResult {
 	return html`
 		<div class="toggle-button-group">
 			<slot @slotchange=${component._onSlotChange}></slot>

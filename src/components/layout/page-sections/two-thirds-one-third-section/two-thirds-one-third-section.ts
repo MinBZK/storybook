@@ -5,7 +5,7 @@
  * The columns wrap automatically when they become smaller than 280px.
  * Padding and gap adjust via container queries.
  *
- * @element ndd-two-thirds-one-third-section
+ * @element nldd-two-thirds-one-third-section
  *
  * @slot header - Content above the columns
  * @slot - Left column (2/3), alternative for slot="left"
@@ -15,11 +15,11 @@
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { twoThirdsOneThirdSectionStyles } from './ndd-two-thirds-one-third-section.styles.ts';
-import { twoThirdsOneThirdSectionTemplate } from './ndd-two-thirds-one-third-section.template.ts';
+import { twoThirdsOneThirdSectionStyles } from './two-thirds-one-third-section.styles.ts';
+import { twoThirdsOneThirdSectionTemplate } from './two-thirds-one-third-section.template.ts';
 
-@customElement('ndd-two-thirds-one-third-section')
-export class NDDTwoThirdsOneThirdSection extends LitElement {
+@customElement('nldd-two-thirds-one-third-section')
+export class NLDDTwoThirdsOneThirdSection extends LitElement {
 	static override styles = twoThirdsOneThirdSectionStyles;
 
 	override render() {
@@ -29,6 +29,6 @@ export class NDDTwoThirdsOneThirdSection extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-two-thirds-one-third-section': NDDTwoThirdsOneThirdSection;
+		'nldd-two-thirds-one-third-section': NLDDTwoThirdsOneThirdSection;
 	}
 }

@@ -3,9 +3,9 @@
  *
  * A horizontal tab bar for document tabs with an automatic overflow button
  * and an end slot for action buttons.
- * Exports both NDDDocumentTabBar and NDDDocumentTabBarItem.
+ * Exports both NLDDDocumentTabBar and NLDDDocumentTabBarItem.
  *
- * @element ndd-document-tab-bar
+ * @element nldd-document-tab-bar
  * @attr {string}  accessible-label       - Accessible name for the navigation landmark
  * @attr {object}  translations           - Translation overrides; unset keys fall back to Dutch.
  *                                          Available keys: 'components.document-tab-bar.overflow-action' (default: 'Meer')
@@ -14,18 +14,18 @@
  *            Use `translations` property instead: `.translations=${{ 'components.document-tab-bar.overflow-action': 'Tabs' }}`
  * @attr {boolean} navigation             - Renders a nav landmark instead of tablist; use when items have hrefs
  *
- * @slot     - ndd-document-tab-bar-item elements
+ * @slot     - nldd-document-tab-bar-item elements
  * @slot end - Action buttons (e.g. new tab)
  *
  * @fires tabchange  - Fired when a tab is selected; detail: { item }
  * @fires tabdismiss - Fired when a tab is dismissed; detail: { item, nextItem }
  * @fires tabempty   - Fired when the last tab is dismissed
- * @fires ndd-reorder - Fired when tabs are reordered via drag; detail: { fromIndex, toIndex }
+ * @fires nldd-reorder - Fired when tabs are reordered via drag; detail: { fromIndex, toIndex }
  *
  * ---
  *
- * @element ndd-document-tab-bar-item
- * @attr {boolean} selected              - Selected state (managed by ndd-document-tab-bar)
+ * @element nldd-document-tab-bar-item
+ * @attr {boolean} selected              - Selected state (managed by nldd-document-tab-bar)
  * @attr {string}  text                  - Primary text
  * @attr {string}  supporting-text       - Supporting text
  * @attr {string}  short-text            - Short primary text (visible below 200px width)
@@ -37,31 +37,31 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { documentTabBarStyles, documentTabBarItemStyles } from './ndd-document-tab-bar.styles.ts';
-import { documentTabBarTemplate, documentTabBarItemTemplate } from './ndd-document-tab-bar.template.ts';
+import { documentTabBarStyles, documentTabBarItemStyles } from './document-tab-bar.styles.ts';
+import { documentTabBarTemplate, documentTabBarItemTemplate } from './document-tab-bar.template.ts';
 import { withTranslations } from '../../../utilities/with-translations.js';
-import { nddDocumentTabBarTranslations } from './ndd-document-tab-bar.i18n.ts';
-import './../../lists-and-menus/menu/ndd-menu.ts';
+import { nlddDocumentTabBarTranslations } from './document-tab-bar.i18n.ts';
+import './../../lists-and-menus/menu/menu.ts';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 // Pointer movement threshold in px before drag mode activates.
 // Distinguishes a click (select) from a drag (reorder).
 const DRAG_THRESHOLD = 5;
 
-export interface NDDReorderEventDetail {
+export interface NLDDReorderEventDetail {
 	fromIndex: number;
 	toIndex: number;
 }
 
 
-// # ndd-document-tab-bar-item
+// # nldd-document-tab-bar-item
 
-@customElement('ndd-document-tab-bar-item')
-export class NDDDocumentTabBarItem extends LitElement {
+@customElement('nldd-document-tab-bar-item')
+export class NLDDDocumentTabBarItem extends LitElement {
 	static override styles = documentTabBarItemStyles;
 
 	private static _counter = 0;
-	readonly _id = `ndd-document-tab-bar-item-${NDDDocumentTabBarItem._counter++}`;
+	readonly _id = `nldd-document-tab-bar-item-${NLDDDocumentTabBarItem._counter++}`;
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;
@@ -86,15 +86,15 @@ export class NDDDocumentTabBarItem extends LitElement {
 		this.setAttribute('role', 'none');
 	}
 
-	/** Set by ndd-document-tab-bar. Not part of the public API. */
+	/** Set by nldd-document-tab-bar. Not part of the public API. */
 	@state()
 	_dismissButtonAccessibilityLabel = 'Sluit';
 
-	/** Set by ndd-document-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
+	/** Set by nldd-document-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
 	@state()
 	_isFallbackFocusable = false;
 
-	/** Set by ndd-document-tab-bar. Not part of the public API. */
+	/** Set by nldd-document-tab-bar. Not part of the public API. */
 	@state()
 	_navigation = false;
 
@@ -127,14 +127,14 @@ export class NDDDocumentTabBarItem extends LitElement {
 }
 
 
-// # ndd-document-tab-bar
+// # nldd-document-tab-bar
 
-@customElement('ndd-document-tab-bar')
-export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentTabBarTranslations) {
+@customElement('nldd-document-tab-bar')
+export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumentTabBarTranslations) {
 	static override styles = documentTabBarStyles;
 
 	private static _counter = 0;
-	readonly _id = `ndd-document-tab-bar-${NDDDocumentTabBar._counter++}`;
+	readonly _id = `nldd-document-tab-bar-${NLDDDocumentTabBar._counter++}`;
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
@@ -155,7 +155,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 
 	// — Drag state ——————————————————————————————————————————————————————————
 
-	private _draggingEl: NDDDocumentTabBarItem | null = null;
+	private _draggingEl: NLDDDocumentTabBarItem | null = null;
 	private _placeholder: HTMLDivElement | null = null;
 	private _currentDropIndex = -1;
 	private _pointerId: number | null = null;
@@ -164,7 +164,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 	private _tabBarRect: DOMRect | null = null;
 
 	// Pending drag: set on pointerdown, committed once DRAG_THRESHOLD is exceeded
-	private _pendingDragItem: NDDDocumentTabBarItem | null = null;
+	private _pendingDragItem: NLDDDocumentTabBarItem | null = null;
 	private _pendingDragStartX = 0;
 	private _pendingPointerId: number | null = null;
 
@@ -196,7 +196,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 	override firstUpdated(): void {
 		this._hasCustomLabel = Boolean(this.accessibleLabel);
 		if (!this._hasCustomLabel) {
-			import.meta.env?.DEV && console.warn('<ndd-document-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabbladen".');
+			import.meta.env?.DEV && console.warn('<nldd-document-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabbladen".');
 		}
 
 		const container = this.shadowRoot?.querySelector('.document-tab-bar__items') as HTMLElement;
@@ -224,17 +224,17 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 
 	// — Items ——————————————————————————————————————————————————————————————————
 
-	private _getItems(): NDDDocumentTabBarItem[] {
+	private _getItems(): NLDDDocumentTabBarItem[] {
 		const slot = this.shadowRoot?.querySelector('slot:not([name])') as HTMLSlotElement;
 		if (!slot) return [];
 		return slot.assignedElements()
-			.filter((el): el is NDDDocumentTabBarItem =>
-				el.tagName.toLowerCase() === 'ndd-document-tab-bar-item' &&
-				!el.hasAttribute('data-ndd-placeholder')
+			.filter((el): el is NLDDDocumentTabBarItem =>
+				el.tagName.toLowerCase() === 'nldd-document-tab-bar-item' &&
+				!el.hasAttribute('data-nldd-placeholder')
 			);
 	}
 
-	private _getVisibleItems(): NDDDocumentTabBarItem[] {
+	private _getVisibleItems(): NLDDDocumentTabBarItem[] {
 		return this._getItems().filter(item => !item.hidden);
 	}
 
@@ -289,8 +289,8 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 		if (onDismiss) return;
 
 		const item = path.find(
-			el => el instanceof Element && el.tagName.toLowerCase() === 'ndd-document-tab-bar-item'
-		) as NDDDocumentTabBarItem | undefined;
+			el => el instanceof Element && el.tagName.toLowerCase() === 'nldd-document-tab-bar-item'
+		) as NLDDDocumentTabBarItem | undefined;
 		if (!item || item.hidden) return;
 
 		// Record pending drag — only commit once pointer moves beyond threshold
@@ -394,7 +394,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 
 	// — Drag: core ————————————————————————————————————————————————————————————
 
-	private _startDrag(item: NDDDocumentTabBarItem, clientX = 0): void {
+	private _startDrag(item: NLDDDocumentTabBarItem, clientX = 0): void {
 		const visibleItems = this._getVisibleItems();
 		const visibleIndex = visibleItems.indexOf(item);
 		if (visibleIndex === -1) return;
@@ -408,9 +408,9 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 
 		// Insert placeholder at item's current position
 		this._placeholder = document.createElement('div');
-		this._placeholder.className = 'ndd-document-tab-bar-drag-placeholder';
+		this._placeholder.className = 'nldd-document-tab-bar-drag-placeholder';
 		this._placeholder.setAttribute('aria-hidden', 'true');
-		this._placeholder.setAttribute('data-ndd-placeholder', '');
+		this._placeholder.setAttribute('data-nldd-placeholder', '');
 		item.after(this._placeholder);
 
 		item.classList.add('is-dragging');
@@ -496,7 +496,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 		this._cleanupDrag();
 
 		if (fromIndex !== toIndex) {
-			this.dispatchEvent(new CustomEvent<NDDReorderEventDetail>('ndd-reorder', {
+			this.dispatchEvent(new CustomEvent<NLDDReorderEventDetail>('nldd-reorder', {
 				detail: { fromIndex, toIndex },
 				bubbles: true,
 				composed: true,
@@ -592,12 +592,12 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 	}
 
 	private _ensureSelectedVisible(): void {
-		// Deliberately performs a silent light DOM reorder without firing ndd-reorder.
+		// Deliberately performs a silent light DOM reorder without firing nldd-reorder.
 		// This is triggered by the ResizeObserver when overflow recalculates, not by
-		// user action. Firing ndd-reorder here would cause consumers tracking tab order
+		// user action. Firing nldd-reorder here would cause consumers tracking tab order
 		// (e.g. persisting to a server) to receive spurious events on window resize.
 		// Consumers should treat DOM order as the source of truth for tab order and
-		// not rely on ndd-reorder being exhaustive.
+		// not rely on nldd-reorder being exhaustive.
 		const items = this._getItems();
 		const visibleCount = items.length - this._overflowCount;
 		const selectedIndex = items.findIndex(i => i.selected);
@@ -616,8 +616,8 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 	private _updateMenu(): void {
 		if (!this._menu) return;
 		// Rebuilds menu DOM from scratch on every overflow recalculation.
-		// Any event listeners added directly to ndd-menu-item elements by consumers
-		// will be lost. Consumers should listen on the ndd-document-tab-bar itself
+		// Any event listeners added directly to nldd-menu-item elements by consumers
+		// will be lost. Consumers should listen on the nldd-document-tab-bar itself
 		// using event delegation rather than on individual menu items.
 		this._menu.innerHTML = '';
 
@@ -628,7 +628,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 			const menuItemText = item.supportingText
 				? `${item.text || '–'} · ${item.supportingText}`
 				: item.text || '–';
-			const menuItem = document.createElement('ndd-menu-item');
+			const menuItem = document.createElement('nldd-menu-item');
 			menuItem.setAttribute('text', menuItemText);
 			menuItem.addEventListener('click', () => {
 				this._selectAndPromote(item);
@@ -638,7 +638,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 		});
 	}
 
-	private _selectAndPromote(targetItem: NDDDocumentTabBarItem): void {
+	private _selectAndPromote(targetItem: NLDDDocumentTabBarItem): void {
 		const items = this._getItems();
 		const visibleCount = items.length - this._overflowCount;
 
@@ -668,7 +668,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 		if (this._menu) return;
 		// SSR guard — document is not available in server-side rendering contexts
 		if (typeof document === 'undefined') return;
-		const menu = document.createElement('ndd-menu');
+		const menu = document.createElement('nldd-menu');
 		menu.setAttribute('placement', 'bottom-end');
 		menu.id = `${this._id}-menu`;
 		menu.addEventListener('toggle', (event: Event) => {
@@ -676,8 +676,8 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 			this._menuOpen = open;
 			if (!open) this._menuClosedAt = Date.now();
 		});
-		// TODO: appending to document.body and accessing ndd-menu internals via any-cast
-		// is a known limitation. Fix: define a typed public API on ndd-menu (anchorElement,
+		// TODO: appending to document.body and accessing nldd-menu internals via any-cast
+		// is a known limitation. Fix: define a typed public API on nldd-menu (anchorElement,
 		// showPopover, hidePopover) or use a popover anchor approach within renderRoot.
 		document.body.appendChild(menu);
 		this._menu = menu;
@@ -685,7 +685,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
-		const button = this.shadowRoot?.querySelector('.document-tab-bar__overflow ndd-icon-button') as HTMLElement | null;
+		const button = this.shadowRoot?.querySelector('.document-tab-bar__overflow nldd-icon-button') as HTMLElement | null;
 		if (button) {
 			(this._menu as any).anchorElement = button;
 		}
@@ -711,7 +711,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 
 	private _handleItemSelect = (event: CustomEvent): void => {
 		event.stopPropagation();
-		const selectedItem = event.detail.item as NDDDocumentTabBarItem;
+		const selectedItem = event.detail.item as NLDDDocumentTabBarItem;
 		this._getItems().forEach(item => { item.selected = item === selectedItem; });
 		this._syncFallbackFocusable();
 		this.dispatchEvent(new CustomEvent('tabchange', {
@@ -723,9 +723,9 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 
 	private _handleItemDismiss = (event: CustomEvent): void => {
 		event.stopPropagation();
-		const dismissedItem = event.detail.item as NDDDocumentTabBarItem;
+		const dismissedItem = event.detail.item as NLDDDocumentTabBarItem;
 		const items = this._getItems();
-		let nextItem: NDDDocumentTabBarItem | null = null;
+		let nextItem: NLDDDocumentTabBarItem | null = null;
 
 		if (dismissedItem.selected) {
 			const index = items.indexOf(dismissedItem);
@@ -764,8 +764,8 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 		const path = event.composedPath() as Element[];
 
 		const item = path.find(
-			el => el instanceof Element && el.tagName.toLowerCase() === 'ndd-document-tab-bar-item'
-		) as NDDDocumentTabBarItem | undefined;
+			el => el instanceof Element && el.tagName.toLowerCase() === 'nldd-document-tab-bar-item'
+		) as NLDDDocumentTabBarItem | undefined;
 		if (!item || item.hidden) return;
 
 		const onDismiss = path.some(el =>
@@ -795,7 +795,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 			const newAllItems = this._getItems();
 			const toIndex = newAllItems.indexOf(item);
 
-			this.dispatchEvent(new CustomEvent<NDDReorderEventDetail>('ndd-reorder', {
+			this.dispatchEvent(new CustomEvent<NLDDReorderEventDetail>('nldd-reorder', {
 				detail: { fromIndex, toIndex },
 				bubbles: true,
 				composed: true,
@@ -861,7 +861,7 @@ export class NDDDocumentTabBar extends withTranslations(LitElement, nddDocumentT
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-document-tab-bar': NDDDocumentTabBar;
-		'ndd-document-tab-bar-item': NDDDocumentTabBarItem;
+		'nldd-document-tab-bar': NLDDDocumentTabBar;
+		'nldd-document-tab-bar-item': NLDDDocumentTabBarItem;
 	}
 }

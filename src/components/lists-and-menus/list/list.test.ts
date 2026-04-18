@@ -1,9 +1,9 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './ndd-list.ts';
-import '../list-item/ndd-list-item.ts';
+import './list.ts';
+import '../list-item/list-item.ts';
 
-describe('ndd-list', () => {
+describe('nldd-list', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -11,28 +11,28 @@ describe('ndd-list', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-list></ndd-list>');
+		el = await fixture('<nldd-list></nldd-list>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('defaults to simple variant', async () => {
-		el = await fixture('<ndd-list></ndd-list>');
+		el = await fixture('<nldd-list></nldd-list>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('simple');
 	});
 
 	it('reflects variant attribute', async () => {
-		el = await fixture('<ndd-list variant="box"></ndd-list>');
+		el = await fixture('<nldd-list variant="box"></nldd-list>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('box');
 	});
 
 	it('renders header slot', async () => {
 		el = await fixture(`
-			<ndd-list>
+			<nldd-list>
 				<span slot="header">Header content</span>
-			</ndd-list>
+			</nldd-list>
 		`);
 		await waitForUpdate(el);
 		const header = el.querySelector('[slot="header"]');
@@ -40,22 +40,22 @@ describe('ndd-list', () => {
 	});
 
 	it('reflects no-dividers attribute', async () => {
-		el = await fixture('<ndd-list no-dividers></ndd-list>');
+		el = await fixture('<nldd-list no-dividers></nldd-list>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('no-dividers')).toBe(true);
 	});
 
 	it('sets --context-list-divider-display when no-dividers is set', async () => {
-		el = await fixture('<ndd-list no-dividers></ndd-list>');
+		el = await fixture('<nldd-list no-dividers></nldd-list>');
 		await waitForUpdate(el);
 		expect(getComputedStyle(el).getPropertyValue('--context-list-divider-display').trim()).toBe('none');
 	});
 
 	it('renders footer slot', async () => {
 		el = await fixture(`
-			<ndd-list>
+			<nldd-list>
 				<span slot="footer">Footer content</span>
-			</ndd-list>
+			</nldd-list>
 		`);
 		await waitForUpdate(el);
 		const footer = el.querySelector('[slot="footer"]');
@@ -65,20 +65,20 @@ describe('ndd-list', () => {
 
 	// — Drag: keyboard ———————————————————————————————————————————————————————
 
-	it('fires ndd-reorder with correct fromIndex and toIndex after keyboard drop', async () => {
+	it('fires nldd-reorder with correct fromIndex and toIndex after keyboard drop', async () => {
 		el = await fixture(`
-			<ndd-list reorderable>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-			</ndd-list>
+			<nldd-list reorderable>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+			</nldd-list>
 		`);
 		await waitForUpdate(el);
 
 		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
 
 		let reorderDetail: { fromIndex: number; toIndex: number } | null = null;
-		el.addEventListener('ndd-reorder', (e: Event) => {
+		el.addEventListener('nldd-reorder', (e: Event) => {
 			reorderDetail = (e as CustomEvent).detail;
 		});
 
@@ -96,19 +96,19 @@ describe('ndd-list', () => {
 		expect(reorderDetail!.toIndex).toBe(1);
 	});
 
-	it('does not fire ndd-reorder when item is dropped at its original position', async () => {
+	it('does not fire nldd-reorder when item is dropped at its original position', async () => {
 		el = await fixture(`
-			<ndd-list reorderable>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-			</ndd-list>
+			<nldd-list reorderable>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+			</nldd-list>
 		`);
 		await waitForUpdate(el);
 
 		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
 
 		let fired = false;
-		el.addEventListener('ndd-reorder', () => { fired = true; });
+		el.addEventListener('nldd-reorder', () => { fired = true; });
 
 		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
 		await waitForUpdate(el);
@@ -121,18 +121,18 @@ describe('ndd-list', () => {
 
 	it('ArrowDown and ArrowUp move the placeholder, Enter commits the drop', async () => {
 		el = await fixture(`
-			<ndd-list reorderable>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-			</ndd-list>
+			<nldd-list reorderable>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+			</nldd-list>
 		`);
 		await waitForUpdate(el);
 
 		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
 
 		let reorderDetail: { fromIndex: number; toIndex: number } | null = null;
-		el.addEventListener('ndd-reorder', (e: Event) => {
+		el.addEventListener('nldd-reorder', (e: Event) => {
 			reorderDetail = (e as CustomEvent).detail;
 		});
 
@@ -155,15 +155,15 @@ describe('ndd-list', () => {
 
 	it('Escape cancels drag: restores is-dragging class and removes placeholder', async () => {
 		el = await fixture(`
-			<ndd-list reorderable>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-				<ndd-list-item><span draggable-only tabindex="0">handle</span></ndd-list-item>
-			</ndd-list>
+			<nldd-list reorderable>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+			</nldd-list>
 		`);
 		await waitForUpdate(el);
 
 		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
-		const firstItem = el.querySelectorAll('ndd-list-item')[0];
+		const firstItem = el.querySelectorAll('nldd-list-item')[0];
 
 		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
 		await waitForUpdate(el);
@@ -174,26 +174,26 @@ describe('ndd-list', () => {
 		await waitForUpdate(el);
 
 		expect(firstItem.classList.contains('is-dragging')).toBe(false);
-		expect(el.querySelector('.ndd-list-drag-placeholder')).toBeNull();
+		expect(el.querySelector('.nldd-list-drag-placeholder')).toBeNull();
 	});
 
 
 	// — Drag: pointer ————————————————————————————————————————————————————————
 
-	it('fires ndd-reorder with correct indices after pointer drag', async () => {
+	it('fires nldd-reorder with correct indices after pointer drag', async () => {
 		el = await fixture(`
-			<ndd-list reorderable>
-				<ndd-list-item><span draggable-only>handle</span></ndd-list-item>
-				<ndd-list-item><span draggable-only>handle</span></ndd-list-item>
-				<ndd-list-item><span draggable-only>handle</span></ndd-list-item>
-			</ndd-list>
+			<nldd-list reorderable>
+				<nldd-list-item><span draggable-only>handle</span></nldd-list-item>
+				<nldd-list-item><span draggable-only>handle</span></nldd-list-item>
+				<nldd-list-item><span draggable-only>handle</span></nldd-list-item>
+			</nldd-list>
 		`);
 		await waitForUpdate(el);
 
 		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
 
 		let reorderDetail: { fromIndex: number; toIndex: number } | null = null;
-		el.addEventListener('ndd-reorder', (e: Event) => {
+		el.addEventListener('nldd-reorder', (e: Event) => {
 			reorderDetail = (e as CustomEvent).detail;
 		});
 
@@ -212,15 +212,15 @@ describe('ndd-list', () => {
 
 	it('pointer cancel cleans up is-dragging class and removes placeholder', async () => {
 		el = await fixture(`
-			<ndd-list reorderable>
-				<ndd-list-item><span draggable-only>handle</span></ndd-list-item>
-				<ndd-list-item><span draggable-only>handle</span></ndd-list-item>
-			</ndd-list>
+			<nldd-list reorderable>
+				<nldd-list-item><span draggable-only>handle</span></nldd-list-item>
+				<nldd-list-item><span draggable-only>handle</span></nldd-list-item>
+			</nldd-list>
 		`);
 		await waitForUpdate(el);
 
 		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
-		const firstItem = el.querySelectorAll('ndd-list-item')[0];
+		const firstItem = el.querySelectorAll('nldd-list-item')[0];
 
 		handle.dispatchEvent(new PointerEvent('pointerdown', { clientY: 10, pointerId: 1, bubbles: true, composed: true }));
 		await waitForUpdate(el);
@@ -231,6 +231,6 @@ describe('ndd-list', () => {
 		await waitForUpdate(el);
 
 		expect(firstItem.classList.contains('is-dragging')).toBe(false);
-		expect(el.querySelector('.ndd-list-drag-placeholder')).toBeNull();
+		expect(el.querySelector('.nldd-list-drag-placeholder')).toBeNull();
 	});
 });

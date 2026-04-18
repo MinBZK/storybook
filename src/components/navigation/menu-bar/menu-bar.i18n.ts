@@ -1,5 +1,5 @@
-export const nddMenuBarTranslations = {
+export const nlddMenuBarTranslations = {
 	'components.menu-bar.overflow-action': 'Meer opties',
 };
 
-export type NDDMenuBarTranslations = typeof nddMenuBarTranslations;
+export type NLDDMenuBarTranslations = typeof nlddMenuBarTranslations;

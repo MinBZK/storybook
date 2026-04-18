@@ -1,10 +1,10 @@
 import { html, TemplateResult, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import type { NDDBarSplitView } from './ndd-bar-split-view.js';
-import '../split-view-divider/ndd-split-view-divider.ts';
+import type { NLDDBarSplitView } from './bar-split-view.js';
+import '../split-view-divider/split-view-divider.ts';
 
-export function barSplitViewTemplate(component: NDDBarSplitView): TemplateResult {
+export function barSplitViewTemplate(component: NLDDBarSplitView): TemplateResult {
 	const sorted = component._getSortedChildren();
 	const isSm = component._currentBreakpoint === 'sm';
 
@@ -28,7 +28,7 @@ export function barSplitViewTemplate(component: NDDBarSplitView): TemplateResult
 					</div>
 					${!isSm && !isLast ? html`
 						<div class="bar-split-view__divider">
-							<ndd-split-view-divider orientation="horizontal"></ndd-split-view-divider>
+							<nldd-split-view-divider orientation="horizontal"></nldd-split-view-divider>
 						</div>
 					` : nothing}
 				`;

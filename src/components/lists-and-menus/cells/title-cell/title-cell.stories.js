@@ -1,9 +1,9 @@
 import { html } from 'lit';
-import './ndd-title-cell.ts';
+import './title-cell.ts';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Title Cell',
-	component: 'ndd-title-cell',
+	component: 'nldd-title-cell',
 	tags: ['autodocs'],
 	argTypes: {
 		headingLevel: {
@@ -85,7 +85,7 @@ export const Default = {
 		selected: false,
 	},
 	render: (args) => html`
-		<ndd-title-cell
+		<nldd-title-cell
 			size=${args.size}
 			color=${args.color}
 			width=${args.width}
@@ -99,19 +99,19 @@ export const Default = {
 
 export const WithOverline = {
 	render: () => html`
-		<ndd-title-cell overline="Overline" text="Title cell" />
+		<nldd-title-cell overline="Overline" text="Title cell" />
 	`,
 };
 
 export const WithSupportingText = {
 	render: () => html`
-		<ndd-title-cell text="Title cell" supporting-text="Subtitle" />
+		<nldd-title-cell text="Title cell" supporting-text="Subtitle" />
 	`,
 };
 
 export const WithOverlineAndSupportingText = {
 	render: () => html`
-		<ndd-title-cell overline="Overline" text="Title cell" supporting-text="Subtitle" />
+		<nldd-title-cell overline="Overline" text="Title cell" supporting-text="Subtitle" />
 	`,
 };
 
@@ -119,7 +119,7 @@ export const AllSizes = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			${[1, 2, 3, 4, 5, 6].map(s => html`
-				<ndd-title-cell size=${s} text="Title cell (size ${s})" />
+				<nldd-title-cell size=${s} text="Title cell (size ${s})" />
 			`)}
 		</div>
 	`,
@@ -128,8 +128,8 @@ export const AllSizes = {
 export const Selected = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<ndd-title-cell overline="Overline" text="Title cell" supporting-text="Subtitle" />
-			<ndd-title-cell selected overline="Overline" text="Title cell (selected)" supporting-text="Subtitle" />
+			<nldd-title-cell overline="Overline" text="Title cell" supporting-text="Subtitle" />
+			<nldd-title-cell selected overline="Overline" text="Title cell (selected)" supporting-text="Subtitle" />
 		</div>
 	`,
 };
@@ -137,8 +137,8 @@ export const Selected = {
 export const HorizontalAlignment = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<ndd-title-cell horizontal-alignment="left" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Title cell (left)" supporting-text="Subtitle" />
-			<ndd-title-cell horizontal-alignment="right" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Title cell (right)" supporting-text="Subtitle" />
+			<nldd-title-cell horizontal-alignment="left" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Title cell (left)" supporting-text="Subtitle" />
+			<nldd-title-cell horizontal-alignment="right" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Title cell (right)" supporting-text="Subtitle" />
 		</div>
 	`,
 };
@@ -146,9 +146,9 @@ export const HorizontalAlignment = {
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<ndd-title-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Center" />
-			<ndd-title-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Top" />
-			<ndd-title-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Bottom" />
+			<nldd-title-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Center" />
+			<nldd-title-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Top" />
+			<nldd-title-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Bottom" />
 		</div>
 	`,
 };

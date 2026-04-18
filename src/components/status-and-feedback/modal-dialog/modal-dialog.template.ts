@@ -1,8 +1,8 @@
 /* eslint-disable lit-a11y/click-events-have-key-events -- native dialog handles keyboard via @cancel */
 import { html, nothing } from 'lit';
-import type { NDDModalDialog } from './ndd-modal-dialog.ts';
+import type { NLDDModalDialog } from './modal-dialog.ts';
 
-export function modalDialogTemplate(component: NDDModalDialog) {
+export function modalDialogTemplate(component: NLDDModalDialog) {
 	return html`
 		<dialog class="modal-dialog"
 			role=${component.variant === 'alert' ? 'alertdialog' : nothing}
@@ -11,7 +11,7 @@ export function modalDialogTemplate(component: NDDModalDialog) {
 			@click=${component._handleBackdropClick}
 			@cancel=${component._handleCancel}
 		>
-			<ndd-inline-dialog
+			<nldd-inline-dialog
 				variant=${component.variant || nothing}
 				icon-name=${component.iconName || nothing}
 				text=${component.text || nothing}
@@ -20,7 +20,7 @@ export function modalDialogTemplate(component: NDDModalDialog) {
 			>
 				<slot></slot>
 				<slot slot="actions" name="actions"></slot>
-			</ndd-inline-dialog>
+			</nldd-inline-dialog>
 		</dialog>
 	`;
 }

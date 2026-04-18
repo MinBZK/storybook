@@ -5,22 +5,22 @@
  * De kaart heeft een elevated look als standaard. Padding wordt overgelaten
  * aan geneste containers.
  *
- * @element ndd-card
+ * @element nldd-card
  *
  * @attr {string} accessible-label - Toegankelijke naam voor de kaart (aria-label)
  *
- * @slot header - Header-content (bijv. ndd-title)
+ * @slot header - Header-content (bijv. nldd-title)
  * @slot - Body-content
- * @slot footer - Footer-content (bijv. ndd-button-group) — altijd aan onderkant
+ * @slot footer - Footer-content (bijv. nldd-button-group) — altijd aan onderkant
  */
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { cardStyles } from './ndd-card.styles.ts';
-import { cardTemplate } from './ndd-card.template.ts';
+import { cardStyles } from './card.styles.ts';
+import { cardTemplate } from './card.template.ts';
 
-@customElement('ndd-card')
-export class NDDCard extends LitElement {
+@customElement('nldd-card')
+export class NLDDCard extends LitElement {
 	static override styles = cardStyles;
 
 	@property({ type: String, attribute: 'accessible-label' })
@@ -39,6 +39,6 @@ export class NDDCard extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-card': NDDCard;
+		'nldd-card': NLDDCard;
 	}
 }

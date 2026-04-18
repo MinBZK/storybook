@@ -10,7 +10,7 @@
  * bars after main stack from bottom to top. On md and lg, all panels
  * are in normal flow with a divider between each adjacent pair.
  *
- * CSS custom properties on the host for consumers like ndd-page:
+ * CSS custom properties on the host for consumers like nldd-page:
  *   --context-bar-split-view-top-bars-height
  *   --context-bar-split-view-bottom-bars-height
  *
@@ -21,13 +21,13 @@
  *
  * ## Background color
  * Sets --context-parent-background-color, which cascades to all descendants
- * including ndd-page and the fade overlays.
+ * including nldd-page and the fade overlays.
  *
- * @element ndd-bar-split-view
+ * @element nldd-bar-split-view
  *
  * @attr {'inherit'|'default'|'tinted'} background  - Background color variant (default: inherit)
  *
- * Responsive visibility per child (direct children of ndd-bar-split-view):
+ * Responsive visibility per child (direct children of nldd-bar-split-view):
  * @attr {'sm'|'md'|'lg'} above - Show this panel from this breakpoint and larger
  * @attr {'sm'|'md'|'lg'} below - Show this panel up to and including this breakpoint
  * @attr {'sm'|'md'|'lg'} only  - Show this panel only at this breakpoint
@@ -37,8 +37,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { barSplitViewStyles } from './ndd-bar-split-view.styles.ts';
-import { barSplitViewTemplate } from './ndd-bar-split-view.template.ts';
+import { barSplitViewStyles } from './bar-split-view.styles.ts';
+import { barSplitViewTemplate } from './bar-split-view.template.ts';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 const smMaxPx = parseInt(breakpoints.smMax);
@@ -47,8 +47,8 @@ const mdMaxPx = parseInt(breakpoints.mdMax);
 export type Breakpoint = 'sm' | 'md' | 'lg';
 type BreakpointOrUnmeasured = Breakpoint | null;
 
-@customElement('ndd-bar-split-view')
-export class NDDBarSplitView extends LitElement {
+@customElement('nldd-bar-split-view')
+export class NLDDBarSplitView extends LitElement {
 	static override styles = barSplitViewStyles;
 
 	@property({ type: String, reflect: true })
@@ -138,7 +138,7 @@ export class NDDBarSplitView extends LitElement {
 	_getSortedChildren(): Element[] {
 		const all = Array.from(this.children).filter(el => {
 			if (!el.slot) {
-				console.warn('<ndd-bar-split-view>: every child must have a slot attribute (e.g. slot="toolbar", slot="status-bar", or slot="bar-1" if no meaningful name applies). Child without slot attribute is ignored:', el);
+				console.warn('<nldd-bar-split-view>: every child must have a slot attribute (e.g. slot="toolbar", slot="status-bar", or slot="bar-1" if no meaningful name applies). Child without slot attribute is ignored:', el);
 				return false;
 			}
 			return this._isChildVisible(el);
@@ -214,6 +214,6 @@ export class NDDBarSplitView extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-bar-split-view': NDDBarSplitView;
+		'nldd-bar-split-view': NLDDBarSplitView;
 	}
 }

@@ -5,7 +5,7 @@ const smMax = unsafeCSS(breakpoints.smMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
-/* # ndd-navigation-split-view styles */
+/* # nldd-navigation-split-view styles */
 
 export const navigationSplitViewStyles = css`
 	:host {

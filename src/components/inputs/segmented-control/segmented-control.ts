@@ -2,9 +2,9 @@
  * Nederlandse Digitale Dienst Segmented Control Component (Lit + TypeScript)
  *
  * A horizontal group of mutually exclusive (radio) or multi-select (checkbox) options.
- * Exports both NDDSegmentedControl and NDDSegmentedControlItem.
+ * Exports both NLDDSegmentedControl and NLDDSegmentedControlItem.
  *
- * @element ndd-segmented-control
+ * @element nldd-segmented-control
  * @attr {string}  value         - Selected value for radio type
  * @prop {string[]} values        - Selected values for checkbox type (property binding only, not an attribute)
  * @attr {string}  size          - Control size: 'sm' | 'md' (default: 'md')
@@ -17,17 +17,17 @@
  * @fires change - When selection changes; detail: { value: string } for radio,
  *                 detail: { values: string[] } for checkbox
  *
- * @slot - ndd-segmented-control-item elements
+ * @slot - nldd-segmented-control-item elements
  *
  * ---
  *
- * @element ndd-segmented-control-item
+ * @element nldd-segmented-control-item
  * @attr {string}  value        - Value for this item
  * @attr {boolean} selected     - Whether this item is selected (set by parent)
  * @attr {boolean} disabled     - Disabled state
  * @attr {string}  text         - Text label (shown when parent variant="text",
  *                                always used as aria-label and tooltip for icon items)
- * @attr {string}  icon         - Icon name for ndd-icon
+ * @attr {string}  icon         - Icon name for nldd-icon
  *
  * @slot icon    - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
@@ -38,22 +38,22 @@ import { customElement, property } from 'lit/decorators.js';
 import {
 	segmentedControlStyles,
 	segmentedControlItemStyles,
-} from './ndd-segmented-control.styles.ts';
+} from './segmented-control.styles.ts';
 import {
 	segmentedControlTemplate,
 	segmentedControlItemTemplate,
-} from './ndd-segmented-control.template.ts';
-import './../../content/icon/ndd-icon.ts';
+} from './segmented-control.template.ts';
+import './../../content/icon/icon.ts';
 
 export type SegmentedControlSize = 'sm' | 'md';
 export type SegmentedControlType = 'radio' | 'checkbox';
 export type SegmentedControlVariant = 'text' | 'icon';
 
 
-// # ndd-segmented-control-item
+// # nldd-segmented-control-item
 
-@customElement('ndd-segmented-control-item')
-export class NDDSegmentedControlItem extends LitElement {
+@customElement('nldd-segmented-control-item')
+export class NLDDSegmentedControlItem extends LitElement {
 	static override styles = segmentedControlItemStyles;
 
 	@property({ type: String })
@@ -65,19 +65,19 @@ export class NDDSegmentedControlItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	/** Set by ndd-segmented-control. Not part of the public API. */
+	/** Set by nldd-segmented-control. Not part of the public API. */
 	@property({ type: String, reflect: true })
 	size: SegmentedControlSize = 'md';
 
-	/** Set by ndd-segmented-control. Not part of the public API. */
+	/** Set by nldd-segmented-control. Not part of the public API. */
 	@property({ type: String, reflect: true, attribute: 'variant' })
 	variant: SegmentedControlVariant = 'text';
 
-	/** Set by ndd-segmented-control. Not part of the public API. */
+	/** Set by nldd-segmented-control. Not part of the public API. */
 	@property({ type: String, reflect: true, attribute: 'input-type' })
 	inputType: SegmentedControlType = 'radio';
 
-	/** Set by ndd-segmented-control. Not part of the public API. */
+	/** Set by nldd-segmented-control. Not part of the public API. */
 	@property({ type: String })
 	groupName = '';
 
@@ -85,7 +85,7 @@ export class NDDSegmentedControlItem extends LitElement {
 	@property({ type: String })
 	text = '';
 
-	/** Icon name for ndd-icon. When not set, the icon slot is used. */
+	/** Icon name for nldd-icon. When not set, the icon slot is used. */
 	@property({ type: String })
 	icon = '';
 
@@ -104,10 +104,10 @@ export class NDDSegmentedControlItem extends LitElement {
 }
 
 
-// # ndd-segmented-control
+// # nldd-segmented-control
 
-@customElement('ndd-segmented-control')
-export class NDDSegmentedControl extends LitElement {
+@customElement('nldd-segmented-control')
+export class NLDDSegmentedControl extends LitElement {
 	static override styles = segmentedControlStyles;
 
 	/** Selected value for radio type. */
@@ -169,7 +169,7 @@ export class NDDSegmentedControl extends LitElement {
 	override firstUpdated(): void {
 		this._syncItems();
 		if (!this.accessibleLabel && !this.accessibleLabelledBy) {
-			console.warn('<ndd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
 		}
 	}
 
@@ -206,13 +206,13 @@ export class NDDSegmentedControl extends LitElement {
 
 	// — Items ——————————————————————————————————————————————————————————————————
 
-	private _getItems(): NDDSegmentedControlItem[] {
+	private _getItems(): NLDDSegmentedControlItem[] {
 		const slot = this.shadowRoot?.querySelector('slot');
 		if (!slot) return [];
 		return slot
 			.assignedElements()
-			.filter((el): el is NDDSegmentedControlItem =>
-				el.tagName.toLowerCase() === 'ndd-segmented-control-item'
+			.filter((el): el is NLDDSegmentedControlItem =>
+				el.tagName.toLowerCase() === 'nldd-segmented-control-item'
 			);
 	}
 
@@ -255,7 +255,7 @@ export class NDDSegmentedControl extends LitElement {
 
 	private get _autoName(): string {
 		if (!this._generatedName) {
-			this._generatedName = `ndd-segmented-${NDDSegmentedControl._counter++}`;
+			this._generatedName = `nldd-segmented-${NLDDSegmentedControl._counter++}`;
 		}
 		return this._generatedName;
 	}
@@ -354,7 +354,7 @@ export class NDDSegmentedControl extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-segmented-control': NDDSegmentedControl;
-		'ndd-segmented-control-item': NDDSegmentedControlItem;
+		'nldd-segmented-control': NLDDSegmentedControl;
+		'nldd-segmented-control-item': NLDDSegmentedControlItem;
 	}
 }

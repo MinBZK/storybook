@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 
-/* # ndd-card styles */
+/* # nldd-card styles */
 
 export const cardStyles = css`
 

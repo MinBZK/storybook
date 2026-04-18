@@ -1,9 +1,9 @@
 import { html, nothing } from 'lit';
-import type { NDDTopTitleBar } from './ndd-top-title-bar.ts';
-import '../../actions/button/ndd-button.ts';
-import '../../actions/icon-button/ndd-icon-button.ts';
+import type { NLDDTopTitleBar } from './top-title-bar.ts';
+import '../../actions/button/button.ts';
+import '../../actions/icon-button/icon-button.ts';
 
-export function topTitleBarTemplate(component: NDDTopTitleBar) {
+export function topTitleBarTemplate(component: NLDDTopTitleBar) {
 	const showBack = !!component.backText;
 
 	return html`
@@ -12,23 +12,23 @@ export function topTitleBarTemplate(component: NDDTopTitleBar) {
 				${showBack ? html`
 					<div class="top-title-bar__back-button">
 						<div class="top-title-bar__text-back-button">
-							<ndd-button
+							<nldd-button
 								variant="accent-transparent"
 								start-icon="chevron-left"
 								text=${component.backText}
 								href=${component.backHref || nothing}
 								@click=${component._handleBack}
-							></ndd-button>
+							></nldd-button>
 						</div>
 						<div class="top-title-bar__icon-back-button">
-							<ndd-icon-button
+							<nldd-icon-button
 								variant="accent-transparent"
 								icon="chevron-left"
 								text=${component.backText}
 								accessible-label=${component.backText || nothing}
 								href=${component.backHref || nothing}
 								@click=${component._handleBack}
-							></ndd-icon-button>
+							></nldd-icon-button>
 						</div>
 						<div class="top-title-bar__divider"></div>
 					</div>
@@ -44,11 +44,11 @@ export function topTitleBarTemplate(component: NDDTopTitleBar) {
 				<slot name="toolbar" @slotchange=${component._onToolbarSlotChange}></slot>
 				${component.dismissText ? html`
 					<div class="top-title-bar__dismiss-button">
-						<ndd-button
+						<nldd-button
 							variant="accent-transparent"
 							text=${component.dismissText}
 							@click=${component._handleDismiss}
-						></ndd-button>
+						></nldd-button>
 					</div>
 				` : nothing}
 			</div>

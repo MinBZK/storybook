@@ -1,7 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDCard } from './ndd-card.js';
+import type { NLDDCard } from './card.js';
 
-export function cardTemplate(component: NDDCard): TemplateResult {
+export function cardTemplate(component: NLDDCard): TemplateResult {
 	return html`
 		<article class="card"
 			aria-label=${component.accessibleLabel ?? nothing}

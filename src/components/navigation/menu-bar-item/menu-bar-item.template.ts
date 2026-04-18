@@ -1,8 +1,8 @@
 import { html, nothing } from 'lit';
-import type { NDDMenuBarItem } from './ndd-menu-bar-item.js';
+import type { NLDDMenuBarItem } from './menu-bar-item.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
-export function template(component: NDDMenuBarItem) {
+export function template(component: NLDDMenuBarItem) {
 	const safeHref = sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
 	const isIconOnly = Boolean((component.iconOnly || (component.contentPriority === 'icon' && component.compact)) && component.text);
@@ -24,7 +24,7 @@ export function template(component: NDDMenuBarItem) {
 			>
 				${component.icon ? html`
 					<span class="menu-bar-item__icon">
-						<ndd-icon name=${component.icon}></ndd-icon>
+						<nldd-icon name=${component.icon}></nldd-icon>
 					</span>
 				` : nothing}
 				<span class="menu-bar-item__text">
@@ -32,7 +32,7 @@ export function template(component: NDDMenuBarItem) {
 				</span>
 				${component.expandable ? html`
 					<span class="menu-bar-item__disclosure-icon">
-						<ndd-icon name="chevron-down-small"></ndd-icon>
+						<nldd-icon name="chevron-down-small"></nldd-icon>
 					</span>
 				` : nothing}
 			</a>
@@ -51,7 +51,7 @@ export function template(component: NDDMenuBarItem) {
 		>
 			${component.icon ? html`
 				<span class="menu-bar-item__icon">
-					<ndd-icon name=${component.icon}></ndd-icon>
+					<nldd-icon name=${component.icon}></nldd-icon>
 				</span>
 			` : nothing}
 			<span class="menu-bar-item__text">
@@ -59,7 +59,7 @@ export function template(component: NDDMenuBarItem) {
 			</span>
 			${component.expandable ? html`
 				<span class="menu-bar-item__disclosure-icon">
-					<ndd-icon name="chevron-down-small"></ndd-icon>
+					<nldd-icon name="chevron-down-small"></nldd-icon>
 				</span>
 			` : nothing}
 		</button>

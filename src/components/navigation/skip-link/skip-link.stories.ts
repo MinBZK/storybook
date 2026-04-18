@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './ndd-skip-link.ts';
-import '../top-navigation-bar/ndd-top-navigation-bar.ts';
+import './skip-link.ts';
+import '../top-navigation-bar/top-navigation-bar.ts';
 
 /**
  * Skip-link component voor keyboard-navigatie.
@@ -9,7 +9,7 @@ import '../top-navigation-bar/ndd-top-navigation-bar.ts';
  */
 export default {
 	title: 'Components/Navigation/Skip Link',
-	component: 'ndd-skip-link',
+	component: 'nldd-skip-link',
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'fullscreen',
@@ -30,13 +30,13 @@ export const Default = {
 	render: () => html`
 		<div style=${layoutArea}>
 			<p style="padding: 16px; font-family: system-ui;">Druk op Tab om de skip-link te zien.</p>
-			<ndd-skip-link>
-				<ndd-top-navigation-bar website-title="DigID">
-					<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Contact"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></ndd-menu-bar-item>
-				</ndd-top-navigation-bar>
-			</ndd-skip-link>
+			<nldd-skip-link>
+				<nldd-top-navigation-bar website-title="DigID">
+					<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Contact"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></nldd-menu-bar-item>
+				</nldd-top-navigation-bar>
+			</nldd-skip-link>
 			<main style="padding: 16px; font-family: system-ui;">
 				<h1>Hoofdinhoud</h1>
 				<p>Na het klikken op de skip-link springt de focus hierheen.</p>
@@ -49,13 +49,13 @@ export const Default = {
 export const MetTekst = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<ndd-skip-link text="Ga naar hoofdinhoud">
-				<ndd-top-navigation-bar website-title="Rijksoverheid">
-					<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></ndd-menu-bar-item>
-				</ndd-top-navigation-bar>
-			</ndd-skip-link>
+			<nldd-skip-link text="Ga naar hoofdinhoud">
+				<nldd-top-navigation-bar website-title="Rijksoverheid">
+					<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Onderwerpen"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></nldd-menu-bar-item>
+				</nldd-top-navigation-bar>
+			</nldd-skip-link>
 			<main style="padding: 16px; font-family: system-ui;">
 				<h1>Hoofdinhoud</h1>
 				<a href="#">Link in de content</a>
@@ -67,7 +67,7 @@ export const MetTekst = {
 export const MetHref = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<ndd-skip-link text="Ga naar formulier" href="#contact-form"></ndd-skip-link>
+			<nldd-skip-link text="Ga naar formulier" href="#contact-form"></nldd-skip-link>
 			<div style="padding: 32px; font-family: system-ui;">
 				<p>Content bovenaan de pagina...</p>
 			</div>

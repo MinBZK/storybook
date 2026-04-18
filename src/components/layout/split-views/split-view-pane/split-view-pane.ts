@@ -5,16 +5,16 @@
  * The split view automatically sets context: whether a back button should be shown.
  *
  * The consumer sets `has-content` to indicate the pane has content.
- * The consumer sets `back-text` on the `ndd-top-title-bar` inside the pane.
+ * The consumer sets `back-text` on the `nldd-top-title-bar` inside the pane.
  * The split view sets `hide-back` when the back button is not applicable.
  * The pane automatically hides the back button via CSS when `hide-back` is active.
  *
  * ## Background color
  * The pane sets `--context-parent-background-color` which cascades down to all descendants.
  * Set `background="tinted"` on a pane to give it a tinted background independently of sibling panes.
- * Descendants such as `ndd-page` read `--context-parent-background-color` automatically.
+ * Descendants such as `nldd-page` read `--context-parent-background-color` automatically.
  *
- * @element ndd-split-view-pane
+ * @element nldd-split-view-pane
  *
  * @attr {boolean} has-content - The pane has content (default: false)
  * @attr {boolean} hide-back   - Hide the back button (set automatically by the split view)
@@ -24,11 +24,11 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { splitViewPaneStyles } from './ndd-split-view-pane.styles.ts';
-import { splitViewPaneTemplate } from './ndd-split-view-pane.template.ts';
+import { splitViewPaneStyles } from './split-view-pane.styles.ts';
+import { splitViewPaneTemplate } from './split-view-pane.template.ts';
 
-@customElement('ndd-split-view-pane')
-export class NDDSplitViewPane extends LitElement {
+@customElement('nldd-split-view-pane')
+export class NLDDSplitViewPane extends LitElement {
 	static override styles = splitViewPaneStyles;
 
 	@property({ type: Boolean, reflect: true, attribute: 'has-content' })
@@ -47,6 +47,6 @@ export class NDDSplitViewPane extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-split-view-pane': NDDSplitViewPane;
+		'nldd-split-view-pane': NLDDSplitViewPane;
 	}
 }

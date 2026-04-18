@@ -1,24 +1,24 @@
 import { html } from 'lit';
-import './ndd-pagination.ts';
+import './pagination.ts';
 
 /**
  * De Pagination component voor het navigeren tussen pagina's met inhoud.
  *
  * ## Gebruik
  * ```html
- * <ndd-pagination current="1" total="10"></ndd-pagination>
+ * <nldd-pagination current="1" total="10"></nldd-pagination>
  *
  * <!-- Met links in plaats van buttons -->
- * <ndd-pagination current="1" total="10" href-pattern="/resultaten?pagina={page}"></ndd-pagination>
+ * <nldd-pagination current="1" total="10" href-pattern="/resultaten?pagina={page}"></nldd-pagination>
  * ```
  */
 export default {
 	title: 'Components/Navigation/Pagination',
-	component: 'ndd-pagination',
+	component: 'nldd-pagination',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/navigation/pagination/ndd-pagination.ts',
+			file: 'src/components/navigation/pagination/pagination.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -57,12 +57,12 @@ export default {
 };
 
 const Template = ({ current, total, disabled, fullWidth }) => html`
-	<ndd-pagination
+	<nldd-pagination
 		current=${current}
 		total=${total}
 		?disabled=${disabled}
 		?full-width=${fullWidth}
-	></ndd-pagination>
+	></nldd-pagination>
 `;
 
 export const Standaard = Template.bind({});
@@ -78,7 +78,7 @@ export const Uitgeschakeld = Template.bind({});
 Uitgeschakeld.args = { current: 3, total: 10, disabled: true };
 
 export const MetLinks = () => html`
-	<ndd-pagination current="3" total="10" href-pattern="/resultaten?pagina={page}"></ndd-pagination>
+	<nldd-pagination current="3" total="10" href-pattern="/resultaten?pagina={page}"></nldd-pagination>
 `;
 MetLinks.parameters = {
 	controls: { disable: true },

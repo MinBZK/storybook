@@ -6,9 +6,9 @@
  * and the inspector shows additional details or properties of the selection.
  * Panes are shown automatically when content is slotted into them.
  *
- * @element ndd-navigation-split-view
+ * @element nldd-navigation-split-view
  *
- * Use <code>ndd-split-view-pane</code> as direct children for automatic
+ * Use <code>nldd-split-view-pane</code> as direct children for automatic
  * back button handling.
  *
  * @attr {boolean} inspector-auto-hidden       - Inspector hidden to free up space for other panes (read-only, set by the split view)
@@ -30,11 +30,11 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { isPointerMode } from '../../../../utilities/input-modality.js';
-import { navigationSplitViewStyles } from './ndd-navigation-split-view.styles.ts';
-import { navigationSplitViewTemplate } from './ndd-navigation-split-view.template.ts';
+import { navigationSplitViewStyles } from './navigation-split-view.styles.ts';
+import { navigationSplitViewTemplate } from './navigation-split-view.template.ts';
 
-@customElement('ndd-navigation-split-view')
-export class NDDNavigationSplitView extends LitElement {
+@customElement('nldd-navigation-split-view')
+export class NLDDNavigationSplitView extends LitElement {
 	static override styles = navigationSplitViewStyles;
 
 	@property({ type: Boolean, reflect: true, attribute: 'inspector-auto-hidden' })
@@ -97,7 +97,7 @@ export class NDDNavigationSplitView extends LitElement {
 	}
 
 	_paneHasContent(slot: string): boolean {
-		return this.querySelector(`:scope > ndd-split-view-pane[slot="${slot}"]`)?.hasAttribute('has-content') ?? false;
+		return this.querySelector(`:scope > nldd-split-view-pane[slot="${slot}"]`)?.hasAttribute('has-content') ?? false;
 	}
 
 	override connectedCallback() {
@@ -128,7 +128,7 @@ export class NDDNavigationSplitView extends LitElement {
 
 	private _observePanes() {
 		this._paneObserver?.disconnect();
-		this.querySelectorAll(':scope > ndd-split-view-pane').forEach(pane => {
+		this.querySelectorAll(':scope > nldd-split-view-pane').forEach(pane => {
 			this._paneObserver!.observe(pane, {
 				attributes: true,
 				attributeFilter: ['has-content'],
@@ -235,9 +235,9 @@ export class NDDNavigationSplitView extends LitElement {
 
 	private _updatePaneBackButtons() {
 		const panes = {
-			sidebar: this.querySelector(':scope > ndd-split-view-pane[slot="sidebar"]'),
-			secondarySidebar: this.querySelector(':scope > ndd-split-view-pane[slot="secondary-sidebar"]'),
-			main: this.querySelector(':scope > ndd-split-view-pane[slot="main"]'),
+			sidebar: this.querySelector(':scope > nldd-split-view-pane[slot="sidebar"]'),
+			secondarySidebar: this.querySelector(':scope > nldd-split-view-pane[slot="secondary-sidebar"]'),
+			main: this.querySelector(':scope > nldd-split-view-pane[slot="main"]'),
 		};
 
 		// When sidebar-as-sheet, main is always the only visible inline pane — no back buttons
@@ -403,6 +403,6 @@ export class NDDNavigationSplitView extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-navigation-split-view': NDDNavigationSplitView;
+		'nldd-navigation-split-view': NLDDNavigationSplitView;
 	}
 }

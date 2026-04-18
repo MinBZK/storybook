@@ -19,12 +19,12 @@
 
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { topTitleBarStyles } from './ndd-top-title-bar.styles.ts';
-import { topTitleBarTemplate } from './ndd-top-title-bar.template.ts';
-import type { NDDPage } from '../../layout/page/ndd-page.ts';
+import { topTitleBarStyles } from './top-title-bar.styles.ts';
+import { topTitleBarTemplate } from './top-title-bar.template.ts';
+import type { NLDDPage } from '../../layout/page/page.ts';
 
-@customElement('ndd-top-title-bar')
-export class NDDTopTitleBar extends LitElement {
+@customElement('nldd-top-title-bar')
+export class NLDDTopTitleBar extends LitElement {
 	static override styles = topTitleBarStyles;
 
 	@property({ type: String })
@@ -82,7 +82,7 @@ export class NDDTopTitleBar extends LitElement {
 	private _connectPage(): void {
 		let el: Element | null = this;
 		while (el) {
-			if (el.tagName.toLowerCase() === 'ndd-page') {
+			if (el.tagName.toLowerCase() === 'nldd-page') {
 				this._pageElement = el;
 				return;
 			}
@@ -104,7 +104,7 @@ export class NDDTopTitleBar extends LitElement {
 
 		if (!this._anchorElement) return;
 
-		const page = this._pageElement as NDDPage | null;
+		const page = this._pageElement as NLDDPage | null;
 		this._activeScrollTarget = page ? page.scrollTarget : window;
 		this._activeScrollTarget.addEventListener('scroll', this._boundOnScroll, { passive: true });
 
@@ -146,6 +146,6 @@ export class NDDTopTitleBar extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-top-title-bar': NDDTopTitleBar;
+		'nldd-top-title-bar': NLDDTopTitleBar;
 	}
 }

@@ -1,11 +1,11 @@
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
 import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.ts';
-import './ndd-list-item.ts';
-import '../list/ndd-list.ts';
-import '../cells/text-cell/ndd-text-cell.ts';
+import './list-item.ts';
+import '../list/list.ts';
+import '../cells/text-cell/text-cell.ts';
 
-describe('ndd-list-item', () => {
+describe('nldd-list-item', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -13,37 +13,37 @@ describe('ndd-list-item', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-list-item></ndd-list-item>');
+		el = await fixture('<nldd-list-item></nldd-list-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('defaults to md size', async () => {
-		el = await fixture('<ndd-list-item></ndd-list-item>');
+		el = await fixture('<nldd-list-item></nldd-list-item>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('size')).toBe('md');
 	});
 
 	it('reflects selected attribute', async () => {
-		el = await fixture('<ndd-list-item selected></ndd-list-item>');
+		el = await fixture('<nldd-list-item selected></nldd-list-item>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('selected')).toBe(true);
 	});
 
 	it('renders a div by default', async () => {
-		el = await fixture('<ndd-list-item></ndd-list-item>');
+		el = await fixture('<nldd-list-item></nldd-list-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('div.list-item')).not.toBeNull();
 	});
 
 	it('renders a button when type="button"', async () => {
-		el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+		el = await fixture('<nldd-list-item type="button"></nldd-list-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('button.list-item__action')).not.toBeNull();
 	});
 
 	it('renders an anchor when href is set', async () => {
-		el = await fixture('<ndd-list-item href="/test"></ndd-list-item>');
+		el = await fixture('<nldd-list-item href="/test"></nldd-list-item>');
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
 		expect(anchor).not.toBeNull();
@@ -52,38 +52,38 @@ describe('ndd-list-item', () => {
 
 	it('sets is-boxed class when inside a box list', async () => {
 		const wrapper = await fixture(`
-			<ndd-list variant="box">
-				<ndd-list-item></ndd-list-item>
-			</ndd-list>
+			<nldd-list variant="box">
+				<nldd-list-item></nldd-list-item>
+			</nldd-list>
 		`);
 		await waitForUpdate(wrapper);
-		el = wrapper.querySelector('ndd-list-item')!;
+		el = wrapper.querySelector('nldd-list-item')!;
 		await waitForUpdate(el);
 		expect(el.classList.contains('is-boxed')).toBe(true);
 	});
 
 	it('does not set is-boxed class when inside a simple list', async () => {
 		const wrapper = await fixture(`
-			<ndd-list variant="simple">
-				<ndd-list-item></ndd-list-item>
-			</ndd-list>
+			<nldd-list variant="simple">
+				<nldd-list-item></nldd-list-item>
+			</nldd-list>
 		`);
 		await waitForUpdate(wrapper);
-		el = wrapper.querySelector('ndd-list-item')!;
+		el = wrapper.querySelector('nldd-list-item')!;
 		await waitForUpdate(el);
 		expect(el.classList.contains('is-boxed')).toBe(false);
 	});
 
 	it('shows end area when end slot is filled, start area stays hidden', async () => {
 		const wrapper = await fixture(`
-			<ndd-list variant="simple">
-				<ndd-list-item>
+			<nldd-list variant="simple">
+				<nldd-list-item>
 					<span slot="end">›</span>
-				</ndd-list-item>
-			</ndd-list>
+				</nldd-list-item>
+			</nldd-list>
 		`);
 		await waitForUpdate(wrapper);
-		el = wrapper.querySelector('ndd-list-item')!;
+		el = wrapper.querySelector('nldd-list-item')!;
 		await waitForUpdate(el);
 		const startArea = el.shadowRoot!.querySelector('.list-item__start-area');
 		const endArea = el.shadowRoot!.querySelector('.list-item__end-area');
@@ -95,7 +95,7 @@ describe('ndd-list-item', () => {
 	// — Highlighted ————————————————————————————————————————————————————————
 
 	it('reflects highlighted attribute', async () => {
-		el = await fixture('<ndd-list-item highlighted></ndd-list-item>');
+		el = await fixture('<nldd-list-item highlighted></nldd-list-item>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('highlighted')).toBe(true);
 	});
@@ -104,7 +104,7 @@ describe('ndd-list-item', () => {
 		// The :host([selected]:focus-within) CSS rule promotes a selected item
 		// to the highlighted state on focus. Verify the selector semantics
 		// (which the CSS then keys off of).
-		el = await fixture('<ndd-list-item type="button" selected></ndd-list-item>');
+		el = await fixture('<nldd-list-item type="button" selected></nldd-list-item>');
 		await waitForUpdate(el);
 		const action = el.shadowRoot!.querySelector<HTMLButtonElement>('.list-item__action')!;
 
@@ -119,7 +119,7 @@ describe('ndd-list-item', () => {
 
 
 	it('forces focus on the action on click (Safari/Firefox workaround)', async () => {
-		el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+		el = await fixture('<nldd-list-item type="button"></nldd-list-item>');
 		await waitForUpdate(el);
 		const action = el.shadowRoot!.querySelector<HTMLButtonElement>('.list-item__action')!;
 		action.click();
@@ -137,7 +137,7 @@ describe('ndd-list-item', () => {
 		});
 
 		it('adds is-pointer-focus class on mouse focus', async () => {
-			el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+			el = await fixture('<nldd-list-item type="button"></nldd-list-item>');
 			await waitForUpdate(el);
 			document.dispatchEvent(new MouseEvent('mousedown'));
 			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
@@ -147,7 +147,7 @@ describe('ndd-list-item', () => {
 		});
 
 		it('does not add is-pointer-focus class on keyboard focus', async () => {
-			el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+			el = await fixture('<nldd-list-item type="button"></nldd-list-item>');
 			await waitForUpdate(el);
 			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
 			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
@@ -157,7 +157,7 @@ describe('ndd-list-item', () => {
 		});
 
 		it('removes is-pointer-focus class on blur', async () => {
-			el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+			el = await fixture('<nldd-list-item type="button"></nldd-list-item>');
 			await waitForUpdate(el);
 			document.dispatchEvent(new MouseEvent('mousedown'));
 			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;

@@ -1,36 +1,36 @@
 /**
  * Nederlandse Digitale Dienst Toolbar Component (Lit + TypeScript)
  *
- * @element ndd-toolbar
+ * @element nldd-toolbar
  * @attr {string} size - Toolbar size, propagated to all child controls: 'sm' | 'md' (default: 'md')
  * @attr {boolean} show-item-labels - When true, shows a text label below each toolbar item and the overflow button
  * @attr {string} label - Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page
  *
- * @slot start    - ndd-toolbar-item and ndd-toolbar-title-group elements placed at the start
- * @slot center   - ndd-toolbar-item and ndd-toolbar-title-group elements placed at the center
- * @slot end      - ndd-toolbar-item and ndd-toolbar-title-group elements placed at the end
- * @slot overflow - ndd-menu-item and ndd-menu-divider elements always shown in the overflow menu
+ * @slot start    - nldd-toolbar-item and nldd-toolbar-title-group elements placed at the start
+ * @slot center   - nldd-toolbar-item and nldd-toolbar-title-group elements placed at the center
+ * @slot end      - nldd-toolbar-item and nldd-toolbar-title-group elements placed at the end
+ * @slot overflow - nldd-menu-item and nldd-menu-divider elements always shown in the overflow menu
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './ndd-toolbar.styles.ts';
-import { template, type ToolbarChild } from './ndd-toolbar.template.ts';
-import { nddToolbarTranslations } from './ndd-toolbar.i18n.ts';
-import type { NDDToolbarTranslations } from './ndd-toolbar.i18n.ts';
-import { NDDMenu } from '../../lists-and-menus/menu/ndd-menu.ts';
+import { styles } from './toolbar.styles.ts';
+import { template, type ToolbarChild } from './toolbar.template.ts';
+import { nlddToolbarTranslations } from './toolbar.i18n.ts';
+import type { NLDDToolbarTranslations } from './toolbar.i18n.ts';
+import { NLDDMenu } from '../../lists-and-menus/menu/menu.ts';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 // # Marker elements
-if (!customElements.get('ndd-toolbar-item')) {
-	customElements.define('ndd-toolbar-item', class extends HTMLElement {
+if (!customElements.get('nldd-toolbar-item')) {
+	customElements.define('nldd-toolbar-item', class extends HTMLElement {
 		constructor() {
 			super();
 			this.attachShadow({ mode: 'open' }).innerHTML = '<slot></slot><slot name="overflow" style="display:none"></slot>';
 		}
 	});
 }
-if (!customElements.get('ndd-toolbar-title-group')) {
-	customElements.define('ndd-toolbar-title-group', class extends HTMLElement {});
+if (!customElements.get('nldd-toolbar-title-group')) {
+	customElements.define('nldd-toolbar-title-group', class extends HTMLElement {});
 }
 
 // # Types
@@ -38,8 +38,8 @@ type Size = 'sm' | 'md';
 
 // # Component
 
-@customElement('ndd-toolbar')
-export class NDDToolbar extends LitElement {
+@customElement('nldd-toolbar')
+export class NLDDToolbar extends LitElement {
 	static override styles = styles;
 
 	/** Controls the size of toolbar items. Propagated automatically to all child controls. */
@@ -53,18 +53,18 @@ export class NDDToolbar extends LitElement {
 	/**
 	 * Accessible label for the toolbar, exposed as `aria-label` on the `role="toolbar"` container.
 	 * Only needed when multiple toolbars appear on the same page so screen readers can distinguish them.
-	 * @example `<ndd-toolbar label="Formatting">`
+	 * @example `<nldd-toolbar label="Formatting">`
 	 */
 	@property({ type: String, reflect: true })
 	label = '';
 
 	@property({ type: Object })
-	translations: Partial<NDDToolbarTranslations> = {};
+	translations: Partial<NLDDToolbarTranslations> = {};
 
 	// — i18n —————————————————————————————————————————————————————————————————
 
-	public _t(key: keyof NDDToolbarTranslations): string {
-		return this.translations[key] ?? nddToolbarTranslations[key];
+	public _t(key: keyof NLDDToolbarTranslations): string {
+		return this.translations[key] ?? nlddToolbarTranslations[key];
 	}
 
 	@state()
@@ -96,7 +96,7 @@ export class NDDToolbar extends LitElement {
 	private _itemWidths = new Map<number, number>();
 	private _observer: MutationObserver | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
-	private _menu: NDDMenu | null = null;
+	private _menu: NLDDMenu | null = null;
 	private _isMeasuring = false;
 	private _isBuilding = false;
 	private _hasMeasured = false;
@@ -115,11 +115,11 @@ export class NDDToolbar extends LitElement {
 			if (this._isBuilding) return;
 			const onlyInternalMoves = mutations.every(m => {
 				// Attribute change — only rebuild for toolbar-structural elements.
-				// Changes on deeply nested descendants (e.g. ndd-segmented-control-item)
+				// Changes on deeply nested descendants (e.g. nldd-segmented-control-item)
 				// are safe to ignore.
 				if (m.type === 'attributes') {
 					const tag = (m.target as Element).tagName.toLowerCase();
-					return tag !== 'ndd-toolbar-item' && tag !== 'ndd-toolbar-title-group';
+					return tag !== 'nldd-toolbar-item' && tag !== 'nldd-toolbar-title-group';
 				}
 				return false;
 			});
@@ -188,9 +188,9 @@ export class NDDToolbar extends LitElement {
 
 	private _createMenu(): void {
 		if (this._menu) return;
-		const menu = document.createElement('ndd-menu') as NDDMenu;
+		const menu = document.createElement('nldd-menu') as NLDDMenu;
 		menu.setAttribute('placement', 'bottom-end');
-		menu.id = `ndd-toolbar-overflow-menu-${this._idCounter++}`;
+		menu.id = `nldd-toolbar-overflow-menu-${this._idCounter++}`;
 		menu.addEventListener('toggle', (event: Event) => {
 			const open = (event as ToggleEvent).newState === 'open';
 			this._menuOpen = open;
@@ -202,17 +202,17 @@ export class NDDToolbar extends LitElement {
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
-		const overflowButton = this.shadowRoot?.querySelector('.toolbar__overflow-button ndd-icon-button') as HTMLElement | null;
+		const overflowButton = this.shadowRoot?.querySelector('.toolbar__overflow-button nldd-icon-button') as HTMLElement | null;
 		if (overflowButton) {
 			this._menu.anchorElement = overflowButton;
 		}
 	}
 
 	/**
-	 * Syncs overflow menu items by cloning the original `ndd-menu-item` elements.
+	 * Syncs overflow menu items by cloning the original `nldd-menu-item` elements.
 	 * Note: `cloneNode` does not copy event listeners added via `addEventListener`.
-	 * The `select` event works correctly since it is dispatched by `ndd-menu-item` internally.
-	 * Consumers should avoid adding extra listeners directly on overflow `ndd-menu-item` elements.
+	 * The `select` event works correctly since it is dispatched by `nldd-menu-item` internally.
+	 * Consumers should avoid adding extra listeners directly on overflow `nldd-menu-item` elements.
 	 */
 	private _syncMenuItems(): void {
 		if (!this._menu) return;
@@ -239,7 +239,7 @@ export class NDDToolbar extends LitElement {
 	}
 
 	private _propagateSize(): void {
-		Array.from(this.querySelectorAll('ndd-toolbar-item')).forEach(item => {
+		Array.from(this.querySelectorAll('nldd-toolbar-item')).forEach(item => {
 			Array.from(item.children).forEach(child => {
 				if (child.getAttribute('slot') !== 'overflow') {
 					child.setAttribute('size', this.size);
@@ -322,20 +322,20 @@ export class NDDToolbar extends LitElement {
 		const hostGap = parseFloat(getComputedStyle(this).gap ?? '0');
 
 		const overflowButtonContainerEl = this.shadowRoot?.querySelector('.toolbar__overflow-button') as HTMLElement | null;
-		const overflowButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button ndd-icon-button') as HTMLElement | null;
+		const overflowButtonEl = this.shadowRoot?.querySelector('.toolbar__overflow-button nldd-icon-button') as HTMLElement | null;
 		const overflowButtonWidth = (overflowButtonContainerEl && !overflowButtonContainerEl.classList.contains('is-hidden') && overflowButtonEl)
 			? overflowButtonEl.getBoundingClientRect().width + hostGap
 			: 0;
 
-		this.style.setProperty('--ndd-toolbar-overflow-button-width', `${overflowButtonWidth}px`);
+		this.style.setProperty('--nldd-toolbar-overflow-button-width', `${overflowButtonWidth}px`);
 
 		const startWidth = this._computeAreaWidth(this._startChildren, itemGap);
 		const centerWidth = this._computeAreaWidth(this._centerChildren, itemGap);
 		const endWidth = this._computeAreaWidth(this._endChildren, itemGap);
 
-		this.style.setProperty('--ndd-toolbar-start-width', `${startWidth}px`);
-		this.style.setProperty('--ndd-toolbar-center-width', `${centerWidth}px`);
-		this.style.setProperty('--ndd-toolbar-end-width', `${endWidth}px`);
+		this.style.setProperty('--nldd-toolbar-start-width', `${startWidth}px`);
+		this.style.setProperty('--nldd-toolbar-center-width', `${centerWidth}px`);
+		this.style.setProperty('--nldd-toolbar-end-width', `${endWidth}px`);
 
 		const { leftZero, rightZero } = this._computeSpacerZeros(
 			hostWidth, itemGap, overflowButtonWidth, startWidth, centerWidth, endWidth
@@ -351,7 +351,7 @@ export class NDDToolbar extends LitElement {
 
 		this._isMeasuring = true;
 		const hostWidth = this.getBoundingClientRect().width;
-		this.style.setProperty('--ndd-toolbar-width', `${hostWidth}px`);
+		this.style.setProperty('--nldd-toolbar-width', `${hostWidth}px`);
 		this._measureOverflow(itemsEl);
 		this._hasMeasured = true;
 		this._isMeasuring = false;
@@ -466,7 +466,7 @@ export class NDDToolbar extends LitElement {
 			.map(el => {
 				const tag = el.tagName.toLowerCase();
 
-				if (tag === 'ndd-toolbar-title-group') {
+				if (tag === 'nldd-toolbar-title-group') {
 					const id = this._getId(el);
 					(el as HTMLElement).dataset.toolbarSlot = slotName;
 					el.setAttribute('slot', `child-${id}`);
@@ -480,7 +480,7 @@ export class NDDToolbar extends LitElement {
 					} as ToolbarChild;
 				}
 
-				if (tag === 'ndd-toolbar-item') {
+				if (tag === 'nldd-toolbar-item') {
 					const id = this._getId(el);
 					const label = el.getAttribute('label') ?? '';
 					const priority = parseInt(el.getAttribute('priority') ?? '0', 10);
@@ -499,7 +499,7 @@ export class NDDToolbar extends LitElement {
 
 					const overflowItems = Array.from(el.children).filter(child => {
 						const childTag = child.tagName.toLowerCase();
-						return childTag === 'ndd-menu-item' || childTag === 'ndd-menu-divider';
+						return childTag === 'nldd-menu-item' || childTag === 'nldd-menu-divider';
 					});
 					overflowItems.forEach(child => child.setAttribute('slot', 'overflow'));
 
@@ -517,7 +517,7 @@ export class NDDToolbar extends LitElement {
 		this._pinnedOverflowItems = Array.from(this.children).filter(el => {
 			const tag = el.tagName.toLowerCase();
 			return el.getAttribute('slot') === 'overflow' &&
-				(tag === 'ndd-menu-item' || tag === 'ndd-menu-divider');
+				(tag === 'nldd-menu-item' || tag === 'nldd-menu-divider');
 		});
 	}
 
@@ -583,8 +583,8 @@ export class NDDToolbar extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-toolbar': NDDToolbar;
-		'ndd-toolbar-item': HTMLElement;
-		'ndd-toolbar-title-group': HTMLElement;
+		'nldd-toolbar': NLDDToolbar;
+		'nldd-toolbar-item': HTMLElement;
+		'nldd-toolbar-title-group': HTMLElement;
 	}
 }

@@ -1,38 +1,38 @@
 import { html } from 'lit';
-import './ndd-navigation-split-view.ts';
-import '../../app-view/ndd-app-view.ts';
-import '../../page/ndd-page.ts';
-import '../../page-sections/simple-section/ndd-simple-section.ts';
-import '../../../content/rich-text/ndd-rich-text.ts';
-import '../../../actions/button/ndd-button.ts';
-import '../../../navigation/top-title-bar/ndd-top-title-bar.ts';
+import './navigation-split-view.ts';
+import '../../app-view/app-view.ts';
+import '../../page/page.ts';
+import '../../page-sections/simple-section/simple-section.ts';
+import '../../../content/rich-text/rich-text.ts';
+import '../../../actions/button/button.ts';
+import '../../../navigation/top-title-bar/top-title-bar.ts';
 
 /**
  * Gebruik een navigation split view voor een vierkoloms navigatiepatroon met
  * een zijbalk, secundaire zijbalk, inhoudsgebied en inspecteur.
  *
- * Gebruik <code>ndd-split-view-pane</code> als directe kinderen. De split view stelt
+ * Gebruik <code>nldd-split-view-pane</code> als directe kinderen. De split view stelt
  * automatisch <code>hide-back</code> in op elk paneel op basis van de beschikbare ruimte.
  * Panelen worden automatisch getoond wanneer inhoud in de bijbehorende slot wordt geplaatst.
  *
  * ## Gebruik
  * ```html
- * <ndd-navigation-split-view>
- *   <ndd-split-view-pane slot="sidebar">...</ndd-split-view-pane>
- *   <ndd-split-view-pane slot="secondary-sidebar">...</ndd-split-view-pane>
- *   <ndd-split-view-pane slot="main" has-content>...</ndd-split-view-pane>
- *   <ndd-split-view-pane slot="inspector">...</ndd-split-view-pane>
- * </ndd-navigation-split-view>
+ * <nldd-navigation-split-view>
+ *   <nldd-split-view-pane slot="sidebar">...</nldd-split-view-pane>
+ *   <nldd-split-view-pane slot="secondary-sidebar">...</nldd-split-view-pane>
+ *   <nldd-split-view-pane slot="main" has-content>...</nldd-split-view-pane>
+ *   <nldd-split-view-pane slot="inspector">...</nldd-split-view-pane>
+ * </nldd-navigation-split-view>
  * ```
  */
 export default {
 	title: 'Components/Layout/Split Views/Navigation Split View',
-	component: 'ndd-navigation-split-view',
+	component: 'nldd-navigation-split-view',
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'fullscreen',
 		componentSource: {
-			file: 'src/components/layout/split-views/navigation-split-view/ndd-navigation-split-view.ts',
+			file: 'src/components/layout/split-views/navigation-split-view/navigation-split-view.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -58,7 +58,7 @@ export default {
 };
 
 export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
-	customElements.whenDefined('ndd-navigation-split-view').then(() => {
+	customElements.whenDefined('nldd-navigation-split-view').then(() => {
 		const splitView = document.getElementById('split-view-demo');
 		const inspectorButton = document.getElementById('inspector-toggle');
 		const navButton = document.getElementById('sidebar-toggle');
@@ -89,21 +89,21 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 	});
 
 	return html`
-		<ndd-navigation-split-view
+		<nldd-navigation-split-view
 			id="split-view-demo"
 			style="height: 600px;"
 			?inspector-as-sheet=${inspectorAsSheet}
 			?sidebar-as-sheet=${sidebarAsSheet}
 		>
-			<ndd-split-view-pane slot="sidebar">
-				<ndd-page sticky-header>
-					<ndd-top-title-bar
+			<nldd-split-view-pane slot="sidebar">
+				<nldd-page sticky-header>
+					<nldd-top-title-bar
 						slot="header"
 						text="Zijbalk"
 						dismiss-text="Sluit"
-					></ndd-top-title-bar>
-					<ndd-simple-section>
-						<ndd-rich-text>
+					></nldd-top-title-bar>
+					<nldd-simple-section>
+						<nldd-rich-text>
 							<h2>Navigatie</h2>
 							<p>Wetten, regelingen en andere bronnen.</p>
 							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -117,21 +117,21 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 							<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
 							<p>Et harum quidem rerum facilis est et expedita distinctio.</p>
 							<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet.</p>
-						</ndd-rich-text>
-					</ndd-simple-section>
-				</ndd-page>
-			</ndd-split-view-pane>
+						</nldd-rich-text>
+					</nldd-simple-section>
+				</nldd-page>
+			</nldd-split-view-pane>
 
-			<ndd-split-view-pane slot="secondary-sidebar" has-content>
-				<ndd-page sticky-header>
-					<ndd-top-title-bar
+			<nldd-split-view-pane slot="secondary-sidebar" has-content>
+				<nldd-page sticky-header>
+					<nldd-top-title-bar
 						slot="header"
 						text="Secundaire zijbalk"
 						back-text="Zijbalk"
 						dismiss-text="Sluit"
-					></ndd-top-title-bar>
-					<ndd-simple-section>
-						<ndd-rich-text>
+					></nldd-top-title-bar>
+					<nldd-simple-section>
+						<nldd-rich-text>
 							<h2>Subnavigatie</h2>
 							<p>Artikelen, hoofdstukken of andere subitems.</p>
 							<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</p>
@@ -143,51 +143,51 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 							<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
 							<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.</p>
 							<p>At vero eos et accusamus et iusto odio dignissimos ducimus.</p>
-						</ndd-rich-text>
-					</ndd-simple-section>
-				</ndd-page>
-			</ndd-split-view-pane>
+						</nldd-rich-text>
+					</nldd-simple-section>
+				</nldd-page>
+			</nldd-split-view-pane>
 
-			<ndd-split-view-pane slot="main" has-content>
-				<ndd-page sticky-header>
-					<ndd-top-title-bar
+			<nldd-split-view-pane slot="main" has-content>
+				<nldd-page sticky-header>
+					<nldd-top-title-bar
 						slot="header"
 						text="Inhoud"
 						back-text="Terug"
 					>
-						<ndd-button
+						<nldd-button
 							id="sidebar-toggle"
 							slot="toolbar"
 							variant="accent-transparent"
 							text="Navigatie"
-						></ndd-button>
-						<ndd-button
+						></nldd-button>
+						<nldd-button
 							id="inspector-toggle"
 							slot="toolbar"
 							variant="accent-transparent"
 							text="Inspecteur"
-						></ndd-button>
-					</ndd-top-title-bar>
-					<ndd-simple-section>
-						<ndd-rich-text>
+						></nldd-button>
+					</nldd-top-title-bar>
+					<nldd-simple-section>
+						<nldd-rich-text>
 							<h2>Primaire inhoud</h2>
 							<p>Artikelen, artikellijsten en primaire weergave.</p>
 							<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
 							<p>Verklein het venster om de terugknopgedrag te zien.</p>
-						</ndd-rich-text>
-					</ndd-simple-section>
-				</ndd-page>
-			</ndd-split-view-pane>
+						</nldd-rich-text>
+					</nldd-simple-section>
+				</nldd-page>
+			</nldd-split-view-pane>
 
-			<ndd-split-view-pane slot="inspector">
-				<ndd-page sticky-header>
-					<ndd-top-title-bar
+			<nldd-split-view-pane slot="inspector">
+				<nldd-page sticky-header>
+					<nldd-top-title-bar
 						slot="header"
 						text="Inspecteur"
 						dismiss-text="Sluit"
-					></ndd-top-title-bar>
-					<ndd-simple-section>
-						<ndd-rich-text>
+					></nldd-top-title-bar>
+					<nldd-simple-section>
+						<nldd-rich-text>
 							<h2>Details</h2>
 							<p>Eigenschappen en aanvullende informatie over de selectie.</p>
 							<p>Excepteur sint occaecat cupidatat non proident.</p>
@@ -201,11 +201,11 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
 							<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
 							<p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio.</p>
 							<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.</p>
-						</ndd-rich-text>
-					</ndd-simple-section>
-				</ndd-page>
-			</ndd-split-view-pane>
-		</ndd-navigation-split-view>
+						</nldd-rich-text>
+					</nldd-simple-section>
+				</nldd-page>
+			</nldd-split-view-pane>
+		</nldd-navigation-split-view>
 	`;
 };
 
@@ -215,50 +215,50 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
  * with a sidebar, an editor area, and an output panel below it.
  */
 export const GenestdeSplitView = () => html`
-	<ndd-navigation-split-view
+	<nldd-navigation-split-view
 		style="height: 600px;"
 	>
-		<ndd-split-view-pane slot="sidebar">
-			<ndd-page sticky-header>
-				<ndd-top-title-bar
+		<nldd-split-view-pane slot="sidebar">
+			<nldd-page sticky-header>
+				<nldd-top-title-bar
 					slot="header"
 					text="Zijbalk"
 					dismiss-text="Sluit"
-				></ndd-top-title-bar>
-				<ndd-simple-section>
-					<ndd-rich-text>
+				></nldd-top-title-bar>
+				<nldd-simple-section>
+					<nldd-rich-text>
 						<h2>Navigatie</h2>
 						<p>Wetten, regelingen en andere bronnen.</p>
-					</ndd-rich-text>
-				</ndd-simple-section>
-			</ndd-page>
-		</ndd-split-view-pane>
+					</nldd-rich-text>
+				</nldd-simple-section>
+			</nldd-page>
+		</nldd-split-view-pane>
 
-		<ndd-split-view-pane slot="main" has-content>
-			<ndd-bar-split-view>
-				<ndd-split-view-pane slot="main">
-					<ndd-page sticky-header>
-						<ndd-top-title-bar
+		<nldd-split-view-pane slot="main" has-content>
+			<nldd-bar-split-view>
+				<nldd-split-view-pane slot="main">
+					<nldd-page sticky-header>
+						<nldd-top-title-bar
 							slot="header"
 							text="Inhoud"
 							back-text="Terug"
-						></ndd-top-title-bar>
-						<ndd-simple-section>
-							<ndd-rich-text>
+						></nldd-top-title-bar>
+						<nldd-simple-section>
+							<nldd-rich-text>
 								<h2>Primaire inhoud</h2>
 								<p>Het hoofdgebied voor bewerkbare of weer te geven inhoud.</p>
 								<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</ndd-rich-text>
-						</ndd-simple-section>
-					</ndd-page>
-				</ndd-split-view-pane>
-				<ndd-split-view-pane slot="secondary-bar">
-					<ndd-container padding="16">
-						<ndd-button variant="primary" full-width text="Secondaire balk"></ndd-button>
-					</ndd-container>
-				</ndd-split-view-pane>
-			</ndd-bar-split-view>
-		</ndd-split-view-pane>
-	</ndd-navigation-split-view>
+							</nldd-rich-text>
+						</nldd-simple-section>
+					</nldd-page>
+				</nldd-split-view-pane>
+				<nldd-split-view-pane slot="secondary-bar">
+					<nldd-container padding="16">
+						<nldd-button variant="primary" full-width text="Secondaire balk"></nldd-button>
+					</nldd-container>
+				</nldd-split-view-pane>
+			</nldd-bar-split-view>
+		</nldd-split-view-pane>
+	</nldd-navigation-split-view>
 `;
 GenestdeSplitView.parameters = { controls: { disable: true } };

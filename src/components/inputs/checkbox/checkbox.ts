@@ -1,7 +1,7 @@
 /**
  * Nederlandse Digitale Dienst Checkbox Component (Lit + TypeScript)
  *
- * @element ndd-checkbox
+ * @element nldd-checkbox
  * @attr {boolean} checked       - Checked state
  * @attr {boolean} disabled      - Disabled state
  * @attr {boolean} indeterminate - Indeterminate state (takes precedence over checked visually)
@@ -14,11 +14,11 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { checkboxStyles } from './ndd-checkbox.styles.ts';
-import { checkboxTemplate } from './ndd-checkbox.template.ts';
+import { checkboxStyles } from './checkbox.styles.ts';
+import { checkboxTemplate } from './checkbox.template.ts';
 
-@customElement('ndd-checkbox')
-export class NDDCheckbox extends LitElement {
+@customElement('nldd-checkbox')
+export class NLDDCheckbox extends LitElement {
 	static override styles = checkboxStyles;
 
 	@property({ type: Boolean, reflect: true })
@@ -68,6 +68,6 @@ export class NDDCheckbox extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-checkbox': NDDCheckbox;
+		'nldd-checkbox': NLDDCheckbox;
 	}
 }

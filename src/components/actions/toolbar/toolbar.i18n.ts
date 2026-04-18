@@ -1,5 +1,5 @@
-export const nddToolbarTranslations = {
+export const nlddToolbarTranslations = {
 	'components.toolbar.overflow-action': 'Meer',
 };
 
-export type NDDToolbarTranslations = typeof nddToolbarTranslations;
+export type NLDDToolbarTranslations = typeof nlddToolbarTranslations;

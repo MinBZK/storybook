@@ -1,7 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDToken } from './ndd-token.js';
+import type { NLDDToken } from './token.js';
 
-export function tokenTemplate(component: NDDToken): TemplateResult {
+export function tokenTemplate(component: NLDDToken): TemplateResult {
 	if (component.control === 'menu') {
 		return html`
 			<button
@@ -13,7 +13,7 @@ export function tokenTemplate(component: NDDToken): TemplateResult {
 				@click=${component._handleMenuClick}
 			>
 				<span class="token__text"><slot></slot></span>
-				<ndd-icon class="token__icon" name="chevron-down-small"></ndd-icon>
+				<nldd-icon class="token__icon" name="chevron-down-small"></nldd-icon>
 			</button>
 		`;
 	}
@@ -23,7 +23,7 @@ export function tokenTemplate(component: NDDToken): TemplateResult {
 			<span class="token__text"><slot></slot></span>
 			${component.control === 'dismiss' ? html`
 				<div class="token__dismiss-action">
-					<ndd-icon-button
+					<nldd-icon-button
 						size="sm"
 						variant="neutral-tinted"
 						icon="dismiss-small"
@@ -31,7 +31,7 @@ export function tokenTemplate(component: NDDToken): TemplateResult {
 						accessible-label=${component.dismissText}
 						?disabled=${component.disabled}
 						@click=${component._handleDismiss}
-					></ndd-icon-button>
+					></nldd-icon-button>
 				</div>
 			` : nothing}
 		</div>

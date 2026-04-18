@@ -39,7 +39,7 @@ export const segmentedControlStyles = css`
 
 	/* # Focus */
 
-	::slotted(ndd-segmented-control-item:focus-within) {
+	::slotted(nldd-segmented-control-item:focus-within) {
 		position: relative;
 		z-index: 1;
 	}
@@ -156,7 +156,7 @@ export const segmentedControlItemStyles = css`
 		height: var(--_segmented-control-sm-item-icon-size);
 	}
 
-	::slotted(ndd-icon) {
+	::slotted(nldd-icon) {
 		display: block;
 		width: 100%;
 		height: 100%;

@@ -1,8 +1,8 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDSwitch } from './ndd-switch.js';
-import './../../content/icon/ndd-icon.ts';
+import type { NLDDSwitch } from './switch.js';
+import './../../content/icon/icon.ts';
 
-export function switchTemplate(component: NDDSwitch): TemplateResult {
+export function switchTemplate(component: NLDDSwitch): TemplateResult {
 	return html`
 		<input class="switch__input"
 			type="checkbox"
@@ -24,7 +24,7 @@ export function switchTemplate(component: NDDSwitch): TemplateResult {
 		>
 			<div class="switch__thumb">
 				<div class="switch__check">
-					<ndd-icon name="check-mark-small"></ndd-icon>
+					<nldd-icon name="check-mark-small"></nldd-icon>
 				</div>
 			</div>
 		</div>

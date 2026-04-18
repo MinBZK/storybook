@@ -5,7 +5,7 @@
  * Contains optional header and footer slots. The padding and spacing between
  * slots adjust automatically via container queries.
  *
- * @element ndd-simple-section
+ * @element nldd-simple-section
  *
  * @slot header - Content above the main content
  * @slot - Main content
@@ -15,11 +15,11 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { simpleSectionStyles } from './ndd-simple-section.styles.ts';
-import { simpleSectionTemplate } from './ndd-simple-section.template.ts';
+import { simpleSectionStyles } from './simple-section.styles.ts';
+import { simpleSectionTemplate } from './simple-section.template.ts';
 
-@customElement('ndd-simple-section')
-export class NDDSimpleSection extends LitElement {
+@customElement('nldd-simple-section')
+export class NLDDSimpleSection extends LitElement {
 	static override styles = simpleSectionStyles;
 
 	@property({ type: String, reflect: true })
@@ -38,6 +38,6 @@ export class NDDSimpleSection extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-simple-section': NDDSimpleSection;
+		'nldd-simple-section': NLDDSimpleSection;
 	}
 }

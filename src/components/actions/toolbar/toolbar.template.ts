@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
-import type { NDDToolbarTranslations } from './ndd-toolbar.i18n.ts';
-import '../icon-button/ndd-icon-button.js';
+import type { NLDDToolbarTranslations } from './toolbar.i18n.ts';
+import '../icon-button/icon-button.js';
 
 // # Types
 export type ToolbarChild =
@@ -14,7 +14,7 @@ function resolveWidth(width: string): string {
 	if (!width) return '';
 	if (width.endsWith('%')) {
 		const ratio = parseFloat(width) / 100;
-		return `calc(var(--ndd-toolbar-width) * ${ratio})`;
+		return `calc(var(--nldd-toolbar-width) * ${ratio})`;
 	}
 	return width;
 }
@@ -96,7 +96,7 @@ export function template(
 	menuId: string,
 	onOverflowClick: () => void,
 	centerOnly: boolean,
-	t: (key: keyof NDDToolbarTranslations) => string,
+	t: (key: keyof NLDDToolbarTranslations) => string,
 ) {
 	const allChildren = [...startChildren, ...centerChildren, ...endChildren];
 
@@ -123,14 +123,14 @@ export function template(
 				${renderChildren(endChildren, allChildren, overflowIds)}
 			</div>
 			<div class="toolbar__overflow-button ${hasOverflow ? '' : 'is-hidden'}">
-				<ndd-icon-button size=${size}
+				<nldd-icon-button size=${size}
 					icon="ellipsis"
 					text=${t('components.toolbar.overflow-action')}
 					aria-haspopup="menu"
 					aria-expanded=${menuOpen ? 'true' : 'false'}
 					aria-controls=${menuId}
 					@click=${onOverflowClick}
-				></ndd-icon-button>
+				></nldd-icon-button>
 				<span class="toolbar__item-label">${t('components.toolbar.overflow-action')}</span>
 			</div>
 		</div>

@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
-import type { NDDDivider } from './ndd-divider.js';
+import type { NLDDDivider } from './divider.js';
 
-export function dividerTemplate(_component: NDDDivider): TemplateResult {
+export function dividerTemplate(_component: NLDDDivider): TemplateResult {
 	return html`
 		<hr class="divider">
 	`;

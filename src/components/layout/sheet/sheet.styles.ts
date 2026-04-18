@@ -6,7 +6,7 @@ const mdMin = unsafeCSS(breakpoints.mdMin);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
-/* # ndd-sheet styles */
+/* # nldd-sheet styles */
 
 export const sheetStyles = css`
 

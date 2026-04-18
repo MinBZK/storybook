@@ -1,8 +1,8 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDStepper } from './ndd-stepper.js';
-import './../../actions/icon-button/ndd-icon-button.ts';
+import type { NLDDStepper } from './stepper.js';
+import './../../actions/icon-button/icon-button.ts';
 
-export function stepperTemplate(component: NDDStepper): TemplateResult {
+export function stepperTemplate(component: NLDDStepper): TemplateResult {
 	const atMin = component.value <= component.min;
 	const atMax = component.value >= component.max;
 
@@ -17,7 +17,7 @@ export function stepperTemplate(component: NDDStepper): TemplateResult {
 			aria-disabled=${component.disabled ? 'true' : nothing}
 			@keydown=${component._handleKeydown}
 		>
-			<ndd-icon-button
+			<nldd-icon-button
 				variant="neutral-tinted"
 				size=${component.size}
 				icon="minus"
@@ -26,11 +26,11 @@ export function stepperTemplate(component: NDDStepper): TemplateResult {
 				aria-hidden="true"
 				tabindex="-1"
 				@click=${component._decrement}
-			></ndd-icon-button>
+			></nldd-icon-button>
 			<div class="stepper__divider"
 				aria-hidden="true"
 			></div>
-			<ndd-icon-button
+			<nldd-icon-button
 				variant="neutral-tinted"
 				size=${component.size}
 				icon="plus"
@@ -39,7 +39,7 @@ export function stepperTemplate(component: NDDStepper): TemplateResult {
 				aria-hidden="true"
 				tabindex="-1"
 				@click=${component._increment}
-			></ndd-icon-button>
+			></nldd-icon-button>
 		</div>
 	`;
 }

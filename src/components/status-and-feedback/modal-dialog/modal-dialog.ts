@@ -2,18 +2,18 @@
  * Nederlandse Digitale Dienst Modal Dialog Component (Lit + TypeScript)
  *
  * A modal window with overlay backdrop, based on the native <dialog> element.
- * Internally renders an <ndd-inline-dialog> for the visual structure.
+ * Internally renders an <nldd-inline-dialog> for the visual structure.
  *
- * @element ndd-modal-dialog
+ * @element nldd-modal-dialog
  *
- * @attr {'alert'} variant          - Forwarded to ndd-inline-dialog; 'alert' forces icon and color
- * @attr {string}  icon-name        - Forwarded to ndd-inline-dialog; absent when not set
- * @attr {string}  text             - Forwarded to ndd-inline-dialog; main text
- * @attr {string}  supporting-text  - Forwarded to ndd-inline-dialog; supporting text
+ * @attr {'alert'} variant          - Forwarded to nldd-inline-dialog; 'alert' forces icon and color
+ * @attr {string}  icon-name        - Forwarded to nldd-inline-dialog; absent when not set
+ * @attr {string}  text             - Forwarded to nldd-inline-dialog; main text
+ * @attr {string}  supporting-text  - Forwarded to nldd-inline-dialog; supporting text
  * @attr {string}  accessible-label - Accessible name for the dialog (aria-label); falls back to text
  *
- * @slot         - Optional custom content, forwarded to ndd-inline-dialog
- * @slot actions - ndd-button elements, forwarded to ndd-inline-dialog
+ * @slot         - Optional custom content, forwarded to nldd-inline-dialog
+ * @slot actions - nldd-button elements, forwarded to nldd-inline-dialog
  *
  * @fires open  - When the dialog is opened
  * @fires close - When the dialog is fully closed
@@ -23,14 +23,14 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { modalDialogStyles } from './ndd-modal-dialog.styles.ts';
-import { modalDialogTemplate } from './ndd-modal-dialog.template.ts';
+import { modalDialogStyles } from './modal-dialog.styles.ts';
+import { modalDialogTemplate } from './modal-dialog.template.ts';
 import { isPointerMode } from '../../../utilities/input-modality.js';
-import type { InlineDialogVariant } from '../inline-dialog/ndd-inline-dialog.ts';
-import '../inline-dialog/ndd-inline-dialog.ts';
+import type { InlineDialogVariant } from '../inline-dialog/inline-dialog.ts';
+import '../inline-dialog/inline-dialog.ts';
 
-@customElement('ndd-modal-dialog')
-export class NDDModalDialog extends LitElement {
+@customElement('nldd-modal-dialog')
+export class NLDDModalDialog extends LitElement {
 	static override styles = modalDialogStyles;
 
 	@property({ type: String, reflect: true })
@@ -113,6 +113,6 @@ export class NDDModalDialog extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-modal-dialog': NDDModalDialog;
+		'nldd-modal-dialog': NLDDModalDialog;
 	}
 }

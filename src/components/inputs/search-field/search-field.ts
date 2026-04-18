@@ -4,7 +4,7 @@
  * A search input with a leading search icon, an optional dismiss button,
  * and an optional search button.
  *
- * @element ndd-search-field
+ * @element nldd-search-field
  * @attr {string}  value               - The search value
  * @attr {string}  placeholder         - Placeholder text for the input
  * @attr {string}  accessible-label    - Accessible label (aria-label) for the native input.
@@ -23,18 +23,18 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { searchFieldStyles } from './ndd-search-field.styles.ts';
-import { searchFieldTemplate } from './ndd-search-field.template.ts';
-import { nddSearchFieldTranslations } from './ndd-search-field.i18n.ts';
-import type { NDDSearchFieldTranslations } from './ndd-search-field.i18n.ts';
-import './../../actions/icon-button/ndd-icon-button.ts';
-import './../../actions/button/ndd-button.ts';
-import './../../content/icon/ndd-icon.ts';
+import { searchFieldStyles } from './search-field.styles.ts';
+import { searchFieldTemplate } from './search-field.template.ts';
+import { nlddSearchFieldTranslations } from './search-field.i18n.ts';
+import type { NLDDSearchFieldTranslations } from './search-field.i18n.ts';
+import './../../actions/icon-button/icon-button.ts';
+import './../../actions/button/button.ts';
+import './../../content/icon/icon.ts';
 
 export type SearchFieldSize = 'sm' | 'md';
 
-@customElement('ndd-search-field')
-export class NDDSearchField extends LitElement {
+@customElement('nldd-search-field')
+export class NLDDSearchField extends LitElement {
 	static override styles = searchFieldStyles;
 
 	@property({ type: String })
@@ -65,15 +65,15 @@ export class NDDSearchField extends LitElement {
 
 	/** Override one or more translation keys. Unset keys fall back to Dutch. */
 	@property({ type: Object })
-	translations: Partial<NDDSearchFieldTranslations> = {};
+	translations: Partial<NLDDSearchFieldTranslations> = {};
 
 	@query('.search-field__input')
 	_input!: HTMLInputElement;
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
-	public _t(key: keyof NDDSearchFieldTranslations): string {
-		return this.translations[key] ?? nddSearchFieldTranslations[key];
+	public _t(key: keyof NLDDSearchFieldTranslations): string {
+		return this.translations[key] ?? nlddSearchFieldTranslations[key];
 	}
 
 	// — Handlers ————————————————————————————————————————————————————————————
@@ -132,6 +132,6 @@ export class NDDSearchField extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-search-field': NDDSearchField;
+		'nldd-search-field': NLDDSearchField;
 	}
 }

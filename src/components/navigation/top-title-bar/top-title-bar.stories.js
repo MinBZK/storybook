@@ -1,11 +1,11 @@
 import { action } from 'storybook/actions';
 import { html } from 'lit';
-import './ndd-top-title-bar.ts';
-import '../../actions/button/ndd-button.ts';
-import '../../actions/icon-button/ndd-icon-button.ts';
-import '../../layout/page/ndd-page.ts';
-import '../../layout/page-sections/simple-section/ndd-simple-section.ts';
-import '../../content/title/ndd-title.ts';
+import './top-title-bar.ts';
+import '../../actions/button/button.ts';
+import '../../actions/icon-button/icon-button.ts';
+import '../../layout/page/page.ts';
+import '../../layout/page-sections/simple-section/simple-section.ts';
+import '../../content/title/title.ts';
 
 /**
  * De Top Title Bar is de werkbalk van een pagina of container.
@@ -13,7 +13,7 @@ import '../../content/title/ndd-title.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-top-title-bar text="Paginatitel"></ndd-top-title-bar>
+ * <nldd-top-title-bar text="Paginatitel"></nldd-top-title-bar>
  * ```
  *
  * ## Compact stand
@@ -29,11 +29,11 @@ import '../../content/title/ndd-title.ts';
  */
 export default {
 	title: 'Components/Navigation/Top Title Bar',
-	component: 'ndd-top-title-bar',
+	component: 'nldd-top-title-bar',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/navigation/top-title-bar/ndd-top-title-bar.ts',
+			file: 'src/components/navigation/top-title-bar/top-title-bar.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -86,8 +86,8 @@ export default {
 };
 
 const Template = (args) => html`
-	<ndd-page background="tinted" style="height: 120px;">
-		<ndd-top-title-bar
+	<nldd-page background="tinted" style="height: 120px;">
+		<nldd-top-title-bar
 			slot="header"
 			text=${args.text}
 			supporting-text=${args.supportingText}
@@ -97,8 +97,8 @@ const Template = (args) => html`
 			collapse-anchor=${args.collapseAnchor}
 			@back=${action('back')}
 			@dismiss=${action('dismiss')}
-		></ndd-top-title-bar>
-	</ndd-page>
+		></nldd-top-title-bar>
+	</nldd-page>
 `;
 
 export const Standaard = Template.bind({});
@@ -115,8 +115,8 @@ MetTerugknop.parameters = {
 };
 
 export const Compact = () => html`
-	<ndd-page background="tinted" style="height: 120px;">
-		<ndd-top-title-bar
+	<nldd-page background="tinted" style="height: 120px;">
+		<nldd-top-title-bar
 			class="is-compact"
 			slot="header"
 			text="Detailpagina"
@@ -124,8 +124,8 @@ export const Compact = () => html`
 			dismiss-text="Sluit"
 			@back=${action('back')}
 			@dismiss=${action('dismiss')}
-		></ndd-top-title-bar>
-	</ndd-page>
+		></nldd-top-title-bar>
+	</nldd-page>
 `;
 Compact.parameters = {
 	controls: { disable: true },
@@ -151,17 +151,17 @@ MetSubtitel.args = {
 };
 
 export const MetWerkbalkActies = () => html`
-	<ndd-page background="tinted" style="height: 120px;">
-		<ndd-top-title-bar
+	<nldd-page background="tinted" style="height: 120px;">
+		<nldd-top-title-bar
 			slot="header"
 			text="Document"
 			back-text="Overzicht"
 			dismiss-text="Sluit"
 		>
-			<ndd-icon-button slot="toolbar" variant="accent-transparent" icon="share" text="Delen"></ndd-icon-button>
-			<ndd-icon-button slot="toolbar" variant="accent-transparent" icon="edit" text="Bewerken"></ndd-icon-button>
-		</ndd-top-title-bar>
-	</ndd-page>
+			<nldd-icon-button slot="toolbar" variant="accent-transparent" icon="share" text="Delen"></nldd-icon-button>
+			<nldd-icon-button slot="toolbar" variant="accent-transparent" icon="edit" text="Bewerken"></nldd-icon-button>
+		</nldd-top-title-bar>
+	</nldd-page>
 `;
 MetWerkbalkActies.parameters = {
 	controls: { disable: true },
@@ -173,8 +173,8 @@ MetWerkbalkActies.parameters = {
 };
 
 export const MetTitelAnker = () => html`
-	<ndd-page background="tinted" sticky-header style="height: 400px;">
-		<ndd-top-title-bar
+	<nldd-page background="tinted" sticky-header style="height: 400px;">
+		<nldd-top-title-bar
 			slot="header"
 			text="Paginatitel"
 			back-text="Overzicht"
@@ -182,15 +182,15 @@ export const MetTitelAnker = () => html`
 			collapse-anchor="page-title-bar"
 			@back=${action('back')}
 			@dismiss=${action('dismiss')}
-		></ndd-top-title-bar>
-		<ndd-simple-section>
-			<ndd-title id="page-title-bar" size="2">
+		></nldd-top-title-bar>
+		<nldd-simple-section>
+			<nldd-title id="page-title-bar" size="2">
 				<h1>Paginatitel</h1>
 				<p slot="subtitle">Scroll omlaag om te zien hoe de compacte stand wordt geactiveerd.</p>
-			</ndd-title>
+			</nldd-title>
 			<div style="height: 600px;"></div>
-		</ndd-simple-section>
-	</ndd-page>
+		</nldd-simple-section>
+	</nldd-page>
 `;
 MetTitelAnker.parameters = {
 	controls: { disable: true },
@@ -202,22 +202,22 @@ MetTitelAnker.parameters = {
 };
 
 export const MetTitelAnkerZonderActies = () => html`
-	<ndd-page background="tinted" sticky-header style="height: 400px;">
-		<ndd-top-title-bar
+	<nldd-page background="tinted" sticky-header style="height: 400px;">
+		<nldd-top-title-bar
 			slot="header"
 			text="Paginatitel"
 			collapse-anchor="page-title-bar-2"
 			@back=${action('back')}
 			@dismiss=${action('dismiss')}
-		></ndd-top-title-bar>
-		<ndd-simple-section>
-			<ndd-title id="page-title-bar-2" size="2">
+		></nldd-top-title-bar>
+		<nldd-simple-section>
+			<nldd-title id="page-title-bar-2" size="2">
 				<h1>Paginatitel</h1>
 				<p slot="subtitle">Zonder terugknop of sluitknop.</p>
-			</ndd-title>
+			</nldd-title>
 			<div style="height: 600px;"></div>
-		</ndd-simple-section>
-	</ndd-page>
+		</nldd-simple-section>
+	</nldd-page>
 `;
 MetTitelAnkerZonderActies.parameters = {
 	controls: { disable: true },

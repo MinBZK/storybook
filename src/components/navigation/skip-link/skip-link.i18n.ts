@@ -1,5 +1,5 @@
-export const nddSkipLinkTranslations = {
+export const nlddSkipLinkTranslations = {
 	'components.skip-link.action': 'Sla over',
 };
 
-export type NDDSkipLinkTranslations = typeof nddSkipLinkTranslations;
+export type NLDDSkipLinkTranslations = typeof nlddSkipLinkTranslations;

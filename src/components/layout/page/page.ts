@@ -7,7 +7,7 @@
  * .page__scroll takes over scrolling. A ResizeObserver on the header
  * sets padding-top on the scroll wrapper (only when not scrolled).
  *
- * @element ndd-page
+ * @element nldd-page
  *
  * @attr {boolean} sticky-header - Sticky header
  * @attr {boolean} sticky-footer - Sticky footer
@@ -19,11 +19,11 @@
  */
 import { LitElement, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { pageStyles } from './ndd-page.styles.ts';
-import { pageTemplate } from './ndd-page.template.ts';
+import { pageStyles } from './page.styles.ts';
+import { pageTemplate } from './page.template.ts';
 
-@customElement('ndd-page')
-export class NDDPage extends LitElement {
+@customElement('nldd-page')
+export class NLDDPage extends LitElement {
 	static override styles = pageStyles;
 
 	@property({ type: Boolean, reflect: true, attribute: 'sticky-header' })
@@ -132,6 +132,6 @@ export class NDDPage extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-page': NDDPage;
+		'nldd-page': NLDDPage;
 	}
 }

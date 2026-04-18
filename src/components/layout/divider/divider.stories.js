@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './ndd-divider.ts';
-import '../../content/rich-text/ndd-rich-text.ts';
+import './divider.ts';
+import '../../content/rich-text/rich-text.ts';
 
 /**
  * Gebruik een scheidingslijn om secties van inhoud visueel van elkaar te scheiden.
@@ -8,16 +8,16 @@ import '../../content/rich-text/ndd-rich-text.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-divider></ndd-divider>
+ * <nldd-divider></nldd-divider>
  * ```
  */
 export default {
 	title: 'Components/Layout/Divider',
-	component: 'ndd-divider',
+	component: 'nldd-divider',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/layout/divider/ndd-divider.ts',
+			file: 'src/components/layout/divider/divider.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -27,11 +27,11 @@ export default {
 };
 
 export const Standaard = () => html`
-	<ndd-rich-text>
+	<nldd-rich-text>
 		<p>Inhoud boven de scheidingslijn.</p>
-	</ndd-rich-text>
-	<ndd-divider></ndd-divider>
-	<ndd-rich-text>
+	</nldd-rich-text>
+	<nldd-divider></nldd-divider>
+	<nldd-rich-text>
 		<p>Inhoud onder de scheidingslijn.</p>
-	</ndd-rich-text>
+	</nldd-rich-text>
 `;

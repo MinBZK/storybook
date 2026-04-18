@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
-import type { NDDSimpleSection } from './ndd-simple-section.js';
+import type { NLDDSimpleSection } from './simple-section.js';
 
-export function simpleSectionTemplate(component: NDDSimpleSection): TemplateResult {
+export function simpleSectionTemplate(component: NLDDSimpleSection): TemplateResult {
 	return html`
 		<section class="simple-section">
 			<div class="simple-section__body">

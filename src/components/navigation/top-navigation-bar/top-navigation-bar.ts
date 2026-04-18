@@ -1,27 +1,27 @@
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { styles } from './ndd-top-navigation-bar.styles.js';
-import { template } from './ndd-top-navigation-bar.template.js';
+import { styles } from './top-navigation-bar.styles.js';
+import { template } from './top-navigation-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
-import { nddTopNavigationBarTranslations } from './ndd-top-navigation-bar.i18n.js';
-import '../menu-bar-item/ndd-menu-bar-item.js';
-import { NDDMenuBarItem } from '../menu-bar-item/ndd-menu-bar-item.js';
-import '../menu-bar/ndd-menu-bar.js';
-import { NDDMenuBar } from '../menu-bar/ndd-menu-bar.js';
-import '../../content/icon/ndd-icon.js';
+import { nlddTopNavigationBarTranslations } from './top-navigation-bar.i18n.js';
+import '../menu-bar-item/menu-bar-item.js';
+import { NLDDMenuBarItem } from '../menu-bar-item/menu-bar-item.js';
+import '../menu-bar/menu-bar.js';
+import { NLDDMenuBar } from '../menu-bar/menu-bar.js';
+import '../../content/icon/icon.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
-/** Minimal typed interface for ndd-sheet API. */
+/** Minimal typed interface for nldd-sheet API. */
 interface Sheet extends HTMLElement {
 	show(): void;
 	hide(): void;
 }
 
-// # ndd-top-navigation-bar
+// # nldd-top-navigation-bar
 
-@customElement('ndd-top-navigation-bar')
-export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavigationBarTranslations) {
+@customElement('nldd-top-navigation-bar')
+export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNavigationBarTranslations) {
 	static override styles = styles;
 
 	// ## Main properties
@@ -84,8 +84,8 @@ export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavi
 		super.willUpdate(changed);
 		if (changed.has('translations')) {
 			this._globalMenuSheet?.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
-			this._globalMenuSheet?.querySelector('ndd-top-title-bar')?.setAttribute('text', this._menuText);
-			this._globalMenuSheet?.querySelector('ndd-top-title-bar')?.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));
+			this._globalMenuSheet?.querySelector('nldd-top-title-bar')?.setAttribute('text', this._menuText);
+			this._globalMenuSheet?.querySelector('nldd-top-title-bar')?.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));
 		}
 	}
 
@@ -210,7 +210,7 @@ export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavi
 	/** Update has-global-items class on host based on global slot content. */
 	private _syncHasGlobalItems(): void {
 		const globalItems = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
-		const hasGlobalItems = globalItems.some(el => el.tagName === 'NDD-MENU-BAR-ITEM');
+		const hasGlobalItems = globalItems.some(el => el.tagName === 'NLDD-MENU-BAR-ITEM');
 		this.classList.toggle('has-global-items', hasGlobalItems);
 	}
 
@@ -219,14 +219,14 @@ export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavi
 		const isCompact = this._isSmBreakpoint();
 
 		// Menu bars (propagate compact + trigger overflow recalculation)
-		const menuBars = this.shadowRoot?.querySelectorAll('ndd-menu-bar') ?? [];
+		const menuBars = this.shadowRoot?.querySelectorAll('nldd-menu-bar') ?? [];
 		for (const menuBar of menuBars) {
 			menuBar.toggleAttribute('compact', isCompact);
-			(menuBar as NDDMenuBar).requestOverflowUpdate();
+			(menuBar as NLDDMenuBar).requestOverflowUpdate();
 		}
 
 		// Internal items not inside a menu-bar (menu-button, back-button)
-		const internalItems = this.shadowRoot?.querySelectorAll('ndd-menu-bar-item') ?? [];
+		const internalItems = this.shadowRoot?.querySelectorAll('nldd-menu-bar-item') ?? [];
 		for (const item of internalItems) {
 			item.toggleAttribute('compact', isCompact);
 		}
@@ -245,33 +245,33 @@ export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavi
 
 	private async _loadGlobalMenuSheetDependencies(): Promise<void> {
 		await Promise.all([
-			import('../../layout/sheet/ndd-sheet.js'),
-			import('../../layout/page/ndd-page.js'),
-			import('../../layout/page-sections/simple-section/ndd-simple-section.js'),
-			import('../../navigation/top-title-bar/ndd-top-title-bar.js'),
-			import('../../lists-and-menus/list/ndd-list.js'),
-			import('../../lists-and-menus/list-item/ndd-list-item.js'),
-			import('../../lists-and-menus/cells/text-cell/ndd-text-cell.js'),
+			import('../../layout/sheet/sheet.js'),
+			import('../../layout/page/page.js'),
+			import('../../layout/page-sections/simple-section/simple-section.js'),
+			import('../../navigation/top-title-bar/top-title-bar.js'),
+			import('../../lists-and-menus/list/list.js'),
+			import('../../lists-and-menus/list-item/list-item.js'),
+			import('../../lists-and-menus/cells/text-cell/text-cell.js'),
 		]);
 	}
 
 	private _createGlobalMenuSheet(): Sheet {
-		const sheet = document.createElement('ndd-sheet') as unknown as Sheet;
+		const sheet = document.createElement('nldd-sheet') as unknown as Sheet;
 		sheet.setAttribute('placement', 'left');
 		sheet.setAttribute('accessible-label', this._t('components.top-navigation-bar.menu-action'));
 
-		const page = document.createElement('ndd-page');
+		const page = document.createElement('nldd-page');
 		page.setAttribute('sticky-header', '');
 
-		const titleBar = document.createElement('ndd-top-title-bar');
+		const titleBar = document.createElement('nldd-top-title-bar');
 		titleBar.setAttribute('slot', 'header');
 		titleBar.setAttribute('text', this._menuText);
 		titleBar.setAttribute('dismiss-text', this._t('components.top-navigation-bar.menu-sheet-dismiss-action'));
 		page.appendChild(titleBar);
 
-		const section = document.createElement('ndd-simple-section');
+		const section = document.createElement('nldd-simple-section');
 
-		this._globalMenuSheetList = document.createElement('ndd-list');
+		this._globalMenuSheetList = document.createElement('nldd-list');
 		this._globalMenuSheetList.setAttribute('variant', 'simple');
 		this._globalMenuSheetList.setAttribute('no-dividers', '');
 		section.appendChild(this._globalMenuSheetList);
@@ -287,10 +287,10 @@ export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavi
 		this._globalMenuSheetList.replaceChildren();
 
 		const slottedElements = this._globalSlot?.assignedElements({ flatten: true }) ?? [];
-		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as NDDMenuBarItem[];
+		const items = slottedElements.filter(el => el.tagName === 'NLDD-MENU-BAR-ITEM') as NLDDMenuBarItem[];
 
 		for (const item of items) {
-			const listItem = document.createElement('ndd-list-item');
+			const listItem = document.createElement('nldd-list-item');
 			const safeHref = sanitizeUrl(item.href);
 
 			if (safeHref) {
@@ -301,7 +301,7 @@ export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavi
 			}
 			if (item.current) listItem.setAttribute('selected', '');
 
-			const textCell = document.createElement('ndd-text-cell');
+			const textCell = document.createElement('nldd-text-cell');
 			textCell.setAttribute('text', item.text);
 			listItem.appendChild(textCell);
 
@@ -321,19 +321,19 @@ export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavi
 				await this._loadGlobalMenuSheetDependencies();
 			} catch (error) {
 				if (import.meta.env?.DEV) {
-					console.error('ndd-top-navigation-bar: failed to load menu sheet dependencies', error);
+					console.error('nldd-top-navigation-bar: failed to load menu sheet dependencies', error);
 				}
 				return;
 			}
 			if (!this.isConnected) return; // guard against disconnect during async load
 			if (this._globalMenuSheet) return; // guard against double-click race
 			this._globalMenuSheet = this._createGlobalMenuSheet();
-			const menuButtonItem = this._menuButton?.querySelector('ndd-menu-bar-item');
+			const menuButtonItem = this._menuButton?.querySelector('nldd-menu-bar-item');
 			this._globalMenuSheet.addEventListener('open', () => {
-				if (menuButtonItem) (menuButtonItem as NDDMenuBarItem).open = true;
+				if (menuButtonItem) (menuButtonItem as NLDDMenuBarItem).open = true;
 			});
 			this._globalMenuSheet.addEventListener('close', () => {
-				if (menuButtonItem) (menuButtonItem as NDDMenuBarItem).open = false;
+				if (menuButtonItem) (menuButtonItem as NLDDMenuBarItem).open = false;
 			});
 		}
 		this._syncGlobalMenuSheetItems();
@@ -367,6 +367,6 @@ export class NDDTopNavigationBar extends withTranslations(LitElement, nddTopNavi
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-top-navigation-bar': NDDTopNavigationBar;
+		'nldd-top-navigation-bar': NLDDTopNavigationBar;
 	}
 }

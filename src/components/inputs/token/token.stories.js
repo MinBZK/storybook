@@ -1,6 +1,6 @@
 import { action } from 'storybook/actions';
 import { html } from 'lit';
-import './ndd-token.js';
+import './token.js';
 
 /**
  * De Token component is een visuele representatie van data —
@@ -9,18 +9,18 @@ import './ndd-token.js';
  *
  * ## Gebruik
  * ```html
- * <ndd-token>Label</ndd-token>
- * <ndd-token control="dismiss">Verwijderbaar</ndd-token>
- * <ndd-token control="menu">Kies optie</ndd-token>
+ * <nldd-token>Label</nldd-token>
+ * <nldd-token control="dismiss">Verwijderbaar</nldd-token>
+ * <nldd-token control="menu">Kies optie</nldd-token>
  * ```
  */
 export default {
 	title: 'Components/Inputs/Token',
-	component: 'ndd-token',
+	component: 'nldd-token',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/token/ndd-token.ts',
+			file: 'src/components/inputs/token/token.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -64,13 +64,13 @@ export default {
 };
 
 const Template = (args) => html`
-	<ndd-token
+	<nldd-token
 		control=${args.control}
 		?open=${args.open}
 		?disabled=${args.disabled}
 		@dismiss=${action('dismiss')}
 		@toggle=${action('toggle')}
-	>${args.label}</ndd-token>
+	>${args.label}</nldd-token>
 `;
 
 export const Standaard = Template.bind({});
@@ -83,10 +83,10 @@ Standaard.args = {};
 
 export const AlleControls = () => html`
 	<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-		<ndd-token>Geen control</ndd-token>
-		<ndd-token control="dismiss">Met dismiss</ndd-token>
-		<ndd-token control="menu">Met menu</ndd-token>
-		<ndd-token control="menu" open>Menu open</ndd-token>
+		<nldd-token>Geen control</nldd-token>
+		<nldd-token control="dismiss">Met dismiss</nldd-token>
+		<nldd-token control="menu">Met menu</nldd-token>
+		<nldd-token control="menu" open>Menu open</nldd-token>
 	</div>
 `;
 AlleControls.parameters = {
@@ -128,9 +128,9 @@ MenuOpen.args = { control: 'menu', open: true, label: 'Datum' };
 
 export const Uitgeschakeld = () => html`
 	<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-		<ndd-token disabled>Geen control</ndd-token>
-		<ndd-token control="dismiss" disabled>Met dismiss</ndd-token>
-		<ndd-token control="menu" disabled>Met menu</ndd-token>
+		<nldd-token disabled>Geen control</nldd-token>
+		<nldd-token control="dismiss" disabled>Met dismiss</nldd-token>
+		<nldd-token control="menu" disabled>Met menu</nldd-token>
 	</div>
 `;
 Uitgeschakeld.parameters = { controls: { disable: true } };
@@ -142,7 +142,7 @@ Uitgeschakeld.parameters = { controls: { disable: true } };
 
 export const FilterVoorbeeld = () => {
 	const handleDismiss = (e) => {
-		(e.target).closest('ndd-token')?.remove();
+		(e.target).closest('nldd-token')?.remove();
 	};
 
 	return html`
@@ -151,10 +151,10 @@ export const FilterVoorbeeld = () => {
 				Actieve tokens — klik op × om een waarde te verwijderen:
 			</p>
 			<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-				<ndd-token control="dismiss" @dismiss=${handleDismiss}>Status: Actief</ndd-token>
-				<ndd-token control="dismiss" @dismiss=${handleDismiss}>Type: Document</ndd-token>
-				<ndd-token control="dismiss" @dismiss=${handleDismiss}>Datum: Vandaag</ndd-token>
-				<ndd-token control="dismiss" @dismiss=${handleDismiss}>Auteur: Jan de Vries</ndd-token>
+				<nldd-token control="dismiss" @dismiss=${handleDismiss}>Status: Actief</nldd-token>
+				<nldd-token control="dismiss" @dismiss=${handleDismiss}>Type: Document</nldd-token>
+				<nldd-token control="dismiss" @dismiss=${handleDismiss}>Datum: Vandaag</nldd-token>
+				<nldd-token control="dismiss" @dismiss=${handleDismiss}>Auteur: Jan de Vries</nldd-token>
 			</div>
 		</div>
 	`;
@@ -170,15 +170,15 @@ FilterVoorbeeld.parameters = {
 
 export const MenuVoorbeeld = () => html`
 	<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-		<ndd-token control="menu"
+		<nldd-token control="menu"
 			@toggle=${action('toggle-periode')}
-		>Periode: Laatste maand</ndd-token>
-		<ndd-token control="menu" open
+		>Periode: Laatste maand</nldd-token>
+		<nldd-token control="menu" open
 			@toggle=${action('toggle-status')}
-		>Status: Actief</ndd-token>
-		<ndd-token control="menu"
+		>Status: Actief</nldd-token>
+		<nldd-token control="menu"
 			@toggle=${action('toggle-afdeling')}
-		>Afdeling: Juridisch</ndd-token>
+		>Afdeling: Juridisch</nldd-token>
 	</div>
 `;
 MenuVoorbeeld.parameters = {

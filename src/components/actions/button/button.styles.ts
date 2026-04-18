@@ -241,7 +241,7 @@ export const styles = css`
 		display: contents;
 	}
 
-	::slotted(ndd-icon) {
+	::slotted(nldd-icon) {
 		display: none;
 	}
 

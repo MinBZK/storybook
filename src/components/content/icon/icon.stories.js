@@ -1,6 +1,6 @@
 // icon.stories.js
 import { html } from 'lit';
-import { ICONS, aliases } from './ndd-icon.ts';
+import { ICONS, aliases } from './icon.ts';
 
 const aliasSet = new Set(Object.keys(aliases));
 const iconNames = ICONS.filter(name => !aliasSet.has(name));
@@ -8,7 +8,7 @@ const allIconNames = ICONS;
 
 export default {
 	title: 'Components/Content/Icon',
-	component: 'ndd-icon',
+	component: 'nldd-icon',
 	tags: ['autodocs'],
 	argTypes: {
 	name: {
@@ -46,7 +46,7 @@ export default {
 	},
 	render: ({ name, containerSize, containerColor }) => html`
 	<div style="width: ${containerSize}px; height: ${containerSize}px; color: ${containerColor};">
-		<ndd-icon name="${name}"></ndd-icon>
+		<nldd-icon name="${name}"></nldd-icon>
 	</div>
 	`,
 };
@@ -83,7 +83,7 @@ export const IconGallery = {
 		return html`
 			<div style="text-align: center; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; background: white;">
 			<div style="width: 48px; height: 48px; margin: 0 auto; color: #333;">
-				<ndd-icon name="${iconName}"></ndd-icon>
+				<nldd-icon name="${iconName}"></nldd-icon>
 			</div>
 			<div style="font-size: 12px; margin-top: 8px; color: #333; font-weight: 500;">${iconName}</div>
 			${iconAliases.length > 0 ? html`
@@ -111,7 +111,7 @@ export const Sizes = {
 		${[16, 24, 32, 48, 64].map(size => html`
 		<div style="text-align: center;">
 			<div style="width: ${size}px; height: ${size}px; color: #ef4444;">
-			<ndd-icon name="heart"></ndd-icon>
+			<nldd-icon name="heart"></nldd-icon>
 			</div>
 			<div style="font-size: 10px; margin-top: 4px;">${size}px</div>
 		</div>
@@ -132,7 +132,7 @@ export const Colors = {
 	<div style="display: flex; gap: 24px; align-items: center; padding: 16px;">
 		${['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899'].map(color => html`
 		<div style="width: 48px; height: 48px; color: ${color};">
-			<ndd-icon name="heart"></ndd-icon>
+			<nldd-icon name="heart"></nldd-icon>
 		</div>
 		`)}
 	</div>

@@ -4,7 +4,7 @@ import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 const smMax = unsafeCSS(breakpoints.smMax);
 
 
-/* # ndd-window styles */
+/* # nldd-window styles */
 
 export const windowStyles = css`
 
@@ -69,7 +69,7 @@ export const windowStyles = css`
 
 	/* Drag handle cursor is set via JS in _detectDragHandle
 	   because ::slotted cannot reach nested elements
-	   (e.g. ndd-top-title-bar inside ndd-page). */
+	   (e.g. nldd-top-title-bar inside nldd-page). */
 
 
 	/* ## Responsive: sm — fixed insets, no dragging */

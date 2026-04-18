@@ -1,7 +1,7 @@
 import { html, TemplateResult, nothing } from 'lit';
-import type { NDDSplitViewDivider } from './ndd-split-view-divider.js';
+import type { NLDDSplitViewDivider } from './split-view-divider.js';
 
-export function splitViewDividerTemplate(component: NDDSplitViewDivider): TemplateResult {
+export function splitViewDividerTemplate(component: NLDDSplitViewDivider): TemplateResult {
 	return html`
 		<div
 			class="split-view-divider"

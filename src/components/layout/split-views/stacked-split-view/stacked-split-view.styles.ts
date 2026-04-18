@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 
-/* # ndd-stacked-split-view styles */
+/* # nldd-stacked-split-view styles */
 
 export const stackedSplitViewStyles = css`
 	:host {

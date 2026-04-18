@@ -1,8 +1,8 @@
 import { html } from 'lit';
-import './ndd-tooltip.ts';
-import '../../actions/button/ndd-button.ts';
-import '../../actions/icon-button/ndd-icon-button.ts';
-import '../rich-text/ndd-rich-text.ts';
+import './tooltip.ts';
+import '../../actions/button/button.ts';
+import '../../actions/icon-button/icon-button.ts';
+import '../rich-text/rich-text.ts';
 
 /**
  * De Tooltip toont informatieve tekst bij hover of focus op een child element.
@@ -10,18 +10,18 @@ import '../rich-text/ndd-rich-text.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-tooltip text="Meer informatie">
- *   <ndd-icon-button icon="info" text="Info"></ndd-icon-button>
- * </ndd-tooltip>
+ * <nldd-tooltip text="Meer informatie">
+ *   <nldd-icon-button icon="info" text="Info"></nldd-icon-button>
+ * </nldd-tooltip>
  * ```
  */
 export default {
 	title: 'Components/Content/Tooltip',
-	component: 'ndd-tooltip',
+	component: 'nldd-tooltip',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/content/tooltip/ndd-tooltip.ts',
+			file: 'src/components/content/tooltip/tooltip.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'stable' },
@@ -47,12 +47,12 @@ export default {
 export const Standaard = {
 	render: (args) => html`
 		<div style="display: flex; justify-content: center; padding: 4rem;">
-			<ndd-tooltip
+			<nldd-tooltip
 				text=${args.text}
 				placement=${args.placement}
 			>
-				<ndd-button text="Hover mij"></ndd-button>
-			</ndd-tooltip>
+				<nldd-button text="Hover mij"></nldd-button>
+			</nldd-tooltip>
 		</div>
 	`,
 };
@@ -60,17 +60,17 @@ export const Standaard = {
 export const MetIconButton = {
 	render: () => html`
 		<div style="display: flex; justify-content: center; padding: 4rem;">
-			<ndd-icon-button
+			<nldd-icon-button
 				icon="info"
 				text="Info"
-			></ndd-icon-button>
+			></nldd-icon-button>
 		</div>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Icon-button rendert intern een ndd-tooltip wanneer de tekst niet zichtbaar is.',
+				story: 'Icon-button rendert intern een nldd-tooltip wanneer de tekst niet zichtbaar is.',
 			},
 		},
 	},
@@ -79,18 +79,18 @@ export const MetIconButton = {
 export const Posities = {
 	render: () => html`
 		<div style="display: flex; gap: 2rem; justify-content: center; padding: 4rem;">
-			<ndd-tooltip text="Boven" placement="top">
-				<ndd-button text="Top"></ndd-button>
-			</ndd-tooltip>
-			<ndd-tooltip text="Onder" placement="bottom">
-				<ndd-button text="Bottom"></ndd-button>
-			</ndd-tooltip>
-			<ndd-tooltip text="Links" placement="left">
-				<ndd-button text="Left"></ndd-button>
-			</ndd-tooltip>
-			<ndd-tooltip text="Rechts" placement="right">
-				<ndd-button text="Right"></ndd-button>
-			</ndd-tooltip>
+			<nldd-tooltip text="Boven" placement="top">
+				<nldd-button text="Top"></nldd-button>
+			</nldd-tooltip>
+			<nldd-tooltip text="Onder" placement="bottom">
+				<nldd-button text="Bottom"></nldd-button>
+			</nldd-tooltip>
+			<nldd-tooltip text="Links" placement="left">
+				<nldd-button text="Left"></nldd-button>
+			</nldd-tooltip>
+			<nldd-tooltip text="Rechts" placement="right">
+				<nldd-button text="Right"></nldd-button>
+			</nldd-tooltip>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },
@@ -98,14 +98,14 @@ export const Posities = {
 
 export const MetLink = {
 	render: () => html`
-		<ndd-rich-text>
+		<nldd-rich-text>
 			<p>Lees meer over
-				<ndd-tooltip text="Artikel 1: Allen die zich in Nederland bevinden, worden in gelijke gevallen gelijk behandeld.">
+				<nldd-tooltip text="Artikel 1: Allen die zich in Nederland bevinden, worden in gelijke gevallen gelijk behandeld.">
 					<a href="#">de Grondwet</a>
-				</ndd-tooltip>
+				</nldd-tooltip>
 				voor meer informatie.
 			</p>
-		</ndd-rich-text>
+		</nldd-rich-text>
 	`,
 	parameters: {
 		controls: { disable: true },

@@ -1,9 +1,9 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDStepper } from './ndd-stepper.ts';
-import './ndd-stepper.ts';
+import type { NLDDStepper } from './stepper.ts';
+import './stepper.ts';
 
-describe('ndd-stepper', () => {
+describe('nldd-stepper', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -11,15 +11,15 @@ describe('ndd-stepper', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-stepper></ndd-stepper>');
+		el = await fixture('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders two ndd-icon-button elements', async () => {
-		el = await fixture('<ndd-stepper></ndd-stepper>');
+	it('renders two nldd-icon-button elements', async () => {
+		el = await fixture('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelectorAll('ndd-icon-button').length).toBe(2);
+		expect(el.shadowRoot!.querySelectorAll('nldd-icon-button').length).toBe(2);
 	});
 });
 
@@ -28,29 +28,29 @@ describe('ndd-stepper', () => {
    State
    ============================================================ */
 
-describe('ndd-stepper – state', () => {
-	let el: NDDStepper;
+describe('nldd-stepper – state', () => {
+	let el: NLDDStepper;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('has default value of 0', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
 		expect(el.value).toBe(0);
 	});
 
 	it('reflects value attribute', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="5"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="5"></nldd-stepper>');
 		await waitForUpdate(el);
 		expect(el.value).toBe(5);
 	});
 
 	it('is disabled when disabled attribute is set', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper disabled></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper disabled></nldd-stepper>');
 		await waitForUpdate(el);
-		const buttons = el.shadowRoot!.querySelectorAll('ndd-icon-button');
+		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
 		buttons.forEach(async btn => {
 			await waitForUpdate(btn);
 			expect((btn as any).disabled).toBe(true);
@@ -58,17 +58,17 @@ describe('ndd-stepper – state', () => {
 	});
 
 	it('disables decrement button at minimum value', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="0" min="0"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="0" min="0"></nldd-stepper>');
 		await waitForUpdate(el);
-		const [decrement] = el.shadowRoot!.querySelectorAll('ndd-icon-button');
+		const [decrement] = el.shadowRoot!.querySelectorAll('nldd-icon-button');
 		await waitForUpdate(decrement);
 		expect((decrement as any).disabled).toBe(true);
 	});
 
 	it('disables increment button at maximum value', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="10" max="10"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="10" max="10"></nldd-stepper>');
 		await waitForUpdate(el);
-		const buttons = el.shadowRoot!.querySelectorAll('ndd-icon-button');
+		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
 		const increment = buttons[1];
 		await waitForUpdate(increment);
 		expect((increment as any).disabled).toBe(true);
@@ -80,57 +80,57 @@ describe('ndd-stepper – state', () => {
    Increment & decrement
    ============================================================ */
 
-describe('ndd-stepper – increment & decrement', () => {
-	let el: NDDStepper;
+describe('nldd-stepper – increment & decrement', () => {
+	let el: NLDDStepper;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('increments value by step', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="5" step="1" max="10"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="5" step="1" max="10"></nldd-stepper>');
 		await waitForUpdate(el);
 		el._increment();
 		expect(el.value).toBe(6);
 	});
 
 	it('decrements value by step', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="5" step="1" min="0"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="5" step="1" min="0"></nldd-stepper>');
 		await waitForUpdate(el);
 		el._decrement();
 		expect(el.value).toBe(4);
 	});
 
 	it('does not exceed max on increment', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="10" max="10"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="10" max="10"></nldd-stepper>');
 		await waitForUpdate(el);
 		el._increment();
 		expect(el.value).toBe(10);
 	});
 
 	it('does not go below min on decrement', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="0" min="0"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="0" min="0"></nldd-stepper>');
 		await waitForUpdate(el);
 		el._decrement();
 		expect(el.value).toBe(0);
 	});
 
 	it('does not increment when disabled', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="5" disabled></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="5" disabled></nldd-stepper>');
 		await waitForUpdate(el);
 		el._increment();
 		expect(el.value).toBe(5);
 	});
 
 	it('does not decrement when disabled', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="5" disabled></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="5" disabled></nldd-stepper>');
 		await waitForUpdate(el);
 		el._decrement();
 		expect(el.value).toBe(5);
 	});
 
 	it('respects custom step size', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="0" step="5" max="100"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="0" step="5" max="100"></nldd-stepper>');
 		await waitForUpdate(el);
 		el._increment();
 		expect(el.value).toBe(5);
@@ -142,15 +142,15 @@ describe('ndd-stepper – increment & decrement', () => {
    Change event
    ============================================================ */
 
-describe('ndd-stepper – change event', () => {
-	let el: NDDStepper;
+describe('nldd-stepper – change event', () => {
+	let el: NLDDStepper;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('dispatches change event on increment with value detail', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="5" max="10"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="5" max="10"></nldd-stepper>');
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
@@ -160,7 +160,7 @@ describe('ndd-stepper – change event', () => {
 	});
 
 	it('dispatches change event on decrement with value detail', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="5" min="0"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="5" min="0"></nldd-stepper>');
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
@@ -170,7 +170,7 @@ describe('ndd-stepper – change event', () => {
 	});
 
 	it('does not dispatch change when value is already at max', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="10" max="10"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="10" max="10"></nldd-stepper>');
 		await waitForUpdate(el);
 		let changeFired = false;
 		el.addEventListener('change', () => { changeFired = true; });
@@ -179,7 +179,7 @@ describe('ndd-stepper – change event', () => {
 	});
 
 	it('does not dispatch change when value is already at min', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper value="0" min="0"></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper value="0" min="0"></nldd-stepper>');
 		await waitForUpdate(el);
 		let changeFired = false;
 		el.addEventListener('change', () => { changeFired = true; });
@@ -193,15 +193,15 @@ describe('ndd-stepper – change event', () => {
    Translations
    ============================================================ */
 
-describe('ndd-stepper – translations', () => {
-	let el: NDDStepper;
+describe('nldd-stepper – translations', () => {
+	let el: NLDDStepper;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('uses Dutch defaults when no translations are set', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
 		expect(el._t('components.stepper.decrement-action')).toBe('Verlaag aantal');
 		expect(el._t('components.stepper.increment-action')).toBe('Verhoog aantal');
@@ -209,14 +209,14 @@ describe('ndd-stepper – translations', () => {
 	});
 
 	it('overrides a single translation key', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
 		el.translations = { 'components.stepper.decrement-action': 'Decrease' };
 		expect(el._t('components.stepper.decrement-action')).toBe('Decrease');
 	});
 
 	it('falls back to Dutch for keys not present in translations override', async () => {
-		el = await fixture<NDDStepper>('<ndd-stepper></ndd-stepper>');
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
 		el.translations = { 'components.stepper.decrement-action': 'Decrease' };
 		expect(el._t('components.stepper.increment-action')).toBe('Verhoog aantal');

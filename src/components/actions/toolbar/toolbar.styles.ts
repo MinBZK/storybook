@@ -5,7 +5,7 @@ export const styles = css`
 
 	:host {
 		display: block;
-		font-family: var(--ndd-font-family-body);
+		font-family: var(--nldd-font-family-body);
 		box-sizing: border-box;
 		--_item-width: auto;
 		--_item-min-width: 0px;
@@ -81,9 +81,9 @@ export const styles = css`
 		min-width: 0;
 		margin-right: calc(-1 * var(--components-toolbar-md-gap));
 		flex-basis: calc(
-			var(--ndd-toolbar-width) / 2
-			- var(--ndd-toolbar-start-width)
-			- var(--ndd-toolbar-center-width) / 2
+			var(--nldd-toolbar-width) / 2
+			- var(--nldd-toolbar-start-width)
+			- var(--nldd-toolbar-center-width) / 2
 			- var(--components-toolbar-md-gap)
 		);
 	}
@@ -91,9 +91,9 @@ export const styles = css`
 	:host([size="sm"]) .toolbar__left-spacer {
 		margin-right: calc(-1 * var(--components-toolbar-sm-gap));
 		flex-basis: calc(
-			var(--ndd-toolbar-width) / 2
-			- var(--ndd-toolbar-start-width)
-			- var(--ndd-toolbar-center-width) / 2
+			var(--nldd-toolbar-width) / 2
+			- var(--nldd-toolbar-start-width)
+			- var(--nldd-toolbar-center-width) / 2
 			- var(--components-toolbar-sm-gap)
 		);
 	}
@@ -104,22 +104,22 @@ export const styles = css`
 		min-width: 0;
 		margin-left: calc(-1 * var(--components-toolbar-md-gap));
 		flex-basis: calc(
-			var(--ndd-toolbar-width) / 2
-			- var(--ndd-toolbar-end-width)
-			- var(--ndd-toolbar-center-width) / 2
+			var(--nldd-toolbar-width) / 2
+			- var(--nldd-toolbar-end-width)
+			- var(--nldd-toolbar-center-width) / 2
 			- var(--components-toolbar-md-gap)
-			- var(--ndd-toolbar-overflow-button-width, 0px)
+			- var(--nldd-toolbar-overflow-button-width, 0px)
 		);
 	}
 
 	:host([size="sm"]) .toolbar__right-spacer {
 		margin-left: calc(-1 * var(--components-toolbar-sm-gap));
 		flex-basis: calc(
-			var(--ndd-toolbar-width) / 2
-			- var(--ndd-toolbar-end-width)
-			- var(--ndd-toolbar-center-width) / 2
+			var(--nldd-toolbar-width) / 2
+			- var(--nldd-toolbar-end-width)
+			- var(--nldd-toolbar-center-width) / 2
 			- var(--components-toolbar-sm-gap)
-			- var(--ndd-toolbar-overflow-button-width, 0px)
+			- var(--nldd-toolbar-overflow-button-width, 0px)
 		);
 	}
 

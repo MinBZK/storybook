@@ -4,7 +4,7 @@
  * A token component representing a piece of data — such as a person in an address field
  * or an active filter value. Optionally dismissable or interactive via a contextual menu.
  *
- * @element ndd-token
+ * @element nldd-token
  *
  * @attr {'none' | 'dismiss' | 'menu'} control       - Control type (default: 'none')
  * @attr {boolean}                        open          - Whether the menu is open (menu only)
@@ -20,15 +20,15 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { tokenStyles } from './ndd-token.styles.ts';
-import { tokenTemplate } from './ndd-token.template.ts';
-import './../../content/icon/ndd-icon.ts';
-import './../../actions/icon-button/ndd-icon-button.ts';
+import { tokenStyles } from './token.styles.ts';
+import { tokenTemplate } from './token.template.ts';
+import './../../content/icon/icon.ts';
+import './../../actions/icon-button/icon-button.ts';
 
 export type TokenControl = 'none' | 'dismiss' | 'menu';
 
-@customElement('ndd-token')
-export class NDDToken extends LitElement {
+@customElement('nldd-token')
+export class NLDDToken extends LitElement {
 	static override styles = tokenStyles;
 
 	@property({ type: String, reflect: true })
@@ -73,6 +73,6 @@ export class NDDToken extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-token': NDDToken;
+		'nldd-token': NLDDToken;
 	}
 }

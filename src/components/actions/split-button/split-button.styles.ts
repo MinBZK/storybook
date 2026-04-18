@@ -17,8 +17,8 @@ export const styles = css`
 		pointer-events: none;
 	}
 
-	:host([disabled]) ndd-button,
-	:host([disabled]) ndd-icon-button {
+	:host([disabled]) nldd-button,
+	:host([disabled]) nldd-icon-button {
 		opacity: 1;
 	}
 
@@ -32,8 +32,8 @@ export const styles = css`
 
 	/* # Focus */
 
-	ndd-button:focus-within,
-	ndd-icon-button:focus-within {
+	nldd-button:focus-within,
+	nldd-icon-button:focus-within {
 		position: relative;
 		z-index: 1;
 	}

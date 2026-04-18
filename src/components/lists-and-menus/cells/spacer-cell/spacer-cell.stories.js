@@ -1,9 +1,9 @@
 import { html } from 'lit';
-import './ndd-spacer-cell.ts';
+import './spacer-cell.ts';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Spacer Cell',
-	component: 'ndd-spacer-cell',
+	component: 'nldd-spacer-cell',
 	tags: ['autodocs'],
 	argTypes: {
 		size: {
@@ -22,7 +22,7 @@ export const Default = {
 	render: (args) => html`
 		<div style=${containerStyle}>
 			<span>Voor</span>
-			<ndd-spacer-cell size=${args.size} style=${debugStyle}></ndd-spacer-cell>
+			<nldd-spacer-cell size=${args.size} style=${debugStyle}></nldd-spacer-cell>
 			<span>Na</span>
 		</div>
 	`,
@@ -32,7 +32,7 @@ export const Flexible = {
 	render: () => html`
 		<div style="${containerStyle} width: 400px;">
 			<span>Links</span>
-			<ndd-spacer-cell size="flexible" style=${debugStyle}></ndd-spacer-cell>
+			<nldd-spacer-cell size="flexible" style=${debugStyle}></nldd-spacer-cell>
 			<span>Rechts</span>
 		</div>
 	`,
@@ -46,7 +46,7 @@ export const AllFixedSizes = {
 					<span style="width: 40px; font-size: 12px; color: var(--semantics-content-color);">${size}px</span>
 					<div style=${containerStyle}>
 						<span>|</span>
-						<ndd-spacer-cell size=${size} style=${debugStyle}></ndd-spacer-cell>
+						<nldd-spacer-cell size=${size} style=${debugStyle}></nldd-spacer-cell>
 						<span>|</span>
 					</div>
 				</div>

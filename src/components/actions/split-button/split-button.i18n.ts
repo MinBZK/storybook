@@ -1,5 +1,5 @@
-export const nddSplitButtonTranslations = {
+export const nlddSplitButtonTranslations = {
 	'components.split-button.menu-action': 'Meer opties',
 };
 
-export type NDDSplitButtonTranslations = typeof nddSplitButtonTranslations;
+export type NLDDSplitButtonTranslations = typeof nlddSplitButtonTranslations;

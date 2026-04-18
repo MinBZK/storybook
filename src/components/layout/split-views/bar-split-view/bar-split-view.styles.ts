@@ -3,7 +3,7 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 
-/* # ndd-bar-split-view styles */
+/* # nldd-bar-split-view styles */
 
 export const barSplitViewStyles = css`
 	:host {

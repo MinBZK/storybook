@@ -1,5 +1,5 @@
 /* # host */
-ndd-rich-text {
+nldd-rich-text {
 	display: block;
 	color: var(--semantics-content-color);
 	container-type: inline-size;
@@ -9,57 +9,57 @@ ndd-rich-text {
 	font: var(--primitives-font-body-md-regular-snug);
 }
 
-ndd-rich-text[spacing="flat"] {
+nldd-rich-text[spacing="flat"] {
 	--components-rich-text-spacing: var(--components-rich-text-spacing-flat);
 }
 
-ndd-rich-text[spacing="tight"] {
+nldd-rich-text[spacing="tight"] {
 	--components-rich-text-spacing: var(--components-rich-text-spacing-tight);
 }
 
-ndd-rich-text[spacing="snug"] {
+nldd-rich-text[spacing="snug"] {
 	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
 }
 
-ndd-rich-text[spacing="loose"] {
+nldd-rich-text[spacing="loose"] {
 	--components-rich-text-spacing: var(--components-rich-text-spacing-loose);
 }
 
-ndd-rich-text[hidden] {
+nldd-rich-text[hidden] {
 	display: none;
 }
 
 /* # rich-text */
 
-ndd-rich-text > :first-child {
+nldd-rich-text > :first-child {
 	margin-top: 0;
 }
 
-ndd-rich-text > :last-child {
+nldd-rich-text > :last-child {
 	margin-bottom: 0;
 }
 
 
 
-ndd-rich-text *:focus-visible {
+nldd-rich-text *:focus-visible {
 	box-shadow: var(--semantics-focus-ring-box-shadow);
 	outline: var(--semantics-focus-ring-outline);
 }
 
-ndd-rich-text *:focus:not(:focus-visible) {
+nldd-rich-text *:focus:not(:focus-visible) {
 	outline: none;
 }
 
 /* # p */
 
-ndd-rich-text p {
+nldd-rich-text p {
 	margin: var(--components-rich-text-spacing) 0;
 	max-width: var(--primitives-area-720);
 }
 
 /* # h1 */
 
-ndd-rich-text h1 {
+nldd-rich-text h1 {
 	margin-top: calc(var(--components-rich-text-spacing) * 2);
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-1-sm);
@@ -74,7 +74,7 @@ ndd-rich-text h1 {
 
 /* # h2 */
 
-ndd-rich-text h2 {
+nldd-rich-text h2 {
 	margin-top: calc(var(--components-rich-text-spacing) * 2);
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-2-sm);
@@ -89,7 +89,7 @@ ndd-rich-text h2 {
 
 /* # h3 */
 
-ndd-rich-text h3 {
+nldd-rich-text h3 {
 	margin-top: calc(var(--components-rich-text-spacing) * 2);
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-3-sm);
@@ -104,7 +104,7 @@ ndd-rich-text h3 {
 
 /* # h4 */
 
-ndd-rich-text h4 {
+nldd-rich-text h4 {
 	margin-top: calc(var(--components-rich-text-spacing) * 2);
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-4-sm);
@@ -119,7 +119,7 @@ ndd-rich-text h4 {
 
 /* # h5 */
 
-ndd-rich-text h5 {
+nldd-rich-text h5 {
 	margin-top: calc(var(--components-rich-text-spacing) * 2);
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-5-sm);
@@ -134,7 +134,7 @@ ndd-rich-text h5 {
 
 /* # h6 */
 
-ndd-rich-text h6 {
+nldd-rich-text h6 {
 	margin-top: calc(var(--components-rich-text-spacing) * 2);
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-6-sm);
@@ -149,7 +149,7 @@ ndd-rich-text h6 {
 
 /* # ul */
 
-ndd-rich-text ul {
+nldd-rich-text ul {
 	margin: 0;
 	padding-left: var(--components-rich-text-grid-size);
 	list-style-type: disc;
@@ -157,19 +157,19 @@ ndd-rich-text ul {
 
 /* # ol */
 
-ndd-rich-text ol {
+nldd-rich-text ol {
 	margin: 0;
 	padding-left: var(--components-rich-text-grid-size);
 	list-style-type: decimal;
 }
 
-ndd-rich-text ol > li > ol {
+nldd-rich-text ol > li > ol {
 	list-style-type: lower-alpha;
 }
 
 /* # li */
 
-ndd-rich-text li {
+nldd-rich-text li {
 	margin: calc(var(--components-rich-text-spacing) / 2) 0;
 	padding: 0;
 	max-width: var(--primitives-area-720);
@@ -177,7 +177,7 @@ ndd-rich-text li {
 
 /* # a */
 
-ndd-rich-text a {
+nldd-rich-text a {
 	color: var(--semantics-links-color);
 	text-decoration: underline;
 	text-underline-offset: var(--primitives-space-2);
@@ -194,23 +194,23 @@ ndd-rich-text a {
 
 /* # strong, b */
 
-ndd-rich-text strong,
-ndd-rich-text b {
+nldd-rich-text strong,
+nldd-rich-text b {
 	font-weight: var(--primitives-font-weight-body-bold);
 	color: inherit;
 }
 
 /* # em, i */
 
-ndd-rich-text em,
-ndd-rich-text i {
+nldd-rich-text em,
+nldd-rich-text i {
 	font-style: italic;
 	color: inherit;
 }
 
 /* # code */
 
-ndd-rich-text code {
+nldd-rich-text code {
 	font-size: 0.85em;
 	font-family: var(--primitives-font-family-monospace);
 	background-color: var(--semantics-surfaces-tinted-background-color);
@@ -220,7 +220,7 @@ ndd-rich-text code {
 
 /* # mark */
 
-ndd-rich-text mark {
+nldd-rich-text mark {
 	background-color: var(--semantics-content-mark-background-color);
 	color: var(--semantics-content-mark-color);
 	padding: var(--primitives-space-1) var(--primitives-space-2);
@@ -229,7 +229,7 @@ ndd-rich-text mark {
 
 /* # figure */
 
-ndd-rich-text figure {
+nldd-rich-text figure {
 	margin: 0;
 	display: flex;
 	flex-direction: column;
@@ -238,7 +238,7 @@ ndd-rich-text figure {
 
 /* # figcaption */
 
-ndd-rich-text figcaption {
+nldd-rich-text figcaption {
 	font: var(--primitives-font-body-xs-regular-snug);
 	color: var(--semantics-content-secondary-color);
 	text-align: left;
@@ -246,7 +246,7 @@ ndd-rich-text figcaption {
 
 /* # blockquote */
 
-ndd-rich-text blockquote {
+nldd-rich-text blockquote {
 	margin: 0;
 	padding: 0 0 0 var(--components-rich-text-grid-size);
 	max-width: var(--primitives-area-720);
@@ -258,7 +258,7 @@ ndd-rich-text blockquote {
 
 /* # q */
 
-ndd-rich-text q {
+nldd-rich-text q {
 	font-style: italic;
 
 	&::before {
@@ -271,7 +271,7 @@ ndd-rich-text q {
 
 /* # img */
 
-ndd-rich-text img {
+nldd-rich-text img {
 	display: block;
 	max-width: 100%;
 	height: auto;
@@ -279,7 +279,7 @@ ndd-rich-text img {
 
 /* # hr */
 
-ndd-rich-text hr {
+nldd-rich-text hr {
 	margin: var(--components-rich-text-spacing) 0;
 	border: none;
 	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
@@ -287,7 +287,7 @@ ndd-rich-text hr {
 
 /* # table */
 
-ndd-rich-text table {
+nldd-rich-text table {
 	width: 100%;
 	border-collapse: collapse;
 	display: block;
@@ -305,7 +305,7 @@ ndd-rich-text table {
 
 /* # th */
 
-ndd-rich-text th {
+nldd-rich-text th {
 	padding: var(--primitives-space-6);
 	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	text-align: left;
@@ -314,7 +314,7 @@ ndd-rich-text th {
 
 /* # td */
 
-ndd-rich-text td {
+nldd-rich-text td {
 	padding: var(--primitives-space-6);
 	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	min-width: var(--primitives-area-120);

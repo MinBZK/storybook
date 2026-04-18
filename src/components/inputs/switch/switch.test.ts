@@ -1,9 +1,9 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDSwitch } from './ndd-switch.ts';
-import './ndd-switch.ts';
+import type { NLDDSwitch } from './switch.ts';
+import './switch.ts';
 
-describe('ndd-switch', () => {
+describe('nldd-switch', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -12,13 +12,13 @@ describe('ndd-switch', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a native checkbox input', async () => {
-		el = await fixture('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input[type="checkbox"]')).not.toBeNull();
 	});
@@ -29,8 +29,8 @@ describe('ndd-switch', () => {
    State
    ============================================================ */
 
-describe('ndd-switch – state', () => {
-	let el: NDDSwitch;
+describe('nldd-switch – state', () => {
+	let el: NLDDSwitch;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -38,35 +38,35 @@ describe('ndd-switch – state', () => {
 	});
 
 	it('is unchecked by default', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.checked).toBe(false);
 	});
 
 	it('is checked when checked attribute is set', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" checked></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test" checked></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.checked).toBe(true);
 	});
 
 	it('is disabled when disabled attribute is set', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" disabled></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test" disabled></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.disabled).toBe(true);
 	});
 
 	it('has role="switch" on the native input', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('role')).toBe('switch');
 	});
 
 	it('forwards accessible-label as aria-label on the native input', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Meldingen aan"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Meldingen aan"></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.getAttribute('aria-label')).toBe('Meldingen aan');
@@ -78,8 +78,8 @@ describe('ndd-switch – state', () => {
    Change event
    ============================================================ */
 
-describe('ndd-switch – change event', () => {
-	let el: NDDSwitch;
+describe('nldd-switch – change event', () => {
+	let el: NLDDSwitch;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -87,7 +87,7 @@ describe('ndd-switch – change event', () => {
 	});
 
 	it('updates checked property when native input changes', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.checked = true;
@@ -97,7 +97,7 @@ describe('ndd-switch – change event', () => {
 	});
 
 	it('dispatches a change event with checked detail', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -115,7 +115,7 @@ describe('ndd-switch – change event', () => {
 	});
 
 	it('does not toggle when disabled', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" disabled></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test" disabled></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -129,8 +129,8 @@ describe('ndd-switch – change event', () => {
    Toggle
    ============================================================ */
 
-describe('ndd-switch – toggle', () => {
-	let el: NDDSwitch;
+describe('nldd-switch – toggle', () => {
+	let el: NLDDSwitch;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -138,7 +138,7 @@ describe('ndd-switch – toggle', () => {
 	});
 
 	it('toggle() flips checked and dispatches change', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -152,14 +152,14 @@ describe('ndd-switch – toggle', () => {
 	});
 
 	it('toggle() does nothing when disabled', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" disabled></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test" disabled></nldd-switch>');
 		await waitForUpdate(el);
 		el.toggle();
 		expect(el.checked).toBe(false);
 	});
 
 	it('toggle() does not dispatch change when disabled', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" disabled></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test" disabled></nldd-switch>');
 		await waitForUpdate(el);
 		let changeFired = false;
 		el.addEventListener('change', () => { changeFired = true; });
@@ -173,8 +173,8 @@ describe('ndd-switch – toggle', () => {
    Swipe gesture
    ============================================================ */
 
-describe('ndd-switch – swipe gesture', () => {
-	let el: NDDSwitch;
+describe('nldd-switch – swipe gesture', () => {
+	let el: NLDDSwitch;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -188,7 +188,7 @@ describe('ndd-switch – swipe gesture', () => {
 	}
 
 	it('swipe right turns on when unchecked and dispatches change', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		let detail: any;
@@ -199,7 +199,7 @@ describe('ndd-switch – swipe gesture', () => {
 	});
 
 	it('swipe left turns off when checked and dispatches change', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" checked></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test" checked></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		let detail: any;
@@ -210,7 +210,7 @@ describe('ndd-switch – swipe gesture', () => {
 	});
 
 	it('swipe right does nothing when already checked', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" checked></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test" checked></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		let changeFired = false;
@@ -221,7 +221,7 @@ describe('ndd-switch – swipe gesture', () => {
 	});
 
 	it('small movement does not trigger swipe', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		swipe(input, 0, 5);
@@ -229,7 +229,7 @@ describe('ndd-switch – swipe gesture', () => {
 	});
 
 	it('swipe does nothing when disabled', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" disabled></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test" disabled></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		swipe(input, 0, 20);
@@ -239,8 +239,8 @@ describe('ndd-switch – swipe gesture', () => {
 	// Note: relies on JSDOM computing direction from the dir attribute.
 	// Wraps in a dir="rtl" ancestor to match real-world usage (dir on <html> or wrapper).
 	it('swipe left turns on in RTL mode', async () => {
-		el = await fixture<NDDSwitch>('<div dir="rtl"><ndd-switch accessible-label="Test"></ndd-switch></div>' as any);
-		el = el.querySelector('ndd-switch') as NDDSwitch;
+		el = await fixture<NLDDSwitch>('<div dir="rtl"><nldd-switch accessible-label="Test"></nldd-switch></div>' as any);
+		el = el.querySelector('nldd-switch') as NLDDSwitch;
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		swipe(input, 20, 0);
@@ -253,8 +253,8 @@ describe('ndd-switch – swipe gesture', () => {
    Keyboard interaction
    ============================================================ */
 
-describe('ndd-switch – disabled keyboard guard', () => {
-	let el: NDDSwitch;
+describe('nldd-switch – disabled keyboard guard', () => {
+	let el: NLDDSwitch;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -262,7 +262,7 @@ describe('ndd-switch – disabled keyboard guard', () => {
 	});
 
 	it('does not toggle when disabled and Space is pressed', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test" disabled></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test" disabled></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
@@ -276,8 +276,8 @@ describe('ndd-switch – disabled keyboard guard', () => {
    Accessibility
    ============================================================ */
 
-describe('ndd-switch – accessibility', () => {
-	let el: NDDSwitch;
+describe('nldd-switch – accessibility', () => {
+	let el: NLDDSwitch;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -285,7 +285,7 @@ describe('ndd-switch – accessibility', () => {
 	});
 
 	it('focus lands on the native input', async () => {
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Test"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Test"></nldd-switch>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.focus();
@@ -294,7 +294,7 @@ describe('ndd-switch – accessibility', () => {
 
 	it('warns when accessible-label is not provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture<NDDSwitch>('<ndd-switch></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch></nldd-switch>');
 		await waitForUpdate(el);
 		expect(warnSpy).toHaveBeenCalledWith(
 			expect.stringContaining('accessible-label')
@@ -303,7 +303,7 @@ describe('ndd-switch – accessibility', () => {
 
 	it('does not warn when accessible-label is provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture<NDDSwitch>('<ndd-switch accessible-label="Meldingen"></ndd-switch>');
+		el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Meldingen"></nldd-switch>');
 		await waitForUpdate(el);
 		expect(warnSpy).not.toHaveBeenCalled();
 	});

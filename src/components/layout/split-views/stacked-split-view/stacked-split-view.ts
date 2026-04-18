@@ -6,7 +6,7 @@
  * automatically gets a numbered slot: pane-1, pane-2, etc.
  * Panes that do not fit the available height are automatically hidden.
  *
- * @element ndd-stacked-split-view
+ * @element nldd-stacked-split-view
  *
  * @attr {'inherit'|'default'|'tinted'} background - Use a tinted background color (cascades to descendants)
  * @attr {number} panes - Number of panes (default: 2)
@@ -17,11 +17,11 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { stackedSplitViewStyles } from './ndd-stacked-split-view.styles.ts';
-import { stackedSplitViewTemplate } from './ndd-stacked-split-view.template.ts';
+import { stackedSplitViewStyles } from './stacked-split-view.styles.ts';
+import { stackedSplitViewTemplate } from './stacked-split-view.template.ts';
 
-@customElement('ndd-stacked-split-view')
-export class NDDStackedSplitView extends LitElement {
+@customElement('nldd-stacked-split-view')
+export class NLDDStackedSplitView extends LitElement {
 	static override styles = stackedSplitViewStyles;
 
 	@property({ type: String, reflect: true })
@@ -76,6 +76,6 @@ export class NDDStackedSplitView extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-stacked-split-view': NDDStackedSplitView;
+		'nldd-stacked-split-view': NLDDStackedSplitView;
 	}
 }

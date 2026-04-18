@@ -1,32 +1,32 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDTextField } from './ndd-text-field.js';
-import './../../content/icon/ndd-icon.ts';
+import type { NLDDTextField } from './text-field.js';
+import './../../content/icon/icon.ts';
 
-function renderValidationIcon(component: NDDTextField): TemplateResult | typeof nothing {
+function renderValidationIcon(component: NLDDTextField): TemplateResult | typeof nothing {
 	if (component.valid) {
 		return html`
 			<div class="text-field__validation-icon-area">
-				<ndd-icon class="text-field__validation-icon"
+				<nldd-icon class="text-field__validation-icon"
 					name="valid"
 					aria-hidden="true"
-				></ndd-icon>
+				></nldd-icon>
 			</div>
 		`;
 	}
 	if (component.invalid) {
 		return html`
 			<div class="text-field__validation-icon-area">
-				<ndd-icon class="text-field__validation-icon"
+				<nldd-icon class="text-field__validation-icon"
 					name="invalid"
 					aria-hidden="true"
-				></ndd-icon>
+				></nldd-icon>
 			</div>
 		`;
 	}
 	return nothing;
 }
 
-export function textFieldTemplate(component: NDDTextField): TemplateResult {
+export function textFieldTemplate(component: NLDDTextField): TemplateResult {
 	return html`
 		<div class="text-field">
 			<input class="text-field__input"

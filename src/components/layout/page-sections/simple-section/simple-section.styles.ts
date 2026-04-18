@@ -2,7 +2,7 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 
-/* # ndd-simple-section styles */
+/* # nldd-simple-section styles */
 
 export const simpleSectionStyles = css`
 	:host {

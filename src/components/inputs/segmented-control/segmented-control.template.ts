@@ -1,12 +1,12 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDSegmentedControl, NDDSegmentedControlItem } from './ndd-segmented-control.js';
-import '../../content/tooltip/ndd-tooltip.js';
+import type { NLDDSegmentedControl, NLDDSegmentedControlItem } from './segmented-control.js';
+import '../../content/tooltip/tooltip.js';
 
-export function segmentedControlTemplate(component: NDDSegmentedControl): TemplateResult {
+export function segmentedControlTemplate(component: NLDDSegmentedControl): TemplateResult {
 	return html`<slot @slotchange=${component._onSlotChange}></slot>`;
 }
 
-export function segmentedControlItemTemplate(component: NDDSegmentedControlItem): TemplateResult {
+export function segmentedControlItemTemplate(component: NLDDSegmentedControlItem): TemplateResult {
 	const isIcon = component.variant === 'icon';
 	const labelText = component.text || nothing;
 
@@ -25,7 +25,7 @@ export function segmentedControlItemTemplate(component: NDDSegmentedControlItem)
 				aria-hidden=${component.variant === 'icon' ? nothing : 'true'}
 			>
 				${component.icon
-					? html`<ndd-icon name=${component.icon}></ndd-icon>`
+					? html`<nldd-icon name=${component.icon}></nldd-icon>`
 					: html`<slot name="icon"></slot>`}
 			</span>
 			<span class="segmented-control__item-text"
@@ -36,7 +36,7 @@ export function segmentedControlItemTemplate(component: NDDSegmentedControlItem)
 		</label>`;
 
 	if (isIcon && labelText) {
-		return html`<ndd-tooltip text=${labelText}>${label}</ndd-tooltip>`;
+		return html`<nldd-tooltip text=${labelText}>${label}</nldd-tooltip>`;
 	}
 	return label;
 }

@@ -5,10 +5,10 @@
  * Kan modaal of niet-modaal worden weergegeven. Positioneerbaar via
  * CSS-waarden en optioneel versleepbaar.
  *
- * Geen eigen header — consumers gebruiken ndd-page met sticky-header
+ * Geen eigen header — consumers gebruiken nldd-page met sticky-header
  * binnenin voor een title bar.
  *
- * @element ndd-window
+ * @element nldd-window
  *
  * @attr {boolean} modeless         - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
  * @attr {boolean} movable     - Verplaatsbaar via pointer (op sm uitgeschakeld). Geen keyboard-equivalent (WCAG 2.1.1 path-dependent exception).
@@ -20,7 +20,7 @@
  * @attr {string}  width            - CSS width (standaard: var(--components-window-default-width))
  * @attr {string}  height           - CSS height (standaard: content height)
  *
- * @slot - Volledige window content (bijv. ndd-page)
+ * @slot - Volledige window content (bijv. nldd-page)
  *
  * @fires open  - Wanneer het venster wordt geopend
  * @fires close - Wanneer het venster volledig is gesloten
@@ -31,13 +31,13 @@
 
 import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { windowStyles } from './ndd-window.styles.ts';
-import { windowTemplate } from './ndd-window.template.ts';
+import { windowStyles } from './window.styles.ts';
+import { windowTemplate } from './window.template.ts';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
-@customElement('ndd-window')
-export class NDDWindow extends LitElement {
+@customElement('nldd-window')
+export class NLDDWindow extends LitElement {
 	static override styles = windowStyles;
 
 	@property({ type: Boolean, reflect: true })
@@ -113,7 +113,7 @@ export class NDDWindow extends LitElement {
 
 		if (this.accessibleLabel === 'Venster' && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
-			console.warn('<ndd-window>: No accessible-label provided. Screen readers will announce this window as "Venster". Set accessible-label to a unique, descriptive name.');
+			console.warn('<nldd-window>: No accessible-label provided. Screen readers will announce this window as "Venster". Set accessible-label to a unique, descriptive name.');
 		}
 
 		if (this.modeless) {
@@ -379,6 +379,6 @@ export class NDDWindow extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-window': NDDWindow;
+		'nldd-window': NLDDWindow;
 	}
 }

@@ -1,18 +1,18 @@
 import { html, render } from 'lit';
-import './ndd-list.ts';
-import '../list-item/ndd-list-item.ts';
-import '../cells/title-cell/ndd-title-cell.ts';
-import '../cells/text-cell/ndd-text-cell.ts';
-import '../cells/spacer-cell/ndd-spacer-cell.ts';
-import '../cells/icon-cell/ndd-icon-cell.ts';
-import '../cells/drag-handle-cell/ndd-drag-handle-cell.ts';
-import '../../content/icon/ndd-icon.ts';
-import '../../content/title/ndd-title.ts';
-import '../../content/rich-text/ndd-rich-text.ts';
+import './list.ts';
+import '../list-item/list-item.ts';
+import '../cells/title-cell/title-cell.ts';
+import '../cells/text-cell/text-cell.ts';
+import '../cells/spacer-cell/spacer-cell.ts';
+import '../cells/icon-cell/icon-cell.ts';
+import '../cells/drag-handle-cell/drag-handle-cell.ts';
+import '../../content/icon/icon.ts';
+import '../../content/title/title.ts';
+import '../../content/rich-text/rich-text.ts';
 
 export default {
 	title: 'Components/Lists & Menus/List',
-	component: 'ndd-list',
+	component: 'nldd-list',
 	tags: ['autodocs'],
 	argTypes: {
 		variant: {
@@ -35,66 +35,66 @@ export const Default = {
 		'no-dividers': false,
 	},
 	render: (args) => html`
-		<ndd-list variant=${args.variant} ?no-dividers=${args['no-dividers']}>
-			<ndd-list-item>
-				<ndd-text-cell text="Item 1" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Item 2" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Item 3" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant=${args.variant} ?no-dividers=${args['no-dividers']}>
+			<nldd-list-item>
+				<nldd-text-cell text="Item 1" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="Item 2" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="Item 3" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const VariantSimple = {
 	render: () => html`
-		<ndd-list variant="simple">
-			<ndd-list-item>
-				<ndd-text-cell text="Simple list item 1" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Simple list item 2" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Simple list item 3" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple">
+			<nldd-list-item>
+				<nldd-text-cell text="Simple list item 1" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="Simple list item 2" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="Simple list item 3" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const VariantBox = {
 	render: () => html`
-		<ndd-list variant="box">
-			<ndd-list-item>
-				<ndd-text-cell text="Box list item 1" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Box list item 2" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Box list item 3" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="box">
+			<nldd-list-item>
+				<nldd-text-cell text="Box list item 1" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="Box list item 2" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="Box list item 3" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const VariantBoxOnTinted = {
 	render: () => html`
 		<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
-			<ndd-list variant="box-on-tinted">
-				<ndd-list-item>
-					<ndd-text-cell text="Box-on-tinted item 1"></ndd-text-cell>
-				</ndd-list-item>
-				<ndd-list-item>
-					<ndd-text-cell text="Box-on-tinted item 2"></ndd-text-cell>
-				</ndd-list-item>
-				<ndd-list-item>
-					<ndd-text-cell text="Box-on-tinted item 3"></ndd-text-cell>
-				</ndd-list-item>
-			</ndd-list>
+			<nldd-list variant="box-on-tinted">
+				<nldd-list-item>
+					<nldd-text-cell text="Box-on-tinted item 1"></nldd-text-cell>
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-text-cell text="Box-on-tinted item 2"></nldd-text-cell>
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-text-cell text="Box-on-tinted item 3"></nldd-text-cell>
+				</nldd-list-item>
+			</nldd-list>
 		</div>
 	`,
 };
@@ -102,154 +102,154 @@ export const VariantBoxOnTinted = {
 export const WithHeaderAndFooter = {
 	render: () => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
-			<ndd-list variant="box">
-				<ndd-title slot="header" size="4">
+			<nldd-list variant="box">
+				<nldd-title slot="header" size="4">
 					<h5>Notifications</h5>
-				</ndd-title>
-				<ndd-list-item>
-					<ndd-text-cell text="Allow notifications" />
-				</ndd-list-item>
-				<ndd-list-item>
-					<ndd-text-cell text="Sounds" />
-				</ndd-list-item>
-				<ndd-list-item>
-					<ndd-text-cell text="Badges" />
-				</ndd-list-item>
-				<ndd-rich-text slot="footer">
+				</nldd-title>
+				<nldd-list-item>
+					<nldd-text-cell text="Allow notifications" />
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-text-cell text="Sounds" />
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-text-cell text="Badges" />
+				</nldd-list-item>
+				<nldd-rich-text slot="footer">
 					<p>Notifications will only be sent when the app is active on your device.</p>
-				</ndd-rich-text>
-			</ndd-list>
+				</nldd-rich-text>
+			</nldd-list>
 		</div>
 	`,
 };
 
 const handleSelectionClick = (e) => {
-	const item = e.target.closest('ndd-list-item');
+	const item = e.target.closest('nldd-list-item');
 	if (!item) return;
-	const list = item.closest('ndd-list');
-	list.querySelectorAll('ndd-list-item').forEach(i => i.removeAttribute('selected'));
+	const list = item.closest('nldd-list');
+	list.querySelectorAll('nldd-list-item').forEach(i => i.removeAttribute('selected'));
 	item.setAttribute('selected', '');
 };
 
 export const WithSelection = {
 	render: () => html`
-		<ndd-list variant="simple" @click=${handleSelectionClick}>
-			<ndd-list-item type="button">
-				<ndd-text-cell text="Item 1" />
-			</ndd-list-item>
-			<ndd-list-item type="button" selected>
-				<ndd-text-cell text="Item 2 (selected)" />
-			</ndd-list-item>
-			<ndd-list-item type="button">
-				<ndd-text-cell text="Item 3" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple" @click=${handleSelectionClick}>
+			<nldd-list-item type="button">
+				<nldd-text-cell text="Item 1" />
+			</nldd-list-item>
+			<nldd-list-item type="button" selected>
+				<nldd-text-cell text="Item 2 (selected)" />
+			</nldd-list-item>
+			<nldd-list-item type="button">
+				<nldd-text-cell text="Item 3" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const WithSelectionBoxed = {
 	render: () => html`
-		<ndd-list variant="box" @click=${handleSelectionClick}>
-			<ndd-list-item type="button">
-				<ndd-text-cell text="Item 1" />
-			</ndd-list-item>
-			<ndd-list-item type="button" selected>
-				<ndd-text-cell text="Item 2 (selected)" />
-			</ndd-list-item>
-			<ndd-list-item type="button">
-				<ndd-text-cell text="Item 3" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="box" @click=${handleSelectionClick}>
+			<nldd-list-item type="button">
+				<nldd-text-cell text="Item 1" />
+			</nldd-list-item>
+			<nldd-list-item type="button" selected>
+				<nldd-text-cell text="Item 2 (selected)" />
+			</nldd-list-item>
+			<nldd-list-item type="button">
+				<nldd-text-cell text="Item 3" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 WithSelectionBoxed.parameters = { controls: { disable: true } };
 
 export const SizeSmall = {
 	render: () => html`
-		<ndd-list variant="simple">
-			<ndd-list-item size="sm">
-				<ndd-text-cell size="sm" text="Small item 1" />
-			</ndd-list-item>
-			<ndd-list-item size="sm">
-				<ndd-text-cell size="sm" text="Small item 2" />
-			</ndd-list-item>
-			<ndd-list-item size="sm">
-				<ndd-text-cell size="sm" text="Small item 3" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="simple">
+			<nldd-list-item size="sm">
+				<nldd-text-cell size="sm" text="Small item 1" />
+			</nldd-list-item>
+			<nldd-list-item size="sm">
+				<nldd-text-cell size="sm" text="Small item 2" />
+			</nldd-list-item>
+			<nldd-list-item size="sm">
+				<nldd-text-cell size="sm" text="Small item 3" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const WithMultipleColumns = {
 	render: () => html`
-		<ndd-list variant="box">
-			<ndd-list-item type="button">
-				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
-				<ndd-icon-cell slot="start" size="24" vertical-alignment="top">
-					<ndd-icon name="calendar-event"></ndd-icon>
-				</ndd-icon-cell>
-				<ndd-spacer-cell slot="start" size="8"></ndd-spacer-cell>
-				<ndd-text-cell text="Primary title" supporting-text="Supporting text below"></ndd-text-cell>
-				<ndd-spacer-cell></ndd-spacer-cell>
-				<ndd-text-cell
+		<nldd-list variant="box">
+			<nldd-list-item type="button">
+				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
+				<nldd-icon-cell slot="start" size="24" vertical-alignment="top">
+					<nldd-icon name="calendar-event"></nldd-icon>
+				</nldd-icon-cell>
+				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
+				<nldd-text-cell text="Primary title" supporting-text="Supporting text below"></nldd-text-cell>
+				<nldd-spacer-cell></nldd-spacer-cell>
+				<nldd-text-cell
 					color="secondary"
 					horizontal-alignment="right"
 					width="fit-content"
 					text="Detail"
-				></ndd-text-cell>
-				<ndd-spacer-cell size="8"></ndd-spacer-cell>
-				<ndd-icon-cell color="secondary" size="16">
-					<ndd-icon name="chevron-right"></ndd-icon>
-				</ndd-icon-cell>
-			</ndd-list-item>
-			<ndd-list-item type="button">
-				<ndd-spacer-cell slot="start" size="12"></ndd-spacer-cell>
-				<ndd-icon-cell slot="start" size="24" vertical-alignment="top">
-					<ndd-icon name="certificate"></ndd-icon>
-				</ndd-icon-cell>
-				<ndd-spacer-cell slot="start" size="8"></ndd-spacer-cell>
-				<ndd-text-cell text="Another title" supporting-text="More description here"></ndd-text-cell>
-				<ndd-spacer-cell size="8"></ndd-spacer-cell>
-				<ndd-text-cell
+				></nldd-text-cell>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
+				<nldd-icon-cell color="secondary" size="16">
+					<nldd-icon name="chevron-right"></nldd-icon>
+				</nldd-icon-cell>
+			</nldd-list-item>
+			<nldd-list-item type="button">
+				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
+				<nldd-icon-cell slot="start" size="24" vertical-alignment="top">
+					<nldd-icon name="certificate"></nldd-icon>
+				</nldd-icon-cell>
+				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
+				<nldd-text-cell text="Another title" supporting-text="More description here"></nldd-text-cell>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
+				<nldd-text-cell
 					color="secondary"
 					horizontal-alignment="right"
 					width="fit-content"
 					text="More detail"
-				></ndd-text-cell>
-				<ndd-spacer-cell size="8"></ndd-spacer-cell>
-				<ndd-icon-cell color="secondary" size="16">
-					<ndd-icon name="chevron-right"></ndd-icon>
-				</ndd-icon-cell>
-			</ndd-list-item>
-		</ndd-list>
+				></nldd-text-cell>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
+				<nldd-icon-cell color="secondary" size="16">
+					<nldd-icon name="chevron-right"></nldd-icon>
+				</nldd-icon-cell>
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const WithInteractiveItems = {
 	render: () => html`
-		<ndd-list variant="box">
-			<ndd-list-item type="button">
-				<ndd-text-cell text="Button item" />
-			</ndd-list-item>
-			<ndd-list-item href="/settings">
-				<ndd-text-cell text="Link item" />
-			</ndd-list-item>
-			<ndd-list-item>
-				<ndd-text-cell text="Non-interactive item" />
-			</ndd-list-item>
-		</ndd-list>
+		<nldd-list variant="box">
+			<nldd-list-item type="button">
+				<nldd-text-cell text="Button item" />
+			</nldd-list-item>
+			<nldd-list-item href="/settings">
+				<nldd-text-cell text="Link item" />
+			</nldd-list-item>
+			<nldd-list-item>
+				<nldd-text-cell text="Non-interactive item" />
+			</nldd-list-item>
+		</nldd-list>
 	`,
 };
 
 export const DraggableList = {
-	// Imperative render is intentional: the ndd-reorder handler needs to mutate
+	// Imperative render is intentional: the nldd-reorder handler needs to mutate
 	// the DOM in-place to demonstrate actual reordering. A standard Storybook
 	// render function cannot do this because Lit templates are stateless.
 	render: () => {
 		const onReorder = (e) => {
 			const list = e.currentTarget;
 			const { fromIndex, toIndex } = e.detail;
-			const items = [...list.querySelectorAll('ndd-list-item')];
+			const items = [...list.querySelectorAll('nldd-list-item')];
 			const moved = items[fromIndex];
 			if (toIndex === 0) {
 				items[0].before(moved);
@@ -263,16 +263,16 @@ export const DraggableList = {
 
 		const el = document.createElement('div');
 		render(html`
-			<ndd-list variant="box" reorderable @ndd-reorder=${onReorder}>
+			<nldd-list variant="box" reorderable @nldd-reorder=${onReorder}>
 				${labels.map((label) => html`
-					<ndd-list-item>
-						<ndd-spacer-cell slot="start" size="8"></ndd-spacer-cell>
-						<ndd-drag-handle-cell size="sm" slot="start" draggable-only></ndd-drag-handle-cell>
-						<ndd-spacer-cell slot="start" draggable-only size="8"></ndd-spacer-cell>
-						<ndd-text-cell text="${label}" />
-					</ndd-list-item>
+					<nldd-list-item>
+						<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
+						<nldd-drag-handle-cell size="sm" slot="start" draggable-only></nldd-drag-handle-cell>
+						<nldd-spacer-cell slot="start" draggable-only size="8"></nldd-spacer-cell>
+						<nldd-text-cell text="${label}" />
+					</nldd-list-item>
 				`)}
-			</ndd-list>
+			</nldd-list>
 		`, el);
 		return el;
 	},

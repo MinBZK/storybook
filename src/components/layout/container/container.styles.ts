@@ -7,7 +7,7 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
-/* # ndd-container styles */
+/* # nldd-container styles */
 
 export const containerStyles = css`
 	:host {

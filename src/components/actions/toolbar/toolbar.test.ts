@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './ndd-toolbar.ts';
+import './toolbar.ts';
 
-describe('ndd-toolbar', () => {
+describe('nldd-toolbar', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -13,54 +13,54 @@ describe('ndd-toolbar', () => {
 	// ## Smoke tests
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-toolbar></ndd-toolbar>');
+		el = await fixture('<nldd-toolbar></nldd-toolbar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('defaults to md size', async () => {
-		el = await fixture('<ndd-toolbar></ndd-toolbar>');
+		el = await fixture('<nldd-toolbar></nldd-toolbar>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('size')).toBe('md');
 	});
 
 	it('reflects size attribute', async () => {
-		el = await fixture('<ndd-toolbar size="sm"></ndd-toolbar>');
+		el = await fixture('<nldd-toolbar size="sm"></nldd-toolbar>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('size')).toBe('sm');
 	});
 
 	it('defaults show-item-labels to false', async () => {
-		el = await fixture('<ndd-toolbar></ndd-toolbar>');
+		el = await fixture('<nldd-toolbar></nldd-toolbar>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('show-item-labels')).toBe(false);
 	});
 
 	it('reflects show-item-labels attribute', async () => {
-		el = await fixture('<ndd-toolbar show-item-labels></ndd-toolbar>');
+		el = await fixture('<nldd-toolbar show-item-labels></nldd-toolbar>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('show-item-labels')).toBe(true);
 	});
 
-	it('registers ndd-toolbar-item and ndd-toolbar-title-group as custom elements', () => {
-		expect(customElements.get('ndd-toolbar-item')).toBeDefined();
-		expect(customElements.get('ndd-toolbar-title-group')).toBeDefined();
+	it('registers nldd-toolbar-item and nldd-toolbar-title-group as custom elements', () => {
+		expect(customElements.get('nldd-toolbar-item')).toBeDefined();
+		expect(customElements.get('nldd-toolbar-title-group')).toBeDefined();
 	});
 
 	// ## Priority-based collapsing order
 
 	it('collapses end items before start items (end has lower priority area order)', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-item slot="start" label="Start" priority="1">
-					<ndd-icon-button aria-label="Start"></ndd-icon-button>
-					<ndd-menu-item slot="overflow" text="Start"></ndd-menu-item>
-				</ndd-toolbar-item>
-				<ndd-toolbar-item slot="end" label="End" priority="1">
-					<ndd-icon-button aria-label="End"></ndd-icon-button>
-					<ndd-menu-item slot="overflow" text="End"></ndd-menu-item>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Start" priority="1">
+					<nldd-icon-button aria-label="Start"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="Start"></nldd-menu-item>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="end" label="End" priority="1">
+					<nldd-icon-button aria-label="End"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="End"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _getPrioritizedItems: () => { label: string }[] };
@@ -71,14 +71,14 @@ describe('ndd-toolbar', () => {
 
 	it('collapses lower priority number items first', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-item slot="start" label="High" priority="5">
-					<ndd-icon-button aria-label="High"></ndd-icon-button>
-				</ndd-toolbar-item>
-				<ndd-toolbar-item slot="start" label="Low" priority="1">
-					<ndd-icon-button aria-label="Low"></ndd-icon-button>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="High" priority="5">
+					<nldd-icon-button aria-label="High"></nldd-icon-button>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Low" priority="1">
+					<nldd-icon-button aria-label="Low"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _getPrioritizedItems: () => { label: string; priority: number }[] };
@@ -91,14 +91,14 @@ describe('ndd-toolbar', () => {
 
 	it('builds start children from slot="start"', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-item slot="start" label="Item A">
-					<ndd-icon-button aria-label="A"></ndd-icon-button>
-				</ndd-toolbar-item>
-				<ndd-toolbar-item slot="start" label="Item B">
-					<ndd-icon-button aria-label="B"></ndd-icon-button>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Item A">
+					<nldd-icon-button aria-label="A"></nldd-icon-button>
+				</nldd-toolbar-item>
+				<nldd-toolbar-item slot="start" label="Item B">
+					<nldd-icon-button aria-label="B"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _startChildren: { label: string }[] };
@@ -108,9 +108,9 @@ describe('ndd-toolbar', () => {
 
 	it('builds center children from slot="center"', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-title-group slot="center" text="Titel"></ndd-toolbar-title-group>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-toolbar-title-group slot="center" text="Titel"></nldd-toolbar-title-group>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _centerChildren: { type: string }[] };
@@ -120,11 +120,11 @@ describe('ndd-toolbar', () => {
 
 	it('builds end children from slot="end"', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-item slot="end" label="End Item">
-					<ndd-icon-button aria-label="End"></ndd-icon-button>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="end" label="End Item">
+					<nldd-icon-button aria-label="End"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _endChildren: { label: string }[] };
@@ -136,12 +136,12 @@ describe('ndd-toolbar', () => {
 
 	it('separates overflow items from toolbar-item children', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-item slot="start" label="Item">
-					<ndd-icon-button aria-label="Item"></ndd-icon-button>
-					<ndd-menu-item slot="overflow" text="Item overflow"></ndd-menu-item>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Item">
+					<nldd-icon-button aria-label="Item"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="Item overflow"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _startChildren: { overflowItems: Element[] }[] };
@@ -150,9 +150,9 @@ describe('ndd-toolbar', () => {
 
 	it('builds pinned overflow items from slot="overflow"', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-menu-item slot="overflow" text="Altijd zichtbaar"></ndd-menu-item>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-menu-item slot="overflow" text="Altijd zichtbaar"></nldd-menu-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _pinnedOverflowItems: Element[] };
@@ -163,28 +163,28 @@ describe('ndd-toolbar', () => {
 
 	it('propagates size to toolbar item children', async () => {
 		el = await fixture(`
-			<ndd-toolbar size="sm">
-				<ndd-toolbar-item slot="start" label="Item">
-					<ndd-icon-button aria-label="Item"></ndd-icon-button>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar size="sm">
+				<nldd-toolbar-item slot="start" label="Item">
+					<nldd-icon-button aria-label="Item"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
-		const button = el.querySelector('ndd-icon-button');
+		const button = el.querySelector('nldd-icon-button');
 		expect(button?.getAttribute('size')).toBe('sm');
 	});
 
 	it('does not propagate size to overflow slot children', async () => {
 		el = await fixture(`
-			<ndd-toolbar size="sm">
-				<ndd-toolbar-item slot="start" label="Item">
-					<ndd-icon-button aria-label="Item"></ndd-icon-button>
-					<ndd-menu-item slot="overflow" text="Overflow"></ndd-menu-item>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar size="sm">
+				<nldd-toolbar-item slot="start" label="Item">
+					<nldd-icon-button aria-label="Item"></nldd-icon-button>
+					<nldd-menu-item slot="overflow" text="Overflow"></nldd-menu-item>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
-		const menuItem = el.querySelector('ndd-menu-item');
+		const menuItem = el.querySelector('nldd-menu-item');
 		expect(menuItem?.getAttribute('size')).toBeNull();
 	});
 
@@ -192,11 +192,11 @@ describe('ndd-toolbar', () => {
 
 	it('rebuilds children when a new item is added', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-item slot="start" label="Item A">
-					<ndd-icon-button aria-label="A"></ndd-icon-button>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Item A">
+					<nldd-icon-button aria-label="A"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 
@@ -204,7 +204,7 @@ describe('ndd-toolbar', () => {
 		expect(toolbar._startChildren.length).toBe(1);
 
 		const spy = vi.spyOn(toolbar, '_buildChildren');
-		const newItem = document.createElement('ndd-toolbar-item');
+		const newItem = document.createElement('nldd-toolbar-item');
 		newItem.setAttribute('label', 'Item B');
 		newItem.setAttribute('slot', 'start');
 		el.appendChild(newItem);
@@ -215,11 +215,11 @@ describe('ndd-toolbar', () => {
 
 	it('preserves children when a descendant selected attribute changes', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-item slot="start" label="Item">
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Item">
 					<button selected>Toggle</button>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 
@@ -239,7 +239,7 @@ describe('ndd-toolbar', () => {
 	// ## _computeSpacerZeros
 
 	it('returns both zeros true when start and end are both empty', async () => {
-		el = await fixture('<ndd-toolbar></ndd-toolbar>');
+		el = await fixture('<nldd-toolbar></nldd-toolbar>');
 		await waitForUpdate(el);
 		const toolbar = el as unknown as {
 			_computeSpacerZeros: (h: number, g: number, o: number, s: number, c: number, e: number) => { leftZero: boolean; rightZero: boolean };
@@ -250,7 +250,7 @@ describe('ndd-toolbar', () => {
 	});
 
 	it('returns leftZero true when start overflows into center', async () => {
-		el = await fixture('<ndd-toolbar></ndd-toolbar>');
+		el = await fixture('<nldd-toolbar></nldd-toolbar>');
 		await waitForUpdate(el);
 		const toolbar = el as unknown as {
 			_computeSpacerZeros: (h: number, g: number, o: number, s: number, c: number, e: number) => { leftZero: boolean; rightZero: boolean };
@@ -262,16 +262,16 @@ describe('ndd-toolbar', () => {
 	// ## Menu sync
 
 	it('creates a menu element on connectedCallback', async () => {
-		el = await fixture('<ndd-toolbar></ndd-toolbar>');
+		el = await fixture('<nldd-toolbar></nldd-toolbar>');
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _menu: Element | null };
 		expect(toolbar._menu).not.toBeNull();
-		expect(toolbar._menu?.tagName.toLowerCase()).toBe('ndd-menu');
+		expect(toolbar._menu?.tagName.toLowerCase()).toBe('nldd-menu');
 		toolbar._menu?.remove();
 	});
 
 	it('removes menu on disconnectedCallback', async () => {
-		el = await fixture('<ndd-toolbar></ndd-toolbar>');
+		el = await fixture('<nldd-toolbar></nldd-toolbar>');
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _menu: Element | null };
 		const menu = toolbar._menu;
@@ -285,11 +285,11 @@ describe('ndd-toolbar', () => {
 
 	it('marks item as fluid when min-width attribute is set', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-item slot="start" label="Fluid" min-width="120px">
-					<ndd-icon-button aria-label="Fluid"></ndd-icon-button>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Fluid" min-width="120px">
+					<nldd-icon-button aria-label="Fluid"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _startChildren: { isFluid: boolean }[] };
@@ -298,11 +298,11 @@ describe('ndd-toolbar', () => {
 
 	it('does not mark item as fluid without min-width or width', async () => {
 		el = await fixture(`
-			<ndd-toolbar>
-				<ndd-toolbar-item slot="start" label="Normal">
-					<ndd-icon-button aria-label="Normal"></ndd-icon-button>
-				</ndd-toolbar-item>
-			</ndd-toolbar>
+			<nldd-toolbar>
+				<nldd-toolbar-item slot="start" label="Normal">
+					<nldd-icon-button aria-label="Normal"></nldd-icon-button>
+				</nldd-toolbar-item>
+			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _startChildren: { isFluid: boolean }[] };

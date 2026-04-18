@@ -1,10 +1,10 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDComboBox } from './ndd-combo-box.ts';
-import './ndd-combo-box.ts';
-import '../../lists-and-menus/menu/ndd-menu.ts';
+import type { NLDDComboBox } from './combo-box.ts';
+import './combo-box.ts';
+import '../../lists-and-menus/menu/menu.ts';
 
-describe('ndd-combo-box', () => {
+describe('nldd-combo-box', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -12,21 +12,21 @@ describe('ndd-combo-box', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-combo-box></ndd-combo-box>');
+		el = await fixture('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a native text input', async () => {
-		el = await fixture('<ndd-combo-box></ndd-combo-box>');
+		el = await fixture('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input[type="text"]')).not.toBeNull();
 	});
 
-	it('renders ndd-icon-button for the picker', async () => {
-		el = await fixture('<ndd-combo-box></ndd-combo-box>');
+	it('renders nldd-icon-button for the picker', async () => {
+		el = await fixture('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('ndd-icon-button')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-icon-button')).not.toBeNull();
 	});
 });
 
@@ -35,39 +35,39 @@ describe('ndd-combo-box', () => {
    ARIA
    ============================================================ */
 
-describe('ndd-combo-box – ARIA', () => {
-	let el: NDDComboBox;
+describe('nldd-combo-box – ARIA', () => {
+	let el: NLDDComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('sets role="combobox" on the native input', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('role')).toBe('combobox');
 	});
 
 	it('sets aria-expanded="false" when closed', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-expanded')).toBe('false');
 	});
 
 	it('sets aria-autocomplete="list"', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-autocomplete')).toBe('list');
 	});
 
 	it('sets aria-haspopup="listbox"', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-haspopup')).toBe('listbox');
 	});
 
 	it('sets aria-controls to the menu id', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-controls')).toBe(el._menuId);
 	});
@@ -78,27 +78,27 @@ describe('ndd-combo-box – ARIA', () => {
    State
    ============================================================ */
 
-describe('ndd-combo-box – state', () => {
-	let el: NDDComboBox;
+describe('nldd-combo-box – state', () => {
+	let el: NLDDComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('forwards placeholder to native input', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box placeholder="Zoek..."></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box placeholder="Zoek..."></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('placeholder')).toBe('Zoek...');
 	});
 
 	it('forwards name to native input', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box name="land"></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box name="land"></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.name).toBe('land');
 	});
 
 	it('disables native input when disabled', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box disabled></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box disabled></nldd-combo-box>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.disabled).toBe(true);
 	});
@@ -109,15 +109,15 @@ describe('ndd-combo-box – state', () => {
    Input event
    ============================================================ */
 
-describe('ndd-combo-box – input event', () => {
-	let el: NDDComboBox;
+describe('nldd-combo-box – input event', () => {
+	let el: NLDDComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('updates _displayValue on input', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		(input as any).value = 'Neder';
@@ -127,7 +127,7 @@ describe('ndd-combo-box – input event', () => {
 	});
 
 	it('dispatches input event with displayValue detail', async () => {
-		el = await fixture<NDDComboBox>('<ndd-combo-box></ndd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('input', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
@@ -143,21 +143,21 @@ describe('ndd-combo-box – input event', () => {
    Filtering
    ============================================================ */
 
-describe('ndd-combo-box – filtering', () => {
-	let el: NDDComboBox;
+describe('nldd-combo-box – filtering', () => {
+	let el: NLDDComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('filters ndd-menu-item elements on input', async () => {
-		el = await fixture<NDDComboBox>(`
-			<ndd-combo-box>
-				<ndd-menu>
-					<ndd-menu-item text="Nederland" value="nl"></ndd-menu-item>
-					<ndd-menu-item text="België" value="be"></ndd-menu-item>
-				</ndd-menu>
-			</ndd-combo-box>
+	it('filters nldd-menu-item elements on input', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box>
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
 		`);
 		await waitForUpdate(el);
 
@@ -167,19 +167,19 @@ describe('ndd-combo-box – filtering', () => {
 		await waitForUpdate(el);
 
 		const menu = document.getElementById(el._menuId)!;
-		const items = menu.querySelectorAll('ndd-menu-item');
+		const items = menu.querySelectorAll('nldd-menu-item');
 		expect(items[0].hasAttribute('hidden')).toBe(false);
 		expect(items[1].hasAttribute('hidden')).toBe(true);
 	});
 
 	it('matches on search attribute', async () => {
-		el = await fixture<NDDComboBox>(`
-			<ndd-combo-box>
-				<ndd-menu>
-					<ndd-menu-item text="Nederland" value="nl" aliases="dutch holland"></ndd-menu-item>
-					<ndd-menu-item text="België" value="be"></ndd-menu-item>
-				</ndd-menu>
-			</ndd-combo-box>
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box>
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl" aliases="dutch holland"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
 		`);
 		await waitForUpdate(el);
 
@@ -189,7 +189,7 @@ describe('ndd-combo-box – filtering', () => {
 		await waitForUpdate(el);
 
 		const menu = document.getElementById(el._menuId)!;
-		const items = menu.querySelectorAll('ndd-menu-item');
+		const items = menu.querySelectorAll('nldd-menu-item');
 		expect(items[0].hasAttribute('hidden')).toBe(false);
 		expect(items[1].hasAttribute('hidden')).toBe(true);
 	});
@@ -200,8 +200,8 @@ describe('ndd-combo-box – filtering', () => {
    Popover API
    ============================================================ */
 
-describe('ndd-combo-box – Popover API', () => {
-	let el: NDDComboBox;
+describe('nldd-combo-box – Popover API', () => {
+	let el: NLDDComboBox;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -209,12 +209,12 @@ describe('ndd-combo-box – Popover API', () => {
 	});
 
 	it('warns when Popover API is unavailable', async () => {
-		el = await fixture<NDDComboBox>(`
-			<ndd-combo-box>
-				<ndd-menu>
-					<ndd-menu-item text="Nederland" value="nl"></ndd-menu-item>
-				</ndd-menu>
-			</ndd-combo-box>
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box>
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
 		`);
 		await waitForUpdate(el);
 

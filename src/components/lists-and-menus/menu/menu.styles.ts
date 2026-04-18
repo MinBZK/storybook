@@ -69,7 +69,7 @@ export const menuItemStyles = css`
 
 	:host {
 		display: block;
-		font-family: var(--ndd-font-family-body);
+		font-family: var(--nldd-font-family-body);
 		-webkit-tap-highlight-color: transparent;
 	}
 

@@ -1,16 +1,16 @@
 import { html } from 'lit';
-import './ndd-number-field.ts';
+import './number-field.ts';
 
 /**
  * De Number Field component is een numeriek invoerveld met decrement en increment knoppen.
  */
 export default {
 	title: 'Components/Inputs/Number Field',
-	component: 'ndd-number-field',
+	component: 'nldd-number-field',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/number-field/ndd-number-field.ts',
+			file: 'src/components/inputs/number-field/number-field.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -78,7 +78,7 @@ export default {
 };
 
 const Template = ({ value, min, max, step, disabled, name, hideSpinButtons, fullWidth, width }) => html`
-	<ndd-number-field
+	<nldd-number-field
 		value=${value}
 		min=${min}
 		max=${max}
@@ -88,7 +88,7 @@ const Template = ({ value, min, max, step, disabled, name, hideSpinButtons, full
 		?hide-spin-buttons=${hideSpinButtons}
 		?full-width=${fullWidth}
 		width=${width}
-	></ndd-number-field>
+	></nldd-number-field>
 `;
 
 export const Standaard = Template.bind({});
@@ -96,19 +96,19 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<ndd-number-field value="5" min="0" max="10"></ndd-number-field>
-		<ndd-number-field value="0" min="0" max="10"></ndd-number-field>
-		<ndd-number-field value="10" min="0" max="10"></ndd-number-field>
-		<ndd-number-field value="5" min="0" max="10" disabled></ndd-number-field>
-		<ndd-number-field value="5" min="0" max="10" hide-spin-buttons></ndd-number-field>
-		<ndd-number-field value="5" min="0" max="10" hide-spin-buttons disabled></ndd-number-field>
-		<ndd-number-field value="5" min="0" max="10" width="240px"></ndd-number-field>
-		<ndd-number-field value="5" min="0" max="10" hide-spin-buttons width="240px"></ndd-number-field>
+		<nldd-number-field value="5" min="0" max="10"></nldd-number-field>
+		<nldd-number-field value="0" min="0" max="10"></nldd-number-field>
+		<nldd-number-field value="10" min="0" max="10"></nldd-number-field>
+		<nldd-number-field value="5" min="0" max="10" disabled></nldd-number-field>
+		<nldd-number-field value="5" min="0" max="10" hide-spin-buttons></nldd-number-field>
+		<nldd-number-field value="5" min="0" max="10" hide-spin-buttons disabled></nldd-number-field>
+		<nldd-number-field value="5" min="0" max="10" width="240px"></nldd-number-field>
+		<nldd-number-field value="5" min="0" max="10" hide-spin-buttons width="240px"></nldd-number-field>
 		<div style="width: 400px;">
-			<ndd-number-field value="5" min="0" max="10" full-width></ndd-number-field>
+			<nldd-number-field value="5" min="0" max="10" full-width></nldd-number-field>
 		</div>
 		<div style="width: 400px;">
-			<ndd-number-field value="5" min="0" max="10" hide-spin-buttons full-width></ndd-number-field>
+			<nldd-number-field value="5" min="0" max="10" hide-spin-buttons full-width></nldd-number-field>
 		</div>
 	</div>
 `;

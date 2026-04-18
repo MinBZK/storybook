@@ -1,16 +1,16 @@
 import { LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
-import { styles } from './ndd-list-item.styles.ts';
-import { template } from './ndd-list-item.template.ts';
+import { styles } from './list-item.styles.ts';
+import { template } from './list-item.template.ts';
 import { isPointerMode } from '../../../utilities/input-modality.js';
-import type { NDDList } from '../list/ndd-list.ts';
-import '../cells/spacer-cell/ndd-spacer-cell.ts';
+import type { NLDDList } from '../list/list.ts';
+import '../cells/spacer-cell/spacer-cell.ts';
 
 export type ListItemSize = 'sm' | 'md';
 export type ListItemType = 'button';
 
 /**
- * A row within an `ndd-list`, providing layout for start, main and end areas.
+ * A row within an `nldd-list`, providing layout for start, main and end areas.
  * Renders as a link when `href` is set, as a button when `type="button"`, or
  * as a plain container otherwise.
  *
@@ -18,8 +18,8 @@ export type ListItemType = 'button';
  * @slot start   - Content at the start of the row
  * @slot end     - Content at the end of the row
  */
-@customElement('ndd-list-item')
-export class NDDListItem extends LitElement {
+@customElement('nldd-list-item')
+export class NLDDListItem extends LitElement {
 	static override styles = [styles];
 
 	@property({ reflect: true })
@@ -49,7 +49,7 @@ export class NDDListItem extends LitElement {
 	@property({ reflect: true })
 	href?: string;
 
-	/** Set by the parent ndd-list when reorderable is enabled. Used as a CSS hook for drag handle visibility. */
+	/** Set by the parent nldd-list when reorderable is enabled. Used as a CSS hook for drag handle visibility. */
 	@property({ type: Boolean, reflect: true })
 	reorderable = false;
 
@@ -67,8 +67,8 @@ export class NDDListItem extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback();
-		// Skip setup for drag clones — they are visual-only copies inside ndd-list's shadow root
-		if (this.hasAttribute('data-ndd-clone')) return;
+		// Skip setup for drag clones — they are visual-only copies inside nldd-list's shadow root
+		if (this.hasAttribute('data-nldd-clone')) return;
 		this.setAttribute('role', 'listitem');
 		// Attach focus/click listeners here (not firstUpdated) so they are
 		// re-attached when the element is removed and re-inserted into the DOM.
@@ -88,7 +88,7 @@ export class NDDListItem extends LitElement {
 	}
 
 	override firstUpdated() {
-		if (this.hasAttribute('data-ndd-clone')) {
+		if (this.hasAttribute('data-nldd-clone')) {
 			// Clone is visual-only — skip list sync but still observe slots
 			// so start/end areas render correctly based on cloned light DOM
 			this._observeStartSlot();
@@ -101,16 +101,16 @@ export class NDDListItem extends LitElement {
 	}
 
 	/**
-	 * Syncs the item with the closest parent ndd-list variant.
-	 * Called once in firstUpdated. If the item is moved to a different ndd-list
+	 * Syncs the item with the closest parent nldd-list variant.
+	 * Called once in firstUpdated. If the item is moved to a different nldd-list
 	 * after first render, the MutationObserver will still watch the original list.
 	 * This is acceptable as moving items between lists is not a supported use case.
 	 */
 	private _syncWithList() {
-		const list = this.closest<NDDList>('ndd-list');
+		const list = this.closest<NLDDList>('nldd-list');
 		if (!list) {
 			if (import.meta.env?.DEV) {
-				console.warn('ndd-list-item: no parent ndd-list found. Variant sync will not work if appended into a list after first render.');
+				console.warn('nldd-list-item: no parent nldd-list found. Variant sync will not work if appended into a list after first render.');
 			}
 			return;
 		}
@@ -173,6 +173,6 @@ export class NDDListItem extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-list-item': NDDListItem;
+		'nldd-list-item': NLDDListItem;
 	}
 }

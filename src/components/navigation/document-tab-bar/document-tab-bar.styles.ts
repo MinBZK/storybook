@@ -44,14 +44,14 @@ export const documentTabBarStyles = css`
 		min-width: 0;
 	}
 
-	::slotted(ndd-document-tab-bar-item) {
+	::slotted(nldd-document-tab-bar-item) {
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
 		min-width: var(--_item-min-width);
 	}
 
-	::slotted(ndd-document-tab-bar-item[hidden]) {
+	::slotted(nldd-document-tab-bar-item[hidden]) {
 		display: none;
 	}
 
@@ -84,7 +84,7 @@ export const documentTabBarStyles = css`
 
 	/* # Focus */
 
-	::slotted(ndd-document-tab-bar-item:focus-within) {
+	::slotted(nldd-document-tab-bar-item:focus-within) {
 		position: relative;
 		z-index: 4;
 	}
@@ -92,14 +92,14 @@ export const documentTabBarStyles = css`
 
 	/* # Drag states */
 
-	::slotted(ndd-document-tab-bar-item.is-dragging) {
+	::slotted(nldd-document-tab-bar-item.is-dragging) {
 		display: none;
 	}
 
 
 	/* # Drag placeholder */
 
-	::slotted(.ndd-document-tab-bar-drag-placeholder) {
+	::slotted(.nldd-document-tab-bar-drag-placeholder) {
 		box-sizing: border-box;
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		pointer-events: none;

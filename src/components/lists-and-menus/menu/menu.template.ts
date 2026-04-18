@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import type { NDDMenuItem, NDDMenu } from './ndd-menu.js';
+import type { NLDDMenuItem, NLDDMenu } from './menu.js';
 
 const menuRoleMap = {
 	menu: 'menu',
@@ -12,7 +12,7 @@ const itemRoleMap = {
 	radio: { menu: 'menuitemradio', listbox: 'option' },
 } as const;
 
-export function menuTemplate(this: NDDMenu, isEmpty: boolean, variant: 'menu' | 'listbox') {
+export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' | 'listbox') {
 	return html`
 		<div class="menu"
 			role=${menuRoleMap[variant]}
@@ -26,7 +26,7 @@ export function menuTemplate(this: NDDMenu, isEmpty: boolean, variant: 'menu' | 
 	`;
 }
 
-export function menuItemTemplate(this: NDDMenuItem, variant: 'menu' | 'listbox' = 'menu') {
+export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox' = 'menu') {
 	const hasCheckState = this.type !== 'button' && variant === 'menu';
 	const role = itemRoleMap[this.type][variant];
 	return html`
@@ -39,26 +39,26 @@ export function menuItemTemplate(this: NDDMenuItem, variant: 'menu' | 'listbox' 
 			@click=${this._handleClick}
 		>
 			${hasCheckState ? html`
-				<ndd-icon-cell class="menu__item-check"
+				<nldd-icon-cell class="menu__item-check"
 					size="24"
 					color="inherit"
 					horizontal-alignment="center"
 				>
 					${this.selected ? html`
-						<ndd-icon name="check-mark"></ndd-icon>
+						<nldd-icon name="check-mark"></nldd-icon>
 					` : nothing}
-				</ndd-icon-cell>
-				<ndd-spacer-cell size="8"></ndd-spacer-cell>
+				</nldd-icon-cell>
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 			` : nothing}
-			<ndd-text-cell class="menu__item-text" color="inherit" text=${this._displayText || this.text}></ndd-text-cell>
+			<nldd-text-cell class="menu__item-text" color="inherit" text=${this._displayText || this.text}></nldd-text-cell>
 			${this.details ? html`
-				<ndd-spacer-cell size="8"></ndd-spacer-cell>
-				<ndd-text-cell class="menu__item-details"
+				<nldd-spacer-cell size="8"></nldd-spacer-cell>
+				<nldd-text-cell class="menu__item-details"
 					width="fit-content"
 					horizontal-alignment="right"
 					color="secondary"
 					text=${this.details}
-				></ndd-text-cell>
+				></nldd-text-cell>
 			` : nothing}
 		</button>
 	`;

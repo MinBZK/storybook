@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './ndd-segmented-control.ts';
-import './../../content/icon/ndd-icon.ts';
+import './segmented-control.ts';
+import './../../content/icon/icon.ts';
 
 /**
  * De Segmented Control component is een horizontale groep van wederzijds exclusieve (radio)
@@ -8,11 +8,11 @@ import './../../content/icon/ndd-icon.ts';
  */
 export default {
 	title: 'Components/Inputs/Segmented Control',
-	component: 'ndd-segmented-control',
+	component: 'nldd-segmented-control',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/segmented-control/ndd-segmented-control.ts',
+			file: 'src/components/inputs/segmented-control/segmented-control.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -66,7 +66,7 @@ export default {
 };
 
 const Template = ({ value, size, type, variant, disabled, fullWidth }) => html`
-	<ndd-segmented-control
+	<nldd-segmented-control
 		value=${value}
 		size=${size}
 		type=${type}
@@ -74,10 +74,10 @@ const Template = ({ value, size, type, variant, disabled, fullWidth }) => html`
 		?disabled=${disabled}
 		?full-width=${fullWidth}
 	>
-		<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-		<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-		<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-	</ndd-segmented-control>
+		<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+		<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+		<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+	</nldd-segmented-control>
 `;
 
 export const Standaard = Template.bind({});
@@ -85,67 +85,67 @@ Standaard.args = { value: 'vet' };
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; align-items: start; gap: 1rem;">
-		<ndd-segmented-control value="vet" size="md">
-			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-		</ndd-segmented-control>
-		<ndd-segmented-control value="vet" size="sm">
-			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-		</ndd-segmented-control>
-		<ndd-segmented-control .values=${["vet", "cursief"]} type="checkbox" size="md">
-			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-		</ndd-segmented-control>
-		<ndd-segmented-control value="vet" disabled size="md">
-			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-		</ndd-segmented-control>
-		<ndd-segmented-control value="vet" variant="icon" size="md">
-			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-		</ndd-segmented-control>
-		<ndd-segmented-control value="vet" variant="icon" size="sm">
-			<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-		</ndd-segmented-control>
+		<nldd-segmented-control value="vet" size="md">
+			<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+		</nldd-segmented-control>
+		<nldd-segmented-control value="vet" size="sm">
+			<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+		</nldd-segmented-control>
+		<nldd-segmented-control .values=${["vet", "cursief"]} type="checkbox" size="md">
+			<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+		</nldd-segmented-control>
+		<nldd-segmented-control value="vet" disabled size="md">
+			<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+		</nldd-segmented-control>
+		<nldd-segmented-control value="vet" variant="icon" size="md">
+			<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+		</nldd-segmented-control>
+		<nldd-segmented-control value="vet" variant="icon" size="sm">
+			<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+		</nldd-segmented-control>
 		<div style="width: 400px; display: flex; flex-direction: column; gap: 1rem;">
-			<ndd-segmented-control value="vet" full-width size="md">
-				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-			</ndd-segmented-control>
-			<ndd-segmented-control value="vet" full-width size="sm">
-				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-			</ndd-segmented-control>
-			<ndd-segmented-control .values=${["vet", "cursief"]} type="checkbox" full-width size="md">
-				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-			</ndd-segmented-control>
-			<ndd-segmented-control value="vet" disabled full-width size="md">
-				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-			</ndd-segmented-control>
-			<ndd-segmented-control value="vet" variant="icon" full-width size="md">
-				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-			</ndd-segmented-control>
-			<ndd-segmented-control value="vet" variant="icon" full-width size="sm">
-				<ndd-segmented-control-item value="vet" text="Vet" icon="bold"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="cursief" text="Cursief" icon="italic"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+			<nldd-segmented-control value="vet" full-width size="md">
+				<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+			<nldd-segmented-control value="vet" full-width size="sm">
+				<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+			<nldd-segmented-control .values=${["vet", "cursief"]} type="checkbox" full-width size="md">
+				<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+			<nldd-segmented-control value="vet" disabled full-width size="md">
+				<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+			<nldd-segmented-control value="vet" variant="icon" full-width size="md">
+				<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+			<nldd-segmented-control value="vet" variant="icon" full-width size="sm">
+				<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="onderstreept" text="Onderstreept" icon="underlined"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		</div>
 	</div>
 `;

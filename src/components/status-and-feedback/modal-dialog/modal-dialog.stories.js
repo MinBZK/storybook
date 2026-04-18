@@ -1,30 +1,30 @@
 import { html, nothing } from 'lit';
-import './ndd-modal-dialog.ts';
-import '../../actions/button/ndd-button.ts';
-import { ICONS } from '../../content/icon/ndd-icon.ts';
+import './modal-dialog.ts';
+import '../../actions/button/button.ts';
+import { ICONS } from '../../content/icon/icon.ts';
 
 /**
  * De Modal Dialog is een modaal venster met overlay backdrop.
- * Gebruik `ndd-inline-dialog` voor een inline variant zonder overlay.
+ * Gebruik `nldd-inline-dialog` voor een inline variant zonder overlay.
  *
  * ## Gebruik
  * ```html
- * <ndd-modal-dialog
+ * <nldd-modal-dialog
  *   text="Bevestiging vereist"
  *   supporting-text="Dit kan niet ongedaan worden gemaakt."
  * >
- *   <ndd-button slot="actions" variant="primary" text="Bevestig"></ndd-button>
- *   <ndd-button slot="actions" variant="neutral-tinted" text="Annuleer"></ndd-button>
- * </ndd-modal-dialog>
+ *   <nldd-button slot="actions" variant="primary" text="Bevestig"></nldd-button>
+ *   <nldd-button slot="actions" variant="neutral-tinted" text="Annuleer"></nldd-button>
+ * </nldd-modal-dialog>
  * ```
  */
 export default {
 	title: 'Components/Status & Feedback/Modal Dialog',
-	component: 'ndd-modal-dialog',
+	component: 'nldd-modal-dialog',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/status-and-feedback/modal-dialog/ndd-modal-dialog.ts',
+			file: 'src/components/status-and-feedback/modal-dialog/modal-dialog.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'stable' },
@@ -40,7 +40,7 @@ export default {
 			control: 'select',
 			options: ['', ...ICONS],
 			name: 'icon-name',
-			description: 'Naam van het ndd-icon icoon; afwezig wanneer niet ingesteld',
+			description: 'Naam van het nldd-icon icoon; afwezig wanneer niet ingesteld',
 		},
 		text: {
 			control: 'text',
@@ -63,102 +63,102 @@ export default {
 const openNext = (e) => e.currentTarget.nextElementSibling.show();
 
 export const Standaard = (args) => html`
-	<ndd-button
+	<nldd-button
 		variant="primary"
 		text="Open modal dialog"
 		@click=${openNext}
-	></ndd-button>
-	<ndd-modal-dialog
+	></nldd-button>
+	<nldd-modal-dialog
 		variant=${args.variant || nothing}
 		icon-name=${args.iconName || nothing}
 		text=${args.text}
 		supporting-text=${args.supportingText}
 	>
-		<ndd-button
+		<nldd-button
 			slot="actions"
 			variant="primary"
 			text="Bevestig"
-			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
-		></ndd-button>
-		<ndd-button
+			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+		></nldd-button>
+		<nldd-button
 			slot="actions"
 			variant="neutral-tinted"
 			text="Annuleer"
-			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
-		></ndd-button>
-	</ndd-modal-dialog>
+			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+		></nldd-button>
+	</nldd-modal-dialog>
 `;
 
 export const ZonderIcoon = () => html`
-	<ndd-button
+	<nldd-button
 		variant="primary"
 		text="Open modal dialog"
 		@click=${openNext}
-	></ndd-button>
-	<ndd-modal-dialog
+	></nldd-button>
+	<nldd-modal-dialog
 		text="Bevestiging vereist"
 		supporting-text="Weet u zeker dat u door wilt gaan? Dit kan niet ongedaan worden gemaakt."
 	>
-		<ndd-button
+		<nldd-button
 			slot="actions"
 			variant="primary"
 			text="Bevestig"
-			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
-		></ndd-button>
-		<ndd-button
+			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+		></nldd-button>
+		<nldd-button
 			slot="actions"
 			variant="neutral-tinted"
 			text="Annuleer"
-			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
-		></ndd-button>
-	</ndd-modal-dialog>
+			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+		></nldd-button>
+	</nldd-modal-dialog>
 `;
 ZonderIcoon.parameters = { controls: { disable: true } };
 
 export const MetIcoon = () => html`
-	<ndd-button
+	<nldd-button
 		variant="primary"
 		text="Open modal dialog"
 		@click=${openNext}
-	></ndd-button>
-	<ndd-modal-dialog
+	></nldd-button>
+	<nldd-modal-dialog
 		icon-name="check-mark-circle"
 		text="Succesvol opgeslagen"
 		supporting-text="Uw wijzigingen zijn opgeslagen."
 	>
-		<ndd-button
+		<nldd-button
 			slot="actions"
 			variant="primary"
 			text="Sluiten"
-			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
-		></ndd-button>
-	</ndd-modal-dialog>
+			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+		></nldd-button>
+	</nldd-modal-dialog>
 `;
 MetIcoon.parameters = { controls: { disable: true } };
 
 export const Alert = () => html`
-	<ndd-button
+	<nldd-button
 		variant="primary"
 		text="Open modal dialog"
 		@click=${openNext}
-	></ndd-button>
-	<ndd-modal-dialog
+	></nldd-button>
+	<nldd-modal-dialog
 		variant="alert"
 		text="Niet opgeslagen"
 		supporting-text="Als u doorgaat gaan uw wijzigingen verloren."
 	>
-		<ndd-button
+		<nldd-button
 			slot="actions"
 			variant="primary"
 			text="Doorgaan"
-			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
-		></ndd-button>
-		<ndd-button
+			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+		></nldd-button>
+		<nldd-button
 			slot="actions"
 			variant="neutral-tinted"
 			text="Annuleer"
-			@click=${(e) => e.target.closest('ndd-modal-dialog').hide()}
-		></ndd-button>
-	</ndd-modal-dialog>
+			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+		></nldd-button>
+	</nldd-modal-dialog>
 `;
 Alert.parameters = { controls: { disable: true } };

@@ -3,7 +3,7 @@
  *
  * A numeric input field with decrement and increment buttons.
  *
- * @element ndd-number-field
+ * @element nldd-number-field
  * @attr {number}  value        - Current value
  * @attr {number}  min          - Minimum value (default: -Infinity)
  * @attr {number}  max          - Maximum value (default: Infinity)
@@ -21,15 +21,15 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { numberFieldStyles } from './ndd-number-field.styles.ts';
-import { numberFieldTemplate } from './ndd-number-field.template.ts';
-import { nddNumberFieldTranslations } from './ndd-number-field.i18n.ts';
-import type { NDDNumberFieldTranslations } from './ndd-number-field.i18n.ts';
-import './../../actions/icon-button/ndd-icon-button.ts';
-import './../../content/icon/ndd-icon.ts';
+import { numberFieldStyles } from './number-field.styles.ts';
+import { numberFieldTemplate } from './number-field.template.ts';
+import { nlddNumberFieldTranslations } from './number-field.i18n.ts';
+import type { NLDDNumberFieldTranslations } from './number-field.i18n.ts';
+import './../../actions/icon-button/icon-button.ts';
+import './../../content/icon/icon.ts';
 
-@customElement('ndd-number-field')
-export class NDDNumberField extends LitElement {
+@customElement('nldd-number-field')
+export class NLDDNumberField extends LitElement {
 	static override styles = numberFieldStyles;
 
 	@property({ type: Number })
@@ -66,11 +66,11 @@ export class NDDNumberField extends LitElement {
 
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
-	translations: Partial<NDDNumberFieldTranslations> = {};
+	translations: Partial<NLDDNumberFieldTranslations> = {};
 
 	override firstUpdated(): void {
 		if (!this.accessibleLabel) {
-			console.warn('<ndd-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input\'s purpose.');
+			console.warn('<nldd-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input\'s purpose.');
 		}
 	}
 
@@ -88,8 +88,8 @@ export class NDDNumberField extends LitElement {
 
 	// — i18n —————————————————————————————————————————————————————————————————
 
-	public _t(key: keyof NDDNumberFieldTranslations): string {
-		return this.translations[key] ?? nddNumberFieldTranslations[key];
+	public _t(key: keyof NLDDNumberFieldTranslations): string {
+		return this.translations[key] ?? nlddNumberFieldTranslations[key];
 	}
 
 	// — Actions ——————————————————————————————————————————————————————————————
@@ -136,6 +136,6 @@ export class NDDNumberField extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-number-field': NDDNumberField;
+		'nldd-number-field': NLDDNumberField;
 	}
 }

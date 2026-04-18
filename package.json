@@ -3,289 +3,289 @@
   "version": "0.8.33",
   "description": "Design System voor Nederlandse Digitale Dienst",
   "type": "module",
-  "main": "dist/components/ndd-components.js",
-  "module": "dist/components/ndd-components.js",
+  "main": "dist/components/components.js",
+  "module": "dist/components/components.js",
   "exports": {
-    ".": "./dist/components/ndd-components.js",
+    ".": "./dist/components/components.js",
     "./button": {
-      "types": "./dist/components/actions/button/ndd-button.d.ts",
-      "default": "./dist/components/actions/button/ndd-button.js"
+      "types": "./dist/components/actions/button/button.d.ts",
+      "default": "./dist/components/actions/button/button.js"
     },
     "./icon-button": {
-      "types": "./dist/components/actions/icon-button/ndd-icon-button.d.ts",
-      "default": "./dist/components/actions/icon-button/ndd-icon-button.js"
+      "types": "./dist/components/actions/icon-button/icon-button.d.ts",
+      "default": "./dist/components/actions/icon-button/icon-button.js"
     },
     "./split-button": {
-      "types": "./dist/components/actions/split-button/ndd-split-button.d.ts",
-      "default": "./dist/components/actions/split-button/ndd-split-button.js"
+      "types": "./dist/components/actions/split-button/split-button.d.ts",
+      "default": "./dist/components/actions/split-button/split-button.js"
     },
     "./button-group": {
-      "types": "./dist/components/actions/button-group/ndd-button-group.d.ts",
-      "default": "./dist/components/actions/button-group/ndd-button-group.js"
+      "types": "./dist/components/actions/button-group/button-group.d.ts",
+      "default": "./dist/components/actions/button-group/button-group.js"
     },
     "./button-bar": {
-      "types": "./dist/components/actions/button-bar/ndd-button-bar.d.ts",
-      "default": "./dist/components/actions/button-bar/ndd-button-bar.js"
+      "types": "./dist/components/actions/button-bar/button-bar.d.ts",
+      "default": "./dist/components/actions/button-bar/button-bar.js"
     },
     "./toolbar": {
-      "types": "./dist/components/actions/toolbar/ndd-toolbar.d.ts",
-      "default": "./dist/components/actions/toolbar/ndd-toolbar.js"
+      "types": "./dist/components/actions/toolbar/toolbar.d.ts",
+      "default": "./dist/components/actions/toolbar/toolbar.js"
     },
     "./icon": {
-      "types": "./dist/components/content/icon/ndd-icon.d.ts",
-      "default": "./dist/components/content/icon/ndd-icon.js"
+      "types": "./dist/components/content/icon/icon.d.ts",
+      "default": "./dist/components/content/icon/icon.js"
     },
     "./rich-text": {
-      "types": "./dist/components/content/rich-text/ndd-rich-text.d.ts",
-      "default": "./dist/components/content/rich-text/ndd-rich-text.js"
+      "types": "./dist/components/content/rich-text/rich-text.d.ts",
+      "default": "./dist/components/content/rich-text/rich-text.js"
     },
     "./title": {
-      "types": "./dist/components/content/title/ndd-title.d.ts",
-      "default": "./dist/components/content/title/ndd-title.js"
+      "types": "./dist/components/content/title/title.d.ts",
+      "default": "./dist/components/content/title/title.js"
     },
     "./tooltip": {
-      "types": "./dist/components/content/tooltip/ndd-tooltip.d.ts",
-      "default": "./dist/components/content/tooltip/ndd-tooltip.js"
+      "types": "./dist/components/content/tooltip/tooltip.d.ts",
+      "default": "./dist/components/content/tooltip/tooltip.js"
     },
     "./form-field": {
-      "types": "./dist/components/forms/form-field/ndd-form-field.d.ts",
-      "default": "./dist/components/forms/form-field/ndd-form-field.js"
+      "types": "./dist/components/forms/form-field/form-field.d.ts",
+      "default": "./dist/components/forms/form-field/form-field.js"
     },
     "./text-field": {
-      "types": "./dist/components/inputs/text-field/ndd-text-field.d.ts",
-      "default": "./dist/components/inputs/text-field/ndd-text-field.js"
+      "types": "./dist/components/inputs/text-field/text-field.d.ts",
+      "default": "./dist/components/inputs/text-field/text-field.js"
     },
     "./password-field": {
-      "types": "./dist/components/inputs/password-field/ndd-password-field.d.ts",
-      "default": "./dist/components/inputs/password-field/ndd-password-field.js"
+      "types": "./dist/components/inputs/password-field/password-field.d.ts",
+      "default": "./dist/components/inputs/password-field/password-field.js"
     },
     "./search-field": {
-      "types": "./dist/components/inputs/search-field/ndd-search-field.d.ts",
-      "default": "./dist/components/inputs/search-field/ndd-search-field.js"
+      "types": "./dist/components/inputs/search-field/search-field.d.ts",
+      "default": "./dist/components/inputs/search-field/search-field.js"
     },
     "./number-field": {
-      "types": "./dist/components/inputs/number-field/ndd-number-field.d.ts",
-      "default": "./dist/components/inputs/number-field/ndd-number-field.js"
+      "types": "./dist/components/inputs/number-field/number-field.d.ts",
+      "default": "./dist/components/inputs/number-field/number-field.js"
     },
     "./dropdown": {
-      "types": "./dist/components/inputs/dropdown/ndd-dropdown.d.ts",
-      "default": "./dist/components/inputs/dropdown/ndd-dropdown.js"
+      "types": "./dist/components/inputs/dropdown/dropdown.d.ts",
+      "default": "./dist/components/inputs/dropdown/dropdown.js"
     },
     "./combo-box": {
-      "types": "./dist/components/inputs/combo-box/ndd-combo-box.d.ts",
-      "default": "./dist/components/inputs/combo-box/ndd-combo-box.js"
+      "types": "./dist/components/inputs/combo-box/combo-box.d.ts",
+      "default": "./dist/components/inputs/combo-box/combo-box.js"
     },
     "./stepper": {
-      "types": "./dist/components/inputs/stepper/ndd-stepper.d.ts",
-      "default": "./dist/components/inputs/stepper/ndd-stepper.js"
+      "types": "./dist/components/inputs/stepper/stepper.d.ts",
+      "default": "./dist/components/inputs/stepper/stepper.js"
     },
     "./checkbox": {
-      "types": "./dist/components/inputs/checkbox/ndd-checkbox.d.ts",
-      "default": "./dist/components/inputs/checkbox/ndd-checkbox.js"
+      "types": "./dist/components/inputs/checkbox/checkbox.d.ts",
+      "default": "./dist/components/inputs/checkbox/checkbox.js"
     },
     "./checkbox-field": {
-      "types": "./dist/components/inputs/checkbox-field/ndd-checkbox-field.d.ts",
-      "default": "./dist/components/inputs/checkbox-field/ndd-checkbox-field.js"
+      "types": "./dist/components/inputs/checkbox-field/checkbox-field.d.ts",
+      "default": "./dist/components/inputs/checkbox-field/checkbox-field.js"
     },
     "./radio-button": {
-      "types": "./dist/components/inputs/radio-button/ndd-radio-button.d.ts",
-      "default": "./dist/components/inputs/radio-button/ndd-radio-button.js"
+      "types": "./dist/components/inputs/radio-button/radio-button.d.ts",
+      "default": "./dist/components/inputs/radio-button/radio-button.js"
     },
     "./radio-button-field": {
-      "types": "./dist/components/inputs/radio-button-field/ndd-radio-button-field.d.ts",
-      "default": "./dist/components/inputs/radio-button-field/ndd-radio-button-field.js"
+      "types": "./dist/components/inputs/radio-button-field/radio-button-field.d.ts",
+      "default": "./dist/components/inputs/radio-button-field/radio-button-field.js"
     },
     "./radio-button-group": {
-      "types": "./dist/components/inputs/radio-button-group/ndd-radio-button-group.d.ts",
-      "default": "./dist/components/inputs/radio-button-group/ndd-radio-button-group.js"
+      "types": "./dist/components/inputs/radio-button-group/radio-button-group.d.ts",
+      "default": "./dist/components/inputs/radio-button-group/radio-button-group.js"
     },
     "./switch": {
-      "types": "./dist/components/inputs/switch/ndd-switch.d.ts",
-      "default": "./dist/components/inputs/switch/ndd-switch.js"
+      "types": "./dist/components/inputs/switch/switch.d.ts",
+      "default": "./dist/components/inputs/switch/switch.js"
     },
     "./switch-field": {
-      "types": "./dist/components/inputs/switch-field/ndd-switch-field.d.ts",
-      "default": "./dist/components/inputs/switch-field/ndd-switch-field.js"
+      "types": "./dist/components/inputs/switch-field/switch-field.d.ts",
+      "default": "./dist/components/inputs/switch-field/switch-field.js"
     },
     "./segmented-control": {
-      "types": "./dist/components/inputs/segmented-control/ndd-segmented-control.d.ts",
-      "default": "./dist/components/inputs/segmented-control/ndd-segmented-control.js"
+      "types": "./dist/components/inputs/segmented-control/segmented-control.d.ts",
+      "default": "./dist/components/inputs/segmented-control/segmented-control.js"
     },
     "./toggle-button": {
-      "types": "./dist/components/inputs/toggle-button/ndd-toggle-button.d.ts",
-      "default": "./dist/components/inputs/toggle-button/ndd-toggle-button.js"
+      "types": "./dist/components/inputs/toggle-button/toggle-button.d.ts",
+      "default": "./dist/components/inputs/toggle-button/toggle-button.js"
     },
     "./toggle-button-group": {
-      "types": "./dist/components/inputs/toggle-button-group/ndd-toggle-button-group.d.ts",
-      "default": "./dist/components/inputs/toggle-button-group/ndd-toggle-button-group.js"
+      "types": "./dist/components/inputs/toggle-button-group/toggle-button-group.d.ts",
+      "default": "./dist/components/inputs/toggle-button-group/toggle-button-group.js"
     },
     "./token": {
-      "types": "./dist/components/inputs/token/ndd-token.d.ts",
-      "default": "./dist/components/inputs/token/ndd-token.js"
+      "types": "./dist/components/inputs/token/token.d.ts",
+      "default": "./dist/components/inputs/token/token.js"
     },
     "./app-view": {
-      "types": "./dist/components/layout/app-view/ndd-app-view.d.ts",
-      "default": "./dist/components/layout/app-view/ndd-app-view.js"
+      "types": "./dist/components/layout/app-view/app-view.d.ts",
+      "default": "./dist/components/layout/app-view/app-view.js"
     },
     "./bar-split-view": {
-      "types": "./dist/components/layout/split-views/bar-split-view/ndd-bar-split-view.d.ts",
-      "default": "./dist/components/layout/split-views/bar-split-view/ndd-bar-split-view.js"
+      "types": "./dist/components/layout/split-views/bar-split-view/bar-split-view.d.ts",
+      "default": "./dist/components/layout/split-views/bar-split-view/bar-split-view.js"
     },
     "./navigation-split-view": {
-      "types": "./dist/components/layout/split-views/navigation-split-view/ndd-navigation-split-view.d.ts",
-      "default": "./dist/components/layout/split-views/navigation-split-view/ndd-navigation-split-view.js"
+      "types": "./dist/components/layout/split-views/navigation-split-view/navigation-split-view.d.ts",
+      "default": "./dist/components/layout/split-views/navigation-split-view/navigation-split-view.js"
     },
     "./side-by-side-split-view": {
-      "types": "./dist/components/layout/split-views/side-by-side-split-view/ndd-side-by-side-split-view.d.ts",
-      "default": "./dist/components/layout/split-views/side-by-side-split-view/ndd-side-by-side-split-view.js"
+      "types": "./dist/components/layout/split-views/side-by-side-split-view/side-by-side-split-view.d.ts",
+      "default": "./dist/components/layout/split-views/side-by-side-split-view/side-by-side-split-view.js"
     },
     "./stacked-split-view": {
-      "types": "./dist/components/layout/split-views/stacked-split-view/ndd-stacked-split-view.d.ts",
-      "default": "./dist/components/layout/split-views/stacked-split-view/ndd-stacked-split-view.js"
+      "types": "./dist/components/layout/split-views/stacked-split-view/stacked-split-view.d.ts",
+      "default": "./dist/components/layout/split-views/stacked-split-view/stacked-split-view.js"
     },
     "./split-view-pane": {
-      "types": "./dist/components/layout/split-views/split-view-pane/ndd-split-view-pane.d.ts",
-      "default": "./dist/components/layout/split-views/split-view-pane/ndd-split-view-pane.js"
+      "types": "./dist/components/layout/split-views/split-view-pane/split-view-pane.d.ts",
+      "default": "./dist/components/layout/split-views/split-view-pane/split-view-pane.js"
     },
     "./page": {
-      "types": "./dist/components/layout/page/ndd-page.d.ts",
-      "default": "./dist/components/layout/page/ndd-page.js"
+      "types": "./dist/components/layout/page/page.d.ts",
+      "default": "./dist/components/layout/page/page.js"
     },
     "./simple-section": {
-      "types": "./dist/components/layout/page-sections/simple-section/ndd-simple-section.d.ts",
-      "default": "./dist/components/layout/page-sections/simple-section/ndd-simple-section.js"
+      "types": "./dist/components/layout/page-sections/simple-section/simple-section.d.ts",
+      "default": "./dist/components/layout/page-sections/simple-section/simple-section.js"
     },
     "./full-bleed-section": {
-      "types": "./dist/components/layout/page-sections/full-bleed-section/ndd-full-bleed-section.d.ts",
-      "default": "./dist/components/layout/page-sections/full-bleed-section/ndd-full-bleed-section.js"
+      "types": "./dist/components/layout/page-sections/full-bleed-section/full-bleed-section.d.ts",
+      "default": "./dist/components/layout/page-sections/full-bleed-section/full-bleed-section.js"
     },
     "./one-third-two-thirds-section": {
-      "types": "./dist/components/layout/page-sections/one-third-two-thirds-section/ndd-one-third-two-thirds-section.d.ts",
-      "default": "./dist/components/layout/page-sections/one-third-two-thirds-section/ndd-one-third-two-thirds-section.js"
+      "types": "./dist/components/layout/page-sections/one-third-two-thirds-section/one-third-two-thirds-section.d.ts",
+      "default": "./dist/components/layout/page-sections/one-third-two-thirds-section/one-third-two-thirds-section.js"
     },
     "./two-thirds-one-third-section": {
-      "types": "./dist/components/layout/page-sections/two-thirds-one-third-section/ndd-two-thirds-one-third-section.d.ts",
-      "default": "./dist/components/layout/page-sections/two-thirds-one-third-section/ndd-two-thirds-one-third-section.js"
+      "types": "./dist/components/layout/page-sections/two-thirds-one-third-section/two-thirds-one-third-section.d.ts",
+      "default": "./dist/components/layout/page-sections/two-thirds-one-third-section/two-thirds-one-third-section.js"
     },
     "./one-half-one-half-section": {
-      "types": "./dist/components/layout/page-sections/one-half-one-half-section/ndd-one-half-one-half-section.d.ts",
-      "default": "./dist/components/layout/page-sections/one-half-one-half-section/ndd-one-half-one-half-section.js"
+      "types": "./dist/components/layout/page-sections/one-half-one-half-section/one-half-one-half-section.d.ts",
+      "default": "./dist/components/layout/page-sections/one-half-one-half-section/one-half-one-half-section.js"
     },
     "./box": {
-      "types": "./dist/components/layout/box/ndd-box.d.ts",
-      "default": "./dist/components/layout/box/ndd-box.js"
+      "types": "./dist/components/layout/box/box.d.ts",
+      "default": "./dist/components/layout/box/box.js"
     },
     "./card": {
-      "types": "./dist/components/layout/card/ndd-card.d.ts",
-      "default": "./dist/components/layout/card/ndd-card.js"
+      "types": "./dist/components/layout/card/card.d.ts",
+      "default": "./dist/components/layout/card/card.js"
     },
     "./collection": {
-      "types": "./dist/components/layout/collection/ndd-collection.d.ts",
-      "default": "./dist/components/layout/collection/ndd-collection.js"
+      "types": "./dist/components/layout/collection/collection.d.ts",
+      "default": "./dist/components/layout/collection/collection.js"
     },
     "./spacer": {
-      "types": "./dist/components/layout/spacer/ndd-spacer.d.ts",
-      "default": "./dist/components/layout/spacer/ndd-spacer.js"
+      "types": "./dist/components/layout/spacer/spacer.d.ts",
+      "default": "./dist/components/layout/spacer/spacer.js"
     },
     "./container": {
-      "types": "./dist/components/layout/container/ndd-container.d.ts",
-      "default": "./dist/components/layout/container/ndd-container.js"
+      "types": "./dist/components/layout/container/container.d.ts",
+      "default": "./dist/components/layout/container/container.js"
     },
     "./divider": {
-      "types": "./dist/components/layout/divider/ndd-divider.d.ts",
-      "default": "./dist/components/layout/divider/ndd-divider.js"
+      "types": "./dist/components/layout/divider/divider.d.ts",
+      "default": "./dist/components/layout/divider/divider.js"
     },
     "./sheet": {
-      "types": "./dist/components/layout/sheet/ndd-sheet.d.ts",
-      "default": "./dist/components/layout/sheet/ndd-sheet.js"
+      "types": "./dist/components/layout/sheet/sheet.d.ts",
+      "default": "./dist/components/layout/sheet/sheet.js"
     },
     "./window": {
-      "types": "./dist/components/layout/window/ndd-window.d.ts",
-      "default": "./dist/components/layout/window/ndd-window.js"
+      "types": "./dist/components/layout/window/window.d.ts",
+      "default": "./dist/components/layout/window/window.js"
     },
     "./menu": {
-      "types": "./dist/components/lists-and-menus/menu/ndd-menu.d.ts",
-      "default": "./dist/components/lists-and-menus/menu/ndd-menu.js"
+      "types": "./dist/components/lists-and-menus/menu/menu.d.ts",
+      "default": "./dist/components/lists-and-menus/menu/menu.js"
     },
     "./list": {
-      "types": "./dist/components/lists-and-menus/list/ndd-list.d.ts",
-      "default": "./dist/components/lists-and-menus/list/ndd-list.js"
+      "types": "./dist/components/lists-and-menus/list/list.d.ts",
+      "default": "./dist/components/lists-and-menus/list/list.js"
     },
     "./list-item": {
-      "types": "./dist/components/lists-and-menus/list-item/ndd-list-item.d.ts",
-      "default": "./dist/components/lists-and-menus/list-item/ndd-list-item.js"
+      "types": "./dist/components/lists-and-menus/list-item/list-item.d.ts",
+      "default": "./dist/components/lists-and-menus/list-item/list-item.js"
     },
     "./cell": {
-      "types": "./dist/components/lists-and-menus/cells/cell/ndd-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/cell/ndd-cell.js"
+      "types": "./dist/components/lists-and-menus/cells/cell/cell.d.ts",
+      "default": "./dist/components/lists-and-menus/cells/cell/cell.js"
     },
     "./spacer-cell": {
-      "types": "./dist/components/lists-and-menus/cells/spacer-cell/ndd-spacer-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/spacer-cell/ndd-spacer-cell.js"
+      "types": "./dist/components/lists-and-menus/cells/spacer-cell/spacer-cell.d.ts",
+      "default": "./dist/components/lists-and-menus/cells/spacer-cell/spacer-cell.js"
     },
     "./icon-cell": {
-      "types": "./dist/components/lists-and-menus/cells/icon-cell/ndd-icon-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/icon-cell/ndd-icon-cell.js"
+      "types": "./dist/components/lists-and-menus/cells/icon-cell/icon-cell.d.ts",
+      "default": "./dist/components/lists-and-menus/cells/icon-cell/icon-cell.js"
     },
     "./title-cell": {
-      "types": "./dist/components/lists-and-menus/cells/title-cell/ndd-title-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/title-cell/ndd-title-cell.js"
+      "types": "./dist/components/lists-and-menus/cells/title-cell/title-cell.d.ts",
+      "default": "./dist/components/lists-and-menus/cells/title-cell/title-cell.js"
     },
     "./text-cell": {
-      "types": "./dist/components/lists-and-menus/cells/text-cell/ndd-text-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/text-cell/ndd-text-cell.js"
+      "types": "./dist/components/lists-and-menus/cells/text-cell/text-cell.d.ts",
+      "default": "./dist/components/lists-and-menus/cells/text-cell/text-cell.js"
     },
     "./description-cell": {
-      "types": "./dist/components/lists-and-menus/cells/description-cell/ndd-description-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/description-cell/ndd-description-cell.js"
+      "types": "./dist/components/lists-and-menus/cells/description-cell/description-cell.d.ts",
+      "default": "./dist/components/lists-and-menus/cells/description-cell/description-cell.js"
     },
     "./drag-handle-cell": {
-      "types": "./dist/components/lists-and-menus/cells/drag-handle-cell/ndd-drag-handle-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/drag-handle-cell/ndd-drag-handle-cell.js"
+      "types": "./dist/components/lists-and-menus/cells/drag-handle-cell/drag-handle-cell.d.ts",
+      "default": "./dist/components/lists-and-menus/cells/drag-handle-cell/drag-handle-cell.js"
     },
     "./timeline-track-cell": {
-      "types": "./dist/components/lists-and-menus/cells/timeline-track-cell/ndd-timeline-track-cell.d.ts",
-      "default": "./dist/components/lists-and-menus/cells/timeline-track-cell/ndd-timeline-track-cell.js"
+      "types": "./dist/components/lists-and-menus/cells/timeline-track-cell/timeline-track-cell.d.ts",
+      "default": "./dist/components/lists-and-menus/cells/timeline-track-cell/timeline-track-cell.js"
     },
     "./menu-bar": {
-      "types": "./dist/components/navigation/menu-bar/ndd-menu-bar.d.ts",
-      "default": "./dist/components/navigation/menu-bar/ndd-menu-bar.js"
+      "types": "./dist/components/navigation/menu-bar/menu-bar.d.ts",
+      "default": "./dist/components/navigation/menu-bar/menu-bar.js"
     },
     "./menu-bar-item": {
-      "types": "./dist/components/navigation/menu-bar-item/ndd-menu-bar-item.d.ts",
-      "default": "./dist/components/navigation/menu-bar-item/ndd-menu-bar-item.js"
+      "types": "./dist/components/navigation/menu-bar-item/menu-bar-item.d.ts",
+      "default": "./dist/components/navigation/menu-bar-item/menu-bar-item.js"
     },
     "./skip-link": {
-      "types": "./dist/components/navigation/skip-link/ndd-skip-link.d.ts",
-      "default": "./dist/components/navigation/skip-link/ndd-skip-link.js"
+      "types": "./dist/components/navigation/skip-link/skip-link.d.ts",
+      "default": "./dist/components/navigation/skip-link/skip-link.js"
     },
     "./top-navigation-bar": {
-      "types": "./dist/components/navigation/top-navigation-bar/ndd-top-navigation-bar.d.ts",
-      "default": "./dist/components/navigation/top-navigation-bar/ndd-top-navigation-bar.js"
+      "types": "./dist/components/navigation/top-navigation-bar/top-navigation-bar.d.ts",
+      "default": "./dist/components/navigation/top-navigation-bar/top-navigation-bar.js"
     },
     "./top-title-bar": {
-      "types": "./dist/components/navigation/top-title-bar/ndd-top-title-bar.d.ts",
-      "default": "./dist/components/navigation/top-title-bar/ndd-top-title-bar.js"
+      "types": "./dist/components/navigation/top-title-bar/top-title-bar.d.ts",
+      "default": "./dist/components/navigation/top-title-bar/top-title-bar.js"
     },
     "./tab-bar": {
-      "types": "./dist/components/navigation/tab-bar/ndd-tab-bar.d.ts",
-      "default": "./dist/components/navigation/tab-bar/ndd-tab-bar.js"
+      "types": "./dist/components/navigation/tab-bar/tab-bar.d.ts",
+      "default": "./dist/components/navigation/tab-bar/tab-bar.js"
     },
     "./document-tab-bar": {
-      "types": "./dist/components/navigation/document-tab-bar/ndd-document-tab-bar.d.ts",
-      "default": "./dist/components/navigation/document-tab-bar/ndd-document-tab-bar.js"
+      "types": "./dist/components/navigation/document-tab-bar/document-tab-bar.d.ts",
+      "default": "./dist/components/navigation/document-tab-bar/document-tab-bar.js"
     },
     "./pagination": {
-      "types": "./dist/components/navigation/pagination/ndd-pagination.d.ts",
-      "default": "./dist/components/navigation/pagination/ndd-pagination.js"
+      "types": "./dist/components/navigation/pagination/pagination.d.ts",
+      "default": "./dist/components/navigation/pagination/pagination.js"
     },
     "./modal-dialog": {
-      "types": "./dist/components/status-and-feedback/modal-dialog/ndd-modal-dialog.d.ts",
-      "default": "./dist/components/status-and-feedback/modal-dialog/ndd-modal-dialog.js"
+      "types": "./dist/components/status-and-feedback/modal-dialog/modal-dialog.d.ts",
+      "default": "./dist/components/status-and-feedback/modal-dialog/modal-dialog.js"
     },
     "./inline-dialog": {
-      "types": "./dist/components/status-and-feedback/inline-dialog/ndd-inline-dialog.d.ts",
-      "default": "./dist/components/status-and-feedback/inline-dialog/ndd-inline-dialog.js"
+      "types": "./dist/components/status-and-feedback/inline-dialog/inline-dialog.d.ts",
+      "default": "./dist/components/status-and-feedback/inline-dialog/inline-dialog.js"
     },
     "./styles": "./dist/css/global.css",
     "./styles/tokens": "./dist/css/settings.css"
@@ -302,7 +302,7 @@
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run build:components",
-    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/components/content/rich-text/ndd-rich-text.css dist/css/ndd-rich-text.css && printf '@import \"./settings.css\";\\n@import \"./ndd-rich-text.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
+    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && printf '@import \"./settings.css\";\\n@import \"./rich-text.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
     "validate:styles": "node scripts/validate-css-variables.js",
     "build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:exports",
     "build:icons": "node scripts/generate-icon-registry.js && node scripts/generate-logo.js",
@@ -360,7 +360,7 @@
     "design-system",
     "web-components",
     "rijksoverheid",
-    "ndd"
+    "nldd"
   ],
   "license": "EUPL-1.2",
   "dependencies": {

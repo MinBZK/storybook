@@ -1,4 +1,4 @@
-export const nddTopNavigationBarTranslations = {
+export const nlddTopNavigationBarTranslations = {
 	'components.top-navigation-bar.global-menu-bar-label': 'Hoofdnavigatie',
 	'components.top-navigation-bar.back-action': 'Terug',
 	'components.top-navigation-bar.menu-action': 'Menu',
@@ -7,4 +7,4 @@ export const nddTopNavigationBarTranslations = {
 	'components.top-navigation-bar.menu-sheet-dismiss-action': 'Sluit',
 };
 
-export type NDDTopNavigationBarTranslations = typeof nddTopNavigationBarTranslations;
+export type NLDDTopNavigationBarTranslations = typeof nlddTopNavigationBarTranslations;

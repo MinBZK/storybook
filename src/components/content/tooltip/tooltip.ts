@@ -4,7 +4,7 @@
  * Wrapper component dat een tooltip toont bij hover of focus op het child element.
  * Gebruikt `display: contents` zodat het de layout van het child niet beïnvloedt.
  *
- * @element ndd-tooltip
+ * @element nldd-tooltip
  * @attr {string} text - Tooltip tekst
  * @attr {string} placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')
  *
@@ -15,11 +15,11 @@
  *
  * @note aria-describedby werkt alleen wanneer het trigger element in de light DOM staat.
  * Bij web components als trigger (met eigen shadow DOM) is de koppeling een bekende
- * limitatie van shadow DOM + ARIA. Voor ndd-icon-button is dit niet relevant omdat
+ * limitatie van shadow DOM + ARIA. Voor nldd-icon-button is dit niet relevant omdat
  * aria-label al op de interne button staat. Tooltip tekst op icon-button mag daarom
  * geen informatie bevatten die niet al in aria-label zit.
  *
- * @note Bij disabled triggers (bijv. disabled ndd-icon-button) wordt de tooltip niet
+ * @note Bij disabled triggers (bijv. disabled nldd-icon-button) wordt de tooltip niet
  * getoond omdat disabled buttons geen mouseenter/focusin events afvuren en display:
  * contents geen eigen layout box heeft om events op te vangen.
  */
@@ -28,16 +28,16 @@ import { LitElement } from 'lit';
 import type { PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
-import { tooltipStyles } from './ndd-tooltip.styles.ts';
-import { tooltipTemplate } from './ndd-tooltip.template.ts';
+import { tooltipStyles } from './tooltip.styles.ts';
+import { tooltipTemplate } from './tooltip.template.ts';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 
 let tooltipCounter = 0;
 const coarsePointerQuery = matchMedia('(pointer: coarse)');
 
-@customElement('ndd-tooltip')
-export class NDDTooltip extends LitElement {
+@customElement('nldd-tooltip')
+export class NLDDTooltip extends LitElement {
 	static override styles = tooltipStyles;
 
 	@property({ type: String, reflect: true })
@@ -56,7 +56,7 @@ export class NDDTooltip extends LitElement {
 	@state()
 	_focusVisible = false;
 
-	private _tooltipId = `ndd-tooltip-${++tooltipCounter}`;
+	private _tooltipId = `nldd-tooltip-${++tooltipCounter}`;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _descriptionEl: HTMLSpanElement | null = null;
 	private _currentTrigger: Element | null = null;
@@ -237,6 +237,6 @@ export class NDDTooltip extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-tooltip': NDDTooltip;
+		'nldd-tooltip': NLDDTooltip;
 	}
 }

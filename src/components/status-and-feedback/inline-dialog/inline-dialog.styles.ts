@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-/* # ndd-inline-dialog styles */
+/* # nldd-inline-dialog styles */
 
 export const inlineDialogStyles = css`
 

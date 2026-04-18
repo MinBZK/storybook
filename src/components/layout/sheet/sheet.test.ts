@@ -1,14 +1,14 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDSheet } from './ndd-sheet.ts';
-import './ndd-sheet.ts';
+import type { NLDDSheet } from './sheet.ts';
+import './sheet.ts';
 
 
 /* ============================================================
    Smoke tests
    ============================================================ */
 
-describe('ndd-sheet', () => {
+describe('nldd-sheet', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -16,32 +16,32 @@ describe('ndd-sheet', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-sheet></ndd-sheet>');
+		el = await fixture('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a dialog element', async () => {
-		el = await fixture('<ndd-sheet></ndd-sheet>');
+		el = await fixture('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('dialog')).not.toBeNull();
 	});
 
 	it('defaults to placement right', async () => {
-		el = await fixture('<ndd-sheet></ndd-sheet>');
+		el = await fixture('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('placement')).toBe('right');
 	});
 
 	it('defaults to modal (modeless attribute absent)', async () => {
-		el = await fixture('<ndd-sheet></ndd-sheet>');
+		el = await fixture('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
-		expect((el as NDDSheet).modeless).toBe(false);
+		expect((el as NLDDSheet).modeless).toBe(false);
 		expect(el.hasAttribute('modeless')).toBe(false);
 	});
 
 	it('reflects placement attribute', async () => {
-		el = await fixture('<ndd-sheet placement="bottom"></ndd-sheet>');
+		el = await fixture('<nldd-sheet placement="bottom"></nldd-sheet>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('placement')).toBe('bottom');
 	});
@@ -52,8 +52,8 @@ describe('ndd-sheet', () => {
    show() / hide()
    ============================================================ */
 
-describe('ndd-sheet – tonen en verbergen', () => {
-	let el: NDDSheet;
+describe('nldd-sheet – tonen en verbergen', () => {
+	let el: NLDDSheet;
 
 	afterEach(() => {
 		if (el) {
@@ -64,7 +64,7 @@ describe('ndd-sheet – tonen en verbergen', () => {
 	});
 
 	it('opens the dialog when show() is called', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		el.show();
 		const dialog = el.shadowRoot!.querySelector('dialog')!;
@@ -72,7 +72,7 @@ describe('ndd-sheet – tonen en verbergen', () => {
 	});
 
 	it('fires open event when show() is called', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		const listener = vi.fn();
 		el.addEventListener('open', listener);
@@ -81,7 +81,7 @@ describe('ndd-sheet – tonen en verbergen', () => {
 	});
 
 	it('adds is-closing class when hide() is called', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		el.show();
 		el.hide();
@@ -90,7 +90,7 @@ describe('ndd-sheet – tonen en verbergen', () => {
 	});
 
 	it('does not fire close event immediately when hide() is called', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		el.show();
 		const listener = vi.fn();
@@ -100,14 +100,14 @@ describe('ndd-sheet – tonen en verbergen', () => {
 	});
 
 	it('does nothing when hide() is called on a closed sheet', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		// Should not throw
 		expect(() => el.hide()).not.toThrow();
 	});
 
 	it('uses show() for modeless sheets', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet modeless></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet modeless></nldd-sheet>');
 		await waitForUpdate(el);
 		el.show();
 		const dialog = el.shadowRoot!.querySelector('dialog')!;
@@ -120,8 +120,8 @@ describe('ndd-sheet – tonen en verbergen', () => {
    Backdrop click
    ============================================================ */
 
-describe('ndd-sheet – backdrop klik', () => {
-	let el: NDDSheet;
+describe('nldd-sheet – backdrop klik', () => {
+	let el: NLDDSheet;
 
 	afterEach(() => {
 		if (el) {
@@ -132,7 +132,7 @@ describe('ndd-sheet – backdrop klik', () => {
 	});
 
 	it('calls hide() when click target is the dialog itself', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		el.show();
 
@@ -151,8 +151,8 @@ describe('ndd-sheet – backdrop klik', () => {
    Escape key / cancel event
    ============================================================ */
 
-describe('ndd-sheet – Escape-toets', () => {
-	let el: NDDSheet;
+describe('nldd-sheet – Escape-toets', () => {
+	let el: NLDDSheet;
 
 	afterEach(() => {
 		if (el) {
@@ -163,7 +163,7 @@ describe('ndd-sheet – Escape-toets', () => {
 	});
 
 	it('prevents default cancel event and calls hide()', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		el.show();
 
@@ -183,8 +183,8 @@ describe('ndd-sheet – Escape-toets', () => {
    Dismiss event
    ============================================================ */
 
-describe('ndd-sheet – dismiss event', () => {
-	let el: NDDSheet;
+describe('nldd-sheet – dismiss event', () => {
+	let el: NLDDSheet;
 
 	afterEach(() => {
 		if (el) {
@@ -195,7 +195,7 @@ describe('ndd-sheet – dismiss event', () => {
 	});
 
 	it('calls hide() when a dismiss event is dispatched on the sheet', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		el.show();
 
@@ -211,21 +211,21 @@ describe('ndd-sheet – dismiss event', () => {
    Placement
    ============================================================ */
 
-describe('ndd-sheet – placement', () => {
-	let el: NDDSheet;
+describe('nldd-sheet – placement', () => {
+	let el: NLDDSheet;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('reflects placement="left"', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet placement="left"></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="left"></nldd-sheet>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('placement')).toBe('left');
 	});
 
 	it('reflects placement="bottom"', async () => {
-		el = await fixture<NDDSheet>('<ndd-sheet placement="bottom"></ndd-sheet>');
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom"></nldd-sheet>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('placement')).toBe('bottom');
 	});
@@ -236,18 +236,18 @@ describe('ndd-sheet – placement', () => {
    Slot
    ============================================================ */
 
-describe('ndd-sheet – slot', () => {
-	let el: NDDSheet;
+describe('nldd-sheet – slot', () => {
+	let el: NLDDSheet;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('renders slotted content', async () => {
-		el = await fixture<NDDSheet>(`
-			<ndd-sheet>
+		el = await fixture<NLDDSheet>(`
+			<nldd-sheet>
 				<div id="content">Inhoud</div>
-			</ndd-sheet>
+			</nldd-sheet>
 		`);
 		await waitForUpdate(el);
 		const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot')!;
@@ -260,8 +260,8 @@ describe('ndd-sheet – slot', () => {
    Focus management
    ============================================================ */
 
-describe('ndd-sheet – focus management', () => {
-	let el: NDDSheet;
+describe('nldd-sheet – focus management', () => {
+	let el: NLDDSheet;
 
 	afterEach(() => {
 		if (el) {
@@ -272,10 +272,10 @@ describe('ndd-sheet – focus management', () => {
 	});
 
 	it('focuses the dialog when show() is called', async () => {
-		el = await fixture<NDDSheet>(`
-			<ndd-sheet>
+		el = await fixture<NLDDSheet>(`
+			<nldd-sheet>
 				<h2>Sheet titel</h2>
-			</ndd-sheet>
+			</nldd-sheet>
 		`);
 		await waitForUpdate(el);
 		el.show();
@@ -284,10 +284,10 @@ describe('ndd-sheet – focus management', () => {
 	});
 
 	it('respects autofocus attribute on slotted content', async () => {
-		el = await fixture<NDDSheet>(`
-			<ndd-sheet>
+		el = await fixture<NLDDSheet>(`
+			<nldd-sheet>
 				<button autofocus>Focus me</button>
-			</ndd-sheet>
+			</nldd-sheet>
 		`);
 		await waitForUpdate(el);
 		el.show();

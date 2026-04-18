@@ -3,7 +3,7 @@
  *
  * A switch toggle with an inline label for use in forms.
  *
- * @element ndd-switch-field
+ * @element nldd-switch-field
  * @attr {boolean} checked  - Checked state
  * @attr {boolean} disabled - Disabled state
  * @attr {string}  value    - Value for form submission
@@ -14,12 +14,12 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { switchFieldStyles } from './ndd-switch-field.styles.ts';
-import { switchFieldTemplate } from './ndd-switch-field.template.ts';
-import type { NDDSwitch } from '../switch/ndd-switch.js';
+import { switchFieldStyles } from './switch-field.styles.ts';
+import { switchFieldTemplate } from './switch-field.template.ts';
+import type { NLDDSwitch } from '../switch/switch.js';
 
-@customElement('ndd-switch-field')
-export class NDDSwitchField extends LitElement {
+@customElement('nldd-switch-field')
+export class NLDDSwitchField extends LitElement {
 	static override styles = switchFieldStyles;
 
 	@property({ type: Boolean, reflect: true })
@@ -39,8 +39,8 @@ export class NDDSwitchField extends LitElement {
 
 	public _handleLabelClick(e: Event): void {
 		if (this.disabled) return;
-		if ((e.target as HTMLElement).closest?.('ndd-switch')) return;
-		const switchEl = this.shadowRoot?.querySelector('ndd-switch') as NDDSwitch | null;
+		if ((e.target as HTMLElement).closest?.('nldd-switch')) return;
+		const switchEl = this.shadowRoot?.querySelector('nldd-switch') as NLDDSwitch | null;
 		switchEl?.toggle();
 	}
 
@@ -60,6 +60,6 @@ export class NDDSwitchField extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-switch-field': NDDSwitchField;
+		'nldd-switch-field': NLDDSwitchField;
 	}
 }

@@ -1,31 +1,31 @@
 /**
  * Menu Bar Component (Lit + TypeScript)
  *
- * Horizontale rij van ndd-menu-bar-item elementen met automatische overflow
+ * Horizontale rij van nldd-menu-bar-item elementen met automatische overflow
  * detectie. Items die niet passen worden verborgen achter een overflow button
  * met een popover menu.
  *
- * @element ndd-menu-bar
+ * @element nldd-menu-bar
  * @attr {string} overflow-text - Tekst voor de overflow button (standaard via i18n)
  * @attr {string} accessible-label - aria-label voor de nav landmark
  * @attr {boolean} compact - Propageert compact attribuut naar slotted items (activeert content-priority)
  *
- * @slot - ndd-menu-bar-item elementen
+ * @slot - nldd-menu-bar-item elementen
  */
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { styles } from './ndd-menu-bar.styles.js';
-import { template } from './ndd-menu-bar.template.js';
+import { styles } from './menu-bar.styles.js';
+import { template } from './menu-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
-import { nddMenuBarTranslations } from './ndd-menu-bar.i18n.js';
-import '../menu-bar-item/ndd-menu-bar-item.js';
-import { NDDMenuBarItem } from '../menu-bar-item/ndd-menu-bar-item.js';
-import '../../lists-and-menus/menu/ndd-menu.js';
+import { nlddMenuBarTranslations } from './menu-bar.i18n.js';
+import '../menu-bar-item/menu-bar-item.js';
+import { NLDDMenuBarItem } from '../menu-bar-item/menu-bar-item.js';
+import '../../lists-and-menus/menu/menu.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 /**
- * Minimal typed interface for ndd-menu.
+ * Minimal typed interface for nldd-menu.
  */
 interface PopoverMenu extends HTMLElement {
 	anchorElement: Element | null;
@@ -33,8 +33,8 @@ interface PopoverMenu extends HTMLElement {
 	hidePopover(): void;
 }
 
-@customElement('ndd-menu-bar')
-export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslations) {
+@customElement('nldd-menu-bar')
+export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTranslations) {
 	static override styles = styles;
 
 	@property({ type: String, attribute: 'overflow-text' })
@@ -92,7 +92,7 @@ export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslati
 		this._syncCompactAttribute();
 		this._syncEmpty();
 		if (import.meta.env?.DEV && !this.accessibleLabel && !this.hasAttribute('empty')) {
-			console.warn('ndd-menu-bar: accessible-label is niet gezet. Pagina\'s met meerdere nav landmarks moeten elke nav een uniek label geven (WCAG 1.3.1).');
+			console.warn('nldd-menu-bar: accessible-label is niet gezet. Pagina\'s met meerdere nav landmarks moeten elke nav een uniek label geven (WCAG 1.3.1).');
 		}
 	}
 
@@ -110,7 +110,7 @@ export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslati
 	/** Hide the component when no items are slotted to avoid empty nav landmarks. */
 	private _syncEmpty(): void {
 		const items = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
-		const hasItems = items.some(el => el.tagName === 'NDD-MENU-BAR-ITEM');
+		const hasItems = items.some(el => el.tagName === 'NLDD-MENU-BAR-ITEM');
 		this.toggleAttribute('empty', !hasItems);
 	}
 
@@ -122,7 +122,7 @@ export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslati
 		}
 
 		// Internal overflow button item
-		const overflowItem = this._overflowButton?.querySelector('ndd-menu-bar-item');
+		const overflowItem = this._overflowButton?.querySelector('nldd-menu-bar-item');
 		if (overflowItem) {
 			overflowItem.toggleAttribute('compact', this.compact);
 		}
@@ -182,7 +182,7 @@ export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslati
 		if (!overflowButton) return;
 
 		const slottedElements = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
-		const items = slottedElements.filter(el => el.tagName === 'NDD-MENU-BAR-ITEM') as HTMLElement[];
+		const items = slottedElements.filter(el => el.tagName === 'NLDD-MENU-BAR-ITEM') as HTMLElement[];
 
 		if (items.length === 0) {
 			overflowButton.style.display = 'none';
@@ -226,15 +226,15 @@ export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslati
 	// ## Overflow popover menu
 
 	private _createOverflowMenu(): PopoverMenu {
-		const menu = document.createElement('ndd-menu') as unknown as PopoverMenu;
+		const menu = document.createElement('nldd-menu') as unknown as PopoverMenu;
 		menu.setAttribute('placement', 'bottom-end');
 
 		menu.addEventListener('toggle', (event: Event) => {
 			const open = (event as ToggleEvent).newState === 'open';
 			this._overflowMenuOpen = open;
 			if (!open) this._overflowMenuClosedAt = Date.now();
-			const item = this._overflowButton?.querySelector('ndd-menu-bar-item');
-			if (item) (item as NDDMenuBarItem).open = open;
+			const item = this._overflowButton?.querySelector('nldd-menu-bar-item');
+			if (item) (item as NLDDMenuBarItem).open = open;
 		});
 		document.body.appendChild(menu);
 		return menu;
@@ -246,11 +246,11 @@ export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslati
 
 		const slottedElements = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
 		const overflowItems = slottedElements.filter(
-			el => el.tagName === 'NDD-MENU-BAR-ITEM' && el.hasAttribute('data-overflow')
-		) as NDDMenuBarItem[];
+			el => el.tagName === 'NLDD-MENU-BAR-ITEM' && el.hasAttribute('data-overflow')
+		) as NLDDMenuBarItem[];
 
 		for (const item of overflowItems) {
-			const menuItem = document.createElement('ndd-menu-item');
+			const menuItem = document.createElement('nldd-menu-item');
 			menuItem.setAttribute('text', item.text);
 			if (item.icon) menuItem.setAttribute('icon', item.icon);
 			if (item.current) menuItem.setAttribute('selected', '');
@@ -258,9 +258,9 @@ export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslati
 
 			if (item.expandable) {
 				// Expandable items: clone sub-items as a submenu group
-				const children = item.querySelectorAll('ndd-menu-item, ndd-menu-divider');
+				const children = item.querySelectorAll('nldd-menu-item, nldd-menu-divider');
 				if (children.length > 0) {
-					const divider = document.createElement('ndd-menu-divider');
+					const divider = document.createElement('nldd-menu-divider');
 					this._overflowMenu!.appendChild(menuItem);
 					this._overflowMenu!.appendChild(divider);
 					children.forEach(child => {
@@ -305,6 +305,6 @@ export class NDDMenuBar extends withTranslations(LitElement, nddMenuBarTranslati
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-menu-bar': NDDMenuBar;
+		'nldd-menu-bar': NLDDMenuBar;
 	}
 }

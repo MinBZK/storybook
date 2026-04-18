@@ -1,20 +1,20 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDTabBar, NDDTabBarItem } from './ndd-tab-bar.ts';
-import './ndd-tab-bar.ts';
+import type { NLDDTabBar, NLDDTabBarItem } from './tab-bar.ts';
+import './tab-bar.ts';
 
 function threeTabBar(): string {
 	return `
-		<ndd-tab-bar>
-			<ndd-tab-bar-item text="Tab A"></ndd-tab-bar-item>
-			<ndd-tab-bar-item selected text="Tab B"></ndd-tab-bar-item>
-			<ndd-tab-bar-item text="Tab C"></ndd-tab-bar-item>
-		</ndd-tab-bar>
+		<nldd-tab-bar>
+			<nldd-tab-bar-item text="Tab A"></nldd-tab-bar-item>
+			<nldd-tab-bar-item selected text="Tab B"></nldd-tab-bar-item>
+			<nldd-tab-bar-item text="Tab C"></nldd-tab-bar-item>
+		</nldd-tab-bar>
 	`;
 }
 
-function getItems(el: NDDTabBar): NDDTabBarItem[] {
-	return Array.from(el.querySelectorAll('ndd-tab-bar-item'));
+function getItems(el: NLDDTabBar): NLDDTabBarItem[] {
+	return Array.from(el.querySelectorAll('nldd-tab-bar-item'));
 }
 
 function clickInner(item: Element) {
@@ -28,10 +28,10 @@ function pressKey(target: Element, key: string) {
 
 
 /* ============================================================
-   ndd-tab-bar-item – render
+   nldd-tab-bar-item – render
    ============================================================ */
 
-describe('ndd-tab-bar-item', () => {
+describe('nldd-tab-bar-item', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -39,25 +39,25 @@ describe('ndd-tab-bar-item', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-tab-bar-item></ndd-tab-bar-item>');
+		el = await fixture('<nldd-tab-bar-item></nldd-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a button by default', async () => {
-		el = await fixture('<ndd-tab-bar-item text="Tab"></ndd-tab-bar-item>');
+		el = await fixture('<nldd-tab-bar-item text="Tab"></nldd-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.tagName.toLowerCase()).toBe('button');
 	});
 
 	it('renders an anchor when href is provided', async () => {
-		el = await fixture('<ndd-tab-bar-item href="/page">Tab</ndd-tab-bar-item>');
+		el = await fixture('<nldd-tab-bar-item href="/page">Tab</nldd-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.tagName.toLowerCase()).toBe('a');
 	});
 
 	it('does not render an anchor for unsafe hrefs', async () => {
-		el = await fixture('<ndd-tab-bar-item href="javascript:void(0)">Tab</ndd-tab-bar-item>');
+		el = await fixture('<nldd-tab-bar-item href="javascript:void(0)">Tab</nldd-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.tagName.toLowerCase()).toBe('button');
 	});
@@ -65,77 +65,77 @@ describe('ndd-tab-bar-item', () => {
 
 
 /* ============================================================
-   ndd-tab-bar-item – content variant detection
+   nldd-tab-bar-item – content variant detection
    ============================================================ */
 
-describe('ndd-tab-bar-item – content variant detection', () => {
-	let el: NDDTabBarItem;
+describe('nldd-tab-bar-item – content variant detection', () => {
+	let el: NLDDTabBarItem;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('sets variant to icon-and-text when both text and icon are present', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item text="Tab">
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item text="Tab">
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('icon-and-text');
 	});
 
 	it('sets variant to text when only text attribute is present', async () => {
-		el = await fixture<NDDTabBarItem>('<ndd-tab-bar-item text="Tab"></ndd-tab-bar-item>');
+		el = await fixture<NLDDTabBarItem>('<nldd-tab-bar-item text="Tab"></nldd-tab-bar-item>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('text');
 	});
 
 	it('sets variant to icon when only an icon slot is filled', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item>
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item>
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('icon');
 	});
 
 	it('respects explicit variant="text" even when both text and icon are present', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item variant="text" text="Tab">
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item variant="text" text="Tab">
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('text');
 	});
 
 	it('respects explicit variant="icon" even when both text and icon are present', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item variant="icon" text="Tab">
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item variant="icon" text="Tab">
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('icon');
 	});
 
 	it('sets variant to compact when compact attribute is set', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item compact text="Tab">
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item compact text="Tab">
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('compact');
 	});
 
 	it('compact overrides explicit variant', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item compact variant="text" text="Tab">
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item compact variant="text" text="Tab">
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('compact');
@@ -144,73 +144,73 @@ describe('ndd-tab-bar-item – content variant detection', () => {
 
 
 /* ============================================================
-   ndd-tab-bar-item – icon variant accessibility
+   nldd-tab-bar-item – icon variant accessibility
    ============================================================ */
 
-describe('ndd-tab-bar-item – icon variant accessibility', () => {
-	let el: NDDTabBarItem;
+describe('nldd-tab-bar-item – icon variant accessibility', () => {
+	let el: NLDDTabBarItem;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('sets aria-label from text attribute when variant is icon', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item variant="icon" text="Home">
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item variant="icon" text="Home">
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('aria-label')).toBe('Home');
 	});
 
-	it('wraps in ndd-tooltip when variant is icon', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item variant="icon" text="Home">
+	it('wraps in nldd-tooltip when variant is icon', async () => {
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item variant="icon" text="Home">
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
-		const tooltip = el.shadowRoot!.querySelector('ndd-tooltip');
+		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip');
 		expect(tooltip).not.toBeNull();
 		expect(tooltip!.getAttribute('text')).toBe('Home');
 	});
 
 	it('does not set aria-label when variant is icon-and-text', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item text="Home">
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item text="Home">
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('[role="tab"]')!.getAttribute('aria-label')).toBeNull();
 	});
 
-	it('does not wrap in ndd-tooltip when variant is text', async () => {
-		el = await fixture<NDDTabBarItem>(`
-			<ndd-tab-bar-item variant="text" text="Home">
+	it('does not wrap in nldd-tooltip when variant is text', async () => {
+		el = await fixture<NLDDTabBarItem>(`
+			<nldd-tab-bar-item variant="text" text="Home">
 				<svg slot="icon"></svg>
-			</ndd-tab-bar-item>
+			</nldd-tab-bar-item>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('ndd-tooltip')).toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
 	});
 });
 
 
 /* ============================================================
-   ndd-tab-bar-item – events
+   nldd-tab-bar-item – events
    ============================================================ */
 
-describe('ndd-tab-bar-item – events', () => {
-	let el: NDDTabBarItem;
+describe('nldd-tab-bar-item – events', () => {
+	let el: NLDDTabBarItem;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('fires select event on click', async () => {
-		el = await fixture<NDDTabBarItem>('<ndd-tab-bar-item text="Tab"></ndd-tab-bar-item>');
+		el = await fixture<NLDDTabBarItem>('<nldd-tab-bar-item text="Tab"></nldd-tab-bar-item>');
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -223,7 +223,7 @@ describe('ndd-tab-bar-item – events', () => {
 	});
 
 	it('does not set selected on itself after click', async () => {
-		el = await fixture<NDDTabBarItem>('<ndd-tab-bar-item text="Tab"></ndd-tab-bar-item>');
+		el = await fixture<NLDDTabBarItem>('<nldd-tab-bar-item text="Tab"></nldd-tab-bar-item>');
 		await waitForUpdate(el);
 
 		el.shadowRoot!.querySelector('[role="tab"]')!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
@@ -235,10 +235,10 @@ describe('ndd-tab-bar-item – events', () => {
 
 
 /* ============================================================
-   ndd-tab-bar – render & ARIA
+   nldd-tab-bar – render & ARIA
    ============================================================ */
 
-describe('ndd-tab-bar', () => {
+describe('nldd-tab-bar', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -246,7 +246,7 @@ describe('ndd-tab-bar', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-tab-bar></ndd-tab-bar>');
+		el = await fixture('<nldd-tab-bar></nldd-tab-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
@@ -273,11 +273,11 @@ describe('ndd-tab-bar', () => {
 
 
 /* ============================================================
-   ndd-tab-bar – accessible label
+   nldd-tab-bar – accessible label
    ============================================================ */
 
-describe('ndd-tab-bar – accessible label', () => {
-	let el: NDDTabBar;
+describe('nldd-tab-bar – accessible label', () => {
+	let el: NLDDTabBar;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -286,14 +286,14 @@ describe('ndd-tab-bar – accessible label', () => {
 
 	it('falls back to "Tabs" when no accessible-label is provided', async () => {
 		vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture<NDDTabBar>('<ndd-tab-bar></ndd-tab-bar>');
+		el = await fixture<NLDDTabBar>('<nldd-tab-bar></nldd-tab-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe('Tabs');
 	});
 
 	it('warns once when no accessible-label is provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture<NDDTabBar>('<ndd-tab-bar></ndd-tab-bar>');
+		el = await fixture<NLDDTabBar>('<nldd-tab-bar></nldd-tab-bar>');
 		await waitForUpdate(el);
 		expect(warnSpy).toHaveBeenCalledOnce();
 		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
@@ -301,13 +301,13 @@ describe('ndd-tab-bar – accessible label', () => {
 
 	it('does not warn when accessible-label is provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture<NDDTabBar>('<ndd-tab-bar accessible-label="Navigatie"></ndd-tab-bar>');
+		el = await fixture<NLDDTabBar>('<nldd-tab-bar accessible-label="Navigatie"></nldd-tab-bar>');
 		await waitForUpdate(el);
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 
 	it('forwards accessible-label to the tablist aria-label', async () => {
-		el = await fixture<NDDTabBar>('<ndd-tab-bar accessible-label="Hoofdnavigatie"></ndd-tab-bar>');
+		el = await fixture<NLDDTabBar>('<nldd-tab-bar accessible-label="Hoofdnavigatie"></nldd-tab-bar>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.tab-bar__items')!.getAttribute('aria-label')).toBe('Hoofdnavigatie');
 	});
@@ -315,18 +315,18 @@ describe('ndd-tab-bar – accessible label', () => {
 
 
 /* ============================================================
-   ndd-tab-bar – item selection
+   nldd-tab-bar – item selection
    ============================================================ */
 
-describe('ndd-tab-bar – item selection', () => {
-	let el: NDDTabBar;
+describe('nldd-tab-bar – item selection', () => {
+	let el: NLDDTabBar;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('deselects other items when one is selected', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		const items = getItems(el);
@@ -340,7 +340,7 @@ describe('ndd-tab-bar – item selection', () => {
 	});
 
 	it('dispatches tabchange event with item detail', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		let detail: any;
@@ -354,7 +354,7 @@ describe('ndd-tab-bar – item selection', () => {
 	});
 
 	it('select event does not bubble past the tab bar', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		let selectBubbled = false;
@@ -369,22 +369,22 @@ describe('ndd-tab-bar – item selection', () => {
 
 
 /* ============================================================
-   ndd-tab-bar – variant propagation
+   nldd-tab-bar – variant propagation
    ============================================================ */
 
-describe('ndd-tab-bar – variant propagation', () => {
-	let el: NDDTabBar;
+describe('nldd-tab-bar – variant propagation', () => {
+	let el: NLDDTabBar;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('propagates variant="text" to all items as default', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar variant="text">
-				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
-				<ndd-tab-bar-item><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar variant="text">
+				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+				<nldd-tab-bar-item><svg slot="icon"></svg>Zoeken</nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		getItems(el).forEach(item => {
@@ -393,11 +393,11 @@ describe('ndd-tab-bar – variant propagation', () => {
 	});
 
 	it('propagates variant="icon" to all items as default', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar variant="icon">
-				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
-				<ndd-tab-bar-item><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar variant="icon">
+				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+				<nldd-tab-bar-item><svg slot="icon"></svg>Zoeken</nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		getItems(el).forEach(item => {
@@ -406,11 +406,11 @@ describe('ndd-tab-bar – variant propagation', () => {
 	});
 
 	it('item-level variant overrides parent variant', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar variant="text">
-				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
-				<ndd-tab-bar-item variant="icon"><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar variant="text">
+				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+				<nldd-tab-bar-item variant="icon"><svg slot="icon"></svg>Zoeken</nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		const items = getItems(el);
@@ -419,10 +419,10 @@ describe('ndd-tab-bar – variant propagation', () => {
 	});
 
 	it('compact still overrides parent variant', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar compact variant="text">
-				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar compact variant="text">
+				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		expect(getItems(el)[0].getAttribute('variant')).toBe('compact');
@@ -431,22 +431,22 @@ describe('ndd-tab-bar – variant propagation', () => {
 
 
 /* ============================================================
-   ndd-tab-bar – compact propagation
+   nldd-tab-bar – compact propagation
    ============================================================ */
 
-describe('ndd-tab-bar – compact propagation', () => {
-	let el: NDDTabBar;
+describe('nldd-tab-bar – compact propagation', () => {
+	let el: NLDDTabBar;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('propagates compact to all items', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar compact>
-				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
-				<ndd-tab-bar-item><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar compact>
+				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+				<nldd-tab-bar-item><svg slot="icon"></svg>Zoeken</nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		getItems(el).forEach(item => {
@@ -455,20 +455,20 @@ describe('ndd-tab-bar – compact propagation', () => {
 	});
 
 	it('compact overrides explicit variant on items', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar compact>
-				<ndd-tab-bar-item variant="text"><svg slot="icon"></svg>Home</ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar compact>
+				<nldd-tab-bar-item variant="text"><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		expect(getItems(el)[0].getAttribute('variant')).toBe('compact');
 	});
 
 	it('removes compact from items when parent compact is removed', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar compact>
-				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar compact>
+				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		el.compact = false;
@@ -479,22 +479,22 @@ describe('ndd-tab-bar – compact propagation', () => {
 
 
 /* ============================================================
-   ndd-tab-bar – responsive propagation
+   nldd-tab-bar – responsive propagation
    ============================================================ */
 
-describe('ndd-tab-bar – responsive propagation', () => {
-	let el: NDDTabBar;
+describe('nldd-tab-bar – responsive propagation', () => {
+	let el: NLDDTabBar;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('propagates responsive attribute to all items', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar responsive>
-				<ndd-tab-bar-item><svg slot="icon"></svg>Home</ndd-tab-bar-item>
-				<ndd-tab-bar-item><svg slot="icon"></svg>Zoeken</ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar responsive>
+				<nldd-tab-bar-item><svg slot="icon"></svg>Home</nldd-tab-bar-item>
+				<nldd-tab-bar-item><svg slot="icon"></svg>Zoeken</nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		getItems(el).forEach(item => {
@@ -503,10 +503,10 @@ describe('ndd-tab-bar – responsive propagation', () => {
 	});
 
 	it('removes responsive from items when parent responsive is removed', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar responsive>
-				<ndd-tab-bar-item text="Home"></ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar responsive>
+				<nldd-tab-bar-item text="Home"></nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		el.responsive = false;
@@ -517,21 +517,21 @@ describe('ndd-tab-bar – responsive propagation', () => {
 
 
 /* ============================================================
-   ndd-tab-bar – full-width
+   nldd-tab-bar – full-width
    ============================================================ */
 
-describe('ndd-tab-bar – full-width', () => {
-	let el: NDDTabBar;
+describe('nldd-tab-bar – full-width', () => {
+	let el: NLDDTabBar;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('reflects full-width attribute on host', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar full-width>
-				<ndd-tab-bar-item text="Home"></ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar full-width>
+				<nldd-tab-bar-item text="Home"></nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		expect(el.hasAttribute('full-width')).toBe(true);
@@ -540,11 +540,11 @@ describe('ndd-tab-bar – full-width', () => {
 
 
 /* ============================================================
-   ndd-tab-bar – keyboard navigation
+   nldd-tab-bar – keyboard navigation
    ============================================================ */
 
-describe('ndd-tab-bar – keyboard navigation', () => {
-	let el: NDDTabBar;
+describe('nldd-tab-bar – keyboard navigation', () => {
+	let el: NLDDTabBar;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -552,11 +552,11 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('first enabled item has tabindex="0" when no tab is selected', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar>
-				<ndd-tab-bar-item text="A"></ndd-tab-bar-item>
-				<ndd-tab-bar-item text="B"></ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar>
+				<nldd-tab-bar-item text="A"></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="B"></nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		const items = getItems(el);
@@ -567,7 +567,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('selected tab has tabindex="0"', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 		const items = getItems(el);
 		const inner = items[1].shadowRoot!.querySelector('[role="tab"]')!;
@@ -575,7 +575,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('non-selected tabs have tabindex="-1"', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 		const items = getItems(el);
 		const innerA = items[0].shadowRoot!.querySelector('[role="tab"]')!;
@@ -585,7 +585,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('ArrowRight auto-activates next tab', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 		const items = getItems(el);
 		pressKey(items[1], 'ArrowRight');
@@ -595,7 +595,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('ArrowLeft auto-activates previous tab', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 		const items = getItems(el);
 		pressKey(items[1], 'ArrowLeft');
@@ -605,7 +605,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('ArrowRight calls focus on next item', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		const items = getItems(el);
@@ -615,7 +615,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('ArrowLeft calls focus on previous item', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		const items = getItems(el);
@@ -625,7 +625,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('ArrowRight wraps from last to first', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		const items = getItems(el);
@@ -635,7 +635,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('ArrowLeft wraps from first to last', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		const items = getItems(el);
@@ -645,7 +645,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('Home calls focus on first item', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		const items = getItems(el);
@@ -655,7 +655,7 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 	});
 
 	it('End calls focus on last item', async () => {
-		el = await fixture<NDDTabBar>(threeTabBar());
+		el = await fixture<NLDDTabBar>(threeTabBar());
 		await waitForUpdate(el);
 
 		const items = getItems(el);
@@ -667,11 +667,11 @@ describe('ndd-tab-bar – keyboard navigation', () => {
 });
 
 /* ============================================================
-   ndd-tab-bar – navigation mode
+   nldd-tab-bar – navigation mode
    ============================================================ */
 
-describe('ndd-tab-bar – navigation mode', () => {
-	let el: NDDTabBar;
+describe('nldd-tab-bar – navigation mode', () => {
+	let el: NLDDTabBar;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -679,31 +679,31 @@ describe('ndd-tab-bar – navigation mode', () => {
 	});
 
 	it('renders a nav element when navigation is set', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar navigation accessible-label="Navigatie">
-				<ndd-tab-bar-item text="Home" href="/home" selected></ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar navigation accessible-label="Navigatie">
+				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nav')).not.toBeNull();
 	});
 
 	it('does not render role="tablist" when navigation is set', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar navigation accessible-label="Navigatie">
-				<ndd-tab-bar-item text="Home" href="/home"></ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar navigation accessible-label="Navigatie">
+				<nldd-tab-bar-item text="Home" href="/home"></nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('[role="tablist"]')).toBeNull();
 	});
 
 	it('sets aria-current="page" on selected link item in navigation mode', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar navigation accessible-label="Navigatie">
-				<ndd-tab-bar-item text="Home" href="/home" selected></ndd-tab-bar-item>
-				<ndd-tab-bar-item text="Profiel" href="/profiel"></ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar navigation accessible-label="Navigatie">
+				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Profiel" href="/profiel"></nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		const items = getItems(el);
@@ -714,10 +714,10 @@ describe('ndd-tab-bar – navigation mode', () => {
 	});
 
 	it('does not set aria-selected on link items in navigation mode', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar navigation accessible-label="Navigatie">
-				<ndd-tab-bar-item text="Home" href="/home" selected></ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar navigation accessible-label="Navigatie">
+				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		const items = getItems(el);
@@ -726,11 +726,11 @@ describe('ndd-tab-bar – navigation mode', () => {
 	});
 
 	it('does not auto-activate on ArrowRight in navigation mode', async () => {
-		el = await fixture<NDDTabBar>(`
-			<ndd-tab-bar navigation accessible-label="Navigatie">
-				<ndd-tab-bar-item text="Home" href="/home" selected></ndd-tab-bar-item>
-				<ndd-tab-bar-item text="Profiel" href="/profiel"></ndd-tab-bar-item>
-			</ndd-tab-bar>
+		el = await fixture<NLDDTabBar>(`
+			<nldd-tab-bar navigation accessible-label="Navigatie">
+				<nldd-tab-bar-item text="Home" href="/home" selected></nldd-tab-bar-item>
+				<nldd-tab-bar-item text="Profiel" href="/profiel"></nldd-tab-bar-item>
+			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
 		const items = getItems(el);

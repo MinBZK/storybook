@@ -1,9 +1,9 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './ndd-icon.styles.js';
-import { template } from './ndd-icon.template.js';
-import { aliases } from './ndd-icon-aliases.js';
-import { iconRegistry } from './ndd-icon-registry.js';
+import { styles } from './icon.styles.js';
+import { template } from './icon.template.js';
+import { aliases } from './icon-aliases.js';
+import { iconRegistry } from './icon-registry.js';
 
 export { aliases };
 
@@ -15,17 +15,17 @@ export const ICONS: string[] = [
 /**
  * A customizable icon component that renders SVG icons from a predefined library.
  *
- * @element ndd-icon
+ * @element nldd-icon
  *
  * @attr {string} name - The name of the icon to display
  *
  * @example
  * ```html
- * <ndd-icon name="heart"></ndd-icon>
+ * <nldd-icon name="heart"></nldd-icon>
  * ```
  */
-@customElement('ndd-icon')
-export class NDDIcon extends LitElement {
+@customElement('nldd-icon')
+export class NLDDIcon extends LitElement {
 	static override styles = styles;
 
 	@property({ type: String })
@@ -53,7 +53,7 @@ export class NDDIcon extends LitElement {
 			return svg;
 		}
 
-		console.warn(`NDDIcon: icon "${resolvedName}" not found`);
+		console.warn(`NLDDIcon: icon "${resolvedName}" not found`);
 		return null;
 	}
 
@@ -64,6 +64,6 @@ export class NDDIcon extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-icon': NDDIcon;
+		'nldd-icon': NLDDIcon;
 	}
 }

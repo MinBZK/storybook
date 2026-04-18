@@ -108,7 +108,7 @@ export const tokenStyles = css`
 
 	/* # Dismiss — padding compensation */
 
-	/* Remove right padding so the ndd-icon-button flush-fits the token edge */
+	/* Remove right padding so the nldd-icon-button flush-fits the token edge */
 	:host([control="dismiss"]) .token {
 		padding-right: 0;
 	}

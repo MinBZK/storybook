@@ -1,16 +1,16 @@
 import { html } from 'lit';
-import './ndd-checkbox-field.ts';
+import './checkbox-field.ts';
 
 /**
  * De Checkbox Field component is een checkbox met een inline label voor gebruik in formulieren.
  */
 export default {
 	title: 'Components/Inputs/Checkbox Field',
-	component: 'ndd-checkbox-field',
+	component: 'nldd-checkbox-field',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/checkbox-field/ndd-checkbox-field.ts',
+			file: 'src/components/inputs/checkbox-field/checkbox-field.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -57,13 +57,13 @@ export default {
 };
 
 const Template = ({ label, checked, indeterminate, disabled, value }) => html`
-	<ndd-checkbox-field
+	<nldd-checkbox-field
 		label=${label}
 		?checked=${checked}
 		?indeterminate=${indeterminate}
 		?disabled=${disabled}
 		value=${value}
-	></ndd-checkbox-field>
+	></nldd-checkbox-field>
 `;
 
 export const Standaard = Template.bind({});
@@ -71,12 +71,12 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
-		<ndd-checkbox-field label="Niet aangevinkt" value="1"></ndd-checkbox-field>
-		<ndd-checkbox-field label="Aangevinkt" value="2" checked></ndd-checkbox-field>
-		<ndd-checkbox-field label="Onbepaald" value="3" indeterminate></ndd-checkbox-field>
-		<ndd-checkbox-field label="Uitgeschakeld" value="4" disabled></ndd-checkbox-field>
-		<ndd-checkbox-field label="Aangevinkt en uitgeschakeld" value="5" checked disabled></ndd-checkbox-field>
-		<ndd-checkbox-field label="Onbepaald en uitgeschakeld" value="6" indeterminate disabled></ndd-checkbox-field>
+		<nldd-checkbox-field label="Niet aangevinkt" value="1"></nldd-checkbox-field>
+		<nldd-checkbox-field label="Aangevinkt" value="2" checked></nldd-checkbox-field>
+		<nldd-checkbox-field label="Onbepaald" value="3" indeterminate></nldd-checkbox-field>
+		<nldd-checkbox-field label="Uitgeschakeld" value="4" disabled></nldd-checkbox-field>
+		<nldd-checkbox-field label="Aangevinkt en uitgeschakeld" value="5" checked disabled></nldd-checkbox-field>
+		<nldd-checkbox-field label="Onbepaald en uitgeschakeld" value="6" indeterminate disabled></nldd-checkbox-field>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

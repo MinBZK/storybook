@@ -5,7 +5,7 @@ const mdMin = unsafeCSS(breakpoints.mdMin);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
-/* # ndd-collection styles */
+/* # nldd-collection styles */
 
 export const collectionStyles = css`
 	:host {
@@ -111,15 +111,15 @@ export const collectionStyles = css`
 		justify-content: stretch;
 	}
 
-	:host([layout='grid']) .collection__footer ndd-button,
-	:host([layout='list']) .collection__footer ndd-button,
-	:host(:not([layout])) .collection__footer ndd-button {
+	:host([layout='grid']) .collection__footer nldd-button,
+	:host([layout='list']) .collection__footer nldd-button,
+	:host(:not([layout])) .collection__footer nldd-button {
 		width: 100%;
 	}
 
-	:host([layout='grid']) .collection__footer ndd-button::part(button),
-	:host([layout='list']) .collection__footer ndd-button::part(button),
-	:host(:not([layout])) .collection__footer ndd-button::part(button) {
+	:host([layout='grid']) .collection__footer nldd-button::part(button),
+	:host([layout='list']) .collection__footer nldd-button::part(button),
+	:host(:not([layout])) .collection__footer nldd-button::part(button) {
 		width: 100%;
 	}
 

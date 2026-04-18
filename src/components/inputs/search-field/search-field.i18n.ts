@@ -1,6 +1,6 @@
-export const nddSearchFieldTranslations = {
+export const nlddSearchFieldTranslations = {
 	'components.search-field.dismiss-action': 'Wis zoekopdracht',
 	'components.search-field.search-action': 'Zoek',
 };
 
-export type NDDSearchFieldTranslations = typeof nddSearchFieldTranslations;
+export type NLDDSearchFieldTranslations = typeof nlddSearchFieldTranslations;

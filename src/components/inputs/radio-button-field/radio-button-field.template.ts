@@ -1,15 +1,15 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDRadioButtonField } from './ndd-radio-button-field.js';
-import '../radio-button/ndd-radio-button.ts';
+import type { NLDDRadioButtonField } from './radio-button-field.js';
+import '../radio-button/radio-button.ts';
 
 /* eslint-disable lit-a11y/click-events-have-key-events -- label wrapper delegates to inner radio button */
-export function radioButtonFieldTemplate(component: NDDRadioButtonField): TemplateResult {
+export function radioButtonFieldTemplate(component: NLDDRadioButtonField): TemplateResult {
 	return html`
 		<div class="radio-button-field"
 			@click=${component._handleLabelClick}
 		>
 			<div class="radio-button-field__control">
-				<ndd-radio-button
+				<nldd-radio-button
 					?checked=${component.checked}
 					?disabled=${component.disabled}
 					?required=${component.required}
@@ -17,7 +17,7 @@ export function radioButtonFieldTemplate(component: NDDRadioButtonField): Templa
 					value=${component.value}
 					accessible-label=${component.label || nothing}
 					@change=${component._handleChange}
-				></ndd-radio-button>
+				></nldd-radio-button>
 			</div>
 			<span class="radio-button-field__label">${component.label}</span>
 		</div>

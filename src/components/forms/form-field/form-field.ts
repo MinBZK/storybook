@@ -1,7 +1,7 @@
 /**
  * Nederlandse Digitale Dienst Form Field Components (Lit + TypeScript)
  *
- * @element ndd-form-field
+ * @element nldd-form-field
  *
  * @attr {string} label-alignment  - 'top' (default) | 'right' | 'left'
  * @attr {string} label            - Field label text. Omit for no-label layout.
@@ -9,37 +9,37 @@
  * @attr {boolean} optional        - Shows an optional badge next to the label.
  * @attr {string} optional-label   - Text for the optional badge. Defaults to 'Optioneel'.
  *
- * @slot           - The slotted input (e.g. ndd-text-field). Set `invalid` and
+ * @slot           - The slotted input (e.g. nldd-text-field). Set `invalid` and
  *                   `error-message="id1 id2"` on the input to wire up error texts.
- *                   ndd-form-field-error-text elements assign themselves to the
+ *                   nldd-form-field-error-text elements assign themselves to the
  *                   errors slot automatically.
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
- * @element ndd-form-field-help-text
+ * @element nldd-form-field-help-text
  *
  * @slot - Help text content. May contain inline elements including links.
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
- * @element ndd-form-field-error-text
+ * @element nldd-form-field-error-text
  *
  * @attr {string} id       - Referenced by the input's `error-message` attribute.
- * @attr {boolean} invalid - Visibility managed automatically by ndd-form-field.
+ * @attr {boolean} invalid - Visibility managed automatically by nldd-form-field.
  *
  * @slot - The error message text.
  *
  * ─────────────────────────────────────────────────────────────────────────
  *
  * @example
- * <ndd-form-field label="Password">
- *   <ndd-form-field-help-text>
+ * <nldd-form-field label="Password">
+ *   <nldd-form-field-help-text>
  *     At least 8 characters. <a href="/help">Learn more</a>.
- *   </ndd-form-field-help-text>
- *   <ndd-text-field invalid error-message="endd-required endd-length"></ndd-text-field>
- *   <ndd-form-field-error-text id="endd-required">This field is required.</ndd-form-field-error-text>
- *   <ndd-form-field-error-text id="endd-length">Must be at least 8 characters.</ndd-form-field-error-text>
- * </ndd-form-field>
+ *   </nldd-form-field-help-text>
+ *   <nldd-text-field invalid error-message="enldd-required enldd-length"></nldd-text-field>
+ *   <nldd-form-field-error-text id="enldd-required">This field is required.</nldd-form-field-error-text>
+ *   <nldd-form-field-error-text id="enldd-length">Must be at least 8 characters.</nldd-form-field-error-text>
+ * </nldd-form-field>
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -47,32 +47,32 @@ import {
 	formFieldStyles,
 	formFieldHelpTextStyles,
 	formFieldErrorTextStyles,
-} from './ndd-form-field.styles.js';
+} from './form-field.styles.js';
 import {
 	formFieldTemplate,
 	formFieldHelpTextTemplate,
 	formFieldErrorTextTemplate,
-} from './ndd-form-field.template.js';
+} from './form-field.template.js';
 
 export type LabelAlignment = 'top' | 'left' | 'right';
 
 // Exclude helper elements so _findInput() never returns them instead of the actual input
-const HELPER_TAGS = ['ndd-form-field-help-text', 'ndd-form-field-error-text'];
+const HELPER_TAGS = ['nldd-form-field-help-text', 'nldd-form-field-error-text'];
 
 // crypto.randomUUID() requires a secure context (HTTPS or localhost).
 // The fallback uses Math.random() which is sufficient for non-security-sensitive DOM IDs.
 function generateId(): string {
 	const uuid = crypto.randomUUID?.() ?? Math.random().toString(36).slice(2);
-	return `ndd-field-input-${uuid}`;
+	return `nldd-field-input-${uuid}`;
 }
 
 
 /* ============================================================
-   ndd-form-field
+   nldd-form-field
    ============================================================ */
 
-@customElement('ndd-form-field')
-export class NDDFormField extends LitElement {
+@customElement('nldd-form-field')
+export class NLDDFormField extends LitElement {
 	static override styles = formFieldStyles;
 
 	/**
@@ -92,7 +92,7 @@ export class NDDFormField extends LitElement {
 
 	/**
 	 * Short supporting text shown below the label. Same typography as the
-	 * optional badge. Use ndd-form-field-help-text for longer descriptive text.
+	 * optional badge. Use nldd-form-field-help-text for longer descriptive text.
 	 */
 	@property({ type: String, attribute: 'supporting-label' })
 	supportingLabel = '';
@@ -101,7 +101,7 @@ export class NDDFormField extends LitElement {
 	 * When true an "Optional" badge is shown next to the label.
 	 * Required fields are intentionally left unmarked per design spec.
 	 *
-	 * Note: ndd-form-field does not auto-propagate `required` or `aria-required`
+	 * Note: nldd-form-field does not auto-propagate `required` or `aria-required`
 	 * to the slotted input. If the field is required, set `required` directly
 	 * on the slotted input element so screen readers announce it correctly.
 	 */
@@ -170,7 +170,7 @@ export class NDDFormField extends LitElement {
 		if (!input) return;
 
 		// Ensure the inner native input has an id so aria-describedby can reference it.
-		// For custom elements (ndd-text-field, ndd-password-field) inputId is a property
+		// For custom elements (nldd-text-field, nldd-password-field) inputId is a property
 		// that gets forwarded to the inner <input id>. For plain <input> elements we set
 		// the id directly. We never set the host element's id to avoid duplicate IDs.
 		const isCustomInput = 'inputId' in input;
@@ -182,7 +182,7 @@ export class NDDFormField extends LitElement {
 			if (!input.id) input.id = generateId();
 		}
 
-		// Custom elements (ndd-text-field, ndd-password-field) expose an `accessible-label`
+		// Custom elements (nldd-text-field, nldd-password-field) expose an `accessible-label`
 		// attribute that they forward to their inner <input aria-label>. Native <input>
 		// elements have no such property — set aria-label directly on them instead.
 		if (this.label) {
@@ -200,7 +200,7 @@ export class NDDFormField extends LitElement {
 
 		// Ensure each help text element has an id so it can be referenced in aria-describedby
 		Array.from(this.children)
-			.filter(el => el.tagName.toLowerCase() === 'ndd-form-field-help-text')
+			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-help-text')
 			.forEach(el => { if (!el.id) el.id = generateId(); });
 
 		this._observer = new MutationObserver(() => this._syncErrorText());
@@ -220,11 +220,11 @@ export class NDDFormField extends LitElement {
 
 	/**
 	 * Reads `invalid` and `error-message` from the input and toggles
-	 * the `invalid` attribute on the referenced ndd-form-field-error-text elements.
+	 * the `invalid` attribute on the referenced nldd-form-field-error-text elements.
 	 * Also sets `aria-describedby` on the input to reference visible error texts.
 	 *
 	 * Note: this mechanism relies on the slotted input reflecting an `invalid`
-	 * attribute, which ndd-text-field and ndd-password-field do. Plain native
+	 * attribute, which nldd-text-field and nldd-password-field do. Plain native
 	 * `<input>` elements use constraint validation (validity.valid, the `invalid`
 	 * event) instead — support for native inputs is a known limitation and
 	 * tracked as a follow-up.
@@ -240,10 +240,10 @@ export class NDDFormField extends LitElement {
 			.filter(Boolean);
 
 		const allErrorTexts = Array.from(this.children)
-			.filter(el => el.tagName.toLowerCase() === 'ndd-form-field-error-text');
+			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-error-text');
 
 		const helpIds = Array.from(this.children)
-			.filter(el => el.tagName.toLowerCase() === 'ndd-form-field-help-text' && el.id)
+			.filter(el => el.tagName.toLowerCase() === 'nldd-form-field-help-text' && el.id)
 			.map(el => el.id);
 
 		const visibleErrorIds: string[] = [];
@@ -259,7 +259,7 @@ export class NDDFormField extends LitElement {
 		const describedByValue = describedByIds.join(' ');
 
 		if (isCustomInput) {
-			// For custom elements (ndd-text-field, ndd-password-field), set error-message-ids
+			// For custom elements (nldd-text-field, nldd-password-field), set error-message-ids
 			// so they can forward it to the inner <input aria-describedby>. IDs do not cross
 			// shadow DOM boundaries so setting aria-describedby on the host is not sufficient.
 			(input as unknown as HTMLElement & { errorMessageIds: string }).errorMessageIds = describedByValue;
@@ -277,11 +277,11 @@ export class NDDFormField extends LitElement {
 
 
 /* ============================================================
-   ndd-form-field-help-text
+   nldd-form-field-help-text
    ============================================================ */
 
-@customElement('ndd-form-field-help-text')
-export class NDDFormFieldHelpText extends LitElement {
+@customElement('nldd-form-field-help-text')
+export class NLDDFormFieldHelpText extends LitElement {
 	static override styles = formFieldHelpTextStyles;
 
 	override connectedCallback() {
@@ -298,16 +298,16 @@ export class NDDFormFieldHelpText extends LitElement {
 
 
 /* ============================================================
-   ndd-form-field-error-text
+   nldd-form-field-error-text
    ============================================================ */
 
-@customElement('ndd-form-field-error-text')
-export class NDDFormFieldErrorText extends LitElement {
+@customElement('nldd-form-field-error-text')
+export class NLDDFormFieldErrorText extends LitElement {
 	static override styles = formFieldErrorTextStyles;
 
 	/**
 	 * When present the error text is visible.
-	 * Managed automatically by the parent ndd-form-field — do not set manually.
+	 * Managed automatically by the parent nldd-form-field — do not set manually.
 	 */
 	@property({ type: Boolean, reflect: true })
 	invalid = false;
@@ -327,8 +327,8 @@ export class NDDFormFieldErrorText extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-form-field': NDDFormField;
-		'ndd-form-field-help-text': NDDFormFieldHelpText;
-		'ndd-form-field-error-text': NDDFormFieldErrorText;
+		'nldd-form-field': NLDDFormField;
+		'nldd-form-field-help-text': NLDDFormFieldHelpText;
+		'nldd-form-field-error-text': NLDDFormFieldErrorText;
 	}
 }

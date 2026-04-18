@@ -1,21 +1,21 @@
 import { LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset, size } from '@floating-ui/dom';
-import { menuStyles, menuItemStyles, menuDividerStyles } from './ndd-menu.styles.js';
-import { menuTemplate, menuItemTemplate, menuDividerTemplate } from './ndd-menu.template.js';
-import { nddMenuTranslations } from './ndd-menu.i18n.js';
-import type { NDDMenuTranslations } from './ndd-menu.i18n.js';
-import '../../lists-and-menus/cells/icon-cell/ndd-icon-cell.js';
-import '../../lists-and-menus/cells/spacer-cell/ndd-spacer-cell.js';
-import '../../lists-and-menus/cells/text-cell/ndd-text-cell.js';
-import '../../content/icon/ndd-icon.js';
+import { menuStyles, menuItemStyles, menuDividerStyles } from './menu.styles.js';
+import { menuTemplate, menuItemTemplate, menuDividerTemplate } from './menu.template.js';
+import { nlddMenuTranslations } from './menu.i18n.js';
+import type { NLDDMenuTranslations } from './menu.i18n.js';
+import '../../lists-and-menus/cells/icon-cell/icon-cell.js';
+import '../../lists-and-menus/cells/spacer-cell/spacer-cell.js';
+import '../../lists-and-menus/cells/text-cell/text-cell.js';
+import '../../content/icon/icon.js';
 import { isKeyboardMode } from '../../../utilities/input-modality.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 
-// # ndd-menu-divider
+// # nldd-menu-divider
 
-export class NDDMenuDivider extends LitElement {
+export class NLDDMenuDivider extends LitElement {
 	static override styles = menuDividerStyles;
 
 	override render() {
@@ -23,18 +23,18 @@ export class NDDMenuDivider extends LitElement {
 	}
 }
 
-if (!customElements.get('ndd-menu-divider')) {
-	customElements.define('ndd-menu-divider', NDDMenuDivider);
+if (!customElements.get('nldd-menu-divider')) {
+	customElements.define('nldd-menu-divider', NLDDMenuDivider);
 }
 
 
-// # ndd-menu-item
+// # nldd-menu-item
 
 /**
- * A single item within an ndd-menu.
+ * A single item within an nldd-menu.
  *
  * @attr {string}  text     - Display text. Supports **bold** markdown syntax when set
- *                            programmatically by ndd-menu's filter method. See filter() for details.
+ *                            programmatically by nldd-menu's filter method. See filter() for details.
  * @attr {string}  value    - Form value. Falls back to text when not set.
  * @attr {string}  aliases  - Space-separated alternative search terms.
  * @attr {string}  details  - Secondary label shown on the right side.
@@ -44,7 +44,7 @@ if (!customElements.get('ndd-menu-divider')) {
  *
  * @fires select - Fired when the item is clicked and not disabled.
  */
-export class NDDMenuItem extends LitElement {
+export class NLDDMenuItem extends LitElement {
 	static override styles = menuItemStyles;
 
 	@property({ type: String, reflect: true })
@@ -53,7 +53,7 @@ export class NDDMenuItem extends LitElement {
 	@property({ type: String, reflect: true })
 	value = '';
 
-	/** Space-separated alternative search terms used by ndd-menu's filter. */
+	/** Space-separated alternative search terms used by nldd-menu's filter. */
 	@property({ type: String, reflect: true })
 	aliases = '';
 
@@ -69,16 +69,16 @@ export class NDDMenuItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	/** Internal display text set by ndd-menu's filter with bold markers applied. */
+	/** Internal display text set by nldd-menu's filter with bold markers applied. */
 	@state()
 	_displayText = '';
 
-	/** Set by ndd-menu during filtering to apply bold markers to matching text. */
+	/** Set by nldd-menu during filtering to apply bold markers to matching text. */
 	setDisplayText(text: string): void {
 		this._displayText = text;
 	}
 
-	/** Set by ndd-menu. Not part of the public API. */
+	/** Set by nldd-menu. Not part of the public API. */
 	@state()
 	menuVariant: 'menu' | 'listbox' = 'menu';
 
@@ -87,7 +87,7 @@ export class NDDMenuItem extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		if (!this.id) {
-			this.id = `ndd-menu-item-${NDDMenuItem._counter++}`;
+			this.id = `nldd-menu-item-${NLDDMenuItem._counter++}`;
 		}
 		this.addEventListener('focusin', () => {
 			this.setAttribute('data-focused', '');
@@ -110,7 +110,7 @@ export class NDDMenuItem extends LitElement {
 			bubbles: true,
 			composed: true,
 		}));
-		(this.closest('ndd-menu') as HTMLElement)?.hidePopover?.();
+		(this.closest('nldd-menu') as HTMLElement)?.hidePopover?.();
 	}
 
 	/** Programmatically select this item. */
@@ -123,14 +123,14 @@ export class NDDMenuItem extends LitElement {
 	}
 }
 
-if (!customElements.get('ndd-menu-item')) {
-	customElements.define('ndd-menu-item', NDDMenuItem);
+if (!customElements.get('nldd-menu-item')) {
+	customElements.define('nldd-menu-item', NLDDMenuItem);
 }
 
 
-// # ndd-menu
+// # nldd-menu
 
-const defaultFilterFn = (query: string, item: NDDMenuItem): boolean => {
+const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
 	const q = query.toLowerCase();
 	const textMatch = item.text.toLowerCase().includes(q);
 	const valueMatch = item.value !== '' && item.value.toLowerCase().includes(q);
@@ -143,9 +143,9 @@ const defaultFilterFn = (query: string, item: NDDMenuItem): boolean => {
  * Positioned relative to an anchor element using Floating UI.
  *
  * Supports filtering, keyboard navigation, and highlight management.
- * Use ndd-menu-item and ndd-menu-divider as children.
+ * Use nldd-menu-item and nldd-menu-divider as children.
  *
- * Note: Only type="button" items are supported when used inside ndd-combo-box-field.
+ * Note: Only type="button" items are supported when used inside nldd-combo-box-field.
  * Radio and checkbox types may be used in standalone menus.
  *
  * @attr {string}  anchor         - ID of the anchor element.
@@ -157,9 +157,9 @@ const defaultFilterFn = (query: string, item: NDDMenuItem): boolean => {
  * @attr {object}  translations   - Override one or more translation keys.
  * @attr {Function} filterFn      - Custom filter function (query, item) => boolean.
  *
- * @slot - ndd-menu-item and ndd-menu-divider elements.
+ * @slot - nldd-menu-item and nldd-menu-divider elements.
  */
-export class NDDMenu extends LitElement {
+export class NLDDMenu extends LitElement {
 	static override styles = menuStyles;
 
 	@property({ type: String, reflect: true })
@@ -199,14 +199,14 @@ export class NDDMenu extends LitElement {
 	 * Unset keys fall back to the Dutch default.
 	 */
 	@property({ type: Object })
-	translations: Partial<NDDMenuTranslations> = {};
+	translations: Partial<NLDDMenuTranslations> = {};
 
 	/**
 	 * Custom filter function. Defaults to case-insensitive substring match
 	 * on text, value, and aliases attributes.
 	 */
 	@property({ attribute: false })
-	filterFn: (query: string, item: NDDMenuItem) => boolean = defaultFilterFn;
+	filterFn: (query: string, item: NLDDMenuItem) => boolean = defaultFilterFn;
 
 	@state()
 	private _isEmpty = false;
@@ -216,8 +216,8 @@ export class NDDMenu extends LitElement {
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
-	private _t(key: keyof NDDMenuTranslations): string {
-		return this.translations[key] ?? nddMenuTranslations[key];
+	private _t(key: keyof NLDDMenuTranslations): string {
+		return this.translations[key] ?? nlddMenuTranslations[key];
 	}
 
 	/** Resolved empty text: emptyText attribute takes precedence, then i18n fallback. */
@@ -243,8 +243,8 @@ export class NDDMenu extends LitElement {
 			}
 		}
 		if (changedProperties.has('variant')) {
-			Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
-				(item as NDDMenuItem).menuVariant = this.variant;
+			Array.from(this.querySelectorAll('nldd-menu-item')).forEach(item => {
+				(item as NLDDMenuItem).menuVariant = this.variant;
 			});
 		}
 	}
@@ -273,7 +273,7 @@ export class NDDMenu extends LitElement {
 	};
 
 	private _handleMenuItemMouseenter = (event: MouseEvent): void => {
-		const item = (event.target as Element).closest('ndd-menu-item') as NDDMenuItem | null;
+		const item = (event.target as Element).closest('nldd-menu-item') as NLDDMenuItem | null;
 		if (!item || item.disabled || item.hasAttribute('hidden')) return;
 		this._setHighlight(item);
 	};
@@ -283,7 +283,7 @@ export class NDDMenu extends LitElement {
 	};
 
 	private _handleMenuItemFocused = (event: Event): void => {
-		const item = (event.target as Element).closest('ndd-menu-item') as NDDMenuItem | null;
+		const item = (event.target as Element).closest('nldd-menu-item') as NLDDMenuItem | null;
 		if (!item || item.disabled || item.hasAttribute('hidden')) return;
 		this._setHighlight(item);
 	};
@@ -315,23 +315,23 @@ export class NDDMenu extends LitElement {
 
 	// — Internal helpers ——————————————————————————————————————————————————————
 
-	private _getVisibleItems(): NDDMenuItem[] {
+	private _getVisibleItems(): NLDDMenuItem[] {
 		return Array.from(
-			this.querySelectorAll('ndd-menu-item:not([hidden]):not([disabled])')
-		) as NDDMenuItem[];
+			this.querySelectorAll('nldd-menu-item:not([hidden]):not([disabled])')
+		) as NLDDMenuItem[];
 	}
 
-	private _getFocusedIndex(items: NDDMenuItem[]): number {
+	private _getFocusedIndex(items: NLDDMenuItem[]): number {
 		return items.findIndex(item => item.hasAttribute('data-focused'));
 	}
 
 	private _clearHighlight(): void {
-		Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
+		Array.from(this.querySelectorAll('nldd-menu-item')).forEach(item => {
 			item.removeAttribute('highlighted');
 		});
 	}
 
-	private _setHighlight(target: NDDMenuItem | null): void {
+	private _setHighlight(target: NLDDMenuItem | null): void {
 		this._clearHighlight();
 		const resolved = target ?? this._getVisibleItems()[0] ?? null;
 		resolved?.setAttribute('highlighted', '');
@@ -344,17 +344,17 @@ export class NDDMenu extends LitElement {
 	private _updateDividerVisibility(): void {
 		const children = Array.from(this.children) as Element[];
 		children.forEach(el => {
-			if (el.tagName.toLowerCase() === 'ndd-menu-divider') {
+			if (el.tagName.toLowerCase() === 'nldd-menu-divider') {
 				el.removeAttribute('hidden');
 			}
 		});
 
 		const visible = children.filter(el => !el.hasAttribute('hidden'));
 		visible.forEach((el, index) => {
-			if (el.tagName.toLowerCase() !== 'ndd-menu-divider') return;
+			if (el.tagName.toLowerCase() !== 'nldd-menu-divider') return;
 			const isFirst = index === 0;
 			const isLast = index === visible.length - 1;
-			const prevIsDivider = index > 0 && visible[index - 1].tagName.toLowerCase() === 'ndd-menu-divider';
+			const prevIsDivider = index > 0 && visible[index - 1].tagName.toLowerCase() === 'nldd-menu-divider';
 			if (isFirst || isLast || prevIsDivider) {
 				el.setAttribute('hidden', '');
 			}
@@ -377,7 +377,7 @@ export class NDDMenu extends LitElement {
 	 * When the query is empty, all items are shown and bold markers are cleared.
 	 */
 	public filter(query: string): void {
-		const allItems = Array.from(this.querySelectorAll('ndd-menu-item')) as NDDMenuItem[];
+		const allItems = Array.from(this.querySelectorAll('nldd-menu-item')) as NLDDMenuItem[];
 		allItems.forEach(item => {
 			const matches = !query || this.filterFn(query, item);
 			item.toggleAttribute('hidden', !matches);
@@ -459,8 +459,8 @@ export class NDDMenu extends LitElement {
 	}
 
 	/** Returns the currently highlighted item, or null if none. */
-	public getHighlighted(): NDDMenuItem | null {
-		return this.querySelector('ndd-menu-item[highlighted]') as NDDMenuItem | null;
+	public getHighlighted(): NLDDMenuItem | null {
+		return this.querySelector('nldd-menu-item[highlighted]') as NLDDMenuItem | null;
 	}
 
 	/** Returns the ID of the currently highlighted item, or empty string if none. */
@@ -551,8 +551,8 @@ export class NDDMenu extends LitElement {
 		this._updateDividerVisibility();
 		this._clearHighlight();
 		this._updateEmptyState();
-		Array.from(this.querySelectorAll('ndd-menu-item')).forEach(item => {
-			(item as NDDMenuItem).menuVariant = this.variant;
+		Array.from(this.querySelectorAll('nldd-menu-item')).forEach(item => {
+			(item as NLDDMenuItem).menuVariant = this.variant;
 		});
 
 		await this.reposition();
@@ -577,14 +577,14 @@ export class NDDMenu extends LitElement {
 	}
 }
 
-if (!customElements.get('ndd-menu')) {
-	customElements.define('ndd-menu', NDDMenu);
+if (!customElements.get('nldd-menu')) {
+	customElements.define('nldd-menu', NLDDMenu);
 }
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-menu': NDDMenu;
-		'ndd-menu-item': NDDMenuItem;
-		'ndd-menu-divider': NDDMenuDivider;
+		'nldd-menu': NLDDMenu;
+		'nldd-menu-item': NLDDMenuItem;
+		'nldd-menu-divider': NLDDMenuDivider;
 	}
 }

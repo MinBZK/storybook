@@ -3,15 +3,15 @@
  *
  * Een scheidingslijn die secties van inhoud visueel van elkaar scheidt.
  *
- * @element ndd-divider
+ * @element nldd-divider
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { dividerStyles } from './ndd-divider.styles.ts';
-import { dividerTemplate } from './ndd-divider.template.ts';
+import { dividerStyles } from './divider.styles.ts';
+import { dividerTemplate } from './divider.template.ts';
 
-@customElement('ndd-divider')
-export class NDDDivider extends LitElement {
+@customElement('nldd-divider')
+export class NLDDDivider extends LitElement {
 	static override styles = dividerStyles;
 
 	override render() {
@@ -21,6 +21,6 @@ export class NDDDivider extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-divider': NDDDivider;
+		'nldd-divider': NLDDDivider;
 	}
 }

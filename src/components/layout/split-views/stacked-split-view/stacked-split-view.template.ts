@@ -1,8 +1,8 @@
 import { html, TemplateResult, nothing } from 'lit';
-import type { NDDStackedSplitView } from './ndd-stacked-split-view.js';
-import '../split-view-divider/ndd-split-view-divider.ts';
+import type { NLDDStackedSplitView } from './stacked-split-view.js';
+import '../split-view-divider/split-view-divider.ts';
 
-export function stackedSplitViewTemplate(component: NDDStackedSplitView): TemplateResult {
+export function stackedSplitViewTemplate(component: NLDDStackedSplitView): TemplateResult {
 	// Render slots for all panes but only show the ones that fit
 	const panes = Array.from({ length: component.panes }, (_, i) => i + 1);
 
@@ -10,7 +10,7 @@ export function stackedSplitViewTemplate(component: NDDStackedSplitView): Templa
 		<div class="stacked-split-view">
 			${panes.map((n, i) => html`
 				${i > 0 && i < component._visiblePanes ? html`
-					<ndd-split-view-divider orientation="horizontal"></ndd-split-view-divider>
+					<nldd-split-view-divider orientation="horizontal"></nldd-split-view-divider>
 				` : nothing}
 				<div
 					class="stacked-split-view__pane"

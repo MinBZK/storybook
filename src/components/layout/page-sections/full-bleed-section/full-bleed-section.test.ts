@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
-import './ndd-full-bleed-section.ts';
+import './full-bleed-section.ts';
 
-describe('ndd-full-bleed-section', () => {
+describe('nldd-full-bleed-section', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -10,19 +10,19 @@ describe('ndd-full-bleed-section', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-full-bleed-section></ndd-full-bleed-section>');
+		el = await fixture('<nldd-full-bleed-section></nldd-full-bleed-section>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a section element in the shadow DOM', async () => {
-		el = await fixture('<ndd-full-bleed-section></ndd-full-bleed-section>');
+		el = await fixture('<nldd-full-bleed-section></nldd-full-bleed-section>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.full-bleed-section')).not.toBeNull();
 	});
 
 	it('reflects align property to attribute', async () => {
-		el = await fixture('<ndd-full-bleed-section></ndd-full-bleed-section>');
+		el = await fixture('<nldd-full-bleed-section></nldd-full-bleed-section>');
 		await waitForUpdate(el);
 		(el as any).align = 'center';
 		await waitForUpdate(el);

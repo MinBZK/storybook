@@ -1,16 +1,16 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDSearchField } from './ndd-search-field.js';
-import './../../actions/icon-button/ndd-icon-button.ts';
-import './../../actions/button/ndd-button.ts';
-import './../../content/icon/ndd-icon.ts';
+import type { NLDDSearchField } from './search-field.js';
+import './../../actions/icon-button/icon-button.ts';
+import './../../actions/button/button.ts';
+import './../../content/icon/icon.ts';
 
-export function searchFieldTemplate(component: NDDSearchField): TemplateResult {
+export function searchFieldTemplate(component: NLDDSearchField): TemplateResult {
 	const buttonSize = component.size === 'sm' ? 'xs' : 'sm';
 
 	return html`
 		<div class="search-field">
 			<div class="search-field__search-icon">
-				<ndd-icon name="search"></ndd-icon>
+				<nldd-icon name="search"></nldd-icon>
 			</div>
 			<input class="search-field__input"
 				type="search"
@@ -27,23 +27,23 @@ export function searchFieldTemplate(component: NDDSearchField): TemplateResult {
 			<div class="search-field__actions">
 				${component.value ? html`
 					<div class="search-field__dismiss-action">
-						<ndd-icon-button
+						<nldd-icon-button
 							variant="neutral-transparent"
 							size=${buttonSize}
 							icon="dismiss"
 							text=${component._t('components.search-field.dismiss-action')}
 							@click=${component._handleDismiss}
-						></ndd-icon-button>
+						></nldd-icon-button>
 					</div>
 				` : nothing}
 				${component.hasSearchButton ? html`
 					<div class="search-field__search-action">
-						<ndd-button
+						<nldd-button
 							variant="neutral-tinted"
 							size=${buttonSize}
 							text=${component._t('components.search-field.search-action')}
 							@click=${component._handleSearch}
-						></ndd-button>
+						></nldd-button>
 					</div>
 				` : nothing}
 			</div>

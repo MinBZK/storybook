@@ -1,21 +1,21 @@
 import { html } from 'lit';
-import './ndd-checkbox.ts';
+import './checkbox.ts';
 
 /**
  * De Checkbox component stelt gebruikers in staat om een of meerdere opties te selecteren.
  *
  * ## Gebruik
  * ```html
- * <ndd-checkbox accessible-label="Ik ga akkoord"></ndd-checkbox>
+ * <nldd-checkbox accessible-label="Ik ga akkoord"></nldd-checkbox>
  * ```
  */
 export default {
 	title: 'Components/Inputs/Checkbox',
-	component: 'ndd-checkbox',
+	component: 'nldd-checkbox',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/checkbox/ndd-checkbox.ts',
+			file: 'src/components/inputs/checkbox/checkbox.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -58,14 +58,14 @@ export default {
 };
 
 const Template = ({ checked, indeterminate, disabled, value, name }) => html`
-	<ndd-checkbox
+	<nldd-checkbox
 		?checked=${checked}
 		?indeterminate=${indeterminate}
 		?disabled=${disabled}
 		value=${value}
 		name=${name}
 		accessible-label="Checkbox"
-	></ndd-checkbox>
+	></nldd-checkbox>
 `;
 
 export const Standaard = Template.bind({});
@@ -85,12 +85,12 @@ AangevinktUitgeschakeld.args = { checked: true, disabled: true };
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
-		<ndd-checkbox accessible-label="Niet aangevinkt"></ndd-checkbox>
-		<ndd-checkbox checked accessible-label="Aangevinkt"></ndd-checkbox>
-		<ndd-checkbox indeterminate accessible-label="Onbepaald"></ndd-checkbox>
-		<ndd-checkbox disabled accessible-label="Uitgeschakeld"></ndd-checkbox>
-		<ndd-checkbox checked disabled accessible-label="Aangevinkt en uitgeschakeld"></ndd-checkbox>
-		<ndd-checkbox indeterminate disabled accessible-label="Onbepaald en uitgeschakeld"></ndd-checkbox>
+		<nldd-checkbox accessible-label="Niet aangevinkt"></nldd-checkbox>
+		<nldd-checkbox checked accessible-label="Aangevinkt"></nldd-checkbox>
+		<nldd-checkbox indeterminate accessible-label="Onbepaald"></nldd-checkbox>
+		<nldd-checkbox disabled accessible-label="Uitgeschakeld"></nldd-checkbox>
+		<nldd-checkbox checked disabled accessible-label="Aangevinkt en uitgeschakeld"></nldd-checkbox>
+		<nldd-checkbox indeterminate disabled accessible-label="Onbepaald en uitgeschakeld"></nldd-checkbox>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

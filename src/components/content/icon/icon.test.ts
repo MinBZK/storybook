@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './ndd-icon.ts';
+import './icon.ts';
 
-describe('ndd-icon', () => {
+describe('nldd-icon', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -10,7 +10,7 @@ describe('ndd-icon', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-icon></ndd-icon>');
+		el = await fixture('<nldd-icon></nldd-icon>');
 		await waitForUpdate(el);
 
 		expect(el.shadowRoot).not.toBeNull();

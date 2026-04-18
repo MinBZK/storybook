@@ -1,9 +1,9 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDTabBar, NDDTabBarItem } from './ndd-tab-bar.ts';
-import '../../content/tooltip/ndd-tooltip.js';
+import type { NLDDTabBar, NLDDTabBarItem } from './tab-bar.ts';
+import '../../content/tooltip/tooltip.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
-export function tabBarTemplate(component: NDDTabBar): TemplateResult {
+export function tabBarTemplate(component: NLDDTabBar): TemplateResult {
 	const label = component.accessibleLabel || 'Tabs';
 	const isNavigation = component.navigation;
 
@@ -31,7 +31,7 @@ export function tabBarTemplate(component: NDDTabBar): TemplateResult {
 	`;
 }
 
-export function tabBarItemTemplate(component: NDDTabBarItem): TemplateResult {
+export function tabBarItemTemplate(component: NLDDTabBarItem): TemplateResult {
 	const safeHref = sanitizeUrl(component.href);
 	const isLink = Boolean(safeHref);
 	const isNavigation = component._navigation;
@@ -76,7 +76,7 @@ export function tabBarItemTemplate(component: NDDTabBarItem): TemplateResult {
 	}
 
 	if (isIconVariant && component.text) {
-		return html`<ndd-tooltip text=${component.text}>${result}</ndd-tooltip>`;
+		return html`<nldd-tooltip text=${component.text}>${result}</nldd-tooltip>`;
 	}
 	return result;
 }

@@ -1,10 +1,10 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDSwitchField } from './ndd-switch-field.ts';
-import './ndd-switch-field.ts';
-import '../switch/ndd-switch.ts';
+import type { NLDDSwitchField } from './switch-field.ts';
+import './switch-field.ts';
+import '../switch/switch.ts';
 
-describe('ndd-switch-field', () => {
+describe('nldd-switch-field', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -12,34 +12,34 @@ describe('ndd-switch-field', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-switch-field></ndd-switch-field>');
+		el = await fixture('<nldd-switch-field></nldd-switch-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a label span element', async () => {
-		el = await fixture('<ndd-switch-field label="Optie 1"></ndd-switch-field>');
+		el = await fixture('<nldd-switch-field label="Optie 1"></nldd-switch-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.switch-field__label')).not.toBeNull();
 	});
 
 	it('renders label text from attribute', async () => {
-		el = await fixture('<ndd-switch-field label="Optie 1"></ndd-switch-field>');
+		el = await fixture('<nldd-switch-field label="Optie 1"></nldd-switch-field>');
 		await waitForUpdate(el);
 		const label = el.shadowRoot!.querySelector('.switch-field__label')!;
 		expect(label.textContent).toBe('Optie 1');
 	});
 
-	it('renders ndd-switch in shadow DOM', async () => {
-		el = await fixture('<ndd-switch-field></ndd-switch-field>');
+	it('renders nldd-switch in shadow DOM', async () => {
+		el = await fixture('<nldd-switch-field></nldd-switch-field>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('ndd-switch')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-switch')).not.toBeNull();
 	});
 
-	it('forwards label as accessible-label to ndd-switch', async () => {
-		el = await fixture('<ndd-switch-field label="Meldingen"></ndd-switch-field>');
+	it('forwards label as accessible-label to nldd-switch', async () => {
+		el = await fixture('<nldd-switch-field label="Meldingen"></nldd-switch-field>');
 		await waitForUpdate(el);
-		const switchEl = el.shadowRoot!.querySelector('ndd-switch')!;
+		const switchEl = el.shadowRoot!.querySelector('nldd-switch')!;
 		expect(switchEl.getAttribute('accessible-label')).toBe('Meldingen');
 	});
 });
@@ -49,39 +49,39 @@ describe('ndd-switch-field', () => {
    State
    ============================================================ */
 
-describe('ndd-switch-field – state', () => {
-	let el: NDDSwitchField;
+describe('nldd-switch-field – state', () => {
+	let el: NLDDSwitchField;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('is unchecked by default', async () => {
-		el = await fixture<NDDSwitchField>('<ndd-switch-field></ndd-switch-field>');
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field></nldd-switch-field>');
 		await waitForUpdate(el);
 		expect(el.checked).toBe(false);
 	});
 
 	it('is checked when checked attribute is set', async () => {
-		el = await fixture<NDDSwitchField>('<ndd-switch-field checked></ndd-switch-field>');
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field checked></nldd-switch-field>');
 		await waitForUpdate(el);
 		expect(el.checked).toBe(true);
 	});
 
 	it('is disabled when disabled attribute is set', async () => {
-		el = await fixture<NDDSwitchField>('<ndd-switch-field disabled></ndd-switch-field>');
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field disabled></nldd-switch-field>');
 		await waitForUpdate(el);
-		const switchEl = el.shadowRoot!.querySelector('ndd-switch') as any;
+		const switchEl = el.shadowRoot!.querySelector('nldd-switch') as any;
 		await waitForUpdate(switchEl);
 		expect(switchEl.disabled).toBe(true);
 	});
 
 	it('forwards value in change event detail', async () => {
-		el = await fixture<NDDSwitchField>('<ndd-switch-field value="meldingen"></ndd-switch-field>');
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field value="meldingen"></nldd-switch-field>');
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
-		const switchEl = el.shadowRoot!.querySelector('ndd-switch')!;
+		const switchEl = el.shadowRoot!.querySelector('nldd-switch')!;
 		switchEl.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: true },
 			bubbles: true,
@@ -95,17 +95,17 @@ describe('ndd-switch-field – state', () => {
    Change event
    ============================================================ */
 
-describe('ndd-switch-field – change event', () => {
-	let el: NDDSwitchField;
+describe('nldd-switch-field – change event', () => {
+	let el: NLDDSwitchField;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('updates checked when ndd-switch fires change', async () => {
-		el = await fixture<NDDSwitchField>('<ndd-switch-field></ndd-switch-field>');
+	it('updates checked when nldd-switch fires change', async () => {
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field></nldd-switch-field>');
 		await waitForUpdate(el);
-		const switchEl = el.shadowRoot!.querySelector('ndd-switch')!;
+		const switchEl = el.shadowRoot!.querySelector('nldd-switch')!;
 		switchEl.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: true },
 			bubbles: true,
@@ -115,11 +115,11 @@ describe('ndd-switch-field – change event', () => {
 	});
 
 	it('dispatches a change event with checked and value detail', async () => {
-		el = await fixture<NDDSwitchField>('<ndd-switch-field value="aan"></ndd-switch-field>');
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field value="aan"></nldd-switch-field>');
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
-		const switchEl = el.shadowRoot!.querySelector('ndd-switch')!;
+		const switchEl = el.shadowRoot!.querySelector('nldd-switch')!;
 		switchEl.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: true },
 			bubbles: true,
@@ -135,15 +135,15 @@ describe('ndd-switch-field – change event', () => {
    Label click
    ============================================================ */
 
-describe('ndd-switch-field – label click', () => {
-	let el: NDDSwitchField;
+describe('nldd-switch-field – label click', () => {
+	let el: NLDDSwitchField;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('toggles checked when label span is clicked', async () => {
-		el = await fixture<NDDSwitchField>('<ndd-switch-field label="Optie 1"></ndd-switch-field>');
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field label="Optie 1"></nldd-switch-field>');
 		await waitForUpdate(el);
 		const labelSpan = el.shadowRoot!.querySelector<HTMLElement>('.switch-field__label')!;
 		labelSpan.click();
@@ -152,7 +152,7 @@ describe('ndd-switch-field – label click', () => {
 	});
 
 	it('does not toggle when disabled and label span is clicked', async () => {
-		el = await fixture<NDDSwitchField>('<ndd-switch-field label="Optie 1" disabled></ndd-switch-field>');
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field label="Optie 1" disabled></nldd-switch-field>');
 		await waitForUpdate(el);
 		const labelSpan = el.shadowRoot!.querySelector<HTMLElement>('.switch-field__label')!;
 		labelSpan.click();

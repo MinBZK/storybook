@@ -1,27 +1,27 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDSegmentedControl, NDDSegmentedControlItem } from './ndd-segmented-control.ts';
-import './ndd-segmented-control.ts';
+import type { NLDDSegmentedControl, NLDDSegmentedControlItem } from './segmented-control.ts';
+import './segmented-control.ts';
 
 function radioFixture(selectedValue = 'a'): string {
 	return `
-		<ndd-segmented-control value="${selectedValue}" name="test">
-			<ndd-segmented-control-item value="a" text="Alpha"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="b" text="Beta"></ndd-segmented-control-item>
-			<ndd-segmented-control-item value="c" text="Gamma"></ndd-segmented-control-item>
-		</ndd-segmented-control>
+		<nldd-segmented-control value="${selectedValue}" name="test">
+			<nldd-segmented-control-item value="a" text="Alpha"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="b" text="Beta"></nldd-segmented-control-item>
+			<nldd-segmented-control-item value="c" text="Gamma"></nldd-segmented-control-item>
+		</nldd-segmented-control>
 	`;
 }
 
-function getItems(el: NDDSegmentedControl): NDDSegmentedControlItem[] {
-	return Array.from(el.querySelectorAll('ndd-segmented-control-item'));
+function getItems(el: NLDDSegmentedControl): NLDDSegmentedControlItem[] {
+	return Array.from(el.querySelectorAll('nldd-segmented-control-item'));
 }
 
-function getInput(item: NDDSegmentedControlItem): HTMLInputElement {
+function getInput(item: NLDDSegmentedControlItem): HTMLInputElement {
 	return item.shadowRoot!.querySelector('input')!;
 }
 
-describe('ndd-segmented-control', () => {
+describe('nldd-segmented-control', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -29,13 +29,13 @@ describe('ndd-segmented-control', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-segmented-control></ndd-segmented-control>');
+		el = await fixture('<nldd-segmented-control></nldd-segmented-control>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 });
 
-describe('ndd-segmented-control-item', () => {
+describe('nldd-segmented-control-item', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -43,13 +43,13 @@ describe('ndd-segmented-control-item', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-segmented-control-item></ndd-segmented-control-item>');
+		el = await fixture('<nldd-segmented-control-item></nldd-segmented-control-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a native input', async () => {
-		el = await fixture('<ndd-segmented-control-item></ndd-segmented-control-item>');
+		el = await fixture('<nldd-segmented-control-item></nldd-segmented-control-item>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')).not.toBeNull();
 	});
@@ -60,15 +60,15 @@ describe('ndd-segmented-control-item', () => {
    State sync
    ============================================================ */
 
-describe('ndd-segmented-control – state sync', () => {
-	let el: NDDSegmentedControl;
+describe('nldd-segmented-control – state sync', () => {
+	let el: NLDDSegmentedControl;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('marks matching item as selected', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('b'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('b'));
 		await waitForUpdate(el);
 		const items = getItems(el);
 		expect(items[0].selected).toBe(false);
@@ -77,7 +77,7 @@ describe('ndd-segmented-control – state sync', () => {
 	});
 
 	it('updates selected when value changes', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('a'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('a'));
 		await waitForUpdate(el);
 		el.value = 'c';
 		await waitForUpdate(el);
@@ -87,32 +87,32 @@ describe('ndd-segmented-control – state sync', () => {
 	});
 
 	it('propagates size to items', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control size="sm">
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control size="sm">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		expect(getItems(el)[0].size).toBe('sm');
 	});
 
 	it('disables all items when parent is disabled', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control disabled>
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="b" text="B"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control disabled>
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		getItems(el).forEach(item => expect(item.disabled).toBe(true));
 	});
 
 	it('preserves item-level disabled when parent is not disabled', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control>
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="b" disabled text="B"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control>
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" disabled text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		const items = getItems(el);
@@ -121,11 +121,11 @@ describe('ndd-segmented-control – state sync', () => {
 	});
 
 	it('re-enables group-disabled items when parent disabled is removed', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control disabled>
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="b" text="B"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control disabled>
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		el.disabled = false;
@@ -134,11 +134,11 @@ describe('ndd-segmented-control – state sync', () => {
 	});
 
 	it('does not re-enable individually disabled items when parent disabled is removed', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control disabled>
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="b" disabled text="B"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control disabled>
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" disabled text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		el.disabled = false;
@@ -149,20 +149,20 @@ describe('ndd-segmented-control – state sync', () => {
 	});
 
 	it('propagates variant to items', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control variant="icon">
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control variant="icon">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		expect(getItems(el)[0].variant).toBe('icon');
 	});
 
 	it('forwards name as groupName to items', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control name="view">
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control name="view">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		expect(getInput(getItems(el)[0]).name).toBe('view');
@@ -170,15 +170,15 @@ describe('ndd-segmented-control – state sync', () => {
 });
 
 
-describe('ndd-segmented-control – radio change', () => {
-	let el: NDDSegmentedControl;
+describe('nldd-segmented-control – radio change', () => {
+	let el: NLDDSegmentedControl;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('fires change with value detail when item changes', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('a'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('a'));
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
@@ -189,7 +189,7 @@ describe('ndd-segmented-control – radio change', () => {
 	});
 
 	it('does not fire change when already selected item is clicked', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('a'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('a'));
 		await waitForUpdate(el);
 		let fired = false;
 		el.addEventListener('change', () => { fired = true; });
@@ -205,19 +205,19 @@ describe('ndd-segmented-control – radio change', () => {
    Checkbox change event
    ============================================================ */
 
-describe('ndd-segmented-control – checkbox change', () => {
-	let el: NDDSegmentedControl;
+describe('nldd-segmented-control – checkbox change', () => {
+	let el: NLDDSegmentedControl;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('fires change with values array when item is checked', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control type="checkbox">
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="b" text="B"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control type="checkbox">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		let detail: any;
@@ -229,13 +229,13 @@ describe('ndd-segmented-control – checkbox change', () => {
 	});
 
 	it('removes value from values when item is unchecked', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control type="checkbox">
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="b" text="B"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control type="checkbox">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
-		(el as NDDSegmentedControl).values = ['a', 'b'];
+		(el as NLDDSegmentedControl).values = ['a', 'b'];
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
@@ -248,8 +248,8 @@ describe('ndd-segmented-control – checkbox change', () => {
 });
 
 
-describe('ndd-segmented-control – keyboard navigation', () => {
-	let el: NDDSegmentedControl;
+describe('nldd-segmented-control – keyboard navigation', () => {
+	let el: NLDDSegmentedControl;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -260,23 +260,23 @@ describe('ndd-segmented-control – keyboard navigation', () => {
 	}
 
 	it('ArrowRight does nothing in checkbox mode', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control type="checkbox">
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-				<ndd-segmented-control-item value="b" text="B"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control type="checkbox">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
-		(el as NDDSegmentedControl).values = ['a'];
+		(el as NLDDSegmentedControl).values = ['a'];
 		await waitForUpdate(el);
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
 		await waitForUpdate(el);
-		const items = getItems(el as NDDSegmentedControl);
+		const items = getItems(el as NLDDSegmentedControl);
 		expect(items[0].selected).toBe(true);
 		expect(items[1].selected).toBe(false);
 	});
 
 	it('ArrowRight selects next item', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('a'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('a'));
 		await waitForUpdate(el);
 		pressKey('ArrowRight');
 		await waitForUpdate(el);
@@ -284,7 +284,7 @@ describe('ndd-segmented-control – keyboard navigation', () => {
 	});
 
 	it('ArrowLeft selects previous item', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('b'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('b'));
 		await waitForUpdate(el);
 		pressKey('ArrowLeft');
 		await waitForUpdate(el);
@@ -292,7 +292,7 @@ describe('ndd-segmented-control – keyboard navigation', () => {
 	});
 
 	it('ArrowRight wraps from last to first', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('c'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('c'));
 		await waitForUpdate(el);
 		pressKey('ArrowRight');
 		await waitForUpdate(el);
@@ -300,7 +300,7 @@ describe('ndd-segmented-control – keyboard navigation', () => {
 	});
 
 	it('Home selects first item', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('c'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('c'));
 		await waitForUpdate(el);
 		pressKey('Home');
 		await waitForUpdate(el);
@@ -308,7 +308,7 @@ describe('ndd-segmented-control – keyboard navigation', () => {
 	});
 
 	it('End selects last item', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('a'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('a'));
 		await waitForUpdate(el);
 		pressKey('End');
 		await waitForUpdate(el);
@@ -321,31 +321,31 @@ describe('ndd-segmented-control – keyboard navigation', () => {
    ARIA
    ============================================================ */
 
-describe('ndd-segmented-control – ARIA', () => {
-	let el: NDDSegmentedControl;
+describe('nldd-segmented-control – ARIA', () => {
+	let el: NLDDSegmentedControl;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('has role="radiogroup" for radio type', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('a'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('a'));
 		await waitForUpdate(el);
 		expect(el.getAttribute('role')).toBe('radiogroup');
 	});
 
 	it('has role="group" for checkbox type', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control type="checkbox">
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control type="checkbox">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('role')).toBe('group');
 	});
 
 	it('native radio input has correct checked state', async () => {
-		el = await fixture<NDDSegmentedControl>(radioFixture('b'));
+		el = await fixture<NLDDSegmentedControl>(radioFixture('b'));
 		await waitForUpdate(el);
 		const items = getItems(el);
 		expect(getInput(items[0]).checked).toBe(false);
@@ -358,8 +358,8 @@ describe('ndd-segmented-control – ARIA', () => {
    Accessibility
    ============================================================ */
 
-describe('ndd-segmented-control – accessibility', () => {
-	let el: NDDSegmentedControl;
+describe('nldd-segmented-control – accessibility', () => {
+	let el: NLDDSegmentedControl;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -368,10 +368,10 @@ describe('ndd-segmented-control – accessibility', () => {
 
 	it('warns when no accessible name is provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control>
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control>
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		expect(warnSpy).toHaveBeenCalledWith(
@@ -381,20 +381,20 @@ describe('ndd-segmented-control – accessibility', () => {
 
 	it('does not warn when accessible-label is provided', async () => {
 		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control accessible-label="Weergave">
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control accessible-label="Weergave">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 
 	it('sets aria-label on host from accessible-label', async () => {
-		el = await fixture<NDDSegmentedControl>(`
-			<ndd-segmented-control accessible-label="Weergave">
-				<ndd-segmented-control-item value="a" text="A"></ndd-segmented-control-item>
-			</ndd-segmented-control>
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control accessible-label="Weergave">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('aria-label')).toBe('Weergave');
@@ -406,28 +406,28 @@ describe('ndd-segmented-control – accessibility', () => {
    Tooltip
    ============================================================ */
 
-describe('ndd-segmented-control-item – tooltip', () => {
-	let el: NDDSegmentedControlItem;
+describe('nldd-segmented-control-item – tooltip', () => {
+	let el: NLDDSegmentedControlItem;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('wraps in ndd-tooltip when variant is icon', async () => {
-		el = await fixture<NDDSegmentedControlItem>(`
-			<ndd-segmented-control-item variant="icon" text="Zoom in" icon="zoom-in"></ndd-segmented-control-item>
+	it('wraps in nldd-tooltip when variant is icon', async () => {
+		el = await fixture<NLDDSegmentedControlItem>(`
+			<nldd-segmented-control-item variant="icon" text="Zoom in" icon="zoom-in"></nldd-segmented-control-item>
 		`);
 		await waitForUpdate(el);
-		const tooltip = el.shadowRoot!.querySelector('ndd-tooltip');
+		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip');
 		expect(tooltip).not.toBeNull();
 		expect(tooltip!.getAttribute('text')).toBe('Zoom in');
 	});
 
-	it('does not wrap in ndd-tooltip when variant is text', async () => {
-		el = await fixture<NDDSegmentedControlItem>(`
-			<ndd-segmented-control-item variant="text" text="Label"></ndd-segmented-control-item>
+	it('does not wrap in nldd-tooltip when variant is text', async () => {
+		el = await fixture<NLDDSegmentedControlItem>(`
+			<nldd-segmented-control-item variant="text" text="Label"></nldd-segmented-control-item>
 		`);
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('ndd-tooltip')).toBeNull();
+		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
 	});
 });

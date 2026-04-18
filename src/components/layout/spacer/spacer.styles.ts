@@ -2,7 +2,7 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.ts';
 
 
-/* # ndd-spacer styles */
+/* # nldd-spacer styles */
 
 export const spacerStyles = css`
 	:host {

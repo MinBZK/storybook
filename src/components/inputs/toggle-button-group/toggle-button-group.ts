@@ -1,14 +1,14 @@
 /**
  * Nederlandse Digitale Dienst Toggle Button Group Component (Lit + TypeScript)
  *
- * Groups ndd-toggle-button elements and manages selection, keyboard navigation,
+ * Groups nldd-toggle-button elements and manages selection, keyboard navigation,
  * and forwarding of type, name, size, and disabled state to all buttons.
  *
  * For type="radio" (single-select), arrow keys navigate between buttons and
  * automatically select the focused one.
  * For type="checkbox" (multi-select), multiple buttons can be selected simultaneously.
  *
- * @element ndd-toggle-button-group
+ * @element nldd-toggle-button-group
  *
  * @attr {'button' | 'checkbox' | 'radio'} type                  - Selection mode (default: 'checkbox')
  * @attr {string}               name                  - Forwarded to all buttons
@@ -17,21 +17,21 @@
  * @attr {string}               accessible-label      - Accessible name for the group (aria-label)
  * @attr {string}               accessible-labelledby - ID of an external label element (aria-labelledby)
  *
- * @slot - ndd-toggle-button elements
+ * @slot - nldd-toggle-button elements
  *
  * @fires change - Bubbles up from the changed button; detail: { selected: boolean, value: string }
  */
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { toggleButtonGroupStyles } from './ndd-toggle-button-group.styles.ts';
-import { toggleButtonGroupTemplate } from './ndd-toggle-button-group.template.ts';
-import type { NDDToggleButton, ToggleButtonSize } from '../toggle-button/ndd-toggle-button.ts';
+import { toggleButtonGroupStyles } from './toggle-button-group.styles.ts';
+import { toggleButtonGroupTemplate } from './toggle-button-group.template.ts';
+import type { NLDDToggleButton, ToggleButtonSize } from '../toggle-button/toggle-button.ts';
 
 type GroupType = 'button' | 'checkbox' | 'radio';
 
-@customElement('ndd-toggle-button-group')
-export class NDDToggleButtonGroup extends LitElement {
+@customElement('nldd-toggle-button-group')
+export class NLDDToggleButtonGroup extends LitElement {
 	static override styles = toggleButtonGroupStyles;
 
 	@property({ type: String, reflect: true })
@@ -73,7 +73,7 @@ export class NDDToggleButtonGroup extends LitElement {
 
 	override firstUpdated(): void {
 		import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy &&
-			console.warn('<ndd-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+			console.warn('<nldd-toggle-button-group>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
 	}
 
 	override updated(changed: Map<PropertyKey, unknown>): void {
@@ -99,11 +99,11 @@ export class NDDToggleButtonGroup extends LitElement {
 		}
 	}
 
-	private _getButtons(): NDDToggleButton[] {
-		return Array.from(this.querySelectorAll('ndd-toggle-button'));
+	private _getButtons(): NLDDToggleButton[] {
+		return Array.from(this.querySelectorAll('nldd-toggle-button'));
 	}
 
-	private _getEnabledButtons(): NDDToggleButton[] {
+	private _getEnabledButtons(): NLDDToggleButton[] {
 		return this._getButtons().filter(b => !b.disabled);
 	}
 
@@ -132,7 +132,7 @@ export class NDDToggleButtonGroup extends LitElement {
 	private _handleChange = (e: Event): void => {
 		if (this.type !== 'radio') return;
 
-		const changedButton = e.target as NDDToggleButton;
+		const changedButton = e.target as NLDDToggleButton;
 		if (!changedButton.selected) return;
 
 		// Deselect all other buttons when a radio button is selected
@@ -186,6 +186,6 @@ export class NDDToggleButtonGroup extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-toggle-button-group': NDDToggleButtonGroup;
+		'nldd-toggle-button-group': NLDDToggleButtonGroup;
 	}
 }

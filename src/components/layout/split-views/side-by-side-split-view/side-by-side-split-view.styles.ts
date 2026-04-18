@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 
-/* # ndd-side-by-side-split-view styles */
+/* # nldd-side-by-side-split-view styles */
 
 export const sideBySideSplitViewStyles = css`
 	:host {

@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './ndd-box.ts';
-import '../../content/rich-text/ndd-rich-text.ts';
+import './box.ts';
+import '../../content/rich-text/rich-text.ts';
 
 /**
  * Gebruik een box om gerelateerde componenten visueel te groeperen in een afgebakend gebied.
@@ -9,20 +9,20 @@ import '../../content/rich-text/ndd-rich-text.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-box>
- *   <ndd-rich-text>
+ * <nldd-box>
+ *   <nldd-rich-text>
  *     <p>Inhoud van de box.</p>
- *   </ndd-rich-text>
- * </ndd-box>
+ *   </nldd-rich-text>
+ * </nldd-box>
  * ```
  */
 export default {
 	title: 'Components/Layout/Box',
-	component: 'ndd-box',
+	component: 'nldd-box',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/layout/box/ndd-box.ts',
+			file: 'src/components/layout/box/box.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -32,8 +32,8 @@ export default {
 };
 
 export const Standaard = () => html`
-	<ndd-box>
-		<ndd-rich-text>
+	<nldd-box>
+		<nldd-rich-text>
 			<h3>Wanneer gebruik je een box?</h3>
 			<p>
 				Een box groepeert gerelateerde componenten visueel in een afgebakend gebied.
@@ -50,6 +50,6 @@ export const Standaard = () => html`
 				<li>Plaats niet te veel verschillende soorten inhoud in één box.</li>
 				<li>Gebruik geen geneste boxes.</li>
 			</ul>
-		</ndd-rich-text>
-	</ndd-box>
+		</nldd-rich-text>
+	</nldd-box>
 `;

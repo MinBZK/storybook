@@ -1,20 +1,20 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDRadioButtonGroup } from './ndd-radio-button-group.ts';
-import './ndd-radio-button-group.ts';
-import '../radio-button-field/ndd-radio-button-field.ts';
+import type { NLDDRadioButtonGroup } from './radio-button-group.ts';
+import './radio-button-group.ts';
+import '../radio-button-field/radio-button-field.ts';
 
 function groupFixture(name = 'group'): string {
 	return `
-		<ndd-radio-button-group name="${name}">
-			<ndd-radio-button-field value="1" checked label="Optie 1"></ndd-radio-button-field>
-			<ndd-radio-button-field value="2" label="Optie 2"></ndd-radio-button-field>
-			<ndd-radio-button-field value="3" label="Optie 3"></ndd-radio-button-field>
-		</ndd-radio-button-group>
+		<nldd-radio-button-group name="${name}">
+			<nldd-radio-button-field value="1" checked label="Optie 1"></nldd-radio-button-field>
+			<nldd-radio-button-field value="2" label="Optie 2"></nldd-radio-button-field>
+			<nldd-radio-button-field value="3" label="Optie 3"></nldd-radio-button-field>
+		</nldd-radio-button-group>
 	`;
 }
 
-describe('ndd-radio-button-group', () => {
+describe('nldd-radio-button-group', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -22,13 +22,13 @@ describe('ndd-radio-button-group', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-radio-button-group></ndd-radio-button-group>');
+		el = await fixture('<nldd-radio-button-group></nldd-radio-button-group>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a div with role="radiogroup"', async () => {
-		el = await fixture('<ndd-radio-button-group></ndd-radio-button-group>');
+		el = await fixture('<nldd-radio-button-group></nldd-radio-button-group>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('role')).toBe('radiogroup');
 	});
@@ -39,29 +39,29 @@ describe('ndd-radio-button-group', () => {
    Name and disabled forwarding
    ============================================================ */
 
-describe('ndd-radio-button-group – field sync', () => {
-	let el: NDDRadioButtonGroup;
+describe('nldd-radio-button-group – field sync', () => {
+	let el: NLDDRadioButtonGroup;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('forwards name to all child fields', async () => {
-		el = await fixture<NDDRadioButtonGroup>(groupFixture('mygroup'));
+		el = await fixture<NLDDRadioButtonGroup>(groupFixture('mygroup'));
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('ndd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
 		fields.forEach(f => expect(f.name).toBe('mygroup'));
 	});
 
 	it('forwards disabled to all child fields', async () => {
-		el = await fixture<NDDRadioButtonGroup>(`
-			<ndd-radio-button-group name="g" disabled>
-				<ndd-radio-button-field value="1" label="Optie 1"></ndd-radio-button-field>
-				<ndd-radio-button-field value="2" label="Optie 2"></ndd-radio-button-field>
-			</ndd-radio-button-group>
+		el = await fixture<NLDDRadioButtonGroup>(`
+			<nldd-radio-button-group name="g" disabled>
+				<nldd-radio-button-field value="1" label="Optie 1"></nldd-radio-button-field>
+				<nldd-radio-button-field value="2" label="Optie 2"></nldd-radio-button-field>
+			</nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('ndd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
 		fields.forEach(f => expect(f.disabled).toBe(true));
 	});
 });
@@ -71,8 +71,8 @@ describe('ndd-radio-button-group – field sync', () => {
    Keyboard navigation
    ============================================================ */
 
-describe('ndd-radio-button-group – keyboard navigation', () => {
-	let el: NDDRadioButtonGroup;
+describe('nldd-radio-button-group – keyboard navigation', () => {
+	let el: NLDDRadioButtonGroup;
 
 	afterEach(() => {
 		if (el) cleanup(el);
@@ -83,9 +83,9 @@ describe('ndd-radio-button-group – keyboard navigation', () => {
 	}
 
 	it('ArrowDown moves to next field', async () => {
-		el = await fixture<NDDRadioButtonGroup>(groupFixture());
+		el = await fixture<NLDDRadioButtonGroup>(groupFixture());
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('ndd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
 
 		pressKey(el, 'ArrowDown');
 		await waitForUpdate(el);
@@ -95,15 +95,15 @@ describe('ndd-radio-button-group – keyboard navigation', () => {
 	});
 
 	it('ArrowUp moves to previous field', async () => {
-		el = await fixture<NDDRadioButtonGroup>(`
-			<ndd-radio-button-group name="g">
-				<ndd-radio-button-field value="1" label="Optie 1"></ndd-radio-button-field>
-				<ndd-radio-button-field value="2" checked label="Optie 2"></ndd-radio-button-field>
-				<ndd-radio-button-field value="3" label="Optie 3"></ndd-radio-button-field>
-			</ndd-radio-button-group>
+		el = await fixture<NLDDRadioButtonGroup>(`
+			<nldd-radio-button-group name="g">
+				<nldd-radio-button-field value="1" label="Optie 1"></nldd-radio-button-field>
+				<nldd-radio-button-field value="2" checked label="Optie 2"></nldd-radio-button-field>
+				<nldd-radio-button-field value="3" label="Optie 3"></nldd-radio-button-field>
+			</nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('ndd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
 
 		pressKey(el, 'ArrowUp');
 		await waitForUpdate(el);
@@ -113,15 +113,15 @@ describe('ndd-radio-button-group – keyboard navigation', () => {
 	});
 
 	it('ArrowDown wraps from last to first', async () => {
-		el = await fixture<NDDRadioButtonGroup>(`
-			<ndd-radio-button-group name="g">
-				<ndd-radio-button-field value="1" label="Optie 1"></ndd-radio-button-field>
-				<ndd-radio-button-field value="2" label="Optie 2"></ndd-radio-button-field>
-				<ndd-radio-button-field value="3" checked label="Optie 3"></ndd-radio-button-field>
-			</ndd-radio-button-group>
+		el = await fixture<NLDDRadioButtonGroup>(`
+			<nldd-radio-button-group name="g">
+				<nldd-radio-button-field value="1" label="Optie 1"></nldd-radio-button-field>
+				<nldd-radio-button-field value="2" label="Optie 2"></nldd-radio-button-field>
+				<nldd-radio-button-field value="3" checked label="Optie 3"></nldd-radio-button-field>
+			</nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('ndd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
 
 		pressKey(el, 'ArrowDown');
 		await waitForUpdate(el);
@@ -131,15 +131,15 @@ describe('ndd-radio-button-group – keyboard navigation', () => {
 	});
 
 	it('skips disabled fields during navigation', async () => {
-		el = await fixture<NDDRadioButtonGroup>(`
-			<ndd-radio-button-group name="g">
-				<ndd-radio-button-field value="1" checked label="Optie 1"></ndd-radio-button-field>
-				<ndd-radio-button-field value="2" disabled label="Optie 2"></ndd-radio-button-field>
-				<ndd-radio-button-field value="3" label="Optie 3"></ndd-radio-button-field>
-			</ndd-radio-button-group>
+		el = await fixture<NLDDRadioButtonGroup>(`
+			<nldd-radio-button-group name="g">
+				<nldd-radio-button-field value="1" checked label="Optie 1"></nldd-radio-button-field>
+				<nldd-radio-button-field value="2" disabled label="Optie 2"></nldd-radio-button-field>
+				<nldd-radio-button-field value="3" label="Optie 3"></nldd-radio-button-field>
+			</nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('ndd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
 
 		pressKey(el, 'ArrowDown');
 		await waitForUpdate(el);
@@ -154,24 +154,24 @@ describe('ndd-radio-button-group – keyboard navigation', () => {
    Accessibility
    ============================================================ */
 
-describe('ndd-radio-button-group – accessibility', () => {
-	let el: NDDRadioButtonGroup;
+describe('nldd-radio-button-group – accessibility', () => {
+	let el: NLDDRadioButtonGroup;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('forwards accessible-labelledby to aria-labelledby on the radiogroup element', async () => {
-		el = await fixture<NDDRadioButtonGroup>(`
-			<ndd-radio-button-group accessible-labelledby="my-label"></ndd-radio-button-group>
+		el = await fixture<NLDDRadioButtonGroup>(`
+			<nldd-radio-button-group accessible-labelledby="my-label"></nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('aria-labelledby')).toBe('my-label');
 	});
 
 	it('does not set aria-labelledby when accessible-labelledby is not provided', async () => {
-		el = await fixture<NDDRadioButtonGroup>(`
-			<ndd-radio-button-group></ndd-radio-button-group>
+		el = await fixture<NLDDRadioButtonGroup>(`
+			<nldd-radio-button-group></nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('aria-labelledby')).toBeNull();

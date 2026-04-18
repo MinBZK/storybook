@@ -1,7 +1,7 @@
 /**
  * Nederlandse Digitale Dienst Button Component (Lit + TypeScript)
  *
- * @element ndd-button
+ * @element nldd-button
  * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'danger-tinted'
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
@@ -24,9 +24,9 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './ndd-button.styles.ts';
-import { template } from './ndd-button.template.ts';
-import './../../content/icon/ndd-icon.ts';
+import { styles } from './button.styles.ts';
+import { template } from './button.template.ts';
+import './../../content/icon/icon.ts';
 
 type Variant =
 	| 'primary'
@@ -41,8 +41,8 @@ type Variant =
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
 
-@customElement('ndd-button')
-export class NDDButton extends LitElement {
+@customElement('nldd-button')
+export class NLDDButton extends LitElement {
 	static override styles = styles;
 
 	@property({ type: String, reflect: true })
@@ -103,7 +103,7 @@ export class NDDButton extends LitElement {
 		const isEmpty = !this.text && !this.accessibleLabel;
 		if (isEmpty && !this._warnedA11y) {
 			this._warnedA11y = true;
-			console.warn('<ndd-button>: button has no text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2).');
+			console.warn('<nldd-button>: button has no text or accessible-label. This produces an inaccessible button (WCAG SC 4.1.2).');
 		} else if (!isEmpty) {
 			this._warnedA11y = false;
 		}
@@ -133,6 +133,6 @@ export class NDDButton extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-button': NDDButton;
+		'nldd-button': NLDDButton;
 	}
 }

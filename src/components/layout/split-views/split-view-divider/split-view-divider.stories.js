@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './ndd-split-view-divider.ts';
+import './split-view-divider.ts';
 
 /**
  * Gebruik een split view divider als scheidingslijn tussen panelen in een
@@ -9,16 +9,16 @@ import './ndd-split-view-divider.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-split-view-divider orientation="vertical"></ndd-split-view-divider>
+ * <nldd-split-view-divider orientation="vertical"></nldd-split-view-divider>
  * ```
  */
 export default {
 	title: 'Components/Layout/Split Views/Split View Divider',
-	component: 'ndd-split-view-divider',
+	component: 'nldd-split-view-divider',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/layout/split-views/split-view-divider/ndd-split-view-divider.ts',
+			file: 'src/components/layout/split-views/split-view-divider/split-view-divider.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -48,10 +48,10 @@ export const Verticaal = ({ orientation, hasDragHandle }) => html`
 	<div style="display: flex; flex-direction: row; height: 200px;">
 		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
-		<ndd-split-view-divider
+		<nldd-split-view-divider
 			orientation=${orientation}
 			?has-drag-handle=${hasDragHandle}
-		></ndd-split-view-divider>
+		></nldd-split-view-divider>
 		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
 	</div>
@@ -61,7 +61,7 @@ export const Horizontaal = () => html`
 	<div style="display: flex; flex-direction: column; width: 400px;">
 		<div style="height: 100px; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
-		<ndd-split-view-divider orientation="horizontal"></ndd-split-view-divider>
+		<nldd-split-view-divider orientation="horizontal"></nldd-split-view-divider>
 		<div style="height: 100px; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
 	</div>
@@ -72,7 +72,7 @@ export const MetSleepHandvat = () => html`
 	<div style="display: flex; flex-direction: row; height: 200px;">
 		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
-		<ndd-split-view-divider orientation="vertical" has-drag-handle></ndd-split-view-divider>
+		<nldd-split-view-divider orientation="vertical" has-drag-handle></nldd-split-view-divider>
 		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
 	</div>

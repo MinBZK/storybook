@@ -8,7 +8,7 @@
  * a minimum centered region. For strict top alignment without a minimum height,
  * use `vertical-alignment="top"`.
  *
- * @element ndd-cell
+ * @element nldd-cell
  * @attr {'stretch' | 'fit-content' | number} width - Width of the cell. A number sets a fixed pixel width. (default: 'fit-content')
  * @attr {number} min-width - Minimum width in pixels
  * @attr {number} max-width - Maximum width in pixels
@@ -19,8 +19,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './ndd-cell.styles.ts';
-import { template } from './ndd-cell.template.ts';
+import { styles } from './cell.styles.ts';
+import { template } from './cell.template.ts';
 
 export type CellWidth = 'stretch' | 'fit-content';
 export type CellVerticalAlignment = 'top' | 'center' | 'bottom';
@@ -36,8 +36,8 @@ const widthConverter = {
 	},
 };
 
-@customElement('ndd-cell')
-export class NDDCell extends LitElement {
+@customElement('nldd-cell')
+export class NLDDCell extends LitElement {
 	static override styles = [styles];
 
 	@property({ reflect: true, converter: widthConverter })
@@ -93,6 +93,6 @@ export class NDDCell extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-cell': NDDCell;
+		'nldd-cell': NLDDCell;
 	}
 }

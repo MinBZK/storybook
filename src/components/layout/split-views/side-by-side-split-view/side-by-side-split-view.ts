@@ -6,7 +6,7 @@
  * automatically gets a numbered slot: pane-1, pane-2, etc.
  * Panes that do not fit the available width are automatically hidden.
  *
- * @element ndd-side-by-side-split-view
+ * @element nldd-side-by-side-split-view
  *
  * @attr {'inherit'|'default'|'tinted'} background - Use a tinted background color (cascades to descendants)
  * @attr {number} panes - Number of panes (default: 2)
@@ -17,11 +17,11 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { sideBySideSplitViewStyles } from './ndd-side-by-side-split-view.styles.ts';
-import { sideBySideSplitViewTemplate } from './ndd-side-by-side-split-view.template.ts';
+import { sideBySideSplitViewStyles } from './side-by-side-split-view.styles.ts';
+import { sideBySideSplitViewTemplate } from './side-by-side-split-view.template.ts';
 
-@customElement('ndd-side-by-side-split-view')
-export class NDDSideBySideSplitView extends LitElement {
+@customElement('nldd-side-by-side-split-view')
+export class NLDDSideBySideSplitView extends LitElement {
 	static override styles = sideBySideSplitViewStyles;
 
 	@property({ type: String, reflect: true })
@@ -76,6 +76,6 @@ export class NDDSideBySideSplitView extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-side-by-side-split-view': NDDSideBySideSplitView;
+		'nldd-side-by-side-split-view': NLDDSideBySideSplitView;
 	}
 }

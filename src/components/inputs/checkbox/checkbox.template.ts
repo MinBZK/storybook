@@ -1,8 +1,8 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDCheckbox } from './ndd-checkbox.js';
-import './../../content/icon/ndd-icon.ts';
+import type { NLDDCheckbox } from './checkbox.js';
+import './../../content/icon/icon.ts';
 
-export function checkboxTemplate(component: NDDCheckbox): TemplateResult {
+export function checkboxTemplate(component: NLDDCheckbox): TemplateResult {
 	return html`
 		<input class="checkbox__input"
 			type="checkbox"
@@ -15,8 +15,8 @@ export function checkboxTemplate(component: NDDCheckbox): TemplateResult {
 			@change=${component._handleChange}
 		>
 		<div class="checkbox__box" aria-hidden="true">
-			<ndd-icon class="checkbox__check-icon" name="check-mark-small"></ndd-icon>
-			<ndd-icon class="checkbox__indeterminate-icon" name="minus-extra-small"></ndd-icon>
+			<nldd-icon class="checkbox__check-icon" name="check-mark-small"></nldd-icon>
+			<nldd-icon class="checkbox__indeterminate-icon" name="minus-extra-small"></nldd-icon>
 		</div>
 	`;
 }

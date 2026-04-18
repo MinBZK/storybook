@@ -1,37 +1,37 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './ndd-list.styles.ts';
-import { template } from './ndd-list.template.ts';
-import type { NDDListItem } from '../list-item/ndd-list-item.ts';
-import { nddListTranslations } from './ndd-list.i18n.ts';
-import type { NDDListTranslations } from './ndd-list.i18n.ts';
+import { styles } from './list.styles.ts';
+import { template } from './list.template.ts';
+import type { NLDDListItem } from '../list-item/list-item.ts';
+import { nlddListTranslations } from './list.i18n.ts';
+import type { NLDDListTranslations } from './list.i18n.ts';
 
 export type ListVariant = 'simple' | 'box' | 'box-on-tinted';
 
-export interface NDDReorderEventDetail {
+export interface NLDDReorderEventDetail {
 	fromIndex: number;
 	toIndex: number;
 }
 
 /**
- * A container for `ndd-list-item` elements, with optional header and footer slots.
+ * A container for `nldd-list-item` elements, with optional header and footer slots.
  * When `reorderable` is set, items can be reordered by drag or keyboard.
  *
- * @slot         - List items (`ndd-list-item`)
- * @slot header  - Content above the list body (e.g. `ndd-title`)
+ * @slot         - List items (`nldd-list-item`)
+ * @slot header  - Content above the list body (e.g. `nldd-title`)
  * @slot footer  - Content below the list body (e.g. a short description)
  *
- * @fires ndd-reorder - Fired on successful drop: `{ fromIndex, toIndex }`
+ * @fires nldd-reorder - Fired on successful drop: `{ fromIndex, toIndex }`
  */
-@customElement('ndd-list')
-export class NDDList extends LitElement {
+@customElement('nldd-list')
+export class NLDDList extends LitElement {
 	static override styles = [styles];
 
 	/** Visual style of the list. */
 	@property({ reflect: true })
 	variant: ListVariant = 'simple';
 
-	/** Enables drag-to-reorder. Sets `draggable` on each `ndd-list-item`. */
+	/** Enables drag-to-reorder. Sets `draggable` on each `nldd-list-item`. */
 	@property({ type: Boolean, reflect: true })
 	reorderable = false;
 
@@ -41,17 +41,17 @@ export class NDDList extends LitElement {
 
 	/** Override one or more translation keys. Unset keys fall back to the Dutch default. */
 	@property({ type: Object })
-	translations: Partial<NDDListTranslations> = {};
+	translations: Partial<NLDDListTranslations> = {};
 
 	@state()
-	private _mergedTranslations = { ...nddListTranslations };
+	private _mergedTranslations = { ...nlddListTranslations };
 
 	@state()
 	private _hasHeader = false;
 
 	// — Drag state ——————————————————————————————————————————————————————————
 
-	private _draggingEl: NDDListItem | null = null;
+	private _draggingEl: NLDDListItem | null = null;
 	private _draggingFromIndex = -1;
 	private _placeholder: HTMLDivElement | null = null;
 	private _currentDropIndex = -1;
@@ -92,17 +92,17 @@ export class NDDList extends LitElement {
 			this._updateItems();
 		}
 		if (changed.has('translations')) {
-			this._mergedTranslations = { ...nddListTranslations, ...this.translations };
+			this._mergedTranslations = { ...nlddListTranslations, ...this.translations };
 		}
 	}
 
 	// — Items ————————————————————————————————————————————————————————————————
 
-	private _getItems(): NDDListItem[] {
+	private _getItems(): NLDDListItem[] {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		return (slot?.assignedElements() ?? []).filter(
-			(el) => el.tagName.toLowerCase() === 'ndd-list-item' && !el.hasAttribute('data-ndd-placeholder'),
-		) as NDDListItem[];
+			(el) => el.tagName.toLowerCase() === 'nldd-list-item' && !el.hasAttribute('data-nldd-placeholder'),
+		) as NLDDListItem[];
 	}
 
 	private _updateItems() {
@@ -129,8 +129,8 @@ export class NDDList extends LitElement {
 		if (!hasDragHandle) return;
 
 		const item = path.find(
-			(el) => el instanceof Element && el.tagName.toLowerCase() === 'ndd-list-item',
-		) as NDDListItem | undefined;
+			(el) => el instanceof Element && el.tagName.toLowerCase() === 'nldd-list-item',
+		) as NLDDListItem | undefined;
 		if (!item) return;
 
 		event.preventDefault();
@@ -169,7 +169,7 @@ export class NDDList extends LitElement {
 		let toIndex = nonDragging.length; // default: end
 
 		for (let i = 0; i < nonDragging.length; i++) {
-			// ndd-list-item is display:contents so its own rect is zero — use the inner element
+			// nldd-list-item is display:contents so its own rect is zero — use the inner element
 			const inner = nonDragging[i].shadowRoot?.querySelector('.list-item') ?? nonDragging[i];
 			const rect = inner.getBoundingClientRect();
 			const threshold = draggingDown ? rect.top : rect.bottom;
@@ -236,8 +236,8 @@ export class NDDList extends LitElement {
 		if (!hasDragHandle) return;
 
 		const item = path.find(
-			(el) => el instanceof Element && el.tagName.toLowerCase() === 'ndd-list-item',
-		) as NDDListItem | undefined;
+			(el) => el instanceof Element && el.tagName.toLowerCase() === 'nldd-list-item',
+		) as NLDDListItem | undefined;
 		if (!item) return;
 
 		event.preventDefault();
@@ -249,7 +249,7 @@ export class NDDList extends LitElement {
 
 	// — Drag: core ———————————————————————————————————————————————————————————
 
-	private _startDrag(item: NDDListItem, clientY = 0) {
+	private _startDrag(item: NLDDListItem, clientY = 0) {
 		const items = this._getItems();
 		const fromIndex = items.indexOf(item);
 		if (fromIndex === -1) return;
@@ -263,9 +263,9 @@ export class NDDList extends LitElement {
 
 		// Insert placeholder at item's current position, sized to match the actual item
 		this._placeholder = document.createElement('div');
-		this._placeholder.className = 'ndd-list-drag-placeholder';
+		this._placeholder.className = 'nldd-list-drag-placeholder';
 		this._placeholder.setAttribute('aria-hidden', 'true');
-		this._placeholder.setAttribute('data-ndd-placeholder', '');
+		this._placeholder.setAttribute('data-nldd-placeholder', '');
 		this._placeholder.style.height = `${rect.height}px`;
 		item.after(this._placeholder);
 
@@ -283,7 +283,7 @@ export class NDDList extends LitElement {
 			const hostClone = item.cloneNode(true) as HTMLElement;
 			hostClone.classList.remove('is-dragging');
 			hostClone.classList.remove('is-dragging-pointer');
-			hostClone.setAttribute('data-ndd-clone', '');
+			hostClone.setAttribute('data-nldd-clone', '');
 
 			this._clone = document.createElement('div');
 			this._clone.className = 'list__drag-clone';
@@ -336,7 +336,7 @@ export class NDDList extends LitElement {
 
 		if (fromIndex !== toIndex) {
 			this.dispatchEvent(
-				new CustomEvent<NDDReorderEventDetail>('ndd-reorder', {
+				new CustomEvent<NLDDReorderEventDetail>('nldd-reorder', {
 					detail: { fromIndex, toIndex },
 					bubbles: true,
 					composed: true,
@@ -345,7 +345,7 @@ export class NDDList extends LitElement {
 			this._announce(this._t('components.list.drag-dropped-text', { position: toIndex + 1 }));
 
 			// Restore focus to the drag handle on the moved item after the
-			// consumer has had a chance to reorder the DOM in response to ndd-reorder.
+			// consumer has had a chance to reorder the DOM in response to nldd-reorder.
 			requestAnimationFrame(() => {
 				const handle = movedItem
 					.querySelector('[draggable-only]')
@@ -391,7 +391,7 @@ export class NDDList extends LitElement {
 
 	// — i18n ————————————————————————————————————————————————————————————————
 
-	private _t(key: keyof NDDListTranslations, vars?: Record<string, string | number>): string {
+	private _t(key: keyof NLDDListTranslations, vars?: Record<string, string | number>): string {
 		let str = this._mergedTranslations[key];
 		if (vars) {
 			for (const [k, v] of Object.entries(vars)) {
@@ -403,7 +403,7 @@ export class NDDList extends LitElement {
 
 
 	// Sets or clears the aria-label on the active keyboard drag handle button directly
-	private _setDragHandleLabel(item: NDDListItem, label?: string) {
+	private _setDragHandleLabel(item: NLDDListItem, label?: string) {
 		const handle = item
 			.querySelector('[draggable-only]')
 			?.shadowRoot?.querySelector<HTMLElement>('button');
@@ -447,6 +447,6 @@ export class NDDList extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-list': NDDList;
+		'nldd-list': NLDDList;
 	}
 }

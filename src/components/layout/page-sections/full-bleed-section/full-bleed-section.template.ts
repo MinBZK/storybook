@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
-import type { NDDFullBleedSection } from './ndd-full-bleed-section.js';
+import type { NLDDFullBleedSection } from './full-bleed-section.js';
 
-export function fullBleedSectionTemplate(component: NDDFullBleedSection): TemplateResult {
+export function fullBleedSectionTemplate(component: NLDDFullBleedSection): TemplateResult {
 	return html`
 		<section class="full-bleed-section">
 			<div class="full-bleed-section__body">

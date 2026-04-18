@@ -1,14 +1,14 @@
 import { html, nothing } from 'lit';
-import './ndd-tab-bar.ts';
-import './../../content/icon/ndd-icon.ts';
+import './tab-bar.ts';
+import './../../content/icon/icon.ts';
 
 export default {
 	title: 'Components/Navigation/Tab Bar',
-	component: 'ndd-tab-bar',
+	component: 'nldd-tab-bar',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/navigation/tab-bar/ndd-tab-bar.ts',
+			file: 'src/components/navigation/tab-bar/tab-bar.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'stable' },
@@ -48,54 +48,54 @@ export default {
 // Every item always has both icon and text for accessible, complete markup.
 // variant on the item forces a specific visual presentation.
 const tabBarItems = html`
-	<ndd-tab-bar-item
+	<nldd-tab-bar-item
 		selected
 		text="Home"
 	>
-		<ndd-icon slot="icon" name="home"></ndd-icon>
-	</ndd-tab-bar-item>
-	<ndd-tab-bar-item text="Profiel">
-		<ndd-icon slot="icon" name="profile"></ndd-icon>
-	</ndd-tab-bar-item>
-	<ndd-tab-bar-item text="Zoeken">
-		<ndd-icon slot="icon" name="search"></ndd-icon>
-	</ndd-tab-bar-item>
+		<nldd-icon slot="icon" name="home"></nldd-icon>
+	</nldd-tab-bar-item>
+	<nldd-tab-bar-item text="Profiel">
+		<nldd-icon slot="icon" name="profile"></nldd-icon>
+	</nldd-tab-bar-item>
+	<nldd-tab-bar-item text="Zoeken">
+		<nldd-icon slot="icon" name="search"></nldd-icon>
+	</nldd-tab-bar-item>
 `;
 
 const Template = ({ variant, compact, responsive, fullWidth }) => html`
 	<div style="container-type: inline-size; container-name: layout-area;">
-		<ndd-tab-bar
+		<nldd-tab-bar
 			variant=${variant || nothing}
 			?compact=${compact}
 			?responsive=${responsive}
 			?full-width=${fullWidth}
 		>
 			${tabBarItems}
-		</ndd-tab-bar>
+		</nldd-tab-bar>
 	</div>
 `;
 
 export const Standaard = Template.bind({});
 
 export const MetTekstVariant = () => html`
-	<ndd-tab-bar variant="text">
+	<nldd-tab-bar variant="text">
 		${tabBarItems}
-	</ndd-tab-bar>
+	</nldd-tab-bar>
 `;
 MetTekstVariant.parameters = { controls: { disable: true } };
 
 export const MetIconenVariant = () => html`
-	<ndd-tab-bar variant="icon">
+	<nldd-tab-bar variant="icon">
 		${tabBarItems}
-	</ndd-tab-bar>
+	</nldd-tab-bar>
 `;
 MetIconenVariant.parameters = { controls: { disable: true } };
 
 
 export const Compact = () => html`
-	<ndd-tab-bar compact>
+	<nldd-tab-bar compact>
 		${tabBarItems}
-	</ndd-tab-bar>
+	</nldd-tab-bar>
 `;
 Compact.parameters = { controls: { disable: true } };
 
@@ -104,17 +104,17 @@ export const Responsief = () => html`
 		<div>
 			<small>Breed (regular weergave)</small>
 			<div style="container-type: inline-size; container-name: layout-area; width: 680px;">
-				<ndd-tab-bar responsive full-width>
+				<nldd-tab-bar responsive full-width>
 					${tabBarItems}
-				</ndd-tab-bar>
+				</nldd-tab-bar>
 			</div>
 		</div>
 		<div>
 			<small>Smal onder 480px (compact weergave)</small>
 			<div style="container-type: inline-size; container-name: layout-area; width: 320px;">
-				<ndd-tab-bar responsive full-width>
+				<nldd-tab-bar responsive full-width>
 					${tabBarItems}
-				</ndd-tab-bar>
+				</nldd-tab-bar>
 			</div>
 		</div>
 	</div>
@@ -123,59 +123,59 @@ Responsief.parameters = { controls: { disable: true } };
 
 export const VolleBreedte = () => html`
 	<div style="container-type: inline-size; container-name: layout-area;">
-		<ndd-tab-bar full-width>
+		<nldd-tab-bar full-width>
 			${tabBarItems}
-		</ndd-tab-bar>
+		</nldd-tab-bar>
 	</div>
 `;
 VolleBreedte.parameters = { controls: { disable: true } };
 
 export const Gemengd = () => html`
-	<ndd-tab-bar>
-		<ndd-tab-bar-item
+	<nldd-tab-bar>
+		<nldd-tab-bar-item
 			selected
 			variant="text"
 			text="Home"
 		>
-			<ndd-icon slot="icon" name="home"></ndd-icon>
-		</ndd-tab-bar-item>
-		<ndd-tab-bar-item
+			<nldd-icon slot="icon" name="home"></nldd-icon>
+		</nldd-tab-bar-item>
+		<nldd-tab-bar-item
 			variant="text"
 			text="Profiel"
 		>
-			<ndd-icon slot="icon" name="profile"></ndd-icon>
-		</ndd-tab-bar-item>
-		<ndd-tab-bar-item
+			<nldd-icon slot="icon" name="profile"></nldd-icon>
+		</nldd-tab-bar-item>
+		<nldd-tab-bar-item
 			variant="icon"
 			text="Zoeken"
 		>
-			<ndd-icon slot="icon" name="search"></ndd-icon>
-		</ndd-tab-bar-item>
-	</ndd-tab-bar>
+			<nldd-icon slot="icon" name="search"></nldd-icon>
+		</nldd-tab-bar-item>
+	</nldd-tab-bar>
 `;
 Gemengd.parameters = { controls: { disable: true } };
 
 export const Navigatie = () => html`
-	<ndd-tab-bar navigation accessible-label="Hoofdnavigatie">
-		<ndd-tab-bar-item
+	<nldd-tab-bar navigation accessible-label="Hoofdnavigatie">
+		<nldd-tab-bar-item
 			selected
 			text="Home"
 			href="/home"
 		>
-			<ndd-icon slot="icon" name="home"></ndd-icon>
-		</ndd-tab-bar-item>
-		<ndd-tab-bar-item
+			<nldd-icon slot="icon" name="home"></nldd-icon>
+		</nldd-tab-bar-item>
+		<nldd-tab-bar-item
 			text="Profiel"
 			href="/profiel"
 		>
-			<ndd-icon slot="icon" name="profile"></ndd-icon>
-		</ndd-tab-bar-item>
-		<ndd-tab-bar-item
+			<nldd-icon slot="icon" name="profile"></nldd-icon>
+		</nldd-tab-bar-item>
+		<nldd-tab-bar-item
 			text="Zoeken"
 			href="/zoeken"
 		>
-			<ndd-icon slot="icon" name="search"></ndd-icon>
-		</ndd-tab-bar-item>
-	</ndd-tab-bar>
+			<nldd-icon slot="icon" name="search"></nldd-icon>
+		</nldd-tab-bar-item>
+	</nldd-tab-bar>
 `;
 Navigatie.parameters = { controls: { disable: true } };

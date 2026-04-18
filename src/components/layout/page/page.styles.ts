@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 
-/* # ndd-page styles */
+/* # nldd-page styles */
 
 export const pageStyles = css`
 	:host {

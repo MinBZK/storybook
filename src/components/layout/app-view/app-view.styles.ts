@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 
-/* # ndd-app-view styles */
+/* # nldd-app-view styles */
 
 export const appViewStyles = css`
 	:host {

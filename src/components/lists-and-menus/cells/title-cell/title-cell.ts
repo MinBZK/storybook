@@ -9,7 +9,7 @@
  * a minimum centered region. For strict top alignment without a minimum height,
  * use `vertical-alignment="top"`.
  *
- * @element ndd-title-cell
+ * @element nldd-title-cell
  * @attr {1|2|3|4|5|6} size - Visual size of the title (default: 5)
  * @attr {'default' | 'inherit'} color - Text color variant (default: 'default')
  * @attr {'stretch' | 'fit-content' | number} width - Width of the cell (default: 'stretch')
@@ -26,8 +26,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './ndd-title-cell.styles.ts';
-import { template } from './ndd-title-cell.template.ts';
+import { styles } from './title-cell.styles.ts';
+import { template } from './title-cell.template.ts';
 
 export type TitleCellSize = 1 | 2 | 3 | 4 | 5 | 6;
 type Color = 'default' | 'inherit';
@@ -46,8 +46,8 @@ const widthConverter = {
 	},
 };
 
-@customElement('ndd-title-cell')
-export class NDDTitleCell extends LitElement {
+@customElement('nldd-title-cell')
+export class NLDDTitleCell extends LitElement {
 	static override styles = [styles];
 
 	@property({ type: Number, reflect: true })
@@ -125,6 +125,6 @@ export class NDDTitleCell extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-title-cell': NDDTitleCell;
+		'nldd-title-cell': NLDDTitleCell;
 	}
 }

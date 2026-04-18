@@ -1,8 +1,8 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDNumberField } from './ndd-number-field.js';
-import './../../actions/icon-button/ndd-icon-button.ts';
+import type { NLDDNumberField } from './number-field.js';
+import './../../actions/icon-button/icon-button.ts';
 
-export function numberFieldTemplate(component: NDDNumberField): TemplateResult {
+export function numberFieldTemplate(component: NLDDNumberField): TemplateResult {
 	const canDecrease = component.value > component.min;
 	const canIncrease = component.value < component.max;
 
@@ -13,14 +13,14 @@ export function numberFieldTemplate(component: NDDNumberField): TemplateResult {
 		>
 			${!component.hideSpinButtons ? html`
 				<div class="number-field__decrement-control">
-					<ndd-icon-button
+					<nldd-icon-button
 						variant="neutral-tinted"
 						size="sm"
 						icon="minus"
 						text=${component._t('components.number-field.decrement-action')}
 						?disabled=${component.disabled || !canDecrease}
 						@click=${component._handleDecrease}
-					></ndd-icon-button>
+					></nldd-icon-button>
 				</div>
 			` : nothing}
 			<input class="number-field__input"
@@ -36,14 +36,14 @@ export function numberFieldTemplate(component: NDDNumberField): TemplateResult {
 			>
 			${!component.hideSpinButtons ? html`
 				<div class="number-field__increment-control">
-					<ndd-icon-button
+					<nldd-icon-button
 						variant="neutral-tinted"
 						size="sm"
 						icon="plus"
 						text=${component._t('components.number-field.increment-action')}
 						?disabled=${component.disabled || !canIncrease}
 						@click=${component._handleIncrease}
-					></ndd-icon-button>
+					></nldd-icon-button>
 				</div>
 			` : nothing}
 		</div>

@@ -1,9 +1,9 @@
 import { html, nothing } from 'lit';
-import './ndd-top-navigation-bar.ts';
+import './top-navigation-bar.ts';
 
 export default {
 	title: 'Components/Navigation/Top Navigation Bar',
-	component: 'ndd-top-navigation-bar',
+	component: 'nldd-top-navigation-bar',
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'fullscreen',
@@ -34,7 +34,7 @@ export default {
 	},
 };
 
-// ## Layout area wrapper (simulates ndd-page container)
+// ## Layout area wrapper (simulates nldd-page container)
 
 const layoutArea = 'container-type: inline-size; container-name: layout-area; background-color: var(--semantics-surfaces-background-color);';
 
@@ -53,7 +53,7 @@ const Template = ({
 	backText,
 }: Record<string, unknown>) => html`
 	<div style=${layoutArea}>
-		<ndd-top-navigation-bar
+		<nldd-top-navigation-bar
 			website-title=${websiteTitle || nothing}
 			?no-logo=${noLogo}
 			logo-title=${logoTitle || nothing}
@@ -65,24 +65,24 @@ const Template = ({
 			back-href=${backHref || nothing}
 			back-text=${backText || nothing}
 		>
-			<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
-				<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
-				<ndd-menu-item text="English" type="radio"></ndd-menu-item>
-				<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
-			</ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
-			<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
-				<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
-				<ndd-menu-item text="Instellingen"></ndd-menu-item>
-				<ndd-menu-divider></ndd-menu-divider>
-				<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-			</ndd-menu-bar-item>
-		</ndd-top-navigation-bar>
+			<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
+			<nldd-menu-bar-item slot="global" text="Aanvragen & activeren"></nldd-menu-bar-item>
+			<nldd-menu-bar-item slot="global" text="Manieren van inloggen"></nldd-menu-bar-item>
+			<nldd-menu-bar-item slot="global" text="Veiligheid"></nldd-menu-bar-item>
+			<nldd-menu-bar-item slot="global" text="Hulp"></nldd-menu-bar-item>
+			<nldd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
+				<nldd-menu-item text="Nederlands" type="radio" selected></nldd-menu-item>
+				<nldd-menu-item text="English" type="radio"></nldd-menu-item>
+				<nldd-menu-item text="Papiamentu" type="radio"></nldd-menu-item>
+			</nldd-menu-bar-item>
+			<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
+			<nldd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
+				<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+				<nldd-menu-item text="Instellingen"></nldd-menu-item>
+				<nldd-menu-divider></nldd-menu-divider>
+				<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+			</nldd-menu-bar-item>
+		</nldd-top-navigation-bar>
 	</div>
 `;
 
@@ -104,20 +104,20 @@ WithBackButton.args = {
 export const MijnOverheidZakelijk = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<ndd-top-navigation-bar logo-title="Mijn overheid zakelijk">
-				<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Over MOZa"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Contact"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable>
-					<ndd-menu-item text="Bedrijfsprofiel"></ndd-menu-item>
-					<ndd-menu-item text="Instellingen"></ndd-menu-item>
-					<ndd-menu-divider></ndd-menu-divider>
-					<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-				</ndd-menu-bar-item>
-			</ndd-top-navigation-bar>
+			<nldd-top-navigation-bar logo-title="Mijn overheid zakelijk">
+				<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Over MOZa"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Actueel"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Onderwerpen"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Contact"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable>
+					<nldd-menu-item text="Bedrijfsprofiel"></nldd-menu-item>
+					<nldd-menu-item text="Instellingen"></nldd-menu-item>
+					<nldd-menu-divider></nldd-menu-divider>
+					<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+				</nldd-menu-bar-item>
+			</nldd-top-navigation-bar>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },
@@ -126,17 +126,17 @@ export const MijnOverheidZakelijk = {
 export const RegelRecht = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<ndd-top-navigation-bar
+			<nldd-top-navigation-bar
 				website-title="RegelRecht"
 				back-href="/"
 				back-text="Bibliotheek"
 			>
-				<ndd-menu-bar-item slot="utility" text="J. Jansen" icon="person" expandable>
-					<ndd-menu-item text="Mijn profiel"></ndd-menu-item>
-					<ndd-menu-divider></ndd-menu-divider>
-					<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-				</ndd-menu-bar-item>
-			</ndd-top-navigation-bar>
+				<nldd-menu-bar-item slot="utility" text="J. Jansen" icon="person" expandable>
+					<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
+					<nldd-menu-divider></nldd-menu-divider>
+					<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+				</nldd-menu-bar-item>
+			</nldd-top-navigation-bar>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },
@@ -145,23 +145,23 @@ export const RegelRecht = {
 export const SmallViewport = {
 	render: () => html`
 		<div style="${layoutArea} max-width: 400px;">
-			<ndd-top-navigation-bar website-title="DigID">
-				<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
-					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
-					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
-					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
-				</ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
-					<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
-					<ndd-menu-item text="Instellingen"></ndd-menu-item>
-					<ndd-menu-divider></ndd-menu-divider>
-					<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-				</ndd-menu-bar-item>
-			</ndd-top-navigation-bar>
+			<nldd-top-navigation-bar website-title="DigID">
+				<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Aanvragen & activeren"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Manieren van inloggen"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
+					<nldd-menu-item text="Nederlands" type="radio" selected></nldd-menu-item>
+					<nldd-menu-item text="English" type="radio"></nldd-menu-item>
+					<nldd-menu-item text="Papiamentu" type="radio"></nldd-menu-item>
+				</nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
+					<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+					<nldd-menu-item text="Instellingen"></nldd-menu-item>
+					<nldd-menu-divider></nldd-menu-divider>
+					<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+				</nldd-menu-bar-item>
+			</nldd-top-navigation-bar>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },
@@ -170,28 +170,28 @@ export const SmallViewport = {
 export const ManyGlobalItems = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<ndd-top-navigation-bar logo-title="Rijksoverheid">
-				<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Documenten en publicaties"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Ministeries"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Contact"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Vraag en antwoord"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="global" text="Wetten en regelgeving"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
-					<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
-					<ndd-menu-item text="English" type="radio"></ndd-menu-item>
-					<ndd-menu-item text="Papiamentu" type="radio"></ndd-menu-item>
-				</ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
-				<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
-					<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
-					<ndd-menu-item text="Instellingen"></ndd-menu-item>
-					<ndd-menu-divider></ndd-menu-divider>
-					<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-				</ndd-menu-bar-item>
-			</ndd-top-navigation-bar>
+			<nldd-top-navigation-bar logo-title="Rijksoverheid">
+				<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Onderwerpen"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Documenten en publicaties"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Ministeries"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Contact"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Actueel"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Vraag en antwoord"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="global" text="Wetten en regelgeving"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
+					<nldd-menu-item text="Nederlands" type="radio" selected></nldd-menu-item>
+					<nldd-menu-item text="English" type="radio"></nldd-menu-item>
+					<nldd-menu-item text="Papiamentu" type="radio"></nldd-menu-item>
+				</nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
+				<nldd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
+					<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+					<nldd-menu-item text="Instellingen"></nldd-menu-item>
+					<nldd-menu-divider></nldd-menu-divider>
+					<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+				</nldd-menu-bar-item>
+			</nldd-top-navigation-bar>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },
@@ -200,7 +200,7 @@ export const ManyGlobalItems = {
 export const MinimalLogo = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<ndd-top-navigation-bar></ndd-top-navigation-bar>
+			<nldd-top-navigation-bar></nldd-top-navigation-bar>
 		</div>
 	`,
 	parameters: { controls: { disable: true } },
@@ -210,64 +210,64 @@ export const AllStates = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 32px;">
 			<div style=${layoutArea}>
-				<ndd-top-navigation-bar website-title="DigID (Full width)">
-					<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Veiligheid"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Hulp"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
-						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
-						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
-					</ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
-						<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
-						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-					</ndd-menu-bar-item>
-				</ndd-top-navigation-bar>
+				<nldd-top-navigation-bar website-title="DigID (Full width)">
+					<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Aanvragen & activeren"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Manieren van inloggen"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Veiligheid"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Hulp"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
+						<nldd-menu-item text="Nederlands" type="radio" selected></nldd-menu-item>
+						<nldd-menu-item text="English" type="radio"></nldd-menu-item>
+					</nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
+						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+						<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					</nldd-menu-bar-item>
+				</nldd-top-navigation-bar>
 			</div>
 			<div style="${layoutArea} max-width: 400px;">
-				<ndd-top-navigation-bar website-title="DigID (Small viewport)">
-					<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Aanvragen & activeren"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Manieren van inloggen"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
-						<ndd-menu-item text="Nederlands" type="radio" selected></ndd-menu-item>
-						<ndd-menu-item text="English" type="radio"></ndd-menu-item>
-					</ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
-						<ndd-menu-item text="Mijn gegevens"></ndd-menu-item>
-						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-					</ndd-menu-bar-item>
-				</ndd-top-navigation-bar>
+				<nldd-top-navigation-bar website-title="DigID (Small viewport)">
+					<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Aanvragen & activeren"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Manieren van inloggen"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="NL" expandable content-priority="icon">
+						<nldd-menu-item text="Nederlands" type="radio" selected></nldd-menu-item>
+						<nldd-menu-item text="English" type="radio"></nldd-menu-item>
+					</nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="Mijn DigID" icon="person" expandable content-priority="text">
+						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+						<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					</nldd-menu-bar-item>
+				</nldd-top-navigation-bar>
 			</div>
 			<div style=${layoutArea}>
-				<ndd-top-navigation-bar logo-title="Mijn overheid zakelijk">
-					<ndd-menu-bar-item slot="global" text="Home" current></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Over MOZa"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Actueel"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Onderwerpen"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="global" text="Contact"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></ndd-menu-bar-item>
-					<ndd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable>
-						<ndd-menu-item text="Bedrijfsprofiel"></ndd-menu-item>
-						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-					</ndd-menu-bar-item>
-				</ndd-top-navigation-bar>
+				<nldd-top-navigation-bar logo-title="Mijn overheid zakelijk">
+					<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Over MOZa"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Actueel"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Onderwerpen"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="global" text="Contact"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier" content-priority="icon"></nldd-menu-bar-item>
+					<nldd-menu-bar-item slot="utility" text="Bloom B.V." icon="person" expandable>
+						<nldd-menu-item text="Bedrijfsprofiel"></nldd-menu-item>
+						<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					</nldd-menu-bar-item>
+				</nldd-top-navigation-bar>
 			</div>
 			<div style=${layoutArea}>
-				<ndd-top-navigation-bar
+				<nldd-top-navigation-bar
 					website-title="RegelRecht"
 					back-href="/"
 					back-text="Bibliotheek"
 				>
-					<ndd-menu-bar-item slot="utility" text="J. Jansen" icon="person" expandable>
-						<ndd-menu-item text="Mijn profiel"></ndd-menu-item>
-						<ndd-menu-item text="Uitloggen"></ndd-menu-item>
-					</ndd-menu-bar-item>
-				</ndd-top-navigation-bar>
+					<nldd-menu-bar-item slot="utility" text="J. Jansen" icon="person" expandable>
+						<nldd-menu-item text="Mijn profiel"></nldd-menu-item>
+						<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+					</nldd-menu-bar-item>
+				</nldd-top-navigation-bar>
 			</div>
 		</div>
 	`,

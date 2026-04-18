@@ -1,15 +1,15 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDToggleButton } from './ndd-toggle-button.js';
-import '../../content/tooltip/ndd-tooltip.js';
+import type { NLDDToggleButton } from './toggle-button.js';
+import '../../content/tooltip/tooltip.js';
 
 
-export function toggleButtonTemplate(component: NDDToggleButton): TemplateResult {
+export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResult {
 	const label = component.accessibleLabel || nothing;
 	const iconOnly = !!component.icon && !component.text;
 	const tooltipText = iconOnly ? (component.accessibleLabel || component.text) : '';
 
 	const icon = component.icon
-		? html`<ndd-icon class="toggle-button__icon" name=${component.icon}></ndd-icon>`
+		? html`<nldd-icon class="toggle-button__icon" name=${component.icon}></nldd-icon>`
 		: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`;
 
 	const textContent = component.text
@@ -52,7 +52,7 @@ export function toggleButtonTemplate(component: NDDToggleButton): TemplateResult
 	}
 
 	if (tooltipText) {
-		return html`<ndd-tooltip text=${tooltipText}>${result}</ndd-tooltip>`;
+		return html`<nldd-tooltip text=${tooltipText}>${result}</nldd-tooltip>`;
 	}
 	return result;
 }

@@ -7,7 +7,7 @@
  * With `lazy-load`, the next items are automatically loaded when
  * the load-more button comes into view.
  *
- * @element ndd-collection
+ * @element nldd-collection
  *
  * @attr {string} layout - Layout mode: 'grid' | 'list' | 'horizontal-scroll' (default: 'grid')
  * @attr {boolean} show-load-more - Show load-more button in grid/list (default: false)
@@ -27,19 +27,19 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
-import { collectionStyles } from './ndd-collection.styles.ts';
-import { collectionTemplate } from './ndd-collection.template.ts';
-import { nddCollectionTranslations } from './ndd-collection.i18n.ts';
-import type { NDDCollectionTranslations } from './ndd-collection.i18n.ts';
-import '../../actions/button/ndd-button.ts';
-import '../../actions/button-bar/ndd-button-bar.ts';
-import '../../actions/icon-button/ndd-icon-button.ts';
-import '../../content/icon/ndd-icon.ts';
+import { collectionStyles } from './collection.styles.ts';
+import { collectionTemplate } from './collection.template.ts';
+import { nlddCollectionTranslations } from './collection.i18n.ts';
+import type { NLDDCollectionTranslations } from './collection.i18n.ts';
+import '../../actions/button/button.ts';
+import '../../actions/button-bar/button-bar.ts';
+import '../../actions/icon-button/icon-button.ts';
+import '../../content/icon/icon.ts';
 
 type Layout = 'grid' | 'list' | 'horizontal-scroll';
 
-@customElement('ndd-collection')
-export class NDDCollection extends LitElement {
+@customElement('nldd-collection')
+export class NLDDCollection extends LitElement {
 	static override styles = collectionStyles;
 
 	@property({ type: String, reflect: true })
@@ -55,12 +55,12 @@ export class NDDCollection extends LitElement {
 	lazyLoad = false;
 
 	@property({ type: Object })
-	translations: Partial<NDDCollectionTranslations> = {};
+	translations: Partial<NLDDCollectionTranslations> = {};
 
 	// — i18n —————————————————————————————————————————————————————————————————
 
-	public _t(key: keyof NDDCollectionTranslations): string {
-		return this.translations[key] ?? nddCollectionTranslations[key];
+	public _t(key: keyof NLDDCollectionTranslations): string {
+		return this.translations[key] ?? nlddCollectionTranslations[key];
 	}
 
 	@state()
@@ -85,7 +85,7 @@ export class NDDCollection extends LitElement {
 		this._atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
 	};
 
-	@query('ndd-button.load-more')
+	@query('nldd-button.load-more')
 	private _loadMoreBtn!: HTMLElement | null;
 
 	private _intersectionObserver: IntersectionObserver | undefined;
@@ -179,6 +179,6 @@ export class NDDCollection extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-collection': NDDCollection;
+		'nldd-collection': NLDDCollection;
 	}
 }

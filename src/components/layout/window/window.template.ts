@@ -1,8 +1,8 @@
 /* eslint-disable lit-a11y/click-events-have-key-events -- native dialog handles keyboard via @cancel */
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDWindow } from './ndd-window.js';
+import type { NLDDWindow } from './window.js';
 
-export function windowTemplate(component: NDDWindow): TemplateResult {
+export function windowTemplate(component: NLDDWindow): TemplateResult {
 	return html`
 		<dialog class="window"
 			aria-label=${component.accessibleLabel}

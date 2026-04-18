@@ -78,7 +78,7 @@ export const styles = css`
 
 	/* # Drag placeholder */
 
-	::slotted(.ndd-list-drag-placeholder) {
+	::slotted(.nldd-list-drag-placeholder) {
 		box-sizing: border-box;
 		background-color: var(--components-list-drag-placeholder-background-color);
 		pointer-events: none;

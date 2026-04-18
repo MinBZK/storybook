@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
-import type { NDDContainer } from './ndd-container.ts';
+import type { NLDDContainer } from './container.ts';
 
-export function containerTemplate(_component: NDDContainer): TemplateResult {
+export function containerTemplate(_component: NLDDContainer): TemplateResult {
 	return html`
 		<div class="container">
 			<slot></slot>

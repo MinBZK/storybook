@@ -1,8 +1,8 @@
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import type { NDDButtonBar, BarChild } from './ndd-button-bar.ts';
+import type { NLDDButtonBar, BarChild } from './button-bar.ts';
 
-export function template(this: NDDButtonBar) {
+export function template(this: NLDDButtonBar) {
 	return html`
 		<div class="button-bar" part="bar" role="group">
 			${repeat(this._children, c => c.id, c => renderChild.call(this, c))}
@@ -10,7 +10,7 @@ export function template(this: NDDButtonBar) {
 	`;
 }
 
-function renderChild(this: NDDButtonBar, child: BarChild) {
+function renderChild(this: NLDDButtonBar, child: BarChild) {
 	if (child.type === 'divider') {
 		return html`
 			<div class="button-bar__divider">

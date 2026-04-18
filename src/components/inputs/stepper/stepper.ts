@@ -3,7 +3,7 @@
  *
  * A numeric control with increment and decrement buttons.
  *
- * @element ndd-stepper
+ * @element nldd-stepper
  * @attr {number}  value        - Current value
  * @attr {number}  min          - Minimum value (default: 0)
  * @attr {number}  max          - Maximum value (default: Infinity)
@@ -16,17 +16,17 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { stepperStyles } from './ndd-stepper.styles.ts';
-import { stepperTemplate } from './ndd-stepper.template.ts';
-import { nddStepperTranslations } from './ndd-stepper.i18n.ts';
-import type { NDDStepperTranslations } from './ndd-stepper.i18n.ts';
-import './../../actions/icon-button/ndd-icon-button.ts';
-import './../../content/icon/ndd-icon.ts';
+import { stepperStyles } from './stepper.styles.ts';
+import { stepperTemplate } from './stepper.template.ts';
+import { nlddStepperTranslations } from './stepper.i18n.ts';
+import type { NLDDStepperTranslations } from './stepper.i18n.ts';
+import './../../actions/icon-button/icon-button.ts';
+import './../../content/icon/icon.ts';
 
 export type StepperSize = 'sm' | 'md';
 
-@customElement('ndd-stepper')
-export class NDDStepper extends LitElement {
+@customElement('nldd-stepper')
+export class NLDDStepper extends LitElement {
 	static override styles = stepperStyles;
 
 	@property({ type: Number })
@@ -49,12 +49,12 @@ export class NDDStepper extends LitElement {
 
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
-	translations: Partial<NDDStepperTranslations> = {};
+	translations: Partial<NLDDStepperTranslations> = {};
 
 	// — i18n —————————————————————————————————————————————————————————————————
 
-	public _t(key: keyof NDDStepperTranslations): string {
-		return this.translations[key] ?? nddStepperTranslations[key];
+	public _t(key: keyof NLDDStepperTranslations): string {
+		return this.translations[key] ?? nlddStepperTranslations[key];
 	}
 
 	// — Actions ——————————————————————————————————————————————————————————————
@@ -121,6 +121,6 @@ export class NDDStepper extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-stepper': NDDStepper;
+		'nldd-stepper': NLDDStepper;
 	}
 }

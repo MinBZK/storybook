@@ -1,9 +1,9 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NDDRadioButton } from './ndd-radio-button.ts';
-import './ndd-radio-button.ts';
+import type { NLDDRadioButton } from './radio-button.ts';
+import './radio-button.ts';
 
-describe('ndd-radio-button', () => {
+describe('nldd-radio-button', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -11,13 +11,13 @@ describe('ndd-radio-button', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-radio-button></ndd-radio-button>');
+		el = await fixture('<nldd-radio-button></nldd-radio-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders a native radio input', async () => {
-		el = await fixture('<ndd-radio-button></ndd-radio-button>');
+		el = await fixture('<nldd-radio-button></nldd-radio-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input[type="radio"]')).not.toBeNull();
 	});
@@ -28,39 +28,39 @@ describe('ndd-radio-button', () => {
    State
    ============================================================ */
 
-describe('ndd-radio-button – state', () => {
-	let el: NDDRadioButton;
+describe('nldd-radio-button – state', () => {
+	let el: NLDDRadioButton;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('is unchecked by default', async () => {
-		el = await fixture<NDDRadioButton>('<ndd-radio-button></ndd-radio-button>');
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button></nldd-radio-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.checked).toBe(false);
 	});
 
 	it('is checked when checked attribute is set', async () => {
-		el = await fixture<NDDRadioButton>('<ndd-radio-button checked></ndd-radio-button>');
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button checked></nldd-radio-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.checked).toBe(true);
 	});
 
 	it('is disabled when disabled attribute is set', async () => {
-		el = await fixture<NDDRadioButton>('<ndd-radio-button disabled></ndd-radio-button>');
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button disabled></nldd-radio-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.disabled).toBe(true);
 	});
 
 	it('forwards value to the native input', async () => {
-		el = await fixture<NDDRadioButton>('<ndd-radio-button value="option-a"></ndd-radio-button>');
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button value="option-a"></nldd-radio-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.value).toBe('option-a');
 	});
 
 	it('forwards name to the native input', async () => {
-		el = await fixture<NDDRadioButton>('<ndd-radio-button name="group1"></ndd-radio-button>');
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button name="group1"></nldd-radio-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.name).toBe('group1');
 	});
@@ -71,15 +71,15 @@ describe('ndd-radio-button – state', () => {
    Change event
    ============================================================ */
 
-describe('ndd-radio-button – change event', () => {
-	let el: NDDRadioButton;
+describe('nldd-radio-button – change event', () => {
+	let el: NLDDRadioButton;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
 	it('updates checked property when native input changes', async () => {
-		el = await fixture<NDDRadioButton>('<ndd-radio-button></ndd-radio-button>');
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button></nldd-radio-button>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		input.checked = true;
@@ -89,7 +89,7 @@ describe('ndd-radio-button – change event', () => {
 	});
 
 	it('dispatches a change event with checked, value and name detail', async () => {
-		el = await fixture<NDDRadioButton>('<ndd-radio-button name="group1" value="option-a"></ndd-radio-button>');
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button name="group1" value="option-a"></nldd-radio-button>');
 		await waitForUpdate(el);
 
 		let detail: any;

@@ -20,7 +20,7 @@ export const numberFieldStyles = css`
 		pointer-events: none;
 	}
 
-	:host([disabled]) ndd-icon-button {
+	:host([disabled]) nldd-icon-button {
 		opacity: 1;
 	}
 

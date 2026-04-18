@@ -4,7 +4,7 @@
  * A cell component for displaying timeline track indicators in lists.
  * Shows a vertical line with a dot indicating timeline position and state.
  *
- * @element ndd-timeline-track-cell
+ * @element nldd-timeline-track-cell
  * @attr {string} step - Timeline step state: 'past' | 'future' | 'none' (default: 'past')
  * @attr {string} child - Position in timeline: 'first' | 'between' | 'last' (default: 'between')
  *
@@ -17,8 +17,8 @@ import { customElement, property } from 'lit/decorators.js';
 type Step = 'past' | 'future' | 'none';
 type Child = 'first' | 'between' | 'last';
 
-@customElement('ndd-timeline-track-cell')
-export class NDDTimelineTrackCell extends LitElement {
+@customElement('nldd-timeline-track-cell')
+export class NLDDTimelineTrackCell extends LitElement {
 	static override styles = css`
 		:host {
 			display: flex;
@@ -134,6 +134,6 @@ export class NDDTimelineTrackCell extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-timeline-track-cell': NDDTimelineTrackCell;
+		'nldd-timeline-track-cell': NLDDTimelineTrackCell;
 	}
 }

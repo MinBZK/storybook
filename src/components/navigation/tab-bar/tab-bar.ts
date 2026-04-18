@@ -2,40 +2,40 @@
  * Nederlandse Digitale Dienst Tab Bar Component (Lit + TypeScript)
  *
  * A horizontal navigation bar with mutually exclusive tabs.
- * Exports both NDDTabBar and NDDTabBarItem.
+ * Exports both NLDDTabBar and NLDDTabBarItem.
  *
- * @element ndd-tab-bar
+ * @element nldd-tab-bar
  * @attr {boolean} compact           - Shows items in compact view: icon stacked above text
  * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
  * @attr {boolean} responsive        - Automatically switches to compact below 480px container width
  * @attr {string}  accessible-label  - Accessible name for the navigation region; defaults to 'Tabs'
  *
- * @slot - ndd-tab-bar-item elements
+ * @slot - nldd-tab-bar-item elements
  *
- * @fires tabchange - When a tab is selected; detail: { item: NDDTabBarItem }
+ * @fires tabchange - When a tab is selected; detail: { item: NLDDTabBarItem }
  *
  * ---
  *
- * @element ndd-tab-bar-item
- * @attr {boolean} selected  - Selected state (managed by ndd-tab-bar)
+ * @element nldd-tab-bar-item
+ * @attr {boolean} selected  - Selected state (managed by nldd-tab-bar)
  * @attr {string}  text      - Tab text; also used as accessible name for icon-only items
  * @attr {string}  href      - Optional link URL; renders an anchor instead of a button
  *
  * @slot icon - Icon content
  *
- * @fires select - When the item is activated; detail: { item: NDDTabBarItem }
+ * @fires select - When the item is activated; detail: { item: NLDDTabBarItem }
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { tabBarStyles, tabBarItemStyles } from './ndd-tab-bar.styles.ts';
-import { tabBarTemplate, tabBarItemTemplate } from './ndd-tab-bar.template.ts';
+import { tabBarStyles, tabBarItemStyles } from './tab-bar.styles.ts';
+import { tabBarTemplate, tabBarItemTemplate } from './tab-bar.template.ts';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 
-// # ndd-tab-bar-item
+// # nldd-tab-bar-item
 
-@customElement('ndd-tab-bar-item')
-export class NDDTabBarItem extends LitElement {
+@customElement('nldd-tab-bar-item')
+export class NLDDTabBarItem extends LitElement {
 	static override styles = tabBarItemStyles;
 
 	@property({ type: Boolean, reflect: true })
@@ -44,15 +44,15 @@ export class NDDTabBarItem extends LitElement {
 	@property({ type: String })
 	href = '';
 
-	/** Set by ndd-tab-bar. Not part of the public API. */
+	/** Set by nldd-tab-bar. Not part of the public API. */
 	@property({ type: Boolean, reflect: true })
 	compact = false;
 
-	/** Set by ndd-tab-bar. Not part of the public API. */
+	/** Set by nldd-tab-bar. Not part of the public API. */
 	@property({ type: Boolean, reflect: true })
 	responsive = false;
 
-	/** Set by ndd-tab-bar. Not part of the public API. */
+	/** Set by nldd-tab-bar. Not part of the public API. */
 	@property({ type: String })
 	_groupVariant: 'icon-and-text' | 'text' | 'icon' | '' = '';
 
@@ -76,11 +76,11 @@ export class NDDTabBarItem extends LitElement {
 	@state()
 	_hasIcon = false;
 
-	/** Set by ndd-tab-bar. Not part of the public API. */
+	/** Set by nldd-tab-bar. Not part of the public API. */
 	@state()
 	_navigation = false;
 
-	/** Set by ndd-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
+	/** Set by nldd-tab-bar. Marks this item as the keyboard entry point when no tab is selected. */
 	@state()
 	_isFallbackFocusable = false;
 
@@ -124,10 +124,10 @@ export class NDDTabBarItem extends LitElement {
 }
 
 
-// # ndd-tab-bar
+// # nldd-tab-bar
 
-@customElement('ndd-tab-bar')
-export class NDDTabBar extends LitElement {
+@customElement('nldd-tab-bar')
+export class NLDDTabBar extends LitElement {
 	static override styles = tabBarStyles;
 
 	@property({ type: Boolean, reflect: true })
@@ -166,7 +166,7 @@ export class NDDTabBar extends LitElement {
 	override firstUpdated(): void {
 		this._hasCustomLabel = Boolean(this.accessibleLabel);
 		import.meta.env?.DEV && !this._hasCustomLabel &&
-			console.warn('<ndd-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabs".');
+			console.warn('<nldd-tab-bar>: No accessible-label provided. Add an accessible-label attribute for a meaningful navigation landmark name. Falling back to "Tabs".');
 		this._syncItems();
 	}
 
@@ -181,13 +181,13 @@ export class NDDTabBar extends LitElement {
 		}
 	}
 
-	private _getItems(): NDDTabBarItem[] {
+	private _getItems(): NLDDTabBarItem[] {
 		const slot = this.shadowRoot?.querySelector('slot');
 		if (!slot) return [];
 		return slot
 			.assignedElements()
-			.filter((el): el is NDDTabBarItem =>
-				el.tagName.toLowerCase() === 'ndd-tab-bar-item'
+			.filter((el): el is NLDDTabBarItem =>
+				el.tagName.toLowerCase() === 'nldd-tab-bar-item'
 			);
 	}
 
@@ -277,7 +277,7 @@ export class NDDTabBar extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-tab-bar': NDDTabBar;
-		'ndd-tab-bar-item': NDDTabBarItem;
+		'nldd-tab-bar': NLDDTabBar;
+		'nldd-tab-bar-item': NLDDTabBarItem;
 	}
 }

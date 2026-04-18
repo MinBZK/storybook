@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './ndd-divider.ts';
+import './divider.ts';
 
-describe('ndd-divider', () => {
+describe('nldd-divider', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -10,13 +10,13 @@ describe('ndd-divider', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-divider></ndd-divider>');
+		el = await fixture('<nldd-divider></nldd-divider>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
 	it('renders an hr element in the shadow DOM', async () => {
-		el = await fixture('<ndd-divider></ndd-divider>');
+		el = await fixture('<nldd-divider></nldd-divider>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('hr')).not.toBeNull();
 	});

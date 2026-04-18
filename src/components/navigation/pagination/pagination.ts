@@ -3,7 +3,7 @@
  *
  * A pagination control for navigating between pages of content.
  *
- * @element ndd-pagination
+ * @element nldd-pagination
  * @attr {number} current - Currently active page (1-based)
  * @attr {number} total - Total number of pages (recommended max: 200 for compact select performance)
  * @attr {boolean} disabled - Disabled state
@@ -16,13 +16,13 @@
 import { LitElement } from 'lit';
 import type { PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { paginationStyles } from './ndd-pagination.styles.ts';
-import { paginationTemplate } from './ndd-pagination.template.ts';
-import { nddPaginationTranslations } from './ndd-pagination.i18n.ts';
-import type { NDDPaginationTranslations } from './ndd-pagination.i18n.ts';
+import { paginationStyles } from './pagination.styles.ts';
+import { paginationTemplate } from './pagination.template.ts';
+import { nlddPaginationTranslations } from './pagination.i18n.ts';
+import type { NLDDPaginationTranslations } from './pagination.i18n.ts';
 
-@customElement('ndd-pagination')
-export class NDDPagination extends LitElement {
+@customElement('nldd-pagination')
+export class NLDDPagination extends LitElement {
 	static override styles = paginationStyles;
 
 	@property({ type: Number, reflect: true })
@@ -41,17 +41,17 @@ export class NDDPagination extends LitElement {
 	hrefPattern = '';
 
 	@property({ type: Object })
-	translations: Partial<NDDPaginationTranslations> = {};
+	translations: Partial<NLDDPaginationTranslations> = {};
 
-	private _mergedTranslations = { ...nddPaginationTranslations };
+	private _mergedTranslations = { ...nlddPaginationTranslations };
 
 	override willUpdate(changed: PropertyValues): void {
 		if (changed.has('translations')) {
-			this._mergedTranslations = { ...nddPaginationTranslations, ...this.translations };
+			this._mergedTranslations = { ...nlddPaginationTranslations, ...this.translations };
 		}
 	}
 
-	_t(key: keyof NDDPaginationTranslations, params?: Record<string, string | number>): string {
+	_t(key: keyof NLDDPaginationTranslations, params?: Record<string, string | number>): string {
 		let text = this._mergedTranslations[key] ?? key;
 		if (params) {
 			for (const [k, v] of Object.entries(params)) {
@@ -122,6 +122,6 @@ export class NDDPagination extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-pagination': NDDPagination;
+		'nldd-pagination': NLDDPagination;
 	}
 }

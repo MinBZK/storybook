@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import './ndd-split-button.ts';
+import './split-button.ts';
 
-describe('ndd-split-button', () => {
+describe('nldd-split-button', () => {
 	let el: HTMLElement;
 
 	afterEach(() => {
@@ -10,7 +10,7 @@ describe('ndd-split-button', () => {
 	});
 
 	it('renders without error', async () => {
-		el = await fixture('<ndd-split-button></ndd-split-button>');
+		el = await fixture('<nldd-split-button></nldd-split-button>');
 		await waitForUpdate(el);
 
 		expect(el.shadowRoot).not.toBeNull();

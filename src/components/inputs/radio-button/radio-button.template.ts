@@ -1,7 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDRadioButton } from './ndd-radio-button.js';
+import type { NLDDRadioButton } from './radio-button.js';
 
-export function radioButtonTemplate(component: NDDRadioButton): TemplateResult {
+export function radioButtonTemplate(component: NLDDRadioButton): TemplateResult {
 	return html`
 		<input class="radio-button__input"
 			type="radio"

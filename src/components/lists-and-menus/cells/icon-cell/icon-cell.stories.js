@@ -1,10 +1,10 @@
 import { html } from 'lit';
-import './ndd-icon-cell.ts';
-import { ICONS } from '../../../content/icon/ndd-icon.ts';
+import './icon-cell.ts';
+import { ICONS } from '../../../content/icon/icon.ts';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Icon Cell',
-	component: 'ndd-icon-cell',
+	component: 'nldd-icon-cell',
 	tags: ['autodocs'],
 	argTypes: {
 		verticalAlignment: {
@@ -40,31 +40,31 @@ export const Default = {
 		icon: 'icon-placeholder',
 	},
 	render: (args) => html`
-		<ndd-icon-cell
+		<nldd-icon-cell
 			vertical-alignment=${args.verticalAlignment}
 			size=${args.size}
 			?selected=${args.selected}
 		>
-			<ndd-icon name=${args.icon}></ndd-icon>
-		</ndd-icon-cell>
+			<nldd-icon name=${args.icon}></nldd-icon>
+		</nldd-icon-cell>
 	`,
 };
 
 export const AllSizes = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<ndd-icon-cell size="16">
-				<ndd-icon name="icon-placeholder"></ndd-icon>
-			</ndd-icon-cell>
-			<ndd-icon-cell size="20">
-				<ndd-icon name="icon-placeholder"></ndd-icon>
-			</ndd-icon-cell>
-			<ndd-icon-cell size="24">
-				<ndd-icon name="icon-placeholder"></ndd-icon>
-			</ndd-icon-cell>
-			<ndd-icon-cell size="32">
-				<ndd-icon name="icon-placeholder"></ndd-icon>
-			</ndd-icon-cell>
+			<nldd-icon-cell size="16">
+				<nldd-icon name="icon-placeholder"></nldd-icon>
+			</nldd-icon-cell>
+			<nldd-icon-cell size="20">
+				<nldd-icon name="icon-placeholder"></nldd-icon>
+			</nldd-icon-cell>
+			<nldd-icon-cell size="24">
+				<nldd-icon name="icon-placeholder"></nldd-icon>
+			</nldd-icon-cell>
+			<nldd-icon-cell size="32">
+				<nldd-icon name="icon-placeholder"></nldd-icon>
+			</nldd-icon-cell>
 		</div>
 	`,
 };
@@ -72,20 +72,20 @@ export const AllSizes = {
 export const Selected = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<ndd-icon-cell size="24">
-				<ndd-icon name="icon-placeholder"></ndd-icon>
-			</ndd-icon-cell>
-			<ndd-icon-cell size="24" selected>
-				<ndd-icon name="icon-placeholder"></ndd-icon>
-			</ndd-icon-cell>
+			<nldd-icon-cell size="24">
+				<nldd-icon name="icon-placeholder"></nldd-icon>
+			</nldd-icon-cell>
+			<nldd-icon-cell size="24" selected>
+				<nldd-icon name="icon-placeholder"></nldd-icon>
+			</nldd-icon-cell>
 		</div>
 	`,
 };
 
 export const VerticalTop = {
 	render: () => html`
-		<ndd-icon-cell vertical-alignment="top" size="24" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
-			<ndd-icon name="icon-placeholder"></ndd-icon>
-		</ndd-icon-cell>
+		<nldd-icon-cell vertical-alignment="top" size="24" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-icon name="icon-placeholder"></nldd-icon>
+		</nldd-icon-cell>
 	`,
 };

@@ -2,7 +2,7 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
 
 
-/* # ndd-one-half-one-half-section styles */
+/* # nldd-one-half-one-half-section styles */
 
 export const oneHalfOneHalfSectionStyles = css`
 	:host {

@@ -6,20 +6,20 @@
  * the orientation. An optional drag handle indicates that the divider
  * is draggable (future functionality).
  *
- * @element ndd-split-view-divider
+ * @element nldd-split-view-divider
  *
  * @attr {string} orientation - Orientation: 'vertical' | 'horizontal'
  * @attr {boolean} has-drag-handle - Show a drag handle
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { splitViewDividerStyles } from './ndd-split-view-divider.styles.ts';
-import { splitViewDividerTemplate } from './ndd-split-view-divider.template.ts';
+import { splitViewDividerStyles } from './split-view-divider.styles.ts';
+import { splitViewDividerTemplate } from './split-view-divider.template.ts';
 
 type Orientation = 'vertical' | 'horizontal';
 
-@customElement('ndd-split-view-divider')
-export class NDDSplitViewDivider extends LitElement {
+@customElement('nldd-split-view-divider')
+export class NLDDSplitViewDivider extends LitElement {
 	static override styles = splitViewDividerStyles;
 
 	@property({ type: String, reflect: true })
@@ -35,6 +35,6 @@ export class NDDSplitViewDivider extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-split-view-divider': NDDSplitViewDivider;
+		'nldd-split-view-divider': NLDDSplitViewDivider;
 	}
 }

@@ -16,8 +16,8 @@ export const styles = css`
 		pointer-events: none;
 	}
 
-	:host([disabled]) ::slotted(ndd-button),
-	:host([disabled]) ::slotted(ndd-icon-button) {
+	:host([disabled]) ::slotted(nldd-button),
+	:host([disabled]) ::slotted(nldd-icon-button) {
 		opacity: 1;
 	}
 

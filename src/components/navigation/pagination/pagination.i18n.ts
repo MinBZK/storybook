@@ -1,4 +1,4 @@
-export const nddPaginationTranslations = {
+export const nlddPaginationTranslations = {
 	'components.pagination.accessibility-label': 'Paginering',
 	'components.pagination.previous-action': 'Ga naar vorige pagina',
 	'components.pagination.next-action': 'Ga naar volgende pagina',
@@ -6,4 +6,4 @@ export const nddPaginationTranslations = {
 	'components.pagination.go-to-page-label': 'Ga naar pagina',
 };
 
-export type NDDPaginationTranslations = typeof nddPaginationTranslations;
+export type NLDDPaginationTranslations = typeof nlddPaginationTranslations;

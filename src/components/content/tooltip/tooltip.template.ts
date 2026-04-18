@@ -1,9 +1,9 @@
 import { html } from 'lit';
 import type { TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import type { NDDTooltip } from './ndd-tooltip.ts';
+import type { NLDDTooltip } from './tooltip.ts';
 
-export function tooltipTemplate(component: NDDTooltip): TemplateResult {
+export function tooltipTemplate(component: NLDDTooltip): TemplateResult {
 	return html`
 		<slot
 			@mouseenter=${component._handleTriggerEnter}

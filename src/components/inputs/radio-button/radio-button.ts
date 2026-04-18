@@ -7,11 +7,11 @@
  * @example
  * <fieldset>
  *   <legend>Kies een optie</legend>
- *   <ndd-radio-button name="options" value="1">Optie 1</ndd-radio-button>
- *   <ndd-radio-button name="options" value="2">Optie 2</ndd-radio-button>
+ *   <nldd-radio-button name="options" value="1">Optie 1</nldd-radio-button>
+ *   <nldd-radio-button name="options" value="2">Optie 2</nldd-radio-button>
  * </fieldset>
  *
- * @element ndd-radio-button
+ * @element nldd-radio-button
  * @attr {boolean} checked  - Checked state
  * @attr {boolean} disabled - Disabled state
  * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the native input.
@@ -21,11 +21,11 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { radioButtonStyles } from './ndd-radio-button.styles.ts';
-import { radioButtonTemplate } from './ndd-radio-button.template.ts';
+import { radioButtonStyles } from './radio-button.styles.ts';
+import { radioButtonTemplate } from './radio-button.template.ts';
 
-@customElement('ndd-radio-button')
-export class NDDRadioButton extends LitElement {
+@customElement('nldd-radio-button')
+export class NLDDRadioButton extends LitElement {
 	static override styles = radioButtonStyles;
 
 	@property({ type: Boolean, reflect: true })
@@ -71,6 +71,6 @@ export class NDDRadioButton extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-radio-button': NDDRadioButton;
+		'nldd-radio-button': NLDDRadioButton;
 	}
 }

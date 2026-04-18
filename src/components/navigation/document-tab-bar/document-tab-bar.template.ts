@@ -1,12 +1,12 @@
 import { html, nothing, TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import type { NDDDocumentTabBar, NDDDocumentTabBarItem } from './ndd-document-tab-bar.ts';
-import './../../actions/icon-button/ndd-icon-button.ts';
-import './../../content/icon/ndd-icon.ts';
+import type { NLDDDocumentTabBar, NLDDDocumentTabBarItem } from './document-tab-bar.ts';
+import './../../actions/icon-button/icon-button.ts';
+import './../../content/icon/icon.ts';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
-import './../../content/tooltip/ndd-tooltip.ts';
+import './../../content/tooltip/tooltip.ts';
 
-export function documentTabBarTemplate(component: NDDDocumentTabBar): TemplateResult {
+export function documentTabBarTemplate(component: NLDDDocumentTabBar): TemplateResult {
 	const hasOverflow = component._overflowCount > 0;
 	const label = component.accessibleLabel || 'Tabbladen';
 	const isNavigation = component.navigation;
@@ -19,7 +19,7 @@ export function documentTabBarTemplate(component: NDDDocumentTabBar): TemplateRe
 			<slot @slotchange=${component._onSlotChange}></slot>
 		</div>
 		<div class=${classMap({ 'document-tab-bar__overflow': true, 'is-hidden': !hasOverflow })}>
-			<ndd-icon-button
+			<nldd-icon-button
 				text=${component._t('components.document-tab-bar.overflow-action')}
 				variant="neutral-tinted"
 				icon="ellipsis"
@@ -29,9 +29,9 @@ export function documentTabBarTemplate(component: NDDDocumentTabBar): TemplateRe
 			>
 				<!-- aria-controls omitted: ARIA IDREF attributes cannot cross shadow DOM boundaries.
 					 aria-haspopup + aria-expanded provide sufficient AT context for WCAG 2.1 AA.
-					 Restore aria-controls once ndd-menu moves into the shadow root or CSS Anchor
+					 Restore aria-controls once nldd-menu moves into the shadow root or CSS Anchor
 					 Positioning allows the menu to escape stacking context without document.body. -->
-			</ndd-icon-button>
+			</nldd-icon-button>
 		</div>
 		<div class="document-tab-bar__end" hidden>
 			<slot name="end" @slotchange=${component._onEndSlotChange}></slot>
@@ -55,7 +55,7 @@ export function documentTabBarTemplate(component: NDDDocumentTabBar): TemplateRe
 	`;
 }
 
-export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): TemplateResult {
+export function documentTabBarItemTemplate(component: NLDDDocumentTabBarItem): TemplateResult {
 	const shortTextValue = component.shortText || component.text;
 	const shortSupportingTextValue = component.shortSupportingText || component.supportingText;
 	const isNavigation = component._navigation;
@@ -75,12 +75,12 @@ export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): Te
 				: nothing}
 		</span>
 		<span class="document-tab-bar__item-short">
-			<ndd-tooltip text=${tooltipText}>
+			<nldd-tooltip text=${tooltipText}>
 				<span class="document-tab-bar__item-short-text">${shortTextValue}</span>
 				${shortSupportingTextValue
 					? html`<span class="document-tab-bar__item-short-supporting-text">${shortSupportingTextValue}</span>`
 					: nothing}
-			</ndd-tooltip>
+			</nldd-tooltip>
 		</span>
 	`;
 
@@ -112,7 +112,7 @@ export function documentTabBarItemTemplate(component: NDDDocumentTabBarItem): Te
 				@click=${component._handleDismiss}
 			>
 				<span class="document-tab-bar__item-dismiss-icon">
-					<ndd-icon name="dismiss"></ndd-icon>
+					<nldd-icon name="dismiss"></nldd-icon>
 				</span>
 			</button>
 		</div>

@@ -1,4 +1,4 @@
-export const nddDocumentTabBarTranslations = {
+export const nlddDocumentTabBarTranslations = {
 	'components.document-tab-bar.dismiss-action': 'Sluit',
 	'components.document-tab-bar.overflow-action': 'Toon meer tabbladen',
 	'components.document-tab-bar.drag-dropped-text': 'Tabblad verplaatst naar positie {position}.',
@@ -6,4 +6,4 @@ export const nddDocumentTabBarTranslations = {
 	'components.document-tab-bar.drag-cancelled-text': 'Slepen geannuleerd.',
 };
 
-export type NDDDocumentTabBarTranslations = typeof nddDocumentTabBarTranslations;
+export type NLDDDocumentTabBarTranslations = typeof nlddDocumentTabBarTranslations;

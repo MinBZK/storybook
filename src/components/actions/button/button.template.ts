@@ -1,34 +1,34 @@
 import { html, nothing } from 'lit';
-import type { NDDButton } from './ndd-button.ts';
+import type { NLDDButton } from './button.ts';
 
 interface TemplateHelpers {
 	handleClick: (e: MouseEvent) => void;
 }
 
-function renderContent(component: NDDButton) {
+function renderContent(component: NLDDButton) {
 	return html`
 		<span class="button__content">
 			${component.startIcon ? html`
-				<ndd-icon class="button__start-icon"
+				<nldd-icon class="button__start-icon"
 					name=${component.startIcon}
-				></ndd-icon>
+				></nldd-icon>
 			` : html`<slot name="start-icon"></slot>`}
 			${component.text}
 			${component.endIcon ? html`
-				<ndd-icon class="button__end-icon"
+				<nldd-icon class="button__end-icon"
 					name=${component.endIcon}
-				></ndd-icon>
+				></nldd-icon>
 			` : html`<slot name="end-icon"></slot>`}
 			${component.expandable ? html`
-				<ndd-icon class="button__disclosure-icon"
+				<nldd-icon class="button__disclosure-icon"
 					name="chevron-down-small"
-				></ndd-icon>
+				></nldd-icon>
 			` : nothing}
 		</span>
 	`;
 }
 
-export function template(this: NDDButton, helpers: TemplateHelpers) {
+export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	const content = renderContent(this);
 
 	if (this.href) {

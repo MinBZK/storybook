@@ -1,21 +1,21 @@
 import { html } from 'lit';
-import './ndd-password-field.ts';
+import './password-field.ts';
 
 /**
  * De Password Field component voor wachtwoordinvoer met zichtbaarheidstoggle.
  *
  * ## Gebruik
  * ```html
- * <ndd-password-field placeholder="Password field"></ndd-password-field>
+ * <nldd-password-field placeholder="Password field"></nldd-password-field>
  * ```
  */
 export default {
 	title: 'Components/Inputs/Password Field',
-	component: 'ndd-password-field',
+	component: 'nldd-password-field',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/password-field/ndd-password-field.ts',
+			file: 'src/components/inputs/password-field/password-field.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -105,7 +105,7 @@ export default {
 };
 
 const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, showText, hideText, showAccessibleLabel, hideAccessibleLabel, name }) => html`
-	<ndd-password-field
+	<nldd-password-field
 		.value=${value}
 		.placeholder=${placeholder}
 		size=${size}
@@ -118,7 +118,7 @@ const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, 
 		show-accessible-label=${showAccessibleLabel}
 		hide-accessible-label=${hideAccessibleLabel}
 		name=${name}
-	></ndd-password-field>
+	></nldd-password-field>
 `;
 
 export const Default = Template.bind({});
@@ -149,19 +149,19 @@ Disabled.args = {
 
 export const AllStates = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<ndd-password-field placeholder="Neutral"></ndd-password-field>
-		<ndd-password-field .value=${"strong-password"} valid></ndd-password-field>
-		<ndd-password-field .value=${"123"} invalid></ndd-password-field>
-		<ndd-password-field .value=${"disabled"} disabled></ndd-password-field>
-		<ndd-password-field .value=${"unmasked"} .masked=${false}></ndd-password-field>
+		<nldd-password-field placeholder="Neutral"></nldd-password-field>
+		<nldd-password-field .value=${"strong-password"} valid></nldd-password-field>
+		<nldd-password-field .value=${"123"} invalid></nldd-password-field>
+		<nldd-password-field .value=${"disabled"} disabled></nldd-password-field>
+		<nldd-password-field .value=${"unmasked"} .masked=${false}></nldd-password-field>
 	</div>
 `;
 AllStates.parameters = { controls: { disable: true } };
 
 export const Sizes = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<ndd-password-field placeholder="Medium (md)"></ndd-password-field>
-		<ndd-password-field placeholder="Small (sm)" size="sm"></ndd-password-field>
+		<nldd-password-field placeholder="Medium (md)"></nldd-password-field>
+		<nldd-password-field placeholder="Small (sm)" size="sm"></nldd-password-field>
 	</div>
 `;
 Sizes.parameters = { controls: { disable: true } };

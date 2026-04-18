@@ -3,7 +3,7 @@
  *
  * A container for grouping related buttons together, either horizontally or vertically.
  *
- * @element ndd-button-group
+ * @element nldd-button-group
  * @attr {string} size - Button group size: 'sm' | 'md' (default: 'md')
  * @attr {string} orientation - Layout direction: 'horizontal' | 'vertical' (default: 'vertical')
  *
@@ -13,14 +13,14 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { styles } from './ndd-button-group.styles.ts';
-import { template } from './ndd-button-group.template.ts';
+import { styles } from './button-group.styles.ts';
+import { template } from './button-group.template.ts';
 
 type Size = 'sm' | 'md';
 type Orientation = 'horizontal' | 'vertical';
 
-@customElement('ndd-button-group')
-export class NDDButtonGroup extends LitElement {
+@customElement('nldd-button-group')
+export class NLDDButtonGroup extends LitElement {
 	static override styles = styles;
 
 	@property({ type: String, reflect: true })
@@ -40,7 +40,7 @@ export class NDDButtonGroup extends LitElement {
 		assigned.forEach((el, index) => {
 			if (index >= 3) {
 				el.setAttribute('hidden', '');
-				console.warn('ndd-button-group: Only 3 buttons are allowed. Extra buttons will be hidden.');
+				console.warn('nldd-button-group: Only 3 buttons are allowed. Extra buttons will be hidden.');
 			}
 
 			if (this.orientation === 'vertical') {
@@ -66,6 +66,6 @@ export class NDDButtonGroup extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-button-group': NDDButtonGroup;
+		'nldd-button-group': NLDDButtonGroup;
 	}
 }

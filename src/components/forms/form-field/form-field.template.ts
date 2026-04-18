@@ -1,18 +1,18 @@
 /* eslint-disable lit-a11y/click-events-have-key-events -- label delegates to inner input */
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDFormField } from './ndd-form-field.js';
-import type { NDDFormFieldHelpText } from './ndd-form-field.js';
-import type { NDDFormFieldErrorText } from './ndd-form-field.js';
+import type { NLDDFormField } from './form-field.js';
+import type { NLDDFormFieldHelpText } from './form-field.js';
+import type { NLDDFormFieldErrorText } from './form-field.js';
 
 /* ============================================================
-   ndd-form-field
+   nldd-form-field
    ============================================================ */
 
 function renderOptional(label: string): TemplateResult {
 	return html`<span class="form-field__optional">${label}</span>`;
 }
 
-export function formFieldTemplate(component: NDDFormField): TemplateResult {
+export function formFieldTemplate(component: NLDDFormField): TemplateResult {
 	const hasLabel = Boolean(component.label);
 	const hasSupportingLabel = Boolean(component.supportingLabel);
 	const isHeaderEmpty = !hasLabel && !hasSupportingLabel;
@@ -50,10 +50,10 @@ export function formFieldTemplate(component: NDDFormField): TemplateResult {
 }
 
 /* ============================================================
-   ndd-form-field-help-text
+   nldd-form-field-help-text
    ============================================================ */
 
-export function formFieldHelpTextTemplate(_component: NDDFormFieldHelpText): TemplateResult {
+export function formFieldHelpTextTemplate(_component: NLDDFormFieldHelpText): TemplateResult {
 	return html`
 		<p class="form-field__help-text">
 			<slot></slot>
@@ -62,10 +62,10 @@ export function formFieldHelpTextTemplate(_component: NDDFormFieldHelpText): Tem
 }
 
 /* ============================================================
-   ndd-form-field-error-text
+   nldd-form-field-error-text
    ============================================================ */
 
-export function formFieldErrorTextTemplate(_component: NDDFormFieldErrorText): TemplateResult {
+export function formFieldErrorTextTemplate(_component: NLDDFormFieldErrorText): TemplateResult {
 	return html`
 		<p class="form-field__error-text">
 			<slot></slot>

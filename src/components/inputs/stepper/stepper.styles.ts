@@ -17,7 +17,7 @@ export const stepperStyles = css`
 		pointer-events: none;
 	}
 
-	:host([disabled]) ndd-icon-button {
+	:host([disabled]) nldd-icon-button {
 		opacity: 1;
 	}
 
@@ -66,7 +66,7 @@ export const stepperStyles = css`
 
 	/* # Focus */
 
-	ndd-icon-button:focus-within {
+	nldd-icon-button:focus-within {
 		position: relative;
 		z-index: 1;
 	}

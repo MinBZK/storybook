@@ -1,16 +1,16 @@
 import { html } from 'lit';
-import './ndd-switch.ts';
+import './switch.ts';
 
 /**
  * De Switch component is een toggle control voor aan/uit instellingen.
  */
 export default {
 	title: 'Components/Inputs/Switch',
-	component: 'ndd-switch',
+	component: 'nldd-switch',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/switch/ndd-switch.ts',
+			file: 'src/components/inputs/switch/switch.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -43,12 +43,12 @@ export default {
 };
 
 const Template = ({ checked, disabled, size }) => html`
-	<ndd-switch
+	<nldd-switch
 		?checked=${checked}
 		?disabled=${disabled}
 		size=${size}
 		accessible-label="Switch"
-	></ndd-switch>
+	></nldd-switch>
 `;
 
 export const Standaard = Template.bind({});
@@ -57,16 +57,16 @@ Standaard.args = {};
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<div style="display: flex; gap: 2rem; align-items: center;">
-			<ndd-switch accessible-label="Niet aan" size="sm"></ndd-switch>
-			<ndd-switch accessible-label="Aan" size="sm" checked></ndd-switch>
-			<ndd-switch accessible-label="Uitgeschakeld" size="sm" disabled></ndd-switch>
-			<ndd-switch accessible-label="Aan en uitgeschakeld" size="sm" checked disabled></ndd-switch>
+			<nldd-switch accessible-label="Niet aan" size="sm"></nldd-switch>
+			<nldd-switch accessible-label="Aan" size="sm" checked></nldd-switch>
+			<nldd-switch accessible-label="Uitgeschakeld" size="sm" disabled></nldd-switch>
+			<nldd-switch accessible-label="Aan en uitgeschakeld" size="sm" checked disabled></nldd-switch>
 		</div>
 		<div style="display: flex; gap: 2rem; align-items: center;">
-			<ndd-switch accessible-label="Niet aan klein" size="xs"></ndd-switch>
-			<ndd-switch accessible-label="Aan klein" size="xs" checked></ndd-switch>
-			<ndd-switch accessible-label="Uitgeschakeld klein" size="xs" disabled></ndd-switch>
-			<ndd-switch accessible-label="Aan en uitgeschakeld klein" size="xs" checked disabled></ndd-switch>
+			<nldd-switch accessible-label="Niet aan klein" size="xs"></nldd-switch>
+			<nldd-switch accessible-label="Aan klein" size="xs" checked></nldd-switch>
+			<nldd-switch accessible-label="Uitgeschakeld klein" size="xs" disabled></nldd-switch>
+			<nldd-switch accessible-label="Aan en uitgeschakeld klein" size="xs" checked disabled></nldd-switch>
 		</div>
 	</div>
 `;

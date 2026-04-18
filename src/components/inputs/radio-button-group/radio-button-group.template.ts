@@ -1,7 +1,7 @@
 import { html, TemplateResult } from 'lit';
-import type { NDDRadioButtonGroup } from './ndd-radio-button-group.js';
+import type { NLDDRadioButtonGroup } from './radio-button-group.js';
 
-export function radioButtonGroupTemplate(component: NDDRadioButtonGroup): TemplateResult {
+export function radioButtonGroupTemplate(component: NLDDRadioButtonGroup): TemplateResult {
 	return html`
 		<div class="radio-button-group">
 			<slot @slotchange=${component._onSlotChange}></slot>

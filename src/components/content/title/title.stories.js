@@ -1,7 +1,7 @@
 import { html } from 'lit';
-import './ndd-title.ts';
-import '../../actions/button/ndd-button.ts';
-import '../../layout/spacer/ndd-spacer.ts';
+import './title.ts';
+import '../../actions/button/button.ts';
+import '../../layout/spacer/spacer.ts';
 
 /**
  * Gebruik een title bar om een paginatitel of sectietitel te tonen met
@@ -10,21 +10,21 @@ import '../../layout/spacer/ndd-spacer.ts';
  *
  * ## Gebruik
  * ```html
- * <ndd-title size="3">
+ * <nldd-title size="3">
  *   <p slot="overline">Overline</p>
  *   <h1>Paginatitel</h1>
  *   <p slot="subtitle">Ondertitel</p>
- *   <ndd-button slot="actions" text="Actie"></ndd-button>
- * </ndd-title>
+ *   <nldd-button slot="actions" text="Actie"></nldd-button>
+ * </nldd-title>
  * ```
  */
 export default {
 	title: 'Components/Content/Title',
-	component: 'ndd-title',
+	component: 'nldd-title',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/content/title/ndd-title.ts',
+			file: 'src/components/content/title/title.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -46,52 +46,52 @@ export default {
 
 export const Standaard = ({ size }) => html`
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
-		<ndd-title size=${size}>
+		<nldd-title size=${size}>
 			<h1>Paginatitel</h1>
-			<ndd-button slot="actions" variant="secondary" size="sm" text="Actie"></ndd-button>
-		</ndd-title>
+			<nldd-button slot="actions" variant="secondary" size="sm" text="Actie"></nldd-button>
+		</nldd-title>
 	</div>
 `;
 
 export const MetOverline = () => html`
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
-		<ndd-title>
+		<nldd-title>
 			<p slot="overline">Wet op de zorgtoeslag</p>
 			<h1>Artikel 1</h1>
-		</ndd-title>
+		</nldd-title>
 	</div>
 `;
 MetOverline.parameters = { controls: { disable: true } };
 
 export const MetOndertitel = () => html`
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
-		<ndd-title>
+		<nldd-title>
 			<h1>Wet op de zorgtoeslag</h1>
 			<p slot="subtitle">Laatste wijziging: 1 januari 2024</p>
-		</ndd-title>
+		</nldd-title>
 	</div>
 `;
 MetOndertitel.parameters = { controls: { disable: true } };
 
 export const MetOverlineEnOndertitel = () => html`
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
-		<ndd-title>
+		<nldd-title>
 			<p slot="overline">Hoofdstuk 1</p>
 			<h1>Begripsbepalingen</h1>
 			<p slot="subtitle">Ingangsdatum: 1 januari 2024</p>
-		</ndd-title>
+		</nldd-title>
 	</div>
 `;
 MetOverlineEnOndertitel.parameters = { controls: { disable: true } };
 
 export const MetActies = () => html`
 	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
-		<ndd-title>
+		<nldd-title>
 			<h1>Wet op de zorgtoeslag</h1>
-			<ndd-button slot="actions" variant="secondary" size="sm" text="Bewerken"></ndd-button>
-			<ndd-spacer slot="actions" size="8"></ndd-spacer>
-			<ndd-button slot="actions" size="sm" text="Opslaan"></ndd-button>
-		</ndd-title>
+			<nldd-button slot="actions" variant="secondary" size="sm" text="Bewerken"></nldd-button>
+			<nldd-spacer slot="actions" size="8"></nldd-spacer>
+			<nldd-button slot="actions" size="sm" text="Opslaan"></nldd-button>
+		</nldd-title>
 	</div>
 `;
 MetActies.parameters = { controls: { disable: true } };
@@ -99,9 +99,9 @@ MetActies.parameters = { controls: { disable: true } };
 export const AlleGrootten = () => html`
 	<div style="display: flex; flex-direction: column; gap: 24px; padding: 24px; container-type: inline-size; container-name: layout-area;">
 		${[1, 2, 3, 4, 5, 6].map(s => html`
-			<ndd-title size=${s}>
+			<nldd-title size=${s}>
 				<h1>Grootte ${s}</h1>
-			</ndd-title>
+			</nldd-title>
 		`)}
 	</div>
 `;

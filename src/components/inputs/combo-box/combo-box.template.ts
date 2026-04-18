@@ -1,8 +1,8 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NDDComboBox } from './ndd-combo-box.js';
-import '../../actions/icon-button/ndd-icon-button.ts';
+import type { NLDDComboBox } from './combo-box.js';
+import '../../actions/icon-button/icon-button.ts';
 
-export function comboBoxTemplate(component: NDDComboBox): TemplateResult {
+export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 	return html`
 		<div class="combo-box">
 			<input class="combo-box__input"
@@ -23,7 +23,7 @@ export function comboBoxTemplate(component: NDDComboBox): TemplateResult {
 				@blur=${component._handleBlur}
 			>
 			<div class="combo-box__picker">
-				<ndd-icon-button
+				<nldd-icon-button
 					variant="neutral-tinted"
 					size="sm"
 					icon="chevron-down"
@@ -31,7 +31,7 @@ export function comboBoxTemplate(component: NDDComboBox): TemplateResult {
 					?disabled=${component.disabled}
 					@mousedown=${component._handlePickerMousedown}
 					@click=${component._toggleMenu}
-				></ndd-icon-button>
+				></nldd-icon-button>
 			</div>
 		</div>
 		<slot @slotchange=${component._onSlotChange}></slot>

@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './ndd-dropdown.ts';
+import './dropdown.ts';
 
 /**
  * De Dropdown component is een visuele wrapper om een native `<select>` element.
@@ -8,11 +8,11 @@ import './ndd-dropdown.ts';
  */
 export default {
 	title: 'Components/Inputs/Dropdown',
-	component: 'ndd-dropdown',
+	component: 'nldd-dropdown',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/dropdown/ndd-dropdown.ts',
+			file: 'src/components/inputs/dropdown/dropdown.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -39,14 +39,14 @@ export default {
 };
 
 const Template = ({ size, disabled }) => html`
-	<ndd-dropdown size=${size} ?disabled=${disabled}>
+	<nldd-dropdown size=${size} ?disabled=${disabled}>
 		<select name="optie" aria-label="Selecteer een optie">
 			<option value="" disabled selected>Selecteer een optie</option>
 			<option value="optie-1">Optie 1</option>
 			<option value="optie-2">Optie 2</option>
 			<option value="optie-3">Optie 3</option>
 		</select>
-	</ndd-dropdown>
+	</nldd-dropdown>
 `;
 
 export const Standaard = Template.bind({});
@@ -54,33 +54,33 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<ndd-dropdown size="md">
+		<nldd-dropdown size="md">
 			<select name="optie-1" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>
-		</ndd-dropdown>
-		<ndd-dropdown size="md">
+		</nldd-dropdown>
+		<nldd-dropdown size="md">
 			<select name="optie-2" aria-label="Selecteer een optie">
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>
-		</ndd-dropdown>
-		<ndd-dropdown size="sm">
+		</nldd-dropdown>
+		<nldd-dropdown size="sm">
 			<select name="optie-3" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>
-		</ndd-dropdown>
-		<ndd-dropdown size="md" disabled>
+		</nldd-dropdown>
+		<nldd-dropdown size="md" disabled>
 			<select name="optie-4" aria-label="Selecteer een optie">
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>
-		</ndd-dropdown>
-		<ndd-dropdown size="md">
+		</nldd-dropdown>
+		<nldd-dropdown size="md">
 			<select name="optie-5" aria-label="Selecteer een categorie">
 				<optgroup label="Groep A">
 					<option value="a1">A1</option>
@@ -91,7 +91,7 @@ export const AlleToestanden = () => html`
 					<option value="b2">B2</option>
 				</optgroup>
 			</select>
-		</ndd-dropdown>
+		</nldd-dropdown>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

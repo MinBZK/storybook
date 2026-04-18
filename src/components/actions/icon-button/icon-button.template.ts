@@ -1,18 +1,18 @@
 import { html, nothing } from 'lit';
-import type { NDDIconButton } from './ndd-icon-button.ts';
-import '../../content/tooltip/ndd-tooltip.ts';
+import type { NLDDIconButton } from './icon-button.ts';
+import '../../content/tooltip/tooltip.ts';
 
-function renderContent(component: NDDIconButton) {
+function renderContent(component: NLDDIconButton) {
 	return html`
 		<span class="icon-button__icon-area">
 			<span class="icon-button__icon">
 				${component.icon
-					? html`<ndd-icon name=${component.icon}></ndd-icon>`
+					? html`<nldd-icon name=${component.icon}></nldd-icon>`
 					: html`<slot name="icon" @slotchange=${component.requestUpdate}></slot>`}
 			</span>
 			${component.expandable ? html`
 				<span class="icon-button__disclosure-icon">
-					<ndd-icon name="chevron-down-small"></ndd-icon>
+					<nldd-icon name="chevron-down-small"></nldd-icon>
 				</span>
 			` : nothing}
 		</span>
@@ -22,7 +22,7 @@ function renderContent(component: NDDIconButton) {
 	`;
 }
 
-export function template(this: NDDIconButton) {
+export function template(this: NLDDIconButton) {
 	const label = this.accessibleLabel || this.text || nothing;
 	const content = renderContent(this);
 
@@ -63,9 +63,9 @@ export function template(this: NDDIconButton) {
 
 	if (tooltipText) {
 		return html`
-			<ndd-tooltip text=${tooltipText}>
+			<nldd-tooltip text=${tooltipText}>
 				${renderButton()}
-			</ndd-tooltip>
+			</nldd-tooltip>
 		`;
 	}
 

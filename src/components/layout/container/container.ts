@@ -10,7 +10,7 @@
  * and container queries (layout-area-sm-, layout-area-md-, layout-area-lg-).
  * Cascade order: base → viewport breakpoints → container queries.
  *
- * @element ndd-container
+ * @element nldd-container
  *
  * @attr {string} padding              - Padding for all sides
  * @attr {string} padding-inline       - Padding for left and right
@@ -31,8 +31,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { containerStyles } from './ndd-container.styles.ts';
-import { containerTemplate } from './ndd-container.template.ts';
+import { containerStyles } from './container.styles.ts';
+import { containerTemplate } from './container.template.ts';
 
 type PaddingSize =
 	| '0'
@@ -55,8 +55,8 @@ type PaddingSize =
 	| '80'
 	| '96';
 
-@customElement('ndd-container')
-export class NDDContainer extends LitElement {
+@customElement('nldd-container')
+export class NLDDContainer extends LitElement {
 	static override styles = containerStyles;
 
 
@@ -214,6 +214,6 @@ export class NDDContainer extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-container': NDDContainer;
+		'nldd-container': NLDDContainer;
 	}
 }

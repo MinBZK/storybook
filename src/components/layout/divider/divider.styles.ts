@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 
-/* # ndd-divider styles */
+/* # nldd-divider styles */
 
 export const dividerStyles = css`
 	:host {

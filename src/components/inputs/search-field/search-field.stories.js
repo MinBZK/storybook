@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './ndd-search-field.ts';
+import './search-field.ts';
 
 /**
  * De Search Field component is een zoekveld met zoekicoon, een optionele dismiss knop
@@ -7,11 +7,11 @@ import './ndd-search-field.ts';
  */
 export default {
 	title: 'Components/Inputs/Search Field',
-	component: 'ndd-search-field',
+	component: 'nldd-search-field',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/inputs/search-field/ndd-search-field.ts',
+			file: 'src/components/inputs/search-field/search-field.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {
@@ -68,7 +68,7 @@ export default {
 };
 
 const Template = ({ value, placeholder, accessibleLabel, size, disabled, hasSearchButton, name }) => html`
-	<ndd-search-field
+	<nldd-search-field
 		value=${value}
 		placeholder=${placeholder}
 		accessible-label=${accessibleLabel}
@@ -76,7 +76,7 @@ const Template = ({ value, placeholder, accessibleLabel, size, disabled, hasSear
 		?disabled=${disabled}
 		?has-search-button=${hasSearchButton}
 		name=${name}
-	></ndd-search-field>
+	></nldd-search-field>
 `;
 
 export const Standaard = Template.bind({});
@@ -87,16 +87,16 @@ MetZoekKnop.args = { hasSearchButton: true };
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<ndd-search-field size="md" placeholder="Zoeken"></ndd-search-field>
-		<ndd-search-field size="md" placeholder="Zoeken" value="Zoekterm"></ndd-search-field>
-		<ndd-search-field size="md" placeholder="Zoeken" has-search-button></ndd-search-field>
-		<ndd-search-field size="md" placeholder="Zoeken" value="Zoekterm" has-search-button></ndd-search-field>
-		<ndd-search-field size="sm" placeholder="Zoeken"></ndd-search-field>
-		<ndd-search-field size="sm" placeholder="Zoeken" value="Zoekterm"></ndd-search-field>
-		<ndd-search-field size="sm" placeholder="Zoeken" has-search-button></ndd-search-field>
-		<ndd-search-field size="sm" placeholder="Zoeken" value="Zoekterm" has-search-button></ndd-search-field>
-		<ndd-search-field size="md" placeholder="Zoeken" disabled></ndd-search-field>
-		<ndd-search-field size="md" placeholder="Zoeken" value="Zoekterm" disabled></ndd-search-field>
+		<nldd-search-field size="md" placeholder="Zoeken"></nldd-search-field>
+		<nldd-search-field size="md" placeholder="Zoeken" value="Zoekterm"></nldd-search-field>
+		<nldd-search-field size="md" placeholder="Zoeken" has-search-button></nldd-search-field>
+		<nldd-search-field size="md" placeholder="Zoeken" value="Zoekterm" has-search-button></nldd-search-field>
+		<nldd-search-field size="sm" placeholder="Zoeken"></nldd-search-field>
+		<nldd-search-field size="sm" placeholder="Zoeken" value="Zoekterm"></nldd-search-field>
+		<nldd-search-field size="sm" placeholder="Zoeken" has-search-button></nldd-search-field>
+		<nldd-search-field size="sm" placeholder="Zoeken" value="Zoekterm" has-search-button></nldd-search-field>
+		<nldd-search-field size="md" placeholder="Zoeken" disabled></nldd-search-field>
+		<nldd-search-field size="md" placeholder="Zoeken" value="Zoekterm" disabled></nldd-search-field>
 	</div>
 `;
 AlleToestanden.parameters = { controls: { disable: true } };

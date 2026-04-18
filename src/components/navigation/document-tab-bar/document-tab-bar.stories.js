@@ -1,15 +1,15 @@
 import { html } from 'lit';
-import './ndd-document-tab-bar.ts';
-import './../../actions/icon-button/ndd-icon-button.ts';
+import './document-tab-bar.ts';
+import './../../actions/icon-button/icon-button.ts';
 
 
 export default {
 	title: 'Components/Navigation/Document Tab Bar',
-	component: 'ndd-document-tab-bar',
+	component: 'nldd-document-tab-bar',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/navigation/document-tab-bar/ndd-document-tab-bar.ts',
+			file: 'src/components/navigation/document-tab-bar/document-tab-bar.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: { type: 'stable' },
@@ -28,106 +28,106 @@ export default {
 };
 
 const Template = ({ accessibleLabel }) => html`
-	<ndd-document-tab-bar
+	<nldd-document-tab-bar
 		accessible-label=${accessibleLabel}
 	>
-		<ndd-document-tab-bar-item
+		<nldd-document-tab-bar-item
 			selected
 			text="Artikel 2"
 			supporting-text="Wet op de Zorgtoeslag"
 			short-text="Art. 2"
 			short-supporting-text="WZT"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 1"
 			supporting-text="Zorgverzekeringswet"
 			short-text="Art. 1"
 			short-supporting-text="Zvw"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 3:2"
 			supporting-text="Algemene wet bestuursrecht"
 			short-text="Art. 3:2"
 			short-supporting-text="Awb"
-		></ndd-document-tab-bar-item>
-		<ndd-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad" icon="plus"></ndd-icon-button>
-	</ndd-document-tab-bar>
+		></nldd-document-tab-bar-item>
+		<nldd-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad" icon="plus"></nldd-icon-button>
+	</nldd-document-tab-bar>
 `;
 
 export const Standaard = Template.bind({});
 
 export const VeelTabbladen = () => html`
-	<ndd-document-tab-bar accessible-label="Documenten">
-		<ndd-document-tab-bar-item
+	<nldd-document-tab-bar accessible-label="Documenten">
+		<nldd-document-tab-bar-item
 			selected
 			text="Artikel 2"
 			supporting-text="Wet op de Zorgtoeslag"
 			short-text="Art. 2"
 			short-supporting-text="WZT"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 1"
 			supporting-text="Zorgverzekeringswet"
 			short-text="Art. 1"
 			short-supporting-text="Zvw"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 68b"
 			supporting-text="Zorgverzekeringswet"
 			short-text="Art. 68b"
 			short-supporting-text="Zvw"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 3:2"
 			supporting-text="Algemene wet bestuursrecht"
 			short-text="Art. 3:2"
 			short-supporting-text="Awb"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 7"
 			supporting-text="Algemene wet inkomensafhankelijke regelingen"
 			short-text="Art. 7"
 			short-supporting-text="Awir"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 67"
 			supporting-text="Algemene wet inzake rijksbelastingen"
 			short-text="Art. 67"
 			short-supporting-text="AWR"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 18"
 			supporting-text="Algemene Kinderbijslagwet"
 			short-text="Art. 18"
 			short-supporting-text="AKW"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 4:3"
 			supporting-text="Algemene wet bestuursrecht"
 			short-text="Art. 4:3"
 			short-supporting-text="Awb"
-		></ndd-document-tab-bar-item>
-		<ndd-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad" icon="plus"></ndd-icon-button>
-	</ndd-document-tab-bar>
+		></nldd-document-tab-bar-item>
+		<nldd-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad" icon="plus"></nldd-icon-button>
+	</nldd-document-tab-bar>
 `;
 VeelTabbladen.parameters = { controls: { disable: true } };
 
 export const ZonderSubtitel = () => html`
-	<ndd-document-tab-bar accessible-label="Documenten">
-		<ndd-document-tab-bar-item
+	<nldd-document-tab-bar accessible-label="Documenten">
+		<nldd-document-tab-bar-item
 			selected
 			text="Artikel 2"
 			short-text="Art. 2"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 1"
 			short-text="Art. 1"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 3:2"
 			short-text="Art. 3:2"
-		></ndd-document-tab-bar-item>
-	</ndd-document-tab-bar>
+		></nldd-document-tab-bar-item>
+	</nldd-document-tab-bar>
 `;
 ZonderSubtitel.parameters = { controls: { disable: true } };
 
@@ -136,12 +136,12 @@ export const Herschikbaar = {
 	render: () => {
 		const el = document.createElement('div');
 		el.innerHTML = `
-			<ndd-document-tab-bar accessible-label="Documenten">
-				<ndd-document-tab-bar-item selected text="Artikel 2" supporting-text="Wet op de Zorgtoeslag" short-text="Art. 2" short-supporting-text="WZT"></ndd-document-tab-bar-item>
-				<ndd-document-tab-bar-item text="Artikel 1" supporting-text="Zorgverzekeringswet" short-text="Art. 1" short-supporting-text="Zvw"></ndd-document-tab-bar-item>
-				<ndd-document-tab-bar-item text="Artikel 3:2" supporting-text="Algemene wet bestuursrecht" short-text="Art. 3:2" short-supporting-text="Awb"></ndd-document-tab-bar-item>
-				<ndd-document-tab-bar-item text="Artikel 7" supporting-text="Algemene wet inkomensafhankelijke regelingen" short-text="Art. 7" short-supporting-text="Awir"></ndd-document-tab-bar-item>
-			</ndd-document-tab-bar>
+			<nldd-document-tab-bar accessible-label="Documenten">
+				<nldd-document-tab-bar-item selected text="Artikel 2" supporting-text="Wet op de Zorgtoeslag" short-text="Art. 2" short-supporting-text="WZT"></nldd-document-tab-bar-item>
+				<nldd-document-tab-bar-item text="Artikel 1" supporting-text="Zorgverzekeringswet" short-text="Art. 1" short-supporting-text="Zvw"></nldd-document-tab-bar-item>
+				<nldd-document-tab-bar-item text="Artikel 3:2" supporting-text="Algemene wet bestuursrecht" short-text="Art. 3:2" short-supporting-text="Awb"></nldd-document-tab-bar-item>
+				<nldd-document-tab-bar-item text="Artikel 7" supporting-text="Algemene wet inkomensafhankelijke regelingen" short-text="Art. 7" short-supporting-text="Awir"></nldd-document-tab-bar-item>
+			</nldd-document-tab-bar>
 		`;
 		return el;
 	},
@@ -149,29 +149,29 @@ export const Herschikbaar = {
 Herschikbaar.parameters = { controls: { disable: true } };
 
 export const Navigatie = () => html`
-	<ndd-document-tab-bar navigation accessible-label="Documenten">
-		<ndd-document-tab-bar-item
+	<nldd-document-tab-bar navigation accessible-label="Documenten">
+		<nldd-document-tab-bar-item
 			selected
 			text="Artikel 2"
 			supporting-text="Wet op de Zorgtoeslag"
 			short-text="Art. 2"
 			short-supporting-text="WZT"
 			href="/artikel-2"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 1"
 			supporting-text="Zorgverzekeringswet"
 			short-text="Art. 1"
 			short-supporting-text="Zvw"
 			href="/artikel-1"
-		></ndd-document-tab-bar-item>
-		<ndd-document-tab-bar-item
+		></nldd-document-tab-bar-item>
+		<nldd-document-tab-bar-item
 			text="Artikel 3:2"
 			supporting-text="Algemene wet bestuursrecht"
 			short-text="Art. 3:2"
 			short-supporting-text="Awb"
 			href="/artikel-3-2"
-		></ndd-document-tab-bar-item>
-	</ndd-document-tab-bar>
+		></nldd-document-tab-bar-item>
+	</nldd-document-tab-bar>
 `;
 Navigatie.parameters = { controls: { disable: true } };

@@ -1,19 +1,19 @@
 import { html, nothing } from 'lit';
-import type { NDDSplitButton } from './ndd-split-button.ts';
+import type { NLDDSplitButton } from './split-button.ts';
 
-export function template(this: NDDSplitButton) {
+export function template(this: NLDDSplitButton) {
 	return html`
 		<div class="split-button">
-			<ndd-button
+			<nldd-button
 				variant=${this.variant}
 				size=${this.size}
 				text=${this.text}
 				start-icon=${this.startIcon || nothing}
 				?disabled=${this.disabled}
 				@click=${this._handleActionClick}
-			></ndd-button>
+			></nldd-button>
 			<div class="split-button__divider"></div>
-			<ndd-icon-button
+			<nldd-icon-button
 				variant=${this.variant}
 				size=${this.size}
 				icon="chevron-down-small"
@@ -21,7 +21,7 @@ export function template(this: NDDSplitButton) {
 				?disabled=${this.disabled}
 				aria-haspopup="menu"
 				@click=${this._handleMenuClick}
-			></ndd-icon-button>
+			></nldd-icon-button>
 		</div>
 	`;
 }

@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
 import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
-import type { NDDTitleCell } from './ndd-title-cell.js';
+import type { NLDDTitleCell } from './title-cell.js';
 
 // SAFETY: whitelist of allowed heading tags for unsafeStatic.
 // This map is the sole guard against XSS — never derive a tag name
@@ -15,7 +15,7 @@ const HEADING_TAGS: Record<number, ReturnType<typeof unsafeStatic>> = {
 	6: unsafeStatic('h6'),
 };
 
-function renderTitle(component: NDDTitleCell) {
+function renderTitle(component: NLDDTitleCell) {
 	if (!component.text) return nothing;
 
 	const tag = HEADING_TAGS[component.headingLevel as number];
@@ -26,7 +26,7 @@ function renderTitle(component: NDDTitleCell) {
 	return html`<p class="title-cell__title">${component.text}</p>`;
 }
 
-export const template = function (this: NDDTitleCell) {
+export const template = function (this: NLDDTitleCell) {
 	return html`
 		${this.overline ? html`<p class="title-cell__overline">${this.overline}</p>` : nothing}
 		${renderTitle(this)}

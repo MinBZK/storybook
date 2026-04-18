@@ -3,17 +3,17 @@
  *
  * A cell component that provides fixed horizontal spacing within list items.
  *
- * @element ndd-spacer-cell
+ * @element nldd-spacer-cell
  * @attr {string} size - Spacer size in pixels: '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96' (default: '16')
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './ndd-spacer-cell.styles.js';
+import { styles } from './spacer-cell.styles.js';
 
 type Size = '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96' | 'flexible';
 
-@customElement('ndd-spacer-cell')
-export class NDDSpacerCell extends LitElement {
+@customElement('nldd-spacer-cell')
+export class NLDDSpacerCell extends LitElement {
 	static override styles = styles;
 
 	@property({ type: String, reflect: true })
@@ -26,6 +26,6 @@ export class NDDSpacerCell extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-spacer-cell': NDDSpacerCell;
+		'nldd-spacer-cell': NLDDSpacerCell;
 	}
 }

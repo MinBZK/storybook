@@ -1,14 +1,14 @@
 /**
  * Nederlandse Digitale Dienst Spacer Component (Lit + TypeScript)
  *
- * @element ndd-spacer
+ * @element nldd-spacer
  *
  * @attr {string} size - Spacer size: 'flexible' | 'md' | fixed values (2–96)
  * @attr {string} direction - Direction: 'horizontal' | 'vertical' | 'both'
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { spacerStyles } from './ndd-spacer.styles.ts';
+import { spacerStyles } from './spacer.styles.ts';
 
 type SpacerSize =
 	| 'flexible'
@@ -33,8 +33,8 @@ type SpacerSize =
 	| '96';
 type Direction = 'horizontal' | 'vertical' | 'both';
 
-@customElement('ndd-spacer')
-export class NDDSpacer extends LitElement {
+@customElement('nldd-spacer')
+export class NLDDSpacer extends LitElement {
 	static override styles = spacerStyles;
 
 	@property({ type: String, reflect: true })
@@ -46,6 +46,6 @@ export class NDDSpacer extends LitElement {
 
 declare global {
 	interface HTMLElementTagNameMap {
-		'ndd-spacer': NDDSpacer;
+		'nldd-spacer': NLDDSpacer;
 	}
 }

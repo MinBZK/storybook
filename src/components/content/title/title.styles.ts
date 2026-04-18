@@ -7,7 +7,7 @@ const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 
-/* # ndd-title styles */
+/* # nldd-title styles */
 
 export const titleStyles = css`
 	:host {
