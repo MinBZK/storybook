@@ -32,15 +32,15 @@ export const searchFieldStyles = css`
 		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
 	}
 
+	:host([size='sm']) .search-field {
+		min-height: var(--semantics-controls-sm-min-size);
+		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
 	:host([size='md']) .search-field,
 	:host(:not([size])) .search-field {
 		min-height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
-	}
-
-	:host([size='sm']) .search-field {
-		min-height: var(--semantics-controls-sm-min-size);
-		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
 	.search-field:has(.search-field__input:focus-visible) {

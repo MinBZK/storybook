@@ -6,14 +6,46 @@ export const styles = css`
 	:host {
 		display: block;
 		width: 100%;
-		--_z-index-content: 1;
+		-webkit-tap-highlight-color: transparent;
+		--_z-index-content: 0;
+		--_z-index-focus: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
 		--_focus-outline-offset: 6px;
-		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
 		display: none;
+	}
+
+
+	/* # Content color context
+	   Expose the current content color as a CSS custom property so slotted
+	   cells can render with the matching color without knowing list-item state.
+	   Order matters: selected and highlighted must win over hover. */
+
+	:host([type="button"]:hover),
+	:host([href]:hover) {
+		--context-list-item-content-color: var(--components-list-item-is-hovered-content-color);
+	}
+
+	:host([selected]),
+	:host([selected][type="button"]:hover),
+	:host([selected][href]:hover) {
+		--context-list-item-content-color: var(--components-list-item-is-selected-content-color);
+	}
+
+	:host([highlighted]),
+	:host([highlighted][type="button"]:hover),
+	:host([highlighted][href]:hover),
+	:host([selected]:focus-within),
+	:host([selected]:focus-within[type="button"]:hover),
+	:host([selected]:focus-within[href]:hover) {
+		--context-list-item-content-color: var(--components-list-item-is-highlighted-content-color);
+	}
+
+	:host(:focus-within) {
+		position: relative;
+		z-index: var(--_z-index-focus);
 	}
 
 
@@ -73,30 +105,11 @@ export const styles = css`
 		text-align: start;
 		text-decoration: none;
 		color: inherit;
-	}
-
-	.list-item__action:focus-visible {
-		outline: var(--semantics-focus-ring-outline);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
-		border-radius: var(--primitives-corner-radius-xxs);
-	}
-
-	:host(.is-boxed) .list-item__action:focus-visible {
 		outline: none;
-		box-shadow: none;
 	}
 
-	:host(.is-boxed) .list-item__action:focus-visible:after {
-		content: '';
-		display: block;
-		position: absolute;
-		left: var(--_focus-outline-offset);
-		top: var(--_focus-outline-offset);
-		right: var(--_focus-outline-offset);
-		bottom: var(--_focus-outline-offset);
-		border-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
-		outline: var(--semantics-focus-ring-outline);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
+	a.list-item__action {
+		cursor: var(--semantics-controls-link-cursor);
 	}
 
 
@@ -154,6 +167,7 @@ export const styles = css`
 	}
 
 	:host([selected]) .list-item__divider,
+	:host([highlighted]) .list-item__divider,
 	:host(.is-boxed.is-last) .list-item__divider {
 		display: none;
 	}
@@ -171,17 +185,63 @@ export const styles = css`
 		z-index: var(--_z-index-indicator);
 	}
 
-	:host([selected]) .list-item::before {
-		display: block;
-		background-color: var(--components-list-item-is-selected-background-color);
-	}
-
 	.list-item:has(.list-item__action:hover)::before {
 		display: block;
 		background-color: var(--components-list-item-is-hovered-background-color);
 	}
 
-	:host([selected]) .list-item:has(.list-item__action:hover)::before {
+	:host([selected]) .list-item::before {
+		display: block;
 		background-color: var(--components-list-item-is-selected-background-color);
+	}
+
+	:host([selected]) .list-item:has(.list-item__action:hover)::before {
+		display: block;
+		background-color: var(--components-list-item-is-selected-background-color);
+	}
+
+	:host([highlighted]) .list-item::before,
+	:host([selected]:focus-within) .list-item::before {
+		display: block;
+		background-color: var(--components-list-item-is-highlighted-background-color);
+	}
+
+	:host([highlighted]) .list-item:has(.list-item__action:hover)::before,
+	:host([selected]:focus-within) .list-item:has(.list-item__action:hover)::before {
+		display: block;
+		background-color: var(--components-list-item-is-highlighted-background-color);
+	}
+
+	/* # Focus */
+
+	/* Boxed items use the ::after ring on the action; exclude them here to
+	   avoid a double focus ring. */
+
+	:host(:not(.is-boxed)) .list-item:has(.list-item__action:focus-visible:not(.is-pointer-focus))::before {
+		display: block;
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	:host(.is-boxed) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
+		content: '';
+		display: block;
+		position: absolute;
+		left: var(--_focus-outline-offset);
+		top: var(--_focus-outline-offset);
+		right: var(--_focus-outline-offset);
+		bottom: var(--_focus-outline-offset);
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	:host(.is-boxed:first-child) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
+		border-top-left-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
+		border-top-right-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
+	}
+
+	:host(.is-boxed:last-child) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
+		border-bottom-left-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
+		border-bottom-right-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
 	}
 `;

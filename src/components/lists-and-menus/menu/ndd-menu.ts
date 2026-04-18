@@ -9,7 +9,7 @@ import '../../lists-and-menus/cells/icon-cell/ndd-icon-cell.js';
 import '../../lists-and-menus/cells/spacer-cell/ndd-spacer-cell.js';
 import '../../lists-and-menus/cells/text-cell/ndd-text-cell.js';
 import '../../content/icon/ndd-icon.js';
-import { isKeyboardMode } from '../../../utilities/keyboard-mode.js';
+import { isKeyboardMode } from '../../../utilities/input-modality.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 
@@ -566,7 +566,7 @@ export class NDDMenu extends LitElement {
 				items[0].focus();
 			} else {
 				const menu = this.shadowRoot?.querySelector<HTMLElement>('.menu');
-				menu?.classList.toggle('is-keyboard-focus', keyboard);
+				menu?.classList.toggle('is-pointer-focus', !keyboard);
 				menu?.focus();
 			}
 		}

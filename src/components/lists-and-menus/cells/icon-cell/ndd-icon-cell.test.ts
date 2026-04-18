@@ -39,15 +39,4 @@ describe('ndd-icon-cell', () => {
 		expect(el.getAttribute('size')).toBe('32');
 	});
 
-	it('defaults selected to false', async () => {
-		el = await fixture('<ndd-icon-cell></ndd-icon-cell>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('selected')).toBe(false);
-	});
-
-	it('reflects selected attribute', async () => {
-		el = await fixture('<ndd-icon-cell selected></ndd-icon-cell>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('selected')).toBe(true);
-	});
 });

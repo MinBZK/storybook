@@ -83,6 +83,15 @@ export default {
 				defaultValue: { summary: 'button' },
 			},
 		},
+		href: {
+			control: 'text',
+			description: 'Wanneer gezet, wordt het element als link gerenderd in plaats van het opgegeven type',
+		},
+		target: {
+			control: 'select',
+			options: ['', '_self', '_blank', '_parent', '_top'],
+			description: 'Link target (alleen gebruikt als href is gezet)',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -99,11 +108,13 @@ export default {
 		accessibleLabel: '',
 		expandable: false,
 		type: 'button',
+		href: '',
+		target: '',
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, icon, text, accessibleLabel, expandable, type, disabled }) => html`
+const Template = ({ variant, size, icon, text, accessibleLabel, expandable, type, href, target, disabled }) => html`
 	<ndd-icon-button
 		variant=${variant}
 		size=${size}
@@ -111,6 +122,8 @@ const Template = ({ variant, size, icon, text, accessibleLabel, expandable, type
 		text=${text}
 		?expandable=${expandable}
 		type=${type}
+		href=${href || nothing}
+		target=${target || nothing}
 		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
 	></ndd-icon-button>

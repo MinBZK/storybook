@@ -15,7 +15,6 @@
  * @attr {number} max-width - Maximum width in pixels
  * @attr {number} min-height - Minimum height in pixels
  * @attr {'top' | 'center' | 'bottom'} vertical-alignment - Vertical alignment (default: 'center')
- * @attr {boolean} selected - Selected state
  *
  * @slot title - The label displayed above the description
  * @slot description - The description content
@@ -57,9 +56,6 @@ export class NDDDescriptionCell extends LitElement {
 
 	@property({ reflect: true, attribute: 'vertical-alignment' })
 	verticalAlignment: VerticalAlignment = 'center';
-
-	@property({ type: Boolean, reflect: true })
-	selected = false;
 
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('width') || changed.has('minWidth') || changed.has('maxWidth') || changed.has('minHeight')) {

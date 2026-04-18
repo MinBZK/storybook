@@ -71,7 +71,7 @@ export const styles = css`
 		align-self: stretch;
 		min-width: 0;
 		font: var(--primitives-font-body-sm-regular-flat);
-		color: var(--semantics-content-secondary-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
 	}
 
 
@@ -82,15 +82,7 @@ export const styles = css`
 		align-self: stretch;
 		min-width: 0;
 		font: var(--primitives-font-body-md-regular-tight);
-		color: var(--semantics-content-color);
-	}
-
-
-	/* # Selected */
-
-	:host([selected]) ::slotted([slot='title']),
-	:host([selected]) ::slotted([slot='description']) {
-		color: var(--semantics-controls-is-selected-contrast-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-color));
 	}
 
 

@@ -1,6 +1,12 @@
 import { html } from 'lit';
 import './ndd-collection.ts';
+import '../../actions/button/ndd-button.ts';
+import '../../actions/button-group/ndd-button-group.ts';
 import '../../content/rich-text/ndd-rich-text.ts';
+import '../../content/title/ndd-title.ts';
+import '../card/ndd-card.ts';
+import '../container/ndd-container.ts';
+import '../spacer/ndd-spacer.ts';
 import '../page/ndd-page.ts';
 import '../page-sections/simple-section/ndd-simple-section.ts';
 
@@ -61,31 +67,35 @@ export default {
 	},
 };
 
+const itemContent = (i) => html`
+	<ndd-title size="4"><h3>Item ${i + 1}</h3></ndd-title>
+	<ndd-spacer size="4"></ndd-spacer>
+	<ndd-rich-text spacing="flat">
+		<p>Omschrijving van item ${i + 1}. Dit item bevat wat extra tekst om de kaart wat meer hoogte te geven en de layout beter tot zijn recht te laten komen.</p>
+	</ndd-rich-text>
+	<ndd-spacer size="16"></ndd-spacer>
+	<ndd-button-group orientation="horizontal">
+		<ndd-button variant="primary" text="Bekijk"></ndd-button>
+		<ndd-button variant="secondary" text="Meer info"></ndd-button>
+	</ndd-button-group>
+`;
+
 const gridItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="padding: 24px; background: var(--primitives-color-neutral-150); border-radius: 8px; min-height: 120px;">
-		<ndd-rich-text size="flat">
-			<h3>Item ${i + 1}</h3>
-			<p>Omschrijving van item ${i + 1}.</p>
-		</ndd-rich-text>
-	</div>
+	<ndd-card>
+		<ndd-container padding="16">${itemContent(i)}</ndd-container>
+	</ndd-card>
 `);
 
 const listItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="padding: 16px; background: var(--primitives-color-neutral-150); border-radius: 8px;">
-		<ndd-rich-text size="flat">
-			<h3>Item ${i + 1}</h3>
-			<p>Omschrijving van item ${i + 1}.</p>
-		</ndd-rich-text>
-	</div>
+	<ndd-card>
+		<ndd-container padding="16">${itemContent(i)}</ndd-container>
+	</ndd-card>
 `);
 
 const scrollItems = Array.from({ length: 12 }, (_, i) => html`
-	<div style="width: 280px; min-height: 200px; padding: 24px; background: var(--primitives-color-neutral-150); border-radius: 8px; flex-shrink: 0; box-sizing: border-box;">
-		<ndd-rich-text size="flat">
-			<h3>Item ${i + 1}</h3>
-			<p>Omschrijving van item ${i + 1}.</p>
-		</ndd-rich-text>
-	</div>
+	<ndd-card>
+		<ndd-container padding="16">${itemContent(i)}</ndd-container>
+	</ndd-card>
 `);
 
 export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad }) => html`
@@ -131,10 +141,11 @@ HorizontaalScrollend.parameters = { controls: { disable: true } };
 
 
 export const InSimpleSectie = () => html`
-	<ndd-page background="tinted" style="height: 500px;">
+	<ndd-page background="tinted">
 		<ndd-simple-section>
-			<ndd-rich-text size="flat">
-				<h2>Sectietitel</h2>
+			<ndd-title slot="header" size="2"><h2>Sectietitel</h2></ndd-title>
+			<ndd-spacer slot="header" size="4"></ndd-spacer>
+			<ndd-rich-text slot="header" spacing="flat">
 				<p>Tekst boven de collectie om de uitlijning te zien.</p>
 			</ndd-rich-text>
 			<ndd-collection layout="horizontal-scroll">

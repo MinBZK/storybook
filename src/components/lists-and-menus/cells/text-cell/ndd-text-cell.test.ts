@@ -160,15 +160,4 @@ describe('ndd-text-cell', () => {
 		expect(p!.textContent?.trim()).toBe('No bold here');
 	});
 
-	it('defaults selected to false', async () => {
-		el = await fixture('<ndd-text-cell></ndd-text-cell>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('selected')).toBe(false);
-	});
-
-	it('reflects selected attribute', async () => {
-		el = await fixture('<ndd-text-cell selected></ndd-text-cell>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('selected')).toBe(true);
-	});
 });

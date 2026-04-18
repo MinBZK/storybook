@@ -49,7 +49,7 @@ export const toggleButtonStyles = css`
 
 	:host([size="xs"]) .toggle-button {
 		min-height: var(--semantics-controls-xs-min-size);
-		padding: var(--primitives-space-4) var(--primitives-space-6);
+		padding: var(--semantics-controls-xs-block-padding) var(--semantics-controls-xs-inline-padding);
 		font: var(--semantics-buttons-xs-font);
 		border-radius: var(--semantics-controls-xs-corner-radius);
 		gap: var(--semantics-buttons-xs-gap);
@@ -57,7 +57,7 @@ export const toggleButtonStyles = css`
 
 	:host([size="sm"]) .toggle-button {
 		min-height: var(--semantics-controls-sm-min-size);
-		padding: var(--primitives-space-6) var(--primitives-space-8);
+		padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
 		font: var(--semantics-buttons-sm-font);
 		border-radius: var(--semantics-controls-sm-corner-radius);
 		gap: var(--semantics-buttons-sm-gap);
@@ -66,7 +66,7 @@ export const toggleButtonStyles = css`
 	:host([size="md"]) .toggle-button,
 	:host(:not([size])) .toggle-button {
 		min-height: var(--semantics-controls-md-min-size);
-		padding: var(--primitives-space-8) var(--primitives-space-14);
+		padding: var(--semantics-controls-md-block-padding) var(--semantics-controls-md-inline-padding);
 		font: var(--semantics-buttons-md-font);
 		border-radius: var(--semantics-controls-md-corner-radius);
 		gap: var(--semantics-buttons-md-gap);

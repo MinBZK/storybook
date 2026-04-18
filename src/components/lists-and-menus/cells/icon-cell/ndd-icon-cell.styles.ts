@@ -7,7 +7,7 @@ export const styles = css`
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		color: var(--semantics-content-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-color));
 	}
 
 	:host([hidden]) {
@@ -20,13 +20,22 @@ export const styles = css`
 
 	:host([vertical-alignment="center"]),
 	:host(:not([vertical-alignment])) {
+		align-self: stretch;
 		justify-content: center;
 	}
 
 	/* ## vertical-alignment: top */
 
 	:host([vertical-alignment="top"]) {
+		align-self: flex-start;
 		justify-content: flex-start;
+	}
+
+	/* ## vertical-alignment: bottom */
+
+	:host([vertical-alignment="bottom"]) {
+		align-self: flex-end;
+		justify-content: flex-end;
 	}
 
 	/* # size */
@@ -79,12 +88,6 @@ export const styles = css`
 	:host([size="32"]) ::slotted(*) {
 		width: var(--primitives-space-32);
 		height: var(--primitives-space-32);
-	}
-
-	/* # selected */
-
-	:host([selected]) {
-		color: var(--semantics-controls-is-selected-contrast-color);
 	}
 
 	/* # color: inherit */

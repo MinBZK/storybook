@@ -88,15 +88,15 @@ export const dropdownStyles = css`
 		color: inherit;
 	}
 
-	:host([size='md']) .dropdown__value,
-	:host(:not([size])) .dropdown__value {
-		padding: 0 var(--primitives-space-12);
-		font: var(--semantics-input-fields-md-text-font);
+	:host([size='sm']) .dropdown__value {
+		padding: 0 var(--semantics-controls-sm-inline-padding);
+		font: var(--semantics-input-fields-sm-text-font);
 	}
 
-	:host([size='sm']) .dropdown__value {
-		padding: 0 var(--primitives-space-10);
-		font: var(--semantics-input-fields-sm-text-font);
+	:host([size='md']) .dropdown__value,
+	:host(:not([size])) .dropdown__value {
+		padding: 0 var(--semantics-controls-md-inline-padding);
+		font: var(--semantics-input-fields-md-text-font);
 	}
 
 

@@ -1,16 +1,18 @@
 import { LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { styles } from './ndd-list-item.styles.ts';
 import { template } from './ndd-list-item.template.ts';
+import { isPointerMode } from '../../../utilities/input-modality.js';
 import type { NDDList } from '../list/ndd-list.ts';
 import '../cells/spacer-cell/ndd-spacer-cell.ts';
 
 export type ListItemSize = 'sm' | 'md';
-export type ListItemType = 'button' | 'link';
+export type ListItemType = 'button';
 
 /**
  * A row within an `ndd-list`, providing layout for start, main and end areas.
- * Can render as a button, link, or plain container depending on `type`.
+ * Renders as a link when `href` is set, as a button when `type="button"`, or
+ * as a plain container otherwise.
  *
  * @slot         - Main content area (cells)
  * @slot start   - Content at the start of the row
@@ -23,14 +25,27 @@ export class NDDListItem extends LitElement {
 	@property({ reflect: true })
 	size: ListItemSize = 'md';
 
+	/**
+	 * Visual-only state: renders the item with the selected background.
+	 * Does NOT set any ARIA attribute — the correct ARIA (aria-selected in
+	 * a listbox, aria-current in navigation) depends on context and is the
+	 * consumer's responsibility.
+	 */
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	/** When set, renders the item as a button or link. */
+	/**
+	 * Visual-only high-contrast state. Like `selected`, no ARIA is applied —
+	 * the consumer is responsible for the correct ARIA for their context.
+	 */
+	@property({ type: Boolean, reflect: true })
+	highlighted = false;
+
+	/** When set, renders the item as a button. */
 	@property({ reflect: true })
 	type?: ListItemType;
 
-	/** URL for when type="link". */
+	/** When set, renders the item as a link (overrides type). */
 	@property({ reflect: true })
 	href?: string;
 
@@ -44,7 +59,10 @@ export class NDDListItem extends LitElement {
 	@state()
 	private _showEnd = false;
 
-	private _isBoxOrInset = false;
+	@query('.list-item__action')
+	private _action?: HTMLElement;
+
+	private _isBoxed = false;
 	private _listObserver: MutationObserver | null = null;
 
 	override connectedCallback() {
@@ -52,12 +70,21 @@ export class NDDListItem extends LitElement {
 		// Skip setup for drag clones — they are visual-only copies inside ndd-list's shadow root
 		if (this.hasAttribute('data-ndd-clone')) return;
 		this.setAttribute('role', 'listitem');
+		// Attach focus/click listeners here (not firstUpdated) so they are
+		// re-attached when the element is removed and re-inserted into the DOM.
+		// _action is resolved lazily via @query inside the handlers.
+		this.addEventListener('focusin', this._handleFocusIn);
+		this.addEventListener('focusout', this._handleFocusOut);
+		this.addEventListener('click', this._handleClick);
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this._listObserver?.disconnect();
 		this._listObserver = null;
+		this.removeEventListener('focusin', this._handleFocusIn);
+		this.removeEventListener('focusout', this._handleFocusOut);
+		this.removeEventListener('click', this._handleClick);
 	}
 
 	override firstUpdated() {
@@ -71,12 +98,6 @@ export class NDDListItem extends LitElement {
 		this._syncWithList();
 		this._observeStartSlot();
 		this._observeEndSlot();
-	}
-
-	override updated(changed: Map<string, unknown>) {
-		if (changed.has('selected')) {
-			this._propagateSelected();
-		}
 	}
 
 	/**
@@ -104,16 +125,16 @@ export class NDDListItem extends LitElement {
 	}
 
 	private _applyVariant(variant: string) {
-		this._isBoxOrInset = variant === 'box' || variant === 'inset';
-		this.classList.toggle('is-boxed', this._isBoxOrInset);
+		this._isBoxed = variant === 'box' || variant === 'box-on-tinted';
+		this.classList.toggle('is-boxed', this._isBoxed);
 		this._updateVisibility();
 	}
 
 	private _updateVisibility() {
 		const startSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="start"]');
 		const endSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="end"]');
-		this._showStart = this._isBoxOrInset || (startSlot?.assignedElements().length ?? 0) > 0;
-		this._showEnd = this._isBoxOrInset || (endSlot?.assignedElements().length ?? 0) > 0;
+		this._showStart = this._isBoxed || (startSlot?.assignedElements().length ?? 0) > 0;
+		this._showEnd = this._isBoxed || (endSlot?.assignedElements().length ?? 0) > 0;
 	}
 
 	private _observeStartSlot() {
@@ -126,18 +147,24 @@ export class NDDListItem extends LitElement {
 		slot?.addEventListener('slotchange', () => this._updateVisibility());
 	}
 
-	private _propagateSelected() {
-		const slots = this.shadowRoot?.querySelectorAll('slot');
-		slots?.forEach((slot) => {
-			slot.assignedElements({ flatten: true }).forEach((el) => {
-				if (this.selected) {
-					el.setAttribute('selected', '');
-				} else {
-					el.removeAttribute('selected');
-				}
-			});
-		});
-	}
+	private _handleClick = () => {
+		// Safari and Firefox on Mac don't focus buttons on click. Force focus
+		// so :has(.list-item__action:focus) and :focus-within CSS work reliably.
+		this._action?.focus();
+	};
+
+	private _handleFocusIn = () => {
+		// Safari treats programmatic focus (forced on click for Safari/Firefox)
+		// as focus-visible. Opt out by marking pointer-originated focus with a
+		// class the CSS uses to suppress the ::before focus ring. If JS fails,
+		// is-pointer-focus is never set so the CSS selector still matches on
+		// keyboard focus and the custom ring renders — accessible by default.
+		this._action?.classList.toggle('is-pointer-focus', isPointerMode());
+	};
+
+	private _handleFocusOut = () => {
+		this._action?.classList.remove('is-pointer-focus');
+	};
 
 	override render() {
 		return template(this.type, this.href, this._showStart, this._showEnd);

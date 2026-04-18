@@ -1,5 +1,6 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.ts';
 import './ndd-list-item.ts';
 import '../list/ndd-list.ts';
 import '../cells/text-cell/ndd-text-cell.ts';
@@ -41,8 +42,8 @@ describe('ndd-list-item', () => {
 		expect(el.shadowRoot!.querySelector('button.list-item__action')).not.toBeNull();
 	});
 
-	it('renders an anchor when type="link"', async () => {
-		el = await fixture('<ndd-list-item type="link" href="/test"></ndd-list-item>');
+	it('renders an anchor when href is set', async () => {
+		el = await fixture('<ndd-list-item href="/test"></ndd-list-item>');
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
 		expect(anchor).not.toBeNull();
@@ -91,37 +92,80 @@ describe('ndd-list-item', () => {
 	});
 
 
-	// — Selected propagation ————————————————————————————————————————————————
+	// — Highlighted ————————————————————————————————————————————————————————
 
-	it('propagates selected attribute to slotted elements when selected', async () => {
-		const wrapper = await fixture(`
-			<ndd-list variant="simple">
-				<ndd-list-item selected>
-					<ndd-text-cell text="Item"></ndd-text-cell>
-				</ndd-list-item>
-			</ndd-list>
-		`);
-		await waitForUpdate(wrapper);
-		el = wrapper.querySelector('ndd-list-item')!;
+	it('reflects highlighted attribute', async () => {
+		el = await fixture('<ndd-list-item highlighted></ndd-list-item>');
 		await waitForUpdate(el);
-		const cell = el.querySelector('ndd-text-cell');
-		expect(cell?.hasAttribute('selected')).toBe(true);
+		expect(el.hasAttribute('highlighted')).toBe(true);
 	});
 
-	it('removes selected attribute from slotted elements when deselected', async () => {
-		const wrapper = await fixture(`
-			<ndd-list variant="simple">
-				<ndd-list-item selected>
-					<ndd-text-cell text="Item"></ndd-text-cell>
-				</ndd-list-item>
-			</ndd-list>
-		`);
-		await waitForUpdate(wrapper);
-		el = wrapper.querySelector('ndd-list-item')!;
+	it('matches [selected]:focus-within when focused on the action', async () => {
+		// The :host([selected]:focus-within) CSS rule promotes a selected item
+		// to the highlighted state on focus. Verify the selector semantics
+		// (which the CSS then keys off of).
+		el = await fixture('<ndd-list-item type="button" selected></ndd-list-item>');
 		await waitForUpdate(el);
-		el.removeAttribute('selected');
+		const action = el.shadowRoot!.querySelector<HTMLButtonElement>('.list-item__action')!;
+
+		expect(el.matches('[selected]:focus-within')).toBe(false);
+		action.focus();
 		await waitForUpdate(el);
-		const cell = el.querySelector('ndd-text-cell');
-		expect(cell?.hasAttribute('selected')).toBe(false);
+		expect(el.matches('[selected]:focus-within')).toBe(true);
+		action.blur();
+		await waitForUpdate(el);
+		expect(el.matches('[selected]:focus-within')).toBe(false);
+	});
+
+
+	it('forces focus on the action on click (Safari/Firefox workaround)', async () => {
+		el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+		await waitForUpdate(el);
+		const action = el.shadowRoot!.querySelector<HTMLButtonElement>('.list-item__action')!;
+		action.click();
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.activeElement).toBe(action);
+	});
+
+
+	// — Mouse-focus suppression ————————————————————————————————————————————
+
+	describe('is-pointer-focus', () => {
+		beforeEach(() => {
+			_resetInputModalityForTesting();
+			getInputModality(); // re-register document listeners
+		});
+
+		it('adds is-pointer-focus class on mouse focus', async () => {
+			el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+			await waitForUpdate(el);
+			document.dispatchEvent(new MouseEvent('mousedown'));
+			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
+			action.focus();
+			await waitForUpdate(el);
+			expect(action.classList.contains('is-pointer-focus')).toBe(true);
+		});
+
+		it('does not add is-pointer-focus class on keyboard focus', async () => {
+			el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+			await waitForUpdate(el);
+			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
+			action.focus();
+			await waitForUpdate(el);
+			expect(action.classList.contains('is-pointer-focus')).toBe(false);
+		});
+
+		it('removes is-pointer-focus class on blur', async () => {
+			el = await fixture('<ndd-list-item type="button"></ndd-list-item>');
+			await waitForUpdate(el);
+			document.dispatchEvent(new MouseEvent('mousedown'));
+			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
+			action.focus();
+			await waitForUpdate(el);
+			action.blur();
+			await waitForUpdate(el);
+			expect(action.classList.contains('is-pointer-focus')).toBe(false);
+		});
 	});
 });

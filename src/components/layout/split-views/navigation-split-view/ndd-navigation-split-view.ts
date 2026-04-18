@@ -29,6 +29,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { isPointerMode } from '../../../../utilities/input-modality.js';
 import { navigationSplitViewStyles } from './ndd-navigation-split-view.styles.ts';
 import { navigationSplitViewTemplate } from './ndd-navigation-split-view.template.ts';
 
@@ -341,35 +342,14 @@ export class NDDNavigationSplitView extends LitElement {
 	// Shared focus helper
 	// ----------------------------------------------------------------
 
-	private _manageFocusForSlot(assigned: Element[], fallback: HTMLDialogElement | null) {
+	private _manageFocusForSlot(assigned: Element[], dialog: HTMLDialogElement | null) {
 		// 1. autofocus element present — let the browser handle it natively
 		if (assigned.some(el => el.querySelector('[autofocus]'))) return;
 
-		// 2. Focus the first heading — check ndd-top-title-bar shadow root first,
-		// then fall back to light DOM headings inside assigned elements
-		const topTitleBar = assigned.flatMap(el => [
-			el.tagName === 'NDD-TOP-TITLE-BAR' ? el : null,
-			el.querySelector('ndd-top-title-bar'),
-		]).find(Boolean) as HTMLElement | null;
-
-		const heading = (
-			topTitleBar?.shadowRoot?.querySelector('h1,h2,h3,h4,h5,h6') as HTMLElement | null
-		) ?? (
-			assigned.map(el => el.querySelector('h1,h2,h3,h4,h5,h6')).find(Boolean) as HTMLElement | null
-		);
-
-		if (heading) {
-			const hadTabindex = heading.hasAttribute('tabindex');
-			if (!hadTabindex) heading.setAttribute('tabindex', '-1');
-			heading.focus();
-			if (!hadTabindex) {
-				heading.addEventListener('blur', () => heading.removeAttribute('tabindex'), { once: true });
-			}
-			return;
-		}
-
-		// 3. Fallback — focus the dialog itself
-		fallback?.focus();
+		// 2. Focus the dialog — show focus ring only when opened via keyboard
+		if (!dialog) return;
+		dialog.classList.toggle('is-pointer-focus', isPointerMode());
+		dialog.focus();
 	}
 
 	// ----------------------------------------------------------------

@@ -82,7 +82,7 @@ export const styles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
-		color: var(--semantics-content-secondary-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([size='md']) .text-cell__overline,
@@ -127,7 +127,7 @@ export const styles = css`
 
 	:host([color='default']) .text-cell__text,
 	:host(:not([color])) .text-cell__text {
-		color: var(--semantics-content-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-color));
 	}
 
 	/* ## Color: secondary */
@@ -151,7 +151,7 @@ export const styles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
-		color: var(--semantics-content-secondary-color);
+		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([size='md']) .text-cell__supporting-text,
@@ -165,15 +165,6 @@ export const styles = css`
 
 	:host([horizontal-alignment='right']) .text-cell__supporting-text {
 		text-align: right;
-	}
-
-
-	/* # Selected */
-
-	:host([selected]) .text-cell__text,
-	:host([selected]) .text-cell__overline,
-	:host([selected]) .text-cell__supporting-text {
-		color: var(--semantics-controls-is-selected-contrast-color);
 	}
 
 
