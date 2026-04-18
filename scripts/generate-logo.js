@@ -1,7 +1,7 @@
 /**
  * Generates a static logo module from logo.svg.
  * This replaces the Vite-specific ?raw import so that
- * ndd-top-navigation-bar works with both Vite and plain tsc.
+ * nldd-top-navigation-bar works with both Vite and plain tsc.
  *
  * Output: src/components/navigation/top-navigation-bar/logo.ts
  */
