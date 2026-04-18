@@ -6,7 +6,7 @@ import type { NDDListItem } from '../list-item/ndd-list-item.ts';
 import { nddListTranslations } from './ndd-list.i18n.ts';
 import type { NDDListTranslations } from './ndd-list.i18n.ts';
 
-export type ListVariant = 'simple' | 'box' | 'inset';
+export type ListVariant = 'simple' | 'box' | 'box-on-tinted';
 
 export interface NDDReorderEventDetail {
 	fromIndex: number;

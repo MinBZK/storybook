@@ -112,19 +112,6 @@ export const styles = css`
 		cursor: var(--semantics-controls-link-cursor);
 	}
 
-	:host(.is-boxed) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
-		content: '';
-		display: block;
-		position: absolute;
-		left: var(--_focus-outline-offset);
-		top: var(--_focus-outline-offset);
-		right: var(--_focus-outline-offset);
-		bottom: var(--_focus-outline-offset);
-		border-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
-		outline: var(--semantics-focus-ring-outline);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
-	}
-
 
 	/* # Start & end area */
 
@@ -203,14 +190,6 @@ export const styles = css`
 		background-color: var(--components-list-item-is-hovered-background-color);
 	}
 
-	/* Boxed items use the ::after ring on the action; exclude them here to
-	   avoid a double focus ring. */
-	:host(:not(.is-boxed)) .list-item:has(.list-item__action:focus-visible:not(.is-pointer-focus))::before {
-		display: block;
-		outline: var(--semantics-focus-ring-outline);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
-	}
-
 	:host([selected]) .list-item::before {
 		display: block;
 		background-color: var(--components-list-item-is-selected-background-color);
@@ -231,5 +210,36 @@ export const styles = css`
 	:host([selected]:focus-within) .list-item:has(.list-item__action:hover)::before {
 		display: block;
 		background-color: var(--components-list-item-is-highlighted-background-color);
+	}
+
+	/* # Focus */
+
+	/* Boxed items use the ::after ring on the action; exclude them here to
+	   avoid a double focus ring. */
+
+	:host(:not(.is-boxed)) .list-item:has(.list-item__action:focus-visible:not(.is-pointer-focus))::before {
+		display: block;
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	:host(.is-boxed) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
+		content: '';
+		display: block;
+		position: absolute;
+		left: var(--_focus-outline-offset);
+		top: var(--_focus-outline-offset);
+		right: var(--_focus-outline-offset);
+		bottom: var(--_focus-outline-offset);
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	:host(.is-boxed:first-child) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
+		border-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset)) calc(var(--components-list-corner-radius) - var(--_focus-outline-offset)) 0 0;
+	}
+
+	:host(.is-boxed:last-child) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
+		border-radius: 0 0 calc(var(--components-list-corner-radius) - var(--_focus-outline-offset)) calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
 	}
 `;

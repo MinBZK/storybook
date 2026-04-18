@@ -125,7 +125,7 @@ export class NDDListItem extends LitElement {
 	}
 
 	private _applyVariant(variant: string) {
-		this._isBoxOrInset = variant === 'box' || variant === 'inset';
+		this._isBoxOrInset = variant === 'box' || variant === 'box-on-tinted';
 		this.classList.toggle('is-boxed', this._isBoxOrInset);
 		this._updateVisibility();
 	}

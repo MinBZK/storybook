@@ -67,9 +67,9 @@ export const styles = css`
 	}
 
 
-	/* # Variant: inset */
+	/* # Variant: box-on-tinted */
 
-	:host([variant='inset']) .list__items {
+	:host([variant='box-on-tinted']) .list__items {
 		background-color: var(--semantics-surfaces-background-color);
 		border-radius: var(--components-list-corner-radius);
 		overflow: hidden;
