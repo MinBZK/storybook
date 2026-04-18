@@ -100,6 +100,23 @@ describe('ndd-list-item', () => {
 		expect(el.hasAttribute('highlighted')).toBe(true);
 	});
 
+	it('matches [selected]:focus-within when focused on the action', async () => {
+		// The :host([selected]:focus-within) CSS rule promotes a selected item
+		// to the highlighted state on focus. Verify the selector semantics
+		// (which the CSS then keys off of).
+		el = await fixture('<ndd-list-item type="button" selected></ndd-list-item>');
+		await waitForUpdate(el);
+		const action = el.shadowRoot!.querySelector<HTMLButtonElement>('.list-item__action')!;
+
+		expect(el.matches('[selected]:focus-within')).toBe(false);
+		action.focus();
+		await waitForUpdate(el);
+		expect(el.matches('[selected]:focus-within')).toBe(true);
+		action.blur();
+		await waitForUpdate(el);
+		expect(el.matches('[selected]:focus-within')).toBe(false);
+	});
+
 
 	it('forces focus on the action on click (Safari/Firefox workaround)', async () => {
 		el = await fixture('<ndd-list-item type="button"></ndd-list-item>');

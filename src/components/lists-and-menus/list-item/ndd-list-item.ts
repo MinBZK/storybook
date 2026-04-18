@@ -62,7 +62,7 @@ export class NDDListItem extends LitElement {
 	@query('.list-item__action')
 	private _action?: HTMLElement;
 
-	private _isBoxOrInset = false;
+	private _isBoxed = false;
 	private _listObserver: MutationObserver | null = null;
 
 	override connectedCallback() {
@@ -125,16 +125,16 @@ export class NDDListItem extends LitElement {
 	}
 
 	private _applyVariant(variant: string) {
-		this._isBoxOrInset = variant === 'box' || variant === 'box-on-tinted';
-		this.classList.toggle('is-boxed', this._isBoxOrInset);
+		this._isBoxed = variant === 'box' || variant === 'box-on-tinted';
+		this.classList.toggle('is-boxed', this._isBoxed);
 		this._updateVisibility();
 	}
 
 	private _updateVisibility() {
 		const startSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="start"]');
 		const endSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="end"]');
-		this._showStart = this._isBoxOrInset || (startSlot?.assignedElements().length ?? 0) > 0;
-		this._showEnd = this._isBoxOrInset || (endSlot?.assignedElements().length ?? 0) > 0;
+		this._showStart = this._isBoxed || (startSlot?.assignedElements().length ?? 0) > 0;
+		this._showEnd = this._isBoxed || (endSlot?.assignedElements().length ?? 0) > 0;
 	}
 
 	private _observeStartSlot() {

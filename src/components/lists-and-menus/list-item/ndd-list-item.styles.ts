@@ -236,10 +236,12 @@ export const styles = css`
 	}
 
 	:host(.is-boxed:first-child) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
-		border-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset)) calc(var(--components-list-corner-radius) - var(--_focus-outline-offset)) 0 0;
+		border-top-left-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
+		border-top-right-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
 	}
 
 	:host(.is-boxed:last-child) .list-item__action:focus-visible:not(.is-pointer-focus)::after {
-		border-radius: 0 0 calc(var(--components-list-corner-radius) - var(--_focus-outline-offset)) calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
+		border-bottom-left-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
+		border-bottom-right-radius: calc(var(--components-list-corner-radius) - var(--_focus-outline-offset));
 	}
 `;
