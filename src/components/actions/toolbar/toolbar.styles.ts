@@ -5,11 +5,17 @@ export const styles = css`
 
 	:host {
 		display: block;
-		font-family: var(--nldd-font-family-body);
 		box-sizing: border-box;
 		--_item-width: auto;
 		--_item-min-width: 0px;
 		--_title-group-min-width: 200px;
+		/* These are computed by JS (toolbar.ts measures and sets them).
+		   Initial 0px keeps the CSS valid before measurement. */
+		--_width: 0px;
+		--_start-width: 0px;
+		--_center-width: 0px;
+		--_end-width: 0px;
+		--_overflow-button-width: 0px;
 	}
 
 	:host([hidden]) {
@@ -81,9 +87,9 @@ export const styles = css`
 		min-width: 0;
 		margin-right: calc(-1 * var(--components-toolbar-md-gap));
 		flex-basis: calc(
-			var(--nldd-toolbar-width) / 2
-			- var(--nldd-toolbar-start-width)
-			- var(--nldd-toolbar-center-width) / 2
+			var(--_width) / 2
+			- var(--_start-width)
+			- var(--_center-width) / 2
 			- var(--components-toolbar-md-gap)
 		);
 	}
@@ -91,9 +97,9 @@ export const styles = css`
 	:host([size="sm"]) .toolbar__left-spacer {
 		margin-right: calc(-1 * var(--components-toolbar-sm-gap));
 		flex-basis: calc(
-			var(--nldd-toolbar-width) / 2
-			- var(--nldd-toolbar-start-width)
-			- var(--nldd-toolbar-center-width) / 2
+			var(--_width) / 2
+			- var(--_start-width)
+			- var(--_center-width) / 2
 			- var(--components-toolbar-sm-gap)
 		);
 	}
@@ -104,22 +110,22 @@ export const styles = css`
 		min-width: 0;
 		margin-left: calc(-1 * var(--components-toolbar-md-gap));
 		flex-basis: calc(
-			var(--nldd-toolbar-width) / 2
-			- var(--nldd-toolbar-end-width)
-			- var(--nldd-toolbar-center-width) / 2
+			var(--_width) / 2
+			- var(--_end-width)
+			- var(--_center-width) / 2
 			- var(--components-toolbar-md-gap)
-			- var(--nldd-toolbar-overflow-button-width, 0px)
+			- var(--_overflow-button-width, 0px)
 		);
 	}
 
 	:host([size="sm"]) .toolbar__right-spacer {
 		margin-left: calc(-1 * var(--components-toolbar-sm-gap));
 		flex-basis: calc(
-			var(--nldd-toolbar-width) / 2
-			- var(--nldd-toolbar-end-width)
-			- var(--nldd-toolbar-center-width) / 2
+			var(--_width) / 2
+			- var(--_end-width)
+			- var(--_center-width) / 2
 			- var(--components-toolbar-sm-gap)
-			- var(--nldd-toolbar-overflow-button-width, 0px)
+			- var(--_overflow-button-width, 0px)
 		);
 	}
 

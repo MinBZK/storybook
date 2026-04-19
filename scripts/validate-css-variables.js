@@ -5,7 +5,7 @@
  *
  * Validates that all CSS custom properties used in components are defined.
  * Token categories:
- * - --nldd-* : Override hooks for consumers (SKIPPED - not defined in styles)
+ * - --context-* : Context variables shared between components (SKIPPED)
  * - --_* : Internal variables (validated within same file)
  * - --components-*, --semantics-*, --primitives-* : CSS variables (validated against settings.css)
  */
@@ -111,7 +111,6 @@ function parseComponentFile(filePath) {
  * Categorize a CSS variable by its prefix
  */
 function categorizeVariable(varName) {
-  if (varName.startsWith('--nldd-')) return 'override';
   if (varName.startsWith('--context-')) return 'context';
   if (varName.startsWith('--_')) return 'internal';
   if (varName.startsWith('--components-')) return 'style';
@@ -138,35 +137,50 @@ function validate() {
   const warnings = [];
   const stats = {
     totalUsages: 0,
-    overrideVars: 0,
+    contextVars: 0,
     internalVars: 0,
     styleVars: 0,
     unknownVars: 0,
   };
 
+  // First pass: collect internal definitions per component folder so a var
+  // can be defined in styles.ts and used in template.ts within the same component.
+  const internalDefsByFolder = new Map();
+  for (const filePath of componentFiles) {
+    const folder = path.dirname(filePath);
+    const { definitions } = parseComponentFile(filePath);
+    if (!internalDefsByFolder.has(folder)) {
+      internalDefsByFolder.set(folder, new Set());
+    }
+    const folderDefs = internalDefsByFolder.get(folder);
+    for (const def of definitions) folderDefs.add(def);
+  }
+
   // Process each component file
   for (const filePath of componentFiles) {
     const relativePath = path.relative(ROOT_DIR, filePath);
-    const { usages, definitions } = parseComponentFile(filePath);
+    const folder = path.dirname(filePath);
+    const folderDefs = internalDefsByFolder.get(folder) ?? new Set();
+    const { usages } = parseComponentFile(filePath);
 
     for (const varName of usages) {
       stats.totalUsages++;
       const category = categorizeVariable(varName);
 
       switch (category) {
-        case 'override':
-          // --nldd-* variables are consumer hooks, skip validation
-          stats.overrideVars++;
+        case 'context':
+          // --context-* variables are shared across components, skip validation
+          stats.contextVars++;
           break;
 
         case 'internal':
-          // --_* variables must be defined in the same file
+          // --_* variables must be defined somewhere in the component folder
           stats.internalVars++;
-          if (!definitions.has(varName)) {
+          if (!folderDefs.has(varName)) {
             errors.push({
               file: relativePath,
               variable: varName,
-              message: `Internal variable "${varName}" is used but not defined in this file`,
+              message: `Internal variable "${varName}" is used but not defined in this component`,
             });
           }
           break;
@@ -199,7 +213,7 @@ function validate() {
   // Print statistics
   console.log('📊 Statistics:');
   console.log(`   Total variable usages: ${stats.totalUsages}`);
-  console.log(`   Override hooks (--nldd-*): ${stats.overrideVars} (skipped)`);
+  console.log(`   Context variables (--context-*): ${stats.contextVars} (skipped)`);
   console.log(`   Internal variables (--_*): ${stats.internalVars}`);
   console.log(`   CSS variables: ${stats.styleVars}`);
   if (stats.unknownVars > 0) {

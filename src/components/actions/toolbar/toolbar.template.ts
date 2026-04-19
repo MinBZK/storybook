@@ -14,7 +14,7 @@ function resolveWidth(width: string): string {
 	if (!width) return '';
 	if (width.endsWith('%')) {
 		const ratio = parseFloat(width) / 100;
-		return `calc(var(--nldd-toolbar-width) * ${ratio})`;
+		return `calc(var(--_width) * ${ratio})`;
 	}
 	return width;
 }

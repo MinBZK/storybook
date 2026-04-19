@@ -327,15 +327,15 @@ export class NLDDToolbar extends LitElement {
 			? overflowButtonEl.getBoundingClientRect().width + hostGap
 			: 0;
 
-		this.style.setProperty('--nldd-toolbar-overflow-button-width', `${overflowButtonWidth}px`);
+		this.style.setProperty('--_overflow-button-width', `${overflowButtonWidth}px`);
 
 		const startWidth = this._computeAreaWidth(this._startChildren, itemGap);
 		const centerWidth = this._computeAreaWidth(this._centerChildren, itemGap);
 		const endWidth = this._computeAreaWidth(this._endChildren, itemGap);
 
-		this.style.setProperty('--nldd-toolbar-start-width', `${startWidth}px`);
-		this.style.setProperty('--nldd-toolbar-center-width', `${centerWidth}px`);
-		this.style.setProperty('--nldd-toolbar-end-width', `${endWidth}px`);
+		this.style.setProperty('--_start-width', `${startWidth}px`);
+		this.style.setProperty('--_center-width', `${centerWidth}px`);
+		this.style.setProperty('--_end-width', `${endWidth}px`);
 
 		const { leftZero, rightZero } = this._computeSpacerZeros(
 			hostWidth, itemGap, overflowButtonWidth, startWidth, centerWidth, endWidth
@@ -351,7 +351,7 @@ export class NLDDToolbar extends LitElement {
 
 		this._isMeasuring = true;
 		const hostWidth = this.getBoundingClientRect().width;
-		this.style.setProperty('--nldd-toolbar-width', `${hostWidth}px`);
+		this.style.setProperty('--_width', `${hostWidth}px`);
 		this._measureOverflow(itemsEl);
 		this._hasMeasured = true;
 		this._isMeasuring = false;
