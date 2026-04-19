@@ -1,7 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDPasswordField } from './password-field.js';
-import './../../content/icon/icon.ts';
-import './../../actions/button/button.ts';
+import './../../content/icon/icon.js';
+import './../../actions/button/button.js';
 
 function renderValidationIcon(component: NLDDPasswordField): TemplateResult | typeof nothing {
 	if (component.valid) {

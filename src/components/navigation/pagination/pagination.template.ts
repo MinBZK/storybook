@@ -1,7 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDPagination } from './pagination.js';
-import '../../actions/icon-button/icon-button.ts';
-import '../../content/icon/icon.ts';
+import '../../actions/icon-button/icon-button.js';
+import '../../content/icon/icon.js';
 
 export function paginationTemplate(component: NLDDPagination): TemplateResult {
 	const pages = component._getVisiblePages();

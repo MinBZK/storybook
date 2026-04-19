@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
-import './bar-split-view.ts';
+import './bar-split-view.js';
 import type { NLDDBarSplitView } from './bar-split-view.js';
 
 // jsdom returns 0 for getBoundingClientRect().width, so the component always

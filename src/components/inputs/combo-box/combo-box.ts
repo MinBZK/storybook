@@ -47,9 +47,9 @@ import { comboBoxTemplate } from './combo-box.template.js';
 import { nlddComboBoxTranslations } from './combo-box.i18n.js';
 import type { NLDDComboBoxTranslations } from './combo-box.i18n.js';
 import type { NLDDMenu, NLDDMenuItem } from '../../lists-and-menus/menu/menu.js';
-import '../../lists-and-menus/menu/menu.ts';
-import '../../actions/icon-button/icon-button.ts';
-import '../../content/icon/icon.ts';
+import '../../lists-and-menus/menu/menu.js';
+import '../../actions/icon-button/icon-button.js';
+import '../../content/icon/icon.js';
 
 
 @customElement('nldd-combo-box')

@@ -4,7 +4,7 @@ import { styles } from './list-item.styles.js';
 import { template } from './list-item.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import type { NLDDList } from '../list/list.js';
-import '../cells/spacer-cell/spacer-cell.ts';
+import '../cells/spacer-cell/spacer-cell.js';
 
 export type ListItemSize = 'sm' | 'md';
 export type ListItemType = 'button';

@@ -1,12 +1,12 @@
 import { html, nothing } from 'lit';
-import './window.ts';
-import '../../layout/page/page.ts';
-import '../../navigation/top-title-bar/top-title-bar.ts';
-import '../../content/rich-text/rich-text.ts';
-import '../../actions/button/button.ts';
-import '../../actions/button-group/button-group.ts';
-import '../../layout/page-sections/simple-section/simple-section.ts';
-import '../../layout/container/container.ts';
+import './window.js';
+import '../../layout/page/page.js';
+import '../../navigation/top-title-bar/top-title-bar.js';
+import '../../content/rich-text/rich-text.js';
+import '../../actions/button/button.js';
+import '../../actions/button-group/button-group.js';
+import '../../layout/page-sections/simple-section/simple-section.js';
+import '../../layout/container/container.js';
 
 /**
  * Een zwevend venster gebaseerd op het native `<dialog>`-element.

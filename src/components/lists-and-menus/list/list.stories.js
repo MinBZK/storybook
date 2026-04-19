@@ -1,14 +1,14 @@
 import { html, render } from 'lit';
-import './list.ts';
-import '../list-item/list-item.ts';
-import '../cells/title-cell/title-cell.ts';
-import '../cells/text-cell/text-cell.ts';
-import '../cells/spacer-cell/spacer-cell.ts';
-import '../cells/icon-cell/icon-cell.ts';
-import '../cells/drag-handle-cell/drag-handle-cell.ts';
-import '../../content/icon/icon.ts';
-import '../../content/title/title.ts';
-import '../../content/rich-text/rich-text.ts';
+import './list.js';
+import '../list-item/list-item.js';
+import '../cells/title-cell/title-cell.js';
+import '../cells/text-cell/text-cell.js';
+import '../cells/spacer-cell/spacer-cell.js';
+import '../cells/icon-cell/icon-cell.js';
+import '../cells/drag-handle-cell/drag-handle-cell.js';
+import '../../content/icon/icon.js';
+import '../../content/title/title.js';
+import '../../content/rich-text/rich-text.js';
 
 export default {
 	title: 'Components/Lists & Menus/List',

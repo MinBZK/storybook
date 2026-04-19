@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
-import './full-bleed-section.ts';
+import './full-bleed-section.js';
 
 describe('nldd-full-bleed-section', () => {
 	let el: HTMLElement;

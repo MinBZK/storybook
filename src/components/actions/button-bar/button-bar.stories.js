@@ -1,7 +1,7 @@
 import { html } from 'lit';
-import './button-bar.ts';
-import '../button/button.ts';
-import '../icon-button/icon-button.ts';
+import './button-bar.js';
+import '../button/button.js';
+import '../icon-button/icon-button.js';
 
 export default {
 	title: 'Components/Actions/Button Bar',

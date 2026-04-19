@@ -31,7 +31,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styles } from './icon-button.styles.js';
 import { template } from './icon-button.template.js';
-import './../../content/icon/icon.ts';
+import './../../content/icon/icon.js';
 
 export type Size = 'xs' | 'sm' | 'md' | 'lg';
 export type Variant =

@@ -1,8 +1,8 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDSearchField } from './search-field.js';
-import './../../actions/icon-button/icon-button.ts';
-import './../../actions/button/button.ts';
-import './../../content/icon/icon.ts';
+import './../../actions/icon-button/icon-button.js';
+import './../../actions/button/button.js';
+import './../../content/icon/icon.js';
 
 export function searchFieldTemplate(component: NLDDSearchField): TemplateResult {
 	const buttonSize = component.size === 'sm' ? 'xs' : 'sm';

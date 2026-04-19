@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDStepper } from './stepper.js';
-import './stepper.ts';
+import './stepper.js';
 
 describe('nldd-stepper', () => {
 	let el: HTMLElement;

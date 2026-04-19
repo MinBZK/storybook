@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDSearchField } from './search-field.js';
-import './search-field.ts';
+import './search-field.js';
 
 describe('nldd-search-field', () => {
 	let el: HTMLElement;

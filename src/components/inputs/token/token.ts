@@ -22,8 +22,8 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { tokenStyles } from './token.styles.js';
 import { tokenTemplate } from './token.template.js';
-import './../../content/icon/icon.ts';
-import './../../actions/icon-button/icon-button.ts';
+import './../../content/icon/icon.js';
+import './../../actions/icon-button/icon-button.js';
 
 export type TokenControl = 'none' | 'dismiss' | 'menu';
 

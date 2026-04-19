@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDNumberField } from './number-field.js';
-import './number-field.ts';
+import './number-field.js';
 
 describe('nldd-number-field', () => {
 	let el: HTMLElement;

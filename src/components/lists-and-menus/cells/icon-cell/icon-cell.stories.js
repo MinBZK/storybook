@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './icon-cell.ts';
+import './icon-cell.js';
 import { ICONS } from '../../../content/icon/icon.js';
 
 export default {

@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './modal-dialog.ts';
+import './modal-dialog.js';
 import type { NLDDModalDialog } from './modal-dialog.js';
 
 describe('nldd-modal-dialog', () => {

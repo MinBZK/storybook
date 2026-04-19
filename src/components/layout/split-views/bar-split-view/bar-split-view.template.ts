@@ -2,7 +2,7 @@ import { html, TemplateResult, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import type { NLDDBarSplitView } from './bar-split-view.js';
-import '../split-view-divider/split-view-divider.ts';
+import '../split-view-divider/split-view-divider.js';
 
 export function barSplitViewTemplate(component: NLDDBarSplitView): TemplateResult {
 	const sorted = component._getSortedChildren();

@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './simple-section.ts';
-import '../../../content/rich-text/rich-text.ts';
+import './simple-section.js';
+import '../../../content/rich-text/rich-text.js';
 
 /**
  * Gebruik een simple section als bouwsteen voor paginainhoud.

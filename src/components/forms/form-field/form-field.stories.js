@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './form-field.ts';
-import '../../inputs/text-field/text-field.ts';
+import './form-field.js';
+import '../../inputs/text-field/text-field.js';
 
 /**
  * `nldd-form-field` is een lay-outwrapper voor formulierinvoer.

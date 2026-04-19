@@ -1,12 +1,12 @@
 import { html } from 'lit';
-import './sheet.ts';
-import '../../navigation/top-title-bar/top-title-bar.ts';
-import '../../layout/page/page.ts';
-import '../../actions/button/button.ts';
-import '../../actions/button-group/button-group.ts';
-import '../../content/rich-text/rich-text.ts';
-import '../../layout/page-sections/simple-section/simple-section.ts';
-import '../../layout/container/container.ts';
+import './sheet.js';
+import '../../navigation/top-title-bar/top-title-bar.js';
+import '../../layout/page/page.js';
+import '../../actions/button/button.js';
+import '../../actions/button-group/button-group.js';
+import '../../content/rich-text/rich-text.js';
+import '../../layout/page-sections/simple-section/simple-section.js';
+import '../../layout/container/container.js';
 
 /**
  * De Sheet is een overlay-component die vanuit een zijkant of de onderkant van

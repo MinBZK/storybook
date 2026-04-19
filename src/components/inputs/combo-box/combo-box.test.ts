@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDComboBox } from './combo-box.js';
-import './combo-box.ts';
-import '../../lists-and-menus/menu/menu.ts';
+import './combo-box.js';
+import '../../lists-and-menus/menu/menu.js';
 
 describe('nldd-combo-box', () => {
 	let el: HTMLElement;

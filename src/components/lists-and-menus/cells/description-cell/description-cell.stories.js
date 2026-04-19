@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './description-cell.ts';
-import '../../../content/rich-text/rich-text.ts';
+import './description-cell.js';
+import '../../../content/rich-text/rich-text.js';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Description Cell',

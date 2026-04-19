@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './text-field.ts';
+import './text-field.js';
 
 describe('nldd-text-field', () => {
 	let el: HTMLElement;

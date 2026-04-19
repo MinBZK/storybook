@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './stepper.ts';
+import './stepper.js';
 
 /**
  * De Stepper component is een numerieke control met increment en decrement knoppen.

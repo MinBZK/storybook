@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
-import './modal-dialog.ts';
-import '../../actions/button/button.ts';
+import './modal-dialog.js';
+import '../../actions/button/button.js';
 import { ICONS } from '../../content/icon/icon.js';
 
 /**

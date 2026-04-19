@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './document-tab-bar.ts';
-import './../../actions/icon-button/icon-button.ts';
+import './document-tab-bar.js';
+import './../../actions/icon-button/icon-button.js';
 
 
 export default {

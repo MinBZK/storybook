@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDRadioButton } from './radio-button.js';
-import './radio-button.ts';
+import './radio-button.js';
 
 describe('nldd-radio-button', () => {
 	let el: HTMLElement;

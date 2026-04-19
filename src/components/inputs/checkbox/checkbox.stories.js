@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './checkbox.ts';
+import './checkbox.js';
 
 /**
  * De Checkbox component stelt gebruikers in staat om een of meerdere opties te selecteren.

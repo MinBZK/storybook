@@ -43,7 +43,7 @@ import {
 	segmentedControlTemplate,
 	segmentedControlItemTemplate,
 } from './segmented-control.template.js';
-import './../../content/icon/icon.ts';
+import './../../content/icon/icon.js';
 
 export type SegmentedControlSize = 'sm' | 'md';
 export type SegmentedControlType = 'radio' | 'checkbox';

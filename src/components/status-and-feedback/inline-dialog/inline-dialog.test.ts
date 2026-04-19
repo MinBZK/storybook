@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './inline-dialog.ts';
+import './inline-dialog.js';
 
 describe('nldd-inline-dialog', () => {
 	let el: HTMLElement;

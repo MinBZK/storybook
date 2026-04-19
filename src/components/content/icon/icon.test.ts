@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './icon.ts';
+import './icon.js';
 
 describe('nldd-icon', () => {
 	let el: HTMLElement;

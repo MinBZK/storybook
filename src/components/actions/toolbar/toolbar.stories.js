@@ -1,12 +1,12 @@
 import { html } from 'lit';
-import './toolbar.ts';
-import '../button/button.ts';
-import '../icon-button/icon-button.ts';
-import '../button-bar/button-bar.ts';
-import '../../content/icon/icon.ts';
-import '../../lists-and-menus/menu/menu.ts';
-import '../../inputs/search-field/search-field.ts';
-import '../../inputs/segmented-control/segmented-control.ts';
+import './toolbar.js';
+import '../button/button.js';
+import '../icon-button/icon-button.js';
+import '../button-bar/button-bar.js';
+import '../../content/icon/icon.js';
+import '../../lists-and-menus/menu/menu.js';
+import '../../inputs/search-field/search-field.js';
+import '../../inputs/segmented-control/segmented-control.js';
 
 export default {
 	title: 'Components/Actions/Toolbar',

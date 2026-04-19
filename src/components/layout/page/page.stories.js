@@ -1,14 +1,14 @@
 import { html } from 'lit';
-import './page.ts';
-import '../container/container.ts';
-import '../page-sections/simple-section/simple-section.ts';
-import '../../actions/button/button.ts';
-import '../../layout/spacer/spacer.ts';
-import '../../actions/button-group/button-group.ts';
-import '../../content/rich-text/rich-text.ts';
-import '../../status-and-feedback/inline-dialog/inline-dialog.ts';
-import '../../navigation/top-title-bar/top-title-bar.ts';
-import '../../content/title/title.ts';
+import './page.js';
+import '../container/container.js';
+import '../page-sections/simple-section/simple-section.js';
+import '../../actions/button/button.js';
+import '../../layout/spacer/spacer.js';
+import '../../actions/button-group/button-group.js';
+import '../../content/rich-text/rich-text.js';
+import '../../status-and-feedback/inline-dialog/inline-dialog.js';
+import '../../navigation/top-title-bar/top-title-bar.js';
+import '../../content/title/title.js';
 
 /**
  * Gebruik de page-component als buitenste wrapper van een pagina.

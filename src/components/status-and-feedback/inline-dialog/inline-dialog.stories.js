@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
-import './inline-dialog.ts';
-import '../../actions/button/button.ts';
-import '../../layout/box/box.ts';
+import './inline-dialog.js';
+import '../../actions/button/button.js';
+import '../../layout/box/box.js';
 import { ICONS } from '../../content/icon/icon.js';
 
 /**

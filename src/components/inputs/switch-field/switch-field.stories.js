@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './switch-field.ts';
+import './switch-field.js';
 
 /**
  * De Switch Field component is een switch toggle met een inline label voor gebruik in formulieren.

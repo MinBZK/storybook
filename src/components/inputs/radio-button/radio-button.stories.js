@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './radio-button.ts';
+import './radio-button.js';
 
 /**
  * De Radio Button component wordt gebruikt voor exclusieve keuzes binnen een groep opties.

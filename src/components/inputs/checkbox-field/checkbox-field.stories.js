@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './checkbox-field.ts';
+import './checkbox-field.js';
 
 /**
  * De Checkbox Field component is een checkbox met een inline label voor gebruik in formulieren.

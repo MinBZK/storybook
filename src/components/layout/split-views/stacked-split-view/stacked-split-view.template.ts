@@ -1,6 +1,6 @@
 import { html, TemplateResult, nothing } from 'lit';
 import type { NLDDStackedSplitView } from './stacked-split-view.js';
-import '../split-view-divider/split-view-divider.ts';
+import '../split-view-divider/split-view-divider.js';
 
 export function stackedSplitViewTemplate(component: NLDDStackedSplitView): TemplateResult {
 	// Render slots for all panes but only show the ones that fit

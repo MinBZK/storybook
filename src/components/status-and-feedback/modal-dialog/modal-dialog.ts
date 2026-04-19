@@ -27,7 +27,7 @@ import { modalDialogStyles } from './modal-dialog.styles.js';
 import { modalDialogTemplate } from './modal-dialog.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import type { InlineDialogVariant } from '../inline-dialog/inline-dialog.js';
-import '../inline-dialog/inline-dialog.ts';
+import '../inline-dialog/inline-dialog.js';
 
 @customElement('nldd-modal-dialog')
 export class NLDDModalDialog extends LitElement {

@@ -65,7 +65,8 @@ function findComponentFiles(dir) {
         (entry.name.endsWith('.ts') || entry.name.endsWith('.js')) &&
         !entry.name.endsWith('.stories.js') &&
         !entry.name.endsWith('.stories.ts') &&
-        entry.name.startsWith('nldd-')
+        !entry.name.endsWith('.test.ts') &&
+        !entry.name.endsWith('.test.js')
       ) {
         files.push(fullPath);
       }

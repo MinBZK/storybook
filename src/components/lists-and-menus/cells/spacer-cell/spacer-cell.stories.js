@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './spacer-cell.ts';
+import './spacer-cell.js';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Spacer Cell',

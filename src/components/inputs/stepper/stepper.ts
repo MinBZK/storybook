@@ -20,8 +20,8 @@ import { stepperStyles } from './stepper.styles.js';
 import { stepperTemplate } from './stepper.template.js';
 import { nlddStepperTranslations } from './stepper.i18n.js';
 import type { NLDDStepperTranslations } from './stepper.i18n.js';
-import './../../actions/icon-button/icon-button.ts';
-import './../../content/icon/icon.ts';
+import './../../actions/icon-button/icon-button.js';
+import './../../content/icon/icon.js';
 
 export type StepperSize = 'sm' | 'md';
 

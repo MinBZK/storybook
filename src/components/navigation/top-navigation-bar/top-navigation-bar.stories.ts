@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './top-navigation-bar.ts';
+import './top-navigation-bar.js';
 
 export default {
 	title: 'Components/Navigation/Top Navigation Bar',

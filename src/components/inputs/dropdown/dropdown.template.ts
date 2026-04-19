@@ -1,6 +1,6 @@
 import { html, TemplateResult } from 'lit';
 import type { NLDDDropdown } from './dropdown.js';
-import './../../content/icon/icon.ts';
+import './../../content/icon/icon.js';
 
 export function dropdownTemplate(component: NLDDDropdown): TemplateResult {
 	return html`

@@ -1,9 +1,9 @@
 import { html } from 'lit';
-import './side-by-side-split-view.ts';
-import '../../page/page.ts';
-import '../../page-sections/simple-section/simple-section.ts';
-import '../../container/container.ts';
-import '../../../content/rich-text/rich-text.ts';
+import './side-by-side-split-view.js';
+import '../../page/page.js';
+import '../../page-sections/simple-section/simple-section.js';
+import '../../container/container.js';
+import '../../../content/rich-text/rich-text.js';
 
 /**
  * Use a side-by-side split view to show multiple panes next to each other,

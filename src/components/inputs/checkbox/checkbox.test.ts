@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDCheckbox } from './checkbox.js';
-import './checkbox.ts';
+import './checkbox.js';
 
 describe('nldd-checkbox', () => {
 	let el: HTMLElement;

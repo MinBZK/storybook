@@ -26,7 +26,7 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styles } from './button.styles.js';
 import { template } from './button.template.js';
-import './../../content/icon/icon.ts';
+import './../../content/icon/icon.js';
 
 type Variant =
 	| 'primary'

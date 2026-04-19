@@ -1,7 +1,7 @@
 import { html } from 'lit';
-import './title.ts';
-import '../../actions/button/button.ts';
-import '../../layout/spacer/spacer.ts';
+import './title.js';
+import '../../actions/button/button.js';
+import '../../layout/spacer/spacer.js';
 
 /**
  * Gebruik een title bar om een paginatitel of sectietitel te tonen met

@@ -1,15 +1,15 @@
 import { html } from 'lit';
-import './bar-split-view.ts';
-import '../split-view-pane/split-view-pane.ts';
-import '../../page/page.ts';
-import '../../page-sections/simple-section/simple-section.ts';
-import '../../../content/rich-text/rich-text.ts';
-import '../../container/container.ts';
-import '../../../actions/toolbar/toolbar.ts';
-import '../../../inputs/segmented-control/segmented-control.ts';
-import '../../../inputs/search-field/search-field.ts';
+import './bar-split-view.js';
+import '../split-view-pane/split-view-pane.js';
+import '../../page/page.js';
+import '../../page-sections/simple-section/simple-section.js';
+import '../../../content/rich-text/rich-text.js';
+import '../../container/container.js';
+import '../../../actions/toolbar/toolbar.js';
+import '../../../inputs/segmented-control/segmented-control.js';
+import '../../../inputs/search-field/search-field.js';
 
-import '../../../lists-and-menus/menu/menu.ts';
+import '../../../lists-and-menus/menu/menu.js';
 
 /**
  * Gebruik een bar split view voor een verticale layout met een main-gebied en een

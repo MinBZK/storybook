@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './radio-button-field.ts';
+import './radio-button-field.js';
 
 /**
  * De Radio Button Field component is een radio button met een inline label.

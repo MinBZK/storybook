@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDTextField } from './text-field.js';
-import './../../content/icon/icon.ts';
+import './../../content/icon/icon.js';
 
 function renderValidationIcon(component: NLDDTextField): TemplateResult | typeof nothing {
 	if (component.valid) {

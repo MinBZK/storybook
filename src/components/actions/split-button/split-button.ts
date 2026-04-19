@@ -21,8 +21,8 @@ import { styles } from './split-button.styles.js';
 import { template } from './split-button.template.js';
 import { nlddSplitButtonTranslations } from './split-button.i18n.js';
 import type { NLDDSplitButtonTranslations } from './split-button.i18n.js';
-import './../button/button.ts';
-import './../icon-button/icon-button.ts';
+import './../button/button.js';
+import './../icon-button/icon-button.js';
 
 export type Size = 'xs' | 'sm' | 'md';
 

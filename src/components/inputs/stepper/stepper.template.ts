@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDStepper } from './stepper.js';
-import './../../actions/icon-button/icon-button.ts';
+import './../../actions/icon-button/icon-button.js';
 
 export function stepperTemplate(component: NLDDStepper): TemplateResult {
 	const atMin = component.value <= component.min;

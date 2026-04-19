@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './drag-handle-cell.ts';
+import './drag-handle-cell.js';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Drag Handle Cell',

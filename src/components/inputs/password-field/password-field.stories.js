@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './password-field.ts';
+import './password-field.js';
 
 /**
  * De Password Field component voor wachtwoordinvoer met zichtbaarheidstoggle.

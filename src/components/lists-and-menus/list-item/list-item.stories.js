@@ -1,9 +1,9 @@
 import { html, nothing } from 'lit';
-import './list-item.ts';
-import '../list/list.ts';
-import '../cells/text-cell/text-cell.ts';
-import '../cells/spacer-cell/spacer-cell.ts';
-import '../cells/drag-handle-cell/drag-handle-cell.ts';
+import './list-item.js';
+import '../list/list.js';
+import '../cells/text-cell/text-cell.js';
+import '../cells/spacer-cell/spacer-cell.js';
+import '../cells/drag-handle-cell/drag-handle-cell.js';
 
 export default {
 	title: 'Components/Lists & Menus/List Item',

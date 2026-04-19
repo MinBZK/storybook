@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDNumberField } from './number-field.js';
-import './../../actions/icon-button/icon-button.ts';
+import './../../actions/icon-button/icon-button.js';
 
 export function numberFieldTemplate(component: NLDDNumberField): TemplateResult {
 	const canDecrease = component.value > component.min;

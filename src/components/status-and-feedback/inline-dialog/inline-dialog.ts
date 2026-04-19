@@ -19,8 +19,8 @@ import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { inlineDialogStyles } from './inline-dialog.styles.js';
 import { inlineDialogTemplate } from './inline-dialog.template.js';
-import '../../content/icon/icon.ts';
-import '../../actions/button-group/button-group.ts';
+import '../../content/icon/icon.js';
+import '../../actions/button-group/button-group.js';
 
 export type InlineDialogVariant = 'alert';
 

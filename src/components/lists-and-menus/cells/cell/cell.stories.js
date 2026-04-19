@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './cell.ts';
-import '../../../actions/button/button.ts';
+import './cell.js';
+import '../../../actions/button/button.js';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Cell',

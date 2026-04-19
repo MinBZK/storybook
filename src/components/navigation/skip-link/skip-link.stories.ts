@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './skip-link.ts';
-import '../top-navigation-bar/top-navigation-bar.ts';
+import './skip-link.js';
+import '../top-navigation-bar/top-navigation-bar.js';
 
 /**
  * Skip-link component voor keyboard-navigatie.

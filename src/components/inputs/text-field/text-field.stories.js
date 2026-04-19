@@ -1,6 +1,6 @@
 import { action } from 'storybook/actions';
 import { html } from 'lit';
-import './text-field.ts';
+import './text-field.js';
 
 /**
  * `nldd-text-field` is a single-line text input.

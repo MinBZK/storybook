@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDSwitchField } from './switch-field.js';
-import '../switch/switch.ts';
+import '../switch/switch.js';
 
 /* eslint-disable lit-a11y/click-events-have-key-events -- label wrapper delegates to inner switch */
 export function switchFieldTemplate(component: NLDDSwitchField): TemplateResult {

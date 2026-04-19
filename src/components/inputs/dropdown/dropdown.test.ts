@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDDropdown } from './dropdown.js';
-import './dropdown.ts';
+import './dropdown.js';
 
 function selectFixture(): string {
 	return `

@@ -1,7 +1,7 @@
 /* eslint-disable lit-a11y/click-events-have-key-events -- native dialog handles keyboard via @cancel */
 import { html, TemplateResult, nothing } from 'lit';
 import type { NLDDNavigationSplitView } from './navigation-split-view.js';
-import '../split-view-divider/split-view-divider.ts';
+import '../split-view-divider/split-view-divider.js';
 
 export function navigationSplitViewTemplate(component: NLDDNavigationSplitView): TemplateResult {
 	return html`

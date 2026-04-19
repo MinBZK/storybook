@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDSegmentedControl, NLDDSegmentedControlItem } from './segmented-control.js';
-import './segmented-control.ts';
+import './segmented-control.js';
 
 function radioFixture(selectedValue = 'a'): string {
 	return `

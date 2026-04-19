@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './menu-bar.ts';
+import './menu-bar.js';
 
 export default {
 	title: 'Components/Navigation/Menu Bar',

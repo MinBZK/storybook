@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDIconButton } from './icon-button.js';
-import './icon-button.ts';
+import './icon-button.js';
 
 describe('nldd-icon-button', () => {
 	let el: HTMLElement;

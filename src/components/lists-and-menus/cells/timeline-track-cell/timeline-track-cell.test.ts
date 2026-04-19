@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
-import './timeline-track-cell.ts';
+import './timeline-track-cell.js';
 
 describe('nldd-timeline-track-cell', () => {
 	let el: HTMLElement;

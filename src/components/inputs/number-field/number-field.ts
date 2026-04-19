@@ -25,8 +25,8 @@ import { numberFieldStyles } from './number-field.styles.js';
 import { numberFieldTemplate } from './number-field.template.js';
 import { nlddNumberFieldTranslations } from './number-field.i18n.js';
 import type { NLDDNumberFieldTranslations } from './number-field.i18n.js';
-import './../../actions/icon-button/icon-button.ts';
-import './../../content/icon/icon.ts';
+import './../../actions/icon-button/icon-button.js';
+import './../../content/icon/icon.js';
 
 @customElement('nldd-number-field')
 export class NLDDNumberField extends LitElement {

@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import type { NLDDSplitViewPane } from './split-view-pane.js';
-import './split-view-pane.ts';
+import './split-view-pane.js';
 
 describe('nldd-split-view-pane', () => {
 	let el: NLDDSplitViewPane;

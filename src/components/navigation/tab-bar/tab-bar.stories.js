@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
-import './tab-bar.ts';
-import './../../content/icon/icon.ts';
+import './tab-bar.js';
+import './../../content/icon/icon.js';
 
 export default {
 	title: 'Components/Navigation/Tab Bar',

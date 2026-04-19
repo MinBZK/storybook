@@ -1,9 +1,9 @@
 import { html } from 'lit';
-import './stacked-split-view.ts';
-import '../../page/page.ts';
-import '../../page-sections/simple-section/simple-section.ts';
-import '../../container/container.ts';
-import '../../../content/rich-text/rich-text.ts';
+import './stacked-split-view.js';
+import '../../page/page.js';
+import '../../page-sections/simple-section/simple-section.js';
+import '../../container/container.js';
+import '../../../content/rich-text/rich-text.js';
 
 /**
  * Use a stacked split view to show multiple panes stacked vertically,

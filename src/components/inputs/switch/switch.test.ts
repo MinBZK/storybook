@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDSwitch } from './switch.js';
-import './switch.ts';
+import './switch.js';
 
 describe('nldd-switch', () => {
 	let el: HTMLElement;

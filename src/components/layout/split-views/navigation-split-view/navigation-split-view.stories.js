@@ -1,11 +1,11 @@
 import { html } from 'lit';
-import './navigation-split-view.ts';
-import '../../app-view/app-view.ts';
-import '../../page/page.ts';
-import '../../page-sections/simple-section/simple-section.ts';
-import '../../../content/rich-text/rich-text.ts';
-import '../../../actions/button/button.ts';
-import '../../../navigation/top-title-bar/top-title-bar.ts';
+import './navigation-split-view.js';
+import '../../app-view/app-view.js';
+import '../../page/page.js';
+import '../../page-sections/simple-section/simple-section.js';
+import '../../../content/rich-text/rich-text.js';
+import '../../../actions/button/button.js';
+import '../../../navigation/top-title-bar/top-title-bar.js';
 
 /**
  * Gebruik een navigation split view voor een vierkoloms navigatiepatroon met

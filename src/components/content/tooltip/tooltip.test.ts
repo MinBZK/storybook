@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDTooltip } from './tooltip.js';
-import './tooltip.ts';
+import './tooltip.js';
 
 function isTooltipVisible(el: NLDDTooltip): boolean {
 	const tooltip = el.shadowRoot!.querySelector('.tooltip');

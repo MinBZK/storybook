@@ -28,14 +28,13 @@ const componentExports = {};
 for (const match of indexContent.matchAll(exportRegex)) {
 	const sourcePath = match[1]; // e.g. ./actions/button/button.ts
 
-	// Extract component name from path: ./actions/button/button.ts → button
+	// Extract component name from path: ./actions/button/button.js → button
 	const parts = sourcePath.split('/');
-	const fileName = parts[parts.length - 1].replace(/\.ts$/, '');
-	const componentName = fileName.replace(/^nldd-/, '');
+	const componentName = parts[parts.length - 1].replace(/\.(ts|js)$/, '');
 
-	// Build dist path: ./actions/button/button.ts → ./dist/components/actions/button/button.js
+	// Build dist path: ./actions/button/button.js → ./dist/components/actions/button/button.js
 	// Assumes tsconfig.build.json rootDir=src, outDir=dist — src/components/… maps to dist/components/….
-	const distPath = `./dist/components/${sourcePath.replace(/^\.\//, '').replace(/\.ts$/, '')}`;
+	const distPath = `./dist/components/${sourcePath.replace(/^\.\//, '').replace(/\.(ts|js)$/, '')}`;
 
 	const exportKey = `./${componentName}`;
 	if (componentExports[exportKey]) {

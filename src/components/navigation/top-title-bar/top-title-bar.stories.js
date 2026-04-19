@@ -1,11 +1,11 @@
 import { action } from 'storybook/actions';
 import { html } from 'lit';
-import './top-title-bar.ts';
-import '../../actions/button/button.ts';
-import '../../actions/icon-button/icon-button.ts';
-import '../../layout/page/page.ts';
-import '../../layout/page-sections/simple-section/simple-section.ts';
-import '../../content/title/title.ts';
+import './top-title-bar.js';
+import '../../actions/button/button.js';
+import '../../actions/icon-button/icon-button.js';
+import '../../layout/page/page.js';
+import '../../layout/page-sections/simple-section/simple-section.js';
+import '../../content/title/title.js';
 
 /**
  * De Top Title Bar is de werkbalk van een pagina of container.

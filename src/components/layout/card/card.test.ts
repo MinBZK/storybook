@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDCard } from './card.js';
-import './card.ts';
+import './card.js';
 
 describe('nldd-card', () => {
 	let el: NLDDCard;

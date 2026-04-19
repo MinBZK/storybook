@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './icon-button.ts';
+import './icon-button.js';
 import { ICONS } from './../../content/icon/icon.js';
 
 /**

@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './segmented-control.ts';
-import './../../content/icon/icon.ts';
+import './segmented-control.js';
+import './../../content/icon/icon.js';
 
 /**
  * De Segmented Control component is een horizontale groep van wederzijds exclusieve (radio)

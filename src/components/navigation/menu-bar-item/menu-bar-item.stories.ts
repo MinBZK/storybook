@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import './menu-bar-item.ts';
+import './menu-bar-item.js';
 import { ICONS } from '../../content/icon/icon.js';
 
 export default {

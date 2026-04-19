@@ -1,10 +1,10 @@
 import { html } from 'lit';
-import './app-view.ts';
-import '../split-views/navigation-split-view/navigation-split-view.ts';
-import '../page/page.ts';
-import '../page-sections/simple-section/simple-section.ts';
-import '../container/container.ts';
-import '../../content/rich-text/rich-text.ts';
+import './app-view.js';
+import '../split-views/navigation-split-view/navigation-split-view.js';
+import '../page/page.js';
+import '../page-sections/simple-section/simple-section.js';
+import '../container/container.js';
+import '../../content/rich-text/rich-text.js';
 
 /**
  * De <code>nldd-app-view</code> is de verplichte root shell van elke Nederlandse Digitale Dienst applicatie.

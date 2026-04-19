@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './one-half-one-half-section.ts';
-import '../../../content/rich-text/rich-text.ts';
+import './one-half-one-half-section.js';
+import '../../../content/rich-text/rich-text.js';
 
 /**
  * Gebruik een one-half one-half section voor twee gelijkwaardige kolommen,

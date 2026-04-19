@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './password-field.ts';
+import './password-field.js';
 
 describe('nldd-password-field', () => {
 	let el: HTMLElement;

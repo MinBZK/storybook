@@ -31,10 +31,10 @@ import { collectionStyles } from './collection.styles.js';
 import { collectionTemplate } from './collection.template.js';
 import { nlddCollectionTranslations } from './collection.i18n.js';
 import type { NLDDCollectionTranslations } from './collection.i18n.js';
-import '../../actions/button/button.ts';
-import '../../actions/button-bar/button-bar.ts';
-import '../../actions/icon-button/icon-button.ts';
-import '../../content/icon/icon.ts';
+import '../../actions/button/button.js';
+import '../../actions/button-bar/button-bar.js';
+import '../../actions/icon-button/icon-button.js';
+import '../../content/icon/icon.js';
 
 type Layout = 'grid' | 'list' | 'horizontal-scroll';
 

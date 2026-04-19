@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './number-field.ts';
+import './number-field.js';
 
 /**
  * De Number Field component is een numeriek invoerveld met decrement en increment knoppen.

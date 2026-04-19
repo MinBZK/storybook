@@ -1,8 +1,8 @@
 import { html } from 'lit';
-import './tooltip.ts';
-import '../../actions/button/button.ts';
-import '../../actions/icon-button/icon-button.ts';
-import '../rich-text/rich-text.ts';
+import './tooltip.js';
+import '../../actions/button/button.js';
+import '../../actions/icon-button/icon-button.js';
+import '../rich-text/rich-text.js';
 
 /**
  * De Tooltip toont informatieve tekst bij hover of focus op een child element.

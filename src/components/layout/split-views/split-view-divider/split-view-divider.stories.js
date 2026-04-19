@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './split-view-divider.ts';
+import './split-view-divider.js';
 
 /**
  * Gebruik een split view divider als scheidingslijn tussen panelen in een

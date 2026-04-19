@@ -1,10 +1,10 @@
 import { html } from 'lit';
-import './split-view-pane.ts';
-import '../navigation-split-view/navigation-split-view.ts';
-import '../../page/page.ts';
-import '../../page-sections/simple-section/simple-section.ts';
-import '../../../content/rich-text/rich-text.ts';
-import '../../../navigation/top-title-bar/top-title-bar.ts';
+import './split-view-pane.js';
+import '../navigation-split-view/navigation-split-view.js';
+import '../../page/page.js';
+import '../../page-sections/simple-section/simple-section.js';
+import '../../../content/rich-text/rich-text.js';
+import '../../../navigation/top-title-bar/top-title-bar.js';
 
 /**
  * Het <code>nldd-split-view-pane</code> is een eenvoudige paneel-container voor gebruik

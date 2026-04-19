@@ -1,6 +1,6 @@
 import { action } from 'storybook/actions';
 import { html } from 'lit';
-import './split-button.ts';
+import './split-button.js';
 
 /**
  * De Split Button combineert een primaire actieknop met een dropdown trigger.

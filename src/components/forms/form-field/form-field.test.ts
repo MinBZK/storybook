@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './form-field.ts';
-import '../../inputs/text-field/text-field.ts';
-import '../../inputs/password-field/password-field.ts';
+import './form-field.js';
+import '../../inputs/text-field/text-field.js';
+import '../../inputs/password-field/password-field.js';
 
 
 /* ============================================================

@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './two-thirds-one-third-section.ts';
-import '../../../content/rich-text/rich-text.ts';
+import './two-thirds-one-third-section.js';
+import '../../../content/rich-text/rich-text.js';
 
 /**
  * Gebruik een two-thirds one-third section wanneer de hoofdinhoud de meeste

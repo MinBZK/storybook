@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDComboBox } from './combo-box.js';
-import '../../actions/icon-button/icon-button.ts';
+import '../../actions/icon-button/icon-button.js';
 
 export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 	return html`

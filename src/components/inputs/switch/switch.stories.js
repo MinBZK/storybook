@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './switch.ts';
+import './switch.js';
 
 /**
  * De Switch component is een toggle control voor aan/uit instellingen.

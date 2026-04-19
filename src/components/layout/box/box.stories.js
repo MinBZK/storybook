@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './box.ts';
-import '../../content/rich-text/rich-text.ts';
+import './box.js';
+import '../../content/rich-text/rich-text.js';
 
 /**
  * Gebruik een box om gerelateerde componenten visueel te groeperen in een afgebakend gebied.

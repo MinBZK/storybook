@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDRadioButtonGroup } from './radio-button-group.js';
-import './radio-button-group.ts';
-import '../radio-button-field/radio-button-field.ts';
+import './radio-button-group.js';
+import '../radio-button-field/radio-button-field.js';
 
 function groupFixture(name = 'group'): string {
 	return `

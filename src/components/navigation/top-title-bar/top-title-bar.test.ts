@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDTopTitleBar } from './top-title-bar.js';
-import './top-title-bar.ts';
+import './top-title-bar.js';
 
 
 /* ============================================================

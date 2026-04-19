@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './menu.ts';
-import '../../actions/button/button.ts';
+import './menu.js';
+import '../../actions/button/button.js';
 
 export default {
 	title: 'Components/Lists & Menus/Menu',

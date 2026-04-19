@@ -1,10 +1,10 @@
 import { html } from 'lit';
-import './card.ts';
-import '../../content/title/title.ts';
-import '../../content/rich-text/rich-text.ts';
-import '../../actions/button/button.ts';
-import '../../actions/button-group/button-group.ts';
-import '../../layout/container/container.ts';
+import './card.js';
+import '../../content/title/title.js';
+import '../../content/rich-text/rich-text.js';
+import '../../actions/button/button.js';
+import '../../actions/button-group/button-group.js';
+import '../../layout/container/container.js';
 
 /**
  * Een visueel afgebakende kaart met optionele header, body en footer secties.

@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './spacer.ts';
-import '../../actions/button/button.ts';
+import './spacer.js';
+import '../../actions/button/button.js';
 
 /**
  * Gebruik een spacer om ruimte tussen elementen te creëren.

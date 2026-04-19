@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './menu-bar-item.ts';
+import './menu-bar-item.js';
 
 describe('nldd-menu-bar-item', () => {
 	let el: HTMLElement;

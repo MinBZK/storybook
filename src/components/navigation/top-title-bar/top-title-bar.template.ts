@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
 import type { NLDDTopTitleBar } from './top-title-bar.js';
-import '../../actions/button/button.ts';
-import '../../actions/icon-button/icon-button.ts';
+import '../../actions/button/button.js';
+import '../../actions/icon-button/icon-button.js';
 
 export function topTitleBarTemplate(component: NLDDTopTitleBar) {
 	const showBack = !!component.backText;

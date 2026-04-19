@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './divider.ts';
+import './divider.js';
 
 describe('nldd-divider', () => {
 	let el: HTMLElement;

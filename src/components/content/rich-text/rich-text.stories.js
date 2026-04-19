@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './rich-text.ts';
+import './rich-text.js';
 
 export default {
 	title: 'Components/Content/Rich Text',

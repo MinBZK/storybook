@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './pagination.ts';
+import './pagination.js';
 
 /**
  * De Pagination component voor het navigeren tussen pagina's met inhoud.

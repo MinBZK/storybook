@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
-import './spacer-cell.ts';
+import './spacer-cell.js';
 
 describe('nldd-spacer-cell', () => {
 	let el: HTMLElement;

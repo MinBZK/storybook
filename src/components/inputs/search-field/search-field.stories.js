@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './search-field.ts';
+import './search-field.js';
 
 /**
  * De Search Field component is een zoekveld met zoekicoon, een optionele dismiss knop

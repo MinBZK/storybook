@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDWindow } from './window.js';
-import './window.ts';
+import './window.js';
 
 describe('nldd-window', () => {
 	let el: NLDDWindow;

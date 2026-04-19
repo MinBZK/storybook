@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './button-group.ts';
-import '../button/button.ts';
+import './button-group.js';
+import '../button/button.js';
 
 export default {
 	title: 'Components/Actions/Button Group',

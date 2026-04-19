@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './dropdown.ts';
+import './dropdown.js';
 
 /**
  * De Dropdown component is een visuele wrapper om een native `<select>` element.

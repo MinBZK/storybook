@@ -1,7 +1,7 @@
 import { html } from 'lit';
-import './radio-button-group.ts';
-import '../radio-button-field/radio-button-field.ts';
-import '../../forms/form-field/form-field.ts';
+import './radio-button-group.js';
+import '../radio-button-field/radio-button-field.js';
+import '../../forms/form-field/form-field.js';
 /**
  * De Radio Button Group groepeert `nldd-radio-button-field` elementen, beheert
  * toetsenbordnavigatie en geeft `name` en `disabled` door aan alle velden.

@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './text-cell.ts';
+import './text-cell.js';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Text Cell',

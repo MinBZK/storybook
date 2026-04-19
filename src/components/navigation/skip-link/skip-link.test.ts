@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './skip-link.ts';
+import './skip-link.js';
 
 describe('nldd-skip-link', () => {
 	let el: HTMLElement;

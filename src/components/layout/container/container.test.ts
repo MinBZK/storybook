@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './container.ts';
+import './container.js';
 
 describe('nldd-container', () => {
 	let el: HTMLElement;

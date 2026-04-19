@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDCheckboxField } from './checkbox-field.js';
-import '../checkbox/checkbox.ts';
+import '../checkbox/checkbox.js';
 
 /* eslint-disable lit-a11y/click-events-have-key-events -- label wrapper delegates to inner checkbox */
 export function checkboxFieldTemplate(component: NLDDCheckboxField): TemplateResult {

@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import './container.ts';
-import '../../content/rich-text/rich-text.ts';
+import './container.js';
+import '../../content/rich-text/rich-text.js';
 
 /**
  * Use a container to add padding to content.

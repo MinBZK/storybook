@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './title-cell.ts';
+import './title-cell.js';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Title Cell',

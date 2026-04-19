@@ -1,9 +1,9 @@
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.js';
-import './list-item.ts';
-import '../list/list.ts';
-import '../cells/text-cell/text-cell.ts';
+import './list-item.js';
+import '../list/list.js';
+import '../cells/text-cell/text-cell.js';
 
 describe('nldd-list-item', () => {
 	let el: HTMLElement;

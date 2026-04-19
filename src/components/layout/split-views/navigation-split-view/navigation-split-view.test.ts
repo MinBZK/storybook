@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import type { NLDDNavigationSplitView } from './navigation-split-view.js';
-import './navigation-split-view.ts';
-import '../split-view-pane/split-view-pane.ts';
+import './navigation-split-view.js';
+import '../split-view-pane/split-view-pane.js';
 
 async function setWidth(el: NLDDNavigationSplitView, width: number) {
 	vi.spyOn(el, 'getBoundingClientRect').mockReturnValue({ width } as DOMRect);

@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDRadioButtonField } from './radio-button-field.js';
-import '../radio-button/radio-button.ts';
+import '../radio-button/radio-button.js';
 
 /* eslint-disable lit-a11y/click-events-have-key-events -- label wrapper delegates to inner radio button */
 export function radioButtonFieldTemplate(component: NLDDRadioButtonField): TemplateResult {

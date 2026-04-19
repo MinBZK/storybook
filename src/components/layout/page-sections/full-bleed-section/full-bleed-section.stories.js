@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './full-bleed-section.ts';
-import '../../../content/rich-text/rich-text.ts';
+import './full-bleed-section.js';
+import '../../../content/rich-text/rich-text.js';
 
 /**
  * Gebruik een full bleed section voor inhoud die van rand tot rand loopt,

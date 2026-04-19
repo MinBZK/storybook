@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDCheckbox } from './checkbox.js';
-import './../../content/icon/icon.ts';
+import './../../content/icon/icon.js';
 
 export function checkboxTemplate(component: NLDDCheckbox): TemplateResult {
 	return html`

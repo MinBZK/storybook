@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDRadioButtonField } from './radio-button-field.js';
-import './radio-button-field.ts';
-import '../radio-button/radio-button.ts';
+import './radio-button-field.js';
+import '../radio-button/radio-button.js';
 
 describe('nldd-radio-button-field', () => {
 	let el: HTMLElement;

@@ -1,14 +1,14 @@
 import { html } from 'lit';
-import './collection.ts';
-import '../../actions/button/button.ts';
-import '../../actions/button-group/button-group.ts';
-import '../../content/rich-text/rich-text.ts';
-import '../../content/title/title.ts';
-import '../card/card.ts';
-import '../container/container.ts';
-import '../spacer/spacer.ts';
-import '../page/page.ts';
-import '../page-sections/simple-section/simple-section.ts';
+import './collection.js';
+import '../../actions/button/button.js';
+import '../../actions/button-group/button-group.js';
+import '../../content/rich-text/rich-text.js';
+import '../../content/title/title.js';
+import '../card/card.js';
+import '../container/container.js';
+import '../spacer/spacer.js';
+import '../page/page.js';
+import '../page-sections/simple-section/simple-section.js';
 
 /**
  * Gebruik een collection om een verzameling items weer te geven in een grid-,

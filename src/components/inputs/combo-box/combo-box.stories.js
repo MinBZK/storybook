@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import './combo-box.ts';
+import './combo-box.js';
 
 /**
  * De Combo Box component is een tekstveld met autocomplete/dropdown functionaliteit.

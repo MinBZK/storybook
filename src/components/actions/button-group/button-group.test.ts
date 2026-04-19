@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './button-group.ts';
+import './button-group.js';
 
 describe('nldd-button-group', () => {
 	let el: HTMLElement;

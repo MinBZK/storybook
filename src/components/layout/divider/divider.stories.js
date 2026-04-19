@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import './divider.ts';
-import '../../content/rich-text/rich-text.ts';
+import './divider.js';
+import '../../content/rich-text/rich-text.js';
 
 /**
  * Gebruik een scheidingslijn om secties van inhoud visueel van elkaar te scheiden.

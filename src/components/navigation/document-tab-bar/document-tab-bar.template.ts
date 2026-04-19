@@ -1,10 +1,10 @@
 import { html, nothing, TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import type { NLDDDocumentTabBar, NLDDDocumentTabBarItem } from './document-tab-bar.js';
-import './../../actions/icon-button/icon-button.ts';
-import './../../content/icon/icon.ts';
+import './../../actions/icon-button/icon-button.js';
+import './../../content/icon/icon.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
-import './../../content/tooltip/tooltip.ts';
+import './../../content/tooltip/tooltip.js';
 
 export function documentTabBarTemplate(component: NLDDDocumentTabBar): TemplateResult {
 	const hasOverflow = component._overflowCount > 0;

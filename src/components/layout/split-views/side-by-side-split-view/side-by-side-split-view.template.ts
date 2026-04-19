@@ -1,6 +1,6 @@
 import { html, TemplateResult, nothing } from 'lit';
 import type { NLDDSideBySideSplitView } from './side-by-side-split-view.js';
-import '../split-view-divider/split-view-divider.ts';
+import '../split-view-divider/split-view-divider.js';
 
 export function sideBySideSplitViewTemplate(component: NLDDSideBySideSplitView): TemplateResult {
 	// Render slots for all panes but only show the ones that fit

@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDAppView } from './app-view.js';
-import './app-view.ts';
+import './app-view.js';
 
 describe('nldd-app-view', () => {
 	let el: NLDDAppView;

@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import './toolbar.ts';
+import './toolbar.js';
 
 describe('nldd-toolbar', () => {
 	let el: HTMLElement;
