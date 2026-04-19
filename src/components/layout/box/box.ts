@@ -10,8 +10,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { boxStyles } from './box.styles.ts';
-import { boxTemplate } from './box.template.ts';
+import { boxStyles } from './box.styles.js';
+import { boxTemplate } from './box.template.js';
 
 @customElement('nldd-box')
 export class NLDDBox extends LitElement {

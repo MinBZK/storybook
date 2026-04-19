@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDSwitch } from './switch.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDSwitch } from './switch.js';
 import './switch.ts';
 
 describe('nldd-switch', () => {

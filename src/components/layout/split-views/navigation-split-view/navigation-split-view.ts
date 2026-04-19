@@ -30,8 +30,8 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { isPointerMode } from '../../../../utilities/input-modality.js';
-import { navigationSplitViewStyles } from './navigation-split-view.styles.ts';
-import { navigationSplitViewTemplate } from './navigation-split-view.template.ts';
+import { navigationSplitViewStyles } from './navigation-split-view.styles.js';
+import { navigationSplitViewTemplate } from './navigation-split-view.template.js';
 
 @customElement('nldd-navigation-split-view')
 export class NLDDNavigationSplitView extends LitElement {

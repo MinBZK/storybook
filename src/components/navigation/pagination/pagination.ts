@@ -16,10 +16,10 @@
 import { LitElement } from 'lit';
 import type { PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { paginationStyles } from './pagination.styles.ts';
-import { paginationTemplate } from './pagination.template.ts';
-import { nlddPaginationTranslations } from './pagination.i18n.ts';
-import type { NLDDPaginationTranslations } from './pagination.i18n.ts';
+import { paginationStyles } from './pagination.styles.js';
+import { paginationTemplate } from './pagination.template.js';
+import { nlddPaginationTranslations } from './pagination.i18n.js';
+import type { NLDDPaginationTranslations } from './pagination.i18n.js';
 
 @customElement('nldd-pagination')
 export class NLDDPagination extends LitElement {

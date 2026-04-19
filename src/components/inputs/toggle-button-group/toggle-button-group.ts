@@ -24,9 +24,9 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { toggleButtonGroupStyles } from './toggle-button-group.styles.ts';
-import { toggleButtonGroupTemplate } from './toggle-button-group.template.ts';
-import type { NLDDToggleButton, ToggleButtonSize } from '../toggle-button/toggle-button.ts';
+import { toggleButtonGroupStyles } from './toggle-button-group.styles.js';
+import { toggleButtonGroupTemplate } from './toggle-button-group.template.js';
+import type { NLDDToggleButton, ToggleButtonSize } from '../toggle-button/toggle-button.js';
 
 type GroupType = 'button' | 'checkbox' | 'radio';
 

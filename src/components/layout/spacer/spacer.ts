@@ -8,7 +8,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { spacerStyles } from './spacer.styles.ts';
+import { spacerStyles } from './spacer.styles.js';
 
 type SpacerSize =
 	| 'flexible'

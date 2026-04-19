@@ -2,7 +2,7 @@ import { html, nothing } from 'lit';
 import './inline-dialog.ts';
 import '../../actions/button/button.ts';
 import '../../layout/box/box.ts';
-import { ICONS } from '../../content/icon/icon.ts';
+import { ICONS } from '../../content/icon/icon.js';
 
 /**
  * De Dialog is een inline statuscomponent voor lege toestanden, bevestigingen en feedback.

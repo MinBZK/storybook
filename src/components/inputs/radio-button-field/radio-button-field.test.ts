@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDRadioButtonField } from './radio-button-field.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDRadioButtonField } from './radio-button-field.js';
 import './radio-button-field.ts';
 import '../radio-button/radio-button.ts';
 

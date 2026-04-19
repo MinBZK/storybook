@@ -14,8 +14,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { radioButtonFieldStyles } from './radio-button-field.styles.ts';
-import { radioButtonFieldTemplate } from './radio-button-field.template.ts';
+import { radioButtonFieldStyles } from './radio-button-field.styles.js';
+import { radioButtonFieldTemplate } from './radio-button-field.template.js';
 import type { NLDDRadioButton } from '../radio-button/radio-button.js';
 
 @customElement('nldd-radio-button-field')

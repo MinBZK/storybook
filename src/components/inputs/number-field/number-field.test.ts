@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDNumberField } from './number-field.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDNumberField } from './number-field.js';
 import './number-field.ts';
 
 describe('nldd-number-field', () => {

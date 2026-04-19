@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDToken } from './token.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDToken } from './token.js';
 import './token.ts';
 
 

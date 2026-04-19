@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDButtonBar } from './button-bar.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDButtonBar } from './button-bar.js';
 import './button-bar.ts';
 import '../button/button.ts';
 import '../icon-button/icon-button.ts';

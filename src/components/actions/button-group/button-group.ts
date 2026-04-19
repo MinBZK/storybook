@@ -13,8 +13,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { styles } from './button-group.styles.ts';
-import { template } from './button-group.template.ts';
+import { styles } from './button-group.styles.js';
+import { template } from './button-group.template.js';
 
 type Size = 'sm' | 'md';
 type Orientation = 'horizontal' | 'vertical';

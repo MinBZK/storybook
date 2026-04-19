@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import type { NLDDIconButton } from './icon-button.ts';
+import type { NLDDIconButton } from './icon-button.js';
 import '../../content/tooltip/tooltip.ts';
 
 function renderContent(component: NLDDIconButton) {

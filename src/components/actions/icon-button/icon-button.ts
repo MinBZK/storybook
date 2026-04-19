@@ -29,8 +29,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './icon-button.styles.ts';
-import { template } from './icon-button.template.ts';
+import { styles } from './icon-button.styles.js';
+import { template } from './icon-button.template.js';
 import './../../content/icon/icon.ts';
 
 export type Size = 'xs' | 'sm' | 'md' | 'lg';

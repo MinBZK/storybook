@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDTopNavigationBar } from './top-navigation-bar.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDTopNavigationBar } from './top-navigation-bar.js';
 import './top-navigation-bar.ts';
 
 function navWithItems(): string {

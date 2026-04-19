@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
 import './icon-button.ts';
-import { ICONS } from './../../content/icon/icon.ts';
+import { ICONS } from './../../content/icon/icon.js';
 
 /**
  * De Icon Button component is een vierkante knop voor icoon-only acties.

@@ -1,5 +1,5 @@
 import { html, TemplateResult } from 'lit';
-import type { NLDDAppView } from './app-view.ts';
+import type { NLDDAppView } from './app-view.js';
 
 export function appViewTemplate(_component: NLDDAppView): TemplateResult {
 	return html`

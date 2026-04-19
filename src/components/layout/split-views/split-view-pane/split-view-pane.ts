@@ -24,8 +24,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { splitViewPaneStyles } from './split-view-pane.styles.ts';
-import { splitViewPaneTemplate } from './split-view-pane.template.ts';
+import { splitViewPaneStyles } from './split-view-pane.styles.js';
+import { splitViewPaneTemplate } from './split-view-pane.template.js';
 
 @customElement('nldd-split-view-pane')
 export class NLDDSplitViewPane extends LitElement {

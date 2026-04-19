@@ -26,8 +26,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './text-cell.styles.ts';
-import { template } from './text-cell.template.ts';
+import { styles } from './text-cell.styles.js';
+import { template } from './text-cell.template.js';
 
 type Size = 'sm' | 'md';
 type Color = 'default' | 'secondary' | 'inherit';

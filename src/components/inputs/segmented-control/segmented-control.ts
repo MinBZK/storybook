@@ -38,11 +38,11 @@ import { customElement, property } from 'lit/decorators.js';
 import {
 	segmentedControlStyles,
 	segmentedControlItemStyles,
-} from './segmented-control.styles.ts';
+} from './segmented-control.styles.js';
 import {
 	segmentedControlTemplate,
 	segmentedControlItemTemplate,
-} from './segmented-control.template.ts';
+} from './segmented-control.template.js';
 import './../../content/icon/icon.ts';
 
 export type SegmentedControlSize = 'sm' | 'md';

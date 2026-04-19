@@ -1,10 +1,10 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './list.styles.ts';
-import { template } from './list.template.ts';
-import type { NLDDListItem } from '../list-item/list-item.ts';
-import { nlddListTranslations } from './list.i18n.ts';
-import type { NLDDListTranslations } from './list.i18n.ts';
+import { styles } from './list.styles.js';
+import { template } from './list.template.js';
+import type { NLDDListItem } from '../list-item/list-item.js';
+import { nlddListTranslations } from './list.i18n.js';
+import type { NLDDListTranslations } from './list.i18n.js';
 
 export type ListVariant = 'simple' | 'box' | 'box-on-tinted';
 

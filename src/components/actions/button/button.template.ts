@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import type { NLDDButton } from './button.ts';
+import type { NLDDButton } from './button.js';
 
 interface TemplateHelpers {
 	handleClick: (e: MouseEvent) => void;

@@ -1,6 +1,6 @@
 /* eslint-disable lit-a11y/click-events-have-key-events -- native dialog handles keyboard via @cancel */
 import { html, nothing } from 'lit';
-import type { NLDDSheet } from './sheet.ts';
+import type { NLDDSheet } from './sheet.js';
 
 export function sheetTemplate(component: NLDDSheet) {
 	return html`

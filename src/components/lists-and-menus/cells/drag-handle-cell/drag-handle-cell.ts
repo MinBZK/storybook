@@ -25,10 +25,10 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './drag-handle-cell.styles.ts';
-import { template } from './drag-handle-cell.template.ts';
-import { nlddDragHandleCellTranslations } from './drag-handle-cell.i18n.ts';
-import type { NLDDDragHandleCellTranslations } from './drag-handle-cell.i18n.ts';
+import { styles } from './drag-handle-cell.styles.js';
+import { template } from './drag-handle-cell.template.js';
+import { nlddDragHandleCellTranslations } from './drag-handle-cell.i18n.js';
+import type { NLDDDragHandleCellTranslations } from './drag-handle-cell.i18n.js';
 
 type Size = 'sm' | 'md';
 

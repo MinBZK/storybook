@@ -42,10 +42,10 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
-import { comboBoxStyles } from './combo-box.styles.ts';
-import { comboBoxTemplate } from './combo-box.template.ts';
-import { nlddComboBoxTranslations } from './combo-box.i18n.ts';
-import type { NLDDComboBoxTranslations } from './combo-box.i18n.ts';
+import { comboBoxStyles } from './combo-box.styles.js';
+import { comboBoxTemplate } from './combo-box.template.js';
+import { nlddComboBoxTranslations } from './combo-box.i18n.js';
+import type { NLDDComboBoxTranslations } from './combo-box.i18n.js';
 import type { NLDDMenu, NLDDMenuItem } from '../../lists-and-menus/menu/menu.js';
 import '../../lists-and-menus/menu/menu.ts';
 import '../../actions/icon-button/icon-button.ts';

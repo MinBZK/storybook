@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup } from '../../../test-utils.ts';
+import { fixture, cleanup } from '../../../test-utils.js';
 import './rich-text.ts';
 
 describe('nldd-rich-text', () => {

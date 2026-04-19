@@ -15,8 +15,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { titleStyles } from './title.styles.ts';
-import { titleTemplate } from './title.template.ts';
+import { titleStyles } from './title.styles.js';
+import { titleTemplate } from './title.template.js';
 
 type Size = 1 | 2 | 3 | 4 | 5 | 6;
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './split-button.ts';
 
 describe('nldd-split-button', () => {

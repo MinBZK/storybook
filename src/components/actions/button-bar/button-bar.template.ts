@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import type { NLDDButtonBar, BarChild } from './button-bar.ts';
+import type { NLDDButtonBar, BarChild } from './button-bar.js';
 
 export function template(this: NLDDButtonBar) {
 	return html`

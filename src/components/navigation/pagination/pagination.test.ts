@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDPagination } from './pagination.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDPagination } from './pagination.js';
 import './pagination.ts';
 
 function getPageLabels(el: NLDDPagination): (string | '…')[] {

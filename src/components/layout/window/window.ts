@@ -31,10 +31,10 @@
 
 import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { windowStyles } from './window.styles.ts';
-import { windowTemplate } from './window.template.ts';
+import { windowStyles } from './window.styles.js';
+import { windowTemplate } from './window.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
-import { breakpoints } from '../../../assets/styles/breakpoints.ts';
+import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
 @customElement('nldd-window')
 export class NLDDWindow extends LitElement {

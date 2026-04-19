@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import type { NLDDSplitButton } from './split-button.ts';
+import type { NLDDSplitButton } from './split-button.js';
 
 export function template(this: NLDDSplitButton) {
 	return html`

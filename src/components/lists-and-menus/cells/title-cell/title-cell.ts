@@ -26,8 +26,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './title-cell.styles.ts';
-import { template } from './title-cell.template.ts';
+import { styles } from './title-cell.styles.js';
+import { template } from './title-cell.template.js';
 
 export type TitleCellSize = 1 | 2 | 3 | 4 | 5 | 6;
 type Color = 'default' | 'inherit';

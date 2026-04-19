@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDTooltip } from './tooltip.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDTooltip } from './tooltip.js';
 import './tooltip.ts';
 
 function isTooltipVisible(el: NLDDTooltip): boolean {

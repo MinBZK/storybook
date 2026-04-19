@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import type { NLDDTopTitleBar } from './top-title-bar.ts';
+import type { NLDDTopTitleBar } from './top-title-bar.js';
 import '../../actions/button/button.ts';
 import '../../actions/icon-button/icon-button.ts';
 

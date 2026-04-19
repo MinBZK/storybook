@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import './side-by-side-split-view.ts';
 
 describe('nldd-side-by-side-split-view', () => {

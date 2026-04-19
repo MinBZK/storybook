@@ -23,10 +23,10 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { modalDialogStyles } from './modal-dialog.styles.ts';
-import { modalDialogTemplate } from './modal-dialog.template.ts';
+import { modalDialogStyles } from './modal-dialog.styles.js';
+import { modalDialogTemplate } from './modal-dialog.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
-import type { InlineDialogVariant } from '../inline-dialog/inline-dialog.ts';
+import type { InlineDialogVariant } from '../inline-dialog/inline-dialog.js';
 import '../inline-dialog/inline-dialog.ts';
 
 @customElement('nldd-modal-dialog')

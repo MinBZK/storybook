@@ -17,8 +17,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { inlineDialogStyles } from './inline-dialog.styles.ts';
-import { inlineDialogTemplate } from './inline-dialog.template.ts';
+import { inlineDialogStyles } from './inline-dialog.styles.js';
+import { inlineDialogTemplate } from './inline-dialog.template.js';
 import '../../content/icon/icon.ts';
 import '../../actions/button-group/button-group.ts';
 

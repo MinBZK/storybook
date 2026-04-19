@@ -14,8 +14,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { switchFieldStyles } from './switch-field.styles.ts';
-import { switchFieldTemplate } from './switch-field.template.ts';
+import { switchFieldStyles } from './switch-field.styles.js';
+import { switchFieldTemplate } from './switch-field.template.js';
 import type { NLDDSwitch } from '../switch/switch.js';
 
 @customElement('nldd-switch-field')

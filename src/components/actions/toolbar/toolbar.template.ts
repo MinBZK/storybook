@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
-import type { NLDDToolbarTranslations } from './toolbar.i18n.ts';
+import type { NLDDToolbarTranslations } from './toolbar.i18n.js';
 import '../icon-button/icon-button.js';
 
 // # Types

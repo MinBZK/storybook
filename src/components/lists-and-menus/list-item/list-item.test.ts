@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.js';
 import './list-item.ts';
 import '../list/list.ts';
 import '../cells/text-cell/text-cell.ts';

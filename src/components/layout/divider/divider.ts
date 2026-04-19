@@ -7,8 +7,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { dividerStyles } from './divider.styles.ts';
-import { dividerTemplate } from './divider.template.ts';
+import { dividerStyles } from './divider.styles.js';
+import { dividerTemplate } from './divider.template.js';
 
 @customElement('nldd-divider')
 export class NLDDDivider extends LitElement {

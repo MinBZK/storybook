@@ -19,8 +19,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './cell.styles.ts';
-import { template } from './cell.template.ts';
+import { styles } from './cell.styles.js';
+import { template } from './cell.template.js';
 
 export type CellWidth = 'stretch' | 'fit-content';
 export type CellVerticalAlignment = 'top' | 'center' | 'bottom';

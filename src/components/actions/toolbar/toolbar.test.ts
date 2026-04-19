@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './toolbar.ts';
 
 describe('nldd-toolbar', () => {

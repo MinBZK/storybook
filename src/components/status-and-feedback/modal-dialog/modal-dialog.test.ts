@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './modal-dialog.ts';
-import type { NLDDModalDialog } from './modal-dialog.ts';
+import type { NLDDModalDialog } from './modal-dialog.js';
 
 describe('nldd-modal-dialog', () => {
 	let el: HTMLElement;

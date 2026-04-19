@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import './two-thirds-one-third-section.ts';
 
 describe('nldd-two-thirds-one-third-section', () => {

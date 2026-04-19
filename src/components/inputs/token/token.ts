@@ -20,8 +20,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { tokenStyles } from './token.styles.ts';
-import { tokenTemplate } from './token.template.ts';
+import { tokenStyles } from './token.styles.js';
+import { tokenTemplate } from './token.template.js';
 import './../../content/icon/icon.ts';
 import './../../actions/icon-button/icon-button.ts';
 

@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDTabBar, NLDDTabBarItem } from './tab-bar.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDTabBar, NLDDTabBarItem } from './tab-bar.js';
 import './tab-bar.ts';
 
 function threeTabBar(): string {

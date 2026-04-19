@@ -21,8 +21,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './description-cell.styles.ts';
-import { template } from './description-cell.template.ts';
+import { styles } from './description-cell.styles.js';
+import { template } from './description-cell.template.js';
 
 type Width = 'stretch' | 'fit-content';
 type VerticalAlignment = 'top' | 'center' | 'bottom';

@@ -16,8 +16,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { switchStyles } from './switch.styles.ts';
-import { switchTemplate } from './switch.template.ts';
+import { switchStyles } from './switch.styles.js';
+import { switchTemplate } from './switch.template.js';
 
 export type SwitchSize = 'xs' | 'sm';
 

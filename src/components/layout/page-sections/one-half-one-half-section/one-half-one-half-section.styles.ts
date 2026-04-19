@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from 'lit';
-import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
+import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
 
 /* # nldd-one-half-one-half-section styles */

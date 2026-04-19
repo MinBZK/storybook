@@ -16,8 +16,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './button-bar.styles.ts';
-import { template } from './button-bar.template.ts';
+import { styles } from './button-bar.styles.js';
+import { template } from './button-bar.template.js';
 
 if (!customElements.get('nldd-button-bar-divider')) {
 	customElements.define('nldd-button-bar-divider', class extends HTMLElement {});

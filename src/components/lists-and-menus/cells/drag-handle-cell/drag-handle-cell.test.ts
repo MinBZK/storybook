@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import './drag-handle-cell.ts';
-import { nlddDragHandleCellTranslations } from './drag-handle-cell.i18n.ts';
+import { nlddDragHandleCellTranslations } from './drag-handle-cell.i18n.js';
 
 describe('nldd-drag-handle-cell', () => {
 	let el: HTMLElement;

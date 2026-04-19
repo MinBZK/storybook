@@ -15,8 +15,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { oneHalfOneHalfSectionStyles } from './one-half-one-half-section.styles.ts';
-import { oneHalfOneHalfSectionTemplate } from './one-half-one-half-section.template.ts';
+import { oneHalfOneHalfSectionStyles } from './one-half-one-half-section.styles.js';
+import { oneHalfOneHalfSectionTemplate } from './one-half-one-half-section.template.js';
 
 @customElement('nldd-one-half-one-half-section')
 export class NLDDOneHalfOneHalfSection extends LitElement {

@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
-import type { NLDDToggleButtonGroup } from './toggle-button-group.ts';
-import type { NLDDToggleButton } from '../toggle-button/toggle-button.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDToggleButtonGroup } from './toggle-button-group.js';
+import type { NLDDToggleButton } from '../toggle-button/toggle-button.js';
 import './toggle-button-group.ts';
 import '../toggle-button/toggle-button.ts';
 

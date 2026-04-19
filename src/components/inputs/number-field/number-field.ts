@@ -21,10 +21,10 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { numberFieldStyles } from './number-field.styles.ts';
-import { numberFieldTemplate } from './number-field.template.ts';
-import { nlddNumberFieldTranslations } from './number-field.i18n.ts';
-import type { NLDDNumberFieldTranslations } from './number-field.i18n.ts';
+import { numberFieldStyles } from './number-field.styles.js';
+import { numberFieldTemplate } from './number-field.template.js';
+import { nlddNumberFieldTranslations } from './number-field.i18n.js';
+import type { NLDDNumberFieldTranslations } from './number-field.i18n.js';
 import './../../actions/icon-button/icon-button.ts';
 import './../../content/icon/icon.ts';
 

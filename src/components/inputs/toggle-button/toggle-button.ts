@@ -23,8 +23,8 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { toggleButtonStyles } from './toggle-button.styles.ts';
-import { toggleButtonTemplate } from './toggle-button.template.ts';
+import { toggleButtonStyles } from './toggle-button.styles.js';
+import { toggleButtonTemplate } from './toggle-button.template.js';
 import './../../content/icon/icon.ts';
 
 export type ToggleButtonType = 'button' | 'checkbox' | 'radio';

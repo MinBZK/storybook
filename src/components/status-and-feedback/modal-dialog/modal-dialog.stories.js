@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
 import './modal-dialog.ts';
 import '../../actions/button/button.ts';
-import { ICONS } from '../../content/icon/icon.ts';
+import { ICONS } from '../../content/icon/icon.js';
 
 /**
  * De Modal Dialog is een modaal venster met overlay backdrop.

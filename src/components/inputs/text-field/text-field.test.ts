@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './text-field.ts';
 
 describe('nldd-text-field', () => {
@@ -103,16 +103,16 @@ describe('nldd-text-field', () => {
 	});
 
 	it('accepts aria-describedby on the host element', async () => {
-		el = await fixture('<nldd-text-field aria-describedby="help-1 enldd-1"></nldd-text-field>');
+		el = await fixture('<nldd-text-field aria-describedby="help-1 error-1"></nldd-text-field>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('aria-describedby')).toBe('help-1 enldd-1');
+		expect(el.getAttribute('aria-describedby')).toBe('help-1 error-1');
 	});
 
 	it('forwards error-message-ids to inner input aria-describedby', async () => {
-		el = await fixture('<nldd-text-field error-message-ids="help-1 enldd-1"></nldd-text-field>');
+		el = await fixture('<nldd-text-field error-message-ids="help-1 error-1"></nldd-text-field>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
-		expect(input.getAttribute('aria-describedby')).toBe('help-1 enldd-1');
+		expect(input.getAttribute('aria-describedby')).toBe('help-1 error-1');
 	});
 
 	it('omits aria-describedby from inner input when error-message-ids not set', async () => {

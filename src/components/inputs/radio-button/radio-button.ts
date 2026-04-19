@@ -21,8 +21,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { radioButtonStyles } from './radio-button.styles.ts';
-import { radioButtonTemplate } from './radio-button.template.ts';
+import { radioButtonStyles } from './radio-button.styles.js';
+import { radioButtonTemplate } from './radio-button.template.js';
 
 @customElement('nldd-radio-button')
 export class NLDDRadioButton extends LitElement {

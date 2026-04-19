@@ -17,8 +17,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { stackedSplitViewStyles } from './stacked-split-view.styles.ts';
-import { stackedSplitViewTemplate } from './stacked-split-view.template.ts';
+import { stackedSplitViewStyles } from './stacked-split-view.styles.js';
+import { stackedSplitViewTemplate } from './stacked-split-view.template.js';
 
 @customElement('nldd-stacked-split-view')
 export class NLDDStackedSplitView extends LitElement {

@@ -15,8 +15,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { checkboxFieldStyles } from './checkbox-field.styles.ts';
-import { checkboxFieldTemplate } from './checkbox-field.template.ts';
+import { checkboxFieldStyles } from './checkbox-field.styles.js';
+import { checkboxFieldTemplate } from './checkbox-field.template.js';
 import type { NLDDCheckbox } from '../checkbox/checkbox.js';
 
 @customElement('nldd-checkbox-field')

@@ -13,8 +13,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { splitViewDividerStyles } from './split-view-divider.styles.ts';
-import { splitViewDividerTemplate } from './split-view-divider.template.ts';
+import { splitViewDividerStyles } from './split-view-divider.styles.js';
+import { splitViewDividerTemplate } from './split-view-divider.template.js';
 
 type Orientation = 'vertical' | 'horizontal';
 

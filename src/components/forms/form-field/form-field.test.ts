@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './form-field.ts';
 import '../../inputs/text-field/text-field.ts';
 import '../../inputs/password-field/password-field.ts';
@@ -107,15 +107,15 @@ describe('nldd-form-field', () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
 				<nldd-form-field-help-text id="help-1">Format hint</nldd-form-field-help-text>
-				<input invalid error-message="enldd-1">
-				<nldd-form-field-error-text id="enldd-1">Required</nldd-form-field-error-text>
+				<input invalid error-message="error-1">
+				<nldd-form-field-error-text id="error-1">Required</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
 		const input = el.querySelector('input')!;
 		const describedBy = input.getAttribute('aria-describedby') ?? '';
 		const helpIndex = describedBy.indexOf('help-1');
-		const errIndex = describedBy.indexOf('enldd-1');
+		const errIndex = describedBy.indexOf('error-1');
 		expect(helpIndex).toBeGreaterThanOrEqual(0);
 		expect(errIndex).toBeGreaterThan(helpIndex);
 	});
@@ -178,8 +178,8 @@ describe('nldd-form-field error text wiring', () => {
 	it('shows referenced error text when control is invalid', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
-				<input invalid error-message="enldd-1">
-				<nldd-form-field-error-text id="enldd-1">Required.</nldd-form-field-error-text>
+				<input invalid error-message="error-1">
+				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -189,8 +189,8 @@ describe('nldd-form-field error text wiring', () => {
 	it('hides error text when control is not invalid', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
-				<input error-message="enldd-1">
-				<nldd-form-field-error-text id="enldd-1">Required.</nldd-form-field-error-text>
+				<input error-message="error-1">
+				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -200,9 +200,9 @@ describe('nldd-form-field error text wiring', () => {
 	it('only shows error texts referenced by error-message', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Password">
-				<input invalid error-message="enldd-length">
-				<nldd-form-field-error-text id="enldd-required">Required.</nldd-form-field-error-text>
-				<nldd-form-field-error-text id="enldd-length">Too short.</nldd-form-field-error-text>
+				<input invalid error-message="error-length">
+				<nldd-form-field-error-text id="error-required">Required.</nldd-form-field-error-text>
+				<nldd-form-field-error-text id="error-length">Too short.</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -214,9 +214,9 @@ describe('nldd-form-field error text wiring', () => {
 	it('shows multiple error texts when all are referenced', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Password">
-				<input invalid error-message="enldd-required enldd-length">
-				<nldd-form-field-error-text id="enldd-required">Required.</nldd-form-field-error-text>
-				<nldd-form-field-error-text id="enldd-length">Too short.</nldd-form-field-error-text>
+				<input invalid error-message="error-required error-length">
+				<nldd-form-field-error-text id="error-required">Required.</nldd-form-field-error-text>
+				<nldd-form-field-error-text id="error-length">Too short.</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -228,8 +228,8 @@ describe('nldd-form-field error text wiring', () => {
 	it('hides error texts when invalid is removed from control', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
-				<input id="ctrl" invalid error-message="enldd-1">
-				<nldd-form-field-error-text id="enldd-1">Required.</nldd-form-field-error-text>
+				<input id="ctrl" invalid error-message="error-1">
+				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -242,8 +242,8 @@ describe('nldd-form-field error text wiring', () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
 				<nldd-form-field-help-text>Help.</nldd-form-field-help-text>
-				<input invalid error-message="enldd-1">
-				<nldd-form-field-error-text id="enldd-1">Required.</nldd-form-field-error-text>
+				<input invalid error-message="error-1">
+				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -253,8 +253,8 @@ describe('nldd-form-field error text wiring', () => {
 	it('does not treat nldd-form-field-error-text as the control', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
-				<nldd-form-field-error-text id="enldd-1">Required.</nldd-form-field-error-text>
-				<input invalid error-message="enldd-1">
+				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
+				<input invalid error-message="error-1">
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
@@ -264,33 +264,33 @@ describe('nldd-form-field error text wiring', () => {
 	it('sets aria-describedby on the input referencing visible error IDs', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
-				<input invalid error-message="enldd-1">
-				<nldd-form-field-error-text id="enldd-1">Required.</nldd-form-field-error-text>
+				<input invalid error-message="error-1">
+				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
 		const input = el.querySelector('input')!;
-		expect(input.getAttribute('aria-describedby')).toBe('enldd-1');
+		expect(input.getAttribute('aria-describedby')).toBe('error-1');
 	});
 
 	it('sets aria-describedby with multiple IDs when multiple errors are visible', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Password">
-				<input invalid error-message="enldd-required enldd-length">
-				<nldd-form-field-error-text id="enldd-required">Required.</nldd-form-field-error-text>
-				<nldd-form-field-error-text id="enldd-length">Too short.</nldd-form-field-error-text>
+				<input invalid error-message="error-required error-length">
+				<nldd-form-field-error-text id="error-required">Required.</nldd-form-field-error-text>
+				<nldd-form-field-error-text id="error-length">Too short.</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);
 		const input = el.querySelector('input')!;
-		expect(input.getAttribute('aria-describedby')).toBe('enldd-required enldd-length');
+		expect(input.getAttribute('aria-describedby')).toBe('error-required error-length');
 	});
 
 	it('removes aria-describedby when errors are cleared', async () => {
 		el = await fixture(`
 			<nldd-form-field label="Email">
-				<input id="ctrl" invalid error-message="enldd-1">
-				<nldd-form-field-error-text id="enldd-1">Required.</nldd-form-field-error-text>
+				<input id="ctrl" invalid error-message="error-1">
+				<nldd-form-field-error-text id="error-1">Required.</nldd-form-field-error-text>
 			</nldd-form-field>
 		`);
 		await waitForUpdate(el);

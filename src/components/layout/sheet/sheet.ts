@@ -25,8 +25,8 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { sheetStyles } from './sheet.styles.ts';
-import { sheetTemplate } from './sheet.template.ts';
+import { sheetStyles } from './sheet.styles.js';
+import { sheetTemplate } from './sheet.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 
 type Placement = 'left' | 'right' | 'bottom';

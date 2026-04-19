@@ -1,5 +1,5 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NLDDTabBar, NLDDTabBarItem } from './tab-bar.ts';
+import type { NLDDTabBar, NLDDTabBarItem } from './tab-bar.js';
 import '../../content/tooltip/tooltip.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 

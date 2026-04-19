@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from 'lit';
-import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
+import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 

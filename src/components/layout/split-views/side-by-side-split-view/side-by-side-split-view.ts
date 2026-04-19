@@ -17,8 +17,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { sideBySideSplitViewStyles } from './side-by-side-split-view.styles.ts';
-import { sideBySideSplitViewTemplate } from './side-by-side-split-view.template.ts';
+import { sideBySideSplitViewStyles } from './side-by-side-split-view.styles.js';
+import { sideBySideSplitViewTemplate } from './side-by-side-split-view.template.js';
 
 @customElement('nldd-side-by-side-split-view')
 export class NLDDSideBySideSplitView extends LitElement {

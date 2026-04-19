@@ -9,7 +9,7 @@ import { NLDDMenuBarItem } from '../menu-bar-item/menu-bar-item.js';
 import '../menu-bar/menu-bar.js';
 import { NLDDMenuBar } from '../menu-bar/menu-bar.js';
 import '../../content/icon/icon.js';
-import { breakpoints } from '../../../assets/styles/breakpoints.ts';
+import { breakpoints } from '../../../assets/styles/breakpoints.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 /** Minimal typed interface for nldd-sheet API. */

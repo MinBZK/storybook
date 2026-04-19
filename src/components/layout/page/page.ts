@@ -19,8 +19,8 @@
  */
 import { LitElement, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { pageStyles } from './page.styles.ts';
-import { pageTemplate } from './page.template.ts';
+import { pageStyles } from './page.styles.js';
+import { pageTemplate } from './page.template.js';
 
 @customElement('nldd-page')
 export class NLDDPage extends LitElement {

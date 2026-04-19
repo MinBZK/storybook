@@ -16,8 +16,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { radioButtonGroupStyles } from './radio-button-group.styles.ts';
-import { radioButtonGroupTemplate } from './radio-button-group.template.ts';
+import { radioButtonGroupStyles } from './radio-button-group.styles.js';
+import { radioButtonGroupTemplate } from './radio-button-group.template.js';
 import type { NLDDRadioButtonField } from '../radio-button-field/radio-button-field.js';
 
 @customElement('nldd-radio-button-group')

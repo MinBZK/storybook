@@ -37,10 +37,10 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { documentTabBarStyles, documentTabBarItemStyles } from './document-tab-bar.styles.ts';
-import { documentTabBarTemplate, documentTabBarItemTemplate } from './document-tab-bar.template.ts';
+import { documentTabBarStyles, documentTabBarItemStyles } from './document-tab-bar.styles.js';
+import { documentTabBarTemplate, documentTabBarItemTemplate } from './document-tab-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
-import { nlddDocumentTabBarTranslations } from './document-tab-bar.i18n.ts';
+import { nlddDocumentTabBarTranslations } from './document-tab-bar.i18n.js';
 import './../../lists-and-menus/menu/menu.ts';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 

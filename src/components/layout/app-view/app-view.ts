@@ -17,8 +17,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { appViewStyles } from './app-view.styles.ts';
-import { appViewTemplate } from './app-view.template.ts';
+import { appViewStyles } from './app-view.styles.js';
+import { appViewTemplate } from './app-view.template.js';
 
 @customElement('nldd-app-view')
 export class NLDDAppView extends LitElement {

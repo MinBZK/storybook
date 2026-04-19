@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
 import './button.ts';
-import { ICONS } from './../../content/icon/icon.ts';
+import { ICONS } from './../../content/icon/icon.js';
 
 /**
  * De Button component is het primaire interactie-element voor gebruikersacties.

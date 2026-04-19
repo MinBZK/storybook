@@ -1,5 +1,5 @@
 import { html, TemplateResult } from 'lit';
-import type { NLDDToggleButtonGroup } from './toggle-button-group.ts';
+import type { NLDDToggleButtonGroup } from './toggle-button-group.js';
 
 export function toggleButtonGroupTemplate(component: NLDDToggleButtonGroup): TemplateResult {
 	return html`

@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './icon-cell.ts';
-import { ICONS } from '../../../content/icon/icon.ts';
+import { ICONS } from '../../../content/icon/icon.js';
 
 export default {
 	title: 'Components/Lists & Menus/Cells/Icon Cell',

@@ -31,8 +31,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { containerStyles } from './container.styles.ts';
-import { containerTemplate } from './container.template.ts';
+import { containerStyles } from './container.styles.js';
+import { containerTemplate } from './container.template.js';
 
 type PaddingSize =
 	| '0'

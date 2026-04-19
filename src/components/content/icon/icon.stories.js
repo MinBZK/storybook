@@ -1,6 +1,6 @@
 // icon.stories.js
 import { html } from 'lit';
-import { ICONS, aliases } from './icon.ts';
+import { ICONS, aliases } from './icon.js';
 
 const aliasSet = new Set(Object.keys(aliases));
 const iconNames = ICONS.filter(name => !aliasSet.has(name));

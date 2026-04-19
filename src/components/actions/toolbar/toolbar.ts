@@ -13,11 +13,11 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './toolbar.styles.ts';
-import { template, type ToolbarChild } from './toolbar.template.ts';
-import { nlddToolbarTranslations } from './toolbar.i18n.ts';
-import type { NLDDToolbarTranslations } from './toolbar.i18n.ts';
-import { NLDDMenu } from '../../lists-and-menus/menu/menu.ts';
+import { styles } from './toolbar.styles.js';
+import { template, type ToolbarChild } from './toolbar.template.js';
+import { nlddToolbarTranslations } from './toolbar.i18n.js';
+import type { NLDDToolbarTranslations } from './toolbar.i18n.js';
+import { NLDDMenu } from '../../lists-and-menus/menu/menu.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 // # Marker elements

@@ -45,9 +45,9 @@ import '../../inputs/text-field/text-field.ts';
  *   <nldd-form-field-help-text>
  *     Minimaal 8 tekens. <a href="/help">Meer informatie</a>.
  *   </nldd-form-field-help-text>
- *   <nldd-text-field invalid error-message="enldd-verplicht enldd-lengte"></nldd-text-field>
- *   <nldd-form-field-error-text id="enldd-verplicht">Dit veld is verplicht.</nldd-form-field-error-text>
- *   <nldd-form-field-error-text id="enldd-lengte">Minimaal 8 tekens vereist.</nldd-form-field-error-text>
+ *   <nldd-text-field invalid error-message="error-verplicht error-lengte"></nldd-text-field>
+ *   <nldd-form-field-error-text id="error-verplicht">Dit veld is verplicht.</nldd-form-field-error-text>
+ *   <nldd-form-field-error-text id="error-lengte">Minimaal 8 tekens vereist.</nldd-form-field-error-text>
  * </nldd-form-field>
  * ```
  */
@@ -118,8 +118,8 @@ export const Optional = () => html`
 
 export const Invalid = () => html`
 	<nldd-form-field label="E-mailadres">
-		<nldd-text-field invalid error-message="enldd-email"></nldd-text-field>
-		<nldd-form-field-error-text id="enldd-email">Voer een geldig e-mailadres in.</nldd-form-field-error-text>
+		<nldd-text-field invalid error-message="error-email"></nldd-text-field>
+		<nldd-form-field-error-text id="error-email">Voer een geldig e-mailadres in.</nldd-form-field-error-text>
 	</nldd-form-field>
 `;
 
@@ -128,9 +128,9 @@ export const MultipleErrors = () => html`
 		<nldd-form-field-help-text>
 			Minimaal 8 tekens. <a href="/help">Vereisten</a>.
 		</nldd-form-field-help-text>
-		<nldd-text-field invalid error-message="enldd-verplicht enldd-lengte"></nldd-text-field>
-		<nldd-form-field-error-text id="enldd-verplicht">Dit veld is verplicht.</nldd-form-field-error-text>
-		<nldd-form-field-error-text id="enldd-lengte">Minimaal 8 tekens vereist.</nldd-form-field-error-text>
+		<nldd-text-field invalid error-message="error-verplicht error-lengte"></nldd-text-field>
+		<nldd-form-field-error-text id="error-verplicht">Dit veld is verplicht.</nldd-form-field-error-text>
+		<nldd-form-field-error-text id="error-lengte">Minimaal 8 tekens vereist.</nldd-form-field-error-text>
 	</nldd-form-field>
 `;
 
@@ -159,9 +159,9 @@ export const CompleteFormTop = () => html`
 				type="tel"
 				input-id="top-telefoon"
 				invalid
-				error-message="enldd-telefoon"
+				error-message="error-telefoon"
 			></nldd-text-field>
-			<nldd-form-field-error-text id="enldd-telefoon">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
+			<nldd-form-field-error-text id="error-telefoon">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
 		</nldd-form-field>
 		<nldd-form-field label="Opmerkingen" optional supporting-label="Eventuele aanvullende opmerkingen.">
 			<nldd-text-field input-id="top-opmerkingen"></nldd-text-field>
@@ -182,9 +182,9 @@ export const CompleteFormRight = () => html`
 				type="tel"
 				input-id="rechts-telefoon"
 				invalid
-				error-message="enldd-telefoon-rechts"
+				error-message="error-telefoon-rechts"
 			></nldd-text-field>
-			<nldd-form-field-error-text id="enldd-telefoon-rechts">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
+			<nldd-form-field-error-text id="error-telefoon-rechts">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
 		</nldd-form-field>
 		<nldd-form-field label="Opmerkingen" label-alignment="right" optional supporting-label="Eventuele aanvullende opmerkingen.">
 			<nldd-text-field input-id="rechts-opmerkingen"></nldd-text-field>

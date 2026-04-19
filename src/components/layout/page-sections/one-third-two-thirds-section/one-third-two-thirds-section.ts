@@ -15,8 +15,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { oneThirdTwoThirdsSectionStyles } from './one-third-two-thirds-section.styles.ts';
-import { oneThirdTwoThirdsSectionTemplate } from './one-third-two-thirds-section.template.ts';
+import { oneThirdTwoThirdsSectionStyles } from './one-third-two-thirds-section.styles.js';
+import { oneThirdTwoThirdsSectionTemplate } from './one-third-two-thirds-section.template.js';
 
 @customElement('nldd-one-third-two-thirds-section')
 export class NLDDOneThirdTwoThirdsSection extends LitElement {

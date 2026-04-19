@@ -27,10 +27,10 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
-import { collectionStyles } from './collection.styles.ts';
-import { collectionTemplate } from './collection.template.ts';
-import { nlddCollectionTranslations } from './collection.i18n.ts';
-import type { NLDDCollectionTranslations } from './collection.i18n.ts';
+import { collectionStyles } from './collection.styles.js';
+import { collectionTemplate } from './collection.template.js';
+import { nlddCollectionTranslations } from './collection.i18n.js';
+import type { NLDDCollectionTranslations } from './collection.i18n.js';
 import '../../actions/button/button.ts';
 import '../../actions/button-bar/button-bar.ts';
 import '../../actions/icon-button/icon-button.ts';

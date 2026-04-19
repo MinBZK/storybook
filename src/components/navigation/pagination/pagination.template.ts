@@ -1,5 +1,5 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { NLDDPagination } from './pagination.ts';
+import type { NLDDPagination } from './pagination.js';
 import '../../actions/icon-button/icon-button.ts';
 import '../../content/icon/icon.ts';
 

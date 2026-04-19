@@ -27,8 +27,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { tabBarStyles, tabBarItemStyles } from './tab-bar.styles.ts';
-import { tabBarTemplate, tabBarItemTemplate } from './tab-bar.template.ts';
+import { tabBarStyles, tabBarItemStyles } from './tab-bar.styles.js';
+import { tabBarTemplate, tabBarItemTemplate } from './tab-bar.template.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 

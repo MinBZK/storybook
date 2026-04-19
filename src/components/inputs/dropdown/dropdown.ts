@@ -28,8 +28,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { dropdownStyles } from './dropdown.styles.ts';
-import { dropdownTemplate } from './dropdown.template.ts';
+import { dropdownStyles } from './dropdown.styles.js';
+import { dropdownTemplate } from './dropdown.template.js';
 import './../../content/icon/icon.ts';
 
 export type DropdownSize = 'sm' | 'md';

@@ -23,10 +23,10 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { searchFieldStyles } from './search-field.styles.ts';
-import { searchFieldTemplate } from './search-field.template.ts';
-import { nlddSearchFieldTranslations } from './search-field.i18n.ts';
-import type { NLDDSearchFieldTranslations } from './search-field.i18n.ts';
+import { searchFieldStyles } from './search-field.styles.js';
+import { searchFieldTemplate } from './search-field.template.js';
+import { nlddSearchFieldTranslations } from './search-field.i18n.js';
+import type { NLDDSearchFieldTranslations } from './search-field.i18n.js';
 import './../../actions/icon-button/icon-button.ts';
 import './../../actions/button/button.ts';
 import './../../content/icon/icon.ts';

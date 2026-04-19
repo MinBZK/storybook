@@ -15,8 +15,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { fullBleedSectionStyles } from './full-bleed-section.styles.ts';
-import { fullBleedSectionTemplate } from './full-bleed-section.template.ts';
+import { fullBleedSectionStyles } from './full-bleed-section.styles.js';
+import { fullBleedSectionTemplate } from './full-bleed-section.template.js';
 
 @customElement('nldd-full-bleed-section')
 export class NLDDFullBleedSection extends LitElement {

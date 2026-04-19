@@ -16,8 +16,8 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { cardStyles } from './card.styles.ts';
-import { cardTemplate } from './card.template.ts';
+import { cardStyles } from './card.styles.js';
+import { cardTemplate } from './card.template.js';
 
 @customElement('nldd-card')
 export class NLDDCard extends LitElement {

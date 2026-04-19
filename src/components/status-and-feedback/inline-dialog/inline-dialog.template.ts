@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import type { NLDDInlineDialog } from './inline-dialog.ts';
+import type { NLDDInlineDialog } from './inline-dialog.js';
 
 export function inlineDialogTemplate(component: NLDDInlineDialog) {
 	return html`

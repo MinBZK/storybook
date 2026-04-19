@@ -28,8 +28,8 @@ import { LitElement } from 'lit';
 import type { PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
-import { tooltipStyles } from './tooltip.styles.ts';
-import { tooltipTemplate } from './tooltip.template.ts';
+import { tooltipStyles } from './tooltip.styles.js';
+import { tooltipTemplate } from './tooltip.template.js';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 

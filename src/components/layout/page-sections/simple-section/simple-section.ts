@@ -15,8 +15,8 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { simpleSectionStyles } from './simple-section.styles.ts';
-import { simpleSectionTemplate } from './simple-section.template.ts';
+import { simpleSectionStyles } from './simple-section.styles.js';
+import { simpleSectionTemplate } from './simple-section.template.js';
 
 @customElement('nldd-simple-section')
 export class NLDDSimpleSection extends LitElement {

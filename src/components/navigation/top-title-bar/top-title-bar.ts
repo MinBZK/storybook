@@ -19,9 +19,9 @@
 
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { topTitleBarStyles } from './top-title-bar.styles.ts';
-import { topTitleBarTemplate } from './top-title-bar.template.ts';
-import type { NLDDPage } from '../../layout/page/page.ts';
+import { topTitleBarStyles } from './top-title-bar.styles.js';
+import { topTitleBarTemplate } from './top-title-bar.template.js';
+import type { NLDDPage } from '../../layout/page/page.js';
 
 @customElement('nldd-top-title-bar')
 export class NLDDTopTitleBar extends LitElement {

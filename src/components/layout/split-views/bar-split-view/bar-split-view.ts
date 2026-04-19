@@ -37,9 +37,9 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { barSplitViewStyles } from './bar-split-view.styles.ts';
-import { barSplitViewTemplate } from './bar-split-view.template.ts';
-import { breakpoints } from '../../../../assets/styles/breakpoints.ts';
+import { barSplitViewStyles } from './bar-split-view.styles.js';
+import { barSplitViewTemplate } from './bar-split-view.template.js';
+import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
 const smMaxPx = parseInt(breakpoints.smMax);
 const mdMaxPx = parseInt(breakpoints.mdMax);

@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
 import './menu-bar-item.ts';
-import { ICONS } from '../../content/icon/icon.ts';
+import { ICONS } from '../../content/icon/icon.js';
 
 export default {
 	title: 'Components/Navigation/Menu Bar Item',

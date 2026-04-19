@@ -24,8 +24,8 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './button.styles.ts';
-import { template } from './button.template.ts';
+import { styles } from './button.styles.js';
+import { template } from './button.template.js';
 import './../../content/icon/icon.ts';
 
 type Variant =

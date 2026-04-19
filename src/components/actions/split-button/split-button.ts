@@ -17,10 +17,10 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './split-button.styles.ts';
-import { template } from './split-button.template.ts';
-import { nlddSplitButtonTranslations } from './split-button.i18n.ts';
-import type { NLDDSplitButtonTranslations } from './split-button.i18n.ts';
+import { styles } from './split-button.styles.js';
+import { template } from './split-button.template.js';
+import { nlddSplitButtonTranslations } from './split-button.i18n.js';
+import type { NLDDSplitButtonTranslations } from './split-button.i18n.js';
 import './../button/button.ts';
 import './../icon-button/icon-button.ts';
 

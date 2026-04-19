@@ -16,10 +16,10 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { stepperStyles } from './stepper.styles.ts';
-import { stepperTemplate } from './stepper.template.ts';
-import { nlddStepperTranslations } from './stepper.i18n.ts';
-import type { NLDDStepperTranslations } from './stepper.i18n.ts';
+import { stepperStyles } from './stepper.styles.js';
+import { stepperTemplate } from './stepper.template.js';
+import { nlddStepperTranslations } from './stepper.i18n.js';
+import type { NLDDStepperTranslations } from './stepper.i18n.js';
 import './../../actions/icon-button/icon-button.ts';
 import './../../content/icon/icon.ts';
 

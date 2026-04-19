@@ -1,6 +1,6 @@
 /* eslint-disable lit-a11y/click-events-have-key-events -- native dialog handles keyboard via @cancel */
 import { html, nothing } from 'lit';
-import type { NLDDModalDialog } from './modal-dialog.ts';
+import type { NLDDModalDialog } from './modal-dialog.js';
 
 export function modalDialogTemplate(component: NLDDModalDialog) {
 	return html`

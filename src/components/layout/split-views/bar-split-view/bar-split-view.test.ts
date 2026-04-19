@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.ts';
+import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import './bar-split-view.ts';
-import type { NLDDBarSplitView } from './bar-split-view.ts';
+import type { NLDDBarSplitView } from './bar-split-view.js';
 
 // jsdom returns 0 for getBoundingClientRect().width, so the component always
 // initialises at the 'sm' breakpoint in tests. Breakpoint-specific rendering

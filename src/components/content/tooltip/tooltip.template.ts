@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import type { TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import type { NLDDTooltip } from './tooltip.ts';
+import type { NLDDTooltip } from './tooltip.js';
 
 export function tooltipTemplate(component: NLDDTooltip): TemplateResult {
 	return html`
