@@ -1,0 +1,411 @@
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDToggleButton } from './toggle-button.js';
+import './toggle-button.js';
+
+
+/* ============================================================
+   Rendering
+   ============================================================ */
+
+describe('nldd-toggle-button', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders without error', async () => {
+		el = await fixture('<nldd-toggle-button></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('renders a button element by default', async () => {
+		el = await fixture('<nldd-toggle-button text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('input')).toBeNull();
+	});
+
+	it('type=checkbox renders an input[type=checkbox]', async () => {
+		el = await fixture('<nldd-toggle-button type="checkbox" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input');
+		expect(input).not.toBeNull();
+		expect(input!.type).toBe('checkbox');
+	});
+
+	it('type=radio renders an input[type=radio]', async () => {
+		el = await fixture('<nldd-toggle-button type="radio" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input');
+		expect(input).not.toBeNull();
+		expect(input!.type).toBe('radio');
+	});
+
+	it('checkbox/radio renders a label wrapper', async () => {
+		el = await fixture('<nldd-toggle-button type="checkbox" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('label')).not.toBeNull();
+	});
+
+	it('renders text from text attribute', async () => {
+		el = await fixture('<nldd-toggle-button text="Bewaren"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const textEl = el.shadowRoot!.querySelector('.toggle-button__text');
+		expect(textEl).not.toBeNull();
+		expect(textEl!.textContent).toBe('Bewaren');
+	});
+
+	it('renders icon from icon attribute', async () => {
+		el = await fixture('<nldd-toggle-button text="Bewaren" icon="heart"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.toggle-button__icon');
+		expect(icon).not.toBeNull();
+		expect(icon!.getAttribute('name')).toBe('heart');
+	});
+
+	it('renders icon slot when icon attribute is not set', async () => {
+		el = await fixture(`
+			<nldd-toggle-button text="Custom">
+				<svg slot="icon" width="20" height="20"><circle cx="10" cy="10" r="8"/></svg>
+			</nldd-toggle-button>
+		`);
+		await waitForUpdate(el);
+		const slot = el.shadowRoot!.querySelector('slot[name="icon"]') as HTMLSlotElement;
+		expect(slot).not.toBeNull();
+	});
+});
+
+
+/* ============================================================
+   State
+   ============================================================ */
+
+describe('nldd-toggle-button – state', () => {
+	let el: NLDDToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('selected is false by default', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.selected).toBe(false);
+	});
+
+	it('selected reflects as attribute', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button selected></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('selected')).toBe(true);
+	});
+
+	it('disabled reflects as attribute', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button disabled></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('disabled')).toBe(true);
+	});
+
+	it('button type: button has aria-pressed=false when not selected', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button')!;
+		expect(button.getAttribute('aria-pressed')).toBe('false');
+	});
+
+	it('button type: button has aria-pressed=true when selected', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label" selected></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button')!;
+		expect(button.getAttribute('aria-pressed')).toBe('true');
+	});
+
+	it('checkbox type: input.checked matches selected property', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="checkbox" text="Label" selected></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
+		expect(input.checked).toBe(true);
+	});
+
+	it('checkbox type: input is disabled when disabled attribute is set', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="checkbox" text="Label" disabled></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
+		expect(input.disabled).toBe(true);
+	});
+
+	it('forwards name to the input', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="checkbox" name="filter" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
+		expect(input.name).toBe('filter');
+	});
+
+	it('forwards value to the input', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="checkbox" value="optie-a" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
+		expect(input.value).toBe('optie-a');
+	});
+});
+
+
+/* ============================================================
+   Icon-only detection
+   ============================================================ */
+
+describe('nldd-toggle-button – icon-only', () => {
+	let el: NLDDToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('sets icon-only attribute when only icon is set (no text)', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" accessible-label="Favoriet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('icon-only')).toBe(true);
+	});
+
+	it('does not set icon-only when there is text', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('icon-only')).toBe(false);
+	});
+
+	it('does not set icon-only when there is no icon', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('icon-only')).toBe(false);
+	});
+
+	it('warns when icon-only without accessible-label', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart"></nldd-toggle-button>');
+		await waitForUpdate(el);
+
+		expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible-label'));
+		warnSpy.mockRestore();
+	});
+
+	it('does not warn when icon-only with accessible-label', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="heart" accessible-label="Favoriet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+
+		expect(warnSpy).not.toHaveBeenCalled();
+		warnSpy.mockRestore();
+	});
+});
+
+
+/* ============================================================
+   Interaction – type=button
+   ============================================================ */
+
+describe('nldd-toggle-button – interaction (button)', () => {
+	let el: NLDDToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('clicking toggles selected', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('button')!.click();
+		await waitForUpdate(el);
+		expect(el.selected).toBe(true);
+	});
+
+	it('clicking again deselects', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label" selected></nldd-toggle-button>');
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('button')!.click();
+		await waitForUpdate(el);
+		expect(el.selected).toBe(false);
+	});
+
+	it('click dispatches change event with correct detail', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label" value="optie"></nldd-toggle-button>');
+		await waitForUpdate(el);
+
+		let detail: any;
+		el.addEventListener('change', (e: Event) => { detail = (e as CustomEvent).detail; });
+		el.shadowRoot!.querySelector('button')!.click();
+
+		expect(detail?.selected).toBe(true);
+		expect(detail?.value).toBe('optie');
+	});
+
+	it('disabled button does not toggle when clicked', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label" disabled></nldd-toggle-button>');
+		await waitForUpdate(el);
+		el.shadowRoot!.querySelector('button')!.click();
+		await waitForUpdate(el);
+		expect(el.selected).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   Interaction – type=checkbox
+   ============================================================ */
+
+describe('nldd-toggle-button – interaction (checkbox)', () => {
+	let el: NLDDToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('input change syncs selected property', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="checkbox" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
+		input.checked = true;
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+		await waitForUpdate(el);
+
+		expect(el.selected).toBe(true);
+	});
+
+	it('input change dispatches change event', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="checkbox" value="check" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+
+		let detail: any;
+		el.addEventListener('change', (e: Event) => { detail = (e as CustomEvent).detail; });
+
+		const input = el.shadowRoot!.querySelector<HTMLInputElement>('input')!;
+		input.checked = true;
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+
+		expect(detail?.selected).toBe(true);
+		expect(detail?.value).toBe('check');
+	});
+});
+
+
+/* ============================================================
+   Interaction – type=radio
+   ============================================================ */
+
+describe('nldd-toggle-button – interaction (radio)', () => {
+	let el: NLDDToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('toggle() on selected radio does nothing', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="radio" text="Label" selected></nldd-toggle-button>');
+		await waitForUpdate(el);
+		el.toggle();
+		await waitForUpdate(el);
+		expect(el.selected).toBe(true);
+	});
+
+	it('toggle() on unselected radio selects it', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="radio" text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		el.toggle();
+		await waitForUpdate(el);
+		expect(el.selected).toBe(true);
+	});
+});
+
+
+/* ============================================================
+   toggle() method
+   ============================================================ */
+
+describe('nldd-toggle-button – toggle()', () => {
+	let el: NLDDToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('toggle() toggles button type', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		el.toggle();
+		expect(el.selected).toBe(true);
+		el.toggle();
+		expect(el.selected).toBe(false);
+	});
+
+	it('toggle() does nothing when disabled', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label" disabled></nldd-toggle-button>');
+		await waitForUpdate(el);
+		el.toggle();
+		expect(el.selected).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   Accessibility
+   ============================================================ */
+
+describe('nldd-toggle-button – accessibility', () => {
+	let el: NLDDToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('forwards accessible-label to button aria-label', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button accessible-label="Sluiten" text="✕"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button')!;
+		expect(button.getAttribute('aria-label')).toBe('Sluiten');
+	});
+
+	it('forwards accessible-label to input aria-label', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="checkbox" accessible-label="Sluiten" text="✕"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.getAttribute('aria-label')).toBe('Sluiten');
+	});
+
+	it('does not set aria-label when accessible-label is empty', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button text="Label"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button')!;
+		expect(button.hasAttribute('aria-label')).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   Tooltip
+   ============================================================ */
+
+describe('nldd-toggle-button – tooltip', () => {
+	let el: NLDDToggleButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('wraps in nldd-tooltip when icon-only', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="star" accessible-label="Favoriet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('text')).toBe('Favoriet');
+	});
+
+	it('does not wrap in nldd-tooltip when text is present', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="star" text="Favoriet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
+	});
+});

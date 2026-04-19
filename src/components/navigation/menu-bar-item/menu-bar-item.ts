@@ -1,0 +1,217 @@
+/**
+ * Menu Bar Item Component (Lit + TypeScript)
+ *
+ * Interactief bouwblok voor gebruik in een menu bar. Rendert als <a> (met href)
+ * of <button> (zonder href). Ondersteunt icon, text, disclosure indicator,
+ * en expandable popover menu via slotted nldd-menu-item elementen.
+ *
+ * @element nldd-menu-bar-item
+ * @attr {string} text - Tekst van het item
+ * @attr {boolean} current - Markeer als actief/huidig item
+ * @attr {string} current-type - aria-current waarde als current is true ('page', 'step', 'location', 'true'). Standaard: 'page'
+ * @attr {string} href - Optionele link URL. Zonder href rendert als button.
+ * @attr {string} icon - Optioneel icon naam (nldd-icon)
+ * @attr {boolean} expandable - Toon disclosure icon en open popover bij klik
+ * @attr {boolean} icon-only - Verberg tekst visueel (altijd)
+ * @attr {'icon'|'text'} content-priority - Bepaalt wat zichtbaar blijft in compact modus: 'icon' verbergt tekst, 'text' verbergt icon
+ * @attr {boolean} compact - Activeert content-priority gedrag (gezet door parent nldd-menu-bar)
+ * @attr {boolean} disabled - Schakel interactie uit
+ * @attr {string} accessible-label - Overschrijf aria-label
+ * @attr {string} haspopup - aria-haspopup waarde (bijv. "menu", "dialog")
+ * @attr {boolean} open - Of het gekoppelde popover/menu open is
+ *
+ * @fires select - Bij klik op non-expandable button item (bubbles, composed)
+ *
+ * @slot - Slotted nldd-menu-item en nldd-menu-divider voor expandable popover.
+ *   Items worden gekloond naar het popover menu (cloneNode). JS event listeners
+ *   op slotted items worden niet meegenomen. Gebruik event delegation op een
+ *   parent element als custom click handlers nodig zijn.
+ */
+
+import { LitElement, type PropertyValues } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { styles } from './menu-bar-item.styles.js';
+import { template } from './menu-bar-item.template.js';
+import '../../content/icon/icon.js';
+import '../../lists-and-menus/menu/menu.js';
+import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
+
+/**
+ * Minimal typed interface for nldd-menu.
+ * Double-cast (as unknown as) is required because createElement returns HTMLElement,
+ * and this custom element class is not registered in HTMLElementTagNameMap
+ * for this component's compilation unit.
+ */
+interface PopoverMenu extends HTMLElement {
+	anchorElement: Element | null;
+	showPopover(): void;
+	hidePopover(): void;
+}
+
+@customElement('nldd-menu-bar-item')
+export class NLDDMenuBarItem extends LitElement {
+	static override styles = styles;
+
+	@property({ type: String, reflect: true })
+	text = '';
+
+	@property({ type: Boolean, reflect: true })
+	current = false;
+
+	@property({ type: String, attribute: 'current-type', reflect: true })
+	currentType: 'page' | 'step' | 'location' | 'date' | 'time' | 'true' = 'page';
+
+	@property({ type: String })
+	href = '';
+
+	@property({ type: String, reflect: true })
+	icon = '';
+
+	@property({ type: Boolean, reflect: true })
+	expandable = false;
+
+	@property({ type: Boolean, attribute: 'icon-only', reflect: true })
+	iconOnly = false;
+
+	@property({ type: String, attribute: 'content-priority', reflect: true })
+	contentPriority = '';
+
+	@property({ type: Boolean, reflect: true })
+	compact = false;
+
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
+
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
+	@property({ type: String })
+	haspopup = '';
+
+	@property({ type: Boolean, reflect: true })
+	open = false;
+
+	// ## Menu popover state
+
+	private _menu: PopoverMenu | null = null;
+	private _menuOpen = false;
+	private _menuClosedAt = 0;
+
+	// ## Lifecycle
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this.addEventListener('click', this._handleClick);
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this.removeEventListener('click', this._handleClick);
+		this._menu?.remove();
+		this._menu = null;
+	}
+
+	override updated(changed: PropertyValues): void {
+		// Clean up menu when expandable is removed; creation is lazy in _toggleMenu()
+		if (changed.has('expandable') && !this.expandable && this._menu) {
+			this._menu.remove();
+			this._menu = null;
+		}
+	}
+
+	override focus(options?: FocusOptions): void {
+		const focusable = this.shadowRoot?.querySelector<HTMLElement>('button, a');
+		focusable?.focus(options);
+	}
+
+	// ## Helpers
+
+	private _hasMenuItems(): boolean {
+		return this.querySelector('nldd-menu-item, nldd-menu-divider') !== null;
+	}
+
+	// ## Event handlers
+
+	private _handleClick = (event: Event): void => {
+		if (this.disabled) {
+			event.preventDefault();
+			event.stopPropagation();
+			return;
+		}
+
+		if (this.expandable && this._hasMenuItems()) {
+			event.preventDefault();
+			this._toggleMenu();
+			return;
+		}
+
+		if (!this.href) {
+			event.preventDefault();
+			this.dispatchEvent(new CustomEvent('select', {
+				bubbles: true,
+				composed: true,
+				detail: { item: this },
+			}));
+		}
+	};
+
+	// ## Menu popover
+
+	private _createMenu(): void {
+		if (this._menu || !this._hasMenuItems()) return;
+		if (typeof document === 'undefined') return;
+
+		const menu = document.createElement('nldd-menu') as unknown as PopoverMenu;
+		menu.setAttribute('placement', 'bottom-start');
+
+		menu.addEventListener('toggle', (event: Event) => {
+			const open = (event as ToggleEvent).newState === 'open';
+			this._menuOpen = open;
+			this.open = open;
+			if (!open) this._menuClosedAt = Date.now();
+		});
+		document.body.appendChild(menu);
+		this._menu = menu;
+	}
+
+	/**
+	 * Clone slotted menu items into the popover menu.
+	 * Note: cloneNode(true) copies DOM structure and attributes but not JS event
+	 * listeners. Custom click handlers on slotted nldd-menu-item elements won't
+	 * fire in the popover. Use event delegation on a parent element instead.
+	 */
+	private _syncMenuItems(): void {
+		if (!this._menu) return;
+		this._menu.replaceChildren();
+
+		const items = this.querySelectorAll('nldd-menu-item, nldd-menu-divider');
+		items.forEach(item => {
+			const clone = item.cloneNode(true) as Element;
+			this._menu!.appendChild(clone);
+		});
+	}
+
+	private _toggleMenu(): void {
+		if (!this._menu) this._createMenu();
+		if (!this._menu) return;
+
+		this._menu.anchorElement = this;
+
+		if (this._menuOpen) {
+			this._menu.hidePopover();
+		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
+			this._syncMenuItems();
+			this._menu.showPopover();
+		}
+	}
+
+	override render() {
+		return template(this);
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'nldd-menu-bar-item': NLDDMenuBarItem;
+	}
+}

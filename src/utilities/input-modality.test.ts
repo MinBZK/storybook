@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getInputModality, isKeyboardMode, isPointerMode, _resetInputModalityForTesting } from './input-modality.ts';
+import { getInputModality, isKeyboardMode, isPointerMode, _resetInputModalityForTesting } from './input-modality.js';
 
 describe('input-modality', () => {
 	beforeEach(() => {

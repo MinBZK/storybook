@@ -1,6 +1,6 @@
-# NDD Icon Style Guide
+# NLDD Icon Style Guide
 
-Stijlregels voor het ontwerpen en aanleveren van SVG-iconen in het NDD Design System.
+Stijlregels voor het ontwerpen en aanleveren van SVG-iconen in het NLDD Design System.
 
 ## Canvas
 
@@ -178,7 +178,7 @@ Richting staat in de naam zelf (niet als los suffix):
 
 ### Aliases: beschrijf het doel
 
-Aliases koppelen een **functionele naam** aan een visuele icoonnaam. Ze staan in `ndd-icon-aliases.js`.
+Aliases koppelen een **functionele naam** aan een visuele icoonnaam. Ze staan in `nldd-icon-aliases.js`.
 
 | Visueel (bestandsnaam) | Alias (functie) |
 |------------------------|-----------------|

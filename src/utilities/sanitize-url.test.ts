@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sanitizeUrl } from './sanitize-url.ts';
+import { sanitizeUrl } from './sanitize-url.js';
 
 describe('sanitizeUrl', () => {
 	it('allows valid relative URLs', () => {

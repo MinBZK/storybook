@@ -1,0 +1,118 @@
+/**
+ * Nederlandse Digitale Dienst Modal Dialog Component (Lit + TypeScript)
+ *
+ * A modal window with overlay backdrop, based on the native <dialog> element.
+ * Internally renders an <nldd-inline-dialog> for the visual structure.
+ *
+ * @element nldd-modal-dialog
+ *
+ * @attr {'alert'} variant          - Forwarded to nldd-inline-dialog; 'alert' forces icon and color
+ * @attr {string}  icon-name        - Forwarded to nldd-inline-dialog; absent when not set
+ * @attr {string}  text             - Forwarded to nldd-inline-dialog; main text
+ * @attr {string}  supporting-text  - Forwarded to nldd-inline-dialog; supporting text
+ * @attr {string}  accessible-label - Accessible name for the dialog (aria-label); falls back to text
+ *
+ * @slot         - Optional custom content, forwarded to nldd-inline-dialog
+ * @slot actions - nldd-button elements, forwarded to nldd-inline-dialog
+ *
+ * @fires open  - When the dialog is opened
+ * @fires close - When the dialog is fully closed
+ *
+ * @method show() - Opens the modal dialog
+ * @method hide() - Closes the modal dialog with a closing animation
+ */
+import { LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { modalDialogStyles } from './modal-dialog.styles.js';
+import { modalDialogTemplate } from './modal-dialog.template.js';
+import { isPointerMode } from '../../../utilities/input-modality.js';
+import type { InlineDialogVariant } from '../inline-dialog/inline-dialog.js';
+import '../inline-dialog/inline-dialog.js';
+
+@customElement('nldd-modal-dialog')
+export class NLDDModalDialog extends LitElement {
+	static override styles = modalDialogStyles;
+
+	@property({ type: String, reflect: true })
+	variant: InlineDialogVariant | '' = '';
+
+	@property({ type: String, reflect: true, attribute: 'icon-name' })
+	iconName = '';
+
+	@property({ type: String, reflect: true })
+	text = '';
+
+	@property({ type: String, reflect: true, attribute: 'supporting-text' })
+	supportingText = '';
+
+	/** Accessible name for the dialog — forwarded as aria-label. Falls back to text. */
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
+	private _closing = false;
+
+	private get _dialog(): HTMLDialogElement | null {
+		return this.shadowRoot?.querySelector('dialog') ?? null;
+	}
+
+	show(): void {
+		const dialog = this._dialog;
+		if (!dialog || dialog.open) return;
+		dialog.showModal();
+		this._manageFocus();
+		this.dispatchEvent(new CustomEvent('open', { bubbles: true, composed: true }));
+	}
+
+	private _manageFocus(): void {
+		// 1. autofocus element present — let the browser handle it natively
+		if (this.querySelector('[autofocus]')) return;
+
+		// 2. Focus the dialog — show focus ring only when opened via keyboard
+		const dialog = this._dialog;
+		if (!dialog) return;
+		dialog.classList.toggle('is-pointer-focus', isPointerMode());
+		dialog.focus();
+	}
+
+	hide(): void {
+		const dialog = this._dialog;
+		if (!dialog || !dialog.open || this._closing) return;
+
+		this._closing = true;
+		dialog.classList.add('is-closing');
+		dialog.addEventListener('animationend', () => {
+			dialog.classList.remove('is-closing');
+			this._closing = false;
+			dialog.close();
+			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+		}, { once: true });
+
+		requestAnimationFrame(() => {
+			if (this._closing && getComputedStyle(dialog).animationName === 'none') {
+				dialog.classList.remove('is-closing');
+				this._closing = false;
+				dialog.close();
+				this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+			}
+		});
+	}
+
+	_handleBackdropClick(e: MouseEvent): void {
+		if (e.target === this._dialog) this.hide();
+	}
+
+	_handleCancel(e: Event): void {
+		e.preventDefault();
+		this.hide();
+	}
+
+	override render() {
+		return modalDialogTemplate(this);
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'nldd-modal-dialog': NLDDModalDialog;
+	}
+}

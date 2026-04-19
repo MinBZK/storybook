@@ -1,4 +1,4 @@
-# NDD Design System
+# NLDD Design System
 
 Web Components voor de Nederlandse Digitale Dienst (Rijksoverheid).
 
@@ -30,12 +30,12 @@ npm run build            # Volledige build
 
 ```
 src/components/{categorie}/{naam}/
-  ndd-{naam}.ts           # Lit + TypeScript component
-  ndd-{naam}.styles.ts    # Component styles
-  ndd-{naam}.template.ts  # Render template
-  ndd-{naam}.i18n.ts      # Vertalingen (optioneel)
-  ndd-{naam}.stories.ts   # Storybook stories
-  ndd-{naam}.test.ts      # Unit tests
+  nldd-{naam}.ts           # Lit + TypeScript component
+  nldd-{naam}.styles.ts    # Component styles
+  nldd-{naam}.template.ts  # Render template
+  nldd-{naam}.i18n.ts      # Vertalingen (optioneel)
+  nldd-{naam}.stories.ts   # Storybook stories
+  nldd-{naam}.test.ts      # Unit tests
 ```
 
 ## CSS Variabelen

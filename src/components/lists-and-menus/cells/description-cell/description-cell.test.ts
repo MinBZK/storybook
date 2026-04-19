@@ -1,0 +1,83 @@
+import { describe, it, expect, afterEach } from 'vitest';
+import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
+import './description-cell.js';
+
+describe('nldd-description-cell', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders without error', async () => {
+		el = await fixture('<nldd-description-cell></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('defaults to stretch width', async () => {
+		el = await fixture('<nldd-description-cell></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('width')).toBe('stretch');
+	});
+
+	it('reflects width attribute', async () => {
+		el = await fixture('<nldd-description-cell width="fit-content"></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('width')).toBe('fit-content');
+	});
+
+	it('sets inline width style for numeric width', async () => {
+		el = await fixture('<nldd-description-cell width="200"></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_width')).toBe('200px');
+	});
+
+	it('sets --_min-width custom property', async () => {
+		el = await fixture('<nldd-description-cell min-width="80"></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_min-width')).toBe('80px');
+	});
+
+	it('sets --_max-width custom property', async () => {
+		el = await fixture('<nldd-description-cell max-width="300"></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_max-width')).toBe('300px');
+	});
+
+	it('sets --_min-height custom property', async () => {
+		el = await fixture('<nldd-description-cell min-height="44"></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_min-height')).toBe('44px');
+	});
+
+	it('defaults to center vertical alignment', async () => {
+		el = await fixture('<nldd-description-cell></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('vertical-alignment')).toBe('center');
+	});
+
+	it('reflects vertical-alignment top', async () => {
+		el = await fixture('<nldd-description-cell vertical-alignment="top"></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('vertical-alignment')).toBe('top');
+	});
+
+	it('reflects vertical-alignment bottom', async () => {
+		el = await fixture('<nldd-description-cell vertical-alignment="bottom"></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('vertical-alignment')).toBe('bottom');
+	});
+
+	it('renders slotted title content', async () => {
+		el = await fixture('<nldd-description-cell><p slot="title">Label</p></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.querySelector('[slot="title"]')?.textContent?.trim()).toBe('Label');
+	});
+
+	it('renders slotted description content', async () => {
+		el = await fixture('<nldd-description-cell><p slot="description">Description</p></nldd-description-cell>');
+		await waitForUpdate(el);
+		expect(el.querySelector('[slot="description"]')?.textContent?.trim()).toBe('Description');
+	});
+});

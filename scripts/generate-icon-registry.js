@@ -1,9 +1,9 @@
 /**
  * Generates a static icon registry from SVG files.
  * This replaces the Vite-specific import.meta.glob pattern so that
- * ndd-icon works with both Vite (dev) and plain tsc (per-component build).
+ * nldd-icon works with both Vite (dev) and plain tsc (per-component build).
  *
- * Output: src/components/content/icon/ndd-icon-registry.ts
+ * Output: src/components/content/icon/icon-registry.ts
  */
 
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
@@ -11,8 +11,8 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const iconsDir = resolve(__dirname, '../src/components/content/icon/ndd-icons');
-const outputFile = resolve(__dirname, '../src/components/content/icon/ndd-icon-registry.ts');
+const iconsDir = resolve(__dirname, '../src/components/content/icon/icons');
+const outputFile = resolve(__dirname, '../src/components/content/icon/icon-registry.ts');
 
 const svgFiles = readdirSync(iconsDir)
 	.filter(f => f.endsWith('.svg'))

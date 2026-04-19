@@ -1,0 +1,22 @@
+import { html, nothing, TemplateResult } from 'lit';
+import type { NLDDCheckbox } from './checkbox.js';
+import './../../content/icon/icon.js';
+
+export function checkboxTemplate(component: NLDDCheckbox): TemplateResult {
+	return html`
+		<input class="checkbox__input"
+			type="checkbox"
+			.checked=${component.checked}
+			.indeterminate=${component.indeterminate}
+			?disabled=${component.disabled}
+			name=${component.name || ''}
+			value=${component.value}
+			aria-label=${component.accessibleLabel || nothing}
+			@change=${component._handleChange}
+		>
+		<div class="checkbox__box" aria-hidden="true">
+			<nldd-icon class="checkbox__check-icon" name="check-mark-small"></nldd-icon>
+			<nldd-icon class="checkbox__indeterminate-icon" name="minus-extra-small"></nldd-icon>
+		</div>
+	`;
+}

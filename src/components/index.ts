@@ -11,112 +11,112 @@
 
 // # Action components
 
-export { NDDButton } from './actions/button/ndd-button.ts';
-export { NDDIconButton } from './actions/icon-button/ndd-icon-button.ts';
-export { NDDSplitButton } from './actions/split-button/ndd-split-button.ts';
-export { NDDButtonGroup } from './actions/button-group/ndd-button-group.ts';
-export { NDDButtonBar } from './actions/button-bar/ndd-button-bar.ts';
-export { NDDToolbar } from './actions/toolbar/ndd-toolbar.ts';
+export { NLDDButton } from './actions/button/button.js';
+export { NLDDIconButton } from './actions/icon-button/icon-button.js';
+export { NLDDSplitButton } from './actions/split-button/split-button.js';
+export { NLDDButtonGroup } from './actions/button-group/button-group.js';
+export { NLDDButtonBar } from './actions/button-bar/button-bar.js';
+export { NLDDToolbar } from './actions/toolbar/toolbar.js';
 
 
 // # Content components
 
-export { NDDIcon } from './content/icon/ndd-icon.ts';
-export { NDDRichText } from './content/rich-text/ndd-rich-text.ts';
-export { NDDTitle } from './content/title/ndd-title.ts';
-export { NDDTooltip } from './content/tooltip/ndd-tooltip.ts';
+export { NLDDIcon } from './content/icon/icon.js';
+export { NLDDRichText } from './content/rich-text/rich-text.js';
+export { NLDDTitle } from './content/title/title.js';
+export { NLDDTooltip } from './content/tooltip/tooltip.js';
 
 
 // # Forms components
 
-export { NDDFormField } from './forms/form-field/ndd-form-field.ts';
+export { NLDDFormField } from './forms/form-field/form-field.js';
 
 
 // # Input components
 
-export { NDDTextField } from './inputs/text-field/ndd-text-field.ts';
-export { NDDPasswordField } from './inputs/password-field/ndd-password-field.ts';
-export { NDDSearchField } from './inputs/search-field/ndd-search-field.ts';
-export { NDDNumberField } from './inputs/number-field/ndd-number-field.ts';
-export { NDDDropdown } from './inputs/dropdown/ndd-dropdown.ts';
-export { NDDComboBox } from './inputs/combo-box/ndd-combo-box.ts';
-export { NDDStepper } from './inputs/stepper/ndd-stepper.ts';
-export { NDDCheckbox } from './inputs/checkbox/ndd-checkbox.ts';
-export { NDDCheckboxField } from './inputs/checkbox-field/ndd-checkbox-field.ts';
-export { NDDRadioButton } from './inputs/radio-button/ndd-radio-button.ts';
-export { NDDRadioButtonField } from './inputs/radio-button-field/ndd-radio-button-field.ts';
-export { NDDRadioButtonGroup } from './inputs/radio-button-group/ndd-radio-button-group.ts';
-export { NDDSwitch } from './inputs/switch/ndd-switch.ts';
-export { NDDSwitchField } from './inputs/switch-field/ndd-switch-field.ts';
-export { NDDSegmentedControl } from './inputs/segmented-control/ndd-segmented-control.ts';
-export { NDDToggleButton } from './inputs/toggle-button/ndd-toggle-button.ts';
-export { NDDToggleButtonGroup } from './inputs/toggle-button-group/ndd-toggle-button-group.ts';
+export { NLDDTextField } from './inputs/text-field/text-field.js';
+export { NLDDPasswordField } from './inputs/password-field/password-field.js';
+export { NLDDSearchField } from './inputs/search-field/search-field.js';
+export { NLDDNumberField } from './inputs/number-field/number-field.js';
+export { NLDDDropdown } from './inputs/dropdown/dropdown.js';
+export { NLDDComboBox } from './inputs/combo-box/combo-box.js';
+export { NLDDStepper } from './inputs/stepper/stepper.js';
+export { NLDDCheckbox } from './inputs/checkbox/checkbox.js';
+export { NLDDCheckboxField } from './inputs/checkbox-field/checkbox-field.js';
+export { NLDDRadioButton } from './inputs/radio-button/radio-button.js';
+export { NLDDRadioButtonField } from './inputs/radio-button-field/radio-button-field.js';
+export { NLDDRadioButtonGroup } from './inputs/radio-button-group/radio-button-group.js';
+export { NLDDSwitch } from './inputs/switch/switch.js';
+export { NLDDSwitchField } from './inputs/switch-field/switch-field.js';
+export { NLDDSegmentedControl } from './inputs/segmented-control/segmented-control.js';
+export { NLDDToggleButton } from './inputs/toggle-button/toggle-button.js';
+export { NLDDToggleButtonGroup } from './inputs/toggle-button-group/toggle-button-group.js';
 
-export { NDDToken } from './inputs/token/ndd-token.ts';
+export { NLDDToken } from './inputs/token/token.js';
 
 
 // # Layout components
 
-export { NDDAppView } from './layout/app-view/ndd-app-view.ts';
+export { NLDDAppView } from './layout/app-view/app-view.js';
 
-export { NDDBarSplitView } from './layout/split-views/bar-split-view/ndd-bar-split-view.ts';
-export { NDDNavigationSplitView } from './layout/split-views/navigation-split-view/ndd-navigation-split-view.ts';
-export { NDDSideBySideSplitView } from './layout/split-views/side-by-side-split-view/ndd-side-by-side-split-view.ts';
-export { NDDStackedSplitView } from './layout/split-views/stacked-split-view/ndd-stacked-split-view.ts';
+export { NLDDBarSplitView } from './layout/split-views/bar-split-view/bar-split-view.js';
+export { NLDDNavigationSplitView } from './layout/split-views/navigation-split-view/navigation-split-view.js';
+export { NLDDSideBySideSplitView } from './layout/split-views/side-by-side-split-view/side-by-side-split-view.js';
+export { NLDDStackedSplitView } from './layout/split-views/stacked-split-view/stacked-split-view.js';
 
-export { NDDSplitViewPane } from './layout/split-views/split-view-pane/ndd-split-view-pane.ts';
+export { NLDDSplitViewPane } from './layout/split-views/split-view-pane/split-view-pane.js';
 
-export { NDDPage } from './layout/page/ndd-page.ts';
+export { NLDDPage } from './layout/page/page.js';
 
-export { NDDSimpleSection } from './layout/page-sections/simple-section/ndd-simple-section.ts';
-export { NDDFullBleedSection } from './layout/page-sections/full-bleed-section/ndd-full-bleed-section.ts';
-export { NDDOneThirdTwoThirdsSection } from './layout/page-sections/one-third-two-thirds-section/ndd-one-third-two-thirds-section.ts';
-export { NDDTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/ndd-two-thirds-one-third-section.ts';
-export { NDDOneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/ndd-one-half-one-half-section.ts';
+export { NLDDSimpleSection } from './layout/page-sections/simple-section/simple-section.js';
+export { NLDDFullBleedSection } from './layout/page-sections/full-bleed-section/full-bleed-section.js';
+export { NLDDOneThirdTwoThirdsSection } from './layout/page-sections/one-third-two-thirds-section/one-third-two-thirds-section.js';
+export { NLDDTwoThirdsOneThirdSection } from './layout/page-sections/two-thirds-one-third-section/two-thirds-one-third-section.js';
+export { NLDDOneHalfOneHalfSection } from './layout/page-sections/one-half-one-half-section/one-half-one-half-section.js';
 
-export { NDDBox } from './layout/box/ndd-box.ts';
-export { NDDCard } from './layout/card/ndd-card.ts';
-export { NDDCollection } from './layout/collection/ndd-collection.ts';
+export { NLDDBox } from './layout/box/box.js';
+export { NLDDCard } from './layout/card/card.js';
+export { NLDDCollection } from './layout/collection/collection.js';
 
-export { NDDSpacer } from './layout/spacer/ndd-spacer.ts';
-export { NDDContainer } from './layout/container/ndd-container.ts';
-export { NDDDivider } from './layout/divider/ndd-divider.ts';
-export { NDDSheet } from './layout/sheet/ndd-sheet.ts';
-export { NDDWindow } from './layout/window/ndd-window.ts';
+export { NLDDSpacer } from './layout/spacer/spacer.js';
+export { NLDDContainer } from './layout/container/container.js';
+export { NLDDDivider } from './layout/divider/divider.js';
+export { NLDDSheet } from './layout/sheet/sheet.js';
+export { NLDDWindow } from './layout/window/window.js';
 
 
 // # List and Menu components
 
-export { NDDMenu } from './lists-and-menus/menu/ndd-menu.ts';
-export { NDDList } from './lists-and-menus/list/ndd-list.ts';
-export { NDDListItem } from './lists-and-menus/list-item/ndd-list-item.ts';
+export { NLDDMenu } from './lists-and-menus/menu/menu.js';
+export { NLDDList } from './lists-and-menus/list/list.js';
+export { NLDDListItem } from './lists-and-menus/list-item/list-item.js';
 
-export { NDDCell } from './lists-and-menus/cells/cell/ndd-cell.ts';
-export { NDDSpacerCell } from './lists-and-menus/cells/spacer-cell/ndd-spacer-cell.ts';
-export { NDDIconCell } from './lists-and-menus/cells/icon-cell/ndd-icon-cell.ts';
-export { NDDTitleCell } from './lists-and-menus/cells/title-cell/ndd-title-cell.ts';
-export { NDDTextCell } from './lists-and-menus/cells/text-cell/ndd-text-cell.ts';
-export { NDDDescriptionCell } from './lists-and-menus/cells/description-cell/ndd-description-cell.ts';
+export { NLDDCell } from './lists-and-menus/cells/cell/cell.js';
+export { NLDDSpacerCell } from './lists-and-menus/cells/spacer-cell/spacer-cell.js';
+export { NLDDIconCell } from './lists-and-menus/cells/icon-cell/icon-cell.js';
+export { NLDDTitleCell } from './lists-and-menus/cells/title-cell/title-cell.js';
+export { NLDDTextCell } from './lists-and-menus/cells/text-cell/text-cell.js';
+export { NLDDDescriptionCell } from './lists-and-menus/cells/description-cell/description-cell.js';
 
-export { NDDDragHandleCell } from './lists-and-menus/cells/drag-handle-cell/ndd-drag-handle-cell.ts';
-export { NDDTimelineTrackCell } from './lists-and-menus/cells/timeline-track-cell/ndd-timeline-track-cell.ts';
+export { NLDDDragHandleCell } from './lists-and-menus/cells/drag-handle-cell/drag-handle-cell.js';
+export { NLDDTimelineTrackCell } from './lists-and-menus/cells/timeline-track-cell/timeline-track-cell.js';
 
 
 // # Navigation components
 
-export { NDDMenuBar } from './navigation/menu-bar/ndd-menu-bar.ts';
-export { NDDMenuBarItem } from './navigation/menu-bar-item/ndd-menu-bar-item.ts';
-export { NDDSkipLink } from './navigation/skip-link/ndd-skip-link.ts';
-export { NDDTopNavigationBar } from './navigation/top-navigation-bar/ndd-top-navigation-bar.ts';
-export { NDDTopTitleBar } from './navigation/top-title-bar/ndd-top-title-bar.ts';
-export { NDDTabBar } from './navigation/tab-bar/ndd-tab-bar.ts';
-export { NDDDocumentTabBar } from './navigation/document-tab-bar/ndd-document-tab-bar.ts';
-export { NDDPagination } from './navigation/pagination/ndd-pagination.ts';
+export { NLDDMenuBar } from './navigation/menu-bar/menu-bar.js';
+export { NLDDMenuBarItem } from './navigation/menu-bar-item/menu-bar-item.js';
+export { NLDDSkipLink } from './navigation/skip-link/skip-link.js';
+export { NLDDTopNavigationBar } from './navigation/top-navigation-bar/top-navigation-bar.js';
+export { NLDDTopTitleBar } from './navigation/top-title-bar/top-title-bar.js';
+export { NLDDTabBar } from './navigation/tab-bar/tab-bar.js';
+export { NLDDDocumentTabBar } from './navigation/document-tab-bar/document-tab-bar.js';
+export { NLDDPagination } from './navigation/pagination/pagination.js';
 
 
 // # Status and Feedback components
 
-export { NDDModalDialog } from './status-and-feedback/modal-dialog/ndd-modal-dialog.ts';
-export { NDDInlineDialog } from './status-and-feedback/inline-dialog/ndd-inline-dialog.ts';
+export { NLDDModalDialog } from './status-and-feedback/modal-dialog/modal-dialog.js';
+export { NLDDInlineDialog } from './status-and-feedback/inline-dialog/inline-dialog.js';
 
 // Auto-register happens on import of individual component files

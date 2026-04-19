@@ -1,0 +1,237 @@
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import type { NLDDComboBox } from './combo-box.js';
+import './combo-box.js';
+import '../../lists-and-menus/menu/menu.js';
+
+describe('nldd-combo-box', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders without error', async () => {
+		el = await fixture('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('renders a native text input', async () => {
+		el = await fixture('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input[type="text"]')).not.toBeNull();
+	});
+
+	it('renders nldd-icon-button for the picker', async () => {
+		el = await fixture('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('nldd-icon-button')).not.toBeNull();
+	});
+});
+
+
+/* ============================================================
+   ARIA
+   ============================================================ */
+
+describe('nldd-combo-box – ARIA', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('sets role="combobox" on the native input', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('role')).toBe('combobox');
+	});
+
+	it('sets aria-expanded="false" when closed', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-expanded')).toBe('false');
+	});
+
+	it('sets aria-autocomplete="list"', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-autocomplete')).toBe('list');
+	});
+
+	it('sets aria-haspopup="listbox"', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-haspopup')).toBe('listbox');
+	});
+
+	it('sets aria-controls to the menu id', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-controls')).toBe(el._menuId);
+	});
+});
+
+
+/* ============================================================
+   State
+   ============================================================ */
+
+describe('nldd-combo-box – state', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('forwards placeholder to native input', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box placeholder="Zoek..."></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('placeholder')).toBe('Zoek...');
+	});
+
+	it('forwards name to native input', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box name="land"></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.name).toBe('land');
+	});
+
+	it('disables native input when disabled', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box disabled></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.disabled).toBe(true);
+	});
+});
+
+
+/* ============================================================
+   Input event
+   ============================================================ */
+
+describe('nldd-combo-box – input event', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('updates _displayValue on input', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'Neder';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(el._displayValue).toBe('Neder');
+	});
+
+	it('dispatches input event with displayValue detail', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		let detail: any;
+		el.addEventListener('input', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'test';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		expect(detail?.value).toBe('test');
+	});
+});
+
+
+/* ============================================================
+   Filtering
+   ============================================================ */
+
+describe('nldd-combo-box – filtering', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('filters nldd-menu-item elements on input', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box>
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'Ned';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+
+		const menu = document.getElementById(el._menuId)!;
+		const items = menu.querySelectorAll('nldd-menu-item');
+		expect(items[0].hasAttribute('hidden')).toBe(false);
+		expect(items[1].hasAttribute('hidden')).toBe(true);
+	});
+
+	it('matches on search attribute', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box>
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl" aliases="dutch holland"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'dutch';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+
+		const menu = document.getElementById(el._menuId)!;
+		const items = menu.querySelectorAll('nldd-menu-item');
+		expect(items[0].hasAttribute('hidden')).toBe(false);
+		expect(items[1].hasAttribute('hidden')).toBe(true);
+	});
+});
+
+
+/* ============================================================
+   Popover API
+   ============================================================ */
+
+describe('nldd-combo-box – Popover API', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	it('warns when Popover API is unavailable', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box>
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+		// Simulate missing Popover API by deleting showPopover from the prototype
+		const proto = HTMLElement.prototype;
+		const original = proto.showPopover;
+		// @ts-ignore
+		delete proto.showPopover;
+
+		el._openMenu(false);
+
+		expect(warnSpy).toHaveBeenCalledWith(
+			expect.stringContaining('Popover API')
+		);
+
+		proto.showPopover = original;
+	});
+});

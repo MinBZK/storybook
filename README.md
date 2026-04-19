@@ -1,4 +1,4 @@
-# NDD Design System
+# NLDD Design System
 
 Web Components voor Nederlandse Digitale Dienst (Rijksoverheid).
 
@@ -35,14 +35,14 @@ import '@minbzk/storybook/styles';
 import '@minbzk/storybook';
 
 // Of importeer specifieke componenten
-import { NDDButton, NDDCheckbox, NDDSwitch } from '@minbzk/storybook';
+import { NLDDButton, NLDDCheckbox, NLDDSwitch } from '@minbzk/storybook';
 ```
 
 ```html
 <!-- Gebruik in HTML -->
-<ndd-button variant="accent-filled" text="Opslaan"></ndd-button>
-<ndd-checkbox-field label="Akkoord met voorwaarden"></ndd-checkbox-field>
-<ndd-switch-field label="Meldingen inschakelen"></ndd-switch-field>
+<nldd-button variant="accent-filled" text="Opslaan"></nldd-button>
+<nldd-checkbox-field label="Akkoord met voorwaarden"></nldd-checkbox-field>
+<nldd-switch-field label="Meldingen inschakelen"></nldd-switch-field>
 ```
 
 ## Storybook
@@ -63,7 +63,7 @@ npm run storybook
 
 ## Componenten
 
-### ndd-button
+### nldd-button
 
 | Attribuut          | Type    | Default          | Beschrijving                                                                                                                                             |
 | ------------------ | ------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |

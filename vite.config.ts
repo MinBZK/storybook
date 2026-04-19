@@ -6,7 +6,7 @@ export default defineConfig({
 		lib: {
 			entry: resolve(import.meta.dirname, 'src/components/index.ts'),
 			formats: ['es'],
-			fileName: () => 'ndd-components.js',
+			fileName: () => 'components.js',
 		},
 		outDir: 'dist/components',
 		emptyOutDir: false,

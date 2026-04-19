@@ -20,22 +20,21 @@ const packagePath = resolve(__dirname, '../package.json');
 const indexContent = readFileSync(indexPath, 'utf-8');
 const pkg = JSON.parse(readFileSync(packagePath, 'utf-8'));
 
-// Parse named export lines: export { NDDButton } from './actions/button/ndd-button.ts';
+// Parse named export lines: export { NLDDButton } from './actions/button/button.ts';
 // Note: does not match `export * from` barrel re-exports — only named exports are mapped.
 const exportRegex = /export\s+\{[^}]+\}\s+from\s+['"](\.\/[^'"]+)['"]/g;
 
 const componentExports = {};
 for (const match of indexContent.matchAll(exportRegex)) {
-	const sourcePath = match[1]; // e.g. ./actions/button/ndd-button.ts
+	const sourcePath = match[1]; // e.g. ./actions/button/button.ts
 
-	// Extract component name from path: ./actions/button/ndd-button.ts → button
+	// Extract component name from path: ./actions/button/button.js → button
 	const parts = sourcePath.split('/');
-	const fileName = parts[parts.length - 1].replace(/\.ts$/, '');
-	const componentName = fileName.replace(/^ndd-/, '');
+	const componentName = parts[parts.length - 1].replace(/\.(ts|js)$/, '');
 
-	// Build dist path: ./actions/button/ndd-button.ts → ./dist/components/actions/button/ndd-button.js
+	// Build dist path: ./actions/button/button.js → ./dist/components/actions/button/button.js
 	// Assumes tsconfig.build.json rootDir=src, outDir=dist — src/components/… maps to dist/components/….
-	const distPath = `./dist/components/${sourcePath.replace(/^\.\//, '').replace(/\.ts$/, '')}`;
+	const distPath = `./dist/components/${sourcePath.replace(/^\.\//, '').replace(/\.(ts|js)$/, '')}`;
 
 	const exportKey = `./${componentName}`;
 	if (componentExports[exportKey]) {
@@ -53,7 +52,7 @@ for (const match of indexContent.matchAll(exportRegex)) {
 
 // Build complete exports map
 const exports = {
-	'.': './dist/components/ndd-components.js',
+	'.': './dist/components/components.js',
 	...componentExports,
 	'./styles': './dist/css/global.css',
 	'./styles/tokens': './dist/css/settings.css',
