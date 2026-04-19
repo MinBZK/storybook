@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDRadioButtonGroup } from './radio-button-group.js';
+import type { NLDDRadioButtonField } from '../radio-button-field/radio-button-field.js';
 import './radio-button-group.js';
 import '../radio-button-field/radio-button-field.js';
 
@@ -27,7 +28,7 @@ describe('nldd-radio-button-group', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders a div with role="radiogroup"', async () => {
+	it('sets role="radiogroup" on the host element', async () => {
 		el = await fixture('<nldd-radio-button-group></nldd-radio-button-group>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('role')).toBe('radiogroup');
@@ -49,7 +50,7 @@ describe('nldd-radio-button-group – field sync', () => {
 	it('forwards name to all child fields', async () => {
 		el = await fixture<NLDDRadioButtonGroup>(groupFixture('mygroup'));
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll<NLDDRadioButtonField>('nldd-radio-button-field'));
 		fields.forEach(f => expect(f.name).toBe('mygroup'));
 	});
 
@@ -61,7 +62,7 @@ describe('nldd-radio-button-group – field sync', () => {
 			</nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll<NLDDRadioButtonField>('nldd-radio-button-field'));
 		fields.forEach(f => expect(f.disabled).toBe(true));
 	});
 });
@@ -85,7 +86,7 @@ describe('nldd-radio-button-group – keyboard navigation', () => {
 	it('ArrowDown moves to next field', async () => {
 		el = await fixture<NLDDRadioButtonGroup>(groupFixture());
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll<NLDDRadioButtonField>('nldd-radio-button-field'));
 
 		pressKey(el, 'ArrowDown');
 		await waitForUpdate(el);
@@ -103,7 +104,7 @@ describe('nldd-radio-button-group – keyboard navigation', () => {
 			</nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll<NLDDRadioButtonField>('nldd-radio-button-field'));
 
 		pressKey(el, 'ArrowUp');
 		await waitForUpdate(el);
@@ -121,7 +122,7 @@ describe('nldd-radio-button-group – keyboard navigation', () => {
 			</nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll<NLDDRadioButtonField>('nldd-radio-button-field'));
 
 		pressKey(el, 'ArrowDown');
 		await waitForUpdate(el);
@@ -139,7 +140,7 @@ describe('nldd-radio-button-group – keyboard navigation', () => {
 			</nldd-radio-button-group>
 		`);
 		await waitForUpdate(el);
-		const fields = Array.from(el.querySelectorAll('nldd-radio-button-field')) as any[];
+		const fields = Array.from(el.querySelectorAll<NLDDRadioButtonField>('nldd-radio-button-field'));
 
 		pressKey(el, 'ArrowDown');
 		await waitForUpdate(el);
