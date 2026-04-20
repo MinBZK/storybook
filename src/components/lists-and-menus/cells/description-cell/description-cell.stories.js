@@ -9,20 +9,20 @@ export default {
 	argTypes: {
 		width: {
 			control: 'text',
-			description: "Width of the cell: 'stretch', 'fit-content', or a number (pixels)",
+			description: "'stretch', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
 			table: { defaultValue: { summary: 'stretch' } },
 		},
 		minWidth: {
-			control: 'number',
-			description: 'Minimum width in pixels',
+			control: 'text',
+			description: "Minimum width as CSS length (e.g. '80px', '5rem')",
 		},
 		maxWidth: {
-			control: 'number',
-			description: 'Maximum width in pixels',
+			control: 'text',
+			description: "Maximum width as CSS length (e.g. '300px', '20rem')",
 		},
 		minHeight: {
-			control: 'number',
-			description: 'Minimum height in pixels',
+			control: 'text',
+			description: "Minimum height as CSS length (e.g. '44px', '3rem')",
 		},
 		verticalAlignment: {
 			control: 'select',
@@ -43,6 +43,9 @@ export const Default = {
 		selected: false,
 		verticalAlignment: 'center',
 		width: 'stretch',
+		minWidth: '',
+		maxWidth: '',
+		minHeight: '',
 	},
 	render: (args) => html`
 		<nldd-description-cell

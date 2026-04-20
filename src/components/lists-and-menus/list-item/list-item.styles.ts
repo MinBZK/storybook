@@ -9,6 +9,8 @@ export const listItemStyles = css`
 		display: block;
 		width: 100%;
 		-webkit-tap-highlight-color: transparent;
+		container-type: inline-size;
+		container-name: list-item;
 		--_z-index-content: 0;
 		--_z-index-focus: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
@@ -61,21 +63,21 @@ export const listItemStyles = css`
 		display: none;
 	}
 
-	:host(:not([reorderable])) ::slotted([draggable-only]) {
+	:host(:not([reorderable])) ::slotted([reorderable-only]) {
 		display: none;
 	}
 
-	:host([reorderable]) ::slotted([draggable-only]) {
+	:host([reorderable]) ::slotted([reorderable-only]) {
 		cursor: grab;
 		touch-action: none;
 	}
 
-	:host(.is-dragging) ::slotted([draggable-only]) {
+	:host(.is-dragging) ::slotted([reorderable-only]) {
 		cursor: grabbing;
 	}
 
 
-	/* # List item */
+	/* # Block */
 
 	.list-item {
 		box-sizing: border-box;

@@ -5,20 +5,20 @@
  * Always vertically centered and sized to fit the handle.
  *
  * ### Usage with nldd-list
- * To enable drag-to-reorder, add the `draggable-only` attribute to this element.
+ * To enable drag-to-reorder, add the `reorderable-only` attribute to this element.
  * This attribute is required for `nldd-list` to detect the drag handle in the
  * composed event path and activate pointer and keyboard drag mode:
  *
  * ```html
  * <nldd-list reorderable>
  *   <nldd-list-item>
- *     <nldd-drag-handle-cell slot="start" draggable-only></nldd-drag-handle-cell>
+ *     <nldd-drag-handle-cell slot="start" reorderable-only></nldd-drag-handle-cell>
  *     <nldd-text-cell text="Item"></nldd-text-cell>
  *   </nldd-list-item>
  * </nldd-list>
  * ```
  *
- * Without `draggable-only`, pointer and keyboard drag will never trigger.
+ * Without `reorderable-only`, pointer and keyboard drag will never trigger.
  *
  * @element nldd-drag-handle-cell
  * @attr {string} size - Handle size: 'sm' | 'md' (default: 'md')
