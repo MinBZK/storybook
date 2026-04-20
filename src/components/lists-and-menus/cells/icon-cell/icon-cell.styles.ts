@@ -9,7 +9,7 @@ export const iconCellStyles = css`
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		color: var(--context-list-item-content-color, var(--semantics-content-color));
+		color: var(--context-cell-content-color, var(--semantics-content-color));
 	}
 
 	:host([hidden]) {

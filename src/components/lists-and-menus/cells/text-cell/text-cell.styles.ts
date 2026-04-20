@@ -84,7 +84,7 @@ export const textCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
-		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
+		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([size='md']) .text-cell__overline,
@@ -129,13 +129,13 @@ export const textCellStyles = css`
 
 	:host([color='default']) .text-cell__text,
 	:host(:not([color])) .text-cell__text {
-		color: var(--context-list-item-content-color, var(--semantics-content-color));
+		color: var(--context-cell-content-color, var(--semantics-content-color));
 	}
 
 	/* ## Color: secondary */
 
 	:host([color='secondary']) .text-cell__text {
-		color: var(--semantics-content-secondary-color);
+		color: var(--context-cell-content-secondary-color, var(--semantics-content-secondary-color));
 	}
 
 	/* ## Color: inherit */
@@ -153,7 +153,7 @@ export const textCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
-		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
+		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([size='md']) .text-cell__supporting-text,

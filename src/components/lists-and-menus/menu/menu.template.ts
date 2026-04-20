@@ -41,7 +41,6 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 			${hasCheckState ? html`
 				<nldd-icon-cell class="menu__item-check"
 					size="24"
-					color="inherit"
 					horizontal-alignment="center"
 				>
 					${this.selected ? html`
@@ -50,7 +49,13 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 				</nldd-icon-cell>
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 			` : nothing}
-			<nldd-text-cell class="menu__item-text" color="inherit" text=${this._displayText || this.text}></nldd-text-cell>
+			${this.icon ? html`
+				<nldd-icon-cell class="menu__item-icon" size="20">
+					<nldd-icon name=${this.icon}></nldd-icon>
+				</nldd-icon-cell>
+				<nldd-spacer-cell size="6"></nldd-spacer-cell>
+			` : nothing}
+			<nldd-text-cell class="menu__item-text" text=${this._displayText || this.text}></nldd-text-cell>
 			${this.details ? html`
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell class="menu__item-details"

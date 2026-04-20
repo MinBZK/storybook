@@ -38,6 +38,7 @@ if (!customElements.get('nldd-menu-divider')) {
  * @attr {string}  value    - Form value. Falls back to text when not set.
  * @attr {string}  aliases  - Space-separated alternative search terms.
  * @attr {string}  details  - Secondary label shown on the right side.
+ * @attr {string}  icon     - Icon name rendered before the text (nldd-icon name).
  * @attr {string}  type     - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
  * @attr {boolean} selected - Selected state for checkbox and radio types.
  * @attr {boolean} disabled - Disabled state.
@@ -59,6 +60,10 @@ export class NLDDMenuItem extends LitElement {
 
 	@property({ type: String, reflect: true })
 	details = '';
+
+	/** Icon name rendered before the text (looked up via nldd-icon). */
+	@property({ type: String, reflect: true })
+	icon = '';
 
 	@property({ type: String, reflect: true })
 	type: 'button' | 'checkbox' | 'radio' = 'button';

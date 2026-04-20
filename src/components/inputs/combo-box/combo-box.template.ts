@@ -40,7 +40,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 						variant="neutral-tinted"
 						size="sm"
 						icon="chevron-down"
-						text=${component._t('components.combo-box.open-picker-action')}
+						text=${component._t('components.combo-box.open-menu-action')}
 						?disabled=${component.disabled}
 						@mousedown=${component._handlePickerMousedown}
 						@click=${component._toggleMenu}

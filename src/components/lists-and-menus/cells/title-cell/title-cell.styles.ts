@@ -85,7 +85,7 @@ export const titleCellStyles = css`
 		align-self: stretch;
 		min-width: 0;
 		font: var(--primitives-font-body-xs-regular-tight);
-		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
+		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([horizontal-alignment='right']) .title-cell__overline {
@@ -99,7 +99,7 @@ export const titleCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
-		color: var(--context-list-item-content-color, var(--semantics-content-color));
+		color: var(--context-cell-content-color, var(--semantics-content-color));
 	}
 
 	:host([horizontal-alignment='right']) .title-cell__title {
@@ -151,7 +151,7 @@ export const titleCellStyles = css`
 		align-self: stretch;
 		min-width: 0;
 		font: var(--primitives-font-body-sm-regular-tight);
-		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
+		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
 
 	:host([horizontal-alignment='right']) .title-cell__supporting-text {

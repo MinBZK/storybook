@@ -29,13 +29,13 @@ export const listItemStyles = css`
 
 	:host([type="button"]:hover),
 	:host([href]:hover) {
-		--context-list-item-content-color: var(--components-list-item-is-hovered-content-color);
+		--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
 	}
 
 	:host([selected]),
 	:host([selected][type="button"]:hover),
 	:host([selected][href]:hover) {
-		--context-list-item-content-color: var(--components-list-item-is-selected-content-color);
+		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
 	}
 
 	:host([highlighted]),
@@ -44,7 +44,7 @@ export const listItemStyles = css`
 	:host([selected]:focus-within),
 	:host([selected]:focus-within[type="button"]:hover),
 	:host([selected]:focus-within[href]:hover) {
-		--context-list-item-content-color: var(--components-list-item-is-highlighted-content-color);
+		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 	:host(:focus-within) {
