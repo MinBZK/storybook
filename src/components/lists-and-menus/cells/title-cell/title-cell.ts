@@ -26,7 +26,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './title-cell.styles.js';
+import { titleCellStyles } from './title-cell.styles.js';
 import { template } from './title-cell.template.js';
 
 export type TitleCellSize = 1 | 2 | 3 | 4 | 5 | 6;
@@ -48,7 +48,7 @@ const widthConverter = {
 
 @customElement('nldd-title-cell')
 export class NLDDTitleCell extends LitElement {
-	static override styles = [styles];
+	static override styles = [titleCellStyles];
 
 	@property({ type: Number, reflect: true })
 	size: TitleCellSize = 5;

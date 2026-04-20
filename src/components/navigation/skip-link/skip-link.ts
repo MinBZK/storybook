@@ -15,14 +15,14 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './skip-link.styles.js';
+import { skipLinkStyles } from './skip-link.styles.js';
 import { template } from './skip-link.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddSkipLinkTranslations } from './skip-link.i18n.js';
 
 @customElement('nldd-skip-link')
 export class NLDDSkipLink extends withTranslations(LitElement, nlddSkipLinkTranslations) {
-	static override styles = styles;
+	static override styles = skipLinkStyles;
 
 	@property({ type: String })
 	text = '';

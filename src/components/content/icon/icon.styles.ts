@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const iconStyles = css`
 	:host {
 		display: inline-block;
 		width: 100%;

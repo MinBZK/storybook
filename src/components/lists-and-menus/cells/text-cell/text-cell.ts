@@ -26,7 +26,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './text-cell.styles.js';
+import { textCellStyles } from './text-cell.styles.js';
 import { template } from './text-cell.template.js';
 
 type Size = 'sm' | 'md';
@@ -48,7 +48,7 @@ const widthConverter = {
 
 @customElement('nldd-text-cell')
 export class NLDDTextCell extends LitElement {
-	static override styles = [styles];
+	static override styles = [textCellStyles];
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';

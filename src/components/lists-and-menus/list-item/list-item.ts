@@ -1,6 +1,6 @@
 import { LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
-import { styles } from './list-item.styles.js';
+import { listItemStyles } from './list-item.styles.js';
 import { template } from './list-item.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import type { NLDDList } from '../list/list.js';
@@ -20,7 +20,7 @@ export type ListItemType = 'button';
  */
 @customElement('nldd-list-item')
 export class NLDDListItem extends LitElement {
-	static override styles = [styles];
+	static override styles = [listItemStyles];
 
 	@property({ reflect: true })
 	size: ListItemSize = 'md';

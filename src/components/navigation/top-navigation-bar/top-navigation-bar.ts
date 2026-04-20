@@ -1,6 +1,6 @@
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { styles } from './top-navigation-bar.styles.js';
+import { topNavigationBarStyles } from './top-navigation-bar.styles.js';
 import { template } from './top-navigation-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddTopNavigationBarTranslations } from './top-navigation-bar.i18n.js';
@@ -22,7 +22,7 @@ interface Sheet extends HTMLElement {
 
 @customElement('nldd-top-navigation-bar')
 export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNavigationBarTranslations) {
-	static override styles = styles;
+	static override styles = topNavigationBarStyles;
 
 	// ## Main properties
 

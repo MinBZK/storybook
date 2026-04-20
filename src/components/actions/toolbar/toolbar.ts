@@ -13,7 +13,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './toolbar.styles.js';
+import { toolbarStyles } from './toolbar.styles.js';
 import { template, type ToolbarChild } from './toolbar.template.js';
 import { nlddToolbarTranslations } from './toolbar.i18n.js';
 import type { NLDDToolbarTranslations } from './toolbar.i18n.js';
@@ -40,7 +40,7 @@ type Size = 'sm' | 'md';
 
 @customElement('nldd-toolbar')
 export class NLDDToolbar extends LitElement {
-	static override styles = styles;
+	static override styles = toolbarStyles;
 
 	/** Controls the size of toolbar items. Propagated automatically to all child controls. */
 	@property({ type: String, reflect: true })

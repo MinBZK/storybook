@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const buttonGroupStyles = css`
 	:host {
 		display: inline-flex;
 	}

@@ -30,7 +30,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './icon-button.styles.js';
+import { iconButtonStyles } from './icon-button.styles.js';
 import { template } from './icon-button.template.js';
 import './../../content/icon/icon.js';
 
@@ -49,7 +49,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('nldd-icon-button')
 export class NLDDIconButton extends LitElement {
-	static override styles = styles;
+	static override styles = iconButtonStyles;
 
 	@property({ type: String, reflect: true })
 	variant: Variant = 'neutral-tinted';

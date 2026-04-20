@@ -19,7 +19,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './cell.styles.js';
+import { cellStyles } from './cell.styles.js';
 import { template } from './cell.template.js';
 
 export type CellWidth = 'stretch' | 'fit-content';
@@ -38,7 +38,7 @@ const widthConverter = {
 
 @customElement('nldd-cell')
 export class NLDDCell extends LitElement {
-	static override styles = [styles];
+	static override styles = [cellStyles];
 
 	@property({ reflect: true, converter: widthConverter })
 	width: CellWidth | number = 'fit-content';

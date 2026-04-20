@@ -13,7 +13,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './icon-cell.styles.js';
+import { iconCellStyles } from './icon-cell.styles.js';
 import { template } from './icon-cell.template.js';
 
 type VerticalAlignment = 'top' | 'center' | 'bottom';
@@ -22,7 +22,7 @@ type Color = 'default' | 'inherit';
 
 @customElement('nldd-icon-cell')
 export class NLDDIconCell extends LitElement {
-	static override styles = styles;
+	static override styles = iconCellStyles;
 
 	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })
 	verticalAlignment: VerticalAlignment = 'center';

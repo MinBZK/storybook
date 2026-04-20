@@ -25,7 +25,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './drag-handle-cell.styles.js';
+import { dragHandleCellStyles } from './drag-handle-cell.styles.js';
 import { template } from './drag-handle-cell.template.js';
 import { nlddDragHandleCellTranslations } from './drag-handle-cell.i18n.js';
 import type { NLDDDragHandleCellTranslations } from './drag-handle-cell.i18n.js';
@@ -34,7 +34,7 @@ type Size = 'sm' | 'md';
 
 @customElement('nldd-drag-handle-cell')
 export class NLDDDragHandleCell extends LitElement {
-	static override styles = styles;
+	static override styles = dragHandleCellStyles;
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';

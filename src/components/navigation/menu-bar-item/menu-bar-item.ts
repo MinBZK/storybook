@@ -30,7 +30,7 @@
 
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './menu-bar-item.styles.js';
+import { menuBarItemStyles } from './menu-bar-item.styles.js';
 import { template } from './menu-bar-item.template.js';
 import '../../content/icon/icon.js';
 import '../../lists-and-menus/menu/menu.js';
@@ -50,7 +50,7 @@ interface PopoverMenu extends HTMLElement {
 
 @customElement('nldd-menu-bar-item')
 export class NLDDMenuBarItem extends LitElement {
-	static override styles = styles;
+	static override styles = menuBarItemStyles;
 
 	@property({ type: String, reflect: true })
 	text = '';

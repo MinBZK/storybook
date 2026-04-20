@@ -24,7 +24,7 @@
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './button.styles.js';
+import { buttonStyles } from './button.styles.js';
 import { template } from './button.template.js';
 import './../../content/icon/icon.js';
 
@@ -43,7 +43,7 @@ type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('nldd-button')
 export class NLDDButton extends LitElement {
-	static override styles = styles;
+	static override styles = buttonStyles;
 
 	@property({ type: String, reflect: true })
 	variant: Variant = 'neutral-tinted';

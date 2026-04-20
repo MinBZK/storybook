@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const descriptionCellStyles = css`
 	/* # Host */
 
 	:host {

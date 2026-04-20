@@ -13,7 +13,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { styles } from './button-group.styles.js';
+import { buttonGroupStyles } from './button-group.styles.js';
 import { template } from './button-group.template.js';
 
 type Size = 'sm' | 'md';
@@ -21,7 +21,7 @@ type Orientation = 'horizontal' | 'vertical';
 
 @customElement('nldd-button-group')
 export class NLDDButtonGroup extends LitElement {
-	static override styles = styles;
+	static override styles = buttonGroupStyles;
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';

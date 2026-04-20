@@ -1,5 +1,5 @@
 import { css } from 'lit';
-export const styles = css`
+export const toolbarStyles = css`
 
 	/* # Host */
 

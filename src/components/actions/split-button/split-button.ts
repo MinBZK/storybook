@@ -17,7 +17,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styles } from './split-button.styles.js';
+import { splitButtonStyles } from './split-button.styles.js';
 import { template } from './split-button.template.js';
 import { nlddSplitButtonTranslations } from './split-button.i18n.js';
 import type { NLDDSplitButtonTranslations } from './split-button.i18n.js';
@@ -28,7 +28,7 @@ export type Size = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-split-button')
 export class NLDDSplitButton extends LitElement {
-	static override styles = styles;
+	static override styles = splitButtonStyles;
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';

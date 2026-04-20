@@ -7,7 +7,7 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 
 // # Top navigation bar styles
 
-export const styles = css`
+export const topNavigationBarStyles = css`
 
 
 	/* # Host */

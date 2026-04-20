@@ -1,6 +1,6 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './list.styles.js';
+import { listStyles } from './list.styles.js';
 import { template } from './list.template.js';
 import type { NLDDListItem } from '../list-item/list-item.js';
 import { nlddListTranslations } from './list.i18n.js';
@@ -25,7 +25,7 @@ export interface NLDDReorderEventDetail {
  */
 @customElement('nldd-list')
 export class NLDDList extends LitElement {
-	static override styles = [styles];
+	static override styles = [listStyles];
 
 	/** Visual style of the list. */
 	@property({ reflect: true })
