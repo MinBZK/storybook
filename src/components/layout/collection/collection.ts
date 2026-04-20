@@ -13,6 +13,11 @@
  * @attr {boolean} show-load-more - Show load-more button in grid/list (default: false)
  * @attr {number} max-items - Number of visible items per page (default: 24)
  * @attr {boolean} lazy-load - Automatically load more items when the button becomes visible
+ * @attr {string}  item-width - Preferred width for each item (e.g. '280px', '20rem'). In grid
+ *                              layout used as the minimum column width (columns will be at
+ *                              least this wide; 1fr if container allows more). In horizontal
+ *                              scroll used as flex-basis. Never forces horizontal overflow —
+ *                              the value is clamped to container width.
  * @attr {object} translations - Translation overrides; unset keys fall back to Dutch.
  *                               Available keys: 'components.collection.previous-action',
  *                               'components.collection.next-action', 'components.collection.load-more-action'
@@ -53,6 +58,9 @@ export class NLDDCollection extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'lazy-load' })
 	lazyLoad = false;
+
+	@property({ type: String, reflect: true, attribute: 'item-width' })
+	itemWidth: string | undefined;
 
 	@property({ type: Object })
 	translations: Partial<NLDDCollectionTranslations> = {};
@@ -106,6 +114,14 @@ export class NLDDCollection extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('layout')) {
 			this._setupScrollListeners();
+		}
+
+		if (changedProperties.has('itemWidth')) {
+			if (this.itemWidth) {
+				this.style.setProperty('--_item-width', this.itemWidth);
+			} else {
+				this.style.removeProperty('--_item-width');
+			}
 		}
 
 		if (this.lazyLoad && this._loadMoreBtn && !this._intersectionObserver) {

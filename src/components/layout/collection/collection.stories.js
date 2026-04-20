@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './collection.js';
 import '../../actions/button/button.js';
 import '../../actions/button-group/button-group.js';
@@ -58,12 +58,19 @@ export default {
 			description: 'Laad automatisch meer wanneer de knop zichtbaar wordt',
 			table: { defaultValue: { summary: 'false' } },
 		},
+		itemWidth: {
+			control: 'text',
+			name: 'item-width',
+			description: 'Gewenste breedte per item (bv. "280px", "20rem"). Bij grid wordt deze breedte geclamped op de container-breedte om horizontale overflow te voorkomen.',
+			table: { defaultValue: { summary: '280px' } },
+		},
 	},
 	args: {
 		layout: 'grid',
 		showLoadMore: false,
 		maxItems: 6,
 		lazyLoad: false,
+		itemWidth: '',
 	},
 };
 
@@ -98,13 +105,13 @@ const scrollItems = Array.from({ length: 12 }, (_, i) => html`
 	</nldd-card>
 `);
 
-export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad }) => html`
+export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad, itemWidth }) => html`
 	<nldd-collection
 		layout=${layout}
 		?show-load-more=${showLoadMore}
-
 		max-items=${maxItems}
 		?lazy-load=${lazyLoad}
+		item-width=${itemWidth || nothing}
 	>
 		${gridItems}
 	</nldd-collection>
