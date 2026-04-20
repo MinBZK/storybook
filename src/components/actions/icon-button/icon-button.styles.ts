@@ -8,6 +8,12 @@ export const styles = css`
 		-webkit-tap-highlight-color: transparent;
 	}
 
+	:host([full-width]) {
+		display: block;
+		width: 100%;
+		flex-grow: 1;
+	}
+
 	:host([hidden]) {
 		display: none;
 	}
@@ -150,6 +156,10 @@ export const styles = css`
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		margin-right: calc(var(--primitives-space-2) * -1);
+	}
+
+	:host([full-width]) .icon-button {
+		width: 100%;
 	}
 
 

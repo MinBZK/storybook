@@ -75,6 +75,14 @@ export default {
 				defaultValue: { summary: false },
 			},
 		},
+		fullWidth: {
+			control: 'boolean',
+			name: 'full-width',
+			description: 'Laat de knop vullen tot de beschikbare breedte van de container',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
 		type: {
 			control: 'select',
 			options: ['button', 'submit', 'reset'],
@@ -107,6 +115,7 @@ export default {
 		text: 'Annuleer',
 		accessibleLabel: '',
 		expandable: false,
+		fullWidth: false,
 		type: 'button',
 		href: '',
 		target: '',
@@ -114,13 +123,14 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, icon, text, accessibleLabel, expandable, type, href, target, disabled }) => html`
+const Template = ({ variant, size, icon, text, accessibleLabel, expandable, fullWidth, type, href, target, disabled }) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}
 		icon=${icon}
 		text=${text}
 		?expandable=${expandable}
+		?full-width=${fullWidth}
 		type=${type}
 		href=${href || nothing}
 		target=${target || nothing}

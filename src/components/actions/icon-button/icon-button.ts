@@ -7,6 +7,7 @@
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable        - Whether the button opens a menu or popover and shows chevron next to the icon
+ * @attr {boolean} full-width        - Whether the button stretches to fill its container width
  * @attr {string}  text              - Button text, used as aria-label and shown below the icon in lg size
  * @attr {string}  icon              - Icon name for the nldd-icon element
  * @attr {string}  accessible-label  - Accessible label for screen readers. Overrides text as aria-label
@@ -64,6 +65,9 @@ export class NLDDIconButton extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'expandable' })
 	expandable = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
+	fullWidth = false;
 
 	@property({ type: String })
 	popovertarget: string | undefined = undefined;
