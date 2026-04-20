@@ -167,9 +167,9 @@ AlleToestanden.parameters = { controls: { disable: true } };
 
 export const AlleGrootten = () => html`
 	<div style="display: flex; gap: 1rem; align-items: center;">
-		<nldd-toggle-button size="xs" text="Zoeken" icon="magnifier"></nldd-toggle-button>
-		<nldd-toggle-button size="sm" text="Zoeken" icon="magnifier"></nldd-toggle-button>
-		<nldd-toggle-button size="md" text="Zoeken" icon="magnifier"></nldd-toggle-button>
+		<nldd-toggle-button size="xs" text="Zoeken" icon="search"></nldd-toggle-button>
+		<nldd-toggle-button size="sm" text="Zoeken" icon="search"></nldd-toggle-button>
+		<nldd-toggle-button size="md" text="Zoeken" icon="search"></nldd-toggle-button>
 	</div>
 `;
 AlleGrootten.parameters = { controls: { disable: true } };
@@ -183,7 +183,7 @@ export const MetIcoon = () => html`
 	<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
 		<nldd-toggle-button text="Bewaren" icon="heart"></nldd-toggle-button>
 		<nldd-toggle-button text="Bewaard" icon="heart-filled" selected></nldd-toggle-button>
-		<nldd-toggle-button text="Delen" icon="square-and-arrow-up"></nldd-toggle-button>
+		<nldd-toggle-button text="Delen" icon="share"></nldd-toggle-button>
 		<nldd-toggle-button text="Tonen" icon="eye"></nldd-toggle-button>
 		<nldd-toggle-button text="Verborgen" icon="eye-slash" selected></nldd-toggle-button>
 	</div>
