@@ -55,7 +55,6 @@ export class NLDDList extends LitElement {
 	private _draggingFromIndex = -1;
 	private _placeholder: HTMLDivElement | null = null;
 	private _currentDropIndex = -1;
-	private _keyboardDragging = false;
 	private _pointerId: number | null = null;
 	private _clone: HTMLDivElement | null = null;
 	private _cloneOffsetY = 0;
@@ -192,60 +191,62 @@ export class NLDDList extends LitElement {
 
 	// — Drag: keyboard ———————————————————————————————————————————————————————
 
+	// ArrowUp/ArrowDown on a focused drag handle moves the item immediately.
+	// Mirrors nldd-document-tab-bar: no grab-and-drop cycle — each arrow press
+	// reorders the DOM, fires nldd-reorder and restores focus on the handle.
 	private _onKeyDown = (event: KeyboardEvent) => {
 		if (!this.reorderable) return;
-
-		if (this._keyboardDragging) {
-			switch (event.key) {
-				case 'ArrowUp': {
-					event.preventDefault();
-					const current = this._getDropIndex();
-					this._setDropIndex(Math.max(0, current - 1));
-					this._announce(this._dragPositionAnnouncement());
-					if (this._draggingEl) this._setDragHandleLabel(this._draggingEl, this._dragPositionLabel());
-					break;
-				}
-				case 'ArrowDown': {
-					event.preventDefault();
-					const items = this._getItems();
-					const current = this._getDropIndex();
-					this._setDropIndex(Math.min(items.length - 1, current + 1));
-					this._announce(this._dragPositionAnnouncement());
-					if (this._draggingEl) this._setDragHandleLabel(this._draggingEl, this._dragPositionLabel());
-					break;
-				}
-				case 'Enter':
-				case ' ':
-					event.preventDefault();
-					this._endDrag();
-					break;
-				case 'Escape':
-					event.preventDefault();
-					this._cancelDrag();
-					break;
-			}
-			return;
-		}
-
-		if (event.key !== ' ' && event.key !== 'Enter') return;
+		if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
 
 		const path = event.composedPath() as Element[];
-		const hasDragHandle = path.some(
-			(el) => el instanceof Element && el.hasAttribute('draggable-only'),
-		);
-		if (!hasDragHandle) return;
+		const handle = path.find(
+			(el) => el instanceof HTMLElement && el.hasAttribute('draggable-only'),
+		) as HTMLElement | undefined;
+		if (!handle) return;
 
 		const item = path.find(
 			(el) => el instanceof Element && el.tagName.toLowerCase() === 'nldd-list-item',
 		) as NLDDListItem | undefined;
 		if (!item) return;
 
+		const items = this._getItems();
+		const fromIndex = items.indexOf(item);
+		if (fromIndex === -1) return;
+
+		const targetIndex = event.key === 'ArrowUp' ? fromIndex - 1 : fromIndex + 1;
+		if (targetIndex < 0 || targetIndex >= items.length) return;
+
 		event.preventDefault();
-		this._keyboardDragging = true;
-		this._startDrag(item);
-		this._announce(this._t('components.list.drag-grabbed-text'), true);
-		this._setDragHandleLabel(item, this._dragPositionLabel());
+
+		// Capture the actual focused element (may live inside the handle's shadow DOM,
+		// e.g. the <button> inside nldd-drag-handle-cell) so we can restore focus
+		// after the consumer reorders the DOM in response to nldd-reorder.
+		const focused = this._getDeepActiveElement() ?? handle;
+
+		// Mirror pointer-drag semantics: don't mutate the DOM ourselves — emit
+		// nldd-reorder with from/to indices and let the consumer reorder. toIndex
+		// here is the target index relative to the CURRENT order (same contract
+		// as pointer drag: fromIndex vs toIndex in the pre-move list).
+		this.dispatchEvent(
+			new CustomEvent<NLDDReorderEventDetail>('nldd-reorder', {
+				detail: { fromIndex, toIndex: targetIndex },
+				bubbles: true,
+				composed: true,
+			}),
+		);
+		this._announce(this._t('components.list.drag-dropped-text', { position: targetIndex + 1 }));
+
+		// Wait for the consumer to reorder, then restore focus on the moved item's handle.
+		requestAnimationFrame(() => focused.focus());
 	};
+
+	private _getDeepActiveElement(): HTMLElement | null {
+		let active: Element | null = document.activeElement;
+		while (active?.shadowRoot?.activeElement) {
+			active = active.shadowRoot.activeElement;
+		}
+		return active instanceof HTMLElement ? active : null;
+	}
 
 	// — Drag: core ———————————————————————————————————————————————————————————
 
@@ -270,30 +271,25 @@ export class NLDDList extends LitElement {
 		item.after(this._placeholder);
 
 		item.classList.add('is-dragging');
+		item.classList.add('is-dragging-pointer');
+		this._listRect = this.getBoundingClientRect();
+		this._cloneOffsetY = clientY - rect.top;
 
-		// Pointer drag: hide the original and show a floating clone
-		// Keyboard drag: keep the item visible (dimmed) so the user sees what they grabbed
-		if (!this._keyboardDragging) {
-			item.classList.add('is-dragging-pointer');
-			this._listRect = this.getBoundingClientRect();
-			this._cloneOffsetY = clientY - rect.top;
+		// Clone the host (carries slotted light DOM), keep draggable so consumer
+		// CSS doesn't hide draggable-only cells in the clone
+		const hostClone = item.cloneNode(true) as HTMLElement;
+		hostClone.classList.remove('is-dragging');
+		hostClone.classList.remove('is-dragging-pointer');
+		hostClone.setAttribute('data-nldd-clone', '');
 
-			// Clone the host (carries slotted light DOM), keep draggable so consumer
-			// CSS doesn't hide draggable-only cells in the clone
-			const hostClone = item.cloneNode(true) as HTMLElement;
-			hostClone.classList.remove('is-dragging');
-			hostClone.classList.remove('is-dragging-pointer');
-			hostClone.setAttribute('data-nldd-clone', '');
-
-			this._clone = document.createElement('div');
-			this._clone.className = 'list__drag-clone';
-			this._clone.style.setProperty('--_drag-clone-top', `${clientY - this._listRect.top - this._cloneOffsetY}px`);
-			this._clone.style.setProperty('--_drag-clone-left', `${rect.left - this._listRect.left}px`);
-			this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
-			this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
-			this._clone.appendChild(hostClone);
-			this.renderRoot.appendChild(this._clone);
-		}
+		this._clone = document.createElement('div');
+		this._clone.className = 'list__drag-clone';
+		this._clone.style.setProperty('--_drag-clone-top', `${clientY - this._listRect.top - this._cloneOffsetY}px`);
+		this._clone.style.setProperty('--_drag-clone-left', `${rect.left - this._listRect.left}px`);
+		this._clone.style.setProperty('--_drag-clone-width', `${rect.width}px`);
+		this._clone.style.setProperty('--_drag-clone-height', `${rect.height}px`);
+		this._clone.appendChild(hostClone);
+		this.renderRoot.appendChild(this._clone);
 	}
 
 	/**
@@ -364,7 +360,6 @@ export class NLDDList extends LitElement {
 	}
 
 	private _cleanupDrag() {
-		if (this._draggingEl) this._setDragHandleLabel(this._draggingEl);
 		this._draggingEl?.classList.remove('is-dragging');
 		this._draggingEl?.classList.remove('is-dragging-pointer');
 		this._placeholder?.remove();
@@ -386,7 +381,6 @@ export class NLDDList extends LitElement {
 		this._cloneOffsetY = 0;
 		this._listRect = null;
 		this._currentDropIndex = -1;
-		this._keyboardDragging = false;
 	}
 
 	// — i18n ————————————————————————————————————————————————————————————————
@@ -402,32 +396,6 @@ export class NLDDList extends LitElement {
 	}
 
 
-	// Sets or clears the aria-label on the active keyboard drag handle button directly
-	private _setDragHandleLabel(item: NLDDListItem, label?: string) {
-		const handle = item
-			.querySelector('[draggable-only]')
-			?.shadowRoot?.querySelector<HTMLElement>('button');
-		if (!handle) return;
-		if (label) {
-			handle.setAttribute('aria-label', label);
-		} else {
-			handle.removeAttribute('aria-label');
-		}
-	}
-
-	// — Accessibility ————————————————————————————————————————————————————————
-
-	private _dragPositionLabel(): string {
-		const items = this._getItems();
-		const pos = this._getDropIndex() + 1;
-		return this._t('components.list.drag-handle-active-label-text', { position: pos, total: items.length });
-	}
-
-	private _dragPositionAnnouncement(): string {
-		const items = this._getItems();
-		const pos = this._getDropIndex() + 1;
-		return this._t('components.list.drag-position-text', { position: pos, total: items.length });
-	}
 
 	private _announce(message: string, assertive = false) {
 		const selector = assertive ? '.list__assertive-announcer' : '.list__polite-announcer';

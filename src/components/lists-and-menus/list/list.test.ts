@@ -63,9 +63,9 @@ describe('nldd-list', () => {
 	});
 
 
-	// — Drag: keyboard ———————————————————————————————————————————————————————
+	// — Drag: keyboard (direct arrow-reorder) ——————————————————————————————
 
-	it('fires nldd-reorder with correct fromIndex and toIndex after keyboard drop', async () => {
+	it('ArrowDown on a drag handle fires nldd-reorder with the target index', async () => {
 		el = await fixture(`
 			<nldd-list reorderable>
 				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
@@ -82,13 +82,7 @@ describe('nldd-list', () => {
 			reorderDetail = (e as CustomEvent).detail;
 		});
 
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
-		await waitForUpdate(el);
-
 		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
-		await waitForUpdate(el);
-
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
 		await waitForUpdate(el);
 
 		expect(reorderDetail).not.toBeNull();
@@ -96,7 +90,7 @@ describe('nldd-list', () => {
 		expect(reorderDetail!.toIndex).toBe(1);
 	});
 
-	it('does not fire nldd-reorder when item is dropped at its original position', async () => {
+	it('ArrowUp on the first item is a no-op', async () => {
 		el = await fixture(`
 			<nldd-list reorderable>
 				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
@@ -106,75 +100,30 @@ describe('nldd-list', () => {
 		await waitForUpdate(el);
 
 		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
-
 		let fired = false;
 		el.addEventListener('nldd-reorder', () => { fired = true; });
 
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
+		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, composed: true }));
 		await waitForUpdate(el);
-
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
-		await waitForUpdate(el);
-
 		expect(fired).toBe(false);
 	});
 
-	it('ArrowDown and ArrowUp move the placeholder, Enter commits the drop', async () => {
+	it('does nothing when the keydown path has no drag handle', async () => {
 		el = await fixture(`
 			<nldd-list reorderable>
-				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
-				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
-				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
+				<nldd-list-item><span tabindex="0">no handle</span></nldd-list-item>
+				<nldd-list-item><span tabindex="0">no handle</span></nldd-list-item>
 			</nldd-list>
 		`);
 		await waitForUpdate(el);
 
-		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
+		const span = el.querySelectorAll('span[tabindex]')[0] as HTMLElement;
+		let fired = false;
+		el.addEventListener('nldd-reorder', () => { fired = true; });
 
-		let reorderDetail: { fromIndex: number; toIndex: number } | null = null;
-		el.addEventListener('nldd-reorder', (e: Event) => {
-			reorderDetail = (e as CustomEvent).detail;
-		});
-
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
+		span.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
 		await waitForUpdate(el);
-
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
-		await waitForUpdate(el);
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
-		await waitForUpdate(el);
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, composed: true }));
-		await waitForUpdate(el);
-
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
-		await waitForUpdate(el);
-
-		// Net effect: 2 down, 1 up = toIndex 1
-		expect(reorderDetail!.toIndex).toBe(1);
-	});
-
-	it('Escape cancels drag: restores is-dragging class and removes placeholder', async () => {
-		el = await fixture(`
-			<nldd-list reorderable>
-				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
-				<nldd-list-item><span draggable-only tabindex="0">handle</span></nldd-list-item>
-			</nldd-list>
-		`);
-		await waitForUpdate(el);
-
-		const handle = el.querySelectorAll('[draggable-only]')[0] as HTMLElement;
-		const firstItem = el.querySelectorAll('nldd-list-item')[0];
-
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
-		await waitForUpdate(el);
-
-		expect(firstItem.classList.contains('is-dragging')).toBe(true);
-
-		handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
-		await waitForUpdate(el);
-
-		expect(firstItem.classList.contains('is-dragging')).toBe(false);
-		expect(el.querySelector('.nldd-list-drag-placeholder')).toBeNull();
+		expect(fired).toBe(false);
 	});
 
 
