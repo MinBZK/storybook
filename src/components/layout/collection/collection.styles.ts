@@ -4,10 +4,11 @@ import { breakpoints } from '../../../assets/styles/breakpoints.js';
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
-
-/* # nldd-collection styles */
-
 export const collectionStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		flex-direction: column;

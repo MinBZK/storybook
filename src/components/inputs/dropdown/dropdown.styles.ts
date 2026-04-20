@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const dropdownStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -20,7 +22,7 @@ export const dropdownStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.dropdown {
 		position: relative;

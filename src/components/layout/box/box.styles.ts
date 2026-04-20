@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const boxStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: block;
 	}
@@ -8,6 +12,9 @@ export const boxStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
+
+	/* # Block */
 
 	.box {
 		background-color: var(--components-box-background-color);

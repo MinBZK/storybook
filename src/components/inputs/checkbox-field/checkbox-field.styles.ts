@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const checkboxFieldStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -12,7 +14,7 @@ export const checkboxFieldStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.checkbox-field {
 		display: flex;

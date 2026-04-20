@@ -1,10 +1,11 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
-
-/* # nldd-full-bleed-section styles */
-
 export const fullBleedSectionStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -22,7 +23,7 @@ export const fullBleedSectionStyles = css`
 	}
 
 
-	/* # Section */
+	/* # Block */
 
 	.full-bleed-section {
 		display: flex;
@@ -43,7 +44,6 @@ export const fullBleedSectionStyles = css`
 			padding-block: var(--semantics-page-sections-lg-margin-block);
 		}
 	}
-
 
 
 	/* # Header */
@@ -73,7 +73,6 @@ export const fullBleedSectionStyles = css`
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
-
 
 
 	/* # Footer */

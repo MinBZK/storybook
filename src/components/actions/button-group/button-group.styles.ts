@@ -1,6 +1,10 @@
 import { css } from 'lit';
 
 export const buttonGroupStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: inline-flex;
 	}
@@ -13,10 +17,14 @@ export const buttonGroupStyles = css`
 		display: none !important;
 	}
 
+
+	/* # Block */
+
 	.button-group {
 		display: flex;
 		justify-content: center;
 	}
+
 
 	/* # Orientation: Horizontal */
 
@@ -24,6 +32,7 @@ export const buttonGroupStyles = css`
 		flex-direction: row;
 		flex-wrap: wrap;
 	}
+
 
 	/* # Orientation: Vertical */
 
@@ -37,11 +46,13 @@ export const buttonGroupStyles = css`
 		width: 100%;
 	}
 
+
 	/* # Size: S */
 
 	:host([size="sm"]) .button-group {
 		gap: var(--components-button-group-sm-gap);
 	}
+
 
 	/* # Size: M (default) */
 

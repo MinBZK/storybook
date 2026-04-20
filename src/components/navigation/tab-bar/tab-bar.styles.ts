@@ -5,6 +5,7 @@ const smMax = unsafeCSS(breakpoints.smMax);
 
 export const tabBarStyles = css`
 
+
 	/* # Host */
 
 	:host {
@@ -23,7 +24,7 @@ export const tabBarStyles = css`
 	}
 
 
-	/* # Tab bar */
+	/* # Block */
 
 	.tab-bar {
 		display: flex;
@@ -57,6 +58,7 @@ export const tabBarStyles = css`
 `;
 
 export const tabBarItemStyles = css`
+
 
 	/* # Host */
 

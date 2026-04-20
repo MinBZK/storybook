@@ -3,10 +3,11 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
-
-/* # nldd-split-view-pane styles */
-
 export const splitViewPaneStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 
@@ -38,7 +39,7 @@ export const splitViewPaneStyles = css`
 	}
 
 
-	/* # Pane */
+	/* # Block */
 
 	.split-view-pane {
 		display: flex;

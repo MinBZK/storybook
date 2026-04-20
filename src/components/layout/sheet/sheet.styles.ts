@@ -5,10 +5,8 @@ const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
-
-/* # nldd-sheet styles */
-
 export const sheetStyles = css`
+
 
 	/* # Host */
 
@@ -56,7 +54,7 @@ export const sheetStyles = css`
 	}
 
 
-	/* # Sheet base */
+	/* # Block */
 
 	.sheet {
 		display: flex;

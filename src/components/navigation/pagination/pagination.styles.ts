@@ -26,7 +26,7 @@ export const paginationStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.pagination {
 		display: inline-flex;

@@ -19,7 +19,7 @@ export const formFieldStyles = css`
 	}
 
 
-	/* # Form field */
+	/* # Block */
 
 	.form-field {
 		display: flex;

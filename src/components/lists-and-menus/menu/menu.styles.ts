@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const menuStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -29,7 +31,7 @@ export const menuStyles = css`
 	}
 
 
-	/* # Menu */
+	/* # Block */
 
 	.menu {
 		display: flex;
@@ -65,6 +67,8 @@ export const menuStyles = css`
 `;
 
 export const menuItemStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -152,6 +156,8 @@ export const menuItemStyles = css`
 `;
 
 export const menuDividerStyles = css`
+
+
 	/* # Host */
 
 	:host {

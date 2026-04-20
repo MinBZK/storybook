@@ -22,7 +22,7 @@ export const menuBarItemStyles = css`
 	}
 
 
-	/* # Item */
+	/* # Block */
 
 	.menu-bar-item {
 		appearance: none;

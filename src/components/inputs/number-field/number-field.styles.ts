@@ -34,7 +34,7 @@ export const numberFieldStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.number-field {
 		display: inline-flex;

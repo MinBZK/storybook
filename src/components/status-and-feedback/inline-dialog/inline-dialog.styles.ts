@@ -1,8 +1,7 @@
 import { css } from 'lit';
 
-/* # nldd-inline-dialog styles */
-
 export const inlineDialogStyles = css`
+
 
 	/* # Host */
 

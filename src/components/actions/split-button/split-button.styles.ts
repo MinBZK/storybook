@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const splitButtonStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -22,13 +24,15 @@ export const splitButtonStyles = css`
 		opacity: 1;
 	}
 
-	/* # Base */
+
+	/* # Block */
 
 	.split-button {
 		display: inline-flex;
 		flex-direction: row;
 		align-items: center;
 	}
+
 
 	/* # Focus */
 
@@ -37,6 +41,7 @@ export const splitButtonStyles = css`
 		position: relative;
 		z-index: 1;
 	}
+
 
 	/* # Sizes */
 
@@ -71,6 +76,7 @@ export const splitButtonStyles = css`
 	:host(:not([size])) .split-button__divider {
 		height: var(--semantics-buttons-md-divider-length);
 	}
+
 
 	/* # Variants */
 

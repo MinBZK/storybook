@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const segmentedControlStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -46,6 +48,8 @@ export const segmentedControlStyles = css`
 `;
 
 export const segmentedControlItemStyles = css`
+
+
 	/* # Host */
 
 	:host {

@@ -4,10 +4,11 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 const smMax = unsafeCSS(breakpoints.smMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
-
-/* # nldd-navigation-split-view styles */
-
 export const navigationSplitViewStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		width: 100%;
@@ -32,7 +33,7 @@ export const navigationSplitViewStyles = css`
 	}
 
 
-	/* # Split view */
+	/* # Block */
 
 	.navigation-split-view {
 		display: flex;
@@ -93,6 +94,7 @@ export const navigationSplitViewStyles = css`
 	:host(.full-stack) .navigation-split-view__main-pane {
 		min-width: 0;
 	}
+
 
 	/* # Sidebar — inline pane suppresses dismiss button */
 

@@ -1,10 +1,11 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
-
-/* # nldd-one-half-one-half-section styles */
-
 export const oneHalfOneHalfSectionStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -18,8 +19,7 @@ export const oneHalfOneHalfSectionStyles = css`
 	}
 
 
-
-	/* # Section */
+	/* # Block */
 
 	.one-half-one-half-section {
 		display: flex;

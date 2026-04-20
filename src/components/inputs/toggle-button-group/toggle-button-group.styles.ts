@@ -14,7 +14,7 @@ export const toggleButtonGroupStyles = css`
 	}
 
 
-	/* # Group */
+	/* # Block */
 
 	.toggle-button-group {
 		display: flex;

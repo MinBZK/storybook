@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const cellStyles = css`
+
+
 	/* # Host */
 
 	:host {

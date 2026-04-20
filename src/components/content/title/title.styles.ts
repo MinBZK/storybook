@@ -6,13 +6,13 @@ const mdMin = unsafeCSS(breakpoints.mdMin);
 const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
-
-/* # nldd-title styles */
-
 export const titleStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
-		container-type: inline-size;
 	}
 
 	:host([hidden]) {
@@ -20,7 +20,7 @@ export const titleStyles = css`
 	}
 
 
-	/* # Title bar */
+	/* # Block */
 
 	.title {
 		display: flex;
@@ -54,8 +54,164 @@ export const titleStyles = css`
 
 	::slotted(:not([slot])) {
 		margin: 0;
-		padding: 0;
 		color: var(--semantics-content-color);
+	}
+
+	:host([size='1']) ::slotted(:not([slot])) {
+		@media (max-width: ${smMax}) {
+			font: var(--primitives-font-display-1-sm);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-1-md);
+		}
+
+		@media (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-1-lg);
+		}
+
+		@container layout-area (max-width: ${smMax}) {
+			font: var(--primitives-font-display-1-sm);
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-1-md);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-1-lg);
+		}
+	}
+
+	:host([size='2']) ::slotted(:not([slot])) {
+		@media (max-width: ${smMax}) {
+			font: var(--primitives-font-display-2-sm);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-2-md);
+		}
+
+		@media (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-2-lg);
+		}
+
+		@container layout-area (max-width: ${smMax}) {
+			font: var(--primitives-font-display-2-sm);
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-2-md);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-2-lg);
+		}
+	}
+
+	:host([size='3']) ::slotted(:not([slot])),
+	:host(:not([size])) ::slotted(:not([slot])) {
+		@media (max-width: ${smMax}) {
+			font: var(--primitives-font-display-3-sm);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-3-md);
+		}
+
+		@media (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-3-lg);
+		}
+
+		@container layout-area (max-width: ${smMax}) {
+			font: var(--primitives-font-display-3-sm);
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-3-md);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-3-lg);
+		}
+	}
+
+	:host([size='4']) ::slotted(:not([slot])) {
+		@media (max-width: ${smMax}) {
+			font: var(--primitives-font-display-4-sm);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-4-md);
+		}
+
+		@media (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-4-lg);
+		}
+
+		@container layout-area (max-width: ${smMax}) {
+			font: var(--primitives-font-display-4-sm);
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-4-md);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-4-lg);
+		}
+	}
+
+	:host([size='5']) ::slotted(:not([slot])) {
+		@media (max-width: ${smMax}) {
+			font: var(--primitives-font-display-5-sm);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-5-md);
+		}
+
+		@media (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-5-lg);
+		}
+
+		@container layout-area (max-width: ${smMax}) {
+			font: var(--primitives-font-display-5-sm);
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-5-md);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-5-lg);
+		}
+	}
+
+	:host([size='6']) ::slotted(:not([slot])) {
+		@media (max-width: ${smMax}) {
+			font: var(--primitives-font-display-6-sm);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-6-md);
+		}
+
+		@media (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-6-lg);
+		}
+
+		@container layout-area (max-width: ${smMax}) {
+			font: var(--primitives-font-display-6-sm);
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			font: var(--primitives-font-display-6-md);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
+			font: var(--primitives-font-display-6-lg);
+		}
 	}
 
 
@@ -77,132 +233,4 @@ export const titleStyles = css`
 		flex-shrink: 0;
 	}
 
-
-	/* # Size 1 */
-
-	@container layout-area (max-width: ${smMax}) {
-		:host([size='1']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-1-sm);
-		}
-	}
-
-	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([size='1']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-1-md);
-		}
-	}
-
-	@container layout-area (min-width: ${lgMin}) {
-		:host([size='1']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-1-lg);
-		}
-	}
-
-
-	/* # Size 2 */
-
-	@container layout-area (max-width: ${smMax}) {
-		:host([size='2']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-2-sm);
-		}
-	}
-
-	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([size='2']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-2-md);
-		}
-	}
-
-	@container layout-area (min-width: ${lgMin}) {
-		:host([size='2']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-2-lg);
-		}
-	}
-
-
-	/* # Size 3 */
-
-	@container layout-area (max-width: ${smMax}) {
-		:host([size='3']) ::slotted(:not([slot])),
-		:host(:not([size])) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-3-sm);
-		}
-	}
-
-	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([size='3']) ::slotted(:not([slot])),
-		:host(:not([size])) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-3-md);
-		}
-	}
-
-	@container layout-area (min-width: ${lgMin}) {
-		:host([size='3']) ::slotted(:not([slot])),
-		:host(:not([size])) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-3-lg);
-		}
-	}
-
-
-	/* # Size 4 */
-
-	@container layout-area (max-width: ${smMax}) {
-		:host([size='4']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-4-sm);
-		}
-	}
-
-	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([size='4']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-4-md);
-		}
-	}
-
-	@container layout-area (min-width: ${lgMin}) {
-		:host([size='4']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-4-lg);
-		}
-	}
-
-
-	/* # Size 5 */
-
-	@container layout-area (max-width: ${smMax}) {
-		:host([size='5']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-5-sm);
-		}
-	}
-
-	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([size='5']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-5-md);
-		}
-	}
-
-	@container layout-area (min-width: ${lgMin}) {
-		:host([size='5']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-5-lg);
-		}
-	}
-
-
-	/* # Size 6 */
-
-	@container layout-area (max-width: ${smMax}) {
-		:host([size='6']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-6-sm);
-		}
-	}
-
-	@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-		:host([size='6']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-6-md);
-		}
-	}
-
-	@container layout-area (min-width: ${lgMin}) {
-		:host([size='6']) ::slotted(:not([slot])) {
-			font: var(--primitives-font-display-6-lg);
-		}
-	}
 `;

@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const searchFieldStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -19,7 +21,7 @@ export const searchFieldStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.search-field {
 		position: relative;

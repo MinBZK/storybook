@@ -1,10 +1,11 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
-
-/* # nldd-spacer styles */
-
 export const spacerStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: block;
 		flex-shrink: 0;

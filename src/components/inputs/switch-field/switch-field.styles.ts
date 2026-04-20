@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const switchFieldStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -12,7 +14,7 @@ export const switchFieldStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.switch-field {
 		display: flex;

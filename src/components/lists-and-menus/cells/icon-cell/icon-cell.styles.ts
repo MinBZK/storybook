@@ -1,7 +1,9 @@
 import { css } from 'lit';
 
 export const iconCellStyles = css`
-	/* # host */
+
+
+	/* # Host */
 
 	:host {
 		display: flex;
@@ -13,6 +15,7 @@ export const iconCellStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
 
 	/* # vertical-alignment */
 
@@ -37,6 +40,7 @@ export const iconCellStyles = css`
 		align-self: flex-end;
 		justify-content: flex-end;
 	}
+
 
 	/* # size */
 
@@ -89,6 +93,7 @@ export const iconCellStyles = css`
 		width: var(--primitives-space-32);
 		height: var(--primitives-space-32);
 	}
+
 
 	/* # color: inherit */
 

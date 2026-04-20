@@ -20,7 +20,7 @@ export const tokenStyles = css`
 	}
 
 
-	/* # Base */
+	/* # Block */
 
 	.token {
 		/* Reset (for menu button) */
@@ -112,6 +112,7 @@ export const tokenStyles = css`
 	:host([control="dismiss"]) .token {
 		padding-right: 0;
 	}
+
 
 	/* # Accessibility */
 

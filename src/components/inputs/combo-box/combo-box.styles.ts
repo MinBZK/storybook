@@ -20,7 +20,7 @@ export const comboBoxStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.combo-box {
 		display: flex;

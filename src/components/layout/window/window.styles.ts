@@ -3,9 +3,6 @@ import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 
-
-/* # nldd-window styles */
-
 export const windowStyles = css`
 
 
@@ -20,7 +17,7 @@ export const windowStyles = css`
 	}
 
 
-	/* # Window */
+	/* # Block */
 
 	.window {
 		display: flex;

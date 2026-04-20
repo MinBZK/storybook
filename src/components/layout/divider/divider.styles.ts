@@ -1,9 +1,10 @@
 import { css } from 'lit';
 
-
-/* # nldd-divider styles */
-
 export const dividerStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: block;
 		flex-shrink: 0;
@@ -12,6 +13,9 @@ export const dividerStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
+
+	/* # Block */
 
 	.divider {
 		display: block;

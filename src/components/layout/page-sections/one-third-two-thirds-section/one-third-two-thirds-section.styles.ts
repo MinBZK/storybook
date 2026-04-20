@@ -1,10 +1,11 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
-
-/* # nldd-two-thirds-one-third-section styles */
-
 export const oneThirdTwoThirdsSectionStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -18,8 +19,7 @@ export const oneThirdTwoThirdsSectionStyles = css`
 	}
 
 
-
-	/* # Section */
+	/* # Block */
 
 	.one-third-two-thirds-section {
 		display: flex;

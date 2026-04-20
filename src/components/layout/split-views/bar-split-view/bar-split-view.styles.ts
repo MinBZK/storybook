@@ -3,9 +3,11 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 
-/* # nldd-bar-split-view styles */
-
 export const barSplitViewStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -33,7 +35,7 @@ export const barSplitViewStyles = css`
 	}
 
 
-	/* # Bar split view */
+	/* # Block */
 
 	.bar-split-view {
 		display: flex;

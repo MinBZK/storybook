@@ -32,7 +32,7 @@ export const topNavigationBarStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.top-navigation-bar {
 		display: flex;

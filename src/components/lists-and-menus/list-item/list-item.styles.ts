@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const listItemStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -211,6 +213,7 @@ export const listItemStyles = css`
 		display: block;
 		background-color: var(--components-list-item-is-highlighted-background-color);
 	}
+
 
 	/* # Focus */
 
