@@ -140,6 +140,56 @@ describe('nldd-combo-box – input event', () => {
 
 
 /* ============================================================
+   Dismiss button
+   ============================================================ */
+
+describe('nldd-combo-box – dismiss', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('does not render dismiss button when display value is empty', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.combo-box__clear-action')).toBeNull();
+	});
+
+	it('renders dismiss button when there is a display value', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'Ned';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.combo-box__clear-action')).not.toBeNull();
+	});
+
+	it('clears value, fires change event and refocuses input on dismiss click', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'Nederland';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		el.value = 'nl';
+		await waitForUpdate(el);
+
+		let changeDetail: any;
+		el.addEventListener('change', ((e: CustomEvent) => { changeDetail = e.detail; }) as EventListener);
+
+		const dismissButton = el.shadowRoot!.querySelector<HTMLElement>('.combo-box__clear-action nldd-icon-button')!;
+		dismissButton.click();
+		await waitForUpdate(el);
+
+		expect(el.value).toBe('');
+		expect(el._displayValue).toBe('');
+		expect(changeDetail?.value).toBe('');
+	});
+});
+
+
+/* ============================================================
    Filtering
    ============================================================ */
 

@@ -26,13 +26,13 @@ export function searchFieldTemplate(component: NLDDSearchField): TemplateResult 
 			<div class="search-field__fade"></div>
 			<div class="search-field__actions">
 				${component.value ? html`
-					<div class="search-field__dismiss-action">
+					<div class="search-field__clear-action">
 						<nldd-icon-button
 							variant="neutral-transparent"
 							size=${buttonSize}
 							icon="dismiss"
-							text=${component._t('components.search-field.dismiss-action')}
-							@click=${component._handleDismiss}
+							text=${component._t('components.search-field.clear-action')}
+							@click=${component._handleClear}
 						></nldd-icon-button>
 					</div>
 				` : nothing}

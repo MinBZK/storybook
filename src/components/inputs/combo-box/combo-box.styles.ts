@@ -73,12 +73,19 @@ export const comboBoxStyles = css`
 	}
 
 
-	/* # Picker */
+	/* # Actions */
 
-	.combo-box__picker {
+	.combo-box__actions {
 		display: flex;
-		align-items: center;
 		flex-shrink: 0;
+		align-items: center;
+		gap: var(--primitives-space-6);
 		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+	}
+
+	.combo-box__clear-action:focus-within,
+	.combo-box__picker:focus-within {
+		position: relative;
+		z-index: 1;
 	}
 `;
