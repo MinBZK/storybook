@@ -13,7 +13,7 @@ export function template(this: NLDDSplitButton) {
 				@click=${this._handleActionClick}
 			></nldd-button>
 			<div class="split-button__divider"></div>
-			<nldd-icon-button
+			<nldd-icon-button class="split-button__trigger"
 				variant=${this.variant}
 				size=${this.size}
 				icon="chevron-down-small"
@@ -23,5 +23,6 @@ export function template(this: NLDDSplitButton) {
 				@click=${this._handleMenuClick}
 			></nldd-icon-button>
 		</div>
+		<nldd-menu class="split-button__menu"></nldd-menu>
 	`;
 }

@@ -88,7 +88,7 @@ export const splitButtonStyles = css`
 	}
 
 
-	/* # Elements */
+	/* # Divider */
 
 	.split-button__divider {
 		width: 1px;
