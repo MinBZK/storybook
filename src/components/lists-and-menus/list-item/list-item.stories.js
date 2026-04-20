@@ -1,4 +1,4 @@
-import { html, nothing } from 'lit';
+import { html, nothing, render } from 'lit';
 import './list-item.js';
 import '../list/list.js';
 import '../cells/text-cell/text-cell.js';
@@ -180,38 +180,42 @@ export const SimpleWithEndOnly = {
  * werkt slepen via pointer en toetsenbord niet.
  */
 export const WithDragHandle = {
-	render: () => html`
-		<nldd-list variant="box" reorderable>
-			<nldd-list-item>
-				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
-				<nldd-drag-handle-cell
-					size="sm"
-					slot="start"
-					reorderable-only
-				></nldd-drag-handle-cell>
-				<nldd-spacer-cell
-					slot="start"
-					reorderable-only
-					size="8"
-				></nldd-spacer-cell>
-				<nldd-text-cell text="Versleepbaar item" />
-			</nldd-list-item>
-			<nldd-list-item>
-				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
-				<nldd-drag-handle-cell
-					size="sm"
-					slot="start"
-					reorderable-only
-				></nldd-drag-handle-cell>
-				<nldd-spacer-cell
-					slot="start"
-					reorderable-only
-					size="8"
-				></nldd-spacer-cell>
-				<nldd-text-cell text="Nog een item" />
-			</nldd-list-item>
-		</nldd-list>
-	`,
+	// Imperative render: the nldd-reorder handler mutates the DOM in place so
+	// keyboard + pointer drag actually move items. A standard Storybook render
+	// function can't do this because Lit templates are stateless.
+	render: () => {
+		const onReorder = (e) => {
+			const list = e.currentTarget;
+			const { fromIndex, toIndex } = e.detail;
+			const items = [...list.querySelectorAll('nldd-list-item')];
+			const moved = items[fromIndex];
+			if (toIndex === 0) {
+				items[0].before(moved);
+			} else {
+				const ref = items.filter((_, i) => i !== fromIndex)[toIndex - 1];
+				ref.after(moved);
+			}
+		};
+
+		const el = document.createElement('div');
+		render(html`
+			<nldd-list variant="box" reorderable @nldd-reorder=${onReorder}>
+				<nldd-list-item>
+					<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
+					<nldd-drag-handle-cell size="sm" slot="start" reorderable-only></nldd-drag-handle-cell>
+					<nldd-spacer-cell slot="start" reorderable-only size="8"></nldd-spacer-cell>
+					<nldd-text-cell text="Versleepbaar item"></nldd-text-cell>
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
+					<nldd-drag-handle-cell size="sm" slot="start" reorderable-only></nldd-drag-handle-cell>
+					<nldd-spacer-cell slot="start" reorderable-only size="8"></nldd-spacer-cell>
+					<nldd-text-cell text="Nog een item"></nldd-text-cell>
+				</nldd-list-item>
+			</nldd-list>
+		`, el);
+		return el;
+	},
 };
 WithDragHandle.parameters = { controls: { disable: true } };
 
