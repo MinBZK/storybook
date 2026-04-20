@@ -2,7 +2,6 @@
 nldd-rich-text {
 	display: block;
 	color: var(--semantics-content-color);
-	container-type: inline-size;
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
 	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
@@ -64,6 +63,13 @@ nldd-rich-text h1 {
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-1-sm);
 
+	@media (min-width: 641px) {
+		font: var(--primitives-font-display-1-md);
+	}
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-1-lg);
+	}
+
 	@container layout-area (min-width: 641px) {
 		font: var(--primitives-font-display-1-md);
 	}
@@ -78,6 +84,13 @@ nldd-rich-text h2 {
 	margin-top: calc(var(--components-rich-text-spacing) * 2);
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-2-sm);
+
+	@media (min-width: 641px) {
+		font: var(--primitives-font-display-2-md);
+	}
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-2-lg);
+	}
 
 	@container layout-area (min-width: 641px) {
 		font: var(--primitives-font-display-2-md);
@@ -94,6 +107,13 @@ nldd-rich-text h3 {
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-3-sm);
 
+	@media (min-width: 641px) {
+		font: var(--primitives-font-display-3-md);
+	}
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-3-lg);
+	}
+
 	@container layout-area (min-width: 641px) {
 		font: var(--primitives-font-display-3-md);
 	}
@@ -108,6 +128,13 @@ nldd-rich-text h4 {
 	margin-top: calc(var(--components-rich-text-spacing) * 2);
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-4-sm);
+
+	@media (min-width: 641px) {
+		font: var(--primitives-font-display-4-md);
+	}
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-4-lg);
+	}
 
 	@container layout-area (min-width: 641px) {
 		font: var(--primitives-font-display-4-md);
@@ -124,6 +151,13 @@ nldd-rich-text h5 {
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-5-sm);
 
+	@media (min-width: 641px) {
+		font: var(--primitives-font-display-5-md);
+	}
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-5-lg);
+	}
+
 	@container layout-area (min-width: 641px) {
 		font: var(--primitives-font-display-5-md);
 	}
@@ -138,6 +172,13 @@ nldd-rich-text h6 {
 	margin-top: calc(var(--components-rich-text-spacing) * 2);
 	margin-bottom: var(--components-rich-text-spacing);
 	font: var(--primitives-font-display-6-sm);
+
+	@media (min-width: 641px) {
+		font: var(--primitives-font-display-6-md);
+	}
+	@media (min-width: 1008px) {
+		font: var(--primitives-font-display-6-lg);
+	}
 
 	@container layout-area (min-width: 641px) {
 		font: var(--primitives-font-display-6-md);
@@ -296,6 +337,12 @@ nldd-rich-text table {
 	-webkit-overflow-scrolling: touch;
 	scrollbar-width: thin;
 
+	@media (min-width: 641px) {
+		display: table;
+		overflow-x: unset;
+		scrollbar-width: unset;
+	}
+
 	@container layout-area (min-width: 641px) {
 		display: table;
 		overflow-x: unset;
@@ -319,6 +366,10 @@ nldd-rich-text td {
 	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 	min-width: var(--primitives-area-120);
 	font: var(--primitives-font-body-md-regular-snug);
+
+	@media (min-width: 641px) {
+		min-width: none;
+	}
 
 	@container layout-area (min-width: 641px) {
 		min-width: none;

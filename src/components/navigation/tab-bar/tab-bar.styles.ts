@@ -117,6 +117,13 @@ export const tabBarItemStyles = css`
 	}
 
 	:host([responsive]) .tab-bar__item {
+		@media (max-width: ${smMax}) {
+			flex-direction: column;
+			gap: 0;
+			padding: var(--primitives-space-8);
+			height: var(--semantics-controls-lg-min-size);
+		}
+
 		@container layout-area (max-width: ${smMax}) {
 			flex-direction: column;
 			gap: 0;
@@ -207,6 +214,10 @@ export const tabBarItemStyles = css`
 	}
 
 	:host([responsive]) .tab-bar__item-text {
+		@media (max-width: ${smMax}) {
+			font: var(--primitives-font-body-xxs-bold-flat);
+		}
+
 		@container layout-area (max-width: ${smMax}) {
 			font: var(--primitives-font-body-xxs-bold-flat);
 		}
