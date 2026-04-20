@@ -34,16 +34,16 @@
 	font-display: swap;
 }
 
-:root[data-theme="dark"] {
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-
 @media (prefers-color-scheme: dark) {
-	:root:not([data-theme="light"]) {
+	:root:not([data-scheme="light"]) {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
+}
+
+:root[data-scheme="dark"] {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 :root {
@@ -670,44 +670,56 @@
 
 	/* ## Box shadow */
 
+	--primitives-box-shadow-opacity-factor: 1;
+
+	@media (prefers-color-scheme: dark) {
+		&:not([data-scheme="light"]) {
+			--primitives-box-shadow-opacity-factor: 3;
+		}
+	}
+
+	&[data-scheme="dark"] {
+		--primitives-box-shadow-opacity-factor: 3;
+	}
+
 	--primitives-box-shadows-level-1:
-		0px 2px 4px 0px rgba(0, 0, 0, 0.11),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.09)
+		0px 2px 4px 0px rgba(0, 0, 0, calc(0.11 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.09 * var(--primitives-box-shadow-opacity-factor)))
 		;
 	--primitives-box-shadows-level-2:
-		0px 2px 8px 0px rgba(0, 0, 0, 0.1),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.08),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.06)
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor)))
 	;
 	--primitives-box-shadows-level-3:
-		0px 4px 16px 0px rgba(0, 0, 0, 0.12),
-		0px 2px 8px 0px rgba(0, 0, 0, 0.06),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.05),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.04)
+		0px 4px 16px 0px rgba(0, 0, 0, calc(0.12 * var(--primitives-box-shadow-opacity-factor))),
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.05 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor)))
 	;
 	--primitives-box-shadows-level-4:
-		0px 8px 32px 0px rgba(0, 0, 0, 0.1),
-		0px 4px 16px 0px rgba(0, 0, 0, 0.08),
-		0px 2px 8px 0px rgba(0, 0, 0, 0.06),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.04),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
+		0px 8px 32px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
+		0px 4px 16px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
 	;
 	--primitives-box-shadows-level-5:
-		0px 16px 64px 0px rgba(0, 0, 0, 0.11),
-		0px 8px 32px 0px rgba(0, 0, 0, 0.09),
-		0px 4px 16px 0px rgba(0, 0, 0, 0.06),
-		0px 2px 8px 0px rgba(0, 0, 0, 0.04),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.03),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
+		0px 16px 64px 0px rgba(0, 0, 0, calc(0.11 * var(--primitives-box-shadow-opacity-factor))),
+		0px 8px 32px 0px rgba(0, 0, 0, calc(0.09 * var(--primitives-box-shadow-opacity-factor))),
+		0px 4px 16px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.03 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
 	;
 	--primitives-box-shadows-level-6:
-		0px 32px 128px 0px rgba(0, 0, 0, 0.16),
-		0px 16px 64px 0px rgba(0, 0, 0, 0.1),
-		0px 8px 32px 0px rgba(0, 0, 0, 0.08),
-		0px 4px 16px 0px rgba(0, 0, 0, 0.06),
-		0px 2px 8px 0px rgba(0, 0, 0, 0.04),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.03),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
+		0px 32px 128px 0px rgba(0, 0, 0, calc(0.16 * var(--primitives-box-shadow-opacity-factor))),
+		0px 16px 64px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
+		0px 8px 32px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
+		0px 4px 16px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.03 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
 	;
 
 
