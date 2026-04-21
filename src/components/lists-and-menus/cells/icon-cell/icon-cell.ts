@@ -22,7 +22,7 @@ type Size = '16' | '20' | '24' | '32';
 type Color = 'default' | 'inherit';
 
 @customElement('nldd-icon-cell')
-export class NLDDIconCell extends VisibilityMixin(LitElement, 'list-item') {
+export class NLDDIconCell extends VisibilityMixin(LitElement) {
 	static override styles = iconCellStyles;
 
 	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })

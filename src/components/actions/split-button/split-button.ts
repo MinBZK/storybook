@@ -60,6 +60,7 @@ export class NLDDSplitButton extends LitElement {
 
 	private _hasMenuItems = false;
 	private _menuWasOpenOnMousedown = false;
+	private _childObserver?: MutationObserver;
 
 	// — i18n —————————————————————————————————————————————————————————————————
 
@@ -70,22 +71,46 @@ export class NLDDSplitButton extends LitElement {
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
 	override firstUpdated(): void {
-		// Move any slotted menu-items / dividers from the light DOM into the
-		// internal nldd-menu so nldd-menu's querySelectorAll sees them.
-		const items = Array.from(this.children).filter((el) =>
+		this._syncMenuItems();
+		// Watch for children added or removed after first render. Moving items
+		// into the menu (in _syncMenuItems) itself triggers a childList mutation
+		// — the re-entry is harmless because subsequent syncs find no items to
+		// move and just update the flag.
+		this._childObserver = new MutationObserver(() => this._syncMenuItems());
+		this._childObserver.observe(this, { childList: true });
+		// Capture open-state BEFORE the browser's light-dismiss fires on
+		// mousedown. The subsequent click handler uses this snapshot to
+		// decide: was the popover open? → user clicked to close (no-op,
+		// light-dismiss already closed it). Was it closed? → open it.
+		this._trigger?.addEventListener('mousedown', () => {
+			this._menuWasOpenOnMousedown = this._menu?.matches(':popover-open') ?? false;
+		});
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._childObserver?.disconnect();
+		this._childObserver = undefined;
+	}
+
+	/**
+	 * Moves any `nldd-menu-item` / `nldd-menu-divider` children from the light
+	 * DOM into the internal `nldd-menu` (so nldd-menu's `querySelectorAll`
+	 * sees them) and syncs `_hasMenuItems` against the menu's current content.
+	 * Safe to call repeatedly — already-moved items are no longer in
+	 * `this.children`.
+	 */
+	private _syncMenuItems(): void {
+		if (!this._menu || !this._trigger) return;
+		const toMove = Array.from(this.children).filter((el) =>
 			el.matches('nldd-menu-item, nldd-menu-divider'),
 		);
-		this._hasMenuItems = items.length > 0;
-		if (this._hasMenuItems && this._menu && this._trigger) {
-			items.forEach((item) => this._menu!.appendChild(item));
+		toMove.forEach((item) => this._menu!.appendChild(item));
+		const hadItems = this._hasMenuItems;
+		this._hasMenuItems =
+			this._menu.querySelectorAll('nldd-menu-item, nldd-menu-divider').length > 0;
+		if (this._hasMenuItems && !hadItems) {
 			this._menu.anchorElement = this._trigger;
-			// Capture open-state BEFORE the browser's light-dismiss fires on
-			// mousedown. The subsequent click handler uses this snapshot to
-			// decide: was the popover open? → user clicked to close (no-op,
-			// light-dismiss already closed it). Was it closed? → open it.
-			this._trigger.addEventListener('mousedown', () => {
-				this._menuWasOpenOnMousedown = this._menu!.matches(':popover-open');
-			});
 		}
 	}
 

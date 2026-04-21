@@ -26,7 +26,7 @@ import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
 export type CellVerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('nldd-cell')
-export class NLDDCell extends VisibilityMixin(LitElement, 'list-item') {
+export class NLDDCell extends VisibilityMixin(LitElement) {
 	static override styles = [cellStyles];
 
 	/** 'stretch' | 'fit-content' | CSS length (e.g. '120px', '10rem'). */

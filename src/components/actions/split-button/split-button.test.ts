@@ -65,4 +65,27 @@ describe('nldd-split-button', () => {
 		expect(menu.querySelectorAll('nldd-menu-item').length).toBe(2);
 		expect(el.querySelectorAll(':scope > nldd-menu-item').length).toBe(0);
 	});
+
+	it('picks up menu-items added after first render', async () => {
+		el = await fixture('<nldd-split-button text="Opslaan"></nldd-split-button>');
+		await waitForUpdate(el);
+
+		const item = document.createElement('nldd-menu-item');
+		item.setAttribute('text', 'Later toegevoegd');
+		el.appendChild(item);
+		await waitForUpdate(el);
+
+		const menu = el.shadowRoot!.querySelector<HTMLElement>('.split-button__menu')!;
+		expect(menu.querySelectorAll('nldd-menu-item').length).toBe(1);
+		expect(el.querySelectorAll(':scope > nldd-menu-item').length).toBe(0);
+
+		// With items now present, chevron should open the menu instead of firing menu-click.
+		let menuClickFired = false;
+		el.addEventListener('menu-click', () => { menuClickFired = true; });
+		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__trigger')!;
+		trigger.click();
+		await waitForUpdate(el);
+		expect(menuClickFired).toBe(false);
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
 });

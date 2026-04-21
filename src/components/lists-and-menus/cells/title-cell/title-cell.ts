@@ -36,7 +36,7 @@ type HorizontalAlignment = 'left' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('nldd-title-cell')
-export class NLDDTitleCell extends VisibilityMixin(LitElement, 'list-item') {
+export class NLDDTitleCell extends VisibilityMixin(LitElement) {
 	static override styles = [titleCellStyles];
 
 	@property({ type: Number, reflect: true })

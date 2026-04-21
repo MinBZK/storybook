@@ -6,12 +6,12 @@ type Constructor<T = LitElement> = new (...args: any[]) => T;
 
 /**
  * Adds `hide-below` and `hide-above` attributes that toggle visibility based
- * on the inline-size of an ancestor CSS container.
+ * on the inline-size of the nearest ancestor CSS container.
  *
  * The ancestor (typically the component's direct parent in usage) must declare
- * `container-type: inline-size`. `containerName` is only informational — the
- * generated `@container` rule is anonymous, which resolves more reliably in
- * Safari when the querying element is slotted across shadow-DOM boundaries.
+ * `container-type: inline-size`. The generated `@container` rule is anonymous
+ * — Safari does not reliably resolve named containers across shadow-DOM
+ * boundaries when the querying element is slotted.
  *
  * Values are CSS lengths (e.g. '320px', '20rem'). Container queries can't read
  * CSS variables in their conditions, so the query rule is generated at runtime
@@ -21,13 +21,10 @@ type Constructor<T = LitElement> = new (...args: any[]) => T;
  *
  * @example
  * ```ts
- * class NLDDTextCell extends VisibilityMixin(LitElement, 'list-item') { ... }
+ * class NLDDTextCell extends VisibilityMixin(LitElement) { ... }
  * ```
  */
-export function VisibilityMixin<TBase extends Constructor<LitElement>>(
-	Base: TBase,
-	_containerName: string,
-) {
+export function VisibilityMixin<TBase extends Constructor<LitElement>>(Base: TBase) {
 	class WithVisibility extends Base {
 		@property({ type: String, reflect: true, attribute: 'hide-below' })
 		hideBelow?: string;
