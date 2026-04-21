@@ -31,6 +31,45 @@ describe('nldd-number-field', () => {
 
 
 /* ============================================================
+   Size
+   ============================================================ */
+
+describe('nldd-number-field – size', () => {
+	let el: NLDDNumberField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults size to md', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field></nldd-number-field>');
+		await waitForUpdate(el);
+		expect(el.size).toBe('md');
+	});
+
+	it('reflects size attribute to host', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field size="sm"></nldd-number-field>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('sm');
+	});
+
+	it('renders sm icon buttons when size is md', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field></nldd-number-field>');
+		await waitForUpdate(el);
+		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
+		expect(buttons[0].getAttribute('size')).toBe('sm');
+	});
+
+	it('renders xs icon buttons when size is sm', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field size="sm"></nldd-number-field>');
+		await waitForUpdate(el);
+		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
+		expect(buttons[0].getAttribute('size')).toBe('xs');
+	});
+});
+
+
+/* ============================================================
    State
    ============================================================ */
 

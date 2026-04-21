@@ -54,15 +54,9 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<nldd-dropdown size="md">
-			<select name="optie-1" aria-label="Selecteer een optie">
+		<nldd-dropdown size="xs">
+			<select name="optie-xs" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
-				<option value="optie-1">Optie 1</option>
-				<option value="optie-2">Optie 2</option>
-			</select>
-		</nldd-dropdown>
-		<nldd-dropdown size="md">
-			<select name="optie-2" aria-label="Selecteer een optie">
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>
@@ -74,9 +68,15 @@ export const AlleToestanden = () => html`
 				<option value="optie-2">Optie 2</option>
 			</select>
 		</nldd-dropdown>
-		<nldd-dropdown size="xs">
-			<select name="optie-xs" aria-label="Selecteer een optie">
+		<nldd-dropdown size="md">
+			<select name="optie-1" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
+				<option value="optie-1">Optie 1</option>
+				<option value="optie-2">Optie 2</option>
+			</select>
+		</nldd-dropdown>
+		<nldd-dropdown size="md">
+			<select name="optie-2" aria-label="Selecteer een optie">
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
 			</select>

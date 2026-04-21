@@ -32,6 +32,45 @@ describe('nldd-combo-box', () => {
 
 
 /* ============================================================
+   Size
+   ============================================================ */
+
+describe('nldd-combo-box – size', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults size to md', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.size).toBe('md');
+	});
+
+	it('reflects size attribute to host', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box size="sm"></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('sm');
+	});
+
+	it('renders sm icon buttons when size is md', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		const picker = el.shadowRoot!.querySelector('.combo-box__picker nldd-icon-button')!;
+		expect(picker.getAttribute('size')).toBe('sm');
+	});
+
+	it('renders xs icon buttons when size is sm', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box size="sm"></nldd-combo-box>');
+		await waitForUpdate(el);
+		const picker = el.shadowRoot!.querySelector('.combo-box__picker nldd-icon-button')!;
+		expect(picker.getAttribute('size')).toBe('xs');
+	});
+});
+
+
+/* ============================================================
    ARIA
    ============================================================ */
 

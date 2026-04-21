@@ -73,7 +73,7 @@ export const dropdownStyles = css`
 		background: transparent;
 		outline: none;
 		box-sizing: border-box;
-		font: var(--primitives-font-body-sm-regular-snug);
+		font: var(--semantics-input-fields-native-select-font);
 	}
 
 

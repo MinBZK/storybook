@@ -151,14 +151,14 @@ AlleLanden.parameters = { controls: { disable: true } };
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<nldd-combo-box placeholder="Zoek een land" size="md">
+		<nldd-combo-box placeholder="Zoek een land" size="sm">
 			<nldd-menu empty-text="Geen resultaten">
 				<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
 				<nldd-menu-item text="België" value="be"></nldd-menu-item>
 				<nldd-menu-item text="Duitsland" value="de"></nldd-menu-item>
 			</nldd-menu>
 		</nldd-combo-box>
-		<nldd-combo-box placeholder="Zoek een land" size="sm">
+		<nldd-combo-box placeholder="Zoek een land" size="md">
 			<nldd-menu empty-text="Geen resultaten">
 				<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
 				<nldd-menu-item text="België" value="be"></nldd-menu-item>

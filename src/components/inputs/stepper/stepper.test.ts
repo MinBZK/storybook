@@ -25,6 +25,33 @@ describe('nldd-stepper', () => {
 
 
 /* ============================================================
+   Size
+   ============================================================ */
+
+describe('nldd-stepper – size', () => {
+	let el: NLDDStepper;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults size to md', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
+		await waitForUpdate(el);
+		expect(el.size).toBe('md');
+	});
+
+	it('reflects size="xs" to host and propagates to icon buttons', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper size="xs"></nldd-stepper>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('xs');
+		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
+		expect(buttons[0].getAttribute('size')).toBe('xs');
+	});
+});
+
+
+/* ============================================================
    State
    ============================================================ */
 

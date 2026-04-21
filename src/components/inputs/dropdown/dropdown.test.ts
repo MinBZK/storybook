@@ -37,6 +37,31 @@ describe('nldd-dropdown', () => {
 
 
 /* ============================================================
+   Size
+   ============================================================ */
+
+describe('nldd-dropdown – size', () => {
+	let el: NLDDDropdown;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults size to md', async () => {
+		el = await fixture<NLDDDropdown>('<nldd-dropdown></nldd-dropdown>');
+		await waitForUpdate(el);
+		expect(el.size).toBe('md');
+	});
+
+	it('reflects size="xs" to host', async () => {
+		el = await fixture<NLDDDropdown>('<nldd-dropdown size="xs"></nldd-dropdown>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('xs');
+	});
+});
+
+
+/* ============================================================
    State
    ============================================================ */
 

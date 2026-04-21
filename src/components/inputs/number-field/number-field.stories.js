@@ -104,8 +104,8 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<nldd-number-field value="5" min="0" max="10" size="md"></nldd-number-field>
 		<nldd-number-field value="5" min="0" max="10" size="sm"></nldd-number-field>
+		<nldd-number-field value="5" min="0" max="10" size="md"></nldd-number-field>
 		<nldd-number-field value="0" min="0" max="10"></nldd-number-field>
 		<nldd-number-field value="10" min="0" max="10"></nldd-number-field>
 		<nldd-number-field value="5" min="0" max="10" disabled></nldd-number-field>

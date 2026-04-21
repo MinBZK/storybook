@@ -843,6 +843,9 @@
 
 	--semantics-input-fields-xs-text-font: var(--primitives-font-body-xs-regular-flat);
 	--semantics-input-fields-xs-mask-font: 400 var(--primitives-font-size-80)/var(--primitives-line-height-flat) Verdana, system-ui;
+	/* Font for the invisible native <select>: Safari derives the option popup size from this,
+	   and iOS Safari auto-zooms inputs below 16px — so this must stay >= 16px. */
+	--semantics-input-fields-native-select-font: var(--primitives-font-body-sm-regular-snug);
 	--semantics-input-fields-sm-text-font: var(--primitives-font-body-sm-regular-flat);
 	--semantics-input-fields-sm-mask-font: 400 var(--primitives-font-size-90)/var(--primitives-line-height-flat) Verdana, system-ui;
 	--semantics-input-fields-md-text-font: var(--primitives-font-body-md-regular-flat);
