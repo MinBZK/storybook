@@ -192,4 +192,24 @@ describe('nldd-search-field – dismiss', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-icon-button')).toBeNull();
 	});
+
+	it('dispatches input event with empty value on dismiss', async () => {
+		el = await fixture<NLDDSearchField>('<nldd-search-field value="test"></nldd-search-field>');
+		await waitForUpdate(el);
+		let detail: any;
+		el.addEventListener('input', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
+		el._handleClear();
+		expect(detail?.value).toBe('');
+	});
+
+	it('refocuses the input after dismiss', async () => {
+		el = await fixture<NLDDSearchField>('<nldd-search-field value="test"></nldd-search-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		el._handleClear();
+		await waitForUpdate(el);
+		let active: Element | null = document.activeElement;
+		while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement;
+		expect(active).toBe(input);
+	});
 });
