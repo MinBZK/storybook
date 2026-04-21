@@ -8,7 +8,7 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['md', 'sm'],
+			options: ['sm', 'md'],
 			description: 'Handle size',
 			table: {
 				defaultValue: { summary: 'md' },

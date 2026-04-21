@@ -24,7 +24,7 @@ export const textFieldStyles = css`
 		align-items: center;
 		overflow: hidden;
 		box-sizing: border-box;
-		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
+		border: var(--semantics-input-fields-border);
 		background-color: var(--_background-color);
 	}
 

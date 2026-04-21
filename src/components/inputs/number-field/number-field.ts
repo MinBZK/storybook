@@ -8,6 +8,7 @@
  * @attr {number}  min          - Minimum value (default: -Infinity)
  * @attr {number}  max          - Maximum value (default: Infinity)
  * @attr {number}  step         - Step size (default: 1)
+ * @attr {string}  size         - Size: 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled     - Disabled state
  * @attr {string}  name         - Name for form submission
  * @attr {object}  translations - Translations; unspecified keys fall back to Dutch
@@ -28,6 +29,8 @@ import type { NLDDNumberFieldTranslations } from './number-field.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
 
+export type NumberFieldSize = 'sm' | 'md';
+
 @customElement('nldd-number-field')
 export class NLDDNumberField extends LitElement {
 	static override styles = numberFieldStyles;
@@ -43,6 +46,9 @@ export class NLDDNumberField extends LitElement {
 
 	@property({ type: Number })
 	step = 1;
+
+	@property({ type: String, reflect: true })
+	size: NumberFieldSize = 'md';
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;

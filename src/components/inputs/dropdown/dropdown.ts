@@ -8,7 +8,7 @@
  * dynamic changes to options.
  *
  * @element nldd-dropdown
- * @attr {string}  size     - Size: 'sm' | 'md' (default: 'md')
+ * @attr {string}  size     - Size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
  *
  * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
@@ -32,7 +32,7 @@ import { dropdownStyles } from './dropdown.styles.js';
 import { dropdownTemplate } from './dropdown.template.js';
 import './../../content/icon/icon.js';
 
-export type DropdownSize = 'sm' | 'md';
+export type DropdownSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-dropdown')
 export class NLDDDropdown extends LitElement {

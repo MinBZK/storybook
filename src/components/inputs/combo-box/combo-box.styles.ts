@@ -7,6 +7,7 @@ export const comboBoxStyles = css`
 
 	:host {
 		display: block;
+		--_background-color: var(--semantics-input-fields-background-color);
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -28,11 +29,19 @@ export const comboBoxStyles = css`
 		align-items: center;
 		box-sizing: border-box;
 		width: 100%;
-		min-height: var(--semantics-controls-md-min-size);
 		background-color: var(--_background-color);
-		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
+		border: var(--semantics-input-fields-border);
+	}
+
+	:host([size='sm']) .combo-box {
+		min-height: var(--semantics-controls-sm-min-size);
+		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
+	:host([size='md']) .combo-box,
+	:host(:not([size])) .combo-box {
+		min-height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
-		--_background-color: var(--semantics-input-fields-background-color);
 	}
 
 	.combo-box:has(input:-webkit-autofill),
@@ -53,14 +62,23 @@ export const comboBoxStyles = css`
 		border: none;
 		background: transparent;
 		margin: 0;
-		padding: 0 calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 		outline: none;
 		box-sizing: border-box;
 		flex: 1;
 		min-width: 0;
 		width: 100%;
-		font: var(--semantics-input-fields-md-text-font);
 		color: var(--semantics-content-color);
+	}
+
+	:host([size='sm']) .combo-box__input {
+		padding: 0 calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
+		font: var(--semantics-input-fields-sm-text-font);
+	}
+
+	:host([size='md']) .combo-box__input,
+	:host(:not([size])) .combo-box__input {
+		padding: 0 calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
+		font: var(--semantics-input-fields-md-text-font);
 	}
 
 	.combo-box__input::placeholder {
@@ -80,6 +98,14 @@ export const comboBoxStyles = css`
 		flex-shrink: 0;
 		align-items: center;
 		gap: var(--primitives-space-6);
+	}
+
+	:host([size='sm']) .combo-box__actions {
+		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+	}
+
+	:host([size='md']) .combo-box__actions,
+	:host(:not([size])) .combo-box__actions {
 		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 

@@ -7,8 +7,9 @@ export const dropdownStyles = css`
 
 	:host {
 		display: block;
-		--_md-icon-size: var(--primitives-space-24);
+		--_xs-icon-size: var(--primitives-space-16);
 		--_sm-icon-size: var(--primitives-space-20);
+		--_md-icon-size: var(--primitives-space-24);
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -35,15 +36,20 @@ export const dropdownStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 	}
 
-	:host([size='md']) .dropdown,
-	:host(:not([size])) .dropdown {
-		min-height: var(--semantics-controls-md-min-size);
-		border-radius: var(--semantics-controls-md-corner-radius);
+	:host([size='xs']) .dropdown {
+		min-height: var(--semantics-controls-xs-min-size);
+		border-radius: var(--semantics-controls-xs-corner-radius);
 	}
 
 	:host([size='sm']) .dropdown {
 		min-height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
+	:host([size='md']) .dropdown,
+	:host(:not([size])) .dropdown {
+		min-height: var(--semantics-controls-md-min-size);
+		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
 	.dropdown:focus-within {
@@ -67,15 +73,7 @@ export const dropdownStyles = css`
 		background: transparent;
 		outline: none;
 		box-sizing: border-box;
-	}
-
-	:host([size='md']) ::slotted(select),
-	:host(:not([size])) ::slotted(select) {
-		font: var(--semantics-input-fields-md-text-font);
-	}
-
-	:host([size='sm']) ::slotted(select) {
-		font: var(--semantics-input-fields-sm-text-font);
+		font: var(--primitives-font-body-sm-regular-snug);
 	}
 
 
@@ -88,6 +86,11 @@ export const dropdownStyles = css`
 		overflow: hidden;
 		text-overflow: ellipsis;
 		color: inherit;
+	}
+
+	:host([size='xs']) .dropdown__value {
+		padding: 0 var(--semantics-controls-xs-inline-padding);
+		font: var(--semantics-input-fields-xs-text-font);
 	}
 
 	:host([size='sm']) .dropdown__value {
@@ -112,16 +115,22 @@ export const dropdownStyles = css`
 		color: inherit;
 	}
 
-	:host([size='md']) .dropdown__picker-icon,
-	:host(:not([size])) .dropdown__picker-icon {
-		width: var(--_md-icon-size);
-		height: var(--_md-icon-size);
-		padding-right: calc((var(--semantics-controls-md-min-size) - var(--_md-icon-size)) / 2);
+	:host([size='xs']) .dropdown__picker-icon {
+		width: var(--_xs-icon-size);
+		height: var(--_xs-icon-size);
+		padding-right: calc((var(--semantics-controls-xs-min-size) - var(--_xs-icon-size)) / 2);
 	}
 
 	:host([size='sm']) .dropdown__picker-icon {
 		width: var(--_sm-icon-size);
 		height: var(--_sm-icon-size);
 		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--_sm-icon-size)) / 2);
+	}
+
+	:host([size='md']) .dropdown__picker-icon,
+	:host(:not([size])) .dropdown__picker-icon {
+		width: var(--_md-icon-size);
+		height: var(--_md-icon-size);
+		padding-right: calc((var(--semantics-controls-md-min-size) - var(--_md-icon-size)) / 2);
 	}
 `;

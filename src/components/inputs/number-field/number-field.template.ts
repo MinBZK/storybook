@@ -5,6 +5,7 @@ import './../../actions/icon-button/icon-button.js';
 export function numberFieldTemplate(component: NLDDNumberField): TemplateResult {
 	const canDecrease = component.value > component.min;
 	const canIncrease = component.value < component.max;
+	const iconButtonSize = component.size === 'sm' ? 'xs' : 'sm';
 
 	return html`
 		<div class="number-field"
@@ -15,7 +16,7 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 				<div class="number-field__decrement-control">
 					<nldd-icon-button
 						variant="neutral-tinted"
-						size="sm"
+						size=${iconButtonSize}
 						icon="minus"
 						text=${component._t('components.number-field.decrement-action')}
 						?disabled=${component.disabled || !canDecrease}
@@ -38,7 +39,7 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 				<div class="number-field__increment-control">
 					<nldd-icon-button
 						variant="neutral-tinted"
-						size="sm"
+						size=${iconButtonSize}
 						icon="plus"
 						text=${component._t('components.number-field.increment-action')}
 						?disabled=${component.disabled || !canIncrease}

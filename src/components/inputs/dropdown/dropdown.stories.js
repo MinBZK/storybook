@@ -22,7 +22,7 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['sm', 'md'],
+			options: ['xs', 'sm', 'md'],
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
 		},
@@ -69,6 +69,13 @@ export const AlleToestanden = () => html`
 		</nldd-dropdown>
 		<nldd-dropdown size="sm">
 			<select name="optie-3" aria-label="Selecteer een optie">
+				<option value="" disabled selected>Selecteer een optie</option>
+				<option value="optie-1">Optie 1</option>
+				<option value="optie-2">Optie 2</option>
+			</select>
+		</nldd-dropdown>
+		<nldd-dropdown size="xs">
+			<select name="optie-xs" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>

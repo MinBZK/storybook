@@ -31,7 +31,7 @@ export const searchFieldStyles = css`
 		box-sizing: border-box;
 		width: 100%;
 		background-color: var(--_background-color);
-		border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
+		border: var(--semantics-input-fields-border);
 	}
 
 	:host([size='sm']) .search-field {

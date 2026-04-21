@@ -3,6 +3,8 @@ import type { NLDDComboBox } from './combo-box.js';
 import '../../actions/icon-button/icon-button.js';
 
 export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
+	const iconButtonSize = component.size === 'sm' ? 'xs' : 'sm';
+
 	return html`
 		<div class="combo-box">
 			<input class="combo-box__input"
@@ -27,7 +29,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 					<div class="combo-box__clear-action">
 						<nldd-icon-button
 							variant="neutral-transparent"
-							size="sm"
+							size=${iconButtonSize}
 							icon="dismiss"
 							text=${component._t('components.combo-box.clear-action')}
 							?disabled=${component.disabled}
@@ -38,7 +40,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 				<div class="combo-box__picker">
 					<nldd-icon-button
 						variant="neutral-tinted"
-						size="sm"
+						size=${iconButtonSize}
 						icon="chevron-down"
 						text=${component._t('components.combo-box.open-menu-action')}
 						?disabled=${component.disabled}
