@@ -17,6 +17,14 @@ export interface NLDDReorderEventDetail {
  * A container for `nldd-list-item` elements, with optional header and footer slots.
  * When `reorderable` is set, items can be reordered by drag or keyboard.
  *
+ * On reorder, the list dispatches `nldd-reorder` with `fromIndex` / `toIndex`
+ * and expects the consumer to mutate the DOM (or their data model that
+ * renders the DOM). Focus is restored to the moved item's drag handle via a
+ * single `requestAnimationFrame` — this assumes the consumer reorders
+ * **synchronously** in the event handler. Async renderers (React, Vue, …)
+ * that update the DOM on a later tick will miss the focus restore and should
+ * manage focus themselves after their render commits.
+ *
  * @slot         - List items (`nldd-list-item`)
  * @slot header  - Content above the list body (e.g. `nldd-title`)
  * @slot footer  - Content below the list body (e.g. a short description)

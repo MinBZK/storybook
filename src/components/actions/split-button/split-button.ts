@@ -4,6 +4,15 @@
  * A split button combines a primary action button with a dropdown trigger.
  * The main button performs the default action, while the icon button opens a menu.
  *
+ * Any `nldd-menu-item` and `nldd-menu-divider` children in the light DOM are
+ * **moved** into an internal `nldd-menu` inside the component's shadow DOM on
+ * mount (and on subsequent add/remove via MutationObserver). Consumers can no
+ * longer `querySelector` those items from the split-button afterwards — query
+ * through the menu via custom events or keep their own references.
+ *
+ * When no items are slotted, the chevron dispatches `menu-click` and the
+ * consumer is expected to manage their own popover.
+ *
  * @element nldd-split-button
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {string} variant - Button variant (default: 'neutral-tinted')
@@ -13,10 +22,11 @@
  * @attr {object} translations - Translations; unset keys fall back to Dutch
  *
  * @fires action-click - Fired when the main button is clicked
- * @fires menu-click - Fired when the dropdown trigger is clicked
+ * @fires menu-click - Fired when the dropdown trigger is clicked and no items
+ *                     are slotted
  */
 import { LitElement } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { splitButtonStyles } from './split-button.styles.js';
 import { template } from './split-button.template.js';
 import { nlddSplitButtonTranslations } from './split-button.i18n.js';
@@ -58,7 +68,11 @@ export class NLDDSplitButton extends LitElement {
 	@query('.split-button__menu')
 	private _menu?: NLDDMenu;
 
-	private _hasMenuItems = false;
+	@state()
+	_menuIsOpen = false;
+
+	@state()
+	_hasMenuItems = false;
 	private _menuWasOpenOnMousedown = false;
 	private _childObserver?: MutationObserver;
 
@@ -91,6 +105,7 @@ export class NLDDSplitButton extends LitElement {
 		super.disconnectedCallback();
 		this._childObserver?.disconnect();
 		this._childObserver = undefined;
+		this._menu?.removeEventListener('toggle', this._handleMenuToggle);
 	}
 
 	/**
@@ -111,8 +126,13 @@ export class NLDDSplitButton extends LitElement {
 			this._menu.querySelectorAll('nldd-menu-item, nldd-menu-divider').length > 0;
 		if (this._hasMenuItems && !hadItems) {
 			this._menu.anchorElement = this._trigger;
+			this._menu.addEventListener('toggle', this._handleMenuToggle);
 		}
 	}
+
+	private _handleMenuToggle = (event: Event): void => {
+		this._menuIsOpen = (event as ToggleEvent).newState === 'open';
+	};
 
 	_handleActionClick(e: MouseEvent): void {
 		if (this.disabled) return;

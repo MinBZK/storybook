@@ -51,7 +51,7 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 			` : nothing}
 			${this.icon ? html`
 				<nldd-icon-cell class="menu__item-icon" size="20">
-					<nldd-icon name=${this.icon}></nldd-icon>
+					<nldd-icon name=${this.icon} aria-hidden="true"></nldd-icon>
 				</nldd-icon-cell>
 				<nldd-spacer-cell size="6"></nldd-spacer-cell>
 			` : nothing}

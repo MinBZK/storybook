@@ -43,10 +43,6 @@ export function VisibilityMixin<TBase extends Constructor<LitElement>>(Base: TBa
 
 		private _updateVisibilityStyle(): void {
 			if (!this.shadowRoot) return;
-			if (!this._visibilityStyle) {
-				this._visibilityStyle = document.createElement('style');
-				this.shadowRoot.appendChild(this._visibilityStyle);
-			}
 			const rules: string[] = [];
 			if (this.hideBelow) {
 				rules.push(
@@ -57,6 +53,15 @@ export function VisibilityMixin<TBase extends Constructor<LitElement>>(Base: TBa
 				rules.push(
 					`:host { @container (min-width: ${this.hideAbove}) { display: none !important; } }`,
 				);
+			}
+			if (rules.length === 0) {
+				this._visibilityStyle?.remove();
+				this._visibilityStyle = undefined;
+				return;
+			}
+			if (!this._visibilityStyle) {
+				this._visibilityStyle = document.createElement('style');
+				this.shadowRoot.appendChild(this._visibilityStyle);
 			}
 			this._visibilityStyle.textContent = rules.join('\n');
 		}
