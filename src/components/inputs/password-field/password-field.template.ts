@@ -33,7 +33,7 @@ function renderVisibilityToggle(component: NLDDPasswordField): TemplateResult {
 	const accessibleLabel = component.masked ? component.showAccessibleLabel : component.hideAccessibleLabel;
 
 	return html`
-		<div class="password-field__visibility-toggle">
+		<div class="password-field__visibility-toggle-button">
 			<nldd-button
 				size=${buttonSize}
 				type="button"

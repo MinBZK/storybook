@@ -8,6 +8,7 @@ export const passwordFieldStyles = css`
 	:host {
 		display: block;
 		--_background-color: var(--semantics-input-fields-background-color);
+		--_z-index-visibility-toggle-button: 1;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -63,12 +64,12 @@ export const passwordFieldStyles = css`
 		--_background-color: var(--semantics-input-fields-is-autofill-background-color);
 	}
 
-	.password-field:focus-within:not(:has(.password-field__visibility-toggle:focus-within)) {
+	.password-field:focus-within:not(:has(.password-field__visibility-toggle-button:focus-within)) {
 		outline: var(--semantics-focus-ring-outline);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
-	.password-field:has(.password-field__visibility-toggle:focus-within) {
+	.password-field:has(.password-field__visibility-toggle-button:focus-within) {
 		overflow: visible;
 	}
 
@@ -183,9 +184,9 @@ export const passwordFieldStyles = css`
 	}
 
 
-	/* # Toggle button */
+	/* # Visibility toggle button */
 
-	.password-field__visibility-toggle {
+	.password-field__visibility-toggle-button {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -194,9 +195,10 @@ export const passwordFieldStyles = css`
 		/* (field height - 2 x border - sm button height) / 2 */
 		padding-block: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
 		padding-inline-end: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
+		z-index: var(--_z-index-visibility-toggle-button);
 	}
 
-	:host([size='sm']) .password-field__visibility-toggle {
+	:host([size='sm']) .password-field__visibility-toggle-button {
 		/* (field height - 2 x border - xs button height) / 2 */
 		padding-block: calc((var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-xs-min-size)) / 2);
 		padding-inline-end: calc((var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-xs-min-size)) / 2);

@@ -34,7 +34,7 @@ describe('nldd-password-field', () => {
 		el = await fixture('<nldd-password-field></nldd-password-field>');
 		await waitForUpdate(el);
 		expect((el as any).masked).toBe(true);
-		const button = el.shadowRoot!.querySelector('.password-field__visibility-toggle nldd-button')!;
+		const button = el.shadowRoot!.querySelector('.password-field__visibility-toggle-button nldd-button')!;
 		(button as HTMLElement).click();
 		await waitForUpdate(el);
 		expect((el as any).masked).toBe(false);
@@ -175,7 +175,7 @@ describe('nldd-password-field', () => {
 	it('disables visibility toggle button when disabled', async () => {
 		el = await fixture('<nldd-password-field disabled></nldd-password-field>');
 		await waitForUpdate(el);
-		const button = el.shadowRoot!.querySelector('.password-field__visibility-toggle nldd-button')!;
+		const button = el.shadowRoot!.querySelector('.password-field__visibility-toggle-button nldd-button')!;
 		expect(button.hasAttribute('disabled')).toBe(true);
 	});
 
