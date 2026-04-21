@@ -4,21 +4,21 @@ import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
 
 function renderValidationIcon(component: NLDDComboBox): TemplateResult | typeof nothing {
-	if (component.valid) {
-		return html`
-			<div class="combo-box__validation-icon-area">
-				<nldd-icon class="combo-box__validation-icon"
-					name="valid"
-					aria-hidden="true"
-				></nldd-icon>
-			</div>
-		`;
-	}
 	if (component.invalid) {
 		return html`
 			<div class="combo-box__validation-icon-area">
 				<nldd-icon class="combo-box__validation-icon"
 					name="invalid"
+					aria-hidden="true"
+				></nldd-icon>
+			</div>
+		`;
+	}
+	if (component.valid) {
+		return html`
+			<div class="combo-box__validation-icon-area">
+				<nldd-icon class="combo-box__validation-icon"
+					name="valid"
 					aria-hidden="true"
 				></nldd-icon>
 			</div>

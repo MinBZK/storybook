@@ -4,21 +4,21 @@ import './../../content/icon/icon.js';
 import './../../actions/button/button.js';
 
 function renderValidationIcon(component: NLDDPasswordField): TemplateResult | typeof nothing {
-	if (component.valid) {
-		return html`
-			<div class="password-field__validation-icon-area">
-				<nldd-icon class="password-field__validation-icon"
-					name="valid"
-					aria-hidden="true"
-				></nldd-icon>
-			</div>
-		`;
-	}
 	if (component.invalid) {
 		return html`
 			<div class="password-field__validation-icon-area">
 				<nldd-icon class="password-field__validation-icon"
 					name="invalid"
+					aria-hidden="true"
+				></nldd-icon>
+			</div>
+		`;
+	}
+	if (component.valid) {
+		return html`
+			<div class="password-field__validation-icon-area">
+				<nldd-icon class="password-field__validation-icon"
+					name="valid"
 					aria-hidden="true"
 				></nldd-icon>
 			</div>

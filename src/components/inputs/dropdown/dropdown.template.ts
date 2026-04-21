@@ -3,21 +3,21 @@ import type { NLDDDropdown } from './dropdown.js';
 import './../../content/icon/icon.js';
 
 function renderValidationIcon(component: NLDDDropdown): TemplateResult | typeof nothing {
-	if (component.valid) {
-		return html`
-			<div class="dropdown__validation-icon-area">
-				<nldd-icon class="dropdown__validation-icon"
-					name="valid"
-					aria-hidden="true"
-				></nldd-icon>
-			</div>
-		`;
-	}
 	if (component.invalid) {
 		return html`
 			<div class="dropdown__validation-icon-area">
 				<nldd-icon class="dropdown__validation-icon"
 					name="invalid"
+					aria-hidden="true"
+				></nldd-icon>
+			</div>
+		`;
+	}
+	if (component.valid) {
+		return html`
+			<div class="dropdown__validation-icon-area">
+				<nldd-icon class="dropdown__validation-icon"
+					name="valid"
 					aria-hidden="true"
 				></nldd-icon>
 			</div>
