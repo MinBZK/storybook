@@ -33,6 +33,10 @@ export const stepperStyles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 	}
 
+	:host([size='xs']) .stepper {
+		border-radius: var(--semantics-controls-xs-corner-radius);
+	}
+
 	:host([size='sm']) .stepper {
 		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
@@ -54,6 +58,10 @@ export const stepperStyles = css`
 		width: var(--semantics-dividers-thickness);
 		flex-shrink: 0;
 		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
+	}
+
+	:host([size='xs']) .stepper__divider {
+		height: var(--semantics-buttons-xs-divider-length);
 	}
 
 	:host([size='sm']) .stepper__divider {

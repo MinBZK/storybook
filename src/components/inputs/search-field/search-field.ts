@@ -106,11 +106,17 @@ export class NLDDSearchField extends LitElement {
 
 	public _handleClear(): void {
 		this.value = '';
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value: '' },
+			bubbles: true,
+			composed: true,
+		}));
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: '' },
 			bubbles: true,
 			composed: true,
 		}));
+		this._input?.focus();
 	}
 
 	public _handleSearch(): void {

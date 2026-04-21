@@ -9,7 +9,7 @@
  * @attr {number}  max          - Maximum value (default: Infinity)
  * @attr {number}  step         - Step size (default: 1)
  * @attr {boolean} disabled     - Disabled state
- * @attr {string}  size         - Size: 'sm' | 'md' (default: 'md')
+ * @attr {string}  size         - Size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {object}  translations - Translations; unspecified keys fall back to Dutch
  *
  * @fires change - When the value changes; detail: { value: number }
@@ -23,7 +23,7 @@ import type { NLDDStepperTranslations } from './stepper.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
 
-export type StepperSize = 'sm' | 'md';
+export type StepperSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-stepper')
 export class NLDDStepper extends LitElement {

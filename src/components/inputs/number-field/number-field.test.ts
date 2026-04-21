@@ -31,6 +31,47 @@ describe('nldd-number-field', () => {
 
 
 /* ============================================================
+   Size
+   ============================================================ */
+
+describe('nldd-number-field – size', () => {
+	let el: NLDDNumberField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults size to md', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field></nldd-number-field>');
+		await waitForUpdate(el);
+		expect(el.size).toBe('md');
+	});
+
+	it('reflects size attribute to host', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field size="sm"></nldd-number-field>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('sm');
+	});
+
+	it('renders sm icon buttons when size is md', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field size="md"></nldd-number-field>');
+		await waitForUpdate(el);
+		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
+		expect(buttons[0].getAttribute('size')).toBe('sm');
+		expect(buttons[1].getAttribute('size')).toBe('sm');
+	});
+
+	it('renders xs icon buttons when size is sm', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field size="sm"></nldd-number-field>');
+		await waitForUpdate(el);
+		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
+		expect(buttons[0].getAttribute('size')).toBe('xs');
+		expect(buttons[1].getAttribute('size')).toBe('xs');
+	});
+});
+
+
+/* ============================================================
    State
    ============================================================ */
 
@@ -204,6 +245,102 @@ describe('nldd-number-field – change event', () => {
 		el.addEventListener('input', () => { eventFired = true; });
 		el._handleIncrease();
 		expect(eventFired).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   Typing & clamping on commit
+   ============================================================ */
+
+describe('nldd-number-field – typing & clamping on commit', () => {
+	let el: NLDDNumberField;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function type(el: NLDDNumberField, value: string): HTMLInputElement {
+		const input = el.shadowRoot!.querySelector('input')!;
+		input.value = value;
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		return input;
+	}
+
+	function blur(input: HTMLInputElement): void {
+		input.dispatchEvent(new Event('change', { bubbles: true }));
+	}
+
+	it('does not clamp while typing an out-of-range value', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field value="5" max="10"></nldd-number-field>');
+		await waitForUpdate(el);
+		type(el, '109999');
+		await waitForUpdate(el);
+		expect(el.value).toBe(109999);
+	});
+
+	it('clamps to max on commit when value exceeds max', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field value="5" max="10"></nldd-number-field>');
+		await waitForUpdate(el);
+		const input = type(el, '109999');
+		await waitForUpdate(el);
+		blur(input);
+		await waitForUpdate(el);
+		expect(el.value).toBe(10);
+		expect(input.value).toBe('10');
+	});
+
+	it('clamps to min on commit when value is below min', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field value="5" min="0"></nldd-number-field>');
+		await waitForUpdate(el);
+		const input = type(el, '-50');
+		await waitForUpdate(el);
+		blur(input);
+		await waitForUpdate(el);
+		expect(el.value).toBe(0);
+		expect(input.value).toBe('0');
+	});
+
+	it('falls back to the last valid value on empty commit', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field value="7" min="0" max="10"></nldd-number-field>');
+		await waitForUpdate(el);
+		const input = type(el, '');
+		await waitForUpdate(el);
+		blur(input);
+		await waitForUpdate(el);
+		expect(el.value).toBe(7);
+		expect(input.value).toBe('7');
+	});
+
+	it('updates the last valid value when a new in-range value is committed', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field value="5" min="0" max="10"></nldd-number-field>');
+		await waitForUpdate(el);
+		const first = type(el, '8');
+		await waitForUpdate(el);
+		blur(first);
+		await waitForUpdate(el);
+		// Now empty the field and commit — should fall back to 8, not 5.
+		const second = type(el, '');
+		await waitForUpdate(el);
+		blur(second);
+		await waitForUpdate(el);
+		expect(el.value).toBe(8);
+	});
+
+	it('dispatches a single input followed by a single change when a typed value is corrected', async () => {
+		el = await fixture<NLDDNumberField>('<nldd-number-field value="5" max="10"></nldd-number-field>');
+		await waitForUpdate(el);
+		const input = type(el, '50');
+		await waitForUpdate(el);
+		let inputCount = 0;
+		let changeCount = 0;
+		el.addEventListener('input', () => { inputCount++; });
+		el.addEventListener('change', () => { changeCount++; });
+		blur(input);
+		await waitForUpdate(el);
+		expect(inputCount).toBe(1);
+		expect(changeCount).toBe(1);
+		expect(el.value).toBe(10);
 	});
 });
 

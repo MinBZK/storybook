@@ -3,21 +3,21 @@ import type { NLDDTextField } from './text-field.js';
 import './../../content/icon/icon.js';
 
 function renderValidationIcon(component: NLDDTextField): TemplateResult | typeof nothing {
-	if (component.valid) {
-		return html`
-			<div class="text-field__validation-icon-area">
-				<nldd-icon class="text-field__validation-icon"
-					name="valid"
-					aria-hidden="true"
-				></nldd-icon>
-			</div>
-		`;
-	}
 	if (component.invalid) {
 		return html`
 			<div class="text-field__validation-icon-area">
 				<nldd-icon class="text-field__validation-icon"
 					name="invalid"
+					aria-hidden="true"
+				></nldd-icon>
+			</div>
+		`;
+	}
+	if (component.valid) {
+		return html`
+			<div class="text-field__validation-icon-area">
+				<nldd-icon class="text-field__validation-icon"
+					name="valid"
 					aria-hidden="true"
 				></nldd-icon>
 			</div>
@@ -45,7 +45,7 @@ export function textFieldTemplate(component: NLDDTextField): TemplateResult {
 				@input=${component._handleInput}
 				@change=${component._handleChange}
 			/>
-			<div class="text-field__fade"></div>
+			<div class="text-field__input-fade"></div>
 			${renderValidationIcon(component)}
 		</div>
 	`;

@@ -35,7 +35,7 @@ export default {
 		},
 		size: {
 			control: 'select',
-			options: ['md', 'sm'],
+			options: ['sm', 'md'],
 			description: 'Size variant',
 			table: { defaultValue: { summary: 'md' } },
 		},

@@ -4,21 +4,21 @@ import './../../content/icon/icon.js';
 import './../../actions/button/button.js';
 
 function renderValidationIcon(component: NLDDPasswordField): TemplateResult | typeof nothing {
-	if (component.valid) {
-		return html`
-			<div class="password-field__validation-icon-area">
-				<nldd-icon class="password-field__validation-icon"
-					name="valid"
-					aria-hidden="true"
-				></nldd-icon>
-			</div>
-		`;
-	}
 	if (component.invalid) {
 		return html`
 			<div class="password-field__validation-icon-area">
 				<nldd-icon class="password-field__validation-icon"
 					name="invalid"
+					aria-hidden="true"
+				></nldd-icon>
+			</div>
+		`;
+	}
+	if (component.valid) {
+		return html`
+			<div class="password-field__validation-icon-area">
+				<nldd-icon class="password-field__validation-icon"
+					name="valid"
 					aria-hidden="true"
 				></nldd-icon>
 			</div>
@@ -33,7 +33,7 @@ function renderVisibilityToggle(component: NLDDPasswordField): TemplateResult {
 	const accessibleLabel = component.masked ? component.showAccessibleLabel : component.hideAccessibleLabel;
 
 	return html`
-		<div class="password-field__visibility-toggle">
+		<div class="password-field__visibility-toggle-button">
 			<nldd-button
 				size=${buttonSize}
 				type="button"
@@ -66,7 +66,7 @@ export function passwordFieldTemplate(component: NLDDPasswordField): TemplateRes
 				@input=${component._handleInput}
 				@change=${component._handleChange}
 			/>
-			<div class="password-field__fade"></div>
+			<div class="password-field__input-fade"></div>
 			${renderValidationIcon(component)}
 			${renderVisibilityToggle(component)}
 		</div>

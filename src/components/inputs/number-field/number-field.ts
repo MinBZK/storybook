@@ -8,6 +8,7 @@
  * @attr {number}  min          - Minimum value (default: -Infinity)
  * @attr {number}  max          - Maximum value (default: Infinity)
  * @attr {number}  step         - Step size (default: 1)
+ * @attr {string}  size         - Size: 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled     - Disabled state
  * @attr {string}  name         - Name for form submission
  * @attr {object}  translations - Translations; unspecified keys fall back to Dutch
@@ -16,8 +17,12 @@
  * @attr {boolean} hide-spin-buttons - When set, hides the decrement and increment buttons
  * @attr {string}  accessible-label  - Accessible label (aria-label) forwarded to the native input
  *
- * @fires input  - When the value changes; detail: { value: number }
- * @fires change - When the value is confirmed; detail: { value: number }
+ * @fires input  - When the value changes (typing, +/- button, or on-commit correction);
+ *                 detail: { value: number }
+ * @fires change - When the value is committed (blur/Enter or +/- button), clamped to
+ *                 [min, max]; empty input falls back to the last valid value. When the
+ *                 committed value differs from the typed value, a matching input event
+ *                 is fired immediately before this one. detail: { value: number }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -27,6 +32,8 @@ import { nlddNumberFieldTranslations } from './number-field.i18n.js';
 import type { NLDDNumberFieldTranslations } from './number-field.i18n.js';
 import './../../actions/icon-button/icon-button.js';
 import './../../content/icon/icon.js';
+
+export type NumberFieldSize = 'sm' | 'md';
 
 @customElement('nldd-number-field')
 export class NLDDNumberField extends LitElement {
@@ -43,6 +50,9 @@ export class NLDDNumberField extends LitElement {
 
 	@property({ type: Number })
 	step = 1;
+
+	@property({ type: String, reflect: true })
+	size: NumberFieldSize = 'md';
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
@@ -68,10 +78,16 @@ export class NLDDNumberField extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDNumberFieldTranslations> = {};
 
+	/** Last value inside [min, max]; used as fallback when the input is cleared.
+	 *  Initialised to the clamped `value` in firstUpdated — the 0 default is only
+	 *  relevant before the first render, which no user-facing handler can reach. */
+	private _lastValidValue = 0;
+
 	override firstUpdated(): void {
 		if (!this.accessibleLabel) {
 			console.warn('<nldd-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input\'s purpose.');
 		}
+		this._lastValidValue = this._clamp(this.value);
 	}
 
 	override updated(changedProperties: Map<string, unknown>): void {
@@ -96,37 +112,61 @@ export class NLDDNumberField extends LitElement {
 
 	public _handleDecrease(): void {
 		if (this.disabled) return;
-		this._updateValue(this.value - this.step);
+		this._commitValue(this.value - this.step);
 	}
 
 	public _handleIncrease(): void {
 		if (this.disabled) return;
-		this._updateValue(this.value + this.step);
+		this._commitValue(this.value + this.step);
 	}
 
+	/** Fires while the user types. The value may be outside [min, max]; clamping happens on change. */
 	public _handleInput(e: Event): void {
+		if (this.disabled) return;
 		const input = e.target as HTMLInputElement;
-		const newValue = parseFloat(input.value);
-		if (!isNaN(newValue)) {
-			this._updateValue(newValue);
-		}
+		const parsed = parseFloat(input.value);
+		if (isNaN(parsed)) return;
+		this.value = parsed;
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
 	}
 
-	private _updateValue(newValue: number): void {
-		const clampedValue = Math.max(this.min, Math.min(this.max, newValue));
-		if (clampedValue !== this.value) {
-			this.value = clampedValue;
-			this.dispatchEvent(new CustomEvent('input', {
-				detail: { value: this.value },
-				bubbles: true,
-				composed: true,
-			}));
-			this.dispatchEvent(new CustomEvent('change', {
-				detail: { value: this.value },
-				bubbles: true,
-				composed: true,
-			}));
-		}
+	/** Fires on blur or Enter. Clamps the value and falls back to the last valid value when empty. */
+	public _handleChange(e: Event): void {
+		if (this.disabled) return;
+		const input = e.target as HTMLInputElement;
+		const parsed = parseFloat(input.value);
+		const finalValue = isNaN(parsed) ? this._lastValidValue : this._clamp(parsed);
+		this._commitValue(finalValue, input);
+	}
+
+	private _commitValue(newValue: number, input?: HTMLInputElement): void {
+		const clampedValue = this._clamp(newValue);
+		const changed = clampedValue !== this.value;
+		this.value = clampedValue;
+		this._lastValidValue = clampedValue;
+		// Force the input DOM to match the committed value — Lit's property binding
+		// may not re-sync when the user typed an out-of-range value that parses to
+		// the same number after clamping (e.g. empty → fallback).
+		if (input) input.value = String(clampedValue);
+		if (!changed) return;
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: this.value },
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	private _clamp(value: number): number {
+		return Math.max(this.min, Math.min(this.max, value));
 	}
 
 	override render() {

@@ -5,6 +5,7 @@ import './../../actions/icon-button/icon-button.js';
 export function numberFieldTemplate(component: NLDDNumberField): TemplateResult {
 	const canDecrease = component.value > component.min;
 	const canIncrease = component.value < component.max;
+	const iconButtonSize = component.size === 'sm' ? 'xs' : 'sm';
 
 	return html`
 		<div class="number-field"
@@ -12,10 +13,10 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 			aria-label=${component._t('components.number-field.to-adjust-value-action')}
 		>
 			${!component.hideSpinButtons ? html`
-				<div class="number-field__decrement-control">
+				<div class="number-field__decrement-button">
 					<nldd-icon-button
 						variant="neutral-tinted"
-						size="sm"
+						size=${iconButtonSize}
 						icon="minus"
 						text=${component._t('components.number-field.decrement-action')}
 						?disabled=${component.disabled || !canDecrease}
@@ -33,12 +34,13 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
 				@input=${component._handleInput}
+				@change=${component._handleChange}
 			>
 			${!component.hideSpinButtons ? html`
-				<div class="number-field__increment-control">
+				<div class="number-field__increment-button">
 					<nldd-icon-button
 						variant="neutral-tinted"
-						size="sm"
+						size=${iconButtonSize}
 						icon="plus"
 						text=${component._t('components.number-field.increment-action')}
 						?disabled=${component.disabled || !canIncrease}

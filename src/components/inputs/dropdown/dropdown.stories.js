@@ -22,9 +22,19 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['sm', 'md'],
+			options: ['xs', 'sm', 'md'],
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
+		},
+		valid: {
+			control: 'boolean',
+			description: 'Markeert het veld als geldig',
+			table: { defaultValue: { summary: false } },
+		},
+		invalid: {
+			control: 'boolean',
+			description: 'Markeert het veld als ongeldig',
+			table: { defaultValue: { summary: false } },
 		},
 		disabled: {
 			control: 'boolean',
@@ -34,12 +44,14 @@ export default {
 	},
 	args: {
 		size: 'md',
+		valid: false,
+		invalid: false,
 		disabled: false,
 	},
 };
 
-const Template = ({ size, disabled }) => html`
-	<nldd-dropdown size=${size} ?disabled=${disabled}>
+const Template = ({ size, valid, invalid, disabled }) => html`
+	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled}>
 		<select name="optie" aria-label="Selecteer een optie">
 			<option value="" disabled selected>Selecteer een optie</option>
 			<option value="optie-1">Optie 1</option>
@@ -54,6 +66,20 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
+		<nldd-dropdown size="xs">
+			<select name="optie-xs" aria-label="Selecteer een optie">
+				<option value="" disabled selected>Selecteer een optie</option>
+				<option value="optie-1">Optie 1</option>
+				<option value="optie-2">Optie 2</option>
+			</select>
+		</nldd-dropdown>
+		<nldd-dropdown size="sm">
+			<select name="optie-3" aria-label="Selecteer een optie">
+				<option value="" disabled selected>Selecteer een optie</option>
+				<option value="optie-1">Optie 1</option>
+				<option value="optie-2">Optie 2</option>
+			</select>
+		</nldd-dropdown>
 		<nldd-dropdown size="md">
 			<select name="optie-1" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
@@ -67,11 +93,16 @@ export const AlleToestanden = () => html`
 				<option value="optie-2">Optie 2</option>
 			</select>
 		</nldd-dropdown>
-		<nldd-dropdown size="sm">
-			<select name="optie-3" aria-label="Selecteer een optie">
+		<nldd-dropdown size="md" valid>
+			<select name="optie-valid" aria-label="Selecteer een optie">
+				<option value="optie-1" selected>Optie 1</option>
+				<option value="optie-2">Optie 2</option>
+			</select>
+		</nldd-dropdown>
+		<nldd-dropdown size="md" invalid>
+			<select name="optie-invalid" aria-label="Selecteer een optie">
 				<option value="" disabled selected>Selecteer een optie</option>
 				<option value="optie-1">Optie 1</option>
-				<option value="optie-2">Optie 2</option>
 			</select>
 		</nldd-dropdown>
 		<nldd-dropdown size="md" disabled>

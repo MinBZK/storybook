@@ -45,7 +45,7 @@ export default {
 		},
 		size: {
 			control: 'select',
-			options: ['sm', 'md'],
+			options: ['xs', 'sm', 'md'],
 			description: 'Grootte van de stepper',
 			table: { defaultValue: { summary: 'md' } },
 		},
@@ -87,13 +87,19 @@ export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">5</span>
-			<nldd-stepper value="5" min="0" max="10" size="md"
+			<nldd-stepper value="5" min="0" max="10" size="xs"
 				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
 			></nldd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">5</span>
 			<nldd-stepper value="5" min="0" max="10" size="sm"
+				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+			></nldd-stepper>
+		</div>
+		<div style="display: flex; gap: 1rem; align-items: center;">
+			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">5</span>
+			<nldd-stepper value="5" min="0" max="10" size="md"
 				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
 			></nldd-stepper>
 		</div>

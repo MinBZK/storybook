@@ -37,6 +37,86 @@ describe('nldd-dropdown', () => {
 
 
 /* ============================================================
+   Validation
+   ============================================================ */
+
+describe('nldd-dropdown – validation', () => {
+	let el: NLDDDropdown;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders no validation icon by default', async () => {
+		el = await fixture<NLDDDropdown>('<nldd-dropdown></nldd-dropdown>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.dropdown__validation-icon-area')).toBeNull();
+	});
+
+	it('renders a valid icon when valid', async () => {
+		el = await fixture<NLDDDropdown>('<nldd-dropdown valid></nldd-dropdown>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.dropdown__validation-icon')!;
+		expect(icon.getAttribute('name')).toBe('valid');
+	});
+
+	it('renders an invalid icon when invalid', async () => {
+		el = await fixture<NLDDDropdown>('<nldd-dropdown invalid></nldd-dropdown>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.dropdown__validation-icon')!;
+		expect(icon.getAttribute('name')).toBe('invalid');
+	});
+
+	it('forwards aria-invalid to the slotted select', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown invalid>
+				<select aria-label="Land"><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('select')!.getAttribute('aria-invalid')).toBe('true');
+	});
+
+	it('removes aria-invalid when invalid is cleared', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown invalid>
+				<select aria-label="Land"><option value="nl">Nederland</option></select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		el.invalid = false;
+		await waitForUpdate(el);
+		expect(el.querySelector('select')!.hasAttribute('aria-invalid')).toBe(false);
+	});
+});
+
+
+/* ============================================================
+   Size
+   ============================================================ */
+
+describe('nldd-dropdown – size', () => {
+	let el: NLDDDropdown;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults size to md', async () => {
+		el = await fixture<NLDDDropdown>('<nldd-dropdown></nldd-dropdown>');
+		await waitForUpdate(el);
+		expect(el.size).toBe('md');
+	});
+
+	it('reflects size="xs" to host', async () => {
+		el = await fixture<NLDDDropdown>('<nldd-dropdown size="xs"></nldd-dropdown>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('xs');
+	});
+});
+
+
+/* ============================================================
    State
    ============================================================ */
 

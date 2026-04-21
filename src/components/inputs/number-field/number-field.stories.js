@@ -38,6 +38,12 @@ export default {
 			description: 'Stapgrootte',
 			table: { defaultValue: { summary: 1 } },
 		},
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Grootte van het veld',
+			table: { defaultValue: { summary: 'md' } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -69,6 +75,7 @@ export default {
 		min: 0,
 		max: 10,
 		step: 1,
+		size: 'md',
 		disabled: false,
 		name: '',
 		hideSpinButtons: false,
@@ -77,12 +84,13 @@ export default {
 	},
 };
 
-const Template = ({ value, min, max, step, disabled, name, hideSpinButtons, fullWidth, width }) => html`
+const Template = ({ value, min, max, step, size, disabled, name, hideSpinButtons, fullWidth, width }) => html`
 	<nldd-number-field
 		value=${value}
 		min=${min}
 		max=${max}
 		step=${step}
+		size=${size}
 		?disabled=${disabled}
 		name=${name}
 		?hide-spin-buttons=${hideSpinButtons}
@@ -96,12 +104,14 @@ Standaard.args = {};
 
 export const AlleToestanden = () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
-		<nldd-number-field value="5" min="0" max="10"></nldd-number-field>
+		<nldd-number-field value="5" min="0" max="10" size="sm"></nldd-number-field>
+		<nldd-number-field value="5" min="0" max="10" size="md"></nldd-number-field>
 		<nldd-number-field value="0" min="0" max="10"></nldd-number-field>
 		<nldd-number-field value="10" min="0" max="10"></nldd-number-field>
 		<nldd-number-field value="5" min="0" max="10" disabled></nldd-number-field>
 		<nldd-number-field value="5" min="0" max="10" hide-spin-buttons></nldd-number-field>
 		<nldd-number-field value="5" min="0" max="10" hide-spin-buttons disabled></nldd-number-field>
+		<nldd-number-field value="5" min="0" max="10" size="sm" hide-spin-buttons></nldd-number-field>
 		<nldd-number-field value="5" min="0" max="10" width="240px"></nldd-number-field>
 		<nldd-number-field value="5" min="0" max="10" hide-spin-buttons width="240px"></nldd-number-field>
 		<div style="width: 400px;">

@@ -25,6 +25,34 @@ describe('nldd-stepper', () => {
 
 
 /* ============================================================
+   Size
+   ============================================================ */
+
+describe('nldd-stepper – size', () => {
+	let el: NLDDStepper;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults size to md', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
+		await waitForUpdate(el);
+		expect(el.size).toBe('md');
+	});
+
+	it('reflects size="xs" to host and propagates to both icon buttons', async () => {
+		el = await fixture<NLDDStepper>('<nldd-stepper size="xs"></nldd-stepper>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('size')).toBe('xs');
+		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
+		expect(buttons[0].getAttribute('size')).toBe('xs');
+		expect(buttons[1].getAttribute('size')).toBe('xs');
+	});
+});
+
+
+/* ============================================================
    State
    ============================================================ */
 
@@ -203,8 +231,8 @@ describe('nldd-stepper – translations', () => {
 	it('uses Dutch defaults when no translations are set', async () => {
 		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
-		expect(el._t('components.stepper.decrement-action')).toBe('Verlaag aantal');
-		expect(el._t('components.stepper.increment-action')).toBe('Verhoog aantal');
+		expect(el._t('components.stepper.decrement-action')).toBe('Verlaag');
+		expect(el._t('components.stepper.increment-action')).toBe('Verhoog');
 		expect(el._t('components.stepper.to-adjust-value-action')).toBe('Aantal aanpassen');
 	});
 
@@ -219,6 +247,6 @@ describe('nldd-stepper – translations', () => {
 		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
 		el.translations = { 'components.stepper.decrement-action': 'Decrease' };
-		expect(el._t('components.stepper.increment-action')).toBe('Verhoog aantal');
+		expect(el._t('components.stepper.increment-action')).toBe('Verhoog');
 	});
 });

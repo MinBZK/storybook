@@ -14,6 +14,9 @@
  * @element nldd-combo-box
  * @attr {string}  value        - The selected form value
  * @attr {string}  placeholder  - Placeholder text for the input
+ * @attr {string}  size         - Size: 'sm' | 'md' (default: 'md')
+ * @attr {boolean} valid        - Marks the field as valid
+ * @attr {boolean} invalid      - Marks the field as invalid
  * @attr {boolean} disabled     - Disabled state
  * @attr {string}  name         - Input name for form submission
  * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the input. Required for screen reader accessibility.
@@ -51,6 +54,7 @@ import '../../lists-and-menus/menu/menu.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
 
+export type ComboBoxSize = 'sm' | 'md';
 
 @customElement('nldd-combo-box')
 export class NLDDComboBox extends LitElement {
@@ -61,6 +65,15 @@ export class NLDDComboBox extends LitElement {
 
 	@property({ type: String })
 	placeholder = '';
+
+	@property({ type: String, reflect: true })
+	size: ComboBoxSize = 'md';
+
+	@property({ type: Boolean, reflect: true })
+	valid = false;
+
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
