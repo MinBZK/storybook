@@ -108,6 +108,25 @@ describe('nldd-list', () => {
 		expect(fired).toBe(false);
 	});
 
+	it('ArrowDown on the last item is a no-op', async () => {
+		el = await fixture(`
+			<nldd-list reorderable>
+				<nldd-list-item><span reorderable-only tabindex="0">handle</span></nldd-list-item>
+				<nldd-list-item><span reorderable-only tabindex="0">handle</span></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const handles = el.querySelectorAll('[reorderable-only]');
+		const lastHandle = handles[handles.length - 1] as HTMLElement;
+		let fired = false;
+		el.addEventListener('nldd-reorder', () => { fired = true; });
+
+		lastHandle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(fired).toBe(false);
+	});
+
 	it('does nothing when the keydown path has no drag handle', async () => {
 		el = await fixture(`
 			<nldd-list reorderable>

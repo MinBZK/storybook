@@ -234,7 +234,7 @@ export class NLDDList extends LitElement {
 				composed: true,
 			}),
 		);
-		this._announce(this._t('components.list.drag-dropped-text', { position: targetIndex + 1 }));
+		this._announce(this._t('components.list.drag-moved-text', { position: targetIndex + 1 }));
 
 		// Wait for the consumer to reorder, then restore focus on the moved item's handle.
 		requestAnimationFrame(() => focused.focus());
