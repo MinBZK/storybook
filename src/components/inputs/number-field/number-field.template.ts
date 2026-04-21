@@ -13,7 +13,7 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 			aria-label=${component._t('components.number-field.to-adjust-value-action')}
 		>
 			${!component.hideSpinButtons ? html`
-				<div class="number-field__decrement-control">
+				<div class="number-field__decrement-button">
 					<nldd-icon-button
 						variant="neutral-tinted"
 						size=${iconButtonSize}
@@ -36,7 +36,7 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 				@input=${component._handleInput}
 			>
 			${!component.hideSpinButtons ? html`
-				<div class="number-field__increment-control">
+				<div class="number-field__increment-button">
 					<nldd-icon-button
 						variant="neutral-tinted"
 						size=${iconButtonSize}

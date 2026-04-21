@@ -8,6 +8,7 @@ export const searchFieldStyles = css`
 	:host {
 		display: block;
 		--_background-color: var(--semantics-input-fields-background-color);
+		--_z-index-button-focus: 1;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -66,17 +67,17 @@ export const searchFieldStyles = css`
 		color: var(--semantics-content-secondary-color);
 	}
 
+	:host([size='sm']) .search-field__search-icon {
+		width: var(--primitives-space-20);
+		height: var(--primitives-space-20);
+		margin-inline: calc((var(--semantics-controls-sm-min-size) - var(--primitives-space-20)) / 2 - var(--semantics-input-fields-border-thickness));
+	}
+
 	:host([size='md']) .search-field__search-icon,
 	:host(:not([size])) .search-field__search-icon {
 		width: var(--primitives-space-24);
 		height: var(--primitives-space-24);
 		margin-inline: calc((var(--semantics-controls-md-min-size) - var(--primitives-space-24)) / 2 - var(--semantics-input-fields-border-thickness));
-	}
-
-	:host([size='sm']) .search-field__search-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		margin-inline: calc((var(--semantics-controls-sm-min-size) - var(--primitives-space-20)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
 
@@ -95,13 +96,13 @@ export const searchFieldStyles = css`
 		color: var(--semantics-content-color);
 	}
 
+	:host([size='sm']) .search-field__input {
+		font: var(--semantics-input-fields-sm-text-font);
+	}
+
 	:host([size='md']) .search-field__input,
 	:host(:not([size])) .search-field__input {
 		font: var(--semantics-input-fields-md-text-font);
-	}
-
-	:host([size='sm']) .search-field__input {
-		font: var(--semantics-input-fields-sm-text-font);
 	}
 
 	.search-field__input::placeholder {
@@ -118,52 +119,59 @@ export const searchFieldStyles = css`
 	}
 
 
-	/* # Fade */
+	/* # Input fade */
 
-	.search-field__fade {
+	.search-field__input-fade {
 		position: relative;
 		flex-shrink: 0;
 		align-self: stretch;
 		width: 0;
 	}
 
-	.search-field__fade::after {
+	.search-field__input-fade::after {
 		content: '';
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		right: 0;
 		width: var(--primitives-space-8);
-		border-radius: var(--semantics-controls-md-corner-radius);
 		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
 		pointer-events: none;
 	}
 
+	:host([size='sm']) .search-field__input-fade::after {
+		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
 
-	/* # Actions */
+	:host([size='md']) .search-field__input-fade::after,
+	:host(:not([size])) .search-field__input-fade::after {
+		border-radius: var(--semantics-controls-md-corner-radius);
+	}
 
-	.search-field__actions {
+
+	/* # End */
+
+	.search-field__end {
 		display: flex;
 		flex-shrink: 0;
 		align-items: center;
 		position: relative;
-		z-index: 1;
 	}
 
-	:host([size='md']) .search-field__actions,
-	:host(:not([size])) .search-field__actions {
-		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
-		gap: var(--primitives-space-6);
-	}
-
-	:host([size='sm']) .search-field__actions {
+	:host([size='sm']) .search-field__end {
 		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 		gap: var(--primitives-space-4);
 	}
 
-	.search-field__clear-action:focus-within,
-	.search-field__search-action:focus-within {
+	:host([size='md']) .search-field__end,
+	:host(:not([size])) .search-field__end {
+		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
+		gap: var(--primitives-space-6);
+	}
+
+	.search-field__clear-button:focus-within,
+	.search-field__search-button:focus-within {
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-button-focus);
 	}
 `;

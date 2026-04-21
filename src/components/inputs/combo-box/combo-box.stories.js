@@ -35,6 +35,16 @@ export default {
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		valid: {
+			control: 'boolean',
+			description: 'Markeert het veld als geldig',
+			table: { defaultValue: { summary: false } },
+		},
+		invalid: {
+			control: 'boolean',
+			description: 'Markeert het veld als ongeldig',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -49,6 +59,8 @@ export default {
 		value: '',
 		placeholder: 'Zoek een land',
 		size: 'md',
+		valid: false,
+		invalid: false,
 		disabled: false,
 		name: '',
 	},
@@ -58,6 +70,8 @@ const Template = (args) => html`
 	<nldd-combo-box
 		placeholder=${args.placeholder}
 		size=${args.size}
+		?valid=${args.valid}
+		?invalid=${args.invalid}
 		?disabled=${args.disabled}
 		name=${args.name}
 	>
@@ -163,6 +177,18 @@ export const AlleToestanden = () => html`
 				<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
 				<nldd-menu-item text="België" value="be"></nldd-menu-item>
 				<nldd-menu-item text="Duitsland" value="de"></nldd-menu-item>
+			</nldd-menu>
+		</nldd-combo-box>
+		<nldd-combo-box placeholder="Zoek een land" valid>
+			<nldd-menu empty-text="Geen resultaten">
+				<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				<nldd-menu-item text="België" value="be"></nldd-menu-item>
+			</nldd-menu>
+		</nldd-combo-box>
+		<nldd-combo-box placeholder="Zoek een land" invalid>
+			<nldd-menu empty-text="Geen resultaten">
+				<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				<nldd-menu-item text="België" value="be"></nldd-menu-item>
 			</nldd-menu>
 		</nldd-combo-box>
 		<nldd-combo-box placeholder="Zoek een land" disabled>

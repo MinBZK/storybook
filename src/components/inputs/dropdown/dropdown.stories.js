@@ -26,6 +26,16 @@ export default {
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		valid: {
+			control: 'boolean',
+			description: 'Markeert het veld als geldig',
+			table: { defaultValue: { summary: false } },
+		},
+		invalid: {
+			control: 'boolean',
+			description: 'Markeert het veld als ongeldig',
+			table: { defaultValue: { summary: false } },
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -34,12 +44,14 @@ export default {
 	},
 	args: {
 		size: 'md',
+		valid: false,
+		invalid: false,
 		disabled: false,
 	},
 };
 
-const Template = ({ size, disabled }) => html`
-	<nldd-dropdown size=${size} ?disabled=${disabled}>
+const Template = ({ size, valid, invalid, disabled }) => html`
+	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled}>
 		<select name="optie" aria-label="Selecteer een optie">
 			<option value="" disabled selected>Selecteer een optie</option>
 			<option value="optie-1">Optie 1</option>
@@ -79,6 +91,18 @@ export const AlleToestanden = () => html`
 			<select name="optie-2" aria-label="Selecteer een optie">
 				<option value="optie-1">Optie 1</option>
 				<option value="optie-2">Optie 2</option>
+			</select>
+		</nldd-dropdown>
+		<nldd-dropdown size="md" valid>
+			<select name="optie-valid" aria-label="Selecteer een optie">
+				<option value="optie-1" selected>Optie 1</option>
+				<option value="optie-2">Optie 2</option>
+			</select>
+		</nldd-dropdown>
+		<nldd-dropdown size="md" invalid>
+			<select name="optie-invalid" aria-label="Selecteer een optie">
+				<option value="" disabled selected>Selecteer een optie</option>
+				<option value="optie-1">Optie 1</option>
 			</select>
 		</nldd-dropdown>
 		<nldd-dropdown size="md" disabled>

@@ -54,7 +54,7 @@ describe('nldd-number-field – size', () => {
 	});
 
 	it('renders sm icon buttons when size is md', async () => {
-		el = await fixture<NLDDNumberField>('<nldd-number-field></nldd-number-field>');
+		el = await fixture<NLDDNumberField>('<nldd-number-field size="md"></nldd-number-field>');
 		await waitForUpdate(el);
 		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
 		expect(buttons[0].getAttribute('size')).toBe('sm');

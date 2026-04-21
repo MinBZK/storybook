@@ -9,6 +9,8 @@
  *
  * @element nldd-dropdown
  * @attr {string}  size     - Size: 'xs' | 'sm' | 'md' (default: 'md')
+ * @attr {boolean} valid    - Marks the field as valid
+ * @attr {boolean} invalid  - Marks the field as invalid
  * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
  *
  * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
@@ -42,6 +44,12 @@ export class NLDDDropdown extends LitElement {
 	size: DropdownSize = 'md';
 
 	@property({ type: Boolean, reflect: true })
+	valid = false;
+
+	@property({ type: Boolean, reflect: true })
+	invalid = false;
+
+	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
 	@state()
@@ -54,6 +62,9 @@ export class NLDDDropdown extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('disabled')) {
 			this._syncDisabled();
+		}
+		if (changedProperties.has('invalid')) {
+			this._syncAriaInvalid();
 		}
 	}
 
@@ -81,6 +92,7 @@ export class NLDDDropdown extends LitElement {
 
 		select.addEventListener('change', this._handleSelectChange);
 		this._syncDisabled();
+		this._syncAriaInvalid();
 		this._syncDisplayValue();
 	}
 
@@ -89,6 +101,15 @@ export class NLDDDropdown extends LitElement {
 	private _syncDisabled(): void {
 		if (!this._select) return;
 		this._select.disabled = this.disabled;
+	}
+
+	private _syncAriaInvalid(): void {
+		if (!this._select) return;
+		if (this.invalid) {
+			this._select.setAttribute('aria-invalid', 'true');
+		} else {
+			this._select.removeAttribute('aria-invalid');
+		}
 	}
 
 	private _syncDisplayValue(): void {

@@ -8,7 +8,7 @@ export const passwordFieldStyles = css`
 	:host {
 		display: block;
 		--_background-color: var(--semantics-input-fields-background-color);
-		--_z-index-visibility-toggle-button: 1;
+		--_z-index-button-focus: 1;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -83,8 +83,6 @@ export const passwordFieldStyles = css`
 		box-sizing: border-box;
 		padding: 0;
 		margin: 0;
-		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		font: var(--semantics-input-fields-md-text-font);
 		color: var(--semantics-content-color);
 		background: transparent;
 		border: none;
@@ -92,31 +90,37 @@ export const passwordFieldStyles = css`
 		appearance: none;
 	}
 
-	.password-field__input.is-masked {
-		font: var(--semantics-input-fields-md-mask-font);
-	}
-
 	:host([size='sm']) .password-field__input {
 		min-height: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		font: var(--semantics-input-fields-sm-text-font);
+	}
+
+	:host([size='md']) .password-field__input,
+	:host(:not([size])) .password-field__input {
+		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		font: var(--semantics-input-fields-md-text-font);
 	}
 
 	:host([size='sm']) .password-field__input.is-masked {
 		font: var(--semantics-input-fields-sm-mask-font);
 	}
 
-	:host([disabled]) .password-field__input {
-		pointer-events: none;
+	:host([size='md']) .password-field__input.is-masked,
+	:host(:not([size])) .password-field__input.is-masked {
+		font: var(--semantics-input-fields-md-mask-font);
 	}
 
 	.password-field__input::placeholder {
 		color: var(--semantics-input-fields-placeholder-color);
-		/* Always use text font for placeholder, regardless of masked state */
-		font: var(--semantics-input-fields-md-text-font);
 	}
 
 	:host([size='sm']) .password-field__input::placeholder {
 		font: var(--semantics-input-fields-sm-text-font);
+	}
+
+	:host([size='md']) .password-field__input::placeholder,
+	:host(:not([size])) .password-field__input::placeholder {
+		font: var(--semantics-input-fields-md-text-font);
 	}
 
 	.password-field__input:-webkit-autofill,
@@ -124,17 +128,21 @@ export const passwordFieldStyles = css`
 		box-shadow: 0 0 0 999px var(--_background-color) inset;
 	}
 
+	:host([disabled]) .password-field__input {
+		pointer-events: none;
+	}
 
-	/* # Fade */
 
-	.password-field__fade {
+	/* # Input fade */
+
+	.password-field__input-fade {
 		position: relative;
 		flex-shrink: 0;
 		align-self: stretch;
 		width: 0;
 	}
 
-	.password-field__fade::after {
+	.password-field__input-fade::after {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -147,19 +155,23 @@ export const passwordFieldStyles = css`
 	}
 
 
-	/* # Validation icon area */
+	/* # Validation icon */
 
 	.password-field__validation-icon-area {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		width: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		height: 100%;
 	}
 
 	:host([size='sm']) .password-field__validation-icon-area {
 		width: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+	}
+
+	:host([size='md']) .password-field__validation-icon-area,
+	:host(:not([size])) .password-field__validation-icon-area {
+		width: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 	}
 
 	:host([valid]) .password-field__validation-icon-area {
@@ -170,17 +182,15 @@ export const passwordFieldStyles = css`
 		color: var(--semantics-input-fields-is-invalid-icon-color);
 	}
 
-
-	/* # Validation icon */
-
-	.password-field__validation-icon {
-		width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
+	:host([size='sm']) .password-field__validation-icon {
+		width: var(--semantics-input-fields-sm-validation-icon-size);
+		height: var(--semantics-input-fields-sm-validation-icon-size);
 	}
 
-	:host([size='sm']) .password-field__validation-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
+	:host([size='md']) .password-field__validation-icon,
+	:host(:not([size])) .password-field__validation-icon {
+		width: var(--semantics-input-fields-md-validation-icon-size);
+		height: var(--semantics-input-fields-md-validation-icon-size);
 	}
 
 
@@ -192,15 +202,21 @@ export const passwordFieldStyles = css`
 		justify-content: center;
 		flex-shrink: 0;
 		height: 100%;
-		/* (field height - 2 x border - sm button height) / 2 */
-		padding-block: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
-		padding-inline-end: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
-		z-index: var(--_z-index-visibility-toggle-button);
 	}
 
 	:host([size='sm']) .password-field__visibility-toggle-button {
-		/* (field height - 2 x border - xs button height) / 2 */
 		padding-block: calc((var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-xs-min-size)) / 2);
 		padding-inline-end: calc((var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-xs-min-size)) / 2);
+	}
+
+	:host([size='md']) .password-field__visibility-toggle-button,
+	:host(:not([size])) .password-field__visibility-toggle-button {
+		padding-block: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
+		padding-inline-end: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - var(--semantics-controls-sm-min-size)) / 2);
+	}
+
+	.password-field__visibility-toggle-button:focus-within {
+		position: relative;
+		z-index: var(--_z-index-button-focus);
 	}
 `;

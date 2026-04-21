@@ -23,10 +23,10 @@ export function searchFieldTemplate(component: NLDDSearchField): TemplateResult 
 				@change=${component._handleChange}
 				@keydown=${component._handleKeydown}
 			>
-			<div class="search-field__fade"></div>
-			<div class="search-field__actions">
+			<div class="search-field__input-fade"></div>
+			<div class="search-field__end">
 				${component.value ? html`
-					<div class="search-field__clear-action">
+					<div class="search-field__clear-button">
 						<nldd-icon-button
 							variant="neutral-transparent"
 							size=${buttonSize}
@@ -37,7 +37,7 @@ export function searchFieldTemplate(component: NLDDSearchField): TemplateResult 
 					</div>
 				` : nothing}
 				${component.hasSearchButton ? html`
-					<div class="search-field__search-action">
+					<div class="search-field__search-button">
 						<nldd-button
 							variant="neutral-tinted"
 							size=${buttonSize}

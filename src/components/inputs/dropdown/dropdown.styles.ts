@@ -7,9 +7,9 @@ export const dropdownStyles = css`
 
 	:host {
 		display: block;
-		--_xs-icon-size: var(--primitives-space-16);
-		--_sm-icon-size: var(--primitives-space-20);
-		--_md-icon-size: var(--primitives-space-24);
+		--_xs-picker-icon-size: var(--primitives-space-16);
+		--_sm-picker-icon-size: var(--primitives-space-20);
+		--_md-picker-icon-size: var(--primitives-space-24);
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -80,7 +80,7 @@ export const dropdownStyles = css`
 	/* # Value */
 
 	.dropdown__value {
-		flex: 1;
+		flex-grow: 1;
 		min-width: 0;
 		white-space: nowrap;
 		overflow: hidden;
@@ -105,6 +105,54 @@ export const dropdownStyles = css`
 	}
 
 
+	/* # Validation icon */
+
+	.dropdown__validation-icon-area {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		height: 100%;
+	}
+
+	:host([size='xs']) .dropdown__validation-icon-area {
+		padding-right: var(--primitives-space-0);
+	}
+
+	:host([size='sm']) .dropdown__validation-icon-area {
+		padding-right: var(--primitives-space-2);
+	}
+
+	:host([size='md']) .dropdown__validation-icon-area,
+	:host(:not([size])) .dropdown__validation-icon-area {
+		padding-right: var(--primitives-space-4);
+	}
+
+	:host([valid]) .dropdown__validation-icon-area {
+		color: var(--semantics-input-fields-is-valid-icon-color);
+	}
+
+	:host([invalid]) .dropdown__validation-icon-area {
+		color: var(--semantics-input-fields-is-invalid-icon-color);
+	}
+
+	:host([size='xs']) .dropdown__validation-icon {
+		width: var(--semantics-input-fields-xs-validation-icon-size);
+		height: var(--semantics-input-fields-xs-validation-icon-size);
+	}
+
+	:host([size='sm']) .dropdown__validation-icon {
+		width: var(--semantics-input-fields-sm-validation-icon-size);
+		height: var(--semantics-input-fields-sm-validation-icon-size);
+	}
+
+	:host([size='md']) .dropdown__validation-icon,
+	:host(:not([size])) .dropdown__validation-icon {
+		width: var(--semantics-input-fields-md-validation-icon-size);
+		height: var(--semantics-input-fields-md-validation-icon-size);
+	}
+
+
 	/* # Picker icon */
 
 	.dropdown__picker-icon {
@@ -116,21 +164,21 @@ export const dropdownStyles = css`
 	}
 
 	:host([size='xs']) .dropdown__picker-icon {
-		width: var(--_xs-icon-size);
-		height: var(--_xs-icon-size);
-		padding-right: calc((var(--semantics-controls-xs-min-size) - var(--_xs-icon-size)) / 2);
+		width: var(--_xs-picker-icon-size);
+		height: var(--_xs-picker-icon-size);
+		padding-right: calc((var(--semantics-controls-xs-min-size) - var(--_xs-picker-icon-size)) / 2);
 	}
 
 	:host([size='sm']) .dropdown__picker-icon {
-		width: var(--_sm-icon-size);
-		height: var(--_sm-icon-size);
-		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--_sm-icon-size)) / 2);
+		width: var(--_sm-picker-icon-size);
+		height: var(--_sm-picker-icon-size);
+		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--_sm-picker-icon-size)) / 2);
 	}
 
 	:host([size='md']) .dropdown__picker-icon,
 	:host(:not([size])) .dropdown__picker-icon {
-		width: var(--_md-icon-size);
-		height: var(--_md-icon-size);
-		padding-right: calc((var(--semantics-controls-md-min-size) - var(--_md-icon-size)) / 2);
+		width: var(--_md-picker-icon-size);
+		height: var(--_md-picker-icon-size);
+		padding-right: calc((var(--semantics-controls-md-min-size) - var(--_md-picker-icon-size)) / 2);
 	}
 `;

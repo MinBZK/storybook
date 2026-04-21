@@ -32,6 +32,45 @@ describe('nldd-combo-box', () => {
 
 
 /* ============================================================
+   Validation
+   ============================================================ */
+
+describe('nldd-combo-box – validation', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders no validation icon by default', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.combo-box__validation-icon-area')).toBeNull();
+	});
+
+	it('renders a valid icon when valid', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box valid></nldd-combo-box>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.combo-box__validation-icon')!;
+		expect(icon.getAttribute('name')).toBe('valid');
+	});
+
+	it('renders an invalid icon when invalid', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box invalid></nldd-combo-box>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.combo-box__validation-icon')!;
+		expect(icon.getAttribute('name')).toBe('invalid');
+	});
+
+	it('sets aria-invalid on the input when invalid', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box invalid></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-invalid')).toBe('true');
+	});
+});
+
+
+/* ============================================================
    Size
    ============================================================ */
 
@@ -55,16 +94,16 @@ describe('nldd-combo-box – size', () => {
 	});
 
 	it('renders sm icon buttons when size is md', async () => {
-		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		el = await fixture<NLDDComboBox>('<nldd-combo-box size="md"></nldd-combo-box>');
 		await waitForUpdate(el);
-		const picker = el.shadowRoot!.querySelector('.combo-box__picker nldd-icon-button')!;
+		const picker = el.shadowRoot!.querySelector('.combo-box__picker-button nldd-icon-button')!;
 		expect(picker.getAttribute('size')).toBe('sm');
 	});
 
 	it('renders xs icon buttons when size is sm', async () => {
 		el = await fixture<NLDDComboBox>('<nldd-combo-box size="sm"></nldd-combo-box>');
 		await waitForUpdate(el);
-		const picker = el.shadowRoot!.querySelector('.combo-box__picker nldd-icon-button')!;
+		const picker = el.shadowRoot!.querySelector('.combo-box__picker-button nldd-icon-button')!;
 		expect(picker.getAttribute('size')).toBe('xs');
 	});
 });
@@ -192,7 +231,7 @@ describe('nldd-combo-box – clear', () => {
 	it('does not render clear button when display value is empty', async () => {
 		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.combo-box__clear-action')).toBeNull();
+		expect(el.shadowRoot!.querySelector('.combo-box__clear-button')).toBeNull();
 	});
 
 	it('renders clear button when there is a display value', async () => {
@@ -202,7 +241,7 @@ describe('nldd-combo-box – clear', () => {
 		(input as any).value = 'Ned';
 		input.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.combo-box__clear-action')).not.toBeNull();
+		expect(el.shadowRoot!.querySelector('.combo-box__clear-button')).not.toBeNull();
 	});
 
 	it('clears value, fires change event and refocuses input on clear click', async () => {
@@ -217,7 +256,7 @@ describe('nldd-combo-box – clear', () => {
 		let changeDetail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { changeDetail = e.detail; }) as EventListener);
 
-		const clearButton = el.shadowRoot!.querySelector<HTMLElement>('.combo-box__clear-action nldd-icon-button')!;
+		const clearButton = el.shadowRoot!.querySelector<HTMLElement>('.combo-box__clear-button nldd-icon-button')!;
 		clearButton.click();
 		await waitForUpdate(el);
 

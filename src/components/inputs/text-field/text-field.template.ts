@@ -45,7 +45,7 @@ export function textFieldTemplate(component: NLDDTextField): TemplateResult {
 				@input=${component._handleInput}
 				@change=${component._handleChange}
 			/>
-			<div class="text-field__fade"></div>
+			<div class="text-field__input-fade"></div>
 			${renderValidationIcon(component)}
 		</div>
 	`;

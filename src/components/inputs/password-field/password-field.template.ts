@@ -66,7 +66,7 @@ export function passwordFieldTemplate(component: NLDDPasswordField): TemplateRes
 				@input=${component._handleInput}
 				@change=${component._handleChange}
 			/>
-			<div class="password-field__fade"></div>
+			<div class="password-field__input-fade"></div>
 			${renderValidationIcon(component)}
 			${renderVisibilityToggle(component)}
 		</div>

@@ -78,8 +78,6 @@ export const textFieldStyles = css`
 		box-sizing: border-box;
 		padding: 0;
 		margin: 0;
-		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
-		font: var(--semantics-input-fields-md-text-font);
 		color: var(--semantics-content-color);
 		background: transparent;
 		border: none;
@@ -90,6 +88,12 @@ export const textFieldStyles = css`
 	:host([size='sm']) .text-field__input {
 		min-height: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		font: var(--semantics-input-fields-sm-text-font);
+	}
+
+	:host([size='md']) .text-field__input,
+	:host(:not([size])) .text-field__input {
+		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		font: var(--semantics-input-fields-md-text-font);
 	}
 
 	:host([disabled]) .text-field__input {
@@ -106,29 +110,33 @@ export const textFieldStyles = css`
 	}
 
 
-	/* # Fade */
+	/* # Input fade */
 
-	.text-field__fade {
+	.text-field__input-fade {
 		position: relative;
 		flex-shrink: 0;
 		align-self: stretch;
 		width: 0;
 	}
 
-	.text-field__fade::after {
+	.text-field__input-fade::after {
 		content: '';
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		right: 0;
 		width: var(--primitives-space-8);
-		border-radius: var(--semantics-controls-md-corner-radius);
 		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
 		pointer-events: none;
 	}
 
-	:host([size='sm']) .text-field__fade::after {
+	:host([size='sm']) .text-field__input-fade::after {
 		border-radius: var(--semantics-controls-sm-corner-radius);
+	}
+
+	:host([size='md']) .text-field__input-fade::after,
+	:host(:not([size])) .text-field__input-fade::after {
+		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
 
@@ -139,12 +147,16 @@ export const textFieldStyles = css`
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		width: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 		height: 100%;
 	}
 
 	:host([size='sm']) .text-field__validation-icon-area {
 		width: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+	}
+
+	:host([size='md']) .text-field__validation-icon-area,
+	:host(:not([size])) .text-field__validation-icon-area {
+		width: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
 	}
 
 	:host([valid]) .text-field__validation-icon-area {
@@ -158,13 +170,14 @@ export const textFieldStyles = css`
 
 	/* # Validation icon */
 
-	.text-field__validation-icon {
-		width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
+	:host([size='sm']) .text-field__validation-icon {
+		width: var(--semantics-input-fields-sm-validation-icon-size);
+		height: var(--semantics-input-fields-sm-validation-icon-size);
 	}
 
-	:host([size='sm']) .text-field__validation-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
+	:host([size='md']) .text-field__validation-icon,
+	:host(:not([size])) .text-field__validation-icon {
+		width: var(--semantics-input-fields-md-validation-icon-size);
+		height: var(--semantics-input-fields-md-validation-icon-size);
 	}
 `;

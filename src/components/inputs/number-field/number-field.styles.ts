@@ -69,28 +69,28 @@ export const numberFieldStyles = css`
 
 	/* # Controls */
 
-	.number-field__decrement-control,
-	.number-field__increment-control {
+	.number-field__decrement-button,
+	.number-field__increment-button {
 		display: flex;
 		align-items: center;
 		height: 100%;
 	}
 
-	:host([size='sm']) .number-field__decrement-control {
+	:host([size='sm']) .number-field__decrement-button {
 		padding-left: calc((var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
-	:host([size='sm']) .number-field__increment-control {
+	:host([size='sm']) .number-field__increment-button {
 		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
-	:host([size='md']) .number-field__decrement-control,
-	:host(:not([size])) .number-field__decrement-control {
+	:host([size='md']) .number-field__decrement-button,
+	:host(:not([size])) .number-field__decrement-button {
 		padding-left: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
-	:host([size='md']) .number-field__increment-control,
-	:host(:not([size])) .number-field__increment-control {
+	:host([size='md']) .number-field__increment-button,
+	:host(:not([size])) .number-field__increment-button {
 		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
@@ -136,7 +136,7 @@ export const numberFieldStyles = css`
 
 	:host([full-width]) .number-field__input,
 	:host([width]) .number-field__input {
-		flex: 1;
+		flex-grow: 1;
 		min-width: 0;
 	}
 `;

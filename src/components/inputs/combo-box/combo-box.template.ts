@@ -1,6 +1,31 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDComboBox } from './combo-box.js';
 import '../../actions/icon-button/icon-button.js';
+import '../../content/icon/icon.js';
+
+function renderValidationIcon(component: NLDDComboBox): TemplateResult | typeof nothing {
+	if (component.valid) {
+		return html`
+			<div class="combo-box__validation-icon-area">
+				<nldd-icon class="combo-box__validation-icon"
+					name="valid"
+					aria-hidden="true"
+				></nldd-icon>
+			</div>
+		`;
+	}
+	if (component.invalid) {
+		return html`
+			<div class="combo-box__validation-icon-area">
+				<nldd-icon class="combo-box__validation-icon"
+					name="invalid"
+					aria-hidden="true"
+				></nldd-icon>
+			</div>
+		`;
+	}
+	return nothing;
+}
 
 export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 	const iconButtonSize = component.size === 'sm' ? 'xs' : 'sm';
@@ -16,6 +41,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 				aria-autocomplete="list"
 				aria-haspopup="listbox"
 				aria-activedescendant=${component._highlightedId || nothing}
+				aria-invalid=${component.invalid ? 'true' : nothing}
 				.value=${component._displayValue}
 				placeholder=${component.placeholder || nothing}
 				?disabled=${component.disabled}
@@ -24,9 +50,10 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 				@keydown=${component._handleKeydown}
 				@blur=${component._handleBlur}
 			>
-			<div class="combo-box__actions">
+			<div class="combo-box__input-fade"></div>
+			<div class="combo-box__end">
 				${component._displayValue ? html`
-					<div class="combo-box__clear-action">
+					<div class="combo-box__clear-button">
 						<nldd-icon-button
 							variant="neutral-transparent"
 							size=${iconButtonSize}
@@ -37,7 +64,8 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 						></nldd-icon-button>
 					</div>
 				` : nothing}
-				<div class="combo-box__picker">
+				${renderValidationIcon(component)}
+				<div class="combo-box__picker-button">
 					<nldd-icon-button
 						variant="neutral-tinted"
 						size=${iconButtonSize}

@@ -8,6 +8,7 @@ export const comboBoxStyles = css`
 	:host {
 		display: block;
 		--_background-color: var(--semantics-input-fields-background-color);
+		--_z-index-button-focus: 1;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -44,6 +45,14 @@ export const comboBoxStyles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
+	:host([valid]) .combo-box {
+		border-color: var(--semantics-input-fields-is-valid-border-color);
+	}
+
+	:host([invalid]) .combo-box {
+		border-color: var(--semantics-input-fields-is-invalid-border-color);
+	}
+
 	.combo-box:has(input:-webkit-autofill),
 	.combo-box:has(input:autofill) {
 		--_background-color: var(--semantics-input-fields-is-autofill-background-color);
@@ -71,13 +80,13 @@ export const comboBoxStyles = css`
 	}
 
 	:host([size='sm']) .combo-box__input {
-		padding: 0 calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
+		padding-left: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
 		font: var(--semantics-input-fields-sm-text-font);
 	}
 
 	:host([size='md']) .combo-box__input,
 	:host(:not([size])) .combo-box__input {
-		padding: 0 calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
+		padding-left: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 		font: var(--semantics-input-fields-md-text-font);
 	}
 
@@ -91,27 +100,90 @@ export const comboBoxStyles = css`
 	}
 
 
-	/* # Actions */
+	/* # Input fade */
 
-	.combo-box__actions {
+	.combo-box__input-fade {
+		position: relative;
+		flex-shrink: 0;
+		align-self: stretch;
+		width: 0;
+	}
+
+	.combo-box__input-fade::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: var(--primitives-space-8);
+		background: linear-gradient(90deg, color-mix(in oklch, var(--_background-color) 0%, transparent) 0%, var(--_background-color) 100%);
+		pointer-events: none;
+	}
+
+
+	/* # End */
+
+	.combo-box__end {
 		display: flex;
 		flex-shrink: 0;
 		align-items: center;
-		gap: var(--primitives-space-6);
 	}
 
-	:host([size='sm']) .combo-box__actions {
+	:host([size='sm']) .combo-box__end {
 		padding-right: calc((var(--semantics-controls-sm-min-size) - var(--semantics-controls-xs-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
-	:host([size='md']) .combo-box__actions,
-	:host(:not([size])) .combo-box__actions {
+	:host([size='md']) .combo-box__end,
+	:host(:not([size])) .combo-box__end {
 		padding-right: calc((var(--semantics-controls-md-min-size) - var(--semantics-controls-sm-min-size)) / 2 - var(--semantics-input-fields-border-thickness));
 	}
 
-	.combo-box__clear-action:focus-within,
-	.combo-box__picker:focus-within {
+
+	/* # Clear button */
+
+	.combo-box__clear-button:focus-within {
 		position: relative;
-		z-index: 1;
+		z-index: var(--_z-index-button-focus);
+	}
+
+
+	/* # Validation icon */
+
+	.combo-box__validation-icon-area {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		height: 100%;
+	}
+
+	:host([valid]) .combo-box__validation-icon-area {
+		color: var(--semantics-input-fields-is-valid-icon-color);
+	}
+
+	:host([invalid]) .combo-box__validation-icon-area {
+		color: var(--semantics-input-fields-is-invalid-icon-color);
+	}
+
+	:host([size='sm']) .combo-box__validation-icon {
+		width: var(--semantics-input-fields-sm-validation-icon-size);
+		height: var(--semantics-input-fields-sm-validation-icon-size);
+	}
+
+	:host([size='md']) .combo-box__validation-icon,
+	:host(:not([size])) .combo-box__validation-icon {
+		width: var(--semantics-input-fields-md-validation-icon-size);
+		height: var(--semantics-input-fields-md-validation-icon-size);
+	}
+
+	/* # Picker button */
+
+	.combo-box__picker-button {
+		margin-left: var(--primitives-space-6);
+	}
+
+	.combo-box__picker-button:focus-within {
+		position: relative;
+		z-index: var(--_z-index-button-focus);
 	}
 `;
