@@ -1,9 +1,10 @@
 import { css } from 'lit';
 
-
-/* # nldd-stacked-split-view styles */
-
 export const stackedSplitViewStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -30,7 +31,7 @@ export const stackedSplitViewStyles = css`
 	}
 
 
-	/* # Split view */
+	/* # Block */
 
 	.stacked-split-view {
 		display: flex;

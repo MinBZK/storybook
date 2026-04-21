@@ -7,7 +7,7 @@ const lgMin = unsafeCSS(breakpoints.lgMin);
 
 // # Top navigation bar styles
 
-export const styles = css`
+export const topNavigationBarStyles = css`
 
 
 	/* # Host */
@@ -17,6 +17,14 @@ export const styles = css`
 		--_wordmark-content-color: light-dark(var(--primitives-color-reference-lintblauw), var(--primitives-color-neutral-1000));
 		display: block;
 		width: 100%;
+
+		@media (min-width: ${mdMin}) {
+			--_logo-width: var(--primitives-space-44);
+		}
+
+		@media (min-width: ${lgMin}) {
+			--_logo-width: var(--primitives-space-48);
+		}
 
 		@container layout-area (min-width: ${mdMin}) {
 			--_logo-width: var(--primitives-space-44);
@@ -32,7 +40,7 @@ export const styles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.top-navigation-bar {
 		display: flex;
@@ -53,6 +61,14 @@ export const styles = css`
 		gap: var(--primitives-space-8);
 		align-items: center;
 		padding-inline: var(--semantics-page-sections-sm-margin-inline);
+
+		@media (min-width: ${mdMin}) {
+			padding-inline: var(--semantics-page-sections-md-margin-inline);
+		}
+
+		@media (min-width: ${lgMin}) {
+			padding-inline: var(--semantics-page-sections-lg-margin-inline);
+		}
 
 		@container layout-area (min-width: ${mdMin}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
@@ -162,6 +178,14 @@ export const styles = css`
 		display: flex;
 		flex-direction: column;
 		padding-inline: calc(var(--semantics-page-sections-sm-margin-inline) - var(--components-menu-bar-item-inline-padding));
+
+		@media (min-width: ${mdMin}) {
+			padding-inline: var(--semantics-page-sections-md-margin-inline);
+		}
+
+		@media (min-width: ${lgMin}) {
+			padding-inline: var(--semantics-page-sections-lg-margin-inline);
+		}
 
 		@container layout-area (min-width: ${mdMin}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);

@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const menuBarStyles = css`
 
 
 	/* # Host */

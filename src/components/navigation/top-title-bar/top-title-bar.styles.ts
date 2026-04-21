@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 export const topTitleBarStyles = css`
 
+
 	/* # Host */
 
 	:host {
@@ -14,7 +15,7 @@ export const topTitleBarStyles = css`
 	}
 
 
-	/* # Top title bar */
+	/* # Block */
 
 	.top-title-bar {
 		display: flex;

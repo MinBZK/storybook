@@ -1,7 +1,7 @@
 import { css } from 'lit';
 
 
-export const styles = css`
+export const skipLinkStyles = css`
 
 
 	/* # Host */

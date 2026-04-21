@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const buttonBarStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -21,7 +23,8 @@ export const styles = css`
 		opacity: 1;
 	}
 
-	/* # Base */
+
+	/* # Block */
 
 	.button-bar {
 		display: flex;
@@ -31,12 +34,14 @@ export const styles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 	}
 
+
 	/* # Size: XS */
 
 	:host([size="xs"]) .button-bar {
 		height: var(--semantics-controls-xs-min-size);
 		border-radius: var(--semantics-controls-xs-corner-radius);
 	}
+
 
 	/* # Size: SM */
 
@@ -45,6 +50,7 @@ export const styles = css`
 		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
+
 	/* # Size: MD */
 
 	:host([size="md"]) .button-bar,
@@ -52,6 +58,7 @@ export const styles = css`
 		height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
 	}
+
 
 	/* # Divider */
 
@@ -92,6 +99,7 @@ export const styles = css`
 	:host(:not([size])) .button-bar__divider-line {
 		height: var(--semantics-buttons-md-divider-length);
 	}
+
 
 	/* # Focus */
 

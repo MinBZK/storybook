@@ -1,9 +1,10 @@
 import { css } from 'lit';
 
-
-/* # nldd-side-by-side-split-view styles */
-
 export const sideBySideSplitViewStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		width: 100%;
@@ -29,7 +30,7 @@ export const sideBySideSplitViewStyles = css`
 	}
 
 
-	/* # Split view */
+	/* # Block */
 
 	.side-by-side-split-view {
 		display: flex;

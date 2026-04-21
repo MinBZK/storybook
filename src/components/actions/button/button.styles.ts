@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const buttonStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -23,7 +25,8 @@ export const styles = css`
 		pointer-events: none;
 	}
 
-	/* # Base */
+
+	/* # Block */
 
 	.button {
 		appearance: none;
@@ -54,6 +57,7 @@ export const styles = css`
 		}
 	}
 
+
 	/* # Focus */
 
 	.button:focus-visible {
@@ -64,6 +68,7 @@ export const styles = css`
 	.button:focus:not(:focus-visible) {
 		outline: none;
 	}
+
 
 	/* # Sizes */
 
@@ -100,6 +105,7 @@ export const styles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 		gap: var(--semantics-buttons-md-gap);
 	}
+
 
 	/* # Variants */
 

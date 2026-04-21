@@ -4,16 +4,18 @@ import { breakpoints } from '../../../assets/styles/breakpoints.js';
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
-
-/* # nldd-collection styles */
-
 export const collectionStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		min-width: 0;
 		gap: 16px;
+		--_item-width: var(--primitives-area-280);
 	}
 
 	:host([hidden]) {
@@ -43,7 +45,9 @@ export const collectionStyles = css`
 	:host([layout='grid']) .collection__items,
 	:host(:not([layout])) .collection__items {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(var(--primitives-area-280), 1fr));
+		/* min(item-width, 100%) clamps the track min to the container width so
+		   a single column never forces horizontal overflow on narrow screens. */
+		grid-template-columns: repeat(auto-fill, minmax(min(var(--_item-width), 100%), 1fr));
 	}
 
 
@@ -90,7 +94,7 @@ export const collectionStyles = css`
 	:host([layout='horizontal-scroll']) .collection__items ::slotted(*) {
 		flex-grow: 1;
 		flex-shrink: 0;
-		flex-basis: var(--primitives-area-280);
+		flex-basis: var(--_item-width);
 		scroll-snap-align: start;
 	}
 

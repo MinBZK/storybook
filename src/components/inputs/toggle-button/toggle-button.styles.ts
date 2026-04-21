@@ -20,7 +20,7 @@ export const toggleButtonStyles = css`
 	}
 
 
-	/* # Base */
+	/* # Block */
 
 	.toggle-button {
 		/* Reset */

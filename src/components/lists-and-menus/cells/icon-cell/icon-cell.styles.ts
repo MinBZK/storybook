@@ -1,18 +1,21 @@
 import { css } from 'lit';
 
-export const styles = css`
-	/* # host */
+export const iconCellStyles = css`
+
+
+	/* # Host */
 
 	:host {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		color: var(--context-list-item-content-color, var(--semantics-content-color));
+		color: var(--context-cell-content-color, var(--semantics-content-color));
 	}
 
 	:host([hidden]) {
 		display: none;
 	}
+
 
 	/* # vertical-alignment */
 
@@ -37,6 +40,7 @@ export const styles = css`
 		align-self: flex-end;
 		justify-content: flex-end;
 	}
+
 
 	/* # size */
 
@@ -89,6 +93,7 @@ export const styles = css`
 		width: var(--primitives-space-32);
 		height: var(--primitives-space-32);
 	}
+
 
 	/* # color: inherit */
 

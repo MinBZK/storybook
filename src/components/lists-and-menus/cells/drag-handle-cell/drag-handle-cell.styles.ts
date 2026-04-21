@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const dragHandleCellStyles = css`
+
+
 	/* # Host */
 
 	:host {

@@ -1,10 +1,11 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
-
-/* # nldd-simple-section styles */
-
 export const simpleSectionStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		flex-direction: column;
@@ -22,7 +23,7 @@ export const simpleSectionStyles = css`
 	}
 
 
-	/* # Section */
+	/* # Block */
 
 	.simple-section {
 		display: flex;
@@ -47,7 +48,6 @@ export const simpleSectionStyles = css`
 			padding-block: var(--semantics-page-sections-lg-margin-block);
 		}
 	}
-
 
 
 	/* # Header */
@@ -78,7 +78,6 @@ export const simpleSectionStyles = css`
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
-
 
 
 	/* # Footer */

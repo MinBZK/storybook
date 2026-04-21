@@ -16,7 +16,7 @@
  */
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { styles } from './button-bar.styles.js';
+import { buttonBarStyles } from './button-bar.styles.js';
 import { template } from './button-bar.template.js';
 
 if (!customElements.get('nldd-button-bar-divider')) {
@@ -33,7 +33,7 @@ const BUTTON_TAGS = ['nldd-button', 'nldd-icon-button'];
 
 @customElement('nldd-button-bar')
 export class NLDDButtonBar extends LitElement {
-	static override styles = styles;
+	static override styles = buttonBarStyles;
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';

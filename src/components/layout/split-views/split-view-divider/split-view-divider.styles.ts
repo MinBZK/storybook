@@ -1,9 +1,10 @@
 import { css } from 'lit';
 
-
-/* # nldd-split-view-divider styles */
-
 export const splitViewDividerStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		display: flex;
 		flex-shrink: 0;
@@ -15,7 +16,7 @@ export const splitViewDividerStyles = css`
 	}
 
 
-	/* # Divider */
+	/* # Block */
 
 	.split-view-divider {
 		display: flex;

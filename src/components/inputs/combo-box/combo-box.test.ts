@@ -140,6 +140,60 @@ describe('nldd-combo-box – input event', () => {
 
 
 /* ============================================================
+   Clear button
+   ============================================================ */
+
+describe('nldd-combo-box – clear', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('does not render clear button when display value is empty', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.combo-box__clear-action')).toBeNull();
+	});
+
+	it('renders clear button when there is a display value', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'Ned';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.combo-box__clear-action')).not.toBeNull();
+	});
+
+	it('clears value, fires change event and refocuses input on clear click', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		(input as any).value = 'Nederland';
+		input.dispatchEvent(new Event('input', { bubbles: true }));
+		el.value = 'nl';
+		await waitForUpdate(el);
+
+		let changeDetail: any;
+		el.addEventListener('change', ((e: CustomEvent) => { changeDetail = e.detail; }) as EventListener);
+
+		const clearButton = el.shadowRoot!.querySelector<HTMLElement>('.combo-box__clear-action nldd-icon-button')!;
+		clearButton.click();
+		await waitForUpdate(el);
+
+		expect(el.value).toBe('');
+		expect(el._displayValue).toBe('');
+		expect(changeDetail?.value).toBe('');
+		// Refocus: walk shadow roots to find the deepest active element.
+		let active: Element | null = document.activeElement;
+		while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement;
+		expect(active).toBe(input);
+	});
+});
+
+
+/* ============================================================
    Filtering
    ============================================================ */
 

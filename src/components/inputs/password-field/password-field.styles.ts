@@ -16,7 +16,7 @@ export const passwordFieldStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.password-field {
 		display: flex;

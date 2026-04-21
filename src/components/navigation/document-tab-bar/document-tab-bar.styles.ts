@@ -2,6 +2,7 @@ import { css } from 'lit';
 
 export const documentTabBarStyles = css`
 
+
 	/* # Host */
 
 	:host {
@@ -24,7 +25,7 @@ export const documentTabBarStyles = css`
 	}
 
 
-	/* # Document tab bar */
+	/* # Block */
 
 	.document-tab-bar {
 		display: flex;
@@ -199,6 +200,7 @@ export const documentTabBarStyles = css`
 `;
 
 export const documentTabBarItemStyles = css`
+
 
 	/* # Host */
 

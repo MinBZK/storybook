@@ -153,6 +153,20 @@ describe('nldd-menu-item', () => {
 		expect(el.getAttribute('text')).toBe('Bewerk');
 	});
 
+	it('renders an icon-cell when the icon attribute is set', async () => {
+		el = await fixture('<nldd-menu-item text="Save" icon="file"></nldd-menu-item>');
+		await waitForUpdate(el);
+		const iconCell = el.shadowRoot!.querySelector('.menu__item-icon');
+		expect(iconCell).not.toBeNull();
+		expect(iconCell!.querySelector('nldd-icon')?.getAttribute('name')).toBe('file');
+	});
+
+	it('does not render an icon-cell when the icon attribute is missing', async () => {
+		el = await fixture('<nldd-menu-item text="Save"></nldd-menu-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.menu__item-icon')).toBeNull();
+	});
+
 	it('reflects details attribute', async () => {
 		el = await fixture('<nldd-menu-item details="Cmd+S"></nldd-menu-item>');
 		await waitForUpdate(el);

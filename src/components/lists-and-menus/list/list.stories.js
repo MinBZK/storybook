@@ -267,8 +267,8 @@ export const DraggableList = {
 				${labels.map((label) => html`
 					<nldd-list-item>
 						<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
-						<nldd-drag-handle-cell size="sm" slot="start" draggable-only></nldd-drag-handle-cell>
-						<nldd-spacer-cell slot="start" draggable-only size="8"></nldd-spacer-cell>
+						<nldd-drag-handle-cell size="sm" slot="start" reorderable-only></nldd-drag-handle-cell>
+						<nldd-spacer-cell slot="start" reorderable-only size="8"></nldd-spacer-cell>
 						<nldd-text-cell text="${label}" />
 					</nldd-list-item>
 				`)}

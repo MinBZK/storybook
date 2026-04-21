@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const searchFieldStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -19,7 +21,7 @@ export const searchFieldStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.search-field {
 		position: relative;
@@ -159,7 +161,7 @@ export const searchFieldStyles = css`
 		gap: var(--primitives-space-4);
 	}
 
-	.search-field__dismiss-action:focus-within,
+	.search-field__clear-action:focus-within,
 	.search-field__search-action:focus-within {
 		position: relative;
 		z-index: 1;

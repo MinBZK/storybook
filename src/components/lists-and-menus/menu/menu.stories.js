@@ -29,6 +29,17 @@ export const WithDetails = {
 	`,
 };
 
+export const WithIcons = {
+	render: () => html`
+		<nldd-button id="button-icons" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-icons" anchor="button-icons">
+			<nldd-menu-item text="Bewerk" icon="pencil"></nldd-menu-item>
+			<nldd-menu-item text="Dupliceer" icon="square-plus-on-square"></nldd-menu-item>
+			<nldd-menu-item text="Verwijder" icon="trash"></nldd-menu-item>
+		</nldd-menu>
+	`,
+};
+
 export const WithDivider = {
 	render: () => html`
 		<nldd-button id="button-divider" expandable text="Open menu"></nldd-button>

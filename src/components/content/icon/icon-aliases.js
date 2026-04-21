@@ -2,6 +2,7 @@
 export const aliases = {
 	// apartment-building
 	'office': 'apartment-building',
+	'building': 'apartment-building',
 
 	// arrow-2-counter-clockwise
 	'refresh': 'arrow-2-counter-clockwise',
@@ -33,6 +34,7 @@ export const aliases = {
 
 	// certificate
 	'license': 'certificate',
+	'diploma': 'certificate',
 
 	// chart-x-y-axis-line
 	'analytics': 'chart-x-y-axis-line',
@@ -63,6 +65,9 @@ export const aliases = {
 
 	// clock-arrow-counter-clockwise
 	'history': 'clock-arrow-counter-clockwise',
+
+	// cloud-arrow-down
+	'download-from-cloud': 'cloud-arrow-down',
 
 	// cloud-arrow-up
 	'backup-in-cloud': 'cloud-arrow-up',
@@ -145,6 +150,7 @@ export const aliases = {
 
 	// lock-open
 	'unlocked': 'lock-open',
+	'unsecure': 'lock-open',
 
 	// ship-wheel
 	'k8s': 'ship-wheel',
@@ -208,14 +214,17 @@ export const aliases = {
 	'blocked': 'slash-circle',
 	'forbidden': 'slash-circle',
 
-	// square-and-arrow-up
-	'share': 'square-and-arrow-up',
+	// square-arrow-up
+	'share': 'square-arrow-up',
 
 	// square-arrow-right-top
 	'external-link': 'square-arrow-right-top',
 
-	// squares-stack-plus
-	'add-stack': 'squares-stack-plus',
+	// square-plus-on-square
+	'add-stack': 'square-plus-on-square',
+
+	// rectangle-stack
+	'stack': 'rectangle-stack',
 
 	// sun
 	'day': 'sun',

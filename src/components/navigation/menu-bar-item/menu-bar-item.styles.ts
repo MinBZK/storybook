@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const menuBarItemStyles = css`
 
 
 	/* # Host */
@@ -22,7 +22,7 @@ export const styles = css`
 	}
 
 
-	/* # Item */
+	/* # Block */
 
 	.menu-bar-item {
 		appearance: none;

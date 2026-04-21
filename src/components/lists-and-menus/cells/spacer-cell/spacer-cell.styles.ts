@@ -1,7 +1,9 @@
 import { css } from 'lit';
 
-export const styles = css`
-	/* # host */
+export const spacerCellStyles = css`
+
+
+	/* # Host */
 
 	:host {
 		display: block;
@@ -12,6 +14,7 @@ export const styles = css`
 	:host([hidden]) {
 		display: none;
 	}
+
 
 	/* # size */
 

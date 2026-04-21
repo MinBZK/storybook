@@ -3,9 +3,8 @@ import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
 const mdMin = unsafeCSS(breakpoints.mdMin);
 
-/* # nldd-modal-dialog styles */
-
 export const modalDialogStyles = css`
+
 
 	/* # Host */
 
@@ -21,7 +20,7 @@ export const modalDialogStyles = css`
 	}
 
 
-	/* # Modal dialog */
+	/* # Block */
 
 	.modal-dialog {
 		border: none;

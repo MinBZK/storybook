@@ -22,7 +22,7 @@ export const tooltipStyles = css`
 	}
 
 
-	/* # Tooltip */
+	/* # Block */
 
 	.tooltip {
 		position: fixed;

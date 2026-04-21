@@ -51,28 +51,55 @@ describe('nldd-text-cell', () => {
 		expect(el.getAttribute('width')).toBe('fit-content');
 	});
 
-	it('sets inline width style for numeric width', async () => {
-		el = await fixture('<nldd-text-cell width="120"></nldd-text-cell>');
+	it('sets inline width style for explicit CSS length', async () => {
+		el = await fixture('<nldd-text-cell width="120px"></nldd-text-cell>');
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_width')).toBe('120px');
 	});
 
 	it('sets --_min-width custom property', async () => {
-		el = await fixture('<nldd-text-cell min-width="80"></nldd-text-cell>');
+		el = await fixture('<nldd-text-cell min-width="80px"></nldd-text-cell>');
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_min-width')).toBe('80px');
 	});
 
 	it('sets --_max-width custom property', async () => {
-		el = await fixture('<nldd-text-cell max-width="200"></nldd-text-cell>');
+		el = await fixture('<nldd-text-cell max-width="200px"></nldd-text-cell>');
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_max-width')).toBe('200px');
 	});
 
 	it('sets --_min-height custom property', async () => {
-		el = await fixture('<nldd-text-cell min-height="44"></nldd-text-cell>');
+		el = await fixture('<nldd-text-cell min-height="44px"></nldd-text-cell>');
 		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_min-height')).toBe('44px');
+	});
+
+	it('accepts CSS length units other than px', async () => {
+		el = await fixture('<nldd-text-cell min-width="5rem"></nldd-text-cell>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_min-width')).toBe('5rem');
+	});
+
+	it('injects a @container rule for hide-below', async () => {
+		el = await fixture('<nldd-text-cell hide-below="320px"></nldd-text-cell>');
+		await waitForUpdate(el);
+		const styleEls = el.shadowRoot!.querySelectorAll('style');
+		const injected = Array.from(styleEls).find((s) =>
+			s.textContent?.includes('@container'),
+		);
+		expect(injected?.textContent).toContain('max-width: 320px');
+		expect(injected?.textContent).toContain('display: none');
+	});
+
+	it('injects a @container rule for hide-above', async () => {
+		el = await fixture('<nldd-text-cell hide-above="480px"></nldd-text-cell>');
+		await waitForUpdate(el);
+		const styleEls = el.shadowRoot!.querySelectorAll('style');
+		const injected = Array.from(styleEls).find((s) =>
+			s.textContent?.includes('@container'),
+		);
+		expect(injected?.textContent).toContain('min-width: 480px');
 	});
 
 	it('defaults to left horizontal alignment', async () => {

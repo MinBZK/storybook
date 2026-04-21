@@ -278,6 +278,24 @@ export class NLDDComboBox extends LitElement {
 		}));
 	}
 
+	public _handleClear(): void {
+		this._displayValue = '';
+		this.value = '';
+		this._menu?.filter('');
+		this._closeMenu();
+		this.dispatchEvent(new CustomEvent('input', {
+			detail: { value: '' },
+			bubbles: true,
+			composed: true,
+		}));
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: { value: '' },
+			bubbles: true,
+			composed: true,
+		}));
+		this._input?.focus();
+	}
+
 	/** Accept a custom typed value and close the menu when focus leaves the input. */
 	public _handleBlur(e: FocusEvent): void {
 		const relatedTarget = e.relatedTarget as Node | null;

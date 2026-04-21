@@ -1,9 +1,10 @@
 import { css } from 'lit';
 
-
-/* # nldd-app-view styles */
-
 export const appViewStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		--context-parent-background-color: var(--semantics-surfaces-background-color);
 		--_background-color: var(--context-parent-background-color);
@@ -25,7 +26,7 @@ export const appViewStyles = css`
 	}
 
 
-	/* # App view */
+	/* # Block */
 
 	.app-view {
 		display: flex;

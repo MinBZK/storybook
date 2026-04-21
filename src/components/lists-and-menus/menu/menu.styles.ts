@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const menuStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -29,7 +31,7 @@ export const menuStyles = css`
 	}
 
 
-	/* # Menu */
+	/* # Block */
 
 	.menu {
 		display: flex;
@@ -65,6 +67,8 @@ export const menuStyles = css`
 `;
 
 export const menuItemStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -92,8 +96,6 @@ export const menuItemStyles = css`
 		background: transparent;
 		text-align: start;
 		appearance: none;
-		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-md-regular-tight);
 		@media (pointer: fine) {
 			padding: var(--primitives-space-4) var(--primitives-space-8);
 			border-radius: var(--semantics-controls-sm-corner-radius);
@@ -105,8 +107,8 @@ export const menuItemStyles = css`
 
 	:host([highlighted]) .menu__item {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
-		color: var(--components-menu-item-is-highlighted-content-color);
-		--semantics-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);
+		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
+		--context-cell-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);
 	}
 
 
@@ -152,6 +154,8 @@ export const menuItemStyles = css`
 `;
 
 export const menuDividerStyles = css`
+
+
 	/* # Host */
 
 	:host {

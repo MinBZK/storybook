@@ -1,11 +1,19 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const iconButtonStyles = css`
+
+
 	/* # Host */
 
 	:host {
 		display: inline-block;
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	:host([full-width]) {
+		display: block;
+		width: 100%;
+		flex-grow: 1;
 	}
 
 	:host([hidden]) {
@@ -18,7 +26,7 @@ export const styles = css`
 	}
 
 
-	/* # Base */
+	/* # Block */
 
 	.icon-button {
 		appearance: none;
@@ -150,6 +158,10 @@ export const styles = css`
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		margin-right: calc(var(--primitives-space-2) * -1);
+	}
+
+	:host([full-width]) .icon-button {
+		width: 100%;
 	}
 
 

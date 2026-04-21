@@ -1,8 +1,5 @@
 import { css } from 'lit';
 
-
-/* # nldd-card styles */
-
 export const cardStyles = css`
 
 
@@ -18,7 +15,7 @@ export const cardStyles = css`
 	}
 
 
-	/* # Card */
+	/* # Block */
 
 	.card {
 		display: flex;

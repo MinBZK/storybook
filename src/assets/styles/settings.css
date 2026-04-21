@@ -34,16 +34,16 @@
 	font-display: swap;
 }
 
-:root[data-theme="dark"] {
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-
 @media (prefers-color-scheme: dark) {
-	:root:not([data-theme="light"]) {
+	:root:not([data-scheme="light"]) {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
+}
+
+:root[data-scheme="dark"] {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 :root {
@@ -184,7 +184,7 @@
 	--primitives-color-danger-950: light-dark(oklch(0.212 0.086 29.5), oklch(0.951 0.025 29.5)); /* light: #370000 | dark: #FFE9E5 */
 	--primitives-color-danger-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
 
-	/* ### Highlight (Yellow) - 79.0° */
+	/* ### Mark (Yellow) - 79.0° */
 
 	--primitives-color-mark-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
 	--primitives-color-mark-25: light-dark(oklch(0.974 0.023 79.0), oklch(0.159 0.033 79.0)); /* light: #FFF5E6 | dark: #150B00 */
@@ -322,24 +322,29 @@
 	--primitives-font-size-1000: 3.247rem; /* ~52px */
 
 	--primitives-font-weight-body-hairline: 100;
-	--primitives-font-weight-body-thin: 100;
+	--primitives-font-weight-body-thin: 200;
 	--primitives-font-weight-body-light: 300;
 	--primitives-font-weight-body-regular: 400;
-	--primitives-font-weight-body-medium: 550;
-	--primitives-font-weight-body-semi-bold: 550;
-	--primitives-font-weight-body-bold: 550;
+	--primitives-font-weight-body-medium: 450;
+	--primitives-font-weight-body-semi-bold: 475;
+	--primitives-font-weight-body-bold: 500;
 	--primitives-font-weight-body-extra-bold: 700;
 	--primitives-font-weight-body-black: 800;
 
 	--primitives-font-weight-display-hairline: 100;
-	--primitives-font-weight-display-thin: 100;
+	--primitives-font-weight-display-thin: 200;
 	--primitives-font-weight-display-light: 300;
 	--primitives-font-weight-display-regular: 400;
-	--primitives-font-weight-display-medium: 550;
-	--primitives-font-weight-display-semi-bold: 550;
-	--primitives-font-weight-display-bold: 550;
+	--primitives-font-weight-display-medium: 450;
+	--primitives-font-weight-display-semi-bold: 475;
+	--primitives-font-weight-display-bold: 500;
 	--primitives-font-weight-display-extra-bold: 700;
 	--primitives-font-weight-display-black: 800;
+
+	--primitives-line-height-loose: 1.75;
+	--primitives-line-height-snug: 1.5;
+	--primitives-line-height-tight: 1.25;
+	--primitives-line-height-flat: 1.125;
 
 	--primitives-font-body-lg-regular-loose:
 		var(--primitives-font-weight-body-regular)
@@ -633,15 +638,6 @@
 		var(--primitives-font-family-display)
 	;
 
-	/* ## Line height
-	   Declared after font shorthands — CSS custom properties resolve lazily
-	   within the same :root block, so source order does not matter. */
-
-	--primitives-line-height-loose: 1.75;
-	--primitives-line-height-snug: 1.5;
-	--primitives-line-height-tight: 1.25;
-	--primitives-line-height-flat: 1.125;
-
 	/* ## Opacity */
 
 	--primitives-opacity-0: 0;
@@ -670,44 +666,56 @@
 
 	/* ## Box shadow */
 
+	--primitives-box-shadow-opacity-factor: 1;
+
+	@media (prefers-color-scheme: dark) {
+		&:not([data-scheme="light"]) {
+			--primitives-box-shadow-opacity-factor: 3;
+		}
+	}
+
+	&[data-scheme="dark"] {
+		--primitives-box-shadow-opacity-factor: 3;
+	}
+
 	--primitives-box-shadows-level-1:
-		0px 2px 4px 0px rgba(0, 0, 0, 0.11),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.09)
-		;
+		0px 2px 4px 0px rgba(0, 0, 0, calc(0.11 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.09 * var(--primitives-box-shadow-opacity-factor)))
+	;
 	--primitives-box-shadows-level-2:
-		0px 2px 8px 0px rgba(0, 0, 0, 0.1),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.08),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.06)
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor)))
 	;
 	--primitives-box-shadows-level-3:
-		0px 4px 16px 0px rgba(0, 0, 0, 0.12),
-		0px 2px 8px 0px rgba(0, 0, 0, 0.06),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.05),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.04)
+		0px 4px 16px 0px rgba(0, 0, 0, calc(0.12 * var(--primitives-box-shadow-opacity-factor))),
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.05 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor)))
 	;
 	--primitives-box-shadows-level-4:
-		0px 8px 32px 0px rgba(0, 0, 0, 0.1),
-		0px 4px 16px 0px rgba(0, 0, 0, 0.08),
-		0px 2px 8px 0px rgba(0, 0, 0, 0.06),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.04),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
+		0px 8px 32px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
+		0px 4px 16px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
 	;
 	--primitives-box-shadows-level-5:
-		0px 16px 64px 0px rgba(0, 0, 0, 0.11),
-		0px 8px 32px 0px rgba(0, 0, 0, 0.09),
-		0px 4px 16px 0px rgba(0, 0, 0, 0.06),
-		0px 2px 8px 0px rgba(0, 0, 0, 0.04),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.03),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
+		0px 16px 64px 0px rgba(0, 0, 0, calc(0.11 * var(--primitives-box-shadow-opacity-factor))),
+		0px 8px 32px 0px rgba(0, 0, 0, calc(0.09 * var(--primitives-box-shadow-opacity-factor))),
+		0px 4px 16px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.03 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
 	;
 	--primitives-box-shadows-level-6:
-		0px 32px 128px 0px rgba(0, 0, 0, 0.16),
-		0px 16px 64px 0px rgba(0, 0, 0, 0.1),
-		0px 8px 32px 0px rgba(0, 0, 0, 0.08),
-		0px 4px 16px 0px rgba(0, 0, 0, 0.06),
-		0px 2px 8px 0px rgba(0, 0, 0, 0.04),
-		0px 1px 4px 0px rgba(0, 0, 0, 0.03),
-		0px 0px 2px 0px rgba(0, 0, 0, 0.02)
+		0px 32px 128px 0px rgba(0, 0, 0, calc(0.16 * var(--primitives-box-shadow-opacity-factor))),
+		0px 16px 64px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
+		0px 8px 32px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
+		0px 4px 16px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
+		0px 2px 8px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
+		0px 1px 4px 0px rgba(0, 0, 0, calc(0.03 * var(--primitives-box-shadow-opacity-factor))),
+		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
 	;
 
 
@@ -723,6 +731,7 @@
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-800));
 	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-550));
 	--semantics-content-error-color: light-dark(var(--primitives-color-danger-600), var(--primitives-color-danger-650));
+	--semantics-content-success-color: light-dark(var(--primitives-color-success-600), var(--primitives-color-success-650));
 
 	/* ## Links */
 
@@ -732,6 +741,11 @@
 
 	/* ## Controls */
 
+	--semantics-controls-xs-min-size: var(--primitives-space-24);
+	--semantics-controls-sm-min-size: var(--primitives-space-32);
+	--semantics-controls-md-min-size: var(--primitives-space-44);
+	--semantics-controls-lg-min-size: var(--primitives-space-56);
+
 	--semantics-controls-md-inline-padding: var(--primitives-space-12);
 	--semantics-controls-sm-inline-padding: var(--primitives-space-10);
 	--semantics-controls-xs-inline-padding: var(--primitives-space-6);
@@ -740,24 +754,19 @@
 	--semantics-controls-sm-block-padding: var(--primitives-space-6);
 	--semantics-controls-xs-block-padding: var(--primitives-space-4);
 
-	--semantics-controls-xs-min-size: var(--primitives-space-24);
-	--semantics-controls-sm-min-size: var(--primitives-space-32);
-	--semantics-controls-md-min-size: var(--primitives-space-44);
-	--semantics-controls-lg-min-size: var(--primitives-space-56);
-
 	--semantics-controls-xs-corner-radius: var(--primitives-corner-radius-xs);
 	--semantics-controls-sm-corner-radius: var(--primitives-corner-radius-sm);
 	--semantics-controls-md-corner-radius: var(--primitives-corner-radius-md);
 	--semantics-controls-lg-corner-radius: var(--primitives-corner-radius-md);
 
-	--semantics-controls-link-cursor: default;
-
 	--semantics-controls-is-highlighted-indicator-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
-	--semantics-controls-is-highlighted-contrast-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-controls-is-highlighted-contrast-color: var(--semantics-surfaces-background-color);
 	--semantics-controls-is-highlighted-is-hovered-indicator-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
-	--semantics-controls-is-highlighted-is-hovered-contrast-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-controls-is-highlighted-is-hovered-contrast-color: var(--semantics-surfaces-background-color);
 	--semantics-controls-is-highlighted-is-active-indicator-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
-	--semantics-controls-is-highlighted-is-active-contrast-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-controls-is-highlighted-is-active-contrast-color: var(--semantics-surfaces-background-color);
+
+	--semantics-controls-link-cursor: default;
 
 	/* ## Buttons */
 
@@ -817,17 +826,12 @@
 	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-250));
 	--semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-750), var(--primitives-color-danger-800));
 
-	/* ## Grab handles */
-
-	--semantics-grab-handles-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
-	--semantics-grab-handles-grip-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-750));
-
 	/* ## Input fields */
 
 	--semantics-input-fields-border-thickness: var(--primitives-space-2);
-	--semantics-input-fields-placeholder-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
-	--semantics-input-fields-background-color: var(--semantics-surfaces-background-color);
 	--semantics-input-fields-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
+	--semantics-input-fields-background-color: var(--semantics-surfaces-background-color);
+	--semantics-input-fields-placeholder-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--semantics-input-fields-is-valid-border-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
 	--semantics-input-fields-is-valid-icon-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
 	--semantics-input-fields-is-invalid-border-color: light-dark(var(--primitives-color-danger-550), var(--primitives-color-danger-650));
@@ -841,6 +845,11 @@
 	--semantics-input-fields-md-text-font: var(--primitives-font-body-md-regular-flat);
 	--semantics-input-fields-md-mask-font: 400 var(--primitives-font-size-100)/var(--primitives-line-height-flat) Verdana, system-ui;
 
+	/* ## Grab handles */
+
+	--semantics-grab-handles-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
+	--semantics-grab-handles-grip-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-750));
+
 	/* ## Dividers */
 
 	--semantics-dividers-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
@@ -849,6 +858,7 @@
 	/* ## Page sections */
 
 	--semantics-page-sections-body-max-width: var(--primitives-area-1280);
+
 	--semantics-page-sections-sm-margin-inline: var(--primitives-space-16);
 	--semantics-page-sections-sm-margin-block: var(--primitives-space-16);
 	--semantics-page-sections-sm-gap: var(--primitives-space-16);
@@ -861,7 +871,19 @@
 
 	/* ## Overlays */
 
-	--semantics-overlays-backdrop-color: rgba(0, 0, 0, 0.2);
+	--semantics-overlays-backdrop-opacity-factor: 1;
+
+	@media (prefers-color-scheme: dark) {
+		&:not([data-scheme="light"]) {
+			--semantics-overlays-backdrop-opacity-factor: 2;
+		}
+	}
+
+	&[data-scheme="dark"] {
+		--semantics-overlays-backdrop-opacity-factor: 2;
+	}
+
+	--semantics-overlays-backdrop-color: rgba(0, 0, 0, calc(0.2 * var(--semantics-overlays-backdrop-opacity-factor)));
 	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
 
 	/* ## Focus ring */

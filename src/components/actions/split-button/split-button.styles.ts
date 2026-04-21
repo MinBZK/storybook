@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const splitButtonStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -22,13 +24,15 @@ export const styles = css`
 		opacity: 1;
 	}
 
-	/* # Base */
+
+	/* # Block */
 
 	.split-button {
 		display: inline-flex;
 		flex-direction: row;
 		align-items: center;
 	}
+
 
 	/* # Focus */
 
@@ -37,6 +41,7 @@ export const styles = css`
 		position: relative;
 		z-index: 1;
 	}
+
 
 	/* # Sizes */
 
@@ -72,6 +77,7 @@ export const styles = css`
 		height: var(--semantics-buttons-md-divider-length);
 	}
 
+
 	/* # Variants */
 
 	/* ## Variant: Neutral Tintend (Default) */
@@ -82,7 +88,7 @@ export const styles = css`
 	}
 
 
-	/* # Elements */
+	/* # Divider */
 
 	.split-button__divider {
 		width: 1px;

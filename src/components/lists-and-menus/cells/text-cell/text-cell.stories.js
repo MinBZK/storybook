@@ -20,20 +20,20 @@ export default {
 		},
 		width: {
 			control: 'text',
-			description: "Width of the cell: 'stretch', 'fit-content', or a number (pixels)",
+			description: "'stretch', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
 			table: { defaultValue: { summary: 'stretch' } },
 		},
 		minWidth: {
-			control: 'number',
-			description: 'Minimum width in pixels',
+			control: 'text',
+			description: "Minimum width as CSS length (e.g. '80px', '5rem')",
 		},
 		maxWidth: {
-			control: 'number',
-			description: 'Maximum width in pixels',
+			control: 'text',
+			description: "Maximum width as CSS length (e.g. '200px', '20rem')",
 		},
 		minHeight: {
-			control: 'number',
-			description: 'Minimum height in pixels',
+			control: 'text',
+			description: "Minimum height as CSS length (e.g. '44px', '3rem')",
 		},
 		horizontalAlignment: {
 			control: 'select',
@@ -60,6 +60,9 @@ export const Default = {
 		size: 'md',
 		color: 'default',
 		width: 'stretch',
+		minWidth: '',
+		maxWidth: '',
+		minHeight: '',
 		horizontalAlignment: 'left',
 		verticalAlignment: 'center',
 		selected: false,
@@ -124,7 +127,7 @@ export const Width = {
 		<div style="display: flex; flex-direction: column; gap: 8px; width: 300px; border: 1px dashed var(--primitives-color-neutral-150); padding: 8px;">
 			<nldd-text-cell width="stretch" text="Stretch (default)" />
 			<nldd-text-cell width="fit-content" text="Fit content" />
-			<nldd-text-cell width=${120} text="120px fixed" />
+			<nldd-text-cell width="120px" text="120px fixed" />
 		</div>
 	`,
 };
@@ -132,8 +135,8 @@ export const Width = {
 export const MinHeight = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; align-items: flex-start;">
-			<nldd-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed var(--primitives-color-neutral-150);" text="Min height 44px" />
-			<nldd-text-cell vertical-alignment="top" min-height=${44} style="border: 1px dashed var(--primitives-color-neutral-150);" text="With supporting text" supporting-text="Supporting text" />
+			<nldd-text-cell vertical-alignment="top" min-height="44px" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Min height 44px" />
+			<nldd-text-cell vertical-alignment="top" min-height="44px" style="border: 1px dashed var(--primitives-color-neutral-150);" text="With supporting text" supporting-text="Supporting text" />
 		</div>
 	`,
 };

@@ -1,4 +1,5 @@
 import { css } from 'lit';
+
 export const textFieldStyles = css`
 
 
@@ -15,7 +16,7 @@ export const textFieldStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.text-field {
 		display: flex;

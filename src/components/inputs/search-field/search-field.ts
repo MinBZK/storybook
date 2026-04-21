@@ -104,7 +104,7 @@ export class NLDDSearchField extends LitElement {
 		}
 	}
 
-	public _handleDismiss(): void {
+	public _handleClear(): void {
 		this.value = '';
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: { value: '' },

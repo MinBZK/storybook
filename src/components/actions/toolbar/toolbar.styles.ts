@@ -1,5 +1,7 @@
 import { css } from 'lit';
-export const styles = css`
+
+export const toolbarStyles = css`
+
 
 	/* # Host */
 
@@ -22,7 +24,8 @@ export const styles = css`
 		display: none;
 	}
 
-	/* # Toolbar */
+
+	/* # Block */
 
 	.toolbar {
 		display: flex;
@@ -39,6 +42,7 @@ export const styles = css`
 	:host(:not([size])) .toolbar {
 		gap: var(--components-toolbar-md-gap);
 	}
+
 
 	/* # Items */
 
@@ -58,6 +62,7 @@ export const styles = css`
 	:host(:not([size])) .toolbar__items {
 		gap: var(--components-toolbar-md-gap);
 	}
+
 
 	/* # Spacers */
 
@@ -129,6 +134,7 @@ export const styles = css`
 		);
 	}
 
+
 	/* # Item */
 
 	.toolbar__item {
@@ -179,6 +185,7 @@ export const styles = css`
 		display: block;
 	}
 
+
 	/* # Overflow button */
 
 	.toolbar__overflow-button {
@@ -200,6 +207,7 @@ export const styles = css`
 	:host([show-item-labels]) .toolbar__overflow-button .toolbar__item-label {
 		display: block;
 	}
+
 
 	/* # Title group */
 

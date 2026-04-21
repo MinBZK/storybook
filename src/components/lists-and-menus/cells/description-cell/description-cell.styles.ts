@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const descriptionCellStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -71,7 +73,7 @@ export const styles = css`
 		align-self: stretch;
 		min-width: 0;
 		font: var(--primitives-font-body-sm-regular-flat);
-		color: var(--context-list-item-content-color, var(--semantics-content-secondary-color));
+		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
 
 
@@ -82,7 +84,7 @@ export const styles = css`
 		align-self: stretch;
 		min-width: 0;
 		font: var(--primitives-font-body-md-regular-tight);
-		color: var(--context-list-item-content-color, var(--semantics-content-color));
+		color: var(--context-cell-content-color, var(--semantics-content-color));
 	}
 
 

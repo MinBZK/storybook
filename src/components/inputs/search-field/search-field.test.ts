@@ -171,7 +171,7 @@ describe('nldd-search-field – dismiss', () => {
 	it('clears value on dismiss', async () => {
 		el = await fixture<NLDDSearchField>('<nldd-search-field value="test"></nldd-search-field>');
 		await waitForUpdate(el);
-		el._handleDismiss();
+		el._handleClear();
 		await waitForUpdate(el);
 		expect(el.value).toBe('');
 	});
@@ -181,14 +181,14 @@ describe('nldd-search-field – dismiss', () => {
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
-		el._handleDismiss();
+		el._handleClear();
 		expect(detail?.value).toBe('');
 	});
 
 	it('hides dismiss button after dismiss', async () => {
 		el = await fixture<NLDDSearchField>('<nldd-search-field value="test"></nldd-search-field>');
 		await waitForUpdate(el);
-		el._handleDismiss();
+		el._handleClear();
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-icon-button')).toBeNull();
 	});

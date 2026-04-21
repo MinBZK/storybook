@@ -1,12 +1,16 @@
 import { css } from 'lit';
 
-export const styles = css`
+export const listItemStyles = css`
+
+
 	/* # Host */
 
 	:host {
 		display: block;
 		width: 100%;
 		-webkit-tap-highlight-color: transparent;
+		container-type: inline-size;
+		container-name: list-item;
 		--_z-index-content: 0;
 		--_z-index-focus: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
@@ -25,13 +29,13 @@ export const styles = css`
 
 	:host([type="button"]:hover),
 	:host([href]:hover) {
-		--context-list-item-content-color: var(--components-list-item-is-hovered-content-color);
+		--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
 	}
 
 	:host([selected]),
 	:host([selected][type="button"]:hover),
 	:host([selected][href]:hover) {
-		--context-list-item-content-color: var(--components-list-item-is-selected-content-color);
+		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
 	}
 
 	:host([highlighted]),
@@ -40,7 +44,7 @@ export const styles = css`
 	:host([selected]:focus-within),
 	:host([selected]:focus-within[type="button"]:hover),
 	:host([selected]:focus-within[href]:hover) {
-		--context-list-item-content-color: var(--components-list-item-is-highlighted-content-color);
+		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
 	}
 
 	:host(:focus-within) {
@@ -59,21 +63,21 @@ export const styles = css`
 		display: none;
 	}
 
-	:host(:not([reorderable])) ::slotted([draggable-only]) {
+	:host(:not([reorderable])) ::slotted([reorderable-only]) {
 		display: none;
 	}
 
-	:host([reorderable]) ::slotted([draggable-only]) {
+	:host([reorderable]) ::slotted([reorderable-only]) {
 		cursor: grab;
 		touch-action: none;
 	}
 
-	:host(.is-dragging) ::slotted([draggable-only]) {
+	:host(.is-dragging) ::slotted([reorderable-only]) {
 		cursor: grabbing;
 	}
 
 
-	/* # List item */
+	/* # Block */
 
 	.list-item {
 		box-sizing: border-box;
@@ -211,6 +215,7 @@ export const styles = css`
 		display: block;
 		background-color: var(--components-list-item-is-highlighted-background-color);
 	}
+
 
 	/* # Focus */
 

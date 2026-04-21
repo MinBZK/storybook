@@ -14,7 +14,7 @@ export const radioButtonGroupStyles = css`
 	}
 
 
-	/* # Group */
+	/* # Block */
 
 	.radio-button-group {
 		display: flex;

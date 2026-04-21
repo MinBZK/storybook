@@ -1,9 +1,10 @@
 import { css } from 'lit';
 
-
-/* # nldd-page styles */
-
 export const pageStyles = css`
+
+
+	/* # Host */
+
 	:host {
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 

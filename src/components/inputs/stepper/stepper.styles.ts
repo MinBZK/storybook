@@ -1,6 +1,8 @@
 import { css } from 'lit';
 
 export const stepperStyles = css`
+
+
 	/* # Host */
 
 	:host {
@@ -22,7 +24,7 @@ export const stepperStyles = css`
 	}
 
 
-	/* # Container */
+	/* # Block */
 
 	.stepper {
 		display: inline-flex;

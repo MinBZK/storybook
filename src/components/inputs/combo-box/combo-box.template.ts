@@ -22,16 +22,30 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 				@keydown=${component._handleKeydown}
 				@blur=${component._handleBlur}
 			>
-			<div class="combo-box__picker">
-				<nldd-icon-button
-					variant="neutral-tinted"
-					size="sm"
-					icon="chevron-down"
-					text=${component._t('components.combo-box.open-picker-action')}
-					?disabled=${component.disabled}
-					@mousedown=${component._handlePickerMousedown}
-					@click=${component._toggleMenu}
-				></nldd-icon-button>
+			<div class="combo-box__actions">
+				${component._displayValue ? html`
+					<div class="combo-box__clear-action">
+						<nldd-icon-button
+							variant="neutral-transparent"
+							size="sm"
+							icon="dismiss"
+							text=${component._t('components.combo-box.clear-action')}
+							?disabled=${component.disabled}
+							@click=${component._handleClear}
+						></nldd-icon-button>
+					</div>
+				` : nothing}
+				<div class="combo-box__picker">
+					<nldd-icon-button
+						variant="neutral-tinted"
+						size="sm"
+						icon="chevron-down"
+						text=${component._t('components.combo-box.open-menu-action')}
+						?disabled=${component.disabled}
+						@mousedown=${component._handlePickerMousedown}
+						@click=${component._toggleMenu}
+					></nldd-icon-button>
+				</div>
 			</div>
 		</div>
 		<slot @slotchange=${component._onSlotChange}></slot>

@@ -35,12 +35,12 @@ export default {
 			control: 'select',
 			options: ['top', 'bottom', 'left', 'right'],
 			description: 'Positie van de tooltip',
-			table: { defaultValue: { summary: 'top' } },
+			table: { defaultValue: { summary: 'bottom' } },
 		},
 	},
 	args: {
 		text: 'Dit is een tooltip',
-		placement: 'top',
+		placement: 'bottom',
 	},
 };
 
