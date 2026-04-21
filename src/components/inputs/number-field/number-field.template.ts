@@ -34,6 +34,7 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
 				@input=${component._handleInput}
+				@change=${component._handleChange}
 			>
 			${!component.hideSpinButtons ? html`
 				<div class="number-field__increment-button">
