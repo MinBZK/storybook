@@ -58,6 +58,7 @@ describe('nldd-number-field – size', () => {
 		await waitForUpdate(el);
 		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
 		expect(buttons[0].getAttribute('size')).toBe('sm');
+		expect(buttons[1].getAttribute('size')).toBe('sm');
 	});
 
 	it('renders xs icon buttons when size is sm', async () => {
@@ -65,6 +66,7 @@ describe('nldd-number-field – size', () => {
 		await waitForUpdate(el);
 		const buttons = el.shadowRoot!.querySelectorAll('nldd-icon-button');
 		expect(buttons[0].getAttribute('size')).toBe('xs');
+		expect(buttons[1].getAttribute('size')).toBe('xs');
 	});
 });
 

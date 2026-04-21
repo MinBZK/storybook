@@ -67,6 +67,14 @@ describe('nldd-combo-box – validation', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-invalid')).toBe('true');
 	});
+
+	it('removes aria-invalid when invalid is cleared', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box invalid></nldd-combo-box>');
+		await waitForUpdate(el);
+		el.invalid = false;
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.hasAttribute('aria-invalid')).toBe(false);
+	});
 });
 
 
