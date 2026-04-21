@@ -327,15 +327,18 @@ describe('nldd-number-field – typing & clamping on commit', () => {
 		expect(el.value).toBe(8);
 	});
 
-	it('dispatches change event once on commit when value is corrected', async () => {
+	it('dispatches a single input followed by a single change when a typed value is corrected', async () => {
 		el = await fixture<NLDDNumberField>('<nldd-number-field value="5" max="10"></nldd-number-field>');
 		await waitForUpdate(el);
 		const input = type(el, '50');
 		await waitForUpdate(el);
+		let inputCount = 0;
 		let changeCount = 0;
+		el.addEventListener('input', () => { inputCount++; });
 		el.addEventListener('change', () => { changeCount++; });
 		blur(input);
 		await waitForUpdate(el);
+		expect(inputCount).toBe(1);
 		expect(changeCount).toBe(1);
 		expect(el.value).toBe(10);
 	});

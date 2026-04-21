@@ -17,10 +17,12 @@
  * @attr {boolean} hide-spin-buttons - When set, hides the decrement and increment buttons
  * @attr {string}  accessible-label  - Accessible label (aria-label) forwarded to the native input
  *
- * @fires input  - When the value changes while typing; detail: { value: number }
- * @fires change - When the value is committed on blur/Enter or via +/- buttons, clamped to
- *                 min/max; empty input falls back to the last valid value.
+ * @fires input  - When the value changes (typing, +/- button, or on-commit correction);
  *                 detail: { value: number }
+ * @fires change - When the value is committed (blur/Enter or +/- button), clamped to
+ *                 [min, max]; empty input falls back to the last valid value. When the
+ *                 committed value differs from the typed value, a matching input event
+ *                 is fired immediately before this one. detail: { value: number }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -76,7 +78,9 @@ export class NLDDNumberField extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDNumberFieldTranslations> = {};
 
-	/** Last value inside [min, max]; used as fallback when the input is cleared. */
+	/** Last value inside [min, max]; used as fallback when the input is cleared.
+	 *  Initialised to the clamped `value` in firstUpdated — the 0 default is only
+	 *  relevant before the first render, which no user-facing handler can reach. */
 	private _lastValidValue = 0;
 
 	override firstUpdated(): void {

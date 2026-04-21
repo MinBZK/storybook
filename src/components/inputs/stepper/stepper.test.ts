@@ -231,8 +231,8 @@ describe('nldd-stepper – translations', () => {
 	it('uses Dutch defaults when no translations are set', async () => {
 		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
-		expect(el._t('components.stepper.decrement-action')).toBe('Verlaag aantal');
-		expect(el._t('components.stepper.increment-action')).toBe('Verhoog aantal');
+		expect(el._t('components.stepper.decrement-action')).toBe('Verlaag');
+		expect(el._t('components.stepper.increment-action')).toBe('Verhoog');
 		expect(el._t('components.stepper.to-adjust-value-action')).toBe('Aantal aanpassen');
 	});
 
@@ -247,6 +247,6 @@ describe('nldd-stepper – translations', () => {
 		el = await fixture<NLDDStepper>('<nldd-stepper></nldd-stepper>');
 		await waitForUpdate(el);
 		el.translations = { 'components.stepper.decrement-action': 'Decrease' };
-		expect(el._t('components.stepper.increment-action')).toBe('Verhoog aantal');
+		expect(el._t('components.stepper.increment-action')).toBe('Verhoog');
 	});
 });
