@@ -41,7 +41,7 @@ export class NLDDListItem extends LitElement {
 
 	/**
 	 * Visual-only high-contrast state. Used by `nldd-list` (listbox type) to
-	 * mark the `aria-activedescendant` target. No standalone ARIA implication.
+	 * highlight the `aria-activedescendant` target. No standalone ARIA implication.
 	 */
 	@property({ type: Boolean, reflect: true })
 	highlighted = false;
