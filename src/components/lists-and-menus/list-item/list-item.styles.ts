@@ -89,7 +89,34 @@ export const listItemStyles = css`
 	}
 
 
-	/* ## Indicator */
+	/* # Indicator */
+
+	/* ## Non-interactive
+	   Items without an inner action get the selection indicator directly on
+	   .list-item, driven only by :host([selected]). Use when a slotted
+	   control (e.g. a checkbox) owns the selection semantics and the row
+	   itself should still reflect the selected state visually. */
+
+	.list-item:not(:has(.list-item__action))::before {
+		content: '';
+		display: block;
+		position: absolute;
+		inset-block: 0;
+		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
+		border-radius: var(--components-list-item-indicator-corner-radius);
+		background-color: var(--_background-color);
+		z-index: var(--_z-index-indicator);
+		pointer-events: none;
+	}
+
+	:host([selected]) {
+		--_background-color: var(--components-list-item-is-selected-background-color);
+		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
+	}
+
+	/* ## Interactive
+	   Items with a link or button inner element. Indicator responds to
+	   hover and focus on top of the selected state. */
 
 	.list-item__action::before {
 		content: '';
