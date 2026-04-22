@@ -20,7 +20,14 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 		>
 			<slot></slot>
 			${isEmpty ? html`
-				<div class="menu__empty-text">${this._resolvedEmptyText}</div>
+				<div class="menu__empty">
+					<slot name="empty">
+						<nldd-inline-dialog
+							text=${this._resolvedEmptyText}
+							supporting-text=${this.emptySupportingText || nothing}
+						></nldd-inline-dialog>
+					</slot>
+				</div>
 			` : nothing}
 		</div>
 	`;

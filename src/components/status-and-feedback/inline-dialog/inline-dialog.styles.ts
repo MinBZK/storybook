@@ -77,7 +77,7 @@ export const inlineDialogStyles = css`
 		width: 100%;
 	}
 
-	.inline-dialog__content:not(:has(*)) {
+	.inline-dialog__content[hidden] {
 		display: none;
 	}
 
@@ -89,7 +89,7 @@ export const inlineDialogStyles = css`
 		padding-top: var(--primitives-space-16);
 	}
 
-	.inline-dialog__actions:not(:has(*)) {
+	.inline-dialog__actions[hidden] {
 		display: none;
 	}
 `;

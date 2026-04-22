@@ -587,4 +587,43 @@ describe('nldd-list', () => {
 		await waitForUpdate(el);
 		expect(empty.hasAttribute('hidden')).toBe(false);
 	});
+
+
+	// — Empty default inline-dialog ——————————————————————————————————————————
+
+	it('empty default: renders nldd-inline-dialog with i18n text when no items', async () => {
+		el = await fixture('<nldd-list></nldd-list>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog).not.toBeNull();
+		expect(dialog!.getAttribute('text')).toBe('Geen resultaten');
+	});
+
+	it('empty default: empty-text attribute overrides the i18n default', async () => {
+		el = await fixture('<nldd-list empty-text="Niets gevonden"></nldd-list>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog!.getAttribute('text')).toBe('Niets gevonden');
+	});
+
+	it('empty default: empty-supporting-text populates the inline-dialog', async () => {
+		el = await fixture('<nldd-list empty-supporting-text="Probeer iets anders."></nldd-list>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog!.getAttribute('supporting-text')).toBe('Probeer iets anders.');
+	});
+
+	it('empty default: slotted content replaces the default dialog', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-inline-dialog slot="empty" text="Custom"></nldd-inline-dialog>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		// Only the slotted dialog should be visible (slot fallback suppressed)
+		const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="empty"]')!;
+		const assigned = slot.assignedElements();
+		expect(assigned.length).toBe(1);
+		expect(assigned[0].getAttribute('text')).toBe('Custom');
+	});
 });

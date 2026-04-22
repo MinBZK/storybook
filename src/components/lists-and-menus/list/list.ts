@@ -5,6 +5,7 @@ import { template } from './list.template.js';
 import type { NLDDListItem } from '../list-item/list-item.js';
 import { nlddListTranslations } from './list.i18n.js';
 import type { NLDDListTranslations } from './list.i18n.js';
+import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 
 export type ListVariant = 'simple' | 'box' | 'box-on-tinted';
 export type ListType = 'list' | 'listbox' | 'navigation';
@@ -61,7 +62,10 @@ export interface NLDDSelectEventDetail {
  * @slot         - List items (`nldd-list-item`)
  * @slot header  - Content above the list body (e.g. `nldd-title`)
  * @slot footer  - Content below the list body (e.g. a short description)
- * @slot empty   - Auto-shown when no items are visible (all `[hidden]` or none)
+ * @slot empty   - Shown when no items are visible (all `[hidden]` or none). Defaults
+ *                 to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text`
+ *                 (falling back to Dutch i18n "Geen resultaten"). Slot content
+ *                 overrides the default dialog entirely.
  *
  * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
  * @fires nldd-select  - Listbox lists: `{ item, selected }` on Enter/Space/click
@@ -96,6 +100,21 @@ export class NLDDList extends LitElement {
 	/** Hides dividers between list items. */
 	@property({ type: Boolean, reflect: true, attribute: 'no-dividers' })
 	noDividers = false;
+
+	/**
+	 * Text for the default empty-state dialog. Falls back to the Dutch
+	 * i18n default ("Geen resultaten"). Ignored when consumers slot their
+	 * own content into `[slot=empty]`.
+	 */
+	@property({ type: String, attribute: 'empty-text' })
+	emptyText = '';
+
+	/**
+	 * Optional supporting text for the default empty-state dialog.
+	 * Ignored when consumers slot their own content into `[slot=empty]`.
+	 */
+	@property({ type: String, attribute: 'empty-supporting-text' })
+	emptySupportingText = '';
 
 	/** Override one or more translation keys. Unset keys fall back to the Dutch default. */
 	@property({ type: Object })
@@ -716,6 +735,8 @@ export class NLDDList extends LitElement {
 			this.controlled,
 			this._activeDescendantId,
 			this._isEmpty,
+			this.emptyText || this._t('components.list.empty-text-text'),
+			this.emptySupportingText,
 		);
 	}
 }

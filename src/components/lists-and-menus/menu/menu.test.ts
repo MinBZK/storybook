@@ -309,6 +309,59 @@ describe('nldd-menu filter', () => {
 	});
 });
 
+describe('nldd-menu empty state', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders default nldd-inline-dialog with i18n text when no items', async () => {
+		el = await fixture('<nldd-menu></nldd-menu>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog).not.toBeNull();
+		expect(dialog!.getAttribute('text')).toBe('Geen opties beschikbaar');
+	});
+
+	it('empty-text attribute overrides the i18n default', async () => {
+		el = await fixture('<nldd-menu empty-text="Niets gevonden"></nldd-menu>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog!.getAttribute('text')).toBe('Niets gevonden');
+	});
+
+	it('empty-supporting-text populates the inline-dialog', async () => {
+		el = await fixture('<nldd-menu empty-supporting-text="Probeer iets anders."></nldd-menu>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog!.getAttribute('supporting-text')).toBe('Probeer iets anders.');
+	});
+
+	it('slotted content replaces the default dialog', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-inline-dialog slot="empty" text="Custom"></nldd-inline-dialog>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="empty"]')!;
+		const assigned = slot.assignedElements();
+		expect(assigned.length).toBe(1);
+		expect(assigned[0].getAttribute('text')).toBe('Custom');
+	});
+
+	it('does not render empty container when items are present', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Item"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.menu__empty')).toBeNull();
+	});
+});
+
 describe('nldd-menu-divider', () => {
 	let el: HTMLElement;
 

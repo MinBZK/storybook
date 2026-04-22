@@ -37,6 +37,16 @@ export default {
 			description: 'Hides dividers between list items',
 			table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
 		},
+		'empty-text': {
+			control: 'text',
+			description: 'Text of the default empty-state dialog. Falls back to i18n ("Geen resultaten").',
+			table: { type: { summary: 'string' } },
+		},
+		'empty-supporting-text': {
+			control: 'text',
+			description: 'Supporting text of the default empty-state dialog.',
+			table: { type: { summary: 'string' } },
+		},
 	},
 	parameters: {
 		docs: {
@@ -238,11 +248,6 @@ export const TypeListboxControlled = {
 						<nldd-text-cell text="${label}" mark="${q}"></nldd-text-cell>
 					</nldd-list-item>
 				`)}
-				<nldd-inline-dialog
-					slot="empty"
-					text="Geen resultaten"
-					supporting-text="Probeer een andere zoekterm."
-				></nldd-inline-dialog>
 			`, list);
 			if (q && matches.length > 0) {
 				list.moveHighlight('first');
@@ -258,7 +263,13 @@ export const TypeListboxControlled = {
 				placeholder="Zoek een groente…"
 			></nldd-search-field>
 			<nldd-spacer size="8" direction="vertical"></nldd-spacer>
-			<nldd-list id="demo-listbox" type="listbox" variant="box" controlled></nldd-list>
+			<nldd-list
+				id="demo-listbox"
+				type="listbox"
+				variant="box"
+				controlled
+				empty-supporting-text="Probeer een andere zoekterm."
+			></nldd-list>
 		`, root);
 
 		const searchField = root.querySelector('nldd-search-field');
@@ -312,7 +323,8 @@ export const TypeListboxControlled = {
 
 		list.addEventListener('nldd-select', (e) => {
 			const { item } = e.detail;
-			const label = item.textContent.trim();
+			const textCell = item.querySelector('nldd-text-cell');
+			const label = textCell?.text ?? '';
 			searchField.value = label;
 			renderItems(label);
 			syncActiveDescendant();
@@ -446,7 +458,39 @@ export const WithHeaderAndFooter = {
 
 // — Empty slot ————————————————————————————————————————————————————————————————
 
-export const WithEmptySlot = {
+export const EmptyDefault = {
+	render: () => html`
+		<nldd-list variant="box"></nldd-list>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Out of the box, an empty list renders a default `nldd-inline-dialog` with i18n text ("Geen resultaten"). No configuration needed.',
+			},
+		},
+	},
+};
+
+export const EmptyWithAttributes = {
+	render: () => html`
+		<nldd-list
+			variant="box"
+			empty-text="Niets gevonden"
+			empty-supporting-text="Probeer een andere zoekterm."
+		></nldd-list>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Use `empty-text` and `empty-supporting-text` to tweak the default dialog without writing markup. For anything richer (icon, action buttons, alert variant) slot a full `nldd-inline-dialog`.',
+			},
+		},
+	},
+};
+
+export const EmptySlotOverride = {
 	render: () => html`
 		<nldd-list variant="box">
 			<nldd-inline-dialog
@@ -463,7 +507,7 @@ export const WithEmptySlot = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'The `empty` slot is auto-shown when there are no items, or when all items have the `[hidden]` attribute. Works for any `type`. An `nldd-inline-dialog` is a natural fit — give it an icon, a heading, supporting text, and optional action buttons.',
+				story: 'Slotting content into `[slot=empty]` fully replaces the default dialog — bring your own icon, heading, supporting text, or action buttons.',
 			},
 		},
 	},

@@ -227,11 +227,11 @@ export class NLDDListItem extends LitElement {
 		// .list-item__action). The listbox container handles activation via
 		// aria-activedescendant; an inner button/anchor would be focusable and
 		// break that pattern.
-		const isOption = this._parentType === 'listbox';
+		const isListboxOption = this._parentType === 'listbox';
 		return template(
 			this.type,
 			this.href,
-			isOption,
+			isListboxOption,
 			this._showStart,
 			this._showEnd,
 		);

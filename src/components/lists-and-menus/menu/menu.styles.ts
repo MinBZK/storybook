@@ -56,13 +56,10 @@ export const menuStyles = css`
 	}
 
 
-	/* # Empty text */
+	/* # Empty */
 
-	.menu__empty-text {
+	.menu__empty {
 		padding: var(--primitives-space-8);
-		color: var(--semantics-content-secondary-color);
-		font: var(--primitives-font-body-md-regular-tight);
-		text-align: center;
 	}
 `;
 

@@ -10,6 +10,7 @@ import '../../lists-and-menus/cells/icon-cell/icon-cell.js';
 import '../../lists-and-menus/cells/spacer-cell/spacer-cell.js';
 import '../../lists-and-menus/cells/text-cell/text-cell.js';
 import '../../content/icon/icon.js';
+import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import { isKeyboardMode } from '../../../utilities/input-modality.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
@@ -152,16 +153,21 @@ const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
  * Note: Only type="button" items are supported when used inside nldd-combo-box-field.
  * Radio and checkbox types may be used in standalone menus.
  *
- * @attr {string}  anchor         - ID of the anchor element.
- * @attr {string}  placement      - Floating UI placement. Default: 'bottom-start'.
- * @attr {string}  empty-text     - Text shown when all items are hidden or no items exist.
- * @attr {string}  width          - Explicit width. Sets --_menu-width internally.
- * @attr {number}  max-items      - Maximum number of visible items before scrolling.
- *                                  Sets --_menu-max-items internally. Default: 0 (no limit).
- * @attr {object}  translations   - Override one or more translation keys.
- * @attr {Function} filterFn      - Custom filter function (query, item) => boolean.
+ * @attr {string}  anchor               - ID of the anchor element.
+ * @attr {string}  placement            - Floating UI placement. Default: 'bottom-start'.
+ * @attr {string}  empty-text           - Text of the default empty-state dialog. Falls back
+ *                                        to Dutch i18n "Geen opties beschikbaar".
+ * @attr {string}  empty-supporting-text - Supporting text of the default empty-state dialog.
+ * @attr {string}  width                - Explicit width. Sets --_menu-width internally.
+ * @attr {number}  max-items            - Maximum number of visible items before scrolling.
+ *                                        Sets --_menu-max-items internally. Default: 0 (no limit).
+ * @attr {object}  translations         - Override one or more translation keys.
+ * @attr {Function} filterFn            - Custom filter function (query, item) => boolean.
  *
  * @slot - nldd-menu-item and nldd-menu-divider elements.
+ * @slot empty - Shown when no items are visible. Defaults to `nldd-inline-dialog`
+ *               driven by `empty-text` / `empty-supporting-text`. Slot content
+ *               overrides the default dialog entirely.
  */
 export class NLDDMenu extends LitElement {
 	static override styles = menuStyles;
@@ -185,6 +191,9 @@ export class NLDDMenu extends LitElement {
 
 	@property({ type: String, attribute: 'empty-text' })
 	emptyText = '';
+
+	@property({ type: String, attribute: 'empty-supporting-text' })
+	emptySupportingText = '';
 
 
 	/** Explicit width. Sets --_menu-width internally. */
@@ -305,6 +314,10 @@ export class NLDDMenu extends LitElement {
 		this.addEventListener('mouseleave', this._handleMouseleave);
 		this.addEventListener('menu-item-focused', this._handleMenuItemFocused);
 		document.addEventListener('click', this._handleDocumentClick);
+	}
+
+	override firstUpdated(): void {
+		this._updateEmptyState();
 	}
 
 	override disconnectedCallback(): void {

@@ -21,7 +21,7 @@ const areas = (showStart: boolean, showEnd: boolean) => html`
 export const template = (
 	type: string | undefined,
 	href: string | undefined,
-	isOption: boolean,
+	isListboxOption: boolean,
 	showStart: boolean,
 	showEnd: boolean,
 ) => {
@@ -30,7 +30,7 @@ export const template = (
 	// activation semantics. The listbox container handles focus + selection
 	// via aria-activedescendant. Sharing the structure means hover and
 	// selection styling all work via the existing `.list-item__action` rules.
-	if (isOption) {
+	if (isListboxOption) {
 		return html`<div class="list-item">
 			<div class="list-item__action">
 				${areas(showStart, showEnd)}

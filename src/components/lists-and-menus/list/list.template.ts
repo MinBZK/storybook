@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { ListType } from './list.js';
 
@@ -9,6 +9,8 @@ export const template = (
 	controlled: boolean,
 	activeDescendantId: string,
 	isEmpty: boolean,
+	emptyText: string,
+	emptySupportingText: string,
 ) => {
 	const isListbox = type === 'listbox';
 	const itemsRole = isListbox ? 'listbox' : 'list';
@@ -29,7 +31,12 @@ export const template = (
 			>
 				<slot></slot>
 				<div class="list__empty" ?hidden=${!isEmpty}>
-					<slot name="empty"></slot>
+					<slot name="empty">
+						<nldd-inline-dialog
+							text=${emptyText}
+							supporting-text=${emptySupportingText || nothing}
+						></nldd-inline-dialog>
+					</slot>
 				</div>
 			</div>
 			<div class="list__footer">
