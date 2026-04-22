@@ -41,22 +41,47 @@ export const listStyles = css`
 		flex-direction: column;
 	}
 
+	:host([type='listbox']) .list__items:focus {
+		outline: none;
+	}
+
+	:host([type='listbox']) .list__items:focus-visible::after {
+		content: '';
+		display: block;
+		position: absolute;
+		outline: var(--semantics-focus-ring-outline);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+		border-radius: var(--components-list-corner-radius);
+		pointer-events: none;
+	}
+
+	:host([type='listbox'][variant='box-on-tinted']) .list__items:focus-visible::after,
+	:host([type='listbox'][variant='box']) .list__items:focus-visible::after {
+		inset: 0;
+	}
+
+	:host([type='listbox']:not([variant])) .list__items:focus-visible::after,
+	:host([type='listbox'][variant='simple']) .list__items:focus-visible::after {
+		inset-inline: min(calc(var(--primitives-space-8) * -1), calc(var(--components-list-item-indicator-corner-radius) * -1));
+		inset-block: 0;
+	}
+
+
+	/* # Empty slot */
+
+	.list__empty {
+		padding: var(--primitives-space-16);
+	}
+
+	.list__empty[hidden] {
+		display: none;
+	}
+
 
 	/* # No dividers */
 
 	:host([no-dividers]) {
 		--context-list-divider-display: none;
-	}
-
-
-	/* # Variant: simple */
-
-	:host([variant='simple']) .list__items {
-		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
-	}
-
-	:host([variant='simple'][no-dividers]) .list__items {
-		border-top: none;
 	}
 
 

@@ -21,9 +21,22 @@ const areas = (showStart: boolean, showEnd: boolean) => html`
 export const template = (
 	type: string | undefined,
 	href: string | undefined,
+	isOption: boolean,
 	showStart: boolean,
 	showEnd: boolean,
 ) => {
+	// Listbox options: render the same inner layout (`.list-item__action`) as
+	// interactive variants, but as a plain div — not focusable, no own
+	// activation semantics. The listbox container handles focus + selection
+	// via aria-activedescendant. Sharing the structure means hover and
+	// selection styling all work via the existing `.list-item__action` rules.
+	if (isOption) {
+		return html`<div class="list-item">
+			<div class="list-item__action">
+				${areas(showStart, showEnd)}
+			</div>
+		</div>`;
+	}
 	if (href) {
 		return html`<div class="list-item">
 			<a class="list-item__action"
@@ -38,5 +51,7 @@ export const template = (
 			>${areas(showStart, showEnd)}</button>
 		</div>`;
 	}
-	return html`<div class="list-item">${areas(showStart, showEnd)}</div>`;
+	return html`<div class="list-item">
+		${areas(showStart, showEnd)}
+	</div>`;
 };

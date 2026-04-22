@@ -15,6 +15,17 @@
  * @attr {boolean} disabled            - Disabled state
  * @attr {string}  name                - Input name for form submission
  * @attr {boolean} has-search-button  - When set, shows a search button on the right
+ * @attr {boolean} combobox            - When set, the inner input gets `role="combobox"`,
+ *                                       `aria-expanded="true"` and `aria-autocomplete="list"`,
+ *                                       and `controls` / `active-descendant` are forwarded
+ *                                       as the matching aria attributes. Use together with
+ *                                       an `nldd-list type="listbox" controlled` to build an
+ *                                       inline combobox.
+ * @attr {string}  listbox             - Forwarded to the inner input as `aria-controls`.
+ *                                       Point to the id of the listbox this field controls.
+ * @attr {string}  active-descendant   - Forwarded to the inner input as `aria-activedescendant`.
+ *                                       Set this from the controlled listbox's
+ *                                       `getHighlightedId()` after each `moveHighlight()`.
  * @attr {object}  translations        - Override translation keys; unset keys fall back to Dutch
  *
  * @fires input  - When the input value changes; detail: { value: string }
@@ -62,6 +73,26 @@ export class NLDDSearchField extends LitElement {
 
 	@property({ type: Boolean, reflect: true, attribute: 'has-search-button' })
 	hasSearchButton = false;
+
+	/**
+	 * When set, marks the inner input as a combobox (`role="combobox"` +
+	 * `aria-expanded="true"` + `aria-autocomplete="list"`). Pair with
+	 * `listbox` (and optionally `active-descendant`) to wire a controlled
+	 * listbox.
+	 */
+	@property({ type: Boolean, reflect: true })
+	combobox = false;
+
+	/**
+	 * Id of the `nldd-list type="listbox"` this field controls. Forwarded as
+	 * `aria-controls` on the inner input.
+	 */
+	@property({ type: String })
+	listbox = '';
+
+	/** Forwarded as `aria-activedescendant` on the inner input. */
+	@property({ type: String, attribute: 'active-descendant' })
+	activeDescendant = '';
 
 	/** Override one or more translation keys. Unset keys fall back to Dutch. */
 	@property({ type: Object })

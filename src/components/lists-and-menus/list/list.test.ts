@@ -201,4 +201,504 @@ describe('nldd-list', () => {
 		expect(firstItem.classList.contains('is-dragging')).toBe(false);
 		expect(el.querySelector('.nldd-list-drag-placeholder')).toBeNull();
 	});
+
+
+	// — Type: content (default) ——————————————————————————————————————————————
+
+	it('defaults to type="list" with role="list" on .list__items', async () => {
+		el = await fixture('<nldd-list></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('type')).toBe('list');
+		const itemsEl = el.shadowRoot!.querySelector('.list__items');
+		expect(itemsEl?.getAttribute('role')).toBe('list');
+		expect(el.hasAttribute('role')).toBe(false);
+	});
+
+
+	// — Type: listbox ————————————————————————————————————————————————————————
+
+	it('listbox: .list__items has role="listbox" and tabindex=0', async () => {
+		el = await fixture('<nldd-list type="listbox"></nldd-list>');
+		await waitForUpdate(el);
+		const itemsEl = el.shadowRoot!.querySelector('.list__items');
+		expect(itemsEl?.getAttribute('role')).toBe('listbox');
+		expect(itemsEl?.getAttribute('tabindex')).toBe('0');
+	});
+
+	it('listbox: ArrowDown sets aria-activedescendant + highlights item', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+				<nldd-list-item id="opt-c"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.list__items')!;
+		itemsEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		expect(itemsEl.getAttribute('aria-activedescendant')).toBe('opt-a');
+		expect(el.querySelector('#opt-a')?.hasAttribute('highlighted')).toBe(true);
+
+		itemsEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(itemsEl.getAttribute('aria-activedescendant')).toBe('opt-b');
+		expect(el.querySelector('#opt-b')?.hasAttribute('highlighted')).toBe(true);
+		expect(el.querySelector('#opt-a')?.hasAttribute('highlighted')).toBe(false);
+	});
+
+	it('listbox: End jumps to last, Home jumps to first', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+				<nldd-list-item id="opt-c"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.list__items')!;
+		itemsEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(itemsEl.getAttribute('aria-activedescendant')).toBe('opt-c');
+
+		itemsEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(itemsEl.getAttribute('aria-activedescendant')).toBe('opt-a');
+	});
+
+	it('listbox: Enter dispatches nldd-select with the active item', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.list__items')!;
+		itemsEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		let detail: { item: Element; selected: boolean } | null = null;
+		el.addEventListener('nldd-select', (e: Event) => {
+			detail = (e as CustomEvent).detail;
+		});
+
+		itemsEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+
+		expect(detail).not.toBeNull();
+		expect(detail!.item.id).toBe('opt-a');
+		expect(detail!.selected).toBe(true);
+	});
+
+	it('listbox: click on an item dispatches nldd-select', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		let detail: { item: Element; selected: boolean } | null = null;
+		el.addEventListener('nldd-select', (e: Event) => {
+			detail = (e as CustomEvent).detail;
+		});
+
+		const itemB = el.querySelector('#opt-b') as HTMLElement;
+		itemB.click();
+		await waitForUpdate(el);
+
+		expect(detail).not.toBeNull();
+		expect(detail!.item.id).toBe('opt-b');
+	});
+
+	it('listbox: ArrowDown wraps from the last to the first item', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const itemsEl = el.shadowRoot!.querySelector<HTMLElement>('.list__items')!;
+		itemsEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		itemsEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(itemsEl.getAttribute('aria-activedescendant')).toBe('opt-a');
+	});
+
+
+	// — Listbox: controlled (combobox) mode ——————————————————————————————————
+
+	it('controlled listbox: .list__items has no tabindex', async () => {
+		el = await fixture('<nldd-list type="listbox" controlled></nldd-list>');
+		await waitForUpdate(el);
+		const itemsEl = el.shadowRoot!.querySelector('.list__items');
+		expect(itemsEl?.hasAttribute('tabindex')).toBe(false);
+	});
+
+	it('controlled listbox: no aria-activedescendant on .list__items', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox" controlled>
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		(el as HTMLElement & { moveHighlight: (dir: string) => void }).moveHighlight('next');
+		await waitForUpdate(el);
+		const itemsEl = el.shadowRoot!.querySelector('.list__items');
+		expect(itemsEl?.hasAttribute('aria-activedescendant')).toBe(false);
+	});
+
+	it('moveHighlight("next") wraps at the last item', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox" controlled>
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const list = el as HTMLElement & { moveHighlight: (dir: string) => void; getHighlightedId: () => string };
+		list.moveHighlight('next');
+		expect(list.getHighlightedId()).toBe('opt-a');
+		list.moveHighlight('next');
+		expect(list.getHighlightedId()).toBe('opt-b');
+		list.moveHighlight('next');
+		expect(list.getHighlightedId()).toBe('opt-a');
+	});
+
+	it('moveHighlight("prev") wraps at the first item', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox" controlled>
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const list = el as HTMLElement & { moveHighlight: (dir: string) => void; getHighlightedId: () => string };
+		list.moveHighlight('first');
+		expect(list.getHighlightedId()).toBe('opt-a');
+		list.moveHighlight('prev');
+		expect(list.getHighlightedId()).toBe('opt-b');
+	});
+
+	it('moveHighlight skips hidden items', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox" controlled>
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b" hidden></nldd-list-item>
+				<nldd-list-item id="opt-c"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const list = el as HTMLElement & { moveHighlight: (dir: string) => void; getHighlightedId: () => string };
+		list.moveHighlight('first');
+		list.moveHighlight('next');
+		expect(list.getHighlightedId()).toBe('opt-c');
+	});
+
+	it('selectHighlighted dispatches nldd-select for the active item', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox" controlled>
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		let detail: { item: Element } | null = null;
+		el.addEventListener('nldd-select', (e: Event) => {
+			detail = (e as CustomEvent).detail;
+		});
+
+		const list = el as HTMLElement & { moveHighlight: (dir: string) => void; selectHighlighted: () => void };
+		list.moveHighlight('last');
+		list.selectHighlighted();
+
+		expect(detail).not.toBeNull();
+		expect(detail!.item.id).toBe('opt-b');
+	});
+
+	it('clears stale aria-activedescendant when the active item is removed', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox" controlled>
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const list = el as HTMLElement & {
+			moveHighlight: (dir: string) => void;
+			getHighlightedId: () => string;
+		};
+		list.moveHighlight('first');
+		expect(list.getHighlightedId()).toBe('opt-a');
+
+		// Consumer removes the active item (e.g. server returned new results)
+		el.querySelector('#opt-a')!.remove();
+		await waitForUpdate(el);
+
+		expect(list.getHighlightedId()).toBe('');
+	});
+
+	it('clears stale aria-activedescendant when the active item is hidden', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox" controlled>
+				<nldd-list-item id="opt-a"></nldd-list-item>
+				<nldd-list-item id="opt-b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const list = el as HTMLElement & {
+			moveHighlight: (dir: string) => void;
+			getHighlightedId: () => string;
+		};
+		list.moveHighlight('first');
+		expect(list.getHighlightedId()).toBe('opt-a');
+
+		el.querySelector('#opt-a')!.setAttribute('hidden', '');
+		await waitForUpdate(el);
+
+		expect(list.getHighlightedId()).toBe('');
+	});
+
+	it('clearHighlight removes highlight and id', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox" controlled>
+				<nldd-list-item id="opt-a"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const list = el as HTMLElement & {
+			moveHighlight: (dir: string) => void;
+			clearHighlight: () => void;
+			getHighlightedId: () => string;
+		};
+		list.moveHighlight('first');
+		expect(list.getHighlightedId()).toBe('opt-a');
+		list.clearHighlight();
+		expect(list.getHighlightedId()).toBe('');
+		expect(el.querySelector('#opt-a')?.hasAttribute('highlighted')).toBe(false);
+	});
+
+
+	// — Listbox: filter() ————————————————————————————————————————————————————
+
+	it('filter(query) hides items whose label does not match', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="a" search-text="Aardappel"></nldd-list-item>
+				<nldd-list-item id="b" search-text="Broccoli"></nldd-list-item>
+				<nldd-list-item id="c" search-text="Courgette"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		(el as HTMLElement & { filter: (q: string) => void }).filter('gett');
+		await waitForUpdate(el);
+
+		expect(el.querySelector('#a')?.hasAttribute('hidden')).toBe(true);
+		expect(el.querySelector('#b')?.hasAttribute('hidden')).toBe(true);
+		expect(el.querySelector('#c')?.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('filter() matches on aliases as well as label', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="a" search-text="Aardappel" aliases="pieper knol"></nldd-list-item>
+				<nldd-list-item id="b" search-text="Broccoli"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		(el as HTMLElement & { filter: (q: string) => void }).filter('knol');
+		await waitForUpdate(el);
+
+		expect(el.querySelector('#a')?.hasAttribute('hidden')).toBe(false);
+		expect(el.querySelector('#b')?.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('filter("") shows everything and clears the highlight', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="a" search-text="Aardappel"></nldd-list-item>
+				<nldd-list-item id="b" search-text="Broccoli"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const list = el as HTMLElement & { filter: (q: string) => void; getHighlightedId: () => string };
+		list.filter('br');
+		await waitForUpdate(el);
+		expect(list.getHighlightedId()).toBe('b');
+
+		list.filter('');
+		await waitForUpdate(el);
+		expect(el.querySelector('#a')?.hasAttribute('hidden')).toBe(false);
+		expect(el.querySelector('#b')?.hasAttribute('hidden')).toBe(false);
+		expect(list.getHighlightedId()).toBe('');
+	});
+
+	it('filter() highlights the first visible match by default', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="a" search-text="Aardappel"></nldd-list-item>
+				<nldd-list-item id="b" search-text="Broccoli"></nldd-list-item>
+				<nldd-list-item id="c" search-text="Courgette"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const list = el as HTMLElement & { filter: (q: string) => void; getHighlightedId: () => string };
+		list.filter('o');
+		await waitForUpdate(el);
+		// Broccoli is the first match
+		expect(list.getHighlightedId()).toBe('b');
+	});
+
+	it('filter() with autoHighlight:false does not highlight', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="a" search-text="Aardappel"></nldd-list-item>
+				<nldd-list-item id="b" search-text="Broccoli"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const list = el as HTMLElement & {
+			filter: (q: string, opts?: { autoHighlight?: boolean }) => void;
+			getHighlightedId: () => string;
+		};
+		list.filter('br', { autoHighlight: false });
+		await waitForUpdate(el);
+		expect(list.getHighlightedId()).toBe('');
+	});
+
+	it('filter() uses a custom filterFn when provided', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox">
+				<nldd-list-item id="a" search-text="Aardappel"></nldd-list-item>
+				<nldd-list-item id="b" search-text="Broccoli"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+
+		const list = el as HTMLElement & {
+			filter: (q: string) => void;
+			filterFn: (q: string, item: { id: string }) => boolean;
+		};
+		list.filterFn = (q, item) => item.id === q;
+		list.filter('a');
+		await waitForUpdate(el);
+
+		expect(el.querySelector('#a')?.hasAttribute('hidden')).toBe(false);
+		expect(el.querySelector('#b')?.hasAttribute('hidden')).toBe(true);
+	});
+
+
+	// — Type: navigation ——————————————————————————————————————————————————————
+
+	it('navigation: host gets role="navigation" and a default aria-label', async () => {
+		el = await fixture('<nldd-list type="navigation"></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('navigation');
+		expect(el.getAttribute('aria-label')).toBe('Navigatie');
+	});
+
+	it('navigation: respects a consumer-provided aria-label', async () => {
+		el = await fixture('<nldd-list type="navigation" aria-label="Hoofdmenu"></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Hoofdmenu');
+	});
+
+	it('navigation: switching back to content removes role and auto-label', async () => {
+		el = await fixture('<nldd-list type="navigation"></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-label')).toBe(true);
+
+		el.setAttribute('type', 'list');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('role')).toBe(false);
+		expect(el.hasAttribute('aria-label')).toBe(false);
+	});
+
+
+	// — Type / reorderable conflict ———————————————————————————————————————————
+
+	it('does not set reorderable on items when type is not list', async () => {
+		el = await fixture(`
+			<nldd-list type="listbox" reorderable>
+				<nldd-list-item id="a"></nldd-list-item>
+				<nldd-list-item id="b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('#a')?.hasAttribute('reorderable')).toBe(false);
+		expect(el.querySelector('#b')?.hasAttribute('reorderable')).toBe(false);
+	});
+
+
+	// — Empty slot ————————————————————————————————————————————————————————————
+
+	it('empty slot: hidden when items are present', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item></nldd-list-item>
+				<div slot="empty">No results</div>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('empty slot: visible when there are no items', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<div slot="empty">No results</div>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('empty slot: visible when all items are [hidden]', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item hidden></nldd-list-item>
+				<nldd-list-item hidden></nldd-list-item>
+				<div slot="empty">No results</div>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('empty slot: toggles when an item is hidden at runtime', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item id="a"></nldd-list-item>
+				<div slot="empty">No results</div>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(true);
+
+		el.querySelector('#a')!.setAttribute('hidden', '');
+		await waitForUpdate(el);
+		expect(empty.hasAttribute('hidden')).toBe(false);
+	});
 });

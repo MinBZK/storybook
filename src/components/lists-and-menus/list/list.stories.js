@@ -9,6 +9,11 @@ import '../cells/drag-handle-cell/drag-handle-cell.js';
 import '../../content/icon/icon.js';
 import '../../content/title/title.js';
 import '../../content/rich-text/rich-text.js';
+import '../../status-and-feedback/inline-dialog/inline-dialog.js';
+import '../../actions/button/button.js';
+import '../../inputs/search-field/search-field.js';
+import '../../layout/spacer/spacer.js';
+import '../../layout/box/box.js';
 
 export default {
 	title: 'Components/Lists & Menus/List',
@@ -21,10 +26,31 @@ export default {
 			description: 'Visual style of the list',
 			table: { defaultValue: { summary: 'simple' } },
 		},
+		type: {
+			control: 'select',
+			options: ['list', 'listbox', 'navigation'],
+			description: 'A11y semantics: `list` (role="list"), `listbox` (selectable options), `navigation` (landmark with `aria-current` on the active item)',
+			table: { defaultValue: { summary: 'list' } },
+		},
 		'no-dividers': {
 			control: 'boolean',
 			description: 'Hides dividers between list items',
 			table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+		},
+	},
+	parameters: {
+		docs: {
+			description: {
+				component: `
+**When to use which \`type\`:**
+
+- **\`list\`** (default) — semantic list (\`role="list"\`) with no special keyboard behaviour. Items may individually be buttons or links. Use for settings lists, data overviews, lists of cards.
+- **\`listbox\`** — form-style selection of one or more values. One tabstop on the listbox itself; arrows navigate options via \`aria-activedescendant\`; Enter/Space dispatches \`nldd-select\`. Use when the user picks values from a set.
+- **\`navigation\`** — way-finding between pages or app sections. Items are links or buttons, each independently focusable via Tab. The active item gets \`aria-current="page"\` based on the \`selected\` prop. Use for sidebars, in-app menus, master/detail pickers.
+
+Selection state is **always consumer-managed**: the list never mutates \`selected\` itself. For listbox, listen for \`nldd-select\` and update items in your data model.
+				`.trim(),
+			},
 		},
 	},
 };
@@ -32,10 +58,15 @@ export default {
 export const Default = {
 	args: {
 		variant: 'simple',
+		type: 'list',
 		'no-dividers': false,
 	},
 	render: (args) => html`
-		<nldd-list variant=${args.variant} ?no-dividers=${args['no-dividers']}>
+		<nldd-list
+			variant=${args.variant}
+			type=${args.type}
+			?no-dividers=${args['no-dividers']}
+		>
 			<nldd-list-item>
 				<nldd-text-cell text="Item 1" />
 			</nldd-list-item>
@@ -49,135 +80,38 @@ export const Default = {
 	`,
 };
 
-export const VariantSimple = {
+export const Variants = {
 	render: () => html`
-		<nldd-list variant="simple">
-			<nldd-list-item>
-				<nldd-text-cell text="Simple list item 1" />
-			</nldd-list-item>
-			<nldd-list-item>
-				<nldd-text-cell text="Simple list item 2" />
-			</nldd-list-item>
-			<nldd-list-item>
-				<nldd-text-cell text="Simple list item 3" />
-			</nldd-list-item>
-		</nldd-list>
-	`,
-};
-
-export const VariantBox = {
-	render: () => html`
-		<nldd-list variant="box">
-			<nldd-list-item>
-				<nldd-text-cell text="Box list item 1" />
-			</nldd-list-item>
-			<nldd-list-item>
-				<nldd-text-cell text="Box list item 2" />
-			</nldd-list-item>
-			<nldd-list-item>
-				<nldd-text-cell text="Box list item 3" />
-			</nldd-list-item>
-		</nldd-list>
-	`,
-};
-
-export const VariantBoxOnTinted = {
-	render: () => html`
-		<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
-			<nldd-list variant="box-on-tinted">
-				<nldd-list-item>
-					<nldd-text-cell text="Box-on-tinted item 1"></nldd-text-cell>
-				</nldd-list-item>
-				<nldd-list-item>
-					<nldd-text-cell text="Box-on-tinted item 2"></nldd-text-cell>
-				</nldd-list-item>
-				<nldd-list-item>
-					<nldd-text-cell text="Box-on-tinted item 3"></nldd-text-cell>
-				</nldd-list-item>
+		<div style="display: flex; flex-direction: column; gap: 32px;">
+			<nldd-list variant="simple">
+				<nldd-list-item><nldd-text-cell text="Simple — item 1" /></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Simple — item 2" /></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Simple — item 3" /></nldd-list-item>
 			</nldd-list>
-		</div>
-	`,
-};
 
-export const WithHeaderAndFooter = {
-	render: () => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-list variant="box">
-				<nldd-title slot="header" size="4">
-					<h5>Notifications</h5>
-				</nldd-title>
-				<nldd-list-item>
-					<nldd-text-cell text="Allow notifications" />
-				</nldd-list-item>
-				<nldd-list-item>
-					<nldd-text-cell text="Sounds" />
-				</nldd-list-item>
-				<nldd-list-item>
-					<nldd-text-cell text="Badges" />
-				</nldd-list-item>
-				<nldd-rich-text slot="footer">
-					<p>Notifications will only be sent when the app is active on your device.</p>
-				</nldd-rich-text>
+				<nldd-list-item><nldd-text-cell text="Box — item 1" /></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Box — item 2" /></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Box — item 3" /></nldd-list-item>
 			</nldd-list>
+
+			<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
+				<nldd-list variant="box-on-tinted">
+					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 1" /></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 2" /></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 3" /></nldd-list-item>
+				</nldd-list>
+			</div>
 		</div>
 	`,
-};
-
-const handleSelectionClick = (e) => {
-	const item = e.target.closest('nldd-list-item');
-	if (!item) return;
-	const list = item.closest('nldd-list');
-	list.querySelectorAll('nldd-list-item').forEach(i => i.removeAttribute('selected'));
-	item.setAttribute('selected', '');
-};
-
-export const WithSelection = {
-	render: () => html`
-		<nldd-list variant="simple" @click=${handleSelectionClick}>
-			<nldd-list-item type="button">
-				<nldd-text-cell text="Item 1" />
-			</nldd-list-item>
-			<nldd-list-item type="button" selected>
-				<nldd-text-cell text="Item 2 (selected)" />
-			</nldd-list-item>
-			<nldd-list-item type="button">
-				<nldd-text-cell text="Item 3" />
-			</nldd-list-item>
-		</nldd-list>
-	`,
-};
-
-export const WithSelectionBoxed = {
-	render: () => html`
-		<nldd-list variant="box" @click=${handleSelectionClick}>
-			<nldd-list-item type="button">
-				<nldd-text-cell text="Item 1" />
-			</nldd-list-item>
-			<nldd-list-item type="button" selected>
-				<nldd-text-cell text="Item 2 (selected)" />
-			</nldd-list-item>
-			<nldd-list-item type="button">
-				<nldd-text-cell text="Item 3" />
-			</nldd-list-item>
-		</nldd-list>
-	`,
-};
-WithSelectionBoxed.parameters = { controls: { disable: true } };
-
-export const SizeSmall = {
-	render: () => html`
-		<nldd-list variant="simple">
-			<nldd-list-item size="sm">
-				<nldd-text-cell size="sm" text="Small item 1" />
-			</nldd-list-item>
-			<nldd-list-item size="sm">
-				<nldd-text-cell size="sm" text="Small item 2" />
-			</nldd-list-item>
-			<nldd-list-item size="sm">
-				<nldd-text-cell size="sm" text="Small item 3" />
-			</nldd-list-item>
-		</nldd-list>
-	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Three visual variants: `simple` (top-border only), `box` (tinted surface with rounded corners) and `box-on-tinted` (plain surface for use on an already-tinted background).',
+			},
+		},
+	},
 };
 
 export const WithMultipleColumns = {
@@ -241,7 +175,187 @@ export const WithInteractiveItems = {
 	`,
 };
 
-export const DraggableList = {
+// — Type: listbox ————————————————————————————————————————————————————————————
+
+const listboxSelectHandler = (e) => {
+	const { item } = e.detail;
+	const list = e.currentTarget;
+	list.querySelectorAll('nldd-list-item').forEach(i => i.removeAttribute('selected'));
+	item.setAttribute('selected', '');
+};
+
+export const TypeListbox = {
+	render: () => {
+		const el = document.createElement('div');
+		render(html`
+			<div style="display: flex; flex-direction: column; gap: 32px;">
+				<nldd-list type="listbox" variant="simple" @nldd-select=${listboxSelectHandler}>
+					<nldd-list-item><nldd-text-cell text="Aardappelen" /></nldd-list-item>
+					<nldd-list-item selected><nldd-text-cell text="Broccoli (geselecteerd)" /></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Courgette" /></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Doperwten" /></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Erwten" /></nldd-list-item>
+				</nldd-list>
+
+				<nldd-list type="listbox" variant="box" @nldd-select=${listboxSelectHandler}>
+					<nldd-list-item><nldd-text-cell text="Aardappelen" /></nldd-list-item>
+					<nldd-list-item selected><nldd-text-cell text="Broccoli (geselecteerd)" /></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Courgette" /></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Doperwten" /></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Erwten" /></nldd-list-item>
+				</nldd-list>
+			</div>
+		`, el);
+		return el;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Single-select listbox in both `simple` and `box` variants. Tab in, arrows navigate, Enter/Space selects. Consumer mutates `selected` in the `nldd-select` handler.',
+			},
+		},
+	},
+};
+
+// — Listbox: controlled (inline combobox) —————————————————————————————————————
+
+export const TypeListboxControlled = {
+	render: () => {
+		const labels = [
+			'Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten',
+			'Fritesstampers', 'Groene asperges', 'Haricots verts', 'IJsbergsla', 'Knolselderij',
+		];
+
+		const root = document.createElement('div');
+
+		render(html`
+			<nldd-search-field
+				combobox
+				listbox="demo-listbox"
+				placeholder="Zoek een groente…"
+			></nldd-search-field>
+			<nldd-spacer size="8" direction="vertical"></nldd-spacer>
+			<nldd-list id="demo-listbox" type="listbox" variant="box" controlled>
+				${labels.map(label => html`
+					<nldd-list-item search-text="${label}">
+						<nldd-text-cell text="${label}" />
+					</nldd-list-item>
+				`)}
+				<nldd-inline-dialog
+					slot="empty"
+					text="Geen resultaten"
+					supporting-text="Probeer een andere zoekterm."
+				></nldd-inline-dialog>
+			</nldd-list>
+		`, root);
+
+		const searchField = root.querySelector('nldd-search-field');
+		const list = root.querySelector('nldd-list');
+
+		const syncActiveDescendant = () => {
+			searchField.activeDescendant = list.getHighlightedId();
+		};
+
+		searchField.addEventListener('input', (e) => {
+			list.filter(e.detail.value);
+			syncActiveDescendant();
+		});
+
+		searchField.addEventListener('keydown', (e) => {
+			switch (e.key) {
+				case 'ArrowDown':
+					e.preventDefault();
+					list.moveHighlight('next');
+					syncActiveDescendant();
+					break;
+				case 'ArrowUp':
+					e.preventDefault();
+					list.moveHighlight('prev');
+					syncActiveDescendant();
+					break;
+				case 'Home':
+					e.preventDefault();
+					list.moveHighlight('first');
+					syncActiveDescendant();
+					break;
+				case 'End':
+					e.preventDefault();
+					list.moveHighlight('last');
+					syncActiveDescendant();
+					break;
+				case 'Enter':
+					e.preventDefault();
+					list.selectHighlighted();
+					break;
+				case 'Escape':
+					e.preventDefault();
+					searchField.value = '';
+					list.filter('');
+					syncActiveDescendant();
+					break;
+			}
+		});
+
+		list.addEventListener('nldd-select', (e) => {
+			const { item } = e.detail;
+			searchField.value = item.searchText;
+			list.filter(item.searchText);
+			syncActiveDescendant();
+		});
+
+		return root;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: `
+Controlled listbox used as a combobox popup. Focus stays on the search input; the consumer forwards arrow/Enter keys to the listbox and mirrors \`getHighlightedId()\` into the input's \`aria-activedescendant\`. Set \`controlled\` on the list to disable its own tabindex and focus behaviour.
+
+Public API used here: \`moveHighlight()\`, \`getHighlightedId()\`, \`selectHighlighted()\`, \`clearHighlight()\`.
+				`.trim(),
+			},
+		},
+	},
+};
+
+
+// — Type: navigation ——————————————————————————————————————————————————————————
+
+export const TypeNavigation = {
+	render: () => {
+		const onClick = (e) => {
+			const item = e.target.closest('nldd-list-item');
+			if (!item) return;
+			e.preventDefault();
+			const list = item.closest('nldd-list');
+			list.querySelectorAll('nldd-list-item').forEach(i => i.removeAttribute('selected'));
+			item.setAttribute('selected', '');
+		};
+		return html`
+			<nldd-list type="navigation" variant="box" aria-label="Hoofdmenu" @click=${onClick}>
+				<nldd-list-item href="#dashboard"><nldd-text-cell text="Dashboard" /></nldd-list-item>
+				<nldd-list-item href="#aanvragen" selected><nldd-text-cell text="Aanvragen" /></nldd-list-item>
+				<nldd-list-item href="#meldingen"><nldd-text-cell text="Meldingen" /></nldd-list-item>
+				<nldd-list-item href="#instellingen"><nldd-text-cell text="Instellingen" /></nldd-list-item>
+			</nldd-list>
+		`;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Navigation landmark. Items are links (or buttons), each independently tab-focusable. The active item gets `aria-current="page"` via `selected`. The host carries `role="navigation"` and a default `aria-label="Navigatie"` (override via `aria-label`).',
+			},
+		},
+	},
+};
+
+
+// — Reorderable ———————————————————————————————————————————————————————————————
+
+export const ReorderableList = {
 	// Imperative render is intentional: the nldd-reorder handler needs to mutate
 	// the DOM in-place to demonstrate actual reordering. A standard Storybook
 	// render function cannot do this because Lit templates are stateless.
@@ -276,5 +390,65 @@ export const DraggableList = {
 		`, el);
 		return el;
 	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Set `reorderable` on a default-type list to enable drag-and-keyboard reorder. The list emits `nldd-reorder` with `{ fromIndex, toIndex }` — the consumer is responsible for mutating the DOM (or data model).',
+			},
+		},
+	},
 };
-DraggableList.parameters = { controls: { disable: true } };
+
+
+// — Header & footer ———————————————————————————————————————————————————————————
+
+export const WithHeaderAndFooter = {
+	render: () => html`
+		<div style="container-type: inline-size; container-name: layout-area;">
+			<nldd-list variant="box">
+				<nldd-title slot="header" size="4">
+					<h5>Notifications</h5>
+				</nldd-title>
+				<nldd-list-item>
+					<nldd-text-cell text="Allow notifications" />
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-text-cell text="Sounds" />
+				</nldd-list-item>
+				<nldd-list-item>
+					<nldd-text-cell text="Badges" />
+				</nldd-list-item>
+				<nldd-rich-text slot="footer">
+					<p>Notifications will only be sent when the app is active on your device.</p>
+				</nldd-rich-text>
+			</nldd-list>
+		</div>
+	`,
+};
+
+
+// — Empty slot ————————————————————————————————————————————————————————————————
+
+export const WithEmptySlot = {
+	render: () => html`
+		<nldd-list variant="box">
+			<nldd-inline-dialog
+				slot="empty"
+				icon-name="search"
+				text="Geen resultaten"
+				supporting-text="Pas de filters aan of probeer een andere zoekterm."
+			>
+				<nldd-button slot="actions" variant="neutral-tinted" text="Filters wissen"></nldd-button>
+			</nldd-inline-dialog>
+		</nldd-list>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'The `empty` slot is auto-shown when there are no items, or when all items have the `[hidden]` attribute. Works for any `type`. An `nldd-inline-dialog` is a natural fit — give it an icon, a heading, supporting text, and optional action buttons.',
+			},
+		},
+	},
+};

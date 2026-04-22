@@ -501,21 +501,21 @@ export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumen
 				bubbles: true,
 				composed: true,
 			}));
-			this._announce(this._t('components.document-tab-bar.drag-dropped-text', { position: toIndex + 1 }));
+			this._announce(this._t('components.document-tab-bar.reorder-dropped-text', { position: toIndex + 1 }));
 
 			requestAnimationFrame(() => {
 				const inner = movedItem.shadowRoot?.querySelector<HTMLElement>('.document-tab-bar__item-tab');
 				inner?.focus();
 			});
 		} else {
-			this._announce(this._t('components.document-tab-bar.drag-no-change-text'));
+			this._announce(this._t('components.document-tab-bar.reorder-no-change-text'));
 		}
 	}
 
 	private _cancelDrag(): void {
 		if (!this._draggingEl) return;
 		this._cleanupDrag();
-		this._announce(this._t('components.document-tab-bar.drag-cancelled-text'));
+		this._announce(this._t('components.document-tab-bar.reorder-cancelled-text'));
 	}
 
 	private _cleanupDrag(): void {
@@ -801,7 +801,7 @@ export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumen
 				composed: true,
 			}));
 
-			this._announce(this._t('components.document-tab-bar.drag-dropped-text', { position: toIndex + 1 }));
+			this._announce(this._t('components.document-tab-bar.reorder-dropped-text', { position: toIndex + 1 }));
 
 			// Restore focus after DOM move
 			requestAnimationFrame(() => {
