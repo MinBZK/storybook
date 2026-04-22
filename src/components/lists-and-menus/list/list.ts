@@ -298,7 +298,7 @@ export class NLDDList extends LitElement {
 		this._cancelDrag();
 	};
 
-	// — Drag: keyboard ———————————————————————————————————————————————————————
+	// — Keyboard reorder —————————————————————————————————————————————————————
 
 	// ArrowUp/ArrowDown on a focused drag handle moves the item immediately.
 	// Mirrors nldd-document-tab-bar: no grab-and-drop cycle — each arrow press
