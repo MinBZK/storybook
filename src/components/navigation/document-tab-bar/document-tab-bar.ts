@@ -60,8 +60,8 @@ export interface NLDDReorderEventDetail {
 export class NLDDDocumentTabBarItem extends LitElement {
 	static override styles = documentTabBarItemStyles;
 
-	private static _counter = 0;
-	readonly _id = `nldd-document-tab-bar-item-${NLDDDocumentTabBarItem._counter++}`;
+	private static _idCounter = 0;
+	readonly _id = `nldd-document-tab-bar-item-${NLDDDocumentTabBarItem._idCounter++}`;
 
 	@property({ type: Boolean, reflect: true })
 	selected = false;
@@ -133,8 +133,8 @@ export class NLDDDocumentTabBarItem extends LitElement {
 export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumentTabBarTranslations) {
 	static override styles = documentTabBarStyles;
 
-	private static _counter = 0;
-	readonly _id = `nldd-document-tab-bar-${NLDDDocumentTabBar._counter++}`;
+	private static _idCounter = 0;
+	readonly _id = `nldd-document-tab-bar-${NLDDDocumentTabBar._idCounter++}`;
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';

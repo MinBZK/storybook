@@ -102,8 +102,8 @@ export class NLDDComboBox extends LitElement {
 	@state()
 	_highlightedId = '';
 
-	private static _counter = 0;
-	readonly _menuId = `nldd-combo-box-menu-${NLDDComboBox._counter++}`;
+	private static _idCounter = 0;
+	readonly _menuId = `nldd-combo-box-menu-${NLDDComboBox._idCounter++}`;
 
 	private _menu: NLDDMenu | null = null;
 	private _resizeObserver: ResizeObserver | null = null;

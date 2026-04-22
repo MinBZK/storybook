@@ -87,12 +87,12 @@ export class NLDDMenuItem extends LitElement {
 	@state()
 	menuVariant: 'menu' | 'listbox' = 'menu';
 
-	private static _counter = 0;
+	private static _idCounter = 0;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
 		if (!this.id) {
-			this.id = `nldd-menu-item-${NLDDMenuItem._counter++}`;
+			this.id = `nldd-menu-item-${NLDDMenuItem._idCounter++}`;
 		}
 		this.addEventListener('focusin', () => {
 			this.setAttribute('data-focused', '');

@@ -73,7 +73,7 @@ export class NLDDListItem extends LitElement {
 	private _isBoxed = false;
 	private _listObserver: MutationObserver | null = null;
 
-	private static _counter = 0;
+	private static _idCounter = 0;
 
 	override connectedCallback() {
 		super.connectedCallback();
@@ -83,7 +83,7 @@ export class NLDDListItem extends LitElement {
 		// Auto-assign an id so a parent listbox can wire `aria-activedescendant`
 		// without consumer boilerplate.
 		if (!this.id) {
-			this.id = `nldd-list-item-${NLDDListItem._counter++}`;
+			this.id = `nldd-list-item-${NLDDListItem._idCounter++}`;
 		}
 		// Attach focus/click listeners here (not firstUpdated) so they are
 		// re-attached when the element is removed and re-inserted into the DOM.
