@@ -26,6 +26,7 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 			` : nothing}
 			<input class="number-field__input"
 				type="number"
+				inputmode=${Number.isInteger(component.step) ? 'numeric' : 'decimal'}
 				aria-label=${component.accessibleLabel || nothing}
 				.value=${String(component.value)}
 				min=${component.min}

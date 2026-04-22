@@ -13,6 +13,10 @@
  * @attr {string}  placement        - Sheet position: 'left' | 'right' | 'bottom' (default: 'right')
  * @attr {boolean} modeless         - Non-modal (no backdrop or focus lock); the sheet is modal by default
  * @attr {string}  accessible-label - Accessible name for the dialog, forwarded as aria-label (default: 'Dialoogvenster')
+ * @attr {string}  width            - Custom width for side sheets (left/right) as a CSS length
+ *                                    (e.g. '480px', '32rem'). Applied from the md breakpoint up;
+ *                                    ignored on sm (bottom sheet) and for `placement="bottom"`.
+ *                                    Clamped to `100vw - 2 * inset` so the sheet always fits.
  *
  * @slot - Sheet content
  *
@@ -44,6 +48,24 @@ export class NLDDSheet extends LitElement {
 	/** Accessible name for the dialog — forwarded as aria-label to the dialog element. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = 'Venster';
+
+	/**
+	 * Custom width for side sheets (left/right) from the md breakpoint up.
+	 * CSS length (e.g. '480px', '32rem'). Ignored on sm viewports (bottom-sheet
+	 * fallback) and for `placement="bottom"`. Clamped to `100vw - 2 * inset`.
+	 */
+	@property({ type: String, reflect: true })
+	width = '';
+
+	override updated(changed: Map<string, unknown>) {
+		if (changed.has('width')) {
+			if (this.width) {
+				this.style.setProperty('--_custom-width', this.width);
+			} else {
+				this.style.removeProperty('--_custom-width');
+			}
+		}
+	}
 
 	private _hasWarnedLabel = false;
 

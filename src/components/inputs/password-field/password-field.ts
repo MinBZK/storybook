@@ -130,7 +130,6 @@ export class NLDDPasswordField extends LitElement {
 
 	public _handleToggle(): void {
 		this.masked = !this.masked;
-		this.updateComplete.then(() => { this._input?.focus(); });
 	}
 
 	public focus(): void {
