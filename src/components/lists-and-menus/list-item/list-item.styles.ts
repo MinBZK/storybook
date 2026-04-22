@@ -103,11 +103,6 @@ export const listItemStyles = css`
 		pointer-events: none;
 	}
 
-	/* # Content color context
-	   Expose the current content color as a CSS custom property so slotted
-	   cells can render with the matching color without knowing list-item state.
-	   Order matters: selected and highlighted must win over hover. */
-
 	.list-item__action:hover {
 		--_background-color: var(--components-list-item-is-hovered-background-color);
 		--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
