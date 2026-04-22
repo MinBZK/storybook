@@ -118,13 +118,11 @@ export const listItemStyles = css`
 		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
 	}
 
-	:host([highlighted]) .list-item__action,
 	:host([selected]) .list-item__action:focus {
 		--_background-color: var(--components-list-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
 	}
 
-	:host([highlighted]) .list-item__action:hover,
 	:host([selected]) .list-item__action:focus:hover {
 		--_background-color: var(--components-list-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
@@ -217,7 +215,6 @@ export const listItemStyles = css`
 	}
 
 	:host([selected]) .list-item__divider,
-	:host([highlighted]) .list-item__divider,
 	:host(.is-boxed.is-last) .list-item__divider {
 		display: none;
 	}

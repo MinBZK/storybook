@@ -16,14 +16,10 @@ const HEADING_TAGS: Record<number, ReturnType<typeof unsafeStatic>> = {
 	6: unsafeStatic('h6'),
 };
 
-function renderField(text: string, mark: string, mode: 'match' | 'predictive') {
-	return mark ? renderMarked(text, mark, mode) : renderMarked(text, '');
-}
-
 function renderTitle(component: NLDDTitleCell) {
 	if (!component.text) return nothing;
 
-	const rendered = renderField(component.text, component.mark, component.markMode);
+	const rendered = renderMarked(component.text, component.mark, component.markMode);
 	const tag = HEADING_TAGS[component.headingLevel as number];
 	if (tag) {
 		return staticHtml`<${tag} class="title-cell__title">${rendered}</${tag}>`;
@@ -34,8 +30,8 @@ function renderTitle(component: NLDDTitleCell) {
 
 export const template = function (this: NLDDTitleCell) {
 	return html`
-		${this.overline ? html`<p class="title-cell__overline">${renderField(this.overline, this.mark, this.markMode)}</p>` : nothing}
+		${this.overline ? html`<p class="title-cell__overline">${renderMarked(this.overline, this.mark, this.markMode)}</p>` : nothing}
 		${renderTitle(this)}
-		${this.supportingText ? html`<p class="title-cell__supporting-text">${renderField(this.supportingText, this.mark, this.markMode)}</p>` : nothing}
+		${this.supportingText ? html`<p class="title-cell__supporting-text">${renderMarked(this.supportingText, this.mark, this.markMode)}</p>` : nothing}
 	`;
 };

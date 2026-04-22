@@ -15,15 +15,9 @@ export type ListItemType = 'button';
  * as a plain container otherwise.
  *
  * The item synchronises its ARIA with its parent `nldd-list`'s `type`:
- * - `list` parent         → `role="listitem"`
- * - `listbox` parent      → `role="option"` + `aria-selected` reflects `selected`
- * - `navigation` parent   → `role="listitem"` + `aria-current="page"` on the
- *                           inner `<a>` / `<button>` when `selected`
- *
- * In a `listbox` parent the item is rendered as a plain div regardless of
- * `type` / `href` — the listbox container handles activation and keyboard
- * navigation itself, and an interactive widget inside an option would conflict
- * with the listbox a11y pattern.
+ * - `list` parent       → `role="listitem"`
+ * - `navigation` parent → `role="listitem"` + `aria-current="page"` on the
+ *                         inner `<a>` / `<button>` when `selected`
  *
  * @slot         - Main content area
  * @slot start   - Content at the start of the row
@@ -39,18 +33,11 @@ export class NLDDListItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
-	/**
-	 * Visual-only high-contrast state. Used by `nldd-list` (listbox type) to
-	 * highlight the `aria-activedescendant` target. No standalone ARIA implication.
-	 */
-	@property({ type: Boolean, reflect: true })
-	highlighted = false;
-
-	/** When set, renders the item as a button. Ignored when parent list is a listbox. */
+	/** When set, renders the item as a button. */
 	@property({ reflect: true })
 	type?: ListItemType;
 
-	/** When set, renders the item as a link. Ignored when parent list is a listbox. */
+	/** When set, renders the item as a link. */
 	@property({ reflect: true })
 	href?: string;
 
@@ -73,18 +60,11 @@ export class NLDDListItem extends LitElement {
 	private _isBoxed = false;
 	private _listObserver: MutationObserver | null = null;
 
-	private static _idCounter = 0;
-
 	override connectedCallback() {
 		super.connectedCallback();
 		// Skip setup for drag clones — they are visual-only copies inside nldd-list's shadow root
 		if (this.hasAttribute('data-nldd-clone')) return;
 		this.setAttribute('role', 'listitem');
-		// Auto-assign an id so a parent listbox can wire `aria-activedescendant`
-		// without consumer boilerplate.
-		if (!this.id) {
-			this.id = `nldd-list-item-${NLDDListItem._idCounter++}`;
-		}
 		// Attach focus/click listeners here (not firstUpdated) so they are
 		// re-attached when the element is removed and re-inserted into the DOM.
 		// _action is resolved lazily via @query inside the handlers.
@@ -116,7 +96,7 @@ export class NLDDListItem extends LitElement {
 	}
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('selected') || changed.has('highlighted') || changed.has('type') || changed.has('href') || changed.has('_parentType')) {
+		if (changed.has('selected') || changed.has('type') || changed.has('href') || changed.has('_parentType')) {
 			this._updateAriaState();
 		}
 	}
@@ -154,21 +134,11 @@ export class NLDDListItem extends LitElement {
 	}
 
 	private _applyParentType(type: ListType) {
-		if (type === 'listbox' && (this.type === 'button' || this.href) && import.meta.env?.DEV) {
-			console.warn('nldd-list-item: `type` and `href` are ignored inside a listbox parent. The listbox container handles activation.');
-		}
 		this._parentType = type;
 	}
 
 	private _updateAriaState() {
-		// Host-level role
-		if (this._parentType === 'listbox') {
-			this.setAttribute('role', 'option');
-			this.setAttribute('aria-selected', this.selected ? 'true' : 'false');
-		} else {
-			this.setAttribute('role', 'listitem');
-			this.removeAttribute('aria-selected');
-		}
+		this.setAttribute('role', 'listitem');
 
 		// aria-current on the inner action (link/button) — navigation only
 		const action = this.shadowRoot?.querySelector<HTMLElement>('.list-item__action');
@@ -216,15 +186,9 @@ export class NLDDListItem extends LitElement {
 	};
 
 	override render() {
-		// In a listbox parent, render the option variant (plain div inside
-		// .list-item__action). The listbox container handles activation via
-		// aria-activedescendant; an inner button/anchor would be focusable and
-		// break that pattern.
-		const isListboxOption = this._parentType === 'listbox';
 		return template(
 			this.type,
 			this.href,
-			isListboxOption,
 			this._showStart,
 			this._showEnd,
 		);

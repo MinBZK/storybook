@@ -23,11 +23,6 @@ export default {
 			description: 'Whether the item is selected',
 			table: { defaultValue: { summary: 'false' } },
 		},
-		highlighted: {
-			control: 'boolean',
-			description: 'Whether the item is highlighted (high contrast accent)',
-			table: { defaultValue: { summary: 'false' } },
-		},
 		type: {
 			control: 'select',
 			options: ['', 'button'],
@@ -45,13 +40,12 @@ export const Default = {
 	args: {
 		size: 'md',
 		selected: false,
-		highlighted: false,
 		type: '',
 		href: '',
 	},
 	render: (args) => html`
 		<nldd-list variant="simple">
-			<nldd-list-item size=${args.size} ?selected=${args.selected} ?highlighted=${args.highlighted} type=${args.type || nothing} href=${args.href || nothing}>
+			<nldd-list-item size=${args.size} ?selected=${args.selected} type=${args.type || nothing} href=${args.href || nothing}>
 				<nldd-text-cell text="Text cell" supporting-text="Supporting text" />
 			</nldd-list-item>
 		</nldd-list>

@@ -8,16 +8,11 @@ import type { NLDDListTranslations } from './list.i18n.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 
 export type ListVariant = 'simple' | 'box' | 'box-on-tinted';
-export type ListType = 'list' | 'listbox' | 'navigation';
+export type ListType = 'list' | 'navigation';
 
 export interface NLDDReorderEventDetail {
 	fromIndex: number;
 	toIndex: number;
-}
-
-export interface NLDDSelectEventDetail {
-	item: NLDDListItem;
-	selected: boolean;
 }
 
 /**
@@ -27,27 +22,10 @@ export interface NLDDSelectEventDetail {
  * - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed.
  *                     Items may individually be buttons or links; the list itself
  *                     has no special keyboard semantics.
- * - `listbox`            — `role="listbox"`, items `role="option"` with `aria-selected`,
- *                          `aria-activedescendant`-based keyboard nav, fires `nldd-select`.
- * - `navigation`         — host `role="navigation"`, items with `selected` get
- *                          `aria-current="page"` on their inner `<a>` or `<button>`.
+ * - `navigation`     — host `role="navigation"`, items with `selected` get
+ *                     `aria-current="page"` on their inner `<a>` or `<button>`.
  *
- * Selection state is consumer-managed in all types: the list never mutates
- * `selected` itself — it only emits `nldd-select` with the proposed new state.
- *
- * ### Combobox popup
- *
- * For inline combobox patterns (search input above a listbox), set
- * `controlled` on the listbox. The list drops its own tabindex, the consumer
- * keeps focus on the input, and drives navigation via the public methods
- * (`moveHighlight`, `selectHighlighted`, `getHighlightedId`, …). Mirror
- * `getHighlightedId()` into the input's `aria-activedescendant` so screen
- * readers announce the highlighted option.
- *
- * The list does not filter data — the consumer owns filtering and rendering.
- * Re-render the child items based on the current search query, and set
- * `mark="<query>"` on the visible text/title cells so the predictive-completion
- * bolding kicks in automatically (see `nldd-text-cell`).
+ * Selection state is consumer-managed: the list never mutates `selected` itself.
  *
  * ### Reorder
  *
@@ -68,7 +46,6 @@ export interface NLDDSelectEventDetail {
  *                 overrides the default dialog entirely.
  *
  * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
- * @fires nldd-select  - Listbox lists: `{ item, selected }` on Enter/Space/click
  */
 @customElement('nldd-list')
 export class NLDDList extends LitElement {
@@ -81,17 +58,6 @@ export class NLDDList extends LitElement {
 	/** A11y semantics. See class docblock. */
 	@property({ reflect: true })
 	type: ListType = 'list';
-
-	/**
-	 * Listbox-only: marks the listbox as externally controlled (typically by a
-	 * preceding input with `role="combobox"`). The list drops its own
-	 * `tabindex`, does not grab focus on click, and relies on the consumer to
-	 * drive navigation through the public methods (`moveHighlight`,
-	 * `selectHighlighted`, …) and to mirror `getHighlightedId()` into the
-	 * input's `aria-activedescendant`.
-	 */
-	@property({ type: Boolean, reflect: true })
-	controlled = false;
 
 	/** Enables drag-to-reorder. Only valid when `type="list"` (the default). */
 	@property({ type: Boolean, reflect: true })
@@ -127,9 +93,6 @@ export class NLDDList extends LitElement {
 	private _hasHeader = false;
 
 	@state()
-	private _activeDescendantId = '';
-
-	@state()
 	private _isEmpty = false;
 
 	// — Drag state ——————————————————————————————————————————————————————————
@@ -163,8 +126,6 @@ export class NLDDList extends LitElement {
 			this._hasHeader = (headerSlot.assignedElements().length > 0);
 		});
 
-		// Watch item [hidden] mutations so empty-slot visibility stays in sync
-		// with consumer-driven filtering.
 		// Watch direct children for add/remove and watch any descendant for
 		// `hidden` mutations (consumer-driven filtering). The attribute filter
 		// keeps the callback cheap; subtree is needed because `attributes`
@@ -174,7 +135,6 @@ export class NLDDList extends LitElement {
 		this._itemsObserver = new MutationObserver(() => {
 			this._updateItems();
 			this._updateEmpty();
-			this._cleanupStaleActiveDescendant();
 		});
 		this._itemsObserver.observe(this, {
 			childList: true,
@@ -183,12 +143,6 @@ export class NLDDList extends LitElement {
 			attributeFilter: ['hidden'],
 		});
 
-		// Listbox: focus is delegated to the .list__items element (it carries
-		// role="listbox" and the activedescendant). The handler stays attached
-		// for the element's lifetime; type-gating happens inside the handler.
-		const itemsEl = this.shadowRoot?.querySelector<HTMLElement>('.list__items');
-		itemsEl?.addEventListener('focus', this._onListboxFocus);
-
 		this._applyHostType();
 	}
 
@@ -196,16 +150,12 @@ export class NLDDList extends LitElement {
 		super.connectedCallback();
 		this.addEventListener('pointerdown', this._onPointerDown);
 		this.addEventListener('keydown', this._onKeyDown);
-		this.addEventListener('keydown', this._onListboxKeydown);
-		this.addEventListener('click', this._onListboxClick);
 	}
 
 	override disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('pointerdown', this._onPointerDown);
 		this.removeEventListener('keydown', this._onKeyDown);
-		this.removeEventListener('keydown', this._onListboxKeydown);
-		this.removeEventListener('click', this._onListboxClick);
 		this._itemsObserver?.disconnect();
 		this._itemsObserver = null;
 		this._cancelDrag();
@@ -223,10 +173,6 @@ export class NLDDList extends LitElement {
 		}
 		if (changed.has('type')) {
 			this._applyHostType();
-			// Reset listbox-only state when leaving listbox mode
-			if (this.type !== 'listbox') {
-				this.clearHighlight();
-			}
 		}
 	}
 
@@ -248,8 +194,6 @@ export class NLDDList extends LitElement {
 				this.removeAttribute('data-nldd-auto-label');
 			}
 		}
-		// Listbox needs the inner .list__items to be focusable; that's handled
-		// in the template via tabindex. The host stays non-focusable.
 	}
 
 	// — Items ————————————————————————————————————————————————————————————————
@@ -279,160 +223,6 @@ export class NLDDList extends LitElement {
 	private _updateEmpty() {
 		const items = this._getItems();
 		this._isEmpty = items.length === 0 || items.every(item => item.hasAttribute('hidden'));
-	}
-
-	/**
-	 * Clear `_activeDescendantId` if it points to an item that is no longer
-	 * a visible option (removed from DOM or now `[hidden]`). Without this,
-	 * consumers that replace items (e.g. server-side search) would be left
-	 * with a stale `aria-activedescendant` pointing to nothing.
-	 */
-	private _cleanupStaleActiveDescendant() {
-		if (this.type !== 'listbox' || !this._activeDescendantId) return;
-		const stillVisible = this._getOptionItems().some(i => i.id === this._activeDescendantId);
-		if (!stillVisible) this._activeDescendantId = '';
-	}
-
-	// — Listbox: keyboard ————————————————————————————————————————————————————
-
-	private _onListboxKeydown = (event: KeyboardEvent) => {
-		if (this.type !== 'listbox') return;
-
-		// Only react to keys originating in/on .list__items (the focused element)
-		const path = event.composedPath() as Element[];
-		const itemsEl = this.shadowRoot?.querySelector<HTMLElement>('.list__items');
-		if (!itemsEl || !path.includes(itemsEl)) return;
-
-		switch (event.key) {
-			case 'ArrowDown':
-				event.preventDefault();
-				this.moveHighlight('next');
-				break;
-			case 'ArrowUp':
-				event.preventDefault();
-				this.moveHighlight('prev');
-				break;
-			case 'Home':
-				event.preventDefault();
-				this.moveHighlight('first');
-				break;
-			case 'End':
-				event.preventDefault();
-				this.moveHighlight('last');
-				break;
-			case 'Enter':
-			case ' ': {
-				event.preventDefault();
-				const highlighted = this.getHighlighted();
-				const items = this._getOptionItems();
-				const target = highlighted ?? items[0];
-				if (target) this._selectItem(target);
-				break;
-			}
-		}
-	};
-
-	// — Listbox: focus / click ————————————————————————————————————————————————
-
-	private _onListboxClick = (event: MouseEvent) => {
-		if (this.type !== 'listbox') return;
-		const path = event.composedPath() as Element[];
-		const item = path.find(
-			el => el instanceof Element && el.tagName.toLowerCase() === 'nldd-list-item',
-		) as NLDDListItem | undefined;
-		if (!item || item.hasAttribute('hidden')) return;
-		this._setActiveDescendant(item);
-		this._selectItem(item);
-		// Self-driven mode: refocus the listbox container so arrow keys keep
-		// working. Controlled mode: leave focus alone (it's on an external input).
-		if (!this.controlled) {
-			this.shadowRoot?.querySelector<HTMLElement>('.list__items')?.focus();
-		}
-	};
-
-	private _onListboxFocus = () => {
-		if (this.type !== 'listbox' || this.controlled || this._activeDescendantId) return;
-		const items = this._getOptionItems();
-		if (items.length === 0) return;
-		const selected = items.find(i => i.selected);
-		this._setActiveDescendant(selected ?? items[0]);
-	};
-
-	// — Listbox: public API ————————————————————————————————————————————————
-
-	/**
-	 * Move the highlight among visible options without moving focus. Wraps
-	 * around at both ends. Use from a combobox controller that keeps focus on
-	 * its input and mirrors `getHighlightedId()` into `aria-activedescendant`.
-	 */
-	public moveHighlight(direction: 'next' | 'prev' | 'first' | 'last'): void {
-		const items = this._getOptionItems();
-		if (items.length === 0) return;
-		const current = items.findIndex(i => i.id === this._activeDescendantId);
-		let next: number;
-		switch (direction) {
-			case 'first':
-				next = 0;
-				break;
-			case 'last':
-				next = items.length - 1;
-				break;
-			case 'next':
-				next = current === -1 ? 0 : (current < items.length - 1 ? current + 1 : 0);
-				break;
-			case 'prev':
-				next = current === -1 ? items.length - 1 : (current > 0 ? current - 1 : items.length - 1);
-				break;
-		}
-		this._setActiveDescendant(items[next]);
-	}
-
-	/** Returns the currently highlighted option, or null if none. */
-	public getHighlighted(): NLDDListItem | null {
-		return this._getOptionItems().find(i => i.id === this._activeDescendantId) ?? null;
-	}
-
-	/** Returns the id of the currently highlighted option, or '' if none. */
-	public getHighlightedId(): string {
-		return this._activeDescendantId;
-	}
-
-	/** Dispatch `nldd-select` for the currently highlighted option. No-op if none. */
-	public selectHighlighted(): void {
-		const item = this.getHighlighted();
-		if (item) this._selectItem(item);
-	}
-
-	/** Clear the highlight and `aria-activedescendant`. */
-	public clearHighlight(): void {
-		this._activeDescendantId = '';
-		this._getItems().forEach(i => i.removeAttribute('highlighted'));
-	}
-
-	// — Listbox: internal helpers ————————————————————————————————————————————
-
-	private _getOptionItems(): NLDDListItem[] {
-		return this._getItems().filter(item => !item.hasAttribute('hidden'));
-	}
-
-	private _setActiveDescendant(item: NLDDListItem) {
-		if (!item.id) {
-			// Items assign their own id on connect, but be defensive
-			item.id = `nldd-list-item-${Math.random().toString(36).slice(2, 9)}`;
-		}
-		this._activeDescendantId = item.id;
-		this._getItems().forEach(i => {
-			if (i === item) i.setAttribute('highlighted', '');
-			else i.removeAttribute('highlighted');
-		});
-	}
-
-	private _selectItem(item: NLDDListItem) {
-		this.dispatchEvent(new CustomEvent<NLDDSelectEventDetail>('nldd-select', {
-			detail: { item, selected: !item.selected },
-			bubbles: true,
-			composed: true,
-		}));
 	}
 
 	// — Drag: pointer ————————————————————————————————————————————————————————
@@ -732,8 +522,6 @@ export class NLDDList extends LitElement {
 			this._t('components.list.items-label-text'),
 			this._hasHeader,
 			this.type,
-			this.controlled,
-			this._activeDescendantId,
 			this._isEmpty,
 			this.emptyText || this._t('components.list.empty-text-text'),
 			this.emptySupportingText,

@@ -11,7 +11,6 @@ import '../../content/title/title.js';
 import '../../content/rich-text/rich-text.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import '../../actions/button/button.js';
-import '../../inputs/search-field/search-field.js';
 import '../../layout/spacer/spacer.js';
 import '../../layout/box/box.js';
 
@@ -28,8 +27,8 @@ export default {
 		},
 		type: {
 			control: 'select',
-			options: ['list', 'listbox', 'navigation'],
-			description: 'A11y semantics: `list` (role="list"), `listbox` (selectable options), `navigation` (landmark with `aria-current` on the active item)',
+			options: ['list', 'navigation'],
+			description: 'A11y semantics: `list` (role="list") or `navigation` (landmark with `aria-current` on the active item)',
 			table: { defaultValue: { summary: 'list' } },
 		},
 		'no-dividers': {
@@ -55,10 +54,9 @@ export default {
 **When to use which \`type\`:**
 
 - **\`list\`** (default) — semantic list (\`role="list"\`) with no special keyboard behaviour. Items may individually be buttons or links. Use for settings lists, data overviews, lists of cards.
-- **\`listbox\`** — form-style selection of one or more values. One tabstop on the listbox itself; arrows navigate options via \`aria-activedescendant\`; Enter/Space dispatches \`nldd-select\`. Use when the user picks values from a set.
 - **\`navigation\`** — way-finding between pages or app sections. Items are links or buttons, each independently focusable via Tab. The active item gets \`aria-current="page"\` based on the \`selected\` prop. Use for sidebars, in-app menus, master/detail pickers.
 
-Selection state is **always consumer-managed**: the list never mutates \`selected\` itself. For listbox, listen for \`nldd-select\` and update items in your data model.
+Selection state is **always consumer-managed**: the list never mutates \`selected\` itself.
 				`.trim(),
 			},
 		},
@@ -188,170 +186,6 @@ export const WithInteractiveItems = {
 		</nldd-list>
 	`,
 };
-
-// — Type: listbox ————————————————————————————————————————————————————————————
-
-const listboxSelectHandler = (e) => {
-	const { item } = e.detail;
-	const list = e.currentTarget;
-	list.querySelectorAll('nldd-list-item').forEach(i => i.removeAttribute('selected'));
-	item.setAttribute('selected', '');
-};
-
-export const TypeListbox = {
-	render: () => {
-		const el = document.createElement('div');
-		render(html`
-			<div style="display: flex; flex-direction: column; gap: 32px;">
-				<nldd-list type="listbox" variant="simple" @nldd-select=${listboxSelectHandler}>
-					<nldd-list-item><nldd-text-cell text="Aardappelen" /></nldd-list-item>
-					<nldd-list-item selected><nldd-text-cell text="Broccoli (geselecteerd)" /></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Courgette" /></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Doperwten" /></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Erwten" /></nldd-list-item>
-				</nldd-list>
-
-				<nldd-list type="listbox" variant="box" @nldd-select=${listboxSelectHandler}>
-					<nldd-list-item><nldd-text-cell text="Aardappelen" /></nldd-list-item>
-					<nldd-list-item selected><nldd-text-cell text="Broccoli (geselecteerd)" /></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Courgette" /></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Doperwten" /></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Erwten" /></nldd-list-item>
-				</nldd-list>
-			</div>
-		`, el);
-		return el;
-	},
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Single-select listbox in both `simple` and `box` variants. Tab in, arrows navigate, Enter/Space selects. Consumer mutates `selected` in the `nldd-select` handler.',
-			},
-		},
-	},
-};
-
-// — Listbox: controlled (inline combobox) —————————————————————————————————————
-
-export const TypeListboxControlled = {
-	render: () => {
-		const labels = [
-			'Aardappelen', 'Broccoli', 'Courgette', 'Doperwten', 'Erwten',
-			'Fritesstampers', 'Groene asperges', 'Haricots verts', 'IJsbergsla', 'Knolselderij',
-		];
-
-		const root = document.createElement('div');
-
-		const renderItems = (query) => {
-			const q = query.trim().toLowerCase();
-			const matches = q ? labels.filter(l => l.toLowerCase().includes(q)) : labels;
-			render(html`
-				${matches.map(label => html`
-					<nldd-list-item>
-						<nldd-text-cell text="${label}" mark="${q}"></nldd-text-cell>
-					</nldd-list-item>
-				`)}
-			`, list);
-			if (q && matches.length > 0) {
-				list.moveHighlight('first');
-			} else {
-				list.clearHighlight();
-			}
-		};
-
-		render(html`
-			<nldd-search-field
-				combobox
-				listbox="demo-listbox"
-				placeholder="Zoek een groente…"
-			></nldd-search-field>
-			<nldd-spacer size="8" direction="vertical"></nldd-spacer>
-			<nldd-list
-				id="demo-listbox"
-				type="listbox"
-				variant="box"
-				controlled
-				empty-supporting-text="Probeer een andere zoekterm."
-			></nldd-list>
-		`, root);
-
-		const searchField = root.querySelector('nldd-search-field');
-		const list = root.querySelector('nldd-list');
-
-		renderItems('');
-
-		const syncActiveDescendant = () => {
-			searchField.activeDescendant = list.getHighlightedId();
-		};
-
-		searchField.addEventListener('input', (e) => {
-			renderItems(e.detail.value);
-			syncActiveDescendant();
-		});
-
-		searchField.addEventListener('keydown', (e) => {
-			switch (e.key) {
-				case 'ArrowDown':
-					e.preventDefault();
-					list.moveHighlight('next');
-					syncActiveDescendant();
-					break;
-				case 'ArrowUp':
-					e.preventDefault();
-					list.moveHighlight('prev');
-					syncActiveDescendant();
-					break;
-				case 'Home':
-					e.preventDefault();
-					list.moveHighlight('first');
-					syncActiveDescendant();
-					break;
-				case 'End':
-					e.preventDefault();
-					list.moveHighlight('last');
-					syncActiveDescendant();
-					break;
-				case 'Enter':
-					e.preventDefault();
-					list.selectHighlighted();
-					break;
-				case 'Escape':
-					e.preventDefault();
-					searchField.value = '';
-					renderItems('');
-					syncActiveDescendant();
-					break;
-			}
-		});
-
-		list.addEventListener('nldd-select', (e) => {
-			const { item } = e.detail;
-			const textCell = item.querySelector('nldd-text-cell');
-			const label = textCell?.text ?? '';
-			searchField.value = label;
-			renderItems(label);
-			syncActiveDescendant();
-		});
-
-		return root;
-	},
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: `
-Controlled listbox used as a combobox popup. Focus stays on the search input; the consumer forwards arrow/Enter keys to the listbox and mirrors \`getHighlightedId()\` into the input's \`aria-activedescendant\`. Set \`controlled\` on the list to disable its own tabindex and focus behaviour.
-
-**Data flow:** the consumer owns the item list and re-renders the listbox children based on the search query. Setting \`mark="<query>"\` on each text-cell triggers the predictive-completion bolding automatically (ARIA APG pattern for combobox) — no per-cell string munging in the consumer.
-
-Public API used here: \`moveHighlight()\`, \`getHighlightedId()\`, \`selectHighlighted()\`, \`clearHighlight()\`.
-				`.trim(),
-			},
-		},
-	},
-};
-
 
 // — Type: navigation ——————————————————————————————————————————————————————————
 

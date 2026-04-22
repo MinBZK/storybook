@@ -17,11 +17,6 @@ export function searchFieldTemplate(component: NLDDSearchField): TemplateResult 
 				.value=${component.value}
 				placeholder=${component.placeholder}
 				aria-label=${component.accessibleLabel || component.placeholder || nothing}
-				role=${component.combobox ? 'combobox' : nothing}
-				aria-expanded=${component.combobox ? 'true' : nothing}
-				aria-autocomplete=${component.combobox ? 'list' : nothing}
-				aria-controls=${component.listbox || nothing}
-				aria-activedescendant=${component.activeDescendant || nothing}
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
 				@input=${component._handleInput}

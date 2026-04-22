@@ -92,14 +92,6 @@ describe('nldd-list-item', () => {
 	});
 
 
-	// — Highlighted ————————————————————————————————————————————————————————
-
-	it('reflects highlighted attribute', async () => {
-		el = await fixture('<nldd-list-item highlighted></nldd-list-item>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('highlighted')).toBe(true);
-	});
-
 	it('matches [selected]:focus-within when focused on the action', async () => {
 		// The :host([selected]:focus-within) CSS rule promotes a selected item
 		// to the highlighted state on focus. Verify the selector semantics
@@ -170,21 +162,6 @@ describe('nldd-list-item', () => {
 	});
 
 
-	// — Auto-id ——————————————————————————————————————————————————————————————
-
-	it('auto-assigns an id when none is provided', async () => {
-		el = await fixture('<nldd-list-item></nldd-list-item>');
-		await waitForUpdate(el);
-		expect(el.id).toMatch(/^nldd-list-item-\d+$/);
-	});
-
-	it('keeps a consumer-provided id', async () => {
-		el = await fixture('<nldd-list-item id="my-item"></nldd-list-item>');
-		await waitForUpdate(el);
-		expect(el.id).toBe('my-item');
-	});
-
-
 	// — Parent type sync: content (default) ——————————————————————————————————
 
 	it('content parent: role="listitem", no aria-selected', async () => {
@@ -198,63 +175,6 @@ describe('nldd-list-item', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('role')).toBe('listitem');
 		expect(el.hasAttribute('aria-selected')).toBe(false);
-	});
-
-
-	// — Parent type sync: listbox ——————————————————————————————————————————————
-
-	it('listbox parent: role="option" and aria-selected reflects selected', async () => {
-		const wrapper = await fixture(`
-			<nldd-list type="listbox">
-				<nldd-list-item id="a"></nldd-list-item>
-				<nldd-list-item id="b" selected></nldd-list-item>
-			</nldd-list>
-		`);
-		await waitForUpdate(wrapper);
-		const a = wrapper.querySelector('#a') as HTMLElement;
-		const b = wrapper.querySelector('#b') as HTMLElement;
-		await waitForUpdate(a);
-		await waitForUpdate(b);
-
-		expect(a.getAttribute('role')).toBe('option');
-		expect(a.getAttribute('aria-selected')).toBe('false');
-		expect(b.getAttribute('role')).toBe('option');
-		expect(b.getAttribute('aria-selected')).toBe('true');
-	});
-
-	it('listbox parent: forces div rendering even when type="button" or href is set', async () => {
-		const wrapper = await fixture(`
-			<nldd-list type="listbox">
-				<nldd-list-item id="a" type="button"></nldd-list-item>
-				<nldd-list-item id="b" href="/foo"></nldd-list-item>
-			</nldd-list>
-		`);
-		await waitForUpdate(wrapper);
-		const a = wrapper.querySelector('#a') as HTMLElement;
-		const b = wrapper.querySelector('#b') as HTMLElement;
-		await waitForUpdate(a);
-		await waitForUpdate(b);
-
-		expect(a.shadowRoot!.querySelector('button.list-item__action')).toBeNull();
-		expect(b.shadowRoot!.querySelector('a.list-item__action')).toBeNull();
-		expect(a.shadowRoot!.querySelector('div.list-item')).not.toBeNull();
-		expect(b.shadowRoot!.querySelector('div.list-item')).not.toBeNull();
-	});
-
-	it('listbox parent: aria-selected updates when selected prop toggles', async () => {
-		const wrapper = await fixture(`
-			<nldd-list type="listbox">
-				<nldd-list-item id="a"></nldd-list-item>
-			</nldd-list>
-		`);
-		await waitForUpdate(wrapper);
-		el = wrapper.querySelector('#a') as HTMLElement;
-		await waitForUpdate(el);
-		expect(el.getAttribute('aria-selected')).toBe('false');
-
-		el.setAttribute('selected', '');
-		await waitForUpdate(el);
-		expect(el.getAttribute('aria-selected')).toBe('true');
 	});
 
 
@@ -309,19 +229,19 @@ describe('nldd-list-item', () => {
 	it('re-syncs ARIA when parent list type changes', async () => {
 		const wrapper = await fixture(`
 			<nldd-list>
-				<nldd-list-item id="a" selected></nldd-list-item>
+				<nldd-list-item id="a" href="/a" selected></nldd-list-item>
 			</nldd-list>
 		`);
 		await waitForUpdate(wrapper);
 		el = wrapper.querySelector('#a') as HTMLElement;
 		await waitForUpdate(el);
-		expect(el.getAttribute('role')).toBe('listitem');
+		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
+		expect(anchor?.hasAttribute('aria-current')).toBe(false);
 
-		wrapper.setAttribute('type', 'listbox');
+		wrapper.setAttribute('type', 'navigation');
 		// MutationObserver fires async — wait a tick
 		await waitForUpdate(wrapper);
 		await waitForUpdate(el);
-		expect(el.getAttribute('role')).toBe('option');
-		expect(el.getAttribute('aria-selected')).toBe('true');
+		expect(anchor?.getAttribute('aria-current')).toBe('page');
 	});
 });

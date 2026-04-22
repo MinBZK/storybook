@@ -6,28 +6,23 @@ export const template = (
 	itemsLabel: string,
 	hasHeader: boolean,
 	type: ListType,
-	controlled: boolean,
-	activeDescendantId: string,
 	isEmpty: boolean,
 	emptyText: string,
 	emptySupportingText: string,
 ) => {
-	const isListbox = type === 'listbox';
-	const itemsRole = isListbox ? 'listbox' : 'list';
-	// Controlled listbox: an external input owns focus and drives navigation
-	// via the public API, so the listbox container itself is not tabbable and
-	// carries no aria-activedescendant (that attribute lives on the input).
-	const isSelfDriven = isListbox && !controlled;
+	const isNavigation = type === 'navigation';
+	// Navigation: the host carries role="navigation" with its own label; an
+	// extra aria-label on the inner role="list" would make the landmark name
+	// and the inner list name stack in screen-reader announcements.
+	const skipItemsLabel = hasHeader || isNavigation;
 	return html`
 		<div class="list__body">
 			<div class="list__header">
 				<slot name="header"></slot>
 			</div>
 			<div class="list__items"
-				role=${itemsRole}
-				tabindex=${ifDefined(isSelfDriven ? '0' : undefined)}
-				aria-label=${ifDefined(hasHeader ? undefined : itemsLabel)}
-				aria-activedescendant=${ifDefined(isSelfDriven && activeDescendantId ? activeDescendantId : undefined)}
+				role="list"
+				aria-label=${ifDefined(skipItemsLabel ? undefined : itemsLabel)}
 			>
 				<slot></slot>
 				<div class="list__empty" ?hidden=${!isEmpty}>
