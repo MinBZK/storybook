@@ -190,7 +190,13 @@ export class NLDDList extends LitElement {
 				this.removeAttribute('role');
 			}
 			if (this.hasAttribute('data-nldd-auto-label')) {
-				this.removeAttribute('aria-label');
+				// Only strip the label we set ourselves. If the consumer overrode
+				// `aria-label` after our auto-set, the value no longer matches and
+				// we leave it intact. Either way, clear the sentinel.
+				const autoLabel = this._t('components.list.navigation-label-text');
+				if (this.getAttribute('aria-label') === autoLabel) {
+					this.removeAttribute('aria-label');
+				}
 				this.removeAttribute('data-nldd-auto-label');
 			}
 		}
@@ -523,7 +529,7 @@ export class NLDDList extends LitElement {
 			this._hasHeader,
 			this.type,
 			this._isEmpty,
-			this.emptyText || this._t('components.list.empty-text-text'),
+			this.emptyText || this._t('components.list.no-results-text'),
 			this.emptySupportingText,
 		);
 	}

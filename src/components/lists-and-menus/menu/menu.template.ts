@@ -13,9 +13,13 @@ const itemRoleMap = {
 } as const;
 
 export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' | 'listbox') {
+	// Drop role="menu"/"listbox" when empty. The empty-state slot renders an
+	// nldd-inline-dialog, which is neither a menuitem nor an option — keeping
+	// the role here would violate ARIA's required-children rules.
+	const menuRole = isEmpty ? nothing : menuRoleMap[variant];
 	return html`
 		<div class="menu"
-			role=${menuRoleMap[variant]}
+			role=${menuRole}
 			tabindex="-1"
 		>
 			<slot></slot>

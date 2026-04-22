@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import './toolbar.js';
 import '../button/button.js';
 import '../icon-button/icon-button.js';
@@ -27,7 +27,7 @@ export default {
 	},
 };
 
-const resizable = (content: Record<string, any>) => html`
+const resizable = (content: TemplateResult) => html`
 	<div style="resize: horizontal; overflow: hidden; min-width: 200px; max-width: 100%; padding: 8px;">
 		${content}
 	</div>

@@ -360,6 +360,15 @@ describe('nldd-menu empty state', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.menu__empty')).toBeNull();
 	});
+
+	it('drops role on .menu when empty', async () => {
+		// Empty-state slot renders non-menuitem content; keeping role="menu" or
+		// role="listbox" would violate ARIA's required-children rules.
+		el = await fixture('<nldd-menu></nldd-menu>');
+		await waitForUpdate(el);
+		const menuEl = el.shadowRoot!.querySelector('.menu');
+		expect(menuEl?.hasAttribute('role')).toBe(false);
+	});
 });
 
 describe('nldd-menu-divider', () => {

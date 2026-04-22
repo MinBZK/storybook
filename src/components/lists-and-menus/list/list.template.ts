@@ -15,14 +15,18 @@ export const template = (
 	// extra aria-label on the inner role="list" would make the landmark name
 	// and the inner list name stack in screen-reader announcements.
 	const skipItemsLabel = hasHeader || isNavigation;
+	// Drop role="list" (and its label) when the container is empty. The
+	// empty-state slot renders an nldd-inline-dialog which is not a listitem;
+	// keeping role="list" here would violate ARIA's listitem-only child rule.
+	const itemsRole = isEmpty ? undefined : 'list';
 	return html`
 		<div class="list__body">
 			<div class="list__header">
 				<slot name="header"></slot>
 			</div>
 			<div class="list__items"
-				role="list"
-				aria-label=${ifDefined(skipItemsLabel ? undefined : itemsLabel)}
+				role=${ifDefined(itemsRole)}
+				aria-label=${ifDefined(skipItemsLabel || isEmpty ? undefined : itemsLabel)}
 			>
 				<slot></slot>
 				<div class="list__empty" ?hidden=${!isEmpty}>

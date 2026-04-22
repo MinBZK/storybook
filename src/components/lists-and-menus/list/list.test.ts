@@ -206,12 +206,25 @@ describe('nldd-list', () => {
 	// — Type: content (default) ——————————————————————————————————————————————
 
 	it('defaults to type="list" with role="list" on .list__items', async () => {
-		el = await fixture('<nldd-list></nldd-list>');
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item></nldd-list-item>
+			</nldd-list>
+		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('type')).toBe('list');
 		const itemsEl = el.shadowRoot!.querySelector('.list__items');
 		expect(itemsEl?.getAttribute('role')).toBe('list');
 		expect(el.hasAttribute('role')).toBe(false);
+	});
+
+	it('drops role="list" on .list__items when the list is empty', async () => {
+		// Empty-state slot renders non-listitem content (nldd-inline-dialog);
+		// keeping role="list" would violate ARIA's listitem-only child rule.
+		el = await fixture('<nldd-list></nldd-list>');
+		await waitForUpdate(el);
+		const itemsEl = el.shadowRoot!.querySelector('.list__items');
+		expect(itemsEl?.hasAttribute('role')).toBe(false);
 	});
 
 
@@ -239,6 +252,20 @@ describe('nldd-list', () => {
 		await waitForUpdate(el);
 		expect(el.hasAttribute('role')).toBe(false);
 		expect(el.hasAttribute('aria-label')).toBe(false);
+	});
+
+	it('navigation: keeps consumer-set aria-label when switching back to list', async () => {
+		// Edge case: auto-label was applied, consumer then overrode it, then
+		// type flipped back. We should not wipe the consumer's label.
+		el = await fixture('<nldd-list type="navigation"></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Navigatie');
+
+		el.setAttribute('aria-label', 'Mijn menu');
+		el.setAttribute('type', 'list');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Mijn menu');
+		expect(el.hasAttribute('data-nldd-auto-label')).toBe(false);
 	});
 
 

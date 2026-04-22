@@ -17,9 +17,9 @@ export function renderBold(text: string): TemplateResult | string {
  *
  * - `mode: 'match'` bolds the typed query — useful in long texts where the user
  *   wants to spot the search term quickly (search-result highlighting).
- * - `mode: 'predictive'` bolds the remaining (non-typed) characters — the ARIA
- *   APG pattern for combobox predictive completion: the typed prefix stays plain,
- *   the suggested completion stands out.
+ * - `mode: 'predictive'` bolds all non-matched segments. Named for the ARIA APG
+ *   combobox pattern where the query is a prefix, so the non-matched tail
+ *   reads as a predictive completion.
  *
  * The match is case-insensitive substring. If the query is empty or does not
  * appear in the text, the text is returned as-is (falls back to `renderBold`
