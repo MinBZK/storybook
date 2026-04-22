@@ -36,13 +36,6 @@ export class NLDDListItem extends LitElement {
 	@property({ reflect: true })
 	size: ListItemSize = 'md';
 
-	/**
-	 * Selection state. The visual treatment is always applied; the ARIA
-	 * mapping depends on the parent list's `type`:
-	 *   listbox    → `aria-selected="true"` on the host
-	 *   navigation → `aria-current="page"` on the inner `<a>` / `<button>`
-	 *   list       → no ARIA implication
-	 */
 	@property({ type: Boolean, reflect: true })
 	selected = false;
 
