@@ -39,4 +39,24 @@ describe('nldd-icon-cell', () => {
 		expect(el.getAttribute('size')).toBe('32');
 	});
 
+	it('renders an nldd-icon when the icon attribute is set', async () => {
+		el = await fixture('<nldd-icon-cell icon="house"></nldd-icon-cell>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('nldd-icon');
+		expect(icon).not.toBeNull();
+		expect(icon!.getAttribute('name')).toBe('house');
+	});
+
+	it('falls back to the default slot when icon attribute is not set', async () => {
+		el = await fixture(`
+			<nldd-icon-cell>
+				<nldd-icon name="custom"></nldd-icon>
+			</nldd-icon-cell>
+		`);
+		await waitForUpdate(el);
+		// No internally-rendered nldd-icon; slot forwards consumer content.
+		expect(el.shadowRoot!.querySelector('nldd-icon')).toBeNull();
+		expect(el.shadowRoot!.querySelector('slot')).not.toBeNull();
+	});
+
 });

@@ -48,18 +48,9 @@ export default {
 // Every item always has both icon and text for accessible, complete markup.
 // variant on the item forces a specific visual presentation.
 const tabBarItems = html`
-	<nldd-tab-bar-item
-		selected
-		text="Home"
-	>
-		<nldd-icon slot="icon" name="home"></nldd-icon>
-	</nldd-tab-bar-item>
-	<nldd-tab-bar-item text="Profiel">
-		<nldd-icon slot="icon" name="profile"></nldd-icon>
-	</nldd-tab-bar-item>
-	<nldd-tab-bar-item text="Zoeken">
-		<nldd-icon slot="icon" name="search"></nldd-icon>
-	</nldd-tab-bar-item>
+	<nldd-tab-bar-item selected text="Home" icon="home"></nldd-tab-bar-item>
+	<nldd-tab-bar-item text="Profiel" icon="profile"></nldd-tab-bar-item>
+	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
 
 const Template = ({ variant, compact, responsive, fullWidth }: Record<string, any>) => html`
@@ -149,21 +140,18 @@ export const Gemengd = {
 			selected
 			variant="text"
 			text="Home"
-		>
-			<nldd-icon slot="icon" name="home"></nldd-icon>
-		</nldd-tab-bar-item>
+			icon="home"
+		></nldd-tab-bar-item>
 		<nldd-tab-bar-item
 			variant="text"
 			text="Profiel"
-		>
-			<nldd-icon slot="icon" name="profile"></nldd-icon>
-		</nldd-tab-bar-item>
+			icon="profile"
+		></nldd-tab-bar-item>
 		<nldd-tab-bar-item
 			variant="icon"
 			text="Zoeken"
-		>
-			<nldd-icon slot="icon" name="search"></nldd-icon>
-		</nldd-tab-bar-item>
+			icon="search"
+		></nldd-tab-bar-item>
 	</nldd-tab-bar>
 `,
 	parameters: { controls: { disable: true } },
@@ -175,22 +163,19 @@ export const Navigatie = {
 		<nldd-tab-bar-item
 			selected
 			text="Home"
+			icon="home"
 			href="/home"
-		>
-			<nldd-icon slot="icon" name="home"></nldd-icon>
-		</nldd-tab-bar-item>
+		></nldd-tab-bar-item>
 		<nldd-tab-bar-item
 			text="Profiel"
+			icon="profile"
 			href="/profiel"
-		>
-			<nldd-icon slot="icon" name="profile"></nldd-icon>
-		</nldd-tab-bar-item>
+		></nldd-tab-bar-item>
 		<nldd-tab-bar-item
 			text="Zoeken"
+			icon="search"
 			href="/zoeken"
-		>
-			<nldd-icon slot="icon" name="search"></nldd-icon>
-		</nldd-tab-bar-item>
+		></nldd-tab-bar-item>
 	</nldd-tab-bar>
 `,
 	parameters: { controls: { disable: true } },

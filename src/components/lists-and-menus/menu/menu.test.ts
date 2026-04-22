@@ -158,7 +158,8 @@ describe('nldd-menu-item', () => {
 		await waitForUpdate(el);
 		const iconCell = el.shadowRoot!.querySelector('.menu__item-icon');
 		expect(iconCell).not.toBeNull();
-		expect(iconCell!.querySelector('nldd-icon')?.getAttribute('name')).toBe('file');
+		// icon-cell forwards its `icon` attribute to an internal <nldd-icon>.
+		expect(iconCell!.getAttribute('icon')).toBe('file');
 	});
 
 	it('does not render an icon-cell when the icon attribute is missing', async () => {

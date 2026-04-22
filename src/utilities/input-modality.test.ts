@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getInputModality, isKeyboardMode, isPointerMode, _resetInputModalityForTesting } from './input-modality.js';
+import { getInputModality, isKeyboardMode, isMouseMode, isPointerMode, isTouchMode, _resetInputModalityForTesting } from './input-modality.js';
+
+function dispatchPointerDown(pointerType: 'mouse' | 'pen' | 'touch'): void {
+	document.dispatchEvent(new PointerEvent('pointerdown', { pointerType }));
+}
 
 describe('input-modality', () => {
 	beforeEach(() => {
@@ -7,9 +11,11 @@ describe('input-modality', () => {
 		getInputModality(); // re-register listeners
 	});
 
-	it('defaults to pointer', () => {
-		expect(getInputModality()).toBe('pointer');
+	it('defaults to mouse', () => {
+		expect(getInputModality()).toBe('mouse');
+		expect(isMouseMode()).toBe(true);
 		expect(isPointerMode()).toBe(true);
+		expect(isTouchMode()).toBe(false);
 		expect(isKeyboardMode()).toBe(false);
 	});
 
@@ -30,18 +36,28 @@ describe('input-modality', () => {
 		expect(isKeyboardMode()).toBe(true);
 	});
 
-	it('switches back to pointer after mousedown', () => {
+	it('switches to mouse after pointerdown with pointerType "mouse"', () => {
 		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
 		expect(isKeyboardMode()).toBe(true);
-		document.dispatchEvent(new MouseEvent('mousedown'));
+		dispatchPointerDown('mouse');
+		expect(isMouseMode()).toBe(true);
 		expect(isPointerMode()).toBe(true);
+		expect(isTouchMode()).toBe(false);
 	});
 
-	it('switches back to pointer after touchstart', () => {
+	it('switches to touch after pointerdown with pointerType "touch"', () => {
 		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
 		expect(isKeyboardMode()).toBe(true);
-		document.dispatchEvent(new Event('touchstart'));
+		dispatchPointerDown('touch');
+		expect(isTouchMode()).toBe(true);
 		expect(isPointerMode()).toBe(true);
+		expect(isMouseMode()).toBe(false);
+	});
+
+	it('treats pen pointerdown as mouse (same hover/focus semantics)', () => {
+		dispatchPointerDown('pen');
+		expect(isMouseMode()).toBe(true);
+		expect(isTouchMode()).toBe(false);
 	});
 
 	it('does not switch to keyboard for unrelated keys', () => {

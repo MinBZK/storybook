@@ -3,6 +3,8 @@ import type { NLDDIconCell } from './icon-cell.js';
 
 export function template(this: NLDDIconCell) {
 	return html`
-		<slot></slot>
+		${this.icon
+			? html`<nldd-icon name=${this.icon}></nldd-icon>`
+			: html`<slot></slot>`}
 	`;
 }

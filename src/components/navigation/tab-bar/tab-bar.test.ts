@@ -140,6 +140,21 @@ describe('nldd-tab-bar-item – content variant detection', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('variant')).toBe('compact');
 	});
+
+	it('uses the icon attribute for variant detection (icon-and-text)', async () => {
+		el = await fixture<NLDDTabBarItem>('<nldd-tab-bar-item text="Home" icon="house"></nldd-tab-bar-item>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('variant')).toBe('icon-and-text');
+	});
+
+	it('renders nldd-icon when icon attribute is set (no slot fallback)', async () => {
+		el = await fixture<NLDDTabBarItem>('<nldd-tab-bar-item text="Home" icon="house"></nldd-tab-bar-item>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('.tab-bar__item-icon nldd-icon');
+		expect(icon).not.toBeNull();
+		expect(icon!.getAttribute('name')).toBe('house');
+		expect(el.shadowRoot!.querySelector('.tab-bar__item-icon slot')).toBeNull();
+	});
 });
 
 

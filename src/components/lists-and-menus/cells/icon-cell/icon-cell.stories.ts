@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './icon-cell.js';
+import '../../../content/icon/icon.js';
 import { ICONS } from '../../../content/icon/icon.js';
 
 export default {
@@ -44,27 +45,18 @@ export const Default = {
 			vertical-alignment=${args.verticalAlignment}
 			size=${args.size}
 			?selected=${args.selected}
-		>
-			<nldd-icon name=${args.icon}></nldd-icon>
-		</nldd-icon-cell>
+			icon=${args.icon}
+		></nldd-icon-cell>
 	`,
 };
 
 export const AllSizes = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-icon-cell size="16">
-				<nldd-icon name="icon-placeholder"></nldd-icon>
-			</nldd-icon-cell>
-			<nldd-icon-cell size="20">
-				<nldd-icon name="icon-placeholder"></nldd-icon>
-			</nldd-icon-cell>
-			<nldd-icon-cell size="24">
-				<nldd-icon name="icon-placeholder"></nldd-icon>
-			</nldd-icon-cell>
-			<nldd-icon-cell size="32">
-				<nldd-icon name="icon-placeholder"></nldd-icon>
-			</nldd-icon-cell>
+			<nldd-icon-cell size="16" icon="icon-placeholder"></nldd-icon-cell>
+			<nldd-icon-cell size="20" icon="icon-placeholder"></nldd-icon-cell>
+			<nldd-icon-cell size="24" icon="icon-placeholder"></nldd-icon-cell>
+			<nldd-icon-cell size="32" icon="icon-placeholder"></nldd-icon-cell>
 		</div>
 	`,
 };
@@ -72,20 +64,28 @@ export const AllSizes = {
 export const Selected = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-icon-cell size="24">
-				<nldd-icon name="icon-placeholder"></nldd-icon>
-			</nldd-icon-cell>
-			<nldd-icon-cell size="24" selected>
-				<nldd-icon name="icon-placeholder"></nldd-icon>
-			</nldd-icon-cell>
+			<nldd-icon-cell size="24" icon="icon-placeholder"></nldd-icon-cell>
+			<nldd-icon-cell size="24" selected icon="icon-placeholder"></nldd-icon-cell>
 		</div>
 	`,
 };
 
 export const VerticalTop = {
 	render: () => html`
-		<nldd-icon-cell vertical-alignment="top" size="24" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
-			<nldd-icon name="icon-placeholder"></nldd-icon>
+		<nldd-icon-cell vertical-alignment="top" size="24" icon="icon-placeholder" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);"></nldd-icon-cell>
+	`,
+};
+
+export const CustomSlotContent = {
+	render: () => html`
+		<nldd-icon-cell size="24">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+				<circle cx="12" cy="12" r="10"></circle>
+			</svg>
 		</nldd-icon-cell>
 	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: 'When `icon` is not set, the default slot renders consumer content — useful for custom SVGs or icons from another library.' } },
+	},
 };

@@ -1,6 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
 import type { NLDDTabBar, NLDDTabBarItem } from './tab-bar.js';
 import '../../content/tooltip/tooltip.js';
+import '../../content/icon/icon.js';
 import { sanitizeUrl } from '../../../utilities/sanitize-url.js';
 
 export function tabBarTemplate(component: NLDDTabBar): TemplateResult {
@@ -41,7 +42,9 @@ export function tabBarItemTemplate(component: NLDDTabBarItem): TemplateResult {
 
 	const content = html`
 		<span class="tab-bar__item-icon" aria-hidden="true">
-			<slot name="icon" @slotchange=${component._onIconSlotChange}></slot>
+			${component.icon
+				? html`<nldd-icon name=${component.icon}></nldd-icon>`
+				: html`<slot name="icon" @slotchange=${component._onIconSlotChange}></slot>`}
 		</span>
 		<span class="tab-bar__item-text">
 			${component.text}

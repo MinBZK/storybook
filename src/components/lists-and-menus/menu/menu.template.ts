@@ -53,17 +53,12 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 				<nldd-icon-cell class="menu__item-check"
 					size="24"
 					horizontal-alignment="center"
-				>
-					${this.selected ? html`
-						<nldd-icon name="check-mark"></nldd-icon>
-					` : nothing}
-				</nldd-icon-cell>
+					icon=${this.selected ? 'check-mark' : nothing}
+				></nldd-icon-cell>
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 			` : nothing}
 			${this.icon ? html`
-				<nldd-icon-cell class="menu__item-icon" size="20">
-					<nldd-icon name=${this.icon} aria-hidden="true"></nldd-icon>
-				</nldd-icon-cell>
+				<nldd-icon-cell class="menu__item-icon" size="20" icon=${this.icon}></nldd-icon-cell>
 				<nldd-spacer-cell size="6"></nldd-spacer-cell>
 			` : nothing}
 			<nldd-text-cell class="menu__item-text" text=${this.text} mark=${this.mark} mark-mode=${this.markMode}></nldd-text-cell>
