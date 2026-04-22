@@ -11,14 +11,14 @@ export default {
 	component: 'nldd-icon',
 	tags: ['autodocs'],
 	argTypes: {
-	name: {
-		control: 'select',
-		options: allIconNames,
-		description: 'Select an icon from the library',
-		table: {
-		type: { summary: 'string' },
-		defaultValue: { summary: 'circle-dashed' },
-		},
+		name: {
+			control: 'select',
+			options: allIconNames,
+			description: 'Select an icon from the library',
+			table: {
+			type: { summary: 'string' },
+			defaultValue: { summary: 'circle-dashed' },
+			},
 	},
 	containerSize: {
 		control: { type: 'range', min: 16, max: 128, step: 8 },
@@ -38,13 +38,13 @@ export default {
 	},
 	},
 	parameters: {
-	docs: {
-		description: {
-		component: 'A flexible icon component that displays SVG icons from a predefined library. The icon always fills its parent container (square aspect ratio) and inherits color from parent. Aliases can be used as alternative names for icons.',
-		},
+		docs: {
+			description: {
+			component: 'A flexible icon component that displays SVG icons from a predefined library. The icon always fills its parent container (square aspect ratio) and inherits color from parent. Aliases can be used as alternative names for icons.',
+			},
 	},
 	},
-	render: ({ name, containerSize, containerColor }) => html`
+	render: ({ name, containerSize, containerColor }: Record<string, any>) => html`
 	<div style="width: ${containerSize}px; height: ${containerSize}px; color: ${containerColor};">
 		<nldd-icon name="${name}"></nldd-icon>
 	</div>
@@ -53,25 +53,25 @@ export default {
 
 export const Default = {
 	args: {
-	name: 'circle-dashed',
-	containerSize: 32,
-	containerColor: '#000000',
+		name: 'circle-dashed',
+		containerSize: 32,
+		containerColor: '#000000',
 	},
 	parameters: {
-	docs: {
-		description: {
-		story: 'The default icon configuration. Parent container controls size and color.',
-		},
+		docs: {
+			description: {
+			story: 'The default icon configuration. Parent container controls size and color.',
+			},
 	},
 	},
 };
 
 export const IconGallery = {
 	parameters: {
-	docs: {
-		description: {
-		story: 'A gallery view showing all available icons in the library, including aliases.',
-		},
+		docs: {
+			description: {
+			story: 'A gallery view showing all available icons in the library, including aliases.',
+			},
 	},
 	},
 	render: () => html`
@@ -100,10 +100,10 @@ export const IconGallery = {
 
 export const Sizes = {
 	parameters: {
-	docs: {
-		description: {
-		story: 'Icons can be displayed in different sizes by changing the parent container size.',
-		},
+		docs: {
+			description: {
+			story: 'Icons can be displayed in different sizes by changing the parent container size.',
+			},
 	},
 	},
 	render: () => html`
@@ -122,10 +122,10 @@ export const Sizes = {
 
 export const Colors = {
 	parameters: {
-	docs: {
-		description: {
-		story: 'Icons can be displayed in different colors by changing the parent container color.',
-		},
+		docs: {
+			description: {
+			story: 'Icons can be displayed in different colors by changing the parent container color.',
+			},
 	},
 	},
 	render: () => html`

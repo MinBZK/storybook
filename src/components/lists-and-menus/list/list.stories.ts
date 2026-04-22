@@ -71,7 +71,7 @@ export const Default = {
 		'empty-text': '',
 		'empty-supporting-text': '',
 	},
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-list
 			variant=${args.variant}
 			type=${args.type}
@@ -191,12 +191,12 @@ export const WithInteractiveItems = {
 
 export const TypeNavigation = {
 	render: () => {
-		const onClick = (e) => {
+		const onClick = (e: Record<string, any>) => {
 			const item = e.target.closest('nldd-list-item');
 			if (!item) return;
 			e.preventDefault();
 			const list = item.closest('nldd-list');
-			list.querySelectorAll('nldd-list-item').forEach(i => i.removeAttribute('selected'));
+			list.querySelectorAll('nldd-list-item').forEach((i: any) => i.removeAttribute('selected'));
 			item.setAttribute('selected', '');
 		};
 		return html`
@@ -226,7 +226,7 @@ export const ReorderableList = {
 	// the DOM in-place to demonstrate actual reordering. A standard Storybook
 	// render function cannot do this because Lit templates are stateless.
 	render: () => {
-		const onReorder = (e) => {
+		const onReorder = (e: Record<string, any>) => {
 			const list = e.currentTarget;
 			const { fromIndex, toIndex } = e.detail;
 			const items = [...list.querySelectorAll('nldd-list-item')];

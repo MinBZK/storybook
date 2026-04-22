@@ -27,7 +27,7 @@ export default {
 	},
 };
 
-const Template = ({ accessibleLabel }) => html`
+const Template = ({ accessibleLabel }: Record<string, any>) => html`
 	<nldd-document-tab-bar
 		accessible-label=${accessibleLabel}
 	>
@@ -54,9 +54,12 @@ const Template = ({ accessibleLabel }) => html`
 	</nldd-document-tab-bar>
 `;
 
-export const Standaard = Template.bind({});
+export const Standaard = {
+	render: Template,
+};
 
-export const VeelTabbladen = () => html`
+export const VeelTabbladen = {
+	render: () => html`
 	<nldd-document-tab-bar accessible-label="Documenten">
 		<nldd-document-tab-bar-item
 			selected
@@ -109,10 +112,12 @@ export const VeelTabbladen = () => html`
 		></nldd-document-tab-bar-item>
 		<nldd-icon-button slot="end" variant="neutral-tinted" text="Nieuw tabblad" icon="plus"></nldd-icon-button>
 	</nldd-document-tab-bar>
-`;
-VeelTabbladen.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const ZonderSubtitel = () => html`
+export const ZonderSubtitel = {
+	render: () => html`
 	<nldd-document-tab-bar accessible-label="Documenten">
 		<nldd-document-tab-bar-item
 			selected
@@ -128,8 +133,9 @@ export const ZonderSubtitel = () => html`
 			short-text="Art. 3:2"
 		></nldd-document-tab-bar-item>
 	</nldd-document-tab-bar>
-`;
-ZonderSubtitel.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
 
 export const Herschikbaar = {
@@ -145,10 +151,11 @@ export const Herschikbaar = {
 		`;
 		return el;
 	},
+	parameters: { controls: { disable: true } },
 };
-Herschikbaar.parameters = { controls: { disable: true } };
 
-export const Navigatie = () => html`
+export const Navigatie = {
+	render: () => html`
 	<nldd-document-tab-bar navigation accessible-label="Documenten">
 		<nldd-document-tab-bar-item
 			selected
@@ -173,5 +180,6 @@ export const Navigatie = () => html`
 			href="/artikel-3-2"
 		></nldd-document-tab-bar-item>
 	</nldd-document-tab-bar>
-`;
-Navigatie.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

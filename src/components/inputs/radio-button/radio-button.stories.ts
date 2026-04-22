@@ -55,7 +55,7 @@ export default {
 	},
 };
 
-const Template = ({ checked, disabled, name, value }) => html`
+const Template = ({ checked, disabled, name, value }: Record<string, any>) => html`
 	<nldd-radio-button
 		?checked=${checked}
 		?disabled=${disabled}
@@ -65,19 +65,28 @@ const Template = ({ checked, disabled, name, value }) => html`
 	></nldd-radio-button>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
-export const Geselecteerd = Template.bind({});
-Geselecteerd.args = { checked: true };
+export const Geselecteerd = {
+	render: Template,
+	args: { checked: true },
+};
 
-export const Uitgeschakeld = Template.bind({});
-Uitgeschakeld.args = { disabled: true };
+export const Uitgeschakeld = {
+	render: Template,
+	args: { disabled: true },
+};
 
-export const GeselecteerdUitgeschakeld = Template.bind({});
-GeselecteerdUitgeschakeld.args = { checked: true, disabled: true };
+export const GeselecteerdUitgeschakeld = {
+	render: Template,
+	args: { checked: true, disabled: true },
+};
 
-export const RadioGroep = () => html`
+export const RadioGroep = {
+	render: () => html`
 	<fieldset style="border: none; padding: 0; margin: 0;">
 		<legend style="font-size: 16px; font-weight: 550; margin-bottom: 12px;">Kies een optie</legend>
 		<div style="display: flex; flex-direction: column; gap: 12px;">
@@ -87,15 +96,18 @@ export const RadioGroep = () => html`
 			<nldd-radio-button name="groep" value="4" disabled>Optie 4 (uitgeschakeld)</nldd-radio-button>
 		</div>
 	</fieldset>
-`;
-RadioGroep.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; gap: 2rem; align-items: center;">
 		<nldd-radio-button accessible-label="Niet geselecteerd"></nldd-radio-button>
 		<nldd-radio-button checked accessible-label="Geselecteerd"></nldd-radio-button>
 		<nldd-radio-button disabled accessible-label="Uitgeschakeld"></nldd-radio-button>
 		<nldd-radio-button checked disabled accessible-label="Geselecteerd en uitgeschakeld"></nldd-radio-button>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

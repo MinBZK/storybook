@@ -46,7 +46,7 @@ export default {
 	},
 };
 
-const Template = ({ label, checked, disabled, value }) => html`
+const Template = ({ label, checked, disabled, value }: Record<string, any>) => html`
 	<nldd-radio-button-field
 		label=${label}
 		?checked=${checked}
@@ -55,15 +55,19 @@ const Template = ({ label, checked, disabled, value }) => html`
 	></nldd-radio-button-field>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
 		<nldd-radio-button-field label="Niet geselecteerd" value="1"></nldd-radio-button-field>
 		<nldd-radio-button-field label="Geselecteerd" value="2" checked></nldd-radio-button-field>
 		<nldd-radio-button-field label="Uitgeschakeld" value="3" disabled></nldd-radio-button-field>
 		<nldd-radio-button-field label="Geselecteerd en uitgeschakeld" value="4" checked disabled></nldd-radio-button-field>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

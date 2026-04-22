@@ -53,7 +53,8 @@ export const Standaard = () => html`
 	</nldd-one-third-two-thirds-section>
 `;
 
-export const ZonderHeaderEnFooter = () => html`
+export const ZonderHeaderEnFooter = {
+	render: () => html`
 	<nldd-one-third-two-thirds-section>
 		<nldd-rich-text slot="left">
 			<h3>Zijkolom</h3>
@@ -64,5 +65,6 @@ export const ZonderHeaderEnFooter = () => html`
 			<p>De hoofdinhoud van de sectie zonder header en footer.</p>
 		</nldd-rich-text>
 	</nldd-one-third-two-thirds-section>
-`;
-ZonderHeaderEnFooter.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

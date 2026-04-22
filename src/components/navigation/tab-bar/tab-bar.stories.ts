@@ -62,7 +62,7 @@ const tabBarItems = html`
 	</nldd-tab-bar-item>
 `;
 
-const Template = ({ variant, compact, responsive, fullWidth }) => html`
+const Template = ({ variant, compact, responsive, fullWidth }: Record<string, any>) => html`
 	<div style="container-type: inline-size; container-name: layout-area;">
 		<nldd-tab-bar
 			variant=${variant || nothing}
@@ -75,31 +75,40 @@ const Template = ({ variant, compact, responsive, fullWidth }) => html`
 	</div>
 `;
 
-export const Standaard = Template.bind({});
+export const Standaard = {
+	render: Template,
+};
 
-export const MetTekstVariant = () => html`
+export const MetTekstVariant = {
+	render: () => html`
 	<nldd-tab-bar variant="text">
 		${tabBarItems}
 	</nldd-tab-bar>
-`;
-MetTekstVariant.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const MetIconenVariant = () => html`
+export const MetIconenVariant = {
+	render: () => html`
 	<nldd-tab-bar variant="icon">
 		${tabBarItems}
 	</nldd-tab-bar>
-`;
-MetIconenVariant.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
 
-export const Compact = () => html`
+export const Compact = {
+	render: () => html`
 	<nldd-tab-bar compact>
 		${tabBarItems}
 	</nldd-tab-bar>
-`;
-Compact.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Responsief = () => html`
+export const Responsief = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 2rem;">
 		<div>
 			<small>Breed (regular weergave)</small>
@@ -118,19 +127,23 @@ export const Responsief = () => html`
 			</div>
 		</div>
 	</div>
-`;
-Responsief.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const VolleBreedte = () => html`
+export const VolleBreedte = {
+	render: () => html`
 	<div style="container-type: inline-size; container-name: layout-area;">
 		<nldd-tab-bar full-width>
 			${tabBarItems}
 		</nldd-tab-bar>
 	</div>
-`;
-VolleBreedte.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Gemengd = () => html`
+export const Gemengd = {
+	render: () => html`
 	<nldd-tab-bar>
 		<nldd-tab-bar-item
 			selected
@@ -152,10 +165,12 @@ export const Gemengd = () => html`
 			<nldd-icon slot="icon" name="search"></nldd-icon>
 		</nldd-tab-bar-item>
 	</nldd-tab-bar>
-`;
-Gemengd.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Navigatie = () => html`
+export const Navigatie = {
+	render: () => html`
 	<nldd-tab-bar navigation accessible-label="Hoofdnavigatie">
 		<nldd-tab-bar-item
 			selected
@@ -177,5 +192,6 @@ export const Navigatie = () => html`
 			<nldd-icon slot="icon" name="search"></nldd-icon>
 		</nldd-tab-bar-item>
 	</nldd-tab-bar>
-`;
-Navigatie.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

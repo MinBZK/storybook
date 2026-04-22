@@ -53,7 +53,7 @@ export default {
 	},
 };
 
-const Template = ({ name, disabled, required }) => html`
+const Template = ({ name, disabled, required }: Record<string, any>) => html`
 	<nldd-form-field label="Kies een optie">
 		<nldd-radio-button-group
 			name=${name}
@@ -67,13 +67,18 @@ const Template = ({ name, disabled, required }) => html`
 	</nldd-form-field>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
-export const Uitgeschakeld = Template.bind({});
-Uitgeschakeld.args = { disabled: true };
+export const Uitgeschakeld = {
+	render: Template,
+	args: { disabled: true },
+};
 
-export const MetUitgeschakeldVeld = () => html`
+export const MetUitgeschakeldVeld = {
+	render: () => html`
 	<nldd-form-field label="Kies een optie">
 		<nldd-radio-button-group name="demo">
 			<nldd-radio-button-field value="1" checked label="Optie 1"></nldd-radio-button-field>
@@ -81,5 +86,6 @@ export const MetUitgeschakeldVeld = () => html`
 			<nldd-radio-button-field value="3" label="Optie 3 (uitgeschakeld)" disabled></nldd-radio-button-field>
 		</nldd-radio-button-group>
 	</nldd-form-field>
-`;
-MetUitgeschakeldVeld.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

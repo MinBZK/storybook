@@ -17,7 +17,7 @@ export default {
 
 export const Default = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 1. Algemene begrippen</h3>
@@ -34,7 +34,7 @@ export const Default = {
 
 export const Headings = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h1>Heading 1 — Wet op de zorgtoeslag</h1>
@@ -50,7 +50,7 @@ export const Headings = {
 
 export const Paragraph = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 2. Zorgtoeslag</h3>
@@ -64,7 +64,7 @@ export const Paragraph = {
 
 export const Lists = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Ongeordende lijst</h3>
@@ -121,7 +121,7 @@ export const Lists = {
 
 export const InlineElements = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Inline elementen</h3>
@@ -137,7 +137,7 @@ export const InlineElements = {
 
 export const Blockquote = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 3. Citaat</h3>
@@ -153,7 +153,7 @@ export const Blockquote = {
 
 export const Figure = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 4. Toelichting met afbeelding</h3>
@@ -170,7 +170,7 @@ export const Figure = {
 
 export const Table = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 5. Overzicht toeslagbedragen</h3>
@@ -204,7 +204,7 @@ export const Table = {
 
 export const Divider = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 6. Eerste onderdeel</h3>
@@ -270,7 +270,7 @@ export const Spacing = {
 
 export const FullArticle = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-area;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h1>Wet op de zorgtoeslag</h1>
@@ -326,7 +326,7 @@ export const FullArticle = {
 
 export const AllSizes = {
 	args: { spacing: 'snug' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="display: flex; flex-direction: column; gap: 2rem;">
 			<div>
 				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">sm (&lt; 641px) — constrained to 393px</p>
@@ -369,5 +369,5 @@ export const AllSizes = {
 			</div>
 		</div>
 	`,
+	storyName: 'All Sizes (Container Query)',
 };
-AllSizes.storyName = 'All Sizes (Container Query)';

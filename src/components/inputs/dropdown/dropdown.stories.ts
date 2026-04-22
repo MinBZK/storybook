@@ -50,7 +50,7 @@ export default {
 	},
 };
 
-const Template = ({ size, valid, invalid, disabled }) => html`
+const Template = ({ size, valid, invalid, disabled }: Record<string, any>) => html`
 	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled}>
 		<select name="optie" aria-label="Selecteer een optie">
 			<option value="" disabled selected>Selecteer een optie</option>
@@ -61,10 +61,13 @@ const Template = ({ size, valid, invalid, disabled }) => html`
 	</nldd-dropdown>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-dropdown size="xs">
 			<select name="optie-xs" aria-label="Selecteer een optie">
@@ -124,5 +127,6 @@ export const AlleToestanden = () => html`
 			</select>
 		</nldd-dropdown>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

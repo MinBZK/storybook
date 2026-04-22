@@ -21,7 +21,7 @@ export const Default = {
 	args: {
 		size: 'md',
 	},
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-drag-handle-cell size=${args.size}></nldd-drag-handle-cell>
 	`,
 };

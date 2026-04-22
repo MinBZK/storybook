@@ -123,7 +123,7 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, icon, text, accessibleLabel, expandable, fullWidth, type, href, target, disabled }) => html`
+const Template = ({ variant, size, icon, text, accessibleLabel, expandable, fullWidth, type, href, target, disabled }: Record<string, any>) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}
@@ -139,29 +139,34 @@ const Template = ({ variant, size, icon, text, accessibleLabel, expandable, full
 	></nldd-icon-button>
 `;
 
-export const Default = Template.bind({});
-Default.args = {
-	icon: 'dismiss',
-	text: 'Annuleer',
+export const Default = {
+	render: Template,
+	args: {
+		icon: 'dismiss',
+		text: 'Annuleer',
+	},
 };
 
-export const RoleBased = () => html`
+export const RoleBased = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button variant="primary" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="secondary" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="destructive" icon="delete" text="Verwijder"></nldd-icon-button>
 	</div>
-`;
-RoleBased.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Role based buttons zijn aliases van de appearance based buttons.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Role based buttons zijn aliases van de appearance based buttons.',
+			},
 	},
+},
 };
 
-export const AppearanceBased = () => html`
+export const AppearanceBased = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button variant="accent-filled" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="accent-outlined" icon="add" text="Voeg toe"></nldd-icon-button>
@@ -170,84 +175,96 @@ export const AppearanceBased = () => html`
 		<nldd-icon-button variant="neutral-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="danger-tinted" icon="delete" text="Verwijder"></nldd-icon-button>
 	</div>
-`;
-AppearanceBased.parameters = {
-	controls: { disable: true },
+`,
+	parameters: {
+		controls: { disable: true },
+	},
 };
 
-export const Sizes = () => html`
+export const Sizes = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button size="lg" icon="dismiss" text="Annuleer"></nldd-icon-button>
 		<nldd-icon-button size="md" icon="dismiss" text="Annuleer"></nldd-icon-button>
 		<nldd-icon-button size="sm" icon="dismiss" text="Annuleer"></nldd-icon-button>
 		<nldd-icon-button size="xs" icon="dismiss" text="Annuleer"></nldd-icon-button>
 	</div>
-`;
-Sizes.parameters = {
-	controls: { disable: true },
+`,
+	parameters: {
+		controls: { disable: true },
+	},
 };
 
-export const Large = () => html`
+export const Large = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button size="lg" icon="download" text="Download"></nldd-icon-button>
 		<nldd-icon-button size="lg" icon="global-settings" text="Instellingen"></nldd-icon-button>
 		<nldd-icon-button size="lg" icon="search" text="Zoeken"></nldd-icon-button>
 	</div>
-`;
-Large.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Icon button in lg formaat toont automatisch de tekst als label onder het icoon.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Icon button in lg formaat toont automatisch de tekst als label onder het icoon.',
+			},
 	},
+},
 };
 
-export const WithAccessibleLabel = () => html`
+export const WithAccessibleLabel = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button icon="eye" text="Toon" accessible-label="Toon wachtwoord"></nldd-icon-button>
 		<nldd-icon-button icon="eye-slash" text="Verberg" accessible-label="Verberg wachtwoord"></nldd-icon-button>
 	</div>
-`;
-WithAccessibleLabel.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Gebruik <code>accessible-label</code> als de zichtbare tekst onvoldoende context biedt voor schermlezers. De zichtbare tekst blijft ongewijzigd.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Gebruik <code>accessible-label</code> als de zichtbare tekst onvoldoende context biedt voor schermlezers. De zichtbare tekst blijft ongewijzigd.',
+			},
 	},
+},
 };
 
-export const WithDisclosureIcon = () => html`
+export const WithDisclosureIcon = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button expandable size="lg" icon="global-settings" text="Instellingen"></nldd-icon-button>
 		<nldd-icon-button expandable size="md" icon="global-settings" text="Instellingen"></nldd-icon-button>
 		<nldd-icon-button expandable size="sm" icon="global-settings" text="Instellingen"></nldd-icon-button>
 		<nldd-icon-button expandable size="xs" icon="global-settings" text="Instellingen"></nldd-icon-button>
 	</div>
-`;
-WithDisclosureIcon.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Icon button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover toont.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Icon button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover toont.',
+			},
 	},
+},
 };
 
-export const Disabled = () => html`
+export const Disabled = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button disabled variant="accent-filled" icon="remove" text="Verwijderen"></nldd-icon-button>
 		<nldd-icon-button disabled variant="accent-outlined" icon="remove" text="Verwijderen"></nldd-icon-button>
 		<nldd-icon-button disabled variant="neutral-tinted" icon="remove" text="Verwijderen"></nldd-icon-button>
 		<nldd-icon-button disabled variant="danger-tinted" icon="remove" text="Verwijderen"></nldd-icon-button>
 	</div>
-`;
-Disabled.parameters = {
-	controls: { disable: true },
+`,
+	parameters: {
+		controls: { disable: true },
+	},
 };
 
-export const CustomIconSlot = () => html`
+export const CustomIconSlot = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button text="Custom">
 			<svg slot="icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
@@ -255,12 +272,13 @@ export const CustomIconSlot = () => html`
 			</svg>
 		</nldd-icon-button>
 	</div>
-`;
-CustomIconSlot.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Gebruik de <code>icon</code> slot om een custom SVG icoon te plaatsen in plaats van het <code>icon</code> attribute.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Gebruik de <code>icon</code> slot om een custom SVG icoon te plaatsen in plaats van het <code>icon</code> attribute.',
+			},
 	},
+},
 };

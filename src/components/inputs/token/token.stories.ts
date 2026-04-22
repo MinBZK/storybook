@@ -63,7 +63,7 @@ export default {
 	},
 };
 
-const Template = (args) => html`
+const Template = (args: Record<string, any>) => html`
 	<nldd-token
 		control=${args.control}
 		?open=${args.open}
@@ -73,75 +73,88 @@ const Template = (args) => html`
 	>${args.label}</nldd-token>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
 
 /* ============================================================
    Controls
    ============================================================ */
 
-export const AlleControls = () => html`
+export const AlleControls = {
+	render: () => html`
 	<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
 		<nldd-token>Geen control</nldd-token>
 		<nldd-token control="dismiss">Met dismiss</nldd-token>
 		<nldd-token control="menu">Met menu</nldd-token>
 		<nldd-token control="menu" open>Menu open</nldd-token>
 	</div>
-`;
-AlleControls.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Overzicht van alle drie de control-varianten.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Overzicht van alle drie de control-varianten.',
+			},
 	},
+},
 };
 
-export const MetDismiss = Template.bind({});
-MetDismiss.args = { control: 'dismiss', label: 'Status: Actief' };
-MetDismiss.parameters = {
-	docs: {
-		description: {
-			story: 'Gebruik `control="dismiss"` voor verwijderbare tokens. De dismiss-knop dispatcht een `dismiss` event waarmee de consumer de token kan verwijderen.',
-		},
+export const MetDismiss = {
+	render: Template,
+	args: { control: 'dismiss', label: 'Status: Actief' },
+	parameters: {
+		docs: {
+			description: {
+				story: 'Gebruik `control="dismiss"` voor verwijderbare tokens. De dismiss-knop dispatcht een `dismiss` event waarmee de consumer de token kan verwijderen.',
+			},
 	},
+},
 };
 
-export const MetMenu = Template.bind({});
-MetMenu.args = { control: 'menu', label: 'Datum' };
-MetMenu.parameters = {
-	docs: {
-		description: {
-			story: 'Gebruik `control="menu"` voor tokens die een contextueel menu openen over de gerepresenteerde data (bijv. kopieer e-mailadres, bewerk, verwijder). Dispatcht een `toggle` event met `{ open: boolean }`.',
-		},
+export const MetMenu = {
+	render: Template,
+	args: { control: 'menu', label: 'Datum' },
+	parameters: {
+		docs: {
+			description: {
+				story: 'Gebruik `control="menu"` voor tokens die een contextueel menu openen over de gerepresenteerde data (bijv. kopieer e-mailadres, bewerk, verwijder). Dispatcht een `toggle` event met `{ open: boolean }`.',
+			},
 	},
+},
 };
 
-export const MenuOpen = Template.bind({});
-MenuOpen.args = { control: 'menu', open: true, label: 'Datum' };
+export const MenuOpen = {
+	render: Template,
+	args: { control: 'menu', open: true, label: 'Datum' },
+};
 
 
 /* ============================================================
    Toestanden
    ============================================================ */
 
-export const Uitgeschakeld = () => html`
+export const Uitgeschakeld = {
+	render: () => html`
 	<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
 		<nldd-token disabled>Geen control</nldd-token>
 		<nldd-token control="dismiss" disabled>Met dismiss</nldd-token>
 		<nldd-token control="menu" disabled>Met menu</nldd-token>
 	</div>
-`;
-Uitgeschakeld.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
 
 /* ============================================================
    Gebruik
    ============================================================ */
 
-export const FilterVoorbeeld = () => {
-	const handleDismiss = (e) => {
+export const FilterVoorbeeld = {
+	render: () => {
+	const handleDismiss = (e: Record<string, any>) => {
 		(e.target).closest('nldd-token')?.remove();
 	};
 
@@ -158,17 +171,19 @@ export const FilterVoorbeeld = () => {
 			</div>
 		</div>
 	`;
-};
-FilterVoorbeeld.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Voorbeeld van verwijderbare tokens die een stuk data representeren.',
-		},
+},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Voorbeeld van verwijderbare tokens die een stuk data representeren.',
+			},
 	},
+},
 };
 
-export const MenuVoorbeeld = () => html`
+export const MenuVoorbeeld = {
+	render: () => html`
 	<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
 		<nldd-token control="menu"
 			@toggle=${action('toggle-periode')}
@@ -180,12 +195,13 @@ export const MenuVoorbeeld = () => html`
 			@toggle=${action('toggle-afdeling')}
 		>Afdeling: Juridisch</nldd-token>
 	</div>
-`;
-MenuVoorbeeld.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Voorbeeld van tokens met een contextueel menu. Klik op het token om acties te tonen over de gerepresenteerde data. De `open` toestand wordt door de consumer beheerd.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Voorbeeld van tokens met een contextueel menu. Klik op het token om acties te tonen over de gerepresenteerde data. De `open` toestand wordt door de consumer beheerd.',
+			},
 	},
+},
 };

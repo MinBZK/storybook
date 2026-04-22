@@ -25,7 +25,7 @@ export default {
 
 export const Default = {
 	args: { size: 'md', orientation: 'vertical' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 	<nldd-button-group size=${args.size} orientation=${args.orientation}>
 		<nldd-button variant="primary" text="Bewaar"></nldd-button>
 		<nldd-button variant="secondary" text="Bewaar en maak nieuwe"></nldd-button>
@@ -35,7 +35,7 @@ export const Default = {
 
 export const Horizontal = {
 	args: { size: 'md', orientation: 'horizontal' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 	<nldd-button-group size=${args.size} orientation=${args.orientation}>
 		<nldd-button variant="primary" text="Bewaar"></nldd-button>
 		<nldd-button variant="secondary" text="Bewaar en maak nieuwe"></nldd-button>
@@ -45,7 +45,7 @@ export const Horizontal = {
 
 export const SizeSmall = {
 	args: { size: 'sm', orientation: 'horizontal' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 	<nldd-button-group size=${args.size} orientation=${args.orientation}>
 		<nldd-button variant="primary" text="Bewaar"></nldd-button>
 		<nldd-button variant="secondary" text="Bewaar en maak nieuwe"></nldd-button>
@@ -55,7 +55,7 @@ export const SizeSmall = {
 
 export const ThreeButtons = {
 	args: { size: 'md', orientation: 'vertical' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 	<nldd-button-group size=${args.size} orientation=${args.orientation}>
 		<nldd-button variant="primary" text="Bewaar"></nldd-button>
 		<nldd-button variant="secondary" text="Bewaar en maak nieuwe"></nldd-button>
@@ -66,7 +66,7 @@ export const ThreeButtons = {
 
 export const MaxEnforced = {
 	args: { size: 'md', orientation: 'vertical' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 	<nldd-button-group size=${args.size} orientation=${args.orientation}>
 		<nldd-button variant="primary" text="Bewaar"></nldd-button>
 		<nldd-button variant="secondary" text="Bewaar en maak nieuwe"></nldd-button>
@@ -74,5 +74,5 @@ export const MaxEnforced = {
 		<nldd-button variant="secondary" text="Een knop te veel"></nldd-button>
 	</nldd-button-group>
 	`,
+	storyName: 'Max 3 Enforced (4th button hidden)',
 };
-MaxEnforced.storyName = 'Max 3 Enforced (4th button hidden)';

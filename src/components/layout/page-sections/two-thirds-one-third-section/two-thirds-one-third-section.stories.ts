@@ -53,7 +53,8 @@ export const Standaard = () => html`
 	</nldd-two-thirds-one-third-section>
 `;
 
-export const ZonderHeaderEnFooter = () => html`
+export const ZonderHeaderEnFooter = {
+	render: () => html`
 	<nldd-two-thirds-one-third-section>
 		<nldd-rich-text>
 			<h3>Hoofdinhoud</h3>
@@ -64,5 +65,6 @@ export const ZonderHeaderEnFooter = () => html`
 			<p>Aanvullende informatie.</p>
 		</nldd-rich-text>
 	</nldd-two-thirds-one-third-section>
-`;
-ZonderHeaderEnFooter.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

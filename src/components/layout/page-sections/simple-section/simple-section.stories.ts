@@ -46,11 +46,13 @@ export const Standaard = () => html`
 	</nldd-simple-section>
 `;
 
-export const ZonderHeaderEnFooter = () => html`
+export const ZonderHeaderEnFooter = {
+	render: () => html`
 	<nldd-simple-section>
 		<nldd-rich-text>
 			<p>Een sectie zonder header en footer. Alleen de hoofdinhoud wordt getoond.</p>
 		</nldd-rich-text>
 	</nldd-simple-section>
-`;
-ZonderHeaderEnFooter.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

@@ -59,7 +59,7 @@ const menuItems = html`
 	<nldd-menu-item text="Verwijderen" @select=${action('select: delete')}></nldd-menu-item>
 `;
 
-const Template = ({ text, size, disabled }) => html`
+const Template = ({ text, size, disabled }: Record<string, any>) => html`
 	<nldd-split-button
 		text=${text}
 		size=${size}
@@ -69,29 +69,35 @@ const Template = ({ text, size, disabled }) => html`
 	>${menuItems}</nldd-split-button>
 `;
 
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = {
+	render: Template,
+	args: {},
+};
 
 // All sizes overview
-export const Sizes = () => html`
+export const Sizes = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-split-button text="Opslaan" size="md">${menuItems}</nldd-split-button>
 		<nldd-split-button text="Opslaan" size="sm">${menuItems}</nldd-split-button>
 		<nldd-split-button text="Opslaan" size="xs">${menuItems}</nldd-split-button>
 	</div>
-`;
-Sizes.parameters = {
-	controls: { disable: true },
+`,
+	parameters: {
+		controls: { disable: true },
+	},
 };
 
 // Disabled
-export const Disabled = () => html`
+export const Disabled = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-split-button text="Opslaan" disabled size="md">${menuItems}</nldd-split-button>
 		<nldd-split-button text="Opslaan" disabled size="sm">${menuItems}</nldd-split-button>
 		<nldd-split-button text="Opslaan" disabled size="xs">${menuItems}</nldd-split-button>
 	</div>
-`;
-Disabled.parameters = {
-	controls: { disable: true },
+`,
+	parameters: {
+		controls: { disable: true },
+	},
 };

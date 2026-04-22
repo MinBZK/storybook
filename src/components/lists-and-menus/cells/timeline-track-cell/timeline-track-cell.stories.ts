@@ -25,7 +25,7 @@ export const Default = {
 		step: 'past',
 		child: 'between',
 	},
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-timeline-track-cell
 			step=${args.step}
 			child=${args.child}

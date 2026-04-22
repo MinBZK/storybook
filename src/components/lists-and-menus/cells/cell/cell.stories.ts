@@ -41,7 +41,7 @@ export const Default = {
 		minHeight: '',
 		verticalAlignment: 'center',
 	},
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-cell
 			width=${args.width}
 			vertical-alignment=${args.verticalAlignment}

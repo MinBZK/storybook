@@ -108,7 +108,7 @@ const content = html`
 	</nldd-simple-section>
 `;
 
-export const Standaard = ({ stickyHeader, stickyFooter, background }) => html`
+export const Standaard = ({ stickyHeader, stickyFooter, background }: Record<string, any>) => html`
 	<nldd-page
 		?sticky-header=${stickyHeader}
 		?sticky-footer=${stickyFooter}
@@ -121,43 +121,52 @@ export const Standaard = ({ stickyHeader, stickyFooter, background }) => html`
 	</nldd-page>
 `;
 
-export const StickyHeader = () => html`
+export const StickyHeader = {
+	render: () => html`
 	<nldd-page sticky-header style="height: 400px;">
 		${header}
 		${content}
 		<div slot="footer">${footer}</div>
 	</nldd-page>
-`;
-StickyHeader.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const StickyFooter = () => html`
+export const StickyFooter = {
+	render: () => html`
 	<nldd-page sticky-footer style="height: 400px;">
 		${header}
 		${content}
 		<div slot="footer">${footer}</div>
 	</nldd-page>
-`;
-StickyFooter.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const StickyBeide = () => html`
+export const StickyBeide = {
+	render: () => html`
 	<nldd-page sticky-header sticky-footer style="height: 400px;">
 		${header}
 		${content}
 		<div slot="footer">${footer}</div>
 	</nldd-page>
-`;
-StickyBeide.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Tinted = () => html`
+export const Tinted = {
+	render: () => html`
 	<nldd-page sticky-header sticky-footer background="tinted" style="height: 400px;">
 		${header}
 		${content}
 		<div slot="footer">${footer}</div>
 	</nldd-page>
-`;
-Tinted.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const GecentreerdeDialoog = () => html`
+export const GecentreerdeDialoog = {
+	render: () => html`
 	<nldd-page sticky-header sticky-footer style="height: 400px;">
 		${header}
 		<nldd-simple-section align="center">
@@ -169,5 +178,6 @@ export const GecentreerdeDialoog = () => html`
 		</nldd-simple-section>
 		<div slot="footer">${footer}</div>
 	</nldd-page>
-`;
-GecentreerdeDialoog.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

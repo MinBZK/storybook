@@ -56,7 +56,7 @@ export default {
 	},
 };
 
-const Template = ({ current, total, disabled, fullWidth }) => html`
+const Template = ({ current, total, disabled, fullWidth }: Record<string, any>) => html`
 	<nldd-pagination
 		current=${current}
 		total=${total}
@@ -65,26 +65,36 @@ const Template = ({ current, total, disabled, fullWidth }) => html`
 	></nldd-pagination>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = { current: 1, total: 10 };
+export const Standaard = {
+	render: Template,
+	args: { current: 1, total: 10 },
+};
 
-export const VeelPaginas = Template.bind({});
-VeelPaginas.args = { current: 25, total: 100 };
+export const VeelPaginas = {
+	render: Template,
+	args: { current: 25, total: 100 },
+};
 
-export const WeinigPaginas = Template.bind({});
-WeinigPaginas.args = { current: 2, total: 3 };
+export const WeinigPaginas = {
+	render: Template,
+	args: { current: 2, total: 3 },
+};
 
-export const Uitgeschakeld = Template.bind({});
-Uitgeschakeld.args = { current: 3, total: 10, disabled: true };
+export const Uitgeschakeld = {
+	render: Template,
+	args: { current: 3, total: 10, disabled: true },
+};
 
-export const MetLinks = () => html`
+export const MetLinks = {
+	render: () => html`
 	<nldd-pagination current="3" total="10" href-pattern="/resultaten?pagina={page}"></nldd-pagination>
-`;
-MetLinks.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Met <code>href-pattern</code> worden pagina-knoppen als links gerenderd in plaats van buttons. Beter voor SEO en bookmarkbare pagina\'s.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Met <code>href-pattern</code> worden pagina-knoppen als links gerenderd in plaats van buttons. Beter voor SEO en bookmarkbare pagina\'s.',
+			},
 	},
+},
 };

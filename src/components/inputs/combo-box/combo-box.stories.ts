@@ -66,7 +66,7 @@ export default {
 	},
 };
 
-const Template = (args) => html`
+const Template = (args: Record<string, any>) => html`
 	<nldd-combo-box
 		placeholder=${args.placeholder}
 		size=${args.size}
@@ -85,10 +85,13 @@ const Template = (args) => html`
 	</nldd-combo-box>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
-export const MetZoektermen = () => html`
+export const MetZoektermen = {
+	render: () => html`
 	<nldd-combo-box placeholder="Zoek een land (probeer 'dutch' of 'holland')">
 		<nldd-menu empty-text="Geen resultaten">
 			<nldd-menu-item text="Nederland" value="nl" aliases="dutch holland"></nldd-menu-item>
@@ -97,17 +100,19 @@ export const MetZoektermen = () => html`
 			<nldd-menu-item text="Frankrijk" value="fr" aliases="france frankrijk"></nldd-menu-item>
 		</nldd-menu>
 	</nldd-combo-box>
-`;
-MetZoektermen.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Gebruik het <code>aliases</code> attribuut op <code>nldd-menu-item</code> voor alternatieve zoektermen.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Gebruik het <code>aliases</code> attribuut op <code>nldd-menu-item</code> voor alternatieve zoektermen.',
+			},
 	},
+},
 };
 
-export const AlleLanden = () => html`
+export const AlleLanden = {
+	render: () => html`
 	<nldd-combo-box placeholder="Zoek een land">
 		<nldd-menu empty-text="Geen resultaten">
 			<nldd-menu-item text="Afghanistan" value="af"></nldd-menu-item>
@@ -160,10 +165,12 @@ export const AlleLanden = () => html`
 			<nldd-menu-item text="Zwitserland" value="ch"></nldd-menu-item>
 		</nldd-menu>
 	</nldd-combo-box>
-`;
-AlleLanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-combo-box placeholder="Zoek een land" size="sm">
 			<nldd-menu empty-text="Geen resultaten">
@@ -198,5 +205,6 @@ export const AlleToestanden = () => html`
 			</nldd-menu>
 		</nldd-combo-box>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

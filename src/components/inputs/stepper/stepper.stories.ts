@@ -60,7 +60,7 @@ export default {
 	},
 };
 
-const Template = ({ value, min, max, step, disabled, size }) => html`
+const Template = ({ value, min, max, step, disabled, size }: Record<string, any>) => html`
 	<div style="display: flex; gap: 1rem; align-items: center;">
 		<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;"
 			.textContent=${String(value)}
@@ -72,7 +72,7 @@ const Template = ({ value, min, max, step, disabled, size }) => html`
 			step=${step}
 			?disabled=${disabled}
 			size=${size}
-			@change=${(e) => {
+			@change=${(e: any) => {
 				const display = e.target.previousElementSibling;
 				if (display) display.textContent = e.detail.value;
 			}}
@@ -80,39 +80,42 @@ const Template = ({ value, min, max, step, disabled, size }) => html`
 	</div>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">5</span>
 			<nldd-stepper value="5" min="0" max="10" size="xs"
-				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+				@change=${(e: any) => { e.target.previousElementSibling.textContent = e.detail.value; }}
 			></nldd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">5</span>
 			<nldd-stepper value="5" min="0" max="10" size="sm"
-				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+				@change=${(e: any) => { e.target.previousElementSibling.textContent = e.detail.value; }}
 			></nldd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">5</span>
 			<nldd-stepper value="5" min="0" max="10" size="md"
-				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+				@change=${(e: any) => { e.target.previousElementSibling.textContent = e.detail.value; }}
 			></nldd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">0</span>
 			<nldd-stepper value="0" min="0" max="10" size="md"
-				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+				@change=${(e: any) => { e.target.previousElementSibling.textContent = e.detail.value; }}
 			></nldd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">
 			<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;">10</span>
 			<nldd-stepper value="10" min="0" max="10" size="md"
-				@change=${(e) => { e.target.previousElementSibling.textContent = e.detail.value; }}
+				@change=${(e: any) => { e.target.previousElementSibling.textContent = e.detail.value; }}
 			></nldd-stepper>
 		</div>
 		<div style="display: flex; gap: 1rem; align-items: center;">
@@ -120,5 +123,6 @@ export const AlleToestanden = () => html`
 			<nldd-stepper value="5" min="0" max="10" size="md" disabled></nldd-stepper>
 		</div>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

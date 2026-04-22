@@ -39,7 +39,7 @@ export const Default = {
 		selected: false,
 		icon: 'icon-placeholder',
 	},
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-icon-cell
 			vertical-alignment=${args.verticalAlignment}
 			size=${args.size}

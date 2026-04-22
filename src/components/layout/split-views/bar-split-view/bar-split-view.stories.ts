@@ -176,7 +176,7 @@ const mainContent = html`
 	</nldd-page>
 `;
 
-export const Standaard = (args) => html`
+export const Standaard = (args: Record<string, any>) => html`
 	<nldd-bar-split-view
 		style="height: 600px;"
 		background=${args.background}
@@ -200,7 +200,8 @@ export const Standaard = (args) => html`
 	</nldd-bar-split-view>
 `;
 
-export const MetStatusbalk = (args) => html`
+export const MetStatusbalk = {
+	render: (args: Record<string, any>) => html`
 	<nldd-bar-split-view
 		style="height: 600px;"
 		background=${args.background}
@@ -250,12 +251,14 @@ export const MetStatusbalk = (args) => html`
 			</nldd-container>
 		</nldd-split-view-pane>
 	</nldd-bar-split-view>
-`;
-MetStatusbalk.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
 // On sm: main is visible at top, toolbar moves to a bottom bar.
 // On md/lg: toolbar is above main, matching DOM order.
-export const WisselVolgorde = () => html`
+export const WisselVolgorde = {
+	render: () => html`
 	<nldd-bar-split-view style="height: 600px;">
 		<nldd-split-view-pane
 			slot="toolbar"
@@ -281,11 +284,13 @@ export const WisselVolgorde = () => html`
 			</nldd-page>
 		</nldd-split-view-pane>
 	</nldd-bar-split-view>
-`;
-WisselVolgorde.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
 // Toolbar only visible on md and lg; mobile bar only visible on sm.
-export const ResponsieveBalken = () => html`
+export const ResponsieveBalken = {
+	render: () => html`
 	<nldd-bar-split-view style="height: 600px;">
 		<nldd-split-view-pane
 			slot="toolbar"
@@ -339,5 +344,6 @@ export const ResponsieveBalken = () => html`
 			${mainContent}
 		</nldd-split-view-pane>
 	</nldd-bar-split-view>
-`;
-ResponsieveBalken.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

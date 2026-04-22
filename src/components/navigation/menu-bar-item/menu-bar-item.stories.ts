@@ -60,53 +60,69 @@ const Template = ({
 	></nldd-menu-bar-item>
 `;
 
-export const Default = Template.bind({});
-
-export const WithIcon = Template.bind({});
-WithIcon.args = {
-	text: 'Zoeken',
-	icon: 'magnifier',
+export const Default = {
+	render: Template,
 };
 
-export const Current = Template.bind({});
-Current.args = {
-	text: 'Home',
-	current: true,
+export const WithIcon = {
+	render: Template,
+	args: {
+		text: 'Zoeken',
+		icon: 'magnifier',
+	},
 };
 
-export const AsLink = Template.bind({});
-AsLink.args = {
-	text: 'Home',
-	href: '/',
+export const Current = {
+	render: Template,
+	args: {
+		text: 'Home',
+		current: true,
+	},
 };
 
-export const IconOnly = Template.bind({});
-IconOnly.args = {
-	text: 'Zoeken',
-	icon: 'magnifier',
-	iconOnly: true,
+export const AsLink = {
+	render: Template,
+	args: {
+		text: 'Home',
+		href: '/',
+	},
 };
 
-export const ContentPriorityIcon = Template.bind({});
-ContentPriorityIcon.args = {
-	text: 'Zoeken',
-	icon: 'magnifier',
-	contentPriority: 'icon',
-	compact: true,
+export const IconOnly = {
+	render: Template,
+	args: {
+		text: 'Zoeken',
+		icon: 'magnifier',
+		iconOnly: true,
+	},
 };
 
-export const ContentPriorityText = Template.bind({});
-ContentPriorityText.args = {
-	text: 'Mijn DigID',
-	icon: 'person',
-	contentPriority: 'text',
-	compact: true,
+export const ContentPriorityIcon = {
+	render: Template,
+	args: {
+		text: 'Zoeken',
+		icon: 'magnifier',
+		contentPriority: 'icon',
+		compact: true,
+	},
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-	text: 'Uitgeschakeld',
-	disabled: true,
+export const ContentPriorityText = {
+	render: Template,
+	args: {
+		text: 'Mijn DigID',
+		icon: 'person',
+		contentPriority: 'text',
+		compact: true,
+	},
+};
+
+export const Disabled = {
+	render: Template,
+	args: {
+		text: 'Uitgeschakeld',
+		disabled: true,
+	},
 };
 
 export const Expandable = {

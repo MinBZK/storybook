@@ -25,7 +25,7 @@ export default {
 
 export const Default = {
 	args: { size: 'md', disabled: false },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-button-bar size=${args.size} ?disabled=${args.disabled}>
 			<nldd-icon-button icon="chevron-left" text="Vorige"></nldd-icon-button>
 			<nldd-button-bar-divider></nldd-button-bar-divider>
@@ -64,7 +64,7 @@ export const Sizes = {
 
 export const WithoutDivider = {
 	args: { size: 'md', disabled: false },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-button-bar size=${args.size} ?disabled=${args.disabled}>
 			<nldd-button text="Cut"></nldd-button>
 			<nldd-button text="Copy"></nldd-button>

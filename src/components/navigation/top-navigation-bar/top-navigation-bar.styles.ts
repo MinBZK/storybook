@@ -157,7 +157,7 @@ export const topNavigationBarStyles = css`
 	}
 
 	.top-navigation-bar__wordmark-title {
-		font: var(--primitives-font-body-md-bold-flat);
+		font: var(--primitives-font-body-sm-bold-flat);
 		margin: 0;
 	}
 

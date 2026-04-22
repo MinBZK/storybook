@@ -90,7 +90,7 @@ export const Standaard = {
 	args: {
 		padding: '16',
 	},
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-container
 			padding=${ifDefined(args.padding)}
 			padding-inline=${ifDefined(args.paddingInline)}
@@ -148,28 +148,35 @@ export const Standaard = {
 	`,
 };
 
-export const PaddingAlleZijden = () => html`
+export const PaddingAlleZijden = {
+	render: () => html`
 	<nldd-container padding="24" style="outline: 1px dashed var(--color-neutral-400);">
 		<nldd-rich-text><p>Padding aan alle zijden.</p></nldd-rich-text>
 	</nldd-container>
-`;
-PaddingAlleZijden.storyName = 'Padding — alle zijden';
+`,
+	storyName: 'Padding — alle zijden',
+};
 
-export const PaddingInline = () => html`
+export const PaddingInline = {
+	render: () => html`
 	<nldd-container padding-inline="32" style="outline: 1px dashed var(--color-neutral-400);">
 		<nldd-rich-text><p>Padding links en rechts.</p></nldd-rich-text>
 	</nldd-container>
-`;
-PaddingInline.storyName = 'Padding — inline (links/rechts)';
+`,
+	storyName: 'Padding — inline (links/rechts)',
+};
 
-export const PaddingBlock = () => html`
+export const PaddingBlock = {
+	render: () => html`
 	<nldd-container padding-block="32" style="outline: 1px dashed var(--color-neutral-400);">
 		<nldd-rich-text><p>Padding boven en onder.</p></nldd-rich-text>
 	</nldd-container>
-`;
-PaddingBlock.storyName = 'Padding — block (boven/onder)';
+`,
+	storyName: 'Padding — block (boven/onder)',
+};
 
-export const PaddingIndividueel = () => html`
+export const PaddingIndividueel = {
+	render: () => html`
 	<nldd-container
 		padding-top="8"
 		padding-right="32"
@@ -179,10 +186,12 @@ export const PaddingIndividueel = () => html`
 	>
 		<nldd-rich-text><p>Individuele padding: top=8 right=32 bottom=16 left=64.</p></nldd-rich-text>
 	</nldd-container>
-`;
-PaddingIndividueel.storyName = 'Padding — individuele zijden';
+`,
+	storyName: 'Padding — individuele zijden',
+};
 
-export const PaddingResponsief = () => html`
+export const PaddingResponsief = {
+	render: () => html`
 	<nldd-container
 		padding="8"
 		sm-padding="16"
@@ -192,10 +201,12 @@ export const PaddingResponsief = () => html`
 	>
 		<nldd-rich-text><p>Responsive viewport padding: 8 → 16 → 24 → 32.</p></nldd-rich-text>
 	</nldd-container>
-`;
-PaddingResponsief.storyName = 'Padding — responsive viewport';
+`,
+	storyName: 'Padding — responsive viewport',
+};
 
-export const PaddingContainerQuery = () => html`
+export const PaddingContainerQuery = {
+	render: () => html`
 	<nldd-container
 		padding="8"
 		layout-area-sm-padding="16"
@@ -205,12 +216,15 @@ export const PaddingContainerQuery = () => html`
 	>
 		<nldd-rich-text><p>Responsive container padding: 8 → 16 → 24 → 32 based on layout-area container size.</p></nldd-rich-text>
 	</nldd-container>
-`;
-PaddingContainerQuery.storyName = 'Padding — responsive container query';
+`,
+	storyName: 'Padding — responsive container query',
+};
 
-export const GeenPadding = () => html`
+export const GeenPadding = {
+	render: () => html`
 	<nldd-container padding="0" style="outline: 1px dashed var(--color-neutral-400);">
 		<nldd-rich-text><p>Geen padding.</p></nldd-rich-text>
 	</nldd-container>
-`;
-GeenPadding.storyName = 'Geen padding';
+`,
+	storyName: 'Geen padding',
+};

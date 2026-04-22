@@ -44,7 +44,7 @@ export default {
 	},
 };
 
-export const Verticaal = ({ orientation, hasDragHandle }) => html`
+export const Verticaal = ({ orientation, hasDragHandle }: Record<string, any>) => html`
 	<div style="display: flex; flex-direction: row; height: 200px;">
 		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
@@ -57,7 +57,8 @@ export const Verticaal = ({ orientation, hasDragHandle }) => html`
 	</div>
 `;
 
-export const Horizontaal = () => html`
+export const Horizontaal = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; width: 400px;">
 		<div style="height: 100px; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
@@ -65,10 +66,12 @@ export const Horizontaal = () => html`
 		<div style="height: 100px; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
 	</div>
-`;
-Horizontaal.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const MetSleepHandvat = () => html`
+export const MetSleepHandvat = {
+	render: () => html`
 	<div style="display: flex; flex-direction: row; height: 200px;">
 		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
@@ -76,5 +79,6 @@ export const MetSleepHandvat = () => html`
 		<div style="flex: 1; background: var(--semantics-surfaces-tinted-background-color);">
 		</div>
 	</div>
-`;
-MetSleepHandvat.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

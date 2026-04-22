@@ -52,7 +52,7 @@ export default {
 	},
 };
 
-const paneContent = (title, slot) => html`
+const paneContent = (title: any, slot: any) => html`
 	<nldd-split-view-pane slot=${slot}>
 		<nldd-page sticky-header>
 			<nldd-container slot="header" padding="16">
@@ -74,15 +74,17 @@ const paneContent = (title, slot) => html`
 	</nldd-split-view-pane>
 `;
 
-export const Standaard = ({ panes, background }) => html`
+export const Standaard = ({ panes, background }: Record<string, any>) => html`
 	<nldd-stacked-split-view panes=${panes} background=${background} style="height: 640px;">
 		${Array.from({ length: panes }, (_, i) => paneContent(`Paneel ${i + 1}`, `pane-${i + 1}`))}
 	</nldd-stacked-split-view>
 `;
 
-export const DrieRijen = () => html`
+export const DrieRijen = {
+	render: () => html`
 	<nldd-stacked-split-view panes="3" style="height: 900px;">
 		${[1, 2, 3].map(n => paneContent(`Paneel ${n}`, `pane-${n}`))}
 	</nldd-stacked-split-view>
-`;
-DrieRijen.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

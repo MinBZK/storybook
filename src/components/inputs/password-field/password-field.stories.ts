@@ -104,7 +104,7 @@ export default {
 	},
 };
 
-const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, showText, hideText, showAccessibleLabel, hideAccessibleLabel, name }) => html`
+const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, showText, hideText, showAccessibleLabel, hideAccessibleLabel, name }: Record<string, any>) => html`
 	<nldd-password-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -121,33 +121,44 @@ const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, 
 	></nldd-password-field>
 `;
 
-export const Default = Template.bind({});
-
-export const Unmasked = Template.bind({});
-Unmasked.args = {
-	value: 'visible-password',
-	masked: false,
+export const Default = {
+	render: Template,
 };
 
-export const Valid = Template.bind({});
-Valid.args = {
-	value: 'strong-password-123',
-	valid: true,
+export const Unmasked = {
+	render: Template,
+	args: {
+		value: 'visible-password',
+		masked: false,
+	},
 };
 
-export const Invalid = Template.bind({});
-Invalid.args = {
-	value: '123',
-	invalid: true,
+export const Valid = {
+	render: Template,
+	args: {
+		value: 'strong-password-123',
+		valid: true,
+	},
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-	value: 'disabled-password',
-	disabled: true,
+export const Invalid = {
+	render: Template,
+	args: {
+		value: '123',
+		invalid: true,
+	},
 };
 
-export const AllStates = () => html`
+export const Disabled = {
+	render: Template,
+	args: {
+		value: 'disabled-password',
+		disabled: true,
+	},
+};
+
+export const AllStates = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-password-field placeholder="Neutral"></nldd-password-field>
 		<nldd-password-field .value=${"strong-password"} valid></nldd-password-field>
@@ -155,13 +166,16 @@ export const AllStates = () => html`
 		<nldd-password-field .value=${"disabled"} disabled></nldd-password-field>
 		<nldd-password-field .value=${"unmasked"} .masked=${false}></nldd-password-field>
 	</div>
-`;
-AllStates.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Sizes = () => html`
+export const Sizes = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-password-field placeholder="Medium (md)"></nldd-password-field>
 		<nldd-password-field placeholder="Small (sm)" size="sm"></nldd-password-field>
 	</div>
-`;
-Sizes.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

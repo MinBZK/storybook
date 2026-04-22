@@ -74,7 +74,7 @@ export default {
 	},
 };
 
-const itemContent = (i) => html`
+const itemContent = (i: any) => html`
 	<nldd-title size="4"><h3>Item ${i + 1}</h3></nldd-title>
 	<nldd-spacer size="4"></nldd-spacer>
 	<nldd-rich-text spacing="flat">
@@ -105,7 +105,7 @@ const scrollItems = Array.from({ length: 12 }, (_, i) => html`
 	</nldd-card>
 `);
 
-export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad, itemWidth }) => html`
+export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad, itemWidth }: Record<string, any>) => html`
 	<nldd-collection
 		layout=${layout}
 		?show-load-more=${showLoadMore}
@@ -117,37 +117,46 @@ export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad, itemWidth 
 	</nldd-collection>
 `;
 
-export const Grid = () => html`
+export const Grid = {
+	render: () => html`
 	<nldd-collection layout="grid" show-load-more max-items="6">
 		${gridItems}
 	</nldd-collection>
-`;
-Grid.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const GridLazyLoad = () => html`
+export const GridLazyLoad = {
+	render: () => html`
 	<nldd-collection layout="grid" show-load-more max-items="6" lazy-load>
 		${gridItems}
 	</nldd-collection>
-`;
-GridLazyLoad.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Lijst = () => html`
+export const Lijst = {
+	render: () => html`
 	<nldd-collection layout="list" show-load-more max-items="6">
 		${listItems}
 	</nldd-collection>
-`;
-Lijst.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const HorizontaalScrollend = () => html`
+export const HorizontaalScrollend = {
+	render: () => html`
 	<nldd-collection layout="horizontal-scroll">
 		${scrollItems}
 	</nldd-collection>
-`;
-HorizontaalScrollend.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
 
 
-export const InSimpleSectie = () => html`
+export const InSimpleSectie = {
+	render: () => html`
 	<nldd-page background="tinted">
 		<nldd-simple-section>
 			<nldd-title slot="header" size="2"><h2>Sectietitel</h2></nldd-title>
@@ -160,5 +169,6 @@ export const InSimpleSectie = () => html`
 			</nldd-collection>
 		</nldd-simple-section>
 	</nldd-page>
-`;
-InSimpleSectie.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

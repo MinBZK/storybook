@@ -67,7 +67,7 @@ export const Default = {
 		verticalAlignment: 'center',
 		selected: false,
 	},
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-text-cell
 			size=${args.size}
 			color=${args.color}

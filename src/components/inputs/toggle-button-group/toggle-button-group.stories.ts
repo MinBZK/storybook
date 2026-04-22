@@ -64,7 +64,7 @@ export default {
 	},
 };
 
-const Template = (args) => html`
+const Template = (args: Record<string, any>) => html`
 	<nldd-toggle-button-group
 		type=${args.type}
 		name=${args.name}
@@ -77,15 +77,18 @@ const Template = (args) => html`
 	</nldd-toggle-button-group>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
 
 /* ============================================================
    Selectiemodi
    ============================================================ */
 
-export const TypeButton = () => html`
+export const TypeButton = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
 		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
 			Met <code>type="button"</code> beheert elke knop zijn eigen <code>aria-pressed</code> toestand onafhankelijk. Ideaal voor teksteditor-toolbars.
@@ -98,17 +101,19 @@ export const TypeButton = () => html`
 			<nldd-toggle-button value="numbered-list" accessible-label="Genummerde lijst" icon="numbered-list"></nldd-toggle-button>
 		</nldd-toggle-button-group>
 	</div>
-`;
-TypeButton.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: '`type="button"` — knoppen zijn onafhankelijk van elkaar en kunnen tegelijk actief zijn. De groep biedt layout en synchronisatie van `size` en `disabled`.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: '`type="button"` — knoppen zijn onafhankelijk van elkaar en kunnen tegelijk actief zijn. De groep biedt layout en synchronisatie van `size` en `disabled`.',
+			},
 	},
+},
 };
 
-export const MultiSelect = () => html`
+export const MultiSelect = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
 		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
 			Met <code>type="checkbox"</code> kunnen meerdere opties tegelijk geselecteerd zijn.
@@ -120,17 +125,19 @@ export const MultiSelect = () => html`
 			<nldd-toggle-button value="documenten" text="Documenten" icon="file-text"></nldd-toggle-button>
 		</nldd-toggle-button-group>
 	</div>
-`;
-MultiSelect.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Multi-select met `type="checkbox"`. Meerdere opties kunnen tegelijk actief zijn.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Multi-select met `type="checkbox"`. Meerdere opties kunnen tegelijk actief zijn.',
+			},
 	},
+},
 };
 
-export const SingleSelect = () => html`
+export const SingleSelect = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.5rem;">
 		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
 			Met <code>type="radio"</code> kan slechts één optie tegelijk geselecteerd zijn.
@@ -142,14 +149,15 @@ export const SingleSelect = () => html`
 			<nldd-toggle-button value="relevant" text="Relevant" icon="sort"></nldd-toggle-button>
 		</nldd-toggle-button-group>
 	</div>
-`;
-SingleSelect.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Single-select met `type="radio"`. Pijltoetsen navigeren tussen opties en selecteren tegelijk.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Single-select met `type="radio"`. Pijltoetsen navigeren tussen opties en selecteren tegelijk.',
+			},
 	},
+},
 };
 
 
@@ -157,7 +165,8 @@ SingleSelect.parameters = {
    Grootten
    ============================================================ */
 
-export const Grootten = () => html`
+export const Grootten = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-toggle-button-group type="radio" name="sortering-xs" size="xs" aria-label="Sortering (extra klein)">
 			<nldd-toggle-button value="oplopend" text="Oplopend" icon="sort-ascending"></nldd-toggle-button>
@@ -172,15 +181,17 @@ export const Grootten = () => html`
 			<nldd-toggle-button value="aflopend" text="Aflopend" icon="sort-descending" selected></nldd-toggle-button>
 		</nldd-toggle-button-group>
 	</div>
-`;
-Grootten.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
 
 /* ============================================================
    Uitgeschakeld
    ============================================================ */
 
-export const Uitgeschakeld = () => html`
+export const Uitgeschakeld = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-toggle-button-group type="checkbox" name="filter-uit" disabled aria-label="Filters (uitgeschakeld)">
 			<nldd-toggle-button value="mijn-zaken" text="Mijn zaken" icon="person"></nldd-toggle-button>
@@ -188,14 +199,15 @@ export const Uitgeschakeld = () => html`
 			<nldd-toggle-button value="agenda" text="Agenda" icon="calendar-event"></nldd-toggle-button>
 		</nldd-toggle-button-group>
 	</div>
-`;
-Uitgeschakeld.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Het `disabled` attribuut op de groep schakelt alle knoppen tegelijk uit. Knoppen die al individueel uitgeschakeld waren, worden niet opnieuw ingeschakeld wanneer de groep weer actief wordt.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Het `disabled` attribuut op de groep schakelt alle knoppen tegelijk uit. Knoppen die al individueel uitgeschakeld waren, worden niet opnieuw ingeschakeld wanneer de groep weer actief wordt.',
+			},
 	},
+},
 };
 
 
@@ -203,18 +215,20 @@ Uitgeschakeld.parameters = {
    Met iconen (icon-only)
    ============================================================ */
 
-export const MetIconen = () => html`
+export const MetIconen = {
+	render: () => html`
 	<nldd-toggle-button-group type="radio" name="weergave" aria-label="Weergave">
 		<nldd-toggle-button value="lijst" accessible-label="Lijstweergave" icon="list" selected></nldd-toggle-button>
 		<nldd-toggle-button value="compact" accessible-label="Compacte weergave" icon="list-decreasing-lines"></nldd-toggle-button>
 		<nldd-toggle-button value="uitgebreid" accessible-label="Uitgebreide weergave" icon="stack"></nldd-toggle-button>
 	</nldd-toggle-button-group>
-`;
-MetIconen.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Icoon-only knoppen in een groep. Elk `nldd-toggle-button` heeft een `accessible-label`.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Icoon-only knoppen in een groep. Elk `nldd-toggle-button` heeft een `accessible-label`.',
+			},
 	},
+},
 };

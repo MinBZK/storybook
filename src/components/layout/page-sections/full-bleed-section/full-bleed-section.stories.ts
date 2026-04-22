@@ -47,11 +47,13 @@ export const Standaard = () => html`
 	</nldd-full-bleed-section>
 `;
 
-export const ZonderHeaderEnFooter = () => html`
+export const ZonderHeaderEnFooter = {
+	render: () => html`
 	<nldd-full-bleed-section>
 		<nldd-rich-text>
 			<p>Een full bleed section zonder header en footer.</p>
 		</nldd-rich-text>
 	</nldd-full-bleed-section>
-`;
-ZonderHeaderEnFooter.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

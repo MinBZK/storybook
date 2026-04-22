@@ -87,7 +87,7 @@ export default {
 	},
 };
 
-export const Standaard = ({ size, direction }) => html`
+export const Standaard = ({ size, direction }: Record<string, any>) => html`
 	<div style="display: flex; flex-direction: column; align-items: flex-start;">
 		<nldd-button text="Knop"></nldd-button>
 		<nldd-spacer size=${size} direction=${direction}></nldd-spacer>
@@ -95,16 +95,19 @@ export const Standaard = ({ size, direction }) => html`
 	</div>
 `;
 
-export const Flexibel = () => html`
+export const Flexibel = {
+	render: () => html`
 	<div style="display: flex; align-items: center;">
 		<nldd-button text="Links"></nldd-button>
 		<nldd-spacer size="flexible"></nldd-spacer>
 		<nldd-button text="Rechts"></nldd-button>
 	</div>
-`;
-Flexibel.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Responsief = () => html`
+export const Responsief = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; align-items: flex-start;">
 		<p style="font-size: 14px; color: var(--semantics-content-color); margin: 0 0 8px 0;">sm — 16px</p>
 		<div style="display: flex; flex-direction: column; align-items: flex-start; width: 320px; border: 1px dashed #cbd5e1; padding: 8px;">
@@ -131,10 +134,12 @@ export const Responsief = () => html`
 			<nldd-button text="Knop"></nldd-button>
 		</div>
 	</div>
-`;
-Responsief.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const VasteGroottes = () => html`
+export const VasteGroottes = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column;">
 		${['2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'].map(
 			(size) => html`
@@ -146,5 +151,6 @@ export const VasteGroottes = () => html`
 			`,
 		)}
 	</div>
-`;
-VasteGroottes.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

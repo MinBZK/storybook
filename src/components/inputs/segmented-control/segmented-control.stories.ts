@@ -65,7 +65,7 @@ export default {
 	},
 };
 
-const Template = ({ value, size, type, variant, disabled, fullWidth }) => html`
+const Template = ({ value, size, type, variant, disabled, fullWidth }: Record<string, any>) => html`
 	<nldd-segmented-control
 		value=${value}
 		size=${size}
@@ -80,10 +80,13 @@ const Template = ({ value, size, type, variant, disabled, fullWidth }) => html`
 	</nldd-segmented-control>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = { value: 'vet' };
+export const Standaard = {
+	render: Template,
+	args: { value: 'vet' },
+};
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; align-items: start; gap: 1rem;">
 		<nldd-segmented-control value="vet" size="md">
 			<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
@@ -148,5 +151,6 @@ export const AlleToestanden = () => html`
 			</nldd-segmented-control>
 		</div>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

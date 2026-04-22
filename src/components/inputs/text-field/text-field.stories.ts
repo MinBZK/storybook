@@ -102,7 +102,7 @@ export default {
 	},
 };
 
-const Template = ({ value, placeholder, size, valid, invalid, disabled, type, name, readonly, required }) => html`
+const Template = ({ value, placeholder, size, valid, invalid, disabled, type, name, readonly, required }: Record<string, any>) => html`
 	<nldd-text-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -117,9 +117,12 @@ const Template = ({ value, placeholder, size, valid, invalid, disabled, type, na
 	></nldd-text-field>
 `;
 
-export const Default = Template.bind({});
+export const Default = {
+	render: Template,
+};
 
-export const AllStates = () => html`
+export const AllStates = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-text-field placeholder="Neutral"></nldd-text-field>
 		<nldd-text-field .value=${'Valid input'} valid></nldd-text-field>
@@ -127,18 +130,22 @@ export const AllStates = () => html`
 		<nldd-text-field .value=${'Disabled'} disabled></nldd-text-field>
 		<nldd-text-field .value=${'Readonly'} readonly></nldd-text-field>
 	</div>
-`;
-AllStates.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Sizes = () => html`
+export const Sizes = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-text-field placeholder="Medium (md)"></nldd-text-field>
 		<nldd-text-field placeholder="Small (sm)" size="sm"></nldd-text-field>
 	</div>
-`;
-Sizes.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const InteractiveExample = () => html`
+export const InteractiveExample = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
 		<nldd-text-field
 			name="name"
@@ -161,12 +168,13 @@ export const InteractiveExample = () => html`
 			@change=${action('change')}
 		></nldd-text-field>
 	</div>
-`;
-InteractiveExample.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Open the browser console to see `input` and `change` events.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Open the browser console to see `input` and `change` events.',
+			},
 	},
+},
 };

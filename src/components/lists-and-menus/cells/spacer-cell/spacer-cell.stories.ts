@@ -19,7 +19,7 @@ const containerStyle = 'display: flex; align-items: center; background: #f0f0f0;
 
 export const Default = {
 	args: { size: '16' },
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style=${containerStyle}>
 			<span>Voor</span>
 			<nldd-spacer-cell size=${args.size} style=${debugStyle}></nldd-spacer-cell>

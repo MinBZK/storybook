@@ -67,7 +67,7 @@ export default {
 	},
 };
 
-const Template = ({ value, placeholder, accessibleLabel, size, disabled, hasSearchButton, name }) => html`
+const Template = ({ value, placeholder, accessibleLabel, size, disabled, hasSearchButton, name }: Record<string, any>) => html`
 	<nldd-search-field
 		value=${value}
 		placeholder=${placeholder}
@@ -79,13 +79,18 @@ const Template = ({ value, placeholder, accessibleLabel, size, disabled, hasSear
 	></nldd-search-field>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
-export const MetZoekKnop = Template.bind({});
-MetZoekKnop.args = { hasSearchButton: true };
+export const MetZoekKnop = {
+	render: Template,
+	args: { hasSearchButton: true },
+};
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-search-field size="md" placeholder="Zoeken"></nldd-search-field>
 		<nldd-search-field size="md" placeholder="Zoeken" value="Zoekterm"></nldd-search-field>
@@ -98,5 +103,6 @@ export const AlleToestanden = () => html`
 		<nldd-search-field size="md" placeholder="Zoeken" disabled></nldd-search-field>
 		<nldd-search-field size="md" placeholder="Zoeken" value="Zoekterm" disabled></nldd-search-field>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

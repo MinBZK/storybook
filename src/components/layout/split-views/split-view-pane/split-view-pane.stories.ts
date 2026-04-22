@@ -52,7 +52,7 @@ export default {
 	},
 };
 
-export const Standaard = ({ hasContent }) => html`
+export const Standaard = ({ hasContent }: Record<string, any>) => html`
 	<nldd-navigation-split-view
 		style="height: 600px;"
 

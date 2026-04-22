@@ -64,7 +64,7 @@ export default {
 	},
 };
 
-export const Standaard = (args) => html`
+export const Standaard = (args: Record<string, any>) => html`
 	<nldd-inline-dialog
 		variant=${args.variant || nothing}
 		icon-name=${args.iconName || nothing}
@@ -76,7 +76,8 @@ export const Standaard = (args) => html`
 	</nldd-inline-dialog>
 `;
 
-export const ZonderIcoon = () => html`
+export const ZonderIcoon = {
+	render: () => html`
 	<nldd-inline-dialog
 		text="Bevestiging vereist"
 		supporting-text="Weet u zeker dat u door wilt gaan? Dit kan niet ongedaan worden gemaakt."
@@ -84,10 +85,12 @@ export const ZonderIcoon = () => html`
 		<nldd-button slot="actions" variant="primary" text="Bevestig"></nldd-button>
 		<nldd-button slot="actions" variant="neutral-tinted" text="Annuleer"></nldd-button>
 	</nldd-inline-dialog>
-`;
-ZonderIcoon.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const MetIcoon = () => html`
+export const MetIcoon = {
+	render: () => html`
 	<nldd-inline-dialog
 		icon-name="check-mark-circle"
 		text="Succesvol opgeslagen"
@@ -95,10 +98,12 @@ export const MetIcoon = () => html`
 	>
 		<nldd-button slot="actions" variant="primary" text="Sluiten"></nldd-button>
 	</nldd-inline-dialog>
-`;
-MetIcoon.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Alert = () => html`
+export const Alert = {
+	render: () => html`
 	<nldd-inline-dialog
 		variant="alert"
 		text="Niet opgeslagen"
@@ -107,10 +112,12 @@ export const Alert = () => html`
 		<nldd-button slot="actions" variant="primary" text="Doorgaan"></nldd-button>
 		<nldd-button slot="actions" variant="neutral-tinted" text="Annuleer"></nldd-button>
 	</nldd-inline-dialog>
-`;
-Alert.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const LegeToestand = () => html`
+export const LegeToestand = {
+	render: () => html`
 	<nldd-box style="height: 400px; display: flex; align-items: center; justify-content: center;">
 		<nldd-inline-dialog
 			icon-name="inbox"
@@ -120,5 +127,6 @@ export const LegeToestand = () => html`
 			<nldd-button slot="actions" variant="neutral-tinted" text="Zoekopdracht wissen"></nldd-button>
 		</nldd-inline-dialog>
 	</nldd-box>
-`;
-LegeToestand.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

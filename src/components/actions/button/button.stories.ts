@@ -129,7 +129,7 @@ export default {
 	},
 };
 
-const Template = ({ text, variant, size, fullWidth, type, href, target, startIcon, endIcon, expandable, disabled }) => html`
+const Template = ({ text, variant, size, fullWidth, type, href, target, startIcon, endIcon, expandable, disabled }: Record<string, any>) => html`
 	<nldd-button
 		variant=${variant}
 		size=${size}
@@ -145,28 +145,33 @@ const Template = ({ text, variant, size, fullWidth, type, href, target, startIco
 	></nldd-button>
 `;
 
-export const Default = Template.bind({});
-Default.args = {
-	text: 'Button',
+export const Default = {
+	render: Template,
+	args: {
+		text: 'Button',
+	},
 };
 
-export const RoleBased = () => html`
+export const RoleBased = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button variant="primary" text="Primary"></nldd-button>
 		<nldd-button variant="secondary" text="Secondary"></nldd-button>
 		<nldd-button variant="destructive" text="Destructive"></nldd-button>
 	</div>
-`;
-RoleBased.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Role based buttons zijn aliases van de appearance based buttons.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Role based buttons zijn aliases van de appearance based buttons.',
+			},
 	},
+},
 };
 
-export const AppearanceBased = () => html`
+export const AppearanceBased = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button variant="accent-filled" text="Accent Filled"></nldd-button>
 		<nldd-button variant="accent-outlined" text="Accent Outlined"></nldd-button>
@@ -175,87 +180,99 @@ export const AppearanceBased = () => html`
 		<nldd-button variant="neutral-transparent" text="Neutral Transparent"></nldd-button>
 		<nldd-button variant="danger-tinted" text="Danger Tinted"></nldd-button>
 	</div>
-`;
-AppearanceBased.parameters = {
-	controls: { disable: true },
+`,
+	parameters: {
+		controls: { disable: true },
+	},
 };
 
-export const Sizes = () => html`
+export const Sizes = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button size="md" text="Medium"></nldd-button>
 		<nldd-button size="sm" text="Small"></nldd-button>
 		<nldd-button size="xs" text="Extra Small"></nldd-button>
 	</div>
-`;
-Sizes.parameters = {
-	controls: { disable: true },
+`,
+	parameters: {
+		controls: { disable: true },
+	},
 };
 
-export const WithStartIcon = () => html`
+export const WithStartIcon = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button size="md" text="Download" start-icon="download"></nldd-button>
 		<nldd-button size="sm" text="Download" start-icon="download"></nldd-button>
 		<nldd-button size="xs" text="Download" start-icon="download"></nldd-button>
 	</div>
-`;
-WithStartIcon.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Button met een icoon aan de linkerkant via het <code>start-icon</code> attribute.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Button met een icoon aan de linkerkant via het <code>start-icon</code> attribute.',
+			},
 	},
+},
 };
 
-export const WithEndIcon = () => html`
+export const WithEndIcon = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button size="md" text="Volgende" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="sm" text="Volgende" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="xs" text="Volgende" end-icon="arrow-right"></nldd-button>
 	</div>
-`;
-WithEndIcon.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Button met een icoon aan de rechterkant via het <code>end-icon</code> attribute.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Button met een icoon aan de rechterkant via het <code>end-icon</code> attribute.',
+			},
 	},
+},
 };
 
-export const WithBothIcons = () => html`
+export const WithBothIcons = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button size="md" text="Download bestand" start-icon="download" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="sm" text="Download bestand" start-icon="download" end-icon="arrow-right"></nldd-button>
 		<nldd-button size="xs" text="Download bestand" start-icon="download" end-icon="arrow-right"></nldd-button>
 	</div>
-`;
-WithBothIcons.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Button met zowel een start als end icoon via de <code>start-icon</code> en <code>end-icon</code> attributes.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Button met zowel een start als end icoon via de <code>start-icon</code> en <code>end-icon</code> attributes.',
+			},
 	},
+},
 };
 
-export const WithDisclosureIcon = () => html`
+export const WithDisclosureIcon = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button expandable size="md" text="Opties"></nldd-button>
 		<nldd-button expandable size="sm" text="Opties"></nldd-button>
 		<nldd-button expandable size="xs" text="Opties"></nldd-button>
 	</div>
-`;
-WithDisclosureIcon.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Button die een menu of popover opent. Gebruik de <code>expandable</code> attribute om aan te geven dat deze button een menu of popover opent.',
+			},
 	},
+},
 };
 
-export const CustomIconSlot = () => html`
+export const CustomIconSlot = {
+	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button text="Custom start">
 			<svg slot="start-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
@@ -268,12 +285,13 @@ export const CustomIconSlot = () => html`
 			</svg>
 		</nldd-button>
 	</div>
-`;
-CustomIconSlot.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Gebruik de <code>start-icon</code> en <code>end-icon</code> slots om custom SVG iconen te plaatsen in plaats van de icon attributes.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Gebruik de <code>start-icon</code> en <code>end-icon</code> slots om custom SVG iconen te plaatsen in plaats van de icon attributes.',
+			},
 	},
+},
 };

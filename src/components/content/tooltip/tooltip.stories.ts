@@ -45,7 +45,7 @@ export default {
 };
 
 export const Standaard = {
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<div style="display: flex; justify-content: center; padding: 4rem;">
 			<nldd-tooltip
 				text=${args.text}

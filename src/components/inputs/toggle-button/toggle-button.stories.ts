@@ -75,7 +75,7 @@ export default {
 	},
 };
 
-const Template = (args) => html`
+const Template = (args: Record<string, any>) => html`
 	<nldd-toggle-button
 		type=${args.type}
 		size=${args.size}
@@ -86,16 +86,18 @@ const Template = (args) => html`
 	></nldd-toggle-button>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {
-	text: 'Toggle button',
-};
-Standaard.parameters = {
-	docs: {
-		description: {
-			story: 'Standaard toggle button met `type="button"` (de default). Gebruikt `aria-pressed` voor de geselecteerde toestand en neemt niet deel aan formulierverwerking.',
-		},
+export const Standaard = {
+	render: Template,
+	args: {
+		text: 'Toggle button',
 	},
+	parameters: {
+		docs: {
+			description: {
+				story: 'Standaard toggle button met `type="button"` (de default). Gebruikt `aria-pressed` voor de geselecteerde toestand en neemt niet deel aan formulierverwerking.',
+			},
+	},
+},
 };
 
 
@@ -103,7 +105,8 @@ Standaard.parameters = {
    Types
    ============================================================ */
 
-export const AlleTypes = () => html`
+export const AlleTypes = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
 		<div>
 			<p style="font: var(--primitives-font-body-sm-regular-snug); color: var(--semantics-content-secondary-color); margin: 0 0 0.5rem;">
@@ -135,14 +138,15 @@ export const AlleTypes = () => html`
 			</div>
 		</div>
 	</div>
-`;
-AlleTypes.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Overzicht van alle drie de types. Gebruik `type="button"` voor UI-acties, `type="checkbox"` voor multi-select filters en `type="radio"` voor single-select keuzes met formulierparticipatie.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Overzicht van alle drie de types. Gebruik `type="button"` voor UI-acties, `type="checkbox"` voor multi-select filters en `type="radio"` voor single-select keuzes met formulierparticipatie.',
+			},
 	},
+},
 };
 
 
@@ -150,36 +154,41 @@ AlleTypes.parameters = {
    Toestanden
    ============================================================ */
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
 		<nldd-toggle-button text="Bewaren" icon="heart"></nldd-toggle-button>
 		<nldd-toggle-button text="Bewaard" icon="heart-filled" selected></nldd-toggle-button>
 		<nldd-toggle-button text="Bewaren" icon="heart" disabled></nldd-toggle-button>
 		<nldd-toggle-button text="Bewaard" icon="heart-filled" selected disabled></nldd-toggle-button>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
 
 /* ============================================================
    Grootten
    ============================================================ */
 
-export const AlleGrootten = () => html`
+export const AlleGrootten = {
+	render: () => html`
 	<div style="display: flex; gap: 1rem; align-items: center;">
 		<nldd-toggle-button size="xs" text="Zoeken" icon="search"></nldd-toggle-button>
 		<nldd-toggle-button size="sm" text="Zoeken" icon="search"></nldd-toggle-button>
 		<nldd-toggle-button size="md" text="Zoeken" icon="search"></nldd-toggle-button>
 	</div>
-`;
-AlleGrootten.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
 
 /* ============================================================
    Met icoon
    ============================================================ */
 
-export const MetIcoon = () => html`
+export const MetIcoon = {
+	render: () => html`
 	<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
 		<nldd-toggle-button text="Bewaren" icon="heart"></nldd-toggle-button>
 		<nldd-toggle-button text="Bewaard" icon="heart-filled" selected></nldd-toggle-button>
@@ -187,17 +196,19 @@ export const MetIcoon = () => html`
 		<nldd-toggle-button text="Tonen" icon="eye"></nldd-toggle-button>
 		<nldd-toggle-button text="Verborgen" icon="eye-slash" selected></nldd-toggle-button>
 	</div>
-`;
-MetIcoon.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Gebruik het `icon` attribute om een icoon toe te voegen.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Gebruik het `icon` attribute om een icoon toe te voegen.',
+			},
 	},
+},
 };
 
-export const AlleenIcoon = () => html`
+export const AlleenIcoon = {
+	render: () => html`
 	<div style="display: flex; gap: 0.5rem; align-items: center;">
 		<nldd-toggle-button size="md" icon="bold" accessible-label="Vet"></nldd-toggle-button>
 		<nldd-toggle-button size="md" icon="italic" accessible-label="Cursief" selected></nldd-toggle-button>
@@ -205,14 +216,15 @@ export const AlleenIcoon = () => html`
 		<nldd-toggle-button size="md" icon="bullet-list" accessible-label="Opsomming"></nldd-toggle-button>
 		<nldd-toggle-button size="md" icon="numbered-list" accessible-label="Genummerde lijst"></nldd-toggle-button>
 	</div>
-`;
-AlleenIcoon.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Zonder tekst wordt de knop automatisch vierkant. Het `accessible-label` attribuut is verplicht voor toegankelijkheid.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Zonder tekst wordt de knop automatisch vierkant. Het `accessible-label` attribuut is verplicht voor toegankelijkheid.',
+			},
 	},
+},
 };
 
 
@@ -220,7 +232,8 @@ AlleenIcoon.parameters = {
    Type: button
    ============================================================ */
 
-export const TypeButton = () => html`
+export const TypeButton = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
 			<code>type="button"</code> is de standaard. Gebruikt <code>aria-pressed</code> voor de geselecteerde toestand en neemt niet deel aan formulierverwerking.
@@ -232,14 +245,15 @@ export const TypeButton = () => html`
 			<nldd-toggle-button type="button" text="Bewerken" icon="pencil" selected></nldd-toggle-button>
 		</div>
 	</div>
-`;
-TypeButton.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: '`type="button"` (de default) — `aria-pressed` geeft de geselecteerde toestand door aan hulptechnologie.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: '`type="button"` (de default) — `aria-pressed` geeft de geselecteerde toestand door aan hulptechnologie.',
+			},
 	},
+},
 };
 
 
@@ -247,7 +261,8 @@ TypeButton.parameters = {
    Type: checkbox
    ============================================================ */
 
-export const TypeCheckbox = () => html`
+export const TypeCheckbox = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
 			<code>type="checkbox"</code> voor filter-chips en multi-select acties met formulierparticipatie.
@@ -259,14 +274,15 @@ export const TypeCheckbox = () => html`
 			<nldd-toggle-button type="checkbox" name="filter" value="documenten" text="Documenten" icon="file-text"></nldd-toggle-button>
 		</div>
 	</div>
-`;
-TypeCheckbox.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: '`type="checkbox"` — meerdere knoppen kunnen tegelijk geselecteerd zijn.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: '`type="checkbox"` — meerdere knoppen kunnen tegelijk geselecteerd zijn.',
+			},
 	},
+},
 };
 
 
@@ -274,7 +290,8 @@ TypeCheckbox.parameters = {
    Type: radio
    ============================================================ */
 
-export const TypeRadio = () => html`
+export const TypeRadio = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 		<p style="font: var(--primitives-font-body-md-regular-snug); margin: 0;">
 			<code>type="radio"</code> voor single-select keuzes. Gebruik <code>nldd-toggle-button-group</code> voor beheer via JavaScript.
@@ -285,12 +302,13 @@ export const TypeRadio = () => html`
 			<nldd-toggle-button type="radio" name="sortering" value="relevant" text="Relevant" icon="sort"></nldd-toggle-button>
 		</div>
 	</div>
-`;
-TypeRadio.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: '`type="radio"` — native browser-gedrag zorgt voor wederzijdse uitsluiting binnen dezelfde `name`-groep.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: '`type="radio"` — native browser-gedrag zorgt voor wederzijdse uitsluiting binnen dezelfde `name`-groep.',
+			},
 	},
+},
 };

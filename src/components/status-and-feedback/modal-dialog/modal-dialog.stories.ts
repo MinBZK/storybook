@@ -60,9 +60,9 @@ export default {
 	},
 };
 
-const openNext = (e) => e.currentTarget.nextElementSibling.show();
+const openNext = (e: Record<string, any>) => e.currentTarget.nextElementSibling.show();
 
-export const Standaard = (args) => html`
+export const Standaard = (args: Record<string, any>) => html`
 	<nldd-button
 		variant="primary"
 		text="Open modal dialog"
@@ -78,18 +78,19 @@ export const Standaard = (args) => html`
 			slot="actions"
 			variant="primary"
 			text="Bevestig"
-			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
 		></nldd-button>
 		<nldd-button
 			slot="actions"
 			variant="neutral-tinted"
 			text="Annuleer"
-			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
 		></nldd-button>
 	</nldd-modal-dialog>
 `;
 
-export const ZonderIcoon = () => html`
+export const ZonderIcoon = {
+	render: () => html`
 	<nldd-button
 		variant="primary"
 		text="Open modal dialog"
@@ -103,19 +104,21 @@ export const ZonderIcoon = () => html`
 			slot="actions"
 			variant="primary"
 			text="Bevestig"
-			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
 		></nldd-button>
 		<nldd-button
 			slot="actions"
 			variant="neutral-tinted"
 			text="Annuleer"
-			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
 		></nldd-button>
 	</nldd-modal-dialog>
-`;
-ZonderIcoon.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const MetIcoon = () => html`
+export const MetIcoon = {
+	render: () => html`
 	<nldd-button
 		variant="primary"
 		text="Open modal dialog"
@@ -130,13 +133,15 @@ export const MetIcoon = () => html`
 			slot="actions"
 			variant="primary"
 			text="Sluiten"
-			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
 		></nldd-button>
 	</nldd-modal-dialog>
-`;
-MetIcoon.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};
 
-export const Alert = () => html`
+export const Alert = {
+	render: () => html`
 	<nldd-button
 		variant="primary"
 		text="Open modal dialog"
@@ -151,14 +156,15 @@ export const Alert = () => html`
 			slot="actions"
 			variant="primary"
 			text="Doorgaan"
-			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
 		></nldd-button>
 		<nldd-button
 			slot="actions"
 			variant="neutral-tinted"
 			text="Annuleer"
-			@click=${(e) => e.target.closest('nldd-modal-dialog').hide()}
+			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
 		></nldd-button>
 	</nldd-modal-dialog>
-`;
-Alert.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

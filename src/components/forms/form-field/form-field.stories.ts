@@ -82,7 +82,7 @@ export default {
 	},
 };
 
-const Template = ({ labelAlignment, label, supportingLabel, optional }) => html`
+const Template = ({ labelAlignment, label, supportingLabel, optional }: Record<string, any>) => html`
 	<nldd-form-field
 		label-alignment=${labelAlignment}
 		label=${label}
@@ -93,7 +93,9 @@ const Template = ({ labelAlignment, label, supportingLabel, optional }) => html`
 	</nldd-form-field>
 `;
 
-export const Default = Template.bind({});
+export const Default = {
+	render: Template,
+};
 
 export const WithSupportingLabel = () => html`
 	<nldd-form-field label="Geboortedatum" supporting-label="DD-MM-JJJJ">

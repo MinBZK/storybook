@@ -57,9 +57,9 @@ export default {
 	},
 };
 
-export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
+export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }: Record<string, any>) => {
 	customElements.whenDefined('nldd-navigation-split-view').then(() => {
-		const splitView = document.getElementById('split-view-demo');
+		const splitView = document.getElementById('split-view-demo') as (HTMLElement & { showInspectorSheet: () => void; showSidebarSheet: () => void }) | null;
 		const inspectorButton = document.getElementById('inspector-toggle');
 		const navButton = document.getElementById('sidebar-toggle');
 		if (!splitView) return;
@@ -214,7 +214,8 @@ export const Standaard = ({ inspectorAsSheet, sidebarAsSheet }) => {
  * the main pane of a navigation split view, creating an editor-like layout
  * with a sidebar, an editor area, and an output panel below it.
  */
-export const GenestdeSplitView = () => html`
+export const GenestdeSplitView = {
+	render: () => html`
 	<nldd-navigation-split-view
 		style="height: 600px;"
 	>
@@ -260,5 +261,6 @@ export const GenestdeSplitView = () => html`
 			</nldd-bar-split-view>
 		</nldd-split-view-pane>
 	</nldd-navigation-split-view>
-`;
-GenestdeSplitView.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

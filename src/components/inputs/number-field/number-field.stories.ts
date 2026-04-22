@@ -84,7 +84,7 @@ export default {
 	},
 };
 
-const Template = ({ value, min, max, step, size, disabled, name, hideSpinButtons, fullWidth, width }) => html`
+const Template = ({ value, min, max, step, size, disabled, name, hideSpinButtons, fullWidth, width }: Record<string, any>) => html`
 	<nldd-number-field
 		value=${value}
 		min=${min}
@@ -99,10 +99,13 @@ const Template = ({ value, min, max, step, size, disabled, name, hideSpinButtons
 	></nldd-number-field>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-number-field value="5" min="0" max="10" size="sm"></nldd-number-field>
 		<nldd-number-field value="5" min="0" max="10" size="md"></nldd-number-field>
@@ -121,5 +124,6 @@ export const AlleToestanden = () => html`
 			<nldd-number-field value="5" min="0" max="10" hide-spin-buttons full-width></nldd-number-field>
 		</div>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

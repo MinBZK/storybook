@@ -43,7 +43,7 @@ export const Default = {
 		type: '',
 		href: '',
 	},
-	render: (args) => html`
+	render: (args: Record<string, any>) => html`
 		<nldd-list variant="simple">
 			<nldd-list-item size=${args.size} ?selected=${args.selected} type=${args.type || nothing} href=${args.href || nothing}>
 				<nldd-text-cell text="Text cell" supporting-text="Supporting text" />
@@ -178,7 +178,7 @@ export const WithDragHandle = {
 	// keyboard + pointer drag actually move items. A standard Storybook render
 	// function can't do this because Lit templates are stateless.
 	render: () => {
-		const onReorder = (e) => {
+		const onReorder = (e: Record<string, any>) => {
 			const list = e.currentTarget;
 			const { fromIndex, toIndex } = e.detail;
 			const items = [...list.querySelectorAll('nldd-list-item')];
@@ -210,8 +210,8 @@ export const WithDragHandle = {
 		`, el);
 		return el;
 	},
+	parameters: { controls: { disable: true } },
 };
-WithDragHandle.parameters = { controls: { disable: true } };
 
 /**
  * Cells kunnen via `hide-below` en `hide-above` verschijnen of verdwijnen op
@@ -244,5 +244,5 @@ export const ResponsiveCells = {
 			</nldd-list-item>
 		</nldd-list>
 	`,
+	parameters: { controls: { disable: true } },
 };
-ResponsiveCells.parameters = { controls: { disable: true } };

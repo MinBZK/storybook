@@ -42,7 +42,7 @@ export default {
 	},
 };
 
-const Template = ({ checked, disabled, size }) => html`
+const Template = ({ checked, disabled, size }: Record<string, any>) => html`
 	<nldd-switch
 		?checked=${checked}
 		?disabled=${disabled}
@@ -51,10 +51,13 @@ const Template = ({ checked, disabled, size }) => html`
 	></nldd-switch>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = {};
+export const Standaard = {
+	render: Template,
+	args: {},
+};
 
-export const AlleToestanden = () => html`
+export const AlleToestanden = {
+	render: () => html`
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<div style="display: flex; gap: 2rem; align-items: center;">
 			<nldd-switch accessible-label="Niet aan" size="sm"></nldd-switch>
@@ -69,5 +72,6 @@ export const AlleToestanden = () => html`
 			<nldd-switch accessible-label="Aan en uitgeschakeld klein" size="xs" checked disabled></nldd-switch>
 		</div>
 	</div>
-`;
-AlleToestanden.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

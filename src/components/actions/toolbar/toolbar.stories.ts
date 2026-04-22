@@ -27,7 +27,7 @@ export default {
 	},
 };
 
-const resizable = (content) => html`
+const resizable = (content: Record<string, any>) => html`
 	<div style="resize: horizontal; overflow: hidden; min-width: 200px; max-width: 100%; padding: 8px;">
 		${content}
 	</div>
@@ -38,7 +38,7 @@ const resizable = (content) => html`
 
 export const Default = {
 	args: { size: 'md', showItemLabels: false },
-	render: (args) => resizable(html`
+	render: (args: Record<string, any>) => resizable(html`
 		<nldd-toolbar
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}
@@ -77,7 +77,7 @@ export const Default = {
 
 export const WithLabels = {
 	args: { size: 'md', showItemLabels: true },
-	render: (args) => resizable(html`
+	render: (args: Record<string, any>) => resizable(html`
 		<nldd-toolbar
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}
@@ -128,7 +128,7 @@ export const WithLabels = {
 
 export const WithTitleGroup = {
 	args: { size: 'md', showItemLabels: false },
-	render: (args) => resizable(html`
+	render: (args: Record<string, any>) => resizable(html`
 		<nldd-toolbar
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}
@@ -174,7 +174,7 @@ export const WithTitleGroup = {
 
 export const WithTitleGroupCentered = {
 	args: { size: 'md', showItemLabels: false },
-	render: (args) => resizable(html`
+	render: (args: Record<string, any>) => resizable(html`
 		<nldd-toolbar
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}
@@ -211,7 +211,7 @@ export const WithTitleGroupCentered = {
 
 export const SizeSmall = {
 	args: { size: 'sm', showItemLabels: false },
-	render: (args) => resizable(html`
+	render: (args: Record<string, any>) => resizable(html`
 		<nldd-toolbar
 			size=${args.size}
 			?show-item-labels=${args.showItemLabels}

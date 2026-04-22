@@ -53,7 +53,8 @@ export const Standaard = () => html`
 	</nldd-one-half-one-half-section>
 `;
 
-export const ZonderHeaderEnFooter = () => html`
+export const ZonderHeaderEnFooter = {
+	render: () => html`
 	<nldd-one-half-one-half-section>
 		<nldd-rich-text>
 			<h3>Linkerkolom</h3>
@@ -64,5 +65,6 @@ export const ZonderHeaderEnFooter = () => html`
 			<p>De rechterkolom zonder header en footer.</p>
 		</nldd-rich-text>
 	</nldd-one-half-one-half-section>
-`;
-ZonderHeaderEnFooter.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

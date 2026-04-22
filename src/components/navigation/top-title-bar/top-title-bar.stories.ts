@@ -85,7 +85,7 @@ export default {
 	},
 };
 
-const Template = (args) => html`
+const Template = (args: Record<string, any>) => html`
 	<nldd-page background="tinted" style="height: 120px;">
 		<nldd-top-title-bar
 			slot="header"
@@ -101,20 +101,25 @@ const Template = (args) => html`
 	</nldd-page>
 `;
 
-export const Standaard = Template.bind({});
-Standaard.args = { text: 'Paginatitel' };
-
-export const MetTerugknop = Template.bind({});
-MetTerugknop.args = { text: 'Detailpagina', backText: 'Overzicht' };
-MetTerugknop.parameters = {
-	docs: {
-		description: {
-			story: 'In de standaard stand wordt de terugknop als tekstknop weergegeven.',
-		},
-	},
+export const Standaard = {
+	render: Template,
+	args: { text: 'Paginatitel' },
 };
 
-export const Compact = () => html`
+export const MetTerugknop = {
+	render: Template,
+	args: { text: 'Detailpagina', backText: 'Overzicht' },
+	parameters: {
+		docs: {
+			description: {
+				story: 'In de standaard stand wordt de terugknop als tekstknop weergegeven.',
+			},
+	},
+},
+};
+
+export const Compact = {
+	render: () => html`
 	<nldd-page background="tinted" style="height: 120px;">
 		<nldd-top-title-bar
 			class="is-compact"
@@ -126,31 +131,39 @@ export const Compact = () => html`
 			@dismiss=${action('dismiss')}
 		></nldd-top-title-bar>
 	</nldd-page>
-`;
-Compact.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Compacte stand via de <code>is-compact</code>-klasse: icoonknop, scheider en werkbalktitel.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Compacte stand via de <code>is-compact</code>-klasse: icoonknop, scheider en werkbalktitel.',
+			},
+	},
+},
+};
+
+export const MetSluitknop = {
+	render: Template,
+	args: { text: 'Formulier', dismissText: 'Sluit' },
+};
+
+export const MetBeideKnoppen = {
+	render: Template,
+	args: { text: 'Detailpagina', backText: 'Overzicht', dismissText: 'Annuleer' },
+};
+
+export const MetSubtitel = {
+	render: Template,
+	args: {
+		text: 'Paginatitel',
+		supportingText: 'Aanvullende informatie',
+		backText: 'Overzicht',
+		dismissText: 'Sluit',
 	},
 };
 
-export const MetSluitknop = Template.bind({});
-MetSluitknop.args = { text: 'Formulier', dismissText: 'Sluit' };
-
-export const MetBeideKnoppen = Template.bind({});
-MetBeideKnoppen.args = { text: 'Detailpagina', backText: 'Overzicht', dismissText: 'Annuleer' };
-
-export const MetSubtitel = Template.bind({});
-MetSubtitel.args = {
-	text: 'Paginatitel',
-	supportingText: 'Aanvullende informatie',
-	backText: 'Overzicht',
-	dismissText: 'Sluit',
-};
-
-export const MetWerkbalkActies = () => html`
+export const MetWerkbalkActies = {
+	render: () => html`
 	<nldd-page background="tinted" style="height: 120px;">
 		<nldd-top-title-bar
 			slot="header"
@@ -162,17 +175,19 @@ export const MetWerkbalkActies = () => html`
 			<nldd-icon-button slot="toolbar" variant="accent-transparent" icon="edit" text="Bewerken"></nldd-icon-button>
 		</nldd-top-title-bar>
 	</nldd-page>
-`;
-MetWerkbalkActies.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Extra knoppen via de <code>toolbar</code>-slot.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Extra knoppen via de <code>toolbar</code>-slot.',
+			},
 	},
+},
 };
 
-export const MetTitelAnker = () => html`
+export const MetTitelAnker = {
+	render: () => html`
 	<nldd-page background="tinted" sticky-header style="height: 400px;">
 		<nldd-top-title-bar
 			slot="header"
@@ -191,17 +206,19 @@ export const MetTitelAnker = () => html`
 			<div style="height: 600px;"></div>
 		</nldd-simple-section>
 	</nldd-page>
-`;
-MetTitelAnker.parameters = {
-	controls: { disable: true },
-	docs: {
-		description: {
-			story: 'Automatische compacte stand via <code>collapse-anchor</code>.',
-		},
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Automatische compacte stand via <code>collapse-anchor</code>.',
+			},
 	},
+},
 };
 
-export const MetTitelAnkerZonderActies = () => html`
+export const MetTitelAnkerZonderActies = {
+	render: () => html`
 	<nldd-page background="tinted" sticky-header style="height: 400px;">
 		<nldd-top-title-bar
 			slot="header"
@@ -218,7 +235,8 @@ export const MetTitelAnkerZonderActies = () => html`
 			<div style="height: 600px;"></div>
 		</nldd-simple-section>
 	</nldd-page>
-`;
-MetTitelAnkerZonderActies.parameters = {
-	controls: { disable: true },
+`,
+	parameters: {
+		controls: { disable: true },
+	},
 };
