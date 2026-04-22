@@ -70,12 +70,16 @@ export const Default = {
 		variant: 'simple',
 		type: 'list',
 		'no-dividers': false,
+		'empty-text': '',
+		'empty-supporting-text': '',
 	},
 	render: (args) => html`
 		<nldd-list
 			variant=${args.variant}
 			type=${args.type}
 			?no-dividers=${args['no-dividers']}
+			empty-text=${args['empty-text']}
+			empty-supporting-text=${args['empty-supporting-text']}
 		>
 			<nldd-list-item>
 				<nldd-text-cell text="Item 1" />
