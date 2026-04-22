@@ -5,6 +5,7 @@ import { menuStyles, menuItemStyles, menuDividerStyles } from './menu.styles.js'
 import { menuTemplate, menuItemTemplate, menuDividerTemplate } from './menu.template.js';
 import { nlddMenuTranslations } from './menu.i18n.js';
 import type { NLDDMenuTranslations } from './menu.i18n.js';
+import type { MarkMode } from '../../../utilities/render-marked.js';
 import '../../lists-and-menus/cells/icon-cell/icon-cell.js';
 import '../../lists-and-menus/cells/spacer-cell/spacer-cell.js';
 import '../../lists-and-menus/cells/text-cell/text-cell.js';
@@ -33,15 +34,16 @@ if (!customElements.get('nldd-menu-divider')) {
 /**
  * A single item within an nldd-menu.
  *
- * @attr {string}  text     - Display text. Supports **bold** markdown syntax when set
- *                            programmatically by nldd-menu's filter method. See filter() for details.
- * @attr {string}  value    - Form value. Falls back to text when not set.
- * @attr {string}  aliases  - Space-separated alternative search terms.
- * @attr {string}  details  - Secondary label shown on the right side.
- * @attr {string}  icon     - Icon name rendered before the text (nldd-icon name).
- * @attr {string}  type     - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
- * @attr {boolean} selected - Selected state for checkbox and radio types.
- * @attr {boolean} disabled - Disabled state.
+ * @attr {string}  text      - Display text. Supports **bold** markdown syntax.
+ * @attr {string}  value     - Form value. Falls back to text when not set.
+ * @attr {string}  aliases   - Space-separated alternative search terms.
+ * @attr {string}  details   - Secondary label shown on the right side.
+ * @attr {string}  icon      - Icon name rendered before the text (nldd-icon name).
+ * @attr {string}  type      - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
+ * @attr {boolean} selected  - Selected state for checkbox and radio types.
+ * @attr {boolean} disabled  - Disabled state.
+ * @attr {string}  mark      - Query substring to bold-highlight in text. Set by menu's filter(); also settable by consumers.
+ * @attr {string}  mark-mode - 'match' | 'predictive' (default: 'predictive'). See text-cell for details.
  *
  * @fires select - Fired when the item is clicked and not disabled.
  */
@@ -74,14 +76,11 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	/** Internal display text set by nldd-menu's filter with bold markers applied. */
-	@state()
-	_displayText = '';
+	@property({ type: String, reflect: true })
+	mark = '';
 
-	/** Set by nldd-menu during filtering to apply bold markers to matching text. */
-	setDisplayText(text: string): void {
-		this._displayText = text;
-	}
+	@property({ type: String, reflect: true, attribute: 'mark-mode' })
+	markMode: MarkMode = 'predictive';
 
 	/** Set by nldd-menu. Not part of the public API. */
 	@state()
@@ -371,43 +370,18 @@ export class NLDDMenu extends LitElement {
 	/**
 	 * Filter items based on a query string.
 	 *
-	 * Matching items are kept visible. Non-matching items are hidden.
+	 * Matching items are kept visible. Non-matching items are hidden. Matching
+	 * items receive `mark=<query>` so their text-cell bolds the non-typed
+	 * remainder (predictive completion — the ARIA APG pattern for combobox).
 	 *
-	 * For visible items, the non-typed portion of the text is marked bold using
-	 * **markdown** syntax, which the template renders as <b> tags. This follows
-	 * the principle that the typed characters are already known to the user —
-	 * emphasising the predictive completion helps users scan the differences
-	 * between suggestions and identify the new information at a glance.
-	 *
-	 * When the query is empty, all items are shown and bold markers are cleared.
+	 * When the query is empty, all items are shown and `mark` is cleared.
 	 */
 	public filter(query: string): void {
 		const allItems = Array.from(this.querySelectorAll('nldd-menu-item')) as NLDDMenuItem[];
 		allItems.forEach(item => {
 			const matches = !query || this.filterFn(query, item);
 			item.toggleAttribute('hidden', !matches);
-			if (!query) {
-				item.setDisplayText('');
-			} else if (matches) {
-				const q = query.toLowerCase();
-				let remaining = item.text;
-				let remainingLower = item.text.toLowerCase();
-				const parts: string[] = [];
-
-				while (remaining.length > 0) {
-					const idx = remainingLower.indexOf(q);
-					if (idx === -1) {
-						parts.push(`**${remaining}**`);
-						break;
-					}
-					if (idx > 0) parts.push(`**${remaining.slice(0, idx)}**`);
-					parts.push(remaining.slice(idx, idx + query.length));
-					remaining = remaining.slice(idx + query.length);
-					remainingLower = remaining.toLowerCase();
-				}
-
-				item.setDisplayText(parts.join(''));
-			}
+			item.mark = (matches && query) ? query : '';
 		});
 		this._setHighlight(null);
 		this._updateEmptyState();

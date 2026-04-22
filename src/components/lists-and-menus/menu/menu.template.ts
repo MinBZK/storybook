@@ -55,7 +55,7 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 				</nldd-icon-cell>
 				<nldd-spacer-cell size="6"></nldd-spacer-cell>
 			` : nothing}
-			<nldd-text-cell class="menu__item-text" text=${this._displayText || this.text}></nldd-text-cell>
+			<nldd-text-cell class="menu__item-text" text=${this.text} mark=${this.mark} mark-mode=${this.markMode}></nldd-text-cell>
 			${this.details ? html`
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell class="menu__item-details"

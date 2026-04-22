@@ -1,0 +1,57 @@
+import { html, nothing, type TemplateResult } from 'lit';
+
+export type MarkMode = 'match' | 'predictive';
+
+/**
+ * Renders text with `**bold**` markdown segments as `<b>` elements.
+ * Returns the original string when no markers are present (cheap path).
+ */
+export function renderBold(text: string): TemplateResult | string {
+	if (!text.includes('**')) return text;
+	const parts = text.split(/\*\*(.+?)\*\*/g);
+	return html`${parts.map((part, i) => i % 2 === 1 ? html`<b>${part}</b>` : part)}`;
+}
+
+/**
+ * Renders text with the query (or its complement) wrapped in `<b>`, based on `mode`.
+ *
+ * - `mode: 'match'` bolds the typed query — useful in long texts where the user
+ *   wants to spot the search term quickly (search-result highlighting).
+ * - `mode: 'predictive'` bolds the remaining (non-typed) characters — the ARIA
+ *   APG pattern for combobox predictive completion: the typed prefix stays plain,
+ *   the suggested completion stands out.
+ *
+ * The match is case-insensitive substring. If the query is empty or does not
+ * appear in the text, the text is returned as-is (falls back to `renderBold`
+ * so existing `**bold**` syntax still renders).
+ */
+export function renderMarked(
+	text: string,
+	query: string,
+	mode: MarkMode = 'predictive',
+): TemplateResult | string | typeof nothing {
+	if (!text) return nothing;
+	const q = query.trim();
+	if (!q) return renderBold(text);
+
+	const qLower = q.toLowerCase();
+	const textLower = text.toLowerCase();
+	if (!textLower.includes(qLower)) return renderBold(text);
+
+	const segments: Array<{ text: string; bold: boolean }> = [];
+	let cursor = 0;
+	while (cursor < text.length) {
+		const idx = textLower.indexOf(qLower, cursor);
+		if (idx === -1) {
+			segments.push({ text: text.slice(cursor), bold: mode === 'predictive' });
+			break;
+		}
+		if (idx > cursor) {
+			segments.push({ text: text.slice(cursor, idx), bold: mode === 'predictive' });
+		}
+		segments.push({ text: text.slice(idx, idx + q.length), bold: mode === 'match' });
+		cursor = idx + q.length;
+	}
+
+	return html`${segments.map(s => s.bold ? html`<b>${s.text}</b>` : s.text)}`;
+}

@@ -187,4 +187,58 @@ describe('nldd-text-cell', () => {
 		expect(p!.textContent?.trim()).toBe('No bold here');
 	});
 
+	// — mark / mark-mode —
+
+	it('mark: predictive mode bolds the remainder of text (default)', async () => {
+		el = await fixture('<nldd-text-cell text="Aardappelen" mark="aa"></nldd-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		const bold = p!.querySelector('b');
+		expect(bold?.textContent).toBe('rdappelen');
+		expect(p!.textContent?.trim()).toBe('Aardappelen');
+	});
+
+	it('mark: match mode bolds the query substring', async () => {
+		el = await fixture('<nldd-text-cell text="Aardappelen" mark="aa" mark-mode="match"></nldd-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		const bold = p!.querySelector('b');
+		expect(bold?.textContent).toBe('Aa');
+		expect(p!.textContent?.trim()).toBe('Aardappelen');
+	});
+
+	it('mark applies across text, overline and supporting-text', async () => {
+		el = await fixture('<nldd-text-cell overline="Groente" text="Aardappelen" supporting-text="appelsoort" mark="app"></nldd-text-cell>');
+		await waitForUpdate(el);
+		const overline = el.shadowRoot!.querySelector('.text-cell__overline');
+		const text = el.shadowRoot!.querySelector('.text-cell__text');
+		const supporting = el.shadowRoot!.querySelector('.text-cell__supporting-text');
+		// overline "Groente" does not contain "app" → no marking
+		expect(overline!.querySelector('b')).toBeNull();
+		// text "Aardappelen" contains "app" → predictive mode bolds remainder
+		expect(text!.querySelectorAll('b').length).toBeGreaterThan(0);
+		// supporting-text "appelsoort" contains "app" → bolding applied
+		expect(supporting!.querySelectorAll('b').length).toBeGreaterThan(0);
+	});
+
+	it('mark: empty query leaves text untouched (falls back to **bold** rendering)', async () => {
+		el = await fixture('<nldd-text-cell text="Hello **world**" mark=""></nldd-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p!.querySelector('b')?.textContent).toBe('world');
+	});
+
+	it('mark: query not present in text renders plain (no bold)', async () => {
+		el = await fixture('<nldd-text-cell text="Aardappelen" mark="zz"></nldd-text-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.text-cell__text');
+		expect(p!.querySelector('b')).toBeNull();
+	});
+
+	it('mark-mode defaults to predictive', async () => {
+		el = await fixture('<nldd-text-cell text="Aardappelen" mark="aa"></nldd-text-cell>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement & { markMode: string }).markMode).toBe('predictive');
+	});
+
 });

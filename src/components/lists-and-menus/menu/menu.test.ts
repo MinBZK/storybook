@@ -264,6 +264,51 @@ describe('nldd-menu-item', () => {
 	});
 });
 
+describe('nldd-menu filter', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('sets mark attribute on matching items and clears on non-matching', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Aardappelen"></nldd-menu-item>
+				<nldd-menu-item text="Broccoli"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		(el as unknown as { filter(q: string): void }).filter('aa');
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('nldd-menu-item');
+		expect(items[0].getAttribute('mark')).toBe('aa');
+		expect(items[0].hasAttribute('hidden')).toBe(false);
+		expect(items[1].hasAttribute('hidden')).toBe(true);
+		expect(items[1].getAttribute('mark')).toBe('');
+	});
+
+	it('clears all marks when query is empty', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Aardappelen"></nldd-menu-item>
+				<nldd-menu-item text="Broccoli"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const menu = el as unknown as { filter(q: string): void };
+		menu.filter('aa');
+		await waitForUpdate(el);
+		menu.filter('');
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('nldd-menu-item');
+		items.forEach(i => {
+			expect(i.getAttribute('mark') ?? '').toBe('');
+			expect(i.hasAttribute('hidden')).toBe(false);
+		});
+	});
+});
+
 describe('nldd-menu-divider', () => {
 	let el: HTMLElement;
 

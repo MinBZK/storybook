@@ -19,13 +19,6 @@ export interface NLDDSelectEventDetail {
 	selected: boolean;
 }
 
-const defaultFilterFn = (query: string, item: NLDDListItem): boolean => {
-	const q = query.toLowerCase();
-	if (item.searchText && item.searchText.toLowerCase().includes(q)) return true;
-	if (item.aliases && item.aliases.split(/\s+/).some(a => a.toLowerCase().includes(q))) return true;
-	return false;
-};
-
 /**
  * A container for `nldd-list-item` elements, with optional header and footer slots.
  *
@@ -41,12 +34,21 @@ const defaultFilterFn = (query: string, item: NLDDListItem): boolean => {
  * Selection state is consumer-managed in all types: the list never mutates
  * `selected` itself — it only emits `nldd-select` with the proposed new state.
  *
+ * ### Combobox popup
+ *
  * For inline combobox patterns (search input above a listbox), set
  * `controlled` on the listbox. The list drops its own tabindex, the consumer
  * keeps focus on the input, and drives navigation via the public methods
  * (`moveHighlight`, `selectHighlighted`, `getHighlightedId`, …). Mirror
  * `getHighlightedId()` into the input's `aria-activedescendant` so screen
  * readers announce the highlighted option.
+ *
+ * The list does not filter data — the consumer owns filtering and rendering.
+ * Re-render the child items based on the current search query, and set
+ * `mark="<query>"` on the visible text/title cells so the predictive-completion
+ * bolding kicks in automatically (see `nldd-text-cell`).
+ *
+ * ### Reorder
  *
  * On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with
  * `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their
@@ -98,13 +100,6 @@ export class NLDDList extends LitElement {
 	/** Override one or more translation keys. Unset keys fall back to the Dutch default. */
 	@property({ type: Object })
 	translations: Partial<NLDDListTranslations> = {};
-
-	/**
-	 * Custom matcher used by `filter()`. Defaults to a case-insensitive
-	 * substring match on the item's `searchText` and `aliases`.
-	 */
-	@property({ attribute: false })
-	filterFn?: (query: string, item: NLDDListItem) => boolean;
 
 	@state()
 	private _mergedTranslations = { ...nlddListTranslations };
@@ -393,33 +388,6 @@ export class NLDDList extends LitElement {
 	public clearHighlight(): void {
 		this._activeDescendantId = '';
 		this._getItems().forEach(i => i.removeAttribute('highlighted'));
-	}
-
-	/**
-	 * Hide items whose `searchText` / `aliases` don't contain `query`
-	 * (case-insensitive substring). Empty query shows everything.
-	 *
-	 * By default, the first visible match is highlighted after filtering
-	 * (ARIA APG pattern for `aria-autocomplete="list"`); pass
-	 * `{ autoHighlight: false }` to suppress. For server-side / async
-	 * search, skip this method and mutate `[hidden]` / `moveHighlight()`
-	 * yourself.
-	 *
-	 * Consumers can override the match logic with a custom `filterFn`.
-	 */
-	public filter(query: string, opts: { autoHighlight?: boolean } = {}): void {
-		const autoHighlight = opts.autoHighlight ?? true;
-		const q = query.trim().toLowerCase();
-		const matcher = this.filterFn ?? defaultFilterFn;
-		this._getItems().forEach(item => {
-			const match = q === '' || matcher(q, item);
-			item.toggleAttribute('hidden', !match);
-		});
-		if (q === '' || !autoHighlight) {
-			this.clearHighlight();
-		} else {
-			this.moveHighlight('first');
-		}
 	}
 
 	// — Listbox: internal helpers ————————————————————————————————————————————

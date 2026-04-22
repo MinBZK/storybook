@@ -61,22 +61,6 @@ export class NLDDListItem extends LitElement {
 	@property({ reflect: true })
 	href?: string;
 
-	/**
-	 * Primary search term used by `nldd-list.filter()`. Not rendered — consumers
-	 * put visible text in a slotted cell (e.g. `nldd-text-cell`). Usually
-	 * equal to that visible text. Ignored when the consumer handles filtering
-	 * themselves (e.g. server-side search).
-	 */
-	@property({ type: String, attribute: 'search-text' })
-	searchText = '';
-
-	/**
-	 * Space-separated alternative search terms used by `nldd-list.filter()`
-	 * in addition to `searchText`.
-	 */
-	@property({ type: String })
-	aliases = '';
-
 	/** Set by the parent nldd-list when reorderable is enabled. Used as a CSS hook for drag handle visibility. */
 	@property({ type: Boolean, reflect: true })
 	reorderable = false;

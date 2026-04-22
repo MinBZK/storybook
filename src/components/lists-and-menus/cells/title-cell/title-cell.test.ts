@@ -177,4 +177,73 @@ describe('nldd-title-cell', () => {
 		const title = el.shadowRoot!.querySelector('.title-cell__title');
 		expect(title!.tagName.toLowerCase()).toBe('p');
 	});
+
+	// — markdown bold —
+
+	it('renders **bold** markers as <b> elements in text', async () => {
+		el = await fixture('<nldd-title-cell text="Hello **world**"></nldd-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title!.querySelector('b')?.textContent).toBe('world');
+		expect(title!.textContent?.trim()).toBe('Hello world');
+	});
+
+	it('renders **bold** markers in overline and supporting-text', async () => {
+		el = await fixture('<nldd-title-cell overline="Over **line**" text="T" supporting-text="Sub **title**"></nldd-title-cell>');
+		await waitForUpdate(el);
+		const overline = el.shadowRoot!.querySelector('.title-cell__overline');
+		const supporting = el.shadowRoot!.querySelector('.title-cell__supporting-text');
+		expect(overline!.querySelector('b')?.textContent).toBe('line');
+		expect(supporting!.querySelector('b')?.textContent).toBe('title');
+	});
+
+	// — mark / mark-mode —
+
+	it('mark: predictive mode bolds the remainder of text (default)', async () => {
+		el = await fixture('<nldd-title-cell text="Aardappelen" mark="aa"></nldd-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		const bold = title!.querySelector('b');
+		expect(bold?.textContent).toBe('rdappelen');
+		expect(title!.textContent?.trim()).toBe('Aardappelen');
+	});
+
+	it('mark: match mode bolds the query substring', async () => {
+		el = await fixture('<nldd-title-cell text="Aardappelen" mark="aa" mark-mode="match"></nldd-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title!.querySelector('b')?.textContent).toBe('Aa');
+	});
+
+	it('mark applies across text, overline and supporting-text', async () => {
+		el = await fixture('<nldd-title-cell overline="Groente" text="Aardappelen" supporting-text="appelsoort" mark="app"></nldd-title-cell>');
+		await waitForUpdate(el);
+		const overline = el.shadowRoot!.querySelector('.title-cell__overline');
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		const supporting = el.shadowRoot!.querySelector('.title-cell__supporting-text');
+		expect(overline!.querySelector('b')).toBeNull();
+		expect(title!.querySelectorAll('b').length).toBeGreaterThan(0);
+		expect(supporting!.querySelectorAll('b').length).toBeGreaterThan(0);
+	});
+
+	it('mark: query not present in text renders plain', async () => {
+		el = await fixture('<nldd-title-cell text="Aardappelen" mark="zz"></nldd-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title!.querySelector('b')).toBeNull();
+	});
+
+	it('mark-mode defaults to predictive', async () => {
+		el = await fixture('<nldd-title-cell text="Aardappelen"></nldd-title-cell>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement & { markMode: string }).markMode).toBe('predictive');
+	});
+
+	it('mark works with heading-level', async () => {
+		el = await fixture('<nldd-title-cell text="Aardappelen" heading-level="2" mark="aa"></nldd-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title');
+		expect(title!.tagName.toLowerCase()).toBe('h2');
+		expect(title!.querySelector('b')?.textContent).toBe('rdappelen');
+	});
 });

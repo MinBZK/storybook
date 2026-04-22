@@ -229,17 +229,13 @@ export const TypeListboxControlled = {
 
 		const root = document.createElement('div');
 
-		render(html`
-			<nldd-search-field
-				combobox
-				listbox="demo-listbox"
-				placeholder="Zoek een groente…"
-			></nldd-search-field>
-			<nldd-spacer size="8" direction="vertical"></nldd-spacer>
-			<nldd-list id="demo-listbox" type="listbox" variant="box" controlled>
-				${labels.map(label => html`
-					<nldd-list-item search-text="${label}">
-						<nldd-text-cell text="${label}" />
+		const renderItems = (query) => {
+			const q = query.trim().toLowerCase();
+			const matches = q ? labels.filter(l => l.toLowerCase().includes(q)) : labels;
+			render(html`
+				${matches.map(label => html`
+					<nldd-list-item>
+						<nldd-text-cell text="${label}" mark="${q}"></nldd-text-cell>
 					</nldd-list-item>
 				`)}
 				<nldd-inline-dialog
@@ -247,18 +243,35 @@ export const TypeListboxControlled = {
 					text="Geen resultaten"
 					supporting-text="Probeer een andere zoekterm."
 				></nldd-inline-dialog>
-			</nldd-list>
+			`, list);
+			if (q && matches.length > 0) {
+				list.moveHighlight('first');
+			} else {
+				list.clearHighlight();
+			}
+		};
+
+		render(html`
+			<nldd-search-field
+				combobox
+				listbox="demo-listbox"
+				placeholder="Zoek een groente…"
+			></nldd-search-field>
+			<nldd-spacer size="8" direction="vertical"></nldd-spacer>
+			<nldd-list id="demo-listbox" type="listbox" variant="box" controlled></nldd-list>
 		`, root);
 
 		const searchField = root.querySelector('nldd-search-field');
 		const list = root.querySelector('nldd-list');
+
+		renderItems('');
 
 		const syncActiveDescendant = () => {
 			searchField.activeDescendant = list.getHighlightedId();
 		};
 
 		searchField.addEventListener('input', (e) => {
-			list.filter(e.detail.value);
+			renderItems(e.detail.value);
 			syncActiveDescendant();
 		});
 
@@ -291,7 +304,7 @@ export const TypeListboxControlled = {
 				case 'Escape':
 					e.preventDefault();
 					searchField.value = '';
-					list.filter('');
+					renderItems('');
 					syncActiveDescendant();
 					break;
 			}
@@ -299,8 +312,9 @@ export const TypeListboxControlled = {
 
 		list.addEventListener('nldd-select', (e) => {
 			const { item } = e.detail;
-			searchField.value = item.searchText;
-			list.filter(item.searchText);
+			const label = item.textContent.trim();
+			searchField.value = label;
+			renderItems(label);
 			syncActiveDescendant();
 		});
 
@@ -312,6 +326,8 @@ export const TypeListboxControlled = {
 			description: {
 				story: `
 Controlled listbox used as a combobox popup. Focus stays on the search input; the consumer forwards arrow/Enter keys to the listbox and mirrors \`getHighlightedId()\` into the input's \`aria-activedescendant\`. Set \`controlled\` on the list to disable its own tabindex and focus behaviour.
+
+**Data flow:** the consumer owns the item list and re-renders the listbox children based on the search query. Setting \`mark="<query>"\` on each text-cell triggers the predictive-completion bolding automatically (ARIA APG pattern for combobox) — no per-cell string munging in the consumer.
 
 Public API used here: \`moveHighlight()\`, \`getHighlightedId()\`, \`selectHighlighted()\`, \`clearHighlight()\`.
 				`.trim(),

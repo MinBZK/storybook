@@ -19,16 +19,30 @@
  * @attr {'left' | 'right'} horizontal-alignment - Horizontal alignment (default: 'left')
  * @attr {'top' | 'center' | 'bottom'} vertical-alignment - Vertical alignment (default: 'center')
  *
- * @attr {string} text - Title text content
- * @attr {string} overline - Optional overline text displayed above the title
- * @attr {string} supporting-text - Optional supporting text displayed below the title
+ * @attr {string} text - Title text content. Supports **bold** syntax for inline bold segments.
+ * @attr {string} overline - Optional overline text displayed above the title. Supports **bold**.
+ * @attr {string} supporting-text - Optional supporting text displayed below the title. Supports **bold**.
  * @attr {number} heading-level - Heading level for the title element: 1–6 (default: none, renders a <p>)
+ *
+ * ### Search mark
+ * Set `mark` to a query string to bold matching substrings in text, overline and
+ * supporting-text. `mark-mode` selects the strategy:
+ * - `'predictive'` (default): bolds the non-matched remainder — the ARIA APG
+ *   pattern for combobox predictive completion.
+ * - `'match'`: bolds the matched query — useful for search-result highlighting
+ *   in longer text.
+ *
+ * When `mark` is set, `**bold**` markdown in the same field is ignored.
+ *
+ * @attr {string} mark - Query substring to bold-highlight across text fields. Empty = no marking.
+ * @attr {string} mark-mode - 'match' | 'predictive' (default: 'predictive')
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { titleCellStyles } from './title-cell.styles.js';
 import { template } from './title-cell.template.js';
 import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
+import type { MarkMode } from '../../../../utilities/render-marked.js';
 
 export type TitleCellSize = 1 | 2 | 3 | 4 | 5 | 6;
 type Color = 'default' | 'inherit';
@@ -76,6 +90,12 @@ export class NLDDTitleCell extends VisibilityMixin(LitElement) {
 	/** Heading level for the title element (1–6). When not set, renders a <p>. */
 	@property({ type: Number, attribute: 'heading-level' })
 	headingLevel: number | undefined = undefined;
+
+	@property({ type: String })
+	mark = '';
+
+	@property({ type: String, attribute: 'mark-mode' })
+	markMode: MarkMode = 'predictive';
 
 	override updated(changed: Map<string, unknown>) {
 		super.updated(changed);
