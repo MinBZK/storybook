@@ -160,10 +160,13 @@ export const aliases = {
 	'search': 'magnifier',
 
 	// minus
-	'delete': 'minus',
+	'remove': 'minus',
 
 	// minus-small
-	'delete-small': 'minus-small',
+	'remove-small': 'minus-small',
+
+	// minus-extra-small
+	'remove-extra-small': 'minus-extra-small',
 
 	// moon
 	'dark-mode': 'moon',
@@ -221,7 +224,7 @@ export const aliases = {
 	'external-link': 'square-arrow-right-top',
 
 	// square-plus-on-square
-	'add-stack': 'square-plus-on-square',
+	'duplicate': 'square-plus-on-square',
 
 	// rectangle-stack
 	'stack': 'rectangle-stack',
@@ -238,5 +241,5 @@ export const aliases = {
 	'console': 'terminal',
 
 	// trash
-	'remove': 'trash',
+	'delete': 'trash',
 };

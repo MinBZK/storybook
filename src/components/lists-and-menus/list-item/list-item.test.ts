@@ -92,14 +92,6 @@ describe('nldd-list-item', () => {
 	});
 
 
-	// — Highlighted ————————————————————————————————————————————————————————
-
-	it('reflects highlighted attribute', async () => {
-		el = await fixture('<nldd-list-item highlighted></nldd-list-item>');
-		await waitForUpdate(el);
-		expect(el.hasAttribute('highlighted')).toBe(true);
-	});
-
 	it('matches [selected]:focus-within when focused on the action', async () => {
 		// The :host([selected]:focus-within) CSS rule promotes a selected item
 		// to the highlighted state on focus. Verify the selector semantics
@@ -167,5 +159,89 @@ describe('nldd-list-item', () => {
 			await waitForUpdate(el);
 			expect(action.classList.contains('is-pointer-focus')).toBe(false);
 		});
+	});
+
+
+	// — Parent type sync: content (default) ——————————————————————————————————
+
+	it('content parent: role="listitem", no aria-selected', async () => {
+		const wrapper = await fixture(`
+			<nldd-list>
+				<nldd-list-item selected></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(wrapper);
+		el = wrapper.querySelector('nldd-list-item')!;
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('listitem');
+		expect(el.hasAttribute('aria-selected')).toBe(false);
+	});
+
+
+	// — Parent type sync: navigation —————————————————————————————————————————
+
+	it('navigation parent: aria-current="page" on inner anchor when selected', async () => {
+		const wrapper = await fixture(`
+			<nldd-list type="navigation">
+				<nldd-list-item id="a" href="/a" selected></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(wrapper);
+		el = wrapper.querySelector('#a') as HTMLElement;
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
+		expect(anchor?.getAttribute('aria-current')).toBe('page');
+	});
+
+	it('navigation parent: aria-current="page" on inner button when selected', async () => {
+		const wrapper = await fixture(`
+			<nldd-list type="navigation">
+				<nldd-list-item id="a" type="button" selected></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(wrapper);
+		el = wrapper.querySelector('#a') as HTMLElement;
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button.list-item__action');
+		expect(button?.getAttribute('aria-current')).toBe('page');
+	});
+
+	it('navigation parent: removes aria-current when selected is toggled off', async () => {
+		const wrapper = await fixture(`
+			<nldd-list type="navigation">
+				<nldd-list-item id="a" href="/a" selected></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(wrapper);
+		el = wrapper.querySelector('#a') as HTMLElement;
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
+		expect(anchor?.getAttribute('aria-current')).toBe('page');
+
+		el.removeAttribute('selected');
+		await waitForUpdate(el);
+		expect(anchor?.hasAttribute('aria-current')).toBe(false);
+	});
+
+
+	// — Parent type sync: switching at runtime ————————————————————————————————
+
+	it('re-syncs ARIA when parent list type changes', async () => {
+		const wrapper = await fixture(`
+			<nldd-list>
+				<nldd-list-item id="a" href="/a" selected></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(wrapper);
+		el = wrapper.querySelector('#a') as HTMLElement;
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a.list-item__action');
+		expect(anchor?.hasAttribute('aria-current')).toBe(false);
+
+		wrapper.setAttribute('type', 'navigation');
+		// MutationObserver fires async — wait a tick
+		await waitForUpdate(wrapper);
+		await waitForUpdate(el);
+		expect(anchor?.getAttribute('aria-current')).toBe('page');
 	});
 });

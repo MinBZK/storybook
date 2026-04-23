@@ -158,7 +158,8 @@ describe('nldd-menu-item', () => {
 		await waitForUpdate(el);
 		const iconCell = el.shadowRoot!.querySelector('.menu__item-icon');
 		expect(iconCell).not.toBeNull();
-		expect(iconCell!.querySelector('nldd-icon')?.getAttribute('name')).toBe('file');
+		// icon-cell forwards its `icon` attribute to an internal <nldd-icon>.
+		expect(iconCell!.getAttribute('icon')).toBe('file');
 	});
 
 	it('does not render an icon-cell when the icon attribute is missing', async () => {
@@ -261,6 +262,113 @@ describe('nldd-menu-item', () => {
 		el = await fixture('<nldd-menu-item text="Item"></nldd-menu-item>');
 		await waitForUpdate(el);
 		expect(getButton(el).getAttribute('aria-checked')).toBeNull();
+	});
+});
+
+describe('nldd-menu filter', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('sets query attribute on matching items and clears on non-matching', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Aardappelen"></nldd-menu-item>
+				<nldd-menu-item text="Broccoli"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		(el as unknown as { filter(q: string): void }).filter('aa');
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('nldd-menu-item');
+		expect(items[0].getAttribute('query')).toBe('aa');
+		expect(items[0].hasAttribute('hidden')).toBe(false);
+		expect(items[1].hasAttribute('hidden')).toBe(true);
+		expect(items[1].getAttribute('query')).toBe('');
+	});
+
+	it('clears all queries when query is empty', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Aardappelen"></nldd-menu-item>
+				<nldd-menu-item text="Broccoli"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const menu = el as unknown as { filter(q: string): void };
+		menu.filter('aa');
+		await waitForUpdate(el);
+		menu.filter('');
+		await waitForUpdate(el);
+		const items = el.querySelectorAll('nldd-menu-item');
+		items.forEach(i => {
+			expect(i.getAttribute('query') ?? '').toBe('');
+			expect(i.hasAttribute('hidden')).toBe(false);
+		});
+	});
+});
+
+describe('nldd-menu empty state', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders default nldd-inline-dialog with i18n text when no items', async () => {
+		el = await fixture('<nldd-menu></nldd-menu>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog).not.toBeNull();
+		expect(dialog!.getAttribute('text')).toBe('Geen opties beschikbaar');
+	});
+
+	it('empty-text attribute overrides the i18n default', async () => {
+		el = await fixture('<nldd-menu empty-text="Niets gevonden"></nldd-menu>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog!.getAttribute('text')).toBe('Niets gevonden');
+	});
+
+	it('empty-supporting-text populates the inline-dialog', async () => {
+		el = await fixture('<nldd-menu empty-supporting-text="Probeer iets anders."></nldd-menu>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog!.getAttribute('supporting-text')).toBe('Probeer iets anders.');
+	});
+
+	it('slotted content replaces the default dialog', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-inline-dialog slot="empty" text="Custom"></nldd-inline-dialog>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="empty"]')!;
+		const assigned = slot.assignedElements();
+		expect(assigned.length).toBe(1);
+		expect(assigned[0].getAttribute('text')).toBe('Custom');
+	});
+
+	it('does not render empty container when items are present', async () => {
+		el = await fixture(`
+			<nldd-menu>
+				<nldd-menu-item text="Item"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.menu__empty')).toBeNull();
+	});
+
+	it('drops role on .menu when empty', async () => {
+		// Empty-state slot renders non-menuitem content; keeping role="menu" or
+		// role="listbox" would violate ARIA's required-children rules.
+		el = await fixture('<nldd-menu></nldd-menu>');
+		await waitForUpdate(el);
+		const menuEl = el.shadowRoot!.querySelector('.menu');
+		expect(menuEl?.hasAttribute('role')).toBe(false);
 	});
 });
 

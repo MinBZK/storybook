@@ -30,6 +30,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';
 import { tooltipStyles } from './tooltip.styles.js';
 import { tooltipTemplate } from './tooltip.template.js';
+import { isTouchMode } from '../../../utilities/input-modality.js';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
 
@@ -147,6 +148,10 @@ export class NLDDTooltip extends LitElement {
 
 	_handleFocusIn(): void {
 		if (!this.text) return;
+		// Touch taps can focus elements with explicit `tabindex` (e.g. tab-bar's
+		// roving-tabindex pattern on iOS, Android `<button>` focus-on-tap).
+		// Suppress the tooltip in that case — it's not a keyboard intent.
+		if (isTouchMode()) return;
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;

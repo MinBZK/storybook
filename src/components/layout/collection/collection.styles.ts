@@ -14,8 +14,16 @@ export const collectionStyles = css`
 		flex-direction: column;
 		width: 100%;
 		min-width: 0;
-		gap: 16px;
+		gap: var(--components-collection-sm-gap);
 		--_item-width: var(--primitives-area-280);
+
+		@media (min-width: ${mdMin}) {
+			gap: var(--components-collection-md-gap);
+		}
+
+		@media (min-width: ${lgMin}) {
+			gap: var(--components-collection-lg-gap);
+		}
 	}
 
 	:host([hidden]) {

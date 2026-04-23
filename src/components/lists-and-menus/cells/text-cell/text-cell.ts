@@ -21,14 +21,28 @@
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')
  *
  * @attr {string} text - Main text content. Supports **bold** syntax for inline bold segments.
- * @attr {string} overline - Optional overline text displayed above the main content
- * @attr {string} supporting-text - Optional supporting text displayed below the main content
+ * @attr {string} overline - Optional overline text displayed above the main content. Supports **bold**.
+ * @attr {string} supporting-text - Optional supporting text displayed below the main content. Supports **bold**.
+ *
+ * ### Query mark
+ * Set `query` to a substring to bold-highlight the match across text, overline
+ * and supporting-text. `query-mark-mode` selects the strategy:
+ * - `'predictive'` (default): bolds the non-matched remainder — the ARIA APG
+ *   pattern for combobox predictive completion.
+ * - `'match'`: bolds the matched query — useful for search-result highlighting
+ *   in longer text.
+ *
+ * When `query` is set, `**bold**` markdown in the same field is ignored.
+ *
+ * @attr {string} query - Query substring to bold-highlight across text fields. Empty = no marking.
+ * @attr {string} query-mark-mode - 'match' | 'predictive' (default: 'predictive')
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { textCellStyles } from './text-cell.styles.js';
 import { template } from './text-cell.template.js';
 import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
+import type { QueryMarkMode } from '../../../../utilities/render-marked.js';
 
 type Size = 'sm' | 'md';
 type Color = 'default' | 'secondary' | 'inherit';
@@ -72,6 +86,12 @@ export class NLDDTextCell extends VisibilityMixin(LitElement) {
 
 	@property({ type: String, attribute: 'supporting-text' })
 	supportingText = '';
+
+	@property({ type: String })
+	query = '';
+
+	@property({ type: String, attribute: 'query-mark-mode' })
+	queryMarkMode: QueryMarkMode = 'predictive';
 
 	override updated(changed: Map<string, unknown>) {
 		super.updated(changed);

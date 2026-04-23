@@ -39,7 +39,7 @@ export default {
 	args: { placement: 'right', modeless: false },
 };
 
-const openNext = (e) => e.currentTarget.nextElementSibling.show();
+const openNext = (e: Record<string, any>) => e.currentTarget.nextElementSibling.show();
 
 const pageContent = html`
 	<nldd-simple-section>
@@ -54,7 +54,7 @@ const pageContent = html`
 	</nldd-simple-section>
 `;
 
-const Template = (args) => html`
+const Template = (args: Record<string, any>) => html`
 	<nldd-button text="Open sheet" @click=${openNext}></nldd-button>
 	<nldd-sheet placement=${args.placement} ?modeless=${args.modeless}>
 		<nldd-page sticky-header>

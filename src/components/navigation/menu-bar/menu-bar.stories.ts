@@ -39,7 +39,9 @@ const Template = ({
 	</div>
 `;
 
-export const Default = Template.bind({});
+export const Default = {
+	render: Template,
+};
 
 export const FewItems = {
 	render: () => html`

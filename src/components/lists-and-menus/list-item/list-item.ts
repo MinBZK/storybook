@@ -3,7 +3,7 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { listItemStyles } from './list-item.styles.js';
 import { template } from './list-item.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
-import type { NLDDList } from '../list/list.js';
+import type { NLDDList, ListType } from '../list/list.js';
 import '../cells/spacer-cell/spacer-cell.js';
 
 export type ListItemSize = 'sm' | 'md';
@@ -14,7 +14,12 @@ export type ListItemType = 'button';
  * Renders as a link when `href` is set, as a button when `type="button"`, or
  * as a plain container otherwise.
  *
- * @slot         - Main content area (cells)
+ * The item synchronises its ARIA with its parent `nldd-list`'s `type`:
+ * - `list` parent       → `role="listitem"`
+ * - `navigation` parent → `role="listitem"` + `aria-current="page"` on the
+ *                         inner `<a>` / `<button>` when `selected`
+ *
+ * @slot         - Main content area
  * @slot start   - Content at the start of the row
  * @slot end     - Content at the end of the row
  */
@@ -25,27 +30,14 @@ export class NLDDListItem extends LitElement {
 	@property({ reflect: true })
 	size: ListItemSize = 'md';
 
-	/**
-	 * Visual-only state: renders the item with the selected background.
-	 * Does NOT set any ARIA attribute — the correct ARIA (aria-selected in
-	 * a listbox, aria-current in navigation) depends on context and is the
-	 * consumer's responsibility.
-	 */
 	@property({ type: Boolean, reflect: true })
 	selected = false;
-
-	/**
-	 * Visual-only high-contrast state. Like `selected`, no ARIA is applied —
-	 * the consumer is responsible for the correct ARIA for their context.
-	 */
-	@property({ type: Boolean, reflect: true })
-	highlighted = false;
 
 	/** When set, renders the item as a button. */
 	@property({ reflect: true })
 	type?: ListItemType;
 
-	/** When set, renders the item as a link (overrides type). */
+	/** When set, renders the item as a link. */
 	@property({ reflect: true })
 	href?: string;
 
@@ -58,6 +50,9 @@ export class NLDDListItem extends LitElement {
 
 	@state()
 	private _showEnd = false;
+
+	@state()
+	private _parentType: ListType = 'list';
 
 	@query('.list-item__action')
 	private _action?: HTMLElement;
@@ -100,8 +95,14 @@ export class NLDDListItem extends LitElement {
 		this._observeEndSlot();
 	}
 
+	override updated(changed: Map<string, unknown>) {
+		if (changed.has('selected') || changed.has('type') || changed.has('href') || changed.has('_parentType')) {
+			this._updateAriaState();
+		}
+	}
+
 	/**
-	 * Syncs the item with the closest parent nldd-list variant.
+	 * Syncs the item with the closest parent nldd-list (variant + type).
 	 * Called once in firstUpdated. If the item is moved to a different nldd-list
 	 * after first render, the MutationObserver will still watch the original list.
 	 * This is acceptable as moving items between lists is not a supported use case.
@@ -110,17 +111,19 @@ export class NLDDListItem extends LitElement {
 		const list = this.closest<NLDDList>('nldd-list');
 		if (!list) {
 			if (import.meta.env?.DEV) {
-				console.warn('nldd-list-item: no parent nldd-list found. Variant sync will not work if appended into a list after first render.');
+				console.warn('nldd-list-item: no parent nldd-list found. Variant/type sync will not work if appended into a list after first render.');
 			}
 			return;
 		}
 		this._applyVariant(list.variant);
+		this._applyParentType(list.type);
 		this._listObserver = new MutationObserver(() => {
 			this._applyVariant(list.variant);
+			this._applyParentType(list.type);
 		});
 		this._listObserver.observe(list, {
 			attributes: true,
-			attributeFilter: ['variant'],
+			attributeFilter: ['variant', 'type'],
 		});
 	}
 
@@ -128,6 +131,22 @@ export class NLDDListItem extends LitElement {
 		this._isBoxed = variant === 'box' || variant === 'box-on-tinted';
 		this.classList.toggle('is-boxed', this._isBoxed);
 		this._updateVisibility();
+	}
+
+	private _applyParentType(type: ListType) {
+		this._parentType = type;
+	}
+
+	private _updateAriaState() {
+		this.setAttribute('role', 'listitem');
+
+		// aria-current on the inner action (link/button) — navigation only
+		const action = this.shadowRoot?.querySelector<HTMLElement>('.list-item__action');
+		if (this._parentType === 'navigation' && this.selected && action) {
+			action.setAttribute('aria-current', 'page');
+		} else {
+			action?.removeAttribute('aria-current');
+		}
 	}
 
 	private _updateVisibility() {
@@ -167,7 +186,12 @@ export class NLDDListItem extends LitElement {
 	};
 
 	override render() {
-		return template(this.type, this.href, this._showStart, this._showEnd);
+		return template(
+			this.type,
+			this.href,
+			this._showStart,
+			this._showEnd,
+		);
 	}
 }
 

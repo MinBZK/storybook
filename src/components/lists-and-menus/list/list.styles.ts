@@ -42,21 +42,21 @@ export const listStyles = css`
 	}
 
 
+	/* # Empty slot */
+
+	.list__empty {
+		padding: var(--primitives-space-16);
+	}
+
+	.list__empty[hidden] {
+		display: none;
+	}
+
+
 	/* # No dividers */
 
 	:host([no-dividers]) {
 		--context-list-divider-display: none;
-	}
-
-
-	/* # Variant: simple */
-
-	:host([variant='simple']) .list__items {
-		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
-	}
-
-	:host([variant='simple'][no-dividers]) .list__items {
-		border-top: none;
 	}
 
 

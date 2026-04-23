@@ -1,6 +1,6 @@
-export type InputModality = 'keyboard' | 'pointer';
+export type InputModality = 'keyboard' | 'mouse' | 'touch';
 
-let modality: InputModality = 'pointer';
+let modality: InputModality = 'mouse';
 let initialized = false;
 let controller: AbortController | null = null;
 
@@ -16,13 +16,12 @@ function init(): void {
 		}
 	}, { signal });
 
-	document.addEventListener('mousedown', () => {
-		modality = 'pointer';
+	// pointerdown carries `pointerType` ('mouse' | 'pen' | 'touch'). Use it so
+	// we can distinguish touch from mouse in one listener. Pen is grouped with
+	// mouse: stylus users generally expect the same hover/focus semantics.
+	document.addEventListener('pointerdown', (e: PointerEvent) => {
+		modality = e.pointerType === 'touch' ? 'touch' : 'mouse';
 	}, { signal });
-
-	document.addEventListener('touchstart', () => {
-		modality = 'pointer';
-	}, { passive: true, signal });
 }
 
 export function getInputModality(): InputModality {
@@ -34,14 +33,24 @@ export function isKeyboardMode(): boolean {
 	return getInputModality() === 'keyboard';
 }
 
+/** True for mouse OR touch — any non-keyboard input. */
 export function isPointerMode(): boolean {
-	return getInputModality() === 'pointer';
+	const m = getInputModality();
+	return m === 'mouse' || m === 'touch';
+}
+
+export function isMouseMode(): boolean {
+	return getInputModality() === 'mouse';
+}
+
+export function isTouchMode(): boolean {
+	return getInputModality() === 'touch';
 }
 
 /** @internal Reset state for testing only. */
 export function _resetInputModalityForTesting(): void {
 	controller?.abort();
 	controller = null;
-	modality = 'pointer';
+	modality = 'mouse';
 	initialized = false;
 }

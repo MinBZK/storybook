@@ -5,8 +5,10 @@ import { template } from './list.template.js';
 import type { NLDDListItem } from '../list-item/list-item.js';
 import { nlddListTranslations } from './list.i18n.js';
 import type { NLDDListTranslations } from './list.i18n.js';
+import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 
 export type ListVariant = 'simple' | 'box' | 'box-on-tinted';
+export type ListType = 'list' | 'navigation';
 
 export interface NLDDReorderEventDetail {
 	fromIndex: number;
@@ -15,21 +17,35 @@ export interface NLDDReorderEventDetail {
 
 /**
  * A container for `nldd-list-item` elements, with optional header and footer slots.
- * When `reorderable` is set, items can be reordered by drag or keyboard.
  *
- * On reorder, the list dispatches `nldd-reorder` with `fromIndex` / `toIndex`
- * and expects the consumer to mutate the DOM (or their data model that
- * renders the DOM). Focus is restored to the moved item's drag handle via a
- * single `requestAnimationFrame` — this assumes the consumer reorders
- * **synchronously** in the event handler. Async renderers (React, Vue, …)
- * that update the DOM on a later tick will miss the focus restore and should
- * manage focus themselves after their render commits.
+ * The `type` attribute switches the list's a11y role and behaviour:
+ * - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed.
+ *                     Items may individually be buttons or links; the list itself
+ *                     has no special keyboard semantics.
+ * - `navigation`     — host `role="navigation"`, items with `selected` get
+ *                     `aria-current="page"` on their inner `<a>` or `<button>`.
+ *
+ * Selection state is consumer-managed: the list never mutates `selected` itself.
+ *
+ * ### Reorder
+ *
+ * On reorder (type="list" + reorderable), the list dispatches `nldd-reorder` with
+ * `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their
+ * data model that renders the DOM). Focus is restored to the moved item's drag
+ * handle via a single `requestAnimationFrame` — this assumes the consumer
+ * reorders **synchronously** in the event handler. Async renderers (React,
+ * Vue, …) that update the DOM on a later tick will miss the focus restore and
+ * should manage focus themselves after their render commits.
  *
  * @slot         - List items (`nldd-list-item`)
  * @slot header  - Content above the list body (e.g. `nldd-title`)
  * @slot footer  - Content below the list body (e.g. a short description)
+ * @slot empty   - Shown when no items are visible (all `[hidden]` or none). Defaults
+ *                 to `nldd-inline-dialog` with `empty-text` / `empty-supporting-text`
+ *                 (falling back to Dutch i18n "Geen resultaten"). Slot content
+ *                 overrides the default dialog entirely.
  *
- * @fires nldd-reorder - Fired on successful drop: `{ fromIndex, toIndex }`
+ * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
  */
 @customElement('nldd-list')
 export class NLDDList extends LitElement {
@@ -39,13 +55,32 @@ export class NLDDList extends LitElement {
 	@property({ reflect: true })
 	variant: ListVariant = 'simple';
 
-	/** Enables drag-to-reorder. Sets `draggable` on each `nldd-list-item`. */
+	/** A11y semantics. See class docblock. */
+	@property({ reflect: true })
+	type: ListType = 'list';
+
+	/** Enables drag-to-reorder. Only valid when `type="list"` (the default). */
 	@property({ type: Boolean, reflect: true })
 	reorderable = false;
 
 	/** Hides dividers between list items. */
 	@property({ type: Boolean, reflect: true, attribute: 'no-dividers' })
 	noDividers = false;
+
+	/**
+	 * Text for the default empty-state dialog. Falls back to the Dutch
+	 * i18n default ("Geen resultaten"). Ignored when consumers slot their
+	 * own content into `[slot=empty]`.
+	 */
+	@property({ type: String, attribute: 'empty-text' })
+	emptyText = '';
+
+	/**
+	 * Optional supporting text for the default empty-state dialog.
+	 * Ignored when consumers slot their own content into `[slot=empty]`.
+	 */
+	@property({ type: String, attribute: 'empty-supporting-text' })
+	emptySupportingText = '';
 
 	/** Override one or more translation keys. Unset keys fall back to the Dutch default. */
 	@property({ type: Object })
@@ -56,6 +91,9 @@ export class NLDDList extends LitElement {
 
 	@state()
 	private _hasHeader = false;
+
+	@state()
+	private _isEmpty = false;
 
 	// — Drag state ——————————————————————————————————————————————————————————
 
@@ -68,17 +106,54 @@ export class NLDDList extends LitElement {
 	private _cloneOffsetY = 0;
 	private _listRect: DOMRect | null = null;
 
+	// — Observers ————————————————————————————————————————————————————————————
+
+	private _itemsObserver: MutationObserver | null = null;
+
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
 	override firstUpdated() {
 		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
-		slot?.addEventListener('slotchange', () => this._updateItems());
+		slot?.addEventListener('slotchange', () => {
+			this._updateItems();
+			this._updateEmpty();
+		});
 		this._updateItems();
+		this._updateEmpty();
 
 		const headerSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="header"]');
 		headerSlot?.addEventListener('slotchange', () => {
 			this._hasHeader = (headerSlot.assignedElements().length > 0);
 		});
+
+		// Watch direct children for add/remove (nldd-list-item gains/lose) and
+		// for `hidden` toggles on those direct children (consumer-driven
+		// filtering). `subtree: true` is required because `attributes` on the
+		// host itself isn't relevant — we need `hidden` changes on the items.
+		// The callback filters mutations so we only work when a direct child
+		// is affected; nested `hidden` toggles on e.g. cells inside items
+		// (which can happen via container-query `[hidden]` in visibility-mixin)
+		// no longer trigger item/empty recalculation.
+		this._itemsObserver = new MutationObserver((mutations) => {
+			const relevant = mutations.some(m => {
+				if (m.type === 'childList') return m.target === this;
+				if (m.type === 'attributes' && m.attributeName === 'hidden') {
+					return m.target instanceof Element && m.target.parentElement === this;
+				}
+				return false;
+			});
+			if (!relevant) return;
+			this._updateItems();
+			this._updateEmpty();
+		});
+		this._itemsObserver.observe(this, {
+			childList: true,
+			subtree: true,
+			attributes: true,
+			attributeFilter: ['hidden'],
+		});
+
+		this._applyHostType();
 	}
 
 	override connectedCallback() {
@@ -91,15 +166,49 @@ export class NLDDList extends LitElement {
 		super.disconnectedCallback();
 		this.removeEventListener('pointerdown', this._onPointerDown);
 		this.removeEventListener('keydown', this._onKeyDown);
+		this._itemsObserver?.disconnect();
+		this._itemsObserver = null;
 		this._cancelDrag();
 	}
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('reorderable')) {
+		if (changed.has('reorderable') || changed.has('type')) {
+			if (this.reorderable && this.type !== 'list' && import.meta.env?.DEV) {
+				console.warn('nldd-list: `reorderable` is only valid when type="list". Ignoring.');
+			}
 			this._updateItems();
 		}
 		if (changed.has('translations')) {
 			this._mergedTranslations = { ...nlddListTranslations, ...this.translations };
+		}
+		if (changed.has('type')) {
+			this._applyHostType();
+		}
+	}
+
+	// — Host attribute routing ————————————————————————————————————————————————
+
+	private _applyHostType() {
+		if (this.type === 'navigation') {
+			this.setAttribute('role', 'navigation');
+			if (!this.hasAttribute('aria-label') && !this.hasAttribute('aria-labelledby')) {
+				this.setAttribute('aria-label', this._t('components.list.navigation-label-text'));
+				this.setAttribute('data-nldd-auto-label', '');
+			}
+		} else {
+			if (this.getAttribute('role') === 'navigation') {
+				this.removeAttribute('role');
+			}
+			if (this.hasAttribute('data-nldd-auto-label')) {
+				// Only strip the label we set ourselves. If the consumer overrode
+				// `aria-label` after our auto-set, the value no longer matches and
+				// we leave it intact. Either way, clear the sentinel.
+				const autoLabel = this._t('components.list.navigation-label-text');
+				if (this.getAttribute('aria-label') === autoLabel) {
+					this.removeAttribute('aria-label');
+				}
+				this.removeAttribute('data-nldd-auto-label');
+			}
 		}
 	}
 
@@ -114,9 +223,12 @@ export class NLDDList extends LitElement {
 
 	private _updateItems() {
 		const items = this._getItems();
-		items.forEach((item, index) => {
-			item.classList.toggle('is-last', index === items.length - 1);
-			if (this.reorderable) {
+		const visibleItems = items.filter(item => !item.hasAttribute('hidden'));
+		const lastVisible = visibleItems[visibleItems.length - 1];
+		const reorderActive = this.reorderable && this.type === 'list';
+		items.forEach((item) => {
+			item.classList.toggle('is-last', item === lastVisible);
+			if (reorderActive) {
 				item.setAttribute('reorderable', '');
 			} else {
 				item.removeAttribute('reorderable');
@@ -124,10 +236,15 @@ export class NLDDList extends LitElement {
 		});
 	}
 
+	private _updateEmpty() {
+		const items = this._getItems();
+		this._isEmpty = items.length === 0 || items.every(item => item.hasAttribute('hidden'));
+	}
+
 	// — Drag: pointer ————————————————————————————————————————————————————————
 
 	private _onPointerDown = (event: PointerEvent) => {
-		if (!this.reorderable) return;
+		if (!this.reorderable || this.type !== 'list') return;
 
 		const path = event.composedPath() as Element[];
 		const hasDragHandle = path.some(
@@ -197,13 +314,13 @@ export class NLDDList extends LitElement {
 		this._cancelDrag();
 	};
 
-	// — Drag: keyboard ———————————————————————————————————————————————————————
+	// — Keyboard reorder —————————————————————————————————————————————————————
 
 	// ArrowUp/ArrowDown on a focused drag handle moves the item immediately.
 	// Mirrors nldd-document-tab-bar: no grab-and-drop cycle — each arrow press
 	// reorders the DOM, fires nldd-reorder and restores focus on the handle.
 	private _onKeyDown = (event: KeyboardEvent) => {
-		if (!this.reorderable) return;
+		if (!this.reorderable || this.type !== 'list') return;
 		if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
 
 		const path = event.composedPath() as Element[];
@@ -242,7 +359,7 @@ export class NLDDList extends LitElement {
 				composed: true,
 			}),
 		);
-		this._announce(this._t('components.list.drag-moved-text', { position: targetIndex + 1 }));
+		this._announce(this._t('components.list.reorder-moved-text', { position: targetIndex + 1 }));
 
 		// Wait for the consumer to reorder, then restore focus on the moved item's handle.
 		requestAnimationFrame(() => focused.focus());
@@ -346,7 +463,7 @@ export class NLDDList extends LitElement {
 					composed: true,
 				}),
 			);
-			this._announce(this._t('components.list.drag-dropped-text', { position: toIndex + 1 }));
+			this._announce(this._t('components.list.reorder-dropped-text', { position: toIndex + 1 }));
 
 			// Restore focus to the drag handle on the moved item after the
 			// consumer has had a chance to reorder the DOM in response to nldd-reorder.
@@ -357,14 +474,14 @@ export class NLDDList extends LitElement {
 				handle?.focus();
 			});
 		} else {
-			this._announce(this._t('components.list.drag-no-change-text'));
+			this._announce(this._t('components.list.reorder-no-change-text'));
 		}
 	}
 
 	private _cancelDrag() {
 		if (!this._draggingEl) return;
 		this._cleanupDrag();
-		this._announce(this._t('components.list.drag-cancelled-text'));
+		this._announce(this._t('components.list.reorder-cancelled-text'));
 	}
 
 	private _cleanupDrag() {
@@ -417,7 +534,14 @@ export class NLDDList extends LitElement {
 	}
 
 	override render() {
-		return template(this._t('components.list.items-label-text'), this._hasHeader);
+		return template(
+			this._t('components.list.items-label-text'),
+			this._hasHeader,
+			this.type,
+			this._isEmpty,
+			this.emptyText || this._t('components.list.empty-text'),
+			this.emptySupportingText,
+		);
 	}
 }
 

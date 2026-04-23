@@ -38,5 +38,7 @@ export const template = (
 			>${areas(showStart, showEnd)}</button>
 		</div>`;
 	}
-	return html`<div class="list-item">${areas(showStart, showEnd)}</div>`;
+	return html`<div class="list-item">
+		${areas(showStart, showEnd)}
+	</div>`;
 };

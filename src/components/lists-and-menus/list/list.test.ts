@@ -201,4 +201,179 @@ describe('nldd-list', () => {
 		expect(firstItem.classList.contains('is-dragging')).toBe(false);
 		expect(el.querySelector('.nldd-list-drag-placeholder')).toBeNull();
 	});
+
+
+	// — Type: content (default) ——————————————————————————————————————————————
+
+	it('defaults to type="list" with role="list" on .list__items', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('type')).toBe('list');
+		const itemsEl = el.shadowRoot!.querySelector('.list__items');
+		expect(itemsEl?.getAttribute('role')).toBe('list');
+		expect(el.hasAttribute('role')).toBe(false);
+	});
+
+	it('drops role="list" on .list__items when the list is empty', async () => {
+		// Empty-state slot renders non-listitem content (nldd-inline-dialog);
+		// keeping role="list" would violate ARIA's listitem-only child rule.
+		el = await fixture('<nldd-list></nldd-list>');
+		await waitForUpdate(el);
+		const itemsEl = el.shadowRoot!.querySelector('.list__items');
+		expect(itemsEl?.hasAttribute('role')).toBe(false);
+	});
+
+
+	// — Type: navigation ——————————————————————————————————————————————————————
+
+	it('navigation: host gets role="navigation" and a default aria-label', async () => {
+		el = await fixture('<nldd-list type="navigation"></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('role')).toBe('navigation');
+		expect(el.getAttribute('aria-label')).toBe('Navigatie');
+	});
+
+	it('navigation: respects a consumer-provided aria-label', async () => {
+		el = await fixture('<nldd-list type="navigation" aria-label="Hoofdmenu"></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Hoofdmenu');
+	});
+
+	it('navigation: switching back to content removes role and auto-label', async () => {
+		el = await fixture('<nldd-list type="navigation"></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('aria-label')).toBe(true);
+
+		el.setAttribute('type', 'list');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('role')).toBe(false);
+		expect(el.hasAttribute('aria-label')).toBe(false);
+	});
+
+	it('navigation: keeps consumer-set aria-label when switching back to list', async () => {
+		// Edge case: auto-label was applied, consumer then overrode it, then
+		// type flipped back. We should not wipe the consumer's label.
+		el = await fixture('<nldd-list type="navigation"></nldd-list>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Navigatie');
+
+		el.setAttribute('aria-label', 'Mijn menu');
+		el.setAttribute('type', 'list');
+		await waitForUpdate(el);
+		expect(el.getAttribute('aria-label')).toBe('Mijn menu');
+		expect(el.hasAttribute('data-nldd-auto-label')).toBe(false);
+	});
+
+
+	// — Type / reorderable conflict ———————————————————————————————————————————
+
+	it('does not set reorderable on items when type is not list', async () => {
+		el = await fixture(`
+			<nldd-list type="navigation" reorderable>
+				<nldd-list-item id="a"></nldd-list-item>
+				<nldd-list-item id="b"></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		expect(el.querySelector('#a')?.hasAttribute('reorderable')).toBe(false);
+		expect(el.querySelector('#b')?.hasAttribute('reorderable')).toBe(false);
+	});
+
+
+	// — Empty slot ————————————————————————————————————————————————————————————
+
+	it('empty slot: hidden when items are present', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item></nldd-list-item>
+				<div slot="empty">No results</div>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('empty slot: visible when there are no items', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<div slot="empty">No results</div>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('empty slot: visible when all items are [hidden]', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item hidden></nldd-list-item>
+				<nldd-list-item hidden></nldd-list-item>
+				<div slot="empty">No results</div>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('empty slot: toggles when an item is hidden at runtime', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-list-item id="a"></nldd-list-item>
+				<div slot="empty">No results</div>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
+		expect(empty.hasAttribute('hidden')).toBe(true);
+
+		el.querySelector('#a')!.setAttribute('hidden', '');
+		await waitForUpdate(el);
+		expect(empty.hasAttribute('hidden')).toBe(false);
+	});
+
+
+	// — Empty default inline-dialog ——————————————————————————————————————————
+
+	it('empty default: renders nldd-inline-dialog with i18n text when no items', async () => {
+		el = await fixture('<nldd-list></nldd-list>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog).not.toBeNull();
+		expect(dialog!.getAttribute('text')).toBe('Geen resultaten');
+	});
+
+	it('empty default: empty-text attribute overrides the i18n default', async () => {
+		el = await fixture('<nldd-list empty-text="Niets gevonden"></nldd-list>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog!.getAttribute('text')).toBe('Niets gevonden');
+	});
+
+	it('empty default: empty-supporting-text populates the inline-dialog', async () => {
+		el = await fixture('<nldd-list empty-supporting-text="Probeer iets anders."></nldd-list>');
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(dialog!.getAttribute('supporting-text')).toBe('Probeer iets anders.');
+	});
+
+	it('empty default: slotted content replaces the default dialog', async () => {
+		el = await fixture(`
+			<nldd-list>
+				<nldd-inline-dialog slot="empty" text="Custom"></nldd-inline-dialog>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		// Only the slotted dialog should be visible (slot fallback suppressed)
+		const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="empty"]')!;
+		const assigned = slot.assignedElements();
+		expect(assigned.length).toBe(1);
+		expect(assigned[0].getAttribute('text')).toBe('Custom');
+	});
 });

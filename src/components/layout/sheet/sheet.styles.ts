@@ -12,6 +12,7 @@ export const sheetStyles = css`
 
 	:host {
 		display: block;
+		--_custom-width: initial;
 	}
 
 
@@ -92,12 +93,12 @@ export const sheetStyles = css`
 	:host([placement='right']) .sheet,
 	:host(:not([placement])) .sheet {
 		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
-		width: var(--components-sheet-side-md-width);
+		width: min(var(--_custom-width, var(--components-sheet-side-md-width)), calc(100vw - var(--components-sheet-side-inset) * 2));
 		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: var(--components-sheet-side-lg-width);
+			width: min(var(--_custom-width, var(--components-sheet-side-lg-width)), calc(100vw - var(--components-sheet-side-inset) * 2));
 		}
 
 		&[open] {
@@ -114,12 +115,12 @@ export const sheetStyles = css`
 
 	:host([placement='left']) .sheet {
 		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
-		width: var(--components-sheet-side-md-width);
+		width: min(var(--_custom-width, var(--components-sheet-side-md-width)), calc(100vw - var(--components-sheet-side-inset) * 2));
 		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: var(--components-sheet-side-lg-width);
+			width: min(var(--_custom-width, var(--components-sheet-side-lg-width)), calc(100vw - var(--components-sheet-side-inset) * 2));
 		}
 
 		&[open] {

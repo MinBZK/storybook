@@ -16,7 +16,7 @@
  * @slot actions - nldd-button elements, wrapped in nldd-button-group (max 3)
  */
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { inlineDialogStyles } from './inline-dialog.styles.js';
 import { inlineDialogTemplate } from './inline-dialog.template.js';
 import '../../content/icon/icon.js';
@@ -43,10 +43,38 @@ export class NLDDInlineDialog extends LitElement {
 	@property({ type: Number, reflect: true, attribute: 'heading-level' })
 	headingLevel: 1 | 2 | 3 | 4 | 5 | 6 | null = null;
 
+	@state()
+	_hasContent = false;
+
+	@state()
+	_hasActions = false;
+
 	get _resolvedIconName(): string {
 		if (this.variant === 'alert') return 'alert';
 		if (this.iconName) return this.iconName;
 		return '';
+	}
+
+	override firstUpdated() {
+		const contentSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
+		const actionsSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="actions"]');
+		// Check assignedNodes (not assignedElements) so that plain text content
+		// — e.g. `<nldd-inline-dialog>Some note</nldd-inline-dialog>` — is also
+		// detected. Whitespace-only text nodes (formatting indentation) are
+		// filtered out.
+		const hasMeaningfulContent = (slot: HTMLSlotElement | undefined | null): boolean => {
+			const nodes = slot?.assignedNodes({ flatten: true }) ?? [];
+			return nodes.some(n =>
+				n.nodeType === Node.ELEMENT_NODE
+				|| (n.nodeType === Node.TEXT_NODE && (n.textContent?.trim() ?? '') !== ''),
+			);
+		};
+		const syncContent = () => { this._hasContent = hasMeaningfulContent(contentSlot); };
+		const syncActions = () => { this._hasActions = hasMeaningfulContent(actionsSlot); };
+		contentSlot?.addEventListener('slotchange', syncContent);
+		actionsSlot?.addEventListener('slotchange', syncActions);
+		syncContent();
+		syncActions();
 	}
 
 	override render() {

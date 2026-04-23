@@ -21,10 +21,10 @@ export function inlineDialogTemplate(component: NLDDInlineDialog) {
 			${component.supportingText ? html`
 				<p class="inline-dialog__supporting-text">${component.supportingText}</p>
 			` : nothing}
-			<div class="inline-dialog__content">
+			<div class="inline-dialog__content" ?hidden=${!component._hasContent}>
 				<slot></slot>
 			</div>
-			<div class="inline-dialog__actions">
+			<div class="inline-dialog__actions" ?hidden=${!component._hasActions}>
 				<nldd-button-group orientation="vertical">
 					<slot name="actions"></slot>
 				</nldd-button-group>

@@ -5,10 +5,12 @@ import { menuStyles, menuItemStyles, menuDividerStyles } from './menu.styles.js'
 import { menuTemplate, menuItemTemplate, menuDividerTemplate } from './menu.template.js';
 import { nlddMenuTranslations } from './menu.i18n.js';
 import type { NLDDMenuTranslations } from './menu.i18n.js';
+import type { QueryMarkMode } from '../../../utilities/render-marked.js';
 import '../../lists-and-menus/cells/icon-cell/icon-cell.js';
 import '../../lists-and-menus/cells/spacer-cell/spacer-cell.js';
 import '../../lists-and-menus/cells/text-cell/text-cell.js';
 import '../../content/icon/icon.js';
+import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import { isKeyboardMode } from '../../../utilities/input-modality.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
@@ -33,15 +35,16 @@ if (!customElements.get('nldd-menu-divider')) {
 /**
  * A single item within an nldd-menu.
  *
- * @attr {string}  text     - Display text. Supports **bold** markdown syntax when set
- *                            programmatically by nldd-menu's filter method. See filter() for details.
- * @attr {string}  value    - Form value. Falls back to text when not set.
- * @attr {string}  aliases  - Space-separated alternative search terms.
- * @attr {string}  details  - Secondary label shown on the right side.
- * @attr {string}  icon     - Icon name rendered before the text (nldd-icon name).
- * @attr {string}  type     - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
- * @attr {boolean} selected - Selected state for checkbox and radio types.
- * @attr {boolean} disabled - Disabled state.
+ * @attr {string}  text      - Display text. Supports **bold** markdown syntax.
+ * @attr {string}  value     - Form value. Falls back to text when not set.
+ * @attr {string}  aliases   - Space-separated alternative search terms.
+ * @attr {string}  details   - Secondary label shown on the right side.
+ * @attr {string}  icon      - Icon name rendered before the text (nldd-icon name).
+ * @attr {string}  type      - Item type: 'button' | 'checkbox' | 'radio'. Default: 'button'.
+ * @attr {boolean} selected        - Selected state for checkbox and radio types.
+ * @attr {boolean} disabled        - Disabled state.
+ * @attr {string}  query           - Query substring to bold-highlight in text. Set by menu's filter(); also settable by consumers.
+ * @attr {string}  query-mark-mode - 'match' | 'predictive' (default: 'predictive'). See text-cell for details.
  *
  * @fires select - Fired when the item is clicked and not disabled.
  */
@@ -74,25 +77,22 @@ export class NLDDMenuItem extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	/** Internal display text set by nldd-menu's filter with bold markers applied. */
-	@state()
-	_displayText = '';
+	@property({ type: String, reflect: true })
+	query = '';
 
-	/** Set by nldd-menu during filtering to apply bold markers to matching text. */
-	setDisplayText(text: string): void {
-		this._displayText = text;
-	}
+	@property({ type: String, reflect: true, attribute: 'query-mark-mode' })
+	queryMarkMode: QueryMarkMode = 'predictive';
 
 	/** Set by nldd-menu. Not part of the public API. */
 	@state()
 	menuVariant: 'menu' | 'listbox' = 'menu';
 
-	private static _counter = 0;
+	private static _idCounter = 0;
 
 	override connectedCallback(): void {
 		super.connectedCallback();
 		if (!this.id) {
-			this.id = `nldd-menu-item-${NLDDMenuItem._counter++}`;
+			this.id = `nldd-menu-item-${NLDDMenuItem._idCounter++}`;
 		}
 		this.addEventListener('focusin', () => {
 			this.setAttribute('data-focused', '');
@@ -153,16 +153,21 @@ const defaultFilterFn = (query: string, item: NLDDMenuItem): boolean => {
  * Note: Only type="button" items are supported when used inside nldd-combo-box-field.
  * Radio and checkbox types may be used in standalone menus.
  *
- * @attr {string}  anchor         - ID of the anchor element.
- * @attr {string}  placement      - Floating UI placement. Default: 'bottom-start'.
- * @attr {string}  empty-text     - Text shown when all items are hidden or no items exist.
- * @attr {string}  width          - Explicit width. Sets --_menu-width internally.
- * @attr {number}  max-items      - Maximum number of visible items before scrolling.
- *                                  Sets --_menu-max-items internally. Default: 0 (no limit).
- * @attr {object}  translations   - Override one or more translation keys.
- * @attr {Function} filterFn      - Custom filter function (query, item) => boolean.
+ * @attr {string}  anchor               - ID of the anchor element.
+ * @attr {string}  placement            - Floating UI placement. Default: 'bottom-start'.
+ * @attr {string}  empty-text           - Text of the default empty-state dialog. Falls back
+ *                                        to Dutch i18n "Geen opties beschikbaar".
+ * @attr {string}  empty-supporting-text - Supporting text of the default empty-state dialog.
+ * @attr {string}  width                - Explicit width. Sets --_menu-width internally.
+ * @attr {number}  max-items            - Maximum number of visible items before scrolling.
+ *                                        Sets --_menu-max-items internally. Default: 0 (no limit).
+ * @attr {object}  translations         - Override one or more translation keys.
+ * @attr {Function} filterFn            - Custom filter function (query, item) => boolean.
  *
  * @slot - nldd-menu-item and nldd-menu-divider elements.
+ * @slot empty - Shown when no items are visible. Defaults to `nldd-inline-dialog`
+ *               driven by `empty-text` / `empty-supporting-text`. Slot content
+ *               overrides the default dialog entirely.
  */
 export class NLDDMenu extends LitElement {
 	static override styles = menuStyles;
@@ -186,6 +191,9 @@ export class NLDDMenu extends LitElement {
 
 	@property({ type: String, attribute: 'empty-text' })
 	emptyText = '';
+
+	@property({ type: String, attribute: 'empty-supporting-text' })
+	emptySupportingText = '';
 
 
 	/** Explicit width. Sets --_menu-width internally. */
@@ -308,6 +316,10 @@ export class NLDDMenu extends LitElement {
 		document.addEventListener('click', this._handleDocumentClick);
 	}
 
+	override firstUpdated(): void {
+		this._updateEmptyState();
+	}
+
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
 		this.removeEventListener('toggle', this._handleToggle);
@@ -371,43 +383,18 @@ export class NLDDMenu extends LitElement {
 	/**
 	 * Filter items based on a query string.
 	 *
-	 * Matching items are kept visible. Non-matching items are hidden.
+	 * Matching items are kept visible. Non-matching items are hidden. Matching
+	 * items receive `query=<query>` so their text-cell bolds the non-typed
+	 * remainder (predictive completion — the ARIA APG pattern for combobox).
 	 *
-	 * For visible items, the non-typed portion of the text is marked bold using
-	 * **markdown** syntax, which the template renders as <b> tags. This follows
-	 * the principle that the typed characters are already known to the user —
-	 * emphasising the predictive completion helps users scan the differences
-	 * between suggestions and identify the new information at a glance.
-	 *
-	 * When the query is empty, all items are shown and bold markers are cleared.
+	 * When the query is empty, all items are shown and `query` is cleared.
 	 */
 	public filter(query: string): void {
 		const allItems = Array.from(this.querySelectorAll('nldd-menu-item')) as NLDDMenuItem[];
 		allItems.forEach(item => {
 			const matches = !query || this.filterFn(query, item);
 			item.toggleAttribute('hidden', !matches);
-			if (!query) {
-				item.setDisplayText('');
-			} else if (matches) {
-				const q = query.toLowerCase();
-				let remaining = item.text;
-				let remainingLower = item.text.toLowerCase();
-				const parts: string[] = [];
-
-				while (remaining.length > 0) {
-					const idx = remainingLower.indexOf(q);
-					if (idx === -1) {
-						parts.push(`**${remaining}**`);
-						break;
-					}
-					if (idx > 0) parts.push(`**${remaining.slice(0, idx)}**`);
-					parts.push(remaining.slice(idx, idx + query.length));
-					remaining = remaining.slice(idx + query.length);
-					remainingLower = remaining.toLowerCase();
-				}
-
-				item.setDisplayText(parts.join(''));
-			}
+			item.query = (matches && query) ? query : '';
 		});
 		this._setHighlight(null);
 		this._updateEmptyState();

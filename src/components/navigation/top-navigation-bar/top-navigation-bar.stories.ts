@@ -86,19 +86,25 @@ const Template = ({
 	</div>
 `;
 
-export const Default = Template.bind({});
-
-export const WithLogoWordmark = Template.bind({});
-WithLogoWordmark.args = {
-	logoTitle: 'DigID',
-	logoHref: '/',
-	siteHref: '/',
+export const Default = {
+	render: Template,
 };
 
-export const WithBackButton = Template.bind({});
-WithBackButton.args = {
-	backHref: '/',
-	backText: 'Terug naar overzicht',
+export const WithLogoWordmark = {
+	render: Template,
+	args: {
+		logoTitle: 'DigID',
+		logoHref: '/',
+		siteHref: '/',
+	},
+};
+
+export const WithBackButton = {
+	render: Template,
+	args: {
+		backHref: '/',
+		backText: 'Terug naar overzicht',
+	},
 };
 
 export const MijnOverheidZakelijk = {

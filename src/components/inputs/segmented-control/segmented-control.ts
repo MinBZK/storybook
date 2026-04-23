@@ -251,11 +251,11 @@ export class NLDDSegmentedControl extends LitElement {
 		});
 	}
 
-	private static _counter = 0;
+	private static _idCounter = 0;
 
 	private get _autoName(): string {
 		if (!this._generatedName) {
-			this._generatedName = `nldd-segmented-${NLDDSegmentedControl._counter++}`;
+			this._generatedName = `nldd-segmented-${NLDDSegmentedControl._idCounter++}`;
 		}
 		return this._generatedName;
 	}

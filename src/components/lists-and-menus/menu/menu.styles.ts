@@ -56,13 +56,10 @@ export const menuStyles = css`
 	}
 
 
-	/* # Empty text */
+	/* # Empty */
 
-	.menu__empty-text {
+	.menu__empty {
 		padding: var(--primitives-space-8);
-		color: var(--semantics-content-secondary-color);
-		font: var(--primitives-font-body-md-regular-tight);
-		text-align: center;
 	}
 `;
 
@@ -103,9 +100,10 @@ export const menuItemStyles = css`
 	}
 
 
-	/* # Highlighted */
+	/* # Highlighted or pressed */
 
-	:host([highlighted]) .menu__item {
+	:host([highlighted]) .menu__item,
+	.menu__item:active {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
 		--context-cell-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);

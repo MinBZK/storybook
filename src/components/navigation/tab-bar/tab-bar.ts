@@ -64,17 +64,21 @@ export class NLDDTabBarItem extends LitElement {
 	@property({ type: String })
 	text = '';
 
+	@property({ type: String, reflect: true })
+	icon = '';
+
 	get _effectiveVariant(): 'icon-and-text' | 'text' | 'icon' | 'compact' {
 		if (this.compact) return 'compact';
 		if (this._authorVariant) return this._authorVariant;
 		if (this._groupVariant) return this._groupVariant;
-		if (this.text && this._hasIcon) return 'icon-and-text';
+		const hasIcon = Boolean(this.icon) || this._hasIconSlot;
+		if (this.text && hasIcon) return 'icon-and-text';
 		if (this.text) return 'text';
 		return 'icon';
 	}
 
 	@state()
-	_hasIcon = false;
+	_hasIconSlot = false;
 
 	/** Set by nldd-tab-bar. Not part of the public API. */
 	@state()
@@ -104,7 +108,7 @@ export class NLDDTabBarItem extends LitElement {
 
 	_onIconSlotChange(e: Event): void {
 		const slot = e.target as HTMLSlotElement;
-		this._hasIcon = slot.assignedElements({ flatten: true }).length > 0;
+		this._hasIconSlot = slot.assignedElements({ flatten: true }).length > 0;
 	}
 
 	_handleClick(event: Event): void {

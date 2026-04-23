@@ -129,7 +129,8 @@ export const MetPagina = () => html`
  * Het instellen van tinted op een paneel laat --context-parent-background-color alleen
  * doorwerken naar de afstammelingen van dat paneel. Naburige panelen blijven ongewijzigd.
  */
-export const TintedPerPaneel = () => html`
+export const TintedPerPaneel = {
+	render: () => html`
 	<nldd-app-view style="height: 600px;">
 		<nldd-navigation-split-view>
 			<nldd-page sticky-header slot="sidebar" background="tinted">
@@ -161,5 +162,6 @@ export const TintedPerPaneel = () => html`
 			</nldd-page>
 		</nldd-navigation-split-view>
 	</nldd-app-view>
-`;
-TintedPerPaneel.parameters = { controls: { disable: true } };
+`,
+	parameters: { controls: { disable: true } },
+};

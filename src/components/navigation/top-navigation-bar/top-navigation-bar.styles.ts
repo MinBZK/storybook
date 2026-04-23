@@ -157,7 +157,7 @@ export const topNavigationBarStyles = css`
 	}
 
 	.top-navigation-bar__wordmark-title {
-		font: var(--primitives-font-body-md-bold-flat);
+		font: var(--primitives-font-body-sm-bold-flat);
 		margin: 0;
 	}
 
@@ -220,11 +220,14 @@ export const topNavigationBarStyles = css`
 	.top-navigation-bar__website-title {
 		font: var(--components-top-navigation-bar-title-sm-font);
 		color: var(--semantics-content-color);
-		margin-inline-end: var(--primitives-space-8);
 		white-space: nowrap;
 
 		@container top-navigation-bar (min-width: ${mdMin}) {
 			font: var(--components-top-navigation-bar-title-md-font);
+			/* Create spacing between title and menu-bar on md+ where they sit
+			   on the same row. On sm the title-bar stacks above the menu-bar
+			   and this margin would visually offset the centered title. */
+			margin-inline-end: var(--primitives-space-8);
 		}
 
 		@container top-navigation-bar (min-width: ${lgMin}) {
