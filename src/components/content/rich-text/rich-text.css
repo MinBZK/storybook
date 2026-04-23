@@ -1,7 +1,7 @@
 /* # Host */
 
 nldd-rich-text {
-	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
+	--_spacing: var(--components-rich-text-spacing-snug);
 
 	display: block;
 	color: var(--semantics-content-color);
@@ -11,27 +11,24 @@ nldd-rich-text {
 }
 
 nldd-rich-text[spacing="flat"] {
-	--components-rich-text-spacing: var(--components-rich-text-spacing-flat);
+	--_spacing: var(--components-rich-text-spacing-flat);
 }
 
 nldd-rich-text[spacing="tight"] {
-	--components-rich-text-spacing: var(--components-rich-text-spacing-tight);
+	--_spacing: var(--components-rich-text-spacing-tight);
 }
 
 nldd-rich-text[spacing="snug"] {
-	--components-rich-text-spacing: var(--components-rich-text-spacing-snug);
+	--_spacing: var(--components-rich-text-spacing-snug);
 }
 
 nldd-rich-text[spacing="loose"] {
-	--components-rich-text-spacing: var(--components-rich-text-spacing-loose);
+	--_spacing: var(--components-rich-text-spacing-loose);
 }
 
 nldd-rich-text[hidden] {
 	display: none;
 }
-
-
-/* # Block */
 
 nldd-rich-text > :first-child {
 	margin-top: 0;
@@ -51,19 +48,19 @@ nldd-rich-text *:focus:not(:focus-visible) {
 }
 
 
-/* # p */
+/* # Paragraph */
 
 nldd-rich-text p {
 	max-width: var(--primitives-area-720);
-	margin: var(--components-rich-text-spacing) 0;
+	margin: var(--_spacing) 0;
 }
 
 
-/* # h1 */
+/* # Heading 1 */
 
 nldd-rich-text h1 {
-	margin-top: calc(var(--components-rich-text-spacing) * 2);
-	margin-bottom: var(--components-rich-text-spacing);
+	margin-top: calc(var(--_spacing) * 2);
+	margin-bottom: var(--_spacing);
 	font: var(--primitives-font-display-1-sm);
 
 	@media (min-width: 641px) {
@@ -84,11 +81,11 @@ nldd-rich-text h1 {
 }
 
 
-/* # h2 */
+/* # Heading 2 */
 
 nldd-rich-text h2 {
-	margin-top: calc(var(--components-rich-text-spacing) * 2);
-	margin-bottom: var(--components-rich-text-spacing);
+	margin-top: calc(var(--_spacing) * 2);
+	margin-bottom: var(--_spacing);
 	font: var(--primitives-font-display-2-sm);
 
 	@media (min-width: 641px) {
@@ -109,11 +106,11 @@ nldd-rich-text h2 {
 }
 
 
-/* # h3 */
+/* # Heading 3 */
 
 nldd-rich-text h3 {
-	margin-top: calc(var(--components-rich-text-spacing) * 2);
-	margin-bottom: var(--components-rich-text-spacing);
+	margin-top: calc(var(--_spacing) * 2);
+	margin-bottom: var(--_spacing);
 	font: var(--primitives-font-display-3-sm);
 
 	@media (min-width: 641px) {
@@ -134,11 +131,11 @@ nldd-rich-text h3 {
 }
 
 
-/* # h4 */
+/* # Heading 4 */
 
 nldd-rich-text h4 {
-	margin-top: calc(var(--components-rich-text-spacing) * 2);
-	margin-bottom: var(--components-rich-text-spacing);
+	margin-top: calc(var(--_spacing) * 2);
+	margin-bottom: var(--_spacing);
 	font: var(--primitives-font-display-4-sm);
 
 	@media (min-width: 641px) {
@@ -159,11 +156,11 @@ nldd-rich-text h4 {
 }
 
 
-/* # h5 */
+/* # Heading 5 */
 
 nldd-rich-text h5 {
-	margin-top: calc(var(--components-rich-text-spacing) * 2);
-	margin-bottom: var(--components-rich-text-spacing);
+	margin-top: calc(var(--_spacing) * 2);
+	margin-bottom: var(--_spacing);
 	font: var(--primitives-font-display-5-sm);
 
 	@media (min-width: 641px) {
@@ -184,11 +181,11 @@ nldd-rich-text h5 {
 }
 
 
-/* # h6 */
+/* # Heading 6 */
 
 nldd-rich-text h6 {
-	margin-top: calc(var(--components-rich-text-spacing) * 2);
-	margin-bottom: var(--components-rich-text-spacing);
+	margin-top: calc(var(--_spacing) * 2);
+	margin-bottom: var(--_spacing);
 	font: var(--primitives-font-display-6-sm);
 
 	@media (min-width: 641px) {
@@ -209,7 +206,7 @@ nldd-rich-text h6 {
 }
 
 
-/* # ul and ol */
+/* # Lists */
 
 nldd-rich-text ul {
 	margin: 0;
@@ -225,7 +222,7 @@ nldd-rich-text ol {
 
 nldd-rich-text > ul,
 nldd-rich-text > ol {
-	margin: var(--components-rich-text-spacing) 0;
+	margin: var(--_spacing) 0;
 }
 
 nldd-rich-text ol > li > ol {
@@ -233,16 +230,16 @@ nldd-rich-text ol > li > ol {
 }
 
 
-/* # li */
+/* # List Item */
 
 nldd-rich-text li {
 	max-width: var(--primitives-area-720);
-	margin: calc(var(--components-rich-text-spacing) / 2) 0;
+	margin: calc(var(--_spacing) / 2) 0;
 	padding: 0;
 }
 
 
-/* # a */
+/* # Link */
 
 nldd-rich-text a {
 	border-radius: var(--primitives-corner-radius-xxs);
@@ -261,7 +258,7 @@ nldd-rich-text a {
 }
 
 
-/* # strong, b */
+/* # Strong and Bold */
 
 nldd-rich-text strong,
 nldd-rich-text b {
@@ -270,7 +267,7 @@ nldd-rich-text b {
 }
 
 
-/* # em, i */
+/* # Emphasis and Italic */
 
 nldd-rich-text em,
 nldd-rich-text i {
@@ -279,7 +276,7 @@ nldd-rich-text i {
 }
 
 
-/* # code */
+/* # Code */
 
 nldd-rich-text code {
 	padding: var(--primitives-space-4);
@@ -290,7 +287,7 @@ nldd-rich-text code {
 }
 
 
-/* # mark */
+/* # Mark */
 
 nldd-rich-text mark {
 	padding: var(--primitives-space-1) var(--primitives-space-2);
@@ -300,7 +297,7 @@ nldd-rich-text mark {
 }
 
 
-/* # figure */
+/* # Figure */
 
 nldd-rich-text figure {
 	display: flex;
@@ -310,7 +307,7 @@ nldd-rich-text figure {
 }
 
 
-/* # Figcaption */
+/* # Figure Caption */
 
 nldd-rich-text figcaption {
 	color: var(--semantics-content-secondary-color);
@@ -333,7 +330,7 @@ nldd-rich-text blockquote {
 }
 
 
-/* # q */
+/* # Inline Quote */
 
 nldd-rich-text q {
 	font-style: italic;
@@ -348,7 +345,7 @@ nldd-rich-text q {
 }
 
 
-/* # img */
+/* # Image */
 
 nldd-rich-text img {
 	display: block;
@@ -357,16 +354,16 @@ nldd-rich-text img {
 }
 
 
-/* # hr */
+/* # Horizontal Rule */
 
 nldd-rich-text hr {
-	margin: var(--components-rich-text-spacing) 0;
+	margin: var(--_spacing) 0;
 	border: none;
 	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 }
 
 
-/* # table */
+/* # Table */
 
 nldd-rich-text table {
 	display: block;
@@ -391,7 +388,7 @@ nldd-rich-text table {
 }
 
 
-/* # th */
+/* # Table Header Cell */
 
 nldd-rich-text th {
 	padding: var(--primitives-space-6);
@@ -401,7 +398,7 @@ nldd-rich-text th {
 }
 
 
-/* # td */
+/* # Table Data Cell */
 
 nldd-rich-text td {
 	min-width: var(--primitives-area-120);
