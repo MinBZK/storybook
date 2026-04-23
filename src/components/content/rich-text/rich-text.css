@@ -209,7 +209,7 @@ nldd-rich-text h6 {
 }
 
 
-/* # ul */
+/* # ul and ol */
 
 nldd-rich-text ul {
 	margin: 0;
@@ -217,13 +217,15 @@ nldd-rich-text ul {
 	list-style-type: disc;
 }
 
-
-/* # ol */
-
 nldd-rich-text ol {
 	margin: 0;
 	padding-left: var(--components-rich-text-grid-size);
 	list-style-type: decimal;
+}
+
+nldd-rich-text > ul,
+nldd-rich-text > ol {
+	margin: var(--components-rich-text-spacing) 0;
 }
 
 nldd-rich-text ol > li > ol {
@@ -308,7 +310,7 @@ nldd-rich-text figure {
 }
 
 
-/* # figcaption */
+/* # Figcaption */
 
 nldd-rich-text figcaption {
 	color: var(--semantics-content-secondary-color);
@@ -317,22 +319,17 @@ nldd-rich-text figcaption {
 }
 
 
-/* # blockquote */
+/* # Blockquote */
 
 nldd-rich-text blockquote {
-	max-width: var(--primitives-area-720);
-	margin: 0;
-	padding-top: calc(var(--components-rich-text-grid-size) - var(--primitives-space-2));
-	padding-right: 0;
-	padding-bottom: var(--components-rich-text-grid-size);
-	padding-left: calc(var(--components-rich-text-grid-size) - var(--primitives-space-2));
-	border-top: var(--primitives-space-2) solid var(--semantics-content-color);
-	border-left: var(--primitives-space-2) solid var(--semantics-content-color);
-	border-top-left-radius: var(--primitives-corner-radius-xxxl);
-	background-color: var(--semantics-content-blockquote-background-color);
-	color: var(--semantics-content-color);
-	font: var(--primitives-font-body-lg-regular-snug);
-	font-style: italic;
+	max-width: var(--semantics-blockquotes-max-width);
+	margin-block: var(--semantics-blockquotes-spacing);
+	margin-inline: 0;
+	padding: var(--semantics-blockquotes-spacing);
+	border-top: var(--semantics-blockquotes-border);
+	border-left: var(--semantics-blockquotes-border);
+	border-top-left-radius: var(--semantics-blockquotes-corner-radius);
+	font: var(--semantics-blockquotes-quote-font);
 }
 
 

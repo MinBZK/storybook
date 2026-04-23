@@ -739,6 +739,19 @@
 	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
 	--semantics-links-is-active-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
 
+	/* ## Blockquotes */
+
+	--semantics-blockquotes-max-width: var(--primitives-area-720);
+	--semantics-blockquotes-spacing: calc(var(--primitives-font-size-200) * var(--primitives-line-height-snug));
+	--semantics-blockquotes-border: var(--primitives-space-2) solid var(--semantics-content-color);
+	--semantics-blockquotes-corner-radius: var(--primitives-corner-radius-xxxl);
+	--semantics-blockquotes-quote-font:
+		italic
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-300) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-body)
+	;
+
 	/* ## Controls */
 
 	--semantics-controls-xs-min-size: var(--primitives-space-24);
