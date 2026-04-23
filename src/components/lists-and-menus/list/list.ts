@@ -529,7 +529,7 @@ export class NLDDList extends LitElement {
 			this._hasHeader,
 			this.type,
 			this._isEmpty,
-			this.emptyText || this._t('components.list.no-results-text'),
+			this.emptyText || this._t('components.list.empty-text'),
 			this.emptySupportingText,
 		);
 	}

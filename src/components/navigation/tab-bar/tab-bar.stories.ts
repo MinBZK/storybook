@@ -54,16 +54,14 @@ const tabBarItems = html`
 `;
 
 const Template = ({ variant, compact, responsive, fullWidth }: Record<string, any>) => html`
-	<div style="container-type: inline-size; container-name: layout-area;">
-		<nldd-tab-bar
-			variant=${variant || nothing}
-			?compact=${compact}
-			?responsive=${responsive}
-			?full-width=${fullWidth}
-		>
-			${tabBarItems}
-		</nldd-tab-bar>
-	</div>
+	<nldd-tab-bar
+		variant=${variant || nothing}
+		?compact=${compact}
+		?responsive=${responsive}
+		?full-width=${fullWidth}
+	>
+		${tabBarItems}
+	</nldd-tab-bar>
 `;
 
 export const Standaard = {
