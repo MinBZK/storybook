@@ -1,7 +1,7 @@
 import { html, nothing } from 'lit';
 import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
 import type { NLDDTitleCell } from './title-cell.js';
-import { renderMarked } from '../../../../utilities/render-marked.js';
+import { renderQueryMark } from '../../../../utilities/render-marked.js';
 
 // SAFETY: whitelist of allowed heading tags for unsafeStatic.
 // This map is the sole guard against XSS — never derive a tag name
@@ -19,7 +19,7 @@ const HEADING_TAGS: Record<number, ReturnType<typeof unsafeStatic>> = {
 function renderTitle(component: NLDDTitleCell) {
 	if (!component.text) return nothing;
 
-	const rendered = renderMarked(component.text, component.mark, component.markMode);
+	const rendered = renderQueryMark(component.text, component.query, component.queryMarkMode);
 	const tag = HEADING_TAGS[component.headingLevel as number];
 	if (tag) {
 		return staticHtml`<${tag} class="title-cell__title">${rendered}</${tag}>`;
@@ -30,8 +30,8 @@ function renderTitle(component: NLDDTitleCell) {
 
 export const template = function (this: NLDDTitleCell) {
 	return html`
-		${this.overline ? html`<p class="title-cell__overline">${renderMarked(this.overline, this.mark, this.markMode)}</p>` : nothing}
+		${this.overline ? html`<p class="title-cell__overline">${renderQueryMark(this.overline, this.query, this.queryMarkMode)}</p>` : nothing}
 		${renderTitle(this)}
-		${this.supportingText ? html`<p class="title-cell__supporting-text">${renderMarked(this.supportingText, this.mark, this.markMode)}</p>` : nothing}
+		${this.supportingText ? html`<p class="title-cell__supporting-text">${renderQueryMark(this.supportingText, this.query, this.queryMarkMode)}</p>` : nothing}
 	`;
 };

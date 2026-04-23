@@ -272,7 +272,7 @@ describe('nldd-menu filter', () => {
 		if (el) cleanup(el);
 	});
 
-	it('sets mark attribute on matching items and clears on non-matching', async () => {
+	it('sets query attribute on matching items and clears on non-matching', async () => {
 		el = await fixture(`
 			<nldd-menu>
 				<nldd-menu-item text="Aardappelen"></nldd-menu-item>
@@ -283,13 +283,13 @@ describe('nldd-menu filter', () => {
 		(el as unknown as { filter(q: string): void }).filter('aa');
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('nldd-menu-item');
-		expect(items[0].getAttribute('mark')).toBe('aa');
+		expect(items[0].getAttribute('query')).toBe('aa');
 		expect(items[0].hasAttribute('hidden')).toBe(false);
 		expect(items[1].hasAttribute('hidden')).toBe(true);
-		expect(items[1].getAttribute('mark')).toBe('');
+		expect(items[1].getAttribute('query')).toBe('');
 	});
 
-	it('clears all marks when query is empty', async () => {
+	it('clears all queries when query is empty', async () => {
 		el = await fixture(`
 			<nldd-menu>
 				<nldd-menu-item text="Aardappelen"></nldd-menu-item>
@@ -304,7 +304,7 @@ describe('nldd-menu filter', () => {
 		await waitForUpdate(el);
 		const items = el.querySelectorAll('nldd-menu-item');
 		items.forEach(i => {
-			expect(i.getAttribute('mark') ?? '').toBe('');
+			expect(i.getAttribute('query') ?? '').toBe('');
 			expect(i.hasAttribute('hidden')).toBe(false);
 		});
 	});

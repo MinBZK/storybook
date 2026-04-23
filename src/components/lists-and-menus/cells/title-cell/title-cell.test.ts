@@ -197,10 +197,10 @@ describe('nldd-title-cell', () => {
 		expect(supporting!.querySelector('b')?.textContent).toBe('title');
 	});
 
-	// — mark / mark-mode —
+	// — query / query-mark-mode —
 
-	it('mark: predictive mode bolds the remainder of text (default)', async () => {
-		el = await fixture('<nldd-title-cell text="Aardappelen" mark="aa"></nldd-title-cell>');
+	it('query: predictive mode bolds the remainder of text (default)', async () => {
+		el = await fixture('<nldd-title-cell text="Aardappelen" query="aa"></nldd-title-cell>');
 		await waitForUpdate(el);
 		const title = el.shadowRoot!.querySelector('.title-cell__title');
 		const bold = title!.querySelector('b');
@@ -208,15 +208,15 @@ describe('nldd-title-cell', () => {
 		expect(title!.textContent?.trim()).toBe('Aardappelen');
 	});
 
-	it('mark: match mode bolds the query substring', async () => {
-		el = await fixture('<nldd-title-cell text="Aardappelen" mark="aa" mark-mode="match"></nldd-title-cell>');
+	it('query: match mode bolds the query substring', async () => {
+		el = await fixture('<nldd-title-cell text="Aardappelen" query="aa" query-mark-mode="match"></nldd-title-cell>');
 		await waitForUpdate(el);
 		const title = el.shadowRoot!.querySelector('.title-cell__title');
 		expect(title!.querySelector('b')?.textContent).toBe('Aa');
 	});
 
-	it('mark applies across text, overline and supporting-text', async () => {
-		el = await fixture('<nldd-title-cell overline="Groente" text="Aardappelen" supporting-text="appelsoort" mark="app"></nldd-title-cell>');
+	it('query applies across text, overline and supporting-text', async () => {
+		el = await fixture('<nldd-title-cell overline="Groente" text="Aardappelen" supporting-text="appelsoort" query="app"></nldd-title-cell>');
 		await waitForUpdate(el);
 		const overline = el.shadowRoot!.querySelector('.title-cell__overline');
 		const title = el.shadowRoot!.querySelector('.title-cell__title');
@@ -226,21 +226,21 @@ describe('nldd-title-cell', () => {
 		expect(supporting!.querySelectorAll('b').length).toBeGreaterThan(0);
 	});
 
-	it('mark: query not present in text renders plain', async () => {
-		el = await fixture('<nldd-title-cell text="Aardappelen" mark="zz"></nldd-title-cell>');
+	it('query: query not present in text renders plain', async () => {
+		el = await fixture('<nldd-title-cell text="Aardappelen" query="zz"></nldd-title-cell>');
 		await waitForUpdate(el);
 		const title = el.shadowRoot!.querySelector('.title-cell__title');
 		expect(title!.querySelector('b')).toBeNull();
 	});
 
-	it('mark-mode defaults to predictive', async () => {
+	it('query-mark-mode defaults to predictive', async () => {
 		el = await fixture('<nldd-title-cell text="Aardappelen"></nldd-title-cell>');
 		await waitForUpdate(el);
-		expect((el as HTMLElement & { markMode: string }).markMode).toBe('predictive');
+		expect((el as HTMLElement & { queryMarkMode: string }).queryMarkMode).toBe('predictive');
 	});
 
-	it('mark works with heading-level', async () => {
-		el = await fixture('<nldd-title-cell text="Aardappelen" heading-level="2" mark="aa"></nldd-title-cell>');
+	it('query works with heading-level', async () => {
+		el = await fixture('<nldd-title-cell text="Aardappelen" heading-level="2" query="aa"></nldd-title-cell>');
 		await waitForUpdate(el);
 		const title = el.shadowRoot!.querySelector('.title-cell__title');
 		expect(title!.tagName.toLowerCase()).toBe('h2');

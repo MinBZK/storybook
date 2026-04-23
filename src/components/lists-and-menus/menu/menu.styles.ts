@@ -100,9 +100,10 @@ export const menuItemStyles = css`
 	}
 
 
-	/* # Highlighted */
+	/* # Highlighted or pressed */
 
-	:host([highlighted]) .menu__item {
+	:host([highlighted]) .menu__item,
+	.menu__item:active {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
 		--context-cell-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);

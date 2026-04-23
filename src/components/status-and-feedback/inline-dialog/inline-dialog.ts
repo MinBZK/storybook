@@ -58,8 +58,19 @@ export class NLDDInlineDialog extends LitElement {
 	override firstUpdated() {
 		const contentSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
 		const actionsSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="actions"]');
-		const syncContent = () => { this._hasContent = (contentSlot?.assignedElements().length ?? 0) > 0; };
-		const syncActions = () => { this._hasActions = (actionsSlot?.assignedElements().length ?? 0) > 0; };
+		// Check assignedNodes (not assignedElements) so that plain text content
+		// — e.g. `<nldd-inline-dialog>Some note</nldd-inline-dialog>` — is also
+		// detected. Whitespace-only text nodes (formatting indentation) are
+		// filtered out.
+		const hasMeaningfulContent = (slot: HTMLSlotElement | undefined | null): boolean => {
+			const nodes = slot?.assignedNodes({ flatten: true }) ?? [];
+			return nodes.some(n =>
+				n.nodeType === Node.ELEMENT_NODE
+				|| (n.nodeType === Node.TEXT_NODE && (n.textContent?.trim() ?? '') !== ''),
+			);
+		};
+		const syncContent = () => { this._hasContent = hasMeaningfulContent(contentSlot); };
+		const syncActions = () => { this._hasActions = hasMeaningfulContent(actionsSlot); };
 		contentSlot?.addEventListener('slotchange', syncContent);
 		actionsSlot?.addEventListener('slotchange', syncActions);
 		syncContent();

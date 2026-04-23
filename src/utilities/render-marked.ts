@@ -1,6 +1,6 @@
 import { html, nothing, type TemplateResult } from 'lit';
 
-export type MarkMode = 'match' | 'predictive';
+export type QueryMarkMode = 'match' | 'predictive';
 
 /**
  * Renders text with `**bold**` markdown segments as `<b>` elements.
@@ -21,14 +21,20 @@ export function renderBold(text: string): TemplateResult | string {
  *   combobox pattern where the query is a prefix, so the non-matched tail
  *   reads as a predictive completion.
  *
+ * Uses `<b>` (not `<mark>`) deliberately: `<mark>` triggers a screen-reader
+ * "highlight start/end" announcement AND a yellow background by default. We
+ * want neither the yellow background (visually disruptive in cell contexts)
+ * nor the cherry-picked SR-only semantics without the matching visual. `<b>`
+ * gives consistent presentation for sighted and AT users.
+ *
  * The match is case-insensitive substring. If the query is empty or does not
  * appear in the text, the text is returned as-is (falls back to `renderBold`
  * so existing `**bold**` syntax still renders).
  */
-export function renderMarked(
+export function renderQueryMark(
 	text: string,
 	query: string,
-	mode: MarkMode = 'predictive',
+	mode: QueryMarkMode = 'predictive',
 ): TemplateResult | string | typeof nothing {
 	if (!text) return nothing;
 	const q = query.trim();

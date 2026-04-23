@@ -160,20 +160,20 @@ export const VerticalAlignment = {
 	`,
 };
 
-export const MarkSearchQuery = {
+export const QuerySearchHighlight = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px; max-width: 480px;">
 			<div>
 				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">predictive (default) — bolds the non-matched remainder. Best for short labels in combobox lists.</p>
-				<nldd-text-cell text="Aardappelen" mark="aa" />
+				<nldd-text-cell text="Aardappelen" query="aa" />
 			</div>
 			<div>
 				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">match — bolds the matched query. Best for long content in search results.</p>
-				<nldd-text-cell text="De aardappel is een knolgewas en een belangrijk voedingsmiddel in de Nederlandse keuken." mark="aardappel" mark-mode="match" />
+				<nldd-text-cell text="De aardappel is een knolgewas en een belangrijk voedingsmiddel in de Nederlandse keuken." query="aardappel" query-mark-mode="match" />
 			</div>
 			<div>
 				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Applies across text, overline and supporting-text.</p>
-				<nldd-text-cell overline="Groente" text="Aardappelen" supporting-text="Ook: pieper, knol" mark="ap" />
+				<nldd-text-cell overline="Groente" text="Aardappelen" supporting-text="Ook: pieper, knol" query="ap" />
 			</div>
 		</div>
 	`,
@@ -182,7 +182,7 @@ export const MarkSearchQuery = {
 		docs: {
 			description: {
 				story: `
-Set \`mark\` to a query string and the cell automatically bolds matching substrings across \`text\`, \`overline\` and \`supporting-text\`. Use \`mark-mode\` to pick the strategy:
+Set \`query\` to a substring and the cell automatically bolds the match across \`text\`, \`overline\` and \`supporting-text\`. Use \`query-mark-mode\` to pick the strategy:
 
 - \`'predictive'\` (default): bolds the non-matched remainder — the ARIA APG combobox pattern.
 - \`'match'\`: bolds the matched query — useful for highlighting search terms in longer text.
