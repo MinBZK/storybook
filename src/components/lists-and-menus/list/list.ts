@@ -126,13 +126,23 @@ export class NLDDList extends LitElement {
 			this._hasHeader = (headerSlot.assignedElements().length > 0);
 		});
 
-		// Watch direct children for add/remove and watch any descendant for
-		// `hidden` mutations (consumer-driven filtering). The attribute filter
-		// keeps the callback cheap; subtree is needed because `attributes`
-		// observation requires the watched node itself or — with subtree —
-		// any descendant. Both `_updateItems` (for the `is-last` marker on the
-		// visible-last item) and `_updateEmpty` depend on current visibility.
-		this._itemsObserver = new MutationObserver(() => {
+		// Watch direct children for add/remove (nldd-list-item gains/lose) and
+		// for `hidden` toggles on those direct children (consumer-driven
+		// filtering). `subtree: true` is required because `attributes` on the
+		// host itself isn't relevant — we need `hidden` changes on the items.
+		// The callback filters mutations so we only work when a direct child
+		// is affected; nested `hidden` toggles on e.g. cells inside items
+		// (which can happen via container-query `[hidden]` in visibility-mixin)
+		// no longer trigger item/empty recalculation.
+		this._itemsObserver = new MutationObserver((mutations) => {
+			const relevant = mutations.some(m => {
+				if (m.type === 'childList') return m.target === this;
+				if (m.type === 'attributes' && m.attributeName === 'hidden') {
+					return m.target instanceof Element && m.target.parentElement === this;
+				}
+				return false;
+			});
+			if (!relevant) return;
 			this._updateItems();
 			this._updateEmpty();
 		});

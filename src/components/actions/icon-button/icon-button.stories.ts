@@ -252,10 +252,10 @@ export const WithDisclosureIcon = {
 export const Disabled = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
-		<nldd-icon-button disabled variant="accent-filled" icon="remove" text="Verwijderen"></nldd-icon-button>
-		<nldd-icon-button disabled variant="accent-outlined" icon="remove" text="Verwijderen"></nldd-icon-button>
-		<nldd-icon-button disabled variant="neutral-tinted" icon="remove" text="Verwijderen"></nldd-icon-button>
-		<nldd-icon-button disabled variant="danger-tinted" icon="remove" text="Verwijderen"></nldd-icon-button>
+		<nldd-icon-button disabled variant="accent-filled" icon="delete" text="Verwijderen"></nldd-icon-button>
+		<nldd-icon-button disabled variant="accent-outlined" icon="delete" text="Verwijderen"></nldd-icon-button>
+		<nldd-icon-button disabled variant="neutral-tinted" icon="delete" text="Verwijderen"></nldd-icon-button>
+		<nldd-icon-button disabled variant="danger-tinted" icon="delete" text="Verwijderen"></nldd-icon-button>
 	</div>
 `,
 	parameters: {
