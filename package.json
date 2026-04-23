@@ -1,6 +1,6 @@
 {
   "name": "@minbzk/storybook",
-  "version": "0.8.34",
+  "version": "0.8.35",
   "description": "Design System voor Nederlandse Digitale Dienst",
   "type": "module",
   "main": "dist/components/components.js",
