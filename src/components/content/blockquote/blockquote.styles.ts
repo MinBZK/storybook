@@ -11,6 +11,7 @@ export const blockquoteStyles = css`
 	:host {
 		--_spacing: var(--semantics-blockquotes-md-spacing);
 		--_quote-font: var(--semantics-blockquotes-md-quote-font);
+		--_attribution-font: var(--semantics-blockquotes-md-attribution-font);
 		display: block;
 		max-width: var(--semantics-blockquotes-max-width);
 	}
@@ -19,6 +20,7 @@ export const blockquoteStyles = css`
 		:host {
 			--_spacing: var(--semantics-blockquotes-sm-spacing);
 			--_quote-font: var(--semantics-blockquotes-sm-quote-font);
+			--_attribution-font: var(--semantics-blockquotes-sm-attribution-font);
 		}
 	}
 
@@ -26,6 +28,7 @@ export const blockquoteStyles = css`
 		:host {
 			--_spacing: var(--semantics-blockquotes-sm-spacing);
 			--_quote-font: var(--semantics-blockquotes-sm-quote-font);
+			--_attribution-font: var(--semantics-blockquotes-sm-attribution-font);
 		}
 	}
 
@@ -57,11 +60,8 @@ export const blockquoteStyles = css`
 	}
 
 	.blockquote__attribution {
-		font: var(--primitives-font-body-sm-regular-flat);
-	}
-
-	.blockquote__attribution::before {
-		content: "— ";
+		margin: 0;
+		font: var(--_attribution-font);
 	}
 
 	.blockquote__attribution[hidden] {

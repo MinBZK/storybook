@@ -784,6 +784,8 @@
 		var(--primitives-font-size-300) / var(--primitives-line-height-snug)
 		var(--primitives-font-family-body)
 	;
+	--semantics-blockquotes-sm-attribution-font: var(--primitives-font-body-xs-regular-flat);
+	--semantics-blockquotes-md-attribution-font: var(--primitives-font-body-sm-regular-flat);
 
 	/* ## Controls */
 
@@ -952,8 +954,8 @@
 	/* ## Badge */
 
 	--components-badge-corner-radius: var(--primitives-corner-radius-full);
-	--components-badge-red-background-color: var(--primitives-color-rood-550);
-	--components-badge-red-content-color: var(--primitives-color-rood-0);
+	--components-badge-red-background-color: var(--primitives-color-danger-550);
+	--components-badge-red-content-color: var(--primitives-color-danger-0);
 	--components-badge-accent-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--components-badge-accent-content-color: var(--primitives-color-accent-0);
 	--components-badge-neutral-background-color: var(--primitives-color-neutral-800);

@@ -6,14 +6,14 @@ export function template(component: NLDDKeyboardShortcut) {
 
 	if (keys.length === 0) {
 		return html`
-			<span class="keyboard-shortcut" role="group">
+			<span class="keyboard-shortcut">
 				<slot></slot>
 			</span>
 		`;
 	}
 
 	return html`
-		<span class="keyboard-shortcut" role="group">
+		<span class="keyboard-shortcut">
 			${keys.map((key, index) => html`
 				${index > 0 ? html`<span class="keyboard-shortcut__separator" aria-hidden="true">+</span>` : ''}
 				<kbd class="keyboard-shortcut__key">${key}</kbd>
