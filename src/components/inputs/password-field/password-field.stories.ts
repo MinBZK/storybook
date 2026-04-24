@@ -23,6 +23,16 @@ export default {
 		},
 	},
 	argTypes: {
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Size variant',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		name: {
+			control: 'text',
+			description: 'Form field name',
+		},
 		value: {
 			control: 'text',
 			description: 'Input value',
@@ -33,11 +43,34 @@ export default {
 			description: 'Placeholder text',
 			table: { defaultValue: { summary: 'Password field' } },
 		},
-		size: {
-			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Size variant',
-			table: { defaultValue: { summary: 'md' } },
+		showText: {
+			name: 'show-text',
+			control: 'text',
+			description: 'Zichtbare knoptekst wanneer gemaskeerd',
+			table: { defaultValue: { summary: 'Toon' } },
+		},
+		hideText: {
+			name: 'hide-text',
+			control: 'text',
+			description: 'Zichtbare knoptekst wanneer zichtbaar',
+			table: { defaultValue: { summary: 'Verberg' } },
+		},
+		showAccessibleLabel: {
+			name: 'show-accessible-label',
+			control: 'text',
+			description: 'aria-label for toggle button when masked',
+			table: { defaultValue: { summary: 'Toon wachtwoord' } },
+		},
+		hideAccessibleLabel: {
+			name: 'hide-accessible-label',
+			control: 'text',
+			description: 'aria-label for toggle button when unmasked',
+			table: { defaultValue: { summary: 'Verberg wachtwoord' } },
+		},
+		masked: {
+			control: 'boolean',
+			description: 'Whether the password is masked',
+			table: { defaultValue: { summary: true } },
 		},
 		valid: {
 			control: 'boolean',
@@ -54,57 +87,24 @@ export default {
 			description: 'Disabled state',
 			table: { defaultValue: { summary: false } },
 		},
-		masked: {
-			control: 'boolean',
-			description: 'Whether the password is masked',
-			table: { defaultValue: { summary: true } },
-		},
-		showText: {
-			control: 'text',
-			name: 'show-text',
-			description: 'Zichtbare knoptekst wanneer gemaskeerd',
-			table: { defaultValue: { summary: 'Toon' } },
-		},
-		hideText: {
-			control: 'text',
-			name: 'hide-text',
-			description: 'Zichtbare knoptekst wanneer zichtbaar',
-			table: { defaultValue: { summary: 'Verberg' } },
-		},
-		showAccessibleLabel: {
-			control: 'text',
-			name: 'show-accessible-label',
-			description: 'aria-label for toggle button when masked',
-			table: { defaultValue: { summary: 'Toon wachtwoord' } },
-		},
-		hideAccessibleLabel: {
-			control: 'text',
-			name: 'hide-accessible-label',
-			description: 'aria-label for toggle button when unmasked',
-			table: { defaultValue: { summary: 'Verberg wachtwoord' } },
-		},
-		name: {
-			control: 'text',
-			description: 'Form field name',
-		},
 	},
 	args: {
+		size: 'md',
+		name: 'password',
 		value: '',
 		placeholder: 'Password field',
-		size: 'md',
-		valid: false,
-		invalid: false,
-		disabled: false,
-		masked: true,
 		showText: 'Toon',
 		hideText: 'Verberg',
 		showAccessibleLabel: 'Toon wachtwoord',
 		hideAccessibleLabel: 'Verberg wachtwoord',
-		name: 'password',
+		masked: true,
+		valid: false,
+		invalid: false,
+		disabled: false,
 	},
 };
 
-const Template = ({ value, placeholder, size, valid, invalid, disabled, masked, showText, hideText, showAccessibleLabel, hideAccessibleLabel, name }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, showText, hideText, showAccessibleLabel, hideAccessibleLabel, masked, valid, invalid, disabled }: Record<string, any>) => html`
 	<nldd-password-field
 		.value=${value}
 		.placeholder=${placeholder}

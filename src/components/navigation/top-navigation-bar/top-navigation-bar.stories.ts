@@ -9,28 +9,28 @@ export default {
 		layout: 'fullscreen',
 	},
 	args: {
-		websiteTitle: 'DigID',
 		noLogo: false,
+		websiteTitle: 'DigID',
 		logoTitle: '',
 		logoSubtitle: '',
 		logoSupportingText1: '',
 		logoSupportingText2: '',
+		backText: '',
 		logoHref: '',
 		siteHref: '',
 		backHref: '',
-		backText: '',
 	},
 	argTypes: {
-		websiteTitle: { name: 'website-title', control: 'text', description: 'Naam van de website of applicatie' },
 		noLogo: { name: 'no-logo', control: 'boolean', description: 'Verberg het logo', table: { defaultValue: { summary: false } } },
+		websiteTitle: { name: 'website-title', control: 'text', description: 'Naam van de website of applicatie' },
 		logoTitle: { name: 'logo-title', control: 'text', description: 'Woordmerk titel (toont woordmerk naast logo)', table: { defaultValue: { summary: '' } } },
 		logoSubtitle: { name: 'logo-subtitle', control: 'text', description: 'Woordmerk subtitel', table: { defaultValue: { summary: '' } } },
 		logoSupportingText1: { name: 'logo-supporting-text-1', control: 'text', description: 'Woordmerk ondersteunende tekst regel 1', table: { defaultValue: { summary: '' } } },
 		logoSupportingText2: { name: 'logo-supporting-text-2', control: 'text', description: 'Woordmerk ondersteunende tekst regel 2', table: { defaultValue: { summary: '' } } },
+		backText: { name: 'back-text', control: 'text', description: 'Tekst van de terugknop (standaard: "Terug")', table: { defaultValue: { summary: '' } } },
 		logoHref: { name: 'logo-href', control: 'text', description: 'URL voor logo en woordmerk', table: { defaultValue: { summary: '' } } },
 		siteHref: { name: 'site-href', control: 'text', description: 'URL voor de site-titel', table: { defaultValue: { summary: '' } } },
 		backHref: { name: 'back-href', control: 'text', description: 'URL van de terugknop', table: { defaultValue: { summary: '' } } },
-		backText: { name: 'back-text', control: 'text', description: 'Tekst van de terugknop (standaard: "Terug")', table: { defaultValue: { summary: '' } } },
 	},
 };
 
@@ -41,16 +41,16 @@ const layoutArea = 'container-type: inline-size; container-name: layout-area; ba
 // ## Template
 
 const Template = ({
-	websiteTitle,
 	noLogo,
+	websiteTitle,
 	logoTitle,
 	logoSubtitle,
 	logoSupportingText1,
 	logoSupportingText2,
+	backText,
 	logoHref,
 	siteHref,
 	backHref,
-	backText,
 }: Record<string, unknown>) => html`
 	<div style=${layoutArea}>
 		<nldd-top-navigation-bar

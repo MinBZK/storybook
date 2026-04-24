@@ -27,19 +27,6 @@ export default {
 		},
 	},
 	argTypes: {
-		text: {
-			control: 'text',
-			description: 'Tekst van de link',
-		},
-		href: {
-			control: 'text',
-			description: 'Link doel',
-		},
-		target: {
-			control: 'select',
-			options: ['', '_self', '_blank', '_parent', '_top'],
-			description: 'Link target (stelt rel automatisch bij voor _blank)',
-		},
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md', 'lg'],
@@ -47,6 +34,10 @@ export default {
 			table: {
 				defaultValue: { summary: 'md' },
 			},
+		},
+		text: {
+			control: 'text',
+			description: 'Tekst van de link',
 		},
 		startIcon: {
 			name: 'start-icon',
@@ -66,6 +57,15 @@ export default {
 				defaultValue: { summary: '' },
 			},
 		},
+		href: {
+			control: 'text',
+			description: 'Link doel',
+		},
+		target: {
+			control: 'select',
+			options: ['', '_self', '_blank', '_parent', '_top'],
+			description: 'Link target (stelt rel automatisch bij voor _blank)',
+		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
@@ -80,18 +80,18 @@ export default {
 		},
 	},
 	args: {
-		text: 'Bekijk meer',
-		href: '#',
-		target: '',
 		size: 'md',
+		text: 'Bekijk meer',
 		startIcon: '',
 		endIcon: '',
+		href: '#',
+		target: '',
 		accessibleLabel: '',
 		disabled: false,
 	},
 };
 
-const Template = ({ text, href, target, size, startIcon, endIcon, accessibleLabel, disabled }: Record<string, any>) => html`
+const Template = ({ size, text, startIcon, endIcon, href, target, accessibleLabel, disabled }: Record<string, any>) => html`
 	<nldd-link
 		href=${href || nothing}
 		target=${target || nothing}

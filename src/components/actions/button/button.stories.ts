@@ -52,9 +52,17 @@ export default {
 			},
 		},
 		fullWidth: {
-			control: 'boolean',
 			name: 'full-width',
+			control: 'boolean',
 			description: 'Full width',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
+		expandable: {
+			name: 'expandable',
+			control: 'boolean',
+			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -64,29 +72,21 @@ export default {
 			description: 'Tekst van de knop',
 		},
 		startIcon: {
+			name: 'start-icon',
 			control: 'select',
 			options: ['', ...ICONS],
-			name: 'start-icon',
 			description: 'Icoon voor de tekst',
 			table: {
 				defaultValue: { summary: '' },
 			},
 		},
 		endIcon: {
+			name: 'end-icon',
 			control: 'select',
 			options: ['', ...ICONS],
-			name: 'end-icon',
 			description: 'Icoon na de tekst',
 			table: {
 				defaultValue: { summary: '' },
-			},
-		},
-		expandable: {
-			control: 'boolean',
-			name: 'expandable',
-			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
-			table: {
-				defaultValue: { summary: false },
 			},
 		},
 		type: {
@@ -118,10 +118,10 @@ export default {
 		variant: 'neutral-tinted',
 		size: 'md',
 		fullWidth: false,
+		expandable: false,
 		text: 'Button',
 		startIcon: '',
 		endIcon: '',
-		expandable: false,
 		type: 'button',
 		href: '',
 		target: '',
@@ -129,7 +129,7 @@ export default {
 	},
 };
 
-const Template = ({ text, variant, size, fullWidth, type, href, target, startIcon, endIcon, expandable, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, fullWidth, expandable, text, startIcon, endIcon, type, href, target, disabled }: Record<string, any>) => html`
 	<nldd-button
 		variant=${variant}
 		size=${size}

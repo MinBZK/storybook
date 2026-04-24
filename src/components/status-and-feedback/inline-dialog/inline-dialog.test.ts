@@ -51,27 +51,27 @@ describe('nldd-inline-dialog', () => {
 		expect(el.shadowRoot!.querySelector('.inline-dialog__supporting-text')).toBeNull();
 	});
 
-	it('renders icon when icon-name is set', async () => {
-		el = await fixture('<nldd-inline-dialog icon-name="check-mark-circle"></nldd-inline-dialog>');
+	it('renders icon when icon is set', async () => {
+		el = await fixture('<nldd-inline-dialog icon="check-mark-circle"></nldd-inline-dialog>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.inline-dialog__icon')).not.toBeNull();
 	});
 
-	it('does not render icon when icon-name is absent and no variant', async () => {
+	it('does not render icon when icon is absent and no variant', async () => {
 		el = await fixture('<nldd-inline-dialog></nldd-inline-dialog>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('.inline-dialog__icon')).toBeNull();
 	});
 
-	it('forces icon-name to "alert" when variant="alert" and no explicit icon-name', async () => {
+	it('forces icon to "alert" when variant="alert" and no explicit icon', async () => {
 		el = await fixture('<nldd-inline-dialog variant="alert"></nldd-inline-dialog>');
 		await waitForUpdate(el);
 		const icon = el.shadowRoot!.querySelector('nldd-icon');
 		expect(icon?.getAttribute('name')).toBe('alert');
 	});
 
-	it('variant="alert" always overrides explicit icon-name', async () => {
-		el = await fixture('<nldd-inline-dialog variant="alert" icon-name="info-circle"></nldd-inline-dialog>');
+	it('variant="alert" always overrides explicit icon', async () => {
+		el = await fixture('<nldd-inline-dialog variant="alert" icon="info-circle"></nldd-inline-dialog>');
 		await waitForUpdate(el);
 		const icon = el.shadowRoot!.querySelector('nldd-icon');
 		expect(icon?.getAttribute('name')).toBe('alert');

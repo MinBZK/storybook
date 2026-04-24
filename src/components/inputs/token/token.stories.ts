@@ -28,6 +28,16 @@ export default {
 		},
 	},
 	argTypes: {
+		label: {
+			control: 'text',
+			description: 'Tekst van het token',
+		},
+		dismissText: {
+			name: 'dismiss-text',
+			control: 'text',
+			description: 'Tekst van de dismiss-knop',
+			table: { defaultValue: { summary: 'Verwijder' } },
+		},
 		control: {
 			control: 'select',
 			options: ['none', 'dismiss', 'menu'],
@@ -44,22 +54,12 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		dismissText: {
-			control: 'text',
-			name: 'dismiss-text',
-			description: 'Tekst van de dismiss-knop',
-			table: { defaultValue: { summary: 'Verwijder' } },
-		},
-		label: {
-			control: 'text',
-			description: 'Tekst van het token',
-		},
 	},
 	args: {
+		label: 'Token',
 		control: 'none',
 		open: false,
 		disabled: false,
-		label: 'Token',
 	},
 };
 

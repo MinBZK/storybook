@@ -36,27 +36,26 @@ export default {
 			description: 'Semantische variant — dwingt een icoon en kleur af',
 			table: { defaultValue: { summary: '' } },
 		},
-		iconName: {
-			control: 'select',
-			options: ['', ...ICONS],
-			name: 'icon-name',
-			description: 'Naam van het nldd-icon icoon; afwezig wanneer niet ingesteld',
-		},
 		text: {
 			control: 'text',
 			description: 'Hoofdtekst',
 		},
 		supportingText: {
-			control: 'text',
 			name: 'supporting-text',
+			control: 'text',
 			description: 'Ondersteunende tekst',
+		},
+		icon: {
+			control: 'select',
+			options: ['', ...ICONS],
+			description: 'Naam van het nldd-icon icoon; afwezig wanneer niet ingesteld',
 		},
 	},
 	args: {
 		variant: '',
-		iconName: '',
 		text: 'Dialog titel',
 		supportingText: 'Ondersteunende tekst voor aanvullende context.',
+		icon: '',
 	},
 };
 
@@ -70,9 +69,9 @@ export const Standaard = (args: Record<string, any>) => html`
 	></nldd-button>
 	<nldd-modal-dialog
 		variant=${args.variant || nothing}
-		icon-name=${args.iconName || nothing}
 		text=${args.text}
 		supporting-text=${args.supportingText}
+		icon=${args.icon || nothing}
 	>
 		<nldd-button
 			slot="actions"
@@ -125,7 +124,7 @@ export const MetIcoon = {
 		@click=${openNext}
 	></nldd-button>
 	<nldd-modal-dialog
-		icon-name="check-mark-circle"
+		icon="check-mark-circle"
 		text="Succesvol opgeslagen"
 		supporting-text="Uw wijzigingen zijn opgeslagen."
 	>

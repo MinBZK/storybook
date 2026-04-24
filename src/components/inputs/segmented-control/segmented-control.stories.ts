@@ -20,22 +20,6 @@ export default {
 		},
 	},
 	argTypes: {
-		value: {
-			control: 'text',
-			description: 'Geselecteerde waarde (radio) of spatie-gescheiden waarden (checkbox)',
-		},
-		size: {
-			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Grootte van de control',
-			table: { defaultValue: { summary: 'md' } },
-		},
-		type: {
-			control: 'select',
-			options: ['radio', 'checkbox'],
-			description: 'Type selectie: radio (enkelvoudig) of checkbox (meervoudig)',
-			table: { defaultValue: { summary: 'radio' } },
-		},
 		variant: {
 			control: 'select',
 			options: ['text', 'icon'],
@@ -43,10 +27,11 @@ export default {
 			description: 'Inhoudstype van alle items: tekst of icoon. Combineren is niet ondersteund.',
 			table: { defaultValue: { summary: 'text' } },
 		},
-		disabled: {
-			control: 'boolean',
-			description: 'Uitgeschakelde toestand',
-			table: { defaultValue: { summary: false } },
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Grootte van de control',
+			table: { defaultValue: { summary: 'md' } },
 		},
 		fullWidth: {
 			control: 'boolean',
@@ -54,18 +39,33 @@ export default {
 			description: 'Vult de volledige breedte van de container',
 			table: { defaultValue: { summary: false } },
 		},
+		value: {
+			control: 'text',
+			description: 'Geselecteerde waarde (radio) of spatie-gescheiden waarden (checkbox)',
+		},
+		type: {
+			control: 'select',
+			options: ['radio', 'checkbox'],
+			description: 'Type selectie: radio (enkelvoudig) of checkbox (meervoudig)',
+			table: { defaultValue: { summary: 'radio' } },
+		},
+		disabled: {
+			control: 'boolean',
+			description: 'Uitgeschakelde toestand',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
-		value: 'vet',
-		size: 'md',
-		type: 'radio',
 		variant: 'text',
-		disabled: false,
+		size: 'md',
 		fullWidth: false,
+		value: 'vet',
+		type: 'radio',
+		disabled: false,
 	},
 };
 
-const Template = ({ value, size, type, variant, disabled, fullWidth }: Record<string, any>) => html`
+const Template = ({ variant, size, fullWidth , value, type, disabled}: Record<string, any>) => html`
 	<nldd-segmented-control
 		value=${value}
 		size=${size}

@@ -6,23 +6,23 @@ export default {
 	component: 'nldd-menu-bar',
 	tags: ['autodocs'],
 	args: {
-		accessibleLabel: 'Navigatie',
-		overflowText: 'Meer opties',
 		compact: false,
+		overflowText: 'Meer opties',
+		accessibleLabel: 'Navigatie',
 	},
 	argTypes: {
-		accessibleLabel: { name: 'accessible-label', control: 'text', description: 'aria-label voor de nav landmark', table: { defaultValue: { summary: '' } } },
-		overflowText: { name: 'overflow-text', control: 'text', description: 'Tekst voor de overflow button', table: { defaultValue: { summary: 'Meer opties' } } },
 		compact: { control: 'boolean', description: 'Propageert compact naar slotted items', table: { defaultValue: { summary: false } } },
+		overflowText: { name: 'overflow-text', control: 'text', description: 'Tekst voor de overflow button', table: { defaultValue: { summary: 'Meer opties' } } },
+		accessibleLabel: { name: 'accessible-label', control: 'text', description: 'aria-label voor de nav landmark', table: { defaultValue: { summary: '' } } },
 	},
 };
 
 const layoutArea = 'container-type: inline-size; container-name: layout-area; background-color: var(--semantics-surfaces-background-color);';
 
 const Template = ({
-	accessibleLabel,
-	overflowText,
 	compact,
+	overflowText,
+	accessibleLabel,
 }: Record<string, unknown>) => html`
 	<div style=${layoutArea}>
 		<nldd-menu-bar

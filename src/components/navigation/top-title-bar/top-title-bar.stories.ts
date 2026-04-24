@@ -56,16 +56,16 @@ export default {
 			description: 'Tekst voor de terugknop; weglaten verbergt de knop',
 			table: { defaultValue: { summary: '' } },
 		},
-		backHref: {
-			control: 'text',
-			name: 'back-href',
-			description: 'Wanneer ingesteld rendert de terugknop als ankerlink',
-			table: { defaultValue: { summary: '' } },
-		},
 		dismissText: {
 			control: 'text',
 			name: 'dismiss-text',
 			description: "Tekst voor de sluitknop: 'Sluit', 'Annuleer' of 'Klaar'",
+			table: { defaultValue: { summary: '' } },
+		},
+		backHref: {
+			control: 'text',
+			name: 'back-href',
+			description: 'Wanneer ingesteld rendert de terugknop als ankerlink',
 			table: { defaultValue: { summary: '' } },
 		},
 		collapseAnchor: {
@@ -79,8 +79,8 @@ export default {
 		text: 'Paginatitel',
 		supportingText: '',
 		backText: '',
-		backHref: '',
 		dismissText: '',
+		backHref: '',
 		collapseAnchor: '',
 	},
 };

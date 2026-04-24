@@ -18,6 +18,12 @@ export default {
 		},
 	},
 	argTypes: {
+		size: {
+			control: 'select',
+			options: ['xs', 'sm', 'md'],
+			description: 'Grootte van de stepper',
+			table: { defaultValue: { summary: 'md' } },
+		},
 		value: {
 			control: { type: 'number' },
 			description: 'Huidige waarde',
@@ -43,24 +49,18 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		size: {
-			control: 'select',
-			options: ['xs', 'sm', 'md'],
-			description: 'Grootte van de stepper',
-			table: { defaultValue: { summary: 'md' } },
-		},
 	},
 	args: {
+		size: 'md',
 		value: 5,
 		min: 0,
 		max: 10,
 		step: 1,
 		disabled: false,
-		size: 'md',
 	},
 };
 
-const Template = ({ value, min, max, step, disabled, size }: Record<string, any>) => html`
+const Template = ({ size, value, min, max, step, disabled }: Record<string, any>) => html`
 	<div style="display: flex; gap: 1rem; align-items: center;">
 		<span style="font: var(--primitives-font-body-md-regular-snug); min-width: 2ch;"
 			.textContent=${String(value)}

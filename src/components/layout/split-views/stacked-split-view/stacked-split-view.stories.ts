@@ -74,7 +74,7 @@ const paneContent = (title: any, slot: any) => html`
 	</nldd-split-view-pane>
 `;
 
-export const Standaard = ({ panes, background }: Record<string, any>) => html`
+export const Standaard = ({ background, panes }: Record<string, any>) => html`
 	<nldd-stacked-split-view panes=${panes} background=${background} style="height: 640px;">
 		${Array.from({ length: panes }, (_, i) => paneContent(`Paneel ${i + 1}`, `pane-${i + 1}`))}
 	</nldd-stacked-split-view>

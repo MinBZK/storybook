@@ -9,6 +9,7 @@ export default {
 	tags: ['autodocs'],
 	argTypes: {
 		verticalAlignment: {
+			name: 'vertical-alignment',
 			control: 'select',
 			options: ['center', 'top'],
 			description: 'Vertical alignment of the icon',

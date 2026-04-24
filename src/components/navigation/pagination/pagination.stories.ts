@@ -26,6 +26,12 @@ export default {
 		},
 	},
 	argTypes: {
+		fullWidth: {
+			control: 'boolean',
+			name: 'full-width',
+			description: 'Centreert de pagination in de container',
+			table: { defaultValue: { summary: false } },
+		},
 		current: {
 			control: { type: 'number', min: 1 },
 			description: 'Huidige actieve pagina (1-gebaseerd)',
@@ -41,22 +47,16 @@ export default {
 			description: 'Uitgeschakelde staat',
 			table: { defaultValue: { summary: false } },
 		},
-		fullWidth: {
-			control: 'boolean',
-			name: 'full-width',
-			description: 'Centreert de pagination in de container',
-			table: { defaultValue: { summary: false } },
-		},
 	},
 	args: {
+		fullWidth: false,
 		current: 1,
 		total: 10,
 		disabled: false,
-		fullWidth: false,
 	},
 };
 
-const Template = ({ current, total, disabled, fullWidth }: Record<string, any>) => html`
+const Template = ({ fullWidth , current, total, disabled}: Record<string, any>) => html`
 	<nldd-pagination
 		current=${current}
 		total=${total}

@@ -333,7 +333,7 @@ export const EmptySlotOverride = {
 		<nldd-list variant="box">
 			<nldd-inline-dialog
 				slot="empty"
-				icon-name="search"
+				icon="search"
 				text="Geen resultaten"
 				supporting-text="Pas de filters aan of probeer een andere zoekterm."
 			>

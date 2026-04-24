@@ -13,18 +13,22 @@ export default {
 			table: { defaultValue: { summary: 'fit-content' } },
 		},
 		minWidth: {
+			name: 'min-width',
 			control: 'text',
 			description: "Minimum width as CSS length (e.g. '80px', '5rem')",
 		},
 		maxWidth: {
+			name: 'max-width',
 			control: 'text',
 			description: "Maximum width as CSS length (e.g. '200px', '20rem')",
 		},
 		minHeight: {
+			name: 'min-height',
 			control: 'text',
 			description: "Minimum height as CSS length (e.g. '44px', '3rem')",
 		},
 		verticalAlignment: {
+			name: 'vertical-alignment',
 			control: 'select',
 			options: ['center', 'top', 'bottom'],
 			description: 'Vertical alignment of slotted content',

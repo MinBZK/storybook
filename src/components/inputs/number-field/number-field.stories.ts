@@ -18,6 +18,28 @@ export default {
 		},
 	},
 	argTypes: {
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Grootte van het veld',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		fullWidth: {
+			name: 'full-width',
+			control: 'boolean',
+			description: 'Vult de volledige breedte van de container',
+			table: { defaultValue: { summary: false } },
+		},
+		hideSpinButtons: {
+			name: 'hide-spin-buttons',
+			control: 'boolean',
+			description: 'Verbergt de plus- en minknoppen',
+			table: { defaultValue: { summary: false } },
+		},
+		name: {
+			control: 'text',
+			description: 'Naam voor formulierverwerking',
+		},
 		value: {
 			control: { type: 'number' },
 			description: 'Huidige waarde',
@@ -38,53 +60,31 @@ export default {
 			description: 'Stapgrootte',
 			table: { defaultValue: { summary: 1 } },
 		},
-		size: {
-			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Grootte van het veld',
-			table: { defaultValue: { summary: 'md' } },
+		width: {
+			control: 'text',
+			description: 'Vaste breedte van het veld; het invoervak rekt mee',
 		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		name: {
-			control: 'text',
-			description: 'Naam voor formulierverwerking',
-		},
-		hideSpinButtons: {
-			control: 'boolean',
-			name: 'hide-spin-buttons',
-			description: 'Verbergt de plus- en minknoppen',
-			table: { defaultValue: { summary: false } },
-		},
-		fullWidth: {
-			control: 'boolean',
-			name: 'full-width',
-			description: 'Vult de volledige breedte van de container',
-			table: { defaultValue: { summary: false } },
-		},
-		width: {
-			control: 'text',
-			description: 'Vaste breedte van het veld; het invoervak rekt mee',
-		},
 	},
 	args: {
+		size: 'md',
+		fullWidth: false,
+		hideSpinButtons: false,
+		name: '',
 		value: 1,
 		min: 0,
 		max: 10,
 		step: 1,
-		size: 'md',
-		disabled: false,
-		name: '',
-		hideSpinButtons: false,
-		fullWidth: false,
 		width: '',
+		disabled: false,
 	},
 };
 
-const Template = ({ value, min, max, step, size, disabled, name, hideSpinButtons, fullWidth, width }: Record<string, any>) => html`
+const Template = ({ size, fullWidth, hideSpinButtons, name, value, min, max, step, width, disabled }: Record<string, any>) => html`
 	<nldd-number-field
 		value=${value}
 		min=${min}

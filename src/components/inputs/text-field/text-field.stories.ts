@@ -36,6 +36,16 @@ export default {
 		},
 	},
 	argTypes: {
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Size variant',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		name: {
+			control: 'text',
+			description: 'Input name for form submission',
+		},
 		value: {
 			control: 'text',
 			description: 'Input value',
@@ -46,11 +56,11 @@ export default {
 			description: 'Placeholder text',
 			table: { defaultValue: { summary: '' } },
 		},
-		size: {
+		type: {
 			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Size variant',
-			table: { defaultValue: { summary: 'md' } },
+			options: ['text', 'email', 'tel', 'url'],
+			description: 'Input type',
+			table: { defaultValue: { summary: 'text' } },
 		},
 		valid: {
 			control: 'boolean',
@@ -62,21 +72,6 @@ export default {
 			description: 'Invalid state',
 			table: { defaultValue: { summary: false } },
 		},
-		disabled: {
-			control: 'boolean',
-			description: 'Disabled state',
-			table: { defaultValue: { summary: false } },
-		},
-		type: {
-			control: 'select',
-			options: ['text', 'email', 'tel', 'url'],
-			description: 'Input type',
-			table: { defaultValue: { summary: 'text' } },
-		},
-		name: {
-			control: 'text',
-			description: 'Input name for form submission',
-		},
 		readonly: {
 			control: 'boolean',
 			description: 'Readonly state',
@@ -87,22 +82,27 @@ export default {
 			description: 'Required state',
 			table: { defaultValue: { summary: false } },
 		},
+		disabled: {
+			control: 'boolean',
+			description: 'Disabled state',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
+		size: 'md',
+		name: '',
 		value: '',
 		placeholder: 'Text field',
-		size: 'md',
+		type: 'text',
 		valid: false,
 		invalid: false,
-		disabled: false,
-		type: 'text',
-		name: '',
 		readonly: false,
 		required: false,
+		disabled: false,
 	},
 };
 
-const Template = ({ value, placeholder, size, valid, invalid, disabled, type, name, readonly, required }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, type, valid, invalid, readonly, required, disabled }: Record<string, any>) => html`
 	<nldd-text-field
 		.value=${value}
 		.placeholder=${placeholder}

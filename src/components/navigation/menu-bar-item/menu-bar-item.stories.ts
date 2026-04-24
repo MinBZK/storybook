@@ -7,23 +7,23 @@ export default {
 	component: 'nldd-menu-bar-item',
 	tags: ['autodocs'],
 	args: {
+		expandable: false,
+		iconOnly: false,
 		text: 'Menu item',
 		icon: '',
 		href: '',
 		current: false,
-		expandable: false,
-		iconOnly: false,
 		contentPriority: '',
 		compact: false,
 		disabled: false,
 	},
 	argTypes: {
+		expandable: { control: 'boolean', description: 'Toon disclosure icon', table: { defaultValue: { summary: false } } },
+		iconOnly: { name: 'icon-only', control: 'boolean', description: 'Verberg tekst visueel (altijd)', table: { defaultValue: { summary: false } } },
 		text: { control: 'text', description: 'Tekst van het item' },
 		icon: { control: 'select', options: ['', ...ICONS], description: 'Icon naam (nldd-icon)', table: { defaultValue: { summary: '' } } },
 		href: { control: 'text', description: 'Optionele link URL', table: { defaultValue: { summary: '' } } },
 		current: { control: 'boolean', description: 'Markeer als actief/huidig', table: { defaultValue: { summary: false } } },
-		expandable: { control: 'boolean', description: 'Toon disclosure icon', table: { defaultValue: { summary: false } } },
-		iconOnly: { name: 'icon-only', control: 'boolean', description: 'Verberg tekst visueel (altijd)', table: { defaultValue: { summary: false } } },
 		contentPriority: {
 			name: 'content-priority',
 			control: 'select',
@@ -37,12 +37,12 @@ export default {
 };
 
 const Template = ({
+	expandable,
+	iconOnly,
 	text,
 	icon,
 	href,
 	current,
-	expandable,
-	iconOnly,
 	contentPriority,
 	compact,
 	disabled,

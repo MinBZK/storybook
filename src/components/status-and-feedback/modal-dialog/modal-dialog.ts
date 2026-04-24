@@ -7,7 +7,7 @@
  * @element nldd-modal-dialog
  *
  * @attr {'alert'} variant          - Forwarded to nldd-inline-dialog; 'alert' forces icon and color
- * @attr {string}  icon-name        - Forwarded to nldd-inline-dialog; absent when not set
+ * @attr {string}  icon             - Forwarded to nldd-inline-dialog; absent when not set
  * @attr {string}  text             - Forwarded to nldd-inline-dialog; main text
  * @attr {string}  supporting-text  - Forwarded to nldd-inline-dialog; supporting text
  * @attr {string}  accessible-label - Accessible name for the dialog (aria-label); falls back to text
@@ -36,8 +36,8 @@ export class NLDDModalDialog extends LitElement {
 	@property({ type: String, reflect: true })
 	variant: InlineDialogVariant | '' = '';
 
-	@property({ type: String, reflect: true, attribute: 'icon-name' })
-	iconName = '';
+	@property({ type: String, reflect: true })
+	icon = '';
 
 	@property({ type: String, reflect: true })
 	text = '';

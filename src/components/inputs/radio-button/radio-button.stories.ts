@@ -28,6 +28,14 @@ export default {
 		},
 	},
 	argTypes: {
+		name: {
+			control: 'text',
+			description: 'Naam voor formulierverwerking (groepeert radio buttons)',
+		},
+		value: {
+			control: 'text',
+			description: 'Waarde voor formulierverwerking',
+		},
 		checked: {
 			control: 'boolean',
 			description: 'Aangevinkte toestand',
@@ -38,24 +46,16 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		name: {
-			control: 'text',
-			description: 'Naam voor formulierverwerking (groepeert radio buttons)',
-		},
-		value: {
-			control: 'text',
-			description: 'Waarde voor formulierverwerking',
-		},
 	},
 	args: {
-		checked: false,
-		disabled: false,
 		name: 'demo',
 		value: 'optie-1',
+		checked: false,
+		disabled: false,
 	},
 };
 
-const Template = ({ checked, disabled, name, value }: Record<string, any>) => html`
+const Template = ({ name, value, checked, disabled }: Record<string, any>) => html`
 	<nldd-radio-button
 		?checked=${checked}
 		?disabled=${disabled}

@@ -20,6 +20,12 @@ export default {
 			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Wordt genegeerd wanneer compact actief is.',
 			table: { defaultValue: { summary: '' } },
 		},
+		fullWidth: {
+			control: 'boolean',
+			name: 'full-width',
+			description: 'Vult de volledige breedte van de container; items blijven gecentreerd',
+			table: { defaultValue: { summary: false } },
+		},
 		compact: {
 			control: 'boolean',
 			description: 'Toont items in compact weergave: icoon boven tekst gestapeld. Overschrijft variant op de parent én individuele variant attributen op items.',
@@ -30,18 +36,12 @@ export default {
 			description: 'Schakelt automatisch over naar compact via de layout-area container query (onder 480px)',
 			table: { defaultValue: { summary: false } },
 		},
-		fullWidth: {
-			control: 'boolean',
-			name: 'full-width',
-			description: 'Vult de volledige breedte van de container; items blijven gecentreerd',
-			table: { defaultValue: { summary: false } },
-		},
 	},
 	args: {
 		variant: '',
+		fullWidth: false,
 		compact: false,
 		responsive: false,
-		fullWidth: false,
 	},
 };
 
@@ -53,7 +53,7 @@ const tabBarItems = html`
 	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
 
-const Template = ({ variant, compact, responsive, fullWidth }: Record<string, any>) => html`
+const Template = ({ variant, fullWidth , compact, responsive}: Record<string, any>) => html`
 	<nldd-tab-bar
 		variant=${variant || nothing}
 		?compact=${compact}

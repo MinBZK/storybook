@@ -25,10 +25,6 @@ export default {
 		},
 	},
 	argTypes: {
-		keys: {
-			control: 'text',
-			description: 'Toetsen gescheiden door +',
-		},
 		size: {
 			control: 'select',
 			options: ['sm', 'md'],
@@ -37,14 +33,18 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
+		keys: {
+			control: 'text',
+			description: 'Toetsen gescheiden door +',
+		},
 	},
 	args: {
-		keys: 'Cmd+K',
 		size: 'md',
+		keys: 'Cmd+K',
 	},
 };
 
-const Template = ({ keys, size }: Record<string, any>) => html`
+const Template = ({ size , keys}: Record<string, any>) => html`
 	<nldd-keyboard-shortcut
 		keys=${keys}
 		size=${size}

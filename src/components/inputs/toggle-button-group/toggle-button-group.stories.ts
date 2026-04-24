@@ -28,24 +28,24 @@ export default {
 		},
 	},
 	argTypes: {
-		type: {
-			control: 'select',
-			options: ['button', 'checkbox', 'radio'],
-			description: 'Selectiemodus',
-			table: {
-				defaultValue: { summary: 'checkbox' },
-			},
-		},
-		name: {
-			control: 'text',
-			description: 'Naam voor formulierverwerking, doorgestuurd naar alle knoppen',
-		},
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
 			description: 'Grootte, doorgestuurd naar alle knoppen',
 			table: {
 				defaultValue: { summary: 'md' },
+			},
+		},
+		name: {
+			control: 'text',
+			description: 'Naam voor formulierverwerking, doorgestuurd naar alle knoppen',
+		},
+		type: {
+			control: 'select',
+			options: ['button', 'checkbox', 'radio'],
+			description: 'Selectiemodus',
+			table: {
+				defaultValue: { summary: 'checkbox' },
 			},
 		},
 		disabled: {
@@ -57,9 +57,9 @@ export default {
 		},
 	},
 	args: {
-		type: 'checkbox',
-		name: 'groep',
 		size: 'md',
+		name: 'groep',
+		type: 'checkbox',
 		disabled: false,
 	},
 };

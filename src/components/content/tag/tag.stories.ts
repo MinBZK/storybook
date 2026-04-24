@@ -42,6 +42,10 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
+		text: {
+			control: 'text',
+			description: 'Tekst van de tag',
+		},
 		icon: {
 			control: 'select',
 			options: ['', ...ICONS],
@@ -49,10 +53,6 @@ export default {
 			table: {
 				defaultValue: { summary: '' },
 			},
-		},
-		text: {
-			control: 'text',
-			description: 'Tekst van de tag',
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
@@ -63,13 +63,13 @@ export default {
 	args: {
 		variant: 'neutral',
 		size: 'md',
-		icon: '',
 		text: 'Tag',
+		icon: '',
 		accessibleLabel: '',
 	},
 };
 
-const Template = ({ variant, size, icon, text, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ variant, size, text, icon, accessibleLabel }: Record<string, any>) => html`
 	<nldd-tag
 		variant=${variant}
 		size=${size}

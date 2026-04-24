@@ -50,37 +50,32 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
-		icon: {
-			control: 'select',
-			options: ICONS,
-			description: 'Icoon naam voor nldd-icon',
+		fullWidth: {
+			name: 'full-width',
+			control: 'boolean',
+			description: 'Laat de knop vullen tot de beschikbare breedte van de container',
 			table: {
-				defaultValue: { summary: 'dismiss' },
+				defaultValue: { summary: false },
+			},
+		},
+		expandable: {
+			name: 'expandable',
+			control: 'boolean',
+			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
+			table: {
+				defaultValue: { summary: false },
 			},
 		},
 		text: {
 			control: 'text',
 			description: 'Tekst die als aria-label en title tooltip wordt gebruikt, en zichtbaar is als label onder het icoon in lg formaat',
 		},
-		accessibleLabel: {
-			control: 'text',
-			name: 'accessible-label',
-			description: 'Overschrijft de tekst als aria-label en title tooltip voor schermlezer-context. Gebruik als de zichtbare tekst onvoldoende context biedt (bijv. tekst "Toon", accessible-label "Toon wachtwoord"). De tekst blijft zichtbaar in lg formaat.',
-		},
-		expandable: {
-			control: 'boolean',
-			name: 'expandable',
-			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
+		icon: {
+			control: 'select',
+			options: ICONS,
+			description: 'Icoon naam voor nldd-icon',
 			table: {
-				defaultValue: { summary: false },
-			},
-		},
-		fullWidth: {
-			control: 'boolean',
-			name: 'full-width',
-			description: 'Laat de knop vullen tot de beschikbare breedte van de container',
-			table: {
-				defaultValue: { summary: false },
+				defaultValue: { summary: 'dismiss' },
 			},
 		},
 		type: {
@@ -100,6 +95,11 @@ export default {
 			options: ['', '_self', '_blank', '_parent', '_top'],
 			description: 'Link target (alleen gebruikt als href is gezet)',
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Overschrijft de tekst als aria-label en title tooltip voor schermlezer-context. Gebruik als de zichtbare tekst onvoldoende context biedt (bijv. tekst "Toon", accessible-label "Toon wachtwoord"). De tekst blijft zichtbaar in lg formaat.',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -111,19 +111,19 @@ export default {
 	args: {
 		variant: 'neutral-tinted',
 		size: 'md',
-		icon: 'dismiss',
-		text: 'Annuleer',
-		accessibleLabel: '',
-		expandable: false,
 		fullWidth: false,
+		expandable: false,
+		text: 'Annuleer',
+		icon: 'dismiss',
 		type: 'button',
 		href: '',
 		target: '',
+		accessibleLabel: '',
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, icon, text, accessibleLabel, expandable, fullWidth, type, href, target, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, fullWidth, expandable, text, icon, type, href, target, accessibleLabel, disabled }: Record<string, any>) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}

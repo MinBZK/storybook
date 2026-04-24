@@ -41,11 +41,13 @@ export default {
 	},
 	argTypes: {
 		inspectorAsSheet: {
+			name: 'inspector-as-sheet',
 			control: 'boolean',
 			description: 'Toon de inspecteur altijd als sheet, ongeacht beschikbare ruimte',
 			table: { defaultValue: { summary: 'false' } },
 		},
 		sidebarAsSheet: {
+			name: 'sidebar-as-sheet',
 			control: 'boolean',
 			description: 'Toon de zijbalk altijd als sheet, inhoudsgebied blijft altijd zichtbaar',
 			table: { defaultValue: { summary: 'false' } },

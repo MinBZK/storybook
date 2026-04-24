@@ -35,25 +35,25 @@ export default {
 			control: 'text',
 			description: 'Naam doorgegeven aan alle velden',
 		},
-		disabled: {
-			control: 'boolean',
-			description: 'Schakelt alle velden uit',
-			table: { defaultValue: { summary: false } },
-		},
 		required: {
 			control: 'boolean',
 			description: 'Markeert de groep als verplicht',
 			table: { defaultValue: { summary: false } },
 		},
+		disabled: {
+			control: 'boolean',
+			description: 'Schakelt alle velden uit',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
 		name: 'demo',
-		disabled: false,
 		required: false,
+		disabled: false,
 	},
 };
 
-const Template = ({ name, disabled, required }: Record<string, any>) => html`
+const Template = ({ name, required, disabled }: Record<string, any>) => html`
 	<nldd-form-field label="Kies een optie">
 		<nldd-radio-button-group
 			name=${name}

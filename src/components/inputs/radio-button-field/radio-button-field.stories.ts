@@ -23,6 +23,10 @@ export default {
 			control: 'text',
 			description: 'Label tekst',
 		},
+		value: {
+			control: 'text',
+			description: 'Waarde voor formulierverwerking',
+		},
 		checked: {
 			control: 'boolean',
 			description: 'Aangevinkte toestand',
@@ -33,20 +37,16 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		value: {
-			control: 'text',
-			description: 'Waarde voor formulierverwerking',
-		},
 	},
 	args: {
 		label: 'Radio button field',
+		value: 'optie-1',
 		checked: false,
 		disabled: false,
-		value: 'optie-1',
 	},
 };
 
-const Template = ({ label, checked, disabled, value }: Record<string, any>) => html`
+const Template = ({ label, value, checked, disabled }: Record<string, any>) => html`
 	<nldd-radio-button-field
 		label=${label}
 		?checked=${checked}

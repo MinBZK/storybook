@@ -45,6 +45,10 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
+		text: {
+			control: 'text',
+			description: 'Tekst (heeft voorrang op number)',
+		},
 		icon: {
 			control: 'select',
 			options: ['', ...ICONS],
@@ -68,10 +72,6 @@ export default {
 				defaultValue: { summary: '99' },
 			},
 		},
-		text: {
-			control: 'text',
-			description: 'Tekst (heeft voorrang op number)',
-		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
@@ -81,15 +81,15 @@ export default {
 	args: {
 		variant: 'red',
 		size: 'md',
+		text: '',
 		icon: '',
 		number: '',
 		max: 99,
-		text: '',
 		accessibleLabel: '',
 	},
 };
 
-const Template = ({ variant, size, icon, number, max, text, accessibleLabel }: Record<string, any>) => {
+const Template = ({ variant, size, text, icon, number, max, accessibleLabel }: Record<string, any>) => {
 	const parsed = number === '' || number === null || number === undefined ? undefined : Number(number);
 	return html`
 		<nldd-badge
