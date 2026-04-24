@@ -15,14 +15,21 @@ describe('nldd-keyboard-shortcut', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders one kbd per key', async () => {
+	it('uses an outer <kbd> container', async () => {
+		el = await fixture('<nldd-keyboard-shortcut keys="Cmd+K"></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const container = el.shadowRoot!.querySelector('.keyboard-shortcut')!;
+		expect(container.tagName).toBe('KBD');
+	});
+
+	it('renders one inner kbd per key', async () => {
 		el = await fixture('<nldd-keyboard-shortcut keys="Cmd+Shift+K"></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
-		const kbds = el.shadowRoot!.querySelectorAll('kbd');
-		expect(kbds.length).toBe(3);
-		expect(kbds[0].textContent).toBe('Cmd');
-		expect(kbds[1].textContent).toBe('Shift');
-		expect(kbds[2].textContent).toBe('K');
+		const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');
+		expect(keys.length).toBe(3);
+		expect(keys[0].textContent).toBe('Cmd');
+		expect(keys[1].textContent).toBe('Shift');
+		expect(keys[2].textContent).toBe('K');
 	});
 
 	it('wraps all keys in a single container', async () => {
@@ -30,7 +37,7 @@ describe('nldd-keyboard-shortcut', () => {
 		await waitForUpdate(el);
 		const containers = el.shadowRoot!.querySelectorAll('.keyboard-shortcut');
 		expect(containers.length).toBe(1);
-		expect(containers[0].querySelectorAll('kbd').length).toBe(2);
+		expect(containers[0].querySelectorAll('.keyboard-shortcut__key').length).toBe(2);
 	});
 
 	it('renders a "+" separator between keys', async () => {
@@ -44,11 +51,11 @@ describe('nldd-keyboard-shortcut', () => {
 	it('treats "+++" as separator + literal + key + separator', async () => {
 		el = await fixture('<nldd-keyboard-shortcut keys="Ctrl+++a"></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);
-		const kbds = el.shadowRoot!.querySelectorAll('kbd');
-		expect(kbds.length).toBe(3);
-		expect(kbds[0].textContent).toBe('Ctrl');
-		expect(kbds[1].textContent).toBe('+');
-		expect(kbds[2].textContent).toBe('a');
+		const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');
+		expect(keys.length).toBe(3);
+		expect(keys[0].textContent).toBe('Ctrl');
+		expect(keys[1].textContent).toBe('+');
+		expect(keys[2].textContent).toBe('a');
 	});
 
 	it('renders slot content when keys is empty', async () => {

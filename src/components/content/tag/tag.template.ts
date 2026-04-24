@@ -2,8 +2,10 @@ import { html, nothing } from 'lit';
 import type { NLDDTag } from './tag.js';
 
 export function template(component: NLDDTag) {
+	const iconOnly = !!component.icon && !component.text && !!component.accessibleLabel;
 	return html`
 		<span class="tag"
+			role=${iconOnly ? 'img' : nothing}
 			aria-label=${component.accessibleLabel || nothing}
 		>
 			${component.icon ? html`

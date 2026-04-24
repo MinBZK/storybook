@@ -36,6 +36,23 @@ describe('nldd-link', () => {
 		expect(anchor.getAttribute('rel')).toBe('noopener noreferrer');
 	});
 
+	it('merges custom rel with noopener noreferrer for target=_blank', async () => {
+		el = await fixture('<nldd-link href="https://example.com" target="_blank" rel="nofollow" text="External"></nldd-link>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a')!;
+		const rel = anchor.getAttribute('rel')!.split(/\s+/);
+		expect(rel).toContain('nofollow');
+		expect(rel).toContain('noopener');
+		expect(rel).toContain('noreferrer');
+	});
+
+	it('does not add safety attrs when target is not _blank', async () => {
+		el = await fixture('<nldd-link href="/local" rel="nofollow" text="Local"></nldd-link>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a')!;
+		expect(anchor.getAttribute('rel')).toBe('nofollow');
+	});
+
 	it('removes href and adds role="link" when disabled', async () => {
 		el = await fixture('<nldd-link href="#" text="Disabled" disabled></nldd-link>');
 		await waitForUpdate(el);

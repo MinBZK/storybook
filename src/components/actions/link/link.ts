@@ -69,9 +69,12 @@ export class NLDDLink extends LitElement {
 
 	/** @internal */
 	_resolvedRel(): string {
-		if (this.rel) return this.rel;
-		if (this.target === '_blank') return 'noopener noreferrer';
-		return '';
+		const base = this.rel ?? '';
+		if (this.target !== '_blank') return base;
+		const parts = new Set(base.split(/\s+/).filter(Boolean));
+		parts.add('noopener');
+		parts.add('noreferrer');
+		return [...parts].join(' ');
 	}
 
 	override render() {
