@@ -683,6 +683,13 @@
 	--primitives-opacity-disabled: 0.38;
 	--primitives-opacity-dragging: 0.4;
 
+	/* ## Transition */
+
+	--primitives-transition-duration-fast: 150ms;
+	--primitives-transition-duration-medium: 200ms;
+	--primitives-transition-duration-slow: 300ms;
+	--primitives-transition-easing-default: ease-out;
+
 	/* ## Box shadow */
 
 	--primitives-box-shadow-opacity-factor: 1;
@@ -945,8 +952,8 @@
 	/* ## Badge */
 
 	--components-badge-corner-radius: var(--primitives-corner-radius-full);
-	--components-badge-rood-background-color: var(--primitives-color-rood-550);
-	--components-badge-rood-content-color: var(--primitives-color-rood-0);
+	--components-badge-red-background-color: var(--primitives-color-rood-550);
+	--components-badge-red-content-color: var(--primitives-color-rood-0);
 	--components-badge-accent-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--components-badge-accent-content-color: var(--primitives-color-accent-0);
 	--components-badge-neutral-background-color: var(--primitives-color-neutral-800);

@@ -6,7 +6,7 @@
  * Gebruik in een hoek van een ander element (bijv. een icon) of standalone.
  *
  * @element nldd-badge
- * @attr {string} variant - 'rood' | 'accent' | 'neutral' | 'warning' | 'success' (default: 'rood')
+ * @attr {string} variant - 'red' | 'accent' | 'neutral' | 'warning' | 'success' (default: 'red')
  * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
  * @attr {string} text - Tekst (heeft voorrang op number)
  * @attr {number} number - Numerieke waarde. Wordt beknopt als meer dan max
@@ -23,7 +23,7 @@ import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddBadgeTranslations } from './badge.i18n.js';
 import './../../content/icon/icon.js';
 
-type Variant = 'rood' | 'accent' | 'neutral' | 'warning' | 'success';
+type Variant = 'red' | 'accent' | 'neutral' | 'warning' | 'success';
 type Size = 'sm' | 'md';
 
 @customElement('nldd-badge')
@@ -31,7 +31,7 @@ export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslation
 	static override styles = badgeStyles;
 
 	@property({ type: String, reflect: true })
-	variant: Variant = 'rood';
+	variant: Variant = 'red';
 
 	@property({ type: String, reflect: true })
 	size: Size = 'md';

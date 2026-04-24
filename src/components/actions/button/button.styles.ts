@@ -42,8 +42,8 @@ export const buttonStyles = css`
 		justify-content: center;
 		width: 100%;
 		transition:
-			background-color 0.15s ease-out,
-			color 0.15s ease-out
+			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
+			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)
 		;
 	}
 

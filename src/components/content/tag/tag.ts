@@ -9,6 +9,7 @@
  * @attr {string} size - Tag grootte: 'sm' | 'md' (default: 'md')
  * @attr {string} text - Tag tekst (alternatief voor default slot)
  * @attr {string} icon - Icoon voor de tekst
+ * @attr {string} accessible-label - Toegankelijk label voor screenreaders. Gebruik dit bij icon-only tags zonder zichtbare tekst.
  *
  * @slot - Tag tekst
  * @slot icon - Custom icoon voor de tekst
@@ -38,6 +39,9 @@ export class NLDDTag extends LitElement {
 
 	@property({ type: String })
 	icon = '';
+
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
 
 	override render() {
 		return template(this);

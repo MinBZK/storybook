@@ -35,4 +35,11 @@ describe('nldd-tag', () => {
 		expect(icon).not.toBeNull();
 		expect(icon!.getAttribute('name')).toBe('check-mark');
 	});
+
+	it('sets aria-label from accessible-label attribute', async () => {
+		el = await fixture('<nldd-tag icon="check-mark" accessible-label="Geverifieerd"></nldd-tag>');
+		await waitForUpdate(el);
+		const tag = el.shadowRoot!.querySelector('.tag')!;
+		expect(tag.getAttribute('aria-label')).toBe('Geverifieerd');
+	});
 });

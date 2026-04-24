@@ -322,7 +322,8 @@ nldd-rich-text blockquote {
 	max-width: var(--semantics-blockquotes-max-width);
 	margin-block: var(--semantics-blockquotes-md-spacing);
 	margin-inline: 0;
-	padding: var(--semantics-blockquotes-md-spacing);
+	padding-inline: var(--semantics-blockquotes-md-spacing);
+	padding-top: var(--semantics-blockquotes-md-spacing);
 	border-top: var(--semantics-blockquotes-border);
 	border-left: var(--semantics-blockquotes-border);
 	border-top-left-radius: var(--semantics-blockquotes-corner-radius);

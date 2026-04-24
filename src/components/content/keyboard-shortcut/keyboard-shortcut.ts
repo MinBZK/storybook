@@ -5,7 +5,10 @@
  * container met semantische <kbd>-elementen per toets.
  *
  * @element nldd-keyboard-shortcut
- * @attr {string} keys - Toetsen gescheiden door '+' (bijv. 'Cmd+K' of 'Ctrl+Shift+P')
+ * @attr {string} keys - Toetsen gescheiden door '+' (bijv. 'Cmd+K' of 'Ctrl+Shift+P').
+ *   Gebruik '+++' voor een letterlijke '+' toets: 'Ctrl+++' wordt 'Ctrl' + '+'.
+ *   Voor complexere scenario's (bijv. combo met meerdere '+' keys) kun je in plaats
+ *   van het keys-attribuut de default slot gebruiken met eigen <kbd> elementen.
  * @attr {string} size - Grootte: 'sm' | 'md' (default: 'md')
  *
  * @slot - Optionele custom <kbd>-elementen. Wordt genegeerd als keys is opgegeven.
@@ -30,7 +33,13 @@ export class NLDDKeyboardShortcut extends LitElement {
 
 	get _parsedKeys(): string[] {
 		if (!this.keys) return [];
-		return this.keys.split('+').map(k => k.trim()).filter(Boolean);
+		// '+++' encodes a literal '+' key between separators: Ctrl+++a → [Ctrl, +, a]
+		const MARKER = '\u0000';
+		return this.keys
+			.replace(/\+\+\+/g, `+${MARKER}+`)
+			.split('+')
+			.map(k => k.trim().replace(new RegExp(MARKER, 'g'), '+'))
+			.filter(Boolean);
 	}
 
 	override render() {

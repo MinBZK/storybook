@@ -44,7 +44,7 @@ export const tokenStyles = css`
 		font: var(--semantics-buttons-sm-font);
 
 		/* Animation */
-		transition: background-color 0.15s ease-out;
+		transition: background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

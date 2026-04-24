@@ -13,7 +13,7 @@ import { ICONS } from './../../content/icon/icon.js';
  * <nldd-badge variant="success" text="Nieuw"></nldd-badge>
  * ```
  */
-const VARIANTS = ['rood', 'accent', 'neutral', 'warning', 'success'];
+const VARIANTS = ['red', 'accent', 'neutral', 'warning', 'success'];
 
 export default {
 	title: 'Components/Status & Feedback/Badge',
@@ -34,7 +34,7 @@ export default {
 			options: VARIANTS,
 			description: 'Kleur-variant',
 			table: {
-				defaultValue: { summary: 'rood' },
+				defaultValue: { summary: 'red' },
 			},
 		},
 		size: {
@@ -79,7 +79,7 @@ export default {
 		},
 	},
 	args: {
-		variant: 'rood',
+		variant: 'red',
 		size: 'md',
 		icon: '',
 		number: '',
@@ -114,7 +114,7 @@ export const Default = {
 export const Dot = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-badge variant="rood"></nldd-badge>
+			<nldd-badge variant="red"></nldd-badge>
 			<nldd-badge variant="accent"></nldd-badge>
 			<nldd-badge variant="neutral"></nldd-badge>
 			<nldd-badge variant="warning"></nldd-badge>
@@ -168,7 +168,7 @@ export const WithIcon = {
 		<div style="display: flex; gap: 16px; align-items: center;">
 			<nldd-badge variant="success" icon="check-mark"></nldd-badge>
 			<nldd-badge variant="warning" icon="alert"></nldd-badge>
-			<nldd-badge variant="rood" icon="dismiss-circle"></nldd-badge>
+			<nldd-badge variant="red" icon="dismiss-circle"></nldd-badge>
 			<nldd-badge variant="accent" icon="info-circle"></nldd-badge>
 		</div>
 	`,

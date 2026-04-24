@@ -25,6 +25,7 @@ export class NLDDBlockquote extends LitElement {
 	@state()
 	_hasAttribution = false;
 
+	/** @internal */
 	_handleAttributionSlotChange = (e: Event): void => {
 		const slot = e.target as HTMLSlotElement;
 		this._hasAttribution = slot.assignedNodes({ flatten: true }).some(n => {

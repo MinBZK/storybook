@@ -6,8 +6,8 @@ export const badgeStyles = css`
 	/* # Host */
 
 	:host {
-		--_background-color: var(--components-badge-rood-background-color);
-		--_content-color: var(--components-badge-rood-content-color);
+		--_background-color: var(--components-badge-red-background-color);
+		--_content-color: var(--components-badge-red-content-color);
 		--_height: var(--primitives-space-20);
 		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
@@ -34,10 +34,10 @@ export const badgeStyles = css`
 
 	/* ## Variants */
 
-	:host([variant="rood"]),
+	:host([variant="red"]),
 	:host(:not([variant])) {
-		--_background-color: var(--components-badge-rood-background-color);
-		--_content-color: var(--components-badge-rood-content-color);
+		--_background-color: var(--components-badge-red-background-color);
+		--_content-color: var(--components-badge-red-content-color);
 	}
 
 	:host([variant="accent"]) {

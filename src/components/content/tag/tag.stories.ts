@@ -54,21 +54,28 @@ export default {
 			control: 'text',
 			description: 'Tekst van de tag',
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label (vooral nuttig bij icon-only tags)',
+		},
 	},
 	args: {
 		variant: 'neutral',
 		size: 'md',
 		icon: '',
 		text: 'Tag',
+		accessibleLabel: '',
 	},
 };
 
-const Template = ({ variant, size, icon, text }: Record<string, any>) => html`
+const Template = ({ variant, size, icon, text, accessibleLabel }: Record<string, any>) => html`
 	<nldd-tag
 		variant=${variant}
 		size=${size}
 		icon=${icon || nothing}
 		text=${text}
+		accessible-label=${accessibleLabel || nothing}
 	></nldd-tag>
 `;
 

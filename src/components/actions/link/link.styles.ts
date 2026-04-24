@@ -30,7 +30,7 @@ export const linkStyles = css`
 		align-items: center;
 		text-decoration: none;
 		border-radius: var(--primitives-corner-radius-xs);
-		transition: color 0.15s ease-out;
+		transition: color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
 	}
 
 	:host([size="xs"]) .link {

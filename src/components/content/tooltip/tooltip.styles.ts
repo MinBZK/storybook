@@ -9,9 +9,9 @@ export const tooltipStyles = css`
 		display: contents;
 		--_z-index: 10000;
 		--_show-delay: 700ms;
-		--_show-duration: 150ms;
+		--_show-duration: var(--primitives-transition-duration-fast);
 		--_hide-delay: 50; /* unitless ms, read by JavaScript */
-		--_hide-duration: 150ms;
+		--_hide-duration: var(--primitives-transition-duration-fast);
 		--_offset: 4; /* px, unitless — read by JS */
 		--_shift-padding: 8; /* px, unitless — read by JS */
 		--_max-width: var(--primitives-area-280);

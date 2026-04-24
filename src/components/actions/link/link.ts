@@ -67,6 +67,7 @@ export class NLDDLink extends LitElement {
 		}
 	}
 
+	/** @internal */
 	_resolvedRel(): string {
 		if (this.rel) return this.rel;
 		if (this.target === '_blank') return 'noopener noreferrer';

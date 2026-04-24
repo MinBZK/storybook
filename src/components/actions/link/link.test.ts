@@ -44,4 +44,13 @@ describe('nldd-link', () => {
 		expect(anchor.getAttribute('role')).toBe('link');
 		expect(anchor.getAttribute('aria-disabled')).toBe('true');
 	});
+
+	it('blocks programmatic click when disabled', async () => {
+		el = await fixture('<nldd-link href="#" text="Disabled" disabled></nldd-link>');
+		await waitForUpdate(el);
+		const anchor = el.shadowRoot!.querySelector('a')!;
+		const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+		anchor.dispatchEvent(event);
+		expect(event.defaultPrevented).toBe(true);
+	});
 });

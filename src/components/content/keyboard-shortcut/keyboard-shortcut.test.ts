@@ -41,6 +41,16 @@ describe('nldd-keyboard-shortcut', () => {
 		separators.forEach(s => expect(s.textContent).toBe('+'));
 	});
 
+	it('treats "+++" as separator + literal + key + separator', async () => {
+		el = await fixture('<nldd-keyboard-shortcut keys="Ctrl+++a"></nldd-keyboard-shortcut>');
+		await waitForUpdate(el);
+		const kbds = el.shadowRoot!.querySelectorAll('kbd');
+		expect(kbds.length).toBe(3);
+		expect(kbds[0].textContent).toBe('Ctrl');
+		expect(kbds[1].textContent).toBe('+');
+		expect(kbds[2].textContent).toBe('a');
+	});
+
 	it('renders slot content when keys is empty', async () => {
 		el = await fixture('<nldd-keyboard-shortcut><kbd>F</kbd></nldd-keyboard-shortcut>');
 		await waitForUpdate(el);

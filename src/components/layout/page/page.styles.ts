@@ -70,7 +70,7 @@ export const pageStyles = css`
 		background: linear-gradient(to bottom, color-mix(in srgb, var(--_background-color) 95%, transparent), transparent);
 		pointer-events: none;
 		opacity: 0;
-		transition: opacity 200ms ease;
+		transition: opacity var(--primitives-transition-duration-medium) ease;
 	}
 
 	:host([sticky-header]) .page__header.is-scrolled::after {

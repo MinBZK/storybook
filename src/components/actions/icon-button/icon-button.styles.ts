@@ -41,8 +41,8 @@ export const iconButtonStyles = css`
 		align-items: center;
 		justify-content: center;
 		transition:
-			background-color 0.15s ease-out,
-			color 0.15s ease-out;
+			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
+			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
