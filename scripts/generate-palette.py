@@ -264,7 +264,7 @@ def generate_palette(hex_color: str, is_neutral: bool = False):
 						L_min = L_mid
 					else:
 						L_max = L_mid
-				except:
+				except Exception:
 					L_max = L_mid
 
 			if is_neutral:

@@ -6,8 +6,17 @@ export const keyboardShortcutStyles = css`
 	/* # Host */
 
 	:host {
+		--_size: var(--components-keyboard-shortcut-md-size);
+		--_inline-padding: var(--primitives-space-6);
+		--_font: var(--primitives-font-body-xs-regular-flat);
 		display: inline-flex;
 		vertical-align: middle;
+	}
+
+	:host([size="sm"]) {
+		--_size: var(--components-keyboard-shortcut-sm-size);
+		--_inline-padding: var(--primitives-space-4);
+		--_font: var(--primitives-font-body-xxs-regular-flat);
 	}
 
 	:host([hidden]) {
@@ -31,41 +40,20 @@ export const keyboardShortcutStyles = css`
 		align-items: center;
 		justify-content: center;
 		box-sizing: border-box;
-		background-color: var(--primitives-color-neutral-50);
-		color: var(--primitives-color-neutral-800);
-		border: 1px solid var(--primitives-color-neutral-150);
-		border-radius: var(--primitives-corner-radius-xs);
-		font-family: var(--primitives-font-family-body);
-		font-weight: var(--primitives-font-weight-body-regular);
+		min-width: var(--_size);
+		height: var(--_size);
+		padding: 0 var(--_inline-padding);
+		background-color: var(--components-keyboard-shortcut-background-color);
+		color: var(--components-keyboard-shortcut-content-color);
+		border: var(--components-keyboard-shortcut-border-thickness) solid var(--components-keyboard-shortcut-border-color);
+		border-radius: var(--components-keyboard-shortcut-corner-radius);
+		font: var(--_font);
 		white-space: nowrap;
 	}
 
-	:host([size="sm"]) .keyboard-shortcut__key {
-		min-width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		padding: 0 var(--primitives-space-4);
-		font-size: var(--primitives-font-size-70);
-	}
-
-	:host([size="md"]) .keyboard-shortcut__key,
-	:host(:not([size])) .keyboard-shortcut__key {
-		min-width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
-		padding: 0 var(--primitives-space-6);
-		font-size: var(--primitives-font-size-80);
-	}
-
 	.keyboard-shortcut__separator {
-		color: var(--semantics-content-secondary-color);
-	}
-
-	:host([size="sm"]) .keyboard-shortcut__separator {
-		font-size: var(--primitives-font-size-70);
-	}
-
-	:host([size="md"]) .keyboard-shortcut__separator,
-	:host(:not([size])) .keyboard-shortcut__separator {
-		font-size: var(--primitives-font-size-80);
+		color: var(--components-keyboard-shortcut-separator-color);
+		font: var(--_font);
 	}
 
 

@@ -10,6 +10,7 @@ export function template(component: NLDDBadge) {
 	return html`
 		<span class=${classes}
 			role="status"
+			aria-label=${component._ariaLabel}
 		>
 			${component.icon ? html`
 				<span class="badge__icon">

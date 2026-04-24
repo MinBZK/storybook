@@ -51,6 +51,18 @@
       "types": "./dist/components/content/tooltip/tooltip.d.ts",
       "default": "./dist/components/content/tooltip/tooltip.js"
     },
+    "./blockquote": {
+      "types": "./dist/components/content/blockquote/blockquote.d.ts",
+      "default": "./dist/components/content/blockquote/blockquote.js"
+    },
+    "./tag": {
+      "types": "./dist/components/content/tag/tag.d.ts",
+      "default": "./dist/components/content/tag/tag.js"
+    },
+    "./keyboard-shortcut": {
+      "types": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.d.ts",
+      "default": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.js"
+    },
     "./form-field": {
       "types": "./dist/components/forms/form-field/form-field.d.ts",
       "default": "./dist/components/forms/form-field/form-field.js"
@@ -290,6 +302,10 @@
     "./inline-dialog": {
       "types": "./dist/components/status-and-feedback/inline-dialog/inline-dialog.d.ts",
       "default": "./dist/components/status-and-feedback/inline-dialog/inline-dialog.js"
+    },
+    "./badge": {
+      "types": "./dist/components/status-and-feedback/badge/badge.d.ts",
+      "default": "./dist/components/status-and-feedback/badge/badge.js"
     },
     "./styles": "./dist/css/global.css",
     "./styles/tokens": "./dist/css/settings.css"

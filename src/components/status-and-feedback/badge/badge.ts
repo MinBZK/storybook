@@ -12,19 +12,22 @@
  * @attr {number} number - Numerieke waarde. Wordt beknopt als meer dan max
  * @attr {number} max - Maximum waarde boven welke number wordt getoond als "{max}+" (default: 99)
  * @attr {string} icon - Icoon naam. Icon-only wordt als vierkant gerenderd; met text/number komt het icoon links.
+ * @attr {string} accessible-label - Toegankelijk label voor screenreaders. Fallback naar text/number; anders naar i18n default ("Notificatie").
  */
 
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { badgeStyles } from './badge.styles.js';
 import { template } from './badge.template.js';
+import { withTranslations } from '../../../utilities/with-translations.js';
+import { nlddBadgeTranslations } from './badge.i18n.js';
 import './../../content/icon/icon.js';
 
 type Variant = 'rood' | 'accent' | 'neutral' | 'warning' | 'success';
 type Size = 'sm' | 'md';
 
 @customElement('nldd-badge')
-export class NLDDBadge extends LitElement {
+export class NLDDBadge extends withTranslations(LitElement, nlddBadgeTranslations) {
 	static override styles = badgeStyles;
 
 	@property({ type: String, reflect: true })
@@ -45,6 +48,9 @@ export class NLDDBadge extends LitElement {
 	@property({ type: String })
 	icon = '';
 
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = '';
+
 	get _hasText(): boolean {
 		return !!this.text || typeof this.number === 'number';
 	}
@@ -63,6 +69,12 @@ export class NLDDBadge extends LitElement {
 			return this.number > this.max ? `${this.max}+` : String(this.number);
 		}
 		return '';
+	}
+
+	get _ariaLabel(): string {
+		if (this.accessibleLabel) return this.accessibleLabel;
+		if (this._hasText) return this._displayValue;
+		return this._t('components.badge.notification-text');
 	}
 
 	override render() {

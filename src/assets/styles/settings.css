@@ -1005,6 +1005,17 @@
 
 	--components-form-gap: var(--primitives-space-16);
 
+	/* ## Keyboard shortcut */
+
+	--components-keyboard-shortcut-sm-size: var(--primitives-space-20);
+	--components-keyboard-shortcut-md-size: var(--primitives-space-24);
+	--components-keyboard-shortcut-background-color: var(--semantics-surfaces-tinted-background-color);
+	--components-keyboard-shortcut-content-color: var(--semantics-content-color);
+	--components-keyboard-shortcut-border-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-250));
+	--components-keyboard-shortcut-border-thickness: 1px;
+	--components-keyboard-shortcut-corner-radius: var(--primitives-corner-radius-xs);
+	--components-keyboard-shortcut-separator-color: var(--semantics-content-secondary-color);
+
 	/* ## List */
 
 	--components-list-corner-radius: var(--semantics-controls-md-corner-radius);

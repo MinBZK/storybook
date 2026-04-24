@@ -133,7 +133,7 @@ function validate() {
   for (const file of STYLES_FILES) {
     for (const v of parseStylesFile(file)) variables.add(v);
   }
-  console.log(`📦 Found ${variables.size} variables in settings.css\n`);
+  console.log(`📦 Found ${variables.size} variables across ${STYLES_FILES.length} style files\n`);
 
   // Find component files
   const componentFiles = findComponentFiles(COMPONENTS_DIR);

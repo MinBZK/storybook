@@ -69,4 +69,39 @@ describe('nldd-badge', () => {
 		expect(el.shadowRoot!.querySelector('.badge__icon')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('.badge__text')!.textContent).toBe('OK');
 	});
+
+	it('uses text as aria-label when set', async () => {
+		el = await fixture('<nldd-badge text="Nieuw"></nldd-badge>');
+		await waitForUpdate(el);
+		const badge = el.shadowRoot!.querySelector('.badge')!;
+		expect(badge.getAttribute('aria-label')).toBe('Nieuw');
+	});
+
+	it('uses number display value as aria-label', async () => {
+		el = await fixture('<nldd-badge number="5"></nldd-badge>');
+		await waitForUpdate(el);
+		const badge = el.shadowRoot!.querySelector('.badge')!;
+		expect(badge.getAttribute('aria-label')).toBe('5');
+	});
+
+	it('falls back to i18n notification label in dot mode', async () => {
+		el = await fixture('<nldd-badge></nldd-badge>');
+		await waitForUpdate(el);
+		const badge = el.shadowRoot!.querySelector('.badge')!;
+		expect(badge.getAttribute('aria-label')).toBe('Notificatie');
+	});
+
+	it('falls back to i18n label in icon-only mode', async () => {
+		el = await fixture('<nldd-badge icon="check-mark"></nldd-badge>');
+		await waitForUpdate(el);
+		const badge = el.shadowRoot!.querySelector('.badge')!;
+		expect(badge.getAttribute('aria-label')).toBe('Notificatie');
+	});
+
+	it('prefers accessible-label over all fallbacks', async () => {
+		el = await fixture('<nldd-badge accessible-label="3 ongelezen berichten" number="3"></nldd-badge>');
+		await waitForUpdate(el);
+		const badge = el.shadowRoot!.querySelector('.badge')!;
+		expect(badge.getAttribute('aria-label')).toBe('3 ongelezen berichten');
+	});
 });

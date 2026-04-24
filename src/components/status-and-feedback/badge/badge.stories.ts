@@ -72,6 +72,11 @@ export default {
 			control: 'text',
 			description: 'Tekst (heeft voorrang op number)',
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screenreaders (fallback naar text/number; anders naar i18n default)',
+		},
 	},
 	args: {
 		variant: 'rood',
@@ -80,11 +85,12 @@ export default {
 		number: '',
 		max: 99,
 		text: '',
+		accessibleLabel: '',
 	},
 };
 
-const Template = ({ variant, size, icon, number, max, text }: Record<string, any>) => {
-	const parsed = number === '' || number == null ? undefined : Number(number);
+const Template = ({ variant, size, icon, number, max, text, accessibleLabel }: Record<string, any>) => {
+	const parsed = number === '' || number === null || number === undefined ? undefined : Number(number);
 	return html`
 		<nldd-badge
 			variant=${variant}
@@ -93,6 +99,7 @@ const Template = ({ variant, size, icon, number, max, text }: Record<string, any
 			number=${Number.isFinite(parsed) ? parsed! : nothing}
 			max=${max}
 			text=${text || nothing}
+			accessible-label=${accessibleLabel || nothing}
 		></nldd-badge>
 	`;
 };
@@ -231,6 +238,21 @@ export const OverlayOnIcon = {
 			<span style="position: relative; display: inline-flex;">
 				<nldd-icon name="envelope" style="width: 32px; height: 32px;"></nldd-icon>
 				<nldd-badge
+					size="sm"
+					number="3"
+					style="position: absolute; top: -4px; right: -6px;"
+				></nldd-badge>
+			</span>
+			<span style="position: relative; display: inline-flex;">
+				<nldd-icon name="envelope" style="width: 32px; height: 32px;"></nldd-icon>
+				<nldd-badge
+					style="position: absolute; top: 0; right: 0;"
+				></nldd-badge>
+			</span>
+			<span style="position: relative; display: inline-flex;">
+				<nldd-icon name="envelope" style="width: 32px; height: 32px;"></nldd-icon>
+				<nldd-badge
+					size="sm"
 					style="position: absolute; top: 0; right: 0;"
 				></nldd-badge>
 			</span>

@@ -8,19 +8,19 @@ export const badgeStyles = css`
 	:host {
 		--_background-color: var(--components-badge-rood-background-color);
 		--_content-color: var(--components-badge-rood-content-color);
-		--_height: var(--primitives-space-24);
-		--_inline-padding: var(--primitives-space-8);
+		--_height: var(--primitives-space-20);
+		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
 		--_font: var(--primitives-font-body-xs-bold-flat);
-		--_icon-size: var(--primitives-space-16);
+		--_icon-size: var(--primitives-space-14);
 		--_dot-size: var(--primitives-space-10);
 		display: inline-flex;
 		vertical-align: middle;
 	}
 
 	:host([size="sm"]) {
-		--_height: var(--primitives-space-20);
-		--_inline-padding: var(--primitives-space-6);
+		--_height: var(--primitives-space-16);
+		--_inline-padding: var(--primitives-space-4);
 		--_gap: var(--primitives-space-2);
 		--_font: var(--primitives-font-body-xxs-bold-flat);
 		--_icon-size: var(--primitives-space-12);
