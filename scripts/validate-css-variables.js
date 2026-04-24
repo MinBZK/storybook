@@ -19,7 +19,10 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
 
 // Configuration
-const STYLES_FILE = path.join(ROOT_DIR, 'src/assets/styles/settings.css');
+const STYLES_FILES = [
+  path.join(ROOT_DIR, 'src/assets/styles/settings.css'),
+  path.join(ROOT_DIR, 'src/assets/styles/palettes.generated.css'),
+];
 const COMPONENTS_DIR = path.join(ROOT_DIR, 'src/components');
 
 // Patterns
@@ -126,7 +129,10 @@ function validate() {
   console.log('🔍 Validating CSS variables...\n');
 
   // Parse styles
-  const variables = parseStylesFile(STYLES_FILE);
+  const variables = new Set();
+  for (const file of STYLES_FILES) {
+    for (const v of parseStylesFile(file)) variables.add(v);
+  }
   console.log(`📦 Found ${variables.size} variables in settings.css\n`);
 
   // Find component files

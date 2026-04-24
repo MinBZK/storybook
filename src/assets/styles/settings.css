@@ -2,6 +2,8 @@
  * NLDD Design System — CSS variables & fonts
  */
 
+@import "./palettes.generated.css";
+
 @font-face {
 	font-family: 'RijksSansVF';
 	src: url('../fonts/RijksSansVF-Regular.ttf') format('truetype-variations');
@@ -52,163 +54,180 @@
 
 	/* # Primitives */
 
-	/* ## Colors */
+	/* ## Functional Colors */
 
-	/* ### Neutral (Blue-Gray) - 253.4° with reduced chroma */
+	/* Descriptive palettes live in palettes.generated.css.
+	 * Each functional role points at a descriptive palette; override these
+	 * aliases at :root level to theme the whole system. */
 
-	--primitives-color-neutral-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
-	--primitives-color-neutral-25: light-dark(oklch(0.974 0.004 253.4), oklch(0.158 0.009 253.4)); /* light: #F4F6F9 | dark: #0A0D10 */
-	--primitives-color-neutral-50: light-dark(oklch(0.948 0.007 253.4), oklch(0.202 0.011 253.4)); /* light: #EBEEF2 | dark: #13171B */
-	--primitives-color-neutral-75: light-dark(oklch(0.923 0.009 253.4), oklch(0.234 0.013 253.4)); /* light: #E1E6EB | dark: #1A1E24 */
-	--primitives-color-neutral-100: light-dark(oklch(0.898 0.011 253.4), oklch(0.261 0.015 253.4)); /* light: #D8DEE5 | dark: #1F252B */
-	--primitives-color-neutral-150: light-dark(oklch(0.850 0.015 253.4), oklch(0.307 0.018 253.4)); /* light: #C7CFD8 | dark: #293038 */
-	--primitives-color-neutral-200: light-dark(oklch(0.804 0.019 253.4), oklch(0.347 0.020 253.4)); /* light: #B7C0CB | dark: #333B44 */
-	--primitives-color-neutral-250: light-dark(oklch(0.760 0.023 253.4), oklch(0.385 0.023 253.4)); /* light: #A7B2C0 | dark: #3B4450 */
-	--primitives-color-neutral-300: light-dark(oklch(0.718 0.026 253.4), oklch(0.421 0.026 253.4)); /* light: #99A5B5 | dark: #444E5B */
-	--primitives-color-neutral-350: light-dark(oklch(0.677 0.030 253.4), oklch(0.456 0.029 253.4)); /* light: #8B99AA | dark: #4C5867 */
-	--primitives-color-neutral-400: light-dark(oklch(0.638 0.033 253.4), oklch(0.491 0.032 253.4)); /* light: #7E8DA0 | dark: #546273 */
-	--primitives-color-neutral-450: light-dark(oklch(0.600 0.037 253.4), oklch(0.527 0.036 253.4)); /* light: #718296 | dark: #5D6C80 */
-	--primitives-color-neutral-500: light-dark(oklch(0.563 0.040 253.4), oklch(0.563 0.040 253.4)); /* light: #65778D | dark: #65778D */
-	--primitives-color-neutral-550: light-dark(oklch(0.527 0.036 253.4), oklch(0.600 0.037 253.4)); /* light: #5D6C80 | dark: #718296 */
-	--primitives-color-neutral-600: light-dark(oklch(0.491 0.032 253.4), oklch(0.638 0.033 253.4)); /* light: #546273 | dark: #7E8DA0 */
-	--primitives-color-neutral-650: light-dark(oklch(0.456 0.029 253.4), oklch(0.677 0.030 253.4)); /* light: #4C5867 | dark: #8B99AA */
-	--primitives-color-neutral-700: light-dark(oklch(0.421 0.026 253.4), oklch(0.718 0.026 253.4)); /* light: #444E5B | dark: #99A5B5 */
-	--primitives-color-neutral-750: light-dark(oklch(0.385 0.023 253.4), oklch(0.760 0.023 253.4)); /* light: #3B4450 | dark: #A7B2C0 */
-	--primitives-color-neutral-800: light-dark(oklch(0.347 0.020 253.4), oklch(0.804 0.019 253.4)); /* light: #333B44 | dark: #B7C0CB */
-	--primitives-color-neutral-850: light-dark(oklch(0.307 0.018 253.4), oklch(0.850 0.015 253.4)); /* light: #293038 | dark: #C7CFD8 */
-	--primitives-color-neutral-900: light-dark(oklch(0.261 0.015 253.4), oklch(0.898 0.011 253.4)); /* light: #1F252B | dark: #D8DEE5 */
-	--primitives-color-neutral-950: light-dark(oklch(0.202 0.011 253.4), oklch(0.948 0.007 253.4)); /* light: #13171B | dark: #EBEEF2 */
-	--primitives-color-neutral-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
+	/* ### Neutral */
 
-	/* ### Accent (Blue) - 253.4° */
+	--primitives-color-neutral-0: var(--primitives-color-coolgray-0);
+	--primitives-color-neutral-25: var(--primitives-color-coolgray-25);
+	--primitives-color-neutral-50: var(--primitives-color-coolgray-50);
+	--primitives-color-neutral-75: var(--primitives-color-coolgray-75);
+	--primitives-color-neutral-100: var(--primitives-color-coolgray-100);
+	--primitives-color-neutral-150: var(--primitives-color-coolgray-150);
+	--primitives-color-neutral-200: var(--primitives-color-coolgray-200);
+	--primitives-color-neutral-250: var(--primitives-color-coolgray-250);
+	--primitives-color-neutral-300: var(--primitives-color-coolgray-300);
+	--primitives-color-neutral-350: var(--primitives-color-coolgray-350);
+	--primitives-color-neutral-400: var(--primitives-color-coolgray-400);
+	--primitives-color-neutral-450: var(--primitives-color-coolgray-450);
+	--primitives-color-neutral-500: var(--primitives-color-coolgray-500);
+	--primitives-color-neutral-550: var(--primitives-color-coolgray-550);
+	--primitives-color-neutral-600: var(--primitives-color-coolgray-600);
+	--primitives-color-neutral-650: var(--primitives-color-coolgray-650);
+	--primitives-color-neutral-700: var(--primitives-color-coolgray-700);
+	--primitives-color-neutral-750: var(--primitives-color-coolgray-750);
+	--primitives-color-neutral-800: var(--primitives-color-coolgray-800);
+	--primitives-color-neutral-850: var(--primitives-color-coolgray-850);
+	--primitives-color-neutral-900: var(--primitives-color-coolgray-900);
+	--primitives-color-neutral-925: var(--primitives-color-coolgray-925);
+	--primitives-color-neutral-950: var(--primitives-color-coolgray-950);
+	--primitives-color-neutral-975: var(--primitives-color-coolgray-975);
+	--primitives-color-neutral-1000: var(--primitives-color-coolgray-1000);
 
-	--primitives-color-accent-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
-	--primitives-color-accent-25: light-dark(oklch(0.973 0.013 253.4), oklch(0.159 0.050 253.4)); /* light: #F0F7FF | dark: #000D21 */
-	--primitives-color-accent-50: light-dark(oklch(0.947 0.026 253.4), oklch(0.203 0.063 253.4)); /* light: #E2EFFF | dark: #001632 */
-	--primitives-color-accent-75: light-dark(oklch(0.922 0.038 253.4), oklch(0.235 0.074 253.4)); /* light: #D4E7FF | dark: #001E3F */
-	--primitives-color-accent-100: light-dark(oklch(0.897 0.051 253.4), oklch(0.262 0.082 253.4)); /* light: #C6E0FF | dark: #00244B */
-	--primitives-color-accent-150: light-dark(oklch(0.849 0.076 253.4), oklch(0.308 0.096 253.4)); /* light: #ABD1FF | dark: #00305F */
-	--primitives-color-accent-200: light-dark(oklch(0.804 0.097 253.4), oklch(0.348 0.097 253.4)); /* light: #93C3FC | dark: #0C3A6B */
-	--primitives-color-accent-250: light-dark(oklch(0.760 0.097 253.4), oklch(0.386 0.097 253.4)); /* light: #85B5EE | dark: #184576 */
-	--primitives-color-accent-300: light-dark(oklch(0.718 0.097 253.4), oklch(0.421 0.097 253.4)); /* light: #78A7E0 | dark: #224F81 */
-	--primitives-color-accent-350: light-dark(oklch(0.677 0.097 253.4), oklch(0.457 0.097 253.4)); /* light: #6C9BD2 | dark: #2C598C */
-	--primitives-color-accent-400: light-dark(oklch(0.638 0.097 253.4), oklch(0.492 0.097 253.4)); /* light: #608FC5 | dark: #366396 */
-	--primitives-color-accent-450: light-dark(oklch(0.600 0.097 253.4), oklch(0.527 0.097 253.4)); /* light: #5583B9 | dark: #406DA2 */
-	--primitives-color-accent-500: light-dark(oklch(0.563 0.097 253.4), oklch(0.563 0.097 253.4)); /* light: #4B78AD | dark: #4B78AD */
-	--primitives-color-accent-550: light-dark(oklch(0.527 0.097 253.4), oklch(0.600 0.097 253.4)); /* light: #406DA2 | dark: #5583B9 */
-	--primitives-color-accent-600: light-dark(oklch(0.492 0.097 253.4), oklch(0.638 0.097 253.4)); /* light: #366396 | dark: #608FC5 */
-	--primitives-color-accent-650: light-dark(oklch(0.457 0.097 253.4), oklch(0.677 0.097 253.4)); /* light: #2C598C | dark: #6C9BD2 */
-	--primitives-color-accent-700: light-dark(oklch(0.421 0.097 253.4), oklch(0.718 0.097 253.4)); /* light: #224F81 | dark: #78A7E0 */
-	--primitives-color-accent-750: light-dark(oklch(0.386 0.097 253.4), oklch(0.760 0.097 253.4)); /* light: #184576 | dark: #85B5EE */
-	--primitives-color-accent-800: light-dark(oklch(0.348 0.097 253.4), oklch(0.804 0.097 253.4)); /* light: #0C3A6B | dark: #93C3FC */
-	--primitives-color-accent-850: light-dark(oklch(0.308 0.096 253.4), oklch(0.849 0.076 253.4)); /* light: #00305F | dark: #ABD1FF */
-	--primitives-color-accent-900: light-dark(oklch(0.262 0.082 253.4), oklch(0.897 0.051 253.4)); /* light: #00244B | dark: #C6E0FF */
-	--primitives-color-accent-950: light-dark(oklch(0.203 0.063 253.4), oklch(0.947 0.026 253.4)); /* light: #001632 | dark: #E2EFFF */
-	--primitives-color-accent-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
+	/* ### Accent */
 
-	/* ### Success (Green) - 137.9° */
+	--primitives-color-accent-0: var(--primitives-color-lintblauw-0);
+	--primitives-color-accent-25: var(--primitives-color-lintblauw-25);
+	--primitives-color-accent-50: var(--primitives-color-lintblauw-50);
+	--primitives-color-accent-75: var(--primitives-color-lintblauw-75);
+	--primitives-color-accent-100: var(--primitives-color-lintblauw-100);
+	--primitives-color-accent-150: var(--primitives-color-lintblauw-150);
+	--primitives-color-accent-200: var(--primitives-color-lintblauw-200);
+	--primitives-color-accent-250: var(--primitives-color-lintblauw-250);
+	--primitives-color-accent-300: var(--primitives-color-lintblauw-300);
+	--primitives-color-accent-350: var(--primitives-color-lintblauw-350);
+	--primitives-color-accent-400: var(--primitives-color-lintblauw-400);
+	--primitives-color-accent-450: var(--primitives-color-lintblauw-450);
+	--primitives-color-accent-500: var(--primitives-color-lintblauw-500);
+	--primitives-color-accent-550: var(--primitives-color-lintblauw-550);
+	--primitives-color-accent-600: var(--primitives-color-lintblauw-600);
+	--primitives-color-accent-650: var(--primitives-color-lintblauw-650);
+	--primitives-color-accent-700: var(--primitives-color-lintblauw-700);
+	--primitives-color-accent-750: var(--primitives-color-lintblauw-750);
+	--primitives-color-accent-800: var(--primitives-color-lintblauw-800);
+	--primitives-color-accent-850: var(--primitives-color-lintblauw-850);
+	--primitives-color-accent-900: var(--primitives-color-lintblauw-900);
+	--primitives-color-accent-925: var(--primitives-color-lintblauw-925);
+	--primitives-color-accent-950: var(--primitives-color-lintblauw-950);
+	--primitives-color-accent-975: var(--primitives-color-lintblauw-975);
+	--primitives-color-accent-1000: var(--primitives-color-lintblauw-1000);
 
-	--primitives-color-success-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
-	--primitives-color-success-25: light-dark(oklch(0.967 0.062 137.9), oklch(0.154 0.047 137.9)); /* light: #E0FFD6 | dark: #031000 */
-	--primitives-color-success-50: light-dark(oklch(0.935 0.133 137.9), oklch(0.197 0.061 137.9)); /* light: #BDFFA7 | dark: #061B00 */
-	--primitives-color-success-75: light-dark(oklch(0.907 0.165 137.9), oklch(0.228 0.070 137.9)); /* light: #A8FA8B | dark: #092300 */
-	--primitives-color-success-100: light-dark(oklch(0.883 0.165 137.9), oklch(0.254 0.078 137.9)); /* light: #A0F283 | dark: #0C2B00 */
-	--primitives-color-success-150: light-dark(oklch(0.835 0.165 137.9), oklch(0.299 0.092 137.9)); /* light: #91E273 | dark: #123700 */
-	--primitives-color-success-200: light-dark(oklch(0.790 0.165 137.9), oklch(0.338 0.104 137.9)); /* light: #83D365 | dark: #174300 */
-	--primitives-color-success-250: light-dark(oklch(0.746 0.165 137.9), oklch(0.375 0.115 137.9)); /* light: #75C456 | dark: #1C4E00 */
-	--primitives-color-success-300: light-dark(oklch(0.704 0.165 137.9), oklch(0.410 0.126 137.9)); /* light: #68B749 | dark: #215900 */
-	--primitives-color-success-350: light-dark(oklch(0.663 0.165 137.9), oklch(0.444 0.137 137.9)); /* light: #5BAA3B | dark: #266400 */
-	--primitives-color-success-400: light-dark(oklch(0.624 0.165 137.9), oklch(0.479 0.148 137.9)); /* light: #4F9D2D | dark: #2B6F00 */
-	--primitives-color-success-450: light-dark(oklch(0.586 0.165 137.9), oklch(0.514 0.158 137.9)); /* light: #44911E | dark: #307A00 */
-	--primitives-color-success-500: light-dark(oklch(0.549 0.165 137.9), oklch(0.549 0.165 137.9)); /* light: #38860A | dark: #38860A */
-	--primitives-color-success-550: light-dark(oklch(0.514 0.158 137.9), oklch(0.586 0.165 137.9)); /* light: #307A00 | dark: #44911E */
-	--primitives-color-success-600: light-dark(oklch(0.479 0.148 137.9), oklch(0.624 0.165 137.9)); /* light: #2B6F00 | dark: #4F9D2D */
-	--primitives-color-success-650: light-dark(oklch(0.444 0.137 137.9), oklch(0.663 0.165 137.9)); /* light: #266400 | dark: #5BAA3B */
-	--primitives-color-success-700: light-dark(oklch(0.410 0.126 137.9), oklch(0.704 0.165 137.9)); /* light: #215900 | dark: #68B749 */
-	--primitives-color-success-750: light-dark(oklch(0.375 0.115 137.9), oklch(0.746 0.165 137.9)); /* light: #1C4E00 | dark: #75C456 */
-	--primitives-color-success-800: light-dark(oklch(0.338 0.104 137.9), oklch(0.790 0.165 137.9)); /* light: #174300 | dark: #83D365 */
-	--primitives-color-success-850: light-dark(oklch(0.299 0.092 137.9), oklch(0.835 0.165 137.9)); /* light: #123700 | dark: #91E273 */
-	--primitives-color-success-900: light-dark(oklch(0.254 0.078 137.9), oklch(0.883 0.165 137.9)); /* light: #0C2B00 | dark: #A0F283 */
-	--primitives-color-success-950: light-dark(oklch(0.197 0.061 137.9), oklch(0.935 0.133 137.9)); /* light: #061B00 | dark: #BDFFA7 */
-	--primitives-color-success-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
+	/* ### Success */
 
-	/* ### Warning (Orange) - 52.9° */
+	--primitives-color-success-0: var(--primitives-color-groen-0);
+	--primitives-color-success-25: var(--primitives-color-groen-25);
+	--primitives-color-success-50: var(--primitives-color-groen-50);
+	--primitives-color-success-75: var(--primitives-color-groen-75);
+	--primitives-color-success-100: var(--primitives-color-groen-100);
+	--primitives-color-success-150: var(--primitives-color-groen-150);
+	--primitives-color-success-200: var(--primitives-color-groen-200);
+	--primitives-color-success-250: var(--primitives-color-groen-250);
+	--primitives-color-success-300: var(--primitives-color-groen-300);
+	--primitives-color-success-350: var(--primitives-color-groen-350);
+	--primitives-color-success-400: var(--primitives-color-groen-400);
+	--primitives-color-success-450: var(--primitives-color-groen-450);
+	--primitives-color-success-500: var(--primitives-color-groen-500);
+	--primitives-color-success-550: var(--primitives-color-groen-550);
+	--primitives-color-success-600: var(--primitives-color-groen-600);
+	--primitives-color-success-650: var(--primitives-color-groen-650);
+	--primitives-color-success-700: var(--primitives-color-groen-700);
+	--primitives-color-success-750: var(--primitives-color-groen-750);
+	--primitives-color-success-800: var(--primitives-color-groen-800);
+	--primitives-color-success-850: var(--primitives-color-groen-850);
+	--primitives-color-success-900: var(--primitives-color-groen-900);
+	--primitives-color-success-925: var(--primitives-color-groen-925);
+	--primitives-color-success-950: var(--primitives-color-groen-950);
+	--primitives-color-success-975: var(--primitives-color-groen-975);
+	--primitives-color-success-1000: var(--primitives-color-groen-1000);
 
-	--primitives-color-warning-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
-	--primitives-color-warning-25: light-dark(oklch(0.975 0.014 52.9), oklch(0.162 0.041 52.9)); /* light: #FFF4EE | dark: #1B0800 */
-	--primitives-color-warning-50: light-dark(oklch(0.950 0.029 52.9), oklch(0.206 0.052 52.9)); /* light: #FFEADD | dark: #290F00 */
-	--primitives-color-warning-75: light-dark(oklch(0.926 0.043 52.9), oklch(0.239 0.061 52.9)); /* light: #FFDFCC | dark: #351500 */
-	--primitives-color-warning-100: light-dark(oklch(0.902 0.058 52.9), oklch(0.267 0.068 52.9)); /* light: #FFD5BC | dark: #3E1A00 */
-	--primitives-color-warning-150: light-dark(oklch(0.857 0.089 52.9), oklch(0.314 0.080 52.9)); /* light: #FFC09A | dark: #4F2300 */
-	--primitives-color-warning-200: light-dark(oklch(0.814 0.119 52.9), oklch(0.355 0.090 52.9)); /* light: #FFAC77 | dark: #5F2B00 */
-	--primitives-color-warning-250: light-dark(oklch(0.773 0.151 52.9), oklch(0.394 0.100 52.9)); /* light: #FF9750 | dark: #6E3300 */
-	--primitives-color-warning-300: light-dark(oklch(0.733 0.169 52.9), oklch(0.430 0.109 52.9)); /* light: #F9852D | dark: #7D3B00 */
-	--primitives-color-warning-350: light-dark(oklch(0.692 0.169 52.9), oklch(0.467 0.119 52.9)); /* light: #EA7918 | dark: #8B4300 */
-	--primitives-color-warning-400: light-dark(oklch(0.653 0.166 52.9), oklch(0.503 0.128 52.9)); /* light: #DB6D00 | dark: #9A4B00 */
-	--primitives-color-warning-450: light-dark(oklch(0.614 0.156 52.9), oklch(0.539 0.137 52.9)); /* light: #CA6400 | dark: #AA5300 */
-	--primitives-color-warning-500: light-dark(oklch(0.576 0.146 52.9), oklch(0.576 0.146 52.9)); /* light: #BA5B00 | dark: #BA5B00 */
-	--primitives-color-warning-550: light-dark(oklch(0.539 0.137 52.9), oklch(0.614 0.156 52.9)); /* light: #AA5300 | dark: #CA6400 */
-	--primitives-color-warning-600: light-dark(oklch(0.503 0.128 52.9), oklch(0.653 0.166 52.9)); /* light: #9A4B00 | dark: #DB6D00 */
-	--primitives-color-warning-650: light-dark(oklch(0.467 0.119 52.9), oklch(0.692 0.169 52.9)); /* light: #8B4300 | dark: #EA7918 */
-	--primitives-color-warning-700: light-dark(oklch(0.430 0.109 52.9), oklch(0.733 0.169 52.9)); /* light: #7D3B00 | dark: #F9852D */
-	--primitives-color-warning-750: light-dark(oklch(0.394 0.100 52.9), oklch(0.773 0.151 52.9)); /* light: #6E3300 | dark: #FF9750 */
-	--primitives-color-warning-800: light-dark(oklch(0.355 0.090 52.9), oklch(0.814 0.119 52.9)); /* light: #5F2B00 | dark: #FFAC77 */
-	--primitives-color-warning-850: light-dark(oklch(0.314 0.080 52.9), oklch(0.857 0.089 52.9)); /* light: #4F2300 | dark: #FFC09A */
-	--primitives-color-warning-900: light-dark(oklch(0.267 0.068 52.9), oklch(0.902 0.058 52.9)); /* light: #3E1A00 | dark: #FFD5BC */
-	--primitives-color-warning-950: light-dark(oklch(0.206 0.052 52.9), oklch(0.950 0.029 52.9)); /* light: #290F00 | dark: #FFEADD */
-	--primitives-color-warning-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
+	/* ### Warning */
 
-	/* ### Danger (Red) - 29.5° */
+	--primitives-color-warning-0: var(--primitives-color-oranje-0);
+	--primitives-color-warning-25: var(--primitives-color-oranje-25);
+	--primitives-color-warning-50: var(--primitives-color-oranje-50);
+	--primitives-color-warning-75: var(--primitives-color-oranje-75);
+	--primitives-color-warning-100: var(--primitives-color-oranje-100);
+	--primitives-color-warning-150: var(--primitives-color-oranje-150);
+	--primitives-color-warning-200: var(--primitives-color-oranje-200);
+	--primitives-color-warning-250: var(--primitives-color-oranje-250);
+	--primitives-color-warning-300: var(--primitives-color-oranje-300);
+	--primitives-color-warning-350: var(--primitives-color-oranje-350);
+	--primitives-color-warning-400: var(--primitives-color-oranje-400);
+	--primitives-color-warning-450: var(--primitives-color-oranje-450);
+	--primitives-color-warning-500: var(--primitives-color-oranje-500);
+	--primitives-color-warning-550: var(--primitives-color-oranje-550);
+	--primitives-color-warning-600: var(--primitives-color-oranje-600);
+	--primitives-color-warning-650: var(--primitives-color-oranje-650);
+	--primitives-color-warning-700: var(--primitives-color-oranje-700);
+	--primitives-color-warning-750: var(--primitives-color-oranje-750);
+	--primitives-color-warning-800: var(--primitives-color-oranje-800);
+	--primitives-color-warning-850: var(--primitives-color-oranje-850);
+	--primitives-color-warning-900: var(--primitives-color-oranje-900);
+	--primitives-color-warning-925: var(--primitives-color-oranje-925);
+	--primitives-color-warning-950: var(--primitives-color-oranje-950);
+	--primitives-color-warning-975: var(--primitives-color-oranje-975);
+	--primitives-color-warning-1000: var(--primitives-color-oranje-1000);
 
-	--primitives-color-danger-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
-	--primitives-color-danger-25: light-dark(oklch(0.975 0.012 29.5), oklch(0.166 0.068 29.5)); /* light: #FFF4F2 | dark: #250000 */
-	--primitives-color-danger-50: light-dark(oklch(0.951 0.025 29.5), oklch(0.212 0.086 29.5)); /* light: #FFE9E5 | dark: #370000 */
-	--primitives-color-danger-75: light-dark(oklch(0.927 0.037 29.5), oklch(0.246 0.100 29.5)); /* light: #FFDED8 | dark: #450100 */
-	--primitives-color-danger-100: light-dark(oklch(0.903 0.050 29.5), oklch(0.275 0.112 29.5)); /* light: #FFD3CC | dark: #510100 */
-	--primitives-color-danger-150: light-dark(oklch(0.859 0.077 29.5), oklch(0.323 0.131 29.5)); /* light: #FFBEB3 | dark: #670100 */
-	--primitives-color-danger-200: light-dark(oklch(0.816 0.104 29.5), oklch(0.365 0.148 29.5)); /* light: #FFA99B | dark: #7A0200 */
-	--primitives-color-danger-250: light-dark(oklch(0.776 0.132 29.5), oklch(0.405 0.165 29.5)); /* light: #FF9484 | dark: #8D0300 */
-	--primitives-color-danger-300: light-dark(oklch(0.737 0.161 29.5), oklch(0.443 0.180 29.5)); /* light: #FF7D6C | dark: #9F0400 */
-	--primitives-color-danger-350: light-dark(oklch(0.700 0.191 29.5), oklch(0.480 0.195 29.5)); /* light: #FF6553 | dark: #B20400 */
-	--primitives-color-danger-400: light-dark(oklch(0.663 0.207 29.5), oklch(0.517 0.207 29.5)); /* light: #F8503F | dark: #C30E05 */
-	--primitives-color-danger-450: light-dark(oklch(0.625 0.207 29.5), oklch(0.552 0.207 29.5)); /* light: #EA4233 | dark: #D02418 */
-	--primitives-color-danger-500: light-dark(oklch(0.588 0.207 29.5), oklch(0.588 0.207 29.5)); /* light: #DD3426 | dark: #DD3426 */
-	--primitives-color-danger-550: light-dark(oklch(0.552 0.207 29.5), oklch(0.625 0.207 29.5)); /* light: #D02418 | dark: #EA4233 */
-	--primitives-color-danger-600: light-dark(oklch(0.517 0.207 29.5), oklch(0.663 0.207 29.5)); /* light: #C30E05 | dark: #F8503F */
-	--primitives-color-danger-650: light-dark(oklch(0.480 0.195 29.5), oklch(0.700 0.191 29.5)); /* light: #B20400 | dark: #FF6553 */
-	--primitives-color-danger-700: light-dark(oklch(0.443 0.180 29.5), oklch(0.737 0.161 29.5)); /* light: #9F0400 | dark: #FF7D6C */
-	--primitives-color-danger-750: light-dark(oklch(0.405 0.165 29.5), oklch(0.776 0.132 29.5)); /* light: #8D0300 | dark: #FF9484 */
-	--primitives-color-danger-800: light-dark(oklch(0.365 0.148 29.5), oklch(0.816 0.104 29.5)); /* light: #7A0200 | dark: #FFA99B */
-	--primitives-color-danger-850: light-dark(oklch(0.323 0.131 29.5), oklch(0.859 0.077 29.5)); /* light: #670100 | dark: #FFBEB3 */
-	--primitives-color-danger-900: light-dark(oklch(0.275 0.112 29.5), oklch(0.903 0.050 29.5)); /* light: #510100 | dark: #FFD3CC */
-	--primitives-color-danger-950: light-dark(oklch(0.212 0.086 29.5), oklch(0.951 0.025 29.5)); /* light: #370000 | dark: #FFE9E5 */
-	--primitives-color-danger-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
+	/* ### Danger */
 
-	/* ### Mark (Yellow) - 79.0° */
+	--primitives-color-danger-0: var(--primitives-color-rood-0);
+	--primitives-color-danger-25: var(--primitives-color-rood-25);
+	--primitives-color-danger-50: var(--primitives-color-rood-50);
+	--primitives-color-danger-75: var(--primitives-color-rood-75);
+	--primitives-color-danger-100: var(--primitives-color-rood-100);
+	--primitives-color-danger-150: var(--primitives-color-rood-150);
+	--primitives-color-danger-200: var(--primitives-color-rood-200);
+	--primitives-color-danger-250: var(--primitives-color-rood-250);
+	--primitives-color-danger-300: var(--primitives-color-rood-300);
+	--primitives-color-danger-350: var(--primitives-color-rood-350);
+	--primitives-color-danger-400: var(--primitives-color-rood-400);
+	--primitives-color-danger-450: var(--primitives-color-rood-450);
+	--primitives-color-danger-500: var(--primitives-color-rood-500);
+	--primitives-color-danger-550: var(--primitives-color-rood-550);
+	--primitives-color-danger-600: var(--primitives-color-rood-600);
+	--primitives-color-danger-650: var(--primitives-color-rood-650);
+	--primitives-color-danger-700: var(--primitives-color-rood-700);
+	--primitives-color-danger-750: var(--primitives-color-rood-750);
+	--primitives-color-danger-800: var(--primitives-color-rood-800);
+	--primitives-color-danger-850: var(--primitives-color-rood-850);
+	--primitives-color-danger-900: var(--primitives-color-rood-900);
+	--primitives-color-danger-925: var(--primitives-color-rood-925);
+	--primitives-color-danger-950: var(--primitives-color-rood-950);
+	--primitives-color-danger-975: var(--primitives-color-rood-975);
+	--primitives-color-danger-1000: var(--primitives-color-rood-1000);
 
-	--primitives-color-mark-0: light-dark(oklch(1.000 0.000 0.0), oklch(0.000 0.000 0.0)); /* light: #FFFFFF | dark: #000000 */
-	--primitives-color-mark-25: light-dark(oklch(0.974 0.023 79.0), oklch(0.159 0.033 79.0)); /* light: #FFF5E6 | dark: #150B00 */
-	--primitives-color-mark-50: light-dark(oklch(0.949 0.046 79.0), oklch(0.203 0.042 79.0)); /* light: #FFEBCC | dark: #211400 */
-	--primitives-color-mark-75: light-dark(oklch(0.924 0.069 79.0), oklch(0.236 0.049 79.0)); /* light: #FFE1B3 | dark: #2A1B00 */
-	--primitives-color-mark-100: light-dark(oklch(0.900 0.091 79.0), oklch(0.263 0.055 79.0)); /* light: #FFD898 | dark: #332100 */
-	--primitives-color-mark-150: light-dark(oklch(0.854 0.137 79.0), oklch(0.309 0.064 79.0)); /* light: #FFC45D | dark: #412B00 */
-	--primitives-color-mark-200: light-dark(oklch(0.810 0.168 79.0), oklch(0.350 0.073 79.0)); /* light: #FAB200 | dark: #4E3500 */
-	--primitives-color-mark-250: light-dark(oklch(0.766 0.159 79.0), oklch(0.388 0.081 79.0)); /* light: #E9A500 | dark: #5B3E00 */
-	--primitives-color-mark-300: light-dark(oklch(0.724 0.150 79.0), oklch(0.424 0.088 79.0)); /* light: #D89800 | dark: #684700 */
-	--primitives-color-mark-350: light-dark(oklch(0.683 0.142 79.0), oklch(0.460 0.096 79.0)); /* light: #C78D00 | dark: #745000 */
-	--primitives-color-mark-400: light-dark(oklch(0.643 0.134 79.0), oklch(0.495 0.103 79.0)); /* light: #B88200 | dark: #815A00 */
-	--primitives-color-mark-450: light-dark(oklch(0.605 0.126 79.0), oklch(0.531 0.110 79.0)); /* light: #A97700 | dark: #8E6300 */
-	--primitives-color-mark-500: light-dark(oklch(0.568 0.118 79.0), oklch(0.568 0.118 79.0)); /* light: #9B6D00 | dark: #9B6D00 */
-	--primitives-color-mark-550: light-dark(oklch(0.531 0.110 79.0), oklch(0.605 0.126 79.0)); /* light: #8E6300 | dark: #A97700 */
-	--primitives-color-mark-600: light-dark(oklch(0.495 0.103 79.0), oklch(0.643 0.134 79.0)); /* light: #815A00 | dark: #B88200 */
-	--primitives-color-mark-650: light-dark(oklch(0.460 0.096 79.0), oklch(0.683 0.142 79.0)); /* light: #745000 | dark: #C78D00 */
-	--primitives-color-mark-700: light-dark(oklch(0.424 0.088 79.0), oklch(0.724 0.150 79.0)); /* light: #684700 | dark: #D89800 */
-	--primitives-color-mark-750: light-dark(oklch(0.388 0.081 79.0), oklch(0.766 0.159 79.0)); /* light: #5B3E00 | dark: #E9A500 */
-	--primitives-color-mark-800: light-dark(oklch(0.350 0.073 79.0), oklch(0.810 0.168 79.0)); /* light: #4E3500 | dark: #FAB200 */
-	--primitives-color-mark-850: light-dark(oklch(0.309 0.064 79.0), oklch(0.854 0.137 79.0)); /* light: #412B00 | dark: #FFC45D */
-	--primitives-color-mark-900: light-dark(oklch(0.263 0.055 79.0), oklch(0.900 0.091 79.0)); /* light: #332100 | dark: #FFD898 */
-	--primitives-color-mark-950: light-dark(oklch(0.203 0.042 79.0), oklch(0.949 0.046 79.0)); /* light: #211400 | dark: #FFEBCC */
-	--primitives-color-mark-1000: light-dark(oklch(0.000 0.000 0.0), oklch(1.000 0.000 0.0)); /* light: #000000 | dark: #FFFFFF */
+	/* ### Mark */
+
+	--primitives-color-mark-0: var(--primitives-color-donkergeel-0);
+	--primitives-color-mark-25: var(--primitives-color-donkergeel-25);
+	--primitives-color-mark-50: var(--primitives-color-donkergeel-50);
+	--primitives-color-mark-75: var(--primitives-color-donkergeel-75);
+	--primitives-color-mark-100: var(--primitives-color-donkergeel-100);
+	--primitives-color-mark-150: var(--primitives-color-donkergeel-150);
+	--primitives-color-mark-200: var(--primitives-color-donkergeel-200);
+	--primitives-color-mark-250: var(--primitives-color-donkergeel-250);
+	--primitives-color-mark-300: var(--primitives-color-donkergeel-300);
+	--primitives-color-mark-350: var(--primitives-color-donkergeel-350);
+	--primitives-color-mark-400: var(--primitives-color-donkergeel-400);
+	--primitives-color-mark-450: var(--primitives-color-donkergeel-450);
+	--primitives-color-mark-500: var(--primitives-color-donkergeel-500);
+	--primitives-color-mark-550: var(--primitives-color-donkergeel-550);
+	--primitives-color-mark-600: var(--primitives-color-donkergeel-600);
+	--primitives-color-mark-650: var(--primitives-color-donkergeel-650);
+	--primitives-color-mark-700: var(--primitives-color-donkergeel-700);
+	--primitives-color-mark-750: var(--primitives-color-donkergeel-750);
+	--primitives-color-mark-800: var(--primitives-color-donkergeel-800);
+	--primitives-color-mark-850: var(--primitives-color-donkergeel-850);
+	--primitives-color-mark-900: var(--primitives-color-donkergeel-900);
+	--primitives-color-mark-925: var(--primitives-color-donkergeel-925);
+	--primitives-color-mark-950: var(--primitives-color-donkergeel-950);
+	--primitives-color-mark-975: var(--primitives-color-donkergeel-975);
+	--primitives-color-mark-1000: var(--primitives-color-donkergeel-1000);
+
 
 	--primitives-color-reference-coolgray: #64748b;
 	--primitives-color-reference-lintblauw: #154273;
@@ -916,6 +935,20 @@
 
 	/* # Components */
 
+	/* ## Badge */
+
+	--components-badge-corner-radius: var(--primitives-corner-radius-full);
+	--components-badge-rood-background-color: var(--primitives-color-rood-550);
+	--components-badge-rood-content-color: var(--primitives-color-rood-0);
+	--components-badge-accent-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+	--components-badge-accent-content-color: var(--primitives-color-accent-0);
+	--components-badge-neutral-background-color: var(--primitives-color-neutral-800);
+	--components-badge-neutral-content-color: var(--primitives-color-neutral-0);
+	--components-badge-warning-background-color: var(--primitives-color-warning-300);
+	--components-badge-warning-content-color: var(--primitives-color-warning-1000);
+	--components-badge-success-background-color: var(--primitives-color-success-550);
+	--components-badge-success-content-color: var(--primitives-color-success-0);
+
 	/* ## Box */
 
 	--components-box-background-color: var(--semantics-surfaces-tinted-background-color);
@@ -1051,6 +1084,21 @@
 	--components-switch-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-switch-is-selected-thumb-background-color: var(--semantics-controls-is-highlighted-contrast-color);
 	--components-switch-is-selected-icon-color: var(--semantics-controls-is-highlighted-indicator-color);
+
+	/* ## Tag */
+
+	--components-tag-sm-corner-radius: var(--primitives-corner-radius-xs);
+	--components-tag-md-corner-radius: var(--primitives-corner-radius-sm);
+	--components-tag-neutral-background-color: var(--primitives-color-neutral-75);
+	--components-tag-neutral-content-color: var(--primitives-color-neutral-800);
+	--components-tag-accent-background-color: var(--primitives-color-accent-75);
+	--components-tag-accent-content-color: var(--primitives-color-accent-750);
+	--components-tag-success-background-color: var(--primitives-color-success-75);
+	--components-tag-success-content-color: var(--primitives-color-success-750);
+	--components-tag-warning-background-color: var(--primitives-color-warning-75);
+	--components-tag-warning-content-color: var(--primitives-color-warning-750);
+	--components-tag-danger-background-color: var(--primitives-color-danger-75);
+	--components-tag-danger-content-color: var(--primitives-color-danger-750);
 
 	/* ## Title */
 

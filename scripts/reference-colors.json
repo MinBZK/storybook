@@ -1,0 +1,21 @@
+[
+	{ "name": "coolgray",      "hex": "#64748B", "neutral": true },
+	{ "name": "lintblauw",     "hex": "#154273" },
+	{ "name": "donkerblauw",   "hex": "#01689B" },
+	{ "name": "hemelblauw",    "hex": "#007BC7" },
+	{ "name": "lichtblauw",    "hex": "#8FCAE7" },
+	{ "name": "paars",         "hex": "#42145F" },
+	{ "name": "violet",        "hex": "#A90061" },
+	{ "name": "robijnrood",    "hex": "#CA005D" },
+	{ "name": "roze",          "hex": "#F092CD" },
+	{ "name": "rood",          "hex": "#D52B1E" },
+	{ "name": "oranje",        "hex": "#E17000" },
+	{ "name": "donkergeel",    "hex": "#FFB612" },
+	{ "name": "geel",          "hex": "#F9E11E" },
+	{ "name": "donkerbruin",   "hex": "#673327" },
+	{ "name": "bruin",         "hex": "#94710A" },
+	{ "name": "donkergroen",   "hex": "#275937" },
+	{ "name": "groen",         "hex": "#39870C" },
+	{ "name": "mosgroen",      "hex": "#777B00" },
+	{ "name": "mintgroen",     "hex": "#76D2B6" }
+]
