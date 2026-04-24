@@ -320,13 +320,25 @@ nldd-rich-text figcaption {
 
 nldd-rich-text blockquote {
 	max-width: var(--semantics-blockquotes-max-width);
-	margin-block: var(--semantics-blockquotes-spacing);
+	margin-block: var(--semantics-blockquotes-md-spacing);
 	margin-inline: 0;
-	padding: var(--semantics-blockquotes-spacing);
+	padding: var(--semantics-blockquotes-md-spacing);
 	border-top: var(--semantics-blockquotes-border);
 	border-left: var(--semantics-blockquotes-border);
 	border-top-left-radius: var(--semantics-blockquotes-corner-radius);
-	font: var(--semantics-blockquotes-quote-font);
+	font: var(--semantics-blockquotes-md-quote-font);
+
+	@media (max-width: 640px) {
+		margin-block: var(--semantics-blockquotes-sm-spacing);
+		padding: var(--semantics-blockquotes-sm-spacing);
+		font: var(--semantics-blockquotes-sm-quote-font);
+	}
+
+	@container layout-area (max-width: 640px) {
+		margin-block: var(--semantics-blockquotes-sm-spacing);
+		padding: var(--semantics-blockquotes-sm-spacing);
+		font: var(--semantics-blockquotes-sm-quote-font);
+	}
 }
 
 
