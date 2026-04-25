@@ -13,7 +13,7 @@ import { ICONS } from './../../content/icon/icon.js';
  * <nldd-badge variant="success" text="Nieuw"></nldd-badge>
  * ```
  */
-const VARIANTS = ['red', 'accent', 'neutral', 'warning', 'success'];
+const VARIANTS = ['critical', 'accent', 'neutral', 'warning', 'success'];
 
 export default {
 	title: 'Components/Status & Feedback/Badge',
@@ -34,7 +34,7 @@ export default {
 			options: VARIANTS,
 			description: 'Kleur-variant',
 			table: {
-				defaultValue: { summary: 'red' },
+				defaultValue: { summary: 'critical' },
 			},
 		},
 		size: {
@@ -79,7 +79,7 @@ export default {
 		},
 	},
 	args: {
-		variant: 'red',
+		variant: 'critical',
 		size: 'md',
 		text: '',
 		icon: '',
@@ -114,7 +114,7 @@ export const Default = {
 export const Dot = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-badge variant="red"></nldd-badge>
+			<nldd-badge variant="critical"></nldd-badge>
 			<nldd-badge variant="accent"></nldd-badge>
 			<nldd-badge variant="neutral"></nldd-badge>
 			<nldd-badge variant="warning"></nldd-badge>
@@ -168,7 +168,7 @@ export const WithIcon = {
 		<div style="display: flex; gap: 16px; align-items: center;">
 			<nldd-badge variant="success" icon="check-mark"></nldd-badge>
 			<nldd-badge variant="warning" icon="alert"></nldd-badge>
-			<nldd-badge variant="red" icon="dismiss-circle"></nldd-badge>
+			<nldd-badge variant="critical" icon="dismiss-circle"></nldd-badge>
 			<nldd-badge variant="accent" icon="info-circle"></nldd-badge>
 		</div>
 	`,
@@ -227,30 +227,30 @@ export const Sizes = {
 
 export const OverlayOnIcon = {
 	render: () => html`
-		<div style="display: flex; gap: 24px; align-items: center;">
-			<span style="position: relative; display: inline-flex;">
-				<nldd-icon name="envelope" style="width: 32px; height: 32px;"></nldd-icon>
+		<div style="display: flex; gap: var(--primitives-space-24); align-items: center;">
+			<span style="position: relative; display: inline-flex; width: var(--primitives-space-32); height: var(--primitives-space-32);">
+				<nldd-icon name="envelope"></nldd-icon>
 				<nldd-badge
 					number="3"
-					style="position: absolute; top: -4px; right: -8px;"
+					style="position: absolute; top: calc(var(--primitives-space-4) * -1); right: calc(var(--primitives-space-8) * -1);"
 				></nldd-badge>
 			</span>
-			<span style="position: relative; display: inline-flex;">
-				<nldd-icon name="envelope" style="width: 32px; height: 32px;"></nldd-icon>
+			<span style="position: relative; display: inline-flex; width: var(--primitives-space-32); height: var(--primitives-space-32);">
+				<nldd-icon name="envelope"></nldd-icon>
 				<nldd-badge
 					size="sm"
 					number="3"
-					style="position: absolute; top: -4px; right: -6px;"
+					style="position: absolute; top: calc(var(--primitives-space-4) * -1); right: calc(var(--primitives-space-6) * -1);"
 				></nldd-badge>
 			</span>
-			<span style="position: relative; display: inline-flex;">
-				<nldd-icon name="envelope" style="width: 32px; height: 32px;"></nldd-icon>
+			<span style="position: relative; display: inline-flex; width: var(--primitives-space-32); height: var(--primitives-space-32);">
+				<nldd-icon name="envelope"></nldd-icon>
 				<nldd-badge
 					style="position: absolute; top: 0; right: 0;"
 				></nldd-badge>
 			</span>
-			<span style="position: relative; display: inline-flex;">
-				<nldd-icon name="envelope" style="width: 32px; height: 32px;"></nldd-icon>
+			<span style="position: relative; display: inline-flex; width: var(--primitives-space-32); height: var(--primitives-space-32);">
+				<nldd-icon name="envelope"></nldd-icon>
 				<nldd-badge
 					size="sm"
 					style="position: absolute; top: 0; right: 0;"

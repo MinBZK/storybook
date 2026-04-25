@@ -13,6 +13,7 @@ export const tagStyles = css`
 		--_gap: var(--primitives-space-3);
 		--_font: var(--primitives-font-body-sm-bold-flat);
 		--_icon-size: var(--primitives-space-16);
+		--_icon-offset-correction: var(--primitives-space-1);
 		--_corner-radius: var(--components-tag-md-corner-radius);
 		display: inline-flex;
 		vertical-align: middle;
@@ -89,7 +90,7 @@ export const tagStyles = css`
 	}
 
 	.tag__icon:has(+ .tag__text) {
-		margin-left: calc((var(--_min-height) - var(--_icon-size)) / 2 - var(--_inline-padding) + 1px);
+		margin-left: calc((var(--_min-height) - var(--_icon-size)) / 2 - var(--_inline-padding) + var(--_icon-offset-correction));
 	}
 
 

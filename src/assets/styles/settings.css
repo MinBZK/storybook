@@ -252,6 +252,7 @@
 	/* ## Spacing */
 
 	--primitives-space-0: 0px;
+	--primitives-space-1: 1px;
 	--primitives-space-2: 2px;
 	--primitives-space-3: 3px;
 	--primitives-space-4: 4px;
@@ -954,8 +955,8 @@
 	/* ## Badge */
 
 	--components-badge-corner-radius: var(--primitives-corner-radius-full);
-	--components-badge-red-background-color: var(--primitives-color-critical-550);
-	--components-badge-red-content-color: var(--primitives-color-critical-0);
+	--components-badge-critical-background-color: var(--primitives-color-critical-550);
+	--components-badge-critical-content-color: var(--primitives-color-critical-0);
 	--components-badge-accent-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--components-badge-accent-content-color: var(--primitives-color-accent-0);
 	--components-badge-neutral-background-color: var(--primitives-color-neutral-800);
@@ -1021,7 +1022,7 @@
 	--components-keyboard-shortcut-background-color: var(--semantics-surfaces-tinted-background-color);
 	--components-keyboard-shortcut-content-color: var(--semantics-content-color);
 	--components-keyboard-shortcut-border-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-250));
-	--components-keyboard-shortcut-border-thickness: 1px;
+	--components-keyboard-shortcut-border-thickness: var(--primitives-space-1);
 	--components-keyboard-shortcut-corner-radius: var(--primitives-corner-radius-xs);
 	--components-keyboard-shortcut-separator-color: var(--semantics-content-secondary-color);
 

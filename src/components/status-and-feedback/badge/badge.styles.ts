@@ -6,13 +6,14 @@ export const badgeStyles = css`
 	/* # Host */
 
 	:host {
-		--_background-color: var(--components-badge-red-background-color);
-		--_content-color: var(--components-badge-red-content-color);
+		--_background-color: var(--components-badge-critical-background-color);
+		--_content-color: var(--components-badge-critical-content-color);
 		--_height: var(--primitives-space-20);
 		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
 		--_font: var(--primitives-font-body-xs-bold-flat);
 		--_icon-size: var(--primitives-space-14);
+		--_icon-offset-correction: var(--primitives-space-1);
 		--_dot-size: var(--primitives-space-10);
 		display: inline-flex;
 		vertical-align: middle;
@@ -34,10 +35,10 @@ export const badgeStyles = css`
 
 	/* ## Variants */
 
-	:host([variant="red"]),
+	:host([variant="critical"]),
 	:host(:not([variant])) {
-		--_background-color: var(--components-badge-red-background-color);
-		--_content-color: var(--components-badge-red-content-color);
+		--_background-color: var(--components-badge-critical-background-color);
+		--_content-color: var(--components-badge-critical-content-color);
 	}
 
 	:host([variant="accent"]) {
@@ -105,7 +106,7 @@ export const badgeStyles = css`
 	}
 
 	.badge__icon:has(+ .badge__text) {
-		margin-left: calc((var(--_height) - var(--_icon-size)) / 2 - var(--_inline-padding) + 1px);
+		margin-left: calc((var(--_height) - var(--_icon-size)) / 2 - var(--_inline-padding) + var(--_icon-offset-correction));
 	}
 
 	.badge__icon nldd-icon {
