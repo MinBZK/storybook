@@ -319,6 +319,9 @@ nldd-rich-text figcaption {
 /* # Blockquote */
 
 nldd-rich-text blockquote {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--semantics-blockquotes-md-spacing) / 2);
 	max-width: var(--semantics-blockquotes-max-width);
 	margin-block: var(--semantics-blockquotes-md-spacing);
 	margin-inline: 0;
@@ -331,6 +334,7 @@ nldd-rich-text blockquote {
 	font: var(--semantics-blockquotes-md-quote-font);
 
 	@media (max-width: 640px) {
+		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
 		margin-block: var(--semantics-blockquotes-sm-spacing);
 		padding-inline: var(--semantics-blockquotes-sm-spacing);
 		padding-top: var(--semantics-blockquotes-sm-spacing);
@@ -339,6 +343,7 @@ nldd-rich-text blockquote {
 	}
 
 	@container layout-area (max-width: 640px) {
+		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
 		margin-block: var(--semantics-blockquotes-sm-spacing);
 		padding-inline: var(--semantics-blockquotes-sm-spacing);
 		padding-top: var(--semantics-blockquotes-sm-spacing);
@@ -348,7 +353,7 @@ nldd-rich-text blockquote {
 }
 
 nldd-rich-text blockquote > p {
-	margin-block: calc(var(--_spacing) / 2);
+	margin: 0;
 }
 
 

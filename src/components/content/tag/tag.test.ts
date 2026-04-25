@@ -22,6 +22,15 @@ describe('nldd-tag', () => {
 		expect(text.textContent).toContain('Nieuw');
 	});
 
+	it('renders slotted content when text attribute is not set', async () => {
+		el = await fixture('<nldd-tag><span>Concept</span></nldd-tag>');
+		await waitForUpdate(el);
+		const slot = el.shadowRoot!.querySelector('.tag__text slot') as HTMLSlotElement;
+		expect(slot).not.toBeNull();
+		const assigned = slot.assignedNodes({ flatten: true });
+		expect(assigned.some(n => n.textContent === 'Concept')).toBe(true);
+	});
+
 	it('reflects variant attribute', async () => {
 		el = await fixture('<nldd-tag variant="success" text="OK"></nldd-tag>');
 		await waitForUpdate(el);
