@@ -36,7 +36,7 @@ export default {
 				'accent-transparent',
 				'neutral-tinted',
 				'neutral-transparent',
-				'danger-tinted',
+				'critical-tinted',
 			],
 			description: 'Visuele stijlvariant',
 			table: {
@@ -178,7 +178,7 @@ export const AppearanceBased = {
 		<nldd-button variant="accent-transparent" text="Accent Transparent"></nldd-button>
 		<nldd-button variant="neutral-tinted" text="Neutral Tinted"></nldd-button>
 		<nldd-button variant="neutral-transparent" text="Neutral Transparent"></nldd-button>
-		<nldd-button variant="danger-tinted" text="Danger Tinted"></nldd-button>
+		<nldd-button variant="critical-tinted" text="Critical Tinted"></nldd-button>
 	</div>
 `,
 	parameters: {

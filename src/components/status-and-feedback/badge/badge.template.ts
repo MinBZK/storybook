@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import type { NLDDBadge } from './badge.js';
 
 export function template(component: NLDDBadge) {
@@ -6,11 +6,12 @@ export function template(component: NLDDBadge) {
 	if (component._isDot) modifiers.push('badge--dot');
 	if (component._isIconOnly) modifiers.push('badge--icon-only');
 	const classes = ['badge', ...modifiers].join(' ');
+	const needsAriaImg = component._isDot || component._isIconOnly;
 
 	return html`
 		<span class=${classes}
-			role="img"
-			aria-label=${component._ariaLabel}
+			role=${needsAriaImg ? 'img' : nothing}
+			aria-label=${needsAriaImg ? component._ariaLabel : nothing}
 		>
 			${component.icon ? html`
 				<span class="badge__icon">

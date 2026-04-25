@@ -2,7 +2,7 @@
  * Nederlandse Digitale Dienst Icon Button Component (Lit + TypeScript)
  *
  * @element nldd-icon-button
- * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'danger-tinted' | 'primary' | 'secondary' | 'destructive'
+ * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'primary' | 'secondary' | 'destructive'
  * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
@@ -44,7 +44,7 @@ export type Variant =
 	| 'accent-transparent'
 	| 'neutral-tinted'
 	| 'neutral-transparent'
-	| 'danger-tinted';
+	| 'critical-tinted';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('nldd-icon-button')

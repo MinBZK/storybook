@@ -28,7 +28,7 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['neutral', 'accent', 'success', 'warning', 'danger'],
+			options: ['neutral', 'accent', 'success', 'warning', 'critical'],
 			description: 'Visuele variant',
 			table: {
 				defaultValue: { summary: 'neutral' },
@@ -93,7 +93,7 @@ export const Variants = {
 			<nldd-tag variant="accent" text="Nieuw"></nldd-tag>
 			<nldd-tag variant="success" text="Gepubliceerd"></nldd-tag>
 			<nldd-tag variant="warning" text="Let op"></nldd-tag>
-			<nldd-tag variant="danger" text="Afgewezen"></nldd-tag>
+			<nldd-tag variant="critical" text="Afgewezen"></nldd-tag>
 		</div>
 	`,
 	parameters: {
@@ -118,7 +118,7 @@ export const WithIcon = {
 		<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
 			<nldd-tag variant="success" text="Goedgekeurd" icon="check-mark"></nldd-tag>
 			<nldd-tag variant="warning" text="Let op" icon="alert"></nldd-tag>
-			<nldd-tag variant="danger" text="Afgewezen" icon="dismiss-circle"></nldd-tag>
+			<nldd-tag variant="critical" text="Afgewezen" icon="dismiss-circle"></nldd-tag>
 		</div>
 	`,
 	parameters: {

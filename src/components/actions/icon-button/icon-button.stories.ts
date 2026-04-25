@@ -35,7 +35,7 @@ export default {
 				'accent-transparent',
 				'neutral-tinted',
 				'neutral-transparent',
-				'danger-tinted',
+				'critical-tinted',
 			],
 			description: 'Visuele stijlvariant',
 			table: {
@@ -173,7 +173,7 @@ export const AppearanceBased = {
 		<nldd-icon-button variant="accent-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="neutral-tinted" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="neutral-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
-		<nldd-icon-button variant="danger-tinted" icon="delete" text="Verwijder"></nldd-icon-button>
+		<nldd-icon-button variant="critical-tinted" icon="delete" text="Verwijder"></nldd-icon-button>
 	</div>
 `,
 	parameters: {
@@ -255,7 +255,7 @@ export const Disabled = {
 		<nldd-icon-button disabled variant="accent-filled" icon="delete" text="Verwijderen"></nldd-icon-button>
 		<nldd-icon-button disabled variant="accent-outlined" icon="delete" text="Verwijderen"></nldd-icon-button>
 		<nldd-icon-button disabled variant="neutral-tinted" icon="delete" text="Verwijderen"></nldd-icon-button>
-		<nldd-icon-button disabled variant="danger-tinted" icon="delete" text="Verwijderen"></nldd-icon-button>
+		<nldd-icon-button disabled variant="critical-tinted" icon="delete" text="Verwijderen"></nldd-icon-button>
 	</div>
 `,
 	parameters: {

@@ -43,13 +43,14 @@ export const blockquoteStyles = css`
 		margin: 0;
 		padding-inline: var(--_spacing);
 		padding-top: var(--_spacing);
+		padding-bottom: 0;
 		border-top: var(--semantics-blockquotes-border);
 		border-left: var(--semantics-blockquotes-border);
 		border-top-left-radius: var(--semantics-blockquotes-corner-radius);
 		color: var(--semantics-content-color);
 		display: flex;
 		flex-direction: column;
-		gap: var(--_spacing);
+		gap: calc(var(--_spacing) / 2);
 	}
 
 

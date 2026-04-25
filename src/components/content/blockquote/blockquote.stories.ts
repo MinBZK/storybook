@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './blockquote.js';
 
 /**
@@ -26,33 +26,41 @@ export default {
 		},
 	},
 	argTypes: {
+		quote: {
+			control: 'text',
+			description: 'Citaat (default slot)',
+		},
+		attribution: {
+			control: 'text',
+			description: 'Bronvermelding (slot="attribution")',
+		},
 		cite: {
 			control: 'text',
 			description: 'URL van de bron',
 		},
 	},
 	args: {
+		quote: 'Overheidsdienstverlening moet begrijpelijk, toegankelijk en inclusief zijn voor iedereen.',
+		attribution: 'Nederlandse Digitale Dienst, 2024',
 		cite: '',
 	},
 };
 
+const Template = ({ quote, attribution, cite }: Record<string, any>) => html`
+	<nldd-blockquote cite=${cite || nothing}>
+		${quote}
+		${attribution ? html`<span slot="attribution">${attribution}</span>` : ''}
+	</nldd-blockquote>
+`;
+
 export const Default = {
-	render: () => html`
-		<nldd-blockquote>
-			Overheidsdienstverlening moet begrijpelijk, toegankelijk en inclusief zijn voor iedereen.
-		</nldd-blockquote>
-	`,
+	render: Template,
 };
 
-export const WithAttribution = {
-	render: () => html`
-		<nldd-blockquote cite="https://www.digitaleoverheid.nl/">
-			Overheidsdienstverlening moet begrijpelijk, toegankelijk en inclusief zijn voor iedereen.
-			<span slot="attribution">Nederlandse Digitale Dienst, 2024</span>
-		</nldd-blockquote>
-	`,
-	parameters: {
-		controls: { disable: true },
+export const WithCiteUrl = {
+	render: Template,
+	args: {
+		cite: 'https://www.digitaleoverheid.nl/',
 	},
 };
 

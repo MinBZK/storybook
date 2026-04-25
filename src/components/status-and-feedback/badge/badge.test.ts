@@ -70,38 +70,42 @@ describe('nldd-badge', () => {
 		expect(el.shadowRoot!.querySelector('.badge__text')!.textContent).toBe('OK');
 	});
 
-	it('uses text as aria-label when set', async () => {
+	it('omits role and aria-label when text is visible', async () => {
 		el = await fixture('<nldd-badge text="Nieuw"></nldd-badge>');
 		await waitForUpdate(el);
 		const badge = el.shadowRoot!.querySelector('.badge')!;
-		expect(badge.getAttribute('aria-label')).toBe('Nieuw');
+		expect(badge.hasAttribute('role')).toBe(false);
+		expect(badge.hasAttribute('aria-label')).toBe(false);
 	});
 
-	it('uses number display value as aria-label', async () => {
+	it('omits role and aria-label when number is visible', async () => {
 		el = await fixture('<nldd-badge number="5"></nldd-badge>');
 		await waitForUpdate(el);
 		const badge = el.shadowRoot!.querySelector('.badge')!;
-		expect(badge.getAttribute('aria-label')).toBe('5');
+		expect(badge.hasAttribute('role')).toBe(false);
+		expect(badge.hasAttribute('aria-label')).toBe(false);
 	});
 
-	it('falls back to i18n notification label in dot mode', async () => {
+	it('sets role=img + i18n notification label in dot mode', async () => {
 		el = await fixture('<nldd-badge></nldd-badge>');
 		await waitForUpdate(el);
 		const badge = el.shadowRoot!.querySelector('.badge')!;
+		expect(badge.getAttribute('role')).toBe('img');
 		expect(badge.getAttribute('aria-label')).toBe('Notificatie');
 	});
 
-	it('falls back to i18n label in icon-only mode', async () => {
+	it('sets role=img + i18n label in icon-only mode', async () => {
 		el = await fixture('<nldd-badge icon="check-mark"></nldd-badge>');
 		await waitForUpdate(el);
 		const badge = el.shadowRoot!.querySelector('.badge')!;
+		expect(badge.getAttribute('role')).toBe('img');
 		expect(badge.getAttribute('aria-label')).toBe('Notificatie');
 	});
 
-	it('prefers accessible-label over all fallbacks', async () => {
-		el = await fixture('<nldd-badge accessible-label="3 ongelezen berichten" number="3"></nldd-badge>');
+	it('uses accessible-label in icon-only mode', async () => {
+		el = await fixture('<nldd-badge icon="check-mark" accessible-label="Geverifieerd"></nldd-badge>');
 		await waitForUpdate(el);
 		const badge = el.shadowRoot!.querySelector('.badge')!;
-		expect(badge.getAttribute('aria-label')).toBe('3 ongelezen berichten');
+		expect(badge.getAttribute('aria-label')).toBe('Geverifieerd');
 	});
 });

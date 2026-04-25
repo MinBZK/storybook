@@ -172,33 +172,33 @@
 	--primitives-color-warning-975: var(--primitives-color-oranje-975);
 	--primitives-color-warning-1000: var(--primitives-color-oranje-1000);
 
-	/* ### Danger */
+	/* ### Critical */
 
-	--primitives-color-danger-0: var(--primitives-color-rood-0);
-	--primitives-color-danger-25: var(--primitives-color-rood-25);
-	--primitives-color-danger-50: var(--primitives-color-rood-50);
-	--primitives-color-danger-75: var(--primitives-color-rood-75);
-	--primitives-color-danger-100: var(--primitives-color-rood-100);
-	--primitives-color-danger-150: var(--primitives-color-rood-150);
-	--primitives-color-danger-200: var(--primitives-color-rood-200);
-	--primitives-color-danger-250: var(--primitives-color-rood-250);
-	--primitives-color-danger-300: var(--primitives-color-rood-300);
-	--primitives-color-danger-350: var(--primitives-color-rood-350);
-	--primitives-color-danger-400: var(--primitives-color-rood-400);
-	--primitives-color-danger-450: var(--primitives-color-rood-450);
-	--primitives-color-danger-500: var(--primitives-color-rood-500);
-	--primitives-color-danger-550: var(--primitives-color-rood-550);
-	--primitives-color-danger-600: var(--primitives-color-rood-600);
-	--primitives-color-danger-650: var(--primitives-color-rood-650);
-	--primitives-color-danger-700: var(--primitives-color-rood-700);
-	--primitives-color-danger-750: var(--primitives-color-rood-750);
-	--primitives-color-danger-800: var(--primitives-color-rood-800);
-	--primitives-color-danger-850: var(--primitives-color-rood-850);
-	--primitives-color-danger-900: var(--primitives-color-rood-900);
-	--primitives-color-danger-925: var(--primitives-color-rood-925);
-	--primitives-color-danger-950: var(--primitives-color-rood-950);
-	--primitives-color-danger-975: var(--primitives-color-rood-975);
-	--primitives-color-danger-1000: var(--primitives-color-rood-1000);
+	--primitives-color-critical-0: var(--primitives-color-rood-0);
+	--primitives-color-critical-25: var(--primitives-color-rood-25);
+	--primitives-color-critical-50: var(--primitives-color-rood-50);
+	--primitives-color-critical-75: var(--primitives-color-rood-75);
+	--primitives-color-critical-100: var(--primitives-color-rood-100);
+	--primitives-color-critical-150: var(--primitives-color-rood-150);
+	--primitives-color-critical-200: var(--primitives-color-rood-200);
+	--primitives-color-critical-250: var(--primitives-color-rood-250);
+	--primitives-color-critical-300: var(--primitives-color-rood-300);
+	--primitives-color-critical-350: var(--primitives-color-rood-350);
+	--primitives-color-critical-400: var(--primitives-color-rood-400);
+	--primitives-color-critical-450: var(--primitives-color-rood-450);
+	--primitives-color-critical-500: var(--primitives-color-rood-500);
+	--primitives-color-critical-550: var(--primitives-color-rood-550);
+	--primitives-color-critical-600: var(--primitives-color-rood-600);
+	--primitives-color-critical-650: var(--primitives-color-rood-650);
+	--primitives-color-critical-700: var(--primitives-color-rood-700);
+	--primitives-color-critical-750: var(--primitives-color-rood-750);
+	--primitives-color-critical-800: var(--primitives-color-rood-800);
+	--primitives-color-critical-850: var(--primitives-color-rood-850);
+	--primitives-color-critical-900: var(--primitives-color-rood-900);
+	--primitives-color-critical-925: var(--primitives-color-rood-925);
+	--primitives-color-critical-950: var(--primitives-color-rood-950);
+	--primitives-color-critical-975: var(--primitives-color-rood-975);
+	--primitives-color-critical-1000: var(--primitives-color-rood-1000);
 
 	/* ### Mark */
 
@@ -756,7 +756,7 @@
 
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-800));
 	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-550));
-	--semantics-content-error-color: light-dark(var(--primitives-color-danger-600), var(--primitives-color-danger-650));
+	--semantics-content-error-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
 	--semantics-content-success-color: light-dark(var(--primitives-color-success-600), var(--primitives-color-success-650));
 
 	/* ## Links */
@@ -867,12 +867,12 @@
 	--semantics-buttons-accent-transparent-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
 	--semantics-buttons-accent-transparent-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 
-	--semantics-buttons-danger-tinted-background-color: light-dark(var(--primitives-color-danger-75), var(--primitives-color-danger-150));
-	--semantics-buttons-danger-tinted-content-color: light-dark(var(--primitives-color-danger-650), var(--primitives-color-danger-700));
-	--semantics-buttons-danger-tinted-is-hovered-background-color: light-dark(var(--primitives-color-danger-100), var(--primitives-color-danger-200));
-	--semantics-buttons-danger-tinted-is-hovered-content-color: light-dark(var(--primitives-color-danger-700), var(--primitives-color-danger-750));
-	--semantics-buttons-danger-tinted-is-active-background-color: light-dark(var(--primitives-color-danger-150), var(--primitives-color-danger-250));
-	--semantics-buttons-danger-tinted-is-active-content-color: light-dark(var(--primitives-color-danger-750), var(--primitives-color-danger-800));
+	--semantics-buttons-critical-tinted-background-color: light-dark(var(--primitives-color-critical-75), var(--primitives-color-critical-150));
+	--semantics-buttons-critical-tinted-content-color: light-dark(var(--primitives-color-critical-650), var(--primitives-color-critical-700));
+	--semantics-buttons-critical-tinted-is-hovered-background-color: light-dark(var(--primitives-color-critical-100), var(--primitives-color-critical-200));
+	--semantics-buttons-critical-tinted-is-hovered-content-color: light-dark(var(--primitives-color-critical-700), var(--primitives-color-critical-750));
+	--semantics-buttons-critical-tinted-is-active-background-color: light-dark(var(--primitives-color-critical-150), var(--primitives-color-critical-250));
+	--semantics-buttons-critical-tinted-is-active-content-color: light-dark(var(--primitives-color-critical-750), var(--primitives-color-critical-800));
 
 	/* ## Input fields */
 
@@ -883,8 +883,8 @@
 	--semantics-input-fields-placeholder-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--semantics-input-fields-is-valid-border-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
 	--semantics-input-fields-is-valid-icon-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
-	--semantics-input-fields-is-invalid-border-color: light-dark(var(--primitives-color-danger-550), var(--primitives-color-danger-650));
-	--semantics-input-fields-is-invalid-icon-color: light-dark(var(--primitives-color-danger-550), var(--primitives-color-danger-650));
+	--semantics-input-fields-is-invalid-border-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
+	--semantics-input-fields-is-invalid-icon-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
 	--semantics-input-fields-is-read-only-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-input-fields-is-read-only-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-input-fields-is-autofill-background-color: light-dark(var(--primitives-color-mark-50), var(--primitives-color-mark-150));
@@ -954,8 +954,8 @@
 	/* ## Badge */
 
 	--components-badge-corner-radius: var(--primitives-corner-radius-full);
-	--components-badge-red-background-color: var(--primitives-color-danger-550);
-	--components-badge-red-content-color: var(--primitives-color-danger-0);
+	--components-badge-red-background-color: var(--primitives-color-critical-550);
+	--components-badge-red-content-color: var(--primitives-color-critical-0);
 	--components-badge-accent-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--components-badge-accent-content-color: var(--primitives-color-accent-0);
 	--components-badge-neutral-background-color: var(--primitives-color-neutral-800);
@@ -1124,8 +1124,8 @@
 	--components-tag-success-content-color: var(--primitives-color-success-750);
 	--components-tag-warning-background-color: var(--primitives-color-warning-75);
 	--components-tag-warning-content-color: var(--primitives-color-warning-750);
-	--components-tag-danger-background-color: var(--primitives-color-danger-75);
-	--components-tag-danger-content-color: var(--primitives-color-danger-750);
+	--components-tag-critical-background-color: var(--primitives-color-critical-75);
+	--components-tag-critical-content-color: var(--primitives-color-critical-750);
 
 	/* ## Title */
 

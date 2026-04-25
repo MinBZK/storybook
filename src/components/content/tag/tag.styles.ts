@@ -55,9 +55,9 @@ export const tagStyles = css`
 		--_content-color: var(--components-tag-warning-content-color);
 	}
 
-	:host([variant="danger"]) {
-		--_background-color: var(--components-tag-danger-background-color);
-		--_content-color: var(--components-tag-danger-content-color);
+	:host([variant="critical"]) {
+		--_background-color: var(--components-tag-critical-background-color);
+		--_content-color: var(--components-tag-critical-content-color);
 	}
 
 
