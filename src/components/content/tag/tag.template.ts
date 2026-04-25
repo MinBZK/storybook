@@ -6,7 +6,7 @@ export function template(component: NLDDTag) {
 	return html`
 		<span class="tag"
 			role=${iconOnly ? 'img' : nothing}
-			aria-label=${component.accessibleLabel || nothing}
+			aria-label=${iconOnly ? component.accessibleLabel : nothing}
 		>
 			${component.icon ? html`
 				<span class="tag__icon">

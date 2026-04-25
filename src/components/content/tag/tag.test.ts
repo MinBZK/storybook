@@ -44,10 +44,11 @@ describe('nldd-tag', () => {
 		expect(tag.getAttribute('role')).toBe('img');
 	});
 
-	it('does not set role=img when visible text is present', async () => {
+	it('does not set role=img or aria-label when visible text is present', async () => {
 		el = await fixture('<nldd-tag icon="check-mark" text="Done" accessible-label="Geverifieerd"></nldd-tag>');
 		await waitForUpdate(el);
 		const tag = el.shadowRoot!.querySelector('.tag')!;
 		expect(tag.hasAttribute('role')).toBe(false);
+		expect(tag.hasAttribute('aria-label')).toBe(false);
 	});
 });
