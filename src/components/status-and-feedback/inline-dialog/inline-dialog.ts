@@ -6,8 +6,8 @@
  *
  * @element nldd-inline-dialog
  *
- * @attr {'alert'} variant       - Semantic variant; 'alert' forces icon-name="alert" and colors the icon
- * @attr {string}  icon-name     - Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set.
+ * @attr {'alert'} variant       - Semantic variant; 'alert' forces icon="alert" and colors the icon
+ * @attr {string}  icon          - Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set.
  * @attr {string}  text          - Main text (heading or paragraph, depending on heading-level)
  * @attr {string}  supporting-text - Supporting text below the heading
  * @attr {1|2|3|4|5|6} heading-level - Renders text as h1–h6; absent renders a p
@@ -31,8 +31,8 @@ export class NLDDInlineDialog extends LitElement {
 	@property({ type: String, reflect: true })
 	variant: InlineDialogVariant | '' = '';
 
-	@property({ type: String, reflect: true, attribute: 'icon-name' })
-	iconName = '';
+	@property({ type: String, reflect: true })
+	icon = '';
 
 	@property({ type: String, reflect: true })
 	text = '';
@@ -51,7 +51,7 @@ export class NLDDInlineDialog extends LitElement {
 
 	get _resolvedIconName(): string {
 		if (this.variant === 'alert') return 'alert';
-		if (this.iconName) return this.iconName;
+		if (this.icon) return this.icon;
 		return '';
 	}
 

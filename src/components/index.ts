@@ -17,6 +17,7 @@ export { NLDDSplitButton } from './actions/split-button/split-button.js';
 export { NLDDButtonGroup } from './actions/button-group/button-group.js';
 export { NLDDButtonBar } from './actions/button-bar/button-bar.js';
 export { NLDDToolbar } from './actions/toolbar/toolbar.js';
+export { NLDDLink } from './actions/link/link.js';
 
 
 // # Content components
@@ -25,6 +26,9 @@ export { NLDDIcon } from './content/icon/icon.js';
 export { NLDDRichText } from './content/rich-text/rich-text.js';
 export { NLDDTitle } from './content/title/title.js';
 export { NLDDTooltip } from './content/tooltip/tooltip.js';
+export { NLDDBlockquote } from './content/blockquote/blockquote.js';
+export { NLDDTag } from './content/tag/tag.js';
+export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-shortcut.js';
 
 
 // # Forms components
@@ -118,5 +122,6 @@ export { NLDDPagination } from './navigation/pagination/pagination.js';
 
 export { NLDDModalDialog } from './status-and-feedback/modal-dialog/modal-dialog.js';
 export { NLDDInlineDialog } from './status-and-feedback/inline-dialog/inline-dialog.js';
+export { NLDDBadge } from './status-and-feedback/badge/badge.js';
 
 // Auto-register happens on import of individual component files

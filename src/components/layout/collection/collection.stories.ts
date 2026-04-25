@@ -44,23 +44,26 @@ export default {
 			table: { defaultValue: { summary: 'grid' } },
 		},
 		showLoadMore: {
+			name: 'show-load-more',
 			control: 'boolean',
 			description: 'Toon laad-meer-knop (alleen bij grid en list)',
 			table: { defaultValue: { summary: 'false' } },
 		},
-		maxItems: {
-			control: { type: 'number' },
-			description: 'Aantal items per pagina',
-			table: { defaultValue: { summary: '24' } },
-		},
 		lazyLoad: {
+			name: 'lazy-load',
 			control: 'boolean',
 			description: 'Laad automatisch meer wanneer de knop zichtbaar wordt',
 			table: { defaultValue: { summary: 'false' } },
 		},
+		maxItems: {
+			name: 'max-items',
+			control: { type: 'number' },
+			description: 'Aantal items per pagina',
+			table: { defaultValue: { summary: '24' } },
+		},
 		itemWidth: {
-			control: 'text',
 			name: 'item-width',
+			control: 'text',
 			description: 'Gewenste breedte per item (bv. "280px", "20rem"). Bij grid wordt deze breedte geclamped op de container-breedte om horizontale overflow te voorkomen.',
 			table: { defaultValue: { summary: '280px' } },
 		},
@@ -68,8 +71,8 @@ export default {
 	args: {
 		layout: 'grid',
 		showLoadMore: false,
-		maxItems: 6,
 		lazyLoad: false,
+		maxItems: 6,
 		itemWidth: '',
 	},
 };
@@ -105,7 +108,7 @@ const scrollItems = Array.from({ length: 12 }, (_, i) => html`
 	</nldd-card>
 `);
 
-export const Standaard = ({ layout, showLoadMore, maxItems, lazyLoad, itemWidth }: Record<string, any>) => html`
+export const Standaard = ({ layout, showLoadMore, lazyLoad, maxItems, itemWidth }: Record<string, any>) => html`
 	<nldd-collection
 		layout=${layout}
 		?show-load-more=${showLoadMore}

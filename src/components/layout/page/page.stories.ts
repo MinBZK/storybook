@@ -41,27 +41,29 @@ export default {
 		},
 	},
 	argTypes: {
-		stickyHeader: {
-			control: 'boolean',
-			description: 'Sticky header',
-			table: { defaultValue: { summary: 'false' } },
-		},
-		stickyFooter: {
-			control: 'boolean',
-			description: 'Sticky footer',
-			table: { defaultValue: { summary: 'false' } },
-		},
 		background: {
 			control: { type: 'select' },
 			options: ['inherit', 'default', 'tinted'],
 			description: 'Grijze achtergrond',
 			table: { defaultValue: { summary: 'false' } },
 		},
+		stickyHeader: {
+			name: 'sticky-header',
+			control: 'boolean',
+			description: 'Sticky header',
+			table: { defaultValue: { summary: 'false' } },
+		},
+		stickyFooter: {
+			name: 'sticky-footer',
+			control: 'boolean',
+			description: 'Sticky footer',
+			table: { defaultValue: { summary: 'false' } },
+		},
 	},
 	args: {
+		background: 'inherit',
 		stickyHeader: false,
 		stickyFooter: false,
-		background: 'inherit',
 	},
 };
 
@@ -108,7 +110,7 @@ const content = html`
 	</nldd-simple-section>
 `;
 
-export const Standaard = ({ stickyHeader, stickyFooter, background }: Record<string, any>) => html`
+export const Standaard = ({ background, stickyHeader, stickyFooter }: Record<string, any>) => html`
 	<nldd-page
 		?sticky-header=${stickyHeader}
 		?sticky-footer=${stickyFooter}
@@ -171,7 +173,7 @@ export const GecentreerdeDialoog = {
 		${header}
 		<nldd-simple-section align="center">
 			<nldd-inline-dialog
-				icon-name="search"
+				icon="search"
 				text="Geen resultaten"
 				supporting-text="Probeer een andere zoekopdracht."
 			></nldd-inline-dialog>

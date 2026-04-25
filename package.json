@@ -31,6 +31,10 @@
       "types": "./dist/components/actions/toolbar/toolbar.d.ts",
       "default": "./dist/components/actions/toolbar/toolbar.js"
     },
+    "./link": {
+      "types": "./dist/components/actions/link/link.d.ts",
+      "default": "./dist/components/actions/link/link.js"
+    },
     "./icon": {
       "types": "./dist/components/content/icon/icon.d.ts",
       "default": "./dist/components/content/icon/icon.js"
@@ -46,6 +50,18 @@
     "./tooltip": {
       "types": "./dist/components/content/tooltip/tooltip.d.ts",
       "default": "./dist/components/content/tooltip/tooltip.js"
+    },
+    "./blockquote": {
+      "types": "./dist/components/content/blockquote/blockquote.d.ts",
+      "default": "./dist/components/content/blockquote/blockquote.js"
+    },
+    "./tag": {
+      "types": "./dist/components/content/tag/tag.d.ts",
+      "default": "./dist/components/content/tag/tag.js"
+    },
+    "./keyboard-shortcut": {
+      "types": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.d.ts",
+      "default": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.js"
     },
     "./form-field": {
       "types": "./dist/components/forms/form-field/form-field.d.ts",
@@ -287,6 +303,10 @@
       "types": "./dist/components/status-and-feedback/inline-dialog/inline-dialog.d.ts",
       "default": "./dist/components/status-and-feedback/inline-dialog/inline-dialog.js"
     },
+    "./badge": {
+      "types": "./dist/components/status-and-feedback/badge/badge.d.ts",
+      "default": "./dist/components/status-and-feedback/badge/badge.js"
+    },
     "./styles": "./dist/css/global.css",
     "./styles/tokens": "./dist/css/settings.css"
   },
@@ -302,7 +322,8 @@
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run build:components",
-    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && printf '@import \"./settings.css\";\\n@import \"./rich-text.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
+    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && printf '@import \"./settings.css\";\\n@import \"./rich-text.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
+    "generate:palettes": "node scripts/generate-palettes.js",
     "validate:styles": "node scripts/validate-css-variables.js",
     "build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:exports",
     "build:icons": "node scripts/generate-icon-registry.js && node scripts/generate-logo.js",

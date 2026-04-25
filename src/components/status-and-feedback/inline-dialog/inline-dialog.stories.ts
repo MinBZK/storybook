@@ -38,38 +38,37 @@ export default {
 			description: 'Semantische variant — dwingt een icoon en kleur af',
 			table: { defaultValue: { summary: '' } },
 		},
-		iconName: {
-			control: 'select',
-			options: ['', ...ICONS],
-			name: 'icon-name',
-			description: 'Naam van het nldd-icon icoon; afwezig wanneer niet ingesteld. Overschrijft het variant-icoon.',
-		},
 		text: {
 			control: 'text',
 			description: 'Hoofdtekst',
 			table: { defaultValue: { summary: '' } },
 		},
 		supportingText: {
-			control: 'text',
 			name: 'supporting-text',
+			control: 'text',
 			description: 'Ondersteunende tekst onder de heading',
 			table: { defaultValue: { summary: '' } },
+		},
+		icon: {
+			control: 'select',
+			options: ['', ...ICONS],
+			description: 'Naam van het nldd-icon icoon; afwezig wanneer niet ingesteld. Overschrijft het variant-icoon.',
 		},
 	},
 	args: {
 		variant: '',
-		iconName: '',
 		text: 'Dialog titel',
 		supportingText: 'Ondersteunende tekst voor aanvullende context.',
+		icon: '',
 	},
 };
 
 export const Standaard = (args: Record<string, any>) => html`
 	<nldd-inline-dialog
 		variant=${args.variant || nothing}
-		icon-name=${args.iconName || nothing}
 		text=${args.text}
 		supporting-text=${args.supportingText}
+		icon=${args.icon || nothing}
 	>
 		<nldd-button slot="actions" variant="primary" text="Bevestig"></nldd-button>
 		<nldd-button slot="actions" variant="neutral-tinted" text="Annuleer"></nldd-button>
@@ -92,7 +91,7 @@ export const ZonderIcoon = {
 export const MetIcoon = {
 	render: () => html`
 	<nldd-inline-dialog
-		icon-name="check-mark-circle"
+		icon="check-mark-circle"
 		text="Succesvol opgeslagen"
 		supporting-text="Uw wijzigingen zijn opgeslagen."
 	>
@@ -120,7 +119,7 @@ export const LegeToestand = {
 	render: () => html`
 	<nldd-box style="height: 400px; display: flex; align-items: center; justify-content: center;">
 		<nldd-inline-dialog
-			icon-name="inbox"
+			icon="inbox"
 			text="Geen resultaten"
 			supporting-text="Er zijn geen items gevonden die overeenkomen met uw zoekopdracht."
 		>

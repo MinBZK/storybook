@@ -319,14 +319,41 @@ nldd-rich-text figcaption {
 /* # Blockquote */
 
 nldd-rich-text blockquote {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--semantics-blockquotes-md-spacing) / 2);
 	max-width: var(--semantics-blockquotes-max-width);
-	margin-block: var(--semantics-blockquotes-spacing);
+	margin-block: var(--semantics-blockquotes-md-spacing);
 	margin-inline: 0;
-	padding: var(--semantics-blockquotes-spacing);
+	padding-inline: var(--semantics-blockquotes-md-spacing);
+	padding-top: var(--semantics-blockquotes-md-spacing);
+	padding-bottom: 0;
 	border-top: var(--semantics-blockquotes-border);
 	border-left: var(--semantics-blockquotes-border);
 	border-top-left-radius: var(--semantics-blockquotes-corner-radius);
-	font: var(--semantics-blockquotes-quote-font);
+	font: var(--semantics-blockquotes-md-quote-font);
+
+	@media (max-width: 640px) {
+		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
+		margin-block: var(--semantics-blockquotes-sm-spacing);
+		padding-inline: var(--semantics-blockquotes-sm-spacing);
+		padding-top: var(--semantics-blockquotes-sm-spacing);
+		padding-bottom: 0;
+		font: var(--semantics-blockquotes-sm-quote-font);
+	}
+
+	@container layout-area (max-width: 640px) {
+		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
+		margin-block: var(--semantics-blockquotes-sm-spacing);
+		padding-inline: var(--semantics-blockquotes-sm-spacing);
+		padding-top: var(--semantics-blockquotes-sm-spacing);
+		padding-bottom: 0;
+		font: var(--semantics-blockquotes-sm-quote-font);
+	}
+}
+
+nldd-rich-text blockquote > p {
+	margin: 0;
 }
 
 

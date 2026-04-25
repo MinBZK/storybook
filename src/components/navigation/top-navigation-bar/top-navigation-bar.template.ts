@@ -36,7 +36,7 @@ function wordmarkContent(component: NLDDTopNavigationBar) {
 
 export function template(component: NLDDTopNavigationBar) {
 	const safeLogoHref = sanitizeUrl(component.logoHref);
-	const safeSiteHref = sanitizeUrl(component.siteHref);
+	const safeWebsiteHref = sanitizeUrl(component.websiteHref);
 
 	return html`
 		<div class="top-navigation-bar">
@@ -72,9 +72,9 @@ export function template(component: NLDDTopNavigationBar) {
 			<div class="top-navigation-bar__main-bar">
 				${component.websiteTitle ? html`
 					<div class="top-navigation-bar__website-title-bar">
-						${safeSiteHref ? html`
+						${safeWebsiteHref ? html`
 							<a class="top-navigation-bar__website-title"
-								href="${safeSiteHref}"
+								href="${safeWebsiteHref}"
 							>
 								${component.websiteTitle}
 							</a>

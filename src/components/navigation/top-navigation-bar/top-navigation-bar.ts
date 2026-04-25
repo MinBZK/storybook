@@ -51,8 +51,8 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 	@property({ type: String, attribute: 'logo-href' })
 	logoHref = '';
 
-	@property({ type: String, attribute: 'site-href' })
-	siteHref = '';
+	@property({ type: String, attribute: 'website-href' })
+	websiteHref = '';
 
 	// ## Back button properties
 

@@ -42,8 +42,8 @@ export const buttonStyles = css`
 		justify-content: center;
 		width: 100%;
 		transition:
-			background-color 0.15s ease-out,
-			color 0.15s ease-out
+			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
+			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)
 		;
 	}
 
@@ -221,24 +221,24 @@ export const buttonStyles = css`
 		color: var(--semantics-buttons-accent-transparent-is-active-content-color);
 	}
 
-	/* ## Variant: Danger Tinted */
+	/* ## Variant: Critical Tinted */
 
-	:host([variant="danger-tinted"]) .button,
+	:host([variant="critical-tinted"]) .button,
 	:host([variant="destructive"]) .button {
-		background-color: var(--semantics-buttons-danger-tinted-background-color);
-		color: var(--semantics-buttons-danger-tinted-content-color);
+		background-color: var(--semantics-buttons-critical-tinted-background-color);
+		color: var(--semantics-buttons-critical-tinted-content-color);
 	}
 
-	:host([variant="danger-tinted"]) .button:hover,
+	:host([variant="critical-tinted"]) .button:hover,
 	:host([variant="destructive"]) .button:hover {
-		background-color: var(--semantics-buttons-danger-tinted-is-hovered-background-color);
-		color: var(--semantics-buttons-danger-tinted-is-hovered-content-color);
+		background-color: var(--semantics-buttons-critical-tinted-is-hovered-background-color);
+		color: var(--semantics-buttons-critical-tinted-is-hovered-content-color);
 	}
 
-	:host([variant="danger-tinted"]) .button:active,
+	:host([variant="critical-tinted"]) .button:active,
 	:host([variant="destructive"]) .button:active {
-		background-color: var(--semantics-buttons-danger-tinted-is-active-background-color);
-		color: var(--semantics-buttons-danger-tinted-is-active-content-color);
+		background-color: var(--semantics-buttons-critical-tinted-is-active-background-color);
+		color: var(--semantics-buttons-critical-tinted-is-active-content-color);
 	}
 
 	/* ## Elements */

@@ -14,7 +14,7 @@
  * @attr {string}  size                - Field size: 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled            - Disabled state
  * @attr {string}  name                - Input name for form submission
- * @attr {boolean} has-search-button  - When set, shows a search button on the right
+ * @attr {boolean} show-search-button - When set, shows a search button on the right
  * @attr {object}  translations        - Override translation keys; unset keys fall back to Dutch
  *
  * @fires input  - When the input value changes; detail: { value: string }
@@ -60,8 +60,8 @@ export class NLDDSearchField extends LitElement {
 	@property({ type: String })
 	name = '';
 
-	@property({ type: Boolean, reflect: true, attribute: 'has-search-button' })
-	hasSearchButton = false;
+	@property({ type: Boolean, reflect: true, attribute: 'show-search-button' })
+	showSearchButton = false;
 
 	/** Override one or more translation keys. Unset keys fall back to Dutch. */
 	@property({ type: Object })

@@ -102,11 +102,11 @@ describe('nldd-modal-dialog', () => {
 		expect(inner?.getAttribute('variant')).toBe('alert');
 	});
 
-	it('forwards icon-name attribute to nldd-inline-dialog', async () => {
-		el = await fixture('<nldd-modal-dialog icon-name="check-mark-circle"></nldd-modal-dialog>');
+	it('forwards icon attribute to nldd-inline-dialog', async () => {
+		el = await fixture('<nldd-modal-dialog icon="check-mark-circle"></nldd-modal-dialog>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('nldd-inline-dialog');
-		expect(inner?.getAttribute('icon-name')).toBe('check-mark-circle');
+		expect(inner?.getAttribute('icon')).toBe('check-mark-circle');
 	});
 
 	it('sets aria-label from accessible-label', async () => {

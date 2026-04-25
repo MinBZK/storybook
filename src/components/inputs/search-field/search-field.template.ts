@@ -36,7 +36,7 @@ export function searchFieldTemplate(component: NLDDSearchField): TemplateResult 
 						></nldd-icon-button>
 					</div>
 				` : nothing}
-				${component.hasSearchButton ? html`
+				${component.showSearchButton ? html`
 					<div class="search-field__search-button">
 						<nldd-button
 							variant="neutral-tinted"

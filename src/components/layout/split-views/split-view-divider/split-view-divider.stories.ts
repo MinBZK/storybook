@@ -33,6 +33,7 @@ export default {
 			table: { defaultValue: { summary: 'vertical' } },
 		},
 		hasDragHandle: {
+			name: 'has-drag-handle',
 			control: 'boolean',
 			description: 'Toon een sleephandvat',
 			table: { defaultValue: { summary: 'false' } },

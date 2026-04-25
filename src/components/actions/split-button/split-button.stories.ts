@@ -25,10 +25,6 @@ export default {
 		},
 	},
 	argTypes: {
-		text: {
-			control: 'text',
-			description: 'Tekst van de primaire actieknop',
-		},
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
@@ -36,6 +32,10 @@ export default {
 			table: {
 				defaultValue: { summary: 'md' },
 			},
+		},
+		text: {
+			control: 'text',
+			description: 'Tekst van de primaire actieknop',
 		},
 		disabled: {
 			control: 'boolean',
@@ -46,8 +46,8 @@ export default {
 		},
 	},
 	args: {
-		text: 'Opslaan',
 		size: 'md',
+		text: 'Opslaan',
 		disabled: false,
 	},
 };
@@ -59,7 +59,7 @@ const menuItems = html`
 	<nldd-menu-item text="Verwijderen" @select=${action('select: delete')}></nldd-menu-item>
 `;
 
-const Template = ({ text, size, disabled }: Record<string, any>) => html`
+const Template = ({ size, text, disabled }: Record<string, any>) => html`
 	<nldd-split-button
 		text=${text}
 		size=${size}

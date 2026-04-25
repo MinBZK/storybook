@@ -41,8 +41,8 @@ export const iconButtonStyles = css`
 		align-items: center;
 		justify-content: center;
 		transition:
-			background-color 0.15s ease-out,
-			color 0.15s ease-out;
+			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
+			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -277,24 +277,24 @@ export const iconButtonStyles = css`
 		color: var(--semantics-buttons-accent-transparent-is-active-content-color);
 	}
 
-	/* ## Variant: danger-tinted (destructive) */
+	/* ## Variant: critical-tinted (destructive) */
 
-	:host([variant='danger-tinted']) .icon-button,
+	:host([variant='critical-tinted']) .icon-button,
 	:host([variant='destructive']) .icon-button {
-		background-color: var(--semantics-buttons-danger-tinted-background-color);
-		color: var(--semantics-buttons-danger-tinted-content-color);
+		background-color: var(--semantics-buttons-critical-tinted-background-color);
+		color: var(--semantics-buttons-critical-tinted-content-color);
 	}
 
-	:host([variant='danger-tinted']) .icon-button:hover,
+	:host([variant='critical-tinted']) .icon-button:hover,
 	:host([variant='destructive']) .icon-button:hover {
-		background-color: var(--semantics-buttons-danger-tinted-is-hovered-background-color);
-		color: var(--semantics-buttons-danger-tinted-is-hovered-content-color);
+		background-color: var(--semantics-buttons-critical-tinted-is-hovered-background-color);
+		color: var(--semantics-buttons-critical-tinted-is-hovered-content-color);
 	}
 
-	:host([variant='danger-tinted']) .icon-button:active,
+	:host([variant='critical-tinted']) .icon-button:active,
 	:host([variant='destructive']) .icon-button:active {
-		background-color: var(--semantics-buttons-danger-tinted-is-active-background-color);
-		color: var(--semantics-buttons-danger-tinted-is-active-content-color);
+		background-color: var(--semantics-buttons-critical-tinted-is-active-background-color);
+		color: var(--semantics-buttons-critical-tinted-is-active-content-color);
 	}
 
 

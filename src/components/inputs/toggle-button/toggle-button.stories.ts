@@ -26,20 +26,28 @@ export default {
 		},
 	},
 	argTypes: {
-		type: {
-			control: 'select',
-			options: ['button', 'checkbox', 'radio'],
-			description: 'Onderliggend element',
-			table: {
-				defaultValue: { summary: 'button' },
-			},
-		},
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
 			description: 'Grootte',
 			table: {
 				defaultValue: { summary: 'md' },
+			},
+		},
+		text: {
+			control: 'text',
+			description: 'Tekst van de knop',
+		},
+		icon: {
+			control: 'text',
+			description: 'Icoon naam voor nldd-icon',
+		},
+		type: {
+			control: 'select',
+			options: ['button', 'checkbox', 'radio'],
+			description: 'Onderliggend element',
+			table: {
+				defaultValue: { summary: 'button' },
 			},
 		},
 		selected: {
@@ -56,22 +64,14 @@ export default {
 				defaultValue: { summary: false },
 			},
 		},
-		text: {
-			control: 'text',
-			description: 'Tekst van de knop',
-		},
-		icon: {
-			control: 'text',
-			description: 'Icoon naam voor nldd-icon',
-		},
 	},
 	args: {
-		type: 'button',
 		size: 'md',
-		selected: false,
-		disabled: false,
 		text: 'Toggle',
 		icon: '',
+		type: 'button',
+		selected: false,
+		disabled: false,
 	},
 };
 

@@ -77,14 +77,14 @@ describe('nldd-search-field – state', () => {
 		expect(el.shadowRoot!.querySelector('nldd-icon-button')).not.toBeNull();
 	});
 
-	it('does not render search button when has-search-button is not set', async () => {
+	it('does not render search button when show-search-button is not set', async () => {
 		el = await fixture<NLDDSearchField>('<nldd-search-field></nldd-search-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-button')).toBeNull();
 	});
 
-	it('renders search button when has-search-button is set', async () => {
-		el = await fixture<NLDDSearchField>('<nldd-search-field has-search-button></nldd-search-field>');
+	it('renders search button when show-search-button is set', async () => {
+		el = await fixture<NLDDSearchField>('<nldd-search-field show-search-button></nldd-search-field>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-button')).not.toBeNull();
 	});
@@ -147,7 +147,7 @@ describe('nldd-search-field – search event', () => {
 	});
 
 	it('dispatches search event on search button click', async () => {
-		el = await fixture<NLDDSearchField>('<nldd-search-field value="test" has-search-button></nldd-search-field>');
+		el = await fixture<NLDDSearchField>('<nldd-search-field value="test" show-search-button></nldd-search-field>');
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('search', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);

@@ -23,6 +23,15 @@ export default {
 		},
 	},
 	argTypes: {
+		name: {
+			control: 'text',
+			description: 'Naam voor formulierverwerking',
+		},
+		value: {
+			control: 'text',
+			description: 'Waarde voor formulierverwerking',
+			table: { defaultValue: { summary: 'on' } },
+		},
 		checked: {
 			control: 'boolean',
 			description: 'Aangevinkte toestand',
@@ -38,26 +47,17 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		value: {
-			control: 'text',
-			description: 'Waarde voor formulierverwerking',
-			table: { defaultValue: { summary: 'on' } },
-		},
-		name: {
-			control: 'text',
-			description: 'Naam voor formulierverwerking',
-		},
 	},
 	args: {
+		name: '',
+		value: 'on',
 		checked: false,
 		indeterminate: false,
 		disabled: false,
-		value: 'on',
-		name: '',
 	},
 };
 
-const Template = ({ checked, indeterminate, disabled, value, name }: Record<string, any>) => html`
+const Template = ({ name, value, checked, indeterminate, disabled }: Record<string, any>) => html`
 	<nldd-checkbox
 		?checked=${checked}
 		?indeterminate=${indeterminate}

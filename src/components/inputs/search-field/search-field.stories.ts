@@ -19,6 +19,22 @@ export default {
 		},
 	},
 	argTypes: {
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Grootte van het veld',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		showSearchButton: {
+			name: 'show-search-button',
+			control: 'boolean',
+			description: 'Toont een zoekknop aan de rechterkant',
+			table: { defaultValue: { summary: false } },
+		},
+		name: {
+			control: 'text',
+			description: 'Naam voor formulierverwerking',
+		},
 		value: {
 			control: 'text',
 			description: 'Huidige zoekwaarde',
@@ -30,51 +46,35 @@ export default {
 			table: { defaultValue: { summary: 'Zoeken' } },
 		},
 		accessibleLabel: {
-			control: 'text',
 			name: 'accessible-label',
+			control: 'text',
 			description: 'Toegankelijkheidslabel voor de input. Valt automatisch terug op de placeholder als niet ingevuld.',
-		},
-		size: {
-			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Grootte van het veld',
-			table: { defaultValue: { summary: 'md' } },
 		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		hasSearchButton: {
-			control: 'boolean',
-			name: 'has-search-button',
-			description: 'Toont een zoekknop aan de rechterkant',
-			table: { defaultValue: { summary: false } },
-		},
-		name: {
-			control: 'text',
-			description: 'Naam voor formulierverwerking',
-		},
 	},
 	args: {
+		size: 'md',
+		showSearchButton: false,
+		name: '',
 		value: '',
 		placeholder: 'Zoeken',
 		accessibleLabel: '',
-		size: 'md',
 		disabled: false,
-		hasSearchButton: false,
-		name: '',
 	},
 };
 
-const Template = ({ value, placeholder, accessibleLabel, size, disabled, hasSearchButton, name }: Record<string, any>) => html`
+const Template = ({ size, showSearchButton, name, value, placeholder, accessibleLabel, disabled }: Record<string, any>) => html`
 	<nldd-search-field
 		value=${value}
 		placeholder=${placeholder}
 		accessible-label=${accessibleLabel}
 		size=${size}
 		?disabled=${disabled}
-		?has-search-button=${hasSearchButton}
+		?show-search-button=${showSearchButton}
 		name=${name}
 	></nldd-search-field>
 `;
@@ -86,7 +86,7 @@ export const Standaard = {
 
 export const MetZoekKnop = {
 	render: Template,
-	args: { hasSearchButton: true },
+	args: { showSearchButton: true },
 };
 
 export const AlleToestanden = {
@@ -94,12 +94,12 @@ export const AlleToestanden = {
 	<div style="display: flex; flex-direction: column; gap: 1rem;">
 		<nldd-search-field size="md" placeholder="Zoeken"></nldd-search-field>
 		<nldd-search-field size="md" placeholder="Zoeken" value="Zoekterm"></nldd-search-field>
-		<nldd-search-field size="md" placeholder="Zoeken" has-search-button></nldd-search-field>
-		<nldd-search-field size="md" placeholder="Zoeken" value="Zoekterm" has-search-button></nldd-search-field>
+		<nldd-search-field size="md" placeholder="Zoeken" show-search-button></nldd-search-field>
+		<nldd-search-field size="md" placeholder="Zoeken" value="Zoekterm" show-search-button></nldd-search-field>
 		<nldd-search-field size="sm" placeholder="Zoeken"></nldd-search-field>
 		<nldd-search-field size="sm" placeholder="Zoeken" value="Zoekterm"></nldd-search-field>
-		<nldd-search-field size="sm" placeholder="Zoeken" has-search-button></nldd-search-field>
-		<nldd-search-field size="sm" placeholder="Zoeken" value="Zoekterm" has-search-button></nldd-search-field>
+		<nldd-search-field size="sm" placeholder="Zoeken" show-search-button></nldd-search-field>
+		<nldd-search-field size="sm" placeholder="Zoeken" value="Zoekterm" show-search-button></nldd-search-field>
 		<nldd-search-field size="md" placeholder="Zoeken" disabled></nldd-search-field>
 		<nldd-search-field size="md" placeholder="Zoeken" value="Zoekterm" disabled></nldd-search-field>
 	</div>

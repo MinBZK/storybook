@@ -13,7 +13,7 @@ export function modalDialogTemplate(component: NLDDModalDialog) {
 		>
 			<nldd-inline-dialog
 				variant=${component.variant || nothing}
-				icon-name=${component.iconName || nothing}
+				icon=${component.icon || nothing}
 				text=${component.text || nothing}
 				supporting-text=${component.supportingText || nothing}
 				heading-level="2"

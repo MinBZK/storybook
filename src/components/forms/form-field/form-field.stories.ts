@@ -57,6 +57,7 @@ export default {
 	tags: ['autodocs'],
 	argTypes: {
 		labelAlignment: {
+			name: 'label-alignment',
 			control: 'select',
 			options: ['top', 'right', 'left'],
 			table: { order: 1, defaultValue: { summary: 'top' } },
@@ -66,6 +67,7 @@ export default {
 			table: { order: 2 },
 		},
 		supportingLabel: {
+			name: 'supporting-label',
 			control: 'text',
 			table: { order: 3 },
 		},

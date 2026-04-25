@@ -20,6 +20,7 @@ export default {
 			table: { defaultValue: { summary: 'md' } },
 		},
 		showItemLabels: {
+			name: 'show-item-labels',
 			control: 'boolean',
 			description: 'Show labels below toolbar items',
 			table: { defaultValue: { summary: 'false' } },

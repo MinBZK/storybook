@@ -15,6 +15,10 @@ export const ICONS: string[] = [
 /**
  * A customizable icon component that renders SVG icons from a predefined library.
  *
+ * Icons are decorative by default: the host gets `aria-hidden="true"` automatically.
+ * If you want the icon to be announced by assistive tech, set `aria-hidden="false"`
+ * on the consumer side together with an `aria-label`.
+ *
  * @element nldd-icon
  *
  * @attr {string} name - The name of the icon to display
@@ -36,6 +40,9 @@ export class NLDDIcon extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
+		if (!this.hasAttribute('aria-hidden')) {
+			this.setAttribute('aria-hidden', 'true');
+		}
 		this._iconSvg = this._loadIcon(this.name);
 	}
 

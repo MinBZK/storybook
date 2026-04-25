@@ -19,6 +19,16 @@ export default {
 		},
 	},
 	argTypes: {
+		size: {
+			control: 'select',
+			options: ['sm', 'md'],
+			description: 'Grootte van het veld',
+			table: { defaultValue: { summary: 'md' } },
+		},
+		name: {
+			control: 'text',
+			description: 'Naam voor formulierverwerking',
+		},
 		value: {
 			control: 'text',
 			description: 'Geselecteerde waarde (voor formulierverwerking)',
@@ -28,12 +38,6 @@ export default {
 			control: 'text',
 			description: 'Placeholder tekst',
 			table: { defaultValue: { summary: '' } },
-		},
-		size: {
-			control: 'select',
-			options: ['sm', 'md'],
-			description: 'Grootte van het veld',
-			table: { defaultValue: { summary: 'md' } },
 		},
 		valid: {
 			control: 'boolean',
@@ -50,19 +54,15 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		name: {
-			control: 'text',
-			description: 'Naam voor formulierverwerking',
-		},
 	},
 	args: {
+		size: 'md',
+		name: '',
 		value: '',
 		placeholder: 'Zoek een land',
-		size: 'md',
 		valid: false,
 		invalid: false,
 		disabled: false,
-		name: '',
 	},
 };
 

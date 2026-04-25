@@ -18,6 +18,12 @@ export default {
 		},
 	},
 	argTypes: {
+		size: {
+			control: 'select',
+			options: ['xs', 'sm'],
+			description: 'Grootte van de switch',
+			table: { defaultValue: { summary: 'sm' } },
+		},
 		checked: {
 			control: 'boolean',
 			description: 'Aangevinkte toestand',
@@ -28,21 +34,15 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		size: {
-			control: 'select',
-			options: ['xs', 'sm'],
-			description: 'Grootte van de switch',
-			table: { defaultValue: { summary: 'sm' } },
-		},
 	},
 	args: {
+		size: 'sm',
 		checked: false,
 		disabled: false,
-		size: 'sm',
 	},
 };
 
-const Template = ({ checked, disabled, size }: Record<string, any>) => html`
+const Template = ({ size, checked, disabled }: Record<string, any>) => html`
 	<nldd-switch
 		?checked=${checked}
 		?disabled=${disabled}
