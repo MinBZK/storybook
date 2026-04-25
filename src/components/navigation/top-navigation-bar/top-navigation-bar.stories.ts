@@ -10,26 +10,26 @@ export default {
 	},
 	args: {
 		noLogo: false,
-		websiteTitle: 'DigID',
 		logoTitle: '',
 		logoSubtitle: '',
 		logoSupportingText1: '',
 		logoSupportingText2: '',
-		backText: '',
 		logoHref: '',
-		siteHref: '',
+		websiteTitle: 'DigID',
+		websiteHref: '',
+		backText: '',
 		backHref: '',
 	},
 	argTypes: {
 		noLogo: { name: 'no-logo', control: 'boolean', description: 'Verberg het logo', table: { defaultValue: { summary: false } } },
-		websiteTitle: { name: 'website-title', control: 'text', description: 'Naam van de website of applicatie' },
 		logoTitle: { name: 'logo-title', control: 'text', description: 'Woordmerk titel (toont woordmerk naast logo)', table: { defaultValue: { summary: '' } } },
 		logoSubtitle: { name: 'logo-subtitle', control: 'text', description: 'Woordmerk subtitel', table: { defaultValue: { summary: '' } } },
 		logoSupportingText1: { name: 'logo-supporting-text-1', control: 'text', description: 'Woordmerk ondersteunende tekst regel 1', table: { defaultValue: { summary: '' } } },
 		logoSupportingText2: { name: 'logo-supporting-text-2', control: 'text', description: 'Woordmerk ondersteunende tekst regel 2', table: { defaultValue: { summary: '' } } },
-		backText: { name: 'back-text', control: 'text', description: 'Tekst van de terugknop (standaard: "Terug")', table: { defaultValue: { summary: '' } } },
 		logoHref: { name: 'logo-href', control: 'text', description: 'URL voor logo en woordmerk', table: { defaultValue: { summary: '' } } },
-		siteHref: { name: 'site-href', control: 'text', description: 'URL voor de site-titel', table: { defaultValue: { summary: '' } } },
+		websiteTitle: { name: 'website-title', control: 'text', description: 'Naam van de website of applicatie' },
+		websiteHref: { name: 'website-href', control: 'text', description: 'URL voor de website-titel', table: { defaultValue: { summary: '' } } },
+		backText: { name: 'back-text', control: 'text', description: 'Tekst van de terugknop (standaard: "Terug")', table: { defaultValue: { summary: '' } } },
 		backHref: { name: 'back-href', control: 'text', description: 'URL van de terugknop', table: { defaultValue: { summary: '' } } },
 	},
 };
@@ -42,28 +42,28 @@ const layoutArea = 'container-type: inline-size; container-name: layout-area; ba
 
 const Template = ({
 	noLogo,
-	websiteTitle,
 	logoTitle,
 	logoSubtitle,
 	logoSupportingText1,
 	logoSupportingText2,
-	backText,
 	logoHref,
-	siteHref,
+	websiteTitle,
+	websiteHref,
+	backText,
 	backHref,
 }: Record<string, unknown>) => html`
 	<div style=${layoutArea}>
 		<nldd-top-navigation-bar
-			website-title=${websiteTitle || nothing}
 			?no-logo=${noLogo}
 			logo-title=${logoTitle || nothing}
 			logo-subtitle=${logoSubtitle || nothing}
 			logo-supporting-text-1=${logoSupportingText1 || nothing}
 			logo-supporting-text-2=${logoSupportingText2 || nothing}
 			logo-href=${logoHref || nothing}
-			site-href=${siteHref || nothing}
-			back-href=${backHref || nothing}
+			website-title=${websiteTitle || nothing}
+			website-href=${websiteHref || nothing}
 			back-text=${backText || nothing}
+			back-href=${backHref || nothing}
 		>
 			<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
 			<nldd-menu-bar-item slot="global" text="Aanvragen & activeren"></nldd-menu-bar-item>
@@ -95,7 +95,7 @@ export const WithLogoWordmark = {
 	args: {
 		logoTitle: 'DigID',
 		logoHref: '/',
-		siteHref: '/',
+		websiteHref: '/',
 	},
 };
 

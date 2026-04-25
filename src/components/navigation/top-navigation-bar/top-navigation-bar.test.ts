@@ -241,9 +241,9 @@ describe('nldd-top-navigation-bar – href sanitization', () => {
 		expect(link).toBeNull();
 	});
 
-	it('renders title as non-link when site-href is a javascript: URI', async () => {
+	it('renders title as non-link when website-href is a javascript: URI', async () => {
 		el = await fixture<NLDDTopNavigationBar>(`
-			<nldd-top-navigation-bar website-title="Test" site-href="javascript:void(0)"></nldd-top-navigation-bar>
+			<nldd-top-navigation-bar website-title="Test" website-href="javascript:void(0)"></nldd-top-navigation-bar>
 		`);
 		await waitForUpdate(el);
 		const link = el.shadowRoot!.querySelector('a.top-navigation-bar__website-title');
