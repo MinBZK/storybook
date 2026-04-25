@@ -11,6 +11,7 @@ export function template(this: NLDDLink, helpers: TemplateHelpers) {
 		<a class="link"
 			href=${this.disabled ? nothing : (this.href || nothing)}
 			role=${this.disabled ? 'link' : nothing}
+			tabindex=${this.disabled ? '0' : nothing}
 			target=${this.disabled ? nothing : (this.target || nothing)}
 			rel=${this.disabled ? nothing : (resolvedRel || nothing)}
 			aria-disabled=${this.disabled ? 'true' : nothing}

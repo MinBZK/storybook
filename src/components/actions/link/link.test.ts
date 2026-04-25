@@ -53,12 +53,13 @@ describe('nldd-link', () => {
 		expect(anchor.getAttribute('rel')).toBe('nofollow');
 	});
 
-	it('removes href and adds role="link" when disabled', async () => {
+	it('removes href and adds role="link" + tabindex=0 when disabled', async () => {
 		el = await fixture('<nldd-link href="#" text="Disabled" disabled></nldd-link>');
 		await waitForUpdate(el);
 		const anchor = el.shadowRoot!.querySelector('a')!;
 		expect(anchor.hasAttribute('href')).toBe(false);
 		expect(anchor.getAttribute('role')).toBe('link');
+		expect(anchor.getAttribute('tabindex')).toBe('0');
 		expect(anchor.getAttribute('aria-disabled')).toBe('true');
 	});
 

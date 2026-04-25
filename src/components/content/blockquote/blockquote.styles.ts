@@ -57,15 +57,25 @@ export const blockquoteStyles = css`
 	/* # Elements */
 
 	.blockquote__quote {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--_spacing) / 2);
 		font: var(--_quote-font);
 	}
 
 	.blockquote__attribution {
-		margin: 0;
 		font: var(--_attribution-font);
 	}
 
 	.blockquote__attribution[hidden] {
 		display: none;
+	}
+
+	::slotted(p) {
+		margin: 0;
+	}
+
+	slot[name="attribution"]::slotted(p) {
+		display: inline;
 	}
 `;

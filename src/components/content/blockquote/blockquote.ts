@@ -6,7 +6,7 @@
  * @element nldd-blockquote
  * @attr {string} cite - URL van de bron (wordt doorgegeven aan het <blockquote> element)
  *
- * @slot - De citaat-tekst
+ * @slot - De citaat-paragra(a)f(en) — gebruik bij voorkeur <p>-elementen
  * @slot attribution - Optionele bronvermelding (auteur, titel, etc.)
  */
 

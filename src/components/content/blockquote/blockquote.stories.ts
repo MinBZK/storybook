@@ -7,8 +7,8 @@ import './blockquote.js';
  * ## Gebruik
  * ```html
  * <nldd-blockquote>
- *   Het beste systeem is het systeem dat je niet ziet.
- *   <span slot="attribution">Jan Jansen, 2024</span>
+ *   <p>Het beste systeem is het systeem dat je niet ziet.</p>
+ *   <p slot="attribution">Jan Jansen, 2024</p>
  * </nldd-blockquote>
  * ```
  */
@@ -48,8 +48,8 @@ export default {
 
 const Template = ({ quote, attribution, cite }: Record<string, any>) => html`
 	<nldd-blockquote cite=${cite || nothing}>
-		${quote}
-		${attribution ? html`<span slot="attribution">${attribution}</span>` : ''}
+		<p>${quote}</p>
+		${attribution ? html`<p slot="attribution">${attribution}</p>` : ''}
 	</nldd-blockquote>
 `;
 
@@ -67,10 +67,14 @@ export const WithCiteUrl = {
 export const LongQuote = {
 	render: () => html`
 		<nldd-blockquote>
-			Een goede digitale dienst is als een goede ambtenaar: betrouwbaar, geduldig en altijd
-			gericht op de burger die aan de andere kant van de balie staat. Of die balie nu
-			fysiek is of een formulier op het scherm: de bedoeling blijft hetzelfde.
-			<span slot="attribution">uit het handboek ontwerpprincipes</span>
+			<p>
+				Een goede digitale dienst is als een goede ambtenaar: betrouwbaar, geduldig en altijd
+				gericht op de burger die aan de andere kant van de balie staat.
+			</p>
+			<p>
+				Of die balie nu fysiek is of een formulier op het scherm: de bedoeling blijft hetzelfde.
+			</p>
+			<p slot="attribution">uit het handboek ontwerpprincipes</p>
 		</nldd-blockquote>
 	`,
 	parameters: {
