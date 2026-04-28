@@ -19,6 +19,10 @@
  * @attr {boolean} invalid      - Marks the field as invalid
  * @attr {boolean} disabled     - Disabled state
  * @attr {string}  name         - Input name for form submission
+ * @attr {string}  autocomplete - Browser autofill hint. Default 'off' to prevent the
+ *                                native autofill panel from competing with the menu dropdown.
+ *                                Set to a valid token (e.g. 'country', 'organization') when
+ *                                browser autofill is desired.
  * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the input. Required for screen reader accessibility.
  * @attr {number}  max-items    - Maximum visible items before scrolling (default: 8)
  * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
@@ -80,6 +84,9 @@ export class NLDDComboBox extends LitElement {
 
 	@property({ type: String })
 	name = '';
+
+	@property({ type: String })
+	autocomplete = 'off';
 
 	/** Maximum number of visible menu items before scrolling. Defaults to 8. */
 	@property({ type: Number, attribute: 'max-items' })

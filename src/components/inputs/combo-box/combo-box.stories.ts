@@ -39,6 +39,11 @@ export default {
 			description: 'Placeholder tekst',
 			table: { defaultValue: { summary: '' } },
 		},
+		autocomplete: {
+			control: 'text',
+			description: 'Browser autofill hint. Default "off" om conflict met dropdown te voorkomen. Set bv. "country" of "organization" om autofill toe te staan.',
+			table: { defaultValue: { summary: 'off' } },
+		},
 		valid: {
 			control: 'boolean',
 			description: 'Markeert het veld als geldig',
@@ -60,6 +65,7 @@ export default {
 		name: '',
 		value: '',
 		placeholder: 'Zoek een land',
+		autocomplete: 'off',
 		valid: false,
 		invalid: false,
 		disabled: false,
@@ -74,6 +80,7 @@ const Template = (args: Record<string, any>) => html`
 		?invalid=${args.invalid}
 		?disabled=${args.disabled}
 		name=${args.name}
+		autocomplete=${args.autocomplete}
 	>
 		<nldd-menu empty-text="Geen resultaten">
 			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>

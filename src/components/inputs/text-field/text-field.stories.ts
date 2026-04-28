@@ -62,6 +62,11 @@ export default {
 			description: 'Input type',
 			table: { defaultValue: { summary: 'text' } },
 		},
+		autocomplete: {
+			control: 'text',
+			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "name", "email", "off")',
+			table: { defaultValue: { summary: '' } },
+		},
 		valid: {
 			control: 'boolean',
 			description: 'Valid state',
@@ -94,6 +99,7 @@ export default {
 		value: '',
 		placeholder: 'Text field',
 		type: 'text',
+		autocomplete: '',
 		valid: false,
 		invalid: false,
 		readonly: false,
@@ -102,7 +108,7 @@ export default {
 	},
 };
 
-const Template = ({ size, name, value, placeholder, type, valid, invalid, readonly, required, disabled }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, type, autocomplete, valid, invalid, readonly, required, disabled }: Record<string, any>) => html`
 	<nldd-text-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -112,6 +118,7 @@ const Template = ({ size, name, value, placeholder, type, valid, invalid, readon
 		?disabled=${disabled}
 		type=${type}
 		name=${name}
+		autocomplete=${autocomplete}
 		?readonly=${readonly}
 		?required=${required}
 	></nldd-text-field>
