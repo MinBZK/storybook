@@ -158,7 +158,7 @@ export const paginationStyles = css`
 		height: var(--semantics-controls-md-min-size);
 		padding-block: var(--primitives-space-8);
 		padding-inline-start: var(--primitives-space-12);
-		padding-inline-end: calc(var(--primitives-space-24) + var(--primitives-space-12));
+		padding-inline-end: calc(var(--primitives-space-24) + var(--primitives-space-4));
 		font: var(--semantics-buttons-md-font);
 		color: inherit;
 		box-sizing: border-box;
