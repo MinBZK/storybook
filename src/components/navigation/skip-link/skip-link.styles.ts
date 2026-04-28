@@ -62,6 +62,7 @@ export const skipLinkStyles = css`
 	.skip-link__control:focus-visible {
 		box-shadow: var(--_focus-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 		outline-offset: var(--_focus-outline-offset);
 	}
 `;

@@ -104,6 +104,7 @@ export const topNavigationBarStyles = css`
 	a.top-navigation-bar__logo:focus-visible {
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 	/* ## Logo and wordmark */
@@ -130,6 +131,7 @@ export const topNavigationBarStyles = css`
 	a.top-navigation-bar__logo-and-wordmark:focus-visible {
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 	/* ## Wordmark */
@@ -243,6 +245,7 @@ export const topNavigationBarStyles = css`
 	a.top-navigation-bar__website-title:focus-visible {
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 	/* ## Menu bar */

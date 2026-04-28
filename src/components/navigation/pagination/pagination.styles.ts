@@ -97,6 +97,7 @@ export const paginationStyles = css`
 	.pagination__page-button:focus-visible::before {
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 
@@ -170,6 +171,7 @@ export const paginationStyles = css`
 	.pagination__select:focus-visible {
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--primitives-space-4) / 2);
 	}
 

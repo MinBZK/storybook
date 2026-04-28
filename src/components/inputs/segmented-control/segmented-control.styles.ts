@@ -216,5 +216,6 @@ export const segmentedControlItemStyles = css`
 	.segmented-control__item-label:has(:focus-visible)::before {
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 `;

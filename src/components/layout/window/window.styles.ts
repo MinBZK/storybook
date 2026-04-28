@@ -43,6 +43,7 @@ export const windowStyles = css`
 	.window:focus-visible:not(.is-pointer-focus) {
 		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-window-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 

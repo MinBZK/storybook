@@ -66,6 +66,7 @@ export const passwordFieldStyles = css`
 
 	.password-field:focus-within:not(:has(.password-field__visibility-toggle-button:focus-within)) {
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 

@@ -53,6 +53,7 @@ export const menuStyles = css`
 	.menu:focus-visible:not(.is-pointer-focus) {
 		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-menu-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 
@@ -117,6 +118,7 @@ export const menuItemStyles = css`
 		z-index: 1;
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 

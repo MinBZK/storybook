@@ -946,8 +946,9 @@
 
 	/* ## Focus ring */
 
-	--semantics-focus-ring-box-shadow: 0 0 0 4px light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
-	--semantics-focus-ring-outline: 6px double var(--semantics-surfaces-background-color);
+	--semantics-focus-ring-outline: 2px solid var(--primitives-color-accent-600);
+	--semantics-focus-ring-outline-offset: 2px;
+	--semantics-focus-ring-box-shadow: 0 0 0 6px var(--semantics-surfaces-background-color);
 
 
 	/* # Components */

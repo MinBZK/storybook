@@ -64,6 +64,7 @@ export const numberFieldStyles = css`
 	.number-field:has(.number-field__input:focus-visible) {
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 
