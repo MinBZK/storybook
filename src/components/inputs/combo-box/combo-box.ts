@@ -241,11 +241,11 @@ export class NLDDComboBox extends LitElement {
 		(this._menu as HTMLElement).hidePopover();
 	}
 
-	private _pickerMousedown = false;
+	private _pickerPointerdownWhileOpen = false;
 
 	public _toggleMenu(): void {
-		if (this._pickerMousedown) {
-			this._pickerMousedown = false;
+		if (this._pickerPointerdownWhileOpen) {
+			this._pickerPointerdownWhileOpen = false;
 			return;
 		}
 		if (this._isOpen) {
@@ -257,9 +257,9 @@ export class NLDDComboBox extends LitElement {
 		}
 	}
 
-	public _handlePickerMousedown(): void {
+	public _handlePickerPointerdown(): void {
 		if (this._isOpen) {
-			this._pickerMousedown = true;
+			this._pickerPointerdownWhileOpen = true;
 		}
 	}
 
