@@ -304,14 +304,14 @@
 	/* ## Corner radius */
 
 	--primitives-corner-radius-none: 0px;
-	--primitives-corner-radius-xxs: 2px;
+	--primitives-corner-radius-xxs: 3px;
 	--primitives-corner-radius-xs: 4px;
 	--primitives-corner-radius-sm: 6px;
 	--primitives-corner-radius-md: 9px;
-	--primitives-corner-radius-lg: 12px;
-	--primitives-corner-radius-xl: 16px;
-	--primitives-corner-radius-xxl: 20px;
-	--primitives-corner-radius-xxxl: 24px;
+	--primitives-corner-radius-lg: 13px;
+	--primitives-corner-radius-xl: 18px;
+	--primitives-corner-radius-xxl: 24px;
+	--primitives-corner-radius-xxxl: 31px;
 	--primitives-corner-radius-full: 9999px;
 
 	/* ## Typography */
@@ -1115,17 +1115,17 @@
 
 	/* ## Tag */
 
-	--components-tag-sm-corner-radius: var(--primitives-corner-radius-xs);
-	--components-tag-md-corner-radius: var(--primitives-corner-radius-sm);
-	--components-tag-neutral-background-color: var(--primitives-color-neutral-75);
+	--components-tag-sm-corner-radius: var(--primitives-corner-radius-xxs);
+	--components-tag-md-corner-radius: var(--primitives-corner-radius-xs);
+	--components-tag-neutral-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-150));
 	--components-tag-neutral-content-color: var(--primitives-color-neutral-800);
-	--components-tag-accent-background-color: var(--primitives-color-accent-75);
+	--components-tag-accent-background-color: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-150));
 	--components-tag-accent-content-color: var(--primitives-color-accent-750);
-	--components-tag-success-background-color: var(--primitives-color-success-75);
+	--components-tag-success-background-color: light-dark(var(--primitives-color-success-75), var(--primitives-color-success-150));
 	--components-tag-success-content-color: var(--primitives-color-success-750);
-	--components-tag-warning-background-color: var(--primitives-color-warning-75);
+	--components-tag-warning-background-color: light-dark(var(--primitives-color-warning-75), var(--primitives-color-warning-150));
 	--components-tag-warning-content-color: var(--primitives-color-warning-750);
-	--components-tag-critical-background-color: var(--primitives-color-critical-75);
+	--components-tag-critical-background-color: light-dark(var(--primitives-color-critical-75), var(--primitives-color-critical-150));
 	--components-tag-critical-content-color: var(--primitives-color-critical-750);
 
 	/* ## Title */

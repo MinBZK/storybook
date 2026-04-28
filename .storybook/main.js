@@ -9,7 +9,7 @@ const config = {
     '@storybook/addon-themes'
   ],
   framework: '@storybook/web-components-vite',
-  staticDirs: ['../dist'],
+  staticDirs: ['../dist', '../public'],
 };
 
 export default config;
