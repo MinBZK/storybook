@@ -87,10 +87,12 @@ export const tagStyles = css`
 		flex-shrink: 0;
 		width: var(--_icon-size);
 		height: var(--_icon-size);
+		margin-inline: calc((var(--_min-height) - var(--_icon-size)) / 2 - var(--_inline-padding));
 	}
 
 	.tag__icon:has(+ .tag__text) {
 		margin-left: calc((var(--_min-height) - var(--_icon-size)) / 2 - var(--_inline-padding) + var(--_icon-offset-correction));
+		margin-right: 0;
 	}
 
 

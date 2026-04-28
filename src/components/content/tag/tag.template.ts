@@ -2,20 +2,24 @@ import { html, nothing } from 'lit';
 import type { NLDDTag } from './tag.js';
 
 export function template(component: NLDDTag) {
-	const iconOnly = !!component.icon && !component.text && !!component.accessibleLabel;
+	const iconOnly = !!component.icon && !component._hasText && !!component.accessibleLabel;
 	return html`
 		<span class="tag"
 			role=${iconOnly ? 'img' : nothing}
 			aria-label=${iconOnly ? component.accessibleLabel : nothing}
 		>
-			${component.icon ? html`
+			${component._hasIcon ? html`
 				<span class="tag__icon">
-					<nldd-icon name=${component.icon}></nldd-icon>
+					${component.icon
+						? html`<nldd-icon name=${component.icon}></nldd-icon>`
+						: html`<slot name="icon"></slot>`}
 				</span>
-			` : html`<slot name="icon"></slot>`}
-			<span class="tag__text">
-				${component.text ? component.text : html`<slot></slot>`}
-			</span>
+			` : nothing}
+			${component._hasText ? html`
+				<span class="tag__text">
+					${component.text ? component.text : html`<slot></slot>`}
+				</span>
+			` : nothing}
 		</span>
 	`;
 }
