@@ -11,6 +11,7 @@ export const tabBarStyles = css`
 	:host {
 		display: inline-block;
 		position: relative;
+		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
 	}
 

@@ -7,6 +7,7 @@ export const splitButtonStyles = css`
 
 	:host {
 		display: inline-flex;
+		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
 	}
 

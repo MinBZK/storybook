@@ -8,6 +8,7 @@ export const paginationStyles = css`
 	:host {
 		display: block;
 		container-type: inline-size;
+		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
 	}
 

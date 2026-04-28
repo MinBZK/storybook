@@ -8,6 +8,7 @@ export const documentTabBarStyles = css`
 	:host {
 		display: block;
 		position: relative;
+		isolation: isolate;
 		--_drag-clone-top: 0px;
 		--_drag-clone-left: 0px;
 		--_drag-clone-width: 0px;
