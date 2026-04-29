@@ -17,10 +17,12 @@ export const formActionsStyles = css`
 
 	/* # Block */
 
+	/* In stacked mode only .form-actions__main is visible (spacer is display:none),
+	   so no gap is needed. Aligned-gap kicks in below in the row-layout media query. */
+
 	.form-actions {
 		display: flex;
 		flex-direction: column;
-		gap: var(--semantics-forms-stacked-gap);
 	}
 
 	@container (min-width: 640px) {
