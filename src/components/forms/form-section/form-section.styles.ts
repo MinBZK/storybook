@@ -34,13 +34,22 @@ export const formSectionStyles = css`
 	}
 
 
-	/* # Title (rendered as <legend>, must be direct child of <fieldset>) */
+	/* # Header (rendered as <legend>, must be direct child of <fieldset>).
+	   Title and subtitle are spans inside the legend so screen readers read
+	   them together as the group label. */
 
-	.form-section__title {
+	.form-section__header {
 		padding: 0;
 		margin: 0;
 		width: 100%;
 		text-align: left;
+	}
+
+
+	/* # Title */
+
+	.form-section__title {
+		display: block;
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-lg-bold-tight);
 	}
@@ -49,15 +58,15 @@ export const formSectionStyles = css`
 	/* # Subtitle */
 
 	.form-section__subtitle {
-		margin: 0;
+		display: block;
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-md-regular-tight);
 	}
 
 
-	/* # Main — gets margin-top to separate from title/subtitle. When neither
-	   title nor subtitle is rendered, main is the first child of the fieldset
-	   and the margin collapses via :first-child. */
+	/* # Main — gets margin-top to separate from header. When no header is
+	   rendered, main is the first child of the fieldset and the margin
+	   collapses via :first-child. */
 
 	.form-section__main {
 		display: block;
