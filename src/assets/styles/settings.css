@@ -908,6 +908,8 @@
 	--semantics-forms-gap: var(--primitives-space-16);
 	--semantics-forms-gap-tight: var(--primitives-space-8);
 	--semantics-forms-label-column-width: var(--primitives-area-240);
+	--semantics-forms-stacked-gap: var(--primitives-space-2);
+	--semantics-forms-aligned-gap: var(--primitives-space-8);
 
 	/* ## Grab handles */
 
