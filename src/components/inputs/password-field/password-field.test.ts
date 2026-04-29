@@ -211,4 +211,11 @@ describe('nldd-password-field', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('size')).toBe('sm');
 	});
+
+	it('past inline host width toe als width property gezet is', async () => {
+		el = await fixture('<nldd-password-field width="240px"></nldd-password-field>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('width')).toBe('240px');
+		expect((el as HTMLElement).style.width).toBe('240px');
+	});
 });

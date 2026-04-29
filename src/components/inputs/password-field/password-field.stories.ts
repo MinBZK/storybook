@@ -93,6 +93,11 @@ export default {
 			description: 'Disabled state',
 			table: { defaultValue: { summary: false } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 	},
 	args: {
 		size: 'md',
@@ -108,10 +113,11 @@ export default {
 		valid: false,
 		invalid: false,
 		disabled: false,
+		width: '',
 	},
 };
 
-const Template = ({ size, name, value, placeholder, showText, hideText, showAccessibleLabel, hideAccessibleLabel, autocomplete, masked, valid, invalid, disabled }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, showText, hideText, showAccessibleLabel, hideAccessibleLabel, autocomplete, masked, valid, invalid, disabled, width }: Record<string, any>) => html`
 	<nldd-password-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -126,6 +132,7 @@ const Template = ({ size, name, value, placeholder, showText, hideText, showAcce
 		hide-accessible-label=${hideAccessibleLabel}
 		name=${name}
 		autocomplete=${autocomplete}
+		width=${width}
 	></nldd-password-field>
 `;
 

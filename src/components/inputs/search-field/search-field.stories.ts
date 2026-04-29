@@ -55,6 +55,11 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 	},
 	args: {
 		size: 'md',
@@ -64,10 +69,11 @@ export default {
 		placeholder: 'Zoeken',
 		accessibleLabel: '',
 		disabled: false,
+		width: '',
 	},
 };
 
-const Template = ({ size, showSearchButton, name, value, placeholder, accessibleLabel, disabled }: Record<string, any>) => html`
+const Template = ({ size, showSearchButton, name, value, placeholder, accessibleLabel, disabled, width }: Record<string, any>) => html`
 	<nldd-search-field
 		value=${value}
 		placeholder=${placeholder}
@@ -76,6 +82,7 @@ const Template = ({ size, showSearchButton, name, value, placeholder, accessible
 		?disabled=${disabled}
 		?show-search-button=${showSearchButton}
 		name=${name}
+		width=${width}
 	></nldd-search-field>
 `;
 

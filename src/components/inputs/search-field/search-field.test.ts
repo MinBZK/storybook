@@ -212,4 +212,11 @@ describe('nldd-search-field – dismiss', () => {
 		while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement;
 		expect(active).toBe(input);
 	});
+
+	it('past inline host width toe als width property gezet is', async () => {
+		el = await fixture('<nldd-search-field width="240px"></nldd-search-field>') as NLDDSearchField;
+		await waitForUpdate(el);
+		expect(el.getAttribute('width')).toBe('240px');
+		expect((el as HTMLElement).style.width).toBe('240px');
+	});
 });

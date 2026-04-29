@@ -26,6 +26,7 @@
  * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the input. Required for screen reader accessibility.
  * @attr {number}  max-items    - Maximum visible items before scrolling (default: 8)
  * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
+ * @attr {string}  width        - Optional fixed width (any CSS length, e.g. "240px"). Default: full-width.
  *
  * @note Free-text values: if the user types a value that does not match any menu option
  *       and presses Enter or moves focus away, the typed text is emitted as-is via the
@@ -98,6 +99,10 @@ export class NLDDComboBox extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDComboBoxTranslations> = {};
 
+	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
+	@property({ type: String, reflect: true })
+	width = '';
+
 	@state()
 	_isOpen = false;
 
@@ -135,6 +140,9 @@ export class NLDDComboBox extends LitElement {
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('maxItems') && this._menu) {
 			this._menu.maxItems = this.maxItems;
+		}
+		if (changedProperties.has('width')) {
+			this.style.width = this.width || '';
 		}
 	}
 

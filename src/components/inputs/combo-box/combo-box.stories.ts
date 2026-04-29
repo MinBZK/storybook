@@ -59,6 +59,11 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 	},
 	args: {
 		size: 'md',
@@ -69,6 +74,7 @@ export default {
 		valid: false,
 		invalid: false,
 		disabled: false,
+		width: '',
 	},
 };
 
@@ -81,6 +87,7 @@ const Template = (args: Record<string, any>) => html`
 		?disabled=${args.disabled}
 		name=${args.name}
 		autocomplete=${args.autocomplete}
+		width=${args.width}
 	>
 		<nldd-menu empty-text="Geen resultaten">
 			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>

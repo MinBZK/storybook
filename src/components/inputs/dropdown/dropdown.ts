@@ -12,6 +12,7 @@
  * @attr {boolean} valid    - Marks the field as valid
  * @attr {boolean} invalid  - Marks the field as invalid
  * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
+ * @attr {string}  width    - Optional fixed width (any CSS length, e.g. "240px"). Default: full-width.
  *
  * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
  *
@@ -52,6 +53,10 @@ export class NLDDDropdown extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
+	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
+	@property({ type: String, reflect: true })
+	width = '';
+
 	@state()
 	_displayValue = '';
 
@@ -65,6 +70,9 @@ export class NLDDDropdown extends LitElement {
 		}
 		if (changedProperties.has('invalid')) {
 			this._syncAriaInvalid();
+		}
+		if (changedProperties.has('width')) {
+			this.style.width = this.width || '';
 		}
 	}
 

@@ -121,4 +121,19 @@ describe('nldd-text-field', () => {
 		const input = el.shadowRoot!.querySelector('input')!;
 		expect(input.hasAttribute('aria-describedby')).toBe(false);
 	});
+
+	it('past inline host width toe als width property gezet is', async () => {
+		el = await fixture('<nldd-text-field width="240px"></nldd-text-field>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('width')).toBe('240px');
+		expect((el as HTMLElement).style.width).toBe('240px');
+	});
+
+	it('verwijdert inline host width als width leeg wordt gezet', async () => {
+		el = await fixture('<nldd-text-field width="240px"></nldd-text-field>');
+		await waitForUpdate(el);
+		(el as any).width = '';
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('');
+	});
 });

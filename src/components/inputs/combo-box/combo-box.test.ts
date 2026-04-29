@@ -114,6 +114,13 @@ describe('nldd-combo-box – size', () => {
 		const picker = el.shadowRoot!.querySelector('.combo-box__picker-button nldd-icon-button')!;
 		expect(picker.getAttribute('size')).toBe('xs');
 	});
+
+	it('past inline host width toe als width property gezet is', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box width="240px"></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('width')).toBe('240px');
+		expect((el as HTMLElement).style.width).toBe('240px');
+	});
 });
 
 

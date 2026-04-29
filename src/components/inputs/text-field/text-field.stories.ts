@@ -97,6 +97,11 @@ export default {
 			description: 'Disabled state',
 			table: { defaultValue: { summary: false } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 	},
 	args: {
 		size: 'md',
@@ -110,10 +115,11 @@ export default {
 		readonly: false,
 		required: false,
 		disabled: false,
+		width: '',
 	},
 };
 
-const Template = ({ size, name, value, placeholder, type, autocomplete, valid, invalid, readonly, required, disabled }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, type, autocomplete, valid, invalid, readonly, required, disabled, width }: Record<string, any>) => html`
 	<nldd-text-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -126,6 +132,7 @@ const Template = ({ size, name, value, placeholder, type, autocomplete, valid, i
 		autocomplete=${autocomplete}
 		?readonly=${readonly}
 		?required=${required}
+		width=${width}
 	></nldd-text-field>
 `;
 
