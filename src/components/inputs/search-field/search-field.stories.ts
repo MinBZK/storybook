@@ -25,6 +25,11 @@ export default {
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 		showSearchButton: {
 			name: 'show-search-button',
 			control: 'boolean',
@@ -55,21 +60,16 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		width: {
-			control: 'text',
-			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
-		},
 	},
 	args: {
 		size: 'md',
+		width: '',
 		showSearchButton: false,
 		name: '',
 		value: '',
 		placeholder: 'Zoeken',
 		accessibleLabel: '',
 		disabled: false,
-		width: '',
 	},
 };
 

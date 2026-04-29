@@ -25,6 +25,11 @@ export default {
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 		name: {
 			control: 'text',
 			description: 'Naam voor formulierverwerking',
@@ -59,14 +64,10 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
-		width: {
-			control: 'text',
-			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
-		},
 	},
 	args: {
 		size: 'md',
+		width: '',
 		name: '',
 		value: '',
 		placeholder: 'Zoek een land',
@@ -74,7 +75,6 @@ export default {
 		valid: false,
 		invalid: false,
 		disabled: false,
-		width: '',
 	},
 };
 

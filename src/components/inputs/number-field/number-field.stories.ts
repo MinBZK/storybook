@@ -30,6 +30,11 @@ export default {
 			description: 'Vult de volledige breedte van de container',
 			table: { defaultValue: { summary: false } },
 		},
+		width: {
+			control: 'text',
+			description: 'Vaste breedte van het veld; het invoervak rekt mee',
+			table: { defaultValue: { summary: '' } },
+		},
 		hideSpinButtons: {
 			name: 'hide-spin-buttons',
 			control: 'boolean',
@@ -60,10 +65,6 @@ export default {
 			description: 'Stapgrootte',
 			table: { defaultValue: { summary: 1 } },
 		},
-		width: {
-			control: 'text',
-			description: 'Vaste breedte van het veld; het invoervak rekt mee',
-		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -73,13 +74,13 @@ export default {
 	args: {
 		size: 'md',
 		fullWidth: false,
+		width: '',
 		hideSpinButtons: false,
 		name: '',
 		value: 1,
 		min: 0,
 		max: 10,
 		step: 1,
-		width: '',
 		disabled: false,
 	},
 };

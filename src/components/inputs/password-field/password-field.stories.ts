@@ -29,6 +29,11 @@ export default {
 			description: 'Size variant',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 		name: {
 			control: 'text',
 			description: 'Form field name',
@@ -93,14 +98,10 @@ export default {
 			description: 'Disabled state',
 			table: { defaultValue: { summary: false } },
 		},
-		width: {
-			control: 'text',
-			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
-		},
 	},
 	args: {
 		size: 'md',
+		width: '',
 		name: 'password',
 		value: '',
 		placeholder: 'Password field',
@@ -113,7 +114,6 @@ export default {
 		valid: false,
 		invalid: false,
 		disabled: false,
-		width: '',
 	},
 };
 
