@@ -330,27 +330,27 @@ export const documentTabBarItemStyles = css`
 	.document-tab-bar__item-supporting-text {
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
-		color: var(--semantics-content-secondary-color);
+		color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
 	:host([selected]) .document-tab-bar__item-supporting-text {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-secondary-content-color);
 	}
 
 	.document-tab-bar__item-short-supporting-text {
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
-		color: var(--semantics-content-secondary-color);
+		color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
 	:host([selected]) .document-tab-bar__item-short-supporting-text {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-secondary-content-color);
 	}
 
 

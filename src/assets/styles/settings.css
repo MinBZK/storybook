@@ -756,7 +756,7 @@
 	/* ## Content */
 
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-800));
-	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-550));
+	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--semantics-content-error-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
 	--semantics-content-success-color: light-dark(var(--primitives-color-success-600), var(--primitives-color-success-650));
 
@@ -833,17 +833,23 @@
 
 	--semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
 	--semantics-buttons-neutral-tinted-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
+	--semantics-buttons-neutral-tinted-secondary-content-color: light-dark(var(--primitives-color-neutral-750), var(--primitives-color-neutral-750));
 	--semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-350));
 	--semantics-buttons-neutral-tinted-is-hovered-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
 	--semantics-buttons-neutral-tinted-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-hovered-secondary-content-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-800));
 	--semantics-buttons-neutral-tinted-is-active-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
 	--semantics-buttons-neutral-tinted-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-active-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
 	--semantics-buttons-neutral-tinted-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--semantics-buttons-neutral-tinted-is-selected-content-color: var(--semantics-controls-is-highlighted-contrast-color);
+	--semantics-buttons-neutral-tinted-is-selected-secondary-content-color: var(--semantics-controls-is-highlighted-contrast-color);
 	--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color: var(--semantics-controls-is-highlighted-is-hovered-indicator-color);
 	--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color: var(--semantics-controls-is-highlighted-is-hovered-contrast-color);
+	--semantics-buttons-neutral-tinted-is-selected-is-hovered-secondary-content-color: var(--semantics-controls-is-highlighted-is-hovered-contrast-color);
 	--semantics-buttons-neutral-tinted-is-selected-is-active-background-color: var(--semantics-controls-is-highlighted-is-active-indicator-color);
 	--semantics-buttons-neutral-tinted-is-selected-is-active-content-color: var(--semantics-controls-is-highlighted-is-active-contrast-color);
+	--semantics-buttons-neutral-tinted-is-selected-is-active-secondary-content-color: var(--semantics-controls-is-highlighted-is-active-contrast-color);
 
 	--semantics-buttons-neutral-transparent-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-transparent-is-hovered-content-color: light-dark(var(--primitives-color-neutral-950), var(--primitives-color-neutral-950));
