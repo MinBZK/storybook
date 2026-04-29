@@ -24,7 +24,7 @@ export const formFieldStyles = css`
 	.form-field {
 		display: flex;
 		flex-direction: column;
-		gap: var(--semantics-forms-stacked-gap);
+		gap: var(--components-form-field-gap);
 	}
 
 	:host([label-alignment='left']) .form-field,
@@ -32,7 +32,7 @@ export const formFieldStyles = css`
 		@container (min-width: 640px) {
 			flex-direction: row;
 			align-items: start;
-			gap: var(--semantics-forms-aligned-gap);
+			gap: var(--semantics-forms-columns-gap);
 		}
 	}
 

@@ -27,7 +27,7 @@ export const formActionsStyles = css`
 		@container (min-width: 640px) {
 			flex-direction: row;
 			align-items: start;
-			gap: var(--semantics-forms-aligned-gap);
+			gap: var(--semantics-forms-columns-gap);
 		}
 	}
 

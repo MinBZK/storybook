@@ -914,8 +914,7 @@
 	--semantics-forms-gap: var(--primitives-space-16);
 	--semantics-forms-gap-tight: var(--primitives-space-8);
 	--semantics-forms-label-column-width: var(--primitives-area-240);
-	--semantics-forms-stacked-gap: var(--primitives-space-2);
-	--semantics-forms-aligned-gap: var(--primitives-space-8);
+	--semantics-forms-columns-gap: var(--primitives-space-8);
 	--semantics-forms-section-title-font: var(--primitives-font-body-lg-bold-tight);
 	--semantics-forms-section-subtitle-font: var(--primitives-font-body-md-regular-tight);
 
@@ -1039,6 +1038,10 @@
 	/* ## Document tab bar */
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
+
+	/* ## Form field */
+
+	--components-form-field-gap: var(--primitives-space-2);
 
 	/* ## Keyboard shortcut */
 
