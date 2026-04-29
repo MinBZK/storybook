@@ -96,6 +96,23 @@ describe('nldd-popover', () => {
 		expect(closed).toHaveBeenCalledTimes(1);
 	});
 
+	it('initialiseert aria-expanded en aria-haspopup op de anchor bij connect', async () => {
+		// SR moet de trigger als toggle-control aankondigen vanaf de eerste
+		// render — niet pas na de eerste open.
+		const wrapper = await fixture(`
+			<div>
+				<button id="trigger-init-aria">Trigger</button>
+				<nldd-popover anchor="trigger-init-aria" accessible-label="Test"></nldd-popover>
+			</div>
+		`);
+		el = wrapper;
+		const trigger = wrapper.querySelector('#trigger-init-aria')!;
+		// Wacht tot de gedeferred microtask in connectedCallback heeft gelopen
+		await new Promise(resolve => setTimeout(resolve, 0));
+		expect(trigger.getAttribute('aria-expanded')).toBe('false');
+		expect(trigger.getAttribute('aria-haspopup')).toBe('dialog');
+	});
+
 	it('update aria-expanded en aria-haspopup op de anchor', async () => {
 		const wrapper = await fixture(`
 			<div>

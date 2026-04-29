@@ -70,7 +70,7 @@ export const formSectionStyles = css`
 	.form-section__title {
 		display: block;
 		color: var(--semantics-content-color);
-		font: var(--primitives-font-body-lg-bold-tight);
+		font: var(--semantics-forms-section-title-font);
 	}
 
 
@@ -79,7 +79,7 @@ export const formSectionStyles = css`
 	.form-section__subtitle {
 		display: block;
 		color: var(--semantics-content-secondary-color);
-		font: var(--primitives-font-body-md-regular-tight);
+		font: var(--semantics-forms-section-subtitle-font);
 	}
 
 

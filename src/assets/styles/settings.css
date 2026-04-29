@@ -916,6 +916,8 @@
 	--semantics-forms-label-column-width: var(--primitives-area-240);
 	--semantics-forms-stacked-gap: var(--primitives-space-2);
 	--semantics-forms-aligned-gap: var(--primitives-space-8);
+	--semantics-forms-section-title-font: var(--primitives-font-body-lg-bold-tight);
+	--semantics-forms-section-subtitle-font: var(--primitives-font-body-md-regular-tight);
 
 	/* ## Grab handles */
 

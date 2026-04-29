@@ -85,6 +85,7 @@ export class NLDDPopover extends LitElement {
 	private _previousFocus: HTMLElement | null = null;
 	private _closedAt = 0;
 	private _smQuery: MediaQueryList | null = null;
+	private _previousAnchorEl: Element | null = null;
 
 	get open(): boolean {
 		return this._isOpen;
@@ -101,6 +102,11 @@ export class NLDDPopover extends LitElement {
 		document.addEventListener('click', this._handleDocumentClick);
 		this._smQuery = window.matchMedia(`(max-width: ${breakpoints.smMax})`);
 		this._smQuery.addEventListener('change', this._handleViewportChange);
+		// Initialiseer aria-expanded/aria-haspopup op de anchor zodat SR de
+		// trigger-knop direct als toggle-control aankondigt — niet pas na de
+		// eerste open. Defer naar microtask: anchor (by id) is mogelijk nog
+		// niet in de DOM op connectedCallback-tijd.
+		Promise.resolve().then(() => this._updateAnchorAria(false));
 	}
 
 	override disconnectedCallback(): void {
@@ -212,11 +218,24 @@ export class NLDDPopover extends LitElement {
 
 	private _updateAnchorAria(open: boolean): void {
 		const anchorEl = this._getAnchorEl();
-		if (!anchorEl) return;
+		// Anchor changed (e.g. anchorElement property switched, or anchor
+		// attribute updated) — strip aria-expanded from the previous one
+		// zodat 'ie niet als toggle blijft hangen voor SR.
+		if (this._previousAnchorEl && this._previousAnchorEl !== anchorEl) {
+			this._previousAnchorEl.removeAttribute('aria-expanded');
+		}
+		if (!anchorEl) {
+			this._previousAnchorEl = null;
+			return;
+		}
 		anchorEl.setAttribute('aria-expanded', open ? 'true' : 'false');
-		if (open && !anchorEl.hasAttribute('aria-haspopup')) {
+		// aria-haspopup hoort bij de trigger te staan vanaf de eerste render,
+		// niet pas na de eerste open. Geen overwrite als de host een eigen
+		// waarde heeft (bv. 'menu' i.p.v. 'dialog' voor combinaties).
+		if (!anchorEl.hasAttribute('aria-haspopup')) {
 			anchorEl.setAttribute('aria-haspopup', 'dialog');
 		}
+		this._previousAnchorEl = anchorEl;
 	}
 
 	// — Event handlers ————————————————————————————————————————————————————————
@@ -310,9 +329,13 @@ export class NLDDPopover extends LitElement {
 		const result: HTMLElement[] = [];
 		const visit = (root: ParentNode): void => {
 			root.querySelectorAll<HTMLElement>(selector).forEach(el => {
-				if (!el.hasAttribute('disabled') && el.offsetParent !== null) {
-					result.push(el);
-				}
+				if (el.hasAttribute('disabled')) return;
+				// getClientRects().length === 0 catches both display:none and
+				// visibility:hidden (also from any ancestor incl. shadow host),
+				// regardless of where in the shadow tree the element lives.
+				// More reliable than offsetParent inside shadow roots.
+				if (el.getClientRects().length === 0) return;
+				result.push(el);
 			});
 			root.querySelectorAll<HTMLElement>('*').forEach(el => {
 				if (el.shadowRoot) visit(el.shadowRoot);

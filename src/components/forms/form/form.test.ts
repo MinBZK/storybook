@@ -3,6 +3,16 @@ import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './form.js';
 import '../form-field/form-field.js';
 import '../form-actions/form-actions.js';
+import type { NLDDForm } from './form.js';
+
+/**
+ * NLDDForm extends HTMLElement (geen Lit), dus waitForUpdate dekt z'n
+ * MutationObserver-callback niet — die vuurt buiten de Lit update-cycle.
+ * Use deze helper voor "wacht op pending microtasks" zodat de observer
+ * heeft kunnen lopen. Niet vervangen door waitForUpdate; dat zou de
+ * timing breken.
+ */
+const awaitMicrotask = () => new Promise(resolve => setTimeout(resolve, 0));
 
 describe('nldd-form', () => {
 	let el: HTMLElement;
@@ -53,7 +63,7 @@ describe('nldd-form', () => {
 	it('exposeert het inner form via .form getter', async () => {
 		el = await fixture('<nldd-form></nldd-form>');
 		await waitForUpdate(el);
-		const form = (el as any).form;
+		const form = (el as NLDDForm).form;
 		expect(form).toBeInstanceOf(HTMLFormElement);
 	});
 
@@ -66,7 +76,7 @@ describe('nldd-form', () => {
 		el.appendChild(input);
 
 		// MutationObserver runs async — wait a microtask
-		await new Promise(resolve => setTimeout(resolve, 0));
+		await awaitMicrotask();
 
 		const form = el.querySelector('form')!;
 		expect(form.querySelector('input[name="late"]')).not.toBeNull();
@@ -92,7 +102,7 @@ describe('nldd-form', () => {
 		const late = document.createElement('input');
 		late.name = 'after-reconnect';
 		form.appendChild(late);
-		await new Promise(resolve => setTimeout(resolve, 0));
+		await awaitMicrotask();
 
 		const innerForm = form.querySelector('form')!;
 		expect(innerForm.querySelector('input[name="after-reconnect"]')).not.toBeNull();
@@ -190,7 +200,7 @@ describe('nldd-form', () => {
 			el.appendChild(field);
 
 			// MutationObserver runs async — wait a microtask
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await awaitMicrotask();
 
 			expect(field.getAttribute('label-alignment')).toBe('right');
 			expect(field.dataset.formAlignmentInherited).toBe('true');
