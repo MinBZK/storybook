@@ -85,6 +85,7 @@ export { NLDDCollection } from './layout/collection/collection.js';
 export { NLDDSpacer } from './layout/spacer/spacer.js';
 export { NLDDContainer } from './layout/container/container.js';
 export { NLDDDivider } from './layout/divider/divider.js';
+export { NLDDPopover } from './layout/popover/popover.js';
 export { NLDDSheet } from './layout/sheet/sheet.js';
 export { NLDDWindow } from './layout/window/window.js';
 

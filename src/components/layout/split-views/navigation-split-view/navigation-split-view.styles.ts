@@ -137,21 +137,21 @@ export const navigationSplitViewStyles = css`
 		padding: 0;
 		margin: 0;
 		background: var(--semantics-surfaces-background-color);
-		box-shadow: var(--components-sheet-box-shadow);
+		box-shadow: var(--semantics-overlays-box-shadow);
 		overflow: hidden;
 		position: fixed;
 		outline: none;
-		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
-		width: var(--components-sheet-side-md-width);
-		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
+		inset: var(--semantics-overlays-inset) var(--semantics-overlays-inset) var(--semantics-overlays-inset) auto;
+		width: var(--semantics-sheets-side-md-width);
+		height: calc(100dvh - var(--semantics-overlays-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: var(--components-sheet-side-lg-width);
+			width: var(--semantics-sheets-side-lg-width);
 		}
 
 		&:focus-visible:not(.is-pointer-focus) {
-			box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-sheet-box-shadow);
+			box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 			outline-offset: var(--semantics-focus-ring-outline-offset);
 		}
@@ -165,11 +165,11 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&[open] {
-			animation: navigation-split-view-inspector-slide-in var(--components-sheet-side-animation-duration) ease both;
+			animation: navigation-split-view-inspector-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 
 		&.is-closing {
-			animation: navigation-split-view-inspector-slide-out var(--components-sheet-side-animation-duration) ease both;
+			animation: navigation-split-view-inspector-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 	}
 
@@ -201,21 +201,21 @@ export const navigationSplitViewStyles = css`
 		padding: 0;
 		margin: 0;
 		background: var(--semantics-surfaces-background-color);
-		box-shadow: var(--components-sheet-box-shadow);
+		box-shadow: var(--semantics-overlays-box-shadow);
 		overflow: hidden;
 		position: fixed;
 		outline: none;
-		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
-		width: var(--components-sheet-side-md-width);
-		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
+		inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);
+		width: var(--semantics-sheets-side-md-width);
+		height: calc(100dvh - var(--semantics-overlays-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: var(--components-sheet-side-lg-width);
+			width: var(--semantics-sheets-side-lg-width);
 		}
 
 		&:focus-visible:not(.is-pointer-focus) {
-			box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-sheet-box-shadow);
+			box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 			outline-offset: var(--semantics-focus-ring-outline-offset);
 		}
@@ -229,11 +229,11 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&[open] {
-			animation: navigation-split-view-sidebar-slide-in var(--components-sheet-side-animation-duration) ease both;
+			animation: navigation-split-view-sidebar-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 
 		&.is-closing {
-			animation: navigation-split-view-sidebar-slide-out var(--components-sheet-side-animation-duration) ease both;
+			animation: navigation-split-view-sidebar-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 	}
 
@@ -267,15 +267,15 @@ export const navigationSplitViewStyles = css`
 			width: 100%;
 			max-width: 100%;
 			height: auto;
-			max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
+			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
 			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
 			&[open] {
-				animation: navigation-split-view-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
+				animation: navigation-split-view-slide-in-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
 
 			&.is-closing {
-				animation: navigation-split-view-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
+				animation: navigation-split-view-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
 		}
 
@@ -284,15 +284,15 @@ export const navigationSplitViewStyles = css`
 			width: 100%;
 			max-width: 100%;
 			height: auto;
-			max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
+			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
 			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
 			&[open] {
-				animation: navigation-split-view-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
+				animation: navigation-split-view-slide-in-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
 
 			&.is-closing {
-				animation: navigation-split-view-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
+				animation: navigation-split-view-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
 		}
 	}

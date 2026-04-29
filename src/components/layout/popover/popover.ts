@@ -1,0 +1,289 @@
+/**
+ * Nederlandse Digitale Dienst Popover Component (Lit + TypeScript)
+ *
+ * Een non-modal floating panel dat is verankerd aan een trigger-element.
+ * Gebouwd op de native Popover API (popover="auto") met Floating UI voor
+ * positionering. De browser regelt open/toggle/light-dismiss; deze
+ * component regelt alleen positionering en focus.
+ *
+ * Aanbevolen gebruik via popovertarget zodat de browser de toggle regelt:
+ *
+ *     <nldd-button id="info-trigger" popovertarget="info-popover">Info</nldd-button>
+ *     <nldd-popover id="info-popover" anchor="info-trigger" accessible-label="Info">
+ *         <nldd-container>
+ *             <p>Inhoud van de popover.</p>
+ *         </nldd-container>
+ *     </nldd-popover>
+ *
+ * Voor een custom focus-target binnen de popover: zet `autofocus` op het
+ * gewenste child-element. Anders krijgt de popover-host zelf focus.
+ *
+ * @element nldd-popover
+ *
+ * @attr {string} anchor           - ID van het trigger-element voor positionering
+ * @attr {string} placement        - Floating UI placement (default: 'bottom-start')
+ * @attr {string} width            - Expliciete width (default: 320px via --components-popover-default-width)
+ * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label)
+ *
+ * @prop {Element|null} anchorElement - Programmatische anchor (heeft voorrang op anchor attribuut)
+ * @prop {boolean} open               - (read-only) Of de popover momenteel open is
+ *
+ * @slot - Vrije content (bijv. nldd-container met form/info)
+ *
+ * @fires open  - Wanneer de popover wordt geopend
+ * @fires close - Wanneer de popover wordt gesloten
+ *
+ * @method show()     - Opent de popover
+ * @method hide()     - Sluit de popover
+ * @method toggle()   - Toggelt de popover
+ * @method reposition() - Herberekent de positie t.o.v. anchor
+ */
+
+import { LitElement, PropertyValues } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { computePosition, flip, shift, size, type Placement } from '@floating-ui/dom';
+import { popoverStyles } from './popover.styles.js';
+import { popoverTemplate } from './popover.template.js';
+import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
+import { isPointerMode } from '../../../utilities/input-modality.js';
+import { breakpoints } from '../../../assets/styles/breakpoints.js';
+
+@customElement('nldd-popover')
+export class NLDDPopover extends LitElement {
+	static override styles = popoverStyles;
+
+	@property({ type: String, reflect: true })
+	anchor = '';
+
+	@property({ attribute: false })
+	anchorElement: Element | null = null;
+
+	@property({ type: String, reflect: true })
+	placement: Placement = 'bottom-start';
+
+	@property({ type: String, reflect: true })
+	width: string | undefined;
+
+	@property({ type: String, attribute: 'accessible-label' })
+	accessibleLabel = 'Popover';
+
+	private _isOpen = false;
+	private _hasWarnedLabel = false;
+	private _previousFocus: HTMLElement | null = null;
+	private _closedAt = 0;
+	private _smQuery: MediaQueryList | null = null;
+
+	get open(): boolean {
+		return this._isOpen;
+	}
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		if (!this.hasAttribute('popover')) this.setAttribute('popover', '');
+		if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '-1');
+		if (!this.hasAttribute('role')) this.setAttribute('role', 'dialog');
+		if (!this.hasAttribute('aria-modal')) this.setAttribute('aria-modal', 'false');
+		this.addEventListener('toggle', this._handleToggle);
+		this.addEventListener('keydown', this._handleKeydown);
+		document.addEventListener('click', this._handleDocumentClick);
+		this._smQuery = window.matchMedia(`(max-width: ${breakpoints.smMax})`);
+		this._smQuery.addEventListener('change', this._handleViewportChange);
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this.removeEventListener('toggle', this._handleToggle);
+		this.removeEventListener('keydown', this._handleKeydown);
+		document.removeEventListener('click', this._handleDocumentClick);
+		this._smQuery?.removeEventListener('change', this._handleViewportChange);
+		this._smQuery = null;
+		this._updateAnchorAria(false);
+	}
+
+	override updated(changed: PropertyValues): void {
+		// Set width via the CSS variable so media-query overrides (bottom
+		// sheet on sm) keep working. Inline `style.width` would beat them.
+		if (changed.has('width')) {
+			if (this.width) {
+				this.style.setProperty('--components-popover-default-width', this.width);
+			} else {
+				this.style.removeProperty('--components-popover-default-width');
+			}
+		}
+		if (changed.has('accessibleLabel')) {
+			this.setAttribute('aria-label', this.accessibleLabel);
+		}
+	}
+
+	// — Public API ————————————————————————————————————————————————————————————
+
+	show(): void {
+		if (this.accessibleLabel === 'Popover' && !this._hasWarnedLabel) {
+			this._hasWarnedLabel = true;
+			console.warn('<nldd-popover>: No accessible-label provided. Screen readers will announce this popover as "Popover". Set accessible-label to a unique, descriptive name.');
+		}
+		const anchorEl = this._getAnchorEl();
+		if (!anchorEl) {
+			console.warn('<nldd-popover>: anchor element not found. Set anchor=ID or anchorElement before calling show().');
+			return;
+		}
+		(this as HTMLElement).showPopover();
+	}
+
+	hide(): void {
+		if (!this._isOpen) return;
+		(this as HTMLElement).hidePopover();
+	}
+
+	toggle(): void {
+		if (this._isOpen) this.hide();
+		else this.show();
+	}
+
+	/** Herberekent positie t.o.v. anchor. Wordt automatisch aangeroepen bij openen. */
+	async reposition(): Promise<void> {
+		if (!this._isOpen) return;
+
+		// On sm viewport the popover renders as a bottom sheet via CSS; clear
+		// any inline positioning Floating UI may have set previously so the
+		// CSS rules take effect.
+		if (this._smQuery?.matches) {
+			this.style.removeProperty('left');
+			this.style.removeProperty('top');
+			this.style.removeProperty('--_max-height');
+			return;
+		}
+
+		const anchorEl = this._getAnchorEl();
+		if (!anchorEl) return;
+
+		const inset = parseInt(getComputedStyle(this).getPropertyValue('--semantics-overlays-inset')) || 16;
+
+		const { x, y } = await computePosition(anchorEl, this, {
+			placement: this.placement,
+			middleware: [
+				flip({ padding: inset }),
+				shift({ padding: inset }),
+				size({
+					padding: inset,
+					apply: ({ availableHeight }: { availableHeight: number }) => {
+						this.style.setProperty('--_max-height', `${availableHeight}px`);
+					},
+				}),
+			],
+		});
+
+		Object.assign(this.style, {
+			left: `${x}px`,
+			top: `${y}px`,
+		});
+	}
+
+	// — Anchor ————————————————————————————————————————————————————————————————
+
+	private _getAnchorEl(): Element | null {
+		if (this.anchorElement) return this.anchorElement;
+		if (this.anchor) return document.getElementById(this.anchor);
+		return null;
+	}
+
+	private _updateAnchorAria(open: boolean): void {
+		const anchorEl = this._getAnchorEl();
+		if (!anchorEl) return;
+		anchorEl.setAttribute('aria-expanded', open ? 'true' : 'false');
+		if (open && !anchorEl.hasAttribute('aria-haspopup')) {
+			anchorEl.setAttribute('aria-haspopup', 'dialog');
+		}
+	}
+
+	// — Event handlers ————————————————————————————————————————————————————————
+
+	private _handleViewportChange = (): void => {
+		if (this._isOpen) this.reposition();
+	};
+
+	private _handleDocumentClick = (event: MouseEvent): void => {
+		const anchorEl = this._getAnchorEl();
+		if (!anchorEl) return;
+		const path = event.composedPath();
+		if (!path.includes(anchorEl)) return;
+		if (this._isOpen) {
+			(this as HTMLElement).hidePopover();
+		} else if (Date.now() - this._closedAt > POPOVER_REOPEN_GUARD_MS) {
+			(this as HTMLElement).showPopover();
+		}
+	};
+
+	private _handleToggle = async (event: Event): Promise<void> => {
+		const toggleEvent = event as ToggleEvent;
+		this._isOpen = toggleEvent.newState === 'open';
+
+		this._updateAnchorAria(this._isOpen);
+
+		if (toggleEvent.newState !== 'open') {
+			this._closedAt = Date.now();
+			this._returnFocus();
+			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
+			return;
+		}
+
+		this._previousFocus = (document.activeElement as HTMLElement | null) ?? this._getAnchorEl() as HTMLElement | null;
+		await this.reposition();
+		await this.updateComplete;
+		this._manageFocus();
+		this.dispatchEvent(new CustomEvent('open', { bubbles: true, composed: true }));
+	};
+
+	private _handleKeydown = (event: KeyboardEvent): void => {
+		if (event.key !== 'Tab') return;
+		const focusables = this._getFocusables();
+		const idx = focusables.indexOf(document.activeElement as HTMLElement);
+		const tabsOut = focusables.length === 0
+			|| (event.shiftKey ? idx <= 0 : idx === focusables.length - 1);
+		if (tabsOut) {
+			event.preventDefault();
+			this.hide();
+		}
+	};
+
+	// — Focus ————————————————————————————————————————————————————————————————
+
+	private _manageFocus(): void {
+		this.classList.toggle('is-pointer-focus', isPointerMode());
+		const autofocusEl = this.querySelector<HTMLElement>('[autofocus]');
+		if (autofocusEl) {
+			autofocusEl.focus();
+			return;
+		}
+		this.focus();
+	}
+
+	private _returnFocus(): void {
+		const target = this._previousFocus ?? (this._getAnchorEl() as HTMLElement | null);
+		this._previousFocus = null;
+		target?.focus();
+	}
+
+	private _getFocusables(): HTMLElement[] {
+		const selector = [
+			'a[href]',
+			'button:not([disabled])',
+			'input:not([disabled])',
+			'select:not([disabled])',
+			'textarea:not([disabled])',
+			'[tabindex]:not([tabindex="-1"])',
+		].join(',');
+		const directs = Array.from(this.querySelectorAll<HTMLElement>(selector));
+		return directs.filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+	}
+
+	override render() {
+		return popoverTemplate();
+	}
+}
+
+declare global {
+	interface HTMLElementTagNameMap {
+		'nldd-popover': NLDDPopover;
+	}
+}

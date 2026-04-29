@@ -943,6 +943,18 @@
 
 	--semantics-overlays-backdrop-color: rgba(0, 0, 0, calc(0.2 * var(--semantics-overlays-backdrop-opacity-factor)));
 	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
+	--semantics-overlays-inset: var(--primitives-space-16);
+	--semantics-overlays-box-shadow: var(--primitives-box-shadows-level-5);
+
+	/* ## Sheets */
+
+	--semantics-sheets-side-animation-duration: 250ms;
+	--semantics-sheets-side-md-width: var(--primitives-area-360);
+	--semantics-sheets-side-lg-width: var(--primitives-area-480);
+	--semantics-sheets-bottom-top-inset: var(--primitives-space-48);
+	--semantics-sheets-bottom-md-inline-inset: var(--primitives-space-48);
+	--semantics-sheets-bottom-lg-inline-inset: var(--primitives-space-80);
+	--semantics-sheets-bottom-animation-duration: 350ms;
 
 	/* ## Focus ring */
 
@@ -974,22 +986,16 @@
 	--components-box-corner-radius: var(--primitives-corner-radius-xl);
 	--components-box-padding: var(--primitives-space-16);
 
+	/* ## Button group */
+
+	--components-button-group-sm-gap: var(--primitives-space-6);
+	--components-button-group-md-gap: var(--primitives-space-8);
+
 	/* ## Card */
 
 	--components-card-background-color: var(--semantics-surfaces-background-color);
 	--components-card-corner-radius: var(--primitives-corner-radius-none);
 	--components-card-box-shadow: var(--primitives-box-shadows-level-2);
-
-	/* ## Collection */
-
-	--components-collection-sm-gap: var(--primitives-space-16);
-	--components-collection-md-gap: var(--primitives-space-24);
-	--components-collection-lg-gap: var(--primitives-space-24);
-
-	/* ## Button group */
-
-	--components-button-group-sm-gap: var(--primitives-space-6);
-	--components-button-group-md-gap: var(--primitives-space-8);
 
 	/* ## Checkbox */
 
@@ -1007,6 +1013,12 @@
 	--components-checkbox-is-selected-is-active-background-color: var(--semantics-controls-is-highlighted-is-active-indicator-color);
 	--components-checkbox-is-selected-is-active-border-color: var(--semantics-controls-is-highlighted-is-active-indicator-color);
 	--components-checkbox-is-selected-is-active-icon-color: var(--semantics-controls-is-highlighted-is-active-contrast-color);
+
+	/* ## Collection */
+
+	--components-collection-sm-gap: var(--primitives-space-16);
+	--components-collection-md-gap: var(--primitives-space-24);
+	--components-collection-lg-gap: var(--primitives-space-24);
 
 	/* ## Document tab bar */
 
@@ -1059,9 +1071,9 @@
 	--components-menu-bar-item-font: var(--primitives-font-body-md-bold-flat);
 	--components-menu-bar-item-inline-padding: var(--primitives-space-8);
 
-	/* ## Modal dialog */
+	/* ## Popover */
 
-	--components-modal-dialog-box-shadow: var(--primitives-box-shadows-level-5);
+	--components-popover-default-width: var(--primitives-area-320);
 
 	/* ## Radio button */
 
@@ -1088,18 +1100,6 @@
 	--components-rich-text-spacing-tight: calc(var(--components-rich-text-grid-size) / 4);
 	--components-rich-text-spacing-snug: calc(var(--components-rich-text-grid-size) / 2);
 	--components-rich-text-spacing-loose: var(--components-rich-text-grid-size);
-
-	/* ## Sheet */
-
-	--components-sheet-box-shadow: var(--primitives-box-shadows-level-5);
-	--components-sheet-side-inset: var(--primitives-space-16);
-	--components-sheet-side-animation-duration: 250ms;
-	--components-sheet-side-md-width: var(--primitives-area-360);
-	--components-sheet-side-lg-width: var(--primitives-area-480);
-	--components-sheet-bottom-top-inset: var(--primitives-space-48);
-	--components-sheet-bottom-md-inline-inset: var(--primitives-space-48);
-	--components-sheet-bottom-lg-inline-inset: var(--primitives-space-80);
-	--components-sheet-bottom-animation-duration: 350ms;
 
 	/* ## Switch */
 
@@ -1169,8 +1169,6 @@
 
 	/* ## Window */
 
-	--components-window-box-shadow: var(--primitives-box-shadows-level-5);
-	--components-window-inset: var(--primitives-space-16);
 	--components-window-default-width: var(--primitives-area-640);
 }
 

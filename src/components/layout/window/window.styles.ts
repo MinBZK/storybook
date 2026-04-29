@@ -26,13 +26,13 @@ export const windowStyles = css`
 		padding: 0;
 		background-color: var(--semantics-surfaces-background-color);
 		border-radius: var(--semantics-overlays-corner-radius);
-		box-shadow: var(--components-window-box-shadow);
+		box-shadow: var(--semantics-overlays-box-shadow);
 		overflow: hidden;
 		position: fixed;
 		margin: auto;
 		width: var(--components-window-default-width);
-		max-width: calc(100vw - var(--components-window-inset) * 2);
-		max-height: calc(100dvh - var(--components-window-inset) * 2);
+		max-width: calc(100vw - var(--semantics-overlays-inset) * 2);
+		max-height: calc(100dvh - var(--semantics-overlays-inset) * 2);
 		outline: none;
 	}
 
@@ -41,7 +41,7 @@ export const windowStyles = css`
 	}
 
 	.window:focus-visible:not(.is-pointer-focus) {
-		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-window-box-shadow);
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
@@ -74,9 +74,9 @@ export const windowStyles = css`
 
 	@media (max-width: ${smMax}) {
 		.window {
-			left: var(--components-window-inset);
-			right: var(--components-window-inset);
-			width: calc(100vw - var(--components-window-inset) * 2);
+			left: var(--semantics-overlays-inset);
+			right: var(--semantics-overlays-inset);
+			width: calc(100vw - var(--semantics-overlays-inset) * 2);
 		}
 
 		:host([movable]:not([has-drag-handle])) .window__body {

@@ -30,7 +30,7 @@ export const modalDialogStyles = css`
 		overflow-y: auto;
 		background-color: var(--semantics-surfaces-background-color);
 		border-radius: var(--semantics-overlays-corner-radius);
-		box-shadow: var(--components-modal-dialog-box-shadow);
+		box-shadow: var(--semantics-overlays-box-shadow);
 		box-sizing: border-box;
 		outline: none;
 
@@ -46,7 +46,7 @@ export const modalDialogStyles = css`
 	}
 
 	.modal-dialog:focus-visible:not(.is-pointer-focus) {
-		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-modal-dialog-box-shadow);
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
