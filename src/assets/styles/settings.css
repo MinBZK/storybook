@@ -974,9 +974,9 @@
 
 	/* ## Focus ring */
 
-	--semantics-focus-ring-outline: 2px solid var(--primitives-color-accent-600);
-	--semantics-focus-ring-outline-offset: 2px;
-	--semantics-focus-ring-box-shadow: 0 0 0 6px var(--semantics-surfaces-background-color);
+	--semantics-focus-ring-outline: var(--primitives-space-2) solid var(--primitives-color-accent-600);
+	--semantics-focus-ring-outline-offset: var(--primitives-space-2);
+	--semantics-focus-ring-box-shadow: 0 0 0 var(--primitives-space-6) var(--semantics-surfaces-background-color);
 
 
 	/* # Components */
@@ -1177,7 +1177,7 @@
 
 	/* ## Top title bar */
 
-	--components-top-title-bar-divider-color: light-dark(var(--primitives-color-neutral-150),var(--primitives-color-neutral-350));
+	--components-top-title-bar-divider-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-350));
 
 	/* ## Window */
 
