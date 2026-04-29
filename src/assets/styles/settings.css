@@ -964,13 +964,13 @@
 
 	/* ## Sheets */
 
-	--semantics-sheets-side-animation-duration: 250ms;
+	--semantics-sheets-side-animation-duration: var(--primitives-transition-duration-medium);
 	--semantics-sheets-side-md-width: var(--primitives-area-360);
 	--semantics-sheets-side-lg-width: var(--primitives-area-480);
 	--semantics-sheets-bottom-top-inset: var(--primitives-space-48);
 	--semantics-sheets-bottom-md-inline-inset: var(--primitives-space-48);
 	--semantics-sheets-bottom-lg-inline-inset: var(--primitives-space-80);
-	--semantics-sheets-bottom-animation-duration: 350ms;
+	--semantics-sheets-bottom-animation-duration: var(--primitives-transition-duration-slow);
 
 	/* ## Focus ring */
 
