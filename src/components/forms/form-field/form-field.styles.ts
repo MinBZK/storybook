@@ -45,17 +45,6 @@ export const formFieldStyles = css`
 		box-sizing: border-box;
 	}
 
-	.form-field__header.is-empty {
-		display: none;
-	}
-
-	:host([label-alignment='left']) .form-field__header.is-empty,
-	:host([label-alignment='right']) .form-field__header.is-empty {
-		@container (min-width: 640px) {
-			display: flex;
-		}
-	}
-
 	:host([label-alignment='left']) .form-field__header,
 	:host([label-alignment='right']) .form-field__header {
 		@container (min-width: 640px) {
@@ -78,6 +67,17 @@ export const formFieldStyles = css`
 		@container (min-width: 640px) {
 			align-items: start;
 			text-align: left;
+		}
+	}
+
+	.form-field__header.is-empty {
+		display: none;
+	}
+
+	:host([label-alignment='left']) .form-field__header.is-empty,
+	:host([label-alignment='right']) .form-field__header.is-empty {
+		@container (min-width: 640px) {
+			display: flex;
 		}
 	}
 
