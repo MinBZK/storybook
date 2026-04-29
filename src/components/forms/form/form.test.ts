@@ -72,6 +72,32 @@ describe('nldd-form', () => {
 		expect(form.querySelector('input[name="late"]')).not.toBeNull();
 	});
 
+	it('herattacht observer na disconnect/reconnect', async () => {
+		const wrapper = await fixture(`
+			<div>
+				<div id="from"><nldd-form></nldd-form></div>
+				<div id="to"></div>
+			</div>
+		`);
+		el = wrapper;
+		const form = wrapper.querySelector('nldd-form')!;
+		await waitForUpdate(form);
+
+		// Move the form to a different parent (triggers disconnect + reconnect)
+		const to = wrapper.querySelector('#to')!;
+		to.appendChild(form);
+		await waitForUpdate(form);
+
+		// Append a child after reconnect — observer should catch it
+		const late = document.createElement('input');
+		late.name = 'after-reconnect';
+		form.appendChild(late);
+		await new Promise(resolve => setTimeout(resolve, 0));
+
+		const innerForm = form.querySelector('form')!;
+		expect(innerForm.querySelector('input[name="after-reconnect"]')).not.toBeNull();
+	});
+
 
 	describe('label-alignment propagation', () => {
 		it('propageert label-alignment naar form-field en form-actions children', async () => {

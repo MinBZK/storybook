@@ -4,12 +4,15 @@
  * Een layout-wrapper voor de actie-knoppen onderaan een formulier (typisch
  * een submit-button of button-group). Volgt dezelfde responsive layout als
  * `nldd-form-field`: met `label-alignment="right"` of `"left"` krijgt de
- * inhoud dezelfde insprong als de invoervelden boven, dankzij een onzichtbaar
- * spacer-kolom waar de label zou staan.
+ * inhoud dezelfde insprong als de invoervelden boven, dankzij een
+ * `::before`-pseudo-element dat fungeert als spacer-kolom waar de label
+ * zou staan.
  *
- * Erft `label-alignment` automatisch over van een wrappende `<nldd-form>`
- * via CSS `:host-context()` — geen JS-attribuut-mirror nodig. Per-instance
- * override blijft mogelijk via een eigen `label-alignment` attribuut.
+ * Erft `label-alignment` automatisch over van een wrappende `<nldd-form>`:
+ * de form mirrort z'n eigen `label-alignment` naar descendant
+ * `nldd-form-actions` (en `nldd-form-field`) via een MutationObserver
+ * en JS-attribuut-propagatie. Een expliciete eigen `label-alignment` op de
+ * form-actions zelf wordt nooit overschreven.
  *
  *     <nldd-form label-alignment="right">
  *         <nldd-form-field>...</nldd-form-field>

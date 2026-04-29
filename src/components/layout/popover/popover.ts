@@ -230,6 +230,12 @@ export class NLDDPopover extends LitElement {
 		if (!anchorEl) return;
 		const path = event.composedPath();
 		if (!path.includes(anchorEl)) return;
+		// If the anchor uses popovertarget pointing at this popover, the
+		// browser's default activation behavior already toggles us. Running
+		// our own toggle here would invert the state right after, leaving
+		// the popover in the wrong final state.
+		const popovertarget = (anchorEl as HTMLElement).getAttribute?.('popovertarget');
+		if (popovertarget && this.id && popovertarget === this.id) return;
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
 		} else if (Date.now() - this._closedAt > POPOVER_REOPEN_GUARD_MS) {
@@ -296,8 +302,24 @@ export class NLDDPopover extends LitElement {
 			'textarea:not([disabled])',
 			'[tabindex]:not([tabindex="-1"])',
 		].join(',');
-		const directs = Array.from(this.querySelectorAll<HTMLElement>(selector));
-		return directs.filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+
+		// Custom elements (nldd-button, nldd-text-field, etc.) host their
+		// real focusable inside their shadow root. querySelectorAll can't
+		// pierce closed/open shadow boundaries, so we walk the tree and
+		// recurse into shadow roots ourselves.
+		const result: HTMLElement[] = [];
+		const visit = (root: ParentNode): void => {
+			root.querySelectorAll<HTMLElement>(selector).forEach(el => {
+				if (!el.hasAttribute('disabled') && el.offsetParent !== null) {
+					result.push(el);
+				}
+			});
+			root.querySelectorAll<HTMLElement>('*').forEach(el => {
+				if (el.shadowRoot) visit(el.shadowRoot);
+			});
+		};
+		visit(this);
+		return result;
 	}
 
 	override render() {

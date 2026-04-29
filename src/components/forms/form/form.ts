@@ -1,10 +1,11 @@
 /**
- * Nederlandse Digitale Dienst Form Component (Lit + TypeScript)
+ * Nederlandse Digitale Dienst Form Component
  *
- * A wrapper that renders a real <form> element in the LIGHT DOM around its
- * children. This is required for browser autofill: Chrome's autofill engine
- * looks for native <input> elements that have a <form> ancestor in the light
- * DOM. Without this wrapper our shadow-DOM inputs are invisible to autofill.
+ * Plain custom element (extends HTMLElement, no Lit) — required for light-DOM
+ * autofill. Renders a real <form> element in the LIGHT DOM around its
+ * children. Chrome's autofill engine looks for native <input> elements that
+ * have a <form> ancestor in the light DOM; with shadow-DOM inputs it can't
+ * find them, so we keep this component shadow-less.
  *
  * Import nldd-form.css globally in your application.
  *
@@ -57,38 +58,47 @@ export class NLDDForm extends HTMLElement {
 	private _observer: MutationObserver | null = null;
 
 	connectedCallback(): void {
-		if (this._form) return;
+		// One-time setup: create inner <form> and migrate initial children.
+		// Subsequent connect cycles (move in DOM) skip this block but still
+		// re-attach the observer below.
+		if (!this._form) {
+			const form = document.createElement('form');
+			this._form = form;
+			this._mirrorAttributes();
 
-		const form = document.createElement('form');
-		this._form = form;
-		this._mirrorAttributes();
-
-		// Move existing light-DOM children into the form
-		// Assumption: all initial children are present at connectedCallback time.
-		// Frameworks that synchronously insert children DURING connectedCallback
-		// (re-entrant upgrades) would land in this and be migrated by the observer
-		// below. Children appended after connectedCallback returns are also
-		// caught by the observer.
-		const initialChildren = Array.from(this.childNodes);
-		for (const node of initialChildren) {
-			form.appendChild(node);
-		}
-		this.appendChild(form);
-
-		// Forward any later-added children into the form
-		this._observer = new MutationObserver(mutations => {
-			for (const m of mutations) {
-				m.addedNodes.forEach(node => {
-					if (node === form) return;
-					form.appendChild(node);
-				});
+			// Move existing light-DOM children into the form
+			// Assumption: all initial children are present at connectedCallback time.
+			// Frameworks that synchronously insert children DURING connectedCallback
+			// (re-entrant upgrades) would land in this and be migrated by the observer
+			// below. Children appended after connectedCallback returns are also
+			// caught by the observer.
+			const initialChildren = Array.from(this.childNodes);
+			for (const node of initialChildren) {
+				form.appendChild(node);
 			}
-			// Newly added descendants should also receive the inherited alignment
-			this._propagateLabelAlignment(this.getAttribute('label-alignment'));
-		});
-		this._observer.observe(this, { childList: true });
+			this.appendChild(form);
+		}
 
-		// Propagate initial label-alignment to children we just moved in
+		// (Re-)attach the observer on every connect. After disconnectedCallback
+		// nulls _observer, a subsequent connectedCallback must rebuild it —
+		// otherwise children appended after a move/reconnect would never land
+		// in the inner <form>.
+		if (!this._observer) {
+			const form = this._form;
+			this._observer = new MutationObserver(mutations => {
+				for (const m of mutations) {
+					m.addedNodes.forEach(node => {
+						if (node === form) return;
+						form.appendChild(node);
+					});
+				}
+				// Newly added descendants should also receive the inherited alignment
+				this._propagateLabelAlignment(this.getAttribute('label-alignment'));
+			});
+			this._observer.observe(this, { childList: true });
+		}
+
+		// Propagate label-alignment to current children (initial + after reconnect)
 		this._propagateLabelAlignment(this.getAttribute('label-alignment'));
 	}
 
