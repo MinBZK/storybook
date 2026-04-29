@@ -28,13 +28,13 @@ nldd-form-field + nldd-form-field {
 
 @media (max-width: 640px) {
 	nldd-form-field + nldd-form-field {
-		margin-top: var(--primitives-space-8);
+		margin-top: var(--components-form-gap-tight);
 	}
 }
 
 @media (min-width: 641px) {
 	nldd-form-field:not([label-alignment]) + nldd-form-field:not([label-alignment]),
 	nldd-form-field[label-alignment='top'] + nldd-form-field[label-alignment='top'] {
-		margin-top: var(--primitives-space-8);
+		margin-top: var(--components-form-gap-tight);
 	}
 }

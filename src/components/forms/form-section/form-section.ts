@@ -1,12 +1,20 @@
 /**
  * Nederlandse Digitale Dienst Form Section Component (Lit + TypeScript)
  *
- * Een visuele groepering binnen een formulier met optionele heading en
+ * Een visuele groepering binnen een formulier met optionele title en
  * supporting text. Rendert intern als `<fieldset>` + `<legend>` voor
  * semantische correctheid en screenreader-context.
  *
- * Heading is altijd links uitgelijnd over de volledige breedte, ook als
+ * Title is altijd links uitgelijnd over de volledige breedte, ook als
  * de formulier-velden binnenin `label-alignment="right"` gebruiken.
+ *
+ * **Accessibility note**: de title rendert als `<legend>`. Dat is
+ * semantisch een **groep-label**, geen heading. Screenreaders
+ * kondigen 't aan wanneer de gebruiker in de fieldset komt, maar
+ * gebruikers die met de H-toets door headings springen slaan 'm
+ * over. Visueel lijkt 't op een heading; gebruik dit component dus
+ * voor *form-grouping*, niet als pagina-structuur. Voor echte
+ * page-headings: gebruik een apart heading-element boven het form.
  *
  *     <nldd-form>
  *         <nldd-form-section text="Persoonsgegevens" supporting-text="Vul je gegevens in.">

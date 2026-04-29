@@ -44,4 +44,23 @@ describe('nldd-form-section', () => {
 		expect(assigned.length).toBe(1);
 		expect((assigned[0] as HTMLElement).getAttribute('data-testid')).toBe('child');
 	});
+
+	it('legend is direct child van fieldset (vereist door SR a11y)', async () => {
+		el = await fixture('<nldd-form-section text="Persoonsgegevens"></nldd-form-section>');
+		await waitForUpdate(el);
+		const fieldset = el.shadowRoot!.querySelector('fieldset')!;
+		const legend = fieldset.querySelector('legend')!;
+		// HTML spec + screen-reader requirement: <legend> moet directe child van <fieldset> zijn
+		expect(legend.parentElement).toBe(fieldset);
+		expect(fieldset.firstElementChild).toBe(legend);
+	});
+
+	it('rendert title én subtitle samen wanneer beide gezet zijn', async () => {
+		el = await fixture('<nldd-form-section text="Persoonsgegevens" supporting-text="Vul je gegevens in."></nldd-form-section>');
+		await waitForUpdate(el);
+		const legend = el.shadowRoot!.querySelector('.form-section__title');
+		const subtitle = el.shadowRoot!.querySelector('.form-section__subtitle');
+		expect(legend?.textContent).toContain('Persoonsgegevens');
+		expect(subtitle?.textContent).toContain('Vul je gegevens in.');
+	});
 });

@@ -34,21 +34,7 @@ export const formSectionStyles = css`
 	}
 
 
-	/* # Header (title + optional subtitle) */
-
-	.form-section__header {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		margin-bottom: var(--components-form-gap);
-	}
-
-	.form-section__header.is-empty {
-		display: none;
-	}
-
-
-	/* # Title */
+	/* # Title (rendered as <legend>, must be direct child of <fieldset>) */
 
 	.form-section__title {
 		padding: 0;
@@ -69,9 +55,16 @@ export const formSectionStyles = css`
 	}
 
 
-	/* # Main */
+	/* # Main — gets margin-top to separate from title/subtitle. When neither
+	   title nor subtitle is rendered, main is the first child of the fieldset
+	   and the margin collapses via :first-child. */
 
 	.form-section__main {
 		display: block;
+		margin-top: var(--components-form-gap);
+	}
+
+	.form-section__main:first-child {
+		margin-top: 0;
 	}
 `;

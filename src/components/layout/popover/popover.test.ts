@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './popover.js';
+import type { NLDDPopover } from './popover.js';
 
 describe('nldd-popover', () => {
 	let el: HTMLElement;
@@ -38,7 +39,7 @@ describe('nldd-popover', () => {
 			</div>
 		`);
 		el = wrapper;
-		const popover = wrapper.querySelector('nldd-popover') as any;
+		const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
 		await waitForUpdate(popover);
 
 		popover.show();
@@ -58,7 +59,7 @@ describe('nldd-popover', () => {
 			</div>
 		`);
 		el = wrapper;
-		const popover = wrapper.querySelector('nldd-popover') as any;
+		const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
 		await waitForUpdate(popover);
 
 		popover.toggle();
@@ -78,7 +79,7 @@ describe('nldd-popover', () => {
 			</div>
 		`);
 		el = wrapper;
-		const popover = wrapper.querySelector('nldd-popover') as any;
+		const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
 		await waitForUpdate(popover);
 
 		const opened = vi.fn();
@@ -103,7 +104,7 @@ describe('nldd-popover', () => {
 			</div>
 		`);
 		el = wrapper;
-		const popover = wrapper.querySelector('nldd-popover') as any;
+		const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
 		const trigger = wrapper.querySelector('#trigger-aria')!;
 		await waitForUpdate(popover);
 
@@ -122,11 +123,11 @@ describe('nldd-popover', () => {
 		el = await fixture('<nldd-popover anchor="non-existent" accessible-label="Test"></nldd-popover>');
 		await waitForUpdate(el);
 
-		(el as any).show();
+		(el as NLDDPopover).show();
 		await waitForUpdate(el);
 
 		expect(warn).toHaveBeenCalled();
-		expect((el as any).open).toBe(false);
+		expect((el as NLDDPopover).open).toBe(false);
 		warn.mockRestore();
 	});
 
@@ -139,7 +140,7 @@ describe('nldd-popover', () => {
 			</div>
 		`);
 		el = wrapper;
-		const popover = wrapper.querySelector('nldd-popover') as any;
+		const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
 		const propAnchor = wrapper.querySelector('#anchor-by-prop')!;
 		popover.anchorElement = propAnchor;
 		await waitForUpdate(popover);

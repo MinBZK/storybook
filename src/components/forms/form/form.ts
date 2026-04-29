@@ -64,6 +64,11 @@ export class NLDDForm extends HTMLElement {
 		this._mirrorAttributes();
 
 		// Move existing light-DOM children into the form
+		// Assumption: all initial children are present at connectedCallback time.
+		// Frameworks that synchronously insert children DURING connectedCallback
+		// (re-entrant upgrades) would land in this and be migrated by the observer
+		// below. Children appended after connectedCallback returns are also
+		// caught by the observer.
 		const initialChildren = Array.from(this.childNodes);
 		for (const node of initialChildren) {
 			form.appendChild(node);

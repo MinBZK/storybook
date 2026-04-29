@@ -1027,6 +1027,7 @@
 	/* ## Form */
 
 	--components-form-gap: var(--primitives-space-16);
+	--components-form-gap-tight: var(--primitives-space-8);
 
 	/* ## Keyboard shortcut */
 
