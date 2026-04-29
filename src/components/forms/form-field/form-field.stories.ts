@@ -1,6 +1,10 @@
 import { html } from 'lit';
 import './form-field.js';
+import '../form/form.js';
+import '../form-actions/form-actions.js';
 import '../../inputs/text-field/text-field.js';
+import '../../actions/button/button.js';
+import '../../actions/button-group/button-group.js';
 
 /**
  * `nldd-form-field` is een lay-outwrapper voor formulierinvoer.
@@ -139,7 +143,7 @@ export const MultipleErrors = () => html`
 `;
 
 export const LabelAlignmentRight = () => html`
-	<nldd-form-field label="Volledige naam" label-alignment="right" supporting-label="Zoals vermeld in uw paspoort.">
+	<nldd-form-field label="Volledige naam" supporting-label="Zoals vermeld in uw paspoort.">
 		<nldd-text-field></nldd-text-field>
 	</nldd-form-field>
 `;
@@ -151,7 +155,7 @@ export const LabelAlignmentLeft = () => html`
 `;
 
 export const CompleteFormTop = () => html`
-	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+	<nldd-form novalidate>
 		<nldd-form-field label="Volledige naam">
 			<nldd-text-field input-id="top-volledige-naam"></nldd-text-field>
 		</nldd-form-field>
@@ -170,28 +174,40 @@ export const CompleteFormTop = () => html`
 		<nldd-form-field label="Opmerkingen" optional supporting-label="Eventuele aanvullende opmerkingen.">
 			<nldd-text-field input-id="top-opmerkingen"></nldd-text-field>
 		</nldd-form-field>
-	</div>
+		<nldd-form-actions>
+			<nldd-button-group>
+				<nldd-button variant="primary" type="submit" text="Opslaan"></nldd-button>
+			</nldd-button-group>
+		</nldd-form-actions>
+	</nldd-form>
 `;
 
 export const CompleteFormRight = () => html`
-	<div style="display: flex; flex-direction: column; gap: 1.5rem; container-type: inline-size;">
-		<nldd-form-field label="Volledige naam" label-alignment="right" supporting-label="Zoals vermeld in uw paspoort.">
-			<nldd-text-field input-id="rechts-volledige-naam"></nldd-text-field>
-		</nldd-form-field>
-		<nldd-form-field label="E-mailadres" label-alignment="right" supporting-label="We sturen een bevestigingsmail.">
-			<nldd-text-field type="email" input-id="rechts-email"></nldd-text-field>
-		</nldd-form-field>
-		<nldd-form-field label="Telefoonnummer" label-alignment="right" optional>
-			<nldd-text-field
-				type="tel"
-				input-id="rechts-telefoon"
-				invalid
-				error-message="error-telefoon-rechts"
-			></nldd-text-field>
-			<nldd-form-field-error-text id="error-telefoon-rechts">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
-		</nldd-form-field>
-		<nldd-form-field label="Opmerkingen" label-alignment="right" optional supporting-label="Eventuele aanvullende opmerkingen.">
-			<nldd-text-field input-id="rechts-opmerkingen"></nldd-text-field>
-		</nldd-form-field>
+	<div style="container-type: inline-size;">
+		<nldd-form label-alignment="right" novalidate>
+			<nldd-form-field label="Volledige naam" supporting-label="Zoals vermeld in uw paspoort.">
+				<nldd-text-field input-id="rechts-volledige-naam"></nldd-text-field>
+			</nldd-form-field>
+			<nldd-form-field label="E-mailadres" supporting-label="We sturen een bevestigingsmail.">
+				<nldd-text-field type="email" input-id="rechts-email"></nldd-text-field>
+			</nldd-form-field>
+			<nldd-form-field label="Telefoonnummer" optional>
+				<nldd-text-field
+					type="tel"
+					input-id="rechts-telefoon"
+					invalid
+					error-message="error-telefoon-rechts"
+				></nldd-text-field>
+				<nldd-form-field-error-text id="error-telefoon-rechts">Voer een geldig telefoonnummer in.</nldd-form-field-error-text>
+			</nldd-form-field>
+			<nldd-form-field label="Opmerkingen" optional supporting-label="Eventuele aanvullende opmerkingen.">
+				<nldd-text-field input-id="rechts-opmerkingen"></nldd-text-field>
+			</nldd-form-field>
+			<nldd-form-actions>
+				<nldd-button-group>
+					<nldd-button variant="primary" type="submit" text="Opslaan"></nldd-button>
+				</nldd-button-group>
+			</nldd-form-actions>
+		</nldd-form>
 	</div>
 `;

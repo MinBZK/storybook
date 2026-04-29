@@ -2,6 +2,10 @@ import { html } from 'lit';
 import './popover.js';
 import '../container/container.js';
 import '../../actions/button/button.js';
+import '../../actions/button-group/button-group.js';
+import '../../forms/form/form.js';
+import '../../forms/form-field/form-field.js';
+import '../../forms/form-actions/form-actions.js';
 import '../../inputs/text-field/text-field.js';
 import '../../content/rich-text/rich-text.js';
 
@@ -97,11 +101,19 @@ export const MetForm = {
 			accessible-label="Filter instellingen"
 		>
 			<nldd-container padding="16">
-				<div style="display: flex; flex-direction: column; gap: 1rem;">
-					<nldd-text-field placeholder="Naam" autofocus></nldd-text-field>
-					<nldd-text-field placeholder="E-mail" type="email"></nldd-text-field>
-					<nldd-button text="Toepassen"></nldd-button>
-				</div>
+				<nldd-form novalidate>
+					<nldd-form-field label="Naam">
+						<nldd-text-field autofocus></nldd-text-field>
+					</nldd-form-field>
+					<nldd-form-field label="E-mail">
+						<nldd-text-field type="email"></nldd-text-field>
+					</nldd-form-field>
+					<nldd-form-actions>
+						<nldd-button-group>
+							<nldd-button variant="primary" type="submit" text="Pas toe"></nldd-button>
+						</nldd-button-group>
+					</nldd-form-actions>
+				</nldd-form>
 			</nldd-container>
 		</nldd-popover>
 	`,

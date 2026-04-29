@@ -1,6 +1,11 @@
 import { action } from 'storybook/actions';
 import { html } from 'lit';
 import './text-field.js';
+import '../../forms/form/form.js';
+import '../../forms/form-field/form-field.js';
+import '../../forms/form-actions/form-actions.js';
+import '../../actions/button/button.js';
+import '../../actions/button-group/button-group.js';
 
 /**
  * `nldd-text-field` is a single-line text input.
@@ -153,28 +158,36 @@ export const Sizes = {
 
 export const InteractiveExample = {
 	render: () => html`
-	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
-		<nldd-text-field
-			name="name"
-			placeholder="Full name"
-			@input=${action('input')}
-			@change=${action('change')}
-		></nldd-text-field>
-		<nldd-text-field
-			name="email"
-			type="email"
-			placeholder="your@email.com"
-			@input=${action('input')}
-			@change=${action('change')}
-		></nldd-text-field>
-		<nldd-text-field
-			name="phone"
-			type="tel"
-			placeholder="+31 6 12345678"
-			@input=${action('input')}
-			@change=${action('change')}
-		></nldd-text-field>
-	</div>
+	<nldd-form label-alignment="right" novalidate>
+		<nldd-form-field label="Volledige naam">
+			<nldd-text-field
+				name="name"
+				@input=${action('input')}
+				@change=${action('change')}
+			></nldd-text-field>
+		</nldd-form-field>
+		<nldd-form-field label="E-mail">
+			<nldd-text-field
+				name="email"
+				type="email"
+				@input=${action('input')}
+				@change=${action('change')}
+			></nldd-text-field>
+		</nldd-form-field>
+		<nldd-form-field label="Telefoonnummer">
+			<nldd-text-field
+				name="phone"
+				type="tel"
+				@input=${action('input')}
+				@change=${action('change')}
+			></nldd-text-field>
+		</nldd-form-field>
+		<nldd-form-actions>
+			<nldd-button-group>
+				<nldd-button variant="primary" type="submit" text="Opslaan"></nldd-button>
+			</nldd-button-group>
+		</nldd-form-actions>
+	</nldd-form>
 `,
 	parameters: {
 		controls: { disable: true },

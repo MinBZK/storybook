@@ -1,0 +1,40 @@
+/* # Host */
+
+nldd-form {
+	display: block;
+}
+
+nldd-form > form {
+	display: block;
+}
+
+
+/* # Vertical rhythm
+   Use margin-top on adjacent siblings (owl pattern) instead of gap, so the
+   spacing between specific element pairs can be tuned independently. */
+
+nldd-form > form > * + *,
+nldd-form-section > * + *,
+nldd-form-field + nldd-form-field {
+	margin-top: var(--components-form-gap);
+}
+
+
+/* Tighter spacing between consecutive top-aligned form-fields. Top-aligned
+   fields are vertically tall (label stacked above input), so a tight 8px gap
+   feels right between them. Right/left-aligned fields use the default 16px.
+   On sm viewport every form-field collapses to top-alignment (via the
+   form-field's own container query), so 8px applies regardless of attribute. */
+
+@media (max-width: 640px) {
+	nldd-form-field + nldd-form-field {
+		margin-top: var(--primitives-space-8);
+	}
+}
+
+@media (min-width: 641px) {
+	nldd-form-field:not([label-alignment]) + nldd-form-field:not([label-alignment]),
+	nldd-form-field[label-alignment='top'] + nldd-form-field[label-alignment='top'] {
+		margin-top: var(--primitives-space-8);
+	}
+}

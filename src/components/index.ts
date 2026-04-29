@@ -33,7 +33,10 @@ export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-short
 
 // # Forms components
 
+export { NLDDForm } from './forms/form/form.js';
+export { NLDDFormActions } from './forms/form-actions/form-actions.js';
 export { NLDDFormField } from './forms/form-field/form-field.js';
+export { NLDDFormSection } from './forms/form-section/form-section.js';
 
 
 // # Input components
