@@ -23,7 +23,12 @@
  * @attr {string} anchor           - ID van het trigger-element voor positionering
  * @attr {string} placement        - Floating UI placement (default: 'bottom-start')
  * @attr {string} width            - Expliciete width (default: 320px via --components-popover-default-width)
- * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label)
+ * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label).
+ *                                    Valt terug op de i18n default ('Popover')
+ *                                    als niet gezet — geef altijd een unieke,
+ *                                    beschrijvende naam.
+ * @attr {object} translations       - Override translation keys; unset keys
+ *                                    vallen terug op de Nederlandse default.
  *
  * @prop {Element|null} anchorElement - Programmatische anchor (heeft voorrang op anchor attribuut)
  * @prop {boolean} open               - (read-only) Of de popover momenteel open is
@@ -44,6 +49,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { computePosition, flip, shift, size, type Placement } from '@floating-ui/dom';
 import { popoverStyles } from './popover.styles.js';
 import { popoverTemplate } from './popover.template.js';
+import { nlddPopoverTranslations, type NLDDPopoverTranslations } from './popover.i18n.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
@@ -65,7 +71,14 @@ export class NLDDPopover extends LitElement {
 	width: string | undefined;
 
 	@property({ type: String, attribute: 'accessible-label' })
-	accessibleLabel = 'Popover';
+	accessibleLabel = '';
+
+	/**
+	 * Override one or more translation keys.
+	 * Unset keys fall back to the Dutch default.
+	 */
+	@property({ type: Object })
+	translations: Partial<NLDDPopoverTranslations> = {};
 
 	private _isOpen = false;
 	private _hasWarnedLabel = false;
@@ -110,17 +123,27 @@ export class NLDDPopover extends LitElement {
 				this.style.removeProperty('--components-popover-default-width');
 			}
 		}
-		if (changed.has('accessibleLabel')) {
-			this.setAttribute('aria-label', this.accessibleLabel);
+		if (changed.has('accessibleLabel') || changed.has('translations')) {
+			this.setAttribute('aria-label', this._resolvedAccessibleLabel);
 		}
+	}
+
+	// — i18n ——————————————————————————————————————————————————————————————————
+
+	private _t(key: keyof NLDDPopoverTranslations): string {
+		return this.translations[key] ?? nlddPopoverTranslations[key];
+	}
+
+	get _resolvedAccessibleLabel(): string {
+		return this.accessibleLabel || this._t('components.popover.accessible-label');
 	}
 
 	// — Public API ————————————————————————————————————————————————————————————
 
 	show(): void {
-		if (this.accessibleLabel === 'Popover' && !this._hasWarnedLabel) {
+		if (!this.accessibleLabel && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
-			console.warn('<nldd-popover>: No accessible-label provided. Screen readers will announce this popover as "Popover". Set accessible-label to a unique, descriptive name.');
+			console.warn(`<nldd-popover>: No accessible-label provided. Screen readers will announce this popover as "${this._t('components.popover.accessible-label')}". Set accessible-label to a unique, descriptive name.`);
 		}
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) {
