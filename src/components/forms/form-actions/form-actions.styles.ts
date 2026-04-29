@@ -45,7 +45,7 @@ export const formActionsStyles = css`
 			display: block;
 			flex-grow: 0;
 			flex-shrink: 0;
-			width: var(--components-form-label-column-width);
+			width: var(--semantics-forms-label-column-width);
 		}
 	}
 

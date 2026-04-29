@@ -903,6 +903,12 @@
 	--semantics-input-fields-sm-validation-icon-size: var(--primitives-space-20);
 	--semantics-input-fields-md-validation-icon-size: var(--primitives-space-24);
 
+	/* ## Forms */
+
+	--semantics-forms-gap: var(--primitives-space-16);
+	--semantics-forms-gap-tight: var(--primitives-space-8);
+	--semantics-forms-label-column-width: var(--primitives-area-240);
+
 	/* ## Grab handles */
 
 	--semantics-grab-handles-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
@@ -1023,12 +1029,6 @@
 	/* ## Document tab bar */
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
-
-	/* ## Form */
-
-	--components-form-gap: var(--primitives-space-16);
-	--components-form-gap-tight: var(--primitives-space-8);
-	--components-form-label-column-width: var(--primitives-area-240);
 
 	/* ## Keyboard shortcut */
 

@@ -61,7 +61,7 @@ export const formSectionStyles = css`
 
 	.form-section__main {
 		display: block;
-		margin-top: var(--components-form-gap);
+		margin-top: var(--semantics-forms-gap);
 	}
 
 	.form-section__main:first-child {

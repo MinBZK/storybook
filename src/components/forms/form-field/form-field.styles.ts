@@ -60,7 +60,7 @@ export const formFieldStyles = css`
 			flex-grow: 0;
 			flex-shrink: 0;
 			justify-content: center;
-			width: var(--components-form-label-column-width);
+			width: var(--semantics-forms-label-column-width);
 			min-height: var(--semantics-controls-md-min-size);
 		}
 

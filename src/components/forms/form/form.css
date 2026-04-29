@@ -16,7 +16,7 @@ nldd-form > form {
 nldd-form > form > * + *,
 nldd-form-section > * + *,
 nldd-form-field + nldd-form-field {
-	margin-top: var(--components-form-gap);
+	margin-top: var(--semantics-forms-gap);
 }
 
 
@@ -28,13 +28,13 @@ nldd-form-field + nldd-form-field {
 
 @media (max-width: 640px) {
 	nldd-form-field + nldd-form-field {
-		margin-top: var(--components-form-gap-tight);
+		margin-top: var(--semantics-forms-gap-tight);
 	}
 }
 
 @media (min-width: 641px) {
 	nldd-form-field:not([label-alignment]) + nldd-form-field:not([label-alignment]),
 	nldd-form-field[label-alignment='top'] + nldd-form-field[label-alignment='top'] {
-		margin-top: var(--components-form-gap-tight);
+		margin-top: var(--semantics-forms-gap-tight);
 	}
 }
