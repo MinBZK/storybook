@@ -38,3 +38,16 @@ nldd-form-field + nldd-form-field {
 		margin-top: var(--semantics-forms-gap-tight);
 	}
 }
+
+
+/* # Form-section dividers — suppress top divider when preceded by another
+   form-section. The previous section's bottom divider already separates
+   the two; a top divider here would render a double line.
+
+   Sibling selectors only work in light DOM, so the suppression flows in
+   via context-vars that the form-section's :host reads with var(...). */
+
+nldd-form-section + nldd-form-section {
+	--context-form-section-top-border: none;
+	--context-form-section-top-padding: 0;
+}

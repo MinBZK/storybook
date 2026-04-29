@@ -3,10 +3,37 @@ import { css } from 'lit';
 export const formSectionStyles = css`
 
 
-	/* # Host */
+	/* # Host
+	   Top + bottom dividers leven op de host, zodat external CSS (form.css)
+	   ze via sibling-selectors kan overrulen. Defaults vallen terug op de
+	   semantics-dividers-tokens; via --context-form-section-* kunnen ze
+	   uitgezet worden.
+
+	   Suppressed top divider scenarios:
+	   - :first-child (niets erboven om van te scheiden)
+	   - voorafgegaan door een andere nldd-form-section (form.css regel —
+	     vermijdt dubbele lijn met de bottom-divider van het vorige section)
+
+	   Suppressed bottom divider scenarios:
+	   - :last-child (niets eronder om van te scheiden) */
 
 	:host {
 		display: block;
+		box-sizing: border-box;
+		border-top: var(--context-form-section-top-border, var(--semantics-dividers-thickness) solid var(--semantics-dividers-color));
+		border-bottom: var(--context-form-section-bottom-border, var(--semantics-dividers-thickness) solid var(--semantics-dividers-color));
+		padding-top: var(--context-form-section-top-padding, var(--primitives-space-16));
+		padding-bottom: var(--context-form-section-bottom-padding, var(--primitives-space-16));
+	}
+
+	:host(:first-child) {
+		--context-form-section-top-border: none;
+		--context-form-section-top-padding: 0;
+	}
+
+	:host(:last-child) {
+		--context-form-section-bottom-border: none;
+		--context-form-section-bottom-padding: 0;
 	}
 
 	:host([hidden]) {
@@ -18,19 +45,11 @@ export const formSectionStyles = css`
 
 	.form-section {
 		border: none;
-		border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 		margin: 0;
-		padding-top: 0;
-		padding-inline: 0;
-		padding-bottom: var(--primitives-space-16);
+		padding: 0;
 		min-width: 0;
 		display: block;
 		width: 100%;
-	}
-
-	:host(:last-child) .form-section {
-		border-bottom: none;
-		padding-bottom: 0;
 	}
 
 
