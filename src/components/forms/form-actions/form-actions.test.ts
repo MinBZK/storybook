@@ -30,21 +30,15 @@ describe('nldd-form-actions', () => {
 		expect(el.getAttribute('label-alignment')).toBe('right');
 	});
 
-	it('heeft een spacer voor alignment', async () => {
-		el = await fixture('<nldd-form-actions label-alignment="right"></nldd-form-actions>');
+	it('main is enige child van form-actions (spacer is een ::before pseudo-element)', async () => {
+		el = await fixture('<nldd-form-actions label-alignment="right"><button>Save</button></nldd-form-actions>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.form-actions__spacer')).not.toBeNull();
-	});
-
-	it('rendert spacer in DOM bij left- en right-alignment', async () => {
-		el = await fixture('<nldd-form-actions label-alignment="left"><button>Save</button></nldd-form-actions>');
-		await waitForUpdate(el);
-		const spacer = el.shadowRoot!.querySelector('.form-actions__spacer');
-		const main = el.shadowRoot!.querySelector('.form-actions__main');
-		expect(spacer).not.toBeNull();
-		expect(main).not.toBeNull();
-		// Spacer comes before main in DOM order so the actions align with the input column
 		const root = el.shadowRoot!.querySelector('.form-actions')!;
-		expect(root.firstElementChild).toBe(spacer);
+		const main = el.shadowRoot!.querySelector('.form-actions__main');
+		expect(main).not.toBeNull();
+		// Geen spacer-div meer in DOM — alignment komt van .form-actions::before
+		expect(el.shadowRoot!.querySelector('.form-actions__spacer')).toBeNull();
+		expect(root.children.length).toBe(1);
+		expect(root.firstElementChild).toBe(main);
 	});
 });

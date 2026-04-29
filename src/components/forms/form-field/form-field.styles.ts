@@ -27,9 +27,9 @@ export const formFieldStyles = css`
 		gap: var(--semantics-forms-stacked-gap);
 	}
 
-	@container (min-width: 640px) {
-		:host([label-alignment='left']) .form-field,
-		:host([label-alignment='right']) .form-field {
+	:host([label-alignment='left']) .form-field,
+	:host([label-alignment='right']) .form-field {
+		@container (min-width: 640px) {
 			flex-direction: row;
 			align-items: start;
 			gap: var(--semantics-forms-aligned-gap);
@@ -49,27 +49,33 @@ export const formFieldStyles = css`
 		display: none;
 	}
 
-	@container (min-width: 640px) {
-		:host([label-alignment='left']) .form-field__header.is-empty,
-		:host([label-alignment='right']) .form-field__header.is-empty {
+	:host([label-alignment='left']) .form-field__header.is-empty,
+	:host([label-alignment='right']) .form-field__header.is-empty {
+		@container (min-width: 640px) {
 			display: flex;
 		}
+	}
 
-		:host([label-alignment='left']) .form-field__header,
-		:host([label-alignment='right']) .form-field__header {
+	:host([label-alignment='left']) .form-field__header,
+	:host([label-alignment='right']) .form-field__header {
+		@container (min-width: 640px) {
 			flex-grow: 0;
 			flex-shrink: 0;
 			justify-content: center;
 			width: var(--semantics-forms-label-column-width);
 			min-height: var(--semantics-controls-md-min-size);
 		}
+	}
 
-		:host([label-alignment='right']) .form-field__header {
+	:host([label-alignment='right']) .form-field__header {
+		@container (min-width: 640px) {
 			align-items: end;
 			text-align: right;
 		}
+	}
 
-		:host([label-alignment='left']) .form-field__header {
+	:host([label-alignment='left']) .form-field__header {
+		@container (min-width: 640px) {
 			align-items: start;
 			text-align: left;
 		}
@@ -86,19 +92,23 @@ export const formFieldStyles = css`
 		font: var(--primitives-font-body-md-regular-tight);
 	}
 
-	@container (min-width: 640px) {
-		:host([label-alignment='left']) .form-field__label,
-		:host([label-alignment='right']) .form-field__label {
+	:host([label-alignment='left']) .form-field__label,
+	:host([label-alignment='right']) .form-field__label {
+		@container (min-width: 640px) {
 			display: flex;
 			flex-direction: column;
 			gap: var(--primitives-space-0);
 		}
+	}
 
-		:host([label-alignment='right']) .form-field__label {
+	:host([label-alignment='right']) .form-field__label {
+		@container (min-width: 640px) {
 			align-items: end;
 		}
+	}
 
-		:host([label-alignment='left']) .form-field__label {
+	:host([label-alignment='left']) .form-field__label {
+		@container (min-width: 640px) {
 			align-items: start;
 		}
 	}
