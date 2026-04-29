@@ -71,7 +71,7 @@ const Template = ({ name, required, disabled }: Record<string, any>) => html`
 			</nldd-radio-button-group>
 		</nldd-form-field>
 		<nldd-form-actions>
-			<nldd-button-group>
+			<nldd-button-group orientation="horizontal">
 				<nldd-button variant="primary" type="submit" text="Opslaan"></nldd-button>
 			</nldd-button-group>
 		</nldd-form-actions>
@@ -99,7 +99,7 @@ export const MetUitgeschakeldVeld = {
 			</nldd-radio-button-group>
 		</nldd-form-field>
 		<nldd-form-actions>
-			<nldd-button-group>
+			<nldd-button-group orientation="horizontal">
 				<nldd-button variant="primary" type="submit" text="Opslaan"></nldd-button>
 			</nldd-button-group>
 		</nldd-form-actions>
