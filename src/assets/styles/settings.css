@@ -927,7 +927,7 @@
 	/* ## Dividers */
 
 	--semantics-dividers-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
-	--semantics-dividers-thickness: 1px;
+	--semantics-dividers-thickness: var(--primitives-space-1);
 
 	/* ## Page sections */
 
@@ -1108,7 +1108,7 @@
 	/* ## Rich text */
 
 	--components-rich-text-grid-size: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));
-	--components-rich-text-spacing-flat: 0px;
+	--components-rich-text-spacing-flat: var(--primitives-space-0);
 	--components-rich-text-spacing-tight: calc(var(--components-rich-text-grid-size) / 4);
 	--components-rich-text-spacing-snug: calc(var(--components-rich-text-grid-size) / 2);
 	--components-rich-text-spacing-loose: var(--components-rich-text-grid-size);
