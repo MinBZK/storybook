@@ -86,10 +86,10 @@ export const MetHref = {
 				</nldd-rich-text>
 			</nldd-simple-section>
 			<nldd-simple-section id="contact-form" tabindex="-1">
-				<nldd-title slot="header" size="3">
-					<h2>Contactformulier</h2>
-				</nldd-title>
 				<nldd-form novalidate label-alignment="right">
+					<nldd-title size="3">
+						<h2>Contactformulier</h2>
+					</nldd-title>
 					<nldd-form-field label="Naam">
 						<nldd-text-field name="name" autocomplete="name"></nldd-text-field>
 					</nldd-form-field>
