@@ -27,7 +27,12 @@ nldd-form nldd-form-field + nldd-form-field {
    fields are vertically tall (label stacked above input), so a tight 8px gap
    feels right between them. Right/left-aligned fields use the default 16px.
    On sm viewport every form-field collapses to top-alignment (via the
-   form-field's own container query), so 8px applies regardless of attribute. */
+   form-field's own container query), so 8px applies regardless of attribute.
+
+   640px / 641px = breakpoints.smMax / breakpoints.mdMin (zie
+   src/assets/styles/breakpoints.ts). Light-DOM CSS files kunnen geen TS
+   imports gebruiken, dus de waarde wordt hier gedupliceerd. Houd in sync
+   met breakpoints.ts en met form-field/form-actions container queries. */
 
 @media (max-width: 640px) {
 	nldd-form nldd-form-field + nldd-form-field {

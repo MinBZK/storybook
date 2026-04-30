@@ -15,7 +15,9 @@ export const formActionsStyles = css`
 	}
 
 
-	/* # Block */
+	/* # Block
+	   641px = breakpoints.mdMin (zie src/assets/styles/breakpoints.ts).
+	   Houd in sync met form.css's @media queries en form-field. */
 
 	.form-actions {
 		display: flex;
