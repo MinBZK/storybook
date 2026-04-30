@@ -202,6 +202,26 @@ export class NLDDForm extends HTMLElement {
 	 * assignments via a data-attribute so subsequent updates only touch the
 	 * elements we previously inherited to — explicit per-element overrides
 	 * are preserved.
+	 *
+	 * **Timing-subtleties (Lit reflect-default + MutationObserver race):**
+	 *
+	 * Lit-based descendants (nldd-form-field, nldd-form-actions) reflecten hun
+	 * default `label-alignment="top"` op het attribuut wanneer hun eerste
+	 * update fired. Een naïeve `hasOwn`-check zou dan elke vers gemaakte
+	 * descendant als "explicit own value" zien en propagation skippen.
+	 *
+	 * In praktijk werkt 't omdat:
+	 * 1. Bij parsed HTML fires de form's connectedCallback VOORDAT children
+	 *    upgraden — propagation set 'right' op het attribuut, child upgrade
+	 *    leest dat als initial value (geen reflect-default-conflict).
+	 * 2. Bij dynamic appendChild fires de MutationObserver na DOM-mutation
+	 *    maar microtask-volgorde laat de propagation z'n attribuut zetten
+	 *    voordat Lit's reflection 't kan overschrijven (Lit reflect = ook
+	 *    microtask, maar de MO callback runt eerder in deze flow).
+	 *
+	 * Regression test: form.test.ts "propageert ook naar later toegevoegde
+	 * form-actions children" verifieert deze flow. Verander deze guard
+	 * niet zonder die test te draaien.
 	 */
 	private _propagateLabelAlignment(value: string | null): void {
 		const fields = this.querySelectorAll<HTMLElement>(DESCENDANT_SELECTOR);

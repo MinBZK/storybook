@@ -232,10 +232,13 @@ export class NLDDPopover extends LitElement {
 	private _updateAnchorAria(open: boolean): void {
 		const anchorEl = this._getAnchorEl();
 		// Anchor changed (e.g. anchorElement property switched, or anchor
-		// attribute updated) — strip aria-expanded from the previous one
-		// zodat 'ie niet als toggle blijft hangen voor SR.
+		// attribute updated) — strip aria-expanded en eventuele aria-controls
+		// van de vorige zodat 'ie niet als toggle blijft hangen voor SR.
 		if (this._previousAnchorEl && this._previousAnchorEl !== anchorEl) {
 			this._previousAnchorEl.removeAttribute('aria-expanded');
+			if (this._previousAnchorEl.getAttribute('aria-controls') === this.id) {
+				this._previousAnchorEl.removeAttribute('aria-controls');
+			}
 		}
 		if (!anchorEl) {
 			this._previousAnchorEl = null;
@@ -247,6 +250,13 @@ export class NLDDPopover extends LitElement {
 		// waarde heeft (bv. 'menu' i.p.v. 'dialog' voor combinaties).
 		if (!anchorEl.hasAttribute('aria-haspopup')) {
 			anchorEl.setAttribute('aria-haspopup', 'dialog');
+		}
+		// aria-controls verbindt de trigger expliciet met het popover-element.
+		// ARIA Authoring Practices voor dialog-triggers; verbetert SR-context.
+		// Alleen zetten als deze popover een id heeft én de anchor 'm nog niet
+		// naar iets anders wijst.
+		if (this.id && !anchorEl.hasAttribute('aria-controls')) {
+			anchorEl.setAttribute('aria-controls', this.id);
 		}
 		this._previousAnchorEl = anchorEl;
 	}
@@ -340,6 +350,9 @@ export class NLDDPopover extends LitElement {
 			'select:not([disabled])',
 			'textarea:not([disabled])',
 			'[tabindex]:not([tabindex="-1"])',
+			'[contenteditable=""]',
+			'[contenteditable="true"]',
+			'details > summary:first-of-type',
 		].join(',');
 
 		// Walk in document order, descending into shadow roots inline so a

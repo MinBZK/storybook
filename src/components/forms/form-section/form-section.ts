@@ -82,6 +82,7 @@ export class NLDDFormSection extends HTMLElement {
 	private _legend: HTMLLegendElement | null = null;
 	private _main: HTMLDivElement | null = null;
 	private _observer: MutationObserver | null = null;
+	private _hasWarnedNoLabel = false;
 
 	get text(): string {
 		return this.getAttribute('text') ?? '';
@@ -105,6 +106,7 @@ export class NLDDFormSection extends HTMLElement {
 		// inner <form>) skip this block but still re-attach the observer.
 		if (!this._fieldset) this._buildStructure();
 		this._renderLegend();
+		this._warnIfNoLabel();
 
 		// (Re-)attach observer on every connect to catch dynamically added
 		// children (which would otherwise land outside the inner fieldset).
@@ -131,8 +133,18 @@ export class NLDDFormSection extends HTMLElement {
 	attributeChangedCallback(name: string): void {
 		if (name === 'text' || name === 'supporting-text') {
 			// Pas re-renderen na _buildStructure (eerste connect).
-			if (this._legend) this._renderLegend();
+			if (this._legend) {
+				this._renderLegend();
+				this._warnIfNoLabel();
+			}
 		}
+	}
+
+	private _warnIfNoLabel(): void {
+		if (this._hasWarnedNoLabel) return;
+		if (this.text || this.supportingText) return;
+		this._hasWarnedNoLabel = true;
+		console.warn('<nldd-form-section>: No `text` or `supporting-text` provided. The <fieldset> has no accessible name and screen readers may announce it as just "group" (Chrome) or nothing (Firefox). Set `text` for a group label, or document this section as purely visual grouping.');
 	}
 
 	private _buildStructure(): void {
