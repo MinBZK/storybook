@@ -15,6 +15,33 @@
  *   niet in een component-specifieke shadow stylesheet. Import deze als deel
  *   van je app's globale CSS bundle.
  *
+ * **Two usage modes:**
+ *
+ * 1. **Auto-wrap** (default): write children directly. Component creates a
+ *    `<form>` element and migrates children into it via MutationObserver.
+ *    Simplest API.
+ *
+ * 2. **User-provided form** (framework-friendly): write your own `<form>`
+ *    as direct child. Component detects it, takes over attribute-mirroring,
+ *    en skipt de migration. Children blijven waar je framework ze plaatst —
+ *    geen DOM-shuffling die met React/Vue/Angular reconciliation conflicteert.
+ *
+ * **Framework interop:**
+ *
+ * In auto-wrap mode wordt elke direct child verplaatst naar het inner form
+ * via een MutationObserver. Voor de meeste React/Vue use cases werkt dit
+ * prima omdat frameworks alleen DOM-mutaties doen wanneer hun virtual DOM
+ * verandert. Voor edge cases (animatie-libs die DOM-positie tracken,
+ * SSR-hydration mismatches, frameworks die actief sibling-positions
+ * controleren) gebruik dan **user-provided form** mode.
+ *
+ * Voor programmatische manipulatie: gebruik de `form` getter zodat je
+ * direct met het inner `<form>` element werkt:
+ *
+ *     const inner = document.querySelector('nldd-form').form;
+ *     inner.checkValidity();
+ *     inner.appendChild(myInput);  // skipt migration-overhead
+ *
  * @element nldd-form
  *
  * @attr {string}  name             - Form name
@@ -29,19 +56,36 @@
  *                                    ('top' | 'right' | 'left'). Individuele
  *                                    elementen kunnen het overrulen.
  *
+ * @prop {HTMLFormElement | null} form - The inner <form> element (read-only).
+ *                                       Use voor `form.checkValidity()`,
+ *                                       directe DOM-manipulatie, of als doel
+ *                                       voor framework-managed children.
+ *
  * Events bubble naturally from the inner <form>:
  * @fires submit
  * @fires reset
  *
  * @example
+ * Globale stylesheet import (eenmalig in je app entry):
  * ```js
- * // Globale stylesheet import (eenmalig in je app entry):
  * import '@minbzk/storybook/dist/css/global.css';
  * ```
+ *
+ * Auto-wrap mode:
  * ```html
  * <nldd-form name="profile" novalidate>
  *   <nldd-text-field name="email" autocomplete="email"></nldd-text-field>
  *   <nldd-button type="submit" text="Verstuur"></nldd-button>
+ * </nldd-form>
+ * ```
+ *
+ * User-provided form mode (React/Vue/Angular):
+ * ```html
+ * <nldd-form name="profile" novalidate>
+ *   <form>
+ *     <nldd-text-field name="email" autocomplete="email"></nldd-text-field>
+ *     <nldd-button type="submit" text="Verstuur"></nldd-button>
+ *   </form>
  * </nldd-form>
  * ```
  */
@@ -66,27 +110,40 @@ export class NLDDForm extends HTMLElement {
 
 	private _form: HTMLFormElement | null = null;
 	private _observer: MutationObserver | null = null;
+	/** When true, user provided their own <form> child — skip migration. */
+	private _userProvidedForm = false;
 
 	connectedCallback(): void {
-		// One-time setup: create inner <form> and migrate initial children.
+		// One-time setup: detect user-provided <form> or create one ourselves.
 		// Subsequent connect cycles (move in DOM) skip this block but still
 		// re-attach the observer below.
 		if (!this._form) {
-			const form = document.createElement('form');
-			this._form = form;
-			this._mirrorAttributes();
+			// User-provided form mode: framework-managed <form> as direct
+			// child. We take it over for attribute-mirroring/propagation but
+			// skip migration so we don't conflict with framework reconciliation.
+			const userForm = this.querySelector(':scope > form');
+			if (userForm) {
+				this._form = userForm as HTMLFormElement;
+				this._userProvidedForm = true;
+				this._mirrorAttributes();
+			} else {
+				// Auto-wrap mode: create inner <form> and migrate initial children.
+				const form = document.createElement('form');
+				this._form = form;
+				this._mirrorAttributes();
 
-			// Move existing light-DOM children into the form.
-			// For HTML parsed by the browser, connectedCallback fires at the
-			// opening tag — children are added one-by-one AFTER and surface
-			// via the MutationObserver below. This loop only matters for
-			// programmatic patterns (createElement + appendChild children +
-			// then attach), where children are already present at connect.
-			const initialChildren = Array.from(this.childNodes);
-			for (const node of initialChildren) {
-				form.appendChild(node);
+				// Move existing light-DOM children into the form.
+				// For HTML parsed by the browser, connectedCallback fires at the
+				// opening tag — children are added one-by-one AFTER and surface
+				// via the MutationObserver below. This loop only matters for
+				// programmatic patterns (createElement + appendChild children +
+				// then attach), where children are already present at connect.
+				const initialChildren = Array.from(this.childNodes);
+				for (const node of initialChildren) {
+					form.appendChild(node);
+				}
+				this.appendChild(form);
 			}
-			this.appendChild(form);
 		}
 
 		// (Re-)attach the observer on every connect. After disconnectedCallback
@@ -95,6 +152,7 @@ export class NLDDForm extends HTMLElement {
 		// in the inner <form>.
 		if (!this._observer) {
 			const form = this._form;
+			const userProvided = this._userProvidedForm;
 			this._observer = new MutationObserver(mutations => {
 				for (const m of mutations) {
 					// Migrate only direct children of the host (children of
@@ -102,6 +160,9 @@ export class NLDDForm extends HTMLElement {
 					// form-section). Nested children are already inside the
 					// inner form via their parent migration.
 					if (m.target !== this) continue;
+					// In user-provided form mode: skip migration. User's
+					// framework controls placement; we don't shuffle DOM.
+					if (userProvided) continue;
 					m.addedNodes.forEach(node => {
 						if (node === form) return;
 						form.appendChild(node);

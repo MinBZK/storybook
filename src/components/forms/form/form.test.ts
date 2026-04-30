@@ -82,6 +82,62 @@ describe('nldd-form', () => {
 		expect(form.querySelector('input[name="late"]')).not.toBeNull();
 	});
 
+	it('user-provided form mode: gebruikt bestaande <form> child i.p.v. nieuwe te creëren', async () => {
+		// Framework-friendly mode: user wraps content in eigen <form>. Component
+		// detecteert 't en neemt 't over voor attribute-mirroring zonder DOM-shuffle.
+		el = await fixture(`
+			<nldd-form name="user-form" novalidate>
+				<form>
+					<input type="text" name="email">
+					<button type="submit">Save</button>
+				</form>
+			</nldd-form>
+		`);
+		await waitForUpdate(el);
+
+		// Er moet maar één <form> zijn (de user's), niet een tweede die wij creëerden
+		const forms = el.querySelectorAll('form');
+		expect(forms.length).toBe(1);
+
+		// .form getter wijst naar de user's form
+		const innerForm = (el as NLDDForm).form;
+		expect(innerForm).toBe(forms[0]);
+
+		// Attributes zijn gespiegeld
+		expect(innerForm!.getAttribute('name')).toBe('user-form');
+		expect(innerForm!.hasAttribute('novalidate')).toBe(true);
+
+		// Children blijven waar ze zijn (niet verplaatst)
+		expect(innerForm!.querySelector('input[name="email"]')).not.toBeNull();
+		expect(innerForm!.querySelector('button[type="submit"]')).not.toBeNull();
+	});
+
+	it('user-provided form mode: skipt migration voor nieuw toegevoegde direct children', async () => {
+		// In user-provided mode mag een framework children OUT-of-form positioneren
+		// zonder dat wij ze automatisch verhuizen.
+		const wrapper = await fixture(`
+			<nldd-form name="user-form">
+				<form>
+					<input name="initial">
+				</form>
+			</nldd-form>
+		`);
+		el = wrapper;
+		await waitForUpdate(el);
+
+		// Voeg een direct child toe aan het host (dus NAAST de form, niet erin)
+		const stray = document.createElement('div');
+		stray.dataset.testid = 'stray';
+		el.appendChild(stray);
+		await awaitMicrotask();
+
+		// Stray blijft een direct child van host (niet in form gemigreerd)
+		expect(el.querySelector(':scope > [data-testid="stray"]')).not.toBeNull();
+		// Form's eigen children zijn ongewijzigd
+		const innerForm = (el as NLDDForm).form!;
+		expect(innerForm.children.length).toBe(1);
+	});
+
 	it('herattacht observer na disconnect/reconnect', async () => {
 		const wrapper = await fixture(`
 			<div>
