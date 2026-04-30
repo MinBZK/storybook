@@ -43,15 +43,20 @@ export default {
 	},
 };
 
+// Form-section heeft een form-context nodig (vertical-rhythm regels leven in
+// form.css en zijn gescoped onder nldd-form). Standalone gebruik wordt niet
+// ondersteund.
 const Template = ({ text, supportingText }: Record<string, any>) => html`
-	<nldd-form-section text=${text} supporting-text=${supportingText}>
-		<nldd-form-field label="Voornaam">
-			<nldd-text-field name="given-name" autocomplete="given-name"></nldd-text-field>
-		</nldd-form-field>
-		<nldd-form-field label="Achternaam">
-			<nldd-text-field name="family-name" autocomplete="family-name"></nldd-text-field>
-		</nldd-form-field>
-	</nldd-form-section>
+	<nldd-form novalidate>
+		<nldd-form-section text=${text} supporting-text=${supportingText}>
+			<nldd-form-field label="Voornaam">
+				<nldd-text-field name="given-name" autocomplete="given-name"></nldd-text-field>
+			</nldd-form-field>
+			<nldd-form-field label="Achternaam">
+				<nldd-text-field name="family-name" autocomplete="family-name"></nldd-text-field>
+			</nldd-form-field>
+		</nldd-form-section>
+	</nldd-form>
 `;
 
 export const Standaard = {
@@ -97,14 +102,16 @@ export const InForm = {
 
 export const ZonderText = {
 	render: () => html`
-		<nldd-form-section>
-			<nldd-form-field label="Voornaam">
-				<nldd-text-field></nldd-text-field>
-			</nldd-form-field>
-			<nldd-form-field label="Achternaam">
-				<nldd-text-field></nldd-text-field>
-			</nldd-form-field>
-		</nldd-form-section>
+		<nldd-form novalidate>
+			<nldd-form-section>
+				<nldd-form-field label="Voornaam">
+					<nldd-text-field></nldd-text-field>
+				</nldd-form-field>
+				<nldd-form-field label="Achternaam">
+					<nldd-text-field></nldd-text-field>
+				</nldd-form-field>
+			</nldd-form-section>
+		</nldd-form>
 	`,
 	parameters: { controls: { disable: true } },
 };

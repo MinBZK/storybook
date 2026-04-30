@@ -13,9 +13,9 @@ nldd-form > form {
    Use margin-top on adjacent siblings (owl pattern) instead of gap, so the
    spacing between specific element pairs can be tuned independently.
 
-   Alle regels zijn gescoped binnen nldd-form (of nldd-form-section binnen
-   een form) — anders raak je form-fields die buiten een form gerenderd
-   worden (story fixtures, ad-hoc compositions) ook met margin-top. */
+   Scoped binnen nldd-form. Form-section heeft buiten een form geen
+   design-context, dus standalone gebruik (zonder nldd-form wrapper)
+   wordt niet ondersteund. */
 
 nldd-form > form > * + *,
 nldd-form nldd-form-section > * + *,
