@@ -301,6 +301,11 @@
 	--primitives-breakpoint-md-max: 1007px;
 	--primitives-breakpoint-lg-min: 1008px;
 
+	/* ## Border width */
+
+	--primitives-border-width-thin: 1px;
+	--primitives-border-width-regular: 2px;
+
 	/* ## Corner radius */
 
 	--primitives-corner-radius-none: 0px;
@@ -691,11 +696,6 @@
 	--primitives-transition-duration-slow: 300ms;
 	--primitives-transition-easing-default: ease-out;
 
-	/* ## Border width */
-
-	--primitives-border-width-thin: 1px;
-	--primitives-border-width-regular: 2px;
-
 	/* ## Box shadow */
 
 	--primitives-box-shadow-opacity-factor: 1;
@@ -979,8 +979,8 @@
 	/* ## Focus ring */
 
 	--semantics-focus-ring-outline: var(--primitives-border-width-regular) solid var(--primitives-color-accent-600);
-	--semantics-focus-ring-outline-offset: var(--primitives-space-2);
-	--semantics-focus-ring-box-shadow: 0 0 0 var(--primitives-space-6) var(--semantics-surfaces-background-color);
+	--semantics-focus-ring-outline-offset: var(--primitives-border-width-regular);
+	--semantics-focus-ring-box-shadow: 0 0 0 calc(var(--primitives-border-width-regular) * 3) var(--semantics-surfaces-background-color);
 
 
 	/* # Components */
