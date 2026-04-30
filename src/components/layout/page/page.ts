@@ -40,6 +40,7 @@ export class NLDDPage extends LitElement {
 
 	private _scrollTarget: EventTarget | null = null;
 	private _headerObserver: ResizeObserver | null = null;
+	private _mainSlot: HTMLSlotElement | null = null;
 
 	get scrollTarget(): HTMLElement {
 		return (this.stickyHeader ? (this._scrollEl ?? this) : this);
@@ -72,11 +73,13 @@ export class NLDDPage extends LitElement {
 		super.disconnectedCallback();
 		this._teardownScrollListener();
 		this._teardownHeaderObserver();
+		this._teardownMainSlotListener();
 	}
 
 	override firstUpdated() {
 		this._setupScrollListener();
 		if (this.stickyHeader) this._setupHeaderObserver();
+		this._setupMainSlotListener();
 	}
 
 	override updated(changed: PropertyValues) {
@@ -130,6 +133,36 @@ export class NLDDPage extends LitElement {
 	private _onScroll = () => {
 		const target = (this.stickyHeader ? this._scrollEl : this) as HTMLElement;
 		this._scrolled = target.scrollTop > 0;
+	};
+
+	// Mark the last visible main-slot child with `is-last`, so section-style
+	// components can grow to fill remaining vertical space without coupling
+	// to specific tag types or relying on light-DOM `:last-child` (which
+	// breaks when slot="footer" siblings are present). Same shape as
+	// nldd-list's _updateItems().
+	private _setupMainSlotListener() {
+		this._teardownMainSlotListener();
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])') ?? null;
+		this._mainSlot = slot;
+		if (!slot) return;
+		slot.addEventListener('slotchange', this._updateMainItems);
+		this._updateMainItems();
+	}
+
+	private _teardownMainSlotListener() {
+		if (this._mainSlot) {
+			this._mainSlot.removeEventListener('slotchange', this._updateMainItems);
+			this._mainSlot = null;
+		}
+	}
+
+	private _updateMainItems = () => {
+		const slot = this._mainSlot;
+		if (!slot) return;
+		const items = slot.assignedElements() as HTMLElement[];
+		const visible = items.filter(el => !el.hasAttribute('hidden'));
+		const last = visible[visible.length - 1];
+		items.forEach(el => el.classList.toggle('is-last', el === last));
 	};
 
 	override render() {

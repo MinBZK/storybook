@@ -8,6 +8,8 @@ export const inlineDialogStyles = css`
 	:host {
 		display: flex;
 		justify-content: center;
+		align-items: center;
+		flex-grow: 1;
 
 		--_icon-color: var(--semantics-content-color);
 	}

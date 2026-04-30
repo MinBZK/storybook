@@ -24,7 +24,9 @@ export const simpleSectionStyles = css`
 		display: none;
 	}
 
-	:host([align="center"]) {
+	:host([align="center"]),
+	:host(:last-child),
+	:host(.is-last) {
 		flex-grow: 1;
 	}
 

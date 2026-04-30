@@ -61,7 +61,7 @@ export const pageStyles = css`
 
 	:host([sticky-header]) .page__header {
 		position: absolute;
-		top: 0;
+		top: var(--context-bar-split-view-top-bars-height, 0px);
 		left: 0;
 		right: 0;
 		z-index: 1;
