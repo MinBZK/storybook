@@ -194,7 +194,12 @@ export class NLDDPopover extends LitElement {
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
 
-		const inset = parseInt(getComputedStyle(this).getPropertyValue('--semantics-overlays-inset')) || 16;
+		// No fallback: --semantics-overlays-inset moet bestaan (gevalideerd
+		// door CI). parseFloat handelt leading whitespace (die
+		// getPropertyValue soms levert) correct af; bij ontbrekende token
+		// propagateert NaN zodat de fout zichtbaar is i.p.v. stilletjes
+		// een fallback gebruikt te worden.
+		const inset = parseFloat(getComputedStyle(this).getPropertyValue('--semantics-overlays-inset'));
 
 		const { x, y } = await computePosition(anchorEl, this, {
 			placement: this.placement,

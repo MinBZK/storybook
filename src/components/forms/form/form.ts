@@ -7,7 +7,13 @@
  * have a <form> ancestor in the light DOM; with shadow-DOM inputs it can't
  * find them, so we keep this component shadow-less.
  *
- * Import nldd-form.css globally in your application.
+ * **Differs from other nldd-* components:**
+ * - Geen shadowRoot — alle children leven in light DOM (binnen het inner <form>)
+ * - Geen Lit — pure HTMLElement met handmatige attribute-mirroring
+ * - **Vereist global stylesheet import** — vertical rhythm en form-section
+ *   divider-suppression regels staan in `dist/css/form.css` (of `global.css`),
+ *   niet in een component-specifieke shadow stylesheet. Import deze als deel
+ *   van je app's globale CSS bundle.
  *
  * @element nldd-form
  *
@@ -28,6 +34,10 @@
  * @fires reset
  *
  * @example
+ * ```js
+ * // Globale stylesheet import (eenmalig in je app entry):
+ * import '@minbzk/storybook/dist/css/global.css';
+ * ```
  * ```html
  * <nldd-form name="profile" novalidate>
  *   <nldd-text-field name="email" autocomplete="email"></nldd-text-field>

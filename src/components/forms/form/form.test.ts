@@ -219,5 +219,32 @@ describe('nldd-form', () => {
 			// form gepropageerd — geen inherited marker
 			expect(field.dataset.formAlignmentInherited).toBeUndefined();
 		});
+
+		it('CSS cascade: expliciete eigen label-alignment wint over geërfde via container query', async () => {
+			// Container ≥ mdMin zodat de @container (min-width: 640px) regel
+			// matcht en row-layout wordt toegepast bij left/right alignment.
+			const wrapper = await fixture(`
+				<div style="width: 800px;">
+					<nldd-form label-alignment="right">
+						<nldd-form-field label="Inherits" label="A"></nldd-form-field>
+						<nldd-form-field label="Own" label-alignment="top"></nldd-form-field>
+					</nldd-form>
+				</div>
+			`);
+			el = wrapper;
+			await waitForUpdate(wrapper.querySelector('nldd-form') as HTMLElement);
+
+			const inherits = wrapper.querySelector('nldd-form-field[label="Inherits"]')!;
+			const own = wrapper.querySelector('nldd-form-field[label="Own"]')!;
+
+			const inheritsRoot = inherits.shadowRoot!.querySelector('.form-field')!;
+			const ownRoot = own.shadowRoot!.querySelector('.form-field')!;
+
+			// Inherits → label-alignment=right → row layout
+			expect(getComputedStyle(inheritsRoot).flexDirection).toBe('row');
+			// Own (label-alignment=top) → kolom-layout, niet overschreven door
+			// container query op de parent's right-alignment
+			expect(getComputedStyle(ownRoot).flexDirection).toBe('column');
+		});
 	});
 });

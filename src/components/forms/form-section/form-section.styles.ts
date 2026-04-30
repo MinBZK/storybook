@@ -18,10 +18,11 @@ export const formSectionStyles = css`
 	   - :last-child (niets eronder om van te scheiden) */
 
 	:host {
+		--_divider: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 		display: block;
 		box-sizing: border-box;
-		border-top: var(--context-form-section-top-border, var(--semantics-dividers-thickness) solid var(--semantics-dividers-color));
-		border-bottom: var(--context-form-section-bottom-border, var(--semantics-dividers-thickness) solid var(--semantics-dividers-color));
+		border-top: var(--context-form-section-top-border, var(--_divider));
+		border-bottom: var(--context-form-section-bottom-border, var(--_divider));
 		padding-top: var(--context-form-section-top-padding, var(--semantics-forms-gap));
 		padding-bottom: var(--context-form-section-bottom-padding, var(--semantics-forms-gap));
 	}
