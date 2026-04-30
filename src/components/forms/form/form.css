@@ -13,12 +13,11 @@ nldd-form > form {
    Use margin-top on adjacent siblings (owl pattern) instead of gap, so the
    spacing between specific element pairs can be tuned independently.
 
-   Scoped binnen nldd-form. Form-section heeft buiten een form geen
-   design-context, dus standalone gebruik (zonder nldd-form wrapper)
-   wordt niet ondersteund. */
+   Scoped binnen nldd-form. Form-section's eigen children spacing wordt
+   in form-section.css afgehandeld; deze regels zijn voor form's directe
+   children en form-fields anywhere binnen het form. */
 
 nldd-form > form > * + *,
-nldd-form nldd-form-section > * + *,
 nldd-form nldd-form-field + nldd-form-field {
 	margin-top: var(--semantics-forms-gap);
 }
@@ -41,17 +40,4 @@ nldd-form nldd-form-field + nldd-form-field {
 	nldd-form nldd-form-field[label-alignment='top'] + nldd-form-field[label-alignment='top'] {
 		margin-top: var(--semantics-forms-gap-tight);
 	}
-}
-
-
-/* # Form-section dividers — suppress top divider when preceded by another
-   form-section. The previous section's bottom divider already separates
-   the two; a top divider here would render a double line.
-
-   Sibling selectors only work in light DOM, so the suppression flows in
-   via context-vars that the form-section's :host reads with var(...). */
-
-nldd-form nldd-form-section + nldd-form-section {
-	--context-form-section-top-border: none;
-	--context-form-section-top-padding: 0;
 }

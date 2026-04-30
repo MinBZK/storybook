@@ -1,12 +1,32 @@
 /**
- * Nederlandse Digitale Dienst Form Section Component (Lit + TypeScript)
+ * Nederlandse Digitale Dienst Form Section Component
  *
- * Een visuele groepering binnen een formulier met optionele title en
- * supporting text. Rendert intern als `<fieldset>` + `<legend>` voor
- * semantische correctheid en screenreader-context.
+ * Plain custom element (extends HTMLElement, no Lit) — light-DOM render
+ * lost een NVDA + Firefox a11y-bug op waar shadow-DOM <fieldset> + <legend>
+ * niet betrouwbaar als group-label aangekondigd worden voor slotted
+ * controls. Native fieldset/legend in light DOM werkt correct over alle
+ * AT/browser-combinaties.
  *
- * Title is altijd links uitgelijnd over de volledige breedte, ook als
- * de formulier-velden binnenin `label-alignment="right"` gebruiken.
+ * **Differs from shadow components:**
+ * - Geen shadowRoot — alle children leven in light DOM (binnen het
+ *   gerenderde <fieldset>).
+ * - Geen Lit — pure HTMLElement met handmatige DOM-mutation.
+ * - **Vereist global stylesheet import** — `dist/css/form-section.css`
+ *   (of `global.css`). Form-section heeft geen shadow stylesheet.
+ *
+ * Renders to:
+ *
+ *     <nldd-form-section>
+ *         <fieldset class="form-section">
+ *             <legend class="form-section__header">
+ *                 <span class="form-section__title">Title</span>
+ *                 <span class="form-section__subtitle">Subtitle</span>
+ *             </legend>
+ *             <div class="form-section__main">
+ *                 [user's children]
+ *             </div>
+ *         </fieldset>
+ *     </nldd-form-section>
  *
  * **Accessibility note**: de title rendert als `<legend>`. Dat is
  * semantisch een **groep-label**, geen heading. Screenreaders
@@ -15,16 +35,6 @@
  * over. Visueel lijkt 't op een heading; gebruik dit component dus
  * voor *form-grouping*, niet als pagina-structuur. Voor echte
  * page-headings: gebruik een apart heading-element boven het form.
- *
- * **Shadow-DOM caveat**: `<fieldset>` + `<legend>` zit in de shadow
- * van dit component, terwijl form-fields via slot in de light DOM
- * leven. NVDA + Firefox en oudere JAWS-versies kondigen de legend
- * niet altijd betrouwbaar aan als group-label bij focus op een
- * slotted control — dat is een bekende Web Components-limitatie,
- * niet een bug van dit component. VoiceOver (macOS/iOS) en NVDA +
- * Chromium handelen 't wel correct af. Voor kritische
- * groep-context: zet altijd een aria-describedby of expliciete
- * label op de relevante velden zelf.
  *
  * **Supporting-text lengte**: de subtitle staat als `<span>` binnen
  * de `<legend>` zodat SR 'm meeleest als group label. Bijwerking: bij
@@ -50,31 +60,142 @@
  *
  * @element nldd-form-section
  *
- * @attr {string} text             - Heading-tekst (gerenderd als `<legend>`).
+ * @attr {string} text             - Heading-tekst (gerenderd in `<legend>`).
  * @attr {string} supporting-text  - Korte beschrijving onder de heading.
  *                                   Houd ≤ ~80 tekens (zie a11y-note).
  *
- * @slot - Form-fields en andere content binnen de sectie.
+ * Children van de form-section worden in `.form-section__main` geplaatst.
  */
 
-import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import { formSectionStyles } from './form-section.styles.js';
-import { formSectionTemplate } from './form-section.template.js';
+const FIELDSET_CLASS = 'form-section';
+const HEADER_CLASS = 'form-section__header';
+const TITLE_CLASS = 'form-section__title';
+const SUBTITLE_CLASS = 'form-section__subtitle';
+const MAIN_CLASS = 'form-section__main';
 
-@customElement('nldd-form-section')
-export class NLDDFormSection extends LitElement {
-	static override styles = formSectionStyles;
-
-	@property({ type: String })
-	text = '';
-
-	@property({ type: String, attribute: 'supporting-text' })
-	supportingText = '';
-
-	override render() {
-		return formSectionTemplate(this);
+export class NLDDFormSection extends HTMLElement {
+	static get observedAttributes(): string[] {
+		return ['text', 'supporting-text'];
 	}
+
+	private _fieldset: HTMLFieldSetElement | null = null;
+	private _legend: HTMLLegendElement | null = null;
+	private _main: HTMLDivElement | null = null;
+	private _observer: MutationObserver | null = null;
+
+	get text(): string {
+		return this.getAttribute('text') ?? '';
+	}
+	set text(value: string) {
+		if (value) this.setAttribute('text', value);
+		else this.removeAttribute('text');
+	}
+
+	get supportingText(): string {
+		return this.getAttribute('supporting-text') ?? '';
+	}
+	set supportingText(value: string) {
+		if (value) this.setAttribute('supporting-text', value);
+		else this.removeAttribute('supporting-text');
+	}
+
+	connectedCallback(): void {
+		// One-time setup: build fieldset/legend/main and migrate children.
+		// Subsequent connect cycles (e.g. when nldd-form moves us into its
+		// inner <form>) skip this block but still re-attach the observer.
+		if (!this._fieldset) this._buildStructure();
+		this._renderLegend();
+
+		// (Re-)attach observer on every connect to catch dynamically added
+		// children (which would otherwise land outside the inner fieldset).
+		if (!this._observer) {
+			const main = this._main;
+			this._observer = new MutationObserver(mutations => {
+				for (const m of mutations) {
+					if (m.target !== this) continue;
+					m.addedNodes.forEach(node => {
+						if (node === this._fieldset) return;
+						main?.appendChild(node);
+					});
+				}
+			});
+			this._observer.observe(this, { childList: true });
+		}
+	}
+
+	disconnectedCallback(): void {
+		this._observer?.disconnect();
+		this._observer = null;
+	}
+
+	attributeChangedCallback(name: string): void {
+		if (name === 'text' || name === 'supporting-text') {
+			// Pas re-renderen na _buildStructure (eerste connect).
+			if (this._legend) this._renderLegend();
+		}
+	}
+
+	private _buildStructure(): void {
+		// Save user's existing children (light-DOM at construction time).
+		const initialChildren = Array.from(this.childNodes);
+
+		// Create structure: <fieldset><legend/><div.main/></fieldset>
+		const fieldset = document.createElement('fieldset');
+		fieldset.className = FIELDSET_CLASS;
+
+		const legend = document.createElement('legend');
+		legend.className = HEADER_CLASS;
+
+		const main = document.createElement('div');
+		main.className = MAIN_CLASS;
+
+		fieldset.append(legend, main);
+
+		// Move children into main
+		for (const child of initialChildren) {
+			main.appendChild(child);
+		}
+
+		this.appendChild(fieldset);
+
+		this._fieldset = fieldset;
+		this._legend = legend;
+		this._main = main;
+	}
+
+	private _renderLegend(): void {
+		const legend = this._legend;
+		if (!legend) return;
+
+		const text = this.text;
+		const supportingText = this.supportingText;
+		const hasContent = !!text || !!supportingText;
+
+		// Clear existing legend content.
+		legend.textContent = '';
+
+		if (text) {
+			const titleSpan = document.createElement('span');
+			titleSpan.className = TITLE_CLASS;
+			titleSpan.textContent = text;
+			legend.appendChild(titleSpan);
+		}
+
+		if (supportingText) {
+			const subtitleSpan = document.createElement('span');
+			subtitleSpan.className = SUBTITLE_CLASS;
+			subtitleSpan.textContent = supportingText;
+			legend.appendChild(subtitleSpan);
+		}
+
+		// Hide legend completely (incl. its space) if empty so .form-section__main
+		// becomes :first-child and z'n margin-top collapseert via CSS.
+		legend.hidden = !hasContent;
+	}
+}
+
+if (!customElements.get('nldd-form-section')) {
+	customElements.define('nldd-form-section', NLDDFormSection);
 }
 
 declare global {
