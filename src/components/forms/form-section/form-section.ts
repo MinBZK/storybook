@@ -16,6 +16,15 @@
  * voor *form-grouping*, niet als pagina-structuur. Voor echte
  * page-headings: gebruik een apart heading-element boven het form.
  *
+ * **Supporting-text lengte**: de subtitle staat als `<span>` binnen
+ * de `<legend>` zodat SR 'm meeleest als group label. Bijwerking: bij
+ * elke field-entry binnen de sectie wordt de hele legend (titel +
+ * subtitel) opnieuw uitgesproken. Houd `supporting-text` daarom kort
+ * (richtlijn: ≤ ~80 tekens) en gebruik 'm voor groep-introductie
+ * ("Vul je adresgegevens in"), niet voor uitgebreide instructies.
+ * Voor langere uitleg op een specifiek veld: gebruik
+ * `nldd-form-field-help-text` op dat veld.
+ *
  *     <nldd-form>
  *         <nldd-form-section text="Persoonsgegevens" supporting-text="Vul je gegevens in.">
  *             <nldd-form-field label="Voornaam">...</nldd-form-field>
@@ -33,6 +42,7 @@
  *
  * @attr {string} text             - Heading-tekst (gerenderd als `<legend>`).
  * @attr {string} supporting-text  - Korte beschrijving onder de heading.
+ *                                   Houd ≤ ~80 tekens (zie a11y-note).
  *
  * @slot - Form-fields en andere content binnen de sectie.
  */
