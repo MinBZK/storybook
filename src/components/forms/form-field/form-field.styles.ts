@@ -29,7 +29,7 @@ export const formFieldStyles = css`
 
 	:host([label-alignment='left']) .form-field,
 	:host([label-alignment='right']) .form-field {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			flex-direction: row;
 			align-items: start;
 			gap: var(--semantics-forms-columns-gap);
@@ -47,7 +47,7 @@ export const formFieldStyles = css`
 
 	:host([label-alignment='left']) .form-field__header,
 	:host([label-alignment='right']) .form-field__header {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			flex-grow: 0;
 			flex-shrink: 0;
 			justify-content: center;
@@ -57,14 +57,14 @@ export const formFieldStyles = css`
 	}
 
 	:host([label-alignment='right']) .form-field__header {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			align-items: end;
 			text-align: right;
 		}
 	}
 
 	:host([label-alignment='left']) .form-field__header {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			align-items: start;
 			text-align: left;
 		}
@@ -76,7 +76,7 @@ export const formFieldStyles = css`
 
 	:host([label-alignment='left']) .form-field__header.is-empty,
 	:host([label-alignment='right']) .form-field__header.is-empty {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			display: flex;
 		}
 	}
@@ -94,7 +94,7 @@ export const formFieldStyles = css`
 
 	:host([label-alignment='left']) .form-field__label,
 	:host([label-alignment='right']) .form-field__label {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			display: flex;
 			flex-direction: column;
 			gap: var(--primitives-space-0);
@@ -102,13 +102,13 @@ export const formFieldStyles = css`
 	}
 
 	:host([label-alignment='right']) .form-field__label {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			align-items: end;
 		}
 	}
 
 	:host([label-alignment='left']) .form-field__label {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			align-items: start;
 		}
 	}

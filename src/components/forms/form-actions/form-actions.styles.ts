@@ -24,7 +24,7 @@ export const formActionsStyles = css`
 
 	:host([label-alignment='left']) .form-actions,
 	:host([label-alignment='right']) .form-actions {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			flex-direction: row;
 			align-items: start;
 			gap: var(--semantics-forms-columns-gap);
@@ -33,7 +33,7 @@ export const formActionsStyles = css`
 
 	:host([label-alignment='left']) .form-actions::before,
 	:host([label-alignment='right']) .form-actions::before {
-		@container (min-width: 640px) {
+		@container (min-width: 641px) {
 			content: '';
 			flex-grow: 0;
 			flex-shrink: 0;
