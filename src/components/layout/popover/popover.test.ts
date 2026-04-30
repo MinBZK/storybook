@@ -171,6 +171,39 @@ describe('nldd-popover', () => {
 		expect(wrapper.querySelector('#anchor-by-id')!.hasAttribute('aria-expanded')).toBe(false);
 	});
 
+	it('updated() reageert op anchor-wissel zelfs als popover gesloten is', async () => {
+		// Regression: voorheen werd _updateAnchorAria niet aangeroepen
+		// wanneer anchor of anchorElement runtime veranderde terwijl de
+		// popover gesloten was — de oude trigger hield stale aria-expanded
+		// en aria-controls.
+		const wrapper = await fixture(`
+			<div>
+				<button id="initial-anchor">Initial</button>
+				<button id="new-anchor">New</button>
+				<nldd-popover anchor="initial-anchor" id="my-popover" accessible-label="Test"></nldd-popover>
+			</div>
+		`);
+		el = wrapper;
+		const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
+		const initial = wrapper.querySelector('#initial-anchor')!;
+		const newAnchor = wrapper.querySelector('#new-anchor')!;
+		// Wacht tot de gedeferred init-aria call is gelopen
+		await new Promise(resolve => setTimeout(resolve, 0));
+		expect(initial.getAttribute('aria-expanded')).toBe('false');
+		expect(initial.getAttribute('aria-controls')).toBe('my-popover');
+
+		// Wijzig de anchor terwijl popover gesloten is
+		popover.setAttribute('anchor', 'new-anchor');
+		await waitForUpdate(popover);
+
+		// Oude anchor: aria-expanded en aria-controls weg
+		expect(initial.hasAttribute('aria-expanded')).toBe(false);
+		expect(initial.hasAttribute('aria-controls')).toBe(false);
+		// Nieuwe anchor: aria-expanded = false (gesloten), aria-controls gezet
+		expect(newAnchor.getAttribute('aria-expanded')).toBe('false');
+		expect(newAnchor.getAttribute('aria-controls')).toBe('my-popover');
+	});
+
 
 	describe('focus management & keyboard navigation', () => {
 		it('zet focus terug op de anchor na hide()', async () => {

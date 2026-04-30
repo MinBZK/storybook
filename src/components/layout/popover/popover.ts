@@ -145,6 +145,12 @@ export class NLDDPopover extends LitElement {
 		if (changed.has('accessibleLabel') || changed.has('translations')) {
 			this.setAttribute('aria-label', this._resolvedAccessibleLabel);
 		}
+		// Anchor change at runtime: strip aria-* van de oude trigger en zet
+		// 'm op de nieuwe. Zonder dit blijft de oude trigger met stale
+		// aria-expanded / aria-controls hangen voor SR.
+		if (changed.has('anchor') || changed.has('anchorElement')) {
+			this._updateAnchorAria(this._isOpen);
+		}
 	}
 
 	// — i18n ——————————————————————————————————————————————————————————————————
@@ -163,7 +169,7 @@ export class NLDDPopover extends LitElement {
 		this._warnIfMissingLabel();
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) {
-			console.warn('<nldd-popover>: anchor element not found. Set anchor=ID or anchorElement before calling show().');
+			if (import.meta.env?.DEV) console.warn('<nldd-popover>: anchor element not found. Set anchor=ID or anchorElement before calling show().');
 			return;
 		}
 		(this as HTMLElement).showPopover();

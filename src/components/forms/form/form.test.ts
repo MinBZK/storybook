@@ -302,7 +302,7 @@ describe('nldd-form', () => {
 			const wrapper = await fixture(`
 				<div style="width: 800px;">
 					<nldd-form label-alignment="right">
-						<nldd-form-field label="Inherits" label="A"></nldd-form-field>
+						<nldd-form-field label="Inherits"></nldd-form-field>
 						<nldd-form-field label="Own" label-alignment="top"></nldd-form-field>
 					</nldd-form>
 				</div>
