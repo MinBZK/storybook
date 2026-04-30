@@ -129,7 +129,19 @@ export class NLDDPopover extends LitElement {
 		document.removeEventListener('click', this._handleDocumentClick);
 		this._smQuery?.removeEventListener('change', this._handleViewportChange);
 		this._smQuery = null;
-		this._updateAnchorAria(false);
+		// Strip ALL aria-* van de anchor — niet alleen aria-expanded. In SPA
+		// flows (v-if, conditional render) kan de popover verdwijnen terwijl
+		// de anchor blijft bestaan. Een achtergebleven aria-controls naar een
+		// niet-bestaand element is een WCAG 4.1.2 fout (Name, Role, Value).
+		const anchorEl = this._getAnchorEl();
+		if (anchorEl) {
+			anchorEl.removeAttribute('aria-expanded');
+			anchorEl.removeAttribute('aria-haspopup');
+			if (this.id && anchorEl.getAttribute('aria-controls') === this.id) {
+				anchorEl.removeAttribute('aria-controls');
+			}
+		}
+		this._previousAnchorEl = null;
 	}
 
 	override updated(changed: PropertyValues): void {

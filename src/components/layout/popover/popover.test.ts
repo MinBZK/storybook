@@ -171,6 +171,34 @@ describe('nldd-popover', () => {
 		expect(wrapper.querySelector('#anchor-by-id')!.hasAttribute('aria-expanded')).toBe(false);
 	});
 
+	it('disconnect strip alle aria-* van anchor (geen stale state in SPA flows)', async () => {
+		// Regression: in SPA-patterns (v-if, React conditional render) kan
+		// de popover verdwijnen terwijl de anchor blijft. Een achtergebleven
+		// aria-controls naar een niet-bestaand element is een WCAG 4.1.2 fout.
+		const wrapper = await fixture(`
+			<div>
+				<button id="trigger-disconnect">Trigger</button>
+				<nldd-popover anchor="trigger-disconnect" id="disconnect-popover" accessible-label="Test"></nldd-popover>
+			</div>
+		`);
+		el = wrapper;
+		const trigger = wrapper.querySelector('#trigger-disconnect')!;
+		const popover = wrapper.querySelector('nldd-popover')!;
+		// Wacht tot de gedeferred init-aria call gelopen is
+		await new Promise(resolve => setTimeout(resolve, 0));
+		expect(trigger.getAttribute('aria-expanded')).toBe('false');
+		expect(trigger.getAttribute('aria-haspopup')).toBe('dialog');
+		expect(trigger.getAttribute('aria-controls')).toBe('disconnect-popover');
+
+		// Verwijder popover uit DOM (bv. v-if false)
+		popover.remove();
+
+		// Anchor mag geen achtergebleven aria-* hebben
+		expect(trigger.hasAttribute('aria-expanded')).toBe(false);
+		expect(trigger.hasAttribute('aria-haspopup')).toBe(false);
+		expect(trigger.hasAttribute('aria-controls')).toBe(false);
+	});
+
 	it('updated() reageert op anchor-wissel zelfs als popover gesloten is', async () => {
 		// Regression: voorheen werd _updateAnchorAria niet aangeroepen
 		// wanneer anchor of anchorElement runtime veranderde terwijl de

@@ -68,10 +68,18 @@ export const popoverStyles = css`
 			}
 		}
 
-		@media (prefers-reduced-motion: reduce) {
-			:host {
-				transition: none;
-			}
+	}
+
+
+	/* # Reduced motion — top-level safety net.
+	   Currently transitions zijn alleen gedefinieerd binnen de sm
+	   bottom-sheet-rule, maar deze top-level guard zorgt dat ook
+	   toekomstige desktop-viewport animaties automatisch worden
+	   gedeactiveerd voor users met prefers-reduced-motion. */
+
+	@media (prefers-reduced-motion: reduce) {
+		:host {
+			transition: none;
 		}
 	}
 `;
