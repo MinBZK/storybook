@@ -143,7 +143,7 @@ export const MultipleErrors = () => html`
 `;
 
 export const LabelAlignmentRight = () => html`
-	<nldd-form-field label="Volledige naam" supporting-label="Zoals vermeld in uw paspoort.">
+	<nldd-form-field label="Volledige naam" label-alignment="right" supporting-label="Zoals vermeld in uw paspoort.">
 		<nldd-text-field></nldd-text-field>
 	</nldd-form-field>
 `;
