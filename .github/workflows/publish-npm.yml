@@ -1,5 +1,9 @@
 name: Publish to npmjs
 
+# Requires repository secret NPM_TOKEN: a granular npmjs token with
+# read+write access to the @nldd scope and 2FA bypass enabled.
+# Without it, the publish step fails with E401/EAUTH at runtime.
+
 on:
   push:
     branches:
