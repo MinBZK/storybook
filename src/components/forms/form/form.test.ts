@@ -60,6 +60,40 @@ describe('nldd-form', () => {
 		expect(form.getAttribute('action')).toBe('/login');
 	});
 
+	it('forwardt enctype attribuut (multipart/form-data voor file upload)', async () => {
+		el = await fixture('<nldd-form enctype="multipart/form-data"></nldd-form>');
+		await waitForUpdate(el);
+		const form = el.querySelector('form')!;
+		expect(form.getAttribute('enctype')).toBe('multipart/form-data');
+	});
+
+	it('forwardt target attribuut', async () => {
+		el = await fixture('<nldd-form target="_blank"></nldd-form>');
+		await waitForUpdate(el);
+		const form = el.querySelector('form')!;
+		expect(form.getAttribute('target')).toBe('_blank');
+	});
+
+	it('forwardt autocomplete attribuut', async () => {
+		el = await fixture('<nldd-form autocomplete="off"></nldd-form>');
+		await waitForUpdate(el);
+		const form = el.querySelector('form')!;
+		expect(form.getAttribute('autocomplete')).toBe('off');
+	});
+
+	it('verwijdert geforwarde attributen wanneer ze van de host weggehaald worden', async () => {
+		el = await fixture('<nldd-form enctype="multipart/form-data" target="_blank"></nldd-form>');
+		await waitForUpdate(el);
+		const form = el.querySelector('form')!;
+		expect(form.getAttribute('enctype')).toBe('multipart/form-data');
+
+		el.removeAttribute('enctype');
+		await waitForUpdate(el);
+		expect(form.hasAttribute('enctype')).toBe(false);
+		// target blijft staan (geen impact)
+		expect(form.getAttribute('target')).toBe('_blank');
+	});
+
 	it('exposeert het inner form via .form getter', async () => {
 		el = await fixture('<nldd-form></nldd-form>');
 		await waitForUpdate(el);
