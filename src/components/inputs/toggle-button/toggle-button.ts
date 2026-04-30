@@ -76,7 +76,7 @@ export class NLDDToggleButton extends LitElement {
 		const iconOnly = this._hasIcon && !this.text;
 		this.toggleAttribute('icon-only', iconOnly);
 		const inaccessible = iconOnly && !this.accessibleLabel;
-		if (inaccessible && !this._warnedA11y) {
+		if (import.meta.env?.DEV && inaccessible && !this._warnedA11y) {
 			this._warnedA11y = true;
 			console.warn('<nldd-toggle-button>: Icon-only usage requires an accessible-label attribute for accessibility.');
 		} else if (!inaccessible) {

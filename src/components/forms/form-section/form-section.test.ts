@@ -29,7 +29,7 @@ describe('nldd-form-section', () => {
 		el = await fixture('<nldd-form-section text="Persoonsgegevens"></nldd-form-section>');
 		const fieldset = el.querySelector('fieldset.form-section');
 		expect(fieldset).not.toBeNull();
-		const legend = el.querySelector('legend.form-section__header');
+		const legend = el.querySelector<HTMLLegendElement>('legend.form-section__header');
 		expect(legend?.textContent).toContain('Persoonsgegevens');
 		expect(legend?.hidden).toBe(false);
 	});

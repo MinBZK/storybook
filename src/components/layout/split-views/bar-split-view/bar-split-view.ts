@@ -138,7 +138,9 @@ export class NLDDBarSplitView extends LitElement {
 	_getSortedChildren(): Element[] {
 		const all = Array.from(this.children).filter(el => {
 			if (!el.slot) {
-				console.warn('<nldd-bar-split-view>: every child must have a slot attribute (e.g. slot="toolbar", slot="status-bar", or slot="bar-1" if no meaningful name applies). Child without slot attribute is ignored:', el);
+				if (import.meta.env?.DEV) {
+					console.warn('<nldd-bar-split-view>: every child must have a slot attribute (e.g. slot="toolbar", slot="status-bar", or slot="bar-1" if no meaningful name applies). Child without slot attribute is ignored:', el);
+				}
 				return false;
 			}
 			return this._isChildVisible(el);

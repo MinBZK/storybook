@@ -135,7 +135,7 @@ export class NLDDComboBox extends LitElement {
 	// — Lifecycle ————————————————————————————————————————————————————————————
 
 	override firstUpdated(): void {
-		if (!this.accessibleLabel) {
+		if (import.meta.env?.DEV && !this.accessibleLabel) {
 			console.warn('<nldd-combo-box>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
 		}
 	}

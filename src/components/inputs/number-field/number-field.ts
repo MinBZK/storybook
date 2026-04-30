@@ -84,7 +84,7 @@ export class NLDDNumberField extends LitElement {
 	private _lastValidValue = 0;
 
 	override firstUpdated(): void {
-		if (!this.accessibleLabel) {
+		if (import.meta.env?.DEV && !this.accessibleLabel) {
 			console.warn('<nldd-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input\'s purpose.');
 		}
 		this._lastValidValue = this._clamp(this.value);

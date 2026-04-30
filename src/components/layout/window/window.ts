@@ -134,7 +134,7 @@ export class NLDDWindow extends LitElement {
 		const dialog = this._dialog;
 		if (!dialog) return;
 
-		if (!this.accessibleLabel && !this._hasWarnedLabel) {
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
 			console.warn(`<nldd-window>: No accessible-label provided. Screen readers will announce this window as "${this._t('components.window.accessible-label')}". Set accessible-label to a unique, descriptive name.`);
 		}

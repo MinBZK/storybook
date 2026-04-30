@@ -94,7 +94,7 @@ export class NLDDDropdown extends LitElement {
 			return;
 		}
 
-		if (!select.hasAttribute('aria-label') && !select.hasAttribute('aria-labelledby') && !select.labels?.length) {
+		if (import.meta.env?.DEV && !select.hasAttribute("aria-label") && !select.hasAttribute("aria-labelledby") && !select.labels?.length) {
 			console.warn('<nldd-dropdown>: The slotted <select> has no accessible name. Add an aria-label or aria-labelledby attribute to the <select> element.');
 		}
 

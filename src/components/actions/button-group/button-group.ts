@@ -40,7 +40,7 @@ export class NLDDButtonGroup extends LitElement {
 		assigned.forEach((el, index) => {
 			if (index >= 3) {
 				el.setAttribute('hidden', '');
-				console.warn('nldd-button-group: Only 3 buttons are allowed. Extra buttons will be hidden.');
+				if (import.meta.env?.DEV) console.warn('nldd-button-group: Only 3 buttons are allowed. Extra buttons will be hidden.');
 			}
 
 			if (this.orientation === 'vertical') {
