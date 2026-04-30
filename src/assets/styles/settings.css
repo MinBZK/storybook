@@ -691,6 +691,11 @@
 	--primitives-transition-duration-slow: 300ms;
 	--primitives-transition-easing-default: ease-out;
 
+	/* ## Border width */
+
+	--primitives-border-width-thin: 1px;
+	--primitives-border-width-regular: 2px;
+
 	/* ## Box shadow */
 
 	--primitives-box-shadow-opacity-factor: 1;
@@ -771,7 +776,7 @@
 	--semantics-blockquotes-max-width: var(--primitives-area-720);
 	--semantics-blockquotes-sm-spacing: calc(var(--primitives-font-size-200) * var(--primitives-line-height-snug));
 	--semantics-blockquotes-md-spacing: calc(var(--primitives-font-size-300) * var(--primitives-line-height-snug));
-	--semantics-blockquotes-border: var(--primitives-space-2) solid var(--semantics-content-color);
+	--semantics-blockquotes-border: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 	--semantics-blockquotes-corner-radius: var(--primitives-corner-radius-xxxl);
 	--semantics-blockquotes-sm-quote-font:
 		italic
@@ -862,7 +867,7 @@
 	--semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-accent-filled-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 
-	--semantics-buttons-accent-outlined-border-thickness: var(--primitives-space-2);
+	--semantics-buttons-accent-outlined-border-thickness: var(--primitives-border-width-regular);
 	--semantics-buttons-accent-outlined-border-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-outlined-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-outlined-is-hovered-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
@@ -883,7 +888,7 @@
 
 	/* ## Input fields */
 
-	--semantics-input-fields-border-thickness: var(--primitives-space-2);
+	--semantics-input-fields-border-thickness: var(--primitives-border-width-regular);
 	--semantics-input-fields-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--semantics-input-fields-border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
 	--semantics-input-fields-background-color: var(--semantics-surfaces-background-color);
@@ -926,7 +931,7 @@
 	/* ## Dividers */
 
 	--semantics-dividers-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
-	--semantics-dividers-thickness: var(--primitives-space-1);
+	--semantics-dividers-thickness: var(--primitives-border-width-thin);
 
 	/* ## Page sections */
 
@@ -973,7 +978,7 @@
 
 	/* ## Focus ring */
 
-	--semantics-focus-ring-outline: var(--primitives-space-2) solid var(--primitives-color-accent-600);
+	--semantics-focus-ring-outline: var(--primitives-border-width-regular) solid var(--primitives-color-accent-600);
 	--semantics-focus-ring-outline-offset: var(--primitives-space-2);
 	--semantics-focus-ring-box-shadow: 0 0 0 var(--primitives-space-6) var(--semantics-surfaces-background-color);
 
@@ -1014,7 +1019,7 @@
 
 	/* ## Checkbox */
 
-	--components-checkbox-border-thickness: var(--primitives-space-2);
+	--components-checkbox-border-thickness: var(--primitives-border-width-regular);
 	--components-checkbox-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-checkbox-background-color: var(--semantics-surfaces-background-color);
 	--components-checkbox-is-hovered-border-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
@@ -1050,7 +1055,7 @@
 	--components-keyboard-shortcut-background-color: var(--semantics-surfaces-tinted-background-color);
 	--components-keyboard-shortcut-content-color: var(--semantics-content-color);
 	--components-keyboard-shortcut-border-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-250));
-	--components-keyboard-shortcut-border-thickness: var(--primitives-space-1);
+	--components-keyboard-shortcut-border-thickness: var(--primitives-border-width-thin);
 	--components-keyboard-shortcut-corner-radius: var(--primitives-corner-radius-xs);
 	--components-keyboard-shortcut-separator-color: var(--semantics-content-secondary-color);
 
@@ -1092,14 +1097,14 @@
 
 	/* ## Radio button */
 
-	--components-radio-button-border-thickness: var(--primitives-space-2);
+	--components-radio-button-border-thickness: var(--primitives-border-width-regular);
 	--components-radio-button-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-radio-button-background-color: var(--semantics-surfaces-background-color);
 	--components-radio-button-is-hovered-border-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
 	--components-radio-button-is-active-border-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-750));
 	--components-radio-button-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-radio-button-is-selected-border-color: var(--semantics-controls-is-highlighted-indicator-color);
-	--components-radio-button-is-selected-inner-shape-border-thickness: var(--primitives-space-2);
+	--components-radio-button-is-selected-inner-shape-border-thickness: var(--primitives-border-width-regular);
 	--components-radio-button-is-selected-inner-shape-border-color: var(--semantics-controls-is-highlighted-contrast-color);
 	--components-radio-button-is-selected-is-hovered-background-color: var(--semantics-controls-is-highlighted-is-hovered-indicator-color);
 	--components-radio-button-is-selected-is-hovered-border-color: var(--semantics-controls-is-highlighted-is-hovered-indicator-color);
@@ -1118,10 +1123,10 @@
 
 	/* ## Switch */
 
-	--components-switch-border-thickness: var(--primitives-space-2);
+	--components-switch-border-thickness: var(--primitives-border-width-regular);
 	--components-switch-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-switch-background-color: var(--semantics-surfaces-background-color);
-	--components-switch-thumb-border-thickness: var(--primitives-space-2);
+	--components-switch-thumb-border-thickness: var(--primitives-border-width-regular);
 	--components-switch-thumb-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-switch-thumb-background-color: var(--semantics-surfaces-background-color);
 	--components-switch-icon-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));

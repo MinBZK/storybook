@@ -87,15 +87,23 @@ export class NLDDForm extends HTMLElement {
 			const form = this._form;
 			this._observer = new MutationObserver(mutations => {
 				for (const m of mutations) {
+					// Migrate only direct children of the host (children of
+					// the nldd-form itself, NOT descendants of e.g. a nested
+					// form-section). Nested children are already inside the
+					// inner form via their parent migration.
+					if (m.target !== this) continue;
 					m.addedNodes.forEach(node => {
 						if (node === form) return;
 						form.appendChild(node);
 					});
 				}
-				// Newly added descendants should also receive the inherited alignment
+				// Newly added descendants — also from inside a nested
+				// nldd-form-section — should receive the inherited alignment.
 				this._propagateLabelAlignment(this.getAttribute('label-alignment'));
 			});
-			this._observer.observe(this, { childList: true });
+			// subtree:true so dynamically added form-fields inside a
+			// nested form-section ook getrokken worden door de propagation.
+			this._observer.observe(this, { childList: true, subtree: true });
 		}
 
 		// Propagate label-alignment to current children (initial + after reconnect)

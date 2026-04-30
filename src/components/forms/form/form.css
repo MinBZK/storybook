@@ -11,11 +11,15 @@ nldd-form > form {
 
 /* # Vertical rhythm
    Use margin-top on adjacent siblings (owl pattern) instead of gap, so the
-   spacing between specific element pairs can be tuned independently. */
+   spacing between specific element pairs can be tuned independently.
+
+   Alle regels zijn gescoped binnen nldd-form (of nldd-form-section binnen
+   een form) — anders raak je form-fields die buiten een form gerenderd
+   worden (story fixtures, ad-hoc compositions) ook met margin-top. */
 
 nldd-form > form > * + *,
-nldd-form-section > * + *,
-nldd-form-field + nldd-form-field {
+nldd-form nldd-form-section > * + *,
+nldd-form nldd-form-field + nldd-form-field {
 	margin-top: var(--semantics-forms-gap);
 }
 
@@ -27,14 +31,14 @@ nldd-form-field + nldd-form-field {
    form-field's own container query), so 8px applies regardless of attribute. */
 
 @media (max-width: 640px) {
-	nldd-form-field + nldd-form-field {
+	nldd-form nldd-form-field + nldd-form-field {
 		margin-top: var(--semantics-forms-gap-tight);
 	}
 }
 
 @media (min-width: 641px) {
-	nldd-form-field:not([label-alignment]) + nldd-form-field:not([label-alignment]),
-	nldd-form-field[label-alignment='top'] + nldd-form-field[label-alignment='top'] {
+	nldd-form nldd-form-field:not([label-alignment]) + nldd-form-field:not([label-alignment]),
+	nldd-form nldd-form-field[label-alignment='top'] + nldd-form-field[label-alignment='top'] {
 		margin-top: var(--semantics-forms-gap-tight);
 	}
 }
@@ -47,7 +51,7 @@ nldd-form-field + nldd-form-field {
    Sibling selectors only work in light DOM, so the suppression flows in
    via context-vars that the form-section's :host reads with var(...). */
 
-nldd-form-section + nldd-form-section {
+nldd-form nldd-form-section + nldd-form-section {
 	--context-form-section-top-border: none;
 	--context-form-section-top-padding: 0;
 }

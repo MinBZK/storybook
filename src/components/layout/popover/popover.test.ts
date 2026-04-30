@@ -217,13 +217,16 @@ describe('nldd-popover', () => {
 			const last = wrapper.querySelector<HTMLButtonElement>('#popover-btn-2')!;
 			last.focus();
 
-			// Tab vooruit op laatste focusable → popover sluit
+			// Tab vooruit op laatste focusable → popover sluit. Dispatch op
+			// het gefocuste element zodat composedPath()[0] de button is
+			// (matcht hoe een echte browser het event aflevert).
 			const tabEvent = new KeyboardEvent('keydown', {
 				key: 'Tab',
 				bubbles: true,
 				cancelable: true,
+				composed: true,
 			});
-			popover.dispatchEvent(tabEvent);
+			last.dispatchEvent(tabEvent);
 			await waitForUpdate(popover);
 
 			expect(popover.open).toBe(false);
@@ -254,11 +257,66 @@ describe('nldd-popover', () => {
 				shiftKey: true,
 				bubbles: true,
 				cancelable: true,
+				composed: true,
 			});
-			popover.dispatchEvent(tabEvent);
+			first.dispatchEvent(tabEvent);
 			await waitForUpdate(popover);
 
 			expect(popover.open).toBe(false);
+		});
+
+		it('Shift+Tab vanuit shadow-DOM custom element sluit niet wanneer er een focusable vóór staat', async () => {
+			// Regression: voorheen gaf document.activeElement de host (custom
+			// element) terug i.p.v. het interne <button>. indexOf gaf -1, en
+			// (-1 <= 0) === true, wat Shift-Tab altijd liet sluiten — ook
+			// midden in de popover. Test simuleert een nldd-button-achtige
+			// custom element met een interne button.
+			class TestCustomBtn extends HTMLElement {
+				static observedAttributes = [];
+				constructor() {
+					super();
+					const sr = this.attachShadow({ mode: 'open' });
+					sr.innerHTML = '<button class="inner">slot</button>';
+				}
+			}
+			if (!customElements.get('test-custom-btn')) {
+				customElements.define('test-custom-btn', TestCustomBtn);
+			}
+
+			const wrapper = await fixture(`
+				<div>
+					<button id="trigger-shadow-shift">Trigger</button>
+					<nldd-popover anchor="trigger-shadow-shift" accessible-label="Test">
+						<button id="first-light">First</button>
+						<test-custom-btn id="second-shadow"></test-custom-btn>
+					</nldd-popover>
+				</div>
+			`);
+			el = wrapper;
+			const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
+			await waitForUpdate(popover);
+
+			popover.show();
+			await waitForUpdate(popover);
+
+			// Focus het interne button van de custom element (positie 2)
+			const customBtn = wrapper.querySelector('#second-shadow') as HTMLElement;
+			const innerBtn = customBtn.shadowRoot!.querySelector('.inner') as HTMLButtonElement;
+			innerBtn.focus();
+
+			// Shift-Tab vanaf positie 2 moet NIET sluiten — er staat nog een
+			// focusable vóór (de light-DOM button op positie 1).
+			const tabEvent = new KeyboardEvent('keydown', {
+				key: 'Tab',
+				shiftKey: true,
+				bubbles: true,
+				cancelable: true,
+				composed: true,
+			});
+			innerBtn.dispatchEvent(tabEvent);
+			await waitForUpdate(popover);
+
+			expect(popover.open).toBe(true);
 		});
 
 		it('Tab in het midden van de popover sluit niet', async () => {
@@ -280,13 +338,15 @@ describe('nldd-popover', () => {
 			await waitForUpdate(popover);
 
 			// Focus op middelste — Tab moet niet sluiten
-			wrapper.querySelector<HTMLButtonElement>('#middle-btn-2')!.focus();
+			const middle = wrapper.querySelector<HTMLButtonElement>('#middle-btn-2')!;
+			middle.focus();
 			const tabEvent = new KeyboardEvent('keydown', {
 				key: 'Tab',
 				bubbles: true,
 				cancelable: true,
+				composed: true,
 			});
-			popover.dispatchEvent(tabEvent);
+			middle.dispatchEvent(tabEvent);
 			await waitForUpdate(popover);
 
 			expect(popover.open).toBe(true);

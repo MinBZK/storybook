@@ -285,9 +285,16 @@ export class NLDDPopover extends LitElement {
 	private _handleKeydown = (event: KeyboardEvent): void => {
 		if (event.key !== 'Tab') return;
 		const focusables = this._getFocusables();
-		const idx = focusables.indexOf(document.activeElement as HTMLElement);
+		// document.activeElement geeft alleen de shadow host terug (bv.
+		// nldd-button), niet het interne <button>. Onze focusables-lijst
+		// bevat juist het interne element via shadow-walk. Gebruik
+		// composedPath()[0] om het daadwerkelijk gefocuste element te
+		// krijgen — dat matcht wat _getFocusables retourneert.
+		const focused = (event.composedPath()[0] as HTMLElement | null)
+			?? (document.activeElement as HTMLElement | null);
+		const idx = focused ? focusables.indexOf(focused) : -1;
 		const tabsOut = focusables.length === 0
-			|| (event.shiftKey ? idx <= 0 : idx === focusables.length - 1);
+			|| (event.shiftKey ? idx === 0 : idx === focusables.length - 1);
 		if (tabsOut) {
 			event.preventDefault();
 			this.hide();
@@ -322,24 +329,25 @@ export class NLDDPopover extends LitElement {
 			'[tabindex]:not([tabindex="-1"])',
 		].join(',');
 
-		// Custom elements (nldd-button, nldd-text-field, etc.) host their
-		// real focusable inside their shadow root. querySelectorAll can't
-		// pierce closed/open shadow boundaries, so we walk the tree and
-		// recurse into shadow roots ourselves.
+		// Walk in document order, descending into shadow roots inline so a
+		// custom element's internal <button> verschijnt op de juiste plek
+		// tussen omringende light-DOM focusables (eerst shadow content, dan
+		// light children — matcht de tab-order voor de meeste use cases).
+		// Edge case: een shadow tree met markup vóór een <slot> volgorde
+		// raakt niet 100% gespiegeld, maar dat is zeldzaam in popover content.
 		const result: HTMLElement[] = [];
 		const visit = (root: ParentNode): void => {
-			root.querySelectorAll<HTMLElement>(selector).forEach(el => {
-				if (el.hasAttribute('disabled')) return;
-				// getClientRects().length === 0 catches both display:none and
-				// visibility:hidden (also from any ancestor incl. shadow host),
-				// regardless of where in the shadow tree the element lives.
-				// More reliable than offsetParent inside shadow roots.
-				if (el.getClientRects().length === 0) return;
-				result.push(el);
-			});
-			root.querySelectorAll<HTMLElement>('*').forEach(el => {
+			for (const child of Array.from(root.children)) {
+				const el = child as HTMLElement;
+				if (el.matches?.(selector) && !el.hasAttribute('disabled')) {
+					// getClientRects().length === 0 catches display:none en
+					// visibility:hidden van element of ancestor (inclusief
+					// shadow host) — robuuster dan offsetParent in shadow.
+					if (el.getClientRects().length > 0) result.push(el);
+				}
 				if (el.shadowRoot) visit(el.shadowRoot);
-			});
+				visit(el);
+			}
 		};
 		visit(this);
 		return result;
