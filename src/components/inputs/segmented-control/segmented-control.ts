@@ -168,7 +168,7 @@ export class NLDDSegmentedControl extends LitElement {
 
 	override firstUpdated(): void {
 		this._syncItems();
-		if (!this.accessibleLabel && !this.accessibleLabelledBy) {
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy) {
 			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
 		}
 	}

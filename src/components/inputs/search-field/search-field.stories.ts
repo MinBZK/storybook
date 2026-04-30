@@ -25,6 +25,11 @@ export default {
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 		showSearchButton: {
 			name: 'show-search-button',
 			control: 'boolean',
@@ -58,6 +63,7 @@ export default {
 	},
 	args: {
 		size: 'md',
+		width: '',
 		showSearchButton: false,
 		name: '',
 		value: '',
@@ -67,7 +73,7 @@ export default {
 	},
 };
 
-const Template = ({ size, showSearchButton, name, value, placeholder, accessibleLabel, disabled }: Record<string, any>) => html`
+const Template = ({ size, showSearchButton, name, value, placeholder, accessibleLabel, disabled, width }: Record<string, any>) => html`
 	<nldd-search-field
 		value=${value}
 		placeholder=${placeholder}
@@ -76,6 +82,7 @@ const Template = ({ size, showSearchButton, name, value, placeholder, accessible
 		?disabled=${disabled}
 		?show-search-button=${showSearchButton}
 		name=${name}
+		width=${width}
 	></nldd-search-field>
 `;
 

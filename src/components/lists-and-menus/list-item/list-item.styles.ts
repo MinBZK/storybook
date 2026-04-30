@@ -164,6 +164,7 @@ export const listItemStyles = css`
 		position: absolute;
 		pointer-events: none;
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 

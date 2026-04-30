@@ -25,6 +25,11 @@ export default {
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 		name: {
 			control: 'text',
 			description: 'Naam voor formulierverwerking',
@@ -38,6 +43,11 @@ export default {
 			control: 'text',
 			description: 'Placeholder tekst',
 			table: { defaultValue: { summary: '' } },
+		},
+		autocomplete: {
+			control: 'text',
+			description: 'Browser autofill hint. Default "off" om conflict met dropdown te voorkomen. Set bv. "country" of "organization" om autofill toe te staan.',
+			table: { defaultValue: { summary: 'off' } },
 		},
 		valid: {
 			control: 'boolean',
@@ -57,9 +67,11 @@ export default {
 	},
 	args: {
 		size: 'md',
+		width: '',
 		name: '',
 		value: '',
 		placeholder: 'Zoek een land',
+		autocomplete: 'off',
 		valid: false,
 		invalid: false,
 		disabled: false,
@@ -74,6 +86,8 @@ const Template = (args: Record<string, any>) => html`
 		?invalid=${args.invalid}
 		?disabled=${args.disabled}
 		name=${args.name}
+		autocomplete=${args.autocomplete}
+		width=${args.width}
 	>
 		<nldd-menu empty-text="Geen resultaten">
 			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>

@@ -11,6 +11,7 @@ export const tabBarStyles = css`
 	:host {
 		display: inline-block;
 		position: relative;
+		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -169,8 +170,9 @@ export const tabBarItemStyles = css`
 	/* # Focus */
 
 	.tab-bar__item:focus-visible::before {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 

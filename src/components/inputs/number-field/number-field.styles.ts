@@ -62,8 +62,9 @@ export const numberFieldStyles = css`
 	}
 
 	.number-field:has(.number-field__input:focus-visible) {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 
@@ -132,6 +133,16 @@ export const numberFieldStyles = css`
 
 	:host([hide-spin-buttons]) .number-field__input {
 		min-width: var(--primitives-space-80);
+		text-align: left;
+	}
+
+	:host([hide-spin-buttons][size='sm']) .number-field__input {
+		padding-inline: calc(var(--semantics-controls-sm-inline-padding) - var(--semantics-input-fields-border-thickness));
+	}
+
+	:host([hide-spin-buttons][size='md']) .number-field__input,
+	:host([hide-spin-buttons]:not([size])) .number-field__input {
+		padding-inline: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 	}
 
 	:host([full-width]) .number-field__input,

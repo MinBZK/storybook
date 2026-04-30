@@ -7,6 +7,7 @@ export const buttonBarStyles = css`
 
 	:host {
 		display: inline-flex;
+		isolation: isolate;
 	}
 
 	:host([hidden]) {

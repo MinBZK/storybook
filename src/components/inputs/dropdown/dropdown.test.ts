@@ -260,4 +260,17 @@ describe('nldd-dropdown – change event', () => {
 		expect(detail).toBeDefined();
 		expect(detail.value).toBe('be');
 	});
+
+	it('past inline host width toe als width property gezet is', async () => {
+		el = await fixture<NLDDDropdown>(`
+			<nldd-dropdown width="240px">
+				<select aria-label="Test">
+					<option value="a">A</option>
+				</select>
+			</nldd-dropdown>
+		`);
+		await waitForUpdate(el);
+		expect(el.getAttribute('width')).toBe('240px');
+		expect((el as HTMLElement).style.width).toBe('240px');
+	});
 });

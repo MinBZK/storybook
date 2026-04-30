@@ -11,6 +11,7 @@ export const menuBarItemStyles = css`
 		--_focus-z-index: 1;
 		display: inline-block;
 		position: relative;
+		isolation: isolate;
 		flex-grow: 0;
 		flex-shrink: 0;
 		flex-basis: auto;
@@ -121,8 +122,9 @@ export const menuBarItemStyles = css`
 	}
 
 	.menu-bar-item:focus-visible::before {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 

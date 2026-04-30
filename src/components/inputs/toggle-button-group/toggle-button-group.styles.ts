@@ -7,6 +7,7 @@ export const toggleButtonGroupStyles = css`
 
 	:host {
 		display: block;
+		isolation: isolate;
 	}
 
 	:host([hidden]) {

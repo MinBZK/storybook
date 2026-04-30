@@ -8,6 +8,7 @@ export const paginationStyles = css`
 	:host {
 		display: block;
 		container-type: inline-size;
+		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -94,8 +95,9 @@ export const paginationStyles = css`
 	}
 
 	.pagination__page-button:focus-visible::before {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 
@@ -157,7 +159,7 @@ export const paginationStyles = css`
 		height: var(--semantics-controls-md-min-size);
 		padding-block: var(--primitives-space-8);
 		padding-inline-start: var(--primitives-space-12);
-		padding-inline-end: calc(var(--primitives-space-24) + var(--primitives-space-12));
+		padding-inline-end: calc(var(--primitives-space-24) + var(--primitives-space-4));
 		font: var(--semantics-buttons-md-font);
 		color: inherit;
 		box-sizing: border-box;
@@ -167,8 +169,9 @@ export const paginationStyles = css`
 	}
 
 	.pagination__select:focus-visible {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--primitives-space-4) / 2);
 	}
 

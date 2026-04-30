@@ -19,20 +19,22 @@ export const formFieldStyles = css`
 	}
 
 
-	/* # Block */
+	/* # Block
+	   641px = breakpoints.mdMin (zie src/assets/styles/breakpoints.ts).
+	   Houd in sync met form.css's @media queries en form-actions. */
 
 	.form-field {
 		display: flex;
 		flex-direction: column;
-		gap: var(--primitives-space-2);
+		gap: var(--components-form-field-gap);
 	}
 
-	@container (min-width: 640px) {
-		:host([label-alignment='left']) .form-field,
-		:host([label-alignment='right']) .form-field {
+	:host([label-alignment='left']) .form-field,
+	:host([label-alignment='right']) .form-field {
+		@container (min-width: 641px) {
 			flex-direction: row;
 			align-items: start;
-			gap: var(--primitives-space-8);
+			gap: var(--semantics-forms-columns-gap);
 		}
 	}
 
@@ -45,33 +47,39 @@ export const formFieldStyles = css`
 		box-sizing: border-box;
 	}
 
+	:host([label-alignment='left']) .form-field__header,
+	:host([label-alignment='right']) .form-field__header {
+		@container (min-width: 641px) {
+			flex-grow: 0;
+			flex-shrink: 0;
+			justify-content: center;
+			width: var(--semantics-forms-label-column-width);
+			min-height: var(--semantics-controls-md-min-size);
+		}
+	}
+
+	:host([label-alignment='right']) .form-field__header {
+		@container (min-width: 641px) {
+			align-items: end;
+			text-align: right;
+		}
+	}
+
+	:host([label-alignment='left']) .form-field__header {
+		@container (min-width: 641px) {
+			align-items: start;
+			text-align: left;
+		}
+	}
+
 	.form-field__header.is-empty {
 		display: none;
 	}
 
-	@container (min-width: 640px) {
-		:host([label-alignment='left']) .form-field__header.is-empty,
-		:host([label-alignment='right']) .form-field__header.is-empty {
+	:host([label-alignment='left']) .form-field__header.is-empty,
+	:host([label-alignment='right']) .form-field__header.is-empty {
+		@container (min-width: 641px) {
 			display: flex;
-		}
-
-		:host([label-alignment='left']) .form-field__header,
-		:host([label-alignment='right']) .form-field__header {
-			flex-grow: 0;
-			flex-shrink: 0;
-			justify-content: center;
-			width: var(--primitives-area-240);
-			min-height: var(--semantics-controls-md-min-size);
-		}
-
-		:host([label-alignment='right']) .form-field__header {
-			align-items: end;
-			text-align: right;
-		}
-
-		:host([label-alignment='left']) .form-field__header {
-			align-items: start;
-			text-align: left;
 		}
 	}
 
@@ -86,19 +94,23 @@ export const formFieldStyles = css`
 		font: var(--primitives-font-body-md-regular-tight);
 	}
 
-	@container (min-width: 640px) {
-		:host([label-alignment='left']) .form-field__label,
-		:host([label-alignment='right']) .form-field__label {
+	:host([label-alignment='left']) .form-field__label,
+	:host([label-alignment='right']) .form-field__label {
+		@container (min-width: 641px) {
 			display: flex;
 			flex-direction: column;
 			gap: var(--primitives-space-0);
 		}
+	}
 
-		:host([label-alignment='right']) .form-field__label {
+	:host([label-alignment='right']) .form-field__label {
+		@container (min-width: 641px) {
 			align-items: end;
 		}
+	}
 
-		:host([label-alignment='left']) .form-field__label {
+	:host([label-alignment='left']) .form-field__label {
+		@container (min-width: 641px) {
 			align-items: start;
 		}
 	}
@@ -185,8 +197,9 @@ export const formFieldHelpTextStyles = css`
 	}
 
 	::slotted(a:focus-visible) {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 	::slotted(a:focus:not(:focus-visible)) {
@@ -239,8 +252,9 @@ export const formFieldErrorTextStyles = css`
 	}
 
 	::slotted(a:focus-visible) {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 	::slotted(a:focus:not(:focus-visible)) {

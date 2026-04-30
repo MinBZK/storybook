@@ -1,0 +1,118 @@
+/* Form-section: light-DOM grouping wrapper.
+
+   nldd-form-section bouwt z'n eigen DOM-structuur in light DOM (geen
+   shadow), zodat NVDA + Firefox de native <fieldset> + <legend> als
+   group-label betrouwbaar aankondigen voor de slotted controls.
+
+   Structuur na connectedCallback:
+     <nldd-form-section>
+       <fieldset class="form-section">
+         <legend class="form-section__header">
+           <span class="form-section__title">Title</span>
+           <span class="form-section__subtitle">Subtitle</span>
+         </legend>
+         <div class="form-section__main">
+           [user's children]
+         </div>
+       </fieldset>
+     </nldd-form-section>
+
+   Form-fields die als directe children meegegeven worden, worden in
+   .form-section__main geplaatst (zie form-section.ts).
+*/
+
+
+/* # Host
+   Top + bottom dividers + padding voor vertical rhythm.
+   Suppression: :first-child, :last-child, en sibling-section
+   (om dubbele lijnen te voorkomen). */
+
+nldd-form-section {
+	display: block;
+	box-sizing: border-box;
+	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+	border-bottom: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+	padding-top: var(--semantics-forms-gap);
+	padding-bottom: var(--semantics-forms-gap);
+}
+
+nldd-form-section[hidden] {
+	display: none;
+}
+
+nldd-form-section:first-child,
+nldd-form-section + nldd-form-section {
+	border-top: none;
+	padding-top: 0;
+}
+
+nldd-form-section:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+
+/* # Block (fieldset) — reset native styles */
+
+nldd-form-section > fieldset.form-section {
+	border: none;
+	margin: 0;
+	padding: 0;
+	min-width: 0;
+	display: block;
+	width: 100%;
+}
+
+
+/* # Header (rendered as <legend>, must be direct child of <fieldset>).
+   Title and subtitle are spans inside the legend so screen readers read
+   them together as the group label. */
+
+nldd-form-section .form-section__header {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	text-align: left;
+}
+
+nldd-form-section .form-section__header[hidden] {
+	display: none;
+}
+
+
+/* # Title */
+
+nldd-form-section .form-section__title {
+	display: block;
+	color: var(--semantics-content-color);
+	font: var(--semantics-forms-section-title-font);
+}
+
+
+/* # Subtitle */
+
+nldd-form-section .form-section__subtitle {
+	display: block;
+	color: var(--semantics-content-secondary-color);
+	font: var(--semantics-forms-section-subtitle-font);
+}
+
+
+/* # Main — gets margin-top to separate from header. When no header is
+   rendered (no text + no supporting-text), main is the first child of
+   the fieldset and the margin collapses via :first-child. */
+
+nldd-form-section > fieldset.form-section > .form-section__main {
+	display: block;
+	margin-top: var(--semantics-forms-gap);
+}
+
+nldd-form-section > fieldset.form-section > .form-section__main:first-child {
+	margin-top: 0;
+}
+
+/* Form-fields binnen .form-section__main krijgen hun spacing via form.css's
+   `nldd-form nldd-form-field + nldd-form-field` rule (incl. tighter @media
+   varianten voor top-aligned). Mixed content (form-fields + paragraphs etc.)
+   wordt niet automatisch gespaceerd — gebruik nldd-rich-text of eigen
+   spacing-CSS voor die zeldzame gevallen. */

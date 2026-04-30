@@ -91,7 +91,7 @@ export class NLDDSheet extends LitElement {
 		if (!dialog) return;
 
 		// Warn once per instance when the consumer has not provided a meaningful accessible label
-		if (this.accessibleLabel === 'Dialoogvenster' && !this._hasWarnedLabel) {
+		if (import.meta.env?.DEV && this.accessibleLabel === 'Dialoogvenster' && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
 			console.warn('<nldd-sheet>: No accessible-label provided. Screen readers will announce this dialog as "Dialoogvenster". Set accessible-label to a descriptive name matching the dialog title.');
 		}

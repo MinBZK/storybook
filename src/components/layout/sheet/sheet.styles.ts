@@ -64,15 +64,16 @@ export const sheetStyles = css`
 		padding: 0;
 		margin: 0;
 		background: var(--semantics-surfaces-background-color);
-		box-shadow: var(--components-sheet-box-shadow);
+		box-shadow: var(--semantics-overlays-box-shadow);
 		overflow: hidden;
 		position: fixed;
 		outline: none;
 	}
 
 	.sheet:focus-visible:not(.is-pointer-focus) {
-		box-shadow: var(--semantics-focus-ring-box-shadow), var(--components-sheet-box-shadow);
+		box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
 	}
 
 	.sheet:not([open]) {
@@ -92,21 +93,21 @@ export const sheetStyles = css`
 
 	:host([placement='right']) .sheet,
 	:host(:not([placement])) .sheet {
-		inset: var(--components-sheet-side-inset) var(--components-sheet-side-inset) var(--components-sheet-side-inset) auto;
-		width: min(var(--_custom-width, var(--components-sheet-side-md-width)), calc(100vw - var(--components-sheet-side-inset) * 2));
-		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
+		inset: var(--semantics-overlays-inset) var(--semantics-overlays-inset) var(--semantics-overlays-inset) auto;
+		width: min(var(--_custom-width, var(--semantics-sheets-side-md-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
+		height: calc(100dvh - var(--semantics-overlays-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: min(var(--_custom-width, var(--components-sheet-side-lg-width)), calc(100vw - var(--components-sheet-side-inset) * 2));
+			width: min(var(--_custom-width, var(--semantics-sheets-side-lg-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
 		}
 
 		&[open] {
-			animation: sheet-slide-in-right var(--components-sheet-side-animation-duration) ease both;
+			animation: sheet-slide-in-right var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 
 		&.is-closing {
-			animation: sheet-slide-out-right var(--components-sheet-side-animation-duration) ease both;
+			animation: sheet-slide-out-right var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 	}
 
@@ -114,21 +115,21 @@ export const sheetStyles = css`
 	/* # Placement: left */
 
 	:host([placement='left']) .sheet {
-		inset: var(--components-sheet-side-inset) auto var(--components-sheet-side-inset) var(--components-sheet-side-inset);
-		width: min(var(--_custom-width, var(--components-sheet-side-md-width)), calc(100vw - var(--components-sheet-side-inset) * 2));
-		height: calc(100dvh - var(--components-sheet-side-inset) * 2);
+		inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);
+		width: min(var(--_custom-width, var(--semantics-sheets-side-md-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
+		height: calc(100dvh - var(--semantics-overlays-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: min(var(--_custom-width, var(--components-sheet-side-lg-width)), calc(100vw - var(--components-sheet-side-inset) * 2));
+			width: min(var(--_custom-width, var(--semantics-sheets-side-lg-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
 		}
 
 		&[open] {
-			animation: sheet-slide-in-left var(--components-sheet-side-animation-duration) ease both;
+			animation: sheet-slide-in-left var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 
 		&.is-closing {
-			animation: sheet-slide-out-left var(--components-sheet-side-animation-duration) ease both;
+			animation: sheet-slide-out-left var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 	}
 
@@ -138,7 +139,7 @@ export const sheetStyles = css`
 	:host([placement='bottom']) .sheet {
 		inset: auto 0 0 0;
 		max-width: var(--semantics-page-sections-body-max-width);
-		max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
+		max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
 		height: auto;
 		margin-inline: auto;
 		border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
@@ -149,19 +150,19 @@ export const sheetStyles = css`
 		}
 
 		@media (min-width: ${mdMin}) {
-			width: calc(100% - var(--components-sheet-bottom-md-inline-inset));
+			width: calc(100% - var(--semantics-sheets-bottom-md-inline-inset));
 		}
 
 		@media (min-width: ${lgMin}) {
-			width: calc(100% - var(--components-sheet-bottom-lg-inline-inset));
+			width: calc(100% - var(--semantics-sheets-bottom-lg-inline-inset));
 		}
 
 		&[open] {
-			animation: sheet-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
+			animation: sheet-slide-in-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 
 		&.is-closing {
-			animation: sheet-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
+			animation: sheet-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 		}
 	}
 
@@ -176,15 +177,15 @@ export const sheetStyles = css`
 			width: 100%;
 			max-width: 100%;
 			height: auto;
-			max-height: calc(100dvh - var(--components-sheet-bottom-top-inset));
+			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
 			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
 			&[open] {
-				animation: sheet-slide-in-bottom var(--components-sheet-bottom-animation-duration) ease both;
+				animation: sheet-slide-in-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
 
 			&.is-closing {
-				animation: sheet-slide-out-bottom var(--components-sheet-bottom-animation-duration) ease both;
+				animation: sheet-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
 		}
 	}

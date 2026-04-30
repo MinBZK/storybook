@@ -114,6 +114,13 @@ describe('nldd-combo-box – size', () => {
 		const picker = el.shadowRoot!.querySelector('.combo-box__picker-button nldd-icon-button')!;
 		expect(picker.getAttribute('size')).toBe('xs');
 	});
+
+	it('past inline host width toe als width property gezet is', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box width="240px"></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('width')).toBe('240px');
+		expect((el as HTMLElement).style.width).toBe('240px');
+	});
 });
 
 
@@ -366,12 +373,74 @@ describe('nldd-combo-box – Popover API', () => {
 		// @ts-ignore
 		delete proto.showPopover;
 
-		el._openMenu(false);
+		el._openMenu();
 
 		expect(warnSpy).toHaveBeenCalledWith(
 			expect.stringContaining('Popover API')
 		);
 
 		proto.showPopover = original;
+	});
+});
+
+describe('nldd-combo-box – picker pointerdown (touch close)', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('pointerdown op picker terwijl menu open is sluit het en skippen volgende click-toggle', async () => {
+		// Op iOS sluit een tap buiten de open popover automatisch via
+		// light-dismiss. De picker-tap dispatcht ZOWEL pointerdown ALS
+		// click — als click _toggleMenu zou aanroepen zou 'ie het menu
+		// direct heropenen. _handlePickerPointerdown markeert dat het
+		// menu open WAS, zodat de daaropvolgende click-toggle een no-op
+		// wordt.
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box>
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+
+		// Open het menu programmatisch
+		el._openMenu();
+		await waitForUpdate(el);
+		expect(el._isOpen).toBe(true);
+
+		// Simuleer browser flow: pointerdown → light-dismiss closes popover →
+		// pointerdown handler markeert flag → click → _toggleMenu skipt.
+		el._handlePickerPointerdown();
+		// Light-dismiss zou _isOpen op false zetten via de toggle event;
+		// simuleer dat handmatig
+		el._closeMenu();
+		await waitForUpdate(el);
+
+		// Nu komt de click — _toggleMenu zou normaal heropenen, maar de
+		// flag voorkomt dat
+		el._toggleMenu();
+		await waitForUpdate(el);
+		expect(el._isOpen).toBe(false);
+	});
+
+	it('pointerdown wanneer menu gesloten is markeert geen flag', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box>
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		expect(el._isOpen).toBe(false);
+
+		// Pointerdown bij gesloten menu — geen flag, dus volgende toggle opent
+		el._handlePickerPointerdown();
+		el._toggleMenu();
+		await waitForUpdate(el);
+		expect(el._isOpen).toBe(true);
 	});
 });

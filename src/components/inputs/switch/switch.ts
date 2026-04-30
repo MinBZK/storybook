@@ -41,7 +41,7 @@ export class NLDDSwitch extends LitElement {
 	value = 'on';
 
 	override firstUpdated(): void {
-		if (!this.accessibleLabel) {
+		if (import.meta.env?.DEV && !this.accessibleLabel) {
 			console.warn('<nldd-switch>: No accessible-label provided. Use nldd-switch-field for labeled usage, or provide an accessible-label attribute for screen reader accessibility.');
 		}
 	}

@@ -12,7 +12,12 @@
  *
  * @attr {boolean} modeless         - Niet-modaal (geen backdrop of focusvergrendeling); standaard is het venster modaal
  * @attr {boolean} movable     - Verplaatsbaar via pointer (op sm uitgeschakeld). Geen keyboard-equivalent (WCAG 2.1.1 path-dependent exception).
- * @attr {string}  accessible-label - (verplicht) Toegankelijke naam (aria-label) — zet een unieke naam per venster
+ * @attr {string}  accessible-label - (verplicht) Toegankelijke naam (aria-label).
+ *                                     Valt terug op de i18n default ('Venster')
+ *                                     als niet gezet — geef altijd een unieke,
+ *                                     beschrijvende naam per venster.
+ * @attr {object}  translations      - Override translation keys; unset keys
+ *                                     vallen terug op de Nederlandse default.
  * @attr {string}  top              - CSS top positie van de bovenrand (bijv. '0', '100px')
  * @attr {string}  left             - CSS left positie van de linkerrand
  * @attr {string}  right            - CSS right waarde
@@ -33,6 +38,7 @@ import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { windowStyles } from './window.styles.js';
 import { windowTemplate } from './window.template.js';
+import { nlddWindowTranslations, type NLDDWindowTranslations } from './window.i18n.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
@@ -47,7 +53,14 @@ export class NLDDWindow extends LitElement {
 	movable = false;
 
 	@property({ type: String, attribute: 'accessible-label' })
-	accessibleLabel = 'Venster';
+	accessibleLabel = '';
+
+	/**
+	 * Override one or more translation keys.
+	 * Unset keys fall back to the Dutch default.
+	 */
+	@property({ type: Object })
+	translations: Partial<NLDDWindowTranslations> = {};
 
 	@property({ type: String, reflect: true })
 	top: string | undefined;
@@ -107,13 +120,23 @@ export class NLDDWindow extends LitElement {
 		}
 	}
 
+	// — i18n ——————————————————————————————————————————————————————————————————
+
+	private _t(key: keyof NLDDWindowTranslations): string {
+		return this.translations[key] ?? nlddWindowTranslations[key];
+	}
+
+	get _resolvedAccessibleLabel(): string {
+		return this.accessibleLabel || this._t('components.window.accessible-label');
+	}
+
 	show(): void {
 		const dialog = this._dialog;
 		if (!dialog) return;
 
-		if (this.accessibleLabel === 'Venster' && !this._hasWarnedLabel) {
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this._hasWarnedLabel) {
 			this._hasWarnedLabel = true;
-			console.warn('<nldd-window>: No accessible-label provided. Screen readers will announce this window as "Venster". Set accessible-label to a unique, descriptive name.');
+			console.warn(`<nldd-window>: No accessible-label provided. Screen readers will announce this window as "${this._t('components.window.accessible-label')}". Set accessible-label to a unique, descriptive name.`);
 		}
 
 		if (this.modeless) {

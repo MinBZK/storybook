@@ -29,6 +29,11 @@ export default {
 			description: 'Size variant',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 		name: {
 			control: 'text',
 			description: 'Form field name',
@@ -67,6 +72,12 @@ export default {
 			description: 'aria-label for toggle button when unmasked',
 			table: { defaultValue: { summary: 'Verberg wachtwoord' } },
 		},
+		autocomplete: {
+			control: 'select',
+			options: ['', 'off', 'current-password', 'new-password'],
+			description: 'Browser autofill hint (HTML autocomplete attribute)',
+			table: { defaultValue: { summary: '' } },
+		},
 		masked: {
 			control: 'boolean',
 			description: 'Whether the password is masked',
@@ -90,6 +101,7 @@ export default {
 	},
 	args: {
 		size: 'md',
+		width: '',
 		name: 'password',
 		value: '',
 		placeholder: 'Password field',
@@ -97,6 +109,7 @@ export default {
 		hideText: 'Verberg',
 		showAccessibleLabel: 'Toon wachtwoord',
 		hideAccessibleLabel: 'Verberg wachtwoord',
+		autocomplete: '',
 		masked: true,
 		valid: false,
 		invalid: false,
@@ -104,7 +117,7 @@ export default {
 	},
 };
 
-const Template = ({ size, name, value, placeholder, showText, hideText, showAccessibleLabel, hideAccessibleLabel, masked, valid, invalid, disabled }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, showText, hideText, showAccessibleLabel, hideAccessibleLabel, autocomplete, masked, valid, invalid, disabled, width }: Record<string, any>) => html`
 	<nldd-password-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -118,6 +131,8 @@ const Template = ({ size, name, value, placeholder, showText, hideText, showAcce
 		show-accessible-label=${showAccessibleLabel}
 		hide-accessible-label=${hideAccessibleLabel}
 		name=${name}
+		autocomplete=${autocomplete}
+		width=${width}
 	></nldd-password-field>
 `;
 

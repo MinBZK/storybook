@@ -22,6 +22,7 @@
  * @attr {string} name         - Input name for form submission
  * @attr {string} autocomplete        - Autocomplete hint
  * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
+ * @attr {string} width        - Optional fixed width (any CSS length, e.g. "240px"). Default: full-width.
  *
  * @fires input  - When the input value changes ({ detail: { value } })
  * @fires change - When the input value is committed ({ detail: { value } })
@@ -30,7 +31,7 @@
  * @csspart input  - The native input element
  * @csspart toggle - The toggle button wrapper
  */
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { passwordFieldStyles } from './password-field.styles.js';
 import { passwordFieldTemplate } from './password-field.template.js';
@@ -103,8 +104,18 @@ export class NLDDPasswordField extends LitElement {
 	@property({ type: String, attribute: 'error-message-ids' })
 	errorMessageIds = '';
 
+	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
+	@property({ type: String, reflect: true })
+	width = '';
+
 	@query('.password-field__input')
 	private _input!: HTMLInputElement;
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('width')) {
+			this.style.width = this.width || '';
+		}
+	}
 
 	public _handleInput(e: Event): void {
 		e.stopPropagation();

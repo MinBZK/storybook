@@ -46,6 +46,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 				placeholder=${component.placeholder || nothing}
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
+				autocomplete=${component.autocomplete || nothing}
 				@input=${component._handleInput}
 				@keydown=${component._handleKeydown}
 				@blur=${component._handleBlur}
@@ -72,7 +73,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 						icon="chevron-down"
 						text=${component._t('components.combo-box.open-menu-action')}
 						?disabled=${component.disabled}
-						@mousedown=${component._handlePickerMousedown}
+						@pointerdown=${component._handlePickerPointerdown}
 						@click=${component._toggleMenu}
 					></nldd-icon-button>
 				</div>

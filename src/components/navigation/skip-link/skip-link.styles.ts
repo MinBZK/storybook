@@ -62,6 +62,9 @@ export const skipLinkStyles = css`
 	.skip-link__control:focus-visible {
 		box-shadow: var(--_focus-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		/* Negative outline-offset zodat de halo binnen het control valt
+		   (skip-link is small en zou anders deels buiten het viewport
+		   uitsteken). Component-specifieke override van de default. */
 		outline-offset: var(--_focus-outline-offset);
 	}
 `;

@@ -60,7 +60,7 @@ export class NLDDIcon extends LitElement {
 			return svg;
 		}
 
-		console.warn(`NLDDIcon: icon "${resolvedName}" not found`);
+		if (import.meta.env?.DEV) console.warn(`NLDDIcon: icon "${resolvedName}" not found`);
 		return null;
 	}
 

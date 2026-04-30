@@ -16,12 +16,13 @@
  * @attr {string}  name                - Input name for form submission
  * @attr {boolean} show-search-button - When set, shows a search button on the right
  * @attr {object}  translations        - Override translation keys; unset keys fall back to Dutch
+ * @attr {string}  width               - Optional fixed width (any CSS length, e.g. "240px"). Default: full-width.
  *
  * @fires input  - When the input value changes; detail: { value: string }
  * @fires change - When the input value is committed; detail: { value: string }
  * @fires search - When search is submitted via Enter or the search button; detail: { value: string }
  */
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { searchFieldStyles } from './search-field.styles.js';
 import { searchFieldTemplate } from './search-field.template.js';
@@ -67,8 +68,18 @@ export class NLDDSearchField extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDSearchFieldTranslations> = {};
 
+	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
+	@property({ type: String, reflect: true })
+	width = '';
+
 	@query('.search-field__input')
 	_input!: HTMLInputElement;
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('width')) {
+			this.style.width = this.width || '';
+		}
+	}
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 

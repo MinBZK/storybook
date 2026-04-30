@@ -23,6 +23,15 @@ export const keyboardShortcutStyles = css`
 		display: none;
 	}
 
+	/* Hide on touch-only devices (no hover capability anywhere) since the
+	   shortcut cannot be invoked. Override with [always-visible] when the
+	   shortcut is shown for informational purposes. */
+	@media (any-hover: none) {
+		:host(:not([always-visible])) {
+			display: none;
+		}
+	}
+
 
 	/* # Block */
 

@@ -8,6 +8,7 @@ export const documentTabBarStyles = css`
 	:host {
 		display: block;
 		position: relative;
+		isolation: isolate;
 		--_drag-clone-top: 0px;
 		--_drag-clone-left: 0px;
 		--_drag-clone-width: 0px;
@@ -270,8 +271,9 @@ export const documentTabBarItemStyles = css`
 	/* ## Focus */
 
 	.document-tab-bar__item-tab:focus-visible {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 
@@ -328,27 +330,27 @@ export const documentTabBarItemStyles = css`
 	.document-tab-bar__item-supporting-text {
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
-		color: var(--semantics-content-secondary-color);
+		color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
 	:host([selected]) .document-tab-bar__item-supporting-text {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-secondary-content-color);
 	}
 
 	.document-tab-bar__item-short-supporting-text {
 		padding-inline-end: var(--primitives-space-6);
 		font: var(--primitives-font-body-xs-regular-flat);
-		color: var(--semantics-content-secondary-color);
+		color: var(--semantics-buttons-neutral-tinted-secondary-content-color);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
 	:host([selected]) .document-tab-bar__item-short-supporting-text {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-secondary-content-color);
 	}
 
 
@@ -394,8 +396,9 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-dismiss-button:focus-visible {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 

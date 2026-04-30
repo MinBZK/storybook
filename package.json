@@ -63,9 +63,21 @@
       "types": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.d.ts",
       "default": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.js"
     },
+    "./form": {
+      "types": "./dist/components/forms/form/form.d.ts",
+      "default": "./dist/components/forms/form/form.js"
+    },
+    "./form-actions": {
+      "types": "./dist/components/forms/form-actions/form-actions.d.ts",
+      "default": "./dist/components/forms/form-actions/form-actions.js"
+    },
     "./form-field": {
       "types": "./dist/components/forms/form-field/form-field.d.ts",
       "default": "./dist/components/forms/form-field/form-field.js"
+    },
+    "./form-section": {
+      "types": "./dist/components/forms/form-section/form-section.d.ts",
+      "default": "./dist/components/forms/form-section/form-section.js"
     },
     "./text-field": {
       "types": "./dist/components/inputs/text-field/text-field.d.ts",
@@ -211,6 +223,10 @@
       "types": "./dist/components/layout/divider/divider.d.ts",
       "default": "./dist/components/layout/divider/divider.js"
     },
+    "./popover": {
+      "types": "./dist/components/layout/popover/popover.d.ts",
+      "default": "./dist/components/layout/popover/popover.js"
+    },
     "./sheet": {
       "types": "./dist/components/layout/sheet/sheet.d.ts",
       "default": "./dist/components/layout/sheet/sheet.js"
@@ -322,7 +338,7 @@
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run build:components",
-    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && printf '@import \"./settings.css\";\\n@import \"./rich-text.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
+    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && cp src/components/forms/form/form.css dist/css/form.css && cp src/components/forms/form-section/form-section.css dist/css/form-section.css && printf '@import \"./settings.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
     "generate:palettes": "node scripts/generate-palettes.js",
     "validate:styles": "node scripts/validate-css-variables.js",
     "build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:exports",

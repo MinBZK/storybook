@@ -15,11 +15,11 @@ export const aliases = {
 	// arrow-up-arrow-down
 	'sort': 'arrow-up-arrow-down',
 
-	// arrow-uturn-backward
-	'undo': 'arrow-uturn-backward',
+	// arrow-u-turn-backward
+	'undo': 'arrow-u-turn-backward',
 
-	// arrow-uturn-forward
-	'redo': 'arrow-uturn-forward',
+	// arrow-u-turn-forward
+	'redo': 'arrow-u-turn-forward',
 
 	// brackets-ellipsis
 	'code': 'brackets-ellipsis',

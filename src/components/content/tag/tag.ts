@@ -16,7 +16,7 @@
  */
 
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { tagStyles } from './tag.styles.js';
 import { template } from './tag.template.js';
 import './../icon/icon.js';
@@ -42,6 +42,57 @@ export class NLDDTag extends LitElement {
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	@state()
+	_hasSlotText = false;
+
+	@state()
+	_hasSlotIcon = false;
+
+	private _childObserver?: MutationObserver;
+
+	get _hasText(): boolean {
+		return !!this.text || this._hasSlotText;
+	}
+
+	get _hasIcon(): boolean {
+		return !!this.icon || this._hasSlotIcon;
+	}
+
+	override connectedCallback() {
+		super.connectedCallback();
+		this._updateSlotState();
+		this._childObserver = new MutationObserver(() => this._updateSlotState());
+		// Alleen direct children volgen — _updateSlotState itereert over
+		// this.childNodes, dus subtree-mutaties zijn nutteloos en kosten
+		// onnodig werk bij rich slotted content. characterData zou enkel
+		// zin hebben mét subtree (om text-edits in bestaande nodes te
+		// catchen); zeldzaam genoeg om over te skippen, en add/remove van
+		// children blijft via childList werken.
+		this._childObserver.observe(this, { childList: true });
+	}
+
+	override disconnectedCallback() {
+		super.disconnectedCallback();
+		this._childObserver?.disconnect();
+		this._childObserver = undefined;
+	}
+
+	private _updateSlotState() {
+		let hasText = false;
+		let hasIcon = false;
+		for (const node of Array.from(this.childNodes)) {
+			if (node.nodeType === Node.TEXT_NODE) {
+				if (node.textContent?.trim()) hasText = true;
+			} else if (node.nodeType === Node.ELEMENT_NODE) {
+				const slotName = (node as Element).getAttribute('slot');
+				if (slotName === 'icon') hasIcon = true;
+				else if (!slotName) hasText = true;
+			}
+		}
+		this._hasSlotText = hasText;
+		this._hasSlotIcon = hasIcon;
+	}
 
 	override render() {
 		return template(this);

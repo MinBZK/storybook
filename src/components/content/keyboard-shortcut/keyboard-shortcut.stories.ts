@@ -33,6 +33,14 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
+		alwaysVisible: {
+			name: 'always-visible',
+			control: 'boolean',
+			description: 'Toon ook op touch-only devices waar shortcuts niet aanroepbaar zijn',
+			table: {
+				defaultValue: { summary: 'false' },
+			},
+		},
 		keys: {
 			control: 'text',
 			description: 'Toetsen gescheiden door +',
@@ -40,14 +48,16 @@ export default {
 	},
 	args: {
 		size: 'md',
+		alwaysVisible: false,
 		keys: 'Cmd+K',
 	},
 };
 
-const Template = ({ size , keys}: Record<string, any>) => html`
+const Template = ({ size, alwaysVisible, keys }: Record<string, any>) => html`
 	<nldd-keyboard-shortcut
-		keys=${keys}
 		size=${size}
+		?always-visible=${alwaysVisible}
+		keys=${keys}
 	></nldd-keyboard-shortcut>
 `;
 

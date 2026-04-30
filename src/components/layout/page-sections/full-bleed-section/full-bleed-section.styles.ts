@@ -1,17 +1,22 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
+const mdMin = unsafeCSS(breakpoints.mdMin);
+const lgMin = unsafeCSS(breakpoints.lgMin);
+
 export const fullBleedSectionStyles = css`
 
 
-	/* # Host */
+	/* # Host
+	   Geen eigen container-type: page-sections luisteren naar de outer
+	   layout-area (gezet door nldd-page / nldd-card). Voor contexten
+	   zonder layout-area dient @media als fallback. */
 
 	:host {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		width: 100%;
-		container-type: inline-size;
 	}
 
 	:host([hidden]) {
@@ -23,7 +28,8 @@ export const fullBleedSectionStyles = css`
 	}
 
 
-	/* # Block */
+	/* # Block — sm = base; md/lg via @media (fallback) en
+	   @container layout-area (heeft voorrang binnen layout-area). */
 
 	.full-bleed-section {
 		display: flex;
@@ -31,16 +37,21 @@ export const fullBleedSectionStyles = css`
 		flex-grow: 1;
 		width: 100%;
 		box-sizing: border-box;
+		padding-block: var(--semantics-page-sections-sm-margin-block);
 
-		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
-			padding-block: var(--semantics-page-sections-sm-margin-block);
-		}
-
-		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
+		@media (min-width: ${mdMin}) {
 			padding-block: var(--semantics-page-sections-md-margin-block);
 		}
 
-		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
+		@media (min-width: ${lgMin}) {
+			padding-block: var(--semantics-page-sections-lg-margin-block);
+		}
+
+		@container layout-area (min-width: ${mdMin}) {
+			padding-block: var(--semantics-page-sections-md-margin-block);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
 			padding-block: var(--semantics-page-sections-lg-margin-block);
 		}
 	}
@@ -60,16 +71,21 @@ export const fullBleedSectionStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 		width: 100%;
+		gap: var(--semantics-page-sections-sm-gap);
 
-		@container (max-width: ${unsafeCSS(breakpoints.smMax)}) {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-
-		@container (min-width: ${unsafeCSS(breakpoints.mdMin)}) and (max-width: ${unsafeCSS(breakpoints.mdMax)}) {
+		@media (min-width: ${mdMin}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
-		@container (min-width: ${unsafeCSS(breakpoints.lgMin)}) {
+		@media (min-width: ${lgMin}) {
+			gap: var(--semantics-page-sections-lg-gap);
+		}
+
+		@container layout-area (min-width: ${mdMin}) {
+			gap: var(--semantics-page-sections-md-gap);
+		}
+
+		@container layout-area (min-width: ${lgMin}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}

@@ -10,6 +10,7 @@ export const segmentedControlStyles = css`
 		grid-auto-columns: 1fr;
 		grid-auto-flow: column;
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -213,7 +214,8 @@ export const segmentedControlItemStyles = css`
 	/* # Focus */
 
 	.segmented-control__item-label:has(:focus-visible)::before {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 `;

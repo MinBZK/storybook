@@ -1,6 +1,11 @@
 import { action } from 'storybook/actions';
 import { html } from 'lit';
 import './text-field.js';
+import '../../forms/form/form.js';
+import '../../forms/form-field/form-field.js';
+import '../../forms/form-actions/form-actions.js';
+import '../../actions/button/button.js';
+import '../../actions/button-group/button-group.js';
 
 /**
  * `nldd-text-field` is a single-line text input.
@@ -42,6 +47,11 @@ export default {
 			description: 'Size variant',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 		name: {
 			control: 'text',
 			description: 'Input name for form submission',
@@ -61,6 +71,11 @@ export default {
 			options: ['text', 'email', 'tel', 'url'],
 			description: 'Input type',
 			table: { defaultValue: { summary: 'text' } },
+		},
+		autocomplete: {
+			control: 'text',
+			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "name", "email", "off")',
+			table: { defaultValue: { summary: '' } },
 		},
 		valid: {
 			control: 'boolean',
@@ -90,10 +105,12 @@ export default {
 	},
 	args: {
 		size: 'md',
+		width: '',
 		name: '',
 		value: '',
 		placeholder: 'Text field',
 		type: 'text',
+		autocomplete: '',
 		valid: false,
 		invalid: false,
 		readonly: false,
@@ -102,7 +119,7 @@ export default {
 	},
 };
 
-const Template = ({ size, name, value, placeholder, type, valid, invalid, readonly, required, disabled }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, type, autocomplete, valid, invalid, readonly, required, disabled, width }: Record<string, any>) => html`
 	<nldd-text-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -112,8 +129,10 @@ const Template = ({ size, name, value, placeholder, type, valid, invalid, readon
 		?disabled=${disabled}
 		type=${type}
 		name=${name}
+		autocomplete=${autocomplete}
 		?readonly=${readonly}
 		?required=${required}
+		width=${width}
 	></nldd-text-field>
 `;
 
@@ -146,28 +165,36 @@ export const Sizes = {
 
 export const InteractiveExample = {
 	render: () => html`
-	<div style="display: flex; flex-direction: column; gap: 1.5rem;">
-		<nldd-text-field
-			name="name"
-			placeholder="Full name"
-			@input=${action('input')}
-			@change=${action('change')}
-		></nldd-text-field>
-		<nldd-text-field
-			name="email"
-			type="email"
-			placeholder="your@email.com"
-			@input=${action('input')}
-			@change=${action('change')}
-		></nldd-text-field>
-		<nldd-text-field
-			name="phone"
-			type="tel"
-			placeholder="+31 6 12345678"
-			@input=${action('input')}
-			@change=${action('change')}
-		></nldd-text-field>
-	</div>
+	<nldd-form label-alignment="right" novalidate>
+		<nldd-form-field label="Volledige naam">
+			<nldd-text-field
+				name="name"
+				@input=${action('input')}
+				@change=${action('change')}
+			></nldd-text-field>
+		</nldd-form-field>
+		<nldd-form-field label="E-mail">
+			<nldd-text-field
+				name="email"
+				type="email"
+				@input=${action('input')}
+				@change=${action('change')}
+			></nldd-text-field>
+		</nldd-form-field>
+		<nldd-form-field label="Telefoonnummer">
+			<nldd-text-field
+				name="phone"
+				type="tel"
+				@input=${action('input')}
+				@change=${action('change')}
+			></nldd-text-field>
+		</nldd-form-field>
+		<nldd-form-actions>
+			<nldd-button-group>
+				<nldd-button variant="primary" type="submit" text="Opslaan"></nldd-button>
+			</nldd-button-group>
+		</nldd-form-actions>
+	</nldd-form>
 `,
 	parameters: {
 		controls: { disable: true },

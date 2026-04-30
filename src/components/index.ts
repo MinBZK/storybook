@@ -33,7 +33,10 @@ export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-short
 
 // # Forms components
 
+export { NLDDForm } from './forms/form/form.js';
+export { NLDDFormActions } from './forms/form-actions/form-actions.js';
 export { NLDDFormField } from './forms/form-field/form-field.js';
+export { NLDDFormSection } from './forms/form-section/form-section.js';
 
 
 // # Input components
@@ -85,6 +88,7 @@ export { NLDDCollection } from './layout/collection/collection.js';
 export { NLDDSpacer } from './layout/spacer/spacer.js';
 export { NLDDContainer } from './layout/container/container.js';
 export { NLDDDivider } from './layout/divider/divider.js';
+export { NLDDPopover } from './layout/popover/popover.js';
 export { NLDDSheet } from './layout/sheet/sheet.js';
 export { NLDDWindow } from './layout/window/window.js';
 

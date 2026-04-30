@@ -16,6 +16,7 @@
  * @attr {boolean} required    - Required state
  * @attr {string} autocomplete - Autocomplete hint
  * @attr {string} accessible-label    - Accessible label forwarded to the inner input. Set automatically by nldd-form-field.
+ * @attr {string} width        - Optional fixed width (any CSS length, e.g. "240px"). Default: full-width.
  *
  * @fires input  - When input value changes
  * @fires change - When input value is committed
@@ -23,7 +24,7 @@
  * @csspart container - The field container
  * @csspart input     - The native input element
  */
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { textFieldStyles } from './text-field.styles.js';
 import { textFieldTemplate } from './text-field.template.js';
@@ -82,9 +83,19 @@ export class NLDDTextField extends LitElement {
 	@property({ type: String, attribute: 'error-message-ids' })
 	errorMessageIds = '';
 
+	/** Optional fixed width (any CSS length). When unset, the field stretches to fill its container. */
+	@property({ type: String, reflect: true })
+	width = '';
+
 
 	@query('.text-field__input')
 	private _input!: HTMLInputElement;
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('width')) {
+			this.style.width = this.width || '';
+		}
+	}
 
 	public _handleInput(e: Event): void {
 		e.stopPropagation();

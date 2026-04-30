@@ -301,17 +301,22 @@
 	--primitives-breakpoint-md-max: 1007px;
 	--primitives-breakpoint-lg-min: 1008px;
 
+	/* ## Border width */
+
+	--primitives-border-width-thin: 1px;
+	--primitives-border-width-regular: 2px;
+
 	/* ## Corner radius */
 
 	--primitives-corner-radius-none: 0px;
-	--primitives-corner-radius-xxs: 2px;
+	--primitives-corner-radius-xxs: 3px;
 	--primitives-corner-radius-xs: 4px;
 	--primitives-corner-radius-sm: 6px;
 	--primitives-corner-radius-md: 9px;
-	--primitives-corner-radius-lg: 12px;
-	--primitives-corner-radius-xl: 16px;
-	--primitives-corner-radius-xxl: 20px;
-	--primitives-corner-radius-xxxl: 24px;
+	--primitives-corner-radius-lg: 13px;
+	--primitives-corner-radius-xl: 18px;
+	--primitives-corner-radius-xxl: 24px;
+	--primitives-corner-radius-xxxl: 31px;
 	--primitives-corner-radius-full: 9999px;
 
 	/* ## Typography */
@@ -755,8 +760,8 @@
 
 	/* ## Content */
 
-	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-800));
-	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-550));
+	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-850));
+	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--semantics-content-error-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
 	--semantics-content-success-color: light-dark(var(--primitives-color-success-600), var(--primitives-color-success-650));
 
@@ -771,7 +776,7 @@
 	--semantics-blockquotes-max-width: var(--primitives-area-720);
 	--semantics-blockquotes-sm-spacing: calc(var(--primitives-font-size-200) * var(--primitives-line-height-snug));
 	--semantics-blockquotes-md-spacing: calc(var(--primitives-font-size-300) * var(--primitives-line-height-snug));
-	--semantics-blockquotes-border: var(--primitives-space-2) solid var(--semantics-content-color);
+	--semantics-blockquotes-border: var(--primitives-border-width-regular) solid var(--semantics-content-color);
 	--semantics-blockquotes-corner-radius: var(--primitives-corner-radius-xxxl);
 	--semantics-blockquotes-sm-quote-font:
 		italic
@@ -833,17 +838,23 @@
 
 	--semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
 	--semantics-buttons-neutral-tinted-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
+	--semantics-buttons-neutral-tinted-secondary-content-color: light-dark(var(--primitives-color-neutral-750), var(--primitives-color-neutral-750));
 	--semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-350));
 	--semantics-buttons-neutral-tinted-is-hovered-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
 	--semantics-buttons-neutral-tinted-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-hovered-secondary-content-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-800));
 	--semantics-buttons-neutral-tinted-is-active-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
 	--semantics-buttons-neutral-tinted-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-active-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
 	--semantics-buttons-neutral-tinted-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--semantics-buttons-neutral-tinted-is-selected-content-color: var(--semantics-controls-is-highlighted-contrast-color);
+	--semantics-buttons-neutral-tinted-is-selected-secondary-content-color: var(--semantics-controls-is-highlighted-contrast-color);
 	--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color: var(--semantics-controls-is-highlighted-is-hovered-indicator-color);
 	--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color: var(--semantics-controls-is-highlighted-is-hovered-contrast-color);
+	--semantics-buttons-neutral-tinted-is-selected-is-hovered-secondary-content-color: var(--semantics-controls-is-highlighted-is-hovered-contrast-color);
 	--semantics-buttons-neutral-tinted-is-selected-is-active-background-color: var(--semantics-controls-is-highlighted-is-active-indicator-color);
 	--semantics-buttons-neutral-tinted-is-selected-is-active-content-color: var(--semantics-controls-is-highlighted-is-active-contrast-color);
+	--semantics-buttons-neutral-tinted-is-selected-is-active-secondary-content-color: var(--semantics-controls-is-highlighted-is-active-contrast-color);
 
 	--semantics-buttons-neutral-transparent-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-transparent-is-hovered-content-color: light-dark(var(--primitives-color-neutral-950), var(--primitives-color-neutral-950));
@@ -856,7 +867,7 @@
 	--semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-accent-filled-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 
-	--semantics-buttons-accent-outlined-border-thickness: var(--primitives-space-2);
+	--semantics-buttons-accent-outlined-border-thickness: var(--primitives-border-width-regular);
 	--semantics-buttons-accent-outlined-border-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-outlined-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-outlined-is-hovered-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
@@ -877,7 +888,7 @@
 
 	/* ## Input fields */
 
-	--semantics-input-fields-border-thickness: var(--primitives-space-2);
+	--semantics-input-fields-border-thickness: var(--primitives-border-width-regular);
 	--semantics-input-fields-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--semantics-input-fields-border: var(--semantics-input-fields-border-thickness) solid var(--semantics-input-fields-border-color);
 	--semantics-input-fields-background-color: var(--semantics-surfaces-background-color);
@@ -903,6 +914,15 @@
 	--semantics-input-fields-sm-validation-icon-size: var(--primitives-space-20);
 	--semantics-input-fields-md-validation-icon-size: var(--primitives-space-24);
 
+	/* ## Forms */
+
+	--semantics-forms-gap: var(--primitives-space-16);
+	--semantics-forms-gap-tight: var(--primitives-space-8);
+	--semantics-forms-label-column-width: var(--primitives-area-240);
+	--semantics-forms-columns-gap: var(--primitives-space-8);
+	--semantics-forms-section-title-font: var(--primitives-font-body-lg-bold-tight);
+	--semantics-forms-section-subtitle-font: var(--primitives-font-body-md-regular-tight);
+
 	/* ## Grab handles */
 
 	--semantics-grab-handles-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
@@ -911,7 +931,7 @@
 	/* ## Dividers */
 
 	--semantics-dividers-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-200));
-	--semantics-dividers-thickness: 1px;
+	--semantics-dividers-thickness: var(--primitives-border-width-thin);
 
 	/* ## Page sections */
 
@@ -943,11 +963,24 @@
 
 	--semantics-overlays-backdrop-color: rgba(0, 0, 0, calc(0.2 * var(--semantics-overlays-backdrop-opacity-factor)));
 	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
+	--semantics-overlays-inset: var(--primitives-space-16);
+	--semantics-overlays-box-shadow: var(--primitives-box-shadows-level-5);
+
+	/* ## Sheets */
+
+	--semantics-sheets-side-animation-duration: var(--primitives-transition-duration-medium);
+	--semantics-sheets-side-md-width: var(--primitives-area-360);
+	--semantics-sheets-side-lg-width: var(--primitives-area-480);
+	--semantics-sheets-bottom-top-inset: var(--primitives-space-48);
+	--semantics-sheets-bottom-md-inline-inset: var(--primitives-space-48);
+	--semantics-sheets-bottom-lg-inline-inset: var(--primitives-space-80);
+	--semantics-sheets-bottom-animation-duration: var(--primitives-transition-duration-slow);
 
 	/* ## Focus ring */
 
-	--semantics-focus-ring-box-shadow: 0 0 0 4px light-dark(var(--primitives-color-accent-600), var(--primitives-color-accent-600));
-	--semantics-focus-ring-outline: 6px double var(--semantics-surfaces-background-color);
+	--semantics-focus-ring-outline: var(--primitives-border-width-regular) solid var(--primitives-color-accent-600);
+	--semantics-focus-ring-outline-offset: var(--primitives-border-width-regular);
+	--semantics-focus-ring-box-shadow: 0 0 0 calc(var(--primitives-border-width-regular) * 3) var(--semantics-surfaces-background-color);
 
 
 	/* # Components */
@@ -973,26 +1006,20 @@
 	--components-box-corner-radius: var(--primitives-corner-radius-xl);
 	--components-box-padding: var(--primitives-space-16);
 
+	/* ## Button group */
+
+	--components-button-group-sm-gap: var(--primitives-space-6);
+	--components-button-group-md-gap: var(--primitives-space-8);
+
 	/* ## Card */
 
 	--components-card-background-color: var(--semantics-surfaces-background-color);
 	--components-card-corner-radius: var(--primitives-corner-radius-none);
 	--components-card-box-shadow: var(--primitives-box-shadows-level-2);
 
-	/* ## Collection */
-
-	--components-collection-sm-gap: var(--primitives-space-16);
-	--components-collection-md-gap: var(--primitives-space-24);
-	--components-collection-lg-gap: var(--primitives-space-24);
-
-	/* ## Button group */
-
-	--components-button-group-sm-gap: var(--primitives-space-6);
-	--components-button-group-md-gap: var(--primitives-space-8);
-
 	/* ## Checkbox */
 
-	--components-checkbox-border-thickness: var(--primitives-space-2);
+	--components-checkbox-border-thickness: var(--primitives-border-width-regular);
 	--components-checkbox-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-checkbox-background-color: var(--semantics-surfaces-background-color);
 	--components-checkbox-is-hovered-border-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
@@ -1007,13 +1034,19 @@
 	--components-checkbox-is-selected-is-active-border-color: var(--semantics-controls-is-highlighted-is-active-indicator-color);
 	--components-checkbox-is-selected-is-active-icon-color: var(--semantics-controls-is-highlighted-is-active-contrast-color);
 
+	/* ## Collection */
+
+	--components-collection-sm-gap: var(--primitives-space-16);
+	--components-collection-md-gap: var(--primitives-space-24);
+	--components-collection-lg-gap: var(--primitives-space-24);
+
 	/* ## Document tab bar */
 
 	--components-document-tab-bar-tab-title-font: var(--primitives-font-body-sm-bold-flat);
 
-	/* ## Form */
+	/* ## Form field */
 
-	--components-form-gap: var(--primitives-space-16);
+	--components-form-field-gap: var(--primitives-space-2);
 
 	/* ## Keyboard shortcut */
 
@@ -1022,7 +1055,7 @@
 	--components-keyboard-shortcut-background-color: var(--semantics-surfaces-tinted-background-color);
 	--components-keyboard-shortcut-content-color: var(--semantics-content-color);
 	--components-keyboard-shortcut-border-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-250));
-	--components-keyboard-shortcut-border-thickness: var(--primitives-space-1);
+	--components-keyboard-shortcut-border-thickness: var(--primitives-border-width-thin);
 	--components-keyboard-shortcut-corner-radius: var(--primitives-corner-radius-xs);
 	--components-keyboard-shortcut-separator-color: var(--semantics-content-secondary-color);
 
@@ -1058,20 +1091,20 @@
 	--components-menu-bar-item-font: var(--primitives-font-body-md-bold-flat);
 	--components-menu-bar-item-inline-padding: var(--primitives-space-8);
 
-	/* ## Modal dialog */
+	/* ## Popover */
 
-	--components-modal-dialog-box-shadow: var(--primitives-box-shadows-level-5);
+	--components-popover-default-width: var(--primitives-area-320);
 
 	/* ## Radio button */
 
-	--components-radio-button-border-thickness: var(--primitives-space-2);
+	--components-radio-button-border-thickness: var(--primitives-border-width-regular);
 	--components-radio-button-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-radio-button-background-color: var(--semantics-surfaces-background-color);
 	--components-radio-button-is-hovered-border-color: light-dark(var(--primitives-color-neutral-600), var(--primitives-color-neutral-700));
 	--components-radio-button-is-active-border-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-750));
 	--components-radio-button-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-radio-button-is-selected-border-color: var(--semantics-controls-is-highlighted-indicator-color);
-	--components-radio-button-is-selected-inner-shape-border-thickness: var(--primitives-space-2);
+	--components-radio-button-is-selected-inner-shape-border-thickness: var(--primitives-border-width-regular);
 	--components-radio-button-is-selected-inner-shape-border-color: var(--semantics-controls-is-highlighted-contrast-color);
 	--components-radio-button-is-selected-is-hovered-background-color: var(--semantics-controls-is-highlighted-is-hovered-indicator-color);
 	--components-radio-button-is-selected-is-hovered-border-color: var(--semantics-controls-is-highlighted-is-hovered-indicator-color);
@@ -1083,29 +1116,17 @@
 	/* ## Rich text */
 
 	--components-rich-text-grid-size: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));
-	--components-rich-text-spacing-flat: 0px;
+	--components-rich-text-spacing-flat: var(--primitives-space-0);
 	--components-rich-text-spacing-tight: calc(var(--components-rich-text-grid-size) / 4);
 	--components-rich-text-spacing-snug: calc(var(--components-rich-text-grid-size) / 2);
 	--components-rich-text-spacing-loose: var(--components-rich-text-grid-size);
 
-	/* ## Sheet */
-
-	--components-sheet-box-shadow: var(--primitives-box-shadows-level-5);
-	--components-sheet-side-inset: var(--primitives-space-16);
-	--components-sheet-side-animation-duration: 250ms;
-	--components-sheet-side-md-width: var(--primitives-area-360);
-	--components-sheet-side-lg-width: var(--primitives-area-480);
-	--components-sheet-bottom-top-inset: var(--primitives-space-48);
-	--components-sheet-bottom-md-inline-inset: var(--primitives-space-48);
-	--components-sheet-bottom-lg-inline-inset: var(--primitives-space-80);
-	--components-sheet-bottom-animation-duration: 350ms;
-
 	/* ## Switch */
 
-	--components-switch-border-thickness: var(--primitives-space-2);
+	--components-switch-border-thickness: var(--primitives-border-width-regular);
 	--components-switch-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-switch-background-color: var(--semantics-surfaces-background-color);
-	--components-switch-thumb-border-thickness: var(--primitives-space-2);
+	--components-switch-thumb-border-thickness: var(--primitives-border-width-regular);
 	--components-switch-thumb-border-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
 	--components-switch-thumb-background-color: var(--semantics-surfaces-background-color);
 	--components-switch-icon-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
@@ -1115,17 +1136,17 @@
 
 	/* ## Tag */
 
-	--components-tag-sm-corner-radius: var(--primitives-corner-radius-xs);
-	--components-tag-md-corner-radius: var(--primitives-corner-radius-sm);
-	--components-tag-neutral-background-color: var(--primitives-color-neutral-75);
+	--components-tag-sm-corner-radius: var(--primitives-corner-radius-xxs);
+	--components-tag-md-corner-radius: var(--primitives-corner-radius-xs);
+	--components-tag-neutral-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-150));
 	--components-tag-neutral-content-color: var(--primitives-color-neutral-800);
-	--components-tag-accent-background-color: var(--primitives-color-accent-75);
+	--components-tag-accent-background-color: light-dark(var(--primitives-color-accent-75), var(--primitives-color-accent-150));
 	--components-tag-accent-content-color: var(--primitives-color-accent-750);
-	--components-tag-success-background-color: var(--primitives-color-success-75);
+	--components-tag-success-background-color: light-dark(var(--primitives-color-success-75), var(--primitives-color-success-150));
 	--components-tag-success-content-color: var(--primitives-color-success-750);
-	--components-tag-warning-background-color: var(--primitives-color-warning-75);
+	--components-tag-warning-background-color: light-dark(var(--primitives-color-warning-75), var(--primitives-color-warning-150));
 	--components-tag-warning-content-color: var(--primitives-color-warning-750);
-	--components-tag-critical-background-color: var(--primitives-color-critical-75);
+	--components-tag-critical-background-color: light-dark(var(--primitives-color-critical-75), var(--primitives-color-critical-150));
 	--components-tag-critical-content-color: var(--primitives-color-critical-750);
 
 	/* ## Title */
@@ -1164,12 +1185,10 @@
 
 	/* ## Top title bar */
 
-	--components-top-title-bar-divider-color: light-dark(var(--primitives-color-neutral-150),var(--primitives-color-neutral-350));
+	--components-top-title-bar-divider-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-350));
 
 	/* ## Window */
 
-	--components-window-box-shadow: var(--primitives-box-shadows-level-5);
-	--components-window-inset: var(--primitives-space-16);
 	--components-window-default-width: var(--primitives-area-640);
 }
 

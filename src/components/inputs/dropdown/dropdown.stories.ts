@@ -26,6 +26,11 @@ export default {
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
 		},
+		width: {
+			control: 'text',
+			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
+			table: { defaultValue: { summary: '' } },
+		},
 		valid: {
 			control: 'boolean',
 			description: 'Markeert het veld als geldig',
@@ -44,14 +49,15 @@ export default {
 	},
 	args: {
 		size: 'md',
+		width: '',
 		valid: false,
 		invalid: false,
 		disabled: false,
 	},
 };
 
-const Template = ({ size, valid, invalid, disabled }: Record<string, any>) => html`
-	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled}>
+const Template = ({ size, valid, invalid, disabled, width }: Record<string, any>) => html`
+	<nldd-dropdown size=${size} ?valid=${valid} ?invalid=${invalid} ?disabled=${disabled} width=${width}>
 		<select name="optie" aria-label="Selecteer een optie">
 			<option value="" disabled selected>Selecteer een optie</option>
 			<option value="optie-1">Optie 1</option>

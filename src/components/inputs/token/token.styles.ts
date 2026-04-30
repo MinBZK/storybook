@@ -97,8 +97,9 @@ export const tokenStyles = css`
 	/* ## Focus — menu */
 
 	:host([control="menu"]) .token:focus-visible {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 	:host([control="menu"]) .token:focus:not(:focus-visible) {
