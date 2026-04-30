@@ -3,6 +3,7 @@ import './skip-link.js';
 import '../top-navigation-bar/top-navigation-bar.js';
 import '../../content/rich-text/rich-text.js';
 import '../../layout/container/container.js';
+import '../../layout/page/page.js';
 import '../../forms/form/form.js';
 import '../../forms/form-section/form-section.js';
 import '../../forms/form-field/form-field.js';
@@ -33,62 +34,52 @@ export default {
 	},
 };
 
-const layoutArea = 'container-type: inline-size; container-name: layout-area; background-color: var(--semantics-surfaces-background-color);';
-
 export const Default = {
 	render: () => html`
-		<div style=${layoutArea}>
-			<nldd-container padding="16">
-				<nldd-rich-text>
-					<p>Druk op Tab om de skip-link te zien.</p>
-				</nldd-rich-text>
-			</nldd-container>
-			<nldd-skip-link>
+		<nldd-page>
+			<nldd-skip-link slot="header">
 				<nldd-top-navigation-bar website-title="DigID">
 					<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
 					<nldd-menu-bar-item slot="global" text="Contact"></nldd-menu-bar-item>
 					<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></nldd-menu-bar-item>
 				</nldd-top-navigation-bar>
 			</nldd-skip-link>
-			<main>
-				<nldd-container padding="16">
-					<nldd-rich-text>
-						<h1>Hoofdinhoud</h1>
-						<p>Na het klikken op de skip-link springt de focus hierheen.</p>
-						<a href="#">Eerste link in hoofdinhoud</a>
-					</nldd-rich-text>
-				</nldd-container>
-			</main>
-		</div>
+			<nldd-container padding="16">
+				<nldd-rich-text>
+					<p>Druk op Tab om de skip-link te zien.</p>
+					<h1>Hoofdinhoud</h1>
+					<p>Na het klikken op de skip-link springt de focus hierheen.</p>
+					<a href="#">Eerste link in hoofdinhoud</a>
+				</nldd-rich-text>
+			</nldd-container>
+		</nldd-page>
 	`,
 };
 
 export const MetTekst = {
 	render: () => html`
-		<div style=${layoutArea}>
-			<nldd-skip-link text="Ga naar hoofdinhoud">
+		<nldd-page>
+			<nldd-skip-link slot="header" text="Ga naar hoofdinhoud">
 				<nldd-top-navigation-bar website-title="Rijksoverheid">
 					<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
 					<nldd-menu-bar-item slot="global" text="Onderwerpen"></nldd-menu-bar-item>
 					<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></nldd-menu-bar-item>
 				</nldd-top-navigation-bar>
 			</nldd-skip-link>
-			<main>
-				<nldd-container padding="16">
-					<nldd-rich-text>
-						<h1>Hoofdinhoud</h1>
-						<a href="#">Link in de content</a>
-					</nldd-rich-text>
-				</nldd-container>
-			</main>
-		</div>
+			<nldd-container padding="16">
+				<nldd-rich-text>
+					<h1>Hoofdinhoud</h1>
+					<a href="#">Link in de content</a>
+				</nldd-rich-text>
+			</nldd-container>
+		</nldd-page>
 	`,
 };
 
 export const MetHref = {
 	render: () => html`
-		<div style=${layoutArea}>
-			<nldd-skip-link text="Ga naar formulier" href="#contact-form"></nldd-skip-link>
+		<nldd-page>
+			<nldd-skip-link slot="header" text="Ga naar formulier" href="#contact-form"></nldd-skip-link>
 			<nldd-container padding="32">
 				<nldd-rich-text>
 					<p>Content bovenaan de pagina...</p>
@@ -108,6 +99,6 @@ export const MetHref = {
 					</nldd-form-actions>
 				</nldd-form>
 			</nldd-container>
-		</div>
+		</nldd-page>
 	`,
 };
