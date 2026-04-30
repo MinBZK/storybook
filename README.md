@@ -4,38 +4,21 @@ Web Components voor Nederlandse Digitale Dienst (Rijksoverheid).
 
 ## Installatie
 
-### Via npm (GitHub Packages)
-
-1. Voeg `.npmrc` toe aan je project voor GitHub Packages authenticatie:
-
-```
-@minbzk:registry=https://npm.pkg.github.com
-```
-
-2. Authenticeer bij GitHub Packages (eenmalig):
-
 ```bash
-npm login --registry=https://npm.pkg.github.com
-# Gebruik je GitHub-gebruikersnaam en een personal access token met `read:packages` scope
-```
-
-3. Installeer het pakket:
-
-```bash
-npm install @minbzk/storybook
+npm install @nldd/design-system
 ```
 
 ### Gebruik
 
 ```javascript
 // Importeer CSS variabelen en fonts (vereist voor styling)
-import '@minbzk/storybook/styles';
+import '@nldd/design-system/styles';
 
 // Importeer alle componenten
-import '@minbzk/storybook';
+import '@nldd/design-system';
 
 // Of importeer specifieke componenten
-import { NLDDButton, NLDDCheckbox, NLDDSwitch } from '@minbzk/storybook';
+import { NLDDButton, NLDDCheckbox, NLDDSwitch } from '@nldd/design-system';
 ```
 
 ```html

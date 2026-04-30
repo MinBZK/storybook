@@ -1,5 +1,5 @@
 {
-  "name": "@minbzk/storybook",
+  "name": "@nldd/design-system",
   "version": "0.8.36",
   "description": "Design System voor Nederlandse Digitale Dienst",
   "type": "module",
@@ -334,7 +334,7 @@
     "url": "https://github.com/MinBZK/storybook.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public"
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run build:components",

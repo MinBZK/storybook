@@ -68,7 +68,7 @@
  * @example
  * Globale stylesheet import (eenmalig in je app entry):
  * ```js
- * import '@minbzk/storybook/dist/css/global.css';
+ * import '@nldd/design-system/styles';
  * ```
  *
  * Auto-wrap mode:

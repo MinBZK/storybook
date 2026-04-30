@@ -2,10 +2,10 @@
  * Nederlandse Digitale Dienst Design System Components
  *
  * Import this file to register all components:
- * import '@minbzk/storybook';
+ * import '@nldd/design-system';
  *
  * Or import individual components:
- * import '@minbzk/storybook/components/actions/button';
+ * import '@nldd/design-system/button';
  */
 
 
