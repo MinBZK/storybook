@@ -16,6 +16,16 @@
  * voor *form-grouping*, niet als pagina-structuur. Voor echte
  * page-headings: gebruik een apart heading-element boven het form.
  *
+ * **Shadow-DOM caveat**: `<fieldset>` + `<legend>` zit in de shadow
+ * van dit component, terwijl form-fields via slot in de light DOM
+ * leven. NVDA + Firefox en oudere JAWS-versies kondigen de legend
+ * niet altijd betrouwbaar aan als group-label bij focus op een
+ * slotted control — dat is een bekende Web Components-limitatie,
+ * niet een bug van dit component. VoiceOver (macOS/iOS) en NVDA +
+ * Chromium handelen 't wel correct af. Voor kritische
+ * groep-context: zet altijd een aria-describedby of expliciete
+ * label op de relevante velden zelf.
+ *
  * **Supporting-text lengte**: de subtitle staat als `<span>` binnen
  * de `<legend>` zodat SR 'm meeleest als group label. Bijwerking: bij
  * elke field-entry binnen de sectie wordt de hele legend (titel +

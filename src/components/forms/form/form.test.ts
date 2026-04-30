@@ -206,6 +206,26 @@ describe('nldd-form', () => {
 			expect(field.dataset.formAlignmentInherited).toBe('true');
 		});
 
+		it('propageert ook naar later toegevoegde form-actions children', async () => {
+			// Regression: reflect:true op een Lit-component met default ='top'
+			// kan de default reflecten op de attribuut. De propagation-guard
+			// moet hier toch correct met omgaan: een dynamisch toegevoegde
+			// form-actions zonder eigen explicit alignment moet 'right'
+			// erven van de form.
+			el = await fixture('<nldd-form label-alignment="right"></nldd-form>');
+			await waitForUpdate(el);
+
+			const actions = document.createElement('nldd-form-actions');
+			el.appendChild(actions);
+
+			// Wacht beide: Lit's eerste update (reflect default) én MO callback
+			await waitForUpdate(actions);
+			await awaitMicrotask();
+
+			expect(actions.getAttribute('label-alignment')).toBe('right');
+			expect(actions.dataset.formAlignmentInherited).toBe('true');
+		});
+
 		it('markert niets als inherited als parent geen label-alignment heeft', async () => {
 			el = await fixture(`
 				<nldd-form>

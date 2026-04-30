@@ -348,6 +348,12 @@ export class NLDDPopover extends LitElement {
 		// light children — matcht de tab-order voor de meeste use cases).
 		// Edge case: een shadow tree met markup vóór een <slot> volgorde
 		// raakt niet 100% gespiegeld, maar dat is zeldzaam in popover content.
+		//
+		// Performance: getClientRects() forceert layout per element. Voor
+		// rich popover content met veel focusables is dit O(n) layout-flush.
+		// Alleen aangeroepen op Tab-keydown (zeldzaam, niet hot path), en
+		// caching zou de visibility-snapshot kunnen verouderen — bewuste
+		// trade-off voor correctheid boven micro-perf.
 		const result: HTMLElement[] = [];
 		const visit = (root: ParentNode): void => {
 			for (const child of Array.from(root.children)) {

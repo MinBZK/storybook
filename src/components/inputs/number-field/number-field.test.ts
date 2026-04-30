@@ -373,3 +373,52 @@ describe('nldd-number-field – accessibility', () => {
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
 });
+
+describe('nldd-number-field – hide-spin-buttons', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('reflecteert hide-spin-buttons attribuut', async () => {
+		el = await fixture('<nldd-number-field hide-spin-buttons accessible-label="Aantal"></nldd-number-field>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('hide-spin-buttons')).toBe(true);
+	});
+
+	it('lijnt de input links uit wanneer spinners verborgen zijn', async () => {
+		el = await fixture('<nldd-number-field hide-spin-buttons accessible-label="Aantal"></nldd-number-field>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('.number-field__input') as HTMLElement;
+		// Met verborgen spinners is left-align gewenst (zonder spinners is een
+		// number-field functioneel een tekstinvoer voor cijfers).
+		expect(getComputedStyle(input).textAlign).toBe('left');
+	});
+
+	it('declareert padding-inline regel voor hide-spin-buttons in styles', async () => {
+		// CSS-variabelen worden niet geladen in test-env, dus computed style
+		// numerieke waardes zijn niet betrouwbaar. Verifieer via cssRules dat
+		// de padding-regel bestaat zodat de input dezelfde inset krijgt als
+		// andere input-velden i.p.v. de flex-default 0.
+		el = await fixture('<nldd-number-field hide-spin-buttons></nldd-number-field>');
+		await waitForUpdate(el);
+		const sheets = (el.shadowRoot as ShadowRoot).adoptedStyleSheets;
+		const cssText = Array.from(sheets)
+			.flatMap(s => Array.from(s.cssRules))
+			.map(r => r.cssText)
+			.join('\n');
+		expect(cssText).toContain('[hide-spin-buttons]');
+		expect(cssText).toMatch(/padding-inline:\s*calc/);
+	});
+
+	it('default (zonder hide-spin-buttons) toont spin-buttons', async () => {
+		el = await fixture('<nldd-number-field accessible-label="Aantal"></nldd-number-field>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('hide-spin-buttons')).toBe(false);
+		const decrement = el.shadowRoot!.querySelector('.number-field__decrement-button');
+		const increment = el.shadowRoot!.querySelector('.number-field__increment-button');
+		expect(decrement).not.toBeNull();
+		expect(increment).not.toBeNull();
+	});
+});
