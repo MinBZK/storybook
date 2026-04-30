@@ -276,7 +276,7 @@ export class NLDDPopover extends LitElement {
 		// browser's default activation behavior already toggles us. Running
 		// our own toggle here would invert the state right after, leaving
 		// the popover in the wrong final state.
-		const popovertarget = (anchorEl as HTMLElement).getAttribute?.('popovertarget');
+		const popovertarget = anchorEl.getAttribute('popovertarget');
 		if (popovertarget && this.id && popovertarget === this.id) return;
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
