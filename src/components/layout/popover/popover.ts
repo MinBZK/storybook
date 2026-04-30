@@ -54,7 +54,7 @@
 
 import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { computePosition, flip, shift, size, type Placement } from '@floating-ui/dom';
+import { computePosition, flip, shift, size, autoUpdate, type Placement } from '@floating-ui/dom';
 import { popoverStyles } from './popover.styles.js';
 import { popoverTemplate } from './popover.template.js';
 import { nlddPopoverTranslations, type NLDDPopoverTranslations } from './popover.i18n.js';
@@ -92,6 +92,8 @@ export class NLDDPopover extends LitElement {
 	private _hasWarnedLabel = false;
 	private _previousFocus: HTMLElement | null = null;
 	private _closedAt = 0;
+	/** Cleanup-functie van Floating UI's autoUpdate, alleen actief tijdens open. */
+	private _cleanupAutoUpdate: (() => void) | null = null;
 	private _smQuery: MediaQueryList | null = null;
 	private _previousAnchorEl: Element | null = null;
 
@@ -129,6 +131,10 @@ export class NLDDPopover extends LitElement {
 		document.removeEventListener('click', this._handleDocumentClick);
 		this._smQuery?.removeEventListener('change', this._handleViewportChange);
 		this._smQuery = null;
+		// Stop autoUpdate-listeners als popover verwijderd wordt terwijl 'ie
+		// nog open is — voorkomt memory-leak en dangling listeners.
+		this._cleanupAutoUpdate?.();
+		this._cleanupAutoUpdate = null;
 		// Strip ALL aria-* van de anchor — niet alleen aria-expanded. In SPA
 		// flows (v-if, conditional render) kan de popover verdwijnen terwijl
 		// de anchor blijft bestaan. Een achtergebleven aria-controls naar een
@@ -320,6 +326,9 @@ export class NLDDPopover extends LitElement {
 		this._updateAnchorAria(this._isOpen);
 
 		if (toggleEvent.newState !== 'open') {
+			// Stop scroll/resize tracking — niet meer nodig wanneer dicht.
+			this._cleanupAutoUpdate?.();
+			this._cleanupAutoUpdate = null;
 			this._closedAt = Date.now();
 			this._returnFocus();
 			this.dispatchEvent(new CustomEvent('close', { bubbles: true, composed: true }));
@@ -328,6 +337,16 @@ export class NLDDPopover extends LitElement {
 
 		this._previousFocus = (document.activeElement as HTMLElement | null) ?? this._getAnchorEl() as HTMLElement | null;
 		await this.reposition();
+		// Start scroll/resize/layout-change tracking. Floating UI's autoUpdate
+		// luistert naar ancestor scroll, window resize, en ResizeObserver op
+		// de anchor — dekt window-resize binnen viewport-breakpoint, dynamic
+		// content shifts, en popovers in scrollable containers (niet alleen
+		// document scroll). Op sm-viewport (bottom sheet, position: fixed)
+		// is reposition() een no-op dus geen werk.
+		const anchorEl = this._getAnchorEl();
+		if (anchorEl) {
+			this._cleanupAutoUpdate = autoUpdate(anchorEl, this, () => this.reposition());
+		}
 		await this.updateComplete;
 		this._manageFocus();
 		this.dispatchEvent(new CustomEvent('open', { bubbles: true, composed: true }));
