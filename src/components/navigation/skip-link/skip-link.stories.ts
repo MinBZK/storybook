@@ -2,8 +2,8 @@ import { html } from 'lit';
 import './skip-link.js';
 import '../top-navigation-bar/top-navigation-bar.js';
 import '../../content/rich-text/rich-text.js';
-import '../../layout/container/container.js';
 import '../../layout/page/page.js';
+import '../../layout/page-sections/simple-section/simple-section.js';
 import '../../forms/form/form.js';
 import '../../forms/form-section/form-section.js';
 import '../../forms/form-field/form-field.js';
@@ -44,14 +44,14 @@ export const Default = {
 					<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></nldd-menu-bar-item>
 				</nldd-top-navigation-bar>
 			</nldd-skip-link>
-			<nldd-container padding="16">
+			<nldd-simple-section>
 				<nldd-rich-text>
 					<p>Druk op Tab om de skip-link te zien.</p>
 					<h1>Hoofdinhoud</h1>
 					<p>Na het klikken op de skip-link springt de focus hierheen.</p>
 					<a href="#">Eerste link in hoofdinhoud</a>
 				</nldd-rich-text>
-			</nldd-container>
+			</nldd-simple-section>
 		</nldd-page>
 	`,
 };
@@ -66,12 +66,12 @@ export const MetTekst = {
 					<nldd-menu-bar-item slot="utility" text="Zoeken" icon="magnifier"></nldd-menu-bar-item>
 				</nldd-top-navigation-bar>
 			</nldd-skip-link>
-			<nldd-container padding="16">
+			<nldd-simple-section>
 				<nldd-rich-text>
 					<h1>Hoofdinhoud</h1>
 					<a href="#">Link in de content</a>
 				</nldd-rich-text>
-			</nldd-container>
+			</nldd-simple-section>
 		</nldd-page>
 	`,
 };
@@ -80,12 +80,12 @@ export const MetHref = {
 	render: () => html`
 		<nldd-page>
 			<nldd-skip-link slot="header" text="Ga naar formulier" href="#contact-form"></nldd-skip-link>
-			<nldd-container padding="32">
+			<nldd-simple-section>
 				<nldd-rich-text>
 					<p>Content bovenaan de pagina...</p>
 				</nldd-rich-text>
-			</nldd-container>
-			<nldd-container padding="16" id="contact-form" tabindex="-1">
+			</nldd-simple-section>
+			<nldd-simple-section id="contact-form" tabindex="-1">
 				<nldd-form novalidate label-alignment="right">
 					<nldd-form-section text="Contactformulier">
 						<nldd-form-field label="Naam">
@@ -98,7 +98,7 @@ export const MetHref = {
 						</nldd-button-group>
 					</nldd-form-actions>
 				</nldd-form>
-			</nldd-container>
+			</nldd-simple-section>
 		</nldd-page>
 	`,
 };
