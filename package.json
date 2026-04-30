@@ -334,7 +334,8 @@
     "url": "https://github.com/MinBZK/storybook.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run build:components",
