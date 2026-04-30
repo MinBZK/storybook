@@ -86,8 +86,11 @@ export class NLDDComboBox extends LitElement {
 	@property({ type: String })
 	name = '';
 
+	/** Browser autofill hint. Use AutoFill tokens (e.g. 'country', 'organization')
+	 *  or 'off' to disable. Default 'off' to prevent the native autofill panel
+	 *  from competing with the menu dropdown. */
 	@property({ type: String })
-	autocomplete = 'off';
+	autocomplete: AutoFill | (string & {}) = 'off';
 
 	/** Maximum number of visible menu items before scrolling. Defaults to 8. */
 	@property({ type: Number, attribute: 'max-items' })

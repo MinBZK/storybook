@@ -96,7 +96,6 @@ export class NLDDPopover extends LitElement {
 		if (!this.hasAttribute('popover')) this.setAttribute('popover', '');
 		if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '-1');
 		if (!this.hasAttribute('role')) this.setAttribute('role', 'dialog');
-		if (!this.hasAttribute('aria-modal')) this.setAttribute('aria-modal', 'false');
 		this.addEventListener('toggle', this._handleToggle);
 		this.addEventListener('keydown', this._handleKeydown);
 		document.addEventListener('click', this._handleDocumentClick);
@@ -105,8 +104,14 @@ export class NLDDPopover extends LitElement {
 		// Initialiseer aria-expanded/aria-haspopup op de anchor zodat SR de
 		// trigger-knop direct als toggle-control aankondigt — niet pas na de
 		// eerste open. Defer naar microtask: anchor (by id) is mogelijk nog
-		// niet in de DOM op connectedCallback-tijd.
-		Promise.resolve().then(() => this._updateAnchorAria(false));
+		// niet in de DOM op connectedCallback-tijd. Daarnaast: warn over
+		// ontbrekende accessible-label vanuit dezelfde gedeferde tick zodat
+		// 'm ook vliegt bij popovertarget-gebruik (waar show() niet wordt
+		// aangeroepen door ons component).
+		Promise.resolve().then(() => {
+			this._updateAnchorAria(false);
+			this._warnIfMissingLabel();
+		});
 	}
 
 	override disconnectedCallback(): void {
@@ -147,16 +152,19 @@ export class NLDDPopover extends LitElement {
 	// — Public API ————————————————————————————————————————————————————————————
 
 	show(): void {
-		if (!this.accessibleLabel && !this._hasWarnedLabel) {
-			this._hasWarnedLabel = true;
-			console.warn(`<nldd-popover>: No accessible-label provided. Screen readers will announce this popover as "${this._t('components.popover.accessible-label')}". Set accessible-label to a unique, descriptive name.`);
-		}
+		this._warnIfMissingLabel();
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) {
 			console.warn('<nldd-popover>: anchor element not found. Set anchor=ID or anchorElement before calling show().');
 			return;
 		}
 		(this as HTMLElement).showPopover();
+	}
+
+	private _warnIfMissingLabel(): void {
+		if (this.accessibleLabel || this._hasWarnedLabel) return;
+		this._hasWarnedLabel = true;
+		console.warn(`<nldd-popover>: No accessible-label provided. Screen readers will announce this popover as "${this._t('components.popover.accessible-label')}". Set accessible-label to a unique, descriptive name.`);
 	}
 
 	hide(): void {

@@ -22,8 +22,8 @@ export const formSectionStyles = css`
 		box-sizing: border-box;
 		border-top: var(--context-form-section-top-border, var(--semantics-dividers-thickness) solid var(--semantics-dividers-color));
 		border-bottom: var(--context-form-section-bottom-border, var(--semantics-dividers-thickness) solid var(--semantics-dividers-color));
-		padding-top: var(--context-form-section-top-padding, var(--primitives-space-16));
-		padding-bottom: var(--context-form-section-bottom-padding, var(--primitives-space-16));
+		padding-top: var(--context-form-section-top-padding, var(--semantics-forms-gap));
+		padding-bottom: var(--context-form-section-bottom-padding, var(--semantics-forms-gap));
 	}
 
 	:host(:first-child) {

@@ -21,7 +21,9 @@ describe('nldd-popover', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('popover')).toBe('');
 		expect(el.getAttribute('role')).toBe('dialog');
-		expect(el.getAttribute('aria-modal')).toBe('false');
+		// aria-modal: niet expliciet gezet — default voor role="dialog" is
+		// false en explicit duplication voegt geen waarde toe.
+		expect(el.hasAttribute('aria-modal')).toBe(false);
 		expect(el.getAttribute('tabindex')).toBe('-1');
 	});
 

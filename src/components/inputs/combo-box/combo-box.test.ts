@@ -373,7 +373,7 @@ describe('nldd-combo-box – Popover API', () => {
 		// @ts-ignore
 		delete proto.showPopover;
 
-		el._openMenu(false);
+		el._openMenu();
 
 		expect(warnSpy).toHaveBeenCalledWith(
 			expect.stringContaining('Popover API')
@@ -407,7 +407,7 @@ describe('nldd-combo-box – picker pointerdown (touch close)', () => {
 		await waitForUpdate(el);
 
 		// Open het menu programmatisch
-		el._openMenu(false);
+		el._openMenu();
 		await waitForUpdate(el);
 		expect(el._isOpen).toBe(true);
 
