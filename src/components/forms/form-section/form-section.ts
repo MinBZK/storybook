@@ -190,6 +190,14 @@ export class NLDDFormSection extends HTMLElement {
 
 		// Hide legend completely (incl. its space) if empty so .form-section__main
 		// becomes :first-child and z'n margin-top collapseert via CSS.
+		//
+		// A11y-implicatie: zonder legend heeft de <fieldset> geen accessible
+		// name. SR-gedrag varieert (Chrome: "group", Firefox: niets). Dat is
+		// een bewuste keuze — een form-section kan ook puur als visueel-
+		// grouping (divider + padding) gebruikt worden zonder heading. Wil je
+		// een SR-naam zonder zichtbare title? Wrap dan het form in een
+		// nldd-form-section MET text, of gebruik aria-labelledby op de
+		// individuele velden.
 		legend.hidden = !hasContent;
 	}
 }
