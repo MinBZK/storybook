@@ -25,8 +25,6 @@ export const cardStyles = css`
 		border-radius: var(--components-card-corner-radius);
 		box-shadow: var(--components-card-box-shadow);
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 

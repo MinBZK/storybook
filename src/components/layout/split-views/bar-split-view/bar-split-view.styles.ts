@@ -55,15 +55,13 @@ export const barSplitViewStyles = css`
 		flex-shrink: 0;
 		min-width: 0;
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
 
 		@media (max-width: ${smMax}) {
 			position: absolute;
 			left: 0;
 			right: 0;
 			z-index: 2;
-		}
+	}
 	}
 
 
@@ -83,8 +81,6 @@ export const barSplitViewStyles = css`
 		min-height: 0;
 		min-width: 0;
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
 
 		@media (max-width: ${smMax}) {
 			&::before {
@@ -116,7 +112,7 @@ export const barSplitViewStyles = css`
 					transparent);
 				pointer-events: none;
 			}
-		}
+	}
 	}
 
 

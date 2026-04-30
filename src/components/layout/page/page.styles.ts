@@ -42,13 +42,21 @@ export const pageStyles = css`
 	}
 
 
+	/* # Block */
+
+	.page {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
+	}
+
+
 	/* # Header */
 
 	.page__header {
 		flex-shrink: 0;
 		position: relative;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 	:host([sticky-header]) .page__header {
@@ -99,8 +107,6 @@ export const pageStyles = css`
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 
@@ -109,8 +115,6 @@ export const pageStyles = css`
 	.page__footer {
 		flex-shrink: 0;
 		position: relative;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 	:host([sticky-footer]) .page__footer {

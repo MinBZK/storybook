@@ -55,6 +55,13 @@ export class NLDDPage extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback();
+		// Set container-type/name as inline style on the host element. Doing
+		// this from a `:host` rule inside the shadow DOM works in Chromium
+		// but Safari does not always recognise the host as a container for
+		// slotted descendants — a known engine inconsistency. Inline on the
+		// light-DOM host avoids it entirely.
+		this.style.containerType = 'inline-size';
+		this.style.containerName = 'layout-area';
 		if (this.hasUpdated) {
 			this._setupScrollListener();
 			if (this.stickyHeader) this._setupHeaderObserver();

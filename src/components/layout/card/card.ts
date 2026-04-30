@@ -26,6 +26,12 @@ export class NLDDCard extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel: string | undefined;
 
+	override connectedCallback() {
+		super.connectedCallback();
+		this.style.containerType = 'inline-size';
+		this.style.containerName = 'layout-area';
+	}
+
 	_onSlotChange = (e: Event): void => {
 		const slot = e.target as HTMLSlotElement;
 		const wrapper = slot.parentElement as HTMLElement;

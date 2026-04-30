@@ -1,6 +1,7 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
+const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
@@ -51,6 +52,11 @@ export const simpleSectionStyles = css`
 			padding-block: var(--semantics-page-sections-lg-margin-block);
 		}
 
+		@container layout-area (max-width: ${smMax}) {
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			padding-block: var(--semantics-page-sections-sm-margin-block);
+		}
+
 		@container layout-area (min-width: ${mdMin}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-block: var(--semantics-page-sections-md-margin-block);
@@ -86,6 +92,10 @@ export const simpleSectionStyles = css`
 
 		@media (min-width: ${lgMin}) {
 			gap: var(--semantics-page-sections-lg-gap);
+		}
+
+		@container layout-area (max-width: ${unsafeCSS(breakpoints.smMax)}) {
+			gap: var(--semantics-page-sections-sm-gap);
 		}
 
 		@container layout-area (min-width: ${mdMin}) {

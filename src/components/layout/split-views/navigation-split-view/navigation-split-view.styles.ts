@@ -54,8 +54,7 @@ export const navigationSplitViewStyles = css`
 		min-height: 0;
 		min-width: var(--_sidebar-min-width);
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
+
 	}
 
 
@@ -68,8 +67,7 @@ export const navigationSplitViewStyles = css`
 		min-height: 0;
 		min-width: var(--_secondary-sidebar-min-width);
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
+
 	}
 
 
@@ -82,8 +80,7 @@ export const navigationSplitViewStyles = css`
 		min-height: 0;
 		min-width: var(--_main-min-width);
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
+
 	}
 
 
@@ -110,8 +107,6 @@ export const navigationSplitViewStyles = css`
 		min-height: 0;
 		min-width: var(--_inspector-min-width);
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
 
 		/* Suppress dismiss button — inspector is always dismissable as a sheet, not inline */
 		--context-dismiss-button-display: none;
@@ -148,29 +143,29 @@ export const navigationSplitViewStyles = css`
 
 		@media (min-width: ${lgMin}) {
 			width: var(--semantics-sheets-side-lg-width);
-		}
+	}
 
 		&:focus-visible:not(.is-pointer-focus) {
 			box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 			outline-offset: var(--semantics-focus-ring-outline-offset);
-		}
+	}
 
 		&:not([open]) {
 			display: none;
-		}
+	}
 
 		&::backdrop {
 			background: var(--semantics-overlays-backdrop-color);
-		}
+	}
 
 		&[open] {
 			animation: navigation-split-view-inspector-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
-		}
+	}
 
 		&.is-closing {
 			animation: navigation-split-view-inspector-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
-		}
+	}
 	}
 
 	.navigation-split-view__inspector-sheet-body {
@@ -212,29 +207,29 @@ export const navigationSplitViewStyles = css`
 
 		@media (min-width: ${lgMin}) {
 			width: var(--semantics-sheets-side-lg-width);
-		}
+	}
 
 		&:focus-visible:not(.is-pointer-focus) {
 			box-shadow: var(--semantics-focus-ring-box-shadow), var(--semantics-overlays-box-shadow);
 			outline: var(--semantics-focus-ring-outline);
 			outline-offset: var(--semantics-focus-ring-outline-offset);
-		}
+	}
 
 		&:not([open]) {
 			display: none;
-		}
+	}
 
 		&::backdrop {
 			background: var(--semantics-overlays-backdrop-color);
-		}
+	}
 
 		&[open] {
 			animation: navigation-split-view-sidebar-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
-		}
+	}
 
 		&.is-closing {
 			animation: navigation-split-view-sidebar-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
-		}
+	}
 	}
 
 	.navigation-split-view__sidebar-sheet-body {
@@ -277,7 +272,7 @@ export const navigationSplitViewStyles = css`
 			&.is-closing {
 				animation: navigation-split-view-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
-		}
+	}
 
 		.navigation-split-view__sidebar-sheet {
 			inset: auto 0 0 0;
@@ -294,7 +289,7 @@ export const navigationSplitViewStyles = css`
 			&.is-closing {
 				animation: navigation-split-view-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
-		}
+	}
 	}
 
 
@@ -306,7 +301,7 @@ export const navigationSplitViewStyles = css`
 		.navigation-split-view__sidebar-sheet[open],
 		.navigation-split-view__sidebar-sheet.is-closing {
 			animation: none;
-		}
+	}
 	}
 
 

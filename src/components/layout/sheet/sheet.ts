@@ -77,6 +77,8 @@ export class NLDDSheet extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
+		this.style.containerType = 'inline-size';
+		this.style.containerName = 'layout-area';
 		// Listen for dismiss events bubbling up from nldd-top-title-bar
 		this.addEventListener('dismiss', this._handleDismiss);
 	}
