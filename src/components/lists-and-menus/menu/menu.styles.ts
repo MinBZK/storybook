@@ -116,9 +116,9 @@ export const menuItemStyles = css`
 	.menu__item:focus-visible {
 		position: relative;
 		z-index: 1;
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 

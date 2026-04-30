@@ -27,6 +27,14 @@
  *                                    Valt terug op de i18n default ('Popover')
  *                                    als niet gezet — geef altijd een unieke,
  *                                    beschrijvende naam.
+ * @attr {string} role             - ARIA role (default: 'dialog'). Voor
+ *                                    informationele content (tooltip-callout,
+ *                                    rich-text help-panel) zonder dialog-
+ *                                    interactie-pattern: zet `role="region"`.
+ *                                    Voor menu-style triggers: `role="menu"` +
+ *                                    `aria-haspopup="menu"` op de anchor.
+ *                                    De popover overschrijft een expliciet
+ *                                    gezette role nooit.
  * @attr {object} translations       - Override translation keys; unset keys
  *                                    vallen terug op de Nederlandse default.
  *

@@ -271,9 +271,9 @@ export const documentTabBarItemStyles = css`
 	/* ## Focus */
 
 	.document-tab-bar__item-tab:focus-visible {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 
@@ -396,9 +396,9 @@ export const documentTabBarItemStyles = css`
 	}
 
 	.document-tab-bar__item-dismiss-button:focus-visible {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 

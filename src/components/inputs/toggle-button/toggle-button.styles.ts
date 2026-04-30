@@ -115,9 +115,9 @@ export const toggleButtonStyles = css`
 
 	.toggle-button:focus-visible,
 	.toggle-button:has(.toggle-button__input:focus-visible) {
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 	.toggle-button:focus:not(:focus-visible) {
