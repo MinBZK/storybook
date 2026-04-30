@@ -170,6 +170,8 @@ export class NLDDPopover extends LitElement {
 	}
 
 	private _warnIfMissingLabel(): void {
+		// Dev-only — productieconsoles van end-users blijven schoon.
+		if (!import.meta.env?.DEV) return;
 		if (this.accessibleLabel || this._hasWarnedLabel) return;
 		this._hasWarnedLabel = true;
 		console.warn(`<nldd-popover>: No accessible-label provided. Screen readers will announce this popover as "${this._t('components.popover.accessible-label')}". Set accessible-label to a unique, descriptive name.`);

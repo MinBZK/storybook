@@ -141,6 +141,8 @@ export class NLDDFormSection extends HTMLElement {
 	}
 
 	private _warnIfNoLabel(): void {
+		// Dev-only — productieconsoles van end-users blijven schoon.
+		if (!import.meta.env?.DEV) return;
 		if (this._hasWarnedNoLabel) return;
 		if (this.text || this.supportingText) return;
 		this._hasWarnedNoLabel = true;
