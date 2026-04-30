@@ -2,6 +2,14 @@ import { html } from 'lit';
 import './skip-link.js';
 import '../top-navigation-bar/top-navigation-bar.js';
 import '../../content/rich-text/rich-text.js';
+import '../../layout/container/container.js';
+import '../../forms/form/form.js';
+import '../../forms/form-section/form-section.js';
+import '../../forms/form-field/form-field.js';
+import '../../forms/form-actions/form-actions.js';
+import '../../inputs/text-field/text-field.js';
+import '../../actions/button/button.js';
+import '../../actions/button-group/button-group.js';
 
 /**
  * Skip-link component voor keyboard-navigatie.
@@ -30,9 +38,11 @@ const layoutArea = 'container-type: inline-size; container-name: layout-area; ba
 export const Default = {
 	render: () => html`
 		<div style=${layoutArea}>
-			<nldd-rich-text style="padding: 16px;">
-				<p>Druk op Tab om de skip-link te zien.</p>
-			</nldd-rich-text>
+			<nldd-container padding="16">
+				<nldd-rich-text>
+					<p>Druk op Tab om de skip-link te zien.</p>
+				</nldd-rich-text>
+			</nldd-container>
 			<nldd-skip-link>
 				<nldd-top-navigation-bar website-title="DigID">
 					<nldd-menu-bar-item slot="global" text="Home" current></nldd-menu-bar-item>
@@ -41,11 +51,13 @@ export const Default = {
 				</nldd-top-navigation-bar>
 			</nldd-skip-link>
 			<main>
-				<nldd-rich-text style="padding: 16px;">
-					<h1>Hoofdinhoud</h1>
-					<p>Na het klikken op de skip-link springt de focus hierheen.</p>
-					<a href="#">Eerste link in hoofdinhoud</a>
-				</nldd-rich-text>
+				<nldd-container padding="16">
+					<nldd-rich-text>
+						<h1>Hoofdinhoud</h1>
+						<p>Na het klikken op de skip-link springt de focus hierheen.</p>
+						<a href="#">Eerste link in hoofdinhoud</a>
+					</nldd-rich-text>
+				</nldd-container>
 			</main>
 		</div>
 	`,
@@ -62,10 +74,12 @@ export const MetTekst = {
 				</nldd-top-navigation-bar>
 			</nldd-skip-link>
 			<main>
-				<nldd-rich-text style="padding: 16px;">
-					<h1>Hoofdinhoud</h1>
-					<a href="#">Link in de content</a>
-				</nldd-rich-text>
+				<nldd-container padding="16">
+					<nldd-rich-text>
+						<h1>Hoofdinhoud</h1>
+						<a href="#">Link in de content</a>
+					</nldd-rich-text>
+				</nldd-container>
 			</main>
 		</div>
 	`,
@@ -75,18 +89,25 @@ export const MetHref = {
 	render: () => html`
 		<div style=${layoutArea}>
 			<nldd-skip-link text="Ga naar formulier" href="#contact-form"></nldd-skip-link>
-			<nldd-rich-text style="padding: 32px;">
-				<p>Content bovenaan de pagina...</p>
-			</nldd-rich-text>
-			<form id="contact-form"
-				tabindex="-1"
-				style="padding: 16px; border: 1px solid var(--semantics-dividers-color);"
-			>
+			<nldd-container padding="32">
 				<nldd-rich-text>
-					<h2>Contactformulier</h2>
-					<label>Naam: <input type="text"></label>
+					<p>Content bovenaan de pagina...</p>
 				</nldd-rich-text>
-			</form>
+			</nldd-container>
+			<nldd-container padding="16" id="contact-form" tabindex="-1">
+				<nldd-form novalidate label-alignment="right">
+					<nldd-form-section text="Contactformulier">
+						<nldd-form-field label="Naam">
+							<nldd-text-field name="name" autocomplete="name"></nldd-text-field>
+						</nldd-form-field>
+					</nldd-form-section>
+					<nldd-form-actions>
+						<nldd-button-group orientation="horizontal">
+							<nldd-button variant="primary" type="submit" text="Verstuur"></nldd-button>
+						</nldd-button-group>
+					</nldd-form-actions>
+				</nldd-form>
+			</nldd-container>
 		</div>
 	`,
 };
