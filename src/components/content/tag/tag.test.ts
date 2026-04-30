@@ -97,6 +97,21 @@ describe('nldd-tag', () => {
 			expect(el.shadowRoot!.querySelector('.tag__text')).toBeNull();
 		});
 
+		it('zet role="img" en aria-label op slotted-icon-only tag', async () => {
+			// Regression: voorheen checkte iconOnly alleen op component.icon
+			// (de property), niet op _hasIcon. Slotted-icon-only tags kregen
+			// dus geen role/aria-label en hadden geen accessible name.
+			el = await fixture(`
+				<nldd-tag accessible-label="Status">
+					<svg slot="icon" width="12" height="12"><circle cx="6" cy="6" r="6"/></svg>
+				</nldd-tag>
+			`);
+			await waitForUpdate(el);
+			const tag = el.shadowRoot!.querySelector('.tag')!;
+			expect(tag.getAttribute('role')).toBe('img');
+			expect(tag.getAttribute('aria-label')).toBe('Status');
+		});
+
 		it('reageert op dynamisch toegevoegde slotted content via MutationObserver', async () => {
 			el = await fixture('<nldd-tag></nldd-tag>');
 			await waitForUpdate(el);

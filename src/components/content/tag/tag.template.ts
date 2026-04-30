@@ -2,7 +2,11 @@ import { html, nothing } from 'lit';
 import type { NLDDTag } from './tag.js';
 
 export function template(component: NLDDTag) {
-	const iconOnly = !!component.icon && !component._hasText && !!component.accessibleLabel;
+	// Use _hasIcon (covers icon prop én slot="icon") zodat slotted-icon-only
+	// tags ook role="img" + aria-label krijgen — zonder dit zou een tag met
+	// slot="icon" en accessible-label maar geen tekst geen accessible name
+	// hebben (SR kondigt niks aan).
+	const iconOnly = component._hasIcon && !component._hasText && !!component.accessibleLabel;
 	return html`
 		<span class="tag"
 			role=${iconOnly ? 'img' : nothing}
