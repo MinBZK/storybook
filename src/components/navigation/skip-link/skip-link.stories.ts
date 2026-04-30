@@ -2,10 +2,10 @@ import { html } from 'lit';
 import './skip-link.js';
 import '../top-navigation-bar/top-navigation-bar.js';
 import '../../content/rich-text/rich-text.js';
+import '../../content/title/title.js';
 import '../../layout/page/page.js';
 import '../../layout/page-sections/simple-section/simple-section.js';
 import '../../forms/form/form.js';
-import '../../forms/form-section/form-section.js';
 import '../../forms/form-field/form-field.js';
 import '../../forms/form-actions/form-actions.js';
 import '../../inputs/text-field/text-field.js';
@@ -86,12 +86,13 @@ export const MetHref = {
 				</nldd-rich-text>
 			</nldd-simple-section>
 			<nldd-simple-section id="contact-form" tabindex="-1">
+				<nldd-title slot="header" size="3">
+					<h2>Contactformulier</h2>
+				</nldd-title>
 				<nldd-form novalidate label-alignment="right">
-					<nldd-form-section text="Contactformulier">
-						<nldd-form-field label="Naam">
-							<nldd-text-field name="name" autocomplete="name"></nldd-text-field>
-						</nldd-form-field>
-					</nldd-form-section>
+					<nldd-form-field label="Naam">
+						<nldd-text-field name="name" autocomplete="name"></nldd-text-field>
+					</nldd-form-field>
 					<nldd-form-actions>
 						<nldd-button-group orientation="horizontal">
 							<nldd-button variant="primary" type="submit" text="Verstuur"></nldd-button>
