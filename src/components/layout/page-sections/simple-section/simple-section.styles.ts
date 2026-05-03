@@ -3,6 +3,7 @@ import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
+const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const simpleSectionStyles = css`
@@ -31,8 +32,7 @@ export const simpleSectionStyles = css`
 	}
 
 
-	/* # Block — sm = base; md/lg via @media (fallback) en
-	   @container layout-area (heeft voorrang binnen layout-area). */
+	/* # Block */
 
 	.simple-section {
 		display: flex;
@@ -41,10 +41,13 @@ export const simpleSectionStyles = css`
 		align-items: center;
 		width: 100%;
 		box-sizing: border-box;
-		padding-inline: var(--semantics-page-sections-sm-margin-inline);
-		padding-block: var(--semantics-page-sections-sm-margin-block);
 
-		@media (min-width: ${mdMin}) {
+		@media (max-width: ${smMax}) {
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			padding-block: var(--semantics-page-sections-sm-margin-block);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-block: var(--semantics-page-sections-md-margin-block);
 		}
@@ -59,7 +62,7 @@ export const simpleSectionStyles = css`
 			padding-block: var(--semantics-page-sections-sm-margin-block);
 		}
 
-		@container layout-area (min-width: ${mdMin}) {
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-block: var(--semantics-page-sections-md-margin-block);
 		}
@@ -86,9 +89,12 @@ export const simpleSectionStyles = css`
 		flex-grow: 1;
 		width: 100%;
 		max-width: var(--semantics-page-sections-body-max-width);
-		gap: var(--semantics-page-sections-sm-gap);
 
-		@media (min-width: ${mdMin}) {
+		@media (max-width: ${smMax}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
@@ -96,11 +102,11 @@ export const simpleSectionStyles = css`
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 
-		@container layout-area (max-width: ${unsafeCSS(breakpoints.smMax)}) {
+		@container layout-area (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@container layout-area (min-width: ${mdMin}) {
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 

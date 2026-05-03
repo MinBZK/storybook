@@ -9,15 +9,15 @@ export const barSplitViewStyles = css`
 	/* # Host */
 
 	:host {
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+		--context-bar-split-view-top-bars-height: 0px;
+		--context-bar-split-view-bottom-bars-height: 0px;
+
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		height: 100%;
 		background-color: var(--_background-color);
-
-		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
-		--context-bar-split-view-top-bars-height: 0px;
-		--context-bar-split-view-bottom-bars-height: 0px;
 	}
 
 	:host([background="default"]) {

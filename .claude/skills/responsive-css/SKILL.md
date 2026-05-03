@@ -1,0 +1,292 @@
+---
+name: responsive-css
+description: Conventie voor responsive CSS in design-system componenten — expliciet per breakpoint, geen mobile-first overrides
+user-invocable: false
+---
+
+# Responsive CSS conventie
+
+Schrijf responsive component-CSS **expliciet per breakpoint**. Geen mobile-first base-waarde die in `@media` of `@container` queries wordt overschreven.
+
+## Waarom
+
+Voor een design-system zwaarder dan voor een gewone app. Componenten worden door derden geconsumeerd, geaudit, en visueel gecontroleerd per breakpoint. Een mobile-first override creëert een impliciete cascade die de developer moet "uitrekenen": *"wat is de actuele waarde op md?"*. Met expliciet-per-breakpoint staat het antwoord direct in de regel.
+
+Trade-off: méér CSS-regels per property dat verschilt per breakpoint. Voor design-system componenten weegt determinisme zwaarder dan kort-en-bondig.
+
+## Regel
+
+Een property die varieert per breakpoint mag **niet** een base-waarde buiten queries hebben. Elke variant zit in z'n eigen `@media`/`@container` block.
+
+Een property die **niet** varieert per breakpoint blijft buiten queries — dat is de natuurlijke base.
+
+## Voorbeeld
+
+❌ **Mobile-first met override (vermijd):**
+
+```css
+.simple-section {
+  display: flex;
+  padding: var(--sm-padding);    /* sm value als "base" */
+
+  @container (min-width: 641px) {
+    padding: var(--md-padding);  /* override */
+  }
+  @container (min-width: 1008px) {
+    padding: var(--lg-padding);  /* nog een override */
+  }
+}
+```
+
+✅ **Expliciet per breakpoint:**
+
+```css
+.simple-section {
+  display: flex;                 /* niet-responsief: blijft in base */
+
+  @container (max-width: 640px) {
+    padding: var(--sm-padding);
+  }
+
+  @container (min-width: 641px) and (max-width: 1007px) {
+    padding: var(--md-padding);
+  }
+
+  @container (min-width: 1008px) {
+    padding: var(--lg-padding);
+  }
+}
+```
+
+## At-rule positie: nest binnen de selector
+
+Voorkeur: `@media`/`@container` genest binnen de selector via native CSS
+nesting. Niet gehoist als top-level wrapper. Argumenten:
+
+- **Lokaliteit**: alle responsive-regels voor een component-element staan
+  bij elkaar — om uit te zoeken hoe `.foo` zich gedraagt zoek je op `.foo`,
+  niet op alle media queries verspreid door 't bestand
+- **Geen selector-duplicatie**: één keer `.foo {}`, daarbinnen alle varianten
+- **Past bij component-architectuur**: elk element heeft één regel met
+  z'n volledige verantwoordelijkheid
+
+❌ **Wrapper rond selector (vermijd):**
+```css
+.foo {
+  display: flex;
+}
+
+@media (max-width: 640px) {
+  .foo {
+    padding: 8px;
+  }
+}
+```
+
+✅ **Nested in selector:**
+```css
+.foo {
+  display: flex;
+
+  @media (max-width: 640px) {
+    padding: 8px;
+  }
+}
+```
+
+## Lokale CSS-variabelen bovenaan
+
+Declareer lokale custom properties (`--_*` voor private, `--components-*`/
+`--context-*` voor public) bovenaan het `:host` (of vergelijkbare top-level
+selector) blok, gescheiden van de rest met een witregel. Zo zie je in één
+oogopslag wat er instelbaar is voordat je de eigen properties leest.
+
+```css
+:host {
+  --_max-height: calc(100vh - var(--semantics-overlays-inset) * 2);
+  --components-popover-default-width: 320px;
+
+  display: flex;
+  margin: 0;
+  padding: 0;
+  /* ... */
+}
+```
+
+## Volgorde: kleinste breakpoint eerst
+
+Plaats `@media`/`@container` blokken in oplopende volgorde — sm, md, lg.
+Binnen elk paar (eerst `@media`, dan `@container`) ook in die volgorde.
+Maakt scannen voorspelbaar: linksboven sm, rechtsonder lg.
+
+```css
+.foo {
+  display: flex;
+
+  @media (max-width: 640px) { … }                                /* sm */
+  @media (min-width: 641px) and (max-width: 1007px) { … }        /* md */
+  @media (min-width: 1008px) { … }                               /* lg */
+
+  @container layout-area (max-width: 640px) { … }                /* sm */
+  @container layout-area (min-width: 641px) and (max-width: 1007px) { … }  /* md */
+  @container layout-area (min-width: 1008px) { … }               /* lg */
+}
+```
+
+## Witregels tussen breakpoint-blokken
+
+Zet een witregel tussen elk `@media`/`@container` blok binnen dezelfde
+selector — ook tussen twee opeenvolgende `@media` of twee opeenvolgende
+`@container` blokken. Dat geeft elk breakpoint visueel z'n eigen ruimte.
+
+```css
+.foo {
+  display: flex;
+
+  @media (max-width: 640px) {
+    padding: 8px;
+  }
+
+  @media (min-width: 641px) and (max-width: 1007px) {
+    padding: 16px;
+  }
+
+  @media (min-width: 1008px) {
+    padding: 24px;
+  }
+
+  @container layout-area (max-width: 640px) {
+    padding: 8px;
+  }
+
+  @container layout-area (min-width: 641px) and (max-width: 1007px) {
+    padding: 16px;
+  }
+
+  @container layout-area (min-width: 1008px) {
+    padding: 24px;
+  }
+}
+```
+
+## Wanneer welke breakpoint-bereiken
+
+Gebruik altijd de bestaande tokens uit `src/assets/styles/breakpoints.ts`:
+
+- `smMax` (640px) — kleinste viewport
+- `mdMin` (641px) — vanaf medium
+- `mdMax` (1007px) — bovengrens medium
+- `lgMin` (1008px) — vanaf large
+
+Bereik-conventie:
+
+- **sm only**: `(max-width: ${smMax})`
+- **md only**: `(min-width: ${mdMin}) and (max-width: ${mdMax})`
+- **lg only**: `(min-width: ${lgMin})`
+- **md+**: `(min-width: ${mdMin})` — gebruik *alleen* als de waarde voor md én lg gelijk is
+- **sm+md (niet lg)**: `(max-width: ${mdMax})`
+
+## `@container` versus `@media`
+
+- **`@container`**: voorkeursroute voor componenten die in panes/wrappers leven — reageert op de container-breedte ipv viewport. Vereist `container-type: inline-size` op de host of een ancestor.
+- **`@media`**: alleen waar de viewport echt 't relevante meetpunt is (top-level layout, of als er geen container-context is).
+
+Veel componenten gebruiken **beide** als fallback: `@container layout-area (...)` voor componenten binnen een nldd-page/nldd-card, plus `@media (...)` als fallback voor losstaand gebruik. Beide blokken volgen dezelfde regel — geen base, alleen explicit-per-breakpoint.
+
+## Wat blijft buiten breakpoint-queries
+
+Properties die op alle breakpoints hetzelfde zijn:
+
+```css
+.foo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  /* ... non-responsive properties */
+}
+```
+
+Geen probleem met deze base. De regel is alleen: *als een property varieert per breakpoint*, niet één waarde buiten en de andere binnen — alle waarden binnen, elk in z'n eigen breakpoint.
+
+## States en pseudo-classes
+
+Override-semantiek voor non-breakpoint condities (states, attributes, pseudo-classes) blijft normaal:
+
+```css
+.button {
+  background-color: var(--default);
+}
+.button:hover {
+  background-color: var(--hover);   /* override is hier prima */
+}
+.button[disabled] {
+  background-color: var(--disabled); /* override is hier prima */
+}
+```
+
+Het anti-override patroon is **alleen** voor breakpoint-varianten.
+
+## Pragmatische uitzondering
+
+Voor properties met *veel* breakpoint-varianten (bv. heading sizes met 6 levels × 3 breakpoints) wordt de duplicatie aanzienlijk. Als de duplicatie de leesbaarheid eerder schaadt dan helpt — bv. wanneer je elke regel min of meer kopieert met alleen één var-naam-verschil — overweeg dan een tabel-achtige indeling met CSS-custom-properties die je per breakpoint omschakelt:
+
+```css
+.foo {
+  --_padding: var(--sm-padding);   /* nog steeds een soort base, maar één var */
+}
+@container (min-width: ${mdMin}) {
+  .foo { --_padding: var(--md-padding); }
+}
+@container (min-width: ${lgMin}) {
+  .foo { --_padding: var(--lg-padding); }
+}
+.foo {
+  padding: var(--_padding);        /* één plek waar 't toegepast wordt */
+}
+```
+
+Deze workaround is acceptabel als de regel-explosie anders te erg wordt. Document de keuze in het component zelf.
+
+## State-conditional layouts (label-alignment, etc.)
+
+Sommige componenten hebben layouts die alleen wisselen op basis van een
+**combinatie** van state en breakpoint. Bijvoorbeeld `nldd-form-field` gaat
+naar row-layout alleen wanneer `[label-alignment='left'/'right']` én
+viewport ≥ md. Dat is een **state-conditional override**, geen mobile-first
+override. Patroon:
+
+```css
+.foo { flex-direction: column; }   /* default — geldt overal tenzij... */
+
+:host([variant='wide']) .foo {
+  @container (min-width: ${mdMin}) {
+    flex-direction: row;            /* alleen wanneer state én viewport matchen */
+  }
+}
+```
+
+De convention is **niet** van toepassing hier — de base (`column`) is een
+universele default die overal geldt tenzij de state-selector matcht. Dit
+mag zo blijven.
+
+## Geen overbodige comments
+
+CSS-properties spreken voor zichzelf. Comments alleen voor het uitleggen
+van iets niet-vanzelfsprekends (een workaround, browser-quirk, of een
+ongebruikelijk patroon). Geen comments die simpelweg herhalen wat de code
+doet (bv. "padding per breakpoint" boven een blok met padding-rules).
+
+## Checklist bij review
+
+- [ ] Geen base-waarde voor een property die ook in een `@media`/`@container` voorkomt
+- [ ] Breakpoints gebruiken de tokens uit `breakpoints.ts`
+- [ ] Bereiken sluiten op elkaar aan (640/641, 1007/1008) — geen gat of overlap
+- [ ] `@container` waar mogelijk, `@media` als fallback
+- [ ] At-rules genest binnen de selector — niet op top-level gehoist
+- [ ] Witregel tussen elk `@media`/`@container` blok binnen dezelfde selector
+- [ ] Breakpoints in oplopende volgorde (sm → md → lg), `@media` voor `@container`
+- [ ] Lokale CSS-variabelen bovenaan `:host`, witregel tussen vars en properties
+- [ ] Non-responsieve properties blijven in de base regel — niet onnodig in queries herhaald
+- [ ] State-conditional overrides (state + breakpoint combo) blijven met base default
+- [ ] Geen overbodige uitleg-comments
