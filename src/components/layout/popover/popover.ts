@@ -20,9 +20,30 @@
  *
  * @element nldd-popover
  *
- * @attr {string} anchor           - ID van het trigger-element voor positionering
- * @attr {string} placement        - Floating UI placement (default: 'bottom-start')
- * @attr {string} width            - Expliciete width (default: 320px via --components-popover-default-width)
+ * @attr {string}  anchor          - ID van het trigger-element voor positionering
+ * @attr {string}  placement       - Floating UI placement (default: 'bottom-start')
+ * @attr {string}  width           - Expliciete width (default: 320px via --components-popover-default-width)
+ * @attr {string}  position-top    - Optionele expliciete top-positie als CSS-
+ *                                    length (bv. '0', '24px', '10vh'). Wanneer
+ *                                    gezet (samen met position-left of alleen)
+ *                                    wordt Floating UI's anchor-positionering
+ *                                    overgeslagen — de popover staat dan vrij
+ *                                    op het scherm. De `anchor` blijft wel
+ *                                    nodig voor ARIA-koppeling
+ *                                    (aria-expanded/aria-haspopup/aria-controls
+ *                                    op de trigger). Geen effect op sm
+ *                                    (bottom-sheet rule wint).
+ * @attr {string}  position-left   - Optionele expliciete left-positie als CSS-
+ *                                    length. Zie position-top voor semantiek.
+ * @attr {boolean} sm-full-height  - Op sm-viewport (waar de popover als
+ *                                    bottom-sheet rendert) de volledige
+ *                                    beschikbare hoogte vullen i.p.v. te
+ *                                    krimpen naar content. Geen effect op
+ *                                    md+ (anchored modus). Opt-in voor
+ *                                    content-heavy use cases zoals zoek-
+ *                                    resultaten of lange detail-views; volgt
+ *                                    Apple/Material conventie van content-
+ *                                    sized als default.
  * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label).
  *                                    Valt terug op de i18n default ('Popover')
  *                                    als niet gezet — geef altijd een unieke,
@@ -77,6 +98,15 @@ export class NLDDPopover extends LitElement {
 
 	@property({ type: String, reflect: true })
 	width: string | undefined;
+
+	@property({ type: String, reflect: true, attribute: 'position-top' })
+	positionTop = '';
+
+	@property({ type: String, reflect: true, attribute: 'position-left' })
+	positionLeft = '';
+
+	@property({ type: Boolean, reflect: true, attribute: 'sm-full-height' })
+	smFullHeight = false;
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
@@ -171,6 +201,13 @@ export class NLDDPopover extends LitElement {
 		if (changed.has('anchor') || changed.has('anchorElement')) {
 			this._updateAnchorAria(this._isOpen);
 		}
+		// Position-override changes at runtime: re-apply (or clear) inline
+		// top/left zodat de popover meebewegt met dynamische waardes.
+		if (changed.has('positionTop') || changed.has('positionLeft')) {
+			if (!this.positionTop) this.style.removeProperty('top');
+			if (!this.positionLeft) this.style.removeProperty('left');
+			if (this._isOpen) this.reposition();
+		}
 	}
 
 	// — i18n ——————————————————————————————————————————————————————————————————
@@ -224,6 +261,16 @@ export class NLDDPopover extends LitElement {
 			this.style.removeProperty('left');
 			this.style.removeProperty('top');
 			this.style.removeProperty('--_max-height');
+			return;
+		}
+
+		// Position-override: skip Floating UI and place the popover at the
+		// consumer-specified coordinates. Anchor blijft nodig voor ARIA maar
+		// niet voor positionering — denk aan een vrij geplaatste search-popover
+		// die bovenaan-gecentreerd hoort, niet onder z'n trigger.
+		if (this.positionTop || this.positionLeft) {
+			if (this.positionTop) this.style.setProperty('top', this.positionTop);
+			if (this.positionLeft) this.style.setProperty('left', this.positionLeft);
 			return;
 		}
 

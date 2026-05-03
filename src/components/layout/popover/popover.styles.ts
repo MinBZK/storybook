@@ -68,6 +68,14 @@ export const popoverStyles = css`
 			}
 		}
 
+		:host::backdrop {
+			background-color: var(--semantics-overlays-backdrop-color);
+		}
+
+		:host([sm-full-height]) {
+			height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
+		}
+
 	}
 
 
