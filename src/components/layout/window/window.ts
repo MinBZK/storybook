@@ -22,6 +22,11 @@
  * @attr {string}  left             - CSS left positie van de linkerrand
  * @attr {string}  right            - CSS right waarde
  * @attr {string}  bottom           - CSS bottom waarde
+ * @attr {boolean} centered         - Centreert beide assen op de viewport. Per
+ *                                     as overrideable: `centered top="0"` =
+ *                                     horizontaal gecentreerd, top-aligned.
+ *                                     Mirrort CSS `place-items: center` met
+ *                                     `align-items`/`justify-items` overrides.
  * @attr {string}  width            - CSS width (standaard: var(--components-window-default-width))
  * @attr {string}  height           - CSS height (standaard: content height)
  *
@@ -73,6 +78,9 @@ export class NLDDWindow extends LitElement {
 
 	@property({ type: String, reflect: true })
 	bottom: string | undefined;
+
+	@property({ type: Boolean, reflect: true })
+	centered = false;
 
 	@property({ type: String, reflect: true })
 	width: string | undefined;
@@ -190,19 +198,34 @@ export class NLDDWindow extends LitElement {
 			return;
 		}
 
-		const hasPosition = this.top !== undefined || this.left !== undefined || this.right !== undefined || this.bottom !== undefined;
+		const hasEdge = this.top !== undefined || this.left !== undefined || this.right !== undefined || this.bottom !== undefined;
+		const hasOverride = hasEdge || this.centered;
+
+		// `centered` centreert beide assen tenzij een edge-attr op die as gezet
+		// is. Edges hebben dus voorrang. transform: translate(-50%) per
+		// gecentreerde as zorgt dat de width-clamping (max-width) niet de
+		// centering breekt — percentage in transform is relatief aan de eigen
+		// breedte, niet de viewport.
+		const yCenter = this.centered && this.top === undefined && this.bottom === undefined;
+		const xCenter = this.centered && this.left === undefined && this.right === undefined;
 
 		// Set explicit 'auto' on opposing axis when only one side is set,
 		// to override the UA stylesheet defaults on <dialog>
-		dialog.style.top = this.top ?? (this.bottom !== undefined ? 'auto' : '');
+		dialog.style.top = this.top ?? (yCenter ? '50%' : (this.bottom !== undefined ? 'auto' : ''));
 		dialog.style.bottom = this.bottom ?? (this.top !== undefined ? 'auto' : '');
-		dialog.style.left = this.left ?? (this.right !== undefined ? 'auto' : '');
+		dialog.style.left = this.left ?? (xCenter ? '50%' : (this.right !== undefined ? 'auto' : ''));
 		dialog.style.right = this.right ?? (this.left !== undefined ? 'auto' : '');
 		dialog.style.width = this.width ?? '';
 		dialog.style.height = this.height ?? '';
 
-		// Reset margin when custom position is set; keep margin: auto for centering
-		dialog.style.margin = hasPosition ? '0' : '';
+		// Translate per gecentreerde as om center-from-edge te corrigeren.
+		dialog.style.transform = (xCenter || yCenter)
+			? `translate(${xCenter ? '-50%' : '0'}, ${yCenter ? '-50%' : '0'})`
+			: '';
+
+		// Reset margin when custom position is set; keep margin: auto for the
+		// UA-default centering (which only kicks in without explicit position).
+		dialog.style.margin = hasOverride ? '0' : '';
 	}
 
 	_handleDialogClick = (e: MouseEvent): void => {
