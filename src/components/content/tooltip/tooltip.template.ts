@@ -11,7 +11,8 @@ export function tooltipTemplate(component: NLDDTooltip): TemplateResult {
 			@focusin=${component._handleFocusIn}
 			@focusout=${component._handleFocusOut}
 		></slot>
-		<div class=${classMap({ tooltip: true, 'is-visible': component._visible && !component._focusVisible, 'is-focus-visible': component._visible && component._focusVisible })}
+		<div class=${classMap({ tooltip: true, 'is-focus-visible': component._visible && component._focusVisible })}
+			popover="manual"
 			aria-hidden="true"
 			@mouseenter=${component._handleTooltipEnter}
 			@mouseleave=${component._handleTooltipLeave}

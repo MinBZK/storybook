@@ -26,35 +26,29 @@ export const tooltipStyles = css`
 
 	.tooltip {
 		position: fixed;
-		z-index: var(--_z-index);
+		margin: 0;
+		padding: 0;
+		border: none;
+		background: none;
 		opacity: 0;
-		pointer-events: none;
-		visibility: hidden;
 		transition:
 			opacity var(--_hide-duration) ease,
-			visibility 0ms linear var(--_hide-duration),
-			pointer-events 0ms linear var(--_hide-duration);
+			display var(--_hide-duration) allow-discrete,
+			overlay var(--_hide-duration) allow-discrete;
 	}
 
-	.tooltip.is-visible {
+	.tooltip:popover-open {
 		opacity: 1;
-		visibility: visible;
-		pointer-events: auto;
-		transition:
-			opacity var(--_show-duration) ease var(--_show-delay),
-			visibility 0ms linear,
-			pointer-events 0ms linear var(--_show-delay);
-	}
-
-	/* Focus triggers: geen show delay */
-	.tooltip.is-focus-visible {
-		opacity: 1;
-		visibility: visible;
-		pointer-events: auto;
 		transition:
 			opacity var(--_show-duration) ease,
-			visibility 0ms linear,
-			pointer-events 0ms linear;
+			display var(--_show-duration) allow-discrete,
+			overlay var(--_show-duration) allow-discrete;
+	}
+
+	@starting-style {
+		.tooltip:popover-open {
+			opacity: 0;
+		}
 	}
 
 
