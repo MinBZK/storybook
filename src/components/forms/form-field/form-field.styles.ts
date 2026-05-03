@@ -100,6 +100,7 @@ export const formFieldStyles = css`
 		gap: var(--primitives-space-4);
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-md-regular-tight);
+		text-wrap: pretty;
 	}
 
 	:host([label-alignment='left']) .form-field__label,
@@ -141,6 +142,7 @@ export const formFieldStyles = css`
 	.form-field__supporting-label {
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-xs-regular-tight);
+		text-wrap: pretty;
 	}
 
 

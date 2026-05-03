@@ -107,6 +107,7 @@ export const textCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
+		text-wrap: pretty;
 	}
 
 	:host([size='md']) .text-cell__text,

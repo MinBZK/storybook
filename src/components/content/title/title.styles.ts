@@ -55,6 +55,7 @@ export const titleStyles = css`
 	::slotted(:not([slot])) {
 		margin: 0;
 		color: var(--semantics-content-color);
+		text-wrap: pretty;
 	}
 
 	:host([size='1']) ::slotted(:not([slot])) {

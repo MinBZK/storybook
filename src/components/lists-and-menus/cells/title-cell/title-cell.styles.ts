@@ -100,6 +100,7 @@ export const titleCellStyles = css`
 		align-self: stretch;
 		min-width: 0;
 		color: var(--context-cell-content-color, var(--semantics-content-color));
+		text-wrap: pretty;
 	}
 
 	:host([horizontal-alignment='right']) .title-cell__title {
