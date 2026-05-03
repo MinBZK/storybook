@@ -1,6 +1,6 @@
 import { LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { computePosition, flip, shift, offset, size } from '@floating-ui/dom';
+import { computePosition, flip, shift, offset, size, autoUpdate } from '@floating-ui/dom';
 import { menuStyles, menuItemStyles, menuDividerStyles } from './menu.styles.js';
 import { menuTemplate, menuItemTemplate, menuDividerTemplate } from './menu.template.js';
 import { nlddMenuTranslations } from './menu.i18n.js';
@@ -226,6 +226,7 @@ export class NLDDMenu extends LitElement {
 
 	private _isOpen = false;
 	private _closedAt = 0;
+	private _cleanupAutoUpdate: (() => void) | null = null;
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
@@ -328,6 +329,8 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('mouseleave', this._handleMouseleave);
 		this.removeEventListener('menu-item-focused', this._handleMenuItemFocused);
 		document.removeEventListener('click', this._handleDocumentClick);
+		this._cleanupAutoUpdate?.();
+		this._cleanupAutoUpdate = null;
 	}
 
 	// — Internal helpers ——————————————————————————————————————————————————————
@@ -537,6 +540,8 @@ export class NLDDMenu extends LitElement {
 
 		if (toggleEvent.newState !== 'open') {
 			this._closedAt = Date.now();
+			this._cleanupAutoUpdate?.();
+			this._cleanupAutoUpdate = null;
 			return;
 		}
 
@@ -548,6 +553,10 @@ export class NLDDMenu extends LitElement {
 		});
 
 		await this.reposition();
+		const anchorEl = this._getAnchorEl();
+		if (anchorEl) {
+			this._cleanupAutoUpdate = autoUpdate(anchorEl, this, () => this.reposition());
+		}
 
 		await this.updateComplete;
 		if (this.variant !== 'listbox') {
