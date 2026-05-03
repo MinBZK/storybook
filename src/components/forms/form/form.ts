@@ -53,8 +53,11 @@
  * @attr {string}  autocomplete     - 'on' | 'off' (form-level autofill toggle)
  * @attr {string}  label-alignment  - Default `label-alignment` voor descendant
  *                                    nldd-form-field en nldd-form-actions
- *                                    ('top' | 'right' | 'left'). Individuele
- *                                    elementen kunnen het overrulen.
+ *                                    ('top' | 'right' | 'left'). Wordt naar
+ *                                    descendants gepropageerd als
+ *                                    `form-label-alignment`. Een eigen
+ *                                    `label-alignment` op de descendant
+ *                                    heeft voorrang via CSS-cascade.
  *
  * @prop {HTMLFormElement | null} form - The inner <form> element (read-only).
  *                                       Use voor `form.checkValidity()`,
@@ -101,7 +104,6 @@ const FORWARDED_ATTRIBUTES = [
 ] as const;
 
 const DESCENDANT_SELECTOR = 'nldd-form-field, nldd-form-actions';
-const INHERITED_MARKER = 'formAlignmentInherited';
 
 export class NLDDForm extends HTMLElement {
 	static get observedAttributes() {
@@ -198,46 +200,26 @@ export class NLDDForm extends HTMLElement {
 
 	/**
 	 * Push `label-alignment` to descendant nldd-form-field and nldd-form-actions
-	 * elements that don't have an explicit own value. We track inherited
-	 * assignments via a data-attribute so subsequent updates only touch the
-	 * elements we previously inherited to — explicit per-element overrides
-	 * are preserved.
+	 * elements as a separate `form-label-alignment` attribute, defaulting to
+	 * `'top'` when the form itself has no `label-alignment`. Descendant CSS
+	 * uses `[label-alignment="X"]` first and falls back to
+	 * `[form-label-alignment="X"]` when no own value is set, so a consumer's
+	 * explicit `label-alignment` always wins automatically — without us having
+	 * to track which elements we previously inherited to.
 	 *
-	 * **Timing-subtleties (Lit reflect-default + MutationObserver race):**
+	 * Always-setting (rather than only when the form has its own value) lets
+	 * downstream selectors assume the attribute is present on every descendant
+	 * inside an `nldd-form`, which keeps form.css's adjacent-sibling tight-gap
+	 * rule simple.
 	 *
-	 * Lit-based descendants (nldd-form-field, nldd-form-actions) reflecten hun
-	 * default `label-alignment="top"` op het attribuut wanneer hun eerste
-	 * update fired. Een naïeve `hasOwn`-check zou dan elke vers gemaakte
-	 * descendant als "explicit own value" zien en propagation skippen.
-	 *
-	 * In praktijk werkt 't omdat:
-	 * 1. Bij parsed HTML fires de form's connectedCallback VOORDAT children
-	 *    upgraden — propagation set 'right' op het attribuut, child upgrade
-	 *    leest dat als initial value (geen reflect-default-conflict).
-	 * 2. Bij dynamic appendChild fires de MutationObserver na DOM-mutation
-	 *    maar microtask-volgorde laat de propagation z'n attribuut zetten
-	 *    voordat Lit's reflection 't kan overschrijven (Lit reflect = ook
-	 *    microtask, maar de MO callback runt eerder in deze flow).
-	 *
-	 * Regression test: form.test.ts "propageert ook naar later toegevoegde
-	 * form-actions children" verifieert deze flow. Verander deze guard
-	 * niet zonder die test te draaien.
+	 * The two-attribute split also avoids the historical Lit reflect-default
+	 * vs MutationObserver timing race: we never touch `label-alignment` on
+	 * the descendant, so a freshly upgraded Lit element reflecting its default
+	 * doesn't conflict with the form's intent.
 	 */
 	private _propagateLabelAlignment(value: string | null): void {
 		const fields = this.querySelectorAll<HTMLElement>(DESCENDANT_SELECTOR);
-		fields.forEach(f => {
-			const isInherited = f.dataset[INHERITED_MARKER] === 'true';
-			const hasOwn = f.hasAttribute('label-alignment');
-			// Skip elements that have an explicit own attribute we didn't set
-			if (hasOwn && !isInherited) return;
-			if (value) {
-				f.setAttribute('label-alignment', value);
-				f.dataset[INHERITED_MARKER] = 'true';
-			} else if (isInherited) {
-				f.removeAttribute('label-alignment');
-				delete f.dataset[INHERITED_MARKER];
-			}
-		});
+		fields.forEach(f => f.setAttribute('form-label-alignment', value ?? 'top'));
 	}
 
 	private _mirrorAttributes(): void {
