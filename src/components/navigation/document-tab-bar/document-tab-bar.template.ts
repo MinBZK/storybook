@@ -75,12 +75,10 @@ export function documentTabBarItemTemplate(component: NLDDDocumentTabBarItem): T
 				: nothing}
 		</span>
 		<span class="document-tab-bar__item-short">
-			<nldd-tooltip text=${tooltipText}>
-				<span class="document-tab-bar__item-short-text">${shortTextValue}</span>
-				${shortSupportingTextValue
-					? html`<span class="document-tab-bar__item-short-supporting-text">${shortSupportingTextValue}</span>`
-					: nothing}
-			</nldd-tooltip>
+			<span class="document-tab-bar__item-short-text">${shortTextValue}</span>
+			${shortSupportingTextValue
+				? html`<span class="document-tab-bar__item-short-supporting-text">${shortSupportingTextValue}</span>`
+				: nothing}
 		</span>
 	`;
 
@@ -104,17 +102,19 @@ export function documentTabBarItemTemplate(component: NLDDDocumentTabBarItem): T
 			>${tabContent}</button>`;
 
 	return html`
-		<div class="document-tab-bar__item">
-			${tab}
-			<button class="document-tab-bar__item-dismiss-button"
-				aria-label=${component._dismissButtonAccessibilityLabel}
-				tabindex=${component.selected || component._isFallbackFocusable ? '0' : '-1'}
-				@click=${component._handleDismiss}
-			>
-				<span class="document-tab-bar__item-dismiss-icon">
-					<nldd-icon name="dismiss"></nldd-icon>
-				</span>
-			</button>
-		</div>
+		<nldd-tooltip text=${tooltipText} ?disabled=${!component._isShort}>
+			<div class="document-tab-bar__item">
+				${tab}
+				<button class="document-tab-bar__item-dismiss-button"
+					aria-label=${component._dismissButtonAccessibilityLabel}
+					tabindex=${component.selected || component._isFallbackFocusable ? '0' : '-1'}
+					@click=${component._handleDismiss}
+				>
+					<span class="document-tab-bar__item-dismiss-icon">
+						<nldd-icon name="dismiss"></nldd-icon>
+					</span>
+				</button>
+			</div>
+		</nldd-tooltip>
 	`;
 }

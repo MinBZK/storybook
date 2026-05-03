@@ -81,9 +81,37 @@ export class NLDDDocumentTabBarItem extends LitElement {
 	@property({ type: String })
 	href = '';
 
+	/**
+	 * True when the parent bar has compressed the item below the
+	 * `--_short-text-threshold` (CSS), so only short-text is visible.
+	 * Used to gate the title-tooltip — in normal mode the full text +
+	 * supporting text is already inline so a tooltip would be redundant.
+	 */
+	@state()
+	_isShort = false;
+
+	private _itemResizeObserver: ResizeObserver | null = null;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.setAttribute('role', 'none');
+		this._itemResizeObserver = new ResizeObserver(() => this._updateIsShort());
+		this._itemResizeObserver.observe(this);
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._itemResizeObserver?.disconnect();
+		this._itemResizeObserver = null;
+	}
+
+	private _updateIsShort(): void {
+		// Read threshold from CSS custom property — single source of truth
+		// shared with the @container query that toggles short-mode visuals.
+		// `--_short-text-threshold` is declared on nldd-document-tab-bar's
+		// :host and cascades to slotted items.
+		const threshold = parseFloat(getComputedStyle(this).getPropertyValue('--_short-text-threshold'));
+		this._isShort = this.getBoundingClientRect().width < threshold;
 	}
 
 	/** Set by nldd-document-tab-bar. Not part of the public API. */
