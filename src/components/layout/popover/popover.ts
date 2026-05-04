@@ -274,6 +274,18 @@ export class NLDDPopover extends LitElement {
 		else this.show();
 	}
 
+	/**
+	 * Restore the inline transition after a breakpoint-suppressed tick. Force
+	 * a layout flush first (`void offsetHeight`) so the just-applied position
+	 * styles commit before transitions resume — otherwise the cleared
+	 * `transition: ''` would re-enable animations on those exact properties
+	 * and you'd still see the slide we were trying to suppress.
+	 */
+	private _restoreTransition(): void {
+		void this.offsetHeight;
+		this.style.transition = '';
+	}
+
 	/** Herberekent positie t.o.v. anchor. Wordt automatisch aangeroepen bij openen. */
 	async reposition(): Promise<void> {
 		if (!this._isOpen) return;
@@ -284,6 +296,7 @@ export class NLDDPopover extends LitElement {
 		// and the sm `translateY(...)` bottom-sheet transform — producing
 		// a visible left/right slide on resize. We only suppress on the
 		// crossing tick; user-driven open/close on sm continues to animate.
+		// Each path below calls _restoreTransition() before returning.
 		const isSm = this._smQuery?.matches ?? false;
 		const crossedBreakpoint = isSm !== this._wasOnSm;
 		this._wasOnSm = isSm;
@@ -299,10 +312,7 @@ export class NLDDPopover extends LitElement {
 			this.style.removeProperty('bottom');
 			this.style.removeProperty('transform');
 			this.style.removeProperty('--_max-height');
-			if (crossedBreakpoint) {
-				void this.offsetHeight;
-				this.style.transition = '';
-			}
+			if (crossedBreakpoint) this._restoreTransition();
 			return;
 		}
 
@@ -334,10 +344,7 @@ export class NLDDPopover extends LitElement {
 			} else {
 				this.style.removeProperty('transform');
 			}
-			if (crossedBreakpoint) {
-				void this.offsetHeight;
-				this.style.transition = '';
-			}
+			if (crossedBreakpoint) this._restoreTransition();
 			return;
 		}
 
@@ -370,14 +377,7 @@ export class NLDDPopover extends LitElement {
 			top: `${y}px`,
 		});
 
-		// Mirror the cleanup the sm and override paths do — without this, a
-		// breakpoint-crossing tick that lands in the Floating UI path leaves
-		// `transition: none` stuck inline. Today md+ has no popover transitions
-		// so it's invisible; tomorrow it'd silently break any added animation.
-		if (crossedBreakpoint) {
-			void this.offsetHeight;
-			this.style.transition = '';
-		}
+		if (crossedBreakpoint) this._restoreTransition();
 	}
 
 	// — Anchor ————————————————————————————————————————————————————————————————

@@ -149,6 +149,43 @@ describe('nldd-tooltip – show/hide', () => {
 
 		expect(isTooltipVisible(el)).toBe(false);
 	});
+
+	it('disabled flip annuleert een pending show-timer voordat die afloopt', async () => {
+		// Use a non-zero delay so we can flip `disabled` while the timer is
+		// still scheduled. This is the exact race the updated() handler is
+		// meant to win — without the clearTimeout, the timer would fire and
+		// open the tooltip even though the consumer just suppressed it.
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		el.style.setProperty('--_show-delay', '50');
+
+		const trigger = el.querySelector('button')!;
+		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+		// Don't wait for the timer to fire — flip disabled mid-flight.
+		el.disabled = true;
+		await waitForUpdate(el);
+
+		// Wait past the original show-delay window — the cancelled timer must
+		// not still open the tooltip.
+		await new Promise(resolve => setTimeout(resolve, 100));
+		expect(isTooltipVisible(el)).toBe(false);
+	});
+
+	it('disabled flip verbergt een al zichtbare tooltip direct', async () => {
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		instantShow(el);
+
+		const trigger = el.querySelector('button')!;
+		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+		await new Promise(resolve => setTimeout(resolve, 0));
+		await waitForUpdate(el);
+		expect(isTooltipVisible(el)).toBe(true);
+
+		el.disabled = true;
+		await waitForUpdate(el);
+		expect(isTooltipVisible(el)).toBe(false);
+	});
 });
 
 describe('nldd-tooltip – aria-describedby', () => {
