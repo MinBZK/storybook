@@ -218,8 +218,11 @@ describe('nldd-form', () => {
 				expect(f.hasAttribute('label-alignment')).toBe(false);
 			});
 			expect(actions.getAttribute('form-label-alignment')).toBe('right');
-			// form-actions reflect z'n Lit-default 'top' op label-alignment, dat is OK —
-			// de form raakt 't attribuut nooit aan, dus geen race en geen overschrijving.
+			// form-actions' labelAlignment default is `undefined`, dus Lit reflectt
+			// niets — eigen `label-alignment` blijft afwezig en de cascaded
+			// `form-label-alignment="right"` wint zonder dat de form 'm hoeft te
+			// overschrijven.
+			expect(actions.hasAttribute('label-alignment')).toBe(false);
 		});
 
 		it('overschrijft NIET een explicit eigen label-alignment van een form-field', async () => {

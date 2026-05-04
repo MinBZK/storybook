@@ -110,8 +110,11 @@ export class NLDDDocumentTabBarItem extends LitElement {
 		// shared with the @container query that toggles short-mode visuals.
 		// `--_short-text-threshold` is declared on nldd-document-tab-bar's
 		// :host and cascades to slotted items.
+		// Guard against NaN: when the item is used outside a tab bar the
+		// custom property is unset and `width < NaN` would silently resolve to
+		// false (safe fallback, but the explicit guard makes intent clear).
 		const threshold = parseFloat(getComputedStyle(this).getPropertyValue('--_short-text-threshold'));
-		this._isShort = this.getBoundingClientRect().width < threshold;
+		this._isShort = Number.isFinite(threshold) && this.getBoundingClientRect().width < threshold;
 	}
 
 	/** Set by nldd-document-tab-bar. Not part of the public API. */
