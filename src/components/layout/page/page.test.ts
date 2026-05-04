@@ -48,4 +48,51 @@ describe('nldd-page', () => {
 		expect(scroll.style.paddingTop).not.toBe('');
 	});
 
+	describe('is-last main slot marker', () => {
+		it('marks the last visible main child with is-last', async () => {
+			el = await fixture(`
+				<nldd-page>
+					<div id="a">A</div>
+					<div id="b">B</div>
+					<div id="c">C</div>
+				</nldd-page>
+			`);
+			await waitForUpdate(el);
+
+			expect(el.querySelector('#a')!.classList.contains('is-last')).toBe(false);
+			expect(el.querySelector('#b')!.classList.contains('is-last')).toBe(false);
+			expect(el.querySelector('#c')!.classList.contains('is-last')).toBe(true);
+		});
+
+		it('skips hidden children when picking the last', async () => {
+			el = await fixture(`
+				<nldd-page>
+					<div id="a">A</div>
+					<div id="b">B</div>
+					<div id="c" hidden>C</div>
+				</nldd-page>
+			`);
+			await waitForUpdate(el);
+
+			expect(el.querySelector('#b')!.classList.contains('is-last')).toBe(true);
+			expect(el.querySelector('#c')!.classList.contains('is-last')).toBe(false);
+		});
+
+		it('ignores siblings in named slots', async () => {
+			el = await fixture(`
+				<nldd-page>
+					<div id="a">A</div>
+					<div id="b">B</div>
+					<div id="footer" slot="footer">Footer</div>
+				</nldd-page>
+			`);
+			await waitForUpdate(el);
+
+			// `footer` is in a named slot — it should not appear in the main-slot
+			// last-pick and thus must not carry is-last.
+			expect(el.querySelector('#b')!.classList.contains('is-last')).toBe(true);
+			expect(el.querySelector('#footer')!.classList.contains('is-last')).toBe(false);
+		});
+	});
+
 });

@@ -98,6 +98,52 @@ describe('nldd-document-tab-bar-item', () => {
 
 
 /* ============================================================
+   nldd-document-tab-bar-item – short mode
+   ============================================================ */
+
+describe('nldd-document-tab-bar-item – short mode', () => {
+	let el: NLDDDocumentTabBar;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	function setItemWidth(item: HTMLElement, width: number) {
+		// jsdom returns 0 from getBoundingClientRect; stub it for the seam that
+		// _updateIsShort reads. Each test sets a different width.
+		Object.defineProperty(item, 'getBoundingClientRect', {
+			configurable: true,
+			value: () => ({ width, height: 0, top: 0, left: 0, right: width, bottom: 0, x: 0, y: 0, toJSON: () => ({}) }),
+		});
+	}
+
+	it('toggles _isShort and the tooltip-disabled gate via the threshold CSS var', async () => {
+		el = await fixture<NLDDDocumentTabBar>(threeTabBar());
+		await waitForUpdate(el);
+		const item = getItems(el)[0] as NLDDDocumentTabBarItem;
+
+		// Override the threshold so we don't depend on the production 200px.
+		item.style.setProperty('--_short-text-threshold', '100px');
+
+		// Below threshold → short mode active.
+		setItemWidth(item, 50);
+		(item as unknown as { _updateIsShort: () => void })._updateIsShort();
+		await waitForUpdate(item);
+		expect((item as unknown as { _isShort: boolean })._isShort).toBe(true);
+		const tooltip = item.shadowRoot!.querySelector('nldd-tooltip')!;
+		expect(tooltip.hasAttribute('disabled')).toBe(false);
+
+		// Above threshold → tooltip suppressed (full text already inline).
+		setItemWidth(item, 150);
+		(item as unknown as { _updateIsShort: () => void })._updateIsShort();
+		await waitForUpdate(item);
+		expect((item as unknown as { _isShort: boolean })._isShort).toBe(false);
+		expect(tooltip.hasAttribute('disabled')).toBe(true);
+	});
+});
+
+
+/* ============================================================
    nldd-document-tab-bar-item – events
    ============================================================ */
 

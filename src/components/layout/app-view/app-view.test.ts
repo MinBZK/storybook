@@ -47,4 +47,44 @@ describe('nldd-app-view', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('background')).toBe('tinted');
 	});
+
+	describe('document.body background ownership', () => {
+		afterEach(() => {
+			document.body.style.removeProperty('background-color');
+		});
+
+		it('writes the body background on connect', async () => {
+			el = await fixture('<nldd-app-view></nldd-app-view>');
+			await waitForUpdate(el);
+			expect(document.body.style.backgroundColor).not.toBe('');
+		});
+
+		it('clears the body background on disconnect when sole owner', async () => {
+			el = await fixture('<nldd-app-view></nldd-app-view>');
+			await waitForUpdate(el);
+			cleanup(el);
+			el = undefined as unknown as NLDDAppView;
+			expect(document.body.style.backgroundColor).toBe('');
+		});
+
+		it('does not erase a surviving instance when an older one disconnects', async () => {
+			const first = await fixture<NLDDAppView>('<nldd-app-view></nldd-app-view>');
+			await waitForUpdate(first);
+			const second = await fixture<NLDDAppView>('<nldd-app-view background="tinted"></nldd-app-view>');
+			await waitForUpdate(second);
+
+			// `second` is the most recent writer; its background sits on body.
+			const ownedBySecond = document.body.style.backgroundColor;
+			expect(ownedBySecond).not.toBe('');
+
+			// Disconnecting the older instance must not clear the surviving one's
+			// background — that was the multi-instance regression.
+			cleanup(first);
+			expect(document.body.style.backgroundColor).toBe(ownedBySecond);
+
+			// Then disconnecting the actual owner clears it.
+			cleanup(second);
+			expect(document.body.style.backgroundColor).toBe('');
+		});
+	});
 });

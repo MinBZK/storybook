@@ -22,7 +22,11 @@ nldd-form nldd-form-field + nldd-form-field {
 	}
 }
 
-nldd-form nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']) + nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']) {
+/* Tight gap when both fields rely on the cascaded form-label-alignment='top'
+   (no own override). An explicit `label-alignment='top'` on the form-field is
+   redundant with the default cascade and not worth the extra selector
+   complexity — set it only when overriding to 'left'/'right'. */
+nldd-form nldd-form-field[form-label-alignment='top']:not([label-alignment]) + nldd-form-field[form-label-alignment='top']:not([label-alignment]) {
 	@container (min-width: 641px) {
 		margin-top: var(--semantics-forms-gap-tight);
 	}

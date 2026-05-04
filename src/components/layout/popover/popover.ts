@@ -102,17 +102,21 @@ export class NLDDPopover extends LitElement {
 	@property({ type: String, reflect: true })
 	width: string | undefined;
 
+	// Default `undefined` (not '') so Lit doesn't reflect an empty value:
+	// `<nldd-popover>` would otherwise carry `top="" left="" right="" bottom=""`
+	// in the DOM, which is noisy and could trip `[top]` attribute selectors in
+	// consumer stylesheets. The hasOverride checks treat both as falsy.
 	@property({ type: String, reflect: true })
-	top = '';
+	top: string | undefined = undefined;
 
 	@property({ type: String, reflect: true })
-	left = '';
+	left: string | undefined = undefined;
 
 	@property({ type: String, reflect: true })
-	right = '';
+	right: string | undefined = undefined;
 
 	@property({ type: String, reflect: true })
-	bottom = '';
+	bottom: string | undefined = undefined;
 
 	@property({ type: Boolean, reflect: true })
 	centered = false;

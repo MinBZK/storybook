@@ -104,9 +104,17 @@ export class NLDDTooltip extends LitElement {
 		if (changed.has('text')) {
 			this._syncAriaDescribedBy();
 		}
-		if (changed.has('disabled') && this.disabled && this._visible) {
-			this._visible = false;
-			this._focusVisible = false;
+		if (changed.has('disabled') && this.disabled) {
+			// Cancel any pending show — without this the timer fires after
+			// disabled is set and re-opens the tooltip.
+			if (this._showTimeout) {
+				clearTimeout(this._showTimeout);
+				this._showTimeout = null;
+			}
+			if (this._visible) {
+				this._visible = false;
+				this._focusVisible = false;
+			}
 		}
 	}
 

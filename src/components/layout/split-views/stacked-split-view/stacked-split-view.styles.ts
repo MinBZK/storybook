@@ -52,7 +52,6 @@ export const stackedSplitViewStyles = css`
 		min-height: var(--_pane-min-height);
 		min-width: 0;
 		overflow: hidden;
-
 	}
 
 	.stacked-split-view__pane[hidden] {

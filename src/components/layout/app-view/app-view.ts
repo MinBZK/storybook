@@ -25,6 +25,12 @@ import { customElement, property } from 'lit/decorators.js';
 import { appViewStyles } from './app-view.styles.js';
 import { appViewTemplate } from './app-view.template.js';
 
+// Track the active app-view that owns the body-background style. Multiple
+// instances can briefly coexist (tabs, modals, tests). Only the most recently
+// connected app-view writes the background; on disconnect we only clear the
+// style if we were the owner — otherwise the surviving instance keeps theirs.
+let _bodyBackgroundOwner: NLDDAppView | null = null;
+
 @customElement('nldd-app-view')
 export class NLDDAppView extends LitElement {
 	static override styles = appViewStyles;
@@ -39,7 +45,10 @@ export class NLDDAppView extends LitElement {
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
-		document.body.style.removeProperty('background-color');
+		if (_bodyBackgroundOwner === this) {
+			document.body.style.removeProperty('background-color');
+			_bodyBackgroundOwner = null;
+		}
 	}
 
 	override updated(changed: PropertyValues): void {
@@ -51,6 +60,7 @@ export class NLDDAppView extends LitElement {
 			? '--semantics-surfaces-tinted-background-color'
 			: '--semantics-surfaces-background-color';
 		document.body.style.backgroundColor = `var(${token})`;
+		_bodyBackgroundOwner = this;
 	}
 
 	override render() {

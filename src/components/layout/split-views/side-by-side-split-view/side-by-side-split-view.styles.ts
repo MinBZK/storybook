@@ -51,7 +51,6 @@ export const sideBySideSplitViewStyles = css`
 		min-height: 0;
 		min-width: var(--_pane-min-width);
 		overflow: hidden;
-
 	}
 
 	.side-by-side-split-view__pane[hidden] {
