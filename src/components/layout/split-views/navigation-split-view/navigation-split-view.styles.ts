@@ -89,6 +89,7 @@ export const navigationSplitViewStyles = css`
 	:host(.full-stack) .navigation-split-view__secondary-sidebar-pane,
 	:host(.full-stack) .navigation-split-view__main-pane {
 		min-width: 0;
+		flex: 1;
 	}
 
 

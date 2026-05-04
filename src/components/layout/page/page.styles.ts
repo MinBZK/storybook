@@ -15,8 +15,6 @@ export const pageStyles = css`
 		overflow-y: auto;
 		overflow-x: hidden;
 		background-color: var(--_background-color);
-		padding-top: var(--context-bar-split-view-top-bars-height, 0px);
-		padding-bottom: var(--context-bar-split-view-bottom-bars-height, 0px);
 	}
 
 	/* Overflow hidden prevents content from escaping the scroll wrapper.
@@ -61,7 +59,7 @@ export const pageStyles = css`
 
 	:host([sticky-header]) .page__header {
 		position: absolute;
-		top: var(--context-bar-split-view-top-bars-height, 0px);
+		top: 0;
 		left: 0;
 		right: 0;
 		z-index: 1;

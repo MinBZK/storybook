@@ -171,7 +171,7 @@ export const GecentreerdeDialoog = {
 	render: () => html`
 	<nldd-page sticky-header sticky-footer style="height: 400px;">
 		${header}
-		<nldd-simple-section align="center">
+		<nldd-simple-section>
 			<nldd-inline-dialog
 				icon="search"
 				text="Geen resultaten"

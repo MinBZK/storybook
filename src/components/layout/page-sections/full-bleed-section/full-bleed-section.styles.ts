@@ -13,6 +13,8 @@ export const fullBleedSectionStyles = css`
 	   zonder layout-area dient @media als fallback. */
 
 	:host {
+		--_max-width: var(--semantics-page-sections-body-max-width);
+
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -23,8 +25,8 @@ export const fullBleedSectionStyles = css`
 		display: none;
 	}
 
-	:host([align="center"]) {
-		flex-grow: 1;
+	:host([full-width]) {
+		--_max-width: none;
 	}
 
 
@@ -71,6 +73,7 @@ export const fullBleedSectionStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 		width: 100%;
+		max-width: var(--_max-width);
 		gap: var(--semantics-page-sections-sm-gap);
 
 		@media (min-width: ${mdMin}) {
@@ -105,9 +108,4 @@ export const fullBleedSectionStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 	}
-
-	:host([align="center"]) .full-bleed-section__main {
-		justify-content: center;
-	}
-
 `;

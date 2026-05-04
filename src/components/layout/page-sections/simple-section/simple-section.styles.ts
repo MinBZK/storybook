@@ -15,6 +15,8 @@ export const simpleSectionStyles = css`
 	   zonder layout-area dient @media als fallback. */
 
 	:host {
+		--_max-width: var(--semantics-page-sections-body-max-width);
+
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -25,10 +27,13 @@ export const simpleSectionStyles = css`
 		display: none;
 	}
 
-	:host([align="center"]),
 	:host(:last-child),
 	:host(.is-last) {
 		flex-grow: 1;
+	}
+
+	:host([full-width]) {
+		--_max-width: none;
 	}
 
 
@@ -88,7 +93,7 @@ export const simpleSectionStyles = css`
 		flex-direction: column;
 		flex-grow: 1;
 		width: 100%;
-		max-width: var(--semantics-page-sections-body-max-width);
+		max-width: var(--_max-width);
 
 		@media (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
@@ -129,9 +134,5 @@ export const simpleSectionStyles = css`
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-	}
-
-	:host([align="center"]) .simple-section__main {
-		justify-content: center;
 	}
 `;

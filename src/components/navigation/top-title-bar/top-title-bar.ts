@@ -51,6 +51,7 @@ export class NLDDTopTitleBar extends LitElement {
 	private _pageElement: Element | null = null;
 	private _anchorElement: Element | null = null;
 	private _activeScrollTarget: EventTarget | null = null;
+	private _scrollTargetStyleObserver: MutationObserver | null = null;
 	private _boundOnScroll = this._onScroll.bind(this);
 
 	override connectedCallback(): void {
@@ -108,6 +109,20 @@ export class NLDDTopTitleBar extends LitElement {
 		this._activeScrollTarget = page ? page.scrollTarget : window;
 		this._activeScrollTarget.addEventListener('scroll', this._boundOnScroll, { passive: true });
 
+		// nldd-page sets padding-top on its scroll target asynchronously
+		// (ResizeObserver on the header). If our initial _onScroll runs
+		// before that, the anchor's measured position is wrong and we
+		// flash into is-compact until the user scrolls. Observe inline-
+		// style changes on the scroll target so we re-check the moment
+		// padding-top lands.
+		if (this._activeScrollTarget instanceof Element) {
+			this._scrollTargetStyleObserver = new MutationObserver(() => this._onScroll());
+			this._scrollTargetStyleObserver.observe(this._activeScrollTarget, {
+				attributes: true,
+				attributeFilter: ['style'],
+			});
+		}
+
 		// Initial check after layout is complete
 		this.updateComplete.then(() => this._onScroll());
 	}
@@ -116,6 +131,8 @@ export class NLDDTopTitleBar extends LitElement {
 		this._activeScrollTarget?.removeEventListener('scroll', this._boundOnScroll);
 		this._activeScrollTarget = null;
 		this._anchorElement = null;
+		this._scrollTargetStyleObserver?.disconnect();
+		this._scrollTargetStyleObserver = null;
 	}
 
 	private _onScroll(): void {

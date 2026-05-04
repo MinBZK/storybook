@@ -13,6 +13,8 @@ export const twoThirdsOneThirdSectionStyles = css`
 	   zonder layout-area dient @media als fallback. */
 
 	:host {
+		--_max-width: var(--semantics-page-sections-body-max-width);
+
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -21,6 +23,10 @@ export const twoThirdsOneThirdSectionStyles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	:host([full-width]) {
+		--_max-width: none;
 	}
 
 
@@ -64,7 +70,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		max-width: var(--semantics-page-sections-body-max-width);
+		max-width: var(--_max-width);
 		gap: var(--semantics-page-sections-sm-gap);
 
 		@media (min-width: ${mdMin}) {
