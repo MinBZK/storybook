@@ -17,6 +17,18 @@ function instantShow(el: NLDDTooltip): void {
 	el.style.setProperty('--_show-delay', '0');
 }
 
+/**
+ * Common open-the-tooltip flow: zero out the show delay, fire mouseenter,
+ * yield once for the (now-immediate) timer, then await Lit's update so
+ * the tooltip's `_visible` state has flushed to the popover element.
+ */
+async function triggerShow(el: NLDDTooltip, trigger: Element): Promise<void> {
+	instantShow(el);
+	trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+	await new Promise(resolve => setTimeout(resolve, 0));
+	await waitForUpdate(el);
+}
+
 describe('nldd-tooltip', () => {
 	let el: NLDDTooltip;
 
@@ -67,13 +79,7 @@ describe('nldd-tooltip – show/hide', () => {
 	it('wordt zichtbaar bij mouseenter op trigger', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-		instantShow(el);
-
-		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 0));
-		await waitForUpdate(el);
-
+		await triggerShow(el, el.querySelector('button')!);
 		expect(isTooltipVisible(el)).toBe(true);
 	});
 
@@ -91,12 +97,8 @@ describe('nldd-tooltip – show/hide', () => {
 	it('wordt verborgen bij mouseleave', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-		instantShow(el);
-
 		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 0));
-		await waitForUpdate(el);
+		await triggerShow(el, trigger);
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
 		await new Promise(resolve => setTimeout(resolve, 250));
 
@@ -106,12 +108,8 @@ describe('nldd-tooltip – show/hide', () => {
 	it('blijft zichtbaar bij tooltip hover', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-		instantShow(el);
-
 		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 0));
-		await waitForUpdate(el);
+		await triggerShow(el, trigger);
 
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
 		const tooltipEl = el.shadowRoot!.querySelector('.tooltip')!;
@@ -124,12 +122,7 @@ describe('nldd-tooltip – show/hide', () => {
 	it('Escape sluit de tooltip', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-		instantShow(el);
-
-		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 0));
-		await waitForUpdate(el);
+		await triggerShow(el, el.querySelector('button')!);
 		expect(isTooltipVisible(el)).toBe(true);
 
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
@@ -140,13 +133,7 @@ describe('nldd-tooltip – show/hide', () => {
 	it('toont niet bij lege text', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text=""><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-		instantShow(el);
-
-		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 0));
-		await waitForUpdate(el);
-
+		await triggerShow(el, el.querySelector('button')!);
 		expect(isTooltipVisible(el)).toBe(false);
 	});
 
@@ -174,12 +161,7 @@ describe('nldd-tooltip – show/hide', () => {
 	it('disabled flip verbergt een al zichtbare tooltip direct', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-		instantShow(el);
-
-		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await new Promise(resolve => setTimeout(resolve, 0));
-		await waitForUpdate(el);
+		await triggerShow(el, el.querySelector('button')!);
 		expect(isTooltipVisible(el)).toBe(true);
 
 		el.disabled = true;

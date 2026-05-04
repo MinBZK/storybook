@@ -45,7 +45,12 @@ export class NLDDAppView extends LitElement {
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
-		if (_bodyBackgroundOwner === this) {
+		// Defensive: clear the stored owner not just when it's `this`, but also
+		// when the recorded owner is itself no longer in the DOM (e.g. removed
+		// without going through disconnect, or test isolation gap). Without
+		// this, a stale reference would survive across instances and the body
+		// background would never be released.
+		if (_bodyBackgroundOwner === this || (_bodyBackgroundOwner && !_bodyBackgroundOwner.isConnected)) {
 			document.body.style.removeProperty('background-color');
 			_bodyBackgroundOwner = null;
 		}

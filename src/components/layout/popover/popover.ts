@@ -423,7 +423,18 @@ export class NLDDPopover extends LitElement {
 	// — Event handlers ————————————————————————————————————————————————————————
 
 	private _handleViewportChange = (): void => {
-		if (this._isOpen) this.reposition();
+		// Track the breakpoint even while closed — otherwise the next show()
+		// would see a "crossing" (current vs stale `_wasOnSm`) that didn't
+		// actually happen during an open state, and the spurious
+		// `transition: none` would suppress the opening animation. When open,
+		// reposition() owns the update (it needs the pre-change value to
+		// compute crossedBreakpoint correctly), so we only sync here when
+		// the popover is closed.
+		if (this._isOpen) {
+			this.reposition();
+		} else {
+			this._wasOnSm = this._smQuery?.matches ?? false;
+		}
 	};
 
 	private _handleDocumentClick = (event: MouseEvent): void => {
