@@ -46,6 +46,14 @@ type Placement = 'top' | 'bottom' | 'left' | 'right';
 let tooltipCounter = 0;
 const coarsePointerQuery = matchMedia('(pointer: coarse)');
 
+// Defaults mirror the values in tooltip.styles.ts. Used as fallback when the
+// CSS variable is unset or non-numeric — most often in SSR / early-load
+// environments where styles haven't reached the element yet. Without the
+// fallback, parseInt('') returns NaN and setTimeout silently coerces it to
+// 0ms, so the tooltip would show instantly. Keep these in sync with CSS.
+const DEFAULT_SHOW_DELAY_MS = 700;
+const DEFAULT_HIDE_DELAY_MS = 50;
+
 @customElement('nldd-tooltip')
 export class NLDDTooltip extends LitElement {
 	static override styles = tooltipStyles;
@@ -181,7 +189,8 @@ export class NLDDTooltip extends LitElement {
 		// holds the delay. Read the same `--_show-delay` token so the value
 		// stays consumer-tunable from CSS.
 		if (this._showTimeout) clearTimeout(this._showTimeout);
-		const showDelay = parseInt(getComputedStyle(this).getPropertyValue('--_show-delay'), 10);
+		const parsedShow = parseInt(getComputedStyle(this).getPropertyValue('--_show-delay'), 10);
+		const showDelay = Number.isFinite(parsedShow) ? parsedShow : DEFAULT_SHOW_DELAY_MS;
 		this._showTimeout = setTimeout(() => {
 			this._showTimeout = null;
 			this._focusVisible = false;
@@ -218,7 +227,8 @@ export class NLDDTooltip extends LitElement {
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 		}
-		const hideDelay = parseInt(getComputedStyle(this).getPropertyValue('--_hide-delay'), 10);
+		const parsedHide = parseInt(getComputedStyle(this).getPropertyValue('--_hide-delay'), 10);
+		const hideDelay = Number.isFinite(parsedHide) ? parsedHide : DEFAULT_HIDE_DELAY_MS;
 		this._hideTimeout = setTimeout(() => {
 			this._visible = false;
 			this._hideTimeout = null;

@@ -477,4 +477,97 @@ describe('nldd-popover', () => {
 			expect(document.activeElement).toBe(popover);
 		});
 	});
+
+
+	describe('position overrides (centered + edge attrs)', () => {
+		// Force md/lg viewport so the sm bottom-sheet branch isn't taken.
+		// reposition() reads `_smQuery.matches`, which we override to false.
+		function asMd(popover: NLDDPopover) {
+			(popover as unknown as { _smQuery: MediaQueryList })._smQuery = {
+				matches: false,
+				addEventListener: () => {},
+				removeEventListener: () => {},
+			} as unknown as MediaQueryList;
+		}
+
+		it('centered=true centreert beide assen via translate(-50%, -50%)', async () => {
+			const wrapper = await fixture(`
+				<div>
+					<button id="trigger-centered">Trigger</button>
+					<nldd-popover anchor="trigger-centered" accessible-label="Test" centered></nldd-popover>
+				</div>
+			`);
+			el = wrapper;
+			const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
+			asMd(popover);
+			await waitForUpdate(popover);
+
+			popover.show();
+			await waitForUpdate(popover);
+
+			expect(popover.style.top).toBe('50%');
+			expect(popover.style.left).toBe('50%');
+			expect(popover.style.transform).toContain('-50%');
+			expect(popover.style.transform).toContain(', -50%');
+		});
+
+		it('centered + top="0" → horizontaal gecentreerd, top-aligned', async () => {
+			const wrapper = await fixture(`
+				<div>
+					<button id="trigger-centered-top">Trigger</button>
+					<nldd-popover anchor="trigger-centered-top" accessible-label="Test" centered top="0"></nldd-popover>
+				</div>
+			`);
+			el = wrapper;
+			const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
+			asMd(popover);
+			await waitForUpdate(popover);
+
+			popover.show();
+			await waitForUpdate(popover);
+
+			expect(popover.style.top).toBe('0px');
+			expect(popover.style.left).toBe('50%');
+			// Y-as gebruikt geen translate; X-as wel. (jsdom normaliseert "0" naar "0px".)
+			expect(popover.style.transform).toMatch(/translate\(-50%,\s*0(px)?\)/);
+		});
+
+		it('expliciete edge attrs zonder centered worden ingeklemd', async () => {
+			const wrapper = await fixture(`
+				<div>
+					<button id="trigger-edge">Trigger</button>
+					<nldd-popover anchor="trigger-edge" accessible-label="Test" top="10px" right="20px"></nldd-popover>
+				</div>
+			`);
+			el = wrapper;
+			const popover = wrapper.querySelector('nldd-popover') as NLDDPopover;
+			asMd(popover);
+			await waitForUpdate(popover);
+
+			popover.show();
+			await waitForUpdate(popover);
+
+			expect(popover.style.top).toBe('10px');
+			expect(popover.style.right).toBe('20px');
+			// Geen transform — geen as werd gecenterd.
+			expect(popover.style.transform).toBe('');
+		});
+
+		it('sm-full-height attribuut wordt op de host gereflecteerd', async () => {
+			el = await fixture('<nldd-popover accessible-label="Test" sm-full-height></nldd-popover>');
+			await waitForUpdate(el);
+			expect(el.hasAttribute('sm-full-height')).toBe(true);
+		});
+
+		it('top/left/right/bottom defaulten naar undefined — geen lege reflectie', async () => {
+			el = await fixture('<nldd-popover accessible-label="Test"></nldd-popover>');
+			await waitForUpdate(el);
+			// Voorheen reflecteerde Lit een lege string als top="" enzovoort op
+			// elke popover. Met undefined-default mag het attribuut afwezig zijn.
+			expect(el.hasAttribute('top')).toBe(false);
+			expect(el.hasAttribute('left')).toBe(false);
+			expect(el.hasAttribute('right')).toBe(false);
+			expect(el.hasAttribute('bottom')).toBe(false);
+		});
+	});
 });

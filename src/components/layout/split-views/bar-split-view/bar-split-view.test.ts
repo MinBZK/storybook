@@ -206,4 +206,61 @@ describe('nldd-bar-split-view', () => {
 		const slotNames = slots.map(s => s.getAttribute('name'));
 		expect(slotNames).toContain('mobile-bar');
 	});
+
+	describe('no-divider attribute', () => {
+		it('suppresses the divider after a bar marked no-divider', async () => {
+			el = await fixture(`
+				<nldd-bar-split-view>
+					<div slot="toolbar" no-divider>Toolbar</div>
+					<div slot="document-tabs">Tabs</div>
+					<div slot="main">Main</div>
+				</nldd-bar-split-view>
+			`);
+			await setBreakpoint(el, 'md');
+			// Without no-divider we'd get 2 dividers (toolbar↓tabs, tabs↓main).
+			// no-divider on toolbar removes the toolbar↓tabs seam, leaving 1.
+			expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(1);
+		});
+
+		it('suppresses both adjacent seams when a middle bar is marked', async () => {
+			el = await fixture(`
+				<nldd-bar-split-view>
+					<div slot="toolbar">Toolbar</div>
+					<div slot="document-tabs" no-divider>Tabs</div>
+					<div slot="main">Main</div>
+				</nldd-bar-split-view>
+			`);
+			await setBreakpoint(el, 'md');
+			// "No divider next to this bar" — both toolbar↓tabs and tabs↓main
+			// are suppressed because tabs has no-divider.
+			expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(0);
+		});
+
+		it('marking either side of a single seam suffices to remove it', async () => {
+			el = await fixture(`
+				<nldd-bar-split-view>
+					<div slot="main">Main</div>
+					<div slot="status" no-divider>Status</div>
+				</nldd-bar-split-view>
+			`);
+			await setBreakpoint(el, 'md');
+			// Single seam main↓status removed because status has no-divider.
+			expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(0);
+		});
+
+		it('keeps unaffected dividers when only one seam is suppressed', async () => {
+			el = await fixture(`
+				<nldd-bar-split-view>
+					<div slot="toolbar" no-divider>Toolbar</div>
+					<div slot="document-tabs">Tabs</div>
+					<div slot="main">Main</div>
+					<div slot="status">Status</div>
+				</nldd-bar-split-view>
+			`);
+			await setBreakpoint(el, 'md');
+			// 4 panes → 3 seams. no-divider on toolbar removes the toolbar↓tabs
+			// seam; the tabs↓main and main↓status seams remain.
+			expect(el.shadowRoot!.querySelectorAll('.bar-split-view__divider').length).toBe(2);
+		});
+	});
 });

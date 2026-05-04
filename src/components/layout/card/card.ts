@@ -28,6 +28,15 @@ export class NLDDCard extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback();
+		// Set container-type/name as inline style on the host. Doing this from
+		// a `:host` rule inside the shadow DOM works in Chromium but Safari
+		// does not always recognise the host as a container for slotted
+		// descendants — a known engine inconsistency.
+		//
+		// We don't clear these on disconnect: a DOM move (disconnect →
+		// reconnect) would just re-set them, and there's no scenario where the
+		// styles being absent is meaningful. They are effectively part of the
+		// element's identity, written once and kept.
 		this.style.containerType = 'inline-size';
 		this.style.containerName = 'layout-area';
 	}

@@ -369,6 +369,15 @@ export class NLDDPopover extends LitElement {
 			left: `${x}px`,
 			top: `${y}px`,
 		});
+
+		// Mirror the cleanup the sm and override paths do — without this, a
+		// breakpoint-crossing tick that lands in the Floating UI path leaves
+		// `transition: none` stuck inline. Today md+ has no popover transitions
+		// so it's invisible; tomorrow it'd silently break any added animation.
+		if (crossedBreakpoint) {
+			void this.offsetHeight;
+			this.style.transition = '';
+		}
 	}
 
 	// — Anchor ————————————————————————————————————————————————————————————————

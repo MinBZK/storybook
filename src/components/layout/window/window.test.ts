@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDWindow } from './window.js';
 import './window.js';
@@ -194,5 +194,71 @@ describe('nldd-window', () => {
 		handle.dispatchEvent(new PointerEvent('pointerup', {
 			clientX: 150, clientY: 120, pointerId: 1, bubbles: true,
 		}));
+	});
+
+	describe('centered position', () => {
+		// Force md+ viewport: _applyPositionStyles short-circuits and clears
+		// inline styles when window.matchMedia(`(max-width: ${smMax})`) matches.
+		// Stub it so the override branch is exercised regardless of test
+		// runner viewport.
+		let originalMatchMedia: typeof window.matchMedia;
+		beforeEach(() => {
+			originalMatchMedia = window.matchMedia;
+			window.matchMedia = ((query: string) => {
+				const list = originalMatchMedia.call(window, query);
+				return new Proxy(list, {
+					get(target, prop) {
+						if (prop === 'matches' && query.includes('max-width')) return false;
+						const v = (target as unknown as Record<string, unknown>)[prop as string];
+						return typeof v === 'function' ? v.bind(target) : v;
+					},
+				});
+			}) as typeof window.matchMedia;
+		});
+		afterEach(() => {
+			window.matchMedia = originalMatchMedia;
+		});
+
+		function dialogOf(window: NLDDWindow): HTMLDialogElement {
+			return window.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
+		}
+
+		it('centered=true: dialog krijgt translate(-50%, -50%) op beide assen', async () => {
+			el = await fixture<NLDDWindow>('<nldd-window modeless centered></nldd-window>');
+			await waitForUpdate(el);
+			el.show();
+			await waitForUpdate(el);
+
+			const dialog = dialogOf(el);
+			expect(dialog.style.top).toBe('50%');
+			expect(dialog.style.left).toBe('50%');
+			expect(dialog.style.transform).toContain('-50%');
+			expect(dialog.style.transform).toContain(', -50%');
+		});
+
+		it('centered + bottom="0": horizontaal centered, verticaal bottom-aligned', async () => {
+			el = await fixture<NLDDWindow>('<nldd-window modeless centered bottom="0"></nldd-window>');
+			await waitForUpdate(el);
+			el.show();
+			await waitForUpdate(el);
+
+			const dialog = dialogOf(el);
+			expect(dialog.style.bottom).toBe('0px');
+			expect(dialog.style.left).toBe('50%');
+			// Y-as is niet meer gecenterd (bottom heeft voorrang); X-as wel.
+			expect(dialog.style.transform).toMatch(/translate\(-50%,\s*0(px)?\)/);
+		});
+
+		it('zonder centered en zonder edge-attrs: geen inline override', async () => {
+			el = await fixture<NLDDWindow>('<nldd-window modeless></nldd-window>');
+			await waitForUpdate(el);
+			el.show();
+			await waitForUpdate(el);
+
+			const dialog = dialogOf(el);
+			expect(dialog.style.transform).toBe('');
+			// margin: '' (empty) — UA-default centering blijft actief
+			expect(dialog.style.margin).toBe('');
+		});
 	});
 });

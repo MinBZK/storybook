@@ -248,6 +248,8 @@ Voor properties met *veel* breakpoint-varianten (bv. heading sizes met 6 levels 
 
 Deze workaround is acceptabel als de regel-explosie anders te erg wordt. Document de keuze in het component zelf.
 
+> **Let op:** dit voorbeeld breekt bewust de eerder beschreven nesting-conventie (at-rules genest binnen selectors). Bij dit var-swap patroon is het @container blok niet "een eigenschap toevoegen aan deze selector", maar "een hele property-waarde omschakelen voor de hele cascade". Top-level wrapping leest dan duidelijker dan nesting in elke selector die de var leest. Houd het wel binnen één component.
+
 ## State-conditional layouts (label-alignment, etc.)
 
 Sommige componenten hebben layouts die alleen wisselen op basis van een
