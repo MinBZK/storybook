@@ -74,9 +74,6 @@ export class NLDDTooltip extends LitElement {
 	@state()
 	_visible = false;
 
-	@state()
-	_focusVisible = false;
-
 	private _tooltipId = `nldd-tooltip-${++tooltipCounter}`;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _showTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -119,10 +116,7 @@ export class NLDDTooltip extends LitElement {
 				clearTimeout(this._showTimeout);
 				this._showTimeout = null;
 			}
-			if (this._visible) {
-				this._visible = false;
-				this._focusVisible = false;
-			}
+			if (this._visible) this._visible = false;
 		}
 	}
 
@@ -193,7 +187,6 @@ export class NLDDTooltip extends LitElement {
 		const showDelay = Number.isFinite(parsedShow) ? parsedShow : DEFAULT_SHOW_DELAY_MS;
 		this._showTimeout = setTimeout(() => {
 			this._showTimeout = null;
-			this._focusVisible = false;
 			this._visible = true;
 		}, showDelay);
 	}
@@ -214,7 +207,6 @@ export class NLDDTooltip extends LitElement {
 			clearTimeout(this._showTimeout);
 			this._showTimeout = null;
 		}
-		this._focusVisible = true;
 		this._visible = true;
 	}
 
@@ -258,10 +250,7 @@ export class NLDDTooltip extends LitElement {
 	}
 
 	private _handleKeyDown = (e: KeyboardEvent): void => {
-		if (e.key === 'Escape' && this._visible) {
-			this._visible = false;
-			this._focusVisible = false;
-		}
+		if (e.key === 'Escape' && this._visible) this._visible = false;
 	};
 
 	private async _updatePosition(): Promise<void> {

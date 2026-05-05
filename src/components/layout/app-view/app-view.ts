@@ -25,11 +25,21 @@ import { customElement, property } from 'lit/decorators.js';
 import { appViewStyles } from './app-view.styles.js';
 import { appViewTemplate } from './app-view.template.js';
 
-// Track the active app-view that owns the body-background style. Multiple
-// instances can briefly coexist (tabs, modals, tests). Only the most recently
-// connected app-view writes the background; on disconnect we only clear the
-// style if we were the owner — otherwise the surviving instance keeps theirs.
-let _bodyBackgroundOwner: NLDDAppView | null = null;
+// Track every connected app-view as a stack — the top is the current owner
+// of the body-background style. Multiple instances can briefly coexist
+// (tabs, modals, tests). Stack semantics handle disconnect order correctly:
+// the older instance's background is restored when the younger owner leaves.
+const _connectedStack: NLDDAppView[] = [];
+
+function _currentOwner(): NLDDAppView | null {
+	// Walk from the top down, skipping any entries that are no longer
+	// connected (defensive: covers test isolation gaps where an instance is
+	// removed without going through disconnectedCallback).
+	for (let i = _connectedStack.length - 1; i >= 0; i--) {
+		if (_connectedStack[i].isConnected) return _connectedStack[i];
+	}
+	return null;
+}
 
 @customElement('nldd-app-view')
 export class NLDDAppView extends LitElement {
@@ -40,32 +50,36 @@ export class NLDDAppView extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
-		this._applyBodyBackground();
+		_connectedStack.push(this);
+		this._writeBodyBackground();
 	}
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
-		// Defensive: clear the stored owner not just when it's `this`, but also
-		// when the recorded owner is itself no longer in the DOM (e.g. removed
-		// without going through disconnect, or test isolation gap). Without
-		// this, a stale reference would survive across instances and the body
-		// background would never be released.
-		if (_bodyBackgroundOwner === this || (_bodyBackgroundOwner && !_bodyBackgroundOwner.isConnected)) {
+		const idx = _connectedStack.indexOf(this);
+		if (idx >= 0) _connectedStack.splice(idx, 1);
+		const owner = _currentOwner();
+		if (owner) {
+			// Re-apply whichever instance is now on top — fixes the case where
+			// a younger instance disconnects first and an older one is still
+			// in the DOM but had its background overwritten.
+			owner._writeBodyBackground();
+		} else {
 			document.body.style.removeProperty('background-color');
-			_bodyBackgroundOwner = null;
 		}
 	}
 
 	override updated(changed: PropertyValues): void {
-		if (changed.has('background')) this._applyBodyBackground();
+		if (changed.has('background') && _currentOwner() === this) {
+			this._writeBodyBackground();
+		}
 	}
 
-	private _applyBodyBackground(): void {
+	private _writeBodyBackground(): void {
 		const token = this.background === 'tinted'
 			? '--semantics-surfaces-tinted-background-color'
 			: '--semantics-surfaces-background-color';
 		document.body.style.backgroundColor = `var(${token})`;
-		_bodyBackgroundOwner = this;
 	}
 
 	override render() {

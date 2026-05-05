@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import type { TemplateResult } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import type { NLDDTooltip } from './tooltip.js';
 
 export function tooltipTemplate(component: NLDDTooltip): TemplateResult {
@@ -11,7 +10,7 @@ export function tooltipTemplate(component: NLDDTooltip): TemplateResult {
 			@focusin=${component._handleFocusIn}
 			@focusout=${component._handleFocusOut}
 		></slot>
-		<div class=${classMap({ tooltip: true, 'is-focus-visible': component._visible && component._focusVisible })}
+		<div class="tooltip"
 			popover="manual"
 			aria-hidden="true"
 			@mouseenter=${component._handleTooltipEnter}
