@@ -217,4 +217,35 @@ describe('nldd-tooltip – aria-describedby', () => {
 		cleanup(el);
 		expect(document.getElementById(id)).toBeNull();
 	});
+
+	it('verwijdert aria-describedby en de description span wanneer disabled flipt naar true', async () => {
+		// Same intent as hiding the visual popover: when disabled, screen
+		// readers shouldn't keep announcing the tooltip text either. Primary
+		// use-case is `?disabled=${!isShort}` in document-tab-bar where the
+		// full label is already inline.
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>T</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		const trigger = el.querySelector('button')!;
+		const id = trigger.getAttribute('aria-describedby')!;
+		expect(id).toBeTruthy();
+		expect(document.getElementById(id)).not.toBeNull();
+
+		el.disabled = true;
+		await waitForUpdate(el);
+		expect(trigger.hasAttribute('aria-describedby')).toBe(false);
+		expect(document.getElementById(id)).toBeNull();
+	});
+
+	it('herstelt aria-describedby wanneer disabled terug naar false flipt', async () => {
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test" disabled><button>T</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		const trigger = el.querySelector('button')!;
+		expect(trigger.hasAttribute('aria-describedby')).toBe(false);
+
+		el.disabled = false;
+		await waitForUpdate(el);
+		const id = trigger.getAttribute('aria-describedby');
+		expect(id).toBeTruthy();
+		expect(document.getElementById(id!)?.textContent).toBe('Test');
+	});
 });

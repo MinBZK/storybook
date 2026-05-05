@@ -106,7 +106,7 @@ export class NLDDTooltip extends LitElement {
 				}
 			}
 		}
-		if (changed.has('text')) {
+		if (changed.has('text') || changed.has('disabled')) {
 			this._syncAriaDescribedBy();
 		}
 		if (changed.has('disabled') && this.disabled) {
@@ -137,7 +137,12 @@ export class NLDDTooltip extends LitElement {
 			return;
 		}
 
-		if (this.text) {
+		// Suppress the description when disabled — same intent as hiding the
+		// visual popover. Without this, screen readers would still announce
+		// the redundant tooltip text (the primary use-case for `disabled` is
+		// `?disabled=${!isShort}` in document-tab-bar, where the full label is
+		// already visible inline).
+		if (this.text && !this.disabled) {
 			if (!this._descriptionEl) {
 				this._descriptionEl = document.createElement('span');
 				this._descriptionEl.id = this._tooltipId;
