@@ -45,6 +45,7 @@ export const titleStyles = css`
 
 	::slotted([slot='overline']) {
 		margin: 0;
+		overflow-wrap: anywhere;
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
@@ -54,6 +55,7 @@ export const titleStyles = css`
 
 	::slotted(:not([slot])) {
 		margin: 0;
+		overflow-wrap: anywhere;
 		color: var(--semantics-content-color);
 		text-wrap: pretty;
 	}
@@ -220,6 +222,7 @@ export const titleStyles = css`
 
 	::slotted([slot='subtitle']) {
 		margin: 0;
+		overflow-wrap: anywhere;
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
