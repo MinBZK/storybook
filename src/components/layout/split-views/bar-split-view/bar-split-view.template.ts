@@ -1,6 +1,5 @@
 import { html, TemplateResult, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { styleMap } from 'lit/directives/style-map.js';
 import type { NLDDBarSplitView } from './bar-split-view.js';
 import '../split-view-divider/split-view-divider.js';
 
@@ -13,20 +12,17 @@ export function barSplitViewTemplate(component: NLDDBarSplitView): TemplateResul
 			${sorted.map((el, index) => {
 				const isMain = el.slot === 'main';
 				const isLast = index === sorted.length - 1;
-
-				// Inline position is only applied to bars on sm viewports
-				const barStyles = !isMain && isSm
-					? component._smTopBars.has(el)
-						? { top: `${component._smOffsets.get(el) ?? 0}px` }
-						: { bottom: `${component._smOffsets.get(el) ?? 0}px` }
-					: {};
+				const next = sorted[index + 1];
+				const showDivider = !isSm
+					&& !isLast
+					&& !el.hasAttribute('no-divider')
+					&& !next?.hasAttribute('no-divider');
 
 				return html`
-					<div class=${classMap({ 'bar-split-view__main': isMain, 'bar-split-view__bar': !isMain })}
-						style=${styleMap(barStyles)}>
+					<div class=${classMap({ 'bar-split-view__main': isMain, 'bar-split-view__bar': !isMain })}>
 						<slot name=${el.slot}></slot>
 					</div>
-					${!isSm && !isLast ? html`
+					${showDivider ? html`
 						<div class="bar-split-view__divider">
 							<nldd-split-view-divider orientation="horizontal"></nldd-split-view-divider>
 						</div>

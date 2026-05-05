@@ -3,8 +3,13 @@
  *
  * @element nldd-form-field
  *
- * @attr {string} label-alignment  - 'top' (default) | 'right' | 'left'
- * @attr {string} label            - Field label text. Omit for no-label layout.
+ * @attr {string} label-alignment      - 'top' (default) | 'right' | 'left'.
+ *                                       Een eigen waarde wint altijd over de
+ *                                       inherited form-label-alignment.
+ * @attr {string} form-label-alignment - Door wrappende nldd-form gezet als
+ *                                       fallback. Niet zelf zetten in
+ *                                       consumer-code.
+ * @attr {string} label                - Field label text. Omit for no-label layout.
  * @attr {string} supporting-label - Short supporting text below the label. Same typography as optional badge.
  * @attr {boolean} optional        - Shows an optional badge next to the label.
  * @attr {string} optional-label   - Text for the optional badge. Defaults to 'Optioneel'.
@@ -82,9 +87,16 @@ export class NLDDFormField extends LitElement {
 	 *  - 'left'  : 240 px column, left-aligned text
 	 *
 	 * Collapses to 'top' automatically when the container is < 640 px wide.
+	 *
+	 * Default is `undefined` (and not `'top'`) so Lit doesn't reflect the
+	 * default value to the attribute on first update. That keeps the
+	 * "no own value set" state visible to CSS as `:not([label-alignment])`,
+	 * which the form-label-alignment fallback selectors rely on. Visually
+	 * `undefined` and `'top'` render identically (no `[label-alignment]`
+	 * rules apply for either).
 	 */
 	@property({ type: String, attribute: 'label-alignment', reflect: true })
-	labelAlignment: LabelAlignment = 'top';
+	labelAlignment: LabelAlignment | undefined = undefined;
 
 	/** Label text. When empty no label is rendered but side-alignment indent is preserved. */
 	@property({ type: String })

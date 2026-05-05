@@ -15,8 +15,6 @@ export const pageStyles = css`
 		overflow-y: auto;
 		overflow-x: hidden;
 		background-color: var(--_background-color);
-		padding-top: var(--context-bar-split-view-top-bars-height, 0px);
-		padding-bottom: var(--context-bar-split-view-bottom-bars-height, 0px);
 	}
 
 	/* Overflow hidden prevents content from escaping the scroll wrapper.
@@ -42,13 +40,21 @@ export const pageStyles = css`
 	}
 
 
+	/* # Block */
+
+	.page {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		min-height: 0;
+	}
+
+
 	/* # Header */
 
 	.page__header {
 		flex-shrink: 0;
 		position: relative;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 	:host([sticky-header]) .page__header {
@@ -99,8 +105,6 @@ export const pageStyles = css`
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 
@@ -109,8 +113,6 @@ export const pageStyles = css`
 	.page__footer {
 		flex-shrink: 0;
 		position: relative;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 	:host([sticky-footer]) .page__footer {

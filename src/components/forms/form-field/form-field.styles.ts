@@ -30,7 +30,9 @@ export const formFieldStyles = css`
 	}
 
 	:host([label-alignment='left']) .form-field,
-	:host([label-alignment='right']) .form-field {
+	:host([label-alignment='right']) .form-field,
+	:host(:not([label-alignment])[form-label-alignment='left']) .form-field,
+	:host(:not([label-alignment])[form-label-alignment='right']) .form-field {
 		@container (min-width: 641px) {
 			flex-direction: row;
 			align-items: start;
@@ -48,7 +50,9 @@ export const formFieldStyles = css`
 	}
 
 	:host([label-alignment='left']) .form-field__header,
-	:host([label-alignment='right']) .form-field__header {
+	:host([label-alignment='right']) .form-field__header,
+	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__header,
+	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__header {
 		@container (min-width: 641px) {
 			flex-grow: 0;
 			flex-shrink: 0;
@@ -58,14 +62,16 @@ export const formFieldStyles = css`
 		}
 	}
 
-	:host([label-alignment='right']) .form-field__header {
+	:host([label-alignment='right']) .form-field__header,
+	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__header {
 		@container (min-width: 641px) {
 			align-items: end;
 			text-align: right;
 		}
 	}
 
-	:host([label-alignment='left']) .form-field__header {
+	:host([label-alignment='left']) .form-field__header,
+	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__header {
 		@container (min-width: 641px) {
 			align-items: start;
 			text-align: left;
@@ -77,7 +83,9 @@ export const formFieldStyles = css`
 	}
 
 	:host([label-alignment='left']) .form-field__header.is-empty,
-	:host([label-alignment='right']) .form-field__header.is-empty {
+	:host([label-alignment='right']) .form-field__header.is-empty,
+	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__header.is-empty,
+	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__header.is-empty {
 		@container (min-width: 641px) {
 			display: flex;
 		}
@@ -92,10 +100,13 @@ export const formFieldStyles = css`
 		gap: var(--primitives-space-4);
 		color: var(--semantics-content-color);
 		font: var(--primitives-font-body-md-regular-tight);
+		text-wrap: pretty;
 	}
 
 	:host([label-alignment='left']) .form-field__label,
-	:host([label-alignment='right']) .form-field__label {
+	:host([label-alignment='right']) .form-field__label,
+	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__label,
+	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__label {
 		@container (min-width: 641px) {
 			display: flex;
 			flex-direction: column;
@@ -103,13 +114,15 @@ export const formFieldStyles = css`
 		}
 	}
 
-	:host([label-alignment='right']) .form-field__label {
+	:host([label-alignment='right']) .form-field__label,
+	:host(:not([label-alignment])[form-label-alignment='right']) .form-field__label {
 		@container (min-width: 641px) {
 			align-items: end;
 		}
 	}
 
-	:host([label-alignment='left']) .form-field__label {
+	:host([label-alignment='left']) .form-field__label,
+	:host(:not([label-alignment])[form-label-alignment='left']) .form-field__label {
 		@container (min-width: 641px) {
 			align-items: start;
 		}
@@ -129,6 +142,7 @@ export const formFieldStyles = css`
 	.form-field__supporting-label {
 		color: var(--semantics-content-secondary-color);
 		font: var(--primitives-font-body-xs-regular-tight);
+		text-wrap: pretty;
 	}
 
 

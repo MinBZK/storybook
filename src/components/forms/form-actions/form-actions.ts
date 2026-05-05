@@ -9,10 +9,11 @@
  * zou staan.
  *
  * Erft `label-alignment` automatisch over van een wrappende `<nldd-form>`:
- * de form mirrort z'n eigen `label-alignment` naar descendant
- * `nldd-form-actions` (en `nldd-form-field`) via een MutationObserver
- * en JS-attribuut-propagatie. Een expliciete eigen `label-alignment` op de
- * form-actions zelf wordt nooit overschreven.
+ * de form propageert z'n eigen `label-alignment` als `form-label-alignment`
+ * naar descendant `nldd-form-actions` (en `nldd-form-field`) via een
+ * MutationObserver. Een expliciete eigen `label-alignment` op de form-actions
+ * wint via CSS-cascade — de form-code raakt het `label-alignment` attribuut
+ * van de descendant nooit aan.
  *
  *     <nldd-form label-alignment="right">
  *         <nldd-form-field>...</nldd-form-field>
@@ -25,8 +26,12 @@
  *
  * @element nldd-form-actions
  *
- * @attr {string} label-alignment - 'top' (default) | 'right' | 'left'.
- *                                  Wordt geërfd van een wrappende nldd-form als niet expliciet gezet.
+ * @attr {string} label-alignment      - 'top' (default) | 'right' | 'left'.
+ *                                       Een eigen waarde wint altijd over de
+ *                                       inherited form-label-alignment.
+ * @attr {string} form-label-alignment - Door wrappende nldd-form gezet als
+ *                                       fallback. Niet zelf zetten in
+ *                                       consumer-code.
  *
  * @slot - Actie-elementen (button, button-group, etc.)
  */
@@ -42,8 +47,14 @@ export type LabelAlignment = 'top' | 'left' | 'right';
 export class NLDDFormActions extends LitElement {
 	static override styles = formActionsStyles;
 
+	/**
+	 * Default is `undefined` (and not `'top'`) so Lit doesn't reflect the
+	 * default value to the attribute on first update. Zie `nldd-form-field`
+	 * voor uitleg — dezelfde reden: form-label-alignment fallback CSS
+	 * werkt op `:not([label-alignment])`.
+	 */
 	@property({ type: String, reflect: true, attribute: 'label-alignment' })
-	labelAlignment: LabelAlignment = 'top';
+	labelAlignment: LabelAlignment | undefined = undefined;
 
 	override render() {
 		return formActionsTemplate();

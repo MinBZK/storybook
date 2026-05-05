@@ -1,7 +1,9 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
+const smMax = unsafeCSS(breakpoints.smMax);
 const mdMin = unsafeCSS(breakpoints.mdMin);
+const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const oneHalfOneHalfSectionStyles = css`
@@ -13,6 +15,8 @@ export const oneHalfOneHalfSectionStyles = css`
 	   zonder layout-area dient @media als fallback. */
 
 	:host {
+		--_max-width: var(--semantics-page-sections-body-max-width);
+
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -23,9 +27,12 @@ export const oneHalfOneHalfSectionStyles = css`
 		display: none;
 	}
 
+	:host([full-width]) {
+		--_max-width: none;
+	}
 
-	/* # Block — sm = base; md/lg via @media (fallback) en
-	   @container layout-area (heeft voorrang binnen layout-area). */
+
+	/* # Block */
 
 	.one-half-one-half-section {
 		display: flex;
@@ -33,10 +40,13 @@ export const oneHalfOneHalfSectionStyles = css`
 		align-items: center;
 		width: 100%;
 		box-sizing: border-box;
-		padding-inline: var(--semantics-page-sections-sm-margin-inline);
-		padding-block: var(--semantics-page-sections-sm-margin-block);
 
-		@media (min-width: ${mdMin}) {
+		@media (max-width: ${smMax}) {
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			padding-block: var(--semantics-page-sections-sm-margin-block);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-block: var(--semantics-page-sections-md-margin-block);
 		}
@@ -46,7 +56,12 @@ export const oneHalfOneHalfSectionStyles = css`
 			padding-block: var(--semantics-page-sections-lg-margin-block);
 		}
 
-		@container layout-area (min-width: ${mdMin}) {
+		@container layout-area (max-width: ${smMax}) {
+			padding-inline: var(--semantics-page-sections-sm-margin-inline);
+			padding-block: var(--semantics-page-sections-sm-margin-block);
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 			padding-block: var(--semantics-page-sections-md-margin-block);
 		}
@@ -64,10 +79,13 @@ export const oneHalfOneHalfSectionStyles = css`
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		max-width: var(--semantics-page-sections-body-max-width);
-		gap: var(--semantics-page-sections-sm-gap);
+		max-width: var(--_max-width);
 
-		@media (min-width: ${mdMin}) {
+		@media (max-width: ${smMax}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
@@ -75,7 +93,11 @@ export const oneHalfOneHalfSectionStyles = css`
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 
-		@container layout-area (min-width: ${mdMin}) {
+		@container layout-area (max-width: ${smMax}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
@@ -90,9 +112,12 @@ export const oneHalfOneHalfSectionStyles = css`
 	.one-half-one-half-section__columns {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--semantics-page-sections-sm-gap);
 
-		@media (min-width: ${mdMin}) {
+		@media (max-width: ${smMax}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
@@ -100,7 +125,11 @@ export const oneHalfOneHalfSectionStyles = css`
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 
-		@container layout-area (min-width: ${mdMin}) {
+		@container layout-area (max-width: ${smMax}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 

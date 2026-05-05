@@ -25,7 +25,9 @@ export const formActionsStyles = css`
 	}
 
 	:host([label-alignment='left']) .form-actions,
-	:host([label-alignment='right']) .form-actions {
+	:host([label-alignment='right']) .form-actions,
+	:host(:not([label-alignment])[form-label-alignment='left']) .form-actions,
+	:host(:not([label-alignment])[form-label-alignment='right']) .form-actions {
 		@container (min-width: 641px) {
 			flex-direction: row;
 			align-items: start;
@@ -34,7 +36,9 @@ export const formActionsStyles = css`
 	}
 
 	:host([label-alignment='left']) .form-actions::before,
-	:host([label-alignment='right']) .form-actions::before {
+	:host([label-alignment='right']) .form-actions::before,
+	:host(:not([label-alignment])[form-label-alignment='left']) .form-actions::before,
+	:host(:not([label-alignment])[form-label-alignment='right']) .form-actions::before {
 		@container (min-width: 641px) {
 			content: '';
 			flex-grow: 0;

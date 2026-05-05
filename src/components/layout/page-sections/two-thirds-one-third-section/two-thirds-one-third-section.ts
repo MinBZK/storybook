@@ -12,15 +12,21 @@
  * @slot left - Left column (2/3)
  * @slot right - Right column (1/3)
  * @slot footer - Content below the columns
+ *
+ * @attr {boolean} [full-width] - Remove the body max-width constraint so the
+ *                                 section spans the full available width
  */
 import { LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { twoThirdsOneThirdSectionStyles } from './two-thirds-one-third-section.styles.js';
 import { twoThirdsOneThirdSectionTemplate } from './two-thirds-one-third-section.template.js';
 
 @customElement('nldd-two-thirds-one-third-section')
 export class NLDDTwoThirdsOneThirdSection extends LitElement {
 	static override styles = twoThirdsOneThirdSectionStyles;
+
+	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
+	fullWidth = false;
 
 	override render() {
 		return twoThirdsOneThirdSectionTemplate(this);

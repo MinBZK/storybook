@@ -5,13 +5,22 @@
  * Gebruikt `display: contents` zodat het de layout van het child niet beïnvloedt.
  *
  * @element nldd-tooltip
- * @attr {string} text - Tooltip tekst
- * @attr {string} placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')
+ * @attr {string}  text      - Tooltip tekst
+ * @attr {string}  placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')
+ * @attr {boolean} disabled  - Wanneer true wordt de tooltip nooit getoond.
+ *                              Hover/focus events op de trigger worden
+ *                              genegeerd; een al zichtbare tooltip wordt
+ *                              direct verborgen. Voor consumers die het
+ *                              tooltip-gedrag conditioneel willen schakelen
+ *                              (bv. alleen tonen wanneer tekst getrunceerd is).
  *
  * @slot - Het element waarop de tooltip wordt getoond
  *
- * @note Gebruikt position: fixed + floating-ui strategy: 'fixed'. Positionering kan
- * breken wanneer een voorouder-element transform, filter of will-change heeft.
+ * @note Rendert via de native Popover API (`popover="manual"`) in de top
+ * layer. Daardoor escape de tooltip alle ancestor stacking contexts en
+ * `overflow: hidden` clipping — geen z-index gevechten meer met overlay-
+ * containers, panes of transform-containers. Positionering blijft via
+ * Floating UI met `strategy: 'fixed'`.
  *
  * @note aria-describedby werkt alleen wanneer het trigger element in de light DOM staat.
  * Bij web components als trigger (met eigen shadow DOM) is de koppeling een bekende
@@ -37,6 +46,14 @@ type Placement = 'top' | 'bottom' | 'left' | 'right';
 let tooltipCounter = 0;
 const coarsePointerQuery = matchMedia('(pointer: coarse)');
 
+// Defaults mirror the values in tooltip.styles.ts. Used as fallback when the
+// CSS variable is unset or non-numeric — most often in SSR / early-load
+// environments where styles haven't reached the element yet. Without the
+// fallback, parseInt('') returns NaN and setTimeout silently coerces it to
+// 0ms, so the tooltip would show instantly. Keep these in sync with CSS.
+const DEFAULT_SHOW_DELAY_MS = 700;
+const DEFAULT_HIDE_DELAY_MS = 50;
+
 @customElement('nldd-tooltip')
 export class NLDDTooltip extends LitElement {
 	static override styles = tooltipStyles;
@@ -47,6 +64,9 @@ export class NLDDTooltip extends LitElement {
 	@property({ type: String, reflect: true })
 	placement: Placement = 'bottom';
 
+	@property({ type: Boolean, reflect: true })
+	disabled = false;
+
 	private get _effectivePlacement(): Placement {
 		return this.placement;
 	}
@@ -54,11 +74,9 @@ export class NLDDTooltip extends LitElement {
 	@state()
 	_visible = false;
 
-	@state()
-	_focusVisible = false;
-
 	private _tooltipId = `nldd-tooltip-${++tooltipCounter}`;
 	private _hideTimeout: ReturnType<typeof setTimeout> | null = null;
+	private _showTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _descriptionEl: HTMLSpanElement | null = null;
 	private _currentTrigger: Element | null = null;
 	private _boundSlotChange = () => this._syncAriaDescribedBy();
@@ -77,11 +95,28 @@ export class NLDDTooltip extends LitElement {
 	}
 
 	override updated(changed: PropertyValues): void {
-		if (changed.has('_visible') && this._visible) {
-			this._updatePosition();
+		if (changed.has('_visible')) {
+			const tooltip = this._getTooltipElement();
+			if (tooltip) {
+				if (this._visible) {
+					if (!tooltip.matches(':popover-open')) tooltip.showPopover();
+					this._updatePosition();
+				} else if (tooltip.matches(':popover-open')) {
+					tooltip.hidePopover();
+				}
+			}
 		}
-		if (changed.has('text')) {
+		if (changed.has('text') || changed.has('disabled')) {
 			this._syncAriaDescribedBy();
+		}
+		if (changed.has('disabled') && this.disabled) {
+			// Cancel any pending show — without this the timer fires after
+			// disabled is set and re-opens the tooltip.
+			if (this._showTimeout) {
+				clearTimeout(this._showTimeout);
+				this._showTimeout = null;
+			}
+			if (this._visible) this._visible = false;
 		}
 	}
 
@@ -102,7 +137,12 @@ export class NLDDTooltip extends LitElement {
 			return;
 		}
 
-		if (this.text) {
+		// Suppress the description when disabled — same intent as hiding the
+		// visual popover. Without this, screen readers would still announce
+		// the redundant tooltip text (the primary use-case for `disabled` is
+		// `?disabled=${!isShort}` in document-tab-bar, where the full label is
+		// already visible inline).
+		if (this.text && !this.disabled) {
 			if (!this._descriptionEl) {
 				this._descriptionEl = document.createElement('span');
 				this._descriptionEl.id = this._tooltipId;
@@ -136,17 +176,28 @@ export class NLDDTooltip extends LitElement {
 	}
 
 	_handleTriggerEnter(): void {
+		if (this.disabled) return;
 		if (!this.text) return;
 		if (coarsePointerQuery.matches) return;
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
 		}
-		this._focusVisible = false;
-		this._visible = true;
+		// Pointer-hover show delay: schedule via JS now that the visibility
+		// transition is binary (popover open/closed) and the CSS no longer
+		// holds the delay. Read the same `--_show-delay` token so the value
+		// stays consumer-tunable from CSS.
+		if (this._showTimeout) clearTimeout(this._showTimeout);
+		const parsedShow = parseInt(getComputedStyle(this).getPropertyValue('--_show-delay'), 10);
+		const showDelay = Number.isFinite(parsedShow) ? parsedShow : DEFAULT_SHOW_DELAY_MS;
+		this._showTimeout = setTimeout(() => {
+			this._showTimeout = null;
+			this._visible = true;
+		}, showDelay);
 	}
 
 	_handleFocusIn(): void {
+		if (this.disabled) return;
 		if (!this.text) return;
 		// Touch taps can focus elements with explicit `tabindex` (e.g. tab-bar's
 		// roving-tabindex pattern on iOS, Android `<button>` focus-on-tap).
@@ -156,15 +207,25 @@ export class NLDDTooltip extends LitElement {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
 		}
-		this._focusVisible = true;
+		// Focus-triggered show: no delay (keyboard intent is explicit).
+		if (this._showTimeout) {
+			clearTimeout(this._showTimeout);
+			this._showTimeout = null;
+		}
 		this._visible = true;
 	}
 
 	_handleTriggerLeave(): void {
+		// Cancel a scheduled show — leaving before delay elapsed means no show.
+		if (this._showTimeout) {
+			clearTimeout(this._showTimeout);
+			this._showTimeout = null;
+		}
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 		}
-		const hideDelay = parseInt(getComputedStyle(this).getPropertyValue('--_hide-delay'), 10);
+		const parsedHide = parseInt(getComputedStyle(this).getPropertyValue('--_hide-delay'), 10);
+		const hideDelay = Number.isFinite(parsedHide) ? parsedHide : DEFAULT_HIDE_DELAY_MS;
 		this._hideTimeout = setTimeout(() => {
 			this._visible = false;
 			this._hideTimeout = null;
@@ -194,10 +255,7 @@ export class NLDDTooltip extends LitElement {
 	}
 
 	private _handleKeyDown = (e: KeyboardEvent): void => {
-		if (e.key === 'Escape' && this._visible) {
-			this._visible = false;
-			this._focusVisible = false;
-		}
+		if (e.key === 'Escape' && this._visible) this._visible = false;
 	};
 
 	private async _updatePosition(): Promise<void> {
@@ -227,6 +285,10 @@ export class NLDDTooltip extends LitElement {
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
+		}
+		if (this._showTimeout) {
+			clearTimeout(this._showTimeout);
+			this._showTimeout = null;
 		}
 		// Clean up aria-describedby on trigger and remove description span from body
 		this._currentTrigger?.removeAttribute('aria-describedby');

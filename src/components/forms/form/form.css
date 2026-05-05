@@ -2,47 +2,29 @@
 
 nldd-form {
 	display: block;
+	container-type: inline-size;
+	container-name: form;
 }
 
 nldd-form > form {
 	display: block;
 }
 
-
-/* # Vertical rhythm
-   Use margin-top on adjacent siblings (owl pattern) instead of gap, so the
-   spacing between specific element pairs can be tuned independently.
-
-   Scoped binnen nldd-form. Form-section's eigen children spacing wordt
-   in form-section.css afgehandeld; deze regels zijn voor form's directe
-   children en form-fields anywhere binnen het form. */
-
-nldd-form > form > * + *,
-nldd-form nldd-form-field + nldd-form-field {
+nldd-form > form > * + * {
 	margin-top: var(--semantics-forms-gap);
 }
 
-
-/* Tighter spacing between consecutive top-aligned form-fields. Top-aligned
-   fields are vertically tall (label stacked above input), so a tight 8px gap
-   feels right between them. Right/left-aligned fields use the default 16px.
-   On sm viewport every form-field collapses to top-alignment (via the
-   form-field's own container query), so 8px applies regardless of attribute.
-
-   640px / 641px = breakpoints.smMax / breakpoints.mdMin (zie
-   src/assets/styles/breakpoints.ts). Light-DOM CSS files kunnen geen TS
-   imports gebruiken, dus de waarde wordt hier gedupliceerd. Houd in sync
-   met breakpoints.ts en met form-field/form-actions container queries. */
-
-@media (max-width: 640px) {
-	nldd-form nldd-form-field + nldd-form-field {
+nldd-form nldd-form-field + nldd-form-field {
+	@container form (max-width: 640px) {
 		margin-top: var(--semantics-forms-gap-tight);
+	}
+	@container form (min-width: 641px) {
+		margin-top: var(--semantics-forms-gap);
 	}
 }
 
-@media (min-width: 641px) {
-	nldd-form nldd-form-field:not([label-alignment]) + nldd-form-field:not([label-alignment]),
-	nldd-form nldd-form-field[label-alignment='top'] + nldd-form-field[label-alignment='top'] {
+nldd-form nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']) + nldd-form-field[form-label-alignment='top']:not([label-alignment='left']):not([label-alignment='right']) {
+	@container form (min-width: 641px) {
 		margin-top: var(--semantics-forms-gap-tight);
 	}
 }

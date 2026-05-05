@@ -2,6 +2,8 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoints } from '../../../../assets/styles/breakpoints.js';
 
 const smMax = unsafeCSS(breakpoints.smMax);
+const mdMin = unsafeCSS(breakpoints.mdMin);
+const mdMax = unsafeCSS(breakpoints.mdMax);
 const lgMin = unsafeCSS(breakpoints.lgMin);
 
 export const navigationSplitViewStyles = css`
@@ -10,16 +12,16 @@ export const navigationSplitViewStyles = css`
 	/* # Host */
 
 	:host {
-		display: flex;
-		width: 100%;
-		height: 100%;
-		background-color: var(--_background-color);
-
 		--_sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_secondary-sidebar-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_main-min-width: var(--primitives-area-480); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_inspector-min-width: var(--primitives-area-320); /* Pane min-width — read by JS via getComputedStyle in firstUpdated */
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+
+		display: flex;
+		width: 100%;
+		height: 100%;
+		background-color: var(--_background-color);
 	}
 
 	:host([background="default"]) {
@@ -54,8 +56,6 @@ export const navigationSplitViewStyles = css`
 		min-height: 0;
 		min-width: var(--_sidebar-min-width);
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 
@@ -68,8 +68,6 @@ export const navigationSplitViewStyles = css`
 		min-height: 0;
 		min-width: var(--_secondary-sidebar-min-width);
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 
@@ -82,8 +80,6 @@ export const navigationSplitViewStyles = css`
 		min-height: 0;
 		min-width: var(--_main-min-width);
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
 	}
 
 
@@ -93,6 +89,7 @@ export const navigationSplitViewStyles = css`
 	:host(.full-stack) .navigation-split-view__secondary-sidebar-pane,
 	:host(.full-stack) .navigation-split-view__main-pane {
 		min-width: 0;
+		flex: 1;
 	}
 
 
@@ -104,17 +101,15 @@ export const navigationSplitViewStyles = css`
 	}
 
 	.navigation-split-view__inspector-pane {
+		/* Suppress dismiss button — inspector is always dismissable as a sheet, not inline */
+		--context-dismiss-button-display: none;
+
 		display: flex;
 		flex-direction: column;
 		flex-shrink: 0;
 		min-height: 0;
 		min-width: var(--_inspector-min-width);
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
-
-		/* Suppress dismiss button — inspector is always dismissable as a sheet, not inline */
-		--context-dismiss-button-display: none;
 	}
 
 
@@ -141,13 +136,28 @@ export const navigationSplitViewStyles = css`
 		overflow: hidden;
 		position: fixed;
 		outline: none;
-		inset: var(--semantics-overlays-inset) var(--semantics-overlays-inset) var(--semantics-overlays-inset) auto;
-		width: var(--semantics-sheets-side-md-width);
-		height: calc(100dvh - var(--semantics-overlays-inset) * 2);
-		border-radius: var(--semantics-overlays-corner-radius);
+
+		@media (max-width: ${smMax}) {
+			inset: auto 0 0 0;
+			width: 100%;
+			max-width: 100%;
+			height: auto;
+			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
+			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			inset: var(--semantics-overlays-inset) var(--semantics-overlays-inset) var(--semantics-overlays-inset) auto;
+			width: var(--semantics-sheets-side-md-width);
+			height: calc(100dvh - var(--semantics-overlays-inset) * 2);
+			border-radius: var(--semantics-overlays-corner-radius);
+		}
 
 		@media (min-width: ${lgMin}) {
+			inset: var(--semantics-overlays-inset) var(--semantics-overlays-inset) var(--semantics-overlays-inset) auto;
 			width: var(--semantics-sheets-side-lg-width);
+			height: calc(100dvh - var(--semantics-overlays-inset) * 2);
+			border-radius: var(--semantics-overlays-corner-radius);
 		}
 
 		&:focus-visible:not(.is-pointer-focus) {
@@ -165,11 +175,23 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&[open] {
-			animation: navigation-split-view-inspector-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+			@media (max-width: ${smMax}) {
+				animation: navigation-split-view-slide-in-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
+			}
+
+			@media (min-width: ${mdMin}) {
+				animation: navigation-split-view-inspector-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+			}
 		}
 
 		&.is-closing {
-			animation: navigation-split-view-inspector-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+			@media (max-width: ${smMax}) {
+				animation: navigation-split-view-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
+			}
+
+			@media (min-width: ${mdMin}) {
+				animation: navigation-split-view-inspector-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+			}
 		}
 	}
 
@@ -205,13 +227,28 @@ export const navigationSplitViewStyles = css`
 		overflow: hidden;
 		position: fixed;
 		outline: none;
-		inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);
-		width: var(--semantics-sheets-side-md-width);
-		height: calc(100dvh - var(--semantics-overlays-inset) * 2);
-		border-radius: var(--semantics-overlays-corner-radius);
+
+		@media (max-width: ${smMax}) {
+			inset: auto 0 0 0;
+			width: 100%;
+			max-width: 100%;
+			height: auto;
+			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
+			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);
+			width: var(--semantics-sheets-side-md-width);
+			height: calc(100dvh - var(--semantics-overlays-inset) * 2);
+			border-radius: var(--semantics-overlays-corner-radius);
+		}
 
 		@media (min-width: ${lgMin}) {
+			inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);
 			width: var(--semantics-sheets-side-lg-width);
+			height: calc(100dvh - var(--semantics-overlays-inset) * 2);
+			border-radius: var(--semantics-overlays-corner-radius);
 		}
 
 		&:focus-visible:not(.is-pointer-focus) {
@@ -229,23 +266,35 @@ export const navigationSplitViewStyles = css`
 		}
 
 		&[open] {
-			animation: navigation-split-view-sidebar-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+			@media (max-width: ${smMax}) {
+				animation: navigation-split-view-slide-in-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
+			}
+
+			@media (min-width: ${mdMin}) {
+				animation: navigation-split-view-sidebar-slide-in var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+			}
 		}
 
 		&.is-closing {
-			animation: navigation-split-view-sidebar-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+			@media (max-width: ${smMax}) {
+				animation: navigation-split-view-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
+			}
+
+			@media (min-width: ${mdMin}) {
+				animation: navigation-split-view-sidebar-slide-out var(--semantics-sheets-side-animation-duration) var(--primitives-transition-easing-default) both;
+			}
 		}
 	}
 
 	.navigation-split-view__sidebar-sheet-body {
+		/* Show dismiss button inside sidebar sheet */
+		--context-dismiss-button-display: block;
+
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
 		min-height: 0;
 		width: 100%;
-
-		/* Show dismiss button inside sidebar sheet */
-		--context-dismiss-button-display: block;
 	}
 
 
@@ -259,42 +308,6 @@ export const navigationSplitViewStyles = css`
 	@keyframes navigation-split-view-slide-out-bottom {
 		from { transform: translateY(0); }
 		to { transform: translateY(100%); }
-	}
-
-	@media (max-width: ${smMax}) {
-		.navigation-split-view__inspector-sheet {
-			inset: auto 0 0 0;
-			width: 100%;
-			max-width: 100%;
-			height: auto;
-			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
-			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
-
-			&[open] {
-				animation: navigation-split-view-slide-in-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
-			}
-
-			&.is-closing {
-				animation: navigation-split-view-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
-			}
-		}
-
-		.navigation-split-view__sidebar-sheet {
-			inset: auto 0 0 0;
-			width: 100%;
-			max-width: 100%;
-			height: auto;
-			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
-			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
-
-			&[open] {
-				animation: navigation-split-view-slide-in-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
-			}
-
-			&.is-closing {
-				animation: navigation-split-view-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
-			}
-		}
 	}
 
 

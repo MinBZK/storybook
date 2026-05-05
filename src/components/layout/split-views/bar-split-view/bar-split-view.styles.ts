@@ -1,7 +1,4 @@
-import { css, unsafeCSS } from 'lit';
-import { breakpoints } from '../../../../assets/styles/breakpoints.js';
-
-const smMax = unsafeCSS(breakpoints.smMax);
+import { css } from 'lit';
 
 export const barSplitViewStyles = css`
 
@@ -9,15 +6,13 @@ export const barSplitViewStyles = css`
 	/* # Host */
 
 	:host {
+		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
+
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		height: 100%;
 		background-color: var(--_background-color);
-
-		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
-		--context-bar-split-view-top-bars-height: 0px;
-		--context-bar-split-view-bottom-bars-height: 0px;
 	}
 
 	:host([background="default"]) {
@@ -43,7 +38,6 @@ export const barSplitViewStyles = css`
 		flex: 1;
 		min-height: 0;
 		min-width: 0;
-		position: relative;
 	}
 
 
@@ -55,15 +49,6 @@ export const barSplitViewStyles = css`
 		flex-shrink: 0;
 		min-width: 0;
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
-
-		@media (max-width: ${smMax}) {
-			position: absolute;
-			left: 0;
-			right: 0;
-			z-index: 2;
-		}
 	}
 
 
@@ -83,40 +68,6 @@ export const barSplitViewStyles = css`
 		min-height: 0;
 		min-width: 0;
 		overflow: hidden;
-		container-type: inline-size;
-		container-name: layout-area;
-
-		@media (max-width: ${smMax}) {
-			&::before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				right: 0;
-				z-index: 1;
-				height: calc(var(--context-bar-split-view-top-bars-height) + var(--primitives-space-32));
-				background: linear-gradient(
-					to bottom,
-					color-mix(in srgb, var(--_background-color) 95%, transparent) var(--context-bar-split-view-top-bars-height),
-					transparent);
-				pointer-events: none;
-			}
-
-			&::after {
-				content: '';
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				z-index: 1;
-				height: calc(var(--context-bar-split-view-bottom-bars-height) + var(--primitives-space-32));
-				background: linear-gradient(
-					to top,
-					color-mix(in srgb, var(--_background-color) 95%, transparent) var(--context-bar-split-view-bottom-bars-height),
-					transparent);
-				pointer-events: none;
-			}
-		}
 	}
 
 

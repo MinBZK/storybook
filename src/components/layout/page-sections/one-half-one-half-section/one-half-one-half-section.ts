@@ -12,15 +12,21 @@
  * @slot left - Left column (1/2)
  * @slot right - Right column (1/2)
  * @slot footer - Content below the columns
+ *
+ * @attr {boolean} [full-width] - Remove the body max-width constraint so the
+ *                                 section spans the full available width
  */
 import { LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import { oneHalfOneHalfSectionStyles } from './one-half-one-half-section.styles.js';
 import { oneHalfOneHalfSectionTemplate } from './one-half-one-half-section.template.js';
 
 @customElement('nldd-one-half-one-half-section')
 export class NLDDOneHalfOneHalfSection extends LitElement {
 	static override styles = oneHalfOneHalfSectionStyles;
+
+	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
+	fullWidth = false;
 
 	override render() {
 		return oneHalfOneHalfSectionTemplate(this);

@@ -11,7 +11,8 @@
  * @slot - Main content
  * @slot footer - Content below the main content
  *
- * @attr {string} [align] - Set to "center" to vertically center section content
+ * @attr {boolean} [full-width] - Remove the body max-width constraint so the
+ *                                 section spans the full available width
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -22,8 +23,8 @@ import { simpleSectionTemplate } from './simple-section.template.js';
 export class NLDDSimpleSection extends LitElement {
 	static override styles = simpleSectionStyles;
 
-	@property({ type: String, reflect: true })
-	align?: string;
+	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
+	fullWidth = false;
 
 	_onSlotChange(e: Event) {
 		const slot = e.target as HTMLSlotElement;

@@ -20,9 +20,33 @@
  *
  * @element nldd-popover
  *
- * @attr {string} anchor           - ID van het trigger-element voor positionering
- * @attr {string} placement        - Floating UI placement (default: 'bottom-start')
- * @attr {string} width            - Expliciete width (default: 320px via --components-popover-default-width)
+ * @attr {string}  anchor          - ID van het trigger-element voor positionering
+ * @attr {string}  placement       - Floating UI placement (default: 'bottom-start')
+ * @attr {string}  width           - Expliciete width (default: 320px via --components-popover-default-width)
+ * @attr {string}  top             - CSS top-positie. Wanneer gezet (alleen of
+ *                                    samen met andere edge-attrs of `centered`)
+ *                                    wordt Floating UI's anchor-positionering
+ *                                    overgeslagen — de popover staat dan vrij
+ *                                    op het scherm. De `anchor` blijft wel
+ *                                    nodig voor ARIA-koppeling op de trigger.
+ *                                    Geen effect op sm (bottom-sheet wint).
+ * @attr {string}  left            - CSS left-positie. Zie `top` voor semantiek.
+ * @attr {string}  right           - CSS right-positie. Zie `top` voor semantiek.
+ * @attr {string}  bottom          - CSS bottom-positie. Zie `top` voor semantiek.
+ * @attr {boolean} centered        - Centreert beide assen op de viewport. Per
+ *                                    as overrideable: `centered top="0"` =
+ *                                    horizontaal gecentreerd, top-aligned.
+ *                                    Mirrort CSS `place-items: center` met
+ *                                    `align-items`/`justify-items` overrides.
+ * @attr {boolean} sm-full-height  - Op sm-viewport (waar de popover als
+ *                                    bottom-sheet rendert) de volledige
+ *                                    beschikbare hoogte vullen i.p.v. te
+ *                                    krimpen naar content. Geen effect op
+ *                                    md+ (anchored modus). Opt-in voor
+ *                                    content-heavy use cases zoals zoek-
+ *                                    resultaten of lange detail-views; volgt
+ *                                    Apple/Material conventie van content-
+ *                                    sized als default.
  * @attr {string} accessible-label - (verplicht) Toegankelijke naam (aria-label).
  *                                    Valt terug op de i18n default ('Popover')
  *                                    als niet gezet — geef altijd een unieke,
@@ -78,6 +102,28 @@ export class NLDDPopover extends LitElement {
 	@property({ type: String, reflect: true })
 	width: string | undefined;
 
+	// Default `undefined` (not '') so Lit doesn't reflect an empty value:
+	// `<nldd-popover>` would otherwise carry `top="" left="" right="" bottom=""`
+	// in the DOM, which is noisy and could trip `[top]` attribute selectors in
+	// consumer stylesheets. The hasOverride checks treat both as falsy.
+	@property({ type: String, reflect: true })
+	top: string | undefined = undefined;
+
+	@property({ type: String, reflect: true })
+	left: string | undefined = undefined;
+
+	@property({ type: String, reflect: true })
+	right: string | undefined = undefined;
+
+	@property({ type: String, reflect: true })
+	bottom: string | undefined = undefined;
+
+	@property({ type: Boolean, reflect: true })
+	centered = false;
+
+	@property({ type: Boolean, reflect: true, attribute: 'sm-full-height' })
+	smFullHeight = false;
+
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
@@ -95,6 +141,7 @@ export class NLDDPopover extends LitElement {
 	/** Cleanup-functie van Floating UI's autoUpdate, alleen actief tijdens open. */
 	private _cleanupAutoUpdate: (() => void) | null = null;
 	private _smQuery: MediaQueryList | null = null;
+	private _wasOnSm = false;
 	private _previousAnchorEl: Element | null = null;
 
 	get open(): boolean {
@@ -103,6 +150,8 @@ export class NLDDPopover extends LitElement {
 
 	override connectedCallback(): void {
 		super.connectedCallback();
+		this.style.containerType = 'inline-size';
+		this.style.containerName = 'layout-area';
 		if (!this.hasAttribute('popover')) this.setAttribute('popover', '');
 		if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '-1');
 		if (!this.hasAttribute('role')) this.setAttribute('role', 'dialog');
@@ -110,6 +159,7 @@ export class NLDDPopover extends LitElement {
 		this.addEventListener('keydown', this._handleKeydown);
 		document.addEventListener('click', this._handleDocumentClick);
 		this._smQuery = window.matchMedia(`(max-width: ${breakpoints.smMax})`);
+		this._wasOnSm = this._smQuery.matches;
 		this._smQuery.addEventListener('change', this._handleViewportChange);
 		// Initialiseer aria-expanded/aria-haspopup op de anchor zodat SR de
 		// trigger-knop direct als toggle-control aankondigt — niet pas na de
@@ -169,6 +219,19 @@ export class NLDDPopover extends LitElement {
 		if (changed.has('anchor') || changed.has('anchorElement')) {
 			this._updateAnchorAria(this._isOpen);
 		}
+		// Position-override changes at runtime: re-apply or clear inline edges
+		// + transform zodat de popover meebewegt met dynamische waardes.
+		if (
+			changed.has('top') || changed.has('left')
+			|| changed.has('right') || changed.has('bottom')
+			|| changed.has('centered')
+		) {
+			if (!this.top && !this.centered) this.style.removeProperty('top');
+			if (!this.left && !this.centered) this.style.removeProperty('left');
+			if (!this.right) this.style.removeProperty('right');
+			if (!this.bottom) this.style.removeProperty('bottom');
+			if (this._isOpen) this.reposition();
+		}
 	}
 
 	// — i18n ——————————————————————————————————————————————————————————————————
@@ -211,17 +274,77 @@ export class NLDDPopover extends LitElement {
 		else this.show();
 	}
 
+	/**
+	 * Restore the inline transition after a breakpoint-suppressed tick. Force
+	 * a layout flush first (`void offsetHeight`) so the just-applied position
+	 * styles commit before transitions resume — otherwise the cleared
+	 * `transition: ''` would re-enable animations on those exact properties
+	 * and you'd still see the slide we were trying to suppress.
+	 */
+	private _restoreTransition(): void {
+		void this.offsetHeight;
+		this.style.transition = '';
+	}
+
 	/** Herberekent positie t.o.v. anchor. Wordt automatisch aangeroepen bij openen. */
 	async reposition(): Promise<void> {
 		if (!this._isOpen) return;
 
+		// Suppress transitions when crossing the sm/md breakpoint. Without
+		// this, the bottom-sheet's `transition: transform ...` rule animates
+		// the swap between the centered-md `translate(-50%, 0)` transform
+		// and the sm `translateY(...)` bottom-sheet transform — producing
+		// a visible left/right slide on resize. We only suppress on the
+		// crossing tick; user-driven open/close on sm continues to animate.
+		// Each path below calls _restoreTransition() before returning.
+		const isSm = this._smQuery?.matches ?? false;
+		const crossedBreakpoint = isSm !== this._wasOnSm;
+		this._wasOnSm = isSm;
+		if (crossedBreakpoint) this.style.transition = 'none';
+
 		// On sm viewport the popover renders as a bottom sheet via CSS; clear
 		// any inline positioning Floating UI may have set previously so the
 		// CSS rules take effect.
-		if (this._smQuery?.matches) {
-			this.style.removeProperty('left');
+		if (isSm) {
 			this.style.removeProperty('top');
+			this.style.removeProperty('left');
+			this.style.removeProperty('right');
+			this.style.removeProperty('bottom');
+			this.style.removeProperty('transform');
 			this.style.removeProperty('--_max-height');
+			if (crossedBreakpoint) this._restoreTransition();
+			return;
+		}
+
+		// Position-override: skip Floating UI and place the popover at the
+		// consumer-specified coordinates. Anchor blijft nodig voor ARIA maar
+		// niet voor positionering — denk aan een vrij geplaatste search-popover
+		// die bovenaan-gecentreerd hoort, niet onder z'n trigger.
+		//
+		// `centered` centreert beide assen (left/top: 50%; transform: translate
+		// -50% per as). Een expliciete edge-attr (top/left/right/bottom)
+		// overschrijft die as, dus `centered top="0"` = horizontaal gecentreerd
+		// + top-aligned. Mirrort CSS `place-items: center` met overrides.
+		const hasOverride = this.top || this.left || this.right || this.bottom || this.centered;
+		if (hasOverride) {
+			const yCenter = this.centered && !this.top && !this.bottom;
+			const xCenter = this.centered && !this.left && !this.right;
+
+			if (this.top) this.style.setProperty('top', this.top);
+			else if (yCenter) this.style.setProperty('top', '50%');
+			if (this.bottom) this.style.setProperty('bottom', this.bottom);
+
+			if (this.left) this.style.setProperty('left', this.left);
+			else if (xCenter) this.style.setProperty('left', '50%');
+			if (this.right) this.style.setProperty('right', this.right);
+
+			if (xCenter || yCenter) {
+				this.style.setProperty('transform',
+					`translate(${xCenter ? '-50%' : '0'}, ${yCenter ? '-50%' : '0'})`);
+			} else {
+				this.style.removeProperty('transform');
+			}
+			if (crossedBreakpoint) this._restoreTransition();
 			return;
 		}
 
@@ -253,6 +376,8 @@ export class NLDDPopover extends LitElement {
 			left: `${x}px`,
 			top: `${y}px`,
 		});
+
+		if (crossedBreakpoint) this._restoreTransition();
 	}
 
 	// — Anchor ————————————————————————————————————————————————————————————————
@@ -298,7 +423,18 @@ export class NLDDPopover extends LitElement {
 	// — Event handlers ————————————————————————————————————————————————————————
 
 	private _handleViewportChange = (): void => {
-		if (this._isOpen) this.reposition();
+		// Track the breakpoint even while closed — otherwise the next show()
+		// would see a "crossing" (current vs stale `_wasOnSm`) that didn't
+		// actually happen during an open state, and the spurious
+		// `transition: none` would suppress the opening animation. When open,
+		// reposition() owns the update (it needs the pre-change value to
+		// compute crossedBreakpoint correctly), so we only sync here when
+		// the popover is closed.
+		if (this._isOpen) {
+			this.reposition();
+		} else {
+			this._wasOnSm = this._smQuery?.matches ?? false;
+		}
 	};
 
 	private _handleDocumentClick = (event: MouseEvent): void => {

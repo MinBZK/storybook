@@ -8,6 +8,8 @@ export const inlineDialogStyles = css`
 	:host {
 		display: flex;
 		justify-content: center;
+		align-items: center;
+		flex-grow: 1;
 
 		--_icon-color: var(--semantics-content-color);
 	}
@@ -53,6 +55,7 @@ export const inlineDialogStyles = css`
 		font: var(--primitives-font-body-md-bold-tight);
 		color: var(--semantics-content-color);
 		text-align: center;
+		text-wrap: pretty;
 	}
 
 	.inline-dialog__text:focus-visible {
@@ -68,6 +71,7 @@ export const inlineDialogStyles = css`
 		font: var(--primitives-font-body-sm-regular-tight);
 		color: var(--semantics-content-color);
 		text-align: center;
+		text-wrap: pretty;
 	}
 
 

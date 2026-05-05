@@ -84,6 +84,7 @@ export const textCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
+		overflow-wrap: anywhere;
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
 
@@ -107,6 +108,8 @@ export const textCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
+		overflow-wrap: anywhere;
+		text-wrap: pretty;
 	}
 
 	:host([size='md']) .text-cell__text,
@@ -153,6 +156,7 @@ export const textCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
+		overflow-wrap: anywhere;
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
 

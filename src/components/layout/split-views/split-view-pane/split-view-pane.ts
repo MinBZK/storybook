@@ -40,6 +40,12 @@ export class NLDDSplitViewPane extends LitElement {
 	@property({ type: String, reflect: true })
 	background: 'inherit' | 'default' | 'tinted' = 'inherit';
 
+	override connectedCallback() {
+		super.connectedCallback();
+		this.style.containerType = 'inline-size';
+		this.style.containerName = 'layout-area';
+	}
+
 	override render() {
 		return splitViewPaneTemplate(this);
 	}

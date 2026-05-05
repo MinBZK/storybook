@@ -41,6 +41,7 @@ export const buttonStyles = css`
 		align-items: center;
 		justify-content: center;
 		width: 100%;
+		text-wrap: pretty;
 		transition:
 			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
 			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)

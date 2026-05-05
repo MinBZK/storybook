@@ -4,8 +4,29 @@ import type { NLDDTooltip } from './tooltip.js';
 import './tooltip.js';
 
 function isTooltipVisible(el: NLDDTooltip): boolean {
-	const tooltip = el.shadowRoot!.querySelector('.tooltip');
-	return tooltip?.classList.contains('is-visible') || tooltip?.classList.contains('is-focus-visible') || false;
+	const tooltip = el.shadowRoot!.querySelector<HTMLElement>('.tooltip');
+	return tooltip?.matches(':popover-open') ?? false;
+}
+
+/**
+ * Tooltip uses a 700ms pointer-hover show delay (read from CSS
+ * `--_show-delay`). In tests we override it to 0 so mouseenter shows the
+ * tooltip on the next microtask instead of forcing every test to wait.
+ */
+function instantShow(el: NLDDTooltip): void {
+	el.style.setProperty('--_show-delay', '0');
+}
+
+/**
+ * Common open-the-tooltip flow: zero out the show delay, fire mouseenter,
+ * yield once for the (now-immediate) timer, then await Lit's update so
+ * the tooltip's `_visible` state has flushed to the popover element.
+ */
+async function triggerShow(el: NLDDTooltip, trigger: Element): Promise<void> {
+	instantShow(el);
+	trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+	await new Promise(resolve => setTimeout(resolve, 0));
+	await waitForUpdate(el);
 }
 
 describe('nldd-tooltip', () => {
@@ -58,11 +79,7 @@ describe('nldd-tooltip – show/hide', () => {
 	it('wordt zichtbaar bij mouseenter op trigger', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-
-		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await waitForUpdate(el);
-
+		await triggerShow(el, el.querySelector('button')!);
 		expect(isTooltipVisible(el)).toBe(true);
 	});
 
@@ -80,10 +97,8 @@ describe('nldd-tooltip – show/hide', () => {
 	it('wordt verborgen bij mouseleave', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-
 		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await waitForUpdate(el);
+		await triggerShow(el, trigger);
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
 		await new Promise(resolve => setTimeout(resolve, 250));
 
@@ -93,10 +108,8 @@ describe('nldd-tooltip – show/hide', () => {
 	it('blijft zichtbaar bij tooltip hover', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-
 		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await waitForUpdate(el);
+		await triggerShow(el, trigger);
 
 		trigger.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
 		const tooltipEl = el.shadowRoot!.querySelector('.tooltip')!;
@@ -109,10 +122,7 @@ describe('nldd-tooltip – show/hide', () => {
 	it('Escape sluit de tooltip', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
-
-		const trigger = el.querySelector('button')!;
-		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		await waitForUpdate(el);
+		await triggerShow(el, el.querySelector('button')!);
 		expect(isTooltipVisible(el)).toBe(true);
 
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
@@ -123,11 +133,39 @@ describe('nldd-tooltip – show/hide', () => {
 	it('toont niet bij lege text', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text=""><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
+		await triggerShow(el, el.querySelector('button')!);
+		expect(isTooltipVisible(el)).toBe(false);
+	});
+
+	it('disabled flip annuleert een pending show-timer voordat die afloopt', async () => {
+		// Use a non-zero delay so we can flip `disabled` while the timer is
+		// still scheduled. This is the exact race the updated() handler is
+		// meant to win — without the clearTimeout, the timer would fire and
+		// open the tooltip even though the consumer just suppressed it.
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		el.style.setProperty('--_show-delay', '50');
 
 		const trigger = el.querySelector('button')!;
 		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+		// Don't wait for the timer to fire — flip disabled mid-flight.
+		el.disabled = true;
 		await waitForUpdate(el);
 
+		// Wait past the original show-delay window — the cancelled timer must
+		// not still open the tooltip.
+		await new Promise(resolve => setTimeout(resolve, 100));
+		expect(isTooltipVisible(el)).toBe(false);
+	});
+
+	it('disabled flip verbergt een al zichtbare tooltip direct', async () => {
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		await triggerShow(el, el.querySelector('button')!);
+		expect(isTooltipVisible(el)).toBe(true);
+
+		el.disabled = true;
+		await waitForUpdate(el);
 		expect(isTooltipVisible(el)).toBe(false);
 	});
 });
@@ -178,5 +216,36 @@ describe('nldd-tooltip – aria-describedby', () => {
 		expect(document.getElementById(id)).not.toBeNull();
 		cleanup(el);
 		expect(document.getElementById(id)).toBeNull();
+	});
+
+	it('verwijdert aria-describedby en de description span wanneer disabled flipt naar true', async () => {
+		// Same intent as hiding the visual popover: when disabled, screen
+		// readers shouldn't keep announcing the tooltip text either. Primary
+		// use-case is `?disabled=${!isShort}` in document-tab-bar where the
+		// full label is already inline.
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>T</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		const trigger = el.querySelector('button')!;
+		const id = trigger.getAttribute('aria-describedby')!;
+		expect(id).toBeTruthy();
+		expect(document.getElementById(id)).not.toBeNull();
+
+		el.disabled = true;
+		await waitForUpdate(el);
+		expect(trigger.hasAttribute('aria-describedby')).toBe(false);
+		expect(document.getElementById(id)).toBeNull();
+	});
+
+	it('herstelt aria-describedby wanneer disabled terug naar false flipt', async () => {
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test" disabled><button>T</button></nldd-tooltip>');
+		await waitForUpdate(el);
+		const trigger = el.querySelector('button')!;
+		expect(trigger.hasAttribute('aria-describedby')).toBe(false);
+
+		el.disabled = false;
+		await waitForUpdate(el);
+		const id = trigger.getAttribute('aria-describedby');
+		expect(id).toBeTruthy();
+		expect(document.getElementById(id!)?.textContent).toBe('Test');
 	});
 });

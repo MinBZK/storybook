@@ -3,16 +3,18 @@ import type { NLDDPage } from './page.js';
 
 export function pageTemplate(component: NLDDPage): TemplateResult {
 	return html`
-		<header class="page__header ${component._scrolled ? 'is-scrolled' : ''}">
-			<slot name="header"></slot>
-		</header>
-		<div class="page__scroll">
-			<main class="page__main">
-				<slot></slot>
-			</main>
-			<footer class="page__footer">
-				<slot name="footer"></slot>
-			</footer>
+		<div class="page">
+			<header class="page__header ${component._scrolled ? 'is-scrolled' : ''}">
+				<slot name="header"></slot>
+			</header>
+			<div class="page__scroll">
+				<main class="page__main">
+					<slot></slot>
+				</main>
+				<footer class="page__footer">
+					<slot name="footer"></slot>
+				</footer>
+			</div>
 		</div>
 	`;
 }

@@ -6,9 +6,11 @@ export const searchFieldStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_z-index-button-focus: 1;
+
+		display: block;
+		min-width: 0;
 		-webkit-tap-highlight-color: transparent;
 	}
 
