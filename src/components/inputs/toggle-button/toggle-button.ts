@@ -107,7 +107,7 @@ export class NLDDToggleButton extends LitElement {
 		this.disabled = disabled;
 	}
 
-	formStateRestoreCallback(state: string | null): void {
+	formStateRestoreCallback(state: File | string | FormData | null): void {
 		this.selected = state !== null;
 	}
 

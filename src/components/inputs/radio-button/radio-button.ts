@@ -70,7 +70,7 @@ export class NLDDRadioButton extends LitElement {
 		this.disabled = disabled;
 	}
 
-	formStateRestoreCallback(state: string | null): void {
+	formStateRestoreCallback(state: File | string | FormData | null): void {
 		this.checked = state !== null;
 	}
 

@@ -177,7 +177,8 @@ export class NLDDSegmentedControl extends LitElement {
 		this._syncItems();
 		this._initialValue = this.value;
 		this._initialValues = [...this.values];
-		this._syncFormValue();
+		// _syncFormValue() runs in updated() with the same changedProperties
+		// on first render — no need to call it explicitly here.
 		if (import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy) {
 			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
 		}
