@@ -129,6 +129,25 @@ describe('nldd-text-field', () => {
 		expect((el as HTMLElement).style.width).toBe('240px');
 	});
 
+	it('participates in FormData via form-associated API', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-text-field name="first" value="Hallo"></nldd-text-field></form>');
+		el = form;
+		const tf = form.querySelector('nldd-text-field')!;
+		await waitForUpdate(tf);
+		expect(new FormData(form).get('first')).toBe('Hallo');
+	});
+
+	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-text-field name="email" value="default@example.com"></nldd-text-field></form>');
+		el = form;
+		const tf = form.querySelector('nldd-text-field')! as HTMLElement & { value: string };
+		await waitForUpdate(tf);
+		tf.value = 'changed@example.com';
+		await waitForUpdate(tf);
+		form.reset();
+		expect(tf.value).toBe('default@example.com');
+	});
+
 	it('verwijdert inline host width als width leeg wordt gezet', async () => {
 		el = await fixture('<nldd-text-field width="240px"></nldd-text-field>');
 		await waitForUpdate(el);

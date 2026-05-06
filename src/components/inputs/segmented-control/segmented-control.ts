@@ -108,7 +108,14 @@ export class NLDDSegmentedControlItem extends LitElement {
 
 @customElement('nldd-segmented-control')
 export class NLDDSegmentedControl extends LitElement {
+	static formAssociated = true;
+
 	static override styles = segmentedControlStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialValue = '';
+	private _initialValues: string[] = [];
 
 	/** Selected value for radio type. */
 	@property({ type: String, reflect: true })
@@ -138,7 +145,7 @@ export class NLDDSegmentedControl extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
 	fullWidth = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	/** Accessible name for the group (aria-label). */
@@ -168,8 +175,45 @@ export class NLDDSegmentedControl extends LitElement {
 
 	override firstUpdated(): void {
 		this._syncItems();
+		this._initialValue = this.value;
+		this._initialValues = [...this.values];
+		// _syncFormValue() runs in updated() with the same changedProperties
+		// on first render — no need to call it explicitly here.
 		if (import.meta.env?.DEV && !this.accessibleLabel && !this.accessibleLabelledBy) {
 			console.warn('<nldd-segmented-control>: No accessible name provided. Add an accessible-label or accessible-labelledby attribute for screen reader accessibility.');
+		}
+	}
+
+	private _syncFormValue(): void {
+		if (this.type === 'checkbox') {
+			if (this.values.length === 0 || !this.name) {
+				this._internals.setFormValue(null);
+				return;
+			}
+			// Submit each selected value under the same name (FormData.getAll)
+			const data = new FormData();
+			for (const v of this.values) data.append(this.name, v);
+			this._internals.setFormValue(data);
+		} else {
+			this._internals.setFormValue(this.value || null);
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = this._initialValue;
+		this.values = [...this._initialValues];
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: FormData | string | null): void {
+		if (state === null) return;
+		if (this.type === 'checkbox' && state instanceof FormData && this.name) {
+			this.values = state.getAll(this.name).map(String);
+		} else if (typeof state === 'string') {
+			this.value = state;
 		}
 	}
 
@@ -184,6 +228,14 @@ export class NLDDSegmentedControl extends LitElement {
 			changedProperties.has('name')
 		) {
 			this._syncItems();
+		}
+		if (
+			changedProperties.has('value') ||
+			changedProperties.has('values') ||
+			changedProperties.has('type') ||
+			changedProperties.has('name')
+		) {
+			this._syncFormValue();
 		}
 		if (changedProperties.has('type')) {
 			this.setAttribute('role', this.type === 'checkbox' ? 'group' : 'radiogroup');

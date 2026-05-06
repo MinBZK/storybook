@@ -430,4 +430,37 @@ describe('nldd-segmented-control-item – tooltip', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
 	});
+
+	it('participates in FormData via form-associated API (radio)', async () => {
+		const form = await fixture<HTMLFormElement>(`
+			<form>
+				<nldd-segmented-control value="b" name="opt" accessible-label="Optie">
+					<nldd-segmented-control-item value="a" text="Alpha"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="b" text="Beta"></nldd-segmented-control-item>
+				</nldd-segmented-control>
+			</form>
+		`);
+		el = form;
+		const sc = form.querySelector('nldd-segmented-control')!;
+		await waitForUpdate(sc);
+		expect(new FormData(form).get('opt')).toBe('b');
+	});
+
+	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>(`
+			<form>
+				<nldd-segmented-control value="a" name="opt" accessible-label="Optie">
+					<nldd-segmented-control-item value="a" text="Alpha"></nldd-segmented-control-item>
+					<nldd-segmented-control-item value="b" text="Beta"></nldd-segmented-control-item>
+				</nldd-segmented-control>
+			</form>
+		`);
+		el = form;
+		const sc = form.querySelector<NLDDSegmentedControl>('nldd-segmented-control')!;
+		await waitForUpdate(sc);
+		sc.value = 'b';
+		await waitForUpdate(sc);
+		form.reset();
+		expect(sc.value).toBe('a');
+	});
 });

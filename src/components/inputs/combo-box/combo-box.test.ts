@@ -443,4 +443,35 @@ describe('nldd-combo-box – picker pointerdown (touch close)', () => {
 		await waitForUpdate(el);
 		expect(el._isOpen).toBe(true);
 	});
+
+	it('participates in FormData via form-associated API', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-combo-box name="land" value="nl" accessible-label="Land"></nldd-combo-box></form>');
+		const cb = form.querySelector('nldd-combo-box')!;
+		await waitForUpdate(cb);
+		expect(new FormData(form).get('land')).toBe('nl');
+		cleanup(form);
+	});
+
+	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-combo-box name="land" value="nl" accessible-label="Land"></nldd-combo-box></form>');
+		const cb = form.querySelector<NLDDComboBox>('nldd-combo-box')!;
+		await waitForUpdate(cb);
+		cb.value = 'be';
+		await waitForUpdate(cb);
+		form.reset();
+		expect(cb.value).toBe('nl');
+		cleanup(form);
+	});
+
+	it('formStateRestoreCallback restores both value and display label from FormData state', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box accessible-label="Land"></nldd-combo-box>');
+		await waitForUpdate(el);
+		const restored = new FormData();
+		restored.append('value', 'nl');
+		restored.append('display', 'Nederland');
+		(el as unknown as { formStateRestoreCallback: (s: FormData) => void }).formStateRestoreCallback(restored);
+		await waitForUpdate(el);
+		expect((el as NLDDComboBox).value).toBe('nl');
+		expect((el as NLDDComboBox)._displayValue).toBe('Nederland');
+	});
 });

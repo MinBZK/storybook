@@ -37,7 +37,13 @@ export type NumberFieldSize = 'sm' | 'md';
 
 @customElement('nldd-number-field')
 export class NLDDNumberField extends LitElement {
+	static formAssociated = true;
+
 	static override styles = numberFieldStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialValue = 0;
 
 	@property({ type: Number })
 	value = 0;
@@ -57,7 +63,7 @@ export class NLDDNumberField extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
@@ -88,6 +94,7 @@ export class NLDDNumberField extends LitElement {
 			console.warn('<nldd-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input\'s purpose.');
 		}
 		this._lastValidValue = this._clamp(this.value);
+		this._initialValue = this._lastValidValue;
 	}
 
 	override updated(changedProperties: Map<string, unknown>): void {
@@ -100,6 +107,23 @@ export class NLDDNumberField extends LitElement {
 				this.removeAttribute('width');
 			}
 		}
+		if (changedProperties.has('value')) {
+			this._internals.setFormValue(String(this.value));
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = this._initialValue;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		if (typeof state !== 'string') return;
+		const parsed = parseFloat(state);
+		if (!isNaN(parsed)) this.value = this._clamp(parsed);
 	}
 
 	// — i18n —————————————————————————————————————————————————————————————————

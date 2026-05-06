@@ -98,7 +98,14 @@ export class NLDDModalDialog extends LitElement {
 	}
 
 	_handleBackdropClick(e: MouseEvent): void {
-		if (e.target === this._dialog) this.hide();
+		if (e.target !== this._dialog) return;
+		// e.target is the dialog for both backdrop clicks and clicks on the dialog's
+		// own padding — distinguish by checking the pointer position against the rect.
+		const rect = this._dialog!.getBoundingClientRect();
+		const insideDialog =
+			e.clientX >= rect.left && e.clientX <= rect.right &&
+			e.clientY >= rect.top && e.clientY <= rect.bottom;
+		if (!insideDialog) this.hide();
 	}
 
 	_handleCancel(e: Event): void {

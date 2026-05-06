@@ -14,7 +14,7 @@
  *
  * @fires change - When the value changes; detail: { value: number }
  */
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { stepperStyles } from './stepper.styles.js';
 import { stepperTemplate } from './stepper.template.js';
@@ -27,7 +27,13 @@ export type StepperSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-stepper')
 export class NLDDStepper extends LitElement {
+	static formAssociated = true;
+
 	static override styles = stepperStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialValue = 0;
 
 	@property({ type: Number })
 	value = 0;
@@ -47,9 +53,36 @@ export class NLDDStepper extends LitElement {
 	@property({ type: String, reflect: true })
 	size: StepperSize = 'md';
 
+	@property({ type: String, reflect: true })
+	name = '';
+
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */
 	@property({ type: Object })
 	translations: Partial<NLDDStepperTranslations> = {};
+
+	override firstUpdated(): void {
+		this._initialValue = this.value;
+	}
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('value')) {
+			this._internals.setFormValue(String(this.value));
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = this._initialValue;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		if (typeof state !== 'string') return;
+		const parsed = parseFloat(state);
+		if (!isNaN(parsed)) this.value = Math.max(this.min, Math.min(this.max, parsed));
+	}
 
 	// — i18n —————————————————————————————————————————————————————————————————
 

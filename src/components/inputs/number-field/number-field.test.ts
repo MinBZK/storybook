@@ -421,4 +421,23 @@ describe('nldd-number-field – hide-spin-buttons', () => {
 		expect(decrement).not.toBeNull();
 		expect(increment).not.toBeNull();
 	});
+
+	it('participates in FormData via form-associated API', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-number-field name="qty" value="5"></nldd-number-field></form>');
+		el = form;
+		const nf = form.querySelector('nldd-number-field')!;
+		await waitForUpdate(nf);
+		expect(new FormData(form).get('qty')).toBe('5');
+	});
+
+	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-number-field name="qty" value="3"></nldd-number-field></form>');
+		el = form;
+		const nf = form.querySelector<NLDDNumberField>('nldd-number-field')!;
+		await waitForUpdate(nf);
+		nf.value = 7;
+		await waitForUpdate(nf);
+		form.reset();
+		expect(nf.value).toBe(3);
+	});
 });

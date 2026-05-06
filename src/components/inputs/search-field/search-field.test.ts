@@ -219,4 +219,23 @@ describe('nldd-search-field – dismiss', () => {
 		expect(el.getAttribute('width')).toBe('240px');
 		expect((el as HTMLElement).style.width).toBe('240px');
 	});
+
+	it('participates in FormData via form-associated API', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-search-field name="q" value="zoekterm"></nldd-search-field></form>');
+		el = form;
+		const sf = form.querySelector('nldd-search-field')!;
+		await waitForUpdate(sf);
+		expect(new FormData(form).get('q')).toBe('zoekterm');
+	});
+
+	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-search-field name="q" value="default"></nldd-search-field></form>');
+		el = form;
+		const sf = form.querySelector<NLDDSearchField>('nldd-search-field')!;
+		await waitForUpdate(sf);
+		sf.value = 'changed';
+		await waitForUpdate(sf);
+		form.reset();
+		expect(sf.value).toBe('default');
+	});
 });

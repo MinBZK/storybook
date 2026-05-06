@@ -307,4 +307,31 @@ describe('nldd-switch – accessibility', () => {
 		await waitForUpdate(el);
 		expect(warnSpy).not.toHaveBeenCalled();
 	});
+
+	it('participates in FormData when checked', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-switch name="alerts" value="on" accessible-label="Meldingen" checked></nldd-switch></form>');
+		el = form;
+		const sw = form.querySelector('nldd-switch')!;
+		await waitForUpdate(sw);
+		expect(new FormData(form).get('alerts')).toBe('on');
+	});
+
+	it('is omitted from FormData when unchecked', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-switch name="alerts" value="on" accessible-label="Meldingen"></nldd-switch></form>');
+		el = form;
+		const sw = form.querySelector('nldd-switch')!;
+		await waitForUpdate(sw);
+		expect(new FormData(form).has('alerts')).toBe(false);
+	});
+
+	it('resets to the HTML-declared initial checked state when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-switch name="alerts" value="on" accessible-label="Meldingen" checked></nldd-switch></form>');
+		el = form;
+		const sw = form.querySelector<NLDDSwitch>('nldd-switch')!;
+		await waitForUpdate(sw);
+		sw.checked = false;
+		await waitForUpdate(sw);
+		form.reset();
+		expect(sw.checked).toBe(true);
+	});
 });

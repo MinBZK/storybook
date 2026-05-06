@@ -252,11 +252,72 @@ export function template(component: NDD{PascalName}): TemplateResult {
 
 ### Controls conventies
 
+- **`args` staat altijd vóór `argTypes`** in de default export
 - **Args keys:** altijd camelCase (bijv. `startIcon`, `fullWidth`)
 - **`name:`** het HTML attribuut in kebab-case (bijv. `name: 'start-icon'`, `name: 'full-width'`)
 - **`table.defaultValue.summary:`** altijd invullen met de default waarde
 - **`description:`** korte Nederlandse beschrijving
 - **Icon controls:** gebruik `control: 'select'` met `options: ['', ...ICONS]` — importeer `ICONS` uit `../../content/icon/ndd-icon.ts`. Nooit een text input voor iconen.
+- **Volgorde consistent**: `args`, `argTypes`, template-destructuring en HTML-attributen in de template gebruiken dezelfde volgorde, volgens de canon hieronder.
+
+### Canonieke control volgorde
+
+Per component: pak alleen de keys die je gebruikt en zet ze in deze volgorde. De groepering is een mentaal model — de daadwerkelijke `args`/`argTypes` is een platte lijst.
+
+```
+[1. Visueel dominant]
+size, compact, variant, color, background, layout, panes,
+iconOnly, responsive, showItemLabels, inspectorAsSheet, sidebarAsSheet, noLogo
+
+[2. Sizing]
+resize, rows, width, minWidth, maxWidth, height, minHeight, fullWidth,
+itemWidth, containerSize
+
+[3. Space]
+spacing, padding, paddingInline, paddingBlock, paddingTop, paddingRight,
+paddingBottom, paddingLeft
++ smPadding…, mdPadding…, lgPadding…, layoutAreaXxxxPadding…
+
+[4. Alignment and position]
+horizontalAlignment, verticalAlignment, direction, orientation, placement,
+labelAlignment, top, right, bottom, left, child
+
+[5. Main content]
+text, supportingText, overline, label, supportingLabel, optional,
+placeholder, number, headingLevel,
+icon, startIcon, endIcon, containerColor,
+quote, attribution, cite, keys,
+logoTitle, logoSubtitle, logoSupportingText1, logoSupportingText2, logoHref,
+websiteTitle, websiteHref, backText, backHref, dismissText
+
+[6. Key behavior]
+control, expandable
+
+[7. A11y]
+accessibleLabel
+
+[8. Elements]
+showSearchButton, hideSpinButtons, hasDragHandle, maxItems
+
+[9. Elements content]
+showText, hideText, overflowText
+
+[10. Elements A11y]
+showAccessibleLabel, hideAccessibleLabel
+
+[11. Behavior]
+modeless, movable, stickyHeader, stickyFooter, hasContent, alwaysVisible,
+showLoadMore, lazyLoad, collapseAnchor, contentPriority
+
+[12. States]
+selected, checked, indeterminate, open, valid, invalid, masked, readonly, current, disabled
+
+[13. Form]
+name, value, type, min, max, step, required, total,
+autocomplete, href, target, method, action, novalidate
+```
+
+**Open punt**: `type` staat onder Form (HTML input type, vaakste betekenis). Voor `segmented-control` heeft het een andere semantiek (radio/checkbox-modus); kan later via een rename naar bijv. `selectionMode` opgelost worden.
 
 ```typescript
 import { html, nothing } from 'lit';

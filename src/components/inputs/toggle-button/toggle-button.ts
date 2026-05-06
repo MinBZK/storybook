@@ -21,7 +21,7 @@
  * @fires change - When selection changes; detail: { selected: boolean, value: string }
  */
 
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { toggleButtonStyles } from './toggle-button.styles.js';
 import { toggleButtonTemplate } from './toggle-button.template.js';
@@ -32,7 +32,13 @@ export type ToggleButtonSize = 'xs' | 'sm' | 'md';
 
 @customElement('nldd-toggle-button')
 export class NLDDToggleButton extends LitElement {
+	static formAssociated = true;
+
 	static override styles = toggleButtonStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialSelected = false;
 
 	@property({ type: String, reflect: true })
 	type: ToggleButtonType = 'button';
@@ -49,7 +55,7 @@ export class NLDDToggleButton extends LitElement {
 	@property({ type: String })
 	value = 'on';
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	/** Button text. */
@@ -72,7 +78,11 @@ export class NLDDToggleButton extends LitElement {
 
 	private _warnedA11y = false;
 
-	override updated(): void {
+	override firstUpdated(): void {
+		this._initialSelected = this.selected;
+	}
+
+	override updated(changed: PropertyValues): void {
 		const iconOnly = this._hasIcon && !this.text;
 		this.toggleAttribute('icon-only', iconOnly);
 		const inaccessible = iconOnly && !this.accessibleLabel;
@@ -82,6 +92,23 @@ export class NLDDToggleButton extends LitElement {
 		} else if (!inaccessible) {
 			this._warnedA11y = false;
 		}
+		if (changed.has('selected') || changed.has('value') || changed.has('type')) {
+			// Only checkbox/radio variants participate in form submission.
+			const submits = this.type === 'checkbox' || this.type === 'radio';
+			this._internals.setFormValue(submits && this.selected ? this.value : null);
+		}
+	}
+
+	formResetCallback(): void {
+		this.selected = this._initialSelected;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		this.selected = state !== null;
 	}
 
 	_handleButtonClick(): void {

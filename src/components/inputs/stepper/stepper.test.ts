@@ -249,4 +249,23 @@ describe('nldd-stepper – translations', () => {
 		el.translations = { 'components.stepper.decrement-action': 'Decrease' };
 		expect(el._t('components.stepper.increment-action')).toBe('Verhoog');
 	});
+
+	it('participates in FormData via form-associated API', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-stepper name="qty" value="5"></nldd-stepper></form>');
+		el = form;
+		const sp = form.querySelector('nldd-stepper')!;
+		await waitForUpdate(sp);
+		expect(new FormData(form).get('qty')).toBe('5');
+	});
+
+	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-stepper name="qty" value="3"></nldd-stepper></form>');
+		el = form;
+		const sp = form.querySelector<NLDDStepper>('nldd-stepper')!;
+		await waitForUpdate(sp);
+		sp.value = 7;
+		await waitForUpdate(sp);
+		form.reset();
+		expect(sp.value).toBe(3);
+	});
 });

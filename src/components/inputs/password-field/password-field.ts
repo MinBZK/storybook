@@ -26,10 +26,6 @@
  *
  * @fires input  - When the input value changes ({ detail: { value } })
  * @fires change - When the input value is committed ({ detail: { value } })
- *
- * @csspart field  - The field container
- * @csspart input  - The native input element
- * @csspart toggle - The toggle button wrapper
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -38,12 +34,18 @@ import { passwordFieldTemplate } from './password-field.template.js';
 
 @customElement('nldd-password-field')
 export class NLDDPasswordField extends LitElement {
+	static formAssociated = true;
+
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
 		delegatesFocus: true,
 	};
 
 	static override styles = passwordFieldStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialValue = '';
 
 	@property({ type: String, reflect: true })
 	size: 'md' | 'sm' = 'md';
@@ -91,7 +93,7 @@ export class NLDDPasswordField extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	required = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: String })
@@ -111,10 +113,29 @@ export class NLDDPasswordField extends LitElement {
 	@query('.password-field__input')
 	private _input!: HTMLInputElement;
 
+	override firstUpdated(): void {
+		this._initialValue = this.value;
+	}
+
 	override updated(changed: PropertyValues): void {
 		if (changed.has('width')) {
 			this.style.width = this.width || '';
 		}
+		if (changed.has('value')) {
+			this._internals.setFormValue(this.value);
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = this._initialValue;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		if (typeof state === 'string') this.value = state;
 	}
 
 	public _handleInput(e: Event): void {

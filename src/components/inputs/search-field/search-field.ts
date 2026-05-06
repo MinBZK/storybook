@@ -36,7 +36,13 @@ export type SearchFieldSize = 'sm' | 'md';
 
 @customElement('nldd-search-field')
 export class NLDDSearchField extends LitElement {
+	static formAssociated = true;
+
 	static override styles = searchFieldStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialValue = '';
 
 	@property({ type: String })
 	value = '';
@@ -58,7 +64,7 @@ export class NLDDSearchField extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'show-search-button' })
@@ -75,10 +81,29 @@ export class NLDDSearchField extends LitElement {
 	@query('.search-field__input')
 	_input!: HTMLInputElement;
 
+	override firstUpdated(): void {
+		this._initialValue = this.value;
+	}
+
 	override updated(changed: PropertyValues): void {
 		if (changed.has('width')) {
 			this.style.width = this.width || '';
 		}
+		if (changed.has('value')) {
+			this._internals.setFormValue(this.value);
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = this._initialValue;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		if (typeof state === 'string') this.value = state;
 	}
 
 	// — i18n ——————————————————————————————————————————————————————————————————

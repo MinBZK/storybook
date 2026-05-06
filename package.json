@@ -83,6 +83,10 @@
       "types": "./dist/components/inputs/text-field/text-field.d.ts",
       "default": "./dist/components/inputs/text-field/text-field.js"
     },
+    "./multi-line-text-field": {
+      "types": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.d.ts",
+      "default": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.js"
+    },
     "./password-field": {
       "types": "./dist/components/inputs/password-field/password-field.d.ts",
       "default": "./dist/components/inputs/password-field/password-field.js"

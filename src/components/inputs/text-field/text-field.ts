@@ -20,9 +20,6 @@
  *
  * @fires input  - When input value changes
  * @fires change - When input value is committed
- *
- * @csspart container - The field container
- * @csspart input     - The native input element
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -33,12 +30,18 @@ export type InputType = 'text' | 'email' | 'tel' | 'url';
 
 @customElement('nldd-text-field')
 export class NLDDTextField extends LitElement {
+	static formAssociated = true;
+
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
 		delegatesFocus: true,
 	};
 
 	static override styles = textFieldStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialValue = '';
 
 	@property({ type: String, reflect: true })
 	size: 'md' | 'sm' = 'md';
@@ -64,7 +67,7 @@ export class NLDDTextField extends LitElement {
 	@property({ type: String })
 	type: InputType = 'text';
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -91,10 +94,29 @@ export class NLDDTextField extends LitElement {
 	@query('.text-field__input')
 	private _input!: HTMLInputElement;
 
+	override firstUpdated(): void {
+		this._initialValue = this.value;
+	}
+
 	override updated(changed: PropertyValues): void {
 		if (changed.has('width')) {
 			this.style.width = this.width || '';
 		}
+		if (changed.has('value')) {
+			this._internals.setFormValue(this.value);
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = this._initialValue;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		if (typeof state === 'string') this.value = state;
 	}
 
 	public _handleInput(e: Event): void {

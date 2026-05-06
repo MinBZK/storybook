@@ -218,4 +218,23 @@ describe('nldd-password-field', () => {
 		expect(el.getAttribute('width')).toBe('240px');
 		expect((el as HTMLElement).style.width).toBe('240px');
 	});
+
+	it('participates in FormData via form-associated API', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-password-field name="pw" value="secret"></nldd-password-field></form>');
+		el = form;
+		const pw = form.querySelector('nldd-password-field')!;
+		await waitForUpdate(pw);
+		expect(new FormData(form).get('pw')).toBe('secret');
+	});
+
+	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-password-field name="pw" value="default"></nldd-password-field></form>');
+		el = form;
+		const pw = form.querySelector('nldd-password-field')! as HTMLElement & { value: string };
+		await waitForUpdate(pw);
+		pw.value = 'changed';
+		await waitForUpdate(pw);
+		form.reset();
+		expect(pw.value).toBe('default');
+	});
 });

@@ -106,4 +106,31 @@ describe('nldd-radio-button – change event', () => {
 		expect(detail.value).toBe('option-a');
 		expect(detail.name).toBe('group1');
 	});
+
+	it('participates in FormData when checked', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-radio-button name="opt" value="a" checked></nldd-radio-button></form>');
+		el = form;
+		const rb = form.querySelector('nldd-radio-button')!;
+		await waitForUpdate(rb);
+		expect(new FormData(form).get('opt')).toBe('a');
+	});
+
+	it('is omitted from FormData when unchecked', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-radio-button name="opt" value="a"></nldd-radio-button></form>');
+		el = form;
+		const rb = form.querySelector('nldd-radio-button')!;
+		await waitForUpdate(rb);
+		expect(new FormData(form).has('opt')).toBe(false);
+	});
+
+	it('resets to the HTML-declared initial checked state when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-radio-button name="opt" value="a" checked></nldd-radio-button></form>');
+		el = form;
+		const rb = form.querySelector<NLDDRadioButton>('nldd-radio-button')!;
+		await waitForUpdate(rb);
+		rb.checked = false;
+		await waitForUpdate(rb);
+		form.reset();
+		expect(rb.checked).toBe(true);
+	});
 });
