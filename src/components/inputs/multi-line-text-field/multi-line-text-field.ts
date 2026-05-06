@@ -22,9 +22,6 @@
  *
  * @fires input  - When value changes
  * @fires change - When value is committed (blur)
- *
- * @csspart container - The field container
- * @csspart textarea  - The native textarea element
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -104,6 +101,9 @@ export class NLDDMultiLineTextField extends LitElement {
 
 	override firstUpdated(): void {
 		this._initialValue = this.value;
+		if (import.meta.env?.DEV && !this.accessibleLabel && !this.inputId) {
+			console.warn('<nldd-multi-line-text-field>: No accessible-label or input-id provided. Use nldd-form-field for labeled usage, or set accessible-label for screen reader accessibility.');
+		}
 	}
 
 	override updated(changed: PropertyValues): void {
@@ -129,7 +129,7 @@ export class NLDDMultiLineTextField extends LitElement {
 		this.disabled = disabled;
 	}
 
-	formStateRestoreCallback(state: string): void {
+	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
 	}
 

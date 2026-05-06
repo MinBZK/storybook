@@ -102,7 +102,7 @@ export class NLDDSearchField extends LitElement {
 		this.disabled = disabled;
 	}
 
-	formStateRestoreCallback(state: string): void {
+	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
 	}
 

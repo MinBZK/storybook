@@ -88,8 +88,11 @@ export const multiLineTextFieldStyles = css`
 		border: none;
 		outline: none;
 		appearance: none;
-		resize: vertical;
 		padding-inline: var(--_inline-padding);
+	}
+
+	:host([resize='vertical']) .multi-line-text-field__input {
+		resize: vertical;
 	}
 
 	:host([resize='none']) .multi-line-text-field__input {

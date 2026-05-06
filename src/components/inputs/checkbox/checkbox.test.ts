@@ -187,4 +187,31 @@ describe('nldd-checkbox – accessibility', () => {
 		input.focus();
 		expect(input.matches(':focus')).toBe(true);
 	});
+
+	it('participates in FormData when checked', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-checkbox name="tos" value="agreed" checked></nldd-checkbox></form>');
+		el = form;
+		const cb = form.querySelector('nldd-checkbox')!;
+		await waitForUpdate(cb);
+		expect(new FormData(form).get('tos')).toBe('agreed');
+	});
+
+	it('is omitted from FormData when unchecked', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-checkbox name="tos" value="agreed"></nldd-checkbox></form>');
+		el = form;
+		const cb = form.querySelector('nldd-checkbox')!;
+		await waitForUpdate(cb);
+		expect(new FormData(form).has('tos')).toBe(false);
+	});
+
+	it('resets to the HTML-declared initial checked state when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-checkbox name="tos" value="agreed" checked></nldd-checkbox></form>');
+		el = form;
+		const cb = form.querySelector<NLDDCheckbox>('nldd-checkbox')!;
+		await waitForUpdate(cb);
+		cb.checked = false;
+		await waitForUpdate(cb);
+		form.reset();
+		expect(cb.checked).toBe(true);
+	});
 });

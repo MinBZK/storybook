@@ -20,9 +20,6 @@
  *
  * @fires input  - When input value changes
  * @fires change - When input value is committed
- *
- * @csspart container - The field container
- * @csspart input     - The native input element
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -118,7 +115,7 @@ export class NLDDTextField extends LitElement {
 		this.disabled = disabled;
 	}
 
-	formStateRestoreCallback(state: string): void {
+	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
 	}
 

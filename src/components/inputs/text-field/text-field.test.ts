@@ -130,29 +130,22 @@ describe('nldd-text-field', () => {
 	});
 
 	it('participates in FormData via form-associated API', async () => {
-		const form = document.createElement('form');
-		document.body.appendChild(form);
-		el = document.createElement('nldd-text-field');
-		el.setAttribute('name', 'first');
-		(el as any).value = 'Hallo';
-		form.appendChild(el);
-		await waitForUpdate(el);
-		const data = new FormData(form);
-		expect(data.get('first')).toBe('Hallo');
-		form.remove();
+		const form = await fixture<HTMLFormElement>('<form><nldd-text-field name="first" value="Hallo"></nldd-text-field></form>');
+		el = form;
+		const tf = form.querySelector('nldd-text-field')!;
+		await waitForUpdate(tf);
+		expect(new FormData(form).get('first')).toBe('Hallo');
 	});
 
 	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
-		const form = document.createElement('form');
-		document.body.appendChild(form);
-		form.innerHTML = '<nldd-text-field name="email" value="default@example.com"></nldd-text-field>';
-		el = form.querySelector('nldd-text-field')!;
-		await waitForUpdate(el);
-		(el as any).value = 'changed@example.com';
-		await waitForUpdate(el);
+		const form = await fixture<HTMLFormElement>('<form><nldd-text-field name="email" value="default@example.com"></nldd-text-field></form>');
+		el = form;
+		const tf = form.querySelector('nldd-text-field')! as HTMLElement & { value: string };
+		await waitForUpdate(tf);
+		tf.value = 'changed@example.com';
+		await waitForUpdate(tf);
 		form.reset();
-		expect((el as any).value).toBe('default@example.com');
-		form.remove();
+		expect(tf.value).toBe('default@example.com');
 	});
 
 	it('verwijdert inline host width als width leeg wordt gezet', async () => {

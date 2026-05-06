@@ -408,4 +408,31 @@ describe('nldd-toggle-button – tooltip', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
 	});
+
+	it('participates in FormData when type="checkbox" and selected', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-toggle-button type="checkbox" name="fav" value="star" text="Favoriet" selected></nldd-toggle-button></form>');
+		el = form;
+		const tb = form.querySelector('nldd-toggle-button')!;
+		await waitForUpdate(tb);
+		expect(new FormData(form).get('fav')).toBe('star');
+	});
+
+	it('is omitted from FormData when type="button" (not a form control)', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-toggle-button type="button" name="fav" value="star" text="Favoriet" selected></nldd-toggle-button></form>');
+		el = form;
+		const tb = form.querySelector('nldd-toggle-button')!;
+		await waitForUpdate(tb);
+		expect(new FormData(form).has('fav')).toBe(false);
+	});
+
+	it('resets to the HTML-declared initial selected state when the parent form is reset', async () => {
+		const form = await fixture<HTMLFormElement>('<form><nldd-toggle-button type="checkbox" name="fav" value="star" text="Favoriet" selected></nldd-toggle-button></form>');
+		el = form;
+		const tb = form.querySelector<NLDDToggleButton>('nldd-toggle-button')!;
+		await waitForUpdate(tb);
+		tb.selected = false;
+		await waitForUpdate(tb);
+		form.reset();
+		expect(tb.selected).toBe(true);
+	});
 });

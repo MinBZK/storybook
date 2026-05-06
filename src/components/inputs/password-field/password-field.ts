@@ -26,10 +26,6 @@
  *
  * @fires input  - When the input value changes ({ detail: { value } })
  * @fires change - When the input value is committed ({ detail: { value } })
- *
- * @csspart field  - The field container
- * @csspart input  - The native input element
- * @csspart toggle - The toggle button wrapper
  */
 import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -138,7 +134,7 @@ export class NLDDPasswordField extends LitElement {
 		this.disabled = disabled;
 	}
 
-	formStateRestoreCallback(state: string): void {
+	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state === 'string') this.value = state;
 	}
 

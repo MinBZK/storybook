@@ -78,7 +78,8 @@ export class NLDDStepper extends LitElement {
 		this.disabled = disabled;
 	}
 
-	formStateRestoreCallback(state: string): void {
+	formStateRestoreCallback(state: File | string | FormData | null): void {
+		if (typeof state !== 'string') return;
 		const parsed = parseFloat(state);
 		if (!isNaN(parsed)) this.value = parsed;
 	}
