@@ -19,14 +19,20 @@
  *
  * @fires change - When checked state changes; detail: { checked: boolean, value: string, name: string }
  */
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { radioButtonStyles } from './radio-button.styles.js';
 import { radioButtonTemplate } from './radio-button.template.js';
 
 @customElement('nldd-radio-button')
 export class NLDDRadioButton extends LitElement {
+	static formAssociated = true;
+
 	static override styles = radioButtonStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialChecked = false;
 
 	@property({ type: Boolean, reflect: true })
 	checked = false;
@@ -45,6 +51,28 @@ export class NLDDRadioButton extends LitElement {
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	override firstUpdated(): void {
+		this._initialChecked = this.checked;
+	}
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('checked') || changed.has('value')) {
+			this._internals.setFormValue(this.checked ? this.value : null);
+		}
+	}
+
+	formResetCallback(): void {
+		this.checked = this._initialChecked;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: string | null): void {
+		this.checked = state !== null;
+	}
 
 	public select(): void {
 		if (this.disabled || this.checked) return;

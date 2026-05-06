@@ -63,7 +63,11 @@ export type ComboBoxSize = 'sm' | 'md';
 
 @customElement('nldd-combo-box')
 export class NLDDComboBox extends LitElement {
+	static formAssociated = true;
+
 	static override styles = comboBoxStyles;
+
+	private _internals = this.attachInternals();
 
 	@property({ type: String })
 	value = '';
@@ -146,6 +150,25 @@ export class NLDDComboBox extends LitElement {
 		}
 		if (changedProperties.has('width')) {
 			this.style.width = this.width || '';
+		}
+		if (changedProperties.has('value')) {
+			this._internals.setFormValue(this.value);
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = '';
+		this._displayValue = '';
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: string): void {
+		if (typeof state === 'string') {
+			this.value = state;
+			this._displayValue = state;
 		}
 	}
 

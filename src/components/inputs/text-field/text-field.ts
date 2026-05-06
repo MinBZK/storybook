@@ -33,12 +33,16 @@ export type InputType = 'text' | 'email' | 'tel' | 'url';
 
 @customElement('nldd-text-field')
 export class NLDDTextField extends LitElement {
+	static formAssociated = true;
+
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
 		delegatesFocus: true,
 	};
 
 	static override styles = textFieldStyles;
+
+	private _internals = this.attachInternals();
 
 	@property({ type: String, reflect: true })
 	size: 'md' | 'sm' = 'md';
@@ -95,6 +99,21 @@ export class NLDDTextField extends LitElement {
 		if (changed.has('width')) {
 			this.style.width = this.width || '';
 		}
+		if (changed.has('value')) {
+			this._internals.setFormValue(this.value);
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = '';
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: string): void {
+		if (typeof state === 'string') this.value = state;
 	}
 
 	public _handleInput(e: Event): void {

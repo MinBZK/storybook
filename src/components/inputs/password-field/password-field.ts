@@ -38,12 +38,16 @@ import { passwordFieldTemplate } from './password-field.template.js';
 
 @customElement('nldd-password-field')
 export class NLDDPasswordField extends LitElement {
+	static formAssociated = true;
+
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
 		delegatesFocus: true,
 	};
 
 	static override styles = passwordFieldStyles;
+
+	private _internals = this.attachInternals();
 
 	@property({ type: String, reflect: true })
 	size: 'md' | 'sm' = 'md';
@@ -115,6 +119,21 @@ export class NLDDPasswordField extends LitElement {
 		if (changed.has('width')) {
 			this.style.width = this.width || '';
 		}
+		if (changed.has('value')) {
+			this._internals.setFormValue(this.value);
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = '';
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: string): void {
+		if (typeof state === 'string') this.value = state;
 	}
 
 	public _handleInput(e: Event): void {

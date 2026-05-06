@@ -37,7 +37,11 @@ export type NumberFieldSize = 'sm' | 'md';
 
 @customElement('nldd-number-field')
 export class NLDDNumberField extends LitElement {
+	static formAssociated = true;
+
 	static override styles = numberFieldStyles;
+
+	private _internals = this.attachInternals();
 
 	@property({ type: Number })
 	value = 0;
@@ -100,6 +104,22 @@ export class NLDDNumberField extends LitElement {
 				this.removeAttribute('width');
 			}
 		}
+		if (changedProperties.has('value')) {
+			this._internals.setFormValue(String(this.value));
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = 0;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: string): void {
+		const parsed = parseFloat(state);
+		if (!isNaN(parsed)) this.value = parsed;
 	}
 
 	// — i18n —————————————————————————————————————————————————————————————————

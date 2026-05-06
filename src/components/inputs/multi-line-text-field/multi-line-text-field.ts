@@ -35,12 +35,16 @@ export type ResizeMode = 'none' | 'vertical' | 'auto';
 
 @customElement('nldd-multi-line-text-field')
 export class NLDDMultiLineTextField extends LitElement {
+	static formAssociated = true;
+
 	static override shadowRootOptions = {
 		...LitElement.shadowRootOptions,
 		delegatesFocus: true,
 	};
 
 	static override styles = multiLineTextFieldStyles;
+
+	private _internals = this.attachInternals();
 
 	@property({ type: String, reflect: true })
 	size: 'md' | 'sm' = 'md';
@@ -106,6 +110,21 @@ export class NLDDMultiLineTextField extends LitElement {
 			this._textarea.style.width = '';
 			this._textarea.style.height = '';
 		}
+		if (changed.has('value')) {
+			this._internals.setFormValue(this.value);
+		}
+	}
+
+	formResetCallback(): void {
+		this.value = '';
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: string): void {
+		if (typeof state === 'string') this.value = state;
 	}
 
 	public _handleInput(e: Event): void {

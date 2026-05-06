@@ -12,14 +12,20 @@
  *
  * @fires change - Fired when the checkbox state changes; detail: { checked: boolean, value: string }
  */
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { checkboxStyles } from './checkbox.styles.js';
 import { checkboxTemplate } from './checkbox.template.js';
 
 @customElement('nldd-checkbox')
 export class NLDDCheckbox extends LitElement {
+	static formAssociated = true;
+
 	static override styles = checkboxStyles;
+
+	private _internals = this.attachInternals();
+
+	private _initialChecked = false;
 
 	@property({ type: Boolean, reflect: true })
 	checked = false;
@@ -38,6 +44,29 @@ export class NLDDCheckbox extends LitElement {
 
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	override firstUpdated(): void {
+		this._initialChecked = this.checked;
+	}
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('checked') || changed.has('value')) {
+			this._internals.setFormValue(this.checked ? this.value : null);
+		}
+	}
+
+	formResetCallback(): void {
+		this.checked = this._initialChecked;
+		this.indeterminate = false;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: string | null): void {
+		this.checked = state !== null;
+	}
 
 	public toggle(): void {
 		if (this.disabled) return;

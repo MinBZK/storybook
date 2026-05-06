@@ -14,7 +14,7 @@
  *
  * @fires change - When the switch state changes; detail: { checked: boolean, value: string }
  */
-import { LitElement } from 'lit';
+import { LitElement, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { switchStyles } from './switch.styles.js';
 import { switchTemplate } from './switch.template.js';
@@ -23,7 +23,14 @@ export type SwitchSize = 'xs' | 'sm';
 
 @customElement('nldd-switch')
 export class NLDDSwitch extends LitElement {
+	static formAssociated = true;
+
 	static override styles = switchStyles;
+
+	private _internals = this.attachInternals();
+
+	@property({ type: String })
+	name = '';
 
 	@property({ type: Boolean, reflect: true })
 	checked = false;
@@ -40,10 +47,31 @@ export class NLDDSwitch extends LitElement {
 	@property({ type: String })
 	value = 'on';
 
+	private _initialChecked = false;
+
 	override firstUpdated(): void {
 		if (import.meta.env?.DEV && !this.accessibleLabel) {
 			console.warn('<nldd-switch>: No accessible-label provided. Use nldd-switch-field for labeled usage, or provide an accessible-label attribute for screen reader accessibility.');
 		}
+		this._initialChecked = this.checked;
+	}
+
+	override updated(changed: PropertyValues): void {
+		if (changed.has('checked') || changed.has('value')) {
+			this._internals.setFormValue(this.checked ? this.value : null);
+		}
+	}
+
+	formResetCallback(): void {
+		this.checked = this._initialChecked;
+	}
+
+	formDisabledCallback(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	formStateRestoreCallback(state: string | null): void {
+		this.checked = state !== null;
 	}
 
 	// ## Swipe gesture
