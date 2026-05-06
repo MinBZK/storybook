@@ -69,6 +69,9 @@ export class NLDDComboBox extends LitElement {
 
 	private _internals = this.attachInternals();
 
+	private _initialValue = '';
+	private _initialDisplayValue = '';
+
 	@property({ type: String })
 	value = '';
 
@@ -142,6 +145,8 @@ export class NLDDComboBox extends LitElement {
 		if (import.meta.env?.DEV && !this.accessibleLabel) {
 			console.warn('<nldd-combo-box>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
 		}
+		this._initialValue = this.value;
+		this._initialDisplayValue = this._displayValue;
 	}
 
 	override updated(changedProperties: Map<string, unknown>): void {
@@ -157,8 +162,8 @@ export class NLDDComboBox extends LitElement {
 	}
 
 	formResetCallback(): void {
-		this.value = '';
-		this._displayValue = '';
+		this.value = this._initialValue;
+		this._displayValue = this._initialDisplayValue;
 	}
 
 	formDisabledCallback(disabled: boolean): void {

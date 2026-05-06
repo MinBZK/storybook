@@ -142,6 +142,32 @@ describe('nldd-multi-line-text-field', () => {
 		expect(textarea.hasAttribute('aria-describedby')).toBe(false);
 	});
 
+	it('participates in FormData via form-associated API', async () => {
+		const form = document.createElement('form');
+		document.body.appendChild(form);
+		el = document.createElement('nldd-multi-line-text-field');
+		el.setAttribute('name', 'notes');
+		(el as any).value = 'Eerste regel\nTweede regel';
+		form.appendChild(el);
+		await waitForUpdate(el);
+		const data = new FormData(form);
+		expect(data.get('notes')).toBe('Eerste regel\nTweede regel');
+		form.remove();
+	});
+
+	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
+		const form = document.createElement('form');
+		document.body.appendChild(form);
+		form.innerHTML = '<nldd-multi-line-text-field name="notes" value="Standaard"></nldd-multi-line-text-field>';
+		el = form.querySelector('nldd-multi-line-text-field')!;
+		await waitForUpdate(el);
+		(el as any).value = 'Aangepaste tekst';
+		await waitForUpdate(el);
+		form.reset();
+		expect((el as any).value).toBe('Standaard');
+		form.remove();
+	});
+
 	it('past inline host width toe als width property gezet is', async () => {
 		el = await fixture('<nldd-multi-line-text-field width="240px"></nldd-multi-line-text-field>');
 		await waitForUpdate(el);

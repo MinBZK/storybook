@@ -142,15 +142,16 @@ describe('nldd-text-field', () => {
 		form.remove();
 	});
 
-	it('resets value when the parent form is reset', async () => {
+	it('resets to the HTML-declared initial value when the parent form is reset', async () => {
 		const form = document.createElement('form');
 		document.body.appendChild(form);
-		el = document.createElement('nldd-text-field');
-		(el as any).value = 'Iets';
-		form.appendChild(el);
+		form.innerHTML = '<nldd-text-field name="email" value="default@example.com"></nldd-text-field>';
+		el = form.querySelector('nldd-text-field')!;
+		await waitForUpdate(el);
+		(el as any).value = 'changed@example.com';
 		await waitForUpdate(el);
 		form.reset();
-		expect((el as any).value).toBe('');
+		expect((el as any).value).toBe('default@example.com');
 		form.remove();
 	});
 

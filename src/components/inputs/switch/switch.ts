@@ -29,7 +29,7 @@ export class NLDDSwitch extends LitElement {
 
 	private _internals = this.attachInternals();
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })

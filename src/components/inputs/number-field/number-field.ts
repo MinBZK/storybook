@@ -43,6 +43,8 @@ export class NLDDNumberField extends LitElement {
 
 	private _internals = this.attachInternals();
 
+	private _initialValue = 0;
+
 	@property({ type: Number })
 	value = 0;
 
@@ -92,6 +94,7 @@ export class NLDDNumberField extends LitElement {
 			console.warn('<nldd-number-field>: No accessible-label provided. Add an accessible-label attribute so screen readers can announce the input\'s purpose.');
 		}
 		this._lastValidValue = this._clamp(this.value);
+		this._initialValue = this._lastValidValue;
 	}
 
 	override updated(changedProperties: Map<string, unknown>): void {
@@ -110,7 +113,7 @@ export class NLDDNumberField extends LitElement {
 	}
 
 	formResetCallback(): void {
-		this.value = 0;
+		this.value = this._initialValue;
 	}
 
 	formDisabledCallback(disabled: boolean): void {

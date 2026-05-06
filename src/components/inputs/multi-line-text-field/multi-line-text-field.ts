@@ -46,6 +46,8 @@ export class NLDDMultiLineTextField extends LitElement {
 
 	private _internals = this.attachInternals();
 
+	private _initialValue = '';
+
 	@property({ type: String, reflect: true })
 	size: 'md' | 'sm' = 'md';
 
@@ -67,7 +69,7 @@ export class NLDDMultiLineTextField extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
@@ -100,6 +102,10 @@ export class NLDDMultiLineTextField extends LitElement {
 	@query('.multi-line-text-field__input')
 	private _textarea!: HTMLTextAreaElement;
 
+	override firstUpdated(): void {
+		this._initialValue = this.value;
+	}
+
 	override updated(changed: PropertyValues): void {
 		if (changed.has('width')) {
 			this.style.width = this.width || '';
@@ -116,7 +122,7 @@ export class NLDDMultiLineTextField extends LitElement {
 	}
 
 	formResetCallback(): void {
-		this.value = '';
+		this.value = this._initialValue;
 	}
 
 	formDisabledCallback(disabled: boolean): void {
@@ -147,14 +153,6 @@ export class NLDDMultiLineTextField extends LitElement {
 			bubbles: true,
 			composed: true,
 		}));
-	}
-
-	public focus(): void {
-		this._textarea?.focus();
-	}
-
-	public blur(): void {
-		this._textarea?.blur();
 	}
 
 	override render() {

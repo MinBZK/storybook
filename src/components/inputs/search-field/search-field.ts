@@ -42,6 +42,8 @@ export class NLDDSearchField extends LitElement {
 
 	private _internals = this.attachInternals();
 
+	private _initialValue = '';
+
 	@property({ type: String })
 	value = '';
 
@@ -79,6 +81,10 @@ export class NLDDSearchField extends LitElement {
 	@query('.search-field__input')
 	_input!: HTMLInputElement;
 
+	override firstUpdated(): void {
+		this._initialValue = this.value;
+	}
+
 	override updated(changed: PropertyValues): void {
 		if (changed.has('width')) {
 			this.style.width = this.width || '';
@@ -89,7 +95,7 @@ export class NLDDSearchField extends LitElement {
 	}
 
 	formResetCallback(): void {
-		this.value = '';
+		this.value = this._initialValue;
 	}
 
 	formDisabledCallback(disabled: boolean): void {

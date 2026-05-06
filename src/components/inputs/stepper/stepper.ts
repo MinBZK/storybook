@@ -53,7 +53,7 @@ export class NLDDStepper extends LitElement {
 	@property({ type: String, reflect: true })
 	size: StepperSize = 'md';
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	/** Override one or more translation keys. Unspecified keys fall back to Dutch. */

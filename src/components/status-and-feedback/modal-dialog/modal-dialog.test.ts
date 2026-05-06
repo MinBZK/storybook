@@ -144,6 +144,11 @@ describe('nldd-modal-dialog', () => {
 		expect(document.activeElement === button).toBe(true);
 	});
 
+	// Note: getBoundingClientRect() returns all-zeros in JSDOM. The padding-click
+	// test passes because (0, 0) lies on the degenerate [0,0]×[0,0] rect; the
+	// backdrop-click test passes because (-10, -10) lies outside it. The logic
+	// is correct under real layout — these assertions exercise the in-rect /
+	// outside-rect branch boundaries, not realistic geometry.
 	it('does not close when clicking on the dialog padding', async () => {
 		el = await fixture('<nldd-modal-dialog text="Test"></nldd-modal-dialog>');
 		await waitForUpdate(el);

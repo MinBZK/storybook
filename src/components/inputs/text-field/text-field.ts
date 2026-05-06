@@ -44,6 +44,8 @@ export class NLDDTextField extends LitElement {
 
 	private _internals = this.attachInternals();
 
+	private _initialValue = '';
+
 	@property({ type: String, reflect: true })
 	size: 'md' | 'sm' = 'md';
 
@@ -95,6 +97,10 @@ export class NLDDTextField extends LitElement {
 	@query('.text-field__input')
 	private _input!: HTMLInputElement;
 
+	override firstUpdated(): void {
+		this._initialValue = this.value;
+	}
+
 	override updated(changed: PropertyValues): void {
 		if (changed.has('width')) {
 			this.style.width = this.width || '';
@@ -105,7 +111,7 @@ export class NLDDTextField extends LitElement {
 	}
 
 	formResetCallback(): void {
-		this.value = '';
+		this.value = this._initialValue;
 	}
 
 	formDisabledCallback(disabled: boolean): void {
