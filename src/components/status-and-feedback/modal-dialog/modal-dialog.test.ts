@@ -144,6 +144,41 @@ describe('nldd-modal-dialog', () => {
 		expect(document.activeElement === button).toBe(true);
 	});
 
+	it('does not close when clicking on the dialog padding', async () => {
+		el = await fixture('<nldd-modal-dialog text="Test"></nldd-modal-dialog>');
+		await waitForUpdate(el);
+		(el as NLDDModalDialog).show();
+		const dialog = el.shadowRoot!.querySelector('dialog')!;
+		const rect = dialog.getBoundingClientRect();
+		// Click coordinates inside the dialog rect, target = dialog (i.e., on padding)
+		const event = new MouseEvent('click', {
+			bubbles: true,
+			clientX: rect.left + rect.width / 2,
+			clientY: rect.top + rect.height / 2,
+		});
+		Object.defineProperty(event, 'target', { value: dialog });
+		(el as NLDDModalDialog)._handleBackdropClick(event);
+		expect(dialog.classList.contains('is-closing')).toBe(false);
+		expect(dialog.open).toBe(true);
+	});
+
+	it('closes when clicking on the backdrop (outside dialog rect)', async () => {
+		el = await fixture('<nldd-modal-dialog text="Test"></nldd-modal-dialog>');
+		await waitForUpdate(el);
+		(el as NLDDModalDialog).show();
+		const dialog = el.shadowRoot!.querySelector('dialog')!;
+		const rect = dialog.getBoundingClientRect();
+		// Click coordinates outside the dialog rect, target = dialog (i.e., on backdrop)
+		const event = new MouseEvent('click', {
+			bubbles: true,
+			clientX: rect.left - 10,
+			clientY: rect.top - 10,
+		});
+		Object.defineProperty(event, 'target', { value: dialog });
+		(el as NLDDModalDialog)._handleBackdropClick(event);
+		expect(dialog.classList.contains('is-closing')).toBe(true);
+	});
+
 	it('prevents default on cancel event and calls hide()', async () => {
 		el = await fixture('<nldd-modal-dialog></nldd-modal-dialog>');
 		await waitForUpdate(el);
