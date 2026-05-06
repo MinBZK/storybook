@@ -53,17 +53,17 @@ export default {
 	},
 	args: {
 		size: 'md',
-		width: '',
-		rows: 3,
 		resize: 'vertical',
-		value: '',
+		rows: 3,
+		width: '',
 		placeholder: 'Schrijf hier je toelichting',
 		valid: false,
 		invalid: false,
 		readonly: false,
 		disabled: false,
-		required: false,
 		name: '',
+		value: '',
+		required: false,
 		autocomplete: '',
 	},
 	argTypes: {
@@ -73,25 +73,20 @@ export default {
 			description: 'Size variant',
 			table: { defaultValue: { summary: 'md' } },
 		},
-		width: {
-			control: 'text',
-			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
-		},
-		rows: {
-			control: 'number',
-			description: 'Initiële hoogte in regels (minimum)',
-			table: { defaultValue: { summary: '3' } },
-		},
 		resize: {
 			control: 'select',
 			options: ['none', 'vertical', 'auto'],
 			description: 'Resize gedrag. "auto" laat het veld meegroeien met de inhoud.',
 			table: { defaultValue: { summary: 'vertical' } },
 		},
-		value: {
+		rows: {
+			control: 'number',
+			description: 'Initiële hoogte in regels (minimum)',
+			table: { defaultValue: { summary: '3' } },
+		},
+		width: {
 			control: 'text',
-			description: 'Veldwaarde',
+			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
 			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
@@ -119,14 +114,19 @@ export default {
 			description: 'Disabled state',
 			table: { defaultValue: { summary: false } },
 		},
+		name: {
+			control: 'text',
+			description: 'Name voor form submission',
+		},
+		value: {
+			control: 'text',
+			description: 'Veldwaarde',
+			table: { defaultValue: { summary: '' } },
+		},
 		required: {
 			control: 'boolean',
 			description: 'Required state',
 			table: { defaultValue: { summary: false } },
-		},
-		name: {
-			control: 'text',
-			description: 'Name voor form submission',
 		},
 		autocomplete: {
 			control: 'text',
@@ -136,20 +136,20 @@ export default {
 	},
 };
 
-const Template = ({ size, width, rows, resize, value, placeholder, valid, invalid, readonly, disabled, required, name, autocomplete }: Record<string, any>) => html`
+const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, autocomplete }: Record<string, any>) => html`
 	<nldd-multi-line-text-field
 		size=${size}
-		width=${width}
-		rows=${rows}
 		resize=${resize}
-		.value=${value}
+		rows=${rows}
+		width=${width}
 		.placeholder=${placeholder}
 		?valid=${valid}
 		?invalid=${invalid}
 		?readonly=${readonly}
 		?disabled=${disabled}
-		?required=${required}
 		name=${name}
+		.value=${value}
+		?required=${required}
 		autocomplete=${autocomplete}
 	></nldd-multi-line-text-field>
 `;

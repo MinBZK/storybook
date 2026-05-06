@@ -270,7 +270,7 @@ size, compact, variant, color, background, layout, panes,
 iconOnly, responsive, showItemLabels, inspectorAsSheet, sidebarAsSheet, noLogo
 
 [2. Sizing]
-width, minWidth, maxWidth, height, minHeight, fullWidth, rows, resize,
+resize, rows, width, minWidth, maxWidth, height, minHeight, fullWidth,
 itemWidth, containerSize
 
 [3. Space]
@@ -284,7 +284,7 @@ labelAlignment, top, right, bottom, left, child
 
 [5. Main content]
 text, supportingText, overline, label, supportingLabel, optional,
-value, placeholder, number, headingLevel,
+placeholder, number, headingLevel,
 icon, startIcon, endIcon, containerColor,
 quote, attribution, cite, keys,
 logoTitle, logoSubtitle, logoSupportingText1, logoSupportingText2, logoHref,
@@ -312,11 +312,9 @@ showLoadMore, lazyLoad, collapseAnchor, contentPriority
 [12. States]
 selected, checked, indeterminate, open, valid, invalid, masked, readonly, current, disabled
 
-[13. Requirements]
-min, max, step, total, required
-
-[14. Form]
-name, type, autocomplete, href, target, method, action, novalidate
+[13. Form]
+name, value, type, min, max, step, required, total,
+autocomplete, href, target, method, action, novalidate
 ```
 
 **Open punt**: `type` staat onder Form (HTML input type, vaakste betekenis). Voor `segmented-control` heeft het een andere semantiek (radio/checkbox-modus); kan later via een rename naar bijv. `selectionMode` opgelost worden.
