@@ -117,6 +117,7 @@ export default {
 		name: {
 			control: 'text',
 			description: 'Name voor form submission',
+			table: { defaultValue: { summary: '' } },
 		},
 		value: {
 			control: 'text',

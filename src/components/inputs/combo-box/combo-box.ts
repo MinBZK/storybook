@@ -156,8 +156,14 @@ export class NLDDComboBox extends LitElement {
 		if (changedProperties.has('width')) {
 			this.style.width = this.width || '';
 		}
-		if (changedProperties.has('value')) {
-			this._internals.setFormValue(this.value);
+		if (changedProperties.has('value') || changedProperties.has('_displayValue')) {
+			// Submit only the form value, but persist the display label in the
+			// restore state so bfcache / state restore can rehydrate the input
+			// text (e.g. value "NL" → display "Netherlands").
+			const state = new FormData();
+			state.append('value', this.value);
+			state.append('display', this._displayValue);
+			this._internals.setFormValue(this.value, state);
 		}
 	}
 
@@ -171,7 +177,11 @@ export class NLDDComboBox extends LitElement {
 	}
 
 	formStateRestoreCallback(state: File | string | FormData | null): void {
-		if (typeof state === 'string') {
+		if (state instanceof FormData) {
+			this.value = String(state.get('value') ?? '');
+			this._displayValue = String(state.get('display') ?? '');
+		} else if (typeof state === 'string') {
+			// Fallback for older session state without separate display label.
 			this.value = state;
 			this._displayValue = state;
 		}

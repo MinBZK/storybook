@@ -462,4 +462,16 @@ describe('nldd-combo-box – picker pointerdown (touch close)', () => {
 		expect(cb.value).toBe('nl');
 		cleanup(form);
 	});
+
+	it('formStateRestoreCallback restores both value and display label from FormData state', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box accessible-label="Land"></nldd-combo-box>');
+		await waitForUpdate(el);
+		const restored = new FormData();
+		restored.append('value', 'nl');
+		restored.append('display', 'Nederland');
+		(el as unknown as { formStateRestoreCallback: (s: FormData) => void }).formStateRestoreCallback(restored);
+		await waitForUpdate(el);
+		expect((el as NLDDComboBox).value).toBe('nl');
+		expect((el as NLDDComboBox)._displayValue).toBe('Nederland');
+	});
 });
