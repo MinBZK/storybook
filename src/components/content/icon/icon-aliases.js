@@ -41,6 +41,11 @@ export const aliases = {
 	'chart-line': 'chart-x-y-axis-line',
 	'graph': 'chart-x-y-axis-line',
 
+	// check-list
+	'tasks': 'check-list',
+	'todos': 'check-list',
+	'checklist': 'check-list',
+
 	// check-mark
 	'checked': 'check-mark',
 
@@ -104,6 +109,17 @@ export const aliases = {
 	'hidden': 'eye-slash',
 	'hide': 'eye-slash',
 
+	// face-frowning
+	'sad': 'face-frowning',
+	'frowning': 'face-frowning',
+
+	// face-smiling
+	'happy': 'face-smiling',
+	'smiling': 'face-smiling',
+
+	// face-smiling-badge-plus
+	'add-emoji': 'face-smiling-badge-plus',
+
 	// file-text
 	'document': 'file-text',
 	'file': 'file-text',
@@ -130,6 +146,10 @@ export const aliases = {
 	// info-circle
 	'info': 'info-circle',
 	'information': 'info-circle',
+
+	// link
+	'url': 'link',
+	'hyperlink': 'link',
 
 	// list
 	'menu': 'list',
@@ -171,6 +191,13 @@ export const aliases = {
 	// moon
 	'dark-mode': 'moon',
 	'night': 'moon',
+
+	// paper-plane
+	'send': 'paper-plane',
+
+	// paperclip
+	'attachment': 'paperclip',
+	'attach': 'paperclip',
 
 	// pencil
 	'write': 'pencil',
@@ -216,6 +243,14 @@ export const aliases = {
 	// slash-circle
 	'blocked': 'slash-circle',
 	'forbidden': 'slash-circle',
+
+	// sparkles
+	'ai': 'sparkles',
+	'magic': 'sparkles',
+
+	// square-and-arrow-right
+	'logout': 'square-and-arrow-right',
+	'exit': 'square-and-arrow-right',
 
 	// square-arrow-up
 	'share': 'square-arrow-up',
