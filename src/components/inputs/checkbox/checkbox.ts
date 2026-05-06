@@ -39,7 +39,7 @@ export class NLDDCheckbox extends LitElement {
 	@property({ type: String })
 	value = 'on';
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: String, attribute: 'accessible-label' })

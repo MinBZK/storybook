@@ -55,7 +55,7 @@ export class NLDDToggleButton extends LitElement {
 	@property({ type: String })
 	value = 'on';
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	/** Button text. */

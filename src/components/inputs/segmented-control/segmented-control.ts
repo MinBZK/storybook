@@ -145,7 +145,7 @@ export class NLDDSegmentedControl extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
 	fullWidth = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	/** Accessible name for the group (aria-label). */

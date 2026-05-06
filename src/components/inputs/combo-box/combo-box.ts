@@ -90,7 +90,7 @@ export class NLDDComboBox extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	/** Browser autofill hint. Use AutoFill tokens (e.g. 'country', 'organization')

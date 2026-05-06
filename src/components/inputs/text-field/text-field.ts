@@ -70,7 +70,7 @@ export class NLDDTextField extends LitElement {
 	@property({ type: String })
 	type: InputType = 'text';
 
-	@property({ type: String })
+	@property({ type: String, reflect: true })
 	name = '';
 
 	@property({ type: Boolean, reflect: true })
