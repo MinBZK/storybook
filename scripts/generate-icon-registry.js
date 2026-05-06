@@ -16,7 +16,11 @@ const outputFile = resolve(__dirname, '../src/components/content/icon/icon-regis
 
 const svgFiles = readdirSync(iconsDir)
 	.filter(f => f.endsWith('.svg'))
-	.sort();
+	.sort((a, b) => {
+		const nameA = a.slice(0, -4);
+		const nameB = b.slice(0, -4);
+		return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+	});
 
 const entries = svgFiles.map(file => {
 	const name = file.replace('.svg', '');
