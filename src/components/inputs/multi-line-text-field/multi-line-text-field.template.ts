@@ -1,0 +1,51 @@
+import { html, nothing, TemplateResult } from 'lit';
+import type { NLDDMultiLineTextField } from './multi-line-text-field.js';
+import './../../content/icon/icon.js';
+
+function renderValidationIcon(component: NLDDMultiLineTextField): TemplateResult | typeof nothing {
+	if (component.invalid) {
+		return html`
+			<div class="multi-line-text-field__validation-icon-area">
+				<nldd-icon class="multi-line-text-field__validation-icon"
+					name="invalid"
+					aria-hidden="true"
+				></nldd-icon>
+			</div>
+		`;
+	}
+	if (component.valid) {
+		return html`
+			<div class="multi-line-text-field__validation-icon-area">
+				<nldd-icon class="multi-line-text-field__validation-icon"
+					name="valid"
+					aria-hidden="true"
+				></nldd-icon>
+			</div>
+		`;
+	}
+	return nothing;
+}
+
+export function multiLineTextFieldTemplate(component: NLDDMultiLineTextField): TemplateResult {
+	return html`
+		<div class="multi-line-text-field">
+			<textarea class="multi-line-text-field__input"
+				id=${component.inputId || nothing}
+				rows=${component.rows}
+				.value=${component.value}
+				placeholder=${component.placeholder || nothing}
+				?disabled=${component.disabled}
+				?readonly=${component.readonly}
+				?required=${component.required}
+				name=${component.name || nothing}
+				autocomplete=${component.autocomplete || nothing}
+				aria-label=${component.accessibleLabel || nothing}
+				aria-describedby=${component.errorMessageIds || nothing}
+				aria-invalid=${component.invalid ? 'true' : nothing}
+				@input=${component._handleInput}
+				@change=${component._handleChange}
+			></textarea>
+			${renderValidationIcon(component)}
+		</div>
+	`;
+}
