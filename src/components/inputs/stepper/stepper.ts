@@ -81,7 +81,7 @@ export class NLDDStepper extends LitElement {
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state !== 'string') return;
 		const parsed = parseFloat(state);
-		if (!isNaN(parsed)) this.value = parsed;
+		if (!isNaN(parsed)) this.value = Math.max(this.min, Math.min(this.max, parsed));
 	}
 
 	// — i18n —————————————————————————————————————————————————————————————————

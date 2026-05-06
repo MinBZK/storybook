@@ -161,14 +161,14 @@ describe('nldd-multi-line-text-field', () => {
 		expect(ml.value).toBe('Standaard');
 	});
 
-	it('past inline host width toe als width property gezet is', async () => {
+	it('applies inline host width when the width property is set', async () => {
 		el = await fixture('<nldd-multi-line-text-field width="240px"></nldd-multi-line-text-field>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('width')).toBe('240px');
 		expect((el as HTMLElement).style.width).toBe('240px');
 	});
 
-	it('wist inline textarea dimensies wanneer resize op "auto" wordt gezet', async () => {
+	it('clears inline textarea dimensions when resize is set to "auto"', async () => {
 		el = await fixture('<nldd-multi-line-text-field resize="vertical"></nldd-multi-line-text-field>');
 		await waitForUpdate(el);
 		const textarea = el.shadowRoot!.querySelector('textarea')!;
@@ -181,7 +181,7 @@ describe('nldd-multi-line-text-field', () => {
 		expect(textarea.style.width).toBe('');
 	});
 
-	it('verwijdert inline host width als width leeg wordt gezet', async () => {
+	it('removes inline host width when width is set to empty', async () => {
 		el = await fixture('<nldd-multi-line-text-field width="240px"></nldd-multi-line-text-field>');
 		await waitForUpdate(el);
 		(el as any).width = '';

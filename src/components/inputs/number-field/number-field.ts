@@ -123,7 +123,7 @@ export class NLDDNumberField extends LitElement {
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (typeof state !== 'string') return;
 		const parsed = parseFloat(state);
-		if (!isNaN(parsed)) this.value = parsed;
+		if (!isNaN(parsed)) this.value = this._clamp(parsed);
 	}
 
 	// — i18n —————————————————————————————————————————————————————————————————
