@@ -14,17 +14,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const iconsDir = resolve(__dirname, '../src/components/content/icon/icons');
 const outputFile = resolve(__dirname, '../src/components/content/icon/icon-registry.ts');
 
-const svgFiles = readdirSync(iconsDir)
+const iconNames = readdirSync(iconsDir)
 	.filter(f => f.endsWith('.svg'))
-	.sort((a, b) => {
-		const nameA = a.slice(0, -4);
-		const nameB = b.slice(0, -4);
-		return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
-	});
+	.map(f => f.slice(0, -4))
+	.sort();
 
-const entries = svgFiles.map(file => {
-	const name = file.replace('.svg', '');
-	const svg = readFileSync(resolve(iconsDir, file), 'utf-8').trim();
+const entries = iconNames.map(name => {
+	const svg = readFileSync(resolve(iconsDir, `${name}.svg`), 'utf-8').trim();
 	return `\t['${name}', ${JSON.stringify(svg)}]`;
 });
 
@@ -36,4 +32,4 @@ ${entries.join(',\n')},
 `;
 
 writeFileSync(outputFile, output, 'utf-8');
-console.log(`Generated icon registry with ${svgFiles.length} icons → ${outputFile}`);
+console.log(`Generated icon registry with ${iconNames.length} icons → ${outputFile}`);

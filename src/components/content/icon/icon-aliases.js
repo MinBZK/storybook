@@ -275,6 +275,9 @@ export const aliases = {
 	'cli': 'terminal',
 	'console': 'terminal',
 
+	// timer
+	'countdown': 'timer',
+
 	// trash
 	'delete': 'trash',
 };
