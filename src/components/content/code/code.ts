@@ -64,7 +64,12 @@ function loadGrammar(language: string): Promise<unknown> | undefined {
 	if (!loader) return undefined;
 	let pending = grammarLoads.get(language);
 	if (!pending) {
-		pending = loader();
+		// Drop the cache entry on failure so a subsequent attempt can retry
+		// the import (e.g. transient chunk-load failure on a flaky network).
+		pending = loader().catch((err) => {
+			grammarLoads.delete(language);
+			throw err;
+		});
 		grammarLoads.set(language, pending);
 	}
 	return pending;

@@ -22,7 +22,6 @@ export const buttonGroupStyles = css`
 
 	.button-group {
 		display: flex;
-		justify-content: center;
 	}
 
 
