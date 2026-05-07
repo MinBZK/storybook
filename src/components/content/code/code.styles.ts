@@ -57,39 +57,10 @@ export const codeStyles = css`
 
 	/* # Tokens (Prism)
 	 *
-	 * Component-level token theme — Solarized-inspired, mapped to
-	 * descriptive DS palettes. These are part of the public API: consumers
-	 * can override per-instance to swap colors. Documented in the JSDoc
-	 * of nldd-code (see code.ts). */
-
-	:host {
-		--components-code-token-comment-color: var(--semantics-content-secondary-color);
-		--components-code-token-punctuation-color: var(--_content-color);
-		--components-code-token-keyword-color: var(--primitives-color-donkergeel-650);
-		--components-code-token-string-color: var(--primitives-color-groen-650);
-		--components-code-token-number-color: var(--primitives-color-oranje-650);
-		--components-code-token-boolean-color: var(--primitives-color-oranje-650);
-		--components-code-token-null-color: var(--primitives-color-oranje-650);
-		--components-code-token-function-color: var(--primitives-color-lintblauw-650);
-		--components-code-token-class-color: var(--primitives-color-donkergeel-650);
-		--components-code-token-builtin-color: var(--primitives-color-donkergeel-650);
-		--components-code-token-tag-color: var(--primitives-color-groen-650);
-		--components-code-token-attr-name-color: var(--primitives-color-lintblauw-650);
-		--components-code-token-attr-value-color: var(--primitives-color-mintgroen-650);
-		--components-code-token-property-color: var(--primitives-color-lintblauw-650);
-		--components-code-token-selector-color: var(--primitives-color-donkergeel-650);
-		--components-code-token-atrule-color: var(--primitives-color-groen-650);
-		--components-code-token-regex-color: var(--primitives-color-rood-650);
-		--components-code-token-url-color: var(--primitives-color-mintgroen-650);
-		--components-code-token-operator-color: var(--primitives-color-groen-650);
-		--components-code-token-constant-color: var(--primitives-color-oranje-650);
-		--components-code-token-deleted-color: var(--primitives-color-rood-650);
-		--components-code-token-inserted-color: var(--primitives-color-groen-650);
-		--components-code-token-important-color: var(--primitives-color-rood-650);
-		--components-code-token-symbol-color: var(--primitives-color-violet-650);
-		--components-code-token-entity-color: var(--primitives-color-paars-650);
-		--components-code-token-variable-color: var(--primitives-color-lintblauw-650);
-	}
+	 * Token theme — Solarized-inspired, mapped to descriptive DS palettes.
+	 * Defaults defined in settings.css under --components-code-token-*;
+	 * consumers can override per-instance to swap colors. Documented in
+	 * the JSDoc of nldd-code (see code.ts). */
 
 	.token.comment,
 	.token.prolog,

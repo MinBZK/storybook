@@ -1095,6 +1095,39 @@
 	--components-keyboard-shortcut-corner-radius: var(--primitives-corner-radius-xs);
 	--components-keyboard-shortcut-separator-color: var(--semantics-content-secondary-color);
 
+	/* ## Code
+
+	   Token colors used by nldd-code's Prism syntax highlighting.
+	   Solarized-inspired, mapped to descriptive DS palettes. Consumers
+	   can override per-instance on `nldd-code` to swap the theme. */
+
+	--components-code-token-comment-color: var(--semantics-content-secondary-color);
+	--components-code-token-punctuation-color: var(--semantics-content-color);
+	--components-code-token-keyword-color: var(--primitives-color-donkergeel-650);
+	--components-code-token-string-color: var(--primitives-color-groen-650);
+	--components-code-token-number-color: var(--primitives-color-oranje-650);
+	--components-code-token-boolean-color: var(--primitives-color-oranje-650);
+	--components-code-token-null-color: var(--primitives-color-oranje-650);
+	--components-code-token-function-color: var(--primitives-color-lintblauw-650);
+	--components-code-token-class-color: var(--primitives-color-donkergeel-650);
+	--components-code-token-builtin-color: var(--primitives-color-donkergeel-650);
+	--components-code-token-tag-color: var(--primitives-color-groen-650);
+	--components-code-token-attr-name-color: var(--primitives-color-lintblauw-650);
+	--components-code-token-attr-value-color: var(--primitives-color-mintgroen-650);
+	--components-code-token-property-color: var(--primitives-color-lintblauw-650);
+	--components-code-token-selector-color: var(--primitives-color-donkergeel-650);
+	--components-code-token-atrule-color: var(--primitives-color-groen-650);
+	--components-code-token-regex-color: var(--primitives-color-rood-650);
+	--components-code-token-url-color: var(--primitives-color-mintgroen-650);
+	--components-code-token-operator-color: var(--primitives-color-groen-650);
+	--components-code-token-constant-color: var(--primitives-color-oranje-650);
+	--components-code-token-deleted-color: var(--primitives-color-rood-650);
+	--components-code-token-inserted-color: var(--primitives-color-groen-650);
+	--components-code-token-important-color: var(--primitives-color-rood-650);
+	--components-code-token-symbol-color: var(--primitives-color-violet-650);
+	--components-code-token-entity-color: var(--primitives-color-paars-650);
+	--components-code-token-variable-color: var(--primitives-color-lintblauw-650);
+
 	/* ## List */
 
 	--components-list-corner-radius: var(--semantics-controls-md-corner-radius);
