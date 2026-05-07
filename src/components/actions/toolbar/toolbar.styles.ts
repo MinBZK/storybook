@@ -6,8 +6,6 @@ export const toolbarStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
-		box-sizing: border-box;
 		--_item-width: auto;
 		--_item-min-width: 0px;
 		--_title-group-min-width: 200px;
@@ -18,6 +16,9 @@ export const toolbarStyles = css`
 		--_center-width: 0px;
 		--_end-width: 0px;
 		--_overflow-button-width: 0px;
+
+		display: block;
+		box-sizing: border-box;
 	}
 
 	:host([hidden]) {

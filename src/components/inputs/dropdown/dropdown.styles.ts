@@ -6,10 +6,11 @@ export const dropdownStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
 		--_xs-picker-icon-size: var(--primitives-space-16);
 		--_sm-picker-icon-size: var(--primitives-space-20);
 		--_md-picker-icon-size: var(--primitives-space-24);
+
+		display: block;
 		-webkit-tap-highlight-color: transparent;
 	}
 

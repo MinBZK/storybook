@@ -6,9 +6,6 @@ export const documentTabBarStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
-		position: relative;
-		isolation: isolate;
 		--_drag-clone-top: 0px;
 		--_drag-clone-left: 0px;
 		--_drag-clone-width: 0px;
@@ -18,6 +15,10 @@ export const documentTabBarStyles = css`
 		--_short-text-threshold: 200px;
 		--_item-min-width: 100px;
 		--_overflow-button-reserve: 52px; /* Used for overflowButtonReserve. Overflow button width + spacing */
+
+		display: block;
+		position: relative;
+		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
 	}
 

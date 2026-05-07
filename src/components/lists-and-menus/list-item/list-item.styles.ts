@@ -6,16 +6,17 @@ export const listItemStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
-		width: 100%;
-		-webkit-tap-highlight-color: transparent;
-		container-type: inline-size;
-		container-name: list-item;
 		--_background-color: transparent;
 		--_z-index-content: 0;
 		--_z-index-focus: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
 		--_focus-outline-offset: 6px;
+
+		display: block;
+		width: 100%;
+		-webkit-tap-highlight-color: transparent;
+		container-type: inline-size;
+		container-name: list-item;
 	}
 
 	:host([hidden]) {

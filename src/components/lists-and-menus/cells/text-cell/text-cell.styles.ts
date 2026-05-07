@@ -6,13 +6,14 @@ export const textCellStyles = css`
 	/* # Host */
 
 	:host {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
 		--_width: auto;
 		--_min-width: 0;
 		--_max-width: none;
 		--_min-height: 0;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 		width: var(--_width);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
@@ -29,7 +30,7 @@ export const textCellStyles = css`
 	:host([width='stretch']),
 	:host(:not([width])) {
 		flex-grow: 1;
-		min-width: 0;
+		flex-shrink: 1;
 	}
 
 	:host([width='fit-content']) {
@@ -41,6 +42,10 @@ export const textCellStyles = css`
 
 	:host([width]:not([width='stretch']):not([width='fit-content'])) {
 		flex-shrink: 0;
+	}
+
+	:host([max-width]) {
+		flex-basis: var(--_max-width);
 	}
 
 

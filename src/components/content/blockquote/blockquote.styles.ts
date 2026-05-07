@@ -12,6 +12,7 @@ export const blockquoteStyles = css`
 		--_spacing: var(--semantics-blockquotes-md-spacing);
 		--_quote-font: var(--semantics-blockquotes-md-quote-font);
 		--_attribution-font: var(--semantics-blockquotes-md-attribution-font);
+
 		display: block;
 		max-width: var(--semantics-blockquotes-max-width);
 	}

@@ -11,8 +11,9 @@ export const sheetStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
 		--_custom-width: initial;
+
+		display: block;
 	}
 
 

@@ -6,8 +6,9 @@ export const textFieldStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
 		--_background-color: var(--semantics-input-fields-background-color);
+
+		display: block;
 		-webkit-tap-highlight-color: transparent;
 	}
 

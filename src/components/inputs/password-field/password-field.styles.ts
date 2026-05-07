@@ -6,9 +6,10 @@ export const passwordFieldStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_z-index-button-focus: 1;
+
+		display: block;
 		-webkit-tap-highlight-color: transparent;
 	}
 

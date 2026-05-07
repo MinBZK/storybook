@@ -9,6 +9,7 @@ export const menuBarItemStyles = css`
 		--_indicator-z-index: 0;
 		--_content-z-index: 1;
 		--_focus-z-index: 1;
+
 		display: inline-block;
 		position: relative;
 		isolation: isolate;
