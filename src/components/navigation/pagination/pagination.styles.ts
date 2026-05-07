@@ -61,9 +61,14 @@ export const paginationStyles = css`
 		text-decoration: none;
 	}
 
-	.pagination__page-button:hover,
 	.pagination__page-button:focus-visible {
 		z-index: 1;
+	}
+
+	@media (hover: hover) {
+		.pagination__page-button:hover {
+			z-index: 1;
+		}
 	}
 
 	.pagination__page-button:focus-visible {
@@ -86,8 +91,10 @@ export const paginationStyles = css`
 		pointer-events: none;
 	}
 
-	.pagination__page-button:hover:not(.is-current)::before {
-		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+	@media (hover: hover) {
+		.pagination__page-button:hover:not(.is-current)::before {
+			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+		}
 	}
 
 	.pagination__page-button.is-current::before {

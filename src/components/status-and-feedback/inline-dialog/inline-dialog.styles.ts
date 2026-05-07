@@ -6,12 +6,12 @@ export const inlineDialogStyles = css`
 	/* # Host */
 
 	:host {
+		--_icon-color: var(--semantics-content-color);
+
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-grow: 1;
-
-		--_icon-color: var(--semantics-content-color);
 	}
 
 	:host([hidden]) {
@@ -19,7 +19,7 @@ export const inlineDialogStyles = css`
 	}
 
 	:host([variant='alert']) {
-		--_icon-color: var(--primitives-color-warning-350);
+		--_icon-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
 	}
 
 

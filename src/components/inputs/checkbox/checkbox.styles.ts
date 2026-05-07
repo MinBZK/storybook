@@ -59,15 +59,17 @@ export const checkboxStyles = css`
 
 	/* # Hover */
 
-	.checkbox__input:hover:not(:disabled) ~ .checkbox__box {
-		border-color: var(--components-checkbox-is-hovered-border-color);
-	}
+	@media (hover: hover) {
+		.checkbox__input:hover:not(:disabled) ~ .checkbox__box {
+			border-color: var(--components-checkbox-is-hovered-border-color);
+		}
 
-	.checkbox__input:checked:hover:not(:disabled) ~ .checkbox__box,
-	.checkbox__input:indeterminate:hover:not(:disabled) ~ .checkbox__box {
-		border-color: var(--components-checkbox-is-selected-is-hovered-border-color);
-		background-color: var(--components-checkbox-is-selected-is-hovered-background-color);
-		color: var(--components-checkbox-is-selected-is-hovered-icon-color);
+		.checkbox__input:checked:hover:not(:disabled) ~ .checkbox__box,
+		.checkbox__input:indeterminate:hover:not(:disabled) ~ .checkbox__box {
+			border-color: var(--components-checkbox-is-selected-is-hovered-border-color);
+			background-color: var(--components-checkbox-is-selected-is-hovered-background-color);
+			color: var(--components-checkbox-is-selected-is-hovered-icon-color);
+		}
 	}
 
 

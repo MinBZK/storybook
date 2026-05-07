@@ -11,6 +11,10 @@
  * When `collapse-anchor` is set, the `is-compact` class is automatically applied
  * as soon as the top of the anchor element reaches the top of the scroll container.
  *
+ * Without `collapse-anchor` the bar takes a static state: compact when `text`
+ * is set (so the title shows in the title-group), non-compact otherwise (so
+ * the `back-text` button stays visible).
+ *
  * @slot toolbar - Optional buttons to the left of the dismiss button
  *
  * @fires back    - Fired when the back button is clicked (not fired when back-href is set)
@@ -58,10 +62,7 @@ export class NLDDTopTitleBar extends LitElement {
 		super.connectedCallback();
 		this._connectPage();
 		this._connectAnchor();
-		// Without a collapse-anchor there is no scroll trigger — always compact
-		if (!this.collapseAnchor) {
-			this.classList.add('is-compact');
-		}
+		this._updateAutoCompact();
 	}
 
 	override disconnectedCallback(): void {
@@ -74,10 +75,21 @@ export class NLDDTopTitleBar extends LitElement {
 			this._teardownAnchor();
 			if (this.collapseAnchor) {
 				this._connectAnchor();
-			} else {
-				this.classList.add('is-compact');
 			}
+			this._updateAutoCompact();
+		} else if (changed.has('text')) {
+			this._updateAutoCompact();
 		}
+	}
+
+	// Without a scroll anchor the bar can't toggle compact state on scroll,
+	// so we settle on a static state. With a `text` value we auto-compact
+	// (so the title shows in the title-group); without `text` we stay
+	// non-compact so the `back-text` button is visible. With an anchor the
+	// scroll listener owns the class — this method is a no-op.
+	private _updateAutoCompact(): void {
+		if (this.collapseAnchor) return;
+		this.classList.toggle('is-compact', Boolean(this.text));
 	}
 
 	private _connectPage(): void {

@@ -75,17 +75,19 @@ export const radioButtonStyles = css`
 
 	/* # Hover */
 
-	.radio-button__input:hover:not(:disabled) ~ .radio-button__outer-shape {
-		border-color: var(--components-radio-button-is-hovered-border-color);
-	}
+	@media (hover: hover) {
+		.radio-button__input:hover:not(:disabled) ~ .radio-button__outer-shape {
+			border-color: var(--components-radio-button-is-hovered-border-color);
+		}
 
-	.radio-button__input:checked:hover:not(:disabled) ~ .radio-button__outer-shape {
-		border-color: var(--components-radio-button-is-selected-is-hovered-border-color);
-		background-color: var(--components-radio-button-is-selected-is-hovered-background-color);
-	}
+		.radio-button__input:checked:hover:not(:disabled) ~ .radio-button__outer-shape {
+			border-color: var(--components-radio-button-is-selected-is-hovered-border-color);
+			background-color: var(--components-radio-button-is-selected-is-hovered-background-color);
+		}
 
-	.radio-button__input:checked:hover:not(:disabled) ~ .radio-button__outer-shape .radio-button__inner-shape {
-		border-color: var(--components-radio-button-is-selected-is-hovered-inner-shape-border-color);
+		.radio-button__input:checked:hover:not(:disabled) ~ .radio-button__outer-shape .radio-button__inner-shape {
+			border-color: var(--components-radio-button-is-selected-is-hovered-inner-shape-border-color);
+		}
 	}
 
 

@@ -207,8 +207,10 @@ export const segmentedControlItemStyles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 	}
 
-	:host(:not([selected])) .segmented-control__item-label:hover::before {
-		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+	@media (hover: hover) {
+		:host(:not([selected])) .segmented-control__item-label:hover::before {
+			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+		}
 	}
 
 

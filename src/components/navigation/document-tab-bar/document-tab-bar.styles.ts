@@ -253,8 +253,10 @@ export const documentTabBarItemStyles = css`
 		text-decoration: none;
 	}
 
-	.document-tab-bar__item-tab:hover {
-		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+	@media (hover: hover) {
+		.document-tab-bar__item-tab:hover {
+			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+		}
 	}
 
 	.document-tab-bar__item-tab:active {
@@ -265,8 +267,10 @@ export const documentTabBarItemStyles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 	}
 
-	:host([selected]) .document-tab-bar__item-tab:hover {
-		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
+	@media (hover: hover) {
+		:host([selected]) .document-tab-bar__item-tab:hover {
+			background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
+		}
 	}
 
 	/* ## Focus */
@@ -376,8 +380,10 @@ export const documentTabBarItemStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 	}
 
-	.document-tab-bar__item-dismiss-button:hover {
-		background-color: var(--primitives-color-neutral-150);
+	@media (hover: hover) {
+		.document-tab-bar__item-dismiss-button:hover {
+			background-color: var(--primitives-color-neutral-150);
+		}
 	}
 
 	.document-tab-bar__item-dismiss-button:active {
@@ -388,8 +394,10 @@ export const documentTabBarItemStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
-	:host([selected]) .document-tab-bar__item-dismiss-button:hover {
-		background-color: var(--primitives-color-accent-650);
+	@media (hover: hover) {
+		:host([selected]) .document-tab-bar__item-dismiss-button:hover {
+			background-color: var(--primitives-color-accent-650);
+		}
 	}
 
 	:host([selected]) .document-tab-bar__item-dismiss-button:active {

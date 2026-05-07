@@ -154,8 +154,10 @@ export const tabBarItemStyles = css`
 		pointer-events: none;
 	}
 
-	.tab-bar__item:hover::before {
-		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+	@media (hover: hover) {
+		.tab-bar__item:hover::before {
+			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+		}
 	}
 
 	:host([selected]) .tab-bar__item::before {

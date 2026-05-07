@@ -77,9 +77,11 @@ export const tokenStyles = css`
 
 	/* ## Hover — menu */
 
-	:host([control="menu"]) .token:hover:not(:disabled) {
-		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+	@media (hover: hover) {
+		:host([control="menu"]) .token:hover:not(:disabled) {
+			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+		}
 	}
 
 	/* ## Open — menu */
@@ -89,9 +91,11 @@ export const tokenStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
-	:host([open]) .token:hover:not(:disabled) {
-		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+	@media (hover: hover) {
+		:host([open]) .token:hover:not(:disabled) {
+			background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
+		}
 	}
 
 	/* ## Focus — menu */

@@ -193,6 +193,26 @@ describe('nldd-top-title-bar – is-compact', () => {
 		expect(el.classList.contains('is-compact')).toBe(true);
 	});
 
+	it('does not auto-compact when neither collapse-anchor nor text is set', async () => {
+		el = await fixture<NLDDTopTitleBar>('<nldd-top-title-bar back-text="Terug"></nldd-top-title-bar>');
+		await waitForUpdate(el);
+		expect(el.classList.contains('is-compact')).toBe(false);
+	});
+
+	it('toggles is-compact when text changes while no collapse-anchor is set', async () => {
+		el = await fixture<NLDDTopTitleBar>('<nldd-top-title-bar back-text="Terug"></nldd-top-title-bar>');
+		await waitForUpdate(el);
+		expect(el.classList.contains('is-compact')).toBe(false);
+
+		el.text = 'Titel';
+		await waitForUpdate(el);
+		expect(el.classList.contains('is-compact')).toBe(true);
+
+		el.text = '';
+		await waitForUpdate(el);
+		expect(el.classList.contains('is-compact')).toBe(false);
+	});
+
 	it('stores the anchor element when collapse-anchor id matches', async () => {
 		const container = await fixture<HTMLElement>(`
 			<div>
