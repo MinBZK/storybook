@@ -89,25 +89,28 @@ export class NLDDCodeEditor extends LitElement {
 	@query('.code-editor__input')
 	private _textarea!: HTMLTextAreaElement;
 
+	private _accessibleLabelWarned = false;
+
 	override firstUpdated(): void {
 		this._initialValue = this.value;
-		// Always warn — production sites without an accessible label fail
-		// WCAG SC 4.1.2 silently otherwise. Cheaper than a runtime throw,
-		// which would risk breaking pages that rely on a parent
-		// nldd-form-field setting input-id slightly later in the lifecycle.
-		if (!this.accessibleLabel && !this.inputId) {
-			console.warn('<nldd-code-editor>: No accessible-label or input-id provided. Use nldd-form-field for labeled usage, or set accessible-label for screen reader accessibility (WCAG SC 4.1.2).');
-		}
 	}
 
 	override updated(changed: PropertyValues): void {
-		if (changed.has('resize') && this.resize === 'auto' && this._textarea) {
-			this._textarea.style.width = '';
-			this._textarea.style.height = '';
-		}
 		if (changed.has('value')) {
 			this._internals.setFormValue(this.value);
 		}
+		this._checkAccessibleLabel();
+	}
+
+	/* Ran from updated(), not firstUpdated(): a parent nldd-form-field sets
+	 * input-id slightly after our first render, so checking earlier triggers
+	 * a spurious warning for the standard form-field usage. We re-check on
+	 * every update and warn once if the missing label is still missing. */
+	private _checkAccessibleLabel(): void {
+		if (this._accessibleLabelWarned) return;
+		if (this.accessibleLabel || this.inputId) return;
+		this._accessibleLabelWarned = true;
+		console.warn('<nldd-code-editor>: No accessible-label or input-id provided. Use nldd-form-field for labeled usage, or set accessible-label for screen reader accessibility (WCAG SC 4.1.2).');
 	}
 
 	formResetCallback(): void {

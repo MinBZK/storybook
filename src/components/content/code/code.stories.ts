@@ -10,7 +10,7 @@ export default {
 			file: 'src/components/content/code/code.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
-		status: { type: 'stable' },
+		status: { type: 'beta' },
 	},
 };
 

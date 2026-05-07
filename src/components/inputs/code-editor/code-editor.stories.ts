@@ -10,7 +10,7 @@ export default {
 			file: 'src/components/inputs/code-editor/code-editor.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
-		status: { type: 'stable' },
+		status: { type: 'beta' },
 	},
 	args: {
 		value: '',

@@ -12,10 +12,11 @@
  * than wrapping.
  *
  * ## Syntax highlighting
- * Set `language` to one of the bundled grammars (yaml, json, javascript,
+ * Set `language` to one of the supported grammars (yaml, json, javascript,
  * typescript, css, html, bash, markdown) to highlight the slot content
  * with Prism. Without `language` the slot content is rendered raw, no
- * highlighting applied.
+ * highlighting applied. Grammars are loaded lazily on first use, so a
+ * page that never sets `language` ships zero grammar code.
  *
  * ### Theming
  * Token colors are exposed as `--components-code-token-*` custom
@@ -38,16 +39,36 @@
 import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import Prism from 'prismjs';
-import 'prismjs/components/prism-yaml.js';
-import 'prismjs/components/prism-json.js';
-import 'prismjs/components/prism-javascript.js';
-import 'prismjs/components/prism-typescript.js';
-import 'prismjs/components/prism-css.js';
-import 'prismjs/components/prism-markup.js'; // covers html/xml/svg
-import 'prismjs/components/prism-bash.js';
-import 'prismjs/components/prism-markdown.js';
 import { codeStyles } from './code.styles.js';
 import { codeTemplate } from './code.template.js';
+
+/* Map our public language names to Prism grammar loaders. `html` shares
+ * the markup grammar (covers html/xml/svg). Static `import()` calls let
+ * the bundler emit one chunk per file, so consumers only download
+ * grammars they actually render. */
+const GRAMMAR_LOADERS: Record<string, () => Promise<unknown>> = {
+	yaml: () => import('prismjs/components/prism-yaml.js'),
+	json: () => import('prismjs/components/prism-json.js'),
+	javascript: () => import('prismjs/components/prism-javascript.js'),
+	typescript: () => import('prismjs/components/prism-typescript.js'),
+	css: () => import('prismjs/components/prism-css.js'),
+	html: () => import('prismjs/components/prism-markup.js'),
+	bash: () => import('prismjs/components/prism-bash.js'),
+	markdown: () => import('prismjs/components/prism-markdown.js'),
+};
+
+const grammarLoads = new Map<string, Promise<unknown>>();
+
+function loadGrammar(language: string): Promise<unknown> | undefined {
+	const loader = GRAMMAR_LOADERS[language];
+	if (!loader) return undefined;
+	let pending = grammarLoads.get(language);
+	if (!pending) {
+		pending = loader();
+		grammarLoads.set(language, pending);
+	}
+	return pending;
+}
 
 @customElement('nldd-code')
 export class NLDDCode extends LitElement {
@@ -62,6 +83,8 @@ export class NLDDCode extends LitElement {
 	@state()
 	_highlightedHtml = '';
 
+	private _highlightPending: Promise<void> = Promise.resolve();
+
 	override render() {
 		return codeTemplate(this);
 	}
@@ -74,12 +97,35 @@ export class NLDDCode extends LitElement {
 		if (changed.has('language')) this._refreshHighlight();
 	}
 
+	/* Lazy grammar loading is async; surface the in-flight highlight
+	 * through updateComplete so consumers (and tests) can `await
+	 * el.updateComplete` and see the final highlighted output. */
+	override async getUpdateComplete(): Promise<boolean> {
+		const result = await super.getUpdateComplete();
+		await this._highlightPending;
+		return result;
+	}
+
 	private _refreshHighlight(slot?: HTMLSlotElement) {
+		this._highlightPending = this._runHighlight(slot);
+	}
+
+	private async _runHighlight(slot?: HTMLSlotElement) {
 		if (!this.language) {
 			this._highlightedHtml = '';
 			return;
 		}
-		const grammar = Prism.languages[this.language];
+		const language = this.language;
+		if (!Prism.languages[language]) {
+			const pending = loadGrammar(language);
+			if (!pending) {
+				this._highlightedHtml = '';
+				return;
+			}
+			await pending;
+			if (this.language !== language) return;
+		}
+		const grammar = Prism.languages[language];
 		if (!grammar) {
 			this._highlightedHtml = '';
 			return;
@@ -90,7 +136,7 @@ export class NLDDCode extends LitElement {
 			.assignedNodes({ flatten: true })
 			.map((n) => n.textContent ?? '')
 			.join('');
-		this._highlightedHtml = Prism.highlight(text, grammar, this.language);
+		this._highlightedHtml = Prism.highlight(text, grammar, language);
 	}
 }
 
