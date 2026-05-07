@@ -14,6 +14,7 @@ export const pageStyles = css`
 		height: 100%;
 		overflow-y: auto;
 		overflow-x: hidden;
+		overscroll-behavior: contain;
 		background-color: var(--_background-color);
 	}
 
@@ -96,6 +97,7 @@ export const pageStyles = css`
 	:host([sticky-header]) .page__scroll {
 		overflow-y: auto;
 		overflow-x: hidden;
+		overscroll-behavior: contain;
 	}
 
 
