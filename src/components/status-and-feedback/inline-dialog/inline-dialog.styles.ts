@@ -6,6 +6,7 @@ export const inlineDialogStyles = css`
 	/* # Host */
 
 	:host {
+		--_icon-size: var(--primitives-space-48);
 		--_icon-color: var(--semantics-content-color);
 
 		display: flex;
@@ -41,8 +42,8 @@ export const inlineDialogStyles = css`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--primitives-space-48);
-		height: var(--primitives-space-48);
+		width: var(--_icon-size);
+		height: var(--_icon-size);
 		color: var(--_icon-color);
 		flex-shrink: 0;
 	}
