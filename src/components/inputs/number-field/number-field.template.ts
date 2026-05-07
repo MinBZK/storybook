@@ -19,6 +19,7 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 						size=${iconButtonSize}
 						icon="minus"
 						text=${component._t('components.number-field.decrement-action')}
+						hide-tooltip
 						?disabled=${component.disabled || !canDecrease}
 						@click=${component._handleDecrease}
 					></nldd-icon-button>
@@ -44,6 +45,7 @@ export function numberFieldTemplate(component: NLDDNumberField): TemplateResult 
 						size=${iconButtonSize}
 						icon="plus"
 						text=${component._t('components.number-field.increment-action')}
+						hide-tooltip
 						?disabled=${component.disabled || !canIncrease}
 						@click=${component._handleIncrease}
 					></nldd-icon-button>

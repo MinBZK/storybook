@@ -6,15 +6,16 @@ export const listStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
-		position: relative;
-		isolation: isolate;
 		--_drag-clone-top: 0px;
 		--_drag-clone-left: 0px;
 		--_drag-clone-width: 0px;
 		--_drag-clone-height: 0px;
 		--_drag-clone-opacity: 0.95;
 		--_drag-clone-z-index: 100;
+
+		display: block;
+		position: relative;
+		isolation: isolate;
 	}
 
 

@@ -25,6 +25,14 @@ export default {
 		},
 	},
 	argTypes: {
+		variant: {
+			control: 'select',
+			options: ['neutral-tinted', 'secondary', 'accent-filled', 'primary'],
+			description: 'Button variant',
+			table: {
+				defaultValue: { summary: 'neutral-tinted' },
+			},
+		},
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
@@ -46,6 +54,7 @@ export default {
 		},
 	},
 	args: {
+		variant: 'neutral-tinted',
 		size: 'md',
 		text: 'Opslaan',
 		disabled: false,
@@ -59,10 +68,11 @@ const menuItems = html`
 	<nldd-menu-item text="Verwijderen" @select=${action('select: delete')}></nldd-menu-item>
 `;
 
-const Template = ({ size, text, disabled }: Record<string, any>) => html`
+const Template = ({ size, variant, text, disabled }: Record<string, any>) => html`
 	<nldd-split-button
 		text=${text}
 		size=${size}
+		variant=${variant}
 		?disabled=${disabled}
 		@action-click=${action('action-click')}
 		@menu-click=${action('menu-click')}
@@ -72,6 +82,19 @@ const Template = ({ size, text, disabled }: Record<string, any>) => html`
 export const Default = {
 	render: Template,
 	args: {},
+};
+
+// All variants overview
+export const Variants = {
+	render: () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-split-button text="Opslaan" variant="neutral-tinted">${menuItems}</nldd-split-button>
+		<nldd-split-button text="Opslaan" variant="accent-filled">${menuItems}</nldd-split-button>
+	</div>
+`,
+	parameters: {
+		controls: { disable: true },
+	},
 };
 
 // All sizes overview

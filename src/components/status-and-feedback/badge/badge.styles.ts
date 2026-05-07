@@ -15,6 +15,7 @@ export const badgeStyles = css`
 		--_icon-size: var(--primitives-space-14);
 		--_icon-offset-correction: var(--primitives-space-1);
 		--_dot-size: var(--primitives-space-10);
+
 		display: inline-flex;
 		vertical-align: middle;
 	}

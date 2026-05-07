@@ -202,8 +202,10 @@ export const formFieldHelpTextStyles = css`
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
-	::slotted(a:hover) {
-		color: var(--semantics-links-is-hovered-color);
+	@media (hover: hover) {
+		::slotted(a:hover) {
+			color: var(--semantics-links-is-hovered-color);
+		}
 	}
 
 	::slotted(a:active) {
@@ -257,8 +259,10 @@ export const formFieldErrorTextStyles = css`
 		border-radius: var(--primitives-corner-radius-xxs);
 	}
 
-	::slotted(a:hover) {
-		color: var(--semantics-links-is-hovered-color);
+	@media (hover: hover) {
+		::slotted(a:hover) {
+			color: var(--semantics-links-is-hovered-color);
+		}
 	}
 
 	::slotted(a:active) {

@@ -14,6 +14,13 @@
  * blend with the app instead of revealing the user-agent's default white.
  * Cleared when the app-view disconnects.
  *
+ * ## Overscroll
+ * `overscroll-behavior: none` is set on `document.documentElement` and
+ * `document.body` while the app-view is connected. Combined with the
+ * `overscroll-behavior: contain` on `nldd-page`'s scroll target, this
+ * prevents iOS rubber-band on the viewport when scroll gestures land
+ * outside an `nldd-page` (e.g. on a top-bar). Cleared on last disconnect.
+ *
  * @element nldd-app-view
  *
  * @attr {'default'|'tinted'} background - Background color (cascades to descendants)
@@ -52,6 +59,8 @@ export class NLDDAppView extends LitElement {
 		super.connectedCallback();
 		_connectedStack.push(this);
 		this._writeBodyBackground();
+		document.documentElement.style.overscrollBehavior = 'none';
+		document.body.style.overscrollBehavior = 'none';
 	}
 
 	override disconnectedCallback(): void {
@@ -62,10 +71,13 @@ export class NLDDAppView extends LitElement {
 		if (owner) {
 			// Re-apply whichever instance is now on top — fixes the case where
 			// a younger instance disconnects first and an older one is still
-			// in the DOM but had its background overwritten.
+			// in the DOM but had its background overwritten. Overscroll value
+			// is the same across instances, no re-apply needed.
 			owner._writeBodyBackground();
 		} else {
 			document.body.style.removeProperty('background-color');
+			document.documentElement.style.removeProperty('overscroll-behavior');
+			document.body.style.removeProperty('overscroll-behavior');
 		}
 	}
 

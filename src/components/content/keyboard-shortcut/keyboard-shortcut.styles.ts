@@ -9,6 +9,7 @@ export const keyboardShortcutStyles = css`
 		--_size: var(--components-keyboard-shortcut-md-size);
 		--_inline-padding: var(--primitives-space-6);
 		--_font: var(--primitives-font-body-xs-regular-flat);
+
 		display: inline-flex;
 		vertical-align: middle;
 	}

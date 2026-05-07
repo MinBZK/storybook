@@ -61,7 +61,7 @@ export function template(this: NLDDIconButton) {
 		`;
 	};
 
-	if (tooltipText) {
+	if (tooltipText && !this.hideTooltip) {
 		return html`
 			<nldd-tooltip text=${tooltipText}>
 				${renderButton()}

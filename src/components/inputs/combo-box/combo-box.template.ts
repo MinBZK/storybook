@@ -60,6 +60,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 							size=${iconButtonSize}
 							icon="dismiss"
 							text=${component._t('components.combo-box.clear-action')}
+							hide-tooltip
 							?disabled=${component.disabled}
 							@click=${component._handleClear}
 						></nldd-icon-button>
@@ -72,6 +73,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 						size=${iconButtonSize}
 						icon="chevron-down"
 						text=${component._t('components.combo-box.open-menu-action')}
+						hide-tooltip
 						?disabled=${component.disabled}
 						@pointerdown=${component._handlePickerPointerdown}
 						@click=${component._toggleMenu}

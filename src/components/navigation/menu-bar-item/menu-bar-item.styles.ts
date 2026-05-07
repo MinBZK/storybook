@@ -9,6 +9,7 @@ export const menuBarItemStyles = css`
 		--_indicator-z-index: 0;
 		--_content-z-index: 1;
 		--_focus-z-index: 1;
+
 		display: inline-block;
 		position: relative;
 		isolation: isolate;
@@ -60,16 +61,20 @@ export const menuBarItemStyles = css`
 		z-index: var(--_indicator-z-index);
 	}
 
-	.menu-bar-item:hover::before {
-		background-color: var(--components-menu-bar-item-is-hovered-indicator-background-color);
+	@media (hover: hover) {
+		.menu-bar-item:hover::before {
+			background-color: var(--components-menu-bar-item-is-hovered-indicator-background-color);
+		}
 	}
 
 	:host([open]) .menu-bar-item::before {
 		background-color: var(--components-menu-bar-item-is-open-indicator-background-color);
 	}
 
-	:host([open]) .menu-bar-item:hover::before {
-		background-color: var(--components-menu-bar-item-is-hovered-indicator-background-color);
+	@media (hover: hover) {
+		:host([open]) .menu-bar-item:hover::before {
+			background-color: var(--components-menu-bar-item-is-hovered-indicator-background-color);
+		}
 	}
 
 	/* ## Current indicator (::after) */

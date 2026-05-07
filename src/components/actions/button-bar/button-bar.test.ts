@@ -115,6 +115,35 @@ describe('nldd-button-bar – child building & attribute propagation', () => {
 		expect(el.querySelector('nldd-icon-button')!.getAttribute('size')).toBe('sm');
 	});
 
+	it('propagates initial variant to button children', async () => {
+		el = await fixture<NLDDButtonBar>(`
+			<nldd-button-bar variant="accent-filled">
+				<nldd-button text="A"></nldd-button>
+				<nldd-icon-button icon="x" text="Close"></nldd-icon-button>
+			</nldd-button-bar>
+		`);
+		await waitForUpdate(el);
+
+		expect(el.querySelector('nldd-button')!.getAttribute('variant')).toBe('accent-filled');
+		expect(el.querySelector('nldd-icon-button')!.getAttribute('variant')).toBe('accent-filled');
+	});
+
+	it('propagates variant change to children', async () => {
+		el = await fixture<NLDDButtonBar>(`
+			<nldd-button-bar variant="neutral-tinted">
+				<nldd-button text="A"></nldd-button>
+			</nldd-button-bar>
+		`);
+		await waitForUpdate(el);
+
+		expect(el.querySelector('nldd-button')!.getAttribute('variant')).toBe('neutral-tinted');
+
+		el.variant = 'accent-filled';
+		await waitForUpdate(el);
+
+		expect(el.querySelector('nldd-button')!.getAttribute('variant')).toBe('accent-filled');
+	});
+
 	it('propagates size change to children', async () => {
 		el = await fixture<NLDDButtonBar>(`
 			<nldd-button-bar size="md">

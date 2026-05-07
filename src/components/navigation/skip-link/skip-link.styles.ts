@@ -11,6 +11,7 @@ export const skipLinkStyles = css`
 		--_box-shadow: var(--primitives-box-shadows-level-3);
 		--_focus-box-shadow: inset var(--semantics-focus-ring-box-shadow);
 		--_focus-outline-offset: -6px;
+
 		display: block;
 		position: relative;
 	}

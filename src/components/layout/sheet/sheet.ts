@@ -11,6 +11,9 @@
  * @element nldd-sheet
  *
  * @attr {string}  placement        - Sheet position: 'left' | 'right' | 'bottom' (default: 'right')
+ * @attr {boolean} full-height      - Force the sheet to fill the viewport top to bottom. Applies to
+ *                                    bottom sheets and to any sheet on sm viewports (where all
+ *                                    placements collapse to bottom). No effect on side sheets at md+.
  * @attr {boolean} modeless         - Non-modal (no backdrop or focus lock); the sheet is modal by default
  * @attr {string}  accessible-label - Accessible name for the dialog, forwarded as aria-label (default: 'Dialoogvenster')
  * @attr {string}  width            - Custom width for side sheets (left/right) as a CSS length
@@ -41,6 +44,9 @@ export class NLDDSheet extends LitElement {
 
 	@property({ type: String, reflect: true })
 	placement: Placement = 'right';
+
+	@property({ type: Boolean, reflect: true, attribute: 'full-height' })
+	fullHeight = false;
 
 	@property({ type: Boolean, reflect: true })
 	modeless = false;

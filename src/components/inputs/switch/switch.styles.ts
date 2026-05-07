@@ -6,9 +6,6 @@ export const switchStyles = css`
 	/* # Host */
 
 	:host {
-		display: inline-block;
-		position: relative;
-		flex-shrink: 0;
 		--_switch-xs-width: var(--semantics-controls-md-min-size);
 		--_switch-xs-height: var(--semantics-controls-xs-min-size);
 		--_switch-sm-width: var(--semantics-controls-lg-min-size);
@@ -17,6 +14,10 @@ export const switchStyles = css`
 		--_switch-xs-thumb-size: calc(var(--_switch-xs-height) - var(--_switch-padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
 		--_switch-sm-thumb-size: calc(var(--_switch-sm-height) - var(--_switch-padding) * 2 - var(--components-switch-thumb-border-thickness) * 2);
 		--_transition-duration: var(--primitives-transition-duration-fast);
+
+		display: inline-block;
+		position: relative;
+		flex-shrink: 0;
 		-webkit-tap-highlight-color: transparent;
 	}
 

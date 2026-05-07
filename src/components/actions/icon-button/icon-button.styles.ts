@@ -177,11 +177,13 @@ export const iconButtonStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 	}
 
-	:host([variant='neutral-tinted']) .icon-button:hover,
-	:host([variant='secondary']) .icon-button:hover,
-	:host(:not([variant])) .icon-button:hover {
-		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+	@media (hover: hover) {
+		:host([variant='neutral-tinted']) .icon-button:hover,
+		:host([variant='secondary']) .icon-button:hover,
+		:host(:not([variant])) .icon-button:hover {
+			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+		}
 	}
 
 	:host([variant='neutral-tinted']) .icon-button:active,
@@ -198,9 +200,11 @@ export const iconButtonStyles = css`
 		color: var(--semantics-buttons-neutral-transparent-content-color);
 	}
 
-	:host([variant='neutral-transparent']) .icon-button:hover {
-		background-color: transparent;
-		color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
+	@media (hover: hover) {
+		:host([variant='neutral-transparent']) .icon-button:hover {
+			background-color: transparent;
+			color: var(--semantics-buttons-neutral-transparent-is-hovered-content-color);
+		}
 	}
 
 	:host([variant='neutral-transparent']) .icon-button:active {
@@ -215,10 +219,12 @@ export const iconButtonStyles = css`
 		color: var(--semantics-buttons-accent-filled-content-color);
 	}
 
-	:host([variant='accent-filled']) .icon-button:hover,
-	:host([variant='primary']) .icon-button:hover {
-		background-color: var(--semantics-buttons-accent-filled-is-hovered-background-color);
-		color: var(--semantics-buttons-accent-filled-is-hovered-content-color);
+	@media (hover: hover) {
+		:host([variant='accent-filled']) .icon-button:hover,
+		:host([variant='primary']) .icon-button:hover {
+			background-color: var(--semantics-buttons-accent-filled-is-hovered-background-color);
+			color: var(--semantics-buttons-accent-filled-is-hovered-content-color);
+		}
 	}
 
 	:host([variant='accent-filled']) .icon-button:active,
@@ -253,9 +259,11 @@ export const iconButtonStyles = css`
 		padding: calc(var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness));
 	}
 
-	:host([variant='accent-outlined']) .icon-button:hover {
-		border-color: var(--semantics-buttons-accent-outlined-is-hovered-border-color);
-		color: var(--semantics-buttons-accent-outlined-is-hovered-content-color);
+	@media (hover: hover) {
+		:host([variant='accent-outlined']) .icon-button:hover {
+			border-color: var(--semantics-buttons-accent-outlined-is-hovered-border-color);
+			color: var(--semantics-buttons-accent-outlined-is-hovered-content-color);
+		}
 	}
 
 	:host([variant='accent-outlined']) .icon-button:active {
@@ -270,8 +278,10 @@ export const iconButtonStyles = css`
 		color: var(--semantics-buttons-accent-transparent-content-color);
 	}
 
-	:host([variant='accent-transparent']) .icon-button:hover {
-		color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
+	@media (hover: hover) {
+		:host([variant='accent-transparent']) .icon-button:hover {
+			color: var(--semantics-buttons-accent-transparent-is-hovered-content-color);
+		}
 	}
 
 	:host([variant='accent-transparent']) .icon-button:active {
@@ -286,10 +296,12 @@ export const iconButtonStyles = css`
 		color: var(--semantics-buttons-critical-tinted-content-color);
 	}
 
-	:host([variant='critical-tinted']) .icon-button:hover,
-	:host([variant='destructive']) .icon-button:hover {
-		background-color: var(--semantics-buttons-critical-tinted-is-hovered-background-color);
-		color: var(--semantics-buttons-critical-tinted-is-hovered-content-color);
+	@media (hover: hover) {
+		:host([variant='critical-tinted']) .icon-button:hover,
+		:host([variant='destructive']) .icon-button:hover {
+			background-color: var(--semantics-buttons-critical-tinted-is-hovered-background-color);
+			color: var(--semantics-buttons-critical-tinted-is-hovered-content-color);
+		}
 	}
 
 	:host([variant='critical-tinted']) .icon-button:active,

@@ -6,7 +6,6 @@ export const tooltipStyles = css`
 	/* # Host */
 
 	:host {
-		display: contents;
 		--_z-index: 10000;
 		--_show-delay: 700ms;
 		--_show-duration: var(--primitives-transition-duration-fast);
@@ -15,6 +14,8 @@ export const tooltipStyles = css`
 		--_offset: 4; /* px, unitless — read by JS */
 		--_shift-padding: 8; /* px, unitless — read by JS */
 		--_max-width: var(--primitives-area-280);
+
+		display: contents;
 	}
 
 	:host([hidden]) {

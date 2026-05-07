@@ -9,6 +9,12 @@ export default {
 	tags: ['autodocs'],
 
 	argTypes: {
+		variant: {
+			control: 'select',
+			options: ['neutral-tinted', 'secondary', 'accent-filled', 'primary'],
+			description: 'Button bar variant',
+			table: { defaultValue: { summary: 'neutral-tinted' } },
+		},
 		size: {
 			control: 'select',
 			options: ['xs', 'sm', 'md'],
@@ -24,13 +30,30 @@ export default {
 };
 
 export const Default = {
-	args: { size: 'md', disabled: false },
+	args: { variant: 'neutral-tinted', size: 'md', disabled: false },
 	render: (args: Record<string, any>) => html`
-		<nldd-button-bar size=${args.size} ?disabled=${args.disabled}>
+		<nldd-button-bar size=${args.size} variant=${args.variant} ?disabled=${args.disabled}>
 			<nldd-icon-button icon="chevron-left" text="Vorige"></nldd-icon-button>
 			<nldd-button-bar-divider></nldd-button-bar-divider>
 			<nldd-icon-button icon="chevron-right" text="Volgende"></nldd-icon-button>
 		</nldd-button-bar>
+	`,
+};
+
+export const Variants = {
+	render: () => html`
+		<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+			<nldd-button-bar variant="neutral-tinted">
+				<nldd-button text="Bewerk"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-icon-button icon="trash" text="Verwijder"></nldd-icon-button>
+			</nldd-button-bar>
+			<nldd-button-bar variant="accent-filled">
+				<nldd-button text="Bewerk"></nldd-button>
+				<nldd-button-bar-divider></nldd-button-bar-divider>
+				<nldd-icon-button icon="trash" text="Verwijder"></nldd-icon-button>
+			</nldd-button-bar>
+		</div>
 	`,
 };
 
@@ -63,9 +86,9 @@ export const Sizes = {
 };
 
 export const WithoutDivider = {
-	args: { size: 'md', disabled: false },
+	args: { variant: 'neutral-tinted', size: 'md', disabled: false },
 	render: (args: Record<string, any>) => html`
-		<nldd-button-bar size=${args.size} ?disabled=${args.disabled}>
+		<nldd-button-bar size=${args.size} variant=${args.variant} ?disabled=${args.disabled}>
 			<nldd-button text="Cut"></nldd-button>
 			<nldd-button text="Copy"></nldd-button>
 			<nldd-button text="Paste"></nldd-button>

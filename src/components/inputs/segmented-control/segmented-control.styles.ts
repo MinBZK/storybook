@@ -54,15 +54,16 @@ export const segmentedControlItemStyles = css`
 	/* # Host */
 
 	:host {
-		display: flex;
-		min-width: 0;
-		position: relative;
 		--_segmented-control-md-inset-size: var(--primitives-space-4);
 		--_segmented-control-md-gap-size: var(--primitives-space-4);
 		--_segmented-control-md-item-icon-size: var(--primitives-space-24);
 		--_segmented-control-sm-inset-size: var(--primitives-space-3);
 		--_segmented-control-sm-gap-size: var(--primitives-space-2);
 		--_segmented-control-sm-item-icon-size: var(--primitives-space-20);
+
+		display: flex;
+		min-width: 0;
+		position: relative;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -206,8 +207,10 @@ export const segmentedControlItemStyles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 	}
 
-	:host(:not([selected])) .segmented-control__item-label:hover::before {
-		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+	@media (hover: hover) {
+		:host(:not([selected])) .segmented-control__item-label:hover::before {
+			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+		}
 	}
 
 

@@ -100,4 +100,47 @@ describe('nldd-app-view', () => {
 			expect(document.body.style.backgroundColor).toBe('');
 		});
 	});
+
+	describe('overscroll-behavior on documentElement and body', () => {
+		const instances: NLDDAppView[] = [];
+		async function track(html: string): Promise<NLDDAppView> {
+			const el = await fixture<NLDDAppView>(html);
+			instances.push(el);
+			return el;
+		}
+
+		afterEach(() => {
+			while (instances.length > 0) {
+				const inst = instances.pop()!;
+				if (inst.isConnected) cleanup(inst);
+			}
+			document.documentElement.style.removeProperty('overscroll-behavior');
+			document.body.style.removeProperty('overscroll-behavior');
+		});
+
+		it('locks overscroll on connect and clears on last disconnect', async () => {
+			el = await track('<nldd-app-view></nldd-app-view>');
+			await waitForUpdate(el);
+			expect(document.documentElement.style.overscrollBehavior).toBe('none');
+			expect(document.body.style.overscrollBehavior).toBe('none');
+
+			cleanup(el);
+			el = undefined as unknown as NLDDAppView;
+			expect(document.documentElement.style.overscrollBehavior).toBe('');
+			expect(document.body.style.overscrollBehavior).toBe('');
+		});
+
+		it('keeps the lock while another instance is still connected', async () => {
+			const first = await track('<nldd-app-view></nldd-app-view>');
+			await waitForUpdate(first);
+			const second = await track('<nldd-app-view></nldd-app-view>');
+			await waitForUpdate(second);
+
+			cleanup(first);
+			expect(document.body.style.overscrollBehavior).toBe('none');
+
+			cleanup(second);
+			expect(document.body.style.overscrollBehavior).toBe('');
+		});
+	});
 });

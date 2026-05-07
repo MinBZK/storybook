@@ -100,6 +100,14 @@ export default {
 			control: 'text',
 			description: 'Overschrijft de tekst als aria-label en title tooltip voor schermlezer-context. Gebruik als de zichtbare tekst onvoldoende context biedt (bijv. tekst "Toon", accessible-label "Toon wachtwoord"). De tekst blijft zichtbaar in lg formaat.',
 		},
+		hideTooltip: {
+			name: 'hide-tooltip',
+			control: 'boolean',
+			description: 'Onderdrukt de visuele tooltip (aria-label blijft intact). Gebruik wanneer de context al duidelijk is (bv. spin-knoppen in nldd-number-field, chevron in nldd-split-button).',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -119,11 +127,12 @@ export default {
 		href: '',
 		target: '',
 		accessibleLabel: '',
+		hideTooltip: false,
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, fullWidth, expandable, text, icon, type, href, target, accessibleLabel, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, fullWidth, expandable, text, icon, type, href, target, accessibleLabel, hideTooltip, disabled }: Record<string, any>) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}
@@ -136,6 +145,7 @@ const Template = ({ variant, size, fullWidth, expandable, text, icon, type, href
 		target=${target || nothing}
 		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
+		?hide-tooltip=${hideTooltip}
 	></nldd-icon-button>
 `;
 

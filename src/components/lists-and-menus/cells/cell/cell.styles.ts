@@ -6,15 +6,16 @@ export const cellStyles = css`
 	/* # Host */
 
 	:host {
+		--_width: auto;
+		--_min-width: 0;
+		--_max-width: none;
+		--_min-height: 0;
+
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
 		flex-shrink: 0;
 		justify-content: center;
-		--_width: auto;
-		--_min-width: 0;
-		--_max-width: none;
-		--_min-height: 0;
 		width: var(--_width);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
@@ -31,17 +32,21 @@ export const cellStyles = css`
 	:host([width='stretch']) {
 		flex-grow: 1;
 		flex-shrink: 1;
-		min-width: 0;
 	}
 
 	:host([width='fit-content']),
 	:host(:not([width])) {
 		flex-grow: 0;
+		flex-basis: auto;
 		width: fit-content;
 	}
 
 	:host([width]:not([width='stretch']):not([width='fit-content'])) {
 		flex-shrink: 0;
+	}
+
+	:host([max-width]) {
+		flex-basis: var(--_max-width);
 	}
 
 

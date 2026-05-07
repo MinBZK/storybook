@@ -9,10 +9,11 @@ export const modalDialogStyles = css`
 	/* # Host */
 
 	:host {
-		display: contents;
 		--_max-height: 90vh;
 		--_animation-duration: 150ms;
 		--_animation-easing: ease;
+
+		display: contents;
 	}
 
 	:host([hidden]) {

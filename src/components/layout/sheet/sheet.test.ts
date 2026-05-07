@@ -233,6 +233,53 @@ describe('nldd-sheet – placement', () => {
 
 
 /* ============================================================
+   Full-height
+   ============================================================ */
+
+describe('nldd-sheet – full-height', () => {
+	let el: NLDDSheet;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('defaults full-height to false', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
+		await waitForUpdate(el);
+		expect(el.fullHeight).toBe(false);
+		expect(el.hasAttribute('full-height')).toBe(false);
+	});
+
+	it('reflects full-height attribute when set in markup', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" full-height></nldd-sheet>');
+		await waitForUpdate(el);
+		expect(el.fullHeight).toBe(true);
+		expect(el.hasAttribute('full-height')).toBe(true);
+	});
+
+	it('reflects full-height when set via property', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom"></nldd-sheet>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('full-height')).toBe(false);
+
+		el.fullHeight = true;
+		await waitForUpdate(el);
+		expect(el.hasAttribute('full-height')).toBe(true);
+	});
+
+	it('removes full-height attribute when property cleared', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" full-height></nldd-sheet>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('full-height')).toBe(true);
+
+		el.fullHeight = false;
+		await waitForUpdate(el);
+		expect(el.hasAttribute('full-height')).toBe(false);
+	});
+});
+
+
+/* ============================================================
    Slot
    ============================================================ */
 

@@ -54,8 +54,10 @@ export const linkStyles = css`
 		font: var(--primitives-font-body-lg-regular-flat);
 	}
 
-	.link:hover {
-		color: var(--semantics-links-is-hovered-color);
+	@media (hover: hover) {
+		.link:hover {
+			color: var(--semantics-links-is-hovered-color);
+		}
 	}
 
 	.link:active {

@@ -6,16 +6,17 @@ export const listItemStyles = css`
 	/* # Host */
 
 	:host {
-		display: block;
-		width: 100%;
-		-webkit-tap-highlight-color: transparent;
-		container-type: inline-size;
-		container-name: list-item;
 		--_background-color: transparent;
 		--_z-index-content: 0;
 		--_z-index-focus: 1;
 		--_z-index-indicator: calc(var(--_z-index-content) - 1);
 		--_focus-outline-offset: 6px;
+
+		display: block;
+		width: 100%;
+		-webkit-tap-highlight-color: transparent;
+		container-type: inline-size;
+		container-name: list-item;
 	}
 
 	:host([hidden]) {
@@ -130,9 +131,23 @@ export const listItemStyles = css`
 		pointer-events: none;
 	}
 
-	.list-item__action:hover {
-		--_background-color: var(--components-list-item-is-hovered-background-color);
-		--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
+	/* Hover rules only on hover-capable devices: prevents touch-scrolling
+	 * from briefly flashing the hover state on the row under the finger. */
+	@media (hover: hover) {
+		.list-item__action:hover {
+			--_background-color: var(--components-list-item-is-hovered-background-color);
+			--context-cell-content-color: var(--components-list-item-is-hovered-content-color);
+		}
+
+		:host([selected]) .list-item__action:hover {
+			--_background-color: var(--components-list-item-is-selected-background-color);
+			--context-cell-content-color: var(--components-list-item-is-selected-content-color);
+		}
+
+		:host([selected]) .list-item__action:focus:hover {
+			--_background-color: var(--components-list-item-is-highlighted-background-color);
+			--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
+		}
 	}
 
 	:host([selected]) .list-item__action {
@@ -140,17 +155,7 @@ export const listItemStyles = css`
 		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
 	}
 
-	:host([selected]) .list-item__action:hover {
-		--_background-color: var(--components-list-item-is-selected-background-color);
-		--context-cell-content-color: var(--components-list-item-is-selected-content-color);
-	}
-
 	:host([selected]) .list-item__action:focus {
-		--_background-color: var(--components-list-item-is-highlighted-background-color);
-		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
-	}
-
-	:host([selected]) .list-item__action:focus:hover {
 		--_background-color: var(--components-list-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-list-item-is-highlighted-content-color);
 	}

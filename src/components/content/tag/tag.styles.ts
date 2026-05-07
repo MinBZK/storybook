@@ -15,6 +15,7 @@ export const tagStyles = css`
 		--_icon-size: var(--primitives-space-16);
 		--_icon-offset-correction: var(--primitives-space-1);
 		--_corner-radius: var(--components-tag-md-corner-radius);
+
 		display: inline-flex;
 		vertical-align: middle;
 	}

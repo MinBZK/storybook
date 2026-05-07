@@ -14,6 +14,10 @@
  *                                     and title tooltip. Use when the visible text alone lacks context for screen
  *                                     readers (e.g. text "Toon", accessible-label "Toon wachtwoord").
  *                                     The text is still shown visually in lg size regardless.
+ * @attr {boolean} hide-tooltip      - Suppress the visual tooltip while keeping aria-label intact.
+ *                                     Use when the surrounding context already explains the button
+ *                                     (e.g. spin buttons in nldd-number-field, the chevron in
+ *                                     nldd-split-button) — screen readers still get the label.
  * @attr {string}  href              - When set, renders an <a> element instead of <button>
  * @attr {string}  target            - Link target (e.g. '_blank'); only used when href is set
  * @attr {string}  rel               - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
@@ -84,6 +88,10 @@ export class NLDDIconButton extends LitElement {
 	 *  The text is still shown visually in lg size regardless. */
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
+
+	/** Suppress the visual tooltip while keeping aria-label intact. */
+	@property({ type: Boolean, reflect: true, attribute: 'hide-tooltip' })
+	hideTooltip = false;
 
 	/** When set, renders an <a> element instead of <button>. */
 	@property({ type: String, reflect: true })

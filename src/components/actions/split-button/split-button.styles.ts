@@ -81,11 +81,19 @@ export const splitButtonStyles = css`
 
 	/* # Variants */
 
-	/* ## Variant: Neutral Tintend (Default) */
+	/* ## Variant: Neutral Tintend (Default) / Secondary */
 
 	:host([variant="neutral-tinted"]) .split-button,
+	:host([variant="secondary"]) .split-button,
 	:host(:not([variant])) .split-button {
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+	}
+
+	/* ## Variant: Accent Filled / Primary */
+
+	:host([variant="accent-filled"]) .split-button,
+	:host([variant="primary"]) .split-button {
+		background-color: var(--semantics-buttons-accent-filled-background-color);
 	}
 
 
@@ -95,5 +103,10 @@ export const splitButtonStyles = css`
 		width: 1px;
 		flex-shrink: 0;
 		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
+	}
+
+	:host([variant="accent-filled"]) .split-button__divider,
+	:host([variant="primary"]) .split-button__divider {
+		background-color: var(--semantics-buttons-accent-filled-divider-color);
 	}
 `;

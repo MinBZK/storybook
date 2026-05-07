@@ -6,12 +6,13 @@ export const inlineDialogStyles = css`
 	/* # Host */
 
 	:host {
+		--_icon-size: var(--primitives-space-48);
+		--_icon-color: var(--semantics-content-color);
+
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-grow: 1;
-
-		--_icon-color: var(--semantics-content-color);
 	}
 
 	:host([hidden]) {
@@ -19,7 +20,7 @@ export const inlineDialogStyles = css`
 	}
 
 	:host([variant='alert']) {
-		--_icon-color: var(--primitives-color-warning-350);
+		--_icon-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
 	}
 
 
@@ -41,8 +42,8 @@ export const inlineDialogStyles = css`
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--primitives-space-48);
-		height: var(--primitives-space-48);
+		width: var(--_icon-size);
+		height: var(--_icon-size);
 		color: var(--_icon-color);
 		flex-shrink: 0;
 	}

@@ -92,10 +92,12 @@ export const toggleButtonStyles = css`
 
 	/* ## Hover */
 
-	.toggle-button:hover,
-	.toggle-button:has(.toggle-button__input:hover) {
-		background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+	@media (hover: hover) {
+		.toggle-button:hover,
+		.toggle-button:has(.toggle-button__input:hover) {
+			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-hovered-content-color);
+		}
 	}
 
 	/* ## Selected */
@@ -105,10 +107,12 @@ export const toggleButtonStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
-	:host([selected]) .toggle-button:hover,
-	:host([selected]) .toggle-button:has(.toggle-button__input:hover) {
-		background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
+	@media (hover: hover) {
+		:host([selected]) .toggle-button:hover,
+		:host([selected]) .toggle-button:has(.toggle-button__input:hover) {
+			background-color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-selected-is-hovered-content-color);
+		}
 	}
 
 	/* ## Focus */

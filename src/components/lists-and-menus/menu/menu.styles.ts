@@ -6,6 +6,18 @@ export const menuStyles = css`
 	/* # Host */
 
 	:host {
+		--_viewport-margin: 16px;
+		--_menu-width: var(--primitives-area-280);
+		--_menu-max-height: calc(infinity * 1px);
+		--_menu-max-items: 9999;
+		--_menu-item-size: var(--semantics-controls-md-min-size);
+		--_menu-padding: var(--primitives-space-8);
+
+		@media (pointer: fine) {
+			--_menu-item-size: var(--semantics-controls-sm-min-size);
+			--_menu-padding: var(--primitives-space-6);
+		}
+
 		display: block;
 		padding: 0;
 		border: none;
@@ -13,16 +25,6 @@ export const menuStyles = css`
 		margin: 0;
 		position: absolute;
 		overflow: visible;
-		--_viewport-margin: 16px;
-		--_menu-width: var(--primitives-area-280);
-		--_menu-max-height: calc(infinity * 1px);
-		--_menu-max-items: 9999;
-		--_menu-item-size: var(--semantics-controls-md-min-size);
-		--_menu-padding: var(--primitives-space-8);
-		@media (pointer: fine) {
-			--_menu-item-size: var(--semantics-controls-sm-min-size);
-			--_menu-padding: var(--primitives-space-6);
-		}
 		-webkit-tap-highlight-color: transparent;
 	}
 
