@@ -572,6 +572,41 @@
 		var(--primitives-font-family-body)
 	;
 
+	/* Monospace tokens use one font-size step smaller than the matching body
+	   size. Constant character widths in monospace render denser than
+	   proportional fonts, so monospace-md sits visually next to body-md
+	   while using font-size-90 (16px) instead of -100 (18px). */
+	--primitives-font-monospace-md-regular-snug:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-90) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-monospace)
+	;
+	--primitives-font-monospace-md-regular-flat:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-90) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-monospace)
+	;
+	--primitives-font-monospace-sm-regular-snug:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-80) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-monospace)
+	;
+	--primitives-font-monospace-sm-regular-flat:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-80) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-monospace)
+	;
+	--primitives-font-monospace-xs-regular-snug:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-70) / var(--primitives-line-height-snug)
+		var(--primitives-font-family-monospace)
+	;
+	--primitives-font-monospace-xs-regular-flat:
+		var(--primitives-font-weight-body-regular)
+		var(--primitives-font-size-70) / var(--primitives-line-height-flat)
+		var(--primitives-font-family-monospace)
+	;
+
 	--primitives-font-display-1-sm:
 		var(--primitives-font-weight-display-bold)
 		var(--primitives-font-size-700) / var(--primitives-line-height-flat)
@@ -839,7 +874,7 @@
 	--semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
 	--semantics-buttons-neutral-tinted-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-tinted-secondary-content-color: light-dark(var(--primitives-color-neutral-750), var(--primitives-color-neutral-750));
-	--semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-350));
+	--semantics-buttons-neutral-tinted-divider-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-450));
 	--semantics-buttons-neutral-tinted-is-hovered-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
 	--semantics-buttons-neutral-tinted-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
 	--semantics-buttons-neutral-tinted-is-hovered-secondary-content-color: light-dark(var(--primitives-color-neutral-650), var(--primitives-color-neutral-800));
@@ -866,6 +901,7 @@
 	--semantics-buttons-accent-filled-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 	--semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-accent-filled-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-accent-filled-divider-color: light-dark(var(--primitives-color-accent-500), var(--primitives-color-accent-450));
 
 	--semantics-buttons-accent-outlined-border-thickness: var(--primitives-border-width-regular);
 	--semantics-buttons-accent-outlined-border-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));

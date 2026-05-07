@@ -30,8 +30,12 @@ export const tabBarStyles = css`
 	.tab-bar {
 		display: flex;
 		flex-direction: row;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
+	}
+
+	:host([full-width]) .tab-bar {
+		justify-content: center;
 	}
 
 	.tab-bar__items {

@@ -29,6 +29,7 @@ export { NLDDTooltip } from './content/tooltip/tooltip.js';
 export { NLDDBlockquote } from './content/blockquote/blockquote.js';
 export { NLDDTag } from './content/tag/tag.js';
 export { NLDDKeyboardShortcut } from './content/keyboard-shortcut/keyboard-shortcut.js';
+export { NLDDCode } from './content/code/code.js';
 
 
 // # Forms components
@@ -43,6 +44,7 @@ export { NLDDFormSection } from './forms/form-section/form-section.js';
 
 export { NLDDTextField } from './inputs/text-field/text-field.js';
 export { NLDDMultiLineTextField } from './inputs/multi-line-text-field/multi-line-text-field.js';
+export { NLDDCodeEditor } from './inputs/code-editor/code-editor.js';
 export { NLDDPasswordField } from './inputs/password-field/password-field.js';
 export { NLDDSearchField } from './inputs/search-field/search-field.js';
 export { NLDDNumberField } from './inputs/number-field/number-field.js';

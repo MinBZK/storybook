@@ -266,7 +266,7 @@ Per component: pak alleen de keys die je gebruikt en zet ze in deze volgorde. De
 
 ```
 [1. Visueel dominant]
-size, compact, variant, color, background, layout, panes,
+variant, size, compact, color, background, layout, panes,
 iconOnly, responsive, showItemLabels, inspectorAsSheet, sidebarAsSheet, noLogo
 
 [2. Sizing]

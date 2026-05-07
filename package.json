@@ -63,6 +63,10 @@
       "types": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.d.ts",
       "default": "./dist/components/content/keyboard-shortcut/keyboard-shortcut.js"
     },
+    "./code": {
+      "types": "./dist/components/content/code/code.d.ts",
+      "default": "./dist/components/content/code/code.js"
+    },
     "./form": {
       "types": "./dist/components/forms/form/form.d.ts",
       "default": "./dist/components/forms/form/form.js"
@@ -86,6 +90,10 @@
     "./multi-line-text-field": {
       "types": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.d.ts",
       "default": "./dist/components/inputs/multi-line-text-field/multi-line-text-field.js"
+    },
+    "./code-editor": {
+      "types": "./dist/components/inputs/code-editor/code-editor.d.ts",
+      "default": "./dist/components/inputs/code-editor/code-editor.js"
     },
     "./password-field": {
       "types": "./dist/components/inputs/password-field/password-field.d.ts",
@@ -381,6 +389,7 @@
     "@storybook/addon-themes": "^10.3.4",
     "@storybook/addon-vitest": "^10.3.4",
     "@storybook/web-components-vite": "^10.3.4",
+    "@types/prismjs": "^1.26.6",
     "@vitest/browser-playwright": "^4.0.16",
     "@vitest/coverage-v8": "^4.0.16",
     "eslint": "^9.17.0",
@@ -408,6 +417,7 @@
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",
     "@rijkshuisstijl-community/font": "^1.1.2",
-    "lit": "^3.3.1"
+    "lit": "^3.3.1",
+    "prismjs": "^1.30.0"
   }
 }

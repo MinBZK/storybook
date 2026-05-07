@@ -32,7 +32,24 @@ export const buttonBarStyles = css`
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
+	}
+
+
+	/* # Variants */
+
+	/* ## Variant: Neutral Tinted (Default) / Secondary */
+
+	:host([variant="neutral-tinted"]) .button-bar,
+	:host([variant="secondary"]) .button-bar,
+	:host(:not([variant])) .button-bar {
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+	}
+
+	/* ## Variant: Accent Filled / Primary */
+
+	:host([variant="accent-filled"]) .button-bar,
+	:host([variant="primary"]) .button-bar {
+		background-color: var(--semantics-buttons-accent-filled-background-color);
 	}
 
 
@@ -86,6 +103,11 @@ export const buttonBarStyles = css`
 	.button-bar__divider-line {
 		width: var(--semantics-dividers-thickness);
 		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
+	}
+
+	:host([variant="accent-filled"]) .button-bar__divider-line,
+	:host([variant="primary"]) .button-bar__divider-line {
+		background-color: var(--semantics-buttons-accent-filled-divider-color);
 	}
 
 	:host([size="xs"]) .button-bar__divider-line {
