@@ -18,6 +18,7 @@ export function template(this: NLDDSplitButton) {
 				size=${this.size}
 				icon="chevron-down-small"
 				text=${this._t('components.split-button.menu-action')}
+				hide-tooltip
 				?disabled=${this.disabled}
 				aria-haspopup="menu"
 				aria-expanded=${this._hasMenuItems ? String(this._menuIsOpen) : nothing}
