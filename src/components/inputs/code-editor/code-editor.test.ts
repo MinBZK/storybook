@@ -46,4 +46,37 @@ describe('nldd-code-editor', () => {
 		textarea.dispatchEvent(new Event('input'));
 		expect(received).toBe('foo: bar');
 	});
+
+	it('formResetCallback restores the initial value', async () => {
+		const el2 = await fixture<HTMLElement & { formResetCallback: () => void; value: string }>(
+			'<nldd-code-editor accessible-label="Code" value="initial"></nldd-code-editor>',
+		);
+		await waitForUpdate(el2);
+		el2.value = 'edited';
+		await waitForUpdate(el2);
+		expect(el2.value).toBe('edited');
+		el2.formResetCallback();
+		expect(el2.value).toBe('initial');
+		cleanup(el2);
+	});
+
+	it('formStateRestoreCallback applies a string state', async () => {
+		const el2 = await fixture<HTMLElement & { formStateRestoreCallback: (state: unknown) => void; value: string }>(
+			'<nldd-code-editor accessible-label="Code"></nldd-code-editor>',
+		);
+		await waitForUpdate(el2);
+		el2.formStateRestoreCallback('restored');
+		expect(el2.value).toBe('restored');
+		cleanup(el2);
+	});
+
+	it('formStateRestoreCallback ignores non-string state', async () => {
+		const el2 = await fixture<HTMLElement & { formStateRestoreCallback: (state: unknown) => void; value: string }>(
+			'<nldd-code-editor accessible-label="Code" value="kept"></nldd-code-editor>',
+		);
+		await waitForUpdate(el2);
+		el2.formStateRestoreCallback(new FormData());
+		expect(el2.value).toBe('kept');
+		cleanup(el2);
+	});
 });

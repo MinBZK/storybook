@@ -35,4 +35,34 @@ describe('nldd-code', () => {
 		await waitForUpdate(el);
 		expect(el.hasAttribute('wrap')).toBe(true);
 	});
+
+	it('renders the highlighted <code> wrapper only when language is set', async () => {
+		el = await fixture('<nldd-code>const x = 1;</nldd-code>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('code.code__highlighted')).toBeNull();
+	});
+
+	it('produces highlighted html with token spans for a known language', async () => {
+		el = await fixture('<nldd-code language="json">{"foo": 1, "bar": true}</nldd-code>');
+		await waitForUpdate(el);
+		const highlighted = el.shadowRoot!.querySelector('code.code__highlighted');
+		expect(highlighted).not.toBeNull();
+		// Prism wraps tokens in <span class="token …"> nodes.
+		expect(highlighted!.querySelectorAll('.token').length).toBeGreaterThan(0);
+	});
+
+	it('falls back to raw slot when language is unknown', async () => {
+		el = await fixture('<nldd-code language="not-a-real-language">plain text</nldd-code>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('code.code__highlighted')).toBeNull();
+	});
+
+	it('clears the highlighted html when language is removed', async () => {
+		el = await fixture<HTMLElement>('<nldd-code language="json">{"a":1}</nldd-code>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('code.code__highlighted')).not.toBeNull();
+		el.removeAttribute('language');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('code.code__highlighted')).toBeNull();
+	});
 });

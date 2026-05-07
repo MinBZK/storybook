@@ -168,6 +168,20 @@ export const sheetStyles = css`
 	}
 
 
+	/* # Full-height
+	   Force a bottom sheet to take its full max-height (= viewport minus
+	   the top-inset), so visualisation-heavy content (graph view, full
+	   editors) doesn't shrink to its intrinsic size. The top-inset stays
+	   intact: it gives users a tap target to dismiss the sheet and a
+	   visual cue that this is an overlay, not a full page. The sm
+	   responsive block below covers the case where any placement
+	   collapses to a bottom sheet on small viewports. */
+
+	:host([placement='bottom'][full-height]) .sheet {
+		height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
+	}
+
+
 	/* # Responsive: sm viewport — all placements become bottom sheet */
 
 	@media (max-width: ${smMax}) {
@@ -188,6 +202,10 @@ export const sheetStyles = css`
 			&.is-closing {
 				animation: sheet-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
+		}
+
+		:host([full-height]) .sheet {
+			height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
 		}
 	}
 

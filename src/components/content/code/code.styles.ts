@@ -13,35 +13,6 @@ export const codeStyles = css`
 		--_corner-radius: var(--primitives-corner-radius-lg);
 		--_font: var(--primitives-font-monospace-sm-regular-snug);
 
-		/* Token theme — Solarized-inspired, mapped to descriptive DS palettes.
-		   Override per-instance to swap colors. */
-		--_token-comment-color: var(--semantics-content-secondary-color);
-		--_token-punctuation-color: var(--_content-color);
-		--_token-keyword-color: var(--primitives-color-donkergeel-650);
-		--_token-string-color: var(--primitives-color-groen-650);
-		--_token-number-color: var(--primitives-color-oranje-650);
-		--_token-boolean-color: var(--primitives-color-oranje-650);
-		--_token-null-color: var(--primitives-color-oranje-650);
-		--_token-function-color: var(--primitives-color-lintblauw-650);
-		--_token-class-color: var(--primitives-color-donkergeel-650);
-		--_token-builtin-color: var(--primitives-color-donkergeel-650);
-		--_token-tag-color: var(--primitives-color-groen-650);
-		--_token-attr-name-color: var(--primitives-color-lintblauw-650);
-		--_token-attr-value-color: var(--primitives-color-mintgroen-650);
-		--_token-property-color: var(--primitives-color-lintblauw-650);
-		--_token-selector-color: var(--primitives-color-donkergeel-650);
-		--_token-atrule-color: var(--primitives-color-groen-650);
-		--_token-regex-color: var(--primitives-color-rood-650);
-		--_token-url-color: var(--primitives-color-mintgroen-650);
-		--_token-operator-color: var(--primitives-color-groen-650);
-		--_token-constant-color: var(--primitives-color-oranje-650);
-		--_token-deleted-color: var(--primitives-color-rood-650);
-		--_token-inserted-color: var(--primitives-color-groen-650);
-		--_token-important-color: var(--primitives-color-rood-650);
-		--_token-symbol-color: var(--primitives-color-violet-650);
-		--_token-entity-color: var(--primitives-color-paars-650);
-		--_token-variable-color: var(--primitives-color-lintblauw-650);
-
 		display: block;
 	}
 
@@ -84,45 +55,79 @@ export const codeStyles = css`
 	}
 
 
-	/* # Tokens (Prism) */
+	/* # Tokens (Prism)
+	 *
+	 * Component-level token theme — Solarized-inspired, mapped to
+	 * descriptive DS palettes. These are part of the public API: consumers
+	 * can override per-instance to swap colors. Documented in the JSDoc
+	 * of nldd-code (see code.ts). */
+
+	:host {
+		--components-code-token-comment-color: var(--semantics-content-secondary-color);
+		--components-code-token-punctuation-color: var(--_content-color);
+		--components-code-token-keyword-color: var(--primitives-color-donkergeel-650);
+		--components-code-token-string-color: var(--primitives-color-groen-650);
+		--components-code-token-number-color: var(--primitives-color-oranje-650);
+		--components-code-token-boolean-color: var(--primitives-color-oranje-650);
+		--components-code-token-null-color: var(--primitives-color-oranje-650);
+		--components-code-token-function-color: var(--primitives-color-lintblauw-650);
+		--components-code-token-class-color: var(--primitives-color-donkergeel-650);
+		--components-code-token-builtin-color: var(--primitives-color-donkergeel-650);
+		--components-code-token-tag-color: var(--primitives-color-groen-650);
+		--components-code-token-attr-name-color: var(--primitives-color-lintblauw-650);
+		--components-code-token-attr-value-color: var(--primitives-color-mintgroen-650);
+		--components-code-token-property-color: var(--primitives-color-lintblauw-650);
+		--components-code-token-selector-color: var(--primitives-color-donkergeel-650);
+		--components-code-token-atrule-color: var(--primitives-color-groen-650);
+		--components-code-token-regex-color: var(--primitives-color-rood-650);
+		--components-code-token-url-color: var(--primitives-color-mintgroen-650);
+		--components-code-token-operator-color: var(--primitives-color-groen-650);
+		--components-code-token-constant-color: var(--primitives-color-oranje-650);
+		--components-code-token-deleted-color: var(--primitives-color-rood-650);
+		--components-code-token-inserted-color: var(--primitives-color-groen-650);
+		--components-code-token-important-color: var(--primitives-color-rood-650);
+		--components-code-token-symbol-color: var(--primitives-color-violet-650);
+		--components-code-token-entity-color: var(--primitives-color-paars-650);
+		--components-code-token-variable-color: var(--primitives-color-lintblauw-650);
+	}
 
 	.token.comment,
 	.token.prolog,
 	.token.doctype,
-	.token.cdata { color: var(--_token-comment-color); font-style: italic; }
+	.token.cdata { color: var(--components-code-token-comment-color); font-style: italic; }
 
-	.token.punctuation { color: var(--_token-punctuation-color); }
+	.token.punctuation { color: var(--components-code-token-punctuation-color); }
 
 	.token.namespace { opacity: 0.7; }
 
-	.token.keyword { color: var(--_token-keyword-color); }
+	.token.keyword { color: var(--components-code-token-keyword-color); }
 	.token.string,
-	.token.char { color: var(--_token-string-color); }
-	.token.number { color: var(--_token-number-color); }
-	.token.boolean { color: var(--_token-boolean-color); }
-	.token.null { color: var(--_token-null-color); }
-	.token.function { color: var(--_token-function-color); }
-	.token.class-name { color: var(--_token-class-color); }
-	.token.builtin { color: var(--_token-builtin-color); }
-	.token.tag { color: var(--_token-tag-color); }
-	.token.attr-name { color: var(--_token-attr-name-color); }
-	.token.attr-value { color: var(--_token-attr-value-color); }
-	.token.property { color: var(--_token-property-color); }
-	.token.selector { color: var(--_token-selector-color); }
-	.token.atrule { color: var(--_token-atrule-color); }
-	.token.regex { color: var(--_token-regex-color); }
-	.token.url { color: var(--_token-url-color); }
-	.token.operator { color: var(--_token-operator-color); }
-	.token.constant { color: var(--_token-constant-color); }
-	.token.deleted { color: var(--_token-deleted-color); }
-	.token.inserted { color: var(--_token-inserted-color); }
-	.token.important { color: var(--_token-important-color); font-weight: bold; }
-	.token.symbol { color: var(--_token-symbol-color); }
-	.token.entity { color: var(--_token-entity-color); }
-	.token.variable { color: var(--_token-variable-color); }
+	.token.char { color: var(--components-code-token-string-color); }
+	.token.number { color: var(--components-code-token-number-color); }
+	.token.boolean { color: var(--components-code-token-boolean-color); }
+	.token.null { color: var(--components-code-token-null-color); }
+	.token.function { color: var(--components-code-token-function-color); }
+	.token.class-name { color: var(--components-code-token-class-color); }
+	.token.builtin { color: var(--components-code-token-builtin-color); }
+	.token.tag { color: var(--components-code-token-tag-color); }
+	.token.attr-name { color: var(--components-code-token-attr-name-color); }
+	.token.attr-value { color: var(--components-code-token-attr-value-color); }
+	.token.property { color: var(--components-code-token-property-color); }
+	.token.selector { color: var(--components-code-token-selector-color); }
+	.token.atrule { color: var(--components-code-token-atrule-color); }
+	.token.regex { color: var(--components-code-token-regex-color); }
+	.token.url { color: var(--components-code-token-url-color); }
+	.token.operator { color: var(--components-code-token-operator-color); }
+	.token.constant { color: var(--components-code-token-constant-color); }
+	.token.deleted { color: var(--components-code-token-deleted-color); }
+	.token.inserted { color: var(--components-code-token-inserted-color); }
+	.token.important { color: var(--components-code-token-important-color); font-weight: bold; }
+	.token.symbol { color: var(--components-code-token-symbol-color); }
+	.token.entity { color: var(--components-code-token-entity-color); }
+	.token.variable { color: var(--components-code-token-variable-color); }
 
 	/* YAML key uses the property/keyword slot so YAML reads naturally */
-	.token.key { color: var(--_token-property-color); }
+	.token.key { color: var(--components-code-token-property-color); }
 
 	.token.bold { font-weight: bold; }
 	.token.italic { font-style: italic; }

@@ -18,13 +18,13 @@
  * highlighting applied.
  *
  * ### Theming
- * Token colors are exposed as `--_token-*` custom properties on the
- * host. Override them per-instance to swap the theme:
+ * Token colors are exposed as `--components-code-token-*` custom
+ * properties on the host. Override them per-instance to swap the theme:
  *
  * ```css
  * nldd-code {
- *   --_token-keyword-color: var(--my-purple);
- *   --_token-string-color: var(--my-green);
+ *   --components-code-token-keyword-color: var(--my-purple);
+ *   --components-code-token-string-color: var(--my-green);
  * }
  * ```
  *

@@ -20,7 +20,9 @@ export const codeEditorStyles = css`
 		   consumers in flex parents don't have to set them on every use. */
 		display: flex;
 		flex-direction: column;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: auto;
 		min-height: 0;
 		-webkit-tap-highlight-color: transparent;
 	}
@@ -36,7 +38,9 @@ export const codeEditorStyles = css`
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: auto;
 		min-height: 0;
 		box-sizing: border-box;
 		background-color: var(--_background-color);
@@ -60,7 +64,9 @@ export const codeEditorStyles = css`
 	.code-editor__input {
 		display: block;
 		box-sizing: border-box;
-		flex: 1;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: auto;
 		min-height: 0;
 		width: 100%;
 		margin: 0;

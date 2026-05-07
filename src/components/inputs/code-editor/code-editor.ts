@@ -91,8 +91,12 @@ export class NLDDCodeEditor extends LitElement {
 
 	override firstUpdated(): void {
 		this._initialValue = this.value;
-		if (import.meta.env?.DEV && !this.accessibleLabel && !this.inputId) {
-			console.warn('<nldd-code-editor>: No accessible-label or input-id provided. Use nldd-form-field for labeled usage, or set accessible-label for screen reader accessibility.');
+		// Always warn — production sites without an accessible label fail
+		// WCAG SC 4.1.2 silently otherwise. Cheaper than a runtime throw,
+		// which would risk breaking pages that rely on a parent
+		// nldd-form-field setting input-id slightly later in the lifecycle.
+		if (!this.accessibleLabel && !this.inputId) {
+			console.warn('<nldd-code-editor>: No accessible-label or input-id provided. Use nldd-form-field for labeled usage, or set accessible-label for screen reader accessibility (WCAG SC 4.1.2).');
 		}
 	}
 
