@@ -3,11 +3,32 @@ import { css } from 'lit';
 export const linkStyles = css`
 
 
-	/* # Host */
+	/* # Host
+	 *
+	 * Inherit mode (no [size] attribute, or [size="inherit"]): display is
+	 * inline so the link wraps naturally inside running text and inherits
+	 * font-size / line-height / font-family from its surroundings. Icons are
+	 * supported via the inline whitespace between icon span and label span,
+	 * which provides natural single-space separation.
+	 *
+	 * Sized mode (xs/sm/md/lg): display becomes inline-flex so start/end
+	 * icons can be aligned to the text baseline with explicit gap spacing.
+	 */
 
 	:host {
-		display: inline-flex;
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	:host(:not([size])),
+	:host([size="inherit"]) {
+		display: inline;
+	}
+
+	:host([size="xs"]),
+	:host([size="sm"]),
+	:host([size="md"]),
+	:host([size="lg"]) {
+		display: inline-flex;
 	}
 
 	:host([hidden]) {
@@ -26,30 +47,40 @@ export const linkStyles = css`
 		appearance: none;
 		background: none;
 		color: var(--semantics-links-color);
-		display: inline-flex;
-		align-items: center;
 		text-decoration: none;
 		border-radius: var(--primitives-corner-radius-xs);
 		transition: color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
 	}
 
+	:host(:not([size])) .link,
+	:host([size="inherit"]) .link {
+		display: inline;
+	}
+
 	:host([size="xs"]) .link {
+		display: inline-flex;
+		align-items: center;
 		gap: var(--primitives-space-4);
 		font: var(--primitives-font-body-xs-regular-flat);
 	}
 
 	:host([size="sm"]) .link {
+		display: inline-flex;
+		align-items: center;
 		gap: var(--primitives-space-4);
 		font: var(--primitives-font-body-sm-regular-flat);
 	}
 
-	:host([size="md"]) .link,
-	:host(:not([size])) .link {
+	:host([size="md"]) .link {
+		display: inline-flex;
+		align-items: center;
 		gap: var(--primitives-space-6);
 		font: var(--primitives-font-body-md-regular-flat);
 	}
 
 	:host([size="lg"]) .link {
+		display: inline-flex;
+		align-items: center;
 		gap: var(--primitives-space-6);
 		font: var(--primitives-font-body-lg-regular-flat);
 	}
@@ -100,6 +131,13 @@ export const linkStyles = css`
 		flex-shrink: 0;
 		width: 1em;
 		height: 1em;
+	}
+
+	:host(:not([size])) .link__start-icon,
+	:host([size="inherit"]) .link__start-icon,
+	:host(:not([size])) .link__end-icon,
+	:host([size="inherit"]) .link__end-icon {
+		top: 0.2em;
 	}
 
 
