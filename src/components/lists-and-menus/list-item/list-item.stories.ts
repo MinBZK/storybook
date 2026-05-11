@@ -46,7 +46,7 @@ export const Default = {
 	render: (args: Record<string, any>) => html`
 		<nldd-list variant="simple">
 			<nldd-list-item size=${args.size} ?selected=${args.selected} type=${args.type || nothing} href=${args.href || nothing}>
-				<nldd-text-cell text="Text cell" supporting-text="Supporting text" />
+				<nldd-text-cell text="Text cell" supporting-text="Supporting text"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -56,7 +56,7 @@ export const SizeMD = {
 	render: () => html`
 		<nldd-list variant="simple">
 			<nldd-list-item size="md">
-				<nldd-text-cell text="Medium size item" />
+				<nldd-text-cell text="Medium size item"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -66,7 +66,7 @@ export const SizeSM = {
 	render: () => html`
 		<nldd-list variant="simple">
 			<nldd-list-item size="sm">
-				<nldd-text-cell size="sm" text="Small size item" />
+				<nldd-text-cell size="sm" text="Small size item"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -76,13 +76,13 @@ export const Selected = {
 	render: () => html`
 		<nldd-list variant="simple">
 			<nldd-list-item>
-				<nldd-text-cell text="Not selected" />
+				<nldd-text-cell text="Not selected"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item selected>
-				<nldd-text-cell text="Selected item" />
+				<nldd-text-cell text="Selected item"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-text-cell text="Not selected" />
+				<nldd-text-cell text="Not selected"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -92,10 +92,10 @@ export const TypeButton = {
 	render: () => html`
 		<nldd-list variant="simple">
 			<nldd-list-item type="button">
-				<nldd-text-cell text="Clickable button item" />
+				<nldd-text-cell text="Clickable button item"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item type="button">
-				<nldd-text-cell text="Another button item" />
+				<nldd-text-cell text="Another button item"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -105,10 +105,10 @@ export const TypeLink = {
 	render: () => html`
 		<nldd-list variant="simple">
 			<nldd-list-item href="/settings">
-				<nldd-text-cell text="Settings" />
+				<nldd-text-cell text="Settings"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item href="/profile">
-				<nldd-text-cell text="Profile" />
+				<nldd-text-cell text="Profile"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -118,10 +118,10 @@ export const BoxWithGutters = {
 	render: () => html`
 		<nldd-list variant="box">
 			<nldd-list-item>
-				<nldd-text-cell text="Gutters visible (spacer)" />
+				<nldd-text-cell text="Gutters visible (spacer)"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-text-cell text="Gutters visible (spacer)" />
+				<nldd-text-cell text="Gutters visible (spacer)"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -134,7 +134,7 @@ export const WithStartAndEnd = {
 				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
 				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
 				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
-				<nldd-text-cell text="Item with start icon" />
+				<nldd-text-cell text="Item with start icon"></nldd-text-cell>
 				<nldd-spacer-cell slot="end" size="8"></nldd-spacer-cell>
 				<nldd-icon-cell slot="end" size="16">
 					<nldd-icon name="chevron-right"></nldd-icon>
@@ -145,7 +145,7 @@ export const WithStartAndEnd = {
 				<nldd-spacer-cell slot="start" size="12"></nldd-spacer-cell>
 				<div slot="start" style="width: 32px; height: 32px; background: var(--primitives-color-neutral-150); border-radius: 8px;"></div>
 				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
-				<nldd-text-cell text="Another item" />
+				<nldd-text-cell text="Another item"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -155,14 +155,14 @@ export const SimpleWithEndOnly = {
 	render: () => html`
 		<nldd-list variant="simple">
 			<nldd-list-item>
-				<nldd-text-cell text="Only end slot filled" />
+				<nldd-text-cell text="Only end slot filled"></nldd-text-cell>
 				<nldd-spacer-cell slot="end" size="8"></nldd-spacer-cell>
 				<nldd-icon-cell slot="end" size="16">
 					<nldd-icon name="chevron-right"></nldd-icon>
 				</nldd-icon-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-text-cell text="No slots" />
+				<nldd-text-cell text="No slots"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
