@@ -111,6 +111,35 @@ export const WithGroups = {
 	},
 };
 
+export const WithMultiLevelSubmenu = {
+	render: () => html`
+		<nldd-button id="button-multi-submenu" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-multi-submenu" anchor="button-multi-submenu">
+			<nldd-menu-item text="Bestand">
+				<nldd-menu>
+					<nldd-menu-item text="Nieuw"></nldd-menu-item>
+					<nldd-menu-item text="Open recent">
+						<nldd-menu>
+							<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>
+							<nldd-menu-item text="Notulen.docx"></nldd-menu-item>
+							<nldd-menu-item text="Plan.pdf"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-menu-item>
+					<nldd-menu-item text="Sluiten" details="Cmd+W"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+			<nldd-menu-item text="Bewerken"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Submenus mogen recursief geneste submenus bevatten — geen diepte-limiet. Elk niveau opent z\'n eigen popover (cascade) of stapelt op dezelfde positie (drill-in mobiel). Toetsenbord: ArrowRight opent submenu en focust eerste item, ArrowLeft of Esc gaat één niveau terug.',
+			},
+		},
+	},
+};
+
 export const WithSubmenu = {
 	render: () => html`
 		<nldd-button id="button-submenu" expandable text="Open menu"></nldd-button>

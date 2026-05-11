@@ -377,15 +377,122 @@ export class NLDDMenu extends LitElement {
 		}
 	};
 
+	// — Hover triangle (cascade only) ————————————————————————————————————————
+	//
+	// When the cursor leaves the parent menu while a submenu is open, classic
+	// hover-out logic would close the submenu — frustrating if the user is
+	// just moving diagonally toward it. The triangle algorithm (mayank.co):
+	// from the cursor's last-known position M to the submenu's two near
+	// corners (top + bottom of the cascading edge), build a triangle. While
+	// the cursor stays inside the triangle, treat as "moving toward submenu"
+	// and cancel any pending close. Outside the triangle, schedule the close.
+	//
+	// Hover-open uses a 150ms delay so a quick pass over an item-with-submenu
+	// doesn't open it spuriously. Hover-close uses 100ms after leaving the
+	// triangle for the same reason.
+
+	private _hoverOpenTimer: number | null = null;
+	private _hoverCloseTimer: number | null = null;
+	private _hoverTriangleListener: ((e: MouseEvent) => void) | null = null;
+
 	private _handleMenuItemMouseenter = (event: MouseEvent): void => {
 		const item = (event.target as Element).closest('nldd-menu-item') as NLDDMenuItem | null;
 		if (!item || item.disabled || item.hasAttribute('hidden')) return;
 		this._setHighlight(item);
+
+		// Re-entering the menu area cancels any pending close from before.
+		this._cancelHoverClose();
+
+		if (this._drillInMode) return; // Touch / narrow viewport: no hover-open.
+
+		// If moving to a peer item that isn't the current submenu opener, close
+		// the open submenu immediately — no delay between peer items.
+		if (this._activeSubmenuOpener && this._activeSubmenuOpener !== item) {
+			(this._activeSubmenu as HTMLElement | null)?.hidePopover?.();
+		}
+
+		// Schedule open of this item's submenu after a small delay so quickly
+		// dragging across items doesn't trigger every submenu in turn.
+		if (item._hasSubmenu && this._activeSubmenuOpener !== item) {
+			this._cancelHoverOpen();
+			this._hoverOpenTimer = window.setTimeout(() => {
+				this._hoverOpenTimer = null;
+				item._handleClick();
+			}, 150);
+		}
 	};
 
-	private _handleMouseleave = (): void => {
+	private _handleMouseleave = (event: MouseEvent): void => {
 		if (this.variant !== 'listbox') this._clearHighlight();
+		this._cancelHoverOpen();
+
+		if (this._drillInMode || !this._activeSubmenu) return;
+
+		// Build the triangle from cursor-on-leave to the submenu's near edge.
+		// right-start placement → near edge is the left side of the submenu.
+		const submenu = this._activeSubmenu;
+		const rect = submenu.getBoundingClientRect();
+		const start = { x: event.clientX, y: event.clientY };
+		const tl = { x: rect.left, y: rect.top };
+		const bl = { x: rect.left, y: rect.bottom };
+
+		this._removeHoverTriangle();
+		this._hoverTriangleListener = (e: MouseEvent) => {
+			const p = { x: e.clientX, y: e.clientY };
+			if (this._pointInTriangle(p, start, tl, bl)) return;
+			// Cursor left the triangle without entering the submenu — schedule
+			// close. A short delay smooths over jitter at the triangle edges.
+			this._removeHoverTriangle();
+			this._cancelHoverClose();
+			this._hoverCloseTimer = window.setTimeout(() => {
+				this._hoverCloseTimer = null;
+				if (this._activeSubmenu === submenu) {
+					(submenu as HTMLElement).hidePopover?.();
+				}
+			}, 100);
+		};
+		window.addEventListener('mousemove', this._hoverTriangleListener);
 	};
+
+	private _cancelHoverOpen(): void {
+		if (this._hoverOpenTimer !== null) {
+			clearTimeout(this._hoverOpenTimer);
+			this._hoverOpenTimer = null;
+		}
+	}
+
+	private _cancelHoverClose(): void {
+		if (this._hoverCloseTimer !== null) {
+			clearTimeout(this._hoverCloseTimer);
+			this._hoverCloseTimer = null;
+		}
+		this._removeHoverTriangle();
+	}
+
+	private _removeHoverTriangle(): void {
+		if (this._hoverTriangleListener !== null) {
+			window.removeEventListener('mousemove', this._hoverTriangleListener);
+			this._hoverTriangleListener = null;
+		}
+	}
+
+	/** Standard barycentric point-in-triangle test. Returns true when p sits
+	 * inside (or on the edge of) the triangle abc. */
+	private _pointInTriangle(
+		p: { x: number, y: number },
+		a: { x: number, y: number },
+		b: { x: number, y: number },
+		c: { x: number, y: number },
+	): boolean {
+		const sign = (p1: { x: number, y: number }, p2: { x: number, y: number }, p3: { x: number, y: number }) =>
+			(p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+		const d1 = sign(p, a, b);
+		const d2 = sign(p, b, c);
+		const d3 = sign(p, c, a);
+		const hasNeg = d1 < 0 || d2 < 0 || d3 < 0;
+		const hasPos = d1 > 0 || d2 > 0 || d3 > 0;
+		return !(hasNeg && hasPos);
+	}
 
 	private _handleMenuItemFocused = (event: Event): void => {
 		const item = (event.target as Element).closest('nldd-menu-item') as NLDDMenuItem | null;
@@ -555,6 +662,8 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('select', this._handleSelectChainClose);
 		document.removeEventListener('click', this._handleDocumentClick);
 		window.removeEventListener('resize', this._handleViewportResize);
+		this._cancelHoverOpen();
+		this._cancelHoverClose();
 		this._cleanupAutoUpdate?.();
 		this._cleanupAutoUpdate = null;
 	}
@@ -767,11 +876,41 @@ export class NLDDMenu extends LitElement {
 				items[items.length - 1].focus();
 				break;
 			}
+			case 'ArrowRight': {
+				// Open the focused item's submenu if it has one. Mode-agnostic:
+				// the parent menu's _handleSubmenuOpen handler routes to cascade
+				// or drill-in based on viewport.
+				const focused = items[index];
+				if (focused?._hasSubmenu) {
+					event.preventDefault();
+					focused._handleClick();
+					// Focus the first item in the submenu once it's open.
+					requestAnimationFrame(() => {
+						this._activeSubmenu?._getVisibleItems()[0]?.focus();
+					});
+				}
+				break;
+			}
+			case 'ArrowLeft': {
+				// In a submenu (cascade or drill-in): close it and return focus
+				// to the parent item. On the root menu, ArrowLeft is a no-op.
+				if (this._isSubmenu) {
+					event.preventDefault();
+					const parentItem = this._parentItem;
+					(this as HTMLElement).hidePopover();
+					parentItem?.focus();
+				}
+				break;
+			}
 			case 'Escape': {
 				event.preventDefault();
 				(this as HTMLElement).hidePopover();
-				const anchorEl = this._getAnchorEl();
-				(anchorEl as HTMLElement | null)?.focus();
+				// On a submenu close, return focus to the parent item rather
+				// than the root anchor — keeps the user oriented in the chain.
+				const focusTarget = this._isSubmenu
+					? this._parentItem
+					: (this._getAnchorEl() as HTMLElement | null);
+				focusTarget?.focus();
 				break;
 			}
 		}

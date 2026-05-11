@@ -575,4 +575,45 @@ describe('nldd-menu-item with submenu', () => {
 		expect(button.getAttribute('aria-expanded')).toBe('true');
 		cleanup(menu);
 	});
+
+	it('ArrowRight on a focused item-with-submenu opens its submenu', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		// _getFocusedIndex looks for the data-focused attribute, normally set
+		// by the menu-item's focusin handler. Test env focus() is unreliable
+		// at firing focusin synchronously — set it directly.
+		item.setAttribute('data-focused', '');
+		let opened = false;
+		menu.addEventListener('submenu-open', () => { opened = true; });
+		menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		await waitForUpdate(menu);
+		expect(opened).toBe(true);
+		cleanup(menu);
+	});
+
+	it('ArrowRight on a focused item without a submenu is a no-op', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Plain"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		item.setAttribute('data-focused', '');
+		let opened = false;
+		menu.addEventListener('submenu-open', () => { opened = true; });
+		menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		await waitForUpdate(menu);
+		expect(opened).toBe(false);
+		cleanup(menu);
+	});
 });
