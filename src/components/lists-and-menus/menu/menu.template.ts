@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import type { NLDDMenuItem, NLDDMenu } from './menu.js';
+import type { NLDDMenuItem, NLDDMenu, NLDDMenuGroup } from './menu.js';
 
 const menuRoleMap = {
 	menu: 'menu',
@@ -77,4 +77,18 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 
 export function menuDividerTemplate() {
 	return html`<div class="menu__divider" role="separator"></div>`;
+}
+
+export function menuGroupTemplate(component: NLDDMenuGroup) {
+	return html`
+		<div class="menu-group__title"
+			id=${component._titleId}
+		>${component.text}</div>
+		<div class="menu-group__items"
+			role="group"
+			aria-labelledby=${component._titleId}
+		>
+			<slot></slot>
+		</div>
+	`;
 }

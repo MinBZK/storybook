@@ -385,3 +385,98 @@ describe('nldd-menu-divider', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 });
+
+describe('nldd-menu-group', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('renders without error', async () => {
+		el = await fixture('<nldd-menu-group text="Bestand"></nldd-menu-group>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot).not.toBeNull();
+	});
+
+	it('renders the text in the title element', async () => {
+		el = await fixture('<nldd-menu-group text="Bestand"></nldd-menu-group>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.menu-group__title');
+		expect(title?.textContent).toBe('Bestand');
+	});
+
+	it('wraps slotted items in a role="group" container labelled by the title', async () => {
+		el = await fixture(`
+			<nldd-menu-group text="Bestand">
+				<nldd-menu-item text="Open"></nldd-menu-item>
+			</nldd-menu-group>
+		`);
+		await waitForUpdate(el);
+		const groupContainer = el.shadowRoot!.querySelector('[role="group"]');
+		const title = el.shadowRoot!.querySelector('.menu-group__title');
+		expect(groupContainer).not.toBeNull();
+		expect(title?.id).toBeTruthy();
+		expect(groupContainer?.getAttribute('aria-labelledby')).toBe(title!.id);
+	});
+
+	it('hides itself when all its items are filtered out', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-group text="Bestand">
+					<nldd-menu-item text="Open"></nldd-menu-item>
+					<nldd-menu-item text="Save"></nldd-menu-item>
+				</nldd-menu-group>
+				<nldd-menu-group text="Bewerken">
+					<nldd-menu-item text="Knip"></nldd-menu-item>
+				</nldd-menu-group>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const [groupA, groupB] = menu.querySelectorAll('nldd-menu-group');
+		(menu as unknown as { filter: (q: string) => void }).filter('knip');
+		await waitForUpdate(menu);
+		expect(groupA.hasAttribute('hidden')).toBe(true);
+		expect(groupB.hasAttribute('hidden')).toBe(false);
+		cleanup(menu);
+	});
+
+	it('shows empty groups again when filter is cleared', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-group text="Bestand">
+					<nldd-menu-item text="Open"></nldd-menu-item>
+				</nldd-menu-group>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const group = menu.querySelector('nldd-menu-group')!;
+		(menu as unknown as { filter: (q: string) => void }).filter('xx');
+		await waitForUpdate(menu);
+		expect(group.hasAttribute('hidden')).toBe(true);
+		(menu as unknown as { filter: (q: string) => void }).filter('');
+		await waitForUpdate(menu);
+		expect(group.hasAttribute('hidden')).toBe(false);
+		cleanup(menu);
+	});
+
+	it('hides an explicit divider that sits directly before a group', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Recent"></nldd-menu-item>
+				<nldd-menu-divider></nldd-menu-divider>
+				<nldd-menu-group text="Mappen">
+					<nldd-menu-item text="Documenten"></nldd-menu-item>
+				</nldd-menu-group>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const divider = menu.querySelector('nldd-menu-divider')!;
+		// _updateDividerVisibility runs on filter() and on menu open. An empty
+		// filter triggers it without changing item visibility.
+		(menu as unknown as { filter: (q: string) => void }).filter('');
+		await waitForUpdate(menu);
+		expect(divider.hasAttribute('hidden')).toBe(true);
+		cleanup(menu);
+	});
+});

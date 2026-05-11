@@ -177,3 +177,53 @@ export const menuDividerStyles = css`
 		background-color: var(--semantics-dividers-color);
 	}
 `;
+
+export const menuGroupStyles = css`
+
+
+	/* # Host
+	 *
+	 * Renders an automatic divider above the group via border-top, except when
+	 * the group is the first child of the menu (then no divider is needed).
+	 * The padding-top below the divider provides generous breathing room above
+	 * the title — paired with the tighter margin-bottom on the title itself
+	 * this gives the "more space above than below" rhythm that visually binds
+	 * the title to the items it labels rather than to whatever sits above.
+	 */
+
+	:host {
+		display: block;
+		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+		padding-top: var(--primitives-space-6);
+		margin-top: var(--primitives-space-4);
+	}
+
+	:host(:first-child) {
+		border-top: none;
+		padding-top: var(--primitives-space-2);
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+
+	/* # Title */
+
+	.menu-group__title {
+		margin: 0;
+		padding-top: 0;
+		padding-right: var(--primitives-space-8);
+		padding-bottom: var(--primitives-space-1);
+		padding-left: var(--primitives-space-4);
+		font: var(--primitives-font-body-sm-regular-tight);
+		color: var(--semantics-content-secondary-color);
+	}
+
+
+	/* # Items wrapper */
+
+	.menu-group__items {
+		display: contents;
+	}
+`;

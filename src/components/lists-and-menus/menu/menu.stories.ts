@@ -85,3 +85,50 @@ export const Disabled = {
 		</nldd-menu>
 	`,
 };
+
+export const WithGroups = {
+	render: () => html`
+		<nldd-button id="button-groups" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-groups" anchor="button-groups">
+			<nldd-menu-group text="Bestand">
+				<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+				<nldd-menu-item text="Open…" details="Cmd+O"></nldd-menu-item>
+				<nldd-menu-item text="Opslaan" details="Cmd+S"></nldd-menu-item>
+			</nldd-menu-group>
+			<nldd-menu-group text="Bewerken">
+				<nldd-menu-item text="Knip" details="Cmd+X"></nldd-menu-item>
+				<nldd-menu-item text="Kopieer" details="Cmd+C"></nldd-menu-item>
+				<nldd-menu-item text="Plak" details="Cmd+V"></nldd-menu-item>
+			</nldd-menu-group>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Wrap items in `<nldd-menu-group text="…">` voor een gelabelde sectie. De groep krijgt automatisch een divider boven (behalve als het de eerste child van de menu is) en levert proper ARIA `role="group"` met `aria-labelledby` voor screen readers.',
+			},
+		},
+	},
+};
+
+export const MixedFlatAndGroups = {
+	render: () => html`
+		<nldd-button id="button-mixed" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-mixed" anchor="button-mixed">
+			<nldd-menu-item text="Recent geopend"></nldd-menu-item>
+			<nldd-menu-group text="Mappen">
+				<nldd-menu-item text="Documenten" icon="folder"></nldd-menu-item>
+				<nldd-menu-item text="Downloads" icon="folder"></nldd-menu-item>
+			</nldd-menu-group>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Sluiten"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Flat items en groups kunnen door elkaar gebruikt worden. Een expliciete `<nldd-menu-divider>` direct vóór een groep wordt automatisch verborgen — de groep heeft al z\'n eigen divider boven.',
+			},
+		},
+	},
+};

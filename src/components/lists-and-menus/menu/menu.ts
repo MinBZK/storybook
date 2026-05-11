@@ -1,8 +1,8 @@
 import { LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { computePosition, flip, shift, offset, size, autoUpdate } from '@floating-ui/dom';
-import { menuStyles, menuItemStyles, menuDividerStyles } from './menu.styles.js';
-import { menuTemplate, menuItemTemplate, menuDividerTemplate } from './menu.template.js';
+import { menuStyles, menuItemStyles, menuDividerStyles, menuGroupStyles } from './menu.styles.js';
+import { menuTemplate, menuItemTemplate, menuDividerTemplate, menuGroupTemplate } from './menu.template.js';
 import { nlddMenuTranslations } from './menu.i18n.js';
 import type { NLDDMenuTranslations } from './menu.i18n.js';
 import type { QueryMarkMode } from '../../../utilities/render-marked.js';
@@ -27,6 +27,47 @@ export class NLDDMenuDivider extends LitElement {
 
 if (!customElements.get('nldd-menu-divider')) {
 	customElements.define('nldd-menu-divider', NLDDMenuDivider);
+}
+
+
+// # nldd-menu-group
+
+/**
+ * A labelled group of menu items inside an nldd-menu. Wraps its slotted
+ * items in `role="group"` with `aria-labelledby` pointing to the group's
+ * `text`, providing native ARIA group semantics that a flat title element
+ * can't deliver.
+ *
+ * The group renders an automatic divider above itself, except when it's
+ * the first child of the menu — so consumers don't need to manage
+ * separator placement around groups themselves. Spacing above the title
+ * is intentionally larger than below, to bind the title visually to the
+ * items it labels.
+ *
+ * Use the wrapper for grouping with a title; for ungrouped flat menus or
+ * a divider without a title, the existing `nldd-menu-item` +
+ * `nldd-menu-divider` flat structure keeps working unchanged.
+ *
+ * @attr {string} text - Group title text shown above the items.
+ *
+ * @slot - nldd-menu-item children (the items belonging to this group).
+ */
+export class NLDDMenuGroup extends LitElement {
+	static override styles = menuGroupStyles;
+
+	@property({ type: String, reflect: true })
+	text = '';
+
+	private static _idCounter = 0;
+	readonly _titleId = `nldd-menu-group-title-${NLDDMenuGroup._idCounter++}`;
+
+	override render() {
+		return menuGroupTemplate(this);
+	}
+}
+
+if (!customElements.get('nldd-menu-group')) {
+	customElements.define('nldd-menu-group', NLDDMenuGroup);
 }
 
 
@@ -375,7 +416,10 @@ export class NLDDMenu extends LitElement {
 			const isFirst = index === 0;
 			const isLast = index === visible.length - 1;
 			const prevIsDivider = index > 0 && visible[index - 1].tagName.toLowerCase() === 'nldd-menu-divider';
-			if (isFirst || isLast || prevIsDivider) {
+			// nldd-menu-group renders its own auto-divider above; suppress an
+			// explicit divider that would render right next to it.
+			const nextIsGroup = index < visible.length - 1 && visible[index + 1].tagName.toLowerCase() === 'nldd-menu-group';
+			if (isFirst || isLast || prevIsDivider || nextIsGroup) {
 				el.setAttribute('hidden', '');
 			}
 		});
@@ -399,10 +443,24 @@ export class NLDDMenu extends LitElement {
 			item.toggleAttribute('hidden', !matches);
 			item.query = (matches && query) ? query : '';
 		});
+		this._updateGroupVisibility();
 		this._setHighlight(null);
 		this._updateEmptyState();
 		this._updateDividerVisibility();
 		if (this._isOpen) this.reposition();
+	}
+
+	/**
+	 * Hide each nldd-menu-group whose items are all filtered out — a labelled
+	 * heading above an empty section reads as broken. Runs after filter() has
+	 * updated individual item visibility.
+	 */
+	private _updateGroupVisibility(): void {
+		const groups = this.querySelectorAll('nldd-menu-group');
+		groups.forEach(group => {
+			const visibleItems = group.querySelectorAll('nldd-menu-item:not([hidden])');
+			group.toggleAttribute('hidden', visibleItems.length === 0);
+		});
 	}
 
 	/**
@@ -587,5 +645,6 @@ declare global {
 		'nldd-menu': NLDDMenu;
 		'nldd-menu-item': NLDDMenuItem;
 		'nldd-menu-divider': NLDDMenuDivider;
+		'nldd-menu-group': NLDDMenuGroup;
 	}
 }
