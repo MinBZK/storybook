@@ -29,7 +29,7 @@ export const listItemStyles = css`
 	}
 
 	:host(.is-dragging) {
-		opacity: var(--components-list-item-is-dragging-opacity);
+		opacity: var(--semantics-controls-is-dragging-opacity);
 	}
 
 	:host(.is-dragging-pointer) {

@@ -722,7 +722,6 @@
 	--primitives-opacity-95: 0.95;
 	--primitives-opacity-100: 1;
 	--primitives-opacity-disabled: 0.38;
-	--primitives-opacity-dragging: 0.4;
 
 	/* ## Transition */
 
@@ -797,7 +796,9 @@
 
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-850));
 	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
-	--semantics-content-error-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
+	--semantics-content-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
+	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
+	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-600), var(--primitives-color-warning-650));
 	--semantics-content-success-color: light-dark(var(--primitives-color-success-600), var(--primitives-color-success-650));
 
 	/* ## Links */
@@ -854,6 +855,8 @@
 	--semantics-controls-is-highlighted-is-hovered-contrast-color: var(--semantics-surfaces-background-color);
 	--semantics-controls-is-highlighted-is-active-indicator-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-controls-is-highlighted-is-active-contrast-color: var(--semantics-surfaces-background-color);
+
+	--semantics-controls-is-dragging-opacity: var(--primitives-opacity-40);
 
 	--semantics-controls-link-cursor: default;
 
@@ -1142,7 +1145,6 @@
 	--components-list-item-is-selected-content-color: var(--primitives-color-neutral-1000);
 	--components-list-item-is-highlighted-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-list-item-is-highlighted-content-color: var(--semantics-controls-is-highlighted-contrast-color);
-	--components-list-item-is-dragging-opacity: var(--primitives-opacity-dragging);
 
 	/* ## Menu */
 
