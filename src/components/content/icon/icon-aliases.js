@@ -22,7 +22,6 @@ export const aliases = {
 	'redo': 'arrow-u-turn-forward',
 
 	// brackets-ellipsis
-	'code': 'brackets-ellipsis',
 	'embed': 'brackets-ellipsis',
 
 	// business-suitcase
@@ -61,6 +60,9 @@ export const aliases = {
 
 	// chevron-left
 	'back': 'chevron-left',
+
+	// chevron-left-forward-slash-chevron-right
+	'code': 'chevron-left-forward-slash-chevron-right',
 
 	// chevron-right
 	'forward': 'chevron-right',
@@ -274,6 +276,9 @@ export const aliases = {
 	// terminal
 	'cli': 'terminal',
 	'console': 'terminal',
+
+	// text-quote
+	'blockquote': 'text-quote',
 
 	// timer
 	'countdown': 'timer',

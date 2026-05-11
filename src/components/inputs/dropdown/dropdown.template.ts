@@ -33,7 +33,7 @@ export function dropdownTemplate(component: NLDDDropdown): TemplateResult {
 			<span class="dropdown__value">${component._displayValue}</span>
 			${renderValidationIcon(component)}
 			<div class="dropdown__picker-icon">
-				<nldd-icon name="chevron-up-down"></nldd-icon>
+				<nldd-icon name="chevron-up-chevron-down"></nldd-icon>
 			</div>
 		</div>
 	`;
