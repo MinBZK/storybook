@@ -185,6 +185,14 @@ export class NLDDListItem extends LitElement {
 		this._action?.classList.remove('is-pointer-focus');
 	};
 
+	/**
+	 * Delegates focus to the inner `.list-item__action` (the button or anchor),
+	 * so consumers can call `listItemEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this._action?.focus(options);
+	}
+
 	override render() {
 		return template(
 			this.type,

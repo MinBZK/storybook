@@ -470,6 +470,14 @@ export class NLDDComboBox extends LitElement {
 		}
 	}
 
+	/**
+	 * Delegates focus to the inner native `<input>`, so consumers can call
+	 * `comboBoxEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this._input?.focus(options);
+	}
+
 	override render() {
 		return comboBoxTemplate(this);
 	}

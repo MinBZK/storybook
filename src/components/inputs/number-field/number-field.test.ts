@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDNumberField } from './number-field.js';
 import './number-field.js';
 
@@ -439,5 +439,13 @@ describe('nldd-number-field – hide-spin-buttons', () => {
 		await waitForUpdate(nf);
 		form.reset();
 		expect(nf.value).toBe(3);
+	});
+
+	it('focus() delegates to the inner input', async () => {
+		el = await fixture<HTMLElement>('<nldd-number-field accessible-label="Aantal"></nldd-number-field>');
+		await waitForUpdate(el);
+		el.focus();
+		const input = el.shadowRoot!.querySelector('input');
+		expect(deepActiveElement()).toBe(input);
 	});
 });

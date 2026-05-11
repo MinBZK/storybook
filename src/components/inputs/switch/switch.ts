@@ -150,6 +150,14 @@ export class NLDDSwitch extends LitElement {
 		}));
 	}
 
+	/**
+	 * Delegates focus to the inner native checkbox `<input>`, so consumers can
+	 * call `switchEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLInputElement>('.switch__input')?.focus(options);
+	}
+
 	override render() {
 		return switchTemplate(this);
 	}

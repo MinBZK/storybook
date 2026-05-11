@@ -149,6 +149,14 @@ export class NLDDTextField extends LitElement {
 		this._input?.blur();
 	}
 
+	/**
+	 * Delegates focus to the inner native `<input>`, so consumers can call
+	 * `textFieldEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this._input?.focus(options);
+	}
+
 	override render() {
 		return textFieldTemplate(this);
 	}

@@ -124,6 +124,14 @@ export class NLDDButton extends LitElement {
 		return '';
 	}
 
+	/**
+	 * Delegates focus to the inner `<button>` (or `<a>` when `href` is set), so
+	 * consumers can call `buttonEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLElement>('.button')?.focus(options);
+	}
+
 	override render() {
 		return template.call(this, {
 			handleClick: this._handleClick.bind(this),

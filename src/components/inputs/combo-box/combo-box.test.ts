@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDComboBox } from './combo-box.js';
 import './combo-box.js';
 import '../../lists-and-menus/menu/menu.js';
@@ -594,5 +594,12 @@ describe('nldd-combo-box – text', () => {
 		// Both changed in same Lit update cycle → derive does not overwrite the explicit value.
 		expect(el.value).toBe('be');
 		expect(el.text).toBe('Custom Belgium');
+	});
+
+	it('focus() delegates to the inner input', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box accessible-label="Land"></nldd-combo-box>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('input'));
 	});
 });

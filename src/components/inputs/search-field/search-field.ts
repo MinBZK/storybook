@@ -167,6 +167,14 @@ export class NLDDSearchField extends LitElement {
 		}));
 	}
 
+	/**
+	 * Delegates focus to the inner native `<input>`, so consumers can call
+	 * `searchFieldEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this._input?.focus(options);
+	}
+
 	override render() {
 		return searchFieldTemplate(this);
 	}
