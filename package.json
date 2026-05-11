@@ -351,7 +351,7 @@
   },
   "scripts": {
     "build": "npm run build:styles && npm run validate:styles && npm run build:components",
-    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && cp src/components/forms/form/form.css dist/css/form.css && cp src/components/forms/form-section/form-section.css dist/css/form-section.css && printf '@import \"./settings.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.ttf src/assets/fonts/*.woff2 dist/fonts/",
+    "build:styles": "mkdir -p dist/css dist/fonts && cp src/assets/styles/settings.css dist/css/settings.css && cp src/assets/styles/palettes.generated.css dist/css/palettes.generated.css && cp src/components/content/rich-text/rich-text.css dist/css/rich-text.css && cp src/components/forms/form/form.css dist/css/form.css && cp src/components/forms/form-section/form-section.css dist/css/form-section.css && printf '@import \"./settings.css\";\\n@import \"./rich-text.css\";\\n@import \"./form-section.css\";\\n@import \"./form.css\";\\n' > dist/css/global.css && cp src/assets/fonts/*.woff2 dist/fonts/",
     "generate:palettes": "node scripts/generate-palettes.js",
     "validate:styles": "node scripts/validate-css-variables.js",
     "build:components": "npm run clean:components && npm run build:icons && npm run build:components:modules && npm run build:components:bundle && npm run build:exports",
