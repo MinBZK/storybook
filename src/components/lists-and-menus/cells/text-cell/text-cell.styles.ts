@@ -146,12 +146,36 @@ export const textCellStyles = css`
 		color: var(--context-cell-content-secondary-color, var(--semantics-content-secondary-color));
 	}
 
-	/* ## Color: inherit */
+	/* ## Color: accent */
 
-	:host([color='inherit']) .text-cell__text,
-	:host([color='inherit']) .text-cell__overline,
-	:host([color='inherit']) .text-cell__supporting-text {
-		color: inherit;
+	:host([color='accent']) .text-cell__text,
+	:host([color='accent']) .text-cell__overline,
+	:host([color='accent']) .text-cell__supporting-text {
+		color: var(--context-cell-content-accent-color, var(--semantics-content-accent-color));
+	}
+
+	/* ## Color: success */
+
+	:host([color='success']) .text-cell__text,
+	:host([color='success']) .text-cell__overline,
+	:host([color='success']) .text-cell__supporting-text {
+		color: var(--context-cell-content-success-color, var(--semantics-content-success-color));
+	}
+
+	/* ## Color: warning */
+
+	:host([color='warning']) .text-cell__text,
+	:host([color='warning']) .text-cell__overline,
+	:host([color='warning']) .text-cell__supporting-text {
+		color: var(--context-cell-content-warning-color, var(--semantics-content-warning-color));
+	}
+
+	/* ## Color: critical */
+
+	:host([color='critical']) .text-cell__text,
+	:host([color='critical']) .text-cell__overline,
+	:host([color='critical']) .text-cell__supporting-text {
+		color: var(--context-cell-content-critical-color, var(--semantics-content-critical-color));
 	}
 
 
