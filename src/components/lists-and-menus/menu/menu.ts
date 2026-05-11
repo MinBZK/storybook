@@ -900,7 +900,14 @@ export class NLDDMenu extends LitElement {
 			// without this, an opener whose submenu was closed via stall-
 			// dismissal or programmatic hidePopover keeps the bold accent
 			// even though the close should also drop the visual signal.
-			item.removeAttribute('highlighted');
+			// Skip when the item is currently focused — keyboard close
+			// (ArrowLeft) sync-focuses the opener before this async toggle
+			// fires, and that focus already set [highlighted] via the
+			// menu-item-focused chain; stripping it here would leave the
+			// opener visibly unhighlighted despite being focused.
+			if (!item.hasAttribute('data-focused')) {
+				item.removeAttribute('highlighted');
+			}
 			this._cancelHoverClose();
 			this._stopSafeTriangle();
 			// Counterpart to `submenu-open` — consumers tracking submenu state
