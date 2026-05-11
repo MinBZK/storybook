@@ -17,11 +17,26 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 	// nldd-inline-dialog, which is neither a menuitem nor an option — keeping
 	// the role here would violate ARIA's required-children rules.
 	const menuRole = isEmpty ? nothing : menuRoleMap[variant];
+	// Back button shows when this menu is itself a submenu and we're rendering
+	// in drill-in mode (touch / narrow viewport). The label is the parent
+	// item's text — gives the user context about which level they're in.
+	const showBack = this._isSubmenu && this._drillInMode && this._parentItem !== null;
 	return html`
 		<div class="menu"
 			role=${menuRole}
 			tabindex="-1"
 		>
+			${showBack ? html`
+				<button class="menu__back"
+					type="button"
+					@click=${this._handleBack}
+				>
+					<nldd-icon-cell class="menu__back-icon" size="20" icon="chevron-left"></nldd-icon-cell>
+					<nldd-spacer-cell size="6"></nldd-spacer-cell>
+					<nldd-text-cell text=${this._parentItem!.text}></nldd-text-cell>
+				</button>
+				<div class="menu__back-divider" role="separator"></div>
+			` : nothing}
 			<slot></slot>
 			${isEmpty ? html`
 				<div class="menu__empty">

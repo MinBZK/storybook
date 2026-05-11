@@ -304,6 +304,17 @@ export class NLDDMenu extends LitElement {
 	private _activeSubmenu: NLDDMenu | null = null;
 	private _activeSubmenuOpener: NLDDMenuItem | null = null;
 
+	/** When this menu is itself a submenu, points to the parent menu that
+	 * opened it. Set by the parent's _handleSubmenuOpen. null on the root.
+	 * @internal */
+	_parentMenu: NLDDMenu | null = null;
+
+	/** The menu-item that triggered this submenu — used to label the back
+	 * button in drill-in mode.
+	 * @internal */
+	@state()
+	_parentItem: NLDDMenuItem | null = null;
+
 	private _isOpen = false;
 	private _closedAt = 0;
 	private _cleanupAutoUpdate: (() => void) | null = null;
@@ -383,10 +394,38 @@ export class NLDDMenu extends LitElement {
 	};
 
 	/**
+	 * Drill-in mode is the touch-friendly rendering: a submenu replaces its
+	 * parent's view by anchoring to the root anchor (so visually it stacks
+	 * over the parent) and gets a back-button header. Otherwise (cascade)
+	 * the submenu opens beside its parent item.
+	 *
+	 * Detection is based on pointer type and viewport width — touch devices
+	 * and narrow viewports drill in, everything else cascades. No consumer
+	 * override; the choice is environment-driven.
+	 */
+	get _drillInMode(): boolean {
+		return matchMedia('(pointer: coarse), (max-width: 640px)').matches;
+	}
+
+	/** Walks the parent-menu chain up to the root (the menu that wasn't
+	 * opened by another menu — has no _parentMenu). */
+	get _rootMenu(): NLDDMenu {
+		let m: NLDDMenu = this;
+		while (m._parentMenu) m = m._parentMenu;
+		return m;
+	}
+
+	/** True when this menu is itself a submenu (was opened by another menu's
+	 * item). The root menu returns false. */
+	get _isSubmenu(): boolean {
+		return this._parentMenu !== null;
+	}
+
+	/**
 	 * Open a submenu in response to one of this menu's items dispatching
-	 * `submenu-open`. Currently always cascades — the submenu opens beside
-	 * its parent item via the right-start placement. Drill-in mode (mobile)
-	 * arrives in a follow-up commit and will route through the same handler.
+	 * `submenu-open`. Branches on drill-in vs cascade mode for anchor +
+	 * placement, but the lifecycle (popover.show, listen for close, clear
+	 * state on hide) is the same for both modes.
 	 */
 	private _handleSubmenuOpen = (event: CustomEvent<{ submenu: NLDDMenu, item: NLDDMenuItem }>): void => {
 		// Only handle events from items that are direct children of this menu.
@@ -403,8 +442,22 @@ export class NLDDMenu extends LitElement {
 			(this._activeSubmenu as HTMLElement).hidePopover?.();
 		}
 
-		submenu.anchorElement = item;
-		submenu.placement = 'right-start';
+		submenu._parentMenu = this;
+		submenu._parentItem = item;
+
+		if (this._drillInMode) {
+			// Drill-in: anchor to the root's anchor so all submenus open at the
+			// same screen position — visually stacks. Inherit root placement
+			// for consistent direction. Back button rendered in template.
+			const root = this._rootMenu;
+			submenu.anchorElement = root._getAnchorEl();
+			submenu.placement = root.placement;
+		} else {
+			// Cascade: anchor to the parent item, open beside it.
+			submenu.anchorElement = item;
+			submenu.placement = 'right-start';
+		}
+
 		this._activeSubmenu = submenu;
 		this._activeSubmenuOpener = item;
 		item._submenuOpen = true;
@@ -418,11 +471,42 @@ export class NLDDMenu extends LitElement {
 				this._activeSubmenu = null;
 				this._activeSubmenuOpener = null;
 			}
+			submenu._parentMenu = null;
+			submenu._parentItem = null;
 			item._submenuOpen = false;
 		};
 		submenu.addEventListener('toggle', onToggle);
 
 		(submenu as HTMLElement).showPopover?.();
+	};
+
+	/** Close this submenu when the back button is clicked, returning to the
+	 * parent view (which is still open as a popover behind this one in
+	 * drill-in mode).
+	 * @internal */
+	_handleBack = (): void => {
+		(this as HTMLElement).hidePopover?.();
+	};
+
+	/** Last cached drill-in mode value, so we only act when it actually
+	 * changes across a resize event. */
+	private _lastDrillInMode: boolean | null = null;
+
+	/** Close any open submenu when the cascade ↔ drill-in threshold is
+	 * crossed during a resize. Switching the rendering of an already-open
+	 * submenu mid-flight (anchor + placement + back button) is more
+	 * disorienting than a clean reset to the root view. */
+	private _handleViewportResize = (): void => {
+		const current = this._drillInMode;
+		if (this._lastDrillInMode === null) {
+			this._lastDrillInMode = current;
+			return;
+		}
+		if (this._lastDrillInMode === current) return;
+		this._lastDrillInMode = current;
+		if (this._activeSubmenu) {
+			(this._activeSubmenu as HTMLElement).hidePopover?.();
+		}
 	};
 
 	/**
@@ -450,6 +534,10 @@ export class NLDDMenu extends LitElement {
 		this.addEventListener('submenu-open', this._handleSubmenuOpen as EventListener);
 		this.addEventListener('select', this._handleSelectChainClose);
 		document.addEventListener('click', this._handleDocumentClick);
+		// Close any open submenu when the viewport crosses the cascade ↔ drill-in
+		// threshold mid-session — re-rendering between modes mid-flight would
+		// require recomputing anchors and is more disorienting than a clean reset.
+		window.addEventListener('resize', this._handleViewportResize);
 	}
 
 	override firstUpdated(): void {
@@ -466,6 +554,7 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('submenu-open', this._handleSubmenuOpen as EventListener);
 		this.removeEventListener('select', this._handleSelectChainClose);
 		document.removeEventListener('click', this._handleDocumentClick);
+		window.removeEventListener('resize', this._handleViewportResize);
 		this._cleanupAutoUpdate?.();
 		this._cleanupAutoUpdate = null;
 	}

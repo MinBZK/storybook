@@ -64,6 +64,50 @@ export const menuStyles = css`
 	.menu__empty {
 		padding: var(--primitives-space-8);
 	}
+
+
+	/* # Back button — drill-in mode header */
+
+	.menu__back {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		width: 100%;
+		min-height: var(--_menu-item-size);
+		padding: var(--primitives-space-8);
+		box-sizing: border-box;
+		border: none;
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background: transparent;
+		text-align: start;
+		appearance: none;
+		--context-cell-content-color: var(--semantics-content-secondary-color);
+
+		@media (pointer: fine) {
+			padding: var(--primitives-space-4) var(--primitives-space-8);
+			border-radius: var(--semantics-controls-sm-corner-radius);
+		}
+	}
+
+	.menu__back:hover,
+	.menu__back:active {
+		background-color: var(--components-menu-item-is-highlighted-background-color);
+		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
+	}
+
+	.menu__back:focus-visible {
+		position: relative;
+		z-index: 1;
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	.menu__back-divider {
+		height: var(--semantics-dividers-thickness);
+		background-color: var(--semantics-dividers-color);
+		margin: var(--primitives-space-4) 0;
+	}
 `;
 
 export const menuItemStyles = css`
