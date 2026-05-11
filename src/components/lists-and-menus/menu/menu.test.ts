@@ -480,3 +480,99 @@ describe('nldd-menu-group', () => {
 		cleanup(menu);
 	});
 });
+
+describe('nldd-menu-item with submenu', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('detects a child nldd-menu as a submenu', async () => {
+		el = await fixture(`
+			<nldd-menu-item text="Bestand">
+				<nldd-menu>
+					<nldd-menu-item text="Open"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+		`);
+		await waitForUpdate(el);
+		expect((el as unknown as { _hasSubmenu: boolean })._hasSubmenu).toBe(true);
+	});
+
+	it('renders aria-haspopup="menu" on the inner button when a submenu is present', async () => {
+		el = await fixture(`
+			<nldd-menu-item text="Bestand">
+				<nldd-menu>
+					<nldd-menu-item text="Open"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+		`);
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button')!;
+		expect(button.getAttribute('aria-haspopup')).toBe('menu');
+		expect(button.getAttribute('aria-expanded')).toBe('false');
+	});
+
+	it('does not render aria-haspopup when no submenu is present', async () => {
+		el = await fixture('<nldd-menu-item text="Plain"></nldd-menu-item>');
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button')!;
+		expect(button.hasAttribute('aria-haspopup')).toBe(false);
+	});
+
+	it('renders a chevron-right indicator when a submenu is present', async () => {
+		el = await fixture(`
+			<nldd-menu-item text="Bestand">
+				<nldd-menu>
+					<nldd-menu-item text="Open"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+		`);
+		await waitForUpdate(el);
+		const indicator = el.shadowRoot!.querySelector('.menu__item-submenu-indicator');
+		expect(indicator).not.toBeNull();
+	});
+
+	it('dispatches submenu-open instead of select when clicked', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		let selectFired = false;
+		let submenuOpenFired = false;
+		menu.addEventListener('select', () => { selectFired = true; });
+		menu.addEventListener('submenu-open', () => { submenuOpenFired = true; });
+		item.shadowRoot!.querySelector('button')!.click();
+		expect(submenuOpenFired).toBe(true);
+		expect(selectFired).toBe(false);
+		cleanup(menu);
+	});
+
+	it('marks the item as expanded while its submenu is open', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const button = item.shadowRoot!.querySelector('button')!;
+		// Trigger submenu-open via click; the parent menu's listener wires it up.
+		button.click();
+		await waitForUpdate(item);
+		expect(button.getAttribute('aria-expanded')).toBe('true');
+		cleanup(menu);
+	});
+});

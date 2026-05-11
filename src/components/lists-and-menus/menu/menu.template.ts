@@ -40,6 +40,7 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox' = 'menu') {
 	const hasCheckState = this.type !== 'button' && variant === 'menu';
 	const role = itemRoleMap[this.type][variant];
+	const hasSubmenu = this._hasSubmenu;
 	return html`
 		<button class="menu__item"
 			type="button"
@@ -47,6 +48,8 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 			?disabled=${this.disabled}
 			aria-checked=${hasCheckState ? String(this.selected) : nothing}
 			aria-selected=${variant === 'listbox' ? String(this.selected) : nothing}
+			aria-haspopup=${hasSubmenu ? 'menu' : nothing}
+			aria-expanded=${hasSubmenu ? String(this._submenuOpen) : nothing}
 			@click=${this._handleClick}
 		>
 			${hasCheckState ? html`
@@ -70,6 +73,13 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 					color="secondary"
 					text=${this.details}
 				></nldd-text-cell>
+			` : nothing}
+			${hasSubmenu ? html`
+				<nldd-spacer-cell size="6"></nldd-spacer-cell>
+				<nldd-icon-cell class="menu__item-submenu-indicator"
+					size="20"
+					icon="chevron-right"
+				></nldd-icon-cell>
 			` : nothing}
 		</button>
 	`;

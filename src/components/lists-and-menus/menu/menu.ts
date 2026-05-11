@@ -128,6 +128,11 @@ export class NLDDMenuItem extends LitElement {
 	@state()
 	menuVariant: 'menu' | 'listbox' = 'menu';
 
+	/** Tracks whether this item's submenu (if any) is currently open. Set by
+	 * the parent nldd-menu via the `submenu-open`/`submenu-close` lifecycle. */
+	@state()
+	_submenuOpen = false;
+
 	private static _idCounter = 0;
 
 	override connectedCallback(): void {
@@ -150,8 +155,37 @@ export class NLDDMenuItem extends LitElement {
 		focusable?.focus(options);
 	}
 
+	/** True when this item has an `<nldd-menu>` direct child — that menu is
+	 * its submenu. Detected once at firstUpdated; mutating the children later
+	 * is not supported in v1. */
+	get _submenuEl(): NLDDMenu | null {
+		return this.querySelector(':scope > nldd-menu');
+	}
+
+	get _hasSubmenu(): boolean {
+		return this._submenuEl !== null;
+	}
+
+	override firstUpdated(): void {
+		// Cache submenu presence in a class for CSS / debugging hooks. Also
+		// re-render once if it turns out we have a submenu (chevron + ARIA).
+		if (this._hasSubmenu) {
+			this.requestUpdate();
+		}
+	}
+
 	_handleClick(): void {
 		if (this.disabled) return;
+		// Submenu items don't fire `select` — they open their submenu instead.
+		// Item is either an action OR a submenu opener, not both.
+		if (this._hasSubmenu) {
+			this.dispatchEvent(new CustomEvent('submenu-open', {
+				detail: { submenu: this._submenuEl, item: this },
+				bubbles: true,
+				composed: false,
+			}));
+			return;
+		}
 		this.dispatchEvent(new CustomEvent('select', {
 			bubbles: true,
 			composed: true,
@@ -265,6 +299,11 @@ export class NLDDMenu extends LitElement {
 	@state()
 	private _isEmpty = false;
 
+	/** Currently open child submenu (a direct descendant nldd-menu opened
+	 * by one of this menu's items). null when no submenu is open. */
+	private _activeSubmenu: NLDDMenu | null = null;
+	private _activeSubmenuOpener: NLDDMenuItem | null = null;
+
 	private _isOpen = false;
 	private _closedAt = 0;
 	private _cleanupAutoUpdate: (() => void) | null = null;
@@ -343,6 +382,59 @@ export class NLDDMenu extends LitElement {
 		this._setHighlight(item);
 	};
 
+	/**
+	 * Open a submenu in response to one of this menu's items dispatching
+	 * `submenu-open`. Currently always cascades — the submenu opens beside
+	 * its parent item via the right-start placement. Drill-in mode (mobile)
+	 * arrives in a follow-up commit and will route through the same handler.
+	 */
+	private _handleSubmenuOpen = (event: CustomEvent<{ submenu: NLDDMenu, item: NLDDMenuItem }>): void => {
+		// Only handle events from items that are direct children of this menu.
+		// Items inside a sub-submenu fire their own submenu-open which bubbles
+		// here too — we let that one bubble past, our descendant menu handles it.
+		const item = event.detail.item;
+		if (item.closest('nldd-menu') !== this) return;
+		event.stopPropagation();
+
+		const submenu = event.detail.submenu;
+		// Close any other submenu that's already open in this menu before
+		// opening a new one — only one peer submenu visible at a time.
+		if (this._activeSubmenu && this._activeSubmenu !== submenu) {
+			(this._activeSubmenu as HTMLElement).hidePopover?.();
+		}
+
+		submenu.anchorElement = item;
+		submenu.placement = 'right-start';
+		this._activeSubmenu = submenu;
+		this._activeSubmenuOpener = item;
+		item._submenuOpen = true;
+
+		// Listen once for the submenu's close so we can clear state and ARIA.
+		const onToggle = (e: Event) => {
+			const tg = e as ToggleEvent;
+			if (tg.newState !== 'closed') return;
+			submenu.removeEventListener('toggle', onToggle);
+			if (this._activeSubmenu === submenu) {
+				this._activeSubmenu = null;
+				this._activeSubmenuOpener = null;
+			}
+			item._submenuOpen = false;
+		};
+		submenu.addEventListener('toggle', onToggle);
+
+		(submenu as HTMLElement).showPopover?.();
+	};
+
+	/**
+	 * Close this menu when a `select` event bubbles up — selecting an item
+	 * anywhere in the menu (or any descendant submenu) closes the entire
+	 * popover chain so the action feels final. The select event is dispatched
+	 * with `composed: true` so it crosses every ancestor menu in the chain.
+	 */
+	private _handleSelectChainClose = (): void => {
+		(this as HTMLElement).hidePopover?.();
+	};
+
 	// — Lifecycle callbacks ————————————————————————————————————————————————————
 
 	override connectedCallback(): void {
@@ -355,6 +447,8 @@ export class NLDDMenu extends LitElement {
 		this.addEventListener('mouseenter', this._handleMenuItemMouseenter, true);
 		this.addEventListener('mouseleave', this._handleMouseleave);
 		this.addEventListener('menu-item-focused', this._handleMenuItemFocused);
+		this.addEventListener('submenu-open', this._handleSubmenuOpen as EventListener);
+		this.addEventListener('select', this._handleSelectChainClose);
 		document.addEventListener('click', this._handleDocumentClick);
 	}
 
@@ -369,6 +463,8 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('mouseenter', this._handleMenuItemMouseenter, true);
 		this.removeEventListener('mouseleave', this._handleMouseleave);
 		this.removeEventListener('menu-item-focused', this._handleMenuItemFocused);
+		this.removeEventListener('submenu-open', this._handleSubmenuOpen as EventListener);
+		this.removeEventListener('select', this._handleSelectChainClose);
 		document.removeEventListener('click', this._handleDocumentClick);
 		this._cleanupAutoUpdate?.();
 		this._cleanupAutoUpdate = null;

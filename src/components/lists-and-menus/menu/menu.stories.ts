@@ -111,6 +111,38 @@ export const WithGroups = {
 	},
 };
 
+export const WithSubmenu = {
+	render: () => html`
+		<nldd-button id="button-submenu" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-submenu" anchor="button-submenu">
+			<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+			<nldd-menu-item text="Open recent">
+				<nldd-menu>
+					<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>
+					<nldd-menu-item text="Notulen.docx"></nldd-menu-item>
+					<nldd-menu-item text="Plan.pdf"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+			<nldd-menu-item text="Exporteer">
+				<nldd-menu>
+					<nldd-menu-item text="Als PDF"></nldd-menu-item>
+					<nldd-menu-item text="Als CSV"></nldd-menu-item>
+					<nldd-menu-item text="Als Excel"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Sluiten" details="Cmd+W"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Wrap een `<nldd-menu>` in een `<nldd-menu-item>` om er een submenu van te maken. Het item krijgt automatisch een chevron-rechts indicator en `aria-haspopup="menu"`. Klik op het item opent het submenu naast de parent (cascade). Een item is óf een actie óf een submenu-opener — geen beide. Selectie van een item ergens in de keten sluit alle popovers tegelijk.',
+			},
+		},
+	},
+};
+
 export const MixedFlatAndGroups = {
 	render: () => html`
 		<nldd-button id="button-mixed" expandable text="Open menu"></nldd-button>
