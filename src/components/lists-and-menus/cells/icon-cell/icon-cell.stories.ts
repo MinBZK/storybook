@@ -21,10 +21,11 @@ export default {
 			description: 'Icon size in pixels',
 			table: { defaultValue: { summary: '24' } },
 		},
-		selected: {
-			control: 'boolean',
-			description: 'Selected state',
-			table: { defaultValue: { summary: 'false' } },
+		color: {
+			control: 'select',
+			options: ['default', 'secondary', 'accent', 'success', 'warning', 'critical'],
+			description: 'Color variant of the icon',
+			table: { defaultValue: { summary: 'default' } },
 		},
 		icon: {
 			control: 'select',
@@ -38,17 +39,35 @@ export const Default = {
 	args: {
 		size: '24',
 		verticalAlignment: 'center',
-		selected: false,
+		color: 'default',
 		icon: 'icon-placeholder',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-icon-cell
 			vertical-alignment=${args.verticalAlignment}
 			size=${args.size}
-			?selected=${args.selected}
+			color=${args.color}
 			icon=${args.icon}
 		></nldd-icon-cell>
 	`,
+};
+
+export const Colors = {
+	render: () => html`
+		<div style="display: flex; gap: 16px; align-items: center;">
+			<nldd-icon-cell size="24" icon="icon-placeholder"></nldd-icon-cell>
+			<nldd-icon-cell color="secondary" size="24" icon="icon-placeholder"></nldd-icon-cell>
+			<nldd-icon-cell color="accent" size="24" icon="icon-placeholder"></nldd-icon-cell>
+			<nldd-icon-cell color="success" size="24" icon="icon-placeholder"></nldd-icon-cell>
+			<nldd-icon-cell color="warning" size="24" icon="icon-placeholder"></nldd-icon-cell>
+			<nldd-icon-cell color="critical" size="24" icon="icon-placeholder"></nldd-icon-cell>
+		</div>
+	`,
+	parameters: {
+		docs: {
+			description: { story: 'Default · secondary · accent · success · warning · critical.' },
+		},
+	},
 };
 
 export const AllSizes = {
@@ -58,15 +77,6 @@ export const AllSizes = {
 			<nldd-icon-cell size="20" icon="icon-placeholder"></nldd-icon-cell>
 			<nldd-icon-cell size="24" icon="icon-placeholder"></nldd-icon-cell>
 			<nldd-icon-cell size="32" icon="icon-placeholder"></nldd-icon-cell>
-		</div>
-	`,
-};
-
-export const Selected = {
-	render: () => html`
-		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-icon-cell size="24" icon="icon-placeholder"></nldd-icon-cell>
-			<nldd-icon-cell size="24" selected icon="icon-placeholder"></nldd-icon-cell>
 		</div>
 	`,
 };
