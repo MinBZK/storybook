@@ -104,6 +104,48 @@ export const Standaard = {
 	args: {},
 };
 
+export const VoorafIngevuld = {
+	render: () => html`
+	<div style="display: flex; flex-direction: column; gap: 16px;">
+		<div>
+			<p style="margin: 0 0 4px; font-size: 12px; color: var(--semantics-content-secondary-color);">
+				Auto-derive — alleen <code>value="nl"</code> gezet, de combo-box leest <code>text="Nederland"</code> van het matching menu-item.
+			</p>
+			<nldd-combo-box value="nl" accessible-label="Land" placeholder="Kies een land">
+				<nldd-menu empty-text="Geen resultaten">
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+					<nldd-menu-item text="Duitsland" value="de"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		</div>
+		<div>
+			<p style="margin: 0 0 4px; font-size: 12px; color: var(--semantics-content-secondary-color);">
+				Expliciet — <code>value</code> én <code>text</code> beide gezet (consumer bepaalt het label, bv. een custom format zoals <code>"Nederland (NL)"</code>).
+			</p>
+			<nldd-combo-box value="nl" text="Nederland (NL)" accessible-label="Land" placeholder="Kies een land">
+				<nldd-menu empty-text="Geen resultaten">
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		</div>
+	</div>
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: `
+Voor het bewerken van een bestaand record: zet \`value\` op het opgeslagen form-id en de input wordt automatisch gevuld met het label van het matching \`<nldd-menu-item>\`.
+
+Voor een aangepast label-format (bijv. \`"Nederland (NL)"\` in plaats van \`"Nederland"\`) zet je \`text\` expliciet — de auto-derive slaat 'm dan over.
+				`.trim(),
+			},
+		},
+	},
+};
+
 export const MetZoektermen = {
 	render: () => html`
 	<nldd-combo-box placeholder="Zoek een land (probeer 'dutch' of 'holland')">
