@@ -495,10 +495,13 @@ export class NLDDMenu extends LitElement {
 			if (inSubmenu) {
 				// Arrived. Triangle is no longer needed — drop the apex so a
 				// later excursion back outside doesn't reuse a stale wedge.
+				// Also drop the opener's "in transit" highlight; the focused
+				// item now lives inside the submenu.
 				this._movingTowardSubmenu = false;
 				this._cancelHoverClose();
 				this._lastCursorPos = p;
 				this._safeTriangleApex = null;
+				this._activeSubmenuOpener?.removeAttribute('highlighted');
 				return;
 			}
 
@@ -526,6 +529,16 @@ export class NLDDMenu extends LitElement {
 				this._movingTowardSubmenu = this._pointInTriangle(p, this._safeTriangleApex, tl, bl);
 			}
 			this._lastCursorPos = p;
+
+			// While the cursor is travelling through the safe triangle, keep
+			// the opener visually highlighted. The aria-expanded "open" style
+			// alone reads too subtle as transit feedback — promote to the bold
+			// accent so the user can see "yes, you're still navigating to
+			// this submenu's branch". The mouseenter / mouseleave handlers
+			// take care of clearing it once the cursor settles elsewhere.
+			if (this._activeSubmenuOpener && this._movingTowardSubmenu) {
+				this._activeSubmenuOpener.setAttribute('highlighted', '');
+			}
 
 			// Direction-reversal recovery: when the flag flips true → false,
 			// the cursor may already be sitting on a peer item whose natural
@@ -757,6 +770,11 @@ export class NLDDMenu extends LitElement {
 			submenu._parentMenu = null;
 			submenu._parentItem = null;
 			item._submenuOpen = false;
+			// Drop any safe-triangle "in transit" highlight on the opener —
+			// without this, an opener whose submenu was closed via stall-
+			// dismissal or programmatic hidePopover keeps the bold accent
+			// even though the close should also drop the visual signal.
+			item.removeAttribute('highlighted');
 			this._cancelHoverClose();
 			this._stopSafeTriangle();
 			// Counterpart to `submenu-open` — consumers tracking submenu state

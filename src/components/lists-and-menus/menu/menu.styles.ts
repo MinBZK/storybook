@@ -166,14 +166,16 @@ export const menuItemStyles = css`
 
 	/* # Highlighted or pressed
 	 *
-	 * For openers (aria-expanded="true"), [highlighted] is excluded from this
-	 * rule — when a deep submenu is open, [highlighted] can stay set on
-	 * ancestor openers as stale state (cursor moved to a descendant menu
-	 * which doesn't fire mouseenter on this menu's items, so this menu's
-	 * _clearHighlight never runs). For openers we promote to accent only
-	 * when the cursor is physically there (:hover) or on press (:active). */
+	 * [highlighted] always upgrades to the bold accent — including on openers
+	 * with an open submenu. The menu component keeps [highlighted] in sync
+	 * with where the user is logically navigating (set by mouseenter,
+	 * keyboard nav, or the safe-triangle while in transit; cleared on
+	 * peer-hover, submenu-entry, mouseleave, submenu-close), so a stale
+	 * highlighted attr on an opener shouldn't occur. The :hover branch
+	 * additionally covers the case where the cursor sits directly on an
+	 * open opener (since [highlighted] gets cleared at submenu-open time). */
 
-	:host([highlighted]) .menu__item:not([aria-expanded="true"]),
+	:host([highlighted]) .menu__item,
 	.menu__item[aria-expanded="true"]:hover,
 	.menu__item:active {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
@@ -223,7 +225,7 @@ export const menuItemStyles = css`
 			outline-offset: -1px;
 		}
 
-		:host([highlighted]) .menu__item:not([aria-expanded="true"]),
+		:host([highlighted]) .menu__item,
 		.menu__item[aria-expanded="true"]:hover {
 			background-color: Highlight;
 			color: HighlightText;
