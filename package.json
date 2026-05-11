@@ -336,7 +336,11 @@
       "default": "./dist/components/status-and-feedback/badge/badge.js"
     },
     "./styles": "./dist/css/global.css",
-    "./styles/tokens": "./dist/css/settings.css"
+    "./styles/tokens": "./dist/css/settings.css",
+    "./tokens": {
+      "types": "./dist/assets/styles/tokens.d.ts",
+      "default": "./dist/assets/styles/tokens.js"
+    }
   },
   "files": [
     "dist"

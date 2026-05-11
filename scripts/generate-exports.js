@@ -56,6 +56,13 @@ const exports = {
 	...componentExports,
 	'./styles': './dist/css/global.css',
 	'./styles/tokens': './dist/css/settings.css',
+	// JS-accessible design tokens (breakpoints, etc.) — for consumers that
+	// need to drive matchMedia / layout logic from the same source as CSS.
+	// Aggregator lives at src/assets/styles/tokens.ts.
+	'./tokens': {
+		types: './dist/assets/styles/tokens.d.ts',
+		default: './dist/assets/styles/tokens.js',
+	},
 };
 
 pkg.exports = exports;
