@@ -204,6 +204,9 @@ export const aliases = {
 	// pencil
 	'write': 'pencil',
 
+	// photo
+	'image': 'photo',
+
 	// pencil-on-square
 	'edit': 'pencil-on-square',
 
