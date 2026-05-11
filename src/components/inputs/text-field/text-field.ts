@@ -141,10 +141,6 @@ export class NLDDTextField extends LitElement {
 		}));
 	}
 
-	public focus(): void {
-		this._input?.focus();
-	}
-
 	public blur(): void {
 		this._input?.blur();
 	}
