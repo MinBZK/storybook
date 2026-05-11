@@ -307,6 +307,11 @@ export class NLDDMenu extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDMenuTranslations> = {};
 
+	/** Debug helper: when true, renders a translucent SVG overlay showing the
+	 * safe triangle's current shape. Useful for debugging — off in production. */
+	@property({ type: Boolean, reflect: true, attribute: 'debug-safe-triangle' })
+	debugSafeTriangle = false;
+
 	/**
 	 * Custom filter function. Defaults to case-insensitive substring match
 	 * on text, value, and aliases attributes.
@@ -422,7 +427,7 @@ export class NLDDMenu extends LitElement {
 	 * long, dismiss the triangle and let whatever item is under the cursor
 	 * become interactive. Without this, a paused cursor would stay
 	 * "protected" indefinitely and the user couldn't peer-hover. */
-	private static readonly _SAFE_TRIANGLE_STALL_DISMISS_MS = 1000;
+	private static readonly _SAFE_TRIANGLE_STALL_DISMISS_MS = 750;
 
 	private _handleMenuItemMouseenter = (event: MouseEvent): void => {
 		const item = (event.target as Element).closest('nldd-menu-item') as NLDDMenuItem | null;
@@ -502,21 +507,98 @@ export class NLDDMenu extends LitElement {
 				this._lastCursorPos = p;
 				this._safeTriangleApex = null;
 				this._activeSubmenuOpener?.removeAttribute('highlighted');
+				this._removeSafeTriangleOverlay();
 				return;
 			}
 
-			// Frozen safe triangle (Mayank/ishadeed pattern): apex captured
-			// once on the first mousemove after submenu open and stays fixed
-			// until the cursor enters the submenu. Each mousemove just tests
-			// the current point against the unchanged wedge — no shrinking
-			// per-frame, no jitter sensitivity, minimal per-frame compute.
+			// Safe triangle (Mayank/ishadeed pattern): apex pinned at the exit
+			// point on the opener (top or bottom edge) once the cursor crosses
+			// out of the opener; stays fixed until the cursor enters the
+			// submenu OR returns to the opener (then re-pins on the next exit).
+			const opener = this._activeSubmenuOpener;
+			const openerRect = opener?.getBoundingClientRect();
+			const cursorOnOpener = openerRect
+				&& p.x >= openerRect.left && p.x <= openerRect.right
+				&& p.y >= openerRect.top && p.y <= openerRect.bottom;
+			// Whether the previous mousemove sample was inside the opener.
+			// Used to gate apex pinning so it only fires on a true exit from
+			// the opener, not on cursor motion that happens to be below the
+			// opener's bottom edge but came from elsewhere (e.g. exiting the
+			// submenu on its far side).
+			const lastOnOpener = openerRect && this._lastCursorPos
+				&& this._lastCursorPos.x >= openerRect.left && this._lastCursorPos.x <= openerRect.right
+				&& this._lastCursorPos.y >= openerRect.top && this._lastCursorPos.y <= openerRect.bottom;
+
+			// If the cursor came back to the opener while an apex was pinned,
+			// drop it so the next exit can re-pin from the new exit point.
+			// Leave the overlay drawn — it gets overwritten on the next pin
+			// rather than flashed in/out on every back-and-forth.
+			if (this._safeTriangleApex !== null && cursorOnOpener) {
+				this._safeTriangleApex = null;
+			}
+
 			const wasMoving = this._movingTowardSubmenu;
 			if (this._safeTriangleApex === null) {
-				this._safeTriangleApex = p;
-				// Benefit-of-the-doubt: the first sample treats the cursor as
-				// "still on path" so peers don't activate before the user has
-				// even started moving.
-				this._movingTowardSubmenu = true;
+				if (cursorOnOpener) {
+					// On opener — give peers benefit of doubt (don't activate
+					// brief pass-throughs) and wait for an exit direction.
+					// Render a live preview wedge so the user can see the safe
+					// area following the cursor before commitment; freezes on
+					// bottom-exit.
+					this._movingTowardSubmenu = true;
+					this._lastCursorPos = p;
+					// Set the opener highlight here too so it's already on
+					// the moment the cursor is on the opener — without this,
+					// the highlight only appears at exit, causing a visible
+					// "pop" on the first transit through the safe area.
+					if (this._activeSubmenuOpener
+						&& !this._activeSubmenuOpener.hasAttribute('highlighted')) {
+						this._setHighlight(this._activeSubmenuOpener);
+					}
+					if (this.debugSafeTriangle && openerRect) {
+						// Live preview follows the cursor — apex band of ±1px
+						// around the actual pointer position. On exit it
+						// freezes at the matching opener edge.
+						const previewTop = { x: p.x, y: p.y - 1 };
+						const previewBottom = { x: p.x, y: p.y + 1 };
+						const nearX = p.x < r.left ? r.left : r.right;
+						this._renderSafeTriangleOverlay([
+							previewTop,
+							{ x: nearX, y: r.top },
+							{ x: nearX, y: r.bottom },
+							previewBottom,
+						]);
+					}
+					return;
+				}
+				if (openerRect && lastOnOpener && (p.y > openerRect.bottom || p.y < openerRect.top)) {
+					// Crossed above or below the opener — pin apex on the
+					// matching edge at the cursor's x. Requires the previous
+					// sample to have been inside the opener so this only
+					// fires on a real exit, not on cursor motion that
+					// happens past the edge for unrelated reasons (e.g.
+					// exiting the submenu on its far side).
+					const apexX = Math.max(openerRect.left, Math.min(openerRect.right, p.x));
+					const apexY = p.y > openerRect.bottom ? openerRect.bottom : openerRect.top;
+					this._safeTriangleApex = { x: apexX, y: apexY };
+					this._movingTowardSubmenu = true;
+				} else {
+					// Exited sideways (or no `lastOnOpener` history) — no
+					// protection. Drop the flag and synthesize mouseenter on
+					// whatever's under the cursor: the natural mouseenter
+					// already fired (during on-opener phase with flag=true)
+					// and bailed, so without this the peer would stay
+					// non-interactive until the cursor leaves and re-enters.
+					this._movingTowardSubmenu = false;
+					this._lastCursorPos = p;
+					if (wasMoving) {
+						const el = document.elementFromPoint(p.x, p.y);
+						if (el) {
+							this._handleMenuItemMouseenter({ target: el } as unknown as MouseEvent);
+						}
+					}
+					return;
+				}
 			} else {
 				// Pick the submenu edge facing the cursor: left edge when
 				// submenu is to the right of the cursor (default right-start),
@@ -524,20 +606,31 @@ export class NLDDMenu extends LitElement {
 				// Without this, the wedge would point away from the submenu
 				// after a flip and the protection would be useless.
 				const nearX = p.x < r.left ? r.left : r.right;
+				const apex = this._safeTriangleApex;
+				const apexTop = { x: apex.x, y: apex.y - 1 };
+				const apexBottom = { x: apex.x, y: apex.y + 1 };
 				const tl = { x: nearX, y: r.top };
 				const bl = { x: nearX, y: r.bottom };
-				this._movingTowardSubmenu = this._pointInTriangle(p, this._safeTriangleApex, tl, bl);
+				// 4-point wedge: apex band of ±1px around the exit point for
+				// jitter tolerance. Point order (clockwise): apexTop → tl → bl → apexBottom.
+				this._movingTowardSubmenu = this._pointInPolygon(p, [apexTop, tl, bl, apexBottom]);
+				if (this.debugSafeTriangle) {
+					this._renderSafeTriangleOverlay([apexTop, tl, bl, apexBottom]);
+				}
 			}
 			this._lastCursorPos = p;
 
 			// While the cursor is travelling through the safe triangle, keep
-			// the opener visually highlighted. The aria-expanded "open" style
-			// alone reads too subtle as transit feedback — promote to the bold
-			// accent so the user can see "yes, you're still navigating to
-			// this submenu's branch". The mouseenter / mouseleave handlers
-			// take care of clearing it once the cursor settles elsewhere.
-			if (this._activeSubmenuOpener && this._movingTowardSubmenu) {
-				this._activeSubmenuOpener.setAttribute('highlighted', '');
+			// the opener visually highlighted. Use _setHighlight so any peer
+			// that briefly got highlighted (e.g. via the synthetic mouseenter
+			// when the cursor crossed outside the polygon) is cleared — a
+			// direct setAttribute would leave both items highlighted and
+			// flicker between them on rapid back-and-forth. Skip the call
+			// when the opener already has the attribute to avoid DOM churn
+			// while the cursor stays inside the safe area.
+			if (this._activeSubmenuOpener && this._movingTowardSubmenu
+				&& !this._activeSubmenuOpener.hasAttribute('highlighted')) {
+				this._setHighlight(this._activeSubmenuOpener);
 			}
 
 			// Direction-reversal recovery: when the flag flips true → false,
@@ -614,6 +707,41 @@ export class NLDDMenu extends LitElement {
 		this._lastCursorPos = null;
 		this._safeTriangleApex = null;
 		this._movingTowardSubmenu = false;
+		this._removeSafeTriangleOverlay();
+	}
+
+	// — Debug overlay ————————————————————————————————————————————————————
+
+	private _safeTriangleOverlay: HTMLDivElement | null = null;
+
+	private _renderSafeTriangleOverlay(vertices: Array<{ x: number, y: number }>): void {
+		const NS = 'http://www.w3.org/2000/svg';
+		if (this._safeTriangleOverlay === null) {
+			const wrapper = document.createElement('div');
+			wrapper.setAttribute('popover', 'manual');
+			wrapper.setAttribute('aria-hidden', 'true');
+			wrapper.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;border:0;padding:0;margin:0;background:transparent;overflow:visible;';
+			const svg = document.createElementNS(NS, 'svg');
+			svg.setAttribute('width', '100%');
+			svg.setAttribute('height', '100%');
+			const polygon = document.createElementNS(NS, 'polygon');
+			polygon.setAttribute('fill', 'rgba(255, 0, 128, 0.15)');
+			polygon.setAttribute('stroke', 'rgba(255, 0, 128, 0.85)');
+			polygon.setAttribute('stroke-width', '1');
+			svg.appendChild(polygon);
+			wrapper.appendChild(svg);
+			document.body.appendChild(wrapper);
+			wrapper.showPopover();
+			this._safeTriangleOverlay = wrapper;
+		}
+		const polygon = this._safeTriangleOverlay.querySelector('polygon')!;
+		polygon.setAttribute('points', vertices.map(v => `${v.x},${v.y}`).join(' '));
+	}
+
+	private _removeSafeTriangleOverlay(): void {
+		this._safeTriangleOverlay?.hidePopover?.();
+		this._safeTriangleOverlay?.remove();
+		this._safeTriangleOverlay = null;
 	}
 
 	private _cancelHoverOpen(): void {
@@ -642,22 +770,20 @@ export class NLDDMenu extends LitElement {
 		return false;
 	}
 
-	/** Standard barycentric point-in-triangle test. Returns true when p sits
-	 * inside (or on the edge of) the triangle abc. */
-	private _pointInTriangle(
-		p: { x: number, y: number },
-		a: { x: number, y: number },
-		b: { x: number, y: number },
-		c: { x: number, y: number },
-	): boolean {
-		const sign = (p1: { x: number, y: number }, p2: { x: number, y: number }, p3: { x: number, y: number }) =>
-			(p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
-		const d1 = sign(p, a, b);
-		const d2 = sign(p, b, c);
-		const d3 = sign(p, c, a);
-		const hasNeg = d1 < 0 || d2 < 0 || d3 < 0;
-		const hasPos = d1 > 0 || d2 > 0 || d3 > 0;
-		return !(hasNeg && hasPos);
+	/** Convex point-in-polygon test via consistent edge-cross-product sign.
+	 * Vertices must be ordered (clockwise or counter-clockwise). */
+	private _pointInPolygon(p: { x: number, y: number }, vertices: Array<{ x: number, y: number }>): boolean {
+		let hasNeg = false;
+		let hasPos = false;
+		for (let i = 0; i < vertices.length; i++) {
+			const a = vertices[i];
+			const b = vertices[(i + 1) % vertices.length];
+			const cross = (p.x - b.x) * (a.y - b.y) - (a.x - b.x) * (p.y - b.y);
+			if (cross < 0) hasNeg = true;
+			if (cross > 0) hasPos = true;
+			if (hasNeg && hasPos) return false;
+		}
+		return true;
 	}
 
 	private _handleMenuItemFocused = (event: Event): void => {

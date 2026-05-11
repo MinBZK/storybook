@@ -172,6 +172,30 @@ export const WithSubmenu = {
 	},
 };
 
+export const DebugSafeTriangle = {
+	render: () => html`
+		<nldd-button id="button-debug-triangle" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-debug-triangle" anchor="button-debug-triangle" debug-safe-triangle>
+			<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+			<nldd-menu-item text="Open recent">
+				<nldd-menu debug-safe-triangle>
+					<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>
+					<nldd-menu-item text="Notulen.docx"></nldd-menu-item>
+					<nldd-menu-item text="Plan.pdf"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+			<nldd-menu-item text="Sluiten"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Schakel het `debug-safe-triangle` attribuut aan om de safe triangle als translucent roze overlay te visualiseren. Handig voor debugging en het tunen van padding-waardes — niet voor productie.',
+			},
+		},
+	},
+};
+
 export const MixedFlatAndGroups = {
 	render: () => html`
 		<nldd-button id="button-mixed" expandable text="Open menu"></nldd-button>
