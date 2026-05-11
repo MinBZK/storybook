@@ -6,9 +6,10 @@
  *
  * @element nldd-inline-dialog
  *
- * @attr {'alert'} variant       - Semantic variant; 'alert' forces icon="alert" and colors the icon
- * @attr {string}  icon          - Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set.
- * @attr {string}  text          - Main text (heading or paragraph, depending on heading-level)
+ * @attr {'alert'|'success'} variant - Semantic variant; 'alert' or 'success' forces a matching icon and color
+ * @attr {string}  icon            - Name of the nldd-icon icon above the text; absent when not set. Ignored when variant is set.
+ * @attr {string}  icon-color      - 'secondary' | 'accent' | 'critical' | 'warning' | 'success'. Overrides the default and variant icon color.
+ * @attr {string}  text            - Main text (heading or paragraph, depending on heading-level)
  * @attr {string}  supporting-text - Supporting text below the heading
  * @attr {1|2|3|4|5|6} heading-level - Renders text as h1–h6; absent renders a p
  *
@@ -22,7 +23,8 @@ import { inlineDialogTemplate } from './inline-dialog.template.js';
 import '../../content/icon/icon.js';
 import '../../actions/button-group/button-group.js';
 
-export type InlineDialogVariant = 'alert';
+export type InlineDialogVariant = 'alert' | 'success';
+export type InlineDialogIconColor = 'secondary' | 'accent' | 'critical' | 'warning' | 'success';
 
 @customElement('nldd-inline-dialog')
 export class NLDDInlineDialog extends LitElement {
@@ -33,6 +35,9 @@ export class NLDDInlineDialog extends LitElement {
 
 	@property({ type: String, reflect: true })
 	icon = '';
+
+	@property({ type: String, reflect: true, attribute: 'icon-color' })
+	iconColor: InlineDialogIconColor | '' = '';
 
 	@property({ type: String, reflect: true })
 	text = '';
@@ -51,6 +56,7 @@ export class NLDDInlineDialog extends LitElement {
 
 	get _resolvedIconName(): string {
 		if (this.variant === 'alert') return 'alert';
+		if (this.variant === 'success') return 'success';
 		if (this.icon) return this.icon;
 		return '';
 	}

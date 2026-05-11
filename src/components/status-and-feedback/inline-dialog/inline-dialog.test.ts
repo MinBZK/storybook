@@ -92,4 +92,26 @@ describe('nldd-inline-dialog', () => {
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-button-group')).not.toBeNull();
 	});
+
+	it('renders success icon when variant="success"', async () => {
+		el = await fixture('<nldd-inline-dialog variant="success"></nldd-inline-dialog>');
+		await waitForUpdate(el);
+		const icon = el.shadowRoot!.querySelector('nldd-icon');
+		expect(icon?.getAttribute('name')).toBe('success');
+	});
+
+	it('reflects icon-color attribute', async () => {
+		el = await fixture('<nldd-inline-dialog icon="info-circle" icon-color="success"></nldd-inline-dialog>');
+		await waitForUpdate(el);
+		expect(el.getAttribute('icon-color')).toBe('success');
+	});
+
+	it('icon-color overrides the variant icon color', async () => {
+		el = await fixture('<nldd-inline-dialog variant="alert" icon-color="critical"></nldd-inline-dialog>');
+		await waitForUpdate(el);
+		const iconColor = getComputedStyle(el).getPropertyValue('--_icon-color').trim();
+		const expected = getComputedStyle(document.documentElement)
+			.getPropertyValue('--semantics-content-critical-color').trim();
+		expect(iconColor).toBe(expected);
+	});
 });

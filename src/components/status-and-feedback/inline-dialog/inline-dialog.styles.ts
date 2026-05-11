@@ -23,6 +23,16 @@ export const inlineDialogStyles = css`
 		--_icon-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
 	}
 
+	:host([variant='success']) {
+		--_icon-color: light-dark(var(--primitives-color-success-350), var(--primitives-color-success-650));
+	}
+
+	:host([icon-color='secondary']) { --_icon-color: var(--semantics-content-secondary-color); }
+	:host([icon-color='accent'])    { --_icon-color: var(--semantics-content-accent-color); }
+	:host([icon-color='critical'])  { --_icon-color: var(--semantics-content-critical-color); }
+	:host([icon-color='warning'])   { --_icon-color: var(--semantics-content-warning-color); }
+	:host([icon-color='success'])   { --_icon-color: var(--semantics-content-success-color); }
+
 
 	/* # Body */
 
