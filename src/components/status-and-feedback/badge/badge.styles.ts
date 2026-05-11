@@ -77,6 +77,7 @@ export const badgeStyles = css`
 		background-color: var(--_background-color);
 		color: var(--_content-color);
 		border-radius: var(--components-badge-corner-radius);
+		box-shadow: 0 0 0 1px var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 		white-space: nowrap;
 		font: var(--_font);
 	}
