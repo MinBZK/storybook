@@ -30,6 +30,7 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 				<button class="menu__back"
 					type="button"
 					@click=${this._handleBack}
+					@mouseenter=${this._handleBackMouseenter}
 				>
 					<nldd-icon-cell class="menu__back-icon" size="20" icon="chevron-left"></nldd-icon-cell>
 					<nldd-spacer-cell size="6"></nldd-spacer-cell>
@@ -65,6 +66,7 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 			aria-selected=${variant === 'listbox' ? String(this.selected) : nothing}
 			aria-haspopup=${hasSubmenu ? 'menu' : nothing}
 			aria-expanded=${hasSubmenu ? String(this._submenuOpen) : nothing}
+			aria-controls=${hasSubmenu && this._submenuEl?.id ? this._submenuEl.id : nothing}
 			@click=${this._handleClick}
 		>
 			${hasCheckState ? html`
@@ -97,6 +99,17 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 				></nldd-icon-cell>
 			` : nothing}
 		</button>
+		<!--
+			Project the slotted nldd-menu (the submenu, if any) into the flat
+			tree. Without this slot, a light-DOM child nldd-menu sits outside
+			any flat tree — and the Popover API uses the flat tree to locate
+			a popover's ancestor popover. Without an ancestor, calling
+			showPopover() on the submenu would dismiss the parent menu (its
+			DOM ancestor) instead of stacking on top of it. The slot itself
+			has no visible effect because the submenu is display:none until
+			it opens its own popover.
+		-->
+		<slot></slot>
 	`;
 }
 

@@ -140,14 +140,29 @@ export class NLDDMenuItem extends LitElement {
 		if (!this.id) {
 			this.id = `nldd-menu-item-${NLDDMenuItem._idCounter++}`;
 		}
-		this.addEventListener('focusin', () => {
+		this.addEventListener('focusin', (e) => {
+			// Only react when focus actually lands on our own shadow content
+			// (the .menu__item button). focusin is composed and bubbles, so it
+			// also fires here when focus moves into a slotted descendant —
+			// notably when a child submenu's .menu element gets focused on
+			// open. Without this guard the parent's _handleMenuItemFocused
+			// re-highlights the opener after we just cleared it.
+			const realTarget = e.composedPath()[0] as Element | undefined;
+			if (!realTarget || !this.shadowRoot?.contains(realTarget)) return;
 			this.setAttribute('data-focused', '');
 			this.dispatchEvent(new CustomEvent('menu-item-focused', {
 				bubbles: true,
 				composed: true,
 			}));
 		});
-		this.addEventListener('focusout', () => this.removeAttribute('data-focused'));
+		this.addEventListener('focusout', (e) => {
+			// Mirror the focusin guard so a slotted descendant losing focus
+			// doesn't strip data-focused from the opener while it's still
+			// keyboard-focused itself.
+			const realTarget = e.composedPath()[0] as Element | undefined;
+			if (!realTarget || !this.shadowRoot?.contains(realTarget)) return;
+			this.removeAttribute('data-focused');
+		});
 	}
 
 	override focus(options?: FocusOptions): void {
@@ -155,21 +170,24 @@ export class NLDDMenuItem extends LitElement {
 		focusable?.focus(options);
 	}
 
-	/** True when this item has an `<nldd-menu>` direct child — that menu is
-	 * its submenu. Detected once at firstUpdated; mutating the children later
-	 * is not supported in v1. */
+	/** Cached reference to the direct child `<nldd-menu>` (this item's
+	 * submenu). Resolved once at firstUpdated; mutating the children after
+	 * mount is not supported in v1. */
+	private _cachedSubmenuEl: NLDDMenu | null = null;
+
 	get _submenuEl(): NLDDMenu | null {
-		return this.querySelector(':scope > nldd-menu');
+		return this._cachedSubmenuEl;
 	}
 
 	get _hasSubmenu(): boolean {
-		return this._submenuEl !== null;
+		return this._cachedSubmenuEl !== null;
 	}
 
 	override firstUpdated(): void {
-		// Cache submenu presence in a class for CSS / debugging hooks. Also
-		// re-render once if it turns out we have a submenu (chevron + ARIA).
-		if (this._hasSubmenu) {
+		// Resolve submenu once and cache. Also trigger a single re-render so
+		// the chevron + ARIA attrs reflect the now-known submenu state.
+		this._cachedSubmenuEl = this.querySelector(':scope > nldd-menu');
+		if (this._cachedSubmenuEl !== null) {
 			this.requestUpdate();
 		}
 	}
@@ -377,44 +395,72 @@ export class NLDDMenu extends LitElement {
 		}
 	};
 
-	// — Hover triangle (cascade only) ————————————————————————————————————————
+	// — Safe triangle (cascade only) ——————————————————————————————————————
 	//
-	// When the cursor leaves the parent menu while a submenu is open, classic
-	// hover-out logic would close the submenu — frustrating if the user is
-	// just moving diagonally toward it. The triangle algorithm (mayank.co):
-	// from the cursor's last-known position M to the submenu's two near
-	// corners (top + bottom of the cascading edge), build a triangle. While
-	// the cursor stays inside the triangle, treat as "moving toward submenu"
-	// and cancel any pending close. Outside the triangle, schedule the close.
-	//
-	// Hover-open uses a 150ms delay so a quick pass over an item-with-submenu
-	// doesn't open it spuriously. Hover-close uses 100ms after leaving the
-	// triangle for the same reason.
+	// While a cascade submenu is open, a global mousemove listener tracks
+	// the cursor against a "safe triangle" (Mayank/ishadeed pattern). The
+	// triangle's apex is captured once on the first mousemove after submenu
+	// open; the base is the submenu's two near corners (top + bottom of the
+	// edge facing the parent — left edge if submenu is right of cursor,
+	// right edge if floating-ui flipped it to the other side). The wedge
+	// stays fixed until the cursor enters the submenu, so the user has a
+	// predictable, stable area to traverse without losing the submenu.
+	// While the cursor is inside the triangle, peer items don't activate
+	// and the linger-close timer is held off.
 
 	private _hoverOpenTimer: number | null = null;
 	private _hoverCloseTimer: number | null = null;
-	private _hoverTriangleListener: ((e: MouseEvent) => void) | null = null;
+	private _safeTriangleListener: ((e: MouseEvent) => void) | null = null;
+	private _safeTriangleStallTimer: number | null = null;
+	private _lastCursorPos: { x: number, y: number } | null = null;
+	private _safeTriangleApex: { x: number, y: number } | null = null;
+	private _movingTowardSubmenu = false;
+	/** Wait this long after cursor stops being on a path toward the submenu
+	 * before closing. Smooths over brief cursor stalls and accidental nudges. */
+	private static readonly _SUBMENU_LINGER_CLOSE_MS = 300;
+	/** When the cursor sits motionless inside the safe triangle for this
+	 * long, dismiss the triangle and let whatever item is under the cursor
+	 * become interactive. Without this, a paused cursor would stay
+	 * "protected" indefinitely and the user couldn't peer-hover. */
+	private static readonly _SAFE_TRIANGLE_STALL_DISMISS_MS = 1000;
 
 	private _handleMenuItemMouseenter = (event: MouseEvent): void => {
 		const item = (event.target as Element).closest('nldd-menu-item') as NLDDMenuItem | null;
 		if (!item || item.disabled || item.hasAttribute('hidden')) return;
+
+		// The listener is registered with capture:true, so it fires for events
+		// targeted at items in descendant submenus too. Bail out for those —
+		// the descendant menu has its own listener that will handle them.
+		if (item.closest('nldd-menu') !== this) return;
+
+		// Hover-triangle guard: while the user is on a path toward the active
+		// submenu, peer items don't get highlighted and don't schedule
+		// hover-opens. Without this, the highlight flickers across every item
+		// the cursor brushes past on its diagonal route to the submenu.
+		if (this._movingTowardSubmenu && item !== this._activeSubmenuOpener) return;
+
 		this._setHighlight(item);
 
-		// Re-entering the menu area cancels any pending close from before.
+		// Cursor is on a real item now (not in transit) — cancel any pending
+		// linger-close from a previous sweep through.
 		this._cancelHoverClose();
 
 		if (this._drillInMode) return; // Touch / narrow viewport: no hover-open.
 
-		// If moving to a peer item that isn't the current submenu opener, close
-		// the open submenu immediately — no delay between peer items.
-		if (this._activeSubmenuOpener && this._activeSubmenuOpener !== item) {
-			(this._activeSubmenu as HTMLElement | null)?.hidePopover?.();
+		// Settled on a peer item (not the active submenu's opener) — close the
+		// active submenu immediately. If this peer itself has a submenu, the
+		// hover-open below will then schedule its own. We don't wait for the
+		// linger-close: the user has already committed to a different item.
+		if (this._activeSubmenu && item !== this._activeSubmenuOpener) {
+			(this._activeSubmenu as HTMLElement).hidePopover?.();
 		}
 
-		// Schedule open of this item's submenu after a small delay so quickly
-		// dragging across items doesn't trigger every submenu in turn.
+		// Always cancel any pending hover-open from a previous item — moving
+		// the cursor onto a peer (with or without submenu) means the previous
+		// item's submenu should not open after its delay. Then schedule a new
+		// one only when the new item itself has a submenu.
+		this._cancelHoverOpen();
 		if (item._hasSubmenu && this._activeSubmenuOpener !== item) {
-			this._cancelHoverOpen();
 			this._hoverOpenTimer = window.setTimeout(() => {
 				this._hoverOpenTimer = null;
 				item._handleClick();
@@ -422,37 +468,140 @@ export class NLDDMenu extends LitElement {
 		}
 	};
 
-	private _handleMouseleave = (event: MouseEvent): void => {
+	private _handleMouseleave = (): void => {
 		if (this.variant !== 'listbox') this._clearHighlight();
 		this._cancelHoverOpen();
-
-		if (this._drillInMode || !this._activeSubmenu) return;
-
-		// Build the triangle from cursor-on-leave to the submenu's near edge.
-		// right-start placement → near edge is the left side of the submenu.
-		const submenu = this._activeSubmenu;
-		const rect = submenu.getBoundingClientRect();
-		const start = { x: event.clientX, y: event.clientY };
-		const tl = { x: rect.left, y: rect.top };
-		const bl = { x: rect.left, y: rect.bottom };
-
-		this._removeHoverTriangle();
-		this._hoverTriangleListener = (e: MouseEvent) => {
-			const p = { x: e.clientX, y: e.clientY };
-			if (this._pointInTriangle(p, start, tl, bl)) return;
-			// Cursor left the triangle without entering the submenu — schedule
-			// close. A short delay smooths over jitter at the triangle edges.
-			this._removeHoverTriangle();
-			this._cancelHoverClose();
-			this._hoverCloseTimer = window.setTimeout(() => {
-				this._hoverCloseTimer = null;
-				if (this._activeSubmenu === submenu) {
-					(submenu as HTMLElement).hidePopover?.();
-				}
-			}, 100);
-		};
-		window.addEventListener('mousemove', this._hoverTriangleListener);
+		// The hover-guard takes over close behaviour while the cursor is
+		// outside both the parent menu and the active submenu.
 	};
+
+	/** Start the global mouse tracker that powers the safe triangle. Called
+	 * by _handleSubmenuOpen when a submenu opens in cascade mode. */
+	private _startSafeTriangle(submenu: NLDDMenu): void {
+		this._stopSafeTriangle();
+		this._lastCursorPos = null;
+		this._safeTriangleApex = null;
+		this._movingTowardSubmenu = false;
+
+		this._safeTriangleListener = (e: MouseEvent) => {
+			const p = { x: e.clientX, y: e.clientY };
+			const r = submenu.getBoundingClientRect();
+			// "In submenu" means anywhere in the submenu OR any nested submenu
+			// it has opened in turn. Without the recursive walk, a deep cursor
+			// in (e.g.) the third level reads as "outside the second" and the
+			// root's guard schedules a linger-close that cascades up the chain.
+			const inSubmenu = NLDDMenu._isPointInMenuTree(p, submenu);
+
+			if (inSubmenu) {
+				// Arrived. Triangle is no longer needed — drop the apex so a
+				// later excursion back outside doesn't reuse a stale wedge.
+				this._movingTowardSubmenu = false;
+				this._cancelHoverClose();
+				this._lastCursorPos = p;
+				this._safeTriangleApex = null;
+				return;
+			}
+
+			// Frozen safe triangle (Mayank/ishadeed pattern): apex captured
+			// once on the first mousemove after submenu open and stays fixed
+			// until the cursor enters the submenu. Each mousemove just tests
+			// the current point against the unchanged wedge — no shrinking
+			// per-frame, no jitter sensitivity, minimal per-frame compute.
+			const wasMoving = this._movingTowardSubmenu;
+			if (this._safeTriangleApex === null) {
+				this._safeTriangleApex = p;
+				// Benefit-of-the-doubt: the first sample treats the cursor as
+				// "still on path" so peers don't activate before the user has
+				// even started moving.
+				this._movingTowardSubmenu = true;
+			} else {
+				// Pick the submenu edge facing the cursor: left edge when
+				// submenu is to the right of the cursor (default right-start),
+				// right edge when floating-ui flipped it to the left side.
+				// Without this, the wedge would point away from the submenu
+				// after a flip and the protection would be useless.
+				const nearX = p.x < r.left ? r.left : r.right;
+				const tl = { x: nearX, y: r.top };
+				const bl = { x: nearX, y: r.bottom };
+				this._movingTowardSubmenu = this._pointInTriangle(p, this._safeTriangleApex, tl, bl);
+			}
+			this._lastCursorPos = p;
+
+			// Direction-reversal recovery: when the flag flips true → false,
+			// the cursor may already be sitting on a peer item whose natural
+			// mouseenter fired (and was bailed) earlier. mouseenter won't
+			// re-fire until the cursor leaves and re-enters that element, so
+			// without this retro-process the item stays non-interactive even
+			// though the user clearly wants it.
+			if (wasMoving && !this._movingTowardSubmenu) {
+				const el = document.elementFromPoint(p.x, p.y);
+				if (el) {
+					this._handleMenuItemMouseenter({ target: el } as unknown as MouseEvent);
+				}
+			}
+
+			// Stall-dismissal: if the cursor sits motionless inside the safe
+			// triangle long enough, drop the protection so the item under the
+			// cursor (typically the gap area or a peer beneath) can become
+			// interactive without the user nudging.
+			if (this._safeTriangleStallTimer !== null) {
+				clearTimeout(this._safeTriangleStallTimer);
+				this._safeTriangleStallTimer = null;
+			}
+			if (this._movingTowardSubmenu) {
+				this._safeTriangleStallTimer = window.setTimeout(() => {
+					this._safeTriangleStallTimer = null;
+					this._movingTowardSubmenu = false;
+					this._safeTriangleApex = null;
+					if (this._lastCursorPos) {
+						const el = document.elementFromPoint(this._lastCursorPos.x, this._lastCursorPos.y);
+						if (el) {
+							this._handleMenuItemMouseenter({ target: el } as unknown as MouseEvent);
+						}
+					}
+				}, NLDDMenu._SAFE_TRIANGLE_STALL_DISMISS_MS);
+			}
+
+			if (this._movingTowardSubmenu) {
+				// Path-toward-submenu — keep things stable.
+				this._cancelHoverClose();
+				return;
+			}
+
+			// Cursor is somewhere outside the safe path. If it's inside the
+			// parent menu, the existing peer-hover logic in mouseenter will
+			// schedule a peer's hover-open. If it's outside both, schedule a
+			// linger-close. Either way the close timer fires only after a
+			// brief pause so jitter doesn't trigger it.
+			const rootRect = (this as HTMLElement).getBoundingClientRect();
+			const inRoot = p.x >= rootRect.left && p.x <= rootRect.right
+				&& p.y >= rootRect.top && p.y <= rootRect.bottom;
+			if (!inRoot && this._hoverCloseTimer === null) {
+				this._hoverCloseTimer = window.setTimeout(() => {
+					this._hoverCloseTimer = null;
+					if (this._activeSubmenu === submenu) {
+						(submenu as HTMLElement).hidePopover?.();
+					}
+				}, NLDDMenu._SUBMENU_LINGER_CLOSE_MS);
+			}
+		};
+
+		window.addEventListener('mousemove', this._safeTriangleListener);
+	}
+
+	private _stopSafeTriangle(): void {
+		if (this._safeTriangleListener !== null) {
+			window.removeEventListener('mousemove', this._safeTriangleListener);
+			this._safeTriangleListener = null;
+		}
+		if (this._safeTriangleStallTimer !== null) {
+			clearTimeout(this._safeTriangleStallTimer);
+			this._safeTriangleStallTimer = null;
+		}
+		this._lastCursorPos = null;
+		this._safeTriangleApex = null;
+		this._movingTowardSubmenu = false;
+	}
 
 	private _cancelHoverOpen(): void {
 		if (this._hoverOpenTimer !== null) {
@@ -466,14 +615,18 @@ export class NLDDMenu extends LitElement {
 			clearTimeout(this._hoverCloseTimer);
 			this._hoverCloseTimer = null;
 		}
-		this._removeHoverTriangle();
 	}
 
-	private _removeHoverTriangle(): void {
-		if (this._hoverTriangleListener !== null) {
-			window.removeEventListener('mousemove', this._hoverTriangleListener);
-			this._hoverTriangleListener = null;
-		}
+	/** Recursively checks whether a point sits inside the given menu OR any of
+	 * its descendant submenus. Used by the hover guard so a cursor deep inside
+	 * a nested submenu still reads as "in the safe area" for ancestor menus —
+	 * without this, an ancestor's linger-close fires and cascades the whole
+	 * chain shut. */
+	private static _isPointInMenuTree(p: { x: number, y: number }, menu: NLDDMenu): boolean {
+		const r = menu.getBoundingClientRect();
+		if (p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom) return true;
+		if (menu._activeSubmenu) return NLDDMenu._isPointInMenuTree(p, menu._activeSubmenu);
+		return false;
 	}
 
 	/** Standard barycentric point-in-triangle test. Returns true when p sits
@@ -497,6 +650,10 @@ export class NLDDMenu extends LitElement {
 	private _handleMenuItemFocused = (event: Event): void => {
 		const item = (event.target as Element).closest('nldd-menu-item') as NLDDMenuItem | null;
 		if (!item || item.disabled || item.hasAttribute('hidden')) return;
+		// Same caveat as _handleMenuItemMouseenter: this listener catches
+		// focused events that bubble up from descendant submenus too. Skip
+		// those so we don't highlight items that aren't ours.
+		if (item.closest('nldd-menu') !== this) return;
 		this._setHighlight(item);
 	};
 
@@ -509,9 +666,22 @@ export class NLDDMenu extends LitElement {
 	 * Detection is based on pointer type and viewport width — touch devices
 	 * and narrow viewports drill in, everything else cascades. No consumer
 	 * override; the choice is environment-driven.
+	 *
+	 * Cached MediaQueryList shared across instances — `matchMedia()` returns
+	 * a live object and re-evaluating it for every mouseenter/submenu-open
+	 * is wasteful. Instances also subscribe to `change` so resize events
+	 * naturally route through `_handleViewportResize`.
 	 */
+	private static _drillInModeQuery: MediaQueryList | null = null;
+	private static _getDrillInModeQuery(): MediaQueryList {
+		if (NLDDMenu._drillInModeQuery === null) {
+			NLDDMenu._drillInModeQuery = matchMedia('(pointer: coarse), (max-width: 640px)');
+		}
+		return NLDDMenu._drillInModeQuery;
+	}
+
 	get _drillInMode(): boolean {
-		return matchMedia('(pointer: coarse), (max-width: 640px)').matches;
+		return NLDDMenu._getDrillInModeQuery().matches;
 	}
 
 	/** Walks the parent-menu chain up to the root (the menu that wasn't
@@ -568,8 +738,14 @@ export class NLDDMenu extends LitElement {
 		this._activeSubmenu = submenu;
 		this._activeSubmenuOpener = item;
 		item._submenuOpen = true;
+		// Clear [highlighted] on the opener — the "logically current" item is
+		// now in the submenu, not on the opener. The opener still shows visibly
+		// active via .menu__item[aria-expanded="true"] (lighter neutral); CSS
+		// :hover upgrades it to accent if the cursor returns to it.
+		item.removeAttribute('highlighted');
 
-		// Listen once for the submenu's close so we can clear state and ARIA.
+		// Listen once for the submenu's close so we can clear state, ARIA and
+		// any leftover safe-triangle plumbing from the cascade open path.
 		const onToggle = (e: Event) => {
 			const tg = e as ToggleEvent;
 			if (tg.newState !== 'closed') return;
@@ -581,10 +757,33 @@ export class NLDDMenu extends LitElement {
 			submenu._parentMenu = null;
 			submenu._parentItem = null;
 			item._submenuOpen = false;
+			this._cancelHoverClose();
+			this._stopSafeTriangle();
+			// Counterpart to `submenu-open` — consumers tracking submenu state
+			// via declarative event listeners (rather than reaching into our
+			// internals) get a clean close signal here.
+			this.dispatchEvent(new CustomEvent('submenu-close', {
+				detail: { submenu, item },
+				bubbles: true,
+				composed: false,
+			}));
 		};
 		submenu.addEventListener('toggle', onToggle);
 
 		(submenu as HTMLElement).showPopover?.();
+
+		// Start the hover triangle tracker for cascade-mode submenus only.
+		// Drill-in mode replaces the parent view, so there's no "moving toward"
+		// path between two visible menus to protect.
+		if (!this._drillInMode) {
+			// Wait one frame so the submenu's getBoundingClientRect reflects its
+			// final position (computePosition runs in the toggle handler).
+			requestAnimationFrame(() => {
+				if (this._activeSubmenu === submenu) {
+					this._startSafeTriangle(submenu);
+				}
+			});
+		}
 	};
 
 	/** Close this submenu when the back button is clicked, returning to the
@@ -593,6 +792,14 @@ export class NLDDMenu extends LitElement {
 	 * @internal */
 	_handleBack = (): void => {
 		(this as HTMLElement).hidePopover?.();
+	};
+
+	/** Cursor moved onto the drill-in back button — clear any item highlight
+	 * so we don't show two "active" elements at once (back button + first
+	 * item that was auto-highlighted on open).
+	 * @internal */
+	_handleBackMouseenter = (): void => {
+		this._clearHighlight();
 	};
 
 	/** Last cached drill-in mode value, so we only act when it actually
@@ -628,8 +835,14 @@ export class NLDDMenu extends LitElement {
 
 	// — Lifecycle callbacks ————————————————————————————————————————————————————
 
+	private static _menuIdCounter = 0;
+
 	override connectedCallback(): void {
 		super.connectedCallback();
+		if (!this.id) {
+			// Auto-id so submenu openers can reference us via aria-controls.
+			this.id = `nldd-menu-${NLDDMenu._menuIdCounter++}`;
+		}
 		if (!this.hasAttribute('popover')) {
 			this.setAttribute('popover', '');
 		}
@@ -664,6 +877,11 @@ export class NLDDMenu extends LitElement {
 		window.removeEventListener('resize', this._handleViewportResize);
 		this._cancelHoverOpen();
 		this._cancelHoverClose();
+		this._stopSafeTriangle();
+		if (this._typeaheadTimer !== null) {
+			clearTimeout(this._typeaheadTimer);
+			this._typeaheadTimer = null;
+		}
 		this._cleanupAutoUpdate?.();
 		this._cleanupAutoUpdate = null;
 	}
@@ -671,9 +889,13 @@ export class NLDDMenu extends LitElement {
 	// — Internal helpers ——————————————————————————————————————————————————————
 
 	private _getVisibleItems(): NLDDMenuItem[] {
+		// Light-DOM querySelectorAll returns ALL menu-item descendants — items
+		// inside nested submenus included. Filter to items that belong directly
+		// to this menu (closest enclosing nldd-menu === this), so navigation
+		// and highlight management stay scoped to one level at a time.
 		return Array.from(
 			this.querySelectorAll('nldd-menu-item:not([hidden]):not([disabled])')
-		) as NLDDMenuItem[];
+		).filter(item => item.closest('nldd-menu') === this) as NLDDMenuItem[];
 	}
 
 	private _getFocusedIndex(items: NLDDMenuItem[]): number {
@@ -681,9 +903,13 @@ export class NLDDMenu extends LitElement {
 	}
 
 	private _clearHighlight(): void {
-		Array.from(this.querySelectorAll('nldd-menu-item')).forEach(item => {
-			item.removeAttribute('highlighted');
-		});
+		// Same scope rule as _getVisibleItems — only clear highlights on items
+		// that belong directly to this menu. Light-DOM querySelectorAll would
+		// otherwise also clear items inside nested submenus, silently
+		// corrupting their highlight state.
+		Array.from(this.querySelectorAll('nldd-menu-item'))
+			.filter(item => item.closest('nldd-menu') === this)
+			.forEach(item => item.removeAttribute('highlighted'));
 	}
 
 	private _setHighlight(target: NLDDMenuItem | null): void {
@@ -824,10 +1050,18 @@ export class NLDDMenu extends LitElement {
 			getComputedStyle(this).getPropertyValue('--_viewport-margin')
 		);
 
+		// Cascade-mode submenus: shift up by the menu's own padding so the
+		// first submenu item lines up vertically with the parent opener item.
+		// Without this, the submenu's top edge aligns with the opener and the
+		// inner padding pushes the first item down, leaving a visible step.
+		const submenuPadding = (this._isSubmenu && !this._drillInMode)
+			? parseInt(getComputedStyle(this).getPropertyValue('--_menu-padding')) || 0
+			: 0;
+
 		const { x, y } = await computePosition(anchorEl, this, {
 			placement: this.placement as import('@floating-ui/dom').Placement,
 			middleware: [
-				offset(0),
+				offset({ mainAxis: 0, alignmentAxis: -submenuPadding }),
 				flip({ padding: viewportMargin }),
 				shift({ padding: viewportMargin }),
 				size({
@@ -851,28 +1085,40 @@ export class NLDDMenu extends LitElement {
 		const items = this._getVisibleItems();
 		if (items.length === 0) return;
 
+		// keydown bubbles up the flat tree, so this handler fires on every
+		// ancestor menu in the chain. Bail when focus belongs to a descendant
+		// submenu — that submenu's own handler already processed the key, and
+		// processing it here too would advance navigation an extra step per
+		// ancestor (or close an extra level on Escape).
+		const focusedDescendant = this.querySelector<NLDDMenuItem>('nldd-menu-item[data-focused]');
+		if (focusedDescendant && focusedDescendant.closest('nldd-menu') !== this) return;
+
 		const index = this._getFocusedIndex(items);
 
 		switch (event.key) {
 			case 'ArrowDown': {
 				event.preventDefault();
+				event.stopPropagation();
 				const next = index === -1 ? 0 : index < items.length - 1 ? index + 1 : 0;
 				items[next].focus();
 				break;
 			}
 			case 'ArrowUp': {
 				event.preventDefault();
+				event.stopPropagation();
 				const prev = index === -1 ? items.length - 1 : index > 0 ? index - 1 : items.length - 1;
 				items[prev].focus();
 				break;
 			}
 			case 'Home': {
 				event.preventDefault();
+				event.stopPropagation();
 				items[0].focus();
 				break;
 			}
 			case 'End': {
 				event.preventDefault();
+				event.stopPropagation();
 				items[items.length - 1].focus();
 				break;
 			}
@@ -883,6 +1129,7 @@ export class NLDDMenu extends LitElement {
 				const focused = items[index];
 				if (focused?._hasSubmenu) {
 					event.preventDefault();
+					event.stopPropagation();
 					focused._handleClick();
 					// Focus the first item in the submenu once it's open.
 					requestAnimationFrame(() => {
@@ -896,6 +1143,7 @@ export class NLDDMenu extends LitElement {
 				// to the parent item. On the root menu, ArrowLeft is a no-op.
 				if (this._isSubmenu) {
 					event.preventDefault();
+					event.stopPropagation();
 					const parentItem = this._parentItem;
 					(this as HTMLElement).hidePopover();
 					parentItem?.focus();
@@ -904,6 +1152,7 @@ export class NLDDMenu extends LitElement {
 			}
 			case 'Escape': {
 				event.preventDefault();
+				event.stopPropagation();
 				(this as HTMLElement).hidePopover();
 				// On a submenu close, return focus to the parent item rather
 				// than the root anchor — keeps the user oriented in the chain.
@@ -913,8 +1162,63 @@ export class NLDDMenu extends LitElement {
 				focusTarget?.focus();
 				break;
 			}
+			default: {
+				// Typeahead (ARIA APG menu pattern): typing a single printable
+				// character jumps to the next item whose visible text starts
+				// with it. Repeated presses cycle through matches.
+				if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+					this._handleTypeahead(event, items, index);
+				}
+			}
 		}
 	};
+
+	private _typeaheadBuffer = '';
+	private _typeaheadTimer: number | null = null;
+	/** Reset the typeahead buffer after this much idle time. 500ms is the
+	 * common ARIA APG / OS convention — long enough to type a 2-3 char prefix
+	 * comfortably, short enough that an unrelated later keystroke starts a
+	 * fresh search. */
+	private static readonly _TYPEAHEAD_RESET_MS = 500;
+
+	/**
+	 * ARIA APG typeahead: characters typed within 500ms accumulate into a
+	 * buffer; the menu jumps to the first item whose text starts with the
+	 * buffer (case-insensitive).
+	 *
+	 * Single-char buffer (first press or after reset) cycles through matches
+	 * — repeated presses of the same letter step through every item starting
+	 * with it. Multi-char buffer matches from the currently-focused item, so
+	 * extending the prefix while the current item still matches keeps focus
+	 * stable instead of jumping forward.
+	 */
+	private _handleTypeahead(event: KeyboardEvent, items: NLDDMenuItem[], currentIndex: number): void {
+		// Extend (or seed) the buffer and (re)arm the reset timer.
+		if (this._typeaheadTimer !== null) {
+			clearTimeout(this._typeaheadTimer);
+		}
+		this._typeaheadBuffer += event.key.toLowerCase();
+		this._typeaheadTimer = window.setTimeout(() => {
+			this._typeaheadBuffer = '';
+			this._typeaheadTimer = null;
+		}, NLDDMenu._TYPEAHEAD_RESET_MS);
+
+		// Single char → cycle past the current item; multi char → start AT the
+		// current item so a still-matching prefix doesn't move focus.
+		const start = this._typeaheadBuffer.length === 1 && currentIndex >= 0
+			? currentIndex + 1
+			: Math.max(0, currentIndex);
+
+		for (let i = 0; i < items.length; i++) {
+			const idx = (start + i) % items.length;
+			if (items[idx].text.toLowerCase().startsWith(this._typeaheadBuffer)) {
+				event.preventDefault();
+				event.stopPropagation();
+				items[idx].focus();
+				return;
+			}
+		}
+	}
 
 	private _handleToggle = async (event: Event): Promise<void> => {
 		const toggleEvent = event as ToggleEvent;

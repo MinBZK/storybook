@@ -1151,6 +1151,8 @@
 	--components-menu-box-shadow: var(--primitives-box-shadows-level-5);
 	--components-menu-item-is-highlighted-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-menu-item-is-highlighted-content-color: var(--semantics-controls-is-highlighted-contrast-color);
+	--components-menu-item-is-open-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
+	--components-menu-item-is-open-content-color: var(--primitives-color-neutral-1000);
 
 	/* ## Menu bar */
 

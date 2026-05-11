@@ -616,4 +616,146 @@ describe('nldd-menu-item with submenu', () => {
 		expect(opened).toBe(false);
 		cleanup(menu);
 	});
+
+	it('renders aria-controls on the opener pointing at its submenu id', async () => {
+		el = await fixture(`
+			<nldd-menu-item text="Bestand">
+				<nldd-menu id="explicit-submenu-id">
+					<nldd-menu-item text="Open"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+		`);
+		await waitForUpdate(el);
+		const button = el.shadowRoot!.querySelector('button')!;
+		expect(button.getAttribute('aria-controls')).toBe('explicit-submenu-id');
+	});
+
+	it('auto-generates an id on a submenu when none is set so aria-controls works', async () => {
+		el = await fixture(`
+			<nldd-menu-item text="Bestand">
+				<nldd-menu>
+					<nldd-menu-item text="Open"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+		`);
+		await waitForUpdate(el);
+		const submenu = el.querySelector('nldd-menu')!;
+		expect(submenu.id).toMatch(/^nldd-menu-/);
+		const button = el.shadowRoot!.querySelector('button')!;
+		expect(button.getAttribute('aria-controls')).toBe(submenu.id);
+	});
+});
+
+describe('nldd-menu typeahead and event lifecycle', () => {
+	it('typeahead jumps to the next item starting with the typed character', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Apple"></nldd-menu-item>
+				<nldd-menu-item text="Banana"></nldd-menu-item>
+				<nldd-menu-item text="Cherry"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const items = menu.querySelectorAll(':scope > nldd-menu-item') as NodeListOf<HTMLElement>;
+		items[0].setAttribute('data-focused', '');
+		// Spy on focus() of items — the typeahead handler calls .focus() on
+		// the matched item. Verifying this works regardless of whether the
+		// popover is actually open (which test fixtures don't trigger).
+		let focused: HTMLElement | null = null;
+		items.forEach(item => {
+			item.focus = () => { focused = item; };
+		});
+		menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'c', bubbles: true }));
+		await waitForUpdate(menu);
+		expect(focused).toBe(items[2]);
+		cleanup(menu);
+	});
+
+	it('typeahead accumulates characters within the buffer window', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Apple"></nldd-menu-item>
+				<nldd-menu-item text="Slack"></nldd-menu-item>
+				<nldd-menu-item text="Slate"></nldd-menu-item>
+				<nldd-menu-item text="Sun"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const items = menu.querySelectorAll(':scope > nldd-menu-item') as NodeListOf<HTMLElement>;
+		items[0].setAttribute('data-focused', '');
+		let focused: HTMLElement | null = null;
+		items.forEach(item => {
+			item.focus = () => { focused = item; };
+		});
+		// Press 'S' — single char, cycles past Apple → Slack
+		menu.dispatchEvent(new KeyboardEvent('keydown', { key: 's', bubbles: true }));
+		await waitForUpdate(menu);
+		expect(focused).toBe(items[1]); // Slack
+
+		// Press 'l' immediately after — buffer becomes "sl", matches Slack & Slate.
+		// Multi-char starts at currentIndex (Slack=1) which still matches → stay.
+		focused = null;
+		items[1].setAttribute('data-focused', '');
+		menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'l', bubbles: true }));
+		await waitForUpdate(menu);
+		expect(focused).toBe(items[1]); // Slack still matches "sl"
+		cleanup(menu);
+	});
+
+	it('typeahead buffer resets after the idle window', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Slack"></nldd-menu-item>
+				<nldd-menu-item text="Sun"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const items = menu.querySelectorAll(':scope > nldd-menu-item') as NodeListOf<HTMLElement>;
+		items[0].setAttribute('data-focused', '');
+		let focused: HTMLElement | null = null;
+		items.forEach(item => {
+			item.focus = () => { focused = item; };
+		});
+		// Type 's' — cycles past Slack → Sun
+		menu.dispatchEvent(new KeyboardEvent('keydown', { key: 's', bubbles: true }));
+		await waitForUpdate(menu);
+		expect(focused).toBe(items[1]); // Sun
+
+		// Wait for the buffer to reset, then type 's' again — should cycle, not extend.
+		items[0].removeAttribute('data-focused');
+		items[1].setAttribute('data-focused', '');
+		focused = null;
+		await new Promise(r => setTimeout(r, 600));
+		menu.dispatchEvent(new KeyboardEvent('keydown', { key: 's', bubbles: true }));
+		await waitForUpdate(menu);
+		expect(focused).toBe(items[0]); // wrap to Slack
+		cleanup(menu);
+	});
+
+	it('dispatches submenu-close when an opened submenu closes', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const submenu = item.querySelector(':scope > nldd-menu') as HTMLElement;
+		// Open via the synthetic submenu-open event.
+		item.dispatchEvent(new CustomEvent('submenu-open', {
+			detail: { submenu, item },
+			bubbles: true,
+		}));
+		await waitForUpdate(menu);
+		let closeFired = false;
+		menu.addEventListener('submenu-close', () => { closeFired = true; });
+		(submenu as HTMLElement & { hidePopover: () => void }).hidePopover();
+		await waitForUpdate(menu);
+		expect(closeFired).toBe(true);
+		cleanup(menu);
+	});
 });

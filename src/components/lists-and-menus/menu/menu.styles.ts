@@ -147,9 +147,34 @@ export const menuItemStyles = css`
 	}
 
 
-	/* # Highlighted or pressed */
+	/* # Open submenu opener
+	 *
+	 * Lighter, neutral background while the opener's submenu is open and the
+	 * cursor has moved into the submenu. The currently-active item is the
+	 * one in the submenu; the opener just shows "this branch is active".
+	 * macOS-style: subtle, not competing with the highlight.
+	 *
+	 * When the cursor moves back over the opener (or it's keyboard-focused),
+	 * the highlighted/hover rule below upgrades it to the bold accent. */
 
-	:host([highlighted]) .menu__item,
+	.menu__item[aria-expanded="true"] {
+		background-color: var(--components-menu-item-is-open-background-color);
+		--context-cell-content-color: var(--components-menu-item-is-open-content-color);
+		--context-cell-content-secondary-color: var(--components-menu-item-is-open-content-color);
+	}
+
+
+	/* # Highlighted or pressed
+	 *
+	 * For openers (aria-expanded="true"), [highlighted] is excluded from this
+	 * rule — when a deep submenu is open, [highlighted] can stay set on
+	 * ancestor openers as stale state (cursor moved to a descendant menu
+	 * which doesn't fire mouseenter on this menu's items, so this menu's
+	 * _clearHighlight never runs). For openers we promote to accent only
+	 * when the cursor is physically there (:hover) or on press (:active). */
+
+	:host([highlighted]) .menu__item:not([aria-expanded="true"]),
+	.menu__item[aria-expanded="true"]:hover,
 	.menu__item:active {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
@@ -188,9 +213,21 @@ export const menuItemStyles = css`
 	/* # Forced colors */
 
 	@media (forced-colors: active) {
-		:host([highlighted]) .menu__item {
+		/* In forced-colors there's no neutral lighter palette, so mark the
+		 * open opener with a 1px outline instead of a fill — visibly "active"
+		 * without competing with the actual Highlight that lives in the
+		 * submenu. The hovered/highlighted branch promotes it back to the
+		 * full Highlight fill. */
+		.menu__item[aria-expanded="true"] {
+			outline: 1px solid CanvasText;
+			outline-offset: -1px;
+		}
+
+		:host([highlighted]) .menu__item:not([aria-expanded="true"]),
+		.menu__item[aria-expanded="true"]:hover {
 			background-color: Highlight;
 			color: HighlightText;
+			outline: none;
 		}
 
 		.menu__item:focus-visible {
