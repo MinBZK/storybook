@@ -268,7 +268,13 @@ export class NLDDComboBox extends LitElement {
 	 */
 	private _deriveTextFromMenu(): void {
 		if (!this._menu || !this.value) return;
-		const items = this._menu.querySelectorAll<NLDDMenuItem>('nldd-menu-item');
+		// Scope to items that belong directly to the wired menu — without the
+		// closest() filter, a nested nldd-menu submenu's items would match
+		// before the intended top-level item when value keys overlap. Today's
+		// combo-boxes are flat, but this keeps the derivation correct as the
+		// menu structure gains depth.
+		const items = Array.from(this._menu.querySelectorAll<NLDDMenuItem>('nldd-menu-item'))
+			.filter(item => item.closest('nldd-menu') === this._menu);
 		for (const item of items) {
 			if ((item.value || item.text) === this.value) {
 				this.text = item.text;
