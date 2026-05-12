@@ -174,6 +174,7 @@ export class NLDDMenuItem extends LitElement {
 	 * submenu). Resolved once at firstUpdated; mutating the children after
 	 * mount is not supported in v1. */
 	private _cachedSubmenuEl: NLDDMenu | null = null;
+	private _submenuMutationObserver: MutationObserver | null = null;
 
 	get _submenuEl(): NLDDMenu | null {
 		return this._cachedSubmenuEl;
@@ -190,6 +191,28 @@ export class NLDDMenuItem extends LitElement {
 		if (this._cachedSubmenuEl !== null) {
 			this.requestUpdate();
 		}
+		// Submenu attachment is one-shot in v1 — a nldd-menu added after this
+		// point would silently miss aria-controls, the chevron indicator, the
+		// hover-open lifecycle, and the close-state sync. Watch for late
+		// additions and warn so consumers don't chase the symptom.
+		this._submenuMutationObserver = new MutationObserver(() => {
+			const current = this.querySelector(':scope > nldd-menu');
+			if (current && current !== this._cachedSubmenuEl) {
+				console.warn(
+					'[nldd-menu-item] A nldd-menu child was added after mount. '
+					+ 'Submenu attachment is resolved once at firstUpdated in v1, '
+					+ 'so this menu will not be treated as a submenu. Define the '
+					+ 'nldd-menu child before the item is connected to the DOM.',
+				);
+			}
+		});
+		this._submenuMutationObserver.observe(this, { childList: true });
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this._submenuMutationObserver?.disconnect();
+		this._submenuMutationObserver = null;
 	}
 
 	_handleClick(): void {
@@ -358,6 +381,16 @@ export class NLDDMenu extends LitElement {
 	/** Resolved empty text: emptyText attribute takes precedence, then i18n fallback. */
 	get _resolvedEmptyText(): string {
 		return this.emptyText || this._t('components.menu.empty-text');
+	}
+
+	/** Accessible name for the drill-in back button. Prefixes the parent
+	 * item's label with the localised "back" word so AT announces "Back:
+	 * Bestand" instead of an ambiguous "Bestand, button". Only used when
+	 * this menu is itself a submenu in drill-in mode. */
+	get _resolvedBackLabel(): string {
+		const back = this._t('components.menu.back');
+		const parent = this._parentItem?.text ?? '';
+		return parent ? `${back}: ${parent}` : back;
 	}
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————

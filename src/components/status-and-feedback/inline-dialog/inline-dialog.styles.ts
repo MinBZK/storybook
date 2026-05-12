@@ -20,11 +20,11 @@ export const inlineDialogStyles = css`
 	}
 
 	:host([variant='alert']) {
-		--_icon-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
+		--_icon-color: var(--semantics-content-warning-color);
 	}
 
 	:host([variant='success']) {
-		--_icon-color: light-dark(var(--primitives-color-success-350), var(--primitives-color-success-650));
+		--_icon-color: var(--semantics-content-success-color);
 	}
 
 	:host([icon-color='secondary']) { --_icon-color: var(--semantics-content-secondary-color); }

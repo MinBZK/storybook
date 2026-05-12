@@ -420,6 +420,16 @@ describe('nldd-menu-group', () => {
 		expect(groupContainer?.getAttribute('aria-labelledby')).toBe(title!.id);
 	});
 
+	it('hides the title from AT to prevent double-announcement', async () => {
+		// The title doubles as the group's accessible name via aria-labelledby.
+		// aria-hidden still allows label references to read its text content,
+		// so the group label survives while standalone announcement does not.
+		el = await fixture('<nldd-menu-group text="Bestand"></nldd-menu-group>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.menu-group__title');
+		expect(title?.getAttribute('aria-hidden')).toBe('true');
+	});
+
 	it('hides itself when all its items are filtered out', async () => {
 		const menu = await fixture<HTMLElement>(`
 			<nldd-menu>
@@ -472,8 +482,11 @@ describe('nldd-menu-group', () => {
 		`);
 		await waitForUpdate(menu);
 		const divider = menu.querySelector('nldd-menu-divider')!;
-		// _updateDividerVisibility runs on filter() and on menu open. An empty
-		// filter triggers it without changing item visibility.
+		// filter() calls _updateDividerVisibility as part of its post-update
+		// pass. An empty query runs the visibility logic without actually
+		// hiding any items, so we can assert the group→divider suppression
+		// path directly (a divider sitting immediately above a group is
+		// hidden because the group already renders its own auto-divider).
 		(menu as unknown as { filter: (q: string) => void }).filter('');
 		await waitForUpdate(menu);
 		expect(divider.hasAttribute('hidden')).toBe(true);
@@ -643,6 +656,21 @@ describe('nldd-menu-item with submenu', () => {
 		expect(submenu.id).toMatch(/^nldd-menu-/);
 		const button = el.shadowRoot!.querySelector('button')!;
 		expect(button.getAttribute('aria-controls')).toBe(submenu.id);
+	});
+
+	it('warns when a nldd-menu child is added after mount', async () => {
+		// Submenu attachment is resolved once at firstUpdated. A late addition
+		// would silently miss aria-controls / chevron / hover-open — surface
+		// it via console.warn so consumers don't chase the symptom.
+		el = await fixture('<nldd-menu-item text="Bestand"></nldd-menu-item>');
+		await waitForUpdate(el);
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const late = document.createElement('nldd-menu');
+		el.appendChild(late);
+		// MutationObserver delivers asynchronously — wait a microtask tick.
+		await new Promise(r => setTimeout(r, 0));
+		expect(warn).toHaveBeenCalled();
+		expect(warn.mock.calls[0][0]).toMatch(/added after mount/);
 	});
 });
 

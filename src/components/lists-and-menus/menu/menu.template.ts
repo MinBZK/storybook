@@ -29,6 +29,7 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 			${showBack ? html`
 				<button class="menu__back-button"
 					type="button"
+					aria-label=${this._resolvedBackLabel}
 					@click=${this._handleBack}
 					@mouseenter=${this._handleBackMouseenter}
 				>
@@ -118,9 +119,14 @@ export function menuDividerTemplate() {
 }
 
 export function menuGroupTemplate(component: NLDDMenuGroup) {
+	// aria-hidden on the title prevents AT from announcing it twice — once as
+	// standalone text and again as the group label via aria-labelledby. The
+	// label reference still reads the hidden node's text content, which is
+	// the standard pattern for this kind of labelling.
 	return html`
 		<div class="menu-group__title"
 			id=${component._titleId}
+			aria-hidden="true"
 		>${component.text}</div>
 		<div class="menu-group__items"
 			role="group"
