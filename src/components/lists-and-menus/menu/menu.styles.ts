@@ -68,7 +68,7 @@ export const menuStyles = css`
 
 	/* # Back button — drill-in mode header */
 
-	.menu__back {
+	.menu__back-button {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -89,13 +89,13 @@ export const menuStyles = css`
 		}
 	}
 
-	.menu__back:hover,
-	.menu__back:active {
+	.menu__back-button:hover,
+	.menu__back-button:active {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
 	}
 
-	.menu__back:focus-visible {
+	.menu__back-button:focus-visible {
 		position: relative;
 		z-index: 1;
 		outline: var(--semantics-focus-ring-outline);
@@ -103,7 +103,7 @@ export const menuStyles = css`
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
-	.menu__back-divider {
+	.menu__back-button-divider {
 		height: var(--semantics-dividers-thickness);
 		background-color: var(--semantics-dividers-color);
 		margin: var(--primitives-space-4) 0;
@@ -304,9 +304,16 @@ export const menuGroupStyles = css`
 	}
 
 
-	/* # Items wrapper */
-
+	/* # Items wrapper
+	 *
+	 * display: block keeps the role="group" wrapper as a real box so the
+	 * accessibility tree reliably exposes role + aria-labelledby across all
+	 * supported engines (display: contents has historical a11y-tree bugs in
+	 * older WebKit/Chromium that drop these). The extra container has no
+	 * visual impact: .menu is a flex column, and a block child stacks the
+	 * group's items the same as if they were direct children.
+	 */
 	.menu-group__items {
-		display: contents;
+		display: block;
 	}
 `;

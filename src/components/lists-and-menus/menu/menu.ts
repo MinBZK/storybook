@@ -307,8 +307,15 @@ export class NLDDMenu extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDMenuTranslations> = {};
 
-	/** Debug helper: when true, renders a translucent SVG overlay showing the
-	 * safe triangle's current shape. Useful for debugging — off in production. */
+	/**
+	 * @internal — development only.
+	 *
+	 * Renders a translucent SVG overlay showing the safe triangle's current
+	 * shape. Reflected as `debug-safe-triangle` so it can be toggled at
+	 * runtime in DevTools, but it must not be enabled in shipped code: the
+	 * overlay attaches a popover to `document.body` and is intended purely
+	 * as a development aid.
+	 */
 	@property({ type: Boolean, reflect: true, attribute: 'debug-safe-triangle' })
 	debugSafeTriangle = false;
 
@@ -429,14 +436,38 @@ export class NLDDMenu extends LitElement {
 	 * become interactive. Without this, a paused cursor would stay
 	 * "protected" indefinitely and the user couldn't peer-hover. */
 	private static readonly _SAFE_TRIANGLE_STALL_DISMISS_MS = 750;
+	/** Pull the wedge apex this many pixels away from the submenu edge (i.e.
+	 * to the left when the submenu is on the right). Widens the wedge near
+	 * the cursor so brief diagonal wobble doesn't pop the cursor out at the
+	 * apex, and avoids the degenerate single-line wedge when the cursor
+	 * crossed the opener edge exactly at the same x as the near submenu
+	 * corner. The shift is always negative — the standard placement is
+	 * submenu-right, so "left" is the intuitive forgive direction. */
+	private static readonly _SAFE_TRIANGLE_APEX_X_OFFSET = 4;
 
 	private _handleMenuItemMouseenter = (event: MouseEvent): void => {
 		const item = (event.target as Element).closest('nldd-menu-item') as NLDDMenuItem | null;
-		if (!item || item.disabled || item.hasAttribute('hidden')) return;
+		if (!item) return;
+		this._activateItem(item);
+	};
 
-		// The listener is registered with capture:true, so it fires for events
-		// targeted at items in descendant submenus too. Bail out for those —
-		// the descendant menu has its own listener that will handle them.
+	/**
+	 * Item-activation logic shared between the native `mouseenter` capture
+	 * handler and the safe-triangle recovery paths (sideways exit, direction
+	 * reversal, stall dismissal). Those paths know which item is under the
+	 * cursor — they don't need to synthesize a MouseEvent just to re-enter
+	 * the handler. Factoring out the body keeps the entry contracts honest:
+	 * the recovery sites pass an already-resolved item rather than relying
+	 * on `event.target` semantics they'd have to fake.
+	 */
+	private _activateItem(item: NLDDMenuItem): void {
+		if (item.disabled || item.hasAttribute('hidden')) return;
+
+		// The mouseenter listener is registered with capture:true, so it fires
+		// for events targeted at items in descendant submenus too. Bail out
+		// for those — the descendant menu has its own listener that will
+		// handle them. (Synthetic callers can hit this branch when the item
+		// under the cursor belongs to a nested menu.)
 		if (item.closest('nldd-menu') !== this) return;
 
 		// Hover-triangle guard: while the user is on a path toward the active
@@ -472,7 +503,17 @@ export class NLDDMenu extends LitElement {
 				item._handleClick();
 			}, 150);
 		}
-	};
+	}
+
+	/** Resolve the menu-item under a viewport point and activate it via
+	 * `_activateItem`. Used by safe-triangle recovery paths whose natural
+	 * mouseenter has already fired (and bailed) — they need to re-trigger
+	 * activation without synthesizing a MouseEvent. */
+	private _activateItemAt(p: { x: number, y: number }): void {
+		const el = document.elementFromPoint(p.x, p.y);
+		const item = el?.closest('nldd-menu-item') as NLDDMenuItem | null;
+		if (item) this._activateItem(item);
+	}
 
 	private _handleMouseleave = (): void => {
 		if (this.variant !== 'listbox') this._clearHighlight();
@@ -551,7 +592,10 @@ export class NLDDMenu extends LitElement {
 
 	// — Safe-triangle phase methods ————————————————————————————————————————
 
-	/** Cursor entered the submenu (or any nested submenu) — clean up. */
+	/** Cursor entered the submenu (or any nested submenu) — clean up triangle
+	 * state but leave the window mousemove listener alive. The listener still
+	 * needs to fire while the cursor is inside the submenu so we can detect a
+	 * return trip to the opener and re-pin a fresh apex for another exit. */
 	private _safeTriangleArrived(p: { x: number, y: number }): void {
 		this._movingTowardSubmenu = false;
 		this._cancelHoverClose();
@@ -581,22 +625,24 @@ export class NLDDMenu extends LitElement {
 		if (this.debugSafeTriangle && openerRect) {
 			const nearX = p.x < r.left ? r.left : r.right;
 			this._renderSafeTriangleOverlay([
-				{ x: p.x, y: p.y - 1 },
+				{ x: p.x - NLDDMenu._SAFE_TRIANGLE_APEX_X_OFFSET, y: p.y },
 				{ x: nearX, y: r.top },
 				{ x: nearX, y: r.bottom },
-				{ x: p.x, y: p.y + 1 },
 			]);
 		}
 	}
 
 	/** Cursor crossed the opener's top or bottom edge — pin apex there.
 	 * x is clamped to the opener's range so the wedge starts at the visual
-	 * edge regardless of how far past the edge this mousemove sample is. */
+	 * edge regardless of how far past the edge this mousemove sample is, then
+	 * shifted by _SAFE_TRIANGLE_APEX_X_OFFSET to widen the wedge at the
+	 * cursor side (the 4px headroom that makes brief diagonal wobble forgive). */
 	private _safeTrianglePinApex(
 		p: { x: number, y: number },
 		openerRect: DOMRect,
 	): void {
-		const apexX = Math.max(openerRect.left, Math.min(openerRect.right, p.x));
+		const apexX = Math.max(openerRect.left, Math.min(openerRect.right, p.x))
+			- NLDDMenu._SAFE_TRIANGLE_APEX_X_OFFSET;
 		const apexY = p.y > openerRect.bottom ? openerRect.bottom : openerRect.top;
 		this._safeTriangleApex = { x: apexX, y: apexY };
 		this._movingTowardSubmenu = true;
@@ -611,12 +657,7 @@ export class NLDDMenu extends LitElement {
 		this._movingTowardSubmenu = false;
 		this._lastCursorPos = p;
 		this._removeSafeTriangleOverlay();
-		if (wasMoving) {
-			const el = document.elementFromPoint(p.x, p.y);
-			if (el) {
-				this._handleMenuItemMouseenter({ target: el } as unknown as MouseEvent);
-			}
-		}
+		if (wasMoving) this._activateItemAt(p);
 	}
 
 	/** Apex pinned — test whether the current cursor position is inside the
@@ -625,14 +666,16 @@ export class NLDDMenu extends LitElement {
 	private _safeTrianglePolygonTest(p: { x: number, y: number }, r: DOMRect): void {
 		const nearX = p.x < r.left ? r.left : r.right;
 		const apex = this._safeTriangleApex!;
-		// 4-point wedge: ±1px apex band for jitter tolerance.
+		// Single-point apex (no jitter band): the apex is already offset left
+		// of the actual crossing point by _SAFE_TRIANGLE_APEX_X_OFFSET, so the
+		// cursor sits comfortably inside the wedge near the opener edge — no
+		// degenerate cases where a 1px jitter pops the cursor out at the apex.
 		const wedge = [
-			{ x: apex.x, y: apex.y - 1 },
+			apex,
 			{ x: nearX, y: r.top },
 			{ x: nearX, y: r.bottom },
-			{ x: apex.x, y: apex.y + 1 },
 		];
-		this._movingTowardSubmenu = this._pointInPolygon(p, wedge);
+		this._movingTowardSubmenu = NLDDMenu._pointInPolygon(p, wedge);
 		if (this.debugSafeTriangle) {
 			this._renderSafeTriangleOverlay(wedge);
 		}
@@ -655,10 +698,7 @@ export class NLDDMenu extends LitElement {
 	 * enters, so synthesize one here to activate the peer immediately. */
 	private _safeTriangleDirectionReversalRecovery(p: { x: number, y: number }, wasMoving: boolean): void {
 		if (!wasMoving || this._movingTowardSubmenu) return;
-		const el = document.elementFromPoint(p.x, p.y);
-		if (el) {
-			this._handleMenuItemMouseenter({ target: el } as unknown as MouseEvent);
-		}
+		this._activateItemAt(p);
 	}
 
 	/** Re-arm the stall-dismissal timer. If the cursor sits motionless
@@ -674,12 +714,7 @@ export class NLDDMenu extends LitElement {
 			this._safeTriangleStallTimer = null;
 			this._movingTowardSubmenu = false;
 			this._safeTriangleApex = null;
-			if (this._lastCursorPos) {
-				const el = document.elementFromPoint(this._lastCursorPos.x, this._lastCursorPos.y);
-				if (el) {
-					this._handleMenuItemMouseenter({ target: el } as unknown as MouseEvent);
-				}
-			}
+			if (this._lastCursorPos) this._activateItemAt(this._lastCursorPos);
 		}, NLDDMenu._SAFE_TRIANGLE_STALL_DISMISS_MS);
 	}
 
@@ -791,7 +826,7 @@ export class NLDDMenu extends LitElement {
 
 	/** Convex point-in-polygon test via consistent edge-cross-product sign.
 	 * Vertices must be ordered (clockwise or counter-clockwise). */
-	private _pointInPolygon(p: { x: number, y: number }, vertices: Array<{ x: number, y: number }>): boolean {
+	private static _pointInPolygon(p: { x: number, y: number }, vertices: Array<{ x: number, y: number }>): boolean {
 		let hasNeg = false;
 		let hasPos = false;
 		for (let i = 0; i < vertices.length; i++) {
@@ -871,6 +906,12 @@ export class NLDDMenu extends LitElement {
 		event.stopPropagation();
 
 		const submenu = event.detail.submenu;
+		// Same submenu already open — bail before re-running the open path. Without
+		// this, hover-opening then clicking the same opener (or rapid double-click)
+		// would stack a second `toggle` listener; `showPopover()` is a no-op on an
+		// already-open popover so both listeners would survive and double-fire on
+		// the next close.
+		if (this._activeSubmenu === submenu) return;
 		// Close any other submenu that's already open in this menu before
 		// opening a new one — only one peer submenu visible at a time.
 		if (this._activeSubmenu && this._activeSubmenu !== submenu) {

@@ -758,4 +758,90 @@ describe('nldd-menu typeahead and event lifecycle', () => {
 		expect(closeFired).toBe(true);
 		cleanup(menu);
 	});
+
+	it('dispatches submenu-close exactly once when the same submenu is re-opened before closing', async () => {
+		// Regression: _handleSubmenuOpen used to register a fresh `toggle`
+		// listener on every call. Hover-opening then clicking the same opener
+		// (or rapid double-click) would stack listeners and fire submenu-close
+		// twice on the eventual close.
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const submenu = item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const dispatchOpen = () => item.dispatchEvent(new CustomEvent('submenu-open', {
+			detail: { submenu, item },
+			bubbles: true,
+		}));
+		dispatchOpen();
+		dispatchOpen();
+		dispatchOpen();
+		await waitForUpdate(menu);
+		let closeCount = 0;
+		menu.addEventListener('submenu-close', () => { closeCount += 1; });
+		(submenu as HTMLElement & { hidePopover: () => void }).hidePopover();
+		await waitForUpdate(menu);
+		expect(closeCount).toBe(1);
+		cleanup(menu);
+	});
+});
+
+describe('nldd-menu safe-triangle internals', () => {
+	type PolygonHelper = (
+		p: { x: number, y: number },
+		vertices: Array<{ x: number, y: number }>,
+	) => boolean;
+
+	// Static helper — reach via the constructor so the test stays honest about
+	// it being callable without an instance.
+	const pointInPolygon = (
+		(customElements.get('nldd-menu') as unknown as { _pointInPolygon: PolygonHelper })._pointInPolygon
+	).bind(customElements.get('nldd-menu')) as PolygonHelper;
+
+	it('identifies a point inside a convex wedge as inside', () => {
+		// Triangle apex at (0,0), base on x=100 between y=-50..50.
+		const wedge = [
+			{ x: 0, y: 0 },
+			{ x: 100, y: -50 },
+			{ x: 100, y: 50 },
+		];
+		expect(pointInPolygon({ x: 50, y: 0 }, wedge)).toBe(true);
+		expect(pointInPolygon({ x: 80, y: 10 }, wedge)).toBe(true);
+	});
+
+	it('identifies a point outside a convex wedge as outside', () => {
+		const wedge = [
+			{ x: 0, y: 0 },
+			{ x: 100, y: -50 },
+			{ x: 100, y: 50 },
+		];
+		expect(pointInPolygon({ x: -10, y: 0 }, wedge)).toBe(false);
+		expect(pointInPolygon({ x: 50, y: 60 }, wedge)).toBe(false);
+		expect(pointInPolygon({ x: 110, y: 0 }, wedge)).toBe(false);
+	});
+
+	it('handles a four-point wedge (apex band + far edge) symmetrically', () => {
+		// Mirrors the actual safe-triangle shape — apex with ±1px band, far
+		// edge on the submenu side. The wedge widens linearly with x, so at
+		// the midpoint the vertical span is roughly half the far edge.
+		const wedge = [
+			{ x: 0, y: -1 },
+			{ x: 100, y: -50 },
+			{ x: 100, y: 50 },
+			{ x: 0, y: 1 },
+		];
+		expect(pointInPolygon({ x: 50, y: 0 }, wedge)).toBe(true);
+		expect(pointInPolygon({ x: 50, y: 20 }, wedge)).toBe(true);
+		expect(pointInPolygon({ x: 90, y: 40 }, wedge)).toBe(true);
+		// Outside the widening wedge at the midpoint.
+		expect(pointInPolygon({ x: 50, y: 40 }, wedge)).toBe(false);
+		expect(pointInPolygon({ x: 50, y: -40 }, wedge)).toBe(false);
+	});
 });

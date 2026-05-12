@@ -27,7 +27,7 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 			tabindex="-1"
 		>
 			${showBack ? html`
-				<button class="menu__back"
+				<button class="menu__back-button"
 					type="button"
 					@click=${this._handleBack}
 					@mouseenter=${this._handleBackMouseenter}
@@ -36,7 +36,7 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 					<nldd-spacer-cell size="6"></nldd-spacer-cell>
 					<nldd-text-cell text=${this._parentItem!.text}></nldd-text-cell>
 				</button>
-				<div class="menu__back-divider" role="separator"></div>
+				<div class="menu__back-button-divider" role="separator"></div>
 			` : nothing}
 			<slot></slot>
 			${isEmpty ? html`
