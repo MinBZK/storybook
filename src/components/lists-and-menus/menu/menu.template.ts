@@ -37,7 +37,10 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 					<nldd-spacer-cell size="6"></nldd-spacer-cell>
 					<nldd-text-cell text=${this._parentItem!.text}></nldd-text-cell>
 				</button>
-				<div class="menu__back-button-divider" role="separator"></div>
+				<!-- Pure visual divider; role="none" keeps strict ARIA validators
+				     quiet (a focusable role="separator" inside a menu would need
+				     aria-valuenow et al.; this one is decorative). -->
+				<div class="menu__back-button-divider" role="none"></div>
 			` : nothing}
 			<slot></slot>
 			${isEmpty ? html`

@@ -431,7 +431,7 @@ describe('nldd-menu-group', () => {
 	});
 
 	it('hides itself when all its items are filtered out', async () => {
-		const menu = await fixture<HTMLElement>(`
+		el = await fixture<HTMLElement>(`
 			<nldd-menu>
 				<nldd-menu-group text="Bestand">
 					<nldd-menu-item text="Open"></nldd-menu-item>
@@ -442,36 +442,34 @@ describe('nldd-menu-group', () => {
 				</nldd-menu-group>
 			</nldd-menu>
 		`);
-		await waitForUpdate(menu);
-		const [groupA, groupB] = menu.querySelectorAll('nldd-menu-group');
-		(menu as unknown as { filter: (q: string) => void }).filter('knip');
-		await waitForUpdate(menu);
+		await waitForUpdate(el);
+		const [groupA, groupB] = el.querySelectorAll('nldd-menu-group');
+		(el as unknown as { filter: (q: string) => void }).filter('knip');
+		await waitForUpdate(el);
 		expect(groupA.hasAttribute('hidden')).toBe(true);
 		expect(groupB.hasAttribute('hidden')).toBe(false);
-		cleanup(menu);
 	});
 
 	it('shows empty groups again when filter is cleared', async () => {
-		const menu = await fixture<HTMLElement>(`
+		el = await fixture<HTMLElement>(`
 			<nldd-menu>
 				<nldd-menu-group text="Bestand">
 					<nldd-menu-item text="Open"></nldd-menu-item>
 				</nldd-menu-group>
 			</nldd-menu>
 		`);
-		await waitForUpdate(menu);
-		const group = menu.querySelector('nldd-menu-group')!;
-		(menu as unknown as { filter: (q: string) => void }).filter('xx');
-		await waitForUpdate(menu);
+		await waitForUpdate(el);
+		const group = el.querySelector('nldd-menu-group')!;
+		(el as unknown as { filter: (q: string) => void }).filter('xx');
+		await waitForUpdate(el);
 		expect(group.hasAttribute('hidden')).toBe(true);
-		(menu as unknown as { filter: (q: string) => void }).filter('');
-		await waitForUpdate(menu);
+		(el as unknown as { filter: (q: string) => void }).filter('');
+		await waitForUpdate(el);
 		expect(group.hasAttribute('hidden')).toBe(false);
-		cleanup(menu);
 	});
 
 	it('hides an explicit divider that sits directly before a group', async () => {
-		const menu = await fixture<HTMLElement>(`
+		el = await fixture<HTMLElement>(`
 			<nldd-menu>
 				<nldd-menu-item text="Recent"></nldd-menu-item>
 				<nldd-menu-divider></nldd-menu-divider>
@@ -480,17 +478,16 @@ describe('nldd-menu-group', () => {
 				</nldd-menu-group>
 			</nldd-menu>
 		`);
-		await waitForUpdate(menu);
-		const divider = menu.querySelector('nldd-menu-divider')!;
+		await waitForUpdate(el);
+		const divider = el.querySelector('nldd-menu-divider')!;
 		// filter() calls _updateDividerVisibility as part of its post-update
 		// pass. An empty query runs the visibility logic without actually
 		// hiding any items, so we can assert the group→divider suppression
 		// path directly (a divider sitting immediately above a group is
 		// hidden because the group already renders its own auto-divider).
-		(menu as unknown as { filter: (q: string) => void }).filter('');
-		await waitForUpdate(menu);
+		(el as unknown as { filter: (q: string) => void }).filter('');
+		await waitForUpdate(el);
 		expect(divider.hasAttribute('hidden')).toBe(true);
-		cleanup(menu);
 	});
 });
 
@@ -548,7 +545,7 @@ describe('nldd-menu-item with submenu', () => {
 	});
 
 	it('dispatches submenu-open instead of select when clicked', async () => {
-		const menu = await fixture<HTMLElement>(`
+		el = await fixture<HTMLElement>(`
 			<nldd-menu>
 				<nldd-menu-item text="Bestand">
 					<nldd-menu>
@@ -557,20 +554,19 @@ describe('nldd-menu-item with submenu', () => {
 				</nldd-menu-item>
 			</nldd-menu>
 		`);
-		await waitForUpdate(menu);
-		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		await waitForUpdate(el);
+		const item = el.querySelector(':scope > nldd-menu-item') as HTMLElement;
 		let selectFired = false;
 		let submenuOpenFired = false;
-		menu.addEventListener('select', () => { selectFired = true; });
-		menu.addEventListener('submenu-open', () => { submenuOpenFired = true; });
+		el.addEventListener('select', () => { selectFired = true; });
+		el.addEventListener('submenu-open', () => { submenuOpenFired = true; });
 		item.shadowRoot!.querySelector('button')!.click();
 		expect(submenuOpenFired).toBe(true);
 		expect(selectFired).toBe(false);
-		cleanup(menu);
 	});
 
 	it('marks the item as expanded while its submenu is open', async () => {
-		const menu = await fixture<HTMLElement>(`
+		el = await fixture<HTMLElement>(`
 			<nldd-menu>
 				<nldd-menu-item text="Bestand">
 					<nldd-menu>
@@ -579,18 +575,17 @@ describe('nldd-menu-item with submenu', () => {
 				</nldd-menu-item>
 			</nldd-menu>
 		`);
-		await waitForUpdate(menu);
-		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		await waitForUpdate(el);
+		const item = el.querySelector(':scope > nldd-menu-item') as HTMLElement;
 		const button = item.shadowRoot!.querySelector('button')!;
 		// Trigger submenu-open via click; the parent menu's listener wires it up.
 		button.click();
 		await waitForUpdate(item);
 		expect(button.getAttribute('aria-expanded')).toBe('true');
-		cleanup(menu);
 	});
 
 	it('ArrowRight on a focused item-with-submenu opens its submenu', async () => {
-		const menu = await fixture<HTMLElement>(`
+		el = await fixture<HTMLElement>(`
 			<nldd-menu>
 				<nldd-menu-item text="Bestand">
 					<nldd-menu>
@@ -599,35 +594,33 @@ describe('nldd-menu-item with submenu', () => {
 				</nldd-menu-item>
 			</nldd-menu>
 		`);
-		await waitForUpdate(menu);
-		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		await waitForUpdate(el);
+		const item = el.querySelector(':scope > nldd-menu-item') as HTMLElement;
 		// _getFocusedIndex looks for the data-focused attribute, normally set
 		// by the menu-item's focusin handler. Test env focus() is unreliable
 		// at firing focusin synchronously — set it directly.
 		item.setAttribute('data-focused', '');
 		let opened = false;
-		menu.addEventListener('submenu-open', () => { opened = true; });
-		menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-		await waitForUpdate(menu);
+		el.addEventListener('submenu-open', () => { opened = true; });
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		await waitForUpdate(el);
 		expect(opened).toBe(true);
-		cleanup(menu);
 	});
 
 	it('ArrowRight on a focused item without a submenu is a no-op', async () => {
-		const menu = await fixture<HTMLElement>(`
+		el = await fixture<HTMLElement>(`
 			<nldd-menu>
 				<nldd-menu-item text="Plain"></nldd-menu-item>
 			</nldd-menu>
 		`);
-		await waitForUpdate(menu);
-		const item = menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		await waitForUpdate(el);
+		const item = el.querySelector(':scope > nldd-menu-item') as HTMLElement;
 		item.setAttribute('data-focused', '');
 		let opened = false;
-		menu.addEventListener('submenu-open', () => { opened = true; });
-		menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-		await waitForUpdate(menu);
+		el.addEventListener('submenu-open', () => { opened = true; });
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		await waitForUpdate(el);
 		expect(opened).toBe(false);
-		cleanup(menu);
 	});
 
 	it('renders aria-controls on the opener pointing at its submenu id', async () => {
@@ -656,6 +649,85 @@ describe('nldd-menu-item with submenu', () => {
 		expect(submenu.id).toMatch(/^nldd-menu-/);
 		const button = el.shadowRoot!.querySelector('button')!;
 		expect(button.getAttribute('aria-controls')).toBe(submenu.id);
+	});
+
+	it('ArrowRight moves focus to the first visible item in the opened submenu', async () => {
+		el = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+						<nldd-menu-item text="Save"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const item = el.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		item.setAttribute('data-focused', '');
+		const firstSubmenuItem = item.querySelectorAll('nldd-menu-item')[0] as HTMLElement;
+		const focusSpy = vi.spyOn(firstSubmenuItem, 'focus');
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+		// The handler schedules focus via requestAnimationFrame once submenu-open
+		// has been processed synchronously by the parent menu.
+		await new Promise(r => requestAnimationFrame(() => r(null)));
+		expect(focusSpy).toHaveBeenCalled();
+	});
+
+	it('ArrowLeft on an open submenu returns focus to the parent item', async () => {
+		el = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(el);
+		const item = el.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const submenu = item.querySelector(':scope > nldd-menu') as HTMLElement;
+		// Open via the synthetic submenu-open so the parent wires _parentMenu / _parentItem.
+		item.dispatchEvent(new CustomEvent('submenu-open', {
+			detail: { submenu, item },
+			bubbles: true,
+		}));
+		await waitForUpdate(el);
+		const focusSpy = vi.spyOn(item, 'focus');
+		submenu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+		expect(focusSpy).toHaveBeenCalled();
+	});
+
+	it('Escape on an open submenu returns focus to the parent item, not the root anchor', async () => {
+		// Without the _isSubmenu branch in _handleKeydown, Escape would focus
+		// the root anchor, dropping the user out of the chain entirely.
+		el = await fixture<HTMLElement>(`
+			<div>
+				<button id="esc-test-anchor"></button>
+				<nldd-menu anchor="esc-test-anchor">
+					<nldd-menu-item text="Bestand">
+						<nldd-menu>
+							<nldd-menu-item text="Open"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-menu-item>
+				</nldd-menu>
+			</div>
+		`);
+		const root = el.querySelector('nldd-menu') as HTMLElement;
+		await waitForUpdate(root);
+		const item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const submenu = item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const anchor = el.querySelector('#esc-test-anchor') as HTMLElement;
+		item.dispatchEvent(new CustomEvent('submenu-open', {
+			detail: { submenu, item },
+			bubbles: true,
+		}));
+		await waitForUpdate(el);
+		const itemFocusSpy = vi.spyOn(item, 'focus');
+		const anchorFocusSpy = vi.spyOn(anchor, 'focus');
+		submenu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+		expect(itemFocusSpy).toHaveBeenCalled();
+		expect(anchorFocusSpy).not.toHaveBeenCalled();
 	});
 
 	it('warns when a nldd-menu child is added after mount', async () => {

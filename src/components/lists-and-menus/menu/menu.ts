@@ -930,15 +930,13 @@ export class NLDDMenu extends LitElement {
 	 * placement, but the lifecycle (popover.show, listen for close, clear
 	 * state on hide) is the same for both modes.
 	 */
-	private _handleSubmenuOpen = (event: CustomEvent<{ submenu: NLDDMenu, item: NLDDMenuItem }>): void => {
+	private _handleSubmenuOpen: EventListener = (event): void => {
 		// Only handle events from items that are direct children of this menu.
 		// Items inside a sub-submenu fire their own submenu-open which bubbles
 		// here too — we let that one bubble past, our descendant menu handles it.
-		const item = event.detail.item;
+		const { item, submenu } = (event as CustomEvent<{ submenu: NLDDMenu, item: NLDDMenuItem }>).detail;
 		if (item.closest('nldd-menu') !== this) return;
 		event.stopPropagation();
-
-		const submenu = event.detail.submenu;
 		// Same submenu already open — bail before re-running the open path. Without
 		// this, hover-opening then clicking the same opener (or rapid double-click)
 		// would stack a second `toggle` listener; `showPopover()` is a no-op on an
@@ -1095,13 +1093,16 @@ export class NLDDMenu extends LitElement {
 		this.addEventListener('mouseenter', this._handleMenuItemMouseenter, true);
 		this.addEventListener('mouseleave', this._handleMouseleave);
 		this.addEventListener('menu-item-focused', this._handleMenuItemFocused);
-		this.addEventListener('submenu-open', this._handleSubmenuOpen as EventListener);
+		this.addEventListener('submenu-open', this._handleSubmenuOpen);
 		this.addEventListener('select', this._handleSelectChainClose);
 		document.addEventListener('click', this._handleDocumentClick);
 		// Close any open submenu when the viewport crosses the cascade ↔ drill-in
 		// threshold mid-session — re-rendering between modes mid-flight would
 		// require recomputing anchors and is more disorienting than a clean reset.
-		window.addEventListener('resize', this._handleViewportResize);
+		// Subscribe to the MediaQueryList's `change` event rather than every
+		// `window.resize` frame: it fires only when the threshold is actually
+		// crossed and matches the comment above the cached query.
+		NLDDMenu._getDrillInModeQuery().addEventListener('change', this._handleViewportResize);
 	}
 
 	override firstUpdated(): void {
@@ -1110,15 +1111,23 @@ export class NLDDMenu extends LitElement {
 
 	override disconnectedCallback(): void {
 		super.disconnectedCallback();
+		// Close any open child submenu before tearing down — the submenu is a
+		// document-anchored popover and would otherwise outlive its parent.
+		// The toggle listener wired in _handleSubmenuOpen still fires from
+		// the hidePopover, but the cleanup below has not run yet so its
+		// state-clear path is safe.
+		if (this._activeSubmenu) {
+			(this._activeSubmenu as HTMLElement).hidePopover?.();
+		}
 		this.removeEventListener('toggle', this._handleToggle);
 		this.removeEventListener('keydown', this._handleKeydown);
 		this.removeEventListener('mouseenter', this._handleMenuItemMouseenter, true);
 		this.removeEventListener('mouseleave', this._handleMouseleave);
 		this.removeEventListener('menu-item-focused', this._handleMenuItemFocused);
-		this.removeEventListener('submenu-open', this._handleSubmenuOpen as EventListener);
+		this.removeEventListener('submenu-open', this._handleSubmenuOpen);
 		this.removeEventListener('select', this._handleSelectChainClose);
 		document.removeEventListener('click', this._handleDocumentClick);
-		window.removeEventListener('resize', this._handleViewportResize);
+		NLDDMenu._getDrillInModeQuery().removeEventListener('change', this._handleViewportResize);
 		this._cancelHoverOpen();
 		this._cancelHoverClose();
 		this._stopSafeTriangle();
