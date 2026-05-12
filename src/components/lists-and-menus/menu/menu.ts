@@ -13,6 +13,7 @@ import '../../content/icon/icon.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 import { isKeyboardMode } from '../../../utilities/input-modality.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
+import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
 
 // # nldd-menu-divider
@@ -58,6 +59,11 @@ export class NLDDMenuGroup extends LitElement {
 	@property({ type: String, reflect: true })
 	text = '';
 
+	// SSR caveat: this counter is per module instance, not per render. If
+	// the component ever runs in a context where modules reload between
+	// server and client (SSR hydration, Vite HMR with fresh module state),
+	// IDs will mismatch and aria-labelledby refs will break. Browser-only
+	// today; revisit if hydration is added.
 	private static _idCounter = 0;
 	readonly _titleId = `nldd-menu-group-title-${NLDDMenuGroup._idCounter++}`;
 
@@ -901,7 +907,10 @@ export class NLDDMenu extends LitElement {
 	private static _drillInModeQuery: MediaQueryList | null = null;
 	private static _getDrillInModeQuery(): MediaQueryList {
 		if (NLDDMenu._drillInModeQuery === null) {
-			NLDDMenu._drillInModeQuery = matchMedia('(pointer: coarse), (max-width: 640px)');
+			// Use the shared breakpoint constant so the JS-side threshold can't
+			// drift from the CSS-side one (spacer.styles.ts and friends pull
+			// from the same source).
+			NLDDMenu._drillInModeQuery = matchMedia(`(pointer: coarse), (max-width: ${breakpoints.smMax})`);
 		}
 		return NLDDMenu._drillInModeQuery;
 	}
