@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDComboBox } from './combo-box.js';
 import './combo-box.js';
 import '../../lists-and-menus/menu/menu.js';
@@ -209,17 +209,17 @@ describe('nldd-combo-box – input event', () => {
 		if (el) cleanup(el);
 	});
 
-	it('updates _displayValue on input', async () => {
+	it('updates text on input', async () => {
 		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		const input = el.shadowRoot!.querySelector('input')!;
 		(input as any).value = 'Neder';
 		input.dispatchEvent(new Event('input', { bubbles: true }));
 		await waitForUpdate(el);
-		expect(el._displayValue).toBe('Neder');
+		expect(el.text).toBe('Neder');
 	});
 
-	it('dispatches input event with displayValue detail', async () => {
+	it('dispatches input event with text detail', async () => {
 		el = await fixture<NLDDComboBox>('<nldd-combo-box></nldd-combo-box>');
 		await waitForUpdate(el);
 		let detail: any;
@@ -276,7 +276,7 @@ describe('nldd-combo-box – clear', () => {
 		await waitForUpdate(el);
 
 		expect(el.value).toBe('');
-		expect(el._displayValue).toBe('');
+		expect(el.text).toBe('');
 		expect(changeDetail?.value).toBe('');
 		// Refocus: walk shadow roots to find the deepest active element.
 		let active: Element | null = document.activeElement;
@@ -472,6 +472,171 @@ describe('nldd-combo-box – picker pointerdown (touch close)', () => {
 		(el as unknown as { formStateRestoreCallback: (s: FormData) => void }).formStateRestoreCallback(restored);
 		await waitForUpdate(el);
 		expect((el as NLDDComboBox).value).toBe('nl');
-		expect((el as NLDDComboBox)._displayValue).toBe('Nederland');
+		expect((el as NLDDComboBox).text).toBe('Nederland');
+	});
+});
+
+
+/* ============================================================
+   text public API + auto-derive
+   ============================================================ */
+
+describe('nldd-combo-box – text', () => {
+	let el: NLDDComboBox;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('exposes text as a public property with default empty string', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box accessible-label="Land"></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.text).toBe('');
+	});
+
+	it('pre-populates the input via text attribute', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box value="nl" text="Nederland" accessible-label="Land"></nldd-combo-box>');
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.value).toBe('Nederland');
+		expect(el.text).toBe('Nederland');
+		expect(el.value).toBe('nl');
+	});
+
+	it('pre-populates the input via text property set from JS', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box accessible-label="Land"></nldd-combo-box>');
+		el.value = 'nl';
+		el.text = 'Nederland';
+		await waitForUpdate(el);
+		const input = el.shadowRoot!.querySelector('input')!;
+		expect(input.value).toBe('Nederland');
+	});
+
+	it('auto-derives text from a slotted menu item matching value (initial render)', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box value="nl" accessible-label="Land">
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		expect(el.text).toBe('Nederland');
+		expect(el.shadowRoot!.querySelector('input')!.value).toBe('Nederland');
+	});
+
+	it('auto-derives text when value is updated programmatically', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box accessible-label="Land">
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		el.value = 'be';
+		await waitForUpdate(el);
+		expect(el.text).toBe('België');
+	});
+
+	it('does not overwrite an explicit text when value matches a menu item', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box value="nl" text="Netherlands (custom)" accessible-label="Land">
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		expect(el.text).toBe('Netherlands (custom)');
+	});
+
+	it('does not auto-derive when value has no matching slotted item', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box value="xx" accessible-label="Land">
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		expect(el.text).toBe('');
+	});
+
+	it('falls back to item.text when item.value is unset', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box value="Optellen" accessible-label="Operatie">
+				<nldd-menu>
+					<nldd-menu-item text="Optellen"></nldd-menu-item>
+					<nldd-menu-item text="Aftrekken"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		expect(el.text).toBe('Optellen');
+	});
+
+	it('keeps both value and text in sync when consumer batches updates', async () => {
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box accessible-label="Land">
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		el.value = 'be';
+		el.text = 'Custom Belgium';
+		await waitForUpdate(el);
+		// Both changed in same Lit update cycle → derive does not overwrite the explicit value.
+		expect(el.value).toBe('be');
+		expect(el.text).toBe('Custom Belgium');
+	});
+
+	it('derives text once the menu is appended after value is set (second-chance _onSlotChange path)', async () => {
+		// Common consumer pattern: <nldd-combo-box value="nl"> with the menu
+		// stamped in async. willUpdate's first run has no menu to walk, so
+		// _onSlotChange must re-trigger derivation when the slot lights up.
+		el = await fixture<NLDDComboBox>('<nldd-combo-box value="nl" accessible-label="Land"></nldd-combo-box>');
+		await waitForUpdate(el);
+		expect(el.text).toBe(''); // no menu yet → derive bailed early
+
+		const menu = document.createElement('nldd-menu');
+		menu.innerHTML = `
+			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+			<nldd-menu-item text="België" value="be"></nldd-menu-item>
+		`;
+		el.appendChild(menu);
+		await waitForUpdate(el);
+		expect(el.text).toBe('Nederland');
+	});
+
+	it('leaves text unchanged when value is updated to a non-matching item', async () => {
+		// _deriveTextFromMenu silently no-ops on no-match (no warning, no
+		// clear). The previous display label stays — consumers driving value
+		// programmatically are responsible for clearing text when they know
+		// the new value has no slotted match.
+		el = await fixture<NLDDComboBox>(`
+			<nldd-combo-box value="nl" text="Nederland" accessible-label="Land">
+				<nldd-menu>
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		`);
+		await waitForUpdate(el);
+		el.value = 'xx';
+		await waitForUpdate(el);
+		expect(el.text).toBe('Nederland');
+	});
+
+	it('focus() delegates to the inner input', async () => {
+		el = await fixture<NLDDComboBox>('<nldd-combo-box accessible-label="Land"></nldd-combo-box>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('input'));
 	});
 });

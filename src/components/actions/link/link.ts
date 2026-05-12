@@ -1,15 +1,26 @@
 /**
  * Nederlandse Digitale Dienst Link Component (Lit + TypeScript)
  *
- * Standalone hyperlink component voor gebruik buiten lopende tekst (menu's,
- * actiegebieden, overzichten). Voor inline links in paragrafen gebruik je
- * <nldd-rich-text> met een standaard <a>.
+ * Hyperlink component met twee modi:
+ *
+ * 1. **Standalone (sized)** — set `size="xs"|"sm"|"md"|"lg"` voor menu's,
+ *    actiegebieden of overzichten. Vaste tekstgrootte, `display: inline-flex`
+ *    met `gap` voor icon-spacing.
+ *
+ * 2. **Inline (inherit)** — laat `size` weg of zet expliciet `size="inherit"`.
+ *    De link erft `font-size`, `line-height` en `font-family` van zijn
+ *    omgeving. Tekst wraps natuurlijk over regels (`display: inline`). Icons
+ *    werken ook hier; de natuurlijke whitespace tussen icon en tekst zorgt
+ *    voor de spacing.
+ *
+ * Voor links in CMS/markdown-output (waar de `<a>` als HTML binnenkomt) blijft
+ * `<nldd-rich-text>` met raw `<a>` de aangewezen route.
  *
  * @element nldd-link
  * @attr {string} href - Link doel
  * @attr {string} target - Link target (bijv. '_blank'); stelt rel automatisch bij
  * @attr {string} rel - Link rel attribuut; standaard 'noopener noreferrer' bij target='_blank'
- * @attr {string} size - Tekstgrootte: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
+ * @attr {string} size - Tekstgrootte: 'xs' | 'sm' | 'md' | 'lg' | 'inherit'. Leeg = inherit.
  * @attr {string} text - Link tekst (alternatief voor default slot)
  * @attr {string} start-icon - Icoon voor de tekst
  * @attr {string} end-icon - Icoon na de tekst
@@ -27,7 +38,7 @@ import { linkStyles } from './link.styles.js';
 import { template } from './link.template.js';
 import './../../content/icon/icon.js';
 
-type Size = 'xs' | 'sm' | 'md' | 'lg';
+type Size = 'xs' | 'sm' | 'md' | 'lg' | 'inherit';
 
 @customElement('nldd-link')
 export class NLDDLink extends LitElement {
@@ -43,7 +54,7 @@ export class NLDDLink extends LitElement {
 	rel: string | undefined = undefined;
 
 	@property({ type: String, reflect: true })
-	size: Size = 'md';
+	size?: Size;
 
 	@property({ type: String })
 	text = '';

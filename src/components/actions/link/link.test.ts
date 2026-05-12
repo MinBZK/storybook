@@ -71,4 +71,48 @@ describe('nldd-link', () => {
 		anchor.dispatchEvent(event);
 		expect(event.defaultPrevented).toBe(true);
 	});
+
+	// — Inherit / inline mode —
+
+	it('has no size attribute by default (inherit mode)', async () => {
+		el = await fixture('<nldd-link href="#" text="Inline"></nldd-link>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('size')).toBe(false);
+	});
+
+	it('inherit mode uses display: inline so text wraps in flow', async () => {
+		el = await fixture('<nldd-link href="#" text="Inline"></nldd-link>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).display).toBe('inline');
+	});
+
+	it('explicit size="inherit" behaves identically to no size', async () => {
+		el = await fixture('<nldd-link href="#" size="inherit" text="Inline"></nldd-link>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).display).toBe('inline');
+	});
+
+	it('sized mode uses display: inline-flex for icon alignment', async () => {
+		el = await fixture('<nldd-link href="#" size="md" text="Sized"></nldd-link>');
+		await waitForUpdate(el);
+		expect(getComputedStyle(el).display).toBe('inline-flex');
+	});
+
+	it('inherit mode renders start-icon (whitespace provides spacing)', async () => {
+		el = await fixture('<nldd-link href="#" text="With icon" start-icon="download"></nldd-link>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.link__start-icon')).not.toBeNull();
+	});
+
+	it('inherit mode renders end-icon (whitespace provides spacing)', async () => {
+		el = await fixture('<nldd-link href="#" text="With icon" end-icon="arrow-right"></nldd-link>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.link__end-icon')).not.toBeNull();
+	});
+
+	it('sized mode renders icons as before', async () => {
+		el = await fixture('<nldd-link href="#" size="md" text="With icon" start-icon="download"></nldd-link>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.link__start-icon')).not.toBeNull();
+	});
 });

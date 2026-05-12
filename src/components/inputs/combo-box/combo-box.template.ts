@@ -42,7 +42,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 				aria-haspopup="listbox"
 				aria-activedescendant=${component._highlightedId || nothing}
 				aria-invalid=${component.invalid ? 'true' : nothing}
-				.value=${component._displayValue}
+				.value=${component.text}
 				placeholder=${component.placeholder || nothing}
 				?disabled=${component.disabled}
 				name=${component.name || nothing}
@@ -53,7 +53,7 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 			>
 			<div class="combo-box__input-fade"></div>
 			<div class="combo-box__end">
-				${component._displayValue ? html`
+				${component.text ? html`
 					<div class="combo-box__clear-button">
 						<nldd-icon-button
 							variant="neutral-transparent"

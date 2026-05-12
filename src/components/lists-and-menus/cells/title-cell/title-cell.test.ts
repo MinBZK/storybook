@@ -27,18 +27,6 @@ describe('nldd-title-cell', () => {
 		expect(el.getAttribute('size')).toBe('2');
 	});
 
-	it('defaults to default color', async () => {
-		el = await fixture('<nldd-title-cell></nldd-title-cell>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('color')).toBe('default');
-	});
-
-	it('reflects color attribute', async () => {
-		el = await fixture('<nldd-title-cell color="inherit"></nldd-title-cell>');
-		await waitForUpdate(el);
-		expect(el.getAttribute('color')).toBe('inherit');
-	});
-
 	it('defaults to stretch width', async () => {
 		el = await fixture('<nldd-title-cell></nldd-title-cell>');
 		await waitForUpdate(el);
@@ -129,10 +117,97 @@ describe('nldd-title-cell', () => {
 		expect(p!.textContent?.trim()).toBe('Supporting');
 	});
 
-	it('does not render title element when text is empty', async () => {
+	it('hides title wrapper when text is empty and no slotted content', async () => {
 		el = await fixture('<nldd-title-cell></nldd-title-cell>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.title-cell__title')).toBeNull();
+		const p = el.shadowRoot!.querySelector('.title-cell__title') as HTMLElement;
+		expect(p).not.toBeNull();
+		expect(p.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('hides overline wrapper when overline is empty and no slotted content', async () => {
+		el = await fixture('<nldd-title-cell></nldd-title-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.title-cell__overline') as HTMLElement;
+		expect(p.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('hides supporting-text wrapper when empty and no slotted content', async () => {
+		el = await fixture('<nldd-title-cell></nldd-title-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.title-cell__supporting-text') as HTMLElement;
+		expect(p.hasAttribute('hidden')).toBe(true);
+	});
+
+	// — Slot fallback —
+
+	it('shows title wrapper when content is slotted into default slot', async () => {
+		el = await fixture('<nldd-title-cell><span>Slotted title</span></nldd-title-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.title-cell__title') as HTMLElement;
+		expect(p.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('shows wrapper when content is slotted into overline slot', async () => {
+		el = await fixture('<nldd-title-cell><span slot="overline">Custom overline</span></nldd-title-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.title-cell__overline') as HTMLElement;
+		expect(p.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('shows wrapper when content is slotted into supporting-text slot', async () => {
+		el = await fixture('<nldd-title-cell><span slot="supporting-text">Custom support</span></nldd-title-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.title-cell__supporting-text') as HTMLElement;
+		expect(p.hasAttribute('hidden')).toBe(false);
+	});
+
+	it('ignores whitespace-only slotted text for visibility', async () => {
+		el = await fixture('<nldd-title-cell>   \n\t  </nldd-title-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.title-cell__title') as HTMLElement;
+		expect(p.hasAttribute('hidden')).toBe(true);
+	});
+
+	it('whitespace-only slot assignment does not suppress attribute fallback', async () => {
+		// Mimics the self-closing custom-element trap: trailing whitespace
+		// becomes a default-slot text node, which would normally hide the slot's
+		// fallback content. The fallback-as-sibling pattern keeps it visible.
+		el = await fixture('<nldd-title-cell text="Visible">   \n\t  </nldd-title-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.title-cell__title') as HTMLElement;
+		expect(p.hasAttribute('hidden')).toBe(false);
+		expect(p.textContent?.trim()).toBe('Visible');
+	});
+
+	it('slotted content takes precedence over attribute for visibility', async () => {
+		el = await fixture('<nldd-title-cell text="Attribute"><span>Slotted</span></nldd-title-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.title-cell__title') as HTMLElement;
+		const slot = p.querySelector('slot:not([name])') as HTMLSlotElement;
+		expect(p.hasAttribute('hidden')).toBe(false);
+		expect(slot.assignedNodes().length).toBeGreaterThan(0);
+	});
+
+	it('slot works with heading-level (h2 contains slot)', async () => {
+		el = await fixture('<nldd-title-cell heading-level="2"><span>Heading content</span></nldd-title-cell>');
+		await waitForUpdate(el);
+		const title = el.shadowRoot!.querySelector('.title-cell__title') as HTMLElement;
+		expect(title.tagName.toLowerCase()).toBe('h2');
+		expect(title.querySelector('slot')).not.toBeNull();
+	});
+
+	it('updates visibility when slotted content is added dynamically', async () => {
+		el = await fixture('<nldd-title-cell></nldd-title-cell>');
+		await waitForUpdate(el);
+		const p = el.shadowRoot!.querySelector('.title-cell__title') as HTMLElement;
+		expect(p.hasAttribute('hidden')).toBe(true);
+
+		const span = document.createElement('span');
+		span.textContent = 'Late slot';
+		el.appendChild(span);
+		await waitForUpdate(el);
+		expect(p.hasAttribute('hidden')).toBe(false);
 	});
 
 	it('renders a <p> by default (no heading-level)', async () => {
@@ -245,5 +320,14 @@ describe('nldd-title-cell', () => {
 		const title = el.shadowRoot!.querySelector('.title-cell__title');
 		expect(title!.tagName.toLowerCase()).toBe('h2');
 		expect(title!.querySelector('b')?.textContent).toBe('rdappelen');
+	});
+
+	it('query: does not modify slotted content', async () => {
+		el = await fixture('<nldd-title-cell query="aa"><span>Aardappelen</span></nldd-title-cell>');
+		await waitForUpdate(el);
+		const span = el.querySelector('span');
+		// Slotted content lives in light DOM, untouched by renderQueryMark.
+		expect(span!.querySelector('b')).toBeNull();
+		expect(span!.textContent).toBe('Aardappelen');
 	});
 });

@@ -7,7 +7,7 @@ export const inlineDialogStyles = css`
 
 	:host {
 		--_icon-size: var(--primitives-space-48);
-		--_icon-color: var(--semantics-content-color);
+		--_icon-color: var(--components-inline-dialog-icon-color);
 
 		display: flex;
 		justify-content: center;
@@ -20,8 +20,18 @@ export const inlineDialogStyles = css`
 	}
 
 	:host([variant='alert']) {
-		--_icon-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
+		--_icon-color: var(--components-inline-dialog-icon-warning-color);
 	}
+
+	:host([variant='success']) {
+		--_icon-color: var(--components-inline-dialog-icon-success-color);
+	}
+
+	:host([icon-color='secondary']) { --_icon-color: var(--components-inline-dialog-icon-secondary-color); }
+	:host([icon-color='accent'])    { --_icon-color: var(--components-inline-dialog-icon-accent-color); }
+	:host([icon-color='critical'])  { --_icon-color: var(--components-inline-dialog-icon-critical-color); }
+	:host([icon-color='warning'])   { --_icon-color: var(--components-inline-dialog-icon-warning-color); }
+	:host([icon-color='success'])   { --_icon-color: var(--components-inline-dialog-icon-success-color); }
 
 
 	/* # Body */

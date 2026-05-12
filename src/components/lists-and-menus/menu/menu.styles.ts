@@ -64,6 +64,50 @@ export const menuStyles = css`
 	.menu__empty {
 		padding: var(--primitives-space-8);
 	}
+
+
+	/* # Back button — drill-in mode header */
+
+	.menu__back-button {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		width: 100%;
+		min-height: var(--_menu-item-size);
+		padding: var(--primitives-space-8);
+		box-sizing: border-box;
+		border: none;
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background: transparent;
+		text-align: start;
+		appearance: none;
+		--context-cell-content-color: var(--semantics-content-secondary-color);
+
+		@media (pointer: fine) {
+			padding: var(--primitives-space-4) var(--primitives-space-8);
+			border-radius: var(--semantics-controls-sm-corner-radius);
+		}
+	}
+
+	.menu__back-button:hover,
+	.menu__back-button:active {
+		background-color: var(--components-menu-item-is-highlighted-background-color);
+		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
+	}
+
+	.menu__back-button:focus-visible {
+		position: relative;
+		z-index: 1;
+		outline: var(--semantics-focus-ring-outline);
+		outline-offset: var(--semantics-focus-ring-outline-offset);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	.menu__back-button-divider {
+		height: var(--semantics-dividers-thickness);
+		background-color: var(--semantics-dividers-color);
+		margin: var(--primitives-space-4) 0;
+	}
 `;
 
 export const menuItemStyles = css`
@@ -103,9 +147,36 @@ export const menuItemStyles = css`
 	}
 
 
-	/* # Highlighted or pressed */
+	/* # Open submenu opener
+	 *
+	 * Lighter, neutral background while the opener's submenu is open and the
+	 * cursor has moved into the submenu. The currently-active item is the
+	 * one in the submenu; the opener just shows "this branch is active".
+	 * macOS-style: subtle, not competing with the highlight.
+	 *
+	 * When the cursor moves back over the opener (or it's keyboard-focused),
+	 * the highlighted/hover rule below upgrades it to the bold accent. */
+
+	.menu__item[aria-expanded="true"] {
+		background-color: var(--components-menu-item-is-open-background-color);
+		--context-cell-content-color: var(--components-menu-item-is-open-content-color);
+		--context-cell-content-secondary-color: var(--components-menu-item-is-open-content-color);
+	}
+
+
+	/* # Highlighted or pressed
+	 *
+	 * [highlighted] always upgrades to the bold accent — including on openers
+	 * with an open submenu. The menu component keeps [highlighted] in sync
+	 * with where the user is logically navigating (set by mouseenter,
+	 * keyboard nav, or the safe-triangle while in transit; cleared on
+	 * peer-hover, submenu-entry, mouseleave, submenu-close), so a stale
+	 * highlighted attr on an opener shouldn't occur. The :hover branch
+	 * additionally covers the case where the cursor sits directly on an
+	 * open opener (since [highlighted] gets cleared at submenu-open time). */
 
 	:host([highlighted]) .menu__item,
+	.menu__item[aria-expanded="true"]:hover,
 	.menu__item:active {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
@@ -144,9 +215,21 @@ export const menuItemStyles = css`
 	/* # Forced colors */
 
 	@media (forced-colors: active) {
-		:host([highlighted]) .menu__item {
+		/* In forced-colors there's no neutral lighter palette, so mark the
+		 * open opener with a 1px outline instead of a fill — visibly "active"
+		 * without competing with the actual Highlight that lives in the
+		 * submenu. The hovered/highlighted branch promotes it back to the
+		 * full Highlight fill. */
+		.menu__item[aria-expanded="true"] {
+			outline: 1px solid CanvasText;
+			outline-offset: -1px;
+		}
+
+		:host([highlighted]) .menu__item,
+		.menu__item[aria-expanded="true"]:hover {
 			background-color: Highlight;
 			color: HighlightText;
+			outline: none;
 		}
 
 		.menu__item:focus-visible {
@@ -175,5 +258,62 @@ export const menuDividerStyles = css`
 	.menu__divider {
 		height: var(--semantics-dividers-thickness);
 		background-color: var(--semantics-dividers-color);
+	}
+`;
+
+export const menuGroupStyles = css`
+
+
+	/* # Host
+	 *
+	 * Renders an automatic divider above the group via border-top, except when
+	 * the group is the first child of the menu (then no divider is needed).
+	 * The padding-top below the divider provides generous breathing room above
+	 * the title — paired with the tighter margin-bottom on the title itself
+	 * this gives the "more space above than below" rhythm that visually binds
+	 * the title to the items it labels rather than to whatever sits above.
+	 */
+
+	:host {
+		display: block;
+		border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
+		padding-top: var(--primitives-space-6);
+		margin-top: var(--primitives-space-4);
+	}
+
+	:host(:first-child) {
+		border-top: none;
+		padding-top: var(--primitives-space-2);
+	}
+
+	:host([hidden]) {
+		display: none;
+	}
+
+
+	/* # Title */
+
+	.menu-group__title {
+		margin: 0;
+		padding-top: 0;
+		padding-right: var(--primitives-space-8);
+		padding-bottom: var(--primitives-space-1);
+		padding-left: var(--primitives-space-4);
+		font: var(--primitives-font-body-sm-regular-tight);
+		color: var(--semantics-content-secondary-color);
+	}
+
+
+	/* # Items wrapper
+	 *
+	 * display: block keeps the role="group" wrapper as a real box so the
+	 * accessibility tree reliably exposes role + aria-labelledby across all
+	 * supported engines (display: contents has historical a11y-tree bugs in
+	 * older WebKit/Chromium that drop these). The extra container has no
+	 * visual impact: .menu is a flex column, and a block child stacks the
+	 * group's items the same as if they were direct children.
+	 */
+	.menu-group__items {
+		display: block;
 	}
 `;

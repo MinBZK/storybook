@@ -29,6 +29,20 @@ export function cleanup(el: Element): void {
 }
 
 /**
+ * Walks shadow roots from `document.activeElement` down to the deepest
+ * focused element. Use this in tests that assert focus delegation —
+ * `document.activeElement` only returns the outermost shadow host, not
+ * the inner element that actually received focus.
+ */
+export function deepActiveElement(): Element | null {
+	let active: Element | null = document.activeElement;
+	while (active?.shadowRoot?.activeElement) {
+		active = active.shadowRoot.activeElement;
+	}
+	return active;
+}
+
+/**
  * Waits for a full MutationObserver → Lit re-render cycle to settle.
  *
  * MO callbacks are microtasks that trigger Lit state changes, which

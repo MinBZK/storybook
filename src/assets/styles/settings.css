@@ -5,34 +5,34 @@
 @import "./palettes.generated.css";
 
 @font-face {
-	font-family: 'RijksSansVF';
-	src: url('../fonts/RijksSansVF-Regular.ttf') format('truetype-variations');
+	font-family: 'RijksSans';
+	src: url('../fonts/RijksSansWeb-Regular.woff2') format('woff2-variations');
 	font-weight: 100 900;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: 'RijksSansVF';
-	src: url('../fonts/RijksSansVF-Italic.ttf') format('truetype-variations');
+	font-family: 'RijksSans';
+	src: url('../fonts/RijksSansWeb-Italic.woff2') format('woff2-variations');
 	font-weight: 100 900;
 	font-style: italic;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: 'IBM Plex Mono';
-	src: url('../fonts/IBMPlexMono-Regular.woff2') format('woff2');
-	font-weight: 400;
+	font-family: 'JetBrains Mono';
+	src: url('../fonts/JetBrainsMono[wght].woff2') format('woff2-variations');
+	font-weight: 100 900;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: 'IBM Plex Mono';
-	src: url('../fonts/IBMPlexMono-Bold.woff2') format('woff2');
-	font-weight: 700;
-	font-style: normal;
+	font-family: 'JetBrains Mono';
+	src: url('../fonts/JetBrainsMono-Italic[wght].woff2') format('woff2-variations');
+	font-weight: 100 900;
+	font-style: italic;
 	font-display: swap;
 }
 
@@ -322,11 +322,11 @@
 	/* ## Typography */
 
 	--primitives-font-family-sans-serif-fallback: system-ui, sans-serif;
-	--primitives-font-family-sans-serif: RijksSansVF, system-ui, sans-serif;
+	--primitives-font-family-sans-serif: RijksSans, system-ui, sans-serif;
 	--primitives-font-family-serif-fallback: serif;
 	--primitives-font-family-serif: RijksoverheidSerif, serif;
 	--primitives-font-family-monospace-fallback: monospace;
-	--primitives-font-family-monospace: 'IBM Plex Mono', monospace;
+	--primitives-font-family-monospace: 'JetBrains Mono', monospace;
 	--primitives-font-family-body-fallback: var(--primitives-font-family-sans-serif-fallback);
 	--primitives-font-family-body: var(--primitives-font-family-sans-serif);
 	--primitives-font-family-display-fallback: var(--primitives-font-family-sans-serif-fallback);
@@ -722,7 +722,6 @@
 	--primitives-opacity-95: 0.95;
 	--primitives-opacity-100: 1;
 	--primitives-opacity-disabled: 0.38;
-	--primitives-opacity-dragging: 0.4;
 
 	/* ## Transition */
 
@@ -797,8 +796,10 @@
 
 	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-850));
 	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
-	--semantics-content-error-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
-	--semantics-content-success-color: light-dark(var(--primitives-color-success-600), var(--primitives-color-success-650));
+	--semantics-content-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
+	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-550), var(--primitives-color-warning-650));
+	--semantics-content-success-color: light-dark(var(--primitives-color-success-550), var(--primitives-color-success-650));
 
 	/* ## Links */
 
@@ -854,6 +855,8 @@
 	--semantics-controls-is-highlighted-is-hovered-contrast-color: var(--semantics-surfaces-background-color);
 	--semantics-controls-is-highlighted-is-active-indicator-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-controls-is-highlighted-is-active-contrast-color: var(--semantics-surfaces-background-color);
+
+	--semantics-controls-is-dragging-opacity: var(--primitives-opacity-40);
 
 	--semantics-controls-link-cursor: default;
 
@@ -1084,6 +1087,15 @@
 
 	--components-form-field-gap: var(--primitives-space-2);
 
+	/* ## Inline dialog */
+
+	--components-inline-dialog-icon-color: var(--semantics-content-color);
+	--components-inline-dialog-icon-secondary-color: var(--semantics-content-secondary-color);
+	--components-inline-dialog-icon-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+	--components-inline-dialog-icon-critical-color: light-dark(var(--primitives-color-critical-500), var(--primitives-color-critical-500));
+	--components-inline-dialog-icon-warning-color: light-dark(var(--primitives-color-warning-350), var(--primitives-color-warning-650));
+	--components-inline-dialog-icon-success-color: light-dark(var(--primitives-color-success-500), var(--primitives-color-success-500));
+
 	/* ## Keyboard shortcut */
 
 	--components-keyboard-shortcut-sm-size: var(--primitives-space-20);
@@ -1142,13 +1154,14 @@
 	--components-list-item-is-selected-content-color: var(--primitives-color-neutral-1000);
 	--components-list-item-is-highlighted-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-list-item-is-highlighted-content-color: var(--semantics-controls-is-highlighted-contrast-color);
-	--components-list-item-is-dragging-opacity: var(--primitives-opacity-dragging);
 
 	/* ## Menu */
 
 	--components-menu-box-shadow: var(--primitives-box-shadows-level-5);
 	--components-menu-item-is-highlighted-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-menu-item-is-highlighted-content-color: var(--semantics-controls-is-highlighted-contrast-color);
+	--components-menu-item-is-open-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
+	--components-menu-item-is-open-content-color: var(--primitives-color-neutral-1000);
 
 	/* ## Menu bar */
 

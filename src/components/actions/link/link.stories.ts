@@ -3,14 +3,25 @@ import './link.js';
 import { ICONS } from './../../content/icon/icon.js';
 
 /**
- * De Link component is een standalone hyperlink voor gebruik buiten lopende tekst —
- * denk aan menu-items, "verder lezen" acties of actiegebieden. Voor inline links
- * in paragrafen gebruik je <nldd-rich-text> met een standaard <a>.
+ * De Link component werkt in twee modi:
+ *
+ * - **Sized** (`size="xs|sm|md|lg"`) — standalone link met vaste tekstgrootte,
+ *   ondersteunt icons. Voor menu's, actiegebieden, overzichten.
+ * - **Inherit** (geen `size`) — erft font-size, line-height en font-family van
+ *   omgeving. Tekst wraps natuurlijk over regels. Voor links in lopende tekst,
+ *   custom layouts of cells.
+ *
+ * Voor links in HTML-content (CMS, markdown) blijft `<nldd-rich-text>` met raw
+ * `<a>` de juiste route — die styled `a` selectors via globale CSS.
  *
  * ## Gebruik
  * ```html
- * <nldd-link href="/pad" text="Bekijk meer"></nldd-link>
- * <nldd-link href="https://example.com" target="_blank" text="Externe link" end-icon="arrow-up-right"></nldd-link>
+ * <!-- Standalone met expliciete grootte -->
+ * <nldd-link href="/pad" size="md" text="Bekijk meer"></nldd-link>
+ * <nldd-link href="https://example.com" target="_blank" size="md" text="Externe" end-icon="arrow-up-right"></nldd-link>
+ *
+ * <!-- Inline in tekst, erft van parent -->
+ * <p>Lees meer over de <nldd-link href="/voorwaarden">voorwaarden</nldd-link> hier.</p>
  * ```
  */
 export default {
@@ -29,10 +40,10 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['xs', 'sm', 'md', 'lg'],
-			description: 'Tekstgrootte',
+			options: ['', 'xs', 'sm', 'md', 'lg', 'inherit'],
+			description: 'Tekstgrootte. Leeg of `inherit` = erven van omgeving (display: inline). Icons werken in beide modi.',
 			table: {
-				defaultValue: { summary: 'md' },
+				defaultValue: { summary: '(inherit)' },
 			},
 		},
 		text: {
@@ -95,7 +106,7 @@ const Template = ({ size, text, startIcon, endIcon, href, target, accessibleLabe
 	<nldd-link
 		href=${href || nothing}
 		target=${target || nothing}
-		size=${size}
+		size=${size || nothing}
 		text=${text}
 		start-icon=${startIcon || nothing}
 		end-icon=${endIcon || nothing}
@@ -123,6 +134,61 @@ export const Sizes = {
 	`,
 	parameters: {
 		controls: { disable: true },
+	},
+};
+
+export const Inline = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 24px; max-width: 560px;">
+			<div>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">In een h2 — link erft display-grootte</p>
+				<h2 style="margin: 0; font: var(--primitives-font-display-2-md);">
+					Lees meer over <nldd-link href="#voorwaarden">de voorwaarden</nldd-link> hier.
+				</h2>
+			</div>
+			<div>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">In body-md — link is body-md</p>
+				<p style="margin: 0; font: var(--primitives-font-body-md-regular-snug);">
+					Wil je toeslag aanvragen? Bekijk dan eerst <nldd-link href="https://example.com" target="_blank">de voorwaarden op de website</nldd-link> van de Belastingdienst.
+				</p>
+			</div>
+			<div>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">In body-sm — link is body-sm</p>
+				<p style="margin: 0; font: var(--primitives-font-body-sm-regular-snug);">
+					Disclaimer: deze pagina is informatief. Voor juridische details zie <nldd-link href="#disclaimer">de disclaimer</nldd-link>.
+				</p>
+			</div>
+			<div>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Lange link wraps over regels (display: inline)</p>
+				<p style="margin: 0; max-width: 280px; font: var(--primitives-font-body-md-regular-snug);">
+					Klik <nldd-link href="#">hier voor een nogal lange linktekst die over meerdere regels moet kunnen wrappen</nldd-link> en kijk wat er gebeurt.
+				</p>
+			</div>
+			<div>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Met end-icon (externe link) — natuurlijke whitespace tussen tekst en icon</p>
+				<p style="margin: 0; font: var(--primitives-font-body-md-regular-snug);">
+					Bezoek <nldd-link href="https://example.com" target="_blank" end-icon="square-arrow-right-top">de website</nldd-link> voor meer info.
+				</p>
+			</div>
+			<div>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Expliciete <code>size="inherit"</code> doet hetzelfde als geen size</p>
+				<p style="margin: 0; font: var(--primitives-font-body-md-regular-snug);">
+					Lees ook <nldd-link href="#" size="inherit">de toelichting</nldd-link> voor context.
+				</p>
+			</div>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: `
+Zonder \`size\` attribuut (of met \`size="inherit"\`) erft \`<nldd-link>\` font-size, line-height en font-family van de omgeving — gebruik dit voor links in lopende tekst. De link rendert als pure inline-element zodat tekst natuurlijk over regels wrapt.
+
+Icons werken ook in inherit mode: de natuurlijke whitespace tussen icon en tekst zorgt voor de spacing.
+				`.trim(),
+			},
+		},
 	},
 };
 

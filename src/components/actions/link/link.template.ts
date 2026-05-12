@@ -7,6 +7,10 @@ interface TemplateHelpers {
 
 export function template(this: NLDDLink, helpers: TemplateHelpers) {
 	const resolvedRel = this._resolvedRel();
+	// Icons render in both modes:
+	// - sized mode: inline-flex container + gap controls spacing
+	// - inherit mode: inline container, the whitespace text node between
+	//   icon span and label span provides a natural single-space separator
 	return html`
 		<a class="link"
 			href=${this.disabled ? nothing : (this.href || nothing)}
@@ -19,17 +23,11 @@ export function template(this: NLDDLink, helpers: TemplateHelpers) {
 			@click=${helpers.handleClick}
 		>
 			${this.startIcon ? html`
-				<span class="link__start-icon">
-					<nldd-icon name=${this.startIcon}></nldd-icon>
-				</span>
+				<span class="link__start-icon"><nldd-icon name=${this.startIcon}></nldd-icon></span>
 			` : html`<slot name="start-icon"></slot>`}
-			<span class="link__label">
-				${this.text ? this.text : html`<slot></slot>`}
-			</span>
+			<span class="link__label">${this.text ? this.text : html`<slot></slot>`}</span>
 			${this.endIcon ? html`
-				<span class="link__end-icon">
-					<nldd-icon name=${this.endIcon}></nldd-icon>
-				</span>
+				<span class="link__end-icon"><nldd-icon name=${this.endIcon}></nldd-icon></span>
 			` : html`<slot name="end-icon"></slot>`}
 		</a>
 	`;

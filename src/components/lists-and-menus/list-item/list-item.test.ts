@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, beforeEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import { _resetInputModalityForTesting, getInputModality } from '../../../utilities/input-modality.js';
 import './list-item.js';
 import '../list/list.js';
@@ -243,5 +243,14 @@ describe('nldd-list-item', () => {
 		await waitForUpdate(wrapper);
 		await waitForUpdate(el);
 		expect(anchor?.getAttribute('aria-current')).toBe('page');
+	});
+
+	it('focus() delegates to the inner .list-item__action', async () => {
+		const el = await fixture<HTMLElement>('<nldd-list-item href="#">Item</nldd-list-item>');
+		await waitForUpdate(el);
+		el.focus();
+		const action = el.shadowRoot!.querySelector('.list-item__action');
+		expect(deepActiveElement()).toBe(action);
+		cleanup(el);
 	});
 });

@@ -89,6 +89,7 @@ export const titleCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
+		overflow-wrap: anywhere;
 		font: var(--primitives-font-body-xs-regular-tight);
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
@@ -104,6 +105,7 @@ export const titleCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
+		overflow-wrap: break-word;
 		color: var(--context-cell-content-color, var(--semantics-content-color));
 		text-wrap: pretty;
 	}
@@ -156,6 +158,7 @@ export const titleCellStyles = css`
 		margin: 0;
 		align-self: stretch;
 		min-width: 0;
+		overflow-wrap: anywhere;
 		font: var(--primitives-font-body-sm-regular-tight);
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
@@ -165,12 +168,52 @@ export const titleCellStyles = css`
 	}
 
 
-	/* # Color: inherit */
+	/* # Color */
 
-	:host([color='inherit']) .title-cell__title,
-	:host([color='inherit']) .title-cell__overline,
-	:host([color='inherit']) .title-cell__supporting-text {
-		color: inherit;
+	/* ## Color: secondary
+	 *
+	 * Overline and supporting-text are already muted by default, so we only
+	 * demote the title to make the whole cell read as secondary.
+	 */
+
+	:host([color='secondary']) .title-cell__title {
+		color: var(--context-cell-content-secondary-color, var(--semantics-content-secondary-color));
+	}
+
+	/* ## Color: accent
+	 *
+	 * Applies to all three text regions so the cell reads as a coherent
+	 * highlight, not a mix of accent + muted overline / supporting-text.
+	 */
+
+	:host([color='accent']) .title-cell__title,
+	:host([color='accent']) .title-cell__overline,
+	:host([color='accent']) .title-cell__supporting-text {
+		color: var(--context-cell-content-accent-color, var(--semantics-content-accent-color));
+	}
+
+	/* ## Color: success */
+
+	:host([color='success']) .title-cell__title,
+	:host([color='success']) .title-cell__overline,
+	:host([color='success']) .title-cell__supporting-text {
+		color: var(--context-cell-content-success-color, var(--semantics-content-success-color));
+	}
+
+	/* ## Color: warning */
+
+	:host([color='warning']) .title-cell__title,
+	:host([color='warning']) .title-cell__overline,
+	:host([color='warning']) .title-cell__supporting-text {
+		color: var(--context-cell-content-warning-color, var(--semantics-content-warning-color));
+	}
+
+	/* ## Color: critical */
+
+	:host([color='critical']) .title-cell__title,
+	:host([color='critical']) .title-cell__overline,
+	:host([color='critical']) .title-cell__supporting-text {
+		color: var(--context-cell-content-critical-color, var(--semantics-content-critical-color));
 	}
 
 

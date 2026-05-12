@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDSearchField } from './search-field.js';
 import './search-field.js';
 
@@ -237,5 +237,13 @@ describe('nldd-search-field – dismiss', () => {
 		await waitForUpdate(sf);
 		form.reset();
 		expect(sf.value).toBe('default');
+	});
+
+	it('focus() delegates to the inner input', async () => {
+		el = await fixture<HTMLElement>('<nldd-search-field accessible-label="Zoek"></nldd-search-field>');
+		await waitForUpdate(el);
+		el.focus();
+		const input = el.shadowRoot!.querySelector('input');
+		expect(deepActiveElement()).toBe(input);
 	});
 });

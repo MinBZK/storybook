@@ -34,17 +34,11 @@ export default {
 			description: 'Vertical alignment of the cell',
 			table: { defaultValue: { summary: 'center' } },
 		},
-		selected: {
-			control: 'boolean',
-			description: 'Selected state',
-			table: { defaultValue: { summary: 'false' } },
-		},
 	},
 };
 
 export const Default = {
 	args: {
-		selected: false,
 		verticalAlignment: 'center',
 		width: 'stretch',
 		minWidth: '',
@@ -55,26 +49,10 @@ export const Default = {
 		<nldd-description-cell
 			width=${args.width}
 			vertical-alignment=${args.verticalAlignment}
-			?selected=${args.selected}
 		>
 			<p slot="title">Term</p>
 			<p slot="description">Description text</p>
 		</nldd-description-cell>
-	`,
-};
-
-export const Selected = {
-	render: () => html`
-		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<nldd-description-cell>
-				<p slot="title">Term</p>
-				<p slot="description">Description text</p>
-			</nldd-description-cell>
-			<nldd-description-cell selected>
-				<p slot="title">Term</p>
-				<p slot="description">Description text (selected)</p>
-			</nldd-description-cell>
-		</div>
 	`,
 };
 

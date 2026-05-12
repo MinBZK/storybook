@@ -425,11 +425,19 @@ Zie `/translation-keys` skill voor alle conventies rond translation keys, types 
 Gebruik `<ndd-spacer>` voor ruimte tussen verschillende soorten componenten die elkaar direct opvolgen:
 
 ```html
+<!-- Vaste spacing op alle breakpoints -->
 <ndd-spacer size="32"></ndd-spacer>
+
+<!-- Per breakpoint anders -->
+<ndd-spacer sm-size="16" md-size="24" lg-size="32"></ndd-spacer>
+
+<!-- Vult beschikbare ruimte op -->
 <ndd-spacer size="flexible"></ndd-spacer>
 ```
 
-**Beschikbare sizes:** 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 44, 48, 64, 80, 96, m, flexible
+**Beschikbare sizes:** 2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96, flexible
+
+**Per-viewport overrides:** `sm-size` (max 640px), `md-size` (641–1007px), `lg-size` (min 1008px). Niet expliciet gezet → val terug op `size`.
 
 ---
 

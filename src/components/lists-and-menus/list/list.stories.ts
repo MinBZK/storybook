@@ -80,13 +80,13 @@ export const Default = {
 			empty-supporting-text=${args['empty-supporting-text']}
 		>
 			<nldd-list-item>
-				<nldd-text-cell text="Item 1" />
+				<nldd-text-cell text="Item 1"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-text-cell text="Item 2" />
+				<nldd-text-cell text="Item 2"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-text-cell text="Item 3" />
+				<nldd-text-cell text="Item 3"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -96,22 +96,22 @@ export const Variants = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 32px;">
 			<nldd-list variant="simple">
-				<nldd-list-item><nldd-text-cell text="Simple — item 1" /></nldd-list-item>
-				<nldd-list-item><nldd-text-cell text="Simple — item 2" /></nldd-list-item>
-				<nldd-list-item><nldd-text-cell text="Simple — item 3" /></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Simple — item 1"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Simple — item 2"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Simple — item 3"></nldd-text-cell></nldd-list-item>
 			</nldd-list>
 
 			<nldd-list variant="box">
-				<nldd-list-item><nldd-text-cell text="Box — item 1" /></nldd-list-item>
-				<nldd-list-item><nldd-text-cell text="Box — item 2" /></nldd-list-item>
-				<nldd-list-item><nldd-text-cell text="Box — item 3" /></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Box — item 1"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Box — item 2"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item><nldd-text-cell text="Box — item 3"></nldd-text-cell></nldd-list-item>
 			</nldd-list>
 
 			<div style="background: var(--semantics-surfaces-tinted-background-color); padding: 24px;">
 				<nldd-list variant="box-on-tinted">
-					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 1" /></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 2" /></nldd-list-item>
-					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 3" /></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 1"></nldd-text-cell></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 2"></nldd-text-cell></nldd-list-item>
+					<nldd-list-item><nldd-text-cell text="Box-on-tinted — item 3"></nldd-text-cell></nldd-list-item>
 				</nldd-list>
 			</div>
 		</div>
@@ -175,13 +175,13 @@ export const WithInteractiveItems = {
 	render: () => html`
 		<nldd-list variant="box">
 			<nldd-list-item type="button">
-				<nldd-text-cell text="Button item" />
+				<nldd-text-cell text="Button item"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item href="/settings">
-				<nldd-text-cell text="Link item" />
+				<nldd-text-cell text="Link item"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-text-cell text="Non-interactive item" />
+				<nldd-text-cell text="Non-interactive item"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -201,10 +201,10 @@ export const TypeNavigation = {
 		};
 		return html`
 			<nldd-list type="navigation" variant="box" aria-label="Hoofdmenu" @click=${onClick}>
-				<nldd-list-item href="#dashboard"><nldd-text-cell text="Dashboard" /></nldd-list-item>
-				<nldd-list-item href="#aanvragen" selected><nldd-text-cell text="Aanvragen" /></nldd-list-item>
-				<nldd-list-item href="#meldingen"><nldd-text-cell text="Meldingen" /></nldd-list-item>
-				<nldd-list-item href="#instellingen"><nldd-text-cell text="Instellingen" /></nldd-list-item>
+				<nldd-list-item href="#dashboard"><nldd-text-cell text="Dashboard"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item href="#aanvragen" selected><nldd-text-cell text="Aanvragen"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item href="#meldingen"><nldd-text-cell text="Meldingen"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item href="#instellingen"><nldd-text-cell text="Instellingen"></nldd-text-cell></nldd-list-item>
 			</nldd-list>
 		`;
 	},
@@ -249,7 +249,7 @@ export const ReorderableList = {
 						<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
 						<nldd-drag-handle-cell size="sm" slot="start" reorderable-only></nldd-drag-handle-cell>
 						<nldd-spacer-cell slot="start" reorderable-only size="8"></nldd-spacer-cell>
-						<nldd-text-cell text="${label}" />
+						<nldd-text-cell text="${label}"></nldd-text-cell>
 					</nldd-list-item>
 				`)}
 			</nldd-list>
@@ -277,13 +277,13 @@ export const WithHeaderAndFooter = {
 					<h5>Notifications</h5>
 				</nldd-title>
 				<nldd-list-item>
-					<nldd-text-cell text="Allow notifications" />
+					<nldd-text-cell text="Allow notifications"></nldd-text-cell>
 				</nldd-list-item>
 				<nldd-list-item>
-					<nldd-text-cell text="Sounds" />
+					<nldd-text-cell text="Sounds"></nldd-text-cell>
 				</nldd-list-item>
 				<nldd-list-item>
-					<nldd-text-cell text="Badges" />
+					<nldd-text-cell text="Badges"></nldd-text-cell>
 				</nldd-list-item>
 				<nldd-rich-text slot="footer">
 					<p>Notifications will only be sent when the app is active on your device.</p>

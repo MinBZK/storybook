@@ -85,3 +85,135 @@ export const Disabled = {
 		</nldd-menu>
 	`,
 };
+
+export const WithGroups = {
+	render: () => html`
+		<nldd-button id="button-groups" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-groups" anchor="button-groups">
+			<nldd-menu-group text="Bestand">
+				<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+				<nldd-menu-item text="Open…" details="Cmd+O"></nldd-menu-item>
+				<nldd-menu-item text="Opslaan" details="Cmd+S"></nldd-menu-item>
+			</nldd-menu-group>
+			<nldd-menu-group text="Bewerken">
+				<nldd-menu-item text="Knip" details="Cmd+X"></nldd-menu-item>
+				<nldd-menu-item text="Kopieer" details="Cmd+C"></nldd-menu-item>
+				<nldd-menu-item text="Plak" details="Cmd+V"></nldd-menu-item>
+			</nldd-menu-group>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Wrap items in `<nldd-menu-group text="…">` voor een gelabelde sectie. De groep krijgt automatisch een divider boven (behalve als het de eerste child van de menu is) en levert proper ARIA `role="group"` met `aria-labelledby` voor screen readers.',
+			},
+		},
+	},
+};
+
+export const WithMultiLevelSubmenu = {
+	render: () => html`
+		<nldd-button id="button-multi-submenu" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-multi-submenu" anchor="button-multi-submenu">
+			<nldd-menu-item text="Bestand">
+				<nldd-menu>
+					<nldd-menu-item text="Nieuw"></nldd-menu-item>
+					<nldd-menu-item text="Open recent">
+						<nldd-menu>
+							<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>
+							<nldd-menu-item text="Notulen.docx"></nldd-menu-item>
+							<nldd-menu-item text="Plan.pdf"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-menu-item>
+					<nldd-menu-item text="Sluiten" details="Cmd+W"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+			<nldd-menu-item text="Bewerken"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Submenus mogen recursief geneste submenus bevatten — geen diepte-limiet. Elk niveau opent z\'n eigen popover (cascade) of stapelt op dezelfde positie (drill-in mobiel). Toetsenbord: ArrowRight opent submenu en focust eerste item, ArrowLeft of Esc gaat één niveau terug.',
+			},
+		},
+	},
+};
+
+export const WithSubmenu = {
+	render: () => html`
+		<nldd-button id="button-submenu" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-submenu" anchor="button-submenu">
+			<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+			<nldd-menu-item text="Open recent">
+				<nldd-menu>
+					<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>
+					<nldd-menu-item text="Notulen.docx"></nldd-menu-item>
+					<nldd-menu-item text="Plan.pdf"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+			<nldd-menu-item text="Exporteer">
+				<nldd-menu>
+					<nldd-menu-item text="Als PDF"></nldd-menu-item>
+					<nldd-menu-item text="Als CSV"></nldd-menu-item>
+					<nldd-menu-item text="Als Excel"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Sluiten" details="Cmd+W"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Wrap een `<nldd-menu>` in een `<nldd-menu-item>` om er een submenu van te maken. Het item krijgt automatisch een chevron-rechts indicator en `aria-haspopup="menu"`. Klik op het item opent het submenu naast de parent (cascade). Een item is óf een actie óf een submenu-opener — geen beide. Selectie van een item ergens in de keten sluit alle popovers tegelijk.',
+			},
+		},
+	},
+};
+
+export const DebugSafeTriangle = {
+	render: () => html`
+		<nldd-button id="button-debug-triangle" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-debug-triangle" anchor="button-debug-triangle" debug-safe-triangle>
+			<nldd-menu-item text="Nieuw" details="Cmd+N"></nldd-menu-item>
+			<nldd-menu-item text="Open recent">
+				<nldd-menu debug-safe-triangle>
+					<nldd-menu-item text="2026-Q2.xlsx"></nldd-menu-item>
+					<nldd-menu-item text="Notulen.docx"></nldd-menu-item>
+					<nldd-menu-item text="Plan.pdf"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-menu-item>
+			<nldd-menu-item text="Sluiten"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Schakel het `debug-safe-triangle` attribuut aan om de safe triangle als translucent roze overlay te visualiseren. Handig voor debugging en het tunen van padding-waardes — niet voor productie.',
+			},
+		},
+	},
+};
+
+export const MixedFlatAndGroups = {
+	render: () => html`
+		<nldd-button id="button-mixed" expandable text="Open menu"></nldd-button>
+		<nldd-menu id="menu-mixed" anchor="button-mixed">
+			<nldd-menu-item text="Recent geopend"></nldd-menu-item>
+			<nldd-menu-group text="Mappen">
+				<nldd-menu-item text="Documenten" icon="folder"></nldd-menu-item>
+				<nldd-menu-item text="Downloads" icon="folder"></nldd-menu-item>
+			</nldd-menu-group>
+			<nldd-menu-divider></nldd-menu-divider>
+			<nldd-menu-item text="Sluiten"></nldd-menu-item>
+		</nldd-menu>
+	`,
+	parameters: {
+		docs: {
+			description: {
+				story: 'Flat items en groups kunnen door elkaar gebruikt worden. Een expliciete `<nldd-menu-divider>` direct vóór een groep wordt automatisch verborgen — de groep heeft al z\'n eigen divider boven.',
+			},
+		},
+	},
+};

@@ -142,6 +142,14 @@ export class NLDDIconButton extends LitElement {
 		}
 	}
 
+	/**
+	 * Delegates focus to the inner `<button>` (or `<a>` when `href` is set), so
+	 * consumers can call `iconButtonEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLElement>('.icon-button')?.focus(options);
+	}
+
 	override render() {
 		return template.call(this);
 	}

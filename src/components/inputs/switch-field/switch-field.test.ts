@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDSwitchField } from './switch-field.js';
 import './switch-field.js';
 import '../switch/switch.js';
@@ -158,5 +158,14 @@ describe('nldd-switch-field – label click', () => {
 		labelSpan.click();
 		await waitForUpdate(el);
 		expect(el.checked).toBe(false);
+	});
+
+	it('focus() delegates through to the inner switch input', async () => {
+		el = await fixture<NLDDSwitchField>('<nldd-switch-field label="Optie 1"></nldd-switch-field>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('nldd-switch')!;
+		await waitForUpdate(inner as HTMLElement);
+		el.focus();
+		expect(deepActiveElement()).toBe(inner.shadowRoot!.querySelector('.switch__input'));
 	});
 });

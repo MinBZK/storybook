@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDIconButton } from './icon-button.js';
 import './icon-button.js';
 
@@ -276,5 +276,13 @@ describe('nldd-icon-button – href / link rendering', () => {
 
 		expect(el.shadowRoot!.querySelector('a')).not.toBeNull();
 		expect(el.shadowRoot!.querySelector('button')).toBeNull();
+	});
+
+	it('focus() delegates to the inner button', async () => {
+		const el = await fixture<NLDDIconButton>('<nldd-icon-button text="Sluit" icon="dismiss" hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.icon-button'));
+		cleanup(el);
 	});
 });

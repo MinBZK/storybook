@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDSwitch } from './switch.js';
 import './switch.js';
 
@@ -333,5 +333,13 @@ describe('nldd-switch – accessibility', () => {
 		await waitForUpdate(sw);
 		form.reset();
 		expect(sw.checked).toBe(true);
+	});
+
+	it('focus() delegates to the inner input', async () => {
+		const el = await fixture<NLDDSwitch>('<nldd-switch accessible-label="Aan/uit"></nldd-switch>');
+		await waitForUpdate(el);
+		el.focus();
+		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.switch__input'));
+		cleanup(el);
 	});
 });

@@ -9,7 +9,6 @@ export const iconCellStyles = css`
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		color: var(--context-cell-content-color, var(--semantics-content-color));
 	}
 
 	:host([hidden]) {
@@ -17,9 +16,9 @@ export const iconCellStyles = css`
 	}
 
 
-	/* # vertical-alignment */
+	/* # Vertical alignment */
 
-	/* ## vertical-alignment: center (default) */
+	/* ## Vertical alignment: center (default) */
 
 	:host([vertical-alignment="center"]),
 	:host(:not([vertical-alignment])) {
@@ -27,14 +26,14 @@ export const iconCellStyles = css`
 		justify-content: center;
 	}
 
-	/* ## vertical-alignment: top */
+	/* ## Vertical alignment: top */
 
 	:host([vertical-alignment="top"]) {
 		align-self: flex-start;
 		justify-content: flex-start;
 	}
 
-	/* ## vertical-alignment: bottom */
+	/* ## Vertical alignment: bottom */
 
 	:host([vertical-alignment="bottom"]) {
 		align-self: flex-end;
@@ -42,14 +41,17 @@ export const iconCellStyles = css`
 	}
 
 
-	/* # size */
+	/* # Slotted icon */
 
 	::slotted(*) {
 		display: block;
 		flex-shrink: 0;
 	}
 
-	/* ## size: 16 */
+
+	/* # Size */
+
+	/* ## Size: 16 */
 
 	:host([size="16"]) {
 		width: var(--primitives-space-16);
@@ -60,7 +62,7 @@ export const iconCellStyles = css`
 		height: var(--primitives-space-16);
 	}
 
-	/* ## size: 20 */
+	/* ## Size: 20 */
 
 	:host([size="20"]) {
 		width: var(--primitives-space-20);
@@ -71,9 +73,10 @@ export const iconCellStyles = css`
 		height: var(--primitives-space-20);
 	}
 
-	/* ## size: 24 (default) */
+	/* ## Size: 24 (default) */
 
-	:host([size="24"]) {
+	:host([size="24"]),
+	:host(:not([size])) {
 		width: var(--primitives-space-24);
 	}
 
@@ -83,7 +86,7 @@ export const iconCellStyles = css`
 		height: var(--primitives-space-24);
 	}
 
-	/* ## size: 32 */
+	/* ## Size: 32 */
 
 	:host([size="32"]) {
 		width: var(--primitives-space-32);
@@ -95,9 +98,42 @@ export const iconCellStyles = css`
 	}
 
 
-	/* # color: inherit */
+	/* # Color */
 
-	:host([color="inherit"]) {
-		color: inherit;
+	/* ## Color: default */
+
+	:host([color="default"]),
+	:host(:not([color])) {
+		color: var(--context-cell-content-color, var(--semantics-content-color));
+	}
+
+	/* ## Color: secondary */
+
+	:host([color="secondary"]) {
+		color: var(--context-cell-content-secondary-color, var(--semantics-content-secondary-color));
+	}
+
+	/* ## Color: accent */
+
+	:host([color="accent"]) {
+		color: var(--context-cell-content-accent-color, var(--semantics-content-accent-color));
+	}
+
+	/* ## Color: success */
+
+	:host([color="success"]) {
+		color: var(--context-cell-content-success-color, var(--semantics-content-success-color));
+	}
+
+	/* ## Color: warning */
+
+	:host([color="warning"]) {
+		color: var(--context-cell-content-warning-color, var(--semantics-content-warning-color));
+	}
+
+	/* ## Color: critical */
+
+	:host([color="critical"]) {
+		color: var(--context-cell-content-critical-color, var(--semantics-content-critical-color));
 	}
 `;

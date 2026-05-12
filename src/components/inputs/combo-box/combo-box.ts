@@ -13,6 +13,11 @@
  *
  * @element nldd-combo-box
  * @attr {string}  value        - The selected form value
+ * @attr {string}  text         - The text shown in the input. May differ from `value`
+ *                                (e.g. value="nl" → text="Nederland"). Set this when
+ *                                pre-populating an existing record. If left empty and
+ *                                `value` matches a slotted menu item, the matching
+ *                                item's `text` is used automatically.
  * @attr {string}  placeholder  - Placeholder text for the input
  * @attr {string}  size         - Size: 'sm' | 'md' (default: 'md')
  * @attr {boolean} valid        - Marks the field as valid
@@ -70,10 +75,21 @@ export class NLDDComboBox extends LitElement {
 	private _internals = this.attachInternals();
 
 	private _initialValue = '';
-	private _initialDisplayValue = '';
+	private _initialText = '';
 
 	@property({ type: String })
 	value = '';
+
+	/**
+	 * The text shown in the input. May differ from `value` (the form-submission value).
+	 *
+	 * Updated automatically on user input and menu select. When the consumer sets `value`
+	 * without setting `text`, the matching slotted `nldd-menu-item`'s `text` is used as
+	 * the display label. Set `text` explicitly to opt out of auto-derivation (e.g. for
+	 * custom display formats like `${item.text} (${item.id})`).
+	 */
+	@property({ type: String })
+	text = '';
 
 	@property({ type: String })
 	placeholder = '';
@@ -116,10 +132,6 @@ export class NLDDComboBox extends LitElement {
 	@state()
 	_isOpen = false;
 
-	/** Display value shown in the input. May differ from value (form value). */
-	@state()
-	_displayValue = '';
-
 	/** ID of the currently highlighted menu item for aria-activedescendant. */
 	@state()
 	_highlightedId = '';
@@ -146,7 +158,16 @@ export class NLDDComboBox extends LitElement {
 			console.warn('<nldd-combo-box>: No accessible-label provided. Add an accessible-label attribute for screen reader accessibility.');
 		}
 		this._initialValue = this.value;
-		this._initialDisplayValue = this._displayValue;
+		this._initialText = this.text;
+	}
+
+	override willUpdate(changedProperties: Map<string, unknown>): void {
+		// Auto-derive text from a matching slotted menu item when value changes
+		// alone. If text also changed in the same update cycle the consumer
+		// was explicit — don't overwrite it.
+		if (changedProperties.has('value') && !changedProperties.has('text')) {
+			this._deriveTextFromMenu();
+		}
 	}
 
 	override updated(changedProperties: Map<string, unknown>): void {
@@ -156,20 +177,20 @@ export class NLDDComboBox extends LitElement {
 		if (changedProperties.has('width')) {
 			this.style.width = this.width || '';
 		}
-		if (changedProperties.has('value') || changedProperties.has('_displayValue')) {
+		if (changedProperties.has('value') || changedProperties.has('text')) {
 			// Submit only the form value, but persist the display label in the
 			// restore state so bfcache / state restore can rehydrate the input
-			// text (e.g. value "NL" → display "Netherlands").
+			// text (e.g. value "nl" → display "Nederland").
 			const state = new FormData();
 			state.append('value', this.value);
-			state.append('display', this._displayValue);
+			state.append('display', this.text);
 			this._internals.setFormValue(this.value, state);
 		}
 	}
 
 	formResetCallback(): void {
 		this.value = this._initialValue;
-		this._displayValue = this._initialDisplayValue;
+		this.text = this._initialText;
 	}
 
 	formDisabledCallback(disabled: boolean): void {
@@ -179,11 +200,11 @@ export class NLDDComboBox extends LitElement {
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		if (state instanceof FormData) {
 			this.value = String(state.get('value') ?? '');
-			this._displayValue = String(state.get('display') ?? '');
+			this.text = String(state.get('display') ?? '');
 		} else if (typeof state === 'string') {
 			// Fallback for older session state without separate display label.
 			this.value = state;
-			this._displayValue = state;
+			this.text = state;
 		}
 	}
 
@@ -229,6 +250,37 @@ export class NLDDComboBox extends LitElement {
 		menu.addEventListener('select', this._handleMenuSelect);
 		menu.addEventListener('keydown', this._handleMenuKeydown);
 		this._updateMenuWidth();
+
+		// First time the menu is wired up, derive a missing text from the
+		// matching item. Covers the common case where the consumer renders
+		// <nldd-combo-box value="nl"> with the menu as a child — value is set
+		// before the menu exists, so the willUpdate hook's first run has no
+		// menu to walk.
+		if (this.value && !this.text) {
+			this._deriveTextFromMenu();
+		}
+	}
+
+	/**
+	 * Walk slotted menu items and set `text` from the first item whose `value`
+	 * (or `text`, when value is unset) matches the current `value`. No-op when
+	 * the menu isn't wired yet or no item matches.
+	 */
+	private _deriveTextFromMenu(): void {
+		if (!this._menu || !this.value) return;
+		// Scope to items that belong directly to the wired menu — without the
+		// closest() filter, a nested nldd-menu submenu's items would match
+		// before the intended top-level item when value keys overlap. Today's
+		// combo-boxes are flat, but this keeps the derivation correct as the
+		// menu structure gains depth.
+		const items = Array.from(this._menu.querySelectorAll<NLDDMenuItem>('nldd-menu-item'))
+			.filter(item => item.closest('nldd-menu') === this._menu);
+		for (const item of items) {
+			if ((item.value || item.text) === this.value) {
+				this.text = item.text;
+				return;
+			}
+		}
 	}
 
 	// — Menu width & position ————————————————————————————————————————————————
@@ -261,7 +313,7 @@ export class NLDDComboBox extends LitElement {
 
 	private _handleMenuSelect = (e: Event): void => {
 		const item = e.target as NLDDMenuItem;
-		this._displayValue = item.text;
+		this.text = item.text;
 		this.value = item.value || item.text;
 		this._highlightedId = '';
 		this._closeMenu();
@@ -336,19 +388,19 @@ export class NLDDComboBox extends LitElement {
 
 	public _handleInput(e: Event): void {
 		const input = e.target as HTMLInputElement;
-		this._displayValue = input.value;
-		this._menu?.filter(this._displayValue);
+		this.text = input.value;
+		this._menu?.filter(this.text);
 		this._updateActiveDescendant();
 		if (!this._isOpen) this._openMenu();
 		this.dispatchEvent(new CustomEvent('input', {
-			detail: { value: this._displayValue },
+			detail: { value: this.text },
 			bubbles: true,
 			composed: true,
 		}));
 	}
 
 	public _handleClear(): void {
-		this._displayValue = '';
+		this.text = '';
 		this.value = '';
 		this._menu?.filter('');
 		this._closeMenu();
@@ -371,8 +423,8 @@ export class NLDDComboBox extends LitElement {
 		if (!relatedTarget || !this._menu?.contains(relatedTarget)) {
 			this._closeMenu();
 		}
-		if (this._displayValue !== '' && this._displayValue !== this.value) {
-			this.value = this._displayValue;
+		if (this.text !== '' && this.text !== this.value) {
+			this.value = this.text;
 			this.dispatchEvent(new CustomEvent('change', {
 				detail: { value: this.value },
 				bubbles: true,
@@ -407,7 +459,7 @@ export class NLDDComboBox extends LitElement {
 				if (highlighted) {
 					highlighted.select();
 				} else {
-					this.value = this._displayValue;
+					this.value = this.text;
 					this._closeMenu();
 					this.dispatchEvent(new CustomEvent('change', {
 						detail: { value: this.value },
@@ -422,6 +474,14 @@ export class NLDDComboBox extends LitElement {
 				this._closeMenu();
 				break;
 		}
+	}
+
+	/**
+	 * Delegates focus to the inner native `<input>`, so consumers can call
+	 * `comboBoxEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this._input?.focus(options);
 	}
 
 	override render() {

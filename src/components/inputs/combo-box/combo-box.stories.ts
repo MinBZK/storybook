@@ -30,24 +30,15 @@ export default {
 			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
 			table: { defaultValue: { summary: '' } },
 		},
-		name: {
+		text: {
 			control: 'text',
-			description: 'Naam voor formulierverwerking',
-		},
-		value: {
-			control: 'text',
-			description: 'Geselecteerde waarde (voor formulierverwerking)',
+			description: 'Tekst die in de input te zien is. Leeg laten en alleen `value` zetten triggert auto-derive vanuit het matching menu-item; expliciet zetten override de auto-derive.',
 			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholder tekst',
 			table: { defaultValue: { summary: '' } },
-		},
-		autocomplete: {
-			control: 'text',
-			description: 'Browser autofill hint. Default "off" om conflict met dropdown te voorkomen. Set bv. "country" of "organization" om autofill toe te staan.',
-			table: { defaultValue: { summary: 'off' } },
 		},
 		valid: {
 			control: 'boolean',
@@ -64,30 +55,47 @@ export default {
 			description: 'Uitgeschakelde toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		name: {
+			control: 'text',
+			description: 'Naam voor formulierverwerking',
+		},
+		value: {
+			control: 'text',
+			description: 'Geselecteerde waarde (voor formulierverwerking). Wanneer een matching `<nldd-menu-item>` aanwezig is en `text` leeg is, vult de combo-box `text` automatisch met `item.text`.',
+			table: { defaultValue: { summary: '' } },
+		},
+		autocomplete: {
+			control: 'text',
+			description: 'Browser autofill hint. Default "off" om conflict met dropdown te voorkomen. Set bv. "country" of "organization" om autofill toe te staan.',
+			table: { defaultValue: { summary: 'off' } },
+		},
 	},
 	args: {
 		size: 'md',
 		width: '',
-		name: '',
-		value: '',
+		text: '',
 		placeholder: 'Zoek een land',
-		autocomplete: 'off',
 		valid: false,
 		invalid: false,
 		disabled: false,
+		name: '',
+		value: '',
+		autocomplete: 'off',
 	},
 };
 
 const Template = (args: Record<string, any>) => html`
 	<nldd-combo-box
-		placeholder=${args.placeholder}
 		size=${args.size}
+		width=${args.width}
+		text=${args.text}
+		placeholder=${args.placeholder}
 		?valid=${args.valid}
 		?invalid=${args.invalid}
 		?disabled=${args.disabled}
 		name=${args.name}
+		value=${args.value}
 		autocomplete=${args.autocomplete}
-		width=${args.width}
 	>
 		<nldd-menu empty-text="Geen resultaten">
 			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
@@ -102,6 +110,48 @@ const Template = (args: Record<string, any>) => html`
 export const Standaard = {
 	render: Template,
 	args: {},
+};
+
+export const VoorafIngevuld = {
+	render: () => html`
+	<div style="display: flex; flex-direction: column; gap: 16px;">
+		<div>
+			<p style="margin: 0 0 4px; font-size: 12px; color: var(--semantics-content-secondary-color);">
+				Auto-derive — alleen <code>value="nl"</code> gezet, de combo-box leest <code>text="Nederland"</code> van het matching menu-item.
+			</p>
+			<nldd-combo-box value="nl" accessible-label="Land" placeholder="Kies een land">
+				<nldd-menu empty-text="Geen resultaten">
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+					<nldd-menu-item text="Duitsland" value="de"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		</div>
+		<div>
+			<p style="margin: 0 0 4px; font-size: 12px; color: var(--semantics-content-secondary-color);">
+				Expliciet — <code>value</code> én <code>text</code> beide gezet (consumer bepaalt het label, bv. een custom format zoals <code>"Nederland (NL)"</code>).
+			</p>
+			<nldd-combo-box value="nl" text="Nederland (NL)" accessible-label="Land" placeholder="Kies een land">
+				<nldd-menu empty-text="Geen resultaten">
+					<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>
+					<nldd-menu-item text="België" value="be"></nldd-menu-item>
+				</nldd-menu>
+			</nldd-combo-box>
+		</div>
+	</div>
+`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: `
+Voor het bewerken van een bestaand record: zet \`value\` op het opgeslagen form-id en de input wordt automatisch gevuld met het label van het matching \`<nldd-menu-item>\`.
+
+Voor een aangepast label-format (bijv. \`"Nederland (NL)"\` in plaats van \`"Nederland"\`) zet je \`text\` expliciet — de auto-derive slaat 'm dan over.
+				`.trim(),
+			},
+		},
+	},
 };
 
 export const MetZoektermen = {

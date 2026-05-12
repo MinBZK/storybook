@@ -101,6 +101,23 @@ CSS variabelen zijn georganiseerd in vijf lagen:
 
 Mis je een component of wil je een wijziging voorstellen? [Maak een issue aan](https://github.com/MinBZK/storybook/issues).
 
+## Fonts
+
+Het design system gebruikt twee fonts, met verschillende licenties:
+
+- **JetBrains Mono** (monospace) — vrij te gebruiken onder de
+  [SIL Open Font License 1.1](https://openfontlicense.org).
+- **Rijksoverheid Sans** (`RijksSansWeb`) — auteursrechtelijk beschermd
+  door de Staat der Nederlanden. **Uitsluitend bedoeld voor publicaties
+  van de Rijksoverheid** of partijen die in opdracht van de Rijksoverheid
+  werken. Voor ander gebruik is voorafgaande schriftelijke toestemming
+  vereist; neem contact op met de Rijksvoorlichtingsdienst.
+
+Volledige licentie-informatie staat in [`NOTICES.md`](./NOTICES.md). Door
+de fonts mee te leveren in deze repository wordt geen licentie verleend
+buiten het hierboven beschreven kader.
+
 ## Licentie (License)
 
-EUPL-1.2
+De broncode van dit design system valt onder **EUPL-1.2**. De fontbestanden
+in `src/assets/fonts/` hebben hun eigen licenties — zie [`NOTICES.md`](./NOTICES.md).

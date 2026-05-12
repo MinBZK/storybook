@@ -193,6 +193,14 @@ export class NLDDNumberField extends LitElement {
 		return Math.max(this.min, Math.min(this.max, value));
 	}
 
+	/**
+	 * Delegates focus to the inner native `<input>`, so consumers can call
+	 * `numberFieldEl.focus()` without reaching into shadow DOM.
+	 */
+	override focus(options?: FocusOptions): void {
+		this.shadowRoot?.querySelector<HTMLInputElement>('.number-field__input')?.focus(options);
+	}
+
 	override render() {
 		return numberFieldTemplate(this);
 	}

@@ -245,7 +245,7 @@ export const formFieldErrorTextStyles = css`
 
 	.form-field__error-text {
 		margin: 0;
-		color: var(--semantics-content-error-color);
+		color: var(--semantics-content-critical-color);
 		font: var(--primitives-font-body-sm-regular-tight);
 	}
 
