@@ -32,9 +32,10 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['', 'alert'],
+			options: ['(geen)', 'alert'],
+			mapping: { '(geen)': '' },
 			description: 'Semantische variant — dwingt een icoon en kleur af',
-			table: { defaultValue: { summary: '' } },
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		text: {
 			control: 'text',
@@ -47,8 +48,10 @@ export default {
 		},
 		icon: {
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Naam van het nldd-icon icoon; afwezig wanneer niet ingesteld',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 	},
 	args: {

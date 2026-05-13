@@ -11,7 +11,7 @@ export function segmentedControlItemTemplate(component: NLDDSegmentedControlItem
 	const labelText = component.text || nothing;
 
 	const label = html`
-		<label class="segmented-control__item-label">
+		<label class="segmented-control__item">
 			<input class="segmented-control__item-input"
 				type=${component.inputType}
 				name=${component.groupName || nothing}

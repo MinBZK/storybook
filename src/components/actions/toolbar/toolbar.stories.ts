@@ -16,13 +16,13 @@ export default {
 		size: {
 			control: 'select',
 			options: ['sm', 'md'],
-			description: 'Toolbar size',
+			description: 'Grootte van de toolbar',
 			table: { defaultValue: { summary: 'md' } },
 		},
 		showItemLabels: {
 			name: 'show-item-labels',
 			control: 'boolean',
-			description: 'Show labels below toolbar items',
+			description: 'Toon labels onder toolbar-items',
 			table: { defaultValue: { summary: 'false' } },
 		},
 	},
@@ -144,11 +144,11 @@ export const WithTitleGroup = {
 					text="Terug"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
-			<nldd-toolbar-title-group
+			<nldd-toolbar-title
 				slot="start"
 				text="Document titel"
-				subtext="Laatste wijziging: vandaag"
-			></nldd-toolbar-title-group>
+				supporting-text="Laatste wijziging: vandaag"
+			></nldd-toolbar-title>
 			<nldd-toolbar-item
 				slot="end"
 				label="Annuleer"
@@ -190,12 +190,12 @@ export const WithTitleGroupCentered = {
 					text="Terug"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
-			<nldd-toolbar-title-group
+			<nldd-toolbar-title
 				slot="center"
 				text="Document titel"
-				subtext="Laatste wijziging: vandaag"
+				supporting-text="Laatste wijziging: vandaag"
 				align="center"
-			></nldd-toolbar-title-group>
+			></nldd-toolbar-title>
 			<nldd-toolbar-item
 				slot="end"
 				label="Sla op"
@@ -608,12 +608,12 @@ export const WithPriority = {
 					type="checkbox"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
-			<nldd-toolbar-title-group
+			<nldd-toolbar-title
 				slot="center"
 				text="Document titel"
-				subtext="Laatste wijziging: vandaag"
+				supporting-text="Laatste wijziging: vandaag"
 				align="center"
-			></nldd-toolbar-title-group>
+			></nldd-toolbar-title>
 			<nldd-toolbar-item
 				slot="end"
 				label="Annuleer"
@@ -750,11 +750,11 @@ export const WithPinnedOverflowOnly = {
 			>
 				<nldd-icon-button text="Terug" icon="chevron-left"></nldd-icon-button>
 			</nldd-toolbar-item>
-			<nldd-toolbar-title-group
+			<nldd-toolbar-title
 				slot="start"
 				text="Document titel"
-				subtext="Laatste wijziging: vandaag"
-			></nldd-toolbar-title-group>
+				supporting-text="Laatste wijziging: vandaag"
+			></nldd-toolbar-title>
 			<nldd-toolbar-item
 				slot="end"
 				label="Sla op"

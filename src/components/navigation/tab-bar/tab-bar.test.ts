@@ -532,24 +532,24 @@ describe('nldd-tab-bar – responsive propagation', () => {
 
 
 /* ============================================================
-   nldd-tab-bar – full-width
+   nldd-tab-bar – centered
    ============================================================ */
 
-describe('nldd-tab-bar – full-width', () => {
+describe('nldd-tab-bar – centered', () => {
 	let el: NLDDTabBar;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('reflects full-width attribute on host', async () => {
+	it('reflects centered attribute on host', async () => {
 		el = await fixture<NLDDTabBar>(`
-			<nldd-tab-bar full-width>
+			<nldd-tab-bar centered>
 				<nldd-tab-bar-item text="Home"></nldd-tab-bar-item>
 			</nldd-tab-bar>
 		`);
 		await waitForUpdate(el);
-		expect(el.hasAttribute('full-width')).toBe(true);
+		expect(el.hasAttribute('centered')).toBe(true);
 	});
 });
 

@@ -36,7 +36,7 @@ export default {
 
 // ## Layout area wrapper (simulates nldd-page container)
 
-const layoutArea = 'container-type: inline-size; container-name: layout-area; background-color: var(--semantics-surfaces-background-color);';
+const layoutArea = 'container-type: inline-size; container-name: layout-container; background-color: var(--semantics-surfaces-background-color);';
 
 // ## Template
 

@@ -13,8 +13,9 @@
  * @slot right - Right column (1/3)
  * @slot footer - Content below the columns
  *
- * @attr {boolean} [full-width] - Remove the body max-width constraint so the
- *                                 section spans the full available width
+ * @attr {string} [width] - Body max-width: 'full' removes the constraint so the
+ *                          section spans the full available width. Any CSS
+ *                          length (e.g. '480px') overrides the default max-width.
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -25,8 +26,23 @@ import { twoThirdsOneThirdSectionTemplate } from './two-thirds-one-third-section
 export class NLDDTwoThirdsOneThirdSection extends LitElement {
 	static override styles = twoThirdsOneThirdSectionStyles;
 
-	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
-	fullWidth = false;
+	/** Width mode: 'full' (removes body max-width) or any CSS length. */
+	@property({ type: String, reflect: true })
+	width = '';
+
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('width')) {
+			const w = this.width;
+			// Sections constrain the body's max-width rather than the host's
+			// outer width. The keyword 'full' is handled by CSS (sets
+			// --_max-width: none); CSS lengths feed --_max-width here.
+			if (w && w !== 'full' && CSS.supports('max-width', w)) {
+				this.style.setProperty('--_max-width', w);
+			} else {
+				this.style.removeProperty('--_max-width');
+			}
+		}
+	}
 
 	override render() {
 		return twoThirdsOneThirdSectionTemplate(this);

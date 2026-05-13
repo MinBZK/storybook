@@ -34,9 +34,10 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['', 'alert', 'success'],
+			options: ['(geen)', 'alert', 'success'],
+			mapping: { '(geen)': '' },
 			description: 'Semantische variant — dwingt een icoon en kleur af',
-			table: { defaultValue: { summary: '' } },
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		text: {
 			control: 'text',
@@ -51,15 +52,18 @@ export default {
 		},
 		icon: {
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Naam van het nldd-icon icoon; afwezig wanneer niet ingesteld. Overschrijft het variant-icoon.',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		iconColor: {
 			name: 'icon-color',
 			control: 'select',
-			options: ['', 'secondary', 'accent', 'critical', 'warning', 'success'],
+			options: ['(geen)', 'secondary', 'accent', 'critical', 'warning', 'success'],
+			mapping: { '(geen)': '' },
 			description: 'Overschrijft de standaard icoonkleur (en die van een variant).',
-			table: { defaultValue: { summary: '' } },
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 	},
 	args: {

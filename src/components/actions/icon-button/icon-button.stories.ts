@@ -31,11 +31,11 @@ export default {
 				'secondary',
 				'destructive',
 				'accent-filled',
-				'accent-outlined',
 				'accent-transparent',
 				'neutral-tinted',
 				'neutral-transparent',
 				'critical-tinted',
+				'critical-transparent',
 			],
 			description: 'Visuele stijlvariant',
 			table: {
@@ -50,12 +50,11 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
-		fullWidth: {
-			name: 'full-width',
-			control: 'boolean',
-			description: 'Laat de knop vullen tot de beschikbare breedte van de container',
+		width: {
+			control: 'text',
+			description: 'Width mode: "full" (stretches to container) or any CSS length (e.g. "240px")',
 			table: {
-				defaultValue: { summary: false },
+				defaultValue: { summary: '' },
 			},
 		},
 		expandable: {
@@ -65,6 +64,21 @@ export default {
 			table: {
 				defaultValue: { summary: false },
 			},
+		},
+		expanded: {
+			control: 'boolean',
+			description: 'Geeft aan dat het popover/menu uitgeklapt is. Wordt geforward als aria-expanded op de inner button en activeert de is-open visuele state.',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
+		popupType: {
+			name: 'popup-type',
+			control: 'select',
+			options: ['(geen)', 'menu', 'listbox', 'dialog', 'tree', 'grid'],
+			mapping: { '(geen)': '' },
+			description: 'Type popup-container dat deze knop opent. Zet aria-haspopup op de inner button en zorgt dat aria-expanded altijd aanwezig is (true/false) zodat screenreaders de popup-staat kennen.',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		text: {
 			control: 'text',
@@ -92,8 +106,10 @@ export default {
 		},
 		target: {
 			control: 'select',
-			options: ['', '_self', '_blank', '_parent', '_top'],
+			options: ['(geen)', '_self', '_blank', '_parent', '_top'],
+			mapping: { '(geen)': '' },
 			description: 'Link target (alleen gebruikt als href is gezet)',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
@@ -119,8 +135,10 @@ export default {
 	args: {
 		variant: 'neutral-tinted',
 		size: 'md',
-		fullWidth: false,
+		width: '',
 		expandable: false,
+		expanded: false,
+		popupType: '',
 		text: 'Annuleer',
 		icon: 'dismiss',
 		type: 'button',
@@ -132,14 +150,16 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, fullWidth, expandable, text, icon, type, href, target, accessibleLabel, hideTooltip, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, expanded, popupType, text, icon, type, href, target, accessibleLabel, hideTooltip, disabled }: Record<string, any>) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}
 		icon=${icon}
 		text=${text}
+		popup-type=${popupType || nothing}
 		?expandable=${expandable}
-		?full-width=${fullWidth}
+		?expanded=${expanded}
+		width=${width || nothing}
 		type=${type}
 		href=${href || nothing}
 		target=${target || nothing}
@@ -179,11 +199,11 @@ export const AppearanceBased = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button variant="accent-filled" icon="add" text="Voeg toe"></nldd-icon-button>
-		<nldd-icon-button variant="accent-outlined" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="accent-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="neutral-tinted" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="neutral-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="critical-tinted" icon="delete" text="Verwijder"></nldd-icon-button>
+		<nldd-icon-button variant="critical-transparent" icon="delete" text="Verwijder"></nldd-icon-button>
 	</div>
 `,
 	parameters: {
@@ -263,7 +283,6 @@ export const Disabled = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button disabled variant="accent-filled" icon="delete" text="Verwijderen"></nldd-icon-button>
-		<nldd-icon-button disabled variant="accent-outlined" icon="delete" text="Verwijderen"></nldd-icon-button>
 		<nldd-icon-button disabled variant="neutral-tinted" icon="delete" text="Verwijderen"></nldd-icon-button>
 		<nldd-icon-button disabled variant="critical-tinted" icon="delete" text="Verwijderen"></nldd-icon-button>
 	</div>

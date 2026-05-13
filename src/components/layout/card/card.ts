@@ -38,7 +38,7 @@ export class NLDDCard extends LitElement {
 		// styles being absent is meaningful. They are effectively part of the
 		// element's identity, written once and kept.
 		this.style.containerType = 'inline-size';
-		this.style.containerName = 'layout-area';
+		this.style.containerName = 'layout-container';
 	}
 
 	_onSlotChange = (e: Event): void => {

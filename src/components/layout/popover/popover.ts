@@ -151,7 +151,7 @@ export class NLDDPopover extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.style.containerType = 'inline-size';
-		this.style.containerName = 'layout-area';
+		this.style.containerName = 'layout-container';
 		if (!this.hasAttribute('popover')) this.setAttribute('popover', '');
 		if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '-1');
 		if (!this.hasAttribute('role')) this.setAttribute('role', 'dialog');

@@ -110,7 +110,7 @@ export class NLDDWindow extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.style.containerType = 'inline-size';
-		this.style.containerName = 'layout-area';
+		this.style.containerName = 'layout-container';
 		this.addEventListener('dismiss', this._handleDismiss);
 		this._detectDragHandle();
 		window.addEventListener('resize', this._handleResize);

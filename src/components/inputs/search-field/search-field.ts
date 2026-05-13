@@ -16,7 +16,7 @@
  * @attr {string}  name                - Input name for form submission
  * @attr {boolean} show-search-button - When set, shows a search button on the right
  * @attr {object}  translations        - Override translation keys; unset keys fall back to Dutch
- * @attr {string}  width               - Optional fixed width (any CSS length, e.g. "240px"). Default: full-width.
+ * @attr {string}  width               - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @fires input  - When the input value changes; detail: { value: string }
  * @fires change - When the input value is committed; detail: { value: string }
@@ -87,7 +87,12 @@ export class NLDDSearchField extends LitElement {
 
 	override updated(changed: PropertyValues): void {
 		if (changed.has('width')) {
-			this.style.width = this.width || '';
+			const w = this.width;
+			if (w && w !== 'full' && CSS.supports('width', w)) {
+				this.style.setProperty('--_width', w);
+			} else {
+				this.style.removeProperty('--_width');
+			}
 		}
 		if (changed.has('value')) {
 			this._internals.setFormValue(this.value);

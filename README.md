@@ -51,7 +51,7 @@ npm run storybook
 | Attribuut          | Type    | Default          | Beschrijving                                                                                                                                             |
 | ------------------ | ------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `text`             | string  | `''`             | Tekst van de button                                                                                                                                      |
-| `variant`          | string  | `neutral-tinted` | `primary`, `secondary`, `destructive`, `accent-filled`, `accent-outlined`, `accent-transparent`, `neutral-tinted`, `neutral-transparent`, `critical-tinted` |
+| `variant`          | string  | `neutral-tinted` | `primary`, `secondary`, `destructive`, `accent-filled`, `accent-transparent`, `neutral-tinted`, `neutral-transparent`, `critical-tinted`, `critical-transparent` |
 | `size`             | string  | `md`             | `xs`, `sm`, `md`                                                                                                                                         |
 | `disabled`         | boolean | `false`          | Uitgeschakelde staat                                                                                                                                     |
 | `type`             | string  | `button`         | `button`, `submit`, `reset`                                                                                                                              |

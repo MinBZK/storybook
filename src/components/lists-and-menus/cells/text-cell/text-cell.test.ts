@@ -39,10 +39,10 @@ describe('nldd-text-cell', () => {
 		expect(el.getAttribute('color')).toBe('secondary');
 	});
 
-	it('defaults to stretch width', async () => {
+	it('defaults to full width', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('width')).toBe('stretch');
+		expect(el.getAttribute('width')).toBe('full');
 	});
 
 	it('reflects width attribute', async () => {

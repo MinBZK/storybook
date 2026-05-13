@@ -22,11 +22,11 @@
  * @element nldd-text-cell
  * @attr {string} size - Cell size: 'sm' | 'md' (default: 'md')
  * @attr {string} color - Text color variant: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' (default: 'default'). All non-default/-secondary variants apply to all three text fields so the cell reads as a coherent state.
- * @attr {string} width - 'stretch' | 'fit-content' | CSS length (e.g. '200px', '20rem'). Default: 'stretch'
+ * @attr {string} width - 'full' | 'fit-content' | CSS length (e.g. '200px', '20rem'). Default: 'full'
  * @attr {string} min-width - Minimum width as CSS length (e.g. '80px', '5rem')
  * @attr {string} max-width - Maximum width as CSS length (e.g. '200px', '20rem')
  * @attr {string} min-height - Minimum height as CSS length (e.g. '44px', '3rem')
- * @attr {string} horizontal-alignment - Horizontal alignment: 'left' | 'right' (default: 'left')
+ * @attr {string} horizontal-alignment - Horizontal alignment: 'left' | 'center' | 'right' (default: 'left')
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')
  *
  * @attr {string} text - Main text content. Supports **bold** syntax for inline bold segments. Falls back to default slot.
@@ -61,11 +61,11 @@ import type { QueryMarkMode } from '../../../../utilities/render-marked.js';
 
 type Size = 'sm' | 'md';
 type Color = 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical';
-type HorizontalAlignment = 'left' | 'right';
+type HorizontalAlignment = 'left' | 'center' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('nldd-text-cell')
-export class NLDDTextCell extends VisibilityMixin(LitElement) {
+export class NLDDTextCell extends VisibilityMixin(LitElement, 'list-container') {
 	static override styles = [textCellStyles];
 
 	@property({ type: String, reflect: true })
@@ -74,9 +74,8 @@ export class NLDDTextCell extends VisibilityMixin(LitElement) {
 	@property({ type: String, reflect: true })
 	color: Color = 'default';
 
-	/** 'stretch' | 'fit-content' | CSS length (e.g. '200px', '20rem'). */
 	@property({ type: String, reflect: true })
-	width: string = 'stretch';
+	width: string = 'full';
 
 	@property({ type: String, reflect: true, attribute: 'min-width' })
 	minWidth?: string;
@@ -123,13 +122,18 @@ export class NLDDTextCell extends VisibilityMixin(LitElement) {
 	}
 
 	private _applyDimensionStyles() {
-		// width's 'stretch' and 'fit-content' are handled via [width] attribute
+		// width's 'full' and 'fit-content' are handled via [width] attribute
 		// selectors in CSS; any other value is a CSS length fed through --_width.
-		const widthIsKeyword = this.width === 'stretch' || this.width === 'fit-content';
-		if (this.width && !widthIsKeyword) {
-			this.style.setProperty('--_width', this.width);
+		const w = this.width;
+		const widthIsKeyword = w === 'full' || w === 'fit-content';
+		const widthIsValidLength = !!w && !widthIsKeyword && CSS.supports('width', w);
+		if (widthIsValidLength) {
+			this.style.setProperty('--_width', w);
 		} else {
 			this.style.removeProperty('--_width');
+		}
+		if (w && !widthIsKeyword && !widthIsValidLength) {
+			this.width = '';
 		}
 		if (this.minWidth) {
 			this.style.setProperty('--_min-width', this.minWidth);

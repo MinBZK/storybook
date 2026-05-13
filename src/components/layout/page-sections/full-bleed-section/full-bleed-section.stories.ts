@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './full-bleed-section.js';
 import '../../../content/rich-text/rich-text.js';
 
@@ -30,22 +30,34 @@ export default {
 			type: 'stable',
 		},
 	},
+	argTypes: {
+		width: {
+			control: 'text',
+			description: 'Body max-width: "full" removes the constraint, of een CSS length (bv. "480px") overschrijft de default max-width',
+			table: { defaultValue: { summary: '' } },
+		},
+	},
+	args: {
+		width: '',
+	},
 };
 
-export const Standaard = () => html`
-	<nldd-full-bleed-section>
-		<nldd-rich-text slot="header">
-			<h2>Sectietitel</h2>
-		</nldd-rich-text>
-		<nldd-rich-text>
-			<p>Dit is de hoofdinhoud van de sectie. De inhoud loopt van rand tot rand zonder horizontale padding.</p>
-			<p>Gebruik deze sectie voor achtergrondkleuren, afbeeldingen of andere inhoud die de volledige breedte beslaat.</p>
-		</nldd-rich-text>
-		<nldd-rich-text slot="footer">
-			<p>Voetnoot of aanvullende informatie.</p>
-		</nldd-rich-text>
-	</nldd-full-bleed-section>
-`;
+export const Standaard = {
+	render: ({ width }: Record<string, any>) => html`
+		<nldd-full-bleed-section width=${width || nothing}>
+			<nldd-rich-text slot="header">
+				<h2>Sectietitel</h2>
+			</nldd-rich-text>
+			<nldd-rich-text>
+				<p>Dit is de hoofdinhoud van de sectie. De inhoud loopt van rand tot rand zonder horizontale padding.</p>
+				<p>Gebruik deze sectie voor achtergrondkleuren, afbeeldingen of andere inhoud die de volledige breedte beslaat.</p>
+			</nldd-rich-text>
+			<nldd-rich-text slot="footer">
+				<p>Voetnoot of aanvullende informatie.</p>
+			</nldd-rich-text>
+		</nldd-full-bleed-section>
+	`,
+};
 
 export const ZonderHeaderEnFooter = {
 	render: () => html`

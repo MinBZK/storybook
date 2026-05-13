@@ -9,11 +9,12 @@
  * use `vertical-alignment="top"`.
  *
  * @element nldd-cell
- * @attr {string} width - 'stretch' | 'fit-content' | CSS length (e.g. '120px', '10rem'). Default: 'fit-content'
+ * @attr {string} width - 'full' | 'fit-content' | CSS length (e.g. '120px', '10rem'). Default: 'fit-content'
  * @attr {string} min-width - Minimum width as CSS length (e.g. '80px', '5rem')
  * @attr {string} max-width - Maximum width as CSS length (e.g. '200px', '20rem')
  * @attr {string} min-height - Minimum height as CSS length (e.g. '44px', '3rem')
  * @attr {'top' | 'center' | 'bottom'} vertical-alignment - Vertical alignment of slotted content (default: 'center')
+ * @attr {'left' | 'center' | 'right'} horizontal-alignment - Horizontal alignment of slotted content (default: 'left')
  *
  * @slot - Default slot for any content (buttons, switches, icons, etc.)
  */
@@ -24,12 +25,12 @@ import { template } from './cell.template.js';
 import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
 
 export type CellVerticalAlignment = 'top' | 'center' | 'bottom';
+export type CellHorizontalAlignment = 'left' | 'center' | 'right';
 
 @customElement('nldd-cell')
-export class NLDDCell extends VisibilityMixin(LitElement) {
+export class NLDDCell extends VisibilityMixin(LitElement, 'list-container') {
 	static override styles = [cellStyles];
 
-	/** 'stretch' | 'fit-content' | CSS length (e.g. '120px', '10rem'). */
 	@property({ type: String, reflect: true })
 	width: string = 'fit-content';
 
@@ -45,6 +46,9 @@ export class NLDDCell extends VisibilityMixin(LitElement) {
 	@property({ reflect: true, attribute: 'vertical-alignment' })
 	verticalAlignment: CellVerticalAlignment = 'center';
 
+	@property({ reflect: true, attribute: 'horizontal-alignment' })
+	horizontalAlignment: CellHorizontalAlignment = 'left';
+
 	override updated(changed: Map<string, unknown>) {
 		super.updated(changed);
 		if (changed.has('width') || changed.has('minWidth') || changed.has('maxWidth') || changed.has('minHeight')) {
@@ -53,11 +57,18 @@ export class NLDDCell extends VisibilityMixin(LitElement) {
 	}
 
 	private _applyDimensionStyles() {
-		const widthIsKeyword = this.width === 'stretch' || this.width === 'fit-content';
-		if (this.width && !widthIsKeyword) {
-			this.style.setProperty('--_width', this.width);
+		const w = this.width;
+		const widthIsKeyword = w === 'full' || w === 'fit-content';
+		const widthIsValidLength = !!w && !widthIsKeyword && CSS.supports('width', w);
+		if (widthIsValidLength) {
+			this.style.setProperty('--_width', w);
 		} else {
 			this.style.removeProperty('--_width');
+		}
+		// Normalize invalid CSS lengths back to '' so the default :host([width=''])
+		// rule applies and the host doesn't get stuck in the fallback selector.
+		if (w && !widthIsKeyword && !widthIsValidLength) {
+			this.width = '';
 		}
 		if (this.minWidth) {
 			this.style.setProperty('--_min-width', this.minWidth);

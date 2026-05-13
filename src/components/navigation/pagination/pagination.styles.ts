@@ -6,6 +6,8 @@ export const paginationStyles = css`
 	/* # Host */
 
 	:host {
+		--_pagination-page-button-indicator-inset: var(--primitives-space-4);
+
 		display: block;
 		container-type: inline-size;
 		isolation: isolate;
@@ -16,7 +18,7 @@ export const paginationStyles = css`
 		display: none;
 	}
 
-	:host([full-width]) {
+	:host([centered]) {
 		display: flex;
 		justify-content: center;
 	}
@@ -85,8 +87,8 @@ export const paginationStyles = css`
 	.pagination__page-button::before {
 		content: '';
 		position: absolute;
-		inset: var(--primitives-space-4);
-		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--primitives-space-4) / 2);
+		inset: var(--_pagination-page-button-indicator-inset);
+		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--_pagination-page-button-indicator-inset) / 2);
 		background-color: transparent;
 		pointer-events: none;
 	}

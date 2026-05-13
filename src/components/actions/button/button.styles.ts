@@ -6,11 +6,23 @@ export const buttonStyles = css`
 	/* # Host */
 
 	:host {
+		--_width: auto;
+		--_disclosure-icon-size: var(--primitives-space-20);
+
 		display: inline-block;
+		max-width: 100%;
 		-webkit-tap-highlight-color: transparent;
 	}
 
-	:host([full-width]) {
+	:host([size="sm"]) {
+		--_disclosure-icon-size: var(--primitives-space-18);
+	}
+
+	:host([size="xs"]) {
+		--_disclosure-icon-size: var(--primitives-space-16);
+	}
+
+	:host([width="full"]) {
 		display: block;
 		width: 100%;
 		flex-grow: 1;
@@ -40,7 +52,8 @@ export const buttonStyles = css`
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 100%;
+		width: var(--_width);
+		max-width: 100%;
 		text-wrap: pretty;
 		transition:
 			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
@@ -111,7 +124,9 @@ export const buttonStyles = css`
 
 	/* # Variants */
 
-	/* ## Variant: Neutral Tintend (Secondary, Default) */
+	/* ## Neutral Tintend (Secondary, Default) */
+
+	/* ### Default neutral tinted button */
 
 	:host([variant="neutral-tinted"]) .button,
 	:host([variant="secondary"]) .button,
@@ -119,6 +134,8 @@ export const buttonStyles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 	}
+
+	/* ### Hovered neutral tinted button */
 
 	@media (hover: hover) {
 		:host([variant="neutral-tinted"]) .button:hover,
@@ -129,6 +146,8 @@ export const buttonStyles = css`
 		}
 	}
 
+	/* ### Active neutral tinted button */
+
 	:host([variant="neutral-tinted"]) .button:active,
 	:host([variant="secondary"]) .button:active,
 	:host(:not([variant])) .button:active {
@@ -136,12 +155,45 @@ export const buttonStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
-	/* ## Variant: Neutral Transparent */
+	/* ### Open neutral tinted button */
+
+	:host([expanded][variant="neutral-tinted"]) .button,
+	:host([expanded][variant="secondary"]) .button,
+	:host([expanded]:not([variant])) .button {
+		background-color: var(--semantics-buttons-neutral-tinted-is-open-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-open-content-color);
+	}
+
+	/* ### Open hovered neutral tinted button */
+
+	@media (hover: hover) {
+		:host([expanded][variant="neutral-tinted"]) .button:hover,
+		:host([expanded][variant="secondary"]) .button:hover,
+		:host([expanded]:not([variant])) .button:hover {
+			background-color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-content-color);
+		}
+	}
+
+	/* ### Open active neutral tinted button */
+
+	:host([expanded][variant="neutral-tinted"]) .button:active,
+	:host([expanded][variant="secondary"]) .button:active,
+	:host([expanded]:not([variant])) .button:active {
+		background-color: var(--semantics-buttons-neutral-tinted-is-open-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-open-is-active-content-color);
+	}
+
+	/* ## Neutral Transparent */
+
+	/* ### Default neutral transparent button */
 
 	:host([variant="neutral-transparent"]) .button {
 		background-color: transparent;
 		color: var(--semantics-buttons-neutral-transparent-content-color);
 	}
+
+	/* ### Hovered neutral transparent button */
 
 	@media (hover: hover) {
 		:host([variant="neutral-transparent"]) .button:hover {
@@ -149,17 +201,23 @@ export const buttonStyles = css`
 		}
 	}
 
+	/* ### Active neutral transparent button */
+
 	:host([variant="neutral-transparent"]) .button:active {
 		color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
 	}
 
-	/* ## Variant: Accent Filled (Primary) */
+	/* ## Accent Filled (Primary) */
+
+	/* ### Default accent filled button */
 
 	:host([variant="accent-filled"]) .button,
 	:host([variant="primary"]) .button {
 		background-color: var(--semantics-buttons-accent-filled-background-color);
 		color: var(--semantics-buttons-accent-filled-content-color);
 	}
+
+	/* ### Hovered accent filled button */
 
 	@media (hover: hover) {
 		:host([variant="accent-filled"]) .button:hover,
@@ -169,59 +227,50 @@ export const buttonStyles = css`
 		}
 	}
 
+	/* ### Active accent filled button */
+
 	:host([variant="accent-filled"]) .button:active,
 	:host([variant="primary"]) .button:active {
 		background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
 		color: var(--semantics-buttons-accent-filled-is-active-content-color);
 	}
 
-	/* ## Variant: Accent Outlined */
+	/* ### Open accent filled button */
 
-	:host([variant="accent-outlined"]) .button {
-		background-color: transparent;
-		padding: calc(var(--primitives-space-12) - var(--semantics-buttons-accent-outlined-border-thickness));
-		color: var(--semantics-buttons-accent-outlined-content-color);
-		border-width: var(--semantics-buttons-accent-outlined-border-thickness);
-		border-style: solid;
-		border-color: var(--semantics-buttons-accent-outlined-border-color);
+	:host([expanded][variant="accent-filled"]) .button,
+	:host([expanded][variant="primary"]) .button {
+		background-color: var(--semantics-buttons-accent-filled-is-open-background-color);
+		color: var(--semantics-buttons-accent-filled-is-open-content-color);
 	}
 
-	:host([variant="accent-outlined"][size="md"]) .button {
-		padding: calc(var(--primitives-space-12) - var(--semantics-buttons-accent-outlined-border-thickness));
-	}
-
-	:host([variant="accent-outlined"][size="sm"]) .button {
-		padding:
-			calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness))
-			calc(var(--primitives-space-10) - var(--semantics-buttons-accent-outlined-border-thickness))
-		;
-	}
-
-	:host([variant="accent-outlined"][size="xs"]) .button {
-		padding:
-			calc(var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness))
-			calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness))
-		;
-	}
+	/* ### Open hovered accent filled button */
 
 	@media (hover: hover) {
-		:host([variant="accent-outlined"]) .button:hover {
-			color: var(--semantics-buttons-accent-outlined-is-hovered-content-color);
-			border-color: var(--semantics-buttons-accent-outlined-is-hovered-border-color);
+		:host([expanded][variant="accent-filled"]) .button:hover,
+		:host([expanded][variant="primary"]) .button:hover {
+			background-color: var(--semantics-buttons-accent-filled-is-open-is-hovered-background-color);
+			color: var(--semantics-buttons-accent-filled-is-open-is-hovered-content-color);
 		}
 	}
 
-	:host([variant="accent-outlined"]) .button:active {
-		color: var(--semantics-buttons-accent-outlined-is-active-content-color);
-		border-color: var(--semantics-buttons-accent-outlined-is-active-border-color);
+	/* ### Open active accent filled button */
+
+	:host([expanded][variant="accent-filled"]) .button:active,
+	:host([expanded][variant="primary"]) .button:active {
+		background-color: var(--semantics-buttons-accent-filled-is-open-is-active-background-color);
+		color: var(--semantics-buttons-accent-filled-is-open-is-active-content-color);
 	}
 
-	/* ## Variant: Accent Transparent */
+	/* ## Accent Transparent */
+
+	/* ### Default accent transparent button */
 
 	:host([variant="accent-transparent"]) .button {
 		background-color: transparent;
 		color: var(--semantics-buttons-accent-transparent-content-color);
 	}
+
+	/* ### Hovered accent transparent button */
 
 	@media (hover: hover) {
 		:host([variant="accent-transparent"]) .button:hover {
@@ -229,17 +278,23 @@ export const buttonStyles = css`
 		}
 	}
 
+	/* ### Active accent transparent button */
+
 	:host([variant="accent-transparent"]) .button:active {
 		color: var(--semantics-buttons-accent-transparent-is-active-content-color);
 	}
 
-	/* ## Variant: Critical Tinted */
+	/* ## Critical Tinted */
+
+	/* ### Default critical tinted button */
 
 	:host([variant="critical-tinted"]) .button,
 	:host([variant="destructive"]) .button {
 		background-color: var(--semantics-buttons-critical-tinted-background-color);
 		color: var(--semantics-buttons-critical-tinted-content-color);
 	}
+
+	/* ### Hovered critical tinted button */
 
 	@media (hover: hover) {
 		:host([variant="critical-tinted"]) .button:hover,
@@ -249,10 +304,35 @@ export const buttonStyles = css`
 		}
 	}
 
+	/* ### Active critical tinted button */
+
 	:host([variant="critical-tinted"]) .button:active,
 	:host([variant="destructive"]) .button:active {
 		background-color: var(--semantics-buttons-critical-tinted-is-active-background-color);
 		color: var(--semantics-buttons-critical-tinted-is-active-content-color);
+	}
+
+	/* ## Critical Transparent */
+
+	/* ### Default critical transparent button */
+
+	:host([variant="critical-transparent"]) .button {
+		background-color: transparent;
+		color: var(--semantics-buttons-critical-transparent-content-color);
+	}
+
+	/* ### Hovered critical transparent button */
+
+	@media (hover: hover) {
+		:host([variant="critical-transparent"]) .button:hover {
+			color: var(--semantics-buttons-critical-transparent-is-hovered-content-color);
+		}
+	}
+
+	/* ### Active critical transparent button */
+
+	:host([variant="critical-transparent"]) .button:active {
+		color: var(--semantics-buttons-critical-transparent-is-active-content-color);
 	}
 
 	/* ## Elements */
@@ -265,6 +345,16 @@ export const buttonStyles = css`
 		display: none;
 	}
 
+	.button__text {
+		min-width: 0;
+	}
+
+	:host([single-line]) .button__text {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
 	.button__start-icon,
 	.button__end-icon {
 		display: block;
@@ -275,45 +365,41 @@ export const buttonStyles = css`
 	:host(:not([size])) .button__start-icon,
 	:host([size="md"]) .button__end-icon,
 	:host(:not([size])) .button__end-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
+		width: var(--semantics-buttons-md-icon-size);
+		height: var(--semantics-buttons-md-icon-size);
 	}
 
 	:host([size="sm"]) .button__start-icon,
 	:host([size="sm"]) .button__end-icon {
-		width: var(--primitives-space-18);
-		height: var(--primitives-space-18);
+		width: var(--semantics-buttons-sm-icon-size);
+		height: var(--semantics-buttons-sm-icon-size);
 	}
 
 	:host([size="xs"]) .button__start-icon,
 	:host([size="xs"]) .button__end-icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
+		width: var(--semantics-buttons-xs-icon-size);
+		height: var(--semantics-buttons-xs-icon-size);
 	}
 
 	.button__disclosure-icon {
 		display: block;
 		flex-shrink: 0;
+		width: var(--_disclosure-icon-size);
+		height: var(--_disclosure-icon-size);
 	}
 
 	:host([size="md"]) .button__disclosure-icon,
 	:host(:not([size])) .button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
 		margin-left: -2px;
 		margin-right: -2px;
 	}
 
 	:host([size="sm"]) .button__disclosure-icon {
-		width: var(--primitives-space-18);
-		height: var(--primitives-space-18);
 		margin-left: -1px;
 		margin-right: -2px;
 	}
 
 	:host([size="xs"]) .button__disclosure-icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
 		margin-left: -1px;
 		margin-right: -2px;
 	}

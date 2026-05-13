@@ -141,20 +141,40 @@ export const toggleButtonStyles = css`
 		flex-shrink: 0;
 	}
 
+	/* ## Icon size — naast tekst (default) */
+
 	:host([size="md"]) .toggle-button__icon,
 	:host(:not([size])) .toggle-button__icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
+		width: var(--semantics-buttons-md-icon-size);
+		height: var(--semantics-buttons-md-icon-size);
 	}
 
 	:host([size="sm"]) .toggle-button__icon {
-		width: var(--primitives-space-18);
-		height: var(--primitives-space-18);
+		width: var(--semantics-buttons-sm-icon-size);
+		height: var(--semantics-buttons-sm-icon-size);
 	}
 
 	:host([size="xs"]) .toggle-button__icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
+		width: var(--semantics-buttons-xs-icon-size);
+		height: var(--semantics-buttons-xs-icon-size);
+	}
+
+	/* ## Icon size — icon-only mode */
+
+	:host([icon-only][size="md"]) .toggle-button__icon,
+	:host([icon-only]:not([size])) .toggle-button__icon {
+		width: var(--semantics-buttons-md-icon-only-icon-size);
+		height: var(--semantics-buttons-md-icon-only-icon-size);
+	}
+
+	:host([icon-only][size="sm"]) .toggle-button__icon {
+		width: var(--semantics-buttons-sm-icon-only-icon-size);
+		height: var(--semantics-buttons-sm-icon-only-icon-size);
+	}
+
+	:host([icon-only][size="xs"]) .toggle-button__icon {
+		width: var(--semantics-buttons-xs-icon-only-icon-size);
+		height: var(--semantics-buttons-xs-icon-only-icon-size);
 	}
 
 

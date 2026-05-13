@@ -1,0 +1,7 @@
+@layer reset {
+	html:has(nldd-app-view),
+	html:has(nldd-app-view) body {
+		margin: 0;
+		height: 100%;
+	}
+}

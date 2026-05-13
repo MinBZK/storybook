@@ -45,7 +45,7 @@ export default {
 };
 
 export const Standaard = ({ size }: Record<string, any>) => html`
-	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-container;">
 		<nldd-title size=${size}>
 			<h1>Paginatitel</h1>
 			<nldd-button slot="actions" variant="secondary" size="sm" text="Actie"></nldd-button>
@@ -55,7 +55,7 @@ export const Standaard = ({ size }: Record<string, any>) => html`
 
 export const MetOverline = {
 	render: () => html`
-	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-container;">
 		<nldd-title>
 			<p slot="overline">Wet op de zorgtoeslag</p>
 			<h1>Artikel 1</h1>
@@ -67,7 +67,7 @@ export const MetOverline = {
 
 export const MetOndertitel = {
 	render: () => html`
-	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-container;">
 		<nldd-title>
 			<h1>Wet op de zorgtoeslag</h1>
 			<p slot="subtitle">Laatste wijziging: 1 januari 2024</p>
@@ -79,7 +79,7 @@ export const MetOndertitel = {
 
 export const MetOverlineEnOndertitel = {
 	render: () => html`
-	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-container;">
 		<nldd-title>
 			<p slot="overline">Hoofdstuk 1</p>
 			<h1>Begripsbepalingen</h1>
@@ -92,7 +92,7 @@ export const MetOverlineEnOndertitel = {
 
 export const MetActies = {
 	render: () => html`
-	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-area;">
+	<div style="display: block; padding: 24px; container-type: inline-size; container-name: layout-container;">
 		<nldd-title>
 			<h1>Wet op de zorgtoeslag</h1>
 			<nldd-button slot="actions" variant="secondary" size="sm" text="Bewerken"></nldd-button>
@@ -106,7 +106,7 @@ export const MetActies = {
 
 export const AlleGrootten = {
 	render: () => html`
-	<div style="display: flex; flex-direction: column; gap: 24px; padding: 24px; container-type: inline-size; container-name: layout-area;">
+	<div style="display: flex; flex-direction: column; gap: 24px; padding: 24px; container-type: inline-size; container-name: layout-container;">
 		${[1, 2, 3, 4, 5, 6].map(s => html`
 			<nldd-title size=${s}>
 				<h1>Grootte ${s}</h1>

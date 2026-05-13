@@ -257,7 +257,7 @@ export const GenestdeSplitView = {
 				</nldd-split-view-pane>
 				<nldd-split-view-pane slot="secondary-bar">
 					<nldd-container padding="16">
-						<nldd-button variant="primary" full-width text="Secondaire balk"></nldd-button>
+						<nldd-button variant="primary" width="full" text="Secondaire balk"></nldd-button>
 					</nldd-container>
 				</nldd-split-view-pane>
 			</nldd-bar-split-view>

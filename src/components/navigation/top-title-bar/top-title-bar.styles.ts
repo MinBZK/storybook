@@ -62,11 +62,13 @@ export const topTitleBarStyles = css`
 		display: var(--context-back-button-display, flex);
 		flex-direction: row;
 		align-items: center;
+		min-width: 0;
 		margin-top: var(--primitives-space-6);
 	}
 
 	.top-title-bar__text-back-button {
 		display: flex;
+		min-width: 0;
 	}
 
 	:host(.is-compact) .top-title-bar__text-back-button {

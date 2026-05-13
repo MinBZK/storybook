@@ -346,7 +346,7 @@ describe('nldd-list', () => {
 		await waitForUpdate(el);
 		const dialog = el.shadowRoot!.querySelector('nldd-inline-dialog');
 		expect(dialog).not.toBeNull();
-		expect(dialog!.getAttribute('text')).toBe('Geen resultaten');
+		expect(dialog!.getAttribute('text')).toBe('Geen items');
 	});
 
 	it('empty default: empty-text attribute overrides the i18n default', async () => {

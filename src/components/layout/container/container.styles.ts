@@ -121,71 +121,71 @@ export const containerStyles = css`
 
 	/* # Padding — sm container */
 
-	:host([layout-area-sm-padding="0"]) .container { @container layout-area (max-width: ${smMax}) { padding: 0; } }
-	:host([layout-area-sm-padding="2"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-2); } }
-	:host([layout-area-sm-padding="4"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-4); } }
-	:host([layout-area-sm-padding="6"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-6); } }
-	:host([layout-area-sm-padding="8"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-8); } }
-	:host([layout-area-sm-padding="10"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-10); } }
-	:host([layout-area-sm-padding="12"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-12); } }
-	:host([layout-area-sm-padding="16"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-16); } }
-	:host([layout-area-sm-padding="20"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-20); } }
-	:host([layout-area-sm-padding="24"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-24); } }
-	:host([layout-area-sm-padding="28"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-28); } }
-	:host([layout-area-sm-padding="32"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-32); } }
-	:host([layout-area-sm-padding="40"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-40); } }
-	:host([layout-area-sm-padding="44"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-44); } }
-	:host([layout-area-sm-padding="48"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-48); } }
-	:host([layout-area-sm-padding="56"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-56); } }
-	:host([layout-area-sm-padding="64"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-64); } }
-	:host([layout-area-sm-padding="80"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-80); } }
-	:host([layout-area-sm-padding="96"]) .container { @container layout-area (max-width: ${smMax}) { padding: var(--primitives-space-96); } }
+	:host([layout-container-sm-padding="0"]) .container { @container layout-container (max-width: ${smMax}) { padding: 0; } }
+	:host([layout-container-sm-padding="2"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-2); } }
+	:host([layout-container-sm-padding="4"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-4); } }
+	:host([layout-container-sm-padding="6"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-6); } }
+	:host([layout-container-sm-padding="8"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-8); } }
+	:host([layout-container-sm-padding="10"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-10); } }
+	:host([layout-container-sm-padding="12"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-12); } }
+	:host([layout-container-sm-padding="16"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-16); } }
+	:host([layout-container-sm-padding="20"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-20); } }
+	:host([layout-container-sm-padding="24"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-24); } }
+	:host([layout-container-sm-padding="28"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-28); } }
+	:host([layout-container-sm-padding="32"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-32); } }
+	:host([layout-container-sm-padding="40"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-40); } }
+	:host([layout-container-sm-padding="44"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-44); } }
+	:host([layout-container-sm-padding="48"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-48); } }
+	:host([layout-container-sm-padding="56"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-56); } }
+	:host([layout-container-sm-padding="64"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-64); } }
+	:host([layout-container-sm-padding="80"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-80); } }
+	:host([layout-container-sm-padding="96"]) .container { @container layout-container (max-width: ${smMax}) { padding: var(--primitives-space-96); } }
 
 
 	/* # Padding — md container */
 
-	:host([layout-area-md-padding="0"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: 0; } }
-	:host([layout-area-md-padding="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-2); } }
-	:host([layout-area-md-padding="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-4); } }
-	:host([layout-area-md-padding="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-6); } }
-	:host([layout-area-md-padding="8"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-8); } }
-	:host([layout-area-md-padding="10"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-10); } }
-	:host([layout-area-md-padding="12"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-12); } }
-	:host([layout-area-md-padding="16"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-16); } }
-	:host([layout-area-md-padding="20"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-20); } }
-	:host([layout-area-md-padding="24"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-24); } }
-	:host([layout-area-md-padding="28"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-28); } }
-	:host([layout-area-md-padding="32"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-32); } }
-	:host([layout-area-md-padding="40"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-40); } }
-	:host([layout-area-md-padding="44"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-44); } }
-	:host([layout-area-md-padding="48"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-48); } }
-	:host([layout-area-md-padding="56"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-56); } }
-	:host([layout-area-md-padding="64"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-64); } }
-	:host([layout-area-md-padding="80"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-80); } }
-	:host([layout-area-md-padding="96"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-96); } }
+	:host([layout-container-md-padding="0"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: 0; } }
+	:host([layout-container-md-padding="2"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-2); } }
+	:host([layout-container-md-padding="4"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-4); } }
+	:host([layout-container-md-padding="6"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-6); } }
+	:host([layout-container-md-padding="8"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-8); } }
+	:host([layout-container-md-padding="10"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-10); } }
+	:host([layout-container-md-padding="12"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-12); } }
+	:host([layout-container-md-padding="16"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-16); } }
+	:host([layout-container-md-padding="20"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-20); } }
+	:host([layout-container-md-padding="24"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-24); } }
+	:host([layout-container-md-padding="28"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-28); } }
+	:host([layout-container-md-padding="32"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-32); } }
+	:host([layout-container-md-padding="40"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-40); } }
+	:host([layout-container-md-padding="44"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-44); } }
+	:host([layout-container-md-padding="48"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-48); } }
+	:host([layout-container-md-padding="56"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-56); } }
+	:host([layout-container-md-padding="64"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-64); } }
+	:host([layout-container-md-padding="80"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-80); } }
+	:host([layout-container-md-padding="96"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding: var(--primitives-space-96); } }
 
 
 	/* # Padding — lg container */
 
-	:host([layout-area-lg-padding="0"]) .container { @container layout-area (min-width: ${lgMin}) { padding: 0; } }
-	:host([layout-area-lg-padding="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-2); } }
-	:host([layout-area-lg-padding="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-4); } }
-	:host([layout-area-lg-padding="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-6); } }
-	:host([layout-area-lg-padding="8"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-8); } }
-	:host([layout-area-lg-padding="10"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-10); } }
-	:host([layout-area-lg-padding="12"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-12); } }
-	:host([layout-area-lg-padding="16"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-16); } }
-	:host([layout-area-lg-padding="20"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-20); } }
-	:host([layout-area-lg-padding="24"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-24); } }
-	:host([layout-area-lg-padding="28"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-28); } }
-	:host([layout-area-lg-padding="32"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-32); } }
-	:host([layout-area-lg-padding="40"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-40); } }
-	:host([layout-area-lg-padding="44"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-44); } }
-	:host([layout-area-lg-padding="48"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-48); } }
-	:host([layout-area-lg-padding="56"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-56); } }
-	:host([layout-area-lg-padding="64"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-64); } }
-	:host([layout-area-lg-padding="80"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-80); } }
-	:host([layout-area-lg-padding="96"]) .container { @container layout-area (min-width: ${lgMin}) { padding: var(--primitives-space-96); } }
+	:host([layout-container-lg-padding="0"]) .container { @container layout-container (min-width: ${lgMin}) { padding: 0; } }
+	:host([layout-container-lg-padding="2"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-2); } }
+	:host([layout-container-lg-padding="4"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-4); } }
+	:host([layout-container-lg-padding="6"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-6); } }
+	:host([layout-container-lg-padding="8"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-8); } }
+	:host([layout-container-lg-padding="10"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-10); } }
+	:host([layout-container-lg-padding="12"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-12); } }
+	:host([layout-container-lg-padding="16"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-16); } }
+	:host([layout-container-lg-padding="20"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-20); } }
+	:host([layout-container-lg-padding="24"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-24); } }
+	:host([layout-container-lg-padding="28"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-28); } }
+	:host([layout-container-lg-padding="32"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-32); } }
+	:host([layout-container-lg-padding="40"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-40); } }
+	:host([layout-container-lg-padding="44"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-44); } }
+	:host([layout-container-lg-padding="48"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-48); } }
+	:host([layout-container-lg-padding="56"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-56); } }
+	:host([layout-container-lg-padding="64"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-64); } }
+	:host([layout-container-lg-padding="80"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-80); } }
+	:host([layout-container-lg-padding="96"]) .container { @container layout-container (min-width: ${lgMin}) { padding: var(--primitives-space-96); } }
 
 
 	/* # Padding Inline — base */
@@ -282,71 +282,71 @@ export const containerStyles = css`
 
 	/* # Padding Inline — sm container */
 
-	:host([layout-area-sm-padding-inline="0"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: 0; } }
-	:host([layout-area-sm-padding-inline="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-2); } }
-	:host([layout-area-sm-padding-inline="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-4); } }
-	:host([layout-area-sm-padding-inline="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-6); } }
-	:host([layout-area-sm-padding-inline="8"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-8); } }
-	:host([layout-area-sm-padding-inline="10"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-10); } }
-	:host([layout-area-sm-padding-inline="12"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-12); } }
-	:host([layout-area-sm-padding-inline="16"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-16); } }
-	:host([layout-area-sm-padding-inline="20"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-20); } }
-	:host([layout-area-sm-padding-inline="24"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-24); } }
-	:host([layout-area-sm-padding-inline="28"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-28); } }
-	:host([layout-area-sm-padding-inline="32"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-32); } }
-	:host([layout-area-sm-padding-inline="40"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-40); } }
-	:host([layout-area-sm-padding-inline="44"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-44); } }
-	:host([layout-area-sm-padding-inline="48"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-48); } }
-	:host([layout-area-sm-padding-inline="56"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-56); } }
-	:host([layout-area-sm-padding-inline="64"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-64); } }
-	:host([layout-area-sm-padding-inline="80"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-80); } }
-	:host([layout-area-sm-padding-inline="96"]) .container { @container layout-area (max-width: ${smMax}) { padding-inline: var(--primitives-space-96); } }
+	:host([layout-container-sm-padding-inline="0"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: 0; } }
+	:host([layout-container-sm-padding-inline="2"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-2); } }
+	:host([layout-container-sm-padding-inline="4"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-4); } }
+	:host([layout-container-sm-padding-inline="6"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-6); } }
+	:host([layout-container-sm-padding-inline="8"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-8); } }
+	:host([layout-container-sm-padding-inline="10"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-10); } }
+	:host([layout-container-sm-padding-inline="12"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-12); } }
+	:host([layout-container-sm-padding-inline="16"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-16); } }
+	:host([layout-container-sm-padding-inline="20"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-20); } }
+	:host([layout-container-sm-padding-inline="24"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-24); } }
+	:host([layout-container-sm-padding-inline="28"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-28); } }
+	:host([layout-container-sm-padding-inline="32"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-32); } }
+	:host([layout-container-sm-padding-inline="40"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-40); } }
+	:host([layout-container-sm-padding-inline="44"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-44); } }
+	:host([layout-container-sm-padding-inline="48"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-48); } }
+	:host([layout-container-sm-padding-inline="56"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-56); } }
+	:host([layout-container-sm-padding-inline="64"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-64); } }
+	:host([layout-container-sm-padding-inline="80"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-80); } }
+	:host([layout-container-sm-padding-inline="96"]) .container { @container layout-container (max-width: ${smMax}) { padding-inline: var(--primitives-space-96); } }
 
 
 	/* # Padding Inline — md container */
 
-	:host([layout-area-md-padding-inline="0"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: 0; } }
-	:host([layout-area-md-padding-inline="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-2); } }
-	:host([layout-area-md-padding-inline="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-4); } }
-	:host([layout-area-md-padding-inline="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-6); } }
-	:host([layout-area-md-padding-inline="8"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-8); } }
-	:host([layout-area-md-padding-inline="10"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-10); } }
-	:host([layout-area-md-padding-inline="12"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-12); } }
-	:host([layout-area-md-padding-inline="16"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-16); } }
-	:host([layout-area-md-padding-inline="20"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-20); } }
-	:host([layout-area-md-padding-inline="24"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-24); } }
-	:host([layout-area-md-padding-inline="28"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-28); } }
-	:host([layout-area-md-padding-inline="32"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-32); } }
-	:host([layout-area-md-padding-inline="40"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-40); } }
-	:host([layout-area-md-padding-inline="44"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-44); } }
-	:host([layout-area-md-padding-inline="48"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-48); } }
-	:host([layout-area-md-padding-inline="56"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-56); } }
-	:host([layout-area-md-padding-inline="64"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-64); } }
-	:host([layout-area-md-padding-inline="80"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-80); } }
-	:host([layout-area-md-padding-inline="96"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-96); } }
+	:host([layout-container-md-padding-inline="0"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: 0; } }
+	:host([layout-container-md-padding-inline="2"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-2); } }
+	:host([layout-container-md-padding-inline="4"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-4); } }
+	:host([layout-container-md-padding-inline="6"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-6); } }
+	:host([layout-container-md-padding-inline="8"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-8); } }
+	:host([layout-container-md-padding-inline="10"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-10); } }
+	:host([layout-container-md-padding-inline="12"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-12); } }
+	:host([layout-container-md-padding-inline="16"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-16); } }
+	:host([layout-container-md-padding-inline="20"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-20); } }
+	:host([layout-container-md-padding-inline="24"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-24); } }
+	:host([layout-container-md-padding-inline="28"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-28); } }
+	:host([layout-container-md-padding-inline="32"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-32); } }
+	:host([layout-container-md-padding-inline="40"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-40); } }
+	:host([layout-container-md-padding-inline="44"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-44); } }
+	:host([layout-container-md-padding-inline="48"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-48); } }
+	:host([layout-container-md-padding-inline="56"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-56); } }
+	:host([layout-container-md-padding-inline="64"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-64); } }
+	:host([layout-container-md-padding-inline="80"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-80); } }
+	:host([layout-container-md-padding-inline="96"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-inline: var(--primitives-space-96); } }
 
 
 	/* # Padding Inline — lg container */
 
-	:host([layout-area-lg-padding-inline="0"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: 0; } }
-	:host([layout-area-lg-padding-inline="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-2); } }
-	:host([layout-area-lg-padding-inline="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-4); } }
-	:host([layout-area-lg-padding-inline="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-6); } }
-	:host([layout-area-lg-padding-inline="8"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-8); } }
-	:host([layout-area-lg-padding-inline="10"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-10); } }
-	:host([layout-area-lg-padding-inline="12"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-12); } }
-	:host([layout-area-lg-padding-inline="16"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-16); } }
-	:host([layout-area-lg-padding-inline="20"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-20); } }
-	:host([layout-area-lg-padding-inline="24"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-24); } }
-	:host([layout-area-lg-padding-inline="28"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-28); } }
-	:host([layout-area-lg-padding-inline="32"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-32); } }
-	:host([layout-area-lg-padding-inline="40"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-40); } }
-	:host([layout-area-lg-padding-inline="44"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-44); } }
-	:host([layout-area-lg-padding-inline="48"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-48); } }
-	:host([layout-area-lg-padding-inline="56"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-56); } }
-	:host([layout-area-lg-padding-inline="64"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-64); } }
-	:host([layout-area-lg-padding-inline="80"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-80); } }
-	:host([layout-area-lg-padding-inline="96"]) .container { @container layout-area (min-width: ${lgMin}) { padding-inline: var(--primitives-space-96); } }
+	:host([layout-container-lg-padding-inline="0"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: 0; } }
+	:host([layout-container-lg-padding-inline="2"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-2); } }
+	:host([layout-container-lg-padding-inline="4"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-4); } }
+	:host([layout-container-lg-padding-inline="6"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-6); } }
+	:host([layout-container-lg-padding-inline="8"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-8); } }
+	:host([layout-container-lg-padding-inline="10"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-10); } }
+	:host([layout-container-lg-padding-inline="12"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-12); } }
+	:host([layout-container-lg-padding-inline="16"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-16); } }
+	:host([layout-container-lg-padding-inline="20"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-20); } }
+	:host([layout-container-lg-padding-inline="24"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-24); } }
+	:host([layout-container-lg-padding-inline="28"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-28); } }
+	:host([layout-container-lg-padding-inline="32"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-32); } }
+	:host([layout-container-lg-padding-inline="40"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-40); } }
+	:host([layout-container-lg-padding-inline="44"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-44); } }
+	:host([layout-container-lg-padding-inline="48"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-48); } }
+	:host([layout-container-lg-padding-inline="56"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-56); } }
+	:host([layout-container-lg-padding-inline="64"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-64); } }
+	:host([layout-container-lg-padding-inline="80"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-80); } }
+	:host([layout-container-lg-padding-inline="96"]) .container { @container layout-container (min-width: ${lgMin}) { padding-inline: var(--primitives-space-96); } }
 
 
 	/* # Padding Block — base */
@@ -443,71 +443,71 @@ export const containerStyles = css`
 
 	/* # Padding Block — sm container */
 
-	:host([layout-area-sm-padding-block="0"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: 0; } }
-	:host([layout-area-sm-padding-block="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-2); } }
-	:host([layout-area-sm-padding-block="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-4); } }
-	:host([layout-area-sm-padding-block="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-6); } }
-	:host([layout-area-sm-padding-block="8"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-8); } }
-	:host([layout-area-sm-padding-block="10"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-10); } }
-	:host([layout-area-sm-padding-block="12"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-12); } }
-	:host([layout-area-sm-padding-block="16"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-16); } }
-	:host([layout-area-sm-padding-block="20"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-20); } }
-	:host([layout-area-sm-padding-block="24"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-24); } }
-	:host([layout-area-sm-padding-block="28"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-28); } }
-	:host([layout-area-sm-padding-block="32"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-32); } }
-	:host([layout-area-sm-padding-block="40"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-40); } }
-	:host([layout-area-sm-padding-block="44"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-44); } }
-	:host([layout-area-sm-padding-block="48"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-48); } }
-	:host([layout-area-sm-padding-block="56"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-56); } }
-	:host([layout-area-sm-padding-block="64"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-64); } }
-	:host([layout-area-sm-padding-block="80"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-80); } }
-	:host([layout-area-sm-padding-block="96"]) .container { @container layout-area (max-width: ${smMax}) { padding-block: var(--primitives-space-96); } }
+	:host([layout-container-sm-padding-block="0"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: 0; } }
+	:host([layout-container-sm-padding-block="2"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-2); } }
+	:host([layout-container-sm-padding-block="4"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-4); } }
+	:host([layout-container-sm-padding-block="6"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-6); } }
+	:host([layout-container-sm-padding-block="8"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-8); } }
+	:host([layout-container-sm-padding-block="10"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-10); } }
+	:host([layout-container-sm-padding-block="12"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-12); } }
+	:host([layout-container-sm-padding-block="16"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-16); } }
+	:host([layout-container-sm-padding-block="20"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-20); } }
+	:host([layout-container-sm-padding-block="24"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-24); } }
+	:host([layout-container-sm-padding-block="28"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-28); } }
+	:host([layout-container-sm-padding-block="32"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-32); } }
+	:host([layout-container-sm-padding-block="40"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-40); } }
+	:host([layout-container-sm-padding-block="44"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-44); } }
+	:host([layout-container-sm-padding-block="48"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-48); } }
+	:host([layout-container-sm-padding-block="56"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-56); } }
+	:host([layout-container-sm-padding-block="64"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-64); } }
+	:host([layout-container-sm-padding-block="80"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-80); } }
+	:host([layout-container-sm-padding-block="96"]) .container { @container layout-container (max-width: ${smMax}) { padding-block: var(--primitives-space-96); } }
 
 
 	/* # Padding Block — md container */
 
-	:host([layout-area-md-padding-block="0"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: 0; } }
-	:host([layout-area-md-padding-block="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-2); } }
-	:host([layout-area-md-padding-block="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-4); } }
-	:host([layout-area-md-padding-block="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-6); } }
-	:host([layout-area-md-padding-block="8"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-8); } }
-	:host([layout-area-md-padding-block="10"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-10); } }
-	:host([layout-area-md-padding-block="12"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-12); } }
-	:host([layout-area-md-padding-block="16"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-16); } }
-	:host([layout-area-md-padding-block="20"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-20); } }
-	:host([layout-area-md-padding-block="24"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-24); } }
-	:host([layout-area-md-padding-block="28"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-28); } }
-	:host([layout-area-md-padding-block="32"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-32); } }
-	:host([layout-area-md-padding-block="40"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-40); } }
-	:host([layout-area-md-padding-block="44"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-44); } }
-	:host([layout-area-md-padding-block="48"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-48); } }
-	:host([layout-area-md-padding-block="56"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-56); } }
-	:host([layout-area-md-padding-block="64"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-64); } }
-	:host([layout-area-md-padding-block="80"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-80); } }
-	:host([layout-area-md-padding-block="96"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-96); } }
+	:host([layout-container-md-padding-block="0"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: 0; } }
+	:host([layout-container-md-padding-block="2"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-2); } }
+	:host([layout-container-md-padding-block="4"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-4); } }
+	:host([layout-container-md-padding-block="6"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-6); } }
+	:host([layout-container-md-padding-block="8"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-8); } }
+	:host([layout-container-md-padding-block="10"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-10); } }
+	:host([layout-container-md-padding-block="12"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-12); } }
+	:host([layout-container-md-padding-block="16"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-16); } }
+	:host([layout-container-md-padding-block="20"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-20); } }
+	:host([layout-container-md-padding-block="24"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-24); } }
+	:host([layout-container-md-padding-block="28"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-28); } }
+	:host([layout-container-md-padding-block="32"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-32); } }
+	:host([layout-container-md-padding-block="40"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-40); } }
+	:host([layout-container-md-padding-block="44"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-44); } }
+	:host([layout-container-md-padding-block="48"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-48); } }
+	:host([layout-container-md-padding-block="56"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-56); } }
+	:host([layout-container-md-padding-block="64"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-64); } }
+	:host([layout-container-md-padding-block="80"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-80); } }
+	:host([layout-container-md-padding-block="96"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-block: var(--primitives-space-96); } }
 
 
 	/* # Padding Block — lg container */
 
-	:host([layout-area-lg-padding-block="0"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: 0; } }
-	:host([layout-area-lg-padding-block="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-2); } }
-	:host([layout-area-lg-padding-block="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-4); } }
-	:host([layout-area-lg-padding-block="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-6); } }
-	:host([layout-area-lg-padding-block="8"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-8); } }
-	:host([layout-area-lg-padding-block="10"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-10); } }
-	:host([layout-area-lg-padding-block="12"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-12); } }
-	:host([layout-area-lg-padding-block="16"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-16); } }
-	:host([layout-area-lg-padding-block="20"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-20); } }
-	:host([layout-area-lg-padding-block="24"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-24); } }
-	:host([layout-area-lg-padding-block="28"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-28); } }
-	:host([layout-area-lg-padding-block="32"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-32); } }
-	:host([layout-area-lg-padding-block="40"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-40); } }
-	:host([layout-area-lg-padding-block="44"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-44); } }
-	:host([layout-area-lg-padding-block="48"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-48); } }
-	:host([layout-area-lg-padding-block="56"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-56); } }
-	:host([layout-area-lg-padding-block="64"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-64); } }
-	:host([layout-area-lg-padding-block="80"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-80); } }
-	:host([layout-area-lg-padding-block="96"]) .container { @container layout-area (min-width: ${lgMin}) { padding-block: var(--primitives-space-96); } }
+	:host([layout-container-lg-padding-block="0"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: 0; } }
+	:host([layout-container-lg-padding-block="2"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-2); } }
+	:host([layout-container-lg-padding-block="4"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-4); } }
+	:host([layout-container-lg-padding-block="6"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-6); } }
+	:host([layout-container-lg-padding-block="8"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-8); } }
+	:host([layout-container-lg-padding-block="10"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-10); } }
+	:host([layout-container-lg-padding-block="12"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-12); } }
+	:host([layout-container-lg-padding-block="16"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-16); } }
+	:host([layout-container-lg-padding-block="20"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-20); } }
+	:host([layout-container-lg-padding-block="24"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-24); } }
+	:host([layout-container-lg-padding-block="28"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-28); } }
+	:host([layout-container-lg-padding-block="32"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-32); } }
+	:host([layout-container-lg-padding-block="40"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-40); } }
+	:host([layout-container-lg-padding-block="44"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-44); } }
+	:host([layout-container-lg-padding-block="48"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-48); } }
+	:host([layout-container-lg-padding-block="56"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-56); } }
+	:host([layout-container-lg-padding-block="64"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-64); } }
+	:host([layout-container-lg-padding-block="80"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-80); } }
+	:host([layout-container-lg-padding-block="96"]) .container { @container layout-container (min-width: ${lgMin}) { padding-block: var(--primitives-space-96); } }
 
 
 	/* # Padding Top — base */
@@ -604,71 +604,71 @@ export const containerStyles = css`
 
 	/* # Padding Top — sm container */
 
-	:host([layout-area-sm-padding-top="0"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: 0; } }
-	:host([layout-area-sm-padding-top="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-2); } }
-	:host([layout-area-sm-padding-top="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-4); } }
-	:host([layout-area-sm-padding-top="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-6); } }
-	:host([layout-area-sm-padding-top="8"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-8); } }
-	:host([layout-area-sm-padding-top="10"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-10); } }
-	:host([layout-area-sm-padding-top="12"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-12); } }
-	:host([layout-area-sm-padding-top="16"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-16); } }
-	:host([layout-area-sm-padding-top="20"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-20); } }
-	:host([layout-area-sm-padding-top="24"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-24); } }
-	:host([layout-area-sm-padding-top="28"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-28); } }
-	:host([layout-area-sm-padding-top="32"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-32); } }
-	:host([layout-area-sm-padding-top="40"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-40); } }
-	:host([layout-area-sm-padding-top="44"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-44); } }
-	:host([layout-area-sm-padding-top="48"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-48); } }
-	:host([layout-area-sm-padding-top="56"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-56); } }
-	:host([layout-area-sm-padding-top="64"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-64); } }
-	:host([layout-area-sm-padding-top="80"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-80); } }
-	:host([layout-area-sm-padding-top="96"]) .container { @container layout-area (max-width: ${smMax}) { padding-top: var(--primitives-space-96); } }
+	:host([layout-container-sm-padding-top="0"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: 0; } }
+	:host([layout-container-sm-padding-top="2"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-2); } }
+	:host([layout-container-sm-padding-top="4"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-4); } }
+	:host([layout-container-sm-padding-top="6"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-6); } }
+	:host([layout-container-sm-padding-top="8"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-8); } }
+	:host([layout-container-sm-padding-top="10"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-10); } }
+	:host([layout-container-sm-padding-top="12"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-12); } }
+	:host([layout-container-sm-padding-top="16"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-16); } }
+	:host([layout-container-sm-padding-top="20"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-20); } }
+	:host([layout-container-sm-padding-top="24"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-24); } }
+	:host([layout-container-sm-padding-top="28"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-28); } }
+	:host([layout-container-sm-padding-top="32"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-32); } }
+	:host([layout-container-sm-padding-top="40"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-40); } }
+	:host([layout-container-sm-padding-top="44"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-44); } }
+	:host([layout-container-sm-padding-top="48"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-48); } }
+	:host([layout-container-sm-padding-top="56"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-56); } }
+	:host([layout-container-sm-padding-top="64"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-64); } }
+	:host([layout-container-sm-padding-top="80"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-80); } }
+	:host([layout-container-sm-padding-top="96"]) .container { @container layout-container (max-width: ${smMax}) { padding-top: var(--primitives-space-96); } }
 
 
 	/* # Padding Top — md container */
 
-	:host([layout-area-md-padding-top="0"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: 0; } }
-	:host([layout-area-md-padding-top="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-2); } }
-	:host([layout-area-md-padding-top="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-4); } }
-	:host([layout-area-md-padding-top="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-6); } }
-	:host([layout-area-md-padding-top="8"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-8); } }
-	:host([layout-area-md-padding-top="10"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-10); } }
-	:host([layout-area-md-padding-top="12"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-12); } }
-	:host([layout-area-md-padding-top="16"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-16); } }
-	:host([layout-area-md-padding-top="20"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-20); } }
-	:host([layout-area-md-padding-top="24"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-24); } }
-	:host([layout-area-md-padding-top="28"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-28); } }
-	:host([layout-area-md-padding-top="32"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-32); } }
-	:host([layout-area-md-padding-top="40"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-40); } }
-	:host([layout-area-md-padding-top="44"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-44); } }
-	:host([layout-area-md-padding-top="48"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-48); } }
-	:host([layout-area-md-padding-top="56"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-56); } }
-	:host([layout-area-md-padding-top="64"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-64); } }
-	:host([layout-area-md-padding-top="80"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-80); } }
-	:host([layout-area-md-padding-top="96"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-96); } }
+	:host([layout-container-md-padding-top="0"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: 0; } }
+	:host([layout-container-md-padding-top="2"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-2); } }
+	:host([layout-container-md-padding-top="4"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-4); } }
+	:host([layout-container-md-padding-top="6"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-6); } }
+	:host([layout-container-md-padding-top="8"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-8); } }
+	:host([layout-container-md-padding-top="10"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-10); } }
+	:host([layout-container-md-padding-top="12"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-12); } }
+	:host([layout-container-md-padding-top="16"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-16); } }
+	:host([layout-container-md-padding-top="20"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-20); } }
+	:host([layout-container-md-padding-top="24"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-24); } }
+	:host([layout-container-md-padding-top="28"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-28); } }
+	:host([layout-container-md-padding-top="32"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-32); } }
+	:host([layout-container-md-padding-top="40"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-40); } }
+	:host([layout-container-md-padding-top="44"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-44); } }
+	:host([layout-container-md-padding-top="48"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-48); } }
+	:host([layout-container-md-padding-top="56"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-56); } }
+	:host([layout-container-md-padding-top="64"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-64); } }
+	:host([layout-container-md-padding-top="80"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-80); } }
+	:host([layout-container-md-padding-top="96"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-top: var(--primitives-space-96); } }
 
 
 	/* # Padding Top — lg container */
 
-	:host([layout-area-lg-padding-top="0"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: 0; } }
-	:host([layout-area-lg-padding-top="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-2); } }
-	:host([layout-area-lg-padding-top="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-4); } }
-	:host([layout-area-lg-padding-top="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-6); } }
-	:host([layout-area-lg-padding-top="8"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-8); } }
-	:host([layout-area-lg-padding-top="10"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-10); } }
-	:host([layout-area-lg-padding-top="12"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-12); } }
-	:host([layout-area-lg-padding-top="16"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-16); } }
-	:host([layout-area-lg-padding-top="20"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-20); } }
-	:host([layout-area-lg-padding-top="24"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-24); } }
-	:host([layout-area-lg-padding-top="28"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-28); } }
-	:host([layout-area-lg-padding-top="32"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-32); } }
-	:host([layout-area-lg-padding-top="40"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-40); } }
-	:host([layout-area-lg-padding-top="44"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-44); } }
-	:host([layout-area-lg-padding-top="48"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-48); } }
-	:host([layout-area-lg-padding-top="56"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-56); } }
-	:host([layout-area-lg-padding-top="64"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-64); } }
-	:host([layout-area-lg-padding-top="80"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-80); } }
-	:host([layout-area-lg-padding-top="96"]) .container { @container layout-area (min-width: ${lgMin}) { padding-top: var(--primitives-space-96); } }
+	:host([layout-container-lg-padding-top="0"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: 0; } }
+	:host([layout-container-lg-padding-top="2"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-2); } }
+	:host([layout-container-lg-padding-top="4"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-4); } }
+	:host([layout-container-lg-padding-top="6"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-6); } }
+	:host([layout-container-lg-padding-top="8"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-8); } }
+	:host([layout-container-lg-padding-top="10"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-10); } }
+	:host([layout-container-lg-padding-top="12"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-12); } }
+	:host([layout-container-lg-padding-top="16"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-16); } }
+	:host([layout-container-lg-padding-top="20"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-20); } }
+	:host([layout-container-lg-padding-top="24"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-24); } }
+	:host([layout-container-lg-padding-top="28"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-28); } }
+	:host([layout-container-lg-padding-top="32"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-32); } }
+	:host([layout-container-lg-padding-top="40"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-40); } }
+	:host([layout-container-lg-padding-top="44"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-44); } }
+	:host([layout-container-lg-padding-top="48"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-48); } }
+	:host([layout-container-lg-padding-top="56"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-56); } }
+	:host([layout-container-lg-padding-top="64"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-64); } }
+	:host([layout-container-lg-padding-top="80"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-80); } }
+	:host([layout-container-lg-padding-top="96"]) .container { @container layout-container (min-width: ${lgMin}) { padding-top: var(--primitives-space-96); } }
 
 
 	/* # Padding Right — base */
@@ -765,71 +765,71 @@ export const containerStyles = css`
 
 	/* # Padding Right — sm container */
 
-	:host([layout-area-sm-padding-right="0"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: 0; } }
-	:host([layout-area-sm-padding-right="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-2); } }
-	:host([layout-area-sm-padding-right="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-4); } }
-	:host([layout-area-sm-padding-right="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-6); } }
-	:host([layout-area-sm-padding-right="8"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-8); } }
-	:host([layout-area-sm-padding-right="10"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-10); } }
-	:host([layout-area-sm-padding-right="12"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-12); } }
-	:host([layout-area-sm-padding-right="16"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-16); } }
-	:host([layout-area-sm-padding-right="20"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-20); } }
-	:host([layout-area-sm-padding-right="24"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-24); } }
-	:host([layout-area-sm-padding-right="28"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-28); } }
-	:host([layout-area-sm-padding-right="32"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-32); } }
-	:host([layout-area-sm-padding-right="40"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-40); } }
-	:host([layout-area-sm-padding-right="44"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-44); } }
-	:host([layout-area-sm-padding-right="48"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-48); } }
-	:host([layout-area-sm-padding-right="56"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-56); } }
-	:host([layout-area-sm-padding-right="64"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-64); } }
-	:host([layout-area-sm-padding-right="80"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-80); } }
-	:host([layout-area-sm-padding-right="96"]) .container { @container layout-area (max-width: ${smMax}) { padding-right: var(--primitives-space-96); } }
+	:host([layout-container-sm-padding-right="0"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: 0; } }
+	:host([layout-container-sm-padding-right="2"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-2); } }
+	:host([layout-container-sm-padding-right="4"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-4); } }
+	:host([layout-container-sm-padding-right="6"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-6); } }
+	:host([layout-container-sm-padding-right="8"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-8); } }
+	:host([layout-container-sm-padding-right="10"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-10); } }
+	:host([layout-container-sm-padding-right="12"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-12); } }
+	:host([layout-container-sm-padding-right="16"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-16); } }
+	:host([layout-container-sm-padding-right="20"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-20); } }
+	:host([layout-container-sm-padding-right="24"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-24); } }
+	:host([layout-container-sm-padding-right="28"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-28); } }
+	:host([layout-container-sm-padding-right="32"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-32); } }
+	:host([layout-container-sm-padding-right="40"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-40); } }
+	:host([layout-container-sm-padding-right="44"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-44); } }
+	:host([layout-container-sm-padding-right="48"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-48); } }
+	:host([layout-container-sm-padding-right="56"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-56); } }
+	:host([layout-container-sm-padding-right="64"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-64); } }
+	:host([layout-container-sm-padding-right="80"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-80); } }
+	:host([layout-container-sm-padding-right="96"]) .container { @container layout-container (max-width: ${smMax}) { padding-right: var(--primitives-space-96); } }
 
 
 	/* # Padding Right — md container */
 
-	:host([layout-area-md-padding-right="0"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: 0; } }
-	:host([layout-area-md-padding-right="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-2); } }
-	:host([layout-area-md-padding-right="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-4); } }
-	:host([layout-area-md-padding-right="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-6); } }
-	:host([layout-area-md-padding-right="8"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-8); } }
-	:host([layout-area-md-padding-right="10"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-10); } }
-	:host([layout-area-md-padding-right="12"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-12); } }
-	:host([layout-area-md-padding-right="16"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-16); } }
-	:host([layout-area-md-padding-right="20"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-20); } }
-	:host([layout-area-md-padding-right="24"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-24); } }
-	:host([layout-area-md-padding-right="28"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-28); } }
-	:host([layout-area-md-padding-right="32"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-32); } }
-	:host([layout-area-md-padding-right="40"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-40); } }
-	:host([layout-area-md-padding-right="44"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-44); } }
-	:host([layout-area-md-padding-right="48"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-48); } }
-	:host([layout-area-md-padding-right="56"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-56); } }
-	:host([layout-area-md-padding-right="64"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-64); } }
-	:host([layout-area-md-padding-right="80"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-80); } }
-	:host([layout-area-md-padding-right="96"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-96); } }
+	:host([layout-container-md-padding-right="0"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: 0; } }
+	:host([layout-container-md-padding-right="2"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-2); } }
+	:host([layout-container-md-padding-right="4"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-4); } }
+	:host([layout-container-md-padding-right="6"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-6); } }
+	:host([layout-container-md-padding-right="8"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-8); } }
+	:host([layout-container-md-padding-right="10"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-10); } }
+	:host([layout-container-md-padding-right="12"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-12); } }
+	:host([layout-container-md-padding-right="16"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-16); } }
+	:host([layout-container-md-padding-right="20"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-20); } }
+	:host([layout-container-md-padding-right="24"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-24); } }
+	:host([layout-container-md-padding-right="28"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-28); } }
+	:host([layout-container-md-padding-right="32"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-32); } }
+	:host([layout-container-md-padding-right="40"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-40); } }
+	:host([layout-container-md-padding-right="44"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-44); } }
+	:host([layout-container-md-padding-right="48"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-48); } }
+	:host([layout-container-md-padding-right="56"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-56); } }
+	:host([layout-container-md-padding-right="64"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-64); } }
+	:host([layout-container-md-padding-right="80"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-80); } }
+	:host([layout-container-md-padding-right="96"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-right: var(--primitives-space-96); } }
 
 
 	/* # Padding Right — lg container */
 
-	:host([layout-area-lg-padding-right="0"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: 0; } }
-	:host([layout-area-lg-padding-right="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-2); } }
-	:host([layout-area-lg-padding-right="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-4); } }
-	:host([layout-area-lg-padding-right="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-6); } }
-	:host([layout-area-lg-padding-right="8"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-8); } }
-	:host([layout-area-lg-padding-right="10"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-10); } }
-	:host([layout-area-lg-padding-right="12"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-12); } }
-	:host([layout-area-lg-padding-right="16"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-16); } }
-	:host([layout-area-lg-padding-right="20"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-20); } }
-	:host([layout-area-lg-padding-right="24"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-24); } }
-	:host([layout-area-lg-padding-right="28"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-28); } }
-	:host([layout-area-lg-padding-right="32"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-32); } }
-	:host([layout-area-lg-padding-right="40"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-40); } }
-	:host([layout-area-lg-padding-right="44"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-44); } }
-	:host([layout-area-lg-padding-right="48"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-48); } }
-	:host([layout-area-lg-padding-right="56"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-56); } }
-	:host([layout-area-lg-padding-right="64"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-64); } }
-	:host([layout-area-lg-padding-right="80"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-80); } }
-	:host([layout-area-lg-padding-right="96"]) .container { @container layout-area (min-width: ${lgMin}) { padding-right: var(--primitives-space-96); } }
+	:host([layout-container-lg-padding-right="0"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: 0; } }
+	:host([layout-container-lg-padding-right="2"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-2); } }
+	:host([layout-container-lg-padding-right="4"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-4); } }
+	:host([layout-container-lg-padding-right="6"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-6); } }
+	:host([layout-container-lg-padding-right="8"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-8); } }
+	:host([layout-container-lg-padding-right="10"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-10); } }
+	:host([layout-container-lg-padding-right="12"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-12); } }
+	:host([layout-container-lg-padding-right="16"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-16); } }
+	:host([layout-container-lg-padding-right="20"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-20); } }
+	:host([layout-container-lg-padding-right="24"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-24); } }
+	:host([layout-container-lg-padding-right="28"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-28); } }
+	:host([layout-container-lg-padding-right="32"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-32); } }
+	:host([layout-container-lg-padding-right="40"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-40); } }
+	:host([layout-container-lg-padding-right="44"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-44); } }
+	:host([layout-container-lg-padding-right="48"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-48); } }
+	:host([layout-container-lg-padding-right="56"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-56); } }
+	:host([layout-container-lg-padding-right="64"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-64); } }
+	:host([layout-container-lg-padding-right="80"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-80); } }
+	:host([layout-container-lg-padding-right="96"]) .container { @container layout-container (min-width: ${lgMin}) { padding-right: var(--primitives-space-96); } }
 
 
 	/* # Padding Bottom — base */
@@ -926,71 +926,71 @@ export const containerStyles = css`
 
 	/* # Padding Bottom — sm container */
 
-	:host([layout-area-sm-padding-bottom="0"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: 0; } }
-	:host([layout-area-sm-padding-bottom="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-2); } }
-	:host([layout-area-sm-padding-bottom="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-4); } }
-	:host([layout-area-sm-padding-bottom="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-6); } }
-	:host([layout-area-sm-padding-bottom="8"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-8); } }
-	:host([layout-area-sm-padding-bottom="10"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-10); } }
-	:host([layout-area-sm-padding-bottom="12"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-12); } }
-	:host([layout-area-sm-padding-bottom="16"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-16); } }
-	:host([layout-area-sm-padding-bottom="20"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-20); } }
-	:host([layout-area-sm-padding-bottom="24"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-24); } }
-	:host([layout-area-sm-padding-bottom="28"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-28); } }
-	:host([layout-area-sm-padding-bottom="32"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-32); } }
-	:host([layout-area-sm-padding-bottom="40"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-40); } }
-	:host([layout-area-sm-padding-bottom="44"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-44); } }
-	:host([layout-area-sm-padding-bottom="48"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-48); } }
-	:host([layout-area-sm-padding-bottom="56"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-56); } }
-	:host([layout-area-sm-padding-bottom="64"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-64); } }
-	:host([layout-area-sm-padding-bottom="80"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-80); } }
-	:host([layout-area-sm-padding-bottom="96"]) .container { @container layout-area (max-width: ${smMax}) { padding-bottom: var(--primitives-space-96); } }
+	:host([layout-container-sm-padding-bottom="0"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: 0; } }
+	:host([layout-container-sm-padding-bottom="2"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-2); } }
+	:host([layout-container-sm-padding-bottom="4"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-4); } }
+	:host([layout-container-sm-padding-bottom="6"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-6); } }
+	:host([layout-container-sm-padding-bottom="8"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-8); } }
+	:host([layout-container-sm-padding-bottom="10"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-10); } }
+	:host([layout-container-sm-padding-bottom="12"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-12); } }
+	:host([layout-container-sm-padding-bottom="16"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-16); } }
+	:host([layout-container-sm-padding-bottom="20"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-20); } }
+	:host([layout-container-sm-padding-bottom="24"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-24); } }
+	:host([layout-container-sm-padding-bottom="28"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-28); } }
+	:host([layout-container-sm-padding-bottom="32"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-32); } }
+	:host([layout-container-sm-padding-bottom="40"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-40); } }
+	:host([layout-container-sm-padding-bottom="44"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-44); } }
+	:host([layout-container-sm-padding-bottom="48"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-48); } }
+	:host([layout-container-sm-padding-bottom="56"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-56); } }
+	:host([layout-container-sm-padding-bottom="64"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-64); } }
+	:host([layout-container-sm-padding-bottom="80"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-80); } }
+	:host([layout-container-sm-padding-bottom="96"]) .container { @container layout-container (max-width: ${smMax}) { padding-bottom: var(--primitives-space-96); } }
 
 
 	/* # Padding Bottom — md container */
 
-	:host([layout-area-md-padding-bottom="0"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: 0; } }
-	:host([layout-area-md-padding-bottom="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-2); } }
-	:host([layout-area-md-padding-bottom="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-4); } }
-	:host([layout-area-md-padding-bottom="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-6); } }
-	:host([layout-area-md-padding-bottom="8"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-8); } }
-	:host([layout-area-md-padding-bottom="10"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-10); } }
-	:host([layout-area-md-padding-bottom="12"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-12); } }
-	:host([layout-area-md-padding-bottom="16"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-16); } }
-	:host([layout-area-md-padding-bottom="20"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-20); } }
-	:host([layout-area-md-padding-bottom="24"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-24); } }
-	:host([layout-area-md-padding-bottom="28"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-28); } }
-	:host([layout-area-md-padding-bottom="32"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-32); } }
-	:host([layout-area-md-padding-bottom="40"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-40); } }
-	:host([layout-area-md-padding-bottom="44"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-44); } }
-	:host([layout-area-md-padding-bottom="48"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-48); } }
-	:host([layout-area-md-padding-bottom="56"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-56); } }
-	:host([layout-area-md-padding-bottom="64"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-64); } }
-	:host([layout-area-md-padding-bottom="80"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-80); } }
-	:host([layout-area-md-padding-bottom="96"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-96); } }
+	:host([layout-container-md-padding-bottom="0"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: 0; } }
+	:host([layout-container-md-padding-bottom="2"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-2); } }
+	:host([layout-container-md-padding-bottom="4"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-4); } }
+	:host([layout-container-md-padding-bottom="6"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-6); } }
+	:host([layout-container-md-padding-bottom="8"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-8); } }
+	:host([layout-container-md-padding-bottom="10"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-10); } }
+	:host([layout-container-md-padding-bottom="12"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-12); } }
+	:host([layout-container-md-padding-bottom="16"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-16); } }
+	:host([layout-container-md-padding-bottom="20"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-20); } }
+	:host([layout-container-md-padding-bottom="24"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-24); } }
+	:host([layout-container-md-padding-bottom="28"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-28); } }
+	:host([layout-container-md-padding-bottom="32"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-32); } }
+	:host([layout-container-md-padding-bottom="40"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-40); } }
+	:host([layout-container-md-padding-bottom="44"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-44); } }
+	:host([layout-container-md-padding-bottom="48"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-48); } }
+	:host([layout-container-md-padding-bottom="56"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-56); } }
+	:host([layout-container-md-padding-bottom="64"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-64); } }
+	:host([layout-container-md-padding-bottom="80"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-80); } }
+	:host([layout-container-md-padding-bottom="96"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-bottom: var(--primitives-space-96); } }
 
 
 	/* # Padding Bottom — lg container */
 
-	:host([layout-area-lg-padding-bottom="0"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: 0; } }
-	:host([layout-area-lg-padding-bottom="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-2); } }
-	:host([layout-area-lg-padding-bottom="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-4); } }
-	:host([layout-area-lg-padding-bottom="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-6); } }
-	:host([layout-area-lg-padding-bottom="8"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-8); } }
-	:host([layout-area-lg-padding-bottom="10"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-10); } }
-	:host([layout-area-lg-padding-bottom="12"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-12); } }
-	:host([layout-area-lg-padding-bottom="16"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-16); } }
-	:host([layout-area-lg-padding-bottom="20"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-20); } }
-	:host([layout-area-lg-padding-bottom="24"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-24); } }
-	:host([layout-area-lg-padding-bottom="28"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-28); } }
-	:host([layout-area-lg-padding-bottom="32"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-32); } }
-	:host([layout-area-lg-padding-bottom="40"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-40); } }
-	:host([layout-area-lg-padding-bottom="44"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-44); } }
-	:host([layout-area-lg-padding-bottom="48"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-48); } }
-	:host([layout-area-lg-padding-bottom="56"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-56); } }
-	:host([layout-area-lg-padding-bottom="64"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-64); } }
-	:host([layout-area-lg-padding-bottom="80"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-80); } }
-	:host([layout-area-lg-padding-bottom="96"]) .container { @container layout-area (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-96); } }
+	:host([layout-container-lg-padding-bottom="0"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: 0; } }
+	:host([layout-container-lg-padding-bottom="2"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-2); } }
+	:host([layout-container-lg-padding-bottom="4"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-4); } }
+	:host([layout-container-lg-padding-bottom="6"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-6); } }
+	:host([layout-container-lg-padding-bottom="8"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-8); } }
+	:host([layout-container-lg-padding-bottom="10"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-10); } }
+	:host([layout-container-lg-padding-bottom="12"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-12); } }
+	:host([layout-container-lg-padding-bottom="16"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-16); } }
+	:host([layout-container-lg-padding-bottom="20"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-20); } }
+	:host([layout-container-lg-padding-bottom="24"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-24); } }
+	:host([layout-container-lg-padding-bottom="28"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-28); } }
+	:host([layout-container-lg-padding-bottom="32"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-32); } }
+	:host([layout-container-lg-padding-bottom="40"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-40); } }
+	:host([layout-container-lg-padding-bottom="44"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-44); } }
+	:host([layout-container-lg-padding-bottom="48"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-48); } }
+	:host([layout-container-lg-padding-bottom="56"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-56); } }
+	:host([layout-container-lg-padding-bottom="64"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-64); } }
+	:host([layout-container-lg-padding-bottom="80"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-80); } }
+	:host([layout-container-lg-padding-bottom="96"]) .container { @container layout-container (min-width: ${lgMin}) { padding-bottom: var(--primitives-space-96); } }
 
 
 	/* # Padding Left — base */
@@ -1087,70 +1087,70 @@ export const containerStyles = css`
 
 	/* # Padding Left — sm container */
 
-	:host([layout-area-sm-padding-left="0"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: 0; } }
-	:host([layout-area-sm-padding-left="2"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-2); } }
-	:host([layout-area-sm-padding-left="4"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-4); } }
-	:host([layout-area-sm-padding-left="6"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-6); } }
-	:host([layout-area-sm-padding-left="8"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-8); } }
-	:host([layout-area-sm-padding-left="10"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-10); } }
-	:host([layout-area-sm-padding-left="12"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-12); } }
-	:host([layout-area-sm-padding-left="16"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-16); } }
-	:host([layout-area-sm-padding-left="20"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-20); } }
-	:host([layout-area-sm-padding-left="24"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-24); } }
-	:host([layout-area-sm-padding-left="28"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-28); } }
-	:host([layout-area-sm-padding-left="32"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-32); } }
-	:host([layout-area-sm-padding-left="40"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-40); } }
-	:host([layout-area-sm-padding-left="44"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-44); } }
-	:host([layout-area-sm-padding-left="48"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-48); } }
-	:host([layout-area-sm-padding-left="56"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-56); } }
-	:host([layout-area-sm-padding-left="64"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-64); } }
-	:host([layout-area-sm-padding-left="80"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-80); } }
-	:host([layout-area-sm-padding-left="96"]) .container { @container layout-area (max-width: ${smMax}) { padding-left: var(--primitives-space-96); } }
+	:host([layout-container-sm-padding-left="0"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: 0; } }
+	:host([layout-container-sm-padding-left="2"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-2); } }
+	:host([layout-container-sm-padding-left="4"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-4); } }
+	:host([layout-container-sm-padding-left="6"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-6); } }
+	:host([layout-container-sm-padding-left="8"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-8); } }
+	:host([layout-container-sm-padding-left="10"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-10); } }
+	:host([layout-container-sm-padding-left="12"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-12); } }
+	:host([layout-container-sm-padding-left="16"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-16); } }
+	:host([layout-container-sm-padding-left="20"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-20); } }
+	:host([layout-container-sm-padding-left="24"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-24); } }
+	:host([layout-container-sm-padding-left="28"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-28); } }
+	:host([layout-container-sm-padding-left="32"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-32); } }
+	:host([layout-container-sm-padding-left="40"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-40); } }
+	:host([layout-container-sm-padding-left="44"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-44); } }
+	:host([layout-container-sm-padding-left="48"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-48); } }
+	:host([layout-container-sm-padding-left="56"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-56); } }
+	:host([layout-container-sm-padding-left="64"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-64); } }
+	:host([layout-container-sm-padding-left="80"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-80); } }
+	:host([layout-container-sm-padding-left="96"]) .container { @container layout-container (max-width: ${smMax}) { padding-left: var(--primitives-space-96); } }
 
 
 	/* # Padding Left — md container */
 
-	:host([layout-area-md-padding-left="0"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: 0; } }
-	:host([layout-area-md-padding-left="2"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-2); } }
-	:host([layout-area-md-padding-left="4"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-4); } }
-	:host([layout-area-md-padding-left="6"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-6); } }
-	:host([layout-area-md-padding-left="8"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-8); } }
-	:host([layout-area-md-padding-left="10"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-10); } }
-	:host([layout-area-md-padding-left="12"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-12); } }
-	:host([layout-area-md-padding-left="16"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-16); } }
-	:host([layout-area-md-padding-left="20"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-20); } }
-	:host([layout-area-md-padding-left="24"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-24); } }
-	:host([layout-area-md-padding-left="28"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-28); } }
-	:host([layout-area-md-padding-left="32"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-32); } }
-	:host([layout-area-md-padding-left="40"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-40); } }
-	:host([layout-area-md-padding-left="44"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-44); } }
-	:host([layout-area-md-padding-left="48"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-48); } }
-	:host([layout-area-md-padding-left="56"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-56); } }
-	:host([layout-area-md-padding-left="64"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-64); } }
-	:host([layout-area-md-padding-left="80"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-80); } }
-	:host([layout-area-md-padding-left="96"]) .container { @container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-96); } }
+	:host([layout-container-md-padding-left="0"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: 0; } }
+	:host([layout-container-md-padding-left="2"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-2); } }
+	:host([layout-container-md-padding-left="4"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-4); } }
+	:host([layout-container-md-padding-left="6"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-6); } }
+	:host([layout-container-md-padding-left="8"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-8); } }
+	:host([layout-container-md-padding-left="10"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-10); } }
+	:host([layout-container-md-padding-left="12"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-12); } }
+	:host([layout-container-md-padding-left="16"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-16); } }
+	:host([layout-container-md-padding-left="20"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-20); } }
+	:host([layout-container-md-padding-left="24"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-24); } }
+	:host([layout-container-md-padding-left="28"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-28); } }
+	:host([layout-container-md-padding-left="32"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-32); } }
+	:host([layout-container-md-padding-left="40"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-40); } }
+	:host([layout-container-md-padding-left="44"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-44); } }
+	:host([layout-container-md-padding-left="48"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-48); } }
+	:host([layout-container-md-padding-left="56"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-56); } }
+	:host([layout-container-md-padding-left="64"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-64); } }
+	:host([layout-container-md-padding-left="80"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-80); } }
+	:host([layout-container-md-padding-left="96"]) .container { @container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { padding-left: var(--primitives-space-96); } }
 
 
 	/* # Padding Left — lg container */
 
-	:host([layout-area-lg-padding-left="0"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: 0; } }
-	:host([layout-area-lg-padding-left="2"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-2); } }
-	:host([layout-area-lg-padding-left="4"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-4); } }
-	:host([layout-area-lg-padding-left="6"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-6); } }
-	:host([layout-area-lg-padding-left="8"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-8); } }
-	:host([layout-area-lg-padding-left="10"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-10); } }
-	:host([layout-area-lg-padding-left="12"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-12); } }
-	:host([layout-area-lg-padding-left="16"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-16); } }
-	:host([layout-area-lg-padding-left="20"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-20); } }
-	:host([layout-area-lg-padding-left="24"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-24); } }
-	:host([layout-area-lg-padding-left="28"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-28); } }
-	:host([layout-area-lg-padding-left="32"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-32); } }
-	:host([layout-area-lg-padding-left="40"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-40); } }
-	:host([layout-area-lg-padding-left="44"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-44); } }
-	:host([layout-area-lg-padding-left="48"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-48); } }
-	:host([layout-area-lg-padding-left="56"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-56); } }
-	:host([layout-area-lg-padding-left="64"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-64); } }
-	:host([layout-area-lg-padding-left="80"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-80); } }
-	:host([layout-area-lg-padding-left="96"]) .container { @container layout-area (min-width: ${lgMin}) { padding-left: var(--primitives-space-96); } }
+	:host([layout-container-lg-padding-left="0"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: 0; } }
+	:host([layout-container-lg-padding-left="2"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-2); } }
+	:host([layout-container-lg-padding-left="4"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-4); } }
+	:host([layout-container-lg-padding-left="6"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-6); } }
+	:host([layout-container-lg-padding-left="8"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-8); } }
+	:host([layout-container-lg-padding-left="10"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-10); } }
+	:host([layout-container-lg-padding-left="12"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-12); } }
+	:host([layout-container-lg-padding-left="16"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-16); } }
+	:host([layout-container-lg-padding-left="20"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-20); } }
+	:host([layout-container-lg-padding-left="24"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-24); } }
+	:host([layout-container-lg-padding-left="28"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-28); } }
+	:host([layout-container-lg-padding-left="32"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-32); } }
+	:host([layout-container-lg-padding-left="40"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-40); } }
+	:host([layout-container-lg-padding-left="44"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-44); } }
+	:host([layout-container-lg-padding-left="48"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-48); } }
+	:host([layout-container-lg-padding-left="56"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-56); } }
+	:host([layout-container-lg-padding-left="64"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-64); } }
+	:host([layout-container-lg-padding-left="80"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-80); } }
+	:host([layout-container-lg-padding-left="96"]) .container { @container layout-container (min-width: ${lgMin}) { padding-left: var(--primitives-space-96); } }
 
 `;

@@ -25,7 +25,7 @@ type Size = '16' | '20' | '24' | '32';
 type Color = 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical';
 
 @customElement('nldd-icon-cell')
-export class NLDDIconCell extends VisibilityMixin(LitElement) {
+export class NLDDIconCell extends VisibilityMixin(LitElement, 'list-container') {
 	static override styles = iconCellStyles;
 
 	@property({ type: String, reflect: true, attribute: 'vertical-alignment' })

@@ -65,20 +65,20 @@ describe('nldd-container', () => {
 		await waitForUpdate(el);
 		expect(el.getAttribute('lg-padding')).toBe('24');
 	});
-	it('reflects layout-area-sm-padding attribute', async () => {
-		el = await fixture('<nldd-container layout-area-sm-padding="24"></nldd-container>');
+	it('reflects layout-container-sm-padding attribute', async () => {
+		el = await fixture('<nldd-container layout-container-sm-padding="24"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('layout-area-sm-padding')).toBe('24');
+		expect(el.getAttribute('layout-container-sm-padding')).toBe('24');
 	});
-	it('reflects layout-area-md-padding attribute', async () => {
-		el = await fixture('<nldd-container layout-area-md-padding="24"></nldd-container>');
+	it('reflects layout-container-md-padding attribute', async () => {
+		el = await fixture('<nldd-container layout-container-md-padding="24"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('layout-area-md-padding')).toBe('24');
+		expect(el.getAttribute('layout-container-md-padding')).toBe('24');
 	});
-	it('reflects layout-area-lg-padding attribute', async () => {
-		el = await fixture('<nldd-container layout-area-lg-padding="24"></nldd-container>');
+	it('reflects layout-container-lg-padding attribute', async () => {
+		el = await fixture('<nldd-container layout-container-lg-padding="24"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('layout-area-lg-padding')).toBe('24');
+		expect(el.getAttribute('layout-container-lg-padding')).toBe('24');
 	});
 	it('accepts none as padding value', async () => {
 		el = await fixture('<nldd-container padding="0"></nldd-container>');

@@ -16,10 +16,18 @@ import { breakpoints } from '../../../assets/styles/breakpoints.js';
  *
  * ## Gebruik in CSS
  *
- * Alle breakpoint-waardes zijn beschikbaar als CSS custom properties via de
- * `@nldd/design-system/styles/tokens` import (settings.css). Componenten in het
- * design system gebruiken ze als `@media (min-width: …)` of als
- * `@container (min-width: …)`.
+ * In `@media` of `@container` query conditions moeten altijd **letterlijke
+ * waardes** staan — CSS-spec staat geen `var(--…)` toe in query conditions.
+ * Componenten in het design system schrijven dus expliciet:
+ *
+ * ```css
+ * @media (min-width: 641px) { … }       // mdMin
+ * @container (min-width: 1008px) { … }  // lgMin
+ * ```
+ *
+ * Daarom staan de breakpoints niet als CSS custom properties in `settings.css`:
+ * `var(--…)` zou hier toch niet werken en zou alleen drift uitlokken met de
+ * canonieke definitie in `breakpoints.ts`.
  *
  * ## Gebruik in JavaScript / TypeScript
  *

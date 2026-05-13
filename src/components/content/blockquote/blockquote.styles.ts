@@ -25,7 +25,7 @@ export const blockquoteStyles = css`
 		}
 	}
 
-	@container layout-area (max-width: ${smMax}) {
+	@container layout-container (max-width: ${smMax}) {
 		:host {
 			--_spacing: var(--semantics-blockquotes-sm-spacing);
 			--_quote-font: var(--semantics-blockquotes-sm-quote-font);

@@ -7,12 +7,17 @@
  * @element nldd-tooltip
  * @attr {string}  text      - Tooltip tekst
  * @attr {string}  placement - Positie: 'top' | 'bottom' | 'left' | 'right' (standaard: 'bottom'; op touch devices automatisch 'top')
- * @attr {boolean} disabled  - Wanneer true wordt de tooltip nooit getoond.
- *                              Hover/focus events op de trigger worden
- *                              genegeerd; een al zichtbare tooltip wordt
- *                              direct verborgen. Voor consumers die het
- *                              tooltip-gedrag conditioneel willen schakelen
- *                              (bv. alleen tonen wanneer tekst getrunceerd is).
+ * @attr {string}  timing    - Wanneer de tooltip verschijnt op hover:
+ *                              'instant'  — direct, zonder show-delay.
+ *                              'default'  — na de standaard show-delay (700ms).
+ *                              'never'    — tooltip wordt nooit getoond;
+ *                                            hover/focus events worden
+ *                                            genegeerd, aria-describedby
+ *                                            wordt onderdrukt en een al
+ *                                            zichtbare tooltip verdwijnt.
+ *                              Hide-delay en touch suppression blijven onder
+ *                              alle waarden van kracht. Focus-trigger is
+ *                              altijd instant.
  *
  * @slot - Het element waarop de tooltip wordt getoond
  *
@@ -42,6 +47,7 @@ import { tooltipTemplate } from './tooltip.template.js';
 import { isTouchMode } from '../../../utilities/input-modality.js';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
+type Timing = 'instant' | 'default' | 'never';
 
 let tooltipCounter = 0;
 const coarsePointerQuery = matchMedia('(pointer: coarse)');
@@ -64,8 +70,8 @@ export class NLDDTooltip extends LitElement {
 	@property({ type: String, reflect: true })
 	placement: Placement = 'bottom';
 
-	@property({ type: Boolean, reflect: true })
-	disabled = false;
+	@property({ type: String, reflect: true })
+	timing: Timing = 'default';
 
 	private get _effectivePlacement(): Placement {
 		return this.placement;
@@ -106,12 +112,12 @@ export class NLDDTooltip extends LitElement {
 				}
 			}
 		}
-		if (changed.has('text') || changed.has('disabled')) {
+		if (changed.has('text') || changed.has('timing')) {
 			this._syncAriaDescribedBy();
 		}
-		if (changed.has('disabled') && this.disabled) {
+		if (changed.has('timing') && this.timing === 'never') {
 			// Cancel any pending show — without this the timer fires after
-			// disabled is set and re-opens the tooltip.
+			// timing flips to 'never' and re-opens the tooltip.
 			if (this._showTimeout) {
 				clearTimeout(this._showTimeout);
 				this._showTimeout = null;
@@ -137,12 +143,12 @@ export class NLDDTooltip extends LitElement {
 			return;
 		}
 
-		// Suppress the description when disabled — same intent as hiding the
-		// visual popover. Without this, screen readers would still announce
-		// the redundant tooltip text (the primary use-case for `disabled` is
-		// `?disabled=${!isShort}` in document-tab-bar, where the full label is
-		// already visible inline).
-		if (this.text && !this.disabled) {
+		// Suppress the description when timing is 'never' — same intent as
+		// hiding the visual popover. Without this, screen readers would still
+		// announce the redundant tooltip text (the primary use-case for
+		// `timing='never'` is `.timing=${isShort ? 'default' : 'never'}` in
+		// document-tab-bar, where the full label is already visible inline).
+		if (this.text && this.timing !== 'never') {
 			if (!this._descriptionEl) {
 				this._descriptionEl = document.createElement('span');
 				this._descriptionEl.id = this._tooltipId;
@@ -176,18 +182,25 @@ export class NLDDTooltip extends LitElement {
 	}
 
 	_handleTriggerEnter(): void {
-		if (this.disabled) return;
+		if (this.timing === 'never') return;
 		if (!this.text) return;
 		if (coarsePointerQuery.matches) return;
 		if (this._hideTimeout) {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
 		}
+		// `timing='instant'` skips the hover show-delay. Touch suppression and
+		// the hide-delay still apply — only the show timer is bypassed.
+		if (this._showTimeout) clearTimeout(this._showTimeout);
+		if (this.timing === 'instant') {
+			this._showTimeout = null;
+			this._visible = true;
+			return;
+		}
 		// Pointer-hover show delay: schedule via JS now that the visibility
 		// transition is binary (popover open/closed) and the CSS no longer
 		// holds the delay. Read the same `--_show-delay` token so the value
 		// stays consumer-tunable from CSS.
-		if (this._showTimeout) clearTimeout(this._showTimeout);
 		const parsedShow = parseInt(getComputedStyle(this).getPropertyValue('--_show-delay'), 10);
 		const showDelay = Number.isFinite(parsedShow) ? parsedShow : DEFAULT_SHOW_DELAY_MS;
 		this._showTimeout = setTimeout(() => {
@@ -197,7 +210,7 @@ export class NLDDTooltip extends LitElement {
 	}
 
 	_handleFocusIn(): void {
-		if (this.disabled) return;
+		if (this.timing === 'never') return;
 		if (!this.text) return;
 		// Touch taps can focus elements with explicit `tabindex` (e.g. tab-bar's
 		// roving-tabindex pattern on iOS, Android `<button>` focus-on-tap).

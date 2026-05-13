@@ -16,14 +16,14 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['', 'icon-and-text', 'text', 'icon'],
+			options: ['(geen)', 'icon-and-text', 'text', 'icon'],
+			mapping: { '(geen)': '' },
 			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Wordt genegeerd wanneer compact actief is.',
-			table: { defaultValue: { summary: '' } },
+			table: { defaultValue: { summary: '(geen)' } },
 		},
-		fullWidth: {
+		centered: {
 			control: 'boolean',
-			name: 'full-width',
-			description: 'Vult de volledige breedte van de container; items blijven gecentreerd',
+			description: 'Centreert de tabs in de container (host vult de rij, tabs groeperen in het midden)',
 			table: { defaultValue: { summary: false } },
 		},
 		compact: {
@@ -33,13 +33,13 @@ export default {
 		},
 		responsive: {
 			control: 'boolean',
-			description: 'Schakelt automatisch over naar compact via de layout-area container query (onder 480px)',
+			description: 'Schakelt automatisch over naar compact via de layout-container container query (onder 480px)',
 			table: { defaultValue: { summary: false } },
 		},
 	},
 	args: {
 		variant: '',
-		fullWidth: false,
+		centered: false,
 		compact: false,
 		responsive: false,
 	},
@@ -53,12 +53,12 @@ const tabBarItems = html`
 	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
 
-const Template = ({ variant, fullWidth , compact, responsive}: Record<string, any>) => html`
+const Template = ({ variant, centered, compact, responsive}: Record<string, any>) => html`
 	<nldd-tab-bar
 		variant=${variant || nothing}
 		?compact=${compact}
 		?responsive=${responsive}
-		?full-width=${fullWidth}
+		?centered=${centered}
 	>
 		${tabBarItems}
 	</nldd-tab-bar>
@@ -101,16 +101,16 @@ export const Responsief = {
 	<div style="display: flex; flex-direction: column; gap: 2rem;">
 		<div>
 			<small>Breed (regular weergave)</small>
-			<div style="container-type: inline-size; container-name: layout-area; width: 680px;">
-				<nldd-tab-bar responsive full-width>
+			<div style="container-type: inline-size; container-name: layout-container; width: 680px;">
+				<nldd-tab-bar responsive centered>
 					${tabBarItems}
 				</nldd-tab-bar>
 			</div>
 		</div>
 		<div>
 			<small>Smal onder 480px (compact weergave)</small>
-			<div style="container-type: inline-size; container-name: layout-area; width: 320px;">
-				<nldd-tab-bar responsive full-width>
+			<div style="container-type: inline-size; container-name: layout-container; width: 320px;">
+				<nldd-tab-bar responsive centered>
 					${tabBarItems}
 				</nldd-tab-bar>
 			</div>
@@ -122,8 +122,8 @@ export const Responsief = {
 
 export const VolleBreedte = {
 	render: () => html`
-	<div style="container-type: inline-size; container-name: layout-area;">
-		<nldd-tab-bar full-width>
+	<div style="container-type: inline-size; container-name: layout-container;">
+		<nldd-tab-bar centered>
 			${tabBarItems}
 		</nldd-tab-bar>
 	</div>

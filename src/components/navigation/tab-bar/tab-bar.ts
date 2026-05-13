@@ -8,6 +8,7 @@
  * @attr {boolean} compact           - Shows items in compact view: icon stacked above text
  * @attr {boolean} navigation        - Renders a nav landmark instead of tablist; use for href-based items that navigate between routes
  * @attr {boolean} responsive        - Automatically switches to compact below 480px container width
+ * @attr {boolean} centered          - Centers the tabs in the container (host fills the row, tabs group in the middle)
  * @attr {string}  accessible-label  - Accessible name for the navigation region; defaults to 'Tabs'
  *
  * @slot - nldd-tab-bar-item elements
@@ -140,8 +141,9 @@ export class NLDDTabBar extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	responsive = false;
 
-	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
-	fullWidth = false;
+	/** Centers the tabs in the container (host fills the row, tabs group in the middle). */
+	@property({ type: Boolean, reflect: true })
+	centered = false;
 
 	@property({ type: String, reflect: true })
 	variant: 'icon-and-text' | 'text' | 'icon' | '' = '';

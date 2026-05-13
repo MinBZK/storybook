@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './one-third-two-thirds-section.js';
 import '../../../content/rich-text/rich-text.js';
 
@@ -31,27 +31,39 @@ export default {
 			type: 'stable',
 		},
 	},
+	argTypes: {
+		width: {
+			control: 'text',
+			description: 'Body max-width: "full" removes the constraint, of een CSS length (bv. "480px") overschrijft de default max-width',
+			table: { defaultValue: { summary: '' } },
+		},
+	},
+	args: {
+		width: '',
+	},
 };
 
-export const Standaard = () => html`
-	<nldd-one-third-two-thirds-section>
-		<nldd-rich-text slot="header">
-			<h2>Sectietitel</h2>
-		</nldd-rich-text>
-		<nldd-rich-text slot="left">
-			<h3>Zijkolom</h3>
-			<p>Gebruik de zijkolom voor navigatie, filters of aanvullende informatie.</p>
-		</nldd-rich-text>
-		<nldd-rich-text>
-			<h3>Hoofdinhoud</h3>
-			<p>Dit is de hoofdinhoud van de sectie. Deze kolom neemt twee derde van de breedte in.</p>
-			<p>De kolommen wrappen automatisch wanneer de beschikbare breedte te klein wordt.</p>
-		</nldd-rich-text>
-		<nldd-rich-text slot="footer">
-			<p>Voetnoot of aanvullende informatie.</p>
-		</nldd-rich-text>
-	</nldd-one-third-two-thirds-section>
-`;
+export const Standaard = {
+	render: ({ width }: Record<string, any>) => html`
+		<nldd-one-third-two-thirds-section width=${width || nothing}>
+			<nldd-rich-text slot="header">
+				<h2>Sectietitel</h2>
+			</nldd-rich-text>
+			<nldd-rich-text slot="left">
+				<h3>Zijkolom</h3>
+				<p>Gebruik de zijkolom voor navigatie, filters of aanvullende informatie.</p>
+			</nldd-rich-text>
+			<nldd-rich-text>
+				<h3>Hoofdinhoud</h3>
+				<p>Dit is de hoofdinhoud van de sectie. Deze kolom neemt twee derde van de breedte in.</p>
+				<p>De kolommen wrappen automatisch wanneer de beschikbare breedte te klein wordt.</p>
+			</nldd-rich-text>
+			<nldd-rich-text slot="footer">
+				<p>Voetnoot of aanvullende informatie.</p>
+			</nldd-rich-text>
+		</nldd-one-third-two-thirds-section>
+	`,
+};
 
 export const ZonderHeaderEnFooter = {
 	render: () => html`

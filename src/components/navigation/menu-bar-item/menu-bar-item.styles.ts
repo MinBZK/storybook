@@ -67,12 +67,12 @@ export const menuBarItemStyles = css`
 		}
 	}
 
-	:host([open]) .menu-bar-item::before {
+	:host([expanded]) .menu-bar-item::before {
 		background-color: var(--components-menu-bar-item-is-open-indicator-background-color);
 	}
 
 	@media (hover: hover) {
-		:host([open]) .menu-bar-item:hover::before {
+		:host([expanded]) .menu-bar-item:hover::before {
 			background-color: var(--components-menu-bar-item-is-hovered-indicator-background-color);
 		}
 	}

@@ -6,11 +6,19 @@ export const iconButtonStyles = css`
 	/* # Host */
 
 	:host {
+		--_width: auto;
+		--_disclosure-icon-size: var(--primitives-space-20);
+
 		display: inline-block;
+		max-width: 100%;
 		-webkit-tap-highlight-color: transparent;
 	}
 
-	:host([full-width]) {
+	:host([size='xs']) {
+		--_disclosure-icon-size: var(--primitives-space-16);
+	}
+
+	:host([width="full"]) {
 		display: block;
 		width: 100%;
 		flex-grow: 1;
@@ -36,23 +44,26 @@ export const iconButtonStyles = css`
 		background: none;
 		font: inherit;
 		box-sizing: border-box;
+		text-decoration: none;
 		display: inline-flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		width: var(--_width);
 		transition:
 			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
-			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default);
+			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)
+		;
+	}
+
+	a.icon-button {
+		cursor: var(--semantics-controls-link-cursor);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.icon-button {
 			transition: none;
 		}
-	}
-
-	a.icon-button {
-		cursor: var(--semantics-controls-link-cursor);
 	}
 
 
@@ -74,75 +85,37 @@ export const iconButtonStyles = css`
 	/* ## Size: XS */
 
 	:host([size='xs']) .icon-button {
-		width: auto;
 		height: var(--semantics-controls-xs-min-size);
 		min-width: var(--semantics-controls-xs-min-size);
 		min-height: var(--semantics-controls-xs-min-size);
-		padding: var(--primitives-space-4);
+		padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-icon-only-icon-size)) / 2);
 		border-radius: var(--semantics-controls-xs-corner-radius);
-	}
-
-	:host([size='xs']) .icon-button__icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
-	}
-
-	:host([size='xs']) .icon-button__disclosure-icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
 	}
 
 	/* ## Size: SM */
 
 	:host([size='sm']) .icon-button {
-		width: auto;
 		height: var(--semantics-controls-sm-min-size);
 		min-width: var(--semantics-controls-sm-min-size);
 		min-height: var(--semantics-controls-sm-min-size);
-		padding: var(--primitives-space-6);
+		padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-icon-only-icon-size)) / 2);
 		border-radius: var(--semantics-controls-sm-corner-radius);
-	}
-
-	:host([size='sm']) .icon-button__icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-	}
-
-	:host([size='sm']) .icon-button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		margin-right: calc(var(--primitives-space-2) * -1);
 	}
 
 	/* ## Size: MD (Default) */
 
 	:host([size='md']) .icon-button,
 	:host(:not([size])) .icon-button {
-		width: auto;
 		height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
 		min-height: var(--semantics-controls-md-min-size);
-		padding: var(--primitives-space-8);
+		padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-icon-only-icon-size)) / 2);
 		border-radius: var(--semantics-controls-md-corner-radius);
-	}
-
-	:host([size='md']) .icon-button__icon,
-	:host(:not([size])) .icon-button__icon {
-		width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
-	}
-
-	:host([size='md']) .icon-button__disclosure-icon,
-	:host(:not([size])) .icon-button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		margin-right: calc(var(--primitives-space-2) * -1);
 	}
 
 	/* ## Size: LG */
 
 	:host([size='lg']) .icon-button {
-		width: auto;
 		height: var(--semantics-controls-lg-min-size);
 		min-width: var(--semantics-controls-lg-min-size);
 		min-height: var(--semantics-controls-lg-min-size);
@@ -150,25 +123,11 @@ export const iconButtonStyles = css`
 		border-radius: var(--semantics-controls-lg-corner-radius);
 	}
 
-	:host([size='lg']) .icon-button__icon {
-		width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
-	}
-
-	:host([size='lg']) .icon-button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		margin-right: calc(var(--primitives-space-2) * -1);
-	}
-
-	:host([full-width]) .icon-button {
-		width: 100%;
-	}
-
-
 	/* # Variants */
 
-	/* ## Variant: neutral-tinted (secondary, default) */
+	/* ## Neutral Tinted (Secondary, Default) */
+
+	/* ### Default neutral tinted icon button */
 
 	:host([variant='neutral-tinted']) .icon-button,
 	:host([variant='secondary']) .icon-button,
@@ -176,6 +135,8 @@ export const iconButtonStyles = css`
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 	}
+
+	/* ### Hovered neutral tinted icon button */
 
 	@media (hover: hover) {
 		:host([variant='neutral-tinted']) .icon-button:hover,
@@ -186,6 +147,8 @@ export const iconButtonStyles = css`
 		}
 	}
 
+	/* ### Active neutral tinted icon button */
+
 	:host([variant='neutral-tinted']) .icon-button:active,
 	:host([variant='secondary']) .icon-button:active,
 	:host(:not([variant])) .icon-button:active {
@@ -193,12 +156,45 @@ export const iconButtonStyles = css`
 		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
-	/* ## Variant: neutral-transparent */
+	/* ### Open neutral tinted icon button */
+
+	:host([expanded][variant='neutral-tinted']) .icon-button,
+	:host([expanded][variant='secondary']) .icon-button,
+	:host([expanded]:not([variant])) .icon-button {
+		background-color: var(--semantics-buttons-neutral-tinted-is-open-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-open-content-color);
+	}
+
+	/* ### Open hovered neutral tinted icon button */
+
+	@media (hover: hover) {
+		:host([expanded][variant='neutral-tinted']) .icon-button:hover,
+		:host([expanded][variant='secondary']) .icon-button:hover,
+		:host([expanded]:not([variant])) .icon-button:hover {
+			background-color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-content-color);
+		}
+	}
+
+	/* ### Open active neutral tinted icon button */
+
+	:host([expanded][variant='neutral-tinted']) .icon-button:active,
+	:host([expanded][variant='secondary']) .icon-button:active,
+	:host([expanded]:not([variant])) .icon-button:active {
+		background-color: var(--semantics-buttons-neutral-tinted-is-open-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-open-is-active-content-color);
+	}
+
+	/* ## Neutral Transparent */
+
+	/* ### Default neutral transparent icon button */
 
 	:host([variant='neutral-transparent']) .icon-button {
 		background-color: transparent;
 		color: var(--semantics-buttons-neutral-transparent-content-color);
 	}
+
+	/* ### Hovered neutral transparent icon button */
 
 	@media (hover: hover) {
 		:host([variant='neutral-transparent']) .icon-button:hover {
@@ -207,17 +203,23 @@ export const iconButtonStyles = css`
 		}
 	}
 
+	/* ### Active neutral transparent icon button */
+
 	:host([variant='neutral-transparent']) .icon-button:active {
 		color: var(--semantics-buttons-neutral-transparent-is-active-content-color);
 	}
 
-	/* ## Variant: accent-filled (primary) */
+	/* ## Accent Filled (Primary) */
+
+	/* ### Default accent filled icon button */
 
 	:host([variant='accent-filled']) .icon-button,
 	:host([variant='primary']) .icon-button {
 		background-color: var(--semantics-buttons-accent-filled-background-color);
 		color: var(--semantics-buttons-accent-filled-content-color);
 	}
+
+	/* ### Hovered accent filled icon button */
 
 	@media (hover: hover) {
 		:host([variant='accent-filled']) .icon-button:hover,
@@ -227,56 +229,50 @@ export const iconButtonStyles = css`
 		}
 	}
 
+	/* ### Active accent filled icon button */
+
 	:host([variant='accent-filled']) .icon-button:active,
 	:host([variant='primary']) .icon-button:active {
 		background-color: var(--semantics-buttons-accent-filled-is-active-background-color);
 		color: var(--semantics-buttons-accent-filled-is-active-content-color);
 	}
 
-	/* ## Variant: accent-outlined */
+	/* ### Open accent filled icon button */
 
-	:host([variant='accent-outlined']) .icon-button {
-		background-color: transparent;
-		border-width: var(--semantics-buttons-accent-outlined-border-thickness);
-		border-style: solid;
-		border-color: var(--semantics-buttons-accent-outlined-border-color);
-		color: var(--semantics-buttons-accent-outlined-content-color);
+	:host([expanded][variant='accent-filled']) .icon-button,
+	:host([expanded][variant='primary']) .icon-button {
+		background-color: var(--semantics-buttons-accent-filled-is-open-background-color);
+		color: var(--semantics-buttons-accent-filled-is-open-content-color);
 	}
 
-	:host([variant='accent-outlined'][size='lg']) .icon-button {
-		padding: calc(var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness));
-	}
-
-	:host([variant='accent-outlined'][size='md']) .icon-button {
-		padding: calc(var(--primitives-space-8) - var(--semantics-buttons-accent-outlined-border-thickness));
-	}
-
-	:host([variant='accent-outlined'][size='sm']) .icon-button {
-		padding: calc(var(--primitives-space-6) - var(--semantics-buttons-accent-outlined-border-thickness));
-	}
-
-	:host([variant='accent-outlined'][size='xs']) .icon-button {
-		padding: calc(var(--primitives-space-4) - var(--semantics-buttons-accent-outlined-border-thickness));
-	}
+	/* ### Open hovered accent filled icon button */
 
 	@media (hover: hover) {
-		:host([variant='accent-outlined']) .icon-button:hover {
-			border-color: var(--semantics-buttons-accent-outlined-is-hovered-border-color);
-			color: var(--semantics-buttons-accent-outlined-is-hovered-content-color);
+		:host([expanded][variant='accent-filled']) .icon-button:hover,
+		:host([expanded][variant='primary']) .icon-button:hover {
+			background-color: var(--semantics-buttons-accent-filled-is-open-is-hovered-background-color);
+			color: var(--semantics-buttons-accent-filled-is-open-is-hovered-content-color);
 		}
 	}
 
-	:host([variant='accent-outlined']) .icon-button:active {
-		border-color: var(--semantics-buttons-accent-outlined-is-active-border-color);
-		color: var(--semantics-buttons-accent-outlined-is-active-content-color);
+	/* ### Open active accent filled icon button */
+
+	:host([expanded][variant='accent-filled']) .icon-button:active,
+	:host([expanded][variant='primary']) .icon-button:active {
+		background-color: var(--semantics-buttons-accent-filled-is-open-is-active-background-color);
+		color: var(--semantics-buttons-accent-filled-is-open-is-active-content-color);
 	}
 
-	/* ## Variant: accent-transparent */
+	/* ## Accent Transparent */
+
+	/* ### Default accent transparent icon button */
 
 	:host([variant='accent-transparent']) .icon-button {
 		background-color: transparent;
 		color: var(--semantics-buttons-accent-transparent-content-color);
 	}
+
+	/* ### Hovered accent transparent icon button */
 
 	@media (hover: hover) {
 		:host([variant='accent-transparent']) .icon-button:hover {
@@ -284,17 +280,23 @@ export const iconButtonStyles = css`
 		}
 	}
 
+	/* ### Active accent transparent icon button */
+
 	:host([variant='accent-transparent']) .icon-button:active {
 		color: var(--semantics-buttons-accent-transparent-is-active-content-color);
 	}
 
-	/* ## Variant: critical-tinted (destructive) */
+	/* ## Critical Tinted (Destructive) */
+
+	/* ### Default critical tinted icon button */
 
 	:host([variant='critical-tinted']) .icon-button,
 	:host([variant='destructive']) .icon-button {
 		background-color: var(--semantics-buttons-critical-tinted-background-color);
 		color: var(--semantics-buttons-critical-tinted-content-color);
 	}
+
+	/* ### Hovered critical tinted icon button */
 
 	@media (hover: hover) {
 		:host([variant='critical-tinted']) .icon-button:hover,
@@ -304,10 +306,35 @@ export const iconButtonStyles = css`
 		}
 	}
 
+	/* ### Active critical tinted icon button */
+
 	:host([variant='critical-tinted']) .icon-button:active,
 	:host([variant='destructive']) .icon-button:active {
 		background-color: var(--semantics-buttons-critical-tinted-is-active-background-color);
 		color: var(--semantics-buttons-critical-tinted-is-active-content-color);
+	}
+
+	/* ## Critical Transparent */
+
+	/* ### Default critical transparent icon button */
+
+	:host([variant='critical-transparent']) .icon-button {
+		background-color: transparent;
+		color: var(--semantics-buttons-critical-transparent-content-color);
+	}
+
+	/* ### Hovered critical transparent icon button */
+
+	@media (hover: hover) {
+		:host([variant='critical-transparent']) .icon-button:hover {
+			color: var(--semantics-buttons-critical-transparent-is-hovered-content-color);
+		}
+	}
+
+	/* ### Active critical transparent icon button */
+
+	:host([variant='critical-transparent']) .icon-button:active {
+		color: var(--semantics-buttons-critical-transparent-is-active-content-color);
 	}
 
 
@@ -327,9 +354,39 @@ export const iconButtonStyles = css`
 		justify-content: center;
 	}
 
+	:host([size='xs']) .icon-button__icon {
+		width: var(--semantics-buttons-xs-icon-only-icon-size);
+		height: var(--semantics-buttons-xs-icon-only-icon-size);
+	}
+
+	:host([size='sm']) .icon-button__icon {
+		width: var(--semantics-buttons-sm-icon-only-icon-size);
+		height: var(--semantics-buttons-sm-icon-only-icon-size);
+	}
+
+	:host([size='md']) .icon-button__icon,
+	:host(:not([size])) .icon-button__icon {
+		width: var(--semantics-buttons-md-icon-only-icon-size);
+		height: var(--semantics-buttons-md-icon-only-icon-size);
+	}
+
+	:host([size='lg']) .icon-button__icon {
+		width: var(--semantics-buttons-md-icon-only-icon-size);
+		height: var(--semantics-buttons-md-icon-only-icon-size);
+	}
+
 	.icon-button__disclosure-icon {
 		display: flex;
 		flex-shrink: 0;
+		width: var(--_disclosure-icon-size);
+		height: var(--_disclosure-icon-size);
+	}
+
+	:host([size='sm']) .icon-button__disclosure-icon,
+	:host([size='md']) .icon-button__disclosure-icon,
+	:host(:not([size])) .icon-button__disclosure-icon,
+	:host([size='lg']) .icon-button__disclosure-icon {
+		margin-right: calc(var(--primitives-space-2) * -1);
 	}
 
 	.icon-button__text {

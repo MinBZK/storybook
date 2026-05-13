@@ -49,8 +49,10 @@ export default {
 		},
 		method: {
 			control: 'select',
-			options: ['', 'get', 'post', 'dialog'],
+			options: ['(geen)', 'get', 'post', 'dialog'],
+			mapping: { '(geen)': '' },
 			description: 'HTTP method',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		action: {
 			control: 'text',
@@ -63,8 +65,10 @@ export default {
 		},
 		autocomplete: {
 			control: 'select',
-			options: ['', 'on', 'off'],
+			options: ['(geen)', 'on', 'off'],
+			mapping: { '(geen)': '' },
 			description: 'Form-level autofill toggle',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 	},
 	args: {

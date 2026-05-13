@@ -12,8 +12,7 @@
  * @attr {boolean} disabled     - Disabled state
  * @attr {string}  name         - Name for form submission
  * @attr {object}  translations - Translations; unspecified keys fall back to Dutch
- * @attr {boolean} full-width       - Stretches to fill the container width
- * @attr {string}  width            - Fixed width; the input stretches to fill remaining space
+ * @attr {string}  width            - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {boolean} hide-spin-buttons - When set, hides the decrement and increment buttons
  * @attr {string}  accessible-label  - Accessible label (aria-label) forwarded to the native input
  *
@@ -66,11 +65,8 @@ export class NLDDNumberField extends LitElement {
 	@property({ type: String, reflect: true })
 	name = '';
 
-	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
-	fullWidth = false;
-
-	/** Sets a fixed width on the component. The input stretches to fill the available space. */
-	@property({ type: String })
+	/** Width mode: 'full' (stretch to container) or any CSS length. */
+	@property({ type: String, reflect: true })
 	width = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'hide-spin-buttons' })
@@ -99,12 +95,13 @@ export class NLDDNumberField extends LitElement {
 
 	override updated(changedProperties: Map<string, unknown>): void {
 		if (changedProperties.has('width')) {
-			if (this.width) {
-				this.style.setProperty('--_width', this.width);
-				this.setAttribute('width', this.width);
+			const w = this.width;
+			// Keyword 'full' handled via CSS attribute selectors; a valid CSS
+			// length is forwarded to --_width. Invalid values are dropped.
+			if (w && w !== 'full' && CSS.supports('width', w)) {
+				this.style.setProperty('--_width', w);
 			} else {
 				this.style.removeProperty('--_width');
-				this.removeAttribute('width');
 			}
 		}
 		if (changedProperties.has('value')) {

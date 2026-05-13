@@ -5,7 +5,7 @@ import '../icon-button/icon-button.js';
 
 // # Types
 export type ToolbarChild =
-	| { type: 'title-group'; title: string; subtitle: string; align: string; minWidth: string; id: number }
+	| { type: 'title'; title: string; supportingText: string; align: string; minWidth: string; id: number }
 	| { type: 'item'; element: Element; label: string; id: number; priority: number; overflowItems: Element[]; minWidth: string; width: string; isFluid: boolean }
 	| { type: 'other'; element: Element; id: number };
 
@@ -26,12 +26,12 @@ function renderChildren(
 	suppressSoloFluid = false,
 ) {
 	return children.map((child) => {
-		if (child.type === 'title-group') {
+		if (child.type === 'title') {
 			const alignClass = child.align === 'center'
 				? 'toolbar__title-group--center-text-align'
 				: 'toolbar__title-group--left-text-align';
 			const visibleItems = allChildren.filter(c =>
-				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
+				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title')
 			);
 			const solo = visibleItems.length === 1 && visibleItems[0].id === child.id;
 			return html`
@@ -41,14 +41,14 @@ function renderChildren(
 					style=${styleMap({ '--_title-group-min-width': child.minWidth })}
 				>
 					${child.title ? html`<p class="toolbar__title">${child.title}</p>` : nothing}
-					${child.subtitle ? html`<p class="toolbar__subtitle">${child.subtitle}</p>` : nothing}
+					${child.supportingText ? html`<p class="toolbar__subtitle">${child.supportingText}</p>` : nothing}
 				</div>
 			`;
 		}
 		if (child.type === 'item') {
 			const isOverflowed = overflowIds.has(child.id);
 			const visibleItems = allChildren.filter(c =>
-				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title-group')
+				!overflowIds.has(c.id) && (c.type === 'item' || c.type === 'title')
 			);
 			const soloFluid = !suppressSoloFluid && !isOverflowed && child.isFluid && visibleItems.length === 1 && visibleItems[0].id === child.id;
 			const cssVars: Record<string, string> = {};

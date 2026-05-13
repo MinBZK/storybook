@@ -17,6 +17,7 @@ export function topTitleBarTemplate(component: NLDDTopTitleBar) {
 								start-icon="chevron-left"
 								text=${component.backText}
 								href=${component.backHref || nothing}
+								single-line
 								@click=${component._handleBack}
 							></nldd-button>
 						</div>

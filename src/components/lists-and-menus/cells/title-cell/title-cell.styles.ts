@@ -27,8 +27,9 @@ export const titleCellStyles = css`
 
 	/* # Width */
 
-	:host([width='stretch']),
-	:host(:not([width])) {
+	:host([width='full']),
+	:host(:not([width])),
+	:host([width='']) {
 		flex-grow: 1;
 		flex-shrink: 1;
 	}
@@ -40,7 +41,7 @@ export const titleCellStyles = css`
 		width: fit-content;
 	}
 
-	:host([width]:not([width='stretch']):not([width='fit-content'])) {
+	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {
 		flex-shrink: 0;
 	}
 
@@ -78,6 +79,10 @@ export const titleCellStyles = css`
 		align-items: flex-start;
 	}
 
+	:host([horizontal-alignment='center']) {
+		align-items: center;
+	}
+
 	:host([horizontal-alignment='right']) {
 		align-items: flex-end;
 	}
@@ -94,6 +99,10 @@ export const titleCellStyles = css`
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
 
+	:host([horizontal-alignment='center']) .title-cell__overline {
+		text-align: center;
+	}
+
 	:host([horizontal-alignment='right']) .title-cell__overline {
 		text-align: right;
 	}
@@ -108,6 +117,10 @@ export const titleCellStyles = css`
 		overflow-wrap: break-word;
 		color: var(--context-cell-content-color, var(--semantics-content-color));
 		text-wrap: pretty;
+	}
+
+	:host([horizontal-alignment='center']) .title-cell__title {
+		text-align: center;
 	}
 
 	:host([horizontal-alignment='right']) .title-cell__title {
@@ -161,6 +174,10 @@ export const titleCellStyles = css`
 		overflow-wrap: anywhere;
 		font: var(--primitives-font-body-sm-regular-tight);
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
+	}
+
+	:host([horizontal-alignment='center']) .title-cell__supporting-text {
+		text-align: center;
 	}
 
 	:host([horizontal-alignment='right']) .title-cell__supporting-text {

@@ -27,10 +27,10 @@ describe('nldd-title-cell', () => {
 		expect(el.getAttribute('size')).toBe('2');
 	});
 
-	it('defaults to stretch width', async () => {
+	it('defaults to full width', async () => {
 		el = await fixture('<nldd-title-cell></nldd-title-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('width')).toBe('stretch');
+		expect(el.getAttribute('width')).toBe('full');
 	});
 
 	it('reflects width attribute', async () => {

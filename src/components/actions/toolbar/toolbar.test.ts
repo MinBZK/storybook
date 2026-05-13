@@ -42,9 +42,9 @@ describe('nldd-toolbar', () => {
 		expect(el.hasAttribute('show-item-labels')).toBe(true);
 	});
 
-	it('registers nldd-toolbar-item and nldd-toolbar-title-group as custom elements', () => {
+	it('registers nldd-toolbar-item and nldd-toolbar-title as custom elements', () => {
 		expect(customElements.get('nldd-toolbar-item')).toBeDefined();
-		expect(customElements.get('nldd-toolbar-title-group')).toBeDefined();
+		expect(customElements.get('nldd-toolbar-title')).toBeDefined();
 	});
 
 	// ## Priority-based collapsing order
@@ -109,13 +109,13 @@ describe('nldd-toolbar', () => {
 	it('builds center children from slot="center"', async () => {
 		el = await fixture(`
 			<nldd-toolbar>
-				<nldd-toolbar-title-group slot="center" text="Titel"></nldd-toolbar-title-group>
+				<nldd-toolbar-title slot="center" text="Titel"></nldd-toolbar-title>
 			</nldd-toolbar>
 		`);
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _centerChildren: { type: string }[] };
 		expect(toolbar._centerChildren.length).toBe(1);
-		expect(toolbar._centerChildren[0].type).toBe('title-group');
+		expect(toolbar._centerChildren[0].type).toBe('title');
 	});
 
 	it('builds end children from slot="end"', async () => {

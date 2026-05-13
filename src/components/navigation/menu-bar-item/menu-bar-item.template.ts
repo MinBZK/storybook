@@ -9,7 +9,7 @@ export function template(component: NLDDMenuBarItem) {
 	const ariaLabel = component.accessibleLabel || (isIconOnly ? component.text : nothing);
 	const ariaCurrent = component.current ? component.currentType : nothing;
 	const ariaHaspopup = component.expandable ? 'menu' : (component.haspopup || nothing);
-	const ariaExpanded = (component.expandable || component.haspopup) ? String(component.open) : nothing;
+	const ariaExpanded = (component.expandable || component.haspopup) ? String(component.expanded) : nothing;
 
 	if (isLink) {
 		return html`

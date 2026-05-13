@@ -9,8 +9,10 @@ export const dropdownStyles = css`
 		--_xs-picker-icon-size: var(--primitives-space-16);
 		--_sm-picker-icon-size: var(--primitives-space-20);
 		--_md-picker-icon-size: var(--primitives-space-24);
+		--_width: auto;
 
 		display: block;
+		width: var(--_width);
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -53,7 +55,7 @@ export const dropdownStyles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
-	.dropdown:focus-within {
+	:host([keyboard-focused]) .dropdown {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);

@@ -11,8 +11,8 @@ export const fullBleedSectionStyles = css`
 
 	/* # Host
 	   Geen eigen container-type: page-sections luisteren naar de outer
-	   layout-area (gezet door nldd-page / nldd-card). Voor contexten
-	   zonder layout-area dient @media als fallback. */
+	   layout-container (gezet door nldd-page / nldd-card). Voor contexten
+	   zonder layout-container dient @media als fallback. */
 
 	:host {
 		--_max-width: var(--semantics-page-sections-body-max-width);
@@ -27,7 +27,7 @@ export const fullBleedSectionStyles = css`
 		display: none;
 	}
 
-	:host([full-width]) {
+	:host([width="full"]) {
 		--_max-width: none;
 	}
 
@@ -53,15 +53,15 @@ export const fullBleedSectionStyles = css`
 			padding-block: var(--semantics-page-sections-lg-margin-block);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			padding-block: var(--semantics-page-sections-sm-margin-block);
 		}
 
-		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			padding-block: var(--semantics-page-sections-md-margin-block);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			padding-block: var(--semantics-page-sections-lg-margin-block);
 		}
 	}
@@ -95,15 +95,15 @@ export const fullBleedSectionStyles = css`
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			gap: var(--semantics-page-sections-sm-gap);
 		}
 
-		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			gap: var(--semantics-page-sections-md-gap);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}

@@ -271,6 +271,6 @@ describe('nldd-dropdown – change event', () => {
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('width')).toBe('240px');
-		expect((el as HTMLElement).style.width).toBe('240px');
+		expect(el.style.getPropertyValue('--_width')).toBe('240px');
 	});
 });

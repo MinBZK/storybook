@@ -14,7 +14,7 @@ import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
 type Size = '2' | '4' | '6' | '8' | '10' | '12' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96' | 'flexible';
 
 @customElement('nldd-spacer-cell')
-export class NLDDSpacerCell extends VisibilityMixin(LitElement) {
+export class NLDDSpacerCell extends VisibilityMixin(LitElement, 'list-container') {
 	static override styles = spacerCellStyles;
 
 	@property({ type: String, reflect: true })

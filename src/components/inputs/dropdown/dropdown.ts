@@ -12,7 +12,7 @@
  * @attr {boolean} valid    - Marks the field as valid
  * @attr {boolean} invalid  - Marks the field as invalid
  * @attr {boolean} disabled - Disabled state; also forwarded to the slotted select
- * @attr {string}  width    - Optional fixed width (any CSS length, e.g. "240px"). Default: full-width.
+ * @attr {string}  width    - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @slot - A native `<select>` element with `<option>` and/or `<optgroup>` children
  *
@@ -33,6 +33,7 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { dropdownStyles } from './dropdown.styles.js';
 import { dropdownTemplate } from './dropdown.template.js';
+import { isKeyboardMode } from '../../../utilities/input-modality.js';
 import './../../content/icon/icon.js';
 
 export type DropdownSize = 'xs' | 'sm' | 'md';
@@ -72,7 +73,12 @@ export class NLDDDropdown extends LitElement {
 			this._syncAriaInvalid();
 		}
 		if (changedProperties.has('width')) {
-			this.style.width = this.width || '';
+			const w = this.width;
+			if (w && w !== 'full' && CSS.supports('width', w)) {
+				this.style.setProperty('--_width', w);
+			} else {
+				this.style.removeProperty('--_width');
+			}
 		}
 	}
 
@@ -85,6 +91,9 @@ export class NLDDDropdown extends LitElement {
 
 		if (this._select && this._select !== select) {
 			this._select.removeEventListener('change', this._handleSelectChange);
+			this._select.removeEventListener('focus', this._handleSelectFocus);
+			this._select.removeEventListener('blur', this._handleSelectBlur);
+			this._select.removeEventListener('keydown', this._handleSelectKeydown);
 		}
 
 		this._select = select;
@@ -99,6 +108,9 @@ export class NLDDDropdown extends LitElement {
 		}
 
 		select.addEventListener('change', this._handleSelectChange);
+		select.addEventListener('focus', this._handleSelectFocus);
+		select.addEventListener('blur', this._handleSelectBlur);
+		select.addEventListener('keydown', this._handleSelectKeydown);
 		this._syncDisabled();
 		this._syncAriaInvalid();
 		this._syncDisplayValue();
@@ -133,6 +145,25 @@ export class NLDDDropdown extends LitElement {
 			bubbles: true,
 			composed: true,
 		}));
+	};
+
+	/**
+	 * Mirrors the global input modality onto a host attribute so the wrapper
+	 * shows a focus ring only on keyboard focus. We can't rely on
+	 * `:focus-visible` for native <select> because Chrome matches it even on
+	 * mouse click (the dropdown is keyboard-navigable once open).
+	 */
+	private _handleSelectFocus = (): void => {
+		this.toggleAttribute('keyboard-focused', isKeyboardMode());
+	};
+
+	private _handleSelectBlur = (): void => {
+		this.toggleAttribute('keyboard-focused', false);
+	};
+
+	/** Click-then-keyboard: any key press while focused promotes to keyboard mode. */
+	private _handleSelectKeydown = (): void => {
+		this.toggleAttribute('keyboard-focused', true);
 	};
 
 	override render() {

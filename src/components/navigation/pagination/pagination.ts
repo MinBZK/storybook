@@ -7,7 +7,7 @@
  * @attr {number} current - Currently active page (1-based)
  * @attr {number} total - Total number of pages (recommended max: 200 for compact select performance)
  * @attr {boolean} disabled - Disabled state
- * @attr {boolean} full-width - Centreert de pagination in de container
+ * @attr {boolean} centered - Centreert de pagination in de container (host fills row, items grouped in the middle)
  * @attr {string} href-pattern - URL patroon met {page} placeholder, rendert links in plaats van buttons
  *
  * @fires page-change - Bij paginawisseling (detail: { page: number, href?: string }). Alleen cancelable in href-mode: preventDefault() voorkomt navigatie (SPA).
@@ -34,8 +34,9 @@ export class NLDDPagination extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
-	fullWidth = false;
+	/** Centers the pagination in the container (host fills the row, items group in the middle). */
+	@property({ type: Boolean, reflect: true })
+	centered = false;
 
 	@property({ type: String, attribute: 'href-pattern' })
 	hrefPattern = '';

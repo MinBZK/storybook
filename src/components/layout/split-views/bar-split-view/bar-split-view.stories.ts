@@ -126,12 +126,12 @@ const toolbar = html`
 					type="checkbox"
 				></nldd-menu-item>
 			</nldd-toolbar-item>
-			<nldd-toolbar-title-group
+			<nldd-toolbar-title
 				slot="center"
 				text="Document titel"
-				subtext="Laatste wijziging: vandaag"
+				supporting-text="Laatste wijziging: vandaag"
 				align="center"
-			></nldd-toolbar-title-group>
+			></nldd-toolbar-title>
 			<nldd-toolbar-item
 				slot="end"
 				label="Annuleer"

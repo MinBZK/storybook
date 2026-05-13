@@ -117,7 +117,7 @@ describe('nldd-document-tab-bar-item – short mode', () => {
 		});
 	}
 
-	it('toggles _isShort and the tooltip-disabled gate via the threshold CSS var', async () => {
+	it('toggles _isShort and the tooltip timing gate via the threshold CSS var', async () => {
 		el = await fixture<NLDDDocumentTabBar>(threeTabBar());
 		await waitForUpdate(el);
 		const item = getItems(el)[0] as NLDDDocumentTabBarItem;
@@ -131,14 +131,14 @@ describe('nldd-document-tab-bar-item – short mode', () => {
 		await waitForUpdate(item);
 		expect((item as unknown as { _isShort: boolean })._isShort).toBe(true);
 		const tooltip = item.shadowRoot!.querySelector('nldd-tooltip')!;
-		expect(tooltip.hasAttribute('disabled')).toBe(false);
+		expect(tooltip.getAttribute('timing')).toBe('default');
 
 		// Above threshold → tooltip suppressed (full text already inline).
 		setItemWidth(item, 150);
 		(item as unknown as { _updateIsShort: () => void })._updateIsShort();
 		await waitForUpdate(item);
 		expect((item as unknown as { _isShort: boolean })._isShort).toBe(false);
-		expect(tooltip.hasAttribute('disabled')).toBe(true);
+		expect(tooltip.getAttribute('timing')).toBe('never');
 	});
 });
 

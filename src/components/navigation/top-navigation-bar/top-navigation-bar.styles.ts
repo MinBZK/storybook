@@ -26,11 +26,11 @@ export const topNavigationBarStyles = css`
 			--_logo-width: var(--primitives-space-48);
 		}
 
-		@container layout-area (min-width: ${mdMin}) {
+		@container layout-container (min-width: ${mdMin}) {
 			--_logo-width: var(--primitives-space-44);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			--_logo-width: var(--primitives-space-48);
 		}
 	}
@@ -70,11 +70,11 @@ export const topNavigationBarStyles = css`
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 		}
 
-		@container layout-area (min-width: ${mdMin}) {
+		@container layout-container (min-width: ${mdMin}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 		}
 	}
@@ -189,11 +189,11 @@ export const topNavigationBarStyles = css`
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 		}
 
-		@container layout-area (min-width: ${mdMin}) {
+		@container layout-container (min-width: ${mdMin}) {
 			padding-inline: var(--semantics-page-sections-md-margin-inline);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 		}
 

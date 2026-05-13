@@ -66,9 +66,9 @@ export class NLDDSheet extends LitElement {
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('width')) {
 			if (this.width) {
-				this.style.setProperty('--_custom-width', this.width);
+				this.style.setProperty('--_width', this.width);
 			} else {
-				this.style.removeProperty('--_custom-width');
+				this.style.removeProperty('--_width');
 			}
 		}
 	}
@@ -84,7 +84,7 @@ export class NLDDSheet extends LitElement {
 	override connectedCallback(): void {
 		super.connectedCallback();
 		this.style.containerType = 'inline-size';
-		this.style.containerName = 'layout-area';
+		this.style.containerName = 'layout-container';
 		// Listen for dismiss events bubbling up from nldd-top-title-bar
 		this.addEventListener('dismiss', this._handleDismiss);
 	}

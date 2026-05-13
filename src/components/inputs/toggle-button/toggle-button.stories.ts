@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import './toggle-button.js';
+import { ICONS } from './../../content/icon/icon.js';
 
 /**
  * De Toggle Button component is een selecteerbare knop die tussen aan/uit kan schakelen.
@@ -39,8 +40,11 @@ export default {
 			description: 'Tekst van de knop',
 		},
 		icon: {
-			control: 'text',
+			control: 'select',
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon naam voor nldd-icon',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		type: {
 			control: 'select',

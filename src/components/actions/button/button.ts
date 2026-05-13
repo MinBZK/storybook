@@ -2,13 +2,16 @@
  * Nederlandse Digitale Dienst Button Component (Lit + TypeScript)
  *
  * @element nldd-button
- * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted'
+ * @attr {string} variant - Button variant: 'primary' | 'secondary' | 'destructive' | 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent'
  * @attr {string} size - Button size: 'xs' | 'sm' | 'md' (default: 'md')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable - Whether the button has a icon to indicate it opens a menu or popover
- * @attr {boolean} full-width - Whether the button stretches to fill its container width
+ * @attr {boolean} expanded - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-open visual state.
+ * @attr {string}  popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
+ * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string} text - Button text
+ * @attr {boolean} single-line - When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width.
  * @attr {string} start-icon - Icon name for the start icon (before text)
  * @attr {string} end-icon - Icon name for the end icon (after text)
  * @attr {string} accessible-label - Accessible label for the button, overrides text for screen readers
@@ -33,13 +36,14 @@ type Variant =
 	| 'secondary'
 	| 'destructive'
 	| 'accent-filled'
-	| 'accent-outlined'
 	| 'accent-transparent'
 	| 'neutral-tinted'
 	| 'neutral-transparent'
-	| 'critical-tinted';
+	| 'critical-tinted'
+	| 'critical-transparent';
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
+type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 
 @customElement('nldd-button')
 export class NLDDButton extends LitElement {
@@ -51,11 +55,23 @@ export class NLDDButton extends LitElement {
 	@property({ type: String, reflect: true })
 	size: Size = 'md';
 
-	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
-	fullWidth = false;
+	/** Width mode: 'full' (stretch to container) or any CSS length. */
+	@property({ type: String, reflect: true })
+	width = '';
 
 	@property({ type: Boolean, reflect: true, attribute: 'expandable' })
 	expandable = false;
+
+	@property({ type: Boolean, reflect: true })
+	expanded = false;
+
+	/**
+	 * Type of popup container this button opens. Sets `aria-haspopup` on the
+	 * inner button and forces `aria-expanded` to always be present (true/false)
+	 * so screen readers can announce both the popup type and its current state.
+	 */
+	@property({ type: String, reflect: true, attribute: 'popup-type' })
+	popupType?: PopupType;
 
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';
@@ -69,6 +85,9 @@ export class NLDDButton extends LitElement {
 	/** Button text. */
 	@property({ type: String })
 	text = '';
+
+	@property({ type: Boolean, reflect: true, attribute: 'single-line' })
+	singleLine = false;
 
 	/** Icon name for the start icon (before text). When not set, the start-icon slot is used. */
 	@property({ type: String, attribute: 'start-icon' })
@@ -99,7 +118,23 @@ export class NLDDButton extends LitElement {
 
 	private _warnedA11y = false;
 
-	override updated(): void {
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('width')) {
+			const w = this.width;
+			// 'full' switches host to block + 100% via CSS attribute selector.
+			// A valid CSS length is applied as inline style.width on the host.
+			// In either case the inner button stretches via --_width, so
+			// a custom width on the host translates to a wide button instead of
+			// leaving the inner shrink-to-fit. Invalid values do nothing.
+			const isFull = w === 'full';
+			const isValidLength = !!w && !isFull && CSS.supports('width', w);
+			this.style.width = isValidLength ? w : '';
+			if (isFull || isValidLength) {
+				this.style.setProperty('--_width', '100%');
+			} else {
+				this.style.removeProperty('--_width');
+			}
+		}
 		const isEmpty = !this.text && !this.accessibleLabel;
 		if (import.meta.env?.DEV && isEmpty && !this._warnedA11y) {
 			this._warnedA11y = true;

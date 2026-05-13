@@ -62,7 +62,7 @@ export class NLDDPage extends LitElement {
 		// slotted descendants — a known engine inconsistency. Inline on the
 		// light-DOM host avoids it entirely.
 		this.style.containerType = 'inline-size';
-		this.style.containerName = 'layout-area';
+		this.style.containerName = 'layout-container';
 		if (this.hasUpdated) {
 			this._setupScrollListener();
 			if (this.stickyHeader) this._setupHeaderObserver();

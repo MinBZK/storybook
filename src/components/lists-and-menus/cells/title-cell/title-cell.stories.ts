@@ -10,68 +10,81 @@ export default {
 		size: {
 			control: 'select',
 			options: [1, 2, 3, 4, 5, 6],
-			description: 'Visual size of the title',
+			description: 'Visuele grootte van de titel',
 			table: { defaultValue: { summary: '5' } },
 		},
 		color: {
 			control: 'select',
 			options: ['default', 'secondary', 'accent', 'success', 'warning', 'critical'],
-			description: 'Text color variant. `secondary` demotes the title; `accent`, `success`, `warning` and `critical` tint all three regions.',
+			description: 'Tekstkleurvariant. `secondary` maakt de titel rustiger; `accent`, `success`, `warning` en `critical` kleuren alle drie de gebieden.',
 			table: { defaultValue: { summary: 'default' } },
 		},
 		width: {
 			control: 'text',
-			description: "'stretch', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
-			table: { defaultValue: { summary: 'stretch' } },
+			description: "'full', 'fit-content', of een CSS-lengte (bv. '200px', '20rem')",
+			table: { defaultValue: { summary: 'full' } },
 		},
 		minWidth: {
 			name: 'min-width',
 			control: 'text',
-			description: "Minimum width as CSS length (e.g. '80px', '5rem')",
+			description: "Minimale breedte als CSS-lengte (bv. '80px', '5rem')",
 		},
 		maxWidth: {
 			name: 'max-width',
 			control: 'text',
-			description: "Maximum width as CSS length (e.g. '300px', '20rem')",
+			description: "Maximale breedte als CSS-lengte (bv. '300px', '20rem')",
 		},
 		minHeight: {
 			name: 'min-height',
 			control: 'text',
-			description: "Minimum height as CSS length (e.g. '44px', '3rem')",
+			description: "Minimale hoogte als CSS-lengte (bv. '44px', '3rem')",
 		},
 		horizontalAlignment: {
 			name: 'horizontal-alignment',
 			control: 'select',
-			options: ['left', 'right'],
-			description: 'Horizontal alignment of the text',
+			options: ['left', 'center', 'right'],
+			description: 'Horizontale uitlijning van de tekst',
 			table: { defaultValue: { summary: 'left' } },
 		},
 		verticalAlignment: {
 			name: 'vertical-alignment',
 			control: 'select',
-			options: ['center', 'top', 'bottom'],
-			description: 'Vertical alignment of the cell',
+			options: ['top', 'center', 'bottom'],
+			description: 'Verticale uitlijning van de cel',
 			table: { defaultValue: { summary: 'center' } },
 		},
 		text: {
 			control: 'text',
-			description: 'Title text content. Supports **bold** markers. Falls back to default slot when empty.',
+			description: 'Titeltekst. Ondersteunt **vet**-markeringen. Valt terug op de default-slot als deze leeg is.',
 		},
 		supportingText: {
 			control: 'text',
 			name: 'supporting-text',
-			description: 'Optional supporting text below the title. Supports **bold** markers. Falls back to `supporting-text` slot when empty.',
+			description: 'Optionele ondersteunende tekst onder de titel. Ondersteunt **vet**-markeringen. Valt terug op de `supporting-text`-slot als deze leeg is.',
 		},
 		overline: {
 			control: 'text',
-			description: 'Optional overline text above the title. Supports **bold** markers. Falls back to `overline` slot when empty.',
+			description: 'Optionele overline-tekst boven de titel. Ondersteunt **vet**-markeringen. Valt terug op de `overline`-slot als deze leeg is.',
 		},
 		headingLevel: {
 			control: 'select',
-			options: [undefined, 1, 2, 3, 4, 5, 6],
+			options: ['(geen)', 1, 2, 3, 4, 5, 6],
+			mapping: { '(geen)': undefined },
 			name: 'heading-level',
-			description: 'Heading level (1–6). When not set, renders a &lt;p&gt;.',
-			table: { defaultValue: { summary: '-' } },
+			description: 'Heading-niveau (1–6). Zonder waarde wordt een &lt;p&gt; gerenderd.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		hideBelow: {
+			name: 'hide-below',
+			control: 'text',
+			description: 'Verberg wanneer list-container smaller is dan deze CSS-lengte (bv. "320px", "20rem")',
+			table: { defaultValue: { summary: '' } },
+		},
+		hideAbove: {
+			name: 'hide-above',
+			control: 'text',
+			description: 'Verberg wanneer list-container breder is dan deze CSS-lengte (bv. "1200px")',
+			table: { defaultValue: { summary: '' } },
 		},
 	},
 };
@@ -80,39 +93,44 @@ export const Default = {
 	args: {
 		size: 5,
 		color: 'default',
-		width: 'stretch',
+		width: '',
 		minWidth: '',
 		maxWidth: '',
 		minHeight: '',
 		horizontalAlignment: 'left',
 		verticalAlignment: 'center',
-		text: 'Title cell',
+		text: 'Titelcel',
 		supportingText: '',
 		overline: '',
+		headingLevel: undefined,
+		hideBelow: '',
+		hideAbove: '',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-title-cell
 			size=${args.size}
 			color=${args.color}
-			width=${args.width}
+			width=${args.width || nothing}
 			horizontal-alignment=${args.horizontalAlignment}
 			vertical-alignment=${args.verticalAlignment}
 			text=${args.text}
 			supporting-text=${args.supportingText}
 			overline=${args.overline}
 			heading-level=${args.headingLevel ?? nothing}
+			hide-below=${args.hideBelow || nothing}
+			hide-above=${args.hideAbove || nothing}
 		></nldd-title-cell>
 	`,
 };
 
 export const Secondary = {
 	render: () => html`
-		<nldd-title-cell color="secondary" overline="Overline" text="Title cell (secondary)" supporting-text="Subtitle"></nldd-title-cell>
+		<nldd-title-cell color="secondary" overline="Overline" text="Titelcel (secondary)" supporting-text="Ondertitel"></nldd-title-cell>
 	`,
 	parameters: {
 		docs: {
 			description: {
-				story: 'The secondary variant demotes the title to match the muted overline/supporting-text — useful for de-emphasized rows.',
+				story: 'De secondary-variant maakt de titel rustiger zodat hij aansluit op de gedempte overline/supporting-text — handig voor minder belangrijke rijen.',
 			},
 		},
 	},
@@ -120,12 +138,12 @@ export const Secondary = {
 
 export const Accent = {
 	render: () => html`
-		<nldd-title-cell color="accent" overline="Overline" text="Title cell (accent)" supporting-text="Subtitle"></nldd-title-cell>
+		<nldd-title-cell color="accent" overline="Overline" text="Titelcel (accent)" supporting-text="Ondertitel"></nldd-title-cell>
 	`,
 	parameters: {
 		docs: {
 			description: {
-				story: 'The accent variant tints all three text fields (overline, title, supporting-text) so the cell reads as a coherent highlight.',
+				story: 'De accent-variant kleurt alle drie tekstvelden (overline, titel, supporting-text) zodat de cel als één samenhangende highlight leest.',
 			},
 		},
 	},
@@ -151,19 +169,19 @@ export const StatusColors = {
 
 export const WithOverline = {
 	render: () => html`
-		<nldd-title-cell overline="Overline" text="Title cell"></nldd-title-cell>
+		<nldd-title-cell overline="Overline" text="Titelcel"></nldd-title-cell>
 	`,
 };
 
 export const WithSupportingText = {
 	render: () => html`
-		<nldd-title-cell text="Title cell" supporting-text="Subtitle"></nldd-title-cell>
+		<nldd-title-cell text="Titelcel" supporting-text="Ondertitel"></nldd-title-cell>
 	`,
 };
 
 export const WithOverlineAndSupportingText = {
 	render: () => html`
-		<nldd-title-cell overline="Overline" text="Title cell" supporting-text="Subtitle"></nldd-title-cell>
+		<nldd-title-cell overline="Overline" text="Titelcel" supporting-text="Ondertitel"></nldd-title-cell>
 	`,
 };
 
@@ -171,7 +189,7 @@ export const AllSizes = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px;">
 			${[1, 2, 3, 4, 5, 6].map(s => html`
-				<nldd-title-cell size=${s} text="Title cell (size ${s})"></nldd-title-cell>
+				<nldd-title-cell size=${s} text="Titelcel (grootte ${s})"></nldd-title-cell>
 			`)}
 		</div>
 	`,
@@ -180,8 +198,8 @@ export const AllSizes = {
 export const HorizontalAlignment = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<nldd-title-cell horizontal-alignment="left" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Title cell (left)" supporting-text="Subtitle"></nldd-title-cell>
-			<nldd-title-cell horizontal-alignment="right" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Title cell (right)" supporting-text="Subtitle"></nldd-title-cell>
+			<nldd-title-cell horizontal-alignment="left" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Titelcel (links)" supporting-text="Ondertitel"></nldd-title-cell>
+			<nldd-title-cell horizontal-alignment="right" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Titelcel (rechts)" supporting-text="Ondertitel"></nldd-title-cell>
 		</div>
 	`,
 };
@@ -189,9 +207,9 @@ export const HorizontalAlignment = {
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<nldd-title-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Center"></nldd-title-cell>
-			<nldd-title-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Top"></nldd-title-cell>
-			<nldd-title-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Bottom"></nldd-title-cell>
+			<nldd-title-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Boven"></nldd-title-cell>
+			<nldd-title-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Midden"></nldd-title-cell>
+			<nldd-title-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Onder"></nldd-title-cell>
 		</div>
 	`,
 };
@@ -202,13 +220,13 @@ export const SlotInlineTag = {
 			<div>
 				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Overline slot — tag als statuslabel boven de titel.</p>
 				<nldd-title-cell text="Aanvraag huurtoeslag" supporting-text="Ingediend op 9 mei 2026">
-					<nldd-tag slot="overline" variant="success" size="sm" text="Goedgekeurd"></nldd-tag>
+					<nldd-tag slot="overline" color="success" size="sm" text="Goedgekeurd"></nldd-tag>
 				</nldd-title-cell>
 			</div>
 			<div>
 				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Default slot — inline tag binnen de titel.</p>
 				<nldd-title-cell overline="Sectie" supporting-text="3 items">
-					Aardappelen <nldd-tag variant="accent" size="sm" text="Nieuw"></nldd-tag>
+					Aardappelen <nldd-tag color="accent" size="sm" text="Nieuw"></nldd-tag>
 				</nldd-title-cell>
 			</div>
 		</div>
@@ -233,15 +251,15 @@ export const QuerySearchHighlight = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px; max-width: 480px;">
 			<div>
-				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">predictive (default) — bolds the non-matched remainder.</p>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">predictive (default) — vet de niet-gematchte rest.</p>
 				<nldd-title-cell text="Aardappelen" query="aa"></nldd-title-cell>
 			</div>
 			<div>
-				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">match — bolds the matched query.</p>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">match — vet de gematchte query.</p>
 				<nldd-title-cell text="Aardappel knolgewas" query="aar" query-mark-mode="match"></nldd-title-cell>
 			</div>
 			<div>
-				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Applies across text, overline and supporting-text.</p>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Werkt op text, overline en supporting-text.</p>
 				<nldd-title-cell overline="Groente" text="Aardappelen" supporting-text="Ook: pieper, knol" query="ap"></nldd-title-cell>
 			</div>
 		</div>
@@ -251,10 +269,10 @@ export const QuerySearchHighlight = {
 		docs: {
 			description: {
 				story: `
-Set \`query\` to a substring and the cell automatically bolds the match across \`text\`, \`overline\` and \`supporting-text\`. Use \`query-mark-mode\` to pick the strategy:
+Zet \`query\` op een substring en de cel vet automatisch de match in \`text\`, \`overline\` en \`supporting-text\`. Gebruik \`query-mark-mode\` om de strategie te kiezen:
 
-- \`'predictive'\` (default): bolds the non-matched remainder — the ARIA APG combobox pattern.
-- \`'match'\`: bolds the matched query — useful for highlighting search terms in longer text.
+- \`'predictive'\` (default): vet de niet-gematchte rest — het ARIA APG combobox-patroon.
+- \`'match'\`: vet de gematchte query — handig om zoektermen in langere tekst te markeren.
 				`.trim(),
 			},
 		},

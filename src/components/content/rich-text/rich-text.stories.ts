@@ -9,7 +9,7 @@ export default {
 		spacing: {
 			control: 'select',
 			options: ['flat', 'tight', 'snug', 'loose'],
-			description: 'Spacing between elements',
+			description: 'Tussenruimte tussen elementen',
 			table: { defaultValue: { summary: 'snug' } },
 		},
 	},
@@ -18,7 +18,7 @@ export default {
 export const Default = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 1. Algemene begrippen</h3>
 				<p>In deze wet en de daarop berustende bepalingen wordt verstaan onder:</p>
@@ -35,7 +35,7 @@ export const Default = {
 export const Headings = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h1>Heading 1 — Wet op de zorgtoeslag</h1>
 				<h2>Heading 2 — Hoofdstuk 1</h2>
@@ -51,7 +51,7 @@ export const Headings = {
 export const Paragraph = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 2. Zorgtoeslag</h3>
 				<p>De verzekerde die op de eerste dag van het berekeningsjaar de leeftijd van achttien jaar heeft bereikt, heeft aanspraak op een zorgtoeslag.</p>
@@ -65,7 +65,7 @@ export const Paragraph = {
 export const Lists = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Ongeordende lijst</h3>
 				<p>De volgende documenten zijn vereist:</p>
@@ -122,7 +122,7 @@ export const Lists = {
 export const InlineElements = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Inline elementen</h3>
 				<p>Dit is een paragraaf met <strong>vetgedrukte tekst</strong> en <em>schuingedrukte tekst</em>.</p>
@@ -138,7 +138,7 @@ export const InlineElements = {
 export const Blockquote = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 3. Citaat</h3>
 				<p>In de memorie van toelichting staat het volgende vermeld:</p>
@@ -154,7 +154,7 @@ export const Blockquote = {
 export const Figure = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 4. Toelichting met afbeelding</h3>
 				<p>Onderstaande afbeelding toont de verdeling van de zorgtoeslag over de verschillende inkomensgroepen.</p>
@@ -171,7 +171,7 @@ export const Figure = {
 export const Table = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 5. Overzicht toeslagbedragen</h3>
 				<p>De maximale zorgtoeslag per jaar is afhankelijk van de huishoudsamenstelling:</p>
@@ -205,7 +205,7 @@ export const Table = {
 export const Divider = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h3>Artikel 6. Eerste onderdeel</h3>
 				<p>De verzekerde heeft recht op zorgtoeslag indien het toetsingsinkomen niet hoger is dan de vastgestelde inkomensgrens.</p>
@@ -219,7 +219,7 @@ export const Divider = {
 
 export const Spacing = {
 	render: () => html`
-		<div style="display: flex; flex-direction: column; gap: 3rem; container-type: inline-size; container-name: layout-area;">
+		<div style="display: flex; flex-direction: column; gap: 3rem; container-type: inline-size; container-name: layout-container;">
 			<div>
 				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">flat</p>
 				<nldd-rich-text spacing="flat">
@@ -271,7 +271,7 @@ export const Spacing = {
 export const FullArticle = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-rich-text spacing=${args.spacing}>
 				<h1>Wet op de zorgtoeslag</h1>
 				<h2>Hoofdstuk 1. Algemene bepalingen</h2>
@@ -329,8 +329,8 @@ export const AllSizes = {
 	render: (args: Record<string, any>) => html`
 		<div style="display: flex; flex-direction: column; gap: 2rem;">
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">sm (&lt; 641px) — constrained to 393px</p>
-				<div style="width: 393px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-area;">
+				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">sm (&lt; 641px) — beperkt tot 393px</p>
+				<div style="width: 393px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-container;">
 					<nldd-rich-text spacing=${args.spacing}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
@@ -342,8 +342,8 @@ export const AllSizes = {
 				</div>
 			</div>
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">md (≥ 641px) — constrained to 834px</p>
-				<div style="width: 834px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-area;">
+				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">md (≥ 641px) — beperkt tot 834px</p>
+				<div style="width: 834px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-container;">
 					<nldd-rich-text spacing=${args.spacing}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
@@ -355,8 +355,8 @@ export const AllSizes = {
 				</div>
 			</div>
 			<div>
-				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">lg (≥ 1008px) — constrained to 1200px</p>
-				<div style="width: 1200px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-area;">
+				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">lg (≥ 1008px) — beperkt tot 1200px</p>
+				<div style="width: 1200px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-container;">
 					<nldd-rich-text spacing=${args.spacing}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
@@ -369,5 +369,5 @@ export const AllSizes = {
 			</div>
 		</div>
 	`,
-	storyName: 'All Sizes (Container Query)',
+	storyName: 'Alle groottes (container query)',
 };

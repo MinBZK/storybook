@@ -6,25 +6,34 @@ type Constructor<T = LitElement> = new (...args: any[]) => T;
 
 /**
  * Adds `hide-below` and `hide-above` attributes that toggle visibility based
- * on the inline-size of the nearest ancestor CSS container.
+ * on the inline-size of an ancestor CSS container.
  *
- * The ancestor (typically the component's direct parent in usage) must declare
- * `container-type: inline-size`. The generated `@container` rule is anonymous
- * — Safari does not reliably resolve named containers across shadow-DOM
- * boundaries when the querying element is slotted.
+ * Without a `containerName` argument the generated rule is an anonymous
+ * `@container (…)` query — it matches the nearest ancestor that declares
+ * `container-type: inline-size`. Pass a name to target a specific container
+ * (e.g. `'list-container'` for cells inside `nldd-list`, which sets that
+ * name inline on its host as a Safari shadow-DOM workaround).
  *
- * Values are CSS lengths (e.g. '320px', '20rem'). Container queries can't read
- * CSS variables in their conditions, so the query rule is generated at runtime
- * and injected as a <style> element in the component's shadow root, wrapped in
- * `:host { @container (…) { display: none !important; } }` (nested form —
- * flattened `@container { :host { … } }` is similarly unreliable in Safari).
+ * Values are CSS lengths (e.g. '320px', '20rem'). Container queries can't
+ * read CSS variables in their conditions, so the query rule is generated at
+ * runtime and injected as a <style> element in the component's shadow root,
+ * wrapped in `:host { @container <name>? (…) { display: none !important; } }`
+ * (nested form — the flattened `@container { :host { … } }` is unreliable in
+ * Safari).
  *
  * @example
  * ```ts
- * class NLDDTextCell extends VisibilityMixin(LitElement) { ... }
+ * // Cell inside nldd-list — target the named list-container
+ * class NLDDTextCell extends VisibilityMixin(LitElement, 'list-container') { … }
+ *
+ * // Other component — fall back to the nearest unnamed container
+ * class SomeComponent extends VisibilityMixin(LitElement) { … }
  * ```
  */
-export function VisibilityMixin<TBase extends Constructor<LitElement>>(Base: TBase) {
+export function VisibilityMixin<TBase extends Constructor<LitElement>>(
+	Base: TBase,
+	containerName?: string,
+) {
 	class WithVisibility extends Base {
 		@property({ type: String, reflect: true, attribute: 'hide-below' })
 		hideBelow?: string;
@@ -43,15 +52,16 @@ export function VisibilityMixin<TBase extends Constructor<LitElement>>(Base: TBa
 
 		private _updateVisibilityStyle(): void {
 			if (!this.shadowRoot) return;
+			const containerPrefix = containerName ? `${containerName} ` : '';
 			const rules: string[] = [];
 			if (this.hideBelow) {
 				rules.push(
-					`:host { @container (max-width: ${this.hideBelow}) { display: none !important; } }`,
+					`:host { @container ${containerPrefix}(max-width: ${this.hideBelow}) { display: none !important; } }`,
 				);
 			}
 			if (this.hideAbove) {
 				rules.push(
-					`:host { @container (min-width: ${this.hideAbove}) { display: none !important; } }`,
+					`:host { @container ${containerPrefix}(min-width: ${this.hideAbove}) { display: none !important; } }`,
 				);
 			}
 			if (rules.length === 0) {

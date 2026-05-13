@@ -89,7 +89,7 @@ export class NLDDMenuBarItem extends LitElement {
 	haspopup = '';
 
 	@property({ type: Boolean, reflect: true })
-	open = false;
+	expanded = false;
 
 	// ## Menu popover state
 
@@ -165,10 +165,10 @@ export class NLDDMenuBarItem extends LitElement {
 		menu.setAttribute('placement', 'bottom-start');
 
 		menu.addEventListener('toggle', (event: Event) => {
-			const open = (event as ToggleEvent).newState === 'open';
-			this._menuOpen = open;
-			this.open = open;
-			if (!open) this._menuClosedAt = Date.now();
+			const isOpen = (event as ToggleEvent).newState === 'open';
+			this._menuOpen = isOpen;
+			this.expanded = isOpen;
+			if (!isOpen) this._menuClosedAt = Date.now();
 		});
 		document.body.appendChild(menu);
 		this._menu = menu;

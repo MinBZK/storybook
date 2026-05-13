@@ -74,9 +74,10 @@ export default {
 		},
 		autocomplete: {
 			control: 'select',
-			options: ['', 'off', 'current-password', 'new-password'],
+			options: ['(geen)', 'off', 'current-password', 'new-password'],
+			mapping: { '(geen)': '' },
 			description: 'Browser autofill hint (HTML autocomplete attribute)',
-			table: { defaultValue: { summary: '' } },
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		masked: {
 			control: 'boolean',

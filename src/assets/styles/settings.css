@@ -293,14 +293,6 @@
 	--primitives-area-1280: 1280px;
 	--primitives-area-1440: 1440px;
 
-	/* ## Breakpoints */
-
-	--primitives-breakpoint-sm-min: 320px;
-	--primitives-breakpoint-sm-max: 640px;
-	--primitives-breakpoint-md-min: 641px;
-	--primitives-breakpoint-md-max: 1007px;
-	--primitives-breakpoint-lg-min: 1008px;
-
 	/* ## Border width */
 
 	--primitives-border-width-thin: 1px;
@@ -732,56 +724,44 @@
 
 	/* ## Box shadow */
 
-	--primitives-box-shadow-opacity-factor: 1;
-
-	@media (prefers-color-scheme: dark) {
-		&:not([data-scheme="light"]) {
-			--primitives-box-shadow-opacity-factor: 3;
-		}
-	}
-
-	&[data-scheme="dark"] {
-		--primitives-box-shadow-opacity-factor: 3;
-	}
-
 	--primitives-box-shadows-level-1:
-		0px 2px 4px 0px rgba(0, 0, 0, calc(0.11 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.09 * var(--primitives-box-shadow-opacity-factor)))
+		0px 2px 4px 0px light-dark(rgba(0, 0, 0, 0.11), rgba(0, 0, 0, 0.33)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.09), rgba(0, 0, 0, 0.27))
 	;
 	--primitives-box-shadows-level-2:
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor)))
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.30)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.24)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18))
 	;
 	--primitives-box-shadows-level-3:
-		0px 4px 16px 0px rgba(0, 0, 0, calc(0.12 * var(--primitives-box-shadow-opacity-factor))),
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.05 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor)))
+		0px 4px 16px 0px light-dark(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.36)),
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.12))
 	;
 	--primitives-box-shadows-level-4:
-		0px 8px 32px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
-		0px 4px 16px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
+		0px 8px 32px 0px light-dark(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.30)),
+		0px 4px 16px 0px light-dark(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.24)),
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.12)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.06))
 	;
 	--primitives-box-shadows-level-5:
-		0px 16px 64px 0px rgba(0, 0, 0, calc(0.11 * var(--primitives-box-shadow-opacity-factor))),
-		0px 8px 32px 0px rgba(0, 0, 0, calc(0.09 * var(--primitives-box-shadow-opacity-factor))),
-		0px 4px 16px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.03 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
+		0px 16px 64px 0px light-dark(rgba(0, 0, 0, 0.11), rgba(0, 0, 0, 0.33)),
+		0px 8px 32px 0px light-dark(rgba(0, 0, 0, 0.09), rgba(0, 0, 0, 0.27)),
+		0px 4px 16px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18)),
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.12)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.09)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.06))
 	;
 	--primitives-box-shadows-level-6:
-		0px 32px 128px 0px rgba(0, 0, 0, calc(0.16 * var(--primitives-box-shadow-opacity-factor))),
-		0px 16px 64px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
-		0px 8px 32px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
-		0px 4px 16px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.03 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
+		0px 32px 128px 0px light-dark(rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.48)),
+		0px 16px 64px 0px light-dark(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.30)),
+		0px 8px 32px 0px light-dark(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.24)),
+		0px 4px 16px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18)),
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.12)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.09)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.06))
 	;
 
 
@@ -794,8 +774,8 @@
 
 	/* ## Content */
 
-	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-850));
-	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-650));
+	--semantics-content-color: light-dark(var(--primitives-color-neutral-800), var(--primitives-color-neutral-900));
+	--semantics-content-secondary-color: light-dark(var(--primitives-color-neutral-550), var(--primitives-color-neutral-700));
 	--semantics-content-accent-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-content-critical-color: light-dark(var(--primitives-color-critical-550), var(--primitives-color-critical-650));
 	--semantics-content-warning-color: light-dark(var(--primitives-color-warning-550), var(--primitives-color-warning-650));
@@ -803,9 +783,9 @@
 
 	/* ## Links */
 
-	--semantics-links-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-600));
-	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-650));
-	--semantics-links-is-active-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-700));
+	--semantics-links-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
+	--semantics-links-is-hovered-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
+	--semantics-links-is-active-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 
 	/* ## Blockquotes */
 
@@ -849,12 +829,20 @@
 	--semantics-controls-md-corner-radius: var(--primitives-corner-radius-md);
 	--semantics-controls-lg-corner-radius: var(--primitives-corner-radius-md);
 
+	--semantics-buttons-xs-icon-size: var(--primitives-space-16);
+	--semantics-buttons-sm-icon-size: var(--primitives-space-18);
+	--semantics-buttons-md-icon-size: var(--primitives-space-20);
+
+	--semantics-buttons-xs-icon-only-icon-size: var(--primitives-space-16);
+	--semantics-buttons-sm-icon-only-icon-size: var(--primitives-space-20);
+	--semantics-buttons-md-icon-only-icon-size: var(--primitives-space-24);
+
 	--semantics-controls-is-highlighted-indicator-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
-	--semantics-controls-is-highlighted-contrast-color: var(--semantics-surfaces-background-color);
+	--semantics-controls-is-highlighted-contrast-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-0));
 	--semantics-controls-is-highlighted-is-hovered-indicator-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
-	--semantics-controls-is-highlighted-is-hovered-contrast-color: var(--semantics-surfaces-background-color);
+	--semantics-controls-is-highlighted-is-hovered-contrast-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-0));
 	--semantics-controls-is-highlighted-is-active-indicator-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
-	--semantics-controls-is-highlighted-is-active-contrast-color: var(--semantics-surfaces-background-color);
+	--semantics-controls-is-highlighted-is-active-contrast-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-0));
 
 	--semantics-controls-is-dragging-opacity: var(--primitives-opacity-40);
 
@@ -884,6 +872,15 @@
 	--semantics-buttons-neutral-tinted-is-active-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
 	--semantics-buttons-neutral-tinted-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
 	--semantics-buttons-neutral-tinted-is-active-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
+	--semantics-buttons-neutral-tinted-is-open-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
+	--semantics-buttons-neutral-tinted-is-open-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-open-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
+	--semantics-buttons-neutral-tinted-is-open-is-hovered-background-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-350));
+	--semantics-buttons-neutral-tinted-is-open-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-open-is-hovered-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
+	--semantics-buttons-neutral-tinted-is-open-is-active-background-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-400));
+	--semantics-buttons-neutral-tinted-is-open-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-open-is-active-secondary-content-color: light-dark(var(--primitives-color-neutral-750), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-tinted-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--semantics-buttons-neutral-tinted-is-selected-content-color: var(--semantics-controls-is-highlighted-contrast-color);
 	--semantics-buttons-neutral-tinted-is-selected-secondary-content-color: var(--semantics-controls-is-highlighted-contrast-color);
@@ -900,19 +897,17 @@
 
 	--semantics-buttons-accent-filled-background-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-filled-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-accent-filled-divider-color: light-dark(var(--primitives-color-accent-500), var(--primitives-color-accent-450));
 	--semantics-buttons-accent-filled-is-hovered-background-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
 	--semantics-buttons-accent-filled-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 	--semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-accent-filled-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	--semantics-buttons-accent-filled-divider-color: light-dark(var(--primitives-color-accent-500), var(--primitives-color-accent-450));
-
-	--semantics-buttons-accent-outlined-border-thickness: var(--primitives-border-width-regular);
-	--semantics-buttons-accent-outlined-border-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
-	--semantics-buttons-accent-outlined-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
-	--semantics-buttons-accent-outlined-is-hovered-border-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
-	--semantics-buttons-accent-outlined-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
-	--semantics-buttons-accent-outlined-is-active-border-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
-	--semantics-buttons-accent-outlined-is-active-content-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
+	--semantics-buttons-accent-filled-is-open-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
+	--semantics-buttons-accent-filled-is-open-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-accent-filled-is-open-is-hovered-background-color: light-dark(var(--primitives-color-accent-900), var(--primitives-color-accent-800));
+	--semantics-buttons-accent-filled-is-open-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-accent-filled-is-open-is-active-background-color: light-dark(var(--primitives-color-accent-950), var(--primitives-color-accent-850));
+	--semantics-buttons-accent-filled-is-open-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 
 	--semantics-buttons-accent-transparent-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-transparent-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
@@ -924,6 +919,10 @@
 	--semantics-buttons-critical-tinted-is-hovered-content-color: light-dark(var(--primitives-color-critical-700), var(--primitives-color-critical-750));
 	--semantics-buttons-critical-tinted-is-active-background-color: light-dark(var(--primitives-color-critical-150), var(--primitives-color-critical-250));
 	--semantics-buttons-critical-tinted-is-active-content-color: light-dark(var(--primitives-color-critical-750), var(--primitives-color-critical-800));
+
+	--semantics-buttons-critical-transparent-content-color: light-dark(var(--primitives-color-critical-600), var(--primitives-color-critical-650));
+	--semantics-buttons-critical-transparent-is-hovered-content-color: light-dark(var(--primitives-color-critical-650), var(--primitives-color-critical-700));
+	--semantics-buttons-critical-transparent-is-active-content-color: light-dark(var(--primitives-color-critical-700), var(--primitives-color-critical-750));
 
 	/* ## Input fields */
 
@@ -988,19 +987,7 @@
 
 	/* ## Overlays */
 
-	--semantics-overlays-backdrop-opacity-factor: 1;
-
-	@media (prefers-color-scheme: dark) {
-		&:not([data-scheme="light"]) {
-			--semantics-overlays-backdrop-opacity-factor: 2;
-		}
-	}
-
-	&[data-scheme="dark"] {
-		--semantics-overlays-backdrop-opacity-factor: 2;
-	}
-
-	--semantics-overlays-backdrop-color: rgba(0, 0, 0, calc(0.2 * var(--semantics-overlays-backdrop-opacity-factor)));
+	--semantics-overlays-backdrop-color: light-dark(rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.40));
 	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
 	--semantics-overlays-inset: var(--primitives-space-16);
 	--semantics-overlays-box-shadow: var(--primitives-box-shadows-level-5);
@@ -1165,13 +1152,14 @@
 
 	/* ## Menu bar */
 
-	--components-menu-bar-item-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-750));
-	--components-menu-bar-item-is-current-indicator-background-color: var(--semantics-controls-is-highlighted-indicator-color);
-	--components-menu-bar-item-is-current-indicator-height: var(--primitives-space-4);
-	--components-menu-bar-item-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-200));
-	--components-menu-bar-item-is-open-indicator-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
 	--components-menu-bar-item-font: var(--primitives-font-body-md-bold-flat);
 	--components-menu-bar-item-inline-padding: var(--primitives-space-8);
+	--components-menu-bar-item-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-750));
+	--components-menu-bar-item-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-200));
+	--components-menu-bar-item-is-open-indicator-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-250));
+	--components-menu-bar-item-is-open-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-300));
+	--components-menu-bar-item-is-current-indicator-background-color: var(--semantics-controls-is-highlighted-indicator-color);
+	--components-menu-bar-item-is-current-indicator-height: var(--primitives-space-4);
 
 	/* ## Popover */
 
@@ -1230,6 +1218,47 @@
 	--components-tag-warning-content-color: var(--primitives-color-warning-750);
 	--components-tag-critical-background-color: light-dark(var(--primitives-color-critical-75), var(--primitives-color-critical-150));
 	--components-tag-critical-content-color: var(--primitives-color-critical-750);
+
+	/* ### Tag — rijkskleuren */
+
+	--components-tag-coolgray-background-color: light-dark(var(--primitives-color-coolgray-75), var(--primitives-color-coolgray-150));
+	--components-tag-coolgray-content-color: var(--primitives-color-coolgray-750);
+	--components-tag-lintblauw-background-color: light-dark(var(--primitives-color-lintblauw-75), var(--primitives-color-lintblauw-150));
+	--components-tag-lintblauw-content-color: var(--primitives-color-lintblauw-750);
+	--components-tag-donkerblauw-background-color: light-dark(var(--primitives-color-donkerblauw-75), var(--primitives-color-donkerblauw-150));
+	--components-tag-donkerblauw-content-color: var(--primitives-color-donkerblauw-750);
+	--components-tag-hemelblauw-background-color: light-dark(var(--primitives-color-hemelblauw-75), var(--primitives-color-hemelblauw-150));
+	--components-tag-hemelblauw-content-color: var(--primitives-color-hemelblauw-750);
+	--components-tag-lichtblauw-background-color: light-dark(var(--primitives-color-lichtblauw-75), var(--primitives-color-lichtblauw-150));
+	--components-tag-lichtblauw-content-color: var(--primitives-color-lichtblauw-750);
+	--components-tag-paars-background-color: light-dark(var(--primitives-color-paars-75), var(--primitives-color-paars-150));
+	--components-tag-paars-content-color: var(--primitives-color-paars-750);
+	--components-tag-violet-background-color: light-dark(var(--primitives-color-violet-75), var(--primitives-color-violet-150));
+	--components-tag-violet-content-color: var(--primitives-color-violet-750);
+	--components-tag-robijnrood-background-color: light-dark(var(--primitives-color-robijnrood-75), var(--primitives-color-robijnrood-150));
+	--components-tag-robijnrood-content-color: var(--primitives-color-robijnrood-750);
+	--components-tag-roze-background-color: light-dark(var(--primitives-color-roze-75), var(--primitives-color-roze-150));
+	--components-tag-roze-content-color: var(--primitives-color-roze-750);
+	--components-tag-rood-background-color: light-dark(var(--primitives-color-rood-75), var(--primitives-color-rood-150));
+	--components-tag-rood-content-color: var(--primitives-color-rood-750);
+	--components-tag-oranje-background-color: light-dark(var(--primitives-color-oranje-75), var(--primitives-color-oranje-150));
+	--components-tag-oranje-content-color: var(--primitives-color-oranje-750);
+	--components-tag-donkergeel-background-color: light-dark(var(--primitives-color-donkergeel-75), var(--primitives-color-donkergeel-150));
+	--components-tag-donkergeel-content-color: var(--primitives-color-donkergeel-750);
+	--components-tag-geel-background-color: light-dark(var(--primitives-color-geel-75), var(--primitives-color-geel-150));
+	--components-tag-geel-content-color: var(--primitives-color-geel-750);
+	--components-tag-donkerbruin-background-color: light-dark(var(--primitives-color-donkerbruin-75), var(--primitives-color-donkerbruin-150));
+	--components-tag-donkerbruin-content-color: var(--primitives-color-donkerbruin-750);
+	--components-tag-bruin-background-color: light-dark(var(--primitives-color-bruin-75), var(--primitives-color-bruin-150));
+	--components-tag-bruin-content-color: var(--primitives-color-bruin-750);
+	--components-tag-donkergroen-background-color: light-dark(var(--primitives-color-donkergroen-75), var(--primitives-color-donkergroen-150));
+	--components-tag-donkergroen-content-color: var(--primitives-color-donkergroen-750);
+	--components-tag-groen-background-color: light-dark(var(--primitives-color-groen-75), var(--primitives-color-groen-150));
+	--components-tag-groen-content-color: var(--primitives-color-groen-750);
+	--components-tag-mosgroen-background-color: light-dark(var(--primitives-color-mosgroen-75), var(--primitives-color-mosgroen-150));
+	--components-tag-mosgroen-content-color: var(--primitives-color-mosgroen-750);
+	--components-tag-mintgroen-background-color: light-dark(var(--primitives-color-mintgroen-75), var(--primitives-color-mintgroen-150));
+	--components-tag-mintgroen-content-color: var(--primitives-color-mintgroen-750);
 
 	/* ## Title */
 

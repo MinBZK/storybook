@@ -13,7 +13,7 @@ export const cellStyles = css`
 
 		display: flex;
 		flex-direction: column;
-		align-items: stretch;
+		align-items: flex-start;
 		flex-shrink: 0;
 		justify-content: center;
 		width: var(--_width);
@@ -29,19 +29,20 @@ export const cellStyles = css`
 
 	/* # Width */
 
-	:host([width='stretch']) {
+	:host([width='full']) {
 		flex-grow: 1;
 		flex-shrink: 1;
 	}
 
 	:host([width='fit-content']),
-	:host(:not([width])) {
+	:host(:not([width])),
+	:host([width='']) {
 		flex-grow: 0;
 		flex-basis: auto;
 		width: fit-content;
 	}
 
-	:host([width]:not([width='stretch']):not([width='fit-content'])) {
+	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {
 		flex-shrink: 0;
 	}
 
@@ -50,13 +51,7 @@ export const cellStyles = css`
 	}
 
 
-	/* # Vertical alignment
-	 *
-	 * 'center' (default): the cell stretches to fill the full row height, then
-	 * centers its content within that space. When min-height is set, the cell is
-	 * at least that tall and the content sits centered inside it. For strict top
-	 * alignment without a minimum height, use vertical-alignment="top".
-	 */
+	/* # Vertical alignment */
 
 	:host([vertical-alignment='center']),
 	:host(:not([vertical-alignment])) {
@@ -69,6 +64,22 @@ export const cellStyles = css`
 
 	:host([vertical-alignment='bottom']) {
 		align-self: flex-end;
+	}
+
+
+	/* # Horizontal alignment */
+
+	:host([horizontal-alignment='left']),
+	:host(:not([horizontal-alignment])) {
+		align-items: flex-start;
+	}
+
+	:host([horizontal-alignment='center']) {
+		align-items: center;
+	}
+
+	:host([horizontal-alignment='right']) {
+		align-items: flex-end;
 	}
 
 

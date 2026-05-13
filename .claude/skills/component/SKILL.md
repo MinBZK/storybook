@@ -167,7 +167,7 @@ export const styles = css`
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		container-name: layout-area;
+		container-name: layout-container;
 		container-type: inline-size;
 	}
 
@@ -178,18 +178,18 @@ export const styles = css`
 	}
 
 
-	/* ## Responsive — container queries (binnen layout-area) */
+	/* ## Responsive — container queries (binnen layout-container) */
 
 	.{naam}__content {
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			/* sm: compact weergave */
 		}
 
-		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			/* md */
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			/* lg */
 		}
 	}
@@ -257,7 +257,31 @@ export function template(component: NDD{PascalName}): TemplateResult {
 - **`name:`** het HTML attribuut in kebab-case (bijv. `name: 'start-icon'`, `name: 'full-width'`)
 - **`table.defaultValue.summary:`** altijd invullen met de default waarde
 - **`description:`** korte Nederlandse beschrijving
-- **Icon controls:** gebruik `control: 'select'` met `options: ['', ...ICONS]` — importeer `ICONS` uit `../../content/icon/ndd-icon.ts`. Nooit een text input voor iconen.
+- **Icon controls:** gebruik `control: 'select'` met `options: ['(geen)', ...ICONS]` plus `mapping: { '(geen)': '' }` — importeer `ICONS` uit `../../content/icon/ndd-icon.ts`. Nooit een text input voor iconen.
+- **Optionele select-controls:** Storybook toont anders een leeg item of letterlijk "undefined" in de dropdown. Gebruik `'(geen)'` als label en `mapping` om dat naar de echte waarde te vertalen. Plaats `'(geen)'` als eerste element in `options`. In `args` staat de **actual value** (`''` of `undefined`) — Storybook reverse-lookt via `mapping` welke label de huidige waarde representeert en toont die als geselecteerd in de UI. De render-functie ontvangt eveneens de actual value. Let op: bij opties met numerieke waarden (`1, 2, ...`) plaatst JS de integer-index keys altijd eerst in `Object.keys`, waardoor `'(geen)'` visueel onderaan de dropdown belandt; de selected-state werkt wel correct, dus accepteer dat als trade-off.
+  ```ts
+  // String prop met '' als "geen waarde"
+  args: { variant: '' },
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['(geen)', 'icon-and-text', 'text', 'icon'],
+      mapping: { '(geen)': '' },
+      table: { defaultValue: { summary: '(geen)' } },
+    },
+  },
+
+  // Number prop met undefined als "geen waarde"
+  args: { headingLevel: undefined },
+  argTypes: {
+    headingLevel: {
+      control: 'select',
+      options: ['(geen)', 1, 2, 3, 4, 5, 6],
+      mapping: { '(geen)': undefined },
+      table: { defaultValue: { summary: '(geen)' } },
+    },
+  },
+  ```
 - **Volgorde consistent**: `args`, `argTypes`, template-destructuring en HTML-attributen in de template gebruiken dezelfde volgorde, volgens de canon hieronder.
 
 ### Canonieke control volgorde
@@ -351,9 +375,10 @@ export default {
 		startIcon: {
 			name: 'start-icon',
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon voor de tekst',
-			table: { defaultValue: { summary: '' } },
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		fullWidth: {
 			name: 'full-width',
@@ -494,7 +519,7 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 	--_min-height: var(--semantics-controls-md-min-size);
 	--_logo-width: var(--primitives-space-40);
 
-	@container layout-area (min-width: 641px) {
+	@container layout-container (min-width: 641px) {
 		--_logo-width: var(--primitives-space-44);
 	}
 

@@ -8,8 +8,10 @@ export const searchFieldStyles = css`
 	:host {
 		--_background-color: var(--semantics-input-fields-background-color);
 		--_z-index-button-focus: 1;
+		--_width: auto;
 
 		display: block;
+		width: var(--_width);
 		min-width: 0;
 		-webkit-tap-highlight-color: transparent;
 	}

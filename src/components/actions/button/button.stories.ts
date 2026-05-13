@@ -32,11 +32,11 @@ export default {
 				'secondary',
 				'destructive',
 				'accent-filled',
-				'accent-outlined',
 				'accent-transparent',
 				'neutral-tinted',
 				'neutral-transparent',
 				'critical-tinted',
+				'critical-transparent',
 			],
 			description: 'Visuele stijlvariant',
 			table: {
@@ -51,12 +51,11 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
-		fullWidth: {
-			name: 'full-width',
-			control: 'boolean',
-			description: 'Full width',
+		width: {
+			control: 'text',
+			description: 'Width mode: "full" (stretches to container) or any CSS length (e.g. "240px")',
 			table: {
-				defaultValue: { summary: false },
+				defaultValue: { summary: '' },
 			},
 		},
 		expandable: {
@@ -67,26 +66,49 @@ export default {
 				defaultValue: { summary: false },
 			},
 		},
+		expanded: {
+			control: 'boolean',
+			description: 'Geeft aan dat het popover/menu uitgeklapt is. Wordt geforward als aria-expanded op de inner button en activeert de is-open visuele state.',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
+		popupType: {
+			name: 'popup-type',
+			control: 'select',
+			options: ['(geen)', 'menu', 'listbox', 'dialog', 'tree', 'grid'],
+			mapping: { '(geen)': '' },
+			description: 'Type popup-container dat deze knop opent. Zet aria-haspopup op de inner button en zorgt dat aria-expanded altijd aanwezig is (true/false) zodat screenreaders de popup-staat kennen.',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
 		text: {
 			control: 'text',
 			description: 'Tekst van de knop',
 		},
+		singleLine: {
+			name: 'single-line',
+			control: 'boolean',
+			description: 'Knipt overlopende tekst af met ellipsis in plaats van te wrappen. Vereist dat de knop (of een ancestor) een max-width oplegt.',
+			table: { defaultValue: { summary: false } },
+		},
 		startIcon: {
 			name: 'start-icon',
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon voor de tekst',
 			table: {
-				defaultValue: { summary: '' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		endIcon: {
 			name: 'end-icon',
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon na de tekst',
 			table: {
-				defaultValue: { summary: '' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		type: {
@@ -103,8 +125,10 @@ export default {
 		},
 		target: {
 			control: 'select',
-			options: ['', '_self', '_blank', '_parent', '_top'],
+			options: ['(geen)', '_self', '_blank', '_parent', '_top'],
+			mapping: { '(geen)': '' },
 			description: 'Link target (alleen gebruikt als href is gezet)',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		disabled: {
 			control: 'boolean',
@@ -117,9 +141,12 @@ export default {
 	args: {
 		variant: 'neutral-tinted',
 		size: 'md',
-		fullWidth: false,
+		width: '',
 		expandable: false,
+		expanded: false,
+		popupType: '',
 		text: 'Button',
+		singleLine: false,
 		startIcon: '',
 		endIcon: '',
 		type: 'button',
@@ -129,18 +156,21 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, fullWidth, expandable, text, startIcon, endIcon, type, href, target, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, expanded, popupType, text, singleLine, startIcon, endIcon, type, href, target, disabled }: Record<string, any>) => html`
 	<nldd-button
 		variant=${variant}
 		size=${size}
-		?full-width=${fullWidth}
+		width=${width || nothing}
 		type=${type}
 		text=${text}
 		href=${href || nothing}
 		target=${target || nothing}
 		start-icon=${startIcon || nothing}
 		end-icon=${endIcon || nothing}
+		popup-type=${popupType || nothing}
 		?expandable=${expandable}
+		?expanded=${expanded}
+		?single-line=${singleLine}
 		?disabled=${disabled}
 	></nldd-button>
 `;
@@ -174,11 +204,11 @@ export const AppearanceBased = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button variant="accent-filled" text="Accent Filled"></nldd-button>
-		<nldd-button variant="accent-outlined" text="Accent Outlined"></nldd-button>
 		<nldd-button variant="accent-transparent" text="Accent Transparent"></nldd-button>
 		<nldd-button variant="neutral-tinted" text="Neutral Tinted"></nldd-button>
 		<nldd-button variant="neutral-transparent" text="Neutral Transparent"></nldd-button>
 		<nldd-button variant="critical-tinted" text="Critical Tinted"></nldd-button>
+		<nldd-button variant="critical-transparent" text="Critical Transparent"></nldd-button>
 	</div>
 `,
 	parameters: {
