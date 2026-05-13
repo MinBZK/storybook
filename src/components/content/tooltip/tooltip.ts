@@ -13,6 +13,10 @@
  *                              direct verborgen. Voor consumers die het
  *                              tooltip-gedrag conditioneel willen schakelen
  *                              (bv. alleen tonen wanneer tekst getrunceerd is).
+ * @attr {boolean} instant   - Wanneer true wordt de tooltip direct getoond
+ *                              bij hover, zonder de standaard show-delay.
+ *                              Hide-delay en touch suppression blijven van
+ *                              kracht. Focus-trigger was al instant.
  *
  * @slot - Het element waarop de tooltip wordt getoond
  *
@@ -66,6 +70,9 @@ export class NLDDTooltip extends LitElement {
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
+
+	@property({ type: Boolean, reflect: true })
+	instant = false;
 
 	private get _effectivePlacement(): Placement {
 		return this.placement;
@@ -183,11 +190,18 @@ export class NLDDTooltip extends LitElement {
 			clearTimeout(this._hideTimeout);
 			this._hideTimeout = null;
 		}
+		// `instant` skips the hover show-delay. Touch suppression and the
+		// hide-delay still apply — only the show timer is bypassed.
+		if (this._showTimeout) clearTimeout(this._showTimeout);
+		if (this.instant) {
+			this._showTimeout = null;
+			this._visible = true;
+			return;
+		}
 		// Pointer-hover show delay: schedule via JS now that the visibility
 		// transition is binary (popover open/closed) and the CSS no longer
 		// holds the delay. Read the same `--_show-delay` token so the value
 		// stays consumer-tunable from CSS.
-		if (this._showTimeout) clearTimeout(this._showTimeout);
 		const parsedShow = parseInt(getComputedStyle(this).getPropertyValue('--_show-delay'), 10);
 		const showDelay = Number.isFinite(parsedShow) ? parsedShow : DEFAULT_SHOW_DELAY_MS;
 		this._showTimeout = setTimeout(() => {

@@ -37,10 +37,16 @@ export default {
 			description: 'Positie van de tooltip',
 			table: { defaultValue: { summary: 'bottom' } },
 		},
+		instant: {
+			control: 'boolean',
+			description: 'Toon de tooltip direct bij hover, zonder de standaard show-delay. Hide-delay en touch-suppression blijven van kracht.',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
 		text: 'Dit is een tooltip',
 		placement: 'bottom',
+		instant: false,
 	},
 };
 
@@ -50,6 +56,7 @@ export const Standaard = {
 			<nldd-tooltip
 				text=${args.text}
 				placement=${args.placement}
+				?instant=${args.instant}
 			>
 				<nldd-button text="Hover mij"></nldd-button>
 			</nldd-tooltip>
