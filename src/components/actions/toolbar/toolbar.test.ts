@@ -115,7 +115,7 @@ describe('nldd-toolbar', () => {
 		await waitForUpdate(el);
 		const toolbar = el as unknown as { _centerChildren: { type: string }[] };
 		expect(toolbar._centerChildren.length).toBe(1);
-		expect(toolbar._centerChildren[0].type).toBe('title-group');
+		expect(toolbar._centerChildren[0].type).toBe('title');
 	});
 
 	it('builds end children from slot="end"', async () => {
