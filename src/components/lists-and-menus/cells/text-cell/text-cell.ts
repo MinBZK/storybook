@@ -65,7 +65,7 @@ type HorizontalAlignment = 'left' | 'center' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 
 @customElement('nldd-text-cell')
-export class NLDDTextCell extends VisibilityMixin(LitElement) {
+export class NLDDTextCell extends VisibilityMixin(LitElement, 'list-container') {
 	static override styles = [textCellStyles];
 
 	@property({ type: String, reflect: true })

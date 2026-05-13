@@ -158,6 +158,13 @@ export class NLDDList extends LitElement {
 
 	override connectedCallback() {
 		super.connectedCallback();
+		// Set container-type/name as inline style on the host. Doing this from
+		// a `:host` rule inside the shadow DOM works in Chromium but Safari
+		// does not always recognise the host as a container for slotted
+		// descendants — a known engine inconsistency. Same workaround as
+		// nldd-page and nldd-card.
+		this.style.containerType = 'inline-size';
+		this.style.containerName = 'list-container';
 		this.addEventListener('pointerdown', this._onPointerDown);
 		this.addEventListener('keydown', this._onKeyDown);
 	}

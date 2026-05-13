@@ -28,7 +28,7 @@ export type CellVerticalAlignment = 'top' | 'center' | 'bottom';
 export type CellHorizontalAlignment = 'left' | 'center' | 'right';
 
 @customElement('nldd-cell')
-export class NLDDCell extends VisibilityMixin(LitElement) {
+export class NLDDCell extends VisibilityMixin(LitElement, 'list-container') {
 	static override styles = [cellStyles];
 
 	@property({ type: String, reflect: true })
