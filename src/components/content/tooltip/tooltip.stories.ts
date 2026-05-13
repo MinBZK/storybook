@@ -42,11 +42,17 @@ export default {
 			description: 'Toon de tooltip direct bij hover, zonder de standaard show-delay. Hide-delay en touch-suppression blijven van kracht.',
 			table: { defaultValue: { summary: false } },
 		},
+		disabled: {
+			control: 'boolean',
+			description: 'Wanneer true wordt de tooltip nooit getoond. Hover/focus events op de trigger worden genegeerd; een al zichtbare tooltip wordt direct verborgen.',
+			table: { defaultValue: { summary: false } },
+		},
 	},
 	args: {
 		text: 'Dit is een tooltip',
 		placement: 'bottom',
 		instant: false,
+		disabled: false,
 	},
 };
 
@@ -57,6 +63,7 @@ export const Standaard = {
 				text=${args.text}
 				placement=${args.placement}
 				?instant=${args.instant}
+				?disabled=${args.disabled}
 			>
 				<nldd-button text="Hover mij"></nldd-button>
 			</nldd-tooltip>
