@@ -724,56 +724,44 @@
 
 	/* ## Box shadow */
 
-	--primitives-box-shadow-opacity-factor: 1;
-
-	@media (prefers-color-scheme: dark) {
-		&:not([data-scheme="light"]) {
-			--primitives-box-shadow-opacity-factor: 3;
-		}
-	}
-
-	&[data-scheme="dark"] {
-		--primitives-box-shadow-opacity-factor: 3;
-	}
-
 	--primitives-box-shadows-level-1:
-		0px 2px 4px 0px rgba(0, 0, 0, calc(0.11 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.09 * var(--primitives-box-shadow-opacity-factor)))
+		0px 2px 4px 0px light-dark(rgba(0, 0, 0, 0.11), rgba(0, 0, 0, 0.33)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.09), rgba(0, 0, 0, 0.27))
 	;
 	--primitives-box-shadows-level-2:
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor)))
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.30)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.24)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18))
 	;
 	--primitives-box-shadows-level-3:
-		0px 4px 16px 0px rgba(0, 0, 0, calc(0.12 * var(--primitives-box-shadow-opacity-factor))),
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.05 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor)))
+		0px 4px 16px 0px light-dark(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.36)),
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.12))
 	;
 	--primitives-box-shadows-level-4:
-		0px 8px 32px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
-		0px 4px 16px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
+		0px 8px 32px 0px light-dark(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.30)),
+		0px 4px 16px 0px light-dark(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.24)),
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.12)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.06))
 	;
 	--primitives-box-shadows-level-5:
-		0px 16px 64px 0px rgba(0, 0, 0, calc(0.11 * var(--primitives-box-shadow-opacity-factor))),
-		0px 8px 32px 0px rgba(0, 0, 0, calc(0.09 * var(--primitives-box-shadow-opacity-factor))),
-		0px 4px 16px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.03 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
+		0px 16px 64px 0px light-dark(rgba(0, 0, 0, 0.11), rgba(0, 0, 0, 0.33)),
+		0px 8px 32px 0px light-dark(rgba(0, 0, 0, 0.09), rgba(0, 0, 0, 0.27)),
+		0px 4px 16px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18)),
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.12)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.09)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.06))
 	;
 	--primitives-box-shadows-level-6:
-		0px 32px 128px 0px rgba(0, 0, 0, calc(0.16 * var(--primitives-box-shadow-opacity-factor))),
-		0px 16px 64px 0px rgba(0, 0, 0, calc(0.1 * var(--primitives-box-shadow-opacity-factor))),
-		0px 8px 32px 0px rgba(0, 0, 0, calc(0.08 * var(--primitives-box-shadow-opacity-factor))),
-		0px 4px 16px 0px rgba(0, 0, 0, calc(0.06 * var(--primitives-box-shadow-opacity-factor))),
-		0px 2px 8px 0px rgba(0, 0, 0, calc(0.04 * var(--primitives-box-shadow-opacity-factor))),
-		0px 1px 4px 0px rgba(0, 0, 0, calc(0.03 * var(--primitives-box-shadow-opacity-factor))),
-		0px 0px 2px 0px rgba(0, 0, 0, calc(0.02 * var(--primitives-box-shadow-opacity-factor)))
+		0px 32px 128px 0px light-dark(rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.48)),
+		0px 16px 64px 0px light-dark(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.30)),
+		0px 8px 32px 0px light-dark(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.24)),
+		0px 4px 16px 0px light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18)),
+		0px 2px 8px 0px light-dark(rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.12)),
+		0px 1px 4px 0px light-dark(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.09)),
+		0px 0px 2px 0px light-dark(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.06))
 	;
 
 
@@ -999,19 +987,7 @@
 
 	/* ## Overlays */
 
-	--semantics-overlays-backdrop-opacity-factor: 1;
-
-	@media (prefers-color-scheme: dark) {
-		&:not([data-scheme="light"]) {
-			--semantics-overlays-backdrop-opacity-factor: 2;
-		}
-	}
-
-	&[data-scheme="dark"] {
-		--semantics-overlays-backdrop-opacity-factor: 2;
-	}
-
-	--semantics-overlays-backdrop-color: rgba(0, 0, 0, calc(0.2 * var(--semantics-overlays-backdrop-opacity-factor)));
+	--semantics-overlays-backdrop-color: light-dark(rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.40));
 	--semantics-overlays-corner-radius: var(--primitives-corner-radius-none);
 	--semantics-overlays-inset: var(--primitives-space-16);
 	--semantics-overlays-box-shadow: var(--primitives-box-shadows-level-5);
