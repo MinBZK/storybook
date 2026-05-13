@@ -1243,6 +1243,47 @@
 	--components-tag-critical-background-color: light-dark(var(--primitives-color-critical-75), var(--primitives-color-critical-150));
 	--components-tag-critical-content-color: var(--primitives-color-critical-750);
 
+	/* ### Tag — rijkskleuren */
+
+	--components-tag-coolgray-background-color: light-dark(var(--primitives-color-coolgray-75), var(--primitives-color-coolgray-150));
+	--components-tag-coolgray-content-color: var(--primitives-color-coolgray-750);
+	--components-tag-lintblauw-background-color: light-dark(var(--primitives-color-lintblauw-75), var(--primitives-color-lintblauw-150));
+	--components-tag-lintblauw-content-color: var(--primitives-color-lintblauw-750);
+	--components-tag-donkerblauw-background-color: light-dark(var(--primitives-color-donkerblauw-75), var(--primitives-color-donkerblauw-150));
+	--components-tag-donkerblauw-content-color: var(--primitives-color-donkerblauw-750);
+	--components-tag-hemelblauw-background-color: light-dark(var(--primitives-color-hemelblauw-75), var(--primitives-color-hemelblauw-150));
+	--components-tag-hemelblauw-content-color: var(--primitives-color-hemelblauw-750);
+	--components-tag-lichtblauw-background-color: light-dark(var(--primitives-color-lichtblauw-75), var(--primitives-color-lichtblauw-150));
+	--components-tag-lichtblauw-content-color: var(--primitives-color-lichtblauw-750);
+	--components-tag-paars-background-color: light-dark(var(--primitives-color-paars-75), var(--primitives-color-paars-150));
+	--components-tag-paars-content-color: var(--primitives-color-paars-750);
+	--components-tag-violet-background-color: light-dark(var(--primitives-color-violet-75), var(--primitives-color-violet-150));
+	--components-tag-violet-content-color: var(--primitives-color-violet-750);
+	--components-tag-robijnrood-background-color: light-dark(var(--primitives-color-robijnrood-75), var(--primitives-color-robijnrood-150));
+	--components-tag-robijnrood-content-color: var(--primitives-color-robijnrood-750);
+	--components-tag-roze-background-color: light-dark(var(--primitives-color-roze-75), var(--primitives-color-roze-150));
+	--components-tag-roze-content-color: var(--primitives-color-roze-750);
+	--components-tag-rood-background-color: light-dark(var(--primitives-color-rood-75), var(--primitives-color-rood-150));
+	--components-tag-rood-content-color: var(--primitives-color-rood-750);
+	--components-tag-oranje-background-color: light-dark(var(--primitives-color-oranje-75), var(--primitives-color-oranje-150));
+	--components-tag-oranje-content-color: var(--primitives-color-oranje-750);
+	--components-tag-donkergeel-background-color: light-dark(var(--primitives-color-donkergeel-75), var(--primitives-color-donkergeel-150));
+	--components-tag-donkergeel-content-color: var(--primitives-color-donkergeel-750);
+	--components-tag-geel-background-color: light-dark(var(--primitives-color-geel-75), var(--primitives-color-geel-150));
+	--components-tag-geel-content-color: var(--primitives-color-geel-750);
+	--components-tag-donkerbruin-background-color: light-dark(var(--primitives-color-donkerbruin-75), var(--primitives-color-donkerbruin-150));
+	--components-tag-donkerbruin-content-color: var(--primitives-color-donkerbruin-750);
+	--components-tag-bruin-background-color: light-dark(var(--primitives-color-bruin-75), var(--primitives-color-bruin-150));
+	--components-tag-bruin-content-color: var(--primitives-color-bruin-750);
+	--components-tag-donkergroen-background-color: light-dark(var(--primitives-color-donkergroen-75), var(--primitives-color-donkergroen-150));
+	--components-tag-donkergroen-content-color: var(--primitives-color-donkergroen-750);
+	--components-tag-groen-background-color: light-dark(var(--primitives-color-groen-75), var(--primitives-color-groen-150));
+	--components-tag-groen-content-color: var(--primitives-color-groen-750);
+	--components-tag-mosgroen-background-color: light-dark(var(--primitives-color-mosgroen-75), var(--primitives-color-mosgroen-150));
+	--components-tag-mosgroen-content-color: var(--primitives-color-mosgroen-750);
+	--components-tag-mintgroen-background-color: light-dark(var(--primitives-color-mintgroen-75), var(--primitives-color-mintgroen-150));
+	--components-tag-mintgroen-content-color: var(--primitives-color-mintgroen-750);
+
 	/* ## Title */
 
 	--components-title-sm-overline-font: var(--primitives-font-body-sm-regular-tight);

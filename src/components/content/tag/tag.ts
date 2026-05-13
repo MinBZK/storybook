@@ -5,7 +5,7 @@
  * Voor interactieve chips (filter, dismiss) gebruik je <nldd-token>.
  *
  * @element nldd-tag
- * @attr {string} variant - Visuele variant: 'neutral' | 'accent' | 'success' | 'warning' | 'critical' (default: 'neutral')
+ * @attr {string} variant - Visuele variant. Semantisch: 'neutral' | 'accent' | 'success' | 'warning' | 'critical'. Rijkskleuren: 'coolgray' | 'lintblauw' | 'donkerblauw' | 'hemelblauw' | 'lichtblauw' | 'paars' | 'violet' | 'robijnrood' | 'roze' | 'rood' | 'oranje' | 'donkergeel' | 'geel' | 'donkerbruin' | 'bruin' | 'donkergroen' | 'groen' | 'mosgroen' | 'mintgroen'. (default: 'neutral')
  * @attr {string} size - Tag grootte: 'sm' | 'md' (default: 'md')
  * @attr {string} text - Tag tekst (alternatief voor default slot)
  * @attr {string} icon - Icoon voor de tekst
@@ -21,7 +21,33 @@ import { tagStyles } from './tag.styles.js';
 import { template } from './tag.template.js';
 import './../icon/icon.js';
 
-type Variant = 'neutral' | 'accent' | 'success' | 'warning' | 'critical';
+type Variant =
+	// Semantisch
+	| 'neutral'
+	| 'accent'
+	| 'success'
+	| 'warning'
+	| 'critical'
+	// Rijkskleuren
+	| 'coolgray'
+	| 'lintblauw'
+	| 'donkerblauw'
+	| 'hemelblauw'
+	| 'lichtblauw'
+	| 'paars'
+	| 'violet'
+	| 'robijnrood'
+	| 'roze'
+	| 'rood'
+	| 'oranje'
+	| 'donkergeel'
+	| 'geel'
+	| 'donkerbruin'
+	| 'bruin'
+	| 'donkergroen'
+	| 'groen'
+	| 'mosgroen'
+	| 'mintgroen';
 type Size = 'sm' | 'md';
 
 @customElement('nldd-tag')

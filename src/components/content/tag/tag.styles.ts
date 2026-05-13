@@ -63,6 +63,104 @@ export const tagStyles = css`
 	}
 
 
+	/* ### Rijkskleuren */
+
+	:host([variant="coolgray"]) {
+		--_background-color: var(--components-tag-coolgray-background-color);
+		--_content-color: var(--components-tag-coolgray-content-color);
+	}
+
+	:host([variant="lintblauw"]) {
+		--_background-color: var(--components-tag-lintblauw-background-color);
+		--_content-color: var(--components-tag-lintblauw-content-color);
+	}
+
+	:host([variant="donkerblauw"]) {
+		--_background-color: var(--components-tag-donkerblauw-background-color);
+		--_content-color: var(--components-tag-donkerblauw-content-color);
+	}
+
+	:host([variant="hemelblauw"]) {
+		--_background-color: var(--components-tag-hemelblauw-background-color);
+		--_content-color: var(--components-tag-hemelblauw-content-color);
+	}
+
+	:host([variant="lichtblauw"]) {
+		--_background-color: var(--components-tag-lichtblauw-background-color);
+		--_content-color: var(--components-tag-lichtblauw-content-color);
+	}
+
+	:host([variant="paars"]) {
+		--_background-color: var(--components-tag-paars-background-color);
+		--_content-color: var(--components-tag-paars-content-color);
+	}
+
+	:host([variant="violet"]) {
+		--_background-color: var(--components-tag-violet-background-color);
+		--_content-color: var(--components-tag-violet-content-color);
+	}
+
+	:host([variant="robijnrood"]) {
+		--_background-color: var(--components-tag-robijnrood-background-color);
+		--_content-color: var(--components-tag-robijnrood-content-color);
+	}
+
+	:host([variant="roze"]) {
+		--_background-color: var(--components-tag-roze-background-color);
+		--_content-color: var(--components-tag-roze-content-color);
+	}
+
+	:host([variant="rood"]) {
+		--_background-color: var(--components-tag-rood-background-color);
+		--_content-color: var(--components-tag-rood-content-color);
+	}
+
+	:host([variant="oranje"]) {
+		--_background-color: var(--components-tag-oranje-background-color);
+		--_content-color: var(--components-tag-oranje-content-color);
+	}
+
+	:host([variant="donkergeel"]) {
+		--_background-color: var(--components-tag-donkergeel-background-color);
+		--_content-color: var(--components-tag-donkergeel-content-color);
+	}
+
+	:host([variant="geel"]) {
+		--_background-color: var(--components-tag-geel-background-color);
+		--_content-color: var(--components-tag-geel-content-color);
+	}
+
+	:host([variant="donkerbruin"]) {
+		--_background-color: var(--components-tag-donkerbruin-background-color);
+		--_content-color: var(--components-tag-donkerbruin-content-color);
+	}
+
+	:host([variant="bruin"]) {
+		--_background-color: var(--components-tag-bruin-background-color);
+		--_content-color: var(--components-tag-bruin-content-color);
+	}
+
+	:host([variant="donkergroen"]) {
+		--_background-color: var(--components-tag-donkergroen-background-color);
+		--_content-color: var(--components-tag-donkergroen-content-color);
+	}
+
+	:host([variant="groen"]) {
+		--_background-color: var(--components-tag-groen-background-color);
+		--_content-color: var(--components-tag-groen-content-color);
+	}
+
+	:host([variant="mosgroen"]) {
+		--_background-color: var(--components-tag-mosgroen-background-color);
+		--_content-color: var(--components-tag-mosgroen-content-color);
+	}
+
+	:host([variant="mintgroen"]) {
+		--_background-color: var(--components-tag-mintgroen-background-color);
+		--_content-color: var(--components-tag-mintgroen-content-color);
+	}
+
+
 	/* # Block */
 
 	.tag {

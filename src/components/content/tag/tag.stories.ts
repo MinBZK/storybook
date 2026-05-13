@@ -28,8 +28,16 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['neutral', 'accent', 'success', 'warning', 'critical'],
-			description: 'Visuele variant',
+			options: [
+				// Semantisch
+				'neutral', 'accent', 'success', 'warning', 'critical',
+				// Rijkskleuren
+				'coolgray', 'lintblauw', 'donkerblauw', 'hemelblauw', 'lichtblauw',
+				'paars', 'violet', 'robijnrood', 'roze', 'rood',
+				'oranje', 'donkergeel', 'geel', 'donkerbruin', 'bruin',
+				'donkergroen', 'groen', 'mosgroen', 'mintgroen',
+			],
+			description: 'Visuele variant — semantisch (neutral, accent, success, warning, critical) of een rijkskleur uit het palette',
 			table: {
 				defaultValue: { summary: 'neutral' },
 			},
@@ -48,10 +56,11 @@ export default {
 		},
 		icon: {
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon voor de tekst',
 			table: {
-				defaultValue: { summary: '' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		accessibleLabel: {
@@ -98,6 +107,45 @@ export const Variants = {
 	`,
 	parameters: {
 		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Semantische varianten voor de meest voorkomende statussen. Gebruik deze waar mogelijk — ze communiceren betekenis bovenop kleur.',
+			},
+		},
+	},
+};
+
+export const Rijkskleuren = {
+	render: () => html`
+		<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+			<nldd-tag variant="coolgray" text="coolgray"></nldd-tag>
+			<nldd-tag variant="lintblauw" text="lintblauw"></nldd-tag>
+			<nldd-tag variant="donkerblauw" text="donkerblauw"></nldd-tag>
+			<nldd-tag variant="hemelblauw" text="hemelblauw"></nldd-tag>
+			<nldd-tag variant="lichtblauw" text="lichtblauw"></nldd-tag>
+			<nldd-tag variant="paars" text="paars"></nldd-tag>
+			<nldd-tag variant="violet" text="violet"></nldd-tag>
+			<nldd-tag variant="robijnrood" text="robijnrood"></nldd-tag>
+			<nldd-tag variant="roze" text="roze"></nldd-tag>
+			<nldd-tag variant="rood" text="rood"></nldd-tag>
+			<nldd-tag variant="oranje" text="oranje"></nldd-tag>
+			<nldd-tag variant="donkergeel" text="donkergeel"></nldd-tag>
+			<nldd-tag variant="geel" text="geel"></nldd-tag>
+			<nldd-tag variant="donkerbruin" text="donkerbruin"></nldd-tag>
+			<nldd-tag variant="bruin" text="bruin"></nldd-tag>
+			<nldd-tag variant="donkergroen" text="donkergroen"></nldd-tag>
+			<nldd-tag variant="groen" text="groen"></nldd-tag>
+			<nldd-tag variant="mosgroen" text="mosgroen"></nldd-tag>
+			<nldd-tag variant="mintgroen" text="mintgroen"></nldd-tag>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Alle rijkskleuren uit het palette zijn direct als variant beschikbaar — handig voor categorisering waar de semantische varianten niet passen. Combineer kleur altijd met tekst zodat de tag ook zonder kleur leesbaar blijft.',
+			},
+		},
 	},
 };
 
