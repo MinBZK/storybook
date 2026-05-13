@@ -82,18 +82,8 @@ export const iconButtonStyles = css`
 		height: var(--semantics-controls-xs-min-size);
 		min-width: var(--semantics-controls-xs-min-size);
 		min-height: var(--semantics-controls-xs-min-size);
-		padding: var(--primitives-space-4);
+		padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-icon-only-icon-size)) / 2);
 		border-radius: var(--semantics-controls-xs-corner-radius);
-	}
-
-	:host([size='xs']) .icon-button__icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
-	}
-
-	:host([size='xs']) .icon-button__disclosure-icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
 	}
 
 	/* ## Size: SM */
@@ -102,19 +92,8 @@ export const iconButtonStyles = css`
 		height: var(--semantics-controls-sm-min-size);
 		min-width: var(--semantics-controls-sm-min-size);
 		min-height: var(--semantics-controls-sm-min-size);
-		padding: var(--primitives-space-6);
+		padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-icon-only-icon-size)) / 2);
 		border-radius: var(--semantics-controls-sm-corner-radius);
-	}
-
-	:host([size='sm']) .icon-button__icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-	}
-
-	:host([size='sm']) .icon-button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		margin-right: calc(var(--primitives-space-2) * -1);
 	}
 
 	/* ## Size: MD (Default) */
@@ -124,21 +103,8 @@ export const iconButtonStyles = css`
 		height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
 		min-height: var(--semantics-controls-md-min-size);
-		padding: var(--primitives-space-8);
+		padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-icon-only-icon-size)) / 2);
 		border-radius: var(--semantics-controls-md-corner-radius);
-	}
-
-	:host([size='md']) .icon-button__icon,
-	:host(:not([size])) .icon-button__icon {
-		width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
-	}
-
-	:host([size='md']) .icon-button__disclosure-icon,
-	:host(:not([size])) .icon-button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		margin-right: calc(var(--primitives-space-2) * -1);
 	}
 
 	/* ## Size: LG */
@@ -149,17 +115,6 @@ export const iconButtonStyles = css`
 		min-height: var(--semantics-controls-lg-min-size);
 		padding: var(--primitives-space-8);
 		border-radius: var(--semantics-controls-lg-corner-radius);
-	}
-
-	:host([size='lg']) .icon-button__icon {
-		width: var(--primitives-space-24);
-		height: var(--primitives-space-24);
-	}
-
-	:host([size='lg']) .icon-button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		margin-right: calc(var(--primitives-space-2) * -1);
 	}
 
 	/* # Variants */
@@ -393,9 +348,54 @@ export const iconButtonStyles = css`
 		justify-content: center;
 	}
 
+	:host([size='xs']) .icon-button__icon {
+		width: var(--semantics-buttons-xs-icon-only-icon-size);
+		height: var(--semantics-buttons-xs-icon-only-icon-size);
+	}
+
+	:host([size='sm']) .icon-button__icon {
+		width: var(--semantics-buttons-sm-icon-only-icon-size);
+		height: var(--semantics-buttons-sm-icon-only-icon-size);
+	}
+
+	:host([size='md']) .icon-button__icon,
+	:host(:not([size])) .icon-button__icon {
+		width: var(--semantics-buttons-md-icon-only-icon-size);
+		height: var(--semantics-buttons-md-icon-only-icon-size);
+	}
+
+	:host([size='lg']) .icon-button__icon {
+		width: var(--semantics-buttons-md-icon-only-icon-size);
+		height: var(--semantics-buttons-md-icon-only-icon-size);
+	}
+
 	.icon-button__disclosure-icon {
 		display: flex;
 		flex-shrink: 0;
+	}
+
+	:host([size='xs']) .icon-button__disclosure-icon {
+		width: var(--primitives-space-16);
+		height: var(--primitives-space-16);
+	}
+
+	:host([size='sm']) .icon-button__disclosure-icon {
+		width: var(--primitives-space-20);
+		height: var(--primitives-space-20);
+		margin-right: calc(var(--primitives-space-2) * -1);
+	}
+
+	:host([size='md']) .icon-button__disclosure-icon,
+	:host(:not([size])) .icon-button__disclosure-icon {
+		width: var(--primitives-space-20);
+		height: var(--primitives-space-20);
+		margin-right: calc(var(--primitives-space-2) * -1);
+	}
+
+	:host([size='lg']) .icon-button__disclosure-icon {
+		width: var(--primitives-space-20);
+		height: var(--primitives-space-20);
+		margin-right: calc(var(--primitives-space-2) * -1);
 	}
 
 	.icon-button__text {

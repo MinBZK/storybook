@@ -7,14 +7,16 @@ export const segmentedControlStyles = css`
 
 	:host {
 		--_width: auto;
+		--_segmented-control-md-item-indicator-inset: var(--primitives-space-4);
+		--_segmented-control-sm-item-indicator-inset: var(--primitives-space-3);
 
 		display: inline-grid;
 		grid-auto-columns: 1fr;
 		grid-auto-flow: column;
+		width: var(--_width);
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
-		width: var(--_width);
 	}
 
 	:host([hidden]) {
@@ -61,13 +63,6 @@ export const segmentedControlItemStyles = css`
 	/* # Host */
 
 	:host {
-		--_segmented-control-md-inset-size: var(--primitives-space-4);
-		--_segmented-control-md-gap-size: var(--primitives-space-4);
-		--_segmented-control-md-item-icon-size: var(--primitives-space-24);
-		--_segmented-control-sm-inset-size: var(--primitives-space-3);
-		--_segmented-control-sm-gap-size: var(--primitives-space-2);
-		--_segmented-control-sm-item-icon-size: var(--primitives-space-20);
-
 		display: flex;
 		min-width: 0;
 		position: relative;
@@ -76,6 +71,52 @@ export const segmentedControlItemStyles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
+
+
+	/* # Item */
+
+	.segmented-control__item {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		box-sizing: border-box;
+		color: var(--semantics-buttons-neutral-tinted-content-color);
+		cursor: default;
+	}
+
+	:host([size='md']) .segmented-control__item,
+	:host(:not([size])) .segmented-control__item {
+		height: var(--semantics-controls-md-min-size);
+		padding-inline: calc(var(--_segmented-control-md-item-indicator-inset) / 2 + var(--primitives-space-12));
+		font: var(--semantics-buttons-md-font);
+	}
+
+	:host([size='sm']) .segmented-control__item {
+		height: var(--semantics-controls-sm-min-size);
+		padding-inline: calc(var(--_segmented-control-sm-item-indicator-inset) / 2 + var(--primitives-space-8));
+		font: var(--semantics-buttons-sm-font);
+	}
+
+	:host([variant='icon'][size='md']) .segmented-control__item,
+	:host([variant='icon']:not([size])) .segmented-control__item {
+		width: calc(var(--semantics-controls-md-min-size) - var(--_segmented-control-md-item-indicator-inset));
+		padding: 0;
+	}
+
+	:host([variant='icon'][size='sm']) .segmented-control__item {
+		width: calc(var(--semantics-controls-sm-min-size) - var(--_segmented-control-sm-item-indicator-inset));
+		padding: 0;
+	}
+
+	:host([selected]) .segmented-control__item {
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
+	}
+
+	:host([disabled]) .segmented-control__item {
+		opacity: var(--primitives-opacity-disabled);
 	}
 
 
@@ -92,50 +133,6 @@ export const segmentedControlItemStyles = css`
 	}
 
 
-	/* # Label */
-
-	.segmented-control__item-label {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		box-sizing: border-box;
-		color: var(--semantics-buttons-neutral-tinted-content-color);
-		cursor: default;
-	}
-
-	:host([size='md']) .segmented-control__item-label,
-	:host(:not([size])) .segmented-control__item-label {
-		height: var(--semantics-controls-md-min-size);
-		padding-inline: calc(var(--_segmented-control-md-inset-size) / 2 + var(--primitives-space-12));
-		font: var(--semantics-buttons-md-font);
-	}
-
-	:host([size='sm']) .segmented-control__item-label {
-		height: var(--semantics-controls-sm-min-size);
-		padding-inline: calc(var(--_segmented-control-sm-inset-size) / 2 + var(--primitives-space-8));
-		font: var(--semantics-buttons-sm-font);
-	}
-
-	:host([variant='icon'][size='md']) .segmented-control__item-label,
-	:host([variant='icon']:not([size])) .segmented-control__item-label {
-		padding-inline: calc((var(--semantics-controls-md-min-size) - var(--_segmented-control-md-item-icon-size) - var(--_segmented-control-md-inset-size) * 2 + var(--_segmented-control-md-gap-size)) / 2);
-	}
-
-	:host([variant='icon'][size='sm']) .segmented-control__item-label {
-		padding-inline: calc((var(--semantics-controls-sm-min-size) - var(--_segmented-control-sm-item-icon-size) - var(--_segmented-control-sm-inset-size) * 2 + var(--_segmented-control-sm-gap-size)) / 2);
-	}
-
-	:host([selected]) .segmented-control__item-label {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
-	}
-
-	:host([disabled]) .segmented-control__item-label {
-		opacity: var(--primitives-opacity-disabled);
-	}
-
-
 	/* # Text */
 
 	.segmented-control__item-text {
@@ -144,6 +141,10 @@ export const segmentedControlItemStyles = css`
 		white-space: nowrap;
 		z-index: 2;
 		pointer-events: none;
+	}
+
+	:host([variant='icon']) .segmented-control__item-text {
+		display: none;
 	}
 
 
@@ -160,13 +161,17 @@ export const segmentedControlItemStyles = css`
 
 	:host([size='md']) .segmented-control__item-icon,
 	:host(:not([size])) .segmented-control__item-icon {
-		width: var(--_segmented-control-md-item-icon-size);
-		height: var(--_segmented-control-md-item-icon-size);
+		width: var(--semantics-buttons-md-icon-only-icon-size);
+		height: var(--semantics-buttons-md-icon-only-icon-size);
 	}
 
 	:host([size='sm']) .segmented-control__item-icon {
-		width: var(--_segmented-control-sm-item-icon-size);
-		height: var(--_segmented-control-sm-item-icon-size);
+		width: var(--semantics-buttons-sm-icon-only-icon-size);
+		height: var(--semantics-buttons-sm-icon-only-icon-size);
+	}
+
+	:host([variant='text']) .segmented-control__item-icon {
+		display: none;
 	}
 
 	::slotted(nldd-icon) {
@@ -176,20 +181,9 @@ export const segmentedControlItemStyles = css`
 	}
 
 
-	/* # Slot visibility */
-
-	:host([variant='text']) .segmented-control__item-icon {
-		display: none;
-	}
-
-	:host([variant='icon']) .segmented-control__item-text {
-		display: none;
-	}
-
-
 	/* # Indicator */
 
-	.segmented-control__item-label::before {
+	.segmented-control__item::before {
 		content: '';
 		position: absolute;
 		inset: 0;
@@ -197,25 +191,25 @@ export const segmentedControlItemStyles = css`
 		background-color: transparent;
 	}
 
-	:host([size='md']) .segmented-control__item-label::before,
-	:host(:not([size])) .segmented-control__item-label::before {
-		inset-block: var(--_segmented-control-md-inset-size);
-		inset-inline: calc(var(--_segmented-control-md-gap-size) / 2);
-		border-radius: calc(var(--semantics-controls-md-corner-radius) - (var(--_segmented-control-md-inset-size) / 2));
+	:host([size='md']) .segmented-control__item::before,
+	:host(:not([size])) .segmented-control__item::before {
+		inset-block: var(--_segmented-control-md-item-indicator-inset);
+		inset-inline: calc(var(--_segmented-control-md-item-indicator-inset) / 2);
+		border-radius: calc(var(--semantics-controls-md-corner-radius) - (var(--_segmented-control-md-item-indicator-inset) / 2));
 	}
 
-	:host([size='sm']) .segmented-control__item-label::before {
-		inset-block: var(--_segmented-control-sm-inset-size);
-		inset-inline: calc(var(--_segmented-control-sm-gap-size) / 2);
-		border-radius: calc(var(--semantics-controls-sm-corner-radius) - (var(--_segmented-control-sm-inset-size) / 2));
+	:host([size='sm']) .segmented-control__item::before {
+		inset-block: var(--_segmented-control-sm-item-indicator-inset);
+		inset-inline: calc(var(--_segmented-control-sm-item-indicator-inset) / 2);
+		border-radius: calc(var(--semantics-controls-sm-corner-radius) - (var(--_segmented-control-sm-item-indicator-inset) / 2));
 	}
 
-	:host([selected]) .segmented-control__item-label::before {
+	:host([selected]) .segmented-control__item::before {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
 	}
 
 	@media (hover: hover) {
-		:host(:not([selected])) .segmented-control__item-label:hover::before {
+		:host(:not([selected])) .segmented-control__item:hover::before {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 		}
 	}
@@ -223,7 +217,7 @@ export const segmentedControlItemStyles = css`
 
 	/* # Focus */
 
-	.segmented-control__item-label:has(:focus-visible)::before {
+	.segmented-control__item:has(:focus-visible)::before {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);

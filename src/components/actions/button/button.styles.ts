@@ -344,20 +344,20 @@ export const buttonStyles = css`
 	:host(:not([size])) .button__start-icon,
 	:host([size="md"]) .button__end-icon,
 	:host(:not([size])) .button__end-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
+		width: var(--semantics-buttons-md-icon-size);
+		height: var(--semantics-buttons-md-icon-size);
 	}
 
 	:host([size="sm"]) .button__start-icon,
 	:host([size="sm"]) .button__end-icon {
-		width: var(--primitives-space-18);
-		height: var(--primitives-space-18);
+		width: var(--semantics-buttons-sm-icon-size);
+		height: var(--semantics-buttons-sm-icon-size);
 	}
 
 	:host([size="xs"]) .button__start-icon,
 	:host([size="xs"]) .button__end-icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
+		width: var(--semantics-buttons-xs-icon-size);
+		height: var(--semantics-buttons-xs-icon-size);
 	}
 
 	.button__disclosure-icon {
