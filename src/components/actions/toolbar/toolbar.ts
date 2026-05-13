@@ -6,9 +6,9 @@
  * @attr {boolean} show-item-labels - When true, shows a text label below each toolbar item and the overflow button
  * @attr {string} label - Accessible label for the toolbar. Only needed when multiple toolbars appear on the same page
  *
- * @slot start    - nldd-toolbar-item and nldd-toolbar-title-group elements placed at the start
- * @slot center   - nldd-toolbar-item and nldd-toolbar-title-group elements placed at the center
- * @slot end      - nldd-toolbar-item and nldd-toolbar-title-group elements placed at the end
+ * @slot start    - nldd-toolbar-item and nldd-toolbar-title elements placed at the start
+ * @slot center   - nldd-toolbar-item and nldd-toolbar-title elements placed at the center
+ * @slot end      - nldd-toolbar-item and nldd-toolbar-title elements placed at the end
  * @slot overflow - nldd-menu-item and nldd-menu-divider elements always shown in the overflow menu
  */
 import { LitElement } from 'lit';
@@ -29,8 +29,8 @@ if (!customElements.get('nldd-toolbar-item')) {
 		}
 	});
 }
-if (!customElements.get('nldd-toolbar-title-group')) {
-	customElements.define('nldd-toolbar-title-group', class extends HTMLElement {});
+if (!customElements.get('nldd-toolbar-title')) {
+	customElements.define('nldd-toolbar-title', class extends HTMLElement {});
 }
 
 // # Types
@@ -119,7 +119,7 @@ export class NLDDToolbar extends LitElement {
 				// are safe to ignore.
 				if (m.type === 'attributes') {
 					const tag = (m.target as Element).tagName.toLowerCase();
-					return tag !== 'nldd-toolbar-item' && tag !== 'nldd-toolbar-title-group';
+					return tag !== 'nldd-toolbar-item' && tag !== 'nldd-toolbar-title';
 				}
 				return false;
 			});
@@ -286,7 +286,7 @@ export class NLDDToolbar extends LitElement {
 		const visible = children.filter(c => !this._overflowIds.has(c.id));
 		const gaps = Math.max(0, visible.length - 1) * itemGap;
 		const itemsWidth = visible.reduce((sum, child) => {
-			if (child.type === 'item' || child.type === 'title-group') {
+			if (child.type === 'item' || child.type === 'title') {
 				return sum + (this._itemWidths.get(child.id) ?? 0);
 			}
 			return sum;
@@ -466,14 +466,14 @@ export class NLDDToolbar extends LitElement {
 			.map(el => {
 				const tag = el.tagName.toLowerCase();
 
-				if (tag === 'nldd-toolbar-title-group') {
+				if (tag === 'nldd-toolbar-title') {
 					const id = this._getId(el);
 					(el as HTMLElement).dataset.toolbarSlot = slotName;
 					el.setAttribute('slot', `child-${id}`);
 					return {
-						type: 'title-group',
+						type: 'title',
 						title: el.getAttribute('text') ?? '',
-						subtitle: el.getAttribute('subtext') ?? '',
+						supportingText: el.getAttribute('supporting-text') ?? '',
 						align: el.getAttribute('align') ?? 'left',
 						minWidth: el.getAttribute('min-width') ?? '200px',
 						id,
@@ -556,7 +556,7 @@ export class NLDDToolbar extends LitElement {
 			!this._overflowIds.has(c.id)
 		);
 		const isSoloFluid = visibleNonDivider.length === 1 && (
-			visibleNonDivider[0].type === 'title-group' ||
+			visibleNonDivider[0].type === 'title' ||
 			(visibleNonDivider[0].type === 'item' && visibleNonDivider[0].isFluid)
 		);
 
@@ -585,6 +585,6 @@ declare global {
 	interface HTMLElementTagNameMap {
 		'nldd-toolbar': NLDDToolbar;
 		'nldd-toolbar-item': HTMLElement;
-		'nldd-toolbar-title-group': HTMLElement;
+		'nldd-toolbar-title': HTMLElement;
 	}
 }
