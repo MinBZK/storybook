@@ -9,7 +9,7 @@ export const tagStyles = css`
 		--_background-color: var(--components-tag-neutral-background-color);
 		--_content-color: var(--components-tag-neutral-content-color);
 		--_min-height: var(--primitives-space-24);
-		--_inline-padding: var(--primitives-space-8);
+		--_inline-padding: var(--primitives-space-6);
 		--_gap: var(--primitives-space-3);
 		--_font: var(--primitives-font-body-sm-bold-flat);
 		--_icon-size: var(--primitives-space-16);
@@ -22,7 +22,7 @@ export const tagStyles = css`
 
 	:host([size="sm"]) {
 		--_min-height: var(--primitives-space-20);
-		--_inline-padding: var(--primitives-space-6);
+		--_inline-padding: var(--primitives-space-4);
 		--_gap: var(--primitives-space-2);
 		--_font: var(--primitives-font-body-xs-bold-flat);
 		--_icon-size: var(--primitives-space-14);
