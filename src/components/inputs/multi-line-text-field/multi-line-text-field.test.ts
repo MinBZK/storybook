@@ -165,7 +165,7 @@ describe('nldd-multi-line-text-field', () => {
 		el = await fixture('<nldd-multi-line-text-field width="240px"></nldd-multi-line-text-field>');
 		await waitForUpdate(el);
 		expect(el.getAttribute('width')).toBe('240px');
-		expect((el as HTMLElement).style.width).toBe('240px');
+		expect(el.style.getPropertyValue('--_width')).toBe('240px');
 	});
 
 	it('clears inline textarea dimensions when resize is set to "auto"', async () => {
@@ -186,6 +186,6 @@ describe('nldd-multi-line-text-field', () => {
 		await waitForUpdate(el);
 		(el as any).width = '';
 		await waitForUpdate(el);
-		expect((el as HTMLElement).style.width).toBe('');
+		expect(el.style.getPropertyValue('--_width')).toBe('');
 	});
 });
