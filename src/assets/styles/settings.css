@@ -293,14 +293,6 @@
 	--primitives-area-1280: 1280px;
 	--primitives-area-1440: 1440px;
 
-	/* ## Breakpoints */
-
-	--primitives-breakpoint-sm-min: 320px;
-	--primitives-breakpoint-sm-max: 640px;
-	--primitives-breakpoint-md-min: 641px;
-	--primitives-breakpoint-md-max: 1007px;
-	--primitives-breakpoint-lg-min: 1008px;
-
 	/* ## Border width */
 
 	--primitives-border-width-thin: 1px;
