@@ -16,13 +16,14 @@ export default {
 	argTypes: {
 		variant: {
 			control: 'select',
-			options: ['', 'icon-and-text', 'text', 'icon'],
+			options: ['(geen)', 'icon-and-text', 'text', 'icon'],
+			mapping: { '(geen)': '' },
 			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Wordt genegeerd wanneer compact actief is.',
-			table: { defaultValue: { summary: '' } },
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		centered: {
 			control: 'boolean',
-			description: 'Centers the tabs in the container (host fills the row, tabs group in the middle)',
+			description: 'Centreert de tabs in de container (host vult de rij, tabs groeperen in het midden)',
 			table: { defaultValue: { summary: false } },
 		},
 		compact: {
@@ -32,7 +33,7 @@ export default {
 		},
 		responsive: {
 			control: 'boolean',
-			description: 'Schakelt automatisch over naar compact via de layout-area container query (onder 480px)',
+			description: 'Schakelt automatisch over naar compact via de layout-container container query (onder 480px)',
 			table: { defaultValue: { summary: false } },
 		},
 	},
@@ -100,7 +101,7 @@ export const Responsief = {
 	<div style="display: flex; flex-direction: column; gap: 2rem;">
 		<div>
 			<small>Breed (regular weergave)</small>
-			<div style="container-type: inline-size; container-name: layout-area; width: 680px;">
+			<div style="container-type: inline-size; container-name: layout-container; width: 680px;">
 				<nldd-tab-bar responsive centered>
 					${tabBarItems}
 				</nldd-tab-bar>
@@ -108,7 +109,7 @@ export const Responsief = {
 		</div>
 		<div>
 			<small>Smal onder 480px (compact weergave)</small>
-			<div style="container-type: inline-size; container-name: layout-area; width: 320px;">
+			<div style="container-type: inline-size; container-name: layout-container; width: 320px;">
 				<nldd-tab-bar responsive centered>
 					${tabBarItems}
 				</nldd-tab-bar>
@@ -121,7 +122,7 @@ export const Responsief = {
 
 export const VolleBreedte = {
 	render: () => html`
-	<div style="container-type: inline-size; container-name: layout-area;">
+	<div style="container-type: inline-size; container-name: layout-container;">
 		<nldd-tab-bar centered>
 			${tabBarItems}
 		</nldd-tab-bar>

@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './icon-cell.js';
 import '../../../content/icon/icon.js';
 import { ICONS } from '../../../content/icon/icon.js';
@@ -11,26 +11,38 @@ export default {
 		size: {
 			control: 'select',
 			options: ['16', '20', '24', '32'],
-			description: 'Icon size in pixels',
+			description: 'Grootte van het icoon in pixels',
 			table: { defaultValue: { summary: '24' } },
 		},
 		color: {
 			control: 'select',
 			options: ['default', 'secondary', 'accent', 'success', 'warning', 'critical'],
-			description: 'Color variant of the icon',
+			description: 'Kleurvariant van het icoon',
 			table: { defaultValue: { summary: 'default' } },
 		},
 		verticalAlignment: {
 			name: 'vertical-alignment',
 			control: 'select',
 			options: ['top', 'center', 'bottom'],
-			description: 'Vertical alignment of the icon',
+			description: 'Verticale uitlijning van het icoon',
 			table: { defaultValue: { summary: 'center' } },
 		},
 		icon: {
 			control: 'select',
 			options: ICONS,
-			description: 'Icon to display',
+			description: 'Te tonen icoon',
+		},
+		hideBelow: {
+			name: 'hide-below',
+			control: 'text',
+			description: 'Verberg wanneer list-container smaller is dan deze CSS-lengte (bv. "320px", "20rem")',
+			table: { defaultValue: { summary: '' } },
+		},
+		hideAbove: {
+			name: 'hide-above',
+			control: 'text',
+			description: 'Verberg wanneer list-container breder is dan deze CSS-lengte (bv. "1200px")',
+			table: { defaultValue: { summary: '' } },
 		},
 	},
 };
@@ -41,6 +53,8 @@ export const Default = {
 		color: 'default',
 		verticalAlignment: 'center',
 		icon: 'icon-placeholder',
+		hideBelow: '',
+		hideAbove: '',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-icon-cell
@@ -48,6 +62,8 @@ export const Default = {
 			color=${args.color}
 			vertical-alignment=${args.verticalAlignment}
 			icon=${args.icon}
+			hide-below=${args.hideBelow || nothing}
+			hide-above=${args.hideAbove || nothing}
 		></nldd-icon-cell>
 	`,
 };
@@ -97,6 +113,6 @@ export const CustomSlotContent = {
 	`,
 	parameters: {
 		controls: { disable: true },
-		docs: { description: { story: 'When `icon` is not set, the default slot renders consumer content — useful for custom SVGs or icons from another library.' } },
+		docs: { description: { story: 'Wanneer `icon` niet is gezet, rendert de default-slot consumer-inhoud — handig voor custom SVG\'s of iconen uit een andere library.' } },
 	},
 };

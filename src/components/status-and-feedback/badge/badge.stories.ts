@@ -51,10 +51,11 @@ export default {
 		},
 		icon: {
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon naam',
 			table: {
-				defaultValue: { summary: '' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		number: {

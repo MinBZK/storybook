@@ -4,19 +4,19 @@ import './container.js';
 import '../../content/rich-text/rich-text.js';
 
 /**
- * Use a container to add padding to content.
- * Padding can be set for all sides, per axis (inline/block),
- * or per individual side (top, right, bottom, left).
- * More specific settings take precedence: sides > axis > all sides.
+ * Gebruik een container om padding aan inhoud toe te voegen.
+ * Padding kan worden ingesteld voor alle zijden, per as (inline/block),
+ * of per individuele zijde (boven, rechts, onder, links).
+ * Specifiekere instellingen hebben voorrang: zijden > as > alle zijden.
  *
- * Responsive padding is supported via viewport breakpoints (sm-, md-, lg-)
- * and container queries (layout-area-sm-, layout-area-md-, layout-area-lg-).
- * Cascade order: base → viewport breakpoints → container queries.
+ * Responsieve padding wordt ondersteund via viewport-breekpunten (sm-, md-, lg-)
+ * en container queries (layout-container-sm-, layout-container-md-, layout-container-lg-).
+ * Cascade-volgorde: basis → viewport-breekpunten → container queries.
  *
  * ## Gebruik
  * ```html
  * <nldd-container padding="16" sm-padding="24" md-padding="32">
- *   <nldd-rich-text><p>Content with responsive padding.</p></nldd-rich-text>
+ *   <nldd-rich-text><p>Inhoud met responsieve padding.</p></nldd-rich-text>
  * </nldd-container>
  * ```
  */
@@ -34,55 +34,55 @@ export default {
 		},
 	},
 	argTypes: {
-		padding: { control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for all sides' },
-		paddingInline: { name: 'padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left and right' },
-		paddingBlock: { name: 'padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top and bottom' },
-		paddingTop: { name: 'padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top' },
-		paddingRight: { name: 'padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for right' },
-		paddingBottom: { name: 'padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for bottom' },
-		paddingLeft: { name: 'padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left' },
-		smPadding: { name: 'sm-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for all sides at sm viewport' },
-		smPaddingInline: { name: 'sm-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left and right at sm viewport' },
-		smPaddingBlock: { name: 'sm-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top and bottom at sm viewport' },
-		smPaddingTop: { name: 'sm-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top at sm viewport' },
-		smPaddingRight: { name: 'sm-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for right at sm viewport' },
-		smPaddingBottom: { name: 'sm-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for bottom at sm viewport' },
-		smPaddingLeft: { name: 'sm-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left at sm viewport' },
-		mdPadding: { name: 'md-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for all sides at md viewport' },
-		mdPaddingInline: { name: 'md-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left and right at md viewport' },
-		mdPaddingBlock: { name: 'md-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top and bottom at md viewport' },
-		mdPaddingTop: { name: 'md-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top at md viewport' },
-		mdPaddingRight: { name: 'md-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for right at md viewport' },
-		mdPaddingBottom: { name: 'md-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for bottom at md viewport' },
-		mdPaddingLeft: { name: 'md-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left at md viewport' },
-		lgPadding: { name: 'lg-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for all sides at lg viewport' },
-		lgPaddingInline: { name: 'lg-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left and right at lg viewport' },
-		lgPaddingBlock: { name: 'lg-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top and bottom at lg viewport' },
-		lgPaddingTop: { name: 'lg-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top at lg viewport' },
-		lgPaddingRight: { name: 'lg-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for right at lg viewport' },
-		lgPaddingBottom: { name: 'lg-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for bottom at lg viewport' },
-		lgPaddingLeft: { name: 'lg-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left at lg viewport' },
-		layoutAreaSmPadding: { name: 'layout-area-sm-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for all sides at sm container size' },
-		layoutAreaSmPaddingInline: { name: 'layout-area-sm-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left and right at sm container size' },
-		layoutAreaSmPaddingBlock: { name: 'layout-area-sm-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top and bottom at sm container size' },
-		layoutAreaSmPaddingTop: { name: 'layout-area-sm-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top at sm container size' },
-		layoutAreaSmPaddingRight: { name: 'layout-area-sm-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for right at sm container size' },
-		layoutAreaSmPaddingBottom: { name: 'layout-area-sm-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for bottom at sm container size' },
-		layoutAreaSmPaddingLeft: { name: 'layout-area-sm-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left at sm container size' },
-		layoutAreaMdPadding: { name: 'layout-area-md-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for all sides at md container size' },
-		layoutAreaMdPaddingInline: { name: 'layout-area-md-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left and right at md container size' },
-		layoutAreaMdPaddingBlock: { name: 'layout-area-md-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top and bottom at md container size' },
-		layoutAreaMdPaddingTop: { name: 'layout-area-md-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top at md container size' },
-		layoutAreaMdPaddingRight: { name: 'layout-area-md-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for right at md container size' },
-		layoutAreaMdPaddingBottom: { name: 'layout-area-md-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for bottom at md container size' },
-		layoutAreaMdPaddingLeft: { name: 'layout-area-md-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left at md container size' },
-		layoutAreaLgPadding: { name: 'layout-area-lg-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for all sides at lg container size' },
-		layoutAreaLgPaddingInline: { name: 'layout-area-lg-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left and right at lg container size' },
-		layoutAreaLgPaddingBlock: { name: 'layout-area-lg-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top and bottom at lg container size' },
-		layoutAreaLgPaddingTop: { name: 'layout-area-lg-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for top at lg container size' },
-		layoutAreaLgPaddingRight: { name: 'layout-area-lg-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for right at lg container size' },
-		layoutAreaLgPaddingBottom: { name: 'layout-area-lg-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for bottom at lg container size' },
-		layoutAreaLgPaddingLeft: { name: 'layout-area-lg-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding for left at lg container size' },
+		padding: { control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor alle zijden' },
+		paddingInline: { name: 'padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor links en rechts' },
+		paddingBlock: { name: 'padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor boven en onder' },
+		paddingTop: { name: 'padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding boven' },
+		paddingRight: { name: 'padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding rechts' },
+		paddingBottom: { name: 'padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding onder' },
+		paddingLeft: { name: 'padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding links' },
+		smPadding: { name: 'sm-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor alle zijden bij sm-viewport' },
+		smPaddingInline: { name: 'sm-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor links en rechts bij sm-viewport' },
+		smPaddingBlock: { name: 'sm-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor boven en onder bij sm-viewport' },
+		smPaddingTop: { name: 'sm-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding boven bij sm-viewport' },
+		smPaddingRight: { name: 'sm-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding rechts bij sm-viewport' },
+		smPaddingBottom: { name: 'sm-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding onder bij sm-viewport' },
+		smPaddingLeft: { name: 'sm-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding links bij sm-viewport' },
+		mdPadding: { name: 'md-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor alle zijden bij md-viewport' },
+		mdPaddingInline: { name: 'md-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor links en rechts bij md-viewport' },
+		mdPaddingBlock: { name: 'md-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor boven en onder bij md-viewport' },
+		mdPaddingTop: { name: 'md-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding boven bij md-viewport' },
+		mdPaddingRight: { name: 'md-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding rechts bij md-viewport' },
+		mdPaddingBottom: { name: 'md-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding onder bij md-viewport' },
+		mdPaddingLeft: { name: 'md-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding links bij md-viewport' },
+		lgPadding: { name: 'lg-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor alle zijden bij lg-viewport' },
+		lgPaddingInline: { name: 'lg-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor links en rechts bij lg-viewport' },
+		lgPaddingBlock: { name: 'lg-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor boven en onder bij lg-viewport' },
+		lgPaddingTop: { name: 'lg-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding boven bij lg-viewport' },
+		lgPaddingRight: { name: 'lg-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding rechts bij lg-viewport' },
+		lgPaddingBottom: { name: 'lg-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding onder bij lg-viewport' },
+		lgPaddingLeft: { name: 'lg-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding links bij lg-viewport' },
+		layoutAreaSmPadding: { name: 'layout-container-sm-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor alle zijden bij sm container-grootte' },
+		layoutAreaSmPaddingInline: { name: 'layout-container-sm-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor links en rechts bij sm container-grootte' },
+		layoutAreaSmPaddingBlock: { name: 'layout-container-sm-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor boven en onder bij sm container-grootte' },
+		layoutAreaSmPaddingTop: { name: 'layout-container-sm-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding boven bij sm container-grootte' },
+		layoutAreaSmPaddingRight: { name: 'layout-container-sm-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding rechts bij sm container-grootte' },
+		layoutAreaSmPaddingBottom: { name: 'layout-container-sm-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding onder bij sm container-grootte' },
+		layoutAreaSmPaddingLeft: { name: 'layout-container-sm-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding links bij sm container-grootte' },
+		layoutAreaMdPadding: { name: 'layout-container-md-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor alle zijden bij md container-grootte' },
+		layoutAreaMdPaddingInline: { name: 'layout-container-md-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor links en rechts bij md container-grootte' },
+		layoutAreaMdPaddingBlock: { name: 'layout-container-md-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor boven en onder bij md container-grootte' },
+		layoutAreaMdPaddingTop: { name: 'layout-container-md-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding boven bij md container-grootte' },
+		layoutAreaMdPaddingRight: { name: 'layout-container-md-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding rechts bij md container-grootte' },
+		layoutAreaMdPaddingBottom: { name: 'layout-container-md-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding onder bij md container-grootte' },
+		layoutAreaMdPaddingLeft: { name: 'layout-container-md-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding links bij md container-grootte' },
+		layoutAreaLgPadding: { name: 'layout-container-lg-padding', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor alle zijden bij lg container-grootte' },
+		layoutAreaLgPaddingInline: { name: 'layout-container-lg-padding-inline', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor links en rechts bij lg container-grootte' },
+		layoutAreaLgPaddingBlock: { name: 'layout-container-lg-padding-block', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding voor boven en onder bij lg container-grootte' },
+		layoutAreaLgPaddingTop: { name: 'layout-container-lg-padding-top', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding boven bij lg container-grootte' },
+		layoutAreaLgPaddingRight: { name: 'layout-container-lg-padding-right', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding rechts bij lg container-grootte' },
+		layoutAreaLgPaddingBottom: { name: 'layout-container-lg-padding-bottom', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding onder bij lg container-grootte' },
+		layoutAreaLgPaddingLeft: { name: 'layout-container-lg-padding-left', control: 'select', options: ['0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'], description: 'Padding links bij lg container-grootte' },
 	},
 };
 
@@ -120,30 +120,30 @@ export const Standaard = {
 			lg-padding-right=${ifDefined(args.lgPaddingRight)}
 			lg-padding-bottom=${ifDefined(args.lgPaddingBottom)}
 			lg-padding-left=${ifDefined(args.lgPaddingLeft)}
-			layout-area-sm-padding=${ifDefined(args.layoutAreaSmPadding)}
-			layout-area-sm-padding-inline=${ifDefined(args.layoutAreaSmPaddingInline)}
-			layout-area-sm-padding-block=${ifDefined(args.layoutAreaSmPaddingBlock)}
-			layout-area-sm-padding-top=${ifDefined(args.layoutAreaSmPaddingTop)}
-			layout-area-sm-padding-right=${ifDefined(args.layoutAreaSmPaddingRight)}
-			layout-area-sm-padding-bottom=${ifDefined(args.layoutAreaSmPaddingBottom)}
-			layout-area-sm-padding-left=${ifDefined(args.layoutAreaSmPaddingLeft)}
-			layout-area-md-padding=${ifDefined(args.layoutAreaMdPadding)}
-			layout-area-md-padding-inline=${ifDefined(args.layoutAreaMdPaddingInline)}
-			layout-area-md-padding-block=${ifDefined(args.layoutAreaMdPaddingBlock)}
-			layout-area-md-padding-top=${ifDefined(args.layoutAreaMdPaddingTop)}
-			layout-area-md-padding-right=${ifDefined(args.layoutAreaMdPaddingRight)}
-			layout-area-md-padding-bottom=${ifDefined(args.layoutAreaMdPaddingBottom)}
-			layout-area-md-padding-left=${ifDefined(args.layoutAreaMdPaddingLeft)}
-			layout-area-lg-padding=${ifDefined(args.layoutAreaLgPadding)}
-			layout-area-lg-padding-inline=${ifDefined(args.layoutAreaLgPaddingInline)}
-			layout-area-lg-padding-block=${ifDefined(args.layoutAreaLgPaddingBlock)}
-			layout-area-lg-padding-top=${ifDefined(args.layoutAreaLgPaddingTop)}
-			layout-area-lg-padding-right=${ifDefined(args.layoutAreaLgPaddingRight)}
-			layout-area-lg-padding-bottom=${ifDefined(args.layoutAreaLgPaddingBottom)}
-			layout-area-lg-padding-left=${ifDefined(args.layoutAreaLgPaddingLeft)}
+			layout-container-sm-padding=${ifDefined(args.layoutAreaSmPadding)}
+			layout-container-sm-padding-inline=${ifDefined(args.layoutAreaSmPaddingInline)}
+			layout-container-sm-padding-block=${ifDefined(args.layoutAreaSmPaddingBlock)}
+			layout-container-sm-padding-top=${ifDefined(args.layoutAreaSmPaddingTop)}
+			layout-container-sm-padding-right=${ifDefined(args.layoutAreaSmPaddingRight)}
+			layout-container-sm-padding-bottom=${ifDefined(args.layoutAreaSmPaddingBottom)}
+			layout-container-sm-padding-left=${ifDefined(args.layoutAreaSmPaddingLeft)}
+			layout-container-md-padding=${ifDefined(args.layoutAreaMdPadding)}
+			layout-container-md-padding-inline=${ifDefined(args.layoutAreaMdPaddingInline)}
+			layout-container-md-padding-block=${ifDefined(args.layoutAreaMdPaddingBlock)}
+			layout-container-md-padding-top=${ifDefined(args.layoutAreaMdPaddingTop)}
+			layout-container-md-padding-right=${ifDefined(args.layoutAreaMdPaddingRight)}
+			layout-container-md-padding-bottom=${ifDefined(args.layoutAreaMdPaddingBottom)}
+			layout-container-md-padding-left=${ifDefined(args.layoutAreaMdPaddingLeft)}
+			layout-container-lg-padding=${ifDefined(args.layoutAreaLgPadding)}
+			layout-container-lg-padding-inline=${ifDefined(args.layoutAreaLgPaddingInline)}
+			layout-container-lg-padding-block=${ifDefined(args.layoutAreaLgPaddingBlock)}
+			layout-container-lg-padding-top=${ifDefined(args.layoutAreaLgPaddingTop)}
+			layout-container-lg-padding-right=${ifDefined(args.layoutAreaLgPaddingRight)}
+			layout-container-lg-padding-bottom=${ifDefined(args.layoutAreaLgPaddingBottom)}
+			layout-container-lg-padding-left=${ifDefined(args.layoutAreaLgPaddingLeft)}
 			style="outline: 1px dashed var(--color-neutral-400);"
 		>
-			<nldd-rich-text><p>Container content.</p></nldd-rich-text>
+			<nldd-rich-text><p>Inhoud van de container.</p></nldd-rich-text>
 		</nldd-container>
 	`,
 };
@@ -199,25 +199,25 @@ export const PaddingResponsief = {
 		lg-padding="32"
 		style="outline: 1px dashed var(--color-neutral-400);"
 	>
-		<nldd-rich-text><p>Responsive viewport padding: 8 → 16 → 24 → 32.</p></nldd-rich-text>
+		<nldd-rich-text><p>Responsieve viewport-padding: 8 → 16 → 24 → 32.</p></nldd-rich-text>
 	</nldd-container>
 `,
-	storyName: 'Padding — responsive viewport',
+	storyName: 'Padding — responsieve viewport',
 };
 
 export const PaddingContainerQuery = {
 	render: () => html`
 	<nldd-container
 		padding="8"
-		layout-area-sm-padding="16"
-		layout-area-md-padding="24"
-		layout-area-lg-padding="32"
+		layout-container-sm-padding="16"
+		layout-container-md-padding="24"
+		layout-container-lg-padding="32"
 		style="outline: 1px dashed var(--color-neutral-400);"
 	>
-		<nldd-rich-text><p>Responsive container padding: 8 → 16 → 24 → 32 based on layout-area container size.</p></nldd-rich-text>
+		<nldd-rich-text><p>Responsieve container-padding: 8 → 16 → 24 → 32 op basis van de layout-container container-grootte.</p></nldd-rich-text>
 	</nldd-container>
 `,
-	storyName: 'Padding — responsive container query',
+	storyName: 'Padding — responsieve container query',
 };
 
 export const GeenPadding = {

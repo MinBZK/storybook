@@ -25,9 +25,10 @@ export default {
 		},
 		type: {
 			control: 'select',
-			options: ['', 'button'],
+			options: ['(geen)', 'button'],
+			mapping: { '(geen)': '' },
 			description: 'Interactive mode of the list item',
-			table: { defaultValue: { summary: '-' } },
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		href: {
 			control: 'text',

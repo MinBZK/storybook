@@ -9,30 +9,42 @@ export default {
 	argTypes: {
 		width: {
 			control: 'text',
-			description: "'full', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
+			description: "'full', 'fit-content', of een CSS-lengte (bv. '200px', '20rem')",
 			table: { defaultValue: { summary: 'full' } },
 		},
 		minWidth: {
 			name: 'min-width',
 			control: 'text',
-			description: "Minimum width as CSS length (e.g. '80px', '5rem')",
+			description: "Minimale breedte als CSS-lengte (bv. '80px', '5rem')",
 		},
 		maxWidth: {
 			name: 'max-width',
 			control: 'text',
-			description: "Maximum width as CSS length (e.g. '300px', '20rem')",
+			description: "Maximale breedte als CSS-lengte (bv. '300px', '20rem')",
 		},
 		minHeight: {
 			name: 'min-height',
 			control: 'text',
-			description: "Minimum height as CSS length (e.g. '44px', '3rem')",
+			description: "Minimale hoogte als CSS-lengte (bv. '44px', '3rem')",
 		},
 		verticalAlignment: {
 			name: 'vertical-alignment',
 			control: 'select',
 			options: ['top', 'center', 'bottom'],
-			description: 'Vertical alignment of the cell',
+			description: 'Verticale uitlijning van de cel',
 			table: { defaultValue: { summary: 'center' } },
+		},
+		hideBelow: {
+			name: 'hide-below',
+			control: 'text',
+			description: 'Verberg wanneer list-container smaller is dan deze CSS-lengte (bv. "320px", "20rem")',
+			table: { defaultValue: { summary: '' } },
+		},
+		hideAbove: {
+			name: 'hide-above',
+			control: 'text',
+			description: 'Verberg wanneer list-container breder is dan deze CSS-lengte (bv. "1200px")',
+			table: { defaultValue: { summary: '' } },
 		},
 	},
 };
@@ -44,14 +56,18 @@ export const Default = {
 		minWidth: '',
 		maxWidth: '',
 		minHeight: '',
+		hideBelow: '',
+		hideAbove: '',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-description-cell
 			width=${args.width || nothing}
 			vertical-alignment=${args.verticalAlignment}
+			hide-below=${args.hideBelow || nothing}
+			hide-above=${args.hideAbove || nothing}
 		>
 			<p slot="title">Term</p>
-			<p slot="description">Description text</p>
+			<p slot="description">Beschrijvingstekst</p>
 		</nldd-description-cell>
 	`,
 };
@@ -61,7 +77,7 @@ export const WithRichText = {
 		<nldd-description-cell>
 			<p slot="title">Term</p>
 			<nldd-rich-text slot="description">
-				<p>This description contains <strong>formatted text</strong> and <a href="#">a link</a>.</p>
+				<p>Deze beschrijving bevat <strong>opgemaakte tekst</strong> en <a href="#">een link</a>.</p>
 			</nldd-rich-text>
 		</nldd-description-cell>
 	`,
@@ -70,17 +86,17 @@ export const WithRichText = {
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<nldd-description-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);">
-				<p slot="title">Term</p>
-				<p slot="description">Center</p>
-			</nldd-description-cell>
 			<nldd-description-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="title">Term</p>
-				<p slot="description">Top</p>
+				<p slot="description">Boven</p>
+			</nldd-description-cell>
+			<nldd-description-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);">
+				<p slot="title">Term</p>
+				<p slot="description">Midden</p>
 			</nldd-description-cell>
 			<nldd-description-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<p slot="title">Term</p>
-				<p slot="description">Bottom</p>
+				<p slot="description">Onder</p>
 			</nldd-description-cell>
 		</div>
 	`,

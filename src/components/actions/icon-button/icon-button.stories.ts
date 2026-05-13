@@ -99,8 +99,10 @@ export default {
 		},
 		target: {
 			control: 'select',
-			options: ['', '_self', '_blank', '_parent', '_top'],
+			options: ['(geen)', '_self', '_blank', '_parent', '_top'],
+			mapping: { '(geen)': '' },
 			description: 'Link target (alleen gebruikt als href is gezet)',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',

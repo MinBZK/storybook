@@ -40,10 +40,11 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['', 'xs', 'sm', 'md', 'lg', 'inherit'],
+			options: ['(geen)', 'xs', 'sm', 'md', 'lg', 'inherit'],
+			mapping: { '(geen)': '' },
 			description: 'Tekstgrootte. Leeg of `inherit` = erven van omgeving (display: inline). Icons werken in beide modi.',
 			table: {
-				defaultValue: { summary: '(inherit)' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		text: {
@@ -53,19 +54,21 @@ export default {
 		startIcon: {
 			name: 'start-icon',
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon voor de tekst',
 			table: {
-				defaultValue: { summary: '' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		endIcon: {
 			name: 'end-icon',
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon na de tekst',
 			table: {
-				defaultValue: { summary: '' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		href: {
@@ -74,8 +77,10 @@ export default {
 		},
 		target: {
 			control: 'select',
-			options: ['', '_self', '_blank', '_parent', '_top'],
+			options: ['(geen)', '_self', '_blank', '_parent', '_top'],
+			mapping: { '(geen)': '' },
 			description: 'Link target (stelt rel automatisch bij voor _blank)',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',

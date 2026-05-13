@@ -81,19 +81,21 @@ export default {
 		startIcon: {
 			name: 'start-icon',
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon voor de tekst',
 			table: {
-				defaultValue: { summary: '' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		endIcon: {
 			name: 'end-icon',
 			control: 'select',
-			options: ['', ...ICONS],
+			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon na de tekst',
 			table: {
-				defaultValue: { summary: '' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		type: {
@@ -110,8 +112,10 @@ export default {
 		},
 		target: {
 			control: 'select',
-			options: ['', '_self', '_blank', '_parent', '_top'],
+			options: ['(geen)', '_self', '_blank', '_parent', '_top'],
+			mapping: { '(geen)': '' },
 			description: 'Link target (alleen gebruikt als href is gezet)',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		disabled: {
 			control: 'boolean',

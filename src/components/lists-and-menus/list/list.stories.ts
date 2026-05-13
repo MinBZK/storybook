@@ -22,28 +22,28 @@ export default {
 		variant: {
 			control: 'select',
 			options: ['simple', 'box', 'box-on-tinted'],
-			description: 'Visual style of the list',
+			description: 'Visuele stijl van de lijst',
 			table: { defaultValue: { summary: 'simple' } },
 		},
 		type: {
 			control: 'select',
 			options: ['list', 'navigation'],
-			description: 'A11y semantics: `list` (role="list") or `navigation` (landmark with `aria-current` on the active item)',
+			description: 'A11y-semantiek: `list` (role="list") of `navigation` (landmark met `aria-current` op het actieve item)',
 			table: { defaultValue: { summary: 'list' } },
 		},
 		'no-dividers': {
 			control: 'boolean',
-			description: 'Hides dividers between list items',
+			description: 'Verbergt scheidingslijnen tussen lijstitems',
 			table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
 		},
 		'empty-text': {
 			control: 'text',
-			description: 'Text of the default empty-state dialog. Falls back to i18n ("Geen resultaten").',
+			description: 'Tekst van de standaard empty-state-dialog. Valt terug op i18n ("Geen items").',
 			table: { type: { summary: 'string' } },
 		},
 		'empty-supporting-text': {
 			control: 'text',
-			description: 'Supporting text of the default empty-state dialog.',
+			description: 'Ondersteunende tekst van de standaard empty-state-dialog.',
 			table: { type: { summary: 'string' } },
 		},
 	},
@@ -51,12 +51,12 @@ export default {
 		docs: {
 			description: {
 				component: `
-**When to use which \`type\`:**
+**Wanneer welk \`type\`:**
 
-- **\`list\`** (default) — semantic list (\`role="list"\`) with no special keyboard behaviour. Items may individually be buttons or links. Use for settings lists, data overviews, lists of cards.
-- **\`navigation\`** — way-finding between pages or app sections. Items are links or buttons, each independently focusable via Tab. The active item gets \`aria-current="page"\` based on the \`selected\` prop. Use for sidebars, in-app menus, master/detail pickers.
+- **\`list\`** (default) — semantische lijst (\`role="list"\`) zonder speciaal toetsenbordgedrag. Items kunnen individueel knoppen of links zijn. Gebruik dit voor instellingen-lijsten, data-overzichten en lijsten van kaarten.
+- **\`navigation\`** — way-finding tussen pagina's of app-secties. Items zijn links of knoppen, elk afzonderlijk focusbaar via Tab. Het actieve item krijgt \`aria-current="page"\` op basis van de \`selected\`-prop. Gebruik dit voor sidebars, in-app menu's en master/detail pickers.
 
-Selection state is **always consumer-managed**: the list never mutates \`selected\` itself.
+Selectie-state wordt **altijd door de consumer beheerd**: de lijst muteert nooit zelf \`selected\`.
 				`.trim(),
 			},
 		},
@@ -120,7 +120,7 @@ export const Variants = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Three visual variants: `simple` (top-border only), `box` (tinted surface with rounded corners) and `box-on-tinted` (plain surface for use on an already-tinted background).',
+				story: 'Drie visuele varianten: `simple` (alleen bovenrand), `box` (getint oppervlak met afgeronde hoeken) en `box-on-tinted` (effen oppervlak voor gebruik op een al getinte achtergrond).',
 			},
 		},
 	},
@@ -135,7 +135,7 @@ export const WithMultipleColumns = {
 					<nldd-icon name="calendar-event"></nldd-icon>
 				</nldd-icon-cell>
 				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
-				<nldd-text-cell text="Primary title" supporting-text="Supporting text below"></nldd-text-cell>
+				<nldd-text-cell text="Primaire titel" supporting-text="Ondersteunende tekst eronder"></nldd-text-cell>
 				<nldd-spacer-cell></nldd-spacer-cell>
 				<nldd-text-cell
 					color="secondary"
@@ -154,13 +154,13 @@ export const WithMultipleColumns = {
 					<nldd-icon name="certificate"></nldd-icon>
 				</nldd-icon-cell>
 				<nldd-spacer-cell slot="start" size="8"></nldd-spacer-cell>
-				<nldd-text-cell text="Another title" supporting-text="More description here"></nldd-text-cell>
+				<nldd-text-cell text="Andere titel" supporting-text="Meer beschrijving hier"></nldd-text-cell>
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-text-cell
 					color="secondary"
 					horizontal-alignment="right"
 					width="fit-content"
-					text="More detail"
+					text="Meer detail"
 				></nldd-text-cell>
 				<nldd-spacer-cell size="8"></nldd-spacer-cell>
 				<nldd-icon-cell color="secondary" size="16">
@@ -175,13 +175,13 @@ export const WithInteractiveItems = {
 	render: () => html`
 		<nldd-list variant="box">
 			<nldd-list-item type="button">
-				<nldd-text-cell text="Button item"></nldd-text-cell>
+				<nldd-text-cell text="Knop-item"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item href="/settings">
-				<nldd-text-cell text="Link item"></nldd-text-cell>
+				<nldd-text-cell text="Link-item"></nldd-text-cell>
 			</nldd-list-item>
 			<nldd-list-item>
-				<nldd-text-cell text="Non-interactive item"></nldd-text-cell>
+				<nldd-text-cell text="Niet-interactief item"></nldd-text-cell>
 			</nldd-list-item>
 		</nldd-list>
 	`,
@@ -212,7 +212,7 @@ export const TypeNavigation = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Navigation landmark. Items are links (or buttons), each independently tab-focusable. The active item gets `aria-current="page"` via `selected`. The host carries `role="navigation"` and a default `aria-label="Navigatie"` (override via `aria-label`).',
+				story: 'Navigation-landmark. Items zijn links (of knoppen), elk afzonderlijk tab-focusbaar. Het actieve item krijgt `aria-current="page"` via `selected`. De host krijgt `role="navigation"` en een standaard `aria-label="Navigatie"` (te overschrijven via `aria-label`).',
 			},
 		},
 	},
@@ -260,7 +260,7 @@ export const ReorderableList = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Set `reorderable` on a default-type list to enable drag-and-keyboard reorder. The list emits `nldd-reorder` with `{ fromIndex, toIndex }` — the consumer is responsible for mutating the DOM (or data model).',
+				story: 'Zet `reorderable` op een lijst van type default om drag-and-keyboard reorder te activeren. De lijst dispatcht `nldd-reorder` met `{ fromIndex, toIndex }` — de consumer is verantwoordelijk voor het muteren van de DOM (of het datamodel).',
 			},
 		},
 	},
@@ -271,22 +271,22 @@ export const ReorderableList = {
 
 export const WithHeaderAndFooter = {
 	render: () => html`
-		<div style="container-type: inline-size; container-name: layout-area;">
+		<div style="container-type: inline-size; container-name: layout-container;">
 			<nldd-list variant="box">
 				<nldd-title slot="header" size="4">
-					<h5>Notifications</h5>
+					<h5>Meldingen</h5>
 				</nldd-title>
 				<nldd-list-item>
-					<nldd-text-cell text="Allow notifications"></nldd-text-cell>
+					<nldd-text-cell text="Meldingen toestaan"></nldd-text-cell>
 				</nldd-list-item>
 				<nldd-list-item>
-					<nldd-text-cell text="Sounds"></nldd-text-cell>
+					<nldd-text-cell text="Geluiden"></nldd-text-cell>
 				</nldd-list-item>
 				<nldd-list-item>
 					<nldd-text-cell text="Badges"></nldd-text-cell>
 				</nldd-list-item>
 				<nldd-rich-text slot="footer">
-					<p>Notifications will only be sent when the app is active on your device.</p>
+					<p>Meldingen worden alleen verstuurd wanneer de app actief is op je apparaat.</p>
 				</nldd-rich-text>
 			</nldd-list>
 		</div>
@@ -304,7 +304,7 @@ export const EmptyDefault = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Out of the box, an empty list renders a default `nldd-inline-dialog` with i18n text ("Geen resultaten"). No configuration needed.',
+				story: 'Standaard rendert een lege lijst een default `nldd-inline-dialog` met i18n-tekst ("Geen items"). Geen configuratie nodig.',
 			},
 		},
 	},
@@ -322,7 +322,7 @@ export const EmptyWithAttributes = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Use `empty-text` and `empty-supporting-text` to tweak the default dialog without writing markup. For anything richer (icon, action buttons, alert variant) slot a full `nldd-inline-dialog`.',
+				story: 'Gebruik `empty-text` en `empty-supporting-text` om de standaard dialog aan te passen zonder markup te schrijven. Voor rijkere inhoud (icoon, action buttons, alert-variant) slot een complete `nldd-inline-dialog`.',
 			},
 		},
 	},
@@ -345,7 +345,7 @@ export const EmptySlotOverride = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Slotting content into `[slot=empty]` fully replaces the default dialog — bring your own icon, heading, supporting text, or action buttons.',
+				story: 'Inhoud in `[slot=empty]` vervangt de standaard dialog volledig — gebruik je eigen icoon, kop, ondersteunende tekst of action buttons.',
 			},
 		},
 	},

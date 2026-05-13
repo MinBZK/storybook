@@ -10,61 +10,73 @@ export default {
 		size: {
 			control: 'select',
 			options: ['sm', 'md'],
-			description: 'Text cell size',
+			description: 'Grootte van de tekstcel',
 			table: { defaultValue: { summary: 'md' } },
 		},
 		color: {
 			control: 'select',
 			options: ['default', 'secondary', 'accent', 'success', 'warning', 'critical'],
-			description: 'Color variant. `accent`, `success`, `warning` and `critical` apply to all three text fields so the cell reads as a coherent state.',
+			description: 'Kleurvariant. `accent`, `success`, `warning` en `critical` gelden voor alle drie tekstvelden zodat de cel als één samenhangende status leest.',
 			table: { defaultValue: { summary: 'default' } },
 		},
 		width: {
 			control: 'text',
-			description: "'full', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
+			description: "'full', 'fit-content', of een CSS-lengte (bv. '200px', '20rem')",
 			table: { defaultValue: { summary: 'full' } },
 		},
 		minWidth: {
 			name: 'min-width',
 			control: 'text',
-			description: "Minimum width as CSS length (e.g. '80px', '5rem')",
+			description: "Minimale breedte als CSS-lengte (bv. '80px', '5rem')",
 		},
 		maxWidth: {
 			name: 'max-width',
 			control: 'text',
-			description: "Maximum width as CSS length (e.g. '200px', '20rem')",
+			description: "Maximale breedte als CSS-lengte (bv. '200px', '20rem')",
 		},
 		minHeight: {
 			name: 'min-height',
 			control: 'text',
-			description: "Minimum height as CSS length (e.g. '44px', '3rem')",
+			description: "Minimale hoogte als CSS-lengte (bv. '44px', '3rem')",
 		},
 		horizontalAlignment: {
 			name: 'horizontal-alignment',
 			control: 'select',
 			options: ['left', 'center', 'right'],
-			description: 'Horizontal alignment of the text',
+			description: 'Horizontale uitlijning van de tekst',
 			table: { defaultValue: { summary: 'left' } },
 		},
 		verticalAlignment: {
 			name: 'vertical-alignment',
 			control: 'select',
 			options: ['top', 'center', 'bottom'],
-			description: 'Vertical alignment of the cell',
+			description: 'Verticale uitlijning van de cel',
 			table: { defaultValue: { summary: 'center' } },
 		},
 		text: {
 			control: 'text',
-			description: 'Main text content. Supports **bold** markers. Falls back to default slot when empty.',
+			description: 'Hoofdtekst. Ondersteunt **vet**-markeringen. Valt terug op de default-slot als deze leeg is.',
 		},
 		supportingText: {
 			name: 'supporting-text',
 			control: 'text',
-			description: 'Optional supporting text. Supports **bold** markers. Falls back to `supporting-text` slot when empty.',
+			description: 'Optionele ondersteunende tekst. Ondersteunt **vet**-markeringen. Valt terug op de `supporting-text`-slot als deze leeg is.',
 		},
 		overline: {
 			control: 'text',
-			description: 'Optional overline text. Supports **bold** markers. Falls back to `overline` slot when empty.',
+			description: 'Optionele overline-tekst. Ondersteunt **vet**-markeringen. Valt terug op de `overline`-slot als deze leeg is.',
+		},
+		hideBelow: {
+			name: 'hide-below',
+			control: 'text',
+			description: 'Verberg wanneer list-container smaller is dan deze CSS-lengte (bv. "320px", "20rem")',
+			table: { defaultValue: { summary: '' } },
+		},
+		hideAbove: {
+			name: 'hide-above',
+			control: 'text',
+			description: 'Verberg wanneer list-container breder is dan deze CSS-lengte (bv. "1200px")',
+			table: { defaultValue: { summary: '' } },
 		},
 	},
 };
@@ -79,9 +91,11 @@ export const Default = {
 		minHeight: '',
 		horizontalAlignment: 'left',
 		verticalAlignment: 'center',
-		text: 'Text cell',
+		text: 'Tekstcel',
 		supportingText: '',
 		overline: '',
+		hideBelow: '',
+		hideAbove: '',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-text-cell
@@ -93,42 +107,44 @@ export const Default = {
 			text=${args.text}
 			supporting-text=${args.supportingText}
 			overline=${args.overline}
+			hide-below=${args.hideBelow || nothing}
+			hide-above=${args.hideAbove || nothing}
 		></nldd-text-cell>
 	`,
 };
 
 export const WithOverline = {
 	render: () => html`
-		<nldd-text-cell overline="Overline" text="Text cell"></nldd-text-cell>
+		<nldd-text-cell overline="Overline" text="Tekstcel"></nldd-text-cell>
 	`,
 };
 
 export const WithSupportingText = {
 	render: () => html`
-		<nldd-text-cell text="Text cell" supporting-text="Supporting text"></nldd-text-cell>
+		<nldd-text-cell text="Tekstcel" supporting-text="Ondersteunende tekst"></nldd-text-cell>
 	`,
 };
 
 export const WithOverlineAndSupportingText = {
 	render: () => html`
-		<nldd-text-cell overline="Overline" text="Text cell" supporting-text="Supporting text"></nldd-text-cell>
+		<nldd-text-cell overline="Overline" text="Tekstcel" supporting-text="Ondersteunende tekst"></nldd-text-cell>
 	`,
 };
 
 export const Secondary = {
 	render: () => html`
-		<nldd-text-cell color="secondary" text="Text cell (secondary)"></nldd-text-cell>
+		<nldd-text-cell color="secondary" text="Tekstcel (secondary)"></nldd-text-cell>
 	`,
 };
 
 export const Accent = {
 	render: () => html`
-		<nldd-text-cell color="accent" overline="Overline" text="Text cell (accent)" supporting-text="Supporting text"></nldd-text-cell>
+		<nldd-text-cell color="accent" overline="Overline" text="Tekstcel (accent)" supporting-text="Ondersteunende tekst"></nldd-text-cell>
 	`,
 	parameters: {
 		docs: {
 			description: {
-				story: 'The accent variant tints all three text fields (overline, main text, supporting-text) so the cell reads as a coherent highlight.',
+				story: 'De accent-variant kleurt alle drie tekstvelden (overline, hoofdtekst, supporting-text) zodat de cel als één samenhangende highlight leest.',
 			},
 		},
 	},
@@ -146,7 +162,7 @@ export const StatusColors = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Status varianten tinten alle drie de tekstvelden (overline, main text, supporting-text) zodat de hele cel als de status leest. Combineer altijd met een tekstuele indicator — kleur alleen is geen toegankelijke status-aanduiding.',
+				story: 'Status varianten tinten alle drie de tekstvelden (overline, hoofdtekst, supporting-text) zodat de hele cel als de status leest. Combineer altijd met een tekstuele indicator — kleur alleen is geen toegankelijke status-aanduiding.',
 			},
 		},
 	},
@@ -155,8 +171,8 @@ export const StatusColors = {
 export const Sizes = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<nldd-text-cell size="md" overline="Overline" text="Text cell (md)" supporting-text="Supporting text"></nldd-text-cell>
-			<nldd-text-cell size="sm" overline="Overline" text="Text cell (sm)" supporting-text="Supporting text"></nldd-text-cell>
+			<nldd-text-cell size="md" overline="Overline" text="Tekstcel (md)" supporting-text="Ondersteunende tekst"></nldd-text-cell>
+			<nldd-text-cell size="sm" overline="Overline" text="Tekstcel (sm)" supporting-text="Ondersteunende tekst"></nldd-text-cell>
 		</div>
 	`,
 };
@@ -164,9 +180,9 @@ export const Sizes = {
 export const Width = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px; width: 300px; border: 1px dashed var(--primitives-color-neutral-150); padding: 8px;">
-			<nldd-text-cell width="full" text="Full (default)"></nldd-text-cell>
-			<nldd-text-cell width="fit-content" text="Fit content"></nldd-text-cell>
-			<nldd-text-cell width="120px" text="120px fixed"></nldd-text-cell>
+			<nldd-text-cell width="full" text="Volledig (default)"></nldd-text-cell>
+			<nldd-text-cell width="fit-content" text="Past zich aan"></nldd-text-cell>
+			<nldd-text-cell width="120px" text="120px vast"></nldd-text-cell>
 		</div>
 	`,
 };
@@ -174,8 +190,8 @@ export const Width = {
 export const MinHeight = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; align-items: flex-start;">
-			<nldd-text-cell vertical-alignment="top" min-height="44px" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Min height 44px"></nldd-text-cell>
-			<nldd-text-cell vertical-alignment="top" min-height="44px" style="border: 1px dashed var(--primitives-color-neutral-150);" text="With supporting text" supporting-text="Supporting text"></nldd-text-cell>
+			<nldd-text-cell vertical-alignment="top" min-height="44px" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Min-hoogte 44px"></nldd-text-cell>
+			<nldd-text-cell vertical-alignment="top" min-height="44px" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Met ondersteunende tekst" supporting-text="Ondersteunende tekst"></nldd-text-cell>
 		</div>
 	`,
 };
@@ -183,8 +199,8 @@ export const MinHeight = {
 export const HorizontalAlignment = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<nldd-text-cell horizontal-alignment="left" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Text cell (left)" supporting-text="Supporting text"></nldd-text-cell>
-			<nldd-text-cell horizontal-alignment="right" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Text cell (right)" supporting-text="Supporting text"></nldd-text-cell>
+			<nldd-text-cell horizontal-alignment="left" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Tekstcel (links)" supporting-text="Ondersteunende tekst"></nldd-text-cell>
+			<nldd-text-cell horizontal-alignment="right" style="border: 1px dashed var(--primitives-color-neutral-150);" overline="Overline" text="Tekstcel (rechts)" supporting-text="Ondersteunende tekst"></nldd-text-cell>
 		</div>
 	`,
 };
@@ -192,9 +208,9 @@ export const HorizontalAlignment = {
 export const VerticalAlignment = {
 	render: () => html`
 		<div style="display: flex; gap: 8px; height: 80px;">
-			<nldd-text-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Center"></nldd-text-cell>
-			<nldd-text-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Top"></nldd-text-cell>
-			<nldd-text-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Bottom"></nldd-text-cell>
+			<nldd-text-cell vertical-alignment="top" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Boven"></nldd-text-cell>
+			<nldd-text-cell vertical-alignment="center" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Midden"></nldd-text-cell>
+			<nldd-text-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);" text="Onder"></nldd-text-cell>
 		</div>
 	`,
 };
@@ -236,15 +252,15 @@ export const QuerySearchHighlight = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 16px; max-width: 480px;">
 			<div>
-				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">predictive (default) — bolds the non-matched remainder. Best for short labels in combobox lists.</p>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">predictive (default) — vet de niet-gematchte rest. Geschikt voor korte labels in combobox-lijsten.</p>
 				<nldd-text-cell text="Aardappelen" query="aa"></nldd-text-cell>
 			</div>
 			<div>
-				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">match — bolds the matched query. Best for long content in search results.</p>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">match — vet de gematchte query. Geschikt voor lange inhoud in zoekresultaten.</p>
 				<nldd-text-cell text="De aardappel is een knolgewas en een belangrijk voedingsmiddel in de Nederlandse keuken." query="aardappel" query-mark-mode="match"></nldd-text-cell>
 			</div>
 			<div>
-				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Applies across text, overline and supporting-text.</p>
+				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Werkt op text, overline en supporting-text.</p>
 				<nldd-text-cell overline="Groente" text="Aardappelen" supporting-text="Ook: pieper, knol" query="ap"></nldd-text-cell>
 			</div>
 		</div>
@@ -254,10 +270,10 @@ export const QuerySearchHighlight = {
 		docs: {
 			description: {
 				story: `
-Set \`query\` to a substring and the cell automatically bolds the match across \`text\`, \`overline\` and \`supporting-text\`. Use \`query-mark-mode\` to pick the strategy:
+Zet \`query\` op een substring en de cel vet automatisch de match in \`text\`, \`overline\` en \`supporting-text\`. Gebruik \`query-mark-mode\` om de strategie te kiezen:
 
-- \`'predictive'\` (default): bolds the non-matched remainder — the ARIA APG combobox pattern.
-- \`'match'\`: bolds the matched query — useful for highlighting search terms in longer text.
+- \`'predictive'\` (default): vet de niet-gematchte rest — het ARIA APG combobox-patroon.
+- \`'match'\`: vet de gematchte query — handig om zoektermen in langere tekst te markeren.
 				`.trim(),
 			},
 		},
