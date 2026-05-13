@@ -10,6 +10,7 @@
  * @attr {boolean} open - Whether the popover/menu controlled by this button is currently open (toggles the is-open visual state)
  * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string} text - Button text
+ * @attr {boolean} single-line - When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width.
  * @attr {string} start-icon - Icon name for the start icon (before text)
  * @attr {string} end-icon - Icon name for the end icon (after text)
  * @attr {string} accessible-label - Accessible label for the button, overrides text for screen readers
@@ -74,6 +75,9 @@ export class NLDDButton extends LitElement {
 	/** Button text. */
 	@property({ type: String })
 	text = '';
+
+	@property({ type: Boolean, reflect: true, attribute: 'single-line' })
+	singleLine = false;
 
 	/** Icon name for the start icon (before text). When not set, the start-icon slot is used. */
 	@property({ type: String, attribute: 'start-icon' })

@@ -78,6 +78,12 @@ export default {
 			control: 'text',
 			description: 'Tekst van de knop',
 		},
+		singleLine: {
+			name: 'single-line',
+			control: 'boolean',
+			description: 'Knipt overlopende tekst af met ellipsis in plaats van te wrappen. Vereist dat de knop (of een ancestor) een max-width oplegt.',
+			table: { defaultValue: { summary: false } },
+		},
 		startIcon: {
 			name: 'start-icon',
 			control: 'select',
@@ -132,6 +138,7 @@ export default {
 		expandable: false,
 		open: false,
 		text: 'Button',
+		singleLine: false,
 		startIcon: '',
 		endIcon: '',
 		type: 'button',
@@ -141,7 +148,7 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, width, expandable, open, text, startIcon, endIcon, type, href, target, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, open, text, singleLine, startIcon, endIcon, type, href, target, disabled }: Record<string, any>) => html`
 	<nldd-button
 		variant=${variant}
 		size=${size}
@@ -154,6 +161,7 @@ const Template = ({ variant, size, width, expandable, open, text, startIcon, end
 		end-icon=${endIcon || nothing}
 		?expandable=${expandable}
 		?open=${open}
+		?single-line=${singleLine}
 		?disabled=${disabled}
 	></nldd-button>
 `;

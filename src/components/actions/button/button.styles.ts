@@ -9,6 +9,7 @@ export const buttonStyles = css`
 		--_width: auto;
 
 		display: inline-block;
+		max-width: 100%;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -43,6 +44,7 @@ export const buttonStyles = css`
 		align-items: center;
 		justify-content: center;
 		width: var(--_width);
+		max-width: 100%;
 		text-wrap: pretty;
 		transition:
 			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
@@ -332,6 +334,16 @@ export const buttonStyles = css`
 
 	::slotted(nldd-icon) {
 		display: none;
+	}
+
+	.button__text {
+		min-width: 0;
+	}
+
+	:host([single-line]) .button__text {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.button__start-icon,

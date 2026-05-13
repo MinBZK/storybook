@@ -13,7 +13,7 @@ function renderContent(component: NLDDButton) {
 					name=${component.startIcon}
 				></nldd-icon>
 			` : html`<slot name="start-icon"></slot>`}
-			${component.text}
+			<span class="button__text">${component.text}</span>
 			${component.endIcon ? html`
 				<nldd-icon class="button__end-icon"
 					name=${component.endIcon}
