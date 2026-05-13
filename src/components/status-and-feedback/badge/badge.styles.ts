@@ -36,28 +36,28 @@ export const badgeStyles = css`
 
 	/* ## Variants */
 
-	:host([variant="critical"]),
-	:host(:not([variant])) {
+	:host([color="critical"]),
+	:host(:not([color])) {
 		--_background-color: var(--components-badge-critical-background-color);
 		--_content-color: var(--components-badge-critical-content-color);
 	}
 
-	:host([variant="accent"]) {
+	:host([color="accent"]) {
 		--_background-color: var(--components-badge-accent-background-color);
 		--_content-color: var(--components-badge-accent-content-color);
 	}
 
-	:host([variant="neutral"]) {
+	:host([color="neutral"]) {
 		--_background-color: var(--components-badge-neutral-background-color);
 		--_content-color: var(--components-badge-neutral-content-color);
 	}
 
-	:host([variant="warning"]) {
+	:host([color="warning"]) {
 		--_background-color: var(--components-badge-warning-background-color);
 		--_content-color: var(--components-badge-warning-content-color);
 	}
 
-	:host([variant="success"]) {
+	:host([color="success"]) {
 		--_background-color: var(--components-badge-success-background-color);
 		--_content-color: var(--components-badge-success-content-color);
 	}

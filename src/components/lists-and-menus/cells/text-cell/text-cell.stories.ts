@@ -221,13 +221,13 @@ export const SlotInlineTag = {
 			<div>
 				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Default slot — inline tag tussen tekst.</p>
 				<nldd-text-cell overline="Aanvraag" supporting-text="Laatst bijgewerkt vandaag">
-					Status: <nldd-tag variant="success" size="sm" text="Goedgekeurd"></nldd-tag>
+					Status: <nldd-tag color="success" size="sm" text="Goedgekeurd"></nldd-tag>
 				</nldd-text-cell>
 			</div>
 			<div>
 				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Overline slot — tag als label.</p>
 				<nldd-text-cell text="Aardappelen kweken in de zomer" supporting-text="Tuinieren · 4 min lezen">
-					<nldd-tag slot="overline" variant="accent" size="sm" text="Nieuw"></nldd-tag>
+					<nldd-tag slot="overline" color="accent" size="sm" text="Nieuw"></nldd-tag>
 				</nldd-text-cell>
 			</div>
 		</div>

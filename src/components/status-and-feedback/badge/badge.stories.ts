@@ -10,10 +10,10 @@ import { ICONS } from './../../content/icon/icon.js';
  * ```html
  * <nldd-badge number="3"></nldd-badge>
  * <nldd-badge></nldd-badge> <!-- toont stip -->
- * <nldd-badge variant="success" text="Nieuw"></nldd-badge>
+ * <nldd-badge color="success" text="Nieuw"></nldd-badge>
  * ```
  */
-const VARIANTS = ['critical', 'accent', 'neutral', 'warning', 'success'];
+const COLORS = ['critical', 'accent', 'neutral', 'warning', 'success'];
 
 export default {
 	title: 'Components/Status & Feedback/Badge',
@@ -29,10 +29,10 @@ export default {
 		},
 	},
 	argTypes: {
-		variant: {
+		color: {
 			control: 'select',
-			options: VARIANTS,
-			description: 'Kleur-variant',
+			options: COLORS,
+			description: 'Kleurvariant',
 			table: {
 				defaultValue: { summary: 'critical' },
 			},
@@ -80,7 +80,7 @@ export default {
 		},
 	},
 	args: {
-		variant: 'critical',
+		color: 'critical',
 		size: 'md',
 		text: '',
 		icon: '',
@@ -90,11 +90,11 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, text, icon, number, max, accessibleLabel }: Record<string, any>) => {
+const Template = ({ color, size, text, icon, number, max, accessibleLabel }: Record<string, any>) => {
 	const parsed = number === '' || number === null || number === undefined ? undefined : Number(number);
 	return html`
 		<nldd-badge
-			variant=${variant}
+			color=${color}
 			size=${size}
 			icon=${icon || nothing}
 			number=${Number.isFinite(parsed) ? parsed! : nothing}
@@ -115,11 +115,11 @@ export const Default = {
 export const Dot = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-badge variant="critical"></nldd-badge>
-			<nldd-badge variant="accent"></nldd-badge>
-			<nldd-badge variant="neutral"></nldd-badge>
-			<nldd-badge variant="warning"></nldd-badge>
-			<nldd-badge variant="success"></nldd-badge>
+			<nldd-badge color="critical"></nldd-badge>
+			<nldd-badge color="accent"></nldd-badge>
+			<nldd-badge color="neutral"></nldd-badge>
+			<nldd-badge color="warning"></nldd-badge>
+			<nldd-badge color="success"></nldd-badge>
 		</div>
 	`,
 	parameters: {
@@ -154,9 +154,9 @@ export const WithNumber = {
 export const WithText = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-badge variant="accent" text="Nieuw"></nldd-badge>
-			<nldd-badge variant="success" text="Live"></nldd-badge>
-			<nldd-badge variant="warning" text="Bèta"></nldd-badge>
+			<nldd-badge color="accent" text="Nieuw"></nldd-badge>
+			<nldd-badge color="success" text="Live"></nldd-badge>
+			<nldd-badge color="warning" text="Bèta"></nldd-badge>
 		</div>
 	`,
 	parameters: {
@@ -167,10 +167,10 @@ export const WithText = {
 export const WithIcon = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-badge variant="success" icon="check-mark"></nldd-badge>
-			<nldd-badge variant="warning" icon="alert"></nldd-badge>
-			<nldd-badge variant="critical" icon="dismiss-circle"></nldd-badge>
-			<nldd-badge variant="accent" icon="info-circle"></nldd-badge>
+			<nldd-badge color="success" icon="check-mark"></nldd-badge>
+			<nldd-badge color="warning" icon="alert"></nldd-badge>
+			<nldd-badge color="critical" icon="dismiss-circle"></nldd-badge>
+			<nldd-badge color="accent" icon="info-circle"></nldd-badge>
 		</div>
 	`,
 	parameters: {
@@ -186,9 +186,9 @@ export const WithIcon = {
 export const WithIconAndText = {
 	render: () => html`
 		<div style="display: flex; gap: 16px; align-items: center;">
-			<nldd-badge variant="success" icon="check-mark" text="Geverifieerd"></nldd-badge>
-			<nldd-badge variant="warning" icon="alert" text="Let op"></nldd-badge>
-			<nldd-badge variant="accent" icon="info-circle" number="3"></nldd-badge>
+			<nldd-badge color="success" icon="check-mark" text="Geverifieerd"></nldd-badge>
+			<nldd-badge color="warning" icon="alert" text="Let op"></nldd-badge>
+			<nldd-badge color="accent" icon="info-circle" number="3"></nldd-badge>
 		</div>
 	`,
 	parameters: {
@@ -204,7 +204,7 @@ export const WithIconAndText = {
 export const Variants = {
 	render: () => html`
 		<div style="display: flex; gap: 12px; align-items: center;">
-			${VARIANTS.map(v => html`<nldd-badge variant=${v} number="3"></nldd-badge>`)}
+			${COLORS.map(v => html`<nldd-badge color=${v} number="3"></nldd-badge>`)}
 		</div>
 	`,
 	parameters: {

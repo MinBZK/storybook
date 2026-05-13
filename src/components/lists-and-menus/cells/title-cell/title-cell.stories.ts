@@ -220,13 +220,13 @@ export const SlotInlineTag = {
 			<div>
 				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Overline slot — tag als statuslabel boven de titel.</p>
 				<nldd-title-cell text="Aanvraag huurtoeslag" supporting-text="Ingediend op 9 mei 2026">
-					<nldd-tag slot="overline" variant="success" size="sm" text="Goedgekeurd"></nldd-tag>
+					<nldd-tag slot="overline" color="success" size="sm" text="Goedgekeurd"></nldd-tag>
 				</nldd-title-cell>
 			</div>
 			<div>
 				<p style="margin: 0 0 4px; font-size: 12px; color: var(--primitives-color-neutral-500);">Default slot — inline tag binnen de titel.</p>
 				<nldd-title-cell overline="Sectie" supporting-text="3 items">
-					Aardappelen <nldd-tag variant="accent" size="sm" text="Nieuw"></nldd-tag>
+					Aardappelen <nldd-tag color="accent" size="sm" text="Nieuw"></nldd-tag>
 				</nldd-title-cell>
 			</div>
 		</div>

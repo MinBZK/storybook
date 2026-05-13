@@ -31,10 +31,10 @@ describe('nldd-tag', () => {
 		expect(assigned.some(n => n.textContent === 'Concept')).toBe(true);
 	});
 
-	it('reflects variant attribute', async () => {
-		el = await fixture('<nldd-tag variant="success" text="OK"></nldd-tag>');
+	it('reflects color attribute', async () => {
+		el = await fixture('<nldd-tag color="success" text="OK"></nldd-tag>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('variant')).toBe('success');
+		expect(el.getAttribute('color')).toBe('success');
 	});
 
 	it('renders icon when provided', async () => {

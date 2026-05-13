@@ -9,7 +9,7 @@ import { ICONS } from './../icon/icon.js';
  * ## Gebruik
  * ```html
  * <nldd-tag text="Concept"></nldd-tag>
- * <nldd-tag variant="success" text="Gepubliceerd"></nldd-tag>
+ * <nldd-tag color="success" text="Gepubliceerd"></nldd-tag>
  * ```
  */
 export default {
@@ -26,7 +26,7 @@ export default {
 		},
 	},
 	argTypes: {
-		variant: {
+		color: {
 			control: 'select',
 			options: [
 				// Semantisch
@@ -37,7 +37,7 @@ export default {
 				'oranje', 'donkergeel', 'geel', 'donkerbruin', 'bruin',
 				'donkergroen', 'groen', 'mosgroen', 'mintgroen',
 			],
-			description: 'Visuele variant — semantisch (neutral, accent, success, warning, critical) of een rijkskleur uit het palette',
+			description: 'Kleurvariant — semantisch (neutral, accent, success, warning, critical) of een rijkskleur uit het palette',
 			table: {
 				defaultValue: { summary: 'neutral' },
 			},
@@ -70,7 +70,7 @@ export default {
 		},
 	},
 	args: {
-		variant: 'neutral',
+		color: 'neutral',
 		size: 'md',
 		text: 'Tag',
 		icon: '',
@@ -78,9 +78,9 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, text, icon, accessibleLabel }: Record<string, any>) => html`
+const Template = ({ color, size, text, icon, accessibleLabel }: Record<string, any>) => html`
 	<nldd-tag
-		variant=${variant}
+		color=${color}
 		size=${size}
 		icon=${icon || nothing}
 		text=${text}
@@ -98,11 +98,11 @@ export const Default = {
 export const Variants = {
 	render: () => html`
 		<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-			<nldd-tag variant="neutral" text="Concept"></nldd-tag>
-			<nldd-tag variant="accent" text="Nieuw"></nldd-tag>
-			<nldd-tag variant="success" text="Gepubliceerd"></nldd-tag>
-			<nldd-tag variant="warning" text="Let op"></nldd-tag>
-			<nldd-tag variant="critical" text="Afgewezen"></nldd-tag>
+			<nldd-tag color="neutral" text="Concept"></nldd-tag>
+			<nldd-tag color="accent" text="Nieuw"></nldd-tag>
+			<nldd-tag color="success" text="Gepubliceerd"></nldd-tag>
+			<nldd-tag color="warning" text="Let op"></nldd-tag>
+			<nldd-tag color="critical" text="Afgewezen"></nldd-tag>
 		</div>
 	`,
 	parameters: {
@@ -118,32 +118,32 @@ export const Variants = {
 export const Rijkskleuren = {
 	render: () => html`
 		<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-			<nldd-tag variant="coolgray" text="coolgray"></nldd-tag>
-			<nldd-tag variant="lintblauw" text="lintblauw"></nldd-tag>
-			<nldd-tag variant="donkerblauw" text="donkerblauw"></nldd-tag>
-			<nldd-tag variant="hemelblauw" text="hemelblauw"></nldd-tag>
-			<nldd-tag variant="lichtblauw" text="lichtblauw"></nldd-tag>
-			<nldd-tag variant="paars" text="paars"></nldd-tag>
-			<nldd-tag variant="violet" text="violet"></nldd-tag>
-			<nldd-tag variant="robijnrood" text="robijnrood"></nldd-tag>
-			<nldd-tag variant="roze" text="roze"></nldd-tag>
-			<nldd-tag variant="rood" text="rood"></nldd-tag>
-			<nldd-tag variant="oranje" text="oranje"></nldd-tag>
-			<nldd-tag variant="donkergeel" text="donkergeel"></nldd-tag>
-			<nldd-tag variant="geel" text="geel"></nldd-tag>
-			<nldd-tag variant="donkerbruin" text="donkerbruin"></nldd-tag>
-			<nldd-tag variant="bruin" text="bruin"></nldd-tag>
-			<nldd-tag variant="donkergroen" text="donkergroen"></nldd-tag>
-			<nldd-tag variant="groen" text="groen"></nldd-tag>
-			<nldd-tag variant="mosgroen" text="mosgroen"></nldd-tag>
-			<nldd-tag variant="mintgroen" text="mintgroen"></nldd-tag>
+			<nldd-tag color="coolgray" text="coolgray"></nldd-tag>
+			<nldd-tag color="lintblauw" text="lintblauw"></nldd-tag>
+			<nldd-tag color="donkerblauw" text="donkerblauw"></nldd-tag>
+			<nldd-tag color="hemelblauw" text="hemelblauw"></nldd-tag>
+			<nldd-tag color="lichtblauw" text="lichtblauw"></nldd-tag>
+			<nldd-tag color="paars" text="paars"></nldd-tag>
+			<nldd-tag color="violet" text="violet"></nldd-tag>
+			<nldd-tag color="robijnrood" text="robijnrood"></nldd-tag>
+			<nldd-tag color="roze" text="roze"></nldd-tag>
+			<nldd-tag color="rood" text="rood"></nldd-tag>
+			<nldd-tag color="oranje" text="oranje"></nldd-tag>
+			<nldd-tag color="donkergeel" text="donkergeel"></nldd-tag>
+			<nldd-tag color="geel" text="geel"></nldd-tag>
+			<nldd-tag color="donkerbruin" text="donkerbruin"></nldd-tag>
+			<nldd-tag color="bruin" text="bruin"></nldd-tag>
+			<nldd-tag color="donkergroen" text="donkergroen"></nldd-tag>
+			<nldd-tag color="groen" text="groen"></nldd-tag>
+			<nldd-tag color="mosgroen" text="mosgroen"></nldd-tag>
+			<nldd-tag color="mintgroen" text="mintgroen"></nldd-tag>
 		</div>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Alle rijkskleuren uit het palette zijn direct als variant beschikbaar — handig voor categorisering waar de semantische varianten niet passen. Combineer kleur altijd met tekst zodat de tag ook zonder kleur leesbaar blijft.',
+				story: 'Alle rijkskleuren uit het palette zijn direct als kleurvariant beschikbaar — handig voor categorisering waar de semantische varianten niet passen. Combineer kleur altijd met tekst zodat de tag ook zonder kleur leesbaar blijft.',
 			},
 		},
 	},
@@ -164,9 +164,9 @@ export const Sizes = {
 export const WithIcon = {
 	render: () => html`
 		<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-			<nldd-tag variant="success" text="Goedgekeurd" icon="check-mark"></nldd-tag>
-			<nldd-tag variant="warning" text="Let op" icon="alert"></nldd-tag>
-			<nldd-tag variant="critical" text="Afgewezen" icon="dismiss-circle"></nldd-tag>
+			<nldd-tag color="success" text="Goedgekeurd" icon="check-mark"></nldd-tag>
+			<nldd-tag color="warning" text="Let op" icon="alert"></nldd-tag>
+			<nldd-tag color="critical" text="Afgewezen" icon="dismiss-circle"></nldd-tag>
 		</div>
 	`,
 	parameters: {
