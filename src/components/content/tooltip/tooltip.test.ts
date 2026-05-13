@@ -137,19 +137,19 @@ describe('nldd-tooltip – show/hide', () => {
 		expect(isTooltipVisible(el)).toBe(false);
 	});
 
-	it('disabled flip annuleert een pending show-timer voordat die afloopt', async () => {
-		// Use a non-zero delay so we can flip `disabled` while the timer is
-		// still scheduled. This is the exact race the updated() handler is
-		// meant to win — without the clearTimeout, the timer would fire and
-		// open the tooltip even though the consumer just suppressed it.
+	it('timing=never flip annuleert een pending show-timer voordat die afloopt', async () => {
+		// Use a non-zero delay so we can flip `timing` to 'never' while the
+		// timer is still scheduled. This is the exact race the updated()
+		// handler is meant to win — without the clearTimeout, the timer would
+		// fire and open the tooltip even though the consumer just suppressed it.
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
 		el.style.setProperty('--_show-delay', '50');
 
 		const trigger = el.querySelector('button')!;
 		trigger.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-		// Don't wait for the timer to fire — flip disabled mid-flight.
-		el.disabled = true;
+		// Don't wait for the timer to fire — flip timing mid-flight.
+		el.timing = 'never';
 		await waitForUpdate(el);
 
 		// Wait past the original show-delay window — the cancelled timer must
@@ -158,13 +158,13 @@ describe('nldd-tooltip – show/hide', () => {
 		expect(isTooltipVisible(el)).toBe(false);
 	});
 
-	it('disabled flip verbergt een al zichtbare tooltip direct', async () => {
+	it('timing=never flip verbergt een al zichtbare tooltip direct', async () => {
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>Trigger</button></nldd-tooltip>');
 		await waitForUpdate(el);
 		await triggerShow(el, el.querySelector('button')!);
 		expect(isTooltipVisible(el)).toBe(true);
 
-		el.disabled = true;
+		el.timing = 'never';
 		await waitForUpdate(el);
 		expect(isTooltipVisible(el)).toBe(false);
 	});
@@ -218,11 +218,11 @@ describe('nldd-tooltip – aria-describedby', () => {
 		expect(document.getElementById(id)).toBeNull();
 	});
 
-	it('verwijdert aria-describedby en de description span wanneer disabled flipt naar true', async () => {
-		// Same intent as hiding the visual popover: when disabled, screen
-		// readers shouldn't keep announcing the tooltip text either. Primary
-		// use-case is `?disabled=${!isShort}` in document-tab-bar where the
-		// full label is already inline.
+	it('verwijdert aria-describedby en de description span wanneer timing flipt naar never', async () => {
+		// Same intent as hiding the visual popover: when timing is 'never',
+		// screen readers shouldn't keep announcing the tooltip text either.
+		// Primary use-case is `.timing=${isShort ? 'default' : 'never'}` in
+		// document-tab-bar where the full label is already inline.
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>T</button></nldd-tooltip>');
 		await waitForUpdate(el);
 		const trigger = el.querySelector('button')!;
@@ -230,19 +230,19 @@ describe('nldd-tooltip – aria-describedby', () => {
 		expect(id).toBeTruthy();
 		expect(document.getElementById(id)).not.toBeNull();
 
-		el.disabled = true;
+		el.timing = 'never';
 		await waitForUpdate(el);
 		expect(trigger.hasAttribute('aria-describedby')).toBe(false);
 		expect(document.getElementById(id)).toBeNull();
 	});
 
-	it('herstelt aria-describedby wanneer disabled terug naar false flipt', async () => {
-		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test" disabled><button>T</button></nldd-tooltip>');
+	it('herstelt aria-describedby wanneer timing terug naar default flipt', async () => {
+		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test" timing="never"><button>T</button></nldd-tooltip>');
 		await waitForUpdate(el);
 		const trigger = el.querySelector('button')!;
 		expect(trigger.hasAttribute('aria-describedby')).toBe(false);
 
-		el.disabled = false;
+		el.timing = 'default';
 		await waitForUpdate(el);
 		const id = trigger.getAttribute('aria-describedby');
 		expect(id).toBeTruthy();
