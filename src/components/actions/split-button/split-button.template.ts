@@ -20,8 +20,8 @@ export function template(this: NLDDSplitButton) {
 				text=${this._t('components.split-button.menu-action')}
 				hide-tooltip
 				?disabled=${this.disabled}
-				?open=${this._menuIsOpen}
-				aria-haspopup="menu"
+				?expanded=${this._menuIsOpen}
+				popup-type="menu"
 				@click=${this._handleMenuClick}
 			></nldd-icon-button>
 		</div>

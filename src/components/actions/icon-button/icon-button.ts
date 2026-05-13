@@ -7,7 +7,8 @@
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable        - Whether the button opens a menu or popover and shows chevron next to the icon
- * @attr {boolean} open              - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button.
+ * @attr {boolean} expanded          - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-open visual state.
+ * @attr {string}  popup-type        - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
  * @attr {string}  width             - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string}  text              - Button text, used as aria-label and shown below the icon in lg size
  * @attr {string}  icon              - Icon name for the nldd-icon element
@@ -51,6 +52,7 @@ export type Variant =
 	| 'critical-tinted'
 	| 'critical-transparent';
 export type ButtonType = 'button' | 'submit' | 'reset';
+export type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 
 @customElement('nldd-icon-button')
 export class NLDDIconButton extends LitElement {
@@ -72,7 +74,15 @@ export class NLDDIconButton extends LitElement {
 	expandable = false;
 
 	@property({ type: Boolean, reflect: true })
-	open = false;
+	expanded = false;
+
+	/**
+	 * Type of popup container this button opens. Sets `aria-haspopup` on the
+	 * inner button and forces `aria-expanded` to always be present (true/false)
+	 * so screen readers can announce both the popup type and its current state.
+	 */
+	@property({ type: String, reflect: true, attribute: 'popup-type' })
+	popupType?: PopupType;
 
 	/** Width mode: 'full' (stretch to container) or any CSS length. */
 	@property({ type: String, reflect: true })

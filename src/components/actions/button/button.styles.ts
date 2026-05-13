@@ -7,10 +7,19 @@ export const buttonStyles = css`
 
 	:host {
 		--_width: auto;
+		--_disclosure-icon-size: var(--primitives-space-20);
 
 		display: inline-block;
 		max-width: 100%;
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	:host([size="sm"]) {
+		--_disclosure-icon-size: var(--primitives-space-18);
+	}
+
+	:host([size="xs"]) {
+		--_disclosure-icon-size: var(--primitives-space-16);
 	}
 
 	:host([width="full"]) {
@@ -148,9 +157,9 @@ export const buttonStyles = css`
 
 	/* ### Open neutral tinted button */
 
-	:host([open][variant="neutral-tinted"]) .button,
-	:host([open][variant="secondary"]) .button,
-	:host([open]:not([variant])) .button {
+	:host([expanded][variant="neutral-tinted"]) .button,
+	:host([expanded][variant="secondary"]) .button,
+	:host([expanded]:not([variant])) .button {
 		background-color: var(--semantics-buttons-neutral-tinted-is-open-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-open-content-color);
 	}
@@ -158,9 +167,9 @@ export const buttonStyles = css`
 	/* ### Open hovered neutral tinted button */
 
 	@media (hover: hover) {
-		:host([open][variant="neutral-tinted"]) .button:hover,
-		:host([open][variant="secondary"]) .button:hover,
-		:host([open]:not([variant])) .button:hover {
+		:host([expanded][variant="neutral-tinted"]) .button:hover,
+		:host([expanded][variant="secondary"]) .button:hover,
+		:host([expanded]:not([variant])) .button:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-background-color);
 			color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-content-color);
 		}
@@ -168,9 +177,9 @@ export const buttonStyles = css`
 
 	/* ### Open active neutral tinted button */
 
-	:host([open][variant="neutral-tinted"]) .button:active,
-	:host([open][variant="secondary"]) .button:active,
-	:host([open]:not([variant])) .button:active {
+	:host([expanded][variant="neutral-tinted"]) .button:active,
+	:host([expanded][variant="secondary"]) .button:active,
+	:host([expanded]:not([variant])) .button:active {
 		background-color: var(--semantics-buttons-neutral-tinted-is-open-is-active-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-open-is-active-content-color);
 	}
@@ -228,8 +237,8 @@ export const buttonStyles = css`
 
 	/* ### Open accent filled button */
 
-	:host([open][variant="accent-filled"]) .button,
-	:host([open][variant="primary"]) .button {
+	:host([expanded][variant="accent-filled"]) .button,
+	:host([expanded][variant="primary"]) .button {
 		background-color: var(--semantics-buttons-accent-filled-is-open-background-color);
 		color: var(--semantics-buttons-accent-filled-is-open-content-color);
 	}
@@ -237,8 +246,8 @@ export const buttonStyles = css`
 	/* ### Open hovered accent filled button */
 
 	@media (hover: hover) {
-		:host([open][variant="accent-filled"]) .button:hover,
-		:host([open][variant="primary"]) .button:hover {
+		:host([expanded][variant="accent-filled"]) .button:hover,
+		:host([expanded][variant="primary"]) .button:hover {
 			background-color: var(--semantics-buttons-accent-filled-is-open-is-hovered-background-color);
 			color: var(--semantics-buttons-accent-filled-is-open-is-hovered-content-color);
 		}
@@ -246,8 +255,8 @@ export const buttonStyles = css`
 
 	/* ### Open active accent filled button */
 
-	:host([open][variant="accent-filled"]) .button:active,
-	:host([open][variant="primary"]) .button:active {
+	:host([expanded][variant="accent-filled"]) .button:active,
+	:host([expanded][variant="primary"]) .button:active {
 		background-color: var(--semantics-buttons-accent-filled-is-open-is-active-background-color);
 		color: var(--semantics-buttons-accent-filled-is-open-is-active-content-color);
 	}
@@ -375,26 +384,22 @@ export const buttonStyles = css`
 	.button__disclosure-icon {
 		display: block;
 		flex-shrink: 0;
+		width: var(--_disclosure-icon-size);
+		height: var(--_disclosure-icon-size);
 	}
 
 	:host([size="md"]) .button__disclosure-icon,
 	:host(:not([size])) .button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
 		margin-left: -2px;
 		margin-right: -2px;
 	}
 
 	:host([size="sm"]) .button__disclosure-icon {
-		width: var(--primitives-space-18);
-		height: var(--primitives-space-18);
 		margin-left: -1px;
 		margin-right: -2px;
 	}
 
 	:host([size="xs"]) .button__disclosure-icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
 		margin-left: -1px;
 		margin-right: -2px;
 	}

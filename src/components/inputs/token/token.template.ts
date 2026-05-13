@@ -8,7 +8,7 @@ export function tokenTemplate(component: NLDDToken): TemplateResult {
 				class="token"
 				type="button"
 				?disabled=${component.disabled}
-				aria-expanded=${component.open}
+				aria-expanded=${component.expanded}
 				aria-controls=${component.controls || nothing}
 				@click=${component._handleMenuClick}
 			>

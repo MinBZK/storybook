@@ -65,13 +65,20 @@ export default {
 				defaultValue: { summary: false },
 			},
 		},
-		open: {
-			name: 'open',
+		expanded: {
 			control: 'boolean',
-			description: 'Geeft aan dat het popover/menu open is. Wordt geforward als aria-expanded="true" op de inner button.',
+			description: 'Geeft aan dat het popover/menu uitgeklapt is. Wordt geforward als aria-expanded op de inner button en activeert de is-open visuele state.',
 			table: {
 				defaultValue: { summary: false },
 			},
+		},
+		popupType: {
+			name: 'popup-type',
+			control: 'select',
+			options: ['(geen)', 'menu', 'listbox', 'dialog', 'tree', 'grid'],
+			mapping: { '(geen)': '' },
+			description: 'Type popup-container dat deze knop opent. Zet aria-haspopup op de inner button en zorgt dat aria-expanded altijd aanwezig is (true/false) zodat screenreaders de popup-staat kennen.',
+			table: { defaultValue: { summary: '(geen)' } },
 		},
 		text: {
 			control: 'text',
@@ -130,7 +137,8 @@ export default {
 		size: 'md',
 		width: '',
 		expandable: false,
-		open: false,
+		expanded: false,
+		popupType: '',
 		text: 'Annuleer',
 		icon: 'dismiss',
 		type: 'button',
@@ -142,14 +150,15 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, width, expandable, open, text, icon, type, href, target, accessibleLabel, hideTooltip, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, expanded, popupType, text, icon, type, href, target, accessibleLabel, hideTooltip, disabled }: Record<string, any>) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}
 		icon=${icon}
 		text=${text}
+		popup-type=${popupType || nothing}
 		?expandable=${expandable}
-		?open=${open}
+		?expanded=${expanded}
 		width=${width || nothing}
 		type=${type}
 		href=${href || nothing}

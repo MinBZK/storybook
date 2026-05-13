@@ -30,6 +30,14 @@ export function template(this: NLDDIconButton) {
 	const tooltipText = this.accessibleLabel
 		|| (this.size !== 'lg' ? this.text : '');
 
+	// `expandable` (disclosure widget signal) or `popup-type` (popup container
+	// signal) both require aria-expanded to always be present so screen
+	// readers know the current open/closed state. Without one of these, only
+	// open=true forwards aria-expanded — keeps plain buttons free of
+	// irrelevant ARIA attributes.
+	const isDisclosure = this.expandable || !!this.popupType;
+	const ariaExpanded = isDisclosure ? String(this.expanded) : (this.expanded ? 'true' : nothing);
+
 	const renderButton = () => {
 		if (this.href) {
 			const resolvedRel = this._resolvedRel();
@@ -40,6 +48,8 @@ export function template(this: NLDDIconButton) {
 					rel=${resolvedRel || nothing}
 					aria-disabled=${this.disabled ? 'true' : nothing}
 					aria-label=${label}
+					aria-haspopup=${this.popupType || nothing}
+					aria-expanded=${ariaExpanded}
 					@click=${this._handleClick}
 				>
 					${content}
@@ -53,7 +63,8 @@ export function template(this: NLDDIconButton) {
 				?disabled=${this.disabled}
 				aria-disabled=${this.disabled ? 'true' : nothing}
 				aria-label=${label}
-				aria-expanded=${this.open ? 'true' : nothing}
+				aria-haspopup=${this.popupType || nothing}
+				aria-expanded=${ariaExpanded}
 				popovertarget=${this.popovertarget || nothing}
 				@click=${this._handleClick}
 			>

@@ -86,13 +86,13 @@ export const tokenStyles = css`
 
 	/* ## Open — menu */
 
-	:host([open]) .token {
+	:host([expanded]) .token {
 		background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 	}
 
 	@media (hover: hover) {
-		:host([open]) .token:hover:not(:disabled) {
+		:host([expanded]) .token:hover:not(:disabled) {
 			background-color: var(--semantics-buttons-neutral-tinted-is-active-background-color);
 			color: var(--semantics-buttons-neutral-tinted-is-active-content-color);
 		}

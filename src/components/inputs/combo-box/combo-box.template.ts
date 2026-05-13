@@ -75,7 +75,8 @@ export function comboBoxTemplate(component: NLDDComboBox): TemplateResult {
 						text=${component._t('components.combo-box.open-menu-action')}
 						hide-tooltip
 						?disabled=${component.disabled}
-						?open=${component._isOpen}
+						?expanded=${component._isOpen}
+						popup-type="listbox"
 						@pointerdown=${component._handlePickerPointerdown}
 						@click=${component._toggleMenu}
 					></nldd-icon-button>

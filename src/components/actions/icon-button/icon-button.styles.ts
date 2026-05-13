@@ -7,9 +7,15 @@ export const iconButtonStyles = css`
 
 	:host {
 		--_width: auto;
+		--_disclosure-icon-size: var(--primitives-space-20);
 
 		display: inline-block;
+		max-width: 100%;
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	:host([size='xs']) {
+		--_disclosure-icon-size: var(--primitives-space-16);
 	}
 
 	:host([width="full"]) {
@@ -152,9 +158,9 @@ export const iconButtonStyles = css`
 
 	/* ### Open neutral tinted icon button */
 
-	:host([open][variant='neutral-tinted']) .icon-button,
-	:host([open][variant='secondary']) .icon-button,
-	:host([open]:not([variant])) .icon-button {
+	:host([expanded][variant='neutral-tinted']) .icon-button,
+	:host([expanded][variant='secondary']) .icon-button,
+	:host([expanded]:not([variant])) .icon-button {
 		background-color: var(--semantics-buttons-neutral-tinted-is-open-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-open-content-color);
 	}
@@ -162,9 +168,9 @@ export const iconButtonStyles = css`
 	/* ### Open hovered neutral tinted icon button */
 
 	@media (hover: hover) {
-		:host([open][variant='neutral-tinted']) .icon-button:hover,
-		:host([open][variant='secondary']) .icon-button:hover,
-		:host([open]:not([variant])) .icon-button:hover {
+		:host([expanded][variant='neutral-tinted']) .icon-button:hover,
+		:host([expanded][variant='secondary']) .icon-button:hover,
+		:host([expanded]:not([variant])) .icon-button:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-background-color);
 			color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-content-color);
 		}
@@ -172,9 +178,9 @@ export const iconButtonStyles = css`
 
 	/* ### Open active neutral tinted icon button */
 
-	:host([open][variant='neutral-tinted']) .icon-button:active,
-	:host([open][variant='secondary']) .icon-button:active,
-	:host([open]:not([variant])) .icon-button:active {
+	:host([expanded][variant='neutral-tinted']) .icon-button:active,
+	:host([expanded][variant='secondary']) .icon-button:active,
+	:host([expanded]:not([variant])) .icon-button:active {
 		background-color: var(--semantics-buttons-neutral-tinted-is-open-is-active-background-color);
 		color: var(--semantics-buttons-neutral-tinted-is-open-is-active-content-color);
 	}
@@ -233,8 +239,8 @@ export const iconButtonStyles = css`
 
 	/* ### Open accent filled icon button */
 
-	:host([open][variant='accent-filled']) .icon-button,
-	:host([open][variant='primary']) .icon-button {
+	:host([expanded][variant='accent-filled']) .icon-button,
+	:host([expanded][variant='primary']) .icon-button {
 		background-color: var(--semantics-buttons-accent-filled-is-open-background-color);
 		color: var(--semantics-buttons-accent-filled-is-open-content-color);
 	}
@@ -242,8 +248,8 @@ export const iconButtonStyles = css`
 	/* ### Open hovered accent filled icon button */
 
 	@media (hover: hover) {
-		:host([open][variant='accent-filled']) .icon-button:hover,
-		:host([open][variant='primary']) .icon-button:hover {
+		:host([expanded][variant='accent-filled']) .icon-button:hover,
+		:host([expanded][variant='primary']) .icon-button:hover {
 			background-color: var(--semantics-buttons-accent-filled-is-open-is-hovered-background-color);
 			color: var(--semantics-buttons-accent-filled-is-open-is-hovered-content-color);
 		}
@@ -251,8 +257,8 @@ export const iconButtonStyles = css`
 
 	/* ### Open active accent filled icon button */
 
-	:host([open][variant='accent-filled']) .icon-button:active,
-	:host([open][variant='primary']) .icon-button:active {
+	:host([expanded][variant='accent-filled']) .icon-button:active,
+	:host([expanded][variant='primary']) .icon-button:active {
 		background-color: var(--semantics-buttons-accent-filled-is-open-is-active-background-color);
 		color: var(--semantics-buttons-accent-filled-is-open-is-active-content-color);
 	}
@@ -372,29 +378,14 @@ export const iconButtonStyles = css`
 	.icon-button__disclosure-icon {
 		display: flex;
 		flex-shrink: 0;
+		width: var(--_disclosure-icon-size);
+		height: var(--_disclosure-icon-size);
 	}
 
-	:host([size='xs']) .icon-button__disclosure-icon {
-		width: var(--primitives-space-16);
-		height: var(--primitives-space-16);
-	}
-
-	:host([size='sm']) .icon-button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		margin-right: calc(var(--primitives-space-2) * -1);
-	}
-
+	:host([size='sm']) .icon-button__disclosure-icon,
 	:host([size='md']) .icon-button__disclosure-icon,
-	:host(:not([size])) .icon-button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
-		margin-right: calc(var(--primitives-space-2) * -1);
-	}
-
+	:host(:not([size])) .icon-button__disclosure-icon,
 	:host([size='lg']) .icon-button__disclosure-icon {
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
 		margin-right: calc(var(--primitives-space-2) * -1);
 	}
 

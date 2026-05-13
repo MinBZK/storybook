@@ -7,7 +7,8 @@
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable - Whether the button has a icon to indicate it opens a menu or popover
- * @attr {boolean} open - Whether the popover/menu controlled by this button is currently open (toggles the is-open visual state)
+ * @attr {boolean} expanded - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-open visual state.
+ * @attr {string}  popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
  * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string} text - Button text
  * @attr {boolean} single-line - When true, truncates overflowing text with an ellipsis instead of letting it wrap. Requires the button (or an ancestor) to constrain the width.
@@ -42,6 +43,7 @@ type Variant =
 	| 'critical-transparent';
 type Size = 'xs' | 'sm' | 'md';
 type ButtonType = 'button' | 'submit' | 'reset';
+type PopupType = 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid';
 
 @customElement('nldd-button')
 export class NLDDButton extends LitElement {
@@ -61,7 +63,15 @@ export class NLDDButton extends LitElement {
 	expandable = false;
 
 	@property({ type: Boolean, reflect: true })
-	open = false;
+	expanded = false;
+
+	/**
+	 * Type of popup container this button opens. Sets `aria-haspopup` on the
+	 * inner button and forces `aria-expanded` to always be present (true/false)
+	 * so screen readers can announce both the popup type and its current state.
+	 */
+	@property({ type: String, reflect: true, attribute: 'popup-type' })
+	popupType?: PopupType;
 
 	@property({ type: String, reflect: true })
 	type: ButtonType = 'button';

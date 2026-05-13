@@ -286,3 +286,86 @@ describe('nldd-icon-button – href / link rendering', () => {
 		cleanup(el);
 	});
 });
+
+describe('nldd-icon-button – aria-expanded / aria-haspopup', () => {
+	let el: NLDDIconButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('omits aria-expanded on a plain icon-button (no expandable, no popup-type, not open)', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="Sluit" hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.hasAttribute('aria-expanded')).toBe(false);
+		expect(inner.hasAttribute('aria-haspopup')).toBe(false);
+	});
+
+	it('sets aria-expanded="false" when expandable and not open', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Menu" expandable hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('false');
+	});
+
+	it('sets aria-expanded="true" when expandable and open', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Menu" expandable expanded hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('true');
+	});
+
+	it('sets aria-expanded="false" + aria-haspopup when popup-type set and not open', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Acties" popup-type="menu" hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('false');
+		expect(inner.getAttribute('aria-haspopup')).toBe('menu');
+	});
+
+	it('sets aria-expanded="true" + aria-haspopup when popup-type set and open', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Acties" popup-type="dialog" expanded hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('true');
+		expect(inner.getAttribute('aria-haspopup')).toBe('dialog');
+	});
+
+	it('forwards aria-expanded + aria-haspopup to the anchor when href is set', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Menu" href="/m" popup-type="menu" expanded hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('a')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('true');
+		expect(inner.getAttribute('aria-haspopup')).toBe('menu');
+	});
+});
+
+describe('nldd-icon-button – width', () => {
+	let el: NLDDIconButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('applies inline host width and --_width=100% when width is a CSS length', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" width="240px" hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('240px');
+		expect(el.style.getPropertyValue('--_width')).toBe('100%');
+	});
+
+	it('sets --_width=100% but leaves inline width empty for width="full"', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" width="full" hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('');
+		expect(el.style.getPropertyValue('--_width')).toBe('100%');
+	});
+
+	it('ignores invalid width values', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" width="not-a-length" hide-tooltip></nldd-icon-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('');
+		expect(el.style.getPropertyValue('--_width')).toBe('');
+	});
+});

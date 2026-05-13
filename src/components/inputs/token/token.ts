@@ -7,7 +7,7 @@
  * @element nldd-token
  *
  * @attr {'none' | 'dismiss' | 'menu'} control       - Control type (default: 'none')
- * @attr {boolean}                        open          - Whether the menu is open (menu only)
+ * @attr {boolean}                        expanded      - Whether the menu is open (menu only). Forwarded as aria-expanded on the menu button.
  * @attr {boolean}                        disabled      - Disabled state
  * @attr {string}                         dismiss-text - Text for the dismiss button (default: 'Verwijder')
  * @attr {string}                         controls      - ID of the associated popup element (aria-controls).
@@ -16,7 +16,7 @@
  * @slot - Token text
  *
  * @fires dismiss - When the dismiss button is clicked
- * @fires toggle  - When the menu is clicked; detail: { open: boolean }
+ * @fires toggle  - When the menu is clicked; detail: { expanded: boolean }
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -35,7 +35,7 @@ export class NLDDToken extends LitElement {
 	control: TokenControl = 'none';
 
 	@property({ type: Boolean, reflect: true })
-	open = false;
+	expanded = false;
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
@@ -58,9 +58,9 @@ export class NLDDToken extends LitElement {
 
 	_handleMenuClick(): void {
 		if (this.disabled) return;
-		this.open = !this.open;
+		this.expanded = !this.expanded;
 		this.dispatchEvent(new CustomEvent('toggle', {
-			detail: { open: this.open },
+			detail: { expanded: this.expanded },
 			bubbles: true,
 			composed: true,
 		}));

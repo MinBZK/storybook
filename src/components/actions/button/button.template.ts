@@ -31,6 +31,14 @@ function renderContent(component: NLDDButton) {
 export function template(this: NLDDButton, helpers: TemplateHelpers) {
 	const content = renderContent(this);
 
+	// `expandable` (disclosure widget signal) or `popup-type` (popup container
+	// signal) both require aria-expanded to always be present so screen
+	// readers know the current open/closed state. Without one of these, only
+	// open=true forwards aria-expanded — keeps plain buttons free of
+	// irrelevant ARIA attributes.
+	const isDisclosure = this.expandable || !!this.popupType;
+	const ariaExpanded = isDisclosure ? String(this.expanded) : (this.expanded ? 'true' : nothing);
+
 	if (this.href) {
 		const resolvedRel = this._resolvedRel();
 		return html`
@@ -40,6 +48,8 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 				rel=${resolvedRel || nothing}
 				aria-disabled=${this.disabled ? 'true' : nothing}
 				aria-label=${this.accessibleLabel || nothing}
+				aria-haspopup=${this.popupType || nothing}
+				aria-expanded=${ariaExpanded}
 				@click=${helpers.handleClick}
 			>
 				${content}
@@ -53,7 +63,8 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled ? 'true' : nothing}
 			aria-label=${this.accessibleLabel || nothing}
-			aria-expanded=${this.open ? 'true' : nothing}
+			aria-haspopup=${this.popupType || nothing}
+			aria-expanded=${ariaExpanded}
 			popovertarget=${this.popovertarget || nothing}
 			@click=${helpers.handleClick}
 		>

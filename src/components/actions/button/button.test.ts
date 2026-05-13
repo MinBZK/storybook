@@ -211,3 +211,121 @@ describe('nldd-button – href / link rendering', () => {
 		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.button'));
 	});
 });
+
+describe('nldd-button – aria-expanded / aria-haspopup', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('omits aria-expanded on a plain button (no expandable, no popup-type, not open)', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Sla op"></nldd-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.hasAttribute('aria-expanded')).toBe(false);
+		expect(inner.hasAttribute('aria-haspopup')).toBe(false);
+	});
+
+	it('sets aria-expanded="false" when expandable and not open', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Menu" expandable></nldd-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('false');
+	});
+
+	it('sets aria-expanded="true" when expandable and open', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Menu" expandable expanded></nldd-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('true');
+	});
+
+	it('sets aria-expanded="false" when popup-type set and not open', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Acties" popup-type="menu"></nldd-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('false');
+		expect(inner.getAttribute('aria-haspopup')).toBe('menu');
+	});
+
+	it('sets aria-expanded="true" + aria-haspopup when popup-type set and open', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Acties" popup-type="dialog" expanded></nldd-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('true');
+		expect(inner.getAttribute('aria-haspopup')).toBe('dialog');
+	});
+
+	it('forwards aria-expanded + aria-haspopup to the anchor when href is set', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Menu" href="/m" popup-type="menu" expanded></nldd-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('a')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('true');
+		expect(inner.getAttribute('aria-haspopup')).toBe('menu');
+	});
+
+	it('sets aria-expanded="true" when only open is set (edge case, no expandable/popup-type)', async () => {
+		// Keeps backwards compatibility for consumers that manage aria-expanded
+		// manually on the host. Plain buttons without expandable/popup-type
+		// still forward open as aria-expanded="true".
+		el = await fixture<NLDDButton>('<nldd-button text="X" expanded></nldd-button>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button')!;
+		expect(inner.getAttribute('aria-expanded')).toBe('true');
+		expect(inner.hasAttribute('aria-haspopup')).toBe(false);
+	});
+});
+
+describe('nldd-button – single-line / width', () => {
+	let el: NLDDButton;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	it('wraps text in a .button__text span', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Lange knop tekst"></nldd-button>');
+		await waitForUpdate(el);
+		const textSpan = el.shadowRoot!.querySelector('.button__text');
+		expect(textSpan).not.toBeNull();
+		expect(textSpan!.textContent).toBe('Lange knop tekst');
+	});
+
+	it('reflects single-line attribute to the host', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" single-line></nldd-button>');
+		await waitForUpdate(el);
+		expect(el.hasAttribute('single-line')).toBe(true);
+		expect(el.singleLine).toBe(true);
+	});
+
+	it('applies inline host width and --_width=100% when width is a CSS length', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" width="240px"></nldd-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('240px');
+		expect(el.style.getPropertyValue('--_width')).toBe('100%');
+	});
+
+	it('sets --_width=100% but leaves inline width empty for width="full"', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" width="full"></nldd-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('');
+		expect(el.style.getPropertyValue('--_width')).toBe('100%');
+	});
+
+	it('clears inline width and --_width when width is cleared', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" width="240px"></nldd-button>');
+		await waitForUpdate(el);
+		el.width = '';
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('');
+		expect(el.style.getPropertyValue('--_width')).toBe('');
+	});
+
+	it('ignores invalid width values (drops both inline width and --_width)', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X" width="not-a-length"></nldd-button>');
+		await waitForUpdate(el);
+		expect((el as HTMLElement).style.width).toBe('');
+		expect(el.style.getPropertyValue('--_width')).toBe('');
+	});
+});

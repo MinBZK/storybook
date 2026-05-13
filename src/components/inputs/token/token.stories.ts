@@ -44,9 +44,9 @@ export default {
 			description: 'Control type',
 			table: { defaultValue: { summary: 'none' } },
 		},
-		open: {
+		expanded: {
 			control: 'boolean',
-			description: 'Of de menu open is (alleen bij control="menu")',
+			description: 'Of het menu uitgeklapt is (alleen bij control="menu"). Wordt geforward als aria-expanded op de menu-knop.',
 			table: { defaultValue: { summary: false } },
 		},
 		disabled: {
@@ -58,7 +58,7 @@ export default {
 	args: {
 		label: 'Token',
 		control: 'none',
-		open: false,
+		expanded: false,
 		disabled: false,
 	},
 };
@@ -66,7 +66,7 @@ export default {
 const Template = (args: Record<string, any>) => html`
 	<nldd-token
 		control=${args.control}
-		?open=${args.open}
+		?expanded=${args.expanded}
 		?disabled=${args.disabled}
 		@dismiss=${action('dismiss')}
 		@toggle=${action('toggle')}
@@ -89,7 +89,7 @@ export const AlleControls = {
 		<nldd-token>Geen control</nldd-token>
 		<nldd-token control="dismiss">Met dismiss</nldd-token>
 		<nldd-token control="menu">Met menu</nldd-token>
-		<nldd-token control="menu" open>Menu open</nldd-token>
+		<nldd-token control="menu" expanded>Menu open</nldd-token>
 	</div>
 `,
 	parameters: {
@@ -120,7 +120,7 @@ export const MetMenu = {
 	parameters: {
 		docs: {
 			description: {
-				story: 'Gebruik `control="menu"` voor tokens die een contextueel menu openen over de gerepresenteerde data (bijv. kopieer e-mailadres, bewerk, verwijder). Dispatcht een `toggle` event met `{ open: boolean }`.',
+				story: 'Gebruik `control="menu"` voor tokens die een contextueel menu openen over de gerepresenteerde data (bijv. kopieer e-mailadres, bewerk, verwijder). Dispatcht een `toggle` event met `{ expanded: boolean }`.',
 			},
 	},
 },
@@ -128,7 +128,7 @@ export const MetMenu = {
 
 export const MenuOpen = {
 	render: Template,
-	args: { control: 'menu', open: true, label: 'Datum' },
+	args: { control: 'menu', expanded: true, label: 'Datum' },
 };
 
 
@@ -188,7 +188,7 @@ export const MenuVoorbeeld = {
 		<nldd-token control="menu"
 			@toggle=${action('toggle-periode')}
 		>Periode: Laatste maand</nldd-token>
-		<nldd-token control="menu" open
+		<nldd-token control="menu" expanded
 			@toggle=${action('toggle-status')}
 		>Status: Actief</nldd-token>
 		<nldd-token control="menu"
@@ -200,7 +200,7 @@ export const MenuVoorbeeld = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Voorbeeld van tokens met een contextueel menu. Klik op het token om acties te tonen over de gerepresenteerde data. De `open` toestand wordt door de consumer beheerd.',
+				story: 'Voorbeeld van tokens met een contextueel menu. Klik op het token om acties te tonen over de gerepresenteerde data. De `expanded` toestand wordt door de consumer beheerd.',
 			},
 	},
 },

@@ -68,13 +68,13 @@ describe('nldd-token – state', () => {
 	it('open is false by default', async () => {
 		el = await fixture<NLDDToken>('<nldd-token control="menu">Label</nldd-token>');
 		await waitForUpdate(el);
-		expect(el.open).toBe(false);
+		expect(el.expanded).toBe(false);
 	});
 
 	it('open reflects as attribute', async () => {
-		el = await fixture<NLDDToken>('<nldd-token control="menu" open>Label</nldd-token>');
+		el = await fixture<NLDDToken>('<nldd-token control="menu" expanded>Label</nldd-token>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('open')).toBe(true);
+		expect(el.hasAttribute('expanded')).toBe(true);
 	});
 
 	it('menu button has aria-expanded=false when not open', async () => {
@@ -85,7 +85,7 @@ describe('nldd-token – state', () => {
 	});
 
 	it('menu button has aria-expanded=true when open', async () => {
-		el = await fixture<NLDDToken>('<nldd-token control="menu" open>Label</nldd-token>');
+		el = await fixture<NLDDToken>('<nldd-token control="menu" expanded>Label</nldd-token>');
 		await waitForUpdate(el);
 		const button = el.shadowRoot!.querySelector('button.token')!;
 		expect(button.getAttribute('aria-expanded')).toBe('true');
@@ -201,11 +201,11 @@ describe('nldd-token – menu', () => {
 
 		el.shadowRoot!.querySelector<HTMLButtonElement>('button.token')!.click();
 		await waitForUpdate(el);
-		expect(el.open).toBe(true);
+		expect(el.expanded).toBe(true);
 
 		el.shadowRoot!.querySelector<HTMLButtonElement>('button.token')!.click();
 		await waitForUpdate(el);
-		expect(el.open).toBe(false);
+		expect(el.expanded).toBe(false);
 	});
 
 	it('clicking menu dispatches toggle event with open detail', async () => {
@@ -216,7 +216,7 @@ describe('nldd-token – menu', () => {
 		el.addEventListener('toggle', (e: Event) => { detail = (e as CustomEvent).detail; });
 
 		el.shadowRoot!.querySelector<HTMLButtonElement>('button.token')!.click();
-		expect(detail?.open).toBe(true);
+		expect(detail?.expanded).toBe(true);
 	});
 
 	it('menu does not toggle when disabled', async () => {
@@ -225,6 +225,6 @@ describe('nldd-token – menu', () => {
 
 		el._handleMenuClick();
 		await waitForUpdate(el);
-		expect(el.open).toBe(false);
+		expect(el.expanded).toBe(false);
 	});
 });

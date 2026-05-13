@@ -230,11 +230,11 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 		menu.setAttribute('placement', 'bottom-end');
 
 		menu.addEventListener('toggle', (event: Event) => {
-			const open = (event as ToggleEvent).newState === 'open';
-			this._overflowMenuOpen = open;
-			if (!open) this._overflowMenuClosedAt = Date.now();
+			const isOpen = (event as ToggleEvent).newState === 'open';
+			this._overflowMenuOpen = isOpen;
+			if (!isOpen) this._overflowMenuClosedAt = Date.now();
 			const item = this._overflowButton?.querySelector('nldd-menu-bar-item');
-			if (item) (item as NLDDMenuBarItem).open = open;
+			if (item) (item as NLDDMenuBarItem).expanded = isOpen;
 		});
 		document.body.appendChild(menu);
 		return menu;

@@ -330,10 +330,10 @@ export class NLDDTopNavigationBar extends withTranslations(LitElement, nlddTopNa
 			this._globalMenuSheet = this._createGlobalMenuSheet();
 			const menuButtonItem = this._menuButton?.querySelector('nldd-menu-bar-item');
 			this._globalMenuSheet.addEventListener('open', () => {
-				if (menuButtonItem) (menuButtonItem as NLDDMenuBarItem).open = true;
+				if (menuButtonItem) (menuButtonItem as NLDDMenuBarItem).expanded = true;
 			});
 			this._globalMenuSheet.addEventListener('close', () => {
-				if (menuButtonItem) (menuButtonItem as NLDDMenuBarItem).open = false;
+				if (menuButtonItem) (menuButtonItem as NLDDMenuBarItem).expanded = false;
 			});
 		}
 		this._syncGlobalMenuSheetItems();
