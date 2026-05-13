@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './one-half-one-half-section.js';
 import '../../../content/rich-text/rich-text.js';
 
@@ -31,27 +31,39 @@ export default {
 			type: 'stable',
 		},
 	},
+	argTypes: {
+		width: {
+			control: 'text',
+			description: 'Body max-width: "full" removes the constraint, of een CSS length (bv. "480px") overschrijft de default max-width',
+			table: { defaultValue: { summary: '' } },
+		},
+	},
+	args: {
+		width: '',
+	},
 };
 
-export const Standaard = () => html`
-	<nldd-one-half-one-half-section>
-		<nldd-rich-text slot="header">
-			<h2>Sectietitel</h2>
-		</nldd-rich-text>
-		<nldd-rich-text>
-			<h3>Linkerkolom</h3>
-			<p>Dit is de linkerkolom. Beide kolommen nemen de helft van de beschikbare breedte in.</p>
-			<p>De kolommen wrappen automatisch wanneer de beschikbare breedte te klein wordt.</p>
-		</nldd-rich-text>
-		<nldd-rich-text slot="right">
-			<h3>Rechterkolom</h3>
-			<p>Dit is de rechterkolom. Gebruik beide kolommen voor gelijkwaardige inhoud.</p>
-		</nldd-rich-text>
-		<nldd-rich-text slot="footer">
-			<p>Voetnoot of aanvullende informatie.</p>
-		</nldd-rich-text>
-	</nldd-one-half-one-half-section>
-`;
+export const Standaard = {
+	render: ({ width }: Record<string, any>) => html`
+		<nldd-one-half-one-half-section width=${width || nothing}>
+			<nldd-rich-text slot="header">
+				<h2>Sectietitel</h2>
+			</nldd-rich-text>
+			<nldd-rich-text>
+				<h3>Linkerkolom</h3>
+				<p>Dit is de linkerkolom. Beide kolommen nemen de helft van de beschikbare breedte in.</p>
+				<p>De kolommen wrappen automatisch wanneer de beschikbare breedte te klein wordt.</p>
+			</nldd-rich-text>
+			<nldd-rich-text slot="right">
+				<h3>Rechterkolom</h3>
+				<p>Dit is de rechterkolom. Gebruik beide kolommen voor gelijkwaardige inhoud.</p>
+			</nldd-rich-text>
+			<nldd-rich-text slot="footer">
+				<p>Voetnoot of aanvullende informatie.</p>
+			</nldd-rich-text>
+		</nldd-one-half-one-half-section>
+	`,
+};
 
 export const ZonderHeaderEnFooter = {
 	render: () => html`

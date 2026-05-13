@@ -21,11 +21,11 @@ describe('nldd-simple-section', () => {
 		expect(el.shadowRoot!.querySelector('.simple-section')).not.toBeNull();
 	});
 
-	it('reflects full-width property to attribute', async () => {
+	it('reflects width property to attribute', async () => {
 		el = await fixture('<nldd-simple-section></nldd-simple-section>');
 		await waitForUpdate(el);
-		(el as any).fullWidth = true;
+		(el as any).width = 'full';
 		await waitForUpdate(el);
-		expect(el.hasAttribute('full-width')).toBe(true);
+		expect(el.getAttribute('width')).toBe('full');
 	});
 });

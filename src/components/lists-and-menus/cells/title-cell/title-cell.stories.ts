@@ -21,8 +21,8 @@ export default {
 		},
 		width: {
 			control: 'text',
-			description: "'stretch', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
-			table: { defaultValue: { summary: 'stretch' } },
+			description: "'full', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
+			table: { defaultValue: { summary: 'full' } },
 		},
 		minWidth: {
 			name: 'min-width',
@@ -42,14 +42,14 @@ export default {
 		horizontalAlignment: {
 			name: 'horizontal-alignment',
 			control: 'select',
-			options: ['left', 'right'],
+			options: ['left', 'center', 'right'],
 			description: 'Horizontal alignment of the text',
 			table: { defaultValue: { summary: 'left' } },
 		},
 		verticalAlignment: {
 			name: 'vertical-alignment',
 			control: 'select',
-			options: ['center', 'top', 'bottom'],
+			options: ['top', 'center', 'bottom'],
 			description: 'Vertical alignment of the cell',
 			table: { defaultValue: { summary: 'center' } },
 		},
@@ -80,7 +80,7 @@ export const Default = {
 	args: {
 		size: 5,
 		color: 'default',
-		width: 'stretch',
+		width: '',
 		minWidth: '',
 		maxWidth: '',
 		minHeight: '',
@@ -94,7 +94,7 @@ export const Default = {
 		<nldd-title-cell
 			size=${args.size}
 			color=${args.color}
-			width=${args.width}
+			width=${args.width || nothing}
 			horizontal-alignment=${args.horizontalAlignment}
 			vertical-alignment=${args.verticalAlignment}
 			text=${args.text}

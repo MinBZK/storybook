@@ -31,7 +31,7 @@
  * @attr {string}  accessible-label - Accessible label forwarded as aria-label to the input. Required for screen reader accessibility.
  * @attr {number}  max-items    - Maximum visible items before scrolling (default: 8)
  * @attr {object}  translations - Override translation keys; unset keys fall back to Dutch
- * @attr {string}  width        - Optional fixed width (any CSS length, e.g. "240px"). Default: full-width.
+ * @attr {string}  width        - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @note Free-text values: if the user types a value that does not match any menu option
  *       and presses Enter or moves focus away, the typed text is emitted as-is via the
@@ -175,7 +175,12 @@ export class NLDDComboBox extends LitElement {
 			this._menu.maxItems = this.maxItems;
 		}
 		if (changedProperties.has('width')) {
-			this.style.width = this.width || '';
+			const w = this.width;
+			if (w && w !== 'full' && CSS.supports('width', w)) {
+				this.style.setProperty('--_width', w);
+			} else {
+				this.style.removeProperty('--_width');
+			}
 		}
 		if (changedProperties.has('value') || changedProperties.has('text')) {
 			// Submit only the form value, but persist the display label in the

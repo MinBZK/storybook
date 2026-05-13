@@ -27,8 +27,9 @@ export const textCellStyles = css`
 
 	/* # Width */
 
-	:host([width='stretch']),
-	:host(:not([width])) {
+	:host([width='full']),
+	:host(:not([width])),
+	:host([width='']) {
 		flex-grow: 1;
 		flex-shrink: 1;
 	}
@@ -40,7 +41,7 @@ export const textCellStyles = css`
 		width: fit-content;
 	}
 
-	:host([width]:not([width='stretch']):not([width='fit-content'])) {
+	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {
 		flex-shrink: 0;
 	}
 
@@ -78,6 +79,10 @@ export const textCellStyles = css`
 		align-items: flex-start;
 	}
 
+	:host([horizontal-alignment='center']) {
+		align-items: center;
+	}
+
 	:host([horizontal-alignment='right']) {
 		align-items: flex-end;
 	}
@@ -102,6 +107,10 @@ export const textCellStyles = css`
 		font: var(--primitives-font-body-xxs-regular-tight);
 	}
 
+	:host([horizontal-alignment='center']) .text-cell__overline {
+		text-align: center;
+	}
+
 	:host([horizontal-alignment='right']) .text-cell__overline {
 		text-align: right;
 	}
@@ -124,6 +133,10 @@ export const textCellStyles = css`
 
 	:host([size='sm']) .text-cell__text {
 		font: var(--primitives-font-body-sm-regular-tight);
+	}
+
+	:host([horizontal-alignment='center']) .text-cell__text {
+		text-align: center;
 	}
 
 	:host([horizontal-alignment='right']) .text-cell__text {
@@ -196,6 +209,10 @@ export const textCellStyles = css`
 
 	:host([size='sm']) .text-cell__supporting-text {
 		font: var(--primitives-font-body-xxs-regular-tight);
+	}
+
+	:host([horizontal-alignment='center']) .text-cell__supporting-text {
+		text-align: center;
 	}
 
 	:host([horizontal-alignment='right']) .text-cell__supporting-text {

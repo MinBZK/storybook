@@ -11,7 +11,7 @@ export const sheetStyles = css`
 	/* # Host */
 
 	:host {
-		--_custom-width: initial;
+		--_width: initial;
 
 		display: block;
 	}
@@ -95,12 +95,12 @@ export const sheetStyles = css`
 	:host([placement='right']) .sheet,
 	:host(:not([placement])) .sheet {
 		inset: var(--semantics-overlays-inset) var(--semantics-overlays-inset) var(--semantics-overlays-inset) auto;
-		width: min(var(--_custom-width, var(--semantics-sheets-side-md-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
+		width: min(var(--_width, var(--semantics-sheets-side-md-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
 		height: calc(100dvh - var(--semantics-overlays-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: min(var(--_custom-width, var(--semantics-sheets-side-lg-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
+			width: min(var(--_width, var(--semantics-sheets-side-lg-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
 		}
 
 		&[open] {
@@ -117,12 +117,12 @@ export const sheetStyles = css`
 
 	:host([placement='left']) .sheet {
 		inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);
-		width: min(var(--_custom-width, var(--semantics-sheets-side-md-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
+		width: min(var(--_width, var(--semantics-sheets-side-md-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
 		height: calc(100dvh - var(--semantics-overlays-inset) * 2);
 		border-radius: var(--semantics-overlays-corner-radius);
 
 		@media (min-width: ${lgMin}) {
-			width: min(var(--_custom-width, var(--semantics-sheets-side-lg-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
+			width: min(var(--_width, var(--semantics-sheets-side-lg-width)), calc(100vw - var(--semantics-overlays-inset) * 2));
 		}
 
 		&[open] {

@@ -66,9 +66,9 @@ export class NLDDSheet extends LitElement {
 	override updated(changed: Map<string, unknown>) {
 		if (changed.has('width')) {
 			if (this.width) {
-				this.style.setProperty('--_custom-width', this.width);
+				this.style.setProperty('--_width', this.width);
 			} else {
-				this.style.removeProperty('--_custom-width');
+				this.style.removeProperty('--_width');
 			}
 		}
 	}

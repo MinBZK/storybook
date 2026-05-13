@@ -27,8 +27,9 @@ export const descriptionCellStyles = css`
 
 	/* # Width */
 
-	:host([width='stretch']),
-	:host(:not([width])) {
+	:host([width='full']),
+	:host(:not([width])),
+	:host([width='']) {
 		flex-grow: 1;
 		flex-shrink: 1;
 	}
@@ -40,7 +41,7 @@ export const descriptionCellStyles = css`
 		width: fit-content;
 	}
 
-	:host([width]:not([width='stretch']):not([width='fit-content'])) {
+	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {
 		flex-shrink: 0;
 	}
 

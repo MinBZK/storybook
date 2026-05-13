@@ -53,6 +53,7 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			?disabled=${this.disabled}
 			aria-disabled=${this.disabled ? 'true' : nothing}
 			aria-label=${this.accessibleLabel || nothing}
+			aria-expanded=${this.open ? 'true' : nothing}
 			popovertarget=${this.popovertarget || nothing}
 			@click=${helpers.handleClick}
 		>

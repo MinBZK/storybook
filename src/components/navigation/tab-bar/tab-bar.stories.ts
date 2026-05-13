@@ -20,10 +20,9 @@ export default {
 			description: 'Standaard variant voor alle items. Kan per item worden overschreven met een eigen variant attribuut. Wordt genegeerd wanneer compact actief is.',
 			table: { defaultValue: { summary: '' } },
 		},
-		fullWidth: {
+		centered: {
 			control: 'boolean',
-			name: 'full-width',
-			description: 'Vult de volledige breedte van de container; items blijven gecentreerd',
+			description: 'Centers the tabs in the container (host fills the row, tabs group in the middle)',
 			table: { defaultValue: { summary: false } },
 		},
 		compact: {
@@ -39,7 +38,7 @@ export default {
 	},
 	args: {
 		variant: '',
-		fullWidth: false,
+		centered: false,
 		compact: false,
 		responsive: false,
 	},
@@ -53,12 +52,12 @@ const tabBarItems = html`
 	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
 
-const Template = ({ variant, fullWidth , compact, responsive}: Record<string, any>) => html`
+const Template = ({ variant, centered, compact, responsive}: Record<string, any>) => html`
 	<nldd-tab-bar
 		variant=${variant || nothing}
 		?compact=${compact}
 		?responsive=${responsive}
-		?full-width=${fullWidth}
+		?centered=${centered}
 	>
 		${tabBarItems}
 	</nldd-tab-bar>
@@ -102,7 +101,7 @@ export const Responsief = {
 		<div>
 			<small>Breed (regular weergave)</small>
 			<div style="container-type: inline-size; container-name: layout-area; width: 680px;">
-				<nldd-tab-bar responsive full-width>
+				<nldd-tab-bar responsive centered>
 					${tabBarItems}
 				</nldd-tab-bar>
 			</div>
@@ -110,7 +109,7 @@ export const Responsief = {
 		<div>
 			<small>Smal onder 480px (compact weergave)</small>
 			<div style="container-type: inline-size; container-name: layout-area; width: 320px;">
-				<nldd-tab-bar responsive full-width>
+				<nldd-tab-bar responsive centered>
 					${tabBarItems}
 				</nldd-tab-bar>
 			</div>
@@ -123,7 +122,7 @@ export const Responsief = {
 export const VolleBreedte = {
 	render: () => html`
 	<div style="container-type: inline-size; container-name: layout-area;">
-		<nldd-tab-bar full-width>
+		<nldd-tab-bar centered>
 			${tabBarItems}
 		</nldd-tab-bar>
 	</div>

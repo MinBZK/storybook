@@ -25,7 +25,7 @@ export const numberFieldStyles = css`
 		opacity: 1;
 	}
 
-	:host([full-width]) {
+	:host([width="full"]) {
 		display: block;
 		width: 100%;
 	}
@@ -57,7 +57,7 @@ export const numberFieldStyles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
-	:host([full-width]) .number-field,
+	:host([width="full"]) .number-field,
 	:host([width]) .number-field {
 		width: 100%;
 	}
@@ -146,7 +146,7 @@ export const numberFieldStyles = css`
 		padding-inline: calc(var(--semantics-controls-md-inline-padding) - var(--semantics-input-fields-border-thickness));
 	}
 
-	:host([full-width]) .number-field__input,
+	:host([width="full"]) .number-field__input,
 	:host([width]) .number-field__input {
 		flex-grow: 1;
 		min-width: 0;

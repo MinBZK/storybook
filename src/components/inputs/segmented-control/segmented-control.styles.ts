@@ -6,21 +6,28 @@ export const segmentedControlStyles = css`
 	/* # Host */
 
 	:host {
+		--_width: auto;
+
 		display: inline-grid;
 		grid-auto-columns: 1fr;
 		grid-auto-flow: column;
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
+		width: var(--_width);
 	}
 
 	:host([hidden]) {
 		display: none;
 	}
 
-	:host([full-width]) {
+	:host([width="full"]) {
 		display: grid;
-		width: 100%;
+		--_width: 100%;
+	}
+
+	:host([width="fit-content"]) {
+		grid-auto-columns: auto;
 	}
 
 	:host([disabled]) {

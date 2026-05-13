@@ -16,7 +16,7 @@ export const paginationStyles = css`
 		display: none;
 	}
 
-	:host([full-width]) {
+	:host([centered]) {
 		display: flex;
 		justify-content: center;
 	}

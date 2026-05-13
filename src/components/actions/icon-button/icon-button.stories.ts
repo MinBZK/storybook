@@ -31,11 +31,11 @@ export default {
 				'secondary',
 				'destructive',
 				'accent-filled',
-				'accent-outlined',
 				'accent-transparent',
 				'neutral-tinted',
 				'neutral-transparent',
 				'critical-tinted',
+				'critical-transparent',
 			],
 			description: 'Visuele stijlvariant',
 			table: {
@@ -50,18 +50,25 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
-		fullWidth: {
-			name: 'full-width',
-			control: 'boolean',
-			description: 'Laat de knop vullen tot de beschikbare breedte van de container',
+		width: {
+			control: 'text',
+			description: 'Width mode: "full" (stretches to container) or any CSS length (e.g. "240px")',
 			table: {
-				defaultValue: { summary: false },
+				defaultValue: { summary: '' },
 			},
 		},
 		expandable: {
 			name: 'expandable',
 			control: 'boolean',
 			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
+		open: {
+			name: 'open',
+			control: 'boolean',
+			description: 'Geeft aan dat het popover/menu open is. Wordt geforward als aria-expanded="true" op de inner button.',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -119,8 +126,9 @@ export default {
 	args: {
 		variant: 'neutral-tinted',
 		size: 'md',
-		fullWidth: false,
+		width: '',
 		expandable: false,
+		open: false,
 		text: 'Annuleer',
 		icon: 'dismiss',
 		type: 'button',
@@ -132,14 +140,15 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, fullWidth, expandable, text, icon, type, href, target, accessibleLabel, hideTooltip, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, open, text, icon, type, href, target, accessibleLabel, hideTooltip, disabled }: Record<string, any>) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}
 		icon=${icon}
 		text=${text}
 		?expandable=${expandable}
-		?full-width=${fullWidth}
+		?open=${open}
+		width=${width || nothing}
 		type=${type}
 		href=${href || nothing}
 		target=${target || nothing}
@@ -179,11 +188,11 @@ export const AppearanceBased = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button variant="accent-filled" icon="add" text="Voeg toe"></nldd-icon-button>
-		<nldd-icon-button variant="accent-outlined" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="accent-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="neutral-tinted" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="neutral-transparent" icon="add" text="Voeg toe"></nldd-icon-button>
 		<nldd-icon-button variant="critical-tinted" icon="delete" text="Verwijder"></nldd-icon-button>
+		<nldd-icon-button variant="critical-transparent" icon="delete" text="Verwijder"></nldd-icon-button>
 	</div>
 `,
 	parameters: {
@@ -263,7 +272,6 @@ export const Disabled = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-icon-button disabled variant="accent-filled" icon="delete" text="Verwijderen"></nldd-icon-button>
-		<nldd-icon-button disabled variant="accent-outlined" icon="delete" text="Verwijderen"></nldd-icon-button>
 		<nldd-icon-button disabled variant="neutral-tinted" icon="delete" text="Verwijderen"></nldd-icon-button>
 		<nldd-icon-button disabled variant="critical-tinted" icon="delete" text="Verwijderen"></nldd-icon-button>
 	</div>

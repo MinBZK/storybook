@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './description-cell.js';
 import '../../../content/rich-text/rich-text.js';
 
@@ -9,8 +9,8 @@ export default {
 	argTypes: {
 		width: {
 			control: 'text',
-			description: "'stretch', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
-			table: { defaultValue: { summary: 'stretch' } },
+			description: "'full', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
+			table: { defaultValue: { summary: 'full' } },
 		},
 		minWidth: {
 			name: 'min-width',
@@ -30,7 +30,7 @@ export default {
 		verticalAlignment: {
 			name: 'vertical-alignment',
 			control: 'select',
-			options: ['center', 'top', 'bottom'],
+			options: ['top', 'center', 'bottom'],
 			description: 'Vertical alignment of the cell',
 			table: { defaultValue: { summary: 'center' } },
 		},
@@ -40,14 +40,14 @@ export default {
 export const Default = {
 	args: {
 		verticalAlignment: 'center',
-		width: 'stretch',
+		width: '',
 		minWidth: '',
 		maxWidth: '',
 		minHeight: '',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-description-cell
-			width=${args.width}
+			width=${args.width || nothing}
 			vertical-alignment=${args.verticalAlignment}
 		>
 			<p slot="title">Term</p>

@@ -53,6 +53,7 @@ export function template(this: NLDDIconButton) {
 				?disabled=${this.disabled}
 				aria-disabled=${this.disabled ? 'true' : nothing}
 				aria-label=${label}
+				aria-expanded=${this.open ? 'true' : nothing}
 				popovertarget=${this.popovertarget || nothing}
 				@click=${this._handleClick}
 			>

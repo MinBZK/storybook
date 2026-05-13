@@ -32,11 +32,11 @@ export default {
 				'secondary',
 				'destructive',
 				'accent-filled',
-				'accent-outlined',
 				'accent-transparent',
 				'neutral-tinted',
 				'neutral-transparent',
 				'critical-tinted',
+				'critical-transparent',
 			],
 			description: 'Visuele stijlvariant',
 			table: {
@@ -51,18 +51,25 @@ export default {
 				defaultValue: { summary: 'md' },
 			},
 		},
-		fullWidth: {
-			name: 'full-width',
-			control: 'boolean',
-			description: 'Full width',
+		width: {
+			control: 'text',
+			description: 'Width mode: "full" (stretches to container) or any CSS length (e.g. "240px")',
 			table: {
-				defaultValue: { summary: false },
+				defaultValue: { summary: '' },
 			},
 		},
 		expandable: {
 			name: 'expandable',
 			control: 'boolean',
 			description: 'Voegt een chevron toe om aan te geven dat deze knop een menu of popover opent',
+			table: {
+				defaultValue: { summary: false },
+			},
+		},
+		open: {
+			name: 'open',
+			control: 'boolean',
+			description: 'Geeft aan dat het popover/menu open is. Activeert de is-open visuele state en zet aria-expanded="true" op de inner button.',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -117,8 +124,9 @@ export default {
 	args: {
 		variant: 'neutral-tinted',
 		size: 'md',
-		fullWidth: false,
+		width: '',
 		expandable: false,
+		open: false,
 		text: 'Button',
 		startIcon: '',
 		endIcon: '',
@@ -129,11 +137,11 @@ export default {
 	},
 };
 
-const Template = ({ variant, size, fullWidth, expandable, text, startIcon, endIcon, type, href, target, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, open, text, startIcon, endIcon, type, href, target, disabled }: Record<string, any>) => html`
 	<nldd-button
 		variant=${variant}
 		size=${size}
-		?full-width=${fullWidth}
+		width=${width || nothing}
 		type=${type}
 		text=${text}
 		href=${href || nothing}
@@ -141,6 +149,7 @@ const Template = ({ variant, size, fullWidth, expandable, text, startIcon, endIc
 		start-icon=${startIcon || nothing}
 		end-icon=${endIcon || nothing}
 		?expandable=${expandable}
+		?open=${open}
 		?disabled=${disabled}
 	></nldd-button>
 `;
@@ -174,11 +183,11 @@ export const AppearanceBased = {
 	render: () => html`
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-button variant="accent-filled" text="Accent Filled"></nldd-button>
-		<nldd-button variant="accent-outlined" text="Accent Outlined"></nldd-button>
 		<nldd-button variant="accent-transparent" text="Accent Transparent"></nldd-button>
 		<nldd-button variant="neutral-tinted" text="Neutral Tinted"></nldd-button>
 		<nldd-button variant="neutral-transparent" text="Neutral Transparent"></nldd-button>
 		<nldd-button variant="critical-tinted" text="Critical Tinted"></nldd-button>
+		<nldd-button variant="critical-transparent" text="Critical Transparent"></nldd-button>
 	</div>
 `,
 	parameters: {

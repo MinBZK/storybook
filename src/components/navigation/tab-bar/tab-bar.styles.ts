@@ -19,7 +19,7 @@ export const tabBarStyles = css`
 		display: none;
 	}
 
-	:host([full-width]) {
+	:host([centered]) {
 		display: block;
 		width: 100%;
 	}
@@ -34,7 +34,7 @@ export const tabBarStyles = css`
 		align-items: center;
 	}
 
-	:host([full-width]) .tab-bar {
+	:host([centered]) .tab-bar {
 		justify-content: center;
 	}
 

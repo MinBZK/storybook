@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './text-cell.js';
 import '../../../content/tag/tag.js';
 
@@ -21,8 +21,8 @@ export default {
 		},
 		width: {
 			control: 'text',
-			description: "'stretch', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
-			table: { defaultValue: { summary: 'stretch' } },
+			description: "'full', 'fit-content', or a CSS length (e.g. '200px', '20rem')",
+			table: { defaultValue: { summary: 'full' } },
 		},
 		minWidth: {
 			name: 'min-width',
@@ -42,14 +42,14 @@ export default {
 		horizontalAlignment: {
 			name: 'horizontal-alignment',
 			control: 'select',
-			options: ['left', 'right'],
+			options: ['left', 'center', 'right'],
 			description: 'Horizontal alignment of the text',
 			table: { defaultValue: { summary: 'left' } },
 		},
 		verticalAlignment: {
 			name: 'vertical-alignment',
 			control: 'select',
-			options: ['center', 'top', 'bottom'],
+			options: ['top', 'center', 'bottom'],
 			description: 'Vertical alignment of the cell',
 			table: { defaultValue: { summary: 'center' } },
 		},
@@ -73,7 +73,7 @@ export const Default = {
 	args: {
 		size: 'md',
 		color: 'default',
-		width: 'stretch',
+		width: '',
 		minWidth: '',
 		maxWidth: '',
 		minHeight: '',
@@ -87,7 +87,7 @@ export const Default = {
 		<nldd-text-cell
 			size=${args.size}
 			color=${args.color}
-			width=${args.width}
+			width=${args.width || nothing}
 			horizontal-alignment=${args.horizontalAlignment}
 			vertical-alignment=${args.verticalAlignment}
 			text=${args.text}
@@ -164,7 +164,7 @@ export const Sizes = {
 export const Width = {
 	render: () => html`
 		<div style="display: flex; flex-direction: column; gap: 8px; width: 300px; border: 1px dashed var(--primitives-color-neutral-150); padding: 8px;">
-			<nldd-text-cell width="stretch" text="Stretch (default)"></nldd-text-cell>
+			<nldd-text-cell width="full" text="Full (default)"></nldd-text-cell>
 			<nldd-text-cell width="fit-content" text="Fit content"></nldd-text-cell>
 			<nldd-text-cell width="120px" text="120px fixed"></nldd-text-cell>
 		</div>

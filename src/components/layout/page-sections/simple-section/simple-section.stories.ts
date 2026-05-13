@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './simple-section.js';
 import '../../../content/rich-text/rich-text.js';
 
@@ -29,22 +29,34 @@ export default {
 			type: 'stable',
 		},
 	},
+	argTypes: {
+		width: {
+			control: 'text',
+			description: 'Body max-width: "full" removes the constraint, of een CSS length (bv. "480px") overschrijft de default max-width',
+			table: { defaultValue: { summary: '' } },
+		},
+	},
+	args: {
+		width: '',
+	},
 };
 
-export const Standaard = () => html`
-	<nldd-simple-section>
-		<nldd-rich-text slot="header">
-			<h2>Sectietitel</h2>
-		</nldd-rich-text>
-		<nldd-rich-text>
-			<p>Dit is de hoofdinhoud van de sectie. Voeg hier tekst, formulieren of andere componenten toe.</p>
-			<p>De ruimte tussen header, inhoud en footer wordt bepaald door de breedte van de sectie.</p>
-		</nldd-rich-text>
-		<nldd-rich-text slot="footer">
-			<p>Voetnoot of aanvullende informatie.</p>
-		</nldd-rich-text>
-	</nldd-simple-section>
-`;
+export const Standaard = {
+	render: ({ width }: Record<string, any>) => html`
+		<nldd-simple-section width=${width || nothing}>
+			<nldd-rich-text slot="header">
+				<h2>Sectietitel</h2>
+			</nldd-rich-text>
+			<nldd-rich-text>
+				<p>Dit is de hoofdinhoud van de sectie. Voeg hier tekst, formulieren of andere componenten toe.</p>
+				<p>De ruimte tussen header, inhoud en footer wordt bepaald door de breedte van de sectie.</p>
+			</nldd-rich-text>
+			<nldd-rich-text slot="footer">
+				<p>Voetnoot of aanvullende informatie.</p>
+			</nldd-rich-text>
+		</nldd-simple-section>
+	`,
+};
 
 export const ZonderHeaderEnFooter = {
 	render: () => html`

@@ -32,7 +32,7 @@ export const simpleSectionStyles = css`
 		flex-grow: 1;
 	}
 
-	:host([full-width]) {
+	:host([width="full"]) {
 		--_max-width: none;
 	}
 

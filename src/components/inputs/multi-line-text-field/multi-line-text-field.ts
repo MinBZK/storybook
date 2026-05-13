@@ -18,7 +18,7 @@
  * @attr {string} resize          - 'none' | 'vertical' (default) | 'auto'.
  *                                  'auto' grows with content (native field-sizing), no manual handle.
  * @attr {string} accessible-label - Accessible label forwarded to the inner textarea. Set automatically by nldd-form-field.
- * @attr {string} width           - Optional fixed width (any CSS length, e.g. "240px"). Default: full-width.
+ * @attr {string} width           - Optional fixed width (any CSS length, e.g. "240px"). Default: stretches to fill container.
  *
  * @fires input  - When value changes
  * @fires change - When value is committed (blur)
@@ -108,7 +108,12 @@ export class NLDDMultiLineTextField extends LitElement {
 
 	override updated(changed: PropertyValues): void {
 		if (changed.has('width')) {
-			this.style.width = this.width || '';
+			const w = this.width;
+			if (w && w !== 'full' && CSS.supports('width', w)) {
+				this.style.setProperty('--_width', w);
+			} else {
+				this.style.removeProperty('--_width');
+			}
 		}
 		if (changed.has('resize') && this.resize === 'auto' && this._textarea) {
 			// Manual resize sets inline width/height on the textarea, which would

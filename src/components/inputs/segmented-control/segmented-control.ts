@@ -11,7 +11,7 @@
  * @attr {string}  type          - Input type: 'radio' | 'checkbox' (default: 'radio')
  * @attr {string}  variant       - Content type for all items: 'text' | 'icon' (default: 'text')
  * @attr {boolean} disabled      - Disabled state for all items
- * @attr {boolean} full-width    - Stretches to fill the container width
+ * @attr {string}  width         - Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px')
  * @attr {string}  name          - Name for form submission, forwarded to native inputs
  *
  * @fires change - When selection changes; detail: { value: string } for radio,
@@ -142,8 +142,14 @@ export class NLDDSegmentedControl extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
-	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
-	fullWidth = false;
+	/**
+	 * Width mode: 'full' (stretch to container, equal-width items),
+	 * 'fit-content' (per-item content size), or any CSS length (e.g. '240px',
+	 * '50%') which sets the host width with equal-width items. Default is
+	 * content-based outer with equal-width items.
+	 */
+	@property({ type: String, reflect: true })
+	width = '';
 
 	@property({ type: String, reflect: true })
 	name = '';
@@ -218,6 +224,20 @@ export class NLDDSegmentedControl extends LitElement {
 	}
 
 	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('width')) {
+			// Keyword 'full' is handled by CSS ([width="full"] sets
+			// --_width: 100% and switches display to grid). Keyword
+			// 'fit-content' only changes grid-auto-columns and leaves the host
+			// width alone. A valid CSS length feeds --_width here.
+			// Invalid values do nothing.
+			const w = this.width;
+			const isKeyword = w === 'full' || w === 'fit-content';
+			if (w && !isKeyword && CSS.supports('width', w)) {
+				this.style.setProperty('--_width', w);
+			} else {
+				this.style.removeProperty('--_width');
+			}
+		}
 		if (
 			changedProperties.has('value') ||
 			changedProperties.has('values') ||

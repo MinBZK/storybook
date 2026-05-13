@@ -10,7 +10,7 @@
  * use `vertical-alignment="top"`.
  *
  * @element nldd-description-cell
- * @attr {string} width - 'stretch' | 'fit-content' | CSS length (e.g. '200px', '20rem'). Default: 'stretch'
+ * @attr {string} width - 'full' | 'fit-content' | CSS length (e.g. '200px', '20rem'). Default: 'full'
  * @attr {string} min-width - Minimum width as CSS length (e.g. '80px', '5rem')
  * @attr {string} max-width - Maximum width as CSS length (e.g. '300px', '20rem')
  * @attr {string} min-height - Minimum height as CSS length (e.g. '44px', '3rem')
@@ -31,9 +31,9 @@ type VerticalAlignment = 'top' | 'center' | 'bottom';
 export class NLDDDescriptionCell extends VisibilityMixin(LitElement) {
 	static override styles = [descriptionCellStyles];
 
-	/** 'stretch' | 'fit-content' | CSS length (e.g. '200px', '20rem'). */
+	/** 'full' | 'fit-content' | CSS length (e.g. '200px', '20rem'). */
 	@property({ type: String, reflect: true })
-	width: string = 'stretch';
+	width: string = 'full';
 
 	@property({ type: String, reflect: true, attribute: 'min-width' })
 	minWidth?: string;
@@ -55,11 +55,16 @@ export class NLDDDescriptionCell extends VisibilityMixin(LitElement) {
 	}
 
 	private _applyDimensionStyles() {
-		const widthIsKeyword = this.width === 'stretch' || this.width === 'fit-content';
-		if (this.width && !widthIsKeyword) {
-			this.style.setProperty('--_width', this.width);
+		const w = this.width;
+		const widthIsKeyword = w === 'full' || w === 'fit-content';
+		const widthIsValidLength = !!w && !widthIsKeyword && CSS.supports('width', w);
+		if (widthIsValidLength) {
+			this.style.setProperty('--_width', w);
 		} else {
 			this.style.removeProperty('--_width');
+		}
+		if (w && !widthIsKeyword && !widthIsValidLength) {
+			this.width = '';
 		}
 		if (this.minWidth) {
 			this.style.setProperty('--_min-width', this.minWidth);

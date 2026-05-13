@@ -22,9 +22,9 @@ describe('nldd-cell', () => {
 	});
 
 	it('reflects width attribute', async () => {
-		el = await fixture('<nldd-cell width="stretch"></nldd-cell>');
+		el = await fixture('<nldd-cell width="full"></nldd-cell>');
 		await waitForUpdate(el);
-		expect(el.getAttribute('width')).toBe('stretch');
+		expect(el.getAttribute('width')).toBe('full');
 	});
 
 	it('sets inline width style for explicit CSS length', async () => {

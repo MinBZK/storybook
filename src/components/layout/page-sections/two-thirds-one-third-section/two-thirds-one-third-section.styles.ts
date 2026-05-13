@@ -27,7 +27,7 @@ export const twoThirdsOneThirdSectionStyles = css`
 		display: none;
 	}
 
-	:host([full-width]) {
+	:host([width="full"]) {
 		--_max-width: none;
 	}
 

@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './cell.js';
 import '../../../actions/button/button.js';
 
@@ -9,7 +9,7 @@ export default {
 	argTypes: {
 		width: {
 			control: 'text',
-			description: "'stretch', 'fit-content', or a CSS length (e.g. '120px', '10rem')",
+			description: "'full', 'fit-content', or a CSS length (e.g. '120px', '10rem')",
 			table: { defaultValue: { summary: 'fit-content' } },
 		},
 		minWidth: {
@@ -27,10 +27,17 @@ export default {
 			control: 'text',
 			description: "Minimum height as CSS length (e.g. '44px', '3rem')",
 		},
+		horizontalAlignment: {
+			name: 'horizontal-alignment',
+			control: 'select',
+			options: ['left', 'center', 'right'],
+			description: 'Horizontal alignment of slotted content',
+			table: { defaultValue: { summary: 'left' } },
+		},
 		verticalAlignment: {
 			name: 'vertical-alignment',
 			control: 'select',
-			options: ['center', 'top', 'bottom'],
+			options: ['top', 'center', 'bottom'],
 			description: 'Vertical alignment of slotted content',
 			table: { defaultValue: { summary: 'center' } },
 		},
@@ -39,15 +46,17 @@ export default {
 
 export const Default = {
 	args: {
-		width: 'fit-content',
+		width: '',
 		minWidth: '',
 		maxWidth: '',
 		minHeight: '',
+		horizontalAlignment: 'left',
 		verticalAlignment: 'center',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-cell
-			width=${args.width}
+			width=${args.width || nothing}
+			horizontal-alignment=${args.horizontalAlignment}
 			vertical-alignment=${args.verticalAlignment}
 			style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);"
 		>
@@ -56,10 +65,10 @@ export const Default = {
 	`,
 };
 
-export const WidthStretch = {
+export const WidthFull = {
 	render: () => html`
-		<nldd-cell width="stretch" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
-			<nldd-button variant="neutral-tinted" width="stretch" text="Stretched button"></nldd-button>
+		<nldd-cell width="full" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-button variant="neutral-tinted" width="full" text="Stretched button"></nldd-button>
 		</nldd-cell>
 	`,
 };
@@ -75,15 +84,15 @@ export const WidthFitContent = {
 export const WidthFixed = {
 	render: () => html`
 		<nldd-cell width="120px" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
-			<nldd-button variant="neutral-tinted" width="stretch" text="120px fixed"></nldd-button>
+			<nldd-button variant="neutral-tinted" width="full" text="120px fixed"></nldd-button>
 		</nldd-cell>
 	`,
 };
 
 export const WithMinAndMaxWidth = {
 	render: () => html`
-		<nldd-cell width="stretch" min-width="80px" max-width="200px" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
-			<nldd-button variant="neutral-tinted" width="stretch" text="Min 80 / Max 200"></nldd-button>
+		<nldd-cell width="full" min-width="80px" max-width="200px" style="height: 80px; border: 1px dashed var(--primitives-color-neutral-150);">
+			<nldd-button variant="neutral-tinted" width="full" text="Min 80 / Max 200"></nldd-button>
 		</nldd-cell>
 	`,
 };
@@ -109,6 +118,22 @@ export const VerticalAlignment = {
 			</nldd-cell>
 			<nldd-cell vertical-alignment="bottom" style="border: 1px dashed var(--primitives-color-neutral-150);">
 				<nldd-button variant="neutral-tinted" text="Bottom"></nldd-button>
+			</nldd-cell>
+		</div>
+	`,
+};
+
+export const HorizontalAlignment = {
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 8px;">
+			<nldd-cell width="240px" horizontal-alignment="left" style="height: 60px; border: 1px dashed var(--primitives-color-neutral-150);">
+				<nldd-button variant="neutral-tinted" text="Left (default)"></nldd-button>
+			</nldd-cell>
+			<nldd-cell width="240px" horizontal-alignment="center" style="height: 60px; border: 1px dashed var(--primitives-color-neutral-150);">
+				<nldd-button variant="neutral-tinted" text="Center"></nldd-button>
+			</nldd-cell>
+			<nldd-cell width="240px" horizontal-alignment="right" style="height: 60px; border: 1px dashed var(--primitives-color-neutral-150);">
+				<nldd-button variant="neutral-tinted" text="Right"></nldd-button>
 			</nldd-cell>
 		</div>
 	`,

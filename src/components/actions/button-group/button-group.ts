@@ -44,9 +44,9 @@ export class NLDDButtonGroup extends LitElement {
 			}
 
 			if (this.orientation === 'vertical') {
-				el.setAttribute('full-width', '');
+				el.setAttribute('width', 'full');
 			} else {
-				el.removeAttribute('full-width');
+				el.removeAttribute('width');
 			}
 
 			el.setAttribute('size', this.size);

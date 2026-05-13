@@ -26,10 +26,9 @@ export default {
 		},
 	},
 	argTypes: {
-		fullWidth: {
+		centered: {
 			control: 'boolean',
-			name: 'full-width',
-			description: 'Centreert de pagination in de container',
+			description: 'Centers the pagination in the container (host fills the row, items group in the middle)',
 			table: { defaultValue: { summary: false } },
 		},
 		current: {
@@ -49,19 +48,19 @@ export default {
 		},
 	},
 	args: {
-		fullWidth: false,
+		centered: false,
 		current: 1,
 		total: 10,
 		disabled: false,
 	},
 };
 
-const Template = ({ fullWidth , current, total, disabled}: Record<string, any>) => html`
+const Template = ({ centered, current, total, disabled}: Record<string, any>) => html`
 	<nldd-pagination
 		current=${current}
 		total=${total}
 		?disabled=${disabled}
-		?full-width=${fullWidth}
+		?centered=${centered}
 	></nldd-pagination>
 `;
 

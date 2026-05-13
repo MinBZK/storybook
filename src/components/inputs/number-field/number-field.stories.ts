@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './number-field.js';
 
 /**
@@ -24,15 +24,9 @@ export default {
 			description: 'Grootte van het veld',
 			table: { defaultValue: { summary: 'md' } },
 		},
-		fullWidth: {
-			name: 'full-width',
-			control: 'boolean',
-			description: 'Vult de volledige breedte van de container',
-			table: { defaultValue: { summary: false } },
-		},
 		width: {
 			control: 'text',
-			description: 'Vaste breedte van het veld; het invoervak rekt mee',
+			description: 'Width mode: "full" (stretches to container) or any CSS length (e.g. "240px")',
 			table: { defaultValue: { summary: '' } },
 		},
 		hideSpinButtons: {
@@ -73,7 +67,6 @@ export default {
 	},
 	args: {
 		size: 'md',
-		fullWidth: false,
 		width: '',
 		hideSpinButtons: false,
 		name: '',
@@ -85,7 +78,7 @@ export default {
 	},
 };
 
-const Template = ({ size, fullWidth, hideSpinButtons, name, value, min, max, step, width, disabled }: Record<string, any>) => html`
+const Template = ({ size, hideSpinButtons, name, value, min, max, step, width, disabled }: Record<string, any>) => html`
 	<nldd-number-field
 		value=${value}
 		min=${min}
@@ -95,8 +88,7 @@ const Template = ({ size, fullWidth, hideSpinButtons, name, value, min, max, ste
 		?disabled=${disabled}
 		name=${name}
 		?hide-spin-buttons=${hideSpinButtons}
-		?full-width=${fullWidth}
-		width=${width}
+		width=${width || nothing}
 	></nldd-number-field>
 `;
 
@@ -119,10 +111,10 @@ export const AlleToestanden = {
 		<nldd-number-field value="5" min="0" max="10" width="240px"></nldd-number-field>
 		<nldd-number-field value="5" min="0" max="10" hide-spin-buttons width="240px"></nldd-number-field>
 		<div style="width: 400px;">
-			<nldd-number-field value="5" min="0" max="10" full-width></nldd-number-field>
+			<nldd-number-field value="5" min="0" max="10" width="full"></nldd-number-field>
 		</div>
 		<div style="width: 400px;">
-			<nldd-number-field value="5" min="0" max="10" hide-spin-buttons full-width></nldd-number-field>
+			<nldd-number-field value="5" min="0" max="10" hide-spin-buttons width="full"></nldd-number-field>
 		</div>
 	</div>
 `,

@@ -149,8 +149,8 @@ export const MetStickyFooter = {
 				${pageContent}
 				<nldd-container slot="footer" padding="16">
 					<nldd-button-group orientation="vertical">
-						<nldd-button variant="primary" text="Opslaan" full-width></nldd-button>
-						<nldd-button variant="secondary" text="Annuleer" full-width></nldd-button>
+						<nldd-button variant="primary" text="Opslaan" width="full"></nldd-button>
+						<nldd-button variant="secondary" text="Annuleer" width="full"></nldd-button>
 					</nldd-button-group>
 				</nldd-container>
 			</nldd-page>

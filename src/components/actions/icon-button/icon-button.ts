@@ -2,12 +2,13 @@
  * Nederlandse Digitale Dienst Icon Button Component (Lit + TypeScript)
  *
  * @element nldd-icon-button
- * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-outlined' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'primary' | 'secondary' | 'destructive'
+ * @attr {string}  variant           - Button variant: 'accent-filled' | 'accent-transparent' | 'neutral-tinted' | 'neutral-transparent' | 'critical-tinted' | 'critical-transparent' | 'primary' | 'secondary' | 'destructive'
  * @attr {string}  size              - Button size: 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable        - Whether the button opens a menu or popover and shows chevron next to the icon
- * @attr {boolean} full-width        - Whether the button stretches to fill its container width
+ * @attr {boolean} open              - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button.
+ * @attr {string}  width             - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string}  text              - Button text, used as aria-label and shown below the icon in lg size
  * @attr {string}  icon              - Icon name for the nldd-icon element
  * @attr {string}  accessible-label  - Accessible label for screen readers. Overrides text as aria-label
@@ -44,11 +45,11 @@ export type Variant =
 	| 'secondary'
 	| 'destructive'
 	| 'accent-filled'
-	| 'accent-outlined'
 	| 'accent-transparent'
 	| 'neutral-tinted'
 	| 'neutral-transparent'
-	| 'critical-tinted';
+	| 'critical-tinted'
+	| 'critical-transparent';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
 @customElement('nldd-icon-button')
@@ -70,8 +71,12 @@ export class NLDDIconButton extends LitElement {
 	@property({ type: Boolean, reflect: true, attribute: 'expandable' })
 	expandable = false;
 
-	@property({ type: Boolean, reflect: true, attribute: 'full-width' })
-	fullWidth = false;
+	@property({ type: Boolean, reflect: true })
+	open = false;
+
+	/** Width mode: 'full' (stretch to container) or any CSS length. */
+	@property({ type: String, reflect: true })
+	width = '';
 
 	@property({ type: String })
 	popovertarget: string | undefined = undefined;
@@ -117,7 +122,23 @@ export class NLDDIconButton extends LitElement {
 
 	private _warnedA11y = false;
 
-	override updated(): void {
+	override updated(changedProperties: Map<string, unknown>): void {
+		if (changedProperties.has('width')) {
+			const w = this.width;
+			// 'full' switches host to block + 100% via CSS attribute selector.
+			// A valid CSS length is applied as inline style.width on the host.
+			// In either case the inner button stretches via --_width, so
+			// a custom width on the host translates to a wide button instead
+			// of leaving the size-based square. Invalid values do nothing.
+			const isFull = w === 'full';
+			const isValidLength = !!w && !isFull && CSS.supports('width', w);
+			this.style.width = isValidLength ? w : '';
+			if (isFull || isValidLength) {
+				this.style.setProperty('--_width', '100%');
+			} else {
+				this.style.removeProperty('--_width');
+			}
+		}
 		const inaccessible = this._hasIcon && !this.text && !this.accessibleLabel;
 		if (import.meta.env?.DEV && inaccessible && !this._warnedA11y) {
 			this._warnedA11y = true;

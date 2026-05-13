@@ -27,7 +27,7 @@ export const oneHalfOneHalfSectionStyles = css`
 		display: none;
 	}
 
-	:host([full-width]) {
+	:host([width="full"]) {
 		--_max-width: none;
 	}
 

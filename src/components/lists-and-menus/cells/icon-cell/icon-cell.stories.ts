@@ -8,13 +8,6 @@ export default {
 	component: 'nldd-icon-cell',
 	tags: ['autodocs'],
 	argTypes: {
-		verticalAlignment: {
-			name: 'vertical-alignment',
-			control: 'select',
-			options: ['center', 'top'],
-			description: 'Vertical alignment of the icon',
-			table: { defaultValue: { summary: 'center' } },
-		},
 		size: {
 			control: 'select',
 			options: ['16', '20', '24', '32'],
@@ -27,6 +20,13 @@ export default {
 			description: 'Color variant of the icon',
 			table: { defaultValue: { summary: 'default' } },
 		},
+		verticalAlignment: {
+			name: 'vertical-alignment',
+			control: 'select',
+			options: ['top', 'center', 'bottom'],
+			description: 'Vertical alignment of the icon',
+			table: { defaultValue: { summary: 'center' } },
+		},
 		icon: {
 			control: 'select',
 			options: ICONS,
@@ -38,15 +38,15 @@ export default {
 export const Default = {
 	args: {
 		size: '24',
-		verticalAlignment: 'center',
 		color: 'default',
+		verticalAlignment: 'center',
 		icon: 'icon-placeholder',
 	},
 	render: (args: Record<string, any>) => html`
 		<nldd-icon-cell
-			vertical-alignment=${args.verticalAlignment}
 			size=${args.size}
 			color=${args.color}
+			vertical-alignment=${args.verticalAlignment}
 			icon=${args.icon}
 		></nldd-icon-cell>
 	`,

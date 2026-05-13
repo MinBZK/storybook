@@ -7,8 +7,10 @@ export const textFieldStyles = css`
 
 	:host {
 		--_background-color: var(--semantics-input-fields-background-color);
+		--_width: auto;
 
 		display: block;
+		width: var(--_width);
 		-webkit-tap-highlight-color: transparent;
 	}
 
