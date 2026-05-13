@@ -7,7 +7,7 @@
  * More specific settings take precedence: sides > axis > all sides.
  *
  * Responsive padding is supported via viewport breakpoints (sm-, md-, lg-)
- * and container queries (layout-area-sm-, layout-area-md-, layout-area-lg-).
+ * and container queries (layout-container-sm-, layout-container-md-, layout-container-lg-).
  * Cascade order: base → viewport breakpoints → container queries.
  *
  * @element nldd-container
@@ -22,9 +22,9 @@
  * @attr {string} sm-padding           - Padding for all sides at sm viewport breakpoint
  * @attr {string} md-padding           - Padding for all sides at md viewport breakpoint
  * @attr {string} lg-padding           - Padding for all sides at lg viewport breakpoint
- * @attr {string} layout-area-sm-padding - Padding for all sides at sm container size
- * @attr {string} layout-area-md-padding - Padding for all sides at md container size
- * @attr {string} layout-area-lg-padding - Padding for all sides at lg container size
+ * @attr {string} layout-container-sm-padding - Padding for all sides at sm container size
+ * @attr {string} layout-container-md-padding - Padding for all sides at md container size
+ * @attr {string} layout-container-lg-padding - Padding for all sides at lg container size
  * (and equivalents for all padding directions)
  *
  * @slot - Container content

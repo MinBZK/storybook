@@ -43,7 +43,7 @@ export class NLDDSplitViewPane extends LitElement {
 	override connectedCallback() {
 		super.connectedCallback();
 		this.style.containerType = 'inline-size';
-		this.style.containerName = 'layout-area';
+		this.style.containerName = 'layout-container';
 	}
 
 	override render() {

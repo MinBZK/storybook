@@ -129,7 +129,7 @@ export const tabBarItemStyles = css`
 			height: var(--semantics-controls-lg-min-size);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			flex-direction: column;
 			gap: 0;
 			padding: var(--primitives-space-8);
@@ -226,7 +226,7 @@ export const tabBarItemStyles = css`
 			font: var(--primitives-font-body-xxs-bold-flat);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			font: var(--primitives-font-body-xxs-bold-flat);
 		}
 	}

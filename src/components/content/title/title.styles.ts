@@ -73,15 +73,15 @@ export const titleStyles = css`
 			font: var(--primitives-font-display-1-lg);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			font: var(--primitives-font-display-1-sm);
 		}
 
-		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			font: var(--primitives-font-display-1-md);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			font: var(--primitives-font-display-1-lg);
 		}
 	}
@@ -99,15 +99,15 @@ export const titleStyles = css`
 			font: var(--primitives-font-display-2-lg);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			font: var(--primitives-font-display-2-sm);
 		}
 
-		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			font: var(--primitives-font-display-2-md);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			font: var(--primitives-font-display-2-lg);
 		}
 	}
@@ -126,15 +126,15 @@ export const titleStyles = css`
 			font: var(--primitives-font-display-3-lg);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			font: var(--primitives-font-display-3-sm);
 		}
 
-		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			font: var(--primitives-font-display-3-md);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			font: var(--primitives-font-display-3-lg);
 		}
 	}
@@ -152,15 +152,15 @@ export const titleStyles = css`
 			font: var(--primitives-font-display-4-lg);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			font: var(--primitives-font-display-4-sm);
 		}
 
-		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			font: var(--primitives-font-display-4-md);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			font: var(--primitives-font-display-4-lg);
 		}
 	}
@@ -178,15 +178,15 @@ export const titleStyles = css`
 			font: var(--primitives-font-display-5-lg);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			font: var(--primitives-font-display-5-sm);
 		}
 
-		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			font: var(--primitives-font-display-5-md);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			font: var(--primitives-font-display-5-lg);
 		}
 	}
@@ -204,15 +204,15 @@ export const titleStyles = css`
 			font: var(--primitives-font-display-6-lg);
 		}
 
-		@container layout-area (max-width: ${smMax}) {
+		@container layout-container (max-width: ${smMax}) {
 			font: var(--primitives-font-display-6-sm);
 		}
 
-		@container layout-area (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			font: var(--primitives-font-display-6-md);
 		}
 
-		@container layout-area (min-width: ${lgMin}) {
+		@container layout-container (min-width: ${lgMin}) {
 			font: var(--primitives-font-display-6-lg);
 		}
 	}

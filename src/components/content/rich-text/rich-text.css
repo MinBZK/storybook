@@ -76,15 +76,15 @@ nldd-rich-text h1 {
 		font: var(--primitives-font-display-1-lg);
 	}
 
-	@container layout-area (max-width: 640px) {
+	@container layout-container (max-width: 640px) {
 		font: var(--primitives-font-display-1-sm);
 	}
 
-	@container layout-area (min-width: 641px) and (max-width: 1007px) {
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-1-md);
 	}
 
-	@container layout-area (min-width: 1008px) {
+	@container layout-container (min-width: 1008px) {
 		font: var(--primitives-font-display-1-lg);
 	}
 }
@@ -109,15 +109,15 @@ nldd-rich-text h2 {
 		font: var(--primitives-font-display-2-lg);
 	}
 
-	@container layout-area (max-width: 640px) {
+	@container layout-container (max-width: 640px) {
 		font: var(--primitives-font-display-2-sm);
 	}
 
-	@container layout-area (min-width: 641px) and (max-width: 1007px) {
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-2-md);
 	}
 
-	@container layout-area (min-width: 1008px) {
+	@container layout-container (min-width: 1008px) {
 		font: var(--primitives-font-display-2-lg);
 	}
 }
@@ -142,15 +142,15 @@ nldd-rich-text h3 {
 		font: var(--primitives-font-display-3-lg);
 	}
 
-	@container layout-area (max-width: 640px) {
+	@container layout-container (max-width: 640px) {
 		font: var(--primitives-font-display-3-sm);
 	}
 
-	@container layout-area (min-width: 641px) and (max-width: 1007px) {
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-3-md);
 	}
 
-	@container layout-area (min-width: 1008px) {
+	@container layout-container (min-width: 1008px) {
 		font: var(--primitives-font-display-3-lg);
 	}
 }
@@ -175,15 +175,15 @@ nldd-rich-text h4 {
 		font: var(--primitives-font-display-4-lg);
 	}
 
-	@container layout-area (max-width: 640px) {
+	@container layout-container (max-width: 640px) {
 		font: var(--primitives-font-display-4-sm);
 	}
 
-	@container layout-area (min-width: 641px) and (max-width: 1007px) {
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-4-md);
 	}
 
-	@container layout-area (min-width: 1008px) {
+	@container layout-container (min-width: 1008px) {
 		font: var(--primitives-font-display-4-lg);
 	}
 }
@@ -208,15 +208,15 @@ nldd-rich-text h5 {
 		font: var(--primitives-font-display-5-lg);
 	}
 
-	@container layout-area (max-width: 640px) {
+	@container layout-container (max-width: 640px) {
 		font: var(--primitives-font-display-5-sm);
 	}
 
-	@container layout-area (min-width: 641px) and (max-width: 1007px) {
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-5-md);
 	}
 
-	@container layout-area (min-width: 1008px) {
+	@container layout-container (min-width: 1008px) {
 		font: var(--primitives-font-display-5-lg);
 	}
 }
@@ -241,15 +241,15 @@ nldd-rich-text h6 {
 		font: var(--primitives-font-display-6-lg);
 	}
 
-	@container layout-area (max-width: 640px) {
+	@container layout-container (max-width: 640px) {
 		font: var(--primitives-font-display-6-sm);
 	}
 
-	@container layout-area (min-width: 641px) and (max-width: 1007px) {
+	@container layout-container (min-width: 641px) and (max-width: 1007px) {
 		font: var(--primitives-font-display-6-md);
 	}
 
-	@container layout-area (min-width: 1008px) {
+	@container layout-container (min-width: 1008px) {
 		font: var(--primitives-font-display-6-lg);
 	}
 }
@@ -391,7 +391,7 @@ nldd-rich-text blockquote {
 		font: var(--semantics-blockquotes-sm-quote-font);
 	}
 
-	@container layout-area (max-width: 640px) {
+	@container layout-container (max-width: 640px) {
 		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
 		margin-block: var(--semantics-blockquotes-sm-spacing);
 		padding-inline: var(--semantics-blockquotes-sm-spacing);
@@ -456,7 +456,7 @@ nldd-rich-text table {
 		scrollbar-width: unset;
 	}
 
-	@container layout-area (min-width: 641px) {
+	@container layout-container (min-width: 641px) {
 		display: table;
 		overflow-x: unset;
 		scrollbar-width: unset;
@@ -486,7 +486,7 @@ nldd-rich-text td {
 		min-width: unset;
 	}
 
-	@container layout-area (min-width: 641px) {
+	@container layout-container (min-width: 641px) {
 		min-width: unset;
 	}
 }

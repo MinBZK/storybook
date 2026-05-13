@@ -127,9 +127,9 @@ Maakt scannen voorspelbaar: linksboven sm, rechtsonder lg.
   @media (min-width: 641px) and (max-width: 1007px) { … }        /* md */
   @media (min-width: 1008px) { … }                               /* lg */
 
-  @container layout-area (max-width: 640px) { … }                /* sm */
-  @container layout-area (min-width: 641px) and (max-width: 1007px) { … }  /* md */
-  @container layout-area (min-width: 1008px) { … }               /* lg */
+  @container layout-container (max-width: 640px) { … }                /* sm */
+  @container layout-container (min-width: 641px) and (max-width: 1007px) { … }  /* md */
+  @container layout-container (min-width: 1008px) { … }               /* lg */
 }
 ```
 
@@ -155,15 +155,15 @@ selector — ook tussen twee opeenvolgende `@media` of twee opeenvolgende
     padding: 24px;
   }
 
-  @container layout-area (max-width: 640px) {
+  @container layout-container (max-width: 640px) {
     padding: 8px;
   }
 
-  @container layout-area (min-width: 641px) and (max-width: 1007px) {
+  @container layout-container (min-width: 641px) and (max-width: 1007px) {
     padding: 16px;
   }
 
-  @container layout-area (min-width: 1008px) {
+  @container layout-container (min-width: 1008px) {
     padding: 24px;
   }
 }
@@ -191,7 +191,7 @@ Bereik-conventie:
 - **`@container`**: voorkeursroute voor componenten die in panes/wrappers leven — reageert op de container-breedte ipv viewport. Vereist `container-type: inline-size` op de host of een ancestor.
 - **`@media`**: alleen waar de viewport echt 't relevante meetpunt is (top-level layout, of als er geen container-context is).
 
-Veel componenten gebruiken **beide** als fallback: `@container layout-area (...)` voor componenten binnen een nldd-page/nldd-card, plus `@media (...)` als fallback voor losstaand gebruik. Beide blokken volgen dezelfde regel — geen base, alleen explicit-per-breakpoint.
+Veel componenten gebruiken **beide** als fallback: `@container layout-container (...)` voor componenten binnen een nldd-page/nldd-card, plus `@media (...)` als fallback voor losstaand gebruik. Beide blokken volgen dezelfde regel — geen base, alleen explicit-per-breakpoint.
 
 ## Wat blijft buiten breakpoint-queries
 
