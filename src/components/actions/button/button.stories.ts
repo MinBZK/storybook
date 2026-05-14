@@ -68,7 +68,7 @@ export default {
 		},
 		expanded: {
 			control: 'boolean',
-			description: 'Geeft aan dat het popover/menu uitgeklapt is. Wordt geforward als aria-expanded op de inner button en activeert de is-open visuele state.',
+			description: 'Geeft aan dat het popover/menu uitgeklapt is. Wordt geforward als aria-expanded op de inner button en activeert de is-expanded visuele state.',
 			table: {
 				defaultValue: { summary: false },
 			},

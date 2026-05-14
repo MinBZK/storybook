@@ -873,15 +873,15 @@
 	--semantics-buttons-neutral-tinted-is-active-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
 	--semantics-buttons-neutral-tinted-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
 	--semantics-buttons-neutral-tinted-is-active-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
-	--semantics-buttons-neutral-tinted-is-open-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
-	--semantics-buttons-neutral-tinted-is-open-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
-	--semantics-buttons-neutral-tinted-is-open-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
-	--semantics-buttons-neutral-tinted-is-open-is-hovered-background-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-350));
-	--semantics-buttons-neutral-tinted-is-open-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
-	--semantics-buttons-neutral-tinted-is-open-is-hovered-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
-	--semantics-buttons-neutral-tinted-is-open-is-active-background-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-400));
-	--semantics-buttons-neutral-tinted-is-open-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
-	--semantics-buttons-neutral-tinted-is-open-is-active-secondary-content-color: light-dark(var(--primitives-color-neutral-750), var(--primitives-color-neutral-900));
+	--semantics-buttons-neutral-tinted-is-expanded-background-color: light-dark(var(--primitives-color-neutral-150), var(--primitives-color-neutral-300));
+	--semantics-buttons-neutral-tinted-is-expanded-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-expanded-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
+	--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color: light-dark(var(--primitives-color-neutral-200), var(--primitives-color-neutral-350));
+	--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-expanded-is-hovered-secondary-content-color: light-dark(var(--primitives-color-neutral-700), var(--primitives-color-neutral-850));
+	--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color: light-dark(var(--primitives-color-neutral-250), var(--primitives-color-neutral-400));
+	--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color: light-dark(var(--primitives-color-neutral-1000), var(--primitives-color-neutral-1000));
+	--semantics-buttons-neutral-tinted-is-expanded-is-active-secondary-content-color: light-dark(var(--primitives-color-neutral-750), var(--primitives-color-neutral-900));
 	--semantics-buttons-neutral-tinted-is-selected-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--semantics-buttons-neutral-tinted-is-selected-content-color: var(--semantics-controls-is-highlighted-contrast-color);
 	--semantics-buttons-neutral-tinted-is-selected-secondary-content-color: var(--semantics-controls-is-highlighted-contrast-color);
@@ -903,12 +903,12 @@
 	--semantics-buttons-accent-filled-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 	--semantics-buttons-accent-filled-is-active-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
 	--semantics-buttons-accent-filled-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	--semantics-buttons-accent-filled-is-open-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
-	--semantics-buttons-accent-filled-is-open-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	--semantics-buttons-accent-filled-is-open-is-hovered-background-color: light-dark(var(--primitives-color-accent-900), var(--primitives-color-accent-800));
-	--semantics-buttons-accent-filled-is-open-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
-	--semantics-buttons-accent-filled-is-open-is-active-background-color: light-dark(var(--primitives-color-accent-950), var(--primitives-color-accent-850));
-	--semantics-buttons-accent-filled-is-open-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-accent-filled-is-expanded-background-color: light-dark(var(--primitives-color-accent-850), var(--primitives-color-accent-750));
+	--semantics-buttons-accent-filled-is-expanded-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-accent-filled-is-expanded-is-hovered-background-color: light-dark(var(--primitives-color-accent-900), var(--primitives-color-accent-800));
+	--semantics-buttons-accent-filled-is-expanded-is-hovered-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
+	--semantics-buttons-accent-filled-is-expanded-is-active-background-color: light-dark(var(--primitives-color-accent-950), var(--primitives-color-accent-850));
+	--semantics-buttons-accent-filled-is-expanded-is-active-content-color: light-dark(var(--primitives-color-accent-0), var(--primitives-color-accent-0));
 
 	--semantics-buttons-accent-transparent-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-buttons-accent-transparent-is-hovered-content-color: light-dark(var(--primitives-color-accent-800), var(--primitives-color-accent-700));
@@ -1148,8 +1148,8 @@
 	--components-menu-box-shadow: var(--primitives-box-shadows-level-5);
 	--components-menu-item-is-highlighted-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-menu-item-is-highlighted-content-color: var(--semantics-controls-is-highlighted-contrast-color);
-	--components-menu-item-is-open-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
-	--components-menu-item-is-open-content-color: var(--primitives-color-neutral-1000);
+	--components-menu-item-is-expanded-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-250));
+	--components-menu-item-is-expanded-content-color: var(--primitives-color-neutral-1000);
 
 	/* ## Menu bar */
 
@@ -1157,8 +1157,8 @@
 	--components-menu-bar-item-inline-padding: var(--primitives-space-8);
 	--components-menu-bar-item-content-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-750));
 	--components-menu-bar-item-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-200));
-	--components-menu-bar-item-is-open-indicator-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-250));
-	--components-menu-bar-item-is-open-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-300));
+	--components-menu-bar-item-is-expanded-indicator-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-250));
+	--components-menu-bar-item-is-expanded-is-hovered-indicator-background-color: light-dark(var(--primitives-color-neutral-100), var(--primitives-color-neutral-300));
 	--components-menu-bar-item-is-current-indicator-background-color: var(--semantics-controls-is-highlighted-indicator-color);
 	--components-menu-bar-item-is-current-indicator-height: var(--primitives-space-4);
 

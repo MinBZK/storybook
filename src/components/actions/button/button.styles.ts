@@ -160,8 +160,8 @@ export const buttonStyles = css`
 	:host([expanded][variant="neutral-tinted"]) .button,
 	:host([expanded][variant="secondary"]) .button,
 	:host([expanded]:not([variant])) .button {
-		background-color: var(--semantics-buttons-neutral-tinted-is-open-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-open-content-color);
+		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
 	}
 
 	/* ### Open hovered neutral tinted button */
@@ -170,8 +170,8 @@ export const buttonStyles = css`
 		:host([expanded][variant="neutral-tinted"]) .button:hover,
 		:host([expanded][variant="secondary"]) .button:hover,
 		:host([expanded]:not([variant])) .button:hover {
-			background-color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-content-color);
+			background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
 		}
 	}
 
@@ -180,8 +180,8 @@ export const buttonStyles = css`
 	:host([expanded][variant="neutral-tinted"]) .button:active,
 	:host([expanded][variant="secondary"]) .button:active,
 	:host([expanded]:not([variant])) .button:active {
-		background-color: var(--semantics-buttons-neutral-tinted-is-open-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-open-is-active-content-color);
+		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
 	}
 
 	/* ## Neutral Transparent */
@@ -239,8 +239,8 @@ export const buttonStyles = css`
 
 	:host([expanded][variant="accent-filled"]) .button,
 	:host([expanded][variant="primary"]) .button {
-		background-color: var(--semantics-buttons-accent-filled-is-open-background-color);
-		color: var(--semantics-buttons-accent-filled-is-open-content-color);
+		background-color: var(--semantics-buttons-accent-filled-is-expanded-background-color);
+		color: var(--semantics-buttons-accent-filled-is-expanded-content-color);
 	}
 
 	/* ### Open hovered accent filled button */
@@ -248,8 +248,8 @@ export const buttonStyles = css`
 	@media (hover: hover) {
 		:host([expanded][variant="accent-filled"]) .button:hover,
 		:host([expanded][variant="primary"]) .button:hover {
-			background-color: var(--semantics-buttons-accent-filled-is-open-is-hovered-background-color);
-			color: var(--semantics-buttons-accent-filled-is-open-is-hovered-content-color);
+			background-color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-background-color);
+			color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-content-color);
 		}
 	}
 
@@ -257,8 +257,8 @@ export const buttonStyles = css`
 
 	:host([expanded][variant="accent-filled"]) .button:active,
 	:host([expanded][variant="primary"]) .button:active {
-		background-color: var(--semantics-buttons-accent-filled-is-open-is-active-background-color);
-		color: var(--semantics-buttons-accent-filled-is-open-is-active-content-color);
+		background-color: var(--semantics-buttons-accent-filled-is-expanded-is-active-background-color);
+		color: var(--semantics-buttons-accent-filled-is-expanded-is-active-content-color);
 	}
 
 	/* ## Accent Transparent */

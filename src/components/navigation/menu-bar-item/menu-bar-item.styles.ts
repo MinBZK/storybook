@@ -68,7 +68,7 @@ export const menuBarItemStyles = css`
 	}
 
 	:host([expanded]) .menu-bar-item::before {
-		background-color: var(--components-menu-bar-item-is-open-indicator-background-color);
+		background-color: var(--components-menu-bar-item-is-expanded-indicator-background-color);
 	}
 
 	@media (hover: hover) {

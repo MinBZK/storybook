@@ -158,9 +158,9 @@ export const menuItemStyles = css`
 	 * the highlighted/hover rule below upgrades it to the bold accent. */
 
 	.menu__item[aria-expanded="true"] {
-		background-color: var(--components-menu-item-is-open-background-color);
-		--context-cell-content-color: var(--components-menu-item-is-open-content-color);
-		--context-cell-content-secondary-color: var(--components-menu-item-is-open-content-color);
+		background-color: var(--components-menu-item-is-expanded-background-color);
+		--context-cell-content-color: var(--components-menu-item-is-expanded-content-color);
+		--context-cell-content-secondary-color: var(--components-menu-item-is-expanded-content-color);
 	}
 
 
