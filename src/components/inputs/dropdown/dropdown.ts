@@ -33,7 +33,7 @@ import { LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { dropdownStyles } from './dropdown.styles.js';
 import { dropdownTemplate } from './dropdown.template.js';
-import { isKeyboardMode } from '../../../utilities/input-modality.js';
+import { isPointerMode } from '../../../utilities/input-modality.js';
 import './../../content/icon/icon.js';
 
 export type DropdownSize = 'xs' | 'sm' | 'md';
@@ -148,22 +148,24 @@ export class NLDDDropdown extends LitElement {
 	};
 
 	/**
-	 * Mirrors the global input modality onto a host attribute so the wrapper
-	 * shows a focus ring only on keyboard focus. We can't rely on
-	 * `:focus-visible` for native <select> because Chrome matches it even on
-	 * mouse click (the dropdown is keyboard-navigable once open).
+	 * Suppress the native `:focus-visible` ring on the wrapper when focus
+	 * came from a pointer. We can't rely on `:focus-visible` alone for
+	 * native <select> because Chrome matches it even on mouse click. The
+	 * inverted "set when known-to-be-pointer" form is failure-safe — if
+	 * input-modality never reports, the attribute stays off and the
+	 * default focus ring shows on every focus (keyboard a11y intact).
 	 */
 	private _handleSelectFocus = (): void => {
-		this.toggleAttribute('keyboard-focused', isKeyboardMode());
+		this.toggleAttribute('is-pointer-focus', isPointerMode());
 	};
 
 	private _handleSelectBlur = (): void => {
-		this.toggleAttribute('keyboard-focused', false);
+		this.toggleAttribute('is-pointer-focus', false);
 	};
 
-	/** Click-then-keyboard: any key press while focused promotes to keyboard mode. */
+	/** Any key press while focused promotes to keyboard mode — drop the marker. */
 	private _handleSelectKeydown = (): void => {
-		this.toggleAttribute('keyboard-focused', true);
+		this.toggleAttribute('is-pointer-focus', false);
 	};
 
 	override render() {

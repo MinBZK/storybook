@@ -55,10 +55,15 @@ export const dropdownStyles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
-	:host([keyboard-focused]) .dropdown {
+	.dropdown:focus-within {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	:host([is-pointer-focus]) .dropdown:focus-within {
+		outline: none;
+		box-shadow: none;
 	}
 
 
