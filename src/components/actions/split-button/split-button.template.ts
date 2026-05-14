@@ -8,22 +8,24 @@ export function template(this: NLDDSplitButton) {
 				variant=${this.variant}
 				size=${this.size}
 				text=${this.text}
-				start-icon=${this.startIcon || nothing}
+				start-icon=${this.icon || nothing}
 				?disabled=${this.disabled}
 				@click=${this._handleActionClick}
 			></nldd-button>
 			<div class="split-button__divider"></div>
-			<nldd-icon-button class="split-button__trigger"
-				variant=${this.variant}
-				size=${this.size}
-				icon="chevron-down-small"
-				text=${this._t('components.split-button.menu-action')}
-				hide-tooltip
-				?disabled=${this.disabled}
-				?expanded=${this._menuIsOpen}
-				popup-type="menu"
-				@click=${this._handleMenuClick}
-			></nldd-icon-button>
+			<div class="split-button__popup-button">
+				<nldd-icon-button
+					variant=${this.variant}
+					size=${this.size}
+					icon="chevron-down-small"
+					text=${this._t('components.split-button.menu-action')}
+					tooltip-timing="never"
+					?disabled=${this.disabled}
+					?expanded=${this._menuIsOpen}
+					popup-type="menu"
+					@click=${this._handleMenuClick}
+				></nldd-icon-button>
+			</div>
 		</div>
 		<nldd-menu class="split-button__menu"></nldd-menu>
 	`;
