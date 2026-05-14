@@ -47,14 +47,16 @@ export function paginationTemplate(component: NLDDPagination): TemplateResult {
 		<nav class="pagination"
 			aria-label=${t('components.pagination.accessibility-label')}
 		>
-			<nldd-icon-button
-				icon="chevron-left-small"
-				text=${t('components.pagination.previous-action')}
-				variant="neutral-tinted"
-				?disabled=${isDisabled || atFirst}
-				href=${hasHref && !isDisabled && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
-				@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current - 1); }}
-			></nldd-icon-button>
+			<div class="pagination__previous-button">
+				<nldd-icon-button
+					icon="chevron-left-small"
+					text=${t('components.pagination.previous-action')}
+					variant="neutral-tinted"
+					?disabled=${isDisabled || atFirst}
+					href=${hasHref && !isDisabled && !atFirst ? component._hrefForPage(component.current - 1) : nothing}
+					@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current - 1); }}
+				></nldd-icon-button>
+			</div>
 			<div class="pagination__divider" aria-hidden="true">
 				<div class="pagination__divider-line"></div>
 			</div>
@@ -71,6 +73,9 @@ export function paginationTemplate(component: NLDDPagination): TemplateResult {
 						aria-label=${t('components.pagination.go-to-page-label')}
 						?disabled=${isDisabled}
 						@change=${(e: Event) => component._goToPage(Number((e.target as HTMLSelectElement).value))}
+						@focus=${component._handleSelectFocus}
+						@blur=${component._handleSelectBlur}
+						@keydown=${component._handleSelectKeydown}
 					>
 						${Array.from({ length: component.total }, (_, i) => i + 1).map((page) => html`
 							<option value=${page} ?selected=${page === component.current}>${page} / ${component.total}</option>
@@ -84,14 +89,16 @@ export function paginationTemplate(component: NLDDPagination): TemplateResult {
 			<div class="pagination__divider" aria-hidden="true">
 				<div class="pagination__divider-line"></div>
 			</div>
-			<nldd-icon-button
-				icon="chevron-right-small"
-				text=${t('components.pagination.next-action')}
-				variant="neutral-tinted"
-				?disabled=${isDisabled || atLast}
-				href=${hasHref && !isDisabled && !atLast ? component._hrefForPage(component.current + 1) : nothing}
-				@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current + 1); }}
-			></nldd-icon-button>
+			<div class="pagination__next-button">
+				<nldd-icon-button
+					icon="chevron-right-small"
+					text=${t('components.pagination.next-action')}
+					variant="neutral-tinted"
+					?disabled=${isDisabled || atLast}
+					href=${hasHref && !isDisabled && !atLast ? component._hrefForPage(component.current + 1) : nothing}
+					@click=${(e: Event) => { if (hasHref) e.preventDefault(); component._goToPage(component.current + 1); }}
+				></nldd-icon-button>
+			</div>
 		</nav>
 	`;
 }

@@ -20,6 +20,7 @@ import { paginationStyles } from './pagination.styles.js';
 import { paginationTemplate } from './pagination.template.js';
 import { nlddPaginationTranslations } from './pagination.i18n.js';
 import type { NLDDPaginationTranslations } from './pagination.i18n.js';
+import { isPointerMode } from '../../../utilities/input-modality.js';
 
 @customElement('nldd-pagination')
 export class NLDDPagination extends LitElement {
@@ -115,6 +116,27 @@ export class NLDDPagination extends LitElement {
 			window.location.href = detail.href;
 		}
 	}
+
+	/**
+	 * Suppress the native `:focus-visible` ring on the select when focus
+	 * came from a pointer. We can't rely on `:focus-visible` alone for
+	 * native <select> because Chrome matches it even on mouse click. The
+	 * inverted "set when known-to-be-pointer" form is failure-safe — if
+	 * input-modality never reports, the attribute stays off and the
+	 * default focus ring shows on every focus (keyboard a11y intact).
+	 */
+	_handleSelectFocus = (): void => {
+		this.toggleAttribute('is-pointer-focus', isPointerMode());
+	};
+
+	_handleSelectBlur = (): void => {
+		this.toggleAttribute('is-pointer-focus', false);
+	};
+
+	/** Any key press while focused promotes to keyboard mode — drop the marker. */
+	_handleSelectKeydown = (): void => {
+		this.toggleAttribute('is-pointer-focus', false);
+	};
 
 	override render() {
 		return paginationTemplate(this);

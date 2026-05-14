@@ -38,6 +38,12 @@ export const paginationStyles = css`
 		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
+	.pagination__previous-button:focus-within,
+	.pagination__next-button:focus-within {
+		position: relative;
+		z-index: 1;
+	}
+
 
 	/* # Page button */
 
@@ -177,11 +183,16 @@ export const paginationStyles = css`
 		z-index: 1;
 	}
 
-	.pagination__select:focus-visible {
+	.pagination__select:focus {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--primitives-space-4) / 2);
+	}
+
+	:host([is-pointer-focus]) .pagination__select:focus {
+		outline: none;
+		box-shadow: none;
 	}
 
 	.pagination__select-picker-icon {
