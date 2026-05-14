@@ -1021,8 +1021,8 @@
 	--components-badge-accent-content-color: var(--primitives-color-accent-0);
 	--components-badge-neutral-background-color: var(--primitives-color-neutral-800);
 	--components-badge-neutral-content-color: var(--primitives-color-neutral-0);
-	--components-badge-warning-background-color: var(--primitives-color-warning-300);
-	--components-badge-warning-content-color: var(--primitives-color-warning-1000);
+	--components-badge-warning-background-color: light-dark(var(--primitives-color-warning-300), var(--primitives-color-warning-700));
+	--components-badge-warning-content-color: light-dark(var(--primitives-color-warning-1000), var(--primitives-color-warning-0));
 	--components-badge-success-background-color: var(--primitives-color-success-550);
 	--components-badge-success-content-color: var(--primitives-color-success-0);
 
