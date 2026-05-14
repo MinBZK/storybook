@@ -21,6 +21,9 @@ export const aliases = {
 	// arrow-u-turn-forward
 	'redo': 'arrow-u-turn-forward',
 
+	// books-vertical
+	'books': 'books-vertical',
+
 	// brackets-ellipsis
 	'embed': 'brackets-ellipsis',
 
@@ -44,6 +47,7 @@ export const aliases = {
 	'tasks': 'check-list',
 	'todos': 'check-list',
 	'checklist': 'check-list',
+	'backlog': 'check-list',
 
 	// check-mark
 	'checked': 'check-mark',
@@ -69,6 +73,13 @@ export const aliases = {
 
 	// circle-dashed
 	'icon-placeholder': 'circle-dashed',
+
+	// clock
+	'time': 'clock',
+	'now': 'clock',
+
+	// clock-arrow-clockwise
+	'future': 'clock-arrow-clockwise',
 
 	// clock-arrow-counter-clockwise
 	'history': 'clock-arrow-counter-clockwise',
@@ -110,6 +121,9 @@ export const aliases = {
 	// eye-slash
 	'hidden': 'eye-slash',
 	'hide': 'eye-slash',
+
+	// eyeglasses
+	'reading-list': 'eyeglasses',
 
 	// face-frowning
 	'sad': 'face-frowning',
@@ -252,6 +266,10 @@ export const aliases = {
 	// sparkles
 	'ai': 'sparkles',
 	'magic': 'sparkles',
+
+	// starburst-filled
+	'new': 'starburst-filled',
+	'promotion': 'starburst-filled',
 
 	// square-and-arrow-right
 	'logout': 'square-and-arrow-right',
