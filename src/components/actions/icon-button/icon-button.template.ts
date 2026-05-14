@@ -73,9 +73,9 @@ export function template(this: NLDDIconButton) {
 		`;
 	};
 
-	if (tooltipText && !this.hideTooltip) {
+	if (tooltipText && this.tooltipTiming !== 'never') {
 		return html`
-			<nldd-tooltip text=${tooltipText}>
+			<nldd-tooltip text=${tooltipText} timing=${this.tooltipTiming}>
 				${renderButton()}
 			</nldd-tooltip>
 		`;

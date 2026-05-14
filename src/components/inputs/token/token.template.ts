@@ -29,7 +29,7 @@ export function tokenTemplate(component: NLDDToken): TemplateResult {
 						icon="dismiss-small"
 						text=${component.dismissText}
 						accessible-label=${component.dismissText}
-						hide-tooltip
+						tooltip-timing="never"
 						?disabled=${component.disabled}
 						@click=${component._handleDismiss}
 					></nldd-icon-button>

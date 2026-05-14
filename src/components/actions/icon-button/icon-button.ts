@@ -7,7 +7,7 @@
  * @attr {boolean} disabled          - Disabled state
  * @attr {string}  type              - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable        - Whether the button opens a menu or popover and shows chevron next to the icon
- * @attr {boolean} expanded          - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-open visual state.
+ * @attr {boolean} expanded          - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state.
  * @attr {string}  popup-type        - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
  * @attr {string}  width             - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string}  text              - Button text, used as aria-label and shown below the icon in lg size
@@ -16,10 +16,12 @@
  *                                     and title tooltip. Use when the visible text alone lacks context for screen
  *                                     readers (e.g. text "Toon", accessible-label "Toon wachtwoord").
  *                                     The text is still shown visually in lg size regardless.
- * @attr {boolean} hide-tooltip      - Suppress the visual tooltip while keeping aria-label intact.
- *                                     Use when the surrounding context already explains the button
- *                                     (e.g. spin buttons in nldd-number-field, the chevron in
- *                                     nldd-split-button) — screen readers still get the label.
+ * @attr {string}  tooltip-timing    - Forwarded to the inner nldd-tooltip's `timing`:
+ *                                     'default' (700 ms show-delay), 'instant', or 'never'
+ *                                     (suppress the visual tooltip; screen readers still get the
+ *                                     aria-label). Use 'never' when the surrounding context
+ *                                     already explains the button (e.g. spin buttons in
+ *                                     nldd-number-field, the chevron in nldd-split-button).
  * @attr {string}  href              - When set, renders an <a> element instead of <button>
  * @attr {string}  target            - Link target (e.g. '_blank'); only used when href is set
  * @attr {string}  rel               - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
@@ -104,9 +106,10 @@ export class NLDDIconButton extends LitElement {
 	@property({ type: String, attribute: 'accessible-label' })
 	accessibleLabel = '';
 
-	/** Suppress the visual tooltip while keeping aria-label intact. */
-	@property({ type: Boolean, reflect: true, attribute: 'hide-tooltip' })
-	hideTooltip = false;
+	/** Forwarded to the inner nldd-tooltip's `timing`. Use `'never'` to
+	 * suppress the visual tooltip; aria-label still describes the button. */
+	@property({ type: String, reflect: true, attribute: 'tooltip-timing' })
+	tooltipTiming: 'default' | 'instant' | 'never' = 'default';
 
 	/** When set, renders an <a> element instead of <button>. */
 	@property({ type: String, reflect: true })

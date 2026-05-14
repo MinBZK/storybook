@@ -126,6 +126,7 @@ export function template(
 				<nldd-icon-button size=${size}
 					icon="ellipsis"
 					text=${t('components.toolbar.overflow-action')}
+					tooltip-timing="never"
 					aria-haspopup="menu"
 					aria-expanded=${menuOpen ? 'true' : 'false'}
 					aria-controls=${menuId}
