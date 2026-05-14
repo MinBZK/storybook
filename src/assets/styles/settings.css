@@ -264,6 +264,7 @@
 	--primitives-space-16: 16px;
 	--primitives-space-18: 18px;
 	--primitives-space-20: 20px;
+	--primitives-space-22: 22px;
 	--primitives-space-24: 24px;
 	--primitives-space-28: 28px;
 	--primitives-space-32: 32px;
@@ -816,19 +817,6 @@
 	--semantics-controls-md-min-size: var(--primitives-space-44);
 	--semantics-controls-lg-min-size: var(--primitives-space-56);
 
-	--semantics-controls-md-inline-padding: var(--primitives-space-12);
-	--semantics-controls-sm-inline-padding: var(--primitives-space-10);
-	--semantics-controls-xs-inline-padding: var(--primitives-space-6);
-
-	--semantics-controls-md-block-padding: var(--primitives-space-12);
-	--semantics-controls-sm-block-padding: var(--primitives-space-6);
-	--semantics-controls-xs-block-padding: var(--primitives-space-4);
-
-	--semantics-controls-xs-corner-radius: var(--primitives-corner-radius-xs);
-	--semantics-controls-sm-corner-radius: var(--primitives-corner-radius-sm);
-	--semantics-controls-md-corner-radius: var(--primitives-corner-radius-md);
-	--semantics-controls-lg-corner-radius: var(--primitives-corner-radius-md);
-
 	--semantics-buttons-xs-icon-size: var(--primitives-space-16);
 	--semantics-buttons-sm-icon-size: var(--primitives-space-18);
 	--semantics-buttons-md-icon-size: var(--primitives-space-20);
@@ -836,6 +824,19 @@
 	--semantics-buttons-xs-icon-only-icon-size: var(--primitives-space-16);
 	--semantics-buttons-sm-icon-only-icon-size: var(--primitives-space-20);
 	--semantics-buttons-md-icon-only-icon-size: var(--primitives-space-24);
+
+	--semantics-controls-md-inline-padding: var(--primitives-space-12);
+	--semantics-controls-sm-inline-padding: var(--primitives-space-10);
+	--semantics-controls-xs-inline-padding: var(--primitives-space-6);
+
+	--semantics-controls-md-block-padding: var(--primitives-space-10);
+	--semantics-controls-sm-block-padding: var(--primitives-space-6);
+	--semantics-controls-xs-block-padding: var(--primitives-space-4);
+
+	--semantics-controls-xs-corner-radius: var(--primitives-corner-radius-xs);
+	--semantics-controls-sm-corner-radius: var(--primitives-corner-radius-sm);
+	--semantics-controls-md-corner-radius: var(--primitives-corner-radius-md);
+	--semantics-controls-lg-corner-radius: var(--primitives-corner-radius-md);
 
 	--semantics-controls-is-highlighted-indicator-color: light-dark(var(--primitives-color-accent-750), var(--primitives-color-accent-650));
 	--semantics-controls-is-highlighted-contrast-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-0));
@@ -858,9 +859,9 @@
 	--semantics-buttons-sm-divider-length: var(--primitives-space-20);
 	--semantics-buttons-md-divider-length: var(--primitives-space-28);
 
-	--semantics-buttons-md-gap: var(--primitives-space-6);
-	--semantics-buttons-sm-gap: var(--primitives-space-4);
-	--semantics-buttons-xs-gap: var(--primitives-space-3);
+	--semantics-buttons-md-gap: var(--primitives-space-4);
+	--semantics-buttons-sm-gap: var(--primitives-space-3);
+	--semantics-buttons-xs-gap: var(--primitives-space-2);
 
 	--semantics-buttons-neutral-tinted-background-color: light-dark(var(--primitives-color-neutral-75), var(--primitives-color-neutral-200));
 	--semantics-buttons-neutral-tinted-content-color: light-dark(var(--primitives-color-neutral-900), var(--primitives-color-neutral-900));
