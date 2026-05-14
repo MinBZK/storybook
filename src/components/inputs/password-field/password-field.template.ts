@@ -29,8 +29,8 @@ function renderValidationIcon(component: NLDDPasswordField): TemplateResult | ty
 
 function renderVisibilityToggle(component: NLDDPasswordField): TemplateResult {
 	const buttonSize = component.size === 'sm' ? 'xs' : 'sm';
-	const label = component.masked ? component.showText : component.hideText;
-	const accessibleLabel = component.masked ? component.showAccessibleLabel : component.hideAccessibleLabel;
+	const label = component.masked ? component.showButtonText : component.hideButtonText;
+	const accessibleLabel = component.masked ? component.showButtonAccessibleLabel : component.hideButtonAccessibleLabel;
 
 	return html`
 		<div class="password-field__visibility-toggle-button">

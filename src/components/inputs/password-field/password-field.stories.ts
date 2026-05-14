@@ -48,26 +48,26 @@ export default {
 			description: 'Placeholder text',
 			table: { defaultValue: { summary: 'Password field' } },
 		},
-		showText: {
-			name: 'show-text',
+		showButtonText: {
+			name: 'show-button-text',
 			control: 'text',
 			description: 'Zichtbare knoptekst wanneer gemaskeerd',
 			table: { defaultValue: { summary: 'Toon' } },
 		},
-		hideText: {
-			name: 'hide-text',
+		hideButtonText: {
+			name: 'hide-button-text',
 			control: 'text',
 			description: 'Zichtbare knoptekst wanneer zichtbaar',
 			table: { defaultValue: { summary: 'Verberg' } },
 		},
-		showAccessibleLabel: {
-			name: 'show-accessible-label',
+		showButtonAccessibleLabel: {
+			name: 'show-button-accessible-label',
 			control: 'text',
 			description: 'aria-label for toggle button when masked',
 			table: { defaultValue: { summary: 'Toon wachtwoord' } },
 		},
-		hideAccessibleLabel: {
-			name: 'hide-accessible-label',
+		hideButtonAccessibleLabel: {
+			name: 'hide-button-accessible-label',
 			control: 'text',
 			description: 'aria-label for toggle button when unmasked',
 			table: { defaultValue: { summary: 'Verberg wachtwoord' } },
@@ -106,10 +106,10 @@ export default {
 		name: 'password',
 		value: '',
 		placeholder: 'Password field',
-		showText: 'Toon',
-		hideText: 'Verberg',
-		showAccessibleLabel: 'Toon wachtwoord',
-		hideAccessibleLabel: 'Verberg wachtwoord',
+		showButtonText: 'Toon',
+		hideButtonText: 'Verberg',
+		showButtonAccessibleLabel: 'Toon wachtwoord',
+		hideButtonAccessibleLabel: 'Verberg wachtwoord',
 		autocomplete: '',
 		masked: true,
 		valid: false,
@@ -118,7 +118,7 @@ export default {
 	},
 };
 
-const Template = ({ size, name, value, placeholder, showText, hideText, showAccessibleLabel, hideAccessibleLabel, autocomplete, masked, valid, invalid, disabled, width }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, showButtonText, hideButtonText, showButtonAccessibleLabel, hideButtonAccessibleLabel, autocomplete, masked, valid, invalid, disabled, width }: Record<string, any>) => html`
 	<nldd-password-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -127,10 +127,10 @@ const Template = ({ size, name, value, placeholder, showText, hideText, showAcce
 		?invalid=${invalid}
 		?disabled=${disabled}
 		.masked=${masked}
-		show-text=${showText}
-		hide-text=${hideText}
-		show-accessible-label=${showAccessibleLabel}
-		hide-accessible-label=${hideAccessibleLabel}
+		show-button-text=${showButtonText}
+		hide-button-text=${hideButtonText}
+		show-button-accessible-label=${showButtonAccessibleLabel}
+		hide-button-accessible-label=${hideButtonAccessibleLabel}
 		name=${name}
 		autocomplete=${autocomplete}
 		width=${width}

@@ -13,10 +13,10 @@
  * @attr {boolean} invalid     - Marks the field as invalid
  * @attr {boolean} disabled    - Disabled state
  * @attr {boolean} masked                  - Whether the password is masked (default: true)
- * @attr {string} show-text               - Visible toggle button text when masked (default: 'Toon')
- * @attr {string} hide-text               - Visible toggle button text when unmasked (default: 'Verberg')
- * @attr {string} show-accessible-label    - aria-label for toggle when masked (default: 'Toon wachtwoord')
- * @attr {string} hide-accessible-label    - aria-label for toggle when unmasked (default: 'Verberg wachtwoord')
+ * @attr {string} show-button-text               - Visible toggle button text when masked (default: 'Toon')
+ * @attr {string} hide-button-text               - Visible toggle button text when unmasked (default: 'Verberg')
+ * @attr {string} show-button-accessible-label    - aria-label for toggle when masked (default: 'Toon wachtwoord')
+ * @attr {string} hide-button-accessible-label    - aria-label for toggle when unmasked (default: 'Verberg wachtwoord')
  * @attr {boolean} readonly    - Readonly state
  * @attr {boolean} required    - Required state
  * @attr {string} name         - Input name for form submission
@@ -72,20 +72,20 @@ export class NLDDPasswordField extends LitElement {
 	masked = true;
 
 	/** Visible button label when the field is masked. Override for localisation. */
-	@property({ type: String, attribute: 'show-text' })
-	showText = 'Toon';
+	@property({ type: String, attribute: 'show-button-text' })
+	showButtonText = 'Toon';
 
 	/** Visible button label when the field is unmasked. Override for localisation. */
-	@property({ type: String, attribute: 'hide-text' })
-	hideText = 'Verberg';
+	@property({ type: String, attribute: 'hide-button-text' })
+	hideButtonText = 'Verberg';
 
 	/** Accessible aria-label for the toggle button when the field is masked. Override for localisation. */
-	@property({ type: String, attribute: 'show-accessible-label' })
-	showAccessibleLabel = 'Toon wachtwoord';
+	@property({ type: String, attribute: 'show-button-accessible-label' })
+	showButtonAccessibleLabel = 'Toon wachtwoord';
 
 	/** Accessible aria-label for the toggle button when the field is unmasked. Override for localisation. */
-	@property({ type: String, attribute: 'hide-accessible-label' })
-	hideAccessibleLabel = 'Verberg wachtwoord';
+	@property({ type: String, attribute: 'hide-button-accessible-label' })
+	hideButtonAccessibleLabel = 'Verberg wachtwoord';
 
 	@property({ type: Boolean, reflect: true })
 	readonly = false;
