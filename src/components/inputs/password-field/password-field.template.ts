@@ -41,7 +41,7 @@ function renderVisibilityToggle(component: NLDDPasswordField): TemplateResult {
 				accessible-label=${accessibleLabel}
 				?disabled=${component.disabled}
 				@click=${component._handleToggle}
-				@mousedown=${(e: Event) => e.preventDefault()}
+				@pointerdown=${(e: Event) => e.preventDefault()}
 			></nldd-button>
 		</div>
 	`;

@@ -73,7 +73,7 @@ export class NLDDSplitButton extends LitElement {
 
 	@state()
 	_hasMenuItems = false;
-	private _menuWasOpenOnMousedown = false;
+	private _menuWasOpenOnPointerdown = false;
 	private _childObserver?: MutationObserver;
 
 	// — i18n —————————————————————————————————————————————————————————————————
@@ -93,11 +93,15 @@ export class NLDDSplitButton extends LitElement {
 		this._childObserver = new MutationObserver(() => this._syncMenuItems());
 		this._childObserver.observe(this, { childList: true });
 		// Capture open-state BEFORE the browser's light-dismiss fires on
-		// mousedown. The subsequent click handler uses this snapshot to
+		// pointerdown. The subsequent click handler uses this snapshot to
 		// decide: was the popover open? → user clicked to close (no-op,
 		// light-dismiss already closed it). Was it closed? → open it.
-		this._trigger?.addEventListener('mousedown', () => {
-			this._menuWasOpenOnMousedown = this._menu?.matches(':popover-open') ?? false;
+		// Pointerdown fires for mouse, touch and pen — `mousedown` alone
+		// would skip touch on mobile, where no mousedown precedes the
+		// synthetic click; the snapshot would stay false and the handler
+		// would re-open an already-light-dismissed menu.
+		this._trigger?.addEventListener('pointerdown', () => {
+			this._menuWasOpenOnPointerdown = this._menu?.matches(':popover-open') ?? false;
 		});
 	}
 
@@ -144,8 +148,8 @@ export class NLDDSplitButton extends LitElement {
 		if (this.disabled) return;
 		e.stopPropagation();
 		if (this._hasMenuItems && this._menu) {
-			const wasOpen = this._menuWasOpenOnMousedown;
-			this._menuWasOpenOnMousedown = false;
+			const wasOpen = this._menuWasOpenOnPointerdown;
+			this._menuWasOpenOnPointerdown = false;
 			if (wasOpen) return; // light-dismiss already closed it
 			this._menu.showPopover();
 			return;
