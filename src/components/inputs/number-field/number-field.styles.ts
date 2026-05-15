@@ -32,6 +32,7 @@ export const numberFieldStyles = css`
 
 	:host([width]) {
 		width: var(--_width);
+		max-width: 100%;
 	}
 
 

@@ -14,6 +14,7 @@ export const segmentedControlStyles = css`
 		grid-auto-columns: 1fr;
 		grid-auto-flow: column;
 		width: var(--_width);
+		max-width: 100%;
 		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;

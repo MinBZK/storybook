@@ -12,6 +12,7 @@ export const searchFieldStyles = css`
 
 		display: block;
 		width: var(--_width);
+		max-width: 100%;
 		min-width: 0;
 		-webkit-tap-highlight-color: transparent;
 	}

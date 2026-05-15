@@ -12,6 +12,7 @@ export const passwordFieldStyles = css`
 
 		display: block;
 		width: var(--_width);
+		max-width: 100%;
 		-webkit-tap-highlight-color: transparent;
 	}
 
