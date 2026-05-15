@@ -551,7 +551,7 @@ export class NLDDMenu extends LitElement {
 	 * long, dismiss the triangle and let whatever item is under the cursor
 	 * become interactive. Without this, a paused cursor would stay
 	 * "protected" indefinitely and the user couldn't peer-hover. */
-	private static readonly _SAFE_TRIANGLE_STALL_DISMISS_MS = 750;
+	private static readonly _SAFE_TRIANGLE_STALL_DISMISS_MS = 500;
 	/** Pull the wedge apex this many pixels away from the submenu edge (i.e.
 	 * to the left when the submenu is on the right). Widens the wedge near
 	 * the cursor so brief diagonal wobble doesn't pop the cursor out at the
