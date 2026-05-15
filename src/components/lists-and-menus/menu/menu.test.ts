@@ -1178,3 +1178,41 @@ describe('nldd-menu drill-in chain', () => {
 		cleanup(root);
 	});
 });
+
+describe('nldd-menu close-on-resize', () => {
+	it('hides an open menu when the window dispatches a resize event', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="A"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		(menu as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(menu);
+		expect(menu.matches(':popover-open')).toBe(true);
+
+		window.dispatchEvent(new Event('resize'));
+		await waitForUpdate(menu);
+		expect(menu.matches(':popover-open')).toBe(false);
+
+		cleanup(menu);
+	});
+
+	it('does not respond to resize while closed (listener wired only on open)', async () => {
+		const menu = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="A"></nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(menu);
+		expect(menu.matches(':popover-open')).toBe(false);
+
+		// No-op: the resize listener is added on open, removed on close, so
+		// resizes outside the open window must not throw or change state.
+		window.dispatchEvent(new Event('resize'));
+		await waitForUpdate(menu);
+		expect(menu.matches(':popover-open')).toBe(false);
+
+		cleanup(menu);
+	});
+});
