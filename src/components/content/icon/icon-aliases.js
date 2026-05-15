@@ -281,6 +281,9 @@ export const aliases = {
 	// square-arrow-right-top
 	'external-link': 'square-arrow-right-top',
 
+	// square-on-square
+	'copy': 'square-on-square',
+
 	// square-plus-on-square
 	'duplicate': 'square-plus-on-square',
 
