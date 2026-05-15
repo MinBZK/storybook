@@ -113,7 +113,7 @@ describe('nldd-keyboard-shortcut', () => {
 			setOSOverride(null);
 		});
 
-		it('uses keys when no OS-specific override is set', async () => {
+		it('uses keys fallback when matching per-OS attribute is absent', async () => {
 			el = await fixture('<nldd-keyboard-shortcut debug-os="mac" keys="Ctrl+K"></nldd-keyboard-shortcut>');
 			await waitForUpdate(el);
 			const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');

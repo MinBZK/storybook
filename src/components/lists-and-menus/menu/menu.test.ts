@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './menu.js';
 
@@ -943,5 +943,158 @@ describe('nldd-menu safe-triangle internals', () => {
 		// Outside the widening wedge at the midpoint.
 		expect(pointInPolygon({ x: 50, y: 40 }, wedge)).toBe(false);
 		expect(pointInPolygon({ x: 50, y: -40 }, wedge)).toBe(false);
+	});
+});
+
+describe('nldd-menu drill-in chain', () => {
+	const NLDDMenuCtor = customElements.get('nldd-menu') as CustomElementConstructor;
+	let drillInSpy: ReturnType<typeof vi.spyOn>;
+
+	function openSubmenu(parent: HTMLElement, item: HTMLElement, submenu: HTMLElement): void {
+		item.dispatchEvent(new CustomEvent('submenu-open', {
+			detail: { submenu, item },
+			bubbles: true,
+		}));
+		void parent; // grouping arg, no further use
+	}
+
+	beforeEach(() => {
+		// Force every menu instance into drill-in mode regardless of viewport.
+		drillInSpy = vi.spyOn(NLDDMenuCtor.prototype as unknown as { _drillInMode: boolean }, '_drillInMode', 'get');
+		drillInSpy.mockReturnValue(true);
+	});
+
+	afterEach(() => {
+		drillInSpy.mockRestore();
+	});
+
+	it('select on a level-3 item collapses the entire chain (3 levels)', async () => {
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="L2">
+							<nldd-menu>
+								<nldd-menu-item text="L3"></nldd-menu-item>
+							</nldd-menu>
+						</nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const l2Item = l2Menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l3Menu = l2Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const l3Item = l3Menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+
+		// Open root → L2 → L3.
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(root, l1Item, l2Menu);
+		await waitForUpdate(root);
+		openSubmenu(l2Menu, l2Item, l3Menu);
+		await waitForUpdate(root);
+
+		// In drill-in: only the deepest level is open; ancestors are hidden.
+		expect(l3Menu.matches(':popover-open')).toBe(true);
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(root.matches(':popover-open')).toBe(false);
+
+		// Selecting the deepest item should collapse all levels at once.
+		l3Item.dispatchEvent(new CustomEvent('select', { bubbles: true, composed: true }));
+		await waitForUpdate(root);
+
+		expect(l3Menu.matches(':popover-open')).toBe(false);
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(root.matches(':popover-open')).toBe(false);
+
+		cleanup(root);
+	});
+
+	it('pointerdown outside the chain collapses every level', async () => {
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="L2">
+							<nldd-menu>
+								<nldd-menu-item text="L3"></nldd-menu-item>
+							</nldd-menu>
+						</nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const l2Item = l2Menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l3Menu = l2Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(root, l1Item, l2Menu);
+		await waitForUpdate(root);
+		openSubmenu(l2Menu, l2Item, l3Menu);
+		await waitForUpdate(root);
+
+		expect(l3Menu.matches(':popover-open')).toBe(true);
+
+		// Click somewhere clearly outside the chain — a fresh element appended
+		// to the body works as the pointerdown target.
+		const outside = document.createElement('div');
+		document.body.appendChild(outside);
+		outside.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true }));
+		await waitForUpdate(root);
+
+		expect(l3Menu.matches(':popover-open')).toBe(false);
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(root.matches(':popover-open')).toBe(false);
+
+		outside.remove();
+		cleanup(root);
+	});
+
+	it('opening a deeper level hides the parent without collapsing the chain', async () => {
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="L2"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		expect(root.matches(':popover-open')).toBe(true);
+
+		openSubmenu(root, l1Item, l2Menu);
+		await waitForUpdate(root);
+
+		// Drill-in: parent level is hidden but the chain link is intact —
+		// the deeper level still references the parent via _parentMenu, and
+		// closing the deeper level (without select-chain-close) re-shows
+		// the parent.
+		expect(l2Menu.matches(':popover-open')).toBe(true);
+		expect(root.matches(':popover-open')).toBe(false);
+		expect((l2Menu as unknown as { _parentMenu: HTMLElement | null })._parentMenu).toBe(root);
+
+		// Closing L2 (back-button equivalent) re-shows the parent.
+		(l2Menu as HTMLElement & { hidePopover: () => void }).hidePopover();
+		await waitForUpdate(root);
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(root.matches(':popover-open')).toBe(true);
+
+		cleanup(root);
 	});
 });
