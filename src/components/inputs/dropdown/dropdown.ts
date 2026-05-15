@@ -145,12 +145,6 @@ export class NLDDDropdown extends LitElement {
 			bubbles: true,
 			composed: true,
 		}));
-		// Force the select to lose focus after a successful change. On iOS
-		// Safari the native <select> retains focus after the wheel picker
-		// dismisses, and a quick re-tap is sometimes ignored because the
-		// element is "already focused". Blurring resets the state so the
-		// next tap opens the picker as a fresh focus + activation.
-		this._select?.blur();
 	};
 
 	/**
