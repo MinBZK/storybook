@@ -68,13 +68,6 @@ export const fullBleedSectionStyles = css`
 	}
 
 
-	/* # Header */
-
-	.full-bleed-section__header[hidden] {
-		display: none;
-	}
-
-
 	/* # Body */
 
 	.full-bleed-section__body {
@@ -110,9 +103,9 @@ export const fullBleedSectionStyles = css`
 	}
 
 
-	/* # Footer */
+	/* # Header */
 
-	.full-bleed-section__footer[hidden] {
+	.full-bleed-section__header[hidden] {
 		display: none;
 	}
 
@@ -123,5 +116,12 @@ export const fullBleedSectionStyles = css`
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
+	}
+
+
+	/* # Footer */
+
+	.full-bleed-section__footer[hidden] {
+		display: none;
 	}
 `;

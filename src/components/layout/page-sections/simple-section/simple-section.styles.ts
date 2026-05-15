@@ -79,13 +79,6 @@ export const simpleSectionStyles = css`
 	}
 
 
-	/* # Header */
-
-	.simple-section__header[hidden] {
-		display: none;
-	}
-
-
 	/* # Body */
 
 	.simple-section__body {
@@ -121,9 +114,9 @@ export const simpleSectionStyles = css`
 	}
 
 
-	/* # Footer */
+	/* # Header */
 
-	.simple-section__footer[hidden] {
+	.simple-section__header[hidden] {
 		display: none;
 	}
 
@@ -134,5 +127,12 @@ export const simpleSectionStyles = css`
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
+	}
+
+
+	/* # Footer */
+
+	.simple-section__footer[hidden] {
+		display: none;
 	}
 `;
