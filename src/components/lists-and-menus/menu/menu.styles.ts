@@ -177,7 +177,7 @@ export const menuItemStyles = css`
 
 	:host([highlighted]) .menu__item,
 	.menu__item[aria-expanded="true"]:hover,
-	.menu__item:active {
+	.menu__item:active:hover {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
 		--context-cell-content-secondary-color: var(--components-menu-item-is-highlighted-content-color);
