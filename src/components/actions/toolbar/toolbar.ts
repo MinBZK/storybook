@@ -204,7 +204,12 @@ export class NLDDToolbar extends LitElement {
 			if ('popoverTargetElement' in overflowButton) {
 				overflowButton.popoverTargetElement = this._menu;
 			}
-			if ('popoverTargetAction' in overflowButton && !overflowButton.popoverTargetAction) {
+			// Default IDL value is 'toggle'; replace it with 'show' so the
+			// very first click opens via the explicit-show path. Once the
+			// menu has opened, `_syncAnchorPopupState` keeps the action in
+			// sync with state ('hide' while open, 'show' while closed) and
+			// this seed never overrides it.
+			if ('popoverTargetAction' in overflowButton && overflowButton.popoverTargetAction === 'toggle') {
 				overflowButton.popoverTargetAction = 'show';
 			}
 		}

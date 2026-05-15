@@ -306,7 +306,12 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 		if (button && 'popoverTargetElement' in button) {
 			button.popoverTargetElement = this._overflowMenu;
 		}
-		if (button && 'popoverTargetAction' in button && !button.popoverTargetAction) {
+		// Default IDL value is 'toggle'; replace it with 'show' so the very
+		// first click opens via the explicit-show path. Once the menu has
+		// opened, `_syncAnchorPopupState` keeps the action in sync with
+		// state ('hide' while open, 'show' while closed) and this seed
+		// never overrides it.
+		if (button && 'popoverTargetAction' in button && button.popoverTargetAction === 'toggle') {
 			button.popoverTargetAction = 'show';
 		}
 	};
