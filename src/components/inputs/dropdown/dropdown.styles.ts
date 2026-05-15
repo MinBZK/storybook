@@ -83,6 +83,14 @@ export const dropdownStyles = css`
 		outline: none;
 		box-sizing: border-box;
 		font: var(--semantics-input-fields-native-select-font);
+		/* iOS Safari occasionally swallows the second tap right after a
+		   native-picker dismissal while it waits to see whether the
+		   gesture is part of a double-tap-to-zoom. 'manipulation' opts
+		   out of the double-tap recognition so consecutive taps reach
+		   the select immediately. Best-effort: the picker-dismiss
+		   animation itself can still race a very fast re-tap, but this
+		   removes the most common cause of "tap doesn't register". */
+		touch-action: manipulation;
 	}
 
 
