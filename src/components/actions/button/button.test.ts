@@ -329,3 +329,62 @@ describe('nldd-button – single-line / width', () => {
 		expect(el.style.getPropertyValue('--_width')).toBe('');
 	});
 });
+
+describe('nldd-button – popoverTargetElement / popoverTargetAction IDL forwarding', () => {
+	let el: NLDDButton;
+	let popover: HTMLDivElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		if (popover) popover.remove();
+	});
+
+	it('forwards popoverTargetElement (Element ref) to the inner button across shadow boundaries', async () => {
+		popover = document.createElement('div');
+		popover.setAttribute('popover', '');
+		document.body.appendChild(popover);
+
+		el = await fixture<NLDDButton>('<nldd-button text="X"></nldd-button>');
+		await waitForUpdate(el);
+
+		el.popoverTargetElement = popover;
+		await waitForUpdate(el);
+
+		const inner = el.shadowRoot!.querySelector('button') as HTMLButtonElement;
+		expect(inner.popoverTargetElement).toBe(popover);
+	});
+
+	it('clears the inner button popoverTargetElement when host property is set back to null', async () => {
+		popover = document.createElement('div');
+		popover.setAttribute('popover', '');
+		document.body.appendChild(popover);
+
+		el = await fixture<NLDDButton>('<nldd-button text="X"></nldd-button>');
+		await waitForUpdate(el);
+		el.popoverTargetElement = popover;
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button') as HTMLButtonElement;
+		expect(inner.popoverTargetElement).toBe(popover);
+
+		el.popoverTargetElement = null;
+		await waitForUpdate(el);
+		expect(inner.popoverTargetElement).toBe(null);
+	});
+
+	it('forwards popoverTargetAction to the inner button', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="X"></nldd-button>');
+		await waitForUpdate(el);
+
+		const inner = el.shadowRoot!.querySelector('button') as HTMLButtonElement;
+		// Default for HTMLButtonElement is 'toggle' — our property defaults match.
+		expect(inner.popoverTargetAction).toBe('toggle');
+
+		el.popoverTargetAction = 'show';
+		await waitForUpdate(el);
+		expect(inner.popoverTargetAction).toBe('show');
+
+		el.popoverTargetAction = 'hide';
+		await waitForUpdate(el);
+		expect(inner.popoverTargetAction).toBe('hide');
+	});
+});
