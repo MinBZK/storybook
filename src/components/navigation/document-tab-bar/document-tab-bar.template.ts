@@ -23,13 +23,14 @@ export function documentTabBarTemplate(component: NLDDDocumentTabBar): TemplateR
 				text=${component._t('components.document-tab-bar.overflow-action')}
 				variant="neutral-tinted"
 				icon="ellipsis"
-				aria-haspopup="menu"
-				aria-expanded=${component._menuOpen ? 'true' : 'false'}
-				@click=${component._onOverflowButtonClick}
+				tooltip-timing="never"
+				popup-type="menu"
+				?expanded=${component._menuOpen}
 			>
 				<!-- aria-controls omitted: ARIA IDREF attributes cannot cross shadow DOM boundaries.
-					 aria-haspopup + aria-expanded provide sufficient AT context for WCAG 2.1 AA.
-					 Restore aria-controls once nldd-menu moves into the shadow root or CSS Anchor
+					 popup-type + expanded provide sufficient AT context for WCAG 2.1 AA, and
+					 forward to the inner button as aria-haspopup / aria-expanded. Restore
+					 aria-controls once nldd-menu moves into the shadow root or CSS Anchor
 					 Positioning allows the menu to escape stacking context without document.body. -->
 			</nldd-icon-button>
 		</div>

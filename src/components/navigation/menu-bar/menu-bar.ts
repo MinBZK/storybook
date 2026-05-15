@@ -22,7 +22,6 @@ import { nlddMenuBarTranslations } from './menu-bar.i18n.js';
 import '../menu-bar-item/menu-bar-item.js';
 import { NLDDMenuBarItem } from '../menu-bar-item/menu-bar-item.js';
 import '../../lists-and-menus/menu/menu.js';
-import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 /**
  * Minimal typed interface for nldd-menu.
@@ -57,8 +56,6 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 	// ## Overflow state
 
 	private _overflowMenu: PopoverMenu | null = null;
-	private _overflowMenuOpen = false;
-	private _overflowMenuClosedAt = 0;
 
 	private _resizeObserver: ResizeObserver | null = null;
 	private _overflowRAF: number | null = null;
@@ -231,8 +228,6 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 
 		menu.addEventListener('toggle', (event: Event) => {
 			const isOpen = (event as ToggleEvent).newState === 'open';
-			this._overflowMenuOpen = isOpen;
-			if (!isOpen) this._overflowMenuClosedAt = Date.now();
 			const item = this._overflowButton?.querySelector('nldd-menu-bar-item');
 			if (item) (item as NLDDMenuBarItem).expanded = isOpen;
 		});
@@ -281,7 +276,16 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 		}
 	}
 
-	/** @internal Used by template */
+	/** @internal Used by template
+	 *
+	 * Lazily wires the overflow menu the first time the user reaches the
+	 * overflow button. The browser performs the actual open/close via the
+	 * popovertarget invoker we set on the button — this handler runs in
+	 * the same click and therefore sets up the wiring just before the
+	 * browser's default action fires for the very first time. Subsequent
+	 * clicks short-circuit (everything is already in place) and the
+	 * browser drives toggle natively without us racing against light-
+	 * dismiss. */
 	_onOverflowClick = (): void => {
 		if (!this._overflowMenu) {
 			this._overflowMenu = this._createOverflowMenu();
@@ -289,10 +293,21 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 		this._populateOverflowMenu();
 
 		this._overflowMenu.anchorElement = this._overflowButton;
-		if (this._overflowMenuOpen) {
-			this._overflowMenu.hidePopover();
-		} else if (Date.now() - this._overflowMenuClosedAt > POPOVER_REOPEN_GUARD_MS) {
-			this._overflowMenu.showPopover();
+		// Wire the button as the menu's invoker so popover light-dismiss
+		// excludes the click on the button from closing the menu, and so
+		// the browser performs open/close via popovertarget instead of us
+		// racing it from a manual hide/show call. The menu syncs
+		// `popoverTargetAction` on every toggle (`'hide'` while open,
+		// `'show'` while closed); seed `'show'` here for the first click.
+		const button = this._overflowButton as (HTMLElement & {
+			popoverTargetElement?: Element | null;
+			popoverTargetAction?: 'toggle' | 'show' | 'hide';
+		}) | null;
+		if (button && 'popoverTargetElement' in button) {
+			button.popoverTargetElement = this._overflowMenu;
+		}
+		if (button && 'popoverTargetAction' in button && !button.popoverTargetAction) {
+			button.popoverTargetAction = 'show';
 		}
 	};
 

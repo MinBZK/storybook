@@ -94,7 +94,6 @@ export function template(
 	menuOpen: boolean,
 	label: string,
 	menuId: string,
-	onOverflowClick: () => void,
 	centerOnly: boolean,
 	t: (key: keyof NLDDToolbarTranslations) => string,
 ) {
@@ -127,10 +126,9 @@ export function template(
 					icon="ellipsis"
 					text=${t('components.toolbar.overflow-action')}
 					tooltip-timing="never"
-					aria-haspopup="menu"
-					aria-expanded=${menuOpen ? 'true' : 'false'}
+					popup-type="menu"
+					?expanded=${menuOpen}
 					aria-controls=${menuId}
-					@click=${onOverflowClick}
 				></nldd-icon-button>
 				<span class="toolbar__item-label">${t('components.toolbar.overflow-action')}</span>
 			</div>
