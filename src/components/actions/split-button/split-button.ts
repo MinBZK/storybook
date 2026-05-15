@@ -62,6 +62,9 @@ export class NLDDSplitButton extends LitElement {
 	@property({ type: Object })
 	translations: Partial<NLDDSplitButtonTranslations> = {};
 
+	// Wrapper div around the inner `nldd-icon-button`. The pointerdown
+	// listener below attaches to the wrapper because pointerdown bubbles
+	// up from the nested icon-button — both work as the snapshot point.
 	@query('.split-button__popup-button')
 	private _trigger?: HTMLElement;
 
