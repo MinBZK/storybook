@@ -7,9 +7,19 @@ import './keyboard-shortcut.js';
  *
  * ## Gebruik
  * ```html
- * <nldd-keyboard-shortcut keys="Cmd+K"></nldd-keyboard-shortcut>
- * <nldd-keyboard-shortcut keys="Ctrl+Shift+P"></nldd-keyboard-shortcut>
+ * <nldd-keyboard-shortcut keys="Ctrl+K"></nldd-keyboard-shortcut>
+ *
+ * <!-- Cross-platform: per OS een eigen string -->
+ * <nldd-keyboard-shortcut
+ *   keys="Ctrl+K"
+ *   mac-keys="⌘+K"
+ *   windows-keys="Ctrl+K"
+ *   linux-keys="Ctrl+K"
+ * ></nldd-keyboard-shortcut>
  * ```
+ *
+ * Het component picks zelf de juiste set op basis van de gedetecteerde OS,
+ * met `keys` als fallback voor onbekende platforms.
  */
 export default {
 	title: 'Components/Content/Keyboard Shortcut',
@@ -45,26 +55,48 @@ export default {
 			control: 'text',
 			description: 'Toetsen gescheiden door +',
 		},
+		macKeys: {
+			name: 'mac-keys',
+			control: 'text',
+			description: 'Optionele override voor macOS (incl. iPhone/iPad/iPod)',
+		},
+		windowsKeys: {
+			name: 'windows-keys',
+			control: 'text',
+			description: 'Optionele override voor Windows',
+		},
+		linuxKeys: {
+			name: 'linux-keys',
+			control: 'text',
+			description: 'Optionele override voor Linux/ChromeOS',
+		},
 	},
 	args: {
 		size: 'md',
 		alwaysVisible: false,
-		keys: 'Cmd+K',
+		keys: 'Ctrl+K',
+		macKeys: '',
+		windowsKeys: '',
+		linuxKeys: '',
 	},
 };
 
-const Template = ({ size, alwaysVisible, keys }: Record<string, any>) => html`
+const Template = ({ size, alwaysVisible, keys, macKeys, windowsKeys, linuxKeys }: Record<string, any>) => html`
 	<nldd-keyboard-shortcut
 		size=${size}
 		?always-visible=${alwaysVisible}
 		keys=${keys}
+		mac-keys=${macKeys}
+		windows-keys=${windowsKeys}
+		linux-keys=${linuxKeys}
 	></nldd-keyboard-shortcut>
 `;
+
 
 export const Default = {
 	render: Template,
 	args: {
-		keys: 'Cmd+K',
+		keys: 'Ctrl+K',
 	},
 };
 
@@ -92,5 +124,53 @@ export const Sizes = {
 	`,
 	parameters: {
 		controls: { disable: true },
+	},
+};
+
+export const Mac = {
+	render: () => html`
+		<nldd-keyboard-shortcut
+			debug-os="mac"
+			keys="Ctrl+K"
+			mac-keys="⌘+K"
+			windows-keys="Ctrl+K"
+			linux-keys="Ctrl+K"
+		></nldd-keyboard-shortcut>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: 'Per-instance `debug-os="mac"` override — toont `mac-keys`.' } },
+	},
+};
+
+export const Windows = {
+	render: () => html`
+		<nldd-keyboard-shortcut
+			debug-os="windows"
+			keys="Ctrl+K"
+			mac-keys="⌘+K"
+			windows-keys="Ctrl+K"
+			linux-keys="Ctrl+K"
+		></nldd-keyboard-shortcut>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: 'Per-instance `debug-os="windows"` override — toont `windows-keys`.' } },
+	},
+};
+
+export const Linux = {
+	render: () => html`
+		<nldd-keyboard-shortcut
+			debug-os="linux"
+			keys="Ctrl+K"
+			mac-keys="⌘+K"
+			windows-keys="Ctrl+K"
+			linux-keys="Ctrl+K"
+		></nldd-keyboard-shortcut>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: { description: { story: 'Per-instance `debug-os="linux"` override — toont `linux-keys`.' } },
 	},
 };
