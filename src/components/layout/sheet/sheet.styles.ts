@@ -12,6 +12,7 @@ export const sheetStyles = css`
 
 	:host {
 		--_width: initial;
+		--_height: initial;
 
 		display: block;
 	}
@@ -135,13 +136,20 @@ export const sheetStyles = css`
 	}
 
 
-	/* # Placement: bottom */
+	/* # Placement: bottom
+
+	   Default height is full (viewport minus top-inset) so visualisation-
+	   heavy bottom sheets fill the available area without the consumer
+	   having to opt in. Consumers that want a content-sized sheet pass
+	   height="fit-content" — max-height already keeps the sheet within
+	   100dvh - top-inset regardless of the chosen value, so the dismiss-
+	   tap area at the top is preserved even for oversized custom heights. */
 
 	:host([placement='bottom']) .sheet {
 		inset: auto 0 0 0;
 		max-width: var(--semantics-page-sections-body-max-width);
 		max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
-		height: auto;
+		height: var(--_height, calc(100dvh - var(--semantics-sheets-bottom-top-inset)));
 		margin-inline: auto;
 		border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
@@ -168,21 +176,10 @@ export const sheetStyles = css`
 	}
 
 
-	/* # Full-height
-	   Force a bottom sheet to take its full max-height (= viewport minus
-	   the top-inset), so visualisation-heavy content (graph view, full
-	   editors) doesn't shrink to its intrinsic size. The top-inset stays
-	   intact: it gives users a tap target to dismiss the sheet and a
-	   visual cue that this is an overlay, not a full page. The sm
-	   responsive block below covers the case where any placement
-	   collapses to a bottom sheet on small viewports. */
+	/* # Responsive: sm viewport — all placements become bottom sheet
 
-	:host([placement='bottom'][full-height]) .sheet {
-		height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
-	}
-
-
-	/* # Responsive: sm viewport — all placements become bottom sheet */
+	   The same default-full + opt-out-via-height semantics apply when
+	   a side sheet collapses to a bottom sheet on sm. */
 
 	@media (max-width: ${smMax}) {
 		:host([placement='right']) .sheet,
@@ -191,7 +188,7 @@ export const sheetStyles = css`
 			inset: auto 0 0 0;
 			width: 100%;
 			max-width: 100%;
-			height: auto;
+			height: var(--_height, calc(100dvh - var(--semantics-sheets-bottom-top-inset)));
 			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
 			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 
@@ -202,10 +199,6 @@ export const sheetStyles = css`
 			&.is-closing {
 				animation: sheet-slide-out-bottom var(--semantics-sheets-bottom-animation-duration) var(--primitives-transition-easing-default) both;
 			}
-		}
-
-		:host([full-height]) .sheet {
-			height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
 		}
 	}
 
