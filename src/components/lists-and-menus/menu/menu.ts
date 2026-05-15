@@ -945,8 +945,7 @@ export class NLDDMenu extends LitElement {
 	 *
 	 * Cached MediaQueryList shared across instances — `matchMedia()` returns
 	 * a live object and re-evaluating it for every mouseenter/submenu-open
-	 * is wasteful. Instances also subscribe to `change` so resize events
-	 * naturally route through `_handleViewportResize`.
+	 * is wasteful.
 	 */
 	private static _drillInModeQuery: MediaQueryList | null = null;
 	private static _getDrillInModeQuery(): MediaQueryList {
@@ -1156,25 +1155,17 @@ export class NLDDMenu extends LitElement {
 		this._clearHighlight();
 	};
 
-	/** Last cached drill-in mode value, so we only act when it actually
-	 * changes across a resize event. */
-	private _lastDrillInMode: boolean | null = null;
-
-	/** Close any open submenu when the cascade ↔ drill-in threshold is
-	 * crossed during a resize. Switching the rendering of an already-open
-	 * submenu mid-flight (anchor + placement + back button) is more
-	 * disorienting than a clean reset to the root view. */
-	private _handleViewportResize = (): void => {
-		const current = this._drillInMode;
-		if (this._lastDrillInMode === null) {
-			this._lastDrillInMode = current;
-			return;
-		}
-		if (this._lastDrillInMode === current) return;
-		this._lastDrillInMode = current;
-		if (this._activeSubmenu) {
-			(this._activeSubmenu as HTMLElement).hidePopover?.();
-		}
+	/** Close the menu on a window resize. Floating-UI's autoUpdate keeps
+	 * the position in sync with scrolls (where users genuinely expect the
+	 * menu to follow the anchor), but a full window resize is a layout-
+	 * shifting interaction the user isn't currently tracking — better to
+	 * dismiss with a clean slate than to chase the anchor across a
+	 * reflow, repaint a flipped placement, or get stuck mid-flight when
+	 * crossing the cascade ↔ drill-in viewport threshold. The window
+	 * listener is wired only while we're open and torn down on close, so
+	 * idle menus pay nothing. */
+	private _handleWindowResize = (): void => {
+		(this as HTMLElement).hidePopover?.();
 	};
 
 	/**
@@ -1278,13 +1269,6 @@ export class NLDDMenu extends LitElement {
 		// processes the pointerdown — gives us a chance to redirect the
 		// dismissal into a chain-close in drill-in mode.
 		document.addEventListener('pointerdown', this._handleDocumentPointerdown, true);
-		// Close any open submenu when the viewport crosses the cascade ↔ drill-in
-		// threshold mid-session — re-rendering between modes mid-flight would
-		// require recomputing anchors and is more disorienting than a clean reset.
-		// Subscribe to the MediaQueryList's `change` event rather than every
-		// `window.resize` frame: it fires only when the threshold is actually
-		// crossed and matches the comment above the cached query.
-		NLDDMenu._getDrillInModeQuery().addEventListener('change', this._handleViewportResize);
 	}
 
 	override firstUpdated(): void {
@@ -1310,7 +1294,10 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('select', this._handleSelectChainClose);
 		document.removeEventListener('click', this._handleDocumentClick);
 		document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
-		NLDDMenu._getDrillInModeQuery().removeEventListener('change', this._handleViewportResize);
+		// Defensive: the resize listener is added on open and removed on
+		// close, but if the menu is removed from the DOM mid-open we'd
+		// otherwise leak the global listener.
+		window.removeEventListener('resize', this._handleWindowResize);
 		this._cancelHoverOpen();
 		this._stopSafeTriangle();
 		if (this._typeaheadTimer !== null) {
@@ -1672,6 +1659,7 @@ export class NLDDMenu extends LitElement {
 			this._closedAt = Date.now();
 			this._cleanupAutoUpdate?.();
 			this._cleanupAutoUpdate = null;
+			window.removeEventListener('resize', this._handleWindowResize);
 			this._clearHighlight();
 			return;
 		}
@@ -1688,6 +1676,9 @@ export class NLDDMenu extends LitElement {
 		if (anchorEl) {
 			this._cleanupAutoUpdate = autoUpdate(anchorEl, this, () => this.reposition());
 		}
+		// Wired only while open so idle menus pay nothing and we don't
+		// accidentally close other menus on the page during a resize.
+		window.addEventListener('resize', this._handleWindowResize, { passive: true });
 
 		await this.updateComplete;
 		if (this.variant !== 'listbox') {
