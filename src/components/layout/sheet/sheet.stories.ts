@@ -30,13 +30,23 @@ export default {
 			description: 'Positie van de sheet',
 			table: { defaultValue: { summary: 'right' } },
 		},
+		width: {
+			control: 'text',
+			description: 'Breedte van side sheets (left/right) als CSS length, bv. `480px` of `32rem`. Genegeerd op sm en voor `placement="bottom"`. Geclamped op `100vw - 2 * inset`.',
+			table: { defaultValue: { summary: '' } },
+		},
+		height: {
+			control: 'text',
+			description: 'Hoogte van bottom sheets (en van elke sheet op sm). `full` (default), `fit-content`, of een CSS length/percentage zoals `50dvh`, `480px`, `50%`. Geclamped op `100dvh - top-inset`. Genegeerd voor side sheets op md+.',
+			table: { defaultValue: { summary: '' } },
+		},
 		modeless: {
 			control: 'boolean',
 			description: 'Niet-modaal (geen backdrop of focusvergrendeling); standaard is de sheet modaal',
 			table: { defaultValue: { summary: false } },
 		},
 	},
-	args: { placement: 'right', modeless: false },
+	args: { placement: 'right', width: '', height: '', modeless: false },
 };
 
 const openNext = (e: Record<string, any>) => e.currentTarget.nextElementSibling.show();
@@ -56,7 +66,12 @@ const pageContent = html`
 
 const Template = (args: Record<string, any>) => html`
 	<nldd-button text="Open sheet" @click=${openNext}></nldd-button>
-	<nldd-sheet placement=${args.placement} ?modeless=${args.modeless}>
+	<nldd-sheet
+		placement=${args.placement}
+		width=${args.width || ''}
+		height=${args.height || ''}
+		?modeless=${args.modeless}
+	>
 		<nldd-page sticky-header>
 			<nldd-top-title-bar
 				slot="header"
