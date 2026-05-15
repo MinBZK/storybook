@@ -66,6 +66,8 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			aria-haspopup=${this.popupType || nothing}
 			aria-expanded=${ariaExpanded}
 			popovertarget=${this.popovertarget || nothing}
+			.popoverTargetElement=${this.popoverTargetElement ?? null}
+			.popoverTargetAction=${this.popoverTargetAction ?? 'toggle'}
 			@click=${helpers.handleClick}
 		>
 			${content}

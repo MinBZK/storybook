@@ -79,6 +79,28 @@ export class NLDDButton extends LitElement {
 	@property({ type: String })
 	popovertarget: string | undefined = undefined;
 
+	/**
+	 * Direct element reference to the popover this button invokes — IDL-only
+	 * counterpart to `popovertarget` that works across shadow boundaries.
+	 * Use this when the popover lives in a different tree (e.g. an
+	 * `nldd-menu` reparented to `<body>`) so the browser still recognises
+	 * this button as the popover's invoker and excludes it from the popover
+	 * light-dismiss algorithm. Set programmatically; not reflected to an
+	 * HTML attribute (the attribute form is `popovertarget`, ID-based).
+	 */
+	@property({ attribute: false })
+	popoverTargetElement: Element | null = null;
+
+	/**
+	 * Action the browser performs when the button is clicked, mirroring the
+	 * standard `popovertargetaction` attribute. Defaults to `'toggle'`. Use
+	 * `'show'` when a separate handler owns the close path (e.g. the
+	 * consumer toggles the popover programmatically) so the browser's
+	 * default action doesn't double-fire.
+	 */
+	@property({ attribute: false })
+	popoverTargetAction: 'toggle' | 'show' | 'hide' = 'toggle';
+
 	@property({ type: Boolean, reflect: true })
 	disabled = false;
 
