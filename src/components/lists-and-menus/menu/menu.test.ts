@@ -1014,6 +1014,86 @@ describe('nldd-menu drill-in chain', () => {
 		cleanup(root);
 	});
 
+	it('chain state is fully reset after a select — re-opening the same chain works', async () => {
+		// Regression: an earlier version captured `_parentMenu` AFTER
+		// hidePopover, and synchronous toggle dispatch had already nulled
+		// it via the parent's cleanup. The walk skipped grandparents,
+		// leaving stale `_activeSubmenu` / cleanup / toggle listeners on
+		// root. The next open of the same chain would then accumulate a
+		// second toggle listener on L2; closing L2 fired both the stale
+		// and the fresh cleanup, corrupting `_activeSubmenu` tracking
+		// from that point on.
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="L2">
+							<nldd-menu>
+								<nldd-menu-item text="L3"></nldd-menu-item>
+							</nldd-menu>
+						</nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const l2Item = l2Menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l3Menu = l2Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const l3Item = l3Menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+
+		const rootInternals = root as unknown as {
+			_activeSubmenu: HTMLElement | null;
+			_activeSubmenuCleanup: ((skipReshow: boolean) => void) | null;
+		};
+		const l2Internals = l2Menu as unknown as {
+			_parentMenu: HTMLElement | null;
+		};
+
+		// Session 1 — open chain to L3, then select.
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		l1Item.dispatchEvent(new CustomEvent('submenu-open', { detail: { submenu: l2Menu, item: l1Item }, bubbles: true }));
+		await waitForUpdate(root);
+		l2Item.dispatchEvent(new CustomEvent('submenu-open', { detail: { submenu: l3Menu, item: l2Item }, bubbles: true }));
+		await waitForUpdate(root);
+
+		l3Item.dispatchEvent(new CustomEvent('select', { bubbles: true, composed: true }));
+		await waitForUpdate(root);
+
+		// After select-chain-close, every level should have shed its
+		// parent reference and the root should have no active submenu.
+		expect(rootInternals._activeSubmenu).toBe(null);
+		expect(rootInternals._activeSubmenuCleanup).toBe(null);
+		expect(l2Internals._parentMenu).toBe(null);
+
+		// Session 2 — same chain again. If session 1 left a stale toggle
+		// listener on L2, the eventual close in this session would double-
+		// fire and corrupt root's tracking. Verify a clean second cycle.
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		l1Item.dispatchEvent(new CustomEvent('submenu-open', { detail: { submenu: l2Menu, item: l1Item }, bubbles: true }));
+		await waitForUpdate(root);
+
+		expect(l2Menu.matches(':popover-open')).toBe(true);
+		expect(l2Internals._parentMenu).toBe(root);
+		expect(rootInternals._activeSubmenu).toBe(l2Menu);
+
+		// Close L2 (back-button equivalent) — root should re-show cleanly,
+		// and exactly one cleanup should run (no stale duplicate firing).
+		(l2Menu as HTMLElement & { hidePopover: () => void }).hidePopover();
+		await waitForUpdate(root);
+
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(root.matches(':popover-open')).toBe(true);
+		expect(rootInternals._activeSubmenu).toBe(null);
+		expect(l2Internals._parentMenu).toBe(null);
+
+		cleanup(root);
+	});
+
 	it('pointerdown outside the chain collapses every level', async () => {
 		const root = await fixture<HTMLElement>(`
 			<nldd-menu>

@@ -1183,6 +1183,14 @@ export class NLDDMenu extends LitElement {
 	 * stack instead of bouncing back to the previous view.
 	 */
 	private _handleSelectChainClose = (): void => {
+		// Capture the chain BEFORE hiding ourselves: in browsers that
+		// dispatch the close-side `toggle` event synchronously inside
+		// `hidePopover()`, our parent's cleanup runs immediately and
+		// nulls `this._parentMenu` — reading it after hidePopover would
+		// then give us null and the walk would never run, leaving stale
+		// `_activeSubmenu` / `_activeSubmenuCleanup` / toggle listeners
+		// on grandparent levels.
+		let parent = this._parentMenu;
 		// Mark this level so its toggle→cleanup run skips re-showing the
 		// parent. Then hide ourselves to fire the normal cleanup path.
 		this._drillInClosingForSelect = true;
@@ -1193,7 +1201,6 @@ export class NLDDMenu extends LitElement {
 		// never fire. Invoke their stored cleanup directly to clear state and
 		// detach listeners. Capture `next` before calling cleanup, since each
 		// cleanup nulls out _parentMenu / _activeSubmenuCleanup as it runs.
-		let parent = this._parentMenu;
 		while (parent) {
 			const next = parent._parentMenu;
 			parent._activeSubmenuCleanup?.(true);
@@ -1265,10 +1272,6 @@ export class NLDDMenu extends LitElement {
 		this.addEventListener('submenu-open', this._handleSubmenuOpen);
 		this.addEventListener('select', this._handleSelectChainClose);
 		document.addEventListener('click', this._handleDocumentClick);
-		// Capture so we run before the popover light-dismiss algorithm
-		// processes the pointerdown — gives us a chance to redirect the
-		// dismissal into a chain-close in drill-in mode.
-		document.addEventListener('pointerdown', this._handleDocumentPointerdown, true);
 	}
 
 	override firstUpdated(): void {
@@ -1293,10 +1296,10 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('submenu-open', this._handleSubmenuOpen);
 		this.removeEventListener('select', this._handleSelectChainClose);
 		document.removeEventListener('click', this._handleDocumentClick);
+		// Defensive: the pointerdown + resize listeners are added on open
+		// and removed on close, but if the menu is torn down mid-open we'd
+		// otherwise leak the global listeners.
 		document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
-		// Defensive: the resize listener is added on open and removed on
-		// close, but if the menu is removed from the DOM mid-open we'd
-		// otherwise leak the global listener.
 		window.removeEventListener('resize', this._handleWindowResize);
 		this._cancelHoverOpen();
 		this._stopSafeTriangle();
@@ -1660,6 +1663,7 @@ export class NLDDMenu extends LitElement {
 			this._cleanupAutoUpdate?.();
 			this._cleanupAutoUpdate = null;
 			window.removeEventListener('resize', this._handleWindowResize);
+			document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
 			this._clearHighlight();
 			return;
 		}
@@ -1677,8 +1681,13 @@ export class NLDDMenu extends LitElement {
 			this._cleanupAutoUpdate = autoUpdate(anchorEl, this, () => this.reposition());
 		}
 		// Wired only while open so idle menus pay nothing and we don't
-		// accidentally close other menus on the page during a resize.
+		// accidentally close other menus on the page during a resize or
+		// during an unrelated pointerdown elsewhere.
 		window.addEventListener('resize', this._handleWindowResize, { passive: true });
+		// Capture so we run before the popover light-dismiss algorithm
+		// processes the pointerdown — gives us a chance to redirect the
+		// dismissal into a chain-close in drill-in mode.
+		document.addEventListener('pointerdown', this._handleDocumentPointerdown, true);
 
 		await this.updateComplete;
 		if (this.variant !== 'listbox') {
