@@ -1187,6 +1187,9 @@
 	/* ## Rich text */
 
 	--components-rich-text-grid-size: calc(var(--primitives-font-size-100) * var(--primitives-line-height-snug));
+	--components-rich-text-main-max-width: var(--primitives-area-720);
+	--components-rich-text-wide-max-width: var(--primitives-area-800);
+	--components-rich-text-centered-wide-max-width: var(--primitives-area-960);
 	--components-rich-text-spacing-flat: var(--primitives-space-0);
 	--components-rich-text-spacing-tight: calc(var(--components-rich-text-grid-size) / 4);
 	--components-rich-text-spacing-snug: calc(var(--components-rich-text-grid-size) / 2);

@@ -12,14 +12,20 @@ export default {
 			description: 'Tussenruimte tussen elementen',
 			table: { defaultValue: { summary: 'snug' } },
 		},
+		centered: {
+			control: 'boolean',
+			description: 'Centreert de main column in de container; zonder dit attribuut is content links uitgelijnd',
+			table: { defaultValue: { summary: false } },
+		},
 	},
+	args: { spacing: 'snug', centered: false },
 };
 
 export const Default = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h3>Artikel 1. Algemene begrippen</h3>
 				<p>In deze wet en de daarop berustende bepalingen wordt verstaan onder:</p>
 				<ul>
@@ -36,7 +42,7 @@ export const Headings = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h1>Heading 1 — Wet op de zorgtoeslag</h1>
 				<h2>Heading 2 — Hoofdstuk 1</h2>
 				<h3>Heading 3 — Artikel 1</h3>
@@ -52,7 +58,7 @@ export const Paragraph = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h3>Artikel 2. Zorgtoeslag</h3>
 				<p>De verzekerde die op de eerste dag van het berekeningsjaar de leeftijd van achttien jaar heeft bereikt, heeft aanspraak op een zorgtoeslag.</p>
 				<p>De zorgtoeslag wordt berekend op basis van het toetsingsinkomen van de verzekerde en, indien van toepassing, diens partner.</p>
@@ -66,7 +72,7 @@ export const Lists = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h3>Ongeordende lijst</h3>
 				<p>De volgende documenten zijn vereist:</p>
 				<ul>
@@ -123,7 +129,7 @@ export const InlineElements = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h3>Inline elementen</h3>
 				<p>Dit is een paragraaf met <strong>vetgedrukte tekst</strong> en <em>schuingedrukte tekst</em>.</p>
 				<p>Hier staat een <a href="#">hyperlink naar een pagina</a> in de tekst.</p>
@@ -139,7 +145,7 @@ export const Blockquote = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h3>Artikel 3. Citaat</h3>
 				<p>In de memorie van toelichting staat het volgende vermeld:</p>
 				<blockquote>
@@ -155,7 +161,7 @@ export const Figure = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h3>Artikel 4. Toelichting met afbeelding</h3>
 				<p>Onderstaande afbeelding toont de verdeling van de zorgtoeslag over de verschillende inkomensgroepen.</p>
 				<figure>
@@ -172,7 +178,7 @@ export const Table = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h3>Artikel 5. Overzicht toeslagbedragen</h3>
 				<p>De maximale zorgtoeslag per jaar is afhankelijk van de huishoudsamenstelling:</p>
 				<table>
@@ -206,7 +212,7 @@ export const Divider = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h3>Artikel 6. Eerste onderdeel</h3>
 				<p>De verzekerde heeft recht op zorgtoeslag indien het toetsingsinkomen niet hoger is dan de vastgestelde inkomensgrens.</p>
 				<hr>
@@ -272,7 +278,7 @@ export const FullArticle = {
 	args: { spacing: 'snug' },
 	render: (args: Record<string, any>) => html`
 		<div style="container-type: inline-size; container-name: layout-container;">
-			<nldd-rich-text spacing=${args.spacing}>
+			<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 				<h1>Wet op de zorgtoeslag</h1>
 				<h2>Hoofdstuk 1. Algemene bepalingen</h2>
 				<h3>Artikel 1. Begrippen</h3>
@@ -331,7 +337,7 @@ export const AllSizes = {
 			<div>
 				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">sm (&lt; 641px) — beperkt tot 393px</p>
 				<div style="width: 393px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-container;">
-					<nldd-rich-text spacing=${args.spacing}>
+					<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
 						<ul>
@@ -344,7 +350,7 @@ export const AllSizes = {
 			<div>
 				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">md (≥ 641px) — beperkt tot 834px</p>
 				<div style="width: 834px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-container;">
-					<nldd-rich-text spacing=${args.spacing}>
+					<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
 						<ul>
@@ -357,7 +363,7 @@ export const AllSizes = {
 			<div>
 				<p style="font: var(--primitives-font-body-sm-bold-tight); color: var(--semantics-content-color); margin: 0 0 8px;">lg (≥ 1008px) — beperkt tot 1200px</p>
 				<div style="width: 1200px; border: 1px dashed #cbd5e1; padding: 16px; container-type: inline-size; container-name: layout-container;">
-					<nldd-rich-text spacing=${args.spacing}>
+					<nldd-rich-text spacing=${args.spacing} ?centered=${args.centered}>
 						<h2>Artikel 1. Algemene begrippen</h2>
 						<p>In deze wet wordt verstaan onder:</p>
 						<ul>

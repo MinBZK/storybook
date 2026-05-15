@@ -2,32 +2,53 @@
 
 nldd-rich-text {
 	--_spacing: var(--components-rich-text-spacing-snug);
+	--_wide-max-width: var(--components-rich-text-wide-max-width);
+	--_wide-bleed-width: calc(
+		(var(--_wide-max-width) - var(--components-rich-text-main-max-width)) / 2
+	);
+	--_main-shortfall: max(
+		0px,
+		calc(100% - var(--components-rich-text-main-max-width))
+	);
 
-	display: block;
+	display: grid;
+	grid-template-columns:
+		[full-start]   0
+		[wide-start]   0
+		[main-start]   minmax(0, var(--components-rich-text-main-max-width))
+		[main-end]     min(calc(var(--_wide-bleed-width) * 2), var(--_main-shortfall))
+		[wide-end]     1fr
+		[full-end];
+	row-gap: var(--_spacing);
 	color: var(--semantics-content-color);
 	font: var(--primitives-font-body-md-regular-snug);
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
 }
 
-nldd-rich-text[spacing="flat"] {
-	--_spacing: var(--components-rich-text-spacing-flat);
+nldd-rich-text[centered] {
+	--_wide-max-width: var(--components-rich-text-centered-wide-max-width);
+
+	grid-template-columns:
+		[full-start]   1fr
+		[wide-start]   min(var(--_wide-bleed-width), calc(var(--_main-shortfall) / 2))
+		[main-start]   minmax(0, var(--components-rich-text-main-max-width))
+		[main-end]     min(var(--_wide-bleed-width), calc(var(--_main-shortfall) / 2))
+		[wide-end]     1fr
+		[full-end];
 }
 
-nldd-rich-text[spacing="tight"] {
-	--_spacing: var(--components-rich-text-spacing-tight);
-}
-
-nldd-rich-text[spacing="snug"] {
-	--_spacing: var(--components-rich-text-spacing-snug);
-}
-
-nldd-rich-text[spacing="loose"] {
-	--_spacing: var(--components-rich-text-spacing-loose);
-}
+nldd-rich-text[spacing="flat"]  { --_spacing: var(--components-rich-text-spacing-flat); }
+nldd-rich-text[spacing="tight"] { --_spacing: var(--components-rich-text-spacing-tight); }
+nldd-rich-text[spacing="snug"]  { --_spacing: var(--components-rich-text-spacing-snug); }
+nldd-rich-text[spacing="loose"] { --_spacing: var(--components-rich-text-spacing-loose); }
 
 nldd-rich-text[hidden] {
 	display: none;
+}
+
+nldd-rich-text > * {
+	grid-column: main;
 }
 
 nldd-rich-text > :first-child {
@@ -49,21 +70,18 @@ nldd-rich-text *:focus:not(:focus-visible) {
 }
 
 
-/* # Paragraph */
+/* # Headings */
 
-nldd-rich-text p {
-	max-width: var(--primitives-area-720);
-	margin: var(--_spacing) 0;
+nldd-rich-text :is(h1, h2, h3, h4, h5, h6) {
+	margin-top: var(--_spacing);
+	margin-bottom: 0;
+	text-wrap: pretty;
 }
 
 
 /* # Heading 1 */
 
 nldd-rich-text h1 {
-	margin-top: calc(var(--_spacing) * 2);
-	margin-bottom: var(--_spacing);
-	text-wrap: pretty;
-
 	@media (max-width: 640px) {
 		font: var(--primitives-font-display-1-sm);
 	}
@@ -93,10 +111,6 @@ nldd-rich-text h1 {
 /* # Heading 2 */
 
 nldd-rich-text h2 {
-	margin-top: calc(var(--_spacing) * 2);
-	margin-bottom: var(--_spacing);
-	text-wrap: pretty;
-
 	@media (max-width: 640px) {
 		font: var(--primitives-font-display-2-sm);
 	}
@@ -126,10 +140,6 @@ nldd-rich-text h2 {
 /* # Heading 3 */
 
 nldd-rich-text h3 {
-	margin-top: calc(var(--_spacing) * 2);
-	margin-bottom: var(--_spacing);
-	text-wrap: pretty;
-
 	@media (max-width: 640px) {
 		font: var(--primitives-font-display-3-sm);
 	}
@@ -159,10 +169,6 @@ nldd-rich-text h3 {
 /* # Heading 4 */
 
 nldd-rich-text h4 {
-	margin-top: calc(var(--_spacing) * 2);
-	margin-bottom: var(--_spacing);
-	text-wrap: pretty;
-
 	@media (max-width: 640px) {
 		font: var(--primitives-font-display-4-sm);
 	}
@@ -192,10 +198,6 @@ nldd-rich-text h4 {
 /* # Heading 5 */
 
 nldd-rich-text h5 {
-	margin-top: calc(var(--_spacing) * 2);
-	margin-bottom: var(--_spacing);
-	text-wrap: pretty;
-
 	@media (max-width: 640px) {
 		font: var(--primitives-font-display-5-sm);
 	}
@@ -225,10 +227,6 @@ nldd-rich-text h5 {
 /* # Heading 6 */
 
 nldd-rich-text h6 {
-	margin-top: calc(var(--_spacing) * 2);
-	margin-bottom: var(--_spacing);
-	text-wrap: pretty;
-
 	@media (max-width: 640px) {
 		font: var(--primitives-font-display-6-sm);
 	}
@@ -255,6 +253,13 @@ nldd-rich-text h6 {
 }
 
 
+/* # Paragraph */
+
+nldd-rich-text p {
+	margin: 0;
+}
+
+
 /* # Lists */
 
 nldd-rich-text ul {
@@ -269,9 +274,8 @@ nldd-rich-text ol {
 	list-style-type: decimal;
 }
 
-nldd-rich-text > ul,
-nldd-rich-text > ol {
-	margin: var(--_spacing) 0;
+nldd-rich-text > :is(ul, ol) {
+	margin-block: calc(var(--_spacing) / -2);
 }
 
 nldd-rich-text ol > li > ol {
@@ -282,7 +286,6 @@ nldd-rich-text ol > li > ol {
 /* # List Item */
 
 nldd-rich-text li {
-	max-width: var(--primitives-area-720);
 	margin: calc(var(--_spacing) / 2) 0;
 	padding: 0;
 }
@@ -367,16 +370,21 @@ nldd-rich-text figcaption {
 
 /* # Blockquote */
 
+nldd-rich-text > blockquote {
+	grid-column: main-start / wide-end;
+}
+
 nldd-rich-text blockquote {
 	display: flex;
 	flex-direction: column;
 	gap: calc(var(--semantics-blockquotes-md-spacing) / 2);
-	max-width: var(--semantics-blockquotes-max-width);
-	margin-block: var(--semantics-blockquotes-md-spacing);
+	margin-block: max(
+		0px,
+		calc(var(--semantics-blockquotes-md-spacing) - var(--_spacing))
+	);
 	margin-inline: 0;
+	padding-block-start: var(--semantics-blockquotes-md-spacing);
 	padding-inline: var(--semantics-blockquotes-md-spacing);
-	padding-top: var(--semantics-blockquotes-md-spacing);
-	padding-bottom: 0;
 	border-top: var(--semantics-blockquotes-border);
 	border-left: var(--semantics-blockquotes-border);
 	border-top-left-radius: var(--semantics-blockquotes-corner-radius);
@@ -384,19 +392,23 @@ nldd-rich-text blockquote {
 
 	@media (max-width: 640px) {
 		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
-		margin-block: var(--semantics-blockquotes-sm-spacing);
+		margin-block: max(
+			0px,
+			calc(var(--semantics-blockquotes-sm-spacing) - var(--_spacing))
+		);
+		padding-block-start: var(--semantics-blockquotes-sm-spacing);
 		padding-inline: var(--semantics-blockquotes-sm-spacing);
-		padding-top: var(--semantics-blockquotes-sm-spacing);
-		padding-bottom: 0;
 		font: var(--semantics-blockquotes-sm-quote-font);
 	}
 
 	@container layout-container (max-width: 640px) {
 		gap: calc(var(--semantics-blockquotes-sm-spacing) / 2);
-		margin-block: var(--semantics-blockquotes-sm-spacing);
+		margin-block: max(
+			0px,
+			calc(var(--semantics-blockquotes-sm-spacing) - var(--_spacing))
+		);
+		padding-block-start: var(--semantics-blockquotes-sm-spacing);
 		padding-inline: var(--semantics-blockquotes-sm-spacing);
-		padding-top: var(--semantics-blockquotes-sm-spacing);
-		padding-bottom: 0;
 		font: var(--semantics-blockquotes-sm-quote-font);
 	}
 }
@@ -432,18 +444,33 @@ nldd-rich-text img {
 
 /* # Horizontal Rule */
 
+nldd-rich-text > hr {
+	grid-column: full;
+}
+
 nldd-rich-text hr {
-	margin: var(--_spacing) 0;
+	margin: 0;
 	border: none;
 	border-top: var(--semantics-dividers-thickness) solid var(--semantics-dividers-color);
 }
 
 
-/* # Table */
+/* # Table
+   Spans the full container width by default so wide data tables aren't
+   cramped to the main text width. Same min-block-spacing floor as
+   blockquote so it always reads as a distinct chunk even in flat mode. */
+
+nldd-rich-text > table {
+	grid-column: main-start / full-end;
+}
 
 nldd-rich-text table {
 	display: block;
 	width: 100%;
+	margin-block: max(
+		0px,
+		calc(var(--components-rich-text-spacing-snug) - var(--_spacing))
+	);
 	border-collapse: collapse;
 	font: var(--primitives-font-body-md-regular-tight);
 	overflow-x: auto;
