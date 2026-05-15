@@ -100,14 +100,21 @@ export const segmentedControlItemStyles = css`
 		font: var(--semantics-buttons-sm-font);
 	}
 
+	/* Icon variant inherits the base 'width: 100%' so items stretch to fill
+	   their grid column when the consumer sets a custom width on the
+	   segmented-control (e.g. width="full"); the icon itself stays
+	   centred via 'justify-content: center' on .segmented-control__item.
+	   'min-width' keeps the natural icon-button footprint as a floor so a
+	   narrow consumer width can't squeeze the item below the standard
+	   icon-only size. */
 	:host([variant='icon'][size='md']) .segmented-control__item,
 	:host([variant='icon']:not([size])) .segmented-control__item {
-		width: calc(var(--semantics-controls-md-min-size) - var(--_segmented-control-md-item-indicator-inset));
+		min-width: calc(var(--semantics-controls-md-min-size) - var(--_segmented-control-md-item-indicator-inset));
 		padding: 0;
 	}
 
 	:host([variant='icon'][size='sm']) .segmented-control__item {
-		width: calc(var(--semantics-controls-sm-min-size) - var(--_segmented-control-sm-item-indicator-inset));
+		min-width: calc(var(--semantics-controls-sm-min-size) - var(--_segmented-control-sm-item-indicator-inset));
 		padding: 0;
 	}
 
