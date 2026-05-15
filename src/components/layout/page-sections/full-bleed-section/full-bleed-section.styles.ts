@@ -38,6 +38,7 @@ export const fullBleedSectionStyles = css`
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
+		align-items: center;
 		width: 100%;
 		box-sizing: border-box;
 
