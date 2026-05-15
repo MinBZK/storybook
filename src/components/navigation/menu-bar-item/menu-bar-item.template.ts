@@ -48,8 +48,8 @@ export function template(component: NLDDMenuBarItem) {
 			aria-label=${ariaLabel}
 			aria-haspopup=${ariaHaspopup}
 			aria-expanded=${ariaExpanded}
-			.popoverTargetElement=${component.popoverTargetElement ?? null}
-			.popoverTargetAction=${component.popoverTargetAction ?? 'toggle'}
+			.popoverTargetElement=${component.popoverTargetElement}
+			.popoverTargetAction=${component.popoverTargetAction}
 		>
 			${component.icon ? html`
 				<span class="menu-bar-item__icon">
