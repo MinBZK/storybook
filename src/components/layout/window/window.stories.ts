@@ -77,6 +77,11 @@ export default {
 			description: 'CSS bottom positie',
 			table: { defaultValue: { summary: '' } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers (aria-label van het venster)',
+		},
 	},
 	args: {
 		modeless: false,
@@ -87,6 +92,7 @@ export default {
 		left: '',
 		right: '',
 		bottom: '',
+		accessibleLabel: 'Voorbeeldvenster',
 	},
 };
 
@@ -113,7 +119,7 @@ const Template = (args: Record<string, unknown>) => html`
 		left=${args.left || nothing}
 		right=${args.right || nothing}
 		bottom=${args.bottom || nothing}
-		accessible-label="Voorbeeldvenster"
+		accessible-label=${args.accessibleLabel || nothing}
 	>
 		<nldd-page sticky-header>
 			<nldd-top-title-bar

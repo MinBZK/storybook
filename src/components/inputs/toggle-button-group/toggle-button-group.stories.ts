@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './toggle-button-group.js';
 import '../toggle-button/toggle-button.js';
 
@@ -48,6 +48,11 @@ export default {
 				defaultValue: { summary: 'checkbox' },
 			},
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers (aria-label van de groep)',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Schakelt alle knoppen uit',
@@ -60,6 +65,7 @@ export default {
 		size: 'md',
 		name: 'groep',
 		type: 'checkbox',
+		accessibleLabel: '',
 		disabled: false,
 	},
 };
@@ -70,6 +76,7 @@ const Template = (args: Record<string, any>) => html`
 		name=${args.name}
 		size=${args.size}
 		?disabled=${args.disabled}
+		accessible-label=${args.accessibleLabel || nothing}
 	>
 		<nldd-toggle-button value="mijn-zaken" text="Mijn zaken" icon="person"></nldd-toggle-button>
 		<nldd-toggle-button value="inbox" text="Inbox" icon="inbox" selected></nldd-toggle-button>

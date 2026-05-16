@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './toggle-button.js';
 import { ICONS } from './../../content/icon/icon.js';
 
@@ -61,6 +61,11 @@ export default {
 				defaultValue: { summary: false },
 			},
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers (verplicht voor icon-only)',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -75,6 +80,7 @@ export default {
 		icon: '',
 		type: 'button',
 		selected: false,
+		accessibleLabel: '',
 		disabled: false,
 	},
 };
@@ -87,6 +93,7 @@ const Template = (args: Record<string, any>) => html`
 		?disabled=${args.disabled}
 		text=${args.text}
 		icon=${args.icon}
+		accessible-label=${args.accessibleLabel || nothing}
 	></nldd-toggle-button>
 `;
 

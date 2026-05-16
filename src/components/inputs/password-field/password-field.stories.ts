@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './password-field.js';
 
 /**
@@ -94,6 +94,11 @@ export default {
 			description: 'Invalid state',
 			table: { defaultValue: { summary: false } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Disabled state',
@@ -114,11 +119,12 @@ export default {
 		masked: true,
 		valid: false,
 		invalid: false,
+		accessibleLabel: '',
 		disabled: false,
 	},
 };
 
-const Template = ({ size, name, value, placeholder, showButtonText, hideButtonText, showButtonAccessibleLabel, hideButtonAccessibleLabel, autocomplete, masked, valid, invalid, disabled, width }: Record<string, any>) => html`
+const Template = ({ size, name, value, placeholder, showButtonText, hideButtonText, showButtonAccessibleLabel, hideButtonAccessibleLabel, autocomplete, masked, valid, invalid, accessibleLabel, disabled, width }: Record<string, any>) => html`
 	<nldd-password-field
 		.value=${value}
 		.placeholder=${placeholder}
@@ -134,6 +140,7 @@ const Template = ({ size, name, value, placeholder, showButtonText, hideButtonTe
 		name=${name}
 		autocomplete=${autocomplete}
 		width=${width}
+		accessible-label=${accessibleLabel || nothing}
 	></nldd-password-field>
 `;
 

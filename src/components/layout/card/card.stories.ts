@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './card.js';
 import '../../content/title/title.js';
 import '../../content/rich-text/rich-text.js';
@@ -39,10 +39,20 @@ export default {
 		},
 		status: { type: 'experimental' },
 	},
+	argTypes: {
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
+	},
+	args: {
+		accessibleLabel: '',
+	},
 };
 
-export const Standaard = () => html`
-	<nldd-card>
+export const Standaard = (args: Record<string, any>) => html`
+	<nldd-card accessible-label=${args.accessibleLabel || nothing}>
 		<nldd-container slot="header" padding-top="16" padding-inline="16">
 			<nldd-title size="4"><h3>Kaarttitel</h3></nldd-title>
 		</nldd-container>

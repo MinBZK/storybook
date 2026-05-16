@@ -53,12 +53,18 @@ export default {
 			description: 'Naam van het nldd-icon icoon; afwezig wanneer niet ingesteld',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 	},
 	args: {
 		variant: '',
 		text: 'Dialog titel',
 		supportingText: 'Ondersteunende tekst voor aanvullende context.',
 		icon: '',
+		accessibleLabel: '',
 	},
 };
 
@@ -75,6 +81,7 @@ export const Standaard = (args: Record<string, any>) => html`
 		text=${args.text}
 		supporting-text=${args.supportingText}
 		icon=${args.icon || nothing}
+		accessible-label=${args.accessibleLabel || nothing}
 	>
 		<nldd-button
 			slot="actions"

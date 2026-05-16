@@ -45,8 +45,13 @@ export default {
 			description: 'Niet-modaal (geen backdrop of focusvergrendeling); standaard is de sheet modaal',
 			table: { defaultValue: { summary: false } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers (aria-label van de dialog)',
+		},
 	},
-	args: { placement: 'right', width: '', height: '', modeless: false },
+	args: { placement: 'right', width: '', height: '', modeless: false, accessibleLabel: '' },
 };
 
 const openNext = (e: Record<string, any>) => e.currentTarget.nextElementSibling.show();
@@ -71,6 +76,7 @@ const Template = (args: Record<string, any>) => html`
 		width=${args.width || ''}
 		height=${args.height || ''}
 		?modeless=${args.modeless}
+		accessible-label=${args.accessibleLabel || ''}
 	>
 		<nldd-page sticky-header>
 			<nldd-top-title-bar

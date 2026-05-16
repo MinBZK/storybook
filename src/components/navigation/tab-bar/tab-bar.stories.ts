@@ -36,12 +36,18 @@ export default {
 			description: 'Schakelt automatisch over naar compact via de layout-container container query (onder 480px)',
 			table: { defaultValue: { summary: false } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 	},
 	args: {
 		variant: '',
 		centered: false,
 		compact: false,
 		responsive: false,
+		accessibleLabel: '',
 	},
 };
 
@@ -53,12 +59,13 @@ const tabBarItems = html`
 	<nldd-tab-bar-item text="Zoeken" icon="search"></nldd-tab-bar-item>
 `;
 
-const Template = ({ variant, centered, compact, responsive}: Record<string, any>) => html`
+const Template = ({ variant, centered, compact, responsive, accessibleLabel }: Record<string, any>) => html`
 	<nldd-tab-bar
 		variant=${variant || nothing}
 		?compact=${compact}
 		?responsive=${responsive}
 		?centered=${centered}
+		accessible-label=${accessibleLabel || nothing}
 	>
 		${tabBarItems}
 	</nldd-tab-bar>

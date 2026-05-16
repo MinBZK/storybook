@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './switch.js';
 
 /**
@@ -29,6 +29,11 @@ export default {
 			description: 'Aangevinkte toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -38,16 +43,17 @@ export default {
 	args: {
 		size: 'sm',
 		checked: false,
+		accessibleLabel: 'Switch',
 		disabled: false,
 	},
 };
 
-const Template = ({ size, checked, disabled }: Record<string, any>) => html`
+const Template = ({ size, checked, accessibleLabel, disabled }: Record<string, any>) => html`
 	<nldd-switch
 		?checked=${checked}
 		?disabled=${disabled}
 		size=${size}
-		accessible-label="Switch"
+		accessible-label=${accessibleLabel || nothing}
 	></nldd-switch>
 `;
 
