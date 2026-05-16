@@ -140,6 +140,26 @@ export const menuStyles = css`
 		background-color: var(--semantics-dividers-color);
 		height: var(--semantics-dividers-thickness);
 	}
+
+
+	/* # Live region — drill-in view-change announcements (WCAG 4.1.3)
+	 *
+	 * Sibling of .menu (not a child): .menu carries role="menu", whose
+	 * required-owned children are menuitem/group/separator only — a
+	 * role="status" node inside it would violate that. Visually hidden
+	 * but kept in the a11y tree so screen readers announce the swapped
+	 * view; out of the focus order (no tabindex). */
+	.menu__live-region {
+		position: absolute;
+		margin: -1px;
+		border: 0;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		padding: 0;
+		white-space: nowrap;
+		clip-path: inset(50%);
+	}
 `;
 
 export const menuItemStyles = css`

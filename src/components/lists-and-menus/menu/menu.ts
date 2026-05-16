@@ -432,8 +432,14 @@ export class NLDDMenu extends LitElement {
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
-	private _t(key: keyof NLDDMenuTranslations): string {
-		return this.translations[key] ?? nlddMenuTranslations[key];
+	private _t(key: keyof NLDDMenuTranslations, vars?: Record<string, string | number>): string {
+		let str = this.translations[key] ?? nlddMenuTranslations[key];
+		if (vars) {
+			for (const [k, v] of Object.entries(vars)) {
+				str = str.replace(`{${k}}`, String(v));
+			}
+		}
+		return str;
 	}
 
 	/** Resolved empty text: emptyText attribute takes precedence, then i18n fallback. */
@@ -449,6 +455,52 @@ export class NLDDMenu extends LitElement {
 		const back = this._t('components.menu.back');
 		const parent = this._parentItem?.text ?? '';
 		return parent ? `${back}: ${parent}` : back;
+	}
+
+	// — Status messages (WCAG 4.1.3) ———————————————————————————————————————————
+	//
+	// Drill-in mode swaps the whole view (parent hides, submenu shows, or
+	// vice versa). Focus moves to the new view's first item / opener, so AT
+	// announces *an* element — but not that the view itself changed. The
+	// polite live region in the shadow DOM (see menu.template) carries that
+	// explicit status. Cascade mode keeps both views visible: nothing is
+	// swapped, so it never announces.
+
+	/** Double-rAF handle for the announcement awaiting flush, so a rapid
+	 * follow-up transition can cancel the stale one instead of stacking it. */
+	private _announceRaf = 0;
+	/** Message currently queued (not yet flushed to the region). Used to
+	 * drop a doubled event in the same tick while still allowing the same
+	 * text to be re-announced on a later, genuine transition. */
+	private _pendingAnnouncement = '';
+
+	/**
+	 * Write `message` to this menu's polite live region. Clears first, then
+	 * sets on a double rAF — the empty→text transition is what makes screen
+	 * readers reliably re-announce unchanged-looking content across engines.
+	 *
+	 * Spam control without muting real navigation: a doubled event in the
+	 * same tick (identical message still pending) is dropped; a *different*
+	 * message arriving first cancels the stale pending one (rapid navigation
+	 * announces only the level you land on); once flushed, the same text may
+	 * be announced again for a later genuine transition (e.g. re-entering a
+	 * submenu after going back).
+	 */
+	private _announce(message: string): void {
+		if (!message) return;
+		if (this._announceRaf && message === this._pendingAnnouncement) return;
+		const region = this.shadowRoot?.querySelector<HTMLElement>('.menu__live-region');
+		if (!region) return;
+		if (this._announceRaf) cancelAnimationFrame(this._announceRaf);
+		this._pendingAnnouncement = message;
+		region.textContent = '';
+		this._announceRaf = requestAnimationFrame(() => {
+			this._announceRaf = requestAnimationFrame(() => {
+				this._announceRaf = 0;
+				this._pendingAnnouncement = '';
+				region.textContent = message;
+			});
+		});
 	}
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————
@@ -1134,6 +1186,18 @@ export class NLDDMenu extends LitElement {
 				if (!skipReshow && this.isConnected && !(this as HTMLElement).matches(':popover-open')) {
 					(this as HTMLElement).showPopover?.();
 				}
+				// One level back (back button / ArrowLeft / Esc) — announce the
+				// destination view on the now-visible parent. `skipReshow` is a
+				// collapse-the-whole-chain teardown (select / outside-tap /
+				// resize): that's a dismiss, not a back-nav, so it stays silent.
+				if (!skipReshow && this.isConnected) {
+					const dest = this._parentItem?.text;
+					this._announce(
+						dest
+							? this._t('components.menu.submenu-back-action', { title: dest })
+							: this._t('components.menu.back'),
+					);
+				}
 			}
 			// Drop any safe-triangle "in transit" highlight on the opener —
 			// without this, an opener whose submenu was closed via stall-
@@ -1198,6 +1262,12 @@ export class NLDDMenu extends LitElement {
 		(submenu as HTMLElement).showPopover?.();
 
 		if (wasDrillIn) {
+			// View just swapped to the submenu — announce the level we
+			// entered (the opener's label is this view's title, same string
+			// the back button shows). Fires on the now-visible submenu.
+			submenu._announce(
+				submenu._t('components.menu.submenu-title', { title: item.text }),
+			);
 			// Signal to our own parent's onToggle (if any) that this hide is
 			// "intentional, making room for a deeper drill" — skip the normal
 			// close cleanup that would re-parent us back and re-open them.

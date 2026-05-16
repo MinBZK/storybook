@@ -58,6 +58,14 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 				</div>
 			` : nothing}
 		</div>
+		<!-- Drill-in view-change announcer (WCAG 4.1.3). Sibling of .menu so
+		     it sits outside role="menu"'s required-children set. Updated via
+		     _announce(); empty and inert until a drill-in transition. -->
+		<div class="menu__live-region"
+			role="status"
+			aria-live="polite"
+			aria-atomic="true"
+		></div>
 	`;
 }
 

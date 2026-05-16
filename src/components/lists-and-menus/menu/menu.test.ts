@@ -1644,6 +1644,214 @@ describe('nldd-menu drill-in chain', () => {
 	});
 });
 
+describe('nldd-menu drill-in status announcements (WCAG 4.1.3)', () => {
+	const NLDDMenuCtor = customElements.get('nldd-menu') as CustomElementConstructor;
+	let drillInSpy: ReturnType<typeof vi.spyOn>;
+
+	function openSubmenu(item: HTMLElement, submenu: HTMLElement): void {
+		item.dispatchEvent(new CustomEvent('submenu-open', {
+			detail: { submenu, item },
+			bubbles: true,
+		}));
+	}
+
+	function liveText(menu: HTMLElement): string {
+		const region = menu.shadowRoot?.querySelector<HTMLElement>('.menu__live-region');
+		return region?.textContent ?? '';
+	}
+
+	// _announce clears then sets on a double rAF; three frames is a safe
+	// margin since the call already ran synchronously before we await.
+	function flushAnnounce(): Promise<void> {
+		return new Promise(resolve => {
+			let n = 0;
+			const step = () => (++n >= 3 ? resolve() : requestAnimationFrame(step));
+			requestAnimationFrame(step);
+		});
+	}
+
+	function forceDrillIn(value: boolean): void {
+		drillInSpy = vi.spyOn(
+			NLDDMenuCtor.prototype as unknown as { _drillInMode: boolean },
+			'_drillInMode',
+			'get',
+		);
+		drillInSpy.mockReturnValue(value);
+	}
+
+	afterEach(() => {
+		drillInSpy?.mockRestore();
+		// Drill-in reparents submenus to <body>; sweep any stragglers if an
+		// assertion threw before the test's own cleanup(root).
+		document.querySelectorAll('nldd-menu').forEach(m => m.remove());
+	});
+
+	it('announces the entered submenu on drill-in open', async () => {
+		forceDrillIn(true);
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+		const item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const submenu = item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(item, submenu);
+		await waitForUpdate(root);
+		await flushAnnounce();
+
+		expect(liveText(submenu)).toBe('Submenu: Bestand');
+		// Nothing leaks onto the (now hidden) parent's region.
+		expect(liveText(root)).toBe('');
+
+		cleanup(root);
+	});
+
+	it('announces returning to the root on back-button click', async () => {
+		forceDrillIn(true);
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+		const item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const submenu = item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(item, submenu);
+		await waitForUpdate(root);
+
+		const backButton = submenu.shadowRoot?.querySelector<HTMLElement>('.menu__back-button');
+		expect(backButton).not.toBeNull();
+		backButton!.click();
+		await waitForUpdate(root);
+		await flushAnnounce();
+
+		// Root has no parent item, so the destination is the plain back word.
+		expect(liveText(root)).toBe('Terug');
+
+		cleanup(root);
+	});
+
+	it('announces the destination level on ArrowLeft from a deeper submenu', async () => {
+		forceDrillIn(true);
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Recent">
+							<nldd-menu>
+								<nldd-menu-item text="Project A"></nldd-menu-item>
+							</nldd-menu>
+						</nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		const l2Item = l2Menu.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l3Menu = l2Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(l1Item, l2Menu);
+		await waitForUpdate(root);
+		openSubmenu(l2Item, l3Menu);
+		await waitForUpdate(root);
+
+		// ArrowLeft from the deepest level → back to L2, whose parent item
+		// ("Bestand") titles that view.
+		l3Menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+		await waitForUpdate(root);
+		await flushAnnounce();
+
+		expect(liveText(l2Menu)).toBe('Terug naar Bestand');
+
+		cleanup(root);
+	});
+
+	it('does not announce in cascade mode (no view swap)', async () => {
+		forceDrillIn(false);
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+		const item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const submenu = item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(item, submenu);
+		await waitForUpdate(root);
+		await flushAnnounce();
+
+		// Cascade keeps both views visible — no view-change to announce.
+		expect(liveText(root)).toBe('');
+		expect(liveText(submenu)).toBe('');
+
+		cleanup(root);
+	});
+
+	it('re-announces the same submenu after navigating back to it', async () => {
+		// Guards the pending-scoped dedupe: an identical message must still
+		// be announced again for a later, genuine transition.
+		forceDrillIn(true);
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="Bestand">
+					<nldd-menu>
+						<nldd-menu-item text="Open"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+		const item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const submenu = item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+
+		openSubmenu(item, submenu);
+		await waitForUpdate(root);
+		await flushAnnounce();
+		expect(liveText(submenu)).toBe('Submenu: Bestand');
+
+		submenu.shadowRoot!.querySelector<HTMLElement>('.menu__back-button')!.click();
+		await waitForUpdate(root);
+		await flushAnnounce();
+		expect(liveText(root)).toBe('Terug');
+
+		openSubmenu(item, submenu);
+		await waitForUpdate(root);
+		await flushAnnounce();
+		expect(liveText(submenu)).toBe('Submenu: Bestand');
+
+		cleanup(root);
+	});
+});
+
 describe('nldd-menu close-on-resize', () => {
 	it('hides an open menu when the window dispatches a resize event', async () => {
 		const menu = await fixture<HTMLElement>(`
