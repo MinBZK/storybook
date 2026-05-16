@@ -66,7 +66,7 @@ export class NLDDSplitButton extends LitElement {
 	// listener below attaches to the wrapper because pointerdown bubbles
 	// up from the nested icon-button — both work as the snapshot point.
 	@query('.split-button__popup-button')
-	private _trigger?: HTMLElement;
+	private _popupButtonWrapper?: HTMLDivElement;
 
 	@query('.split-button__menu')
 	private _menu?: NLDDMenu;
@@ -103,7 +103,7 @@ export class NLDDSplitButton extends LitElement {
 		// would skip touch on mobile, where no mousedown precedes the
 		// synthetic click; the snapshot would stay false and the handler
 		// would re-open an already-light-dismissed menu.
-		this._trigger?.addEventListener('pointerdown', () => {
+		this._popupButtonWrapper?.addEventListener('pointerdown', () => {
 			this._menuWasOpenOnPointerdown = this._menu?.matches(':popover-open') ?? false;
 		});
 	}
@@ -123,7 +123,7 @@ export class NLDDSplitButton extends LitElement {
 	 * `this.children`.
 	 */
 	private _syncMenuItems(): void {
-		if (!this._menu || !this._trigger) return;
+		if (!this._menu || !this._popupButtonWrapper) return;
 		const toMove = Array.from(this.children).filter((el) =>
 			el.matches('nldd-menu-item, nldd-menu-divider'),
 		);
@@ -132,7 +132,7 @@ export class NLDDSplitButton extends LitElement {
 		this._hasMenuItems =
 			this._menu.querySelectorAll('nldd-menu-item, nldd-menu-divider').length > 0;
 		if (this._hasMenuItems && !hadItems) {
-			this._menu.anchorElement = this._trigger;
+			this._menu.anchorElement = this._popupButtonWrapper;
 			this._menu.addEventListener('toggle', this._handleMenuToggle);
 		}
 	}
