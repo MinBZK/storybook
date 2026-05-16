@@ -580,7 +580,6 @@ export class NLDDToolbar extends LitElement {
 			this._pinnedOverflowItems.length > 0 || this._overflowIds.size > 0,
 			this._menuOpen,
 			this.label,
-			this._menu?.id ?? '',
 			this._startChildren.length === 0 && this._endChildren.length === 0 && this._centerChildren.length > 0,
 			(key) => this._t(key),
 		);
