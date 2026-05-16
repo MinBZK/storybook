@@ -489,6 +489,19 @@ Er is geen automatische formatter. Volg deze regels handmatig.
 ### CSS (`.styles.ts`)
 - Property waarden altijd op **één regel**, ook als ze lang zijn
 - Sorteer rules per element; houd alle gedrag voor een element bij elkaar
+- **Property-volgorde binnen een rule: Concentric CSS** ([bron](https://rhodesmill.org/brandon/2011/concentric-css/)) — van buiten de box naar binnen. Ná de `--_*` vars (die staan bovenin `:host`):
+  1. `box-sizing`, `display`, `position`, `inset` / `top` / `right` / `bottom` / `left`, `float`, `clear`
+  2. `visibility`, `opacity`, `z-index`
+  3. `margin`
+  4. `outline`, `outline-offset`, `border`, `border-radius`, `box-shadow`
+  5. `background`, `background-*`
+  6. `cursor`, `pointer-events`
+  7. `width` / `min-width` / `max-width`, `height` / `min-height` / `max-height`, `overflow`
+  8. `padding`
+  9. layout van kinderen: `flex-*`, `grid-*`, `gap`, `align-*`, `justify-*`, `place-*`, `order`, `vertical-align`, `text-align`
+  10. inhoud: `color`, `font` / `font-*`, `line-height`, `letter-spacing`, `text-decoration`, `text-overflow`, `white-space`, `content`
+  11. gedrag/effect: `transition`, `transform`, `animation`, `appearance`, `isolation`, `-webkit-tap-highlight-color`
+  Pseudo-elementen: `content: ''` mag bovenaan (vóór 1). `@container`/`@media` blijven genest, ná de properties van die rule.
 - Gebruik **CSS nesting** voor `@container` en `@media` — nest in de element rule block
 - Declareer **alle** lokale CSS variabelen (`--_*`) **bovenin `:host`**, gevolgd door een lege regel die ze scheidt van de overige properties. Inclusief responsive overrides via `@container` nesting. Elementen gebruiken alleen `var(--_foo)`, nooit fallbacks: niet `var(--_foo, 100)`
 - Gebruik **nooit** flex shorthand (`flex: 1`), schrijf de losse properties
@@ -625,6 +638,7 @@ Gebruik BEM (Block Element Modifier) + state classes:
 
 **CSS:**
 - [ ] Components → semantics → primitives volgorde
+- [ ] Concentric property-volgorde binnen elke rule
 - [ ] Geen fallback waarden
 - [ ] Geen hardcoded waarden, geen !important
 - [ ] Geen `cursor: pointer`
