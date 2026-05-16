@@ -65,7 +65,7 @@ export class NLDDKeyboardShortcut extends LitElement {
 	 * page to render as different operating systems. Don't ship this in
 	 * production markup — production should rely on real OS detection.
 	 */
-	@property({ type: String, reflect: true, attribute: 'debug-os' })
+	@property({ type: String, attribute: 'debug-os' })
 	debugOS: OS | '' = '';
 
 	get _resolvedKeys(): string {
