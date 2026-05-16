@@ -1177,6 +1177,45 @@ describe('nldd-menu drill-in chain', () => {
 
 		cleanup(root);
 	});
+
+	it('does not leak the reparented submenu when the parent is removed mid-open', async () => {
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="L2"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(root, l1Item, l2Menu);
+		await waitForUpdate(root);
+
+		// Drill-in reparents the submenu to <body>.
+		expect(l2Menu.parentElement).toBe(document.body);
+
+		// Simulate SPA navigation / story teardown: the original parent
+		// (the menu-item that hosted the submenu) leaves the DOM while
+		// the submenu is still open and detached to <body>.
+		l1Item.remove();
+		expect(l1Item.isConnected).toBe(false);
+
+		// Closing the submenu now has nowhere to restore it to — it must
+		// be removed, not left orphaned in <body>.
+		(l2Menu as HTMLElement & { hidePopover: () => void }).hidePopover();
+		await waitForUpdate(l2Menu);
+		expect(l2Menu.isConnected).toBe(false);
+		expect(document.body.contains(l2Menu)).toBe(false);
+
+		cleanup(root);
+	});
 });
 
 describe('nldd-menu close-on-resize', () => {

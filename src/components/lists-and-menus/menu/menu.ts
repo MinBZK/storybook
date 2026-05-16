@@ -1056,6 +1056,13 @@ export class NLDDMenu extends LitElement {
 			if (wasDrillIn) {
 				if (drillInOriginalParent && drillInOriginalParent.isConnected) {
 					drillInOriginalParent.insertBefore(submenu, drillInNextSibling);
+				} else {
+					// Original parent was removed from the DOM while the
+					// submenu was reparented to <body> (SPA navigation,
+					// story teardown, etc.). There's nowhere to restore it
+					// to — drop the orphaned node instead of leaking a
+					// detached-but-connected element in <body> forever.
+					submenu.remove();
 				}
 				if (!skipReshow && this.isConnected && !(this as HTMLElement).matches(':popover-open')) {
 					(this as HTMLElement).showPopover?.();
