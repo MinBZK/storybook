@@ -89,7 +89,7 @@ export class NLDDButton extends LitElement {
 	 * HTML attribute (the attribute form is `popovertarget`, ID-based).
 	 */
 	@property({ attribute: false })
-	popoverTargetElement: HTMLElement | null = null;
+	popoverTargetElement: Element | null = null;
 
 	/**
 	 * Action the browser performs when the button is clicked, mirroring the
