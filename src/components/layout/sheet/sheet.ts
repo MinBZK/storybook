@@ -92,6 +92,10 @@ export class NLDDSheet extends LitElement {
 			if (h && h !== 'full' && CSS.supports('height', h)) {
 				this.style.setProperty('--_height', h);
 			} else {
+				// One warning per instance for the element's lifetime (matches
+				// _hasWarnedLabel): a later distinct invalid value won't warn
+				// again. Acceptable for a dev-only nudge — not worth tracking
+				// per-value state to re-warn.
 				if (import.meta.env?.DEV && h && h !== 'full' && !this._hasWarnedHeight) {
 					this._hasWarnedHeight = true;
 					console.warn(`<nldd-sheet>: Invalid height value "${h}". Falling back to full height. Use 'full', 'fit-content', or a valid CSS length (e.g. '50dvh', '480px').`);
