@@ -546,6 +546,18 @@ export class NLDDMenu extends LitElement {
 		if (!anchorEl) return;
 		const path = event.composedPath();
 		if (!path.includes(anchorEl)) return;
+		// Drill-in: the root is hidden while a submenu shows, so `_isOpen`
+		// is false on the root even though the menu is visibly open. A
+		// plain toggle would `showPopover()` the root — i.e. bounce back
+		// to the main level instead of closing. The anchor button is a
+		// toggle: if any level is open, clicking it collapses the whole
+		// chain. Find the deepest open level and run its chain-close.
+		if (this._drillInMode && this._activeSubmenu) {
+			let deepest: NLDDMenu = this._activeSubmenu;
+			while (deepest._activeSubmenu) deepest = deepest._activeSubmenu;
+			deepest._handleSelectChainClose();
+			return;
+		}
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
 		} else if (Date.now() - this._closedAt > POPOVER_REOPEN_GUARD_MS) {

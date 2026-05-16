@@ -1354,6 +1354,46 @@ describe('nldd-menu drill-in chain', () => {
 		anchor.remove();
 		cleanup(root);
 	});
+
+	it('clicking the anchor while a submenu is open collapses the whole chain in one click', async () => {
+		const anchor = document.createElement('button');
+		anchor.id = 'drillin-anchor';
+		anchor.textContent = 'Open menu';
+		document.body.appendChild(anchor);
+
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu anchor="drillin-anchor">
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="L2"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(root, l1Item, l2Menu);
+		await waitForUpdate(root);
+
+		// Drill-in: submenu shows, root hidden behind it.
+		expect(l2Menu.matches(':popover-open')).toBe(true);
+		expect(root.matches(':popover-open')).toBe(false);
+
+		// One click on the anchor must collapse the whole chain — not
+		// bounce back to the (hidden) root menu.
+		anchor.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+		await waitForUpdate(root);
+
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(root.matches(':popover-open')).toBe(false);
+
+		anchor.remove();
+		cleanup(root);
+	});
 });
 
 describe('nldd-menu close-on-resize', () => {
