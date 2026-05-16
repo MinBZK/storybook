@@ -1270,9 +1270,18 @@ export class NLDDMenu extends LitElement {
 	 * outside light-dismisses every popover down to the click target's
 	 * closest ancestor popover, so no extra handling is needed there.
 	 *
-	 * pointerdown (capture) is the right hook: it fires before light-dismiss
-	 * does its work, so by the time the toggle event fires our chain walk
-	 * has already detached listeners and prevented the parent re-show.
+	 * For mouse/pen, pointerdown (capture) is the right hook: it fires
+	 * before light-dismiss does its work, so by the time the toggle event
+	 * fires our chain walk has already detached listeners and prevented
+	 * the parent re-show.
+	 *
+	 * For touch, an outside pointerdown is ambiguous: it's also how a page
+	 * scroll begins. Closing the chain on the scroll-start would be
+	 * inconsistent with a root menu (which native light-dismiss leaves
+	 * open while you scroll outside it) and annoying. So on touch we defer
+	 * the decision: track the pointer and only chain-close on a confirmed
+	 * tap (pointerup without crossing the scroll threshold); a scroll
+	 * leaves the chain untouched, matching root-menu behaviour.
 	 */
 	private _handleDocumentPointerdown = (event: PointerEvent): void => {
 		if (!this._isOpen) return;
@@ -1296,8 +1305,51 @@ export class NLDDMenu extends LitElement {
 			if (path.includes(menu)) return;
 			menu = menu._parentMenu;
 		}
+		// Touch: defer to a confirmed tap so a page-scroll started outside
+		// the chain doesn't collapse it (consistent with the root menu,
+		// which stays open while scrolling outside).
+		if (event.pointerType === 'touch') {
+			this._outsideTapStartX = event.clientX;
+			this._outsideTapStartY = event.clientY;
+			this._teardownOutsideTap();
+			this._outsideTapTracking = true;
+			document.addEventListener('pointermove', this._outsideTapMove, true);
+			document.addEventListener('pointerup', this._outsideTapEnd, true);
+			document.addEventListener('pointercancel', this._outsideTapCancel, true);
+			return;
+		}
 		this._handleSelectChainClose();
 	};
+
+	private _outsideTapStartX = 0;
+	private _outsideTapStartY = 0;
+	private _outsideTapTracking = false;
+
+	private _outsideTapMove = (e: PointerEvent): void => {
+		const dx = e.clientX - this._outsideTapStartX;
+		const dy = e.clientY - this._outsideTapStartY;
+		if (Math.hypot(dx, dy) > NLDDMenu._TOUCH_SCROLL_THRESHOLD_PX) {
+			// Became a scroll — leave the chain open.
+			this._teardownOutsideTap();
+		}
+	};
+
+	private _outsideTapEnd = (): void => {
+		const wasTap = this._outsideTapTracking;
+		this._teardownOutsideTap();
+		if (wasTap) this._handleSelectChainClose();
+	};
+
+	private _outsideTapCancel = (): void => {
+		this._teardownOutsideTap();
+	};
+
+	private _teardownOutsideTap(): void {
+		this._outsideTapTracking = false;
+		document.removeEventListener('pointermove', this._outsideTapMove, true);
+		document.removeEventListener('pointerup', this._outsideTapEnd, true);
+		document.removeEventListener('pointercancel', this._outsideTapCancel, true);
+	}
 
 	// — Lifecycle callbacks ————————————————————————————————————————————————————
 
@@ -1348,6 +1400,7 @@ export class NLDDMenu extends LitElement {
 		// and removed on close, but if the menu is torn down mid-open we'd
 		// otherwise leak the global listeners.
 		document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
+		this._teardownOutsideTap();
 		window.removeEventListener('resize', this._handleWindowResize);
 		this._cancelHoverOpen();
 		this._stopSafeTriangle();
@@ -1712,6 +1765,7 @@ export class NLDDMenu extends LitElement {
 			this._cleanupAutoUpdate = null;
 			window.removeEventListener('resize', this._handleWindowResize);
 			document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
+			this._teardownOutsideTap();
 			this._clearHighlight();
 			return;
 		}

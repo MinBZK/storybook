@@ -1139,6 +1139,81 @@ describe('nldd-menu drill-in chain', () => {
 		cleanup(root);
 	});
 
+	it('a touch SCROLL started outside the chain leaves it open', async () => {
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="L2"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(root, l1Item, l2Menu);
+		await waitForUpdate(root);
+		expect(l2Menu.matches(':popover-open')).toBe(true);
+
+		const outside = document.createElement('div');
+		document.body.appendChild(outside);
+
+		// touch pointerdown outside → deferred (no immediate close)
+		outside.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, pointerType: 'touch', clientX: 10, clientY: 10 }));
+		await waitForUpdate(root);
+		expect(l2Menu.matches(':popover-open')).toBe(true);
+
+		// move past the 8px threshold → recognised as a scroll, chain untouched
+		document.dispatchEvent(new PointerEvent('pointermove', { pointerType: 'touch', clientX: 10, clientY: 70 }));
+		document.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'touch', clientX: 10, clientY: 70 }));
+		await waitForUpdate(root);
+
+		expect(l2Menu.matches(':popover-open')).toBe(true);
+		expect(root.matches(':popover-open')).toBe(false); // still hidden behind, chain intact
+
+		outside.remove();
+		cleanup(root);
+	});
+
+	it('a touch TAP outside the chain collapses every level', async () => {
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="L2"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		await waitForUpdate(root);
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		openSubmenu(root, l1Item, l2Menu);
+		await waitForUpdate(root);
+		expect(l2Menu.matches(':popover-open')).toBe(true);
+
+		const outside = document.createElement('div');
+		document.body.appendChild(outside);
+
+		outside.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, pointerType: 'touch', clientX: 10, clientY: 10 }));
+		// pointerup with negligible move → tap → chain-close
+		document.dispatchEvent(new PointerEvent('pointerup', { pointerType: 'touch', clientX: 11, clientY: 12 }));
+		await waitForUpdate(root);
+
+		expect(l2Menu.matches(':popover-open')).toBe(false);
+		expect(root.matches(':popover-open')).toBe(false);
+
+		outside.remove();
+		cleanup(root);
+	});
+
 	it('opening a deeper level hides the parent without collapsing the chain', async () => {
 		const root = await fixture<HTMLElement>(`
 			<nldd-menu>
