@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './keyboard-shortcut.js';
 
 /**
@@ -86,9 +86,9 @@ const Template = ({ size, alwaysVisible, keys, macKeys, windowsKeys, linuxKeys }
 		size=${size}
 		?always-visible=${alwaysVisible}
 		keys=${keys}
-		mac-keys=${macKeys}
-		windows-keys=${windowsKeys}
-		linux-keys=${linuxKeys}
+		mac-keys=${macKeys || nothing}
+		windows-keys=${windowsKeys || nothing}
+		linux-keys=${linuxKeys || nothing}
 	></nldd-keyboard-shortcut>
 `;
 
