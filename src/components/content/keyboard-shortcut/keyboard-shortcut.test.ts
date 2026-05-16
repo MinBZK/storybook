@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { _setOSOverride, _resetOSDetectionCache } from '../../../utilities/os.js';
 import './keyboard-shortcut.js';
 
 describe('nldd-keyboard-shortcut', () => {
@@ -103,6 +104,68 @@ describe('nldd-keyboard-shortcut', () => {
 				.join('\n');
 			expect(cssText).toContain('any-hover: none');
 			expect(cssText).toContain(':not([always-visible])');
+		});
+	});
+
+
+	describe('per-OS keys overrides', () => {
+		afterEach(() => {
+			_setOSOverride(null);
+			_resetOSDetectionCache();
+		});
+
+		it('uses keys fallback when matching per-OS attribute is absent', async () => {
+			el = await fixture('<nldd-keyboard-shortcut debug-os="mac" keys="Ctrl+K"></nldd-keyboard-shortcut>');
+			await waitForUpdate(el);
+			const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');
+			expect(keys[0].textContent).toBe('Ctrl');
+			expect(keys[1].textContent).toBe('K');
+		});
+
+		it('picks mac-keys on mac', async () => {
+			el = await fixture('<nldd-keyboard-shortcut debug-os="mac" keys="Ctrl+K" mac-keys="Cmd+K"></nldd-keyboard-shortcut>');
+			await waitForUpdate(el);
+			const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');
+			expect(keys[0].textContent).toBe('Cmd');
+			expect(keys[1].textContent).toBe('K');
+		});
+
+		it('picks windows-keys on windows', async () => {
+			el = await fixture('<nldd-keyboard-shortcut debug-os="windows" keys="Ctrl+K" windows-keys="Win+K"></nldd-keyboard-shortcut>');
+			await waitForUpdate(el);
+			const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');
+			expect(keys[0].textContent).toBe('Win');
+			expect(keys[1].textContent).toBe('K');
+		});
+
+		it('picks linux-keys on linux', async () => {
+			el = await fixture('<nldd-keyboard-shortcut debug-os="linux" keys="Ctrl+K" linux-keys="Super+K"></nldd-keyboard-shortcut>');
+			await waitForUpdate(el);
+			const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');
+			expect(keys[0].textContent).toBe('Super');
+			expect(keys[1].textContent).toBe('K');
+		});
+
+		it('falls back to keys when the resolved OS has no override', async () => {
+			el = await fixture('<nldd-keyboard-shortcut debug-os="linux" keys="Ctrl+K" mac-keys="Cmd+K"></nldd-keyboard-shortcut>');
+			await waitForUpdate(el);
+			const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');
+			expect(keys[0].textContent).toBe('Ctrl');
+		});
+
+		it('falls back to keys for "other" platforms', async () => {
+			el = await fixture('<nldd-keyboard-shortcut debug-os="other" keys="Ctrl+K" mac-keys="Cmd+K" windows-keys="Win+K" linux-keys="Super+K"></nldd-keyboard-shortcut>');
+			await waitForUpdate(el);
+			const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');
+			expect(keys[0].textContent).toBe('Ctrl');
+		});
+
+		it('debug-os takes precedence over the global _setOSOverride', async () => {
+			_setOSOverride('mac');
+			el = await fixture('<nldd-keyboard-shortcut debug-os="windows" keys="Ctrl+K" mac-keys="Cmd+K" windows-keys="Win+K"></nldd-keyboard-shortcut>');
+			await waitForUpdate(el);
+			const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');
+			expect(keys[0].textContent).toBe('Win');
 		});
 	});
 });

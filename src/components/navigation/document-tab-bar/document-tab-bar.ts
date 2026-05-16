@@ -42,7 +42,7 @@ import { documentTabBarTemplate, documentTabBarItemTemplate } from './document-t
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddDocumentTabBarTranslations } from './document-tab-bar.i18n.js';
 import './../../lists-and-menus/menu/menu.js';
-import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
+import type { NLDDMenu } from '../../lists-and-menus/menu/menu.js';
 
 // Pointer movement threshold in px before drag mode activates.
 // Distinguishes a click (select) from a drag (reorder).
@@ -179,8 +179,7 @@ export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumen
 	@state()
 	_menuOpen = false;
 
-	private _menu: Element | null = null;
-	private _menuClosedAt = 0;
+	private _menu: NLDDMenu | null = null;
 	private _resizeObserver: ResizeObserver | null = null;
 	private _hasCustomLabel = false;
 
@@ -703,38 +702,43 @@ export class NLDDDocumentTabBar extends withTranslations(LitElement, nlddDocumen
 		menu.setAttribute('placement', 'bottom-end');
 		menu.id = `${this._id}-menu`;
 		menu.addEventListener('toggle', (event: Event) => {
-			const open = (event as ToggleEvent).newState === 'open';
-			this._menuOpen = open;
-			if (!open) this._menuClosedAt = Date.now();
+			this._menuOpen = (event as ToggleEvent).newState === 'open';
 		});
-		// TODO: appending to document.body and accessing nldd-menu internals via any-cast
-		// is a known limitation. Fix: define a typed public API on nldd-menu (anchorElement,
-		// showPopover, hidePopover) or use a popover anchor approach within renderRoot.
 		document.body.appendChild(menu);
 		this._menu = menu;
 	}
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
-		const button = this.shadowRoot?.querySelector('.document-tab-bar__overflow nldd-icon-button') as HTMLElement | null;
+		const button = this.shadowRoot?.querySelector('.document-tab-bar__overflow nldd-icon-button') as HTMLElement & {
+			popoverTargetElement?: Element | null;
+			popoverTargetAction?: 'toggle' | 'show' | 'hide';
+		} | null;
 		if (button) {
-			(this._menu as any).anchorElement = button;
+			this._menu.anchorElement = button;
+			// Wire the button as the menu's invoker. The browser handles
+			// open/close natively via popovertarget — no `@click` handler
+			// needed. The menu syncs `popoverTargetAction` on every toggle
+			// (`'hide'` while open, `'show'` while closed), so the next
+			// click does the right thing without racing against light-
+			// dismiss. Seed `'show'` here for the very first click before
+			// the menu has ever toggled.
+			if ('popoverTargetElement' in button) {
+				button.popoverTargetElement = this._menu;
+			}
+			// Default IDL value is 'toggle'; replace it with 'show' so the
+			// very first click opens via the explicit-show path. Once the
+			// menu has opened, `_syncAnchorPopupState` keeps the action in
+			// sync with state ('hide' while open, 'show' while closed) and
+			// this seed never overrides it.
+			if ('popoverTargetAction' in button && button.popoverTargetAction === 'toggle') {
+				button.popoverTargetAction = 'show';
+			}
 		}
 	}
 
 	private _closeMenu(): void {
-		(this._menu as any)?.hidePopover?.();
-	}
-
-	_onOverflowButtonClick(): void {
-		if (!this._menu) return;
-		this._syncMenuAnchor();
-		this._updateMenu();
-		if (this._menuOpen) {
-			(this._menu as any).hidePopover?.();
-		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
-			(this._menu as any).showPopover?.();
-		}
+		this._menu?.hidePopover();
 	}
 
 

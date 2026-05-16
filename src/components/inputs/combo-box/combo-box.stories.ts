@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './combo-box.js';
 
 /**
@@ -69,6 +69,11 @@ export default {
 			description: 'Browser autofill hint. Default "off" om conflict met dropdown te voorkomen. Set bv. "country" of "organization" om autofill toe te staan.',
 			table: { defaultValue: { summary: 'off' } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 	},
 	args: {
 		size: 'md',
@@ -81,6 +86,7 @@ export default {
 		name: '',
 		value: '',
 		autocomplete: 'off',
+		accessibleLabel: '',
 	},
 };
 
@@ -96,6 +102,7 @@ const Template = (args: Record<string, any>) => html`
 		name=${args.name}
 		value=${args.value}
 		autocomplete=${args.autocomplete}
+		accessible-label=${args.accessibleLabel || nothing}
 	>
 		<nldd-menu empty-text="Geen resultaten">
 			<nldd-menu-item text="Nederland" value="nl"></nldd-menu-item>

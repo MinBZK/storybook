@@ -7,9 +7,9 @@ export const menuBarStyles = css`
 
 	:host {
 		display: flex;
+		min-width: 0;
 		flex-grow: 1;
 		flex-shrink: 1;
-		min-width: 0;
 	}
 
 	:host([hidden]),
@@ -22,11 +22,11 @@ export const menuBarStyles = css`
 
 	.menu-bar {
 		display: flex;
+		min-width: 0;
 		flex-direction: row;
 		align-items: center;
 		flex-grow: 1;
 		flex-shrink: 1;
-		min-width: 0;
 	}
 
 	/* ## Overflow button */

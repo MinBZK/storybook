@@ -76,6 +76,125 @@ describe('nldd-menu-bar', () => {
 		const overflowItem = el.shadowRoot!.querySelector('.menu-bar__overflow-button nldd-menu-bar-item');
 		expect(overflowItem!.getAttribute('text')).toBe('More options');
 	});
+
+	it('toggles the overflow popover open/closed via the trigger', async () => {
+		el = await fixture('<nldd-menu-bar><nldd-menu-bar-item text="A"></nldd-menu-bar-item></nldd-menu-bar>');
+		await waitForUpdate(el);
+
+		const trigger = el.shadowRoot!.querySelector(
+			'.menu-bar__overflow-button nldd-menu-bar-item',
+		) as HTMLElement;
+		expect(trigger).not.toBeNull();
+
+		// Explicit-toggle path (mirrors menu-bar-item._toggleMenu): open.
+		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+		await waitForUpdate(el);
+		const menu = document.querySelector('nldd-menu') as HTMLElement;
+		expect(menu).not.toBeNull();
+		expect(menu.matches(':popover-open')).toBe(true);
+		// Anchored to the always-visible trigger, not the display-toggled wrapper.
+		expect((menu as unknown as { anchorElement: Element | null }).anchorElement)
+			.toBe(trigger);
+
+		// Toggling again closes it.
+		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(false);
+	});
+
+	it('reopens after a close (reopen guard does not permanently block)', async () => {
+		el = await fixture('<nldd-menu-bar><nldd-menu-bar-item text="A"></nldd-menu-bar-item></nldd-menu-bar>');
+		await waitForUpdate(el);
+		const toggle = () =>
+			(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+
+		toggle();
+		await waitForUpdate(el);
+		const menu = document.querySelector('nldd-menu') as HTMLElement;
+		expect(menu.matches(':popover-open')).toBe(true);
+
+		menu.hidePopover(); // simulate light-dismiss
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(false);
+
+		// Past the guard window, the trigger can reopen it.
+		await new Promise(r => setTimeout(r, 150));
+		toggle();
+		await waitForUpdate(el);
+		expect(menu.matches(':popover-open')).toBe(true);
+	});
+
+	it('renders an expandable overflowed item as a real nested submenu (not flattened)', async () => {
+		el = await fixture(`
+			<nldd-menu-bar>
+				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
+					<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+					<nldd-menu-divider></nldd-menu-divider>
+					<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+				</nldd-menu-bar-item>
+			</nldd-menu-bar>
+		`);
+		await waitForUpdate(el);
+		(el.querySelector('nldd-menu-bar-item') as HTMLElement).style.display = 'none';
+
+		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+		await waitForUpdate(el);
+		const overflowMenu = document.querySelector('nldd-menu') as HTMLElement;
+
+		// The parent is a single direct menu-item (no flat divider-separated
+		// siblings at the overflow root, no dead label).
+		const directItems = overflowMenu.querySelectorAll(':scope > nldd-menu-item');
+		expect(directItems.length).toBe(1);
+		expect(overflowMenu.querySelectorAll(':scope > nldd-menu-divider').length).toBe(0);
+		const parent = directItems[0] as HTMLElement & { _hasSubmenu?: boolean };
+		expect(parent.getAttribute('text')).toBe('Mijn DigID');
+
+		// It owns a real nested nldd-menu submenu with the cloned children.
+		const submenu = parent.querySelector(':scope > nldd-menu') as HTMLElement;
+		expect(submenu).toBeTruthy();
+		expect(parent._hasSubmenu).toBe(true); // interactive opener, not a dead label
+		const childTexts = [...submenu.querySelectorAll('nldd-menu-item')]
+			.map(i => i.getAttribute('text'));
+		expect(childTexts).toEqual(['Mijn gegevens', 'Uitloggen']);
+		expect(submenu.querySelectorAll('nldd-menu-divider').length).toBe(1);
+	});
+
+	it('selecting a nested submenu leaf delegates to the original and does not jump off-screen', async () => {
+		el = await fixture(`
+			<nldd-menu-bar>
+				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
+					<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+					<nldd-menu-item text="Instellingen"></nldd-menu-item>
+				</nldd-menu-bar-item>
+			</nldd-menu-bar>
+		`);
+		await waitForUpdate(el);
+		// Simulate the overflowed (hidden) state the real layout produces.
+		(el.querySelector('nldd-menu-bar-item') as HTMLElement).style.display = 'none';
+
+		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+		await waitForUpdate(el);
+
+		let originalSelectFired = false;
+		el.querySelector('nldd-menu-item[text="Mijn gegevens"]')!
+			.addEventListener('select', () => { originalSelectFired = true; });
+
+		const overflowMenu = document.querySelector('nldd-menu') as HTMLElement;
+		const clone = [...overflowMenu.querySelectorAll('nldd-menu-item')]
+			.find(mi => mi.getAttribute('text') === 'Mijn gegevens') as HTMLElement;
+		expect(clone).toBeTruthy();
+		(clone.shadowRoot!.querySelector('button') as HTMLButtonElement).click();
+		await waitForUpdate(el);
+
+		// Delegation reaches the original (select bubbles to the consumer)…
+		expect(originalSelectFired).toBe(true);
+		// …and NO nldd-menu is left open: the popover closed on select and
+		// the original hidden expandable parent's own submenu did NOT open
+		// against a 0-rect anchor (the off-screen bug).
+		const anyOpen = [...document.querySelectorAll('nldd-menu')]
+			.some(m => m.matches(':popover-open'));
+		expect(anyOpen).toBe(false);
+	});
 });
 
 describe('nldd-menu-bar – compact propagation', () => {

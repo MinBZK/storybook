@@ -11,9 +11,9 @@ export const collectionStyles = css`
 
 	:host {
 		display: flex;
-		flex-direction: column;
 		width: 100%;
 		min-width: 0;
+		flex-direction: column;
 		gap: var(--components-collection-sm-gap);
 		--_item-width: var(--primitives-area-280);
 
@@ -69,18 +69,18 @@ export const collectionStyles = css`
 	/* # Horizontal scroll */
 
 	:host([layout='horizontal-scroll']) .collection__items {
+		margin-inline-start: calc(var(--primitives-space-16) * -1);
+		margin-block: calc(var(--primitives-space-16) * -1);
+		overflow-x: auto;
+		padding-inline-start: var(--primitives-space-16);
+		padding-block: var(--primitives-space-16);
 		flex-direction: row;
 		flex-wrap: nowrap;
-		overflow-x: auto;
 		scroll-snap-type: x mandatory;
 		scroll-behavior: smooth;
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: none;
-		margin-inline-start: calc(var(--primitives-space-16) * -1);
-		padding-inline-start: var(--primitives-space-16);
 		scroll-padding-inline-start: var(--primitives-space-16);
-		padding-block: var(--primitives-space-16);
-		margin-block: calc(var(--primitives-space-16) * -1);
 		mask-image: linear-gradient(
 			to right,
 			transparent 0,

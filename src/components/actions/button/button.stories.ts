@@ -68,7 +68,7 @@ export default {
 		},
 		expanded: {
 			control: 'boolean',
-			description: 'Geeft aan dat het popover/menu uitgeklapt is. Wordt geforward als aria-expanded op de inner button en activeert de is-open visuele state.',
+			description: 'Geeft aan dat het popover/menu uitgeklapt is. Wordt geforward als aria-expanded op de inner button en activeert de is-expanded visuele state.',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -130,6 +130,11 @@ export default {
 			description: 'Link target (alleen gebruikt als href is gezet)',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -152,11 +157,12 @@ export default {
 		type: 'button',
 		href: '',
 		target: '',
+		accessibleLabel: '',
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, width, expandable, expanded, popupType, text, singleLine, startIcon, endIcon, type, href, target, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, expanded, popupType, text, singleLine, startIcon, endIcon, type, href, target, accessibleLabel, disabled }: Record<string, any>) => html`
 	<nldd-button
 		variant=${variant}
 		size=${size}
@@ -168,6 +174,7 @@ const Template = ({ variant, size, width, expandable, expanded, popupType, text,
 		start-icon=${startIcon || nothing}
 		end-icon=${endIcon || nothing}
 		popup-type=${popupType || nothing}
+		accessible-label=${accessibleLabel || nothing}
 		?expandable=${expandable}
 		?expanded=${expanded}
 		?single-line=${singleLine}

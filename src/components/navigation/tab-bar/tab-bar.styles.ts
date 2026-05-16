@@ -9,8 +9,6 @@ export const tabBarStyles = css`
 	/* # Host */
 
 	:host {
-		--_tab-bar-item-indicator-inset: var(--primitives-space-4);
-
 		display: inline-block;
 		position: relative;
 		isolation: isolate;
@@ -42,12 +40,11 @@ export const tabBarStyles = css`
 
 	.tab-bar__items {
 		display: flex;
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
-		border-radius: var(--semantics-controls-md-corner-radius);
-		padding: 0 var(--primitives-space-2);
 	}
 
 	:host([compact]) .tab-bar__items {
@@ -83,97 +80,77 @@ export const tabBarItemStyles = css`
 	/* # Item */
 
 	.tab-bar__item {
-		appearance: none;
-		border: none;
-		margin: 0;
-		padding: 0;
-		background: none;
-		text-decoration: none;
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
+		margin: 0;
+		border: none;
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background: none;
+		padding: 0;
 		justify-content: center;
 		align-items: center;
-		font: var(--semantics-buttons-md-font);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
+		font: var(--semantics-buttons-md-font);
+		text-decoration: none;
+		appearance: none;
 	}
 
 	:host([variant='icon-and-text']) .tab-bar__item {
-		gap: var(--semantics-buttons-md-gap);
-		padding: var(--primitives-space-8) var(--primitives-space-12);
 		height: var(--semantics-controls-md-min-size);
+		padding: var(--primitives-space-8) var(--primitives-space-12);
+		gap: var(--semantics-buttons-md-gap);
 	}
 
 	:host([variant='text']) .tab-bar__item {
-		padding: var(--primitives-space-8) var(--primitives-space-12);
 		height: var(--semantics-controls-md-min-size);
+		padding: var(--primitives-space-8) var(--primitives-space-12);
 	}
 
 	:host([variant='icon']) .tab-bar__item {
-		padding: 0;
+		width: var(--semantics-controls-md-min-size);
 		height: var(--semantics-controls-md-min-size);
-		width: calc(var(--semantics-controls-md-min-size) - var(--_tab-bar-item-indicator-inset));
+		padding: 0;
 	}
 
 	:host([variant='compact']) .tab-bar__item {
-		flex-direction: column;
-		padding: var(--primitives-space-8);
 		height: var(--semantics-controls-lg-min-size);
+		padding: var(--primitives-space-8);
+		flex-direction: column;
 	}
 
 	:host([responsive]) .tab-bar__item {
 		@media (max-width: ${smMax}) {
+			height: var(--semantics-controls-lg-min-size);
+			padding: var(--primitives-space-8);
 			flex-direction: column;
 			gap: 0;
-			padding: var(--primitives-space-8);
-			height: var(--semantics-controls-lg-min-size);
 		}
 
 		@container layout-container (max-width: ${smMax}) {
+			height: var(--semantics-controls-lg-min-size);
+			padding: var(--primitives-space-8);
 			flex-direction: column;
 			gap: 0;
-			padding: var(--primitives-space-8);
-			height: var(--semantics-controls-lg-min-size);
 		}
 	}
 
-	:host([selected]) .tab-bar__item {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
-	}
-
-	.tab-bar__item:focus-visible {
-		outline: none;
-	}
-
-
-	/* # Indicator */
-
-	.tab-bar__item::before {
-		content: '';
-		position: absolute;
-		inset-block: var(--_tab-bar-item-indicator-inset);
-		inset-inline: calc(var(--_tab-bar-item-indicator-inset) / 2);
-		border-radius: calc(var(--semantics-controls-md-corner-radius) - (var(--_tab-bar-item-indicator-inset) / 2));
-		background-color: transparent;
-		z-index: 0;
-		pointer-events: none;
-	}
-
 	@media (hover: hover) {
-		.tab-bar__item:hover::before {
+		.tab-bar__item:hover {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 		}
 	}
 
-	:host([selected]) .tab-bar__item::before {
+	:host([selected]) .tab-bar__item {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 
 		@media (forced-colors: active) {
 			background-color: Highlight;
 		}
 	}
 
-	.tab-bar__item:focus-visible::before {
+	.tab-bar__item:focus-visible {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
@@ -184,13 +161,13 @@ export const tabBarItemStyles = css`
 
 	.tab-bar__item-icon {
 		display: flex;
-		align-items: center;
-		justify-content: center;
 		position: relative;
 		z-index: 1;
-		flex-shrink: 0;
 		width: var(--semantics-buttons-md-icon-size);
 		height: var(--semantics-buttons-md-icon-size);
+		justify-content: center;
+		align-items: center;
+		flex-shrink: 0;
 	}
 
 	:host([variant='icon']) .tab-bar__item-icon {

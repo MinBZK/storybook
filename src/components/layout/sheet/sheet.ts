@@ -11,9 +11,14 @@
  * @element nldd-sheet
  *
  * @attr {string}  placement        - Sheet position: 'left' | 'right' | 'bottom' (default: 'right')
- * @attr {boolean} full-height      - Force the sheet to fill the viewport top to bottom. Applies to
- *                                    bottom sheets and to any sheet on sm viewports (where all
- *                                    placements collapse to bottom). No effect on side sheets at md+.
+ * @attr {string}  height           - Custom height for bottom sheets (and for any sheet on sm
+ *                                    viewports, where all placements collapse to bottom). Accepts:
+ *                                    `'full'` (default — viewport minus top-inset, identical to
+ *                                    omitting the attribute), `'fit-content'` (collapse to content
+ *                                    size), or any CSS length/percentage (e.g. `'50dvh'`, `'480px'`,
+ *                                    `'50%'`). Always clamped to `100dvh - top-inset` so the sheet
+ *                                    can't extend past the dismiss-tap area. No effect on side
+ *                                    sheets at md+.
  * @attr {boolean} modeless         - Non-modal (no backdrop or focus lock); the sheet is modal by default
  * @attr {string}  accessible-label - Accessible name for the dialog, forwarded as aria-label (default: 'Dialoogvenster')
  * @attr {string}  width            - Custom width for side sheets (left/right) as a CSS length
@@ -45,8 +50,15 @@ export class NLDDSheet extends LitElement {
 	@property({ type: String, reflect: true })
 	placement: Placement = 'right';
 
-	@property({ type: Boolean, reflect: true, attribute: 'full-height' })
-	fullHeight = false;
+	/**
+	 * Custom height for bottom sheets (and for any sheet on sm viewports
+	 * where all placements collapse to bottom). Defaults to full-height
+	 * — `'fit-content'` opts back into the content-sized layout, any CSS
+	 * length/percentage sets a specific size. Clamped to `100dvh - top-
+	 * inset` via `max-height` so the dismiss-tap area always remains.
+	 */
+	@property({ type: String, reflect: true })
+	height = '';
 
 	@property({ type: Boolean, reflect: true })
 	modeless = false;
@@ -71,9 +83,30 @@ export class NLDDSheet extends LitElement {
 				this.style.removeProperty('--_width');
 			}
 		}
+		if (changed.has('height')) {
+			const h = this.height;
+			// `'full'` is an explicit alias for the default (no var → CSS
+			// fallback to `calc(100dvh - top-inset)`). Anything else flows
+			// through CSS.supports so typos and bogus values silently fall
+			// back to the default rather than producing a broken layout.
+			if (h && h !== 'full' && CSS.supports('height', h)) {
+				this.style.setProperty('--_height', h);
+			} else {
+				// One warning per instance for the element's lifetime (matches
+				// _hasWarnedLabel): a later distinct invalid value won't warn
+				// again. Acceptable for a dev-only nudge — not worth tracking
+				// per-value state to re-warn.
+				if (import.meta.env?.DEV && h && h !== 'full' && !this._hasWarnedHeight) {
+					this._hasWarnedHeight = true;
+					console.warn(`<nldd-sheet>: Invalid height value "${h}". Falling back to full height. Use 'full', 'fit-content', or a valid CSS length (e.g. '50dvh', '480px').`);
+				}
+				this.style.removeProperty('--_height');
+			}
+		}
 	}
 
 	private _hasWarnedLabel = false;
+	private _hasWarnedHeight = false;
 
 	private _closing = false;
 

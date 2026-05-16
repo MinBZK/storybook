@@ -7,10 +7,10 @@ export const stackedSplitViewStyles = css`
 
 	:host {
 		display: flex;
-		flex-direction: column;
+		background-color: var(--_background-color);
 		width: 100%;
 		height: 100%;
-		background-color: var(--_background-color);
+		flex-direction: column;
 
 		--_pane-min-height: var(--primitives-area-200); /* Pane min-height — read by JS via getComputedStyle in firstUpdated */
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
@@ -35,11 +35,11 @@ export const stackedSplitViewStyles = css`
 
 	.stacked-split-view {
 		display: flex;
-		flex-direction: column;
-		flex: 1;
 		min-height: 0;
 		min-width: 0;
 		overflow: hidden;
+		flex-direction: column;
+		flex: 1;
 	}
 
 
@@ -47,11 +47,11 @@ export const stackedSplitViewStyles = css`
 
 	.stacked-split-view__pane {
 		display: flex;
-		flex-direction: column;
-		flex: 1;
 		min-height: var(--_pane-min-height);
 		min-width: 0;
 		overflow: hidden;
+		flex-direction: column;
+		flex: 1;
 	}
 
 	.stacked-split-view__pane[hidden] {
@@ -59,7 +59,7 @@ export const stackedSplitViewStyles = css`
 	}
 
 	::slotted(*) {
-		flex: 1;
 		min-height: 0;
+		flex: 1;
 	}
 `;

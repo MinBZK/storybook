@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './checkbox.js';
 
 /**
@@ -42,6 +42,11 @@ export default {
 			description: 'Onbepaalde toestand (gedeeltelijk geselecteerd)',
 			table: { defaultValue: { summary: false } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -53,18 +58,19 @@ export default {
 		value: 'on',
 		checked: false,
 		indeterminate: false,
+		accessibleLabel: 'Checkbox',
 		disabled: false,
 	},
 };
 
-const Template = ({ name, value, checked, indeterminate, disabled }: Record<string, any>) => html`
+const Template = ({ name, value, checked, indeterminate, accessibleLabel, disabled }: Record<string, any>) => html`
 	<nldd-checkbox
 		?checked=${checked}
 		?indeterminate=${indeterminate}
 		?disabled=${disabled}
 		value=${value}
 		name=${name}
-		accessible-label="Checkbox"
+		accessible-label=${accessibleLabel || nothing}
 	></nldd-checkbox>
 `;
 

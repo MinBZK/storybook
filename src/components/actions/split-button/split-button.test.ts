@@ -24,7 +24,7 @@ describe('nldd-split-button', () => {
 		let fired = false;
 		el.addEventListener('menu-click', () => { fired = true; });
 
-		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__trigger')!;
+		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__popup-button nldd-icon-button')!;
 		trigger.click();
 		await waitForUpdate(el);
 
@@ -44,7 +44,7 @@ describe('nldd-split-button', () => {
 		el.addEventListener('menu-click', () => { menuClickFired = true; });
 
 		const menu = el.shadowRoot!.querySelector<HTMLElement>('.split-button__menu')!;
-		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__trigger')!;
+		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__popup-button nldd-icon-button')!;
 		trigger.click();
 		await waitForUpdate(el);
 
@@ -82,7 +82,7 @@ describe('nldd-split-button', () => {
 		// With items now present, chevron should open the menu instead of firing menu-click.
 		let menuClickFired = false;
 		el.addEventListener('menu-click', () => { menuClickFired = true; });
-		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__trigger')!;
+		const trigger = el.shadowRoot!.querySelector<HTMLElement>('.split-button__popup-button nldd-icon-button')!;
 		trigger.click();
 		await waitForUpdate(el);
 		expect(menuClickFired).toBe(false);

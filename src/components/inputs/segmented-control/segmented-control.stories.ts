@@ -48,6 +48,11 @@ export default {
 			description: 'Type selectie: radio (enkelvoudig) of checkbox (meervoudig)',
 			table: { defaultValue: { summary: 'radio' } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -60,11 +65,12 @@ export default {
 		width: '',
 		value: 'vet',
 		type: 'radio',
+		accessibleLabel: '',
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, width, value, type, disabled}: Record<string, any>) => html`
+const Template = ({ variant, size, width, value, type, accessibleLabel, disabled}: Record<string, any>) => html`
 	<nldd-segmented-control
 		value=${value}
 		size=${size}
@@ -72,6 +78,7 @@ const Template = ({ variant, size, width, value, type, disabled}: Record<string,
 		variant=${variant}
 		?disabled=${disabled}
 		width=${width || nothing}
+		accessible-label=${accessibleLabel || nothing}
 	>
 		<nldd-segmented-control-item value="vet" text="Vet" icon="bold"></nldd-segmented-control-item>
 		<nldd-segmented-control-item value="cursief" text="Cursief" icon="italic"></nldd-segmented-control-item>

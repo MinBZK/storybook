@@ -131,7 +131,7 @@ describe('nldd-list-item', () => {
 		it('adds is-pointer-focus class on mouse focus', async () => {
 			el = await fixture('<nldd-list-item type="button"></nldd-list-item>');
 			await waitForUpdate(el);
-			document.dispatchEvent(new MouseEvent('mousedown'));
+			document.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'mouse' }));
 			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
 			action.focus();
 			await waitForUpdate(el);
@@ -151,7 +151,7 @@ describe('nldd-list-item', () => {
 		it('removes is-pointer-focus class on blur', async () => {
 			el = await fixture('<nldd-list-item type="button"></nldd-list-item>');
 			await waitForUpdate(el);
-			document.dispatchEvent(new MouseEvent('mousedown'));
+			document.dispatchEvent(new PointerEvent('pointerdown', { pointerType: 'mouse' }));
 			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
 			action.focus();
 			await waitForUpdate(el);

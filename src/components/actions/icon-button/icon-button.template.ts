@@ -57,6 +57,11 @@ export function template(this: NLDDIconButton) {
 			`;
 		}
 
+		// .popoverTargetElement / .popoverTargetAction are bound unguarded: in
+		// browsers without Popover-invoker IDL support Lit sets a harmless
+		// expando and the cross-shadow association just doesn't take effect —
+		// but those browsers don't support the Popover API at all, so the menu
+		// this button drives is non-functional regardless. No capability check.
 		return html`
 			<button class="icon-button"
 				type=${this.type}
@@ -66,6 +71,8 @@ export function template(this: NLDDIconButton) {
 				aria-haspopup=${this.popupType || nothing}
 				aria-expanded=${ariaExpanded}
 				popovertarget=${this.popovertarget || nothing}
+				.popoverTargetElement=${this.popoverTargetElement}
+				.popoverTargetAction=${this.popoverTargetAction}
 				@click=${this._handleClick}
 			>
 				${content}
@@ -73,9 +80,9 @@ export function template(this: NLDDIconButton) {
 		`;
 	};
 
-	if (tooltipText && !this.hideTooltip) {
+	if (tooltipText && this.tooltipTiming !== 'never') {
 		return html`
-			<nldd-tooltip text=${tooltipText}>
+			<nldd-tooltip text=${tooltipText} timing=${this.tooltipTiming}>
 				${renderButton()}
 			</nldd-tooltip>
 		`;

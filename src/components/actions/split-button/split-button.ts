@@ -18,7 +18,7 @@
  * @attr {string} variant - Button variant (default: 'neutral-tinted')
  * @attr {boolean} disabled - Disabled state
  * @attr {string} text - Button text for the primary action
- * @attr {string} start-icon - Icon name for the start icon (before text)
+ * @attr {string} icon - Icon name shown before the text on the primary action button
  * @attr {object} translations - Translations; unset keys fall back to Dutch
  *
  * @fires action-click - Fired when the main button is clicked
@@ -55,15 +55,18 @@ export class NLDDSplitButton extends LitElement {
 	@property({ type: String })
 	text = '';
 
-	/** Icon name for the start icon (before text) on the primary action button. */
-	@property({ type: String, attribute: 'start-icon' })
-	startIcon = '';
+	/** Icon name shown before the text on the primary action button. */
+	@property({ type: String })
+	icon = '';
 
 	@property({ type: Object })
 	translations: Partial<NLDDSplitButtonTranslations> = {};
 
-	@query('.split-button__trigger')
-	private _trigger?: HTMLElement;
+	// Wrapper div around the inner `nldd-icon-button`. The pointerdown
+	// listener below attaches to the wrapper because pointerdown bubbles
+	// up from the nested icon-button — both work as the snapshot point.
+	@query('.split-button__popup-button')
+	private _popupButtonWrapper?: HTMLDivElement;
 
 	@query('.split-button__menu')
 	private _menu?: NLDDMenu;
@@ -73,7 +76,7 @@ export class NLDDSplitButton extends LitElement {
 
 	@state()
 	_hasMenuItems = false;
-	private _menuWasOpenOnMousedown = false;
+	private _menuWasOpenOnPointerdown = false;
 	private _childObserver?: MutationObserver;
 
 	// — i18n —————————————————————————————————————————————————————————————————
@@ -93,11 +96,15 @@ export class NLDDSplitButton extends LitElement {
 		this._childObserver = new MutationObserver(() => this._syncMenuItems());
 		this._childObserver.observe(this, { childList: true });
 		// Capture open-state BEFORE the browser's light-dismiss fires on
-		// mousedown. The subsequent click handler uses this snapshot to
+		// pointerdown. The subsequent click handler uses this snapshot to
 		// decide: was the popover open? → user clicked to close (no-op,
 		// light-dismiss already closed it). Was it closed? → open it.
-		this._trigger?.addEventListener('mousedown', () => {
-			this._menuWasOpenOnMousedown = this._menu?.matches(':popover-open') ?? false;
+		// Pointerdown fires for mouse, touch and pen — `mousedown` alone
+		// would skip touch on mobile, where no mousedown precedes the
+		// synthetic click; the snapshot would stay false and the handler
+		// would re-open an already-light-dismissed menu.
+		this._popupButtonWrapper?.addEventListener('pointerdown', () => {
+			this._menuWasOpenOnPointerdown = this._menu?.matches(':popover-open') ?? false;
 		});
 	}
 
@@ -116,7 +123,7 @@ export class NLDDSplitButton extends LitElement {
 	 * `this.children`.
 	 */
 	private _syncMenuItems(): void {
-		if (!this._menu || !this._trigger) return;
+		if (!this._menu || !this._popupButtonWrapper) return;
 		const toMove = Array.from(this.children).filter((el) =>
 			el.matches('nldd-menu-item, nldd-menu-divider'),
 		);
@@ -125,7 +132,7 @@ export class NLDDSplitButton extends LitElement {
 		this._hasMenuItems =
 			this._menu.querySelectorAll('nldd-menu-item, nldd-menu-divider').length > 0;
 		if (this._hasMenuItems && !hadItems) {
-			this._menu.anchorElement = this._trigger;
+			this._menu.anchorElement = this._popupButtonWrapper;
 			this._menu.addEventListener('toggle', this._handleMenuToggle);
 		}
 	}
@@ -144,8 +151,8 @@ export class NLDDSplitButton extends LitElement {
 		if (this.disabled) return;
 		e.stopPropagation();
 		if (this._hasMenuItems && this._menu) {
-			const wasOpen = this._menuWasOpenOnMousedown;
-			this._menuWasOpenOnMousedown = false;
+			const wasOpen = this._menuWasOpenOnPointerdown;
+			this._menuWasOpenOnPointerdown = false;
 			if (wasOpen) return; // light-dismiss already closed it
 			this._menu.showPopover();
 			return;

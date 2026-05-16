@@ -19,12 +19,12 @@ export const cardStyles = css`
 
 	.card {
 		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
-		background-color: var(--components-card-background-color);
 		border-radius: var(--components-card-corner-radius);
 		box-shadow: var(--components-card-box-shadow);
+		background-color: var(--components-card-background-color);
 		overflow: hidden;
+		flex-direction: column;
+		flex-grow: 1;
 	}
 
 
@@ -43,9 +43,9 @@ export const cardStyles = css`
 
 	.card__main {
 		display: flex;
+		min-height: 0;
 		flex-direction: column;
 		flex-grow: 1;
-		min-height: 0;
 	}
 
 

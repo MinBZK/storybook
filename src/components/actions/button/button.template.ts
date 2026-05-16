@@ -57,6 +57,11 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 		`;
 	}
 
+	// .popoverTargetElement / .popoverTargetAction are bound unguarded: in
+	// browsers without Popover-invoker IDL support Lit sets a harmless expando
+	// and the cross-shadow association just doesn't take effect — but those
+	// browsers don't support the Popover API at all, so the menu this button
+	// drives is non-functional regardless. No per-binding capability check.
 	return html`
 		<button class="button"
 			type=${this.type}
@@ -66,6 +71,8 @@ export function template(this: NLDDButton, helpers: TemplateHelpers) {
 			aria-haspopup=${this.popupType || nothing}
 			aria-expanded=${ariaExpanded}
 			popovertarget=${this.popovertarget || nothing}
+			.popoverTargetElement=${this.popoverTargetElement}
+			.popoverTargetAction=${this.popoverTargetAction}
 			@click=${helpers.handleClick}
 		>
 			${content}

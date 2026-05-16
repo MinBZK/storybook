@@ -25,12 +25,12 @@ export const codeStyles = css`
 
 	.code {
 		margin: 0;
-		padding: var(--_block-padding) var(--_inline-padding);
-		background-color: var(--_background-color);
-		color: var(--_content-color);
 		border-radius: var(--_corner-radius);
-		font: var(--_font);
+		background-color: var(--_background-color);
 		overflow-x: auto;
+		padding: var(--_block-padding) var(--_inline-padding);
+		color: var(--_content-color);
+		font: var(--_font);
 		white-space: pre;
 	}
 

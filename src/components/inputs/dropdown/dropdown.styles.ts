@@ -13,6 +13,7 @@ export const dropdownStyles = css`
 
 		display: block;
 		width: var(--_width);
+		max-width: 100%;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -31,34 +32,39 @@ export const dropdownStyles = css`
 	.dropdown {
 		position: relative;
 		display: flex;
+		box-sizing: border-box;
+		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		width: 100%;
 		flex-direction: row;
 		align-items: center;
-		box-sizing: border-box;
-		width: 100%;
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		color: var(--semantics-buttons-neutral-tinted-content-color);
 	}
 
 	:host([size='xs']) .dropdown {
-		min-height: var(--semantics-controls-xs-min-size);
 		border-radius: var(--semantics-controls-xs-corner-radius);
+		min-height: var(--semantics-controls-xs-min-size);
 	}
 
 	:host([size='sm']) .dropdown {
-		min-height: var(--semantics-controls-sm-min-size);
 		border-radius: var(--semantics-controls-sm-corner-radius);
+		min-height: var(--semantics-controls-sm-min-size);
 	}
 
 	:host([size='md']) .dropdown,
 	:host(:not([size])) .dropdown {
-		min-height: var(--semantics-controls-md-min-size);
 		border-radius: var(--semantics-controls-md-corner-radius);
+		min-height: var(--semantics-controls-md-min-size);
 	}
 
-	:host([keyboard-focused]) .dropdown {
+	.dropdown:focus-within {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	:host([is-pointer-focus]) .dropdown:focus-within {
+		outline: none;
+		box-shadow: none;
 	}
 
 
@@ -67,27 +73,27 @@ export const dropdownStyles = css`
 	::slotted(select) {
 		position: absolute;
 		inset: 0;
+		box-sizing: border-box;
+		opacity: 0;
+		margin: 0;
+		border: none;
+		outline: none;
+		background: transparent;
 		width: 100%;
 		height: 100%;
-		opacity: 0;
-		appearance: none;
-		border: none;
-		margin: 0;
 		padding: 0;
-		background: transparent;
-		outline: none;
-		box-sizing: border-box;
 		font: var(--semantics-input-fields-native-select-font);
+		appearance: none;
 	}
 
 
 	/* # Value */
 
 	.dropdown__value {
-		flex-grow: 1;
 		min-width: 0;
-		white-space: nowrap;
 		overflow: hidden;
+		flex-grow: 1;
+		white-space: nowrap;
 		text-overflow: ellipsis;
 		color: inherit;
 	}
@@ -113,10 +119,10 @@ export const dropdownStyles = css`
 
 	.dropdown__validation-icon-area {
 		display: flex;
+		height: 100%;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		height: 100%;
 	}
 
 	:host([size='xs']) .dropdown__validation-icon-area {

@@ -47,10 +47,10 @@ export const switchStyles = css`
 		position: absolute;
 		inset: 0;
 		z-index: 1;
+		opacity: 0;
+		margin: 0;
 		width: 100%;
 		height: 100%;
-		margin: 0;
-		opacity: 0;
 	}
 
 
@@ -59,13 +59,13 @@ export const switchStyles = css`
 	.switch__track {
 		position: relative;
 		display: flex;
-		align-items: center;
 		box-sizing: border-box;
+		border: var(--components-switch-border-thickness) solid var(--components-switch-border-color);
+		background-color: var(--components-switch-background-color);
 		width: 100%;
 		height: 100%;
 		padding: var(--_switch-padding);
-		background-color: var(--components-switch-background-color);
-		border: var(--components-switch-border-thickness) solid var(--components-switch-border-color);
+		align-items: center;
 		transition: background-color var(--_transition-duration) ease, border-color var(--_transition-duration) ease;
 	}
 
@@ -79,8 +79,8 @@ export const switchStyles = css`
 	}
 
 	.switch__input:checked ~ .switch__track {
-		background-color: var(--components-switch-is-selected-background-color);
 		border-color: var(--components-switch-is-selected-background-color);
+		background-color: var(--components-switch-is-selected-background-color);
 	}
 
 	.switch__input:focus-visible ~ .switch__track {
@@ -97,8 +97,8 @@ export const switchStyles = css`
 		left: var(--_switch-padding);
 		box-sizing: border-box;
 		border-radius: 50%;
-		background-color: var(--components-switch-thumb-background-color);
 		border: var(--components-switch-thumb-border-thickness) solid var(--components-switch-thumb-border-color);
+		background-color: var(--components-switch-thumb-background-color);
 		transition: width var(--_transition-duration) ease, height var(--_transition-duration) ease, left var(--_transition-duration) ease, background-color var(--_transition-duration) ease, border-color var(--_transition-duration) ease;
 		will-change: width, height, left;
 	}
@@ -115,8 +115,8 @@ export const switchStyles = css`
 	}
 
 	.switch__input:checked ~ .switch__track .switch__thumb {
-		background-color: var(--components-switch-is-selected-thumb-background-color);
 		border-color: var(--components-switch-is-selected-thumb-background-color);
+		background-color: var(--components-switch-is-selected-thumb-background-color);
 	}
 
 	:host([size='xs']) .switch__input:checked ~ .switch__track .switch__thumb {
@@ -139,15 +139,15 @@ export const switchStyles = css`
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: calc(100% + var(--components-switch-thumb-border-thickness) * 2);
-		height: calc(100% + var(--components-switch-thumb-border-thickness) * 2);
-		color: var(--components-switch-is-selected-background-color);
 		opacity: 0;
 		pointer-events: none;
+		width: calc(100% + var(--components-switch-thumb-border-thickness) * 2);
+		height: calc(100% + var(--components-switch-thumb-border-thickness) * 2);
+		align-items: center;
+		justify-content: center;
+		color: var(--components-switch-is-selected-background-color);
+		transform: translate(-50%, -50%);
 		transition: opacity var(--_transition-duration) ease;
 	}
 

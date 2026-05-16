@@ -7,7 +7,8 @@
  *
  * @element nldd-rich-text
  *
- * @attr {string} spacing - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
+ * @attr {string}  spacing  - Spacing between elements: 'flat' | 'tight' | 'snug' (default) | 'loose'
+ * @attr {boolean} centered - Centers the main column inside the container; without it, content is left-aligned
  */
 import { LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -18,6 +19,9 @@ type Spacing = 'flat' | 'tight' | 'snug' | 'loose';
 export class NLDDRichText extends LitElement {
 	@property({ type: String, reflect: true })
 	spacing: Spacing = 'snug';
+
+	@property({ type: Boolean, reflect: true })
+	centered = false;
 
 	override createRenderRoot() {
 		return this;

@@ -25,12 +25,12 @@ import { ICONS } from './../../content/icon/icon.js';
  * ```
  */
 export default {
-	title: 'Components/Actions/Link',
+	title: 'Components/Navigation/Link',
 	component: 'nldd-link',
 	tags: ['autodocs'],
 	parameters: {
 		componentSource: {
-			file: 'src/components/actions/link/link.ts',
+			file: 'src/components/navigation/link/link.ts',
 			repository: 'https://github.com/MinBZK/storybook',
 		},
 		status: {

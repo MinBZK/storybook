@@ -18,9 +18,9 @@ export const simpleSectionStyles = css`
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
 		display: flex;
+		width: 100%;
 		flex-direction: column;
 		align-items: center;
-		width: 100%;
 	}
 
 	:host([hidden]) {
@@ -41,11 +41,11 @@ export const simpleSectionStyles = css`
 
 	.simple-section {
 		display: flex;
+		box-sizing: border-box;
+		width: 100%;
 		flex-direction: column;
 		flex-grow: 1;
 		align-items: center;
-		width: 100%;
-		box-sizing: border-box;
 
 		@media (max-width: ${smMax}) {
 			padding-inline: var(--semantics-page-sections-sm-margin-inline);
@@ -75,6 +75,41 @@ export const simpleSectionStyles = css`
 		@container layout-container (min-width: ${lgMin}) {
 			padding-inline: var(--semantics-page-sections-lg-margin-inline);
 			padding-block: var(--semantics-page-sections-lg-margin-block);
+		}
+	}
+
+
+	/* # Body */
+
+	.simple-section__body {
+		display: flex;
+		width: 100%;
+		max-width: var(--_max-width);
+		flex-direction: column;
+		flex-grow: 1;
+
+		@media (max-width: ${smMax}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			gap: var(--semantics-page-sections-md-gap);
+		}
+
+		@media (min-width: ${lgMin}) {
+			gap: var(--semantics-page-sections-lg-gap);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			gap: var(--semantics-page-sections-md-gap);
+		}
+
+		@container layout-container (min-width: ${lgMin}) {
+			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
 
@@ -86,38 +121,12 @@ export const simpleSectionStyles = css`
 	}
 
 
-	/* # Body */
+	/* # Main */
 
-	.simple-section__body {
+	.simple-section__main {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		width: 100%;
-		max-width: var(--_max-width);
-
-		@media (max-width: ${smMax}) {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			gap: var(--semantics-page-sections-md-gap);
-		}
-
-		@media (min-width: ${lgMin}) {
-			gap: var(--semantics-page-sections-lg-gap);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			gap: var(--semantics-page-sections-md-gap);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
-			gap: var(--semantics-page-sections-lg-gap);
-		}
 	}
 
 
@@ -125,14 +134,5 @@ export const simpleSectionStyles = css`
 
 	.simple-section__footer[hidden] {
 		display: none;
-	}
-
-
-	/* # Main */
-
-	.simple-section__main {
-		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
 	}
 `;

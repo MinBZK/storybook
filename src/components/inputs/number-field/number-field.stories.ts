@@ -59,6 +59,11 @@ export default {
 			description: 'Stapgrootte',
 			table: { defaultValue: { summary: 1 } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -74,11 +79,12 @@ export default {
 		min: 0,
 		max: 10,
 		step: 1,
+		accessibleLabel: '',
 		disabled: false,
 	},
 };
 
-const Template = ({ size, hideSpinButtons, name, value, min, max, step, width, disabled }: Record<string, any>) => html`
+const Template = ({ size, hideSpinButtons, name, value, min, max, step, width, accessibleLabel, disabled }: Record<string, any>) => html`
 	<nldd-number-field
 		value=${value}
 		min=${min}
@@ -89,6 +95,7 @@ const Template = ({ size, hideSpinButtons, name, value, min, max, step, width, d
 		name=${name}
 		?hide-spin-buttons=${hideSpinButtons}
 		width=${width || nothing}
+		accessible-label=${accessibleLabel || nothing}
 	></nldd-number-field>
 `;
 

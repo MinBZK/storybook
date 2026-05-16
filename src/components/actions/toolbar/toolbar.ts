@@ -18,7 +18,6 @@ import { template, type ToolbarChild } from './toolbar.template.js';
 import { nlddToolbarTranslations } from './toolbar.i18n.js';
 import type { NLDDToolbarTranslations } from './toolbar.i18n.js';
 import { NLDDMenu } from '../../lists-and-menus/menu/menu.js';
-import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 
 // # Marker elements
 if (!customElements.get('nldd-toolbar-item')) {
@@ -175,26 +174,13 @@ export class NLDDToolbar extends LitElement {
 		}
 	}
 
-	private _menuClosedAt = 0;
-
-	private _handleOverflowButtonClick(): void {
-		if (!this._menu) return;
-		if (this._menuOpen) {
-			(this._menu as unknown as { hidePopover: () => void }).hidePopover();
-		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
-			(this._menu as unknown as { showPopover: () => void }).showPopover();
-		}
-	}
-
 	private _createMenu(): void {
 		if (this._menu) return;
 		const menu = document.createElement('nldd-menu') as NLDDMenu;
 		menu.setAttribute('placement', 'bottom-end');
 		menu.id = `nldd-toolbar-overflow-menu-${this._idCounter++}`;
 		menu.addEventListener('toggle', (event: Event) => {
-			const open = (event as ToggleEvent).newState === 'open';
-			this._menuOpen = open;
-			if (!open) this._menuClosedAt = Date.now();
+			this._menuOpen = (event as ToggleEvent).newState === 'open';
 		});
 		document.body.appendChild(menu);
 		this._menu = menu;
@@ -202,9 +188,30 @@ export class NLDDToolbar extends LitElement {
 
 	private _syncMenuAnchor(): void {
 		if (!this._menu) return;
-		const overflowButton = this.shadowRoot?.querySelector('.toolbar__overflow-button nldd-icon-button') as HTMLElement | null;
+		const overflowButton = this.shadowRoot?.querySelector('.toolbar__overflow-button nldd-icon-button') as HTMLElement & {
+			popoverTargetElement?: Element | null;
+			popoverTargetAction?: 'toggle' | 'show' | 'hide';
+		} | null;
 		if (overflowButton) {
 			this._menu.anchorElement = overflowButton;
+			// Wire the button as the menu's invoker. The browser handles
+			// open/close natively via popovertarget — no `@click` handler
+			// needed. The menu syncs `popoverTargetAction` on every toggle
+			// (`'hide'` while open, `'show'` while closed), so the next
+			// click does the right thing without racing against light-
+			// dismiss. Seed `'show'` here for the very first click before
+			// the menu has ever toggled.
+			if ('popoverTargetElement' in overflowButton) {
+				overflowButton.popoverTargetElement = this._menu;
+			}
+			// Default IDL value is 'toggle'; replace it with 'show' so the
+			// very first click opens via the explicit-show path. Once the
+			// menu has opened, `_syncAnchorPopupState` keeps the action in
+			// sync with state ('hide' while open, 'show' while closed) and
+			// this seed never overrides it.
+			if ('popoverTargetAction' in overflowButton && overflowButton.popoverTargetAction === 'toggle') {
+				overflowButton.popoverTargetAction = 'show';
+			}
 		}
 	}
 
@@ -573,8 +580,6 @@ export class NLDDToolbar extends LitElement {
 			this._pinnedOverflowItems.length > 0 || this._overflowIds.size > 0,
 			this._menuOpen,
 			this.label,
-			this._menu?.id ?? '',
-			() => this._handleOverflowButtonClick(),
 			this._startChildren.length === 0 && this._endChildren.length === 0 && this._centerChildren.length > 0,
 			(key) => this._t(key),
 		);

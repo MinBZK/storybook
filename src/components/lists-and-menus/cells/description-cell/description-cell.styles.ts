@@ -12,12 +12,12 @@ export const descriptionCellStyles = css`
 		--_min-height: 0;
 
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
 		width: var(--_width);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
 		min-height: var(--_min-height);
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	:host([hidden]) {
@@ -35,10 +35,10 @@ export const descriptionCellStyles = css`
 	}
 
 	:host([width='fit-content']) {
+		width: fit-content;
 		flex-grow: 0;
 		flex-shrink: 0;
 		flex-basis: auto;
-		width: fit-content;
 	}
 
 	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {
@@ -76,8 +76,8 @@ export const descriptionCellStyles = css`
 
 	::slotted([slot='title']) {
 		margin: 0;
-		align-self: stretch;
 		min-width: 0;
+		align-self: stretch;
 		font: var(--primitives-font-body-sm-regular-flat);
 		color: var(--context-cell-content-color, var(--semantics-content-secondary-color));
 	}
@@ -87,8 +87,8 @@ export const descriptionCellStyles = css`
 
 	::slotted([slot='description']) {
 		margin: 0;
-		align-self: stretch;
 		min-width: 0;
+		align-self: stretch;
 		font: var(--primitives-font-body-md-regular-tight);
 		color: var(--context-cell-content-color, var(--semantics-content-color));
 	}

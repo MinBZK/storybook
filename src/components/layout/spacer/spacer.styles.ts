@@ -15,9 +15,9 @@ export const spacerStyles = css`
 		--_size: var(--primitives-space-16);
 
 		display: block;
-		flex-shrink: 0;
 		width: var(--_size);
 		height: var(--_size);
+		flex-shrink: 0;
 	}
 
 	:host([hidden]) {
@@ -60,11 +60,11 @@ export const spacerStyles = css`
 	/* ## Size: flexible — takes all remaining space in the flex parent */
 
 	:host([size="flexible"]) {
-		flex: 1;
 		min-width: 0;
 		min-height: 0;
 		width: auto;
 		height: auto;
+		flex: 1;
 	}
 
 	:host([size="flexible"][direction="horizontal"]) {
@@ -108,11 +108,11 @@ export const spacerStyles = css`
 		:host([sm-size="96"]) { --_size: var(--primitives-space-96); }
 
 		:host([sm-size="flexible"]) {
-			flex: 1;
 			min-width: 0;
 			min-height: 0;
 			width: auto;
 			height: auto;
+			flex: 1;
 		}
 
 		:host([sm-size="flexible"][direction="horizontal"]) {
@@ -147,11 +147,11 @@ export const spacerStyles = css`
 		:host([md-size="96"]) { --_size: var(--primitives-space-96); }
 
 		:host([md-size="flexible"]) {
-			flex: 1;
 			min-width: 0;
 			min-height: 0;
 			width: auto;
 			height: auto;
+			flex: 1;
 		}
 
 		:host([md-size="flexible"][direction="horizontal"]) {
@@ -186,11 +186,11 @@ export const spacerStyles = css`
 		:host([lg-size="96"]) { --_size: var(--primitives-space-96); }
 
 		:host([lg-size="flexible"]) {
-			flex: 1;
 			min-width: 0;
 			min-height: 0;
 			width: auto;
 			height: auto;
+			flex: 1;
 		}
 
 		:host([lg-size="flexible"][direction="horizontal"]) {

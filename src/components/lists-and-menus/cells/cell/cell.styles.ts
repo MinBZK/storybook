@@ -12,14 +12,14 @@ export const cellStyles = css`
 		--_min-height: 0;
 
 		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		flex-shrink: 0;
-		justify-content: center;
 		width: var(--_width);
 		min-width: var(--_min-width);
 		max-width: var(--_max-width);
 		min-height: var(--_min-height);
+		flex-direction: column;
+		align-items: flex-start;
+		flex-shrink: 0;
+		justify-content: center;
 	}
 
 	:host([hidden]) {
@@ -37,9 +37,9 @@ export const cellStyles = css`
 	:host([width='fit-content']),
 	:host(:not([width])),
 	:host([width='']) {
+		width: fit-content;
 		flex-grow: 0;
 		flex-basis: auto;
-		width: fit-content;
 	}
 
 	:host([width]:not([width='full']):not([width='fit-content']):not([width=''])) {

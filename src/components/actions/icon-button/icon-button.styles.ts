@@ -37,19 +37,19 @@ export const iconButtonStyles = css`
 	/* # Block */
 
 	.icon-button {
-		appearance: none;
-		border: none;
-		margin: 0;
-		padding: 0;
-		background: none;
-		font: inherit;
 		box-sizing: border-box;
-		text-decoration: none;
 		display: inline-flex;
+		margin: 0;
+		border: none;
+		background: none;
+		width: var(--_width);
+		padding: 0;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		width: var(--_width);
+		font: inherit;
+		text-decoration: none;
+		appearance: none;
 		transition:
 			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
 			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)
@@ -85,42 +85,42 @@ export const iconButtonStyles = css`
 	/* ## Size: XS */
 
 	:host([size='xs']) .icon-button {
+		border-radius: var(--semantics-controls-xs-corner-radius);
 		height: var(--semantics-controls-xs-min-size);
 		min-width: var(--semantics-controls-xs-min-size);
 		min-height: var(--semantics-controls-xs-min-size);
 		padding: calc((var(--semantics-controls-xs-min-size) - var(--semantics-buttons-xs-icon-only-icon-size)) / 2);
-		border-radius: var(--semantics-controls-xs-corner-radius);
 	}
 
 	/* ## Size: SM */
 
 	:host([size='sm']) .icon-button {
+		border-radius: var(--semantics-controls-sm-corner-radius);
 		height: var(--semantics-controls-sm-min-size);
 		min-width: var(--semantics-controls-sm-min-size);
 		min-height: var(--semantics-controls-sm-min-size);
 		padding: calc((var(--semantics-controls-sm-min-size) - var(--semantics-buttons-sm-icon-only-icon-size)) / 2);
-		border-radius: var(--semantics-controls-sm-corner-radius);
 	}
 
 	/* ## Size: MD (Default) */
 
 	:host([size='md']) .icon-button,
 	:host(:not([size])) .icon-button {
+		border-radius: var(--semantics-controls-md-corner-radius);
 		height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
 		min-height: var(--semantics-controls-md-min-size);
 		padding: calc((var(--semantics-controls-md-min-size) - var(--semantics-buttons-md-icon-only-icon-size)) / 2);
-		border-radius: var(--semantics-controls-md-corner-radius);
 	}
 
 	/* ## Size: LG */
 
 	:host([size='lg']) .icon-button {
+		border-radius: var(--semantics-controls-lg-corner-radius);
 		height: var(--semantics-controls-lg-min-size);
 		min-width: var(--semantics-controls-lg-min-size);
 		min-height: var(--semantics-controls-lg-min-size);
 		padding: var(--primitives-space-8);
-		border-radius: var(--semantics-controls-lg-corner-radius);
 	}
 
 	/* # Variants */
@@ -161,8 +161,8 @@ export const iconButtonStyles = css`
 	:host([expanded][variant='neutral-tinted']) .icon-button,
 	:host([expanded][variant='secondary']) .icon-button,
 	:host([expanded]:not([variant])) .icon-button {
-		background-color: var(--semantics-buttons-neutral-tinted-is-open-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-open-content-color);
+		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
 	}
 
 	/* ### Open hovered neutral tinted icon button */
@@ -171,8 +171,8 @@ export const iconButtonStyles = css`
 		:host([expanded][variant='neutral-tinted']) .icon-button:hover,
 		:host([expanded][variant='secondary']) .icon-button:hover,
 		:host([expanded]:not([variant])) .icon-button:hover {
-			background-color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-content-color);
+			background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
 		}
 	}
 
@@ -181,8 +181,8 @@ export const iconButtonStyles = css`
 	:host([expanded][variant='neutral-tinted']) .icon-button:active,
 	:host([expanded][variant='secondary']) .icon-button:active,
 	:host([expanded]:not([variant])) .icon-button:active {
-		background-color: var(--semantics-buttons-neutral-tinted-is-open-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-open-is-active-content-color);
+		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
 	}
 
 	/* ## Neutral Transparent */
@@ -241,8 +241,8 @@ export const iconButtonStyles = css`
 
 	:host([expanded][variant='accent-filled']) .icon-button,
 	:host([expanded][variant='primary']) .icon-button {
-		background-color: var(--semantics-buttons-accent-filled-is-open-background-color);
-		color: var(--semantics-buttons-accent-filled-is-open-content-color);
+		background-color: var(--semantics-buttons-accent-filled-is-expanded-background-color);
+		color: var(--semantics-buttons-accent-filled-is-expanded-content-color);
 	}
 
 	/* ### Open hovered accent filled icon button */
@@ -250,8 +250,8 @@ export const iconButtonStyles = css`
 	@media (hover: hover) {
 		:host([expanded][variant='accent-filled']) .icon-button:hover,
 		:host([expanded][variant='primary']) .icon-button:hover {
-			background-color: var(--semantics-buttons-accent-filled-is-open-is-hovered-background-color);
-			color: var(--semantics-buttons-accent-filled-is-open-is-hovered-content-color);
+			background-color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-background-color);
+			color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-content-color);
 		}
 	}
 
@@ -259,8 +259,8 @@ export const iconButtonStyles = css`
 
 	:host([expanded][variant='accent-filled']) .icon-button:active,
 	:host([expanded][variant='primary']) .icon-button:active {
-		background-color: var(--semantics-buttons-accent-filled-is-open-is-active-background-color);
-		color: var(--semantics-buttons-accent-filled-is-open-is-active-content-color);
+		background-color: var(--semantics-buttons-accent-filled-is-expanded-is-active-background-color);
+		color: var(--semantics-buttons-accent-filled-is-expanded-is-active-content-color);
 	}
 
 	/* ## Accent Transparent */
@@ -377,9 +377,9 @@ export const iconButtonStyles = css`
 
 	.icon-button__disclosure-icon {
 		display: flex;
-		flex-shrink: 0;
 		width: var(--_disclosure-icon-size);
 		height: var(--_disclosure-icon-size);
+		flex-shrink: 0;
 	}
 
 	:host([size='sm']) .icon-button__disclosure-icon,

@@ -18,9 +18,9 @@ export const fullBleedSectionStyles = css`
 		--_max-width: var(--semantics-page-sections-body-max-width);
 
 		display: flex;
+		width: 100%;
 		flex-direction: column;
 		align-items: center;
-		width: 100%;
 	}
 
 	:host([hidden]) {
@@ -36,10 +36,11 @@ export const fullBleedSectionStyles = css`
 
 	.full-bleed-section {
 		display: flex;
+		box-sizing: border-box;
+		width: 100%;
 		flex-direction: column;
 		flex-grow: 1;
-		width: 100%;
-		box-sizing: border-box;
+		align-items: center;
 
 		@media (max-width: ${smMax}) {
 			padding-block: var(--semantics-page-sections-sm-margin-block);
@@ -63,6 +64,41 @@ export const fullBleedSectionStyles = css`
 
 		@container layout-container (min-width: ${lgMin}) {
 			padding-block: var(--semantics-page-sections-lg-margin-block);
+		}
+	}
+
+
+	/* # Body */
+
+	.full-bleed-section__body {
+		display: flex;
+		width: 100%;
+		max-width: var(--_max-width);
+		flex-direction: column;
+		flex-grow: 1;
+
+		@media (max-width: ${smMax}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			gap: var(--semantics-page-sections-md-gap);
+		}
+
+		@media (min-width: ${lgMin}) {
+			gap: var(--semantics-page-sections-lg-gap);
+		}
+
+		@container layout-container (max-width: ${smMax}) {
+			gap: var(--semantics-page-sections-sm-gap);
+		}
+
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			gap: var(--semantics-page-sections-md-gap);
+		}
+
+		@container layout-container (min-width: ${lgMin}) {
+			gap: var(--semantics-page-sections-lg-gap);
 		}
 	}
 
@@ -74,38 +110,12 @@ export const fullBleedSectionStyles = css`
 	}
 
 
-	/* # Body */
+	/* # Main */
 
-	.full-bleed-section__body {
+	.full-bleed-section__main {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		width: 100%;
-		max-width: var(--_max-width);
-
-		@media (max-width: ${smMax}) {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			gap: var(--semantics-page-sections-md-gap);
-		}
-
-		@media (min-width: ${lgMin}) {
-			gap: var(--semantics-page-sections-lg-gap);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			gap: var(--semantics-page-sections-sm-gap);
-		}
-
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			gap: var(--semantics-page-sections-md-gap);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
-			gap: var(--semantics-page-sections-lg-gap);
-		}
 	}
 
 
@@ -113,14 +123,5 @@ export const fullBleedSectionStyles = css`
 
 	.full-bleed-section__footer[hidden] {
 		display: none;
-	}
-
-
-	/* # Main */
-
-	.full-bleed-section__main {
-		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
 	}
 `;

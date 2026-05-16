@@ -11,7 +11,7 @@ import '../../lists-and-menus/cells/spacer-cell/spacer-cell.js';
 import '../../lists-and-menus/cells/text-cell/text-cell.js';
 import '../../content/icon/icon.js';
 import '../../status-and-feedback/inline-dialog/inline-dialog.js';
-import { isKeyboardMode } from '../../../utilities/input-modality.js';
+import { isKeyboardMode, isTouchMode } from '../../../utilities/input-modality.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
 import { breakpoints } from '../../../assets/styles/breakpoints.js';
 
@@ -221,11 +221,33 @@ export class NLDDMenuItem extends LitElement {
 		this._submenuMutationObserver = null;
 	}
 
-	_handleClick(): void {
+	_handleClick(event?: Event): void {
 		if (this.disabled) return;
 		// Submenu items don't fire `select` — they open their submenu instead.
 		// Item is either an action OR a submenu opener, not both.
 		if (this._hasSubmenu) {
+			// The button is wired to the submenu via the popoverTargetElement
+			// IDL property (set in the template). That marks it as the
+			// submenu's invoker so the browser excludes the opener from
+			// popover light-dismiss — clicking the opener no longer closes
+			// the submenu underneath it. The flip side: the browser would
+			// also auto-show the popover with its default positioning,
+			// which races our anchor + placement set in `_handleSubmenuOpen`.
+			// preventDefault stops the browser action and lets our flow
+			// own positioning.
+			//
+			// We use the IDL property rather than the `popovertarget`
+			// attribute because the button lives in this menu-item's shadow
+			// root while the submenu is a light-DOM child — attribute-based
+			// ID resolution is tree-scoped and would silently fail to find
+			// the cross-tree target. The IDL property takes a direct element
+			// reference and works across shadow boundaries.
+			event?.preventDefault();
+			// Click on an already-open opener: keep the submenu visible and
+			// the opener visually "active" (aria-expanded + :hover). A second
+			// click should not toggle it closed — that conflicts with the
+			// hover-open semantics of cascade mode.
+			if (this._submenuOpen) return;
 			this.dispatchEvent(new CustomEvent('submenu-open', {
 				detail: { submenu: this._submenuEl, item: this },
 				bubbles: true,
@@ -362,6 +384,30 @@ export class NLDDMenu extends LitElement {
 	 * by one of this menu's items). null when no submenu is open. */
 	private _activeSubmenu: NLDDMenu | null = null;
 	private _activeSubmenuOpener: NLDDMenuItem | null = null;
+	/** Cleanup closure for the currently open child submenu. Invoked by the
+	 * submenu's `toggle→closed` event, but also callable directly from a
+	 * chain-close walk so the upper levels can be torn down without waiting
+	 * for stale toggle events that will never fire (e.g. a hidden drill-in
+	 * parent whose popover state is already 'closed'). */
+	private _activeSubmenuCleanup: ((skipReshow: boolean) => void) | null = null;
+	/** Signal that this menu is hiding itself to make room for a deeper drill-in
+	 * level — its parent's onToggle should skip the normal close cleanup
+	 * (re-parent + re-show) so the chain stays in deeper-level state. */
+	_drillInHidingForDeeper = false;
+	/** Root-owned registry of every submenu currently open in this chain,
+	 * in open order. Lives on the root menu only; submenus reach it via
+	 * `_chainRoot`. Drives `_collapseChain()` so collapsing the whole
+	 * stack never depends on `_activeSubmenu`/`_parentMenu` threading
+	 * (which real interaction can leave stale). @internal */
+	_openChain: NLDDMenu[] = [];
+	/** Back-reference to the chain's root, set on every submenu when it
+	 * opens. Lets `_collapseChain()` find the registry without walking
+	 * the (possibly stale) parent links. null on the root. @internal */
+	_chainRoot: NLDDMenu | null = null;
+	/** Force-teardown for this submenu (detach toggle listener, hide,
+	 * restore DOM, reset state — no parent re-show). Set when the submenu
+	 * opens; called by `_collapseChain()`. @internal */
+	_collapseSelf: (() => void) | null = null;
 
 	/** When this menu is itself a submenu, points to the parent menu that
 	 * opened it. Set by the parent's _handleSubmenuOpen. null on the root.
@@ -376,12 +422,24 @@ export class NLDDMenu extends LitElement {
 
 	private _isOpen = false;
 	private _closedAt = 0;
+	/** Set on the root when a pointer gesture (outside/anchor pointerdown
+	 * or confirmed tap) collapsed the chain. The trailing `click` of that
+	 * same gesture consumes it in `_handleDocumentClick` and must NOT
+	 * reopen — gesture-correlated, so it's reliable on touch where the
+	 * pointerup→click gap exceeds the time-based reopen guard. @internal */
+	_collapsedByPointerGesture = false;
 	private _cleanupAutoUpdate: (() => void) | null = null;
 
 	// — i18n ——————————————————————————————————————————————————————————————————
 
-	private _t(key: keyof NLDDMenuTranslations): string {
-		return this.translations[key] ?? nlddMenuTranslations[key];
+	private _t(key: keyof NLDDMenuTranslations, vars?: Record<string, string | number>): string {
+		let str = this.translations[key] ?? nlddMenuTranslations[key];
+		if (vars) {
+			for (const [k, v] of Object.entries(vars)) {
+				str = str.replace(`{${k}}`, String(v));
+			}
+		}
+		return str;
 	}
 
 	/** Resolved empty text: emptyText attribute takes precedence, then i18n fallback. */
@@ -397,6 +455,52 @@ export class NLDDMenu extends LitElement {
 		const back = this._t('components.menu.back');
 		const parent = this._parentItem?.text ?? '';
 		return parent ? `${back}: ${parent}` : back;
+	}
+
+	// — Status messages (WCAG 4.1.3) ———————————————————————————————————————————
+	//
+	// Drill-in mode swaps the whole view (parent hides, submenu shows, or
+	// vice versa). Focus moves to the new view's first item / opener, so AT
+	// announces *an* element — but not that the view itself changed. The
+	// polite live region in the shadow DOM (see menu.template) carries that
+	// explicit status. Cascade mode keeps both views visible: nothing is
+	// swapped, so it never announces.
+
+	/** Double-rAF handle for the announcement awaiting flush, so a rapid
+	 * follow-up transition can cancel the stale one instead of stacking it. */
+	private _announceRaf = 0;
+	/** Message currently queued (not yet flushed to the region). Used to
+	 * drop a doubled event in the same tick while still allowing the same
+	 * text to be re-announced on a later, genuine transition. */
+	private _pendingAnnouncement = '';
+
+	/**
+	 * Write `message` to this menu's polite live region. Clears first, then
+	 * sets on a double rAF — the empty→text transition is what makes screen
+	 * readers reliably re-announce unchanged-looking content across engines.
+	 *
+	 * Spam control without muting real navigation: a doubled event in the
+	 * same tick (identical message still pending) is dropped; a *different*
+	 * message arriving first cancels the stale pending one (rapid navigation
+	 * announces only the level you land on); once flushed, the same text may
+	 * be announced again for a later genuine transition (e.g. re-entering a
+	 * submenu after going back).
+	 */
+	private _announce(message: string): void {
+		if (!message) return;
+		if (this._announceRaf && message === this._pendingAnnouncement) return;
+		const region = this.shadowRoot?.querySelector<HTMLElement>('.menu__live-region');
+		if (!region) return;
+		if (this._announceRaf) cancelAnimationFrame(this._announceRaf);
+		this._pendingAnnouncement = message;
+		region.textContent = '';
+		this._announceRaf = requestAnimationFrame(() => {
+			this._announceRaf = requestAnimationFrame(() => {
+				this._announceRaf = 0;
+				this._pendingAnnouncement = '';
+				region.textContent = message;
+			});
+		});
 	}
 
 	// — Lifecycle ——————————————————————————————————————————————————————————————
@@ -431,14 +535,99 @@ export class NLDDMenu extends LitElement {
 		return null;
 	}
 
+	/**
+	 * Pick the drill-in side (above vs below the anchor) purely from the
+	 * available viewport space around the anchor — never from content
+	 * size. Content-independent so every level of the chain resolves to
+	 * the same side and a bigger submenu scrolls internally rather than
+	 * flipping the whole stack. Keeps the configured alignment suffix
+	 * (`-start` / `-end`) from `placement`.
+	 */
+	private _resolveDrillInPlacement(anchorEl: Element): string {
+		const base = this.placement || 'bottom-start';
+		const align = base.includes('-') ? base.slice(base.indexOf('-')) : '';
+		const rect = anchorEl.getBoundingClientRect();
+		const margin = this._cssPx('--_viewport-margin');
+		const spaceBelow = window.innerHeight - rect.bottom - margin;
+		const spaceAbove = rect.top - margin;
+		const side = spaceBelow >= spaceAbove ? 'bottom' : 'top';
+		return `${side}${align}`;
+	}
+
+	/**
+	 * Reflect this menu's open state on the anchor so an anchor button (or
+	 * any element exposing an `expanded` IDL property) shows the active
+	 * "is-expanded" visual while we're open. Skip menu-items as anchors —
+	 * they manage their own `_submenuOpen` lifecycle and don't have an
+	 * `expanded` property. Also default `popupType` to 'menu' / 'listbox'
+	 * (matching this menu's variant) when the anchor supports it and the
+	 * consumer hasn't already chosen a value, so screen readers announce
+	 * the popup role without each consumer having to set it manually.
+	 *
+	 * Finally, drive the anchor's `popoverTargetAction` so the browser's
+	 * native invoker action always matches the current state explicitly:
+	 * `'hide'` while open, `'show'` while closed. We avoid `'toggle'` on
+	 * purpose — toggle re-evaluates the popover's live state at click time
+	 * and would re-open the menu if it had just been light-dismissed
+	 * milliseconds earlier (the source of the "menu briefly closes and
+	 * reopens" bug). With explicit show/hide, the worst case is a no-op
+	 * (e.g. `'hide'` on an already-closed menu) — never a spurious open.
+	 *
+	 * The invoker association (`popoverTargetElement`) is set elsewhere
+	 * — persistently on anchor change rather than per-toggle — so the
+	 * browser's light-dismiss exclusion is in place from the very first
+	 * click instead of only after the menu has already opened once.
+	 */
+	private _syncAnchorPopupState(isOpen: boolean): void {
+		const anchor = this._getAnchorEl() as HTMLElement & {
+			expanded?: boolean;
+			popupType?: string;
+			popoverTargetAction?: 'toggle' | 'show' | 'hide';
+		} | null;
+		if (!anchor) return;
+		if ('expanded' in anchor) anchor.expanded = isOpen;
+		// Seed a valid aria-haspopup when the anchor has no usable popup
+		// type. Falsy covers unset (undefined/null) AND `popup-type=""` —
+		// an empty string is not a valid aria-haspopup token, so it must
+		// still be seeded rather than left invalid. An intentional opt-out
+		// is `popup-type="false"`, which is truthy and preserved here.
+		if (isOpen && 'popupType' in anchor && !anchor.popupType) {
+			anchor.popupType = this.variant === 'listbox' ? 'listbox' : 'menu';
+		}
+		if ('popoverTargetAction' in anchor) {
+			anchor.popoverTargetAction = isOpen ? 'hide' : 'show';
+		}
+	}
+
 	// — Event handlers ————————————————————————————————————————————————————————
 
 	private _handleDocumentClick = (event: MouseEvent): void => {
 		if (this.anchorElement) return;
+		// Consume the same-gesture collapse marker (set when an outside or
+		// anchor pointer gesture collapsed the chain). Read+clear for every
+		// click so it never leaks past a single gesture.
+		const collapsedByGesture = this._collapsedByPointerGesture;
+		this._collapsedByPointerGesture = false;
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl) return;
 		const path = event.composedPath();
 		if (!path.includes(anchorEl)) return;
+		// This click is the tail of the very gesture that just collapsed the
+		// chain (e.g. tapping the anchor from deep in a drill-in submenu:
+		// the submenu's pointerdown/tap already collapsed). It must not
+		// reopen. Gesture-correlated, so reliable even when the
+		// pointerup→click gap exceeds the time-based reopen guard on touch.
+		if (collapsedByGesture) return;
+		// Drill-in: the root is hidden while a submenu shows, so `_isOpen`
+		// is false on the root even though the menu is visibly open. A
+		// plain toggle would `showPopover()` the root — i.e. bounce back
+		// to the main level. The anchor is a toggle: if anything in the
+		// chain is open, clicking it collapses the whole stack (registry-
+		// driven, so it works even if chain links went stale).
+		if (this._drillInMode && (this._isOpen || this._openChain.length > 0)) {
+			this._collapseChain();
+			return;
+		}
 		if (this._isOpen) {
 			(this as HTMLElement).hidePopover();
 		} else if (Date.now() - this._closedAt > POPOVER_REOPEN_GUARD_MS) {
@@ -456,25 +645,25 @@ export class NLDDMenu extends LitElement {
 	// right edge if floating-ui flipped it to the other side). The wedge
 	// stays fixed until the cursor enters the submenu, so the user has a
 	// predictable, stable area to traverse without losing the submenu.
-	// While the cursor is inside the triangle, peer items don't activate
-	// and the linger-close timer is held off.
+	// While the cursor is inside the triangle, peer items don't activate.
+	//
+	// We deliberately do NOT auto-close on hover-out: moving the cursor to
+	// empty space outside every menu leaves the chain open. The native
+	// popover light-dismiss takes care of click-outside, which is the only
+	// gesture that should collapse the chain.
 
 	private _hoverOpenTimer: number | null = null;
-	private _hoverCloseTimer: number | null = null;
 	private _safeTriangleListener: ((e: MouseEvent) => void) | null = null;
 	private _safeTriangleStallTimer: number | null = null;
 	private _lastCursorPos: { x: number, y: number } | null = null;
 	private _safeTriangleApex: { x: number, y: number } | null = null;
 	private _safeTriangleSubmenu: NLDDMenu | null = null;
 	private _movingTowardSubmenu = false;
-	/** Wait this long after cursor stops being on a path toward the submenu
-	 * before closing. Smooths over brief cursor stalls and accidental nudges. */
-	private static readonly _SUBMENU_LINGER_CLOSE_MS = 300;
 	/** When the cursor sits motionless inside the safe triangle for this
 	 * long, dismiss the triangle and let whatever item is under the cursor
 	 * become interactive. Without this, a paused cursor would stay
 	 * "protected" indefinitely and the user couldn't peer-hover. */
-	private static readonly _SAFE_TRIANGLE_STALL_DISMISS_MS = 750;
+	private static readonly _SAFE_TRIANGLE_STALL_DISMISS_MS = 500;
 	/** Pull the wedge apex this many pixels away from the submenu edge (i.e.
 	 * to the left when the submenu is on the right). Widens the wedge near
 	 * the cursor so brief diagonal wobble doesn't pop the cursor out at the
@@ -485,6 +674,9 @@ export class NLDDMenu extends LitElement {
 	private static readonly _SAFE_TRIANGLE_APEX_X_OFFSET = 4;
 
 	private _handleMenuItemMouseenter = (event: MouseEvent): void => {
+		// Touch suppress: synthesised mouseenter from touch (e.g. lifting
+		// after a scroll gesture on a long menu) shouldn't paint a highlight.
+		if (isTouchMode()) return;
 		const item = (event.target as Element).closest('nldd-menu-item') as NLDDMenuItem | null;
 		if (!item) return;
 		this._activateItem(item);
@@ -517,16 +709,11 @@ export class NLDDMenu extends LitElement {
 
 		this._setHighlight(item);
 
-		// Cursor is on a real item now (not in transit) — cancel any pending
-		// linger-close from a previous sweep through.
-		this._cancelHoverClose();
-
 		if (this._drillInMode) return; // Touch / narrow viewport: no hover-open.
 
 		// Settled on a peer item (not the active submenu's opener) — close the
 		// active submenu immediately. If this peer itself has a submenu, the
-		// hover-open below will then schedule its own. We don't wait for the
-		// linger-close: the user has already committed to a different item.
+		// hover-open below will then schedule its own.
 		if (this._activeSubmenu && item !== this._activeSubmenuOpener) {
 			(this._activeSubmenu as HTMLElement).hidePopover?.();
 		}
@@ -557,8 +744,9 @@ export class NLDDMenu extends LitElement {
 	private _handleMouseleave = (): void => {
 		if (this.variant !== 'listbox') this._clearHighlight();
 		this._cancelHoverOpen();
-		// The hover-guard takes over close behaviour while the cursor is
-		// outside both the parent menu and the active submenu.
+		// No auto-close on hover-out: leaving the menu rect leaves the chain
+		// open. Click-outside (popover light-dismiss) is the only gesture
+		// that collapses the chain.
 	};
 
 	/** Start the global mouse tracker that powers the safe triangle. Called
@@ -603,9 +791,9 @@ export class NLDDMenu extends LitElement {
 				if (openerRect && lastOnOpener && (p.y > openerRect.bottom || p.y < openerRect.top)) {
 					this._safeTrianglePinApex(p, openerRect);
 				} else {
-					// 3c. Exited sideways — no protection, fall through to
-					// linger-close so the submenu closes if cursor leaves
-					// the menu entirely.
+					// 3c. Exited sideways — no protection. Drop the apex and
+					// activate whatever item is under the cursor so peers
+					// take over immediately.
 					this._safeTriangleSidewaysExit(p, wasMoving);
 				}
 			} else {
@@ -614,16 +802,10 @@ export class NLDDMenu extends LitElement {
 			}
 			this._lastCursorPos = p;
 
-			// 5. Common per-frame work: highlight, recovery, timers.
+			// 5. Common per-frame work: highlight, recovery, stall timer.
 			this._safeTriangleSyncOpenerHighlight();
 			this._safeTriangleDirectionReversalRecovery(p, wasMoving);
 			this._safeTriangleScheduleStall();
-
-			if (this._movingTowardSubmenu) {
-				this._cancelHoverClose();
-				return;
-			}
-			this._safeTriangleMaybeScheduleLingerClose(p);
 		};
 
 		window.addEventListener('mousemove', this._safeTriangleListener);
@@ -637,7 +819,6 @@ export class NLDDMenu extends LitElement {
 	 * return trip to the opener and re-pin a fresh apex for another exit. */
 	private _safeTriangleArrived(p: { x: number, y: number }): void {
 		this._movingTowardSubmenu = false;
-		this._cancelHoverClose();
 		this._lastCursorPos = p;
 		this._safeTriangleApex = null;
 		this._activeSubmenuOpener?.removeAttribute('highlighted');
@@ -757,24 +938,6 @@ export class NLDDMenu extends LitElement {
 		}, NLDDMenu._SAFE_TRIANGLE_STALL_DISMISS_MS);
 	}
 
-	/** Schedule submenu close when cursor sits outside the parent menu rect.
-	 * No-op if cursor is inside the menu (peer-hover logic handles it) or
-	 * if a close is already scheduled. */
-	private _safeTriangleMaybeScheduleLingerClose(p: { x: number, y: number }): void {
-		const submenu = this._safeTriangleSubmenu;
-		if (!submenu) return;
-		const rootRect = (this as HTMLElement).getBoundingClientRect();
-		const inRoot = NLDDMenu._rectContainsPoint(rootRect, p);
-		if (!inRoot && this._hoverCloseTimer === null) {
-			this._hoverCloseTimer = window.setTimeout(() => {
-				this._hoverCloseTimer = null;
-				if (this._activeSubmenu === submenu) {
-					(submenu as HTMLElement).hidePopover?.();
-				}
-			}, NLDDMenu._SUBMENU_LINGER_CLOSE_MS);
-		}
-	}
-
 	/** True when the rect contains the point (inclusive). Returns false for
 	 * a missing rect or point — convenient for the optional-chained call
 	 * sites in the safe-triangle logic. */
@@ -844,18 +1007,11 @@ export class NLDDMenu extends LitElement {
 		}
 	}
 
-	private _cancelHoverClose(): void {
-		if (this._hoverCloseTimer !== null) {
-			clearTimeout(this._hoverCloseTimer);
-			this._hoverCloseTimer = null;
-		}
-	}
-
 	/** Recursively checks whether a point sits inside the given menu OR any of
-	 * its descendant submenus. Used by the hover guard so a cursor deep inside
-	 * a nested submenu still reads as "in the safe area" for ancestor menus —
-	 * without this, an ancestor's linger-close fires and cascades the whole
-	 * chain shut. */
+	 * its descendant submenus. Used by the safe-triangle "arrived" check so a
+	 * cursor that has continued past the immediate submenu into a deeper
+	 * nested submenu still reads as "in the safe area" — without the recursive
+	 * walk we'd treat the deeper hover as an exit and re-pin a stale apex. */
 	private static _isPointInMenuTree(p: { x: number, y: number }, menu: NLDDMenu): boolean {
 		const r = menu.getBoundingClientRect();
 		if (p.x >= r.left && p.x <= r.right && p.y >= r.top && p.y <= r.bottom) return true;
@@ -901,8 +1057,7 @@ export class NLDDMenu extends LitElement {
 	 *
 	 * Cached MediaQueryList shared across instances — `matchMedia()` returns
 	 * a live object and re-evaluating it for every mouseenter/submenu-open
-	 * is wasteful. Instances also subscribe to `change` so resize events
-	 * naturally route through `_handleViewportResize`.
+	 * is wasteful.
 	 */
 	private static _drillInModeQuery: MediaQueryList | null = null;
 	private static _getDrillInModeQuery(): MediaQueryList {
@@ -961,6 +1116,13 @@ export class NLDDMenu extends LitElement {
 		submenu._parentMenu = this;
 		submenu._parentItem = item;
 
+		// Register this submenu in the root's open-chain so `_collapseChain()`
+		// can tear the whole stack down without relying on parent links being
+		// intact at collapse time. Captured here, while links are fresh.
+		const chainRoot = this._rootMenu;
+		submenu._chainRoot = chainRoot;
+		if (!chainRoot._openChain.includes(submenu)) chainRoot._openChain.push(submenu);
+
 		if (this._drillInMode) {
 			// Drill-in: anchor to the root's anchor so all submenus open at the
 			// same screen position — visually stacks. Inherit root placement
@@ -985,17 +1147,58 @@ export class NLDDMenu extends LitElement {
 
 		// Listen once for the submenu's close so we can clear state, ARIA and
 		// any leftover safe-triangle plumbing from the cascade open path.
-		const onToggle = (e: Event) => {
-			const tg = e as ToggleEvent;
-			if (tg.newState !== 'closed') return;
+		const wasDrillIn = this._drillInMode;
+		// Shared teardown — runs from `toggle→closed` in the normal flow, and
+		// invoked directly from a select-chain-close walk for hidden ancestors
+		// whose toggle event will never fire (they were already closed when
+		// the deeper level took over the screen). `skipReshow` lets the chain
+		// walk suppress the parent-restore step so the whole stack collapses.
+		const cleanup = (skipReshow: boolean) => {
 			submenu.removeEventListener('toggle', onToggle);
 			if (this._activeSubmenu === submenu) {
 				this._activeSubmenu = null;
 				this._activeSubmenuOpener = null;
+				this._activeSubmenuCleanup = null;
 			}
 			submenu._parentMenu = null;
 			submenu._parentItem = null;
+			// Deregister from the root's open-chain registry.
+			const ci = chainRoot._openChain.indexOf(submenu);
+			if (ci !== -1) chainRoot._openChain.splice(ci, 1);
+			submenu._collapseSelf = null;
+			submenu._chainRoot = null;
 			item._submenuOpen = false;
+			// Drill-in: restore the submenu to its original DOM position and
+			// re-show the parent so the user returns to the previous view.
+			// Captured at open-time so a viewport flip during navigation
+			// doesn't leave the chain in an inconsistent state.
+			if (wasDrillIn) {
+				if (drillInOriginalParent && drillInOriginalParent.isConnected) {
+					drillInOriginalParent.insertBefore(submenu, drillInNextSibling);
+				} else {
+					// Original parent was removed from the DOM while the
+					// submenu was reparented to <body> (SPA navigation,
+					// story teardown, etc.). There's nowhere to restore it
+					// to — drop the orphaned node instead of leaking a
+					// detached-but-connected element in <body> forever.
+					submenu.remove();
+				}
+				if (!skipReshow && this.isConnected && !(this as HTMLElement).matches(':popover-open')) {
+					(this as HTMLElement).showPopover?.();
+				}
+				// One level back (back button / ArrowLeft / Esc) — announce the
+				// destination view on the now-visible parent. `skipReshow` is a
+				// collapse-the-whole-chain teardown (select / outside-tap /
+				// resize): that's a dismiss, not a back-nav, so it stays silent.
+				if (!skipReshow && this.isConnected) {
+					const dest = this._parentItem?.text;
+					this._announce(
+						dest
+							? this._t('components.menu.submenu-back-action', { title: dest })
+							: this._t('components.menu.back'),
+					);
+				}
+			}
 			// Drop any safe-triangle "in transit" highlight on the opener —
 			// without this, an opener whose submenu was closed via stall-
 			// dismissal or programmatic hidePopover keeps the bold accent
@@ -1008,7 +1211,6 @@ export class NLDDMenu extends LitElement {
 			if (!item.hasAttribute('data-focused')) {
 				item.removeAttribute('highlighted');
 			}
-			this._cancelHoverClose();
 			this._stopSafeTriangle();
 			// Counterpart to `submenu-open` — consumers tracking submenu state
 			// via declarative event listeners (rather than reaching into our
@@ -1019,14 +1221,64 @@ export class NLDDMenu extends LitElement {
 				composed: false,
 			}));
 		};
+		const onToggle = (e: Event) => {
+			const tg = e as ToggleEvent;
+			if (tg.newState !== 'closed') return;
+			// Submenu is hiding to make room for a deeper drill — leave the
+			// chain state alone, keep the listener around for the eventual
+			// real close.
+			if (submenu._drillInHidingForDeeper) {
+				submenu._drillInHidingForDeeper = false;
+				return;
+			}
+			// A real toggle-close = one level back: tear down and re-show
+			// the parent. Collapsing the whole chain doesn't come through
+			// here — `_collapseChain()` drives `_collapseSelf` directly.
+			cleanup(false);
+		};
 		submenu.addEventListener('toggle', onToggle);
+		this._activeSubmenuCleanup = cleanup;
+		// Force-teardown used by `_collapseChain()`: detach the toggle
+		// listener (so this hide doesn't also run the back-nav onToggle),
+		// hide, then run the shared cleanup with no parent re-show.
+		submenu._collapseSelf = () => {
+			submenu.removeEventListener('toggle', onToggle);
+			(submenu as HTMLElement).hidePopover?.();
+			cleanup(true);
+		};
+
+		// Drill-in: re-parent the submenu to <body> before show so it isn't
+		// a popover-stack descendant of the parent — that lets us close the
+		// parent without cascading the submenu closed. Original placement is
+		// restored when the submenu closes.
+		let drillInOriginalParent: HTMLElement | null = null;
+		let drillInNextSibling: Node | null = null;
+		if (wasDrillIn) {
+			drillInOriginalParent = submenu.parentElement;
+			drillInNextSibling = submenu.nextSibling;
+			document.body.appendChild(submenu);
+		}
 
 		(submenu as HTMLElement).showPopover?.();
 
-		// Start the hover triangle tracker for cascade-mode submenus only.
+		if (wasDrillIn) {
+			// View just swapped to the submenu — announce the level we
+			// entered (the opener's label is this view's title, same string
+			// the back button shows). Fires on the now-visible submenu.
+			submenu._announce(
+				submenu._t('components.menu.submenu-title', { title: item.text }),
+			);
+			// Signal to our own parent's onToggle (if any) that this hide is
+			// "intentional, making room for a deeper drill" — skip the normal
+			// close cleanup that would re-parent us back and re-open them.
+			this._drillInHidingForDeeper = true;
+			(this as HTMLElement).hidePopover?.();
+		}
+
+		// Start the safe-triangle tracker for cascade-mode submenus only.
 		// Drill-in mode replaces the parent view, so there's no "moving toward"
 		// path between two visible menus to protect.
-		if (!this._drillInMode) {
+		if (!wasDrillIn) {
 			// Wait one frame so the submenu's getBoundingClientRect reflects its
 			// final position (computePosition runs in the toggle handler).
 			requestAnimationFrame(() => {
@@ -1053,36 +1305,183 @@ export class NLDDMenu extends LitElement {
 		this._clearHighlight();
 	};
 
-	/** Last cached drill-in mode value, so we only act when it actually
-	 * changes across a resize event. */
-	private _lastDrillInMode: boolean | null = null;
+	// — Touch-scroll press-flash suppression ————————————————————————————————
+	//
+	// On touch, pressing an item sets :active and the synthetic sticky
+	// :hover lands on it, so `.menu__item:active:hover` flashes. If the
+	// gesture becomes an internal scroll (cramped menu), :active lingers
+	// until the browser recognises the pan and the highlight stays for
+	// the whole scroll. We detect a scroll from the touch delta and set
+	// `scroll-active` on the host; the styles neutralise the press flash
+	// while it's set. A pure tap never moves past the threshold, so its
+	// brief press feedback is preserved.
 
-	/** Close any open submenu when the cascade ↔ drill-in threshold is
-	 * crossed during a resize. Switching the rendering of an already-open
-	 * submenu mid-flight (anchor + placement + back button) is more
-	 * disorienting than a clean reset to the root view. */
-	private _handleViewportResize = (): void => {
-		const current = this._drillInMode;
-		if (this._lastDrillInMode === null) {
-			this._lastDrillInMode = current;
-			return;
+	private static readonly _TOUCH_SCROLL_THRESHOLD_PX = 8;
+	private _touchStartX = 0;
+	private _touchStartY = 0;
+
+	/** @internal */
+	_handleMenuTouchStart = (event: TouchEvent): void => {
+		const t = event.touches[0];
+		if (!t) return;
+		this._touchStartX = t.clientX;
+		this._touchStartY = t.clientY;
+		this.removeAttribute('scroll-active');
+	};
+
+	/** @internal */
+	_handleMenuTouchMove = (event: TouchEvent): void => {
+		if (this.hasAttribute('scroll-active')) return;
+		const t = event.touches[0];
+		if (!t) return;
+		const dx = t.clientX - this._touchStartX;
+		const dy = t.clientY - this._touchStartY;
+		if (Math.hypot(dx, dy) > NLDDMenu._TOUCH_SCROLL_THRESHOLD_PX) {
+			this.setAttribute('scroll-active', '');
 		}
-		if (this._lastDrillInMode === current) return;
-		this._lastDrillInMode = current;
-		if (this._activeSubmenu) {
-			(this._activeSubmenu as HTMLElement).hidePopover?.();
-		}
+	};
+
+	/** @internal */
+	_handleMenuTouchEnd = (): void => {
+		this.removeAttribute('scroll-active');
+	};
+
+	/** Close the menu on a window resize. Floating-UI's autoUpdate keeps
+	 * the position in sync with scrolls (where users genuinely expect the
+	 * menu to follow the anchor), but a full window resize is a layout-
+	 * shifting interaction the user isn't currently tracking — better to
+	 * dismiss with a clean slate than to chase the anchor across a
+	 * reflow, repaint a flipped placement, or get stuck mid-flight when
+	 * crossing the cascade ↔ drill-in viewport threshold. The window
+	 * listener is wired only while we're open and torn down on close, so
+	 * idle menus pay nothing. */
+	private _handleWindowResize = (): void => {
+		this._collapseChain();
 	};
 
 	/**
-	 * Close this menu when a `select` event bubbles up — selecting an item
-	 * anywhere in the menu (or any descendant submenu) closes the entire
-	 * popover chain so the action feels final. The select event is dispatched
-	 * with `composed: true` so it crosses every ancestor menu in the chain.
+	 * Collapse the entire menu chain at once — root + every open submenu —
+	 * with no "back one level" re-show. Used when the action is final:
+	 * selecting an item, clicking the anchor, clicking/tapping outside, or
+	 * a viewport resize.
+	 *
+	 * Driven by the root's `_openChain` registry and each submenu's
+	 * `_collapseSelf`, so it never depends on `_activeSubmenu` /
+	 * `_parentMenu` threading being intact at collapse time — real
+	 * interaction can leave those stale, which was the source of the
+	 * recurring "anchor click doesn't close after the 2nd navigation"
+	 * bug. Idempotent: every chain level's `select` listener may call it,
+	 * but the first run empties the registry so the rest are no-ops.
 	 */
-	private _handleSelectChainClose = (): void => {
-		(this as HTMLElement).hidePopover?.();
+	private _collapseChain = (): void => {
+		const root = this._chainRoot ?? this;
+		root._closedAt = Date.now();
+		// Snapshot + clear first so the re-entrant cleanup splices are
+		// no-ops and a trailing same-gesture call finds nothing to do.
+		const chain = root._openChain;
+		root._openChain = [];
+		for (let i = chain.length - 1; i >= 0; i--) chain[i]._collapseSelf?.();
+		if (root._isOpen) (root as HTMLElement).hidePopover?.();
 	};
+
+	/**
+	 * Drill-in click-outside: collapse the entire chain.
+	 *
+	 * In drill-in mode only the deepest level is `:popover-open` — popover
+	 * light-dismiss would close just that level, and our onToggle cleanup
+	 * would helpfully re-show the previous level. That's the wrong outcome
+	 * for a click outside the menu: the user is dismissing the whole menu,
+	 * not navigating one step back. Detect the outside click here and route
+	 * to `_collapseChain`, which collapses every level at once.
+	 *
+	 * Cascade mode falls back to the native popover stack behaviour: a click
+	 * outside light-dismisses every popover down to the click target's
+	 * closest ancestor popover, so no extra handling is needed there.
+	 *
+	 * For mouse/pen, pointerdown (capture) is the right hook: it fires
+	 * before light-dismiss does its work, so by the time the toggle event
+	 * fires our chain walk has already detached listeners and prevented
+	 * the parent re-show.
+	 *
+	 * For touch, an outside pointerdown is ambiguous: it's also how a page
+	 * scroll begins. Closing the chain on the scroll-start would be
+	 * inconsistent with a root menu (which native light-dismiss leaves
+	 * open while you scroll outside it) and annoying. So on touch we defer
+	 * the decision: track the pointer and only chain-close on a confirmed
+	 * tap (pointerup without crossing the scroll threshold); a scroll
+	 * leaves the chain untouched, matching root-menu behaviour.
+	 */
+	private _handleDocumentPointerdown = (event: PointerEvent): void => {
+		if (!this._isOpen) return;
+		if (!this._drillInMode) return;
+		// Only nested drill-in submenus need this: they form a hidden chain
+		// of ancestors that won't auto-collapse on outside click. A root
+		// menu has nothing to chain-close — popover light-dismiss + the
+		// invoker's `popovertargetaction` handle outside / anchor clicks
+		// natively. Without this guard a click on the anchor of a root
+		// drill-in menu would fire chain-close → hide → auto-sync flips
+		// `popovertargetaction` to 'show' → click default action reopens
+		// (the "menu sluit en opent consistent weer" bug on small screens).
+		if (!this._isSubmenu) return;
+		// Walk this menu + every parent in the drill-in chain. If the
+		// pointerdown landed inside any of them, it's an in-chain click
+		// (e.g. on the back button, on the menu background, on an item)
+		// and the existing handlers take care of it.
+		const path = event.composedPath();
+		let menu: NLDDMenu | null = this;
+		while (menu) {
+			if (path.includes(menu)) return;
+			menu = menu._parentMenu;
+		}
+		// Touch: defer to a confirmed tap so a page-scroll started outside
+		// the chain doesn't collapse it (consistent with the root menu,
+		// which stays open while scrolling outside).
+		if (event.pointerType === 'touch') {
+			this._outsideTapStartX = event.clientX;
+			this._outsideTapStartY = event.clientY;
+			this._teardownOutsideTap();
+			this._outsideTapTracking = true;
+			document.addEventListener('pointermove', this._outsideTapMove, true);
+			document.addEventListener('pointerup', this._outsideTapEnd, true);
+			document.addEventListener('pointercancel', this._outsideTapCancel, true);
+			return;
+		}
+		(this._chainRoot ?? this)._collapsedByPointerGesture = true;
+		this._collapseChain();
+	};
+
+	private _outsideTapStartX = 0;
+	private _outsideTapStartY = 0;
+	private _outsideTapTracking = false;
+
+	private _outsideTapMove = (e: PointerEvent): void => {
+		const dx = e.clientX - this._outsideTapStartX;
+		const dy = e.clientY - this._outsideTapStartY;
+		if (Math.hypot(dx, dy) > NLDDMenu._TOUCH_SCROLL_THRESHOLD_PX) {
+			// Became a scroll — leave the chain open.
+			this._teardownOutsideTap();
+		}
+	};
+
+	private _outsideTapEnd = (): void => {
+		const wasTap = this._outsideTapTracking;
+		this._teardownOutsideTap();
+		if (wasTap) {
+			(this._chainRoot ?? this)._collapsedByPointerGesture = true;
+			this._collapseChain();
+		}
+	};
+
+	private _outsideTapCancel = (): void => {
+		this._teardownOutsideTap();
+	};
+
+	private _teardownOutsideTap(): void {
+		this._outsideTapTracking = false;
+		document.removeEventListener('pointermove', this._outsideTapMove, true);
+		document.removeEventListener('pointerup', this._outsideTapEnd, true);
+		document.removeEventListener('pointercancel', this._outsideTapCancel, true);
+	}
 
 	// — Lifecycle callbacks ————————————————————————————————————————————————————
 
@@ -1103,15 +1502,8 @@ export class NLDDMenu extends LitElement {
 		this.addEventListener('mouseleave', this._handleMouseleave);
 		this.addEventListener('menu-item-focused', this._handleMenuItemFocused);
 		this.addEventListener('submenu-open', this._handleSubmenuOpen);
-		this.addEventListener('select', this._handleSelectChainClose);
+		this.addEventListener('select', this._collapseChain);
 		document.addEventListener('click', this._handleDocumentClick);
-		// Close any open submenu when the viewport crosses the cascade ↔ drill-in
-		// threshold mid-session — re-rendering between modes mid-flight would
-		// require recomputing anchors and is more disorienting than a clean reset.
-		// Subscribe to the MediaQueryList's `change` event rather than every
-		// `window.resize` frame: it fires only when the threshold is actually
-		// crossed and matches the comment above the cached query.
-		NLDDMenu._getDrillInModeQuery().addEventListener('change', this._handleViewportResize);
 	}
 
 	override firstUpdated(): void {
@@ -1134,11 +1526,15 @@ export class NLDDMenu extends LitElement {
 		this.removeEventListener('mouseleave', this._handleMouseleave);
 		this.removeEventListener('menu-item-focused', this._handleMenuItemFocused);
 		this.removeEventListener('submenu-open', this._handleSubmenuOpen);
-		this.removeEventListener('select', this._handleSelectChainClose);
+		this.removeEventListener('select', this._collapseChain);
 		document.removeEventListener('click', this._handleDocumentClick);
-		NLDDMenu._getDrillInModeQuery().removeEventListener('change', this._handleViewportResize);
+		// Defensive: the pointerdown + resize listeners are added on open
+		// and removed on close, but if the menu is torn down mid-open we'd
+		// otherwise leak the global listeners.
+		document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
+		this._teardownOutsideTap();
+		window.removeEventListener('resize', this._handleWindowResize);
 		this._cancelHoverOpen();
-		this._cancelHoverClose();
 		this._stopSafeTriangle();
 		if (this._typeaheadTimer !== null) {
 			clearTimeout(this._typeaheadTimer);
@@ -1303,28 +1699,47 @@ export class NLDDMenu extends LitElement {
 		return this.getHighlighted()?.id ?? '';
 	}
 
+	/** Read a px-valued CSS custom property as a number. `parseFloat`
+	 * keeps fractional pixels; an unset/NaN value falls back to 0. */
+	private _cssPx(name: string): number {
+		const v = parseFloat(getComputedStyle(this).getPropertyValue(name));
+		return Number.isNaN(v) ? 0 : v;
+	}
+
 	/** Recalculate position and size relative to the anchor element. */
 	public async reposition(): Promise<void> {
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl || !this._isOpen) return;
 
-		const viewportMargin = parseInt(
-			getComputedStyle(this).getPropertyValue('--_viewport-margin')
-		);
+		const viewportMargin = this._cssPx('--_viewport-margin');
 
 		// Cascade-mode submenus: shift up by the menu's own padding so the
 		// first submenu item lines up vertically with the parent opener item.
 		// Without this, the submenu's top edge aligns with the opener and the
 		// inner padding pushes the first item down, leaving a visible step.
 		const submenuPadding = (this._isSubmenu && !this._drillInMode)
-			? parseInt(getComputedStyle(this).getPropertyValue('--_menu-padding')) || 0
+			? this._cssPx('--_menu-padding')
 			: 0;
 
+		// Drill-in: pick the side from the available space around the
+		// anchor — recomputed every reposition, but content-independent so
+		// a larger submenu never changes it (no mid-chain jump). `flip` is
+		// content-dependent and WOULD jump the stack when a bigger submenu
+		// doesn't fit, so it's dropped here; `size` caps the height and
+		// the menu scrolls internally instead. Re-resolving each time (vs
+		// freezing) keeps it following the anchor on scroll and re-picking
+		// the roomiest side after a close + reopen. Cascade keeps `flip`
+		// (submenus open beside the opener, content-fit matters there).
+		const drillIn = this._drillInMode;
+		const effectivePlacement = drillIn
+			? this._resolveDrillInPlacement(anchorEl)
+			: this.placement;
+
 		const { x, y } = await computePosition(anchorEl, this, {
-			placement: this.placement as import('@floating-ui/dom').Placement,
+			placement: effectivePlacement as import('@floating-ui/dom').Placement,
 			middleware: [
 				offset({ mainAxis: 0, alignmentAxis: -submenuPadding }),
-				flip({ padding: viewportMargin }),
+				...(drillIn ? [] : [flip({ padding: viewportMargin })]),
 				shift({ padding: viewportMargin }),
 				size({
 					padding: viewportMargin,
@@ -1486,10 +1901,23 @@ export class NLDDMenu extends LitElement {
 		const toggleEvent = event as ToggleEvent;
 		this._isOpen = toggleEvent.newState === 'open';
 
+		// Sync the anchor's "is-expanded" state so an anchor button (or any
+		// element exposing an `expanded` property) shows the active visual
+		// while we're open. Skip menu-items as anchors — submenu openers
+		// manage their own `_submenuOpen` lifecycle and don't have an
+		// `expanded` prop. Also opt the anchor into menu/listbox semantics
+		// via `popupType` when it supports it and the consumer hasn't
+		// already chosen a value, so screen readers announce the role.
+		this._syncAnchorPopupState(this._isOpen);
+
 		if (toggleEvent.newState !== 'open') {
 			this._closedAt = Date.now();
 			this._cleanupAutoUpdate?.();
 			this._cleanupAutoUpdate = null;
+			window.removeEventListener('resize', this._handleWindowResize);
+			document.removeEventListener('pointerdown', this._handleDocumentPointerdown, true);
+			this._teardownOutsideTap();
+			this._clearHighlight();
 			return;
 		}
 
@@ -1505,6 +1933,14 @@ export class NLDDMenu extends LitElement {
 		if (anchorEl) {
 			this._cleanupAutoUpdate = autoUpdate(anchorEl, this, () => this.reposition());
 		}
+		// Wired only while open so idle menus pay nothing and we don't
+		// accidentally close other menus on the page during a resize or
+		// during an unrelated pointerdown elsewhere.
+		window.addEventListener('resize', this._handleWindowResize, { passive: true });
+		// Capture so we run before the popover light-dismiss algorithm
+		// processes the pointerdown — gives us a chance to redirect the
+		// dismissal into a chain-close in drill-in mode.
+		document.addEventListener('pointerdown', this._handleDocumentPointerdown, true);
 
 		await this.updateComplete;
 		if (this.variant !== 'listbox') {

@@ -41,20 +41,20 @@ export const buttonStyles = css`
 	/* # Block */
 
 	.button {
-		appearance: none;
-		border: none;
-		margin: 0;
-		padding: 0;
-		background: none;
-		font: inherit;
 		box-sizing: border-box;
-		text-decoration: none;
 		display: inline-flex;
-		align-items: center;
-		justify-content: center;
+		margin: 0;
+		border: none;
+		background: none;
 		width: var(--_width);
 		max-width: 100%;
+		padding: 0;
+		align-items: center;
+		justify-content: center;
+		font: inherit;
+		text-decoration: none;
 		text-wrap: pretty;
+		appearance: none;
 		transition:
 			background-color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default),
 			color var(--primitives-transition-duration-fast) var(--primitives-transition-easing-default)
@@ -90,35 +90,35 @@ export const buttonStyles = css`
 	/* ## Size: XS */
 
 	:host([size="xs"]) .button {
+		border-radius: var(--semantics-controls-xs-corner-radius);
 		min-height: var(--semantics-controls-xs-min-size);
 		min-width: var(--semantics-controls-xs-min-size);
 		padding: var(--semantics-controls-xs-block-padding) var(--semantics-controls-xs-inline-padding);
-		font: var(--semantics-buttons-xs-font);
-		border-radius: var(--semantics-controls-xs-corner-radius);
 		gap: var(--semantics-buttons-xs-gap);
+		font: var(--semantics-buttons-xs-font);
 	}
 
 	/* ## Size: SM */
 
 	:host([size="sm"]) .button {
+		border-radius: var(--semantics-controls-sm-corner-radius);
 		min-height: var(--semantics-controls-sm-min-size);
 		min-width: var(--semantics-controls-sm-min-size);
 		padding: var(--semantics-controls-sm-block-padding) var(--semantics-controls-sm-inline-padding);
-		font: var(--semantics-buttons-sm-font);
-		border-radius: var(--semantics-controls-sm-corner-radius);
 		gap: var(--semantics-buttons-sm-gap);
+		font: var(--semantics-buttons-sm-font);
 	}
 
 	/* ## Size: MD (Default) */
 
 	:host([size="md"]) .button,
 	:host(:not([size])) .button {
+		border-radius: var(--semantics-controls-md-corner-radius);
 		min-height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
 		padding: var(--semantics-controls-md-block-padding) var(--semantics-controls-md-inline-padding);
-		font: var(--semantics-buttons-md-font);
-		border-radius: var(--semantics-controls-md-corner-radius);
 		gap: var(--semantics-buttons-md-gap);
+		font: var(--semantics-buttons-md-font);
 	}
 
 
@@ -160,8 +160,8 @@ export const buttonStyles = css`
 	:host([expanded][variant="neutral-tinted"]) .button,
 	:host([expanded][variant="secondary"]) .button,
 	:host([expanded]:not([variant])) .button {
-		background-color: var(--semantics-buttons-neutral-tinted-is-open-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-open-content-color);
+		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-content-color);
 	}
 
 	/* ### Open hovered neutral tinted button */
@@ -170,8 +170,8 @@ export const buttonStyles = css`
 		:host([expanded][variant="neutral-tinted"]) .button:hover,
 		:host([expanded][variant="secondary"]) .button:hover,
 		:host([expanded]:not([variant])) .button:hover {
-			background-color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-background-color);
-			color: var(--semantics-buttons-neutral-tinted-is-open-is-hovered-content-color);
+			background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-background-color);
+			color: var(--semantics-buttons-neutral-tinted-is-expanded-is-hovered-content-color);
 		}
 	}
 
@@ -180,8 +180,8 @@ export const buttonStyles = css`
 	:host([expanded][variant="neutral-tinted"]) .button:active,
 	:host([expanded][variant="secondary"]) .button:active,
 	:host([expanded]:not([variant])) .button:active {
-		background-color: var(--semantics-buttons-neutral-tinted-is-open-is-active-background-color);
-		color: var(--semantics-buttons-neutral-tinted-is-open-is-active-content-color);
+		background-color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-expanded-is-active-content-color);
 	}
 
 	/* ## Neutral Transparent */
@@ -239,8 +239,8 @@ export const buttonStyles = css`
 
 	:host([expanded][variant="accent-filled"]) .button,
 	:host([expanded][variant="primary"]) .button {
-		background-color: var(--semantics-buttons-accent-filled-is-open-background-color);
-		color: var(--semantics-buttons-accent-filled-is-open-content-color);
+		background-color: var(--semantics-buttons-accent-filled-is-expanded-background-color);
+		color: var(--semantics-buttons-accent-filled-is-expanded-content-color);
 	}
 
 	/* ### Open hovered accent filled button */
@@ -248,8 +248,8 @@ export const buttonStyles = css`
 	@media (hover: hover) {
 		:host([expanded][variant="accent-filled"]) .button:hover,
 		:host([expanded][variant="primary"]) .button:hover {
-			background-color: var(--semantics-buttons-accent-filled-is-open-is-hovered-background-color);
-			color: var(--semantics-buttons-accent-filled-is-open-is-hovered-content-color);
+			background-color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-background-color);
+			color: var(--semantics-buttons-accent-filled-is-expanded-is-hovered-content-color);
 		}
 	}
 
@@ -257,8 +257,8 @@ export const buttonStyles = css`
 
 	:host([expanded][variant="accent-filled"]) .button:active,
 	:host([expanded][variant="primary"]) .button:active {
-		background-color: var(--semantics-buttons-accent-filled-is-open-is-active-background-color);
-		color: var(--semantics-buttons-accent-filled-is-open-is-active-content-color);
+		background-color: var(--semantics-buttons-accent-filled-is-expanded-is-active-background-color);
+		color: var(--semantics-buttons-accent-filled-is-expanded-is-active-content-color);
 	}
 
 	/* ## Accent Transparent */
@@ -383,9 +383,9 @@ export const buttonStyles = css`
 
 	.button__disclosure-icon {
 		display: block;
-		flex-shrink: 0;
 		width: var(--_disclosure-icon-size);
 		height: var(--_disclosure-icon-size);
+		flex-shrink: 0;
 	}
 
 	:host([size="md"]) .button__disclosure-icon,

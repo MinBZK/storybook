@@ -6,8 +6,6 @@ export const paginationStyles = css`
 	/* # Host */
 
 	:host {
-		--_pagination-page-button-indicator-inset: var(--primitives-space-4);
-
 		display: block;
 		container-type: inline-size;
 		isolation: isolate;
@@ -33,106 +31,76 @@ export const paginationStyles = css`
 
 	.pagination {
 		display: inline-flex;
-		align-items: center;
-		background-color: var(--semantics-buttons-neutral-tinted-background-color);
 		border-radius: var(--semantics-controls-md-corner-radius);
+		background-color: var(--semantics-buttons-neutral-tinted-background-color);
+		align-items: center;
+	}
+
+	.pagination__previous-button:focus-within,
+	.pagination__next-button:focus-within {
+		position: relative;
+		z-index: 1;
 	}
 
 
 	/* # Page button */
 
 	.pagination__page-button {
-		appearance: none;
-		border: none;
-		background: transparent;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		height: var(--semantics-controls-md-min-size);
-		min-width: var(--semantics-controls-md-min-size);
-		padding-block: var(--primitives-space-8);
-		padding-inline: var(--primitives-space-12);
-		font: var(--semantics-buttons-md-font);
-		color: inherit;
 		box-sizing: border-box;
+		display: inline-flex;
 		position: relative;
 		margin: 0;
+		border: none;
+		border-radius: var(--semantics-controls-md-corner-radius);
+		background: transparent;
+		min-width: var(--semantics-controls-md-min-size);
+		height: var(--semantics-controls-md-min-size);
+		padding-block: var(--primitives-space-8);
+		padding-inline: var(--primitives-space-12);
+		align-items: center;
+		justify-content: center;
+		color: inherit;
+		font: var(--semantics-buttons-md-font);
+		appearance: none;
 	}
 
 	a.pagination__page-button {
 		text-decoration: none;
 	}
 
-	.pagination__page-button:focus-visible {
-		z-index: 1;
-	}
-
 	@media (hover: hover) {
-		.pagination__page-button:hover {
-			z-index: 1;
-		}
-	}
-
-	.pagination__page-button:focus-visible {
-		outline: none;
-	}
-
-	.pagination__page-button.is-current {
-		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
-	}
-
-
-	/* ## Page button indicator */
-
-	.pagination__page-button::before {
-		content: '';
-		position: absolute;
-		inset: var(--_pagination-page-button-indicator-inset);
-		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--_pagination-page-button-indicator-inset) / 2);
-		background-color: transparent;
-		pointer-events: none;
-	}
-
-	@media (hover: hover) {
-		.pagination__page-button:hover:not(.is-current)::before {
+		.pagination__page-button:hover:not(.is-current) {
 			background-color: var(--semantics-buttons-neutral-tinted-is-hovered-background-color);
 		}
 	}
 
-	.pagination__page-button.is-current::before {
+	.pagination__page-button.is-current {
 		background-color: var(--semantics-buttons-neutral-tinted-is-selected-background-color);
+		color: var(--semantics-buttons-neutral-tinted-is-selected-content-color);
 	}
 
-	.pagination__page-button:focus-visible::before {
+	.pagination__page-button:focus-visible {
+		z-index: 1;
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
 
-	/* ## Page button text */
-
-	.pagination__page-button-text {
-		position: relative;
-		z-index: 1;
-		pointer-events: none;
-	}
-
-
 	/* # Ellipsis */
 
 	.pagination__ellipsis {
+		box-sizing: border-box;
 		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		height: var(--semantics-controls-md-min-size);
+		pointer-events: none;
 		min-width: var(--semantics-controls-md-min-size);
+		height: var(--semantics-controls-md-min-size);
 		padding-block: var(--primitives-space-8);
 		padding-inline: var(--primitives-space-12);
-		font: var(--semantics-buttons-md-font);
+		align-items: center;
+		justify-content: center;
 		color: inherit;
-		box-sizing: border-box;
-		pointer-events: none;
+		font: var(--semantics-buttons-md-font);
 	}
 
 
@@ -140,48 +108,53 @@ export const paginationStyles = css`
 
 	.pagination__divider {
 		display: flex;
+		height: var(--semantics-controls-md-min-size);
 		align-items: center;
 		justify-content: center;
-		height: var(--semantics-controls-md-min-size);
 		flex-shrink: 0;
 	}
 
 	.pagination__divider-line {
+		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
 		width: var(--semantics-dividers-thickness);
 		height: var(--semantics-buttons-md-divider-length);
-		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
 	}
 
 
 	/* # Select (compact fallback) */
 
 	.pagination__select-wrapper {
-		position: relative;
 		display: inline-flex;
+		position: relative;
 		align-items: center;
 	}
 
 	.pagination__select {
-		appearance: none;
+		box-sizing: border-box;
+		position: relative;
+		z-index: 1;
+		margin: 0;
 		border: none;
 		background: transparent;
 		height: var(--semantics-controls-md-min-size);
 		padding-block: var(--primitives-space-8);
 		padding-inline-start: var(--primitives-space-12);
 		padding-inline-end: calc(var(--primitives-space-24) + var(--primitives-space-4));
-		font: var(--semantics-buttons-md-font);
 		color: inherit;
-		box-sizing: border-box;
-		margin: 0;
-		position: relative;
-		z-index: 1;
+		font: var(--semantics-buttons-md-font);
+		appearance: none;
 	}
 
-	.pagination__select:focus-visible {
+	.pagination__select:focus {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
-		box-shadow: var(--semantics-focus-ring-box-shadow);
 		border-radius: calc(var(--semantics-controls-md-corner-radius) - var(--primitives-space-4) / 2);
+		box-shadow: var(--semantics-focus-ring-box-shadow);
+	}
+
+	:host([is-pointer-focus]) .pagination__select:focus {
+		outline: none;
+		box-shadow: none;
 	}
 
 	.pagination__select-picker-icon {
@@ -222,14 +195,11 @@ export const paginationStyles = css`
 		}
 
 		.pagination__page-button.is-current {
+			background-color: Highlight;
 			color: HighlightText;
 		}
 
-		.pagination__page-button.is-current::before {
-			background-color: Highlight;
-		}
-
-		.pagination__page-button:focus-visible::before {
+		.pagination__page-button:focus-visible {
 			outline: 2px solid CanvasText;
 		}
 	}

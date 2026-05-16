@@ -12,10 +12,10 @@ export const menuBarItemStyles = css`
 
 		display: inline-block;
 		position: relative;
-		isolation: isolate;
 		flex-grow: 0;
 		flex-shrink: 0;
 		flex-basis: auto;
+		isolation: isolate;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -27,24 +27,24 @@ export const menuBarItemStyles = css`
 	/* # Block */
 
 	.menu-bar-item {
-		appearance: none;
-		border: none;
-		margin: 0;
-		background: none;
-		text-decoration: none;
 		display: flex;
 		position: relative;
+		box-sizing: border-box;
+		margin: 0;
+		border: none;
+		background: none;
 		height: var(--semantics-controls-md-min-size);
 		min-width: var(--semantics-controls-md-min-size);
-		box-sizing: border-box;
+		padding: 0 var(--components-menu-bar-item-inline-padding);
 		justify-content: center;
 		align-items: center;
 		gap: var(--primitives-space-4);
+		text-align: center;
+		text-decoration: none;
 		font: var(--components-menu-bar-item-font);
 		color: var(--components-menu-bar-item-content-color);
-		text-align: center;
-		padding: 0 var(--components-menu-bar-item-inline-padding);
 		white-space: nowrap;
+		appearance: none;
 	}
 
 	/* ## Hover indicator (::before) */
@@ -56,9 +56,9 @@ export const menuBarItemStyles = css`
 		bottom: var(--primitives-space-6);
 		left: 0;
 		right: 0;
+		z-index: var(--_indicator-z-index);
 		border-radius: var(--semantics-controls-sm-corner-radius);
 		pointer-events: none;
-		z-index: var(--_indicator-z-index);
 	}
 
 	@media (hover: hover) {
@@ -68,7 +68,7 @@ export const menuBarItemStyles = css`
 	}
 
 	:host([expanded]) .menu-bar-item::before {
-		background-color: var(--components-menu-bar-item-is-open-indicator-background-color);
+		background-color: var(--components-menu-bar-item-is-expanded-indicator-background-color);
 	}
 
 	@media (hover: hover) {
@@ -85,10 +85,10 @@ export const menuBarItemStyles = css`
 		bottom: 0;
 		left: var(--primitives-space-8);
 		right: var(--primitives-space-8);
-		height: var(--components-menu-bar-item-is-current-indicator-height);
+		z-index: var(--_indicator-z-index);
 		background-color: var(--components-menu-bar-item-is-current-indicator-background-color);
 		pointer-events: none;
-		z-index: var(--_indicator-z-index);
+		height: var(--components-menu-bar-item-is-current-indicator-height);
 	}
 
 	/* ## Text */
@@ -101,18 +101,18 @@ export const menuBarItemStyles = css`
 	/* ## Icon */
 
 	.menu-bar-item__icon {
+		z-index: var(--_content-z-index);
 		width: var(--primitives-space-20);
 		height: var(--primitives-space-20);
 		flex-shrink: 0;
-		z-index: var(--_content-z-index);
 	}
 
 	/* ## Disclosure icon */
 
 	.menu-bar-item__disclosure-icon {
+		z-index: var(--_content-z-index);
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
-		z-index: var(--_content-z-index);
 	}
 
 
@@ -159,14 +159,14 @@ export const menuBarItemStyles = css`
 	:host([icon-only]) .menu-bar-item__text,
 	:host([content-priority="icon"][compact][icon]:not([icon=""])) .menu-bar-item__text {
 		position: absolute;
+		margin: -1px;
+		border: 0;
 		width: 1px;
 		height: 1px;
-		padding: 0;
-		margin: -1px;
 		overflow: hidden;
-		clip-path: inset(50%);
+		padding: 0;
 		white-space: nowrap;
-		border: 0;
+		clip-path: inset(50%);
 	}
 
 	/* ## Text-only when compact */

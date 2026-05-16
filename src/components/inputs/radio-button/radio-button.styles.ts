@@ -7,11 +7,11 @@ export const radioButtonStyles = css`
 
 	:host {
 		display: inline-flex;
-		align-items: center;
-		justify-content: center;
 		position: relative;
 		width: var(--semantics-controls-xs-min-size);
 		height: var(--semantics-controls-xs-min-size);
+		align-items: center;
+		justify-content: center;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -25,11 +25,11 @@ export const radioButtonStyles = css`
 	.radio-button__input {
 		position: absolute;
 		inset: 0;
-		width: 100%;
-		height: 100%;
-		margin: 0;
 		opacity: 0;
 		z-index: 1;
+		margin: 0;
+		width: 100%;
+		height: 100%;
 	}
 
 
@@ -38,11 +38,11 @@ export const radioButtonStyles = css`
 	.radio-button__outer-shape {
 		position: relative;
 		box-sizing: border-box;
-		width: var(--semantics-controls-xs-min-size);
-		height: var(--semantics-controls-xs-min-size);
 		border-radius: 50%;
 		border: var(--components-radio-button-border-thickness) solid var(--components-radio-button-border-color);
 		background-color: var(--components-radio-button-background-color);
+		width: var(--semantics-controls-xs-min-size);
+		height: var(--semantics-controls-xs-min-size);
 	}
 
 
@@ -52,12 +52,12 @@ export const radioButtonStyles = css`
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%) scale(0);
-		width: var(--primitives-space-20);
-		height: var(--primitives-space-20);
+		box-sizing: border-box;
 		border-radius: 50%;
 		border: var(--components-radio-button-is-selected-inner-shape-border-thickness) solid var(--components-radio-button-is-selected-inner-shape-border-color);
-		box-sizing: border-box;
+		width: var(--primitives-space-20);
+		height: var(--primitives-space-20);
+		transform: translate(-50%, -50%) scale(0);
 	}
 
 

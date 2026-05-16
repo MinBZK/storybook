@@ -25,6 +25,10 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 		<div class="menu"
 			role=${menuRole}
 			tabindex="-1"
+			@touchstart=${this._handleMenuTouchStart}
+			@touchmove=${this._handleMenuTouchMove}
+			@touchend=${this._handleMenuTouchEnd}
+			@touchcancel=${this._handleMenuTouchEnd}
 		>
 			${showBack ? html`
 				<button class="menu__back-button"
@@ -54,6 +58,14 @@ export function menuTemplate(this: NLDDMenu, isEmpty: boolean, variant: 'menu' |
 				</div>
 			` : nothing}
 		</div>
+		<!-- Drill-in view-change announcer (WCAG 4.1.3). Sibling of .menu so
+		     it sits outside role="menu"'s required-children set. Updated via
+		     _announce(); empty and inert until a drill-in transition. -->
+		<div class="menu__live-region"
+			role="status"
+			aria-live="polite"
+			aria-atomic="true"
+		></div>
 	`;
 }
 
@@ -71,6 +83,7 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 			aria-haspopup=${hasSubmenu ? 'menu' : nothing}
 			aria-expanded=${hasSubmenu ? String(this._submenuOpen) : nothing}
 			aria-controls=${hasSubmenu && this._submenuEl?.id ? this._submenuEl.id : nothing}
+			.popoverTargetElement=${this._submenuEl}
 			@click=${this._handleClick}
 		>
 			${hasCheckState ? html`

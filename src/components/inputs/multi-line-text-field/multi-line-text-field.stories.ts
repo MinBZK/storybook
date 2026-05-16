@@ -1,5 +1,5 @@
 import { action } from 'storybook/actions';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './multi-line-text-field.js';
 import '../../forms/form/form.js';
 import '../../forms/form-field/form-field.js';
@@ -65,6 +65,7 @@ export default {
 		value: '',
 		required: false,
 		autocomplete: '',
+		accessibleLabel: '',
 	},
 	argTypes: {
 		size: {
@@ -134,10 +135,15 @@ export default {
 			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "off")',
 			table: { defaultValue: { summary: '' } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 	},
 };
 
-const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, autocomplete }: Record<string, any>) => html`
+const Template = ({ size, resize, rows, width, placeholder, valid, invalid, readonly, disabled, name, value, required, autocomplete, accessibleLabel }: Record<string, any>) => html`
 	<nldd-multi-line-text-field
 		size=${size}
 		resize=${resize}
@@ -152,6 +158,7 @@ const Template = ({ size, resize, rows, width, placeholder, valid, invalid, read
 		.value=${value}
 		?required=${required}
 		autocomplete=${autocomplete}
+		accessible-label=${accessibleLabel || nothing}
 	></nldd-multi-line-text-field>
 `;
 

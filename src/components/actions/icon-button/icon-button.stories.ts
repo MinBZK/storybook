@@ -67,7 +67,7 @@ export default {
 		},
 		expanded: {
 			control: 'boolean',
-			description: 'Geeft aan dat het popover/menu uitgeklapt is. Wordt geforward als aria-expanded op de inner button en activeert de is-open visuele state.',
+			description: 'Geeft aan dat het popover/menu uitgeklapt is. Wordt geforward als aria-expanded op de inner button en activeert de is-expanded visuele state.',
 			table: {
 				defaultValue: { summary: false },
 			},
@@ -116,12 +116,13 @@ export default {
 			control: 'text',
 			description: 'Overschrijft de tekst als aria-label en title tooltip voor schermlezer-context. Gebruik als de zichtbare tekst onvoldoende context biedt (bijv. tekst "Toon", accessible-label "Toon wachtwoord"). De tekst blijft zichtbaar in lg formaat.',
 		},
-		hideTooltip: {
-			name: 'hide-tooltip',
-			control: 'boolean',
-			description: 'Onderdrukt de visuele tooltip (aria-label blijft intact). Gebruik wanneer de context al duidelijk is (bv. spin-knoppen in nldd-number-field, chevron in nldd-split-button).',
+		tooltipTiming: {
+			name: 'tooltip-timing',
+			control: 'select',
+			options: ['default', 'instant', 'never'],
+			description: 'Forwarded naar de inner nldd-tooltip `timing`. `never` onderdrukt de visuele tooltip (aria-label blijft intact). Gebruik `never` wanneer de context al duidelijk is (bv. spin-knoppen in nldd-number-field, chevron in nldd-split-button).',
 			table: {
-				defaultValue: { summary: false },
+				defaultValue: { summary: 'default' },
 			},
 		},
 		disabled: {
@@ -145,12 +146,12 @@ export default {
 		href: '',
 		target: '',
 		accessibleLabel: '',
-		hideTooltip: false,
+		tooltipTiming: 'default',
 		disabled: false,
 	},
 };
 
-const Template = ({ variant, size, width, expandable, expanded, popupType, text, icon, type, href, target, accessibleLabel, hideTooltip, disabled }: Record<string, any>) => html`
+const Template = ({ variant, size, width, expandable, expanded, popupType, text, icon, type, href, target, accessibleLabel, tooltipTiming, disabled }: Record<string, any>) => html`
 	<nldd-icon-button
 		variant=${variant}
 		size=${size}
@@ -165,7 +166,7 @@ const Template = ({ variant, size, width, expandable, expanded, popupType, text,
 		target=${target || nothing}
 		?disabled=${disabled}
 		accessible-label=${accessibleLabel || nothing}
-		?hide-tooltip=${hideTooltip}
+		tooltip-timing=${tooltipTiming || nothing}
 	></nldd-icon-button>
 `;
 

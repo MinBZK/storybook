@@ -15,6 +15,7 @@ export default {
 		current: false,
 		contentPriority: '',
 		compact: false,
+		accessibleLabel: '',
 		disabled: false,
 	},
 	argTypes: {
@@ -33,6 +34,7 @@ export default {
 			table: { defaultValue: { summary: '(geen)' } },
 		},
 		compact: { control: 'boolean', description: 'Activeert content-priority gedrag (gezet door parent)', table: { defaultValue: { summary: false } } },
+		accessibleLabel: { name: 'accessible-label', control: 'text', description: 'Toegankelijk label voor screen readers' },
 		disabled: { control: 'boolean', description: 'Schakel interactie uit', table: { defaultValue: { summary: false } } },
 	},
 };
@@ -46,6 +48,7 @@ const Template = ({
 	current,
 	contentPriority,
 	compact,
+	accessibleLabel,
 	disabled,
 }: Record<string, unknown>) => html`
 	<nldd-menu-bar-item
@@ -57,6 +60,7 @@ const Template = ({
 		?icon-only=${iconOnly}
 		content-priority=${contentPriority || nothing}
 		?compact=${compact}
+		accessible-label=${accessibleLabel || nothing}
 		?disabled=${disabled}
 	></nldd-menu-bar-item>
 `;

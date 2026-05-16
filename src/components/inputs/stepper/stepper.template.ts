@@ -22,7 +22,7 @@ export function stepperTemplate(component: NLDDStepper): TemplateResult {
 				size=${component.size}
 				icon="minus"
 				text=${component._t('components.stepper.decrement-action')}
-				hide-tooltip
+				tooltip-timing="never"
 				?disabled=${component.disabled || atMin}
 				aria-hidden="true"
 				tabindex="-1"
@@ -36,7 +36,7 @@ export function stepperTemplate(component: NLDDStepper): TemplateResult {
 				size=${component.size}
 				icon="plus"
 				text=${component._t('components.stepper.increment-action')}
-				hide-tooltip
+				tooltip-timing="never"
 				?disabled=${component.disabled || atMax}
 				aria-hidden="true"
 				tabindex="-1"

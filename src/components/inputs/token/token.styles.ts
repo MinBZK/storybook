@@ -24,18 +24,18 @@ export const tokenStyles = css`
 
 	.token {
 		/* Reset (for menu button) */
-		appearance: none;
-		border: none;
 		margin: 0;
+		border: none;
 		background: none;
 		font: inherit;
+		appearance: none;
 
 		/* Layout */
 		display: inline-flex;
-		align-items: center;
 		box-sizing: border-box;
 		height: var(--semantics-controls-sm-min-size);
 		padding: 0 var(--primitives-space-6);
+		align-items: center;
 
 		/* Appearance */
 		border-radius: var(--semantics-controls-sm-corner-radius);
@@ -58,8 +58,8 @@ export const tokenStyles = css`
 
 	.token__text {
 		display: flex;
-		align-items: center;
 		padding: 0 var(--primitives-space-2);
+		align-items: center;
 	}
 
 
@@ -67,9 +67,9 @@ export const tokenStyles = css`
 
 	.token__icon {
 		display: block;
-		flex-shrink: 0;
 		width: var(--primitives-space-16);
 		height: var(--primitives-space-16);
+		flex-shrink: 0;
 	}
 
 

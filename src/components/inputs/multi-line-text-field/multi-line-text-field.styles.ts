@@ -11,6 +11,7 @@ export const multiLineTextFieldStyles = css`
 
 		display: block;
 		width: var(--_width);
+		max-width: 100%;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -83,15 +84,15 @@ export const multiLineTextFieldStyles = css`
 
 	.multi-line-text-field__input {
 		display: block;
-		width: 100%;
 		box-sizing: border-box;
 		margin: 0;
-		color: var(--semantics-content-color);
-		background: transparent;
 		border: none;
 		outline: none;
-		appearance: none;
+		background: transparent;
+		width: 100%;
 		padding-inline: var(--_inline-padding);
+		color: var(--semantics-content-color);
+		appearance: none;
 	}
 
 	:host([resize='vertical']) .multi-line-text-field__input {
@@ -108,16 +109,16 @@ export const multiLineTextFieldStyles = css`
 	}
 
 	:host([size='sm']) .multi-line-text-field__input {
-		font: var(--semantics-input-fields-sm-text-font);
-		padding-block: calc((var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2 - 1lh) / 2);
 		min-height: calc(var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		padding-block: calc((var(--semantics-controls-sm-min-size) - var(--semantics-input-fields-border-thickness) * 2 - 1lh) / 2);
+		font: var(--semantics-input-fields-sm-text-font);
 	}
 
 	:host([size='md']) .multi-line-text-field__input,
 	:host(:not([size])) .multi-line-text-field__input {
-		font: var(--semantics-input-fields-md-text-font);
-		padding-block: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - 1lh) / 2);
 		min-height: calc(var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2);
+		padding-block: calc((var(--semantics-controls-md-min-size) - var(--semantics-input-fields-border-thickness) * 2 - 1lh) / 2);
+		font: var(--semantics-input-fields-md-text-font);
 	}
 
 	:host([valid]) .multi-line-text-field__input,
@@ -146,11 +147,11 @@ export const multiLineTextFieldStyles = css`
 		top: 0;
 		right: 0;
 		display: flex;
-		align-items: center;
-		justify-content: center;
+		pointer-events: none;
 		width: var(--_icon-area-size);
 		height: var(--_icon-area-size);
-		pointer-events: none;
+		align-items: center;
+		justify-content: center;
 	}
 
 	:host([valid]) .multi-line-text-field__validation-icon-area {

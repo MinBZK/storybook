@@ -19,11 +19,11 @@ export const dividerStyles = css`
 
 	.divider {
 		display: block;
-		width: 100%;
-		height: var(--semantics-dividers-thickness);
 		margin: 0;
 		border: none;
 		background-color: var(--semantics-dividers-color);
+		width: 100%;
+		height: var(--semantics-dividers-thickness);
 
 		@media (forced-colors: active) {
 			background-color: CanvasText;

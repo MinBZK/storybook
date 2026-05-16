@@ -169,6 +169,14 @@ describe('nldd-icon-button – tooltip', () => {
 		expect(tooltip).not.toBeNull();
 		expect(tooltip!.getAttribute('text')).toBe('Toon wachtwoord');
 	});
+
+	it('forwards tooltip-timing="instant" to the inner nldd-tooltip', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button size="md" icon="download" text="Download" tooltip-timing="instant"></nldd-icon-button>');
+		await waitForUpdate(el);
+		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip');
+		expect(tooltip).not.toBeNull();
+		expect(tooltip!.getAttribute('timing')).toBe('instant');
+	});
 });
 
 
@@ -279,7 +287,7 @@ describe('nldd-icon-button – href / link rendering', () => {
 	});
 
 	it('focus() delegates to the inner button', async () => {
-		const el = await fixture<NLDDIconButton>('<nldd-icon-button text="Sluit" icon="dismiss" hide-tooltip></nldd-icon-button>');
+		const el = await fixture<NLDDIconButton>('<nldd-icon-button text="Sluit" icon="dismiss" tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		el.focus();
 		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.icon-button'));
@@ -295,7 +303,7 @@ describe('nldd-icon-button – aria-expanded / aria-haspopup', () => {
 	});
 
 	it('omits aria-expanded on a plain icon-button (no expandable, no popup-type, not open)', async () => {
-		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="Sluit" hide-tooltip></nldd-icon-button>');
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="Sluit" tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('button')!;
 		expect(inner.hasAttribute('aria-expanded')).toBe(false);
@@ -303,21 +311,21 @@ describe('nldd-icon-button – aria-expanded / aria-haspopup', () => {
 	});
 
 	it('sets aria-expanded="false" when expandable and not open', async () => {
-		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Menu" expandable hide-tooltip></nldd-icon-button>');
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Menu" expandable tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('button')!;
 		expect(inner.getAttribute('aria-expanded')).toBe('false');
 	});
 
 	it('sets aria-expanded="true" when expandable and open', async () => {
-		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Menu" expandable expanded hide-tooltip></nldd-icon-button>');
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Menu" expandable expanded tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('button')!;
 		expect(inner.getAttribute('aria-expanded')).toBe('true');
 	});
 
 	it('sets aria-expanded="false" + aria-haspopup when popup-type set and not open', async () => {
-		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Acties" popup-type="menu" hide-tooltip></nldd-icon-button>');
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Acties" popup-type="menu" tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('button')!;
 		expect(inner.getAttribute('aria-expanded')).toBe('false');
@@ -325,7 +333,7 @@ describe('nldd-icon-button – aria-expanded / aria-haspopup', () => {
 	});
 
 	it('sets aria-expanded="true" + aria-haspopup when popup-type set and open', async () => {
-		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Acties" popup-type="dialog" expanded hide-tooltip></nldd-icon-button>');
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Acties" popup-type="dialog" expanded tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('button')!;
 		expect(inner.getAttribute('aria-expanded')).toBe('true');
@@ -333,7 +341,7 @@ describe('nldd-icon-button – aria-expanded / aria-haspopup', () => {
 	});
 
 	it('forwards aria-expanded + aria-haspopup to the anchor when href is set', async () => {
-		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Menu" href="/m" popup-type="menu" expanded hide-tooltip></nldd-icon-button>');
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="more" text="Menu" href="/m" popup-type="menu" expanded tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('a')!;
 		expect(inner.getAttribute('aria-expanded')).toBe('true');
@@ -349,23 +357,81 @@ describe('nldd-icon-button – width', () => {
 	});
 
 	it('applies inline host width and --_width=100% when width is a CSS length', async () => {
-		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" width="240px" hide-tooltip></nldd-icon-button>');
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" width="240px" tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		expect((el as HTMLElement).style.width).toBe('240px');
 		expect(el.style.getPropertyValue('--_width')).toBe('100%');
 	});
 
 	it('sets --_width=100% but leaves inline width empty for width="full"', async () => {
-		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" width="full" hide-tooltip></nldd-icon-button>');
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" width="full" tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		expect((el as HTMLElement).style.width).toBe('');
 		expect(el.style.getPropertyValue('--_width')).toBe('100%');
 	});
 
 	it('ignores invalid width values', async () => {
-		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" width="not-a-length" hide-tooltip></nldd-icon-button>');
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" width="not-a-length" tooltip-timing="never"></nldd-icon-button>');
 		await waitForUpdate(el);
 		expect((el as HTMLElement).style.width).toBe('');
 		expect(el.style.getPropertyValue('--_width')).toBe('');
+	});
+});
+
+describe('nldd-icon-button – popoverTargetElement / popoverTargetAction IDL forwarding', () => {
+	let el: NLDDIconButton;
+	let popover: HTMLDivElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		if (popover) popover.remove();
+	});
+
+	it('forwards popoverTargetElement (Element ref) to the inner button across shadow boundaries', async () => {
+		popover = document.createElement('div');
+		popover.setAttribute('popover', '');
+		document.body.appendChild(popover);
+
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" tooltip-timing="never"></nldd-icon-button>');
+		await waitForUpdate(el);
+
+		el.popoverTargetElement = popover;
+		await waitForUpdate(el);
+
+		const inner = el.shadowRoot!.querySelector('button') as HTMLButtonElement;
+		expect(inner.popoverTargetElement).toBe(popover);
+	});
+
+	it('clears the inner button popoverTargetElement when host property is set back to null', async () => {
+		popover = document.createElement('div');
+		popover.setAttribute('popover', '');
+		document.body.appendChild(popover);
+
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" tooltip-timing="never"></nldd-icon-button>');
+		await waitForUpdate(el);
+		el.popoverTargetElement = popover;
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('button') as HTMLButtonElement;
+		expect(inner.popoverTargetElement).toBe(popover);
+
+		el.popoverTargetElement = null;
+		await waitForUpdate(el);
+		expect(inner.popoverTargetElement).toBe(null);
+	});
+
+	it('forwards popoverTargetAction to the inner button', async () => {
+		el = await fixture<NLDDIconButton>('<nldd-icon-button icon="dismiss" text="X" tooltip-timing="never"></nldd-icon-button>');
+		await waitForUpdate(el);
+
+		const inner = el.shadowRoot!.querySelector('button') as HTMLButtonElement;
+		expect(inner.popoverTargetAction).toBe('toggle');
+
+		el.popoverTargetAction = 'show';
+		await waitForUpdate(el);
+		expect(inner.popoverTargetAction).toBe('show');
+
+		el.popoverTargetAction = 'hide';
+		await waitForUpdate(el);
+		expect(inner.popoverTargetAction).toBe('hide');
 	});
 });

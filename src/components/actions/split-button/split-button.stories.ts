@@ -1,7 +1,8 @@
 import { action } from 'storybook/actions';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './split-button.js';
 import '../../lists-and-menus/menu/menu.js';
+import { ICONS } from '../../content/icon/icon.js';
 
 /**
  * De Split Button combineert een primaire actieknop met een dropdown trigger.
@@ -45,6 +46,11 @@ export default {
 			control: 'text',
 			description: 'Tekst van de primaire actieknop',
 		},
+		icon: {
+			control: 'select',
+			options: ['', ...ICONS],
+			description: 'Icoonnaam links van de tekst op de primaire actieknop',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Disabled state',
@@ -57,6 +63,7 @@ export default {
 		variant: 'neutral-tinted',
 		size: 'md',
 		text: 'Opslaan',
+		icon: '',
 		disabled: false,
 	},
 };
@@ -68,11 +75,12 @@ const menuItems = html`
 	<nldd-menu-item text="Verwijderen" @select=${action('select: delete')}></nldd-menu-item>
 `;
 
-const Template = ({ size, variant, text, disabled }: Record<string, any>) => html`
+const Template = ({ size, variant, text, icon, disabled }: Record<string, any>) => html`
 	<nldd-split-button
 		text=${text}
 		size=${size}
 		variant=${variant}
+		icon=${icon || nothing}
 		?disabled=${disabled}
 		@action-click=${action('action-click')}
 		@menu-click=${action('menu-click')}
@@ -90,6 +98,19 @@ export const Variants = {
 	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
 		<nldd-split-button text="Opslaan" variant="neutral-tinted">${menuItems}</nldd-split-button>
 		<nldd-split-button text="Opslaan" variant="accent-filled">${menuItems}</nldd-split-button>
+	</div>
+`,
+	parameters: {
+		controls: { disable: true },
+	},
+};
+
+// Start icon
+export const WithStartIcon = {
+	render: () => html`
+	<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+		<nldd-split-button text="Opslaan" icon="check-mark">${menuItems}</nldd-split-button>
+		<nldd-split-button text="Download" icon="download" variant="accent-filled">${menuItems}</nldd-split-button>
 	</div>
 `,
 	parameters: {

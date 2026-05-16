@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './radio-button.js';
 
 /**
@@ -41,6 +41,11 @@ export default {
 			description: 'Aangevinkte toestand',
 			table: { defaultValue: { summary: false } },
 		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Toegankelijk label voor screen readers',
+		},
 		disabled: {
 			control: 'boolean',
 			description: 'Uitgeschakelde toestand',
@@ -51,17 +56,18 @@ export default {
 		name: 'demo',
 		value: 'optie-1',
 		checked: false,
+		accessibleLabel: 'Radio button',
 		disabled: false,
 	},
 };
 
-const Template = ({ name, value, checked, disabled }: Record<string, any>) => html`
+const Template = ({ name, value, checked, accessibleLabel, disabled }: Record<string, any>) => html`
 	<nldd-radio-button
 		?checked=${checked}
 		?disabled=${disabled}
 		name=${name}
 		value=${value}
-		accessible-label="Radio button"
+		accessible-label=${accessibleLabel || nothing}
 	></nldd-radio-button>
 `;
 

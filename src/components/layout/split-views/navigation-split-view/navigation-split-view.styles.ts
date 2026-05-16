@@ -19,9 +19,9 @@ export const navigationSplitViewStyles = css`
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-background-color));
 
 		display: flex;
+		background-color: var(--_background-color);
 		width: 100%;
 		height: 100%;
-		background-color: var(--_background-color);
 	}
 
 	:host([background="default"]) {
@@ -39,11 +39,11 @@ export const navigationSplitViewStyles = css`
 
 	.navigation-split-view {
 		display: flex;
-		flex-direction: row;
-		flex: 1;
 		min-height: 0;
 		min-width: 0;
 		overflow: hidden;
+		flex-direction: row;
+		flex: 1;
 	}
 
 
@@ -51,11 +51,11 @@ export const navigationSplitViewStyles = css`
 
 	.navigation-split-view__sidebar-pane {
 		display: flex;
-		flex-direction: column;
-		flex-shrink: 0;
 		min-height: 0;
 		min-width: var(--_sidebar-min-width);
 		overflow: hidden;
+		flex-direction: column;
+		flex-shrink: 0;
 	}
 
 
@@ -63,11 +63,11 @@ export const navigationSplitViewStyles = css`
 
 	.navigation-split-view__secondary-sidebar-pane {
 		display: flex;
-		flex-direction: column;
-		flex-shrink: 0;
 		min-height: 0;
 		min-width: var(--_secondary-sidebar-min-width);
 		overflow: hidden;
+		flex-direction: column;
+		flex-shrink: 0;
 	}
 
 
@@ -75,11 +75,11 @@ export const navigationSplitViewStyles = css`
 
 	.navigation-split-view__main-pane {
 		display: flex;
-		flex-direction: column;
-		flex: 1;
 		min-height: 0;
 		min-width: var(--_main-min-width);
 		overflow: hidden;
+		flex-direction: column;
+		flex: 1;
 	}
 
 
@@ -105,11 +105,11 @@ export const navigationSplitViewStyles = css`
 		--context-dismiss-button-display: none;
 
 		display: flex;
-		flex-direction: column;
-		flex-shrink: 0;
 		min-height: 0;
 		min-width: var(--_inspector-min-width);
 		overflow: hidden;
+		flex-direction: column;
+		flex-shrink: 0;
 	}
 
 
@@ -127,37 +127,37 @@ export const navigationSplitViewStyles = css`
 
 	.navigation-split-view__inspector-sheet {
 		display: flex;
-		flex-direction: column;
-		border: none;
-		padding: 0;
-		margin: 0;
-		background: var(--semantics-surfaces-background-color);
-		box-shadow: var(--semantics-overlays-box-shadow);
-		overflow: hidden;
 		position: fixed;
+		margin: 0;
+		border: none;
+		box-shadow: var(--semantics-overlays-box-shadow);
 		outline: none;
+		background: var(--semantics-surfaces-background-color);
+		overflow: hidden;
+		padding: 0;
+		flex-direction: column;
 
 		@media (max-width: ${smMax}) {
 			inset: auto 0 0 0;
+			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 			width: 100%;
 			max-width: 100%;
 			height: auto;
 			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
-			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 		}
 
 		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			inset: var(--semantics-overlays-inset) var(--semantics-overlays-inset) var(--semantics-overlays-inset) auto;
+			border-radius: var(--semantics-overlays-corner-radius);
 			width: var(--semantics-sheets-side-md-width);
 			height: calc(100dvh - var(--semantics-overlays-inset) * 2);
-			border-radius: var(--semantics-overlays-corner-radius);
 		}
 
 		@media (min-width: ${lgMin}) {
 			inset: var(--semantics-overlays-inset) var(--semantics-overlays-inset) var(--semantics-overlays-inset) auto;
+			border-radius: var(--semantics-overlays-corner-radius);
 			width: var(--semantics-sheets-side-lg-width);
 			height: calc(100dvh - var(--semantics-overlays-inset) * 2);
-			border-radius: var(--semantics-overlays-corner-radius);
 		}
 
 		&:focus-visible:not(.is-pointer-focus) {
@@ -197,10 +197,10 @@ export const navigationSplitViewStyles = css`
 
 	.navigation-split-view__inspector-sheet-body {
 		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
 		min-height: 0;
 		width: 100%;
+		flex-direction: column;
+		flex-grow: 1;
 	}
 
 
@@ -218,37 +218,37 @@ export const navigationSplitViewStyles = css`
 
 	.navigation-split-view__sidebar-sheet {
 		display: flex;
-		flex-direction: column;
-		border: none;
-		padding: 0;
-		margin: 0;
-		background: var(--semantics-surfaces-background-color);
-		box-shadow: var(--semantics-overlays-box-shadow);
-		overflow: hidden;
 		position: fixed;
+		margin: 0;
+		border: none;
+		box-shadow: var(--semantics-overlays-box-shadow);
 		outline: none;
+		background: var(--semantics-surfaces-background-color);
+		overflow: hidden;
+		padding: 0;
+		flex-direction: column;
 
 		@media (max-width: ${smMax}) {
 			inset: auto 0 0 0;
+			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 			width: 100%;
 			max-width: 100%;
 			height: auto;
 			max-height: calc(100dvh - var(--semantics-sheets-bottom-top-inset));
-			border-radius: var(--semantics-overlays-corner-radius) var(--semantics-overlays-corner-radius) 0 0;
 		}
 
 		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
 			inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);
+			border-radius: var(--semantics-overlays-corner-radius);
 			width: var(--semantics-sheets-side-md-width);
 			height: calc(100dvh - var(--semantics-overlays-inset) * 2);
-			border-radius: var(--semantics-overlays-corner-radius);
 		}
 
 		@media (min-width: ${lgMin}) {
 			inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);
+			border-radius: var(--semantics-overlays-corner-radius);
 			width: var(--semantics-sheets-side-lg-width);
 			height: calc(100dvh - var(--semantics-overlays-inset) * 2);
-			border-radius: var(--semantics-overlays-corner-radius);
 		}
 
 		&:focus-visible:not(.is-pointer-focus) {
@@ -291,10 +291,10 @@ export const navigationSplitViewStyles = css`
 		--context-dismiss-button-display: block;
 
 		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
 		min-height: 0;
 		width: 100%;
+		flex-direction: column;
+		flex-grow: 1;
 	}
 
 
@@ -326,7 +326,7 @@ export const navigationSplitViewStyles = css`
 	/* # Slotted */
 
 	::slotted(*) {
-		flex: 1;
 		min-height: 0;
+		flex: 1;
 	}
 `;

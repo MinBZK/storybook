@@ -41,8 +41,8 @@ export const buttonGroupStyles = css`
 	}
 
 	:host([orientation="vertical"]) .button-group {
-		flex-direction: column;
 		width: 100%;
+		flex-direction: column;
 	}
 
 

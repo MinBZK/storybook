@@ -19,11 +19,11 @@ export const topTitleBarStyles = css`
 
 	.top-title-bar {
 		display: flex;
+		box-sizing: border-box;
+		width: 100%;
+		padding-inline: var(--primitives-space-6);
 		flex-direction: row;
 		align-items: center;
-		width: 100%;
-		box-sizing: border-box;
-		padding-inline: var(--primitives-space-6);
 	}
 
 
@@ -31,12 +31,12 @@ export const topTitleBarStyles = css`
 
 	.top-title-bar__start {
 		display: flex;
+		min-width: 0;
 		flex-direction: row;
 		align-items: center;
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: 0;
-		min-width: 0;
 	}
 
 
@@ -44,11 +44,11 @@ export const topTitleBarStyles = css`
 
 	.top-title-bar__end {
 		display: flex;
+		margin-top: var(--primitives-space-6);
 		flex-direction: row;
 		align-items: center;
 		flex-grow: 0;
 		flex-shrink: 0;
-		margin-top: var(--primitives-space-6);
 	}
 
 	.top-title-bar__end[hidden] {
@@ -60,10 +60,10 @@ export const topTitleBarStyles = css`
 
 	.top-title-bar__back-button {
 		display: var(--context-back-button-display, flex);
+		margin-top: var(--primitives-space-6);
+		min-width: 0;
 		flex-direction: row;
 		align-items: center;
-		min-width: 0;
-		margin-top: var(--primitives-space-6);
 	}
 
 	.top-title-bar__text-back-button {
@@ -91,9 +91,9 @@ export const topTitleBarStyles = css`
 
 	.top-title-bar__divider {
 		display: none;
+		background-color: var(--components-top-title-bar-divider-color);
 		width: var(--semantics-dividers-thickness);
 		height: var(--primitives-space-24);
-		background-color: var(--components-top-title-bar-divider-color);
 		flex-shrink: 0;
 	}
 
@@ -106,15 +106,15 @@ export const topTitleBarStyles = css`
 
 	.top-title-bar__title-group {
 		display: none;
+		margin-top: var(--primitives-space-6);
+		min-width: 0;
+		min-height: var(--semantics-controls-md-min-size);
+		overflow: hidden;
+		padding-inline: var(--primitives-space-10);
 		flex-direction: column;
 		justify-content: center;
 		flex-grow: 1;
 		flex-shrink: 1;
-		min-width: 0;
-		min-height: var(--semantics-controls-md-min-size);
-		margin-top: var(--primitives-space-6);
-		padding-inline: var(--primitives-space-10);
-		overflow: hidden;
 	}
 
 	:host(.is-compact) .top-title-bar__title-group {
@@ -123,9 +123,9 @@ export const topTitleBarStyles = css`
 
 	.top-title-bar__title {
 		margin: 0;
+		overflow: hidden;
 		font: var(--primitives-font-body-lg-bold-flat);
 		color: var(--semantics-content-color);
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -136,9 +136,9 @@ export const topTitleBarStyles = css`
 
 	.top-title-bar__subtitle {
 		margin: 0;
+		overflow: hidden;
 		font: var(--primitives-font-body-xxs-regular-flat);
 		color: var(--semantics-content-secondary-color);
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}

@@ -100,9 +100,9 @@ export const splitButtonStyles = css`
 	/* # Divider */
 
 	.split-button__divider {
+		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
 		width: 1px;
 		flex-shrink: 0;
-		background-color: var(--semantics-buttons-neutral-tinted-divider-color);
 	}
 
 	:host([variant="accent-filled"]) .split-button__divider,

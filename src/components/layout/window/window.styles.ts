@@ -21,19 +21,19 @@ export const windowStyles = css`
 
 	.window {
 		display: flex;
-		flex-direction: column;
-		border: none;
-		padding: 0;
-		background-color: var(--semantics-surfaces-background-color);
-		border-radius: var(--semantics-overlays-corner-radius);
-		box-shadow: var(--semantics-overlays-box-shadow);
-		overflow: hidden;
 		position: fixed;
 		margin: auto;
+		border: none;
+		border-radius: var(--semantics-overlays-corner-radius);
+		box-shadow: var(--semantics-overlays-box-shadow);
+		outline: none;
+		background-color: var(--semantics-surfaces-background-color);
+		overflow: hidden;
 		width: var(--components-window-default-width);
 		max-width: calc(100vw - var(--semantics-overlays-inset) * 2);
 		max-height: calc(100dvh - var(--semantics-overlays-inset) * 2);
-		outline: none;
+		padding: 0;
+		flex-direction: column;
 	}
 
 	.window:not([open]) {
@@ -93,10 +93,10 @@ export const windowStyles = css`
 
 	.window__body {
 		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
 		min-height: 0;
 		width: 100%;
+		flex-direction: column;
+		flex-grow: 1;
 	}
 
 	::slotted(*) {

@@ -7,7 +7,7 @@
  * @attr {boolean} disabled - Disabled state
  * @attr {string} type - Button type for form submission: 'button' | 'submit' | 'reset' (ignored when href is set)
  * @attr {boolean} expandable - Whether the button has a icon to indicate it opens a menu or popover
- * @attr {boolean} expanded - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-open visual state.
+ * @attr {boolean} expanded - Whether the popover/menu controlled by this button is currently open. Forwarded as aria-expanded on the inner button; toggles the is-expanded visual state.
  * @attr {string}  popup-type - Type of popup container this button opens: 'menu' | 'listbox' | 'dialog' | 'tree' | 'grid'. Sets aria-haspopup on the inner button and forces aria-expanded to always be present (true/false) so screen readers know the popup state.
  * @attr {string} width - Width mode: 'full' (stretches to container) or any CSS length (e.g. '240px')
  * @attr {string} text - Button text
@@ -78,6 +78,28 @@ export class NLDDButton extends LitElement {
 
 	@property({ type: String })
 	popovertarget: string | undefined = undefined;
+
+	/**
+	 * Direct element reference to the popover this button invokes — IDL-only
+	 * counterpart to `popovertarget` that works across shadow boundaries.
+	 * Use this when the popover lives in a different tree (e.g. an
+	 * `nldd-menu` reparented to `<body>`) so the browser still recognises
+	 * this button as the popover's invoker and excludes it from the popover
+	 * light-dismiss algorithm. Set programmatically; not reflected to an
+	 * HTML attribute (the attribute form is `popovertarget`, ID-based).
+	 */
+	@property({ attribute: false })
+	popoverTargetElement: Element | null = null;
+
+	/**
+	 * Action the browser performs when the button is clicked, mirroring the
+	 * standard `popovertargetaction` attribute. Defaults to `'toggle'`. Use
+	 * `'show'` when a separate handler owns the close path (e.g. the
+	 * consumer toggles the popover programmatically) so the browser's
+	 * default action doesn't double-fire.
+	 */
+	@property({ attribute: false })
+	popoverTargetAction: 'toggle' | 'show' | 'hide' = 'toggle';
 
 	@property({ type: Boolean, reflect: true })
 	disabled = false;

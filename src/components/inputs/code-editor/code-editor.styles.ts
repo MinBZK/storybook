@@ -19,11 +19,11 @@ export const codeEditorStyles = css`
 		   flex: 1 + min-height: 0 make the host a good flex citizen so
 		   consumers in flex parents don't have to set them on every use. */
 		display: flex;
+		min-height: 0;
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: auto;
-		min-height: 0;
 		-webkit-tap-highlight-color: transparent;
 	}
 
@@ -37,15 +37,15 @@ export const codeEditorStyles = css`
 	.code-editor {
 		position: relative;
 		display: flex;
+		box-sizing: border-box;
+		border-radius: var(--_corner-radius);
+		background-color: var(--_background-color);
+		min-height: 0;
+		overflow: hidden;
 		flex-direction: column;
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: auto;
-		min-height: 0;
-		box-sizing: border-box;
-		background-color: var(--_background-color);
-		border-radius: var(--_corner-radius);
-		overflow: hidden;
 	}
 
 	:host([disabled]) .code-editor {
@@ -64,22 +64,22 @@ export const codeEditorStyles = css`
 	.code-editor__input {
 		display: block;
 		box-sizing: border-box;
+		margin: 0;
+		border: none;
+		outline: none;
+		background: transparent;
+		min-height: 0;
+		width: 100%;
+		padding: var(--_block-padding) var(--_inline-padding);
 		flex-grow: 1;
 		flex-shrink: 1;
 		flex-basis: auto;
-		min-height: 0;
-		width: 100%;
-		margin: 0;
-		padding: var(--_block-padding) var(--_inline-padding);
 		color: var(--_content-color);
-		background: transparent;
-		border: none;
-		outline: none;
-		appearance: none;
 		font: var(--_font);
 		tab-size: 2;
 		white-space: pre;
 		overflow-wrap: normal;
+		appearance: none;
 	}
 
 	:host([wrap]) .code-editor__input {

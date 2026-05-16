@@ -236,45 +236,74 @@ describe('nldd-sheet – placement', () => {
    Full-height
    ============================================================ */
 
-describe('nldd-sheet – full-height', () => {
+describe('nldd-sheet – height', () => {
 	let el: NLDDSheet;
 
 	afterEach(() => {
 		if (el) cleanup(el);
 	});
 
-	it('defaults full-height to false', async () => {
+	it('defaults height to empty string and sets no --_height var (CSS default = full)', async () => {
 		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
-		expect(el.fullHeight).toBe(false);
-		expect(el.hasAttribute('full-height')).toBe(false);
+		expect(el.height).toBe('');
+		expect(el.style.getPropertyValue('--_height')).toBe('');
 	});
 
-	it('reflects full-height attribute when set in markup', async () => {
-		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" full-height></nldd-sheet>');
+	it('reflects height attribute when set in markup', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="fit-content"></nldd-sheet>');
 		await waitForUpdate(el);
-		expect(el.fullHeight).toBe(true);
-		expect(el.hasAttribute('full-height')).toBe(true);
+		expect(el.height).toBe('fit-content');
+		expect(el.getAttribute('height')).toBe('fit-content');
 	});
 
-	it('reflects full-height when set via property', async () => {
-		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom"></nldd-sheet>');
+	it('sets --_height for fit-content', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="fit-content"></nldd-sheet>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('full-height')).toBe(false);
-
-		el.fullHeight = true;
-		await waitForUpdate(el);
-		expect(el.hasAttribute('full-height')).toBe(true);
+		expect(el.style.getPropertyValue('--_height').trim()).toBe('fit-content');
 	});
 
-	it('removes full-height attribute when property cleared', async () => {
-		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" full-height></nldd-sheet>');
+	it('sets --_height for a CSS length', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="50dvh"></nldd-sheet>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('full-height')).toBe(true);
+		expect(el.style.getPropertyValue('--_height').trim()).toBe('50dvh');
+	});
 
-		el.fullHeight = false;
+	it('does not set --_height for the "full" alias (uses CSS default)', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="full"></nldd-sheet>');
 		await waitForUpdate(el);
-		expect(el.hasAttribute('full-height')).toBe(false);
+		expect(el.style.getPropertyValue('--_height')).toBe('');
+	});
+
+	it('ignores invalid CSS values (falls back, no --_height)', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="not-a-length"></nldd-sheet>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_height')).toBe('');
+	});
+
+	// The warning is gated on import.meta.env.DEV; skip when the suite runs
+	// in production mode so a missing warn isn't a false failure.
+	it.skipIf(!import.meta.env.DEV)('warns exactly once on an invalid height value', async () => {
+		const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="not-a-length"></nldd-sheet>');
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledTimes(1);
+		expect(warnSpy.mock.calls[0][0]).toContain('Invalid height value "not-a-length"');
+
+		el.height = 'also-bogus';
+		await waitForUpdate(el);
+		expect(warnSpy).toHaveBeenCalledTimes(1);
+		warnSpy.mockRestore();
+	});
+
+	it('clears --_height when property is reset to empty', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet placement="bottom" height="50%"></nldd-sheet>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_height').trim()).toBe('50%');
+
+		el.height = '';
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_height')).toBe('');
 	});
 });
 

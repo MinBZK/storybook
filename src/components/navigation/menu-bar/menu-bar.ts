@@ -14,15 +14,15 @@
  */
 
 import { LitElement, type PropertyValues } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { menuBarStyles } from './menu-bar.styles.js';
 import { template } from './menu-bar.template.js';
 import { withTranslations } from '../../../utilities/with-translations.js';
 import { nlddMenuBarTranslations } from './menu-bar.i18n.js';
-import '../menu-bar-item/menu-bar-item.js';
-import { NLDDMenuBarItem } from '../menu-bar-item/menu-bar-item.js';
-import '../../lists-and-menus/menu/menu.js';
 import { POPOVER_REOPEN_GUARD_MS } from '../../../utilities/popover-guard.js';
+import '../menu-bar-item/menu-bar-item.js';
+import type { NLDDMenuBarItem } from '../menu-bar-item/menu-bar-item.js';
+import '../../lists-and-menus/menu/menu.js';
 
 /**
  * Minimal typed interface for nldd-menu.
@@ -56,9 +56,13 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 
 	// ## Overflow state
 
+	/** @internal Used by template — drives the overflow button's expanded state. */
+	@state()
+	_menuOpen = false;
+
 	private _overflowMenu: PopoverMenu | null = null;
-	private _overflowMenuOpen = false;
-	private _overflowMenuClosedAt = 0;
+	private _menuClosedAt = 0;
+	private _overflowUpdatePending = false;
 
 	private _resizeObserver: ResizeObserver | null = null;
 	private _overflowRAF: number | null = null;
@@ -114,17 +118,11 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 		this.toggleAttribute('empty', !hasItems);
 	}
 
-	/** Propagate compact attribute to slotted items and internal overflow button. */
+	/** Propagate compact attribute to slotted items. */
 	private _syncCompactAttribute(): void {
 		const items = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
 		for (const item of items) {
 			item.toggleAttribute('compact', this.compact);
-		}
-
-		// Internal overflow button item
-		const overflowItem = this._overflowButton?.querySelector('nldd-menu-bar-item');
-		if (overflowItem) {
-			overflowItem.toggleAttribute('compact', this.compact);
 		}
 	}
 
@@ -181,6 +179,19 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 		const overflowButton = this._overflowButton;
 		if (!overflowButton) return;
 
+		// While the overflow popover is open, do NOT relayout. Selecting an
+		// item re-renders the slotted items, which fires our ResizeObserver
+		// and would run this reflow (reset all items visible → measure →
+		// re-hide). nldd-menu's floating-ui autoUpdate is anchored to the
+		// overflow trigger inside .menu-bar__overflow-button and would
+		// reposition the open menu against that mid-reflow / 0-rect anchor
+		// → the menu jumps off-screen. Defer the recalc until the popover
+		// closes (a genuine window resize closes nldd-menu itself first).
+		if (this._menuOpen) {
+			this._overflowUpdatePending = true;
+			return;
+		}
+
 		const slottedElements = this._defaultSlot?.assignedElements({ flatten: true }) ?? [];
 		const items = slottedElements.filter(el => el.tagName === 'NLDD-MENU-BAR-ITEM') as HTMLElement[];
 
@@ -225,20 +236,51 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 
 	// ## Overflow popover menu
 
-	private _createOverflowMenu(): PopoverMenu {
+	private _createOverflowMenu(): void {
+		if (this._overflowMenu) return;
+		// SSR guard — document is unavailable in server-side rendering.
+		if (typeof document === 'undefined') return;
 		const menu = document.createElement('nldd-menu') as unknown as PopoverMenu;
 		menu.setAttribute('placement', 'bottom-end');
-
 		menu.addEventListener('toggle', (event: Event) => {
 			const isOpen = (event as ToggleEvent).newState === 'open';
-			this._overflowMenuOpen = isOpen;
-			if (!isOpen) this._overflowMenuClosedAt = Date.now();
-			const item = this._overflowButton?.querySelector('nldd-menu-bar-item');
-			if (item) (item as NLDDMenuBarItem).expanded = isOpen;
+			this._menuOpen = isOpen;
+			if (!isOpen) {
+				this._menuClosedAt = Date.now();
+				// Flush any overflow recalc that was deferred while open.
+				if (this._overflowUpdatePending) {
+					this._overflowUpdatePending = false;
+					this._scheduleOverflowUpdate();
+				}
+			}
 		});
 		document.body.appendChild(menu);
-		return menu;
+		this._overflowMenu = menu;
 	}
+
+	/**
+	 * @internal Used by template.
+	 *
+	 * Opens/closes the overflow popover explicitly — the same proven
+	 * mechanism as an expandable nldd-menu-bar-item's own submenu
+	 * (`_toggleMenu`): anchor to the (always-visible) trigger so
+	 * floating-ui never collapses to 0,0, and a POPOVER_REOPEN_GUARD_MS
+	 * window so a click that light-dismissed the popover doesn't
+	 * immediately reopen it. The native popover-invoker path was unusable
+	 * here (anchor inside a display-toggled wrapper + no reopen guard).
+	 */
+	_toggleOverflowMenu = (): void => {
+		this._createOverflowMenu();
+		if (!this._overflowMenu) return;
+		const trigger = this._overflowButton?.querySelector('nldd-menu-bar-item');
+		this._overflowMenu.anchorElement = trigger ?? this._overflowButton;
+		if (this._menuOpen) {
+			this._overflowMenu.hidePopover();
+		} else if (Date.now() - this._menuClosedAt > POPOVER_REOPEN_GUARD_MS) {
+			this._populateOverflowMenu();
+			this._overflowMenu.showPopover();
+		}
+	};
 
 	private _populateOverflowMenu(): void {
 		if (!this._overflowMenu) return;
@@ -257,19 +299,33 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 			if (item.disabled) menuItem.setAttribute('disabled', '');
 
 			if (item.expandable) {
-				// Expandable items: clone sub-items as a submenu group
+				// Expandable items become a real nested submenu: the parent
+				// menuItem gets a child nldd-menu, so nldd-menu's own
+				// submenu/drill-in machinery renders it (no dead flat label).
 				const children = item.querySelectorAll('nldd-menu-item, nldd-menu-divider');
 				if (children.length > 0) {
-					const divider = document.createElement('nldd-menu-divider');
-					this._overflowMenu!.appendChild(menuItem);
-					this._overflowMenu!.appendChild(divider);
+					const submenu = document.createElement('nldd-menu');
 					children.forEach(child => {
 						const clone = child.cloneNode(true) as HTMLElement;
-						clone.addEventListener('click', () => {
-							(child as HTMLElement).click();
-						});
-						this._overflowMenu!.appendChild(clone);
+						// Delegate via the original's select(), NOT click(): a
+						// real DOM click bubbles to the original — overflowed,
+						// display:none — expandable nldd-menu-bar-item and its
+						// _handleClick reopens that item's own submenu anchored
+						// to a zero-rect element, throwing it off-screen.
+						// select() fires the `select` event from the original
+						// (so it still bubbles to the consumer) without any
+						// bubbling DOM click. Dividers aren't interactive.
+						const original = child as HTMLElement & { select?: () => void };
+						if (typeof original.select === 'function') {
+							clone.addEventListener('click', () => original.select!());
+						}
+						submenu.appendChild(clone);
 					});
+					// Assemble fully BEFORE attaching: nldd-menu-item resolves
+					// its submenu once at firstUpdated (`:scope > nldd-menu`);
+					// a nldd-menu added after it connects is ignored.
+					menuItem.appendChild(submenu);
+					this._overflowMenu!.appendChild(menuItem);
 					continue;
 				}
 			}
@@ -280,21 +336,6 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 			this._overflowMenu!.appendChild(menuItem);
 		}
 	}
-
-	/** @internal Used by template */
-	_onOverflowClick = (): void => {
-		if (!this._overflowMenu) {
-			this._overflowMenu = this._createOverflowMenu();
-		}
-		this._populateOverflowMenu();
-
-		this._overflowMenu.anchorElement = this._overflowButton;
-		if (this._overflowMenuOpen) {
-			this._overflowMenu.hidePopover();
-		} else if (Date.now() - this._overflowMenuClosedAt > POPOVER_REOPEN_GUARD_MS) {
-			this._overflowMenu.showPopover();
-		}
-	};
 
 	// ## Render
 
