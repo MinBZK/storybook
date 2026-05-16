@@ -299,12 +299,12 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 			if (item.disabled) menuItem.setAttribute('disabled', '');
 
 			if (item.expandable) {
-				// Expandable items: clone sub-items as a submenu group
+				// Expandable items become a real nested submenu: the parent
+				// menuItem gets a child nldd-menu, so nldd-menu's own
+				// submenu/drill-in machinery renders it (no dead flat label).
 				const children = item.querySelectorAll('nldd-menu-item, nldd-menu-divider');
 				if (children.length > 0) {
-					const divider = document.createElement('nldd-menu-divider');
-					this._overflowMenu!.appendChild(menuItem);
-					this._overflowMenu!.appendChild(divider);
+					const submenu = document.createElement('nldd-menu');
 					children.forEach(child => {
 						const clone = child.cloneNode(true) as HTMLElement;
 						// Delegate via the original's select(), NOT click(): a
@@ -319,8 +319,13 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 						if (typeof original.select === 'function') {
 							clone.addEventListener('click', () => original.select!());
 						}
-						this._overflowMenu!.appendChild(clone);
+						submenu.appendChild(clone);
 					});
+					// Assemble fully BEFORE attaching: nldd-menu-item resolves
+					// its submenu once at firstUpdated (`:scope > nldd-menu`);
+					// a nldd-menu added after it connects is ignored.
+					menuItem.appendChild(submenu);
+					this._overflowMenu!.appendChild(menuItem);
 					continue;
 				}
 			}

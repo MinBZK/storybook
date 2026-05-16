@@ -124,7 +124,42 @@ describe('nldd-menu-bar', () => {
 		expect(menu.matches(':popover-open')).toBe(true);
 	});
 
-	it('selecting a flattened expandable child does not reopen the original item\'s submenu off-screen', async () => {
+	it('renders an expandable overflowed item as a real nested submenu (not flattened)', async () => {
+		el = await fixture(`
+			<nldd-menu-bar>
+				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
+					<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
+					<nldd-menu-divider></nldd-menu-divider>
+					<nldd-menu-item text="Uitloggen"></nldd-menu-item>
+				</nldd-menu-bar-item>
+			</nldd-menu-bar>
+		`);
+		await waitForUpdate(el);
+		(el.querySelector('nldd-menu-bar-item') as HTMLElement).style.display = 'none';
+
+		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+		await waitForUpdate(el);
+		const overflowMenu = document.querySelector('nldd-menu') as HTMLElement;
+
+		// The parent is a single direct menu-item (no flat divider-separated
+		// siblings at the overflow root, no dead label).
+		const directItems = overflowMenu.querySelectorAll(':scope > nldd-menu-item');
+		expect(directItems.length).toBe(1);
+		expect(overflowMenu.querySelectorAll(':scope > nldd-menu-divider').length).toBe(0);
+		const parent = directItems[0] as HTMLElement & { _hasSubmenu?: boolean };
+		expect(parent.getAttribute('text')).toBe('Mijn DigID');
+
+		// It owns a real nested nldd-menu submenu with the cloned children.
+		const submenu = parent.querySelector(':scope > nldd-menu') as HTMLElement;
+		expect(submenu).toBeTruthy();
+		expect(parent._hasSubmenu).toBe(true); // interactive opener, not a dead label
+		const childTexts = [...submenu.querySelectorAll('nldd-menu-item')]
+			.map(i => i.getAttribute('text'));
+		expect(childTexts).toEqual(['Mijn gegevens', 'Uitloggen']);
+		expect(submenu.querySelectorAll('nldd-menu-divider').length).toBe(1);
+	});
+
+	it('selecting a nested submenu leaf delegates to the original and does not jump off-screen', async () => {
 		el = await fixture(`
 			<nldd-menu-bar>
 				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
@@ -134,33 +169,28 @@ describe('nldd-menu-bar', () => {
 			</nldd-menu-bar>
 		`);
 		await waitForUpdate(el);
-
-		const original = el.querySelector('nldd-menu-bar-item') as HTMLElement;
 		// Simulate the overflowed (hidden) state the real layout produces.
-		original.style.display = 'none';
+		(el.querySelector('nldd-menu-bar-item') as HTMLElement).style.display = 'none';
 
 		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
 		await waitForUpdate(el);
-		const overflowMenu = document.querySelector('nldd-menu') as HTMLElement;
-		expect(overflowMenu.matches(':popover-open')).toBe(true);
 
 		let originalSelectFired = false;
 		el.querySelector('nldd-menu-item[text="Mijn gegevens"]')!
 			.addEventListener('select', () => { originalSelectFired = true; });
 
-		// Click the cloned child's inner button (where nldd-menu-item binds
-		// its click handler) inside the overflow popover.
+		const overflowMenu = document.querySelector('nldd-menu') as HTMLElement;
 		const clone = [...overflowMenu.querySelectorAll('nldd-menu-item')]
 			.find(mi => mi.getAttribute('text') === 'Mijn gegevens') as HTMLElement;
 		expect(clone).toBeTruthy();
 		(clone.shadowRoot!.querySelector('button') as HTMLButtonElement).click();
 		await waitForUpdate(el);
 
-		// Delegation still reaches the original (select bubbles to consumer)…
+		// Delegation reaches the original (select bubbles to the consumer)…
 		expect(originalSelectFired).toBe(true);
-		// …but NO nldd-menu is left open: the overflow popover closed on
-		// select and the original hidden expandable parent's own submenu
-		// did NOT open against a 0-rect anchor (the off-screen bug).
+		// …and NO nldd-menu is left open: the popover closed on select and
+		// the original hidden expandable parent's own submenu did NOT open
+		// against a 0-rect anchor (the off-screen bug).
 		const anyOpen = [...document.querySelectorAll('nldd-menu')]
 			.some(m => m.matches(':popover-open'));
 		expect(anyOpen).toBe(false);
