@@ -1262,6 +1262,42 @@ describe('nldd-menu drill-in chain', () => {
 		cleanup(root);
 	});
 
+	it('root-only drill-in: anchor click closes (no bounce) and a later click reopens', async () => {
+		// Contract for a root drill-in menu with no submenu. The anchor
+		// click must close it via the click handler's collapse-and-return
+		// branch (no bounce), and a later anchor click must still open it.
+		// (A "set the gesture marker on the root early-return regardless"
+		// change would make the close click return before collapsing and
+		// the open click return before showing — this locks both.)
+		const root = await fixture<HTMLElement>(`
+			<div>
+				<button id="anch4">Open menu</button>
+				<nldd-menu anchor="anch4">
+					<nldd-menu-item text="Only"></nldd-menu-item>
+				</nldd-menu>
+			</div>
+		`);
+		await waitForUpdate(root);
+		const anch = root.querySelector('#anch4') as HTMLButtonElement;
+		const menu = root.querySelector('nldd-menu') as HTMLElement & { showPopover(): void };
+
+		menu.showPopover();
+		await waitForUpdate(root);
+		expect(menu.matches(':popover-open')).toBe(true);
+
+		anch.click(); // close
+		await waitForUpdate(root);
+		expect(menu.matches(':popover-open')).toBe(false);
+
+		// Past the reopen guard, a fresh anchor click opens it again.
+		(menu as unknown as { _closedAt: number })._closedAt = Date.now() - 5000;
+		anch.click();
+		await waitForUpdate(root);
+		expect(menu.matches(':popover-open')).toBe(true);
+
+		cleanup(root);
+	});
+
 	it('pointerdown outside the chain collapses every level', async () => {
 		const root = await fixture<HTMLElement>(`
 			<nldd-menu>

@@ -495,9 +495,7 @@ export class NLDDMenu extends LitElement {
 		const base = this.placement || 'bottom-start';
 		const align = base.includes('-') ? base.slice(base.indexOf('-')) : '';
 		const rect = anchorEl.getBoundingClientRect();
-		const margin = parseInt(
-			getComputedStyle(this).getPropertyValue('--_viewport-margin')
-		) || 0;
+		const margin = this._cssPx('--_viewport-margin');
 		const spaceBelow = window.innerHeight - rect.bottom - margin;
 		const spaceAbove = rect.top - margin;
 		const side = spaceBelow >= spaceAbove ? 'bottom' : 'top';
@@ -1631,21 +1629,26 @@ export class NLDDMenu extends LitElement {
 		return this.getHighlighted()?.id ?? '';
 	}
 
+	/** Read a px-valued CSS custom property as a number. `parseFloat`
+	 * keeps fractional pixels; an unset/NaN value falls back to 0. */
+	private _cssPx(name: string): number {
+		const v = parseFloat(getComputedStyle(this).getPropertyValue(name));
+		return Number.isNaN(v) ? 0 : v;
+	}
+
 	/** Recalculate position and size relative to the anchor element. */
 	public async reposition(): Promise<void> {
 		const anchorEl = this._getAnchorEl();
 		if (!anchorEl || !this._isOpen) return;
 
-		const viewportMargin = parseInt(
-			getComputedStyle(this).getPropertyValue('--_viewport-margin')
-		);
+		const viewportMargin = this._cssPx('--_viewport-margin');
 
 		// Cascade-mode submenus: shift up by the menu's own padding so the
 		// first submenu item lines up vertically with the parent opener item.
 		// Without this, the submenu's top edge aligns with the opener and the
 		// inner padding pushes the first item down, leaving a visible step.
 		const submenuPadding = (this._isSubmenu && !this._drillInMode)
-			? parseInt(getComputedStyle(this).getPropertyValue('--_menu-padding')) || 0
+			? this._cssPx('--_menu-padding')
 			: 0;
 
 		// Drill-in: pick the side from the available space around the
