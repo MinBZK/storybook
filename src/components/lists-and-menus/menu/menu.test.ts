@@ -966,6 +966,10 @@ describe('nldd-menu drill-in chain', () => {
 
 	afterEach(() => {
 		drillInSpy.mockRestore();
+		// Defensive isolation: if an assertion threw before a test's own
+		// cleanup(root), drill-in submenus reparented to <body> would leak
+		// into later tests. Sweep any stragglers.
+		document.querySelectorAll('nldd-menu').forEach(m => m.remove());
 	});
 
 	it('select on a level-3 item collapses the entire chain (3 levels)', async () => {
