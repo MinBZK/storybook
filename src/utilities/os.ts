@@ -19,7 +19,9 @@ interface NavigatorWithUAData extends Navigator {
 
 function classify(platform: string): OS {
 	const p = platform.toLowerCase();
-	if (/mac|iphone|ipad|ipod/.test(p)) return 'mac';
+	// UACH (navigator.userAgentData.platform) reports 'iOS'; navigator.platform
+	// reports 'iPhone'/'iPad'/'iPod'. Match both so iOS resolves to 'mac'.
+	if (/mac|iphone|ipad|ipod|ios/.test(p)) return 'mac';
 	if (/win/.test(p)) return 'windows';
 	// Android's platform string contains "Linux" — bail before the linux check.
 	if (/android/.test(p)) return 'other';

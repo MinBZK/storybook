@@ -109,6 +109,16 @@ describe('os detection', () => {
 		expect(detectOS()).toBe('mac');
 	});
 
+	it('classifies UACH iOS as mac', () => {
+		Object.defineProperty(navigator, 'userAgentData', {
+			value: { platform: 'iOS' },
+			configurable: true,
+			writable: false,
+		});
+		_resetOSDetectionCache();
+		expect(detectOS()).toBe('mac');
+	});
+
 	it('prefers userAgentData.platform over navigator.platform', () => {
 		mockPlatform('Win32'); // also clears userAgentData
 		Object.defineProperty(navigator, 'userAgentData', {
