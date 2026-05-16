@@ -89,8 +89,21 @@ export const menuStyles = css`
 		}
 	}
 
-	.menu__back-button:hover,
-	.menu__back-button:active {
+	/* Hover gated behind a real hover-capable pointer: touch emulates a
+	 * sticky :hover on the last-tapped point, so opening a drill-in
+	 * submenu with the back button under the finger would otherwise
+	 * leave it highlighted. :active:hover gives press feedback without
+	 * the sticky-hover trap (the synthetic hover never coincides with
+	 * an active press on the back button itself). Mirrors the
+	 * .menu__item:active:hover pattern. */
+	@media (hover: hover) {
+		.menu__back-button:hover {
+			background-color: var(--components-menu-item-is-highlighted-background-color);
+			--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
+		}
+	}
+
+	.menu__back-button:active:hover {
 		background-color: var(--components-menu-item-is-highlighted-background-color);
 		--context-cell-content-color: var(--components-menu-item-is-highlighted-content-color);
 	}
