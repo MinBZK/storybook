@@ -72,7 +72,6 @@ export function menuItemTemplate(this: NLDDMenuItem, variant: 'menu' | 'listbox'
 			aria-expanded=${hasSubmenu ? String(this._submenuOpen) : nothing}
 			aria-controls=${hasSubmenu && this._submenuEl?.id ? this._submenuEl.id : nothing}
 			.popoverTargetElement=${this._submenuEl}
-			popovertargetaction="show"
 			@click=${this._handleClick}
 		>
 			${hasCheckState ? html`
