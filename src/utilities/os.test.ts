@@ -99,6 +99,27 @@ describe('os detection', () => {
 		expect(detectOS()).toBe('other');
 	});
 
+	it('uses userAgentData.platform when available (UACH format)', () => {
+		Object.defineProperty(navigator, 'userAgentData', {
+			value: { platform: 'macOS' },
+			configurable: true,
+			writable: false,
+		});
+		_resetOSDetectionCache();
+		expect(detectOS()).toBe('mac');
+	});
+
+	it('prefers userAgentData.platform over navigator.platform', () => {
+		mockPlatform('Win32'); // also clears userAgentData
+		Object.defineProperty(navigator, 'userAgentData', {
+			value: { platform: 'macOS' },
+			configurable: true,
+			writable: false,
+		});
+		_resetOSDetectionCache();
+		expect(detectOS()).toBe('mac');
+	});
+
 	it('caches the result of the first detection', () => {
 		mockPlatform('MacIntel');
 		expect(detectOS()).toBe('mac');
