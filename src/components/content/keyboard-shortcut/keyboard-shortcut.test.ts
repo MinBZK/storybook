@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
-import { setOSOverride } from '../../../utilities/os.js';
+import { _setOSOverride } from '../../../utilities/os.js';
 import './keyboard-shortcut.js';
 
 describe('nldd-keyboard-shortcut', () => {
@@ -110,7 +110,7 @@ describe('nldd-keyboard-shortcut', () => {
 
 	describe('per-OS keys overrides', () => {
 		afterEach(() => {
-			setOSOverride(null);
+			_setOSOverride(null);
 		});
 
 		it('uses keys fallback when matching per-OS attribute is absent', async () => {
@@ -159,8 +159,8 @@ describe('nldd-keyboard-shortcut', () => {
 			expect(keys[0].textContent).toBe('Ctrl');
 		});
 
-		it('debug-os takes precedence over the global setOSOverride', async () => {
-			setOSOverride('mac');
+		it('debug-os takes precedence over the global _setOSOverride', async () => {
+			_setOSOverride('mac');
 			el = await fixture('<nldd-keyboard-shortcut debug-os="windows" keys="Ctrl+K" mac-keys="Cmd+K" windows-keys="Win+K"></nldd-keyboard-shortcut>');
 			await waitForUpdate(el);
 			const keys = el.shadowRoot!.querySelectorAll('.keyboard-shortcut__key');

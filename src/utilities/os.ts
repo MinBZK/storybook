@@ -39,10 +39,15 @@ export function detectOS(): OS {
 }
 
 /**
+ * @internal — test/dev only.
+ *
  * Force a specific OS for the duration of testing or Storybook stories.
  * Pass `null` to clear the override and fall back to real detection.
+ * Mutates module-level singleton state and affects every component on
+ * the page that calls `detectOS()` — not a supported public API
+ * (hence the `_` prefix, matching `_resetOSDetectionCache`).
  */
-export function setOSOverride(os: OS | null): void {
+export function _setOSOverride(os: OS | null): void {
 	override = os;
 }
 

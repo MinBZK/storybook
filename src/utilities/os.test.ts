@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { detectOS, setOSOverride, isMac, isWindows, isLinux, _resetOSDetectionCache } from './os.js';
+import { detectOS, _setOSOverride, isMac, isWindows, isLinux, _resetOSDetectionCache } from './os.js';
 
 const originalPlatformDescriptor = Object.getOwnPropertyDescriptor(Navigator.prototype, 'platform')
 	?? Object.getOwnPropertyDescriptor(navigator, 'platform');
@@ -36,12 +36,12 @@ function restorePlatform(): void {
 
 describe('os detection', () => {
 	beforeEach(() => {
-		setOSOverride(null);
+		_setOSOverride(null);
 		_resetOSDetectionCache();
 	});
 
 	afterEach(() => {
-		setOSOverride(null);
+		_setOSOverride(null);
 		restorePlatform();
 	});
 
@@ -109,16 +109,16 @@ describe('os detection', () => {
 
 	it('respects an override regardless of detection', () => {
 		mockPlatform('Win32');
-		setOSOverride('mac');
+		_setOSOverride('mac');
 		expect(detectOS()).toBe('mac');
 		expect(isMac()).toBe(true);
 	});
 
 	it('clears the override when set to null', () => {
 		mockPlatform('Win32');
-		setOSOverride('mac');
+		_setOSOverride('mac');
 		expect(detectOS()).toBe('mac');
-		setOSOverride(null);
+		_setOSOverride(null);
 		expect(detectOS()).toBe('windows');
 	});
 });
