@@ -21,6 +21,8 @@ function classify(platform: string): OS {
 	const p = platform.toLowerCase();
 	if (/mac|iphone|ipad|ipod/.test(p)) return 'mac';
 	if (/win/.test(p)) return 'windows';
+	// Android's platform string contains "Linux" — bail before the linux check.
+	if (/android/.test(p)) return 'other';
 	if (/linux|cros/.test(p)) return 'linux';
 	return 'other';
 }

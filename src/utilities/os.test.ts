@@ -83,6 +83,12 @@ describe('os detection', () => {
 		expect(detectOS()).toBe('linux');
 	});
 
+	it('classifies Android as other (not linux)', () => {
+		mockPlatform('Android');
+		expect(detectOS()).toBe('other');
+		expect(isLinux()).toBe(false);
+	});
+
 	it('falls back to "other" for unknown platforms', () => {
 		mockPlatform('SomethingExotic');
 		expect(detectOS()).toBe('other');
