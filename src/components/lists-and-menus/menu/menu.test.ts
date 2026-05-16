@@ -1291,6 +1291,69 @@ describe('nldd-menu drill-in chain', () => {
 
 		cleanup(root);
 	});
+
+	it('freezes the drill-in side from available space, stable across a larger submenu', async () => {
+		const anchor = document.createElement('button');
+		anchor.style.cssText = 'position:fixed;left:8px;top:8px;width:40px;height:24px;';
+		document.body.appendChild(anchor);
+
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu>
+				<nldd-menu-item text="L1">
+					<nldd-menu>
+						<nldd-menu-item text="A"></nldd-menu-item>
+						<nldd-menu-item text="B"></nldd-menu-item>
+						<nldd-menu-item text="C"></nldd-menu-item>
+					</nldd-menu>
+				</nldd-menu-item>
+			</nldd-menu>
+		`);
+		(root as unknown as { anchorElement: Element }).anchorElement = anchor;
+		await waitForUpdate(root);
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		await (root as unknown as { reposition: () => Promise<void> }).reposition();
+
+		// Anchor near the top of the viewport → more space below → bottom side.
+		const frozen = (root as unknown as { _drillInPlacement: string })._drillInPlacement;
+		expect(frozen).toBe('bottom-start');
+
+		const l1Item = root.querySelector(':scope > nldd-menu-item') as HTMLElement;
+		const l2Menu = l1Item.querySelector(':scope > nldd-menu') as HTMLElement;
+		openSubmenu(root, l1Item, l2Menu);
+		await waitForUpdate(root);
+		await (l2Menu as unknown as { reposition: () => Promise<void> }).reposition();
+
+		// The (larger) submenu must not re-resolve a different side — the
+		// frozen value is unchanged and the submenu reads it via _rootMenu.
+		expect((root as unknown as { _drillInPlacement: string })._drillInPlacement).toBe(frozen);
+		expect((l2Menu as unknown as { _rootMenu: HTMLElement })._rootMenu).toBe(root);
+
+		anchor.remove();
+		cleanup(root);
+	});
+
+	it('resolves to the top side when there is more space above the anchor', async () => {
+		const anchor = document.createElement('button');
+		anchor.style.cssText = 'position:fixed;left:8px;bottom:4px;width:40px;height:24px;';
+		document.body.appendChild(anchor);
+
+		const root = await fixture<HTMLElement>(`
+			<nldd-menu><nldd-menu-item text="A"></nldd-menu-item></nldd-menu>
+		`);
+		(root as unknown as { anchorElement: Element }).anchorElement = anchor;
+		await waitForUpdate(root);
+
+		(root as HTMLElement & { showPopover: () => void }).showPopover();
+		await waitForUpdate(root);
+		await (root as unknown as { reposition: () => Promise<void> }).reposition();
+
+		expect((root as unknown as { _drillInPlacement: string })._drillInPlacement).toBe('top-start');
+
+		anchor.remove();
+		cleanup(root);
+	});
 });
 
 describe('nldd-menu close-on-resize', () => {
